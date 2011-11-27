@@ -41,12 +41,14 @@ SET( CANTATA_SRCS
     gui/settings.cpp
     gui/updatedialog.cpp
     gui/covers.cpp
+    gui/lyrics.cpp
     lib/mpdconnection.cpp
     lib/mpdparseutils.cpp
     lib/mpdstats.cpp
     lib/mpdstatus.cpp
     lib/song.cpp
     widgets/treeview.cpp
+    widgets/fancytabwidget.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -62,6 +64,11 @@ SET( CANTATA_MOC_HDRS
     gui/dirviewproxymodel.h
     gui/updatedialog.h
     gui/covers.h
+    gui/lyrics.h
+    gui/folderpage.h
+    gui/librarypage.h
+    gui/lyricspage.h
+    gui/playlistspage.h
     lib/mpdconnectionbase.h
     lib/mpdconnectionplayback.h
     lib/mpddatabaseconnection.h
@@ -70,11 +77,16 @@ SET( CANTATA_MOC_HDRS
     lib/output.h
     lib/playlist.h
     lib/song.h
+    widgets/fancytabwidget.h
 )
 
 SET( CANTATA_UIS
     gui/mainwindow.ui
     gui/preferencesdialog.ui
+    gui/folderpage.ui
+    gui/librarypage.ui
+    gui/lyricspage.ui
+    gui/playlistspage.ui
 )
 
 include_directories( ${CMAKE_SOURCE_DIR}/external/libmaia
@@ -111,8 +123,6 @@ IF( KDE4_FOUND )
 ENDIF( KDE4_FOUND )
 
 IF( ENABLE_KDE_SUPPORT )
-    SET( CANTATA_SRCS ${CANTATA_SRCS} gui/lyrics.cpp )
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/lyrics.h )
     include_directories( ${KDE4_INCLUDES} )
     add_definitions( ${KDE4_DEFINITIONS} )
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )

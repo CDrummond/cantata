@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<gui name="Cantata" version="1">
+  <MenuBar>
+    <Menu name="actions">
+      <text>Output</text>
+      <ActionList name="outputs_list" />
+    </Menu>
+  </MenuBar>
+</gui>

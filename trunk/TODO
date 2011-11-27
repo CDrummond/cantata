@@ -1,0 +1,46 @@
+...high priority...
+
+
+Replay Gain: off, track, album
+
+Cover Manager
+   - Need way to fetch covers
+   - Copy amarok code?
+   - Have manual button
+
+Use KPageWidget for left had widget!
+
+...medium priority...
+
+Add Tooltips to lists
+
+Proxy support for Qt
+
+Config dialog:
+    MPD:
+    Interface:
+    Proxy: <for Qt only>
+
+Fix usage of threads - ideally writing/reading should be in thread object.
+
+Need better repeat icon.
+
+Cover fetcher - google, amazon, save to server dir? Read from sever dir? Add to right-click menu "Fetch cover"
+
+Support streams - for radio!
+   Will probably need to store mapping from URL to name, so that can show this in title.
+   How does MPD store this - it doesnt! Could probably save as a playlist with 1 entry?
+
+
+
+...low priority...
+
+When starting, config dialog is shown (because MP not started, etc) then show some text exlplaining this!
+
+Add config of MPD itself -> requires KAuth???
+   outputs
+   album artist support
+
+// When complete:
+Check Qt only build
+Need to fix Qt about-dialog

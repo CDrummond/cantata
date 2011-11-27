@@ -61,6 +61,10 @@ class KAction;
 
 class MainWindow;
 class UpdateDialog;
+class LibraryPage;
+class FolderPage;
+class PlaylistsPage;
+class LyricsPage;
 
 class VolumeSliderEventHandler : public QObject
 {
@@ -263,7 +267,10 @@ private:
 #ifdef ENABLE_KDE_SUPPORT
     bool lyricsNeedUpdating;
 #endif
-
+    LibraryPage *libraryPage;
+    FolderPage *folderPage;
+    PlaylistsPage *playlistsPage;
+    LyricsPage *lyricsPage;
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
 };

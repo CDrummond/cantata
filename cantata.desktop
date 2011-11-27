@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Cantata
+GenericName=Music Player Client
+Icon=cantata
+Exec=cantata
+Categories=Qt;KDE;AudioVideo;Player;

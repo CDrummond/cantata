@@ -50,13 +50,13 @@
     </spacer>
    </item>
    <item row="1" column="2">
-    <widget class="QToolButton" name="addToPlaylist"/>
+    <widget class="QToolButton" name="removePlaylist"/>
    </item>
    <item row="1" column="3">
-    <widget class="QToolButton" name="replacePlaylist"/>
+    <widget class="QToolButton" name="addToPlaylist"/>
    </item>
    <item row="1" column="4">
-    <widget class="QToolButton" name="removePlaylist"/>
+    <widget class="QToolButton" name="replacePlaylist"/>
    </item>
   </layout>
  </widget>

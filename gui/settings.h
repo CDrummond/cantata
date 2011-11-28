@@ -34,6 +34,7 @@ public:
     bool showPopups();
     QString mpdDir();
     int coverSize();
+    int sidebar();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -51,6 +52,7 @@ public:
     void saveShowPopups(bool v);
     void saveMpdDir(const QString &v);
     void saveCoverSize(int v);
+    void saveSidebar(int v);
     void save();
 #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

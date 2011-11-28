@@ -432,6 +432,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     Lyrics::self()->setMpdDir(mpdDir);
     Covers::self()->setMpdDir(mpdDir);
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->coverSize());
+    tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
 
     if (setupTrayIcon() && Settings::self()->useSystemTray())
         trayIcon->show();
@@ -592,6 +593,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveShowPlaylist(action_Show_playlist->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
     Settings::self()->savePlaylistHeaderState(playlistTableViewHeader->saveState());
+    Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->save();
 }
 

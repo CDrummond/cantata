@@ -36,8 +36,9 @@
 #include <QTabBar>
 #include <QTimer>
 #include <QWidget>
+#include <QScopedPointer>
 
-#include <boost/scoped_ptr.hpp>
+//#include <boost/scoped_ptr.hpp>
 
 class QActionGroup;
 class QMenu;
@@ -217,7 +218,8 @@ private:
 
   QMenu* menu_;
 
-  boost::scoped_ptr<FancyTabProxyStyle> proxy_style_;
+  //boost::scoped_ptr<FancyTabProxyStyle> proxy_style_;
+  QScopedPointer<FancyTabProxyStyle> proxy_style_;
 };
 
 } // namespace Internal

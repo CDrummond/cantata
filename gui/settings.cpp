@@ -1,6 +1,7 @@
 #include "settings.h"
 #include "config.h"
 #include "musiclibraryitemalbum.h"
+#include "fancytabwidget.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
@@ -152,6 +153,11 @@ int Settings::coverSize()
     return GET_INT("coverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
 }
 
+int Settings::sidebar()
+{
+    return GET_INT("sidebar", (int)(FancyTabWidget::Mode_LargeSidebar));
+}
+
 void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -242,6 +248,11 @@ void Settings::saveMpdDir(const QString &v)
 void Settings::saveCoverSize(int v)
 {
     SET_VALUE("coverSize", v);
+}
+
+void Settings::saveSidebar(int v)
+{
+    SET_VALUE("sidebar", v);
 }
 
 void Settings::save()

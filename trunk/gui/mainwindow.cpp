@@ -342,6 +342,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     action_Consume_playlist->setIcon(QIcon::fromTheme("format-list-unordered"));
     action_Add_to_playlist->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left" : "arrow-right"));
     action_Replace_playlist->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left-double" : "arrow-right-double"));
+
     action_Prev_track->setIcon(QIcon::fromTheme("media-skip-backward"));
     action_Next_track->setIcon(QIcon::fromTheme("media-skip-forward"));
     action_Play_pause_track->setIcon(playbackPlay);
@@ -367,52 +368,52 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     stopTrackButton->setDefaultAction(action_Stop_track);
     nextTrackButton->setDefaultAction(action_Next_track);
     prevTrackButton->setDefaultAction(action_Prev_track);
-    libraryPage->addToPlaylistPushButton->setDefaultAction(action_Add_to_playlist);
-    libraryPage->replacePlaylistPushButton->setDefaultAction(action_Replace_playlist);
-    folderPage->dirViewAddToPlaylistPushButton->setDefaultAction(action_Add_to_playlist);
-    folderPage->dirViewReplacePlaylistPushButton->setDefaultAction(action_Replace_playlist);
+    libraryPage->addToPlaylist->setDefaultAction(action_Add_to_playlist);
+    libraryPage->replacePlaylist->setDefaultAction(action_Replace_playlist);
+    folderPage->addToPlaylist->setDefaultAction(action_Add_to_playlist);
+    folderPage->replacePlaylist->setDefaultAction(action_Replace_playlist);
     savePlaylistPushButton->setDefaultAction(action_Save_playlist);
     removeAllFromPlaylistPushButton->setDefaultAction(action_Clear_playlist);
     removeFromPlaylistPushButton->setDefaultAction(action_Remove_from_playlist);
-    playlistsPage->addPlaylistToPlaylistPushButton->setDefaultAction(action_Add_to_playlist);
-    playlistsPage->loadPlaylistPushButton->setDefaultAction(action_Load_playlist);
-    playlistsPage->removePlaylistPushButton->setDefaultAction(action_Remove_playlist);
+    playlistsPage->addToPlaylist->setDefaultAction(action_Add_to_playlist);
+    playlistsPage->replacePlaylist->setDefaultAction(action_Load_playlist);
+    playlistsPage->removePlaylist->setDefaultAction(action_Remove_playlist);
     randomPushButton->setDefaultAction(action_Random_playlist);
     repeatPushButton->setDefaultAction(action_Repeat_playlist);
     consumePushButton->setDefaultAction(action_Consume_playlist);
-    libraryPage->libraryUpdateButton->setDefaultAction(action_Update_database);
-    folderPage->libraryUpdateButton2->setDefaultAction(action_Update_database);
-    playlistsPage->libraryUpdateButton3->setDefaultAction(action_Update_database);
+    libraryPage->libraryUpdate->setDefaultAction(action_Update_database);
+    folderPage->libraryUpdate->setDefaultAction(action_Update_database);
+    playlistsPage->libraryUpdate->setDefaultAction(action_Update_database);
 
     action_Show_playlist->setCheckable(true);
     action_Random_playlist->setCheckable(true);
     action_Repeat_playlist->setCheckable(true);
     action_Consume_playlist->setCheckable(true);
 
-    libraryPage->addToPlaylistPushButton->setEnabled(false);
-    libraryPage->replacePlaylistPushButton->setEnabled(false);
-    folderPage->dirViewAddToPlaylistPushButton->setEnabled(false);
-    folderPage->dirViewReplacePlaylistPushButton->setEnabled(false);
-    playlistsPage->addPlaylistToPlaylistPushButton->setEnabled(false);
-    playlistsPage->loadPlaylistPushButton->setEnabled(false);
-    playlistsPage->removePlaylistPushButton->setEnabled(false);
+    libraryPage->addToPlaylist->setEnabled(false);
+    libraryPage->replacePlaylist->setEnabled(false);
+    folderPage->addToPlaylist->setEnabled(false);
+    folderPage->replacePlaylist->setEnabled(false);
+    playlistsPage->addToPlaylist->setEnabled(false);
+    playlistsPage->replacePlaylist->setEnabled(false);
+    playlistsPage->removePlaylist->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
-    libraryPage->searchLibraryLineEdit->setPlaceholderText(i18n("Search library..."));
-    folderPage->searchDirViewLineEdit->setPlaceholderText(i18n("Search files..."));
+    libraryPage->search->setPlaceholderText(i18n("Search library..."));
+    folderPage->search->setPlaceholderText(i18n("Search files..."));
     searchPlaylistLineEdit->setPlaceholderText(i18n("Search playlist..."));
 #else
-    libraryPage->searchLibraryLineEdit->setPlaceholderText(tr("Search library..."));
-    folderPage->searchDirViewLineEdit->setPlaceholderText(tr("Search files..."));
+    libraryPage->search->setPlaceholderText(tr("Search library..."));
+    folderPage->search->setPlaceholderText(tr("Search files..."));
     searchPlaylistLineEdit->setPlaceholderText(tr("Search playlist..."));
 #endif
     QList<QToolButton *> btns;
     btns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton
-         << libraryPage->addToPlaylistPushButton << libraryPage->replacePlaylistPushButton
-         << folderPage->dirViewAddToPlaylistPushButton << folderPage->dirViewReplacePlaylistPushButton << playlistsPage->addPlaylistToPlaylistPushButton
-         << playlistsPage->loadPlaylistPushButton << playlistsPage->removePlaylistPushButton << repeatPushButton << randomPushButton
+         << libraryPage->addToPlaylist << libraryPage->replacePlaylist
+         << folderPage->addToPlaylist << folderPage->replacePlaylist << playlistsPage->addToPlaylist
+         << playlistsPage->replacePlaylist << playlistsPage->removePlaylist << repeatPushButton << randomPushButton
          << savePlaylistPushButton << removeAllFromPlaylistPushButton << removeFromPlaylistPushButton
-         << consumePushButton << libraryPage->libraryUpdateButton << folderPage->libraryUpdateButton2 << playlistsPage->libraryUpdateButton3 << volumeButton;
+         << consumePushButton << libraryPage->libraryUpdate << folderPage->libraryUpdate << playlistsPage->libraryUpdate << volumeButton;
 
     foreach(QToolButton * b, btns) {
         b->setAutoRaise(true);
@@ -426,16 +427,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     artistLabel->setText("...");
 
     playlistsProxyModel.setSourceModel(&playlistsModel);
-    playlistsPage->playlistsView->setModel(&playlistsProxyModel);
-    playlistsPage->playlistsView->sortByColumn(0, Qt::AscendingOrder);
-    playlistsPage->playlistsView->addAction(action_Add_to_playlist);
-    playlistsPage->playlistsView->addAction(action_Load_playlist);
-    playlistsPage->playlistsView->addAction(action_Remove_playlist);
-    playlistsPage->playlistsView->addAction(action_Rename_playlist);
+    playlistsPage->view->setModel(&playlistsProxyModel);
+    playlistsPage->view->sortByColumn(0, Qt::AscendingOrder);
+    playlistsPage->view->addAction(action_Add_to_playlist);
+    playlistsPage->view->addAction(action_Load_playlist);
+    playlistsPage->view->addAction(action_Remove_playlist);
+    playlistsPage->view->addAction(action_Rename_playlist);
 
-    libraryPage->libraryTreeView->setHeaderHidden(true);
-    folderPage->dirTreeView->setHeaderHidden(true);
-    playlistsPage->playlistsView->setHeaderHidden(true);
+    libraryPage->view->setHeaderHidden(true);
+    folderPage->view->setHeaderHidden(true);
+    playlistsPage->view->setHeaderHidden(true);
 
     action_Show_playlist->setChecked(Settings::self()->showPlaylist());
     action_Random_playlist->setChecked(Settings::self()->randomPlaylist());
@@ -479,14 +480,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     coverWidget->installEventFilter(coverEventHandler);
     libraryProxyModel.setSourceModel(&musicLibraryModel);
-    libraryPage->libraryTreeView->setModel(&libraryProxyModel);
-    libraryPage->libraryTreeView->addAction(action_Add_to_playlist);
-    libraryPage->libraryTreeView->addAction(action_Replace_playlist);
+    libraryPage->view->setModel(&libraryProxyModel);
+    libraryPage->view->addAction(action_Add_to_playlist);
+    libraryPage->view->addAction(action_Replace_playlist);
 
     dirProxyModel.setSourceModel(&dirviewModel);
-    folderPage->dirTreeView->setModel(&dirProxyModel);
-    folderPage->dirTreeView->addAction(action_Add_to_playlist);
-    folderPage->dirTreeView->addAction(action_Replace_playlist);
+    folderPage->view->setModel(&dirProxyModel);
+    folderPage->view->addAction(action_Add_to_playlist);
+    folderPage->view->addAction(action_Replace_playlist);
 
     connect(&playlistsModel, SIGNAL(playlistLoaded()), this, SLOT(startPlayingSong()));
     connect(&playlistModel, SIGNAL(filesAddedInPlaylist(const QStringList, const int, const int)), this,
@@ -537,16 +538,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(action_Random_playlist, SIGNAL(activated()), this, SLOT(setRandom()));
     connect(action_Repeat_playlist, SIGNAL(activated()), this, SLOT(setRepeat()));
     connect(action_Consume_playlist, SIGNAL(activated()), this, SLOT(setConsume()));
-    connect(libraryPage->searchLibraryLineEdit, SIGNAL(returnPressed()), this, SLOT(searchMusicLibrary()));
-    connect(libraryPage->searchLibraryLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchMusicLibrary()));
+    connect(libraryPage->search, SIGNAL(returnPressed()), this, SLOT(searchMusicLibrary()));
+    connect(libraryPage->search, SIGNAL(textChanged(const QString)), this, SLOT(searchMusicLibrary()));
     connect(libraryPage->genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchMusicLibrary()));
-    connect(folderPage->searchDirViewLineEdit, SIGNAL(returnPressed()), this, SLOT(searchDirView()));
-    connect(folderPage->searchDirViewLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchDirView()));
+    connect(folderPage->search, SIGNAL(returnPressed()), this, SLOT(searchDirView()));
+    connect(folderPage->search, SIGNAL(textChanged(const QString)), this, SLOT(searchDirView()));
     connect(searchPlaylistLineEdit, SIGNAL(returnPressed()), this, SLOT(searchPlaylist()));
     connect(searchPlaylistLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchPlaylist()));
     connect(playlistTableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistItemActivated(const QModelIndex &)));
-    connect(libraryPage->libraryTreeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(libraryItemActivated(const QModelIndex &)));
-    connect(folderPage->dirTreeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(dirViewItemActivated(const QModelIndex &)));
+    connect(libraryPage->view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(libraryItemActivated(const QModelIndex &)));
+    connect(folderPage->view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(dirViewItemActivated(const QModelIndex &)));
     connect(action_Add_to_playlist, SIGNAL(activated()), this, SLOT(addToPlaylistItemActivated()));
     connect(action_Replace_playlist, SIGNAL(activated()), this, SLOT(replacePlaylist()));
     connect(action_Load_playlist, SIGNAL(activated()), this, SLOT(loadPlaylistPushButtonActivated()));
@@ -561,17 +562,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(action_Show_playlist, SIGNAL(activated()), this, SLOT(togglePlaylist()));
     connect(&elapsedTimer, SIGNAL(timeout()), this, SLOT(updatePositionSilder()));
     connect(&musicLibraryModel, SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
-    connect(libraryPage->libraryTreeView, SIGNAL(itemsSelected(bool)), libraryPage->addToPlaylistPushButton, SLOT(setEnabled(bool)));
-    connect(libraryPage->libraryTreeView, SIGNAL(itemsSelected(bool)), libraryPage->replacePlaylistPushButton, SLOT(setEnabled(bool)));
-    connect(folderPage->dirTreeView, SIGNAL(itemsSelected(bool)), folderPage->dirViewAddToPlaylistPushButton, SLOT(setEnabled(bool)));
-    connect(folderPage->dirTreeView, SIGNAL(itemsSelected(bool)), folderPage->dirViewReplacePlaylistPushButton, SLOT(setEnabled(bool)));
-    connect(playlistsPage->playlistsView, SIGNAL(itemsSelected(bool)), playlistsPage->addPlaylistToPlaylistPushButton, SLOT(setEnabled(bool)));
-    connect(playlistsPage->playlistsView, SIGNAL(itemsSelected(bool)), playlistsPage->loadPlaylistPushButton, SLOT(setEnabled(bool)));
-    connect(playlistsPage->playlistsView, SIGNAL(itemsSelected(bool)), playlistsPage->removePlaylistPushButton, SLOT(setEnabled(bool)));
+    connect(libraryPage->view, SIGNAL(itemsSelected(bool)), libraryPage->addToPlaylist, SLOT(setEnabled(bool)));
+    connect(libraryPage->view, SIGNAL(itemsSelected(bool)), libraryPage->replacePlaylist, SLOT(setEnabled(bool)));
+    connect(folderPage->view, SIGNAL(itemsSelected(bool)), folderPage->addToPlaylist, SLOT(setEnabled(bool)));
+    connect(folderPage->view, SIGNAL(itemsSelected(bool)), folderPage->replacePlaylist, SLOT(setEnabled(bool)));
+    connect(playlistsPage->view, SIGNAL(itemsSelected(bool)), playlistsPage->addToPlaylist, SLOT(setEnabled(bool)));
+    connect(playlistsPage->view, SIGNAL(itemsSelected(bool)), playlistsPage->replacePlaylist, SLOT(setEnabled(bool)));
+    connect(playlistsPage->view, SIGNAL(itemsSelected(bool)), playlistsPage->removePlaylist, SLOT(setEnabled(bool)));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
 
-    connect(playlistsPage->addPlaylistToPlaylistPushButton, SIGNAL(clicked(bool)), this, SLOT(addPlaylistToPlaylistPushButtonActivated()));
-    connect(playlistsPage->playlistsView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistsViewItemDoubleClicked(const QModelIndex &)));
+    connect(playlistsPage->addToPlaylist, SIGNAL(clicked(bool)), this, SLOT(addPlaylistToPlaylistPushButtonActivated()));
+    connect(playlistsPage->view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistsViewItemDoubleClicked(const QModelIndex &)));
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), this, SLOT(updateStoredPlaylists()));
 
     elapsedTimer.setInterval(1000);
@@ -808,22 +809,22 @@ void MainWindow::searchMusicLibrary()
 {
     libraryProxyModel.setFilterGenre(0==libraryPage->genreCombo->currentIndex() ? QString() : libraryPage->genreCombo->currentText());
 
-    if (libraryPage->searchLibraryLineEdit->text().isEmpty()) {
+    if (libraryPage->search->text().isEmpty()) {
         libraryProxyModel.setFilterRegExp(QString());
         return;
     }
 
-    libraryProxyModel.setFilterRegExp(libraryPage->searchLibraryLineEdit->text());
+    libraryProxyModel.setFilterRegExp(libraryPage->search->text());
 }
 
 void MainWindow::searchDirView()
 {
-    if (folderPage->searchDirViewLineEdit->text().isEmpty()) {
+    if (folderPage->search->text().isEmpty()) {
         dirProxyModel.setFilterRegExp("");
         return;
     }
 
-    dirProxyModel.setFilterRegExp(folderPage->searchDirViewLineEdit->text());
+    dirProxyModel.setFilterRegExp(folderPage->search->text());
 }
 
 void MainWindow::searchPlaylist()
@@ -1101,9 +1102,9 @@ void MainWindow::replacePlaylist()
     MPDConnection::self()->clear();
     MPDConnection::self()->getStatus();
     searchPlaylistLineEdit->clear();
-    if (libraryPage->libraryTreeView->isVisible()) {
+    if (libraryPage->view->isVisible()) {
         addSelectionToPlaylist();
-    } else if (folderPage->dirTreeView->isVisible()) {
+    } else if (folderPage->view->isVisible()) {
         addDirViewSelectionToPlaylist();
     }
 }
@@ -1115,7 +1116,7 @@ void MainWindow::addSelectionToPlaylist()
     MusicLibraryItemSong *songItem;
 
     // Get selected view indexes
-    const QModelIndexList selected = libraryPage->libraryTreeView->selectionModel()->selectedIndexes();
+    const QModelIndexList selected = libraryPage->view->selectionModel()->selectedIndexes();
     int selectionSize = selected.size();
 
     if (selectionSize == 0) {
@@ -1176,7 +1177,7 @@ void MainWindow::addSelectionToPlaylist()
         if (MPDStatus::self()->state() != MPDStatus::State_Playing)
             MPDConnection::self()->startPlayingSong();
 
-        libraryPage->libraryTreeView->selectionModel()->clearSelection();
+        libraryPage->view->selectionModel()->clearSelection();
     }
 }
 
@@ -1211,7 +1212,7 @@ void MainWindow::addDirViewSelectionToPlaylist()
     DirViewItem *item;
 
     // Get selected view indexes
-    const QModelIndexList selected = folderPage->dirTreeView->selectionModel()->selectedIndexes();
+    const QModelIndexList selected = folderPage->view->selectionModel()->selectedIndexes();
     int selectionSize = selected.size();
 
     if (selectionSize == 0) {
@@ -1245,14 +1246,14 @@ void MainWindow::addDirViewSelectionToPlaylist()
         if (MPDStatus::self()->state() != MPDStatus::State_Playing)
             MPDConnection::self()->startPlayingSong();
 
-        folderPage->dirTreeView->selectionModel()->clearSelection();
+        folderPage->view->selectionModel()->clearSelection();
     }
 }
 
 void MainWindow::libraryItemActivated(const QModelIndex & /*index*/)
 {
     MusicLibraryItem *item;
-    const QModelIndexList selected = libraryPage->libraryTreeView->selectionModel()->selectedIndexes();
+    const QModelIndexList selected = libraryPage->view->selectionModel()->selectedIndexes();
     int selectionSize = selected.size();
     if (selectionSize != 1) return; //doubleclick should only have one selected item
 
@@ -1266,7 +1267,7 @@ void MainWindow::libraryItemActivated(const QModelIndex & /*index*/)
 void MainWindow::dirViewItemActivated(const QModelIndex & /*index*/)
 {
     DirViewItem *item;
-    const QModelIndexList selected = folderPage->dirTreeView->selectionModel()->selectedIndexes();
+    const QModelIndexList selected = folderPage->view->selectionModel()->selectedIndexes();
     int selectionSize = selected.size();
     if (selectionSize != 1) return; //doubleclick should only have one selected item
 
@@ -1279,9 +1280,9 @@ void MainWindow::dirViewItemActivated(const QModelIndex & /*index*/)
 
 void MainWindow::addToPlaylistItemActivated()
 {
-    if (libraryPage->libraryTreeView->isVisible()) {
+    if (libraryPage->view->isVisible()) {
         addSelectionToPlaylist();
-    } else if (folderPage->dirTreeView->isVisible()) {
+    } else if (folderPage->view->isVisible()) {
         addDirViewSelectionToPlaylist();
     } else if (playlistTableView->isVisible()) {
         addPlaylistToPlaylistPushButtonActivated();
@@ -1586,7 +1587,7 @@ void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
 
 void MainWindow::addPlaylistToPlaylistPushButtonActivated()
 {
-    const QModelIndexList items = playlistsPage->playlistsView->selectionModel()->selectedRows();
+    const QModelIndexList items = playlistsPage->view->selectionModel()->selectedRows();
 
     if (items.size() == 1) {
         QModelIndex sourceIndex = playlistsProxyModel.mapToSource(items.first());
@@ -1597,7 +1598,7 @@ void MainWindow::addPlaylistToPlaylistPushButtonActivated()
 
 void MainWindow::loadPlaylistPushButtonActivated()
 {
-    const QModelIndexList items = playlistsPage->playlistsView->selectionModel()->selectedRows();
+    const QModelIndexList items = playlistsPage->view->selectionModel()->selectedRows();
 
     if (items.size() == 1) {
         MPDConnection::self()->clear();
@@ -1618,7 +1619,7 @@ void MainWindow::playlistsViewItemDoubleClicked(const QModelIndex &index)
 
 void MainWindow::removePlaylistPushButtonActivated()
 {
-    const QModelIndexList items = playlistsPage->playlistsView->selectionModel()->selectedRows();
+    const QModelIndexList items = playlistsPage->view->selectionModel()->selectedRows();
 
     if (items.size() == 1) {
         QModelIndex sourceIndex = playlistsProxyModel.mapToSource(items.first());
@@ -1672,7 +1673,7 @@ void MainWindow::updateStoredPlaylists()
 
 void MainWindow::renamePlaylistActivated()
 {
-    const QModelIndexList items = playlistsPage->playlistsView->selectionModel()->selectedRows();
+    const QModelIndexList items = playlistsPage->view->selectionModel()->selectedRows();
 
     if (items.size() == 1) {
         QModelIndex sourceIndex = playlistsProxyModel.mapToSource(items.first());
@@ -1733,7 +1734,7 @@ void MainWindow::currentTabChanged(int index)
 void MainWindow::lyrics(const QString &artist, const QString &title, const QString &text)
 {
     if (artist==current.artist && title==current.title) {
-        lyricsPage->lyricsText->setText(text);
+        lyricsPage->text->setText(text);
     }
 }
 

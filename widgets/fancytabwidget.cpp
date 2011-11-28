@@ -55,6 +55,7 @@ using namespace Internal;
 const int FancyTabBar::m_rounding = 22;
 const int FancyTabBar::m_textPadding = 4;
 
+#if 0
 static QPainterPath createPath(const QRect &rect, double radius)
 {
     QPainterPath path;
@@ -70,10 +71,10 @@ static QPainterPath createPath(const QRect &rect, double radius)
     return path;
 }
 
-static void drawRoundedRect(QPainter *p, const QRect &r, double radius, const QColor &color, bool horiz=true)
+static void drawRoundedRect(QPainter *p, const QRect &r, double radius, const QColor &color)
 {
     QPainterPath path(createPath(r, radius));
-    QLinearGradient grad(QPoint(r.x(), r.y()), horiz ? QPoint(r.x(), r.bottom()) : QPoint(r.right(), r.y()));
+    QLinearGradient grad(QPoint(r.x(), r.y()), QPoint(r.x(), r.bottom()));
     QColor col(color);
 
     grad.setColorAt(0, col.lighter(120));
@@ -86,6 +87,7 @@ static void drawRoundedRect(QPainter *p, const QRect &r, double radius, const QC
     p->drawPath(path);
     p->restore();
 }
+#endif
 
 static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p)
 {
@@ -109,36 +111,6 @@ void FancyTabProxyStyle::drawControl(
   const bool vertical_tabs = v_opt->shape == QTabBar::RoundedWest;
   const QString text = v_opt->text;
 
-  if (selected) {
-#if 0
-    //background
-    p->save();
-    QLinearGradient grad(rect.topLeft(), rect.topRight());
-    grad.setColorAt(0, QColor(255, 255, 255, 140));
-    grad.setColorAt(1, QColor(255, 255, 255, 210));
-    p->fillRect(rect.adjusted(0, 0, 0, -1), grad);
-    p->restore();
-
-    //shadows
-    p->setPen(QColor(0, 0, 0, 110));
-    p->drawLine(rect.topLeft() + QPoint(1,-1), rect.topRight() - QPoint(0,1));
-    p->drawLine(rect.bottomLeft(), rect.bottomRight());
-    p->setPen(QColor(0, 0, 0, 40));
-    p->drawLine(rect.topLeft(), rect.bottomLeft());
-
-    //highlights
-    p->setPen(QColor(255, 255, 255, 50));
-    p->drawLine(rect.topLeft() + QPoint(0, -2), rect.topRight() - QPoint(0,2));
-    p->drawLine(rect.bottomLeft() + QPoint(0, 1), rect.bottomRight() + QPoint(0,1));
-    p->setPen(QColor(255, 255, 255, 40));
-    p->drawLine(rect.topLeft() + QPoint(0, 0), rect.topRight());
-    p->drawLine(rect.topRight() + QPoint(0, 1), rect.bottomRight() - QPoint(0, 1));
-    p->drawLine(rect.bottomLeft() + QPoint(0,-1), rect.bottomRight()-QPoint(0,1));
-#else
-    drawRoundedRect(p, rect, 4, QApplication::palette().highlight().color(), false);
-#endif
-  }
-
   QTransform m;
   if (vertical_tabs) {
     m = QTransform::fromTranslate(rect.left(), rect.bottom());
@@ -157,6 +129,63 @@ void FancyTabProxyStyle::drawControl(
   text_rect.setRight(draw_rect.width());
   icon_rect.translate(0, (draw_rect.height() - icon_rect.height()) / 2);
 
+    QStyleOptionViewItemV4 styleOpt;
+    styleOpt.palette=option->palette;
+    styleOpt.rect=draw_rect;
+    styleOpt.state=option->state;
+    styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
+    styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
+    styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+    bool drawBgnd=true;
+
+    if (!selected) {
+        const QString fader_key = "tab_" + text + "_fader";
+        const QString animation_key = "tab_" + text + "_animation";
+
+        const QString tab_hover = widget->property("tab_hover").toString();
+        int fader = widget->property(fader_key.toUtf8().constData()).toInt();
+        QPropertyAnimation* animation = widget->property(animation_key.toUtf8().constData()).value<QPropertyAnimation*>();
+
+        if (!animation) {
+            QWidget* mut_widget = const_cast<QWidget*>(widget);
+            fader = 0;
+            mut_widget->setProperty(fader_key.toUtf8().constData(), fader);
+            animation = new QPropertyAnimation(mut_widget, fader_key.toUtf8(), mut_widget);
+            connect(animation, SIGNAL(valueChanged(QVariant)), mut_widget, SLOT(update()));
+            mut_widget->setProperty(animation_key.toUtf8().constData(), QVariant::fromValue(animation));
+        }
+
+        if (text == tab_hover) {
+            if (animation->state() != QAbstractAnimation::Running && fader != 40) {
+                animation->stop();
+                animation->setDuration(80);
+                animation->setEndValue(40);
+                animation->start();
+            }
+        } else {
+            if (animation->state() != QAbstractAnimation::Running && fader != 0) {
+                animation->stop();
+                animation->setDuration(160);
+                animation->setEndValue(0);
+                animation->start();
+            }
+        }
+
+        if (fader<1) {
+            drawBgnd=false;
+        } else {
+            QColor col(styleOpt.palette.highlight().color());
+            col.setAlpha(fader);
+            styleOpt.palette.setColor(styleOpt.palette.currentColorGroup(), QPalette::Highlight, col);
+        }
+    }
+
+    if (drawBgnd) {
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
+    }
+//     drawRoundedRect(p, draw_rect, 3, col);
+
+
 //   QFont boldFont(p->font());
 //   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
 // //   boldFont.setBold(true);
@@ -166,64 +195,7 @@ void FancyTabProxyStyle::drawControl(
 //   p->drawText(text_rect, textFlags, text);
 //   p->setPen(selected ? QColor(60, 60, 60) : Utils::StyleHelper::panelTextColor());
     p->setPen(selected ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
-#ifndef Q_WS_MAC
-  if (widget) {
-    const QString fader_key = "tab_" + text + "_fader";
-    const QString animation_key = "tab_" + text + "_animation";
 
-    const QString tab_hover = widget->property("tab_hover").toString();
-    int fader = widget->property(fader_key.toUtf8().constData()).toInt();
-    QPropertyAnimation* animation = widget->property(animation_key.toUtf8().constData()).value<QPropertyAnimation*>();
-
-    if (!animation) {
-      QWidget* mut_widget = const_cast<QWidget*>(widget);
-      fader = 0;
-      mut_widget->setProperty(fader_key.toUtf8().constData(), fader);
-      animation = new QPropertyAnimation(mut_widget, fader_key.toUtf8(), mut_widget);
-      connect(animation, SIGNAL(valueChanged(QVariant)), mut_widget, SLOT(update()));
-      mut_widget->setProperty(animation_key.toUtf8().constData(), QVariant::fromValue(animation));
-    }
-
-    if (text == tab_hover) {
-      if (animation->state() != QAbstractAnimation::Running && fader != 40) {
-        animation->stop();
-        animation->setDuration(80);
-        animation->setEndValue(40);
-        animation->start();
-      }
-    } else {
-      if (animation->state() != QAbstractAnimation::Running && fader != 0) {
-        animation->stop();
-        animation->setDuration(160);
-        animation->setEndValue(0);
-        animation->start();
-      }
-    }
-
-    if (!selected) {
-#if 0
-      p->save();
-      QColor col(QApplication::palette().highlight().color());
-      col.setAlpha(int(fader));
-      QLinearGradient grad(draw_rect.topLeft(), vertical_tabs ? draw_rect.bottomLeft() : draw_rect.topRight());
-      grad.setColorAt(0, Qt::transparent);
-      grad.setColorAt(0.5, col); // QColor(255, 255, 255, fader));
-      grad.setColorAt(1, Qt::transparent);
-      p->fillRect(draw_rect, grad);
-      p->setPen(QPen(grad, 1.0));
-      p->drawLine(draw_rect.topLeft(), vertical_tabs ? draw_rect.bottomLeft() : draw_rect.topRight());
-      p->drawLine(draw_rect.bottomRight(), vertical_tabs ? draw_rect.topRight() : draw_rect.bottomLeft());
-      p->restore();
-#else
-      QColor col(QApplication::palette().highlight().color());
-      col.setAlpha(int(fader));
-      drawRoundedRect(p, draw_rect, 4, col, false);
-#endif
-    }
-  }
-#endif
-
-//   Utils::StyleHelper::drawIconWithShadow(v_opt->icon, icon_rect, p, QIcon::Normal);
   drawIcon(v_opt->icon, icon_rect, p);
 
   QString txt=text;
@@ -440,35 +412,29 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     QRect rect = tabRect(tabIndex);
     bool selected = (tabIndex == m_currentIndex);
 
-    if (selected) {
-#if 0
-        //background
-        painter->save();
-        QLinearGradient grad(rect.topLeft(), rect.topRight());
-        grad.setColorAt(0, QColor(255, 255, 255, 140));
-        grad.setColorAt(1, QColor(255, 255, 255, 210));
-        painter->fillRect(rect.adjusted(0, 0, 0, -1), grad);
-        painter->restore();
+    QStyleOptionViewItemV4 styleOpt;
+    styleOpt.initFrom(this);
+    styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
+    styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
+    styleOpt.rect=rect;
+    styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+    bool drawBgnd=true;
+    if (!selected) {
+        int fader=int(m_tabs[tabIndex]->fader());
 
-        //shadows
-        painter->setPen(QColor(0, 0, 0, 110));
-        painter->drawLine(rect.topLeft() + QPoint(1,-1), rect.topRight() - QPoint(0,1));
-        painter->drawLine(rect.bottomLeft(), rect.bottomRight());
-        painter->setPen(QColor(0, 0, 0, 40));
-        painter->drawLine(rect.topLeft(), rect.bottomLeft());
-
-        //highlights
-        painter->setPen(QColor(255, 255, 255, 50));
-        painter->drawLine(rect.topLeft() + QPoint(0, -2), rect.topRight() - QPoint(0,2));
-        painter->drawLine(rect.bottomLeft() + QPoint(0, 1), rect.bottomRight() + QPoint(0,1));
-        painter->setPen(QColor(255, 255, 255, 40));
-        painter->drawLine(rect.topLeft() + QPoint(0, 0), rect.topRight());
-        painter->drawLine(rect.topRight() + QPoint(0, 1), rect.bottomRight() - QPoint(0, 1));
-        painter->drawLine(rect.bottomLeft() + QPoint(0,-1), rect.bottomRight()-QPoint(0,1));
-#else
-        drawRoundedRect(painter, rect, 4, palette().highlight().color());
-#endif
+        if (fader<1) {
+            drawBgnd=false;
+        } else {
+            QColor col(styleOpt.palette.highlight().color());
+            col.setAlpha(fader);
+            styleOpt.palette.setColor(styleOpt.palette.currentColorGroup(), QPalette::Highlight, col);
+        }
     }
+    if (drawBgnd) {
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
+    }
+//    drawRoundedRect(painter, rect, 3, col);
+
 
     QString tabText(painter->fontMetrics().elidedText(this->tabText(tabIndex), Qt::ElideMiddle, width()));
     QRect tabTextRect(tabRect(tabIndex));
@@ -483,29 +449,6 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     painter->setPen(selected ? palette().highlightedText().color() : palette().foreground().color());
     int textFlags = Qt::AlignCenter | Qt::AlignBottom;
     painter->drawText(tabTextRect, textFlags, tabText);
-//     painter->setPen(selected ? QColor(60, 60, 60) : Utils::StyleHelper::panelTextColor());
-#ifndef Q_WS_MAC
-    if (!selected) {
-#if 0
-        painter->save();
-        QColor col(palette().highlight().color());
-        col.setAlpha(int(m_tabs[tabIndex]->fader()));
-        QLinearGradient grad(rect.topLeft(), rect.topRight());
-        grad.setColorAt(0, Qt::transparent);
-        grad.setColorAt(0.5, col);
-        grad.setColorAt(1, Qt::transparent);
-        painter->fillRect(rect, grad);
-        painter->setPen(QPen(grad, 1.0));
-        painter->drawLine(rect.topLeft(), rect.topRight());
-        painter->drawLine(rect.bottomLeft(), rect.bottomRight());
-        painter->restore();
-#else
-        QColor col(palette().highlight().color());
-        col.setAlpha(int(m_tabs[tabIndex]->fader()));
-        drawRoundedRect(painter, rect, 4, col);
-#endif
-    }
-#endif
 
     const int textHeight = painter->fontMetrics().height();
     tabIconRect.adjust(0, 4, 0, -textHeight);
@@ -650,6 +593,9 @@ void FancyTabWidget::AddBottomWidget(QWidget* widget) {
 }
 
 void FancyTabWidget::SetMode(Mode mode) {
+  if(mode==mode_) {
+      return;
+  }
   // Remove previous tab bar
   delete tab_bar_;
   tab_bar_ = NULL;
@@ -714,11 +660,11 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
 
     QSignalMapper* mapper = new QSignalMapper(this);
     QActionGroup* group = new QActionGroup(this);
-    AddMenuItem(mapper, group, tr("Large sidebar"), Mode_LargeSidebar);
-    AddMenuItem(mapper, group, tr("Small sidebar"), Mode_SmallSidebar);
-    AddMenuItem(mapper, group, tr("Plain sidebar"), Mode_PlainSidebar);
-    AddMenuItem(mapper, group, tr("Tabs on top"), Mode_Tabs);
-    AddMenuItem(mapper, group, tr("Icons on top"), Mode_IconOnlyTabs);
+    AddMenuItem(mapper, group, tr("Large Sidebar"), Mode_LargeSidebar);
+    AddMenuItem(mapper, group, tr("Small Sidebar"), Mode_SmallSidebar);
+    AddMenuItem(mapper, group, tr("Plain Sidebar"), Mode_PlainSidebar);
+    AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_Tabs);
+    AddMenuItem(mapper, group, tr("Icons On Top"), Mode_IconOnlyTabs);
     menu_->addActions(group->actions());
 
     connect(mapper, SIGNAL(mapped(int)), SLOT(SetMode(int)));
@@ -750,7 +696,7 @@ void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons,
   }
 
   if (fancy) {
-    bar->setStyle(proxy_style_.get());
+    bar->setStyle(proxy_style_.data());
   }
 
   if (shape == QTabBar::RoundedNorth)

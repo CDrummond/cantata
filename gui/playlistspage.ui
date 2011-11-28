@@ -18,7 +18,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="5">
-    <widget class="TreeView" name="playlistsView">
+    <widget class="TreeView" name="view">
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -34,7 +34,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QToolButton" name="libraryUpdateButton3"/>
+    <widget class="QToolButton" name="libraryUpdate"/>
    </item>
    <item row="1" column="1">
     <spacer name="horizontalSpacer">
@@ -50,13 +50,13 @@
     </spacer>
    </item>
    <item row="1" column="2">
-    <widget class="QToolButton" name="addPlaylistToPlaylistPushButton"/>
+    <widget class="QToolButton" name="addToPlaylist"/>
    </item>
    <item row="1" column="3">
-    <widget class="QToolButton" name="loadPlaylistPushButton"/>
+    <widget class="QToolButton" name="replacePlaylist"/>
    </item>
    <item row="1" column="4">
-    <widget class="QToolButton" name="removePlaylistPushButton"/>
+    <widget class="QToolButton" name="removePlaylist"/>
    </item>
   </layout>
  </widget>

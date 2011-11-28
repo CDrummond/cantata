@@ -18,14 +18,14 @@
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="4">
-    <widget class="LineEdit" name="searchDirViewLineEdit">
+    <widget class="LineEdit" name="search">
      <property name="showClearButton" stdset="0">
       <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="1" column="0" colspan="4">
-    <widget class="TreeView" name="dirTreeView">
+    <widget class="TreeView" name="view">
      <property name="dragEnabled">
       <bool>true</bool>
      </property>
@@ -47,7 +47,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QToolButton" name="libraryUpdateButton2"/>
+    <widget class="QToolButton" name="libraryUpdate"/>
    </item>
    <item row="2" column="1">
     <spacer name="horizontalSpacer_2">
@@ -63,10 +63,10 @@
     </spacer>
    </item>
    <item row="2" column="2">
-    <widget class="QToolButton" name="dirViewAddToPlaylistPushButton"/>
+    <widget class="QToolButton" name="addToPlaylist"/>
    </item>
    <item row="2" column="3">
-    <widget class="QToolButton" name="dirViewReplacePlaylistPushButton"/>
+    <widget class="QToolButton" name="replacePlaylist"/>
    </item>
   </layout>
  </widget>

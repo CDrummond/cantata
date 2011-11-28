@@ -69,11 +69,7 @@ SET( CANTATA_MOC_HDRS
     gui/librarypage.h
     gui/lyricspage.h
     gui/playlistspage.h
-    lib/mpdconnectionbase.h
-    lib/mpdconnectionplayback.h
-    lib/mpddatabaseconnection.h
-    lib/mpderror.h
-    lib/mpdplaylistsconnection.h
+    lib/mpdconnection.h
     lib/output.h
     lib/playlist.h
     lib/song.h
@@ -134,9 +130,7 @@ IF( ENABLE_KDE_SUPPORT )
     install( FILES cantata.notifyrc DESTINATION ${DATA_INSTALL_DIR}/cantata )
     ADD_SUBDIRECTORY( icons )
 ELSE( ENABLE_KDE_SUPPORT )
-    SET( CANTATA_SRCS ${CANTATA_SRCS} gui/aboutdialog.cpp widgets/lineedit.cpp)
-    SET( CANTATA_UIS ${CANTATA_UIS} gui/aboutdialog.ui )
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/aboutdialog.h )
+    SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/lineedit.cpp)
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )
     QT4_WRAP_UI( CANTATA_UI_HDRS ${CANTATA_UIS} )
     INCLUDE( ${QT_USE_FILE} )

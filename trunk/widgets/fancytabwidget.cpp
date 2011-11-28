@@ -48,6 +48,9 @@
 #include <QVBoxLayout>
 #include <QWindowsStyle>
 #include <QApplication>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KLocale>
+#endif
 
 using namespace Core;
 using namespace Internal;
@@ -660,11 +663,19 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
 
     QSignalMapper* mapper = new QSignalMapper(this);
     QActionGroup* group = new QActionGroup(this);
+#ifdef ENABLE_KDE_SUPPORT
+    AddMenuItem(mapper, group, i18n("Large Sidebar"), Mode_LargeSidebar);
+    AddMenuItem(mapper, group, i18n("Small Sidebar"), Mode_SmallSidebar);
+    AddMenuItem(mapper, group, i18n("Plain Sidebar"), Mode_PlainSidebar);
+    AddMenuItem(mapper, group, i18n("Tabs On Top"), Mode_Tabs);
+    AddMenuItem(mapper, group, i18n("Icons On Top"), Mode_IconOnlyTabs);
+#else
     AddMenuItem(mapper, group, tr("Large Sidebar"), Mode_LargeSidebar);
     AddMenuItem(mapper, group, tr("Small Sidebar"), Mode_SmallSidebar);
     AddMenuItem(mapper, group, tr("Plain Sidebar"), Mode_PlainSidebar);
     AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_Tabs);
     AddMenuItem(mapper, group, tr("Icons On Top"), Mode_IconOnlyTabs);
+#endif
     menu_->addActions(group->actions());
 
     connect(mapper, SIGNAL(mapped(int)), SLOT(SetMode(int)));

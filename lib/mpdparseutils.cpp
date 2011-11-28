@@ -109,7 +109,6 @@ void MPDParseUtils::parseStatus(const QByteArray &data)
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
 
-    qWarning() << data;
     status->acquireWriteLock();
 
     int amountOfLines = lines.size();

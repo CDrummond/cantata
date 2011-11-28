@@ -572,15 +572,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     splitter->restoreState(Settings::self()->splitterState());
 
-    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(updateOutpus(const QList<Output> &)));
-#ifdef ENABLE_KDE_SUPPORT
-    QMenu *m = (QMenu *)factory()->container("output_menu", this);
-    connect(m, SIGNAL(triggered(QAction *)), this, SLOT(outputChanged(QAction *)));
-#else
-    connect(menu_Outputs, SIGNAL(triggered(QAction *)), this, SLOT(outputChanged(QAction *)));
-#endif
-
-    MPDConnection::self()->outputs();
     MPDConnection::self()->getStatus();
     MPDConnection::self()->getStats();
     MPDConnection::self()->playListInfo();
@@ -1354,44 +1345,6 @@ void MainWindow::copySongInfo()
     }
 
     clipboard->setText(txt);
-}
-
-void MainWindow::updateOutpus(const QList<Output> &outputs)
-{
-#ifndef ENABLE_KDE_SUPPORT
-    menu_Outputs->clear();
-
-    foreach(const Output &o, outputs) {
-        QAction *a = new QAction(o.name, menu_Outputs);
-        a->setCheckable(true);
-        a->setChecked(o.enabled);
-        a->setData(o.id);
-
-        menu_Outputs->addAction(a);
-    }
-#else
-    QList<QAction *> actions;
-
-    foreach(const Output &o, outputs) {
-        QAction *a = new QAction(o.name, this);
-        a->setCheckable(true);
-        a->setChecked(o.enabled);
-        a->setData(o.id);
-        actions << a;
-    }
-
-    unplugActionList("outputs_list");
-    plugActionList("outputs_list", actions);
-#endif
-}
-
-void MainWindow::outputChanged(QAction *action)
-{
-    if (action->isChecked()) {
-        MPDConnection::self()->enableOutput(action->data().toInt());
-    } else {
-        MPDConnection::self()->disableOutput(action->data().toInt());
-    }
 }
 
 void MainWindow::togglePlaylist()

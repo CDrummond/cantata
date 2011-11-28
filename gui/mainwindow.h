@@ -48,7 +48,6 @@
 #include "gui/playlisttableproxymodel.h"
 #include "gui/dirviewmodel.h"
 #include "gui/dirviewproxymodel.h"
-#include "lib/output.h"
 #include "lib/mpdstatus.h"
 #include "lib/song.h"
 
@@ -182,7 +181,6 @@ private Q_SLOTS:
     void dirViewItemActivated(const QModelIndex &);
     void addToPlaylist();
     void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
-    void crossfadingChanged(const int seconds);
     void playlistTableViewContextMenuClicked();
     void playListTableViewToggleItem(const bool visible);
     void cropPlaylist();
@@ -196,8 +194,6 @@ private Q_SLOTS:
     void renamePlaylist();
     void updateStoredPlaylists();
     void copySongInfo();
-    void updateOutpus(const QList<Output> &outputs);
-    void outputChanged(QAction *action);
     void togglePlaylist();
     void currentTabChanged(int index);
     void lyrics(const QString &artist, const QString &title, const QString &text);

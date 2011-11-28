@@ -18,7 +18,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="4">
-    <widget class="LineEdit" name="searchLibraryLineEdit">
+    <widget class="LineEdit" name="search">
      <property name="toolTip">
       <string/>
      </property>
@@ -28,7 +28,7 @@
     </widget>
    </item>
    <item row="1" column="0" colspan="4">
-    <widget class="TreeView" name="libraryTreeView">
+    <widget class="TreeView" name="view">
      <property name="dragEnabled">
       <bool>true</bool>
      </property>
@@ -50,7 +50,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QToolButton" name="libraryUpdateButton"/>
+    <widget class="QToolButton" name="libraryUpdate"/>
    </item>
    <item row="2" column="1">
     <widget class="QComboBox" name="genreCombo">
@@ -63,10 +63,10 @@
     </widget>
    </item>
    <item row="2" column="2">
-    <widget class="QToolButton" name="addToPlaylistPushButton"/>
+    <widget class="QToolButton" name="addToPlaylist"/>
    </item>
    <item row="2" column="3">
-    <widget class="QToolButton" name="replacePlaylistPushButton"/>
+    <widget class="QToolButton" name="replacePlaylist"/>
    </item>
   </layout>
  </widget>

@@ -19,6 +19,7 @@
  */
 
 #include "musiclibraryitem.h"
+#include "musiclibraryitemartist.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryproxymodel.h"
 
@@ -156,6 +157,9 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
         if (leftItem->disc() != rightItem->disc())
             return leftItem->disc() < rightItem->disc();
         return leftItem->track() < rightItem->track();
+    } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Artist) {
+        return static_cast<MusicLibraryItemArtist *>(left.internalPointer())->baseArtist().localeAwareCompare(
+                static_cast<MusicLibraryItemArtist *>(right.internalPointer())->baseArtist())<0;
     }
 
     return QSortFilterProxyModel::lessThan(left, right);

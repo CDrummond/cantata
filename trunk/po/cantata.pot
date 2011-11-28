@@ -1,0 +1,413 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-11-28 09:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: gui/lyrics.cpp:288 gui/lyrics.cpp:313
+msgid "No lyrics found"
+msgstr ""
+
+#: gui/mainwindow.cpp:194
+msgid "Library"
+msgstr ""
+
+#: gui/mainwindow.cpp:195
+msgid "Folders"
+msgstr ""
+
+#: gui/mainwindow.cpp:196
+msgid "Playlists"
+msgstr ""
+
+#: gui/mainwindow.cpp:197
+msgid "Lyrics"
+msgstr ""
+
+#: gui/mainwindow.cpp:212
+msgid "Update Database"
+msgstr ""
+
+#: gui/mainwindow.cpp:215
+msgid "Previous Track"
+msgstr ""
+
+#: gui/mainwindow.cpp:219
+msgid "Next Track"
+msgstr ""
+
+#: gui/mainwindow.cpp:223
+msgid "Play/Pause"
+msgstr ""
+
+#: gui/mainwindow.cpp:227
+msgid "Stop"
+msgstr ""
+
+#: gui/mainwindow.cpp:231
+msgid "Increase Volume"
+msgstr ""
+
+#: gui/mainwindow.cpp:235
+msgid "Decrease Volume"
+msgstr ""
+
+#: gui/mainwindow.cpp:239
+msgid "Add To Playlist"
+msgstr ""
+
+#: gui/mainwindow.cpp:242
+msgid "Replace Playlist"
+msgstr ""
+
+#: gui/mainwindow.cpp:245
+msgid "Load"
+msgstr ""
+
+#: gui/mainwindow.cpp:248 gui/mainwindow.cpp:251
+msgid "Remove"
+msgstr ""
+
+#: gui/mainwindow.cpp:255
+msgid "Copy Song Info"
+msgstr ""
+
+#: gui/mainwindow.cpp:258
+msgid "Crop"
+msgstr ""
+
+#: gui/mainwindow.cpp:261
+msgid "Shuffle"
+msgstr ""
+
+#: gui/mainwindow.cpp:264
+msgid "Rename"
+msgstr ""
+
+#: gui/mainwindow.cpp:267
+msgid "Save As"
+msgstr ""
+
+#: gui/mainwindow.cpp:270
+msgid "Clear"
+msgstr ""
+
+#: gui/mainwindow.cpp:273
+msgid "Show Playlist"
+msgstr ""
+
+#: gui/mainwindow.cpp:276
+msgid "Random"
+msgstr ""
+
+#: gui/mainwindow.cpp:279
+msgid "Repeat"
+msgstr ""
+
+#: gui/mainwindow.cpp:282
+msgid "Consume"
+msgstr ""
+
+#: gui/mainwindow.cpp:401
+msgid "Search library..."
+msgstr ""
+
+#: gui/mainwindow.cpp:402
+msgid "Search files..."
+msgstr ""
+
+#: gui/mainwindow.cpp:403
+msgid "Search playlist..."
+msgstr ""
+
+#: gui/mainwindow.cpp:418 gui/mainwindow.cpp:910 gui/mainwindow.cpp:1028
+msgid "Stopped"
+msgstr ""
+
+#: gui/mainwindow.cpp:658
+msgid ""
+"The MPD connection died unexpectedly.\n"
+"This error is unrecoverable, please restart %1."
+msgstr ""
+
+#: gui/mainwindow.cpp:659
+msgid "Lost MPD Connection"
+msgstr ""
+
+#: gui/mainwindow.cpp:931
+msgid ""
+"<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
+"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
+"\"><b>Song:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Track:</b></"
+"td><td>%4</td></tr><tr><td align=\"right\"><b>Length:</b></td><td>%5</td></"
+"tr></table>"
+msgstr ""
+
+#: gui/mainwindow.cpp:986 gui/mainwindow.cpp:987
+msgid "Volume %1%"
+msgstr ""
+
+#: gui/mainwindow.cpp:1303
+msgid "1 Artist, "
+msgid_plural "%1 Artists, "
+msgstr[0] ""
+msgstr[1] ""
+
+#: gui/mainwindow.cpp:1304
+msgid "1 Album, "
+msgid_plural "%1 Albums, "
+msgstr[0] ""
+msgstr[1] ""
+
+#: gui/mainwindow.cpp:1305
+msgid "1 Song"
+msgid_plural "%1 Songs"
+msgstr[0] ""
+msgstr[1] ""
+
+#: gui/mainwindow.cpp:1445 gui/playlisttablemodel.cpp:57
+msgid "Length"
+msgstr ""
+
+#: gui/mainwindow.cpp:1445 gui/playlisttablemodel.cpp:55
+msgid "Track"
+msgstr ""
+
+#: gui/mainwindow.cpp:1445 gui/playlisttablemodel.cpp:59
+msgid "Disc"
+msgstr ""
+
+#: gui/mainwindow.cpp:1445 gui/playlisttablemodel.cpp:61
+msgid "Year"
+msgstr ""
+
+#: gui/mainwindow.cpp:1558 main.cpp:36
+msgid "Cantata"
+msgstr ""
+
+#: gui/mainwindow.cpp:1624
+msgid "Are you sure you want to delete playlist: %1?"
+msgstr ""
+
+#: gui/mainwindow.cpp:1625
+msgid "Delete Playlist?"
+msgstr ""
+
+#: gui/mainwindow.cpp:1647
+msgid "Playlist Name"
+msgstr ""
+
+#: gui/mainwindow.cpp:1647
+msgid "Enter a name for the playlist:"
+msgstr ""
+
+#: gui/mainwindow.cpp:1677
+msgid "Rename Playlist"
+msgstr ""
+
+#: gui/mainwindow.cpp:1677
+msgid "Enter new name for playlist: %1"
+msgstr ""
+
+#: gui/mainwindow.cpp:1751
+msgid "All Genres"
+msgstr ""
+
+#: gui/playlisttablemodel.cpp:49
+msgid "Title"
+msgstr ""
+
+#: gui/playlisttablemodel.cpp:51
+msgid "Artist"
+msgstr ""
+
+#: gui/playlisttablemodel.cpp:53
+msgid "Album"
+msgstr ""
+
+#: gui/preferencesdialog.cpp:41
+msgid "Configure"
+msgstr ""
+
+#: gui/updatedialog.cpp:59
+msgid "Updating"
+msgstr ""
+
+#: gui/updatedialog.cpp:69
+msgid "<b>Updating backend database</b><br><i>Please wait...</i>"
+msgstr ""
+
+#: gui/updatedialog.cpp:89
+msgid "<b>Finished</b><br><i>Database updated.</i>"
+msgstr ""
+
+#: lib/mpdconnection.cpp:715
+msgid "A Playlist named <i>%1</i> already exists!<br/>Overwrite?"
+msgstr ""
+
+#: lib/mpdconnection.cpp:719
+msgid "Failed to save playlist."
+msgstr ""
+
+#: lib/mpdparseutils.cpp:223
+msgid "Unknown"
+msgstr ""
+
+#: main.cpp:37
+msgid "A simple interface to MPD"
+msgstr ""
+
+#: main.cpp:39
+msgid "Copyright (C) 2011 Craig Drummond"
+msgstr ""
+
+#: main.cpp:40
+msgid "Based upon QtMPC - (C) 2007-2010  The QtMPC Authors"
+msgstr ""
+
+#: main.cpp:43
+msgid "Craig Drummond"
+msgstr ""
+
+#: main.cpp:43
+msgid "Maintainer"
+msgstr ""
+
+#. i18n: file: cantataui.rc:6
+#. i18n: ectx: Menu (actions)
+#: po/rc.cpp:3 rc.cpp:3
+msgid "Output"
+msgstr ""
+
+#. i18n: file: gui/folderpage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, FolderPage)
+#. i18n: file: gui/librarypage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LibraryPage)
+#. i18n: file: gui/lyricspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LyricsPage)
+#. i18n: file: gui/mainwindow.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, MainWindow)
+#. i18n: file: gui/playlistspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PlaylistsPage)
+#. i18n: file: gui/preferencesdialog.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PreferencesDialog)
+#. i18n: file: gui/folderpage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, FolderPage)
+#. i18n: file: gui/librarypage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LibraryPage)
+#. i18n: file: gui/lyricspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LyricsPage)
+#. i18n: file: gui/mainwindow.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, MainWindow)
+#. i18n: file: gui/playlistspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PlaylistsPage)
+#. i18n: file: gui/preferencesdialog.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PreferencesDialog)
+#: po/rc.cpp:6 po/rc.cpp:9 po/rc.cpp:12 po/rc.cpp:15 po/rc.cpp:24 po/rc.cpp:27
+#: rc.cpp:6 rc.cpp:9 rc.cpp:12 rc.cpp:15 rc.cpp:24 rc.cpp:27
+msgid "Form"
+msgstr ""
+
+#. i18n: file: gui/mainwindow.ui:109
+#. i18n: ectx: property (text), widget (KSqueezedTextLabel, trackLabel)
+#: po/rc.cpp:18 rc.cpp:18
+msgid "KSqueezedTextLabel"
+msgstr ""
+
+#. i18n: file: gui/mainwindow.ui:140
+#. i18n: ectx: property (text), widget (QLabel, songTimeElapsedLabel)
+#: po/rc.cpp:21 rc.cpp:21
+msgid "(00:00)"
+msgstr ""
+
+#. i18n: file: gui/preferencesdialog.ui:23
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: po/rc.cpp:30 rc.cpp:30
+msgid "MPD Host:"
+msgstr ""
+
+#. i18n: file: gui/preferencesdialog.ui:36
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: po/rc.cpp:33 rc.cpp:33
+msgid "MPD Port:"
+msgstr ""
+
+#. i18n: file: gui/preferencesdialog.ui:59
+#. i18n: ectx: property (text), widget (QLabel, label_3b)
+#: po/rc.cpp:36 rc.cpp:36
+msgid "Password:"
+msgstr ""
+
+#. i18n: file: gui/preferencesdialog.ui:76
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: po/rc.cpp:39 rc.cpp:39
+msgid "Music Folder:"
+msgstr ""
+
+#. i18n: file: gui/preferencesdialog.ui:89
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: po/rc.cpp:42 rc.cpp:42
+msgid "Crossfading:"
+msgstr ""
+
+#. i18n: file: gui/preferencesdialog.ui:99
+#. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
+#: po/rc.cpp:45 rc.cpp:45
+msgid " seconds"
+msgstr ""
+
+#. i18n: file: gui/preferencesdialog.ui:109
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: po/rc.cpp:48 rc.cpp:48
+msgid "Show In System Tray:"
+msgstr ""
+
+#. i18n: file: gui/preferencesdialog.ui:129
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: po/rc.cpp:51 rc.cpp:51
+msgid "Show Popup Message:"
+msgstr ""
+
+#: po/rc.cpp:52 rc.cpp:52
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr ""
+
+#: po/rc.cpp:53 rc.cpp:53
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr ""
+
+#: widgets/fancytabwidget.cpp:667
+msgid "Large Sidebar"
+msgstr ""
+
+#: widgets/fancytabwidget.cpp:668
+msgid "Small Sidebar"
+msgstr ""
+
+#: widgets/fancytabwidget.cpp:669
+msgid "Plain Sidebar"
+msgstr ""
+
+#: widgets/fancytabwidget.cpp:670
+msgid "Tabs On Top"
+msgstr ""
+
+#: widgets/fancytabwidget.cpp:671
+msgid "Icons On Top"
+msgstr ""

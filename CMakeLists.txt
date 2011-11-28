@@ -98,7 +98,9 @@ SET( QT_USE_QTXML TRUE )
 
 # this command finds Qt4 libraries and sets all required variables
 FIND_PACKAGE( Qt4 REQUIRED )
-FIND_PACKAGE( KDE4 )
+# FIND_PACKAGE( KDE4 )
+FIND_PACKAGE( KDE4 REQUIRED)  # Qt-only build is broken :-(
+
 
 configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 
@@ -107,15 +109,13 @@ IF( NOT DEFINED WANT_KDE_SUPPORT )
 ENDIF( NOT DEFINED WANT_KDE_SUPPORT )
 
 IF( KDE4_FOUND )
-    IF ( KDE4_KDECORE_LIBRARY AND KDE4_KDEUI_LIBRARY )
-        IF( WANT_KDE_SUPPORT )
-            MESSAGE("KDE 4 has been found, will build extra features...")
-            ADD_DEFINITIONS( -DENABLE_KDE_SUPPORT )
-            SET( ENABLE_KDE_SUPPORT TRUE )
-        ELSE( WANT_KDE_SUPPORT )
-            MESSAGE("KDE 4 has been found, but won't be used by user request")
-        ENDIF( WANT_KDE_SUPPORT )
-    ENDIF ( KDE4_KDECORE_LIBRARY AND KDE4_KDEUI_LIBRARY )
+#    IF( WANT_KDE_SUPPORT )
+#        MESSAGE("KDE 4 has been found, will build extra features...")
+        ADD_DEFINITIONS( -DENABLE_KDE_SUPPORT )
+        SET( ENABLE_KDE_SUPPORT TRUE )
+#    ELSE( WANT_KDE_SUPPORT )
+#        MESSAGE("KDE 4 has been found, but won't be used by user request")
+#    ENDIF( WANT_KDE_SUPPORT )
 ENDIF( KDE4_FOUND )
 
 IF( ENABLE_KDE_SUPPORT )

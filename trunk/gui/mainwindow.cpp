@@ -676,7 +676,6 @@ int MainWindow::showPreferencesDialog()
     if (MPDConnection::self()->isConnected()) {
         if (trayIcon != NULL)
             connect(&pref, SIGNAL(systemTraySet(bool)), this, SLOT(toggleTrayIcon(bool)));
-        connect(&pref, SIGNAL(crossfadingChanged(const int)), this, SLOT(crossfadingChanged(const int)));
     }
 
     int rv=pref.exec();
@@ -1282,11 +1281,6 @@ void MainWindow::addToPlaylist()
     } else if (playlistTableView->isVisible()) {
         addPlaylistsSelectionToPlaylist();
     }
-}
-
-void MainWindow::crossfadingChanged(int seconds)
-{
-    MPDConnection::self()->setCrossfade(seconds);
 }
 
 void MainWindow::updatePlayListStatus()

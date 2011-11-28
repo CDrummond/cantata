@@ -26,38 +26,41 @@
 #else
 #include <QDialog>
 #endif
-#include "ui_preferencesdialog.h"
+
+class ServerSettings;
+class PlaybackSettings;
+class InterfaceSettings;
 
 #ifdef ENABLE_KDE_SUPPORT
-class PreferencesDialog : public KDialog, private Ui::PreferencesDialog
+class PreferencesDialog : public KDialog
 #else
-class PreferencesDialog : public QDialog, private Ui::PreferencesDialog
+class PreferencesDialog : public QDialog
 #endif
 {
     Q_OBJECT
 
 public:
     PreferencesDialog(QWidget *parent);
-    void setCrossfading(int crossfade);
 
 private:
-    int xfade;
-
     void writeSettings();
 
 #ifdef ENABLE_KDE_SUPPORT
     void slotButtonClicked(int button);
 #endif
 
-private slots:
-    void loadSettings();
+private Q_SLOTS:
 #ifndef ENABLE_KDE_SUPPORT
     void buttonPressed(QAbstractButton *button);
 #endif
 
-signals:
+Q_SIGNALS:
     void systemTraySet(bool visible);
-    void crossfadingChanged(const int seconds);
+
+private:
+    ServerSettings *server;
+    PlaybackSettings *playback;
+    InterfaceSettings *interface;
 };
 
 #endif

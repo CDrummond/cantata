@@ -42,6 +42,9 @@ SET( CANTATA_SRCS
     gui/updatedialog.cpp
     gui/covers.cpp
     gui/lyrics.cpp
+    gui/interfacesettings.cpp
+    gui/playbacksettings.cpp
+    gui/serversettings.cpp
     lib/mpdconnection.cpp
     lib/mpdparseutils.cpp
     lib/mpdstats.cpp
@@ -69,6 +72,9 @@ SET( CANTATA_MOC_HDRS
     gui/librarypage.h
     gui/lyricspage.h
     gui/playlistspage.h
+    gui/interfacesettings.h
+    gui/playbacksettings.h
+    gui/serversettings.h
     lib/mpdconnection.h
     lib/output.h
     lib/playlist.h
@@ -78,11 +84,13 @@ SET( CANTATA_MOC_HDRS
 
 SET( CANTATA_UIS
     gui/mainwindow.ui
-    gui/preferencesdialog.ui
     gui/folderpage.ui
     gui/librarypage.ui
     gui/lyricspage.ui
     gui/playlistspage.ui
+    gui/interfacesettings.ui
+    gui/playbacksettings.ui
+    gui/serversettings.ui
 )
 
 include_directories( ${CMAKE_SOURCE_DIR}/external/libmaia

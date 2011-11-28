@@ -162,7 +162,7 @@ void FancyTabProxyStyle::drawControl(
             if (animation->state() != QAbstractAnimation::Running && fader != 40) {
                 animation->stop();
                 animation->setDuration(80);
-                animation->setEndValue(40);
+                animation->setEndValue(50);
                 animation->start();
             }
         } else {
@@ -253,7 +253,7 @@ void FancyTab::fadeIn()
 {
     animator.stop();
     animator.setDuration(80);
-    animator.setEndValue(40);
+    animator.setEndValue(50);
     animator.start();
 }
 

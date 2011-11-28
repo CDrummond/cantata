@@ -29,6 +29,7 @@
 21. Use QNetworkAccessManager for HTTP downloads. If compiled woth KDE support, use
     KIO::Integration::AccessManager so that we can gain access to KDE's proxy settings.
 22. Use sidebar instead of tabbar.
+23. Support replaygain setting.
 
 
 --------------QtMPC ChangeLog--------------------

@@ -109,6 +109,7 @@ void MPDParseUtils::parseStatus(const QByteArray &data)
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
 
+    qWarning() << data;
     status->acquireWriteLock();
 
     int amountOfLines = lines.size();
@@ -143,7 +144,7 @@ void MPDParseUtils::parseStatus(const QByteArray &data)
         } else if (tokens.at(0) == "playlistqueue") {
             status->setPlaylistQueue(tokens.at(1).toInt());
         } else if (tokens.at(0) == "xfade") {
-            status->setXfade(tokens.at(1).toInt());
+            status->setCrossFade(tokens.at(1).toInt());
         } else if (tokens.at(0) == "state") {
             if (tokens.at(1).contains("play")) {
                 status->setState(MPDStatus::State_Playing);

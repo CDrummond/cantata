@@ -16,6 +16,32 @@ static const QLatin1String constCoverDir("covers/");
 static const QLatin1String constKeySep("<<##>>");
 static const QLatin1String constExtenstion(".jpg");
 
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KMD5>
+#include <KDE/KStandardDirs>
+
+static QByteArray md5sum(const QString &artist, const QString &album)
+{
+    KMD5 context(artist.toLower().toLocal8Bit() + album.toLower().toLocal8Bit());
+    return context.hexDigest();
+}
+
+static QImage amarokCover(const QString &artist, const QString &album)
+{
+    QImage img(KGlobal::dirs()->localkdedir()+"/share/apps/amarok/albumcovers/large/"+md5sum(artist, album));
+
+    if (!img.isNull()) {
+        QString dir = MusicLibraryModel::cacheDir(constCoverDir+artist+'/');
+        if (!dir.isEmpty()) {
+            QString file(QFile::encodeName(album+constExtenstion));
+            img.save(dir+file);
+        }
+    }
+    return img;
+}
+
+#endif
+
 static QString getDir(const QString &f)
 {
     QString d(f);
@@ -149,7 +175,11 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
 
     if (it!=end) {
         QStringList parts = it.key().split(constKeySep);
+#ifdef ENABLE_KDE_SUPPORT
+        emit cover(parts[0], parts[1], amarokCover(parts[0], parts[1]));
+#else
         emit cover(parts[0], parts[1], QImage());
+#endif
         jobs.remove(it.key());
     }
 
@@ -177,6 +207,16 @@ void Covers::jobFinished(QNetworkReply *reply)
             }
         }
         jobs.remove(it.key());
+
+#ifdef ENABLE_KDE_SUPPORT
+        if (img.isNull()) {
+            emit cover(parts[0], parts[1], amarokCover(parts[0], parts[1]));
+        } else
+#else
+        {
+            emit cover(parts[0], parts[1], QImage());
+        }
+#endif
         emit cover(parts[0], parts[1], img);
     }
 

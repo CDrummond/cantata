@@ -46,7 +46,10 @@ public:
     void setParent(MusicLibraryItem * const parent);
     void clearChildren();
 
+    const QString & baseArtist() const;
+
 private:
+    QString nonTheArtist;
     QList<MusicLibraryItemAlbum *> m_childItems;
     MusicLibraryItemRoot *m_parentItem;
 

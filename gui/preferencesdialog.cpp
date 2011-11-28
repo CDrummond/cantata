@@ -21,66 +21,67 @@
 #include "preferencesdialog.h"
 #include "mainwindow.h"
 #include "settings.h"
+#include "interfacesettings.h"
+#include "playbacksettings.h"
+#include "serversettings.h"
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KPageWidget>
+#include <KDE/KIcon>
+#else
+#include <QtGui/QTabWidget>
+#endif
 
 #ifdef ENABLE_KDE_SUPPORT
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-    : KDialog(parent),
+    : KDialog(parent)
 #else
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-    : QDialog(parent),
+    : QDialog(parent)
 #endif
-      xfade(MPDStatus::self()->xfade())
 {
 #ifdef ENABLE_KDE_SUPPORT
-    QWidget *widget = new QWidget(this);
-    setupUi(widget);
+    KPageWidget *widget = new KPageWidget(this);
+#else
+    QTabWidget *widget = new QTabWidget(this);
+#endif
+
+    server = new ServerSettings(widget);
+    playback = new PlaybackSettings(widget);
+    interface = new InterfaceSettings(widget);
+    server->load();
+    playback->load();
+    interface->load();
+#ifdef ENABLE_KDE_SUPPORT
+    KPageWidgetItem *page=widget->addPage(server, i18n("Server"));
+    page->setHeader(i18n("MPD Backend Settings"));
+    page->setIcon(KIcon("server-database"));
+    page=widget->addPage(playback, i18n("Playback"));
+    page->setHeader(i18n("Playback Settings"));
+    page->setIcon(KIcon("media-playback-start"));
+    page=widget->addPage(interface, i18n("Interface"));
+    page->setHeader(i18n("Interface Settings"));
+    page->setIcon(KIcon("preferences-desktop-color"));
 
     setMainWidget(widget);
 
     setButtons(KDialog::Ok | KDialog::Apply | KDialog::Cancel);
     setCaption(i18n("Configure"));
 #else
-    setupUi(this);
-#endif
-
-#ifndef ENABLE_KDE_SUPPORT
+    widget->addTab(server, QIcon::fromTheme("server-database"), tr("Server"));
+    widget->addTab(playback, QIcon::fromTheme("media-playback-start"), tr("Playback"));
+    widget->addTab(interface, QIcon::fromTheme("preferences-desktop-color"), tr("Interface"));
+    setCaption(tr("Configure"));
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
 #endif
-    loadSettings();
-
-    crossfading->setValue(MPDStatus::self()->xfade());
-    resize(380, 180);
-}
-
-void PreferencesDialog::setCrossfading(int crossfade)
-{
-    xfade = crossfade;
-    crossfading->setValue(xfade);
-}
-
-void PreferencesDialog::loadSettings()
-{
-    hostLineEdit->setText(Settings::self()->connectionHost());
-    portSpinBox->setValue(Settings::self()->connectionPort());
-    passwordLineEdit->setText(Settings::self()->connectionPasswd());
-    systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
-    systemTrayPopup->setChecked(Settings::self()->showPopups());
-//     systemTrayPopup->setEnabled(systemTrayCheckBox->isChecked());
-    mpdDir->setText(Settings::self()->mpdDir());
-    crossfading->setValue(xfade);
+    resize(450, 300);
 }
 
 void PreferencesDialog::writeSettings()
 {
-    Settings::self()->saveConnectionHost(hostLineEdit->text());
-    Settings::self()->saveConnectionPort(portSpinBox->value());
-    Settings::self()->saveConnectionPasswd(passwordLineEdit->text());
-    Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
-    Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
-    Settings::self()->saveMpdDir(mpdDir->text());
-    if (crossfading->value() != xfade)
-        emit crossfadingChanged(crossfading->value());
-    emit systemTraySet(systemTrayCheckBox->isChecked());
+    server->save();
+    playback->save();
+    interface->save();
+    emit systemTraySet(interface->sysTrayEnabled());
 }
 
 #ifdef ENABLE_KDE_SUPPORT

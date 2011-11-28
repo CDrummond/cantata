@@ -48,7 +48,7 @@ Settings::~Settings()
 #define GET_SIZE(KEY)        (cfg.readEntry(KEY, QSize()))
 #define SET_VALUE(KEY, V)    (cfg.writeEntry(KEY, V))
 #else
-#define GET_STRING(KEY)      (cfg.contains(KEY) ? cfg.value(KEY).toString() : QString(DEF))
+#define GET_STRING(KEY, DEF) (cfg.contains(KEY) ? cfg.value(KEY).toString() : QString(DEF))
 #define GET_BOOL(KEY, DEF)   (cfg.contains(KEY) ? cfg.value(KEY).toBool() : DEF)
 #define GET_INT(KEY, DEF)    (cfg.contains(KEY) ? cfg.value(KEY).toInt() : DEF)
 #define GET_BYTE_ARRAY(KEY)  (cfg.value(KEY).toByteArray())

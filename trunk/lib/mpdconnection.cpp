@@ -361,13 +361,33 @@ void MPDConnection::playListInfo()
 /*
  * Playback commands
  */
-void MPDConnection::setCrossfade(const quint8 secs)
+void MPDConnection::setCrossFade(const quint8 secs)
 {
     QByteArray data = "crossfade ";
     data += QByteArray::number(secs);
     if (!sendCommand(data).ok) {
-        qDebug("Couldn't go to next track");
+        qDebug("Couldn't set xfade");
     }
+}
+
+void MPDConnection::setReplayGain(const QString &v)
+{
+    QByteArray data = "replay_gain_mode ";
+    data += v.toLatin1();
+    if (!sendCommand(data).ok) {
+        qDebug("Couldn't set replay_gain_mode");
+    }
+}
+
+QString MPDConnection::getReplayGain()
+{
+    QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', QString::SkipEmptyParts);
+
+    if (2==lines.count() && "OK"==lines[1] && lines[0].startsWith(QLatin1String("replay_gain_mode: "))) {
+        return lines[0].mid(18);
+    }
+
+    return QString();
 }
 
 void MPDConnection::goToNext()

@@ -264,9 +264,7 @@ private:
     UpdateDialog *updateDialog;
     QString mpdDir;
     Song current;
-#ifdef ENABLE_KDE_SUPPORT
     bool lyricsNeedUpdating;
-#endif
     LibraryPage *libraryPage;
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;

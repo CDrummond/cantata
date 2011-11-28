@@ -38,11 +38,9 @@
 #include <KXMLGUIFactory>
 #include <KMessageBox>
 #include <KIcon>
-#include "lyrics.h"
-#else
-#include "aboutdialog.h"
 #endif
 
+#include "lyrics.h"
 #include "covers.h"
 #include "mainwindow.h"
 #include "musiclibraryitemsong.h"
@@ -192,10 +190,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsPage = new PlaylistsPage(this);
     lyricsPage = new LyricsPage(this);
 
+#ifdef ENABLE_KDE_SUPPORT
     tabWidget->AddTab(libraryPage, QIcon::fromTheme("media-optical-audio"), i18n("Library"));
     tabWidget->AddTab(folderPage, QIcon::fromTheme("inode-directory"), i18n("Folders"));
     tabWidget->AddTab(playlistsPage, QIcon::fromTheme("view-media-playlist"), i18n("Playlists"));
     tabWidget->AddTab(lyricsPage, QIcon::fromTheme("view-media-lyrics"), i18n("Lyrics"));
+#else
+    tabWidget->AddTab(libraryPage, QIcon::fromTheme("media-optical-audio"), tr("Library"));
+    tabWidget->AddTab(folderPage, QIcon::fromTheme("inode-directory"), tr("Folders"));
+    tabWidget->AddTab(playlistsPage, QIcon::fromTheme("view-media-playlist"), tr("Playlists"));
+    tabWidget->AddTab(lyricsPage, QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
+#endif
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
 
@@ -396,6 +401,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     libraryPage->searchLibraryLineEdit->setPlaceholderText(i18n("Search library..."));
     folderPage->searchDirViewLineEdit->setPlaceholderText(i18n("Search files..."));
     searchPlaylistLineEdit->setPlaceholderText(i18n("Search playlist..."));
+#else
+    libraryPage->searchLibraryLineEdit->setPlaceholderText(tr("Search library..."));
+    folderPage->searchDirViewLineEdit->setPlaceholderText(tr("Search files..."));
+    searchPlaylistLineEdit->setPlaceholderText(tr("Search playlist..."));
 #endif
     QList<QToolButton *> btns;
     btns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton
@@ -409,7 +418,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
         b->setAutoRaise(true);
     }
 
+#ifdef ENABLE_KDE_SUPPORT
     trackLabel->setText(i18n("Stopped"));
+#else
+    trackLabel->setText(tr("Stopped"));
+#endif
     artistLabel->setText("...");
 
     playlistsProxyModel.setSourceModel(&playlistsModel);
@@ -640,9 +653,6 @@ void MainWindow::mpdConnectionDied()
     positionSlider->setValue(0);
     songTimeElapsedLabel->setText("00:00 / 00:00");
 
-#ifndef ENABLE_KDE_SUPPORT
-    action_Play_pause_track->setText(i18n("&Play"));
-#endif
     action_Play_pause_track->setIcon(playbackPlay);
     action_Play_pause_track->setEnabled(true);
     action_Stop_track->setEnabled(false);
@@ -652,7 +662,7 @@ void MainWindow::mpdConnectionDied()
     KMessageBox::error(this, i18n("The MPD connection died unexpectedly.\nThis error is unrecoverable, please restart %1.").arg(PACKAGE_NAME),
                        i18n("Lost MPD Connection"));
 #else
-    QMessageBox::critical(this, "MPD connection gone", "The MPD connection died unexpectedly. This error is unrecoverable, please restart "PACKAGE_NAME".");
+    QMessageBox::critical(this, tr("MPD connection gone"), tr("The MPD connection died unexpectedly. This error is unrecoverable, please restart "PACKAGE_NAME"."));
 #endif
 }
 
@@ -705,8 +715,12 @@ void MainWindow::toggleTrayIcon(bool enable)
 #ifndef ENABLE_KDE_SUPPORT
 void MainWindow::showAboutDialog()
 {
-    AboutDialog about(this);
-    about.exec();
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setWindowTitle(tr("About Cantata"));
+    msgBox.setText(tr("Simple GUI front-end for MPD.<br/>(c) Craig Drummond 2001.<br/>Released under the GPLv2<br/><i>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</i>"));
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
 }
 #endif
 
@@ -735,9 +749,6 @@ void MainWindow::stopTrack()
     MPDConnection::self()->stopPlaying();
 
     action_Stop_track->setEnabled(false);
-#ifndef ENABLE_KDE_SUPPORT
-    action_Play_pause_track->setText(i18n("&Play"));
-#endif
 }
 
 void MainWindow::playPauseTrack()
@@ -899,7 +910,11 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     if (song.title.isEmpty() && albumArtist.isEmpty()) {
+#ifdef ENABLE_KDE_SUPPORT
         trackLabel->setText(i18n("Stopped"));
+#else
+        trackLabel->setText(tr("Stopped"));
+#endif
         artistLabel->setText("...");
     } else {
         trackLabel->setText(song.title);
@@ -971,8 +986,13 @@ void MainWindow::updateStatus()
         }
     }
 
+#ifdef ENABLE_KDE_SUPPORT
     volumeButton->setToolTip(i18n("Volume %1%").arg(status->volume()));
     volumeControl->setToolTip(i18n("Volume %1%").arg(status->volume()));
+#else
+    volumeButton->setToolTip(tr("Volume %1%").arg(status->volume()));
+    volumeControl->setToolTip(tr("Volume %1%").arg(status->volume()));
+#endif
     volumeControl->setValue(status->volume());
 
     randomPushButton->setChecked(status->random());
@@ -992,9 +1012,6 @@ void MainWindow::updateStatus()
 
     switch (status->state()) {
     case MPDStatus::State_Playing:
-#ifndef ENABLE_KDE_SUPPORT
-        action_Play_pause_track->setText(i18n("&Pause"));
-#endif
         action_Play_pause_track->setIcon(playbackPause);
         action_Play_pause_track->setEnabled(true);
         //playPauseTrackButton->setChecked(false);
@@ -1007,14 +1024,15 @@ void MainWindow::updateStatus()
         break;
     case MPDStatus::State_Inactive:
     case MPDStatus::State_Stopped:
-#ifndef ENABLE_KDE_SUPPORT
-        action_Play_pause_track->setText(i18n("&Play"));
-#endif
         action_Play_pause_track->setIcon(playbackPlay);
         action_Play_pause_track->setEnabled(true);
         action_Stop_track->setEnabled(false);
 
+#ifdef ENABLE_KDE_SUPPORT
         trackLabel->setText(i18n("Stopped"));
+#else
+        trackLabel->setText(tr("Stopped"));
+#endif
         artistLabel->setText("...");
 
         if (trayIcon != NULL)
@@ -1023,9 +1041,6 @@ void MainWindow::updateStatus()
         elapsedTimer.stop();
         break;
     case MPDStatus::State_Paused:
-#ifndef ENABLE_KDE_SUPPORT
-        action_Play_pause_track->setText("&Play");
-#endif
         action_Play_pause_track->setIcon(playbackPlay);
         action_Play_pause_track->setEnabled(true);
         action_Stop_track->setEnabled(true);
@@ -1430,7 +1445,11 @@ void MainWindow::setupPlaylistViewMenu()
     playlistTableViewMenu = new QMenu(this);
 
     QStringList names;
+#ifdef ENABLE_KDE_SUPPORT
     names << i18n("Length") << i18n("Track") << i18n("Disc") << i18n("Year");
+#else
+    names << tr("Length") << tr("Track") << tr("Disc") << tr("Year");
+#endif
     foreach(const QString &n, names) {
         QAction *act=new QAction(n, playlistTableViewMenu);
         act->setCheckable(true);
@@ -1539,7 +1558,11 @@ bool MainWindow::setupTrayIcon()
     trayIconMenu->addAction(quitAction);
     trayIcon->setContextMenu(trayIconMenu);
     trayIcon->setIcon(windowIcon());
+#ifdef ENABLE_KDE_SUPPORT
     trayIcon->setToolTip(i18n("Cantata"));
+#else
+    trayIcon->setToolTip(tr("Cantata"));
+#endif
 
     return true;
 }
@@ -1602,15 +1625,15 @@ void MainWindow::removePlaylistPushButtonActivated()
         QString playlist_name = playlistsModel.data(sourceIndex, Qt::DisplayRole).toString();
 
 #ifdef ENABLE_KDE_SUPPORT
-        if (KMessageBox::Yes == KMessageBox::warningYesNo(this, i18n("Are you sure you want to delete playlist: %1", playlist_name),
+        if (KMessageBox::Yes == KMessageBox::warningYesNo(this, i18n("Are you sure you want to delete playlist: %1?", playlist_name),
                 i18n("Delete Playlist?"))) {
             playlistsModel.removePlaylist(playlist_name);
         }
 #else
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowTitle("Delete playlist?");
-        msgBox.setText("Are you sure you want to delete playlist: " + playlist_name + "?");
+        msgBox.setWindowTitle(tr("Delete Playlist?"));
+        msgBox.setText(tr("Are you sure you want to delete playlist: %1?").arg(playlist_name));
         msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
         msgBox.setDefaultButton(QMessageBox::No);
         int ret = msgBox.exec();
@@ -1624,7 +1647,11 @@ void MainWindow::removePlaylistPushButtonActivated()
 
 void MainWindow::savePlaylistPushButtonActivated()
 {
-    QString name = QInputDialog::getText(this, i18n("Enter name"), i18n("Name"));
+#ifdef ENABLE_KDE_SUPPORT
+    QString name = QInputDialog::getText(this, i18n("Playlist Name"), i18n("Enter a name for the playlist:"));
+#else
+    QString name = QInputDialog::getText(this, tr("Playlist Name"), tr("Enter a name for the playlist:"));
+#endif
 
     if (!name.isEmpty())
         playlistsModel.savePlaylist(name);
@@ -1650,8 +1677,11 @@ void MainWindow::renamePlaylistActivated()
     if (items.size() == 1) {
         QModelIndex sourceIndex = playlistsProxyModel.mapToSource(items.first());
         QString playlist_name = playlistsModel.data(sourceIndex, Qt::DisplayRole).toString();
-        QString new_name = QInputDialog::getText(this, i18n("Rename playlist"), i18n("Enter new name for playlist: %1").arg(playlist_name));
-
+#ifdef ENABLE_KDE_SUPPORT
+        QString new_name = QInputDialog::getText(this, i18n("Rename Playlist"), i18n("Enter new name for playlist: %1").arg(playlist_name));
+#else
+        QString new_name = QInputDialog::getText(this, tr("Rename Playlist"), tr("Enter new name for playlist: %1").arg(playlist_name));
+#endif
 
         if (!new_name.isEmpty()) {
             playlistsModel.renamePlaylist(playlist_name, new_name);
@@ -1721,7 +1751,11 @@ void MainWindow::cover(const QString &artist, const QString &album, const QImage
 void MainWindow::updateGenres(const QStringList &genres)
 {
     QStringList entries;
+#ifdef ENABLE_KDE_SUPPORT
     entries << i18n("All Genres");
+#else
+    entries << tr("All Genres");
+#endif
     entries+=genres;
 
     bool diff=libraryPage->genreCombo->count() != entries.count();

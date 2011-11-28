@@ -12,7 +12,7 @@ public:
 };
 
 #else
-#include <QtGui/DirRequester>
+#include <QtGui/QLineEdit>
 #define DirRequester QLineEdit
 #endif
 

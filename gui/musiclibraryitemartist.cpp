@@ -26,6 +26,9 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibrary
     : MusicLibraryItem(data, MusicLibraryItem::Type_Artist),
       m_parentItem(static_cast<MusicLibraryItemRoot *>(parent))
 {
+    if (m_itemData.startsWith(QLatin1String("The "))) {
+        nonTheArtist=m_itemData.mid(4);
+    }
 }
 
 MusicLibraryItemArtist::~MusicLibraryItemArtist()
@@ -79,3 +82,9 @@ void MusicLibraryItemArtist::clearChildren()
     qDeleteAll(m_childItems);
     m_childItems.clear();
 }
+
+const QString & MusicLibraryItemArtist::baseArtist() const
+{
+    return nonTheArtist.isEmpty() ? m_itemData : nonTheArtist;
+}
+

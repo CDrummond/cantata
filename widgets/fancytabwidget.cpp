@@ -135,6 +135,9 @@ void FancyTabProxyStyle::drawControl(
     QStyleOptionViewItemV4 styleOpt;
     styleOpt.palette=option->palette;
     styleOpt.rect=draw_rect;
+    if (QStyleOptionTab::Beginning==v_opt->position) {
+        styleOpt.rect.adjust(0, 0, -1, 0);
+    }
     styleOpt.state=option->state;
     styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
     styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;

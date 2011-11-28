@@ -1,24 +1,17 @@
 ...high priority...
 
-Replay Gain: off, track, album
 
 Cover Manager
    - Need way to fetch covers
    - Copy amarok code?
    - Have manual button
 
-sort out variable names in pages!
 
 ...medium priority...
 
 Add Tooltips to lists
 
-Proxy support for Qt
-
-Config dialog:
-    MPD:
-    Interface:
-    Proxy: <for Qt only>
+Proxy support for Qt (read system settings, and also add config page)
 
 Fix usage of threads - ideally writing/reading should be in thread object.
 

@@ -29,6 +29,7 @@
 
 class ServerSettings;
 class PlaybackSettings;
+class OutputSettings;
 class InterfaceSettings;
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -60,6 +61,7 @@ Q_SIGNALS:
 private:
     ServerSettings *server;
     PlaybackSettings *playback;
+    OutputSettings *output;
     InterfaceSettings *interface;
 };
 

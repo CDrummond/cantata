@@ -45,6 +45,7 @@ SET( CANTATA_SRCS
     gui/interfacesettings.cpp
     gui/playbacksettings.cpp
     gui/serversettings.cpp
+    gui/outputsettings.cpp
     lib/mpdconnection.cpp
     lib/mpdparseutils.cpp
     lib/mpdstats.cpp
@@ -75,6 +76,7 @@ SET( CANTATA_MOC_HDRS
     gui/interfacesettings.h
     gui/playbacksettings.h
     gui/serversettings.h
+    gui/outputsettings.h
     lib/mpdconnection.h
     lib/output.h
     lib/playlist.h
@@ -91,6 +93,7 @@ SET( CANTATA_UIS
     gui/interfacesettings.ui
     gui/playbacksettings.ui
     gui/serversettings.ui
+    gui/outputsettings.ui
 )
 
 include_directories( ${CMAKE_SOURCE_DIR}/external/libmaia

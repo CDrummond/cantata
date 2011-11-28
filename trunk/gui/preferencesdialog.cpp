@@ -23,6 +23,7 @@
 #include "settings.h"
 #include "interfacesettings.h"
 #include "playbacksettings.h"
+#include "outputsettings.h"
 #include "serversettings.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KPageWidget>
@@ -47,9 +48,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 
     server = new ServerSettings(widget);
     playback = new PlaybackSettings(widget);
+    output = new OutputSettings(widget);
     interface = new InterfaceSettings(widget);
     server->load();
     playback->load();
+    output->load();
     interface->load();
 #ifdef ENABLE_KDE_SUPPORT
     KPageWidgetItem *page=widget->addPage(server, i18n("Server"));
@@ -58,6 +61,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     page=widget->addPage(playback, i18n("Playback"));
     page->setHeader(i18n("Playback Settings"));
     page->setIcon(KIcon("media-playback-start"));
+    page=widget->addPage(output, i18n("Output"));
+    page->setHeader(i18n("Control Active Outputs"));
+    page->setIcon(KIcon("speaker"));
     page=widget->addPage(interface, i18n("Interface"));
     page->setHeader(i18n("Interface Settings"));
     page->setIcon(KIcon("preferences-desktop-color"));
@@ -69,6 +75,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 #else
     widget->addTab(server, QIcon::fromTheme("server-database"), tr("Server"));
     widget->addTab(playback, QIcon::fromTheme("media-playback-start"), tr("Playback"));
+    widget->addTab(output, QIcon::fromTheme("speaker"), tr("Output"));
     widget->addTab(interface, QIcon::fromTheme("preferences-desktop-color"), tr("Interface"));
     setCaption(tr("Configure"));
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
@@ -80,6 +87,7 @@ void PreferencesDialog::writeSettings()
 {
     server->save();
     playback->save();
+    output->save();
     interface->save();
     emit systemTraySet(interface->sysTrayEnabled());
 }

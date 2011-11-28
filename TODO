@@ -1,6 +1,5 @@
 ...high priority...
 
-
 Replay Gain: off, track, album
 
 Cover Manager
@@ -8,7 +7,7 @@ Cover Manager
    - Copy amarok code?
    - Have manual button
 
-Use KPageWidget for left had widget!
+sort out variable names in pages!
 
 ...medium priority...
 
@@ -41,6 +40,4 @@ Add config of MPD itself -> requires KAuth???
    outputs
    album artist support
 
-// When complete:
-Check Qt only build
-Need to fix Qt about-dialog
+Fix Qt-only build, disable in CMakeLists.txt as its broken!!!

@@ -71,7 +71,9 @@ public Q_SLOTS:
     void shuffle();
 
     // Playback
-    void setCrossfade(const quint8 secs);
+    void setCrossFade(const quint8 secs);
+    void setReplayGain(const QString &v);
+    QString getReplayGain();
     void goToNext();
     void setPause(const bool toggle);
     void startPlayingSong(const quint32 song = 0);

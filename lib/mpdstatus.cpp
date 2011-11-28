@@ -115,7 +115,7 @@ qint32 MPDStatus::playlistQueue()
     return playlist_queue;
 }
 
-qint32 MPDStatus::xfade()
+qint32 MPDStatus::crossFade()
 {
     m_lock.lockForRead();
     qint32 xfade = m_xfade;
@@ -247,7 +247,7 @@ void MPDStatus::setPlaylistQueue(qint32 playlist_queue)
     m_playlist_queue = playlist_queue;
 }
 
-void MPDStatus::setXfade(qint32 xfade)
+void MPDStatus::setCrossFade(qint32 xfade)
 {
     m_xfade = xfade;
 }

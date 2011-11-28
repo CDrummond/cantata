@@ -48,7 +48,7 @@ public:
     quint32 playlist();
     qint32 playlistLength();
     qint32 playlistQueue();
-    qint32 xfade();
+    qint32 crossFade();
     State state();
     qint32 song();
     qint32 songId();
@@ -69,7 +69,7 @@ public:
     void setPlaylist(quint32 playlist);
     void setPlaylistLength(qint32 playlist_length);
     void setPlaylistQueue(qint32 playlist_queue);
-    void setXfade(qint32 xfade);
+    void setCrossFade(qint32 xfade);
     void setState(State state);
     void setSong(qint32 song);
     void setSongId(qint32 song_id);

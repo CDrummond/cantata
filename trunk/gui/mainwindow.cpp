@@ -71,10 +71,10 @@ bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
         int numSteps = numDegrees / 15;
         if (numSteps > 0) {
             for (int i = 0; i < numSteps; ++i)
-                window->action_Increase_volume->trigger();
+                window->increaseVolumeAction->trigger();
         } else {
             for (int i = 0; i > numSteps; --i)
-                window->action_Decrease_volume->trigger();
+                window->decreaseVolumeAction->trigger();
         }
         return true;
     }
@@ -152,7 +152,7 @@ bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
         break;
     case QEvent::MouseButtonRelease:
         if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
-            window->action_Show_playlist->trigger();
+            window->showPlaylistAction->trigger();
         }
         pressed=false;
         break;
@@ -211,99 +211,95 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     KAction *action_Update_database = actionCollection()->addAction("updatedatabase");
     action_Update_database->setText(i18n("Update Database"));
 
-    action_Prev_track = actionCollection()->addAction("prevtrack");
-    action_Prev_track->setText(i18n("Previous Track"));
-    action_Prev_track->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
+    prevTrackAction = actionCollection()->addAction("prevtrack");
+    prevTrackAction->setText(i18n("Previous Track"));
+    prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
 
-    action_Next_track = actionCollection()->addAction("nexttrack");
-    action_Next_track->setText(i18n("Next Track"));
-    action_Next_track->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));
+    nextTrackAction = actionCollection()->addAction("nexttrack");
+    nextTrackAction->setText(i18n("Next Track"));
+    nextTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));
 
-    action_Play_pause_track = actionCollection()->addAction("playpausetrack");
-    action_Play_pause_track->setText(i18n("Play/Pause"));
-    action_Play_pause_track->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_C));
+    playPauseTrackAction = actionCollection()->addAction("playpausetrack");
+    playPauseTrackAction->setText(i18n("Play/Pause"));
+    playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_C));
 
-    action_Stop_track = actionCollection()->addAction("stoptrack");
-    action_Stop_track->setText(i18n("Stop"));
-    action_Stop_track->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
+    stopTrackAction = actionCollection()->addAction("stoptrack");
+    stopTrackAction->setText(i18n("Stop"));
+    stopTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
 
-    action_Increase_volume = actionCollection()->addAction("increasevolume");
-    action_Increase_volume->setText(i18n("Increase Volume"));
-    action_Increase_volume->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Up));
+    increaseVolumeAction = actionCollection()->addAction("increasevolume");
+    increaseVolumeAction->setText(i18n("Increase Volume"));
+    increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Up));
 
-    action_Decrease_volume = actionCollection()->addAction("decreasevolume");
-    action_Decrease_volume->setText(i18n("Decrease Volume"));
-    action_Decrease_volume->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
+    decreaseVolumeAction = actionCollection()->addAction("decreasevolume");
+    decreaseVolumeAction->setText(i18n("Decrease Volume"));
+    decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
 
-    action_Add_to_playlist = actionCollection()->addAction("addtoplaylist");
-    action_Add_to_playlist->setText(i18n("Add To Playlist"));
+    addToPlaylistAction = actionCollection()->addAction("addtoplaylist");
+    addToPlaylistAction->setText(i18n("Add To Playlist"));
 
-    action_Replace_playlist = actionCollection()->addAction("replaceplaylist");
-    action_Replace_playlist->setText(i18n("Replace Playlist"));
+    replacePlaylistAction = actionCollection()->addAction("replaceplaylist");
+    replacePlaylistAction->setText(i18n("Replace Playlist"));
 
-    action_Load_playlist = actionCollection()->addAction("loadplaylist");
-    action_Load_playlist->setText(i18n("Load"));
+    removePlaylistAction = actionCollection()->addAction("removeplaylist");
+    removePlaylistAction->setText(i18n("Remove"));
 
-    action_Remove_playlist = actionCollection()->addAction("removeplaylist");
-    action_Remove_playlist->setText(i18n("Remove"));
+    removeFromPlaylistAction = actionCollection()->addAction("removefromplaylist");
+    removeFromPlaylistAction->setText(i18n("Remove"));
+    removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
 
-    action_Remove_from_playlist = actionCollection()->addAction("removefromplaylist");
-    action_Remove_from_playlist->setText(i18n("Remove"));
-    action_Remove_from_playlist->setShortcut(QKeySequence::Delete);
+    copySongInfoAction = actionCollection()->addAction("copysonginfo");
+    copySongInfoAction->setText(i18n("Copy Song Info"));
 
-    action_Copy_song_info = actionCollection()->addAction("copysonginfo");
-    action_Copy_song_info->setText(i18n("Copy Song Info"));
+    cropPlaylistAction = actionCollection()->addAction("cropplaylist");
+    cropPlaylistAction->setText(i18n("Crop"));
 
-    action_Crop_playlist = actionCollection()->addAction("cropplaylist");
-    action_Crop_playlist->setText(i18n("Crop"));
+    shufflePlaylistAction = actionCollection()->addAction("shuffleplaylist");
+    shufflePlaylistAction->setText(i18n("Shuffle"));
 
-    action_Shuffle_playlist = actionCollection()->addAction("shuffleplaylist");
-    action_Shuffle_playlist->setText(i18n("Shuffle"));
+    renamePlaylistAction = actionCollection()->addAction("renameplaylist");
+    renamePlaylistAction->setText(i18n("Rename"));
 
-    action_Rename_playlist = actionCollection()->addAction("renameplaylist");
-    action_Rename_playlist->setText(i18n("Rename"));
+    savePlaylistAction = actionCollection()->addAction("saveplaylist");
+    savePlaylistAction->setText(i18n("Save As"));
 
-    action_Save_playlist = actionCollection()->addAction("saveplaylist");
-    action_Save_playlist->setText(i18n("Save As"));
+    clearPlaylistAction = actionCollection()->addAction("clearplaylist");
+    clearPlaylistAction->setText(i18n("Clear"));
 
-    action_Clear_playlist = actionCollection()->addAction("clearplaylist");
-    action_Clear_playlist->setText(i18n("Clear"));
+    showPlaylistAction = actionCollection()->addAction("showplaylist");
+    showPlaylistAction->setText(i18n("Show Playlist"));
 
-    action_Show_playlist = actionCollection()->addAction("showplaylist");
-    action_Show_playlist->setText(i18n("Show Playlist"));
+    randomPlaylistAction = actionCollection()->addAction("randomplaylist");
+    randomPlaylistAction->setText(i18n("Random"));
 
-    action_Random_playlist = actionCollection()->addAction("randomplaylist");
-    action_Random_playlist->setText(i18n("Random"));
+    repeatPlaylistAction = actionCollection()->addAction("repeatplaylist");
+    repeatPlaylistAction->setText(i18n("Repeat"));
 
-    action_Repeat_playlist = actionCollection()->addAction("repeatplaylist");
-    action_Repeat_playlist->setText(i18n("Repeat"));
-
-    action_Consume_playlist = actionCollection()->addAction("consumeplaylist");
-    action_Consume_playlist->setText(i18n("Consume"));
+    consumePlaylistAction = actionCollection()->addAction("consumeplaylist");
+    consumePlaylistAction->setText(i18n("Consume"));
 #else
-    action_Prev_track = new QAction(tr("Previous Track"), this);
-    action_Next_track = new QAction(tr("Next Track"), this);
-    action_Play_pause_track = new QAction(tr("Play/Pause"), this);
-    action_Stop_track = new QAction(tr("Stop"), this);
-    action_Increase_volume = new QAction(tr("Increase Volume"), this);
-    action_Decrease_volume = new QAction(tr("Decrease Volume"), this);
-    action_Add_to_playlist = new QAction(tr("Add To Playlist"), this);
-    action_Replace_playlist = new QAction(tr("Replace Playlist"), this);
-    action_Load_playlist = new QAction(tr("Load"), this);
-    action_Remove_playlist = new QAction(tr("Remove"), this);
-    action_Remove_from_playlist = new QAction(tr("Remove"), this);
-    action_Remove_from_playlist->setShortcut(QKeySequence::Delete);
-    action_Copy_song_info = new QAction(tr("Copy Song Info"), this);
-    action_Copy_song_info->setShortcuts(QKeySequence::Copy);
-    action_Crop_playlist = new QAction(tr("Crop"), this);
-    action_Shuffle_playlist = new QAction(tr("Shuffle"), this);
-    action_Rename_playlist = new QAction(tr("Rename"), this);
-    action_Save_playlist = new QAction(tr("Save As"), this);
-    action_Clear_playlist = new QAction(tr("Clear"), this);
-    action_Show_playlist = new QAction(tr("Show Playlist"), this);
-    action_Random_playlist = new QAction(tr("Random"), this);
-    action_Repeat_playlist = new QAction(tr("Repeat"), this);
-    action_Consume_playlist = new QAction(tr("Consume"), this);
+    prevTrackAction = new QAction(tr("Previous Track"), this);
+    nextTrackAction = new QAction(tr("Next Track"), this);
+    playPauseTrackAction = new QAction(tr("Play/Pause"), this);
+    stopTrackAction = new QAction(tr("Stop"), this);
+    increaseVolumeAction = new QAction(tr("Increase Volume"), this);
+    decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
+    addToPlaylistAction = new QAction(tr("Add To Playlist"), this);
+    replacePlaylistAction = new QAction(tr("Replace Playlist"), this);
+    removePlaylistAction = new QAction(tr("Remove"), this);
+    removeFromPlaylistAction = new QAction(tr("Remove"), this);
+    removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
+    copySongInfoAction = new QAction(tr("Copy Song Info"), this);
+    copySongInfoAction->setShortcuts(QKeySequence::Copy);
+    cropPlaylistAction = new QAction(tr("Crop"), this);
+    shufflePlaylistAction = new QAction(tr("Shuffle"), this);
+    renamePlaylistAction = new QAction(tr("Rename"), this);
+    savePlaylistAction = new QAction(tr("Save As"), this);
+    clearPlaylistAction = new QAction(tr("Clear"), this);
+    showPlaylistAction = new QAction(tr("Show Playlist"), this);
+    randomPlaylistAction = new QAction(tr("Random"), this);
+    repeatPlaylistAction = new QAction(tr("Repeat"), this);
+    consumePlaylistAction = new QAction(tr("Consume"), this);
 #endif
 
     setVisible(true);
@@ -325,35 +321,34 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playbackPlay = QIcon::fromTheme("media-playback-start");
     playbackPause = QIcon::fromTheme("media-playback-pause");
 // #ifdef ENABLE_KDE_SUPPORT
-//    action_Random_playlist->setIcon(KIcon("media-random-tracks"));
-//    action_Repeat_playlist->setIcon(KIcon("media-repeat-playlist"));
-//     action_Consume_playlist->setIcon(KIcon("media-consume-playlist"));
-//     action_Add_to_playlist->setIcon(KIcon("media-track-add"));
-//     action_Replace_playlist->setIcon(KIcon("media-replace-playlist"));
+//    randomPlaylistAction->setIcon(KIcon("media-random-tracks"));
+//    repeatPlaylistAction->setIcon(KIcon("media-repeat-playlist"));
+//     consumePlaylistAction->setIcon(KIcon("media-consume-playlist"));
+//     addToPlaylistAction->setIcon(KIcon("media-track-add"));
+//     replacePlaylistAction->setIcon(KIcon("media-replace-playlist"));
 // #else
-//    action_Random_playlist->setIcon(QIcon(":/icons/hi16-action-media-random-tracks.png"));
-//    action_Repeat_playlist->setIcon(QIcon(":/icons/hi16-action-media-repeat-playlist.png"));
-//     action_Consume_playlist->setIcon(QIcon(":/icons/hi16-action-media-consume-playlist.png"));
-//     action_Add_to_playlist->setIcon(QIcon(":/icons/hi16-action-media-track-add.png"));
-//     action_Replace_playlist->setIcon(QIcon(":/icons/hi16-action-media-replace-playlist.png"));
+//    randomPlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-random-tracks.png"));
+//    repeatPlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-repeat-playlist.png"));
+//     consumePlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-consume-playlist.png"));
+//     addToPlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-track-add.png"));
+//     replacePlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-replace-playlist.png"));
 // #endif
-    action_Repeat_playlist->setIcon(QIcon::fromTheme("edit-redo"));
-    action_Random_playlist->setIcon(QIcon::fromTheme("roll"));
-    action_Consume_playlist->setIcon(QIcon::fromTheme("format-list-unordered"));
-    action_Add_to_playlist->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left" : "arrow-right"));
-    action_Replace_playlist->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left-double" : "arrow-right-double"));
+    repeatPlaylistAction->setIcon(QIcon::fromTheme("edit-redo"));
+    randomPlaylistAction->setIcon(QIcon::fromTheme("roll"));
+    consumePlaylistAction->setIcon(QIcon::fromTheme("format-list-unordered"));
+    addToPlaylistAction->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left" : "arrow-right"));
+    replacePlaylistAction->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left-double" : "arrow-right-double"));
 
-    action_Prev_track->setIcon(QIcon::fromTheme("media-skip-backward"));
-    action_Next_track->setIcon(QIcon::fromTheme("media-skip-forward"));
-    action_Play_pause_track->setIcon(playbackPlay);
-    action_Stop_track->setIcon(QIcon::fromTheme("media-playback-stop"));
-    action_Load_playlist->setIcon(QIcon::fromTheme("document-open"));
-    action_Remove_playlist->setIcon(QIcon::fromTheme("edit-delete"));
-    action_Remove_from_playlist->setIcon(QIcon::fromTheme("list-remove"));
-    action_Clear_playlist->setIcon(QIcon::fromTheme("edit-clear-list"));
-    action_Save_playlist->setIcon(QIcon::fromTheme("document-save-as"));
-    action_Clear_playlist->setIcon(QIcon::fromTheme("edit-clear-list"));
-    action_Show_playlist->setIcon(QIcon::fromTheme("view-media-playlist"));
+    prevTrackAction->setIcon(QIcon::fromTheme("media-skip-backward"));
+    nextTrackAction->setIcon(QIcon::fromTheme("media-skip-forward"));
+    playPauseTrackAction->setIcon(playbackPlay);
+    stopTrackAction->setIcon(QIcon::fromTheme("media-playback-stop"));
+    removePlaylistAction->setIcon(QIcon::fromTheme("edit-delete"));
+    removeFromPlaylistAction->setIcon(QIcon::fromTheme("list-remove"));
+    clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
+    savePlaylistAction->setIcon(QIcon::fromTheme("document-save-as"));
+    clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
+    showPlaylistAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     action_Update_database->setIcon(QIcon::fromTheme("view-refresh"));
 
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
@@ -364,31 +359,31 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             &musicLibraryModel, SLOT(setCover(const QString &, const QString &, const QImage &)));
 
-    playPauseTrackButton->setDefaultAction(action_Play_pause_track);
-    stopTrackButton->setDefaultAction(action_Stop_track);
-    nextTrackButton->setDefaultAction(action_Next_track);
-    prevTrackButton->setDefaultAction(action_Prev_track);
-    libraryPage->addToPlaylist->setDefaultAction(action_Add_to_playlist);
-    libraryPage->replacePlaylist->setDefaultAction(action_Replace_playlist);
-    folderPage->addToPlaylist->setDefaultAction(action_Add_to_playlist);
-    folderPage->replacePlaylist->setDefaultAction(action_Replace_playlist);
-    savePlaylistPushButton->setDefaultAction(action_Save_playlist);
-    removeAllFromPlaylistPushButton->setDefaultAction(action_Clear_playlist);
-    removeFromPlaylistPushButton->setDefaultAction(action_Remove_from_playlist);
-    playlistsPage->addToPlaylist->setDefaultAction(action_Add_to_playlist);
-    playlistsPage->replacePlaylist->setDefaultAction(action_Load_playlist);
-    playlistsPage->removePlaylist->setDefaultAction(action_Remove_playlist);
-    randomPushButton->setDefaultAction(action_Random_playlist);
-    repeatPushButton->setDefaultAction(action_Repeat_playlist);
-    consumePushButton->setDefaultAction(action_Consume_playlist);
+    playPauseTrackButton->setDefaultAction(playPauseTrackAction);
+    stopTrackButton->setDefaultAction(stopTrackAction);
+    nextTrackButton->setDefaultAction(nextTrackAction);
+    prevTrackButton->setDefaultAction(prevTrackAction);
+    libraryPage->addToPlaylist->setDefaultAction(addToPlaylistAction);
+    libraryPage->replacePlaylist->setDefaultAction(replacePlaylistAction);
+    folderPage->addToPlaylist->setDefaultAction(addToPlaylistAction);
+    folderPage->replacePlaylist->setDefaultAction(replacePlaylistAction);
+    savePlaylistPushButton->setDefaultAction(savePlaylistAction);
+    removeAllFromPlaylistPushButton->setDefaultAction(clearPlaylistAction);
+    removeFromPlaylistPushButton->setDefaultAction(removeFromPlaylistAction);
+    playlistsPage->addToPlaylist->setDefaultAction(addToPlaylistAction);
+    playlistsPage->replacePlaylist->setDefaultAction(replacePlaylistAction);
+    playlistsPage->removePlaylist->setDefaultAction(removePlaylistAction);
+    randomPushButton->setDefaultAction(randomPlaylistAction);
+    repeatPushButton->setDefaultAction(repeatPlaylistAction);
+    consumePushButton->setDefaultAction(consumePlaylistAction);
     libraryPage->libraryUpdate->setDefaultAction(action_Update_database);
     folderPage->libraryUpdate->setDefaultAction(action_Update_database);
     playlistsPage->libraryUpdate->setDefaultAction(action_Update_database);
 
-    action_Show_playlist->setCheckable(true);
-    action_Random_playlist->setCheckable(true);
-    action_Repeat_playlist->setCheckable(true);
-    action_Consume_playlist->setCheckable(true);
+    showPlaylistAction->setCheckable(true);
+    randomPlaylistAction->setCheckable(true);
+    repeatPlaylistAction->setCheckable(true);
+    consumePlaylistAction->setCheckable(true);
 
     libraryPage->addToPlaylist->setEnabled(false);
     libraryPage->replacePlaylist->setEnabled(false);
@@ -429,19 +424,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsProxyModel.setSourceModel(&playlistsModel);
     playlistsPage->view->setModel(&playlistsProxyModel);
     playlistsPage->view->sortByColumn(0, Qt::AscendingOrder);
-    playlistsPage->view->addAction(action_Add_to_playlist);
-    playlistsPage->view->addAction(action_Load_playlist);
-    playlistsPage->view->addAction(action_Remove_playlist);
-    playlistsPage->view->addAction(action_Rename_playlist);
+    playlistsPage->view->addAction(addToPlaylistAction);
+    playlistsPage->view->addAction(replacePlaylistAction);
+    playlistsPage->view->addAction(removePlaylistAction);
+    playlistsPage->view->addAction(renamePlaylistAction);
 
     libraryPage->view->setHeaderHidden(true);
     folderPage->view->setHeaderHidden(true);
     playlistsPage->view->setHeaderHidden(true);
 
-    action_Show_playlist->setChecked(Settings::self()->showPlaylist());
-    action_Random_playlist->setChecked(Settings::self()->randomPlaylist());
-    action_Repeat_playlist->setChecked(Settings::self()->repeatPlaylist());
-    action_Consume_playlist->setChecked(Settings::self()->consumePlaylist());
+    showPlaylistAction->setChecked(Settings::self()->showPlaylist());
+    randomPlaylistAction->setChecked(Settings::self()->randomPlaylist());
+    repeatPlaylistAction->setChecked(Settings::self()->repeatPlaylist());
+    consumePlaylistAction->setChecked(Settings::self()->consumePlaylist());
     mpdDir=Settings::self()->mpdDir();
     Lyrics::self()->setMpdDir(mpdDir);
     Covers::self()->setMpdDir(mpdDir);
@@ -481,13 +476,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     coverWidget->installEventFilter(coverEventHandler);
     libraryProxyModel.setSourceModel(&musicLibraryModel);
     libraryPage->view->setModel(&libraryProxyModel);
-    libraryPage->view->addAction(action_Add_to_playlist);
-    libraryPage->view->addAction(action_Replace_playlist);
+    libraryPage->view->addAction(addToPlaylistAction);
+    libraryPage->view->addAction(replacePlaylistAction);
 
     dirProxyModel.setSourceModel(&dirviewModel);
     folderPage->view->setModel(&dirProxyModel);
-    folderPage->view->addAction(action_Add_to_playlist);
-    folderPage->view->addAction(action_Replace_playlist);
+    folderPage->view->addAction(addToPlaylistAction);
+    folderPage->view->addAction(replacePlaylistAction);
 
     connect(&playlistsModel, SIGNAL(playlistLoaded()), this, SLOT(startPlayingSong()));
     connect(&playlistModel, SIGNAL(filesAddedInPlaylist(const QStringList, const int, const int)), this,
@@ -501,11 +496,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistTableView->setModel(&playlistProxyModel);
     playlistTableView->setAcceptDrops(true);
     playlistTableView->setDropIndicatorShown(true);
-    playlistTableView->addAction(action_Remove_from_playlist);
-    playlistTableView->addAction(action_Clear_playlist);
-    playlistTableView->addAction(action_Crop_playlist);
-    playlistTableView->addAction(action_Shuffle_playlist);
-    playlistTableView->addAction(action_Copy_song_info);
+    playlistTableView->addAction(removeFromPlaylistAction);
+    playlistTableView->addAction(clearPlaylistAction);
+    playlistTableView->addAction(cropPlaylistAction);
+    playlistTableView->addAction(shufflePlaylistAction);
+    playlistTableView->addAction(copySongInfoAction);
     connect(playlistTableView, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
     setupPlaylistViewHeader();
     setupPlaylistViewMenu();
@@ -523,21 +518,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(action_About, SIGNAL(triggered(bool)), this, SLOT(showAboutDialog()));
 #endif
     connect(action_Update_database, SIGNAL(triggered(bool)), this, SLOT(updateDb()));
-    connect(action_Prev_track, SIGNAL(triggered(bool)), this, SLOT(previousTrack()));
-    connect(action_Next_track, SIGNAL(triggered(bool)), this, SLOT(nextTrack()));
-    connect(action_Play_pause_track, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
-    connect(action_Stop_track, SIGNAL(triggered(bool)), this, SLOT(stopTrack()));
+    connect(prevTrackAction, SIGNAL(triggered(bool)), this, SLOT(previousTrack()));
+    connect(nextTrackAction, SIGNAL(triggered(bool)), this, SLOT(nextTrack()));
+    connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
+    connect(stopTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopTrack()));
     connect(volumeControl, SIGNAL(valueChanged(int)), SLOT(setVolume(int)));
-    connect(action_Increase_volume, SIGNAL(triggered(bool)), this, SLOT(increaseVolume()));
-    connect(action_Decrease_volume, SIGNAL(triggered(bool)), this, SLOT(decreaseVolume()));
-    connect(action_Increase_volume, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
-    connect(action_Decrease_volume, SIGNAL(triggered(bool)), volumeControl, SLOT(decreaseVolume()));
+    connect(increaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(increaseVolume()));
+    connect(decreaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(decreaseVolume()));
+    connect(increaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
+    connect(decreaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(decreaseVolume()));
     connect(positionSlider, SIGNAL(sliderPressed()), this, SLOT(positionSliderPressed()));
     connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
     connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(positionSliderReleased()));
-    connect(action_Random_playlist, SIGNAL(activated()), this, SLOT(setRandom()));
-    connect(action_Repeat_playlist, SIGNAL(activated()), this, SLOT(setRepeat()));
-    connect(action_Consume_playlist, SIGNAL(activated()), this, SLOT(setConsume()));
+    connect(randomPlaylistAction, SIGNAL(activated()), this, SLOT(setRandom()));
+    connect(repeatPlaylistAction, SIGNAL(activated()), this, SLOT(setRepeat()));
+    connect(consumePlaylistAction, SIGNAL(activated()), this, SLOT(setConsume()));
     connect(libraryPage->search, SIGNAL(returnPressed()), this, SLOT(searchMusicLibrary()));
     connect(libraryPage->search, SIGNAL(textChanged(const QString)), this, SLOT(searchMusicLibrary()));
     connect(libraryPage->genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchMusicLibrary()));
@@ -548,18 +543,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(playlistTableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistItemActivated(const QModelIndex &)));
     connect(libraryPage->view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(libraryItemActivated(const QModelIndex &)));
     connect(folderPage->view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(dirViewItemActivated(const QModelIndex &)));
-    connect(action_Add_to_playlist, SIGNAL(activated()), this, SLOT(addToPlaylistItemActivated()));
-    connect(action_Replace_playlist, SIGNAL(activated()), this, SLOT(replacePlaylist()));
-    connect(action_Load_playlist, SIGNAL(activated()), this, SLOT(loadPlaylistPushButtonActivated()));
-    connect(action_Remove_playlist, SIGNAL(activated()), this, SLOT(removePlaylistPushButtonActivated()));
-    connect(action_Save_playlist, SIGNAL(activated()), this, SLOT(savePlaylistPushButtonActivated()));
-    connect(action_Remove_from_playlist, SIGNAL(activated()), this, SLOT(removeFromPlaylist()));
-    connect(action_Rename_playlist, SIGNAL(triggered()), this, SLOT(renamePlaylistActivated()));
-    connect(action_Clear_playlist, SIGNAL(activated()), this, SLOT(clearPlaylist()));
-    connect(action_Copy_song_info, SIGNAL(activated()), this, SLOT(copySongInfo()));
-    connect(action_Crop_playlist, SIGNAL(activated()), this, SLOT(cropPlaylist()));
-    connect(action_Shuffle_playlist, SIGNAL(activated()), MPDConnection::self(), SLOT(shuffle()));
-    connect(action_Show_playlist, SIGNAL(activated()), this, SLOT(togglePlaylist()));
+    connect(addToPlaylistAction, SIGNAL(activated()), this, SLOT(addToPlaylist()));
+    connect(replacePlaylistAction, SIGNAL(activated()), this, SLOT(replacePlaylist()));
+    connect(removePlaylistAction, SIGNAL(activated()), this, SLOT(removePlaylist()));
+    connect(savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
+    connect(removeFromPlaylistAction, SIGNAL(activated()), this, SLOT(removeFromPlaylist()));
+    connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
+    connect(clearPlaylistAction, SIGNAL(activated()), this, SLOT(clearPlaylist()));
+    connect(copySongInfoAction, SIGNAL(activated()), this, SLOT(copySongInfo()));
+    connect(cropPlaylistAction, SIGNAL(activated()), this, SLOT(cropPlaylist()));
+    connect(shufflePlaylistAction, SIGNAL(activated()), MPDConnection::self(), SLOT(shuffle()));
+    connect(showPlaylistAction, SIGNAL(activated()), this, SLOT(togglePlaylist()));
     connect(&elapsedTimer, SIGNAL(timeout()), this, SLOT(updatePositionSilder()));
     connect(&musicLibraryModel, SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
     connect(libraryPage->view, SIGNAL(itemsSelected(bool)), libraryPage->addToPlaylist, SLOT(setEnabled(bool)));
@@ -571,7 +565,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(playlistsPage->view, SIGNAL(itemsSelected(bool)), playlistsPage->removePlaylist, SLOT(setEnabled(bool)));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
 
-    connect(playlistsPage->addToPlaylist, SIGNAL(clicked(bool)), this, SLOT(addPlaylistToPlaylistPushButtonActivated()));
     connect(playlistsPage->view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistsViewItemDoubleClicked(const QModelIndex &)));
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), this, SLOT(updateStoredPlaylists()));
 
@@ -601,10 +594,10 @@ MainWindow::~MainWindow()
 #ifndef ENABLE_KDE_SUPPORT
     Settings::self()->saveMainWindowSize(size());
 #endif
-    Settings::self()->saveConsumePlaylist(action_Consume_playlist->isChecked());
-    Settings::self()->saveRandomPlaylist(action_Random_playlist->isChecked());
-    Settings::self()->saveRepeatPlaylist(action_Repeat_playlist->isChecked());
-    Settings::self()->saveShowPlaylist(action_Show_playlist->isChecked());
+    Settings::self()->saveConsumePlaylist(consumePlaylistAction->isChecked());
+    Settings::self()->saveRandomPlaylist(randomPlaylistAction->isChecked());
+    Settings::self()->saveRepeatPlaylist(repeatPlaylistAction->isChecked());
+    Settings::self()->saveShowPlaylist(showPlaylistAction->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
     Settings::self()->savePlaylistHeaderState(playlistTableViewHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
@@ -637,11 +630,11 @@ void MainWindow::playlistItemsSelected(bool s)
 {
     if (playlistTableView->model()->rowCount()) {
         playlistTableView->setContextMenuPolicy(Qt::ActionsContextMenu);
-        action_Remove_from_playlist->setEnabled(s);
-        action_Copy_song_info->setEnabled(s);
-        action_Clear_playlist->setEnabled(true);
-        action_Crop_playlist->setEnabled(playlistTableView->haveUnSelectedItems());
-        action_Shuffle_playlist->setEnabled(true);
+        removeFromPlaylistAction->setEnabled(s);
+        copySongInfoAction->setEnabled(s);
+        clearPlaylistAction->setEnabled(true);
+        cropPlaylistAction->setEnabled(playlistTableView->haveUnSelectedItems());
+        shufflePlaylistAction->setEnabled(true);
     }
 }
 
@@ -654,9 +647,9 @@ void MainWindow::mpdConnectionDied()
     positionSlider->setValue(0);
     songTimeElapsedLabel->setText("00:00 / 00:00");
 
-    action_Play_pause_track->setIcon(playbackPlay);
-    action_Play_pause_track->setEnabled(true);
-    action_Stop_track->setEnabled(false);
+    playPauseTrackAction->setIcon(playbackPlay);
+    playPauseTrackAction->setEnabled(true);
+    stopTrackAction->setEnabled(false);
 
     // Show warning message
 #ifdef ENABLE_KDE_SUPPORT
@@ -749,7 +742,7 @@ void MainWindow::stopTrack()
 {
     MPDConnection::self()->stopPlaying();
 
-    action_Stop_track->setEnabled(false);
+    stopTrackAction->setEnabled(false);
 }
 
 void MainWindow::playPauseTrack()
@@ -792,17 +785,17 @@ void MainWindow::decreaseVolume()
 
 void MainWindow::setRandom()
 {
-    MPDConnection::self()->setRandom(action_Random_playlist->isChecked());
+    MPDConnection::self()->setRandom(randomPlaylistAction->isChecked());
 }
 
 void MainWindow::setRepeat()
 {
-    MPDConnection::self()->setRepeat(action_Repeat_playlist->isChecked());
+    MPDConnection::self()->setRepeat(repeatPlaylistAction->isChecked());
 }
 
 void MainWindow::setConsume()
 {
-    MPDConnection::self()->setConsume(action_Consume_playlist->isChecked());
+    MPDConnection::self()->setConsume(consumePlaylistAction->isChecked());
 }
 
 void MainWindow::searchMusicLibrary()
@@ -1013,10 +1006,10 @@ void MainWindow::updateStatus()
 
     switch (status->state()) {
     case MPDStatus::State_Playing:
-        action_Play_pause_track->setIcon(playbackPause);
-        action_Play_pause_track->setEnabled(true);
+        playPauseTrackAction->setIcon(playbackPause);
+        playPauseTrackAction->setEnabled(true);
         //playPauseTrackButton->setChecked(false);
-        action_Stop_track->setEnabled(true);
+        stopTrackAction->setEnabled(true);
         elapsedTimer.start();
 
         if (trayIcon != NULL)
@@ -1025,9 +1018,9 @@ void MainWindow::updateStatus()
         break;
     case MPDStatus::State_Inactive:
     case MPDStatus::State_Stopped:
-        action_Play_pause_track->setIcon(playbackPlay);
-        action_Play_pause_track->setEnabled(true);
-        action_Stop_track->setEnabled(false);
+        playPauseTrackAction->setIcon(playbackPlay);
+        playPauseTrackAction->setEnabled(true);
+        stopTrackAction->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
         trackLabel->setText(i18n("Stopped"));
@@ -1042,9 +1035,9 @@ void MainWindow::updateStatus()
         elapsedTimer.stop();
         break;
     case MPDStatus::State_Paused:
-        action_Play_pause_track->setIcon(playbackPlay);
-        action_Play_pause_track->setEnabled(true);
-        action_Stop_track->setEnabled(true);
+        playPauseTrackAction->setIcon(playbackPlay);
+        playPauseTrackAction->setEnabled(true);
+        stopTrackAction->setEnabled(true);
 
         if (trayIcon != NULL)
             trayIcon->setIcon(playbackPause);
@@ -1103,13 +1096,15 @@ void MainWindow::replacePlaylist()
     MPDConnection::self()->getStatus();
     searchPlaylistLineEdit->clear();
     if (libraryPage->view->isVisible()) {
-        addSelectionToPlaylist();
+        addLibrarySelectionToPlaylist();
     } else if (folderPage->view->isVisible()) {
         addDirViewSelectionToPlaylist();
+    } else if (playlistsPage->view->isVisible()) {
+        addPlaylistsSelectionToPlaylist();
     }
 }
 
-void MainWindow::addSelectionToPlaylist()
+void MainWindow::addLibrarySelectionToPlaylist()
 {
     QStringList files;
     MusicLibraryItem *item;
@@ -1260,7 +1255,7 @@ void MainWindow::libraryItemActivated(const QModelIndex & /*index*/)
     const QModelIndex current = selected.at(0);
     item = static_cast<MusicLibraryItem *>(libraryProxyModel.mapToSource(current).internalPointer());
     if (item->type() == MusicLibraryItem::Type_Song) {
-        addSelectionToPlaylist();
+        addLibrarySelectionToPlaylist();
     }
 }
 
@@ -1278,14 +1273,14 @@ void MainWindow::dirViewItemActivated(const QModelIndex & /*index*/)
     }
 }
 
-void MainWindow::addToPlaylistItemActivated()
+void MainWindow::addToPlaylist()
 {
     if (libraryPage->view->isVisible()) {
-        addSelectionToPlaylist();
+        addLibrarySelectionToPlaylist();
     } else if (folderPage->view->isVisible()) {
         addDirViewSelectionToPlaylist();
     } else if (playlistTableView->isVisible()) {
-        addPlaylistToPlaylistPushButtonActivated();
+        addPlaylistsSelectionToPlaylist();
     }
 }
 
@@ -1410,13 +1405,13 @@ void MainWindow::outputChanged(QAction *action)
 
 void MainWindow::togglePlaylist()
 {
-    if (splitter->isVisible()==action_Show_playlist->isChecked()) {
+    if (splitter->isVisible()==showPlaylistAction->isChecked()) {
         return;
     }
     static int lastHeight=0;
 
     int widthB4=size().width();
-    bool showing=action_Show_playlist->isChecked();
+    bool showing=showPlaylistAction->isChecked();
 
     if (!showing) {
         lastHeight=size().height();
@@ -1551,10 +1546,10 @@ bool MainWindow::setupTrayIcon()
 #endif
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayIconClicked(QSystemTrayIcon::ActivationReason)));
 
-    trayIconMenu->addAction(action_Prev_track);
-    trayIconMenu->addAction(action_Next_track);
-    trayIconMenu->addAction(action_Stop_track);
-    trayIconMenu->addAction(action_Play_pause_track);
+    trayIconMenu->addAction(prevTrackAction);
+    trayIconMenu->addAction(nextTrackAction);
+    trayIconMenu->addAction(stopTrackAction);
+    trayIconMenu->addAction(playPauseTrackAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(quitAction);
     trayIcon->setContextMenu(trayIconMenu);
@@ -1585,25 +1580,11 @@ void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
-void MainWindow::addPlaylistToPlaylistPushButtonActivated()
+void MainWindow::addPlaylistsSelectionToPlaylist()
 {
     const QModelIndexList items = playlistsPage->view->selectionModel()->selectedRows();
 
     if (items.size() == 1) {
-        QModelIndex sourceIndex = playlistsProxyModel.mapToSource(items.first());
-        QString playlist_name = playlistsModel.data(sourceIndex, Qt::DisplayRole).toString();
-        playlistsModel.loadPlaylist(playlist_name);
-    }
-}
-
-void MainWindow::loadPlaylistPushButtonActivated()
-{
-    const QModelIndexList items = playlistsPage->view->selectionModel()->selectedRows();
-
-    if (items.size() == 1) {
-        MPDConnection::self()->clear();
-        MPDConnection::self()->getStatus();
-        searchPlaylistLineEdit->clear();
         QModelIndex sourceIndex = playlistsProxyModel.mapToSource(items.first());
         QString playlist_name = playlistsModel.data(sourceIndex, Qt::DisplayRole).toString();
         playlistsModel.loadPlaylist(playlist_name);
@@ -1617,7 +1598,7 @@ void MainWindow::playlistsViewItemDoubleClicked(const QModelIndex &index)
     playlistsModel.loadPlaylist(playlist_name);
 }
 
-void MainWindow::removePlaylistPushButtonActivated()
+void MainWindow::removePlaylist()
 {
     const QModelIndexList items = playlistsPage->view->selectionModel()->selectedRows();
 
@@ -1646,7 +1627,7 @@ void MainWindow::removePlaylistPushButtonActivated()
     }
 }
 
-void MainWindow::savePlaylistPushButtonActivated()
+void MainWindow::savePlaylist()
 {
 #ifdef ENABLE_KDE_SUPPORT
     QString name = QInputDialog::getText(this, i18n("Playlist Name"), i18n("Enter a name for the playlist:"));
@@ -1671,7 +1652,7 @@ void MainWindow::updateStoredPlaylists()
     playlistsModel.getPlaylists();
 }
 
-void MainWindow::renamePlaylistActivated()
+void MainWindow::renamePlaylist()
 {
     const QModelIndexList items = playlistsPage->view->selectionModel()->selectedRows();
 

@@ -681,9 +681,6 @@ int MainWindow::showPreferencesDialog()
     int rv=pref.exec();
     if (rv) {
         mpdDir=Settings::self()->mpdDir();
-        if (!mpdDir.endsWith("/")) {
-            mpdDir=mpdDir+"/";
-        }
         Lyrics::self()->setMpdDir(mpdDir);
         Covers::self()->setMpdDir(mpdDir);
     }

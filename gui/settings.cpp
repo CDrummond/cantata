@@ -145,7 +145,11 @@ bool Settings::showPopups()
 
 QString Settings::mpdDir()
 {
-    return GET_STRING("mpdDir", "/var/lib/mpd/music");
+    QString d=GET_STRING("mpdDir", "/var/lib/mpd/music");
+    if (!d.endsWith("/")) {
+        d=d+"/";
+    }
+    return d;
 }
 
 int Settings::coverSize()

@@ -153,9 +153,12 @@ public:
 
     Mode_LargeSidebar = 1,
     Mode_SmallSidebar = 2,
-    Mode_Tabs = 3,
-    Mode_IconOnlyTabs = 4,
-    Mode_PlainSidebar = 5,
+    //Mode_Tabs = 3,
+    //Mode_IconOnlyTabs = 4,
+    //Mode_PlainSidebar = 5,
+    Mode_SideTabs = 3,
+    Mode_TopTabs = 4,
+    Mode_IconOnlyTopTabs = 5
   };
 
   struct Item {

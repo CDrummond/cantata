@@ -178,6 +178,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     trayIcon = 0;
     lyricsNeedUpdating=false;
 
+    libraryPage = new LibraryPage(this);
+    folderPage = new FolderPage(this);
+    playlistsPage = new PlaylistsPage(this);
+    lyricsPage = new LyricsPage(this);
+
 #ifdef ENABLE_KDE_SUPPORT
     QWidget *widget = new QWidget(this);
     setupUi(widget);
@@ -185,24 +190,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #else
     setupUi(this);
 #endif
-    libraryPage = new LibraryPage(this);
-    folderPage = new FolderPage(this);
-    playlistsPage = new PlaylistsPage(this);
-    lyricsPage = new LyricsPage(this);
-
-#ifdef ENABLE_KDE_SUPPORT
-    tabWidget->AddTab(libraryPage, QIcon::fromTheme("media-optical-audio"), i18n("Library"));
-    tabWidget->AddTab(folderPage, QIcon::fromTheme("inode-directory"), i18n("Folders"));
-    tabWidget->AddTab(playlistsPage, QIcon::fromTheme("view-media-playlist"), i18n("Playlists"));
-    tabWidget->AddTab(lyricsPage, QIcon::fromTheme("view-media-lyrics"), i18n("Lyrics"));
-#else
-    tabWidget->AddTab(libraryPage, QIcon::fromTheme("media-optical-audio"), tr("Library"));
-    tabWidget->AddTab(folderPage, QIcon::fromTheme("inode-directory"), tr("Folders"));
-    tabWidget->AddTab(playlistsPage, QIcon::fromTheme("view-media-playlist"), tr("Playlists"));
-    tabWidget->AddTab(lyricsPage, QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
-#endif
-    tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
-    connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
 
 #ifdef ENABLE_KDE_SUPPORT
     KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
@@ -277,6 +264,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     consumePlaylistAction = actionCollection()->addAction("consumeplaylist");
     consumePlaylistAction->setText(i18n("Consume"));
+
+    libraryTabAction = actionCollection()->addAction("showlibrarytab");
+    libraryTabAction->setText(i18n("Library"));
+
+    foldersTabAction = actionCollection()->addAction("showfolderstab");
+    foldersTabAction->setText(i18n("Folders"));
+
+    playlistsTabAction = actionCollection()->addAction("showplayliststab");
+    playlistsTabAction->setText(i18n("Playlists"));
+
+    lyricsTabAction = actionCollection()->addAction("showlyricstab");
+    lyricsTabAction->setText(i18n("Lyrics"));
 #else
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
@@ -290,7 +289,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     removeFromPlaylistAction = new QAction(tr("Remove"), this);
     removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
     copySongInfoAction = new QAction(tr("Copy Song Info"), this);
-    copySongInfoAction->setShortcuts(QKeySequence::Copy);
+    copySongInfoAction->setShortcut(QKeySequence::Copy);
     cropPlaylistAction = new QAction(tr("Crop"), this);
     shufflePlaylistAction = new QAction(tr("Shuffle"), this);
     renamePlaylistAction = new QAction(tr("Rename"), this);
@@ -300,7 +299,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     randomPlaylistAction = new QAction(tr("Random"), this);
     repeatPlaylistAction = new QAction(tr("Repeat"), this);
     consumePlaylistAction = new QAction(tr("Consume"), this);
+    libraryTabAction = new QAction(tr("Library"), this);
+    foldersTabAction = new QAction(tr("Folders"), this);
+    playlistsTabAction = new QAction(tr("Playlists"), this);
+    lyricsTabAction = new QAction(tr("Lyrics"), this);
 #endif
+    libraryTabAction->setShortcut(Qt::Key_F9);
+    foldersTabAction->setShortcut(Qt::Key_F10);
+    playlistsTabAction->setShortcut(Qt::Key_F11);
+    lyricsTabAction->setShortcut(Qt::Key_F12);
 
     setVisible(true);
 
@@ -350,6 +357,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     showPlaylistAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     action_Update_database->setIcon(QIcon::fromTheme("view-refresh"));
+    libraryTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
+    foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
+    playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
+    lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
 
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
     connect(Lyrics::self(), SIGNAL(lyrics(const QString &, const QString &, const QString &)),
@@ -379,6 +390,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     libraryPage->libraryUpdate->setDefaultAction(action_Update_database);
     folderPage->libraryUpdate->setDefaultAction(action_Update_database);
     playlistsPage->libraryUpdate->setDefaultAction(action_Update_database);
+
+    tabWidget->AddTab(libraryPage, libraryTabAction->icon(), libraryTabAction->text());
+    tabWidget->AddTab(folderPage, foldersTabAction->icon(), foldersTabAction->text());
+    tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text());
+    tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text());
+
+    tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
+    connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
 
     showPlaylistAction->setCheckable(true);
     randomPlaylistAction->setCheckable(true);
@@ -564,6 +583,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(playlistsPage->view, SIGNAL(itemsSelected(bool)), playlistsPage->replacePlaylist, SLOT(setEnabled(bool)));
     connect(playlistsPage->view, SIGNAL(itemsSelected(bool)), playlistsPage->removePlaylist, SLOT(setEnabled(bool)));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
+    connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
+    connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
+    connect(playlistsTabAction, SIGNAL(activated()), this, SLOT(showPlaylistsTab()));
+    connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
 
     connect(playlistsPage->view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistsViewItemDoubleClicked(const QModelIndex &)));
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), this, SLOT(updateStoredPlaylists()));
@@ -1718,4 +1741,24 @@ void MainWindow::updateGenres(const QStringList &genres)
             }
         }
     }
+}
+
+void MainWindow::showLibraryTab()
+{
+    tabWidget->SetCurrentIndex(0);
+}
+
+void MainWindow::showFoldersTab()
+{
+    tabWidget->SetCurrentIndex(1);
+}
+
+void MainWindow::showPlaylistsTab()
+{
+    tabWidget->SetCurrentIndex(2);
+}
+
+void MainWindow::showLyricsTab()
+{
+    tabWidget->SetCurrentIndex(3);
 }

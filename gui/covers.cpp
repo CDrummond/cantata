@@ -16,6 +16,12 @@ static const QLatin1String constCoverDir("covers/");
 static const QLatin1String constKeySep("<<##>>");
 static const QLatin1String constExtenstion(".jpg");
 
+static QString encodeName(QString name)
+{
+    name.replace("/", "_");
+    return name;
+}
+
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMD5>
 #include <KDE/KStandardDirs>
@@ -32,9 +38,9 @@ static QImage amarokCover(const QString &artist, const QString &album)
     QImage img(amarokName);
 
     if (!img.isNull()) {
-        QString dir = MusicLibraryModel::cacheDir(constCoverDir+artist+'/');
+        QString dir = MusicLibraryModel::cacheDir(constCoverDir+encodeName(artist)+'/');
         if (!dir.isEmpty()) {
-            QFile::copy(amarokName, QFile::encodeName(album+constExtenstion));
+            QFile::copy(amarokName, QFile::encodeName(encodeName(album)+constExtenstion));
             //QString file(QFile::encodeName(album+constExtenstion));
             //img.save(dir+file);
         }
@@ -97,19 +103,21 @@ void Covers::get(const Song &song)
         }
     }
 
+    QString artist=encodeName(song.albumArtist());
+    QString album=encodeName(song.album);
     // Check if cover is already cached
-    QString dir(MusicLibraryModel::cacheDir(constCoverDir+song.albumArtist()+'/', false));
-    QString file(QFile::encodeName(song.album+constExtenstion));
+    QString dir(MusicLibraryModel::cacheDir(constCoverDir+artist+'/', false));
+    QString file(QFile::encodeName(album+constExtenstion));
     if (QFile::exists(dir+file)) {
         QImage img(dir+file);
         if (!img.isNull()) {
-            emit cover(song.albumArtist(), song.album, img);
+            emit cover(artist, album, img);
             return;
         }
     }
 
 
-    QString key=song.albumArtist()+constKeySep+song.album;
+    QString key=artist+constKeySep+album;
     if (jobs.contains(key)) {
         return;
     }
@@ -202,9 +210,9 @@ void Covers::jobFinished(QNetworkReply *reply)
         }
 
         if (!img.isNull()) {
-            QString dir = MusicLibraryModel::cacheDir(constCoverDir+parts[0]+'/');
+            QString dir = MusicLibraryModel::cacheDir(constCoverDir+encodeName(parts[0])+'/');
             if (!dir.isEmpty()) {
-                QString file(QFile::encodeName(parts[1]+constExtenstion));
+                QString file(QFile::encodeName(encodeName(parts[1])+constExtenstion));
                 img.save(dir+file);
             }
         }

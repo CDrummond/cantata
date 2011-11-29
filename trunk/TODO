@@ -9,8 +9,6 @@ Cover Manager
 
 ...medium priority...
 
-Add Tooltips to lists
-
 Proxy support for Qt (read system settings, and also add config page)
 
 Fix usage of threads - ideally writing/reading should be in thread object.

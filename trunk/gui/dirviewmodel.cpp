@@ -105,22 +105,24 @@ QVariant dirViewModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (role != Qt::DisplayRole && role != Qt::DecorationRole)
-        return QVariant();
-
     DirViewItem *item = static_cast<DirViewItem *>(index.internalPointer());
 
-    if (role == Qt::DecorationRole) {
+    switch (role) {
+    case Qt::DecorationRole: {
         QCommonStyle style;
         if (item->type() == DirViewItem::Type_Dir) {
             return QIcon::fromTheme("inode-directory");
         } else if (item->type() == DirViewItem::Type_File) {
             return QIcon::fromTheme("audio-x-generic");
         }
-    } else {
-        return item->data(index.column());
+        break;
     }
-
+    case Qt::DisplayRole:
+    case Qt::ToolTipRole:
+        return item->data(index.column());
+    default:
+        break;
+    }
     return QVariant();
 }
 

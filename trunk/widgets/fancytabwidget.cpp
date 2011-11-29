@@ -706,7 +706,7 @@ void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons,
   bar->setUsesScrollButtons(true);
 
   if (shape == QTabBar::RoundedWest) {
-    bar->setIconSize(QSize(22, 22));
+    bar->setIconSize(QSize(16, 16));
   }
 
   if (fancy) {

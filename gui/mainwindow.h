@@ -199,6 +199,10 @@ private Q_SLOTS:
     void lyrics(const QString &artist, const QString &title, const QString &text);
     void cover(const QString &artist, const QString &album, const QImage &img);
     void updateGenres(const QStringList &genres);
+    void showLibraryTab();
+    void showFoldersTab();
+    void showPlaylistsTab();
+    void showLyricsTab();
 
 private:
     int loaded;
@@ -246,6 +250,10 @@ private:
     Action *consumePlaylistAction;
     Action *showPlaylistAction;
     Action *quitAction;
+    Action *libraryTabAction;
+    Action *foldersTabAction;
+    Action *playlistsTabAction;
+    Action *lyricsTabAction;
     QList<QAction *> viewActions;
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;

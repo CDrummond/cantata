@@ -196,7 +196,6 @@ private Q_SLOTS:
     void copySongInfo();
     void togglePlaylist();
     void currentTabChanged(int index);
-    void lyrics(const QString &artist, const QString &title, const QString &text);
     void cover(const QString &artist, const QString &album, const QImage &img);
     void updateGenres(const QStringList &genres);
     void showLibraryTab();

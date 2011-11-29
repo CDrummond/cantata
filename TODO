@@ -12,10 +12,10 @@ Covers, have XML file
     <album name=\"XXXX\"></album> <!-- when cover is un set -->
    </artist>
 
-Lyrics, copy clementine code for fetching lyrics
-   src/songinfo
-   data/lyrics/ultimate_providers.xml
-     
+Lyrics
+  - Need to configure enabled helpers, and order!!!
+  - Need to add config ui!!
+
 ...medium priority...
 
 Proxy support for Qt (read system settings, and also add config page)

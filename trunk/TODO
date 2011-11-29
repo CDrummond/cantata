@@ -1,12 +1,21 @@
 ...high priority...
 
-
 Cover Manager
    - Need way to fetch covers
    - Copy amarok code?
    - Have manual button
 
 
+Covers, have XML file
+   <artist name=\"XXXX\">
+    <album name=\"XXXX\">~/.kde/.....</album>  <!-- use for custom and/or amarok -->
+    <album name=\"XXXX\"></album> <!-- when cover is un set -->
+   </artist>
+
+Lyrics, copy clementine code for fetching lyrics
+   src/songinfo
+   data/lyrics/ultimate_providers.xml
+     
 ...medium priority...
 
 Proxy support for Qt (read system settings, and also add config page)

@@ -14,7 +14,7 @@ K_GLOBAL_STATIC(Covers, instance)
 static const QLatin1String constApiKey("11172d35eb8cc2fd33250a9e45a2d486");
 static const QLatin1String constCoverDir("covers/");
 static const QLatin1String constKeySep("<<##>>");
-static const QLatin1String constExtenstion(".jpg");
+static const QLatin1String constExtension(".jpg");
 
 static QString encodeName(QString name)
 {
@@ -40,8 +40,8 @@ static QImage amarokCover(const QString &artist, const QString &album)
     if (!img.isNull()) {
         QString dir = MusicLibraryModel::cacheDir(constCoverDir+encodeName(artist)+'/');
         if (!dir.isEmpty()) {
-            QFile::copy(amarokName, QFile::encodeName(encodeName(album)+constExtenstion));
-            //QString file(QFile::encodeName(album+constExtenstion));
+            QFile::copy(amarokName, QFile::encodeName(encodeName(album)+constExtension));
+            //QString file(QFile::encodeName(album+constExtension));
             //img.save(dir+file);
         }
     }
@@ -90,7 +90,7 @@ void Covers::get(const Song &song)
     if (!mpdDir.isEmpty()) {
         QString dirName(getDir(mpdDir+song.file));
         QStringList fileNames;
-        fileNames << "cover"+constExtenstion << "album"+constExtenstion;
+        fileNames << "cover"+constExtension << "album"+constExtension;
         foreach(const QString &file, fileNames) {
             if (QFile::exists(QFile::encodeName(dirName+file))) {
                 QImage img(dirName+file);
@@ -107,7 +107,7 @@ void Covers::get(const Song &song)
     QString album=encodeName(song.album);
     // Check if cover is already cached
     QString dir(MusicLibraryModel::cacheDir(constCoverDir+artist+'/', false));
-    QString file(QFile::encodeName(album+constExtenstion));
+    QString file(QFile::encodeName(album+constExtension));
     if (QFile::exists(dir+file)) {
         QImage img(dir+file);
         if (!img.isNull()) {
@@ -212,7 +212,7 @@ void Covers::jobFinished(QNetworkReply *reply)
         if (!img.isNull()) {
             QString dir = MusicLibraryModel::cacheDir(constCoverDir+encodeName(parts[0])+'/');
             if (!dir.isEmpty()) {
-                QString file(QFile::encodeName(encodeName(parts[1])+constExtenstion));
+                QString file(QFile::encodeName(encodeName(parts[1])+constExtension));
                 img.save(dir+file);
             }
         }

@@ -53,7 +53,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
     if (index.row() >= m_playlists.size())
         return QVariant();
 
-    if (role == Qt::DisplayRole)
+    if (role == Qt::DisplayRole || role == Qt::ToolTipRole)
         return m_playlists.at(index.row()).m_name;
 
     return QVariant();

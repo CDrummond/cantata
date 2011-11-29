@@ -134,12 +134,10 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (role != Qt::DisplayRole && role != Qt::DecorationRole)
-        return QVariant();
-
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
-    if (role == Qt::DecorationRole) {
+    switch (role) {
+    case Qt::DecorationRole:
         switch (item->type()) {
         case MusicLibraryItem::Type_Artist: return QIcon::fromTheme("view-media-artist");
         case MusicLibraryItem::Type_Album:
@@ -150,13 +148,14 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             }
         // Any point to a track icon?
         //case MusicLibraryItem::Type_Song:   return QIcon::fromTheme("audio-x-generic");
-        default: break;
+        default: return QVariant();
         }
-    } else {
+    case Qt::DisplayRole:
+    case Qt::ToolTipRole:
         return item->data(index.column());
+    default:
+        return QVariant();
     }
-
-    return QVariant();
 }
 
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime db_update, bool fromFile)

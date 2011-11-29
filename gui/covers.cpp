@@ -28,13 +28,15 @@ static QByteArray md5sum(const QString &artist, const QString &album)
 
 static QImage amarokCover(const QString &artist, const QString &album)
 {
-    QImage img(KGlobal::dirs()->localkdedir()+"/share/apps/amarok/albumcovers/large/"+md5sum(artist, album));
+    QString amarokName=KGlobal::dirs()->localkdedir()+"/share/apps/amarok/albumcovers/large/"+md5sum(artist, album);
+    QImage img(amarokName);
 
     if (!img.isNull()) {
         QString dir = MusicLibraryModel::cacheDir(constCoverDir+artist+'/');
         if (!dir.isEmpty()) {
-            QString file(QFile::encodeName(album+constExtenstion));
-            img.save(dir+file);
+            QFile::copy(amarokName, QFile::encodeName(album+constExtenstion));
+            //QString file(QFile::encodeName(album+constExtenstion));
+            //img.save(dir+file);
         }
     }
     return img;

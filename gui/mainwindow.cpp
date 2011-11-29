@@ -40,7 +40,6 @@
 #include <KIcon>
 #endif
 
-#include "lyrics.h"
 #include "covers.h"
 #include "mainwindow.h"
 #include "musiclibraryitemsong.h"
@@ -363,8 +362,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
 
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
-    connect(Lyrics::self(), SIGNAL(lyrics(const QString &, const QString &, const QString &)),
-            SLOT(lyrics(const QString &, const QString &, const QString &)));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             SLOT(cover(const QString &, const QString &, const QImage &)));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
@@ -457,7 +454,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     repeatPlaylistAction->setChecked(Settings::self()->repeatPlaylist());
     consumePlaylistAction->setChecked(Settings::self()->consumePlaylist());
     mpdDir=Settings::self()->mpdDir();
-    Lyrics::self()->setMpdDir(mpdDir);
+    lyricsPage->setMpdDir(mpdDir);
+    lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     Covers::self()->setMpdDir(mpdDir);
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->coverSize());
     tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
@@ -686,7 +684,7 @@ void MainWindow::updateDb()
 
 int MainWindow::showPreferencesDialog()
 {
-    PreferencesDialog pref(this);
+    PreferencesDialog pref(this, lyricsPage);
     if (MPDConnection::self()->isConnected()) {
         if (trayIcon != NULL)
             connect(&pref, SIGNAL(systemTraySet(bool)), this, SLOT(toggleTrayIcon(bool)));
@@ -695,7 +693,8 @@ int MainWindow::showPreferencesDialog()
     int rv=pref.exec();
     if (rv) {
         mpdDir=Settings::self()->mpdDir();
-        Lyrics::self()->setMpdDir(mpdDir);
+        lyricsPage->setMpdDir(mpdDir);
+        lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
         Covers::self()->setMpdDir(mpdDir);
     }
     return rv;
@@ -928,7 +927,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     playlistModel.updateCurrentSong(song.id);
 
     if (3==tabWidget->current_index()) {
-        Lyrics::self()->get(song);
+        lyricsPage->update(song);
     } else {
         lyricsNeedUpdating=true;
     }
@@ -1670,19 +1669,12 @@ void MainWindow::currentTabChanged(int index)
         break;
     case 3:
         if (lyricsNeedUpdating) {
-            Lyrics::self()->get(current);
+            lyricsPage->update(current);
             lyricsNeedUpdating=false;
         }
         break;
     default:
         break;
-    }
-}
-
-void MainWindow::lyrics(const QString &artist, const QString &title, const QString &text)
-{
-    if (artist==current.artist && title==current.title) {
-        lyricsPage->text->setText(text);
     }
 }
 

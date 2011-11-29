@@ -41,11 +41,11 @@ SET( CANTATA_SRCS
     gui/settings.cpp
     gui/updatedialog.cpp
     gui/covers.cpp
-    gui/lyrics.cpp
     gui/interfacesettings.cpp
     gui/playbacksettings.cpp
     gui/serversettings.cpp
     gui/outputsettings.cpp
+    gui/lyricspage.cpp
     lib/mpdconnection.cpp
     lib/mpdparseutils.cpp
     lib/mpdstats.cpp
@@ -53,6 +53,10 @@ SET( CANTATA_SRCS
     lib/song.cpp
     widgets/treeview.cpp
     widgets/fancytabwidget.cpp
+    lyrics/lyricsettings.cpp
+    lyrics/ultimatelyricsprovider.cpp
+    lyrics/ultimatelyricsreader.cpp
+    lyrics/songinfoprovider.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -68,7 +72,6 @@ SET( CANTATA_MOC_HDRS
     gui/dirviewproxymodel.h
     gui/updatedialog.h
     gui/covers.h
-    gui/lyrics.h
     gui/folderpage.h
     gui/librarypage.h
     gui/lyricspage.h
@@ -82,6 +85,10 @@ SET( CANTATA_MOC_HDRS
     lib/playlist.h
     lib/song.h
     widgets/fancytabwidget.h
+    lyrics/lyricsettings.h
+    lyrics/ultimatelyricsprovider.h
+    lyrics/ultimatelyricsreader.h
+    lyrics/songinfoprovider.h
 )
 
 SET( CANTATA_UIS
@@ -94,12 +101,16 @@ SET( CANTATA_UIS
     gui/playbacksettings.ui
     gui/serversettings.ui
     gui/outputsettings.ui
+    lyrics/lyricsettings.ui
 )
+
+SET( CANTATA_RCS cantata.qrc )
 
 include_directories( ${CMAKE_SOURCE_DIR}/external/libmaia
                      ${CMAKE_SOURCE_DIR}/gui
                      ${CMAKE_SOURCE_DIR}/lib
                      ${CMAKE_SOURCE_DIR}/widgets
+                     ${CMAKE_SOURCE_DIR}/lyrics
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
 )

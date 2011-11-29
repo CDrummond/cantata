@@ -25,6 +25,8 @@
 #include "playbacksettings.h"
 #include "outputsettings.h"
 #include "serversettings.h"
+#include "lyricsettings.h"
+#include "lyricspage.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KPageWidget>
 #include <KDE/KIcon>
@@ -33,10 +35,10 @@
 #endif
 
 #ifdef ENABLE_KDE_SUPPORT
-PreferencesDialog::PreferencesDialog(QWidget *parent)
+PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     : KDialog(parent)
 #else
-PreferencesDialog::PreferencesDialog(QWidget *parent)
+PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     : QDialog(parent)
 #endif
 {
@@ -50,10 +52,17 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     playback = new PlaybackSettings(widget);
     output = new OutputSettings(widget);
     interface = new InterfaceSettings(widget);
+    lyrics = new LyricSettings(widget);
     server->load();
     playback->load();
     output->load();
     interface->load();
+    const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
+    lyrics->Load(lprov);
+//     if (lprov.isEmpty()) {
+//         connect(lp, SIGNAL(providersUpdated(const QList<SongInfoProvider *> &)), lyrics,
+//                 SLOT(Load(providersUpdated(const QList<SongInfoProvider *> &))));
+//     }
 #ifdef ENABLE_KDE_SUPPORT
     KPageWidgetItem *page=widget->addPage(server, i18n("Server"));
     page->setHeader(i18n("MPD Backend Settings"));
@@ -67,7 +76,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     page=widget->addPage(interface, i18n("Interface"));
     page->setHeader(i18n("Interface Settings"));
     page->setIcon(KIcon("preferences-desktop-color"));
-
+    page=widget->addPage(lyrics, i18n("Lyrics"));
+    page->setHeader(i18n("Lyrics Settings"));
+    page->setIcon(KIcon("view-media-lyrics"));
     setMainWidget(widget);
 
     setButtons(KDialog::Ok | KDialog::Apply | KDialog::Cancel);
@@ -77,10 +88,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     widget->addTab(playback, QIcon::fromTheme("media-playback-start"), tr("Playback"));
     widget->addTab(output, QIcon::fromTheme("speaker"), tr("Output"));
     widget->addTab(interface, QIcon::fromTheme("preferences-desktop-color"), tr("Interface"));
+    widget->addTab(lyrics, QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
     setCaption(tr("Configure"));
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
 #endif
-    resize(450, 300);
+    resize(600, 400);
 }
 
 void PreferencesDialog::writeSettings()
@@ -89,6 +101,7 @@ void PreferencesDialog::writeSettings()
     playback->save();
     output->save();
     interface->save();
+    Settings::self()->saveLyricProviders(lyrics->EnabledProviders());
     emit systemTraySet(interface->sysTrayEnabled());
 }
 

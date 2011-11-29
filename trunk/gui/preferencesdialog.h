@@ -31,6 +31,8 @@ class ServerSettings;
 class PlaybackSettings;
 class OutputSettings;
 class InterfaceSettings;
+class LyricSettings;
+class LyricsPage;
 
 #ifdef ENABLE_KDE_SUPPORT
 class PreferencesDialog : public KDialog
@@ -41,7 +43,7 @@ class PreferencesDialog : public QDialog
     Q_OBJECT
 
 public:
-    PreferencesDialog(QWidget *parent);
+    PreferencesDialog(QWidget *parent, LyricsPage *lp);
 
 private:
     void writeSettings();
@@ -63,6 +65,7 @@ private:
     PlaybackSettings *playback;
     OutputSettings *output;
     InterfaceSettings *interface;
+    LyricSettings *lyrics;
 };
 
 #endif

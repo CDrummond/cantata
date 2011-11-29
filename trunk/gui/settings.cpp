@@ -41,19 +41,21 @@ Settings::~Settings()
 }
 
 #ifdef ENABLE_KDE_SUPPORT
-#define GET_STRING(KEY, DEF) (cfg.readEntry(KEY, QString(DEF)))
-#define GET_BOOL(KEY, DEF)   (cfg.readEntry(KEY, DEF))
-#define GET_INT(KEY, DEF)    (cfg.readEntry(KEY, DEF))
-#define GET_BYTE_ARRAY(KEY)  (cfg.readEntry(KEY, QByteArray()))
-#define GET_SIZE(KEY)        (cfg.readEntry(KEY, QSize()))
-#define SET_VALUE(KEY, V)    (cfg.writeEntry(KEY, V))
+#define GET_STRING(KEY, DEF)     (cfg.readEntry(KEY, QString(DEF)))
+#define GET_STRINGLIST(KEY, DEF) (cfg.readEntry(KEY, DEF))
+#define GET_BOOL(KEY, DEF)       (cfg.readEntry(KEY, DEF))
+#define GET_INT(KEY, DEF)        (cfg.readEntry(KEY, DEF))
+#define GET_BYTE_ARRAY(KEY)      (cfg.readEntry(KEY, QByteArray()))
+#define GET_SIZE(KEY)            (cfg.readEntry(KEY, QSize()))
+#define SET_VALUE(KEY, V)        (cfg.writeEntry(KEY, V))
 #else
-#define GET_STRING(KEY, DEF) (cfg.contains(KEY) ? cfg.value(KEY).toString() : QString(DEF))
-#define GET_BOOL(KEY, DEF)   (cfg.contains(KEY) ? cfg.value(KEY).toBool() : DEF)
-#define GET_INT(KEY, DEF)    (cfg.contains(KEY) ? cfg.value(KEY).toInt() : DEF)
-#define GET_BYTE_ARRAY(KEY)  (cfg.value(KEY).toByteArray())
-#define GET_SIZE(KEY)        (cfg.contains(KEY) ? cfg.value(KEY).toSize() : QSize())
-#define SET_VALUE(KEY, V)    (cfg.setValue(KEY, V))
+#define GET_STRING(KEY, DEF)     (cfg.contains(KEY) ? cfg.value(KEY).toString() : QString(DEF))
+#define GET_STRINGLIST(KEY, DEF) (cfg.contains(KEY) ? cfg.value(KEY).toStringList() : DEF)
+#define GET_BOOL(KEY, DEF)       (cfg.contains(KEY) ? cfg.value(KEY).toBool() : DEF)
+#define GET_INT(KEY, DEF)        (cfg.contains(KEY) ? cfg.value(KEY).toInt() : DEF)
+#define GET_BYTE_ARRAY(KEY)      (cfg.value(KEY).toByteArray())
+#define GET_SIZE(KEY)            (cfg.contains(KEY) ? cfg.value(KEY).toSize() : QSize())
+#define SET_VALUE(KEY, V)        (cfg.setValue(KEY, V))
 #endif
 
 QString Settings::connectionHost()
@@ -162,6 +164,13 @@ int Settings::sidebar()
     return GET_INT("sidebar", (int)(FancyTabWidget::Mode_LargeSidebar));
 }
 
+QStringList Settings::lyricProviders()
+{
+    QStringList def;
+    def << "lyrics.wikia.com";
+    return GET_STRINGLIST("lyricProviders", def);
+}
+
 void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -257,6 +266,11 @@ void Settings::saveCoverSize(int v)
 void Settings::saveSidebar(int v)
 {
     SET_VALUE("sidebar", v);
+}
+
+void Settings::saveLyricProviders(const QStringList &p)
+{
+    SET_VALUE("lyricProviders", p);
 }
 
 void Settings::save()

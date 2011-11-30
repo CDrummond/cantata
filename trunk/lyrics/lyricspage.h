@@ -19,7 +19,7 @@ public:
     ~LyricsPage();
 
     void setEnabledProviders(const QStringList &providerList);
-    void update(const Song &song);
+    void update(const Song &song, bool force=false);
     const QList<UltimateLyricsProvider *> & getProviders() { return providers; }
     void setMpdDir(const QString &d) { mpdDir=d; }
 
@@ -28,6 +28,7 @@ Q_SIGNALS:
 
 protected Q_SLOTS:
     void resultReady(int id, const QString &lyrics);
+    void update();
 
 private:
     UltimateLyricsProvider * providerByName(const QString &name) const;
@@ -43,6 +44,7 @@ private:
     int currentProvider;
     int currentRequest;
     Song currentSong;
+    QAction *refreshAction;
 };
 
 #endif

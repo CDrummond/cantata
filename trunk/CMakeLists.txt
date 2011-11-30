@@ -45,7 +45,6 @@ SET( CANTATA_SRCS
     gui/playbacksettings.cpp
     gui/serversettings.cpp
     gui/outputsettings.cpp
-    gui/lyricspage.cpp
     lib/mpdconnection.cpp
     lib/mpdparseutils.cpp
     lib/mpdstats.cpp
@@ -53,6 +52,7 @@ SET( CANTATA_SRCS
     lib/song.cpp
     widgets/treeview.cpp
     widgets/fancytabwidget.cpp
+    lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
     lyrics/ultimatelyricsreader.cpp
@@ -75,7 +75,6 @@ SET( CANTATA_MOC_HDRS
     gui/covers.h
     gui/folderpage.h
     gui/librarypage.h
-    gui/lyricspage.h
     gui/playlistspage.h
     gui/interfacesettings.h
     gui/playbacksettings.h
@@ -87,6 +86,7 @@ SET( CANTATA_MOC_HDRS
     lib/song.h
     widgets/fancytabwidget.h
     widgets/treeview.h
+    lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h
     lyrics/ultimatelyricsreader.h
@@ -98,12 +98,12 @@ SET( CANTATA_UIS
     gui/mainwindow.ui
     gui/folderpage.ui
     gui/librarypage.ui
-    gui/lyricspage.ui
     gui/playlistspage.ui
     gui/interfacesettings.ui
     gui/playbacksettings.ui
     gui/serversettings.ui
     gui/outputsettings.ui
+    lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
 )
 

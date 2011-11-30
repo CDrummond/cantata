@@ -600,7 +600,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     elapsedTimer.setInterval(1000);
 
-    splitter->restoreState(Settings::self()->splitterState());
+    QByteArray state=Settings::self()->splitterState();
+
+    if (state.isEmpty()) {
+        QList<int> sizes;
+        sizes << 250 << 500;
+        splitter->setSizes(sizes);
+        resize(800, 600);
+    } else {
+        splitter->restoreState(Settings::self()->splitterState());
+    }
 
     MPDConnection::self()->getStatus();
     MPDConnection::self()->getStats();

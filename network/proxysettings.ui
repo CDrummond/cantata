@@ -67,7 +67,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="proxyHost"/>
+         <widget class="LineEdit" name="proxyHost"/>
         </item>
         <item>
          <widget class="QLabel" name="label_15">
@@ -114,7 +114,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="proxyUsername">
+          <widget class="LineEdit" name="proxyUsername">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -131,7 +131,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLineEdit" name="proxyPassword">
+          <widget class="LineEdit" name="proxyPassword">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -161,6 +161,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

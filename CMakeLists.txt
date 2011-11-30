@@ -57,6 +57,7 @@ SET( CANTATA_SRCS
     lyrics/ultimatelyricsprovider.cpp
     lyrics/ultimatelyricsreader.cpp
     lyrics/songinfoprovider.cpp
+    network/networkaccessmanager.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -89,6 +90,7 @@ SET( CANTATA_MOC_HDRS
     lyrics/ultimatelyricsprovider.h
     lyrics/ultimatelyricsreader.h
     lyrics/songinfoprovider.h
+    network/networkaccessmanager.h
 )
 
 SET( CANTATA_UIS
@@ -111,6 +113,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/external/libmaia
                      ${CMAKE_SOURCE_DIR}/lib
                      ${CMAKE_SOURCE_DIR}/widgets
                      ${CMAKE_SOURCE_DIR}/lyrics
+                     ${CMAKE_SOURCE_DIR}/network
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
 )
@@ -153,7 +156,8 @@ IF( ENABLE_KDE_SUPPORT )
     ADD_SUBDIRECTORY( icons )
     add_subdirectory(po)
 ELSE( ENABLE_KDE_SUPPORT )
-    SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/lineedit.cpp)
+    SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/lineedit.cpp network/networkproxyfactory.cpp)
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} network/networkproxyfactory.h)
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )
     QT4_WRAP_UI( CANTATA_UI_HDRS ${CANTATA_UIS} )
     INCLUDE( ${QT_USE_FILE} )

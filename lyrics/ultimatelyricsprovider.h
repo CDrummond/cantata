@@ -26,7 +26,7 @@
 
 class Song;
 
-class QNetworkAccessManager;
+class NetworkAccessManager;
 
 class QNetworkReply;
 
@@ -76,7 +76,7 @@ private:
   void DoUrlReplace(const QString& tag, const QString& value, QString* url) const;
 
 private:
-  QNetworkAccessManager* network_;
+  NetworkAccessManager* network_;
   QMap<QNetworkReply*, int> requests_;
 
   QString name_;

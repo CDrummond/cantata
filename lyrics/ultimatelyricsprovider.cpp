@@ -17,12 +17,9 @@
 
 //#include "songinfotextview.h"
 #include "ultimatelyricsprovider.h"
+#include "networkaccessmanager.h"
 //#include "core/network.h"
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIO/AccessManager>
-#endif
-#include <QtNetwork/QNetworkAccessManager>
 #include "lib/song.h"
 
 #include <QNetworkReply>
@@ -35,11 +32,7 @@ const int UltimateLyricsProvider::kRedirectLimit = 5;
 
 
 UltimateLyricsProvider::UltimateLyricsProvider()
-#ifdef ENABLE_KDE_SUPPORT
- : network_(new KIO::Integration::AccessManager(this)),
-#else
-  : network_(new QNetworkAccessManager(this)),
-#endif
+  : network_(new NetworkAccessManager(this)),
     relevance_(0),
     redirect_count_(0)
 {

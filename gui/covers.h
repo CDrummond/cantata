@@ -7,7 +7,7 @@
 class Song;
 class QImage;
 class QString;
-class QNetworkAccessManager;
+class NetworkAccessManager;
 class QNetworkReply;
 class MaiaXmlRpcClient;
 
@@ -36,7 +36,7 @@ private:
 private:
     QString mpdDir;
     MaiaXmlRpcClient *rpc;
-    QNetworkAccessManager *manager;
+    NetworkAccessManager *manager;
     QMap<QString, QNetworkReply*> jobs;
 };
 

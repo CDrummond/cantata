@@ -33,6 +33,7 @@
 #include <QtNetwork>
 
 #include "maiaObject.h"
+class NetworkAccessManager;
 
 class MaiaXmlRpcClient : public QObject {
 	Q_OBJECT
@@ -57,7 +58,7 @@ class MaiaXmlRpcClient : public QObject {
 
 	private:
 		void init();
-		QNetworkAccessManager *manager;
+		NetworkAccessManager *manager;
 		QNetworkRequest request;
 		QMap<QNetworkReply*, MaiaObject*> callmap;
 };

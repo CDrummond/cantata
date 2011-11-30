@@ -27,9 +27,7 @@
 
 #include "maiaXmlRpcClient.h"
 #include "maiaFault.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIO/AccessManager>
-#endif
+#include "networkaccessmanager.h"
 
 MaiaXmlRpcClient::MaiaXmlRpcClient(QObject* parent) : QObject(parent),
 	manager(0), request()
@@ -75,11 +73,8 @@ QNetworkReply* MaiaXmlRpcClient::call(QString method, QList<QVariant> args,
 	connect(call, SIGNAL(fault(int, const QString &, QNetworkReply *)), faultObject, faultSlot);
 
     if (!manager) {
-#ifdef ENABLE_KDE_SUPPORT
-        manager = new KIO::Integration::AccessManager(this);
-#else
-        manager=new QNetworkAccessManager(this);
-#endif
+        manager=new NetworkAccessManager(this);
+
         connect(manager, SIGNAL(finished(QNetworkReply*)),
                 this, SLOT(replyFinished(QNetworkReply*)));
         connect(manager, SIGNAL(sslErrors(QNetworkReply *, const QList<QSslError> &)),

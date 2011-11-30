@@ -16,9 +16,13 @@ Lyrics
   - Need to configure enabled helpers, and order!!!
   - Need to add config ui!!
 
-...medium priority...
+Fix Qt only build
 
-Proxy support for Qt (read system settings, and also add config page)
+Integrate Qt proxy settings - 75% there...
+
+
+
+...medium priority...
 
 Fix usage of threads - ideally writing/reading should be in thread object.
 
@@ -39,5 +43,3 @@ When starting, config dialog is shown (because MP not started, etc) then show so
 Add config of MPD itself -> requires KAuth???
    outputs
    album artist support
-
-Fix Qt-only build, disable in CMakeLists.txt as its broken!!!

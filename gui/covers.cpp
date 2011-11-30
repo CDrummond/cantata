@@ -2,12 +2,11 @@
 #include "musiclibrarymodel.h"
 #include "lib/song.h"
 #include "maiaXmlRpcClient.h"
+#include "networkaccessmanager.h"
 #include <QtCore/QFile>
-#include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
-#include <KDE/KIO/AccessManager>
 K_GLOBAL_STATIC(Covers, instance)
 #endif
 
@@ -128,11 +127,7 @@ void Covers::get(const Song &song)
     }
 
     if (!manager) {
-#ifdef ENABLE_KDE_SUPPORT
-        manager = new KIO::Integration::AccessManager(this);
-#else
-        manager=new QNetworkAccessManager(this);
-#endif
+        manager=new NetworkAccessManager(this);
         connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(jobFinished(QNetworkReply *)));
     }
 

@@ -12,8 +12,8 @@ public:
     ProxySettings(QWidget *parent);
     ~ProxySettings();
 
-    void load() { }
-    void save() { }
+    void load();
+    void save();
 };
 
 #endif

@@ -90,6 +90,9 @@
       </item>
       <item>
        <widget class="QGroupBox" name="proxyAuth">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="title">
          <string>Use authentication</string>
         </property>
@@ -102,16 +105,26 @@
         <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="label_16">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>Username</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="proxyUsername"/>
+          <widget class="QLineEdit" name="proxyUsername">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_17">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>Password</string>
            </property>
@@ -119,6 +132,9 @@
          </item>
          <item row="1" column="1">
           <widget class="QLineEdit" name="proxyPassword">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
            </property>
@@ -146,5 +162,102 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>proxyManual</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>proxy_manual_container</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>35</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>10</x>
+     <y>91</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>proxyAuth</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>proxyUsername</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>125</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>proxyAuth</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>proxyPassword</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>142</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>176</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>proxyAuth</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_16</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>63</x>
+     <y>144</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>proxyAuth</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_17</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>230</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>83</x>
+     <y>181</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>proxyManual</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>proxyAuth</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>60</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>102</x>
+     <y>118</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -43,7 +43,7 @@ UpdateDialog::UpdateDialog(QWidget *parent)
 #ifdef ENABLE_KDE_SUPPORT
     QWidget *wid = new QWidget(this);
 #else
-    wid=this;
+    QWidget *wid = this;
 #endif
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::LeftToRight, wid);
 
@@ -58,7 +58,7 @@ UpdateDialog::UpdateDialog(QWidget *parent)
     setButtons(KDialog::Close);
     setCaption(i18n("Updating"));
 #else
-    setCaption(tr("Updating"));
+    setWindowTitle(tr("Updating"));
 #endif
     timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()), SLOT(display()));
@@ -66,7 +66,11 @@ UpdateDialog::UpdateDialog(QWidget *parent)
 
 void UpdateDialog::show()
 {
+#ifdef ENABLE_KDE_SUPPORT
     label->setText(i18n("<b>Updating backend database</b><br><i>Please wait...</i>"));
+#else
+    label->setText(tr("<b>Updating backend database</b><br><i>Please wait...</i>"));
+#endif
     timer->start(1000);
 }
 
@@ -86,6 +90,10 @@ void UpdateDialog::display()
 void UpdateDialog::complete()
 {
     done=true;
+#ifdef ENABLE_KDE_SUPPORT
     label->setText(i18n("<b>Finished</b><br><i>Database updated.</i>"));
+#else
+    label->setText(tr("<b>Finished</b><br><i>Database updated.</i>"));
+#endif
 }
 

@@ -23,7 +23,9 @@
 #include <QStringListModel>
 #include <QMimeData>
 #include <QSet>
+#ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
+#endif
 #include "playlisttablemodel.h"
 #include "lib/mpdparseutils.h"
 #include "lib/mpdstats.h"
@@ -45,6 +47,7 @@ QVariant PlaylistTableModel::headerData(int section, Qt::Orientation orientation
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DisplayRole) {
             switch (section) {
+#ifdef ENABLE_KDE_SUPPORT
             case 0:
                 return i18n("Title");
             case 1:
@@ -59,6 +62,22 @@ QVariant PlaylistTableModel::headerData(int section, Qt::Orientation orientation
                 return i18n("Disc");
             case 6:
                 return i18n("Year");
+#else
+            case 0:
+                return tr("Title");
+            case 1:
+                return tr("Artist");
+            case 2:
+                return tr("Album");
+            case 3:
+                return tr("Track");
+            case 4:
+                return tr("Length");
+            case 5:
+                return tr("Disc");
+            case 6:
+                return tr("Year");
+#endif
             default:
                 break;
             }

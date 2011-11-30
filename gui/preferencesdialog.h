@@ -25,6 +25,9 @@
 #include <KDialog>
 #else
 #include <QDialog>
+class ProxySettings;
+class QDialogButtonBox;
+class QAbstractButton;
 #endif
 
 class ServerSettings;
@@ -46,13 +49,13 @@ public:
     PreferencesDialog(QWidget *parent, LyricsPage *lp);
 
 private:
-    void writeSettings();
 
 #ifdef ENABLE_KDE_SUPPORT
     void slotButtonClicked(int button);
 #endif
 
 private Q_SLOTS:
+    void writeSettings();
 #ifndef ENABLE_KDE_SUPPORT
     void buttonPressed(QAbstractButton *button);
 #endif
@@ -66,6 +69,10 @@ private:
     OutputSettings *output;
     InterfaceSettings *interface;
     LyricSettings *lyrics;
+#ifndef ENABLE_KDE_SUPPORT
+    QDialogButtonBox *buttonBox;
+    ProxySettings *proxy;
+#endif
 };
 
 #endif

@@ -6,8 +6,12 @@
 #include <QtCore/QFile>
 #include <QtNetwork/QNetworkReply>
 #ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KMD5>
+#include <KDE/KStandardDirs>
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(Covers, instance)
+#else
+#include <QtCore/QCryptographicHash>
 #endif
 
 static const QLatin1String constApiKey("11172d35eb8cc2fd33250a9e45a2d486");
@@ -21,19 +25,16 @@ static QString encodeName(QString name)
     return name;
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMD5>
-#include <KDE/KStandardDirs>
-
-static QByteArray md5sum(const QString &artist, const QString &album)
-{
-    KMD5 context(artist.toLower().toLocal8Bit() + album.toLower().toLocal8Bit());
-    return context.hexDigest();
-}
-
 static QImage amarokCover(const QString &artist, const QString &album)
 {
-    QString amarokName=KGlobal::dirs()->localkdedir()+"/share/apps/amarok/albumcovers/large/"+md5sum(artist, album);
+#ifdef ENABLE_KDE_SUPPORT
+    QString amarokName=KGlobal::dirs()->localkdedir()+"/share/apps/amarok/albumcovers/large/"+
+                       KMD5(artist.toLower().toLocal8Bit() + album.toLower().toLocal8Bit()).hexDigest();
+#else
+    QString amarokName=QDir::homePath+"/.kde/share/apps/amarok/albumcovers/large/"+
+                       QCryptographicHash::hash(artist.toLower().toLocal8Bit()+album.toLower().toLocal8Bit(),
+                                                QCryptographicHash::Md5).toHex();
+#endif
     QImage img(amarokName);
 
     if (!img.isNull()) {
@@ -46,8 +47,6 @@ static QImage amarokCover(const QString &artist, const QString &album)
     }
     return img;
 }
-
-#endif
 
 static QString getDir(const QString &f)
 {
@@ -180,11 +179,7 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
 
     if (it!=end) {
         QStringList parts = it.key().split(constKeySep);
-#ifdef ENABLE_KDE_SUPPORT
         emit cover(parts[0], parts[1], amarokCover(parts[0], parts[1]));
-#else
-        emit cover(parts[0], parts[1], QImage());
-#endif
         jobs.remove(it.key());
     }
 
@@ -213,16 +208,11 @@ void Covers::jobFinished(QNetworkReply *reply)
         }
         jobs.remove(it.key());
 
-#ifdef ENABLE_KDE_SUPPORT
         if (img.isNull()) {
             emit cover(parts[0], parts[1], amarokCover(parts[0], parts[1]));
-        } else
-#else
-        {
-            emit cover(parts[0], parts[1], QImage());
+        } else {
+            emit cover(parts[0], parts[1], img);
         }
-#endif
-        emit cover(parts[0], parts[1], img);
     }
 
     reply->deleteLater();

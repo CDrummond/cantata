@@ -357,7 +357,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 //     replacePlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-replace-playlist.png"));
 // #endif
     repeatPlaylistAction->setIcon(QIcon::fromTheme("edit-redo"));
-    randomPlaylistAction->setIcon(QIcon::fromTheme("roll"));
+    randomPlaylistAction->setIcon(QIcon::fromTheme("media-playlist-shuffle"));
     consumePlaylistAction->setIcon(QIcon::fromTheme("format-list-unordered"));
     addToPlaylistAction->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left" : "arrow-right"));
     replacePlaylistAction->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left-double" : "arrow-right-double"));
@@ -368,6 +368,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     stopTrackAction->setIcon(QIcon::fromTheme("media-playback-stop"));
     removePlaylistAction->setIcon(QIcon::fromTheme("edit-delete"));
     removeFromPlaylistAction->setIcon(QIcon::fromTheme("list-remove"));
+    renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     savePlaylistAction->setIcon(QIcon::fromTheme("document-save-as"));
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));

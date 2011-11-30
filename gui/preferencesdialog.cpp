@@ -43,13 +43,13 @@ public:
     ConfigPage(QWidget *p, const QString &title, const QIcon &icon, QWidget *cfg) : QWidget(p)
     {
         QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-        QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, this);
+        QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
         titleLayout->addWidget(new QLabel("<b>"+title+"</b>", this));
         QLabel *icn=new QLabel(this);
         icn->setPixmap(icon.pixmap(22, 22));
         titleLayout->addItem(new QSpacerItem(16, 16, QSizePolicy::Expanding, QSizePolicy::Minimum));
         titleLayout->addWidget(icn);
-        layout->addItem(titleLayout);
+        layout->addLayout(titleLayout);
         layout->addItem(new QSpacerItem(8, 8, QSizePolicy::Fixed, QSizePolicy::Fixed));
         layout->addWidget(cfg);
         QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);

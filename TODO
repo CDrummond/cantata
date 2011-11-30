@@ -1,35 +1,35 @@
 ...high priority...
 
+Initial focus!
+
+Lyrics:
+   - Need way to save prov order on apply
+   - Have a refresh button on page - this should delete the cache and force a re-fetch.
+   - HAve a buttons to request next/prev provider?
+     - save all in memory, but only write last to disk. (But then how to know where it came from???)
+
+   [Ref] [provider name \/]  <-- update this combo as we go through them...
+
+Fix Qt only build
+   DirSelect widget
+   LineEdit - dont seem to be showing clear button?
+   Pref dlg:
+       QLayout: Attempting to add QLayout "" to QWidget "", which already has a layout
+
+
+
 Cover Manager
    - Need way to fetch covers
    - Copy amarok code?
    - Have manual button
+   - Support Clementine covers? ~/.config/Clementine/albumcovers/<md5>.jpg
 
 
-Covers, have XML file
+  Covers, have XML file
    <artist name=\"XXXX\">
     <album name=\"XXXX\">~/.kde/.....</album>  <!-- use for custom and/or amarok -->
     <album name=\"XXXX\"></album> <!-- when cover is un set -->
    </artist>
-
-
-Lyrics page:
-   Have a refresh button - this should delete the cache and force a re-fetch.
-   HAve a buttons to request next/prev provider?
-
-   [Ref] [provider name \/]  <-- update this combo as we go through them...
-
-Interface settings
-   - Initial state, without config, is *bad* (Qt and KDE)
-     - if splitterState is empty, need to set sensible default!
-
-Lyrics settings
-   Need way to save on 'Apply'
-
-Fix Qt only build
-   Proxy - load and save settings
-   DirSelect widget
-   LineEdit - dont seem to be showing clear button?
 
 
 ...medium priority...

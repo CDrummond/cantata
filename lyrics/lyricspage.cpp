@@ -75,9 +75,9 @@ LyricsPage::LyricsPage(QWidget *parent)
     } else {
         refreshAction = new KAction(this);
     }
-    refreshAction->setText(i18n("Refresh"));
+    refreshAction->setText(i18n("Refresh Lyrics"));
 #else
-    refreshAction = new QAction(tr("Refresh"), this);
+    refreshAction = new QAction(tr("Refresh Lyrics"), this);
 #endif
     refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));

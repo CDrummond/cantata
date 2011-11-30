@@ -5,6 +5,7 @@
 #include "networkaccessmanager.h"
 #include <QtCore/QFile>
 #include <QtNetwork/QNetworkReply>
+#include <QtGui/QImage>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMD5>
 #include <KDE/KStandardDirs>
@@ -31,7 +32,7 @@ static QImage amarokCover(const QString &artist, const QString &album)
     QString amarokName=KGlobal::dirs()->localkdedir()+"/share/apps/amarok/albumcovers/large/"+
                        KMD5(artist.toLower().toLocal8Bit() + album.toLower().toLocal8Bit()).hexDigest();
 #else
-    QString amarokName=QDir::homePath+"/.kde/share/apps/amarok/albumcovers/large/"+
+    QString amarokName=QDir::homePath()+"/.kde/share/apps/amarok/albumcovers/large/"+
                        QCryptographicHash::hash(artist.toLower().toLocal8Bit()+album.toLower().toLocal8Bit(),
                                                 QCryptographicHash::Md5).toHex();
 #endif

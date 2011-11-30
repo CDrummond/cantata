@@ -222,7 +222,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
 #ifdef ENABLE_KDE_SUPPORT
         song.genre = i18n("Unknown");
 #else
-        song.genre = tr("Unknown");
+        song.genre = "Unknown";
 #endif
     }
 

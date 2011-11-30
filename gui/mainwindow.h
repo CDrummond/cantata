@@ -253,6 +253,7 @@ private:
     Action *foldersTabAction;
     Action *playlistsTabAction;
     Action *lyricsTabAction;
+    Action *updateDbAction;
     QList<QAction *> viewActions;
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;

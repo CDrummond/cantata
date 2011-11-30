@@ -31,7 +31,34 @@
 #include <KDE/KPageWidget>
 #include <KDE/KIcon>
 #else
-#include <QtGui/QTabWidget>
+#include "fancytabwidget.h"
+#include <QtGui/QDialogButtonBox>
+#include "proxysettings.h"
+#endif
+
+#ifndef ENABLE_KDE_SUPPORT
+class ConfigPage : public QWidget
+{
+public:
+    ConfigPage(QWidget *p, const QString &title, const QIcon &icon, QWidget *cfg) : QWidget(p)
+    {
+        QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
+        QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, this);
+        titleLayout->addWidget(new QLabel("<b>"+title+"</b>", this));
+        QLabel *icn=new QLabel(this);
+        icn->setPixmap(icon.pixmap(22, 22));
+        titleLayout->addItem(new QSpacerItem(16, 16, QSizePolicy::Expanding, QSizePolicy::Minimum));
+        titleLayout->addWidget(icn);
+        layout->addItem(titleLayout);
+        layout->addWidget(cfg);
+        QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(cfg->sizePolicy().hasHeightForWidth());
+        cfg->setSizePolicy(sizePolicy);
+        cfg->setParent(this);
+    }
+};
 #endif
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -45,7 +72,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
 #ifdef ENABLE_KDE_SUPPORT
     KPageWidget *widget = new KPageWidget(this);
 #else
-    QTabWidget *widget = new QTabWidget(this);
+    FancyTabWidget *widget = new FancyTabWidget(this);
 #endif
 
     server = new ServerSettings(widget);
@@ -84,13 +111,31 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     setButtons(KDialog::Ok | KDialog::Apply | KDialog::Cancel);
     setCaption(i18n("Configure"));
 #else
-    widget->addTab(server, QIcon::fromTheme("server-database"), tr("Server"));
-    widget->addTab(playback, QIcon::fromTheme("media-playback-start"), tr("Playback"));
-    widget->addTab(output, QIcon::fromTheme("speaker"), tr("Output"));
-    widget->addTab(interface, QIcon::fromTheme("preferences-desktop-color"), tr("Interface"));
-    widget->addTab(lyrics, QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
-    setCaption(tr("Configure"));
+    widget->AddTab(new ConfigPage(this, tr("MPD Backend Settings"), QIcon::fromTheme("server-database"), server),
+                   QIcon::fromTheme("server-database"), tr("Server"));
+    widget->AddTab(new ConfigPage(this, tr("Playback Settings"), QIcon::fromTheme("media-playback-start"), playback),
+                   QIcon::fromTheme("media-playback-start"), tr("Playback"));
+    widget->AddTab(new ConfigPage(this, tr("Control Active Outputs"), QIcon::fromTheme("speaker"), output),
+                   QIcon::fromTheme("speaker"), tr("Output"));
+    widget->AddTab(new ConfigPage(this, tr("Interface Settings"), QIcon::fromTheme("preferences-desktop-color"), interface),
+                   QIcon::fromTheme("preferences-desktop-color"), tr("Interface"));
+    widget->AddTab(new ConfigPage(this, tr("Lyrics Settings"), QIcon::fromTheme("view-media-lyrics"), lyrics),
+                   QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
+    proxy = new ProxySettings(this);
+    proxy->load();
+    widget->AddTab(new ConfigPage(this, tr("Proxy Settings"), QIcon::fromTheme("preferences-system-network"), proxy),
+                   QIcon::fromTheme("preferences-system-network"), tr("Proxy"));
+    widget->SetMode(FancyTabWidget::Mode_LargeSidebar);
+    setWindowTitle(tr("Configure"));
+
+    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
+    layout->addWidget(widget);
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply,
+                                     Qt::Horizontal, this);
+    layout->addWidget(buttonBox);
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 #endif
     resize(600, 400);
 }
@@ -101,6 +146,9 @@ void PreferencesDialog::writeSettings()
     playback->save();
     output->save();
     interface->save();
+#ifndef ENABLE_KDE_SUPPORT
+    proxy->save();
+#endif
     Settings::self()->saveLyricProviders(lyrics->EnabledProviders());
     emit systemTraySet(interface->sysTrayEnabled());
 }

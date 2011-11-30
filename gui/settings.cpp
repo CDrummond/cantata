@@ -63,6 +63,7 @@ QString Settings::connectionHost()
     return GET_STRING("connectionHost", "localhost");
 }
 
+#ifdef ENABLE_KDE_SUPPORT
 bool Settings::openWallet()
 {
     if(wallet) {
@@ -80,6 +81,7 @@ bool Settings::openWallet()
 
     return false;
 }
+#endif
 
 QString Settings::connectionPasswd()
 {
@@ -293,5 +295,7 @@ void Settings::save()
 {
 #ifdef ENABLE_KDE_SUPPORT
     KGlobal::config()->sync();
+#else
+    cfg.sync();
 #endif
 }

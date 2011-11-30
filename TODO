@@ -12,14 +12,24 @@ Covers, have XML file
     <album name=\"XXXX\"></album> <!-- when cover is un set -->
    </artist>
 
-Lyrics
-  - Need to configure enabled helpers, and order!!!
-  - Need to add config ui!!
+
+Lyrics page:
+   Have a refresh button - this should delete the cache and force a re-fetch.
+   HAve a buttons to request next/prev provider?
+
+   [Ref] [provider name \/]  <-- update this combo as we go through them...
+
+Interface settings
+   - Initial state, without config, is *bad* (Qt and KDE)
+     - if splitterState is empty, need to set sensible default!
+
+Lyrics settings
+   Need way to save on 'Apply'
 
 Fix Qt only build
-
-Integrate Qt proxy settings - 75% there...
-
+   Proxy - load and save settings
+   DirSelect widget
+   LineEdit - dont seem to be showing clear button?
 
 
 ...medium priority...

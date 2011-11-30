@@ -10,8 +10,14 @@
 #include <QTextBrowser>
 #include <QFile>
 #include <QDir>
+#include <QIcon>
+#include <QToolButton>
+
 #ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KAction>
 #include <KDE/KLocale>
+#include <KDE/KXMLGUIClient>
+#include <KDE/KActionCollection>
 #endif
 
 static QString changeExt(const QString &f, const QString &newExt)
@@ -62,6 +68,21 @@ LyricsPage::LyricsPage(QWidget *parent)
 //     QFutureWatcher<ProviderList> *watcher = new QFutureWatcher<ProviderList>(this);
 //     watcher->setFuture(future);
 //     connect(watcher, SIGNAL(finished()), SLOT(ultimateLyricsParsed()));
+#ifdef ENABLE_KDE_SUPPORT
+    KXMLGUIClient *client=dynamic_cast<KXMLGUIClient *>(parent);
+    if (client) {
+        refreshAction = client->actionCollection()->addAction("refreshlyrics");
+    } else {
+        refreshAction = new KAction(this);
+    }
+    refreshAction->setText(i18n("Refresh"));
+#else
+    refreshAction = new QAction(tr("Refresh"), this);
+#endif
+    refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
+    connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
+    refresh->setAutoRaise(true);
+    refresh->setDefaultAction(refreshAction);
 }
 
 LyricsPage::~LyricsPage()
@@ -87,9 +108,14 @@ void LyricsPage::setEnabledProviders(const QStringList &providerList)
     qSort(providers.begin(), providers.end(), CompareLyricProviders);
 }
 
-void LyricsPage::update(const Song &song)
+void LyricsPage::update()
 {
-    if (song.artist!=currentSong.artist || song.title!=currentSong.title) {
+    update(currentSong, true);
+}
+
+void LyricsPage::update(const Song &song, bool force)
+{
+    if (force || song.artist!=currentSong.artist || song.title!=currentSong.title) {
         currentRequest++;
         currentSong=song;
         currentProvider=-1;
@@ -117,12 +143,16 @@ void LyricsPage::update(const Song &song)
         QString file=cacheFile(song.artist, song.title);
 
         if (QFile::exists(file)) {
-            QFile f(file);
+            if (force) {
+                QFile::remove(file);
+            } else {
+                QFile f(file);
 
-            if (f.open(QIODevice::ReadOnly)) {
-                text->setText(f.readAll());
-                f.close();
-                return;
+                if (f.open(QIODevice::ReadOnly)) {
+                    text->setText(f.readAll());
+                    f.close();
+                    return;
+                }
             }
         }
 

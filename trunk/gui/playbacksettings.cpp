@@ -1,13 +1,22 @@
 #include "playbacksettings.h"
 #include "lib/mpdconnection.h"
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KLocale>
+#endif
 
 PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
+#ifdef ENABLE_KDE_SUPPORT
     replayGain->addItem(i18n("None"), QVariant("off"));
     replayGain->addItem(i18n("Track"), QVariant("track"));
     replayGain->addItem(i18n("Album"), QVariant("album"));
+#else
+    replayGain->addItem(tr("None"), QVariant("off"));
+    replayGain->addItem(tr("Track"), QVariant("track"));
+    replayGain->addItem(tr("Album"), QVariant("album"));
+#endif
 };
 
 void PlaybackSettings::load()

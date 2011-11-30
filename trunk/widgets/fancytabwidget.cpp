@@ -685,7 +685,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     AddMenuItem(mapper, group, tr("Small Sidebar"), Mode_SmallSidebar);
     AddMenuItem(mapper, group, tr("Tabs On Side"), Mode_SideTabs);
     AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_TopTabs);
-    AddMenuItem(mapper, group, i18n("Tabs On Top (Icons Only)"), Mode_IconOnlyTopTabs);
+    AddMenuItem(mapper, group, tr("Tabs On Top (Icons Only)"), Mode_IconOnlyTopTabs);
     //AddMenuItem(mapper, group, tr("Plain Sidebar"), Mode_PlainSidebar);
     //AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_Tabs);
     //AddMenuItem(mapper, group, tr("Icons On Top"), Mode_IconOnlyTabs);

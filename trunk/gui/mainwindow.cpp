@@ -38,6 +38,8 @@
 #include <KXMLGUIFactory>
 #include <KMessageBox>
 #include <KIcon>
+#else
+#include <QtGui/QMenuBar>
 #endif
 
 #include "covers.h"
@@ -182,20 +184,34 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsPage = new PlaylistsPage(this);
     lyricsPage = new LyricsPage(this);
 
-#ifdef ENABLE_KDE_SUPPORT
     QWidget *widget = new QWidget(this);
     setupUi(widget);
     setCentralWidget(widget);
-#else
-    setupUi(this);
+
+#ifndef ENABLE_KDE_SUPPORT
+    setWindowIcon(QIcon(":/icons/cantata.svg"));
+    setWindowTitle("Cantata");
+
+    QMenu *menu=new QMenu(tr("File"), this);
+    QAction *menuAct=menu->addAction(tr("Quit"), qApp, SLOT(quit()));
+    menuAct->setIcon(QIcon::fromTheme("application-exit"));
+    menuBar()->addMenu(menu);
+    menu=new QMenu(tr("Settings"), this);
+    menuAct=menu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+    menuAct->setIcon(QIcon::fromTheme("configure"));
+    menuBar()->addMenu(menu);
+    menu=new QMenu(tr("Help"), this);
+    menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
+    menuAct->setIcon(windowIcon());
+    menuBar()->addMenu(menu);
 #endif
 
 #ifdef ENABLE_KDE_SUPPORT
     KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
     KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
 
-    KAction *action_Update_database = actionCollection()->addAction("updatedatabase");
-    action_Update_database->setText(i18n("Update Database"));
+    updateDbAction = actionCollection()->addAction("updatedatabase");
+    updateDbAction->setText(i18n("Update Database"));
 
     prevTrackAction = actionCollection()->addAction("prevtrack");
     prevTrackAction->setText(i18n("Previous Track"));
@@ -276,6 +292,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     lyricsTabAction = actionCollection()->addAction("showlyricstab");
     lyricsTabAction->setText(i18n("Lyrics"));
 #else
+    updateDbAction = new QAction(tr("Update Database"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
     playPauseTrackAction = new QAction(tr("Play/Pause"), this);
@@ -317,10 +334,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     volumeControl = new VolumeControl(volumeButton);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
     volumeButton->installEventFilter(volumeSliderEventHandler);
-// KDE does this for us
-//#ifndef ENABLE_KDE_SUPPORT
-//    setWindowIcon(QIcon(":/icons/icon.svg"));
-//#endif
+
     noCover = QIcon::fromTheme("media-optical-audio").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     coverWidget->setPixmap(noCover);
 
@@ -355,7 +369,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     savePlaylistAction->setIcon(QIcon::fromTheme("document-save-as"));
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     showPlaylistAction->setIcon(QIcon::fromTheme("view-media-playlist"));
-    action_Update_database->setIcon(QIcon::fromTheme("view-refresh"));
+    updateDbAction->setIcon(QIcon::fromTheme("view-refresh"));
     libraryTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
     foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
@@ -384,9 +398,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     randomPushButton->setDefaultAction(randomPlaylistAction);
     repeatPushButton->setDefaultAction(repeatPlaylistAction);
     consumePushButton->setDefaultAction(consumePlaylistAction);
-    libraryPage->libraryUpdate->setDefaultAction(action_Update_database);
-    folderPage->libraryUpdate->setDefaultAction(action_Update_database);
-    playlistsPage->libraryUpdate->setDefaultAction(action_Update_database);
+    libraryPage->libraryUpdate->setDefaultAction(updateDbAction);
+    folderPage->libraryUpdate->setDefaultAction(updateDbAction);
+    playlistsPage->libraryUpdate->setDefaultAction(updateDbAction);
 
     tabWidget->AddTab(libraryPage, libraryTabAction->icon(), libraryTabAction->text());
     tabWidget->AddTab(folderPage, foldersTabAction->icon(), foldersTabAction->text());
@@ -529,12 +543,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(MPDConnection::self(), SIGNAL(mpdConnectionDied()), this, SLOT(mpdConnectionDied()));
     connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)), &musicLibraryModel, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &dirviewModel, SLOT(updateDirView(DirViewItemRoot *)));
-#ifndef ENABLE_KDE_SUPPORT
-    connect(action_Quit, SIGNAL(triggered()), qApp, SLOT(quit()));
-    connect(action_Preferences, SIGNAL(triggered(bool)), this, SLOT(showPreferencesDialog()));
-    connect(action_About, SIGNAL(triggered(bool)), this, SLOT(showAboutDialog()));
-#endif
-    connect(action_Update_database, SIGNAL(triggered(bool)), this, SLOT(updateDb()));
+    connect(updateDbAction, SIGNAL(triggered(bool)), this, SLOT(updateDb()));
     connect(prevTrackAction, SIGNAL(triggered(bool)), this, SLOT(previousTrack()));
     connect(nextTrackAction, SIGNAL(triggered(bool)), this, SLOT(nextTrack()));
     connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
@@ -696,6 +705,7 @@ int MainWindow::showPreferencesDialog()
         lyricsPage->setMpdDir(mpdDir);
         lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
         Covers::self()->setMpdDir(mpdDir);
+        Settings::self()->save();
     }
     return rv;
 }
@@ -721,7 +731,7 @@ void MainWindow::showAboutDialog()
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowTitle(tr("About Cantata"));
-    msgBox.setText(tr("Simple GUI front-end for MPD.<br/>(c) Craig Drummond 2001.<br/>Released under the GPLv2<br/><i>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</i>"));
+    msgBox.setText(tr("Simple GUI front-end for MPD.<br/>(c) Craig Drummond 2001.<br/>Released under the GPLv2<br/><br/><i>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</i>"));
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
 }

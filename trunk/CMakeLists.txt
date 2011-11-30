@@ -86,6 +86,7 @@ SET( CANTATA_MOC_HDRS
     lib/playlist.h
     lib/song.h
     widgets/fancytabwidget.h
+    widgets/treeview.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h
     lyrics/ultimatelyricsreader.h
@@ -122,10 +123,8 @@ SET( QT_USE_QTNETWORK TRUE )
 SET( QT_USE_QTXML TRUE )
 
 # this command finds Qt4 libraries and sets all required variables
-FIND_PACKAGE( Qt4 REQUIRED )
-# FIND_PACKAGE( KDE4 )
-FIND_PACKAGE( KDE4 REQUIRED)  # Qt-only build is broken :-(
-
+FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )
+FIND_PACKAGE( KDE4 )
 
 configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 
@@ -134,13 +133,13 @@ IF( NOT DEFINED WANT_KDE_SUPPORT )
 ENDIF( NOT DEFINED WANT_KDE_SUPPORT )
 
 IF( KDE4_FOUND )
-#    IF( WANT_KDE_SUPPORT )
-#        MESSAGE("KDE 4 has been found, will build extra features...")
+    IF( WANT_KDE_SUPPORT )
+        MESSAGE("KDE 4 has been found, will build extra features...")
         ADD_DEFINITIONS( -DENABLE_KDE_SUPPORT )
         SET( ENABLE_KDE_SUPPORT TRUE )
-#    ELSE( WANT_KDE_SUPPORT )
-#        MESSAGE("KDE 4 has been found, but won't be used by user request")
-#    ENDIF( WANT_KDE_SUPPORT )
+    ELSE( WANT_KDE_SUPPORT )
+        MESSAGE("KDE 4 has been found, but won't be used by user request")
+    ENDIF( WANT_KDE_SUPPORT )
 ENDIF( KDE4_FOUND )
 
 IF( ENABLE_KDE_SUPPORT )
@@ -156,14 +155,17 @@ IF( ENABLE_KDE_SUPPORT )
     ADD_SUBDIRECTORY( icons )
     add_subdirectory(po)
 ELSE( ENABLE_KDE_SUPPORT )
-    SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/lineedit.cpp network/networkproxyfactory.cpp)
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} network/networkproxyfactory.h)
+    SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/lineedit.cpp network/networkproxyfactory.cpp network/proxysettings.cpp )
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} widgets/lineedit.h network/proxysettings.h )
+    SET( CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui )
+    SET( CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc )
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )
     QT4_WRAP_UI( CANTATA_UI_HDRS ${CANTATA_UIS} )
     INCLUDE( ${QT_USE_FILE} )
     QT4_WRAP_CPP( CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS} )
     ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
     TARGET_LINK_LIBRARIES( cantata ${QT_LIBRARIES} Maia )
+    TARGET_LINK_LIBRARIES( cantata ${QT_LIBRARIES}  ${KDE4_KIO_LIBS} Maia )
     install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
     ADD_DEFINITIONS( -DQT_NO_STL -DQT_NO_CAST_TO_ASCII -Wall -Wextra )
 ENDIF( ENABLE_KDE_SUPPORT )

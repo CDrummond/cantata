@@ -50,11 +50,11 @@ void LyricSettings::Load(const QList<UltimateLyricsProvider*> &providers) {
     QListWidgetItem* item = new QListWidgetItem(ui_->providers);
     QString name(provider->name());
 #ifdef ENABLE_KDE_SUPPORT
-    name.replace("(POLISH)", i18n("Polish Translations)"));
-    name.replace("(PORTUGUESE)", i18n("Portuguese Translations)"));
+    name.replace("(POLISH)", i18n("(Polish Translations)"));
+    name.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
 #else
-    name.replace("(POLISH)", tr("Polish Translations)"));
-    name.replace("(PORTUGUESE)", tr("Portuguese Translations)"));
+    name.replace("(POLISH)", tr("(Polish Translations)"));
+    name.replace("(PORTUGUESE)", tr("(Portuguese Translations)"));
 #endif
     item->setText(name);
     item->setCheckState(provider->is_enabled() ? Qt::Checked : Qt::Unchecked);

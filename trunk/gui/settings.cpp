@@ -167,7 +167,23 @@ int Settings::sidebar()
 QStringList Settings::lyricProviders()
 {
     QStringList def;
-    def << "lyrics.wikia.com";
+    def << "lyrics.wikia.com"
+        << "lyricstime.com"
+        << "lyricsreg.com"
+        << "lyricsmania.com"
+        << "metrolyrics.com"
+        << "azlyrics.com"
+        << "songlyrics.com"
+        << "elyrics.net"
+        << "lyricsdownload.com"
+        << "lyrics.com"
+        << "lyricsbay.com"
+        << "directlyrics.com"
+        << "loudson.gs"
+        << "teksty.org"
+        << "tekstowo.pl (POLISH)"
+        << "vagalume.uol.com.br"
+        << "vagalume.uol.com.br (PORTUGUESE)";
     return GET_STRINGLIST("lyricProviders", def);
 }
 

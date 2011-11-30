@@ -1,7 +1,5 @@
 ...high priority...
 
-Initial focus!
-
 Lyrics:
    - Have a refresh button on page - this should delete the cache and force a re-fetch.
    - HAve a buttons to request next/prev provider?

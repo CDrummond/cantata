@@ -49,7 +49,6 @@ public:
     PreferencesDialog(QWidget *parent, LyricsPage *lp);
 
 private:
-
 #ifdef ENABLE_KDE_SUPPORT
     void slotButtonClicked(int button);
 #endif
@@ -61,7 +60,7 @@ private Q_SLOTS:
 #endif
 
 Q_SIGNALS:
-    void systemTraySet(bool visible);
+    void settingsSaved();
 
 private:
     ServerSettings *server;

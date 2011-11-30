@@ -706,25 +706,24 @@ void MainWindow::updateDb()
 int MainWindow::showPreferencesDialog()
 {
     PreferencesDialog pref(this, lyricsPage);
-    if (MPDConnection::self()->isConnected()) {
-        if (trayIcon != NULL)
-            connect(&pref, SIGNAL(systemTraySet(bool)), this, SLOT(toggleTrayIcon(bool)));
-    }
+    connect(&pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
 
-    int rv=pref.exec();
-    if (rv) {
-        mpdDir=Settings::self()->mpdDir();
-        lyricsPage->setMpdDir(mpdDir);
-        lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
-        Covers::self()->setMpdDir(mpdDir);
-        Settings::self()->save();
-    }
-    return rv;
+    return pref.exec();
 }
 
-void MainWindow::toggleTrayIcon(bool enable)
+void MainWindow::updateSettings()
 {
-    if (enable) {
+    mpdDir=Settings::self()->mpdDir();
+    lyricsPage->setMpdDir(mpdDir);
+    lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
+    Covers::self()->setMpdDir(mpdDir);
+    Settings::self()->save();
+
+    if (!MPDConnection::self()->isConnected()) {
+        return;
+    }
+
+    if (Settings::self()->useSystemTray()) {
         if (!trayIcon) {
             setupTrayIcon();
         }

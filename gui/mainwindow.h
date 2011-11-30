@@ -145,7 +145,7 @@ private Q_SLOTS:
     void playlistItemsSelected(bool s);
     void showVolumeControl();
     int showPreferencesDialog();
-    void toggleTrayIcon(bool enable);
+    void updateSettings();
     void mpdConnectionDied();
     void updateDb();
 #ifndef ENABLE_KDE_SUPPORT

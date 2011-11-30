@@ -10,7 +10,9 @@
 #include <QTextBrowser>
 #include <QFile>
 #include <QDir>
+#ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
+#endif
 
 static QString changeExt(const QString &f, const QString &newExt)
 {
@@ -39,10 +41,6 @@ static QString cacheFile(QString artist, QString title, bool createDir=false)
 typedef QList<UltimateLyricsProvider *> ProviderList;
 
 bool CompareLyricProviders(const UltimateLyricsProvider* a, const UltimateLyricsProvider* b) {
-    if (a->is_enabled() && !b->is_enabled())
-        return true;
-    if (!a->is_enabled() && b->is_enabled())
-        return false;
     return a->relevance() < b->relevance();
 }
 
@@ -72,11 +70,17 @@ LyricsPage::~LyricsPage()
 
 void LyricsPage::setEnabledProviders(const QStringList &providerList)
 {
-    int relevance=0;
     foreach (UltimateLyricsProvider* provider, providers) {
-        if (UltimateLyricsProvider* lyrics = qobject_cast<UltimateLyricsProvider*>(provider)) {
-            lyrics->set_enabled(providerList.contains(lyrics->name()));
-            lyrics->set_relevance(relevance++);
+        provider->set_enabled(false);
+        provider->set_relevance(0xFFFF);
+    }
+
+    int relevance=0;
+    foreach (const QString &p, providerList) {
+        UltimateLyricsProvider *provider=providerByName(p);
+        if (provider) {
+            provider->set_enabled(true);
+            provider->set_relevance(relevance++);
         }
     }
 
@@ -162,12 +166,20 @@ void LyricsPage::getLyrics()
         if (currentProvider<providers.count()) {
             UltimateLyricsProvider *prov=providers.at(currentProvider++);
             if (prov && prov->is_enabled()) {
+#ifdef ENABLE_KDE_SUPPORT
                 text->setText(i18n("Fetching lyrics via %1", prov->name()));
+#else
+                text->setText(tr("Fetching lyrics via %1").arg(prov->name()));
+#endif
                 prov->FetchInfo(currentRequest, currentSong);
                 return;
             }
         } else {
+#ifdef ENABLE_KDE_SUPPORT
            text->setText(i18n("No lyrics found"));
+#else
+           text->setText(tr("No lyrics found"));
+#endif
            currentProvider=-1;
            return;
         }

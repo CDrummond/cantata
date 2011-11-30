@@ -620,6 +620,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     currentTabChanged(0);
     playlistItemsSelected(false);
+    playlistTableView->setFocus();
 }
 
 MainWindow::~MainWindow()

@@ -40,6 +40,7 @@
 #include <KIcon>
 #else
 #include <QtGui/QMenuBar>
+#include "networkproxyfactory.h"
 #endif
 
 #include "covers.h"
@@ -204,6 +205,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
     menuAct->setIcon(windowIcon());
     menuBar()->addMenu(menu);
+
+    QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
 #endif
 
 #ifdef ENABLE_KDE_SUPPORT

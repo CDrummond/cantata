@@ -22,7 +22,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
-#include <QDebug>
+#include <QIcon>
 
 LyricSettings::LyricSettings(QWidget *parent)
   : QWidget(parent),
@@ -36,6 +36,8 @@ LyricSettings::LyricSettings(QWidget *parent)
           SLOT(CurrentItemChanged(QListWidgetItem*)));
 //   connect(ui_->providers, SIGNAL(itemChanged(QListWidgetItem*)),
 //           SLOT(ItemChanged(QListWidgetItem*)));
+    ui_->up->setIcon(QIcon::fromTheme("arrow-up"));
+    ui_->down->setIcon(QIcon::fromTheme("arrow-down"));
 }
 
 LyricSettings::~LyricSettings() {
@@ -54,7 +56,6 @@ void LyricSettings::Load(const QList<UltimateLyricsProvider*> &providers) {
     name.replace("(POLISH)", tr("Polish Translations)"));
     name.replace("(PORTUGUESE)", tr("Portuguese Translations)"));
 #endif
-    qWarning() << "ADDING:" << name;
     item->setText(name);
     item->setCheckState(provider->is_enabled() ? Qt::Checked : Qt::Unchecked);
 //     item->setForeground(provider->is_enabled() ? palette().color(QPalette::Active, QPalette::Text)

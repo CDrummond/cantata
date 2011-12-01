@@ -57,6 +57,7 @@ public:
 
     bool setCover(const QImage &img);
     const QPixmap & cover();
+    bool hasRealCover() const { return !m_coverIsDefault; }
 
 private:
     bool m_coverIsDefault;

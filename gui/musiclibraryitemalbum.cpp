@@ -59,9 +59,10 @@ void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 }
 
 
-MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, MusicLibraryItem *parent)
-    : MusicLibraryItem(data, MusicLibraryItem::Type_Album),
-      m_parentItem(static_cast<MusicLibraryItemArtist *>(parent))
+MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent)
+    : MusicLibraryItem(data, MusicLibraryItem::Type_Album)
+    , m_dir(dir)
+    , m_parentItem(static_cast<MusicLibraryItemArtist *>(parent))
 {
     m_coverIsDefault=false;
 }
@@ -145,6 +146,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             Song song;
             song.albumartist=parent()->data(0).toString();
             song.album=m_itemData;
+            song.file=m_dir;
             Covers::self()->get(song);
         }
         return *theDefaultIcon;

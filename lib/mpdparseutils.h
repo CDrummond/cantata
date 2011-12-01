@@ -32,6 +32,7 @@ class Output;
 class MPDParseUtils
 {
 public:
+    static QString getDir(const QString &f);
     static QList<Playlist> parsePlaylists(const QByteArray &data);
     static void parseStats(const QByteArray &data);
     static void parseStatus(const QByteArray &data);

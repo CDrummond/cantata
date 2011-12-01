@@ -34,10 +34,27 @@
 #include "playlist.h"
 #include "song.h"
 #include "output.h"
+#include "covers.h"
 #include "gui/musiclibraryitemroot.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
+
+QString MPDParseUtils::getDir(const QString &f)
+{
+    QString d(f);
+
+    int slashPos(d.lastIndexOf('/'));
+
+    if(slashPos!=-1)
+        d.remove(slashPos+1, d.length());
+
+    if (!d.isEmpty() && !d.endsWith("/")) {
+        d=d+"/";
+    }
+
+    return d;
+}
 
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 {
@@ -312,7 +329,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
             }
 
             if (!found) {
-                albumItem = new MusicLibraryItemAlbum(currentSong.album, artistItem);
+                albumItem = new MusicLibraryItemAlbum(currentSong.album, getDir(currentSong.file), artistItem);
                 artistItem->appendChild(albumItem);
             }
 

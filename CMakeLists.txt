@@ -58,6 +58,11 @@ SET( CANTATA_SRCS
     lyrics/ultimatelyricsreader.cpp
     lyrics/songinfoprovider.cpp
     network/networkaccessmanager.cpp
+#    covers/covermanager.cpp
+#    covers/coverfetchunit.cpp
+#    covers/coverfetcher.cpp
+#    covers/coverfetchunit.cpp
+#    covers/coverfounddialog.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -92,6 +97,10 @@ SET( CANTATA_MOC_HDRS
     lyrics/ultimatelyricsreader.h
     lyrics/songinfoprovider.h
     network/networkaccessmanager.h
+#    covers/covermanager.h
+#    covers/coverfetcher.h
+#    covers/coverfetchunit.h
+#    covers/coverfounddialog.h
 )
 
 SET( CANTATA_UIS
@@ -114,6 +123,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/external/libmaia
                      ${CMAKE_SOURCE_DIR}/lib
                      ${CMAKE_SOURCE_DIR}/widgets
                      ${CMAKE_SOURCE_DIR}/lyrics
+                     ${CMAKE_SOURCE_DIR}/covers
                      ${CMAKE_SOURCE_DIR}/network
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}

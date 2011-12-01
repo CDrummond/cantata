@@ -148,6 +148,7 @@ private Q_SLOTS:
     void updateSettings();
     void mpdConnectionDied();
     void updateDb();
+    //void showCoverManager();
 #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
 #endif
@@ -254,6 +255,7 @@ private:
     Action *playlistsTabAction;
     Action *lyricsTabAction;
     Action *updateDbAction;
+    //Action *coverManagerAction;
     QList<QAction *> viewActions;
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;

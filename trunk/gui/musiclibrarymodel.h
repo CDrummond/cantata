@@ -49,6 +49,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
+    const MusicLibraryItemRoot * root() const { return rootItem; }
 
     bool fromXML(const QDateTime db_update);
 

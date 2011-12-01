@@ -43,7 +43,7 @@ public:
     static CoverSize currentCoverSize();
     static void setCoverSize(CoverSize size);
 
-    MusicLibraryItemAlbum(const QString &data, MusicLibraryItem *parent = 0);
+    MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent = 0);
     ~MusicLibraryItemAlbum();
 
     void appendChild(MusicLibraryItem * const child);
@@ -58,8 +58,10 @@ public:
     bool setCover(const QImage &img);
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }
+    const QString & dir() const { return m_dir; }
 
 private:
+    QString m_dir;
     bool m_coverIsDefault;
     QPixmap m_cover;
     QList<MusicLibraryItemSong *> m_childItems;

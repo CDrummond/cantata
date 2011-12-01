@@ -244,7 +244,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
 
     //Start with the document
     writer.writeStartElement("MPD_database");
-    writer.writeAttribute("version", "1");
+    writer.writeAttribute("version", "2");
     writer.writeAttribute("date", QString::number(db_update.toTime_t()));
     //Loop over all artist, albums and tracks.
     for (int i = 0; i < rootItem->childCount(); i++) {
@@ -255,6 +255,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
             MusicLibraryItemAlbum *album = static_cast<MusicLibraryItemAlbum*>(artist->child(j));
             writer.writeStartElement("Album");
             writer.writeAttribute("title", album->data(0).toString());
+            writer.writeAttribute("dir", album->dir());
             for (int k = 0; k < album->childCount(); k++) {
                 MusicLibraryItemSong *track = static_cast<MusicLibraryItemSong*>(album->child(k));
                 writer.writeEmptyElement("Track");
@@ -329,7 +330,7 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                     quint32 time_t = reader.attributes().value("date").toString().toUInt();
 
                     //Incompatible version
-                    if (version < 1) {
+                    if (version < 2) {
                         break;
                     }
 
@@ -353,8 +354,9 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                     // New album element. Create it and add it to the artist
                     if (element == "Album") {
                         QString album_string = reader.attributes().value("title").toString();
+                        QString dir_string = reader.attributes().value("dir").toString();
 
-                        albumItem = new MusicLibraryItemAlbum(album_string, artistItem);
+                        albumItem = new MusicLibraryItemAlbum(album_string, dir_string, artistItem);
                         artistItem->appendChild(albumItem);
                     }
 
@@ -462,7 +464,7 @@ QStringList MusicLibraryModel::sortAlbumTracks(const MusicLibraryItemAlbum *albu
         return QStringList();
     }
 
-    MusicLibraryItemAlbum *orderedTracks = new MusicLibraryItemAlbum("Album");
+    MusicLibraryItemAlbum *orderedTracks = new MusicLibraryItemAlbum("Album", QString());
     QStringList unorderedTracks;
 
     for (int i = 0; i < album->childCount(); i++) {

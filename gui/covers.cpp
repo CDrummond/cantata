@@ -1,6 +1,7 @@
 #include "covers.h"
 #include "musiclibrarymodel.h"
 #include "lib/song.h"
+#include "lib/mpdparseutils.h"
 #include "maiaXmlRpcClient.h"
 #include "networkaccessmanager.h"
 #include <QtCore/QFile>
@@ -49,22 +50,6 @@ static QImage amarokCover(const QString &artist, const QString &album)
     return img;
 }
 
-static QString getDir(const QString &f)
-{
-    QString d(f);
-
-    int slashPos(d.lastIndexOf('/'));
-
-    if(slashPos!=-1)
-        d.remove(slashPos+1, d.length());
-
-    if (!d.isEmpty() && !d.endsWith("/")) {
-        d=d+"/";
-    }
-
-    return d;
-}
-
 Covers * Covers::self()
 {
 #ifdef ENABLE_KDE_SUPPORT
@@ -87,17 +72,13 @@ Covers::Covers()
 void Covers::get(const Song &song)
 {
     if (!mpdDir.isEmpty()) {
-        QString dirName(getDir(mpdDir+song.file));
-        QStringList fileNames;
-        fileNames << "cover"+constExtension << "album"+constExtension;
-        foreach(const QString &file, fileNames) {
-            if (QFile::exists(QFile::encodeName(dirName+file))) {
-                QImage img(dirName+file);
+        QString dirName(song.file.endsWith("/") ? mpdDir+song.file : MPDParseUtils::getDir(mpdDir+song.file));
+        if (QFile::exists(QFile::encodeName(dirName+"cover"+constExtension))) {
+            QImage img(dirName+"cover"+constExtension);
 
-                if (!img.isNull()) {
-                    emit cover(song.albumArtist(), song.album, img);
-                    return;
-                }
+            if (!img.isNull()) {
+                emit cover(song.albumArtist(), song.album, img);
+                return;
             }
         }
     }

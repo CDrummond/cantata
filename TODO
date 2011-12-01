@@ -8,6 +8,11 @@ Covers
    Cover fetch dialog
        Fetching cover for: <album> by <artist>
        "Configure..." should just have currently selected provider
+   --not worth the hassle, so disable cover manager for now.
+
+   /But do/
+   - When saving covers, try to save as 'cover.jpg' in album dir.
+   - mod amarok code to do this, to, and also look in clementine covers.
 
 
 Code organisation:

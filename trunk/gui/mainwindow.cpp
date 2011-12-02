@@ -43,7 +43,6 @@
 #include "networkproxyfactory.h"
 #endif
 
-//#include "covermanager.h"
 #include "covers.h"
 #include "mainwindow.h"
 #include "musiclibraryitemsong.h"
@@ -199,9 +198,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     menuAct->setIcon(QIcon::fromTheme("application-exit"));
     menuBar()->addMenu(menu);
     menu=new QMenu(tr("Tools"), this);
-    //menuAct=menu->addAction(tr("Cover Mananger..."), this, SLOT(showCoverManager()));
-    //menuAct->setIcon(QIcon::fromTheme("insert-image"));
-    //menuBar()->addMenu(menu);
     menu=new QMenu(tr("Settings"), this);
     menuAct=menu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(QIcon::fromTheme("configure"));
@@ -217,9 +213,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #ifdef ENABLE_KDE_SUPPORT
     KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
     KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
-
-    //coverManagerAction = actionCollection()->addAction("covermanager");
-    //coverManagerAction->setText(i18n("Cover Mananger"));
 
     updateDbAction = actionCollection()->addAction("updatedatabase");
     updateDbAction->setText(i18n("Update Database"));
@@ -303,7 +296,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     lyricsTabAction = actionCollection()->addAction("showlyricstab");
     lyricsTabAction->setText(i18n("Lyrics"));
 #else
-    //coverManagerAction = new QAction(tr("Cover Mananger"), this);
     updateDbAction = new QAction(tr("Update Database"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
@@ -382,7 +374,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     savePlaylistAction->setIcon(QIcon::fromTheme("document-save-as"));
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     showPlaylistAction->setIcon(QIcon::fromTheme("view-media-playlist"));
-    //coverManagerAction->setIcon(QIcon::fromTheme("insert-image"));
     updateDbAction->setIcon(QIcon::fromTheme("view-refresh"));
     libraryTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
     foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
@@ -558,7 +549,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)), &musicLibraryModel, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &dirviewModel, SLOT(updateDirView(DirViewItemRoot *)));
     connect(updateDbAction, SIGNAL(triggered(bool)), this, SLOT(updateDb()));
-    //connect(coverManagerAction, SIGNAL(triggered(bool)), this, SLOT(showCoverManager()));
     connect(prevTrackAction, SIGNAL(triggered(bool)), this, SLOT(previousTrack()));
     connect(nextTrackAction, SIGNAL(triggered(bool)), this, SLOT(nextTrack()));
     connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
@@ -715,12 +705,6 @@ void MainWindow::updateDb()
     }
     updateDialog->show();
 }
-
-//void MainWindow::showCoverManager()
-//{
-//    CoverManager *mgr = new CoverManager(this, &musicLibraryModel);
-//    mgr->exec();
-//}
 
 int MainWindow::showPreferencesDialog()
 {

@@ -38,7 +38,8 @@
 #include <KXMLGUIFactory>
 #include <KMessageBox>
 #include <KIcon>
-#include <KMenuBar>
+// #include <KMenuBar>
+#include <KMenu>
 #else
 #include <QtGui/QMenuBar>
 #include "networkproxyfactory.h"
@@ -189,32 +190,31 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     QWidget *widget = new QWidget(this);
     setupUi(widget);
     setCentralWidget(widget);
+    QMenu *mainMenu=new QMenu(this);
 
 #ifndef ENABLE_KDE_SUPPORT
     setWindowIcon(QIcon(":/icons/cantata.svg"));
     setWindowTitle("Cantata");
 
-    QMenu *menu=new QMenu(tr("File"), this);
-    QAction *menuAct=menu->addAction(tr("Quit"), qApp, SLOT(quit()));
-    menuAct->setIcon(QIcon::fromTheme("application-exit"));
-    menuBar()->addMenu(menu);
-    menu=new QMenu(tr("Tools"), this);
-    menu=new QMenu(tr("Settings"), this);
-    menuAct=menu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-    menuAct->setIcon(QIcon::fromTheme("configure"));
-    menuBar()->addMenu(menu);
-    menu=new QMenu(tr("Help"), this);
-    menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
-    menuAct->setIcon(windowIcon());
-    menuBar()->addMenu(menu);
+//     quitAction=menu->addAction(tr("Quit"), qApp, SLOT(quit()));
+//     menuAct->setIcon(QIcon::fromTheme("application-exit"));
+//     menuBar()->addMenu(menu);
+//     menu=new QMenu(tr("Tools"), this);
+//     menu=new QMenu(tr("Settings"), this);
+//     menuAct=menu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+//     menuAct->setIcon(QIcon::fromTheme("configure"));
+//     menuBar()->addMenu(menu);
+//     menu=new QMenu(tr("Help"), this);
+//     menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
+//     menuAct->setIcon(windowIcon());
+//     menuBar()->addMenu(menu);
 
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
 #endif
 
 #ifdef ENABLE_KDE_SUPPORT
-    KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
-    KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
-    KStandardAction::showMenubar(menuBar(), SLOT(setVisible(bool)), actionCollection());
+    KAction *pref=KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
+    quitAction=KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
     updateDbAction = actionCollection()->addAction("updatedatabase");
     updateDbAction->setText(i18n("Update Database"));
@@ -298,6 +298,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     lyricsTabAction = actionCollection()->addAction("showlyricstab");
     lyricsTabAction->setText(i18n("Lyrics"));
 #else
+    quitAction = new QAction(tr("&Quit"), trayIconMenu);
+    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     updateDbAction = new QAction(tr("Update Database"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
@@ -382,12 +384,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
 
+    menuButton->setIcon(QIcon::fromTheme("configure"));
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             SLOT(cover(const QString &, const QString &, const QImage &)));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             &musicLibraryModel, SLOT(setCover(const QString &, const QString &, const QImage &)));
 
+
+    menuButton->setMenu(mainMenu);
+    menuButton->setPopupMode(QToolButton::InstantPopup);
     playPauseTrackButton->setDefaultAction(playPauseTrackAction);
     stopTrackButton->setDefaultAction(stopTrackAction);
     nextTrackButton->setDefaultAction(nextTrackAction);
@@ -445,7 +451,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
          << folderPage->addToPlaylist << folderPage->replacePlaylist << playlistsPage->addToPlaylist
          << playlistsPage->replacePlaylist << playlistsPage->removePlaylist << repeatPushButton << randomPushButton
          << savePlaylistPushButton << removeAllFromPlaylistPushButton << removeFromPlaylistPushButton
-         << consumePushButton << libraryPage->libraryUpdate << folderPage->libraryUpdate << playlistsPage->libraryUpdate << volumeButton;
+         << consumePushButton << libraryPage->libraryUpdate << folderPage->libraryUpdate << playlistsPage->libraryUpdate
+         << volumeButton << menuButton;
 
     foreach(QToolButton * b, btns) {
         b->setAutoRaise(true);
@@ -510,6 +517,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
         resize(sz);
     }
 #endif
+
+    mainMenu->addAction(pref);
+#ifdef ENABLE_KDE_SUPPORT
+    mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
+#endif
+    mainMenu->addSeparator();
+#ifdef ENABLE_KDE_SUPPORT
+    mainMenu->addMenu(helpMenu());
+#else
+    QMenu *menu=new QMenu(tr("Help"), this);
+    menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
+    menuAct->setIcon(windowIcon());
+    mainMenu->addMenu(menu);
+#endif
+    mainMenu->addSeparator();
+    mainMenu->addAction(quitAction);
 
     coverWidget->installEventFilter(coverEventHandler);
     libraryProxyModel.setSourceModel(&musicLibraryModel);
@@ -1536,12 +1559,6 @@ bool MainWindow::setupTrayIcon()
     trayIcon->installEventFilter(volumeSliderEventHandler);
     trayIconMenu = new QMenu(this);
 
-#ifdef ENABLE_KDE_SUPPORT
-    quitAction = KStandardAction::quit(kapp, SLOT(quit()), trayIconMenu);
-#else
-    quitAction = new QAction(tr("&Quit"), trayIconMenu);
-    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-#endif
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayIconClicked(QSystemTrayIcon::ActivationReason)));
 
     trayIconMenu->addAction(prevTrackAction);

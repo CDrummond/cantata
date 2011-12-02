@@ -3,15 +3,17 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KSqueezedTextLabel>
-#define SqueezedTextLabel KSqueezedTextLabel
+class SqueezedTextLabel : public KSqueezedTextLabel
+{
+public:
+    SqueezedTextLabel(QWidget *p) : KSqueezedTextLabel(p) { setTextElideMode(Qt::ElideRight); }
+};
 #else
 #include <QtGui/QLabel>
 class SqueezedTextLabel : public QLabel
 {
-    public:
-
+public:
     SqueezedTextLabel(QWidget *p) : QLabel(p) { }
-    void setTextElideMode(Qt::TextElideMode) { }
 };
 #endif
 

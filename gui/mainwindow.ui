@@ -117,9 +117,6 @@
        <property name="text">
         <string>SqueezedTextLabel</string>
        </property>
-       <property name="textElideMode">
-        <enum>Qt::ElideRight</enum>
-       </property>
       </widget>
      </item>
      <item>
@@ -244,11 +241,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="SqueezedTextLabel" name="playListStatsLabel">
-         <property name="textElideMode">
-          <enum>Qt::ElideRight</enum>
-         </property>
-        </widget>
+        <widget class="SqueezedTextLabel" name="playListStatsLabel" />
        </item>
        <item row="2" column="1">
         <spacer>

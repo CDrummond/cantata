@@ -38,6 +38,7 @@
 #include <KXMLGUIFactory>
 #include <KMessageBox>
 #include <KIcon>
+#include <KMenuBar>
 #else
 #include <QtGui/QMenuBar>
 #include "networkproxyfactory.h"
@@ -213,6 +214,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #ifdef ENABLE_KDE_SUPPORT
     KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
     KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
+    KStandardAction::showMenubar(menuBar(), SLOT(setVisible(bool)), actionCollection());
 
     updateDbAction = actionCollection()->addAction("updatedatabase");
     updateDbAction->setText(i18n("Update Database"));

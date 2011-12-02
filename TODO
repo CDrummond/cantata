@@ -1,6 +1,3 @@
-Fix Qt only build
-   DirSelect widget - need to make custom, with lineedit and button.
-
 Code organisation:
     lib -> mpd
     create a 'models'  dir to hold libray and dir models
@@ -11,6 +8,8 @@ Lyrics
     Add next/prev provide buttons - so that can try others.
 
 Add option to specify cover size
+
+
 
 Fix usage of threads - ideally writing/reading should be in thread object.
 

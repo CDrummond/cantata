@@ -742,6 +742,12 @@ void MainWindow::updateSettings()
         return;
     }
 
+    if (((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->coverSize()) {
+        MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->coverSize());
+        musicLibraryModel.clearUpdateTime();
+        MPDConnection::self()->listAllInfo(MPDStats::self()->dbUpdate());
+    }
+
     if (Settings::self()->useSystemTray()) {
         if (!trayIcon) {
             setupTrayIcon();

@@ -54,6 +54,40 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_5b">
+     <property name="text">
+      <string>Library-view cover art:</string>
+     </property>
+     <property name="buddy">
+      <cstring>coverArtSize</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="coverArtSize">
+     <item>
+      <property name="text">
+       <string>Do Not Display Cover-Art</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Small</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Medium</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Large</string>
+      </property>
+     </item>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

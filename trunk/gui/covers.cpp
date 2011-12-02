@@ -64,21 +64,39 @@ static QString encodeName(QString name)
     return name;
 }
 
-static QImage amarokCover(const Covers::Job &job)
+static QString xdgConfig()
+{
+    QString env = qgetenv("XDG_CONFIG_HOME");
+    QString dir = (env.isEmpty() ? QDir::homePath() + "/.config/" : env);
+    if (!dir.endsWith("/")) {
+        dir=dir+'/';
+    }
+    return dir;
+}
+
+static QImage otherAppCover(const Covers::Job &job)
 {
 #ifdef ENABLE_KDE_SUPPORT
     QString kdeDir=KGlobal::dirs()->localkdedir();
 #else
     QString kdeDir=QDir::homePath()+"/.kde";
 #endif
-    QString amarokName=kdeDir+"/share/apps/amarok/albumcovers/large/"+
-                       QCryptographicHash::hash(job.artist.toLower().toLocal8Bit()+job.album.toLower().toLocal8Bit(),
-                                                QCryptographicHash::Md5).toHex();
+    QString fileName=kdeDir+"/share/apps/amarok/albumcovers/large/"+
+                     QCryptographicHash::hash(job.artist.toLower().toLocal8Bit()+job.album.toLower().toLocal8Bit(),
+                                              QCryptographicHash::Md5).toHex();
 
-    QImage img(amarokName);
+    QImage img(fileName);
+
+    if (img.isNull()) {
+        fileName=xdgConfig()+"/Clementine/albumcovers/"+
+                 QCryptographicHash::hash(job.artist.toLower().toUtf8()+job.album.toLower().toUtf8(),
+                                          QCryptographicHash::Sha1).toHex()+".jpg";
+
+        img=QImage(fileName);
+    }
 
     if (!img.isNull() && !job.dir.isEmpty()) {
-        QFile f(amarokName);
+        QFile f(fileName);
         if (f.open(QIODevice::ReadOnly)) {
             QByteArray raw=f.readAll();
             if (!raw.isEmpty()) {
@@ -149,8 +167,8 @@ void Covers::get(const Song &song)
 
     Job job(song.albumArtist(), song.album, dirName);
 
-    // See if amarok has it...
-    QImage img=amarokCover(job);
+    // See if amarok, or clementine, has it...
+    QImage img=otherAppCover(job);
     if (!img.isNull()) {
         emit cover(artist, album, img);
         return;
@@ -216,7 +234,7 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
 
     if (it!=end) {
         Job job=it.value();
-        emit cover(job.artist, job.album, amarokCover(job));
+        emit cover(job.artist, job.album, otherAppCover(job));
         jobs.remove(it.key());
     }
 
@@ -244,7 +262,7 @@ void Covers::jobFinished(QNetworkReply *reply)
         jobs.remove(it.key());
 
         if (img.isNull()) {
-            emit cover(job.artist, job.album, amarokCover(job));
+            emit cover(job.artist, job.album, otherAppCover(job));
         } else {
             emit cover(job.artist, job.album, img);
         }

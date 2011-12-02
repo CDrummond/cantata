@@ -549,7 +549,8 @@ void FancyTabWidget::SetBackgroundPixmap(const QPixmap& pixmap) {
 
 void FancyTabWidget::paintEvent(QPaintEvent*e) {
     QWidget::paintEvent(e);
-    if (drawBorder_) {
+    if (!drawBorder_) {
+        return;
     }
 
     QPainter painter(this);

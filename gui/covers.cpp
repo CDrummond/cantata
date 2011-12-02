@@ -66,7 +66,7 @@ static QString encodeName(QString name)
 
 static QString xdgConfig()
 {
-    QString env = qgetenv("XDG_CONFIG_HOME");
+    QString env = QString::fromLocal8Bit(qgetenv("XDG_CONFIG_HOME"));
     QString dir = (env.isEmpty() ? QDir::homePath() + "/.config/" : env);
     if (!dir.endsWith("/")) {
         dir=dir+'/';
@@ -74,12 +74,32 @@ static QString xdgConfig()
     return dir;
 }
 
+#ifndef ENABLE_KDE_SUPPORT
+static QString kdeHome()
+{
+    static QString kdeHomePath;
+    if (kdeHomePath.isEmpty())
+    {
+        kdeHomePath = QString::fromLocal8Bit(qgetenv("KDEHOME"));
+        if (kdeHomePath.isEmpty())
+        {
+            QDir homeDir(QDir::homePath());
+            QString kdeConfDir(QLatin1String("/.kde"));
+            if (homeDir.exists(QLatin1String(".kde4")))
+                kdeConfDir = QLatin1String("/.kde4");
+            kdeHomePath = QDir::homePath() + kdeConfDir;
+        }
+    }
+    return kdeHomePath;
+}
+#endif
+
 static QImage otherAppCover(const Covers::Job &job)
 {
 #ifdef ENABLE_KDE_SUPPORT
     QString kdeDir=KGlobal::dirs()->localkdedir();
 #else
-    QString kdeDir=QDir::homePath()+"/.kde";
+    QString kdeDir=kdeHome();
 #endif
     QString fileName=kdeDir+"/share/apps/amarok/albumcovers/large/"+
                      QCryptographicHash::hash(job.artist.toLower().toLocal8Bit()+job.album.toLower().toLocal8Bit(),

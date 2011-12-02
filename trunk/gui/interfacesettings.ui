@@ -57,7 +57,7 @@
    <item row="2" column="0">
     <widget class="QLabel" name="label_5b">
      <property name="text">
-      <string>Library-view cover art:</string>
+      <string>Covers in library list:</string>
      </property>
      <property name="buddy">
       <cstring>coverArtSize</cstring>
@@ -68,7 +68,7 @@
     <widget class="QComboBox" name="coverArtSize">
      <item>
       <property name="text">
-       <string>Do Not Display Cover-Art</string>
+       <string>None</string>
       </property>
      </item>
      <item>

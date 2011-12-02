@@ -52,6 +52,7 @@ public:
     const MusicLibraryItemRoot * root() const { return rootItem; }
 
     bool fromXML(const QDateTime db_update);
+    void clearUpdateTime() { databaseTime=QDateTime(); }
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime db_update = QDateTime(), bool fromFile = false);

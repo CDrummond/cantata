@@ -74,6 +74,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     KPageWidget *widget = new KPageWidget(this);
 #else
     FancyTabWidget *widget = new FancyTabWidget(this);
+    widget->setAllowContextMenu(false);
+    widget->setDrawBorder(true);
 #endif
 
     server = new ServerSettings(widget);

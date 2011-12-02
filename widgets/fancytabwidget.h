@@ -185,6 +185,8 @@ public:
 
   int current_index() const;
   Mode mode() const { return mode_; }
+  void setAllowContextMenu(bool a) { allowContext_=a; }
+  void setDrawBorder(bool b) { drawBorder_=b; }
 
 public slots:
   void SetCurrentIndex(int index);
@@ -196,7 +198,7 @@ signals:
   void ModeChanged(FancyTabWidget::Mode mode);
 
 protected:
-//   void paintEvent(QPaintEvent *event);
+  void paintEvent(QPaintEvent *event);
   void contextMenuEvent(QContextMenuEvent* e);
 
 private slots:
@@ -223,6 +225,8 @@ private:
 
   //boost::scoped_ptr<FancyTabProxyStyle> proxy_style_;
   QScopedPointer<FancyTabProxyStyle> proxy_style_;
+  bool allowContext_;
+  bool drawBorder_;
 };
 
 } // namespace Internal

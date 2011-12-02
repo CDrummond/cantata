@@ -510,7 +510,9 @@ FancyTabWidget::FancyTabWidget(QWidget* parent)
     top_layout_(new QVBoxLayout),
 //     use_background_(false),
     menu_(NULL),
-    proxy_style_(new FancyTabProxyStyle)
+    proxy_style_(new FancyTabProxyStyle),
+    allowContext_(true),
+    drawBorder_(false)
 {
   side_layout_->setSpacing(0);
   side_layout_->setMargin(0);
@@ -545,7 +547,16 @@ void FancyTabWidget::SetBackgroundPixmap(const QPixmap& pixmap) {
   update();
 }
 
-// void FancyTabWidget::paintEvent(QPaintEvent*) {
+void FancyTabWidget::paintEvent(QPaintEvent*e) {
+    QWidget::paintEvent(e);
+    if (drawBorder_) {
+    }
+
+    QPainter painter(this);
+    QRect rect = side_widget_->rect().adjusted(0, 0, 1, 0);
+    rect = style()->visualRect(layoutDirection(), geometry(), rect);
+    painter.setPen(QApplication::palette().mid().color());
+    painter.drawLine(rect.topRight(), rect.bottomRight());
 //   if (!use_background_)
 //     return;
 //
@@ -573,7 +584,7 @@ void FancyTabWidget::SetBackgroundPixmap(const QPixmap& pixmap) {
 //   QColor light = Utils::StyleHelper::sidebarHighlight();
 //   painter.setPen(light);
 //   painter.drawLine(rect.bottomLeft(), rect.bottomRight());
-// }
+}
 
 int FancyTabWidget::current_index() const {
   return stack_->currentIndex();
@@ -666,6 +677,14 @@ void FancyTabWidget::SetMode(Mode mode) {
 }
 
 void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
+  if (!allowContext_) {
+      return;
+  }
+
+  QWidget *widget=QApplication::widgetAt(e->globalPos());
+  if (!widget || !(qobject_cast<FancyTab *>(widget) || (qobject_cast<QTabBar *>(widget) && widget->parent()==this))) {
+      return;
+  }
   if (!menu_) {
     menu_ = new QMenu(this);
 

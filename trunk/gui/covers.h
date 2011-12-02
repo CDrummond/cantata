@@ -16,6 +16,15 @@ class Covers : public QObject
     Q_OBJECT
 
 public:
+    struct Job
+    {
+        Job(const QString &ar, const QString &al, const QString &d)
+            : artist(ar), album(al), dir(d) { }
+        QString artist;
+        QString album;
+        QString dir;
+    };
+
     static Covers * self();
     Covers();
 
@@ -31,13 +40,14 @@ private Q_SLOTS:
     void jobFinished(QNetworkReply *reply);
 
 private:
-    QMap<QString, QNetworkReply*>::Iterator findJob(QNetworkReply *reply);
+    void saveImg(const Job &job, const QImage &img, const QByteArray &raw);
+    QMap<QNetworkReply *, Job>::Iterator findJob(const Song &song);
 
 private:
     QString mpdDir;
     MaiaXmlRpcClient *rpc;
     NetworkAccessManager *manager;
-    QMap<QString, QNetworkReply*> jobs;
+    QMap<QNetworkReply *, Job> jobs;
 };
 
 #endif

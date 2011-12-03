@@ -518,6 +518,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     }
 #endif
 
+    mainMenu->addAction(showPlaylistAction);
     mainMenu->addAction(pref);
 #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));

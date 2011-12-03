@@ -45,11 +45,11 @@ SET( CANTATA_SRCS
     gui/playbacksettings.cpp
     gui/serversettings.cpp
     gui/outputsettings.cpp
-    lib/mpdconnection.cpp
-    lib/mpdparseutils.cpp
-    lib/mpdstats.cpp
-    lib/mpdstatus.cpp
-    lib/song.cpp
+    mpd/mpdconnection.cpp
+    mpd/mpdparseutils.cpp
+    mpd/mpdstats.cpp
+    mpd/mpdstatus.cpp
+    mpd/song.cpp
     widgets/treeview.cpp
     widgets/fancytabwidget.cpp
     lyrics/lyricspage.cpp
@@ -58,11 +58,6 @@ SET( CANTATA_SRCS
     lyrics/ultimatelyricsreader.cpp
     lyrics/songinfoprovider.cpp
     network/networkaccessmanager.cpp
-#    covers/covermanager.cpp
-#    covers/coverfetchunit.cpp
-#    covers/coverfetcher.cpp
-#    covers/coverfetchunit.cpp
-#    covers/coverfounddialog.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -85,10 +80,10 @@ SET( CANTATA_MOC_HDRS
     gui/playbacksettings.h
     gui/serversettings.h
     gui/outputsettings.h
-    lib/mpdconnection.h
-    lib/output.h
-    lib/playlist.h
-    lib/song.h
+    mpd/mpdconnection.h
+    mpd/output.h
+    mpd/playlist.h
+    mpd/song.h
     widgets/fancytabwidget.h
     widgets/treeview.h
     lyrics/lyricspage.h
@@ -97,10 +92,6 @@ SET( CANTATA_MOC_HDRS
     lyrics/ultimatelyricsreader.h
     lyrics/songinfoprovider.h
     network/networkaccessmanager.h
-#    covers/covermanager.h
-#    covers/coverfetcher.h
-#    covers/coverfetchunit.h
-#    covers/coverfounddialog.h
 )
 
 SET( CANTATA_UIS
@@ -123,7 +114,6 @@ include_directories( ${CMAKE_SOURCE_DIR}/external/libmaia
                      ${CMAKE_SOURCE_DIR}/lib
                      ${CMAKE_SOURCE_DIR}/widgets
                      ${CMAKE_SOURCE_DIR}/lyrics
-                     ${CMAKE_SOURCE_DIR}/covers
                      ${CMAKE_SOURCE_DIR}/network
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}

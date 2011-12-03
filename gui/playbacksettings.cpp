@@ -1,5 +1,5 @@
 #include "playbacksettings.h"
-#include "lib/mpdconnection.h"
+#include "mpdconnection.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif

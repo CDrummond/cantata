@@ -40,16 +40,16 @@
 #include <QMoveEvent>
 
 #include "ui_mainwindow.h"
-#include "gui/musiclibrarymodel.h"
-#include "gui/musiclibraryproxymodel.h"
-#include "gui/playlistsmodel.h"
-#include "gui/playlistsproxymodel.h"
-#include "gui/playlisttablemodel.h"
-#include "gui/playlisttableproxymodel.h"
-#include "gui/dirviewmodel.h"
-#include "gui/dirviewproxymodel.h"
-#include "lib/mpdstatus.h"
-#include "lib/song.h"
+#include "musiclibrarymodel.h"
+#include "musiclibraryproxymodel.h"
+#include "playlistsmodel.h"
+#include "playlistsproxymodel.h"
+#include "playlisttablemodel.h"
+#include "playlisttableproxymodel.h"
+#include "dirviewmodel.h"
+#include "dirviewproxymodel.h"
+#include "mpdstatus.h"
+#include "song.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 class KAction;

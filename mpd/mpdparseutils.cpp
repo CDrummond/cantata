@@ -22,12 +22,13 @@
 #include <QString>
 #include <QStringList>
 
-#include "gui/dirviewitemroot.h"
-#include "gui/dirviewitemdir.h"
-#include "gui/dirviewitemfile.h"
-#include "gui/musiclibraryitemartist.h"
-#include "gui/musiclibraryitemalbum.h"
-#include "gui/musiclibraryitemsong.h"
+#include "dirviewitemroot.h"
+#include "dirviewitemdir.h"
+#include "dirviewitemfile.h"
+#include "musiclibraryitemartist.h"
+#include "musiclibraryitemalbum.h"
+#include "musiclibraryitemsong.h"
+#include "musiclibraryitemroot.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdstatus.h"
@@ -35,7 +36,6 @@
 #include "song.h"
 #include "output.h"
 #include "covers.h"
-#include "gui/musiclibraryitemroot.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif

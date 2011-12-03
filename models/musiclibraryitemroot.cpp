@@ -21,7 +21,6 @@
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemartist.h"
 
-
 MusicLibraryItemRoot::MusicLibraryItemRoot(const QString &data)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Root)
 {

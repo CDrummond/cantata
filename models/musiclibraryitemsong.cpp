@@ -21,7 +21,6 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 
-
 MusicLibraryItemSong::MusicLibraryItemSong(const QString &data, MusicLibraryItem *parent)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Song),
       m_track(0),

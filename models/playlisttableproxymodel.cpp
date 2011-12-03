@@ -19,7 +19,6 @@
  */
 
 #include <QByteArray>
-
 #include "playlisttableproxymodel.h"
 #include "playlisttablemodel.h"
 

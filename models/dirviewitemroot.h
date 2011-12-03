@@ -17,12 +17,32 @@
  * You should have received a copy of the GNU General Public License
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef DIRVIEWITEMROOT_H
+#define DIRVIEWITEMROOT_H
 
-#include "config.h"
-#include "aboutdialog.h"
+#include <QStringList>
+#include <QString>
+#include <QList>
+#include <QVariant>
+#include "dirviewitem.h"
 
-AboutDialog::AboutDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
+class DirViewItemRoot : public DirViewItem
 {
-    setupUi(this);
-    titleLabel->setText(PACKAGE_STRING);
-}
+public:
+    DirViewItemRoot(const QString name=QString());
+    ~DirViewItemRoot();
+
+    DirViewItem * createDirectory(const QString dirName);
+    DirViewItem * insertFile(const QString fileName);
+
+    int childCount() const;
+    DirViewItem * child(int row) const;
+
+private:
+    QList<DirViewItem *> d_childItems;
+
+    friend class DirViewItemDir;
+    friend class DirViewItemFile;
+};
+
+#endif

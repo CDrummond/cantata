@@ -25,7 +25,6 @@
 #include <QThread>
 #include <QTcpSocket>
 #include <QDateTime>
-
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "song.h"

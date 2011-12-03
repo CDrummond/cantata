@@ -2,7 +2,7 @@
 #define OUTPUTSETTINGS_H
 
 #include "ui_outputsettings.h"
-#include "lib/output.h"
+#include "output.h"
 #include <QtCore/QList>
 
 class OutputSettings : public QWidget, private Ui::OutputSettings

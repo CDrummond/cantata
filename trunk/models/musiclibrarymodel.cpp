@@ -18,10 +18,10 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/musiclibraryitemalbum.h"
-#include "gui/musiclibraryitemartist.h"
-#include "gui/musiclibraryitemsong.h"
-#include "gui/musiclibraryitemroot.h"
+#include "musiclibraryitemalbum.h"
+#include "musiclibraryitemartist.h"
+#include "musiclibraryitemsong.h"
+#include "musiclibraryitemroot.h"
 #include "musiclibrarymodel.h"
 #include "settings.h"
 #include "config.h"

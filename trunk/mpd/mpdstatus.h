@@ -24,7 +24,6 @@
 #include <QtCore>
 #include <QtGlobal>
 
-
 class MPDStatus
 {
 public:

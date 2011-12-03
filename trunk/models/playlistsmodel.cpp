@@ -19,11 +19,10 @@
  */
 
 #include <QModelIndex>
-
 #include "playlistsmodel.h"
-#include "lib/mpdparseutils.h"
-#include "lib/mpdstats.h"
-#include "lib/mpdconnection.h"
+#include "mpdparseutils.h"
+#include "mpdstats.h"
+#include "mpdconnection.h"
 
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : QAbstractListModel(parent)

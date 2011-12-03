@@ -17,33 +17,41 @@
  * You should have received a copy of the GNU General Public License
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DIRVIEWITEMROOT_H
-#define DIRVIEWITEMROOT_H
 
-#include <QStringList>
-#include <QString>
+#ifndef PLAYLISTS_MODEL_H
+#define PLAYLISTS_MODEL_H
+
+#include <QAbstractListModel>
 #include <QList>
-#include <QVariant>
+#include "playlist.h"
 
-#include "dirviewitem.h"
-
-class DirViewItemRoot : public DirViewItem
+class PlaylistsModel : public QAbstractListModel
 {
+    Q_OBJECT
+
 public:
-    DirViewItemRoot(const QString name=QString());
-    ~DirViewItemRoot();
+    PlaylistsModel(QObject *parent = 0);
+    ~PlaylistsModel();
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant data(const QModelIndex &, int) const;
 
-    DirViewItem * createDirectory(const QString dirName);
-    DirViewItem * insertFile(const QString fileName);
+    void getPlaylists();
+    void renamePlaylist(const QString oldname, const QString newname);
 
-    int childCount() const;
-    DirViewItem * child(int row) const;
+public slots:
+    void loadPlaylist(QString name);
+    void removePlaylist(QString name);
+    void savePlaylist(QString name);
 
 private:
-    QList<DirViewItem *> d_childItems;
+    QList<Playlist> m_playlists;
 
-    friend class DirViewItemDir;
-    friend class DirViewItemFile;
+private slots:
+    void setPlaylists(const QList<Playlist> &playlists);
+
+signals:
+    void playlistLoaded();
 };
 
 #endif

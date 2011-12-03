@@ -20,9 +20,6 @@
 
 #include "mpdstats.h"
 
-
-
-
 MPDStats * MPDStats::self()
 {
     static MPDStats instance;

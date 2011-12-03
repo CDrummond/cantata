@@ -1,7 +1,7 @@
 #include "covers.h"
 #include "musiclibrarymodel.h"
-#include "lib/song.h"
-#include "lib/mpdparseutils.h"
+#include "song.h"
+#include "mpdparseutils.h"
 #include "maiaXmlRpcClient.h"
 #include "networkaccessmanager.h"
 #include <QtCore/QFile>

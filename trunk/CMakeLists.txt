@@ -20,24 +20,7 @@ include(CPack)
 SET( CANTATA_SRCS
     main.cpp
     gui/mainwindow.cpp
-    gui/musiclibraryitem.cpp
-    gui/musiclibraryitemroot.cpp
-    gui/musiclibraryitemartist.cpp
-    gui/musiclibraryitemalbum.cpp
-    gui/musiclibraryitemsong.cpp
-    gui/musiclibrarymodel.cpp
-    gui/musiclibraryproxymodel.cpp
-    gui/playlistsmodel.cpp
-    gui/playlistsproxymodel.cpp
-    gui/playlisttablemodel.cpp
-    gui/playlisttableproxymodel.cpp
     gui/preferencesdialog.cpp
-    gui/dirviewmodel.cpp
-    gui/dirviewproxymodel.cpp
-    gui/dirviewitem.cpp
-    gui/dirviewitemfile.cpp
-    gui/dirviewitemdir.cpp
-    gui/dirviewitemroot.cpp
     gui/settings.cpp
     gui/updatedialog.cpp
     gui/covers.cpp
@@ -45,6 +28,23 @@ SET( CANTATA_SRCS
     gui/playbacksettings.cpp
     gui/serversettings.cpp
     gui/outputsettings.cpp
+    models/musiclibraryitem.cpp
+    models/musiclibraryitemroot.cpp
+    models/musiclibraryitemartist.cpp
+    models/musiclibraryitemalbum.cpp
+    models/musiclibraryitemsong.cpp
+    models/musiclibrarymodel.cpp
+    models/musiclibraryproxymodel.cpp
+    models/playlistsmodel.cpp
+    models/playlistsproxymodel.cpp
+    models/playlisttablemodel.cpp
+    models/playlisttableproxymodel.cpp
+    models/dirviewmodel.cpp
+    models/dirviewproxymodel.cpp
+    models/dirviewitem.cpp
+    models/dirviewitemfile.cpp
+    models/dirviewitemdir.cpp
+    models/dirviewitemroot.cpp
     mpd/mpdconnection.cpp
     mpd/mpdparseutils.cpp
     mpd/mpdstats.cpp
@@ -62,15 +62,6 @@ SET( CANTATA_SRCS
 
 SET( CANTATA_MOC_HDRS
     gui/mainwindow.h
-    gui/musiclibrarymodel.h
-    gui/musiclibraryproxymodel.h
-    gui/playlistsmodel.h
-    gui/playlistsproxymodel.h
-    gui/playlisttablemodel.h
-    gui/playlisttableproxymodel.h
-    gui/preferencesdialog.h
-    gui/dirviewmodel.h
-    gui/dirviewproxymodel.h
     gui/updatedialog.h
     gui/covers.h
     gui/folderpage.h
@@ -80,6 +71,15 @@ SET( CANTATA_MOC_HDRS
     gui/playbacksettings.h
     gui/serversettings.h
     gui/outputsettings.h
+    gui/preferencesdialog.h
+    models/musiclibrarymodel.h
+    models/musiclibraryproxymodel.h
+    models/playlistsmodel.h
+    models/playlistsproxymodel.h
+    models/playlisttablemodel.h
+    models/playlisttableproxymodel.h
+    models/dirviewmodel.h
+    models/dirviewproxymodel.h
     mpd/mpdconnection.h
     mpd/output.h
     mpd/playlist.h
@@ -111,7 +111,8 @@ SET( CANTATA_RCS cantata.qrc )
 
 include_directories( ${CMAKE_SOURCE_DIR}/external/libmaia
                      ${CMAKE_SOURCE_DIR}/gui
-                     ${CMAKE_SOURCE_DIR}/lib
+                     ${CMAKE_SOURCE_DIR}/mpd
+                     ${CMAKE_SOURCE_DIR}/models
                      ${CMAKE_SOURCE_DIR}/widgets
                      ${CMAKE_SOURCE_DIR}/lyrics
                      ${CMAKE_SOURCE_DIR}/network

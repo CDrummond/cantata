@@ -1,9 +1,7 @@
 #include "networkproxyfactory.h"
-
 #include <QMutexLocker>
 #include <QSettings>
 #include <QStringList>
-
 #include <stdlib.h>
 
 NetworkProxyFactory* NetworkProxyFactory::sInstance = NULL;

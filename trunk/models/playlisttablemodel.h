@@ -25,8 +25,7 @@
 #include <QList>
 #include <QStringList>
 #include <QSet>
-
-#include "lib/song.h"
+#include "song.h"
 
 class PlaylistTableModel : public QAbstractTableModel
 {

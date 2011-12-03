@@ -18,19 +18,24 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ABOUT_DIALOG_H
-#define ABOUT_DIALOG_H
+#include "musiclibraryitem.h"
 
-#include <QDialog>
-
-#include "ui_aboutdialog.h"
-
-class AboutDialog : public QDialog, private Ui::AboutDialog
+MusicLibraryItem::MusicLibraryItem(const QString &data, Type type)
+    : m_type(type),
+      m_itemData(data)
 {
-    Q_OBJECT
+}
 
-public:
-    AboutDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
-};
+MusicLibraryItem::~MusicLibraryItem()
+{
+}
 
-#endif
+QVariant MusicLibraryItem::data(int /*column*/) const
+{
+    return m_itemData;
+}
+
+MusicLibraryItem::Type MusicLibraryItem::type() const
+{
+    return m_type;
+}

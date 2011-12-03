@@ -25,9 +25,8 @@
 #include <QDateTime>
 #include <QMimeData>
 #include <QMutex>
-
-#include "gui/musiclibraryitemroot.h"
-#include "lib/song.h"
+#include "musiclibraryitemroot.h"
+#include "song.h"
 
 class MusicLibraryItemAlbum;
 class MusicLibraryItemArtist;

@@ -6,82 +6,125 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>349</width>
+    <height>250</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Host:</string>
+       </property>
+       <property name="buddy">
+        <cstring>hostLineEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="LineEdit" name="hostLineEdit"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Port:</string>
+       </property>
+       <property name="buddy">
+        <cstring>portSpinBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="portSpinBox">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>66000</number>
+       </property>
+       <property name="value">
+        <number>6600</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3b">
+       <property name="text">
+        <string>Password:</string>
+       </property>
+       <property name="buddy">
+        <cstring>passwordLineEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="LineEdit" name="passwordLineEdit">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Music Folder:</string>
+       </property>
+       <property name="buddy">
+        <cstring>mpdDir</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="DirRequester" name="mpdDir"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>8</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Host:</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music Folder' settings is only used to lookup cover-art (&lt;code&gt;cover.jpg&lt;/code&gt; or &lt;code&gt;cover.png&lt;/code&gt;). If you also have write permissions to this folder (and it's sub-folders), then Cantata will save any downloaded covers into the respective album folder.&lt;/i&gt;</string>
      </property>
-     <property name="buddy">
-      <cstring>hostLineEdit</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="LineEdit" name="hostLineEdit"/>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Port:</string>
-     </property>
-     <property name="buddy">
-      <cstring>portSpinBox</cstring>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QSpinBox" name="portSpinBox">
-     <property name="minimum">
-      <number>1</number>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="maximum">
-      <number>66000</number>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>57</height>
+      </size>
      </property>
-     <property name="value">
-      <number>6600</number>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3b">
-     <property name="text">
-      <string>Password:</string>
-     </property>
-     <property name="buddy">
-      <cstring>passwordLineEdit</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="LineEdit" name="passwordLineEdit">
-     <property name="echoMode">
-      <enum>QLineEdit::Password</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Music Folder:</string>
-     </property>
-     <property name="buddy">
-      <cstring>mpdDir</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="DirRequester" name="mpdDir"/>
+    </spacer>
    </item>
   </layout>
  </widget>

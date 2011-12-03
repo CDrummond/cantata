@@ -21,7 +21,7 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "lib/song.h"
+#include "song.h"
 #include "covers.h"
 #include <QtGui/QIcon>
 #include <QtGui/QPixmap>

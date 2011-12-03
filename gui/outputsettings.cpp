@@ -1,5 +1,5 @@
 #include "outputsettings.h"
-#include "lib/mpdconnection.h"
+#include "mpdconnection.h"
 #include <QtGui/QListWidget>
 
 OutputSettings::OutputSettings(QWidget *p)

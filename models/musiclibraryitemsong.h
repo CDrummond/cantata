@@ -23,7 +23,6 @@
 
 #include <QList>
 #include <QVariant>
-
 #include "musiclibraryitem.h"
 
 class MusicLibraryItemAlbum;

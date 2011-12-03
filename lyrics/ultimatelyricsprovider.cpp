@@ -20,7 +20,7 @@
 #include "networkaccessmanager.h"
 //#include "core/network.h"
 
-#include "lib/song.h"
+#include "song.h"
 
 #include <QNetworkReply>
 #include <QTextCodec>

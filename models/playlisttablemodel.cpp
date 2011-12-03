@@ -27,9 +27,9 @@
 #include <KDE/KLocale>
 #endif
 #include "playlisttablemodel.h"
-#include "lib/mpdparseutils.h"
-#include "lib/mpdstats.h"
-#include "lib/mpdstatus.h"
+#include "mpdparseutils.h"
+#include "mpdstats.h"
+#include "mpdstatus.h"
 
 PlaylistTableModel::PlaylistTableModel(QObject *parent)
     : QAbstractTableModel(parent),

@@ -17,34 +17,34 @@
  * You should have received a copy of the GNU General Public License
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef DIRVIEWITEMDIR_H
+#define DIRVIEWITEMDIR_H
 
-#ifndef MUSIC_LIBRARY_ITEM_ROOT_H
-#define MUSIC_LIBRARY_ITEM_ROOT_H
-
+#include <QStringList>
+#include <QString>
 #include <QList>
 #include <QVariant>
+#include "dirviewitem.h"
 
-#include "musiclibraryitem.h"
-
-class MusicLibraryItemArtist;
-
-class MusicLibraryItemRoot : public MusicLibraryItem
+class DirViewItemDir : public DirViewItem
 {
 public:
-    MusicLibraryItemRoot(const QString &data=QString());
-    ~MusicLibraryItemRoot();
+    DirViewItemDir(const QString name, DirViewItem *parent = 0);
+    ~DirViewItemDir();
 
-    void appendChild(MusicLibraryItem * const child);
-    void insertChild(MusicLibraryItem * const child, const int place);
+    DirViewItem * createDirectory(const QString dirName);
+    DirViewItem * insertFile(const QString fileName);
 
-    MusicLibraryItem * child(int row) const;
+    int row() const;
+    DirViewItem * parent() const;
     int childCount() const;
-    void clearChildren();
+    DirViewItem * child(int row) const;
 
 private:
-    QList<MusicLibraryItemArtist *> m_childItems;
+    DirViewItem * const d_parentItem;
+    QList<DirViewItem *> d_childItems;
 
-    friend class MusicLibraryItemArtist;
+    friend class DirViewItemFile;
 };
 
 #endif

@@ -23,7 +23,6 @@
 #include <QAbstractItemModel>
 #include <QList>
 #include <QModelIndex>
-
 #include "dirviewitemroot.h"
 
 class dirViewModel : public QAbstractItemModel

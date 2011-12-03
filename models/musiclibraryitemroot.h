@@ -18,25 +18,32 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MUSIC_LIBRARY_ITEM_ROOT_H
+#define MUSIC_LIBRARY_ITEM_ROOT_H
+
+#include <QList>
+#include <QVariant>
 #include "musiclibraryitem.h"
 
+class MusicLibraryItemArtist;
 
-MusicLibraryItem::MusicLibraryItem(const QString &data, Type type)
-    : m_type(type),
-      m_itemData(data)
+class MusicLibraryItemRoot : public MusicLibraryItem
 {
-}
+public:
+    MusicLibraryItemRoot(const QString &data=QString());
+    ~MusicLibraryItemRoot();
 
-MusicLibraryItem::~MusicLibraryItem()
-{
-}
+    void appendChild(MusicLibraryItem * const child);
+    void insertChild(MusicLibraryItem * const child, const int place);
 
-QVariant MusicLibraryItem::data(int /*column*/) const
-{
-    return m_itemData;
-}
+    MusicLibraryItem * child(int row) const;
+    int childCount() const;
+    void clearChildren();
 
-MusicLibraryItem::Type MusicLibraryItem::type() const
-{
-    return m_type;
-}
+private:
+    QList<MusicLibraryItemArtist *> m_childItems;
+
+    friend class MusicLibraryItemArtist;
+};
+
+#endif

@@ -128,7 +128,7 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
             return song.displayTitle();
             break;
         case 1:
-            return song.albumArtist();
+            return song.artist;
             break;
         case 2:
             return song.album;

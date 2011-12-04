@@ -1,4 +1,11 @@
 /*
+ * Cantata
+ *
+ * Copyright 2011 Craig Drummond <craig.p.drummond@gmail.com>
+ *
+ */
+
+/*
  * Copyright (c) 2008 Sander Knopper (sander AT knopper DOT tk) and
  *                    Roeland Douma (roeland AT rullzer DOT com)
  *

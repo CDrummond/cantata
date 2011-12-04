@@ -109,7 +109,7 @@ SET( CANTATA_UIS
 
 SET( CANTATA_RCS cantata.qrc )
 
-include_directories( ${CMAKE_SOURCE_DIR}/external/libmaia
+include_directories( ${CMAKE_SOURCE_DIR}/libmaia
                      ${CMAKE_SOURCE_DIR}/gui
                      ${CMAKE_SOURCE_DIR}/mpd
                      ${CMAKE_SOURCE_DIR}/models
@@ -174,7 +174,7 @@ ENDIF( ENABLE_KDE_SUPPORT )
 # enable warnings
 ADD_DEFINITIONS( -DQT_NO_DEBUG_OUTPUT )
 
-ADD_SUBDIRECTORY( external/libmaia )
+ADD_SUBDIRECTORY( libmaia )
 
 IF( UNIX AND NOT APPLE )
     install(FILES cantata.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})

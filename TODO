@@ -1,7 +1,9 @@
 Lyrics
     Add next/prev provide buttons - so that can try others.
 
-
+FancyTabWidget
+   - Allow context menu all the way down tab side
+   - When click on an already active tab, hide the associated widget
 
 Fix usage of threads - ideally writing/reading should be in thread object.
 
@@ -10,12 +12,3 @@ Need better repeat icon.
 Support streams - for radio!
    Will probably need to store mapping from URL to name, so that can show this in title.
    How does MPD store this - it doesnt! Could probably save as a playlist with 1 entry?
-
-Covers
-   Rename Cover to CoverCache
-   Disable library updates when cover manager is open
-   Cover fetch dialog
-       Fetching cover for: <album> by <artist>
-       "Configure..." should just have currently selected provider
-   --not worth the hassle, so disable cover manager for now.
-

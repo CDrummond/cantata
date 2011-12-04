@@ -1,3 +1,9 @@
+/*
+ * Cantata
+ *
+ * Copyright 2011 Craig Drummond <craig.p.drummond@gmail.com>
+ *
+ */
 /* This file is part of Clementine.
    Copyright 2010, David Sansome <me@davidsansome.com>
 

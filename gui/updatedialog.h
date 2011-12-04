@@ -1,5 +1,5 @@
 /*
- * Cantata - KDE Font Installer
+ * Cantata
  *
  * Copyright 2011 Craig Drummond <craig.p.drummond@gmail.com>
  *
@@ -20,6 +20,7 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+
 #ifndef UPDATEDIALOG_H
 #define UPDATEDIALOG_H
 

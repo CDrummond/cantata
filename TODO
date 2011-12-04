@@ -1,11 +1,3 @@
-Config pages - need to set buddy widgets!
-
-Code organisation:
-    lib -> mpd
-    create a 'models'  dir to hold libray and dir models
-    Move genre stuff fro main window into librarypage class
-    Remove aboutdialog
-
 Lyrics
     Add next/prev provide buttons - so that can try others.
 

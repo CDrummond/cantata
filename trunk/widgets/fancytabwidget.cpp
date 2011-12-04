@@ -689,7 +689,8 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   }
 
   QWidget *widget=QApplication::widgetAt(e->globalPos());
-  if (!widget || !(qobject_cast<FancyTab *>(widget) || (qobject_cast<QTabBar *>(widget) && widget->parent()==this))) {
+
+  if (!widget || !(qobject_cast<FancyTab *>(widget) || (qobject_cast<QTabBar *>(widget) && widget==tab_bar_))) {
       return;
   }
   if (!menu_) {

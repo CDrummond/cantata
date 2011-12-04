@@ -1045,14 +1045,26 @@ void MainWindow::updateStatus()
         }
     }
 
+    int vol=status->volume();
 #ifdef ENABLE_KDE_SUPPORT
-    volumeButton->setToolTip(i18n("Volume %1%").arg(status->volume()));
-    volumeControl->setToolTip(i18n("Volume %1%").arg(status->volume()));
+    volumeButton->setToolTip(i18n("Volume %1%").arg(vol));
+    volumeControl->setToolTip(i18n("Volume %1%").arg(vol));
 #else
-    volumeButton->setToolTip(tr("Volume %1%").arg(status->volume()));
-    volumeControl->setToolTip(tr("Volume %1%").arg(status->volume()));
+    volumeButton->setToolTip(tr("Volume %1%").arg(vol));
+    volumeControl->setToolTip(tr("Volume %1%").arg(vol));
 #endif
-    volumeControl->setValue(status->volume());
+    volumeButton->setIcon(QIcon::fromTheme("player-volume"));
+    volumeControl->setValue(vol);
+
+    if (0==vol) {
+        volumeButton->setIcon(QIcon::fromTheme("audio-volume-muted"));
+    } else if (vol<=33) {
+        volumeButton->setIcon(QIcon::fromTheme("audio-volume-low"));
+    } else if (vol<=67) {
+        volumeButton->setIcon(QIcon::fromTheme("audio-volume-medium"));
+    } else {
+        volumeButton->setIcon(QIcon::fromTheme("audio-volume-high"));
+    }
 
     randomPushButton->setChecked(status->random());
     repeatPushButton->setChecked(status->repeat());

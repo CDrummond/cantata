@@ -1,5 +1,5 @@
 /*
- * Cantata - KDE Font Installer
+ * Cantata
  *
  * Copyright 2011 Craig Drummond <craig.p.drummond@gmail.com>
  *

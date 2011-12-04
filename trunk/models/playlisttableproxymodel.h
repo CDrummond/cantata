@@ -1,4 +1,10 @@
 /*
+ * Cantata
+ *
+ * Copyright 2011 Craig Drummond <craig.p.drummond@gmail.com>
+ *
+ */
+/*
  * Copyright (c) 2008 Sander Knopper (sander AT knopper DOT tk) and
  *                    Roeland Douma (roeland AT rullzer DOT com)
  *
@@ -17,6 +23,7 @@
  * You should have received a copy of the GNU General Public License
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef PLAYLISTTABLEPROXYMODEL_H
 #define PLAYLISTTABLEPROXYMODEL_H
 

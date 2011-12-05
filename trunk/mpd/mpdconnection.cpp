@@ -165,8 +165,12 @@ bool MPDConnection::connectToMPD()
 
 void MPDConnection::disconnectFromMPD()
 {
-    sock.disconnectFromHost();
-    idleSocket.disconnectFromHost();
+    if (sock.state() == QAbstractSocket::ConnectedState) {
+        sock.disconnectFromHost();
+    }
+    if (idleSocket.state() == QAbstractSocket::ConnectedState) {
+        idleSocket.disconnectFromHost();
+    }
 }
 
 void MPDConnection::setDetails(const QString &host, const quint16 p, const QString &pass)

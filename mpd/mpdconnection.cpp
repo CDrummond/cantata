@@ -173,11 +173,11 @@ void MPDConnection::setDetails(const QString &host, const quint16 p, const QStri
 {
     if (hostname!=host || port!=p || password!=pass) {
         disconnectFromMPD();
-    }
 
-    hostname=host;
-    port=p;
-    password=pass;
+        hostname=host;
+        port=p;
+        password=pass;
+    }
 }
 
 bool MPDConnection::isConnected()
@@ -188,7 +188,7 @@ bool MPDConnection::isConnected()
 MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command)
 {
     if (!connectToMPD()) {
-        return Response();
+        return Response(false);
     }
 
     mutex.lock();

@@ -36,6 +36,7 @@
 22. Use sidebar instead of tabbar.
 23. Support replaygain setting.
 24. Split config into pages.
+25. Add option to stop playback when cantata exits.
 
 
 --------------QtMPC ChangeLog--------------------

@@ -675,6 +675,10 @@ MainWindow::~MainWindow()
     Settings::self()->savePlaylistHeaderState(playlistTableViewHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->save();
+
+    if (Settings::self()->stopOnExit()) {
+        MPDConnection::self()->stopPlaying();
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

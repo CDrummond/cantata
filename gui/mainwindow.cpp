@@ -527,17 +527,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #endif
 
     mainMenu->addAction(showPlaylistAction);
-    mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
 #ifdef ENABLE_KDE_SUPPORT
+    QAction *menuAct= mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+    menuAct->setIcon(QIcon::fromTheme("configure"));
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
-#endif
     mainMenu->addSeparator();
-#ifdef ENABLE_KDE_SUPPORT
-    mainMenu->addMenu(helpMenu());
+   mainMenu->addMenu(helpMenu());
 #else
+    QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+    menuAct->setIcon(QIcon::fromTheme("configure"));
+    mainMenu->addSeparator();
 //     QMenu *menu=new QMenu(tr("Help"), this);
 //     QAction *menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
-    QAction *menuAct=mainMenu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
+    menuAct=mainMenu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
     menuAct->setIcon(windowIcon());
 //     mainMenu->addMenu(menu);
 #endif

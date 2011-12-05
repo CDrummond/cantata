@@ -45,7 +45,7 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s)
 
     if (m_indexes.end()==it) {
         MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, this);
-        m_indexes[aa]=m_childItems.count();
+        m_indexes.insert(aa, m_childItems.count());
         m_childItems.append(item);
         return item;
     }

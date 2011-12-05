@@ -307,6 +307,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     quitAction->setIcon(QIcon::fromTheme("application-exit"));
+    quitAction->setShortcut(QKeySequence::Quit);
     updateDbAction = new QAction(tr("Update Database"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
@@ -979,7 +980,7 @@ void MainWindow::updateCurrentSong(const Song &song)
         coverWidget->setProperty("album", song.album);
     }
 
-    if (song.title.isEmpty() && albumArtist.isEmpty()) {
+    if (song.title.isEmpty() && song.artist.isEmpty()) {
 #ifdef ENABLE_KDE_SUPPORT
         trackLabel->setText(i18n("Stopped"));
 #else

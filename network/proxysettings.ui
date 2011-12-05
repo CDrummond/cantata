@@ -56,12 +56,12 @@
          <widget class="QComboBox" name="proxyType">
           <item>
            <property name="text">
-            <string>HTTP proxy</string>
+            <string>HTTP Proxy</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>SOCKS proxy</string>
+            <string>SOCKS Proxy</string>
            </property>
           </item>
          </widget>

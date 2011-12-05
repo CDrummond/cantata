@@ -20,7 +20,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Show In System Tray:</string>
+      <string>Show icon in notification area:</string>
      </property>
      <property name="buddy">
       <cstring>systemTrayCheckBox</cstring>
@@ -40,7 +40,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>Show Popup Message:</string>
+      <string>Show popup up messages when chaning tracks:</string>
      </property>
      <property name="buddy">
       <cstring>systemTrayPopup</cstring>

@@ -23,6 +23,7 @@
 
 #include "playbacksettings.h"
 #include "mpdconnection.h"
+#include "settings.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -54,10 +55,12 @@ void PlaybackSettings::load()
             break;
         }
     }
+    stopOnExit->setChecked(Settings::self()->stopOnExit());
 }
 
 void PlaybackSettings::save()
 {
     MPDConnection::self()->setCrossFade(crossfading->value());
     MPDConnection::self()->setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
+    Settings::self()->saveStopOnExit(stopOnExit->isChecked());
 }

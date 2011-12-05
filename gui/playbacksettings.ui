@@ -40,7 +40,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label_6a">
      <property name="text">
-      <string>Replay Gain:</string>
+      <string>Replay gain:</string>
      </property>
      <property name="buddy">
       <cstring>replayGain</cstring>

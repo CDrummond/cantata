@@ -37,19 +37,6 @@
 #include "mpdstats.h"
 #include "mpdstatus.h"
 
-enum Columns
-{
-    COL_TITLE,
-    COL_ARTIST,
-    COL_ALBUM,
-    COL_TRACK,
-    COL_LENGTH,
-    COL_DISC,
-    COL_YEAR,
-
-    COL_COUNT
-};
-
 PlaylistTableModel::PlaylistTableModel(QObject *parent)
     : QAbstractTableModel(parent),
       song_id(-1)

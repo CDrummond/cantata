@@ -473,41 +473,13 @@ QStringList MusicLibraryModel::sortAlbumTracks(const MusicLibraryItemAlbum *albu
         return QStringList();
     }
 
-    MusicLibraryItemAlbum *orderedTracks = new MusicLibraryItemAlbum("Album", QString());
-    QStringList unorderedTracks;
+    QMap<int, QString> tracks;
+    quint32 trackWithoutNumberIndex=0xFFFF; // *Very* unlikely to have tracks numbered greater than 65535!!!
 
     for (int i = 0; i < album->childCount(); i++) {
-        MusicLibraryItemSong *tmp_track = static_cast<MusicLibraryItemSong*>(album->child(i));
-        MusicLibraryItemSong *track = new MusicLibraryItemSong("Song");
-        track->setTrack(tmp_track->track());
-        track->setDisc(tmp_track->disc());
-        track->setFile(tmp_track->file());
-
-        if (track->track() == (quint32)0) {
-            unorderedTracks << track->file();
-        }
-
-        bool insert = false;
-        for (int j = 0; j < orderedTracks->childCount(); j++) {
-            if (track->track() < static_cast<MusicLibraryItemSong*>(orderedTracks->child(j))->track()) {
-                orderedTracks->insertChild(track, j);
-                insert = true;
-                break;
-            }
-        }
-
-        if (insert == false) {
-            orderedTracks->insertChild(track, orderedTracks->childCount());
-        }
+        MusicLibraryItemSong *trackItem = static_cast<MusicLibraryItemSong*>(album->child(i));
+        tracks.insert(0==trackItem->track() || trackItem->track()>0xFFFF ? trackWithoutNumberIndex++ : trackItem->track(), trackItem->file());
     }
 
-    QStringList tracks;
-    for (int i = 0; i < orderedTracks->childCount(); i++) {
-        tracks << static_cast<MusicLibraryItemSong*>(orderedTracks->child(i))->file();
-    }
-    tracks << unorderedTracks;
-
-    orderedTracks->clearChildren();
-    delete orderedTracks;
-    return tracks;
+    return tracks.values();
 }

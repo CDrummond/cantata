@@ -124,7 +124,7 @@ void UltimateLyricsProvider::LyricsFetched() {
 
   const QTextCodec* codec = QTextCodec::codecForName(charset_.toAscii().constData());
   const QString original_content = codec->toUnicode(reply->readAll());
-qWarning() << original_content;
+
   // Check for invalid indicators
   foreach (const QString& indicator, invalid_indicators_) {
     if (original_content.contains(indicator)) {

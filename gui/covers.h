@@ -25,7 +25,7 @@
 #define COVERS_H
 
 #include <QtCore/QObject>
-#include <QtCore/QMap>
+#include <QtCore/QHash>
 
 class Song;
 class QImage;
@@ -64,13 +64,13 @@ private Q_SLOTS:
 
 private:
     void saveImg(const Job &job, const QImage &img, const QByteArray &raw);
-    QMap<QNetworkReply *, Job>::Iterator findJob(const Song &song);
+    QHash<QNetworkReply *, Job>::Iterator findJob(const Song &song);
 
 private:
     QString mpdDir;
     MaiaXmlRpcClient *rpc;
     NetworkAccessManager *manager;
-    QMap<QNetworkReply *, Job> jobs;
+    QHash<QNetworkReply *, Job> jobs;
 };
 
 #endif

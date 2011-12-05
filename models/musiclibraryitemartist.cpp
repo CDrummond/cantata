@@ -46,7 +46,7 @@ MusicLibraryItemArtist::~MusicLibraryItemArtist()
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s)
 {
-    QMap<QString, int>::Iterator it=m_indexes.find(s.album);
+    QHash<QString, int>::Iterator it=m_indexes.find(s.album);
 
     if (m_indexes.end()==it) {
         MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, MPDParseUtils::getDir(s.file), this);

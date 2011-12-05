@@ -240,8 +240,8 @@ void Covers::get(const Song &song)
 
 void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
 {
-    QMap<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
-    QMap<QNetworkReply *, Job>::Iterator end(jobs.end());
+    QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
+    QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
 
     if (it!=end) {
         QString xmldoc = value.toString();
@@ -272,8 +272,8 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
 
 void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
 {
-    QMap<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
-    QMap<QNetworkReply *, Job>::Iterator end(jobs.end());
+    QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
+    QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
 
     if (it!=end) {
         Job job=it.value();
@@ -286,8 +286,8 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
 
 void Covers::jobFinished(QNetworkReply *reply)
 {
-    QMap<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
-    QMap<QNetworkReply *, Job>::Iterator end(jobs.end());
+    QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
+    QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
 
     if (it!=end) {
         QByteArray data=QNetworkReply::NoError==reply->error() ? reply->readAll() : QByteArray();
@@ -331,10 +331,10 @@ void Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw)
     }
 }
 
-QMap<QNetworkReply *, Covers::Job>::Iterator Covers::findJob(const Song &song)
+QHash<QNetworkReply *, Covers::Job>::Iterator Covers::findJob(const Song &song)
 {
-    QMap<QNetworkReply *, Job>::Iterator it(jobs.begin());
-    QMap<QNetworkReply *, Job>::Iterator end(jobs.end());
+    QHash<QNetworkReply *, Job>::Iterator it(jobs.begin());
+    QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
 
     for (; it!=end; ++it) {
         if ((*it).artist==song.albumArtist() && (*it).album==song.album) {

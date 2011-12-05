@@ -313,9 +313,10 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
     QFile file(dir + filename);
 
     MusicLibraryItemRoot * const rootItem = new MusicLibraryItemRoot("Artist / Album / Song");
-    MusicLibraryItemArtist *artistItem = NULL;
-    MusicLibraryItemAlbum *albumItem = NULL;
-    MusicLibraryItemSong *songItem = NULL;
+    MusicLibraryItemArtist *artistItem = 0;
+    MusicLibraryItemAlbum *albumItem = 0;
+    MusicLibraryItemSong *songItem = 0;
+    Song song;
 
     file.open(QIODevice::ReadOnly);
 
@@ -354,40 +355,35 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                 if (valid) {
                     //New artist element. Create it an add it
                     if (element == "Artist") {
-                        QString artist_string = reader.attributes().value("name").toString();
-
-                        artistItem = new MusicLibraryItemArtist(artist_string, rootItem);
-                        rootItem->appendChild(artistItem);
+                        song.artist=reader.attributes().value("name").toString();
+                        artistItem = rootItem->artist(song);
                     }
 
                     // New album element. Create it and add it to the artist
                     if (element == "Album") {
-                        QString album_string = reader.attributes().value("title").toString();
-                        QString dir_string = reader.attributes().value("dir").toString();
-
-                        albumItem = new MusicLibraryItemAlbum(album_string, dir_string, artistItem);
-                        artistItem->appendChild(albumItem);
+                        song.album=reader.attributes().value("title").toString();
+                        song.file=reader.attributes().value("dir").toString();
+                        if (!song.file.isEmpty()) {
+                            song.file.append("dummy.mp3");
+                        }
+                        albumItem = artistItem->album(song);
                     }
 
                     // New track element. Create it and add it to the album
                     if (element == "Track") {
-                        QString track_name = reader.attributes().value("title").toString();
-                        songItem = new MusicLibraryItemSong(track_name, albumItem);
+                        song.title=reader.attributes().value("title").toString();
+                        song.file=reader.attributes().value("filename").toString();
 
-                        QString track_file = reader.attributes().value("filename").toString();
-                        songItem->setFile(track_file);
+                        QString str=reader.attributes().value("track").toString();
+                        song.track=str.isEmpty() ? 0 : str.toUInt();
+                        str=reader.attributes().value("disc").toString();
+                        song.disc=str.isEmpty() ? 0 : str.toUInt();
 
-                        QString track_number_string = reader.attributes().value("track").toString();
-                        QString disc_number_string = reader.attributes().value("disc").toString();
+                        songItem = new MusicLibraryItemSong(song, albumItem);
+
+                        albumItem->appendSong(songItem);
+
                         QString genre = reader.attributes().value("genre").toString();
-                        if (!track_number_string.isEmpty()) {
-                            quint32 track_number = track_number_string.toUInt();
-                            quint32 disc_number = disc_number_string.toUInt();
-                            songItem->setTrack(track_number);
-                            songItem->setDisc(disc_number);
-                        }
-
-                        albumItem->appendChild(songItem);
                         albumItem->addGenre(genre);
                         artistItem->addGenre(genre);
                         songItem->addGenre(genre);

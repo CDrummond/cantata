@@ -29,7 +29,7 @@
 
 #include <QList>
 #include <QVariant>
-#include <QMap>
+#include <QHash>
 #include "musiclibraryitem.h"
 
 class Song;
@@ -46,7 +46,7 @@ public:
     int childCount() const;
 
 private:
-    QMap<QString, int> m_indexes;
+    QHash<QString, int> m_indexes;
     QList<MusicLibraryItemArtist *> m_childItems;
 
     friend class MusicLibraryItemArtist;

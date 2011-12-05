@@ -27,7 +27,7 @@
 #include <QObject>
 #include <QPair>
 #include <QStringList>
-#include <QMap>
+#include <QHash>
 #include "songinfoprovider.h"
 
 class Song;
@@ -83,7 +83,7 @@ private:
 
 private:
   NetworkAccessManager* network_;
-  QMap<QNetworkReply*, int> requests_;
+  QHash<QNetworkReply*, int> requests_;
 
   QString name_;
   QString title_;

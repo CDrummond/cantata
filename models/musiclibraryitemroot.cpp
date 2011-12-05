@@ -41,7 +41,7 @@ MusicLibraryItemRoot::~MusicLibraryItemRoot()
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s)
 {
     QString aa=s.albumArtist();
-    QMap<QString, int>::Iterator it=m_indexes.find(aa);
+    QHash<QString, int>::Iterator it=m_indexes.find(aa);
 
     if (m_indexes.end()==it) {
         MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, this);

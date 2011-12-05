@@ -576,8 +576,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistTableView->addAction(shufflePlaylistAction);
     playlistTableView->addAction(copySongInfoAction);
     connect(playlistTableView, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
-    setupPlaylistViewHeader();
-    setupPlaylistViewMenu();
+    setupPlaylistView();
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated()), this, SLOT(updateStats()));
     connect(MPDConnection::self(), SIGNAL(statusUpdated()), this, SLOT(updateStatus()), Qt::DirectConnection);
@@ -1482,8 +1481,24 @@ void MainWindow::togglePlaylist()
 }
 
 // PlayList view //
-void MainWindow::setupPlaylistViewMenu()
+void MainWindow::setupPlaylistView()
 {
+    playlistTableViewHeader = playlistTableView->header();
+
+    playlistTableViewHeader->setMovable(true);
+    playlistTableViewHeader->setResizeMode(QHeaderView::Interactive);
+    playlistTableViewHeader->setContextMenuPolicy(Qt::CustomContextMenu);
+    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_TITLE, QHeaderView::Interactive);
+    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_ARTIST, QHeaderView::Interactive);
+    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_ALBUM, QHeaderView::Stretch);
+    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_YEAR, QHeaderView::ResizeToContents);
+    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_TRACK, QHeaderView::ResizeToContents);
+    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_LENGTH, QHeaderView::ResizeToContents);
+    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_DISC, QHeaderView::ResizeToContents);
+    playlistTableViewHeader->setStretchLastSection(false);
+
+    connect(playlistTableViewHeader, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(playlistTableViewContextMenuClicked()));
+
     playlistTableViewMenu = new QMenu(this);
 
     QStringList names;
@@ -1508,25 +1523,14 @@ void MainWindow::setupPlaylistViewMenu()
     if (!state.isEmpty()) {
         playlistTableViewHeader->restoreState(state);
 
-        for(int i=3; i<7; ++i) {
+        for(int i=3; i<PlaylistTableModel::COL_COUNT; ++i) {
             if (playlistTableViewHeader->isSectionHidden(i) || playlistTableViewHeader->sectionSize(i) == 0) {
                 viewActions.at(i-3)->setChecked(false);
-                playlistTableViewHeader->resizeSection(i, 100);
+//                 playlistTableViewHeader->resizeSection(i, 100);
                 playlistTableViewHeader->setSectionHidden(i, true);
             }
         }
     }
-}
-
-void MainWindow::setupPlaylistViewHeader()
-{
-    playlistTableViewHeader = playlistTableView->header();
-
-    playlistTableViewHeader->setMovable(true);
-    playlistTableViewHeader->setResizeMode(QHeaderView::Interactive);
-    playlistTableViewHeader->setContextMenuPolicy(Qt::CustomContextMenu);
-
-    connect(playlistTableViewHeader, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(playlistTableViewContextMenuClicked()));
 }
 
 void MainWindow::playlistTableViewContextMenuClicked()

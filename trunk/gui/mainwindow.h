@@ -144,8 +144,7 @@ private:
     void addDirViewSelectionToPlaylist();
     QStringList walkDirView(QModelIndex rootItem);
     bool setupTrayIcon();
-    void setupPlaylistViewMenu();
-    void setupPlaylistViewHeader();
+    void setupPlaylistView();
 
 private Q_SLOTS:
     void playlistItemsSelected(bool s);

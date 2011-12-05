@@ -38,6 +38,20 @@ class PlaylistTableModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
+
+    enum Columns
+    {
+        COL_TITLE,
+        COL_ARTIST,
+        COL_ALBUM,
+        COL_TRACK,
+        COL_LENGTH,
+        COL_DISC,
+        COL_YEAR,
+
+        COL_COUNT
+    };
+
     PlaylistTableModel(QObject *parent = 0);
     ~PlaylistTableModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

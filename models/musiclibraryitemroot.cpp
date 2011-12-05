@@ -26,6 +26,7 @@
 
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemartist.h"
+#include "song.h"
 
 MusicLibraryItemRoot::MusicLibraryItemRoot(const QString &data)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Root)
@@ -37,20 +38,18 @@ MusicLibraryItemRoot::~MusicLibraryItemRoot()
     qDeleteAll(m_childItems);
 }
 
-void MusicLibraryItemRoot::appendChild(MusicLibraryItem * const item)
+MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s)
 {
-    m_childItems.append(static_cast<MusicLibraryItemArtist *>(item));
-}
+    QString aa=s.albumArtist();
+    QMap<QString, int>::Iterator it=m_indexes.find(aa);
 
-/**
- * Insert a new child item at a given place
- *
- * @param child The child item
- * @param place The place to insert the child item
- */
-void MusicLibraryItemRoot::insertChild(MusicLibraryItem * const child, const int place)
-{
-    m_childItems.insert(place, static_cast<MusicLibraryItemArtist *>(child));
+    if (m_indexes.end()==it) {
+        MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, this);
+        m_indexes[aa]=m_childItems.count();
+        m_childItems.append(item);
+        return item;
+    }
+    return m_childItems.at(*it);
 }
 
 MusicLibraryItem * MusicLibraryItemRoot::child(int row) const
@@ -61,9 +60,4 @@ MusicLibraryItem * MusicLibraryItemRoot::child(int row) const
 int MusicLibraryItemRoot::childCount() const
 {
     return m_childItems.count();
-}
-
-void MusicLibraryItemRoot::clearChildren()
-{
-    qDeleteAll(m_childItems);
 }

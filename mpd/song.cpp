@@ -28,8 +28,7 @@
 #include "song.h"
 
 Song::Song()
-    : QObject(),
-      id(-1),
+    : id(-1),
       time(0),
       track(0),
       pos(0),
@@ -39,8 +38,7 @@ Song::Song()
 }
 
 Song::Song(const Song &s)
-    : QObject(),
-      id(s.id),
+    : id(s.id),
       file(s.file),
       time(s.time),
       album(s.album),

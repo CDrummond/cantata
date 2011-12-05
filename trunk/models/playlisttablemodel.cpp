@@ -37,6 +37,19 @@
 #include "mpdstats.h"
 #include "mpdstatus.h"
 
+enum Columns
+{
+    COL_TITLE,
+    COL_ARTIST,
+    COL_ALBUM,
+    COL_TRACK,
+    COL_LENGTH,
+    COL_DISC,
+    COL_YEAR,
+
+    COL_COUNT
+};
+
 PlaylistTableModel::PlaylistTableModel(QObject *parent)
     : QAbstractTableModel(parent),
       song_id(-1)
@@ -54,34 +67,34 @@ QVariant PlaylistTableModel::headerData(int section, Qt::Orientation orientation
         if (role == Qt::DisplayRole) {
             switch (section) {
 #ifdef ENABLE_KDE_SUPPORT
-            case 0:
+            case COL_TITLE:
                 return i18n("Title");
-            case 1:
+            case COL_ARTIST:
                 return i18n("Artist");
-            case 2:
+            case COL_ALBUM:
                 return i18n("Album");
-            case 3:
+            case COL_TRACK:
                 return i18n("Track");
-            case 4:
+            case COL_LENGTH:
                 return i18n("Length");
-            case 5:
+            case COL_DISC:
                 return i18n("Disc");
-            case 6:
+            case COL_YEAR:
                 return i18n("Year");
 #else
-            case 0:
+            case COL_TITLE:
                 return tr("Title");
-            case 1:
+            case COL_ARTIST:
                 return tr("Artist");
-            case 2:
+            case COL_ALBUM:
                 return tr("Album");
-            case 3:
+            case COL_TRACK:
                 return tr("Track");
-            case 4:
+            case COL_LENGTH:
                 return tr("Length");
-            case 5:
+            case COL_DISC:
                 return tr("Disc");
-            case 6:
+            case COL_YEAR:
                 return tr("Year");
 #endif
             default:
@@ -102,7 +115,7 @@ int PlaylistTableModel::rowCount(const QModelIndex &) const
 
 int PlaylistTableModel::columnCount(const QModelIndex &) const
 {
-    return 7;
+    return COL_COUNT;
 }
 
 QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
@@ -124,29 +137,29 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) {
         const Song &song = songs.at(index.row());
         switch (index.column()) {
-        case 0:
+        case COL_TITLE:
             return song.title; // displayTitle();
             break;
-        case 1:
+        case COL_ARTIST:
             return song.artist; // albumArtist();
             break;
-        case 2:
+        case COL_ALBUM:
             return song.album;
             break;
-        case 3:
+        case COL_TRACK:
             if (song.track <= 0)
                 return QVariant();
             return song.track;
             break;
-        case 4:
+        case COL_LENGTH:
             return Song::formattedTime(song.time);
             break;
-        case 5:
+        case COL_DISC:
             if (song.disc <= 0)
                 return QVariant();
             return song.disc;
             break;
-        case 6:
+        case COL_YEAR:
             if (song.year <= 0)
                 return QVariant();
             return song.year;

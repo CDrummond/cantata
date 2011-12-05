@@ -52,15 +52,11 @@ public:
     MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent = 0);
     ~MusicLibraryItemAlbum();
 
-    void appendChild(MusicLibraryItem * const child);
-    void insertChild(MusicLibraryItem * const child, const int place);
-
+    void appendSong(MusicLibraryItemSong * const song);
     MusicLibraryItem * child(int row) const;
     int childCount() const;
     int row() const;
     MusicLibraryItem * parent() const;
-    void clearChildren();
-
     bool setCover(const QImage &img);
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }

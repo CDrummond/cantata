@@ -286,8 +286,6 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
     QByteArray currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
-    MusicLibraryItemArtist *prevArtist=0;
-    MusicLibraryItemAlbum *prevAlbum=0;
 
     for (int i = 0; i < amountOfLines; i++) {
         currentItem += lines.at(i);
@@ -301,53 +299,11 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
             }
 
             currentSong.fillEmptyFields();
+            MusicLibraryItemArtist *artistItem = rootItem->artist(currentSong);
+            MusicLibraryItemAlbum *albumItem = artistItem->album(currentSong);
+            MusicLibraryItemSong *songItem = new MusicLibraryItemSong(currentSong, albumItem);
 
-            const QString &albumArtist=currentSong.albumArtist();
-            MusicLibraryItemArtist *artistItem = 0;
-
-            if (!prevArtist || prevArtist->data(0) != albumArtist) {
-                prevArtist=0;
-                prevAlbum=0;
-                int amountOfArtists = rootItem->childCount();
-                // Check if artist already exists
-                for (int i = amountOfArtists - 1; i >= 0 && !artistItem; i--) {
-                    if (rootItem->child(i)->data(0) == albumArtist) {
-                        artistItem = static_cast<MusicLibraryItemArtist *>(rootItem->child(i));
-                    }
-                }
-            }
-
-            if (!artistItem) {
-                artistItem = new MusicLibraryItemArtist(albumArtist, rootItem);
-                rootItem->appendChild(artistItem);
-            }
-
-            prevArtist=artistItem;
-            MusicLibraryItemAlbum *albumItem = 0;
-
-            if (!prevAlbum || prevAlbum->data(0) != currentSong.album) {
-                int amountOfAlbums = artistItem->childCount();
-                // Check if album already exists
-                for (int i = amountOfAlbums - 1; i >= 0 && !albumItem; i--) {
-                    if (artistItem->child(i)->data(0) == currentSong.album) {
-                        albumItem = static_cast<MusicLibraryItemAlbum *>(artistItem->child(i));
-                    }
-                }
-            }
-
-            if (!albumItem) {
-                albumItem = new MusicLibraryItemAlbum(currentSong.album, getDir(currentSong.file), artistItem);
-                artistItem->appendChild(albumItem);
-            }
-            prevAlbum=albumItem;
-
-            // Add song to album (possibly in track order)
-            MusicLibraryItemSong *songItem = new MusicLibraryItemSong(currentSong.displayTitle(), albumItem);
-            songItem->setFile(currentSong.file);
-            songItem->setTrack(currentSong.track);
-            songItem->setDisc(currentSong.disc);
-            albumItem->appendChild(songItem);
-
+            albumItem->appendSong(songItem);
             albumItem->addGenre(currentSong.genre);
             artistItem->addGenre(currentSong.genre);
             songItem->addGenre(currentSong.genre);

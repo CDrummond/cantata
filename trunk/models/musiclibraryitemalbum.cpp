@@ -64,7 +64,6 @@ void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
     }
 }
 
-
 MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Album)
     , m_dir(dir)
@@ -78,20 +77,9 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
     qDeleteAll(m_childItems);
 }
 
-void MusicLibraryItemAlbum::appendChild(MusicLibraryItem * const item)
+void MusicLibraryItemAlbum::appendSong(MusicLibraryItemSong * const song)
 {
-    m_childItems.append(static_cast<MusicLibraryItemSong *>(item));
-}
-
-/**
- * Insert a new child item at a given place
- *
- * @param child The child item
- * @param place The place to insert the child item
- */
-void MusicLibraryItemAlbum::insertChild(MusicLibraryItem * const child, const int place)
-{
-    m_childItems.insert(place, static_cast<MusicLibraryItemSong *>(child));
+    m_childItems.append(song);
 }
 
 MusicLibraryItem * MusicLibraryItemAlbum::child(int row) const
@@ -112,12 +100,6 @@ MusicLibraryItem * MusicLibraryItemAlbum::parent() const
 int MusicLibraryItemAlbum::row() const
 {
     return m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItemAlbum*>(this));
-}
-
-void MusicLibraryItemAlbum::clearChildren()
-{
-    qDeleteAll(m_childItems);
-    m_childItems.clear();
 }
 
 bool MusicLibraryItemAlbum::setCover(const QImage &img)

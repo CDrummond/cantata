@@ -27,6 +27,8 @@
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
+#include "song.h"
+#include "mpdparseutils.h"
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItem *parent)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Artist),
@@ -42,20 +44,17 @@ MusicLibraryItemArtist::~MusicLibraryItemArtist()
     qDeleteAll(m_childItems);
 }
 
-void MusicLibraryItemArtist::appendChild(MusicLibraryItem * const item)
+MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s)
 {
-    m_childItems.append(static_cast<MusicLibraryItemAlbum *>(item));
-}
+    QMap<QString, int>::Iterator it=m_indexes.find(s.album);
 
-/**
- * Insert a new child item at a given place
- *
- * @param child The child item
- * @param place The place to insert the child item
- */
-void MusicLibraryItemArtist::insertChild(MusicLibraryItem * const child, const int place)
-{
-    m_childItems.insert(place, static_cast<MusicLibraryItemAlbum *>(child));
+    if (m_indexes.end()==it) {
+        MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, MPDParseUtils::getDir(s.file), this);
+        m_indexes[s.album]=m_childItems.count();
+        m_childItems.append(item);
+        return item;
+    }
+    return m_childItems.at(*it);
 }
 
 MusicLibraryItem * MusicLibraryItemArtist::child(int row) const
@@ -81,12 +80,6 @@ void MusicLibraryItemArtist::setParent(MusicLibraryItem * const parent)
 int MusicLibraryItemArtist::row() const
 {
     return m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItemArtist*>(this));
-}
-
-void MusicLibraryItemArtist::clearChildren()
-{
-    qDeleteAll(m_childItems);
-    m_childItems.clear();
 }
 
 const QString & MusicLibraryItemArtist::baseArtist() const

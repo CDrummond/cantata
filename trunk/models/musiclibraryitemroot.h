@@ -29,8 +29,10 @@
 
 #include <QList>
 #include <QVariant>
+#include <QMap>
 #include "musiclibraryitem.h"
 
+class Song;
 class MusicLibraryItemArtist;
 
 class MusicLibraryItemRoot : public MusicLibraryItem
@@ -39,14 +41,12 @@ public:
     MusicLibraryItemRoot(const QString &data=QString());
     ~MusicLibraryItemRoot();
 
-    void appendChild(MusicLibraryItem * const child);
-    void insertChild(MusicLibraryItem * const child, const int place);
-
+    MusicLibraryItemArtist * artist(const Song &s);
     MusicLibraryItem * child(int row) const;
     int childCount() const;
-    void clearChildren();
 
 private:
+    QMap<QString, int> m_indexes;
     QList<MusicLibraryItemArtist *> m_childItems;
 
     friend class MusicLibraryItemArtist;

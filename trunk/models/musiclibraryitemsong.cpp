@@ -26,11 +26,13 @@
 
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "song.h"
 
-MusicLibraryItemSong::MusicLibraryItemSong(const QString &data, MusicLibraryItem *parent)
-    : MusicLibraryItem(data, MusicLibraryItem::Type_Song),
-      m_track(0),
-      m_disc(0),
+MusicLibraryItemSong::MusicLibraryItemSong(const Song &s, MusicLibraryItem *parent)
+    : MusicLibraryItem(s.displayTitle(), MusicLibraryItem::Type_Song),
+      m_track(s.track),
+      m_file(s.file),
+      m_disc(s.disc),
       m_parentItem(static_cast<MusicLibraryItemAlbum *>(parent))
 {
 }
@@ -52,21 +54,6 @@ int MusicLibraryItemSong::row() const
 const QString & MusicLibraryItemSong::file() const
 {
     return m_file;
-}
-
-void MusicLibraryItemSong::setFile(const QString &filename)
-{
-    m_file = filename;
-}
-
-void MusicLibraryItemSong::setTrack(quint32 track_nr)
-{
-    m_track = track_nr;
-}
-
-void MusicLibraryItemSong::setDisc(quint32 disc_nr)
-{
-    m_disc = disc_nr;
 }
 
 quint32 MusicLibraryItemSong::track() const

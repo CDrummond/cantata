@@ -31,20 +31,18 @@
 #include <QVariant>
 #include "musiclibraryitem.h"
 
+class Song;
 class MusicLibraryItemAlbum;
 
 class MusicLibraryItemSong : public MusicLibraryItem
 {
 public:
-    MusicLibraryItemSong(const QString &data, MusicLibraryItem *parent = 0);
+    MusicLibraryItemSong(const Song &s, MusicLibraryItem *parent = 0);
     ~MusicLibraryItemSong();
 
     int row() const;
     MusicLibraryItem * parent() const;
     const QString & file() const;
-    void setFile(const QString &filename);
-    void setTrack(quint32 track_nr);
-    void setDisc(quint32 disc_nr);
     quint32 track() const;
     quint32 disc() const;
     QString genre() const {

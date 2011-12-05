@@ -29,7 +29,7 @@
 
 #include <QList>
 #include <QVariant>
-#include <QMap>
+#include <QHash>
 #include "musiclibraryitem.h"
 
 class Song;
@@ -52,7 +52,7 @@ public:
 
 private:
     QString nonTheArtist;
-    QMap<QString, int> m_indexes;
+    QHash<QString, int> m_indexes;
     QList<MusicLibraryItemAlbum *> m_childItems;
     MusicLibraryItemRoot *m_parentItem;
 

@@ -50,7 +50,7 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s)
 
     if (m_indexes.end()==it) {
         MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, MPDParseUtils::getDir(s.file), this);
-        m_indexes[s.album]=m_childItems.count();
+        m_indexes.insert(s.album, m_childItems.count());
         m_childItems.append(item);
         return item;
     }

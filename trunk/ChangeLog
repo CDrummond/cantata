@@ -4,9 +4,12 @@
 2. Hide listview headers
 3. Dir view -> Folders, Library view -> Library
 4. Removed setting of font style and size - only bold now set
-5. Handle album artist tag, artist changed to albumartist, and title to "artist - title"
+5. In library list, use album-artist (if available, artist otherwise) to group
+   albums. When album-artist is used, display tracks as "artist - track"
 6. Remove search combo, and always default to 'Any'
-7. Removed warning when add to playlist, and nothing selected - was inconsistent with playlist view.
+7. Removed warning when add to playlist, and nothing selected - was inconsistent
+   with playlist view. (Add to playlist actions should now only be enabled if
+   there is something selected)
 8. Fix call to setupGUI so as to not create a statusbar!
 9. If compiled with KDE support;
     - use KMessageBox
@@ -17,17 +20,19 @@
 11. Hide/show playlist when click cover
 12. Fix blank item showing in playlist when playlist is empty
 13. Hide password in preferences dialog
-14. Only 2 socket connections to MPD - one for commands, and one for idle messages.
+14. Only 2 socket connections to MPD - one for commands, and one for idle
+    messages.
 15. Only load data for a tab when the tab is selected.
-16. If saving to a pre-existing playlist, as the user if it is ok to overwrite. If so, delete
-    the existing one first, then save.
+16. If saving to a pre-existing playlist, as the user if it is ok to overwrite.
+    If so, delete the existing one first, then save.
 17. Add a combo to filter on genre.
-18. Check for cover (cover.png/jpg, folder.png/jpg, album.png/jpg, icon.png/jpg) within folder
-    of current track to get cover-art. Oterhwise download.
+18. Check for cover (cover.png/jpg) within folder of current track to get
+    cover-art, otherwise download.
 19. Also check mpdFolder+filename.lyrics for lyrics file
 20. Fetch lyrics
-21. Use QNetworkAccessManager for HTTP downloads. If compiled woth KDE support, use
-    KIO::Integration::AccessManager so that we can gain access to KDE's proxy settings.
+21. Use QNetworkAccessManager for HTTP downloads. If compiled woth KDE support,
+    use KIO::Integration::AccessManager so that we can gain access to KDE's
+    proxy settings.
 22. Use sidebar instead of tabbar.
 23. Support replaygain setting.
 24. Split config into pages.

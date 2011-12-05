@@ -171,7 +171,10 @@ void MPDConnection::disconnectFromMPD()
 
 void MPDConnection::setDetails(const QString &host, const quint16 p, const QString &pass)
 {
-    // TODO: If diff, then reconnect!
+    if (hostname!=host || port!=p || password!=pass) {
+        disconnectFromMPD();
+    }
+
     hostname=host;
     port=p;
     password=pass;

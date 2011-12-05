@@ -101,7 +101,7 @@ QVariant PlaylistTableModel::headerData(int section, Qt::Orientation orientation
                 break;
             }
         } else if (role == Qt::TextAlignmentRole) {
-            return Qt::AlignLeft;
+            return section<COL_TRACK ? Qt::AlignLeft : Qt::AlignRight;
         }
     }
 
@@ -167,6 +167,8 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
         default:
             break;
         }
+    } else if (role == Qt::TextAlignmentRole) {
+        return index.column()<COL_TRACK ? Qt::AlignLeft : Qt::AlignRight;
     }
 
     return QVariant();

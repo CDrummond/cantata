@@ -125,10 +125,10 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
         const Song &song = songs.at(index.row());
         switch (index.column()) {
         case 0:
-            return song.displayTitle();
+            return song.title; // displayTitle();
             break;
         case 1:
-            return song.artist;
+            return song.artist; // albumArtist();
             break;
         case 2:
             return song.album;

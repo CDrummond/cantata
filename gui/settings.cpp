@@ -170,6 +170,11 @@ bool Settings::showPopups()
     return GET_BOOL("showPopups", false);
 }
 
+bool Settings::stopOnExit()
+{
+    return GET_BOOL("stopOnExit", false);
+}
+
 QString Settings::mpdDir()
 {
     QString d=GET_STRING("mpdDir", "/var/lib/mpd/music");
@@ -288,6 +293,11 @@ void Settings::saveUseSystemTray(bool v)
 void Settings::saveShowPopups(bool v)
 {
     SET_VALUE("showPopups", v);
+}
+
+void Settings::saveStopOnExit(bool v)
+{
+    SET_VALUE("stopOnExit", v);
 }
 
 void Settings::saveMpdDir(const QString &v)

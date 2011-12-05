@@ -55,6 +55,7 @@ public:
 #endif
     bool useSystemTray();
     bool showPopups();
+    bool stopOnExit();
     QString mpdDir();
     int coverSize();
     int sidebar();
@@ -67,6 +68,7 @@ public:
     void saveRandomPlaylist(bool v);
     void saveRepeatPlaylist(bool v);
     void saveShowPlaylist(bool v);
+    void saveStopOnExit(bool v);
     void savePlaylistHeaderState(const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
 #ifndef ENABLE_KDE_SUPPORT

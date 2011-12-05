@@ -219,7 +219,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #endif
 
 #ifdef ENABLE_KDE_SUPPORT
-    KAction *pref=KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
+    KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
     quitAction=KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
     updateDbAction = actionCollection()->addAction("updatedatabase");
@@ -304,8 +304,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     lyricsTabAction = actionCollection()->addAction("showlyricstab");
     lyricsTabAction->setText(i18n("Lyrics"));
 #else
-    quitAction = new QAction(tr("&Quit"), trayIconMenu);
+    quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    quitAction->setIcon(QIcon::fromTheme("application-exit"));
     updateDbAction = new QAction(tr("Update Database"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
@@ -525,7 +526,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #endif
 
     mainMenu->addAction(showPlaylistAction);
-    mainMenu->addAction(pref);
+    mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
 #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
 #endif
@@ -533,10 +534,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addMenu(helpMenu());
 #else
-    QMenu *menu=new QMenu(tr("Help"), this);
-    menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
+//     QMenu *menu=new QMenu(tr("Help"), this);
+//     QAction *menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
+    QAction *menuAct=mainMenu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
     menuAct->setIcon(windowIcon());
-    mainMenu->addMenu(menu);
+//     mainMenu->addMenu(menu);
 #endif
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
@@ -783,7 +785,7 @@ void MainWindow::showAboutDialog()
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowTitle(tr("About Cantata"));
-    msgBox.setText(tr("Simple GUI front-end for MPD.<br/>(c) Craig Drummond 2001.<br/>Released under the GPLv2<br/><br/><i>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</i>"));
+    msgBox.setText(tr("Simple GUI front-end for MPD.<br/><br/>(c) Craig Drummond 2001.<br/>Released under the GPLv2<br/><br/><i><small>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>"));
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
 }

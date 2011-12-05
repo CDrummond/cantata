@@ -28,13 +28,10 @@
 #ifndef SONG_H
 #define SONG_H
 
-#include <QObject>
 #include <QString>
 
-class Song : public QObject
+class Song
 {
-    Q_OBJECT
-
 public:
     qint32 id;
     QString file;

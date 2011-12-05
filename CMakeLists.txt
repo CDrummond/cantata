@@ -81,15 +81,12 @@ SET( CANTATA_MOC_HDRS
     models/dirviewmodel.h
     models/dirviewproxymodel.h
     mpd/mpdconnection.h
-    mpd/output.h
-    mpd/playlist.h
     mpd/song.h
     widgets/fancytabwidget.h
     widgets/treeview.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h
-    lyrics/ultimatelyricsreader.h
     lyrics/songinfoprovider.h
     network/networkaccessmanager.h
 )

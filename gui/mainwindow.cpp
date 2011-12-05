@@ -44,7 +44,7 @@
 #include <KXMLGUIFactory>
 #include <KMessageBox>
 #include <KIcon>
-// #include <KMenuBar>
+#include <KMenuBar>
 #include <KMenu>
 #else
 #include <QtGui/QMenuBar>
@@ -518,6 +518,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     setConsume();
 #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
+    menuBar()->setVisible(false);
 #else
     QSize sz=Settings::self()->mainWindowSize();
     if (!sz.isEmpty()) {

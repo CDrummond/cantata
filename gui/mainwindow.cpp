@@ -763,6 +763,12 @@ void MainWindow::updateSettings()
     Covers::self()->setMpdDir(mpdDir);
     Settings::self()->save();
 
+    bool wasConnected=MPDConnection::self()->isConnected();
+    MPDConnection::self()->setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
+    if (wasConnected && !MPDConnection::self()->isConnected()) {
+        MPDConnection::self()->connectToMPD();
+    }
+
     if (!MPDConnection::self()->isConnected()) {
         return;
     }

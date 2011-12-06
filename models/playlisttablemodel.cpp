@@ -129,15 +129,6 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
             QString title=song.title;
 
             if (title.isEmpty()) {
-                title=StreamsModel::self()->name(song.file);
-                return title.isEmpty() ? song.file : song.title;
-            }
-            return title;
-        }
-        case COL_ARTIST:  {
-            QString artist=song.artist;
-
-            if (artist.isEmpty()) {
                 QString streamName=StreamsModel::self()->name(song.file);
 
                 if (streamName.isEmpty()) {
@@ -145,10 +136,19 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
                 }
 
 #ifdef ENABLE_KDE_SUPPORT
-                return i18n("%1 (Stream)", streamName);
+                return i18n("(Stream)", streamName);
 #else
-                return tr("%1 (Stream)").arg(streamName);
+                return tr("(Stream)").arg(streamName);
 #endif
+            }
+            return title;
+        }
+        case COL_ARTIST:  {
+            QString artist=song.artist;
+
+            if (artist.isEmpty()) {
+                artist=StreamsModel::self()->name(song.file);
+                return artist.isEmpty() ? song.file : artist;
             }
             return artist;
         }

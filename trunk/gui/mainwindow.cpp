@@ -486,9 +486,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsPage->view->setHeaderHidden(true);
 
     showPlaylistAction->setChecked(Settings::self()->showPlaylist());
-    randomPlaylistAction->setChecked(Settings::self()->randomPlaylist());
-    repeatPlaylistAction->setChecked(Settings::self()->repeatPlaylist());
-    consumePlaylistAction->setChecked(Settings::self()->consumePlaylist());
+    randomPlaylistAction->setChecked(false);
+    repeatPlaylistAction->setChecked(false);
+    consumePlaylistAction->setChecked(false);
     mpdDir=Settings::self()->mpdDir();
     lyricsPage->setMpdDir(mpdDir);
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
@@ -680,9 +680,6 @@ MainWindow::~MainWindow()
 #ifndef ENABLE_KDE_SUPPORT
     Settings::self()->saveMainWindowSize(size());
 #endif
-    Settings::self()->saveConsumePlaylist(consumePlaylistAction->isChecked());
-    Settings::self()->saveRandomPlaylist(randomPlaylistAction->isChecked());
-    Settings::self()->saveRepeatPlaylist(repeatPlaylistAction->isChecked());
     Settings::self()->saveShowPlaylist(showPlaylistAction->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
     Settings::self()->savePlaylistHeaderState(playlistTableViewHeader->saveState());
@@ -1080,9 +1077,9 @@ void MainWindow::updateStatus()
         volumeButton->setIcon(QIcon::fromTheme("audio-volume-high"));
     }
 
-    randomPushButton->setChecked(status->random());
-    repeatPushButton->setChecked(status->repeat());
-    consumePushButton->setChecked(status->consume());
+    randomPlaylistAction->setChecked(status->random());
+    repeatPlaylistAction->setChecked(status->repeat());
+    consumePlaylistAction->setChecked(status->consume());
 
     if (status->state() == MPDStatus::State_Stopped || status->state() == MPDStatus::State_Inactive) {
         timeElapsedFormattedString = "00:00 / 00:00";

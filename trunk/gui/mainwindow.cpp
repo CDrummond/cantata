@@ -66,6 +66,7 @@
 #include "folderpage.h"
 #include "librarypage.h"
 #include "lyricspage.h"
+#include "streamspage.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 
@@ -188,11 +189,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     trayIcon = 0;
     lyricsNeedUpdating=false;
 
-    libraryPage = new LibraryPage(this);
-    folderPage = new FolderPage(this);
-    playlistsPage = new PlaylistsPage(this);
-    lyricsPage = new LyricsPage(this);
-
     QWidget *widget = new QWidget(this);
     setupUi(widget);
     setCentralWidget(widget);
@@ -303,6 +299,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     lyricsTabAction = actionCollection()->addAction("showlyricstab");
     lyricsTabAction->setText(i18n("Lyrics"));
+
+    streamsTabAction = actionCollection()->addAction("showstreamstab");
+    streamsTabAction->setText(i18n("Streams"));
 #else
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -335,13 +334,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     foldersTabAction = new QAction(tr("Folders"), this);
     playlistsTabAction = new QAction(tr("Playlists"), this);
     lyricsTabAction = new QAction(tr("Lyrics"), this);
+    streamsTabAction = new QAction(tr("Streams"), this);
 #endif
-    libraryTabAction->setShortcut(Qt::Key_F9);
-    foldersTabAction->setShortcut(Qt::Key_F10);
-    playlistsTabAction->setShortcut(Qt::Key_F11);
-    lyricsTabAction->setShortcut(Qt::Key_F12);
-
-    setVisible(true);
+    libraryTabAction->setShortcut(Qt::Key_F5);
+    foldersTabAction->setShortcut(Qt::Key_F6);
+    playlistsTabAction->setShortcut(Qt::Key_F7);
+    streamsTabAction->setShortcut(Qt::Key_F8);
+    lyricsTabAction->setShortcut(Qt::Key_F9);
 
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
@@ -391,6 +390,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
+    streamsTabAction->setIcon(QIcon::fromTheme("network-wireless"));
 
     menuButton->setIcon(QIcon::fromTheme("configure"));
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
@@ -399,13 +399,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             &musicLibraryModel, SLOT(setCover(const QString &, const QString &, const QImage &)));
 
-
     menuButton->setMenu(mainMenu);
     menuButton->setPopupMode(QToolButton::InstantPopup);
+
     playPauseTrackButton->setDefaultAction(playPauseTrackAction);
     stopTrackButton->setDefaultAction(stopTrackAction);
     nextTrackButton->setDefaultAction(nextTrackAction);
     prevTrackButton->setDefaultAction(prevTrackAction);
+
+    libraryPage = new LibraryPage(this);
+    folderPage = new FolderPage(this);
+    playlistsPage = new PlaylistsPage(this);
+    streamsPage = new StreamsPage(this);
+    lyricsPage = new LyricsPage(this);
+
+    setVisible(true);
+
     libraryPage->addToPlaylist->setDefaultAction(addToPlaylistAction);
     libraryPage->replacePlaylist->setDefaultAction(replacePlaylistAction);
     folderPage->addToPlaylist->setDefaultAction(addToPlaylistAction);
@@ -426,6 +435,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabWidget->AddTab(libraryPage, libraryTabAction->icon(), libraryTabAction->text());
     tabWidget->AddTab(folderPage, foldersTabAction->icon(), foldersTabAction->text());
     tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text());
+    tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text());
     tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text());
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
@@ -642,6 +652,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
     connect(playlistsTabAction, SIGNAL(activated()), this, SLOT(showPlaylistsTab()));
     connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
+    connect(streamsTabAction, SIGNAL(activated()), this, SLOT(showStreamsTab()));
 
     connect(playlistsPage->view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistsViewItemDoubleClicked(const QModelIndex &)));
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), MPDConnection::self(), SLOT(listPlaylists()));
@@ -1816,7 +1827,13 @@ void MainWindow::showPlaylistsTab()
     tabWidget->SetCurrentIndex(2);
 }
 
-void MainWindow::showLyricsTab()
+void MainWindow::showStreamsTab()
 {
     tabWidget->SetCurrentIndex(3);
 }
+
+void MainWindow::showLyricsTab()
+{
+    tabWidget->SetCurrentIndex(4);
+}
+

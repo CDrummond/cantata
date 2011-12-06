@@ -40,10 +40,22 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
+#ifdef ENABLE_KDE_SUPPORT
+    removePlaylistAction = p->actionCollection()->addAction("removeplaylist");
+    removePlaylistAction->setText(i18n("Remove"));
+    renamePlaylistAction = p->actionCollection()->addAction("renameplaylist");
+    renamePlaylistAction->setText(i18n("Rename"));
+#else
+    removePlaylistAction = new QAction(tr("Remove"), this);
+    renamePlaylistAction = new QAction(tr("Rename"), this);
+#endif
+    removePlaylistAction->setIcon(QIcon::fromTheme("edit-delete"));
+    renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
+
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->updateDbAction);
-    delPlaylist->setDefaultAction(p->removePlaylistAction);
+    delPlaylist->setDefaultAction(removePlaylistAction);
 //     renamePlaylist->setDefaultAction(p->renamePlaylistAction);
     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
@@ -69,8 +81,8 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     view->sortByColumn(0, Qt::AscendingOrder);
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
-    view->addAction(p->removePlaylistAction);
-    view->addAction(p->renamePlaylistAction);
+    view->addAction(removePlaylistAction);
+    view->addAction(renamePlaylistAction);
 
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
@@ -79,9 +91,9 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(rm(const QString &)));
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(save(const QString &)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(rename(const QString &, const QString &)));
-    connect(p->removePlaylistAction, SIGNAL(activated()), this, SLOT(removePlaylist()));
+    connect(removePlaylistAction, SIGNAL(activated()), this, SLOT(removePlaylist()));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
-    connect(p->renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
+    connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
 }
 
 PlaylistsPage::~PlaylistsPage()

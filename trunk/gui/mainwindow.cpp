@@ -250,9 +250,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     replacePlaylistAction = actionCollection()->addAction("replaceplaylist");
     replacePlaylistAction->setText(i18n("Replace Playlist"));
 
-    removePlaylistAction = actionCollection()->addAction("removeplaylist");
-    removePlaylistAction->setText(i18n("Remove"));
-
     removeFromPlaylistAction = actionCollection()->addAction("removefromplaylist");
     removeFromPlaylistAction->setText(i18n("Remove"));
     removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
@@ -265,9 +262,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     shufflePlaylistAction = actionCollection()->addAction("shuffleplaylist");
     shufflePlaylistAction->setText(i18n("Shuffle"));
-
-    renamePlaylistAction = actionCollection()->addAction("renameplaylist");
-    renamePlaylistAction->setText(i18n("Rename"));
 
     savePlaylistAction = actionCollection()->addAction("saveplaylist");
     savePlaylistAction->setText(i18n("Save As"));
@@ -315,14 +309,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
     addToPlaylistAction = new QAction(tr("Add To Playlist"), this);
     replacePlaylistAction = new QAction(tr("Replace Playlist"), this);
-    removePlaylistAction = new QAction(tr("Remove"), this);
     removeFromPlaylistAction = new QAction(tr("Remove"), this);
     removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
     copySongInfoAction = new QAction(tr("Copy Song Info"), this);
     copySongInfoAction->setShortcut(QKeySequence::Copy);
     cropPlaylistAction = new QAction(tr("Crop"), this);
     shufflePlaylistAction = new QAction(tr("Shuffle"), this);
-    renamePlaylistAction = new QAction(tr("Rename"), this);
     savePlaylistAction = new QAction(tr("Save As"), this);
     clearPlaylistAction = new QAction(tr("Clear"), this);
     showPlaylistAction = new QAction(tr("Show Playlist"), this);
@@ -377,9 +369,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     nextTrackAction->setIcon(QIcon::fromTheme("media-skip-forward"));
     playPauseTrackAction->setIcon(playbackPlay);
     stopTrackAction->setIcon(QIcon::fromTheme("media-playback-stop"));
-    removePlaylistAction->setIcon(QIcon::fromTheme("edit-delete"));
     removeFromPlaylistAction->setIcon(QIcon::fromTheme("list-remove"));
-    renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     savePlaylistAction->setIcon(QIcon::fromTheme("document-save-as"));
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));

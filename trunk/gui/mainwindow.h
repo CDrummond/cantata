@@ -224,13 +224,11 @@ private:
     Action *decreaseVolumeAction;
     Action *addToPlaylistAction;
     Action *replacePlaylistAction;
-    Action *removePlaylistAction;
     Action *removeFromPlaylistAction;
     Action *clearPlaylistAction;
     Action *copySongInfoAction;
     Action *cropPlaylistAction;
     Action *shufflePlaylistAction;
-    Action *renamePlaylistAction;
     Action *savePlaylistAction;
     Action *randomPlaylistAction;
     Action *repeatPlaylistAction;

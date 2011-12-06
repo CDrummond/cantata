@@ -25,11 +25,38 @@
 #define PLAYLISTSPAGE_H
 
 #include "ui_playlistspage.h"
+#include "mainwindow.h"
+#include "playlistsmodel.h"
+#include "playlistsproxymodel.h"
 
 class PlaylistsPage : public QWidget, public Ui::PlaylistsPage
 {
+    Q_OBJECT
 public:
-    PlaylistsPage(QWidget *p) : QWidget(p) { setupUi(this); }
+    PlaylistsPage(MainWindow *p);
+    virtual ~PlaylistsPage();
+
+    void refresh();
+    void clear();
+    void addSelectionToPlaylist();
+
+Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    void add(const QStringList &files);
+    void loadPlaylist(const QString &name);
+    void removePlaylist(const QString &name);
+    void savePlaylist(const QString &name);
+    void renamePlaylist(const QString &oldname, const QString &newname);
+
+private Q_SLOTS:
+    void removePlaylist();
+    void savePlaylist();
+    void renamePlaylist();
+    void itemDoubleClicked(const QModelIndex &index);
+
+private:
+    PlaylistsModel model;
+    PlaylistsProxyModel proxy;
 };
 
 #endif

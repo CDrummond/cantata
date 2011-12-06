@@ -38,6 +38,13 @@ public:
 
     void load();
     void save();
+
+Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    void outputs();
+    void enable(int id);
+    void disable(int id);
+
 private Q_SLOTS:
     void updateOutpus(const QList<Output> &outputs);
 };

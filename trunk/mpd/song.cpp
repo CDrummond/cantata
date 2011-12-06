@@ -37,24 +37,7 @@ Song::Song()
 {
 }
 
-Song::Song(const Song &s)
-    : id(s.id),
-      file(s.file),
-      time(s.time),
-      album(s.album),
-      artist(s.artist),
-      albumartist(s.albumartist),
-      title(s.title),
-      modifiedtitle(s.modifiedtitle),
-      track(s.track),
-      pos(s.pos),
-      disc(s.disc),
-      year(s.year),
-      genre(s.genre)
-{
-}
-
-Song& Song::operator=(const Song &s)
+Song & Song::operator=(const Song &s)
 {
     id = s.id;
     file = s.file;
@@ -70,10 +53,6 @@ Song& Song::operator=(const Song &s)
     year = s.year;
     genre = s.genre;
     return *this;
-}
-
-Song::~Song()
-{
 }
 
 bool Song::isEmpty() const

@@ -41,12 +41,28 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     replayGain->addItem(tr("Track"), QVariant("track"));
     replayGain->addItem(tr("Album"), QVariant("album"));
 #endif
+    connect(MPDConnection::self(), SIGNAL(replayGain(const QString &)), this, SLOT(replayGainSetting(const QString &)));
+    connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
+    connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
+    connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
 };
 
 void PlaybackSettings::load()
 {
     crossfading->setValue(MPDStatus::self()->crossFade());
-    QString rg=MPDConnection::self()->getReplayGain();
+    emit getReplayGain();
+    stopOnExit->setChecked(Settings::self()->stopOnExit());
+}
+
+void PlaybackSettings::save()
+{
+    emit setCrossFade(crossfading->value());
+    emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
+    Settings::self()->saveStopOnExit(stopOnExit->isChecked());
+}
+
+void PlaybackSettings::replayGainSetting(const QString &rg)
+{
     replayGain->setCurrentIndex(0);
 
     for(int i=0; i<replayGain->count(); ++i) {
@@ -55,12 +71,5 @@ void PlaybackSettings::load()
             break;
         }
     }
-    stopOnExit->setChecked(Settings::self()->stopOnExit());
 }
 
-void PlaybackSettings::save()
-{
-    MPDConnection::self()->setCrossFade(crossfading->value());
-    MPDConnection::self()->setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
-    Settings::self()->saveStopOnExit(stopOnExit->isChecked());
-}

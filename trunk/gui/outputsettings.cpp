@@ -30,11 +30,14 @@ OutputSettings::OutputSettings(QWidget *p)
 {
     setupUi(this);
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(updateOutpus(const QList<Output> &)));
+    connect(this, SIGNAL(enable(int)), MPDConnection::self(), SLOT(enableOutput(int)));
+    connect(this, SIGNAL(disable(int)), MPDConnection::self(), SLOT(disableOutput(int)));
+    connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
 };
 
 void OutputSettings::load()
 {
-    MPDConnection::self()->outputs();
+    emit outputs();
 }
 
 void OutputSettings::save()
@@ -43,9 +46,9 @@ void OutputSettings::save()
         QListWidgetItem *item=view->item(i);
 
         if (Qt::Checked==item->checkState()) {
-            MPDConnection::self()->enableOutput(item->data(Qt::UserRole).toInt());
+            emit enable(item->data(Qt::UserRole).toInt());
         } else {
-            MPDConnection::self()->disableOutput(item->data(Qt::UserRole).toInt());
+            emit disable(item->data(Qt::UserRole).toInt());
         }
     }
 }

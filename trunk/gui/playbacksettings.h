@@ -28,12 +28,23 @@
 
 class PlaybackSettings : public QWidget, private Ui::PlaybackSettings
 {
+    Q_OBJECT
+
 public:
     PlaybackSettings(QWidget *p);
     virtual ~PlaybackSettings() { }
 
     void load();
     void save();
+
+private Q_SLOTS:
+    void replayGainSetting(const QString &rg);
+
+Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    void getReplayGain();
+    void setReplayGain(const QString &);
+    void setCrossFade(int secs);
 };
 
 #endif

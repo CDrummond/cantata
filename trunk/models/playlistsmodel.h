@@ -41,23 +41,19 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &, int) const;
-
     void getPlaylists();
     void renamePlaylist(const QString oldname, const QString newname);
-
-public slots:
-    void loadPlaylist(QString name);
-    void removePlaylist(QString name);
-    void savePlaylist(QString name);
+    void clear();
 
 private:
     QList<Playlist> m_playlists;
 
-private slots:
-    void setPlaylists(const QList<Playlist> &playlists);
+Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    void listPlaylists();
 
-signals:
-    void playlistLoaded();
+private Q_SLOTS:
+    void setPlaylists(const QList<Playlist> &playlists);
 };
 
 #endif

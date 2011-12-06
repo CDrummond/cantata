@@ -334,6 +334,12 @@ void PlaylistTableModel::updateCurrentSong(quint32 id)
     emit dataChanged(index(getRowById(song_id), 0), index(getRowById(song_id), 2));
 }
 
+void PlaylistTableModel::clear()
+{
+    songs=QList<Song>();
+    reset();
+}
+
 void PlaylistTableModel::updatePlaylist(const QList<Song> &songs)
 {
     this->songs = songs;

@@ -148,6 +148,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
 
 void PreferencesDialog::writeSettings()
 {
+    // *Must* save server settings first, so that MPD settings go to the correct instance!
     server->save();
     playback->save();
     output->save();

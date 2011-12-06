@@ -35,8 +35,8 @@
 #endif
 #include <QtGui/QApplication>
 
-//#undef qDebug
-//#define qDebug qWarning
+// #undef qDebug
+// #define qDebug qWarning
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
@@ -61,7 +61,7 @@ static QByteArray readFromSocket(QTcpSocket &socket)
 
     while (socket.state() == QAbstractSocket::ConnectedState) {
         while (socket.bytesAvailable() == 0 && socket.state() == QAbstractSocket::ConnectedState) {
-            qDebug("MPDConnection: waiting for read data.");
+            qDebug() << (void *)(&socket) << "Waiting for read data.";
             if (socket.waitForReadyRead(5000)) {
                 break;
             }
@@ -73,10 +73,10 @@ static QByteArray readFromSocket(QTcpSocket &socket)
             break;
         }
     }
-    if(data.size()>128) {
-        qDebug() << "Read (bytes):" << data.size();
+    if(data.size()>256) {
+        qDebug() << (void *)(&socket) << "Read (bytes):" << data.size();
     } else {
-        qDebug() << "Read:" << data;
+        qDebug() << (void *)(&socket) << "Read:" << data;
     }
 
     return data;
@@ -89,28 +89,33 @@ MPDConnection::Response readReply(QTcpSocket &socket)
 }
 
 MPDConnection::MPDConnection()
+    : sock(this)
+    , idleSocket(this)
+    , state(State_Blank)
 {
-    connect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-    connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onIdleSocketStateChanged(QAbstractSocket::SocketState)));
+    qRegisterMetaType<Song>("Song");
+    qRegisterMetaType<Output>("Output");
+    qRegisterMetaType<Playlist>("Playlist");
+    qRegisterMetaType<QList<Song> >("QList<Song>");
+    qRegisterMetaType<QList<Output> >("QList<Output>");
+    qRegisterMetaType<QList<Playlist> >("QList<Playlist>");
+    qRegisterMetaType<QList<quint32> >("QList<quint32>");
+    qRegisterMetaType<QList<qint32> >("QList<qint32>");
 }
 
 MPDConnection::~MPDConnection()
 {
     disconnect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-    disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onIdleSocketStateChanged(QAbstractSocket::SocketState)));
-
+    disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+    disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
     sock.disconnectFromHost();
     idleSocket.disconnectFromHost();
-    quit();
-
-    while (isRunning())
-        msleep(100);
 }
 
 bool MPDConnection::connectToMPD(QTcpSocket &socket, bool enableIdle)
 {
     if (socket.state() != QAbstractSocket::ConnectedState) {
-        qDebug() << "Connecting" << enableIdle;
+        qDebug() << "Connecting" << enableIdle << (enableIdle ? "(idle)" : "(std)") << (void *)(&socket);
         if (hostname.isEmpty() || port == 0) {
             qDebug("MPDConnection: no hostname and/or port supplied.");
             return false;
@@ -118,7 +123,7 @@ bool MPDConnection::connectToMPD(QTcpSocket &socket, bool enableIdle)
 
         socket.connectToHost(hostname, port);
         if (socket.waitForConnected(5000)) {
-            qDebug("MPDConnectionBase established");
+            qDebug("MPDConnection established");
             QByteArray recvdata = readFromSocket(socket);
 
             if (recvdata.startsWith("OK MPD")) {
@@ -138,6 +143,8 @@ bool MPDConnection::connectToMPD(QTcpSocket &socket, bool enableIdle)
                     qDebug("MPDConnection: password accepted");
                 } else {
                     qDebug("MPDConnection: password rejected");
+                    socket.close();
+                    return false;
                 }
             }
 
@@ -147,6 +154,7 @@ bool MPDConnection::connectToMPD(QTcpSocket &socket, bool enableIdle)
                 socket.write("idle\n");
                 socket.waitForBytesWritten();
             }
+            connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
             return true;
         } else {
             qDebug("Couldn't connect");
@@ -154,39 +162,56 @@ bool MPDConnection::connectToMPD(QTcpSocket &socket, bool enableIdle)
         }
     }
 
-    qDebug() << "Already connected" << enableIdle;
+//     qDebug() << "Already connected" << (enableIdle ? "(idle)" : "(std)");
     return true;
 }
 
 bool MPDConnection::connectToMPD()
 {
-    return connectToMPD(sock) && connectToMPD(idleSocket, true);
+    State old=state;
+    if (connectToMPD(sock) && connectToMPD(idleSocket, true)) {
+        state=State_Connected;
+    } else {
+        state=State_Disconnected;
+    }
+
+    if (state!=old) {
+        emit stateChanged(State_Connected==state);
+    }
+    return State_Connected==state;
 }
 
 void MPDConnection::disconnectFromMPD()
 {
+    qDebug() << "disconnectFromMPD" << QThread::currentThreadId();
+    disconnect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+    disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+    disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
     if (sock.state() == QAbstractSocket::ConnectedState) {
         sock.disconnectFromHost();
     }
     if (idleSocket.state() == QAbstractSocket::ConnectedState) {
         idleSocket.disconnectFromHost();
     }
+    sock.close();
+    idleSocket.close();
+    if (State_Connected==state) {
+        emit stateChanged(false);
+    }
+    state=State_Disconnected;
 }
 
-void MPDConnection::setDetails(const QString &host, const quint16 p, const QString &pass)
+void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pass)
 {
     if (hostname!=host || port!=p || password!=pass) {
+        qDebug() << "setDetails" << host << p << (pass.isEmpty() ? false : true);
         disconnectFromMPD();
-
         hostname=host;
         port=p;
         password=pass;
+        qDebug() << "call connectToMPD";
+        connectToMPD();
     }
-}
-
-bool MPDConnection::isConnected()
-{
-    return (sock.state() == QAbstractSocket::ConnectedState);
 }
 
 MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command)
@@ -195,16 +220,13 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command)
         return Response(false);
     }
 
-    mutex.lock();
-
-    qDebug() << "command: " << command;
+    qDebug() << (void *)(&sock) << "command: " << command;
 
     sock.write(command);
     sock.write("\n");
     sock.waitForBytesWritten(5000);
     Response response=readReply(sock);
 
-    mutex.unlock();
     return response;
 }
 
@@ -224,7 +246,9 @@ void MPDConnection::add(const QStringList &files)
 
     send += "command_list_end";
 
-    if (!sendCommand(send).ok){
+    if (sendCommand(send).ok){
+        emit added(files);
+    } else {
         qDebug("Couldn't add song(s) to playlist");
     }
 }
@@ -240,7 +264,7 @@ void MPDConnection::add(const QStringList &files)
  * @param pos Position to add the files
  * @param size The size of the current playlist
  */
-void MPDConnection::addid(const QStringList &files, const quint32 pos, const quint32 size)
+void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size)
 {
     QByteArray send = "command_list_begin\n";
     int cur_size = size;
@@ -259,7 +283,9 @@ void MPDConnection::addid(const QStringList &files, const quint32 pos, const qui
 
     send += "command_list_end";
 
-    if (!sendCommand(send).ok) {
+    if (sendCommand(send).ok) {
+        emit added(files);
+    } else {
         qDebug("Couldn't add song(s) to playlist");
     }
 }
@@ -288,7 +314,7 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
     }
 }
 
-void MPDConnection::move(const quint32 from, const quint32 to)
+void MPDConnection::move(quint32 from, quint32 to)
 {
     QByteArray send = "move " + QByteArray::number(from) + " " + QByteArray::number(to);
 
@@ -298,7 +324,7 @@ void MPDConnection::move(const quint32 from, const quint32 to)
     }
 }
 
-void MPDConnection::move(const QList<quint32> items, const quint32 pos, const quint32 size)
+void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
 {
     QByteArray send = "command_list_begin\n";
     QList<quint32> moveItems;
@@ -343,7 +369,7 @@ void MPDConnection::shuffle()
     }
 }
 
-void MPDConnection::shuffle(const quint32 from, const quint32 to)
+void MPDConnection::shuffle(quint32 from, quint32 to)
 {
     QByteArray command = "shuffle ";
     command += QByteArray::number(from);
@@ -374,7 +400,7 @@ void MPDConnection::playListInfo()
 /*
  * Playback commands
  */
-void MPDConnection::setCrossFade(const quint8 secs)
+void MPDConnection::setCrossFade(int secs)
 {
     QByteArray data = "crossfade ";
     data += QByteArray::number(secs);
@@ -392,15 +418,15 @@ void MPDConnection::setReplayGain(const QString &v)
     }
 }
 
-QString MPDConnection::getReplayGain()
+void MPDConnection::getReplayGain()
 {
     QStringList lines=QString(sendCommand("replay_gain_status").data).split('\n', QString::SkipEmptyParts);
 
     if (2==lines.count() && "OK"==lines[1] && lines[0].startsWith(QLatin1String("replay_gain_mode: "))) {
-        return lines[0].mid(18);
+        emit replayGain(lines[0].mid(18));
+    } else {
+        emit replayGain(QString());
     }
-
-    return QString();
 }
 
 void MPDConnection::goToNext()
@@ -410,7 +436,7 @@ void MPDConnection::goToNext()
     }
 }
 
-void MPDConnection::setPause(const bool toggle)
+void MPDConnection::setPause(bool toggle)
 {
     QByteArray data = "pause ";
     if (toggle == true)
@@ -423,7 +449,7 @@ void MPDConnection::setPause(const bool toggle)
     }
 }
 
-void MPDConnection::startPlayingSong(const quint32 song)
+void MPDConnection::startPlayingSong(quint32 song)
 {
     QByteArray data = "play ";
     data += QByteArray::number(song);
@@ -432,7 +458,7 @@ void MPDConnection::startPlayingSong(const quint32 song)
     }
 }
 
-void MPDConnection::startPlayingSongId(const quint32 song_id)
+void MPDConnection::startPlayingSongId(quint32 song_id)
 {
     QByteArray data = "playid ";
     data += QByteArray::number(song_id);
@@ -448,7 +474,7 @@ void MPDConnection::goToPrevious()
     }
 }
 
-void MPDConnection::setConsume(const bool toggle)
+void MPDConnection::setConsume(bool toggle)
 {
     QByteArray data = "consume ";
     if (toggle == true)
@@ -461,7 +487,7 @@ void MPDConnection::setConsume(const bool toggle)
     }
 }
 
-void MPDConnection::setRandom(const bool toggle)
+void MPDConnection::setRandom(bool toggle)
 {
     QByteArray data = "random ";
     if (toggle == true)
@@ -474,7 +500,7 @@ void MPDConnection::setRandom(const bool toggle)
     }
 }
 
-void MPDConnection::setRepeat(const bool toggle)
+void MPDConnection::setRepeat(bool toggle)
 {
     QByteArray data = "repeat ";
     if (toggle == true)
@@ -487,7 +513,7 @@ void MPDConnection::setRepeat(const bool toggle)
     }
 }
 
-void MPDConnection::setSeek(const quint32 song, const quint32 time)
+void MPDConnection::setSeek(quint32 song, quint32 time)
 {
     QByteArray data = "seek ";
     data += QByteArray::number(song);
@@ -499,7 +525,7 @@ void MPDConnection::setSeek(const quint32 song, const quint32 time)
     }
 }
 
-void MPDConnection::setSeekId(const quint32 song_id, const quint32 time)
+void MPDConnection::setSeekId(quint32 song_id, quint32 time)
 {
     QByteArray data = "seekid ";
     data += QByteArray::number(song_id);
@@ -510,7 +536,7 @@ void MPDConnection::setSeekId(const quint32 song_id, const quint32 time)
     }
 }
 
-void MPDConnection::setVolume(const quint8 vol)
+void MPDConnection::setVolume(int vol)
 {
     QByteArray data = "setvol ";
     data += QByteArray::number(vol);
@@ -558,6 +584,7 @@ void MPDConnection::idleDataReady()
     }
 
     parseIdleReturn(readFromSocket(idleSocket));
+    qDebug() << "write idle";
     idleSocket.write("idle\n");
     idleSocket.waitForBytesWritten();
 }
@@ -569,17 +596,12 @@ void MPDConnection::idleDataReady()
 void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketState)
 {
     if (socketState == QAbstractSocket::ClosingState){
-    //    emit mpdConnectionDied();
-        sock.disconnectFromHost();
-        connectToMPD(sock);
-    }
-}
-
-void MPDConnection::onIdleSocketStateChanged(QAbstractSocket::SocketState socketState)
-{
-    if (socketState == QAbstractSocket::ClosingState){
-        idleSocket.disconnectFromHost();
-        connectToMPD(idleSocket);
+        bool wasConnected=State_Connected==state;
+        qDebug() << "onSocketStateChanged";
+        disconnectFromMPD();
+        if (wasConnected) {
+            connectToMPD();
+        }
     }
 }
 
@@ -616,8 +638,8 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             outputs();
         } else if (line == "changed: options") {
             getStatus();
-        } else if (line == "OK") {
-            break;
+        } else if (line == "OK" || line.startsWith("OK MPD ") || line.isEmpty()) {
+            ;
         } else {
             qWarning() << "Unknown command in idle return: " << line;
         }
@@ -632,7 +654,7 @@ void MPDConnection::outputs()
     }
 }
 
-void MPDConnection::enableOutput(const quint8 id)
+void MPDConnection::enableOutput(int id)
 {
     QByteArray data = "enableoutput ";
     data += QByteArray::number(id);
@@ -641,7 +663,7 @@ void MPDConnection::enableOutput(const quint8 id)
     }
 }
 
-void MPDConnection::disableOutput(const quint8 id)
+void MPDConnection::disableOutput(int id)
 {
     QByteArray data = "disableoutput ";
     data += QByteArray::number(id);
@@ -668,12 +690,12 @@ void MPDConnection::update()
  *
  * @param db_update The last update time of the library
  */
-void MPDConnection::listAllInfo(QDateTime db_update)
+void MPDConnection::listAllInfo(const QDateTime &dbUpdate)
 {
     Response response=sendCommand("listallinfo");
     if(response.ok) {
         qDebug() << "parseLibraryItems:" << response.data;
-        emit musicLibraryUpdated(MPDParseUtils::parseLibraryItems(response.data), db_update);
+        emit musicLibraryUpdated(MPDParseUtils::parseLibraryItems(response.data), dbUpdate);
     }
 }
 
@@ -710,7 +732,9 @@ void MPDConnection::load(QString name)
     QByteArray data("load ");
     data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
 
-    if (!sendCommand(data).ok) {
+    if (sendCommand(data).ok) {
+        emit loaded(name);
+    } else {
         qDebug("Couldn't load playlist");
     }
 }

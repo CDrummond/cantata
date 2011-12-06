@@ -63,30 +63,28 @@ public:
     qint32 getPosByRow(qint32 row) const;
     qint32 getRowById(qint32 id) const;
     Song getSongByRow(const qint32 row) const;
-
     Qt::DropActions supportedDropActions() const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList mimeTypes() const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
-
     QSet<qint32> getSongIdSet();
-
     void playListStats();
+    void clear();
 
-public slots:
+public Q_SLOTS:
     void updatePlaylist(const QList<Song> &songs);
 
-signals:
-    void filesAddedInPlaylist(const QStringList filenames, const int row, const int size);
-    void moveInPlaylist(const QList<quint32> items, const int row, const int size);
+Q_SIGNALS:
+    void filesAddedInPlaylist(const QStringList filenames, const quint32 row, const quint32 size);
+    void moveInPlaylist(const QList<quint32> &items, const quint32 row, const quint32 size);
     void playListStatsUpdated();
 
 private:
     QList<Song> songs;
     qint32 song_id;
 
-private slots:
+private Q_SLOTS:
     void playListReset();
 };
 

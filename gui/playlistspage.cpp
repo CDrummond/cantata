@@ -42,12 +42,12 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     setupUi(this);
 #ifdef ENABLE_KDE_SUPPORT
     removePlaylistAction = p->actionCollection()->addAction("removeplaylist");
-    removePlaylistAction->setText(i18n("Remove"));
+    removePlaylistAction->setText(i18n("Remove Playlist"));
     renamePlaylistAction = p->actionCollection()->addAction("renameplaylist");
-    renamePlaylistAction->setText(i18n("Rename"));
+    renamePlaylistAction->setText(i18n("Rename Playlist"));
 #else
-    removePlaylistAction = new QAction(tr("Remove"), this);
-    renamePlaylistAction = new QAction(tr("Rename"), this);
+    removePlaylistAction = new QAction(tr("Remove Playlist"), this);
+    renamePlaylistAction = new QAction(tr("Rename PlayList"), this);
 #endif
     removePlaylistAction->setIcon(QIcon::fromTheme("edit-delete"));
     renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));

@@ -21,39 +21,33 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef STREAMSPAGE_H
-#define STREAMSPAGE_H
+#ifndef STREAMDIALOG_H
+#define STREAMDIALOG_H
 
-#include "ui_streamspage.h"
-#include "mainwindow.h"
-#include "streamsproxymodel.h"
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDialog>
+#else
+#include <QDialog>
+#endif
+#include "lineedit.h"
 
-class StreamsPage : public QWidget, public Ui::StreamsPage
+#ifdef ENABLE_KDE_SUPPORT
+class StreamDialog : public KDialog
+#else
+class StreamDialog : public QDialog
+#endif
 {
     Q_OBJECT
 
 public:
-    StreamsPage(MainWindow *p);
-    virtual ~StreamsPage();
+    StreamDialog(QWidget *parent);
 
-    void refresh();
-    void save();
-    void addSelectionToPlaylist();
-
-Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
-    void add(const QStringList &streams);
-
-public Q_SLOTS:
-    void add();
-    void remove();
-    void rename();
+    QString name() { return nameEntry->text(); }
+    QString url() { return urlEntry->text(); }
 
 private:
-    Action *addAction;
-    Action *removeAction;
-    Action *renameAction;
-    StreamsProxyModel proxy;
+    LineEdit *nameEntry;
+    LineEdit *urlEntry;
 };
 
 #endif

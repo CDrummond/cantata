@@ -21,39 +21,15 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef STREAMSPAGE_H
-#define STREAMSPAGE_H
+#ifndef STREAMSPROXYMODEL_H
+#define STREAMSPROXYMODEL_H
 
-#include "ui_streamspage.h"
-#include "mainwindow.h"
-#include "streamsproxymodel.h"
+#include <QtGui/QSortFilterProxyModel>
 
-class StreamsPage : public QWidget, public Ui::StreamsPage
+class StreamsProxyModel : public QSortFilterProxyModel
 {
-    Q_OBJECT
-
 public:
-    StreamsPage(MainWindow *p);
-    virtual ~StreamsPage();
-
-    void refresh();
-    void save();
-    void addSelectionToPlaylist();
-
-Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
-    void add(const QStringList &streams);
-
-public Q_SLOTS:
-    void add();
-    void remove();
-    void rename();
-
-private:
-    Action *addAction;
-    Action *removeAction;
-    Action *renameAction;
-    StreamsProxyModel proxy;
+    StreamsProxyModel(QObject *parent = 0);
 };
 
 #endif

@@ -42,7 +42,6 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &, int) const;
     void getPlaylists();
-    void renamePlaylist(const QString oldname, const QString newname);
     void clear();
 
 private:

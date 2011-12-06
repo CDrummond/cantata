@@ -33,6 +33,7 @@
 #include <KDE/KLocale>
 #endif
 #include "playlisttablemodel.h"
+#include "streamsmodel.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdstatus.h"
@@ -124,33 +125,49 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) {
         const Song &song = songs.at(index.row());
         switch (index.column()) {
-        case COL_TITLE:
-            return song.title; // displayTitle();
-            break;
-        case COL_ARTIST:
-            return song.artist; // albumArtist();
-            break;
+        case COL_TITLE: {
+            QString title=song.title;
+
+            if (title.isEmpty()) {
+                title=StreamsModel::self()->name(song.file);
+                return title.isEmpty() ? song.file : song.title;
+            }
+            return title;
+        }
+        case COL_ARTIST:  {
+            QString artist=song.artist;
+
+            if (artist.isEmpty()) {
+                QString streamName=StreamsModel::self()->name(song.file);
+
+                if (streamName.isEmpty()) {
+                    return QString();
+                }
+
+#ifdef ENABLE_KDE_SUPPORT
+                return i18n("%1 (Stream)", streamName);
+#else
+                return tr("%1 (Stream)").arg(streamName);
+#endif
+            }
+            return artist;
+        }
         case COL_ALBUM:
             return song.album;
-            break;
         case COL_TRACK:
             if (song.track <= 0)
                 return QVariant();
             return song.track;
-            break;
         case COL_LENGTH:
             return Song::formattedTime(song.time);
-            break;
         case COL_DISC:
             if (song.disc <= 0)
                 return QVariant();
             return song.disc;
-            break;
         case COL_YEAR:
             if (song.year <= 0)
                 return QVariant();
             return song.year;
-            break;
         default:
             break;
         }

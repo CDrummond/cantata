@@ -35,8 +35,8 @@
 #endif
 #include <QtGui/QApplication>
 
-// #undef qDebug
-// #define qDebug qWarning
+//#undef qDebug
+//#define qDebug qWarning
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)

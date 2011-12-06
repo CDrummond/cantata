@@ -25,11 +25,42 @@
 #define LIBRARYPAGE_H
 
 #include "ui_librarypage.h"
+#include "mainwindow.h"
+#include "musiclibrarymodel.h"
+#include "musiclibraryproxymodel.h"
 
 class LibraryPage : public QWidget, public Ui::LibraryPage
 {
+    Q_OBJECT
 public:
-    LibraryPage(QWidget *p) : QWidget(p) { setupUi(this); }
+
+    enum Refresh
+    {
+        RefreshFromCache,
+        RefreshForce,
+        RefreshStandard
+    };
+
+    LibraryPage(MainWindow *p);
+    virtual ~LibraryPage();
+
+    void refresh(Refresh type);
+    void clear();
+    void addSelectionToPlaylist();
+
+Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    void add(const QStringList &files);
+    void listAllInfo(const QDateTime &);
+
+public Q_SLOTS:
+    void updateGenres(const QStringList &genres);
+    void itemActivated(const QModelIndex &);
+    void searchItems();
+
+private:
+    MusicLibraryModel model;
+    MusicLibraryProxyModel proxy;
 };
 
 #endif

@@ -29,6 +29,9 @@ SET( CANTATA_SRCS
     gui/serversettings.cpp
     gui/outputsettings.cpp
     gui/streamspage.cpp
+    gui/librarypage.cpp
+    gui/folderpage.cpp
+    gui/playlistspage.cpp
     models/musiclibraryitem.cpp
     models/musiclibraryitemroot.cpp
     models/musiclibraryitemartist.cpp

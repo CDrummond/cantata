@@ -25,11 +25,36 @@
 #define FOLDERPAGE_H
 
 #include "ui_folderpage.h"
+#include "mainwindow.h"
+#include "dirviewmodel.h"
+#include "dirviewproxymodel.h"
 
 class FolderPage : public QWidget, public Ui::FolderPage
 {
+    Q_OBJECT
 public:
-    FolderPage(QWidget *p) : QWidget(p) { setupUi(this); }
+    FolderPage(MainWindow *p);
+    virtual ~FolderPage();
+
+    void refresh();
+    void clear();
+    void addSelectionToPlaylist();
+
+Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    void add(const QStringList &files);
+    void listAll();
+
+private Q_SLOTS:
+    void searchItems();
+    void itemActivated(const QModelIndex &);
+
+private:
+    QStringList walk(QModelIndex rootItem);
+
+private:
+    dirViewModel model;
+    DirViewProxyModel proxy;
 };
 
 #endif

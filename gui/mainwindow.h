@@ -46,14 +46,8 @@
 #include <QMoveEvent>
 
 #include "ui_mainwindow.h"
-#include "musiclibrarymodel.h"
-#include "musiclibraryproxymodel.h"
-#include "playlistsmodel.h"
-#include "playlistsproxymodel.h"
 #include "playlisttablemodel.h"
 #include "playlisttableproxymodel.h"
-#include "dirviewmodel.h"
-#include "dirviewproxymodel.h"
 #include "mpdstatus.h"
 #include "song.h"
 
@@ -142,21 +136,13 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private:
-    void addLibrarySelectionToPlaylist();
-    void addDirViewSelectionToPlaylist();
-    QStringList walkDirView(QModelIndex rootItem);
     bool setupTrayIcon();
     void setupPlaylistView();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void setDetails(const QString &host, quint16 port, const QString &pass);
-    void loadPlaylist(const QString &name);
-    void removePlaylist(const QString &name);
-    void savePlaylist(const QString &name);
-    void renamePlaylist(const QString &oldname, const QString &newname);
     void removeSongs(const QList<qint32> &);
-    void add(const QStringList &files);
     void pause(bool p);
     void play();
     void stop();
@@ -164,8 +150,6 @@ Q_SIGNALS:
     void getStats();
     void clear();
     void playListInfo();
-    void listAllInfo(const QDateTime &);
-    void listAll();
     void currentSong();
     void setSeekId(quint32, quint32);
     void startPlayingSongId(quint32);
@@ -188,8 +172,6 @@ private Q_SLOTS:
     void increaseVolume();
     void decreaseVolume();
     void setPosition();
-    void searchMusicLibrary();
-    void searchDirView();
     void searchPlaylist();
     void updatePlaylist(const QList<Song> &songs);
     void updateCurrentSong(const Song &song);
@@ -199,24 +181,16 @@ private Q_SLOTS:
     void playlistItemActivated(const QModelIndex &);
     void removeFromPlaylist();
     void replacePlaylist();
-    void libraryItemActivated(const QModelIndex &);
-    void dirViewItemActivated(const QModelIndex &);
     void addToPlaylist();
     void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
     void playlistTableViewContextMenuClicked();
     void playListTableViewToggleItem(const bool visible);
     void cropPlaylist();
     void updatePlayListStatus();
-    void addPlaylistsSelectionToPlaylist();
-    void playlistsViewItemDoubleClicked(const QModelIndex &index);
-    void removePlaylist();
-    void savePlaylist();
-    void renamePlaylist();
     void copySongInfo();
     void togglePlaylist();
     void currentTabChanged(int index);
     void cover(const QString &artist, const QString &album, const QImage &img);
-    void updateGenres(const QStringList &genres);
     void showLibraryTab();
     void showFoldersTab();
     void showPlaylistsTab();
@@ -232,14 +206,8 @@ private:
     QDateTime lastDbUpdate;
     int fetchStatsFactor;
     int nowPlayingFactor;
-    PlaylistsModel playlistsModel;
-    PlaylistsProxyModel playlistsProxyModel;
     PlaylistTableModel playlistModel;
     PlaylistTableProxyModel playlistProxyModel;
-    dirViewModel dirviewModel;
-    DirViewProxyModel dirProxyModel;
-    MusicLibraryModel musicLibraryModel;
-    MusicLibraryProxyModel libraryProxyModel;
     bool draggingPositionSlider;
     QIcon playbackPause;
     QIcon playbackPlay;
@@ -293,7 +261,11 @@ private:
     QThread *mpdThread;
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
+    friend class LibraryPage;
+    friend class FolderPage;
+    friend class PlaylistsPage;
     friend class StreamsPage;
+    friend class LyricsPage;
 };
 
 #endif

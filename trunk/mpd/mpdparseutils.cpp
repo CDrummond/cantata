@@ -362,39 +362,6 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
     return rootItem;
 }
 
-/**
- * Convert a number of seconds to a readable time format
- * d days hh:mm:ss
- *
- * @param totalseconds Total number of seconds to convert
- * @return A fromatted string
- */
-QString MPDParseUtils::seconds2formattedString(const quint32 totalseconds)
-{
-    QString string;
-
-    //Get the days,hours,minutes and seconds out of the total seconds
-    quint32 days = totalseconds / 86400;
-    quint32 rest = totalseconds - (days * 86400);
-    quint32 hours = rest / 3600;
-    rest = rest - (hours * 3600);
-    quint32 minutes = rest / 60;
-    quint32 seconds = rest - (minutes * 60);
-
-    //Convert hour,minutes and seconds to a QTime for easier parsing
-    QTime time(hours, minutes, seconds);
-
-    if (days == 1) {
-        string.append(QString::number(days) + " day ");
-    } else if (days > 1) {
-        string.append(QString::number(days) + " days ");
-    }
-
-    string.append(time.toString("hh:mm:ss"));
-
-    return string;
-}
-
 QList<Output> MPDParseUtils::parseOuputs(const QByteArray &data)
 {
     QList<Output> outputs;

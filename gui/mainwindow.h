@@ -70,6 +70,7 @@ class LibraryPage;
 class FolderPage;
 class PlaylistsPage;
 class LyricsPage;
+class StreamsPage;
 class QThread;
 
 class VolumeSliderEventHandler : public QObject
@@ -220,6 +221,7 @@ private Q_SLOTS:
     void showFoldersTab();
     void showPlaylistsTab();
     void showLyricsTab();
+    void showStreamsTab();
 
 private:
     int loaded;
@@ -271,6 +273,7 @@ private:
     Action *foldersTabAction;
     Action *playlistsTabAction;
     Action *lyricsTabAction;
+    Action *streamsTabAction;
     Action *updateDbAction;
     QList<QAction *> viewActions;
     QSystemTrayIcon *trayIcon;
@@ -286,9 +289,11 @@ private:
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
     LyricsPage *lyricsPage;
+    StreamsPage *streamsPage;
     QThread *mpdThread;
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
+    friend class StreamsPage;
 };
 
 #endif

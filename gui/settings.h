@@ -32,6 +32,8 @@ class Wallet;
 #else
 #include <QtCore/QSettings>
 #endif
+#include <QtCore/QList>
+#include <QtCore/QUrl>
 
 class Settings
 {
@@ -57,6 +59,7 @@ public:
     int coverSize();
     int sidebar();
     QStringList lyricProviders();
+    QList<QUrl> streamUrls();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -74,6 +77,7 @@ public:
     void saveCoverSize(int v);
     void saveSidebar(int v);
     void saveLyricProviders(const QStringList &p);
+    void saveStreamUrls(const QList<QUrl> &u);
     void save();
 #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

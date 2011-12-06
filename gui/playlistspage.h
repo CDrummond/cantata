@@ -55,6 +55,8 @@ private Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &index);
 
 private:
+    Action *removePlaylistAction;
+    Action *renamePlaylistAction;
     PlaylistsModel model;
     PlaylistsProxyModel proxy;
 };

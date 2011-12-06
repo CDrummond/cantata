@@ -58,6 +58,7 @@ public:
 
     bool fromXML(const QDateTime db_update);
     void clearUpdateTime() { databaseTime=QDateTime(); }
+    void clear();
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime db_update = QDateTime(), bool fromFile = false);
@@ -72,7 +73,7 @@ private:
     QStringList sortAlbumTracks(const MusicLibraryItemAlbum *album) const;
 
     void toXML(const QDateTime db_update);
-    QMutex libraryMutex;
+//     QMutex libraryMutex;
     QDateTime databaseTime;
 };
 

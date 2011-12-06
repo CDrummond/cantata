@@ -32,6 +32,19 @@
 
 struct Playlist
 {
+    Playlist() { }
+
+    Playlist(const Playlist &o) { *this=o; }
+
+    Playlist & operator=(const Playlist &o)
+    {
+        m_name=o.m_name;
+        m_last_modified=o.m_last_modified;
+        return *this;
+    }
+
+    virtual ~Playlist() { }
+
     QString m_name;
     QDateTime m_last_modified;
 };

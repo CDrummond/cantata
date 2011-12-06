@@ -499,24 +499,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     if (setupTrayIcon() && Settings::self()->useSystemTray())
         trayIcon->show();
 
-    // Start connection threads
-    MPDConnection::self()->start();
-
-    // Set connection data
-    MPDConnection::self()->setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
-
-    while (!MPDConnection::self()->connectToMPD()) {
-        if (!showPreferencesDialog())
-            exit(EXIT_FAILURE);
-
-        MPDConnection::self()->setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
-        qWarning("Retrying");
-    }
-
     togglePlaylist();
-    setRandom();
-    setRepeat();
-    setConsume();
 #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
     menuBar()->setVisible(false);
@@ -558,11 +541,32 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     folderPage->view->addAction(addToPlaylistAction);
     folderPage->view->addAction(replacePlaylistAction);
 
-    connect(&playlistsModel, SIGNAL(playlistLoaded()), this, SLOT(startPlayingSong()));
-    connect(&playlistModel, SIGNAL(filesAddedInPlaylist(const QStringList, const int, const int)), this,
-            SLOT(addFilenamesToPlaylist(const QStringList, const int, const int)));
-    connect(&playlistModel, SIGNAL(moveInPlaylist(const QList<quint32>, const int, const int)), this,
-            SLOT(movePlaylistItems(const QList<quint32>, const int, const int)));
+    connect(MPDConnection::self(), SIGNAL(loaded(const QString &)), MPDConnection::self(), SLOT(startPlayingSong()));
+    connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), MPDConnection::self(), SLOT(startPlayingSong()));
+    connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(load(const QString &)));
+    connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(rm(const QString &)));
+    connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(save(const QString &)));
+    connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(rename(const QString &, const QString &)));
+    connect(this, SIGNAL(removeSongs(const QList<qint32> &)), MPDConnection::self(), SLOT(removeSongs(const QList<qint32> &)));
+    connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
+    connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(startPlayingSong()));
+    connect(this, SIGNAL(stop()), MPDConnection::self(), SLOT(stopPlaying()));
+    connect(this, SIGNAL(getStatus()), MPDConnection::self(), SLOT(getStatus()));
+    connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
+    connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
+    connect(this, SIGNAL(playListInfo()), MPDConnection::self(), SLOT(playListInfo()));
+    connect(this, SIGNAL(listAllInfo(const QDateTime &)), MPDConnection::self(), SLOT(listAllInfo(const QDateTime &)));
+    connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
+    connect(this, SIGNAL(currentSong()), MPDConnection::self(), SLOT(currentSong()));
+    connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
+    connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
+    connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    connect(this, SIGNAL(setDetails(const QString &, quint16, const QString &)), MPDConnection::self(), SLOT(setDetails(const QString &, quint16, const QString &)));
+
+    connect(&playlistModel, SIGNAL(filesAddedInPlaylist(const QStringList, quint32, quint32)),
+            MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32)));
+    connect(&playlistModel, SIGNAL(moveInPlaylist(const QList<quint32> &, quint32, quint32)),
+            MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
     connect(&playlistModel, SIGNAL(playListStatsUpdated()), this,
             SLOT(updatePlayListStatus()));
 
@@ -579,18 +583,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     setupPlaylistView();
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated()), this, SLOT(updateStats()));
-    connect(MPDConnection::self(), SIGNAL(statusUpdated()), this, SLOT(updateStatus()), Qt::DirectConnection);
+    connect(MPDConnection::self(), SIGNAL(statusUpdated()), this, SLOT(updateStatus())/*, Qt::DirectConnection*/);
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlaylist(const QList<Song> &)));
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
     connect(MPDConnection::self(), SIGNAL(mpdConnectionDied()), this, SLOT(mpdConnectionDied()));
     connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)), &musicLibraryModel, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &dirviewModel, SLOT(updateDirView(DirViewItemRoot *)));
     connect(updateDbAction, SIGNAL(triggered(bool)), this, SLOT(updateDb()));
-    connect(prevTrackAction, SIGNAL(triggered(bool)), this, SLOT(previousTrack()));
-    connect(nextTrackAction, SIGNAL(triggered(bool)), this, SLOT(nextTrack()));
+    connect(updateDbAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
+    connect(prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
+    connect(nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
     connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
     connect(stopTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopTrack()));
-    connect(volumeControl, SIGNAL(valueChanged(int)), SLOT(setVolume(int)));
+    connect(volumeControl, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(increaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(increaseVolume()));
     connect(decreaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(decreaseVolume()));
     connect(increaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
@@ -598,9 +603,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(positionSlider, SIGNAL(sliderPressed()), this, SLOT(positionSliderPressed()));
     connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
     connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(positionSliderReleased()));
-    connect(randomPlaylistAction, SIGNAL(activated()), this, SLOT(setRandom()));
-    connect(repeatPlaylistAction, SIGNAL(activated()), this, SLOT(setRepeat()));
-    connect(consumePlaylistAction, SIGNAL(activated()), this, SLOT(setConsume()));
+    connect(randomPlaylistAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
+    connect(repeatPlaylistAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
+    connect(consumePlaylistAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setConsume(bool)));
     connect(libraryPage->search, SIGNAL(returnPressed()), this, SLOT(searchMusicLibrary()));
     connect(libraryPage->search, SIGNAL(textChanged(const QString)), this, SLOT(searchMusicLibrary()));
     connect(libraryPage->genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchMusicLibrary()));
@@ -617,7 +622,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(removeFromPlaylistAction, SIGNAL(activated()), this, SLOT(removeFromPlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
-    connect(clearPlaylistAction, SIGNAL(activated()), this, SLOT(clearPlaylist()));
+    connect(clearPlaylistAction, SIGNAL(activated()), searchPlaylistLineEdit, SLOT(clear()));
+    connect(clearPlaylistAction, SIGNAL(activated()), MPDConnection::self(), SLOT(clear()));
     connect(copySongInfoAction, SIGNAL(activated()), this, SLOT(copySongInfo()));
     connect(cropPlaylistAction, SIGNAL(activated()), this, SLOT(cropPlaylist()));
     connect(shufflePlaylistAction, SIGNAL(activated()), MPDConnection::self(), SLOT(shuffle()));
@@ -638,7 +644,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
 
     connect(playlistsPage->view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistsViewItemDoubleClicked(const QModelIndex &)));
-    connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), this, SLOT(updateStoredPlaylists()));
+    connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), MPDConnection::self(), SLOT(listPlaylists()));
+    connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
 
     elapsedTimer.setInterval(1000);
 
@@ -653,14 +660,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
         splitter->restoreState(Settings::self()->splitterState());
     }
 
-    MPDConnection::self()->getStatus();
-    MPDConnection::self()->getStats();
-    MPDConnection::self()->playListInfo();
-
+    emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
     currentTabChanged(0);
     playlistItemsSelected(false);
     playlistTableView->setFocus();
+
+    mpdThread=new QThread(this);
+    MPDConnection::self()->moveToThread(mpdThread);
+    mpdThread->start();
 }
+
+struct Thread : public QThread
+{
+    static void sleep() { QThread::msleep(100); }
+};
 
 MainWindow::~MainWindow()
 {
@@ -675,15 +688,37 @@ MainWindow::~MainWindow()
     Settings::self()->savePlaylistHeaderState(playlistTableViewHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->save();
-
+    disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopOnExit()) {
-        MPDConnection::self()->stopPlaying();
+        emit stop();
+        Thread::sleep();
+    }
+    mpdThread->quit();
+    for(int i=0; i<10 && mpdThread->isRunning(); ++i)
+        Thread::sleep();
+}
+
+void MainWindow::mpdConnectionStateChanged(bool connected)
+{
+    if (connected) {
+        emit getStatus();
+        emit getStats();
+        emit playListInfo();
+        loaded=0;
+        currentTabChanged(tabWidget->current_index());
+    } else {
+        musicLibraryModel.clear();
+        dirviewModel.clear();
+        playlistsModel.clear();
+        playlistModel.clear();
+        lyricsPage->text->clear();
+        showPreferencesDialog();
     }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (trayIcon != NULL && trayIcon->isVisible())
+    if (trayIcon && trayIcon->isVisible())
     {
         lastPos=pos();
         hide();
@@ -739,7 +774,6 @@ void MainWindow::mpdConnectionDied()
 
 void MainWindow::updateDb()
 {
-    MPDConnection::self()->update();
     if (!updateDialog) {
         updateDialog = new UpdateDialog(this);
         connect(MPDConnection::self(), SIGNAL(databaseUpdated()), updateDialog, SLOT(complete()));
@@ -747,12 +781,18 @@ void MainWindow::updateDb()
     updateDialog->show();
 }
 
-int MainWindow::showPreferencesDialog()
+void MainWindow::showPreferencesDialog()
 {
-    PreferencesDialog pref(this, lyricsPage);
-    connect(&pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
+    static bool showing=false;
 
-    return pref.exec();
+    if (!showing) {
+        showing=true;
+        PreferencesDialog pref(this, lyricsPage);
+        connect(&pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
+
+        pref.exec();
+        showing=false;
+    }
 }
 
 void MainWindow::updateSettings()
@@ -763,20 +803,10 @@ void MainWindow::updateSettings()
     Covers::self()->setMpdDir(mpdDir);
     Settings::self()->save();
 
-    bool wasConnected=MPDConnection::self()->isConnected();
-    MPDConnection::self()->setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
-    if (wasConnected && !MPDConnection::self()->isConnected()) {
-        MPDConnection::self()->connectToMPD();
-    }
-
-    if (!MPDConnection::self()->isConnected()) {
-        return;
-    }
-
     if (((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->coverSize()) {
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->coverSize());
         musicLibraryModel.clearUpdateTime();
-        MPDConnection::self()->listAllInfo(MPDStats::self()->dbUpdate());
+        emit listAllInfo(MPDStats::self()->dbUpdate());
     }
 
     if (Settings::self()->useSystemTray()) {
@@ -814,20 +844,9 @@ void MainWindow::positionSliderReleased()
     draggingPositionSlider = false;
 }
 
-void MainWindow::startPlayingSong()
-{
-    MPDConnection::self()->startPlayingSong();
-}
-
-void MainWindow::nextTrack()
-{
-    MPDConnection::self()->goToNext();
-}
-
 void MainWindow::stopTrack()
 {
-    MPDConnection::self()->stopPlaying();
-
+    emit stop();
     stopTrackAction->setEnabled(false);
 }
 
@@ -836,27 +855,16 @@ void MainWindow::playPauseTrack()
     MPDStatus * const status = MPDStatus::self();
 
     if (status->state() == MPDStatus::State_Playing)
-        MPDConnection::self()->setPause(true);
+        emit pause(true);
     else if (status->state() == MPDStatus::State_Paused)
-        MPDConnection::self()->setPause(false);
+        emit pause(false);
     else
-        MPDConnection::self()->startPlayingSong();
-
-}
-
-void MainWindow::previousTrack()
-{
-    MPDConnection::self()->goToPrevious();
+        emit play();
 }
 
 void MainWindow::setPosition()
 {
-    MPDConnection::self()->setSeekId(MPDStatus::self()->songId(), positionSlider->value());
-}
-
-void MainWindow::setVolume(int vol)
-{
-    MPDConnection::self()->setVolume(vol);
+    emit setSeekId(MPDStatus::self()->songId(), positionSlider->value());
 }
 
 void MainWindow::increaseVolume()
@@ -867,21 +875,6 @@ void MainWindow::increaseVolume()
 void MainWindow::decreaseVolume()
 {
     volumeControl->sliderWidget()->triggerAction(QAbstractSlider::SliderPageStepSub);
-}
-
-void MainWindow::setRandom()
-{
-    MPDConnection::self()->setRandom(randomPlaylistAction->isChecked());
-}
-
-void MainWindow::setRepeat()
-{
-    MPDConnection::self()->setRepeat(repeatPlaylistAction->isChecked());
-}
-
-void MainWindow::setConsume()
-{
-    MPDConnection::self()->setConsume(consumePlaylistAction->isChecked());
 }
 
 void MainWindow::searchMusicLibrary()
@@ -1044,8 +1037,8 @@ void MainWindow::updateStats()
      * Also update the dirview
      */
     if (lastDbUpdate.isValid() && stats->dbUpdate() > lastDbUpdate) {
-        MPDConnection::self()->listAllInfo(stats->dbUpdate());
-        MPDConnection::self()->listAll();
+        emit listAllInfo(stats->dbUpdate());
+        emit listAll();
     }
 
     lastDbUpdate = stats->dbUpdate();
@@ -1153,7 +1146,7 @@ void MainWindow::updateStatus()
     if (lastState == MPDStatus::State_Inactive
             || (lastState == MPDStatus::State_Stopped && status->state() == MPDStatus::State_Playing)
             || lastSongId != status->songId())
-        MPDConnection::self()->currentSong();
+        emit currentSong();
     // Update status info
     lastState = status->state();
     lastSongId = status->songId();
@@ -1162,14 +1155,7 @@ void MainWindow::updateStatus()
 
 void MainWindow::playlistItemActivated(const QModelIndex &index)
 {
-    QModelIndex sourceIndex = playlistProxyModel.mapToSource(index);
-    MPDConnection::self()->startPlayingSongId(playlistModel.getIdByRow(sourceIndex.row()));
-}
-
-void MainWindow::clearPlaylist()
-{
-    MPDConnection::self()->clear();
-    searchPlaylistLineEdit->clear();
+    emit startPlayingSongId(playlistModel.getIdByRow(playlistProxyModel.mapToSource(index).row()));
 }
 
 void MainWindow::removeFromPlaylist()
@@ -1186,12 +1172,12 @@ void MainWindow::removeFromPlaylist()
         toBeRemoved.append(playlistModel.getIdByRow(sourceIndex.row()));
     }
 
-    MPDConnection::self()->removeSongs(toBeRemoved);
+    emit removeSongs(toBeRemoved);
 }
 void MainWindow::replacePlaylist()
 {
-    MPDConnection::self()->clear();
-    MPDConnection::self()->getStatus();
+    emit clear();
+    emit getStatus();
     searchPlaylistLineEdit->clear();
     if (libraryPage->view->isVisible()) {
         addLibrarySelectionToPlaylist();
@@ -1266,10 +1252,7 @@ void MainWindow::addLibrarySelectionToPlaylist()
     }
 
     if (!files.isEmpty()) {
-        MPDConnection::self()->add(files);
-        if (MPDStatus::self()->state() != MPDStatus::State_Playing)
-            MPDConnection::self()->startPlayingSong();
-
+        emit add(files);
         libraryPage->view->selectionModel()->clearSelection();
     }
 }
@@ -1335,10 +1318,7 @@ void MainWindow::addDirViewSelectionToPlaylist()
     }
 
     if (!files.isEmpty()) {
-        MPDConnection::self()->add(files);
-        if (MPDStatus::self()->state() != MPDStatus::State_Playing)
-            MPDConnection::self()->startPlayingSong();
-
+        emit add(files);
         folderPage->view->selectionModel()->clearSelection();
     }
 }
@@ -1406,18 +1386,6 @@ void MainWindow::updatePlayListStatus()
     status += ")";
 
     playListStatsLabel->setText(status);
-}
-
-void MainWindow::movePlaylistItems(const QList<quint32> items, const int row, const int size)
-{
-    MPDConnection::self()->move(items, row, size);
-}
-
-void MainWindow::addFilenamesToPlaylist(const QStringList filenames, const int row, const int size)
-{
-    MPDConnection::self()->addid(filenames, row, size);
-    if (MPDStatus::self()->state() != MPDStatus::State_Playing)
-        MPDConnection::self()->startPlayingSong();
 }
 
 void MainWindow::updatePositionSilder()
@@ -1548,7 +1516,7 @@ void MainWindow::playlistTableViewContextMenuClicked()
     playlistTableViewMenu->exec(QCursor::pos());
 }
 
-void MainWindow::playListTableViewToggleItem(const bool visible)
+void MainWindow::playListTableViewToggleItem(bool visible)
 {
     QAction *act=qobject_cast<QAction *>(sender());
 
@@ -1563,7 +1531,7 @@ void MainWindow::playListTableViewToggleItem(const bool visible)
 /*
  * Crop playlist
  * Do this by taking the set off all song id's and subtracting from that
- * the set of selected song id's. Feed that list to MPDConnection::self()->removeSongs
+ * the set of selected song id's. Feed that list to emit removeSongs
  */
 void MainWindow::cropPlaylist()
 {
@@ -1583,7 +1551,7 @@ void MainWindow::cropPlaylist()
 
         QList<qint32> toBeRemoved = (songs - selected).toList();
 
-        MPDConnection::self()->removeSongs(toBeRemoved);
+        emit removeSongs(toBeRemoved);
 }
 
 // Tray Icon //
@@ -1641,7 +1609,7 @@ void MainWindow::addPlaylistsSelectionToPlaylist()
     if (items.size() == 1) {
         QModelIndex sourceIndex = playlistsProxyModel.mapToSource(items.first());
         QString playlist_name = playlistsModel.data(sourceIndex, Qt::DisplayRole).toString();
-        playlistsModel.loadPlaylist(playlist_name);
+        emit loadPlaylist(playlist_name);
     }
 }
 
@@ -1649,7 +1617,7 @@ void MainWindow::playlistsViewItemDoubleClicked(const QModelIndex &index)
 {
     QModelIndex sourceIndex = playlistsProxyModel.mapToSource(index);
     QString playlist_name = playlistsModel.data(sourceIndex, Qt::DisplayRole).toString();
-    playlistsModel.loadPlaylist(playlist_name);
+    emit loadPlaylist(playlist_name);
 }
 
 void MainWindow::removePlaylist()
@@ -1663,7 +1631,7 @@ void MainWindow::removePlaylist()
 #ifdef ENABLE_KDE_SUPPORT
         if (KMessageBox::Yes == KMessageBox::warningYesNo(this, i18n("Are you sure you want to delete playlist: %1?", playlist_name),
                 i18n("Delete Playlist?"))) {
-            playlistsModel.removePlaylist(playlist_name);
+            emit removePlaylist(playlist_name);
         }
 #else
         QMessageBox msgBox;
@@ -1675,7 +1643,7 @@ void MainWindow::removePlaylist()
         int ret = msgBox.exec();
 
         if (ret == QMessageBox::Yes) {
-            playlistsModel.removePlaylist(playlist_name);
+            emit removePlaylist(playlist_name);
         }
 #endif
     }
@@ -1690,20 +1658,7 @@ void MainWindow::savePlaylist()
 #endif
 
     if (!name.isEmpty())
-        playlistsModel.savePlaylist(name);
-}
-
-/*
- * Idle command has returnd that stored_playlist:
- * "a stored playlist has been modified, renamed, created or deleted"
- * Update accordingly
- *
- * TODO: Implement
- */
-void MainWindow::updateStoredPlaylists()
-{
-    qDebug() << "Need to update playlist";
-    playlistsModel.getPlaylists();
+        emit savePlaylist(name);
 }
 
 void MainWindow::renamePlaylist()
@@ -1720,7 +1675,7 @@ void MainWindow::renamePlaylist()
 #endif
 
         if (!new_name.isEmpty()) {
-            playlistsModel.renamePlaylist(playlist_name, new_name);
+            emit renamePlaylist(playlist_name, new_name);
         }
     }
 }
@@ -1739,14 +1694,14 @@ void MainWindow::currentTabChanged(int index)
         if (!(loaded&TAB_LIBRARY)) {
             loaded|=TAB_LIBRARY;
             if (!musicLibraryModel.fromXML(MPDStats::self()->dbUpdate())) {
-                MPDConnection::self()->listAllInfo(MPDStats::self()->dbUpdate());
+                emit listAllInfo(MPDStats::self()->dbUpdate());
             }
         }
         break;
     case 1:
         if (!(loaded&TAB_DIRS)) {
             loaded|=TAB_DIRS;
-            MPDConnection::self()->listAll();
+            emit listAll();
         }
         break;
     case 2:

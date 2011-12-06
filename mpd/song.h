@@ -48,9 +48,9 @@ public:
     QString genre;
 
     Song();
-    Song(const Song &);
-    Song& operator=(const Song&);
-    virtual ~Song();
+    Song(const Song &o) { *this=o; }
+    Song & operator=(const Song &o);
+    virtual ~Song() { }
     bool isEmpty() const;
     void fillEmptyFields();
     virtual void clear();

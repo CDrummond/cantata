@@ -34,6 +34,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
+    connect(this, SIGNAL(listPlaylists()), MPDConnection::self(), SLOT(listPlaylists()));
 }
 
 PlaylistsModel::~PlaylistsModel()
@@ -66,7 +67,14 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 
 void PlaylistsModel::getPlaylists()
 {
-    MPDConnection::self()->listPlaylists();
+    emit listPlaylists();
+}
+
+void PlaylistsModel::clear()
+{
+    beginResetModel();
+    m_playlists=QList<Playlist>();
+    endResetModel();
 }
 
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
@@ -76,23 +84,3 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
     endResetModel();
 }
 
-void PlaylistsModel::loadPlaylist(QString name)
-{
-    MPDConnection::self()->load(name);
-    emit playlistLoaded();
-}
-
-void PlaylistsModel::removePlaylist(QString name)
-{
-    MPDConnection::self()->rm(name);
-}
-
-void PlaylistsModel::savePlaylist(QString name)
-{
-    MPDConnection::self()->save(name);
-}
-
-void PlaylistsModel::renamePlaylist(const QString oldname, const QString newname)
-{
-    MPDConnection::self()->rename(oldname, newname);
-}

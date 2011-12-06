@@ -132,16 +132,18 @@ QVariant dirViewModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+void dirViewModel::clear()
+{
+    updateDirView(new DirViewItemRoot());
+}
+
 void dirViewModel::updateDirView(DirViewItemRoot *newroot)
 {
     const DirViewItemRoot *oldRoot = rootItem;
 
     beginResetModel();
-
     rootItem = newroot;
-
     delete oldRoot;
-
     endResetModel();
 }
 

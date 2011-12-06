@@ -46,6 +46,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
+    void clear();
 
 public slots:
     void updateDirView(DirViewItemRoot *newroot);

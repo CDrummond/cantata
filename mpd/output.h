@@ -32,6 +32,19 @@
 struct Output
 {
     Output(quint8 i, bool en, QString n) : id(i), enabled(en), name(n) { }
+    Output() { }
+
+    Output(const Output &o) { *this=o; }
+
+    Output & operator=(const Output &o)
+    {
+        id=o.id;
+        enabled=o.enabled;
+        name=o.name;
+        return *this;
+    }
+
+    virtual ~Output() { }
 
     quint8 id;
     bool enabled;

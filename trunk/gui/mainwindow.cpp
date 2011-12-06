@@ -379,7 +379,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
-    streamsTabAction->setIcon(QIcon::fromTheme("network-wireless"));
+    streamsTabAction->setIcon(QIcon::fromTheme("applications-internet"));
 
     menuButton->setIcon(QIcon::fromTheme("configure"));
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
@@ -607,6 +607,7 @@ MainWindow::~MainWindow()
     Settings::self()->savePlaylistHeaderState(playlistTableViewHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->save();
+    streamsPage->save();
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopOnExit()) {
         emit stop();
@@ -726,6 +727,8 @@ void MainWindow::updateSettings()
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->coverSize());
         libraryPage->refresh(LibraryPage::RefreshForce);
     }
+
+    streamsPage->refresh();
 
     if (Settings::self()->useSystemTray()) {
         if (!trayIcon) {
@@ -892,7 +895,7 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     playlistModel.updateCurrentSong(song.id);
 
-    if (3==tabWidget->current_index()) {
+    if (4==tabWidget->current_index()) {
         lyricsPage->update(song);
     } else {
         lyricsNeedUpdating=true;
@@ -1073,18 +1076,20 @@ void MainWindow::replacePlaylist()
 {
     emit clear();
     emit getStatus();
-    searchPlaylistLineEdit->clear();
     addToPlaylist();
 }
 
 void MainWindow::addToPlaylist()
 {
+    searchPlaylistLineEdit->clear();
     if (libraryPage->view->isVisible()) {
         libraryPage->addSelectionToPlaylist();
     } else if (folderPage->view->isVisible()) {
         folderPage->addSelectionToPlaylist();
-    } else if (playlistTableView->isVisible()) {
+    } else if (playlistsPage->isVisible()) {
         playlistsPage->addSelectionToPlaylist();
+    } else if (streamsPage->isVisible()) {
+        streamsPage->addSelectionToPlaylist();
     }
 }
 
@@ -1358,7 +1363,8 @@ enum Tabs
 {
     TAB_LIBRARY   = 0x01,
     TAB_DIRS      = 0x02,
-    TAB_PLAYLISTS = 0x04
+//     TAB_STREAMS   = 0x04,
+    TAB_PLAYLISTS = 0x08
 };
 
 void MainWindow::currentTabChanged(int index)
@@ -1383,6 +1389,8 @@ void MainWindow::currentTabChanged(int index)
         }
         break;
     case 3:
+        break;
+    case 4:
         if (lyricsNeedUpdating) {
             lyricsPage->update(current);
             lyricsNeedUpdating=false;

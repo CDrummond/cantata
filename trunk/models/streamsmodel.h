@@ -20,40 +20,39 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+#ifndef STREAMSMODEL_H
+#define STREAMSMODEL_H
 
-#ifndef STREAMSPAGE_H
-#define STREAMSPAGE_H
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QList>
+#include <QtCore/QUrl>
+#include <QtCore/QHash>
 
-#include "ui_streamspage.h"
-#include "mainwindow.h"
-#include "streamsproxymodel.h"
-
-class StreamsPage : public QWidget, public Ui::StreamsPage
+class StreamsModel : public QAbstractListModel
 {
-    Q_OBJECT
-
 public:
-    StreamsPage(MainWindow *p);
-    virtual ~StreamsPage();
+    struct Stream
+    {
+        Stream(const QString &n, const QUrl &u) : name(n), url(u) { }
+        QString name;
+        QUrl url;
+    };
 
-    void refresh();
+    static StreamsModel * self();
+
+    StreamsModel();
+    ~StreamsModel();
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant data(const QModelIndex &, int) const;
+    void reload();
     void save();
-    void addSelectionToPlaylist();
-
-Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
-    void add(const QStringList &streams);
-
-public Q_SLOTS:
-    void add();
-    void remove();
-    void rename();
+    bool add(const QString &name, const QString &url);
+    QString name(const QString &url);
 
 private:
-    Action *addAction;
-    Action *removeAction;
-    Action *renameAction;
-    StreamsProxyModel proxy;
+    QHash<QString, QString> itemMap;
+    QList<Stream> items;
 };
 
 #endif

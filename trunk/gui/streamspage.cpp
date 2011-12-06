@@ -22,14 +22,19 @@
  */
 
 #include "streamspage.h"
+#include "streamsmodel.h"
+#include "streamdialog.h"
+#include "mpdconnection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KAction>
-#include <KLocale>
-#include <KActionCollection>
+#include <KDE/KAction>
+#include <KDE/KLocale>
+#include <KDE/KActionCollection>
+#include <KDE/KMessageBox>
 #else
-#include <QAction>
+#include <QtGui/QAction>
+#include <QtGui/QMessageBox>
 #endif
 
 StreamsPage::StreamsPage(MainWindow *p)
@@ -41,9 +46,12 @@ StreamsPage::StreamsPage(MainWindow *p)
     addAction->setText(i18n("Add Stream"));
     removeAction = p->actionCollection()->addAction("removestream");
     removeAction->setText(i18n("Remove Stream"));
+    renameAction = p->actionCollection()->addAction("renamestream");
+    renameAction->setText(i18n("Rename Stream"));
 #else
     addAction = new QAction(tr("Add Stream"), this);
     removeAction = new QAction(tr("Remove Stream"), this);
+    renameAction = new QAction(tr("Rename Stream"), this);
 #endif
     addAction->setIcon(QIcon::fromTheme("list-add"));
     removeAction->setIcon(QIcon::fromTheme("list-remove"));
@@ -56,6 +64,8 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), removeStream, SLOT(setEnabled(bool)));
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
     connect(removeAction, SIGNAL(triggered(bool)), this, SLOT(remove()));
+    connect(renameAction, SIGNAL(triggered(bool)), this, SLOT(rename()));
+    connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
 
     addStream->setAutoRaise(true);
     removeStream->setAutoRaise(true);
@@ -65,18 +75,119 @@ StreamsPage::StreamsPage(MainWindow *p)
     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
 
+    view->setHeaderHidden(true);
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
+    view->addAction(removeAction);
+    view->addAction(renameAction);
+
+    proxy.setSourceModel(StreamsModel::self());
+    view->setModel(&proxy);
 }
 
 StreamsPage::~StreamsPage()
 {
 }
 
+void StreamsPage::refresh()
+{
+    StreamsModel::self()->reload();
+}
+
+void StreamsPage::save()
+{
+    StreamsModel::self()->save();
+}
+
+void StreamsPage::addSelectionToPlaylist()
+{
+    QStringList streams;
+
+    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
+
+    if (0==selected.size()) {
+        return;
+    }
+
+    foreach (const QModelIndex &idx, selected) {
+        QString stream=StreamsModel::self()->data(proxy.mapToSource(idx), Qt::ToolTipRole).toString();
+
+        if (!streams.contains(stream)) {
+            streams << stream;
+        }
+    }
+
+    if (!streams.isEmpty()) {
+        emit add(streams);
+        view->selectionModel()->clearSelection();
+    }
+}
+
+
+static void showError(QWidget *parent, const QString &error)
+{
+#ifdef ENABLE_KDE_SUPPORT
+    KMessageBox::error(parent, error);
+#else
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Error);
+    msgBox.setWindowTitle(tr("Error"));
+    msgBox.setText(error);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+#endif
+}
+
 void StreamsPage::add()
 {
+    StreamDialog dlg(this);
+
+    if (QDialog::Accepted==dlg.exec()) {
+        QString name=dlg.name();
+        QString url=dlg.url();
+
+        if (name.isEmpty()) {
+#ifdef ENABLE_KDE_SUPPORT
+            showError(this, i18n("No name supplied!"));
+#else
+            showError(this, tr("No name supplied!"));
+#endif
+            return;
+        }
+
+        if (url.isEmpty()) {
+#ifdef ENABLE_KDE_SUPPORT
+            showError(this, i18n("No stream supplied!"));
+#else
+            showError(this, tr("No stream supplied!"));
+#endif
+            return;
+        }
+
+        QString existing=StreamsModel::self()->name(url);
+        if (!existing.isEmpty()) {
+#ifdef ENABLE_KDE_SUPPORT
+            showError(this, i18n("Stream already exists!</br><i>%1</i>", existing));
+#else
+            showError(this, tr("Stream already exists!</br><i>%1</i>").arg(existing));
+#endif
+            return;
+        }
+
+        if (!StreamsModel::self()->add(name, url)) {
+#ifdef ENABLE_KDE_SUPPORT
+            showError(this, i18n("A stream named <i>%1</i> already exists!", name));
+#else
+            showError(this, tr("A stream named <i>%1</i> already exists!").arg(name));
+#endif
+        }
+    }
 }
 
 void StreamsPage::remove()
+{
+}
+
+void StreamsPage::rename()
 {
 }

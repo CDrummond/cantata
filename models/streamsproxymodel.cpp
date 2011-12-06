@@ -20,40 +20,12 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
-
-#ifndef STREAMSPAGE_H
-#define STREAMSPAGE_H
-
-#include "ui_streamspage.h"
-#include "mainwindow.h"
 #include "streamsproxymodel.h"
 
-class StreamsPage : public QWidget, public Ui::StreamsPage
+StreamsProxyModel::StreamsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
-    Q_OBJECT
-
-public:
-    StreamsPage(MainWindow *p);
-    virtual ~StreamsPage();
-
-    void refresh();
-    void save();
-    void addSelectionToPlaylist();
-
-Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
-    void add(const QStringList &streams);
-
-public Q_SLOTS:
-    void add();
-    void remove();
-    void rename();
-
-private:
-    Action *addAction;
-    Action *removeAction;
-    Action *renameAction;
-    StreamsProxyModel proxy;
-};
-
-#endif
+    setDynamicSortFilter(true);
+    setFilterCaseSensitivity(Qt::CaseInsensitive);
+    setSortCaseSensitivity(Qt::CaseInsensitive);
+    setSortLocaleAware(true);
+}

@@ -123,21 +123,6 @@ int Settings::connectionPort()
     return GET_INT("connectionPort", 6600);
 }
 
-bool Settings::consumePlaylist()
-{
-    return GET_BOOL("consumePlaylist", false);
-}
-
-bool Settings::randomPlaylist()
-{
-    return GET_BOOL("randomPlaylist", false);
-}
-
-bool Settings::repeatPlaylist()
-{
-    return GET_BOOL("repeatPlaylist", true);
-}
-
 bool Settings::showPlaylist()
 {
     return GET_BOOL("showPlaylist", true);
@@ -246,21 +231,6 @@ void Settings::saveConnectionPasswd(const QString &v)
 void Settings::saveConnectionPort(int v)
 {
     SET_VALUE("connectionPort", v);
-}
-
-void Settings::saveConsumePlaylist(bool v)
-{
-    SET_VALUE("consumePlaylist", v);
-}
-
-void Settings::saveRandomPlaylist(bool v)
-{
-    SET_VALUE("randomPlaylist", v);
-}
-
-void Settings::saveRepeatPlaylist(bool v)
-{
-    SET_VALUE("repeatPlaylist", v);
 }
 
 void Settings::saveShowPlaylist(bool v)

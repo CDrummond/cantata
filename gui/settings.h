@@ -44,9 +44,6 @@ public:
     QString connectionHost();
     QString connectionPasswd();
     int connectionPort();
-    bool consumePlaylist();
-    bool randomPlaylist();
-    bool repeatPlaylist();
     bool showPlaylist();
     QByteArray playlistHeaderState();
     QByteArray splitterState();
@@ -64,9 +61,6 @@ public:
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
     void saveConnectionPort(int v);
-    void saveConsumePlaylist(bool v);
-    void saveRandomPlaylist(bool v);
-    void saveRepeatPlaylist(bool v);
     void saveShowPlaylist(bool v);
     void saveStopOnExit(bool v);
     void savePlaylistHeaderState(const QByteArray &v);

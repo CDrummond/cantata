@@ -167,13 +167,25 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     }
 }
 
+void MusicLibraryModel::clear()
+{
+    const MusicLibraryItemRoot *oldRoot = rootItem;
+    beginResetModel();
+    databaseTime = QDateTime();
+    rootItem = new MusicLibraryItemRoot("Artist / Album / Song");
+    delete oldRoot;
+    endResetModel();
+
+    emit updateGenres(QStringList());
+}
+
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime db_update, bool fromFile)
 {
-    libraryMutex.lock();
+//     libraryMutex.lock();
     const MusicLibraryItemRoot *oldRoot = rootItem;
 
     if (databaseTime > db_update) {
-        libraryMutex.unlock();
+//         libraryMutex.unlock();
         return;
     }
 
@@ -188,7 +200,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     if (!fromFile) {
         toXML(db_update);
     }
-    libraryMutex.unlock();
+//     libraryMutex.unlock();
 
     QStringList genres=QStringList(rootItem->genres().toList());
     genres.sort();

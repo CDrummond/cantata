@@ -27,8 +27,6 @@
 #ifndef MPDCONNECTION_H
 #define MPDCONNECTION_H
 
-#include <QMutex>
-#include <QThread>
 #include <QTcpSocket>
 #include <QDateTime>
 #include "mpdstats.h"
@@ -41,7 +39,7 @@ class MusicLibraryItemArtist;
 class DirViewItemRoot;
 class MusicLibraryItemRoot;
 
-class MPDConnection : public QThread
+class MPDConnection : public QObject
 {
     Q_OBJECT
 
@@ -57,52 +55,48 @@ public:
     MPDConnection();
     ~MPDConnection();
 
-    bool connectToMPD();
-    void disconnectFromMPD();
-    void setDetails(const QString &host, const quint16 port, const QString &pass);
-    bool isConnected();
-
 public Q_SLOTS:
+    void setDetails(const QString &host, quint16 port, const QString &pass);
     // Playlist
     void add(const QStringList &files);
-    void addid(const QStringList &files, const quint32 pos, const quint32 size);
+    void addid(const QStringList &files, quint32 pos, quint32 size);
     void currentSong();
     void playListInfo();
     void removeSongs(const QList<qint32> &items);
-    void move(const quint32 from, const quint32 to);
-    void move(const QList<quint32> items, const quint32 pos, const quint32 size);
-    void shuffle(const quint32 from, const quint32 to);
+    void move(quint32 from, quint32 to);
+    void move(const QList<quint32> &items, quint32 pos, quint32 size);
+    void shuffle(quint32 from, quint32 to);
     void clear();
     void shuffle();
 
     // Playback
-    void setCrossFade(const quint8 secs);
+    void setCrossFade(int secs);
     void setReplayGain(const QString &v);
-    QString getReplayGain();
+    void getReplayGain();
     void goToNext();
-    void setPause(const bool toggle);
-    void startPlayingSong(const quint32 song = 0);
-    void startPlayingSongId(const quint32 song_id = 0);
+    void setPause(bool toggle);
+    void startPlayingSong(quint32 song = 0);
+    void startPlayingSongId(quint32 songId = 0);
     void goToPrevious();
-    void setConsume(const bool toggle);
-    void setRandom(const bool toggle);
-    void setRepeat(const bool toggle);
-    void setSeek(const quint32 song, const quint32 time);
-    void setSeekId(const quint32 song_id, const quint32 time);
-    void setVolume(const quint8 vol);
+    void setConsume(bool toggle);
+    void setRandom(bool toggle);
+    void setRepeat(bool toggle);
+    void setSeek(quint32 song, quint32 time);
+    void setSeekId(quint32 songId, quint32 time);
+    void setVolume(int vol);
     void stopPlaying();
 
     // Output
     void outputs();
-    void enableOutput(const quint8 id);
-    void disableOutput(const quint8 id);
+    void enableOutput(int id);
+    void disableOutput(int id);
 
     // Miscellaneous
     void getStats();
     void getStatus();
 
     // Database
-    void listAllInfo(QDateTime db_update);
+    void listAllInfo(const QDateTime &dbUpdate);
     void listAll();
 
     // Admin
@@ -117,6 +111,7 @@ public Q_SLOTS:
     void save(QString name);
 
 Q_SIGNALS:
+    void stateChanged(bool connected);
     void currentSongUpdated(const Song &song);
     void mpdConnectionDied();
     void playlistUpdated(const QList<Song> &songs);
@@ -128,13 +123,17 @@ Q_SIGNALS:
     void dirViewUpdated(DirViewItemRoot * root);
     void playlistsRetrieved(const QList<Playlist> &data);
     void databaseUpdated();
+    void loaded(const QString &playlist);
+    void added(const QStringList &files);
+    void replayGain(const QString &);
 
 private Q_SLOTS:
     void idleDataReady();
     void onSocketStateChanged(QAbstractSocket::SocketState socketState);
-    void onIdleSocketStateChanged(QAbstractSocket::SocketState socketState);
 
 private:
+    bool connectToMPD();
+    void disconnectFromMPD();
     bool connectToMPD(QTcpSocket &socket, bool enableIdle=false);
     Response sendCommand(const QByteArray &command);
     void initialize();
@@ -148,7 +147,14 @@ private:
     // Cant use 1, as we could write a command just as an idle event is ready to read
     QTcpSocket sock;
     QTcpSocket idleSocket;
-    QMutex mutex;
+
+    enum State
+    {
+        State_Blank,
+        State_Connected,
+        State_Disconnected
+    };
+    State state;
 };
 
 #endif

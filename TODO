@@ -5,21 +5,6 @@ FancyTabWidget
    - Allow context menu all the way down tab side
    - When click on an already active tab, hide the associated widget
 
-Fix usage of threads - ideally writing/reading should be in thread object.
-   Thread use is bogus at the moment.
-   Need to
-        connect(MPDConnection::....
-        QThread *mpdThread = new QThread(this);
-        MPDConnection::self()->moveToThread(mpdThread);
-        mpdThread->start();
-
-        emit startMpd();
-
-        **All** communication with MPDConnection::self() should be through signals and slots!!!
-
-    See: http://www.christeck.de/wp/2010/10/23/the-great-qthread-mess/
-
-
 
 Need better repeat icon.
 

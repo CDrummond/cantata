@@ -22,6 +22,8 @@
  */
 
 #include <QtCore/QModelIndex>
+#include <QtCore/QDataStream>
+#include <QtCore/QMimeData>
 #include "streamsmodel.h"
 #include "settings.h"
 
@@ -188,3 +190,32 @@ bool StreamsModel::entryExists(const QString &name, const QUrl &url)
     return false;
 }
 
+Qt::ItemFlags StreamsModel::flags(const QModelIndex &index) const
+{
+    if (index.isValid())
+        return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+    else
+        return Qt::NoItemFlags;
+}
+
+QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData = new QMimeData();
+    QByteArray encodedData;
+
+    QDataStream stream(&encodedData, QIODevice::WriteOnly);
+    QStringList filenames;
+
+    foreach(QModelIndex index, indexes) {
+        if (index.row()<items.count()) {
+            filenames << items.at(index.row()).url.toString();
+        }
+    }
+
+    for (int i = filenames.size() - 1; i >= 0; i--) {
+        stream << filenames.at(i);
+    }
+
+    mimeData->setData("application/cantata_songs_filename_text", encodedData);
+    return mimeData;
+}

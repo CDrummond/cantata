@@ -52,6 +52,8 @@ public:
     void remove(const QModelIndex &index);
     QString name(const QString &url);
     bool entryExists(const QString &name, const QUrl &url=QUrl());
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QMimeData * mimeData(const QModelIndexList &indexes) const;
 
 private:
     QHash<QString, QString> itemMap;

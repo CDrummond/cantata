@@ -24,7 +24,6 @@
 #include <QtCore/QModelIndex>
 #include "streamsmodel.h"
 #include "settings.h"
-#include <QDebug>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
@@ -99,6 +98,11 @@ void StreamsModel::reload()
         QString name=url.queryItemValue(constNameQuery);
         if (!name.isEmpty()) {
             url.removeQueryItem(constNameQuery);
+            QString str=url.toString();
+            if (str.endsWith("&")) {
+                str=str.left(str.length()-1);
+                url=QUrl(str);
+            }
             items.append(Stream(name, url));
             itemMap.insert(url.toString(), name);
         }

@@ -23,6 +23,7 @@
 
 #include "playlistspage.h"
 #include "mpdconnection.h"
+#include "playlistsmodel.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #include <QtGui/QInputDialog>
@@ -40,15 +41,15 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     removePlaylistAction = p->actionCollection()->addAction("removeplaylist");
     removePlaylistAction->setText(i18n("Remove Playlist"));
     renamePlaylistAction = p->actionCollection()->addAction("renameplaylist");
     renamePlaylistAction->setText(i18n("Rename Playlist"));
-#else
+    #else
     removePlaylistAction = new QAction(tr("Remove Playlist"), this);
     renamePlaylistAction = new QAction(tr("Rename PlayList"), this);
-#endif
+    #endif
     removePlaylistAction->setIcon(QIcon::fromTheme("list-remove"));
     renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
 
@@ -72,11 +73,6 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     delPlaylist->setEnabled(false);
     renPlaylist->setEnabled(false);
 
-// #ifdef ENABLE_KDE_SUPPORT
-//     search->setPlaceholderText(i18n("Search playlists..."));
-// #else
-//     search->setPlaceholderText(tr("Search playlists..."));
-// #endif
     view->setHeaderHidden(true);
     view->sortByColumn(0, Qt::AscendingOrder);
     view->addAction(p->addToPlaylistAction);
@@ -84,7 +80,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     view->addAction(removePlaylistAction);
     view->addAction(renamePlaylistAction);
 
-    proxy.setSourceModel(&model);
+    proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(load(const QString &)));
@@ -102,12 +98,12 @@ PlaylistsPage::~PlaylistsPage()
 
 void PlaylistsPage::refresh()
 {
-    model.getPlaylists();
+    PlaylistsModel::self()->getPlaylists();
 }
 
 void PlaylistsPage::clear()
 {
-    model.clear();
+    PlaylistsModel::self()->clear();
 }
 
 void PlaylistsPage::addSelectionToPlaylist()
@@ -115,7 +111,7 @@ void PlaylistsPage::addSelectionToPlaylist()
     const QModelIndexList items = view->selectionModel()->selectedRows();
 
     if (items.size() == 1) {
-        emit loadPlaylist(model.data(proxy.mapToSource(items.first()), Qt::DisplayRole).toString());
+        emit loadPlaylist(PlaylistsModel::self()->data(proxy.mapToSource(items.first()), Qt::DisplayRole).toString());
     }
 }
 
@@ -123,38 +119,34 @@ void PlaylistsPage::removePlaylist()
 {
     const QModelIndexList items = view->selectionModel()->selectedRows();
 
-    if (items.size() == 1) {
-        QModelIndex sourceIndex = proxy.mapToSource(items.first());
-        QString name = model.data(sourceIndex, Qt::DisplayRole).toString();
-
-#ifdef ENABLE_KDE_SUPPORT
-        if (KMessageBox::Yes == KMessageBox::warningYesNo(this, i18n("Are you sure you want to delete playlist: %1?", name),
-                i18n("Delete Playlist?"))) {
-            emit removePlaylist(name);
-        }
-#else
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowTitle(tr("Delete Playlist?"));
-        msgBox.setText(tr("Are you sure you want to delete playlist: %1?").arg(name));
-        msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-        msgBox.setDefaultButton(QMessageBox::No);
-        int ret = msgBox.exec();
-
-        if (ret == QMessageBox::Yes) {
-            emit removePlaylist(name);
-        }
-#endif
+    if (items.size() != 1) {
+        return;
     }
+
+    QModelIndex sourceIndex = proxy.mapToSource(items.first());
+    QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
+
+    #ifdef ENABLE_KDE_SUPPORT
+    if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove <i>%1</i>?").arg(name), i18n("Delete Playlist?"))) {
+        return;
+    }
+    #else
+    if (QMessageBox::No==QMessageBox::warning(this, tr("Delete Playlist?"), tr("Are you sure you wish to remove <i>%1</i>?").arg(name),
+                                              QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
+        return;
+    }
+    #endif
+
+    emit removePlaylist(name);
 }
 
 void PlaylistsPage::savePlaylist()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     QString name = QInputDialog::getText(this, i18n("Playlist Name"), i18n("Enter a name for the playlist:"));
-#else
+    #else
     QString name = QInputDialog::getText(this, tr("Playlist Name"), tr("Enter a name for the playlist:"));
-#endif
+    #endif
 
     if (!name.isEmpty())
         emit savePlaylist(name);
@@ -166,15 +158,15 @@ void PlaylistsPage::renamePlaylist()
 
     if (items.size() == 1) {
         QModelIndex sourceIndex = proxy.mapToSource(items.first());
-        QString name = model.data(sourceIndex, Qt::DisplayRole).toString();
-#ifdef ENABLE_KDE_SUPPORT
-        QString new_name = QInputDialog::getText(this, i18n("Rename Playlist"), i18n("Enter new name for playlist: %1").arg(name));
-#else
-        QString new_name = QInputDialog::getText(this, tr("Rename Playlist"), tr("Enter new name for playlist: %1").arg(name));
-#endif
+        QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
+        #ifdef ENABLE_KDE_SUPPORT
+        QString newName = QInputDialog::getText(this, i18n("Rename Playlist"), i18n("Enter new name for playlist: %1").arg(name));
+        #else
+        QString newName = QInputDialog::getText(this, tr("Rename Playlist"), tr("Enter new name for playlist: %1").arg(name));
+        #endif
 
-        if (!new_name.isEmpty()) {
-            emit renamePlaylist(name, new_name);
+        if (!newName.isEmpty()) {
+            emit renamePlaylist(name, newName);
         }
     }
 }
@@ -182,6 +174,6 @@ void PlaylistsPage::renamePlaylist()
 void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
     QModelIndex sourceIndex = proxy.mapToSource(index);
-    QString name = model.data(sourceIndex, Qt::DisplayRole).toString();
+    QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
     emit loadPlaylist(name);
 }

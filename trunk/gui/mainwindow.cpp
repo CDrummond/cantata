@@ -387,7 +387,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
     streamsTabAction->setIcon(QIcon::fromTheme("applications-internet"));
-    infoTabAction->setIcon(QIcon::fromTheme("dialog-information"));
+    infoTabAction->setIcon(QIcon::fromTheme("server-database"));
 
     menuButton->setIcon(QIcon::fromTheme("configure"));
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));

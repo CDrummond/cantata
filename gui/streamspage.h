@@ -44,15 +44,16 @@ Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void add(const QStringList &streams);
 
-public Q_SLOTS:
+private Q_SLOTS:
     void add();
     void remove();
-    void rename();
+    void edit();
+    void controlEdit();
 
 private:
     Action *addAction;
     Action *removeAction;
-    Action *renameAction;
+    Action *editAction;
     StreamsProxyModel proxy;
 };
 

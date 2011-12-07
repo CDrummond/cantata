@@ -43,6 +43,8 @@ class StreamDialog : public QDialog
 public:
     StreamDialog(QWidget *parent);
 
+    void setEdit(const QString &editName, const QString &editUrl);
+
     QString name() { return nameEntry->text().trimmed(); }
     QString url() { return urlEntry->text().trimmed(); }
 
@@ -50,6 +52,8 @@ private Q_SLOTS:
     void textChanged();
 
 private:
+    QString prevName;
+    QString prevUrl;
 #ifndef ENABLE_KDE_SUPPORT
     QDialogButtonBox *buttonBox;
 #endif

@@ -41,18 +41,18 @@ StreamsPage::StreamsPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     addAction = p->actionCollection()->addAction("addstream");
     addAction->setText(i18n("Add Stream"));
     removeAction = p->actionCollection()->addAction("removestream");
     removeAction->setText(i18n("Remove Stream"));
     editAction = p->actionCollection()->addAction("editstream");
     editAction->setText(i18n("Edit Stream"));
-#else
+    #else
     addAction = new QAction(tr("Add Stream"), this);
     removeAction = new QAction(tr("Remove Stream"), this);
     editAction = new QAction(tr("Rename Stream"), this);
-#endif
+    #endif
     addAction->setIcon(QIcon::fromTheme("list-add"));
     removeAction->setIcon(QIcon::fromTheme("list-remove"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
@@ -131,16 +131,16 @@ void StreamsPage::addSelectionToPlaylist()
 
 static void showError(QWidget *parent, const QString &error)
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     KMessageBox::error(parent, error);
-#else
+    #else
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Error);
     msgBox.setWindowTitle(tr("Error"));
     msgBox.setText(error);
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
-#endif
+    #endif
 }
 
 void StreamsPage::add()
@@ -153,20 +153,20 @@ void StreamsPage::add()
 
         QString existing=StreamsModel::self()->name(url);
         if (!existing.isEmpty()) {
-#ifdef ENABLE_KDE_SUPPORT
+            #ifdef ENABLE_KDE_SUPPORT
             showError(this, i18n("Stream already exists!<br/><i>%1</i>", existing));
-#else
+            #else
             showError(this, tr("Stream already exists!<br/><i>%1</i>").arg(existing));
-#endif
+            #endif
             return;
         }
 
         if (!StreamsModel::self()->add(name, url)) {
-#ifdef ENABLE_KDE_SUPPORT
+            #ifdef ENABLE_KDE_SUPPORT
             showError(this, i18n("A stream named <i>%1</i> already exists!", name));
-#else
+            #else
             showError(this, tr("A stream named <i>%1</i> already exists!").arg(name));
-#endif
+            #endif
         }
     }
 }
@@ -183,19 +183,20 @@ void StreamsPage::remove()
 
     QModelIndex firstIndex=proxy.mapToSource(selected.first());
     QString firstName=StreamsModel::self()->data(firstIndex, Qt::DisplayRole).toString();
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     if (KMessageBox::No==KMessageBox::warningYesNo(this, selected.size()>1 ? i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
-                                                                            : i18n("Ayou you sure you wish to remove <i>%1</i>?").arg(firstName))) {
+                                                                           : i18n("Are you sure you wish to remove <i>%1</i>?").arg(firstName),
+                                                   selected.size()>1 ? i18n("Delete Streams?") : i18n("Delete Stream?"))) {
         return;
     }
-#else
-    if (QMessageBox::No==QMessageBox::warning(this, tr("Warning"), this,
-                                                selected.size()>1 ? tr("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
-                                                                : tr("Ayou you sure you wish to remove <i>%1</i>?").arg(firstName)),
-                                                QMessageBox::Yes|QMessageBox::No, QMessageBox::No) {
+    #else
+    if (QMessageBox::No==QMessageBox::warning(this, selected.size()>1 ? tr("Delete Streams?") : tr("Delete Stream?"),
+                                              selected.size()>1 ? tr("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
+                                                                : tr("Are you sure you wish to remove <i>%1</i>?").arg(firstName),
+                                              QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
         return;
     }
-#endif
+    #endif
 
     foreach (const QModelIndex &idx, selected) {
         StreamsModel::self()->remove(proxy.mapToSource(idx));
@@ -226,17 +227,17 @@ void StreamsPage::edit()
         QString existingNameForUrl=newUrl!=url ? StreamsModel::self()->name(newUrl) : QString();
 
         if (!existingNameForUrl.isEmpty()) {
-#ifdef ENABLE_KDE_SUPPORT
+            #ifdef ENABLE_KDE_SUPPORT
             showError(this, i18n("Stream already exists!<br/><i>%1</i>", existingNameForUrl));
-#else
+            #else
             showError(this, tr("Stream already exists!<br/><i>%1</i>").arg(existingNameForUrl));
-#endif
+            #endif
         } else if (newName!=name && StreamsModel::self()->entryExists(newName)) {
-#ifdef ENABLE_KDE_SUPPORT
+            #ifdef ENABLE_KDE_SUPPORT
             showError(this, i18n("A stream named <i>%1</i> already exists!", newName));
-#else
+            #else
             showError(this, tr("A stream named <i>%1</i> already exists!").arg(newName));
-#endif
+            #endif
         } else {
             StreamsModel::self()->edit(index, newName, newUrl);
         }

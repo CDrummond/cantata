@@ -86,7 +86,8 @@ MPDConnection::Response readReply(QTcpSocket &socket)
 }
 
 MPDConnection::MPDConnection()
-    : ui(0)
+    : ver(0)
+    , ui(0)
     , sock(this)
     , idleSocket(this)
     , state(State_Blank)
@@ -126,6 +127,15 @@ bool MPDConnection::connectToMPD(QTcpSocket &socket, bool enableIdle)
 
             if (recvdata.startsWith("OK MPD")) {
                 qDebug("Received identification string");
+            }
+
+            int min, maj, patch;
+            if (3==sscanf(&(recvdata.constData()[7]), "%d.%d.%d", &maj, &min, &patch)) {
+                long v=((maj&0xFF)<<16)+((min&0xFF)<<8)+(patch&0xFF);
+                if (v!=ver) {
+                    ver=v;
+                    emit version(ver);
+                }
             }
 
             recvdata.clear();

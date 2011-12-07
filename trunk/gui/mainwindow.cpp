@@ -688,7 +688,7 @@ void MainWindow::mpdConnectionDied()
 
     // Reset GUI
     positionSlider->setValue(0);
-    songTimeElapsedLabel->setText("00:00 / 00:00");
+    songTimeElapsedLabel->setText("0:00 / 0:00");
 
     playPauseTrackAction->setIcon(playbackPlay);
     playPauseTrackAction->setEnabled(true);
@@ -993,7 +993,7 @@ void MainWindow::updateStatus()
     consumePlaylistAction->setChecked(status->consume());
 
     if (status->state() == MPDStatus::State_Stopped || status->state() == MPDStatus::State_Inactive) {
-        timeElapsedFormattedString = "00:00 / 00:00";
+        timeElapsedFormattedString = "0:00 / 0:00";
     } else {
         timeElapsedFormattedString += Song::formattedTime(status->timeElapsed());
         timeElapsedFormattedString += " / ";

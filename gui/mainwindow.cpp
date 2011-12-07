@@ -65,6 +65,7 @@
 #include "folderpage.h"
 #include "librarypage.h"
 #include "lyricspage.h"
+#include "infopage.h"
 #include "streamspage.h"
 #include "streamsmodel.h"
 #include "playlistspage.h"
@@ -296,6 +297,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     streamsTabAction = actionCollection()->addAction("showstreamstab");
     streamsTabAction->setText(i18n("Streams"));
+
+    infoTabAction = actionCollection()->addAction("showinfotab");
+    infoTabAction->setText(i18n("Info"));
 #else
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -327,12 +331,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction = new QAction(tr("Playlists"), this);
     lyricsTabAction = new QAction(tr("Lyrics"), this);
     streamsTabAction = new QAction(tr("Streams"), this);
+    infoTabAction = new QAction(tr("Info"), this);
 #endif
     libraryTabAction->setShortcut(Qt::Key_F5);
     foldersTabAction->setShortcut(Qt::Key_F6);
     playlistsTabAction->setShortcut(Qt::Key_F7);
     streamsTabAction->setShortcut(Qt::Key_F8);
     lyricsTabAction->setShortcut(Qt::Key_F9);
+    infoTabAction->setShortcut(Qt::Key_F10);
 
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
@@ -381,6 +387,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
     streamsTabAction->setIcon(QIcon::fromTheme("applications-internet"));
+    infoTabAction->setIcon(QIcon::fromTheme("dialog-information"));
 
     menuButton->setIcon(QIcon::fromTheme("configure"));
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
@@ -400,6 +407,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsPage = new PlaylistsPage(this);
     streamsPage = new StreamsPage(this);
     lyricsPage = new LyricsPage(this);
+    infoPage = new InfoPage(this);
 
     setVisible(true);
 
@@ -415,6 +423,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text());
     tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text());
     tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text());
+    tabWidget->AddTab(infoPage, infoTabAction->icon(), infoTabAction->text());
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
@@ -569,6 +578,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(playlistsTabAction, SIGNAL(activated()), this, SLOT(showPlaylistsTab()));
     connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
     connect(streamsTabAction, SIGNAL(activated()), this, SLOT(showStreamsTab()));
+    connect(infoTabAction, SIGNAL(activated()), this, SLOT(showInfoTab()));
 
     elapsedTimer.setInterval(1000);
 
@@ -711,6 +721,7 @@ void MainWindow::updateDb()
         connect(MPDConnection::self(), SIGNAL(databaseUpdated()), updateDialog, SLOT(complete()));
     }
     updateDialog->show();
+    emit getStats();
 }
 
 void MainWindow::showPreferencesDialog()
@@ -1449,4 +1460,9 @@ void MainWindow::showStreamsTab()
 void MainWindow::showLyricsTab()
 {
     tabWidget->SetCurrentIndex(4);
+}
+
+void MainWindow::showInfoTab()
+{
+    tabWidget->SetCurrentIndex(5);
 }

@@ -128,6 +128,7 @@ Q_SIGNALS:
     void loaded(const QString &playlist);
     void added(const QStringList &files);
     void replayGain(const QString &);
+    void version(long);
 
 private Q_SLOTS:
     void idleDataReady();
@@ -142,6 +143,7 @@ private:
     void parseIdleReturn(const QByteArray &data);
 
 private:
+    long ver;
     QObject *ui;
     QString hostname;
     quint16 port;

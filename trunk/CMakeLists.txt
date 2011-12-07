@@ -32,6 +32,7 @@ SET( CANTATA_SRCS
     gui/streamdialog.cpp
     gui/librarypage.cpp
     gui/folderpage.cpp
+    gui/infopage.cpp
     gui/playlistspage.cpp
     models/musiclibraryitem.cpp
     models/musiclibraryitemroot.cpp
@@ -75,6 +76,7 @@ SET( CANTATA_MOC_HDRS
     gui/librarypage.h
     gui/playlistspage.h
     gui/streamspage.h
+    gui/infopage.h
     gui/streamdialog.h
     gui/interfacesettings.h
     gui/playbacksettings.h
@@ -107,6 +109,7 @@ SET( CANTATA_UIS
     gui/librarypage.ui
     gui/playlistspage.ui
     gui/streamspage.ui
+    gui/infopage.ui
     gui/interfacesettings.ui
     gui/playbacksettings.ui
     gui/serversettings.ui

@@ -29,6 +29,8 @@
 #include "settings.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
+#else
+#include <QtGui/QDialogButtonBox>
 #endif
 
 StreamDialog::StreamDialog(QWidget *parent)
@@ -47,6 +49,8 @@ StreamDialog::StreamDialog(QWidget *parent)
 
     nameEntry=new LineEdit(wid);
     urlEntry=new LineEdit(wid);
+    nameEntry->setClearButtonShown(true);
+    urlEntry->setClearButtonShown(true);
 #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(0, QFormLayout::LabelRole, new QLabel(i18n("Name:"), wid));
 #else
@@ -65,9 +69,28 @@ StreamDialog::StreamDialog(QWidget *parent)
     setMainWidget(wid);
     setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Add Stream"));
+    enableButton(KDialog::Ok, false);
 #else
     setWindowTitle(tr("Add Stream"));
-    // TODO: Buttons!!!!
+    QBoxLayout *mainLayout=new QBoxLayout(QBoxLayout::TopToBottom, this);
+    mainLayout->addWidget(wid);
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    mainLayout->addWidget(buttonBox);
+    connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 #endif
+    connect(nameEntry, SIGNAL(textChanged(const QString &)), SLOT(textChanged()));
+    connect(urlEntry, SIGNAL(textChanged(const QString &)), SLOT(textChanged()));
 }
 
+void StreamDialog::textChanged()
+{
+    bool enableOk=!name().isEmpty() && !url().isEmpty();
+#ifdef ENABLE_KDE_SUPPORT
+    enableButton(KDialog::Ok, enableOk);
+#else
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enableOk);
+#endif
+}

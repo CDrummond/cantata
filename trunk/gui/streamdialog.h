@@ -28,6 +28,7 @@
 #include <KDialog>
 #else
 #include <QDialog>
+class QDialogButtonBox;
 #endif
 #include "lineedit.h"
 
@@ -42,10 +43,16 @@ class StreamDialog : public QDialog
 public:
     StreamDialog(QWidget *parent);
 
-    QString name() { return nameEntry->text(); }
-    QString url() { return urlEntry->text(); }
+    QString name() { return nameEntry->text().trimmed(); }
+    QString url() { return urlEntry->text().trimmed(); }
+
+private Q_SLOTS:
+    void textChanged();
 
 private:
+#ifndef ENABLE_KDE_SUPPORT
+    QDialogButtonBox *buttonBox;
+#endif
     LineEdit *nameEntry;
     LineEdit *urlEntry;
 };

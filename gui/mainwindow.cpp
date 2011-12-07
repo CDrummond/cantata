@@ -66,6 +66,7 @@
 #include "librarypage.h"
 #include "lyricspage.h"
 #include "streamspage.h"
+#include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 
@@ -442,7 +443,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #else
     trackLabel->setText(tr("Stopped"));
 #endif
-    artistLabel->setText("...");
+    artistLabel->setText(QString());
 
     showPlaylistAction->setChecked(Settings::self()->showPlaylist());
     randomPlaylistAction->setChecked(false);
@@ -893,12 +894,14 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     if (song.title.isEmpty() && song.artist.isEmpty()) {
-#ifdef ENABLE_KDE_SUPPORT
-        trackLabel->setText(i18n("Stopped"));
-#else
-        trackLabel->setText(tr("Stopped"));
-#endif
-        artistLabel->setText("...");
+        QString streamName=StreamsModel::self()->name(song.file);
+        if (streamName.isEmpty()) {
+            trackLabel->setText(song.file);
+            artistLabel->setText(QString());
+        } else {
+            trackLabel->setText(streamName);
+            artistLabel->setText(QString());
+        }
     } else {
         trackLabel->setText(song.title);
         artistLabel->setText(song.artist);
@@ -1026,7 +1029,7 @@ void MainWindow::updateStatus()
 #else
         trackLabel->setText(tr("Stopped"));
 #endif
-        artistLabel->setText("...");
+        artistLabel->setText(QString());
 
         if (trayIcon != NULL)
             trayIcon->setIcon(windowIcon());

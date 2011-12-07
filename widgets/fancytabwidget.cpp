@@ -688,9 +688,16 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
       return;
   }
 
-  QWidget *widget=QApplication::widgetAt(e->globalPos());
-
-  if (!widget || !(qobject_cast<FancyTab *>(widget) || (qobject_cast<QTabBar *>(widget) && widget==tab_bar_))) {
+  // Check we are over tab space...
+  if (Mode_IconOnlyTopTabs!=mode_ && Mode_TopTabs!=mode_){
+      if (Qt::RightToLeft==QApplication::layoutDirection()) {
+          if (e->pos().x()<=side_widget_->pos().x()) {
+            return;
+          }
+      } else if (e->pos().x()>=side_widget_->rect().right()) {
+          return;
+      }
+  } else if (QApplication::widgetAt(e->globalPos())!=tab_bar_) {
       return;
   }
   if (!menu_) {

@@ -136,9 +136,9 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
                 }
 
 #ifdef ENABLE_KDE_SUPPORT
-                return i18n("(Stream)", streamName);
+                return i18n("(Stream)");
 #else
-                return tr("(Stream)").arg(streamName);
+                return tr("(Stream)");
 #endif
             }
             return title;

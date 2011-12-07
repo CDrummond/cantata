@@ -213,6 +213,11 @@ QList<QUrl> Settings::streamUrls()
     return urls;
 }
 
+int Settings::page()
+{
+    return GET_INT("page", 0);
+}
+
 void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -313,6 +318,11 @@ void Settings::saveStreamUrls(const QList<QUrl> &u)
         list.append(url.toString());
     }
     SET_VALUE("streamUrls", list);
+}
+
+void Settings::savePage(int v)
+{
+    SET_VALUE("page", v);
 }
 
 void Settings::save()

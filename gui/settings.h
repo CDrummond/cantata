@@ -60,6 +60,7 @@ public:
     int sidebar();
     QStringList lyricProviders();
     QList<QUrl> streamUrls();
+    int page();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -78,6 +79,7 @@ public:
     void saveSidebar(int v);
     void saveLyricProviders(const QStringList &p);
     void saveStreamUrls(const QList<QUrl> &u);
+    void savePage(int v);
     void save();
 #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

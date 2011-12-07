@@ -128,21 +128,6 @@ void StreamsPage::addSelectionToPlaylist()
     }
 }
 
-
-static void showError(QWidget *parent, const QString &error)
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    KMessageBox::error(parent, error);
-    #else
-    QMessageBox msgBox;
-    msgBox.setIcon(QMessageBox::Error);
-    msgBox.setWindowTitle(tr("Error"));
-    msgBox.setText(error);
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    msgBox.exec();
-    #endif
-}
-
 void StreamsPage::add()
 {
     StreamDialog dlg(this);
@@ -154,18 +139,18 @@ void StreamsPage::add()
         QString existing=StreamsModel::self()->name(url);
         if (!existing.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
-            showError(this, i18n("Stream already exists!<br/><i>%1</i>", existing));
+            KMessageBox::error(this, i18n("Stream already exists!<br/><i>%1</i>", existing));
             #else
-            showError(this, tr("Stream already exists!<br/><i>%1</i>").arg(existing));
+            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><i>%1</i>").arg(existing));
             #endif
             return;
         }
 
         if (!StreamsModel::self()->add(name, url)) {
             #ifdef ENABLE_KDE_SUPPORT
-            showError(this, i18n("A stream named <i>%1</i> already exists!", name));
+            KMessageBox::error(this, i18n("A stream named <i>%1</i> already exists!", name));
             #else
-            showError(this, tr("A stream named <i>%1</i> already exists!").arg(name));
+            QMessageBox::critical(this, tr("Error"), tr("A stream named <i>%1</i> already exists!").arg(name));
             #endif
         }
     }
@@ -228,15 +213,15 @@ void StreamsPage::edit()
 
         if (!existingNameForUrl.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
-            showError(this, i18n("Stream already exists!<br/><i>%1</i>", existingNameForUrl));
+            KMessageBox::error(this, i18n("Stream already exists!<br/><i>%1</i>", existingNameForUrl));
             #else
-            showError(this, tr("Stream already exists!<br/><i>%1</i>").arg(existingNameForUrl));
+            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><i>%1</i>").arg(existingNameForUrl));
             #endif
         } else if (newName!=name && StreamsModel::self()->entryExists(newName)) {
             #ifdef ENABLE_KDE_SUPPORT
-            showError(this, i18n("A stream named <i>%1</i> already exists!", newName));
+            KMessageBox::error(this, i18n("A stream named <i>%1</i> already exists!", newName));
             #else
-            showError(this, tr("A stream named <i>%1</i> already exists!").arg(newName));
+            QMessageBox::critical(this, tr("Error"), tr("A stream named <i>%1</i> already exists!").arg(newName));
             #endif
         } else {
             StreamsModel::self()->edit(index, newName, newUrl);

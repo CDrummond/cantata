@@ -138,6 +138,7 @@ protected:
 private:
     bool setupTrayIcon();
     void setupPlaylistView();
+    QString formatDuration(const quint32 totalseconds) const;
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)

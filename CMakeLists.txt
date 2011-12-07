@@ -89,7 +89,6 @@ SET( CANTATA_MOC_HDRS
     models/playlisttableproxymodel.h
     models/dirviewmodel.h
     models/dirviewproxymodel.h
-    models/streamsmodel.h
     models/streamsproxymodel.h
     mpd/mpdconnection.h
     mpd/song.h

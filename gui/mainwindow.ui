@@ -188,11 +188,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0" colspan="9">
-        <widget class="LineEdit" name="searchPlaylistLineEdit">
-         <property name="showClearButton" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
+        <widget class="LineEdit" name="searchPlaylistLineEdit"/>
        </item>
        <item row="1" column="0" colspan="9">
         <widget class="TreeView" name="playlistTableView">

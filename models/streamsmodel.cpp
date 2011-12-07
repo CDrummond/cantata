@@ -24,11 +24,11 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QDataStream>
 #include <QtCore/QMimeData>
+#include <QtCore/QStringList>
 #include "streamsmodel.h"
 #include "settings.h"
 
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KStandardDirs>
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(StreamsModel, instance)
 #else

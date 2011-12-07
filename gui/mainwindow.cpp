@@ -654,6 +654,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         playlistsPage->clear();
         playlistModel.clear();
         lyricsPage->text->clear();
+        infoPage->clear();
         showPreferencesDialog();
     }
 }
@@ -1130,7 +1131,7 @@ QString MainWindow::formatDuration(const quint32 totalseconds) const
 #ifdef ENABLE_KDE_SUPPORT
     return 0==days
             ? time.toString("hh:mm:ss")
-            : i18np("1 day %2", "%1 days %2", time.toString("hh:mm:ss"));
+            : i18np("1 day %2", "%1 days %2", days, time.toString("hh:mm:ss"));
 #else
     return 0==days
             ? time.toString("hh:mm:ss")

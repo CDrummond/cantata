@@ -154,6 +154,9 @@ Q_SIGNALS:
     void setSeekId(quint32, quint32);
     void startPlayingSongId(quint32);
 
+public Q_SLOTS:
+    void showError(const QString &message);
+
 private Q_SLOTS:
     void mpdConnectionStateChanged(bool connected);
     void playlistItemsSelected(bool s);

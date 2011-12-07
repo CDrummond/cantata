@@ -43,6 +43,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     void getPlaylists();
     void clear();
+    bool exists(const QString &n) const;
 
 private:
     QList<Playlist> m_playlists;

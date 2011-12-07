@@ -27,11 +27,8 @@
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMessageBox>
 #include <KDE/KLocale>
 #include <KDE/KGlobal>
-#else
-#include <QtGui/QMessageBox>
 #endif
 #include <QtGui/QApplication>
 
@@ -89,7 +86,8 @@ MPDConnection::Response readReply(QTcpSocket &socket)
 }
 
 MPDConnection::MPDConnection()
-    : sock(this)
+    : ui(0)
+    , sock(this)
     , idleSocket(this)
     , state(State_Blank)
 {
@@ -746,8 +744,13 @@ void MPDConnection::rename(const QString oldName, const QString newName)
     data += " ";
     data += "\"" + newName.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
 
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't rename playlist");
+    if (!sendCommand(data).ok && ui) {
+        #ifdef ENABLE_KDE_SUPPORT
+        QString message=i18n("Sorry, failed to rename <i>%1</i> to <i>%2</i>").arg(oldName).arg(newName);
+        #else
+        QString message=tr("Sorry, failed to rename <i>%1</i> to <i>%2</i>").arg(oldName).arg(newName);
+        #endif
+        QMetaObject::invokeMethod(ui, "showError", Qt::QueuedConnection, Q_ARG(QString, message));
     }
 }
 
@@ -766,19 +769,12 @@ void MPDConnection::save(QString name)
     QByteArray data("save ");
     data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
 
-    Response response = sendCommand(data);
-    if (!response.ok && response.data.endsWith("Playlist already exists\n")) {
+    if (!sendCommand(data).ok && ui) {
         #ifdef ENABLE_KDE_SUPPORT
-        if (KMessageBox::Yes==KMessageBox::warningYesNo(QApplication::activeWindow(), i18n("A Playlist named <i>%1</i> already exists!<br/>Overwrite?").arg(name))) {
-            rm(name);
-            response = sendCommand(data);
-            if (!response.ok) {
-                KMessageBox::error(QApplication::activeWindow(), i18n("Failed to save playlist."));
-            }
-        }
+        QString message=i18n("Sorry, failed to save <i>%1</i>").arg(name);
         #else
-        // TODO: Prompt user as per KDE version...
-        QMessageBox::warning(QApplication::activeWindow(), "Warning", "Playlist couldn't be saved since there already exists a playlist with the same name.");
+        QString message=tr("Sorry, failed to save <i>%1</i>").arg(name);
         #endif
+        QMetaObject::invokeMethod(ui, "showError", Qt::QueuedConnection, Q_ARG(QString, message));
     }
 }

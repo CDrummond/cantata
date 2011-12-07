@@ -2,18 +2,3 @@ Lyrics
     Add next/prev provide buttons - so that can try others.
 
 Need better repeat icon.
-
-Use QMessageBox::about for about dialog!
-
-Add info page:
-    Server:
-      version
-      uptime
-      playing time
-      URL handlers
-      Supported tags
-    Database
-     Total playtime
-     Numer of artists
-     Number of albums
-     Number of songs

@@ -49,28 +49,28 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     removePlaylistAction = new QAction(tr("Remove Playlist"), this);
     renamePlaylistAction = new QAction(tr("Rename PlayList"), this);
 #endif
-    removePlaylistAction->setIcon(QIcon::fromTheme("edit-delete"));
+    removePlaylistAction->setIcon(QIcon::fromTheme("list-remove"));
     renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
 
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->updateDbAction);
     delPlaylist->setDefaultAction(removePlaylistAction);
-//     renamePlaylist->setDefaultAction(p->renamePlaylistAction);
+    renPlaylist->setDefaultAction(renamePlaylistAction);
     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), delPlaylist, SLOT(setEnabled(bool)));
-//     connect(view, SIGNAL(itemsSelected(bool)), renamePlaylist, SLOT(setEnabled(bool)));
+    connect(view, SIGNAL(itemsSelected(bool)), renPlaylist, SLOT(setEnabled(bool)));
 
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
     libraryUpdate->setAutoRaise(true);
     delPlaylist->setAutoRaise(true);
-//     renamePlaylist->setAutoRaise(true);
+    renPlaylist->setAutoRaise(true);
     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
     delPlaylist->setEnabled(false);
-//     renamePlaylist->setEnabled(false);
+    renPlaylist->setEnabled(false);
 
 // #ifdef ENABLE_KDE_SUPPORT
 //     search->setPlaceholderText(i18n("Search playlists..."));

@@ -77,6 +77,17 @@ void PlaylistsModel::clear()
     endResetModel();
 }
 
+bool PlaylistsModel::exists(const QString &n) const
+{
+    foreach (const Playlist &p, m_playlists) {
+        if (p.m_name==n) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 {
     beginResetModel();

@@ -110,6 +110,8 @@ public Q_SLOTS:
     void rm(QString name);
     void save(QString name);
 
+    void setUi(QObject *u) { ui=u; }
+
 Q_SIGNALS:
     void stateChanged(bool connected);
     void currentSongUpdated(const Song &song);
@@ -140,6 +142,7 @@ private:
     void parseIdleReturn(const QByteArray &data);
 
 private:
+    QObject *ui;
     QString hostname;
     quint16 port;
     QString password;

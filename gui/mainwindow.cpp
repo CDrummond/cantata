@@ -583,13 +583,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     }
 
     emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
-    currentTabChanged(0);
     playlistItemsSelected(false);
     playlistTableView->setFocus();
 
     mpdThread=new QThread(this);
     MPDConnection::self()->moveToThread(mpdThread);
     mpdThread->start();
+    MPDConnection::self()->setUi(this); // For questions, errors, etc.
+    currentTabChanged(0);
+    playlistsPage->refresh();
 }
 
 struct Thread : public QThread
@@ -616,6 +618,15 @@ MainWindow::~MainWindow()
     mpdThread->quit();
     for(int i=0; i<10 && mpdThread->isRunning(); ++i)
         Thread::sleep();
+}
+
+void MainWindow::showError(const QString &message)
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    KMessageBox::error(this, message);
+    #else
+    QMessageBox::critical(this, tr("Error"), message);
+    #endif
 }
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
@@ -685,10 +696,10 @@ void MainWindow::mpdConnectionDied()
 
     // Show warning message
 #ifdef ENABLE_KDE_SUPPORT
-    KMessageBox::error(this, i18n("The MPD connection died unexpectedly.\nThis error is unrecoverable, please restart %1.").arg(PACKAGE_NAME),
+    KMessageBox::error(this, i18n("The MPD connection died unexpectedly.<br/>TThis error is unrecoverable, please restart %1.").arg(PACKAGE_NAME),
                        i18n("Lost MPD Connection"));
 #else
-    QMessageBox::critical(this, tr("MPD connection gone"), tr("The MPD connection died unexpectedly. This error is unrecoverable, please restart "PACKAGE_NAME"."));
+    QMessageBox::critical(this, tr("MPD connection gone"), tr("The MPD connection died unexpectedly.<br/>This error is unrecoverable, please restart %1.").arg(PACKAGE_NAME));
 #endif
 }
 
@@ -1364,7 +1375,7 @@ enum Tabs
     TAB_LIBRARY   = 0x01,
     TAB_DIRS      = 0x02,
 //     TAB_STREAMS   = 0x04,
-    TAB_PLAYLISTS = 0x08
+//     TAB_PLAYLISTS = 0x08
 };
 
 void MainWindow::currentTabChanged(int index)
@@ -1383,11 +1394,11 @@ void MainWindow::currentTabChanged(int index)
         }
         break;
     case 2:
-        if (!(loaded&TAB_PLAYLISTS)) {
-            loaded|=TAB_PLAYLISTS;
-            playlistsPage->refresh();
-        }
-        break;
+//         if (!(loaded&TAB_PLAYLISTS)) {
+//             loaded|=TAB_PLAYLISTS;
+//             playlistsPage->refresh();
+//         }
+//         break;
     case 3:
         break;
     case 4:

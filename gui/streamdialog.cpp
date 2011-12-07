@@ -31,6 +31,7 @@
 #include <KDE/KLocale>
 #else
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QPushButton>
 #endif
 
 StreamDialog::StreamDialog(QWidget *parent)
@@ -49,8 +50,6 @@ StreamDialog::StreamDialog(QWidget *parent)
 
     nameEntry=new LineEdit(wid);
     urlEntry=new LineEdit(wid);
-    nameEntry->setClearButtonShown(true);
-    urlEntry->setClearButtonShown(true);
 #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(0, QFormLayout::LabelRole, new QLabel(i18n("Name:"), wid));
 #else

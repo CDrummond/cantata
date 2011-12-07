@@ -18,11 +18,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="4">
-    <widget class="LineEdit" name="search">
-     <property name="showClearButton" stdset="0">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <widget class="LineEdit" name="search"/>
    </item>
    <item row="1" column="0" colspan="4">
     <widget class="TreeView" name="view">

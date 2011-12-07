@@ -35,9 +35,14 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLineEdit>
-#define LineEdit KLineEdit
-#else
+class LineEdit : public KLineEdit
+{
+public:
+    LineEdit(QWidget *parent = 0) : KLineEdit(parent) { setClearButtonShown(true); }
+    virtual ~LineEdit() { }
+};
 
+#else
 #include <QLineEdit>
 
 class QToolButton;
@@ -48,6 +53,7 @@ class LineEdit : public QLineEdit
 
 public:
     LineEdit(QWidget *parent = 0);
+    virtual ~LineEdit() { }
 
 protected:
     void resizeEvent(QResizeEvent *);

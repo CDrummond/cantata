@@ -31,6 +31,18 @@
      <property name="sortingEnabled">
       <bool>true</bool>
      </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::DragOnly</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+     <property name="allColumnsShowFocus">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item row="1" column="0">

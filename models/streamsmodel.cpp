@@ -45,7 +45,6 @@ StreamsModel * StreamsModel::self()
 #endif
 }
 
-
 StreamsModel::StreamsModel()
     : QAbstractListModel(0)
 {
@@ -126,18 +125,49 @@ bool StreamsModel::add(const QString &name, const QString &url)
 {
     QUrl u(url);
 
-    foreach (const Stream &s, items) {
-        if (s.name==name || s.url==url) {
-            return false;
-        }
+    if (entryExists(name, url)) {
+        return false;
     }
 
-    int row=items.count();
-    beginInsertRows(createIndex(0, 0), row, row); // ????
+//     int row=items.count();
+    beginResetModel();
+//     beginInsertRows(createIndex(0, 0), row, row); // ????
     items.append(Stream(name, u));
-    endInsertRows();
-    emit layoutChanged();
+    itemMap.insert(url, name);
+//     endInsertRows();
+//     emit layoutChanged();
+    endResetModel();
     return true;
+}
+
+void StreamsModel::edit(const QModelIndex &index, const QString &name, const QString &url)
+{
+    QUrl u(url);
+    int row=index.row();
+
+    if (row<items.count()) {
+        Stream old=items.at(row);
+        beginResetModel();
+        items.removeAt(index.row());
+        itemMap.remove(old.url.toString());
+        row=items.count();
+        items.append(Stream(name, u));
+        itemMap.insert(url, name);
+        endResetModel();
+    }
+}
+
+void StreamsModel::remove(const QModelIndex &index)
+{
+    int row=index.row();
+
+    if (row<items.count()) {
+        Stream old=items.at(row);
+        beginResetModel();
+        items.removeAt(index.row());
+        itemMap.remove(old.url.toString());
+        endResetModel();
+    }
 }
 
 QString StreamsModel::name(const QString &url)
@@ -146,3 +176,15 @@ QString StreamsModel::name(const QString &url)
 
     return it==itemMap.end() ? QString() : it.value();
 }
+
+bool StreamsModel::entryExists(const QString &name, const QUrl &url)
+{
+    foreach (const Stream &s, items) {
+        if ( (!name.isEmpty() && s.name==name) || (!url.isEmpty() && s.url==url)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+

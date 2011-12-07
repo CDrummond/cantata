@@ -85,9 +85,26 @@ StreamDialog::StreamDialog(QWidget *parent)
     connect(urlEntry, SIGNAL(textChanged(const QString &)), SLOT(textChanged()));
 }
 
+void StreamDialog::setEdit(const QString &editName, const QString &editUrl)
+{
+#ifdef ENABLE_KDE_SUPPORT
+    setCaption(i18n("Edit Stream"));
+    enableButton(KDialog::Ok, false);
+#else
+    setWindowTitle(tr("Edit Stream"));
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+#endif
+    prevName=editName;
+    prevUrl=editUrl;
+    nameEntry->setText(editName);
+    urlEntry->setText(editUrl);
+}
+
 void StreamDialog::textChanged()
 {
-    bool enableOk=!name().isEmpty() && !url().isEmpty();
+    QString n=name();
+    QString u=url();
+    bool enableOk=!n.isEmpty() && !u.isEmpty() && (n!=prevName || u!=prevUrl);
 #ifdef ENABLE_KDE_SUPPORT
     enableButton(KDialog::Ok, enableOk);
 #else

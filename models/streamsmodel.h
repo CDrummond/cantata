@@ -48,7 +48,10 @@ public:
     void reload();
     void save();
     bool add(const QString &name, const QString &url);
+    void edit(const QModelIndex &index, const QString &name, const QString &url);
+    void remove(const QModelIndex &index);
     QString name(const QString &url);
+    bool entryExists(const QString &name, const QUrl &url=QUrl());
 
 private:
     QHash<QString, QString> itemMap;

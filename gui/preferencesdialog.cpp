@@ -92,10 +92,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     interface->load();
     const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
     lyrics->Load(lprov);
-//     if (lprov.isEmpty()) {
-//         connect(lp, SIGNAL(providersUpdated(const QList<SongInfoProvider *> &)), lyrics,
-//                 SLOT(Load(providersUpdated(const QList<SongInfoProvider *> &))));
-//     }
 #ifdef ENABLE_KDE_SUPPORT
     KPageWidgetItem *page=widget->addPage(server, i18n("Server"));
     page->setHeader(i18n("MPD Backend Settings"));
@@ -172,22 +168,16 @@ void PreferencesDialog::slotButtonClicked(int button)
         reject();
         break;
     default:
-        // unhandled button
         break;
     }
 
-    if (button == KDialog::Ok) {
+    if (KDialog::Ok==button) {
         accept();
     }
 
     KDialog::slotButtonClicked(button);
 }
-#endif
-
-/**
- * TODO:MERGE it all with the kde version... (submission part..)
- */
-#ifndef ENABLE_KDE_SUPPORT
+#else
 void PreferencesDialog::buttonPressed(QAbstractButton *button)
 {
     switch (buttonBox->buttonRole(button)) {
@@ -198,7 +188,6 @@ void PreferencesDialog::buttonPressed(QAbstractButton *button)
     case QDialogButtonBox::RejectRole:
         break;
     default:
-        // unhandled button
         break;
     }
 }

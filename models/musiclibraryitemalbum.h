@@ -61,6 +61,7 @@ public:
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }
     const QString & dir() const { return m_dir; }
+    QStringList sortedTracks();
 
 private:
     QString m_dir;

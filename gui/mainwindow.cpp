@@ -62,11 +62,12 @@
 #include "updatedialog.h"
 #include "config.h"
 #include "musiclibraryitemalbum.h"
-#include "folderpage.h"
 #include "librarypage.h"
+#include "albumspage.h"
+#include "folderpage.h"
+#include "streamspage.h"
 #include "lyricspage.h"
 #include "infopage.h"
-#include "streamspage.h"
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -286,6 +287,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     libraryTabAction = actionCollection()->addAction("showlibrarytab");
     libraryTabAction->setText(i18n("Library"));
 
+    albumsTabAction = actionCollection()->addAction("showalbumstab");
+    albumsTabAction->setText(i18n("Albums"));
+
     foldersTabAction = actionCollection()->addAction("showfolderstab");
     foldersTabAction->setText(i18n("Folders"));
 
@@ -327,6 +331,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     repeatPlaylistAction = new QAction(tr("Repeat"), this);
     consumePlaylistAction = new QAction(tr("Consume"), this);
     libraryTabAction = new QAction(tr("Library"), this);
+    albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
     playlistsTabAction = new QAction(tr("Playlists"), this);
     lyricsTabAction = new QAction(tr("Lyrics"), this);
@@ -334,11 +339,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     infoTabAction = new QAction(tr("Info"), this);
 #endif
     libraryTabAction->setShortcut(Qt::Key_F5);
-    foldersTabAction->setShortcut(Qt::Key_F6);
-    playlistsTabAction->setShortcut(Qt::Key_F7);
-    streamsTabAction->setShortcut(Qt::Key_F8);
-    lyricsTabAction->setShortcut(Qt::Key_F9);
-    infoTabAction->setShortcut(Qt::Key_F10);
+    albumsTabAction->setShortcut(Qt::Key_F6);
+    foldersTabAction->setShortcut(Qt::Key_F7);
+    playlistsTabAction->setShortcut(Qt::Key_F8);
+    streamsTabAction->setShortcut(Qt::Key_F9);
+    lyricsTabAction->setShortcut(Qt::Key_F10);
+    infoTabAction->setShortcut(Qt::Key_F11);
 
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
@@ -369,7 +375,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     showPlaylistAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     updateDbAction->setIcon(QIcon::fromTheme("view-refresh"));
-    libraryTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
+    libraryTabAction->setIcon(QIcon::fromTheme("view-media-artist"));
+    albumsTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
     foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
@@ -390,11 +397,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     prevTrackButton->setDefaultAction(prevTrackAction);
 
     libraryPage = new LibraryPage(this);
+    albumsPage = new AlbumsPage(this);
     folderPage = new FolderPage(this);
     playlistsPage = new PlaylistsPage(this);
     streamsPage = new StreamsPage(this);
     lyricsPage = new LyricsPage(this);
     infoPage = new InfoPage(this);
+
+    connect(&libraryPage->getModel(), SIGNAL(updated(const MusicLibraryItemRoot *)), albumsPage, SLOT(update(const MusicLibraryItemRoot *)));
+    connect(&libraryPage->getModel(), SIGNAL(updateGenres(const QStringList &)), albumsPage, SLOT(updateGenres(const QStringList &)));
 
     setVisible(true);
 
@@ -406,6 +417,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     consumePushButton->setDefaultAction(consumePlaylistAction);
 
     tabWidget->AddTab(libraryPage, libraryTabAction->icon(), libraryTabAction->text());
+    tabWidget->AddTab(albumsPage, albumsTabAction->icon(), albumsTabAction->text());
     tabWidget->AddTab(folderPage, foldersTabAction->icon(), foldersTabAction->text());
     tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text());
     tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text());
@@ -557,6 +569,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(&elapsedTimer, SIGNAL(timeout()), this, SLOT(updatePositionSilder()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
+    connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
     connect(playlistsTabAction, SIGNAL(activated()), this, SLOT(showPlaylistsTab()));
     connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
@@ -644,6 +657,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         currentTabChanged(tabWidget->current_index());
     } else {
         libraryPage->clear();
+        albumsPage->clear();
         folderPage->clear();
         playlistsPage->clear();
         playlistModel.clear();
@@ -1096,6 +1110,8 @@ void MainWindow::addToPlaylist()
     searchPlaylistLineEdit->clear();
     if (libraryPage->view->isVisible()) {
         libraryPage->addSelectionToPlaylist();
+    } if (albumsPage->view->isVisible()) {
+        albumsPage->addSelectionToPlaylist();
     } else if (folderPage->view->isVisible()) {
         folderPage->addSelectionToPlaylist();
     } else if (playlistsPage->isVisible()) {
@@ -1369,41 +1385,36 @@ void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
 
 enum Tabs
 {
-    TAB_LIBRARY   = 0x01,
-    TAB_DIRS      = 0x02,
-//     TAB_STREAMS   = 0x04,
-//     TAB_PLAYLISTS = 0x08
+    TAB_LIBRARY = 0x01,
+    TAB_FOLDERS = 0x02
 };
 
 void MainWindow::currentTabChanged(int index)
 {
     switch(index) {
-    case 0:
+    case PAGE_LIBRARY:
+    case PAGE_ALBUMS: // Albums shares refresh with library...
         if (!(loaded&TAB_LIBRARY)) {
             loaded|=TAB_LIBRARY;
             libraryPage->refresh(LibraryPage::RefreshFromCache);
         }
         break;
-    case 1:
-        if (!(loaded&TAB_DIRS)) {
-            loaded|=TAB_DIRS;
+    case PAGE_FOLDERS:
+        if (!(loaded&TAB_FOLDERS)) {
+            loaded|=TAB_FOLDERS;
             folderPage->refresh();
         }
         break;
-    case 2:
-//         if (!(loaded&TAB_PLAYLISTS)) {
-//             loaded|=TAB_PLAYLISTS;
-//             playlistsPage->refresh();
-//         }
-//         break;
-    case 3:
+    case PAGE_PLAYLISTS:
+    case PAGE_STREAMS:
         break;
-    case 4:
+    case PAGE_LYRICS:
         if (lyricsNeedUpdating) {
             lyricsPage->update(current);
             lyricsNeedUpdating=false;
         }
         break;
+    case PAGE_INFO:
     default:
         break;
     }
@@ -1420,32 +1431,8 @@ void MainWindow::cover(const QString &artist, const QString &album, const QImage
     }
 }
 
-void MainWindow::showLibraryTab()
+void MainWindow::showTab(int page)
 {
-    tabWidget->SetCurrentIndex(0);
+    tabWidget->SetCurrentIndex(page);
 }
 
-void MainWindow::showFoldersTab()
-{
-    tabWidget->SetCurrentIndex(1);
-}
-
-void MainWindow::showPlaylistsTab()
-{
-    tabWidget->SetCurrentIndex(2);
-}
-
-void MainWindow::showStreamsTab()
-{
-    tabWidget->SetCurrentIndex(3);
-}
-
-void MainWindow::showLyricsTab()
-{
-    tabWidget->SetCurrentIndex(4);
-}
-
-void MainWindow::showInfoTab()
-{
-    tabWidget->SetCurrentIndex(5);
-}

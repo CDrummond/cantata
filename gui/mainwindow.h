@@ -61,6 +61,7 @@ class KAction;
 class MainWindow;
 class UpdateDialog;
 class LibraryPage;
+class AlbumsPage;
 class FolderPage;
 class PlaylistsPage;
 class LyricsPage;
@@ -130,6 +131,18 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
     Q_OBJECT
 
 public:
+
+    enum Page
+    {
+        PAGE_LIBRARY,
+        PAGE_ALBUMS,
+        PAGE_FOLDERS,
+        PAGE_PLAYLISTS,
+        PAGE_STREAMS,
+        PAGE_LYRICS,
+        PAGE_INFO
+    };
+
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -197,12 +210,16 @@ private Q_SLOTS:
     void togglePlaylist();
     void currentTabChanged(int index);
     void cover(const QString &artist, const QString &album, const QImage &img);
-    void showLibraryTab();
-    void showFoldersTab();
-    void showPlaylistsTab();
-    void showLyricsTab();
-    void showStreamsTab();
-    void showInfoTab();
+    void showLibraryTab() { showTab(PAGE_LIBRARY); }
+    void showAlbumsTab() { showTab(PAGE_ALBUMS); }
+    void showFoldersTab() { showTab(PAGE_FOLDERS); }
+    void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
+    void showStreamsTab() { showTab(PAGE_STREAMS); }
+    void showLyricsTab() { showTab(PAGE_LYRICS); }
+    void showInfoTab() { showTab(PAGE_INFO); }
+
+private:
+    void showTab(int page);
 
 private:
     int loaded;
@@ -243,6 +260,7 @@ private:
     Action *showPlaylistAction;
     Action *quitAction;
     Action *libraryTabAction;
+    Action *albumsTabAction;
     Action *foldersTabAction;
     Action *playlistsTabAction;
     Action *lyricsTabAction;
@@ -260,6 +278,7 @@ private:
     Song current;
     bool lyricsNeedUpdating;
     LibraryPage *libraryPage;
+    AlbumsPage *albumsPage;
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
     LyricsPage *lyricsPage;
@@ -269,6 +288,7 @@ private:
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
     friend class LibraryPage;
+    friend class AlbumsPage;
     friend class FolderPage;
     friend class PlaylistsPage;
     friend class StreamsPage;

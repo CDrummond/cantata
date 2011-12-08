@@ -21,15 +21,17 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef LIBRARYPAGE_H
-#define LIBRARYPAGE_H
+#ifndef ALBUMSPAGE_H
+#define ALBUMSPAGE_H
 
-#include "ui_librarypage.h"
+#include "ui_albumspage.h"
 #include "mainwindow.h"
-#include "musiclibrarymodel.h"
-#include "musiclibraryproxymodel.h"
+#include "albumsmodel.h"
+#include "albumsproxymodel.h"
 
-class LibraryPage : public QWidget, public Ui::LibraryPage
+class MusicLibraryItemRoot;
+
+class AlbumsPage : public QWidget, public Ui::AlbumsPage
 {
     Q_OBJECT
 public:
@@ -41,28 +43,26 @@ public:
         RefreshStandard
     };
 
-    LibraryPage(MainWindow *p);
-    virtual ~LibraryPage();
+    AlbumsPage(MainWindow *p);
+    virtual ~AlbumsPage();
 
     void refresh(Refresh type);
     void clear();
     void addSelectionToPlaylist();
 
-    MusicLibraryModel & getModel() { return model; }
-
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void add(const QStringList &files);
-    void listAllInfo(const QDateTime &);
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);
     void itemActivated(const QModelIndex &);
     void searchItems();
+    void update(const MusicLibraryItemRoot *root) { model.update(root); }
 
 private:
-    MusicLibraryModel model;
-    MusicLibraryProxyModel proxy;
+    AlbumsModel model;
+    AlbumsProxyModel proxy;
 };
 
 #endif

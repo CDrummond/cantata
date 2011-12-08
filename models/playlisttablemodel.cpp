@@ -69,6 +69,8 @@ QVariant PlaylistTableModel::headerData(int section, Qt::Orientation orientation
                 return i18n("Disc");
             case COL_YEAR:
                 return i18n("Year");
+            case COL_GENRE:
+                return i18n("Genre");
 #else
             case COL_TITLE:
                 return tr("Title");
@@ -84,6 +86,8 @@ QVariant PlaylistTableModel::headerData(int section, Qt::Orientation orientation
                 return tr("Disc");
             case COL_YEAR:
                 return tr("Year");
+            case COL_GENRE:
+                return tr("Genre");
 #endif
             default:
                 break;
@@ -168,11 +172,13 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
             if (song.year <= 0)
                 return QVariant();
             return song.year;
+        case COL_GENRE:
+            return song.genre;
         default:
             break;
         }
     } else if (role == Qt::TextAlignmentRole) {
-        return index.column()<COL_TRACK ? Qt::AlignLeft : Qt::AlignRight;
+        return index.column()<COL_TRACK || COL_GENRE==index.column() ? Qt::AlignLeft : Qt::AlignRight;
     }
 
     return QVariant();

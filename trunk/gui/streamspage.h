@@ -45,12 +45,16 @@ Q_SIGNALS:
     void add(const QStringList &streams);
 
 private Q_SLOTS:
+    void importXml();
+    void exportXml();
     void add();
     void remove();
     void edit();
     void controlEdit();
 
 private:
+    Action *importAction;
+    Action *exportAction;
     Action *addAction;
     Action *removeAction;
     Action *editAction;

@@ -163,8 +163,10 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         if (MusicLibraryItem::Type_Song==item->type()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
-            if (song->track()>0) {
-                return QString::number(song->track())+QLatin1String(" - ")+item->data(index.column()).toString();
+            if (song->track()>9) {
+                return QString::number(song->track())+QChar(' ')+item->data(index.column()).toString();
+            } else if (song->track()>0) {
+                return QChar('0')+QString::number(song->track())+QChar(' ')+item->data(index.column()).toString();
             }
         }
         return item->data(index.column());

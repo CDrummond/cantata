@@ -353,19 +353,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     playbackPlay = QIcon::fromTheme("media-playback-start");
     playbackPause = QIcon::fromTheme("media-playback-pause");
-// #ifdef ENABLE_KDE_SUPPORT
-//    randomPlaylistAction->setIcon(KIcon("media-random-tracks"));
-//    repeatPlaylistAction->setIcon(KIcon("media-repeat-playlist"));
-//     consumePlaylistAction->setIcon(KIcon("media-consume-playlist"));
-//     addToPlaylistAction->setIcon(KIcon("media-track-add"));
-//     replacePlaylistAction->setIcon(KIcon("media-replace-playlist"));
-// #else
-//    randomPlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-random-tracks.png"));
-//    repeatPlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-repeat-playlist.png"));
-//     consumePlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-consume-playlist.png"));
-//     addToPlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-track-add.png"));
-//     replacePlaylistAction->setIcon(QIcon(":/icons/hi16-action-media-replace-playlist.png"));
-// #endif
     repeatPlaylistAction->setIcon(QIcon::fromTheme("edit-redo"));
     randomPlaylistAction->setIcon(QIcon::fromTheme("media-playlist-shuffle"));
     consumePlaylistAction->setIcon(QIcon::fromTheme("format-list-unordered"));
@@ -1076,8 +1063,9 @@ void MainWindow::removeFromPlaylist()
     QModelIndex sourceIndex;
     QList<qint32> toBeRemoved;
 
-    if (items.isEmpty())
+    if (items.isEmpty()) {
         return;
+    }
 
     for (int i = 0; i < items.size(); i++) {
         sourceIndex = playlistProxyModel.mapToSource(items.at(i));
@@ -1181,8 +1169,9 @@ void MainWindow::copySongInfo()
     QString txt = "";
     QClipboard *clipboard = QApplication::clipboard();
 
-    if (items.isEmpty())
+    if (items.isEmpty()) {
         return;
+    }
 
     for (int i = 0; i < items.size(); i++) {
         sourceIndex = playlistProxyModel.mapToSource(items.at(i));
@@ -1307,23 +1296,22 @@ void MainWindow::playListTableViewToggleItem(bool visible)
  */
 void MainWindow::cropPlaylist()
 {
-        QSet<qint32> songs = playlistModel.getSongIdSet();
-        QSet<qint32> selected;
+    QSet<qint32> songs = playlistModel.getSongIdSet();
+    QSet<qint32> selected;
+    const QModelIndexList items = playlistTableView->selectionModel()->selectedRows();
+    QModelIndex sourceIndex;
 
-        const QModelIndexList items = playlistTableView->selectionModel()->selectedRows();
-        QModelIndex sourceIndex;
+    if (items.isEmpty()) {
+        return;
+    }
 
-        if (items.isEmpty())
-                return;
+    for(int i = 0; i < items.size(); i++) {
+        sourceIndex = playlistProxyModel.mapToSource(items.at(i));
+        selected << playlistModel.getIdByRow(sourceIndex.row());
+    }
 
-        for(int i = 0; i < items.size(); i++) {
-                sourceIndex = playlistProxyModel.mapToSource(items.at(i));
-                selected << playlistModel.getIdByRow(sourceIndex.row());
-        }
-
-        QList<qint32> toBeRemoved = (songs - selected).toList();
-
-        emit removeSongs(toBeRemoved);
+    QList<qint32> toBeRemoved = (songs - selected).toList();
+    emit removeSongs(toBeRemoved);
 }
 
 // Tray Icon //

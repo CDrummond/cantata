@@ -447,11 +447,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
         b->setAutoRaise(true);
     }
 
-#ifdef ENABLE_KDE_SUPPORT
-    trackLabel->setText(i18n("Stopped"));
-#else
-    trackLabel->setText(tr("Stopped"));
-#endif
+    trackLabel->setText(QString());
     artistLabel->setText(QString());
 
     showPlaylistAction->setChecked(Settings::self()->showPlaylist());
@@ -1033,12 +1029,7 @@ void MainWindow::updateStatus()
         playPauseTrackAction->setIcon(playbackPlay);
         playPauseTrackAction->setEnabled(true);
         stopTrackAction->setEnabled(false);
-
-#ifdef ENABLE_KDE_SUPPORT
-        trackLabel->setText(i18n("Stopped"));
-#else
-        trackLabel->setText(tr("Stopped"));
-#endif
+        trackLabel->setText(QString());
         artistLabel->setText(QString());
 
         if (trayIcon != NULL)

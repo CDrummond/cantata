@@ -78,9 +78,7 @@ SET( CANTATA_MOC_HDRS
     gui/streamspage.h
     gui/infopage.h
     gui/streamdialog.h
-    gui/interfacesettings.h
     gui/playbacksettings.h
-    gui/serversettings.h
     gui/outputsettings.h
     gui/preferencesdialog.h
     models/musiclibrarymodel.h
@@ -91,9 +89,7 @@ SET( CANTATA_MOC_HDRS
     models/playlisttableproxymodel.h
     models/dirviewmodel.h
     models/dirviewproxymodel.h
-    models/streamsproxymodel.h
     mpd/mpdconnection.h
-    mpd/song.h
     widgets/fancytabwidget.h
     widgets/treeview.h
     lyrics/lyricspage.h

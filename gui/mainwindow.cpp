@@ -1096,7 +1096,7 @@ void MainWindow::addToPlaylist()
     }
 }
 
-QString MainWindow::formatDuration(const quint32 totalseconds) const
+QString MainWindow::formatDuration(const quint32 totalseconds)
 {
     //Get the days,hours,minutes and seconds out of the total seconds
     quint32 days = totalseconds / 86400;
@@ -1117,8 +1117,8 @@ QString MainWindow::formatDuration(const quint32 totalseconds) const
     return 0==days
             ? time.toString("hh:mm:ss")
             : 1==days
-                ? tr("1 day %1").arg(time.toString("hh:mm:ss"))
-                : tr("%1 days %2").arg(days).arg(time.toString("hh:mm:ss"));
+                ? QObject::tr("1 day %1").arg(time.toString("hh:mm:ss"))
+                : QObject::tr("%1 days %2").arg(days).arg(time.toString("hh:mm:ss"));
 #endif
 }
 

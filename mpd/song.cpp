@@ -26,6 +26,11 @@
 
 #include <cmath>
 #include "song.h"
+#ifdef ENABLE_KDE_SUPPORT
+#include <KLocale>
+#else
+#include <QtCore/QObject>
+#endif
 
 Song::Song()
     : id(-1),
@@ -66,15 +71,31 @@ bool Song::isEmpty() const
 
 void Song::fillEmptyFields()
 {
-    //TODO: i18n!!!
-    if (artist.isEmpty())
-        artist = "<Unknown>";
+#ifdef ENABLE_KDE_SUPPORT
+    if (artist.isEmpty()) {
+        artist = i18n("Unknown");
+    }
 
-    if (album.isEmpty())
-        album = "<Unknown>";
+    if (album.isEmpty()) {
+        album = i18n("<nknown");
+    }
 
-    if (title.isEmpty())
-        title = "<Unknown>";
+    if (title.isEmpty()) {
+        title = i18n("Unknown");
+    }
+#else
+    if (artist.isEmpty()) {
+        artist = QObject::tr("Unknown");
+    }
+
+    if (album.isEmpty()) {
+        album = QObject::tr("Unknown");
+    }
+
+    if (title.isEmpty()) {
+        title = QObject::tr("Unknown");
+    }
+#endif
 }
 
 void Song::clear()

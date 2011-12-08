@@ -1259,11 +1259,11 @@ void MainWindow::setupPlaylistView()
 
     QStringList names;
 #ifdef ENABLE_KDE_SUPPORT
-    names << i18n("Track") << i18n("Length") << i18n("Disc") << i18n("Year");
+    names << i18n("Album") << i18n("Track") << i18n("Length") << i18n("Disc") << i18n("Year");
 #else
-    names << tr("Track") << tr("Length") << tr("Disc") << tr("Year");
+    names << tr("Album") << tr("Track") << tr("Length") << tr("Disc") << tr("Year");
 #endif
-    int section=PlaylistTableModel::COL_TRACK;
+    int section=PlaylistTableModel::COL_ALBUM;
     foreach(const QString &n, names) {
         QAction *act=new QAction(n, playlistTableViewMenu);
         act->setCheckable(true);

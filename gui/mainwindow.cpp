@@ -1230,45 +1230,48 @@ void MainWindow::setupPlaylistView()
     playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_TITLE, QHeaderView::Interactive);
     playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_ARTIST, QHeaderView::Interactive);
     playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_ALBUM, QHeaderView::Stretch);
-    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_YEAR, QHeaderView::ResizeToContents);
     playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_TRACK, QHeaderView::ResizeToContents);
     playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_LENGTH, QHeaderView::ResizeToContents);
     playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_DISC, QHeaderView::ResizeToContents);
+    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_YEAR, QHeaderView::ResizeToContents);
     playlistTableViewHeader->setStretchLastSection(false);
 
     connect(playlistTableViewHeader, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(playlistTableViewContextMenuClicked()));
-
-    playlistTableViewMenu = new QMenu(this);
-
-    QStringList names;
-#ifdef ENABLE_KDE_SUPPORT
-    names << i18n("Length") << i18n("Track") << i18n("Disc") << i18n("Year");
-#else
-    names << tr("Length") << tr("Track") << tr("Disc") << tr("Year");
-#endif
-    foreach(const QString &n, names) {
-        QAction *act=new QAction(n, playlistTableViewMenu);
-        act->setCheckable(true);
-        act->setChecked(true);
-        playlistTableViewMenu->addAction(act);
-        viewActions.append(act);
-        connect(act, SIGNAL(toggled(bool)), this, SLOT(playListTableViewToggleItem(bool)));
-    }
 
     //Restore state
     QByteArray state = Settings::self()->playlistHeaderState();
 
     //Restore
-    if (!state.isEmpty()) {
+    if (state.isEmpty()) {
+        playlistTableViewHeader->setSectionHidden(PlaylistTableModel::COL_YEAR, true);
+        playlistTableViewHeader->setSectionHidden(PlaylistTableModel::COL_DISC, true);
+    } else {
         playlistTableViewHeader->restoreState(state);
 
         for(int i=3; i<PlaylistTableModel::COL_COUNT; ++i) {
             if (playlistTableViewHeader->isSectionHidden(i) || playlistTableViewHeader->sectionSize(i) == 0) {
-                viewActions.at(i-3)->setChecked(false);
-//                 playlistTableViewHeader->resizeSection(i, 100);
                 playlistTableViewHeader->setSectionHidden(i, true);
             }
         }
+    }
+
+    playlistTableViewMenu = new QMenu(this);
+
+    QStringList names;
+#ifdef ENABLE_KDE_SUPPORT
+    names << i18n("Track") << i18n("Length") << i18n("Disc") << i18n("Year");
+#else
+    names << tr("Track") << tr("Length") << tr("Disc") << tr("Year");
+#endif
+    int section=PlaylistTableModel::COL_TRACK;
+    foreach(const QString &n, names) {
+        QAction *act=new QAction(n, playlistTableViewMenu);
+        act->setCheckable(true);
+        act->setChecked(!playlistTableViewHeader->isSectionHidden(section));
+        playlistTableViewMenu->addAction(act);
+        viewActions.append(act);
+        connect(act, SIGNAL(toggled(bool)), this, SLOT(playListTableViewToggleItem(bool)));
+        section++;
     }
 }
 

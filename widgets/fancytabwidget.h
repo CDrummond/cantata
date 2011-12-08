@@ -190,6 +190,9 @@ public:
   void AddBottomWidget(QWidget* widget);
 
   int current_index() const;
+  QWidget * currentWidget() const;
+  QWidget * widget(int index) const;
+  int count() const;
   Mode mode() const { return mode_; }
   void setAllowContextMenu(bool a) { allowContext_=a; }
   void setDrawBorder(bool b) { drawBorder_=b; }

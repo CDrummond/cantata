@@ -1267,21 +1267,13 @@ void MainWindow::setupPlaylistView()
 
     playlistTableViewMenu = new QMenu(this);
 
-    QStringList names;
-#ifdef ENABLE_KDE_SUPPORT
-    names << i18n("Album") << i18n("Track") << i18n("Length") << i18n("Disc") << i18n("Year") << i18n("Genre");
-#else
-    names << tr("Album") << tr("Track") << tr("Length") << tr("Disc") << tr("Year") << i18n("Genre");
-#endif
-    int section=PlaylistTableModel::COL_ALBUM;
-    foreach(const QString &n, names) {
-        QAction *act=new QAction(n, playlistTableViewMenu);
+    for (int col=PlaylistTableModel::COL_ALBUM; col<PlaylistTableModel::COL_COUNT; ++col) {
+        QAction *act=new QAction(playlistModel.headerData(col, Qt::Horizontal, Qt::DisplayRole).toString(), playlistTableViewMenu);
         act->setCheckable(true);
-        act->setChecked(!playlistTableViewHeader->isSectionHidden(section));
+        act->setChecked(!playlistTableViewHeader->isSectionHidden(col));
         playlistTableViewMenu->addAction(act);
         viewActions.append(act);
         connect(act, SIGNAL(toggled(bool)), this, SLOT(playListTableViewToggleItem(bool)));
-        section++;
     }
 }
 

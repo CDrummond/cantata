@@ -153,6 +153,7 @@ void PreferencesDialog::writeSettings()
     proxy->save();
 #endif
     Settings::self()->saveLyricProviders(lyrics->EnabledProviders());
+    Settings::self()->save();
     emit settingsSaved();
 }
 

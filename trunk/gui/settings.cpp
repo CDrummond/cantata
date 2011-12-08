@@ -213,9 +213,9 @@ QList<QUrl> Settings::streamUrls()
     return urls;
 }
 
-int Settings::page()
+QString Settings::page()
 {
-    return GET_INT("page", 0);
+    return GET_STRING("page", QString());
 }
 
 void Settings::saveConnectionHost(const QString &v)
@@ -320,7 +320,7 @@ void Settings::saveStreamUrls(const QList<QUrl> &u)
     SET_VALUE("streamUrls", list);
 }
 
-void Settings::savePage(int v)
+void Settings::savePage(const QString &v)
 {
     SET_VALUE("page", v);
 }

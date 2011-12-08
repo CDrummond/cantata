@@ -584,7 +584,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     MPDConnection::self()->moveToThread(mpdThread);
     mpdThread->start();
     MPDConnection::self()->setUi(this); // For questions, errors, etc.
-    tabWidget->SetCurrentIndex(Settings::self()->page());
+
+    QString page=Settings::self()->page();
+
+    for (int i=0; i<tabWidget->count(); ++i) {
+        if (tabWidget->widget(i)->metaObject()->className()==page) {
+            tabWidget->SetCurrentIndex(i);
+            break;
+        }
+    }
+
     currentTabChanged(tabWidget->current_index());
     playlistsPage->refresh();
 }
@@ -603,7 +612,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveSplitterState(splitter->saveState());
     Settings::self()->savePlaylistHeaderState(playlistTableViewHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
-    Settings::self()->savePage(tabWidget->current_index());
+    Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     Settings::self()->save();
     streamsPage->save();
     disconnect(MPDConnection::self(), 0, 0, 0);

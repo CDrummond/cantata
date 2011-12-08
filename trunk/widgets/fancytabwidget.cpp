@@ -597,6 +597,18 @@ int FancyTabWidget::current_index() const {
   return stack_->currentIndex();
 }
 
+QWidget * FancyTabWidget::currentWidget() const {
+  return stack_->currentWidget();
+}
+
+QWidget * FancyTabWidget::widget(int index) const {
+  return stack_->widget(index);
+}
+
+int FancyTabWidget::count() const {
+  return stack_->count();
+}
+
 void FancyTabWidget::SetCurrentIndex(int index) {
   if (FancyTabBar* bar = qobject_cast<FancyTabBar*>(tab_bar_)) {
     bar->setCurrentIndex(index);

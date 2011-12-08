@@ -1245,6 +1245,7 @@ void MainWindow::setupPlaylistView()
     if (state.isEmpty()) {
         playlistTableViewHeader->setSectionHidden(PlaylistTableModel::COL_YEAR, true);
         playlistTableViewHeader->setSectionHidden(PlaylistTableModel::COL_DISC, true);
+        playlistTableViewHeader->setSectionHidden(PlaylistTableModel::COL_GENRE, true);
     } else {
         playlistTableViewHeader->restoreState(state);
 
@@ -1259,9 +1260,9 @@ void MainWindow::setupPlaylistView()
 
     QStringList names;
 #ifdef ENABLE_KDE_SUPPORT
-    names << i18n("Album") << i18n("Track") << i18n("Length") << i18n("Disc") << i18n("Year");
+    names << i18n("Album") << i18n("Track") << i18n("Length") << i18n("Disc") << i18n("Year") << i18n("Genre");
 #else
-    names << tr("Album") << tr("Track") << tr("Length") << tr("Disc") << tr("Year");
+    names << tr("Album") << tr("Track") << tr("Length") << tr("Disc") << tr("Year") << i18n("Genre");
 #endif
     int section=PlaylistTableModel::COL_ALBUM;
     foreach(const QString &n, names) {

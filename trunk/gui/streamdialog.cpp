@@ -41,11 +41,7 @@ StreamDialog::StreamDialog(QWidget *parent)
     : QDialog(parent)
 #endif
 {
-#ifdef ENABLE_KDE_SUPPORT
     QWidget *wid = new QWidget(this);
-#else
-    QWidget *wid = this;
-#endif
     QFormLayout *layout=new QFormLayout(wid);
 
     nameEntry=new LineEdit(wid);
@@ -75,7 +71,6 @@ StreamDialog::StreamDialog(QWidget *parent)
     mainLayout->addWidget(wid);
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this);
     mainLayout->addWidget(buttonBox);
-    connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);

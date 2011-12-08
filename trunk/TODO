@@ -6,9 +6,15 @@ Need better repeat icon.
 Stream import/export
    - For KDE, need to use getSaveUrl, etc. and use KIO::NetAccess to obatain file.
 
-Add an 'Albums' view - show a grid of album covers.
-    <b>Artist</b></br>Album
-   
+Albums page
+   - search/genre filtering
+   - context menu
+   - add/relpace playlist
+   - only update covers when item is visible
+   - when update db, reset coverRequested flag.
+     - also reset covers?
+   - See if can use bold/small font e.g.
+        <b>Artist</b><br/><small>Album</small>
 
 Sidebar
    - Allow to collapse current item

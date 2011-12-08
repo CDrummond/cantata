@@ -48,6 +48,7 @@ public:
         COL_LENGTH,
         COL_DISC,
         COL_YEAR,
+        COL_GENRE,
 
         COL_COUNT
     };

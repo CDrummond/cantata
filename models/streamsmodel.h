@@ -47,6 +47,8 @@ public:
     QVariant data(const QModelIndex &, int) const;
     void reload();
     void save();
+    QString toXml();
+    bool importXml(const QString &xml);
     bool add(const QString &name, const QString &url);
     void edit(const QModelIndex &index, const QString &name, const QString &url);
     void remove(const QModelIndex &index);

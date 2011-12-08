@@ -27,14 +27,18 @@
 #include "mpdconnection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
+#include <QtCore/QFile>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
 #include <KDE/KMessageBox>
+#include <KDE/KFileDialog>
 #else
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
+#include <QtGui/QFileDialog>
+#include <QtCore/QDir>
 #endif
 
 StreamsPage::StreamsPage(MainWindow *p)
@@ -42,6 +46,10 @@ StreamsPage::StreamsPage(MainWindow *p)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
+    importAction = p->actionCollection()->addAction("importstreams");
+    importAction->setText(i18n("Import Streams"));
+    exportAction = p->actionCollection()->addAction("exportstreams");
+    exportAction->setText(i18n("Export Streams"));
     addAction = p->actionCollection()->addAction("addstream");
     addAction->setText(i18n("Add Stream"));
     removeAction = p->actionCollection()->addAction("removestream");
@@ -49,13 +57,19 @@ StreamsPage::StreamsPage(MainWindow *p)
     editAction = p->actionCollection()->addAction("editstream");
     editAction->setText(i18n("Edit Stream"));
     #else
+    importAction = new QAction(tr("Import Streams"), this);
+    exportAction = new QAction(tr("Export Streams"), this);
     addAction = new QAction(tr("Add Stream"), this);
     removeAction = new QAction(tr("Remove Stream"), this);
     editAction = new QAction(tr("Rename Stream"), this);
     #endif
+    importAction->setIcon(QIcon::fromTheme("document-import"));
+    exportAction->setIcon(QIcon::fromTheme("document-export"));
     addAction->setIcon(QIcon::fromTheme("list-add"));
     removeAction->setIcon(QIcon::fromTheme("list-remove"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
+    importStreams->setDefaultAction(importAction);
+    exportStreams->setDefaultAction(exportAction);
     addStream->setDefaultAction(addAction);
     removeStream->setDefaultAction(removeAction);
     editStream->setDefaultAction(editAction);
@@ -68,8 +82,12 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
     connect(removeAction, SIGNAL(triggered(bool)), this, SLOT(remove()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
+    connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
+    connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlEdit()));
+    importStreams->setAutoRaise(true);
+    exportStreams->setAutoRaise(true);
     addStream->setAutoRaise(true);
     removeStream->setAutoRaise(true);
     editStream->setAutoRaise(true);
@@ -85,7 +103,8 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->addAction(p->replacePlaylistAction);
     view->addAction(removeAction);
     view->addAction(editAction);
-
+    view->addAction(removeAction);
+    view->addAction(exportAction);
     proxy.setSourceModel(StreamsModel::self());
     view->setModel(&proxy);
 }
@@ -97,6 +116,7 @@ StreamsPage::~StreamsPage()
 void StreamsPage::refresh()
 {
     StreamsModel::self()->reload();
+    exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
 }
 
 void StreamsPage::save()
@@ -128,6 +148,93 @@ void StreamsPage::addSelectionToPlaylist()
     }
 }
 
+void StreamsPage::importXml()
+{
+#ifdef ENABLE_KDE_SUPPORT
+    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.streams|Cantata Streams"), this, i18n("Import Streams"));
+#else
+    QString fileName=QFileDialog::getOpenFileName(this, tr("Import Streams"), QDir::homePath(), tr("*.streams|Cantata Streams"));
+#endif
+
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        #ifdef ENABLE_KDE_SUPPORT
+        KMessageBox::error(this, i18n("Failed to open <i>%1</i>!", fileName));
+        #else
+        QMessageBox::critical(this, tr("Error"), tr("Failed to open <i>%1</i>!").arg(fileName));
+        #endif
+        return;
+    }
+
+    QString xml;
+    QTextStream stream(&file);
+
+    while (!stream.atEnd()) {
+        xml+=stream.readLine();
+    }
+
+//     int before=StreamsModel::self()->rowCount();
+//     if (StreamsModel::self()->importXml(xml)) {
+//         int now=StreamsModel::self()->rowCount();
+//         if (now==before) {
+//             #ifdef ENABLE_KDE_SUPPORT
+//             KMessageBox::information(this, i18n("No new streams imported."));
+//             #else
+//             QMessageBox::information(this, tr("Information"), tr("No new streams imported."));
+//             #endif
+//         } else if (now==(before+1)) {
+//             #ifdef ENABLE_KDE_SUPPORT
+//             KMessageBox::information(this, i18n("1 new stream imported."));
+//             #else
+//             QMessageBox::information(this, tr("Information"), tr("1 new stream imported."));
+//             #endif
+//         } else if (now>before) {
+//             #ifdef ENABLE_KDE_SUPPORT
+//             KMessageBox::information(this, i18n("%1 new streams imported.").arg(now-before));
+//             #else
+//             QMessageBox::information(this, tr("Information"), tr("%1 new streams imported.").arg(now-before));
+//             #endif
+//         }
+//     } else {
+
+    if (!StreamsModel::self()->importXml(xml)) {
+        #ifdef ENABLE_KDE_SUPPORT
+        KMessageBox::error(this, i18n("Failed to import <i>%1</i>!<br/>Please check this is of the correct type.", fileName));
+        #else
+        QMessageBox::critical(this, tr("Error"), tr("Failed to import <i>%1</i>!<br/>Please check this is of the correct type.").arg(fileName));
+        #endif
+    }
+}
+
+void StreamsPage::exportXml()
+{
+#ifdef ENABLE_KDE_SUPPORT
+    QString fileName=KFileDialog::getSaveFileName(KUrl(), i18n("*.streams|Cantata Streams"), this, i18n("Export Streams"));
+#else
+    QString fileName=QFileDialog::getSaveFileName(this, tr("Export Streams"), QDir::homePath(), tr("*.streams|Cantata Streams"));
+#endif
+
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        #ifdef ENABLE_KDE_SUPPORT
+        KMessageBox::error(this, i18n("Failed to create <i>%1</i>!", fileName));
+        #else
+        QMessageBox::critical(this, tr("Error"), tr("Failed to create <i>%1</i>!").arg(fileName));
+        #endif
+        return;
+    }
+
+    QTextStream(&file) << StreamsModel::self()->toXml();
+}
+
 void StreamsPage::add()
 {
     StreamDialog dlg(this);
@@ -154,6 +261,7 @@ void StreamsPage::add()
             #endif
         }
     }
+    exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
 }
 
 void StreamsPage::remove()
@@ -171,11 +279,11 @@ void StreamsPage::remove()
     #ifdef ENABLE_KDE_SUPPORT
     if (KMessageBox::No==KMessageBox::warningYesNo(this, selected.size()>1 ? i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
                                                                            : i18n("Are you sure you wish to remove <i>%1</i>?").arg(firstName),
-                                                   selected.size()>1 ? i18n("Delete Streams?") : i18n("Delete Stream?"))) {
+                                                   selected.size()>1 ? i18n("Remove Streams?") : i18n("Remove Stream?"))) {
         return;
     }
     #else
-    if (QMessageBox::No==QMessageBox::warning(this, selected.size()>1 ? tr("Delete Streams?") : tr("Delete Stream?"),
+    if (QMessageBox::No==QMessageBox::warning(this, selected.size()>1 ? tr("Remove Streams?") : tr("Remove Stream?"),
                                               selected.size()>1 ? tr("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
                                                                 : tr("Are you sure you wish to remove <i>%1</i>?").arg(firstName),
                                               QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
@@ -186,6 +294,7 @@ void StreamsPage::remove()
     foreach (const QModelIndex &idx, selected) {
         StreamsModel::self()->remove(proxy.mapToSource(idx));
     }
+    exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
 }
 
 void StreamsPage::edit()

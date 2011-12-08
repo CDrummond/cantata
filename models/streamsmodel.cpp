@@ -33,7 +33,6 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(StreamsModel, instance)
-#else
 #endif
 
 StreamsModel * StreamsModel::self()

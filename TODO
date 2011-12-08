@@ -2,3 +2,14 @@ Lyrics
     Add next/prev provide buttons - so that can try others.
 
 Need better repeat icon.
+
+Stream import/export
+   - For KDE, need to use getSaveUrl, etc. and use KIO::NetAccess to obatain file.
+
+Add an 'Albums' view - show a grid of album covers.
+    <b>Artist</b></br>Album
+   
+
+Sidebar
+   - Allow to collapse current item
+   - Add option to select available tabs

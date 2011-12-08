@@ -142,3 +142,16 @@ const QPixmap & MusicLibraryItemAlbum::cover()
 
     return m_cover;
 }
+
+QStringList MusicLibraryItemAlbum::sortedTracks()
+{
+    QMap<int, QString> tracks;
+    quint32 trackWithoutNumberIndex=0xFFFF; // *Very* unlikely to have tracks numbered greater than 65535!!!
+
+    for (int i = 0; i < childCount(); i++) {
+        MusicLibraryItemSong *trackItem = static_cast<MusicLibraryItemSong*>(child(i));
+        tracks.insert(0==trackItem->track() || trackItem->track()>0xFFFF ? trackWithoutNumberIndex++ : trackItem->track(), trackItem->file());
+    }
+
+    return tracks.values();
+}

@@ -66,11 +66,11 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void xmlWritten(QDateTime db_update);
+    void updated(const MusicLibraryItemRoot *root);
     void updateGenres(const QStringList &genres);
 
 private:
     const MusicLibraryItemRoot * rootItem;
-    QStringList sortAlbumTracks(const MusicLibraryItemAlbum *album) const;
 
     void toXML(const QDateTime db_update);
 //     QMutex libraryMutex;

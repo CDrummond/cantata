@@ -184,6 +184,7 @@ void MusicLibraryModel::clear()
     delete oldRoot;
     endResetModel();
 
+    emit updated(rootItem);
     emit updateGenres(QStringList());
 }
 
@@ -212,6 +213,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
 
     QStringList genres=QStringList(rootItem->genres().toList());
     genres.sort();
+    emit updated(rootItem);
     emit updateGenres(genres);
 }
 
@@ -453,16 +455,15 @@ QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
         switch (item->type()) {
         case MusicLibraryItem::Type_Artist:
             for (int i = 0; i < item->childCount(); i++) {
-                filenames << sortAlbumTracks(static_cast<MusicLibraryItemAlbum*>(item->child(i)));
+                filenames << static_cast<MusicLibraryItemAlbum*>(item->child(i))->sortedTracks();
             }
             break;
         case MusicLibraryItem::Type_Album:
-            filenames << sortAlbumTracks(static_cast<MusicLibraryItemAlbum*>(item));
+            filenames << static_cast<MusicLibraryItemAlbum*>(item)->sortedTracks();
             break;
         case MusicLibraryItem::Type_Song:
-            if (item->type() == MusicLibraryItem::Type_Song) {
-                if (!filenames.contains(static_cast<MusicLibraryItemSong*>(item)->file()))
-                    filenames << static_cast<MusicLibraryItemSong*>(item)->file();
+            if (item->type() == MusicLibraryItem::Type_Song && !filenames.contains(static_cast<MusicLibraryItemSong*>(item)->file())) {
+                filenames << static_cast<MusicLibraryItemSong*>(item)->file();
             }
             break;
         default:
@@ -476,26 +477,4 @@ QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
 
     mimeData->setData("application/cantata_songs_filename_text", encodedData);
     return mimeData;
-}
-
-/**
- * Sort an album by its track numbers. All unnumberd tracks are added to the end
- *
- * @param album The album musiclibrary item
- */
-QStringList MusicLibraryModel::sortAlbumTracks(const MusicLibraryItemAlbum *album) const
-{
-    if (album->type() != MusicLibraryItem::Type_Album) {
-        return QStringList();
-    }
-
-    QMap<int, QString> tracks;
-    quint32 trackWithoutNumberIndex=0xFFFF; // *Very* unlikely to have tracks numbered greater than 65535!!!
-
-    for (int i = 0; i < album->childCount(); i++) {
-        MusicLibraryItemSong *trackItem = static_cast<MusicLibraryItemSong*>(album->child(i));
-        tracks.insert(0==trackItem->track() || trackItem->track()>0xFFFF ? trackWithoutNumberIndex++ : trackItem->track(), trackItem->file());
-    }
-
-    return tracks.values();
 }

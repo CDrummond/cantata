@@ -31,6 +31,7 @@ SET( CANTATA_SRCS
     gui/streamspage.cpp
     gui/streamdialog.cpp
     gui/librarypage.cpp
+    gui/albumspage.cpp
     gui/folderpage.cpp
     gui/infopage.cpp
     gui/playlistspage.cpp
@@ -53,6 +54,8 @@ SET( CANTATA_SRCS
     models/dirviewitemroot.cpp
     models/streamsmodel.cpp
     models/streamsproxymodel.cpp
+    models/albumsmodel.cpp
+    models/albumsproxymodel.cpp
     mpd/mpdconnection.cpp
     mpd/mpdparseutils.cpp
     mpd/mpdstats.cpp
@@ -74,6 +77,7 @@ SET( CANTATA_MOC_HDRS
     gui/covers.h
     gui/folderpage.h
     gui/librarypage.h
+    gui/albumspage.h
     gui/playlistspage.h
     gui/streamspage.h
     gui/infopage.h
@@ -89,6 +93,7 @@ SET( CANTATA_MOC_HDRS
     models/playlisttableproxymodel.h
     models/dirviewmodel.h
     models/dirviewproxymodel.h
+    models/albumsmodel.h
     mpd/mpdconnection.h
     widgets/fancytabwidget.h
     widgets/treeview.h
@@ -103,6 +108,7 @@ SET( CANTATA_UIS
     gui/mainwindow.ui
     gui/folderpage.ui
     gui/librarypage.ui
+    gui/albumspage.ui
     gui/playlistspage.ui
     gui/streamspage.ui
     gui/infopage.ui

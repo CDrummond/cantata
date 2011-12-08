@@ -25,6 +25,8 @@
 #include <QtCore/QDataStream>
 #include <QtCore/QMimeData>
 #include <QtCore/QStringList>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
 #include "streamsmodel.h"
 #include "settings.h"
 
@@ -121,6 +123,65 @@ void StreamsModel::save()
         urls.append(u);
     }
     Settings::self()->saveStreamUrls(urls);
+}
+
+bool StreamsModel::importXml(const QString &xml)
+{
+    QDomDocument doc;
+    bool valid=false;
+    doc.setContent(xml);
+    QDomElement root = doc.documentElement();
+    if ("cantata" == root.tagName() && root.hasAttribute("version") && "1.0" == root.attribute("version")) {
+        QDomElement stream = root.firstChildElement("stream");
+        bool firstInsert=true;
+        while (!stream.isNull()) {
+            if (stream.hasAttribute("name") && stream.hasAttribute("url")) {
+                valid=true;
+                QString name=stream.attribute("name");
+                QString origName=name;
+                QUrl url=QUrl(stream.attribute("url"));
+
+                if (!entryExists(QString(), url)) {
+                    int i=1;
+                    for (; i<100 && entryExists(name); ++i) {
+                        name=origName+QLatin1String("_")+QString::number(i);
+                    }
+
+                    if (i<100) {
+                        if (firstInsert) {
+                            beginResetModel();
+                            firstInsert=false;
+                        }
+
+                        items.append(Stream(name, url));
+                        itemMap.insert(url.toString(), name);
+                    }
+                }
+            }
+            stream=stream.nextSiblingElement("stream");
+        }
+        if (!firstInsert) {
+            endResetModel();
+        }
+    }
+
+    return valid;
+}
+
+QString StreamsModel::toXml()
+{
+    QDomDocument doc;
+    QDomElement root = doc.createElement("cantata");
+    root.setAttribute("version", "1.0");
+    doc.appendChild(root);
+    foreach (const Stream &s, items) {
+        QDomElement stream = doc.createElement("stream");
+        stream.setAttribute("name", s.name);
+        stream.setAttribute("url", s.url.toString());
+        root.appendChild(stream);
+    }
+
+    return doc.toString();
 }
 
 bool StreamsModel::add(const QString &name, const QString &url)

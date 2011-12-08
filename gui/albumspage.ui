@@ -30,7 +30,7 @@
       <bool>true</bool>
      </property>
      <property name="dragDropMode">
-      <enum>QAbstractItemView::DropOnly</enum>
+      <enum>QAbstractItemView::NoDragDrop</enum>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -41,8 +41,14 @@
      <property name="resizeMode">
       <enum>QListView::Adjust</enum>
      </property>
+     <property name="layoutMode">
+      <enum>QListView::Batched</enum>
+     </property>
      <property name="viewMode">
       <enum>QListView::IconMode</enum>
+     </property>
+     <property name="batchSize">
+      <number>50</number>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

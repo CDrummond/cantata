@@ -10,7 +10,6 @@ Albums page
    - search/genre filtering
    - context menu
    - add/relpace playlist
-   - only update covers when item is visible
    - when update db, reset coverRequested flag.
      - also reset covers?
    - See if can use bold/small font e.g.

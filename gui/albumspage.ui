@@ -47,6 +47,9 @@
      <property name="viewMode">
       <enum>QListView::IconMode</enum>
      </property>
+     <property name="uniformItemSizes">
+      <bool>true</bool>
+     </property>
      <property name="batchSize">
       <number>50</number>
      </property>

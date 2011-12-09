@@ -66,7 +66,7 @@ public:
 private:
     QString m_dir;
     bool m_coverIsDefault;
-    QPixmap m_cover;
+    QPixmap *m_cover;
     QList<MusicLibraryItemSong *> m_childItems;
     MusicLibraryItemArtist * const m_parentItem;
 

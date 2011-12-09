@@ -240,7 +240,7 @@ QMimeData *PlaylistTableModel::mimeData(const QModelIndexList &indexes) const
         }
     }
 
-    mimeData->setData("application/cantata_song_move_text", encodedData);
+    mimeData->setData(constMoveMimeType, encodedData);
     return mimeData;
 }
 
@@ -262,9 +262,9 @@ bool PlaylistTableModel::dropMimeData(const QMimeData *data,
         return true;
     }
 
-    if (data->hasFormat("application/cantata_song_move_text")) {
+    if (data->hasFormat(constMoveMimeType)) {
         //Act on internal moves
-        QByteArray encodedData = data->data("application/cantata_song_move_text");
+        QByteArray encodedData = data->data(constMoveMimeType);
         QDataStream stream(&encodedData, QIODevice::ReadOnly);
         QList<quint32> items;
 

@@ -53,6 +53,9 @@ public:
         COL_COUNT
     };
 
+    static const QLatin1String constMoveMimeType;
+    static const QLatin1String constFileNameMimeType;
+
     PlaylistTableModel(QObject *parent = 0);
     ~PlaylistTableModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

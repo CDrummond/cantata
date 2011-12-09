@@ -31,6 +31,7 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
+#include "playlisttablemodel.h"
 #include "song.h"
 #include "covers.h"
 
@@ -177,7 +178,7 @@ QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
         stream << filenames.at(i);
     }
 
-    mimeData->setData("application/cantata_songs_filename_text", encodedData);
+    mimeData->setData(PlaylistTableModel::constFileNameMimeType, encodedData);
     return mimeData;
 }
 

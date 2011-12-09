@@ -38,6 +38,9 @@
 #include "mpdstats.h"
 #include "mpdstatus.h"
 
+const QLatin1String PlaylistTableModel::constMoveMimeType("cantata/move");
+const QLatin1String PlaylistTableModel::constFileNameMimeType("cantata/filename");
+
 PlaylistTableModel::PlaylistTableModel(QObject *parent)
     : QAbstractTableModel(parent),
       song_id(-1)
@@ -203,8 +206,8 @@ Qt::ItemFlags PlaylistTableModel::flags(const QModelIndex &index) const
 QStringList PlaylistTableModel::mimeTypes() const
 {
     QStringList types;
-    types << "application/cantata_song_move_text";
-    types << "application/cantata_songs_filename_text";
+    types << constMoveMimeType;
+    types << constFileNameMimeType;
     return types;
 }
 
@@ -278,9 +281,9 @@ bool PlaylistTableModel::dropMimeData(const QMimeData *data,
         }
 
         return true;
-    } else if (data->hasFormat("application/cantata_songs_filename_text")) {
+    } else if (data->hasFormat(constFileNameMimeType)) {
         //Act on moves from the music library and dir view
-        QByteArray encodedData = data->data("application/cantata_songs_filename_text");
+        QByteArray encodedData = data->data(constFileNameMimeType);
         QDataStream stream(&encodedData, QIODevice::ReadOnly);
         QStringList filenames;
 

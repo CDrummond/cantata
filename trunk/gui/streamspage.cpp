@@ -98,7 +98,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
 
-    view->setHeaderHidden(true);
+    view->setPageDefaults();
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(removeAction);

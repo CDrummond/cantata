@@ -63,6 +63,7 @@ SET( CANTATA_SRCS
     mpd/song.cpp
     widgets/treeview.cpp
     widgets/fancytabwidget.cpp
+    widgets/listview.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -97,6 +98,7 @@ SET( CANTATA_MOC_HDRS
     mpd/mpdconnection.h
     widgets/fancytabwidget.h
     widgets/treeview.h
+    widgets/listview.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h

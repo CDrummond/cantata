@@ -78,6 +78,8 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), removeStream, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), editStream, SLOT(setEnabled(bool)));
+    connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
+    connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
     connect(removeAction, SIGNAL(triggered(bool)), this, SLOT(remove()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
@@ -97,6 +99,11 @@ StreamsPage::StreamsPage(MainWindow *p)
     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
 
+#ifdef ENABLE_KDE_SUPPORT
+    search->setPlaceholderText(i18n("Search streams..."));
+#else
+    search->setPlaceholderText(tr("Search streams..."));
+#endif
     view->setPageDefaults();
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
@@ -340,4 +347,9 @@ void StreamsPage::edit()
 void StreamsPage::controlEdit()
 {
     editAction->setEnabled(1==view->selectionModel()->selectedIndexes().size());
+}
+
+void StreamsPage::searchItems()
+{
+    proxy.setFilterRegExp(search->text());
 }

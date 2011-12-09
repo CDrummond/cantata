@@ -56,7 +56,8 @@ public:
     bool showPopups();
     bool stopOnExit();
     QString mpdDir();
-    int coverSize();
+    int libraryCoverSize();
+    int albumCoverSize();
     int sidebar();
     QStringList lyricProviders();
     QList<QUrl> streamUrls();
@@ -75,7 +76,8 @@ public:
     void saveUseSystemTray(bool v);
     void saveShowPopups(bool v);
     void saveMpdDir(const QString &v);
-    void saveCoverSize(int v);
+    void saveLibraryCoverSize(int v);
+    void saveAlbumCoverSize(int v);
     void saveSidebar(int v);
     void saveLyricProviders(const QStringList &p);
     void saveStreamUrls(const QList<QUrl> &u);

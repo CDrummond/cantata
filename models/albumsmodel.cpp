@@ -34,6 +34,40 @@
 #include "song.h"
 #include "covers.h"
 
+static AlbumsModel::CoverSize coverSize=AlbumsModel::CoverMedium;
+static QPixmap *theDefaultIcon=0;
+
+int AlbumsModel::coverPixels()
+{
+    switch (coverSize) {
+    default:
+    case AlbumsModel::CoverSmall:  return 76;
+    case AlbumsModel::CoverMedium: return 100;
+    case AlbumsModel::CoverLarge:  return 128;
+    }
+}
+
+static int stdIconSize()
+{
+    return 128;
+}
+
+AlbumsModel::CoverSize AlbumsModel::currentCoverSize()
+{
+    return coverSize;
+}
+
+void AlbumsModel::setCoverSize(AlbumsModel::CoverSize size)
+{
+    if (size!=coverSize) {
+        if (theDefaultIcon) {
+            delete theDefaultIcon;
+            theDefaultIcon=0;
+        }
+        coverSize=size;
+    }
+}
+
 AlbumsModel::Album::Album(const QString &ar, const QString &al)
     : artist(ar)
     , album(al)
@@ -72,8 +106,6 @@ QModelIndex AlbumsModel::index(int row, int column, const QModelIndex &parent) c
     return QModelIndex();
 }
 
-static QPixmap *theDefaultIcon=0;
-
 QVariant AlbumsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -93,8 +125,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return al.cover;
         }
         if (!theDefaultIcon) {
-            theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(128, 128)
-                                        .scaled(QSize(100, 100), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(stdIconSize(), stdIconSize())
+                                        .scaled(QSize(coverPixels(), coverPixels()),
+                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         if (!al.coverRequested) {
             Song s;
@@ -217,7 +250,8 @@ void AlbumsModel::setCover(const QString &artist, const QString &album, const QI
 
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it).artist==artist && (*it).album==album) {
-            (*it).cover=img.scaled(QSize(100, 100), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            (*it).cover=img.scaled(QSize(coverPixels(), coverPixels()),
+                                   Qt::KeepAspectRatio, Qt::SmoothTransformation);
             QModelIndex idx=index(row, 0, QModelIndex());
             emit dataChanged(idx, idx);
             return;

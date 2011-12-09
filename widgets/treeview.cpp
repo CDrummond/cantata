@@ -26,9 +26,16 @@
 TreeView::TreeView(QWidget *parent)
         : QTreeView(parent)
 {
+    setHeaderHidden(true);
     sortByColumn(0, Qt::AscendingOrder);
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);
+    setDragDropMode(QAbstractItemView::DragOnly);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setAllColumnsShowFocus(true);
+    setAlternatingRowColors(true);
+    setSelectionBehavior(QAbstractItemView::SelectRows);
+    setSortingEnabled(true);
 }
 
 TreeView::~TreeView()

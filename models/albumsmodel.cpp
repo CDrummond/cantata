@@ -34,6 +34,15 @@
 #include "song.h"
 #include "covers.h"
 
+AlbumsModel::Album::Album(const QString &ar, const QString &al)
+    : artist(ar)
+    , album(al)
+    , updated(false)
+    , coverRequested(false)
+{
+    name=artist+QChar('\n')+album;
+}
+
 AlbumsModel::AlbumsModel()
     : QAbstractListModel(0)
 {
@@ -51,6 +60,16 @@ QVariant AlbumsModel::headerData(int /*section*/, Qt::Orientation /*orientation*
 int AlbumsModel::rowCount(const QModelIndex &) const
 {
     return items.size();
+}
+
+QModelIndex AlbumsModel::index(int row, int column, const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+
+    if(row<items.count())
+        return createIndex(row, column, (void *)&items.at(row));
+
+    return QModelIndex();
 }
 
 static QPixmap *theDefaultIcon=0;
@@ -91,7 +110,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
     }
     case Qt::DisplayRole:
     case Qt::ToolTipRole:
-        return items.at(index.row()).name();
+        return items.at(index.row()).name;
+    case Qt::UserRole:
+        return items.at(index.row()).files;
     }
 
     return QVariant();
@@ -134,6 +155,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
 
     for (; it!=end; ++it) {
         (*it).updated=false;
+        (*it).coverRequested=false;
     }
 
     bool changed=false;
@@ -148,7 +170,9 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
             end=items.end();
             for (; it!=end; ++it) {
                 if ((*it).artist==artist && (*it).album==album) {
-                    (*it).update(albumItem->sortedTracks(), albumItem->genres());
+                    (*it).files=albumItem->sortedTracks();
+                    (*it).genres=albumItem->genres();
+                    (*it).updated=true;
                     found=true;
                     break;
                 }
@@ -156,7 +180,9 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
 
             if (!found) {
                 Album a(artist, album);
-                a.update(albumItem->sortedTracks(), albumItem->genres());
+                a.files=albumItem->sortedTracks();
+                a.genres=albumItem->genres();
+                a.updated=true;
                 items.append(a);
                 changed=true;
             }
@@ -192,7 +218,7 @@ void AlbumsModel::setCover(const QString &artist, const QString &album, const QI
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it).artist==artist && (*it).album==album) {
             (*it).cover=img.scaled(QSize(100, 100), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            QModelIndex idx=index(row, 0);
+            QModelIndex idx=index(row, 0, QModelIndex());
             emit dataChanged(idx, idx);
             return;
         }
@@ -201,5 +227,7 @@ void AlbumsModel::setCover(const QString &artist, const QString &album, const QI
 
 void AlbumsModel::clear()
 {
+    beginResetModel();
+    items.clear();
+    endResetModel();
 }
-

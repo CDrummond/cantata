@@ -72,8 +72,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     delPlaylist->setEnabled(false);
     renPlaylist->setEnabled(false);
 
-    view->setHeaderHidden(true);
-    view->sortByColumn(0, Qt::AscendingOrder);
+    view->setDragDropMode(QAbstractItemView::NoDragDrop);
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(removePlaylistAction);

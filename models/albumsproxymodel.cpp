@@ -21,6 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 #include "albumsproxymodel.h"
+#include "albumsmodel.h"
+#include <QDebug>
 
 AlbumsProxyModel::AlbumsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
@@ -28,4 +30,28 @@ AlbumsProxyModel::AlbumsProxyModel(QObject *parent) : QSortFilterProxyModel(pare
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setSortLocaleAware(true);
+}
+
+bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+    const AlbumsModel::Album * const item = static_cast<AlbumsModel::Album *>(index.internalPointer());
+
+    if (!item) {
+        return false;
+    }
+
+    if (!filterGenre.isEmpty() && !item->genres.contains(filterGenre)) {
+        return false;
+    }
+
+    return item->artist.contains(filterRegExp()) || item->album.contains(filterRegExp());
+}
+
+void AlbumsProxyModel::setFilterGenre(const QString &genre)
+{
+    if (filterGenre!=genre) {
+        invalidate();
+    }
+    filterGenre=genre;
 }

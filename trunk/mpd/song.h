@@ -46,6 +46,7 @@ public:
     quint32 disc;
     quint32 year;
     QString genre;
+    QString name;
 
     Song();
     Song(const Song &o) { *this=o; }

@@ -56,6 +56,7 @@ SET( CANTATA_SRCS
     models/streamsproxymodel.cpp
     models/albumsmodel.cpp
     models/albumsproxymodel.cpp
+    models/streamfetcher.cpp
     mpd/mpdconnection.cpp
     mpd/mpdparseutils.cpp
     mpd/mpdstats.cpp
@@ -96,6 +97,7 @@ SET( CANTATA_MOC_HDRS
     models/dirviewmodel.h
     models/dirviewproxymodel.h
     models/albumsmodel.h
+    models/streamfetcher.h
     mpd/mpdconnection.h
     widgets/fancytabwidget.h
     widgets/treeview.h

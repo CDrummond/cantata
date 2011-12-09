@@ -238,6 +238,8 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
             song.year = value.toUInt();
         } else if (element == "Genre") {
             song.genre = value;
+        }  else if (element == "Name") {
+            song.name = value;
         }
     }
 

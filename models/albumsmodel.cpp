@@ -37,6 +37,7 @@
 
 static AlbumsModel::CoverSize coverSize=AlbumsModel::CoverMedium;
 static QPixmap *theDefaultIcon=0;
+static QSize itemSize;
 
 int AlbumsModel::coverPixels()
 {
@@ -56,6 +57,11 @@ static int stdIconSize()
 AlbumsModel::CoverSize AlbumsModel::currentCoverSize()
 {
     return coverSize;
+}
+
+void AlbumsModel::setItemSize(const QSize &sz)
+{
+    itemSize=sz;
 }
 
 void AlbumsModel::setCoverSize(AlbumsModel::CoverSize size)
@@ -147,6 +153,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         return items.at(index.row()).name;
     case Qt::UserRole:
         return items.at(index.row()).files;
+    case Qt::SizeHintRole:
+        if (!itemSize.isNull()) {
+            return itemSize;
+        }
     }
 
     return QVariant();

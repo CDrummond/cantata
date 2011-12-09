@@ -1,16 +1,17 @@
 0.1.0
 -----
+[Changes from QtMPC]
 1. Use XDG_CACHE_HOME to store XML and covers
 2. Hide listview headers
 3. Dir view -> Folders, Library view -> Library
 4. Removed setting of font style and size - only bold now set
 5. In library list, use album-artist (if available, artist otherwise) to group
-   albums. When album-artist is used, display tracks as "artist - track"
-6. Remove search combo, and always default to 'Any'
+   albums.
+6. Remove search combo, and always default to searching in all fields.
 7. Removed warning when add to playlist, and nothing selected - was inconsistent
    with playlist view. (Add to playlist actions should now only be enabled if
    there is something selected)
-8. Fix call to setupGUI so as to not create a statusbar!
+8. Fix call to setupGUI so as to not create a statusbar
 9. If compiled with KDE support;
     - use KMessageBox
     - store config via KConfig
@@ -23,13 +24,13 @@
 14. Only 2 socket connections to MPD - one for commands, and one for idle
     messages.
 15. Only load data for a tab when the tab is selected.
-16. If saving to a pre-existing playlist, as the user if it is ok to overwrite.
+16. If saving to a pre-existing playlist, ask the user if it is ok to overwrite.
     If so, delete the existing one first, then save.
 17. Add a combo to filter on genre.
 18. Check for cover (cover.png/jpg) within folder of current track to get
     cover-art, otherwise download.
-19. Also check mpdFolder+filename.lyrics for lyrics file
-20. Fetch lyrics
+19. Fetch lyrics
+20. Also check mpdFolder+filename.lyrics for lyrics file
 21. Use QNetworkAccessManager for HTTP downloads. If compiled woth KDE support,
     use KIO::Integration::AccessManager so that we can gain access to KDE's
     proxy settings.
@@ -38,6 +39,8 @@
 24. Split config into pages.
 25. Add option to stop playback when cantata exits.
 26. Fixed thread usage - now sockets are in their own thread.
+27. Add album-cover view
+28. Support radio streams
 
 --------------QtMPC ChangeLog--------------------
 

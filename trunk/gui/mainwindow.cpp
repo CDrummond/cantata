@@ -375,7 +375,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     showPlaylistAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     updateDbAction->setIcon(QIcon::fromTheme("view-refresh"));
-    libraryTabAction->setIcon(QIcon::fromTheme("view-media-artist"));
+    libraryTabAction->setIcon(QIcon::fromTheme("audio-ac3"));
     albumsTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
     foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));

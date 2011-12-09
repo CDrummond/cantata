@@ -53,6 +53,7 @@ private Q_SLOTS:
     void savePlaylist();
     void renamePlaylist();
     void itemDoubleClicked(const QModelIndex &index);
+    void searchItems();
 
 private:
     Action *removePlaylistAction;

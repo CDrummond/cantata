@@ -35,6 +35,7 @@ public:
 
     virtual ~TreeView();
 
+    void setPageDefaults();
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;

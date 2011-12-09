@@ -56,7 +56,7 @@ LibraryPage::LibraryPage(MainWindow *p)
 #else
     search->setPlaceholderText(tr("Search library..."));
 #endif
-    view->setHeaderHidden(true);
+    view->setPageDefaults();
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     proxy.setSourceModel(&model);

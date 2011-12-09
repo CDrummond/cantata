@@ -72,6 +72,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     delPlaylist->setEnabled(false);
     renPlaylist->setEnabled(false);
 
+    view->setPageDefaults();
     view->setDragDropMode(QAbstractItemView::NoDragDrop);
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);

@@ -54,7 +54,7 @@ FolderPage::FolderPage(MainWindow *p)
 #else
     search->setPlaceholderText(tr("Search files..."));
 #endif
-    view->setHeaderHidden(true);
+    view->setPageDefaults();
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
 

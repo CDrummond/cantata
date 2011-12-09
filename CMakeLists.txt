@@ -86,6 +86,7 @@ SET( CANTATA_MOC_HDRS
     gui/playbacksettings.h
     gui/outputsettings.h
     gui/preferencesdialog.h
+    gui/settings.h
     models/musiclibrarymodel.h
     models/musiclibraryproxymodel.h
     models/playlistsmodel.h

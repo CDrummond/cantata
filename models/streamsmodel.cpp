@@ -165,6 +165,11 @@ bool StreamsModel::importXml(const QString &xml)
         }
     }
 
+    if (valid) {
+        save();
+        Settings::self()->save();
+    }
+
     return valid;
 }
 
@@ -200,6 +205,9 @@ bool StreamsModel::add(const QString &name, const QString &url)
 //     endInsertRows();
 //     emit layoutChanged();
     endResetModel();
+
+    save();
+    Settings::self()->save();
     return true;
 }
 
@@ -217,6 +225,8 @@ void StreamsModel::edit(const QModelIndex &index, const QString &name, const QSt
         items.append(Stream(name, u));
         itemMap.insert(url, name);
         endResetModel();
+        save();
+        Settings::self()->save();
     }
 }
 
@@ -230,6 +240,8 @@ void StreamsModel::remove(const QModelIndex &index)
         items.removeAt(index.row());
         itemMap.remove(old.url.toString());
         endResetModel();
+        save();
+        Settings::self()->save();
     }
 }
 

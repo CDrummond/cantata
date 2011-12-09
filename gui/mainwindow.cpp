@@ -627,8 +627,8 @@ MainWindow::~MainWindow()
     Settings::self()->savePlaylistHeaderState(playlistTableViewHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
-    Settings::self()->save();
     streamsPage->save();
+    Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopOnExit()) {
         emit stop();

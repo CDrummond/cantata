@@ -29,6 +29,7 @@
 #include <QtXml/QDomElement>
 #include "streamsmodel.h"
 #include "settings.h"
+#include "playlisttablemodel.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
@@ -276,6 +277,6 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
         stream << filenames.at(i);
     }
 
-    mimeData->setData("application/cantata_songs_filename_text", encodedData);
+    mimeData->setData(PlaylistTableModel::constFileNameMimeType, encodedData);
     return mimeData;
 }

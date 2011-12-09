@@ -30,6 +30,11 @@ class AlbumsProxyModel : public QSortFilterProxyModel
 {
 public:
     AlbumsProxyModel(QObject *parent = 0);
+    void setFilterGenre(const QString &genre);
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+
+private:
+    QString filterGenre;
 };
 
 #endif

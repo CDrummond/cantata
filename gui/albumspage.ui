@@ -25,18 +25,9 @@
     </widget>
    </item>
    <item row="1" column="0" colspan="4">
-    <widget class="QListView" name="view">
+    <widget class="ListView" name="view">
      <property name="dragEnabled">
       <bool>true</bool>
-     </property>
-     <property name="dragDropMode">
-      <enum>QAbstractItemView::NoDragDrop</enum>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::ExtendedSelection</enum>
-     </property>
-     <property name="movement">
-      <enum>QListView::Static</enum>
      </property>
      <property name="resizeMode">
       <enum>QListView::Adjust</enum>
@@ -84,6 +75,11 @@
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ListView</class>
+   <extends>QListView</extends>
+   <header>listview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -83,22 +83,47 @@ void AlbumsPage::clear()
 
 void AlbumsPage::addSelectionToPlaylist()
 {
+    QStringList files;
+
+    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
+
+    if (0==selected.size()) {
+        return;
+    }
+
+    foreach (const QModelIndex &idx, selected) {
+        QStringList albumFiles=model.data(proxy.mapToSource(idx), Qt::UserRole).toStringList();
+
+        foreach (const QString & file, albumFiles) {
+            if (!files.contains(file)) {
+                files.append(file);
+            }
+        }
+    }
+
+    if (!files.isEmpty()) {
+        emit add(files);
+        view->selectionModel()->clearSelection();
+    }
 }
 
 void AlbumsPage::itemActivated(const QModelIndex &)
 {
+    if (1==view->selectionModel()->selectedIndexes().size()) {//doubleclick should only have one selected item
+        addSelectionToPlaylist();
+    }
 }
 
 void AlbumsPage::searchItems()
 {
-//     proxy.setFilterGenre(0==genreCombo->currentIndex() ? QString() : genreCombo->currentText());
-//
-//     if (search->text().isEmpty()) {
-//         proxy.setFilterRegExp(QString());
-//         return;
-//     }
-//
-//     proxy.setFilterRegExp(search->text());
+    proxy.setFilterGenre(0==genreCombo->currentIndex() ? QString() : genreCombo->currentText());
+
+    if (search->text().isEmpty()) {
+        proxy.setFilterRegExp(QString());
+        return;
+    }
+
+    proxy.setFilterRegExp(search->text());
 }
 
 void AlbumsPage::updateGenres(const QStringList &genres)

@@ -26,6 +26,8 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QList>
 #include <QtCore/QSet>
+#include <QtCore/QStringList>
+#include <QtGui/QImage>
 
 class MusicLibraryItemRoot;
 class QImage;
@@ -44,11 +46,10 @@ public:
 
     struct Album
     {
-        Album(const QString &ar, const QString &al) : artist(ar), album(al), updated(false), coverRequested(false) { }
-        void update(const QStringList &f, const QSet<QString> &g) { files=f; genres=g; updated=true; }
-        QString name() const { return artist+QLatin1String(" - ")+album; }
+        Album(const QString &ar, const QString &al);
         QString artist;
         QString album;
+        QString name;
         QStringList files;
         QSet<QString> genres;
         QImage cover;
@@ -60,6 +61,7 @@ public:
     ~AlbumsModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;

@@ -6,15 +6,7 @@ Need better repeat icon.
 Stream import/export
    - For KDE, need to use getSaveUrl, etc. and use KIO::NetAccess to obatain file.
 
-Albums page
-   - search/genre filtering
-   - context menu
-   - add/relpace playlist
-   - when update db, reset coverRequested flag.
-     - also reset covers?
-   - See if can use bold/small font e.g.
-        <b>Artist</b><br/><small>Album</small>
-
 Sidebar
+   - Better icon for library page!!!
    - Allow to collapse current item
    - Add option to select available tabs

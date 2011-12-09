@@ -35,8 +35,12 @@ class Wallet;
 #include <QtCore/QList>
 #include <QtCore/QUrl>
 
-class Settings
+class QTimer;
+
+class Settings : public QObject
 {
+    Q_OBJECT
+
 public:
     static Settings *self();
 
@@ -82,12 +86,16 @@ public:
     void saveLyricProviders(const QStringList &p);
     void saveStreamUrls(const QList<QUrl> &u);
     void savePage(const QString &v);
-    void save();
+    void save(bool force=false);
 #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();
 #endif
 
+private Q_SLOTS:
+    void actualSave();
+
 private:
+    QTimer *timer;
 #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg;
     KWallet::Wallet *wallet;

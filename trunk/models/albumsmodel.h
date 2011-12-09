@@ -31,6 +31,7 @@
 
 class MusicLibraryItemRoot;
 class QImage;
+class QSize;
 
 class AlbumsModel : public QAbstractListModel
 {
@@ -47,6 +48,7 @@ public:
     static CoverSize currentCoverSize();
     static void setCoverSize(CoverSize size);
     static int coverPixels();
+    static void setItemSize(const QSize &sz);
 
     enum Columnms
     {

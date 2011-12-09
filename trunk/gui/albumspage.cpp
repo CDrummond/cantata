@@ -27,6 +27,7 @@
 #include "musiclibraryitemsong.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
+#include <QtGui/QFontMetrics>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KAction>
 #include <KLocale>
@@ -77,9 +78,12 @@ AlbumsPage::~AlbumsPage()
 
 void AlbumsPage::clear()
 {
+    QFontMetrics fm(font());
+
     int size=AlbumsModel::coverPixels();
     view->setIconSize(QSize(size, size));
-    view->setGridSize(QSize(size+14, size+44));
+    view->setGridSize(QSize(size+8, size+(fm.height()*2.5)));
+    AlbumsModel::setItemSize(view->gridSize()-QSize(4, 4));
     model.clear();
     view->update();
 }

@@ -25,6 +25,7 @@
 #include "config.h"
 #include "musiclibraryitemalbum.h"
 #include "fancytabwidget.h"
+#include "albumsmodel.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
@@ -169,9 +170,14 @@ QString Settings::mpdDir()
     return d;
 }
 
-int Settings::coverSize()
+int Settings::libraryCoverSize()
 {
-    return GET_INT("coverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+    return GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+}
+
+int Settings::albumCoverSize()
+{
+    return GET_INT("albumCoverSize", (int)(AlbumsModel::CoverMedium));
 }
 
 int Settings::sidebar()
@@ -295,9 +301,14 @@ void Settings::saveMpdDir(const QString &v)
     SET_VALUE("mpdDir", d);
 }
 
-void Settings::saveCoverSize(int v)
+void Settings::saveLibraryCoverSize(int v)
 {
-    SET_VALUE("coverSize", v);
+    SET_VALUE("libraryCoverSize", v);
+}
+
+void Settings::saveAlbumCoverSize(int v)
+{
+    SET_VALUE("albumCoverSize", v);
 }
 
 void Settings::saveSidebar(int v)

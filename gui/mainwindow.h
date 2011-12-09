@@ -174,6 +174,7 @@ public Q_SLOTS:
     void showError(const QString &message);
 
 private Q_SLOTS:
+    void songLoaded();
     void mpdConnectionStateChanged(bool connected);
     void playlistItemsSelected(bool s);
     void showVolumeControl();

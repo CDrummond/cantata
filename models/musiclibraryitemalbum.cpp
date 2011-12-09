@@ -78,14 +78,16 @@ void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Album)
     , m_dir(dir)
+    , m_coverIsDefault(false)
+    , m_cover(0)
     , m_parentItem(static_cast<MusicLibraryItemArtist *>(parent))
 {
-    m_coverIsDefault=false;
 }
 
 MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
 {
     qDeleteAll(m_childItems);
+    delete m_cover;
 }
 
 void MusicLibraryItemAlbum::appendSong(MusicLibraryItemSong * const song)
@@ -117,9 +119,9 @@ bool MusicLibraryItemAlbum::setCover(const QImage &img)
 {
     if (m_coverIsDefault) {
         QPixmap cover=QPixmap::fromImage(img).scaled(QSize(coverPixels()-2, coverPixels()-2), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        m_cover = QPixmap(coverPixels(), coverPixels());
-        m_cover.fill(Qt::transparent);
-        QPainter p(&m_cover);
+        m_cover = new QPixmap(coverPixels(), coverPixels());
+        m_cover->fill(Qt::transparent);
+        QPainter p(m_cover);
         p.drawPixmap(1, 1, cover);
         p.end();
         m_coverIsDefault=false;
@@ -135,7 +137,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
         return *theDefaultIcon;
     }
 
-    if (m_cover.isNull()) {
+    if (!m_cover) {
         if (!theDefaultIcon) {
             theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(stdIconSize(), stdIconSize())
                                         .scaled(QSize(coverPixels(), coverPixels()), Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -151,7 +153,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
         return *theDefaultIcon;
     }
 
-    return m_cover;
+    return *m_cover;
 }
 
 QStringList MusicLibraryItemAlbum::sortedTracks()

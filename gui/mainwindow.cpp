@@ -497,8 +497,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     coverWidget->installEventFilter(coverEventHandler);
 
-    connect(MPDConnection::self(), SIGNAL(loaded(const QString &)), MPDConnection::self(), SLOT(startPlayingSong()));
-    connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), MPDConnection::self(), SLOT(startPlayingSong()));
+    connect(MPDConnection::self(), SIGNAL(loaded(const QString &)), SLOT(songLoaded()));
+    connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
     connect(this, SIGNAL(removeSongs(const QList<qint32> &)), MPDConnection::self(), SLOT(removeSongs(const QList<qint32> &)));
     connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
     connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(startPlayingSong()));
@@ -637,6 +637,13 @@ MainWindow::~MainWindow()
     mpdThread->quit();
     for(int i=0; i<10 && mpdThread->isRunning(); ++i)
         Thread::sleep();
+}
+
+void MainWindow::songLoaded()
+{
+    if (MPDStatus::State_Stopped==MPDStatus::self()->state()) {
+        emit play();
+    }
 }
 
 void MainWindow::showError(const QString &message)
@@ -815,12 +822,13 @@ void MainWindow::playPauseTrack()
 {
     MPDStatus * const status = MPDStatus::self();
 
-    if (status->state() == MPDStatus::State_Playing)
+    if (status->state() == MPDStatus::State_Playing) {
         emit pause(true);
-    else if (status->state() == MPDStatus::State_Paused)
+    } else if (status->state() == MPDStatus::State_Paused) {
         emit pause(false);
-    else
+    } else {
         emit play();
+    }
 }
 
 void MainWindow::setPosition()
@@ -1042,8 +1050,9 @@ void MainWindow::updateStatus()
         stopTrackAction->setEnabled(true);
         elapsedTimer.start();
 
-        if (trayIcon != NULL)
+        if (trayIcon) {
             trayIcon->setIcon(playbackPlay);
+        }
 
         break;
     case MPDStatus::State_Inactive:
@@ -1053,9 +1062,11 @@ void MainWindow::updateStatus()
         stopTrackAction->setEnabled(false);
         trackLabel->setText(QString());
         artistLabel->setText(QString());
+        current.id=0;
 
-        if (trayIcon != NULL)
+        if (trayIcon) {
             trayIcon->setIcon(windowIcon());
+        }
 
         elapsedTimer.stop();
         break;
@@ -1064,8 +1075,9 @@ void MainWindow::updateStatus()
         playPauseTrackAction->setEnabled(true);
         stopTrackAction->setEnabled(true);
 
-        if (trayIcon != NULL)
+        if (trayIcon) {
             trayIcon->setIcon(playbackPause);
+        }
 
         elapsedTimer.stop();
 
@@ -1079,8 +1091,9 @@ void MainWindow::updateStatus()
     // and update song info if needed
     if (lastState == MPDStatus::State_Inactive
             || (lastState == MPDStatus::State_Stopped && status->state() == MPDStatus::State_Playing)
-            || lastSongId != status->songId())
+            || lastSongId != status->songId()) {
         emit currentSong();
+    }
     // Update status info
     lastState = status->state();
     lastSongId = status->songId();
@@ -1122,7 +1135,7 @@ void MainWindow::addToPlaylist()
     searchPlaylistLineEdit->clear();
     if (libraryPage->view->isVisible()) {
         libraryPage->addSelectionToPlaylist();
-    } if (albumsPage->view->isVisible()) {
+    } else if (albumsPage->view->isVisible()) {
         albumsPage->addSelectionToPlaylist();
     } else if (folderPage->view->isVisible()) {
         folderPage->addSelectionToPlaylist();

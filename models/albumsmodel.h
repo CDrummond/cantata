@@ -37,6 +37,17 @@ class AlbumsModel : public QAbstractListModel
     Q_OBJECT
 
 public:
+    enum CoverSize
+    {
+        CoverSmall  = 0,
+        CoverMedium = 1,
+        CoverLarge  = 2
+    };
+
+    static CoverSize currentCoverSize();
+    static void setCoverSize(CoverSize size);
+    static int coverPixels();
+
     enum Columnms
     {
         COL_NAME,

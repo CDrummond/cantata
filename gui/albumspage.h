@@ -35,18 +35,9 @@ class AlbumsPage : public QWidget, public Ui::AlbumsPage
 {
     Q_OBJECT
 public:
-
-    enum Refresh
-    {
-        RefreshFromCache,
-        RefreshForce,
-        RefreshStandard
-    };
-
     AlbumsPage(MainWindow *p);
     virtual ~AlbumsPage();
 
-    void refresh(Refresh type);
     void clear();
     void addSelectionToPlaylist();
 

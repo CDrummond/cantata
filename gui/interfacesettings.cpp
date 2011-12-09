@@ -35,12 +35,14 @@ void InterfaceSettings::load()
 {
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
     systemTrayPopup->setChecked(Settings::self()->showPopups());
-    coverArtSize->setCurrentIndex(Settings::self()->coverSize());
+    libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
+    albumCoverSize->setCurrentIndex(Settings::self()->albumCoverSize());
 }
 
 void InterfaceSettings::save()
 {
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
-    Settings::self()->saveCoverSize(coverArtSize->currentIndex());
+    Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
+    Settings::self()->saveAlbumCoverSize(albumCoverSize->currentIndex());
 }

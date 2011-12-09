@@ -60,8 +60,6 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->addAction(p->replacePlaylistAction);
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
-    view->setIconSize(QSize(100, 100));
-    view->setGridSize(QSize(120, 160));
 
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
@@ -70,6 +68,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             &model, SLOT(setCover(const QString &, const QString &, const QImage &)));
+    clear();
 }
 
 AlbumsPage::~AlbumsPage()
@@ -78,7 +77,11 @@ AlbumsPage::~AlbumsPage()
 
 void AlbumsPage::clear()
 {
+    int size=AlbumsModel::coverPixels();
+    view->setIconSize(QSize(size, size));
+    view->setGridSize(QSize(size+14, size+44));
     model.clear();
+    view->update();
 }
 
 void AlbumsPage::addSelectionToPlaylist()

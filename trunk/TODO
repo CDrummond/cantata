@@ -3,9 +3,15 @@ Lyrics
 
 Need better repeat icon.
 
-Stream import/export
+Streams
    - For KDE, need to use getSaveUrl, etc. and use KIO::NetAccess to obatain file.
+   - Handle xspf/spiff playlists
+   - Handle more than 1st entry?? Not sure
+   - Check that MPD an handle protocols
 
 Sidebar
    - Allow to collapse current item
    - Add option to select available tabs
+
+Album View
+   - Text/selection is messed up when scrolling

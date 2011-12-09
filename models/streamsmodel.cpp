@@ -31,24 +31,6 @@
 #include "settings.h"
 #include "playlisttablemodel.h"
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KGlobal>
-K_GLOBAL_STATIC(StreamsModel, instance)
-#endif
-
-StreamsModel * StreamsModel::self()
-{
-#ifdef ENABLE_KDE_SUPPORT
-    return instance;
-#else
-    static StreamsModel *instance=0;;
-    if(!instance) {
-        instance=new StreamsModel;
-    }
-    return instance;
-#endif
-}
-
 StreamsModel::StreamsModel()
     : QAbstractListModel(0)
 {

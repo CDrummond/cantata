@@ -33,6 +33,8 @@
 #include <QSet>
 #include "song.h"
 
+class StreamFetcher;
+
 class PlaylistTableModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -55,6 +57,7 @@ public:
 
     static const QLatin1String constMoveMimeType;
     static const QLatin1String constFileNameMimeType;
+    static const QLatin1String constParsedStreamMimeType;
 
     PlaylistTableModel(QObject *parent = 0);
     ~PlaylistTableModel();
@@ -77,6 +80,7 @@ public:
     void clear();
 
 public Q_SLOTS:
+    void addFiles(const QStringList &filenames, int row);
     void updatePlaylist(const QList<Song> &songs);
 
 Q_SIGNALS:
@@ -84,12 +88,13 @@ Q_SIGNALS:
     void moveInPlaylist(const QList<quint32> &items, const quint32 row, const quint32 size);
     void playListStatsUpdated();
 
+private Q_SLOTS:
+    void playListReset();
+
 private:
     QList<Song> songs;
     qint32 song_id;
-
-private Q_SLOTS:
-    void playListReset();
+    StreamFetcher *fetcher;
 };
 
 #endif

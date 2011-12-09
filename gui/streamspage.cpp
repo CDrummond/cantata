@@ -22,7 +22,6 @@
  */
 
 #include "streamspage.h"
-#include "streamsmodel.h"
 #include "streamdialog.h"
 #include "mpdconnection.h"
 #include <QtGui/QIcon>
@@ -105,7 +104,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->addAction(editAction);
     view->addAction(removeAction);
     view->addAction(exportAction);
-    proxy.setSourceModel(StreamsModel::self());
+    proxy.setSourceModel(&model);
     view->setModel(&proxy);
 }
 
@@ -115,13 +114,13 @@ StreamsPage::~StreamsPage()
 
 void StreamsPage::refresh()
 {
-    StreamsModel::self()->reload();
-    exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
+    model.reload();
+    exportAction->setEnabled(model.rowCount()>0);
 }
 
 void StreamsPage::save()
 {
-    StreamsModel::self()->save();
+    model.save();
 }
 
 void StreamsPage::addSelectionToPlaylist()
@@ -135,7 +134,7 @@ void StreamsPage::addSelectionToPlaylist()
     }
 
     foreach (const QModelIndex &idx, selected) {
-        QString stream=StreamsModel::self()->data(proxy.mapToSource(idx), Qt::ToolTipRole).toString();
+        QString stream=model.data(proxy.mapToSource(idx), Qt::ToolTipRole).toString();
 
         if (!streams.contains(stream)) {
             streams << stream;
@@ -177,9 +176,9 @@ void StreamsPage::importXml()
         xml+=stream.readLine();
     }
 
-//     int before=StreamsModel::self()->rowCount();
-//     if (StreamsModel::self()->importXml(xml)) {
-//         int now=StreamsModel::self()->rowCount();
+//     int before=model.rowCount();
+//     if (model.importXml(xml)) {
+//         int now=model.rowCount();
 //         if (now==before) {
 //             #ifdef ENABLE_KDE_SUPPORT
 //             KMessageBox::information(this, i18n("No new streams imported."));
@@ -201,7 +200,7 @@ void StreamsPage::importXml()
 //         }
 //     } else {
 
-    if (!StreamsModel::self()->importXml(xml)) {
+    if (!model.importXml(xml)) {
         #ifdef ENABLE_KDE_SUPPORT
         KMessageBox::error(this, i18n("Failed to import <i>%1</i>!<br/>Please check this is of the correct type.", fileName));
         #else
@@ -232,7 +231,7 @@ void StreamsPage::exportXml()
         return;
     }
 
-    QTextStream(&file) << StreamsModel::self()->toXml();
+    QTextStream(&file) << model.toXml();
 }
 
 void StreamsPage::add()
@@ -243,7 +242,7 @@ void StreamsPage::add()
         QString name=dlg.name();
         QString url=dlg.url();
 
-        QString existing=StreamsModel::self()->name(url);
+        QString existing=model.name(url);
         if (!existing.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("Stream already exists!<br/><i>%1</i>", existing));
@@ -253,7 +252,7 @@ void StreamsPage::add()
             return;
         }
 
-        if (!StreamsModel::self()->add(name, url)) {
+        if (!model.add(name, url)) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("A stream named <i>%1</i> already exists!", name));
             #else
@@ -261,7 +260,7 @@ void StreamsPage::add()
             #endif
         }
     }
-    exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
+    exportAction->setEnabled(model.rowCount()>0);
 }
 
 void StreamsPage::remove()
@@ -275,7 +274,7 @@ void StreamsPage::remove()
     }
 
     QModelIndex firstIndex=proxy.mapToSource(selected.first());
-    QString firstName=StreamsModel::self()->data(firstIndex, Qt::DisplayRole).toString();
+    QString firstName=model.data(firstIndex, Qt::DisplayRole).toString();
     #ifdef ENABLE_KDE_SUPPORT
     if (KMessageBox::No==KMessageBox::warningYesNo(this, selected.size()>1 ? i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
                                                                            : i18n("Are you sure you wish to remove <i>%1</i>?").arg(firstName),
@@ -292,9 +291,9 @@ void StreamsPage::remove()
     #endif
 
     foreach (const QModelIndex &idx, selected) {
-        StreamsModel::self()->remove(proxy.mapToSource(idx));
+        model.remove(proxy.mapToSource(idx));
     }
-    exportAction->setEnabled(StreamsModel::self()->rowCount()>0);
+    exportAction->setEnabled(model.rowCount()>0);
 }
 
 void StreamsPage::edit()
@@ -309,8 +308,8 @@ void StreamsPage::edit()
 
     StreamDialog dlg(this);
     QModelIndex index=proxy.mapToSource(selected.first());
-    QString name=StreamsModel::self()->data(index, Qt::DisplayRole).toString();
-    QString url=StreamsModel::self()->data(index, Qt::ToolTipRole).toString();
+    QString name=model.data(index, Qt::DisplayRole).toString();
+    QString url=model.data(index, Qt::ToolTipRole).toString();
 
     dlg.setEdit(name, url);
 
@@ -318,7 +317,7 @@ void StreamsPage::edit()
         QString newName=dlg.name();
         QString newUrl=dlg.url();
 
-        QString existingNameForUrl=newUrl!=url ? StreamsModel::self()->name(newUrl) : QString();
+        QString existingNameForUrl=newUrl!=url ? model.name(newUrl) : QString();
 
         if (!existingNameForUrl.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
@@ -326,14 +325,14 @@ void StreamsPage::edit()
             #else
             QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><i>%1</i>").arg(existingNameForUrl));
             #endif
-        } else if (newName!=name && StreamsModel::self()->entryExists(newName)) {
+        } else if (newName!=name && model.entryExists(newName)) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("A stream named <i>%1</i> already exists!", newName));
             #else
             QMessageBox::critical(this, tr("Error"), tr("A stream named <i>%1</i> already exists!").arg(newName));
             #endif
         } else {
-            StreamsModel::self()->edit(index, newName, newUrl);
+            model.edit(index, newName, newUrl);
         }
     }
 }

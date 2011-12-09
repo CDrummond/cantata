@@ -38,8 +38,6 @@ public:
         QUrl url;
     };
 
-    static StreamsModel * self();
-
     StreamsModel();
     ~StreamsModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

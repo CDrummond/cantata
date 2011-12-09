@@ -355,6 +355,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     volumeButton->installEventFilter(volumeSliderEventHandler);
 
     noCover = QIcon::fromTheme("media-optical-audio").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    noStreamCover = QIcon::fromTheme("applications-internet").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     coverWidget->setPixmap(noCover);
 
     playbackPlay = QIcon::fromTheme("media-playback-start");
@@ -915,6 +916,10 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
             playlistTableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
     }
+
+    if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
+        updateCurrentSong(songs.at(0));
+    }
 }
 
 void MainWindow::updateCurrentSong(const Song &song)
@@ -929,20 +934,12 @@ void MainWindow::updateCurrentSong(const Song &song)
         coverWidget->setProperty("album", song.album);
     }
 
-    if (song.title.isEmpty() && song.artist.isEmpty()) {
-        QString streamName=StreamsModel::self()->name(song.file);
-        if (streamName.isEmpty()) {
-            trackLabel->setText(song.file);
-            artistLabel->setText(QString());
-        } else {
-            trackLabel->setText(streamName);
-            artistLabel->setText(QString());
-        }
-    } else {
+    if (song.name.isEmpty()) {
         trackLabel->setText(song.title);
-        artistLabel->setText(song.artist);
+    } else {
+        trackLabel->setText(QString("%1 (%2)").arg(song.title).arg(song.name));
     }
-
+    artistLabel->setText(song.artist);
     playlistModel.updateCurrentSong(song.id);
 
     if (4==tabWidget->current_index()) {
@@ -994,7 +991,6 @@ void MainWindow::updateStats()
 void MainWindow::updateStatus()
 {
     MPDStatus * const status = MPDStatus::self();
-    QString timeElapsedFormattedString;
 
     if (!draggingPositionSlider) {
         if (status->state() == MPDStatus::State_Stopped
@@ -1031,13 +1027,17 @@ void MainWindow::updateStatus()
     repeatPlaylistAction->setChecked(status->repeat());
     consumePlaylistAction->setChecked(status->consume());
 
-    if (status->state() == MPDStatus::State_Stopped || status->state() == MPDStatus::State_Inactive) {
-        timeElapsedFormattedString = "0:00 / 0:00";
-    } else {
-        timeElapsedFormattedString += Song::formattedTime(status->timeElapsed());
-        timeElapsedFormattedString += " / ";
-        timeElapsedFormattedString += Song::formattedTime(status->timeTotal());
-        songTime = status->timeTotal();
+    QString timeElapsedFormattedString;
+
+    if (!currentIsStream()) {
+        if (status->state() == MPDStatus::State_Stopped || status->state() == MPDStatus::State_Inactive) {
+            timeElapsedFormattedString = "0:00 / 0:00";
+        } else {
+            timeElapsedFormattedString += Song::formattedTime(status->timeElapsed());
+            timeElapsedFormattedString += " / ";
+            timeElapsedFormattedString += Song::formattedTime(status->timeTotal());
+            songTime = status->timeTotal();
+        }
     }
 
     songTimeElapsedLabel->setText(timeElapsedFormattedString);
@@ -1445,11 +1445,16 @@ void MainWindow::currentTabChanged(int index)
     }
 }
 
+bool MainWindow::currentIsStream()
+{
+    return !current.title.isEmpty() && (current.file.isEmpty() || current.file.contains("://"));
+}
+
 void MainWindow::cover(const QString &artist, const QString &album, const QImage &img)
 {
     if (artist==current.albumArtist() && album==current.album) {
         if (img.isNull()) {
-            coverWidget->setPixmap(noCover);
+            coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
         } else {
             coverWidget->setPixmap(QPixmap::fromImage(img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }

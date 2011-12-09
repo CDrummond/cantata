@@ -220,6 +220,7 @@ private Q_SLOTS:
     void showInfoTab() { showTab(PAGE_INFO); }
 
 private:
+    bool currentIsStream();
     void showTab(int page);
 
 private:
@@ -273,6 +274,7 @@ private:
     QMenu *trayIconMenu;
     QMenu *playlistTableViewMenu;
     QPixmap noCover;
+    QPixmap noStreamCover;
     QPoint lastPos;
     UpdateDialog *updateDialog;
     QString mpdDir;

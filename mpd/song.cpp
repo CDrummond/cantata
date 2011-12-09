@@ -57,6 +57,7 @@ Song & Song::operator=(const Song &s)
     disc = s.disc;
     year = s.year;
     genre = s.genre;
+    name = s.name;
     return *this;
 }
 
@@ -111,6 +112,7 @@ void Song::clear()
     disc = 0;
     year = 0;
     genre.clear();
+    name.clear();
 }
 
 QString Song::formattedTime(const quint32 &seconds)

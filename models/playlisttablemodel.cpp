@@ -29,23 +29,27 @@
 #include <QStringListModel>
 #include <QMimeData>
 #include <QSet>
+#include <QUrl>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
 #include "playlisttablemodel.h"
-#include "streamsmodel.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdstatus.h"
+#include "streamfetcher.h"
 
 const QLatin1String PlaylistTableModel::constMoveMimeType("cantata/move");
 const QLatin1String PlaylistTableModel::constFileNameMimeType("cantata/filename");
+const QLatin1String PlaylistTableModel::constParsedStreamMimeType("cantata/stream");
 
 PlaylistTableModel::PlaylistTableModel(QObject *parent)
     : QAbstractTableModel(parent),
       song_id(-1)
 {
+    fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(playListReset()));
+    connect(fetcher, SIGNAL(result(const QStringList &, int)), SLOT(addFiles(const QStringList &, int)));
 }
 
 PlaylistTableModel::~PlaylistTableModel()
@@ -132,35 +136,13 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) {
         const Song &song = songs.at(index.row());
         switch (index.column()) {
-        case COL_TITLE: {
-            QString title=song.title;
-
-            if (title.isEmpty()) {
-                QString streamName=StreamsModel::self()->name(song.file);
-
-                if (streamName.isEmpty()) {
-                    return QString();
-                }
-
-#ifdef ENABLE_KDE_SUPPORT
-                return i18n("(Stream)");
-#else
-                return tr("(Stream)");
-#endif
-            }
-            return title;
-        }
-        case COL_ARTIST:  {
-            QString artist=song.artist;
-
-            if (artist.isEmpty()) {
-                artist=StreamsModel::self()->name(song.file);
-                return artist.isEmpty() ? song.file : artist;
-            }
-            return artist;
-        }
+        case COL_TITLE:
+            return song.title;
+        case COL_ARTIST:
+            return song.artist;
         case COL_ALBUM:
-            return song.album;
+            return song.album.isEmpty() && !song.name.isEmpty() && (song.file.isEmpty() || song.file.contains("://"))
+                    ? song.name : song.album;
         case COL_TRACK:
             if (song.track <= 0)
                 return QVariant();
@@ -281,32 +263,59 @@ bool PlaylistTableModel::dropMimeData(const QMimeData *data,
         }
 
         return true;
-    } else if (data->hasFormat(constFileNameMimeType)) {
+    } else if (data->hasFormat(constFileNameMimeType) || data->hasFormat(constParsedStreamMimeType)) {
         //Act on moves from the music library and dir view
         QByteArray encodedData = data->data(constFileNameMimeType);
         QDataStream stream(&encodedData, QIODevice::ReadOnly);
         QStringList filenames;
+        bool haveHttp=false;
 
-        QString text;
         while (!stream.atEnd()) {
+            QString text;
             stream >> text;
             filenames << text;
         }
-        //Check for empty playlist
-        if (songs.size() == 1 && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty()) {
-            emit filesAddedInPlaylist(filenames, 0, 0);
-        } else {
-            if (row < 0) {
-                emit filesAddedInPlaylist(filenames, songs.size(), songs.size());
-            } else {
-                emit filesAddedInPlaylist(filenames, row, songs.size());
+
+        if (data->hasFormat(constFileNameMimeType)) {
+            foreach (const QString &f, filenames) {
+                QUrl u(f);
+
+                if (u.scheme()=="http") {
+                    haveHttp=true;
+                    break;
+                }
             }
         }
 
+        if (haveHttp) {
+            QList<QUrl> urls;
+            foreach (const QString &f, filenames) {
+                urls << QUrl(f);
+            }
+
+            fetcher->get(urls, 0);
+            return true;
+        }
+
+        addFiles(filenames, row);
         return true;
     }
 
     return false;
+}
+
+void PlaylistTableModel::addFiles(const QStringList &filenames, int row)
+{
+    //Check for empty playlist
+    if (songs.size() == 1 && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty()) {
+        emit filesAddedInPlaylist(filenames, 0, 0);
+    } else {
+        if (row < 0) {
+            emit filesAddedInPlaylist(filenames, songs.size(), songs.size());
+        } else {
+            emit filesAddedInPlaylist(filenames, row, songs.size());
+        }
+    }
 }
 
 qint32 PlaylistTableModel::getIdByRow(qint32 row) const

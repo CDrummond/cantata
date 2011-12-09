@@ -21,46 +21,46 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef STREAMSPAGE_H
-#define STREAMSPAGE_H
+#ifndef STREAMFETCHER_H
+#define STREAMFETCHER_H
 
-#include "ui_streamspage.h"
-#include "mainwindow.h"
-#include "streamsmodel.h"
-#include "streamsproxymodel.h"
+#include <QtCore/QObject>
+#include <QtCore/QUrl>
+#include <QtCore/QList>
+#include <QtCore/QByteArray>
+#include <QtCore/QStringList>
 
-class StreamsPage : public QWidget, public Ui::StreamsPage
+class NetworkAccessManager;
+class QNetworkReply;
+
+class StreamFetcher : public QObject
 {
     Q_OBJECT
 
 public:
-    StreamsPage(MainWindow *p);
-    virtual ~StreamsPage();
+    StreamFetcher(QObject *p);
+    virtual ~StreamFetcher();
 
-    void refresh();
-    void save();
-    void addSelectionToPlaylist();
+    void get(const QList<QUrl> &urls, int insertRow);
+
+public Q_SLOTS:
+    void cancel();
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
-    void add(const QStringList &streams);
+    void result(const QStringList &urls, int insertRow);
 
 private Q_SLOTS:
-    void importXml();
-    void exportXml();
-    void add();
-    void remove();
-    void edit();
-    void controlEdit();
+    void dataReady();
+    void jobFinished(QNetworkReply *reply);
 
 private:
-    Action *importAction;
-    Action *exportAction;
-    Action *addAction;
-    Action *removeAction;
-    Action *editAction;
-    StreamsModel model;
-    StreamsProxyModel proxy;
+    NetworkAccessManager *manager;
+    QNetworkReply *job;
+    QList<QUrl> todo;
+    QStringList done;
+    int pos;
+    int row;
+    QByteArray data;
 };
 
 #endif

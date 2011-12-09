@@ -72,6 +72,11 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     delPlaylist->setEnabled(false);
     renPlaylist->setEnabled(false);
 
+#ifdef ENABLE_KDE_SUPPORT
+    search->setPlaceholderText(i18n("Search playlist names..."));
+#else
+    search->setPlaceholderText(tr("Search library..."));
+#endif
     view->setPageDefaults();
     view->setDragDropMode(QAbstractItemView::NoDragDrop);
     view->addAction(p->addToPlaylistAction);
@@ -82,6 +87,8 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
+    connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
     connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(load(const QString &)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(rm(const QString &)));
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(save(const QString &)));
@@ -202,4 +209,9 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
     QModelIndex sourceIndex = proxy.mapToSource(index);
     QString name = model.data(sourceIndex, Qt::DisplayRole).toString();
     emit loadPlaylist(name);
+}
+
+void PlaylistsPage::searchItems()
+{
+    proxy.setFilterRegExp(search->text());
 }

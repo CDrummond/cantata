@@ -52,6 +52,7 @@ private Q_SLOTS:
     void remove();
     void edit();
     void controlEdit();
+    void searchItems();
 
 private:
     Action *importAction;

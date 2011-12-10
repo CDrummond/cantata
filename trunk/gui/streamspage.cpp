@@ -157,9 +157,9 @@ void StreamsPage::addSelectionToPlaylist()
 void StreamsPage::importXml()
 {
 #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.streams|Cantata Streams"), this, i18n("Import Streams"));
+    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.streams|Cantata Streams\n*.js|Amarok Script"), this, i18n("Import Streams"));
 #else
-    QString fileName=QFileDialog::getOpenFileName(this, tr("Import Streams"), QDir::homePath(), tr("*.streams|Cantata Streams"));
+    QString fileName=QFileDialog::getOpenFileName(this, tr("Import Streams"), QDir::homePath(), tr("Cantata Streams (*.streams);;Amarok Script (*.js)"));
 #endif
 
     if (fileName.isEmpty()) {
@@ -180,7 +180,7 @@ void StreamsPage::importXml()
     QTextStream stream(&file);
 
     while (!stream.atEnd()) {
-        xml+=stream.readLine();
+        xml+=stream.readLine()+'\n';
     }
 
 //     int before=model.rowCount();
@@ -207,7 +207,7 @@ void StreamsPage::importXml()
 //         }
 //     } else {
 
-    if (!model.importXml(xml)) {
+    if (!model.import(xml)) {
         #ifdef ENABLE_KDE_SUPPORT
         KMessageBox::error(this, i18n("Failed to import <i>%1</i>!<br/>Please check this is of the correct type.", fileName));
         #else
@@ -221,7 +221,7 @@ void StreamsPage::exportXml()
 #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getSaveFileName(KUrl(), i18n("*.streams|Cantata Streams"), this, i18n("Export Streams"));
 #else
-    QString fileName=QFileDialog::getSaveFileName(this, tr("Export Streams"), QDir::homePath(), tr("*.streams|Cantata Streams"));
+    QString fileName=QFileDialog::getSaveFileName(this, tr("Export Streams"), QDir::homePath(), tr("Cantata Streams (*.streams)"));
 #endif
 
     if (fileName.isEmpty()) {

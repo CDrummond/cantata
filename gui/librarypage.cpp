@@ -27,6 +27,9 @@
 #include "musiclibraryitemsong.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
+#include <QtGui/QStyledItemDelegate>
+#include <QtGui/QStyle>
+#include <QtGui/QStyleOptionViewItem>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KAction>
 #include <KLocale>
@@ -35,50 +38,315 @@
 #include <QAction>
 #endif
 
+// class LibraryItemDelegate : public QStyledItemDelegate
+// {
+//     static const int constBorder = 6;
+//
+// public:
+//     LibraryItemDelegate(QObject *p)
+//         : QStyledItemDelegate(p))
+//     {
+//     }
+//
+//     virtual ~LibraryItemDelegate()
+//     {
+//     }
+//
+//     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+//     {
+//         QSize sz(QStyledItemDelegate::sizeHint(option, index));
+//         int textHeight = QApplication::fontMetrics().height()*2.2;
+//
+//         return QSize(qMax(sz.width(), MusicLibraryItemAlbum::coverPixels()) + (constBorder * 2),
+//                      qMax((textHeight + constBorder) * 3, sz.height() + (constBorder * 2)));
+//     }
+//
+//     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+//     {
+//         if (!index.isValid()) {
+//             return;
+//         }
+//         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+//
+//         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+//         QString text = index.data(Qt::DisplayRole).toText();
+//         int children = index.data(Qt::UserRole).toInt();
+//         QVariant decoration = index.data(Qt::DecorationRole).toText();
+//         QPixmap pix;
+//         QRect r(option.rect);
+//         QString childType;
+//
+//         if (item) {
+//             switch (item->type()) {
+//             case MusicLibraryItem::Type_Artist:
+//             case MusicLibraryItem::Type_Song:
+//                 pix=decoration.value<QIcon>().pixmap(MusicLibraryItemAlbum::coverPixels(), MusicLibraryItemAlbum::coverPixels());
+//                 break;
+//             case MusicLibraryItem::Type_Album:
+//                 pix=decoration.value<QPixmap>();
+//                 break;
+//             }
+//         }
+//
+//         int x=r.x()+constBorder;
+//         if (!pix.isNull()) {
+//             painter->drawPixmap(x, r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+//             x+=pix.width()+constBorder;
+//         }
+//
+// //         QFont f(QApplication::font());
+// //         f.setBold(true);
+// //         QFontMetrics fm(f);
+// //         text = fm.elidedText(text, Qt::ElideRight, r.width()-(constBorder+(x-r.x())), QPalette::WindowText);
+// //
+// //         painter->setPen(txtCol);
+// //         painter->setFont(f);
+// //         painter->drawText(
+//
+//         QTextDocument doc;
+//         doc.setFont(QApplication::font());
+//         QString html=i18n("<b>%1</b></br><small>%2</small>").arg(text).arg(children)
+//         doc.setHtml(user.toString());
+//         if ((QVariant::Pixmap == dec.type()) && (QVariant::String == disp.type()) &&
+//             (QVariant::String == user.type())) {
+//             m_widget->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option,
+//                                                 painter, 0L);
+//
+//             QRect                r(option.rect);
+//             QFont                fnt(m_widget->font());
+//             QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ?
+//                                                         QPalette::Normal : QPalette::Disabled;
+//             QPixmap              pix(dec.value<QPixmap>());
+//             int                  textHeight = m_widget->fontMetrics().height();
+//             int                  iconPosModX = constBorder + ((KMF::MediaObject::constIconSize -
+//                                                                 pix.width()) / 2);
+//             int                  iconPosModY = (option.rect.height() - pix.height()) / 2;
+//
+//             painter->drawPixmap(r.adjusted(iconPosModX, iconPosModY, iconPosModX,
+//                                 iconPosModY).topLeft(), pix);
+//
+//             fnt.setBold(true);
+//
+//             painter->setFont(fnt);
+//
+//             if ((QPalette::Normal == cg) && !(option.state & QStyle::State_Active)) {
+//                 cg = QPalette::Inactive;
+//             }
+//
+//             r.adjust(KMF::MediaObject::constIconSize + (constBorder * 2),
+//                         constBorder + textHeight, -constBorder, -constBorder);
+//             QColor defColor = option.palette.color(cg, option.state &
+//                     QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text);
+//             painter->setPen(defColor);
+//             painter->drawText(r.topLeft(), disp.toString());
+//
+//             // Draw info text. Can be rich text
+//             r.adjust(0, constBorder, 0, 0);
+//             QTextDocument doc;
+//             doc.setDefaultFont(KGlobalSettings::smallestReadableFont());
+//             doc.setDefaultStyleSheet(QString("body { color: %1; }").arg(defColor.name()));
+//             doc.setHtml(user.toString());
+//             painter->save();
+//             painter->translate(r.topLeft());
+//             doc.drawContents(painter, QRect(QPoint(0, 0), r.size()));
+//             painter->restore();
+//
+//             if (option.state & QStyle::State_HasFocus) {
+//                 QStyleOptionFocusRect o;
+//                 o.QStyleOption::operator=(option);
+//                 o.rect = option.rect;
+//                 // m_widget->style()->subElementRect(QStyle::SE_ItemViewItemFocusRect,
+//                 // &option, m_widget);
+//                 o.state |= QStyle::State_KeyboardFocusChange;
+//                 o.state |= QStyle::State_Item;
+//                 cg = option.state &
+//                         QStyle::State_Enabled  ? QPalette::Normal : QPalette::Disabled;
+//                 o.backgroundColor = option.palette.color(
+//                         cg, option.state &
+//                         QStyle::State_Selected ? QPalette::Highlight : QPalette::Window);
+//                 m_widget->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &o, painter,
+//                         m_widget);
+//             }
+//
+//             if (option.state & QStyle::State_MouseOver &&
+//                 kmfApp->project()->mediaObjects()->isValid(index)) {
+//                 KMF::MediaObject *ob = kmfApp->project()->mediaObjects()->at(index);
+//                 QList<QAction *> actions;
+//
+//                 ob->actions(&actions);
+//                 r = option.rect;
+//
+//                 QSize                          size(constActionIconSize, constActionIconSize);
+//                 QColor                         col(Qt::black);
+//
+//                 col.setAlphaF(0.35);
+//
+//             }
+//         } else   {
+//             QStyledItemDelegate::paint(painter, option, index);
+//         }
+//     }
+// };
+
 LibraryPage::LibraryPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
+    #ifdef ENABLE_KDE_SUPPORT
+    backAction = p->actionCollection()->addAction("back");
+    backAction->setText(i18n("Back"));
+    homeAction = p->actionCollection()->addAction("home");
+    homeAction->setText(i18n("Artists"));
+    #else
+    backAction = new QAction(tr("Back"), this);
+    homeAction = new QAction(tr("Artists"), this);
+    #endif
+    backAction->setIcon(QIcon::fromTheme("go-previous"));
+    homeAction->setIcon(QIcon::fromTheme("view-media-artist"));
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->updateDbAction);
-    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
+    backButton->setDefaultAction(backAction);
+    homeButton->setDefaultAction(homeAction);
 
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
     libraryUpdate->setAutoRaise(true);
+    backButton->setAutoRaise(true);
+    homeButton->setAutoRaise(true);
     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
 
-#ifdef ENABLE_KDE_SUPPORT
-    search->setPlaceholderText(i18n("Search library..."));
-#else
-    search->setPlaceholderText(tr("Search library..."));
-#endif
-    view->setPageDefaults();
-    view->addAction(p->addToPlaylistAction);
-    view->addAction(p->replacePlaylistAction);
-    proxy.setSourceModel(&model);
-    view->setModel(&proxy);
+    treeView->setPageDefaults();
+    treeView->addAction(p->addToPlaylistAction);
+    treeView->addAction(p->replacePlaylistAction);
+    listView->addAction(p->addToPlaylistAction);
+    listView->addAction(p->replacePlaylistAction);
+    listView->addAction(backAction);
+    listView->addAction(homeAction);
+//     listView->setItemDelegate(new LibraryItemDelegate(this));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
-    connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
-    connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
+    connect(searchTree, SIGNAL(returnPressed()), this, SLOT(searchItems()));
+    connect(searchTree, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
+    connect(searchList, SIGNAL(returnPressed()), this, SLOT(searchItems()));
+    connect(searchList, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)), &model, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             &model, SLOT(setCover(const QString &, const QString &, const QImage &)));
     connect(&model, SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
     connect(this, SIGNAL(listAllInfo(const QDateTime &)), MPDConnection::self(), SLOT(listAllInfo(const QDateTime &)));
+    connect(treeView, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
+    connect(treeView, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
+    connect(treeView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
+    connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    connect(listView, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
+    connect(listView, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
+    connect(listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
+    connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
+    connect(homeAction, SIGNAL(triggered(bool)), this, SLOT(homeActivated()));
+    proxy.setSourceModel(&model);
+#ifdef ENABLE_KDE_SUPPORT
+    searchTree->setPlaceholderText(i18n("Search library..."));
+#else
+    searchTree->setPlaceholderText(tr("Search library..."));
+#endif
+    usingTreeView=false;
+    setView(true);
 }
 
 LibraryPage::~LibraryPage()
 {
 }
 
+void LibraryPage::setView(bool tree)
+{
+    if (tree==usingTreeView) {
+        return;
+    }
+
+    usingTreeView=tree;
+    searchTree->setText(QString());
+    searchList->setText(QString());
+    if (tree) {
+        treeView->setModel(&proxy);
+        listView->setModel(0);
+    } else {
+        homeActivated();
+        treeView->setModel(0);
+        listView->setModel(&proxy);
+    }
+    stackedWidget->setCurrentIndex(tree ? 0 : 1);
+}
+
+void LibraryPage::setLevel(int level, const MusicLibraryItem *i)
+{
+    int cLevel=currentLevel;
+    currentLevel=level;
+
+    backAction->setEnabled(0!=level);
+    homeAction->setEnabled(0!=level);
+    if (level>cLevel) {
+        prevSearch=searchList->text();
+        searchList->setText(QString());
+    } else {
+        searchList->setText(prevSearch);
+        prevSearch=QString();
+    }
+#ifdef ENABLE_KDE_SUPPORT
+    switch(level) {
+    default:
+    case 0:
+        searchList->setPlaceholderText(i18n("Search artists..."));
+        break;
+    case 1:
+        if (i) {
+            searchList->setPlaceholderText(i18n("Search %1 albums...", i->data(0).toString()));
+        } else {
+            searchList->setPlaceholderText(i18n("Search albums..."));
+        }
+        break;
+    case 2:
+        if (i) {
+            searchList->setPlaceholderText(i18n("Search %1 songs...", i->data(0).toString()));
+        } else {
+            searchList->setPlaceholderText(i18n("Search songs..."));
+        }
+        break;
+    }
+#else
+    switch(level) {
+    default:
+    case 0:
+        searchList->setPlaceholderText(tr("Search artists..."));
+        break;
+    case 1:
+        if (i) {
+            searchList->setPlaceholderText(tr("Search %1 albums...", i->data(0).toString()));
+        } else {
+            searchList->setPlaceholderText(tr("Search albums..."));
+        }
+        break;
+    case 2:
+        if (i) {
+            searchList->setPlaceholderText(tr("Search %1 songs...", i->data(0).toString()));
+        } else {
+            searchList->setPlaceholderText(tr("Search songs..."));
+        }
+        break;
+    }
+#endif
+}
+
+QAbstractItemView * LibraryPage::view()
+{
+    return usingTreeView ? (QAbstractItemView *)treeView : (QAbstractItemView *)listView;
+}
+
 void LibraryPage::refresh(Refresh type)
 {
+    homeActivated();
     if (RefreshForce==type) {
         model.clearUpdateTime();
     }
@@ -91,6 +359,7 @@ void LibraryPage::refresh(Refresh type)
 void LibraryPage::clear()
 {
     model.clear();
+    homeActivated();
 }
 
 void LibraryPage::addSelectionToPlaylist()
@@ -99,8 +368,8 @@ void LibraryPage::addSelectionToPlaylist()
     MusicLibraryItem *item;
     MusicLibraryItemSong *songItem;
 
-    // Get selected view indexes
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
+    // Get selected indexes
+    const QModelIndexList selected = view()->selectionModel()->selectedIndexes();
     int selectionSize = selected.size();
 
     if (selectionSize == 0) {
@@ -158,34 +427,61 @@ void LibraryPage::addSelectionToPlaylist()
 
     if (!files.isEmpty()) {
         emit add(files);
-        view->selectionModel()->clearSelection();
+        view()->selectionModel()->clearSelection();
     }
 }
 
-void LibraryPage::itemActivated(const QModelIndex &)
+void LibraryPage::homeActivated()
 {
-    MusicLibraryItem *item;
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
-    int selectionSize = selected.size();
-    if (selectionSize != 1) return; //doubleclick should only have one selected item
+    if (usingTreeView) {
+        return;
+    }
 
+    setLevel(0);
+    listView->setRootIndex(QModelIndex());
+    prevSearch=QString();
+    searchList->setText(prevSearch);
+}
+
+void LibraryPage::backActivated()
+{
+    if (usingTreeView) {
+        return;
+    }
+    setLevel(currentLevel-1, static_cast<MusicLibraryItem *>(proxy.mapToSource(listView->rootIndex().parent()).internalPointer()));
+    listView->setRootIndex(listView->rootIndex().parent());
+}
+
+void LibraryPage::itemActivated(const QModelIndex &index)
+{
+    MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(index).internalPointer());
+
+    if (MusicLibraryItem::Type_Song!=item->type()) {
+        if (usingTreeView) {
+            treeView->setExpanded(index, !treeView->isExpanded(index));
+        } else {
+            setLevel(currentLevel+1, item);
+            listView->setRootIndex(index);
+        }
+    }
+}
+
+void LibraryPage::itemDoubleClicked(const QModelIndex &)
+{
+    const QModelIndexList selected = view()->selectionModel()->selectedIndexes();
     const QModelIndex current = selected.at(0);
-    item = static_cast<MusicLibraryItem *>(proxy.mapToSource(current).internalPointer());
-    if (item->type() == MusicLibraryItem::Type_Song) {
+    MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(current).internalPointer());
+    if (MusicLibraryItem::Type_Song==item->type()) {
         addSelectionToPlaylist();
     }
 }
 
 void LibraryPage::searchItems()
 {
+    QString text=usingTreeView ? searchTree->text() : searchList->text();
     proxy.setFilterGenre(0==genreCombo->currentIndex() ? QString() : genreCombo->currentText());
-
-    if (search->text().isEmpty()) {
-        proxy.setFilterRegExp(QString());
-        return;
-    }
-
-    proxy.setFilterRegExp(search->text());
+    proxy.setFilterField(usingTreeView ? 3 : currentLevel);
+    proxy.setFilterRegExp(text);
 }
 
 void LibraryPage::updateGenres(const QStringList &genres)

@@ -172,6 +172,11 @@ QString Settings::mpdDir()
     return d;
 }
 
+int Settings::libraryView()
+{
+    return GET_INT("libraryView", 1);
+}
+
 int Settings::libraryCoverSize()
 {
     return GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
@@ -290,6 +295,11 @@ void Settings::saveMpdDir(const QString &v)
         d=d+"/";
     }
     SET_VALUE("mpdDir", d);
+}
+
+void Settings::saveLibraryView(int v)
+{
+    SET_VALUE("libraryView", v);
 }
 
 void Settings::saveLibraryCoverSize(int v)

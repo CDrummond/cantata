@@ -609,6 +609,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
         }
     }
 
+    libraryPage->setView(0==Settings::self()->libraryView());
     currentTabChanged(tabWidget->current_index());
     playlistsPage->refresh();
 }
@@ -781,6 +782,7 @@ void MainWindow::updateSettings()
     }
 
     streamsPage->refresh();
+    libraryPage->setView(0==Settings::self()->libraryView());
 
     if (Settings::self()->useSystemTray()) {
         if (!trayIcon) {
@@ -1133,11 +1135,11 @@ void MainWindow::replacePlaylist()
 void MainWindow::addToPlaylist()
 {
     searchPlaylistLineEdit->clear();
-    if (libraryPage->view->isVisible()) {
+    if (libraryPage->isVisible()) {
         libraryPage->addSelectionToPlaylist();
-    } else if (albumsPage->view->isVisible()) {
+    } else if (albumsPage->isVisible()) {
         albumsPage->addSelectionToPlaylist();
-    } else if (folderPage->view->isVisible()) {
+    } else if (folderPage->isVisible()) {
         folderPage->addSelectionToPlaylist();
     } else if (playlistsPage->isVisible()) {
         playlistsPage->addSelectionToPlaylist();

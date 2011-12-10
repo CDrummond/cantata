@@ -29,6 +29,8 @@
 
 class InterfaceSettings : public QWidget, private Ui::InterfaceSettings
 {
+    Q_OBJECT
+
 public:
     InterfaceSettings(QWidget *p);
     virtual ~InterfaceSettings() { }
@@ -37,6 +39,10 @@ public:
     void save();
 
     bool sysTrayEnabled() const { return systemTrayCheckBox->isChecked(); }
+
+private Q_SLOTS:
+    void libraryViewChanged();
+    void libraryCoverSizeChanged();
 };
 
 #endif

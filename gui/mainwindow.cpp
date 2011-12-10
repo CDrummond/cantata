@@ -1287,6 +1287,7 @@ void MainWindow::setupPlaylistView()
     playlistTableViewHeader->setStretchLastSection(false);
 
     connect(playlistTableViewHeader, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(playlistTableViewContextMenuClicked()));
+    connect(streamsPage, SIGNAL(add(const QStringList &)), &playlistModel, SLOT(addItems(const QStringList &)));
 
     //Restore state
     QByteArray state = Settings::self()->playlistHeaderState();

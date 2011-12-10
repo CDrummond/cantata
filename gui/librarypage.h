@@ -47,6 +47,7 @@ public:
     void refresh(Refresh type);
     void clear();
     void addSelectionToPlaylist();
+    void setView(bool tree);
 
     MusicLibraryModel & getModel() { return model; }
 
@@ -57,10 +58,22 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);
-    void itemActivated(const QModelIndex &);
+    void homeActivated();
+    void backActivated();
+    void itemActivated(const QModelIndex &index);
+    void itemDoubleClicked(const QModelIndex &);
     void searchItems();
 
 private:
+    void setLevel(int level, const MusicLibraryItem *i=0);
+    QAbstractItemView * view();
+
+private:
+    Action *backAction;
+    Action *homeAction;
+    int currentLevel;
+    bool usingTreeView;
+    QString prevSearch;
     MusicLibraryModel model;
     MusicLibraryProxyModel proxy;
 };

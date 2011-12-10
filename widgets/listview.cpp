@@ -60,6 +60,11 @@ bool ListView::haveUnSelectedItems() const
 
 void ListView::startDrag(Qt::DropActions supportedActions)
 {
+    if (QListView::IconMode!=viewMode()) {
+        QListView::startDrag(supportedActions);
+        return;
+    }
+
     QModelIndexList indexes = selectedIndexes();
     if (indexes.count() > 0) {
         QMimeData *data = model()->mimeData(indexes);

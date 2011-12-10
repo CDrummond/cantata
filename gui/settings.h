@@ -58,6 +58,7 @@ public:
     bool showPopups();
     bool stopOnExit();
     QString mpdDir();
+    int libraryView();
     int libraryCoverSize();
     int albumCoverSize();
     int sidebar();
@@ -77,6 +78,7 @@ public:
     void saveUseSystemTray(bool v);
     void saveShowPopups(bool v);
     void saveMpdDir(const QString &v);
+    void saveLibraryView(int v);
     void saveLibraryCoverSize(int v);
     void saveAlbumCoverSize(int v);
     void saveSidebar(int v);

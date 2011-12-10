@@ -19,6 +19,7 @@
        /8 Tracks/
        ....
    - Have artist icons
+   - Need to respect KDE's double/single click setting when built with KDE!!!
 
 * Sidebar
    - Allow to collapse current item

@@ -65,7 +65,8 @@ FolderPage::FolderPage(MainWindow *p)
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
     connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
-    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
+    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    connect(view, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
 }
 
 FolderPage::~FolderPage()
@@ -92,9 +93,17 @@ void FolderPage::searchItems()
     proxy.setFilterRegExp(search->text());
 }
 
-void FolderPage::itemActivated(const QModelIndex &)
+void FolderPage::itemActivated(const QModelIndex &index)
 {
-    DirViewItem *item;
+    DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(index).internalPointer());
+
+    if (DirViewItem::Type_File!=item->type()) {
+        view->setExpanded(index, !view->isExpanded(index));
+    }
+}
+
+void FolderPage::itemDoubleClicked(const QModelIndex &)
+{
     const QModelIndexList selected = view->selectionModel()->selectedIndexes();
     int selectionSize = selected.size();
     if (selectionSize != 1) {
@@ -102,18 +111,14 @@ void FolderPage::itemActivated(const QModelIndex &)
     }
 
     const QModelIndex current = selected.at(0);
-    item = static_cast<DirViewItem *>(proxy.mapToSource(current).internalPointer());
-    if (item->type() == DirViewItem::Type_File) {
+    DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(current).internalPointer());
+    if (DirViewItem::Type_File==item->type()) {
         addSelectionToPlaylist();
     }
 }
 
 void FolderPage::addSelectionToPlaylist()
 {
-    QModelIndex current;
-    QStringList files;
-    DirViewItem *item;
-
     // Get selected view indexes
     const QModelIndexList selected = view->selectionModel()->selectedIndexes();
     int selectionSize = selected.size();
@@ -122,9 +127,11 @@ void FolderPage::addSelectionToPlaylist()
         return;
     }
 
+    QStringList files;
+
     for (int selectionPos = 0; selectionPos < selectionSize; selectionPos++) {
-        current = selected.at(selectionPos);
-        item = static_cast<DirViewItem *>(proxy.mapToSource(current).internalPointer());
+        QModelIndex current = selected.at(selectionPos);
+        DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(current).internalPointer());
         QStringList tmp;
 
         switch (item->type()) {

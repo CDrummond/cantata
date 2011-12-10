@@ -29,12 +29,15 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
+    connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
+    connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
 };
 
 void InterfaceSettings::load()
 {
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
     systemTrayPopup->setChecked(Settings::self()->showPopups());
+    libraryView->setCurrentIndex(Settings::self()->libraryView());
     libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
     albumCoverSize->setCurrentIndex(Settings::self()->albumCoverSize());
 }
@@ -43,6 +46,21 @@ void InterfaceSettings::save()
 {
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
+    Settings::self()->saveLibraryView(libraryView->currentIndex());
     Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
     Settings::self()->saveAlbumCoverSize(albumCoverSize->currentIndex());
+}
+
+void InterfaceSettings::libraryViewChanged()
+{
+    if (0!=libraryView->currentIndex() && 0==libraryCoverSize->currentIndex()) {
+        libraryCoverSize->setCurrentIndex(2);
+    }
+}
+
+void InterfaceSettings::libraryCoverSizeChanged()
+{
+    if (0!=libraryView->currentIndex() && 0==libraryCoverSize->currentIndex()) {
+        libraryView->setCurrentIndex(0);
+    }
 }

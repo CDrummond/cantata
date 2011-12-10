@@ -28,8 +28,12 @@
 #include <QtCore/QUrl>
 #include <QtCore/QHash>
 
+class QTimer;
+
 class StreamsModel : public QAbstractListModel
 {
+    Q_OBJECT
+
 public:
     struct Stream
     {
@@ -44,9 +48,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &, int) const;
     void reload();
-    void save();
-    QString toXml();
-    bool import(const QString &str);
+    void save(bool force=false);
+    bool save(const QString &filename);
+    bool import(const QString &filename) { return load(filename, false); }
     bool add(const QString &name, const QString &url);
     void edit(const QModelIndex &index, const QString &name, const QString &url);
     void remove(const QModelIndex &index);
@@ -56,8 +60,15 @@ public:
     QMimeData * mimeData(const QModelIndexList &indexes) const;
 
 private:
+    bool load(const QString &filename, bool isInternal);
+
+private Q_SLOTS:
+    void persist();
+
+private:
     QHash<QString, QString> itemMap;
     QList<Stream> items;
+    QTimer *timer;
 };
 
 #endif

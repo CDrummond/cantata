@@ -26,7 +26,6 @@
 #include "mpdconnection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
-#include <QtCore/QFile>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
@@ -126,7 +125,7 @@ void StreamsPage::refresh()
 
 void StreamsPage::save()
 {
-    model.save();
+    model.save(true);
 }
 
 void StreamsPage::addSelectionToPlaylist()
@@ -165,48 +164,7 @@ void StreamsPage::importXml()
         return;
     }
 
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        #ifdef ENABLE_KDE_SUPPORT
-        KMessageBox::error(this, i18n("Failed to open <i>%1</i>!", fileName));
-        #else
-        QMessageBox::critical(this, tr("Error"), tr("Failed to open <i>%1</i>!").arg(fileName));
-        #endif
-        return;
-    }
-
-    QString xml;
-    QTextStream stream(&file);
-
-    while (!stream.atEnd()) {
-        xml+=stream.readLine()+'\n';
-    }
-
-//     int before=model.rowCount();
-//     if (model.importXml(xml)) {
-//         int now=model.rowCount();
-//         if (now==before) {
-//             #ifdef ENABLE_KDE_SUPPORT
-//             KMessageBox::information(this, i18n("No new streams imported."));
-//             #else
-//             QMessageBox::information(this, tr("Information"), tr("No new streams imported."));
-//             #endif
-//         } else if (now==(before+1)) {
-//             #ifdef ENABLE_KDE_SUPPORT
-//             KMessageBox::information(this, i18n("1 new stream imported."));
-//             #else
-//             QMessageBox::information(this, tr("Information"), tr("1 new stream imported."));
-//             #endif
-//         } else if (now>before) {
-//             #ifdef ENABLE_KDE_SUPPORT
-//             KMessageBox::information(this, i18n("%1 new streams imported.").arg(now-before));
-//             #else
-//             QMessageBox::information(this, tr("Information"), tr("%1 new streams imported.").arg(now-before));
-//             #endif
-//         }
-//     } else {
-
-    if (!model.import(xml)) {
+    if (!model.import(fileName)) {
         #ifdef ENABLE_KDE_SUPPORT
         KMessageBox::error(this, i18n("Failed to import <i>%1</i>!<br/>Please check this is of the correct type.", fileName));
         #else
@@ -227,17 +185,13 @@ void StreamsPage::exportXml()
         return;
     }
 
-    QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    if (!model.save(fileName)) {
         #ifdef ENABLE_KDE_SUPPORT
         KMessageBox::error(this, i18n("Failed to create <i>%1</i>!", fileName));
         #else
         QMessageBox::critical(this, tr("Error"), tr("Failed to create <i>%1</i>!").arg(fileName));
         #endif
-        return;
     }
-
-    QTextStream(&file) << model.toXml();
 }
 
 void StreamsPage::add()

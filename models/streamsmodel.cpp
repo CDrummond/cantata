@@ -23,16 +23,35 @@
 
 #include <QtCore/QModelIndex>
 #include <QtCore/QDataStream>
+#include <QtCore/QTextStream>
 #include <QtCore/QMimeData>
 #include <QtCore/QStringList>
+#include <QtCore/QTimer>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 #include "streamsmodel.h"
 #include "settings.h"
 #include "playlisttablemodel.h"
+#include "config.h"
+
+static QString configDir()
+{
+    QString env = qgetenv("XDG_CONFIG_HOME");
+    QString dir = (env.isEmpty() ? QDir::homePath() + "/.config/" : env) + QLatin1String("/"PACKAGE_NAME"/");
+    QDir d(dir);
+    return d.exists() || d.mkpath(dir) ? QDir::toNativeSeparators(dir) : QString();
+}
+
+static QString getInternalFile()
+{
+    return configDir()+"streams.xml";
+}
 
 StreamsModel::StreamsModel()
     : QAbstractListModel(0)
+    , timer(0)
 {
     reload();
 }
@@ -75,44 +94,39 @@ static const QLatin1String constNameQuery("CantataStreamName");
 void StreamsModel::reload()
 {
     beginResetModel();
-    QList<QUrl> urls=Settings::self()->streamUrls();
     items.clear();
     itemMap.clear();
-    foreach (const QUrl &u, urls) {
-        QUrl url(u);
-        QString name=url.queryItemValue(constNameQuery);
-        if (!name.isEmpty()) {
-            url.removeQueryItem(constNameQuery);
-            QString str=url.toString();
-            if (str.endsWith("&")) {
-                str=str.left(str.length()-1);
-                url=QUrl(str);
-            }
-            items.append(Stream(name, url));
-            itemMap.insert(url.toString(), name);
-        }
-    }
+    load(getInternalFile(), true);
     endResetModel();
 }
 
-void StreamsModel::save()
+void StreamsModel::save(bool force)
 {
-    QList<QUrl> urls;
-
-    foreach (const Stream &s, items) {
-        QUrl u(s.url);
-        u.addQueryItem(constNameQuery, s.name);
-        urls.append(u);
+    if (force) {
+        if (timer) {
+            timer->stop();
+        }
+        persist();
+    } else {
+        if (!timer) {
+            timer=new QTimer(this);
+            connect(timer, SIGNAL(timeout()), this, SLOT(persist()));
+        }
+        timer->start(30*1000);
     }
-    Settings::self()->saveStreamUrls(urls);
 }
-#include <QDebug>
-bool StreamsModel::import(const QString &str)
+
+bool StreamsModel::load(const QString &filename, bool isInternal)
 {
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return false;
+    }
+
     QDomDocument doc;
     bool valid=false;
-    bool firstInsert=true;
-    doc.setContent(str);
+    bool firstInsert=!isInternal;
+    doc.setContent(&file);
     QDomElement root = doc.documentElement();
     if ("cantata" == root.tagName() && root.hasAttribute("version") && "1.0" == root.attribute("version")) {
         QDomElement stream = root.firstChildElement("stream");
@@ -144,51 +158,25 @@ bool StreamsModel::import(const QString &str)
         }
     }
 
-    if (!valid) {
-        // Is it an Amarok .js file???
-        QStringList lines=str.split('\n', QString::SkipEmptyParts);
-
-        foreach (QString line, lines) {
-            if(-1!=line.indexOf("Station") && 4==line.count('\"') && -1!=line.indexOf("http://")) {
-                QStringList parts=line.split('\"');
-                if (parts[3].startsWith("http://")) {
-                    valid=true;
-                    QString name=parts[1];
-                    QString origName=name;
-                    QUrl url=QUrl(parts[3]);
-
-                    if (!entryExists(QString(), url)) {
-                        int i=1;
-                        for (; i<100 && entryExists(name); ++i) {
-                            name=origName+QLatin1String("_")+QString::number(i);
-                        }
-
-                        if (i<100) {
-                            if (firstInsert) {
-                                beginResetModel();
-                                firstInsert=false;
-                            }
-
-                            items.append(Stream(name, url));
-                            itemMap.insert(url.toString(), name);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     if (valid) {
-        save();
-        Settings::self()->save();
-        endResetModel();
+        if (!isInternal) {
+            if (!firstInsert) {
+                endResetModel();
+            }
+            save();
+        }
     }
 
     return valid;
 }
 
-QString StreamsModel::toXml()
+bool StreamsModel::save(const QString &filename)
 {
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        return false;
+    }
+
     QDomDocument doc;
     QDomElement root = doc.createElement("cantata");
     root.setAttribute("version", "1.0");
@@ -200,7 +188,8 @@ QString StreamsModel::toXml()
         root.appendChild(stream);
     }
 
-    return doc.toString();
+    QTextStream(&file) << doc.toString();
+    return true;
 }
 
 bool StreamsModel::add(const QString &name, const QString &url)
@@ -305,4 +294,9 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
 
     mimeData->setData(PlaylistTableModel::constFileNameMimeType, encodedData);
     return mimeData;
+}
+
+void StreamsModel::persist()
+{
+    save(getInternalFile());
 }

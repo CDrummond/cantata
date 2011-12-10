@@ -98,6 +98,7 @@ SET( CANTATA_MOC_HDRS
     models/dirviewproxymodel.h
     models/albumsmodel.h
     models/streamfetcher.h
+    models/streamsmodel.h
     mpd/mpdconnection.h
     widgets/fancytabwidget.h
     widgets/treeview.h

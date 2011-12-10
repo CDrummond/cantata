@@ -32,8 +32,6 @@ class Wallet;
 #else
 #include <QtCore/QSettings>
 #endif
-#include <QtCore/QList>
-#include <QtCore/QUrl>
 
 class QTimer;
 
@@ -64,7 +62,6 @@ public:
     int albumCoverSize();
     int sidebar();
     QStringList lyricProviders();
-    QList<QUrl> streamUrls();
     QString page();
 
     void saveConnectionHost(const QString &v);
@@ -84,7 +81,6 @@ public:
     void saveAlbumCoverSize(int v);
     void saveSidebar(int v);
     void saveLyricProviders(const QStringList &p);
-    void saveStreamUrls(const QList<QUrl> &u);
     void savePage(const QString &v);
     void save(bool force=false);
 #ifdef ENABLE_KDE_SUPPORT

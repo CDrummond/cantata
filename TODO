@@ -1,14 +1,29 @@
-Lyrics
-    Add next/prev provide buttons - so that can try others.
+* Add next/prev provider buttons to lyrics page - so that can try others.
 
-Need better repeat icon.
+* Need better repeat icon.
 
-Streams
+* Streams
    - For KDE, need to use getSaveUrl, etc. and use KIO::NetAccess to obatain file.
    - Handle xspf/spiff playlists
    - Handle more than 1st entry?? Not sure
-   - Check that MPD an handle protocols
+   - Check that MPD can handle protocols before adding
+   - Store list in XML file in ~/.config/cantata/streams.xml
 
-Sidebar
+* Library browser
+   - Add option to show as list
+       Iron Maiden
+       /15 Albums/
+
+       -> Click
+       Killers
+       /8 Tracks/
+       ....
+   - Have artist icons
+
+* Sidebar
    - Allow to collapse current item
    - Add option to select available tabs
+
+* When displaying search results, should expand items to show matched entry
+
+* Use KMessageWidget to display errors?

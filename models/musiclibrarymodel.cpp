@@ -50,9 +50,9 @@
 QString MusicLibraryModel::cacheDir(const QString &sub, bool create)
 {
     QString env = qgetenv("XDG_CACHE_HOME");
-    QString dir = (env.isEmpty() ? QDir::homePath() + "/.cache/" : env) + PACKAGE_NAME"/";
+    QString dir = (env.isEmpty() ? QDir::homePath() + "/.cache" : env) + QLatin1String("/"PACKAGE_NAME"/");
     if(!sub.isEmpty()) {
-        dir+=sub;;
+        dir+=sub;
     }
     if (!dir.endsWith("/")) {
         dir=dir+'/';

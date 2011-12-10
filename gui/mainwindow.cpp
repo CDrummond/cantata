@@ -150,30 +150,30 @@ void VolumeControl::setValue(int v)
     slider->setValue(v);
 }
 
-CoverEventHandler::CoverEventHandler(MainWindow *w)
-    : QObject(w), window(w)
-{
-}
-
-bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
-{
-    switch(event->type()) {
-    case QEvent::MouseButtonPress:
-        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
-            pressed=true;
-        }
-        break;
-    case QEvent::MouseButtonRelease:
-        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
-            window->showPlaylistAction->trigger();
-        }
-        pressed=false;
-        break;
-    default:
-        break;
-    }
-    return QObject::eventFilter(obj, event);
-}
+// CoverEventHandler::CoverEventHandler(MainWindow *w)
+//     : QObject(w), window(w)
+// {
+// }
+//
+// bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
+// {
+//     switch(event->type()) {
+//     case QEvent::MouseButtonPress:
+//         if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
+//             pressed=true;
+//         }
+//         break;
+//     case QEvent::MouseButtonRelease:
+//         if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
+//             window->showPlaylistAction->trigger();
+//         }
+//         pressed=false;
+//         break;
+//     default:
+//         break;
+//     }
+//     return QObject::eventFilter(obj, event);
+// }
 
 #ifdef ENABLE_KDE_SUPPORT
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent),
@@ -348,7 +348,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
-    coverEventHandler = new CoverEventHandler(this);
+//     coverEventHandler = new CoverEventHandler(this);
 
     volumeControl = new VolumeControl(volumeButton);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
@@ -496,7 +496,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
 
-    coverWidget->installEventFilter(coverEventHandler);
+//     coverWidget->installEventFilter(coverEventHandler);
 
     connect(MPDConnection::self(), SIGNAL(loaded(const QString &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));

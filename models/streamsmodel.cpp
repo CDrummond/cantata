@@ -53,7 +53,6 @@ StreamsModel::StreamsModel()
     : QAbstractListModel(0)
     , timer(0)
 {
-    reload();
 }
 
 StreamsModel::~StreamsModel()

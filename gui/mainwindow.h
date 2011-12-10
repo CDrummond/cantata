@@ -107,20 +107,20 @@ private:
     QSlider *slider;
 };
 
-class CoverEventHandler : public QObject
-{
-    Q_OBJECT
-
-public:
-    CoverEventHandler(MainWindow *w);
-
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
-
-private:
-    MainWindow * const window;
-    bool pressed;
-};
+// class CoverEventHandler : public QObject
+// {
+//     Q_OBJECT
+//
+// public:
+//     CoverEventHandler(MainWindow *w);
+//
+// protected:
+//     bool eventFilter(QObject *obj, QEvent *event);
+//
+// private:
+//     MainWindow * const window;
+//     bool pressed;
+// };
 
 #ifdef ENABLE_KDE_SUPPORT
 class MainWindow : public KXmlGuiWindow, private Ui::MainWindow
@@ -239,7 +239,7 @@ private:
     QIcon playbackPlay;
     QHeaderView *playlistTableViewHeader;
     VolumeSliderEventHandler *volumeSliderEventHandler;
-    CoverEventHandler *coverEventHandler;
+//     CoverEventHandler *coverEventHandler;
     VolumeControl *volumeControl;
     QTimer elapsedTimer;
     Action *prevTrackAction;
@@ -289,7 +289,7 @@ private:
     InfoPage *infoPage;
     QThread *mpdThread;
     friend class VolumeSliderEventHandler;
-    friend class CoverEventHandler;
+//     friend class CoverEventHandler;
     friend class LibraryPage;
     friend class AlbumsPage;
     friend class FolderPage;

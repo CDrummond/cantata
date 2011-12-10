@@ -18,29 +18,28 @@
     - make app a KUniqueApplication, and
     - use KWallet to store password
 10. Show cover on top-left
-11. Hide/show playlist when click cover
-12. Fix blank item showing in playlist when playlist is empty
-13. Hide password in preferences dialog
-14. Only 2 socket connections to MPD - one for commands, and one for idle
+11. Fix blank item showing in playlist when playlist is empty
+12. Hide password in preferences dialog
+13. Only 2 socket connections to MPD - one for commands, and one for idle
     messages.
-15. Only load data for a tab when the tab is selected.
-16. If saving to a pre-existing playlist, ask the user if it is ok to overwrite.
+14. Only load data for a tab when the tab is selected.
+15. If saving to a pre-existing playlist, ask the user if it is ok to overwrite.
     If so, delete the existing one first, then save.
-17. Add a combo to filter on genre.
-18. Check for cover (cover.png/jpg) within folder of current track to get
+16. Add a combo to filter on genre.
+17. Check for cover (cover.png/jpg) within folder of current track to get
     cover-art, otherwise download.
-19. Fetch lyrics
-20. Also check mpdFolder+filename.lyrics for lyrics file
-21. Use QNetworkAccessManager for HTTP downloads. If compiled woth KDE support,
+18. Fetch lyrics
+19. Also check mpdFolder+filename.lyrics for lyrics file
+20. Use QNetworkAccessManager for HTTP downloads. If compiled woth KDE support,
     use KIO::Integration::AccessManager so that we can gain access to KDE's
     proxy settings.
-22. Use sidebar instead of tabbar.
-23. Support replaygain setting.
-24. Split config into pages.
-25. Add option to stop playback when cantata exits.
-26. Fixed thread usage - now sockets are in their own thread.
-27. Add album-cover view
-28. Support radio streams
+21. Use sidebar instead of tabbar.
+22. Support replaygain setting.
+23. Split config into pages.
+24. Add option to stop playback when cantata exits.
+25. Fixed thread usage - now sockets are in their own thread.
+26. Add album-cover view
+27. Support radio streams
 
 --------------QtMPC ChangeLog--------------------
 

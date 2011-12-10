@@ -106,16 +106,16 @@ void StreamsModel::save()
     }
     Settings::self()->saveStreamUrls(urls);
 }
-
-bool StreamsModel::importXml(const QString &xml)
+#include <QDebug>
+bool StreamsModel::import(const QString &str)
 {
     QDomDocument doc;
     bool valid=false;
-    doc.setContent(xml);
+    bool firstInsert=true;
+    doc.setContent(str);
     QDomElement root = doc.documentElement();
     if ("cantata" == root.tagName() && root.hasAttribute("version") && "1.0" == root.attribute("version")) {
         QDomElement stream = root.firstChildElement("stream");
-        bool firstInsert=true;
         while (!stream.isNull()) {
             if (stream.hasAttribute("name") && stream.hasAttribute("url")) {
                 valid=true;
@@ -142,14 +142,46 @@ bool StreamsModel::importXml(const QString &xml)
             }
             stream=stream.nextSiblingElement("stream");
         }
-        if (!firstInsert) {
-            endResetModel();
+    }
+
+    if (!valid) {
+        // Is it an Amarok .js file???
+        QStringList lines=str.split('\n', QString::SkipEmptyParts);
+
+        foreach (QString line, lines) {
+            if(-1!=line.indexOf("Station") && 4==line.count('\"') && -1!=line.indexOf("http://")) {
+                QStringList parts=line.split('\"');
+                if (parts[3].startsWith("http://")) {
+                    valid=true;
+                    QString name=parts[1];
+                    QString origName=name;
+                    QUrl url=QUrl(parts[3]);
+
+                    if (!entryExists(QString(), url)) {
+                        int i=1;
+                        for (; i<100 && entryExists(name); ++i) {
+                            name=origName+QLatin1String("_")+QString::number(i);
+                        }
+
+                        if (i<100) {
+                            if (firstInsert) {
+                                beginResetModel();
+                                firstInsert=false;
+                            }
+
+                            items.append(Stream(name, url));
+                            itemMap.insert(url.toString(), name);
+                        }
+                    }
+                }
+            }
         }
     }
 
     if (valid) {
         save();
         Settings::self()->save();
+        endResetModel();
     }
 
     return valid;

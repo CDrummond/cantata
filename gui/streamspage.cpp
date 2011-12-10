@@ -72,9 +72,9 @@ StreamsPage::StreamsPage(MainWindow *p)
     addStream->setDefaultAction(addAction);
     removeStream->setDefaultAction(removeAction);
     editStream->setDefaultAction(editAction);
-    addToPlaylist->setDefaultAction(p->addToPlaylistAction);
+//     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
-    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
+//     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), removeStream, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), editStream, SLOT(setEnabled(bool)));
@@ -85,18 +85,17 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
-    connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlEdit()));
     importStreams->setAutoRaise(true);
     exportStreams->setAutoRaise(true);
     addStream->setAutoRaise(true);
     removeStream->setAutoRaise(true);
     editStream->setAutoRaise(true);
-    addToPlaylist->setAutoRaise(true);
+//     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
     removeStream->setEnabled(false);
     editStream->setEnabled(false);
-    addToPlaylist->setEnabled(false);
+//     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -105,7 +104,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     search->setPlaceholderText(tr("Search streams..."));
 #endif
     view->setPageDefaults();
-    view->addAction(p->addToPlaylistAction);
+//     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(removeAction);
     view->addAction(editAction);

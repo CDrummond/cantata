@@ -42,7 +42,6 @@ public:
     void addSelectionToPlaylist();
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void add(const QStringList &streams);
 
 private Q_SLOTS:

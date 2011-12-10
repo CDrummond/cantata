@@ -17,14 +17,14 @@
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="8">
+   <item row="0" column="0" colspan="7">
     <widget class="LineEdit" name="search">
      <property name="toolTip">
       <string/>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="8">
+   <item row="1" column="0" colspan="7">
     <widget class="TreeView" name="view">
      <property name="rootIsDecorated">
       <bool>false</bool>
@@ -60,9 +60,6 @@
     <widget class="QToolButton" name="editStream"/>
    </item>
    <item row="2" column="6">
-    <widget class="QToolButton" name="addToPlaylist"/>
-   </item>
-   <item row="2" column="7">
     <widget class="QToolButton" name="replacePlaylist"/>
    </item>
   </layout>

@@ -80,6 +80,8 @@ public:
     void clear();
 
 public Q_SLOTS:
+    void addItems(const QStringList &items, int row);
+    void addItems(const QStringList &items) { addItems(items, -1); }
     void addFiles(const QStringList &filenames, int row);
     void updatePlaylist(const QList<Song> &songs);
 

@@ -268,7 +268,6 @@ bool PlaylistTableModel::dropMimeData(const QMimeData *data,
         QByteArray encodedData = data->data(constFileNameMimeType);
         QDataStream stream(&encodedData, QIODevice::ReadOnly);
         QStringList filenames;
-        bool haveHttp=false;
 
         while (!stream.atEnd()) {
             QString text;
@@ -276,32 +275,40 @@ bool PlaylistTableModel::dropMimeData(const QMimeData *data,
             filenames << text;
         }
 
-        if (data->hasFormat(constFileNameMimeType)) {
-            foreach (const QString &f, filenames) {
-                QUrl u(f);
-
-                if (u.scheme()=="http") {
-                    haveHttp=true;
-                    break;
-                }
-            }
-        }
-
-        if (haveHttp) {
-            QList<QUrl> urls;
-            foreach (const QString &f, filenames) {
-                urls << QUrl(f);
-            }
-
-            fetcher->get(urls, 0);
-            return true;
-        }
-
-        addFiles(filenames, row);
+        addItems(filenames, row);
         return true;
     }
 
     return false;
+}
+
+void PlaylistTableModel::addItems(const QStringList &items, int row)
+{
+    bool haveHttp=false;
+
+    if (row<0) {
+        row=songs.size();
+    }
+
+    foreach (const QString &f, items) {
+        QUrl u(f);
+
+        if (u.scheme()=="http") {
+            haveHttp=true;
+            break;
+        }
+    }
+
+    if (haveHttp) {
+        QList<QUrl> urls;
+        foreach (const QString &f, items) {
+            urls << QUrl(f);
+        }
+
+        fetcher->get(urls, 0);
+    } else {
+        addFiles(items, row);
+    }
 }
 
 void PlaylistTableModel::addFiles(const QStringList &filenames, int row)

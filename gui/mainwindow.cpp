@@ -1412,7 +1412,8 @@ void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
 enum Tabs
 {
     TAB_LIBRARY = 0x01,
-    TAB_FOLDERS = 0x02
+    TAB_FOLDERS = 0x02,
+    TAB_STREAMS = 0x04
 };
 
 void MainWindow::currentTabChanged(int index)
@@ -1432,7 +1433,12 @@ void MainWindow::currentTabChanged(int index)
         }
         break;
     case PAGE_PLAYLISTS:
+        break;
     case PAGE_STREAMS:
+        if (!(loaded&TAB_STREAMS)) {
+            loaded|=TAB_STREAMS;
+            streamsPage->refresh();
+        }
         break;
     case PAGE_LYRICS:
         if (lyricsNeedUpdating) {

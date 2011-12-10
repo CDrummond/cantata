@@ -210,17 +210,6 @@ QStringList Settings::lyricProviders()
     return GET_STRINGLIST("lyricProviders", def);
 }
 
-QList<QUrl> Settings::streamUrls()
-{
-    QList<QUrl> urls;
-    QStringList list=GET_STRINGLIST("streamUrls", QStringList());
-
-    foreach (const QString &u, list) {
-        urls.append(QUrl(u));
-    }
-    return urls;
-}
-
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -321,16 +310,6 @@ void Settings::saveSidebar(int v)
 void Settings::saveLyricProviders(const QStringList &p)
 {
     SET_VALUE("lyricProviders", p);
-}
-
-void Settings::saveStreamUrls(const QList<QUrl> &u)
-{
-    QStringList list;
-
-    foreach (const QUrl &url, u) {
-        list.append(url.toString());
-    }
-    SET_VALUE("streamUrls", list);
 }
 
 void Settings::savePage(const QString &v)

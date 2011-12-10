@@ -37,14 +37,14 @@ static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNo
 
 static QPixmap *theDefaultIcon=0;
 
-static int coverPixels()
+int MusicLibraryItemAlbum::coverPixels()
 {
     switch (coverSize) {
     default:
-    case MusicLibraryItemAlbum::CoverNone:   return 0;
-    case MusicLibraryItemAlbum::CoverSmall:  return 22;
-    case MusicLibraryItemAlbum::CoverMedium: return 30;
-    case MusicLibraryItemAlbum::CoverLarge:  return 48;
+    case CoverNone:   return 0;
+    case CoverSmall:  return 22;
+    case CoverMedium: return 30;
+    case CoverLarge:  return 48;
     }
 }
 

@@ -48,6 +48,7 @@ public:
 
     static CoverSize currentCoverSize();
     static void setCoverSize(CoverSize size);
+    static int coverPixels();
 
     MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent = 0);
     ~MusicLibraryItemAlbum();

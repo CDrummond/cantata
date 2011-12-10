@@ -47,7 +47,8 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void searchItems();
-    void itemActivated(const QModelIndex &);
+    void itemActivated(const QModelIndex &index);
+    void itemDoubleClicked(const QModelIndex &);
 
 private:
     QStringList walk(QModelIndex rootItem);

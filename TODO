@@ -10,16 +10,7 @@
    - Store list in XML file in ~/.config/cantata/streams.xml
 
 * Library browser
-   - Add option to show as list
-       Iron Maiden
-       /15 Albums/
-
-       -> Click
-       Killers
-       /8 Tracks/
-       ....
-   - Have artist icons
-   - Need to respect KDE's double/single click setting when built with KDE!!!
+   - Have artist icons ?
 
 * Sidebar
    - Allow to collapse current item

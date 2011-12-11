@@ -22,6 +22,7 @@
  */
 
 #include "treeview.h"
+#include <QtGui/QMouseEvent>
 
 TreeView::TreeView(QWidget *parent)
         : QTreeView(parent)
@@ -64,3 +65,11 @@ bool TreeView::haveUnSelectedItems() const
 {
     return selectedIndexes().count()!=model()->rowCount();
 }
+
+void TreeView::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (Qt::NoModifier==event->modifiers()) {
+        QTreeView::mouseReleaseEvent(event);
+    }
+}
+

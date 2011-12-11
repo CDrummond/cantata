@@ -25,6 +25,7 @@
 #include <QtCore/QMimeData>
 #include <QtGui/QDrag>
 #include <QtGui/QIcon>
+#include <QtGui/QMouseEvent>
 
 ListView::ListView(QWidget *parent)
         : QListView(parent)
@@ -80,5 +81,12 @@ void ListView::startDrag(Qt::DropActions supportedActions)
                             .scaled(QSize(64, 64), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
         }
         drag->start(supportedActions);
+    }
+}
+
+void ListView::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (Qt::NoModifier==event->modifiers()) {
+        QListView::mouseReleaseEvent(event);
     }
 }

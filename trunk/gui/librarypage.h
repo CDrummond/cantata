@@ -60,6 +60,7 @@ public Q_SLOTS:
     void updateGenres(const QStringList &genres);
     void homeActivated();
     void backActivated();
+    void itemClicked(const QModelIndex &index);
     void itemActivated(const QModelIndex &index);
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
@@ -69,6 +70,8 @@ private:
     QAbstractItemView * view();
 
 private:
+    Action *addToPlaylistAction;
+    Action *replacePlaylistAction;
     Action *backAction;
     Action *homeAction;
     int currentLevel;

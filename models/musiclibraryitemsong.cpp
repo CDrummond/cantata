@@ -33,6 +33,7 @@ MusicLibraryItemSong::MusicLibraryItemSong(const Song &s, MusicLibraryItem *pare
       m_track(s.track),
       m_file(s.file),
       m_disc(s.disc),
+      m_time(s.time),
       m_parentItem(static_cast<MusicLibraryItemAlbum *>(parent))
 {
 }
@@ -51,17 +52,3 @@ int MusicLibraryItemSong::row() const
     return m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItemSong*>(this));
 }
 
-const QString & MusicLibraryItemSong::file() const
-{
-    return m_file;
-}
-
-quint32 MusicLibraryItemSong::track() const
-{
-    return m_track;
-}
-
-quint32 MusicLibraryItemSong::disc() const
-{
-    return m_disc;
-}

@@ -413,6 +413,7 @@ void LibraryPage::backActivated()
     }
     setLevel(currentLevel-1, static_cast<MusicLibraryItem *>(proxy.mapToSource(listView->rootIndex().parent()).internalPointer()));
     listView->setRootIndex(listView->rootIndex().parent());
+    listView->scrollTo(prevTopIndex, QAbstractItemView::PositionAtTop);
 }
 
 void LibraryPage::itemActivated(const QModelIndex &index)
@@ -423,6 +424,7 @@ void LibraryPage::itemActivated(const QModelIndex &index)
         if (usingTreeView) {
             treeView->setExpanded(index, !treeView->isExpanded(index));
         } else {
+            prevTopIndex=listView->indexAt(QPoint(0, 0));
             setLevel(currentLevel+1, item);
             listView->setRootIndex(index);
         }

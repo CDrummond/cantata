@@ -34,21 +34,26 @@
 #include <QtGui/QStyleOptionViewItem>
 #include <QtGui/QPainter>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KAction>
-#include <KLocale>
-#include <KActionCollection>
+#include <KDE/KAction>
+#include <KDE/KLocale>
+#include <KDE/KActionCollection>
+#include <KDE/KGlobalSettings>
 #else
-#include <QAction>
+#include <QtGui/QAction>
 #endif
 
 class LibraryItemDelegate : public QStyledItemDelegate
 {
-    static const int constBorder = 2;
-
 public:
-    LibraryItemDelegate(QObject *p, MusicLibraryProxyModel *pr)
+    static const int constBorder = 1;
+    static const int constActionBorder = 2;
+    static const int constActionIconSize=16;
+
+    LibraryItemDelegate(QObject *p, MusicLibraryProxyModel *pr, Action *aa, Action *ra)
         : QStyledItemDelegate(p)
         , proxy(pr)
+        , addAction(aa)
+        , replaceAction(ra)
     {
     }
 
@@ -121,7 +126,7 @@ public:
         r.adjust(constBorder, 0, -constBorder, 0);
         if (!pix.isNull()) {
             painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-            r.adjust(pix.width()+constBorder, 0, -constBorder, 0);
+            r.adjust(pix.width()+3, 0, -3, 0);
         }
         QFont textFont(QApplication::font());
         QFont childFont(QApplication::font());
@@ -149,9 +154,33 @@ public:
         painter->setPen(color);
         painter->setFont(childFont);
         painter->drawText(childRect, childText);
+
+        if (option.state & QStyle::State_MouseOver) {
+            if (r.width()>(constActionIconSize+(2*constActionBorder))) {
+                pix=replaceAction->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+                if (!pix.isNull()) {
+                    painter->drawPixmap(r.x()+r.width()-(pix.width()+constActionBorder),
+                                        r.y()+((r.height()-pix.height())/2),
+                                        pix.width(), pix.height(), pix);
+                    r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
+                }
+            }
+
+            if (r.width()>(constActionIconSize+(2*constActionBorder))) {
+                pix=addAction->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+                if (!pix.isNull()) {
+                    painter->drawPixmap(r.x()+r.width()-(pix.width()+constActionBorder),
+                                        r.y()+((r.height()-pix.height())/2),
+                                        pix.width(), pix.height(), pix);
+                    r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
+                }
+            }
+        }
     }
 
     MusicLibraryProxyModel *proxy;
+    Action *addAction;
+    Action *replaceAction;
 };
 
 LibraryPage::LibraryPage(MainWindow *p)
@@ -167,10 +196,12 @@ LibraryPage::LibraryPage(MainWindow *p)
     backAction = new QAction(tr("Back"), this);
     homeAction = new QAction(tr("Artists"), this);
     #endif
+    addToPlaylistAction=p->addToPlaylistAction;
+    replacePlaylistAction=p->replacePlaylistAction;
     backAction->setIcon(QIcon::fromTheme("go-previous"));
     homeAction->setIcon(QIcon::fromTheme("view-media-artist"));
-    addToPlaylist->setDefaultAction(p->addToPlaylistAction);
-    replacePlaylist->setDefaultAction(p->replacePlaylistAction);
+    addToPlaylist->setDefaultAction(addToPlaylistAction);
+    replacePlaylist->setDefaultAction(replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->updateDbAction);
     backButton->setDefaultAction(backAction);
     homeButton->setDefaultAction(homeAction);
@@ -184,13 +215,13 @@ LibraryPage::LibraryPage(MainWindow *p)
     replacePlaylist->setEnabled(false);
 
     treeView->setPageDefaults();
-    treeView->addAction(p->addToPlaylistAction);
-    treeView->addAction(p->replacePlaylistAction);
-    listView->addAction(p->addToPlaylistAction);
-    listView->addAction(p->replacePlaylistAction);
+    treeView->addAction(addToPlaylistAction);
+    treeView->addAction(replacePlaylistAction);
+    listView->addAction(addToPlaylistAction);
+    listView->addAction(replacePlaylistAction);
     listView->addAction(backAction);
     listView->addAction(homeAction);
-    listView->setItemDelegate(new LibraryItemDelegate(this, &proxy));
+    listView->setItemDelegate(new LibraryItemDelegate(this, &proxy, addToPlaylistAction, replacePlaylistAction));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(searchTree, SIGNAL(returnPressed()), this, SLOT(searchItems()));
     connect(searchTree, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
@@ -208,8 +239,8 @@ LibraryPage::LibraryPage(MainWindow *p)
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(listView, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
-    connect(listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
     connect(homeAction, SIGNAL(triggered(bool)), this, SLOT(homeActivated()));
     proxy.setSourceModel(&model);
@@ -419,6 +450,31 @@ void LibraryPage::backActivated()
     listView->scrollTo(prevTopIndex, QAbstractItemView::PositionAtTop);
 }
 
+void LibraryPage::itemClicked(const QModelIndex &index)
+{
+    QRect rect(listView->visualRect(index));
+    rect.moveTo(listView->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
+    QRect actionRect(rect.x()+rect.width()-(LibraryItemDelegate::constActionIconSize+LibraryItemDelegate::constActionBorder),
+                     rect.y()+((rect.height()-LibraryItemDelegate::constActionIconSize)/2),
+                     LibraryItemDelegate::constActionIconSize, LibraryItemDelegate::constActionIconSize);
+
+    if (actionRect.contains(QCursor::pos())) {
+        replacePlaylistAction->trigger();
+        return;
+    }
+    actionRect.adjust(-(LibraryItemDelegate::constActionIconSize+LibraryItemDelegate::constActionBorder), 0, 0, 0);
+    if (actionRect.contains(QCursor::pos())) {
+        addToPlaylistAction->trigger();
+        return;
+    }
+
+#ifdef ENABLE_KDE_SUPPORT
+    if (KGlobalSettings::singleClick()) {
+        itemActivated(index);
+    }
+#endif
+}
+
 void LibraryPage::itemActivated(const QModelIndex &index)
 {
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(index).internalPointer());
@@ -430,6 +486,7 @@ void LibraryPage::itemActivated(const QModelIndex &index)
             prevTopIndex=listView->indexAt(QPoint(0, 0));
             setLevel(currentLevel+1, item);
             listView->setRootIndex(index);
+            listView->scrollToTop();
         }
     }
 }

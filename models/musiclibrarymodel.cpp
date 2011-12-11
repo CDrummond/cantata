@@ -276,7 +276,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
 
     //Start with the document
     writer.writeStartElement("MPD_database");
-    writer.writeAttribute("version", "2");
+    writer.writeAttribute("version", "3");
     writer.writeAttribute("date", QString::number(db_update.toTime_t()));
     //Loop over all artist, albums and tracks.
     for (int i = 0; i < rootItem->childCount(); i++) {
@@ -293,6 +293,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
                 writer.writeEmptyElement("Track");
                 writer.writeAttribute("title", track->data(0).toString());
                 writer.writeAttribute("filename", track->file());
+                writer.writeAttribute("time", QString::number(track->time()));
                 //Only write track number if it is set
                 if (track->track() != 0) {
                     writer.writeAttribute("track", QString::number(track->track()));
@@ -363,7 +364,7 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                     quint32 time_t = reader.attributes().value("date").toString().toUInt();
 
                     //Incompatible version
-                    if (version < 2) {
+                    if (version < 3) {
                         break;
                     }
 
@@ -401,6 +402,8 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                         song.track=str.isEmpty() ? 0 : str.toUInt();
                         str=reader.attributes().value("disc").toString();
                         song.disc=str.isEmpty() ? 0 : str.toUInt();
+                        str=reader.attributes().value("time").toString();
+                        song.time=str.isEmpty() ? 0 : str.toUInt();
 
                         songItem = new MusicLibraryItemSong(song, albumItem);
 

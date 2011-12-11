@@ -24,12 +24,15 @@
 #include "librarypage.h"
 #include "mpdconnection.h"
 #include "covers.h"
+#include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "mainwindow.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #include <QtGui/QStyledItemDelegate>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionViewItem>
+#include <QtGui/QPainter>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KAction>
 #include <KLocale>
@@ -38,155 +41,115 @@
 #include <QAction>
 #endif
 
-// class LibraryItemDelegate : public QStyledItemDelegate
-// {
-//     static const int constBorder = 6;
-//
-// public:
-//     LibraryItemDelegate(QObject *p)
-//         : QStyledItemDelegate(p))
-//     {
-//     }
-//
-//     virtual ~LibraryItemDelegate()
-//     {
-//     }
-//
-//     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-//     {
-//         QSize sz(QStyledItemDelegate::sizeHint(option, index));
-//         int textHeight = QApplication::fontMetrics().height()*2.2;
-//
-//         return QSize(qMax(sz.width(), MusicLibraryItemAlbum::coverPixels()) + (constBorder * 2),
-//                      qMax((textHeight + constBorder) * 3, sz.height() + (constBorder * 2)));
-//     }
-//
-//     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-//     {
-//         if (!index.isValid()) {
-//             return;
-//         }
-//         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
-//
-//         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
-//         QString text = index.data(Qt::DisplayRole).toText();
-//         int children = index.data(Qt::UserRole).toInt();
-//         QVariant decoration = index.data(Qt::DecorationRole).toText();
-//         QPixmap pix;
-//         QRect r(option.rect);
-//         QString childType;
-//
-//         if (item) {
-//             switch (item->type()) {
-//             case MusicLibraryItem::Type_Artist:
-//             case MusicLibraryItem::Type_Song:
-//                 pix=decoration.value<QIcon>().pixmap(MusicLibraryItemAlbum::coverPixels(), MusicLibraryItemAlbum::coverPixels());
-//                 break;
-//             case MusicLibraryItem::Type_Album:
-//                 pix=decoration.value<QPixmap>();
-//                 break;
-//             }
-//         }
-//
-//         int x=r.x()+constBorder;
-//         if (!pix.isNull()) {
-//             painter->drawPixmap(x, r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-//             x+=pix.width()+constBorder;
-//         }
-//
-// //         QFont f(QApplication::font());
-// //         f.setBold(true);
-// //         QFontMetrics fm(f);
-// //         text = fm.elidedText(text, Qt::ElideRight, r.width()-(constBorder+(x-r.x())), QPalette::WindowText);
-// //
-// //         painter->setPen(txtCol);
-// //         painter->setFont(f);
-// //         painter->drawText(
-//
-//         QTextDocument doc;
-//         doc.setFont(QApplication::font());
-//         QString html=i18n("<b>%1</b></br><small>%2</small>").arg(text).arg(children)
-//         doc.setHtml(user.toString());
-//         if ((QVariant::Pixmap == dec.type()) && (QVariant::String == disp.type()) &&
-//             (QVariant::String == user.type())) {
-//             m_widget->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option,
-//                                                 painter, 0L);
-//
-//             QRect                r(option.rect);
-//             QFont                fnt(m_widget->font());
-//             QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ?
-//                                                         QPalette::Normal : QPalette::Disabled;
-//             QPixmap              pix(dec.value<QPixmap>());
-//             int                  textHeight = m_widget->fontMetrics().height();
-//             int                  iconPosModX = constBorder + ((KMF::MediaObject::constIconSize -
-//                                                                 pix.width()) / 2);
-//             int                  iconPosModY = (option.rect.height() - pix.height()) / 2;
-//
-//             painter->drawPixmap(r.adjusted(iconPosModX, iconPosModY, iconPosModX,
-//                                 iconPosModY).topLeft(), pix);
-//
-//             fnt.setBold(true);
-//
-//             painter->setFont(fnt);
-//
-//             if ((QPalette::Normal == cg) && !(option.state & QStyle::State_Active)) {
-//                 cg = QPalette::Inactive;
-//             }
-//
-//             r.adjust(KMF::MediaObject::constIconSize + (constBorder * 2),
-//                         constBorder + textHeight, -constBorder, -constBorder);
-//             QColor defColor = option.palette.color(cg, option.state &
-//                     QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text);
-//             painter->setPen(defColor);
-//             painter->drawText(r.topLeft(), disp.toString());
-//
-//             // Draw info text. Can be rich text
-//             r.adjust(0, constBorder, 0, 0);
-//             QTextDocument doc;
-//             doc.setDefaultFont(KGlobalSettings::smallestReadableFont());
-//             doc.setDefaultStyleSheet(QString("body { color: %1; }").arg(defColor.name()));
-//             doc.setHtml(user.toString());
-//             painter->save();
-//             painter->translate(r.topLeft());
-//             doc.drawContents(painter, QRect(QPoint(0, 0), r.size()));
-//             painter->restore();
-//
-//             if (option.state & QStyle::State_HasFocus) {
-//                 QStyleOptionFocusRect o;
-//                 o.QStyleOption::operator=(option);
-//                 o.rect = option.rect;
-//                 // m_widget->style()->subElementRect(QStyle::SE_ItemViewItemFocusRect,
-//                 // &option, m_widget);
-//                 o.state |= QStyle::State_KeyboardFocusChange;
-//                 o.state |= QStyle::State_Item;
-//                 cg = option.state &
-//                         QStyle::State_Enabled  ? QPalette::Normal : QPalette::Disabled;
-//                 o.backgroundColor = option.palette.color(
-//                         cg, option.state &
-//                         QStyle::State_Selected ? QPalette::Highlight : QPalette::Window);
-//                 m_widget->style()->drawPrimitive(QStyle::PE_FrameFocusRect, &o, painter,
-//                         m_widget);
-//             }
-//
-//             if (option.state & QStyle::State_MouseOver &&
-//                 kmfApp->project()->mediaObjects()->isValid(index)) {
-//                 KMF::MediaObject *ob = kmfApp->project()->mediaObjects()->at(index);
-//                 QList<QAction *> actions;
-//
-//                 ob->actions(&actions);
-//                 r = option.rect;
-//
-//                 QSize                          size(constActionIconSize, constActionIconSize);
-//                 QColor                         col(Qt::black);
-//
-//                 col.setAlphaF(0.35);
-//
-//             }
-//         } else   {
-//             QStyledItemDelegate::paint(painter, option, index);
-//         }
-//     }
-// };
+class LibraryItemDelegate : public QStyledItemDelegate
+{
+    static const int constBorder = 2;
+
+public:
+    LibraryItemDelegate(QObject *p, MusicLibraryProxyModel *pr)
+        : QStyledItemDelegate(p)
+        , proxy(pr)
+    {
+    }
+
+    virtual ~LibraryItemDelegate()
+    {
+    }
+
+    int imgSize(MusicLibraryItem *item) const
+    {
+       return item && item->type()!=MusicLibraryItem::Type_Album
+            ? qMin(MusicLibraryItemAlbum::coverPixels(), 22)
+            : MusicLibraryItemAlbum::coverPixels();
+    }
+
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy->mapToSource(index).internalPointer());
+        QSize sz(QStyledItemDelegate::sizeHint(option, index));
+        int textHeight = QApplication::fontMetrics().height()*2;
+        int imageSize=imgSize(item);
+
+        return QSize(qMax(sz.width(), imageSize) + (constBorder * 2),
+                     qMax(qMax(textHeight, sz.height()), imageSize)  + (constBorder*2));
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if (!index.isValid()) {
+            return;
+        }
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy->mapToSource(index).internalPointer());
+        QString text = index.data(Qt::DisplayRole).toString();
+        QPixmap pix;
+        QRect r(option.rect);
+        QString childText;
+        int imageSize=imgSize(item);
+
+        if (item) {
+            switch (item->type()) {
+            case MusicLibraryItem::Type_Artist:
+                pix=QIcon::fromTheme("view-media-artist").pixmap(imageSize, imageSize);
+                #ifdef ENABLE_KDE_SUPPORT
+                childText=i18np("1 Album", "%1 Albums", item->childCount());
+                #else
+                childText=1==item->childCount() ? tr("1 Album") : tr("%1 Albums").arg(item->childCount());
+                #endif
+                break;
+            case MusicLibraryItem::Type_Song:
+                pix=QIcon::fromTheme("audio-x-generic").pixmap(imageSize, imageSize);
+                childText=MainWindow::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
+                if (childText.startsWith(QLatin1String("00:"))) {
+                    childText=childText.mid(3);
+                }
+                break;
+            case MusicLibraryItem::Type_Album:
+                pix=static_cast<MusicLibraryItemAlbum *>(item)->cover();
+                #ifdef ENABLE_KDE_SUPPORT
+                childText=i18np("1 Song", "%1 Songs", item->childCount());
+                #else
+                childText=1==item->childCount() ? tr("1 Song") : tr("%1 Songs").arg(item->childCount());
+                #endif
+                break;
+            default:
+                break;
+            }
+        }
+
+        r.adjust(constBorder, 0, -constBorder, 0);
+        if (!pix.isNull()) {
+            painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+            r.adjust(pix.width()+constBorder, 0, -constBorder, 0);
+        }
+        QFont textFont(QApplication::font());
+        QFont childFont(QApplication::font());
+        textFont.setBold(true);
+        QFontMetrics textMetrics(textFont);
+        childFont.setPointSizeF(childFont.pointSizeF()*0.9);
+        QFontMetrics childMetrics(childFont);
+        QRect textRect;
+        QRect childRect;
+
+        int textHeight=textMetrics.height();
+        int childHeight=childMetrics.height();
+        int totalHeight=textHeight+childHeight;
+        textRect=QRect(r.x(), r.y()+((r.height()-totalHeight)/2), r.width(), textHeight);
+        childRect=QRect(r.x(), r.y()+textHeight+((r.height()-totalHeight)/2), r.width(), textHeight);
+        text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);
+
+        painter->setPen(QApplication::palette().color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
+        painter->setFont(textFont);
+        painter->drawText(textRect, text);
+
+        childText = childMetrics.elidedText(childText, Qt::ElideRight, childRect.width(), QPalette::WindowText);
+        painter->setFont(childFont);
+        painter->drawText(childRect, childText);
+    }
+
+    MusicLibraryProxyModel *proxy;
+};
 
 LibraryPage::LibraryPage(MainWindow *p)
     : QWidget(p)
@@ -224,7 +187,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     listView->addAction(p->replacePlaylistAction);
     listView->addAction(backAction);
     listView->addAction(homeAction);
-//     listView->setItemDelegate(new LibraryItemDelegate(this));
+    listView->setItemDelegate(new LibraryItemDelegate(this, &proxy));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(searchTree, SIGNAL(returnPressed()), this, SLOT(searchItems()));
     connect(searchTree, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));

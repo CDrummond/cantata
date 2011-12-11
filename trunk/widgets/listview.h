@@ -39,6 +39,7 @@ public:
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;
     void startDrag(Qt::DropActions supportedActions);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 Q_SIGNALS:
     bool itemsSelected(bool);

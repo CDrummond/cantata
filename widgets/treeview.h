@@ -39,6 +39,7 @@ public:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;
+    void mouseReleaseEvent(QMouseEvent *event);
 
 Q_SIGNALS:
     bool itemsSelected(bool);

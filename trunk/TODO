@@ -19,3 +19,13 @@
 * When displaying search results, should expand items to show matched entry
 
 * Use KMessageWidget to display errors?
+
+* Playlists
+   - Create tree-like structure, so that can show contents
+      send command listplaylistinfo
+   - Allow drag-n-drop within playlist
+   - 'Add to playlist XXX' entries to library, album, and folder context menus
+
+* Album View
+   - Use LibraryPage, but have an 'All Albums' (hidden) artist?
+   - Create custom item delegate and add add/replace buttons?

@@ -42,9 +42,18 @@ public:
 
     int row() const;
     MusicLibraryItem * parent() const;
-    const QString & file() const;
-    quint32 track() const;
-    quint32 disc() const;
+    const QString & file() const {
+        return m_file;
+    }
+    quint32 track() const {
+        return m_track;
+    }
+    quint32 disc() const {
+        return m_disc;
+    }
+    quint32 time() const {
+        return m_time;
+    }
     QString genre() const {
         return m_genres.isEmpty() ? QString() : *m_genres.constBegin();
     }
@@ -53,6 +62,7 @@ private:
     quint32 m_track;
     QString m_file;
     quint32 m_disc;
+    quint32 m_time;
     MusicLibraryItemAlbum * const m_parentItem;
 };
 

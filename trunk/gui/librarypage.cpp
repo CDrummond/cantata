@@ -125,10 +125,11 @@ public:
         }
         QFont textFont(QApplication::font());
         QFont childFont(QApplication::font());
-        textFont.setBold(true);
         QFontMetrics textMetrics(textFont);
-        childFont.setPointSizeF(childFont.pointSizeF()*0.9);
+        childFont.setPointSizeF(childFont.pointSizeF()*0.8);
         QFontMetrics childMetrics(childFont);
+        bool selected=option.state&QStyle::State_Selected;
+        QColor color(QApplication::palette().color(selected ? QPalette::HighlightedText : QPalette::Text));
         QRect textRect;
         QRect childRect;
 
@@ -139,11 +140,13 @@ public:
         childRect=QRect(r.x(), r.y()+textHeight+((r.height()-totalHeight)/2), r.width(), textHeight);
         text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);
 
-        painter->setPen(QApplication::palette().color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
+        painter->setPen(color);
         painter->setFont(textFont);
         painter->drawText(textRect, text);
 
         childText = childMetrics.elidedText(childText, Qt::ElideRight, childRect.width(), QPalette::WindowText);
+        color.setAlphaF(selected ? 0.65 : 0.5);
+        painter->setPen(color);
         painter->setFont(childFont);
         painter->drawText(childRect, childText);
     }

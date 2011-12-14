@@ -29,6 +29,11 @@ TreeView::TreeView(QWidget *parent)
 {
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);
+    setRootIsDecorated(false);
+    setAllColumnsShowFocus(true);
+    setAlternatingRowColors(true);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 TreeView::~TreeView()
@@ -40,10 +45,6 @@ void TreeView::setPageDefaults()
     sortByColumn(0, Qt::AscendingOrder);
     setHeaderHidden(true);
     setDragDropMode(QAbstractItemView::DragOnly);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
-    setAllColumnsShowFocus(true);
-    setAlternatingRowColors(true);
-    setSelectionBehavior(QAbstractItemView::SelectRows);
     setSortingEnabled(true);
 }
 

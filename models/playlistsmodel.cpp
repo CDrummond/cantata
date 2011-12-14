@@ -161,6 +161,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                         ? tr("%1\n%2 Tracks").arg(pl->name).arg(pl->songs.count())
                         : tr("%1\n1 Track").arg(pl->name);
                     #endif
+        case Qt::DecorationRole:
+            return QIcon::fromTheme("view-media-playlist");
         default: break;
         }
     } else {
@@ -180,6 +182,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 text=text+QChar('\n')+duration;
             }
             return text;
+        } else if(Qt::DecorationRole==role) {
+            return QIcon::fromTheme(s->title.isEmpty() ? "applications-internet" : "audio-x-generic");
         }
     }
 

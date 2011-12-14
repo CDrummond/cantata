@@ -44,8 +44,8 @@ SET( CANTATA_SRCS
     models/musiclibraryproxymodel.cpp
     models/playlistsmodel.cpp
     models/playlistsproxymodel.cpp
-    models/playlisttablemodel.cpp
-    models/playlisttableproxymodel.cpp
+    models/playqueuemodel.cpp
+    models/playqueueproxymodel.cpp
     models/dirviewmodel.cpp
     models/dirviewproxymodel.cpp
     models/dirviewitem.cpp
@@ -93,8 +93,8 @@ SET( CANTATA_MOC_HDRS
     models/musiclibraryproxymodel.h
     models/playlistsmodel.h
     models/playlistsproxymodel.h
-    models/playlisttablemodel.h
-    models/playlisttableproxymodel.h
+    models/playqueuemodel.h
+    models/playqueueproxymodel.h
     models/dirviewmodel.h
     models/dirviewproxymodel.h
     models/albumsmodel.h

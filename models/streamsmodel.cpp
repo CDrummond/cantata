@@ -34,7 +34,7 @@
 #include <QtGui/QIcon>
 #include "streamsmodel.h"
 #include "settings.h"
-#include "playlisttablemodel.h"
+#include "playqueuemodel.h"
 #include "config.h"
 
 static QString configDir()
@@ -303,7 +303,7 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
         stream << filenames.at(i);
     }
 
-    mimeData->setData(PlaylistTableModel::constFileNameMimeType, encodedData);
+    mimeData->setData(PlayQueueModel::constFileNameMimeType, encodedData);
     return mimeData;
 }
 

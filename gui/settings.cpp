@@ -131,9 +131,9 @@ bool Settings::showPlaylist()
     return GET_BOOL("showPlaylist", true);
 }
 
-QByteArray Settings::playlistHeaderState()
+QByteArray Settings::playQueueHeaderState()
 {
-    return GET_BYTE_ARRAY("playlistHeaderState");
+    return GET_BYTE_ARRAY("playQueueHeaderState");
 }
 
 QByteArray Settings::splitterState()
@@ -256,9 +256,9 @@ void Settings::saveShowPlaylist(bool v)
     SET_VALUE("showPlaylist", v);
 }
 
-void Settings::savePlaylistHeaderState(const QByteArray &v)
+void Settings::savePlayQueueHeaderState(const QByteArray &v)
 {
-    SET_VALUE("playlistHeaderState", v);
+    SET_VALUE("playQueueHeaderState", v);
 }
 
 void Settings::saveSplitterState(const QByteArray &v)

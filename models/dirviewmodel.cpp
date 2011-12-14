@@ -34,7 +34,7 @@
 #endif
 #include "dirviewmodel.h"
 #include "dirviewitem.h"
-#include "playlisttablemodel.h"
+#include "playqueuemodel.h"
 
 dirViewModel::dirViewModel(QObject *parent)
     : QAbstractItemModel(parent),
@@ -184,7 +184,7 @@ QMimeData *dirViewModel::mimeData(const QModelIndexList &indexes) const
     for (int i = filenames.size() - 1; i >= 0; i--) {
         stream << filenames.at(i);
     }
-    mimeData->setData(PlaylistTableModel::constFileNameMimeType, encodedData);
+    mimeData->setData(PlayQueueModel::constFileNameMimeType, encodedData);
     return mimeData;
 }
 

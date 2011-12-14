@@ -24,8 +24,8 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYLIST_TABLE_MODEL_H
-#define PLAYLIST_TABLE_MODEL_H
+#ifndef PLAYQUEUEMODEL_H
+#define PLAYQUEUEMODEL_H
 
 #include <QAbstractTableModel>
 #include <QList>
@@ -35,7 +35,7 @@
 
 class StreamFetcher;
 
-class PlaylistTableModel : public QAbstractTableModel
+class PlayQueueModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -58,8 +58,8 @@ public:
     static const QLatin1String constMoveMimeType;
     static const QLatin1String constFileNameMimeType;
 
-    PlaylistTableModel(QObject *parent = 0);
-    ~PlaylistTableModel();
+    PlayQueueModel(QObject *parent = 0);
+    ~PlayQueueModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const;

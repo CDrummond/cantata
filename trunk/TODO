@@ -4,6 +4,15 @@
        - To another playlist = insert
    - Need to support drag and drop to/from playing playlist!
    - Lazy loading of playlist contents - this is not 100%
+   - Add list style view
+      - Perhaps make style delegate in lirarypage more generic? (combine albumitemdelegate too)
+         - Supply list of actions
+         - Set view type - list or icon
+         - Add UserRoles to return; icon-size, icon, sub-text
+* DELETE keyboard short-cut. This needs to work on the focused list.
+  Playlists, streams, and playqueue all support deleting.
+
+* Rename PlaylistTable* PlayQueue*
 
 ----
 

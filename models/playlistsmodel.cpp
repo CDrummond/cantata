@@ -155,11 +155,11 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 ? pl->name
                 :
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Song", "%1\n%2 Songs", pl->name, pl->songs.count());
+                    i18np("%1\n1 Track", "%1\n%2 Tracks", pl->name, pl->songs.count());
                     #else
                     (pl->songs.count()>1
-                        ? tr("%1\n%2 Songs").arg(pl->name).arg(pl->songs.count())
-                        : tr("%1\n1 Song").arg(pl->name);
+                        ? tr("%1\n%2 Tracks").arg(pl->name).arg(pl->songs.count())
+                        : tr("%1\n1 Track").arg(pl->name);
                     #endif
         default: break;
         }

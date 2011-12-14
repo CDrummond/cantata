@@ -259,8 +259,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     removeFromPlaylistAction->setText(i18n("Remove"));
     removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
 
-    copySongInfoAction = actionCollection()->addAction("copysonginfo");
-    copySongInfoAction->setText(i18n("Copy Song Info"));
+    copyTrackInfoAction = actionCollection()->addAction("copytrackinfo");
+    copyTrackInfoAction->setText(i18n("Copy Track Info"));
 
     cropPlaylistAction = actionCollection()->addAction("cropplaylist");
     cropPlaylistAction->setText(i18n("Crop"));
@@ -323,8 +323,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     replacePlaylistAction = new QAction(tr("Replace Play Queue"), this);
     removeFromPlaylistAction = new QAction(tr("Remove"), this);
     removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
-    copySongInfoAction = new QAction(tr("Copy Song Info"), this);
-    copySongInfoAction->setShortcut(QKeySequence::Copy);
+    copyTrackInfoAction = new QAction(tr("Copy Track Info"), this);
+    copyTrackInfoAction->setShortcut(QKeySequence::Copy);
     cropPlaylistAction = new QAction(tr("Crop"), this);
     shufflePlaylistAction = new QAction(tr("Shuffle"), this);
     savePlaylistAction = new QAction(tr("Save As"), this);
@@ -533,7 +533,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistTableView->addAction(clearPlaylistAction);
     playlistTableView->addAction(cropPlaylistAction);
     playlistTableView->addAction(shufflePlaylistAction);
-    playlistTableView->addAction(copySongInfoAction);
+    playlistTableView->addAction(copyTrackInfoAction);
     connect(playlistTableView, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
     setupPlaylistView();
 
@@ -569,7 +569,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(removeFromPlaylistAction, SIGNAL(activated()), this, SLOT(removeFromPlaylist()));
     connect(clearPlaylistAction, SIGNAL(activated()), searchPlaylistLineEdit, SLOT(clear()));
     connect(clearPlaylistAction, SIGNAL(activated()), MPDConnection::self(), SLOT(clear()));
-    connect(copySongInfoAction, SIGNAL(activated()), this, SLOT(copySongInfo()));
+    connect(copyTrackInfoAction, SIGNAL(activated()), this, SLOT(copyTrackInfo()));
     connect(cropPlaylistAction, SIGNAL(activated()), this, SLOT(cropPlaylist()));
     connect(shufflePlaylistAction, SIGNAL(activated()), MPDConnection::self(), SLOT(shuffle()));
     connect(showPlaylistAction, SIGNAL(activated()), this, SLOT(togglePlaylist()));
@@ -711,7 +711,7 @@ void MainWindow::playlistItemsSelected(bool s)
     if (playlistTableView->model()->rowCount()) {
         playlistTableView->setContextMenuPolicy(Qt::ActionsContextMenu);
         removeFromPlaylistAction->setEnabled(s);
-        copySongInfoAction->setEnabled(s);
+        copyTrackInfoAction->setEnabled(s);
         clearPlaylistAction->setEnabled(true);
         cropPlaylistAction->setEnabled(playlistTableView->haveUnSelectedItems());
         shufflePlaylistAction->setEnabled(true);
@@ -1220,11 +1220,11 @@ void MainWindow::updatePlayListStatus()
 #ifdef ENABLE_KDE_SUPPORT
     status+=i18np("1 Artist, ", "%1 Artists, ", stats->playlistArtists());
     status+=i18np("1 Album, ", "%1 Albums, ", stats->playlistAlbums());
-    status+=i18np("1 Song", "%1 Songs", stats->playlistSongs());
+    status+=i18np("1 Track", "%1 Tracks", stats->playlistSongs());
 #else
     status += QString::number(stats->playlistArtists())+QString(1==stats->playlistArtists() ? " Artist, " : "Artists, ");
     status += QString::number(stats->playlistAlbums())+QString(1==stats->playlistAlbums() ? " Album, " : "Albums, ");
-    status += QString::number(stats->playlistSongs())+QString(1==stats->playlistSongs() ? " Song" : "Songs");
+    status += QString::number(stats->playlistSongs())+QString(1==stats->playlistSongs() ? " Track" : "Tracks");
 #endif
     status += " (";
     status += MPDParseUtils::formatDuration(stats->playlistTime());
@@ -1247,7 +1247,7 @@ void MainWindow::updatePositionSilder()
     }
 }
 
-void MainWindow::copySongInfo()
+void MainWindow::copyTrackInfo()
 {
     const QModelIndexList items = playlistTableView->selectionModel()->selectedRows();
     QModelIndex sourceIndex;

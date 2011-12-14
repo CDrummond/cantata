@@ -207,7 +207,7 @@ private Q_SLOTS:
     void playListTableViewToggleItem(const bool visible);
     void cropPlaylist();
     void updatePlayListStatus();
-    void copySongInfo();
+    void copyTrackInfo();
     void togglePlaylist();
     void currentTabChanged(int index);
     void cover(const QString &artist, const QString &album, const QImage &img);
@@ -253,7 +253,7 @@ private:
     Action *removeFromPlaylistAction;
     Action *addToStoredPlaylistAction;
     Action *clearPlaylistAction;
-    Action *copySongInfoAction;
+    Action *copyTrackInfoAction;
     Action *cropPlaylistAction;
     Action *shufflePlaylistAction;
     Action *savePlaylistAction;

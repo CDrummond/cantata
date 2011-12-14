@@ -207,29 +207,17 @@
          <property name="dragDropMode">
           <enum>QAbstractItemView::DragDrop</enum>
          </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
          <property name="selectionMode">
           <enum>QAbstractItemView::ExtendedSelection</enum>
          </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
          <property name="indentation">
           <number>0</number>
-         </property>
-         <property name="rootIsDecorated">
-          <bool>false</bool>
          </property>
          <property name="uniformRowHeights">
           <bool>true</bool>
          </property>
          <property name="itemsExpandable">
           <bool>false</bool>
-         </property>
-         <property name="allColumnsShowFocus">
-          <bool>true</bool>
          </property>
          <property name="expandsOnDoubleClick">
           <bool>false</bool>

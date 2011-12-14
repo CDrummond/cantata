@@ -157,8 +157,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }
-        // Any point to a track icon?
-        //case MusicLibraryItem::Type_Song:   return QIcon::fromTheme("audio-x-generic");
+        case MusicLibraryItem::Type_Song:   return QIcon::fromTheme("audio-x-generic");
         default: return QVariant();
         }
     case Qt::DisplayRole:

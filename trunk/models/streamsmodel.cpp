@@ -52,6 +52,7 @@ static QString getInternalFile()
 
 StreamsModel::StreamsModel()
     : QAbstractListModel(0)
+    , modified(false)
     , timer(0)
 {
 }
@@ -223,7 +224,7 @@ bool StreamsModel::add(const QString &name, const QString &url, bool fav)
 //     endInsertRows();
 //     emit layoutChanged();
     endResetModel();
-
+    modified=true;
     save();
     Settings::self()->save();
     return true;
@@ -243,6 +244,7 @@ void StreamsModel::edit(const QModelIndex &index, const QString &name, const QSt
         items.append(Stream(name, u, fav));
         itemMap.insert(url, name);
         endResetModel();
+        modified=true;
         save();
         Settings::self()->save();
     }
@@ -313,7 +315,10 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
 
 void StreamsModel::persist()
 {
-    save(getInternalFile());
+    if (modified) {
+        save(getInternalFile());
+        modified=false;
+    }
 }
 
 void StreamsModel::mark(const QList<int> &rows, bool f)
@@ -323,4 +328,5 @@ void StreamsModel::mark(const QList<int> &rows, bool f)
         items[r].favorite=f;
     }
     endResetModel();
+    modified=true;
 }

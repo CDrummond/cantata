@@ -71,6 +71,7 @@ private Q_SLOTS:
 private:
     QHash<QString, QString> itemMap;
     QList<Stream> items;
+    bool modified;
     QTimer *timer;
 };
 

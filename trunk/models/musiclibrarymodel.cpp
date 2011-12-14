@@ -32,7 +32,7 @@
 #include "playlisttablemodel.h"
 #include "settings.h"
 #include "config.h"
-
+#include "mainwindow.h"
 #include <QCommonStyle>
 #include <QFile>
 #include <QXmlStreamReader>
@@ -161,7 +161,6 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         default: return QVariant();
         }
     case Qt::DisplayRole:
-    case Qt::ToolTipRole:
         if (MusicLibraryItem::Type_Song==item->type()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
             if (song->track()>9) {
@@ -171,6 +170,42 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             }
         }
         return item->data(index.column());
+    case Qt::ToolTipRole:
+        switch (item->type()) {
+        case MusicLibraryItem::Type_Artist:
+            return 0==item->childCount()
+                ? item->data(index.column())
+                :
+                    #ifdef ENABLE_KDE_SUPPORT
+                    i18np("%1\n1 Album", "%1\n%2 Albums", item->data(index.column()).toString(), item->childCount());
+                    #else
+                    (item->childCount()>1
+                        ? tr("%1\n%2 Albums").arg(item->data(index.column()).toString()).arg(item->childCount())
+                        : tr("%1\n1 Album").arg(item->data(index.column()).toString());
+                    #endif
+        case MusicLibraryItem::Type_Album:
+            return 0==item->childCount()
+                ? item->data(index.column())
+                :
+                    #ifdef ENABLE_KDE_SUPPORT
+                    i18np("%1\n1 Song", "%1\n%2 Songs", item->data(index.column()).toString(), item->childCount());
+                    #else
+                    (item->childCount()>1
+                        ? tr("%1\n%2 Songs").arg(item->data(index.column()).toString()).arg(item->childCount())
+                        : tr("%1\n1 Song").arg(item->data(index.column()).toString());
+                    #endif
+        case MusicLibraryItem::Type_Song: {
+            QString duration=MainWindow::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
+            if (duration.startsWith(QLatin1String("00:"))) {
+                duration=duration.mid(3);
+            }
+            if (duration.startsWith(QLatin1String("00:"))) {
+                duration=duration.mid(1);
+            }
+            return data(index, Qt::DisplayRole).toString()+QChar('\n')+duration;
+        }
+        default: return QVariant();
+        }
     default:
         return QVariant();
     }

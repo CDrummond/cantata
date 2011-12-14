@@ -29,8 +29,9 @@
 #include <QString>
 #include <QVariant>
 #include <QMimeData>
-#include <Qt/qdesktopservices.h>
-#include <Qt/qmessagebox.h>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KLocale>
+#endif
 #include "dirviewmodel.h"
 #include "dirviewitem.h"
 #include "playlisttablemodel.h"
@@ -125,8 +126,18 @@ QVariant dirViewModel::data(const QModelIndex &index, int role) const
         break;
     }
     case Qt::DisplayRole:
-    case Qt::ToolTipRole:
         return item->data(index.column());
+    case Qt::ToolTipRole:
+        return 0==item->childCount()
+            ? item->data(index.column())
+            :
+                #ifdef ENABLE_KDE_SUPPORT
+                i18np("%1\n1 Entry", "%1\n%2 Entries", item->data(index.column()).toString(), item->childCount());
+                #else
+                (item->childCount()>1
+                    ? tr("%1\n%2 Entries").arg(item->data(index.column()).toString()).arg(item->childCount())
+                    : tr("%1\n1 Entry").arg(item->data(index.column()).toString());
+                #endif
     default:
         break;
     }

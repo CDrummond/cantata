@@ -26,6 +26,9 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QStringList>
 #include <QtGui/QIcon>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KLocale>
+#endif
 #include "albumsmodel.h"
 #include "settings.h"
 #include "musiclibraryitemalbum.h"
@@ -81,7 +84,7 @@ AlbumsModel::Album::Album(const QString &ar, const QString &al)
     , updated(false)
     , coverRequested(false)
 {
-    name=album+QChar('\n')+artist;
+    name=album+QLatin1String(" - ")+artist;
 }
 
 AlbumsModel::AlbumsModel()
@@ -148,7 +151,19 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         }
         return *theDefaultIcon;
     }
-    case Qt::ToolTipRole:
+    case Qt::ToolTipRole: {
+        const Album &al=items[index.row()];
+        return 0==al.files.count()
+            ? al.name
+            :
+                #ifdef ENABLE_KDE_SUPPORT
+                i18np("%1\n1 Song", "%1\n%2 Songs", al.name, al.files.count());
+                #else
+                (al.files.count()>1
+                    ? tr("%1\n%2 Songs").arg(al.name).arg(al.files.count())
+                    : tr("%1\n1 Song").arg(al.name);
+                #endif
+    }
     case Qt::DisplayRole:
         return items.at(index.row()).name;
     case Qt::UserRole:

@@ -161,13 +161,16 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
 
                     if (i<100) {
                         if (!haveInserted) {
-                            if (!isInternal) {
-                                beginResetModel();
-                            }
                             haveInserted=true;
+                        }
+                        if (!isInternal) {
+                            beginInsertRows(QModelIndex(), items.count(), items.count());
                         }
                         items.append(Stream(name, url, fav));
                         itemMap.insert(url.toString(), name);
+                        if (!isInternal) {
+                            endInsertRows();
+                        }
                     }
                 }
             }
@@ -176,7 +179,6 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
     }
 
     if (haveInserted && !isInternal) {
-        endResetModel();
         save();
     }
 
@@ -216,14 +218,10 @@ bool StreamsModel::add(const QString &name, const QString &url, bool fav)
         return false;
     }
 
-//     int row=items.count();
-    beginResetModel();
-//     beginInsertRows(createIndex(0, 0), row, row); // ????
+    beginInsertRows(QModelIndex(), items.count(), items.count());
     items.append(Stream(name, u, fav));
     itemMap.insert(url, name);
-//     endInsertRows();
-//     emit layoutChanged();
-    endResetModel();
+    endInsertRows();
     modified=true;
     save();
     Settings::self()->save();
@@ -237,13 +235,9 @@ void StreamsModel::edit(const QModelIndex &index, const QString &name, const QSt
 
     if (row<items.count()) {
         Stream old=items.at(row);
-        beginResetModel();
-        items.removeAt(index.row());
-        itemMap.remove(old.url.toString());
-        row=items.count();
-        items.append(Stream(name, u, fav));
+        items[index.row()]=Stream(name, u, fav);
         itemMap.insert(url, name);
-        endResetModel();
+        emit dataChanged(index, index);
         modified=true;
         save();
         Settings::self()->save();
@@ -256,10 +250,10 @@ void StreamsModel::remove(const QModelIndex &index)
 
     if (row<items.count()) {
         Stream old=items.at(row);
-        beginResetModel();
+        beginRemoveRows(QModelIndex(), row, row);
         items.removeAt(index.row());
         itemMap.remove(old.url.toString());
-        endResetModel();
+        endRemoveRows();
         save();
         Settings::self()->save();
     }
@@ -323,10 +317,14 @@ void StreamsModel::persist()
 
 void StreamsModel::mark(const QList<int> &rows, bool f)
 {
-    beginResetModel();
+    emit layoutAboutToBeChanged();
     foreach (int r, rows) {
-        items[r].favorite=f;
+        if (items[r].favorite!=f) {
+            items[r].favorite=f;
+            QModelIndex idx=index(0, 0, QModelIndex());
+            emit dataChanged(idx, idx);
+        }
     }
-    endResetModel();
+    emit layoutChanged();
     modified=true;
 }

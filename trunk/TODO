@@ -1,8 +1,10 @@
 * Playlists
    - Create tree-like structure, so that can show contents
-      send command listplaylistinfo
    - Allow drag-n-drop within playlist
-   - 'Add to playlist XXX' entries to library, album, and folder context menus
+       - Within a playlist = move
+       - To another playlist = insert
+   - Allow to remove from playlist
+   - Need to support drag and drop to/from playing playlist!
 
 * Add next/prev provider buttons to lyrics page - so that can try others.
 
@@ -13,6 +15,7 @@
    - Handle xspf/spiff playlists
    - Handle more than 1st entry?? Not sure
    - Check that MPD can handle protocols before adding
+     - Display list of schemas in 'Info' page
 
 * Library browser
    - Have artist icons ?

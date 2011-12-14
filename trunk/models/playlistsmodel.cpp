@@ -24,26 +24,46 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QModelIndex>
+#include <QtCore/QModelIndex>
+#include <QtGui/QMenu>
+#include "playlistsmodel.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
+#include <KDE/KGlobal>
+K_GLOBAL_STATIC(PlaylistsModel, instance)
 #endif
-#include "playlistsmodel.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdconnection.h"
 
+PlaylistsModel * PlaylistsModel::self()
+{
+#ifdef ENABLE_KDE_SUPPORT
+    return instance;
+#else
+    static PlaylistsModel *instance=0;;
+    if(!instance) {
+        instance=new Covers;
+    }
+    return instance;
+#endif
+}
+
 PlaylistsModel::PlaylistsModel(QObject *parent)
-    : QAbstractListModel(parent)
+    : QAbstractItemModel(parent)
+    , itemMenu(0)
 {
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
     connect(MPDConnection::self(), SIGNAL(playlistInfoRetrieved(const QString &, const QList<Song> &)), this, SLOT(playlistInfoRetrieved(const QString &, const QList<Song> &)));
     connect(this, SIGNAL(listPlaylists()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(this, SIGNAL(playlistInfo(const QString &)), MPDConnection::self(), SLOT(playlistInfo(const QString &)));
+    updateItemMenu();
 }
 
 PlaylistsModel::~PlaylistsModel()
 {
+    itemMenu->deleteLater();
+    itemMenu=0;
 }
 
 QVariant PlaylistsModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const
@@ -61,15 +81,76 @@ QVariant PlaylistsModel::headerData(int /*section*/, Qt::Orientation /*orientati
 //     return QModelIndex();
 // }
 
-int PlaylistsModel::rowCount(const QModelIndex &) const
+int PlaylistsModel::rowCount(const QModelIndex &index) const
 {
-    return items.size();
+    if (!index.isValid()) {
+        return items.size();
+    }
+
+    return static_cast<Playlist *>(index.internalPointer())->songs.count();
+}
+
+QModelIndex PlaylistsModel::parent(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return QModelIndex();
+
+//     const MusicLibraryItem * const childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
+//     MusicLibraryItem * const parentItem = childItem->parent();
+//
+//     if (parentItem == rootItem)
+        return QModelIndex();
+
+//     return createIndex(parentItem->row(), 0, parentItem);
+}
+
+QModelIndex PlaylistsModel::index(int row, int col, const QModelIndex &parent) const
+{
+    if (!hasIndex(row, col, parent))
+        return QModelIndex();
+
+    if (parent.isValid()) {
+        Playlist *pl=static_cast<Playlist *>(parent.internalPointer());
+        return row<pl->songs.count() ? createIndex(row, col, (void *)&pl->songs.at(row)) : QModelIndex();
+    }
+
+    return row<items.count() ? createIndex(row, col, (void *)&items.at(row)) : QModelIndex();
 }
 
 QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
+
+    qWarning() << index.row() << index.parent().row();
+    if (index.parent().isValid()) {
+        Playlist *pl=static_cast<Playlist *>(index.parent().internalPointer());
+
+        if (index.row() >= pl->songs.size())
+            return QVariant();
+
+        const Song &song=pl->songs.at(index.row());
+
+        switch(role) {
+        case Qt::DisplayRole:
+            if (song.track>9) {
+                return QString::number(song.track)+QChar(' ')+song.title;
+            } else if (song.track>0) {
+                return QChar('0')+QString::number(song.track)+QChar(' ')+song.title;
+            }
+        case Qt::ToolTipRole: {
+            QString duration=MPDParseUtils::formatDuration(song.time);
+            if (duration.startsWith(QLatin1String("00:"))) {
+                duration=duration.mid(3);
+            }
+            if (duration.startsWith(QLatin1String("00:"))) {
+                duration=duration.mid(1);
+            }
+            return data(index, Qt::DisplayRole).toString()+QChar('\n')+duration;
+        }
+        default: break;
+        }
+    }
 
     if (index.row() >= items.size())
         return QVariant();
@@ -114,6 +195,7 @@ void PlaylistsModel::clear()
 {
     beginResetModel();
     items=QList<Playlist>();
+    updateItemMenu();
     endResetModel();
 }
 
@@ -143,6 +225,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
     if (diff) {
         beginResetModel();
         items=playlists;
+        updateItemMenu();
     }
     foreach (const Playlist &p, items) {
         emit playlistInfo(p.name);
@@ -151,7 +234,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         endResetModel();
     }
 }
-#include <QtCore/QDebug>
+
 void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song> &songs)
 {
     int index=items.indexOf(Playlist(name));
@@ -173,9 +256,64 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
 //             if (pl.songs.count()) {
 //                 beginRemoveRows(index(
 //             }
+            // TODO!!!!
+            beginResetModel();
             pl.songs=songs;
+            endResetModel();
         }
     } else {
         emit listPlaylists();
     }
 }
+
+static QString qt_strippedText(QString s)
+{
+    s.remove(QString::fromLatin1("..."));
+    int i = 0;
+    while (i < s.size()) {
+        ++i;
+        if (s.at(i - 1) != QLatin1Char('&')) {
+            continue;
+        }
+
+        if (i < s.size() && s.at(i) == QLatin1Char('&')) {
+            ++i;
+        }
+        s.remove(i - 1, 1);
+    }
+    return s.trimmed();
+}
+
+void PlaylistsModel::emitAddToExisting()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+
+    if (act) {
+        emit addToExisting(qt_strippedText(act->text()));
+    }
+}
+
+void PlaylistsModel::updateItemMenu()
+{
+    if (!itemMenu) {
+        itemMenu = new QMenu(0);
+    }
+
+    itemMenu->clear();
+    #ifdef ENABLE_KDE_SUPPORT
+    itemMenu->addAction(QIcon::fromTheme("document-new"), i18n("New Playlist..."), this, SIGNAL(addToNew()));
+    #else
+    itemMenu->addAction(QIcon::fromTheme("document-new"), tr("New Playlist..."), this, SIGNAL(addToNew()));
+    #endif
+
+    QStringList names;
+    foreach (const Playlist &p, items) {
+        names << p.name;
+    }
+    qSort(names);
+    foreach (const QString &n, names) {
+        itemMenu->addAction(n, this, SLOT(emitAddToExisting()));
+    }
+}
+
+

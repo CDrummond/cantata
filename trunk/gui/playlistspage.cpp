@@ -22,6 +22,7 @@
  */
 
 #include "playlistspage.h"
+#include "playlistsmodel.h"
 #include "mpdconnection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
@@ -78,14 +79,14 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     search->setPlaceholderText(tr("Search library..."));
 #endif
     view->setPageDefaults();
-    view->setDragDropMode(QAbstractItemView::NoDragDrop);
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(removePlaylistAction);
     view->addAction(renamePlaylistAction);
 
-    proxy.setSourceModel(&model);
+    proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);
+    connect(view, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
@@ -104,12 +105,12 @@ PlaylistsPage::~PlaylistsPage()
 
 void PlaylistsPage::refresh()
 {
-    model.getPlaylists();
+    PlaylistsModel::self()->getPlaylists();
 }
 
 void PlaylistsPage::clear()
 {
-    model.clear();
+    PlaylistsModel::self()->clear();
 }
 
 void PlaylistsPage::addSelectionToPlaylist()
@@ -117,7 +118,7 @@ void PlaylistsPage::addSelectionToPlaylist()
     const QModelIndexList items = view->selectionModel()->selectedRows();
 
     if (items.size() == 1) {
-        emit loadPlaylist(model.data(proxy.mapToSource(items.first()), Qt::DisplayRole).toString());
+        emit loadPlaylist(PlaylistsModel::self()->data(proxy.mapToSource(items.first()), Qt::DisplayRole).toString());
     }
 }
 
@@ -130,7 +131,7 @@ void PlaylistsPage::removePlaylist()
     }
 
     QModelIndex sourceIndex = proxy.mapToSource(items.first());
-    QString name = model.data(sourceIndex, Qt::DisplayRole).toString();
+    QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
 
     #ifdef ENABLE_KDE_SUPPORT
     if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove <i>%1</i>?").arg(name), i18n("Delete Playlist?"))) {
@@ -155,7 +156,7 @@ void PlaylistsPage::savePlaylist()
     #endif
 
     if (!name.isEmpty()) {
-        if (model.exists(name)) {
+        if (PlaylistsModel::self()->exists(name)) {
             #ifdef ENABLE_KDE_SUPPORT
             if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("A playlist named %1 already exists!<br/>Overwrite?").arg(name), i18n("Overwrite Playlist?"))) {
             #else
@@ -178,7 +179,7 @@ void PlaylistsPage::renamePlaylist()
 
     if (items.size() == 1) {
         QModelIndex sourceIndex = proxy.mapToSource(items.first());
-        QString name = model.data(sourceIndex, Qt::DisplayRole).toString();
+        QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
         #ifdef ENABLE_KDE_SUPPORT
         QString newName = QInputDialog::getText(this, i18n("Rename Playlist"), i18n("Enter new name for playlist: %1").arg(name));
         #else
@@ -186,7 +187,7 @@ void PlaylistsPage::renamePlaylist()
         #endif
 
         if (!newName.isEmpty()) {
-            if (model.exists(newName)) {
+            if (PlaylistsModel::self()->exists(newName)) {
                 #ifdef ENABLE_KDE_SUPPORT
                 if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("A playlist named %1 already exists!<br/>Overwrite?").arg(newName), i18n("Overwrite Playlist?"))) {
                 #else
@@ -204,10 +205,15 @@ void PlaylistsPage::renamePlaylist()
     }
 }
 
+void PlaylistsPage::itemActivated(const QModelIndex &index)
+{
+    view->setExpanded(index, !view->isExpanded(index));
+}
+
 void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
     QModelIndex sourceIndex = proxy.mapToSource(index);
-    QString name = model.data(sourceIndex, Qt::DisplayRole).toString();
+    QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
     emit loadPlaylist(name);
 }
 

@@ -26,7 +26,6 @@
 
 #include "ui_playlistspage.h"
 #include "mainwindow.h"
-#include "playlistsmodel.h"
 #include "playlistsproxymodel.h"
 
 class PlaylistsPage : public QWidget, public Ui::PlaylistsPage
@@ -52,13 +51,13 @@ private Q_SLOTS:
     void removePlaylist();
     void savePlaylist();
     void renamePlaylist();
+    void itemActivated(const QModelIndex &index);
     void itemDoubleClicked(const QModelIndex &index);
     void searchItems();
 
 private:
     Action *removePlaylistAction;
     Action *renamePlaylistAction;
-    PlaylistsModel model;
     PlaylistsProxyModel proxy;
 };
 

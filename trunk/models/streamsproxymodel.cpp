@@ -21,6 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 #include "streamsproxymodel.h"
+#include "streamsmodel.h"
 
 StreamsProxyModel::StreamsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
@@ -29,4 +30,13 @@ StreamsProxyModel::StreamsProxyModel(QObject *parent) : QSortFilterProxyModel(pa
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setSortLocaleAware(true);
     sort(0);
+}
+
+bool StreamsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    StreamsModel::Stream *l=static_cast<StreamsModel::Stream *>(left.internalPointer());
+    StreamsModel::Stream *r=static_cast<StreamsModel::Stream *>(right.internalPointer());
+
+    return l->favorite > r->favorite
+           || (l->favorite==r->favorite && l->name.localeAwareCompare(r->name)<0);
 }

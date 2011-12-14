@@ -247,13 +247,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
 
     addToPlaylistAction = actionCollection()->addAction("addtoplaylist");
-    addToPlaylistAction->setText(i18n("Add To Playlist"));
+    addToPlaylistAction->setText(i18n("Add To Play Queue"));
 
     addToStoredPlaylistAction = actionCollection()->addAction("addtostoredplaylist");
     addToStoredPlaylistAction->setText(i18n("Add To"));
 
     replacePlaylistAction = actionCollection()->addAction("replaceplaylist");
-    replacePlaylistAction->setText(i18n("Replace Playlist"));
+    replacePlaylistAction->setText(i18n("Replace Play Queue"));
 
     removeFromPlaylistAction = actionCollection()->addAction("removefromplaylist");
     removeFromPlaylistAction->setText(i18n("Remove"));
@@ -318,9 +318,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     stopTrackAction = new QAction(tr("Stop"), this);
     increaseVolumeAction = new QAction(tr("Increase Volume"), this);
     decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
-    addToPlaylistAction = new QAction(tr("Add To Playlist"), this);
+    addToPlaylistAction = new QAction(tr("Add To Play Queue"), this);
     addToStoredPlaylistAction = new QAction(tr("Add To"), this);
-    replacePlaylistAction = new QAction(tr("Replace Playlist"), this);
+    replacePlaylistAction = new QAction(tr("Replace Play Queue"), this);
     removeFromPlaylistAction = new QAction(tr("Remove"), this);
     removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
     copySongInfoAction = new QAction(tr("Copy Song Info"), this);

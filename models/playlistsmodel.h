@@ -30,6 +30,7 @@
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QList>
 #include "playlist.h"
+#include "song.h"
 
 class QMenu;
 
@@ -38,26 +39,55 @@ class PlaylistsModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
+    struct Item
+    {
+        virtual bool isPlaylist() = 0;
+        virtual ~Item() { }
+    };
+
+    struct PlaylistItem;
+    struct SongItem : public Item, public Song
+    {
+        SongItem() { }
+        SongItem(const Song &s, PlaylistItem *p=0) : Song(s), parent(p) { }
+        bool isPlaylist() { return false; }
+        PlaylistItem *parent;
+    };
+
+    struct PlaylistItem : public Item, public Playlist
+    {
+        PlaylistItem() : loaded(false) { }
+        PlaylistItem(const Playlist &p) : Playlist(p), loaded(false) { }
+        PlaylistItem(const QString &n) : Playlist(n), loaded(false) { }
+        virtual ~PlaylistItem();
+        bool isPlaylist() { return true; }
+        SongItem * getSong(const Song &song);
+        void clearSongs();
+        bool loaded;
+        QList<SongItem *> songs;
+    };
+
     static PlaylistsModel * self();
 
     PlaylistsModel(QObject *parent = 0);
     ~PlaylistsModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex&) const { return 1; }
     QModelIndex parent(const QModelIndex &index) const;
     QModelIndex index(int row, int col, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
     void getPlaylists();
     void clear();
-    bool exists(const QString &n) const;
+    bool exists(const QString &n) { return 0!=getPlaylist(n); }
 
     QMenu * menu() { return itemMenu; }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void listPlaylists();
-    void playlistInfo(const QString &name);
+    void playlistInfo(const QString &name) const;
 
     void addToNew();
     void addToExisting(const QString &name);
@@ -69,9 +99,11 @@ private Q_SLOTS:
 
 private:
     void updateItemMenu();
+    PlaylistItem * getPlaylist(const QString &name);
+    void clearPlaylists();
 
 private:
-    QList<Playlist> items;
+    QList<PlaylistItem *> items;
     QMenu *itemMenu;
 };
 

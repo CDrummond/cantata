@@ -295,7 +295,7 @@ void LibraryPage::setLevel(int level, const MusicLibraryItem *i)
     switch(level) {
     default:
     case 0:
-        searchList->setPlaceholderText(i18n("Search artists..."));
+        searchList->setPlaceholderText(i18n("Search library..."));
         break;
     case 1:
         if (i) {
@@ -316,7 +316,7 @@ void LibraryPage::setLevel(int level, const MusicLibraryItem *i)
     switch(level) {
     default:
     case 0:
-        searchList->setPlaceholderText(tr("Search artists..."));
+        searchList->setPlaceholderText(tr("Search library..."));
         break;
     case 1:
         if (i) {
@@ -505,7 +505,7 @@ void LibraryPage::searchItems()
 {
     QString text=usingTreeView ? searchTree->text() : searchList->text();
     proxy.setFilterGenre(0==genreCombo->currentIndex() ? QString() : genreCombo->currentText());
-    proxy.setFilterField(usingTreeView ? 3 : currentLevel);
+//     proxy.setFilterField(usingTreeView ? 3 : currentLevel);
     proxy.setFilterRegExp(text);
 }
 

@@ -109,6 +109,9 @@ public:
                 if (childText.startsWith(QLatin1String("00:"))) {
                     childText=childText.mid(3);
                 }
+                if (childText.startsWith(QLatin1String("00:"))) {
+                    childText=childText.mid(1);
+                }
                 break;
             case MusicLibraryItem::Type_Album:
                 pix=static_cast<MusicLibraryItemAlbum *>(item)->cover();

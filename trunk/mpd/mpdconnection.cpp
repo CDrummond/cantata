@@ -766,9 +766,9 @@ void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
 
     if (!sendCommand(data).ok && ui) {
         #ifdef ENABLE_KDE_SUPPORT
-        QString message=i18n("Sorry, failed to rename <i>%1</i> to <i>%2</i>").arg(oldName).arg(newName);
+        QString message=i18n("Sorry, failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName);
         #else
-        QString message=tr("Sorry, failed to rename <i>%1</i> to <i>%2</i>").arg(oldName).arg(newName);
+        QString message=tr("Sorry, failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName);
         #endif
         QMetaObject::invokeMethod(ui, "showError", Qt::QueuedConnection, Q_ARG(QString, message));
     }
@@ -791,9 +791,9 @@ void MPDConnection::savePlaylist(QString name)
 
     if (!sendCommand(data).ok && ui) {
         #ifdef ENABLE_KDE_SUPPORT
-        QString message=i18n("Sorry, failed to save <i>%1</i>").arg(name);
+        QString message=i18n("Sorry, failed to save <b>%1</b>").arg(name);
         #else
-        QString message=tr("Sorry, failed to save <i>%1</i>").arg(name);
+        QString message=tr("Sorry, failed to save <b>%1</b>").arg(name);
         #endif
         QMetaObject::invokeMethod(ui, "showError", Qt::QueuedConnection, Q_ARG(QString, message));
     }

@@ -179,9 +179,9 @@ void StreamsPage::importXml()
 
     if (!model.import(fileName)) {
         #ifdef ENABLE_KDE_SUPPORT
-        KMessageBox::error(this, i18n("Failed to import <i>%1</i>!<br/>Please check this is of the correct type.", fileName));
+        KMessageBox::error(this, i18n("Failed to import <b>%1</b>!<br/>Please check this is of the correct type.", fileName));
         #else
-        QMessageBox::critical(this, tr("Error"), tr("Failed to import <i>%1</i>!<br/>Please check this is of the correct type.").arg(fileName));
+        QMessageBox::critical(this, tr("Error"), tr("Failed to import <b>%1</b>!<br/>Please check this is of the correct type.").arg(fileName));
         #endif
     }
 }
@@ -200,9 +200,9 @@ void StreamsPage::exportXml()
 
     if (!model.save(fileName)) {
         #ifdef ENABLE_KDE_SUPPORT
-        KMessageBox::error(this, i18n("Failed to create <i>%1</i>!", fileName));
+        KMessageBox::error(this, i18n("Failed to create <b>%1</b>!", fileName));
         #else
-        QMessageBox::critical(this, tr("Error"), tr("Failed to create <i>%1</i>!").arg(fileName));
+        QMessageBox::critical(this, tr("Error"), tr("Failed to create <b>%1</b>!").arg(fileName));
         #endif
     }
 }
@@ -218,18 +218,18 @@ void StreamsPage::add()
         QString existing=model.name(url);
         if (!existing.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("Stream already exists!<br/><i>%1</i>", existing));
+            KMessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>", existing));
             #else
-            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><i>%1</i>").arg(existing));
+            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><b>%1</b>").arg(existing));
             #endif
             return;
         }
 
         if (!model.add(name, url, dlg.favorite())) {
             #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("A stream named <i>%1</i> already exists!", name));
+            KMessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", name));
             #else
-            QMessageBox::critical(this, tr("Error"), tr("A stream named <i>%1</i> already exists!").arg(name));
+            QMessageBox::critical(this, tr("Error"), tr("A stream named <b>%1</b> already exists!").arg(name));
             #endif
         }
     }
@@ -250,14 +250,14 @@ void StreamsPage::remove()
     QString firstName=model.data(firstIndex, Qt::DisplayRole).toString();
     #ifdef ENABLE_KDE_SUPPORT
     if (KMessageBox::No==KMessageBox::warningYesNo(this, selected.size()>1 ? i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
-                                                                           : i18n("Are you sure you wish to remove <i>%1</i>?").arg(firstName),
+                                                                           : i18n("Are you sure you wish to remove <b>%1</b>?").arg(firstName),
                                                    selected.size()>1 ? i18n("Remove Streams?") : i18n("Remove Stream?"))) {
         return;
     }
     #else
     if (QMessageBox::No==QMessageBox::warning(this, selected.size()>1 ? tr("Remove Streams?") : tr("Remove Stream?"),
                                               selected.size()>1 ? tr("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
-                                                                : tr("Are you sure you wish to remove <i>%1</i>?").arg(firstName),
+                                                                : tr("Are you sure you wish to remove <b>%1</b>?").arg(firstName),
                                               QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
         return;
     }
@@ -296,15 +296,15 @@ void StreamsPage::edit()
 //
         if (!existingNameForUrl.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("Stream already exists!<br/><i>%1</i>", existingNameForUrl));
+            KMessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>", existingNameForUrl));
             #else
-            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><i>%1</i>").arg(existingNameForUrl));
+            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><b>%1</b>").arg(existingNameForUrl));
             #endif
         } else if (newName!=name && model.entryExists(newName)) {
             #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("A stream named <i>%1</i> already exists!", newName));
+            KMessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", newName));
             #else
-            QMessageBox::critical(this, tr("Error"), tr("A stream named <i>%1</i> already exists!").arg(newName));
+            QMessageBox::critical(this, tr("Error"), tr("A stream named <b>%1</b> already exists!").arg(newName));
             #endif
         } else {
             model.edit(index, newName, newUrl, dlg.favorite());

@@ -76,7 +76,7 @@ private:
     Action *homeAction;
     int currentLevel;
     bool usingTreeView;
-    QString prevSearch;
+//     QString prevSearch;
     QModelIndex prevTopIndex;
     MusicLibraryModel model;
     MusicLibraryProxyModel proxy;

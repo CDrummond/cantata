@@ -71,116 +71,118 @@ QVariant PlaylistsModel::headerData(int /*section*/, Qt::Orientation /*orientati
     return QVariant();
 }
 
-// QModelIndex PlaylistsModel::index(int row, int column, const QModelIndex &parent) const
-// {
-//     Q_UNUSED(parent)
-//
-//     if(row<items.count())
-//         return createIndex(row, column, (void *)&items.at(row));
-//
-//     return QModelIndex();
-// }
-
 int PlaylistsModel::rowCount(const QModelIndex &index) const
 {
     if (!index.isValid()) {
         return items.size();
     }
 
-    return static_cast<Playlist *>(index.internalPointer())->songs.count();
+    Item *item=static_cast<Item *>(index.internalPointer());
+    if (item->isPlaylist()) {
+        PlaylistItem *pl=static_cast<PlaylistItem *>(index.internalPointer());
+        if (!pl->loaded) {
+            pl->loaded=true;
+            emit playlistInfo(pl->name);
+        }
+        return pl->songs.count();
+    }
+    return 0;
+    //return item->isPlaylist() ? static_cast<PlaylistItem *>(item)->songs.count() : 0;
+}
+
+bool PlaylistsModel::hasChildren(const QModelIndex &parent) const
+{
+    return !parent.isValid() || static_cast<Item *>(parent.internalPointer())->isPlaylist();
 }
 
 QModelIndex PlaylistsModel::parent(const QModelIndex &index) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return QModelIndex();
+    }
 
-//     const MusicLibraryItem * const childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
-//     MusicLibraryItem * const parentItem = childItem->parent();
-//
-//     if (parentItem == rootItem)
+    Item *item=static_cast<Item *>(index.internalPointer());
+
+    if(item->isPlaylist())
         return QModelIndex();
+    else
+    {
+        SongItem *song=static_cast<SongItem *>(item);
 
-//     return createIndex(parentItem->row(), 0, parentItem);
+        if (song->parent) {
+            return createIndex(items.indexOf(song->parent), 0, song->parent);
+        }
+    }
+
+    return QModelIndex();
 }
 
 QModelIndex PlaylistsModel::index(int row, int col, const QModelIndex &parent) const
 {
-    if (!hasIndex(row, col, parent))
+    if (!hasIndex(row, col, parent)) {
         return QModelIndex();
-
-    if (parent.isValid()) {
-        Playlist *pl=static_cast<Playlist *>(parent.internalPointer());
-        return row<pl->songs.count() ? createIndex(row, col, (void *)&pl->songs.at(row)) : QModelIndex();
     }
 
-    return row<items.count() ? createIndex(row, col, (void *)&items.at(row)) : QModelIndex();
+    if (parent.isValid()) {
+        Item *p=static_cast<Item *>(parent.internalPointer());
+
+        if (p->isPlaylist()) {
+            PlaylistItem *pl=static_cast<PlaylistItem *>(p);
+            return row<pl->songs.count() ? createIndex(row, col, pl->songs.at(row)) : QModelIndex();
+        }
+    }
+
+    return row<items.count() ? createIndex(row, col, items.at(row)) : QModelIndex();
 }
 
 QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return QVariant();
+    }
 
-    qWarning() << index.row() << index.parent().row();
-    if (index.parent().isValid()) {
-        Playlist *pl=static_cast<Playlist *>(index.parent().internalPointer());
+    Item *item=static_cast<Item *>(index.internalPointer());
 
-        if (index.row() >= pl->songs.size())
-            return QVariant();
-
-        const Song &song=pl->songs.at(index.row());
+    if (item->isPlaylist()) {
+        PlaylistItem *pl=static_cast<PlaylistItem *>(item);
 
         switch(role) {
         case Qt::DisplayRole:
-            if (song.track>9) {
-                return QString::number(song.track)+QChar(' ')+song.title;
-            } else if (song.track>0) {
-                return QChar('0')+QString::number(song.track)+QChar(' ')+song.title;
-            }
-        case Qt::ToolTipRole: {
-            QString duration=MPDParseUtils::formatDuration(song.time);
-            if (duration.startsWith(QLatin1String("00:"))) {
-                duration=duration.mid(3);
-            }
-            if (duration.startsWith(QLatin1String("00:"))) {
-                duration=duration.mid(1);
-            }
-            return data(index, Qt::DisplayRole).toString()+QChar('\n')+duration;
-        }
+            return pl->name;
+        case Qt::ToolTipRole:
+            return 0==pl->songs.count()
+                ? pl->name
+                :
+                    #ifdef ENABLE_KDE_SUPPORT
+                    i18np("%1\n1 Song", "%1\n%2 Songs", pl->name, pl->songs.count());
+                    #else
+                    (pl->songs.count()>1
+                        ? tr("%1\n%2 Songs").arg(pl->name).arg(pl->songs.count())
+                        : tr("%1\n1 Song").arg(pl->name);
+                    #endif
         default: break;
         }
-    }
+    } else {
+        SongItem *s=static_cast<SongItem *>(item);
 
-    if (index.row() >= items.size())
-        return QVariant();
+        if (Qt::DisplayRole==role || Qt::ToolTipRole==role) {
+            QString text=s->title.isEmpty() ? s->file : s->title;
 
-    const Playlist &pl=items.at(index.row());
-
-    switch(role) {
-    case Qt::DisplayRole: return pl.name;
-    case Qt::ToolTipRole:
-        return 0==pl.songs.count()
-            ? pl.name
-            :
-                #ifdef ENABLE_KDE_SUPPORT
-                i18np("%1\n1 Song", "%1\n%2 Songs", pl.name, pl.songs.count());
-                #else
-                (pl.songs.count()>1
-                    ? tr("%1\n%2 Songs").arg(pl.name).arg(pl.songs.count())
-                    : tr("%1\n1 Song").arg(pl.name);
-                #endif
-#if 0
-            QString duration=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
-            if (duration.startsWith(QLatin1String("00:"))) {
-                duration=duration.mid(3);
+            if (!s->title.isEmpty()) {
+                text=s->artist+QLatin1String(" - ")+text;
+                if (Qt::ToolTipRole==role) {
+                    QString duration=MPDParseUtils::formatDuration(s->time);
+                    if (duration.startsWith(QLatin1String("00:"))) {
+                        duration=duration.mid(3);
+                    }
+                    if (duration.startsWith(QLatin1String("00:"))) {
+                        duration=duration.mid(1);
+                    }
+                    text=text+QChar('\n')+duration;
+                }
             }
-            if (duration.startsWith(QLatin1String("00:"))) {
-                duration=duration.mid(1);
-            }
-            return song.name+!Char('\n')+duration;
-#endif
-    default: break;
+            return text;
+        }
     }
 
     return QVariant();
@@ -194,20 +196,9 @@ void PlaylistsModel::getPlaylists()
 void PlaylistsModel::clear()
 {
     beginResetModel();
-    items=QList<Playlist>();
+    clearPlaylists();
     updateItemMenu();
     endResetModel();
-}
-
-bool PlaylistsModel::exists(const QString &n) const
-{
-    foreach (const Playlist &p, items) {
-        if (p.name==n) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
@@ -216,7 +207,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 
     if (!diff) {
         foreach (const Playlist &p, playlists) {
-            if (!items.contains(p)) {
+            if (!getPlaylist(p.name)) {
                 diff=true;
                 break;
             }
@@ -224,11 +215,11 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
     }
     if (diff) {
         beginResetModel();
-        items=playlists;
+        clearPlaylists();
+        foreach (const Playlist &p, playlists) {
+            items.append(new PlaylistItem(p));
+        }
         updateItemMenu();
-    }
-    foreach (const Playlist &p, items) {
-        emit playlistInfo(p.name);
     }
     if (diff) {
         endResetModel();
@@ -237,15 +228,14 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 
 void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song> &songs)
 {
-    int index=items.indexOf(Playlist(name));
+    PlaylistItem *pl=getPlaylist(name);
 
-    if (index>=0 && index<items.count()) {
-        Playlist &pl=items[index];
-        bool diff=songs.count()!=pl.songs.count();
+    if (pl) {
+        bool diff=songs.count()!=pl->songs.count();
 
         if (!diff) {
             foreach (const Song &s, songs) {
-                if (-1!=pl.songs.indexOf(s)) {
+                if (!pl->getSong(s)) {
                     diff=true;
                     break;
                 }
@@ -253,12 +243,11 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
         }
 
         if (diff) {
-//             if (pl.songs.count()) {
-//                 beginRemoveRows(index(
-//             }
-            // TODO!!!!
             beginResetModel();
-            pl.songs=songs;
+            pl->clearSongs();
+            foreach (const Song &s, songs) {
+                pl->songs.append(new SongItem(s, pl));
+            }
             endResetModel();
         }
     } else {
@@ -307,8 +296,8 @@ void PlaylistsModel::updateItemMenu()
     #endif
 
     QStringList names;
-    foreach (const Playlist &p, items) {
-        names << p.name;
+    foreach (const PlaylistItem *p, items) {
+        names << p->name;
     }
     qSort(names);
     foreach (const QString &n, names) {
@@ -316,4 +305,41 @@ void PlaylistsModel::updateItemMenu()
     }
 }
 
+PlaylistsModel::PlaylistItem * PlaylistsModel::getPlaylist(const QString &name)
+{
+    foreach (PlaylistItem *p, items) {
+        if (p->name==name) {
+            return p;
+        }
+    }
 
+    return 0;
+}
+
+void PlaylistsModel::clearPlaylists()
+{
+    qDeleteAll(items);
+    items.clear();
+}
+
+PlaylistsModel::PlaylistItem::~PlaylistItem()
+{
+    clearSongs();
+}
+
+void PlaylistsModel::PlaylistItem::clearSongs()
+{
+    qDeleteAll(songs);
+    songs.clear();
+}
+
+PlaylistsModel::SongItem * PlaylistsModel::PlaylistItem::getSong(const Song &song)
+{
+    foreach (SongItem *s, songs) {
+        if (*s==song) {
+            return s;
+        }
+    }
+
+    return 0;
+}

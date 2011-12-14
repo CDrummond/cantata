@@ -29,7 +29,6 @@
 
 #include <QDateTime>
 #include <QString>
-#include "song.h"
 
 struct Playlist
 {
@@ -46,14 +45,12 @@ struct Playlist
     {
         name=o.name;
         lastModified=o.lastModified;
-        songs=o.songs;
         return *this;
     }
 
     virtual ~Playlist() { }
 
     QString name;
-    QList<Song> songs;
     QDateTime lastModified;
 };
 

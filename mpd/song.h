@@ -30,9 +30,8 @@
 
 #include <QString>
 
-class Song
+struct Song
 {
-public:
     qint32 id;
     QString file;
     quint32 time;

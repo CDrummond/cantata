@@ -53,6 +53,7 @@ private Q_SLOTS:
     void renamePlaylist();
     void itemActivated(const QModelIndex &index);
     void itemDoubleClicked(const QModelIndex &index);
+    void selectionChanged();
     void searchItems();
 
 private:

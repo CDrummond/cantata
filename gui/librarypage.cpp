@@ -33,6 +33,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionViewItem>
 #include <QtGui/QPainter>
+#include <QtCore/QTimer>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
@@ -336,6 +337,7 @@ void LibraryPage::setLevel(int level, const MusicLibraryItem *i)
         break;
     }
 #endif
+    view()->selectionModel()->clearSelection();
 }
 
 QAbstractItemView * LibraryPage::view()

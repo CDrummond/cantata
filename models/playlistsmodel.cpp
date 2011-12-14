@@ -32,6 +32,7 @@
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdconnection.h"
+#include "mainwindow.h"
 
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -80,7 +81,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole: return pl.name;
     case Qt::ToolTipRole:
         return 0==pl.songs.count()
-            ? items.at(index.row()).name
+            ? pl.name
             :
                 #ifdef ENABLE_KDE_SUPPORT
                 i18np("%1\n1 Song", "%1\n%2 Songs", pl.name, pl.songs.count());
@@ -89,6 +90,16 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     ? tr("%1\n%2 Songs").arg(pl.name).arg(pl.songs.count())
                     : tr("%1\n1 Song").arg(pl.name);
                 #endif
+#if 0
+            QString duration=MainWindow::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
+            if (duration.startsWith(QLatin1String("00:"))) {
+                duration=duration.mid(3);
+            }
+            if (duration.startsWith(QLatin1String("00:"))) {
+                duration=duration.mid(1);
+            }
+            return song.name+!Char('\n')+duration;
+#endif
     default: break;
     }
 

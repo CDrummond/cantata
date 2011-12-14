@@ -95,6 +95,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void setPlaylists(const QList<Playlist> &playlists);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
+    void removedFromPlaylist(const QString &name, const QList<int> &positions);
     void emitAddToExisting();
 
 private:

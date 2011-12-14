@@ -2,11 +2,14 @@
    - Allow drag-n-drop within playlist
        - Within a playlist = move
        - To another playlist = insert
-   - Allow to remove from playlist
    - Need to support drag and drop to/from playing playlist!
    - Lazy loading of playlist contents - this is not 100%
 
+* Streams - remove beginResetModel() usagfe - need to be using beingInsert, etc.
+
 * USE TRACK NOT SONG!!!!
+
+* USE BOLD TEXT, NOT ITALIC in message boxes
 
 * Add next/prev provider buttons to lyrics page - so that can try others.
 

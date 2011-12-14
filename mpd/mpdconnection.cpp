@@ -141,7 +141,7 @@ bool MPDConnection::connectToMPD(QTcpSocket &socket, bool enableIdle)
             recvdata.clear();
 
             if (!password.isEmpty()) {
-                qWarning("MPDConnection: setting password...");
+                qDebug("MPDConnection: setting password...");
                 QByteArray senddata = "password ";
                 senddata += password.toUtf8();
                 senddata += "\n";
@@ -326,7 +326,7 @@ void MPDConnection::move(quint32 from, quint32 to)
 {
     QByteArray send = "move " + QByteArray::number(from) + " " + QByteArray::number(to);
 
-    qWarning() << send;
+    qDebug() << send;
     if (!sendCommand(send).ok) {
         qDebug("Couldn't move files around in playlist");
     }
@@ -649,7 +649,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
         } else if (line == "OK" || line.startsWith("OK MPD ") || line.isEmpty()) {
             ;
         } else {
-            qWarning() << "Unknown command in idle return: " << line;
+            qDebug() << "Unknown command in idle return: " << line;
         }
     }
 }
@@ -836,18 +836,19 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<int> &po
 
     qSort(sorted);
     QList<int> fixedPositions;
+    QMap<int, int> map;
+
     for (int i=0; i<sorted.count(); ++i) {
         fixedPositions << (sorted.at(i)-i);
     }
     QList<int> removed;
-    QMap<int, int> map;
-    foreach (int pos, fixedPositions) {
+    for (int i=0; i<fixedPositions.count(); ++i) {
         QByteArray data = "playlistdelete ";
         data += "\"" + encodedName + "\"";
         data += " ";
-        data += QByteArray::number(pos);
+        data += QByteArray::number(fixedPositions.at(i));
         if (sendCommand(data).ok) {
-            removed << map[pos];
+            removed << sorted.at(i);
         } else {
             break;
         }

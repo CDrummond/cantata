@@ -146,8 +146,6 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    static QString formatDuration(const quint32 totalseconds);
-
 protected:
     void closeEvent(QCloseEvent *event);
 

@@ -281,18 +281,18 @@ void LibraryPage::setView(bool tree)
 
 void LibraryPage::setLevel(int level, const MusicLibraryItem *i)
 {
-    int cLevel=currentLevel;
+//     int cLevel=currentLevel;
     currentLevel=level;
 
     backAction->setEnabled(0!=level);
     homeAction->setEnabled(0!=level);
-    if (level>cLevel) {
-        prevSearch=searchList->text();
-        searchList->setText(QString());
-    } else {
-        searchList->setText(prevSearch);
-        prevSearch=QString();
-    }
+//     if (level>cLevel) {
+//         prevSearch=searchList->text();
+//         searchList->setText(QString());
+//     } else {
+//         searchList->setText(prevSearch);
+//         prevSearch=QString();
+//     }
 #ifdef ENABLE_KDE_SUPPORT
     switch(level) {
     default:
@@ -438,8 +438,8 @@ void LibraryPage::homeActivated()
 
     setLevel(0);
     listView->setRootIndex(QModelIndex());
-    prevSearch=QString();
-    searchList->setText(prevSearch);
+//     prevSearch=QString();
+//     searchList->setText(prevSearch);
 }
 
 void LibraryPage::backActivated()

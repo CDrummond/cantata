@@ -23,6 +23,7 @@
 
 #include "librarypage.h"
 #include "mpdconnection.h"
+#include "mpdparseutils.h"
 #include "covers.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
@@ -106,7 +107,7 @@ public:
                 break;
             case MusicLibraryItem::Type_Song:
                 pix=QIcon::fromTheme("audio-x-generic").pixmap(imageSize, imageSize);
-                childText=MainWindow::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
+                childText=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
                 if (childText.startsWith(QLatin1String("00:"))) {
                     childText=childText.mid(3);
                 }

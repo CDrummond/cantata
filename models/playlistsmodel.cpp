@@ -32,7 +32,6 @@
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdconnection.h"
-#include "mainwindow.h"
 
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -91,7 +90,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     : tr("%1\n1 Song").arg(pl.name);
                 #endif
 #if 0
-            QString duration=MainWindow::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
+            QString duration=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
             if (duration.startsWith(QLatin1String("00:"))) {
                 duration=duration.mid(3);
             }

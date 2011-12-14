@@ -32,7 +32,7 @@
 #include "playlisttablemodel.h"
 #include "settings.h"
 #include "config.h"
-#include "mainwindow.h"
+#include "mpdparseutils.h"
 #include <QCommonStyle>
 #include <QFile>
 #include <QXmlStreamReader>
@@ -45,6 +45,7 @@
 #include <QStringList>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
+#include <KDE/KLocale>
 #endif
 
 QString MusicLibraryModel::cacheDir(const QString &sub, bool create)
@@ -195,7 +196,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                         : tr("%1\n1 Song").arg(item->data(index.column()).toString());
                     #endif
         case MusicLibraryItem::Type_Song: {
-            QString duration=MainWindow::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
+            QString duration=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
             if (duration.startsWith(QLatin1String("00:"))) {
                 duration=duration.mid(3);
             }

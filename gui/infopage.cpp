@@ -25,7 +25,7 @@
 #include "mpdconnection.h"
 #include "mpdstats.h"
 #include "mainwindow.h"
-
+#include "mpdparseutils.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
@@ -74,9 +74,9 @@ void InfoPage::clear()
 
 void InfoPage::statsUpdated()
 {
-    uptime->setText(MainWindow::formatDuration(MPDStats::self()->uptime()));
-    timePlaying->setText(MainWindow::formatDuration(MPDStats::self()->playtime()));
-    totalDuration->setText(MainWindow::formatDuration(MPDStats::self()->dbPlaytime()));
+    uptime->setText(MPDParseUtils::formatDuration(MPDStats::self()->uptime()));
+    timePlaying->setText(MPDParseUtils::formatDuration(MPDStats::self()->playtime()));
+    totalDuration->setText(MPDParseUtils::formatDuration(MPDStats::self()->dbPlaytime()));
     artists->setText(QString::number(MPDStats::self()->artists()));
     album->setText(QString::number(MPDStats::self()->albums()));
     songs->setText(QString::number(MPDStats::self()->songs()));

@@ -24,12 +24,12 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QPalette>
-#include <QModelIndex>
-#include <QStringListModel>
-#include <QMimeData>
-#include <QSet>
-#include <QUrl>
+#include <QtGui/QPalette>
+#include <QtCore/QModelIndex>
+#include <QtCore/QMimeData>
+#include <QtCore/QTextStream>
+#include <QtCore/QSet>
+#include <QtCore/QUrl>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -41,6 +41,30 @@
 
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
+
+void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStringList &values)
+{
+    QByteArray encodedData;
+    QTextStream stream(&encodedData, QIODevice::WriteOnly);
+
+    foreach (const QString &v, values) {
+        stream << v << endl;
+    }
+
+    mimeData.setData(mime, encodedData);
+}
+
+QStringList PlayQueueModel::decode(const QMimeData &mimeData, const QString &mime, bool rev)
+{
+    QByteArray encodedData=mimeData.data(mime);
+    QTextStream stream(&encodedData, QIODevice::ReadOnly);
+    QStringList rv;
+
+    while (!stream.atEnd()) {
+        rev ? rv.prepend(stream.readLine().remove('\n')) : rv.append(stream.readLine().remove('\n'));
+    }
+    return rv;
+}
 
 PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractTableModel(parent),
@@ -201,11 +225,8 @@ QStringList PlayQueueModel::mimeTypes() const
 QMimeData *PlayQueueModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    QByteArray encodedData;
-
-    QDataStream stream(&encodedData, QIODevice::WriteOnly);
+    QStringList positions;
     QStringList filenames;
-    QList<int> ids;
     /*
      * Loop over all our indexes. However we have rows*columns indexes
      * We pack per row so ingore the columns
@@ -216,22 +237,14 @@ QMimeData *PlayQueueModel::mimeData(const QModelIndexList &indexes) const
             if (rows.contains(index.row()))
                 continue;
 
-            QString text = QString::number(getPosByRow(index.row()));
-            stream << text;
+            positions.append(QString::number(getPosByRow(index.row())));
             rows.append(index.row());
-            filenames << songs.at(index.row()).file;
-            ids << songs.at(index.row()).id;
+            filenames.append(songs.at(index.row()).file);
         }
     }
 
-    mimeData->setData(constMoveMimeType, encodedData);
-
-    QByteArray filenamesEncodedData;
-    QDataStream filenamesStream(&filenamesEncodedData, QIODevice::WriteOnly);
-    for (int i = filenames.size() - 1; i >= 0; i--) {
-        filenamesStream << filenames.at(i);
-    }
-    mimeData->setData(constFileNameMimeType, filenamesEncodedData);
+    encode(*mimeData, constMoveMimeType, positions);
+    encode(*mimeData, constFileNameMimeType, filenames);
 
     return mimeData;
 }
@@ -256,14 +269,11 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
 
     if (data->hasFormat(constMoveMimeType)) {
         //Act on internal moves
-        QByteArray encodedData = data->data(constMoveMimeType);
-        QDataStream stream(&encodedData, QIODevice::ReadOnly);
+        QStringList positions=decode(*data, constMoveMimeType);
         QList<quint32> items;
 
-        while (!stream.atEnd()) {
-            QString text;
-            stream >> text;
-            items.append(text.toUInt());
+        foreach (const QString &s, positions) {
+            items.append(s.toUInt());
         }
 
         if (row < 0) {
@@ -275,17 +285,7 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         return true;
     } else if (data->hasFormat(constFileNameMimeType)) {
         //Act on moves from the music library and dir view
-        QByteArray encodedData = data->data(constFileNameMimeType);
-        QDataStream stream(&encodedData, QIODevice::ReadOnly);
-        QStringList filenames;
-
-        while (!stream.atEnd()) {
-            QString text;
-            stream >> text;
-            filenames << text;
-        }
-
-        addItems(filenames, row);
+        addItems(decode(*data, constFileNameMimeType, true), row);
         return true;
     }
 

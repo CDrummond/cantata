@@ -483,9 +483,6 @@ Qt::ItemFlags MusicLibraryModel::flags(const QModelIndex &index) const
 QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    QByteArray encodedData;
-
-    QDataStream stream(&encodedData, QIODevice::WriteOnly);
     QStringList filenames;
 
     foreach(QModelIndex index, indexes) {
@@ -510,10 +507,6 @@ QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
         }
     }
 
-    for (int i = filenames.size() - 1; i >= 0; i--) {
-        stream << filenames.at(i);
-    }
-
-    mimeData->setData(PlayQueueModel::constFileNameMimeType, encodedData);
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames);
     return mimeData;
 }

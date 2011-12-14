@@ -57,7 +57,7 @@ public:
 
 public Q_SLOTS:
     void setDetails(const QString &host, quint16 port, const QString &pass);
-    // Playlist
+    // Current Playlist
     void add(const QStringList &files);
     void addid(const QStringList &files, quint32 pos, quint32 size);
     void currentSong();
@@ -105,10 +105,14 @@ public Q_SLOTS:
     // Playlists
     void listPlaylist();
     void listPlaylists();
-    void load(QString name);
-    void rename(const QString oldName, const QString newName);
-    void rm(QString name);
-    void save(QString name);
+    void playlistInfo(const QString &name);
+    void loadPlaylist(QString name);
+    void renamePlaylist(const QString oldName, const QString newName);
+    void removePlaylist(QString name);
+    void savePlaylist(QString name);
+    void addToPlaylist(const QString &name, const QString &song);
+    void removeFromPlaylist(const QString &name, int pos);
+    void moveInPlaylist(const QString &name, int id, int pos);
 
     void setUi(QObject *u) { ui=u; }
 
@@ -124,8 +128,12 @@ Q_SIGNALS:
     void musicLibraryUpdated(MusicLibraryItemRoot * root, QDateTime db_update);
     void dirViewUpdated(DirViewItemRoot * root);
     void playlistsRetrieved(const QList<Playlist> &data);
+    void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
+    void addedToPlaylist(const QString &name, const QString &song);
+    void removedFromPlaylist(const QString &name, int pos);
+    void movedInPlaylist(const QString &name, int id, int pos);
     void databaseUpdated();
-    void loaded(const QString &playlist);
+    void playlistLoaded(const QString &playlist);
     void added(const QStringList &files);
     void replayGain(const QString &);
     void version(long);

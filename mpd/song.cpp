@@ -61,6 +61,11 @@ Song & Song::operator=(const Song &s)
     return *this;
 }
 
+bool Song::operator==(const Song &o) const
+{
+    return id==o.id;
+}
+
 bool Song::isEmpty() const
 {
     return

@@ -149,10 +149,15 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         return *theDefaultIcon;
     }
     case Qt::DisplayRole:
-    case Qt::ToolTipRole:
         return items.at(index.row()).name;
+    case Qt::ToolTipRole:
+        return items.at(index.row()).album+'\n'+items.at(index.row()).artist;
     case Qt::UserRole:
         return items.at(index.row()).files;
+    case Qt::UserRole+1:
+        return items.at(index.row()).artist;
+    case Qt::UserRole+2:
+        return items.at(index.row()).album;
     case Qt::SizeHintRole:
         if (!itemSize.isNull()) {
             return itemSize;
@@ -247,6 +252,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     if (changed) {
         beginResetModel();
         endResetModel();
+        emit updated();
     }
 }
 

@@ -24,17 +24,17 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYLISTTABLEPROXYMODEL_H
-#define PLAYLISTTABLEPROXYMODEL_H
+#ifndef PLAYQUEUEPROXYMODEL_H
+#define PLAYQUEUEPROXYMODEL_H
 
 #include <QSortFilterProxyModel>
 
-class PlaylistTableProxyModel : public QSortFilterProxyModel
+class PlayQueueProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 
 public:
-    PlaylistTableProxyModel(QObject *parent = 0);
+    PlayQueueProxyModel(QObject *parent = 0);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
     QMimeData *mimeData(const QModelIndexList &indexes) const;

@@ -518,23 +518,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
     connect(this, SIGNAL(setDetails(const QString &, quint16, const QString &)), MPDConnection::self(), SLOT(setDetails(const QString &, quint16, const QString &)));
 
-    connect(&playlistModel, SIGNAL(filesAddedInPlaylist(const QStringList, quint32, quint32)),
+    connect(&playQueueModel, SIGNAL(filesAddedInPlaylist(const QStringList, quint32, quint32)),
             MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32)));
-    connect(&playlistModel, SIGNAL(moveInPlaylist(const QList<quint32> &, quint32, quint32)),
+    connect(&playQueueModel, SIGNAL(moveInPlaylist(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
-    connect(&playlistModel, SIGNAL(playListStatsUpdated()), this,
+    connect(&playQueueModel, SIGNAL(playListStatsUpdated()), this,
             SLOT(updatePlayListStatus()));
 
-    playlistProxyModel.setSourceModel(&playlistModel);
-    playlistTableView->setModel(&playlistProxyModel);
-    playlistTableView->setAcceptDrops(true);
-    playlistTableView->setDropIndicatorShown(true);
-    playlistTableView->addAction(removeFromPlaylistAction);
-    playlistTableView->addAction(clearPlaylistAction);
-    playlistTableView->addAction(cropPlaylistAction);
-    playlistTableView->addAction(shufflePlaylistAction);
-    playlistTableView->addAction(copyTrackInfoAction);
-    connect(playlistTableView, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
+    playQueueProxyModel.setSourceModel(&playQueueModel);
+    playQueue->setModel(&playQueueProxyModel);
+    playQueue->setAcceptDrops(true);
+    playQueue->setDropIndicatorShown(true);
+    playQueue->addAction(removeFromPlaylistAction);
+    playQueue->addAction(clearPlaylistAction);
+    playQueue->addAction(cropPlaylistAction);
+    playQueue->addAction(shufflePlaylistAction);
+    playQueue->addAction(copyTrackInfoAction);
+    connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
     setupPlaylistView();
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated()), this, SLOT(updateStats()));
@@ -563,7 +563,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(consumePlaylistAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setConsume(bool)));
     connect(searchPlaylistLineEdit, SIGNAL(returnPressed()), this, SLOT(searchPlaylist()));
     connect(searchPlaylistLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchPlaylist()));
-    connect(playlistTableView, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistItemActivated(const QModelIndex &)));
+    connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistItemActivated(const QModelIndex &)));
     connect(addToPlaylistAction, SIGNAL(activated()), this, SLOT(addToPlaylist()));
     connect(replacePlaylistAction, SIGNAL(activated()), this, SLOT(replacePlaylist()));
     connect(removeFromPlaylistAction, SIGNAL(activated()), this, SLOT(removeFromPlaylist()));
@@ -600,7 +600,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
     playlistItemsSelected(false);
-    playlistTableView->setFocus();
+    playQueue->setFocus();
 
     mpdThread=new QThread(this);
     MPDConnection::self()->moveToThread(mpdThread);
@@ -633,7 +633,7 @@ MainWindow::~MainWindow()
 #endif
     Settings::self()->saveShowPlaylist(showPlaylistAction->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
-    Settings::self()->savePlaylistHeaderState(playlistTableViewHeader->saveState());
+    Settings::self()->savePlayQueueHeaderState(playQueueHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     streamsPage->save();
@@ -677,7 +677,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         albumsPage->clear();
         folderPage->clear();
         playlistsPage->clear();
-        playlistModel.clear();
+        playQueueModel.clear();
         lyricsPage->text->clear();
         infoPage->clear();
         showPreferencesDialog();
@@ -708,12 +708,12 @@ void MainWindow::showVolumeControl()
 
 void MainWindow::playlistItemsSelected(bool s)
 {
-    if (playlistTableView->model()->rowCount()) {
-        playlistTableView->setContextMenuPolicy(Qt::ActionsContextMenu);
+    if (playQueue->model()->rowCount()) {
+        playQueue->setContextMenuPolicy(Qt::ActionsContextMenu);
         removeFromPlaylistAction->setEnabled(s);
         copyTrackInfoAction->setEnabled(s);
         clearPlaylistAction->setEnabled(true);
-        cropPlaylistAction->setEnabled(playlistTableView->haveUnSelectedItems());
+        cropPlaylistAction->setEnabled(playQueue->haveUnSelectedItems());
         shufflePlaylistAction->setEnabled(true);
     }
 }
@@ -859,11 +859,11 @@ void MainWindow::decreaseVolume()
 void MainWindow::searchPlaylist()
 {
     if (searchPlaylistLineEdit->text().isEmpty()) {
-        playlistProxyModel.setFilterRegExp("");
+        playQueueProxyModel.setFilterRegExp("");
         return;
     }
 
-    playlistProxyModel.setFilterRegExp(searchPlaylistLineEdit->text());
+    playQueueProxyModel.setFilterRegExp(searchPlaylistLineEdit->text());
 }
 
 void MainWindow::updatePlaylist(const QList<Song> &songs)
@@ -873,56 +873,56 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     qint32 firstSelectedRow = -1;
 
     // remember selected song ids and rownum of smallest selected row in proxymodel (because that represents the visible rows)
-    if (playlistTableView->selectionModel()->hasSelection()) {
-        QModelIndexList items = playlistTableView->selectionModel()->selectedRows();
+    if (playQueue->selectionModel()->hasSelection()) {
+        QModelIndexList items = playQueue->selectionModel()->selectedRows();
         QModelIndex index;
         QModelIndex sourceIndex;
         // find smallest selected rownum
         for (int i = 0; i < items.size(); i++) {
             index = items.at(i);
-            sourceIndex = playlistProxyModel.mapToSource(index);
-            selectedSongIds.append(playlistModel.getIdByRow(sourceIndex.row()));
+            sourceIndex = playQueueProxyModel.mapToSource(index);
+            selectedSongIds.append(playQueueModel.getIdByRow(sourceIndex.row()));
             if (firstSelectedRow == -1 || index.row() < firstSelectedRow) {
                 firstSelectedRow = index.row();
-                firstSelectedSongId = playlistModel.getIdByRow(sourceIndex.row());
+                firstSelectedSongId = playQueueModel.getIdByRow(sourceIndex.row());
             }
         }
     }
 
     // refresh playlist
-    playlistModel.updatePlaylist(songs);
+    playQueueModel.updatePlaylist(songs);
 
     // reselect song ids or minrow if songids were not found (songs removed)
     bool found =  false;
     if (selectedSongIds.size() > 0) {
-        qint32 newCurrentRow = playlistModel.getRowById(firstSelectedSongId);
-        QModelIndex newCurrentSourceIndex = playlistModel.index(newCurrentRow, 0);
-        QModelIndex newCurrentIndex = playlistProxyModel.mapFromSource(newCurrentSourceIndex);
-        playlistTableView->setCurrentIndex(newCurrentIndex);
+        qint32 newCurrentRow = playQueueModel.getRowById(firstSelectedSongId);
+        QModelIndex newCurrentSourceIndex = playQueueModel.index(newCurrentRow, 0);
+        QModelIndex newCurrentIndex = playQueueProxyModel.mapFromSource(newCurrentSourceIndex);
+        playQueue->setCurrentIndex(newCurrentIndex);
 
         qint32 row;
         QModelIndex sourceIndex;
         QModelIndex index;
         for (int i = 0; i < selectedSongIds.size(); i++) {
-            row = playlistModel.getRowById(selectedSongIds.at(i));
+            row = playQueueModel.getRowById(selectedSongIds.at(i));
             if (row >= 0) {
                 found = true;
             }
-            sourceIndex = playlistModel.index(row, 0);
-            index = playlistProxyModel.mapFromSource(sourceIndex);
-            playlistTableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+            sourceIndex = playQueueModel.index(row, 0);
+            index = playQueueProxyModel.mapFromSource(sourceIndex);
+            playQueue->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
         if (!found) {
             // songids which were selected before the playlistupdate were not found anymore (they were removed) -> select firstSelectedRow again (should be the next song after the removed one)
             // firstSelectedRow contains the selected row of the proxymodel before we did the playlist refresh
             // check if rowcount of current proxymodel is smaller than that (last row as removed) and adjust firstSelectedRow when needed
-            index = playlistProxyModel.index(firstSelectedRow, 0);
-            if (firstSelectedRow > playlistProxyModel.rowCount(index) - 1) {
-                firstSelectedRow = playlistProxyModel.rowCount(index) - 1;
+            index = playQueueProxyModel.index(firstSelectedRow, 0);
+            if (firstSelectedRow > playQueueProxyModel.rowCount(index) - 1) {
+                firstSelectedRow = playQueueProxyModel.rowCount(index) - 1;
             }
-            index = playlistProxyModel.index(firstSelectedRow, 0);
-            playlistTableView->setCurrentIndex(index);
-            playlistTableView->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+            index = playQueueProxyModel.index(firstSelectedRow, 0);
+            playQueue->setCurrentIndex(index);
+            playQueue->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
     }
 
@@ -949,7 +949,7 @@ void MainWindow::updateCurrentSong(const Song &song)
         trackLabel->setText(QString("%1 (%2)").arg(song.title).arg(song.name));
     }
     artistLabel->setText(song.artist);
-    playlistModel.updateCurrentSong(song.id);
+    playQueueModel.updateCurrentSong(song.id);
 
     if (4==tabWidget->current_index()) {
         lyricsPage->update(song);
@@ -1111,12 +1111,12 @@ void MainWindow::updateStatus()
 
 void MainWindow::playlistItemActivated(const QModelIndex &index)
 {
-    emit startPlayingSongId(playlistModel.getIdByRow(playlistProxyModel.mapToSource(index).row()));
+    emit startPlayingSongId(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(index).row()));
 }
 
 void MainWindow::removeFromPlaylist()
 {
-    const QModelIndexList items = playlistTableView->selectionModel()->selectedRows();
+    const QModelIndexList items = playQueue->selectionModel()->selectedRows();
     QModelIndex sourceIndex;
     QList<qint32> toBeRemoved;
 
@@ -1125,8 +1125,8 @@ void MainWindow::removeFromPlaylist()
     }
 
     for (int i = 0; i < items.size(); i++) {
-        sourceIndex = playlistProxyModel.mapToSource(items.at(i));
-        toBeRemoved.append(playlistModel.getIdByRow(sourceIndex.row()));
+        sourceIndex = playQueueProxyModel.mapToSource(items.at(i));
+        toBeRemoved.append(playQueueModel.getIdByRow(sourceIndex.row()));
     }
 
     emit removeSongs(toBeRemoved);
@@ -1249,7 +1249,7 @@ void MainWindow::updatePositionSilder()
 
 void MainWindow::copyTrackInfo()
 {
-    const QModelIndexList items = playlistTableView->selectionModel()->selectedRows();
+    const QModelIndexList items = playQueue->selectionModel()->selectedRows();
     QModelIndex sourceIndex;
     QString txt = "";
     QClipboard *clipboard = QApplication::clipboard();
@@ -1259,8 +1259,8 @@ void MainWindow::copyTrackInfo()
     }
 
     for (int i = 0; i < items.size(); i++) {
-        sourceIndex = playlistProxyModel.mapToSource(items.at(i));
-        Song s = playlistModel.getSongByRow(sourceIndex.row());
+        sourceIndex = playQueueProxyModel.mapToSource(items.at(i));
+        Song s = playQueueModel.getSongByRow(sourceIndex.row());
         if (s.isEmpty()) {
             if (txt != "") {
                 txt += "\n";
@@ -1307,66 +1307,66 @@ void MainWindow::togglePlaylist()
 // PlayList view //
 void MainWindow::setupPlaylistView()
 {
-    playlistTableViewHeader = playlistTableView->header();
+    playQueueHeader = playQueue->header();
 
-    playlistTableViewHeader->setMovable(true);
-    playlistTableViewHeader->setResizeMode(QHeaderView::Interactive);
-    playlistTableViewHeader->setContextMenuPolicy(Qt::CustomContextMenu);
-    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_TITLE, QHeaderView::Interactive);
-    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_ARTIST, QHeaderView::Interactive);
-    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_ALBUM, QHeaderView::Stretch);
-    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_TRACK, QHeaderView::ResizeToContents);
-    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_LENGTH, QHeaderView::ResizeToContents);
-    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_DISC, QHeaderView::ResizeToContents);
-    playlistTableViewHeader->setResizeMode(PlaylistTableModel::COL_YEAR, QHeaderView::ResizeToContents);
-    playlistTableViewHeader->setStretchLastSection(false);
+    playQueueHeader->setMovable(true);
+    playQueueHeader->setResizeMode(QHeaderView::Interactive);
+    playQueueHeader->setContextMenuPolicy(Qt::CustomContextMenu);
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_TITLE, QHeaderView::Interactive);
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_ARTIST, QHeaderView::Interactive);
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_ALBUM, QHeaderView::Stretch);
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_TRACK, QHeaderView::ResizeToContents);
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_LENGTH, QHeaderView::ResizeToContents);
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_DISC, QHeaderView::ResizeToContents);
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_YEAR, QHeaderView::ResizeToContents);
+    playQueueHeader->setStretchLastSection(false);
 
-    connect(playlistTableViewHeader, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(playlistTableViewContextMenuClicked()));
-    connect(streamsPage, SIGNAL(add(const QStringList &)), &playlistModel, SLOT(addItems(const QStringList &)));
+    connect(playQueueHeader, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(playQueueContextMenuClicked()));
+    connect(streamsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
 
     //Restore state
-    QByteArray state = Settings::self()->playlistHeaderState();
+    QByteArray state = Settings::self()->playQueueHeaderState();
 
     //Restore
     if (state.isEmpty()) {
-        playlistTableViewHeader->setSectionHidden(PlaylistTableModel::COL_YEAR, true);
-        playlistTableViewHeader->setSectionHidden(PlaylistTableModel::COL_DISC, true);
-        playlistTableViewHeader->setSectionHidden(PlaylistTableModel::COL_GENRE, true);
+        playQueueHeader->setSectionHidden(PlayQueueModel::COL_YEAR, true);
+        playQueueHeader->setSectionHidden(PlayQueueModel::COL_DISC, true);
+        playQueueHeader->setSectionHidden(PlayQueueModel::COL_GENRE, true);
     } else {
-        playlistTableViewHeader->restoreState(state);
+        playQueueHeader->restoreState(state);
 
-        for(int i=3; i<PlaylistTableModel::COL_COUNT; ++i) {
-            if (playlistTableViewHeader->isSectionHidden(i) || playlistTableViewHeader->sectionSize(i) == 0) {
-                playlistTableViewHeader->setSectionHidden(i, true);
+        for(int i=3; i<PlayQueueModel::COL_COUNT; ++i) {
+            if (playQueueHeader->isSectionHidden(i) || playQueueHeader->sectionSize(i) == 0) {
+                playQueueHeader->setSectionHidden(i, true);
             }
         }
     }
 
-    playlistTableViewMenu = new QMenu(this);
+    playQueueMenu = new QMenu(this);
 
-    for (int col=PlaylistTableModel::COL_ALBUM; col<PlaylistTableModel::COL_COUNT; ++col) {
-        QAction *act=new QAction(playlistModel.headerData(col, Qt::Horizontal, Qt::DisplayRole).toString(), playlistTableViewMenu);
+    for (int col=PlayQueueModel::COL_ALBUM; col<PlayQueueModel::COL_COUNT; ++col) {
+        QAction *act=new QAction(playQueueModel.headerData(col, Qt::Horizontal, Qt::DisplayRole).toString(), playQueueMenu);
         act->setCheckable(true);
-        act->setChecked(!playlistTableViewHeader->isSectionHidden(col));
-        playlistTableViewMenu->addAction(act);
+        act->setChecked(!playQueueHeader->isSectionHidden(col));
+        playQueueMenu->addAction(act);
         viewActions.append(act);
-        connect(act, SIGNAL(toggled(bool)), this, SLOT(playListTableViewToggleItem(bool)));
+        connect(act, SIGNAL(toggled(bool)), this, SLOT(togglePlayQueueHeaderItem(bool)));
     }
 }
 
-void MainWindow::playlistTableViewContextMenuClicked()
+void MainWindow::playQueueContextMenuClicked()
 {
-    playlistTableViewMenu->exec(QCursor::pos());
+    playQueueMenu->exec(QCursor::pos());
 }
 
-void MainWindow::playListTableViewToggleItem(bool visible)
+void MainWindow::togglePlayQueueHeaderItem(bool visible)
 {
     QAction *act=qobject_cast<QAction *>(sender());
 
     if (act) {
         int index=viewActions.indexOf(act);
         if (-1!=index) {
-            playlistTableViewHeader->setSectionHidden(index+3, !visible);
+            playQueueHeader->setSectionHidden(index+3, !visible);
         }
     }
 }
@@ -1378,9 +1378,9 @@ void MainWindow::playListTableViewToggleItem(bool visible)
  */
 void MainWindow::cropPlaylist()
 {
-    QSet<qint32> songs = playlistModel.getSongIdSet();
+    QSet<qint32> songs = playQueueModel.getSongIdSet();
     QSet<qint32> selected;
-    const QModelIndexList items = playlistTableView->selectionModel()->selectedRows();
+    const QModelIndexList items = playQueue->selectionModel()->selectedRows();
     QModelIndex sourceIndex;
 
     if (items.isEmpty()) {
@@ -1388,8 +1388,8 @@ void MainWindow::cropPlaylist()
     }
 
     for(int i = 0; i < items.size(); i++) {
-        sourceIndex = playlistProxyModel.mapToSource(items.at(i));
-        selected << playlistModel.getIdByRow(sourceIndex.row());
+        sourceIndex = playQueueProxyModel.mapToSource(items.at(i));
+        selected << playQueueModel.getIdByRow(sourceIndex.row());
     }
 
     QList<qint32> toBeRemoved = (songs - selected).toList();

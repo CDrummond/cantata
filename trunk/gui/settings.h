@@ -49,7 +49,7 @@ public:
     QString connectionPasswd();
     int connectionPort();
     bool showPlaylist();
-    QByteArray playlistHeaderState();
+    QByteArray playQueueHeaderState();
     QByteArray splitterState();
 #ifndef ENABLE_KDE_SUPPORT
     QSize mainWindowSize();
@@ -70,7 +70,7 @@ public:
     void saveConnectionPort(int v);
     void saveShowPlaylist(bool v);
     void saveStopOnExit(bool v);
-    void savePlaylistHeaderState(const QByteArray &v);
+    void savePlayQueueHeaderState(const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
 #ifndef ENABLE_KDE_SUPPORT
     void saveMainWindowSize(const QSize &v);

@@ -34,7 +34,7 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
-#include "playlisttablemodel.h"
+#include "playqueuemodel.h"
 #include "song.h"
 #include "covers.h"
 
@@ -207,7 +207,7 @@ QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
         stream << filenames.at(i);
     }
 
-    mimeData->setData(PlaylistTableModel::constFileNameMimeType, encodedData);
+    mimeData->setData(PlayQueueModel::constFileNameMimeType, encodedData);
     return mimeData;
 }
 

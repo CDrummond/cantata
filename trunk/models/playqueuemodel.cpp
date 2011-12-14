@@ -33,16 +33,16 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
-#include "playlisttablemodel.h"
+#include "playqueuemodel.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "streamfetcher.h"
 
-const QLatin1String PlaylistTableModel::constMoveMimeType("cantata/move");
-const QLatin1String PlaylistTableModel::constFileNameMimeType("cantata/filename");
+const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
+const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 
-PlaylistTableModel::PlaylistTableModel(QObject *parent)
+PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractTableModel(parent),
       song_id(-1)
 {
@@ -51,11 +51,11 @@ PlaylistTableModel::PlaylistTableModel(QObject *parent)
     connect(fetcher, SIGNAL(result(const QStringList &, int)), SLOT(addFiles(const QStringList &, int)));
 }
 
-PlaylistTableModel::~PlaylistTableModel()
+PlayQueueModel::~PlayQueueModel()
 {
 }
 
-QVariant PlaylistTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DisplayRole) {
@@ -106,17 +106,17 @@ QVariant PlaylistTableModel::headerData(int section, Qt::Orientation orientation
     return QVariant();
 }
 
-int PlaylistTableModel::rowCount(const QModelIndex &) const
+int PlayQueueModel::rowCount(const QModelIndex &) const
 {
     return songs.size();
 }
 
-int PlaylistTableModel::columnCount(const QModelIndex &) const
+int PlayQueueModel::columnCount(const QModelIndex &) const
 {
     return COL_COUNT;
 }
 
-QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
+QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 {
     QPalette palette;
 
@@ -168,12 +168,12 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-Qt::DropActions PlaylistTableModel::supportedDropActions() const
+Qt::DropActions PlayQueueModel::supportedDropActions() const
 {
     return Qt::CopyAction | Qt::MoveAction;
 }
 
-Qt::ItemFlags PlaylistTableModel::flags(const QModelIndex &index) const
+Qt::ItemFlags PlayQueueModel::flags(const QModelIndex &index) const
 {
     if (index.isValid())
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
@@ -184,7 +184,7 @@ Qt::ItemFlags PlaylistTableModel::flags(const QModelIndex &index) const
 /**
  * @return A QStringList with the mimetypes we support
  */
-QStringList PlaylistTableModel::mimeTypes() const
+QStringList PlayQueueModel::mimeTypes() const
 {
     QStringList types;
     types << constMoveMimeType;
@@ -198,7 +198,7 @@ QStringList PlaylistTableModel::mimeTypes() const
  * @param indexes The indexes to pack into mimedata
  * @return The mimedata
  */
-QMimeData *PlaylistTableModel::mimeData(const QModelIndexList &indexes) const
+QMimeData *PlayQueueModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
     QByteArray encodedData;
@@ -247,7 +247,7 @@ QMimeData *PlaylistTableModel::mimeData(const QModelIndexList &indexes) const
  *
  * @return bool if we accest the drop
  */
-bool PlaylistTableModel::dropMimeData(const QMimeData *data,
+bool PlayQueueModel::dropMimeData(const QMimeData *data,
                                       Qt::DropAction action, int row, int /*column*/, const QModelIndex & /*parent*/)
 {
     if (Qt::IgnoreAction==action) {
@@ -292,7 +292,7 @@ bool PlaylistTableModel::dropMimeData(const QMimeData *data,
     return false;
 }
 
-void PlaylistTableModel::addItems(const QStringList &items, int row)
+void PlayQueueModel::addItems(const QStringList &items, int row)
 {
     bool haveHttp=false;
 
@@ -321,7 +321,7 @@ void PlaylistTableModel::addItems(const QStringList &items, int row)
     }
 }
 
-void PlaylistTableModel::addFiles(const QStringList &filenames, int row)
+void PlayQueueModel::addFiles(const QStringList &filenames, int row)
 {
     //Check for empty playlist
     if (songs.size() == 1 && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty()) {
@@ -335,7 +335,7 @@ void PlaylistTableModel::addFiles(const QStringList &filenames, int row)
     }
 }
 
-qint32 PlaylistTableModel::getIdByRow(qint32 row) const
+qint32 PlayQueueModel::getIdByRow(qint32 row) const
 {
     if (songs.size() <= row) {
         return -1;
@@ -344,7 +344,7 @@ qint32 PlaylistTableModel::getIdByRow(qint32 row) const
     return songs.at(row).id;
 }
 
-qint32 PlaylistTableModel::getPosByRow(qint32 row) const
+qint32 PlayQueueModel::getPosByRow(qint32 row) const
 {
     if (songs.size() <= row) {
         return -1;
@@ -353,7 +353,7 @@ qint32 PlaylistTableModel::getPosByRow(qint32 row) const
     return songs.at(row).pos;
 }
 
-qint32 PlaylistTableModel::getRowById(qint32 id) const
+qint32 PlayQueueModel::getRowById(qint32 id) const
 {
     for (int i = 0; i < songs.size(); i++) {
         if (songs.at(i).id == id) {
@@ -364,7 +364,7 @@ qint32 PlaylistTableModel::getRowById(qint32 id) const
     return -1;
 }
 
-Song PlaylistTableModel::getSongByRow(const qint32 row) const
+Song PlayQueueModel::getSongByRow(const qint32 row) const
 {
     if (songs.size() <= row) {
         return Song();
@@ -373,7 +373,7 @@ Song PlaylistTableModel::getSongByRow(const qint32 row) const
     return songs.at(row);
 }
 
-void PlaylistTableModel::updateCurrentSong(quint32 id)
+void PlayQueueModel::updateCurrentSong(quint32 id)
 {
     qint32 oldIndex = -1;
 
@@ -386,13 +386,13 @@ void PlaylistTableModel::updateCurrentSong(quint32 id)
     emit dataChanged(index(getRowById(song_id), 0), index(getRowById(song_id), 2));
 }
 
-void PlaylistTableModel::clear()
+void PlayQueueModel::clear()
 {
     songs=QList<Song>();
     reset();
 }
 
-void PlaylistTableModel::updatePlaylist(const QList<Song> &songs)
+void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
 {
     this->songs = songs;
     reset();
@@ -403,7 +403,7 @@ void PlaylistTableModel::updatePlaylist(const QList<Song> &songs)
  *
  * --Update stats
  */
-void PlaylistTableModel::playListReset()
+void PlayQueueModel::playListReset()
 {
     playListStats();
 }
@@ -411,7 +411,7 @@ void PlaylistTableModel::playListReset()
 /**
  * Set all the statistics to the stats singleton
  */
-void PlaylistTableModel::playListStats()
+void PlayQueueModel::playListStats()
 {
     MPDStats * const stats = MPDStats::self();
     QSet<QString> artists;
@@ -446,7 +446,7 @@ void PlaylistTableModel::playListStats()
     emit playListStatsUpdated();
 }
 
-QSet<qint32>  PlaylistTableModel::getSongIdSet()
+QSet<qint32>  PlayQueueModel::getSongIdSet()
 {
     QSet<qint32> ids;
 

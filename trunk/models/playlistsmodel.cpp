@@ -35,7 +35,7 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdconnection.h"
-#include "playlisttablemodel.h"
+#include "playqueuemodel.h"
 
 PlaylistsModel * PlaylistsModel::self()
 {
@@ -250,7 +250,7 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
         posStream << positions.at(i);
     }
 
-    mimeData->setData(PlaylistTableModel::constFileNameMimeType, encodedData);
+    mimeData->setData(PlayQueueModel::constFileNameMimeType, encodedData);
     mimeData->setData(constPlaylistNameMimeType, encodedPlaylistsData);
     mimeData->setData(constPositionsMimeType, encodedPosData);
     return mimeData;
@@ -266,8 +266,8 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
         return false;
     }
 
-    if (data->hasFormat(PlaylistTableModel::constFileNameMimeType)) {
-        QByteArray encodedData = data->data(PlaylistTableModel::constFileNameMimeType);
+    if (data->hasFormat(PlayQueueModel::constFileNameMimeType)) {
+        QByteArray encodedData = data->data(PlayQueueModel::constFileNameMimeType);
         QDataStream stream(&encodedData, QIODevice::ReadOnly);
         QStringList filenames;
         Item *item=static_cast<Item *>(parent.internalPointer());
@@ -285,7 +285,7 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
             filenames << text;
         }
 
-        if (data->hasFormat(PlaylistTableModel::constMoveMimeType)) {
+        if (data->hasFormat(PlayQueueModel::constMoveMimeType)) {
             qWarning() << "EMIT PL:" << pl->name;
             emit addToPlaylist(pl->name, filenames);
             if (!item->isPlaylist()) {
@@ -358,7 +358,7 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
 QStringList PlaylistsModel::mimeTypes() const
 {
     QStringList types;
-    types << PlaylistTableModel::constFileNameMimeType;
+    types << PlayQueueModel::constFileNameMimeType;
     return types;
 }
 

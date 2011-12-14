@@ -7,8 +7,6 @@
 * DELETE keyboard short-cut. This needs to work on the focused list.
   Playlists, streams, and playqueue all support deleting.
 
-* Rename PlaylistTable* PlayQueue*
-
 * Streams - add genre support?
 
 * Library page - show Various Artists at top, with custom icon?

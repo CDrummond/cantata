@@ -30,6 +30,7 @@ AlbumsProxyModel::AlbumsProxyModel(QObject *parent) : QSortFilterProxyModel(pare
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setSortLocaleAware(true);
+    sort(0);
 }
 
 bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const

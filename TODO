@@ -9,10 +9,6 @@
       Artist\n%n Albums
       Album\n%n Songs
       Song\nDuration
-   Folders
-      Folder\n%n Folders %n Files
-   Albums
-      Album - Artist\n%n Songs
    Playlists
       Playlist\n%n Songs    DONE
       Song\nDuration

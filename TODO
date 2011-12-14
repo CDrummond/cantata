@@ -1,5 +1,4 @@
 * Playlists
-    - Allow drag-n-drop within playlist
     - Lazy loading of playlist contents - this is not 100%, but is ok if we want genre filtering
     - Add genre filtering
     - If drop a playlist with a stream onto queu, only the stream is added!!!!

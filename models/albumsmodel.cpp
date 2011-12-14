@@ -81,7 +81,7 @@ AlbumsModel::Album::Album(const QString &ar, const QString &al)
     , updated(false)
     , coverRequested(false)
 {
-    name=artist+QChar('\n')+album;
+    name=album+QChar('\n')+artist;
 }
 
 AlbumsModel::AlbumsModel()
@@ -148,10 +148,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         }
         return *theDefaultIcon;
     }
+    case Qt::ToolTipRole:
     case Qt::DisplayRole:
         return items.at(index.row()).name;
-    case Qt::ToolTipRole:
-        return items.at(index.row()).album+'\n'+items.at(index.row()).artist;
     case Qt::UserRole:
         return items.at(index.row()).files;
     case Qt::UserRole+1:

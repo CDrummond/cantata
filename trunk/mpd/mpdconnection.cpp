@@ -741,7 +741,6 @@ void MPDConnection::playlistInfo(const QString &name)
     data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     Response response=sendCommand(data);
     if (response.ok) {
-        qWarning() << "PARSE:" << response.data;
         emit playlistInfoRetrieved(name, MPDParseUtils::parseSongs(response.data));
     }
 }

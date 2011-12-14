@@ -1,3 +1,23 @@
+* Playlists
+   - Create tree-like structure, so that can show contents
+      send command listplaylistinfo
+   - Allow drag-n-drop within playlist
+   - 'Add to playlist XXX' entries to library, album, and folder context menus
+
+* Improve tooltips in views.
+   Library
+      Artist\n%n Albums
+      Album\n%n Songs
+      Song\nDuration
+   Folders
+      Folder\n%n Folders %n Files
+   Albums
+      Album - Artist\n%n Songs
+   Playlists
+      Playlist\n%n Songs    DONE
+      Song\nDuration
+
+
 * Add next/prev provider buttons to lyrics page - so that can try others.
 
 * Need better repeat icon.
@@ -19,11 +39,7 @@
 
 * Use KMessageWidget to display errors?
 
-* Playlists
-   - Create tree-like structure, so that can show contents
-      send command listplaylistinfo
-   - Allow drag-n-drop within playlist
-   - 'Add to playlist XXX' entries to library, album, and folder context menus
-
 * Album View
    - Use LibraryPage/model, but have an 'All Albums' (hidden) artist?
+
+

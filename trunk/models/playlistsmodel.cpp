@@ -25,6 +25,9 @@
  */
 
 #include <QModelIndex>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KLocale>
+#endif
 #include "playlistsmodel.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
@@ -34,7 +37,9 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
+    connect(MPDConnection::self(), SIGNAL(playlistInfoRetrieved(const QString &, const QList<Song> &)), this, SLOT(playlistInfoRetrieved(const QString &, const QList<Song> &)));
     connect(this, SIGNAL(listPlaylists()), MPDConnection::self(), SLOT(listPlaylists()));
+    connect(this, SIGNAL(playlistInfo(const QString &)), MPDConnection::self(), SLOT(playlistInfo(const QString &)));
 }
 
 PlaylistsModel::~PlaylistsModel()
@@ -46,9 +51,19 @@ QVariant PlaylistsModel::headerData(int /*section*/, Qt::Orientation /*orientati
     return QVariant();
 }
 
+// QModelIndex PlaylistsModel::index(int row, int column, const QModelIndex &parent) const
+// {
+//     Q_UNUSED(parent)
+//
+//     if(row<items.count())
+//         return createIndex(row, column, (void *)&items.at(row));
+//
+//     return QModelIndex();
+// }
+
 int PlaylistsModel::rowCount(const QModelIndex &) const
 {
-    return m_playlists.size();
+    return items.size();
 }
 
 QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
@@ -56,11 +71,26 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (index.row() >= m_playlists.size())
+    if (index.row() >= items.size())
         return QVariant();
 
-    if (role == Qt::DisplayRole || role == Qt::ToolTipRole)
-        return m_playlists.at(index.row()).m_name;
+    const Playlist &pl=items.at(index.row());
+
+    switch(role) {
+    case Qt::DisplayRole: return pl.name;
+    case Qt::ToolTipRole:
+        return 0==pl.songs.count()
+            ? items.at(index.row()).name
+            :
+                #ifdef ENABLE_KDE_SUPPORT
+                i18np("%1\n1 Song", "%1\n%2 Songs", pl.name, pl.songs.count());
+                #else
+                (pl.songs.count()>1
+                    ? tr("%1\n%2 Songs").arg(pl.name).arg(pl.songs.count())
+                    : tr("%1\n1 Song").arg(pl.name);
+                #endif
+    default: break;
+    }
 
     return QVariant();
 }
@@ -73,14 +103,14 @@ void PlaylistsModel::getPlaylists()
 void PlaylistsModel::clear()
 {
     beginResetModel();
-    m_playlists=QList<Playlist>();
+    items=QList<Playlist>();
     endResetModel();
 }
 
 bool PlaylistsModel::exists(const QString &n) const
 {
-    foreach (const Playlist &p, m_playlists) {
-        if (p.m_name==n) {
+    foreach (const Playlist &p, items) {
+        if (p.name==n) {
             return true;
         }
     }
@@ -90,8 +120,52 @@ bool PlaylistsModel::exists(const QString &n) const
 
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 {
-    beginResetModel();
-    m_playlists=playlists;
-    endResetModel();
-}
+    bool diff=playlists.count()!=items.count();
 
+    if (!diff) {
+        foreach (const Playlist &p, playlists) {
+            if (!items.contains(p)) {
+                diff=true;
+                break;
+            }
+        }
+    }
+    if (diff) {
+        beginResetModel();
+        items=playlists;
+    }
+    foreach (const Playlist &p, items) {
+        emit playlistInfo(p.name);
+    }
+    if (diff) {
+        endResetModel();
+    }
+}
+#include <QtCore/QDebug>
+void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song> &songs)
+{
+    int index=items.indexOf(Playlist(name));
+
+    if (index>=0 && index<items.count()) {
+        Playlist &pl=items[index];
+        bool diff=songs.count()!=pl.songs.count();
+
+        if (!diff) {
+            foreach (const Song &s, songs) {
+                if (-1!=pl.songs.indexOf(s)) {
+                    diff=true;
+                    break;
+                }
+            }
+        }
+
+        if (diff) {
+//             if (pl.songs.count()) {
+//                 beginRemoveRows(index(
+//             }
+            pl.songs=songs;
+        }
+    } else {
+        emit listPlaylists();
+    }
+}

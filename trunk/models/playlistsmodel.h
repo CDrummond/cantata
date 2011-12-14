@@ -46,14 +46,16 @@ public:
     bool exists(const QString &n) const;
 
 private:
-    QList<Playlist> m_playlists;
+    QList<Playlist> items;
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void listPlaylists();
+    void playlistInfo(const QString &name);
 
 private Q_SLOTS:
     void setPlaylists(const QList<Playlist> &playlists);
+    void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
 };
 
 #endif

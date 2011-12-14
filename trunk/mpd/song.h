@@ -51,6 +51,7 @@ public:
     Song();
     Song(const Song &o) { *this=o; }
     Song & operator=(const Song &o);
+    bool operator==(const Song &o) const;
     virtual ~Song() { }
     bool isEmpty() const;
     void fillEmptyFields();

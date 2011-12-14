@@ -29,24 +29,32 @@
 
 #include <QDateTime>
 #include <QString>
+#include "song.h"
 
 struct Playlist
 {
     Playlist() { }
-
+    Playlist(const QString &n) : name(n) { }
     Playlist(const Playlist &o) { *this=o; }
+
+    bool operator==(const Playlist &o) const
+    {
+        return name==o.name;
+    }
 
     Playlist & operator=(const Playlist &o)
     {
-        m_name=o.m_name;
-        m_last_modified=o.m_last_modified;
+        name=o.name;
+        lastModified=o.lastModified;
+        songs=o.songs;
         return *this;
     }
 
     virtual ~Playlist() { }
 
-    QString m_name;
-    QDateTime m_last_modified;
+    QString name;
+    QList<Song> songs;
+    QDateTime lastModified;
 };
 
 #endif

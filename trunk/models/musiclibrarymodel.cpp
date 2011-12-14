@@ -189,11 +189,11 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                 ? item->data(index.column())
                 :
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Song", "%1\n%2 Songs", item->data(index.column()).toString(), item->childCount());
+                    i18np("%1\n1 Track", "%1\n%2 Tracks", item->data(index.column()).toString(), item->childCount());
                     #else
                     (item->childCount()>1
-                        ? tr("%1\n%2 Songs").arg(item->data(index.column()).toString()).arg(item->childCount())
-                        : tr("%1\n1 Song").arg(item->data(index.column()).toString());
+                        ? tr("%1\n%2 Tracks").arg(item->data(index.column()).toString()).arg(item->childCount())
+                        : tr("%1\n1 Track").arg(item->data(index.column()).toString());
                     #endif
         case MusicLibraryItem::Type_Song: {
             QString duration=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
@@ -217,7 +217,7 @@ void MusicLibraryModel::clear()
     const MusicLibraryItemRoot *oldRoot = rootItem;
     beginResetModel();
     databaseTime = QDateTime();
-    rootItem = new MusicLibraryItemRoot("Artist / Album / Song");
+    rootItem = new MusicLibraryItemRoot;
     delete oldRoot;
     endResetModel();
 
@@ -372,7 +372,7 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
 
     QFile file(dir + filename);
 
-    MusicLibraryItemRoot * const rootItem = new MusicLibraryItemRoot("Artist / Album / Song");
+    MusicLibraryItemRoot * const rootItem = new MusicLibraryItemRoot;
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;

@@ -175,7 +175,6 @@ public:
                     painter->drawPixmap(r.x()+r.width()-(pix.width()+constActionBorder),
                                         r.y()+((r.height()-pix.height())/2),
                                         pix.width(), pix.height(), pix);
-                    r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
                 }
             }
         }

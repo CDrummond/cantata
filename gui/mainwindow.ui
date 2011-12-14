@@ -191,7 +191,7 @@
         <widget class="LineEdit" name="searchPlaylistLineEdit"/>
        </item>
        <item row="1" column="0" colspan="9">
-        <widget class="TreeView" name="playlistTableView">
+        <widget class="TreeView" name="playQueue">
          <property name="contextMenuPolicy">
           <enum>Qt::CustomContextMenu</enum>
          </property>

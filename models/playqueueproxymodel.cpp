@@ -25,10 +25,10 @@
  */
 
 #include <QByteArray>
-#include "playlisttableproxymodel.h"
-#include "playlisttablemodel.h"
+#include "playqueueproxymodel.h"
+#include "playqueuemodel.h"
 
-PlaylistTableProxyModel::PlaylistTableProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
+PlayQueueProxyModel::PlayQueueProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -36,7 +36,7 @@ PlaylistTableProxyModel::PlaylistTableProxyModel(QObject *parent) : QSortFilterP
     setSortLocaleAware(true);
 }
 
-bool PlaylistTableProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     int columnCount = sourceModel()->columnCount(sourceParent);
 
@@ -50,7 +50,7 @@ bool PlaylistTableProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex 
 }
 
 /* map proxy to real indexes and redirect to sourceModel */
-QMimeData *PlaylistTableProxyModel::mimeData(const QModelIndexList &indexes) const
+QMimeData *PlayQueueProxyModel::mimeData(const QModelIndexList &indexes) const
 {
     QModelIndexList sourceIndexes;
 
@@ -62,7 +62,7 @@ QMimeData *PlaylistTableProxyModel::mimeData(const QModelIndexList &indexes) con
 }
 
 /* map proxy to real indexes and redirect to sourceModel */
-bool PlaylistTableProxyModel::dropMimeData(const QMimeData *data,
+bool PlayQueueProxyModel::dropMimeData(const QMimeData *data,
         Qt::DropAction action, int row, int column, const QModelIndex & parent)
 {
     const QModelIndex index = this->index(row, column, parent);

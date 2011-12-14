@@ -46,8 +46,8 @@
 #include <QMoveEvent>
 
 #include "ui_mainwindow.h"
-#include "playlisttablemodel.h"
-#include "playlisttableproxymodel.h"
+#include "playqueuemodel.h"
+#include "playqueueproxymodel.h"
 #include "mpdstatus.h"
 #include "song.h"
 
@@ -203,8 +203,8 @@ private Q_SLOTS:
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
     void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
-    void playlistTableViewContextMenuClicked();
-    void playListTableViewToggleItem(const bool visible);
+    void playQueueContextMenuClicked();
+    void togglePlayQueueHeaderItem(const bool visible);
     void cropPlaylist();
     void updatePlayListStatus();
     void copyTrackInfo();
@@ -232,12 +232,12 @@ private:
     QDateTime lastDbUpdate;
     int fetchStatsFactor;
     int nowPlayingFactor;
-    PlaylistTableModel playlistModel;
-    PlaylistTableProxyModel playlistProxyModel;
+    PlayQueueModel playQueueModel;
+    PlayQueueProxyModel playQueueProxyModel;
     bool draggingPositionSlider;
     QIcon playbackPause;
     QIcon playbackPlay;
-    QHeaderView *playlistTableViewHeader;
+    QHeaderView *playQueueHeader;
     VolumeSliderEventHandler *volumeSliderEventHandler;
 //     CoverEventHandler *coverEventHandler;
     VolumeControl *volumeControl;
@@ -273,7 +273,7 @@ private:
     QList<QAction *> viewActions;
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
-    QMenu *playlistTableViewMenu;
+    QMenu *playQueueMenu;
     QPixmap noCover;
     QPixmap noStreamCover;
     QPoint lastPos;

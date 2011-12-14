@@ -37,27 +37,30 @@ class StreamsModel : public QAbstractListModel
 public:
     struct Stream
     {
-        Stream(const QString &n, const QUrl &u) : name(n), url(u) { }
+        Stream(const QString &n, const QUrl &u, bool fav) : name(n), url(u), favorite(fav) { }
         QString name;
         QUrl url;
+        bool favorite;
     };
 
     StreamsModel();
     ~StreamsModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
     void reload();
     void save(bool force=false);
     bool save(const QString &filename);
     bool import(const QString &filename) { return load(filename, false); }
-    bool add(const QString &name, const QString &url);
-    void edit(const QModelIndex &index, const QString &name, const QString &url);
+    bool add(const QString &name, const QString &url, bool fav);
+    void edit(const QModelIndex &index, const QString &name, const QString &url, bool fav);
     void remove(const QModelIndex &index);
     QString name(const QString &url);
     bool entryExists(const QString &name, const QUrl &url=QUrl());
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
+    void mark(const QList<int> &rows, bool f);
 
 private:
     bool load(const QString &filename, bool isInternal);

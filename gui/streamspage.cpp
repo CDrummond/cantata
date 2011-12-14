@@ -54,18 +54,27 @@ StreamsPage::StreamsPage(MainWindow *p)
     removeAction->setText(i18n("Remove Stream"));
     editAction = p->actionCollection()->addAction("editstream");
     editAction->setText(i18n("Edit Stream"));
+    editAction = p->actionCollection()->addAction("editstream");
+    editAction->setText(i18n("Edit Stream"));
+    markAsFavAction = p->actionCollection()->addAction("markasfav");
+    markAsFavAction->setText(i18n("Set As Favorite"));
+    unMarkAsFavAction = p->actionCollection()->addAction("unmarkasfav");
+    unMarkAsFavAction->setText(i18n("Unset As Favorite"));
     #else
     importAction = new QAction(tr("Import Streams"), this);
     exportAction = new QAction(tr("Export Streams"), this);
     addAction = new QAction(tr("Add Stream"), this);
     removeAction = new QAction(tr("Remove Stream"), this);
     editAction = new QAction(tr("Rename Stream"), this);
+    markAsFavAction = new QAction(tr("Set As Favorite"), this);
+    unMarkAsFavAction = new QAction(tr("Unset As Favorite"), this);
     #endif
     importAction->setIcon(QIcon::fromTheme("document-import"));
     exportAction->setIcon(QIcon::fromTheme("document-export"));
     addAction->setIcon(QIcon::fromTheme("list-add"));
     removeAction->setIcon(QIcon::fromTheme("list-remove"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
+    markAsFavAction->setIcon(QIcon::fromTheme("emblem-favorite"));
     importStreams->setDefaultAction(importAction);
     exportStreams->setDefaultAction(exportAction);
     addStream->setDefaultAction(addAction);
@@ -84,7 +93,9 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
-    connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlEdit()));
+    connect(markAsFavAction, SIGNAL(triggered(bool)), this, SLOT(markAsFav()));
+    connect(unMarkAsFavAction, SIGNAL(triggered(bool)), this, SLOT(unMarkAsFav()));
+    connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     importStreams->setAutoRaise(true);
     exportStreams->setAutoRaise(true);
     addStream->setAutoRaise(true);
@@ -109,6 +120,8 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->addAction(editAction);
     view->addAction(removeAction);
     view->addAction(exportAction);
+    view->addAction(markAsFavAction);
+    view->addAction(unMarkAsFavAction);
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
 }
@@ -212,7 +225,7 @@ void StreamsPage::add()
             return;
         }
 
-        if (!model.add(name, url)) {
+        if (!model.add(name, url, dlg.favorite())) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("A stream named <i>%1</i> already exists!", name));
             #else
@@ -268,17 +281,19 @@ void StreamsPage::edit()
 
     StreamDialog dlg(this);
     QModelIndex index=proxy.mapToSource(selected.first());
-    QString name=model.data(index, Qt::DisplayRole).toString();
-    QString url=model.data(index, Qt::ToolTipRole).toString();
+    StreamsModel::Stream *stream=static_cast<StreamsModel::Stream *>(index.internalPointer());
+    QString name=stream->name;
+    QString url=stream->url.toString();
+    bool fav=stream->favorite;
 
-    dlg.setEdit(name, url);
+    dlg.setEdit(name, url, fav);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString newName=dlg.name();
         QString newUrl=dlg.url();
 
         QString existingNameForUrl=newUrl!=url ? model.name(newUrl) : QString();
-
+//
         if (!existingNameForUrl.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("Stream already exists!<br/><i>%1</i>", existingNameForUrl));
@@ -292,17 +307,47 @@ void StreamsPage::edit()
             QMessageBox::critical(this, tr("Error"), tr("A stream named <i>%1</i> already exists!").arg(newName));
             #endif
         } else {
-            model.edit(index, newName, newUrl);
+            model.edit(index, newName, newUrl, dlg.favorite());
         }
     }
 }
 
-void StreamsPage::controlEdit()
+void StreamsPage::controlActions()
 {
-    editAction->setEnabled(1==view->selectionModel()->selectedIndexes().size());
+    QModelIndexList selected=view->selectionModel()->selectedIndexes();
+    editAction->setEnabled(1==selected.size());
+    bool doneMark=false, doneUnMark=false;
+    markAsFavAction->setEnabled(false);
+    unMarkAsFavAction->setEnabled(false);
+    foreach (const QModelIndex &idx, selected) {
+        QModelIndex index=proxy.mapToSource(idx);
+        StreamsModel::Stream *stream=static_cast<StreamsModel::Stream *>(index.internalPointer());
+        if (stream->favorite) {
+            unMarkAsFavAction->setEnabled(true);
+            doneUnMark=true;
+        } else {
+            markAsFavAction->setEnabled(true);
+            doneMark=true;
+        }
+        if (doneUnMark && doneMark) {
+            break;
+        }
+    }
 }
 
 void StreamsPage::searchItems()
 {
     proxy.setFilterRegExp(search->text());
 }
+
+void StreamsPage::mark(bool f)
+{
+    QModelIndexList selected=view->selectionModel()->selectedIndexes();
+    QList<int> rows;
+    foreach (const QModelIndex &idx, selected) {
+        QModelIndex index=proxy.mapToSource(idx);
+        rows << index.row();
+    }
+    model.mark(rows, f);
+}
+

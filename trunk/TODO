@@ -5,8 +5,6 @@
    - Need to support drag and drop to/from playing playlist!
    - Lazy loading of playlist contents - this is not 100%
 
-* Streams - remove beginResetModel() usagfe - need to be using beingInsert, etc.
-
 ----
 
 * Add next/prev provider buttons to lyrics page - so that can try others.

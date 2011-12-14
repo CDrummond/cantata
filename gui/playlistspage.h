@@ -46,9 +46,10 @@ Q_SIGNALS:
     void removePlaylist(const QString &name);
     void savePlaylist(const QString &name);
     void renamePlaylist(const QString &oldname, const QString &newname);
+    void removeFromPlaylist(const QString &name, const QList<int> &positions);
 
 private Q_SLOTS:
-    void removePlaylist();
+    void removeItems();
     void savePlaylist();
     void renamePlaylist();
     void itemActivated(const QModelIndex &index);
@@ -57,7 +58,7 @@ private Q_SLOTS:
     void searchItems();
 
 private:
-    Action *removePlaylistAction;
+    Action *removeAction;
     Action *renamePlaylistAction;
     PlaylistsProxyModel proxy;
 };

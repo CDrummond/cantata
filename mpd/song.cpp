@@ -154,3 +154,18 @@ QString Song::format()
 
     return s;
 }
+
+QString Song::entryName() const
+{
+    QString text=title.isEmpty() ? file : title;
+
+    if (!title.isEmpty()) {
+        text=artist+QLatin1String(" - ")+text;
+    }
+    return text;
+}
+
+uint qHash(const Song &s)
+{
+    return qHash(s.id);
+}

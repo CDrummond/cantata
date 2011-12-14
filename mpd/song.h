@@ -57,8 +57,11 @@ struct Song
     virtual void clear();
     static QString formattedTime(const quint32 &seconds);
     QString format();
+    QString entryName() const;
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     const QString & displayTitle() const { return modifiedtitle.isEmpty() ? title : modifiedtitle; }
 };
+
+extern uint qHash(const Song &s);
 
 #endif

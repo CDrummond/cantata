@@ -55,6 +55,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
 {
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
     connect(MPDConnection::self(), SIGNAL(playlistInfoRetrieved(const QString &, const QList<Song> &)), this, SLOT(playlistInfoRetrieved(const QString &, const QList<Song> &)));
+    connect(MPDConnection::self(), SIGNAL(removedFromPlaylist(const QString &, const QList<int> &)), this, SLOT(removedFromPlaylist(const QString &, const QList<int> &)));
     connect(this, SIGNAL(listPlaylists()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(this, SIGNAL(playlistInfo(const QString &)), MPDConnection::self(), SLOT(playlistInfo(const QString &)));
     updateItemMenu();
@@ -166,20 +167,17 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         SongItem *s=static_cast<SongItem *>(item);
 
         if (Qt::DisplayRole==role || Qt::ToolTipRole==role) {
-            QString text=s->title.isEmpty() ? s->file : s->title;
+            QString text=s->entryName();
 
-            if (!s->title.isEmpty()) {
-                text=s->artist+QLatin1String(" - ")+text;
-                if (Qt::ToolTipRole==role) {
-                    QString duration=MPDParseUtils::formatDuration(s->time);
-                    if (duration.startsWith(QLatin1String("00:"))) {
-                        duration=duration.mid(3);
-                    }
-                    if (duration.startsWith(QLatin1String("00:"))) {
-                        duration=duration.mid(1);
-                    }
-                    text=text+QChar('\n')+duration;
+            if (Qt::ToolTipRole==role && !s->title.isEmpty()) {
+                QString duration=MPDParseUtils::formatDuration(s->time);
+                if (duration.startsWith(QLatin1String("00:"))) {
+                    duration=duration.mid(3);
                 }
+                if (duration.startsWith(QLatin1String("00:"))) {
+                    duration=duration.mid(1);
+                }
+                text=text+QChar('\n')+duration;
             }
             return text;
         }
@@ -203,26 +201,54 @@ void PlaylistsModel::clear()
 
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 {
-    bool diff=playlists.count()!=items.count();
-
-    if (!diff) {
-        foreach (const Playlist &p, playlists) {
-            if (!getPlaylist(p.name)) {
-                diff=true;
-                break;
-            }
+    if (items.isEmpty()) {
+        if (playlists.isEmpty()) {
+            return;
         }
-    }
-    if (diff) {
         beginResetModel();
-        clearPlaylists();
         foreach (const Playlist &p, playlists) {
             items.append(new PlaylistItem(p));
         }
-        updateItemMenu();
-    }
-    if (diff) {
         endResetModel();
+        updateItemMenu();
+    } else if (playlists.isEmpty()) {
+        clear();
+    } else {
+        QModelIndex parent=QModelIndex();
+        QSet<QString> existing;
+        QSet<QString> retreived;
+        QSet<QString> removed;
+        QSet<QString> added;
+
+        foreach (PlaylistItem *p, items) {
+            existing.insert(p->name);
+        }
+
+        foreach (const Playlist &p, playlists) {
+            retreived.insert(p.name);
+        }
+
+        removed=existing-retreived;
+        added=retreived-existing;
+
+        if (removed.count()) {
+            foreach (const QString &p, removed) {
+                PlaylistItem *pl=getPlaylist(p);
+                if (pl) {
+                    int index=items.indexOf(pl);
+                    beginRemoveRows(parent, index, index);
+                    items.removeAt(index);
+                    endRemoveRows();
+                }
+            }
+        }
+        if (added.count()) {
+            beginInsertRows(parent, items.count(), items.count()+added.count()-1);
+            foreach (const QString &p, added) {
+                items.append(new PlaylistItem(p));
+            }
+            endInsertRows();
+        }
     }
 }
 
@@ -231,27 +257,93 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
     PlaylistItem *pl=getPlaylist(name);
 
     if (pl) {
-        bool diff=songs.count()!=pl->songs.count();
-
-        if (!diff) {
+        if (pl->songs.isEmpty()) {
+            if (songs.isEmpty()) {
+                return;
+            }
+            beginInsertRows(createIndex(items.indexOf(pl), 0, pl), 0, songs.count()-1);
             foreach (const Song &s, songs) {
-                if (!pl->getSong(s)) {
-                    diff=true;
-                    break;
+                pl->songs.append(new SongItem(s));
+            }
+            endInsertRows();
+            updateItemMenu();
+        } else if (songs.isEmpty()) {
+            beginRemoveRows(createIndex(items.indexOf(pl), 0, pl), 0, pl->songs.count()-1);
+            pl->clearSongs();
+            endRemoveRows();
+        } else {
+            QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
+            QSet<Song> existing;
+            QSet<Song> retreived;
+            QSet<Song> removed;
+            QSet<Song> added;
+
+            foreach (SongItem *s, pl->songs) {
+                existing.insert(*s);
+            }
+
+            foreach (const Song &s, songs) {
+                retreived.insert(s);
+            }
+
+            removed=existing-retreived;
+            added=retreived-existing;
+
+            if (removed.count()) {
+                foreach (const Song &s, removed) {
+                    SongItem *si=pl->getSong(s);
+                    if (pl) {
+                        int index=pl->songs.indexOf(si);
+                        beginRemoveRows(parent, index, index);
+                        pl->songs.removeAt(index);
+                        endRemoveRows();
+                    }
+                }
+            }
+            if (added.count()) {
+                beginRemoveRows(parent, pl->songs.count(), pl->songs.count()+added.count()-1);
+                foreach (const Song &s, added) {
+                    pl->songs.append(new SongItem(s));
                 }
             }
         }
-
-        if (diff) {
-            beginResetModel();
-            pl->clearSongs();
-            foreach (const Song &s, songs) {
-                pl->songs.append(new SongItem(s, pl));
-            }
-            endResetModel();
-        }
     } else {
         emit listPlaylists();
+    }
+}
+
+void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<int> &positions)
+{
+    if (0==positions.count()) {
+        return;
+    }
+    PlaylistItem *pl=getPlaylist(name);
+
+    if (pl) {
+        int adjust=0;
+        QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
+        QList<int>::ConstIterator it=positions.constBegin();
+        QList<int>::ConstIterator end=positions.constEnd();
+        while(it!=end) {
+            int rowBegin=*it;
+            int rowEnd=*it;
+            QList<int>::ConstIterator next=it+1;
+            while(next!=end) {
+                if (*next!=(rowEnd+1)) {
+                    break;
+                } else {
+                    it=next;
+                    rowEnd=*next;
+                }
+            }
+            beginRemoveRows(parent, rowBegin-adjust, rowEnd-adjust);
+            for (int i=rowBegin; i<=rowEnd; ++i) {
+                pl->songs.removeAt(rowBegin-adjust);
+                adjust++;
+            }
+            endRemoveRows();
+            it++;
+        }
     }
 }
 

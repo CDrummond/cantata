@@ -218,12 +218,6 @@ static const QLatin1String constPositionsMimeType("cantata/positions");
 QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    QByteArray encodedData;
-    QByteArray encodedPlaylistsData;
-    QByteArray encodedPosData;
-    QDataStream stream(&encodedData, QIODevice::WriteOnly);
-    QDataStream playlistsStream(&encodedPlaylistsData, QIODevice::WriteOnly);
-    QDataStream posStream(&encodedPlaylistsData, QIODevice::WriteOnly);
     QStringList filenames;
     QStringList playlists;
     QStringList positions;
@@ -234,7 +228,7 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
             int pos=0;
             foreach (const SongItem *s, static_cast<PlaylistItem*>(item)->songs) {
                 filenames << s->file;
-                playlists << s->parent->name;
+                playlists << static_cast<PlaylistItem*>(item)->name;
                 positions << QString::number(pos++);
             }
         } else {
@@ -244,15 +238,9 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
         }
     }
 
-    for (int i = filenames.size() - 1; i >= 0; i--) {
-        stream << filenames.at(i);
-        playlistsStream << playlists.at(i);
-        posStream << positions.at(i);
-    }
-
-    mimeData->setData(PlayQueueModel::constFileNameMimeType, encodedData);
-    mimeData->setData(constPlaylistNameMimeType, encodedPlaylistsData);
-    mimeData->setData(constPositionsMimeType, encodedPosData);
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames);
+    PlayQueueModel::encode(*mimeData, constPlaylistNameMimeType, playlists);
+    PlayQueueModel::encode(*mimeData, constPositionsMimeType, positions);
     return mimeData;
 }
 
@@ -267,9 +255,6 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
     }
 
     if (data->hasFormat(PlayQueueModel::constFileNameMimeType)) {
-        QByteArray encodedData = data->data(PlayQueueModel::constFileNameMimeType);
-        QDataStream stream(&encodedData, QIODevice::ReadOnly);
-        QStringList filenames;
         Item *item=static_cast<Item *>(parent.internalPointer());
         PlaylistItem *pl=item->isPlaylist()
                             ? static_cast<PlaylistItem *>(item)
@@ -279,36 +264,21 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
             return false;
         }
 
-        while (!stream.atEnd()) {
-            QString text;
-            stream >> text;
-            filenames << text;
-        }
+        QStringList filenames=PlayQueueModel::decode(*data, PlayQueueModel::constFileNameMimeType);
 
         if (data->hasFormat(PlayQueueModel::constMoveMimeType)) {
-            qWarning() << "EMIT PL:" << pl->name;
             emit addToPlaylist(pl->name, filenames);
             if (!item->isPlaylist()) {
                 for (int i=0; i<filenames.count(); ++i) {
-                    qWarning() << "EMIT MOVE:" << pl->name << pl->songs.count();
                     emit moveInPlaylist(pl->name, pl->songs.count(), parent.row());
                 }
             }
             return true;
         } else if (data->hasFormat(constPlaylistNameMimeType)) {
-            encodedData = data->data(constPlaylistNameMimeType);
-            QDataStream playlistStream(&encodedData, QIODevice::ReadOnly);
-            QStringList playlists;
-
-            while (!playlistStream.atEnd()) {
-                QString text;
-                playlistStream >> text;
-                playlists << text;
-            }
+            QStringList playlists=PlayQueueModel::decode(*data, constPlaylistNameMimeType);
 
             bool fromThis=false;
             bool fromOthers=false;
-
             foreach (const QString &p, playlists) {
                 if (p==pl->name) {
                     fromThis=true;
@@ -320,26 +290,27 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
                     return false; // Weird mix...
                 }
             }
-
             if (fromThis) {
-                // Yuck!!!!
-//                 if (item->isPlaylist()) {
-//                     encodedData = data->data(constPositionsMimeType);
-//                     QDataStream posStream(&encodedData, QIODevice::ReadOnly);
-//                     QList<int> pos;
-//
-//                     while (!posStream.atEnd()) {
-//                         QString text;
-//                         posStream >> text;
-//                         pos << text.toInt();
-//                     }
-//                     qSort(pos);
-//                     for (int i=0; i<filenames.count(); ++i) {
-//                         int idx=pl->getIndex(file
-//                         emit moveInPlaylist(pl->name, pos.at(i)-i, parent.row());
-//                     }
-//                     return true;
-//                 }
+                if (!item->isPlaylist()) {
+                    QStringList list=PlayQueueModel::decode(*data, constPositionsMimeType);
+                    QList<int> pos;
+
+                    foreach (const QString &s, list) {
+                        pos.append(s.toUInt());
+                    }
+                    qSort(pos);
+                    int offset=0;
+                    foreach (int p, pos) {
+                        int dest=parent.row();
+                        int source=p;
+
+                        if (dest>source) {
+                            source-=offset++;
+                        }
+                        emit moveInPlaylist(pl->name, source, dest);
+                    }
+                    return true;
+                }
             } else {
                 emit addToPlaylist(pl->name, filenames);
                 if (!item->isPlaylist()) {
@@ -531,9 +502,12 @@ void PlaylistsModel::movedInPlaylist(const QString &name, int from, int to)
         return;
     }
     QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
-    emit beginMoveRows(parent, from, from, parent, to);
-    pl->songs.move(from, to);
-    emit endMoveRows();
+    beginRemoveRows(parent, from, from);
+    SongItem *si=pl->songs.takeAt(from);
+    endRemoveRows();
+    beginInsertRows(parent, to<from ? to : to-1, to<from ? to : to-1);
+    pl->songs.insert(to, si);
+    endInsertRows();
 }
 
 static QString qt_strippedText(QString s)

@@ -35,6 +35,7 @@
 #include "settings.h"
 #include "playlisttablemodel.h"
 #include "config.h"
+#include <QtCore/QDebug>
 
 static QString configDir()
 {
@@ -123,15 +124,14 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
     }
 
     QDomDocument doc;
-    bool valid=false;
-    bool firstInsert=!isInternal;
+    bool haveInserted=false;
     doc.setContent(&file);
     QDomElement root = doc.documentElement();
+    qWarning() << root.elementsByTagName("stream").count();
     if ("cantata" == root.tagName() && root.hasAttribute("version") && "1.0" == root.attribute("version")) {
         QDomElement stream = root.firstChildElement("stream");
         while (!stream.isNull()) {
             if (stream.hasAttribute("name") && stream.hasAttribute("url")) {
-                valid=true;
                 QString name=stream.attribute("name");
                 QString origName=name;
                 QUrl url=QUrl(stream.attribute("url"));
@@ -143,11 +143,12 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                     }
 
                     if (i<100) {
-                        if (firstInsert) {
-                            beginResetModel();
-                            firstInsert=false;
+                        if (!haveInserted) {
+                            if (!isInternal) {
+                                beginResetModel();
+                            }
+                            haveInserted=true;
                         }
-
                         items.append(Stream(name, url));
                         itemMap.insert(url.toString(), name);
                     }
@@ -157,16 +158,12 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
         }
     }
 
-    if (valid) {
-        if (!isInternal) {
-            if (!firstInsert) {
-                endResetModel();
-            }
-            save();
-        }
+    if (haveInserted && !isInternal) {
+        endResetModel();
+        save();
     }
 
-    return valid;
+    return haveInserted;
 }
 
 bool StreamsModel::save(const QString &filename)

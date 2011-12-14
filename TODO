@@ -7,7 +7,7 @@
    - Handle xspf/spiff playlists
    - Handle more than 1st entry?? Not sure
    - Check that MPD can handle protocols before adding
-   - Store list in XML file in ~/.config/cantata/streams.xml
+   - Add option to makr stream as 'favourite'. If so, place at top of list and show KDE favourite icon
 
 * Library browser
    - Have artist icons ?
@@ -27,5 +27,4 @@
    - 'Add to playlist XXX' entries to library, album, and folder context menus
 
 * Album View
-   - Use LibraryPage, but have an 'All Albums' (hidden) artist?
-   - Create custom item delegate and add add/replace buttons?
+   - Use LibraryPage/model, but have an 'All Albums' (hidden) artist?

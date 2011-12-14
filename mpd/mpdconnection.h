@@ -110,8 +110,8 @@ public Q_SLOTS:
     void renamePlaylist(const QString oldName, const QString newName);
     void removePlaylist(QString name);
     void savePlaylist(QString name);
-    void addToPlaylist(const QString &name, const QString &song);
-    void removeFromPlaylist(const QString &name, int pos);
+    void addToPlaylist(const QString &name, const QStringList &songs);
+    void removeFromPlaylist(const QString &name, const QList<int> &positions);
     void moveInPlaylist(const QString &name, int id, int pos);
 
     void setUi(QObject *u) { ui=u; }
@@ -129,8 +129,8 @@ Q_SIGNALS:
     void dirViewUpdated(DirViewItemRoot * root);
     void playlistsRetrieved(const QList<Playlist> &data);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
-    void addedToPlaylist(const QString &name, const QString &song);
-    void removedFromPlaylist(const QString &name, int pos);
+    void addedToPlaylist(const QString &name, const QStringList &songs);
+    void removedFromPlaylist(const QString &name, const QList<int> &positions);
     void movedInPlaylist(const QString &name, int id, int pos);
     void databaseUpdated();
     void playlistLoaded(const QString &playlist);

@@ -57,6 +57,7 @@ FolderPage::FolderPage(MainWindow *p)
     view->setPageDefaults();
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
+    view->addAction(p->addToStoredPlaylistAction);
 
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
@@ -65,6 +66,7 @@ FolderPage::FolderPage(MainWindow *p)
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
     connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
 }
@@ -117,7 +119,7 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
     }
 }
 
-void FolderPage::addSelectionToPlaylist()
+void FolderPage::addSelectionToPlaylist(const QString &name)
 {
     // Get selected view indexes
     const QModelIndexList selected = view->selectionModel()->selectedIndexes();
@@ -152,7 +154,11 @@ void FolderPage::addSelectionToPlaylist()
     }
 
     if (!files.isEmpty()) {
-        emit add(files);
+        if (name.isEmpty()) {
+            emit add(files);
+        } else {
+            emit addSongsToPlaylist(name, files);
+        }
         view->selectionModel()->clearSelection();
     }
 }

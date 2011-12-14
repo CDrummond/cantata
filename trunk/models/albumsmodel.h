@@ -81,6 +81,9 @@ public:
     void update(const MusicLibraryItemRoot *root);
     void clear();
 
+Q_SIGNALS:
+    void updated();
+
 public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img);
 

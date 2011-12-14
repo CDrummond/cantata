@@ -31,11 +31,11 @@
 #include <QtCore/QFile>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
+#include <QtGui/QIcon>
 #include "streamsmodel.h"
 #include "settings.h"
 #include "playlisttablemodel.h"
 #include "config.h"
-#include <QtCore/QDebug>
 
 static QString configDir()
 {
@@ -70,6 +70,16 @@ int StreamsModel::rowCount(const QModelIndex &) const
     return items.size();
 }
 
+QModelIndex StreamsModel::index(int row, int column, const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+
+    if(row<items.count())
+        return createIndex(row, column, (void *)&items.at(row));
+
+    return QModelIndex();
+}
+
 QVariant StreamsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -80,10 +90,15 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    if (Qt::DisplayRole == role) {
-        return items.at(index.row()).name;
-    } else if(Qt::ToolTipRole == role) {
-        return items.at(index.row()).url;
+    switch(role) {
+    case Qt::DisplayRole: return items.at(index.row()).name;
+    case Qt::ToolTipRole: return items.at(index.row()).url;
+    case Qt::UserRole:    return items.at(index.row()).favorite;
+    case Qt::DecorationRole:
+        if (items.at(index.row()).favorite) {
+            return QIcon::fromTheme("emblem-favorite");
+        }
+    default: break;
     }
 
     return QVariant();
@@ -127,7 +142,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
     bool haveInserted=false;
     doc.setContent(&file);
     QDomElement root = doc.documentElement();
-    qWarning() << root.elementsByTagName("stream").count();
+
     if ("cantata" == root.tagName() && root.hasAttribute("version") && "1.0" == root.attribute("version")) {
         QDomElement stream = root.firstChildElement("stream");
         while (!stream.isNull()) {
@@ -135,6 +150,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                 QString name=stream.attribute("name");
                 QString origName=name;
                 QUrl url=QUrl(stream.attribute("url"));
+                bool fav=stream.hasAttribute("favorite") ? stream.attribute("favorite")=="true" : false;
 
                 if (!entryExists(QString(), url)) {
                     int i=1;
@@ -149,7 +165,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                             }
                             haveInserted=true;
                         }
-                        items.append(Stream(name, url));
+                        items.append(Stream(name, url, fav));
                         itemMap.insert(url.toString(), name);
                     }
                 }
@@ -181,6 +197,9 @@ bool StreamsModel::save(const QString &filename)
         QDomElement stream = doc.createElement("stream");
         stream.setAttribute("name", s.name);
         stream.setAttribute("url", s.url.toString());
+        if (s.favorite) {
+            stream.setAttribute("favorite", "true");
+        }
         root.appendChild(stream);
     }
 
@@ -188,7 +207,7 @@ bool StreamsModel::save(const QString &filename)
     return true;
 }
 
-bool StreamsModel::add(const QString &name, const QString &url)
+bool StreamsModel::add(const QString &name, const QString &url, bool fav)
 {
     QUrl u(url);
 
@@ -199,7 +218,7 @@ bool StreamsModel::add(const QString &name, const QString &url)
 //     int row=items.count();
     beginResetModel();
 //     beginInsertRows(createIndex(0, 0), row, row); // ????
-    items.append(Stream(name, u));
+    items.append(Stream(name, u, fav));
     itemMap.insert(url, name);
 //     endInsertRows();
 //     emit layoutChanged();
@@ -210,7 +229,7 @@ bool StreamsModel::add(const QString &name, const QString &url)
     return true;
 }
 
-void StreamsModel::edit(const QModelIndex &index, const QString &name, const QString &url)
+void StreamsModel::edit(const QModelIndex &index, const QString &name, const QString &url, bool fav)
 {
     QUrl u(url);
     int row=index.row();
@@ -221,7 +240,7 @@ void StreamsModel::edit(const QModelIndex &index, const QString &name, const QSt
         items.removeAt(index.row());
         itemMap.remove(old.url.toString());
         row=items.count();
-        items.append(Stream(name, u));
+        items.append(Stream(name, u, fav));
         itemMap.insert(url, name);
         endResetModel();
         save();
@@ -295,4 +314,13 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
 void StreamsModel::persist()
 {
     save(getInternalFile());
+}
+
+void StreamsModel::mark(const QList<int> &rows, bool f)
+{
+    beginResetModel();
+    foreach (int r, rows) {
+        items[r].favorite=f;
+    }
+    endResetModel();
 }

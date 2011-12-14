@@ -42,10 +42,11 @@ StreamDialog::StreamDialog(QWidget *parent)
 #endif
 {
     QWidget *wid = new QWidget(this);
-    QFormLayout *layout=new QFormLayout(wid);
+    QFormLayout *layout = new QFormLayout(wid);
 
-    nameEntry=new LineEdit(wid);
-    urlEntry=new LineEdit(wid);
+    nameEntry = new LineEdit(wid);
+    urlEntry = new LineEdit(wid);
+    fav = new QCheckBox(wid);
 #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(0, QFormLayout::LabelRole, new QLabel(i18n("Name:"), wid));
 #else
@@ -59,7 +60,12 @@ StreamDialog::StreamDialog(QWidget *parent)
 #endif
     layout->setWidget(1, QFormLayout::FieldRole, urlEntry);
     urlEntry->setMinimumWidth(300);
-
+#ifdef ENABLE_KDE_SUPPORT
+    layout->setWidget(2, QFormLayout::LabelRole, new QLabel(i18n("Favorite:"), wid));
+#else
+    layout->setWidget(2, QFormLayout::LabelRole, new QLabel(tr("Favorite:"), wid));
+#endif
+    layout->setWidget(2, QFormLayout::FieldRole, fav);
 #ifdef ENABLE_KDE_SUPPORT
     setMainWidget(wid);
     setButtons(KDialog::Ok|KDialog::Cancel);
@@ -75,11 +81,13 @@ StreamDialog::StreamDialog(QWidget *parent)
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 #endif
-    connect(nameEntry, SIGNAL(textChanged(const QString &)), SLOT(textChanged()));
-    connect(urlEntry, SIGNAL(textChanged(const QString &)), SLOT(textChanged()));
+    connect(nameEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
+    connect(urlEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
+    connect(fav, SIGNAL(toggled(bool)), SLOT(changed()));
+    prevFav=false;
 }
 
-void StreamDialog::setEdit(const QString &editName, const QString &editUrl)
+void StreamDialog::setEdit(const QString &editName, const QString &editUrl, bool f)
 {
 #ifdef ENABLE_KDE_SUPPORT
     setCaption(i18n("Edit Stream"));
@@ -90,15 +98,17 @@ void StreamDialog::setEdit(const QString &editName, const QString &editUrl)
 #endif
     prevName=editName;
     prevUrl=editUrl;
+    prevFav=f;
     nameEntry->setText(editName);
     urlEntry->setText(editUrl);
+    fav->setChecked(f);
 }
 
-void StreamDialog::textChanged()
+void StreamDialog::changed()
 {
     QString n=name();
     QString u=url();
-    bool enableOk=!n.isEmpty() && !u.isEmpty() && (n!=prevName || u!=prevUrl);
+    bool enableOk=!n.isEmpty() && !u.isEmpty() && (n!=prevName || u!=prevUrl || fav->isChecked()!=prevFav);
 #ifdef ENABLE_KDE_SUPPORT
     enableButton(KDialog::Ok, enableOk);
 #else

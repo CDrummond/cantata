@@ -50,8 +50,11 @@ private Q_SLOTS:
     void add();
     void remove();
     void edit();
-    void controlEdit();
+    void controlActions();
     void searchItems();
+    void markAsFav() { mark(true); }
+    void unMarkAsFav() { mark(false); }
+    void mark(bool f);
 
 private:
     Action *importAction;
@@ -59,6 +62,8 @@ private:
     Action *addAction;
     Action *removeAction;
     Action *editAction;
+    Action *markAsFavAction;
+    Action *unMarkAsFavAction;
     StreamsModel model;
     StreamsProxyModel proxy;
 };

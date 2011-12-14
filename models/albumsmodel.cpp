@@ -157,11 +157,11 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             ? al.name
             :
                 #ifdef ENABLE_KDE_SUPPORT
-                i18np("%1\n1 Song", "%1\n%2 Songs", al.name, al.files.count());
+                i18np("%1\n1 Track", "%1\n%2 Tracks", al.name, al.files.count());
                 #else
                 (al.files.count()>1
-                    ? tr("%1\n%2 Songs").arg(al.name).arg(al.files.count())
-                    : tr("%1\n1 Song").arg(al.name);
+                    ? tr("%1\n%2 Tracks").arg(al.name).arg(al.files.count())
+                    : tr("%1\n1 Track").arg(al.name);
                 #endif
     }
     case Qt::DisplayRole:

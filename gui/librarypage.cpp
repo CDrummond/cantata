@@ -118,9 +118,9 @@ public:
             case MusicLibraryItem::Type_Album:
                 pix=static_cast<MusicLibraryItemAlbum *>(item)->cover();
                 #ifdef ENABLE_KDE_SUPPORT
-                childText=i18np("1 Song", "%1 Songs", item->childCount());
+                childText=i18np("1 Track", "%1 Tracks", item->childCount());
                 #else
-                childText=1==item->childCount() ? tr("1 Song") : tr("%1 Songs").arg(item->childCount());
+                childText=1==item->childCount() ? tr("1 Track") : tr("%1 Tracks").arg(item->childCount());
                 #endif
                 break;
             default:

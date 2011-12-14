@@ -47,6 +47,7 @@ public:
     static MusicLibraryItemRoot * parseLibraryItems(const QByteArray &data);
     static DirViewItemRoot * parseDirViewItems(const QByteArray &data);
     static QList<Output> parseOuputs(const QByteArray &data);
+    static QString formatDuration(const quint32 totalseconds);
 };
 
 #endif

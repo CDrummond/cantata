@@ -821,7 +821,7 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs)
     }
 
     if (!added.isEmpty()) {
-        emit addedToPlaylist(name, added);
+        playlistInfo(name);
     }
 }
 
@@ -859,15 +859,15 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<int> &po
     }
 }
 
-void MPDConnection::moveInPlaylist(const QString &name, int id, int pos)
+void MPDConnection::moveInPlaylist(const QString &name, int from, int to)
 {
     QByteArray data = "playlistmove ";
     data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     data += " ";
-    data += QByteArray::number(id);
+    data += QByteArray::number(from);
     data += " ";
-    data += QByteArray::number(pos);
+    data += QByteArray::number(to);
     if (sendCommand(data).ok) {
-        emit movedInPlaylist(name, id, pos);
+        emit movedInPlaylist(name, from, to);
     }
 }

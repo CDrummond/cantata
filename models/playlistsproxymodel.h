@@ -34,6 +34,8 @@ class PlaylistsProxyModel : public QSortFilterProxyModel
 
 public:
     PlaylistsProxyModel(QObject *parent = 0);
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 };
 
 #endif

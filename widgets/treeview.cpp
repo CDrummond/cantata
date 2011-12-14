@@ -73,4 +73,3 @@ void TreeView::mouseReleaseEvent(QMouseEvent *event)
         QTreeView::mouseReleaseEvent(event);
     }
 }
-

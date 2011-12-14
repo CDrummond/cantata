@@ -35,6 +35,7 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdconnection.h"
+#include "playlisttablemodel.h"
 
 PlaylistsModel * PlaylistsModel::self()
 {
@@ -58,6 +59,9 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     connect(MPDConnection::self(), SIGNAL(removedFromPlaylist(const QString &, const QList<int> &)), this, SLOT(removedFromPlaylist(const QString &, const QList<int> &)));
     connect(this, SIGNAL(listPlaylists()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(this, SIGNAL(playlistInfo(const QString &)), MPDConnection::self(), SLOT(playlistInfo(const QString &)));
+    connect(this, SIGNAL(addToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
+    connect(this, SIGNAL(moveInPlaylist(const QString &, int, int)), MPDConnection::self(), SLOT(moveInPlaylist(const QString &, int, int)));
+    connect(MPDConnection::self(), SIGNAL(movedInPlaylist(const QString &, int, int)), this, SLOT(movedInPlaylist(const QString &, int, int)));
     updateItemMenu();
 }
 
@@ -190,6 +194,174 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+Qt::ItemFlags PlaylistsModel::flags(const QModelIndex &index) const
+{
+    if (index.isValid()) {
+//         if (static_cast<Item *>(index.internalPointer())->isPlaylist()) {
+            return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
+//         } else {
+//             return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+//         }
+    } else {
+        return 0;
+    }
+}
+
+Qt::DropActions PlaylistsModel::supportedDropActions() const
+{
+    return Qt::CopyAction | Qt::MoveAction;
+}
+
+static const QLatin1String constPlaylistNameMimeType("cantata/playlistnames");
+static const QLatin1String constPositionsMimeType("cantata/positions");
+
+QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData = new QMimeData();
+    QByteArray encodedData;
+    QByteArray encodedPlaylistsData;
+    QByteArray encodedPosData;
+    QDataStream stream(&encodedData, QIODevice::WriteOnly);
+    QDataStream playlistsStream(&encodedPlaylistsData, QIODevice::WriteOnly);
+    QDataStream posStream(&encodedPlaylistsData, QIODevice::WriteOnly);
+    QStringList filenames;
+    QStringList playlists;
+    QStringList positions;
+    foreach(QModelIndex index, indexes) {
+        Item *item=static_cast<Item *>(index.internalPointer());
+
+        if (item->isPlaylist()) {
+            int pos=0;
+            foreach (const SongItem *s, static_cast<PlaylistItem*>(item)->songs) {
+                filenames << s->file;
+                playlists << s->parent->name;
+                positions << QString::number(pos++);
+            }
+        } else {
+            filenames << static_cast<SongItem*>(item)->file;
+            playlists << static_cast<SongItem*>(item)->parent->name;
+            positions << QString::number(static_cast<SongItem*>(item)->parent->songs.indexOf(static_cast<SongItem*>(item)));
+        }
+    }
+
+    for (int i = filenames.size() - 1; i >= 0; i--) {
+        stream << filenames.at(i);
+        playlistsStream << playlists.at(i);
+        posStream << positions.at(i);
+    }
+
+    mimeData->setData(PlaylistTableModel::constFileNameMimeType, encodedData);
+    mimeData->setData(constPlaylistNameMimeType, encodedPlaylistsData);
+    mimeData->setData(constPositionsMimeType, encodedPosData);
+    return mimeData;
+}
+
+bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int col, const QModelIndex &parent)
+{
+    if (Qt::IgnoreAction==action) {
+        return true;
+    }
+
+    if (!parent.isValid()) {
+        return false;
+    }
+
+    if (data->hasFormat(PlaylistTableModel::constFileNameMimeType)) {
+        QByteArray encodedData = data->data(PlaylistTableModel::constFileNameMimeType);
+        QDataStream stream(&encodedData, QIODevice::ReadOnly);
+        QStringList filenames;
+        Item *item=static_cast<Item *>(parent.internalPointer());
+        PlaylistItem *pl=item->isPlaylist()
+                            ? static_cast<PlaylistItem *>(item)
+                            : static_cast<SongItem *>(item)->parent;
+
+        if (!pl) {
+            return false;
+        }
+
+        while (!stream.atEnd()) {
+            QString text;
+            stream >> text;
+            filenames << text;
+        }
+
+        if (data->hasFormat(PlaylistTableModel::constMoveMimeType)) {
+            qWarning() << "EMIT PL:" << pl->name;
+            emit addToPlaylist(pl->name, filenames);
+            if (!item->isPlaylist()) {
+                for (int i=0; i<filenames.count(); ++i) {
+                    qWarning() << "EMIT MOVE:" << pl->name << pl->songs.count();
+                    emit moveInPlaylist(pl->name, pl->songs.count(), parent.row());
+                }
+            }
+            return true;
+        } else if (data->hasFormat(constPlaylistNameMimeType)) {
+            encodedData = data->data(constPlaylistNameMimeType);
+            QDataStream playlistStream(&encodedData, QIODevice::ReadOnly);
+            QStringList playlists;
+
+            while (!playlistStream.atEnd()) {
+                QString text;
+                playlistStream >> text;
+                playlists << text;
+            }
+
+            bool fromThis=false;
+            bool fromOthers=false;
+
+            foreach (const QString &p, playlists) {
+                if (p==pl->name) {
+                    fromThis=true;
+                } else {
+                    fromOthers=true;
+                }
+
+                if (fromThis && fromOthers) {
+                    return false; // Weird mix...
+                }
+            }
+
+            if (fromThis) {
+                // Yuck!!!!
+//                 if (item->isPlaylist()) {
+//                     encodedData = data->data(constPositionsMimeType);
+//                     QDataStream posStream(&encodedData, QIODevice::ReadOnly);
+//                     QList<int> pos;
+//
+//                     while (!posStream.atEnd()) {
+//                         QString text;
+//                         posStream >> text;
+//                         pos << text.toInt();
+//                     }
+//                     qSort(pos);
+//                     for (int i=0; i<filenames.count(); ++i) {
+//                         int idx=pl->getIndex(file
+//                         emit moveInPlaylist(pl->name, pos.at(i)-i, parent.row());
+//                     }
+//                     return true;
+//                 }
+            } else {
+                emit addToPlaylist(pl->name, filenames);
+                if (!item->isPlaylist()) {
+                    for (int i=0; i<filenames.count(); ++i) {
+                        emit moveInPlaylist(pl->name, pl->songs.count(), parent.row());
+                    }
+                }
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+QStringList PlaylistsModel::mimeTypes() const
+{
+    QStringList types;
+    types << PlaylistTableModel::constFileNameMimeType;
+    return types;
+}
+
 void PlaylistsModel::getPlaylists()
 {
     emit listPlaylists();
@@ -267,7 +439,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
             }
             beginInsertRows(createIndex(items.indexOf(pl), 0, pl), 0, songs.count()-1);
             foreach (const Song &s, songs) {
-                pl->songs.append(new SongItem(s));
+                pl->songs.append(new SongItem(s, pl));
             }
             endInsertRows();
             updateItemMenu();
@@ -277,38 +449,39 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
             endRemoveRows();
         } else {
             QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
-            QSet<Song> existing;
-            QSet<Song> retreived;
-            QSet<Song> removed;
-            QSet<Song> added;
+            int count=pl->songs.count();
+            int addFrom=songs.count()>count ? count : -1;
+            for (int i=0; i<count; ++i) {
+                if (i>=songs.count()) {
+                    // Remove all remaining...
+                    beginRemoveRows(parent, i, count);
+                    for (int j=i; j<count; ++j) {
+                        pl->songs.removeAt(i);
+                    }
+                    endRemoveRows();
+                    break;
+                } else {
+                    Song n=songs.at(i);
+                    const SongItem *o=pl->songs.at(i);
 
-            foreach (SongItem *s, pl->songs) {
-                existing.insert(*s);
-            }
-
-            foreach (const Song &s, songs) {
-                retreived.insert(s);
-            }
-
-            removed=existing-retreived;
-            added=retreived-existing;
-
-            if (removed.count()) {
-                foreach (const Song &s, removed) {
-                    SongItem *si=pl->getSong(s);
-                    if (pl) {
-                        int index=pl->songs.indexOf(si);
-                        beginRemoveRows(parent, index, index);
-                        pl->songs.removeAt(index);
+                    if (o->file!=n.file) {
+                        addFrom=i;
+                        beginRemoveRows(parent, i, count);
+                        for (int j=i; j<count; ++j) {
+                            pl->songs.removeAt(i);
+                        }
                         endRemoveRows();
+                        break;
                     }
                 }
             }
-            if (added.count()) {
-                beginRemoveRows(parent, pl->songs.count(), pl->songs.count()+added.count()-1);
-                foreach (const Song &s, added) {
-                    pl->songs.append(new SongItem(s));
+
+            if (addFrom>=0) {
+                beginInsertRows(parent, pl->songs.count(), pl->songs.count()+(songs.count()-(1+addFrom)));
+                for (int i=addFrom; i<songs.count(); ++i) {
+                    pl->songs.append(new SongItem(songs.at(i), pl));
                 }
+                endInsertRows();
             }
         }
     } else {
@@ -318,37 +491,49 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
 
 void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<int> &positions)
 {
-    if (0==positions.count()) {
+    PlaylistItem *pl=0;
+    if (0==positions.count() || !(pl=getPlaylist(name))) {
+        emit listPlaylists();
         return;
     }
-    PlaylistItem *pl=getPlaylist(name);
 
-    if (pl) {
-        int adjust=0;
-        QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
-        QList<int>::ConstIterator it=positions.constBegin();
-        QList<int>::ConstIterator end=positions.constEnd();
-        while(it!=end) {
-            int rowBegin=*it;
-            int rowEnd=*it;
-            QList<int>::ConstIterator next=it+1;
-            while(next!=end) {
-                if (*next!=(rowEnd+1)) {
-                    break;
-                } else {
-                    it=next;
-                    rowEnd=*next;
-                }
+    int adjust=0;
+    QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
+    QList<int>::ConstIterator it=positions.constBegin();
+    QList<int>::ConstIterator end=positions.constEnd();
+    while(it!=end) {
+        int rowBegin=*it;
+        int rowEnd=*it;
+        QList<int>::ConstIterator next=it+1;
+        while(next!=end) {
+            if (*next!=(rowEnd+1)) {
+                break;
+            } else {
+                it=next;
+                rowEnd=*next;
             }
-            beginRemoveRows(parent, rowBegin-adjust, rowEnd-adjust);
-            for (int i=rowBegin; i<=rowEnd; ++i) {
-                pl->songs.removeAt(rowBegin-adjust);
-                adjust++;
-            }
-            endRemoveRows();
-            it++;
         }
+        beginRemoveRows(parent, rowBegin-adjust, rowEnd-adjust);
+        for (int i=rowBegin; i<=rowEnd; ++i) {
+            pl->songs.removeAt(rowBegin-adjust);
+            adjust++;
+        }
+        endRemoveRows();
+        it++;
     }
+}
+
+void PlaylistsModel::movedInPlaylist(const QString &name, int from, int to)
+{
+    PlaylistItem *pl=0;
+    if (!(pl=getPlaylist(name)) || from>pl->songs.count()) {
+        emit listPlaylists();
+        return;
+    }
+    QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
+    emit beginMoveRows(parent, from, from, parent, to);
+    pl->songs.move(from, to);
+    emit endMoveRows();
 }
 
 static QString qt_strippedText(QString s)

@@ -28,4 +28,5 @@ StreamsProxyModel::StreamsProxyModel(QObject *parent) : QSortFilterProxyModel(pa
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setSortLocaleAware(true);
+    sort(0);
 }

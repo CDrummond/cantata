@@ -137,7 +137,7 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
         const Song &song = songs.at(index.row());
         switch (index.column()) {
         case COL_TITLE:
-            return song.title;
+            return song.title.isEmpty() ? song.file : song.title;
         case COL_ARTIST:
             return song.artist;
         case COL_ALBUM:

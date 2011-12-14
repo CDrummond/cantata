@@ -200,6 +200,8 @@ private Q_SLOTS:
     void removeFromPlaylist();
     void replacePlaylist();
     void addToPlaylist();
+    void addToNewStoredPlaylist();
+    void addToExistingStoredPlaylist(const QString &name);
     void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
     void playlistTableViewContextMenuClicked();
     void playListTableViewToggleItem(const bool visible);
@@ -249,6 +251,7 @@ private:
     Action *addToPlaylistAction;
     Action *replacePlaylistAction;
     Action *removeFromPlaylistAction;
+    Action *addToStoredPlaylistAction;
     Action *clearPlaylistAction;
     Action *copySongInfoAction;
     Action *cropPlaylistAction;

@@ -221,12 +221,15 @@ LibraryPage::LibraryPage(MainWindow *p)
     treeView->setPageDefaults();
     treeView->addAction(addToPlaylistAction);
     treeView->addAction(replacePlaylistAction);
+    treeView->addAction(p->addToStoredPlaylistAction);
     listView->addAction(addToPlaylistAction);
     listView->addAction(replacePlaylistAction);
     listView->addAction(backAction);
     listView->addAction(homeAction);
+    listView->addAction(p->addToStoredPlaylistAction);
     listView->setItemDelegate(new LibraryItemDelegate(this, &proxy, addToPlaylistAction, replacePlaylistAction));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(searchTree, SIGNAL(returnPressed()), this, SLOT(searchItems()));
     connect(searchTree, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
     connect(searchList, SIGNAL(returnPressed()), this, SLOT(searchItems()));
@@ -364,7 +367,7 @@ void LibraryPage::clear()
     homeActivated();
 }
 
-void LibraryPage::addSelectionToPlaylist()
+void LibraryPage::addSelectionToPlaylist(const QString &name)
 {
     QStringList files;
     MusicLibraryItem *item;
@@ -428,7 +431,11 @@ void LibraryPage::addSelectionToPlaylist()
     }
 
     if (!files.isEmpty()) {
-        emit add(files);
+        if (name.isEmpty()) {
+            emit add(files);
+        } else {
+            emit addSongsToPlaylist(name, files);
+        }
         view()->selectionModel()->clearSelection();
     }
 }

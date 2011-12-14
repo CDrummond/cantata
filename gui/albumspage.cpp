@@ -168,11 +168,13 @@ AlbumsPage::AlbumsPage(MainWindow *p)
 #endif
     view->addAction(addToPlaylistAction);
     view->addAction(replacePlaylistAction);
+    view->addAction(p->addToStoredPlaylistAction);
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     view->setItemDelegate(new AlbumItemDelegate(this, &proxy, addToPlaylistAction, replacePlaylistAction));
 
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -199,7 +201,7 @@ void AlbumsPage::clear()
     view->update();
 }
 
-void AlbumsPage::addSelectionToPlaylist()
+void AlbumsPage::addSelectionToPlaylist(const QString &name)
 {
     QStringList files;
 
@@ -220,7 +222,11 @@ void AlbumsPage::addSelectionToPlaylist()
     }
 
     if (!files.isEmpty()) {
-        emit add(files);
+        if (name.isEmpty()) {
+            emit add(files);
+        } else {
+            emit addSongsToPlaylist(name, files);
+        }
         view->selectionModel()->clearSelection();
     }
 }

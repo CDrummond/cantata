@@ -27,35 +27,52 @@
 #ifndef PLAYLISTS_MODEL_H
 #define PLAYLISTS_MODEL_H
 
-#include <QAbstractListModel>
-#include <QList>
+#include <QtCore/QAbstractItemModel>
+#include <QtCore/QList>
 #include "playlist.h"
 
-class PlaylistsModel : public QAbstractListModel
+class QMenu;
+
+class PlaylistsModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
+    static PlaylistsModel * self();
+
     PlaylistsModel(QObject *parent = 0);
     ~PlaylistsModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex&) const { return 1; }
+    QModelIndex parent(const QModelIndex &index) const;
+    QModelIndex index(int row, int col, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
     void getPlaylists();
     void clear();
     bool exists(const QString &n) const;
 
-private:
-    QList<Playlist> items;
+    QMenu * menu() { return itemMenu; }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void listPlaylists();
     void playlistInfo(const QString &name);
 
+    void addToNew();
+    void addToExisting(const QString &name);
+
 private Q_SLOTS:
     void setPlaylists(const QList<Playlist> &playlists);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
+    void emitAddToExisting();
+
+private:
+    void updateItemMenu();
+
+private:
+    QList<Playlist> items;
+    QMenu *itemMenu;
 };
 
 #endif

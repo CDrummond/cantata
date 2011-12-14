@@ -46,7 +46,7 @@ public:
 
     void refresh(Refresh type);
     void clear();
-    void addSelectionToPlaylist();
+    void addSelectionToPlaylist(const QString &name=QString());
     void setView(bool tree);
 
     MusicLibraryModel & getModel() { return model; }
@@ -54,6 +54,7 @@ public:
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void add(const QStringList &files);
+    void addSongsToPlaylist(const QString &name, const QStringList &files);
     void listAllInfo(const QDateTime &);
 
 public Q_SLOTS:

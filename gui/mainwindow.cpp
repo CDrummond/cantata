@@ -24,33 +24,32 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui>
-#include <QSet>
-#include <QString>
-#include <QResizeEvent>
-#include <QMoveEvent>
-#include <QClipboard>
+#include <QtCore/QSet>
+#include <QtCore/QString>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QMoveEvent>
+#include <QtGui/QClipboard>
+#include <QtGui/QInputDialog>
 #include <cstdlib>
-
 #ifdef ENABLE_KDE_SUPPORT
-#include <KApplication>
-#include <KAction>
-#include <KLocale>
-#include <KActionCollection>
-#include <KNotification>
-#include <KStandardAction>
-#include <KAboutApplicationDialog>
-#include <KLineEdit>
-#include <KXMLGUIFactory>
-#include <KMessageBox>
-#include <KIcon>
-#include <KMenuBar>
-#include <KMenu>
+#include <KDE/KApplication>
+#include <KDE/KAction>
+#include <KDE/KLocale>
+#include <KDE/KActionCollection>
+#include <KDE/KNotification>
+#include <KDE/KStandardAction>
+#include <KDE/KAboutApplicationDialog>
+#include <KDE/KLineEdit>
+#include <KDE/KXMLGUIFactory>
+#include <KDE/KMessageBox>
+#include <KDE/KIcon>
+#include <KDE/KMenuBar>
+#include <KDE/KMenu>
 #else
 #include <QtGui/QMenuBar>
 #include "networkproxyfactory.h"
 #endif
-
+#include "playlistsmodel.h"
 #include "covers.h"
 #include "mainwindow.h"
 #include "preferencesdialog.h"
@@ -250,6 +249,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     addToPlaylistAction = actionCollection()->addAction("addtoplaylist");
     addToPlaylistAction->setText(i18n("Add To Playlist"));
 
+    addToStoredPlaylistAction = actionCollection()->addAction("addtostoredplaylist");
+    addToStoredPlaylistAction->setText(i18n("Add To"));
+
     replacePlaylistAction = actionCollection()->addAction("replaceplaylist");
     replacePlaylistAction->setText(i18n("Replace Playlist"));
 
@@ -317,6 +319,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     increaseVolumeAction = new QAction(tr("Increase Volume"), this);
     decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
     addToPlaylistAction = new QAction(tr("Add To Playlist"), this);
+    addToStoredPlaylistAction = new QAction(tr("Add To"), this);
     replacePlaylistAction = new QAction(tr("Replace Playlist"), this);
     removeFromPlaylistAction = new QAction(tr("Remove"), this);
     removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
@@ -383,6 +386,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
     streamsTabAction->setIcon(QIcon::fromTheme("applications-internet"));
     infoTabAction->setIcon(QIcon::fromTheme("server-database"));
+
+    addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
 
     menuButton->setIcon(QIcon::fromTheme("configure"));
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
@@ -577,6 +582,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
     connect(streamsTabAction, SIGNAL(activated()), this, SLOT(showStreamsTab()));
     connect(infoTabAction, SIGNAL(activated()), this, SLOT(showInfoTab()));
+    connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
+    connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
 
     elapsedTimer.setInterval(1000);
 
@@ -1145,6 +1152,58 @@ void MainWindow::addToPlaylist()
         playlistsPage->addSelectionToPlaylist();
     } else if (streamsPage->isVisible()) {
         streamsPage->addSelectionToPlaylist();
+    }
+}
+
+void MainWindow::addToNewStoredPlaylist()
+{
+    for(;;) {
+        #ifdef ENABLE_KDE_SUPPORT
+        QString name = QInputDialog::getText(this, i18n("Playlist Name"), i18n("Enter a name for the playlist:"));
+        #else
+        QString name = QInputDialog::getText(this, tr("Playlist Name"), tr("Enter a name for the playlist:"));
+        #endif
+
+        if (PlaylistsModel::self()->exists(name)) {
+            #ifdef ENABLE_KDE_SUPPORT
+            switch(KMessageBox::warningYesNoCancel(this, i18n("A playlist named %1 already exists!<br/>Add to that playlist?").arg(name),
+                                                   i18n("Existing Playlist"))) {
+            case KMessageBox::Cancel:
+                return;
+            case KMessageBox::Yes:
+                break;
+            case KMessageBox::No:
+                continue;
+            }
+            #else
+            switch(QMessageBox::warning(this, tr("Existing Playlist"),
+                                        tr("A playlist named %1 already exists!<br/>Add to that playlist?").arg(name),
+                                        QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel, QMessageBox::Yes)) {
+            case QMessageBox::Cancel:
+                return;
+            case QMessageBox::Yes:
+                break;
+            case QMessageBox::No:
+                continue;
+            }
+            #endif
+        }
+
+        if (!name.isEmpty()) {
+            addToExistingStoredPlaylist(name);
+        }
+        break;
+    }
+}
+
+void MainWindow::addToExistingStoredPlaylist(const QString &name)
+{
+    if (libraryPage->isVisible()) {
+        libraryPage->addSelectionToPlaylist(name);
+    } else if (albumsPage->isVisible()) {
+        albumsPage->addSelectionToPlaylist(name);
+    } else if (folderPage->isVisible()) {
+        folderPage->addSelectionToPlaylist(name);
     }
 }
 

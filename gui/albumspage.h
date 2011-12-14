@@ -39,11 +39,12 @@ public:
     virtual ~AlbumsPage();
 
     void clear();
-    void addSelectionToPlaylist();
+    void addSelectionToPlaylist(const QString &name=QString());
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void add(const QStringList &files);
+    void addSongsToPlaylist(const QString &name, const QStringList &files);
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);

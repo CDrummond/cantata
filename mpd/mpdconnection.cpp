@@ -799,25 +799,62 @@ void MPDConnection::savePlaylist(QString name)
     }
 }
 
-void MPDConnection::addToPlaylist(const QString &name, const QString &song)
+void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs)
 {
-    QByteArray data = "playlistadd ";
-    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
-    data += " ";
-    data += song.toUtf8();
-    if (sendCommand(data).ok) {
-        emit addedToPlaylist(name, song);
+    if (songs.isEmpty()) {
+        return;
+    }
+
+    QByteArray encodedName=name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"");
+
+    QStringList added;
+    foreach (const QString &s, songs) {
+        QByteArray data = "playlistadd ";
+        data += "\"" + encodedName + "\"";
+        data += " ";
+        data += s.toUtf8();
+        if (sendCommand(data).ok) {
+            added << s;
+        } else {
+            break;
+        }
+    }
+
+    if (!added.isEmpty()) {
+        emit addedToPlaylist(name, added);
     }
 }
 
-void MPDConnection::removeFromPlaylist(const QString &name, int pos)
+void MPDConnection::removeFromPlaylist(const QString &name, const QList<int> &positions)
 {
-    QByteArray data = "playlistdelete ";
-    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
-    data += " ";
-    data += QByteArray::number(pos);
-    if (sendCommand(data).ok) {
-        emit removedFromPlaylist(name, pos);
+    if (positions.isEmpty()) {
+        return;
+    }
+
+    QByteArray encodedName=name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"");
+    QList<int> sorted=positions;
+
+    qSort(sorted);
+    QList<int> fixedPositions;
+    for (int i=0; i<sorted.count(); ++i) {
+        fixedPositions << (sorted.at(i)-i);
+    }
+    QList<int> removed;
+    QMap<int, int> map;
+    foreach (int pos, fixedPositions) {
+        QByteArray data = "playlistdelete ";
+        data += "\"" + encodedName + "\"";
+        data += " ";
+        data += QByteArray::number(pos);
+        if (sendCommand(data).ok) {
+            removed << map[pos];
+        } else {
+            break;
+        }
+    }
+
+    if (!removed.isEmpty()) {
+        emit removedFromPlaylist(name, removed);
     }
 }
 

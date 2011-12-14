@@ -43,12 +43,12 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
     removePlaylistAction = p->actionCollection()->addAction("removeplaylist");
-    removePlaylistAction->setText(i18n("Remove Playlist"));
+    removePlaylistAction->setText(i18n("Remove"));
     renamePlaylistAction = p->actionCollection()->addAction("renameplaylist");
-    renamePlaylistAction->setText(i18n("Rename Playlist"));
+    renamePlaylistAction->setText(i18n("Rename"));
     #else
-    removePlaylistAction = new QAction(tr("Remove Playlist"), this);
-    renamePlaylistAction = new QAction(tr("Rename PlayList"), this);
+    removePlaylistAction = new QAction(tr("Remove"), this);
+    renamePlaylistAction = new QAction(tr("Rename"), this);
     #endif
     removePlaylistAction->setIcon(QIcon::fromTheme("list-remove"));
     renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
@@ -83,11 +83,13 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     view->addAction(p->replacePlaylistAction);
     view->addAction(removePlaylistAction);
     view->addAction(renamePlaylistAction);
+    view->setUniformRowHeights(true);
 
     proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);
     connect(view, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    connect(view, SIGNAL(itemsSelected(bool)), SLOT(selectionChanged()));
     connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
     connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(loadPlaylist(const QString &)));
@@ -215,6 +217,50 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
     QModelIndex sourceIndex = proxy.mapToSource(index);
     QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
     emit loadPlaylist(name);
+}
+
+void PlaylistsPage::selectionChanged()
+{
+    QModelIndexList selected=view->selectionModel()->selectedIndexes();
+    bool enable=false;
+
+    if (1==selected.count()) {
+        QModelIndex index = proxy.mapToSource(selected.first());
+        PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(index.internalPointer());
+        if (item && item->isPlaylist()) {
+            enable=true;
+        }
+    }
+    renamePlaylistAction->setEnabled(enable);
+    renPlaylist->setEnabled(enable);
+
+    //
+    // Go through current selection, and for any 'song' items that are selected,
+    // ensure 'playlist' item is not...
+    QModelIndexList deselectList;
+    QSet<PlaylistsModel::PlaylistItem *> selectedPlaylists;
+
+    foreach(const QModelIndex &index, selected) {
+        if(index.isValid()) {
+            QModelIndex realIndex(proxy.mapToSource(index));
+
+            if(realIndex.isValid()) {
+                if(!(static_cast<PlaylistsModel::Item *>(realIndex.internalPointer()))->isPlaylist()) {
+                    PlaylistsModel::SongItem *song=static_cast<PlaylistsModel::SongItem *>(realIndex.internalPointer());
+
+                    if(!selectedPlaylists.contains(song->parent)) {
+                        selectedPlaylists.insert(song->parent);
+                        deselectList.append(proxy.mapFromSource(PlaylistsModel::self()->parent(realIndex)));
+                    }
+                }
+            }
+        }
+    }
+
+    foreach(const QModelIndex &index, deselectList) {
+        view->selectionModel()->select(index, QItemSelectionModel::Deselect);
+        selected.removeAll(index);
+    }
 }
 
 void PlaylistsPage::searchItems()

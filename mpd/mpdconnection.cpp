@@ -735,19 +735,29 @@ void MPDConnection::listPlaylists()
     }
 }
 
-void MPDConnection::load(QString name)
+void MPDConnection::playlistInfo(const QString &name)
+{
+    QByteArray data = "listplaylistinfo ";
+    data += name.toUtf8();
+    Response response=sendCommand(data);
+    if (response.ok) {
+        emit playlistInfoRetrieved(name, MPDParseUtils::parseSongs(response.data));
+    }
+}
+
+void MPDConnection::loadPlaylist(QString name)
 {
     QByteArray data("load ");
     data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
 
     if (sendCommand(data).ok) {
-        emit loaded(name);
+        emit playlistLoaded(name);
     } else {
         qDebug("Couldn't load playlist");
     }
 }
 
-void MPDConnection::rename(const QString oldName, const QString newName)
+void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
 {
     QByteArray data("rename ");
     data += "\"" + oldName.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
@@ -764,7 +774,7 @@ void MPDConnection::rename(const QString oldName, const QString newName)
     }
 }
 
-void MPDConnection::rm(QString name)
+void MPDConnection::removePlaylist(QString name)
 {
     QByteArray data("rm ");
     data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
@@ -774,7 +784,7 @@ void MPDConnection::rm(QString name)
     }
 }
 
-void MPDConnection::save(QString name)
+void MPDConnection::savePlaylist(QString name)
 {
     QByteArray data("save ");
     data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
@@ -786,5 +796,40 @@ void MPDConnection::save(QString name)
         QString message=tr("Sorry, failed to save <i>%1</i>").arg(name);
         #endif
         QMetaObject::invokeMethod(ui, "showError", Qt::QueuedConnection, Q_ARG(QString, message));
+    }
+}
+
+void MPDConnection::addToPlaylist(const QString &name, const QString &song)
+{
+    QByteArray data = "playlistadd ";
+    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += " ";
+    data += song.toUtf8();
+    if (sendCommand(data).ok) {
+        emit addedToPlaylist(name, song);
+    }
+}
+
+void MPDConnection::removeFromPlaylist(const QString &name, int pos)
+{
+    QByteArray data = "playlistdelete ";
+    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += " ";
+    data += QByteArray::number(pos);
+    if (sendCommand(data).ok) {
+        emit removedFromPlaylist(name, pos);
+    }
+}
+
+void MPDConnection::moveInPlaylist(const QString &name, int id, int pos)
+{
+    QByteArray data = "playlistmove ";
+    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += " ";
+    data += QByteArray::number(id);
+    data += " ";
+    data += QByteArray::number(pos);
+    if (sendCommand(data).ok) {
+        emit movedInPlaylist(name, id, pos);
     }
 }

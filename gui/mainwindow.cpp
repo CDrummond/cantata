@@ -498,7 +498,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 //     coverWidget->installEventFilter(coverEventHandler);
 
-    connect(MPDConnection::self(), SIGNAL(loaded(const QString &)), SLOT(songLoaded()));
+    connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
     connect(this, SIGNAL(removeSongs(const QList<qint32> &)), MPDConnection::self(), SLOT(removeSongs(const QList<qint32> &)));
     connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));

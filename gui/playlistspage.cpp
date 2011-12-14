@@ -89,10 +89,10 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
     connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
-    connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(load(const QString &)));
-    connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(rm(const QString &)));
-    connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(save(const QString &)));
-    connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(rename(const QString &, const QString &)));
+    connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(loadPlaylist(const QString &)));
+    connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
+    connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
+    connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
     connect(removePlaylistAction, SIGNAL(activated()), this, SLOT(removePlaylist()));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));

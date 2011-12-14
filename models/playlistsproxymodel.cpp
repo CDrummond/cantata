@@ -25,6 +25,7 @@
  */
 
 #include "playlistsproxymodel.h"
+#include "playlistsmodel.h"
 
 PlaylistsProxyModel::PlaylistsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
@@ -32,4 +33,42 @@ PlaylistsProxyModel::PlaylistsProxyModel(QObject *parent) : QSortFilterProxyMode
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setSortLocaleAware(true);
+}
+
+bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+    PlaylistsModel::Item *item = static_cast<PlaylistsModel::Item *>(index.internalPointer());
+
+    if (item->isPlaylist()) {
+        PlaylistsModel::PlaylistItem *pl = static_cast<PlaylistsModel::PlaylistItem *>(item);
+        if (pl->name.contains(filterRegExp())) {
+            return true;
+        }
+
+        foreach (PlaylistsModel::SongItem *s, pl->songs) {
+            if (s->entryName().contains(filterRegExp())) {
+                return true;
+            }
+        }
+    } else {
+        PlaylistsModel::SongItem *s = static_cast<PlaylistsModel::SongItem *>(item);
+        return s->entryName().contains(filterRegExp());
+    }
+
+    return false;
+}
+
+bool PlaylistsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    PlaylistsModel::Item *l=static_cast<PlaylistsModel::Item *>(left.internalPointer());
+    PlaylistsModel::Item *r=static_cast<PlaylistsModel::Item *>(right.internalPointer());
+
+    if (l->isPlaylist() && r->isPlaylist()) {
+        return static_cast<PlaylistsModel::PlaylistItem *>(l)->name.localeAwareCompare(static_cast<PlaylistsModel::PlaylistItem *>(r)->name)<0;
+    } else if(!l->isPlaylist() && !r->isPlaylist()) {
+        return left.row()<right.row();
+    }
+
+    return false;
 }

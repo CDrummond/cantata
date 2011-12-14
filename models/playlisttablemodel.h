@@ -57,7 +57,6 @@ public:
 
     static const QLatin1String constMoveMimeType;
     static const QLatin1String constFileNameMimeType;
-    static const QLatin1String constParsedStreamMimeType;
 
     PlaylistTableModel(QObject *parent = 0);
     ~PlaylistTableModel();

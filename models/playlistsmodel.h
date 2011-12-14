@@ -78,6 +78,11 @@ public:
     QModelIndex parent(const QModelIndex &index) const;
     QModelIndex index(int row, int col, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    Qt::DropActions supportedDropActions() const;
+    QMimeData * mimeData(const QModelIndexList &indexes) const;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int /*col*/, const QModelIndex &parent);
+    QStringList mimeTypes() const;
     void getPlaylists();
     void clear();
     bool exists(const QString &n) { return 0!=getPlaylist(n); }
@@ -88,6 +93,8 @@ Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void listPlaylists();
     void playlistInfo(const QString &name) const;
+    void addToPlaylist(const QString &name, const QStringList &songs);
+    void moveInPlaylist(const QString &name, int from, int to);
 
     void addToNew();
     void addToExisting(const QString &name);
@@ -96,6 +103,7 @@ private Q_SLOTS:
     void setPlaylists(const QList<Playlist> &playlists);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
     void removedFromPlaylist(const QString &name, const QList<int> &positions);
+    void movedInPlaylist(const QString &name, int from, int to);
     void emitAddToExisting();
 
 private:

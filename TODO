@@ -1,18 +1,30 @@
 * Playlists
-   - Allow drag-n-drop within playlist
-       - Within a playlist = move
-       - To another playlist = insert
-   - Need to support drag and drop to/from playing playlist!
-   - Lazy loading of playlist contents - this is not 100%
-   - Add list style view
-      - Perhaps make style delegate in lirarypage more generic? (combine albumitemdelegate too)
-         - Supply list of actions
-         - Set view type - list or icon
-         - Add UserRoles to return; icon-size, icon, sub-text
+    - Allow drag-n-drop within playlist
+    - Lazy loading of playlist contents - this is not 100%, but is ok if we want genre filtering
+    - Add genre filtering
+    - If drop a playlist with a stream onto queu, only the stream is added!!!!
+
 * DELETE keyboard short-cut. This needs to work on the focused list.
   Playlists, streams, and playqueue all support deleting.
 
 * Rename PlaylistTable* PlayQueue*
+
+* Streams - add genre support?
+
+* Library page - show Various Artists at top, with custom icon?
+
+* View style (list/tree) should be generic - ItemView
+    - Config option should be 'viewStyle'
+    - use stackedWidget as per library page
+        - firt page hold treeview and search bar (ItemTreeView)
+        - second page holds listview, nav buttons, and search bar (ItemListView)
+    - Make style delegate in librarypage generic
+    - ListItemDelegate
+        - Automatically use for listview (and put in ItemView cpp file)
+        - Supply list of actions
+        - Add UserRoles to return; icon-size, icon, main-text, sub-text
+    ItemView::ItemView(QWidget *p)
+    ItemView::setActions(const QList<Action *> &actions)
 
 ----
 

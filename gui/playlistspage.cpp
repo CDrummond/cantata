@@ -74,9 +74,9 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     renPlaylist->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
-    search->setPlaceholderText(i18n("Search playlist names..."));
+    search->setPlaceholderText(i18n("Search playlists..."));
 #else
-    search->setPlaceholderText(tr("Search library..."));
+    search->setPlaceholderText(tr("Search playlists..."));
 #endif
     view->setPageDefaults();
     view->addAction(p->addToPlaylistAction);
@@ -84,6 +84,10 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     view->addAction(removeAction);
     view->addAction(renamePlaylistAction);
     view->setUniformRowHeights(true);
+    view->setAcceptDrops(true);
+    view->setDragEnabled(true);
+    view->setDragDropOverwriteMode(true);
+    view->setDragDropMode(QAbstractItemView::DragDrop);
 
     proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);

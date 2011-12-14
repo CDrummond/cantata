@@ -41,7 +41,6 @@
 
 const QLatin1String PlaylistTableModel::constMoveMimeType("cantata/move");
 const QLatin1String PlaylistTableModel::constFileNameMimeType("cantata/filename");
-const QLatin1String PlaylistTableModel::constParsedStreamMimeType("cantata/stream");
 
 PlaylistTableModel::PlaylistTableModel(QObject *parent)
     : QAbstractTableModel(parent),
@@ -205,7 +204,8 @@ QMimeData *PlaylistTableModel::mimeData(const QModelIndexList &indexes) const
     QByteArray encodedData;
 
     QDataStream stream(&encodedData, QIODevice::WriteOnly);
-
+    QStringList filenames;
+    QList<int> ids;
     /*
      * Loop over all our indexes. However we have rows*columns indexes
      * We pack per row so ingore the columns
@@ -219,10 +219,20 @@ QMimeData *PlaylistTableModel::mimeData(const QModelIndexList &indexes) const
             QString text = QString::number(getPosByRow(index.row()));
             stream << text;
             rows.append(index.row());
+            filenames << songs.at(index.row()).file;
+            ids << songs.at(index.row()).id;
         }
     }
 
     mimeData->setData(constMoveMimeType, encodedData);
+
+    QByteArray filenamesEncodedData;
+    QDataStream filenamesStream(&filenamesEncodedData, QIODevice::WriteOnly);
+    for (int i = filenames.size() - 1; i >= 0; i--) {
+        filenamesStream << filenames.at(i);
+    }
+    mimeData->setData(constFileNameMimeType, filenamesEncodedData);
+
     return mimeData;
 }
 
@@ -240,7 +250,7 @@ QMimeData *PlaylistTableModel::mimeData(const QModelIndexList &indexes) const
 bool PlaylistTableModel::dropMimeData(const QMimeData *data,
                                       Qt::DropAction action, int row, int /*column*/, const QModelIndex & /*parent*/)
 {
-    if (action == Qt::IgnoreAction) {
+    if (Qt::IgnoreAction==action) {
         return true;
     }
 
@@ -263,7 +273,7 @@ bool PlaylistTableModel::dropMimeData(const QMimeData *data,
         }
 
         return true;
-    } else if (data->hasFormat(constFileNameMimeType) || data->hasFormat(constParsedStreamMimeType)) {
+    } else if (data->hasFormat(constFileNameMimeType)) {
         //Act on moves from the music library and dir view
         QByteArray encodedData = data->data(constFileNameMimeType);
         QDataStream stream(&encodedData, QIODevice::ReadOnly);

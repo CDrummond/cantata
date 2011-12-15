@@ -32,6 +32,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionViewItem>
 #include <QtGui/QPainter>
+#include <QtGui/QRadialGradient>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KAction>
 #include <KLocale>
@@ -39,6 +40,19 @@
 #else
 #include <QAction>
 #endif
+
+static void drawGlow(QPainter *painter, const QRect &rOrig)
+{
+    QRect r=rOrig.adjusted(-2, -2, 2, 2);
+    QRadialGradient gradient(QPointF(r.x()+r.width()/2.0, r.y()+r.height()/2.0), r.width()/2.0, QPointF(r.x()+r.width()/2.0, r.y()+r.height()/2.0));
+    QColor c(Qt::white);
+    c.setAlphaF(0.65);
+    gradient.setColorAt(0, c);
+    gradient.setColorAt(0.5, c);
+    c.setAlphaF(0.0);
+    gradient.setColorAt(1.0, c);
+    painter->fillRect(r, gradient);
+}
 
 class AlbumItemDelegate : public QStyledItemDelegate
 {
@@ -121,9 +135,11 @@ public:
             if (r2.height()>(constActionIconSize+(2*constActionBorder))) {
                 pix=replaceAction->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
                 if (!pix.isNull()) {
-                    painter->drawPixmap(r2.x()+r2.width()-(pix.width()+constActionBorder),
-                                        r2.y()+constActionBorder,
-                                        pix.width(), pix.height(), pix);
+                    QRect r(r2.x()+r2.width()-(pix.width()+constActionBorder),
+                            r2.y()+constActionBorder,
+                            pix.width(), pix.height());
+                    drawGlow(painter, r);
+                    painter->drawPixmap(r, pix);
                     r2.adjust(0, pix.height()+constActionBorder, 0, -(pix.height()+constActionBorder));
                 }
             }
@@ -131,9 +147,11 @@ public:
             if (r2.height()>(constActionIconSize+(2*constActionBorder))) {
                 pix=addAction->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
                 if (!pix.isNull()) {
-                    painter->drawPixmap(r2.x()+r2.width()-(pix.width()+constActionBorder),
-                                        r2.y()+constActionBorder,
-                                        pix.width(), pix.height(), pix);
+                    QRect r(r2.x()+r2.width()-(pix.width()+constActionBorder),
+                            r2.y()+constActionBorder,
+                            pix.width(), pix.height());
+                    drawGlow(painter, r);
+                    painter->drawPixmap(r, pix);
                 }
             }
         }

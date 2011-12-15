@@ -44,7 +44,7 @@ PlaylistsModel * PlaylistsModel::self()
 #else
     static PlaylistsModel *instance=0;;
     if(!instance) {
-        instance=new Covers;
+        instance=new PlaylistsModel;
     }
     return instance;
 #endif
@@ -163,7 +163,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     #else
                     (pl->songs.count()>1
                         ? tr("%1\n%2 Tracks").arg(pl->name).arg(pl->songs.count())
-                        : tr("%1\n1 Track").arg(pl->name);
+                        : tr("%1\n1 Track").arg(pl->name));
                     #endif
         case Qt::DecorationRole:
             return QIcon::fromTheme("view-media-playlist");
@@ -246,6 +246,9 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
 
 bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int col, const QModelIndex &parent)
 {
+    Q_UNUSED(row)
+    Q_UNUSED(col)
+
     if (Qt::IgnoreAction==action) {
         return true;
     }

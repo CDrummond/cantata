@@ -62,6 +62,4 @@ struct Song
     const QString & displayTitle() const { return modifiedtitle.isEmpty() ? title : modifiedtitle; }
 };
 
-extern uint qHash(const Song &s);
-
 #endif

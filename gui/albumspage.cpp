@@ -61,6 +61,8 @@ public:
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
+        Q_UNUSED(option)
+        Q_UNUSED(index)
         int imgSize=AlbumsModel::coverPixels();
         int textHeight = QApplication::fontMetrics().height()*2;
 

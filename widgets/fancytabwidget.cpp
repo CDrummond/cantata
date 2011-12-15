@@ -539,9 +539,9 @@ FancyTabWidget::FancyTabWidget(QWidget* parent)
   setLayout(main_layout);
 }
 
-void FancyTabWidget::AddTab(QWidget* tab, const QIcon& icon, const QString& label) {
+void FancyTabWidget::AddTab(QWidget* tab, const QIcon& icon, const QString& label, bool enabled) {
   stack_->addWidget(tab);
-  items_ << Item(icon, label);
+  items_ << Item(icon, label, enabled);
 }
 
 void FancyTabWidget::AddSpacer(int size) {
@@ -609,19 +609,21 @@ int FancyTabWidget::count() const {
   return stack_->count();
 }
 
-void FancyTabWidget::SetCurrentIndex(int index) {
+void FancyTabWidget::SetCurrentIndex(int idx) {
+  int index=IndexToTab(idx);
   if (FancyTabBar* bar = qobject_cast<FancyTabBar*>(tab_bar_)) {
     bar->setCurrentIndex(index);
   } else if (QTabBar* bar = qobject_cast<QTabBar*>(tab_bar_)) {
     bar->setCurrentIndex(index);
   } else {
-    stack_->setCurrentIndex(index);
+    stack_->setCurrentIndex(idx); // ?? IS this *ever* called???
   }
 }
 
 void FancyTabWidget::ShowWidget(int index) {
-  stack_->setCurrentIndex(index);
-  emit CurrentChanged(index);
+  int idx=TabToIndex(index);
+  stack_->setCurrentIndex(idx);
+  emit CurrentChanged(idx);
 }
 
 void FancyTabWidget::AddBottomWidget(QWidget* widget) {
@@ -650,11 +652,19 @@ void FancyTabWidget::SetMode(Mode mode) {
       side_layout_->insertWidget(0, bar);
       tab_bar_ = bar;
 
-      foreach (const Item& item, items_) {
-        if (item.type_ == Item::Type_Spacer)
-          bar->addSpacer(item.spacer_size_);
+      int index=0;
+      QList<Item>::Iterator it=items_.begin();
+      QList<Item>::Iterator end=items_.end();
+      for (; it!=end; ++it) {
+        if (!(*it).enabled_) {
+          (*it).index_=-1;
+          continue;
+        }
+        if ((*it).type_ == Item::Type_Spacer)
+          bar->addSpacer((*it).spacer_size_);
         else
-          bar->addTab(item.tab_icon_, item.tab_label_);
+          bar->addTab((*it).tab_icon_, (*it).tab_label_);
+        (*it).index_=index++;
       }
 
       bar->setCurrentIndex(stack_->currentIndex());
@@ -693,6 +703,23 @@ void FancyTabWidget::SetMode(Mode mode) {
   mode_ = mode;
   emit ModeChanged(mode);
   update();
+}
+
+void FancyTabWidget::ToggleTab(int tab, bool show) {
+    if (tab>=0 && tab<items_.count()) {
+        items_[tab].enabled_=show;
+        Mode m=mode_;
+        mode_=Mode_None;
+        SetMode(m);
+    }
+}
+
+void FancyTabWidget::ToggleTab() {
+    QAction *act=qobject_cast<QAction *>(sender());
+
+    if (act) {
+        ToggleTab(act->data().toInt(), act->isChecked());
+    }
 }
 
 void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
@@ -737,10 +764,29 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     //AddMenuItem(mapper, group, tr("Icons On Top"), Mode_IconOnlyTabs);
 #endif
     menu_->addActions(group->actions());
-
     connect(mapper, SIGNAL(mapped(int)), SLOT(SetMode(int)));
+
+    menu_->addSeparator();
+    int idx=0;
+    foreach (const Item& item, items_) {
+        if (Item::Type_Tab==item.type_) {
+            QAction* action = menu_->addAction(item.tab_icon_, item.tab_label_);
+            action->setCheckable(true);
+            action->setChecked(item.enabled_);
+            action->setData(idx);
+            connect(action, SIGNAL(triggered()), this, SLOT(ToggleTab()));
+        }
+        idx++;
+    }
   }
 
+  foreach (QAction *act, menu_->actions()) {
+      if (act->data().toInt()==stack_->currentIndex()) {
+          act->setEnabled(false);
+      } else {
+          act->setEnabled(true);
+      }
+  }
   menu_->popup(e->globalPos());
 }
 
@@ -748,6 +794,7 @@ void FancyTabWidget::AddMenuItem(QSignalMapper* mapper, QActionGroup* group,
                                  const QString& text, Mode mode) {
   QAction* action = group->addAction(text);
   action->setCheckable(true);
+  action->setData(-1);
   mapper->setMapping(action, mode);
   connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
 
@@ -775,27 +822,44 @@ void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons,
   else
     side_layout_->insertWidget(0, bar);
 
-  foreach (const Item& item, items_) {
-    if (item.type_ != Item::Type_Tab)
+  int index=0;
+  QList<Item>::Iterator it=items_.begin();
+  QList<Item>::Iterator end=items_.end();
+  for (; it!=end; ++it) {
+    if ((*it).type_ != Item::Type_Tab || !(*it).enabled_) {
+      (*it).index_=-1;
       continue;
+    }
 
-    QString label = item.tab_label_;
+    QString label = (*it).tab_label_;
     if (shape == QTabBar::RoundedWest) {
       label = QFontMetrics(font()).elidedText(label, Qt::ElideMiddle, 100);
     }
 
     int tab_id = -1;
     if (icons && text)
-      tab_id = bar->addTab(item.tab_icon_, label);
+      tab_id = bar->addTab((*it).tab_icon_, label);
     else if (icons)
-      tab_id = bar->addTab(item.tab_icon_, QString());
+      tab_id = bar->addTab((*it).tab_icon_, QString());
     else if (text)
       tab_id = bar->addTab(label);
 
-    bar->setTabToolTip(tab_id, item.tab_label_);
+    bar->setTabToolTip(tab_id, (*it).tab_label_);
+    (*it).index_=index++;
   }
 
   bar->setCurrentIndex(stack_->currentIndex());
   connect(bar, SIGNAL(currentChanged(int)), SLOT(ShowWidget(int)));
   tab_bar_ = bar;
+}
+
+int FancyTabWidget::TabToIndex(int tab) const
+{
+    for (int i=0; i<items_.count(); ++i) {
+        if (items_[i].index_==tab) {
+            return i;
+        }
+    }
+
+    return 0;
 }

@@ -42,9 +42,9 @@ int MusicLibraryItemAlbum::coverPixels()
     switch (coverSize) {
     default:
     case CoverNone:   return 0;
-    case CoverSmall:  return 22;
-    case CoverMedium: return 30;
-    case CoverLarge:  return 48;
+    case CoverSmall:  return 24;
+    case CoverMedium: return 34;
+    case CoverLarge:  return 50;
     }
 }
 
@@ -139,8 +139,15 @@ const QPixmap & MusicLibraryItemAlbum::cover()
 
     if (!m_cover) {
         if (!theDefaultIcon) {
-            theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(stdIconSize(), stdIconSize())
-                                        .scaled(QSize(coverPixels(), coverPixels()), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            theDefaultIcon = new QPixmap();
+
+            QPixmap cover(QIcon::fromTheme("media-optical-audio").pixmap(stdIconSize(), stdIconSize())
+                        .scaled(QSize(coverPixels()-2, coverPixels()-2), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            theDefaultIcon = new QPixmap(coverPixels(), coverPixels());
+            theDefaultIcon->fill(Qt::transparent);
+            QPainter p(theDefaultIcon);
+            p.drawPixmap(1, 1, cover);
+            p.end();
         }
         m_coverIsDefault = true;
         if (parent()) {

@@ -422,13 +422,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     repeatPushButton->setDefaultAction(repeatPlaylistAction);
     consumePushButton->setDefaultAction(consumePlaylistAction);
 
-    tabWidget->AddTab(libraryPage, libraryTabAction->icon(), libraryTabAction->text());
-    tabWidget->AddTab(albumsPage, albumsTabAction->icon(), albumsTabAction->text());
-    tabWidget->AddTab(folderPage, foldersTabAction->icon(), foldersTabAction->text());
-    tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text());
-    tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text());
-    tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text());
-    tabWidget->AddTab(infoPage, infoTabAction->icon(), infoTabAction->text());
+    QStringList hiddenPages=Settings::self()->hiddenPages();
+    tabWidget->AddTab(libraryPage, libraryTabAction->icon(), libraryTabAction->text(), !hiddenPages.contains(libraryPage->metaObject()->className()));
+    tabWidget->AddTab(albumsPage, albumsTabAction->icon(), albumsTabAction->text(), !hiddenPages.contains(albumsPage->metaObject()->className()));
+    tabWidget->AddTab(folderPage, foldersTabAction->icon(), foldersTabAction->text(), !hiddenPages.contains(folderPage->metaObject()->className()));
+    tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text(), !hiddenPages.contains(playlistsPage->metaObject()->className()));
+    tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text(), !hiddenPages.contains(streamsPage->metaObject()->className()));
+    tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text(), !hiddenPages.contains(lyricsPage->metaObject()->className()));
+    tabWidget->AddTab(infoPage, infoTabAction->icon(), infoTabAction->text(), !hiddenPages.contains(infoPage->metaObject()->className()));
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
@@ -636,6 +637,16 @@ MainWindow::~MainWindow()
     Settings::self()->savePlayQueueHeaderState(playQueueHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
+    QStringList hiddenPages;
+    for (int i=0; i<tabWidget->count(); ++i) {
+        if (!tabWidget->isEnabled(i)) {
+            QWidget *w=tabWidget->widget(i);
+            if (w) {
+                hiddenPages << w->metaObject()->className();
+            }
+        }
+    }
+    Settings::self()->saveHiddenPages(hiddenPages);
     streamsPage->save();
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);

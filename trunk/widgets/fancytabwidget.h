@@ -168,9 +168,9 @@ public:
   };
 
   struct Item {
-    Item(const QIcon& icon, const QString& label)
-      : type_(Type_Tab), tab_label_(label), tab_icon_(icon), spacer_size_(0) {}
-    Item(int size) : type_(Type_Spacer), spacer_size_(size) {}
+    Item(const QIcon& icon, const QString& label, bool enabled)
+      : type_(Type_Tab), tab_label_(label), tab_icon_(icon), spacer_size_(0), enabled_(enabled), index_(-1) {}
+    Item(int size) : type_(Type_Spacer), spacer_size_(size), enabled_(true), index_(-1) {}
 
     enum Type {
       Type_Tab,
@@ -181,9 +181,11 @@ public:
     QString tab_label_;
     QIcon tab_icon_;
     int spacer_size_;
+    bool enabled_;
+    int index_;
   };
 
-  void AddTab(QWidget *tab, const QIcon &icon, const QString &label);
+  void AddTab(QWidget *tab, const QIcon &icon, const QString &label, bool enabled=true);
   void AddSpacer(int size = 40);
   void SetBackgroundPixmap(const QPixmap& pixmap);
 
@@ -191,6 +193,7 @@ public:
 
   int current_index() const;
   QWidget * currentWidget() const;
+  bool isEnabled(int index) const { return index>=0 && index<items_.count() ? items_[index].enabled_ : false; }
   QWidget * widget(int index) const;
   int count() const;
   Mode mode() const { return mode_; }
@@ -201,6 +204,7 @@ public slots:
   void SetCurrentIndex(int index);
   void SetMode(Mode mode);
   void SetMode(int mode) { SetMode(Mode(mode)); }
+  void ToggleTab(int tab, bool show);
 
 signals:
   void CurrentChanged(int index);
@@ -212,11 +216,14 @@ protected:
 
 private slots:
   void ShowWidget(int index);
+  void ToggleTab();
 
 private:
   void MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
   void AddMenuItem(QSignalMapper* mapper, QActionGroup* group,
                    const QString& text, Mode mode);
+  int TabToIndex(int tab) const;
+  int IndexToTab(int index) const { return index>=0 && index<items_.count() ? items_[index].index_ : 0; }
 
   Mode mode_;
   QList<Item> items_;

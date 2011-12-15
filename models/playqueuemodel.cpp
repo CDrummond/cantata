@@ -25,6 +25,7 @@
  */
 
 #include <QtGui/QPalette>
+#include <QtGui/QFont>
 #include <QtCore/QModelIndex>
 #include <QtCore/QMimeData>
 #include <QtCore/QTextStream>
@@ -142,7 +143,6 @@ int PlayQueueModel::columnCount(const QModelIndex &) const
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 {
-    QPalette palette;
 
     if (!index.isValid())
         return QVariant();
@@ -153,7 +153,16 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     // Mark background of song currently being played
 
     if (role == Qt::BackgroundRole && songs.at(index.row()).id == song_id) {
-        return QVariant(palette.color(QPalette::Mid));
+        QPalette palette;
+        QColor col(palette.color(QPalette::Highlight));
+        col.setAlphaF(0.2);
+        return QVariant(col);
+    }
+
+    if (role == Qt::FontRole && songs.at(index.row()).id == song_id) {
+        QFont font;
+        font.setBold(true);
+        return font;
     }
 
     if (role == Qt::DisplayRole) {

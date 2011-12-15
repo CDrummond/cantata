@@ -389,6 +389,8 @@ void FancyTabBar::emitCurrentIndex()
 
 void FancyTabBar::mousePressEvent(QMouseEvent *e)
 {
+    if (Qt::LeftButton!=e->button())
+        return;
     e->accept();
     for (int index = 0; index < m_tabs.count(); ++index) {
         if (tabRect(index).contains(e->pos())) {

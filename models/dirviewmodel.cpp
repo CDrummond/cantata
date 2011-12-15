@@ -136,7 +136,7 @@ QVariant dirViewModel::data(const QModelIndex &index, int role) const
                 #else
                 (item->childCount()>1
                     ? tr("%1\n%2 Entries").arg(item->data(index.column()).toString()).arg(item->childCount())
-                    : tr("%1\n1 Entry").arg(item->data(index.column()).toString());
+                    : tr("%1\n1 Entry").arg(item->data(index.column()).toString()));
                 #endif
     default:
         break;

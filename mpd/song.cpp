@@ -165,7 +165,3 @@ QString Song::entryName() const
     return text;
 }
 
-uint qHash(const Song &s)
-{
-    return qHash(s.id);
-}

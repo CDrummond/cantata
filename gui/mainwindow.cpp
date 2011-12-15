@@ -47,6 +47,7 @@
 #include <KDE/KMenu>
 #else
 #include <QtGui/QMenuBar>
+#include <QtGui/QMessageBox>
 #include "networkproxyfactory.h"
 #endif
 #include "playlistsmodel.h"
@@ -1184,6 +1185,7 @@ void MainWindow::addToNewStoredPlaylist()
             case KMessageBox::Yes:
                 break;
             case KMessageBox::No:
+            default:
                 continue;
             }
             #else
@@ -1195,6 +1197,7 @@ void MainWindow::addToNewStoredPlaylist()
             case QMessageBox::Yes:
                 break;
             case QMessageBox::No:
+            default:
                 continue;
             }
             #endif

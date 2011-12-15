@@ -181,7 +181,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                     #else
                     (item->childCount()>1
                         ? tr("%1\n%2 Albums").arg(item->data(index.column()).toString()).arg(item->childCount())
-                        : tr("%1\n1 Album").arg(item->data(index.column()).toString());
+                        : tr("%1\n1 Album").arg(item->data(index.column()).toString()));
                     #endif
         case MusicLibraryItem::Type_Album:
             return 0==item->childCount()
@@ -192,7 +192,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                     #else
                     (item->childCount()>1
                         ? tr("%1\n%2 Tracks").arg(item->data(index.column()).toString()).arg(item->childCount())
-                        : tr("%1\n1 Track").arg(item->data(index.column()).toString());
+                        : tr("%1\n1 Track").arg(item->data(index.column()).toString()));
                     #endif
         case MusicLibraryItem::Type_Song: {
             QString duration=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());

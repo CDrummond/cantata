@@ -164,7 +164,9 @@ public:
     //Mode_PlainSidebar = 5,
     Mode_SideTabs = 3,
     Mode_TopTabs = 4,
-    Mode_IconOnlyTopTabs = 5
+    Mode_IconOnlyTopTabs = 5,
+    Mode_BotTabs = 6,
+    Mode_IconOnlyBotTabs = 7
   };
 
   struct Item {

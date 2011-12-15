@@ -191,6 +191,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     view->setItemDelegate(new AlbumItemDelegate(this, &proxy, addToPlaylistAction, replacePlaylistAction));
+    view->setAlternatingRowColors(false);
 
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));

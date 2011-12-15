@@ -220,6 +220,13 @@ QString Settings::page()
     return GET_STRING("page", QString());
 }
 
+QStringList Settings::hiddenPages()
+{
+    QStringList def;
+    def << "FolderPage";
+    return GET_STRINGLIST("hiddenPages", def);
+}
+
 void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -325,6 +332,11 @@ void Settings::saveLyricProviders(const QStringList &p)
 void Settings::savePage(const QString &v)
 {
     SET_VALUE("page", v);
+}
+
+void Settings::saveHiddenPages(const QStringList &p)
+{
+    SET_VALUE("hiddenPages", p);
 }
 
 void Settings::save(bool force)

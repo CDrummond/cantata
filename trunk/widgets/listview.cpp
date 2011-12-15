@@ -34,6 +34,7 @@ ListView::ListView(QWidget *parent)
     setContextMenuPolicy(Qt::NoContextMenu);
     setDragDropMode(QAbstractItemView::DragOnly);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setAlternatingRowColors(true);
 }
 
 ListView::~ListView()

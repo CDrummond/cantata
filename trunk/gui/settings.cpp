@@ -223,7 +223,8 @@ QString Settings::page()
 QStringList Settings::hiddenPages()
 {
     QStringList def;
-    def << "FolderPage";
+    def << "FolderPage"
+        << "InfoPage";
     return GET_STRINGLIST("hiddenPages", def);
 }
 

@@ -689,6 +689,14 @@ void FancyTabWidget::SetMode(Mode mode) {
       MakeTabBar(QTabBar::RoundedNorth, true, true, false);
       break;
 
+    case Mode_IconOnlyBotTabs:
+      MakeTabBar(QTabBar::RoundedSouth, false, true, false);
+      break;
+
+    case Mode_BotTabs:
+      MakeTabBar(QTabBar::RoundedSouth, true, true, false);
+      break;
+
     case Mode_SmallSidebar:
       MakeTabBar(QTabBar::RoundedWest, true, true, true);
 //       use_background_ = true;
@@ -730,7 +738,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   }
 
   // Check we are over tab space...
-  if (Mode_IconOnlyTopTabs!=mode_ && Mode_TopTabs!=mode_){
+  if (Mode_IconOnlyTopTabs!=mode_ && Mode_TopTabs!=mode_ && Mode_IconOnlyBotTabs!=mode_ && Mode_BotTabs!=mode_){
       if (Qt::RightToLeft==QApplication::layoutDirection()) {
           if (e->pos().x()<=side_widget_->pos().x()) {
             return;
@@ -744,31 +752,6 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   if (!menu_) {
     menu_ = new QMenu(this);
 
-    QSignalMapper* mapper = new QSignalMapper(this);
-    QActionGroup* group = new QActionGroup(this);
-#ifdef ENABLE_KDE_SUPPORT
-    AddMenuItem(mapper, group, i18n("Large Sidebar"), Mode_LargeSidebar);
-    AddMenuItem(mapper, group, i18n("Small Sidebar"), Mode_SmallSidebar);
-    AddMenuItem(mapper, group, i18n("Tabs On Side"), Mode_SideTabs);
-    AddMenuItem(mapper, group, i18n("Tabs On Top"), Mode_TopTabs);
-    AddMenuItem(mapper, group, i18n("Tabs On Top (Icons Only)"), Mode_IconOnlyTopTabs);
-    //AddMenuItem(mapper, group, i18n("Plain Sidebar"), Mode_PlainSidebar);
-    //AddMenuItem(mapper, group, i18n("Tabs On Top"), Mode_Tabs);
-    //AddMenuItem(mapper, group, i18n("Icons On Top"), Mode_IconOnlyTabs);
-#else
-    AddMenuItem(mapper, group, tr("Large Sidebar"), Mode_LargeSidebar);
-    AddMenuItem(mapper, group, tr("Small Sidebar"), Mode_SmallSidebar);
-    AddMenuItem(mapper, group, tr("Tabs On Side"), Mode_SideTabs);
-    AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_TopTabs);
-    AddMenuItem(mapper, group, tr("Tabs On Top (Icons Only)"), Mode_IconOnlyTopTabs);
-    //AddMenuItem(mapper, group, tr("Plain Sidebar"), Mode_PlainSidebar);
-    //AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_Tabs);
-    //AddMenuItem(mapper, group, tr("Icons On Top"), Mode_IconOnlyTabs);
-#endif
-    menu_->addActions(group->actions());
-    connect(mapper, SIGNAL(mapped(int)), SLOT(SetMode(int)));
-
-    menu_->addSeparator();
     int idx=0;
     foreach (const Item& item, items_) {
         if (Item::Type_Tab==item.type_) {
@@ -780,6 +763,43 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
         }
         idx++;
     }
+    menu_->addSeparator();
+
+    QSignalMapper* mapper = new QSignalMapper(this);
+    QActionGroup* group = new QActionGroup(this);
+    QMenu *modeMenu=new QMenu(this);
+    QAction *modeAct;
+#ifdef ENABLE_KDE_SUPPORT
+    modeAct=new QAction(i18n("Style"), this);
+    AddMenuItem(mapper, group, i18n("Large Sidebar"), Mode_LargeSidebar);
+    AddMenuItem(mapper, group, i18n("Small Sidebar"), Mode_SmallSidebar);
+    AddMenuItem(mapper, group, i18n("Tabs On Side"), Mode_SideTabs);
+    AddMenuItem(mapper, group, i18n("Tabs On Top"), Mode_TopTabs);
+    AddMenuItem(mapper, group, i18n("Tabs On Top (Icons Only)"), Mode_IconOnlyTopTabs);
+    AddMenuItem(mapper, group, i18n("Tabs On Bottom"), Mode_BotTabs);
+    AddMenuItem(mapper, group, i18n("Tabs On Bottom (Icons Only)"), Mode_IconOnlyBotTabs);
+    //AddMenuItem(mapper, group, i18n("Plain Sidebar"), Mode_PlainSidebar);
+    //AddMenuItem(mapper, group, i18n("Tabs On Top"), Mode_Tabs);
+    //AddMenuItem(mapper, group, i18n("Icons On Top"), Mode_IconOnlyTabs);
+#else
+    modeAct=new QAction(tr("Style"), this);
+    AddMenuItem(mapper, group, tr("Large Sidebar"), Mode_LargeSidebar);
+    AddMenuItem(mapper, group, tr("Small Sidebar"), Mode_SmallSidebar);
+    AddMenuItem(mapper, group, tr("Tabs On Side"), Mode_SideTabs);
+    AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_TopTabs);
+    AddMenuItem(mapper, group, tr("Tabs On Top (Icons Only)"), Mode_IconOnlyTopTabs);
+    AddMenuItem(mapper, group, tr("Tabs On Bottom"), Mode_BotTabs);
+    AddMenuItem(mapper, group, tr("Tabs On Bottom (Icons Only)"), Mode_IconOnlyBotTabs);
+    //AddMenuItem(mapper, group, tr("Plain Sidebar"), Mode_PlainSidebar);
+    //AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_Tabs);
+    //AddMenuItem(mapper, group, tr("Icons On Top"), Mode_IconOnlyTabs);
+#endif
+    modeMenu->addActions(group->actions());
+    modeAct->setMenu(modeMenu);
+    modeAct->setData(-1);
+    menu_->addAction(modeAct);
+
+    connect(mapper, SIGNAL(mapped(int)), SLOT(SetMode(int)));
   }
 
   foreach (QAction *act, menu_->actions()) {
@@ -821,6 +841,8 @@ void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons,
 
   if (shape == QTabBar::RoundedNorth)
     top_layout_->insertWidget(0, bar);
+  else if (shape == QTabBar::RoundedSouth)
+      top_layout_->insertWidget(1, bar);
   else
     side_layout_->insertWidget(0, bar);
 

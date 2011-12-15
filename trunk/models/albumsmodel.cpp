@@ -161,7 +161,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 #else
                 (al.files.count()>1
                     ? tr("%1\n%2 Tracks").arg(al.name).arg(al.files.count())
-                    : tr("%1\n1 Track").arg(al.name);
+                    : tr("%1\n1 Track").arg(al.name));
                 #endif
     }
     case Qt::DisplayRole:

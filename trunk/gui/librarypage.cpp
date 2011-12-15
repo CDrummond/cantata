@@ -327,14 +327,14 @@ void LibraryPage::setLevel(int level, const MusicLibraryItem *i)
         break;
     case 1:
         if (i) {
-            searchList->setPlaceholderText(tr("Search %1 albums...", i->data(0).toString()));
+            searchList->setPlaceholderText(tr("Search %1 albums...").arg(i->data(0).toString()));
         } else {
             searchList->setPlaceholderText(tr("Search albums..."));
         }
         break;
     case 2:
         if (i) {
-            searchList->setPlaceholderText(tr("Search %1 tracks...", i->data(0).toString()));
+            searchList->setPlaceholderText(tr("Search %1 tracks...").arg(i->data(0).toString()));
         } else {
             searchList->setPlaceholderText(tr("Search tracks..."));
         }

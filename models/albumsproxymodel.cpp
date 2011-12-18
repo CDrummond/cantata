@@ -36,17 +36,27 @@ AlbumsProxyModel::AlbumsProxyModel(QObject *parent) : QSortFilterProxyModel(pare
 bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-    const AlbumsModel::Album * const item = static_cast<AlbumsModel::Album *>(index.internalPointer());
+    AlbumsModel::Item *item = static_cast<AlbumsModel::Item *>(index.internalPointer());
 
     if (!item) {
         return false;
     }
 
-    if (!filterGenre.isEmpty() && !item->genres.contains(filterGenre)) {
-        return false;
-    }
+    if (item->isAlbum()) {
+        AlbumsModel::AlbumItem *ai = static_cast<AlbumsModel::AlbumItem *>(item);
+        if (!filterGenre.isEmpty() && !ai->genres.contains(filterGenre)) {
+            return false;
+        }
 
-    return item->artist.contains(filterRegExp()) || item->album.contains(filterRegExp());
+        return ai->artist.contains(filterRegExp()) || ai->album.contains(filterRegExp());
+    } else {
+        AlbumsModel::SongItem *si = static_cast<AlbumsModel::SongItem *>(item);
+        if (!filterGenre.isEmpty() && !si->genre.contains(filterGenre)) {
+            return false;
+        }
+
+        return si->title.contains(filterRegExp());
+    }
 }
 
 void AlbumsProxyModel::setFilterGenre(const QString &genre)
@@ -55,4 +65,18 @@ void AlbumsProxyModel::setFilterGenre(const QString &genre)
         invalidate();
     }
     filterGenre=genre;
+}
+
+bool AlbumsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    AlbumsModel::Item *l=static_cast<AlbumsModel::Item *>(left.internalPointer());
+    AlbumsModel::Item *r=static_cast<AlbumsModel::Item *>(right.internalPointer());
+
+    if (l->isAlbum() && r->isAlbum()) {
+        return static_cast<AlbumsModel::AlbumItem *>(l)->name.localeAwareCompare(static_cast<AlbumsModel::AlbumItem *>(r)->name)<0;
+    } else if(!l->isAlbum() && !r->isAlbum()) {
+        return static_cast<AlbumsModel::SongItem *>(l)->track<static_cast<AlbumsModel::SongItem *>(r)->track;
+    }
+
+    return false;
 }

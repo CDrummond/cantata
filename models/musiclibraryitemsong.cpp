@@ -26,14 +26,10 @@
 
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "song.h"
 
 MusicLibraryItemSong::MusicLibraryItemSong(const Song &s, MusicLibraryItem *parent)
     : MusicLibraryItem(s.displayTitle(), MusicLibraryItem::Type_Song),
-      m_track(s.track),
-      m_file(s.file),
-      m_disc(s.disc),
-      m_time(s.time),
+      m_song(s),
       m_parentItem(static_cast<MusicLibraryItemAlbum *>(parent))
 {
 }
@@ -51,4 +47,3 @@ int MusicLibraryItemSong::row() const
 {
     return m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItemSong*>(this));
 }
-

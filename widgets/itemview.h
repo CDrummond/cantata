@@ -31,6 +31,12 @@ class ItemView : public QWidget, public Ui::ItemView
 {
     Q_OBJECT
 public:
+    enum Mode
+    {
+        Mode_Tree,
+        Mode_List,
+        Mode_IconTop
+    };
 
     enum Role
     {
@@ -44,7 +50,7 @@ public:
 
     void init(QAction *a1, QAction *a2);
     void addAction(QAction *act);
-    void setView(bool tree);
+    void setMode(Mode m);
     void setLevel(int level);
     QAbstractItemView * view() const;
     void setModel(QAbstractItemModel *m);
@@ -55,6 +61,9 @@ public:
     void setAcceptDrops(bool v);
     void setDragDropOverwriteMode(bool v);
     void setDragDropMode(QAbstractItemView::DragDropMode v);
+    void setGridSize(const QSize &sz);
+    QSize gridSize() const { return listView->gridSize(); }
+    void update() { Mode_Tree==mode ? treeView->update() : listView->update(); }
 
 Q_SIGNALS:
     void searchItems();
@@ -75,10 +84,12 @@ private:
     QAction *act1;
     QAction *act2;
     int currentLevel;
-    bool usingTreeView;
+    Mode mode;
     QString topText;
     QString prevText;
     QModelIndex prevTopIndex;
+    QSize iconGridSize;
+    QSize listGridSize;
 };
 
 #endif

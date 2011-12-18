@@ -31,12 +31,15 @@
 #endif
 #include "albumsmodel.h"
 #include "settings.h"
+#include "musiclibraryitemsong.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
 #include "playqueuemodel.h"
 #include "song.h"
 #include "covers.h"
+#include "itemview.h"
+#include "mpdparseutils.h"
 
 static AlbumsModel::CoverSize coverSize=AlbumsModel::CoverMedium;
 static QPixmap *theDefaultIcon=0;
@@ -78,7 +81,7 @@ void AlbumsModel::setCoverSize(AlbumsModel::CoverSize size)
     }
 }
 
-AlbumsModel::Album::Album(const QString &ar, const QString &al)
+AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al)
     : artist(ar)
     , album(al)
     , updated(false)
@@ -87,8 +90,8 @@ AlbumsModel::Album::Album(const QString &ar, const QString &al)
     name=album+QLatin1String(" - ")+artist;
 }
 
-AlbumsModel::AlbumsModel()
-    : QAbstractListModel(0)
+AlbumsModel::AlbumsModel(QObject *parent)
+    : QAbstractItemModel(parent)
 {
 }
 
@@ -101,19 +104,63 @@ QVariant AlbumsModel::headerData(int /*section*/, Qt::Orientation /*orientation*
     return QVariant();
 }
 
-int AlbumsModel::rowCount(const QModelIndex &) const
+int AlbumsModel::rowCount(const QModelIndex &index) const
 {
-    return items.size();
+    if (!index.isValid()) {
+        return items.size();
+    }
+
+    Item *item=static_cast<Item *>(index.internalPointer());
+    if (item->isAlbum()) {
+        AlbumItem *al=static_cast<AlbumItem *>(index.internalPointer());
+        return al->songs.count();
+    }
+    return 0;
 }
 
-QModelIndex AlbumsModel::index(int row, int column, const QModelIndex &parent) const
+bool AlbumsModel::hasChildren(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
+    return !parent.isValid() || static_cast<Item *>(parent.internalPointer())->isAlbum();
+}
 
-    if(row<items.count())
-        return createIndex(row, column, (void *)&items.at(row));
+QModelIndex AlbumsModel::parent(const QModelIndex &index) const
+{
+    if (!index.isValid()) {
+        return QModelIndex();
+    }
+
+    Item *item=static_cast<Item *>(index.internalPointer());
+
+    if(item->isAlbum())
+        return QModelIndex();
+    else
+    {
+        SongItem *song=static_cast<SongItem *>(item);
+
+        if (song->parent) {
+            return createIndex(items.indexOf(song->parent), 0, song->parent);
+        }
+    }
 
     return QModelIndex();
+}
+
+QModelIndex AlbumsModel::index(int row, int col, const QModelIndex &parent) const
+{
+    if (!hasIndex(row, col, parent)) {
+        return QModelIndex();
+    }
+
+    if (parent.isValid()) {
+        Item *p=static_cast<Item *>(parent.internalPointer());
+
+        if (p->isAlbum()) {
+            AlbumItem *pl=static_cast<AlbumItem *>(p);
+            return row<pl->songs.count() ? createIndex(row, col, pl->songs.at(row)) : QModelIndex();
+        }
+    }
+
+    return row<items.count() ? createIndex(row, col, items.at(row)) : QModelIndex();
 }
 
 QVariant AlbumsModel::data(const QModelIndex &index, int role) const
@@ -122,60 +169,95 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    if (index.row() >= items.size()) {
-        return QVariant();
-    }
+    Item *item=static_cast<Item *>(index.internalPointer());
 
-    switch (role) {
-    case Qt::DecorationRole: {
-        AlbumsModel *that=(AlbumsModel *)this;
-        Album &al=that->items[index.row()];
+    if (item->isAlbum()) {
+        AlbumItem *al=static_cast<AlbumItem *>(item);
 
-        if (!al.cover.isNull()) {
-            return al.cover;
-        }
-        if (!theDefaultIcon) {
-            theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(stdIconSize(), stdIconSize())
-                                        .scaled(QSize(coverPixels(), coverPixels()),
-                                                Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        }
-        if (!al.coverRequested) {
-            Song s;
-            s.artist=al.artist;
-            s.album=al.album;
-            if (al.files.count()) {
-                s.file=al.files.first();
+        switch (role) {
+        case ItemView::Role_Pixmap:
+        case Qt::DecorationRole:
+            if (!al->cover.isNull()) {
+                return al->cover;
             }
-            Covers::self()->get(s);
-            al.coverRequested=true;
+            if (!theDefaultIcon) {
+                theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(stdIconSize(), stdIconSize())
+                                            .scaled(QSize(coverPixels(), coverPixels()),
+                                                    Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            }
+            if (!al->coverRequested) {
+                Song s;
+                s.artist=al->artist;
+                s.album=al->album;
+                if (al->songs.count()) {
+                    s.file=al->songs.first()->file;
+                }
+                Covers::self()->get(s);
+                al->coverRequested=true;
+            }
+            return *theDefaultIcon;
+        case Qt::ToolTipRole:
+            return 0==al->songs.count()
+                ? al->name
+                :
+                    #ifdef ENABLE_KDE_SUPPORT
+                    i18np("%1\n1 Track", "%1\n%2 Tracks", al->name, al->songs.count());
+                    #else
+                    (al->songs.count()>1
+                        ? tr("%1\n%2 Tracks").arg(al->name).arg(al->songs.count())
+                        : tr("%1\n1 Track").arg(al->name));
+                    #endif
+        case Qt::DisplayRole:
+            return al->album;
+        case ItemView::Role_IconSize:
+            return coverPixels();
+        case ItemView::Role_SubText:
+            return al->artist;
+        case Qt::SizeHintRole:
+            if (!itemSize.isNull()) {
+                return itemSize;
+            }
         }
-        return *theDefaultIcon;
-    }
-    case Qt::ToolTipRole: {
-        const Album &al=items[index.row()];
-        return 0==al.files.count()
-            ? al.name
-            :
-                #ifdef ENABLE_KDE_SUPPORT
-                i18np("%1\n1 Track", "%1\n%2 Tracks", al.name, al.files.count());
-                #else
-                (al.files.count()>1
-                    ? tr("%1\n%2 Tracks").arg(al.name).arg(al.files.count())
-                    : tr("%1\n1 Track").arg(al.name));
-                #endif
-    }
-    case Qt::DisplayRole:
-        return items.at(index.row()).name;
-    case Qt::UserRole:
-        return items.at(index.row()).files;
-    case Qt::UserRole+1:
-        return items.at(index.row()).artist;
-    case Qt::UserRole+2:
-        return items.at(index.row()).album;
-    case Qt::SizeHintRole:
-        if (!itemSize.isNull()) {
-            return itemSize;
+    } else {
+        SongItem *si=static_cast<SongItem *>(item);
+
+        switch (role) {
+        case Qt::DecorationRole:
+            return QIcon::fromTheme("audio-x-generic");
+        case Qt::ToolTipRole: {
+            QString duration=MPDParseUtils::formatDuration(si->time);
+            if (duration.startsWith(QLatin1String("00:"))) {
+                duration=duration.mid(3);
+            }
+            if (duration.startsWith(QLatin1String("00:"))) {
+                duration=duration.mid(1);
+            }
+            return data(index, Qt::DisplayRole).toString()+QChar('\n')+duration;
         }
+        case Qt::DisplayRole:
+            if (si->track>9) {
+                return QString::number(si->track)+QChar(' ')+si->title;
+            } else if (si->track>0) {
+                return QChar('0')+QString::number(si->track)+QChar(' ')+si->title;
+            }
+        case ItemView::Role_Pixmap: {
+            QVariant v;
+            v.setValue<QPixmap>(QIcon::fromTheme("audio-x-generic").pixmap(22, 22));
+            return v;
+        }
+        case ItemView::Role_IconSize:
+            return 22;
+        case ItemView::Role_SubText: {
+            QString text=MPDParseUtils::formatDuration(si->time);
+            if (text.startsWith(QLatin1String("00:"))) {
+                return text.mid(3);
+            }
+            if (text.startsWith(QLatin1String("00:"))) {
+                return text.mid(1);
+            }
+            return text.mid(1);
+        }
+    }
     }
 
     return QVariant();
@@ -193,10 +275,15 @@ QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
     QStringList filenames;
+    foreach(QModelIndex index, indexes) {
+        Item *item=static_cast<Item *>(index.internalPointer());
 
-    foreach (QModelIndex index, indexes) {
-        if (index.row()<items.count()) {
-            filenames << items.at(index.row()).files;
+        if (item->isAlbum()) {
+            foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
+                filenames << s->file;
+            }
+        } else {
+            filenames << static_cast<SongItem*>(item)->file;
         }
     }
 
@@ -206,12 +293,12 @@ QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
 
 void AlbumsModel::update(const MusicLibraryItemRoot *root)
 {
-    QList<Album>::Iterator it=items.begin();
-    QList<Album>::Iterator end=items.end();
+    QList<AlbumItem *>::Iterator it=items.begin();
+    QList<AlbumItem *>::Iterator end=items.end();
 
     for (; it!=end; ++it) {
-        (*it).updated=false;
-        (*it).coverRequested=false;
+        (*it)->updated=false;
+        (*it)->coverRequested=false;
     }
 
     bool changed=false;
@@ -225,20 +312,20 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
             it=items.begin();
             end=items.end();
             for (; it!=end; ++it) {
-                if ((*it).artist==artist && (*it).album==album) {
-                    (*it).files=albumItem->sortedTracks();
-                    (*it).genres=albumItem->genres();
-                    (*it).updated=true;
+                if ((*it)->artist==artist && (*it)->album==album) {
+                    (*it)->setSongs(albumItem);
+                    (*it)->genres=albumItem->genres();
+                    (*it)->updated=true;
                     found=true;
                     break;
                 }
             }
 
             if (!found) {
-                Album a(artist, album);
-                a.files=albumItem->sortedTracks();
-                a.genres=albumItem->genres();
-                a.updated=true;
+                AlbumItem *a=new AlbumItem(artist, album);
+                a->setSongs(albumItem);
+                a->genres=albumItem->genres();
+                a->updated=true;
                 items.append(a);
                 changed=true;
             }
@@ -246,9 +333,10 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     }
 
     for (it=items.begin(); it!=items.end();) {
-        if (!(*it).updated) {
+        if (!(*it)->updated) {
             changed=true;
-            QList<Album>::Iterator cur=it;
+            QList<AlbumItem *>::Iterator cur=it;
+            delete (*it);
             ++it;
             items.erase(cur);
         } else {
@@ -269,13 +357,13 @@ void AlbumsModel::setCover(const QString &artist, const QString &album, const QI
         return;
     }
 
-    QList<Album>::Iterator it=items.begin();
-    QList<Album>::Iterator end=items.end();
+    QList<AlbumItem *>::Iterator it=items.begin();
+    QList<AlbumItem *>::Iterator end=items.end();
 
     for (int row=0; it!=end; ++it, ++row) {
-        if ((*it).artist==artist && (*it).album==album) {
-            (*it).cover=img.scaled(QSize(coverPixels(), coverPixels()),
-                                   Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        if ((*it)->artist==artist && (*it)->album==album) {
+            (*it)->cover=img.scaled(QSize(coverPixels(), coverPixels()),
+                                    Qt::KeepAspectRatio, Qt::SmoothTransformation);
             QModelIndex idx=index(row, 0, QModelIndex());
             emit dataChanged(idx, idx);
             return;
@@ -286,6 +374,22 @@ void AlbumsModel::setCover(const QString &artist, const QString &album, const QI
 void AlbumsModel::clear()
 {
     beginResetModel();
+    qDeleteAll(items);
     items.clear();
     endResetModel();
 }
+
+AlbumsModel::AlbumItem::~AlbumItem()
+{
+    qDeleteAll(songs);
+    songs.clear();
+}
+
+void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
+{
+    for (int j = 0; j < ai->childCount(); j++) {
+        MusicLibraryItemSong *songItem = static_cast<MusicLibraryItemSong*>(ai->child(j));
+        songs.append(new SongItem(songItem->song(), this));
+    }
+}
+

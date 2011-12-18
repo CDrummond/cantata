@@ -23,17 +23,19 @@
 #ifndef ALBUMSMODEL_H
 #define ALBUMSMODEL_H
 
-#include <QtCore/QAbstractListModel>
+#include <QtCore/QAbstractItemModel>
 #include <QtCore/QList>
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
 #include <QtGui/QImage>
+#include "song.h"
 
 class MusicLibraryItemRoot;
+class MusicLibraryItemAlbum;
 class QImage;
 class QSize;
 
-class AlbumsModel : public QAbstractListModel
+class AlbumsModel : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -57,23 +59,43 @@ public:
         COL_GENRES
     };
 
-    struct Album
+    struct Item
     {
-        Album(const QString &ar, const QString &al);
+        virtual bool isAlbum() { return false; }
+        virtual ~Item() { }
+    };
+
+    struct AlbumItem;
+    struct SongItem : public Item, public Song
+    {
+        SongItem(const Song &s, AlbumItem *p=0) : Song(s), parent(p) { }
+        virtual ~SongItem() { }
+        AlbumItem *parent;
+    };
+
+    struct AlbumItem : public Item
+    {
+        AlbumItem(const QString &ar, const QString &al);
+        virtual ~AlbumItem();
+        bool isAlbum() { return true; }
+        void setSongs(MusicLibraryItemAlbum *ai);
         QString artist;
         QString album;
         QString name;
-        QStringList files;
+        QList<SongItem *> songs;
         QSet<QString> genres;
         QImage cover;
         bool updated;
         bool coverRequested;
     };
 
-    AlbumsModel();
+    AlbumsModel(QObject *parent=0);
     ~AlbumsModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex&) const { return 1; }
+    QModelIndex parent(const QModelIndex &index) const;
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -88,7 +110,7 @@ public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img);
 
 private:
-    mutable QList<Album> items;
+    mutable QList<AlbumItem *> items;
 };
 
 #endif

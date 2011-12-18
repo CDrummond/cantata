@@ -32,6 +32,7 @@ public:
     AlbumsProxyModel(QObject *parent = 0);
     void setFilterGenre(const QString &genre);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 private:
     QString filterGenre;

@@ -48,14 +48,11 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);
-    void itemClicked(const QModelIndex &index);
     void itemActivated(const QModelIndex &);
     void searchItems();
     void update(const MusicLibraryItemRoot *root) { model.update(root); }
 
 private:
-    Action *addToPlaylistAction;
-    Action *replacePlaylistAction;
     AlbumsModel model;
     AlbumsProxyModel proxy;
 };

@@ -3,6 +3,10 @@
     - Add genre filtering
     - If drop a playlist with a stream onto queu, only the stream is added!!!!
 
+* AlbumsPAge
+   - Merge view code with itemview
+      - setTopIsIcon()
+
 * DELETE keyboard short-cut. This needs to work on the focused list.
   Playlists, streams, and playqueue all support deleting.
 
@@ -13,22 +17,6 @@
     - should be using "Remove" not "Remove Stream" - to be consistent
 
 * Library page - show Various Artists at top, with custom icon?
-
-* View style (list/tree) should be generic - ItemView   -- or ItemPage (if have actions)
-    - Config option should be 'viewStyle'
-    - use stackedWidget as per library page
-        - first page hold treeview and search bar (ItemTreeView)
-        - second page holds listview, nav buttons, and search bar (ItemListView)
-    - Make style delegate in librarypage generic
-    - ListItemDelegate
-        - Automatically use for listview (and put in ItemView cpp file)
-        - Supply list of actions
-        - Add UserRoles to return; icon-size, icon, main-text, sub-text
-    ItemView::ItemView(QWidget *p)
-    ItemView::setActions(const QList<Action *> &actions)
-    ItemView::showHomeButton(bool show, const Action *act=0);
-    - Also add action row.
-      ItemView::setActions(const QList<Action *> &left, const QList<Action *> &right, bool combo);
 
 ----
 

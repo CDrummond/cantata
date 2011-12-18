@@ -40,8 +40,6 @@ FolderPage::FolderPage(MainWindow *p)
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->updateDbAction);
-    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
 
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
@@ -50,25 +48,25 @@ FolderPage::FolderPage(MainWindow *p)
     replacePlaylist->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
-    search->setPlaceholderText(i18n("Search files..."));
+    view->setTopText(i18n("Folders"));
 #else
-    search->setPlaceholderText(tr("Search files..."));
+    view->setTopText(tr("Folders"));
 #endif
-    view->setPageDefaults();
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
 
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
+    view->init(p->replacePlaylistAction, p->addToPlaylistAction);
     connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &model, SLOT(updateDirView(DirViewItemRoot *)));
-    connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
-    connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
     connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
+    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
+    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
+    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    connect(view, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
 }
 
 FolderPage::~FolderPage()
@@ -87,21 +85,12 @@ void FolderPage::clear()
 
 void FolderPage::searchItems()
 {
-    if (search->text().isEmpty()) {
+    if (view->searchText().isEmpty()) {
         proxy.setFilterRegExp("");
         return;
     }
 
-    proxy.setFilterRegExp(search->text());
-}
-
-void FolderPage::itemActivated(const QModelIndex &index)
-{
-    DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(index).internalPointer());
-
-    if (DirViewItem::Type_File!=item->type()) {
-        view->setExpanded(index, !view->isExpanded(index));
-    }
+    proxy.setFilterRegExp(view->searchText());
 }
 
 void FolderPage::itemDoubleClicked(const QModelIndex &)

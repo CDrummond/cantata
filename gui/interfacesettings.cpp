@@ -40,6 +40,8 @@ void InterfaceSettings::load()
     libraryView->setCurrentIndex(Settings::self()->libraryView());
     libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
     albumCoverSize->setCurrentIndex(Settings::self()->albumCoverSize());
+    folderView->setCurrentIndex(Settings::self()->folderView());
+    playlistsView->setCurrentIndex(Settings::self()->playlistsView());
 }
 
 void InterfaceSettings::save()
@@ -49,6 +51,8 @@ void InterfaceSettings::save()
     Settings::self()->saveLibraryView(libraryView->currentIndex());
     Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
     Settings::self()->saveAlbumCoverSize(albumCoverSize->currentIndex());
+    Settings::self()->saveFolderView(folderView->currentIndex());
+    Settings::self()->savePlaylistsView(playlistsView->currentIndex());
 }
 
 void InterfaceSettings::libraryViewChanged()

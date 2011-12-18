@@ -32,6 +32,7 @@
 #include "playqueuemodel.h"
 #include "settings.h"
 #include "config.h"
+#include "itemview.h"
 #include "mpdparseutils.h"
 #include <QCommonStyle>
 #include <QFile>
@@ -203,6 +204,54 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                 duration=duration.mid(1);
             }
             return data(index, Qt::DisplayRole).toString()+QChar('\n')+duration;
+        }
+        default: return QVariant();
+        }
+    case ItemView::Role_IconSize:
+        return MusicLibraryItem::Type_Album==item->type() ? MusicLibraryItemAlbum::coverPixels() : 22;
+    case ItemView::Role_SubText:
+        switch (item->type()) {
+        case MusicLibraryItem::Type_Artist:
+            #ifdef ENABLE_KDE_SUPPORT
+            return i18np("1 Album", "%1 Albums", item->childCount());
+            #else
+            return 1==item->childCount() ? tr("1 Album") : tr("%1 Albums").arg(item->childCount());
+            #endif
+            break;
+        case MusicLibraryItem::Type_Song: {
+            QString text=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
+            if (text.startsWith(QLatin1String("00:"))) {
+                return text.mid(3);
+            }
+            if (text.startsWith(QLatin1String("00:"))) {
+                return text.mid(1);
+            }
+            return text.mid(1);
+        }
+        case MusicLibraryItem::Type_Album:
+            #ifdef ENABLE_KDE_SUPPORT
+            return i18np("1 Track", "%1 Tracks", item->childCount());
+            #else
+            return 1==item->childCount() ? tr("1 Track") : tr("%1 Tracks").arg(item->childCount());
+            #endif
+        default: return QVariant();
+        }
+    case ItemView::Role_Pixmap:
+        switch (item->type()) {
+        case MusicLibraryItem::Type_Artist: {
+            QVariant v;
+            v.setValue<QPixmap>(QIcon::fromTheme("view-media-artist").pixmap(22, 22));
+            return v;
+        }
+        case MusicLibraryItem::Type_Song: {
+            QVariant v;
+            v.setValue<QPixmap>(QIcon::fromTheme("audio-x-generic").pixmap(22, 22));
+            return v;
+        }
+        case MusicLibraryItem::Type_Album: {
+            QVariant v;
+            v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
+            return v;
         }
         default: return QVariant();
         }

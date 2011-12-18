@@ -74,28 +74,26 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     renPlaylist->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
-    search->setPlaceholderText(i18n("Search playlists..."));
+    view->setTopText(i18n("Playlists"));
 #else
-    search->setPlaceholderText(tr("Search playlists..."));
+    view->setTopText(tr("Playlists"));
 #endif
-    view->setPageDefaults();
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(removeAction);
     view->addAction(renamePlaylistAction);
     view->setUniformRowHeights(true);
     view->setAcceptDrops(true);
-    view->setDragEnabled(true);
     view->setDragDropOverwriteMode(true);
     view->setDragDropMode(QAbstractItemView::DragDrop);
 
     proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);
-    connect(view, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
+    view->init(p->replacePlaylistAction, p->addToPlaylistAction);
+
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(selectionChanged()));
-    connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
-    connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
+    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(loadPlaylist(const QString &)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
@@ -240,11 +238,6 @@ void PlaylistsPage::renamePlaylist()
     }
 }
 
-void PlaylistsPage::itemActivated(const QModelIndex &index)
-{
-    view->setExpanded(index, !view->isExpanded(index));
-}
-
 void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
     QModelIndex sourceIndex = proxy.mapToSource(index);
@@ -270,5 +263,5 @@ void PlaylistsPage::selectionChanged()
 
 void PlaylistsPage::searchItems()
 {
-    proxy.setFilterRegExp(search->text());
+    proxy.setFilterRegExp(view->searchText());
 }

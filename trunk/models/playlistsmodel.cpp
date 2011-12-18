@@ -27,6 +27,7 @@
 #include <QtCore/QModelIndex>
 #include <QtGui/QMenu>
 #include "playlistsmodel.h"
+#include "itemview.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #include <KDE/KGlobal>
@@ -153,6 +154,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
 
         switch(role) {
         case Qt::DisplayRole:
+            if (!pl->loaded) {
+                pl->loaded=true;
+                emit playlistInfo(pl->name);
+            }
             return pl->name;
         case Qt::ToolTipRole:
             return 0==pl->songs.count()
@@ -167,12 +172,29 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     #endif
         case Qt::DecorationRole:
             return QIcon::fromTheme("view-media-playlist");
+        case ItemView::Role_IconSize:
+            return 22;
+        case ItemView::Role_SubText:
+            #ifdef ENABLE_KDE_SUPPORT
+            return i18np("1 Track", "%1 Tracks", pl->songs.count());
+            #else
+            return (pl->songs.count()>1
+                ? tr("%1 Tracks").arg(pl->songs.count())
+                : tr("1 Track"));
+            #endif
+        case ItemView::Role_Pixmap:{
+            QVariant v;
+            v.setValue<QPixmap>(QIcon::fromTheme("view-media-playlist").pixmap(22, 22));
+            return v;
+        }
         default: break;
         }
     } else {
         SongItem *s=static_cast<SongItem *>(item);
 
-        if (Qt::DisplayRole==role || Qt::ToolTipRole==role) {
+        switch (role) {
+        case Qt::DisplayRole:
+        case Qt::ToolTipRole: {
             QString text=s->entryName();
 
             if (Qt::ToolTipRole==role && !s->title.isEmpty()) {
@@ -186,8 +208,28 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 text=text+QChar('\n')+duration;
             }
             return text;
-        } else if(Qt::DecorationRole==role) {
+        }
+        case Qt::DecorationRole:
             return QIcon::fromTheme(s->title.isEmpty() ? "applications-internet" : "audio-x-generic");
+        case ItemView::Role_IconSize:
+            return 22;
+        case ItemView::Role_SubText:
+            if (!s->title.isEmpty()) {
+                QString duration=MPDParseUtils::formatDuration(s->time);
+                if (duration.startsWith(QLatin1String("00:"))) {
+                    duration=duration.mid(3);
+                }
+                if (duration.startsWith(QLatin1String("00:"))) {
+                    duration=duration.mid(1);
+                }
+                return duration;
+            }
+            return QString();
+        case ItemView::Role_Pixmap:{
+            QVariant v;
+            v.setValue<QPixmap>(QIcon::fromTheme(s->title.isEmpty() ? "applications-internet" : "audio-x-generic").pixmap(22, 22));
+            return v;
+        }
         }
     }
 
@@ -458,6 +500,8 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
                 endInsertRows();
             }
         }
+        QModelIndex idx=index(items.indexOf(pl), 0, QModelIndex());
+        emit dataChanged(idx, idx);
     } else {
         emit listPlaylists();
     }

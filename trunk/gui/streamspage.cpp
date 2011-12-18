@@ -109,9 +109,9 @@ StreamsPage::StreamsPage(MainWindow *p)
     replacePlaylist->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
-    search->setPlaceholderText(i18n("Search streams..."));
+    search->setPlaceholderText(i18n("Search Streams..."));
 #else
-    search->setPlaceholderText(tr("Search streams..."));
+    search->setPlaceholderText(tr("Search Streams..."));
 #endif
     view->setPageDefaults();
 //     view->addAction(p->addToPlaylistAction);

@@ -18,15 +18,12 @@
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="4">
-    <widget class="LineEdit" name="search"/>
+    <widget class="ItemView" name="view"/>
    </item>
-   <item row="1" column="0" colspan="4">
-    <widget class="TreeView" name="view" />
-   </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QToolButton" name="libraryUpdate"/>
    </item>
-   <item row="2" column="1">
+   <item row="1" column="1">
     <spacer name="horizontalSpacer_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -39,24 +36,19 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="2">
+   <item row="1" column="2">
     <widget class="QToolButton" name="addToPlaylist"/>
    </item>
-   <item row="2" column="3">
+   <item row="1" column="3">
     <widget class="QToolButton" name="replacePlaylist"/>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>LineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
-  </customwidget>
-  <customwidget>
-   <class>TreeView</class>
+   <class>ItemView</class>
    <extends>QTreeView</extends>
-   <header>treeview.h</header>
+   <header>itemview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -177,6 +177,16 @@ int Settings::libraryView()
     return GET_INT("libraryView", 1);
 }
 
+int Settings::folderView()
+{
+    return GET_INT("folderView", 1);
+}
+
+int Settings::playlistsView()
+{
+    return GET_INT("playlistsView", 1);
+}
+
 int Settings::libraryCoverSize()
 {
     return GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
@@ -308,6 +318,16 @@ void Settings::saveMpdDir(const QString &v)
 void Settings::saveLibraryView(int v)
 {
     SET_VALUE("libraryView", v);
+}
+
+void Settings::saveFolderView(int v)
+{
+    SET_VALUE("folderView", v);
+}
+
+void Settings::savePlaylistsView(int v)
+{
+    SET_VALUE("playlistsView", v);
 }
 
 void Settings::saveLibraryCoverSize(int v)

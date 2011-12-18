@@ -38,6 +38,7 @@ public:
     void refresh();
     void clear();
     void addSelectionToPlaylist();
+    void setView(bool tree) { view->setView(tree); }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
@@ -52,7 +53,6 @@ private Q_SLOTS:
     void removeItems();
     void savePlaylist();
     void renamePlaylist();
-    void itemActivated(const QModelIndex &index);
     void itemDoubleClicked(const QModelIndex &index);
     void selectionChanged();
     void searchItems();

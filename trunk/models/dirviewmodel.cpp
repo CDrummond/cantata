@@ -35,6 +35,7 @@
 #include "dirviewmodel.h"
 #include "dirviewitem.h"
 #include "playqueuemodel.h"
+#include "itemview.h"
 
 dirViewModel::dirViewModel(QObject *parent)
     : QAbstractItemModel(parent),
@@ -138,6 +139,34 @@ QVariant dirViewModel::data(const QModelIndex &index, int role) const
                     ? tr("%1\n%2 Entries").arg(item->data(index.column()).toString()).arg(item->childCount())
                     : tr("%1\n1 Entry").arg(item->data(index.column()).toString()));
                 #endif
+    case ItemView::Role_IconSize:
+        return 22;
+    case ItemView::Role_SubText:
+        switch (item->type()) {
+        case DirViewItem::Type_Dir:
+            #ifdef ENABLE_KDE_SUPPORT
+            return i18np("1 Entry", "%1 Entries", item->childCount());
+            #else
+            return 1==item->childCount() ? tr("1 Entry") : tr("%1 Entries").arg(item->childCount());
+            #endif
+            break;
+        case DirViewItem::Type_File:
+        default: return QVariant();
+        }
+    case ItemView::Role_Pixmap:
+        switch (item->type()) {
+        case DirViewItem::Type_Dir: {
+            QVariant v;
+            v.setValue<QPixmap>(QIcon::fromTheme("inode-directory").pixmap(22, 22));
+            return v;
+        }
+        case DirViewItem::Type_File: {
+            QVariant v;
+            v.setValue<QPixmap>(QIcon::fromTheme("audio-x-generic").pixmap(22, 22));
+            return v;
+        }
+        default: return QVariant();
+        }
     default:
         break;
     }

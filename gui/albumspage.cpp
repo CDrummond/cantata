@@ -27,12 +27,6 @@
 #include "musiclibraryitemsong.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
-#include <QtGui/QFontMetrics>
-#include <QtGui/QStyledItemDelegate>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionViewItem>
-#include <QtGui/QPainter>
-#include <QtGui/QRadialGradient>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KAction>
 #include <KLocale>
@@ -41,135 +35,12 @@
 #include <QAction>
 #endif
 
-static void drawGlow(QPainter *painter, const QRect &rOrig)
-{
-    QRect r=rOrig.adjusted(-2, -2, 2, 2);
-    QRadialGradient gradient(QPointF(r.x()+r.width()/2.0, r.y()+r.height()/2.0), r.width()/2.0, QPointF(r.x()+r.width()/2.0, r.y()+r.height()/2.0));
-    QColor c(Qt::white);
-    c.setAlphaF(0.65);
-    gradient.setColorAt(0, c);
-    gradient.setColorAt(0.5, c);
-    c.setAlphaF(0.0);
-    gradient.setColorAt(1.0, c);
-    painter->fillRect(r, gradient);
-}
-
-class AlbumItemDelegate : public QStyledItemDelegate
-{
-public:
-    static const int constBorder = 1;
-    static const int constActionBorder = 2;
-    static const int constActionIconSize=16;
-
-    AlbumItemDelegate(QObject *p, AlbumsProxyModel *pr, Action *aa, Action *ra)
-        : QStyledItemDelegate(p)
-        , proxy(pr)
-        , addAction(aa)
-        , replaceAction(ra)
-    {
-    }
-
-    virtual ~AlbumItemDelegate()
-    {
-    }
-
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        Q_UNUSED(option)
-        Q_UNUSED(index)
-        int imgSize=AlbumsModel::coverPixels();
-        int textHeight = QApplication::fontMetrics().height()*2;
-
-        return QSize(imgSize + (constBorder * 2),
-                     textHeight+imgSize + (constBorder*2));
-    }
-
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        if (!index.isValid()) {
-            return;
-        }
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
-
-        QString artist = index.data(Qt::UserRole+1).toString();
-        QString album = index.data(Qt::UserRole+2).toString();
-        QPixmap pix = index.data(Qt::DecorationRole).value<QPixmap>();
-        QRect r(option.rect);
-
-        r.adjust(constBorder, constBorder, -constBorder, -constBorder);
-
-        QRect r2(r);
-
-        if (!pix.isNull()) {
-            painter->drawPixmap(r.x()+((r.width()-pix.width())/2), r.y(), pix.width(), pix.height(), pix);
-            r.adjust(0, pix.height()+3, 0, -3);
-        }
-        QFont mainFont(QApplication::font());
-        QFont subFont(QApplication::font());
-        QFontMetrics mainMetrics(mainFont);
-        subFont.setPointSizeF(subFont.pointSizeF()*0.8);
-        QFontMetrics subMetrics(subFont);
-        bool selected=option.state&QStyle::State_Selected;
-        QColor color(QApplication::palette().color(selected ? QPalette::HighlightedText : QPalette::Text));
-        QRect mainRect;
-        QRect subRect;
-        QTextOption textOpt(Qt::AlignVCenter|Qt::AlignHCenter);
-        int mainHeight=mainMetrics.height();
-        int subHeight=subMetrics.height();
-        int totalHeight=mainHeight+subHeight;
-        mainRect=QRect(r.x(), r.y()+((r.height()-totalHeight)/2), r.width(), mainHeight);
-        subRect=QRect(r.x(), r.y()+mainHeight+((r.height()-totalHeight)/2), r.width(), mainHeight);
-        album = mainMetrics.elidedText(album, Qt::ElideRight, mainRect.width(), QPalette::WindowText);
-
-        painter->setPen(color);
-        painter->setFont(mainFont);
-        painter->drawText(mainRect, album, textOpt);
-
-        artist = subMetrics.elidedText(artist, Qt::ElideRight, subRect.width(), QPalette::WindowText);
-        color.setAlphaF(selected ? 0.65 : 0.5);
-        painter->setPen(color);
-        painter->setFont(subFont);
-        painter->drawText(subRect, artist, textOpt);
-
-        if (option.state & QStyle::State_MouseOver) {
-            if (r2.height()>(constActionIconSize+(2*constActionBorder))) {
-                pix=replaceAction->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull()) {
-                    QRect r(r2.x()+r2.width()-(pix.width()+constActionBorder),
-                            r2.y()+constActionBorder,
-                            pix.width(), pix.height());
-                    drawGlow(painter, r);
-                    painter->drawPixmap(r, pix);
-                    r2.adjust(0, pix.height()+constActionBorder, 0, -(pix.height()+constActionBorder));
-                }
-            }
-
-            if (r2.height()>(constActionIconSize+(2*constActionBorder))) {
-                pix=addAction->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull()) {
-                    QRect r(r2.x()+r2.width()-(pix.width()+constActionBorder),
-                            r2.y()+constActionBorder,
-                            pix.width(), pix.height());
-                    drawGlow(painter, r);
-                    painter->drawPixmap(r, pix);
-                }
-            }
-        }
-    }
-
-    AlbumsProxyModel *proxy;
-    Action *addAction;
-    Action *replaceAction;
-};
-
 AlbumsPage::AlbumsPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
-    addToPlaylistAction=p->addToPlaylistAction;
-    replacePlaylistAction=p->replacePlaylistAction;
-    addToPlaylist->setDefaultAction(addToPlaylistAction);
-    replacePlaylist->setDefaultAction(replacePlaylistAction);
+    addToPlaylist->setDefaultAction(p->addToPlaylistAction);
+    replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->updateDbAction);
     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
@@ -181,25 +52,21 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     replacePlaylist->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
-    search->setPlaceholderText(i18n("Search Albums..."));
+    view->setTopText(i18n("Albums"));
 #else
-    search->setPlaceholderText(tr("Search Albums..."));
+    view->setTopText(tr("Albums"));
 #endif
-    view->addAction(addToPlaylistAction);
-    view->addAction(replacePlaylistAction);
+    view->addAction(p->addToPlaylistAction);
+    view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
-    view->setItemDelegate(new AlbumItemDelegate(this, &proxy, addToPlaylistAction, replacePlaylistAction));
-    view->setAlternatingRowColors(false);
+    view->init(p->replacePlaylistAction, p->addToPlaylistAction);
+    view->setMode(ItemView::Mode_IconTop);
 
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
-    connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
-    connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
-    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
-    connect(view, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
+    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             &model, SLOT(setCover(const QString &, const QString &, const QImage &)));
     clear();
@@ -214,7 +81,6 @@ void AlbumsPage::clear()
     QFontMetrics fm(font());
 
     int size=AlbumsModel::coverPixels();
-    view->setIconSize(QSize(size, size));
     view->setGridSize(QSize(size+8, size+(fm.height()*2.5)));
     AlbumsModel::setItemSize(view->gridSize()-QSize(4, 4));
     model.clear();
@@ -223,6 +89,8 @@ void AlbumsPage::clear()
 
 void AlbumsPage::addSelectionToPlaylist(const QString &name)
 {
+    return;
+
     QStringList files;
 
     const QModelIndexList selected = view->selectionModel()->selectedIndexes();
@@ -232,12 +100,14 @@ void AlbumsPage::addSelectionToPlaylist(const QString &name)
     }
 
     foreach (const QModelIndex &idx, selected) {
-        QStringList albumFiles=model.data(proxy.mapToSource(idx), Qt::UserRole).toStringList();
+        AlbumsModel::Item *item=static_cast<AlbumsModel::Item *>(idx.internalPointer());
 
-        foreach (const QString & file, albumFiles) {
-            if (!files.contains(file)) {
-                files.append(file);
+        if (item->isAlbum()) {
+            foreach (const AlbumsModel::SongItem *s, static_cast<AlbumsModel::AlbumItem*>(item)->songs) {
+                files << s->file;
             }
+        } else {
+            files << static_cast<AlbumsModel::SongItem*>(item)->file;
         }
     }
 
@@ -248,24 +118,6 @@ void AlbumsPage::addSelectionToPlaylist(const QString &name)
             emit addSongsToPlaylist(name, files);
         }
         view->selectionModel()->clearSelection();
-    }
-}
-
-void AlbumsPage::itemClicked(const QModelIndex &index)
-{
-    QRect rect(view->visualRect(index));
-    rect.moveTo(view->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
-    QRect actionRect(rect.x()+rect.width()-(AlbumItemDelegate::constActionIconSize+AlbumItemDelegate::constActionBorder),
-                     rect.y()+AlbumItemDelegate::constActionBorder,
-                     AlbumItemDelegate::constActionIconSize, AlbumItemDelegate::constActionIconSize);
-    if (actionRect.contains(QCursor::pos())) {
-        replacePlaylistAction->trigger();
-        return;
-    }
-    actionRect.adjust(0, AlbumItemDelegate::constActionIconSize+AlbumItemDelegate::constActionBorder,
-                      0, AlbumItemDelegate::constActionIconSize+AlbumItemDelegate::constActionBorder);
-    if (actionRect.contains(QCursor::pos())) {
-        addToPlaylistAction->trigger();
     }
 }
 
@@ -280,12 +132,12 @@ void AlbumsPage::searchItems()
 {
     proxy.setFilterGenre(0==genreCombo->currentIndex() ? QString() : genreCombo->currentText());
 
-    if (search->text().isEmpty()) {
+    if (view->searchText().isEmpty()) {
         proxy.setFilterRegExp(QString());
         return;
     }
 
-    proxy.setFilterRegExp(search->text());
+    proxy.setFilterRegExp(view->searchText());
 }
 
 void AlbumsPage::updateGenres(const QStringList &genres)

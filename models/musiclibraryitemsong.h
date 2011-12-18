@@ -30,8 +30,8 @@
 #include <QList>
 #include <QVariant>
 #include "musiclibraryitem.h"
+#include "song.h"
 
-class Song;
 class MusicLibraryItemAlbum;
 
 class MusicLibraryItemSong : public MusicLibraryItem
@@ -43,26 +43,25 @@ public:
     int row() const;
     MusicLibraryItem * parent() const;
     const QString & file() const {
-        return m_file;
+        return m_song.file;
     }
     quint32 track() const {
-        return m_track;
+        return m_song.track;
     }
     quint32 disc() const {
-        return m_disc;
+        return m_song.disc;
     }
     quint32 time() const {
-        return m_time;
+        return m_song.time;
     }
     QString genre() const {
         return m_genres.isEmpty() ? QString() : *m_genres.constBegin();
     }
-
+    const Song & song() const {
+        return m_song;
+    }
 private:
-    quint32 m_track;
-    QString m_file;
-    quint32 m_disc;
-    quint32 m_time;
+    Song m_song;
     MusicLibraryItemAlbum * const m_parentItem;
 };
 

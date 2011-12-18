@@ -3,10 +3,6 @@
     - Add genre filtering
     - If drop a playlist with a stream onto queu, only the stream is added!!!!
 
-* AlbumsPAge
-   - Merge view code with itemview
-      - setTopIsIcon()
-
 * DELETE keyboard short-cut. This needs to work on the focused list.
   Playlists, streams, and playqueue all support deleting.
 
@@ -17,6 +13,9 @@
     - should be using "Remove" not "Remove Stream" - to be consistent
 
 * Library page - show Various Artists at top, with custom icon?
+
+* Add a BasicPage class, and use for library, folders, and albums
+    - Or add to ItemView ??? 
 
 ----
 

@@ -6,17 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>357</width>
+    <height>194</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
-   <property name="margin">
-    <number>0</number>
-   </property>
    <item row="0" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
@@ -52,6 +49,30 @@
      <property name="text">
       <string/>
      </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Library view:</string>
+     </property>
+     <property name="buddy">
+      <cstring>libraryView</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="libraryView">
+     <item>
+      <property name="text">
+       <string>Tree</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>List</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="3" column="0">
@@ -117,18 +138,39 @@
      </item>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label">
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Library view:</string>
+      <string>Folder view:</string>
      </property>
      <property name="buddy">
-      <cstring>libraryView</cstring>
+      <cstring>folderView</cstring>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QComboBox" name="libraryView">
+   <item row="5" column="1">
+    <widget class="QComboBox" name="folderView">
+     <item>
+      <property name="text">
+       <string>Tree</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>List</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Playlists view:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QComboBox" name="playlistsView">
      <item>
       <property name="text">
        <string>Tree</string>

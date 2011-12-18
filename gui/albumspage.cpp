@@ -181,9 +181,9 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     replacePlaylist->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
-    search->setPlaceholderText(i18n("Search albums..."));
+    search->setPlaceholderText(i18n("Search Albums..."));
 #else
-    search->setPlaceholderText(tr("Search albums..."));
+    search->setPlaceholderText(tr("Search Albums..."));
 #endif
     view->addAction(addToPlaylistAction);
     view->addAction(replacePlaylistAction);

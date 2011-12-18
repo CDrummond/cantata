@@ -65,6 +65,7 @@ SET( CANTATA_SRCS
     widgets/treeview.cpp
     widgets/fancytabwidget.cpp
     widgets/listview.cpp
+    widgets/itemview.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -104,6 +105,7 @@ SET( CANTATA_MOC_HDRS
     widgets/fancytabwidget.h
     widgets/treeview.h
     widgets/listview.h
+    widgets/itemview.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h
@@ -125,6 +127,7 @@ SET( CANTATA_UIS
     gui/outputsettings.ui
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
+    widgets/itemview.ui
 )
 
 SET( CANTATA_RCS cantata.qrc )

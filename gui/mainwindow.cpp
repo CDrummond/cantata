@@ -619,6 +619,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     }
 
     libraryPage->setView(0==Settings::self()->libraryView());
+    playlistsPage->setView(0==Settings::self()->playlistsView());
+    folderPage->setView(0==Settings::self()->folderView());
     currentTabChanged(tabWidget->current_index());
     playlistsPage->refresh();
 }
@@ -802,6 +804,8 @@ void MainWindow::updateSettings()
 
     streamsPage->refresh();
     libraryPage->setView(0==Settings::self()->libraryView());
+    playlistsPage->setView(0==Settings::self()->playlistsView());
+    folderPage->setView(0==Settings::self()->folderView());
 
     if (Settings::self()->useSystemTray()) {
         if (!trayIcon) {

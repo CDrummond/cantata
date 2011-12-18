@@ -47,9 +47,8 @@ public:
     void refresh(Refresh type);
     void clear();
     void addSelectionToPlaylist(const QString &name=QString());
-    void setView(bool tree);
-
     MusicLibraryModel & getModel() { return model; }
+    void setView(bool tree) { view->setView(tree); }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
@@ -59,26 +58,10 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);
-    void homeActivated();
-    void backActivated();
-    void itemClicked(const QModelIndex &index);
-    void itemActivated(const QModelIndex &index);
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
 
 private:
-    void setLevel(int level, const MusicLibraryItem *i=0);
-    QAbstractItemView * view();
-
-private:
-    Action *addToPlaylistAction;
-    Action *replacePlaylistAction;
-    Action *backAction;
-    Action *homeAction;
-    int currentLevel;
-    bool usingTreeView;
-//     QString prevSearch;
-    QModelIndex prevTopIndex;
     MusicLibraryModel model;
     MusicLibraryProxyModel proxy;
 };

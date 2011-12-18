@@ -67,11 +67,17 @@ public:
     {
         QSize sz(QStyledItemDelegate::sizeHint(option, index));
         int imageSize = index.data(ItemView::Role_IconSize).toInt();
-        bool oneLine = index.data(ItemView::Role_SubText).toString().isEmpty();
-        int textHeight = QApplication::fontMetrics().height()*(oneLine ? 1 : 2);
 
-        return QSize(qMax(64, imageSize) + (constBorder * 2),
-                     qMax(qMax(textHeight, sz.height()), imageSize)  + (constBorder*2));
+        if (imageSize>50) { // Icon Mode!
+            int textHeight = QApplication::fontMetrics().height()*2;
+            return QSize(imageSize + (constBorder * 2), textHeight+imageSize + (constBorder*2));
+        } else {
+            bool oneLine = index.data(ItemView::Role_SubText).toString().isEmpty();
+            int textHeight = QApplication::fontMetrics().height()*(oneLine ? 1 : 2);
+
+            return QSize(qMax(64, imageSize) + (constBorder * 2),
+                        qMax(qMax(textHeight, sz.height()), imageSize)  + (constBorder*2));
+        }
     }
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -83,14 +89,27 @@ public:
 
         QString text = index.data(Qt::DisplayRole).toString();
         QRect r(option.rect);
+        QRect r2;
         QString childText = index.data(ItemView::Role_SubText).toString();
         QPixmap pix = index.data(ItemView::Role_Pixmap).value<QPixmap>();
+        int imageSize = index.data(ItemView::Role_IconSize).toInt();
         bool oneLine = childText.isEmpty();
+        bool iconMode = imageSize>50;
 
-        r.adjust(constBorder, 0, -constBorder, 0);
+        if (iconMode) {
+            r.adjust(constBorder, constBorder, -constBorder, -constBorder);
+            r2=r;
+        } else {
+            r.adjust(constBorder, 0, -constBorder, 0);
+        }
         if (!pix.isNull()) {
-            painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-            r.adjust(pix.width()+3, 0, -3, 0);
+            if (iconMode) {
+                painter->drawPixmap(r.x()+((r.width()-pix.width())/2), r.y(), pix.width(), pix.height(), pix);
+                r.adjust(0, qMax(pix.width(), pix.height())+3, 0, -3);
+            } else {
+                painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                r.adjust(pix.width()+3, 0, -3, 0);
+            }
         }
         QFont textFont(QApplication::font());
         QFontMetrics textMetrics(textFont);
@@ -98,13 +117,14 @@ public:
         int textHeight=textMetrics.height();
         bool selected=option.state&QStyle::State_Selected;
         QColor color(QApplication::palette().color(selected ? QPalette::HighlightedText : QPalette::Text));
+        QTextOption textOpt(iconMode ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
 
         if (oneLine) {
             textRect=QRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
             text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);
             painter->setPen(color);
             painter->setFont(textFont);
-            painter->drawText(textRect, text);
+            painter->drawText(textRect, text, textOpt);
         } else {
             QFont childFont(QApplication::font());
             childFont.setPointSizeF(childFont.pointSizeF()*0.8);
@@ -119,34 +139,49 @@ public:
             text = textMetrics.elidedText(text, Qt::ElideRight, textRect.width(), QPalette::WindowText);
             painter->setPen(color);
             painter->setFont(textFont);
-            painter->drawText(textRect, text);
+            painter->drawText(textRect, text, textOpt);
 
             childText = childMetrics.elidedText(childText, Qt::ElideRight, childRect.width(), QPalette::WindowText);
             color.setAlphaF(selected ? 0.65 : 0.5);
             painter->setPen(color);
             painter->setFont(childFont);
-            painter->drawText(childRect, childText);
+            painter->drawText(childRect, childText, textOpt);
         }
 
         if (option.state & QStyle::State_MouseOver) {
-            if (act1 && r.width()>(constActionIconSize+(2*constActionBorder))) {
+            if (iconMode) {
+                r=r2;
+            }
+            if (act1 && (iconMode ? r.height() : r.width())>(constActionIconSize+(2*constActionBorder))) {
                 pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
                 if (!pix.isNull()) {
-                    QRect ir(r.x()+r.width()-(pix.width()+constActionBorder),
-                             r.y()+((r.height()-pix.height())/2),
-                             pix.width(), pix.height());
+                    QRect ir=iconMode
+                                ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),
+                                        r.y()+constActionBorder,
+                                        pix.width(), pix.height())
+                                : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
+                                        r.y()+((r.height()-pix.height())/2),
+                                        pix.width(), pix.height());
                     drawGlow(painter, ir);
                     painter->drawPixmap(ir, pix);
-                    r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
+                    if (iconMode) {
+                        r.adjust(0, pix.height()+constActionBorder, 0, -(pix.height()+constActionBorder));
+                    } else {
+                        r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
+                    }
                 }
             }
 
-            if (act2 && r.width()>(constActionIconSize+(2*constActionBorder))) {
+            if (act2 && (iconMode ? r.height() : r.width())>(constActionIconSize+(2*constActionBorder))) {
                 pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
                 if (!pix.isNull()) {
-                    QRect ir(r.x()+r.width()-(pix.width()+constActionBorder),
-                             r.y()+((r.height()-pix.height())/2),
-                             pix.width(), pix.height());
+                    QRect ir=iconMode
+                                ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),
+                                        r.y()+constActionBorder,
+                                        pix.width(), pix.height())
+                                : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
+                                        r.y()+((r.height()-pix.height())/2),
+                                        pix.width(), pix.height());
                     drawGlow(painter, ir);
                     painter->drawPixmap(ir, pix);
                 }
@@ -174,6 +209,7 @@ ItemView::ItemView(QWidget *p)
     backButton->setDefaultAction(backAction);
     backButton->setAutoRaise(true);
     treeView->setPageDefaults();
+    iconGridSize=listGridSize=listView->gridSize();
 }
 
 ItemView::~ItemView()
@@ -201,8 +237,8 @@ void ItemView::init(QAction *a1, QAction *a2)
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
-    usingTreeView=false;
-    setView(true);
+    mode=Mode_List;
+    setMode(Mode_Tree);
 }
 
 void ItemView::addAction(QAction *act)
@@ -211,16 +247,16 @@ void ItemView::addAction(QAction *act)
     listView->addAction(act);
 }
 
-void ItemView::setView(bool tree)
+void ItemView::setMode(Mode m)
 {
-    if (tree==usingTreeView) {
+    if (m==mode) {
         return;
     }
 
-    usingTreeView=tree;
+    mode=m;
     treeSearch->setText(QString());
     listSearch->setText(QString());
-    if (tree) {
+    if (Mode_Tree==mode) {
         treeView->setModel(itemModel);
         listView->setModel(0);
     } else {
@@ -229,7 +265,7 @@ void ItemView::setView(bool tree)
         setLevel(0);
         listView->setRootIndex(QModelIndex());
     }
-    stackedWidget->setCurrentIndex(tree ? 0 : 1);
+    stackedWidget->setCurrentIndex(Mode_Tree==mode ? 0 : 1);
 }
 
 void ItemView::setLevel(int l)
@@ -237,6 +273,22 @@ void ItemView::setLevel(int l)
     int prev=currentLevel;
     currentLevel=l;
     backAction->setEnabled(0!=l);
+
+    if (Mode_IconTop==mode) {
+        if (0==currentLevel) {
+            listView->setGridSize(iconGridSize);
+            listView->setViewMode(QListView::IconMode);
+            listView->setResizeMode(QListView::Adjust);
+            listView->setAlternatingRowColors(false);
+            listView->setWordWrap(true);
+        } else if(0==prev) {
+            listView->setGridSize(listGridSize);
+            listView->setViewMode(QListView::ListMode);
+            listView->setResizeMode(QListView::Fixed);
+            listView->setAlternatingRowColors(true);
+            listView->setWordWrap(false);
+        }
+    }
 
     if (view()->selectionModel()) {
         view()->selectionModel()->clearSelection();
@@ -262,7 +314,7 @@ void ItemView::setLevel(int l)
 
 QAbstractItemView * ItemView::view() const
 {
-    return usingTreeView ? (QAbstractItemView *)treeView : (QAbstractItemView *)listView;
+    return Mode_Tree==mode ? (QAbstractItemView *)treeView : (QAbstractItemView *)listView;
 }
 
 void ItemView::setModel(QAbstractItemModel *m)
@@ -273,7 +325,7 @@ void ItemView::setModel(QAbstractItemModel *m)
 
 QString ItemView::searchText() const
 {
-    return usingTreeView ? treeSearch->text() : listSearch->text();
+    return Mode_Tree==mode ? treeSearch->text() : listSearch->text();
 }
 
 void ItemView::setTopText(const QString &text)
@@ -316,9 +368,15 @@ void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
     treeView->setDragDropMode(v);
 }
 
+void ItemView::setGridSize(const QSize &sz)
+{
+    iconGridSize=sz;
+    listView->setGridSize(sz);
+}
+
 void ItemView::backActivated()
 {
-    if (usingTreeView) {
+    if (Mode_Tree==mode) {
         return;
     }
     setLevel(currentLevel-1);
@@ -328,16 +386,27 @@ void ItemView::backActivated()
 
 QAction * ItemView::getAction(const QModelIndex &index)
 {
+    bool iconMode=Mode_IconTop==mode && !index.parent().isValid();
     QRect rect(listView->visualRect(index));
     rect.moveTo(listView->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
-    QRect actionRect(rect.x()+rect.width()-(ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder),
-                     rect.y()+((rect.height()-ItemDelegate::constActionIconSize)/2),
-                     ItemDelegate::constActionIconSize, ItemDelegate::constActionIconSize);
+    QRect actionRect=iconMode
+                        ? QRect(rect.x()+rect.width()-(ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder),
+                                rect.y()+ItemDelegate::constActionBorder,
+                                ItemDelegate::constActionIconSize, ItemDelegate::constActionIconSize)
+                        : QRect(rect.x()+rect.width()-(ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder),
+                                rect.y()+((rect.height()-ItemDelegate::constActionIconSize)/2),
+                                ItemDelegate::constActionIconSize, ItemDelegate::constActionIconSize);
 
     if (act1 && actionRect.contains(QCursor::pos())) {
         return act1;
     }
-    actionRect.adjust(-(ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder), 0, 0, 0);
+
+    if (iconMode) {
+        actionRect.adjust(0, ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder,
+                          0, ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder);
+    } else {
+        actionRect.adjust(-(ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder), 0, 0, 0);
+    }
     if (act2 && actionRect.contains(QCursor::pos())) {
         return act2;
     }
@@ -359,7 +428,7 @@ void ItemView::itemActivated(const QModelIndex &index)
         return;
     }
 
-    if (usingTreeView) {
+    if (Mode_Tree==mode) {
         treeView->setExpanded(index, !treeView->isExpanded(index));
     } else if (index.isValid() && index.child(0, 0).isValid()) {
         prevTopIndex=listView->indexAt(QPoint(0, 0));

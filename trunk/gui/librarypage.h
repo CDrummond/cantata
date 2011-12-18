@@ -48,7 +48,7 @@ public:
     void clear();
     void addSelectionToPlaylist(const QString &name=QString());
     MusicLibraryModel & getModel() { return model; }
-    void setView(bool tree) { view->setView(tree); }
+    void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)

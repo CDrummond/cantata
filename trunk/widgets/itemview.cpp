@@ -32,22 +32,31 @@
 #include <QtGui/QAction>
 #include <QtGui/QRadialGradient>
 
-static void drawGlow(QPainter *painter, const QRect &rOrig)
+static QPainterPath buildPath(const QRectF &r, double radius)
 {
-    QRect r=rOrig.adjusted(-2, -2, 2, 2);
-    QRadialGradient gradient(QPointF(r.x()+r.width()/2.0, r.y()+r.height()/2.0), r.width()/2.0, QPointF(r.x()+r.width()/2.0, r.y()+r.height()/2.0));
+    QPainterPath path;
+    double diameter(radius*2);
+
+    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
+    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
+    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
+    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
+    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
+    return path;
+}
+
+static void drawBgnd(QPainter *painter, const QRect &rx)
+{
+    QRectF r(rx.x()-0.5, rx.y()-0.5, rx.width(), rx.height());
+    QPainterPath p(buildPath(r, 4.0));
     QColor c(Qt::white);
-    c.setAlphaF(0.75);
-    gradient.setColorAt(0, c);
-    gradient.setColorAt(0.6, c);
-    c.setAlphaF(0.0);
-    gradient.setColorAt(1.0, c);
-    painter->fillRect(r, gradient);
+
     painter->setRenderHint(QPainter::Antialiasing, true);
-    c.setAlphaF(0.9);
+    c.setAlphaF(0.55);
+    painter->fillPath(p, c);
+    c.setAlphaF(0.85);
     painter->setPen(c);
-    r=rOrig.adjusted(1, 1, -1, -1);
-    painter->drawRoundedRect(r, r.width()/2.0, r.height()/2.0);
+    painter->drawPath(p);
     painter->setRenderHint(QPainter::Antialiasing, false);
 }
 
@@ -91,7 +100,7 @@ public:
                     QRect ir(r.x()+r.width()-(pix.width()+constActionBorder),
                              r.y()+((r.height()-pix.height())/2),
                              pix.width(), pix.height());
-                    drawGlow(painter, ir);
+                    drawBgnd(painter, ir);
                     painter->drawPixmap(ir, pix);
                     r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
                 }
@@ -103,7 +112,7 @@ public:
                     QRect ir(r.x()+r.width()-(pix.width()+constActionBorder),
                              r.y()+((r.height()-pix.height())/2),
                              pix.width(), pix.height());
-                    drawGlow(painter, ir);
+                    drawBgnd(painter, ir);
                     painter->drawPixmap(ir, pix);
                 }
             }
@@ -231,7 +240,7 @@ public:
                                 : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
                                         r.y()+((r.height()-pix.height())/2),
                                         pix.width(), pix.height());
-                    drawGlow(painter, ir);
+                    drawBgnd(painter, ir);
                     painter->drawPixmap(ir, pix);
                     if (iconMode) {
                         r.adjust(0, pix.height()+constActionBorder, 0, -(pix.height()+constActionBorder));
@@ -251,7 +260,7 @@ public:
                                 : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
                                         r.y()+((r.height()-pix.height())/2),
                                         pix.width(), pix.height());
-                    drawGlow(painter, ir);
+                    drawBgnd(painter, ir);
                     painter->drawPixmap(ir, pix);
                 }
             }

@@ -95,8 +95,8 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(selectionChanged()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
-    connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
-    connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(loadPlaylist(const QString &)));
+    //connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    //connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(loadPlaylist(const QString &)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
@@ -123,15 +123,6 @@ void PlaylistsPage::clear()
 void PlaylistsPage::addSelectionToPlaylist()
 {
     const QModelIndexList indexes = view->selectionModel()->selectedRows();
-
-    if (1==indexes.size()) {
-        QModelIndex idx=proxy.mapToSource(indexes.first());
-        PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
-        if (item->isPlaylist()) {
-            emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name);
-            return;
-        }
-    }
 
     QSet<PlaylistsModel::Item *> selectedPlaylists;
     QStringList filenames;
@@ -265,9 +256,19 @@ void PlaylistsPage::renamePlaylist()
 
 void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
-    QModelIndex sourceIndex = proxy.mapToSource(index);
-    QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
-    emit loadPlaylist(name);
+    QStringList filenames;
+    QModelIndex idx = proxy.mapToSource(index);
+    PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
+
+    if (item->isPlaylist()) {
+        foreach (const PlaylistsModel::SongItem *s, static_cast<PlaylistsModel::PlaylistItem*>(item)->songs) {
+            filenames << s->file;
+        }
+    } else {
+        filenames << static_cast<PlaylistsModel::SongItem*>(item)->file;
+    }
+
+    emit add(filenames);
 }
 
 void PlaylistsPage::selectionChanged()

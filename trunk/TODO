@@ -1,7 +1,10 @@
+* UPDATE TRANSLATIONS!!!
+
+----
+
 * Playlists
     - Lazy loading of playlist contents - this is not 100%, but is ok if we want genre filtering
     - Add genre filtering
-    - If drop a playlist with a stream onto queu, only the stream is added!!!!
 
 * Streams
     - add genre support?
@@ -10,13 +13,6 @@
     - should be using "Remove" not "Remove Stream" - to be consistent
 
 * Library page - show Various Artists at top, with custom icon?
-
-* Add a BasicPage class, and use for library, folders, and albums
-    - Or add to ItemView ???
-
-* UPDATE TRANSLATIONS!!!
-
-----
 
 * Add next/prev provider buttons to lyrics page - so that can try others.
 

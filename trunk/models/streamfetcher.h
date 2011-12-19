@@ -25,7 +25,6 @@
 #define STREAMFETCHER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QUrl>
 #include <QtCore/QList>
 #include <QtCore/QByteArray>
 #include <QtCore/QStringList>
@@ -41,13 +40,16 @@ public:
     StreamFetcher(QObject *p);
     virtual ~StreamFetcher();
 
-    void get(const QList<QUrl> &urls, int insertRow);
+    void get(const QStringList &items, int insertRow);
+
+private:
+    void doNext();
 
 public Q_SLOTS:
     void cancel();
 
 Q_SIGNALS:
-    void result(const QStringList &urls, int insertRow);
+    void result(const QStringList &items, int insertRow);
 
 private Q_SLOTS:
     void dataReady();
@@ -56,9 +58,9 @@ private Q_SLOTS:
 private:
     NetworkAccessManager *manager;
     QNetworkReply *job;
-    QList<QUrl> todo;
+    QString current;
+    QStringList todo;
     QStringList done;
-    int pos;
     int row;
     QByteArray data;
 };

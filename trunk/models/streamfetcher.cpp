@@ -25,6 +25,7 @@
 #include "networkaccessmanager.h"
 #include <QtCore/QDebug>
 #include <QtCore/QRegExp>
+#include <QtCore/QUrl>
 #ifdef XSPF
 #include <xspf_c.h>
 #endif
@@ -117,23 +118,42 @@ StreamFetcher::~StreamFetcher()
 {
 }
 
-void StreamFetcher::get(const QList<QUrl> &urls, int insertRow)
+void StreamFetcher::get(const QStringList &items, int insertRow)
 {
-    if (urls.isEmpty()) {
+    if (items.isEmpty()) {
         return;
     }
 
-    todo=urls;
+    todo=items;
     done.clear();
     row=insertRow;
-    pos=0;
+    current=QString();
     if (!manager) {
         manager=new NetworkAccessManager(this);
         connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(jobFinished(QNetworkReply *)));
     }
 
-    job=manager->get(todo.at(pos));
-    connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+    doNext();
+}
+
+void StreamFetcher::doNext()
+{
+    while (todo.count()) {
+        current=todo.takeFirst();
+        QUrl u(current);
+
+        if (u.scheme()=="http") {
+            job=manager->get(u);
+            connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+            return;
+        } else {
+            done.append(current);
+        }
+    }
+
+    if (todo.isEmpty() && !done.isEmpty()) {
+        emit result(done, row);
+    }
 }
 
 void StreamFetcher::cancel()
@@ -141,8 +161,8 @@ void StreamFetcher::cancel()
     todo.clear();
     done.clear();
     row=0;
-    pos=0;
     data.clear();
+    current=QString();
     if (job) {
         disconnect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
         job->abort();
@@ -170,19 +190,14 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
             QString u=parse(data);
 
             if (u.isEmpty()) {
-                done.append(todo.at(pos).toString());
+                done.append(current);
             } else {
                 done.append(u);
             }
+        } else {
+            done.append(current);
         }
 
-        if (++pos==todo.count()) {
-            if (done.count()) {
-                emit result(done, row);
-            }
-        } else {
-            // Next url!
-            job=manager->get(todo.at(pos));
-        }
+        doNext();
     }
 }

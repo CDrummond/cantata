@@ -37,12 +37,11 @@ public:
 
     void load();
     void save();
-
     bool sysTrayEnabled() const { return systemTrayCheckBox->isChecked(); }
 
 private Q_SLOTS:
-    void libraryViewChanged();
-    void libraryCoverSizeChanged();
+    void albumsViewChanged();
+    void albumsCoverSizeChanged();
 };
 
 #endif

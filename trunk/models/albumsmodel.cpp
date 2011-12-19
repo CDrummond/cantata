@@ -26,13 +26,13 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QStringList>
 #include <QtGui/QIcon>
+#include <QtGui/QPainter>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
 #include "albumsmodel.h"
 #include "settings.h"
 #include "musiclibraryitemsong.h"
-#include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
 #include "playqueuemodel.h"
@@ -41,26 +41,48 @@
 #include "itemview.h"
 #include "mpdparseutils.h"
 
-static AlbumsModel::CoverSize coverSize=AlbumsModel::CoverMedium;
+static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverMedium;
 static QPixmap *theDefaultIcon=0;
 static QSize itemSize;
+static bool useLibraryCoverSizes=false;
 
-int AlbumsModel::coverPixels()
+int AlbumsModel::iconSize()
 {
+    if (useLibraryCoverSizes) {
+        return MusicLibraryItemAlbum::iconSize(coverSize);
+    }
     switch (coverSize) {
     default:
-    case AlbumsModel::CoverSmall:  return 76;
-    case AlbumsModel::CoverMedium: return 100;
-    case AlbumsModel::CoverLarge:  return 128;
+    case MusicLibraryItemAlbum::CoverNone:   return 0;
+    case MusicLibraryItemAlbum::CoverSmall:  return 76;
+    case MusicLibraryItemAlbum::CoverMedium: return 100;
+    case MusicLibraryItemAlbum::CoverLarge:  return 128;
     }
 }
 
 static int stdIconSize()
 {
+    if (useLibraryCoverSizes) {
+        return MusicLibraryItemAlbum::iconSize(coverSize);
+    }
     return 128;
 }
 
-AlbumsModel::CoverSize AlbumsModel::currentCoverSize()
+void AlbumsModel::setUseLibrarySizes(bool u)
+{
+    if (useLibraryCoverSizes!=u && theDefaultIcon) {
+        delete theDefaultIcon;
+        theDefaultIcon=0;
+    }
+    useLibraryCoverSizes=u;
+}
+
+bool AlbumsModel::useLibrarySizes()
+{
+    return useLibraryCoverSizes;
+}
+
+MusicLibraryItemAlbum::CoverSize AlbumsModel::currentCoverSize()
 {
     return coverSize;
 }
@@ -70,7 +92,7 @@ void AlbumsModel::setItemSize(const QSize &sz)
     itemSize=sz;
 }
 
-void AlbumsModel::setCoverSize(AlbumsModel::CoverSize size)
+void AlbumsModel::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 {
     if (size!=coverSize) {
         if (theDefaultIcon) {
@@ -84,6 +106,7 @@ void AlbumsModel::setCoverSize(AlbumsModel::CoverSize size)
 AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al)
     : artist(ar)
     , album(al)
+    , cover(0)
     , updated(false)
     , coverRequested(false)
 {
@@ -176,16 +199,26 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
 
         switch (role) {
         case ItemView::Role_Pixmap:
-        case Qt::DecorationRole:
-            if (!al->cover.isNull()) {
-                return al->cover;
+        case Qt::DecorationRole: {
+            if (al->cover) {
+                return *(al->cover);
             }
+            int iSize=iconSize();
+
+            if (Qt::DecorationRole==role && 0==iSize) {
+                return QIcon::fromTheme("media-optical-audio");
+            }
+
             if (!theDefaultIcon) {
-                theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(stdIconSize(), stdIconSize())
-                                            .scaled(QSize(coverPixels(), coverPixels()),
-                                                    Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                int cSize=iSize;
+                int stdSize=stdIconSize();
+                if (0==cSize) {
+                    cSize=stdSize=22;
+                }
+                theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(stdSize, stdSize)
+                                            .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
-            if (!al->coverRequested) {
+            if (!al->coverRequested && iSize) {
                 Song s;
                 s.artist=al->artist;
                 s.album=al->album;
@@ -196,6 +229,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 al->coverRequested=true;
             }
             return *theDefaultIcon;
+        }
         case Qt::ToolTipRole:
             return 0==al->songs.count()
                 ? al->name
@@ -209,8 +243,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                     #endif
         case Qt::DisplayRole:
             return al->album;
-        case ItemView::Role_IconSize:
-            return coverPixels();
+        case ItemView::Role_IconSize: {
+            int ic=iconSize();
+            return 0==ic ? 22 : ic;
+        }
         case ItemView::Role_SubText:
             return al->artist;
         case Qt::SizeHintRole:
@@ -362,8 +398,7 @@ void AlbumsModel::setCover(const QString &artist, const QString &album, const QI
 
     for (int row=0; it!=end; ++it, ++row) {
         if ((*it)->artist==artist && (*it)->album==album) {
-            (*it)->cover=img.scaled(QSize(coverPixels(), coverPixels()),
-                                    Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            (*it)->cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
             QModelIndex idx=index(row, 0, QModelIndex());
             emit dataChanged(idx, idx);
             return;
@@ -383,6 +418,7 @@ AlbumsModel::AlbumItem::~AlbumItem()
 {
     qDeleteAll(songs);
     songs.clear();
+    delete cover;
 }
 
 void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)

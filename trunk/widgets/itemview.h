@@ -35,7 +35,9 @@ public:
     {
         Mode_Tree,
         Mode_List,
-        Mode_IconTop
+        Mode_IconTop,
+
+        Mode_Count
     };
 
     enum Role
@@ -51,6 +53,7 @@ public:
     void init(QAction *a1, QAction *a2);
     void addAction(QAction *act);
     void setMode(Mode m);
+    Mode viewMode() const { return mode; }
     void setLevel(int level);
     QAbstractItemView * view() const;
     void setModel(QAbstractItemModel *m);

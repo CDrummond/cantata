@@ -111,7 +111,7 @@ void AlbumsPage::addSelectionToPlaylist(const QString &name)
     }
 
     foreach (const QModelIndex &idx, selected) {
-        AlbumsModel::Item *item=static_cast<AlbumsModel::Item *>(idx.internalPointer());
+        AlbumsModel::Item *item=static_cast<AlbumsModel::Item *>(proxy.mapToSource(idx).internalPointer());
 
         if (item->isAlbum()) {
             foreach (const AlbumsModel::SongItem *s, static_cast<AlbumsModel::AlbumItem*>(item)->songs) {

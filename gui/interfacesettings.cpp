@@ -23,14 +23,15 @@
 
 #include "interfacesettings.h"
 #include "settings.h"
+#include "itemview.h"
 #include <QtGui/QComboBox>
 
 InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
-    connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
+    connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
+    connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
 };
 
 void InterfaceSettings::load()
@@ -39,7 +40,8 @@ void InterfaceSettings::load()
     systemTrayPopup->setChecked(Settings::self()->showPopups());
     libraryView->setCurrentIndex(Settings::self()->libraryView());
     libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
-    albumCoverSize->setCurrentIndex(Settings::self()->albumCoverSize());
+    albumsView->setCurrentIndex(Settings::self()->albumsView());
+    albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
     folderView->setCurrentIndex(Settings::self()->folderView());
     playlistsView->setCurrentIndex(Settings::self()->playlistsView());
 }
@@ -50,21 +52,23 @@ void InterfaceSettings::save()
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
     Settings::self()->saveLibraryView(libraryView->currentIndex());
     Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
-    Settings::self()->saveAlbumCoverSize(albumCoverSize->currentIndex());
+    Settings::self()->saveAlbumsView(albumsView->currentIndex());
+    Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
     Settings::self()->saveFolderView(folderView->currentIndex());
     Settings::self()->savePlaylistsView(playlistsView->currentIndex());
 }
 
-void InterfaceSettings::libraryViewChanged()
+void InterfaceSettings::albumsViewChanged()
 {
-    if (0!=libraryView->currentIndex() && 0==libraryCoverSize->currentIndex()) {
-        libraryCoverSize->setCurrentIndex(2);
+    if (ItemView::Mode_IconTop==albumsView->currentIndex() && 0==albumsCoverSize->currentIndex()) {
+        albumsCoverSize->setCurrentIndex(2);
     }
 }
 
-void InterfaceSettings::libraryCoverSizeChanged()
+void InterfaceSettings::albumsCoverSizeChanged()
 {
-    if (0!=libraryView->currentIndex() && 0==libraryCoverSize->currentIndex()) {
-        libraryView->setCurrentIndex(0);
+    if (ItemView::Mode_IconTop==albumsView->currentIndex() && 0==albumsCoverSize->currentIndex()) {
+        albumsView->setCurrentIndex(1);
     }
 }
+

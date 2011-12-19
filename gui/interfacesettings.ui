@@ -110,17 +110,48 @@
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="label_5c">
+    <widget class="QLabel" name="label_3a">
      <property name="text">
-      <string>Covers in album view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>albumCoverSize</cstring>
+      <string>Albums view:</string>
      </property>
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QComboBox" name="albumCoverSize">
+    <widget class="QComboBox" name="albumsView">
+     <item>
+      <property name="text">
+       <string>Tree</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>List</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Icon/List</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_5c">
+     <property name="text">
+      <string>Covers in albums view:</string>
+     </property>
+     <property name="buddy">
+      <cstring>albumsCoverSize</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QComboBox" name="albumsCoverSize">
+     <item>
+      <property name="text">
+       <string>None</string>
+      </property>
+     </item>
      <item>
       <property name="text">
        <string>Small</string>
@@ -138,7 +169,7 @@
      </item>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Folder view:</string>
@@ -148,7 +179,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="QComboBox" name="folderView">
      <item>
       <property name="text">
@@ -162,14 +193,14 @@
      </item>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Playlists view:</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="7" column="1">
     <widget class="QComboBox" name="playlistsView">
      <item>
       <property name="text">

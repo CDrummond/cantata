@@ -40,6 +40,11 @@ public:
 
     void clear();
     void addSelectionToPlaylist(const QString &name=QString());
+    void setView(int v);
+    ItemView::Mode viewMode() const { return view->viewMode(); }
+
+private:
+    void setItemSize();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)

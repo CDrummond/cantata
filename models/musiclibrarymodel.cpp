@@ -208,7 +208,12 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         default: return QVariant();
         }
     case ItemView::Role_IconSize:
-        return MusicLibraryItem::Type_Album==item->type() ? MusicLibraryItemAlbum::coverPixels() : 22;
+        if (MusicLibraryItem::Type_Album==item->type() ) {
+            int ic=MusicLibraryItemAlbum::iconSize();
+            return 0==ic ? 22 : ic;
+        } else {
+            return 22;
+        }
     case ItemView::Role_SubText:
         switch (item->type()) {
         case MusicLibraryItem::Type_Artist:

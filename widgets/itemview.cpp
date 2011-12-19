@@ -51,21 +51,84 @@ static void drawGlow(QPainter *painter, const QRect &rOrig)
     painter->setRenderHint(QPainter::Antialiasing, false);
 }
 
-class ItemDelegate : public QStyledItemDelegate
+class TreeDelegate : public QStyledItemDelegate
 {
 public:
     static const int constBorder = 1;
     static const int constActionBorder = 2;
     static const int constActionIconSize=18;
 
-    ItemDelegate(QObject *p, QAction *a1, QAction *a2)
+    TreeDelegate(QObject *p, QAction *a1, QAction *a2)
         : QStyledItemDelegate(p)
         , act1(a1)
         , act2(a2)
     {
     }
 
-    virtual ~ItemDelegate()
+    virtual ~TreeDelegate()
+    {
+    }
+
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        QSize sz(QStyledItemDelegate::sizeHint(option, index));
+
+        return QSize(sz.width(), sz.height()+2);
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        QStyledItemDelegate::paint(painter, option, index);
+        if (!index.isValid()) {
+            return;
+        }
+
+        if (option.state & QStyle::State_MouseOver) {
+            QRect r(option.rect);
+            if (act1 && r.width()>(constActionIconSize+(2*constActionBorder))) {
+                QPixmap pix=act1->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
+                if (!pix.isNull()) {
+                    QRect ir(r.x()+r.width()-(pix.width()+constActionBorder),
+                             r.y()+((r.height()-pix.height())/2),
+                             pix.width(), pix.height());
+                    drawGlow(painter, ir);
+                    painter->drawPixmap(ir, pix);
+                    r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
+                }
+            }
+
+            if (act2 && r.width()>(constActionIconSize+(2*constActionBorder))) {
+                QPixmap pix=act2->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
+                if (!pix.isNull()) {
+                    QRect ir(r.x()+r.width()-(pix.width()+constActionBorder),
+                             r.y()+((r.height()-pix.height())/2),
+                             pix.width(), pix.height());
+                    drawGlow(painter, ir);
+                    painter->drawPixmap(ir, pix);
+                }
+            }
+        }
+    }
+
+    QAction *act1;
+    QAction *act2;
+};
+
+class ListDelegate : public QStyledItemDelegate
+{
+public:
+    static const int constBorder = 1;
+    static const int constActionBorder = 2;
+    static const int constActionIconSize=18;
+
+    ListDelegate(QObject *p, QAction *a1, QAction *a2)
+        : QStyledItemDelegate(p)
+        , act1(a1)
+        , act2(a2)
+    {
+    }
+
+    virtual ~ListDelegate()
     {
     }
 
@@ -230,7 +293,8 @@ void ItemView::init(QAction *a1, QAction *a2)
 
     act1=a1;
     act2=a2;
-    listView->setItemDelegate(new ItemDelegate(this, a1, a2));
+    listView->setItemDelegate(new ListDelegate(this, a1, a2));
+    treeView->setItemDelegate(new TreeDelegate(this, a1, a2));
     connect(treeSearch, SIGNAL(returnPressed()), this, SIGNAL(searchItems()));
     connect(treeSearch, SIGNAL(textChanged(const QString)), this, SIGNAL(searchItems()));
     connect(listSearch, SIGNAL(returnPressed()), this, SIGNAL(searchItems()));
@@ -270,6 +334,13 @@ void ItemView::setMode(Mode m)
         listView->setModel(itemModel);
         setLevel(0);
         listView->setRootIndex(QModelIndex());
+        if (Mode_IconTop!=mode) {
+            listView->setGridSize(listGridSize);
+            listView->setViewMode(QListView::ListMode);
+            listView->setResizeMode(QListView::Fixed);
+            listView->setAlternatingRowColors(true);
+            listView->setWordWrap(false);
+        }
     }
     stackedWidget->setCurrentIndex(Mode_Tree==mode ? 0 : 1);
 }
@@ -377,7 +448,6 @@ void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
 void ItemView::setGridSize(const QSize &sz)
 {
     iconGridSize=sz;
-    listView->setGridSize(sz);
 }
 
 void ItemView::backActivated()
@@ -396,22 +466,22 @@ QAction * ItemView::getAction(const QModelIndex &index)
     QRect rect(listView->visualRect(index));
     rect.moveTo(listView->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
     QRect actionRect=iconMode
-                        ? QRect(rect.x()+rect.width()-(ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder),
-                                rect.y()+ItemDelegate::constActionBorder,
-                                ItemDelegate::constActionIconSize, ItemDelegate::constActionIconSize)
-                        : QRect(rect.x()+rect.width()-(ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder),
-                                rect.y()+((rect.height()-ItemDelegate::constActionIconSize)/2),
-                                ItemDelegate::constActionIconSize, ItemDelegate::constActionIconSize);
+                        ? QRect(rect.x()+rect.width()-(ListDelegate::constActionIconSize+ListDelegate::constActionBorder),
+                                rect.y()+ListDelegate::constActionBorder,
+                                ListDelegate::constActionIconSize, ListDelegate::constActionIconSize)
+                        : QRect(rect.x()+rect.width()-(ListDelegate::constActionIconSize+ListDelegate::constActionBorder),
+                                rect.y()+((rect.height()-ListDelegate::constActionIconSize)/2),
+                                ListDelegate::constActionIconSize, ListDelegate::constActionIconSize);
 
     if (act1 && actionRect.contains(QCursor::pos())) {
         return act1;
     }
 
     if (iconMode) {
-        actionRect.adjust(0, ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder,
-                          0, ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder);
+        actionRect.adjust(0, ListDelegate::constActionIconSize+ListDelegate::constActionBorder,
+                          0, ListDelegate::constActionIconSize+ListDelegate::constActionBorder);
     } else {
-        actionRect.adjust(-(ItemDelegate::constActionIconSize+ItemDelegate::constActionBorder), 0, 0, 0);
+        actionRect.adjust(-(ListDelegate::constActionIconSize+ListDelegate::constActionBorder), 0, 0, 0);
     }
     if (act2 && actionRect.contains(QCursor::pos())) {
         return act2;

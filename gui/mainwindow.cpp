@@ -466,7 +466,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     Covers::self()->setMpdDir(mpdDir);
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
-    AlbumsModel::setCoverSize((AlbumsModel::CoverSize)Settings::self()->albumCoverSize());
+    AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
 
     if (setupTrayIcon() && Settings::self()->useSystemTray())
@@ -619,6 +619,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     }
 
     libraryPage->setView(0==Settings::self()->libraryView());
+    albumsPage->setView(Settings::self()->albumsView());
+    AlbumsModel::setUseLibrarySizes(Settings::self()->albumsView()!=ItemView::Mode_IconTop);
     playlistsPage->setView(0==Settings::self()->playlistsView());
     folderPage->setView(0==Settings::self()->folderView());
     currentTabChanged(tabWidget->current_index());
@@ -785,16 +787,21 @@ void MainWindow::updateSettings()
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     Covers::self()->setMpdDir(mpdDir);
     Settings::self()->save();
+    bool useLibSizeForAl=Settings::self()->albumsView()!=ItemView::Mode_IconTop;
     bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize();
-    bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumCoverSize();
+    bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumsCoverSize() ||
+                      albumsPage->viewMode()!=Settings::self()->albumsView() ||
+                      useLibSizeForAl!=AlbumsModel::useLibrarySizes();
 
     if (diffLibCovers) {
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     }
     if (diffAlCovers) {
-        AlbumsModel::setCoverSize((AlbumsModel::CoverSize)Settings::self()->albumCoverSize());
+        AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     }
 
+    AlbumsModel::setUseLibrarySizes(useLibSizeForAl);
+    albumsPage->setView(Settings::self()->albumsView());
     if (diffAlCovers) {
         albumsPage->clear();
     }

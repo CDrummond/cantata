@@ -91,6 +91,7 @@ public:
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    void add(const QStringList &files);
     void listPlaylists();
     void playlistInfo(const QString &name) const;
     void addToPlaylist(const QString &name, const QStringList &songs);

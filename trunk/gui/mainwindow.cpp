@@ -441,9 +441,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     consumePlaylistAction->setCheckable(true);
 
 #ifdef ENABLE_KDE_SUPPORT
-    searchPlaylistLineEdit->setPlaceholderText(i18n("Search playlist..."));
+    searchPlaylistLineEdit->setPlaceholderText(i18n("Search Play Queue..."));
 #else
-    searchPlaylistLineEdit->setPlaceholderText(tr("Search playlist..."));
+    searchPlaylistLineEdit->setPlaceholderText(tr("Search Play Queue..."));
 #endif
     QList<QToolButton *> btns;
     btns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton

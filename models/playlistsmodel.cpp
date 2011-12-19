@@ -263,17 +263,19 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
     QStringList filenames;
     QStringList playlists;
     QStringList positions;
+    QSet<Item *> selectedPlaylists;
     foreach(QModelIndex index, indexes) {
         Item *item=static_cast<Item *>(index.internalPointer());
 
         if (item->isPlaylist()) {
             int pos=0;
+            selectedPlaylists.insert(item);
             foreach (const SongItem *s, static_cast<PlaylistItem*>(item)->songs) {
                 filenames << s->file;
                 playlists << static_cast<PlaylistItem*>(item)->name;
                 positions << QString::number(pos++);
             }
-        } else {
+        } else if (!selectedPlaylists.contains(static_cast<SongItem*>(item)->parent)) {
             filenames << static_cast<SongItem*>(item)->file;
             playlists << static_cast<SongItem*>(item)->parent->name;
             positions << QString::number(static_cast<SongItem*>(item)->parent->songs.indexOf(static_cast<SongItem*>(item)));

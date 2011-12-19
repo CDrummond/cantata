@@ -26,6 +26,7 @@
 #include "musiclibraryitemalbum.h"
 #include "fancytabwidget.h"
 #include "albumsmodel.h"
+#include "itemview.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
@@ -174,22 +175,22 @@ QString Settings::mpdDir()
 
 int Settings::libraryView()
 {
-    return GET_INT("libraryView", 1);
+    return GET_INT("libraryView", (int)ItemView::Mode_List);
 }
 
 int Settings::albumsView()
 {
-    return GET_INT("albumsView", 1);
+    return GET_INT("albumsView", (int)ItemView::Mode_IconTop);
 }
 
 int Settings::folderView()
 {
-    return GET_INT("folderView", 1);
+    return GET_INT("folderView", (int)ItemView::Mode_Tree);
 }
 
 int Settings::playlistsView()
 {
-    return GET_INT("playlistsView", 1);
+    return GET_INT("playlistsView", (int)ItemView::Mode_List);
 }
 
 int Settings::libraryCoverSize()

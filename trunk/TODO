@@ -1,7 +1,3 @@
-* UPDATE TRANSLATIONS!!!
-
-----
-
 * Playlists
     - Lazy loading of playlist contents - this is not 100%, but is ok if we want genre filtering
     - Add genre filtering

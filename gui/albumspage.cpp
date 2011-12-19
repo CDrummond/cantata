@@ -42,8 +42,6 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->updateDbAction);
-    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
 
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
@@ -62,29 +60,44 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
-    view->setMode(ItemView::Mode_IconTop);
 
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
+    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
+    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             &model, SLOT(setCover(const QString &, const QString &, const QImage &)));
-    clear();
 }
 
 AlbumsPage::~AlbumsPage()
 {
 }
 
+void AlbumsPage::setView(int v)
+{
+    view->setMode((ItemView::Mode)v);
+    setItemSize();
+}
+
 void AlbumsPage::clear()
 {
-    QFontMetrics fm(font());
-
-    int size=AlbumsModel::coverPixels();
-    view->setGridSize(QSize(size+8, size+(fm.height()*2.5)));
-    AlbumsModel::setItemSize(view->gridSize()-QSize(4, 4));
     model.clear();
     view->update();
+}
+
+void AlbumsPage::setItemSize()
+{
+    if (ItemView::Mode_IconTop!=view->viewMode()) {
+        AlbumsModel::setItemSize(QSize(0, 0));
+    } else {
+        QFontMetrics fm(font());
+
+        int size=AlbumsModel::iconSize();
+        QSize grid(size+8, size+(fm.height()*2.5));
+        view->setGridSize(grid);
+        AlbumsModel::setItemSize(grid-QSize(4, 4));
+    }
 }
 
 void AlbumsPage::addSelectionToPlaylist(const QString &name)

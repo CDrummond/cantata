@@ -177,6 +177,11 @@ int Settings::libraryView()
     return GET_INT("libraryView", 1);
 }
 
+int Settings::albumsView()
+{
+    return GET_INT("albumsView", 1);
+}
+
 int Settings::folderView()
 {
     return GET_INT("folderView", 1);
@@ -192,9 +197,9 @@ int Settings::libraryCoverSize()
     return GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
 }
 
-int Settings::albumCoverSize()
+int Settings::albumsCoverSize()
 {
-    return GET_INT("albumCoverSize", (int)(AlbumsModel::CoverMedium));
+    return GET_INT("albumsCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
 }
 
 int Settings::sidebar()
@@ -320,6 +325,11 @@ void Settings::saveLibraryView(int v)
     SET_VALUE("libraryView", v);
 }
 
+void Settings::saveAlbumsView(int v)
+{
+    SET_VALUE("albumsView", v);
+}
+
 void Settings::saveFolderView(int v)
 {
     SET_VALUE("folderView", v);
@@ -335,9 +345,9 @@ void Settings::saveLibraryCoverSize(int v)
     SET_VALUE("libraryCoverSize", v);
 }
 
-void Settings::saveAlbumCoverSize(int v)
+void Settings::saveAlbumsCoverSize(int v)
 {
-    SET_VALUE("albumCoverSize", v);
+    SET_VALUE("albumsCoverSize", v);
 }
 
 void Settings::saveSidebar(int v)

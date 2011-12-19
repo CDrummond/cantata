@@ -27,30 +27,24 @@
 #include <QtCore/QList>
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
-#include <QtGui/QImage>
 #include "song.h"
+#include "musiclibraryitemalbum.h"
 
 class MusicLibraryItemRoot;
-class MusicLibraryItemAlbum;
-class QImage;
 class QSize;
+class QPixmap;
 
 class AlbumsModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    enum CoverSize
-    {
-        CoverSmall  = 0,
-        CoverMedium = 1,
-        CoverLarge  = 2
-    };
-
-    static CoverSize currentCoverSize();
-    static void setCoverSize(CoverSize size);
-    static int coverPixels();
+    static MusicLibraryItemAlbum::CoverSize currentCoverSize();
+    static void setCoverSize(MusicLibraryItemAlbum::CoverSize size);
+    static int iconSize();
     static void setItemSize(const QSize &sz);
+    static void setUseLibrarySizes(bool u);
+    static bool useLibrarySizes();
 
     enum Columnms
     {
@@ -84,7 +78,7 @@ public:
         QString name;
         QList<SongItem *> songs;
         QSet<QString> genres;
-        QImage cover;
+        QPixmap *cover;
         bool updated;
         bool coverRequested;
     };

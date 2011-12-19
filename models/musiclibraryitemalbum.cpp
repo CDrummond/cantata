@@ -31,32 +31,25 @@
 #include "covers.h"
 #include <QtGui/QIcon>
 #include <QtGui/QPixmap>
-#include <QtGui/QPainter>
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 
 static QPixmap *theDefaultIcon=0;
 
-int MusicLibraryItemAlbum::coverPixels()
+int MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverSize sz)
 {
-    switch (coverSize) {
-    default:
-    case CoverNone:   return 0;
-    case CoverSmall:  return 24;
-    case CoverMedium: return 34;
-    case CoverLarge:  return 50;
-    }
-}
-
-static int stdIconSize()
-{
-    switch (coverSize) {
+    switch (sz) {
     default:
     case MusicLibraryItemAlbum::CoverNone:   return 0;
     case MusicLibraryItemAlbum::CoverSmall:  return 22;
     case MusicLibraryItemAlbum::CoverMedium: return 32;
     case MusicLibraryItemAlbum::CoverLarge:  return 48;
     }
+}
+
+int MusicLibraryItemAlbum::iconSize()
+{
+    return MusicLibraryItemAlbum::iconSize(coverSize);
 }
 
 MusicLibraryItemAlbum::CoverSize MusicLibraryItemAlbum::currentCoverSize()
@@ -118,12 +111,7 @@ int MusicLibraryItemAlbum::row() const
 bool MusicLibraryItemAlbum::setCover(const QImage &img)
 {
     if (m_coverIsDefault) {
-        QPixmap cover=QPixmap::fromImage(img).scaled(QSize(coverPixels()-2, coverPixels()-2), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        m_cover = new QPixmap(coverPixels(), coverPixels());
-        m_cover->fill(Qt::transparent);
-        QPainter p(m_cover);
-        p.drawPixmap(1, 1, cover);
-        p.end();
+        m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         m_coverIsDefault=false;
         return true;
     }
@@ -138,19 +126,18 @@ const QPixmap & MusicLibraryItemAlbum::cover()
     }
 
     if (!m_cover) {
-        if (!theDefaultIcon) {
-            theDefaultIcon = new QPixmap();
+        int iSize=iconSize();
 
-            QPixmap cover(QIcon::fromTheme("media-optical-audio").pixmap(stdIconSize(), stdIconSize())
-                        .scaled(QSize(coverPixels()-2, coverPixels()-2), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-            theDefaultIcon = new QPixmap(coverPixels(), coverPixels());
-            theDefaultIcon->fill(Qt::transparent);
-            QPainter p(theDefaultIcon);
-            p.drawPixmap(1, 1, cover);
-            p.end();
+        if (!theDefaultIcon) {
+            int cSize=iSize;
+            if (0==cSize) {
+                cSize=22;
+            }
+            theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(cSize, cSize)
+                                        .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         m_coverIsDefault = true;
-        if (parent()) {
+        if (parent() && iSize) {
             Song song;
             song.albumartist=parent()->data(0).toString();
             song.album=m_itemData;

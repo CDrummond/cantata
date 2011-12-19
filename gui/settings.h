@@ -59,10 +59,11 @@ public:
     bool stopOnExit();
     QString mpdDir();
     int libraryView();
+    int albumsView();
     int folderView();
     int playlistsView();
     int libraryCoverSize();
-    int albumCoverSize();
+    int albumsCoverSize();
     int sidebar();
     QStringList lyricProviders();
     QString page();
@@ -82,10 +83,11 @@ public:
     void saveShowPopups(bool v);
     void saveMpdDir(const QString &v);
     void saveLibraryView(int v);
+    void saveAlbumsView(int v);
     void saveFolderView(int v);
     void savePlaylistsView(int v);
     void saveLibraryCoverSize(int v);
-    void saveAlbumCoverSize(int v);
+    void saveAlbumsCoverSize(int v);
     void saveSidebar(int v);
     void saveLyricProviders(const QStringList &p);
     void savePage(const QString &v);

@@ -260,7 +260,7 @@ private:
     Action *randomPlaylistAction;
     Action *repeatPlaylistAction;
     Action *consumePlaylistAction;
-    Action *showPlaylistAction;
+    Action *expandInterfaceAction;
     Action *quitAction;
     Action *libraryTabAction;
     Action *albumsTabAction;

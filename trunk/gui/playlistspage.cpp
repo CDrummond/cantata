@@ -90,6 +90,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
+    view->setDeleteAction(removeAction);
 
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(selectionChanged()));

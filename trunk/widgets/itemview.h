@@ -67,6 +67,7 @@ public:
     void setGridSize(const QSize &sz);
     QSize gridSize() const { return listView->gridSize(); }
     void update() { Mode_Tree==mode ? treeView->update() : listView->update(); }
+    void setDeleteAction(QAction *act);
 
 Q_SIGNALS:
     void searchItems();

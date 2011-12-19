@@ -165,7 +165,7 @@ void VolumeControl::setValue(int v)
 //         break;
 //     case QEvent::MouseButtonRelease:
 //         if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
-//             window->showPlaylistAction->trigger();
+//             window->expandInterfaceAction->trigger();
 //         }
 //         pressed=false;
 //         break;
@@ -275,8 +275,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     clearPlaylistAction = actionCollection()->addAction("clearplaylist");
     clearPlaylistAction->setText(i18n("Clear"));
 
-    showPlaylistAction = actionCollection()->addAction("showplaylist");
-    showPlaylistAction->setText(i18n("Show Playlist"));
+    expandInterfaceAction = actionCollection()->addAction("expandinterface");
+    expandInterfaceAction->setText(i18n("Expanded Interface"));
 
     randomPlaylistAction = actionCollection()->addAction("randomplaylist");
     randomPlaylistAction->setText(i18n("Random"));
@@ -330,7 +330,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     shufflePlaylistAction = new QAction(tr("Shuffle"), this);
     savePlaylistAction = new QAction(tr("Save As"), this);
     clearPlaylistAction = new QAction(tr("Clear"), this);
-    showPlaylistAction = new QAction(tr("Show Playlist"), this);
+    expandInterfaceAction = new QAction(tr("Expanded Interface"), this);
     randomPlaylistAction = new QAction(tr("Random"), this);
     repeatPlaylistAction = new QAction(tr("Repeat"), this);
     consumePlaylistAction = new QAction(tr("Consume"), this);
@@ -378,7 +378,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     savePlaylistAction->setIcon(QIcon::fromTheme("document-save-as"));
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
-    showPlaylistAction->setIcon(QIcon::fromTheme("view-media-playlist"));
+    expandInterfaceAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     updateDbAction->setIcon(QIcon::fromTheme("view-refresh"));
     libraryTabAction->setIcon(QIcon::fromTheme("audio-ac3"));
     albumsTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
@@ -435,7 +435,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
 
-    showPlaylistAction->setCheckable(true);
+    expandInterfaceAction->setCheckable(true);
     randomPlaylistAction->setCheckable(true);
     repeatPlaylistAction->setCheckable(true);
     consumePlaylistAction->setCheckable(true);
@@ -457,7 +457,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     trackLabel->setText(QString());
     artistLabel->setText(QString());
 
-    showPlaylistAction->setChecked(Settings::self()->showPlaylist());
+    expandInterfaceAction->setChecked(Settings::self()->showPlaylist());
     randomPlaylistAction->setChecked(false);
     repeatPlaylistAction->setChecked(false);
     consumePlaylistAction->setChecked(false);
@@ -483,7 +483,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     }
 #endif
 
-    mainMenu->addAction(showPlaylistAction);
+    mainMenu->addAction(expandInterfaceAction);
 #ifdef ENABLE_KDE_SUPPORT
     QAction *menuAct= mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(QIcon::fromTheme("configure"));
@@ -574,7 +574,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(copyTrackInfoAction, SIGNAL(activated()), this, SLOT(copyTrackInfo()));
     connect(cropPlaylistAction, SIGNAL(activated()), this, SLOT(cropPlaylist()));
     connect(shufflePlaylistAction, SIGNAL(activated()), MPDConnection::self(), SLOT(shuffle()));
-    connect(showPlaylistAction, SIGNAL(activated()), this, SLOT(togglePlaylist()));
+    connect(expandInterfaceAction, SIGNAL(activated()), this, SLOT(togglePlaylist()));
     connect(&elapsedTimer, SIGNAL(timeout()), this, SLOT(updatePositionSilder()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
@@ -635,7 +635,7 @@ MainWindow::~MainWindow()
 #ifndef ENABLE_KDE_SUPPORT
     Settings::self()->saveMainWindowSize(size());
 #endif
-    Settings::self()->saveShowPlaylist(showPlaylistAction->isChecked());
+    Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
     Settings::self()->savePlayQueueHeaderState(playQueueHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
@@ -1292,13 +1292,13 @@ void MainWindow::copyTrackInfo()
 
 void MainWindow::togglePlaylist()
 {
-    if (splitter->isVisible()==showPlaylistAction->isChecked()) {
+    if (splitter->isVisible()==expandInterfaceAction->isChecked()) {
         return;
     }
     static int lastHeight=0;
 
     int widthB4=size().width();
-    bool showing=showPlaylistAction->isChecked();
+    bool showing=expandInterfaceAction->isChecked();
 
     if (!showing) {
         lastHeight=size().height();

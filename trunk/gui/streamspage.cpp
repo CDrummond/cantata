@@ -49,13 +49,11 @@ StreamsPage::StreamsPage(MainWindow *p)
     exportAction = p->actionCollection()->addAction("exportstreams");
     exportAction->setText(i18n("Export Streams"));
     addAction = p->actionCollection()->addAction("addstream");
-    addAction->setText(i18n("Add Stream"));
+    addAction->setText(i18n("Add"));
     removeAction = p->actionCollection()->addAction("removestream");
-    removeAction->setText(i18n("Remove Stream"));
+    removeAction->setText(i18n("Remove"));
     editAction = p->actionCollection()->addAction("editstream");
-    editAction->setText(i18n("Edit Stream"));
-    editAction = p->actionCollection()->addAction("editstream");
-    editAction->setText(i18n("Edit Stream"));
+    editAction->setText(i18n("Edit"));
     markAsFavAction = p->actionCollection()->addAction("markasfav");
     markAsFavAction->setText(i18n("Set As Favorite"));
     unMarkAsFavAction = p->actionCollection()->addAction("unmarkasfav");
@@ -63,9 +61,9 @@ StreamsPage::StreamsPage(MainWindow *p)
     #else
     importAction = new QAction(tr("Import Streams"), this);
     exportAction = new QAction(tr("Export Streams"), this);
-    addAction = new QAction(tr("Add Stream"), this);
-    removeAction = new QAction(tr("Remove Stream"), this);
-    editAction = new QAction(tr("Rename Stream"), this);
+    addAction = new QAction(tr("Add"), this);
+    removeAction = new QAction(tr("Remove"), this);
+    editAction = new QAction(tr("Edit"), this);
     markAsFavAction = new QAction(tr("Set As Favorite"), this);
     unMarkAsFavAction = new QAction(tr("Unset As Favorite"), this);
     #endif

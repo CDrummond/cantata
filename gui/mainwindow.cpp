@@ -602,7 +602,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(infoTabAction, SIGNAL(activated()), this, SLOT(showInfoTab()));
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
-
+    connect(playlistsPage, SIGNAL(add(const QStringList &)), playQueue, SLOT(addItems(const QStringList &)));
     elapsedTimer.setInterval(1000);
 
     QByteArray state=Settings::self()->splitterState();

@@ -319,12 +319,7 @@ void PlayQueueModel::addItems(const QStringList &items, int row)
     }
 
     if (haveHttp) {
-        QList<QUrl> urls;
-        foreach (const QString &f, items) {
-            urls << QUrl(f);
-        }
-
-        fetcher->get(urls, 0);
+        fetcher->get(items, 0);
     } else {
         addFiles(items, row);
     }

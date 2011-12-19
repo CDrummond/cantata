@@ -37,12 +37,18 @@ static void drawGlow(QPainter *painter, const QRect &rOrig)
     QRect r=rOrig.adjusted(-2, -2, 2, 2);
     QRadialGradient gradient(QPointF(r.x()+r.width()/2.0, r.y()+r.height()/2.0), r.width()/2.0, QPointF(r.x()+r.width()/2.0, r.y()+r.height()/2.0));
     QColor c(Qt::white);
-    c.setAlphaF(0.65);
+    c.setAlphaF(0.75);
     gradient.setColorAt(0, c);
-    gradient.setColorAt(0.5, c);
+    gradient.setColorAt(0.6, c);
     c.setAlphaF(0.0);
     gradient.setColorAt(1.0, c);
     painter->fillRect(r, gradient);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    c.setAlphaF(0.9);
+    painter->setPen(c);
+    r=rOrig.adjusted(1, 1, -1, -1);
+    painter->drawRoundedRect(r, r.width()/2.0, r.height()/2.0);
+    painter->setRenderHint(QPainter::Antialiasing, false);
 }
 
 class ItemDelegate : public QStyledItemDelegate
@@ -50,7 +56,7 @@ class ItemDelegate : public QStyledItemDelegate
 public:
     static const int constBorder = 1;
     static const int constActionBorder = 2;
-    static const int constActionIconSize=16;
+    static const int constActionIconSize=18;
 
     ItemDelegate(QObject *p, QAction *a1, QAction *a2)
         : QStyledItemDelegate(p)
@@ -153,7 +159,7 @@ public:
                 r=r2;
             }
             if (act1 && (iconMode ? r.height() : r.width())>(constActionIconSize+(2*constActionBorder))) {
-                pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+                pix=act1->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
                 if (!pix.isNull()) {
                     QRect ir=iconMode
                                 ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),
@@ -173,7 +179,7 @@ public:
             }
 
             if (act2 && (iconMode ? r.height() : r.width())>(constActionIconSize+(2*constActionBorder))) {
-                pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+                pix=act2->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
                 if (!pix.isNull()) {
                     QRect ir=iconMode
                                 ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),

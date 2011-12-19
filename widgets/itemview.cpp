@@ -312,6 +312,7 @@ void ItemView::init(QAction *a1, QAction *a2)
     connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
     connect(treeView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
+    connect(treeView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(listView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
     connect(listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
@@ -479,8 +480,8 @@ void ItemView::backActivated()
 QAction * ItemView::getAction(const QModelIndex &index)
 {
     bool iconMode=Mode_IconTop==mode && !index.parent().isValid();
-    QRect rect(listView->visualRect(index));
-    rect.moveTo(listView->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
+    QRect rect(view()->visualRect(index));
+    rect.moveTo(view()->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
     QRect actionRect=iconMode
                         ? QRect(rect.x()+rect.width()-(ListDelegate::constActionIconSize+ListDelegate::constActionBorder),
                                 rect.y()+ListDelegate::constActionBorder,

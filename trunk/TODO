@@ -14,7 +14,8 @@
 * Add a BasicPage class, and use for library, folders, and albums
     - Or add to ItemView ???
 
-* Views - delegate buttons not working???
+* Albums page - addSelectionToPlaylist crashes!!!
+* Playlists page - addSelectionToPlaylist doed not take into account selected song items!!!
 
 * UPDATE TRANSLATIONS!!!
 

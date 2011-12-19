@@ -102,8 +102,6 @@ void AlbumsPage::setItemSize()
 
 void AlbumsPage::addSelectionToPlaylist(const QString &name)
 {
-    return;
-
     QStringList files;
 
     const QModelIndexList selected = view->selectionModel()->selectedIndexes();

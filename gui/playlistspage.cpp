@@ -95,6 +95,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(selectionChanged()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
+    connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(loadPlaylist(const QString &)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
@@ -121,11 +122,34 @@ void PlaylistsPage::clear()
 
 void PlaylistsPage::addSelectionToPlaylist()
 {
-    const QModelIndexList items = view->selectionModel()->selectedRows();
+    const QModelIndexList indexes = view->selectionModel()->selectedRows();
 
-    if (items.size() == 1) {
-        emit loadPlaylist(PlaylistsModel::self()->data(proxy.mapToSource(items.first()), Qt::DisplayRole).toString());
+    if (1==indexes.size()) {
+        QModelIndex idx=proxy.mapToSource(indexes.first());
+        PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
+        if (item->isPlaylist()) {
+            emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name);
+            return;
+        }
     }
+
+    QSet<PlaylistsModel::Item *> selectedPlaylists;
+    QStringList filenames;
+    foreach(QModelIndex index, indexes) {
+        QModelIndex idx=proxy.mapToSource(index);
+        PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
+
+        if (item->isPlaylist()) {
+            selectedPlaylists.insert(item);
+            foreach (const PlaylistsModel::SongItem *s, static_cast<PlaylistsModel::PlaylistItem*>(item)->songs) {
+                filenames << s->file;
+            }
+        } else if (!selectedPlaylists.contains(static_cast<PlaylistsModel::SongItem*>(item)->parent)) {
+            filenames << static_cast<PlaylistsModel::SongItem*>(item)->file;
+        }
+    }
+
+    emit add(filenames);
 }
 
 void PlaylistsPage::removeItems()

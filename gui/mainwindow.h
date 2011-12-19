@@ -68,6 +68,22 @@ class LyricsPage;
 class StreamsPage;
 class InfoPage;
 class QThread;
+class QAbstractItemView;
+
+class DeleteKeyEventHandler : public QObject
+{
+    Q_OBJECT
+
+public:
+    DeleteKeyEventHandler(QAbstractItemView *v, QAction *a);
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
+private:
+    QAbstractItemView *view;
+    QAction *act;
+};
 
 class VolumeSliderEventHandler : public QObject
 {

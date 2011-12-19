@@ -122,6 +122,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->addAction(unMarkAsFavAction);
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
+    view->installEventFilter(new DeleteKeyEventHandler(view, removeAction));
 }
 
 StreamsPage::~StreamsPage()

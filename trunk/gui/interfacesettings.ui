@@ -216,13 +216,7 @@
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>systemTrayCheckBox</tabstop>
-  <tabstop>systemTrayPopup</tabstop>
-  <tabstop>libraryView</tabstop>
-  <tabstop>libraryCoverSize</tabstop>
-  <tabstop>albumCoverSize</tabstop>
- </tabstops>
+ <tabstops/>
  <resources/>
  <connections/>
 </ui>

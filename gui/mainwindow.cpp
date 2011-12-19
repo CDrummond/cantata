@@ -72,8 +72,25 @@
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 
+DeleteKeyEventHandler::DeleteKeyEventHandler(QAbstractItemView *v, QAction *a)
+    : QObject(v)
+    , view(v)
+    , act(a)
+{
+}
+
+bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
+{
+    if (view->hasFocus() && QEvent::KeyRelease==event->type() && static_cast<QKeyEvent *>(event)->matches(QKeySequence::Delete)) {
+        act->trigger();
+        return true;
+    }
+    return QObject::eventFilter(obj, event);
+}
+
 VolumeSliderEventHandler::VolumeSliderEventHandler(MainWindow *w)
-    : QObject(w), window(w)
+    : QObject(w)
+    , window(w)
 {
 }
 
@@ -258,7 +275,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     removeFromPlaylistAction = actionCollection()->addAction("removefromplaylist");
     removeFromPlaylistAction->setText(i18n("Remove"));
-    removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
 
     copyTrackInfoAction = actionCollection()->addAction("copytrackinfo");
     copyTrackInfoAction->setText(i18n("Copy Track Info"));
@@ -323,7 +339,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     addToStoredPlaylistAction = new QAction(tr("Add To"), this);
     replacePlaylistAction = new QAction(tr("Replace Play Queue"), this);
     removeFromPlaylistAction = new QAction(tr("Remove"), this);
-    removeFromPlaylistAction->setShortcut(QKeySequence::Delete);
     copyTrackInfoAction = new QAction(tr("Copy Track Info"), this);
     copyTrackInfoAction->setShortcut(QKeySequence::Copy);
     cropPlaylistAction = new QAction(tr("Crop"), this);
@@ -536,6 +551,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playQueue->addAction(cropPlaylistAction);
     playQueue->addAction(shufflePlaylistAction);
     playQueue->addAction(copyTrackInfoAction);
+    playQueue->installEventFilter(new DeleteKeyEventHandler(playQueue, removeFromPlaylistAction));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
     setupPlaylistView();
 

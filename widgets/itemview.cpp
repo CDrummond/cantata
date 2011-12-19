@@ -22,6 +22,7 @@
  */
 
 #include "itemview.h"
+#include "mainwindow.h"
 #include "covers.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
@@ -457,6 +458,12 @@ void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
 void ItemView::setGridSize(const QSize &sz)
 {
     iconGridSize=sz;
+}
+
+void ItemView::setDeleteAction(QAction *act)
+{
+    listView->installEventFilter(new DeleteKeyEventHandler(listView, act));
+    treeView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
 }
 
 void ItemView::backActivated()

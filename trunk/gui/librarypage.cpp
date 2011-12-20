@@ -105,24 +105,16 @@ void LibraryPage::addSelectionToPlaylist(const QString &name)
     QStringList files;
     MusicLibraryItem *item;
     MusicLibraryItemSong *songItem;
-
-    // Get selected indexes
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
-    int selectionSize = selected.size();
-
-    if (selectionSize == 0) {
-        return;
-    }
+    QModelIndexList selected = view->selectedIndexes();
 
     // Loop over the selection. Only add files.
-    for (int selectionPos = 0; selectionPos < selectionSize; selectionPos++) {
-        const QModelIndex current = selected.at(selectionPos);
-        item = static_cast<MusicLibraryItem *>(proxy.mapToSource(current).internalPointer());
+    foreach (const QModelIndex &idx, selected) {
+        item = static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
 
         switch (item->type()) {
         case MusicLibraryItem::Type_Artist: {
             for (quint32 i = 0; ; i++) {
-                const QModelIndex album = current.child(i , 0);
+                const QModelIndex album = idx.child(i , 0);
                 if (!album.isValid())
                     break;
 
@@ -141,7 +133,7 @@ void LibraryPage::addSelectionToPlaylist(const QString &name)
         }
         case MusicLibraryItem::Type_Album: {
             for (quint32 i = 0; ; i++) {
-                QModelIndex track = current.child(i, 0);
+                QModelIndex track = idx.child(i, 0);
                 if (!track.isValid())
                     break;
                 const QModelIndex mappedSongIndex = proxy.mapToSource(track);
@@ -169,15 +161,17 @@ void LibraryPage::addSelectionToPlaylist(const QString &name)
         } else {
             emit addSongsToPlaylist(name, files);
         }
-        view->selectionModel()->clearSelection();
+        view->clearSelection();
     }
 }
 
 void LibraryPage::itemDoubleClicked(const QModelIndex &)
 {
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
-    const QModelIndex current = selected.at(0);
-    MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(current).internalPointer());
+    const QModelIndexList selected = view->selectedIndexes();
+    if (1!=selected.size()) {
+        return; //doubleclick should only have one selected item
+    }
+    MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
     if (MusicLibraryItem::Type_Song==item->type()) {
         addSelectionToPlaylist();
     }

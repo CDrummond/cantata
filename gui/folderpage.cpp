@@ -95,14 +95,12 @@ void FolderPage::searchItems()
 
 void FolderPage::itemDoubleClicked(const QModelIndex &)
 {
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
-    int selectionSize = selected.size();
-    if (selectionSize != 1) {
+    const QModelIndexList selected = view->selectedIndexes();
+    if (1!=selected.size()) {
         return; //doubleclick should only have one selected item
     }
 
-    const QModelIndex current = selected.at(0);
-    DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(current).internalPointer());
+    DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
     if (DirViewItem::Type_File==item->type()) {
         addSelectionToPlaylist();
     }
@@ -111,23 +109,16 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
 void FolderPage::addSelectionToPlaylist(const QString &name)
 {
     // Get selected view indexes
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
-    int selectionSize = selected.size();
-
-    if (selectionSize == 0) {
-        return;
-    }
-
+    QModelIndexList selected = view->selectedIndexes();
     QStringList files;
 
-    for (int selectionPos = 0; selectionPos < selectionSize; selectionPos++) {
-        QModelIndex current = selected.at(selectionPos);
-        DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(current).internalPointer());
+    foreach (const QModelIndex idx, selected) {
+        DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(idx).internalPointer());
         QStringList tmp;
 
         switch (item->type()) {
         case DirViewItem::Type_Dir:
-            tmp = walk(current);
+            tmp = walk(idx);
             for (int i = 0; i < tmp.size(); i++) {
                 if (!files.contains(tmp.at(i)))
                     files << tmp.at(i);
@@ -148,17 +139,16 @@ void FolderPage::addSelectionToPlaylist(const QString &name)
         } else {
             emit addSongsToPlaylist(name, files);
         }
-        view->selectionModel()->clearSelection();
+        view->clearSelection();
     }
 }
 
 QStringList FolderPage::walk(QModelIndex rootItem)
 {
     QStringList files;
-
     DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(rootItem).internalPointer());
 
-    if (item->type() == DirViewItem::Type_File) {
+    if (DirViewItem::Type_File==item->type()) {
         return QStringList(item->fileName());
     }
 

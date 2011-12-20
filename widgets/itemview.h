@@ -57,7 +57,8 @@ public:
     void setLevel(int level);
     QAbstractItemView * view() const;
     void setModel(QAbstractItemModel *m);
-    QItemSelectionModel *selectionModel() const { return view()->selectionModel(); }
+    void clearSelection() { view()->selectionModel()->clearSelection(); }
+    QModelIndexList selectedIndexes() const;
     QString searchText() const;
     void setTopText(const QString &text);
     void setUniformRowHeights(bool v);

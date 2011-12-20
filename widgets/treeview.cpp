@@ -23,6 +23,7 @@
 
 #include "treeview.h"
 #include <QtGui/QMouseEvent>
+#include <QtCore/QMap>
 
 TreeView::TreeView(QWidget *parent)
         : QTreeView(parent)
@@ -72,4 +73,15 @@ void TreeView::mouseReleaseEvent(QMouseEvent *event)
     if (Qt::NoModifier==event->modifiers()) {
         QTreeView::mouseReleaseEvent(event);
     }
+}
+
+QModelIndexList TreeView::selectedIndexes() const
+{
+    QModelIndexList indexes=selectionModel()->selectedIndexes();
+    QMap<int, QModelIndex> sort;
+
+    foreach (const QModelIndex &idx, indexes) {
+        sort.insertMulti(visualRect(idx).y(), idx);
+    }
+    return sort.values();
 }

@@ -104,7 +104,7 @@ void AlbumsPage::addSelectionToPlaylist(const QString &name)
 {
     QStringList files;
 
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return;
@@ -128,13 +128,13 @@ void AlbumsPage::addSelectionToPlaylist(const QString &name)
         } else {
             emit addSongsToPlaylist(name, files);
         }
-        view->selectionModel()->clearSelection();
+        view->clearSelection();
     }
 }
 
 void AlbumsPage::itemActivated(const QModelIndex &)
 {
-    if (1==view->selectionModel()->selectedIndexes().size()) {//doubleclick should only have one selected item
+    if (1==view->selectedIndexes().size()) {//doubleclick should only have one selected item
         addSelectionToPlaylist();
     }
 }

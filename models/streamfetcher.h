@@ -62,6 +62,7 @@ private:
     QStringList todo;
     QStringList done;
     int row;
+    int redirects;
     QByteArray data;
 };
 

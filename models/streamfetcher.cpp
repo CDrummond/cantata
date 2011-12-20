@@ -34,14 +34,15 @@
 #include <spiff/spiff_c.h>
 #endif
 
+static const int constMaxRedirects = 3;
 static const int constMaxData = 12 * 1024;
 
-static QString parsePlaylist(const QByteArray &data)
+static QString parsePlaylist(const QByteArray &data, const QString &key)
 {
     QStringList lines=QString(data).split('\n', QString::SkipEmptyParts);
 
     foreach (QString line, lines) {
-        if (line.startsWith("File", Qt::CaseInsensitive)) {
+        if (line.startsWith(key, Qt::CaseInsensitive)) {
             int index=line.indexOf("=http://", Qt::CaseInsensitive);
             if (index>-1 && index<7) {
                 line.remove('\n');
@@ -69,6 +70,26 @@ static QString parseExt3Mu(const QByteArray &data)
     return QString();
 }
 
+static QString parseAsx(const QByteArray &data)
+{
+    QStringList lines=QString(data).split(QRegExp("(\r\n|\n|\r|/>)"), QString::SkipEmptyParts);
+
+    foreach (QString line, lines) {
+        int ref=line.indexOf(" href ", Qt::CaseInsensitive);
+        int http=-1==ref ? -1 : line.indexOf("http://", Qt::CaseInsensitive);
+        if (-1!=http) {
+            QStringList parts=line.split("\"");
+            foreach (QString part, parts) {
+                if (part.startsWith("http://")) {
+                    return part;
+                }
+            }
+        }
+    }
+
+    return QString();
+}
+
 #ifdef XSPF
 static QString parseXspf(const QByteArray &data)
 {
@@ -86,12 +107,16 @@ static QString parseSpiff(const QByteArray &data)
 static QString parse(const QByteArray &data)
 {
     if (data.length()>10 && !strncasecmp(data.constData(), "[playlist]", 10)) {
-        return parsePlaylist(data);
+        return parsePlaylist(data, "File");
     } else if (data.length()>7 && (!strncasecmp(data.constData(), "#EXTM3U", 7) || !strncasecmp(data.constData(), "http://", 7))) {
         return parseExt3Mu(data);
+    } else if (data.length()>5 && !strncasecmp(data.constData(), "<asx ", 5)) {
+        return parseAsx(data);
+    } else if (data.length()>11 && !strncasecmp(data.constData(), "[reference]", 11)) {
+        return parsePlaylist(data, "Ref");
     }
 #if defined XSPF || defined SPIFF
-    else if (data.length()>5 && strncasecmp(data.constData(), "<?xml", 5)) {
+    else if (data.length()>5 && !strncasecmp(data.constData(), "<?xml", 5)) {
         QString rv;
 #ifdef XSPF
         rv=parseXspf(data);
@@ -138,11 +163,13 @@ void StreamFetcher::get(const QStringList &items, int insertRow)
 
 void StreamFetcher::doNext()
 {
+    redirects=0;
     while (todo.count()) {
         current=todo.takeFirst();
         QUrl u(current);
 
         if (u.scheme()=="http") {
+            data.clear();
             job=manager->get(u);
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
             return;
@@ -189,8 +216,14 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
         if (!reply->error()) {
             QString u=parse(data);
 
-            if (u.isEmpty()) {
+            if (u.isEmpty() || u==current) {
                 done.append(current);
+            } else if (u.startsWith("http://") && ++redirects<constMaxRedirects) {
+                // Redirect...
+                current=u;
+                data.clear();
+                job=manager->get(u);
+                connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
             } else {
                 done.append(u);
             }

@@ -132,15 +132,14 @@ void PlaylistsPage::clear()
 
 void PlaylistsPage::addSelectionToPlaylist()
 {
-    addItemsToPlayQueue(view->selectionModel()->selectedRows());
+    addItemsToPlayQueue(view->selectedIndexes());
 }
 
 void PlaylistsPage::removeItems()
 {
     QSet<QString> remPlaylists;
     QMap<QString, QList<int> > remSongs;
-
-    const QModelIndexList selected = view->selectionModel()->selectedRows();
+    QModelIndexList selected = view->selectedIndexes();
 
     foreach(const QModelIndex &index, selected) {
         if(index.isValid()) {
@@ -216,7 +215,7 @@ void PlaylistsPage::savePlaylist()
 
 void PlaylistsPage::renamePlaylist()
 {
-    const QModelIndexList items = view->selectionModel()->selectedRows();
+    const QModelIndexList items = view->selectedIndexes();
 
     if (items.size() == 1) {
         QModelIndex sourceIndex = proxy.mapToSource(items.first());
@@ -277,6 +276,7 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
             } else {
                 emit add(reverseList(filenames));
             }
+            view->clearSelection();
             return;
         }
     }
@@ -295,13 +295,13 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
             filenames << static_cast<PlaylistsModel::SongItem*>(item)->file;
         }
     }
-
+    view->clearSelection();
     emit add(reverseList(filenames));
 }
 
 void PlaylistsPage::selectionChanged()
 {
-    QModelIndexList selected=view->selectionModel()->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes();
     bool enable=false;
 
     if (1==selected.count()) {

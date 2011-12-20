@@ -144,7 +144,7 @@ void StreamsPage::addSelectionToPlaylist()
 {
     QStringList streams;
 
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return;
@@ -160,7 +160,7 @@ void StreamsPage::addSelectionToPlaylist()
 
     if (!streams.isEmpty()) {
         emit add(streams);
-        view->selectionModel()->clearSelection();
+        view->clearSelection();
     }
 }
 
@@ -238,8 +238,7 @@ void StreamsPage::add()
 void StreamsPage::remove()
 {
     QStringList streams;
-
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return;
@@ -271,8 +270,7 @@ void StreamsPage::remove()
 void StreamsPage::edit()
 {
     QStringList streams;
-
-    const QModelIndexList selected = view->selectionModel()->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
 
     if (1!=selected.size()) {
         return;
@@ -313,7 +311,7 @@ void StreamsPage::edit()
 
 void StreamsPage::controlActions()
 {
-    QModelIndexList selected=view->selectionModel()->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes();
     editAction->setEnabled(1==selected.size());
     bool doneMark=false, doneUnMark=false;
     markAsFavAction->setEnabled(false);
@@ -341,7 +339,7 @@ void StreamsPage::searchItems()
 
 void StreamsPage::mark(bool f)
 {
-    QModelIndexList selected=view->selectionModel()->selectedIndexes();
+    QModelIndexList selected=view->selectedIndexes();
     QList<int> rows;
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index=proxy.mapToSource(idx);
@@ -349,4 +347,3 @@ void StreamsPage::mark(bool f)
     }
     model.mark(rows, f);
 }
-

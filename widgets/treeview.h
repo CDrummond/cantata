@@ -40,6 +40,7 @@ public:
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;
     void mouseReleaseEvent(QMouseEvent *event);
+    QModelIndexList selectedIndexes() const;
 
 Q_SIGNALS:
     bool itemsSelected(bool);

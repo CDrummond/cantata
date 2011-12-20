@@ -40,6 +40,7 @@ public:
     bool haveUnSelectedItems() const;
     void startDrag(Qt::DropActions supportedActions);
     void mouseReleaseEvent(QMouseEvent *event);
+    QModelIndexList selectedIndexes() const;
 
 Q_SIGNALS:
     bool itemsSelected(bool);

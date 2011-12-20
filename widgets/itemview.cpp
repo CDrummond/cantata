@@ -356,6 +356,11 @@ void ItemView::setMode(Mode m)
     stackedWidget->setCurrentIndex(Mode_Tree==mode ? 0 : 1);
 }
 
+QModelIndexList ItemView::selectedIndexes() const
+{
+    return Mode_Tree==mode ? treeView->selectedIndexes() : listView->selectedIndexes();
+}
+
 void ItemView::setLevel(int l)
 {
     int prev=currentLevel;

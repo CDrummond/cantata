@@ -92,3 +92,10 @@ void ListView::mouseReleaseEvent(QMouseEvent *event)
         QListView::mouseReleaseEvent(event);
     }
 }
+
+QModelIndexList ListView::selectedIndexes() const
+{
+    QModelIndexList indexes=selectionModel()->selectedIndexes();
+    qSort(indexes);
+    return indexes;
+}

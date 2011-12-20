@@ -33,6 +33,7 @@ SET( CANTATA_SRCS
     gui/librarypage.cpp
     gui/albumspage.cpp
     gui/folderpage.cpp
+    gui/infopage.cpp
     gui/serverinfopage.cpp
     gui/playlistspage.cpp
     models/musiclibraryitem.cpp
@@ -72,6 +73,7 @@ SET( CANTATA_SRCS
     lyrics/ultimatelyricsreader.cpp
     lyrics/songinfoprovider.cpp
     network/networkaccessmanager.cpp
+    network/network.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -83,6 +85,7 @@ SET( CANTATA_MOC_HDRS
     gui/albumspage.h
     gui/playlistspage.h
     gui/streamspage.h
+    gui/infopage.h
     gui/serverinfopage.h
     gui/streamdialog.h
     gui/playbacksettings.h
@@ -111,6 +114,7 @@ SET( CANTATA_MOC_HDRS
     lyrics/ultimatelyricsprovider.h
     lyrics/songinfoprovider.h
     network/networkaccessmanager.h
+    network/network.h
 )
 
 SET( CANTATA_UIS

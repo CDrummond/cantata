@@ -40,6 +40,7 @@
 25. Fixed thread usage - now sockets are in their own thread.
 26. Add album-cover view
 27. Support radio streams
+28. Query artist/album information via wikipedia
 
 --------------QtMPC ChangeLog--------------------
 

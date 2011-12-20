@@ -66,6 +66,7 @@ class FolderPage;
 class PlaylistsPage;
 class LyricsPage;
 class StreamsPage;
+class InfoPage;
 class ServerInfoPage;
 class QThread;
 class QAbstractItemView;
@@ -156,6 +157,7 @@ public:
         PAGE_PLAYLISTS,
         PAGE_STREAMS,
         PAGE_LYRICS,
+        PAGE_INFO,
         PAGE_SERVER_INFO
     };
 
@@ -233,6 +235,7 @@ private Q_SLOTS:
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
     void showStreamsTab() { showTab(PAGE_STREAMS); }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
+    void showInfoTab() { showTab(PAGE_INFO); }
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
 
 private:
@@ -284,6 +287,7 @@ private:
     Action *playlistsTabAction;
     Action *lyricsTabAction;
     Action *streamsTabAction;
+    Action *infoTabAction;
     Action *serverInfoTabAction;
     Action *updateDbAction;
     QList<QAction *> viewActions;
@@ -297,12 +301,14 @@ private:
     QString mpdDir;
     Song current;
     bool lyricsNeedUpdating;
+    bool infoNeedsUpdating;
     LibraryPage *libraryPage;
     AlbumsPage *albumsPage;
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
     LyricsPage *lyricsPage;
     StreamsPage *streamsPage;
+    InfoPage *infoPage;
     ServerInfoPage *serverInfoPage;
     QThread *mpdThread;
     friend class VolumeSliderEventHandler;
@@ -313,6 +319,7 @@ private:
     friend class PlaylistsPage;
     friend class StreamsPage;
     friend class LyricsPage;
+    friend class InfoPage;
     friend class ServerInfoPage;
 };
 

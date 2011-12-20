@@ -179,6 +179,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
     }
 
     if (haveInserted && !isInternal) {
+        modified=true;
         save();
     }
 

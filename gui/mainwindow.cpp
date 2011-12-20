@@ -67,7 +67,7 @@
 #include "folderpage.h"
 #include "streamspage.h"
 #include "lyricspage.h"
-#include "infopage.h"
+#include "serverinfopage.h"
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -321,8 +321,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     streamsTabAction = actionCollection()->addAction("showstreamstab");
     streamsTabAction->setText(i18n("Streams"));
 
-    infoTabAction = actionCollection()->addAction("showinfotab");
-    infoTabAction->setText(i18n("Info"));
+    serverInfoTabAction = actionCollection()->addAction("showserverinfotab");
+    serverInfoTabAction->setText(i18n("Server Info"));
 #else
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -355,7 +355,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction = new QAction(tr("Playlists"), this);
     lyricsTabAction = new QAction(tr("Lyrics"), this);
     streamsTabAction = new QAction(tr("Streams"), this);
-    infoTabAction = new QAction(tr("Info"), this);
+    serverInfoTabAction = new QAction(tr("Server Info"), this);
 #endif
     libraryTabAction->setShortcut(Qt::Key_F5);
     albumsTabAction->setShortcut(Qt::Key_F6);
@@ -363,7 +363,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction->setShortcut(Qt::Key_F8);
     streamsTabAction->setShortcut(Qt::Key_F9);
     lyricsTabAction->setShortcut(Qt::Key_F10);
-    infoTabAction->setShortcut(Qt::Key_F11);
+    serverInfoTabAction->setShortcut(Qt::Key_F11);
 
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
@@ -401,7 +401,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
     streamsTabAction->setIcon(QIcon::fromTheme("applications-internet"));
-    infoTabAction->setIcon(QIcon::fromTheme("server-database"));
+    serverInfoTabAction->setIcon(QIcon::fromTheme("server-database"));
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
 
@@ -424,7 +424,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsPage = new PlaylistsPage(this);
     streamsPage = new StreamsPage(this);
     lyricsPage = new LyricsPage(this);
-    infoPage = new InfoPage(this);
+    serverInfoPage = new ServerInfoPage(this);
 
     connect(&libraryPage->getModel(), SIGNAL(updated(const MusicLibraryItemRoot *)), albumsPage, SLOT(update(const MusicLibraryItemRoot *)));
     connect(&libraryPage->getModel(), SIGNAL(updateGenres(const QStringList &)), albumsPage, SLOT(updateGenres(const QStringList &)));
@@ -445,7 +445,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text(), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text(), !hiddenPages.contains(streamsPage->metaObject()->className()));
     tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text(), !hiddenPages.contains(lyricsPage->metaObject()->className()));
-    tabWidget->AddTab(infoPage, infoTabAction->icon(), infoTabAction->text(), !hiddenPages.contains(infoPage->metaObject()->className()));
+    tabWidget->AddTab(serverInfoPage, serverInfoTabAction->icon(), serverInfoTabAction->text(), !hiddenPages.contains(serverInfoPage->metaObject()->className()));
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
@@ -599,7 +599,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(playlistsTabAction, SIGNAL(activated()), this, SLOT(showPlaylistsTab()));
     connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
     connect(streamsTabAction, SIGNAL(activated()), this, SLOT(showStreamsTab()));
-    connect(infoTabAction, SIGNAL(activated()), this, SLOT(showInfoTab()));
+    connect(serverInfoTabAction, SIGNAL(activated()), this, SLOT(showServerInfoTab()));
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
@@ -711,7 +711,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         playlistsPage->clear();
         playQueueModel.clear();
         lyricsPage->text->clear();
-        infoPage->clear();
+        serverInfoPage->clear();
         showPreferencesDialog();
     }
 }
@@ -1522,7 +1522,7 @@ void MainWindow::currentTabChanged(int index)
             lyricsNeedUpdating=false;
         }
         break;
-    case PAGE_INFO:
+    case PAGE_SERVER_INFO:
     default:
         break;
     }

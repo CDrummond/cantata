@@ -669,7 +669,7 @@ void FancyTabWidget::SetMode(Mode mode) {
         (*it).index_=index++;
       }
 
-      bar->setCurrentIndex(stack_->currentIndex());
+      bar->setCurrentIndex(IndexToTab(stack_->currentIndex()));
       connect(bar, SIGNAL(currentChanged(int)), SLOT(ShowWidget(int)));
 
 //       use_background_ = true;
@@ -872,7 +872,7 @@ void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons,
     (*it).index_=index++;
   }
 
-  bar->setCurrentIndex(stack_->currentIndex());
+  bar->setCurrentIndex(IndexToTab(stack_->currentIndex()));
   connect(bar, SIGNAL(currentChanged(int)), SLOT(ShowWidget(int)));
   tab_bar_ = bar;
 }

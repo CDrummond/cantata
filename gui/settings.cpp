@@ -240,7 +240,7 @@ QStringList Settings::hiddenPages()
 {
     QStringList def;
     def << "FolderPage"
-        << "InfoPage";
+        << "ServerInfoPage";
     return GET_STRINGLIST("hiddenPages", def);
 }
 

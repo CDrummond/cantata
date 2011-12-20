@@ -21,20 +21,20 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INFOPAGE_H
-#define INFOPAGE_H
+#ifndef SERVERINFOPAGE_H
+#define SERVERINFOPAGE_H
 
 #include <QWidget>
-#include "ui_infopage.h"
+#include "ui_serverinfopage.h"
 #include "mainwindow.h"
 
-class InfoPage : public QWidget, public Ui::InfoPage
+class ServerInfoPage : public QWidget, public Ui::ServerInfoPage
 {
   Q_OBJECT
 
 public:
-    InfoPage(MainWindow *p);
-    ~InfoPage();
+    ServerInfoPage(MainWindow *p);
+    ~ServerInfoPage();
 
     void clear();
 

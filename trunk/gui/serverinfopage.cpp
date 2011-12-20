@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "infopage.h"
+#include "serverinfopage.h"
 #include "mpdconnection.h"
 #include "mpdstats.h"
 #include "mainwindow.h"
@@ -36,7 +36,7 @@
 #endif
 
 
-InfoPage::InfoPage(MainWindow *p)
+ServerInfoPage::ServerInfoPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
@@ -56,11 +56,11 @@ InfoPage::InfoPage(MainWindow *p)
     clear();
 }
 
-InfoPage::~InfoPage()
+ServerInfoPage::~ServerInfoPage()
 {
 }
 
-void InfoPage::clear()
+void ServerInfoPage::clear()
 {
     version->setText(QString());
     uptime->setText(QString());
@@ -72,7 +72,7 @@ void InfoPage::clear()
     lastUpdate->setText(QString());
 }
 
-void InfoPage::statsUpdated()
+void ServerInfoPage::statsUpdated()
 {
     uptime->setText(MPDParseUtils::formatDuration(MPDStats::self()->uptime()));
     timePlaying->setText(MPDParseUtils::formatDuration(MPDStats::self()->playtime()));
@@ -87,7 +87,7 @@ void InfoPage::statsUpdated()
     #endif
 }
 
-void InfoPage::mpdVersion(long v)
+void ServerInfoPage::mpdVersion(long v)
 {
     version->setText(QString("%1.%2.%3").arg((v>>16)&0xFF).arg((v>>8)&0xFF).arg(v&0xFF));
 }

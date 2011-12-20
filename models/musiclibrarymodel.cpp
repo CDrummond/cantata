@@ -34,6 +34,7 @@
 #include "config.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
+#include "network.h"
 #include <QCommonStyle>
 #include <QFile>
 #include <QXmlStreamReader>
@@ -48,20 +49,6 @@
 #include <KDE/KIcon>
 #include <KDE/KLocale>
 #endif
-
-QString MusicLibraryModel::cacheDir(const QString &sub, bool create)
-{
-    QString env = qgetenv("XDG_CACHE_HOME");
-    QString dir = (env.isEmpty() ? QDir::homePath() + "/.cache" : env) + QLatin1String("/"PACKAGE_NAME"/");
-    if(!sub.isEmpty()) {
-        dir+=sub;
-    }
-    if (!dir.endsWith("/")) {
-        dir=dir+'/';
-    }
-    QDir d(dir);
-    return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
-}
 
 static const QLatin1String constLibraryCache("library/");
 static const QLatin1String constLibraryExt(".xml");
@@ -343,7 +330,7 @@ void MusicLibraryModel::setCover(const QString &artist, const QString &album, co
 void MusicLibraryModel::toXML(const QDateTime db_update)
 {
     //Check if dir exists
-    QString dir = cacheDir(constLibraryCache);
+    QString dir = Network::cacheDir(constLibraryCache);
 
     if (dir.isEmpty()) {
         qWarning("Couldn't create directory for storing database file");
@@ -415,7 +402,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
  */
 bool MusicLibraryModel::fromXML(const QDateTime db_update)
 {
-    QString dir(cacheDir(constLibraryCache, false));
+    QString dir(Network::cacheDir(constLibraryCache, false));
     QString hostname = Settings::self()->connectionHost();
     QString filename(QFile::encodeName(hostname + constLibraryExt));
 

@@ -22,11 +22,11 @@
  */
 
 #include "covers.h"
-#include "musiclibrarymodel.h"
 #include "song.h"
 #include "mpdparseutils.h"
 #include "maiaXmlRpcClient.h"
 #include "networkaccessmanager.h"
+#include "network.h"
 #include <QtCore/QFile>
 #include <QtCore/QCryptographicHash>
 #include <QtNetwork/QNetworkReply>
@@ -36,7 +36,6 @@
 #include <KDE/KStandardDirs>
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(Covers, instance)
-#else
 #endif
 
 static const QLatin1String constApiKey("11172d35eb8cc2fd33250a9e45a2d486");
@@ -193,7 +192,7 @@ void Covers::get(const Song &song)
     QString artist=encodeName(song.albumArtist());
     QString album=encodeName(song.album);
     // Check if cover is already cached
-    QString dir(MusicLibraryModel::cacheDir(constCoverDir+artist, false));
+    QString dir(Network::cacheDir(constCoverDir+artist, false));
     foreach (const QString &ext, extensions) {
         if (QFile::exists(dir+album+ext)) {
             QImage img(dir+album+ext);
@@ -325,7 +324,7 @@ void Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw)
     }
 
         // Could not save with album, save in cache dir...
-    QString dir = MusicLibraryModel::cacheDir(constCoverDir+encodeName(job.artist));
+    QString dir = Network::cacheDir(constCoverDir+encodeName(job.artist));
     if (!dir.isEmpty()) {
         save(mimeType, extension, dir+encodeName(job.album), img, raw);
     }

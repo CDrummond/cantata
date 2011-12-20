@@ -25,7 +25,7 @@
 #include "lyricspage.h"
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyricsreader.h"
-#include "musiclibrarymodel.h"
+#include "network.h"
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QSettings>
@@ -35,7 +35,6 @@
 #include <QDir>
 #include <QIcon>
 #include <QToolButton>
-
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
@@ -64,7 +63,7 @@ static QString cacheFile(QString artist, QString title, bool createDir=false)
 {
     title.replace("/", "_");
     artist.replace("/", "_");
-    return QDir::toNativeSeparators(MusicLibraryModel::cacheDir(constLyricsDir+artist+'/', createDir))+title+constExtension;
+    return QDir::toNativeSeparators(Network::cacheDir(constLyricsDir+artist+'/', createDir))+title+constExtension;
 }
 
 typedef QList<UltimateLyricsProvider *> ProviderList;
@@ -98,9 +97,9 @@ LyricsPage::LyricsPage(QWidget *parent)
     } else {
         refreshAction = new KAction(this);
     }
-    refreshAction->setText(i18n("Refresh Lyrics"));
+    refreshAction->setText(i18n("Refresh"));
 #else
-    refreshAction = new QAction(tr("Refresh Lyrics"), this);
+    refreshAction = new QAction(tr("Refresh"), this);
 #endif
     refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));

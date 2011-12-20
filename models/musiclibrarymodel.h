@@ -42,8 +42,6 @@ class MusicLibraryModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    static QString cacheDir(const QString &sub=QString(), bool create=true);
-
     MusicLibraryModel(QObject *parent = 0);
     ~MusicLibraryModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;

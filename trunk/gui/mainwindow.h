@@ -170,7 +170,7 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private:
-    bool setupTrayIcon();
+    void setupTrayIcon();
     void setupPlaylistView();
 
 Q_SIGNALS:

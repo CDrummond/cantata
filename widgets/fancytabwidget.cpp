@@ -307,10 +307,10 @@ FancyTabBar::~FancyTabBar()
 }
 
 QSize FancyTab::sizeHint() const {
-  QFont boldFont(font());
+//   QFont boldFont(font());
 //   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
 //   boldFont.setBold(true);
-  QFontMetrics fm(boldFont);
+  QFontMetrics fm(font());
   int spacing = 8;
   int width = 60 + spacing + 2;
   int iconHeight = 32;
@@ -320,10 +320,10 @@ QSize FancyTab::sizeHint() const {
 
 QSize FancyTabBar::tabSizeHint(bool minimum) const
 {
-  QFont boldFont(font());
+//   QFont boldFont(font());
 //   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
 //   boldFont.setBold(true);
-  QFontMetrics fm(boldFont);
+  QFontMetrics fm(font());
   int spacing = 8;
   int width = 60 + spacing + 2;
   int iconHeight = minimum ? 0 : 32;

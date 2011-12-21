@@ -45,6 +45,7 @@
 #include <KDE/KIcon>
 #include <KDE/KMenuBar>
 #include <KDE/KMenu>
+#include <KDE/KStatusNotifierItem>
 #else
 #include <QtGui/QMenuBar>
 #include <QtGui/QMessageBox>
@@ -206,7 +207,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 {
     loaded=0;
     updateDialog = 0;
-    trayIcon = 0;
+    trayItem = 0;
     lyricsNeedUpdating=false;
     infoNeedsUpdating=false;
 
@@ -494,9 +495,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
 
-    if (setupTrayIcon() && Settings::self()->useSystemTray())
-        trayIcon->show();
-
+    setupTrayIcon();
     togglePlaylist();
 #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
@@ -729,7 +728,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (trayIcon && trayIcon->isVisible())
+    if (trayItem)
     {
         lastPos=pos();
         hide();
@@ -841,17 +840,7 @@ void MainWindow::updateSettings()
     playlistsPage->setView(0==Settings::self()->playlistsView());
     folderPage->setView(0==Settings::self()->folderView());
 
-    if (Settings::self()->useSystemTray()) {
-        if (!trayIcon) {
-            setupTrayIcon();
-        }
-
-        if (trayIcon) {
-            trayIcon->show();
-        }
-    } else if (trayIcon) {
-        trayIcon->hide();
-    }
+    setupTrayIcon();
 }
 
 #ifndef ENABLE_KDE_SUPPORT
@@ -1033,7 +1022,9 @@ void MainWindow::updateCurrentSong(const Song &song)
                             + "track:  " + QString::number(song.track) + "\n"
                             + "length: " + Song::formattedTime(song.time));
 
-            trayIcon->showMessage(song.artist + " - " + song.title, text, QSystemTrayIcon::Information, 5000);
+            if (trayItem) {
+                trayItem->showMessage(song.artist + " - " + song.title, text, QSystemTrayIcon::Information, 5000);
+            }
 #endif
         }
     }
@@ -1115,8 +1106,12 @@ void MainWindow::updateStatus()
         stopTrackAction->setEnabled(true);
         elapsedTimer.start();
 
-        if (trayIcon) {
-            trayIcon->setIcon(playbackPlay);
+        if (trayItem) {
+            #ifdef ENABLE_KDE_SUPPORT
+            trayItem->setIconByName("media-playback-start");
+            #else
+            trayItem->setIcon(playbackPlay);
+            #endif
         }
 
         break;
@@ -1129,8 +1124,12 @@ void MainWindow::updateStatus()
         artistLabel->setText(QString());
         current.id=0;
 
-        if (trayIcon) {
-            trayIcon->setIcon(windowIcon());
+        if (trayItem) {
+            #ifdef ENABLE_KDE_SUPPORT
+            trayItem->setIconByName("cantata");
+            #else
+            trayItem->setIcon(windowIcon());
+            #endif
         }
 
         elapsedTimer.stop();
@@ -1140,8 +1139,12 @@ void MainWindow::updateStatus()
         playPauseTrackAction->setEnabled(true);
         stopTrackAction->setEnabled(true);
 
-        if (trayIcon) {
-            trayIcon->setIcon(playbackPause);
+        if (trayItem) {
+            #ifdef ENABLE_KDE_SUPPORT
+            trayItem->setIconByName("media-playback-pause");
+            #else
+            trayItem->setIcon(playbackPlay);
+            #endif
         }
 
         elapsedTimer.stop();
@@ -1457,34 +1460,64 @@ void MainWindow::cropPlaylist()
 // Tray Icon //
 bool MainWindow::setupTrayIcon()
 {
+    if (!Settings::self()->useSystemTray()) {
+        if (trayItem) {
+            trayItemMenu->deleteLater();
+            trayItemMenu=0;
+            trayItem->deleteLater();
+            trayItem=0;
+        }
+    }
+#ifdef ENABLE_KDE_SUPPORT
+    trayItem = new KStatusNotifierItem(this);
+    trayItem->setCategory(KStatusNotifierItem::ApplicationStatus);
+    trayItem->setTitle(i18n("Cantata"));
+    trayItem->setIconByName("cantata");
+
+    trayItemMenu = new KMenu(this);
+    trayItemMenu->addAction(prevTrackAction);
+    trayItemMenu->addAction(nextTrackAction);
+    trayItemMenu->addAction(stopTrackAction);
+    trayItemMenu->addAction(playPauseTrackAction);
+    trayItem->setContextMenu(trayItemMenu);
+    connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
+#else
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-        trayIcon = NULL;
+        trayItem = NULL;
         return false;
     }
 
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->installEventFilter(volumeSliderEventHandler);
-    trayIconMenu = new QMenu(this);
-
-    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayIconClicked(QSystemTrayIcon::ActivationReason)));
-
-    trayIconMenu->addAction(prevTrackAction);
-    trayIconMenu->addAction(nextTrackAction);
-    trayIconMenu->addAction(stopTrackAction);
-    trayIconMenu->addAction(playPauseTrackAction);
-    trayIconMenu->addSeparator();
-    trayIconMenu->addAction(quitAction);
-    trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(windowIcon());
-#ifdef ENABLE_KDE_SUPPORT
-    trayIcon->setToolTip(i18n("Cantata"));
-#else
-    trayIcon->setToolTip(tr("Cantata"));
+    trayItem = new QSystemTrayIcon(this);
+    trayItem->installEventFilter(volumeSliderEventHandler);
+    QMenu *trayItemMenu = new QMenu(trayItem);
+    trayItemMenu->addAction(prevTrackAction);
+    trayItemMenu->addAction(nextTrackAction);
+    trayItemMenu->addAction(stopTrackAction);
+    trayItemMenu->addAction(playPauseTrackAction);
+    trayItemMenu->addSeparator();
+    trayItemMenu->addAction(quitAction);
+    trayItem->setContextMenu(trayItemMenu);
+    trayItem->setIcon(windowIcon());
+    trayItem->setToolTip(tr("Cantata"));
+    trayItem->show();
+    connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));
 #endif
 
     return true;
 }
 
+#ifdef ENABLE_KDE_SUPPORT
+void MainWindow::trayItemScrollRequested(int delta, Qt::Orientation orientation)
+{
+    if (Qt::Vertical==orientation) {
+        if (delta>0) {
+            increaseVolumeAction->trigger();
+        } else if(delta<0) {
+            decreaseVolumeAction->trigger();
+        }
+    }
+}
+#else
 void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
@@ -1501,6 +1534,7 @@ void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
         break;
     }
 }
+#endif
 
 enum Tabs
 {

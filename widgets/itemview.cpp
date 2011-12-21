@@ -95,6 +95,8 @@ public:
 
         if (option.state & QStyle::State_MouseOver) {
             QRect r(option.rect);
+            painter->save();
+            painter->setClipRect(r);
             if (act1 && r.width()>(constActionIconSize+(2*constActionBorder))) {
                 QPixmap pix=act1->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
                 if (!pix.isNull()) {
@@ -117,6 +119,7 @@ public:
                     painter->drawPixmap(ir, pix);
                 }
             }
+            painter->restore();
         }
     }
 
@@ -175,6 +178,8 @@ public:
         bool oneLine = childText.isEmpty();
         bool iconMode = imageSize>50;
 
+        painter->save();
+        painter->setClipRect(r);
         if (iconMode) {
             r.adjust(constBorder, constBorder, -constBorder, -constBorder);
             r2=r;
@@ -266,6 +271,7 @@ public:
                 }
             }
         }
+        painter->restore();
     }
 
     QAction *act1;

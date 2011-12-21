@@ -7,7 +7,6 @@
     - add genre support?
     - will need to place some items in a menu.
     - Perhaps import/export/edit could go into a 'Tools' menu
-    - should be using "Remove" not "Remove Stream" - to be consistent
     - Handle xspf/spiff playlists
     - Handle more than 1st entry?? Not sure
     - Check that MPD can handle protocols before adding
@@ -15,7 +14,7 @@
 
 * Library page
     - show Various Artists at top, with custom icon?
-   - Have artist icons ?
+    - Have artist icons ?
 
 * Add next/prev provider buttons to lyrics page - so that can try others.
 

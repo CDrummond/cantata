@@ -30,7 +30,6 @@ class StreamsProxyModel : public QSortFilterProxyModel
 {
 public:
     StreamsProxyModel(QObject *parent = 0);
-    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 };
 
 #endif

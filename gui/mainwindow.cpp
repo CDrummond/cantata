@@ -648,6 +648,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::setUseLibrarySizes(Settings::self()->albumsView()!=ItemView::Mode_IconTop);
     playlistsPage->setView(0==Settings::self()->playlistsView());
+    streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
     currentTabChanged(tabWidget->current_index());
     playlistsPage->refresh();
@@ -838,6 +839,7 @@ void MainWindow::updateSettings()
     streamsPage->refresh();
     libraryPage->setView(0==Settings::self()->libraryView());
     playlistsPage->setView(0==Settings::self()->playlistsView());
+    streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
 
     setupTrayIcon();
@@ -1225,7 +1227,7 @@ void MainWindow::addToNewStoredPlaylist()
 
         if (PlaylistsModel::self()->exists(name)) {
             #ifdef ENABLE_KDE_SUPPORT
-            switch(KMessageBox::warningYesNoCancel(this, i18n("A playlist named %1 already exists!<br/>Add to that playlist?").arg(name),
+            switch(KMessageBox::warningYesNoCancel(this, i18n("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?").arg(name),
                                                    i18n("Existing Playlist"))) {
             case KMessageBox::Cancel:
                 return;
@@ -1237,7 +1239,7 @@ void MainWindow::addToNewStoredPlaylist()
             }
             #else
             switch(QMessageBox::warning(this, tr("Existing Playlist"),
-                                        tr("A playlist named %1 already exists!<br/>Add to that playlist?").arg(name),
+                                        tr("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?").arg(name),
                                         QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel, QMessageBox::Yes)) {
             case QMessageBox::Cancel:
                 return;

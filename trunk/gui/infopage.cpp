@@ -42,7 +42,7 @@
 InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     KXMLGUIClient *client=dynamic_cast<KXMLGUIClient *>(parent);
     if (client) {
         refreshAction = client->actionCollection()->addAction("refreshinfo");
@@ -50,20 +50,20 @@ InfoPage::InfoPage(QWidget *parent)
         refreshAction = new QAction(this);
     }
     refreshAction->setText(i18n("Refresh"));
-#else
+    #else
     refreshAction = new QAction(tr("Refresh"), this);
-#endif
+    #endif
     QGridLayout *layout=new QGridLayout(this);
     view=new WebView(this);
     QToolButton *refreshBtn=new QToolButton(this);
     combo=new QComboBox(this);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     combo->insertItem(0, i18n("Artist Information"));
     combo->insertItem(1, i18n("Album Information"));
-#else
+    #else
     combo->insertItem(0, tr("Artist Information"));
     combo->insertItem(1, tr("Album Information"));
-#endif
+    #endif
     layout->addWidget(view, 0, 0, 1, 3);
     layout->addWidget(refreshBtn, 1, 0, 1, 1);
     layout->addItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 1, 1, 1);
@@ -98,7 +98,6 @@ void InfoPage::fetchWiki(QString query)
 void InfoPage::refresh()
 {
     lastWikiQuestion.clear();
-    view->setHtml(QString());
     fetchInfo();
 }
 
@@ -144,6 +143,12 @@ void InfoPage::fetchInfo()
     QString question = 0==combo->currentIndex() ? song.artist : (song.artist.isEmpty() && song.album.isEmpty() ? song.title : song.artist + " " + song.album);
     if ( !question.isEmpty() && lastWikiQuestion != question ) {
         lastWikiQuestion = question;
+        #ifdef ENABLE_KDE_SUPPORT
+        view->setHtml(i18n("<h3><i>Loading...</i></h3>"));
+        #else
+        view->setHtml(tr("<h3><i>Loading...</i></h3>"));
+        #endif
+
         askGoogle( question );
 //         fetchWiki( artist );
     }

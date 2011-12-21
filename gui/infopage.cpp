@@ -301,7 +301,7 @@ void InfoPage::setArtistWiki(const QString &aw)
 
     QString plaintEntry = lastWikiQuestion.toLower();
     plaintEntry.replace('/', '_');
-    QFile cache( Network::cacheDir("info") + "/cantata." + plaintEntry );
+    QFile cache( Network::cacheDir("info") + plaintEntry );
     if ( cache.open(  QIODevice::WriteOnly ) ) {
         QDataStream stream( &cache );
         stream << artistWiki;

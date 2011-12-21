@@ -24,16 +24,20 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QComboBox>
 #include <QtGui/QToolButton>
+#include <QtGui/QContextMenuEvent>
+#include <QtGui/QMenu>
+#include <QtGui/QAction>
 #include <QtCore/QDir>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KWebView>
 #include <KDE/KLocale>
-#include <KDE/KXMLGUIClient>
-#include <KDE/KActionCollection>
-#include <KDE/KAction>
+#include <KDE/KFileDialog>
 #else
+#include <QtGui/QFileDialog>
 #include <QtWebKit/QWebView>
-#include <QtGui/QAction>
 #endif
 #include "infopage.h"
 #include "network.h"
@@ -51,25 +55,35 @@ class WebView : public WEBVIEW_BASE
 public:
     WebView(QWidget *p) : WEBVIEW_BASE(p) { }
     QSize sizeHint() const { return QSize(128, 128); }
+
+    void contextMenuEvent(QContextMenuEvent *ev)
+    {
+        if (page()->swallowContextMenuEvent(ev)) {
+            ev->accept();
+        }
+        QMenu *menu=page()->createStandardContextMenu();
+
+        foreach (QAction *act, menu->actions()) {
+            if (act==page()->action(QWebPage::OpenLinkInNewWindow) ||
+                act==page()->action(QWebPage::OpenFrameInNewWindow) ||
+                act==page()->action(QWebPage::OpenImageInNewWindow) ||
+                act==page()->action(QWebPage::OpenFrameInNewWindow)) {
+                act->setVisible(false);
+            }
+        }
+        menu->exec(ev->globalPos());
+        menu->deleteLater();
+    }
 };
 
 InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KXMLGUIClient *client=dynamic_cast<KXMLGUIClient *>(parent);
-    if (client) {
-        refreshAction = client->actionCollection()->addAction("refreshinfo");
-    } else {
-        refreshAction = new QAction(this);
-    }
-    refreshAction->setText(i18n("Refresh"));
-    #else
-    refreshAction = new QAction(tr("Refresh"), this);
-    #endif
     QGridLayout *layout=new QGridLayout(this);
     view=new WebView(this);
     QToolButton *refreshBtn=new QToolButton(this);
+    QToolButton *backBtn=new QToolButton(this);
+    QToolButton *forwardBtn=new QToolButton(this);
     combo=new QComboBox(this);
     #ifdef ENABLE_KDE_SUPPORT
     combo->insertItem(0, i18n("Artist Information"));
@@ -78,17 +92,23 @@ InfoPage::InfoPage(QWidget *parent)
     combo->insertItem(0, tr("Artist Information"));
     combo->insertItem(1, tr("Album Information"));
     #endif
-    layout->addWidget(view, 0, 0, 1, 3);
+    layout->addWidget(view, 0, 0, 1, 5);
     layout->addWidget(refreshBtn, 1, 0, 1, 1);
-    layout->addItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 1, 1, 1);
-    layout->addWidget(combo, 1, 2, 1, 1);
+    layout->addWidget(backBtn, 1, 1, 1, 1);
+    layout->addWidget(forwardBtn, 1, 2, 1, 1);
+    layout->addItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 3, 1, 1);
+    layout->addWidget(combo, 1, 4, 1, 1);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
+    view->page()->action(QWebPage::Reload)->setShortcut(QKeySequence());
     refreshBtn->setAutoRaise(true);
-    refreshBtn->setDefaultAction(refreshAction);
+    refreshBtn->setDefaultAction(view->page()->action(QWebPage::Reload));
+    backBtn->setAutoRaise(true);
+    backBtn->setDefaultAction(view->page()->action(QWebPage::Back));
+    forwardBtn->setAutoRaise(true);
+    forwardBtn->setDefaultAction(view->page()->action(QWebPage::Forward));
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(changeView()));
-    connect(refreshAction, SIGNAL(triggered()), SLOT(refresh()));
+    connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)), SLOT(downloadRequested(const QNetworkRequest &)));
 }
 
 void InfoPage::askGoogle(const QString &query)
@@ -107,12 +127,6 @@ void InfoPage::fetchWiki(QString query)
     QUrl wikiArtist("http://en.wikipedia.org/wiki/" + query.replace(' ', '_') );
 //     QUrl wikiArtist("http://en.wikipedia.org/wiki/" + query.replace(' ', '_') );
     Network::self()->get( wikiArtist, this, "setArtistWiki" );
-}
-
-void InfoPage::refresh()
-{
-    lastWikiQuestion.clear();
-    fetchInfo();
 }
 
 void InfoPage::changeView()
@@ -165,5 +179,36 @@ void InfoPage::fetchInfo()
 
         askGoogle( question );
 //         fetchWiki( artist );
+    }
+}
+
+void InfoPage::downloadRequested(const QNetworkRequest &request)
+{
+
+    QString defaultFileName=QFileInfo(request.url().toString()).fileName();
+#ifdef ENABLE_KDE_SUPPORT
+    QString fileName=KFileDialog::getSaveFileName(KUrl(), QString(), this);
+#else
+    QString fileName=QFileDialog::getSaveFileName(this, tr("Save File"), defaultFileName);
+#endif
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QNetworkRequest newRequest = request;
+    newRequest.setAttribute(QNetworkRequest::User, fileName);
+
+    QNetworkAccessManager *networkManager = view->page()->networkAccessManager();
+    QNetworkReply *reply = networkManager->get(newRequest);
+    connect(reply, SIGNAL(finished()), this, SLOT(downloadingFinished()));
+}
+
+void InfoPage::downloadingFinished()
+{
+    QNetworkReply *reply = ((QNetworkReply*)sender());
+    QNetworkRequest request = reply->request();
+    QFile file(request.attribute(QNetworkRequest::User).toString());
+    if (file.open(QFile::ReadWrite)) {
+        file.write(reply->readAll());
     }
 }

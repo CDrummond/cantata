@@ -27,9 +27,9 @@
 #include <QWidget>
 #include "song.h"
 
-class QAction;
 class QComboBox;
 class WebView;
+class QNetworkRequest;
 
 class InfoPage : public QWidget
 {
@@ -46,12 +46,12 @@ private:
     void fetchWiki(QString query);
 
 private Q_SLOTS:
-    void refresh();
     void changeView();
     void googleAnswer(const QString &answer);
+    void downloadRequested(const QNetworkRequest &);
+    void downloadingFinished();
 
 private:
-    QAction *refreshAction;
     WebView *view;
     QComboBox *combo;
     QString lastWikiQuestion;

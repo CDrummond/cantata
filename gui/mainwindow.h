@@ -32,10 +32,10 @@
 #include <KStatusBar>
 #else
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 #endif
 
 // #include <QTimer>
-#include <QSystemTrayIcon>
 #include <QMenu>
 #include <QHeaderView>
 #include <QStringList>
@@ -53,6 +53,8 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 class KAction;
+class KStatusNotifierItem;
+class KMenu;
 #define Action KAction
 #else
 #define Action QAction
@@ -220,7 +222,11 @@ private Q_SLOTS:
     void addToPlaylist();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
+#ifdef ENABLE_KDE_SUPPORT
+    void trayItemScrollRequested(int delta, Qt::Orientation orientation);
+#else
     void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
+#endif
     void playQueueContextMenuClicked();
     void togglePlayQueueHeaderItem(const bool visible);
     void cropPlaylist();
@@ -291,8 +297,13 @@ private:
     Action *serverInfoTabAction;
     Action *updateDbAction;
     QList<QAction *> viewActions;
-    QSystemTrayIcon *trayIcon;
-    QMenu *trayIconMenu;
+#ifdef ENABLE_KDE_SUPPORT
+    KStatusNotifierItem *trayItem;
+    KMenu *trayItemMenu;
+#else
+    QSystemTrayIcon *trayItem;
+    QMenu *trayItemMenu;
+#endif
     QMenu *playQueueMenu;
     QPixmap noCover;
     QPixmap noStreamCover;

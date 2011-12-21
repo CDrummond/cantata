@@ -139,8 +139,6 @@ QVariant dirViewModel::data(const QModelIndex &index, int role) const
                     ? tr("%1\n%2 Entries").arg(item->data(index.column()).toString()).arg(item->childCount())
                     : tr("%1\n1 Entry").arg(item->data(index.column()).toString()));
                 #endif
-    case ItemView::Role_IconSize:
-        return 22;
     case ItemView::Role_SubText:
         switch (item->type()) {
         case DirViewItem::Type_Dir:
@@ -151,20 +149,6 @@ QVariant dirViewModel::data(const QModelIndex &index, int role) const
             #endif
             break;
         case DirViewItem::Type_File:
-        default: return QVariant();
-        }
-    case ItemView::Role_Pixmap:
-        switch (item->type()) {
-        case DirViewItem::Type_Dir: {
-            QVariant v;
-            v.setValue<QPixmap>(QIcon::fromTheme("inode-directory").pixmap(22, 22));
-            return v;
-        }
-        case DirViewItem::Type_File: {
-            QVariant v;
-            v.setValue<QPixmap>(QIcon::fromTheme("audio-x-generic").pixmap(22, 22));
-            return v;
-        }
         default: return QVariant();
         }
     default:

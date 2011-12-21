@@ -198,7 +198,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         AlbumItem *al=static_cast<AlbumItem *>(item);
 
         switch (role) {
-        case ItemView::Role_Pixmap:
+        case ItemView::Role_Image:
         case Qt::DecorationRole: {
             if (al->cover) {
                 return *(al->cover);
@@ -243,9 +243,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                     #endif
         case Qt::DisplayRole:
             return al->album;
-        case ItemView::Role_IconSize: {
-            int ic=iconSize();
-            return 0==ic ? 22 : ic;
+        case ItemView::Role_ImageSize: {
+            return iconSize();
         }
         case ItemView::Role_SubText:
             return al->artist;
@@ -276,13 +275,6 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             } else if (si->track>0) {
                 return QChar('0')+QString::number(si->track)+QChar(' ')+si->title;
             }
-        case ItemView::Role_Pixmap: {
-            QVariant v;
-            v.setValue<QPixmap>(QIcon::fromTheme("audio-x-generic").pixmap(22, 22));
-            return v;
-        }
-        case ItemView::Role_IconSize:
-            return 22;
         case ItemView::Role_SubText: {
             QString text=MPDParseUtils::formatDuration(si->time);
             if (text.startsWith(QLatin1String("00:"))) {

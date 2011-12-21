@@ -42,9 +42,9 @@ public:
 
     enum Role
     {
-        Role_IconSize = Qt::UserRole+256,
+        Role_ImageSize = Qt::UserRole+256,
         Role_SubText,
-        Role_Pixmap
+        Role_Image
     };
 
     ItemView(QWidget *p);

@@ -1,7 +1,3 @@
-* ItemView/models
-    - Return QIcon for icons, not QPixmap - RolePixmap -> RoleImage
-    - When using icon, return -1 as item size in model - Role_IconSize -> Role_ImageSize
-
 * Playlists
     - Lazy loading of playlist contents - current is not 100%, but is ok if we want genre filtering
     - Add genre filtering

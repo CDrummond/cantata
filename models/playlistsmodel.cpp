@@ -172,8 +172,6 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     #endif
         case Qt::DecorationRole:
             return QIcon::fromTheme("view-media-playlist");
-        case ItemView::Role_IconSize:
-            return 22;
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track", "%1 Tracks", pl->songs.count());
@@ -182,11 +180,6 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 ? tr("%1 Tracks").arg(pl->songs.count())
                 : tr("1 Track"));
             #endif
-        case ItemView::Role_Pixmap:{
-            QVariant v;
-            v.setValue<QPixmap>(QIcon::fromTheme("view-media-playlist").pixmap(22, 22));
-            return v;
-        }
         default: break;
         }
     } else {
@@ -211,8 +204,6 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         }
         case Qt::DecorationRole:
             return QIcon::fromTheme(s->title.isEmpty() ? "applications-internet" : "audio-x-generic");
-        case ItemView::Role_IconSize:
-            return 22;
         case ItemView::Role_SubText:
             if (!s->title.isEmpty()) {
                 QString duration=MPDParseUtils::formatDuration(s->time);
@@ -225,11 +216,6 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 return duration;
             }
             return QString();
-        case ItemView::Role_Pixmap:{
-            QVariant v;
-            v.setValue<QPixmap>(QIcon::fromTheme(s->title.isEmpty() ? "applications-internet" : "audio-x-generic").pixmap(22, 22));
-            return v;
-        }
         }
     }
 

@@ -61,13 +61,14 @@ static void drawBgnd(QPainter *painter, const QRect &rx)
     painter->setRenderHint(QPainter::Antialiasing, false);
 }
 
+static const int constBorder = 1;
+static const int constActionBorder = 2;
+static const int constActionIconSize=18;
+static const int constImageSize=22;
+
 class TreeDelegate : public QStyledItemDelegate
 {
 public:
-    static const int constBorder = 1;
-    static const int constActionBorder = 2;
-    static const int constActionIconSize=18;
-
     TreeDelegate(QObject *p, QAction *a1, QAction *a2)
         : QStyledItemDelegate(p)
         , act1(a1)
@@ -130,10 +131,6 @@ public:
 class ListDelegate : public QStyledItemDelegate
 {
 public:
-    static const int constBorder = 1;
-    static const int constActionBorder = 2;
-    static const int constActionIconSize=18;
-
     ListDelegate(QObject *p, QAction *a1, QAction *a2)
         : QStyledItemDelegate(p)
         , act1(a1)
@@ -148,7 +145,11 @@ public:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
         QSize sz(QStyledItemDelegate::sizeHint(option, index));
-        int imageSize = index.data(ItemView::Role_IconSize).toInt();
+        int imageSize = index.data(ItemView::Role_ImageSize).toInt();
+
+        if (imageSize<0) {
+            imageSize=constImageSize;
+        }
 
         if (imageSize>50) { // Icon Mode!
             int textHeight = QApplication::fontMetrics().height()*2;
@@ -173,8 +174,18 @@ public:
         QRect r(option.rect);
         QRect r2;
         QString childText = index.data(ItemView::Role_SubText).toString();
-        QPixmap pix = index.data(ItemView::Role_Pixmap).value<QPixmap>();
-        int imageSize = index.data(ItemView::Role_IconSize).toInt();
+        int imageSize = index.data(ItemView::Role_ImageSize).toInt();
+
+        if (imageSize<0) {
+            imageSize=constImageSize;
+        }
+
+        QVariant image = index.data(ItemView::Role_Image);
+        if (image.isNull()) {
+            image = index.data(Qt::DecorationRole);
+        }
+
+        QPixmap pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : image.value<QIcon>().pixmap(imageSize, imageSize);
         bool oneLine = childText.isEmpty();
         bool iconMode = imageSize>50;
 
@@ -494,22 +505,22 @@ QAction * ItemView::getAction(const QModelIndex &index)
     QRect rect(view()->visualRect(index));
     rect.moveTo(view()->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
     QRect actionRect=iconMode
-                        ? QRect(rect.x()+rect.width()-(ListDelegate::constActionIconSize+ListDelegate::constActionBorder),
-                                rect.y()+ListDelegate::constActionBorder,
-                                ListDelegate::constActionIconSize, ListDelegate::constActionIconSize)
-                        : QRect(rect.x()+rect.width()-(ListDelegate::constActionIconSize+ListDelegate::constActionBorder),
-                                rect.y()+((rect.height()-ListDelegate::constActionIconSize)/2),
-                                ListDelegate::constActionIconSize, ListDelegate::constActionIconSize);
+                        ? QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
+                                rect.y()+constActionBorder,
+                                constActionIconSize, constActionIconSize)
+                        : QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
+                                rect.y()+((rect.height()-constActionIconSize)/2),
+                                constActionIconSize, constActionIconSize);
 
     if (act1 && actionRect.contains(QCursor::pos())) {
         return act1;
     }
 
     if (iconMode) {
-        actionRect.adjust(0, ListDelegate::constActionIconSize+ListDelegate::constActionBorder,
-                          0, ListDelegate::constActionIconSize+ListDelegate::constActionBorder);
+        actionRect.adjust(0, constActionIconSize+constActionBorder,
+                          0, constActionIconSize+constActionBorder);
     } else {
-        actionRect.adjust(-(ListDelegate::constActionIconSize+ListDelegate::constActionBorder), 0, 0, 0);
+        actionRect.adjust(-(constActionIconSize+constActionBorder), 0, 0, 0);
     }
     if (act2 && actionRect.contains(QCursor::pos())) {
         return act2;

@@ -81,11 +81,9 @@ StreamsPage::StreamsPage(MainWindow *p)
 //     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), removeStream, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), editStream, SLOT(setEnabled(bool)));
-    connect(search, SIGNAL(returnPressed()), this, SLOT(searchItems()));
-    connect(search, SIGNAL(textChanged(const QString)), this, SLOT(searchItems()));
+    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
+    connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
     connect(removeAction, SIGNAL(triggered(bool)), this, SLOT(remove()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
@@ -93,7 +91,6 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(markAsFavAction, SIGNAL(triggered(bool)), this, SLOT(markAsFav()));
     connect(unMarkAsFavAction, SIGNAL(triggered(bool)), this, SLOT(unMarkAsFav()));
-    connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     importStreams->setAutoRaise(true);
     exportStreams->setAutoRaise(true);
     addStream->setAutoRaise(true);
@@ -107,11 +104,10 @@ StreamsPage::StreamsPage(MainWindow *p)
     replacePlaylist->setEnabled(false);
 
 #ifdef ENABLE_KDE_SUPPORT
-    search->setPlaceholderText(i18n("Search Streams..."));
+    view->setTopText(i18n("Streams"));
 #else
-    search->setPlaceholderText(tr("Search Streams..."));
+    view->setTopText(tr("Streams"));
 #endif
-    view->setPageDefaults();
 //     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(removeAction);
@@ -122,7 +118,9 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->addAction(unMarkAsFavAction);
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
-    view->installEventFilter(new DeleteKeyEventHandler(view, removeAction));
+    view->setDeleteAction(removeAction);
+    view->init(p->replacePlaylistAction, 0);
+    view->setMode(ItemView::Mode_Tree);
 }
 
 StreamsPage::~StreamsPage()
@@ -142,15 +140,18 @@ void StreamsPage::save()
 
 void StreamsPage::addSelectionToPlaylist()
 {
-    QStringList streams;
+    addItemsToPlayQueue(view->selectedIndexes());
+}
 
-    const QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
+void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
+{
+    if (0==indexes.size()) {
         return;
     }
 
-    foreach (const QModelIndex &idx, selected) {
+    QStringList streams;
+
+    foreach (const QModelIndex &idx, indexes) {
         QString stream=model.data(proxy.mapToSource(idx), Qt::ToolTipRole).toString();
 
         if (!streams.contains(stream)) {
@@ -162,6 +163,13 @@ void StreamsPage::addSelectionToPlaylist()
         emit add(streams);
         view->clearSelection();
     }
+}
+
+void StreamsPage::itemDoubleClicked(const QModelIndex &index)
+{
+    QModelIndexList indexes;
+    indexes.append(index);
+    addItemsToPlayQueue(indexes);
 }
 
 void StreamsPage::importXml()
@@ -316,6 +324,9 @@ void StreamsPage::controlActions()
     bool doneMark=false, doneUnMark=false;
     markAsFavAction->setEnabled(false);
     unMarkAsFavAction->setEnabled(false);
+    replacePlaylist->setEnabled(selected.count());
+    removeStream->setEnabled(selected.count());
+    editStream->setEnabled(1==selected.size());
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index=proxy.mapToSource(idx);
         StreamsModel::Stream *stream=static_cast<StreamsModel::Stream *>(index.internalPointer());
@@ -334,7 +345,7 @@ void StreamsPage::controlActions()
 
 void StreamsPage::searchItems()
 {
-    proxy.setFilterRegExp(search->text());
+    proxy.setFilterRegExp(view->searchText());
 }
 
 void StreamsPage::mark(bool f)

@@ -55,6 +55,10 @@ private Q_SLOTS:
     void markAsFav() { mark(true); }
     void unMarkAsFav() { mark(false); }
     void mark(bool f);
+    void itemDoubleClicked(const QModelIndex &index);
+
+private:
+    void addItemsToPlayQueue(const QModelIndexList &indexes);
 
 private:
     Action *importAction;

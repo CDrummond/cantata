@@ -1,4 +1,0 @@
-IF( ENABLE_KDE_SUPPORT )
-    kde4_install_icons( ${ICON_INSTALL_DIR} )
-ENDIF( ENABLE_KDE_SUPPORT )
-

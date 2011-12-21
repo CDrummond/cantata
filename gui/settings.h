@@ -62,6 +62,7 @@ public:
     int albumsView();
     int folderView();
     int playlistsView();
+    int streamsView();
     int libraryCoverSize();
     int albumsCoverSize();
     int sidebar();
@@ -86,6 +87,7 @@ public:
     void saveAlbumsView(int v);
     void saveFolderView(int v);
     void savePlaylistsView(int v);
+    void saveStreamsView(int v);
     void saveLibraryCoverSize(int v);
     void saveAlbumsCoverSize(int v);
     void saveSidebar(int v);

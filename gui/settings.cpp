@@ -193,6 +193,11 @@ int Settings::playlistsView()
     return GET_INT("playlistsView", (int)ItemView::Mode_List);
 }
 
+int Settings::streamsView()
+{
+    return GET_INT("streamsView", (int)ItemView::Mode_List);
+}
+
 int Settings::libraryCoverSize()
 {
     return GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
@@ -339,6 +344,11 @@ void Settings::saveFolderView(int v)
 void Settings::savePlaylistsView(int v)
 {
     SET_VALUE("playlistsView", v);
+}
+
+void Settings::saveStreamsView(int v)
+{
+    SET_VALUE("streamsView", v);
 }
 
 void Settings::saveLibraryCoverSize(int v)

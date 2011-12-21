@@ -26,6 +26,7 @@
 #include "mpdconnection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
+#include <QtGui/QInputDialog>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
@@ -54,25 +55,18 @@ StreamsPage::StreamsPage(MainWindow *p)
     removeAction->setText(i18n("Remove"));
     editAction = p->actionCollection()->addAction("editstream");
     editAction->setText(i18n("Edit"));
-    markAsFavAction = p->actionCollection()->addAction("markasfav");
-    markAsFavAction->setText(i18n("Set As Favorite"));
-    unMarkAsFavAction = p->actionCollection()->addAction("unmarkasfav");
-    unMarkAsFavAction->setText(i18n("Unset As Favorite"));
     #else
     importAction = new QAction(tr("Import Streams"), this);
     exportAction = new QAction(tr("Export Streams"), this);
     addAction = new QAction(tr("Add"), this);
     removeAction = new QAction(tr("Remove"), this);
     editAction = new QAction(tr("Edit"), this);
-    markAsFavAction = new QAction(tr("Set As Favorite"), this);
-    unMarkAsFavAction = new QAction(tr("Unset As Favorite"), this);
     #endif
     importAction->setIcon(QIcon::fromTheme("document-import"));
     exportAction->setIcon(QIcon::fromTheme("document-export"));
     addAction->setIcon(QIcon::fromTheme("list-add"));
     removeAction->setIcon(QIcon::fromTheme("list-remove"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
-    markAsFavAction->setIcon(QIcon::fromTheme("emblem-favorite"));
     importStreams->setDefaultAction(importAction);
     exportStreams->setDefaultAction(exportAction);
     addStream->setDefaultAction(addAction);
@@ -89,8 +83,6 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
-    connect(markAsFavAction, SIGNAL(triggered(bool)), this, SLOT(markAsFav()));
-    connect(unMarkAsFavAction, SIGNAL(triggered(bool)), this, SLOT(unMarkAsFav()));
     importStreams->setAutoRaise(true);
     exportStreams->setAutoRaise(true);
     addStream->setAutoRaise(true);
@@ -114,13 +106,10 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->addAction(editAction);
     view->addAction(removeAction);
     view->addAction(exportAction);
-    view->addAction(markAsFavAction);
-    view->addAction(unMarkAsFavAction);
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     view->setDeleteAction(removeAction);
     view->init(p->replacePlaylistAction, 0);
-    view->setMode(ItemView::Mode_Tree);
 }
 
 StreamsPage::~StreamsPage()
@@ -216,13 +205,14 @@ void StreamsPage::exportXml()
 
 void StreamsPage::add()
 {
-    StreamDialog dlg(this);
+    StreamDialog dlg(getCategories(), this);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString name=dlg.name();
         QString url=dlg.url();
+        QString cat=dlg.category();
 
-        QString existing=model.name(url);
+        QString existing=model.name(cat, url);
         if (!existing.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>", existing));
@@ -232,7 +222,7 @@ void StreamsPage::add()
             return;
         }
 
-        if (!model.add(name, url, dlg.favorite())) {
+        if (!model.add(cat, name, url)) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", name));
             #else
@@ -269,8 +259,23 @@ void StreamsPage::remove()
     }
     #endif
 
-    foreach (const QModelIndex &idx, selected) {
-        model.remove(proxy.mapToSource(idx));
+    // Ensure that if we have a category selected, we dont also try to remove one of its children
+    QSet<StreamsModel::Item *> selectedCategories;
+    QModelIndexList remove;
+    foreach(QModelIndex index, selected) {
+        QModelIndex idx=proxy.mapToSource(index);
+        StreamsModel::Item *item=static_cast<StreamsModel::Item *>(idx.internalPointer());
+
+        if (item->isCategory()) {
+            selectedCategories.insert(item);
+            remove.append(idx);
+        } else if (!selectedCategories.contains(static_cast<StreamsModel::StreamItem*>(item)->parent)) {
+            remove.append(idx);
+        }
+    }
+
+    foreach (const QModelIndex &idx, remove) {
+        model.remove(idx);
     }
     exportAction->setEnabled(model.rowCount()>0);
 }
@@ -284,35 +289,63 @@ void StreamsPage::edit()
         return;
     }
 
-    StreamDialog dlg(this);
     QModelIndex index=proxy.mapToSource(selected.first());
-    StreamsModel::Stream *stream=static_cast<StreamsModel::Stream *>(index.internalPointer());
+    StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
+
+    if (item->isCategory()) {
+        for(;;) {
+            #ifdef ENABLE_KDE_SUPPORT
+            QString name = QInputDialog::getText(this, i18n("Category Name"), i18n("Enter a name for the category:"));
+            #else
+            QString name = QInputDialog::getText(this, tr("Category Name"), tr("Enter a name for the category:"));
+            #endif
+
+            if (name.isEmpty()) {
+                break;
+            }
+
+            if (getCategories().contains(name)) {
+                #ifdef ENABLE_KDE_SUPPORT
+                KMessageBox::error(this, i18n("A category named <b>%1</b> already exists!").arg(name));
+                #else
+                QMessageBox::critical(this, tr("Error"), tr("A category named <b>%1</b> already exists!").arg(name));
+                #endif
+            } else {
+                model.editCategory(index, name);
+                break;
+            }
+        }
+        return;
+    }
+
+    StreamDialog dlg(getCategories(), this);
+    StreamsModel::StreamItem *stream=static_cast<StreamsModel::StreamItem *>(item);
     QString name=stream->name;
     QString url=stream->url.toString();
-    bool fav=stream->favorite;
+    QString cat=stream->parent->name;
 
-    dlg.setEdit(name, url, fav);
+    dlg.setEdit(cat, name, url);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString newName=dlg.name();
         QString newUrl=dlg.url();
-
-        QString existingNameForUrl=newUrl!=url ? model.name(newUrl) : QString();
+        QString newCat=dlg.category();
+        QString existingNameForUrl=newUrl!=url ? model.name(newCat, newUrl) : QString();
 //
         if (!existingNameForUrl.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>", existingNameForUrl));
+            KMessageBox::error(this, i18n("Stream already exists!<br/><b>%1 (%2)</b>", existingNameForUrl, newCat));
             #else
-            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><b>%1</b>").arg(existingNameForUrl));
+            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><b>%1 (%2)</b>").arg(existingNameForUrl).arg(newCat));
             #endif
-        } else if (newName!=name && model.entryExists(newName)) {
+        } else if (newName!=name && model.entryExists(newCat, newName)) {
             #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", newName));
+            KMessageBox::error(this, i18n("A stream named <b>%1 (%2)</b> already exists!", newName, newCat));
             #else
-            QMessageBox::critical(this, tr("Error"), tr("A stream named <b>%1</b> already exists!").arg(newName));
+            QMessageBox::critical(this, tr("Error"), tr("A stream named <b>%1 (%2)</b> already exists!").arg(newName).arg(newCat));
             #endif
         } else {
-            model.edit(index, newName, newUrl, dlg.favorite());
+            model.editStream(index, cat, newCat, newName, newUrl);
         }
     }
 }
@@ -321,26 +354,9 @@ void StreamsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
     editAction->setEnabled(1==selected.size());
-    bool doneMark=false, doneUnMark=false;
-    markAsFavAction->setEnabled(false);
-    unMarkAsFavAction->setEnabled(false);
     replacePlaylist->setEnabled(selected.count());
     removeStream->setEnabled(selected.count());
     editStream->setEnabled(1==selected.size());
-    foreach (const QModelIndex &idx, selected) {
-        QModelIndex index=proxy.mapToSource(idx);
-        StreamsModel::Stream *stream=static_cast<StreamsModel::Stream *>(index.internalPointer());
-        if (stream->favorite) {
-            unMarkAsFavAction->setEnabled(true);
-            doneUnMark=true;
-        } else {
-            markAsFavAction->setEnabled(true);
-            doneMark=true;
-        }
-        if (doneUnMark && doneMark) {
-            break;
-        }
-    }
 }
 
 void StreamsPage::searchItems()
@@ -348,13 +364,24 @@ void StreamsPage::searchItems()
     proxy.setFilterRegExp(view->searchText());
 }
 
-void StreamsPage::mark(bool f)
+QStringList StreamsPage::getCategories()
 {
-    QModelIndexList selected=view->selectedIndexes();
-    QList<int> rows;
-    foreach (const QModelIndex &idx, selected) {
-        QModelIndex index=proxy.mapToSource(idx);
-        rows << index.row();
+    QStringList categories;
+    for(int i=0; i<model.rowCount(); ++i) {
+        QModelIndex idx=model.index(i, 0, QModelIndex());
+        if (idx.isValid()) {
+            categories.append(static_cast<StreamsModel::Item *>(idx.internalPointer())->name);
+        }
     }
-    model.mark(rows, f);
+
+    if (categories.isEmpty()) {
+        #ifdef ENABLE_KDE_SUPPORT
+        categories.append(i18n("General"));
+        #else
+        categories.append(i18n("General"));
+        #endif
+    }
+
+    qSort(categories);
+    return categories;
 }

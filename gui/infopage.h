@@ -27,11 +27,6 @@
 #include <QWidget>
 #include "song.h"
 
-#ifdef ENABLE_KDE_SUPPORT
-#define WebView KWebView
-#else
-#define WebView QWebView
-#endif
 class QAction;
 class QComboBox;
 class WebView;

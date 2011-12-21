@@ -39,6 +39,20 @@
 #include "network.h"
 #include <QDebug>
 
+#ifdef ENABLE_KDE_SUPPORT
+#define WEBVIEW_BASE KWebView
+#else
+#define WEBVIEW_BASE QWebView
+#endif
+
+class WebView : public WEBVIEW_BASE
+
+{
+public:
+    WebView(QWidget *p) : WEBVIEW_BASE(p) { }
+    QSize sizeHint() const { return QSize(128, 128); }
+};
+
 InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
 {

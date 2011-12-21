@@ -33,6 +33,7 @@
 #define WebView QWebView
 #endif
 class QAction;
+class QComboBox;
 class WebView;
 
 class InfoPage : public QWidget

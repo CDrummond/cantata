@@ -194,13 +194,11 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         }
         default: return QVariant();
         }
-    case ItemView::Role_IconSize:
-        if (MusicLibraryItem::Type_Album==item->type() ) {
-            int ic=MusicLibraryItemAlbum::iconSize();
-            return 0==ic ? 22 : ic;
-        } else {
-            return 22;
+    case ItemView::Role_ImageSize:
+        if (MusicLibraryItem::Type_Album==item->type()) {
+            return MusicLibraryItemAlbum::iconSize();
         }
+        break;
     case ItemView::Role_SubText:
         switch (item->type()) {
         case MusicLibraryItem::Type_Artist:
@@ -228,28 +226,16 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             #endif
         default: return QVariant();
         }
-    case ItemView::Role_Pixmap:
-        switch (item->type()) {
-        case MusicLibraryItem::Type_Artist: {
-            QVariant v;
-            v.setValue<QPixmap>(QIcon::fromTheme("view-media-artist").pixmap(22, 22));
-            return v;
-        }
-        case MusicLibraryItem::Type_Song: {
-            QVariant v;
-            v.setValue<QPixmap>(QIcon::fromTheme("audio-x-generic").pixmap(22, 22));
-            return v;
-        }
-        case MusicLibraryItem::Type_Album: {
+    case ItemView::Role_Image:
+        if (MusicLibraryItem::Type_Album==item->type()) {
             QVariant v;
             v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
             return v;
         }
-        default: return QVariant();
-        }
     default:
         return QVariant();
     }
+    return QVariant();
 }
 
 void MusicLibraryModel::clear()

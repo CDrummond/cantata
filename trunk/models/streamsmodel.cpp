@@ -151,8 +151,6 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                         : tr("%1\n1 Stream").arg(cat->name));
                     #endif
         case Qt::DecorationRole: return QIcon::fromTheme("inode-directory");
-        case ItemView::Role_IconSize:
-            return 22;
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Stream", "%1 Streams", cat->streams.count());
@@ -161,11 +159,6 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                 ? tr("%1 Streams").arg(cat->streams.count())
                 : tr("1 Stream"));
             #endif
-        case ItemView::Role_Pixmap:{
-            QVariant v;
-            v.setValue<QPixmap>(QIcon::fromTheme("inode-directory").pixmap(22, 22));
-            return v;
-        }
         default: break;
         }
     } else {
@@ -175,12 +168,6 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         case ItemView::Role_SubText:
         case Qt::ToolTipRole:         return stream->url;
         case Qt::DecorationRole:      return QIcon::fromTheme("applications-internet");
-        case ItemView::Role_IconSize: return 22;
-        case ItemView::Role_Pixmap:{
-            QVariant v;
-            v.setValue<QPixmap>(QIcon::fromTheme("applications-internet").pixmap(22, 22));
-            return v;
-        }
         default: break;
         }
     }

@@ -32,7 +32,7 @@
 #include <KDE/KActionCollection>
 #include <KDE/KAction>
 #else
-#include <QtWebkit/QWebView>
+#include <QtWebKit/QWebView>
 #include <QtGui/QAction>
 #endif
 #include "infopage.h"

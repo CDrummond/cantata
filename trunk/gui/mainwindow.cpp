@@ -1512,7 +1512,7 @@ void MainWindow::setupTrayIcon()
 
     trayItem = new QSystemTrayIcon(this);
     trayItem->installEventFilter(volumeSliderEventHandler);
-    QMenu *trayItemMenu = new QMenu(trayItem);
+    trayItemMenu = new QMenu(this);
     trayItemMenu->addAction(prevTrackAction);
     trayItemMenu->addAction(nextTrackAction);
     trayItemMenu->addAction(stopTrackAction);

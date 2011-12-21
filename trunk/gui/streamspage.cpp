@@ -378,7 +378,7 @@ QStringList StreamsPage::getCategories()
         #ifdef ENABLE_KDE_SUPPORT
         categories.append(i18n("General"));
         #else
-        categories.append(i18n("General"));
+        categories.append(tr("General"));
         #endif
     }
 

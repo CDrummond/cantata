@@ -32,8 +32,11 @@
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 #include <QtGui/QIcon>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KLocale>
+#endif
+#include "itemview.h"
 #include "streamsmodel.h"
-#include "settings.h"
 #include "playqueuemodel.h"
 #include "config.h"
 
@@ -51,7 +54,7 @@ static QString getInternalFile()
 }
 
 StreamsModel::StreamsModel()
-    : QAbstractListModel(0)
+    : QAbstractItemModel(0)
     , modified(false)
     , timer(0)
 {
@@ -66,19 +69,62 @@ QVariant StreamsModel::headerData(int /*section*/, Qt::Orientation /*orientation
     return QVariant();
 }
 
-int StreamsModel::rowCount(const QModelIndex &) const
+int StreamsModel::rowCount(const QModelIndex &index) const
 {
-    return items.size();
+    if (!index.isValid()) {
+        return items.size();
+    }
+
+    Item *item=static_cast<Item *>(index.internalPointer());
+    if (item->isCategory()) {
+        return static_cast<CategoryItem *>(index.internalPointer())->streams.count();
+    }
+    return 0;
+}
+
+bool StreamsModel::hasChildren(const QModelIndex &parent) const
+{
+    return !parent.isValid() || static_cast<Item *>(parent.internalPointer())->isCategory();
+}
+
+QModelIndex StreamsModel::parent(const QModelIndex &index) const
+{
+    if (!index.isValid()) {
+        return QModelIndex();
+    }
+
+    Item *item=static_cast<Item *>(index.internalPointer());
+
+    if(item->isCategory())
+        return QModelIndex();
+    else
+    {
+        StreamItem *stream=static_cast<StreamItem *>(item);
+
+        if (stream->parent) {
+            return createIndex(items.indexOf(stream->parent), 0, stream->parent);
+        }
+    }
+
+    return QModelIndex();
 }
 
 QModelIndex StreamsModel::index(int row, int column, const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
+    if (!hasIndex(row, column, parent)) {
+        return QModelIndex();
+    }
 
-    if(row<items.count())
-        return createIndex(row, column, (void *)&items.at(row));
+    if (parent.isValid()) {
+        Item *p=static_cast<Item *>(parent.internalPointer());
 
-    return QModelIndex();
+        if (p->isCategory()) {
+            CategoryItem *cat=static_cast<CategoryItem *>(p);
+            return row<cat->streams.count() ? createIndex(row, column, cat->streams.at(row)) : QModelIndex();
+        }
+    }
+
+    return row<items.count() ? createIndex(row, column, items.at(row)) : QModelIndex();
 }
 
 QVariant StreamsModel::data(const QModelIndex &index, int role) const
@@ -87,31 +133,65 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    if (index.row() >= items.size()) {
-        return QVariant();
-    }
+    Item *item=static_cast<Item *>(index.internalPointer());
 
-    switch(role) {
-    case Qt::DisplayRole: return items.at(index.row()).name;
-    case Qt::ToolTipRole: return items.at(index.row()).url;
-    case Qt::UserRole:    return items.at(index.row()).favorite;
-    case Qt::DecorationRole:
-        if (items.at(index.row()).favorite) {
-            return QIcon::fromTheme("emblem-favorite");
+    if (item->isCategory()) {
+        CategoryItem *cat=static_cast<CategoryItem *>(item);
+        switch(role) {
+        case Qt::DisplayRole:    return cat->name;
+        case Qt::ToolTipRole:
+            return 0==cat->streams.count()
+                ? cat->name
+                :
+                    #ifdef ENABLE_KDE_SUPPORT
+                    i18np("%1\n1 Stream", "%1\n%2 Streams", cat->name, cat->streams.count());
+                    #else
+                    (cat->streams.count()>1
+                        ? tr("%1\n%2 Streams").arg(cat->name).arg(cat->streams.count())
+                        : tr("%1\n1 Stream").arg(cat->name));
+                    #endif
+        case Qt::DecorationRole: return QIcon::fromTheme("inode-directory");
+        case ItemView::Role_IconSize:
+            return 22;
+        case ItemView::Role_SubText:
+            #ifdef ENABLE_KDE_SUPPORT
+            return i18np("1 Stream", "%1 Streams", cat->streams.count());
+            #else
+            return (cat->streams.count()>1
+                ? tr("%1 Streams").arg(cat->streams.count())
+                : tr("1 Stream"));
+            #endif
+        case ItemView::Role_Pixmap:{
+            QVariant v;
+            v.setValue<QPixmap>(QIcon::fromTheme("inode-directory").pixmap(22, 22));
+            return v;
         }
-    default: break;
+        default: break;
+        }
+    } else {
+        StreamItem *stream=static_cast<StreamItem *>(item);
+        switch(role) {
+        case Qt::DisplayRole:         return stream->name;
+        case ItemView::Role_SubText:
+        case Qt::ToolTipRole:         return stream->url;
+        case Qt::DecorationRole:      return QIcon::fromTheme("applications-internet");
+        case ItemView::Role_IconSize: return 22;
+        case ItemView::Role_Pixmap:{
+            QVariant v;
+            v.setValue<QPixmap>(QIcon::fromTheme("applications-internet").pixmap(22, 22));
+            return v;
+        }
+        default: break;
+        }
     }
 
     return QVariant();
 }
 
-static const QLatin1String constNameQuery("CantataStreamName");
-
 void StreamsModel::reload()
 {
     beginResetModel();
-    items.clear();
-    itemMap.clear();
+    clearCategories();
     load(getInternalFile(), true);
     endResetModel();
 }
@@ -145,36 +225,44 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
     QDomElement root = doc.documentElement();
 
     if ("cantata" == root.tagName() && root.hasAttribute("version") && "1.0" == root.attribute("version")) {
-        QDomElement stream = root.firstChildElement("stream");
-        while (!stream.isNull()) {
-            if (stream.hasAttribute("name") && stream.hasAttribute("url")) {
-                QString name=stream.attribute("name");
-                QString origName=name;
-                QUrl url=QUrl(stream.attribute("url"));
-                bool fav=stream.hasAttribute("favorite") ? stream.attribute("favorite")=="true" : false;
+        QDomElement category = root.firstChildElement("category");
+        while (!category.isNull()) {
+            if (category.hasAttribute("name")) {
+                QString catName=category.attribute("name");
+                CategoryItem *cat=getCategory(catName, true, !isInternal);
+                QDomElement stream = category.firstChildElement("stream");
+                while (!stream.isNull()) {
+                    if (stream.hasAttribute("name") && stream.hasAttribute("url")) {
+                        QString name=stream.attribute("name");
+                        QString origName=name;
+                        QUrl url=QUrl(stream.attribute("url"));
 
-                if (!entryExists(QString(), url)) {
-                    int i=1;
-                    for (; i<100 && entryExists(name); ++i) {
-                        name=origName+QLatin1String("_")+QString::number(i);
-                    }
+                        if (!entryExists(cat, QString(), url)) {
+                            int i=1;
+                            for (; i<100 && entryExists(cat, name); ++i) {
+                                name=origName+QLatin1String("_")+QString::number(i);
+                            }
 
-                    if (i<100) {
-                        if (!haveInserted) {
-                            haveInserted=true;
-                        }
-                        if (!isInternal) {
-                            beginInsertRows(QModelIndex(), items.count(), items.count());
-                        }
-                        items.append(Stream(name, url, fav));
-                        itemMap.insert(url.toString(), name);
-                        if (!isInternal) {
-                            endInsertRows();
+                            if (i<100) {
+                                if (!haveInserted) {
+                                    haveInserted=true;
+                                }
+                                if (!isInternal) {
+                                    beginInsertRows(createIndex(items.indexOf(cat), 0, cat), cat->streams.count(), cat->streams.count());
+                                }
+                                StreamItem *stream=new StreamItem(name, url, cat);
+                                cat->itemMap.insert(url.toString(), stream);
+                                cat->streams.append(stream);
+                                if (!isInternal) {
+                                    endInsertRows();
+                                }
+                            }
                         }
                     }
+                    stream=stream.nextSiblingElement("stream");
                 }
             }
-            stream=stream.nextSiblingElement("stream");
+            category=category.nextSiblingElement("category");
         }
     }
 
@@ -197,81 +285,177 @@ bool StreamsModel::save(const QString &filename)
     QDomElement root = doc.createElement("cantata");
     root.setAttribute("version", "1.0");
     doc.appendChild(root);
-    foreach (const Stream &s, items) {
-        QDomElement stream = doc.createElement("stream");
-        stream.setAttribute("name", s.name);
-        stream.setAttribute("url", s.url.toString());
-        if (s.favorite) {
-            stream.setAttribute("favorite", "true");
+    foreach (const CategoryItem *c, items) {
+        QDomElement cat = doc.createElement("category");
+        cat.setAttribute("name", c->name);
+        root.appendChild(cat);
+        foreach (const StreamItem *s, c->streams) {
+            QDomElement stream = doc.createElement("stream");
+            stream.setAttribute("name", s->name);
+            stream.setAttribute("url", s->url.toString());
+            cat.appendChild(stream);
         }
-        root.appendChild(stream);
     }
 
     QTextStream(&file) << doc.toString();
     return true;
 }
 
-bool StreamsModel::add(const QString &name, const QString &url, bool fav)
+bool StreamsModel::add(const QString &cat, const QString &name, const QString &url)
 {
     QUrl u(url);
+    CategoryItem *c=getCategory(cat, true, true);
 
-    if (entryExists(name, url)) {
+    if (entryExists(c, name, url)) {
         return false;
     }
 
-    beginInsertRows(QModelIndex(), items.count(), items.count());
-    items.append(Stream(name, u, fav));
-    itemMap.insert(url, name);
+    beginInsertRows(createIndex(items.indexOf(c), 0, c), c->streams.count(), c->streams.count());
+    StreamItem *stream=new StreamItem(name, QUrl(url), c);
+    c->itemMap.insert(url, stream);
+    c->streams.append(stream);
     endInsertRows();
+
     modified=true;
-    save();
-    Settings::self()->save();
     return true;
 }
 
-void StreamsModel::edit(const QModelIndex &index, const QString &name, const QString &url, bool fav)
+void StreamsModel::editCategory(const QModelIndex &index, const QString &name)
 {
-    QUrl u(url);
-    int row=index.row();
+    if (!index.isValid()) {
+        return;
+    }
 
-    if (row<items.count()) {
-        Stream old=items.at(row);
-        items[index.row()]=Stream(name, u, fav);
-        itemMap.insert(url, name);
+    Item *item=static_cast<Item *>(index.internalPointer());
+
+    if (item->isCategory() && item->name!=name) {
+        item->name=name;
         emit dataChanged(index, index);
         modified=true;
         save();
-        Settings::self()->save();
+    }
+}
+
+void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &url)
+{
+    if (!index.isValid()) {
+        return;
+    }
+
+    CategoryItem *cat=getCategory(oldCat);
+
+    if (!cat) {
+        return;
+    }
+
+    if (!newCat.isEmpty() && oldCat!=newCat) {
+        if(add(newCat, name, url)) {
+            remove(index);
+        }
+        return;
+    }
+
+    QUrl u(url);
+    int row=index.row();
+
+    if (row<cat->streams.count()) {
+        StreamItem *stream=cat->streams.at(row);
+        QString oldUrl(stream->url.toString());
+        stream->name=name;
+        stream->url=url;
+        if (oldUrl!=url) {
+            cat->itemMap.remove(oldUrl);
+            cat->itemMap.insert(url, stream);
+        }
+        emit dataChanged(index, index);
+        modified=true;
+        save();
     }
 }
 
 void StreamsModel::remove(const QModelIndex &index)
 {
-    int row=index.row();
-
-    if (row<items.count()) {
-        Stream old=items.at(row);
-        beginRemoveRows(QModelIndex(), row, row);
-        items.removeAt(index.row());
-        itemMap.remove(old.url.toString());
-        endRemoveRows();
-        save();
-        Settings::self()->save();
+    if (!index.isValid()) {
+        return;
     }
+    int row=index.row();
+    Item *item=static_cast<Item *>(index.internalPointer());
+
+    if (item->isCategory()) {
+        if (row<items.count()) {
+            CategoryItem *old=items.at(row);
+            beginRemoveRows(QModelIndex(), row, row);
+            items.removeAt(index.row());
+            delete old;
+            endRemoveRows();
+            modified=true;
+        }
+    } else {
+        StreamItem *stream=static_cast<StreamItem *>(item);
+        if (row<stream->parent->streams.count()) {
+            CategoryItem *cat=stream->parent;
+            StreamItem *old=cat->streams.at(row);
+
+            /*if (1==cat->streams.count()) {
+                int catRow=items.indexOf(cat);
+                beginRemoveRows(QModelIndex(), catRow, catRow);
+                items.removeAt(catRow);
+                delete cat;
+                endRemoveRows();
+            } else*/ {
+                beginRemoveRows(createIndex(items.indexOf(cat), 0, cat), row, row);
+                cat->streams.removeAt(index.row());
+                cat->itemMap.remove(old->url.toString());
+                endRemoveRows();
+                delete old;
+            }
+            modified=true;
+        }
+    }
+
+    save();
 }
 
-QString StreamsModel::name(const QString &url)
+StreamsModel::CategoryItem * StreamsModel::getCategory(const QString &name, bool create, bool signal)
 {
-    QHash<QString, QString>::ConstIterator it=itemMap.find(url);
+    foreach (CategoryItem *c, items) {
+        if (c->name==name) {
+            return c;
+        }
+    }
 
-    return it==itemMap.end() ? QString() : it.value();
+    if (create) {
+        CategoryItem *cat=new CategoryItem(name);
+        if (signal) {
+            beginInsertRows(QModelIndex(), items.count(), items.count());
+        }
+        items.append(cat);
+        if (signal) {
+            endInsertRows();
+        }
+        return cat;
+    }
+    return 0;
 }
 
-bool StreamsModel::entryExists(const QString &name, const QUrl &url)
+QString StreamsModel::name(CategoryItem *cat, const QString &url)
 {
-    foreach (const Stream &s, items) {
-        if ( (!name.isEmpty() && s.name==name) || (!url.isEmpty() && s.url==url)) {
-            return true;
+    if(cat) {
+        QHash<QString, StreamItem *>::ConstIterator it=cat->itemMap.find(url);
+
+        return it==cat->itemMap.end() ? QString() : it.value()->name;
+    }
+
+    return QString();
+}
+
+bool StreamsModel::entryExists(CategoryItem *cat, const QString &name, const QUrl &url)
+{
+    if(cat) {
+        foreach (const StreamItem *s, cat->streams) {
+            if ( (!name.isEmpty() && s->name==name) || (!url.isEmpty() && s->url==url)) {
+                return true;
+            }
         }
     }
 
@@ -290,10 +474,17 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
     QStringList filenames;
-
+    QSet<Item *> selectedCategories;
     foreach(QModelIndex index, indexes) {
-        if (index.row()<items.count()) {
-            filenames << items.at(index.row()).url.toString();
+        Item *item=static_cast<Item *>(index.internalPointer());
+
+        if (item->isCategory()) {
+            selectedCategories.insert(item);
+            foreach (const StreamItem *s, static_cast<CategoryItem*>(item)->streams) {
+                filenames << s->url.toString();
+            }
+        } else if (!selectedCategories.contains(static_cast<StreamItem*>(item)->parent)) {
+            filenames << static_cast<StreamItem*>(item)->url.toString();
         }
     }
 
@@ -309,16 +500,15 @@ void StreamsModel::persist()
     }
 }
 
-void StreamsModel::mark(const QList<int> &rows, bool f)
+void StreamsModel::clearCategories()
 {
-    emit layoutAboutToBeChanged();
-    foreach (int r, rows) {
-        if (items[r].favorite!=f) {
-            items[r].favorite=f;
-            QModelIndex idx=index(0, 0, QModelIndex());
-            emit dataChanged(idx, idx);
-        }
-    }
-    emit layoutChanged();
+    qDeleteAll(items);
+    items.clear();
     modified=true;
+}
+
+void StreamsModel::CategoryItem::clearStreams()
+{
+    qDeleteAll(streams);
+    streams.clear();
 }

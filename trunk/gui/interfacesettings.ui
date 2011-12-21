@@ -214,6 +214,30 @@
      </item>
     </widget>
    </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="label_x">
+     <property name="text">
+      <string>Streams view:</string>
+     </property>
+     <property name="buddy">
+      <cstring>streamsView</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QComboBox" name="streamsView">
+     <item>
+      <property name="text">
+       <string>Tree</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>List</string>
+      </property>
+     </item>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops/>

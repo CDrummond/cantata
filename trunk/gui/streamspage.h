@@ -40,6 +40,7 @@ public:
     void refresh();
     void save();
     void addSelectionToPlaylist();
+    void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 
 Q_SIGNALS:
     void add(const QStringList &streams);
@@ -52,13 +53,11 @@ private Q_SLOTS:
     void edit();
     void controlActions();
     void searchItems();
-    void markAsFav() { mark(true); }
-    void unMarkAsFav() { mark(false); }
-    void mark(bool f);
     void itemDoubleClicked(const QModelIndex &index);
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes);
+    QStringList getCategories();
 
 private:
     Action *importAction;
@@ -66,8 +65,6 @@ private:
     Action *addAction;
     Action *removeAction;
     Action *editAction;
-    Action *markAsFavAction;
-    Action *unMarkAsFavAction;
     StreamsModel model;
     StreamsProxyModel proxy;
 };

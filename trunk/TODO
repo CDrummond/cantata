@@ -1,8 +1,13 @@
+* ItemView/models
+    - Return QIcon for icons, not QPixmap - RolePixmap -> RoleImage
+    - When using icon, return -1 as item size in model - Role_IconSize -> Role_ImageSize
+
 * Playlists
     - Lazy loading of playlist contents - current is not 100%, but is ok if we want genre filtering
     - Add genre filtering
 
 * Streams
+    - allow drag'n'drop within categories
     - add genre support?
     - will need to place some items in a menu.
     - Perhaps import/export/edit could go into a 'Tools' menu

@@ -31,7 +31,7 @@
 class QDialogButtonBox;
 #endif
 #include "lineedit.h"
-#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
 
 #ifdef ENABLE_KDE_SUPPORT
 class StreamDialog : public KDialog
@@ -42,13 +42,13 @@ class StreamDialog : public QDialog
     Q_OBJECT
 
 public:
-    StreamDialog(QWidget *parent);
+    StreamDialog(const QStringList &categories, QWidget *parent);
 
-    void setEdit(const QString &editName, const QString &editUrl, bool f);
+    void setEdit(const QString &cat, const QString &editName, const QString &editUrl);
 
     QString name() const { return nameEntry->text().trimmed(); }
     QString url() const { return urlEntry->text().trimmed(); }
-    bool favorite() const { return fav->isChecked(); }
+    QString category() const { return catCombo->currentText().trimmed(); }
 
 private Q_SLOTS:
     void changed();
@@ -56,13 +56,13 @@ private Q_SLOTS:
 private:
     QString prevName;
     QString prevUrl;
-    bool prevFav;
+    QString prevCat;
 #ifndef ENABLE_KDE_SUPPORT
     QDialogButtonBox *buttonBox;
 #endif
     LineEdit *nameEntry;
     LineEdit *urlEntry;
-    QCheckBox *fav;
+    QComboBox *catCombo;
 };
 
 #endif

@@ -1458,15 +1458,16 @@ void MainWindow::cropPlaylist()
 }
 
 // Tray Icon //
-bool MainWindow::setupTrayIcon()
+void MainWindow::setupTrayIcon()
 {
     if (!Settings::self()->useSystemTray()) {
         if (trayItem) {
-            trayItemMenu->deleteLater();
-            trayItemMenu=0;
             trayItem->deleteLater();
             trayItem=0;
+            trayItemMenu->deleteLater();
+            trayItemMenu=0;
         }
+        return;
     }
 #ifdef ENABLE_KDE_SUPPORT
     trayItem = new KStatusNotifierItem(this);
@@ -1484,7 +1485,7 @@ bool MainWindow::setupTrayIcon()
 #else
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         trayItem = NULL;
-        return false;
+        return;
     }
 
     trayItem = new QSystemTrayIcon(this);
@@ -1502,8 +1503,6 @@ bool MainWindow::setupTrayIcon()
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));
 #endif
-
-    return true;
 }
 
 #ifdef ENABLE_KDE_SUPPORT

@@ -209,7 +209,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     updateDialog = 0;
     trayItem = 0;
     lyricsNeedUpdating=false;
+    #ifdef ENABLE_WEBKIT
     infoNeedsUpdating=false;
+    #endif
 
     QWidget *widget = new QWidget(this);
     setupUi(widget);
@@ -324,8 +326,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     streamsTabAction = actionCollection()->addAction("showstreamstab");
     streamsTabAction->setText(i18n("Streams"));
 
+    #ifdef ENABLE_WEBKIT
     infoTabAction = actionCollection()->addAction("showinfotab");
     infoTabAction->setText(i18n("Info"));
+    #endif
 
     serverInfoTabAction = actionCollection()->addAction("showserverinfotab");
     serverInfoTabAction->setText(i18n("Server Info"));
@@ -361,7 +365,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction = new QAction(tr("Playlists"), this);
     lyricsTabAction = new QAction(tr("Lyrics"), this);
     streamsTabAction = new QAction(tr("Streams"), this);
+    #ifdef ENABLE_WEBKIT
     infoTabAction = new QAction(tr("Info"), this);
+    #endif
     serverInfoTabAction = new QAction(tr("Server Info"), this);
 #endif
     libraryTabAction->setShortcut(Qt::Key_F5);
@@ -370,8 +376,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction->setShortcut(Qt::Key_F8);
     streamsTabAction->setShortcut(Qt::Key_F9);
     lyricsTabAction->setShortcut(Qt::Key_F10);
+    #ifdef ENABLE_WEBKIT
     infoTabAction->setShortcut(Qt::Key_F11);
     serverInfoTabAction->setShortcut(Qt::Key_F12);
+    #else
+    serverInfoTabAction->setShortcut(Qt::Key_F11);
+    #endif
 
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
@@ -409,7 +419,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
     streamsTabAction->setIcon(QIcon::fromTheme("applications-internet"));
+    #ifdef ENABLE_WEBKIT
     infoTabAction->setIcon(QIcon::fromTheme("dialog-information"));
+    #endif
     serverInfoTabAction->setIcon(QIcon::fromTheme("server-database"));
 
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
@@ -433,7 +445,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsPage = new PlaylistsPage(this);
     streamsPage = new StreamsPage(this);
     lyricsPage = new LyricsPage(this);
+#ifdef ENABLE_WEBKIT
     infoPage = new InfoPage(this);
+#endif
     serverInfoPage = new ServerInfoPage(this);
 
     connect(&libraryPage->getModel(), SIGNAL(updated(const MusicLibraryItemRoot *)), albumsPage, SLOT(update(const MusicLibraryItemRoot *)));
@@ -455,7 +469,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text(), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text(), !hiddenPages.contains(streamsPage->metaObject()->className()));
     tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text(), !hiddenPages.contains(lyricsPage->metaObject()->className()));
+#ifdef ENABLE_WEBKIT
     tabWidget->AddTab(infoPage, infoTabAction->icon(), infoTabAction->text(), !hiddenPages.contains(infoPage->metaObject()->className()));
+#endif
     tabWidget->AddTab(serverInfoPage, serverInfoTabAction->icon(), serverInfoTabAction->text(), !hiddenPages.contains(serverInfoPage->metaObject()->className()));
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
@@ -608,7 +624,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(playlistsTabAction, SIGNAL(activated()), this, SLOT(showPlaylistsTab()));
     connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
     connect(streamsTabAction, SIGNAL(activated()), this, SLOT(showStreamsTab()));
+    #ifdef ENABLE_WEBKIT
     connect(infoTabAction, SIGNAL(activated()), this, SLOT(showInfoTab()));
+    #endif
     connect(serverInfoTabAction, SIGNAL(activated()), this, SLOT(showServerInfoTab()));
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
@@ -998,11 +1016,13 @@ void MainWindow::updateCurrentSong(const Song &song)
         lyricsNeedUpdating=true;
     }
 
+#ifdef ENABLE_WEBKIT
     if (PAGE_INFO==tabWidget->current_index()) {
         infoPage->update(song);
     } else {
         infoNeedsUpdating=true;
     }
+#endif
 
     if (Settings::self()->showPopups()) { //(trayIcon && trayIcon->isVisible() && isHidden()) {
         if (!song.title.isEmpty() && !song.artist.isEmpty() && !song.album.isEmpty()) {
@@ -1574,12 +1594,14 @@ void MainWindow::currentTabChanged(int index)
             lyricsNeedUpdating=false;
         }
         break;
+#ifdef ENABLE_WEBKIT
     case PAGE_INFO:
         if (infoNeedsUpdating) {
             infoPage->update(current);
             infoNeedsUpdating=false;
         }
         break;
+#endif
     case PAGE_SERVER_INFO:
     default:
         break;

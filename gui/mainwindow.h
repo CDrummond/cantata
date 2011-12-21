@@ -293,17 +293,19 @@ private:
     Action *playlistsTabAction;
     Action *lyricsTabAction;
     Action *streamsTabAction;
+    #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
+    #endif
     Action *serverInfoTabAction;
     Action *updateDbAction;
     QList<QAction *> viewActions;
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     KStatusNotifierItem *trayItem;
     KMenu *trayItemMenu;
-#else
+    #else
     QSystemTrayIcon *trayItem;
     QMenu *trayItemMenu;
-#endif
+    #endif
     QMenu *playQueueMenu;
     QPixmap noCover;
     QPixmap noStreamCover;
@@ -312,14 +314,18 @@ private:
     QString mpdDir;
     Song current;
     bool lyricsNeedUpdating;
+    #ifdef ENABLE_WEBKIT
     bool infoNeedsUpdating;
+    #endif
     LibraryPage *libraryPage;
     AlbumsPage *albumsPage;
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
     LyricsPage *lyricsPage;
     StreamsPage *streamsPage;
+    #ifdef ENABLE_WEBKIT
     InfoPage *infoPage;
+    #endif
     ServerInfoPage *serverInfoPage;
     QThread *mpdThread;
     friend class VolumeSliderEventHandler;

@@ -125,8 +125,8 @@ void FolderPage::addSelectionToPlaylist(const QString &name)
             }
             break;
         case DirViewItem::Type_File:
-            if (!files.contains(item->fileName()))
-                files << item->fileName();
+            if (!files.contains(item->fullName()))
+                files << item->fullName();
             break;
         default:
             break;
@@ -149,7 +149,7 @@ QStringList FolderPage::walk(QModelIndex rootItem)
     DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(rootItem).internalPointer());
 
     if (DirViewItem::Type_File==item->type()) {
-        return QStringList(item->fileName());
+        return QStringList(item->fullName());
     }
 
     for (int i = 0; ; i++) {

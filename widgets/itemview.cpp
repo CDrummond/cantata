@@ -34,6 +34,8 @@
 #include <QtGui/QRadialGradient>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
+#include <KDE/KPixmapSequence>
+#include <KDE/KPixmapSequenceOverlayPainter>
 #endif
 
 static QPainterPath buildPath(const QRectF &r, double radius)
@@ -300,6 +302,8 @@ ItemView::ItemView(QWidget *p)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
+    spinner=0;
+    spinnerActive=false;
     backAction = new QAction(i18n("Back"), this);
     #else
     backAction = new QAction(tr("Back"), this);
@@ -378,6 +382,14 @@ void ItemView::setMode(Mode m)
         }
     }
     stackedWidget->setCurrentIndex(Mode_Tree==mode ? 0 : 1);
+    #ifdef ENABLE_KDE_SUPPORT
+    if (spinner) {
+        spinner->setWidget(view()->viewport());
+        if (spinnerActive) {
+            spinner->start();
+        }
+    }
+    #endif
 }
 
 QModelIndexList ItemView::selectedIndexes() const
@@ -494,6 +506,30 @@ void ItemView::setDeleteAction(QAction *act)
 {
     listView->installEventFilter(new DeleteKeyEventHandler(listView, act));
     treeView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
+}
+
+void ItemView::showSpinner()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    if (!spinner) {
+        spinner=new KPixmapSequenceOverlayPainter(this);
+        spinner->setSequence(KPixmapSequence("process-working", KIconLoader::SizeSmallMedium));
+    }
+    spinnerActive=true;
+    spinner->setWidget(view()->viewport());
+    spinner->setAlignment(Qt::AlignTop | Qt::AlignRight);
+    spinner->start();
+    #endif
+}
+
+void ItemView::hideSpinner()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    if (spinner) {
+        spinnerActive=false;
+        spinner->stop();
+    }
+    #endif
 }
 
 void ItemView::backActivated()

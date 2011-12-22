@@ -136,6 +136,10 @@ Q_SIGNALS:
     void added(const QStringList &files);
     void replayGain(const QString &);
     void version(long);
+    void updatingLibrary();
+    void updatedLibrary();
+    void updatingFileList();
+    void updatedFileList();
 
 private Q_SLOTS:
     void idleDataReady();

@@ -37,11 +37,14 @@ class MusicLibraryItemAlbum;
 class MusicLibraryItemSong : public MusicLibraryItem
 {
 public:
-    MusicLibraryItemSong(const Song &s, MusicLibraryItem *parent = 0);
-    ~MusicLibraryItemSong();
+    MusicLibraryItemSong(const Song &s, MusicLibraryItem *parent)
+        : MusicLibraryItem(s.displayTitle(), MusicLibraryItem::Type_Song, parent)
+        , m_song(s) {
+    }
 
-    int row() const;
-    MusicLibraryItem * parent() const;
+    virtual ~MusicLibraryItemSong() {
+    }
+
     const QString & file() const {
         return m_song.file;
     }
@@ -62,7 +65,6 @@ public:
     }
 private:
     Song m_song;
-    MusicLibraryItemAlbum * const m_parentItem;
 };
 
 #endif

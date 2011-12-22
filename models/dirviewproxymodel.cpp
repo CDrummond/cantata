@@ -25,6 +25,7 @@
  */
 
 #include "dirviewitem.h"
+#include "dirviewitemfile.h"
 #include "dirviewproxymodel.h"
 
 DirViewProxyModel::DirViewProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
@@ -41,7 +42,7 @@ bool DirViewProxyModel::filterAcceptsDirViewItem(const DirViewItem * const item,
     DirViewItem *parent;
 
     // check if self matches regex
-    if (item->data(0).toString().contains(filterRegExp())) {
+    if (item->data().contains(filterRegExp())) {
         return true;
     }
 
@@ -50,7 +51,7 @@ bool DirViewProxyModel::filterAcceptsDirViewItem(const DirViewItem * const item,
         // only need to check parents on first level of recursion
         parent = item->parent();
         while (parent->type() != DirViewItem::Type_Root) {
-            if (parent->data(0).toString().contains(filterRegExp())) {
+            if (parent->data().contains(filterRegExp())) {
                 return true;
             }
             parent = parent->parent();

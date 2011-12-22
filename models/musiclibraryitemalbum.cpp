@@ -69,43 +69,16 @@ void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 }
 
 MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent)
-    : MusicLibraryItem(data, MusicLibraryItem::Type_Album)
+    : MusicLibraryItem(data, MusicLibraryItem::Type_Album, parent)
     , m_dir(dir)
     , m_coverIsDefault(false)
     , m_cover(0)
-    , m_parentItem(static_cast<MusicLibraryItemArtist *>(parent))
 {
 }
 
 MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
 {
-    qDeleteAll(m_childItems);
     delete m_cover;
-}
-
-void MusicLibraryItemAlbum::appendSong(MusicLibraryItemSong * const song)
-{
-    m_childItems.append(song);
-}
-
-MusicLibraryItem * MusicLibraryItemAlbum::child(int row) const
-{
-    return m_childItems.value(row);
-}
-
-int MusicLibraryItemAlbum::childCount() const
-{
-    return m_childItems.count();
-}
-
-MusicLibraryItem * MusicLibraryItemAlbum::parent() const
-{
-    return m_parentItem;
-}
-
-int MusicLibraryItemAlbum::row() const
-{
-    return m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItemAlbum*>(this));
 }
 
 bool MusicLibraryItemAlbum::setCover(const QImage &img)
@@ -139,7 +112,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
         m_coverIsDefault = true;
         if (parent() && iSize) {
             Song song;
-            song.albumartist=parent()->data(0).toString();
+            song.albumartist=parent()->data();
             song.album=m_itemData;
             song.file=m_dir;
             Covers::self()->get(song);

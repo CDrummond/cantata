@@ -38,18 +38,16 @@ class MusicLibraryItemArtist;
 class MusicLibraryItemRoot : public MusicLibraryItem
 {
 public:
-    MusicLibraryItemRoot(const QString &data=QString());
-    ~MusicLibraryItemRoot();
+    MusicLibraryItemRoot()
+        : MusicLibraryItem(QString(), MusicLibraryItem::Type_Root, 0) {
+    }
+    virtual ~MusicLibraryItemRoot() {
+    }
 
     MusicLibraryItemArtist * artist(const Song &s);
-    MusicLibraryItem * child(int row) const;
-    int childCount() const;
 
 private:
     QHash<QString, int> m_indexes;
-    QList<MusicLibraryItemArtist *> m_childItems;
-
-    friend class MusicLibraryItemArtist;
 };
 
 #endif

@@ -1504,6 +1504,7 @@ void MainWindow::setupTrayIcon()
     trayItemMenu->addAction(playPauseTrackAction);
     trayItem->setContextMenu(trayItemMenu);
     connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
+    connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), this, SLOT(playPauseTrack()));
 #else
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         trayItem = NULL;

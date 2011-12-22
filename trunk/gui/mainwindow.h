@@ -192,6 +192,10 @@ public Q_SLOTS:
     void showError(const QString &message);
 
 private Q_SLOTS:
+    void playbackButtonsMenu();
+    void controlButtonsMenu();
+    void setPlaybackButtonsSize(bool small);
+    void setControlButtonsSize(bool small);
     void songLoaded();
     void mpdConnectionStateChanged(bool connected);
     void playlistItemsSelected(bool s);
@@ -298,6 +302,8 @@ private:
     #endif
     Action *serverInfoTabAction;
     Action *updateDbAction;
+    Action *smallPlaybackButtonsAction;
+    Action *smallControlButtonsAction;
     QList<QAction *> viewActions;
     #ifdef ENABLE_KDE_SUPPORT
     KStatusNotifierItem *trayItem;
@@ -306,6 +312,8 @@ private:
     QSystemTrayIcon *trayItem;
     QMenu *trayItemMenu;
     #endif
+    QMenu *playbackBtnsMenu;
+    QMenu *controlBtnsMenu;
     QMenu *playQueueMenu;
     QPixmap noCover;
     QPixmap noStreamCover;

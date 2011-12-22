@@ -242,6 +242,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
     quitAction=KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
+    smallPlaybackButtonsAction = actionCollection()->addAction("smallplaybackbuttons");
+    smallPlaybackButtonsAction->setText(i18n("Small Playback Buttons"));
+
+    smallControlButtonsAction = actionCollection()->addAction("smallcontrolbuttons");
+    smallControlButtonsAction->setText(i18n("Small Control Buttons"));
+
     updateDbAction = actionCollection()->addAction("updatedatabase");
     updateDbAction->setText(i18n("Update Database"));
 
@@ -338,6 +344,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     quitAction->setIcon(QIcon::fromTheme("application-exit"));
     quitAction->setShortcut(QKeySequence::Quit);
+    smallPlaybackButtonsAction = new QAction(tr("Small Playback Buttons"), this);
+    smallControlButtonsAction = new QAction(tr("Small Control Buttons"), this);
     updateDbAction = new QAction(tr("Update Database"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
@@ -487,14 +495,42 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 #else
     searchPlaylistLineEdit->setPlaceholderText(tr("Search Play Queue..."));
 #endif
+    QList<QToolButton *> playbackBtns;
+    QList<QToolButton *> controlBtns;
     QList<QToolButton *> btns;
-    btns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton
-         << repeatPushButton << randomPushButton << savePlaylistPushButton << removeAllFromPlaylistPushButton
-         << removeFromPlaylistPushButton << consumePushButton << volumeButton << menuButton;
+    playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
+    controlBtns << volumeButton << menuButton;
+    btns << repeatPushButton << randomPushButton << savePlaylistPushButton << removeAllFromPlaylistPushButton
+         << removeFromPlaylistPushButton << consumePushButton;
 
-    foreach(QToolButton * b, btns) {
+    foreach (QToolButton *b, btns) {
         b->setAutoRaise(true);
     }
+
+    smallControlButtonsAction->setCheckable(true);
+    smallControlButtonsAction->setChecked(Settings::self()->smallControlButtons());
+    controlBtnsMenu = new QMenu(this);
+    controlBtnsMenu->addAction(smallControlButtonsAction);
+    connect(smallControlButtonsAction, SIGNAL(triggered(bool)), SLOT(setControlButtonsSize(bool)));
+    foreach (QToolButton *b, controlBtns) {
+        b->setAutoRaise(true);
+        b->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(b, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(controlButtonsMenu()));
+    }
+
+    smallPlaybackButtonsAction->setCheckable(true);
+    smallPlaybackButtonsAction->setChecked(Settings::self()->smallPlaybackButtons());
+    playbackBtnsMenu = new QMenu(this);
+    playbackBtnsMenu->addAction(smallPlaybackButtonsAction);
+    connect(smallPlaybackButtonsAction, SIGNAL(triggered(bool)), SLOT(setPlaybackButtonsSize(bool)));
+    foreach (QToolButton *b, playbackBtns) {
+        b->setAutoRaise(true);
+        b->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(b, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(playbackButtonsMenu()));
+    }
+
+    setPlaybackButtonsSize(Settings::self()->smallPlaybackButtons());
+    setControlButtonsSize(Settings::self()->smallControlButtons());
 
     trackLabel->setText(QString());
     artistLabel->setText(QString());
@@ -687,6 +723,8 @@ MainWindow::~MainWindow()
     Settings::self()->savePlayQueueHeaderState(playQueueHeader->saveState());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
+    Settings::self()->saveSmallPlaybackButtons(smallPlaybackButtonsAction->isChecked());
+    Settings::self()->saveSmallControlButtons(smallControlButtonsAction->isChecked());
     QStringList hiddenPages;
     for (int i=0; i<tabWidget->count(); ++i) {
         if (!tabWidget->isEnabled(i)) {
@@ -707,6 +745,35 @@ MainWindow::~MainWindow()
     mpdThread->quit();
     for(int i=0; i<10 && mpdThread->isRunning(); ++i)
         Thread::sleep();
+}
+
+void MainWindow::playbackButtonsMenu()
+{
+    playbackBtnsMenu->exec(QCursor::pos());
+}
+
+void MainWindow::controlButtonsMenu()
+{
+    controlBtnsMenu->exec(QCursor::pos());
+}
+
+void MainWindow::setPlaybackButtonsSize(bool small)
+{
+    QList<QToolButton *> playbackBtns;
+    playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
+    foreach (QToolButton *b, playbackBtns) {
+        b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
+    }
+}
+
+void MainWindow::setControlButtonsSize(bool small)
+{
+    QList<QToolButton *> controlBtns;
+    controlBtns << volumeButton << menuButton;
+
+    foreach (QToolButton *b, controlBtns) {
+        b->setIconSize(small ? QSize(18, 18) : QSize(22, 22));
+    }
 }
 
 void MainWindow::songLoaded()

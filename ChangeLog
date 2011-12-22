@@ -11,6 +11,7 @@
 6. To be more consisten with other apps, show exapander for root items in tree views.
 7. Show spinner over library/folder view when loading. (KDE only)
 8. Fix some right-to-left issues.
+9. Czech translation - thanks to Pavel Fric
 
 0.1.0
 -----

@@ -30,7 +30,7 @@ TreeView::TreeView(QWidget *parent)
 {
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);
-    setRootIsDecorated(false);
+//     setRootIsDecorated(false);
     setAllColumnsShowFocus(true);
     setAlternatingRowColors(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);

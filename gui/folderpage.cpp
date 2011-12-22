@@ -60,6 +60,8 @@ FolderPage::FolderPage(MainWindow *p)
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
     connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &model, SLOT(updateDirView(DirViewItemRoot *)));
+    connect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(showSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
     connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));

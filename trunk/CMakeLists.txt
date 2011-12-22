@@ -36,11 +36,9 @@ SET( CANTATA_SRCS
     gui/infopage.cpp
     gui/serverinfopage.cpp
     gui/playlistspage.cpp
-    models/musiclibraryitem.cpp
     models/musiclibraryitemroot.cpp
     models/musiclibraryitemartist.cpp
     models/musiclibraryitemalbum.cpp
-    models/musiclibraryitemsong.cpp
     models/musiclibrarymodel.cpp
     models/musiclibraryproxymodel.cpp
     models/playlistsmodel.cpp
@@ -50,9 +48,7 @@ SET( CANTATA_SRCS
     models/dirviewmodel.cpp
     models/dirviewproxymodel.cpp
     models/dirviewitem.cpp
-    models/dirviewitemfile.cpp
     models/dirviewitemdir.cpp
-    models/dirviewitemroot.cpp
     models/streamsmodel.cpp
     models/streamsproxymodel.cpp
     models/albumsmodel.cpp

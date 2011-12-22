@@ -2,6 +2,8 @@
 -----
 1. Play/Pause track when middle click on tray iocn. (KDE only). Thanks to Piotr
    Wicijowski for the idea/patch.
+2. No need to manullay expand/collapse on QTreeView::activated - this messes up
+   when KDE is set to double-click.
 
 0.1.0
 -----

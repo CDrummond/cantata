@@ -1,0 +1,1152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-12-21 20:51+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Language: cs_CZ\n"
+"X-Source-Language: C\n"
+
+#: gui/albumspage.cpp:53 gui/mainwindow.cpp:315
+msgid "Albums"
+msgstr "Alba"
+
+#: gui/albumspage.cpp:158 gui/librarypage.cpp:190
+msgid "All Genres"
+msgstr "Všechny žánry"
+
+#: gui/folderpage.cpp:51 gui/mainwindow.cpp:318
+msgid "Folders"
+msgstr "Složky"
+
+#: gui/infopage.cpp:89
+msgid "Artist Information"
+msgstr "Informace o umělci"
+
+#: gui/infopage.cpp:90
+msgid "Album Information"
+msgstr "Informace o albu"
+
+#: gui/infopage.cpp:175
+msgid "<h3><i>Loading...</i></h3>"
+msgstr "<h3><i>Nahrává se...</i></h3>"
+
+#: gui/librarypage.cpp:73 gui/mainwindow.cpp:312
+msgid "Library"
+msgstr "Knihovna"
+
+#: gui/mainwindow.cpp:246
+msgid "Update Database"
+msgstr "Aktualizovat databázi"
+
+#: gui/mainwindow.cpp:249
+msgid "Previous Track"
+msgstr "Předchozí skladba"
+
+#: gui/mainwindow.cpp:253
+msgid "Next Track"
+msgstr "Další skladba"
+
+#: gui/mainwindow.cpp:257
+msgid "Play/Pause"
+msgstr "Přehrát/Pozastavit"
+
+#: gui/mainwindow.cpp:261
+msgid "Stop"
+msgstr "Zastavit"
+
+#: gui/mainwindow.cpp:265
+msgid "Increase Volume"
+msgstr "Zvýšit hlasitost"
+
+#: gui/mainwindow.cpp:269
+msgid "Decrease Volume"
+msgstr "Snížit hlasitost"
+
+#: gui/mainwindow.cpp:273
+msgid "Add To Play Queue"
+msgstr "Přidat do řady přehrávaných skladeb"
+
+#: gui/mainwindow.cpp:276
+msgid "Add To"
+msgstr "Přidat"
+
+#: gui/mainwindow.cpp:279
+msgid "Replace Play Queue"
+msgstr "Nahradit řadu přehrávaných skladeb"
+
+#: gui/mainwindow.cpp:282 gui/playlistspage.cpp:56 gui/streamspage.cpp:55
+msgid "Remove"
+msgstr "Odstranit"
+
+#: gui/mainwindow.cpp:285
+msgid "Copy Track Info"
+msgstr "Kopírovat informace o skladbě"
+
+#: gui/mainwindow.cpp:288
+msgid "Crop"
+msgstr "Oříznout"
+
+#: gui/mainwindow.cpp:291
+msgid "Shuffle"
+msgstr "Zamíchat"
+
+#: gui/mainwindow.cpp:294
+msgid "Save As"
+msgstr "Uložit jako"
+
+#: gui/mainwindow.cpp:297
+msgid "Clear"
+msgstr "Vyprázdnit"
+
+#: gui/mainwindow.cpp:300
+msgid "Expanded Interface"
+msgstr "Rozšířené rozhraní"
+
+#: gui/mainwindow.cpp:303
+msgid "Random"
+msgstr "Náhodné"
+
+#: gui/mainwindow.cpp:306
+msgid "Repeat"
+msgstr "Opakovat"
+
+#: gui/mainwindow.cpp:309
+msgid "Consume"
+msgstr "Strávit"
+
+#: gui/mainwindow.cpp:321 gui/playlistspage.cpp:87
+msgid "Playlists"
+msgstr "Seznamy skladeb"
+
+#: gui/mainwindow.cpp:324 gui/preferencesdialog.cpp:108
+msgid "Lyrics"
+msgstr "Text písně"
+
+#: gui/mainwindow.cpp:327 gui/streamspage.cpp:99
+msgid "Streams"
+msgstr "Proudy"
+
+#: gui/mainwindow.cpp:331
+msgid "Info"
+msgstr "Informace"
+
+#: gui/mainwindow.cpp:335
+msgid "Server Info"
+msgstr "Informace o serveru"
+
+#: gui/mainwindow.cpp:486
+msgid "Search Play Queue..."
+msgstr "Prohledat řadu přehrávaných skladeb..."
+
+#: gui/mainwindow.cpp:528
+msgid "Configure Cantata..."
+msgstr "Nastavit Cantatu..."
+
+#: gui/mainwindow.cpp:797
+#, qt-format
+msgid ""
+"The MPD connection died unexpectedly.<br/>TThis error is unrecoverable, "
+"please restart %1."
+msgstr ""
+"Spojení s MPD neočekávaně skončilo.<br/>Tuto chybu nelze odstranit. Spusťte, "
+"prosím, %1 znovu."
+
+#: gui/mainwindow.cpp:798
+msgid "Lost MPD Connection"
+msgstr "Ztraceno spojení s MPD"
+
+#: gui/mainwindow.cpp:1030
+#, qt-format
+msgid ""
+"<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
+"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td "
+"align=\"right\"><b>Song:</b></td><td>%3</td></tr><tr><td "
+"align=\"right\"><b>Track:</b></td><td>%4</td></tr><tr><td "
+"align=\"right\"><b>Length:</b></td><td>%5</td></tr></table>"
+msgstr ""
+"<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
+"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td "
+"align=\"right\"><b>Song:</b></td><td>%3</td></tr><tr><td "
+"align=\"right\"><b>Skladba:</b></td><td>%4</td></tr><tr><td "
+"align=\"right\"><b>Délka:</b></td><td>%5</td></tr></table>"
+
+#: gui/mainwindow.cpp:1085 gui/mainwindow.cpp:1086
+#, qt-format
+msgid "Volume %1%"
+msgstr "Hlasitost %1%"
+
+#: gui/mainwindow.cpp:1243 gui/playlistspage.cpp:193
+msgid "Playlist Name"
+msgstr "Název seznamu skladeb"
+
+#: gui/mainwindow.cpp:1243 gui/playlistspage.cpp:193
+msgid "Enter a name for the playlist:"
+msgstr "Zadejte název pro seznam skladeb:"
+
+#: gui/mainwindow.cpp:1250
+#, qt-format
+msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
+msgstr ""
+"Seznam skladeb pojmenovaný <b>%1</b> již existuje!<br/>Přidat do tohoto "
+"seznamu skladeb?"
+
+#: gui/mainwindow.cpp:1251
+msgid "Existing Playlist"
+msgstr "Existující seznam skladeb"
+
+#: gui/mainwindow.cpp:1304
+msgid "1 Artist, "
+msgid_plural "%1 Artists, "
+msgstr[0] "Jeden umělec, "
+msgstr[1] "%1 umělci, "
+msgstr[2] "%1 umělců, "
+
+#: gui/mainwindow.cpp:1305
+msgid "1 Album, "
+msgid_plural "%1 Albums, "
+msgstr[0] "Jedno album, "
+msgstr[1] "%1 alba, "
+msgstr[2] "%1 alb, "
+
+#: gui/mainwindow.cpp:1306 models/musiclibrarymodel.cpp:223
+#: models/playlistsmodel.cpp:177
+msgid "1 Track"
+msgid_plural "%1 Tracks"
+msgstr[0] "Jedna skladba"
+msgstr[1] "%1 skladby"
+msgstr[2] "%1 skladeb"
+
+#: gui/mainwindow.cpp:1497 main.cpp:35
+msgid "Cantata"
+msgstr "Cantata"
+
+#. i18n: file: gui/interfacesettings.ui:92
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
+#. i18n: file: gui/interfacesettings.ui:152
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
+#. i18n: file: gui/interfacesettings.ui:92
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
+#. i18n: file: gui/interfacesettings.ui:152
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
+#: gui/playbacksettings.cpp:36 po/rc.cpp:30 po/rc.cpp:57 rc.cpp:30 rc.cpp:57
+msgid "None"
+msgstr "Žádná"
+
+#: gui/playbacksettings.cpp:37 models/playqueuemodel.cpp:96
+msgid "Track"
+msgstr "Skladba"
+
+#: gui/playbacksettings.cpp:38 models/playqueuemodel.cpp:94
+msgid "Album"
+msgstr "Album"
+
+#: gui/playlistspage.cpp:58
+msgid "Rename"
+msgstr "Přejmenovat"
+
+#: gui/playlistspage.cpp:170
+msgid "Are you sure you wish to remove the selected items?"
+msgstr "Opravdu chcete odstranit vybrané položky?"
+
+#: gui/playlistspage.cpp:170
+msgid "Remove?"
+msgstr "Odstranit?"
+
+#: gui/playlistspage.cpp:201 gui/playlistspage.cpp:232
+#, qt-format
+msgid "A playlist named <b>%1</b> already exists!<br/>Overwrite?"
+msgstr "Seznam skladeb pojmenovaný <b>%1</b> již existuje!<br/>Přepsat?"
+
+#: gui/playlistspage.cpp:201 gui/playlistspage.cpp:232
+msgid "Overwrite Playlist?"
+msgstr "Přepsat seznam skladeb?"
+
+#: gui/playlistspage.cpp:224
+msgid "Rename Playlist"
+msgstr "Přejmenovat seznam skladeb"
+
+#: gui/playlistspage.cpp:224
+#, qt-format
+msgid "Enter new name for playlist: %1"
+msgstr "Zadejte název pro seznam skladeb: %1"
+
+#. i18n: file: gui/serverinfopage.ui:38
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: gui/preferencesdialog.cpp:96 po/rc.cpp:132 rc.cpp:132
+msgid "Server"
+msgstr "Server"
+
+#: gui/preferencesdialog.cpp:97
+msgid "MPD Backend Settings"
+msgstr "Nastavení jádra MPD"
+
+#: gui/preferencesdialog.cpp:99
+msgid "Playback"
+msgstr "Přehrávání"
+
+#: gui/preferencesdialog.cpp:100
+msgid "Playback Settings"
+msgstr "Nastavení přehrávání"
+
+#: gui/preferencesdialog.cpp:102
+msgid "Output"
+msgstr "Výstup"
+
+#: gui/preferencesdialog.cpp:103
+msgid "Control Active Outputs"
+msgstr "Ovládání aktivních výstupů"
+
+#: gui/preferencesdialog.cpp:105
+msgid "Interface"
+msgstr "Rozhraní"
+
+#: gui/preferencesdialog.cpp:106
+msgid "Interface Settings"
+msgstr "Nastavení rozhraní"
+
+#: gui/preferencesdialog.cpp:109
+msgid "Lyrics Settings"
+msgstr "Nastavení textu písně"
+
+#: gui/preferencesdialog.cpp:114
+msgid "Configure"
+msgstr "Nastavit"
+
+#: gui/serverinfopage.cpp:45
+msgid "Update MPD Information"
+msgstr "Aktualizovat informace o MPD"
+
+#: gui/streamdialog.cpp:58
+msgid "Name:"
+msgstr "Název:"
+
+#: gui/streamdialog.cpp:64
+msgid "Stream:"
+msgstr "Proud:"
+
+#: gui/streamdialog.cpp:71
+msgid "Category:"
+msgstr "Skupina:"
+
+#: gui/streamdialog.cpp:79
+msgid "Add Stream"
+msgstr "Přidat proud"
+
+#: gui/streamdialog.cpp:103
+msgid "Edit Stream"
+msgstr "Upravit proud"
+
+#: gui/streamspage.cpp:49 gui/streamspage.cpp:167
+msgid "Import Streams"
+msgstr "Zavést proudy"
+
+#: gui/streamspage.cpp:51 gui/streamspage.cpp:188
+msgid "Export Streams"
+msgstr "Vyvést proudy"
+
+#: gui/streamspage.cpp:53
+msgid "Add"
+msgstr "Přidat"
+
+#: gui/streamspage.cpp:57
+msgid "Edit"
+msgstr "Upravit"
+
+#: gui/streamspage.cpp:167
+msgid ""
+"*.streams|Cantata Streams\n"
+"*.js|Amarok Script"
+msgstr ""
+"*.streams|Proudy Cantata\n"
+"*.js|Skript Amaroku"
+
+#: gui/streamspage.cpp:178
+#, qt-format
+msgid ""
+"Failed to import <b>%1</b>!<br/>Please check this is of the correct type."
+msgstr ""
+"Nepodařilo se zavést <b>%1</b>!<br/>Prověřte, prosím, že to je správného "
+"typu."
+
+#: gui/streamspage.cpp:188
+msgid "*.streams|Cantata Streams"
+msgstr "*.streams|Proudy Cantata"
+
+#: gui/streamspage.cpp:199
+#, qt-format
+msgid "Failed to create <b>%1</b>!"
+msgstr "Nepodařilo se vytvořit <b>%1</b>!"
+
+#: gui/streamspage.cpp:218
+#, qt-format
+msgid "Stream already exists!<br/><b>%1</b>"
+msgstr "Proud již existuje!<br/><b>%1</b>"
+
+#: gui/streamspage.cpp:227
+#, qt-format
+msgid "A stream named <b>%1</b> already exists!"
+msgstr "Proud pojmenovaný <b>%1</b> již existuje!"
+
+#: gui/streamspage.cpp:248
+#, qt-format
+msgid "Are you sure you wish to remove the %1 selected streams?"
+msgstr "Opravdu chcete odstranit %1 vybrané proudy?"
+
+#: gui/streamspage.cpp:249
+#, qt-format
+msgid "Are you sure you wish to remove <b>%1</b>?"
+msgstr "Opravdu chcete odstranit <b>%1</b>?"
+
+#: gui/streamspage.cpp:250
+msgid "Remove Streams?"
+msgstr "Odstranit proudy?"
+
+#: gui/streamspage.cpp:250
+msgid "Remove Stream?"
+msgstr "Odstranit proud?"
+
+#: gui/streamspage.cpp:298
+msgid "Category Name"
+msgstr "Název skupiny"
+
+#: gui/streamspage.cpp:298
+msgid "Enter a name for the category:"
+msgstr "Zadejte název pro skupinu:"
+
+#: gui/streamspage.cpp:309
+#, qt-format
+msgid "A category named <b>%1</b> already exists!"
+msgstr "Skupina pojmenovaná <b>%1</b> již existuje!"
+
+#: gui/streamspage.cpp:337
+#, qt-format
+msgid "Stream already exists!<br/><b>%1 (%2)</b>"
+msgstr "Proud již existuje!<br/><b>%1 (%2)</b>"
+
+#: gui/streamspage.cpp:343
+#, qt-format
+msgid "A stream named <b>%1 (%2)</b> already exists!"
+msgstr "Proud pojmenovaný <b>%1 (%2)</b> již existuje!"
+
+#: gui/streamspage.cpp:379
+msgid "General"
+msgstr "Obecné"
+
+#: gui/updatedialog.cpp:59
+msgid "Updating"
+msgstr "Aktualizace"
+
+#: gui/updatedialog.cpp:70
+msgid "<b>Updating backend database</b><br><i>Please wait...</i>"
+msgstr "<b>Aktualizuje se databáze jádra</b><br><i>Čekejte, prosím...</i>"
+
+#: gui/updatedialog.cpp:94
+msgid "<b>Finished</b><br><i>Database updated.</i>"
+msgstr "<b>Hotovo</b><br><i>Databáze obnovena.</i>"
+
+#: lyrics/lyricsettings.cpp:59
+msgid "(Polish Translations)"
+msgstr "Polština"
+
+#: lyrics/lyricsettings.cpp:60
+msgid "(Portuguese Translations)"
+msgstr "Portugalština"
+
+#: lyrics/lyricspage.cpp:100
+msgid "Refresh"
+msgstr "Obnovit"
+
+#: lyrics/lyricspage.cpp:222
+#, qt-format
+msgid "Fetching lyrics via %1"
+msgstr "Natahuje se text písně přes %1"
+
+#: lyrics/lyricspage.cpp:231
+msgid "No lyrics found"
+msgstr "Nenalezen žádný text písně"
+
+#: main.cpp:36
+msgid "A simple interface to MPD"
+msgstr "Jednoduché rozhraní pro MPD"
+
+#: main.cpp:38
+msgid "Copyright (C) 2011 Craig Drummond"
+msgstr "Autorské právo (C) 2011 Craig Drummond"
+
+#: main.cpp:39
+msgid "Based upon QtMPC - (C) 2007-2010  The QtMPC Authors"
+msgstr "Založeno na QtMPC - (C) 2007-2010  Autoři QtMPC"
+
+#: main.cpp:42
+msgid "Craig Drummond"
+msgstr "Craig Drummond"
+
+#: main.cpp:42
+msgid "Maintainer"
+msgstr "Správce"
+
+#: models/albumsmodel.cpp:238 models/musiclibrarymodel.cpp:179
+#: models/playlistsmodel.cpp:167
+#, qt-format
+msgid ""
+"%1\n"
+"1 Track"
+msgid_plural ""
+"%1\n"
+"%2 Tracks"
+msgstr[0] ""
+"%1\n"
+"1 skladba"
+msgstr[1] ""
+"%1\n"
+"%2 skladby"
+msgstr[2] ""
+"%1\n"
+"%2 skladeb"
+
+#: models/dirviewmodel.cpp:136
+#, qt-format
+msgid ""
+"%1\n"
+"1 Entry"
+msgid_plural ""
+"%1\n"
+"%2 Entries"
+msgstr[0] ""
+"%1\n"
+"1 položka"
+msgstr[1] ""
+"%1\n"
+"%2 položky"
+msgstr[2] ""
+"%1\n"
+"%2 položek"
+
+#: models/dirviewmodel.cpp:146
+msgid "1 Entry"
+msgid_plural "%1 Entries"
+msgstr[0] "Jedna položka"
+msgstr[1] "%1 položky"
+msgstr[2] "%1 položek"
+
+#: models/musiclibrarymodel.cpp:168
+#, qt-format
+msgid ""
+"%1\n"
+"1 Album"
+msgid_plural ""
+"%1\n"
+"%2 Albums"
+msgstr[0] ""
+"%1\n"
+"1 album"
+msgstr[1] ""
+"%1\n"
+"%2 alba"
+msgstr[2] ""
+"%1\n"
+"%2 alb"
+
+#: models/musiclibrarymodel.cpp:206
+msgid "1 Album"
+msgid_plural "%1 Albums"
+msgstr[0] "Jedno album"
+msgstr[1] "%1 alba"
+msgstr[2] "%1 alb"
+
+#: models/playlistsmodel.cpp:583
+msgid "New Playlist..."
+msgstr "Nový seznam skladeb..."
+
+#: models/playqueuemodel.cpp:90
+msgid "Title"
+msgstr "Název"
+
+#: models/playqueuemodel.cpp:92
+msgid "Artist"
+msgstr "Umělec"
+
+#: models/playqueuemodel.cpp:98
+msgid "Length"
+msgstr "Délka"
+
+#: models/playqueuemodel.cpp:100
+msgid "Disc"
+msgstr "Disk"
+
+#: models/playqueuemodel.cpp:102
+msgid "Year"
+msgstr "Rok"
+
+#: models/playqueuemodel.cpp:104
+msgid "Genre"
+msgstr "Žánr"
+
+#: models/streamsmodel.cpp:147
+#, qt-format
+msgid ""
+"%1\n"
+"1 Stream"
+msgid_plural ""
+"%1\n"
+"%2 Streams"
+msgstr[0] ""
+"%1\n"
+"1 proud"
+msgstr[1] ""
+"%1\n"
+"%2 proudy"
+msgstr[2] ""
+"%1\n"
+"%2 proudů"
+
+#: models/streamsmodel.cpp:156
+msgid "1 Stream"
+msgid_plural "%1 Streams"
+msgstr[0] "Jeden proud"
+msgstr[1] "%1 proudy"
+msgstr[2] "%1 proudů"
+
+#: mpd/mpdconnection.cpp:769
+#, qt-format
+msgid "Sorry, failed to rename <b>%1</b> to <b>%2</b>"
+msgstr "Promiňte, ale nepodařilo se přejmenovat <b>%1</b> na <b>%2</b>"
+
+#: mpd/mpdconnection.cpp:794
+#, qt-format
+msgid "Sorry, failed to save <b>%1</b>"
+msgstr "Promiňte, ale nepodařilo se uložit <b>%1</b>"
+
+#: mpd/mpdparseutils.cpp:247 mpd/song.cpp:82 mpd/song.cpp:90
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: mpd/mpdparseutils.cpp:404
+#, qt-format
+msgid "1 day %2"
+msgid_plural "%1 days %2"
+msgstr[0] "Jeden den %2"
+msgstr[1] "%1 dny %2"
+msgstr[2] "%1 dnů %2"
+
+#: mpd/song.cpp:86
+msgid "<nknown"
+msgstr "<Neznámý"
+
+#. i18n: file: gui/albumspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, AlbumsPage)
+#. i18n: file: gui/folderpage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, FolderPage)
+#. i18n: file: gui/interfacesettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, InterfaceSettings)
+#. i18n: file: gui/librarypage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LibraryPage)
+#. i18n: file: gui/mainwindow.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, MainWindow)
+#. i18n: file: gui/outputsettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, OutputSettings)
+#. i18n: file: gui/playbacksettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PlaybackSettings)
+#. i18n: file: gui/playlistspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PlaylistsPage)
+#. i18n: file: gui/serverinfopage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, ServerInfoPage)
+#. i18n: file: gui/serversettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, ServerSettings)
+#. i18n: file: gui/streamspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, StreamsPage)
+#. i18n: file: lyrics/lyricsettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LyricSettings)
+#. i18n: file: lyrics/lyricspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LyricsPage)
+#. i18n: file: network/proxysettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, ProxySettings)
+#. i18n: file: widgets/itemview.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, ItemView)
+#. i18n: file: gui/albumspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, AlbumsPage)
+#. i18n: file: gui/folderpage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, FolderPage)
+#. i18n: file: gui/interfacesettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, InterfaceSettings)
+#. i18n: file: gui/librarypage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LibraryPage)
+#. i18n: file: gui/mainwindow.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, MainWindow)
+#. i18n: file: gui/outputsettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, OutputSettings)
+#. i18n: file: gui/playbacksettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PlaybackSettings)
+#. i18n: file: gui/playlistspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, PlaylistsPage)
+#. i18n: file: gui/serverinfopage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, ServerInfoPage)
+#. i18n: file: gui/serversettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, ServerSettings)
+#. i18n: file: gui/streamspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, StreamsPage)
+#. i18n: file: lyrics/lyricsettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LyricSettings)
+#. i18n: file: lyrics/lyricspage.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, LyricsPage)
+#. i18n: file: network/proxysettings.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, ProxySettings)
+#. i18n: file: widgets/itemview.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, ItemView)
+#: po/rc.cpp:3 po/rc.cpp:6 po/rc.cpp:9 po/rc.cpp:96 po/rc.cpp:99 po/rc.cpp:108
+#: po/rc.cpp:111 po/rc.cpp:126 po/rc.cpp:129 po/rc.cpp:186 po/rc.cpp:204
+#: po/rc.cpp:207 po/rc.cpp:219 po/rc.cpp:222 po/rc.cpp:252 rc.cpp:3 rc.cpp:6
+#: rc.cpp:9 rc.cpp:96 rc.cpp:99 rc.cpp:108 rc.cpp:111 rc.cpp:126 rc.cpp:129
+#: rc.cpp:186 rc.cpp:204 rc.cpp:207 rc.cpp:219 rc.cpp:222 rc.cpp:252
+msgid "Form"
+msgstr "Formulář"
+
+#. i18n: file: gui/interfacesettings.ui:20
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: po/rc.cpp:12 rc.cpp:12
+msgid "Show icon in notification area:"
+msgstr "Ukázat ikonu v oznamovací oblasti:"
+
+#. i18n: file: gui/interfacesettings.ui:40
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: po/rc.cpp:15 rc.cpp:15
+msgid "Show popup up messages when changing tracks:"
+msgstr "Ukázat vyskakovací zprávy při změnách skladeb:"
+
+#. i18n: file: gui/interfacesettings.ui:57
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: po/rc.cpp:18 rc.cpp:18
+msgid "Library view:"
+msgstr "Pohled s knihovnou:"
+
+#. i18n: file: gui/interfacesettings.ui:68
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryView)
+#. i18n: file: gui/interfacesettings.ui:123
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsView)
+#. i18n: file: gui/interfacesettings.ui:186
+#. i18n: ectx: property (text), item, widget (QComboBox, folderView)
+#. i18n: file: gui/interfacesettings.ui:207
+#. i18n: ectx: property (text), item, widget (QComboBox, playlistsView)
+#. i18n: file: gui/interfacesettings.ui:231
+#. i18n: ectx: property (text), item, widget (QComboBox, streamsView)
+#. i18n: file: gui/interfacesettings.ui:68
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryView)
+#. i18n: file: gui/interfacesettings.ui:123
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsView)
+#. i18n: file: gui/interfacesettings.ui:186
+#. i18n: ectx: property (text), item, widget (QComboBox, folderView)
+#. i18n: file: gui/interfacesettings.ui:207
+#. i18n: ectx: property (text), item, widget (QComboBox, playlistsView)
+#. i18n: file: gui/interfacesettings.ui:231
+#. i18n: ectx: property (text), item, widget (QComboBox, streamsView)
+#: po/rc.cpp:21 po/rc.cpp:45 po/rc.cpp:72 po/rc.cpp:81 po/rc.cpp:90 rc.cpp:21
+#: rc.cpp:45 rc.cpp:72 rc.cpp:81 rc.cpp:90
+msgid "Tree"
+msgstr "Strom"
+
+#. i18n: file: gui/interfacesettings.ui:73
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryView)
+#. i18n: file: gui/interfacesettings.ui:128
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsView)
+#. i18n: file: gui/interfacesettings.ui:191
+#. i18n: ectx: property (text), item, widget (QComboBox, folderView)
+#. i18n: file: gui/interfacesettings.ui:212
+#. i18n: ectx: property (text), item, widget (QComboBox, playlistsView)
+#. i18n: file: gui/interfacesettings.ui:236
+#. i18n: ectx: property (text), item, widget (QComboBox, streamsView)
+#. i18n: file: gui/interfacesettings.ui:73
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryView)
+#. i18n: file: gui/interfacesettings.ui:128
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsView)
+#. i18n: file: gui/interfacesettings.ui:191
+#. i18n: ectx: property (text), item, widget (QComboBox, folderView)
+#. i18n: file: gui/interfacesettings.ui:212
+#. i18n: ectx: property (text), item, widget (QComboBox, playlistsView)
+#. i18n: file: gui/interfacesettings.ui:236
+#. i18n: ectx: property (text), item, widget (QComboBox, streamsView)
+#: po/rc.cpp:24 po/rc.cpp:48 po/rc.cpp:75 po/rc.cpp:84 po/rc.cpp:93 rc.cpp:24
+#: rc.cpp:48 rc.cpp:75 rc.cpp:84 rc.cpp:93
+msgid "List"
+msgstr "Seznam"
+
+#. i18n: file: gui/interfacesettings.ui:81
+#. i18n: ectx: property (text), widget (QLabel, label_5b)
+#: po/rc.cpp:27 rc.cpp:27
+msgid "Covers in library view:"
+msgstr "Obaly v pohledu s knihovnou:"
+
+#. i18n: file: gui/interfacesettings.ui:97
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
+#. i18n: file: gui/interfacesettings.ui:157
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
+#. i18n: file: gui/interfacesettings.ui:97
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
+#. i18n: file: gui/interfacesettings.ui:157
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
+#: po/rc.cpp:33 po/rc.cpp:60 rc.cpp:33 rc.cpp:60
+msgid "Small"
+msgstr "Malý"
+
+#. i18n: file: gui/interfacesettings.ui:102
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
+#. i18n: file: gui/interfacesettings.ui:162
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
+#. i18n: file: gui/interfacesettings.ui:102
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
+#. i18n: file: gui/interfacesettings.ui:162
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
+#: po/rc.cpp:36 po/rc.cpp:63 rc.cpp:36 rc.cpp:63
+msgid "Medium"
+msgstr "Střední"
+
+#. i18n: file: gui/interfacesettings.ui:107
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
+#. i18n: file: gui/interfacesettings.ui:167
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
+#. i18n: file: gui/interfacesettings.ui:107
+#. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
+#. i18n: file: gui/interfacesettings.ui:167
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
+#: po/rc.cpp:39 po/rc.cpp:66 rc.cpp:39 rc.cpp:66
+msgid "Large"
+msgstr "Velký"
+
+#. i18n: file: gui/interfacesettings.ui:115
+#. i18n: ectx: property (text), widget (QLabel, label_3a)
+#: po/rc.cpp:42 rc.cpp:42
+msgid "Albums view:"
+msgstr "Pohled s alby:"
+
+#. i18n: file: gui/interfacesettings.ui:133
+#. i18n: ectx: property (text), item, widget (QComboBox, albumsView)
+#: po/rc.cpp:51 rc.cpp:51
+msgid "Icon/List"
+msgstr "Ikona/Seznam"
+
+#. i18n: file: gui/interfacesettings.ui:141
+#. i18n: ectx: property (text), widget (QLabel, label_5c)
+#: po/rc.cpp:54 rc.cpp:54
+msgid "Covers in albums view:"
+msgstr "Obaly v pohledu s alby:"
+
+#. i18n: file: gui/interfacesettings.ui:175
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: po/rc.cpp:69 rc.cpp:69
+msgid "Folder view:"
+msgstr "Pohled se složkou:"
+
+#. i18n: file: gui/interfacesettings.ui:199
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: po/rc.cpp:78 rc.cpp:78
+msgid "Playlists view:"
+msgstr "Pohled se seznamy skladeb:"
+
+#. i18n: file: gui/interfacesettings.ui:220
+#. i18n: ectx: property (text), widget (QLabel, label_x)
+#: po/rc.cpp:87 rc.cpp:87
+msgid "Streams view:"
+msgstr "Pohled s proudy:"
+
+#. i18n: file: gui/mainwindow.ui:118
+#. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)
+#: po/rc.cpp:102 rc.cpp:102
+msgid "SqueezedTextLabel"
+msgstr "ZmáčknutýTextovýŠtítek"
+
+#. i18n: file: gui/mainwindow.ui:146
+#. i18n: ectx: property (text), widget (QLabel, songTimeElapsedLabel)
+#: po/rc.cpp:105 rc.cpp:105
+msgid "(00:00)"
+msgstr "(00:00)"
+
+#. i18n: file: gui/playbacksettings.ui:23
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: po/rc.cpp:114 rc.cpp:114
+msgid "Crossfading:"
+msgstr "Prolínání:"
+
+#. i18n: file: gui/playbacksettings.ui:33
+#. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
+#: po/rc.cpp:117 rc.cpp:117
+msgid " seconds"
+msgstr " sekund"
+
+#. i18n: file: gui/playbacksettings.ui:43
+#. i18n: ectx: property (text), widget (QLabel, label_6a)
+#: po/rc.cpp:120 rc.cpp:120
+msgid "Replay gain:"
+msgstr "Vyrovnání hlasitosti:"
+
+#. i18n: file: gui/playbacksettings.ui:56
+#. i18n: ectx: property (text), widget (QLabel, label_6b)
+#: po/rc.cpp:123 rc.cpp:123
+msgid "Stop playback on exit:"
+msgstr "Zastavit přehrávání při ukončení:"
+
+#. i18n: file: gui/serverinfopage.ui:45
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: po/rc.cpp:135 rc.cpp:135
+msgid "Version:"
+msgstr "Verze:"
+
+#. i18n: file: gui/serverinfopage.ui:55
+#. i18n: ectx: property (text), widget (QLabel, version)
+#. i18n: file: gui/serverinfopage.ui:85
+#. i18n: ectx: property (text), widget (QLabel, uptime)
+#. i18n: file: gui/serverinfopage.ui:102
+#. i18n: ectx: property (text), widget (QLabel, timePlaying)
+#. i18n: file: gui/serverinfopage.ui:148
+#. i18n: ectx: property (text), widget (QLabel, artists)
+#. i18n: file: gui/serverinfopage.ui:165
+#. i18n: ectx: property (text), widget (QLabel, album)
+#. i18n: file: gui/serverinfopage.ui:182
+#. i18n: ectx: property (text), widget (QLabel, songs)
+#. i18n: file: gui/serverinfopage.ui:199
+#. i18n: ectx: property (text), widget (QLabel, totalDuration)
+#. i18n: file: gui/serverinfopage.ui:216
+#. i18n: ectx: property (text), widget (QLabel, lastUpdate)
+#. i18n: file: gui/serverinfopage.ui:55
+#. i18n: ectx: property (text), widget (QLabel, version)
+#. i18n: file: gui/serverinfopage.ui:85
+#. i18n: ectx: property (text), widget (QLabel, uptime)
+#. i18n: file: gui/serverinfopage.ui:102
+#. i18n: ectx: property (text), widget (QLabel, timePlaying)
+#. i18n: file: gui/serverinfopage.ui:148
+#. i18n: ectx: property (text), widget (QLabel, artists)
+#. i18n: file: gui/serverinfopage.ui:165
+#. i18n: ectx: property (text), widget (QLabel, album)
+#. i18n: file: gui/serverinfopage.ui:182
+#. i18n: ectx: property (text), widget (QLabel, songs)
+#. i18n: file: gui/serverinfopage.ui:199
+#. i18n: ectx: property (text), widget (QLabel, totalDuration)
+#. i18n: file: gui/serverinfopage.ui:216
+#. i18n: ectx: property (text), widget (QLabel, lastUpdate)
+#: po/rc.cpp:138 po/rc.cpp:144 po/rc.cpp:150 po/rc.cpp:159 po/rc.cpp:165
+#: po/rc.cpp:171 po/rc.cpp:177 po/rc.cpp:183 rc.cpp:138 rc.cpp:144 rc.cpp:150
+#: rc.cpp:159 rc.cpp:165 rc.cpp:171 rc.cpp:177 rc.cpp:183
+msgid "TextLabel"
+msgstr "TextovýŠtítek"
+
+#. i18n: file: gui/serverinfopage.ui:75
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: po/rc.cpp:141 rc.cpp:141
+msgid "Uptime:"
+msgstr "Doba využití:"
+
+#. i18n: file: gui/serverinfopage.ui:92
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: po/rc.cpp:147 rc.cpp:147
+msgid "Time playing:"
+msgstr "Čas přehrávání:"
+
+#. i18n: file: gui/serverinfopage.ui:131
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: po/rc.cpp:153 rc.cpp:153
+msgid "Database"
+msgstr "Databáze"
+
+#. i18n: file: gui/serverinfopage.ui:138
+#. i18n: ectx: property (text), widget (QLabel, label_10)
+#: po/rc.cpp:156 rc.cpp:156
+msgid "Artists:"
+msgstr "Umělci:"
+
+#. i18n: file: gui/serverinfopage.ui:155
+#. i18n: ectx: property (text), widget (QLabel, label_11)
+#: po/rc.cpp:162 rc.cpp:162
+msgid "Albums:"
+msgstr "Alba:"
+
+#. i18n: file: gui/serverinfopage.ui:172
+#. i18n: ectx: property (text), widget (QLabel, label_12)
+#: po/rc.cpp:168 rc.cpp:168
+msgid "Songs:"
+msgstr "Písně:"
+
+#. i18n: file: gui/serverinfopage.ui:189
+#. i18n: ectx: property (text), widget (QLabel, label_9)
+#: po/rc.cpp:174 rc.cpp:174
+msgid "Total duration:"
+msgstr "Celková doba trvání:"
+
+#. i18n: file: gui/serverinfopage.ui:206
+#. i18n: ectx: property (text), widget (QLabel, label_13)
+#: po/rc.cpp:180 rc.cpp:180
+msgid "Last update:"
+msgstr "Poslední aktualizace:"
+
+#. i18n: file: gui/serversettings.ui:25
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: po/rc.cpp:189 rc.cpp:189
+msgid "Host:"
+msgstr "Server:"
+
+#. i18n: file: gui/serversettings.ui:38
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: po/rc.cpp:192 rc.cpp:192
+msgid "Port:"
+msgstr "Přípojka:"
+
+#. i18n: file: gui/serversettings.ui:61
+#. i18n: ectx: property (text), widget (QLabel, label_3b)
+#: po/rc.cpp:195 rc.cpp:195
+msgid "Password:"
+msgstr "Heslo:"
+
+#. i18n: file: gui/serversettings.ui:78
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: po/rc.cpp:198 rc.cpp:198
+msgid "Music folder:"
+msgstr "Složka s hudbou:"
+
+#. i18n: file: gui/serversettings.ui:109
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: po/rc.cpp:201 rc.cpp:201
+msgid ""
+"<i><b>NOTE:</b> The 'Music Folder' settings is only used to lookup cover-art "
+"(<code>cover.jpg</code> or <code>cover.png</code>). If you also have write "
+"permissions to this folder (and it's sub-folders), then Cantata will save "
+"any downloaded covers into the respective album folder.</i>"
+msgstr ""
+"<i><b>Poznámka:</b> Nastavení pro \"složku s hudbou\" se používá jen pro "
+"hledání obrázků obalů (<code>cover.jpg</code> nebo <code>cover.png</code>). "
+"Pokud k této složce máte i oprávnění k zápisu (a do jejích podsložek), potom "
+"Cantata uloží všechny stažené obaly do příslušné složky alba.</i>"
+
+#. i18n: file: lyrics/lyricsettings.ui:23
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: po/rc.cpp:210 rc.cpp:210
+msgid "Choose the websites you want to use when searching for lyrics."
+msgstr "Vyberte stránky, které chcete použít při hledání textů písní."
+
+#. i18n: file: lyrics/lyricsettings.ui:43
+#. i18n: ectx: property (text), widget (QPushButton, up)
+#: po/rc.cpp:213 rc.cpp:213
+msgid "Move Up"
+msgstr "Posunout nahoru"
+
+#. i18n: file: lyrics/lyricsettings.ui:53
+#. i18n: ectx: property (text), widget (QPushButton, down)
+#: po/rc.cpp:216 rc.cpp:216
+msgid "Move Down"
+msgstr "Posunout dolů"
+
+#. i18n: file: network/proxysettings.ui:23
+#. i18n: ectx: property (text), widget (QRadioButton, proxySystem)
+#: po/rc.cpp:225 rc.cpp:225
+msgid "Use the system proxy settings"
+msgstr "Použít systémové nastavení proxy"
+
+#. i18n: file: network/proxysettings.ui:33
+#. i18n: ectx: property (text), widget (QRadioButton, proxyDirect)
+#: po/rc.cpp:228 rc.cpp:228
+msgid "Direct internet connection"
+msgstr "Přímé internetové připojení"
+
+#. i18n: file: network/proxysettings.ui:40
+#. i18n: ectx: property (text), widget (QRadioButton, proxyManual)
+#: po/rc.cpp:231 rc.cpp:231
+msgid "Manual proxy configuration"
+msgstr "Ruční nastavení proxy"
+
+#. i18n: file: network/proxysettings.ui:59
+#. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
+#: po/rc.cpp:234 rc.cpp:234
+msgid "HTTP Proxy"
+msgstr "Proxy HTTP"
+
+#. i18n: file: network/proxysettings.ui:64
+#. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
+#: po/rc.cpp:237 rc.cpp:237
+msgid "SOCKS Proxy"
+msgstr "Proxy SOCKS"
+
+#. i18n: file: network/proxysettings.ui:75
+#. i18n: ectx: property (text), widget (QLabel, label_15)
+#: po/rc.cpp:240 rc.cpp:240
+msgid "Port"
+msgstr "Přípojka"
+
+#. i18n: file: network/proxysettings.ui:97
+#. i18n: ectx: property (title), widget (QGroupBox, proxyAuth)
+#: po/rc.cpp:243 rc.cpp:243
+msgid "Use authentication"
+msgstr "Použít potvrzení pravosti"
+
+#. i18n: file: network/proxysettings.ui:112
+#. i18n: ectx: property (text), widget (QLabel, label_16)
+#: po/rc.cpp:246 rc.cpp:246
+msgid "Username"
+msgstr "Uživatelské jméno"
+
+#. i18n: file: network/proxysettings.ui:129
+#. i18n: ectx: property (text), widget (QLabel, label_17)
+#: po/rc.cpp:249 rc.cpp:249
+msgid "Password"
+msgstr "Heslo"
+
+#: po/rc.cpp:253 rc.cpp:253
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Pavel Fric"
+
+#: po/rc.cpp:254 rc.cpp:254
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "pavelfric@seznam.cz"
+
+#: widgets/fancytabwidget.cpp:773
+msgid "Style"
+msgstr "Styl"
+
+#: widgets/fancytabwidget.cpp:774
+msgid "Large Sidebar"
+msgstr "Velký postranní panel"
+
+#: widgets/fancytabwidget.cpp:775
+msgid "Small Sidebar"
+msgstr "Malý postranní panel"
+
+#: widgets/fancytabwidget.cpp:776
+msgid "Tabs On Side"
+msgstr "Karty po straně"
+
+#: widgets/fancytabwidget.cpp:777
+msgid "Tabs On Top"
+msgstr "Karty nahoře"
+
+#: widgets/fancytabwidget.cpp:778
+msgid "Tabs On Top (Icons Only)"
+msgstr "Karty nahoře (pouze ikony)"
+
+#: widgets/fancytabwidget.cpp:779
+msgid "Tabs On Bottom"
+msgstr "Karty dole"
+
+#: widgets/fancytabwidget.cpp:780
+msgid "Tabs On Bottom (Icons Only)"
+msgstr "Karty dole (pouze ikony)"
+
+#: widgets/itemview.cpp:300
+msgid "Back"
+msgstr "Zpět"
+
+#: widgets/itemview.cpp:408 widgets/itemview.cpp:446 widgets/itemview.cpp:452
+#: widgets/itemview.cpp:552
+#, qt-format
+msgid "Search %1..."
+msgstr "Hledání %1..."

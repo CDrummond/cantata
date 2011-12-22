@@ -29,7 +29,12 @@
 class SqueezedTextLabel : public KSqueezedTextLabel
 {
 public:
-    SqueezedTextLabel(QWidget *p) : KSqueezedTextLabel(p) { setTextElideMode(Qt::ElideRight); }
+    SqueezedTextLabel(QWidget *p)
+        : KSqueezedTextLabel(p) {
+        bool rtl=Qt::RightToLeft==layoutDirection();
+        setTextElideMode(rtl ? Qt::ElideLeft : Qt::ElideRight);
+        setAlignment(rtl ? Qt::AlignRight : Qt::AlignLeft);
+    }
 };
 #else
 #include <QtGui/QLabel>

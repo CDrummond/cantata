@@ -51,44 +51,16 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QToolButton" name="prevTrackButton">
-       <property name="iconSize">
-        <size>
-         <width>28</width>
-         <height>28</height>
-        </size>
-       </property>
-      </widget>
+      <widget class="QToolButton" name="prevTrackButton"/>
      </item>
      <item>
-      <widget class="QToolButton" name="playPauseTrackButton">
-       <property name="iconSize">
-        <size>
-         <width>28</width>
-         <height>28</height>
-        </size>
-       </property>
-      </widget>
+      <widget class="QToolButton" name="playPauseTrackButton"/>
      </item>
      <item>
-      <widget class="QToolButton" name="stopTrackButton">
-       <property name="iconSize">
-        <size>
-         <width>28</width>
-         <height>28</height>
-        </size>
-       </property>
-      </widget>
+      <widget class="QToolButton" name="stopTrackButton"/>
      </item>
      <item>
-      <widget class="QToolButton" name="nextTrackButton">
-       <property name="iconSize">
-        <size>
-         <width>28</width>
-         <height>28</height>
-        </size>
-       </property>
-      </widget>
+      <widget class="QToolButton" name="nextTrackButton"/>
      </item>
     </layout>
    </item>

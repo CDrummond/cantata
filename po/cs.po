@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-21 20:51+0000\n"
+"POT-Creation-Date: 2011-12-22 20:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,15 +20,15 @@ msgstr ""
 "X-Language: cs_CZ\n"
 "X-Source-Language: C\n"
 
-#: gui/albumspage.cpp:53 gui/mainwindow.cpp:315
+#: gui/albumspage.cpp:53 gui/mainwindow.cpp:321
 msgid "Albums"
 msgstr "Alba"
 
-#: gui/albumspage.cpp:158 gui/librarypage.cpp:190
+#: gui/albumspage.cpp:160 gui/librarypage.cpp:192
 msgid "All Genres"
 msgstr "Všechny žánry"
 
-#: gui/folderpage.cpp:51 gui/mainwindow.cpp:318
+#: gui/folderpage.cpp:51 gui/mainwindow.cpp:324
 msgid "Folders"
 msgstr "Složky"
 
@@ -44,120 +44,130 @@ msgstr "Informace o albu"
 msgid "<h3><i>Loading...</i></h3>"
 msgstr "<h3><i>Nahrává se...</i></h3>"
 
-#: gui/librarypage.cpp:73 gui/mainwindow.cpp:312
+#: gui/librarypage.cpp:75 gui/mainwindow.cpp:318
 msgid "Library"
 msgstr "Knihovna"
 
 #: gui/mainwindow.cpp:246
+#, fuzzy
+msgid "Small Playback Buttons"
+msgstr "Nastavení přehrávání"
+
+#: gui/mainwindow.cpp:249
+msgid "Small Control Buttons"
+msgstr ""
+
+#: gui/mainwindow.cpp:252
 msgid "Update Database"
 msgstr "Aktualizovat databázi"
 
-#: gui/mainwindow.cpp:249
+#: gui/mainwindow.cpp:255
 msgid "Previous Track"
 msgstr "Předchozí skladba"
 
-#: gui/mainwindow.cpp:253
+#: gui/mainwindow.cpp:259
 msgid "Next Track"
 msgstr "Další skladba"
 
-#: gui/mainwindow.cpp:257
+#: gui/mainwindow.cpp:263
 msgid "Play/Pause"
 msgstr "Přehrát/Pozastavit"
 
-#: gui/mainwindow.cpp:261
+#: gui/mainwindow.cpp:267
 msgid "Stop"
 msgstr "Zastavit"
 
-#: gui/mainwindow.cpp:265
+#: gui/mainwindow.cpp:271
 msgid "Increase Volume"
 msgstr "Zvýšit hlasitost"
 
-#: gui/mainwindow.cpp:269
+#: gui/mainwindow.cpp:275
 msgid "Decrease Volume"
 msgstr "Snížit hlasitost"
 
-#: gui/mainwindow.cpp:273
+#: gui/mainwindow.cpp:279
 msgid "Add To Play Queue"
 msgstr "Přidat do řady přehrávaných skladeb"
 
-#: gui/mainwindow.cpp:276
+#: gui/mainwindow.cpp:282
 msgid "Add To"
 msgstr "Přidat"
 
-#: gui/mainwindow.cpp:279
+#: gui/mainwindow.cpp:285
 msgid "Replace Play Queue"
 msgstr "Nahradit řadu přehrávaných skladeb"
 
-#: gui/mainwindow.cpp:282 gui/playlistspage.cpp:56 gui/streamspage.cpp:55
-msgid "Remove"
-msgstr "Odstranit"
+#: gui/mainwindow.cpp:288
+#, fuzzy
+msgid "Remove From Playlist"
+msgstr "Přejmenovat seznam skladeb"
 
-#: gui/mainwindow.cpp:285
+#: gui/mainwindow.cpp:291
 msgid "Copy Track Info"
 msgstr "Kopírovat informace o skladbě"
 
-#: gui/mainwindow.cpp:288
+#: gui/mainwindow.cpp:294
 msgid "Crop"
 msgstr "Oříznout"
 
-#: gui/mainwindow.cpp:291
+#: gui/mainwindow.cpp:297
 msgid "Shuffle"
 msgstr "Zamíchat"
 
-#: gui/mainwindow.cpp:294
+#: gui/mainwindow.cpp:300
 msgid "Save As"
 msgstr "Uložit jako"
 
-#: gui/mainwindow.cpp:297
-msgid "Clear"
-msgstr "Vyprázdnit"
+#: gui/mainwindow.cpp:303
+#, fuzzy
+msgid "Clear Playlist"
+msgstr "Přejmenovat seznam skladeb"
 
-#: gui/mainwindow.cpp:300
+#: gui/mainwindow.cpp:306
 msgid "Expanded Interface"
 msgstr "Rozšířené rozhraní"
 
-#: gui/mainwindow.cpp:303
+#: gui/mainwindow.cpp:309
 msgid "Random"
 msgstr "Náhodné"
 
-#: gui/mainwindow.cpp:306
+#: gui/mainwindow.cpp:312
 msgid "Repeat"
 msgstr "Opakovat"
 
-#: gui/mainwindow.cpp:309
+#: gui/mainwindow.cpp:315
 msgid "Consume"
 msgstr "Strávit"
 
-#: gui/mainwindow.cpp:321 gui/playlistspage.cpp:87
+#: gui/mainwindow.cpp:327 gui/playlistspage.cpp:87
 msgid "Playlists"
 msgstr "Seznamy skladeb"
 
-#: gui/mainwindow.cpp:324 gui/preferencesdialog.cpp:108
+#: gui/mainwindow.cpp:330 gui/preferencesdialog.cpp:108
 msgid "Lyrics"
 msgstr "Text písně"
 
-#: gui/mainwindow.cpp:327 gui/streamspage.cpp:99
+#: gui/mainwindow.cpp:333 gui/streamspage.cpp:99
 msgid "Streams"
 msgstr "Proudy"
 
-#: gui/mainwindow.cpp:331
+#: gui/mainwindow.cpp:337
 msgid "Info"
 msgstr "Informace"
 
-#: gui/mainwindow.cpp:335
+#: gui/mainwindow.cpp:341
 msgid "Server Info"
 msgstr "Informace o serveru"
 
-#: gui/mainwindow.cpp:486
+#: gui/mainwindow.cpp:494
 msgid "Search Play Queue..."
 msgstr "Prohledat řadu přehrávaných skladeb..."
 
-#: gui/mainwindow.cpp:528
+#: gui/mainwindow.cpp:564
 msgid "Configure Cantata..."
 msgstr "Nastavit Cantatu..."
 
-#: gui/mainwindow.cpp:797
-#, qt-format
+#: gui/mainwindow.cpp:864
 msgid ""
 "The MPD connection died unexpectedly.<br/>TThis error is unrecoverable, "
 "please restart %1."
@@ -165,64 +175,61 @@ msgstr ""
 "Spojení s MPD neočekávaně skončilo.<br/>Tuto chybu nelze odstranit. Spusťte, "
 "prosím, %1 znovu."
 
-#: gui/mainwindow.cpp:798
+#: gui/mainwindow.cpp:865
 msgid "Lost MPD Connection"
 msgstr "Ztraceno spojení s MPD"
 
-#: gui/mainwindow.cpp:1030
-#, qt-format
+#: gui/mainwindow.cpp:1097
 msgid ""
 "<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
-"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td "
-"align=\"right\"><b>Song:</b></td><td>%3</td></tr><tr><td "
-"align=\"right\"><b>Track:</b></td><td>%4</td></tr><tr><td "
-"align=\"right\"><b>Length:</b></td><td>%5</td></tr></table>"
+"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
+"\"><b>Song:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Track:</b></"
+"td><td>%4</td></tr><tr><td align=\"right\"><b>Length:</b></td><td>%5</td></"
+"tr></table>"
 msgstr ""
 "<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
-"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td "
-"align=\"right\"><b>Song:</b></td><td>%3</td></tr><tr><td "
-"align=\"right\"><b>Skladba:</b></td><td>%4</td></tr><tr><td "
-"align=\"right\"><b>Délka:</b></td><td>%5</td></tr></table>"
+"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
+"\"><b>Song:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Skladba:</b></"
+"td><td>%4</td></tr><tr><td align=\"right\"><b>Délka:</b></td><td>%5</td></"
+"tr></table>"
 
-#: gui/mainwindow.cpp:1085 gui/mainwindow.cpp:1086
-#, qt-format
+#: gui/mainwindow.cpp:1152 gui/mainwindow.cpp:1153
 msgid "Volume %1%"
 msgstr "Hlasitost %1%"
 
-#: gui/mainwindow.cpp:1243 gui/playlistspage.cpp:193
+#: gui/mainwindow.cpp:1310 gui/playlistspage.cpp:193
 msgid "Playlist Name"
 msgstr "Název seznamu skladeb"
 
-#: gui/mainwindow.cpp:1243 gui/playlistspage.cpp:193
+#: gui/mainwindow.cpp:1310 gui/playlistspage.cpp:193
 msgid "Enter a name for the playlist:"
 msgstr "Zadejte název pro seznam skladeb:"
 
-#: gui/mainwindow.cpp:1250
-#, qt-format
+#: gui/mainwindow.cpp:1317
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
 msgstr ""
 "Seznam skladeb pojmenovaný <b>%1</b> již existuje!<br/>Přidat do tohoto "
 "seznamu skladeb?"
 
-#: gui/mainwindow.cpp:1251
+#: gui/mainwindow.cpp:1318
 msgid "Existing Playlist"
 msgstr "Existující seznam skladeb"
 
-#: gui/mainwindow.cpp:1304
+#: gui/mainwindow.cpp:1371
 msgid "1 Artist, "
 msgid_plural "%1 Artists, "
 msgstr[0] "Jeden umělec, "
 msgstr[1] "%1 umělci, "
 msgstr[2] "%1 umělců, "
 
-#: gui/mainwindow.cpp:1305
+#: gui/mainwindow.cpp:1372
 msgid "1 Album, "
 msgid_plural "%1 Albums, "
 msgstr[0] "Jedno album, "
 msgstr[1] "%1 alba, "
 msgstr[2] "%1 alb, "
 
-#: gui/mainwindow.cpp:1306 models/musiclibrarymodel.cpp:223
+#: gui/mainwindow.cpp:1373 models/musiclibrarymodel.cpp:224
 #: models/playlistsmodel.cpp:177
 msgid "1 Track"
 msgid_plural "%1 Tracks"
@@ -230,7 +237,7 @@ msgstr[0] "Jedna skladba"
 msgstr[1] "%1 skladby"
 msgstr[2] "%1 skladeb"
 
-#: gui/mainwindow.cpp:1497 main.cpp:35
+#: gui/mainwindow.cpp:1568 main.cpp:35
 msgid "Cantata"
 msgstr "Cantata"
 
@@ -254,9 +261,14 @@ msgstr "Skladba"
 msgid "Album"
 msgstr "Album"
 
-#: gui/playlistspage.cpp:58
-msgid "Rename"
-msgstr "Přejmenovat"
+#: gui/playlistspage.cpp:56
+#, fuzzy
+msgid "Remove Playlist"
+msgstr "Přejmenovat seznam skladeb"
+
+#: gui/playlistspage.cpp:58 gui/playlistspage.cpp:224
+msgid "Rename Playlist"
+msgstr "Přejmenovat seznam skladeb"
 
 #: gui/playlistspage.cpp:170
 msgid "Are you sure you wish to remove the selected items?"
@@ -267,7 +279,6 @@ msgid "Remove?"
 msgstr "Odstranit?"
 
 #: gui/playlistspage.cpp:201 gui/playlistspage.cpp:232
-#, qt-format
 msgid "A playlist named <b>%1</b> already exists!<br/>Overwrite?"
 msgstr "Seznam skladeb pojmenovaný <b>%1</b> již existuje!<br/>Přepsat?"
 
@@ -276,11 +287,6 @@ msgid "Overwrite Playlist?"
 msgstr "Přepsat seznam skladeb?"
 
 #: gui/playlistspage.cpp:224
-msgid "Rename Playlist"
-msgstr "Přejmenovat seznam skladeb"
-
-#: gui/playlistspage.cpp:224
-#, qt-format
 msgid "Enter new name for playlist: %1"
 msgstr "Zadejte název pro seznam skladeb: %1"
 
@@ -342,11 +348,11 @@ msgstr "Proud:"
 msgid "Category:"
 msgstr "Skupina:"
 
-#: gui/streamdialog.cpp:79
+#: gui/streamdialog.cpp:79 gui/streamspage.cpp:53
 msgid "Add Stream"
 msgstr "Přidat proud"
 
-#: gui/streamdialog.cpp:103
+#: gui/streamdialog.cpp:103 gui/streamspage.cpp:57
 msgid "Edit Stream"
 msgstr "Upravit proud"
 
@@ -358,13 +364,10 @@ msgstr "Zavést proudy"
 msgid "Export Streams"
 msgstr "Vyvést proudy"
 
-#: gui/streamspage.cpp:53
-msgid "Add"
-msgstr "Přidat"
-
-#: gui/streamspage.cpp:57
-msgid "Edit"
-msgstr "Upravit"
+#: gui/streamspage.cpp:55
+#, fuzzy
+msgid "Remove Stream"
+msgstr "Odstranit proud?"
 
 #: gui/streamspage.cpp:167
 msgid ""
@@ -375,7 +378,6 @@ msgstr ""
 "*.js|Skript Amaroku"
 
 #: gui/streamspage.cpp:178
-#, qt-format
 msgid ""
 "Failed to import <b>%1</b>!<br/>Please check this is of the correct type."
 msgstr ""
@@ -387,27 +389,22 @@ msgid "*.streams|Cantata Streams"
 msgstr "*.streams|Proudy Cantata"
 
 #: gui/streamspage.cpp:199
-#, qt-format
 msgid "Failed to create <b>%1</b>!"
 msgstr "Nepodařilo se vytvořit <b>%1</b>!"
 
 #: gui/streamspage.cpp:218
-#, qt-format
 msgid "Stream already exists!<br/><b>%1</b>"
 msgstr "Proud již existuje!<br/><b>%1</b>"
 
 #: gui/streamspage.cpp:227
-#, qt-format
 msgid "A stream named <b>%1</b> already exists!"
 msgstr "Proud pojmenovaný <b>%1</b> již existuje!"
 
 #: gui/streamspage.cpp:248
-#, qt-format
 msgid "Are you sure you wish to remove the %1 selected streams?"
 msgstr "Opravdu chcete odstranit %1 vybrané proudy?"
 
 #: gui/streamspage.cpp:249
-#, qt-format
 msgid "Are you sure you wish to remove <b>%1</b>?"
 msgstr "Opravdu chcete odstranit <b>%1</b>?"
 
@@ -428,17 +425,14 @@ msgid "Enter a name for the category:"
 msgstr "Zadejte název pro skupinu:"
 
 #: gui/streamspage.cpp:309
-#, qt-format
 msgid "A category named <b>%1</b> already exists!"
 msgstr "Skupina pojmenovaná <b>%1</b> již existuje!"
 
 #: gui/streamspage.cpp:337
-#, qt-format
 msgid "Stream already exists!<br/><b>%1 (%2)</b>"
 msgstr "Proud již existuje!<br/><b>%1 (%2)</b>"
 
 #: gui/streamspage.cpp:343
-#, qt-format
 msgid "A stream named <b>%1 (%2)</b> already exists!"
 msgstr "Proud pojmenovaný <b>%1 (%2)</b> již existuje!"
 
@@ -471,7 +465,6 @@ msgid "Refresh"
 msgstr "Obnovit"
 
 #: lyrics/lyricspage.cpp:222
-#, qt-format
 msgid "Fetching lyrics via %1"
 msgstr "Natahuje se text písně přes %1"
 
@@ -499,9 +492,8 @@ msgstr "Craig Drummond"
 msgid "Maintainer"
 msgstr "Správce"
 
-#: models/albumsmodel.cpp:238 models/musiclibrarymodel.cpp:179
+#: models/albumsmodel.cpp:238 models/musiclibrarymodel.cpp:180
 #: models/playlistsmodel.cpp:167
-#, qt-format
 msgid ""
 "%1\n"
 "1 Track"
@@ -519,7 +511,6 @@ msgstr[2] ""
 "%2 skladeb"
 
 #: models/dirviewmodel.cpp:136
-#, qt-format
 msgid ""
 "%1\n"
 "1 Entry"
@@ -543,8 +534,7 @@ msgstr[0] "Jedna položka"
 msgstr[1] "%1 položky"
 msgstr[2] "%1 položek"
 
-#: models/musiclibrarymodel.cpp:168
-#, qt-format
+#: models/musiclibrarymodel.cpp:169
 msgid ""
 "%1\n"
 "1 Album"
@@ -561,7 +551,7 @@ msgstr[2] ""
 "%1\n"
 "%2 alb"
 
-#: models/musiclibrarymodel.cpp:206
+#: models/musiclibrarymodel.cpp:207
 msgid "1 Album"
 msgid_plural "%1 Albums"
 msgstr[0] "Jedno album"
@@ -597,7 +587,6 @@ msgid "Genre"
 msgstr "Žánr"
 
 #: models/streamsmodel.cpp:147
-#, qt-format
 msgid ""
 "%1\n"
 "1 Stream"
@@ -621,13 +610,11 @@ msgstr[0] "Jeden proud"
 msgstr[1] "%1 proudy"
 msgstr[2] "%1 proudů"
 
-#: mpd/mpdconnection.cpp:769
-#, qt-format
+#: mpd/mpdconnection.cpp:773
 msgid "Sorry, failed to rename <b>%1</b> to <b>%2</b>"
 msgstr "Promiňte, ale nepodařilo se přejmenovat <b>%1</b> na <b>%2</b>"
 
-#: mpd/mpdconnection.cpp:794
-#, qt-format
+#: mpd/mpdconnection.cpp:798
 msgid "Sorry, failed to save <b>%1</b>"
 msgstr "Promiňte, ale nepodařilo se uložit <b>%1</b>"
 
@@ -636,7 +623,6 @@ msgid "Unknown"
 msgstr "Neznámý"
 
 #: mpd/mpdparseutils.cpp:404
-#, qt-format
 msgid "1 day %2"
 msgid_plural "%1 days %2"
 msgstr[0] "Jeden den %2"
@@ -861,14 +847,14 @@ msgstr "Pohled se seznamy skladeb:"
 msgid "Streams view:"
 msgstr "Pohled s proudy:"
 
-#. i18n: file: gui/mainwindow.ui:118
+#. i18n: file: gui/mainwindow.ui:90
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)
 #: po/rc.cpp:102 rc.cpp:102
 msgid "SqueezedTextLabel"
 msgstr "ZmáčknutýTextovýŠtítek"
 
-#. i18n: file: gui/mainwindow.ui:146
-#. i18n: ectx: property (text), widget (QLabel, songTimeElapsedLabel)
+#. i18n: file: gui/mainwindow.ui:118
+#. i18n: ectx: property (text), widget (SqueezedTextLabel, songTimeElapsedLabel)
 #: po/rc.cpp:105 rc.cpp:105
 msgid "(00:00)"
 msgstr "(00:00)"
@@ -1141,12 +1127,26 @@ msgstr "Karty dole"
 msgid "Tabs On Bottom (Icons Only)"
 msgstr "Karty dole (pouze ikony)"
 
-#: widgets/itemview.cpp:300
+#: widgets/itemview.cpp:337
 msgid "Back"
 msgstr "Zpět"
 
-#: widgets/itemview.cpp:408 widgets/itemview.cpp:446 widgets/itemview.cpp:452
-#: widgets/itemview.cpp:552
-#, qt-format
+#: widgets/itemview.cpp:457 widgets/itemview.cpp:495 widgets/itemview.cpp:501
+#: widgets/itemview.cpp:642
 msgid "Search %1..."
 msgstr "Hledání %1..."
+
+#~ msgid "Remove"
+#~ msgstr "Odstranit"
+
+#~ msgid "Clear"
+#~ msgstr "Vyprázdnit"
+
+#~ msgid "Rename"
+#~ msgstr "Přejmenovat"
+
+#~ msgid "Add"
+#~ msgstr "Přidat"
+
+#~ msgid "Edit"
+#~ msgstr "Upravit"

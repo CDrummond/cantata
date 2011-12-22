@@ -1491,6 +1491,10 @@ void MainWindow::setupTrayIcon()
         }
         return;
     }
+
+    if (trayItem) {
+        return;
+    }
 #ifdef ENABLE_KDE_SUPPORT
     trayItem = new KStatusNotifierItem(this);
     trayItem->setCategory(KStatusNotifierItem::ApplicationStatus);

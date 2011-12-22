@@ -9,6 +9,7 @@
 4. Add context menu to toolbar buttons to enable using smaller buttons.
 5. Polish translation - thanks to Piotr Wicijowski
 6. To be more consisten with other apps, show exapander for root items in tree views.
+7. Show spinner over library/folder view when loading. (KDE only)
 
 0.1.0
 -----

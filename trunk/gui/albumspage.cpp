@@ -68,6 +68,8 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
             &model, SLOT(setCover(const QString &, const QString &, const QImage &)));
+    connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
+    connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
 }
 
 AlbumsPage::~AlbumsPage()

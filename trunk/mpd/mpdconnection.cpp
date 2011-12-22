@@ -700,11 +700,13 @@ void MPDConnection::update()
  */
 void MPDConnection::listAllInfo(const QDateTime &dbUpdate)
 {
+    emit updatingLibrary();
     Response response=sendCommand("listallinfo");
     if(response.ok) {
         qDebug() << "parseLibraryItems:" << response.data;
         emit musicLibraryUpdated(MPDParseUtils::parseLibraryItems(response.data), dbUpdate);
     }
+    emit updatedLibrary();
 }
 
 /**
@@ -713,10 +715,12 @@ void MPDConnection::listAllInfo(const QDateTime &dbUpdate)
 */
 void MPDConnection::listAll()
 {
+    emit updatingFileList();
     Response response=sendCommand("listall");
     if(response.ok) {
         emit dirViewUpdated(MPDParseUtils::parseDirViewItems(response.data));
     }
+    emit updatedFileList();
 }
 
 /*

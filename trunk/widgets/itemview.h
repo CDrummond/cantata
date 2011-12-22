@@ -27,6 +27,10 @@
 #include "ui_itemview.h"
 class QAction;
 
+#ifdef ENABLE_KDE_SUPPORT
+class KPixmapSequenceOverlayPainter;
+#endif
+
 class ItemView : public QWidget, public Ui::ItemView
 {
     Q_OBJECT
@@ -70,6 +74,10 @@ public:
     void update() { Mode_Tree==mode ? treeView->update() : listView->update(); }
     void setDeleteAction(QAction *act);
 
+public Q_SLOTS:
+    void showSpinner();
+    void hideSpinner();
+
 Q_SIGNALS:
     void searchItems();
     void itemsSelected(bool);
@@ -95,6 +103,10 @@ private:
     QModelIndex prevTopIndex;
     QSize iconGridSize;
     QSize listGridSize;
+    #ifdef ENABLE_KDE_SUPPORT
+    bool spinnerActive;
+    KPixmapSequenceOverlayPainter *spinner;
+    #endif
 };
 
 #endif

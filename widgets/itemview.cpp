@@ -193,6 +193,7 @@ public:
         QPixmap pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : image.value<QIcon>().pixmap(imageSize, imageSize);
         bool oneLine = childText.isEmpty();
         bool iconMode = imageSize>50;
+        bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
 
         painter->save();
         painter->setClipRect(r);
@@ -207,8 +208,13 @@ public:
                 painter->drawPixmap(r.x()+((r.width()-pix.width())/2), r.y(), pix.width(), pix.height(), pix);
                 r.adjust(0, qMax(pix.width(), pix.height())+3, 0, -3);
             } else {
-                painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-                r.adjust(pix.width()+3, 0, -3, 0);
+                if (rtl) {
+                    painter->drawPixmap(r.x()+r.width()-pix.width(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                    r.adjust(3, 0, -(3+pix.width()), 0);
+                } else {
+                    painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                    r.adjust(pix.width()+3, 0, -3, 0);
+                }
             }
         }
         QFont textFont(QApplication::font());
@@ -255,19 +261,35 @@ public:
             if (act1 && (iconMode ? r.height() : r.width())>(constActionIconSize+(2*constActionBorder))) {
                 pix=act1->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
                 if (!pix.isNull()) {
-                    QRect ir=iconMode
-                                ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),
-                                        r.y()+constActionBorder,
-                                        pix.width(), pix.height())
-                                : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
-                                        r.y()+((r.height()-pix.height())/2),
-                                        pix.width(), pix.height());
+                    QRect ir=rtl
+                                ? iconMode
+                                    ? QRect(r.x()+constActionBorder,
+                                            r.y()+constActionBorder,
+                                            pix.width(), pix.height())
+                                    : QRect(r.x()+constActionBorder,
+                                            r.y()+((r.height()-pix.height())/2),
+                                            pix.width(), pix.height())
+                                : iconMode
+                                    ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),
+                                            r.y()+constActionBorder,
+                                            pix.width(), pix.height())
+                                    : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
+                                            r.y()+((r.height()-pix.height())/2),
+                                            pix.width(), pix.height());
                     drawBgnd(painter, ir);
                     painter->drawPixmap(ir, pix);
-                    if (iconMode) {
-                        r.adjust(0, pix.height()+constActionBorder, 0, -(pix.height()+constActionBorder));
+                    if (rtl) {
+                        if (iconMode) {
+                            r.adjust(0, pix.height()+constActionBorder, 0, -(pix.height()+constActionBorder));
+                        } else {
+                            r.adjust(pix.width()+constActionBorder, 0, 0, 0);
+                        }
                     } else {
-                        r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
+                        if (iconMode) {
+                            r.adjust(0, pix.height()+constActionBorder, 0, -(pix.height()+constActionBorder));
+                        } else {
+                            r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
+                        }
                     }
                 }
             }
@@ -275,13 +297,21 @@ public:
             if (act2 && (iconMode ? r.height() : r.width())>(constActionIconSize+(2*constActionBorder))) {
                 pix=act2->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
                 if (!pix.isNull()) {
-                    QRect ir=iconMode
-                                ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),
-                                        r.y()+constActionBorder,
-                                        pix.width(), pix.height())
-                                : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
-                                        r.y()+((r.height()-pix.height())/2),
-                                        pix.width(), pix.height());
+                    QRect ir=rtl
+                                ? iconMode
+                                    ? QRect(r.x()+constActionBorder,
+                                            r.y()+constActionBorder,
+                                            pix.width(), pix.height())
+                                    : QRect(r.x()+constActionBorder,
+                                            r.y()+((r.height()-pix.height())/2),
+                                            pix.width(), pix.height())
+                                : iconMode
+                                    ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),
+                                            r.y()+constActionBorder,
+                                            pix.width(), pix.height())
+                                    : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
+                                            r.y()+((r.height()-pix.height())/2),
+                                            pix.width(), pix.height());
                     drawBgnd(painter, ir);
                     painter->drawPixmap(ir, pix);
                 }
@@ -517,7 +547,7 @@ void ItemView::showSpinner()
     }
     spinnerActive=true;
     spinner->setWidget(view()->viewport());
-    spinner->setAlignment(Qt::AlignTop | Qt::AlignRight);
+    spinner->setAlignment(Qt::AlignTop | (Qt::RightToLeft==QApplication::layoutDirection() ? Qt::AlignLeft : Qt::AlignRight));
     spinner->start();
     #endif
 }
@@ -544,27 +574,44 @@ void ItemView::backActivated()
 
 QAction * ItemView::getAction(const QModelIndex &index)
 {
+    bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
     bool iconMode=Mode_IconTop==mode && !index.parent().isValid();
     QRect rect(view()->visualRect(index));
     rect.moveTo(view()->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
-    QRect actionRect=iconMode
-                        ? QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
-                                rect.y()+constActionBorder,
-                                constActionIconSize, constActionIconSize)
-                        : QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
-                                rect.y()+((rect.height()-constActionIconSize)/2),
-                                constActionIconSize, constActionIconSize);
+    QRect actionRect=rtl
+                        ? iconMode
+                            ? QRect(rect.x()+constActionBorder,
+                                    rect.y()+constActionBorder,
+                                    constActionIconSize, constActionIconSize)
+                            : QRect(rect.x()+constActionBorder,
+                                    rect.y()+((rect.height()-constActionIconSize)/2),
+                                    constActionIconSize, constActionIconSize)
+                        : iconMode
+                            ? QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
+                                    rect.y()+constActionBorder,
+                                    constActionIconSize, constActionIconSize)
+                            : QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
+                                    rect.y()+((rect.height()-constActionIconSize)/2),
+                                    constActionIconSize, constActionIconSize);
 
     if (act1 && actionRect.contains(QCursor::pos())) {
         return act1;
     }
 
-    if (iconMode) {
-        actionRect.adjust(0, constActionIconSize+constActionBorder,
-                          0, constActionIconSize+constActionBorder);
+    if (rtl) {
+        if (iconMode) {
+            actionRect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
+        } else {
+            actionRect.adjust(constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder, 0);
+        }
     } else {
-        actionRect.adjust(-(constActionIconSize+constActionBorder), 0, 0, 0);
+        if (iconMode) {
+            actionRect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
+        } else {
+            actionRect.adjust(-(constActionIconSize+constActionBorder), 0, 0, 0);
+        }
     }
+
     if (act2 && actionRect.contains(QCursor::pos())) {
         return act2;
     }

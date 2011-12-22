@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-22 12:13+0000\n"
-"PO-Revision-Date: 2011-12-22 11:57+0100\n"
+"PO-Revision-Date: 2011-12-22 16:01+0100\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -47,13 +47,12 @@ msgid "Library"
 msgstr "Biblioteka"
 
 #: gui/mainwindow.cpp:246
-#, fuzzy
 msgid "Small Playback Buttons"
-msgstr "Ustawienia odtwarzania"
+msgstr "Małe przyciski odtwarzania"
 
 #: gui/mainwindow.cpp:249
 msgid "Small Control Buttons"
-msgstr ""
+msgstr "Małe przyciski sterujące"
 
 #: gui/mainwindow.cpp:252
 msgid "Update Database"
@@ -96,9 +95,8 @@ msgid "Replace Play Queue"
 msgstr "Zastąp kolejkę odtwarzania"
 
 #: gui/mainwindow.cpp:288
-#, fuzzy
 msgid "Remove From Playlist"
-msgstr "Zmiana nazwy playlisty"
+msgstr "Usuń z playlisty"
 
 #: gui/mainwindow.cpp:291
 msgid "Copy Track Info"
@@ -117,9 +115,8 @@ msgid "Save As"
 msgstr "Zapisz jako"
 
 #: gui/mainwindow.cpp:303
-#, fuzzy
 msgid "Clear Playlist"
-msgstr "Zmiana nazwy playlisty"
+msgstr "Wyczyść playlistę"
 
 #: gui/mainwindow.cpp:306
 msgid "Expanded Interface"
@@ -258,9 +255,8 @@ msgid "Album"
 msgstr "Album"
 
 #: gui/playlistspage.cpp:56
-#, fuzzy
 msgid "Remove Playlist"
-msgstr "Zmiana nazwy playlisty"
+msgstr "Usuń playlistę"
 
 #: gui/playlistspage.cpp:58 gui/playlistspage.cpp:224
 msgid "Rename Playlist"
@@ -361,9 +357,8 @@ msgid "Export Streams"
 msgstr "Eksportuj strumienie"
 
 #: gui/streamspage.cpp:55
-#, fuzzy
 msgid "Remove Stream"
-msgstr "Usunąć strumień?"
+msgstr "Usuń strumień"
 
 #: gui/streamspage.cpp:167
 msgid ""

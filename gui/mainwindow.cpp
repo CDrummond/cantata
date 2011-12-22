@@ -285,7 +285,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     replacePlaylistAction->setText(i18n("Replace Play Queue"));
 
     removeFromPlaylistAction = actionCollection()->addAction("removefromplaylist");
-    removeFromPlaylistAction->setText(i18n("Remove"));
+    removeFromPlaylistAction->setText(i18n("Remove From Playlist"));
 
     copyTrackInfoAction = actionCollection()->addAction("copytrackinfo");
     copyTrackInfoAction->setText(i18n("Copy Track Info"));
@@ -300,7 +300,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     savePlaylistAction->setText(i18n("Save As"));
 
     clearPlaylistAction = actionCollection()->addAction("clearplaylist");
-    clearPlaylistAction->setText(i18n("Clear"));
+    clearPlaylistAction->setText(i18n("Clear Playlist"));
 
     expandInterfaceAction = actionCollection()->addAction("expandinterface");
     expandInterfaceAction->setText(i18n("Expanded Interface"));
@@ -356,13 +356,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     addToPlaylistAction = new QAction(tr("Add To Play Queue"), this);
     addToStoredPlaylistAction = new QAction(tr("Add To"), this);
     replacePlaylistAction = new QAction(tr("Replace Play Queue"), this);
-    removeFromPlaylistAction = new QAction(tr("Remove"), this);
+    removeFromPlaylistAction = new QAction(tr("Remove From PlayList"), this);
     copyTrackInfoAction = new QAction(tr("Copy Track Info"), this);
     copyTrackInfoAction->setShortcut(QKeySequence::Copy);
     cropPlaylistAction = new QAction(tr("Crop"), this);
     shufflePlaylistAction = new QAction(tr("Shuffle"), this);
     savePlaylistAction = new QAction(tr("Save As"), this);
-    clearPlaylistAction = new QAction(tr("Clear"), this);
+    clearPlaylistAction = new QAction(tr("Clear Playlist"), this);
     expandInterfaceAction = new QAction(tr("Expanded Interface"), this);
     randomPlaylistAction = new QAction(tr("Random"), this);
     repeatPlaylistAction = new QAction(tr("Repeat"), this);

@@ -50,17 +50,17 @@ StreamsPage::StreamsPage(MainWindow *p)
     exportAction = p->actionCollection()->addAction("exportstreams");
     exportAction->setText(i18n("Export Streams"));
     addAction = p->actionCollection()->addAction("addstream");
-    addAction->setText(i18n("Add"));
+    addAction->setText(i18n("Add Stream"));
     removeAction = p->actionCollection()->addAction("removestream");
-    removeAction->setText(i18n("Remove"));
+    removeAction->setText(i18n("Remove Stream"));
     editAction = p->actionCollection()->addAction("editstream");
-    editAction->setText(i18n("Edit"));
+    editAction->setText(i18n("Edit Stream"));
     #else
     importAction = new QAction(tr("Import Streams"), this);
     exportAction = new QAction(tr("Export Streams"), this);
-    addAction = new QAction(tr("Add"), this);
-    removeAction = new QAction(tr("Remove"), this);
-    editAction = new QAction(tr("Edit"), this);
+    addAction = new QAction(tr("Add Stream"), this);
+    removeAction = new QAction(tr("Remove Stream"), this);
+    editAction = new QAction(tr("Edit Stream"), this);
     #endif
     importAction->setIcon(QIcon::fromTheme("document-import"));
     exportAction->setIcon(QIcon::fromTheme("document-export"));

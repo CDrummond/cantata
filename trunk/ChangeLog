@@ -4,6 +4,7 @@
    Wicijowski for the idea/patch.
 2. No need to manullay expand/collapse on QTreeView::activated - this messes up
    when KDE is set to double-click.
+3. Only create the tray icon once!
 
 0.1.0
 -----

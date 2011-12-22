@@ -127,17 +127,17 @@ QVariant dirViewModel::data(const QModelIndex &index, int role) const
         break;
     }
     case Qt::DisplayRole:
-        return item->data(index.column());
+        return item->data();
     case Qt::ToolTipRole:
         return 0==item->childCount()
-            ? item->data(index.column())
+            ? item->data()
             :
                 #ifdef ENABLE_KDE_SUPPORT
-                i18np("%1\n1 Entry", "%1\n%2 Entries", item->data(index.column()).toString(), item->childCount());
+                i18np("%1\n1 Entry", "%1\n%2 Entries", item->data(), item->childCount());
                 #else
                 (item->childCount()>1
-                    ? tr("%1\n%2 Entries").arg(item->data(index.column()).toString()).arg(item->childCount())
-                    : tr("%1\n1 Entry").arg(item->data(index.column()).toString()));
+                    ? tr("%1\n%2 Entries").arg(item->data()).arg(item->childCount())
+                    : tr("%1\n1 Entry").arg(item->data()));
                 #endif
     case ItemView::Role_SubText:
         switch (item->type()) {
@@ -197,8 +197,8 @@ QMimeData *dirViewModel::mimeData(const QModelIndexList &indexes) const
 void dirViewModel::recurseDirItems(DirViewItem &parent, QStringList &filenames) const
 {
     if (parent.childCount() == 0) {
-        if (!filenames.contains(parent.fileName())) {
-            filenames << parent.fileName();
+        if (!filenames.contains(parent.fullName())) {
+            filenames << parent.fullName();
         }
     } else {
         for (int i = 0; i < parent.childCount(); i++) {

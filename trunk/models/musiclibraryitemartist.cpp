@@ -29,19 +29,14 @@
 #include "musiclibraryitemalbum.h"
 #include "song.h"
 #include "mpdparseutils.h"
+#include <QDebug>
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItem *parent)
-    : MusicLibraryItem(data, MusicLibraryItem::Type_Artist),
-      m_parentItem(static_cast<MusicLibraryItemRoot *>(parent))
+    : MusicLibraryItem(data, MusicLibraryItem::Type_Artist, parent)
 {
     if (m_itemData.startsWith(QLatin1String("The "))) {
-        nonTheArtist=m_itemData.mid(4);
+        m_nonTheArtist=m_itemData.mid(4);
     }
-}
-
-MusicLibraryItemArtist::~MusicLibraryItemArtist()
-{
-    qDeleteAll(m_childItems);
 }
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s)
@@ -54,36 +49,10 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s)
         m_childItems.append(item);
         return item;
     }
-    return m_childItems.at(*it);
-}
-
-MusicLibraryItem * MusicLibraryItemArtist::child(int row) const
-{
-    return m_childItems.value(row);
-}
-
-int MusicLibraryItemArtist::childCount() const
-{
-    return m_childItems.count();
-}
-
-MusicLibraryItem * MusicLibraryItemArtist::parent() const
-{
-    return m_parentItem;
-}
-
-void MusicLibraryItemArtist::setParent(MusicLibraryItem * const parent)
-{
-    m_parentItem = static_cast<MusicLibraryItemRoot *>(parent);
-}
-
-int MusicLibraryItemArtist::row() const
-{
-    return m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItemArtist*>(this));
+    return static_cast<MusicLibraryItemAlbum *>(m_childItems.at(*it));
 }
 
 const QString & MusicLibraryItemArtist::baseArtist() const
 {
-    return nonTheArtist.isEmpty() ? m_itemData : nonTheArtist;
+    return m_nonTheArtist.isEmpty() ? m_itemData : m_nonTheArtist;
 }
-

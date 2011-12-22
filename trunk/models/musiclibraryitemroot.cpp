@@ -28,16 +28,6 @@
 #include "musiclibraryitemartist.h"
 #include "song.h"
 
-MusicLibraryItemRoot::MusicLibraryItemRoot(const QString &data)
-    : MusicLibraryItem(data, MusicLibraryItem::Type_Root)
-{
-}
-
-MusicLibraryItemRoot::~MusicLibraryItemRoot()
-{
-    qDeleteAll(m_childItems);
-}
-
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s)
 {
     QString aa=s.albumArtist();
@@ -49,15 +39,5 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s)
         m_childItems.append(item);
         return item;
     }
-    return m_childItems.at(*it);
-}
-
-MusicLibraryItem * MusicLibraryItemRoot::child(int row) const
-{
-    return m_childItems.value(row);
-}
-
-int MusicLibraryItemRoot::childCount() const
-{
-    return m_childItems.count();
+    return static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
 }

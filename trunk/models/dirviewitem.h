@@ -39,41 +39,45 @@ public:
         Type_File
     };
 
-    DirViewItem(const QString name, Type type);
-    virtual ~DirViewItem();
-
-    virtual int row() const {
-        return 0;
+    DirViewItem(const QString name, Type type, DirViewItem *p)
+        : m_parentItem(p)
+        , m_name(name)
+        , m_type(type) {
     }
-    virtual DirViewItem * parent() const {
-        return NULL;
+    virtual ~DirViewItem() {
+        qDeleteAll(m_childItems);
     }
-    virtual int childCount() const {
-        return 0;
+    int row() const {
+        return m_parentItem ? m_parentItem->m_childItems.indexOf(const_cast<DirViewItem *>(this)) : 0;
     }
-    virtual DirViewItem * child(int /*row*/) const {
-        return NULL;
+    DirViewItem * parent() const {
+        return m_parentItem;
     }
-    virtual QString fileName() {
-        return QString();
+    int childCount() const {
+        return m_childItems.count();;
     }
-
+    DirViewItem * child(int row) const {
+        return m_childItems.value(row);;
+    }
+    QString fullName();
     int columnCount() const {
         return 1;
     }
-    QVariant data(int) const {
-        return d_name;
+    const QString & data() const {
+        return m_name;
     }
-    QString name() {
-        return d_name;
+    const QString & name() {
+        return m_name;
     }
     DirViewItem::Type type() const {
-        return d_type;
+        return m_type;
     }
 
 protected:
-    QString d_name;
-    Type d_type;
+    DirViewItem * m_parentItem;
+    QList<DirViewItem *> m_childItems;
+    QString m_name;
+    Type m_type;
 };
 
 #endif

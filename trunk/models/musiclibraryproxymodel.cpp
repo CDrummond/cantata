@@ -43,33 +43,33 @@ bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem * const 
 {
     switch (_filterField) {
     case 0: // Artist
-        return item->data(0).toString().contains(filterRegExp());
+        return item->data().contains(filterRegExp());
     case 1: // Album
         for (int i = 0; i < item->childCount(); i++) {
-            if (item->child(i)->data(0).toString().contains(filterRegExp()))
+            if (item->child(i)->data().contains(filterRegExp()))
                 return true;
         }
         break;
     case 2: // Song
         for (int i = 0; i < item->childCount(); i++) {
             for (int j = 0; j < item->child(i)->childCount(); j++) {
-                if (item->child(i)->child(j)->data(0).toString().contains(filterRegExp()))
+                if (item->child(i)->child(j)->data().contains(filterRegExp()))
                     return true;
             }
         }
         break;
     case 3: // Any
-        if (item->data(0).toString().contains(filterRegExp()))
+        if (item->data().contains(filterRegExp()))
             return true;
 
         for (int i = 0; i < item->childCount(); i++) {
-            if (item->child(i)->data(0).toString().contains(filterRegExp()))
+            if (item->child(i)->data().contains(filterRegExp()))
                 return true;
         }
 
         for (int i = 0; i < item->childCount(); i++) {
             for (int j = 0; j < item->child(i)->childCount(); j++) {
-                if (item->child(i)->child(j)->data(0).toString().contains(filterRegExp()))
+                if (item->child(i)->child(j)->data().contains(filterRegExp()))
                     return true;
             }
         }
@@ -85,21 +85,21 @@ bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem * const i
 {
     switch (_filterField) {
     case 0: // Artist
-        return item->parent()->data(0).toString().contains(filterRegExp());
+        return item->parent()->data().contains(filterRegExp());
     case 1: // Album
-        return item->data(0).toString().contains(filterRegExp());
+        return item->data().contains(filterRegExp());
     case 2: // Song
         for (int i = 0; i < item->childCount(); i++) {
-            if (item->child(i)->data(0).toString().contains(filterRegExp()))
+            if (item->child(i)->data().contains(filterRegExp()))
                 return true;
         }
         break;
     case 3: // Any
-        if (item->parent()->data(0).toString().contains(filterRegExp()) || \
-                item->data(0).toString().contains(filterRegExp()))
+        if (item->parent()->data().contains(filterRegExp()) || \
+                item->data().contains(filterRegExp()))
             return true;
         for (int i = 0; i < item->childCount(); i++) {
-            if (item->child(i)->data(0).toString().contains(filterRegExp()))
+            if (item->child(i)->data().contains(filterRegExp()))
                 return true;
         }
         break;
@@ -114,15 +114,15 @@ bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem * const it
 {
     switch (_filterField) {
     case 0: // Artist
-        return item->parent()->parent()->data(0).toString().contains(filterRegExp());
+        return item->parent()->parent()->data().contains(filterRegExp());
     case 1: // Album
-        return item->parent()->data(0).toString().contains(filterRegExp());
+        return item->parent()->data().contains(filterRegExp());
     case 2: // Song
-        return item->data(0).toString().contains(filterRegExp());
+        return item->data().contains(filterRegExp());
     case 3: // Any
-        return item->parent()->parent()->data(0).toString().contains(filterRegExp()) || \
-               item->parent()->data(0).toString().contains(filterRegExp()) || \
-               item->data(0).toString().contains(filterRegExp());
+        return item->parent()->parent()->data().contains(filterRegExp()) || \
+               item->parent()->data().contains(filterRegExp()) || \
+               item->data().contains(filterRegExp());
     default:
         break;
     }

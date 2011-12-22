@@ -26,29 +26,15 @@
 #ifndef DIRVIEWITEMROOT_H
 #define DIRVIEWITEMROOT_H
 
-#include <QStringList>
-#include <QString>
-#include <QList>
-#include <QVariant>
-#include "dirviewitem.h"
+#include "dirviewitemdir.h"
 
-class DirViewItemRoot : public DirViewItem
+class DirViewItemRoot : public DirViewItemDir
 {
 public:
-    DirViewItemRoot(const QString name=QString());
-    ~DirViewItemRoot();
-
-    DirViewItem * createDirectory(const QString dirName);
-    DirViewItem * insertFile(const QString fileName);
-
-    int childCount() const;
-    DirViewItem * child(int row) const;
-
-private:
-    QList<DirViewItem *> d_childItems;
-
-    friend class DirViewItemDir;
-    friend class DirViewItemFile;
+    DirViewItemRoot() {
+    }
+    virtual ~DirViewItemRoot() {
+    }
 };
 
 #endif

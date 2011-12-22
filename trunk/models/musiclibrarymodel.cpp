@@ -99,8 +99,9 @@ QModelIndex MusicLibraryModel::parent(const QModelIndex &index) const
 
 QVariant MusicLibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    Q_UNUSED(section)
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return rootItem->data(section);
+        return rootItem->data();
 
     return QVariant();
 }
@@ -152,35 +153,35 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         if (MusicLibraryItem::Type_Song==item->type()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
             if (song->track()>9) {
-                return QString::number(song->track())+QChar(' ')+item->data(index.column()).toString();
+                return QString::number(song->track())+QChar(' ')+item->data();
             } else if (song->track()>0) {
-                return QChar('0')+QString::number(song->track())+QChar(' ')+item->data(index.column()).toString();
+                return QChar('0')+QString::number(song->track())+QChar(' ')+item->data();
             }
         }
-        return item->data(index.column());
+        return item->data();
     case Qt::ToolTipRole:
         switch (item->type()) {
         case MusicLibraryItem::Type_Artist:
             return 0==item->childCount()
-                ? item->data(index.column())
+                ? item->data()
                 :
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Album", "%1\n%2 Albums", item->data(index.column()).toString(), item->childCount());
+                    i18np("%1\n1 Album", "%1\n%2 Albums", item->data(), item->childCount());
                     #else
                     (item->childCount()>1
-                        ? tr("%1\n%2 Albums").arg(item->data(index.column()).toString()).arg(item->childCount())
-                        : tr("%1\n1 Album").arg(item->data(index.column()).toString()));
+                        ? tr("%1\n%2 Albums").arg(item->data()).arg(item->childCount())
+                        : tr("%1\n1 Album").arg(item->data()));
                     #endif
         case MusicLibraryItem::Type_Album:
             return 0==item->childCount()
-                ? item->data(index.column())
+                ? item->data()
                 :
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Track", "%1\n%2 Tracks", item->data(index.column()).toString(), item->childCount());
+                    i18np("%1\n1 Track", "%1\n%2 Tracks", item->data(), item->childCount());
                     #else
                     (item->childCount()>1
-                        ? tr("%1\n%2 Tracks").arg(item->data(index.column()).toString()).arg(item->childCount())
-                        : tr("%1\n1 Track").arg(item->data(index.column()).toString()));
+                        ? tr("%1\n%2 Tracks").arg(item->data()).arg(item->childCount())
+                        : tr("%1\n1 Track").arg(item->data()));
                     #endif
         case MusicLibraryItem::Type_Song: {
             QString duration=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
@@ -292,10 +293,10 @@ void MusicLibraryModel::setCover(const QString &artist, const QString &album, co
 
     for (int i = 0; i < rootItem->childCount(); i++) {
         MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemArtist*>(rootItem->child(i));
-        if (artistItem->data(0).toString()==artist) {
+        if (artistItem->data()==artist) {
             for (int j = 0; j < artistItem->childCount(); j++) {
                 MusicLibraryItemAlbum *albumItem = static_cast<MusicLibraryItemAlbum*>(artistItem->child(j));
-                if (albumItem->data(0).toString()==album) {
+                if (albumItem->data()==album) {
                     if (albumItem->setCover(img)) {
                         QModelIndex idx=index(j, 0, index(i, 0, QModelIndex()));
                         emit dataChanged(idx, idx);
@@ -344,16 +345,16 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
     for (int i = 0; i < rootItem->childCount(); i++) {
         MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist*>(rootItem->child(i));
         writer.writeStartElement("Artist");
-        writer.writeAttribute("name", artist->data(0).toString());
+        writer.writeAttribute("name", artist->data());
         for (int j = 0; j < artist->childCount(); j++) {
             MusicLibraryItemAlbum *album = static_cast<MusicLibraryItemAlbum*>(artist->child(j));
             writer.writeStartElement("Album");
-            writer.writeAttribute("title", album->data(0).toString());
+            writer.writeAttribute("title", album->data());
             writer.writeAttribute("dir", album->dir());
             for (int k = 0; k < album->childCount(); k++) {
                 MusicLibraryItemSong *track = static_cast<MusicLibraryItemSong*>(album->child(k));
                 writer.writeEmptyElement("Track");
-                writer.writeAttribute("title", track->data(0).toString());
+                writer.writeAttribute("title", track->data());
                 writer.writeAttribute("filename", track->file());
                 writer.writeAttribute("time", QString::number(track->time()));
                 //Only write track number if it is set
@@ -469,7 +470,7 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
 
                         songItem = new MusicLibraryItemSong(song, albumItem);
 
-                        albumItem->appendSong(songItem);
+                        albumItem->append(songItem);
 
                         QString genre = reader.attributes().value("genre").toString();
                         albumItem->addGenre(genre);

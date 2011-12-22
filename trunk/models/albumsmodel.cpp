@@ -332,10 +332,10 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     bool changed=false;
     for (int i = 0; i < root->childCount(); i++) {
         MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemArtist*>(root->child(i));
-        QString artist=artistItem->data(0).toString();
+        QString artist=artistItem->data();
         for (int j = 0; j < artistItem->childCount(); j++) {
             MusicLibraryItemAlbum *albumItem = static_cast<MusicLibraryItemAlbum*>(artistItem->child(j));
-            QString album=albumItem->data(0).toString();
+            QString album=albumItem->data();
             bool found=false;
             it=items.begin();
             end=items.end();

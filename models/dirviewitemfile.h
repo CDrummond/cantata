@@ -26,23 +26,16 @@
 #ifndef DIRVIEWITEMFILE_H
 #define DIRVIEWITEMFILE_H
 
-#include <QString>
-#include <QList>
-#include <QVariant>
 #include "dirviewitem.h"
 
 class DirViewItemFile : public DirViewItem
 {
 public:
-    DirViewItemFile(const QString name, DirViewItem *parent = 0);
-    ~DirViewItemFile();
-
-    int row() const;
-    DirViewItem * parent() const;
-    QString fileName();
-
-private:
-    DirViewItem * const d_parentItem;
+    DirViewItemFile(const QString name, DirViewItem *parent)
+        : DirViewItem(name, DirViewItem::Type_File, parent) {
+    }
+    virtual ~DirViewItemFile() {
+    }
 };
 
 #endif

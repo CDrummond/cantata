@@ -51,14 +51,9 @@ public:
     static int iconSize(MusicLibraryItemAlbum::CoverSize sz);
     static int iconSize();
 
-    MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent = 0);
-    ~MusicLibraryItemAlbum();
+    MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent);
+    virtual ~MusicLibraryItemAlbum();
 
-    void appendSong(MusicLibraryItemSong * const song);
-    MusicLibraryItem * child(int row) const;
-    int childCount() const;
-    int row() const;
-    MusicLibraryItem * parent() const;
     bool setCover(const QImage &img);
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }
@@ -69,10 +64,6 @@ private:
     QString m_dir;
     bool m_coverIsDefault;
     QPixmap *m_cover;
-    QList<MusicLibraryItemSong *> m_childItems;
-    MusicLibraryItemArtist * const m_parentItem;
-
-    friend class MusicLibraryItemSong;
 };
 
 #endif

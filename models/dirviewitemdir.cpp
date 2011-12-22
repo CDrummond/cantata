@@ -24,64 +24,19 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dirviewitemroot.h"
 #include "dirviewitemdir.h"
 #include "dirviewitemfile.h"
-
-DirViewItemDir::DirViewItemDir(const QString name, DirViewItem *parent)
-    : DirViewItem(name, DirViewItem::Type_Dir),
-      d_parentItem(parent)
-{
-}
-
-DirViewItemDir::~DirViewItemDir()
-{
-    qDeleteAll(d_childItems);
-}
-
-int DirViewItemDir::row() const
-{
-    switch (d_parentItem->type()) {
-    case DirViewItem::Type_Root:
-        return static_cast<DirViewItemRoot *>(d_parentItem)->d_childItems.indexOf(const_cast<DirViewItemDir*>(this));
-        break;
-    case DirViewItem::Type_Dir:
-        return static_cast<DirViewItemDir *>(d_parentItem)->d_childItems.indexOf(const_cast<DirViewItemDir*>(this));
-        break;
-    default:
-        break;
-    }
-
-    return 0;
-}
-
-DirViewItem * DirViewItemDir::parent() const
-{
-    return d_parentItem;
-}
-
-int DirViewItemDir::childCount() const
-{
-    return d_childItems.count();
-}
 
 DirViewItem * DirViewItemDir::createDirectory(const QString dirName)
 {
     DirViewItemDir *dir = new DirViewItemDir(dirName, this);
-    d_childItems.append(dir);
-
+    m_childItems.append(dir);
     return dir;
 }
 
 DirViewItem * DirViewItemDir::insertFile(const QString fileName)
 {
     DirViewItemFile *file = new DirViewItemFile(fileName, this);
-    d_childItems.append(file);
-
+    m_childItems.append(file);
     return file;
-}
-
-DirViewItem * DirViewItemDir::child(int row) const
-{
-    return d_childItems.value(row);
 }

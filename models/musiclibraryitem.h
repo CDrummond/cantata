@@ -40,20 +40,34 @@ public:
         Type_Album,
         Type_Song
     };
-    MusicLibraryItem(const QString &data, Type type);
-    virtual ~MusicLibraryItem();
+    MusicLibraryItem(const QString &data, Type type, MusicLibraryItem *parent)
+        : m_parentItem(parent)
+        , m_type(type)
+        , m_itemData(data) {
+    }
 
-    virtual MusicLibraryItem * child(int /*row*/) const {
-        return NULL;
+    virtual ~MusicLibraryItem() {
+        qDeleteAll(m_childItems);
     }
-    virtual int childCount() const {
-        return 0;
+
+    MusicLibraryItem * parent() const {
+        return m_parentItem;
     }
-    virtual int row() const {
-        return 0;
+
+    void append(MusicLibraryItem *i) {
+        m_childItems.append(i);
     }
-    virtual MusicLibraryItem * parent() const {
-        return NULL;
+
+    MusicLibraryItem * child(int row) const {
+        return m_childItems.value(row);
+    }
+
+    int childCount() const {
+        return m_childItems.count();
+    }
+
+    int row() const {
+        return m_parentItem ? m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItem*>(this)) : 0;
     }
 
     int columnCount() const {
@@ -72,10 +86,17 @@ public:
         return m_genres;
     }
 
-    QVariant data(int column) const;
-    MusicLibraryItem::Type type() const;
+    const QString & data() const {
+        return m_itemData;
+    }
+
+    MusicLibraryItem::Type type() const {
+        return m_type;
+    }
 
 protected:
+    MusicLibraryItem *m_parentItem;
+    QList<MusicLibraryItem *> m_childItems;
     Type m_type;
     QString m_itemData;
     QSet<QString> m_genres;

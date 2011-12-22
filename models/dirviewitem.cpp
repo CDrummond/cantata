@@ -26,12 +26,15 @@
 
 #include "dirviewitem.h"
 
-DirViewItem::DirViewItem(const QString name, Type type)
-    : d_name(name),
-      d_type(type)
+QString DirViewItem::fullName()
 {
+    QString fn = m_name;
+    DirViewItem *item = parent();
+    while (item && item->type() != DirViewItem::Type_Root) {
+        fn.prepend("/");
+        fn.prepend(item->name());
+        item = item->parent();
+    }
+    return fn;
 }
 
-DirViewItem::~DirViewItem()
-{
-}

@@ -164,6 +164,16 @@ bool Settings::stopOnExit()
     return GET_BOOL("stopOnExit", false);
 }
 
+bool Settings::smallPlaybackButtons()
+{
+    return GET_BOOL("smallPlaybackButtons", false);
+}
+
+bool Settings::smallControlButtons()
+{
+    return GET_BOOL("smallControlButtons", false);
+}
+
 QString Settings::mpdDir()
 {
     QString d=GET_STRING("mpdDir", "/var/lib/mpd/music");
@@ -315,6 +325,16 @@ void Settings::saveShowPopups(bool v)
 void Settings::saveStopOnExit(bool v)
 {
     SET_VALUE("stopOnExit", v);
+}
+
+void Settings::saveSmallPlaybackButtons(bool v)
+{
+    SET_VALUE("smallPlaybackButtons", v);
+}
+
+void Settings::saveSmallControlButtons(bool v)
+{
+    SET_VALUE("smallControlButtons", v);
 }
 
 void Settings::saveMpdDir(const QString &v)

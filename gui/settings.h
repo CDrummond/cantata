@@ -57,6 +57,8 @@ public:
     bool useSystemTray();
     bool showPopups();
     bool stopOnExit();
+    bool smallPlaybackButtons();
+    bool smallControlButtons();
     QString mpdDir();
     int libraryView();
     int albumsView();
@@ -75,6 +77,8 @@ public:
     void saveConnectionPort(int v);
     void saveShowPlaylist(bool v);
     void saveStopOnExit(bool v);
+    void saveSmallPlaybackButtons(bool v);
+    void saveSmallControlButtons(bool v);
     void savePlayQueueHeaderState(const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
 #ifndef ENABLE_KDE_SUPPORT

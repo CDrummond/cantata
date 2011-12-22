@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-22 12:13+0000\n"
+"POT-Creation-Date: 2011-12-22 20:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Albums"
 msgstr ""
 
-#: gui/albumspage.cpp:158 gui/librarypage.cpp:190
+#: gui/albumspage.cpp:160 gui/librarypage.cpp:192
 msgid "All Genres"
 msgstr ""
 
@@ -42,7 +42,7 @@ msgstr ""
 msgid "<h3><i>Loading...</i></h3>"
 msgstr ""
 
-#: gui/librarypage.cpp:73 gui/mainwindow.cpp:318
+#: gui/librarypage.cpp:75 gui/mainwindow.cpp:318
 msgid "Library"
 msgstr ""
 
@@ -213,7 +213,7 @@ msgid_plural "%1 Albums, "
 msgstr[0] ""
 msgstr[1] ""
 
-#: gui/mainwindow.cpp:1373 models/musiclibrarymodel.cpp:223
+#: gui/mainwindow.cpp:1373 models/musiclibrarymodel.cpp:224
 #: models/playlistsmodel.cpp:177
 msgid "1 Track"
 msgid_plural "%1 Tracks"
@@ -469,7 +469,7 @@ msgstr ""
 msgid "Maintainer"
 msgstr ""
 
-#: models/albumsmodel.cpp:238 models/musiclibrarymodel.cpp:179
+#: models/albumsmodel.cpp:238 models/musiclibrarymodel.cpp:180
 #: models/playlistsmodel.cpp:167
 msgid ""
 "%1\n"
@@ -496,7 +496,7 @@ msgid_plural "%1 Entries"
 msgstr[0] ""
 msgstr[1] ""
 
-#: models/musiclibrarymodel.cpp:168
+#: models/musiclibrarymodel.cpp:169
 msgid ""
 "%1\n"
 "1 Album"
@@ -506,7 +506,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: models/musiclibrarymodel.cpp:206
+#: models/musiclibrarymodel.cpp:207
 msgid "1 Album"
 msgid_plural "%1 Albums"
 msgstr[0] ""
@@ -556,11 +556,11 @@ msgid_plural "%1 Streams"
 msgstr[0] ""
 msgstr[1] ""
 
-#: mpd/mpdconnection.cpp:769
+#: mpd/mpdconnection.cpp:773
 msgid "Sorry, failed to rename <b>%1</b> to <b>%2</b>"
 msgstr ""
 
-#: mpd/mpdconnection.cpp:794
+#: mpd/mpdconnection.cpp:798
 msgid "Sorry, failed to save <b>%1</b>"
 msgstr ""
 
@@ -799,7 +799,7 @@ msgid "SqueezedTextLabel"
 msgstr ""
 
 #. i18n: file: gui/mainwindow.ui:118
-#. i18n: ectx: property (text), widget (QLabel, songTimeElapsedLabel)
+#. i18n: ectx: property (text), widget (SqueezedTextLabel, songTimeElapsedLabel)
 #: po/rc.cpp:105 rc.cpp:105
 msgid "(00:00)"
 msgstr ""
@@ -1068,11 +1068,11 @@ msgstr ""
 msgid "Tabs On Bottom (Icons Only)"
 msgstr ""
 
-#: widgets/itemview.cpp:303
+#: widgets/itemview.cpp:337
 msgid "Back"
 msgstr ""
 
-#: widgets/itemview.cpp:415 widgets/itemview.cpp:453 widgets/itemview.cpp:459
-#: widgets/itemview.cpp:559
+#: widgets/itemview.cpp:457 widgets/itemview.cpp:495 widgets/itemview.cpp:501
+#: widgets/itemview.cpp:642
 msgid "Search %1..."
 msgstr ""

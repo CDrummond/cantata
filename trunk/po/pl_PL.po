@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-22 12:13+0000\n"
+"POT-Creation-Date: 2011-12-22 20:55+0000\n"
 "PO-Revision-Date: 2011-12-22 16:01+0100\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Albums"
 msgstr "Albumy"
 
-#: gui/albumspage.cpp:158 gui/librarypage.cpp:190
+#: gui/albumspage.cpp:160 gui/librarypage.cpp:192
 msgid "All Genres"
 msgstr "Wszystkie gatunki"
 
@@ -42,7 +42,7 @@ msgstr "Informacje o albumie"
 msgid "<h3><i>Loading...</i></h3>"
 msgstr "<h3><i>Ładowanie...</i></h3>"
 
-#: gui/librarypage.cpp:73 gui/mainwindow.cpp:318
+#: gui/librarypage.cpp:75 gui/mainwindow.cpp:318
 msgid "Library"
 msgstr "Biblioteka"
 
@@ -222,7 +222,7 @@ msgstr[0] "1 Album, "
 msgstr[1] "%1 Albumy, "
 msgstr[2] "%1 Albumów, "
 
-#: gui/mainwindow.cpp:1373 models/musiclibrarymodel.cpp:223
+#: gui/mainwindow.cpp:1373 models/musiclibrarymodel.cpp:224
 #: models/playlistsmodel.cpp:177
 msgid "1 Track"
 msgid_plural "%1 Tracks"
@@ -483,7 +483,7 @@ msgstr "Craig Drummond"
 msgid "Maintainer"
 msgstr ""
 
-#: models/albumsmodel.cpp:238 models/musiclibrarymodel.cpp:179
+#: models/albumsmodel.cpp:238 models/musiclibrarymodel.cpp:180
 #: models/playlistsmodel.cpp:167
 msgid ""
 "%1\n"
@@ -525,7 +525,7 @@ msgstr[0] "1 Element"
 msgstr[1] "%1 Elementy"
 msgstr[2] "%1 Elementów"
 
-#: models/musiclibrarymodel.cpp:168
+#: models/musiclibrarymodel.cpp:169
 msgid ""
 "%1\n"
 "1 Album"
@@ -542,7 +542,7 @@ msgstr[2] ""
 "%1\n"
 "%2 Albumów"
 
-#: models/musiclibrarymodel.cpp:206
+#: models/musiclibrarymodel.cpp:207
 msgid "1 Album"
 msgid_plural "%1 Albums"
 msgstr[0] "1 Album"
@@ -601,11 +601,11 @@ msgstr[0] "1 Strumień"
 msgstr[1] "%1 Strumienie"
 msgstr[2] "%1 Strumieni"
 
-#: mpd/mpdconnection.cpp:769
+#: mpd/mpdconnection.cpp:773
 msgid "Sorry, failed to rename <b>%1</b> to <b>%2</b>"
 msgstr "Zmiana nazwy z  <b>%1</b> na <b>%2</b> nie powiodła się"
 
-#: mpd/mpdconnection.cpp:794
+#: mpd/mpdconnection.cpp:798
 msgid "Sorry, failed to save <b>%1</b>"
 msgstr "Zapisywanie <b>%1</b> nie powiodło się"
 
@@ -845,7 +845,7 @@ msgid "SqueezedTextLabel"
 msgstr ""
 
 #. i18n: file: gui/mainwindow.ui:118
-#. i18n: ectx: property (text), widget (QLabel, songTimeElapsedLabel)
+#. i18n: ectx: property (text), widget (SqueezedTextLabel, songTimeElapsedLabel)
 #: po/rc.cpp:105 rc.cpp:105
 msgid "(00:00)"
 msgstr ""
@@ -1118,12 +1118,12 @@ msgstr "Kary u dołu"
 msgid "Tabs On Bottom (Icons Only)"
 msgstr "Karty u dołu (tylko ikony)"
 
-#: widgets/itemview.cpp:303
+#: widgets/itemview.cpp:337
 msgid "Back"
 msgstr "Wstecz"
 
-#: widgets/itemview.cpp:415 widgets/itemview.cpp:453 widgets/itemview.cpp:459
-#: widgets/itemview.cpp:559
+#: widgets/itemview.cpp:457 widgets/itemview.cpp:495 widgets/itemview.cpp:501
+#: widgets/itemview.cpp:642
 msgid "Search %1..."
 msgstr "Szukaj w: %1..."
 

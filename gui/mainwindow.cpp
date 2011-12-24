@@ -613,6 +613,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playQueue->addAction(shufflePlaylistAction);
     playQueue->addAction(copyTrackInfoAction);
     playQueue->installEventFilter(new DeleteKeyEventHandler(playQueue, removeFromPlaylistAction));
+    playQueue->setRootIsDecorated(false);
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
     setupPlaylistView();
 

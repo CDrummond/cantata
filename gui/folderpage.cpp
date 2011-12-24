@@ -77,6 +77,7 @@ FolderPage::~FolderPage()
 
 void FolderPage::refresh()
 {
+    view->showSpinner();
     emit listAll();
 }
 

@@ -1,17 +1,15 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
+# Pavel Fric <pavelfric@seznam.cz>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-22 20:55+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2011-12-22 23:00+0100\n"
+"Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,6 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "X-Language: cs_CZ\n"
 "X-Source-Language: C\n"
+"X-Generator: Lokalize 1.1\n"
 
 #: gui/albumspage.cpp:53 gui/mainwindow.cpp:321
 msgid "Albums"
@@ -49,13 +48,12 @@ msgid "Library"
 msgstr "Knihovna"
 
 #: gui/mainwindow.cpp:246
-#, fuzzy
 msgid "Small Playback Buttons"
-msgstr "Nastavení přehrávání"
+msgstr "Malá tlačítka pro přehrávání"
 
 #: gui/mainwindow.cpp:249
 msgid "Small Control Buttons"
-msgstr ""
+msgstr "Malá tlačítka pro ovládání"
 
 #: gui/mainwindow.cpp:252
 msgid "Update Database"
@@ -98,9 +96,8 @@ msgid "Replace Play Queue"
 msgstr "Nahradit řadu přehrávaných skladeb"
 
 #: gui/mainwindow.cpp:288
-#, fuzzy
 msgid "Remove From Playlist"
-msgstr "Přejmenovat seznam skladeb"
+msgstr "Odstranit ze seznamu skladeb"
 
 #: gui/mainwindow.cpp:291
 msgid "Copy Track Info"
@@ -119,9 +116,8 @@ msgid "Save As"
 msgstr "Uložit jako"
 
 #: gui/mainwindow.cpp:303
-#, fuzzy
 msgid "Clear Playlist"
-msgstr "Přejmenovat seznam skladeb"
+msgstr "Vyprázdnit seznam skladeb"
 
 #: gui/mainwindow.cpp:306
 msgid "Expanded Interface"
@@ -262,9 +258,8 @@ msgid "Album"
 msgstr "Album"
 
 #: gui/playlistspage.cpp:56
-#, fuzzy
 msgid "Remove Playlist"
-msgstr "Přejmenovat seznam skladeb"
+msgstr "Odstranit seznam skladeb"
 
 #: gui/playlistspage.cpp:58 gui/playlistspage.cpp:224
 msgid "Rename Playlist"
@@ -365,9 +360,8 @@ msgid "Export Streams"
 msgstr "Vyvést proudy"
 
 #: gui/streamspage.cpp:55
-#, fuzzy
 msgid "Remove Stream"
-msgstr "Odstranit proud?"
+msgstr "Odstranit proud"
 
 #: gui/streamspage.cpp:167
 msgid ""

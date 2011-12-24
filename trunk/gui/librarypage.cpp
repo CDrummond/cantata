@@ -92,6 +92,7 @@ void LibraryPage::refresh(Refresh type)
     }
 
     if (RefreshFromCache!=type || !model.fromXML(MPDStats::self()->dbUpdate())) {
+        view->showSpinner();
         emit listAllInfo(MPDStats::self()->dbUpdate());
     }
 }

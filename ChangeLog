@@ -1,3 +1,7 @@
+0.1.2
+-----
+1. Explicitly link each Qt library.
+
 0.1.1
 -----
 1. Play/Pause track when middle click on tray iocn. (KDE only). Thanks to Piotr

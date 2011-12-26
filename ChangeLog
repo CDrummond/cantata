@@ -1,6 +1,7 @@
 0.1.2
 -----
 1. Explicitly link each Qt library.
+2. Fix playqueue header hiding/restoring.
 
 0.1.1
 -----

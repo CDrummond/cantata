@@ -1486,7 +1486,7 @@ void MainWindow::setupPlaylistView()
     } else {
         playQueueHeader->restoreState(state);
 
-        for(int i=3; i<PlayQueueModel::COL_COUNT; ++i) {
+        for(int i=PlayQueueModel::COL_ALBUM; i<PlayQueueModel::COL_COUNT; ++i) {
             if (playQueueHeader->isSectionHidden(i) || playQueueHeader->sectionSize(i) == 0) {
                 playQueueHeader->setSectionHidden(i, true);
             }
@@ -1500,6 +1500,7 @@ void MainWindow::setupPlaylistView()
         act->setCheckable(true);
         act->setChecked(!playQueueHeader->isSectionHidden(col));
         playQueueMenu->addAction(act);
+        act->setData(col);
         viewActions.append(act);
         connect(act, SIGNAL(toggled(bool)), this, SLOT(togglePlayQueueHeaderItem(bool)));
     }
@@ -1515,9 +1516,9 @@ void MainWindow::togglePlayQueueHeaderItem(bool visible)
     QAction *act=qobject_cast<QAction *>(sender());
 
     if (act) {
-        int index=viewActions.indexOf(act);
+        int index=act->data().toInt();
         if (-1!=index) {
-            playQueueHeader->setSectionHidden(index+3, !visible);
+            playQueueHeader->setSectionHidden(index, !visible);
         }
     }
 }

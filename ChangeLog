@@ -3,6 +3,8 @@
 1. Explicitly link each Qt library.
 2. Fix playqueue header hiding/restoring.
 3. Allow to connect to local UNIX domain socket.
+4. Jump to track position by clicking on position slider. Thanks to Piotr
+   Wicijowski for the idea/patch.
 
 0.1.1
 -----

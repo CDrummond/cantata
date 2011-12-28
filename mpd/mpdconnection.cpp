@@ -52,12 +52,12 @@ MPDConnection * MPDConnection::self()
 #endif
 }
 
-static QByteArray readFromSocket(QTcpSocket &socket)
+static QByteArray readFromSocket(MpdSocket &socket)
 {
     QByteArray data;
 
-    while (socket.state() == QAbstractSocket::ConnectedState) {
-        while (socket.bytesAvailable() == 0 && socket.state() == QAbstractSocket::ConnectedState) {
+    while (QAbstractSocket::ConnectedState==socket.state()) {
+        while (socket.bytesAvailable() == 0 && QAbstractSocket::ConnectedState==socket.state()) {
             qDebug() << (void *)(&socket) << "Waiting for read data.";
             if (socket.waitForReadyRead(5000)) {
                 break;
@@ -79,7 +79,7 @@ static QByteArray readFromSocket(QTcpSocket &socket)
     return data;
 }
 
-MPDConnection::Response readReply(QTcpSocket &socket)
+MPDConnection::Response readReply(MpdSocket &socket)
 {
     QByteArray data = readFromSocket(socket);
     return MPDConnection::Response(data.endsWith("OK\n"), data);
@@ -100,6 +100,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<QList<Playlist> >("QList<Playlist>");
     qRegisterMetaType<QList<quint32> >("QList<quint32>");
     qRegisterMetaType<QList<qint32> >("QList<qint32>");
+    qRegisterMetaType<QAbstractSocket::SocketState >("QAbstractSocket::SocketState");
 }
 
 MPDConnection::~MPDConnection()
@@ -111,7 +112,7 @@ MPDConnection::~MPDConnection()
     idleSocket.disconnectFromHost();
 }
 
-bool MPDConnection::connectToMPD(QTcpSocket &socket, bool enableIdle)
+bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
 {
     if (socket.state() != QAbstractSocket::ConnectedState) {
         qDebug() << "Connecting" << enableIdle << (enableIdle ? "(idle)" : "(std)") << (void *)(&socket);
@@ -195,10 +196,10 @@ void MPDConnection::disconnectFromMPD()
     disconnect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
-    if (sock.state() == QAbstractSocket::ConnectedState) {
+    if (QAbstractSocket::ConnectedState==sock.state()) {
         sock.disconnectFromHost();
     }
-    if (idleSocket.state() == QAbstractSocket::ConnectedState) {
+    if (QAbstractSocket::ConnectedState==idleSocket.state()) {
         idleSocket.disconnectFromHost();
     }
     sock.close();
@@ -211,7 +212,7 @@ void MPDConnection::disconnectFromMPD()
 
 void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pass)
 {
-    if (hostname!=host || port!=p || password!=pass) {
+    if (hostname!=host || (!sock.isLocal() && port!=p) || password!=pass) {
         qDebug() << "setDetails" << host << p << (pass.isEmpty() ? false : true);
         disconnectFromMPD();
         hostname=host;
@@ -873,5 +874,67 @@ void MPDConnection::moveInPlaylist(const QString &name, int from, int to)
     data += QByteArray::number(to);
     if (sendCommand(data).ok) {
         emit movedInPlaylist(name, from, to);
+    }
+}
+
+MpdSocket::MpdSocket(QObject *parent)
+    : QObject(parent)
+    , tcp(0)
+    , local(0)
+{
+}
+
+MpdSocket::~MpdSocket()
+{
+    deleteTcp();
+    deleteLocal();
+}
+
+void MpdSocket::connectToHost(const QString &hostName, quint16 port, QIODevice::OpenMode mode)
+{
+//     qWarning() << "connectToHost" << hostName << port;
+    if (hostName.startsWith('/')) {
+        deleteTcp();
+        if (!local) {
+            local = new QLocalSocket(this);
+            connect(local, SIGNAL(stateChanged(QLocalSocket::LocalSocketState)), this, SLOT(localStateChanged(QLocalSocket::LocalSocketState)));
+            connect(local, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
+        }
+//         qWarning() << "Connecting to LOCAL socket";
+        local->connectToServer(hostName, mode);
+    } else {
+        deleteLocal();
+        if (!tcp) {
+            tcp = new QTcpSocket(this);
+            connect(tcp, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SIGNAL(stateChanged(QAbstractSocket::SocketState)));
+            connect(tcp, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
+        }
+//         qWarning() << "Connecting to TCP socket";
+        tcp->connectToHost(hostName, port, mode);
+    }
+}
+
+void MpdSocket::localStateChanged(QLocalSocket::LocalSocketState state)
+{
+    emit stateChanged((QAbstractSocket::SocketState)state);
+}
+
+void MpdSocket::deleteTcp()
+{
+    if (tcp) {
+        disconnect(tcp, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SIGNAL(stateChanged(QAbstractSocket::SocketState)));
+        disconnect(tcp, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
+        tcp->deleteLater();
+        tcp=0;
+    }
+}
+
+void MpdSocket::deleteLocal()
+{
+    if (local) {
+        disconnect(local, SIGNAL(stateChanged(QLocalSocket::LocalSocketState)), this, SLOT(localStateChanged(QLocalSocket::LocalSocketState)));
+        disconnect(local, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
+        local->deleteLater();
+        local=0;
     }
 }

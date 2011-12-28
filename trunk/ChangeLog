@@ -2,6 +2,7 @@
 -----
 1. Explicitly link each Qt library.
 2. Fix playqueue header hiding/restoring.
+3. Allow to connect to local UNIX domain socket.
 
 0.1.1
 -----

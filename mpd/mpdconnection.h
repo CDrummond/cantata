@@ -27,8 +27,9 @@
 #ifndef MPDCONNECTION_H
 #define MPDCONNECTION_H
 
-#include <QTcpSocket>
-#include <QDateTime>
+#include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QLocalSocket>
+#include <QtCore/QDateTime>
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "song.h"
@@ -38,6 +39,91 @@
 class MusicLibraryItemArtist;
 class DirViewItemRoot;
 class MusicLibraryItemRoot;
+
+class MpdSocket : public QObject
+{
+    Q_OBJECT
+public:
+    MpdSocket(QObject *parent);
+    virtual ~MpdSocket();
+
+    void connectToHost(const QString &hostName, quint16 port, QIODevice::OpenMode mode = QIODevice::ReadWrite);
+    void disconnectFromHost() {
+        if (tcp) {
+            tcp->disconnectFromHost();
+        } else if(local) {
+            local->disconnectFromServer();
+        }
+    }
+    void close() {
+        if (tcp) {
+            tcp->close();
+        } else if(local) {
+            local->close();
+        }
+    }
+    void write(const QByteArray &data) {
+        if (tcp) {
+            tcp->write(data);
+        } else if(local) {
+            local->write(data);
+        }
+    }
+    void waitForBytesWritten(int msecs = 30000) {
+        if (tcp) {
+            tcp->waitForBytesWritten(msecs);
+        } else if(local) {
+            local->waitForBytesWritten(msecs);
+        }
+    }
+    bool waitForReadyRead(int msecs = 30000) {
+        return tcp ? tcp->waitForReadyRead(msecs)
+                   : local
+                        ? local->waitForReadyRead(msecs)
+                        : false;
+    }
+    bool waitForConnected(int msecs = 30000) {
+        return tcp ? tcp->waitForConnected(msecs)
+                   : local
+                        ? local->waitForConnected(msecs)
+                        : false;
+    }
+    qint64 bytesAvailable() {
+        return tcp ? tcp->bytesAvailable()
+                   : local
+                        ? local->bytesAvailable()
+                        : 0;
+    }
+    QByteArray readAll() {
+        return tcp ? tcp->readAll()
+                   : local
+                        ? local->readAll()
+                        : QByteArray();
+    }
+    QAbstractSocket::SocketState state() const {
+        return tcp ? tcp->state()
+                   : local
+                        ? (QAbstractSocket::SocketState)local->state()
+                        : QAbstractSocket::UnconnectedState;
+    }
+
+    bool isLocal() const { return 0!=local; }
+
+Q_SIGNALS:
+    void stateChanged(QAbstractSocket::SocketState state);
+    void readyRead();
+
+private Q_SLOTS:
+    void localStateChanged(QLocalSocket::LocalSocketState state);
+
+private:
+    void deleteTcp();
+    void deleteLocal();
+
+private:
+    QTcpSocket *tcp;
+    QLocalSocket *local;
+};
 
 class MPDConnection : public QObject
 {
@@ -148,7 +234,7 @@ private Q_SLOTS:
 private:
     bool connectToMPD();
     void disconnectFromMPD();
-    bool connectToMPD(QTcpSocket &socket, bool enableIdle=false);
+    bool connectToMPD(MpdSocket &socket, bool enableIdle=false);
     Response sendCommand(const QByteArray &command);
     void initialize();
     void parseIdleReturn(const QByteArray &data);
@@ -161,8 +247,8 @@ private:
     QString password;
     // Use 2 sockets, 1 for commands and 1 to receive MPD idle events.
     // Cant use 1, as we could write a command just as an idle event is ready to read
-    QTcpSocket sock;
-    QTcpSocket idleSocket;
+    MpdSocket sock;
+    MpdSocket idleSocket;
 
     enum State
     {

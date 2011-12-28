@@ -681,7 +681,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
         splitter->restoreState(Settings::self()->splitterState());
     }
 
-    emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
     playlistItemsSelected(false);
     playQueue->setFocus();
 
@@ -689,6 +688,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     MPDConnection::self()->moveToThread(mpdThread);
     mpdThread->start();
     MPDConnection::self()->setUi(this); // For questions, errors, etc.
+    emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
 
     QString page=Settings::self()->page();
 
@@ -895,6 +895,7 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::updateSettings()
 {
+    emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
     mpdDir=Settings::self()->mpdDir();
     lyricsPage->setMpdDir(mpdDir);
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());

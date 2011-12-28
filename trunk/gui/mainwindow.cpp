@@ -30,6 +30,7 @@
 #include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
 #include <QtGui/QInputDialog>
+#include <QtGui/QProxyStyle>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KApplication>
@@ -73,6 +74,24 @@
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
+
+class ProxyStyle : public QProxyStyle
+{
+public:
+    ProxyStyle()
+        : QProxyStyle()
+    {
+    }
+
+    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
+    {
+        if(stylehint==QStyle::SH_Slider_AbsoluteSetButtons){
+            return Qt::LeftButton|QProxyStyle::styleHint(stylehint,opt,widget,returnData);
+        }else{
+            return QProxyStyle::styleHint(stylehint,opt,widget,returnData);
+        }
+    }
+};
 
 DeleteKeyEventHandler::DeleteKeyEventHandler(QAbstractItemView *v, QAction *a)
     : QObject(v)
@@ -398,6 +417,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     volumeControl = new VolumeControl(volumeButton);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
     volumeButton->installEventFilter(volumeSliderEventHandler);
+
+    positionSlider->setStyle(new ProxyStyle());
 
     noCover = QIcon::fromTheme("media-optical-audio").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     noStreamCover = QIcon::fromTheme("applications-internet").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);

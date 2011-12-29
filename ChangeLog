@@ -5,6 +5,7 @@
 3. Allow to connect to local UNIX domain socket.
 4. Jump to track position by clicking on position slider. Thanks to Piotr
    Wicijowski for the idea/patch.
+5. Fix name of Polish translations file.
 
 0.1.1
 -----

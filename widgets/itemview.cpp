@@ -58,9 +58,9 @@ static void drawBgnd(QPainter *painter, const QRect &rx)
     QColor c(Qt::white);
 
     painter->setRenderHint(QPainter::Antialiasing, true);
-    c.setAlphaF(0.55);
+    c.setAlphaF(0.75);
     painter->fillPath(p, c);
-    c.setAlphaF(0.85);
+    c.setAlphaF(0.95);
     painter->setPen(c);
     painter->drawPath(p);
     painter->setRenderHint(QPainter::Antialiasing, false);

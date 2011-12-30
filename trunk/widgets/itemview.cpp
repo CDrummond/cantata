@@ -53,7 +53,7 @@ static QPainterPath buildPath(const QRectF &r, double radius)
 
 static void drawBgnd(QPainter *painter, const QRect &rx)
 {
-    QRectF r(rx.x()-0.5, rx.y()-0.5, rx.width(), rx.height());
+    QRectF r(rx.x()+0.5, rx.y()+0.5, rx.width()-1, rx.height()-1);
     QPainterPath p(buildPath(r, 4.0));
     QColor c(Qt::white);
 
@@ -68,8 +68,44 @@ static void drawBgnd(QPainter *painter, const QRect &rx)
 
 static const int constBorder = 1;
 static const int constActionBorder = 2;
-static const int constActionIconSize=18;
+static const int constActionIconSize=16;
 static const int constImageSize=22;
+
+QRect calcActionRect(bool rtl, bool iconMode, const QRect &rect)
+{
+    return rtl
+                ? iconMode
+                    ? QRect(rect.x()+constActionBorder,
+                            rect.y()+constActionBorder,
+                            constActionIconSize, constActionIconSize)
+                    : QRect(rect.x()+constActionBorder,
+                            rect.y()+((rect.height()-constActionIconSize)/2),
+                            constActionIconSize, constActionIconSize)
+                : iconMode
+                    ? QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
+                            rect.y()+constActionBorder,
+                            constActionIconSize, constActionIconSize)
+                    : QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
+                            rect.y()+((rect.height()-constActionIconSize)/2),
+                            constActionIconSize, constActionIconSize);
+}
+
+static void adjustActionRect(bool rtl, bool iconMode, QRect &rect)
+{
+    if (rtl) {
+        if (iconMode) {
+            rect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
+        } else {
+            rect.adjust(constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder, 0);
+        }
+    } else {
+        if (iconMode) {
+            rect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
+        } else {
+            rect.adjust(-(constActionIconSize+constActionBorder), 0, -(constActionIconSize+constActionBorder), 0);
+        }
+    }
+}
 
 class TreeDelegate : public QStyledItemDelegate
 {
@@ -103,26 +139,24 @@ public:
             QRect r(option.rect);
             painter->save();
             painter->setClipRect(r);
-            if (act1 && r.width()>(constActionIconSize+(2*constActionBorder))) {
-                QPixmap pix=act1->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
-                if (!pix.isNull()) {
-                    QRect ir(r.x()+r.width()-(pix.width()+constActionBorder),
-                             r.y()+((r.height()-pix.height())/2),
-                             pix.width(), pix.height());
-                    drawBgnd(painter, ir);
-                    painter->drawPixmap(ir, pix);
-                    r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
+            bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
+            QRect actionRect=calcActionRect(rtl, false, r);
+            if (act1) {
+                QPixmap pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+                if (!pix.isNull() && actionRect.width()>=pix.width() && r.x()>=0 && r.y()>=0) {
+                    drawBgnd(painter, actionRect);
+                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
+                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
                 }
             }
 
-            if (act2 && r.width()>(constActionIconSize+(2*constActionBorder))) {
-                QPixmap pix=act2->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
-                if (!pix.isNull()) {
-                    QRect ir(r.x()+r.width()-(pix.width()+constActionBorder),
-                             r.y()+((r.height()-pix.height())/2),
-                             pix.width(), pix.height());
-                    drawBgnd(painter, ir);
-                    painter->drawPixmap(ir, pix);
+            if (act1 && act2) {
+                adjustActionRect(rtl, false, actionRect);
+                QPixmap pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+                if (!pix.isNull() && actionRect.width()>=pix.width() && r.x()>=0 && r.y()>=0) {
+                    drawBgnd(painter, actionRect);
+                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
+                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
                 }
             }
             painter->restore();
@@ -258,62 +292,23 @@ public:
             if (iconMode) {
                 r=r2;
             }
-            if (act1 && (iconMode ? r.height() : r.width())>(constActionIconSize+(2*constActionBorder))) {
-                pix=act1->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
-                if (!pix.isNull()) {
-                    QRect ir=rtl
-                                ? iconMode
-                                    ? QRect(r.x()+constActionBorder,
-                                            r.y()+constActionBorder,
-                                            pix.width(), pix.height())
-                                    : QRect(r.x()+constActionBorder,
-                                            r.y()+((r.height()-pix.height())/2),
-                                            pix.width(), pix.height())
-                                : iconMode
-                                    ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),
-                                            r.y()+constActionBorder,
-                                            pix.width(), pix.height())
-                                    : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
-                                            r.y()+((r.height()-pix.height())/2),
-                                            pix.width(), pix.height());
-                    drawBgnd(painter, ir);
-                    painter->drawPixmap(ir, pix);
-                    if (rtl) {
-                        if (iconMode) {
-                            r.adjust(0, pix.height()+constActionBorder, 0, -(pix.height()+constActionBorder));
-                        } else {
-                            r.adjust(pix.width()+constActionBorder, 0, 0, 0);
-                        }
-                    } else {
-                        if (iconMode) {
-                            r.adjust(0, pix.height()+constActionBorder, 0, -(pix.height()+constActionBorder));
-                        } else {
-                            r.adjust(0, 0, -(pix.width()+constActionBorder), 0);
-                        }
-                    }
+            QRect actionRect=calcActionRect(rtl, iconMode, r);
+            if (act1) {
+                pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+                if (!pix.isNull() && actionRect.width()>=pix.width() && r.x()>=0 && r.y()>=0) {
+                    drawBgnd(painter, actionRect);
+                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
+                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
                 }
             }
 
-            if (act2 && (iconMode ? r.height() : r.width())>(constActionIconSize+(2*constActionBorder))) {
-                pix=act2->icon().pixmap(QSize(constActionIconSize-2, constActionIconSize-2));
-                if (!pix.isNull()) {
-                    QRect ir=rtl
-                                ? iconMode
-                                    ? QRect(r.x()+constActionBorder,
-                                            r.y()+constActionBorder,
-                                            pix.width(), pix.height())
-                                    : QRect(r.x()+constActionBorder,
-                                            r.y()+((r.height()-pix.height())/2),
-                                            pix.width(), pix.height())
-                                : iconMode
-                                    ? QRect(r.x()+r.width()-(pix.width()+constActionBorder),
-                                            r.y()+constActionBorder,
-                                            pix.width(), pix.height())
-                                    : QRect(r.x()+r.width()-(pix.width()+constActionBorder),
-                                            r.y()+((r.height()-pix.height())/2),
-                                            pix.width(), pix.height());
-                    drawBgnd(painter, ir);
-                    painter->drawPixmap(ir, pix);
+            if (act1 && act2) {
+                adjustActionRect(rtl, iconMode, actionRect);
+                pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+                if (!pix.isNull() && actionRect.width()>=pix.width() && r.x()>=0 && r.y()>=0) {
+                    drawBgnd(painter, actionRect);
+                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
+                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
                 }
             }
         }
@@ -578,39 +573,24 @@ QAction * ItemView::getAction(const QModelIndex &index)
     bool iconMode=Mode_IconTop==mode && !index.parent().isValid();
     QRect rect(view()->visualRect(index));
     rect.moveTo(view()->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
-    QRect actionRect=rtl
-                        ? iconMode
-                            ? QRect(rect.x()+constActionBorder,
-                                    rect.y()+constActionBorder,
-                                    constActionIconSize, constActionIconSize)
-                            : QRect(rect.x()+constActionBorder,
-                                    rect.y()+((rect.height()-constActionIconSize)/2),
-                                    constActionIconSize, constActionIconSize)
-                        : iconMode
-                            ? QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
-                                    rect.y()+constActionBorder,
-                                    constActionIconSize, constActionIconSize)
-                            : QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
-                                    rect.y()+((rect.height()-constActionIconSize)/2),
-                                    constActionIconSize, constActionIconSize);
+    if (Mode_Tree!=mode) {
+        if (iconMode) {
+            rect.adjust(constBorder, constBorder, -constBorder, -constBorder);
+        } else {
+            rect.adjust(constBorder+3, 0, -(constBorder+3), 0);
+        }
+    }
+
+    QRect actionRect=calcActionRect(rtl, iconMode, rect);
+
+    QRect actionRect2(actionRect);
+    adjustActionRect(rtl, iconMode, actionRect2);
 
     if (act1 && actionRect.contains(QCursor::pos())) {
         return act1;
     }
 
-    if (rtl) {
-        if (iconMode) {
-            actionRect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
-        } else {
-            actionRect.adjust(constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder, 0);
-        }
-    } else {
-        if (iconMode) {
-            actionRect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
-        } else {
-            actionRect.adjust(-(constActionIconSize+constActionBorder), 0, 0, 0);
-        }
-    }
+    adjustActionRect(rtl, iconMode, actionRect);
 
     if (act2 && actionRect.contains(QCursor::pos())) {
         return act2;

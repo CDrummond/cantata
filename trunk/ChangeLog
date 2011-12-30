@@ -7,6 +7,7 @@
    Wicijowski for the idea/patch.
 5. Fix name of Polish translations file.
 6. Better detection of when mouse is in action rect.
+7. More opaque action background.
 
 0.1.1
 -----

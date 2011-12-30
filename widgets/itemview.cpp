@@ -143,7 +143,7 @@ public:
             QRect actionRect=calcActionRect(rtl, false, r);
             if (act1) {
                 QPixmap pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull() && actionRect.width()>=pix.width() && r.x()>=0 && r.y()>=0) {
+                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
                     drawBgnd(painter, actionRect);
                     painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                         actionRect.y()+(actionRect.height()-pix.height())/2, pix);
@@ -153,7 +153,7 @@ public:
             if (act1 && act2) {
                 adjustActionRect(rtl, false, actionRect);
                 QPixmap pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull() && actionRect.width()>=pix.width() && r.x()>=0 && r.y()>=0) {
+                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
                     drawBgnd(painter, actionRect);
                     painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                         actionRect.y()+(actionRect.height()-pix.height())/2, pix);
@@ -295,7 +295,7 @@ public:
             QRect actionRect=calcActionRect(rtl, iconMode, r);
             if (act1) {
                 pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull() && actionRect.width()>=pix.width() && r.x()>=0 && r.y()>=0) {
+                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
                     drawBgnd(painter, actionRect);
                     painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                         actionRect.y()+(actionRect.height()-pix.height())/2, pix);
@@ -305,7 +305,7 @@ public:
             if (act1 && act2) {
                 adjustActionRect(rtl, iconMode, actionRect);
                 pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull() && actionRect.width()>=pix.width() && r.x()>=0 && r.y()>=0) {
+                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
                     drawBgnd(painter, actionRect);
                     painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                         actionRect.y()+(actionRect.height()-pix.height())/2, pix);

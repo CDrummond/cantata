@@ -6,6 +6,7 @@
 4. Jump to track position by clicking on position slider. Thanks to Piotr
    Wicijowski for the idea/patch.
 5. Fix name of Polish translations file.
+6. Better detection of when mouse is in action rect.
 
 0.1.1
 -----

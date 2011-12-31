@@ -160,7 +160,8 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             } else if (song->track()>0) {
                 return QChar('0')+QString::number(song->track())+QLatin1String(" - ")+item->data();
             }
-        } else if(MusicLibraryItem::Type_Album==item->type() && MusicLibraryItemAlbum::showDate()) {
+        } else if(MusicLibraryItem::Type_Album==item->type() && MusicLibraryItemAlbum::showDate() &&
+                  static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {
             return QString::number(static_cast<MusicLibraryItemAlbum *>(item)->year())+QLatin1String(" - ")+item->data();
         }
         return item->data();

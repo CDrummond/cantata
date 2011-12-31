@@ -33,8 +33,8 @@
 #include <QtGui/QPixmap>
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
-
 static QPixmap *theDefaultIcon=0;
+static bool useDate=false;
 
 int MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverSize sz)
 {
@@ -68,9 +68,20 @@ void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
     }
 }
 
-MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent)
+void MusicLibraryItemAlbum::setShowDate(bool sd)
+{
+    useDate=sd;
+}
+
+bool MusicLibraryItemAlbum::showDate()
+{
+    return useDate;
+}
+
+MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &dir, quint32 year, MusicLibraryItem *parent)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Album, parent)
     , m_dir(dir)
+    , m_year(year)
     , m_coverIsDefault(false)
     , m_cover(0)
 {

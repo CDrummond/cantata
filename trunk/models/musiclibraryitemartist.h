@@ -45,8 +45,12 @@ public:
 
     MusicLibraryItemAlbum * album(const Song &s);
     const QString & baseArtist() const;
+    bool isVarious() const {
+        return m_various;
+    }
 
 private:
+    bool m_various;
     QString m_nonTheArtist;
     QHash<QString, int> m_indexes;
 };

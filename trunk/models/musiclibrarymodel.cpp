@@ -139,7 +139,10 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case Qt::DecorationRole:
         switch (item->type()) {
-        case MusicLibraryItem::Type_Artist: return QIcon::fromTheme("view-media-artist");
+        case MusicLibraryItem::Type_Artist: {
+            MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
+            return artist->isVarious() ? QIcon::fromTheme("applications-multimedia") : QIcon::fromTheme("view-media-artist");
+        }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
                 return QIcon::fromTheme("media-optical-audio");

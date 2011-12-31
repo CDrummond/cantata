@@ -170,8 +170,12 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
             return leftItem->year() < rightItem->year();
         }
     } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Artist) {
-        return static_cast<MusicLibraryItemArtist *>(left.internalPointer())->baseArtist().localeAwareCompare(
-                static_cast<MusicLibraryItemArtist *>(right.internalPointer())->baseArtist())<0;
+        const MusicLibraryItemArtist * const leftItem = static_cast<MusicLibraryItemArtist *>(left.internalPointer());
+        const MusicLibraryItemArtist * const rightItem = static_cast<MusicLibraryItemArtist *>(right.internalPointer());
+        if (leftItem->isVarious() != rightItem->isVarious()) {
+            return leftItem->isVarious() > rightItem->isVarious();
+        }
+        return leftItem->baseArtist().localeAwareCompare(rightItem->baseArtist())<0;
     }
 
     return QSortFilterProxyModel::lessThan(left, right);

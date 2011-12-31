@@ -29,13 +29,23 @@
 #include "musiclibraryitemalbum.h"
 #include "song.h"
 #include "mpdparseutils.h"
-#include <QDebug>
-
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KLocale>
+#endif
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItem *parent)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Artist, parent)
+    , m_various(false)
 {
     if (m_itemData.startsWith(QLatin1String("The "))) {
         m_nonTheArtist=m_itemData.mid(4);
+    } else if(QLatin1String("Various Artists")==m_itemData ||
+            #ifdef ENABLE_KDE_SUPPORT
+            i18n("Various Artists")==m_itemData
+            #else
+            QObject::tr("Various Artists")==m_itemData
+            #endif
+                                                   ) {
+        m_various=true;
     }
 }
 

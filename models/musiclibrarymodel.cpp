@@ -157,6 +157,8 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             } else if (song->track()>0) {
                 return QChar('0')+QString::number(song->track())+QChar(' ')+item->data();
             }
+        } else if(MusicLibraryItem::Type_Album==item->type() && MusicLibraryItemAlbum::showDate()) {
+            return QString::number(static_cast<MusicLibraryItemAlbum *>(item)->year())+QLatin1String(' ')+item->data();
         }
         return item->data();
     case Qt::ToolTipRole:
@@ -339,7 +341,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
 
     //Start with the document
     writer.writeStartElement("MPD_database");
-    writer.writeAttribute("version", "3");
+    writer.writeAttribute("version", "4");
     writer.writeAttribute("date", QString::number(db_update.toTime_t()));
     //Loop over all artist, albums and tracks.
     for (int i = 0; i < rootItem->childCount(); i++) {
@@ -351,6 +353,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
             writer.writeStartElement("Album");
             writer.writeAttribute("title", album->data());
             writer.writeAttribute("dir", album->dir());
+            writer.writeAttribute("year", QString::number(album->year()));
             for (int k = 0; k < album->childCount(); k++) {
                 MusicLibraryItemSong *track = static_cast<MusicLibraryItemSong*>(album->child(k));
                 writer.writeEmptyElement("Track");
@@ -427,7 +430,7 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                     quint32 time_t = reader.attributes().value("date").toString().toUInt();
 
                     //Incompatible version
-                    if (version < 3) {
+                    if (version < 4) {
                         break;
                     }
 
@@ -450,6 +453,7 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                     if (element == "Album") {
                         song.album=reader.attributes().value("title").toString();
                         song.file=reader.attributes().value("dir").toString();
+                        song.year=reader.attributes().value("year").toString().toUInt();
                         if (!song.file.isEmpty()) {
                             song.file.append("dummy.mp3");
                         }

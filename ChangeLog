@@ -1,3 +1,7 @@
+0.2.0
+-----
+1. Add option to show (and sort by) year of albums in library view.
+
 0.1.2
 -----
 1. Explicitly link each Qt library.

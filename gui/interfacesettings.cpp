@@ -40,6 +40,7 @@ void InterfaceSettings::load()
     systemTrayPopup->setChecked(Settings::self()->showPopups());
     libraryView->setCurrentIndex(Settings::self()->libraryView());
     libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
+    libraryYear->setChecked(Settings::self()->libraryYear());
     albumsView->setCurrentIndex(Settings::self()->albumsView());
     albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
     folderView->setCurrentIndex(Settings::self()->folderView());
@@ -53,6 +54,7 @@ void InterfaceSettings::save()
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
     Settings::self()->saveLibraryView(libraryView->currentIndex());
     Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
+    Settings::self()->saveLibraryYear(libraryYear->isChecked());
     Settings::self()->saveAlbumsView(albumsView->currentIndex());
     Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
     Settings::self()->saveFolderView(folderView->currentIndex());

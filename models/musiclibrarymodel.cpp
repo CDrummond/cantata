@@ -153,12 +153,12 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         if (MusicLibraryItem::Type_Song==item->type()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
             if (song->track()>9) {
-                return QString::number(song->track())+QChar(' ')+item->data();
+                return QString::number(song->track())+QLatin1String(" - ")+item->data();
             } else if (song->track()>0) {
-                return QChar('0')+QString::number(song->track())+QChar(' ')+item->data();
+                return QChar('0')+QString::number(song->track())+QLatin1String(" - ")+item->data();
             }
         } else if(MusicLibraryItem::Type_Album==item->type() && MusicLibraryItemAlbum::showDate()) {
-            return QString::number(static_cast<MusicLibraryItemAlbum *>(item)->year())+QLatin1String(' ')+item->data();
+            return QString::number(static_cast<MusicLibraryItemAlbum *>(item)->year())+QLatin1String(" - ")+item->data();
         }
         return item->data();
     case Qt::ToolTipRole:

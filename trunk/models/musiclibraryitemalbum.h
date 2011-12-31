@@ -50,8 +50,10 @@ public:
     static void setCoverSize(CoverSize size);
     static int iconSize(MusicLibraryItemAlbum::CoverSize sz);
     static int iconSize();
+    static void setShowDate(bool sd);
+    static bool showDate();
 
-    MusicLibraryItemAlbum(const QString &data, const QString &dir, MusicLibraryItem *parent);
+    MusicLibraryItemAlbum(const QString &data, const QString &dir, quint32 year, MusicLibraryItem *parent);
     virtual ~MusicLibraryItemAlbum();
 
     bool setCover(const QImage &img);
@@ -59,9 +61,11 @@ public:
     bool hasRealCover() const { return !m_coverIsDefault; }
     const QString & dir() const { return m_dir; }
     QStringList sortedTracks();
+    quint32 year() const { return m_year; }
 
 private:
     QString m_dir;
+    quint32 m_year;
     bool m_coverIsDefault;
     QPixmap *m_cover;
 };

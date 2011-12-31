@@ -44,7 +44,7 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s)
     QHash<QString, int>::Iterator it=m_indexes.find(s.album);
 
     if (m_indexes.end()==it) {
-        MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, MPDParseUtils::getDir(s.file), this);
+        MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, MPDParseUtils::getDir(s.file), s.year, this);
         m_indexes.insert(s.album, m_childItems.count());
         m_childItems.append(item);
         return item;

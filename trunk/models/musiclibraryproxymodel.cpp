@@ -26,6 +26,7 @@
 
 #include "musiclibraryitem.h"
 #include "musiclibraryitemartist.h"
+#include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryproxymodel.h"
 
@@ -156,13 +157,18 @@ bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
 bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
     if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Song) {
-        const MusicLibraryItemSong * const leftItem =
-            static_cast<MusicLibraryItemSong *>(left.internalPointer());
-        const MusicLibraryItemSong * const rightItem =
-            static_cast<MusicLibraryItemSong *>(right.internalPointer());
-        if (leftItem->disc() != rightItem->disc())
+        const MusicLibraryItemSong * const leftItem = static_cast<MusicLibraryItemSong *>(left.internalPointer());
+        const MusicLibraryItemSong * const rightItem = static_cast<MusicLibraryItemSong *>(right.internalPointer());
+        if (leftItem->disc() != rightItem->disc()) {
             return leftItem->disc() < rightItem->disc();
+        }
         return leftItem->track() < rightItem->track();
+    } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Album && MusicLibraryItemAlbum::showDate()) {
+        const MusicLibraryItemAlbum * const leftItem = static_cast<MusicLibraryItemAlbum *>(left.internalPointer());
+        const MusicLibraryItemAlbum * const rightItem = static_cast<MusicLibraryItemAlbum *>(right.internalPointer());
+        if (leftItem->year() != rightItem->year()) {
+            return leftItem->year() < rightItem->year();
+        }
     } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Artist) {
         return static_cast<MusicLibraryItemArtist *>(left.internalPointer())->baseArtist().localeAwareCompare(
                 static_cast<MusicLibraryItemArtist *>(right.internalPointer())->baseArtist())<0;

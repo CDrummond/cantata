@@ -565,6 +565,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     Covers::self()->setMpdDir(mpdDir);
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
+    MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
 
@@ -927,9 +928,13 @@ void MainWindow::updateSettings()
     bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumsCoverSize() ||
                       albumsPage->viewMode()!=Settings::self()->albumsView() ||
                       useLibSizeForAl!=AlbumsModel::useLibrarySizes();
+    bool diffLibYear=MusicLibraryItemAlbum::showDate()!=Settings::self()->libraryYear();
 
     if (diffLibCovers) {
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
+    }
+    if (diffLibYear) {
+        MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
     }
     if (diffAlCovers) {
         AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
@@ -940,7 +945,7 @@ void MainWindow::updateSettings()
     if (diffAlCovers) {
         albumsPage->clear();
     }
-    if (diffLibCovers || diffAlCovers) {
+    if (diffLibCovers || diffAlCovers || diffLibYear) {
         libraryPage->refresh(LibraryPage::RefreshForce);
     }
 

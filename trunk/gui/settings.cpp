@@ -223,6 +223,11 @@ int Settings::sidebar()
     return GET_INT("sidebar", (int)(FancyTabWidget::Mode_LargeSidebar));
 }
 
+bool Settings::libraryYear()
+{
+    return GET_BOOL("libraryYear", false);
+}
+
 QStringList Settings::lyricProviders()
 {
     QStringList def;
@@ -384,6 +389,11 @@ void Settings::saveAlbumsCoverSize(int v)
 void Settings::saveSidebar(int v)
 {
     SET_VALUE("sidebar", v);
+}
+
+void Settings::saveLibraryYear(bool v)
+{
+    SET_VALUE("libraryYear", v);
 }
 
 void Settings::saveLyricProviders(const QStringList &p)

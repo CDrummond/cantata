@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+<file>lyrics/ultimate_providers.xml</file>
 <file>icons/cantata.svg</file>
 </qresource>
 </RCC>

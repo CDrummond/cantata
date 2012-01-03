@@ -63,6 +63,7 @@ SET( CANTATA_SRCS
     widgets/fancytabwidget.cpp
     widgets/listview.cpp
     widgets/itemview.cpp
+    widgets/timeslider.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -105,6 +106,7 @@ SET( CANTATA_MOC_HDRS
     widgets/treeview.h
     widgets/listview.h
     widgets/itemview.h
+    widgets/timeslider.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h

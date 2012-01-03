@@ -45,6 +45,7 @@ public:
     }
 
     MusicLibraryItemArtist * artist(const Song &s);
+    void groupSingleTracks();
 
 private:
     QHash<QString, int> m_indexes;

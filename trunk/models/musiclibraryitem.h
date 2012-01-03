@@ -27,9 +27,9 @@
 #ifndef MUSIC_LIBRARY_ITEM_H
 #define MUSIC_LIBRARY_ITEM_H
 
-#include <QList>
-#include <QVariant>
-#include <QSet>
+#include <QtCore/QList>
+#include <QtCore/QVariant>
+#include <QtCore/QSet>
 
 class MusicLibraryItem
 {
@@ -54,6 +54,17 @@ public:
         return m_parentItem;
     }
 
+    void setParent(MusicLibraryItem *p) {
+        if (p==m_parentItem) {
+            return;
+        }
+        if (m_parentItem) {
+            m_parentItem->m_childItems.removeAll(this);
+        }
+        m_parentItem=p;
+        m_parentItem->m_childItems.append(this);
+    }
+
     void append(MusicLibraryItem *i) {
         m_childItems.append(i);
     }
@@ -64,6 +75,10 @@ public:
 
     int childCount() const {
         return m_childItems.count();
+    }
+
+    const QList<MusicLibraryItem *> & children() {
+        return m_childItems;
     }
 
     int row() const {

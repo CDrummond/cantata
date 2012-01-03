@@ -31,13 +31,13 @@
 #include <QModelIndex>
 #include "dirviewitemroot.h"
 
-class dirViewModel : public QAbstractItemModel
+class DirViewModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    dirViewModel(QObject *parent = 0);
-    ~dirViewModel();
+    DirViewModel(QObject *parent = 0);
+    ~DirViewModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

@@ -55,7 +55,7 @@ private:
     QStringList walk(QModelIndex rootItem);
 
 private:
-    dirViewModel model;
+    DirViewModel model;
     DirViewProxyModel proxy;
 };
 

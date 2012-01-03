@@ -30,10 +30,10 @@
 
 PlayQueueProxyModel::PlayQueueProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
-    setDynamicSortFilter(true);
+    //setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
-    setSortCaseSensitivity(Qt::CaseInsensitive);
-    setSortLocaleAware(true);
+    //setSortCaseSensitivity(Qt::CaseInsensitive);
+    //setSortLocaleAware(true);
 }
 
 bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const

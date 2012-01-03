@@ -32,6 +32,8 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
+#include <QtCore/QDebug>
+
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItem *parent)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Artist, parent)
     , m_various(false)
@@ -51,7 +53,7 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibrary
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s)
 {
-    QHash<QString, int>::Iterator it=m_indexes.find(s.album);
+    QHash<QString, int>::ConstIterator it=m_indexes.find(s.album);
 
     if (m_indexes.end()==it) {
         MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, MPDParseUtils::getDir(s.file), s.year, this);
@@ -66,3 +68,39 @@ const QString & MusicLibraryItemArtist::baseArtist() const
 {
     return m_nonTheArtist.isEmpty() ? m_itemData : m_nonTheArtist;
 }
+
+bool MusicLibraryItemArtist::allSingleTrack() const
+{
+    foreach (MusicLibraryItem *a, m_childItems) {
+        if (a->childCount()>1) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void MusicLibraryItemArtist::addToSingleTracks(MusicLibraryItemArtist *other)
+{
+    Song s;
+    #ifdef ENABLE_KDE_SUPPORT
+    s.album=i18n("Single Tracks");
+    #else
+    s.album=QObject::tr("Single Tracks");
+    #endif
+    MusicLibraryItemAlbum *single=album(s);
+    foreach (MusicLibraryItem *album, other->children()) {
+        single->addTracks(static_cast<MusicLibraryItemAlbum *>(album));
+    }
+}
+
+void MusicLibraryItemArtist::sortSingle()
+{
+    Song s;
+    #ifdef ENABLE_KDE_SUPPORT
+    s.album=i18n("Single Tracks");
+    #else
+    s.album=QObject::tr("Single Tracks");
+    #endif
+    album(s)->sortTracks();
+}
+

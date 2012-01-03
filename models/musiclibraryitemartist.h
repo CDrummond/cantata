@@ -27,9 +27,9 @@
 #ifndef MUSIC_LIBRARY_ITEM_ARTIST_H
 #define MUSIC_LIBRARY_ITEM_ARTIST_H
 
-#include <QList>
-#include <QVariant>
-#include <QHash>
+#include <QtCore/QList>
+#include <QtCore/QVariant>
+#include <QtCore/QHash>
 #include "musiclibraryitem.h"
 
 class Song;
@@ -48,7 +48,9 @@ public:
     bool isVarious() const {
         return m_various;
     }
-
+    bool allSingleTrack() const;
+    void addToSingleTracks(MusicLibraryItemArtist *other);
+    void sortSingle();
 private:
     bool m_various;
     QString m_nonTheArtist;

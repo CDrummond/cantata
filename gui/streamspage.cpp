@@ -138,18 +138,15 @@ void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
         return;
     }
 
-    QStringList streams;
-
+    QModelIndexList mapped;
     foreach (const QModelIndex &idx, indexes) {
-        QString stream=model.data(proxy.mapToSource(idx), Qt::ToolTipRole).toString();
-
-        if (!streams.contains(stream)) {
-            streams << stream;
-        }
+        mapped.append(proxy.mapToSource(idx));
     }
 
-    if (!streams.isEmpty()) {
-        emit add(streams);
+    QStringList files=model.filenames(mapped);
+
+    if (!files.isEmpty()) {
+        emit add(files);
         view->clearSelection();
     }
 }

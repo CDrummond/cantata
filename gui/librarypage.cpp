@@ -104,58 +104,18 @@ void LibraryPage::clear()
 
 void LibraryPage::addSelectionToPlaylist(const QString &name)
 {
-    QStringList files;
-    MusicLibraryItem *item;
-    MusicLibraryItemSong *songItem;
-    QModelIndexList selected = view->selectedIndexes();
+    const QModelIndexList selected = view->selectedIndexes();
 
-    // Loop over the selection. Only add files.
-    foreach (const QModelIndex &idx, selected) {
-        item = static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
-
-        switch (item->type()) {
-        case MusicLibraryItem::Type_Artist: {
-            for (quint32 i = 0; ; i++) {
-                const QModelIndex album = idx.child(i , 0);
-                if (!album.isValid())
-                    break;
-
-                for (quint32 j = 0; ; j++) {
-                    const QModelIndex track = album.child(j, 0);
-                    if (!track.isValid())
-                        break;
-                    const QModelIndex mappedSongIndex = proxy.mapToSource(track);
-                    songItem = static_cast<MusicLibraryItemSong *>(mappedSongIndex.internalPointer());
-                    const QString fileName = songItem->file();
-                    if (!fileName.isEmpty() && !files.contains(fileName))
-                        files.append(fileName);
-                }
-            }
-            break;
-        }
-        case MusicLibraryItem::Type_Album: {
-            for (quint32 i = 0; ; i++) {
-                QModelIndex track = idx.child(i, 0);
-                if (!track.isValid())
-                    break;
-                const QModelIndex mappedSongIndex = proxy.mapToSource(track);
-                songItem = static_cast<MusicLibraryItemSong *>(mappedSongIndex.internalPointer());
-                const QString fileName = songItem->file();
-                if (!fileName.isEmpty() && !files.contains(fileName))
-                    files.append(fileName);
-            }
-            break;
-        }
-        case MusicLibraryItem::Type_Song: {
-            const QString fileName = static_cast<MusicLibraryItemSong *>(item)->file();
-            if (!fileName.isEmpty() && !files.contains(fileName))
-                files.append(fileName);
-            break;
-        }
-        default:
-            break;
-        }
+    if (0==selected.size()) {
+        return;
     }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    QStringList files=model.filenames(mapped);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

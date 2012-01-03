@@ -240,6 +240,26 @@ Qt::DropActions PlaylistsModel::supportedDropActions() const
     return Qt::CopyAction | Qt::MoveAction;
 }
 
+QStringList PlaylistsModel::filenames(const QModelIndexList &indexes) const
+{
+    QStringList fnames;
+    QSet<Item *> selectedPlaylists;
+    foreach(QModelIndex index, indexes) {
+        Item *item=static_cast<Item *>(index.internalPointer());
+
+        if (item->isPlaylist()) {
+            selectedPlaylists.insert(item);
+            foreach (const SongItem *s, static_cast<PlaylistItem*>(item)->songs) {
+                fnames << s->file;
+            }
+        } else if (!selectedPlaylists.contains(static_cast<SongItem*>(item)->parent)) {
+            fnames << static_cast<SongItem*>(item)->file;
+        }
+    }
+
+    return fnames;
+}
+
 static const QLatin1String constPlaylistNameMimeType("cantata/playlistnames");
 static const QLatin1String constPositionsMimeType("cantata/positions");
 

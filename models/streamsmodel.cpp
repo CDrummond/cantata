@@ -457,10 +457,9 @@ Qt::ItemFlags StreamsModel::flags(const QModelIndex &index) const
         return Qt::NoItemFlags;
 }
 
-QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
+QStringList StreamsModel::filenames(const QModelIndexList &indexes) const
 {
-    QMimeData *mimeData = new QMimeData();
-    QStringList filenames;
+    QStringList fnames;
     QSet<Item *> selectedCategories;
     foreach(QModelIndex index, indexes) {
         Item *item=static_cast<Item *>(index.internalPointer());
@@ -469,19 +468,25 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
             selectedCategories.insert(item);
             foreach (const StreamItem *s, static_cast<CategoryItem*>(item)->streams) {
                 QString f=s->url.toString();
-                if (!filenames.contains(f)) {
-                    filenames << f;
+                if (!fnames.contains(f)) {
+                    fnames << f;
                 }
             }
         } else if (!selectedCategories.contains(static_cast<StreamItem*>(item)->parent)) {
             QString f=static_cast<StreamItem*>(item)->url.toString();
-            if (!filenames.contains(f)) {
-                filenames << f;
+            if (!fnames.contains(f)) {
+                fnames << f;
             }
         }
     }
 
-    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames);
+    return fnames;
+}
+
+QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData = new QMimeData();
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes));
     return mimeData;
 }
 

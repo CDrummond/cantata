@@ -37,16 +37,6 @@
 #include <QtGui/QMessageBox>
 #endif
 
-// Play Queue - for some reason, expects the list in reverse order...
-static QStringList reverseList(const QStringList &orig)
-{
-    QStringList rev;
-    foreach (const QString &s, orig) {
-        rev.prepend(s);
-    }
-    return rev;
-}
-
 PlaylistsPage::PlaylistsPage(MainWindow *p)
     : QWidget(p)
 {
@@ -254,10 +244,12 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 
 void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
 {
-    QStringList filenames;
+    if (0==indexes.size()) {
+        return;
+    }
 
     // If we only have 1 item selected, see if it is a playlist. If so, we might be able to
-    // jsut ask MPD to load it...
+    // just ask MPD to load it...
     if (1==indexes.count()) {
         QModelIndex idx=proxy.mapToSource(*(indexes.begin()));
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
@@ -267,36 +259,28 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
             foreach (const PlaylistsModel::SongItem *s, static_cast<PlaylistsModel::PlaylistItem*>(item)->songs) {
                 if (s->file.startsWith("http:/")) {
                     loadable=false; // Can't just load playlist, might need to parse HTTP...
+                    break;
                 }
-                filenames << s->file;
             }
 
             if (loadable) {
-                emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name);;
-            } else {
-                emit add(reverseList(filenames));
+                emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name);
+                return;
             }
-            view->clearSelection();
-            return;
         }
     }
 
-    QSet<PlaylistsModel::Item *> selectedPlaylists;
-    foreach(QModelIndex index, indexes) {
-        QModelIndex idx=proxy.mapToSource(index);
-        PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
-
-        if (item->isPlaylist()) {
-            selectedPlaylists.insert(item);
-            foreach (const PlaylistsModel::SongItem *s, static_cast<PlaylistsModel::PlaylistItem*>(item)->songs) {
-                filenames << s->file;
-            }
-        } else if (!selectedPlaylists.contains(static_cast<PlaylistsModel::SongItem*>(item)->parent)) {
-            filenames << static_cast<PlaylistsModel::SongItem*>(item)->file;
-        }
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, indexes) {
+        mapped.append(proxy.mapToSource(idx));
     }
-    view->clearSelection();
-    emit add(reverseList(filenames));
+
+    QStringList files=PlaylistsModel::self()->filenames(mapped);
+
+    if (!files.isEmpty()) {
+        emit add(files);
+        view->clearSelection();
+    }
 }
 
 void PlaylistsPage::selectionChanged()

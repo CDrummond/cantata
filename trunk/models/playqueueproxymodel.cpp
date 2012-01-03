@@ -38,6 +38,10 @@ PlayQueueProxyModel::PlayQueueProxyModel(QObject *parent) : QSortFilterProxyMode
 
 bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
+    if (filterRegExp().isEmpty()) {
+        return true;
+    }
+
     int columnCount = sourceModel()->columnCount(sourceParent);
 
     for (int i = 0; i < columnCount; i++) {
@@ -62,11 +66,8 @@ QMimeData *PlayQueueProxyModel::mimeData(const QModelIndexList &indexes) const
 }
 
 /* map proxy to real indexes and redirect to sourceModel */
-bool PlayQueueProxyModel::dropMimeData(const QMimeData *data,
-        Qt::DropAction action, int row, int column, const QModelIndex & parent)
+bool PlayQueueProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
-    const QModelIndex index = this->index(row, column, parent);
-    const QModelIndex sourceIndex = mapToSource(index);
-
+    const QModelIndex sourceIndex = mapToSource(index(row, column, parent));
     return sourceModel()->dropMimeData(data, action, sourceIndex.row(), sourceIndex.column(), sourceIndex.parent());
 }

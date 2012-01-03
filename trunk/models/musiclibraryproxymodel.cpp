@@ -136,6 +136,10 @@ bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem * const it
 
 bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
+    if (_filterGenre.isEmpty() && filterRegExp().isEmpty()) {
+        return true;
+    }
+
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     const MusicLibraryItem * const item = static_cast<MusicLibraryItem *>(index.internalPointer());
 

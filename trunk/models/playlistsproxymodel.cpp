@@ -37,6 +37,10 @@ PlaylistsProxyModel::PlaylistsProxyModel(QObject *parent) : QSortFilterProxyMode
 
 bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
+    if (filterRegExp().isEmpty()) {
+        return true;
+    }
+
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     PlaylistsModel::Item *item = static_cast<PlaylistsModel::Item *>(index.internalPointer());
 

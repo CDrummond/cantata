@@ -75,6 +75,7 @@
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 #include "timeslider.h"
+#include "mpris.h"
 
 class ProxyStyle : public QProxyStyle
 {
@@ -730,6 +731,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     folderPage->setView(0==Settings::self()->folderView());
     currentTabChanged(tabWidget->current_index());
     playlistsPage->refresh();
+    new Mpris(this);
 }
 
 struct Thread : public QThread

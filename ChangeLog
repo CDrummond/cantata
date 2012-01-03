@@ -7,6 +7,8 @@
 4. Improve time slider accuracu, by checking the time elapsed at each interval.
 5. Fix inconsistency between adding items via drag'n'drop and using the '>>'
    actions.
+6. Add basic MPRISv2 interface - maily so that Cantata can be controlled via
+   IconTasks's media buttons.
 
 0.1.2
 -----

@@ -71,6 +71,7 @@ SET( CANTATA_SRCS
     lyrics/songinfoprovider.cpp
     network/networkaccessmanager.cpp
     network/network.cpp
+    dbus/mpris.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -113,6 +114,7 @@ SET( CANTATA_MOC_HDRS
     lyrics/songinfoprovider.h
     network/networkaccessmanager.h
     network/network.h
+    dbus/mpris.h
 )
 
 SET( CANTATA_UIS
@@ -141,6 +143,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
                      ${CMAKE_SOURCE_DIR}/widgets
                      ${CMAKE_SOURCE_DIR}/lyrics
                      ${CMAKE_SOURCE_DIR}/network
+                     ${CMAKE_SOURCE_DIR}/dbus
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
 )
@@ -151,6 +154,8 @@ SET( QT_USE_QTXML TRUE )
 # this command finds Qt4 libraries and sets all required variables
 FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )
 FIND_PACKAGE( KDE4 )
+
+qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
 
 configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 

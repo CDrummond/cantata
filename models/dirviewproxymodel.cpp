@@ -72,13 +72,15 @@ bool DirViewProxyModel::filterAcceptsDirViewItem(const DirViewItem * const item,
 
 bool DirViewProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
+    if (filterRegExp().isEmpty()) {
+        return true;
+    }
+
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     DirViewItem *item = static_cast<DirViewItem *>(index.internalPointer());
 
     return filterAcceptsDirViewItem(item, true);
 }
-
-
 
 bool DirViewProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {

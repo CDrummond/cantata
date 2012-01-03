@@ -37,18 +37,18 @@
 #include "playqueuemodel.h"
 #include "itemview.h"
 
-dirViewModel::dirViewModel(QObject *parent)
+DirViewModel::DirViewModel(QObject *parent)
     : QAbstractItemModel(parent),
       rootItem(new DirViewItemRoot)
 {
 }
 
-dirViewModel::~dirViewModel()
+DirViewModel::~DirViewModel()
 {
     delete rootItem;
 }
 
-QModelIndex dirViewModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex DirViewModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (!hasIndex(row, column, parent))
         return QModelIndex();
@@ -67,7 +67,7 @@ QModelIndex dirViewModel::index(int row, int column, const QModelIndex &parent) 
     return QModelIndex();
 }
 
-QModelIndex dirViewModel::parent(const QModelIndex &index) const
+QModelIndex DirViewModel::parent(const QModelIndex &index) const
 {
     if (!index.isValid())
         return QModelIndex();
@@ -81,12 +81,12 @@ QModelIndex dirViewModel::parent(const QModelIndex &index) const
     return createIndex(parentItem->row(), 0, parentItem);
 }
 
-QVariant dirViewModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const
+QVariant DirViewModel::headerData(int /*section*/, Qt::Orientation /*orientation*/, int /*role*/) const
 {
     return QVariant();
 }
 
-int dirViewModel::rowCount(const QModelIndex &parent) const
+int DirViewModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.column() > 0)
         return 0;
@@ -101,7 +101,7 @@ int dirViewModel::rowCount(const QModelIndex &parent) const
     return parentItem->childCount();
 }
 
-int dirViewModel::columnCount(const QModelIndex &parent) const
+int DirViewModel::columnCount(const QModelIndex &parent) const
 {
     if (parent.isValid())
         return static_cast<DirViewItem *>(parent.internalPointer())->columnCount();
@@ -109,7 +109,7 @@ int dirViewModel::columnCount(const QModelIndex &parent) const
         return rootItem->columnCount();
 }
 
-QVariant dirViewModel::data(const QModelIndex &index, int role) const
+QVariant DirViewModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
@@ -157,12 +157,12 @@ QVariant dirViewModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void dirViewModel::clear()
+void DirViewModel::clear()
 {
     updateDirView(new DirViewItemRoot());
 }
 
-void dirViewModel::updateDirView(DirViewItemRoot *newroot)
+void DirViewModel::updateDirView(DirViewItemRoot *newroot)
 {
     const DirViewItemRoot *oldRoot = rootItem;
 
@@ -172,7 +172,7 @@ void dirViewModel::updateDirView(DirViewItemRoot *newroot)
     endResetModel();
 }
 
-Qt::ItemFlags dirViewModel::flags(const QModelIndex &index) const
+Qt::ItemFlags DirViewModel::flags(const QModelIndex &index) const
 {
     if (index.isValid())
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
@@ -180,7 +180,7 @@ Qt::ItemFlags dirViewModel::flags(const QModelIndex &index) const
         return Qt::ItemIsDropEnabled;
 }
 
-QStringList dirViewModel::filenames(const QModelIndexList &indexes) const
+QStringList DirViewModel::filenames(const QModelIndexList &indexes) const
 {
     QStringList fnames;
 
@@ -191,14 +191,14 @@ QStringList dirViewModel::filenames(const QModelIndexList &indexes) const
     return fnames;
 }
 
-QMimeData *dirViewModel::mimeData(const QModelIndexList &indexes) const
+QMimeData *DirViewModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
     PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes));
     return mimeData;
 }
 
-void dirViewModel::recurseDirItems(DirViewItem &parent, QStringList &filenames) const
+void DirViewModel::recurseDirItems(DirViewItem &parent, QStringList &filenames) const
 {
     if (parent.childCount() == 0) {
         if (!filenames.contains(parent.fullName())) {

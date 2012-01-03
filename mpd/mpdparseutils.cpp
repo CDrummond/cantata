@@ -24,9 +24,9 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QList>
-#include <QString>
-#include <QStringList>
+#include <QtCore/QList>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -281,6 +281,18 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
     return songs;
 }
 
+static bool groupSingleTracks=false;
+
+bool MPDParseUtils::groupSingle()
+{
+    return groupSingleTracks;
+}
+
+void MPDParseUtils::setGroupSingle(bool g)
+{
+    groupSingleTracks=g;
+}
+
 MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
 {
     MusicLibraryItemRoot * const rootItem = new MusicLibraryItemRoot;
@@ -310,6 +322,10 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
             songItem->addGenre(currentSong.genre);
             rootItem->addGenre(currentSong.genre);
         }
+    }
+
+    if (groupSingleTracks) {
+        rootItem->groupSingleTracks();
     }
 
     return rootItem;

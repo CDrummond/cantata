@@ -44,6 +44,8 @@ public:
     static void parseStatus(const QByteArray &data);
     static Song parseSong(const QByteArray &data);
     static QList<Song> parseSongs(const QByteArray &data);
+    static bool groupSingle();
+    static void setGroupSingle(bool g);
     static MusicLibraryItemRoot * parseLibraryItems(const QByteArray &data);
     static DirViewItemRoot * parseDirViewItems(const QByteArray &data);
     static QList<Output> parseOuputs(const QByteArray &data);

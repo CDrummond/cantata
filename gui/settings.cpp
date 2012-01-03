@@ -228,6 +228,11 @@ bool Settings::libraryYear()
     return GET_BOOL("libraryYear", false);
 }
 
+bool Settings::groupSingle()
+{
+    return GET_BOOL("groupSingle", false);
+}
+
 QStringList Settings::lyricProviders()
 {
     QStringList def;
@@ -394,6 +399,11 @@ void Settings::saveSidebar(int v)
 void Settings::saveLibraryYear(bool v)
 {
     SET_VALUE("libraryYear", v);
+}
+
+void Settings::saveGroupSingle(bool v)
+{
+    SET_VALUE("groupSingle", v);
 }
 
 void Settings::saveLyricProviders(const QStringList &p)

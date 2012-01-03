@@ -722,6 +722,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     }
 
     libraryPage->setView(0==Settings::self()->libraryView());
+    MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::setUseLibrarySizes(Settings::self()->albumsView()!=ItemView::Mode_IconTop);
     playlistsPage->setView(0==Settings::self()->playlistsView());
@@ -929,6 +930,7 @@ void MainWindow::updateSettings()
                       albumsPage->viewMode()!=Settings::self()->albumsView() ||
                       useLibSizeForAl!=AlbumsModel::useLibrarySizes();
     bool diffLibYear=MusicLibraryItemAlbum::showDate()!=Settings::self()->libraryYear();
+    bool diffSingleGroup=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle();
 
     if (diffLibCovers) {
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
@@ -939,13 +941,16 @@ void MainWindow::updateSettings()
     if (diffAlCovers) {
         AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     }
+    if (diffSingleGroup) {
+        MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
+    }
 
     AlbumsModel::setUseLibrarySizes(useLibSizeForAl);
     albumsPage->setView(Settings::self()->albumsView());
-    if (diffAlCovers) {
+    if (diffAlCovers || diffSingleGroup) {
         albumsPage->clear();
     }
-    if (diffLibCovers || diffAlCovers || diffLibYear) {
+    if (diffLibCovers || diffAlCovers || diffLibYear || diffSingleGroup) {
         libraryPage->refresh(LibraryPage::RefreshForce);
     }
 

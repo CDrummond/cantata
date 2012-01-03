@@ -165,3 +165,8 @@ QString Song::entryName() const
     return text;
 }
 
+QString Song::artistSong() const
+{
+    return artist+QLatin1String(" - ")+title;
+}
+

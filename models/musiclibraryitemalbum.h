@@ -27,9 +27,9 @@
 #ifndef MUSIC_LIBRARY_ITEM_ALBUM_H
 #define MUSIC_LIBRARY_ITEM_ALBUM_H
 
-#include <QList>
-#include <QVariant>
-#include <QPixmap>
+#include <QtCore/QList>
+#include <QtCore/QVariant>
+#include <QtGui/QPixmap>
 #include "musiclibraryitem.h"
 
 class MusicLibraryItemArtist;
@@ -62,12 +62,16 @@ public:
     const QString & dir() const { return m_dir; }
     QStringList sortedTracks();
     quint32 year() const { return m_year; }
+    void addTracks(MusicLibraryItemAlbum *other);
+    void sortTracks();
+    bool isSingleTracks() const { return m_singleTracks; }
 
 private:
     QString m_dir;
     quint32 m_year;
     bool m_coverIsDefault;
     QPixmap *m_cover;
+    bool m_singleTracks;
 };
 
 #endif

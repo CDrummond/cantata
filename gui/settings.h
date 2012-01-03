@@ -69,6 +69,7 @@ public:
     int albumsCoverSize();
     int sidebar();
     bool libraryYear();
+    bool groupSingle();
     QStringList lyricProviders();
     QString page();
     QStringList hiddenPages();
@@ -97,6 +98,7 @@ public:
     void saveAlbumsCoverSize(int v);
     void saveSidebar(int v);
     void saveLibraryYear(bool v);
+    void saveGroupSingle(bool v);
     void saveLyricProviders(const QStringList &p);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &p);

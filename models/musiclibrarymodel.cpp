@@ -155,7 +155,9 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Song==item->type()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
-            if (song->track()>9) {
+            if (static_cast<MusicLibraryItemAlbum *>(song->parent())->isSingleTracks()) {
+                return song->song().artistSong();
+            } else if (song->track()>9) {
                 return QString::number(song->track())+QLatin1String(" - ")+item->data();
             } else if (song->track()>0) {
                 return QChar('0')+QString::number(song->track())+QLatin1String(" - ")+item->data();

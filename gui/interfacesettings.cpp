@@ -46,6 +46,7 @@ void InterfaceSettings::load()
     folderView->setCurrentIndex(Settings::self()->folderView());
     playlistsView->setCurrentIndex(Settings::self()->playlistsView());
     streamsView->setCurrentIndex(Settings::self()->streamsView());
+    groupSingle->setChecked(Settings::self()->groupSingle());
 }
 
 void InterfaceSettings::save()
@@ -60,6 +61,7 @@ void InterfaceSettings::save()
     Settings::self()->saveFolderView(folderView->currentIndex());
     Settings::self()->savePlaylistsView(playlistsView->currentIndex());
     Settings::self()->saveStreamsView(streamsView->currentIndex());
+    Settings::self()->saveGroupSingle(groupSingle->isChecked());
 }
 
 void InterfaceSettings::albumsViewChanged()
@@ -75,4 +77,3 @@ void InterfaceSettings::albumsCoverSizeChanged()
         albumsView->setCurrentIndex(1);
     }
 }
-

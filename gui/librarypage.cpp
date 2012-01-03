@@ -23,7 +23,6 @@
 
 #include "librarypage.h"
 #include "mpdconnection.h"
-#include "mpdparseutils.h"
 #include "covers.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"

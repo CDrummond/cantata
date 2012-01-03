@@ -47,15 +47,17 @@ bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem * const 
         return item->data().contains(filterRegExp());
     case 1: // Album
         for (int i = 0; i < item->childCount(); i++) {
-            if (item->child(i)->data().contains(filterRegExp()))
+            if (item->child(i)->data().contains(filterRegExp())) {
                 return true;
+            }
         }
         break;
     case 2: // Song
         for (int i = 0; i < item->childCount(); i++) {
             for (int j = 0; j < item->child(i)->childCount(); j++) {
-                if (item->child(i)->child(j)->data().contains(filterRegExp()))
+                if (item->child(i)->child(j)->data().contains(filterRegExp())) {
                     return true;
+                }
             }
         }
         break;
@@ -64,14 +66,16 @@ bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem * const 
             return true;
 
         for (int i = 0; i < item->childCount(); i++) {
-            if (item->child(i)->data().contains(filterRegExp()))
+            if (item->child(i)->data().contains(filterRegExp())) {
                 return true;
+            }
         }
 
         for (int i = 0; i < item->childCount(); i++) {
             for (int j = 0; j < item->child(i)->childCount(); j++) {
-                if (item->child(i)->child(j)->data().contains(filterRegExp()))
+                if (item->child(i)->child(j)->data().contains(filterRegExp())) {
                     return true;
+                }
             }
         }
         break;
@@ -96,8 +100,7 @@ bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem * const i
         }
         break;
     case 3: // Any
-        if (item->parent()->data().contains(filterRegExp()) || \
-                item->data().contains(filterRegExp()))
+        if (item->parent()->data().contains(filterRegExp()) || item->data().contains(filterRegExp()))
             return true;
         for (int i = 0; i < item->childCount(); i++) {
             if (item->child(i)->data().contains(filterRegExp()))
@@ -121,8 +124,8 @@ bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem * const it
     case 2: // Song
         return item->data().contains(filterRegExp());
     case 3: // Any
-        return item->parent()->parent()->data().contains(filterRegExp()) || \
-               item->parent()->data().contains(filterRegExp()) || \
+        return item->parent()->parent()->data().contains(filterRegExp()) ||
+               item->parent()->data().contains(filterRegExp()) ||
                item->data().contains(filterRegExp());
     default:
         break;

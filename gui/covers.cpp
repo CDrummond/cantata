@@ -54,30 +54,30 @@ static const QString typeFromRaw(const QByteArray &raw)
     return QString();
 }
 
-static bool save(const QString &mimeType, const QString &extension, const QString &filePrefix, const QImage &img, const QByteArray &raw)
+static QString save(const QString &mimeType, const QString &extension, const QString &filePrefix, const QImage &img, const QByteArray &raw)
 {
     if (!mimeType.isEmpty()) {
         if (QFile::exists(filePrefix+mimeType)) {
-            return true;
+            return filePrefix+mimeType;
         }
 
         QFile f(filePrefix+mimeType);
         if (f.open(QIODevice::WriteOnly) && raw.size()==f.write(raw)) {
-            return true;
+            return filePrefix+mimeType;
         }
     }
 
     if (extension!=mimeType) {
         if (QFile::exists(filePrefix+extension)) {
-            return true;
+            return filePrefix+extension;
         }
 
         if (img.save(filePrefix+extension)) {
-            return true;
+            return filePrefix+extension;
         }
     }
 
-    return false;
+    return QString();
 }
 
 static QString encodeName(QString name)
@@ -116,38 +116,48 @@ static QString kdeHome()
 }
 #endif
 
-static QImage otherAppCover(const Covers::Job &job)
+struct AppCover
+{
+    QImage img;
+    QString filename;
+};
+
+static AppCover otherAppCover(const Covers::Job &job)
 {
 #ifdef ENABLE_KDE_SUPPORT
     QString kdeDir=KGlobal::dirs()->localkdedir();
 #else
     QString kdeDir=kdeHome();
 #endif
-    QString fileName=kdeDir+"/share/apps/amarok/albumcovers/large/"+
-                     QCryptographicHash::hash(job.artist.toLower().toLocal8Bit()+job.album.toLower().toLocal8Bit(),
-                                              QCryptographicHash::Md5).toHex();
+    AppCover app;
+    app.filename=kdeDir+"/share/apps/amarok/albumcovers/large/"+
+                 QCryptographicHash::hash(job.artist.toLower().toLocal8Bit()+job.album.toLower().toLocal8Bit(),
+                                          QCryptographicHash::Md5).toHex();
 
-    QImage img(fileName);
+    app.img=QImage(app.filename);
 
-    if (img.isNull()) {
-        fileName=xdgConfig()+"/Clementine/albumcovers/"+
-                 QCryptographicHash::hash(job.artist.toLower().toUtf8()+job.album.toLower().toUtf8(),
-                                          QCryptographicHash::Sha1).toHex()+".jpg";
+    if (app.img.isNull()) {
+        app.filename=xdgConfig()+"/Clementine/albumcovers/"+
+                     QCryptographicHash::hash(job.artist.toLower().toUtf8()+job.album.toLower().toUtf8(),
+                                              QCryptographicHash::Sha1).toHex()+".jpg";
 
-        img=QImage(fileName);
+        app.img=QImage(app.filename);
     }
 
-    if (!img.isNull() && !job.dir.isEmpty()) {
-        QFile f(fileName);
+    if (!app.img.isNull() && !job.dir.isEmpty()) {
+        QFile f(app.filename);
         if (f.open(QIODevice::ReadOnly)) {
             QByteArray raw=f.readAll();
             if (!raw.isEmpty()) {
                 QString mimeType=typeFromRaw(raw);
-                save(mimeType, mimeType.isEmpty() ? constExtension : mimeType, job.dir+constFileName, img, raw);
+                QString saveName=save(mimeType, mimeType.isEmpty() ? constExtension : mimeType, job.dir+constFileName, app.img, raw);
+                if (!saveName.isEmpty()) {
+                    app.filename=saveName;
+                }
             }
         }
     }
-    return img;
+    return app;
 }
 
 Covers * Covers::self()
@@ -210,9 +220,9 @@ void Covers::get(const Song &song)
     Job job(song.albumArtist(), song.album, dirName);
 
     // See if amarok, or clementine, has it...
-    QImage img=otherAppCover(job);
-    if (!img.isNull()) {
-        emit cover(artist, album, img, QString());
+    AppCover app=otherAppCover(job);
+    if (!app.img.isNull()) {
+        emit cover(artist, album, app.img, app.filename);
         return;
     }
 
@@ -276,7 +286,8 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
 
     if (it!=end) {
         Job job=it.value();
-        emit cover(job.artist, job.album, otherAppCover(job), QString());
+        AppCover app=otherAppCover(job);
+        emit cover(job.artist, job.album, app.img, app.filename);
         jobs.remove(it.key());
     }
 
@@ -305,7 +316,8 @@ void Covers::jobFinished(QNetworkReply *reply)
         jobs.remove(it.key());
 
         if (img.isNull()) {
-            emit cover(job.artist, job.album, otherAppCover(job), QString());
+            AppCover app=otherAppCover(job);
+            emit cover(job.artist, job.album, app.img, app.filename);
         } else {
             emit cover(job.artist, job.album, img, fileName);
         }
@@ -318,17 +330,22 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
 {
     QString mimeType=typeFromRaw(raw);
     QString extension=mimeType.isEmpty() ? constExtension : mimeType;
+    QString savedName;
 
     // Try to save as cover.jpg in album dir...
-    if (!job.dir.isEmpty() && save(mimeType, extension, job.dir+constFileName, img, raw)) {
-        return job.dir+constFileName;
+    if (!job.dir.isEmpty()) {
+        savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
+        if (!savedName.isEmpty()) {
+            return savedName;
+        }
     }
 
     // Could not save with album, save in cache dir...
     QString dir = Network::cacheDir(constCoverDir+encodeName(job.artist));
     if (!dir.isEmpty()) {
-        if (save(mimeType, extension, dir+encodeName(job.album), img, raw)) {
-            return dir+encodeName(job.album);
+        savedName=save(mimeType, extension, dir+encodeName(job.album), img, raw);
+        if (!savedName.isEmpty()) {
+            return savedName;
         }
     }
 

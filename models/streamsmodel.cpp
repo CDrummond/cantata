@@ -468,10 +468,16 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
         if (item->isCategory()) {
             selectedCategories.insert(item);
             foreach (const StreamItem *s, static_cast<CategoryItem*>(item)->streams) {
-                filenames << s->url.toString();
+                QString f=s->url.toString();
+                if (!filenames.contains(f)) {
+                    filenames << f;
+                }
             }
         } else if (!selectedCategories.contains(static_cast<StreamItem*>(item)->parent)) {
-            filenames << static_cast<StreamItem*>(item)->url.toString();
+            QString f=static_cast<StreamItem*>(item)->url.toString();
+            if (!filenames.contains(f)) {
+                filenames << f;
+            }
         }
     }
 

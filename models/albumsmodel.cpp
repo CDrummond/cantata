@@ -308,9 +308,11 @@ QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
 
         if (item->isAlbum()) {
             foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
-                filenames << s->file;
+                if (!filenames.contains(s->file)) {
+                    filenames << s->file;
+                }
             }
-        } else {
+        } else if (!filenames.contains(static_cast<SongItem*>(item)->file)) {
             filenames << static_cast<SongItem*>(item)->file;
         }
     }

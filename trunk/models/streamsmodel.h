@@ -82,6 +82,7 @@ public:
     QString name(const QString &cat, const QString &url) { return name(getCategory(cat), url); }
     bool entryExists(const QString &cat, const QString &name, const QUrl &url=QUrl()) { return entryExists(getCategory(cat), name, url); }
     Qt::ItemFlags flags(const QModelIndex &index) const;
+    QStringList filenames(const QModelIndexList &indexes) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void mark(const QList<int> &rows, bool f);
 

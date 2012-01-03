@@ -104,25 +104,18 @@ void AlbumsPage::setItemSize()
 
 void AlbumsPage::addSelectionToPlaylist(const QString &name)
 {
-    QStringList files;
-
     const QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return;
     }
 
+    QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
-        AlbumsModel::Item *item=static_cast<AlbumsModel::Item *>(proxy.mapToSource(idx).internalPointer());
-
-        if (item->isAlbum()) {
-            foreach (const AlbumsModel::SongItem *s, static_cast<AlbumsModel::AlbumItem*>(item)->songs) {
-                files << s->file;
-            }
-        } else {
-            files << static_cast<AlbumsModel::SongItem*>(item)->file;
-        }
+        mapped.append(proxy.mapToSource(idx));
     }
+
+    QStringList files=model.filenames(mapped);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

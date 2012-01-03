@@ -299,25 +299,29 @@ Qt::ItemFlags AlbumsModel::flags(const QModelIndex &index) const
         return Qt::NoItemFlags;
 }
 
-QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
+QStringList AlbumsModel::filenames(const QModelIndexList &indexes) const
 {
-    QMimeData *mimeData = new QMimeData();
-    QStringList filenames;
+    QStringList fnames;
     foreach(QModelIndex index, indexes) {
         Item *item=static_cast<Item *>(index.internalPointer());
 
         if (item->isAlbum()) {
             foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
-                if (!filenames.contains(s->file)) {
-                    filenames << s->file;
+                if (!fnames.contains(s->file)) {
+                    fnames << s->file;
                 }
             }
-        } else if (!filenames.contains(static_cast<SongItem*>(item)->file)) {
-            filenames << static_cast<SongItem*>(item)->file;
+        } else if (!fnames.contains(static_cast<SongItem*>(item)->file)) {
+            fnames << static_cast<SongItem*>(item)->file;
         }
     }
+    return fnames;
+}
 
-    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames);
+QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData = new QMimeData();
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes));
     return mimeData;
 }
 

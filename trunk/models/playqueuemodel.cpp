@@ -40,6 +40,15 @@
 #include "mpdstatus.h"
 #include "streamfetcher.h"
 
+static QStringList reverseList(const QStringList &orig)
+{
+    QStringList rev;
+    foreach (const QString &s, orig) {
+        rev.prepend(s);
+    }
+    return rev;
+}
+
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 
@@ -55,14 +64,14 @@ void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStr
     mimeData.setData(mime, encodedData);
 }
 
-QStringList PlayQueueModel::decode(const QMimeData &mimeData, const QString &mime, bool rev)
+QStringList PlayQueueModel::decode(const QMimeData &mimeData, const QString &mime)
 {
     QByteArray encodedData=mimeData.data(mime);
     QTextStream stream(&encodedData, QIODevice::ReadOnly);
     QStringList rv;
 
     while (!stream.atEnd()) {
-        rev ? rv.prepend(stream.readLine().remove('\n')) : rv.append(stream.readLine().remove('\n'));
+        rv.append(stream.readLine().remove('\n'));
     }
     return rv;
 }
@@ -294,7 +303,7 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         return true;
     } else if (data->hasFormat(constFileNameMimeType)) {
         //Act on moves from the music library and dir view
-        addItems(decode(*data, constFileNameMimeType, true), row);
+        addItems(reverseList(decode(*data, constFileNameMimeType)), row);
         return true;
     }
 

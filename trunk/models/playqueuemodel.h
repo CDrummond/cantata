@@ -59,7 +59,7 @@ public:
     static const QLatin1String constFileNameMimeType;
 
     static void encode(QMimeData &mimeData, const QString &mime, const QStringList &values);
-    static QStringList decode(const QMimeData &mimeData, const QString &mime, bool rev=false);
+    static QStringList decode(const QMimeData &mimeData, const QString &mime);
 
     PlayQueueModel(QObject *parent = 0);
     ~PlayQueueModel();

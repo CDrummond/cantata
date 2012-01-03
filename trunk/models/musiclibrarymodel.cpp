@@ -512,16 +512,9 @@ Qt::ItemFlags MusicLibraryModel::flags(const QModelIndex &index) const
         return Qt::ItemIsDropEnabled;
 }
 
-/**
-* Convert the data at indexes into mimedata ready for transport
-*
-* @param indexes The indexes to pack into mimedata
-* @return The mimedata
-*/
-QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
+QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes) const
 {
-    QMimeData *mimeData = new QMimeData();
-    QStringList filenames;
+    QStringList fnames;
 
     foreach(QModelIndex index, indexes) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
@@ -531,8 +524,8 @@ QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
             for (int i = 0; i < item->childCount(); i++) {
                 QStringList sorted=static_cast<MusicLibraryItemAlbum*>(item->child(i))->sortedTracks();
                 foreach (const QString &f, sorted) {
-                    if(!filenames.contains(f)) {
-                        filenames << f;
+                    if(!fnames.contains(f)) {
+                        fnames << f;
                     }
                 }
             }
@@ -540,22 +533,33 @@ QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
         case MusicLibraryItem::Type_Album: {
             QStringList sorted=static_cast<MusicLibraryItemAlbum*>(item)->sortedTracks();
                 foreach (const QString &f, sorted) {
-                    if(!filenames.contains(f)) {
-                        filenames << f;
+                    if(!fnames.contains(f)) {
+                        fnames << f;
                     }
                 }
             break;
         }
         case MusicLibraryItem::Type_Song:
-            if (item->type() == MusicLibraryItem::Type_Song && !filenames.contains(static_cast<MusicLibraryItemSong*>(item)->file())) {
-                filenames << static_cast<MusicLibraryItemSong*>(item)->file();
+            if (item->type() == MusicLibraryItem::Type_Song && !fnames.contains(static_cast<MusicLibraryItemSong*>(item)->file())) {
+                fnames << static_cast<MusicLibraryItemSong*>(item)->file();
             }
             break;
         default:
             break;
         }
     }
+    return fnames;
+}
 
-    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames);
+/**
+* Convert the data at indexes into mimedata ready for transport
+*
+* @param indexes The indexes to pack into mimedata
+* @return The mimedata
+*/
+QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData = new QMimeData();
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes));
     return mimeData;
 }

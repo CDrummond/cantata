@@ -21,25 +21,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INTERFACESETTINGS_H
-#define INTERFACESETTINGS_H
+#ifndef EXTERNALSETTINGS_H
+#define EXTERNALSETTINGS_H
 
-#include "ui_interfacesettings.h"
+#include "ui_externalsettings.h"
 
-class InterfaceSettings : public QWidget, private Ui::InterfaceSettings
+class ExternalSettings : public QWidget, private Ui::ExternalSettings
 {
     Q_OBJECT
 
 public:
-    InterfaceSettings(QWidget *p);
-    virtual ~InterfaceSettings() { }
+    ExternalSettings(QWidget *p);
+    virtual ~ExternalSettings() { }
 
     void load();
     void save();
-
-private Q_SLOTS:
-    void albumsViewChanged();
-    void albumsCoverSizeChanged();
 };
 
 #endif

@@ -9,6 +9,8 @@
    actions.
 6. Add basic MPRISv2 interface - maily so that Cantata can be controlled via
    IconTasks's media buttons.
+7. Add option to set icon in dockmanager docks (IconTasks, Docky, DockBarX, etc)
+   to that of the current track.
 
 0.1.2
 -----

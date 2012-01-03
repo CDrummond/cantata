@@ -73,6 +73,8 @@ public:
     QStringList lyricProviders();
     QString page();
     QStringList hiddenPages();
+    bool mpris();
+    bool dockManager();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -102,6 +104,8 @@ public:
     void saveLyricProviders(const QStringList &p);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &p);
+    void saveMpris(bool v);
+    void saveDockManager(bool v);
     void save(bool force=false);
 #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

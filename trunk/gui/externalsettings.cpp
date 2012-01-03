@@ -21,25 +21,28 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INTERFACESETTINGS_H
-#define INTERFACESETTINGS_H
+#include "externalsettings.h"
+#include "settings.h"
+#include <QtGui/QCheckBox>
 
-#include "ui_interfacesettings.h"
-
-class InterfaceSettings : public QWidget, private Ui::InterfaceSettings
+ExternalSettings::ExternalSettings(QWidget *p)
+    : QWidget(p)
 {
-    Q_OBJECT
-
-public:
-    InterfaceSettings(QWidget *p);
-    virtual ~InterfaceSettings() { }
-
-    void load();
-    void save();
-
-private Q_SLOTS:
-    void albumsViewChanged();
-    void albumsCoverSizeChanged();
+    setupUi(this);
 };
 
-#endif
+void ExternalSettings::load()
+{
+    systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
+    systemTrayPopup->setChecked(Settings::self()->showPopups());
+    mpris->setChecked(Settings::self()->mpris());
+    dockManager->setChecked(Settings::self()->dockManager());
+}
+
+void ExternalSettings::save()
+{
+    Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
+    Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
+    Settings::self()->saveMpris(mpris->isChecked());
+    Settings::self()->saveDockManager(dockManager->isChecked());
+}

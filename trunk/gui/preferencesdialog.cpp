@@ -25,6 +25,7 @@
 #include "mainwindow.h"
 #include "settings.h"
 #include "interfacesettings.h"
+#include "externalsettings.h"
 #include "playbacksettings.h"
 #include "outputsettings.h"
 #include "serversettings.h"
@@ -85,11 +86,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     playback = new PlaybackSettings(widget);
     output = new OutputSettings(widget);
     interface = new InterfaceSettings(widget);
+    ext = new ExternalSettings(widget);
     lyrics = new LyricSettings(widget);
     server->load();
     playback->load();
     output->load();
     interface->load();
+    ext->load();
     const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
     lyrics->Load(lprov);
 #ifdef ENABLE_KDE_SUPPORT
@@ -105,6 +108,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page=widget->addPage(interface, i18n("Interface"));
     page->setHeader(i18n("Interface Settings"));
     page->setIcon(KIcon("preferences-desktop-color"));
+    page=widget->addPage(ext, i18n("External"));
+    page->setHeader(i18n("External Settings"));
+    page->setIcon(KIcon("video-display"));
     page=widget->addPage(lyrics, i18n("Lyrics"));
     page->setHeader(i18n("Lyrics Settings"));
     page->setIcon(KIcon("view-media-lyrics"));
@@ -121,6 +127,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
                    QIcon::fromTheme("speaker"), tr("Output"));
     widget->AddTab(new ConfigPage(this, tr("Interface Settings"), QIcon::fromTheme("preferences-desktop-color"), interface),
                    QIcon::fromTheme("preferences-desktop-color"), tr("Interface"));
+    widget->AddTab(new ConfigPage(this, tr("External Settings"), QIcon::fromTheme("video-display"), ext),
+                   QIcon::fromTheme("video-display"), tr("External"));
     widget->AddTab(new ConfigPage(this, tr("Lyrics Settings"), QIcon::fromTheme("view-media-lyrics"), lyrics),
                    QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
     proxy = new ProxySettings(this);
@@ -149,6 +157,7 @@ void PreferencesDialog::writeSettings()
     playback->save();
     output->save();
     interface->save();
+    ext->save();
 #ifndef ENABLE_KDE_SUPPORT
     proxy->save();
 #endif

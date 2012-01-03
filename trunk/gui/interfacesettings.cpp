@@ -25,6 +25,7 @@
 #include "settings.h"
 #include "itemview.h"
 #include <QtGui/QComboBox>
+#include <QtGui/QCheckBox>
 
 InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
@@ -36,8 +37,6 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
-    systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
-    systemTrayPopup->setChecked(Settings::self()->showPopups());
     libraryView->setCurrentIndex(Settings::self()->libraryView());
     libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
     libraryYear->setChecked(Settings::self()->libraryYear());
@@ -51,8 +50,6 @@ void InterfaceSettings::load()
 
 void InterfaceSettings::save()
 {
-    Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
-    Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
     Settings::self()->saveLibraryView(libraryView->currentIndex());
     Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
     Settings::self()->saveLibraryYear(libraryYear->isChecked());

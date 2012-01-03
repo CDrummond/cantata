@@ -76,6 +76,7 @@
 #include "fancytabwidget.h"
 #include "timeslider.h"
 #include "mpris.h"
+#include "dockmanager.h"
 
 class ProxyStyle : public QProxyStyle
 {
@@ -224,7 +225,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     lastSongId(-1),
     fetchStatsFactor(0),
     nowPlayingFactor(0),
-    draggingPositionSlider(false)
+    draggingPositionSlider(false),
+    dock(0),
+    mpris(0)
 {
     loaded=0;
     updateDialog = 0;
@@ -459,8 +462,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     menuButton->setIcon(QIcon::fromTheme("configure"));
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
-    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
-            SLOT(cover(const QString &, const QString &, const QImage &)));
+    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
+            SLOT(cover(const QString &, const QString &, const QImage &, const QString &)));
 
     menuButton->setMenu(mainMenu);
     menuButton->setPopupMode(QToolButton::InstantPopup);
@@ -731,7 +734,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     folderPage->setView(0==Settings::self()->folderView());
     currentTabChanged(tabWidget->current_index());
     playlistsPage->refresh();
-    new Mpris(this);
+    toggleMpris();
+    toggleDockManager();
 }
 
 struct Thread : public QThread
@@ -741,6 +745,9 @@ struct Thread : public QThread
 
 MainWindow::~MainWindow()
 {
+    if (dock) {
+        dock->setIcon(QString());
+    }
 #ifndef ENABLE_KDE_SUPPORT
     Settings::self()->saveMainWindowSize(size());
 #endif
@@ -962,6 +969,8 @@ void MainWindow::updateSettings()
     folderPage->setView(0==Settings::self()->folderView());
 
     setupTrayIcon();
+    toggleDockManager();
+    toggleMpris();
 }
 
 #ifndef ENABLE_KDE_SUPPORT
@@ -1716,13 +1725,15 @@ bool MainWindow::currentIsStream()
     return !current.title.isEmpty() && (current.file.isEmpty() || current.file.contains("://"));
 }
 
-void MainWindow::cover(const QString &artist, const QString &album, const QImage &img)
+void MainWindow::cover(const QString &artist, const QString &album, const QImage &img, const QString &file)
 {
     if (artist==current.albumArtist() && album==current.album) {
         if (img.isNull()) {
             coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
+            emit coverFile(QString());
         } else {
             coverWidget->setPixmap(QPixmap::fromImage(img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            emit coverFile(file);
         }
     }
 }
@@ -1730,4 +1741,29 @@ void MainWindow::cover(const QString &artist, const QString &album, const QImage
 void MainWindow::showTab(int page)
 {
     tabWidget->SetCurrentIndex(page);
+}
+
+void MainWindow::toggleMpris()
+{
+    bool on=Settings::self()->mpris();
+    if (on) {
+        if (!mpris) {
+            mpris=new Mpris(this);
+        }
+    } else {
+        if (mpris) {
+            mpris->deleteLater();
+            mpris=0;
+        }
+    }
+}
+
+void MainWindow::toggleDockManager()
+{
+    if (!dock) {
+        dock=new DockManager(this);
+        connect(this, SIGNAL(coverFile(const QString &)), dock, SLOT(setIcon(const QString &)));
+    }
+
+    dock->setEnabled(Settings::self()->dockManager());
 }

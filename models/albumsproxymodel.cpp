@@ -20,9 +20,8 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+
 #include "albumsproxymodel.h"
-#include "albumsmodel.h"
-#include <QDebug>
 
 AlbumsProxyModel::AlbumsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
@@ -31,6 +30,36 @@ AlbumsProxyModel::AlbumsProxyModel(QObject *parent) : QSortFilterProxyModel(pare
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setSortLocaleAware(true);
     sort(0);
+}
+
+bool AlbumsProxyModel::filterAcceptsAlbum(AlbumsModel::Item *item) const
+{
+    AlbumsModel::AlbumItem *ai = static_cast<AlbumsModel::AlbumItem *>(item);
+    if (!filterGenre.isEmpty() && !ai->genres.contains(filterGenre)) {
+        return false;
+    }
+
+    if(ai->artist.contains(filterRegExp()) || ai->album.contains(filterRegExp())) {
+        return true;
+    }
+
+    foreach (const AlbumsModel::SongItem *song, ai->songs) {
+        if (song->displayTitle().contains(filterRegExp())) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AlbumsProxyModel::filterAcceptsSong(AlbumsModel::Item *item) const
+{
+    AlbumsModel::SongItem *si = static_cast<AlbumsModel::SongItem *>(item);
+
+    if (!filterGenre.isEmpty() && si->genre!=filterGenre) {
+        return false;
+    }
+
+    return si->displayTitle().contains(filterRegExp()) || si->parent->artist.contains(filterRegExp()) || si->parent->album.contains(filterRegExp());
 }
 
 bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
@@ -42,21 +71,7 @@ bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &source
         return false;
     }
 
-    if (item->isAlbum()) {
-        AlbumsModel::AlbumItem *ai = static_cast<AlbumsModel::AlbumItem *>(item);
-        if (!filterGenre.isEmpty() && !ai->genres.contains(filterGenre)) {
-            return false;
-        }
-
-        return ai->artist.contains(filterRegExp()) || ai->album.contains(filterRegExp());
-    } else {
-        AlbumsModel::SongItem *si = static_cast<AlbumsModel::SongItem *>(item);
-        if (!filterGenre.isEmpty() && !si->genre.contains(filterGenre)) {
-            return false;
-        }
-
-        return si->title.contains(filterRegExp());
-    }
+    return item->isAlbum() ? filterAcceptsAlbum(item) : filterAcceptsSong(item);
 }
 
 void AlbumsProxyModel::setFilterGenre(const QString &genre)

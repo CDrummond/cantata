@@ -7,51 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>368</width>
-    <height>275</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::ExpandingFieldsGrow</enum>
+   </property>
    <item row="0" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Show icon in notification area:</string>
-     </property>
-     <property name="buddy">
-      <cstring>systemTrayCheckBox</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QCheckBox" name="systemTrayCheckBox">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>Show popup up messages when changing tracks:</string>
-     </property>
-     <property name="buddy">
-      <cstring>systemTrayPopup</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QCheckBox" name="systemTrayPopup">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Library view:</string>
@@ -61,7 +27,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="0" column="1">
     <widget class="QComboBox" name="libraryView">
      <item>
       <property name="text">
@@ -75,7 +41,7 @@
      </item>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="label_5b">
      <property name="text">
       <string>Covers in library view:</string>
@@ -85,7 +51,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="1" column="1">
     <widget class="QComboBox" name="libraryCoverSize">
      <item>
       <property name="text">
@@ -109,7 +75,41 @@
      </item>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>Show album year in library view:</string>
+     </property>
+     <property name="buddy">
+      <cstring>libraryYear</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QCheckBox" name="libraryYear">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>Group single track albums:</string>
+     </property>
+     <property name="buddy">
+      <cstring>groupSingle</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QCheckBox" name="groupSingle">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <widget class="QLabel" name="label_3a">
      <property name="text">
       <string>Albums view:</string>
@@ -119,7 +119,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="4" column="1">
     <widget class="QComboBox" name="albumsView">
      <item>
       <property name="text">
@@ -138,7 +138,7 @@
      </item>
     </widget>
    </item>
-   <item row="7" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="label_5c">
      <property name="text">
       <string>Covers in albums view:</string>
@@ -148,7 +148,7 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
+   <item row="5" column="1">
     <widget class="QComboBox" name="albumsCoverSize">
      <item>
       <property name="text">
@@ -172,7 +172,7 @@
      </item>
     </widget>
    </item>
-   <item row="8" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Folder view:</string>
@@ -182,7 +182,7 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
+   <item row="6" column="1">
     <widget class="QComboBox" name="folderView">
      <item>
       <property name="text">
@@ -196,7 +196,7 @@
      </item>
     </widget>
    </item>
-   <item row="9" column="0">
+   <item row="7" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Playlists view:</string>
@@ -206,7 +206,7 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="1">
+   <item row="7" column="1">
     <widget class="QComboBox" name="playlistsView">
      <item>
       <property name="text">
@@ -220,7 +220,7 @@
      </item>
     </widget>
    </item>
-   <item row="10" column="0">
+   <item row="8" column="0">
     <widget class="QLabel" name="label_x">
      <property name="text">
       <string>Streams view:</string>
@@ -230,7 +230,7 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="1">
+   <item row="8" column="1">
     <widget class="QComboBox" name="streamsView">
      <item>
       <property name="text">
@@ -244,45 +244,9 @@
      </item>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_6">
-     <property name="text">
-      <string>Show album year in library view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>libraryYear</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QCheckBox" name="libraryYear">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>Group single track albums:</string>
-     </property>
-     <property name="buddy">
-      <cstring>groupSingle</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QCheckBox" name="groupSingle">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>systemTrayCheckBox</tabstop>
-  <tabstop>systemTrayPopup</tabstop>
   <tabstop>libraryView</tabstop>
   <tabstop>libraryCoverSize</tabstop>
   <tabstop>libraryYear</tabstop>

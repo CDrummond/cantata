@@ -55,7 +55,7 @@ public:
     void setMpdDir(const QString &dir) { mpdDir=dir; }
 
 Q_SIGNALS:
-    void cover(const QString &artist, const QString &album, const QImage &img);
+    void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
 
 private Q_SLOTS:
     void albumInfo(QVariant &value, QNetworkReply *reply);
@@ -63,7 +63,7 @@ private Q_SLOTS:
     void jobFinished(QNetworkReply *reply);
 
 private:
-    void saveImg(const Job &job, const QImage &img, const QByteArray &raw);
+    QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<QNetworkReply *, Job>::Iterator findJob(const Song &song);
 
 private:

@@ -182,7 +182,7 @@ void Covers::get(const Song &song)
                 QImage img(dirName+constFileName+ext);
 
                 if (!img.isNull()) {
-                    emit cover(song.albumArtist(), song.album, img);
+                    emit cover(song.albumArtist(), song.album, img, dirName+constFileName+ext);
                     return;
                 }
             }
@@ -197,7 +197,7 @@ void Covers::get(const Song &song)
         if (QFile::exists(dir+album+ext)) {
             QImage img(dir+album+ext);
             if (!img.isNull()) {
-                emit cover(artist, album, img);
+                emit cover(artist, album, img, dir+album+ext);
                 return;
             }
         }
@@ -212,7 +212,7 @@ void Covers::get(const Song &song)
     // See if amarok, or clementine, has it...
     QImage img=otherAppCover(job);
     if (!img.isNull()) {
-        emit cover(artist, album, img);
+        emit cover(artist, album, img, QString());
         return;
     }
 
@@ -263,7 +263,7 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
             jobs.remove(it.key());
             jobs.insert(manager->get(QNetworkRequest(u)), job);
         } else {
-            emit cover(job.artist, job.album, QImage());
+            emit cover(job.artist, job.album, QImage(), QString());
         }
     }
     reply->deleteLater();
@@ -276,7 +276,7 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
 
     if (it!=end) {
         Job job=it.value();
-        emit cover(job.artist, job.album, otherAppCover(job));
+        emit cover(job.artist, job.album, otherAppCover(job), QString());
         jobs.remove(it.key());
     }
 
@@ -291,6 +291,7 @@ void Covers::jobFinished(QNetworkReply *reply)
     if (it!=end) {
         QByteArray data=QNetworkReply::NoError==reply->error() ? reply->readAll() : QByteArray();
         QImage img = data.isEmpty() ? QImage() : QImage::fromData(data);
+        QString fileName;
         Job job=it.value();
 
         if (!img.isNull() && img.size().width()<32) {
@@ -298,36 +299,40 @@ void Covers::jobFinished(QNetworkReply *reply)
         }
 
         if (!img.isNull()) {
-            saveImg(job, img, data);
+            fileName=saveImg(job, img, data);
         }
 
         jobs.remove(it.key());
 
         if (img.isNull()) {
-            emit cover(job.artist, job.album, otherAppCover(job));
+            emit cover(job.artist, job.album, otherAppCover(job), QString());
         } else {
-            emit cover(job.artist, job.album, img);
+            emit cover(job.artist, job.album, img, fileName);
         }
     }
 
     reply->deleteLater();
 }
 
-void Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw)
+QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw)
 {
     QString mimeType=typeFromRaw(raw);
     QString extension=mimeType.isEmpty() ? constExtension : mimeType;
 
     // Try to save as cover.jpg in album dir...
     if (!job.dir.isEmpty() && save(mimeType, extension, job.dir+constFileName, img, raw)) {
-        return;
+        return job.dir+constFileName;
     }
 
-        // Could not save with album, save in cache dir...
+    // Could not save with album, save in cache dir...
     QString dir = Network::cacheDir(constCoverDir+encodeName(job.artist));
     if (!dir.isEmpty()) {
-        save(mimeType, extension, dir+encodeName(job.album), img, raw);
+        if (save(mimeType, extension, dir+encodeName(job.album), img, raw)) {
+            return dir+encodeName(job.album);
+        }
     }
+
+    return QString();
 }
 
 QHash<QNetworkReply *, Covers::Job>::Iterator Covers::findJob(const Song &song)

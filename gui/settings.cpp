@@ -269,6 +269,16 @@ QStringList Settings::hiddenPages()
     return GET_STRINGLIST("hiddenPages", def);
 }
 
+bool Settings::mpris()
+{
+    return GET_BOOL("mpris", false);
+}
+
+bool Settings::dockManager()
+{
+    return GET_BOOL("dockManager", false);
+}
+
 void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -419,6 +429,16 @@ void Settings::savePage(const QString &v)
 void Settings::saveHiddenPages(const QStringList &p)
 {
     SET_VALUE("hiddenPages", p);
+}
+
+void Settings::saveMpris(bool v)
+{
+    SET_VALUE("mpris", v);
+}
+
+void Settings::saveDockManager(bool v)
+{
+    SET_VALUE("dockManager", v);
 }
 
 void Settings::save(bool force)

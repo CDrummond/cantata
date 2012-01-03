@@ -61,7 +61,7 @@ public:
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime db_update = QDateTime(), bool fromFile = false);
-    void setCover(const QString &artist, const QString &album, const QImage &img);
+    void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
 
 Q_SIGNALS:
     void xmlWritten(QDateTime db_update);

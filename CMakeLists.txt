@@ -25,6 +25,7 @@ SET( CANTATA_SRCS
     gui/updatedialog.cpp
     gui/covers.cpp
     gui/interfacesettings.cpp
+    gui/externalsettings.cpp
     gui/playbacksettings.cpp
     gui/serversettings.cpp
     gui/outputsettings.cpp
@@ -72,6 +73,7 @@ SET( CANTATA_SRCS
     network/networkaccessmanager.cpp
     network/network.cpp
     dbus/mpris.cpp
+    dbus/dockmanager.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -91,6 +93,7 @@ SET( CANTATA_MOC_HDRS
     gui/preferencesdialog.h
     gui/settings.h
     gui/interfacesettings.h
+    gui/externalsettings.h
     models/musiclibrarymodel.h
     models/musiclibraryproxymodel.h
     models/playlistsmodel.h
@@ -115,6 +118,7 @@ SET( CANTATA_MOC_HDRS
     network/networkaccessmanager.h
     network/network.h
     dbus/mpris.h
+    dbus/dockmanager.h
 )
 
 SET( CANTATA_UIS
@@ -126,6 +130,7 @@ SET( CANTATA_UIS
     gui/streamspage.ui
     gui/serverinfopage.ui
     gui/interfacesettings.ui
+    gui/externalsettings.ui
     gui/playbacksettings.ui
     gui/serversettings.ui
     gui/outputsettings.ui
@@ -156,6 +161,8 @@ FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )
 FIND_PACKAGE( KDE4 )
 
 qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
+qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockItem.xml )
+qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockManager.xml)
 
 configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 

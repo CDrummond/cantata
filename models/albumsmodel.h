@@ -102,7 +102,7 @@ Q_SIGNALS:
     void updated();
 
 public Q_SLOTS:
-    void setCover(const QString &artist, const QString &album, const QImage &img);
+    void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
 
 private:
     mutable QList<AlbumItem *> items;

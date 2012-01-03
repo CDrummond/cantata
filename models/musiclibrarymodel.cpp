@@ -289,8 +289,9 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     emit updateGenres(genres);
 }
 
-void MusicLibraryModel::setCover(const QString &artist, const QString &album, const QImage &img)
+void MusicLibraryModel::setCover(const QString &artist, const QString &album, const QImage &img, const QString &file)
 {
+    Q_UNUSED(file)
     if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
         return;
     }

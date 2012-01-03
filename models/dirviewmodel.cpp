@@ -180,17 +180,21 @@ Qt::ItemFlags dirViewModel::flags(const QModelIndex &index) const
         return Qt::ItemIsDropEnabled;
 }
 
-QMimeData *dirViewModel::mimeData(const QModelIndexList &indexes) const
+QStringList dirViewModel::filenames(const QModelIndexList &indexes) const
 {
-    QMimeData *mimeData = new QMimeData();
-    QStringList filenames;
+    QStringList fnames;
 
     foreach(QModelIndex index, indexes) {
         DirViewItem *item = static_cast<DirViewItem *>(index.internalPointer());
-        recurseDirItems(*item, filenames);
+        recurseDirItems(*item, fnames);
     }
+    return fnames;
+}
 
-    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames);
+QMimeData *dirViewModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData = new QMimeData();
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes));
     return mimeData;
 }
 

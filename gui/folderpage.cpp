@@ -111,30 +111,18 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
 
 void FolderPage::addSelectionToPlaylist(const QString &name)
 {
-    // Get selected view indexes
-    QModelIndexList selected = view->selectedIndexes();
-    QStringList files;
+    const QModelIndexList selected = view->selectedIndexes();
 
-    foreach (const QModelIndex idx, selected) {
-        DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(idx).internalPointer());
-        QStringList tmp;
-
-        switch (item->type()) {
-        case DirViewItem::Type_Dir:
-            tmp = walk(idx);
-            for (int i = 0; i < tmp.size(); i++) {
-                if (!files.contains(tmp.at(i)))
-                    files << tmp.at(i);
-            }
-            break;
-        case DirViewItem::Type_File:
-            if (!files.contains(item->fullName()))
-                files << item->fullName();
-            break;
-        default:
-            break;
-        }
+    if (0==selected.size()) {
+        return;
     }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    QStringList files=model.filenames(mapped);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

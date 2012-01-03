@@ -83,7 +83,7 @@ void Song::fillEmptyFields()
     }
 
     if (album.isEmpty()) {
-        album = i18n("<nknown");
+        album = i18n("Unknown");
     }
 
     if (title.isEmpty()) {

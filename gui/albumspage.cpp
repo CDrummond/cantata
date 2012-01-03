@@ -137,12 +137,6 @@ void AlbumsPage::itemActivated(const QModelIndex &)
 void AlbumsPage::searchItems()
 {
     proxy.setFilterGenre(0==genreCombo->currentIndex() ? QString() : genreCombo->currentText());
-
-    if (view->searchText().isEmpty()) {
-        proxy.setFilterRegExp(QString());
-        return;
-    }
-
     proxy.setFilterRegExp(view->searchText());
 }
 

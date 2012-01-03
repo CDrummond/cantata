@@ -23,7 +23,8 @@
 
 #include "albumsproxymodel.h"
 
-AlbumsProxyModel::AlbumsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
+AlbumsProxyModel::AlbumsProxyModel(QObject *parent)
+    : ProxyModel(parent)
 {
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -65,6 +66,9 @@ bool AlbumsProxyModel::filterAcceptsSong(AlbumsModel::Item *item) const
 bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     if (filterGenre.isEmpty() && filterRegExp().isEmpty()) {
+        return true;
+    }
+    if (!isChildOfRoot(sourceParent)) {
         return true;
     }
 

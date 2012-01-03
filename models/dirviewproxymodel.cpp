@@ -28,7 +28,8 @@
 #include "dirviewitemfile.h"
 #include "dirviewproxymodel.h"
 
-DirViewProxyModel::DirViewProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
+DirViewProxyModel::DirViewProxyModel(QObject *parent)
+    : ProxyModel(parent)
 {
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -73,6 +74,9 @@ bool DirViewProxyModel::filterAcceptsDirViewItem(const DirViewItem * const item,
 bool DirViewProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     if (filterRegExp().isEmpty()) {
+        return true;
+    }
+    if (!isChildOfRoot(sourceParent)) {
         return true;
     }
 

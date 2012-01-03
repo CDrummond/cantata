@@ -24,6 +24,7 @@
 #include "itemview.h"
 #include "mainwindow.h"
 #include "covers.h"
+#include "proxymodel.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #include <QtGui/QStyledItemDelegate>
@@ -393,11 +394,13 @@ void ItemView::setMode(Mode m)
     if (Mode_Tree==mode) {
         treeView->setModel(itemModel);
         listView->setModel(0);
+        itemModel->setRootIndex(QModelIndex());
     } else {
         treeView->setModel(0);
         listView->setModel(itemModel);
         setLevel(0);
         listView->setRootIndex(QModelIndex());
+        itemModel->setRootIndex(QModelIndex());
         if (Mode_IconTop!=mode) {
             listView->setGridSize(listGridSize);
             listView->setViewMode(QListView::ListMode);
@@ -471,7 +474,7 @@ QAbstractItemView * ItemView::view() const
     return Mode_Tree==mode ? (QAbstractItemView *)treeView : (QAbstractItemView *)listView;
 }
 
-void ItemView::setModel(QAbstractItemModel *m)
+void ItemView::setModel(ProxyModel *m)
 {
     itemModel=m;
     view()->setModel(m);
@@ -563,6 +566,7 @@ void ItemView::backActivated()
         return;
     }
     setLevel(currentLevel-1);
+    itemModel->setRootIndex(listView->rootIndex().parent());
     listView->setRootIndex(listView->rootIndex().parent());
     listView->scrollTo(prevTopIndex, QAbstractItemView::PositionAtTop);
 }
@@ -624,6 +628,7 @@ void ItemView::itemActivated(const QModelIndex &index)
         listSearch->setPlaceholderText(tr("Search %1...").arg(index.data(Qt::DisplayRole).toString()));
         #endif
         listView->setRootIndex(index);
+        itemModel->setRootIndex(index);
         listView->scrollToTop();
     }
 }

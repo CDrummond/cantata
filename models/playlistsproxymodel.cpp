@@ -27,7 +27,8 @@
 #include "playlistsproxymodel.h"
 #include "playlistsmodel.h"
 
-PlaylistsProxyModel::PlaylistsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
+PlaylistsProxyModel::PlaylistsProxyModel(QObject *parent)
+    : ProxyModel(parent)
 {
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -38,6 +39,9 @@ PlaylistsProxyModel::PlaylistsProxyModel(QObject *parent) : QSortFilterProxyMode
 bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     if (filterRegExp().isEmpty()) {
+        return true;
+    }
+    if (!isChildOfRoot(sourceParent)) {
         return true;
     }
 

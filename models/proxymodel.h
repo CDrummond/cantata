@@ -21,26 +21,42 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ALBUMSPROXYMODEL_H
-#define ALBUMSPROXYMODEL_H
+#ifndef PROXYMODEL_H
+#define PROXYMODEL_H
 
-#include "proxymodel.h"
-#include "albumsmodel.h"
+#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QDebug>
 
-class AlbumsProxyModel : public ProxyModel
+class ProxyModel : public QSortFilterProxyModel
 {
 public:
-    AlbumsProxyModel(QObject *parent = 0);
-    void setFilterGenre(const QString &genre);
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+    ProxyModel(QObject *parent)
+        : QSortFilterProxyModel(parent) {
+    }
+    virtual ~ProxyModel() {
+    }
+
+    void setRootIndex(const QModelIndex &idx) {
+        rootIndex=idx.isValid() ? mapToSource(idx) : idx;
+    }
+
+    bool isChildOfRoot(const QModelIndex &idx) const {
+        if (!rootIndex.isValid()) {
+            return true;
+        }
+
+        QModelIndex i=idx;
+        while(i.isValid()) {
+            if (i==rootIndex) {
+                return true;
+            }
+            i=i.parent();
+        }
+        return false;
+    }
 
 private:
-    bool filterAcceptsAlbum(AlbumsModel::Item *item) const;
-    bool filterAcceptsSong(AlbumsModel::Item *item) const;
-
-private:
-    QString filterGenre;
+    QModelIndex rootIndex;
 };
 
 #endif

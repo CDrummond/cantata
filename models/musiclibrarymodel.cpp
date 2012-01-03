@@ -529,12 +529,23 @@ QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
         switch (item->type()) {
         case MusicLibraryItem::Type_Artist:
             for (int i = 0; i < item->childCount(); i++) {
-                filenames << static_cast<MusicLibraryItemAlbum*>(item->child(i))->sortedTracks();
+                QStringList sorted=static_cast<MusicLibraryItemAlbum*>(item->child(i))->sortedTracks();
+                foreach (const QString &f, sorted) {
+                    if(!filenames.contains(f)) {
+                        filenames << f;
+                    }
+                }
             }
             break;
-        case MusicLibraryItem::Type_Album:
-            filenames << static_cast<MusicLibraryItemAlbum*>(item)->sortedTracks();
+        case MusicLibraryItem::Type_Album: {
+            QStringList sorted=static_cast<MusicLibraryItemAlbum*>(item)->sortedTracks();
+                foreach (const QString &f, sorted) {
+                    if(!filenames.contains(f)) {
+                        filenames << f;
+                    }
+                }
             break;
+        }
         case MusicLibraryItem::Type_Song:
             if (item->type() == MusicLibraryItem::Type_Song && !filenames.contains(static_cast<MusicLibraryItemSong*>(item)->file())) {
                 filenames << static_cast<MusicLibraryItemSong*>(item)->file();

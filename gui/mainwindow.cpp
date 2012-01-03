@@ -74,6 +74,7 @@
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
+#include "timeslider.h"
 
 class ProxyStyle : public QProxyStyle
 {
@@ -675,7 +676,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(cropPlaylistAction, SIGNAL(activated()), this, SLOT(cropPlaylist()));
     connect(shufflePlaylistAction, SIGNAL(activated()), MPDConnection::self(), SLOT(shuffle()));
     connect(expandInterfaceAction, SIGNAL(activated()), this, SLOT(togglePlaylist()));
-    connect(&elapsedTimer, SIGNAL(timeout()), this, SLOT(updatePositionSilder()));
+    connect(positionSlider, SIGNAL(valueChanged(int)), this, SLOT(updatePosition()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
@@ -690,7 +691,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
-    elapsedTimer.setInterval(1000);
 
     QByteArray state=Settings::self()->splitterState();
 
@@ -872,8 +872,7 @@ void MainWindow::playlistItemsSelected(bool s)
 
 void MainWindow::mpdConnectionDied()
 {
-    // Stop timer(s)
-    elapsedTimer.stop();
+    positionSlider->stopTimer();
 
     // Reset GUI
     positionSlider->setValue(0);
@@ -1171,8 +1170,7 @@ void MainWindow::updateStatus()
     MPDStatus * const status = MPDStatus::self();
 
     if (!draggingPositionSlider) {
-        if (status->state() == MPDStatus::State_Stopped
-                || status->state() == MPDStatus::State_Inactive) {
+        if (MPDStatus::State_Stopped==status->state() || MPDStatus::State_Inactive==status->state()) {
             positionSlider->setValue(0);
         } else {
             positionSlider->setRange(0, status->timeTotal());
@@ -1226,7 +1224,7 @@ void MainWindow::updateStatus()
         playPauseTrackAction->setEnabled(true);
         //playPauseTrackButton->setChecked(false);
         stopTrackAction->setEnabled(true);
-        elapsedTimer.start();
+        positionSlider->startTimer();
 
         if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT
@@ -1254,7 +1252,7 @@ void MainWindow::updateStatus()
             #endif
         }
 
-        elapsedTimer.stop();
+        positionSlider->stopTimer();
         break;
     case MPDStatus::State_Paused:
         playPauseTrackAction->setIcon(playbackPlay);
@@ -1269,8 +1267,7 @@ void MainWindow::updateStatus()
             #endif
         }
 
-        elapsedTimer.stop();
-
+        positionSlider->stopTimer();
         break;
     default:
         qDebug("Invalid state");
@@ -1416,13 +1413,11 @@ void MainWindow::updatePlayListStatus()
     playListStatsLabel->setText(status);
 }
 
-void MainWindow::updatePositionSilder()
+void MainWindow::updatePosition()
 {
     QString timeElapsedFormattedString;
 
     if (positionSlider->value() != positionSlider->maximum()) {
-        positionSlider->setValue(positionSlider->value() + 1);
-
         timeElapsedFormattedString += Song::formattedTime(positionSlider->value());
         timeElapsedFormattedString += " / ";
         timeElapsedFormattedString += Song::formattedTime(songTime);

@@ -28,22 +28,20 @@
 #define MAIN_WINDOW_H
 
 #ifdef ENABLE_KDE_SUPPORT
-#include <KXmlGuiWindow>
-#include <KStatusBar>
+#include <KDE/KXmlGuiWindow>
 #else
-#include <QMainWindow>
-#include <QSystemTrayIcon>
+#include <QtGui/QMainWindow>
+#include <QtGui/QSystemTrayIcon>
 #endif
 
-// #include <QTimer>
-#include <QMenu>
-#include <QHeaderView>
-#include <QStringList>
-#include <QDateTime>
-#include <QProxyStyle>
-#include <QPixmap>
-#include <QResizeEvent>
-#include <QMoveEvent>
+#include <QtGui/QMenu>
+#include <QtGui/QHeaderView>
+#include <QtCore/QStringList>
+#include <QtCore/QDateTime>
+#include <QtGui/QProxyStyle>
+#include <QtGui/QPixmap>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QMoveEvent>
 
 #include "ui_mainwindow.h"
 #include "playqueuemodel.h"
@@ -219,7 +217,7 @@ private Q_SLOTS:
     void updateCurrentSong(const Song &song);
     void updateStats();
     void updateStatus();
-    void updatePositionSilder();
+    void updatePosition();
     void playlistItemActivated(const QModelIndex &);
     void removeFromPlaylist();
     void replacePlaylist();
@@ -270,7 +268,6 @@ private:
     VolumeSliderEventHandler *volumeSliderEventHandler;
 //     CoverEventHandler *coverEventHandler;
     VolumeControl *volumeControl;
-    QTimer elapsedTimer;
     Action *prevTrackAction;
     Action *nextTrackAction;
     Action *playPauseTrackAction;

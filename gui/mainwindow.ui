@@ -120,7 +120,7 @@
     </widget>
    </item>
    <item row="2" column="1" colspan="4">
-    <widget class="QSlider" name="positionSlider">
+    <widget class="TimeSlider" name="positionSlider">
      <property name="pageStep">
       <number>0</number>
      </property>
@@ -288,6 +288,11 @@
    <class>TreeView</class>
    <extends>QTreeView</extends>
    <header>treeview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TimeSlider</class>
+   <extends>QSlider</extends>
+   <header>timeslider.h</header>
   </customwidget>
   <customwidget>
    <class>FancyTabWidget</class>

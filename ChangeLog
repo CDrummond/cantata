@@ -4,6 +4,7 @@
 2. Show 'Various Artists' at the top of the library view.
 3. Add option to group single track artist/albums under
    'Various Artists'/'Single Tracks'/'Artist - Track'
+4. Improve time slider accuracu, by checking the time elapsed at each interval.
 
 0.1.2
 -----

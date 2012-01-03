@@ -26,9 +26,9 @@
 #ifndef PLAYLISTSPROXYMODEL_H
 #define PLAYLISTSPROXYMODEL_H
 
-#include <QSortFilterProxyModel>
+#include "proxymodel.h"
 
-class PlaylistsProxyModel : public QSortFilterProxyModel
+class PlaylistsProxyModel : public ProxyModel
 {
     Q_OBJECT
 

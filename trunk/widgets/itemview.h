@@ -31,6 +31,8 @@ class QAction;
 class KPixmapSequenceOverlayPainter;
 #endif
 
+class ProxyModel;
+
 class ItemView : public QWidget, public Ui::ItemView
 {
     Q_OBJECT
@@ -60,7 +62,7 @@ public:
     Mode viewMode() const { return mode; }
     void setLevel(int level);
     QAbstractItemView * view() const;
-    void setModel(QAbstractItemModel *m);
+    void setModel(ProxyModel *m);
     void clearSelection() { view()->selectionModel()->clearSelection(); }
     QModelIndexList selectedIndexes() const;
     QString searchText() const;
@@ -92,7 +94,7 @@ private:
     QAction * getAction(const QModelIndex &index);
 
 private:
-    QAbstractItemModel *itemModel;
+    ProxyModel *itemModel;
     QAction *backAction;
     QAction *act1;
     QAction *act2;

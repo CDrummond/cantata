@@ -26,11 +26,11 @@
 #ifndef DIRVIEWPROXYMODEL_H
 #define DIRVIEWPROXYMODEL_H
 
-#include <QSortFilterProxyModel>
+#include "proxymodel.h"
 
 class DirViewItem;
 
-class DirViewProxyModel : public QSortFilterProxyModel
+class DirViewProxyModel : public ProxyModel
 {
     Q_OBJECT
 

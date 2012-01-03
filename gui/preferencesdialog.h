@@ -39,6 +39,7 @@ class OutputSettings;
 class InterfaceSettings;
 class LyricSettings;
 class LyricsPage;
+class ExternalSettings;
 
 #ifdef ENABLE_KDE_SUPPORT
 class PreferencesDialog : public KDialog
@@ -70,6 +71,7 @@ private:
     PlaybackSettings *playback;
     OutputSettings *output;
     InterfaceSettings *interface;
+    ExternalSettings *ext;
     LyricSettings *lyrics;
 #ifndef ENABLE_KDE_SUPPORT
     QDialogButtonBox *buttonBox;

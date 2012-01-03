@@ -70,6 +70,8 @@ class InfoPage;
 class ServerInfoPage;
 class QThread;
 class QAbstractItemView;
+class DockManager;
+class Mpris;
 
 class DeleteKeyEventHandler : public QObject
 {
@@ -186,6 +188,8 @@ Q_SIGNALS:
     void setSeekId(quint32, quint32);
     void startPlayingSongId(quint32);
 
+    void coverFile(const QString &);
+
 public Q_SLOTS:
     void showError(const QString &message);
 
@@ -236,7 +240,7 @@ private Q_SLOTS:
     void copyTrackInfo();
     void togglePlaylist();
     void currentTabChanged(int index);
-    void cover(const QString &artist, const QString &album, const QImage &img);
+    void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
     void showLibraryTab() { showTab(PAGE_LIBRARY); }
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
@@ -245,6 +249,8 @@ private Q_SLOTS:
     void showLyricsTab() { showTab(PAGE_LYRICS); }
     void showInfoTab() { showTab(PAGE_INFO); }
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
+    void toggleMpris();
+    void toggleDockManager();
 
 private:
     bool currentIsStream();
@@ -333,6 +339,8 @@ private:
     #endif
     ServerInfoPage *serverInfoPage;
     QThread *mpdThread;
+    DockManager *dock;
+    Mpris *mpris;
     friend class VolumeSliderEventHandler;
 //     friend class CoverEventHandler;
     friend class LibraryPage;

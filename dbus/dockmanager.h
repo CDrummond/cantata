@@ -21,25 +21,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INTERFACESETTINGS_H
-#define INTERFACESETTINGS_H
+#ifndef DOCKMANAGER_H
+#define DOCKMANAGER_H
 
-#include "ui_interfacesettings.h"
+#include <QtCore/QObject>
+#include "dockmanagerinterface.h"
+#include "dockiteminterface.h"
 
-class InterfaceSettings : public QWidget, private Ui::InterfaceSettings
+class QDBusServiceWatcher;
+
+class DockManager : public QObject
 {
     Q_OBJECT
-
 public:
-    InterfaceSettings(QWidget *p);
-    virtual ~InterfaceSettings() { }
+    DockManager(QObject *p);
+    void setEnabled(bool e);
 
-    void load();
-    void save();
+public Q_SLOTS:
+    void setIcon(const QString &file);
+    void serviceOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner);
 
-private Q_SLOTS:
-    void albumsViewChanged();
-    void albumsCoverSizeChanged();
+private:
+    void getDockItem();
+
+private:
+    bool isEnabled;
+    net::launchpad::DockManager *mgr;
+    net::launchpad::DockItem *item;
+    QDBusServiceWatcher *watcher;
+    QString currentIcon;
 };
 
 #endif

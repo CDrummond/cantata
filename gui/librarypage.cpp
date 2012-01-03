@@ -61,8 +61,8 @@ LibraryPage::LibraryPage(MainWindow *p)
     connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)), &model, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
-    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &)),
-            &model, SLOT(setCover(const QString &, const QString &, const QImage &)));
+    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
+            &model, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
     connect(&model, SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
     connect(this, SIGNAL(listAllInfo(const QDateTime &)), MPDConnection::self(), SLOT(listAllInfo(const QDateTime &)));
     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));

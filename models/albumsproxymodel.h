@@ -25,6 +25,7 @@
 #define ALBUMSPROXYMODEL_H
 
 #include <QtGui/QSortFilterProxyModel>
+#include "albumsmodel.h"
 
 class AlbumsProxyModel : public QSortFilterProxyModel
 {
@@ -33,6 +34,10 @@ public:
     void setFilterGenre(const QString &genre);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+
+private:
+    bool filterAcceptsAlbum(AlbumsModel::Item *item) const;
+    bool filterAcceptsSong(AlbumsModel::Item *item) const;
 
 private:
     QString filterGenre;

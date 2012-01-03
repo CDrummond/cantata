@@ -31,7 +31,7 @@
 #include "musiclibraryproxymodel.h"
 
 MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
-    : QSortFilterProxyModel(parent),
+    : ProxyModel(parent),
       _filterField(3)
 {
     setDynamicSortFilter(true);
@@ -137,6 +137,9 @@ bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem * const it
 bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     if (_filterGenre.isEmpty() && filterRegExp().isEmpty()) {
+        return true;
+    }
+    if (!isChildOfRoot(sourceParent)) {
         return true;
     }
 

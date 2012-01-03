@@ -27,11 +27,11 @@
 #ifndef MUSIC_LIBRARY_SORT_FILTER_MODEL_H
 #define MUSIC_LIBRARY_SORT_FILTER_MODEL_H
 
-#include <QSortFilterProxyModel>
+#include "proxymodel.h"
 
 class MusicLibraryItem;
 
-class MusicLibraryProxyModel : public QSortFilterProxyModel
+class MusicLibraryProxyModel : public ProxyModel
 {
     Q_OBJECT
 
@@ -44,12 +44,13 @@ public:
     void setFilterGenre(const QString &genre);
 
 private:
-    QString _filterGenre;
-    int _filterField;
-
     bool filterAcceptsArtist(const MusicLibraryItem * const item) const;
     bool filterAcceptsAlbum(const MusicLibraryItem * const item) const;
     bool filterAcceptsSong(const MusicLibraryItem * const item) const;
+
+private:
+    QString _filterGenre;
+    int _filterField;
 };
 
 #endif

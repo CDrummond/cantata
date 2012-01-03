@@ -23,11 +23,23 @@
 #include "streamsproxymodel.h"
 #include "streamsmodel.h"
 
-StreamsProxyModel::StreamsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
+StreamsProxyModel::StreamsProxyModel(QObject *parent)
+    : ProxyModel(parent)
 {
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setSortLocaleAware(true);
     sort(0);
+}
+
+bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    if (filterRegExp().isEmpty()) {
+        return true;
+    }
+    if (!isChildOfRoot(sourceParent)) {
+        return true;
+    }
+    return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
 }

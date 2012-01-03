@@ -24,12 +24,13 @@
 #ifndef STREAMSPROXYMODEL_H
 #define STREAMSPROXYMODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include "proxymodel.h"
 
-class StreamsProxyModel : public QSortFilterProxyModel
+class StreamsProxyModel : public ProxyModel
 {
 public:
     StreamsProxyModel(QObject *parent = 0);
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 };
 
 #endif

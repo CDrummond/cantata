@@ -88,11 +88,6 @@ void FolderPage::clear()
 
 void FolderPage::searchItems()
 {
-    if (view->searchText().isEmpty()) {
-        proxy.setFilterRegExp("");
-        return;
-    }
-
     proxy.setFilterRegExp(view->searchText());
 }
 

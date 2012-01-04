@@ -63,7 +63,6 @@ public:
     QStringList sortedTracks();
     quint32 year() const { return m_year; }
     void addTracks(MusicLibraryItemAlbum *other);
-    void sortTracks();
     bool isSingleTracks() const { return m_singleTracks; }
 
 private:

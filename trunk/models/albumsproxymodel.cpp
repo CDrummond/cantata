@@ -96,10 +96,15 @@ bool AlbumsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
     AlbumsModel::Item *r=static_cast<AlbumsModel::Item *>(right.internalPointer());
 
     if (l->isAlbum() && r->isAlbum()) {
-        return static_cast<AlbumsModel::AlbumItem *>(l)->name.localeAwareCompare(static_cast<AlbumsModel::AlbumItem *>(r)->name)<0;
+        const AlbumsModel::AlbumItem * const leftItem = static_cast<AlbumsModel::AlbumItem *>(l);
+        const AlbumsModel::AlbumItem * const rightItem = static_cast<AlbumsModel::AlbumItem *>(r);
+        if (leftItem->isSingleTracks != rightItem->isSingleTracks) {
+            return leftItem->isSingleTracks > rightItem->isSingleTracks;
+        }
+        return leftItem->name.localeAwareCompare(rightItem->name)<0;
     } else if(!l->isAlbum() && !r->isAlbum()) {
-        const AlbumsModel::SongItem * const leftItem = static_cast<AlbumsModel::SongItem *>(left.internalPointer());
-        const AlbumsModel::SongItem * const rightItem = static_cast<AlbumsModel::SongItem *>(right.internalPointer());
+        const AlbumsModel::SongItem * const leftItem = static_cast<AlbumsModel::SongItem *>(l);
+        const AlbumsModel::SongItem * const rightItem = static_cast<AlbumsModel::SongItem *>(r);
         bool singleTracks=leftItem->parent->isSingleTracks;
 
         if (singleTracks) {

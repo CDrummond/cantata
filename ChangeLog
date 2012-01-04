@@ -11,6 +11,7 @@
    IconTasks's media buttons.
 7. Add option to set icon in dockmanager docks (IconTasks, Docky, DockBarX, etc)
    to that of the current track.
+8. Provide a simple script to convert amarok radio streams into cantata streams.
 
 0.1.2
 -----

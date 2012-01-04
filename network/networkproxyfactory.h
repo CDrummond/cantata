@@ -24,9 +24,9 @@
 #ifndef NETWORKPROXYFACTORY_H
 #define NETWORKPROXYFACTORY_H
 
-#include <QMutex>
-#include <QNetworkProxyFactory>
-#include <QUrl>
+#include <QtCore/QMutex>
+#include <QtNetwork/QNetworkProxyFactory>
+#include <QtCore/QUrl>
 
 class NetworkProxyFactory : public QNetworkProxyFactory {
 public:

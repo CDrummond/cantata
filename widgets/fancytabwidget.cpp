@@ -36,24 +36,22 @@
 #include "fancytabwidget.h"
 // #include "stylehelper.h"
 
-#include <QDebug>
-
-#include <QAnimationGroup>
-#include <QColorDialog>
-#include <QHBoxLayout>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPropertyAnimation>
-#include <QSignalMapper>
-#include <QSplitter>
-#include <QStackedLayout>
-#include <QStyleOptionTabV3>
-#include <QToolButton>
-#include <QToolTip>
-#include <QVBoxLayout>
-#include <QWindowsStyle>
-#include <QApplication>
+// #include <QtGui/QColorDialog>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QMenu>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QSplitter>
+#include <QtGui/QStackedLayout>
+#include <QtGui/QStyleOptionTabV3>
+#include <QtGui/QToolButton>
+#include <QtGui/QToolTip>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QWindowsStyle>
+#include <QtGui/QApplication>
+#include <QtCore/QAnimationGroup>
+#include <QtCore/QPropertyAnimation>
+#include <QtCore/QSignalMapper>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -646,7 +644,7 @@ void FancyTabWidget::SetMode(Mode mode) {
   switch (mode) {
     case Mode_None:
     default:
-      qDebug() << "Unknown fancy tab mode" << mode;
+//       qDebug() << "Unknown fancy tab mode" << mode;
       // fallthrough
 
     case Mode_LargeSidebar: {

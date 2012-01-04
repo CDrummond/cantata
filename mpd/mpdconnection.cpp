@@ -41,15 +41,15 @@ K_GLOBAL_STATIC(MPDConnection, conn)
 
 MPDConnection * MPDConnection::self()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     return conn;
-#else
+    #else
     static MPDConnection *conn=0;;
     if(!conn) {
         conn=new MPDConnection;
     }
     return conn;
-#endif
+    #endif
 }
 
 static QByteArray readFromSocket(MpdSocket &socket)
@@ -236,6 +236,9 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command)
     sock.waitForBytesWritten(5000);
     Response response=readReply(sock);
 
+    if (!response.ok) {
+        qDebug() << command << "failed";
+    }
     return response;
 }
 
@@ -257,8 +260,6 @@ void MPDConnection::add(const QStringList &files)
 
     if (sendCommand(send).ok){
         emit added(files);
-    } else {
-        qDebug("Couldn't add song(s) to playlist");
     }
 }
 
@@ -294,16 +295,12 @@ void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size)
 
     if (sendCommand(send).ok) {
         emit added(files);
-    } else {
-        qDebug("Couldn't add song(s) to playlist");
     }
 }
 
 void MPDConnection::clear()
 {
-    if(sendCommand("clear").ok) {
-        qDebug("Couldn't clear playlist");
-    }
+    sendCommand("clear");
 }
 
 void MPDConnection::removeSongs(const QList<qint32> &items)
@@ -318,9 +315,7 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
 
     send += "command_list_end";
 
-    if (!sendCommand(send).ok) {
-        qDebug("Couldn't remove songs from playlist");
-    }
+    sendCommand(send);
 }
 
 void MPDConnection::move(quint32 from, quint32 to)
@@ -328,9 +323,7 @@ void MPDConnection::move(quint32 from, quint32 to)
     QByteArray send = "move " + QByteArray::number(from) + " " + QByteArray::number(to);
 
     qDebug() << send;
-    if (!sendCommand(send).ok) {
-        qDebug("Couldn't move files around in playlist");
-    }
+    sendCommand(send);
 }
 
 void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
@@ -366,16 +359,12 @@ void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
 
     send += "command_list_end";
 
-    if (!sendCommand(send).ok) {
-        qDebug("Couldn't move songs around in playlist");
-    }
+    sendCommand(send);
 }
 
 void MPDConnection::shuffle()
 {
-    if (!sendCommand("shuffle").ok) {
-        qDebug("Couldn't shuffle playlist");
-    }
+    sendCommand("shuffle");
 }
 
 void MPDConnection::shuffle(quint32 from, quint32 to)
@@ -385,9 +374,7 @@ void MPDConnection::shuffle(quint32 from, quint32 to)
     command += ":";
     command += QByteArray::number(to + 1);
 
-    if (!sendCommand(command).ok) {
-        qDebug("Couldn't shuffle playlist");
-    }
+    sendCommand(command);
 }
 
 void MPDConnection::currentSong()
@@ -413,18 +400,14 @@ void MPDConnection::setCrossFade(int secs)
 {
     QByteArray data = "crossfade ";
     data += QByteArray::number(secs);
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't set xfade");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::setReplayGain(const QString &v)
 {
     QByteArray data = "replay_gain_mode ";
     data += v.toLatin1();
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't set replay_gain_mode");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::getReplayGain()
@@ -440,9 +423,7 @@ void MPDConnection::getReplayGain()
 
 void MPDConnection::goToNext()
 {
-    if (!sendCommand("next").ok) {
-        qDebug("Couldn't go to next track");
-    }
+    sendCommand("next");
 }
 
 void MPDConnection::setPause(bool toggle)
@@ -453,34 +434,26 @@ void MPDConnection::setPause(bool toggle)
     else
         data += "0";
 
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't set pause");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::startPlayingSong(quint32 song)
 {
     QByteArray data = "play ";
     data += QByteArray::number(song);
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't start playing song");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::startPlayingSongId(quint32 song_id)
 {
     QByteArray data = "playid ";
     data += QByteArray::number(song_id);
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't start playing song id");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::goToPrevious()
 {
-    if (!sendCommand("previous").ok) {
-        qDebug("Couldn't go to previous track");
-    }
+    sendCommand("previous");
 }
 
 void MPDConnection::setConsume(bool toggle)
@@ -491,9 +464,7 @@ void MPDConnection::setConsume(bool toggle)
     else
         data += "0";
 
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't toggle consume");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::setRandom(bool toggle)
@@ -504,9 +475,7 @@ void MPDConnection::setRandom(bool toggle)
     else
         data += "0";
 
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't toggle random");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::setRepeat(bool toggle)
@@ -517,9 +486,7 @@ void MPDConnection::setRepeat(bool toggle)
     else
         data += "0";
 
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't toggle repeat");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::setSeek(quint32 song, quint32 time)
@@ -529,9 +496,7 @@ void MPDConnection::setSeek(quint32 song, quint32 time)
     data += " ";
     data += QByteArray::number(time);
 
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't set seek position");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::setSeekId(quint32 song_id, quint32 time)
@@ -540,25 +505,19 @@ void MPDConnection::setSeekId(quint32 song_id, quint32 time)
     data += QByteArray::number(song_id);
     data += " ";
     data += QByteArray::number(time);
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't set seek position");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::setVolume(int vol)
 {
     QByteArray data = "setvol ";
     data += QByteArray::number(vol);
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't set volume");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::stopPlaying()
 {
-    if (!sendCommand("stop").ok) {
-        qDebug("Couldn't stop playing");
-    }
+    sendCommand("stop");
 }
 
 void MPDConnection::getStats()
@@ -667,18 +626,14 @@ void MPDConnection::enableOutput(int id)
 {
     QByteArray data = "enableoutput ";
     data += QByteArray::number(id);
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't enable output");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::disableOutput(int id)
 {
     QByteArray data = "disableoutput ";
     data += QByteArray::number(id);
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't disable output");
-    }
+    sendCommand(data);
 }
 
 /*
@@ -757,8 +712,6 @@ void MPDConnection::loadPlaylist(QString name)
 
     if (sendCommand(data).ok) {
         emit playlistLoaded(name);
-    } else {
-        qDebug("Couldn't load playlist");
     }
 }
 
@@ -784,9 +737,7 @@ void MPDConnection::removePlaylist(QString name)
     QByteArray data("rm ");
     data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
 
-    if (!sendCommand(data).ok) {
-        qDebug("Couldn't remove playlist");
-    }
+    sendCommand(data);
 }
 
 void MPDConnection::savePlaylist(QString name)

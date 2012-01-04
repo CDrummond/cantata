@@ -23,7 +23,6 @@
 
 #include "streamfetcher.h"
 #include "networkaccessmanager.h"
-#include <QtCore/QDebug>
 #include <QtCore/QRegExp>
 #include <QtCore/QUrl>
 #ifdef XSPF

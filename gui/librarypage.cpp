@@ -70,11 +70,11 @@ LibraryPage::LibraryPage(MainWindow *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     proxy.setSourceModel(&model);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Library"));
-#else
+    #else
     view->setTopText(tr("Library"));
-#endif
+    #endif
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
 }
@@ -148,11 +148,11 @@ void LibraryPage::searchItems()
 void LibraryPage::updateGenres(const QStringList &genres)
 {
     QStringList entries;
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     entries << i18n("All Genres");
-#else
+    #else
     entries << tr("All Genres");
-#endif
+    #endif
     entries+=genres;
 
     bool diff=genreCombo->count() != entries.count();

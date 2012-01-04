@@ -25,7 +25,6 @@
 #define PROXYMODEL_H
 
 #include <QtGui/QSortFilterProxyModel>
-#include <QtCore/QDebug>
 
 class ProxyModel : public QSortFilterProxyModel
 {

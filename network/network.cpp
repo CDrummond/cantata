@@ -49,15 +49,15 @@ QString Network::cacheDir(const QString &sub, bool create)
 
 Network * Network::self()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     return instance;
-#else
+    #else
     static Network *instance=0;;
     if(!instance) {
         instance=new Network;
     }
     return instance;
-#endif
+    #endif
 }
 
 Network::Network()

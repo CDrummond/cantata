@@ -40,15 +40,15 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 
 PlaylistsModel * PlaylistsModel::self()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     return instance;
-#else
+    #else
     static PlaylistsModel *instance=0;;
     if(!instance) {
         instance=new PlaylistsModel;
     }
     return instance;
-#endif
+    #endif
 }
 
 PlaylistsModel::PlaylistsModel(QObject *parent)
@@ -109,10 +109,9 @@ QModelIndex PlaylistsModel::parent(const QModelIndex &index) const
 
     Item *item=static_cast<Item *>(index.internalPointer());
 
-    if(item->isPlaylist())
+    if(item->isPlaylist()) {
         return QModelIndex();
-    else
-    {
+    } else {
         SongItem *song=static_cast<SongItem *>(item);
 
         if (song->parent) {

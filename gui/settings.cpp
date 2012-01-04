@@ -40,31 +40,31 @@ K_GLOBAL_STATIC(Settings, instance)
 
 Settings * Settings::self()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     return instance;
-#else
+    #else
     static Settings *instance=0;;
     if(!instance) {
         instance=new Settings;
     }
     return instance;
-#endif
+    #endif
 }
 
 Settings::Settings()
     : timer(0)
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     , cfg(KGlobal::config(), "General")
     , wallet(0)
-#endif
+    #endif
 {
 }
 
 Settings::~Settings()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     delete wallet;
-#endif
+    #endif
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -112,14 +112,14 @@ bool Settings::openWallet()
 
 QString Settings::connectionPasswd()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     if(passwd.isEmpty() && GET_BOOL("connectionPasswd", false) && openWallet()) {
         wallet->readPassword("mpd", passwd);
     }
     return passwd;
-#else
+    #else
     return GET_STRING("connectionPasswd", "");
-#endif
+    #endif
 }
 
 int Settings::connectionPort()
@@ -286,7 +286,7 @@ void Settings::saveConnectionHost(const QString &v)
 
 void Settings::saveConnectionPasswd(const QString &v)
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     if(v!=passwd) {
         passwd=v;
         SET_VALUE("connectionPasswd", !passwd.isEmpty());
@@ -300,9 +300,9 @@ void Settings::saveConnectionPasswd(const QString &v)
             wallet->writePassword("mpd", passwd);
         }
     }
-#else
+    #else
     SET_VALUE("connectionPasswd", v);
-#endif
+    #endif
 }
 
 void Settings::saveConnectionPort(int v)
@@ -444,11 +444,11 @@ void Settings::saveDockManager(bool v)
 void Settings::save(bool force)
 {
     if (force) {
-#ifdef ENABLE_KDE_SUPPORT
+        #ifdef ENABLE_KDE_SUPPORT
         KGlobal::config()->sync();
-#else
+        #else
         cfg.sync();
-#endif
+        #endif
         if (timer) {
             timer->stop();
         }

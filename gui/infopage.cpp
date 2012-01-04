@@ -41,7 +41,6 @@
 #endif
 #include "infopage.h"
 #include "network.h"
-#include <QDebug>
 
 #ifdef ENABLE_KDE_SUPPORT
 #define WEBVIEW_BASE KWebView
@@ -186,11 +185,11 @@ void InfoPage::downloadRequested(const QNetworkRequest &request)
 {
 
     QString defaultFileName=QFileInfo(request.url().toString()).fileName();
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getSaveFileName(KUrl(), QString(), this);
-#else
+    #else
     QString fileName=QFileDialog::getSaveFileName(this, tr("Save File"), defaultFileName);
-#endif
+    #endif
     if (fileName.isEmpty()) {
         return;
     }

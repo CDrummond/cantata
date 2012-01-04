@@ -242,7 +242,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     setCentralWidget(widget);
     QMenu *mainMenu=new QMenu(this);
 
-#ifndef ENABLE_KDE_SUPPORT
+    #ifndef ENABLE_KDE_SUPPORT
     setWindowIcon(QIcon(":/icons/cantata.svg"));
     setWindowTitle("Cantata");
 
@@ -260,9 +260,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 //     menuBar()->addMenu(menu);
 
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
-#endif
+    #endif
 
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
     quitAction=KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
@@ -359,11 +359,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     #ifdef ENABLE_WEBKIT
     infoTabAction = actionCollection()->addAction("showinfotab");
     infoTabAction->setText(i18n("Info"));
-    #endif
+    #endif // ENABLE_WEBKIT
 
     serverInfoTabAction = actionCollection()->addAction("showserverinfotab");
     serverInfoTabAction->setText(i18n("Server Info"));
-#else
+    #else
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     quitAction->setIcon(QIcon::fromTheme("application-exit"));
@@ -399,9 +399,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     streamsTabAction = new QAction(tr("Streams"), this);
     #ifdef ENABLE_WEBKIT
     infoTabAction = new QAction(tr("Info"), this);
-    #endif
+    #endif // ENABLE_WEBKIT
     serverInfoTabAction = new QAction(tr("Server Info"), this);
-#endif
+    #endif // ENABLE_KDE_SUPPORT
     libraryTabAction->setShortcut(Qt::Key_F5);
     albumsTabAction->setShortcut(Qt::Key_F6);
     foldersTabAction->setShortcut(Qt::Key_F7);
@@ -411,9 +411,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     #ifdef ENABLE_WEBKIT
     infoTabAction->setShortcut(Qt::Key_F11);
     serverInfoTabAction->setShortcut(Qt::Key_F12);
-    #else
+    #else // ENABLE_WEBKIT
     serverInfoTabAction->setShortcut(Qt::Key_F11);
-    #endif
+    #endif // ENABLE_WEBKIT
 
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
@@ -479,9 +479,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsPage = new PlaylistsPage(this);
     streamsPage = new StreamsPage(this);
     lyricsPage = new LyricsPage(this);
-#ifdef ENABLE_WEBKIT
+    #ifdef ENABLE_WEBKIT
     infoPage = new InfoPage(this);
-#endif
+    #endif
     serverInfoPage = new ServerInfoPage(this);
 
     connect(&libraryPage->getModel(), SIGNAL(updated(const MusicLibraryItemRoot *)), albumsPage, SLOT(update(const MusicLibraryItemRoot *)));
@@ -503,9 +503,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text(), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text(), !hiddenPages.contains(streamsPage->metaObject()->className()));
     tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text(), !hiddenPages.contains(lyricsPage->metaObject()->className()));
-#ifdef ENABLE_WEBKIT
+    #ifdef ENABLE_WEBKIT
     tabWidget->AddTab(infoPage, infoTabAction->icon(), infoTabAction->text(), !hiddenPages.contains(infoPage->metaObject()->className()));
-#endif
+    #endif
     tabWidget->AddTab(serverInfoPage, serverInfoTabAction->icon(), serverInfoTabAction->text(), !hiddenPages.contains(serverInfoPage->metaObject()->className()));
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
@@ -516,11 +516,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     repeatPlaylistAction->setCheckable(true);
     consumePlaylistAction->setCheckable(true);
 
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     searchPlaylistLineEdit->setPlaceholderText(i18n("Search Play Queue..."));
-#else
+    #else
     searchPlaylistLineEdit->setPlaceholderText(tr("Search Play Queue..."));
-#endif
+    #endif
     QList<QToolButton *> playbackBtns;
     QList<QToolButton *> controlBtns;
     QList<QToolButton *> btns;
@@ -576,24 +576,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     setupTrayIcon();
     togglePlaylist();
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
     menuBar()->setVisible(false);
-#else
+    #else
     QSize sz=Settings::self()->mainWindowSize();
     if (!sz.isEmpty()) {
         resize(sz);
     }
-#endif
+    #endif
 
     mainMenu->addAction(expandInterfaceAction);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     QAction *menuAct= mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(QIcon::fromTheme("configure"));
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
     mainMenu->addSeparator();
-   mainMenu->addMenu(helpMenu());
-#else
+    mainMenu->addMenu(helpMenu());
+    #else
     QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(QIcon::fromTheme("configure"));
     mainMenu->addSeparator();
@@ -602,7 +602,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     menuAct=mainMenu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
     menuAct->setIcon(windowIcon());
 //     mainMenu->addMenu(menu);
-#endif
+    #endif
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
 
@@ -748,9 +748,9 @@ MainWindow::~MainWindow()
     if (dock) {
         dock->setIcon(QString());
     }
-#ifndef ENABLE_KDE_SUPPORT
+    #ifndef ENABLE_KDE_SUPPORT
     Settings::self()->saveMainWindowSize(size());
-#endif
+    #endif
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
     Settings::self()->savePlayQueueHeaderState(playQueueHeader->saveState());
@@ -847,8 +847,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (trayItem)
-    {
+    if (trayItem) {
         lastPos=pos();
         hide();
     }
@@ -892,12 +891,12 @@ void MainWindow::mpdConnectionDied()
     stopTrackAction->setEnabled(false);
 
     // Show warning message
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     KMessageBox::error(this, i18n("The MPD connection died unexpectedly.<br/>TThis error is unrecoverable, please restart %1.").arg(PACKAGE_NAME),
                        i18n("Lost MPD Connection"));
-#else
+    #else
     QMessageBox::critical(this, tr("MPD connection gone"), tr("The MPD connection died unexpectedly.<br/>This error is unrecoverable, please restart %1.").arg(PACKAGE_NAME));
-#endif
+    #endif
 }
 
 void MainWindow::updateDb()
@@ -1126,17 +1125,17 @@ void MainWindow::updateCurrentSong(const Song &song)
         lyricsNeedUpdating=true;
     }
 
-#ifdef ENABLE_WEBKIT
+    #ifdef ENABLE_WEBKIT
     if (PAGE_INFO==tabWidget->current_index()) {
         infoPage->update(song);
     } else {
         infoNeedsUpdating=true;
     }
-#endif
+    #endif
 
     if (Settings::self()->showPopups()) { //(trayIcon && trayIcon->isVisible() && isHidden()) {
         if (!song.title.isEmpty() && !song.artist.isEmpty() && !song.album.isEmpty()) {
-#ifdef ENABLE_KDE_SUPPORT
+            #ifdef ENABLE_KDE_SUPPORT
             const QString text(i18n("<table>"
                                     "<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
                                     "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
@@ -1149,7 +1148,7 @@ void MainWindow::updateCurrentSong(const Song &song)
             KNotification *notification = new KNotification("CurrentTrackChanged", this);
             notification->setText(text);
             notification->sendEvent();
-#else
+            #else
             const QString text("album:  " + song.album + "\n"
                             + "track:  " + QString::number(song.track) + "\n"
                             + "length: " + Song::formattedTime(song.time));
@@ -1157,7 +1156,7 @@ void MainWindow::updateCurrentSong(const Song &song)
             if (trayItem) {
                 trayItem->showMessage(song.artist + " - " + song.title, text, QSystemTrayIcon::Information, 5000);
             }
-#endif
+            #endif
         }
     }
 }
@@ -1190,13 +1189,13 @@ void MainWindow::updateStatus()
     }
 
     int vol=status->volume();
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     volumeButton->setToolTip(i18n("Volume %1%").arg(vol));
     volumeControl->setToolTip(i18n("Volume %1%").arg(vol));
-#else
+    #else
     volumeButton->setToolTip(tr("Volume %1%").arg(vol));
     volumeControl->setToolTip(tr("Volume %1%").arg(vol));
-#endif
+    #endif
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
     volumeControl->setValue(vol);
 
@@ -1408,15 +1407,15 @@ void MainWindow::updatePlayListStatus()
         return;
     }
 
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     status+=i18np("1 Artist, ", "%1 Artists, ", stats->playlistArtists());
     status+=i18np("1 Album, ", "%1 Albums, ", stats->playlistAlbums());
     status+=i18np("1 Track", "%1 Tracks", stats->playlistSongs());
-#else
+    #else
     status += QString::number(stats->playlistArtists())+QString(1==stats->playlistArtists() ? " Artist, " : "Artists, ");
     status += QString::number(stats->playlistAlbums())+QString(1==stats->playlistAlbums() ? " Album, " : "Albums, ");
     status += QString::number(stats->playlistSongs())+QString(1==stats->playlistSongs() ? " Track" : "Tracks");
-#endif
+    #endif
     status += " (";
     status += MPDParseUtils::formatDuration(stats->playlistTime());
     status += ")";
@@ -1602,7 +1601,7 @@ void MainWindow::setupTrayIcon()
     if (trayItem) {
         return;
     }
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     trayItem = new KStatusNotifierItem(this);
     trayItem->setCategory(KStatusNotifierItem::ApplicationStatus);
     trayItem->setTitle(i18n("Cantata"));
@@ -1616,7 +1615,7 @@ void MainWindow::setupTrayIcon()
     trayItem->setContextMenu(trayItemMenu);
     connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
     connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), this, SLOT(playPauseTrack()));
-#else
+    #else
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         trayItem = NULL;
         return;
@@ -1636,7 +1635,7 @@ void MainWindow::setupTrayIcon()
     trayItem->setToolTip(tr("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));
-#endif
+    #endif
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -1706,14 +1705,14 @@ void MainWindow::currentTabChanged(int index)
             lyricsNeedUpdating=false;
         }
         break;
-#ifdef ENABLE_WEBKIT
+    #ifdef ENABLE_WEBKIT
     case PAGE_INFO:
         if (infoNeedsUpdating) {
             infoPage->update(current);
             infoNeedsUpdating=false;
         }
         break;
-#endif
+    #endif
     case PAGE_SERVER_INFO:
     default:
         break;

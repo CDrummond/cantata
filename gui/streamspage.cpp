@@ -95,11 +95,11 @@ StreamsPage::StreamsPage(MainWindow *p)
 //     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
 
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Streams"));
-#else
+    #else
     view->setTopText(tr("Streams"));
-#endif
+    #endif
 //     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(removeAction);
@@ -160,11 +160,11 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
 
 void StreamsPage::importXml()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.cantata|Cantata Streams"), this, i18n("Import Streams"));
-#else
+    #else
     QString fileName=QFileDialog::getOpenFileName(this, tr("Import Streams"), QDir::homePath(), tr("Cantata Streams (*.cantata)"));
-#endif
+    #endif
 
     if (fileName.isEmpty()) {
         return;
@@ -197,11 +197,11 @@ void StreamsPage::exportXml()
     if (1==mapped.count()) {
         name=static_cast<StreamsModel::StreamItem*>(mapped.first().internalPointer())->name+QLatin1String(".cantata");
     }
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getSaveFileName(name, i18n("*.cantata|Cantata Streams"), this, i18n("Export Streams"));
-#else
+    #else
     QString fileName=QFileDialog::getSaveFileName(this, tr("Export Streams"), name, tr("Cantata Streams (*.cantata)"));
-#endif
+    #endif
 
     if (fileName.isEmpty()) {
         return;

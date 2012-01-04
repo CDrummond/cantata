@@ -24,8 +24,8 @@
 #ifndef SONGINFOPROVIDER_H
 #define SONGINFOPROVIDER_H
 
-#include <QObject>
-#include <QUrl>
+#include <QtCore/QObject>
+#include <QtCore/QUrl>
 
 //#include "collapsibleinfopane.h"
 //#include "core/song.h"

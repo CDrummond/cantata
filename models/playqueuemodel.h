@@ -27,10 +27,10 @@
 #ifndef PLAYQUEUEMODEL_H
 #define PLAYQUEUEMODEL_H
 
-#include <QAbstractTableModel>
-#include <QList>
-#include <QStringList>
-#include <QSet>
+#include <QtCore/QAbstractTableModel>
+#include <QtCore/QList>
+#include <QtCore/QStringList>
+#include <QtCore/QSet>
 #include "song.h"
 
 class StreamFetcher;

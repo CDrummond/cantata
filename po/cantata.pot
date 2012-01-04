@@ -454,7 +454,7 @@ msgid "A simple interface to MPD"
 msgstr ""
 
 #: main.cpp:38
-msgid "Copyright (C) 2011 Craig Drummond"
+msgid "Copyright (C) 2011-2012 Craig Drummond"
 msgstr ""
 
 #: main.cpp:39

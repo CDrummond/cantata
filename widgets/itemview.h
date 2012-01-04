@@ -60,7 +60,7 @@ public:
     void addAction(QAction *act);
     void setMode(Mode m);
     Mode viewMode() const { return mode; }
-    void setLevel(int level);
+    void setLevel(int level, bool haveChildren=true);
     QAbstractItemView * view() const;
     void setModel(ProxyModel *m);
     void clearSelection() { view()->selectionModel()->clearSelection(); }

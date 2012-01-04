@@ -425,20 +425,22 @@ QModelIndexList ItemView::selectedIndexes() const
     return Mode_Tree==mode ? treeView->selectedIndexes() : listView->selectedIndexes();
 }
 
-void ItemView::setLevel(int l)
+void ItemView::setLevel(int l, bool haveChildren)
 {
     int prev=currentLevel;
     currentLevel=l;
     backAction->setEnabled(0!=l);
 
     if (Mode_IconTop==mode) {
-        if (0==currentLevel) {
-            listView->setGridSize(iconGridSize);
-            listView->setViewMode(QListView::IconMode);
-            listView->setResizeMode(QListView::Adjust);
-            listView->setAlternatingRowColors(false);
-            listView->setWordWrap(true);
-        } else if(0==prev) {
+        if (0==currentLevel || haveChildren) {
+            if (QListView::IconMode!=listView->viewMode()) {
+                listView->setGridSize(iconGridSize);
+                listView->setViewMode(QListView::IconMode);
+                listView->setResizeMode(QListView::Adjust);
+                listView->setAlternatingRowColors(false);
+                listView->setWordWrap(true);
+            }
+        } else if(QListView::ListMode!=listView->viewMode()) {
             listView->setGridSize(listGridSize);
             listView->setViewMode(QListView::ListMode);
             listView->setResizeMode(QListView::Fixed);
@@ -574,7 +576,7 @@ void ItemView::backActivated()
 QAction * ItemView::getAction(const QModelIndex &index)
 {
     bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
-    bool iconMode=Mode_IconTop==mode && !index.parent().isValid();
+    bool iconMode=Mode_IconTop==mode && index.child(0, 0).isValid();
     QRect rect(view()->visualRect(index));
     rect.moveTo(view()->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
     if (Mode_Tree!=mode) {
@@ -621,7 +623,7 @@ void ItemView::itemActivated(const QModelIndex &index)
         treeView->setExpanded(index, !treeView->isExpanded(index));
     } else if (index.isValid() && index.child(0, 0).isValid()) {
         prevTopIndex=listView->indexAt(QPoint(0, 0));
-        setLevel(currentLevel+1);
+        setLevel(currentLevel+1, index.child(0, 0).child(0, 0).isValid());
         #ifdef ENABLE_KDE_SUPPORT
         listSearch->setPlaceholderText(i18n("Search %1...", index.data(Qt::DisplayRole).toString()));
         #else

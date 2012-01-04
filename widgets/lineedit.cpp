@@ -31,10 +31,9 @@
 ****************************************************************************/
 
 #include "lineedit.h"
-#include <QToolButton>
-#include <QStyle>
-#include <QIcon>
-#include <QDebug>
+#include <QtGui/QToolButton>
+#include <QtGui/QStyle>
+#include <QtGui/QIcon>
 
 LineEdit::LineEdit(QWidget *parent)
     : QLineEdit(parent)

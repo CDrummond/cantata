@@ -27,7 +27,7 @@
 #include <cmath>
 #include "song.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KLocale>
+#include <KDE/KLocale>
 #else
 #include <QtCore/QObject>
 #endif
@@ -73,7 +73,7 @@ bool Song::isEmpty() const
 
 void Song::fillEmptyFields()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     if (artist.isEmpty()) {
         artist = i18n("Unknown");
     }
@@ -85,7 +85,7 @@ void Song::fillEmptyFields()
     if (title.isEmpty()) {
         title = i18n("Unknown");
     }
-#else
+    #else
     if (artist.isEmpty()) {
         artist = QObject::tr("Unknown");
     }
@@ -97,7 +97,7 @@ void Song::fillEmptyFields()
     if (title.isEmpty()) {
         title = QObject::tr("Unknown");
     }
-#endif
+    #endif
 }
 
 void Song::clear()
@@ -122,8 +122,9 @@ QString Song::formattedTime(const quint32 &seconds)
 
     result += QString::number(floor(seconds / 60.0));
     result += ":";
-    if (seconds % 60 < 10)
+    if (seconds % 60 < 10) {
         result += "0";
+    }
     result += QString::number(seconds % 60);
 
     return result;

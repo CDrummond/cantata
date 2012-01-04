@@ -257,6 +257,7 @@ private:
     void showTab(int page);
 
 private:
+    bool connectedToMpd;
     int loaded;
     MPDStatus::State lastState;
     quint32 songTime;

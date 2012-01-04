@@ -27,13 +27,12 @@
 #ifndef MUSIC_LIBRARY_MODEL_H
 #define MUSIC_LIBRARY_MODEL_H
 
-#include <QAbstractItemModel>
-#include <QDateTime>
-#include <QMimeData>
-#include <QMutex>
+#include <QtCore/QAbstractItemModel>
+#include <QtCore/QDateTime>
 #include "musiclibraryitemroot.h"
 #include "song.h"
 
+class QMimeData;
 class MusicLibraryItemAlbum;
 class MusicLibraryItemArtist;
 
@@ -72,7 +71,6 @@ private:
     const MusicLibraryItemRoot * rootItem;
 
     void toXML(const QDateTime db_update);
-//     QMutex libraryMutex;
     QDateTime databaseTime;
 };
 

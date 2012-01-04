@@ -100,11 +100,9 @@ static QString xdgConfig()
 static QString kdeHome()
 {
     static QString kdeHomePath;
-    if (kdeHomePath.isEmpty())
-    {
+    if (kdeHomePath.isEmpty()) {
         kdeHomePath = QString::fromLocal8Bit(qgetenv("KDEHOME"));
-        if (kdeHomePath.isEmpty())
-        {
+        if (kdeHomePath.isEmpty())  {
             QDir homeDir(QDir::homePath());
             QString kdeConfDir(QLatin1String("/.kde"));
             if (homeDir.exists(QLatin1String(".kde4")))
@@ -124,11 +122,11 @@ struct AppCover
 
 static AppCover otherAppCover(const Covers::Job &job)
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     QString kdeDir=KGlobal::dirs()->localkdedir();
-#else
+    #else
     QString kdeDir=kdeHome();
-#endif
+    #endif
     AppCover app;
     app.filename=kdeDir+"/share/apps/amarok/albumcovers/large/"+
                  QCryptographicHash::hash(job.artist.toLower().toLocal8Bit()+job.album.toLower().toLocal8Bit(),
@@ -162,15 +160,15 @@ static AppCover otherAppCover(const Covers::Job &job)
 
 Covers * Covers::self()
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     return instance;
-#else
+    #else
     static Covers *instance=0;;
     if(!instance) {
         instance=new Covers;
     }
     return instance;
-#endif
+    #endif
 }
 
 Covers::Covers()

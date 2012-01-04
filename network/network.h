@@ -25,9 +25,9 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include <QMap>
-#include <QObject>
-#include <QUrl>
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QUrl>
 
 class NetworkAccessManager;
 class QNetworkReply;

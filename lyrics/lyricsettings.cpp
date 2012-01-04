@@ -28,7 +28,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
-#include <QIcon>
+#include <QtGui/QIcon>
 
 LyricSettings::LyricSettings(QWidget *parent)
   : QWidget(parent),

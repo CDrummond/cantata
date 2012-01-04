@@ -27,9 +27,9 @@
 #ifndef MUSIC_LIBRARY_ITEM_ROOT_H
 #define MUSIC_LIBRARY_ITEM_ROOT_H
 
-#include <QList>
-#include <QVariant>
-#include <QHash>
+#include <QtCore/QList>
+#include <QtCore/QVariant>
+#include <QtCore/QHash>
 #include "musiclibraryitem.h"
 
 class Song;

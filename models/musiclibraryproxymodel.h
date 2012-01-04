@@ -40,7 +40,6 @@ public:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
     void setFilterField(int field);
-    int filterField() const;
     void setFilterGenre(const QString &genre);
 
 private:
@@ -49,8 +48,8 @@ private:
     bool filterAcceptsSong(const MusicLibraryItem * const item) const;
 
 private:
-    QString _filterGenre;
-    int _filterField;
+    QString filterGenre;
+    int filterField;
 };
 
 #endif

@@ -26,11 +26,11 @@
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KAction>
-#include <KLocale>
-#include <KActionCollection>
+#include <KDE/KAction>
+#include <KDE/KLocale>
+#include <KDE/KActionCollection>
 #else
-#include <QAction>
+#include <QtGui/QAction>
 #endif
 
 FolderPage::FolderPage(MainWindow *p)
@@ -47,11 +47,11 @@ FolderPage::FolderPage(MainWindow *p)
     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
 
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Folders"));
-#else
+    #else
     view->setTopText(tr("Folders"));
-#endif
+    #endif
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);

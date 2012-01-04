@@ -24,11 +24,10 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QCommonStyle>
-#include <QModelIndex>
-#include <QString>
-#include <QVariant>
-#include <QMimeData>
+#include <QtCore/QModelIndex>
+#include <QtCore/QString>
+#include <QtCore/QVariant>
+#include <QtCore/QMimeData>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -50,33 +49,38 @@ DirViewModel::~DirViewModel()
 
 QModelIndex DirViewModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if (!hasIndex(row, column, parent))
+    if (!hasIndex(row, column, parent)) {
         return QModelIndex();
+    }
 
     const DirViewItem * parentItem;
 
-    if (!parent.isValid())
+    if (!parent.isValid()) {
         parentItem = rootItem;
-    else
+    } else {
         parentItem = static_cast<DirViewItem *>(parent.internalPointer());
+    }
 
     DirViewItem * const childItem = parentItem->child(row);
-    if (childItem)
+    if (childItem) {
         return createIndex(row, column, childItem);
+    }
 
     return QModelIndex();
 }
 
 QModelIndex DirViewModel::parent(const QModelIndex &index) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return QModelIndex();
+    }
 
     const DirViewItem * const childItem = static_cast<DirViewItem *>(index.internalPointer());
     DirViewItem * const parentItem = childItem->parent();
 
-    if (parentItem == rootItem)
+    if (parentItem == rootItem) {
         return QModelIndex();
+    }
 
     return createIndex(parentItem->row(), 0, parentItem);
 }
@@ -88,37 +92,40 @@ QVariant DirViewModel::headerData(int /*section*/, Qt::Orientation /*orientation
 
 int DirViewModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.column() > 0)
+    if (parent.column() > 0) {
         return 0;
+    }
 
     const DirViewItem *parentItem;
 
-    if (!parent.isValid())
+    if (!parent.isValid()) {
         parentItem = rootItem;
-    else
+    } else {
         parentItem = static_cast<DirViewItem *>(parent.internalPointer());
+    }
 
     return parentItem->childCount();
 }
 
 int DirViewModel::columnCount(const QModelIndex &parent) const
 {
-    if (parent.isValid())
+    if (parent.isValid()) {
         return static_cast<DirViewItem *>(parent.internalPointer())->columnCount();
-    else
+    } else {
         return rootItem->columnCount();
+    }
 }
 
 QVariant DirViewModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return QVariant();
+    }
 
     DirViewItem *item = static_cast<DirViewItem *>(index.internalPointer());
 
     switch (role) {
     case Qt::DecorationRole: {
-        QCommonStyle style;
         if (item->type() == DirViewItem::Type_Dir) {
             return QIcon::fromTheme("inode-directory");
         } else if (item->type() == DirViewItem::Type_File) {
@@ -174,10 +181,11 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot)
 
 Qt::ItemFlags DirViewModel::flags(const QModelIndex &index) const
 {
-    if (index.isValid())
+    if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-    else
+    } else {
         return Qt::ItemIsDropEnabled;
+    }
 }
 
 QStringList DirViewModel::filenames(const QModelIndexList &indexes) const

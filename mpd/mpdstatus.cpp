@@ -312,4 +312,3 @@ void MPDStatus::setError(QString error)
 {
     m_error = error;
 }
-

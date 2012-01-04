@@ -25,9 +25,9 @@
 #define STREAMDIALOG_H
 
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDialog>
+#include <KDE/KDialog>
 #else
-#include <QDialog>
+#include <QtGui/QDialog>
 class QDialogButtonBox;
 #endif
 #include "lineedit.h"

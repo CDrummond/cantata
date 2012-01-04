@@ -54,31 +54,31 @@ StreamDialog::StreamDialog(const QStringList &categories, QWidget *parent)
     sizePolicy.setHeightForWidth(catCombo->sizePolicy().hasHeightForWidth());
     catCombo->setSizePolicy(sizePolicy);
 
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(0, QFormLayout::LabelRole, new QLabel(i18n("Name:"), wid));
-#else
+    #else
     layout->setWidget(0, QFormLayout::LabelRole, new QLabel(tr("Name:"), wid));
-#endif
+    #endif
     layout->setWidget(0, QFormLayout::FieldRole, nameEntry);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(1, QFormLayout::LabelRole, new QLabel(i18n("Stream:"), wid));
-#else
+    #else
     layout->setWidget(1, QFormLayout::LabelRole, new QLabel(tr("Stream:"), wid));
-#endif
+    #endif
     layout->setWidget(1, QFormLayout::FieldRole, urlEntry);
     urlEntry->setMinimumWidth(300);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(2, QFormLayout::LabelRole, new QLabel(i18n("Category:"), wid));
-#else
+    #else
     layout->setWidget(2, QFormLayout::LabelRole, new QLabel(tr("Category:"), wid));
-#endif
+    #endif
     layout->setWidget(2, QFormLayout::FieldRole, catCombo);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     setMainWidget(wid);
     setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Add Stream"));
     enableButton(KDialog::Ok, false);
-#else
+    #else
     setWindowTitle(tr("Add Stream"));
     QBoxLayout *mainLayout=new QBoxLayout(QBoxLayout::TopToBottom, this);
     mainLayout->addWidget(wid);
@@ -87,7 +87,7 @@ StreamDialog::StreamDialog(const QStringList &categories, QWidget *parent)
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-#endif
+    #endif
     foreach (const QString &c, categories) {
         catCombo->insertItem(catCombo->count(), c);
     }
@@ -99,13 +99,13 @@ StreamDialog::StreamDialog(const QStringList &categories, QWidget *parent)
 
 void StreamDialog::setEdit(const QString &cat, const QString &editName, const QString &editUrl)
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     setCaption(i18n("Edit Stream"));
     enableButton(KDialog::Ok, false);
-#else
+    #else
     setWindowTitle(tr("Edit Stream"));
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-#endif
+    #endif
     prevName=editName;
     prevUrl=editUrl;
     prevCat=cat;
@@ -120,9 +120,9 @@ void StreamDialog::changed()
     QString u=url();
     QString c=category();
     bool enableOk=!n.isEmpty() && !u.isEmpty() && !c.isEmpty() && (n!=prevName || u!=prevUrl || c!=prevCat);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     enableButton(KDialog::Ok, enableOk);
-#else
+    #else
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enableOk);
-#endif
+    #endif
 }

@@ -24,10 +24,9 @@
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyricsreader.h"
 
-#include <QCoreApplication>
-#include <QFile>
-#include <QXmlStreamReader>
-#include <QDebug>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QFile>
+#include <QtXml/QXmlStreamReader>
 
 UltimateLyricsReader::UltimateLyricsReader(/*QObject* parent*/)
 //   : QObject(parent)
@@ -37,7 +36,7 @@ UltimateLyricsReader::UltimateLyricsReader(/*QObject* parent*/)
 QList<UltimateLyricsProvider*> UltimateLyricsReader::Parse(const QString& filename) const {
   QFile file(filename);
   if (!file.open(QIODevice::ReadOnly)) {
-    qWarning() << "Error opening" << filename;
+//     qWarning() << "Error opening" << filename;
     return QList<UltimateLyricsProvider*>();
   }
 

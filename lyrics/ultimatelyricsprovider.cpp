@@ -25,13 +25,9 @@
 #include "ultimatelyricsprovider.h"
 #include "networkaccessmanager.h"
 //#include "core/network.h"
-
 #include "song.h"
-
-#include <QNetworkReply>
-#include <QTextCodec>
-#include <QDebug>
-
+#include <QtNetwork/QNetworkReply>
+#include <QtCore/QTextCodec>
 //#include <boost/scoped_ptr.hpp>
 
 const int UltimateLyricsProvider::kRedirectLimit = 5;
@@ -48,7 +44,7 @@ void UltimateLyricsProvider::FetchInfo(int id, const Song& metadata) {
   // Get the text codec
   const QTextCodec* codec = QTextCodec::codecForName(charset_.toAscii().constData());
   if (!codec) {
-    qWarning() << "Invalid codec" << charset_;
+    //qWarning() << "Invalid codec" << charset_;
     //emit Finished(id);
     emit InfoReady(id, QString());
     return;

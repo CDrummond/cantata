@@ -155,6 +155,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
 
 SET( QT_USE_QTNETWORK TRUE )
 SET( QT_USE_QTXML TRUE )
+SET( QT_USE_QTDBUS TRUE )
 
 # this command finds Qt4 libraries and sets all required variables
 FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )

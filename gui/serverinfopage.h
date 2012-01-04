@@ -24,7 +24,7 @@
 #ifndef SERVERINFOPAGE_H
 #define SERVERINFOPAGE_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 #include "ui_serverinfopage.h"
 #include "mainwindow.h"
 

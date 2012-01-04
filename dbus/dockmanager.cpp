@@ -22,7 +22,6 @@
  */
 
 #include "dockmanager.h"
-#include <QtCore/QDebug>
 
 DockManager::DockManager(QObject *p)
     : QObject(p)

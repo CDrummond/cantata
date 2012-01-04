@@ -23,7 +23,6 @@
 
 #include "timeslider.h"
 #include <QtCore/QTimer>
-#include <QtCore/QDebug>
 
 TimeSlider::TimeSlider(QWidget *p)
     : QSlider(p)

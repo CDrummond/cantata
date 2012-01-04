@@ -22,6 +22,7 @@
  */
 
 #include "dockmanager.h"
+#include <QtCore/QTimer>
 
 DockManager::DockManager(QObject *p)
     : QObject(p)
@@ -62,11 +63,15 @@ void DockManager::setEnabled(bool e)
         watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
         watcher->addWatchedService(net::launchpad::DockManager::staticInterfaceName());
         connect(watcher, SIGNAL(serviceOwnerChanged(QString, QString, QString)), this, SLOT(serviceOwnerChanged(QString, QString, QString)));
+        QTimer::singleShot(500, this, SLOT(checkIfRunning()));
+    }
+}
 
-        QDBusReply<bool> reply = QDBusConnection::sessionBus().interface()->isServiceRegistered(net::launchpad::DockManager::staticInterfaceName());
-        if (reply.isValid() && reply.value()) {
-            serviceOwnerChanged(net::launchpad::DockManager::staticInterfaceName(), QString(), QLatin1String("X"));
-        }
+void DockManager::checkIfRunning()
+{
+    QDBusReply<bool> reply = QDBusConnection::sessionBus().interface()->isServiceRegistered(net::launchpad::DockManager::staticInterfaceName());
+    if (reply.isValid() && reply.value()) {
+        serviceOwnerChanged(net::launchpad::DockManager::staticInterfaceName(), QString(), QLatin1String("X"));
     }
 }
 
@@ -101,6 +106,14 @@ void DockManager::serviceOwnerChanged(const QString &name, const QString &oldOwn
             mgr = 0;
         }
     } else if (oldOwner.isEmpty()) {
+        if (item) {
+            item->deleteLater();
+            item = 0;
+        }
+        if (mgr) {
+            mgr->deleteLater();
+            mgr = 0;
+        }
         mgr = new net::launchpad::DockManager(net::launchpad::DockManager::staticInterfaceName(), "/net/launchpad/DockManager", QDBusConnection::sessionBus(), this);
         if (!currentIcon.isEmpty()) {
             setIcon(currentIcon);

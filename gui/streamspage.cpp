@@ -52,15 +52,15 @@ StreamsPage::StreamsPage(MainWindow *p)
     addAction = p->actionCollection()->addAction("addstream");
     addAction->setText(i18n("Add Stream"));
     removeAction = p->actionCollection()->addAction("removestream");
-    removeAction->setText(i18n("Remove Stream"));
+    removeAction->setText(i18n("Remove Stream/Category"));
     editAction = p->actionCollection()->addAction("editstream");
-    editAction->setText(i18n("Edit Stream"));
+    editAction->setText(i18n("Edit Stream/Category"));
     #else
     importAction = new QAction(tr("Import Streams"), this);
     exportAction = new QAction(tr("Export Streams"), this);
     addAction = new QAction(tr("Add Stream"), this);
-    removeAction = new QAction(tr("Remove Stream"), this);
-    editAction = new QAction(tr("Edit Stream"), this);
+    removeAction = new QAction(tr("Remove Stream/Category"), this);
+    editAction = new QAction(tr("Edit Stream/Category"), this);
     #endif
     importAction->setIcon(QIcon::fromTheme("document-import"));
     exportAction->setIcon(QIcon::fromTheme("document-export"));
@@ -161,9 +161,9 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
 void StreamsPage::importXml()
 {
 #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.streams|Cantata Streams\n*.js|Amarok Script"), this, i18n("Import Streams"));
+    QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.cantata|Cantata Streams"), this, i18n("Import Streams"));
 #else
-    QString fileName=QFileDialog::getOpenFileName(this, tr("Import Streams"), QDir::homePath(), tr("Cantata Streams (*.streams);;Amarok Script (*.js)"));
+    QString fileName=QFileDialog::getOpenFileName(this, tr("Import Streams"), QDir::homePath(), tr("Cantata Streams (*.cantata)"));
 #endif
 
     if (fileName.isEmpty()) {
@@ -181,17 +181,33 @@ void StreamsPage::importXml()
 
 void StreamsPage::exportXml()
 {
+    QModelIndexList selected=view->selectedIndexes();
+
+    if (selected.isEmpty()) {
+        return;
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    QString name;
+
+    if (1==mapped.count()) {
+        name=static_cast<StreamsModel::StreamItem*>(mapped.first().internalPointer())->name+QLatin1String(".cantata");
+    }
 #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getSaveFileName(KUrl(), i18n("*.streams|Cantata Streams"), this, i18n("Export Streams"));
+    QString fileName=KFileDialog::getSaveFileName(name, i18n("*.cantata|Cantata Streams"), this, i18n("Export Streams"));
 #else
-    QString fileName=QFileDialog::getSaveFileName(this, tr("Export Streams"), QDir::homePath(), tr("Cantata Streams (*.streams)"));
+    QString fileName=QFileDialog::getSaveFileName(this, tr("Export Streams"), name, tr("Cantata Streams (*.cantata)"));
 #endif
 
     if (fileName.isEmpty()) {
         return;
     }
 
-    if (!model.save(fileName)) {
+    if (!model.save(fileName, mapped)) {
         #ifdef ENABLE_KDE_SUPPORT
         KMessageBox::error(this, i18n("Failed to create <b>%1</b>!", fileName));
         #else
@@ -354,6 +370,18 @@ void StreamsPage::controlActions()
     replacePlaylist->setEnabled(selected.count());
     removeStream->setEnabled(selected.count());
     editStream->setEnabled(1==selected.size());
+
+    bool enableExport=selected.size()>0;
+    if (selected.size()) {
+        foreach (const QModelIndex &idx, selected) {
+            QModelIndex index=proxy.mapToSource(idx);
+            if(!static_cast<StreamsModel::Item *>(index.internalPointer())->isCategory()) {
+                enableExport=false;
+                break;
+            }
+        }
+    }
+    exportAction->setEnabled(enableExport);
 }
 
 void StreamsPage::searchItems()

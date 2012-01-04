@@ -14,6 +14,7 @@
  8. Provide a simple script to convert amarok radio streams into cantata streams.
  9. Use .cantata extension for import/export of cantata streams.
 10. Only export selected strema categories.
+11. Show track details in titlebar, so that these also appear in taskbar tooltips.
 
 0.1.2
 -----

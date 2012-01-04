@@ -1116,9 +1116,39 @@ void MainWindow::updateCurrentSong(const Song &song)
     } else {
         trackLabel->setText(QString("%1 (%2)").arg(song.title).arg(song.name));
     }
-    artistLabel->setText(song.artist);
+    if (song.album.isEmpty()) {
+        #ifdef ENABLE_KDE_SUPPORT
+        artistLabel->setText(i18n("<i>By</i> %1", song.artist));
+        #else
+        artistLabel->setText(tr("<i>By</i> %1").arg(song.artist));
+        #endif
+
+    } else {
+        #ifdef ENABLE_KDE_SUPPORT
+        artistLabel->setText(i18n("<i>By</i> %1 <i>, from</i> %2", song.artist, song.album));
+        #else
+        #endif
+    }
+
     playQueueModel.updateCurrentSong(song.id);
 
+    if (song.artist.isEmpty()) {
+        if (trackLabel->text().isEmpty()) {
+            setWindowTitle("Cantata");
+        } else {
+            #ifdef ENABLE_KDE_SUPPORT
+            setWindowTitle(i18n("%1 :: Cantata", trackLabel->text()));
+            #else
+            setWindowTitle(tr("%1 :: Cantata").arg(trackLabel->text()));
+            #endif
+        }
+    } else {
+        #ifdef ENABLE_KDE_SUPPORT
+        setWindowTitle(i18n("%1 - %2 :: Cantata", song.artist, trackLabel->text()));
+        #else
+        setWindowTitle(tr("%1 - %2 :: Cantata").arg(song.artist).arg(trackLabel->text()));
+        #endif
+    }
     if (PAGE_LYRICS==tabWidget->current_index()) {
         lyricsPage->update(song);
     } else {
@@ -1252,6 +1282,7 @@ void MainWindow::updateStatus()
         stopTrackAction->setEnabled(false);
         trackLabel->setText(QString());
         artistLabel->setText(QString());
+        setWindowTitle("Cantata");
         current.id=0;
 
         if (trayItem) {

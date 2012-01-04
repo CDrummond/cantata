@@ -15,6 +15,7 @@
  9. Use .cantata extension for import/export of cantata streams.
 10. Only export selected strema categories.
 11. Show track details in titlebar, so that these also appear in taskbar tooltips.
+12. Use 'play' icon for 'replace play queue', and 'add' icon for 'add to play queue'
 
 0.1.2
 -----

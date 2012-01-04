@@ -81,6 +81,7 @@ public:
         QPixmap *cover;
         bool updated;
         bool coverRequested;
+        bool isSingleTracks;
     };
 
     AlbumsModel(QObject *parent=0);

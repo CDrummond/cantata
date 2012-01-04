@@ -732,7 +732,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsPage->setView(0==Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
-    currentTabChanged(tabWidget->current_index());
+//     currentTabChanged(tabWidget->current_index());
     playlistsPage->refresh();
     toggleMpris();
     toggleDockManager();

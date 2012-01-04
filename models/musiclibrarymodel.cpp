@@ -366,6 +366,9 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
             writer.writeAttribute("title", album->data());
             writer.writeAttribute("dir", album->dir());
             writer.writeAttribute("year", QString::number(album->year()));
+            if (album->isSingleTracks()) {
+                writer.writeAttribute("singleTracks", "true");
+            }
             for (int k = 0; k < album->childCount(); k++) {
                 MusicLibraryItemSong *track = static_cast<MusicLibraryItemSong*>(album->child(k));
                 writer.writeEmptyElement("Track");
@@ -469,6 +472,9 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                         song.file.append("dummy.mp3");
                     }
                     albumItem = artistItem->album(song);
+                    if (QLatin1String("true")==reader.attributes().value("singleTracks").toString()) {
+                        albumItem->setIsSingleTracks();
+                    }
                 }
 
                 // New track element. Create it and add it to the album

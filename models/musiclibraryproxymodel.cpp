@@ -181,10 +181,14 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
             return leftItem->disc() < rightItem->disc();
         }
         return leftItem->track() < rightItem->track();
-    } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Album && MusicLibraryItemAlbum::showDate()) {
+    } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Album) {
         const MusicLibraryItemAlbum * const leftItem = static_cast<MusicLibraryItemAlbum *>(left.internalPointer());
         const MusicLibraryItemAlbum * const rightItem = static_cast<MusicLibraryItemAlbum *>(right.internalPointer());
-        if (leftItem->year() != rightItem->year()) {
+
+        if (leftItem->isSingleTracks() != rightItem->isSingleTracks()) {
+            return leftItem->isSingleTracks() > rightItem->isSingleTracks();
+        }
+        if (MusicLibraryItemAlbum::showDate() && (leftItem->year() != rightItem->year())) {
             return leftItem->year() < rightItem->year();
         }
     } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Artist) {

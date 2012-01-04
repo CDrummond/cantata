@@ -261,7 +261,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
     return haveInserted;
 }
 
-bool StreamsModel::save(const QString &filename)
+bool StreamsModel::save(const QString &filename, const QModelIndexList &selection)
 {
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -270,17 +270,23 @@ bool StreamsModel::save(const QString &filename)
 
     QDomDocument doc;
     QDomElement root = doc.createElement("cantata");
+    QSet<const Item *> selectedItems;
+    foreach (const QModelIndex &idx, selection) {
+        selectedItems.insert(static_cast<const Item *>(idx.internalPointer()));
+    }
     root.setAttribute("version", "1.0");
     doc.appendChild(root);
     foreach (const CategoryItem *c, items) {
-        QDomElement cat = doc.createElement("category");
-        cat.setAttribute("name", c->name);
-        root.appendChild(cat);
-        foreach (const StreamItem *s, c->streams) {
-            QDomElement stream = doc.createElement("stream");
-            stream.setAttribute("name", s->name);
-            stream.setAttribute("url", s->url.toString());
-            cat.appendChild(stream);
+        if (selectedItems.isEmpty() || selectedItems.contains(c)) {
+            QDomElement cat = doc.createElement("category");
+            cat.setAttribute("name", c->name);
+            root.appendChild(cat);
+            foreach (const StreamItem *s, c->streams) {
+                QDomElement stream = doc.createElement("stream");
+                stream.setAttribute("name", s->name);
+                stream.setAttribute("url", s->url.toString());
+                cat.appendChild(stream);
+            }
         }
     }
 

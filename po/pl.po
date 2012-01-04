@@ -468,8 +468,8 @@ msgid "A simple interface to MPD"
 msgstr "Prosty interfejs do MPD"
 
 #: main.cpp:38
-msgid "Copyright (C) 2011 Craig Drummond"
-msgstr "Copyright (C) 2011 Craig Drummond"
+msgid "Copyright (C) 2011-2012 Craig Drummond"
+msgstr "Copyright (C) 2011-2012 Craig Drummond"
 
 #: main.cpp:39
 msgid "Based upon QtMPC - (C) 2007-2010  The QtMPC Authors"

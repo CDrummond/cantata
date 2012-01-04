@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2011-2012 Craig Drummond <craig.p.drummond@gmail.com>
  *
  */
 /* BE::MPC Qt4 client for MPD

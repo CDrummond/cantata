@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
                          ki18n("Cantata"), PACKAGE_VERSION,
                          ki18n("A simple interface to MPD"),
                          KAboutData::License_GPL_V2,
-                         ki18n("Copyright (C) 2011 Craig Drummond"),
+                         ki18n("Copyright (C) 2011-2012 Craig Drummond"),
                          ki18n("Based upon QtMPC - (C) 2007-2010  The QtMPC Authors"),
                          QByteArray(), "craig.p.drummond@gmail.com");
 

@@ -270,7 +270,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             return data(index, Qt::DisplayRole).toString()+QChar('\n')+duration;
         }
         case Qt::DisplayRole:
-            if (si->track>9) {
+            if (si->parent->isSingleTracks) {
+                return si->artistSong();
+            }
+            else if (si->track>9) {
                 return QString::number(si->track)+QLatin1String(" - ")+si->title;
             } else if (si->track>0) {
                 return QChar('0')+QString::number(si->track)+QLatin1String(" - ")+si->title;

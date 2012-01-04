@@ -434,8 +434,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     repeatPlaylistAction->setIcon(QIcon::fromTheme("edit-redo"));
     randomPlaylistAction->setIcon(QIcon::fromTheme("media-playlist-shuffle"));
     consumePlaylistAction->setIcon(QIcon::fromTheme("format-list-unordered"));
-    addToPlaylistAction->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left" : "arrow-right"));
-    replacePlaylistAction->setIcon(QIcon::fromTheme(Qt::RightToLeft==QApplication::layoutDirection() ? "arrow-left-double" : "arrow-right-double"));
+    addToPlaylistAction->setIcon(QIcon::fromTheme("list-add"));
+    replacePlaylistAction->setIcon(QIcon::fromTheme("media-playback-start"));
 
     prevTrackAction->setIcon(QIcon::fromTheme("media-skip-backward"));
     nextTrackAction->setIcon(QIcon::fromTheme("media-skip-forward"));

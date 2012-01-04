@@ -68,11 +68,7 @@ bool Song::operator==(const Song &o) const
 
 bool Song::isEmpty() const
 {
-    return
-        (
-            (artist.isEmpty() && album.isEmpty() && title.isEmpty())
-            || file.isEmpty()
-        );
+    return (artist.isEmpty() && album.isEmpty() && title.isEmpty()) || file.isEmpty();
 }
 
 void Song::fillEmptyFields()

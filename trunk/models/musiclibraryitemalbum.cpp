@@ -155,14 +155,3 @@ void MusicLibraryItemAlbum::addTracks(MusicLibraryItemAlbum *other)
         track->setParent(this);
     }
 }
-
-bool sortTrackNames(const MusicLibraryItem *left, const MusicLibraryItem *right)
-{
-    return static_cast<const MusicLibraryItemSong*>(left)->song().artistSong().localeAwareCompare(
-                static_cast<const MusicLibraryItemSong*>(right)->song().artistSong())<0;
-}
-
-void MusicLibraryItemAlbum::sortTracks()
-{
-    qSort(m_childItems.begin(), m_childItems.end(), sortTrackNames);
-}

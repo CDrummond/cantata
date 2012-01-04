@@ -30,7 +30,6 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
-#include <QtCore/QDebug>
 
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s)
 {
@@ -50,9 +49,10 @@ void MusicLibraryItemRoot::groupSingleTracks()
 {
     QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
     MusicLibraryItemArtist *various=0;
+    bool created=false;
 
     for (; it!=m_childItems.end(); ) {
-        if ((!various || various!=(*it)) && static_cast<MusicLibraryItemArtist *>(*it)->allSingleTrack()) {
+        if (various!=(*it) && static_cast<MusicLibraryItemArtist *>(*it)->allSingleTrack()) {
             if (!various) {
                 Song s;
                 #ifdef ENABLE_KDE_SUPPORT
@@ -60,22 +60,29 @@ void MusicLibraryItemRoot::groupSingleTracks()
                 #else
                 s.artist=QObject::tr("Various Artists");
                 #endif
-                various=artist(s);
+                QHash<QString, int>::ConstIterator it=m_indexes.find(s.albumArtist());
+                if (m_indexes.end()==it) {
+                    various=new MusicLibraryItemArtist(s.albumArtist(), this);
+                    created=true;
+                } else {
+                    various=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
+                }
             }
             various->addToSingleTracks(static_cast<MusicLibraryItemArtist *>(*it));
-            QList<MusicLibraryItem *>::iterator cur=it;
-            ++it;
-            delete *cur;
-            m_childItems.erase(cur);
+            delete (*it);
+            it=m_childItems.erase(it);
         } else {
             ++it;
         }
     }
 
     if (various) {
-        various->sortSingle();
+        m_indexes.clear();
+        if (created) {
+            m_childItems.append(various);
+        }
         it=m_childItems.begin();
-        QList<MusicLibraryItem *>::iterator  end=m_childItems.end();
+        QList<MusicLibraryItem *>::iterator end=m_childItems.end();
         for (int i=0; it!=end; ++it, ++i) {
             m_indexes.insert((*it)->data(), i);
         }

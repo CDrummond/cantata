@@ -50,7 +50,7 @@ public:
     }
     bool allSingleTrack() const;
     void addToSingleTracks(MusicLibraryItemArtist *other);
-    void sortSingle();
+
 private:
     bool m_various;
     QString m_nonTheArtist;

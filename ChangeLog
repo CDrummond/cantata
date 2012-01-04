@@ -4,11 +4,11 @@
 2. Show 'Various Artists' at the top of the library view.
 3. Add option to group single track artist/albums under
    'Various Artists'/'Single Tracks'/'Artist - Track'
-4. Improve time slider accuracu, by checking the time elapsed at each interval.
-5. Fix inconsistency between adding items via drag'n'drop and using the '>>'
-   actions.
-6. Add basic MPRISv2 interface - maily so that Cantata can be controlled via
-   IconTasks's media buttons.
+4. Improve time slider accuracy, by checking the time elapsed at each interval.
+5. Fix inconsistency between adding items via drag'n'drop and using the 'add to'
+   and 'replace' actions.
+6. Add basic MPRISv2 interface - mainly so that Cantata can be controlled via
+   IconTasks' media buttons.
 7. Add option to set icon in dockmanager docks (IconTasks, Docky, DockBarX, etc)
    to that of the current track.
 8. Provide a simple script to convert amarok radio streams into cantata streams.
@@ -26,7 +26,7 @@
 
 0.1.1
 -----
-1. Play/Pause track when middle click on tray iocn. (KDE only). Thanks to Piotr
+1. Play/Pause track when middle click on tray icon. (KDE only). Thanks to Piotr
    Wicijowski for the idea/patch.
 2. Only connecto to QTreeView::activated when in single-click. Double-click already
    expands/collapses the item - so if we also do this on activated, then the item

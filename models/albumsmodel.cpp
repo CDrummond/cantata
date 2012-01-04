@@ -271,9 +271,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         }
         case Qt::DisplayRole:
             if (si->track>9) {
-                return QString::number(si->track)+QChar(' ')+si->title;
+                return QString::number(si->track)+QLatin1String(" - ")+si->title;
             } else if (si->track>0) {
-                return QChar('0')+QString::number(si->track)+QChar(' ')+si->title;
+                return QChar('0')+QString::number(si->track)+QLatin1String(" - ")+si->title;
             }
         case ItemView::Role_SubText: {
             QString text=MPDParseUtils::formatDuration(si->time);

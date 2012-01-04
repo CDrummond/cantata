@@ -73,7 +73,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     void reload();
     void save(bool force=false);
-    bool save(const QString &filename);
+    bool save(const QString &filename, const QModelIndexList &selection=QModelIndexList());
     bool import(const QString &filename) { return load(filename, false); }
     bool add(const QString &cat, const QString &name, const QString &url);
     void editCategory(const QModelIndex &index, const QString &name);

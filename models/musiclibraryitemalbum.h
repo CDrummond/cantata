@@ -64,6 +64,7 @@ public:
     quint32 year() const { return m_year; }
     void addTracks(MusicLibraryItemAlbum *other);
     bool isSingleTracks() const { return m_singleTracks; }
+    void setIsSingleTracks() { m_singleTracks=true; }
 
 private:
     QString m_dir;

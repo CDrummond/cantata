@@ -41,6 +41,9 @@ public Q_SLOTS:
     void setIcon(const QString &file);
     void serviceOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner);
 
+private Q_SLOTS:
+    void checkIfRunning();
+
 private:
     void getDockItem();
 

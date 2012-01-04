@@ -2,3 +2,18 @@ Introduction
 ============
 
 Cantata is a GUI front-end for MPD. The code is forked from QtMPC.
+
+
+Amarok Radio Streams
+====================
+The script amarok2cantata.sh may be used to covert Amarok Radio plugins
+into an XML file suitable to be imported into Cantata. The script is
+rather basic and requires the Amarok plugin to list its streams in 'main.js'
+with the following syntax:
+
+    Station( "NAME", "URL")
+
+Each station must be on its own line, and must be all in one line.
+
+'script.spec' is used to ascertain the Amarok plugin name, for this the
+script will look for the line starting with "Name="

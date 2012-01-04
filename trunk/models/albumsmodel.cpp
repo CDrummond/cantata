@@ -285,7 +285,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             }
             return text.mid(1);
         }
-    }
+        }
     }
 
     return QVariant();
@@ -360,6 +360,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
+                a->isSingleTracks=albumItem->isSingleTracks();
                 items.append(a);
                 changed=true;
             }
@@ -422,9 +423,8 @@ AlbumsModel::AlbumItem::~AlbumItem()
 
 void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
 {
-    for (int j = 0; j < ai->childCount(); j++) {
-        MusicLibraryItemSong *songItem = static_cast<MusicLibraryItemSong*>(ai->child(j));
-        songs.append(new SongItem(songItem->song(), this));
+    foreach (MusicLibraryItem *item, ai->children()) {
+        songs.append(new SongItem(static_cast<MusicLibraryItemSong*>(item)->song(), this));
     }
 }
 

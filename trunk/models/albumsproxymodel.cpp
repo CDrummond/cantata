@@ -98,7 +98,20 @@ bool AlbumsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
     if (l->isAlbum() && r->isAlbum()) {
         return static_cast<AlbumsModel::AlbumItem *>(l)->name.localeAwareCompare(static_cast<AlbumsModel::AlbumItem *>(r)->name)<0;
     } else if(!l->isAlbum() && !r->isAlbum()) {
-        return static_cast<AlbumsModel::SongItem *>(l)->track<static_cast<AlbumsModel::SongItem *>(r)->track;
+        const AlbumsModel::SongItem * const leftItem = static_cast<AlbumsModel::SongItem *>(left.internalPointer());
+        const AlbumsModel::SongItem * const rightItem = static_cast<AlbumsModel::SongItem *>(right.internalPointer());
+        bool singleTracks=leftItem->parent->isSingleTracks;
+
+        if (singleTracks) {
+            int compare=leftItem->artistSong().localeAwareCompare(rightItem->artistSong());
+            if (0!=compare) {
+                return compare<0;
+            }
+        }
+        if (leftItem->disc != rightItem->disc) {
+            return leftItem->disc < rightItem->disc;
+        }
+        return leftItem->track < rightItem->track;
     }
 
     return false;

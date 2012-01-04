@@ -24,7 +24,7 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QByteArray>
+#include <QtCore/QByteArray>
 #include "playqueueproxymodel.h"
 #include "playqueuemodel.h"
 

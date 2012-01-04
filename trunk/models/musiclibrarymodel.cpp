@@ -35,16 +35,15 @@
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "network.h"
-#include <QCommonStyle>
-#include <QFile>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
-#include <QDebug>
-#include <QStringRef>
-#include <QDateTime>
-#include <QDir>
-#include <QMimeData>
-#include <QStringList>
+#include <QtGui/QCommonStyle>
+#include <QtCore/QFile>
+#include <QtXml/QXmlStreamReader>
+#include <QtXml/QXmlStreamWriter>
+#include <QtCore/QStringRef>
+#include <QtCore/QDateTime>
+#include <QtCore/QDir>
+#include <QtCore/QMimeData>
+#include <QtCore/QStringList>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
 #include <KDE/KLocale>
@@ -66,33 +65,38 @@ MusicLibraryModel::~MusicLibraryModel()
 
 QModelIndex MusicLibraryModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if (!hasIndex(row, column, parent))
+    if (!hasIndex(row, column, parent)) {
         return QModelIndex();
+    }
 
     const MusicLibraryItem * parentItem;
 
-    if (!parent.isValid())
+    if (!parent.isValid()) {
         parentItem = rootItem;
-    else
+    } else {
         parentItem = static_cast<MusicLibraryItem *>(parent.internalPointer());
+    }
 
     MusicLibraryItem * const childItem = parentItem->child(row);
-    if (childItem)
+    if (childItem) {
         return createIndex(row, column, childItem);
+    }
 
     return QModelIndex();
 }
 
 QModelIndex MusicLibraryModel::parent(const QModelIndex &index) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return QModelIndex();
+    }
 
     const MusicLibraryItem * const childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
     MusicLibraryItem * const parentItem = childItem->parent();
 
-    if (parentItem == rootItem)
+    if (parentItem == rootItem) {
         return QModelIndex();
+    }
 
     return createIndex(parentItem->row(), 0, parentItem);
 }
@@ -100,39 +104,40 @@ QModelIndex MusicLibraryModel::parent(const QModelIndex &index) const
 QVariant MusicLibraryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     Q_UNUSED(section)
-    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return rootItem->data();
-
-    return QVariant();
+    return Qt::Horizontal==orientation && Qt::DisplayRole==role ? rootItem->data() : QVariant();
 }
 
 int MusicLibraryModel::rowCount(const QModelIndex &parent) const
 {
-    if (parent.column() > 0)
+    if (parent.column() > 0) {
         return 0;
+    }
 
     const MusicLibraryItem *parentItem;
 
-    if (!parent.isValid())
+    if (!parent.isValid()) {
         parentItem = rootItem;
-    else
+    } else {
         parentItem = static_cast<MusicLibraryItem *>(parent.internalPointer());
+    }
 
     return parentItem->childCount();
 }
 
 int MusicLibraryModel::columnCount(const QModelIndex &parent) const
 {
-    if (parent.isValid())
+    if (parent.isValid()) {
         return static_cast<MusicLibraryItem *>(parent.internalPointer())->columnCount();
-    else
+    } else {
         return rootItem->columnCount();
+    }
 }
 
 QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return QVariant();
+    }
 
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
@@ -404,8 +409,9 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
     QString filename(QFile::encodeName(hostname + constLibraryExt));
 
     //Check if file exists
-    if (dir.isEmpty())
+    if (dir.isEmpty()) {
         return false;
+    }
 
     QFile file(dir + filename);
 
@@ -426,69 +432,66 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
         /**
          * TODO: CHECK FOR ERRORS
          */
-        if (reader.error()) {
-            qDebug() << reader.errorString();
-        } else {
-            if (reader.isStartElement()) {
-                QString element = reader.name().toString();
+        if (!reader.error() && reader.isStartElement()) {
+            QString element = reader.name().toString();
 
-                if (element == "MPD_database") {
-                    quint32 version = reader.attributes().value("version").toString().toUInt();
-                    quint32 time_t = reader.attributes().value("date").toString().toUInt();
+            if (element == "MPD_database") {
+                quint32 version = reader.attributes().value("version").toString().toUInt();
+                quint32 time_t = reader.attributes().value("date").toString().toUInt();
 
-                    //Incompatible version
-                    if (version < 4) {
-                        break;
-                    }
-
-                    //Outdated
-                    if (time_t != db_update.toTime_t())
-                        break;
-
-                    valid = true;
+                //Incompatible version
+                if (version < 4) {
+                    break;
                 }
 
-                //Only check for other elements when we are valid!
-                if (valid) {
-                    //New artist element. Create it an add it
-                    if (element == "Artist") {
-                        song.artist=reader.attributes().value("name").toString();
-                        artistItem = rootItem->artist(song);
+                //Outdated
+                if (time_t != db_update.toTime_t()) {
+                    break;
+                }
+
+                valid = true;
+            }
+
+            //Only check for other elements when we are valid!
+            if (valid) {
+                //New artist element. Create it an add it
+                if (element == "Artist") {
+                    song.artist=reader.attributes().value("name").toString();
+                    artistItem = rootItem->artist(song);
+                }
+
+                // New album element. Create it and add it to the artist
+                if (element == "Album") {
+                    song.album=reader.attributes().value("title").toString();
+                    song.file=reader.attributes().value("dir").toString();
+                    song.year=reader.attributes().value("year").toString().toUInt();
+                    if (!song.file.isEmpty()) {
+                        song.file.append("dummy.mp3");
                     }
+                    albumItem = artistItem->album(song);
+                }
 
-                    // New album element. Create it and add it to the artist
-                    if (element == "Album") {
-                        song.album=reader.attributes().value("title").toString();
-                        song.file=reader.attributes().value("dir").toString();
-                        song.year=reader.attributes().value("year").toString().toUInt();
-                        if (!song.file.isEmpty()) {
-                            song.file.append("dummy.mp3");
-                        }
-                        albumItem = artistItem->album(song);
-                    }
+                // New track element. Create it and add it to the album
+                if (element == "Track") {
+                    song.title=reader.attributes().value("title").toString();
+                    song.file=reader.attributes().value("filename").toString();
 
-                    // New track element. Create it and add it to the album
-                    if (element == "Track") {
-                        song.title=reader.attributes().value("title").toString();
-                        song.file=reader.attributes().value("filename").toString();
+                    QString str=reader.attributes().value("track").toString();
+                    song.track=str.isEmpty() ? 0 : str.toUInt();
+                    str=reader.attributes().value("disc").toString();
+                    song.disc=str.isEmpty() ? 0 : str.toUInt();
+                    str=reader.attributes().value("time").toString();
+                    song.time=str.isEmpty() ? 0 : str.toUInt();
 
-                        QString str=reader.attributes().value("track").toString();
-                        song.track=str.isEmpty() ? 0 : str.toUInt();
-                        str=reader.attributes().value("disc").toString();
-                        song.disc=str.isEmpty() ? 0 : str.toUInt();
-                        str=reader.attributes().value("time").toString();
-                        song.time=str.isEmpty() ? 0 : str.toUInt();
+                    songItem = new MusicLibraryItemSong(song, albumItem);
 
-                        songItem = new MusicLibraryItemSong(song, albumItem);
+                    albumItem->append(songItem);
 
-                        albumItem->append(songItem);
-
-                        QString genre = reader.attributes().value("genre").toString();
-                        albumItem->addGenre(genre);
-                        artistItem->addGenre(genre);
-                        songItem->addGenre(genre);
-                        rootItem->addGenre(genre);
-                    }
+                    QString genre = reader.attributes().value("genre").toString();
+                    albumItem->addGenre(genre);
+                    artistItem->addGenre(genre);
+                    songItem->addGenre(genre);
+                    rootItem->addGenre(genre);
                 }
             }
         }
@@ -507,10 +510,11 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
 
 Qt::ItemFlags MusicLibraryModel::flags(const QModelIndex &index) const
 {
-    if (index.isValid())
+    if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-    else
+    } else {
         return Qt::ItemIsDropEnabled;
+    }
 }
 
 QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes) const

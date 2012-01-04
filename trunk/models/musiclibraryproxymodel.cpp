@@ -32,7 +32,7 @@
 
 MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
     : ProxyModel(parent),
-      _filterField(3)
+      filterField(3)
 {
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -42,7 +42,7 @@ MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
 
 bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem * const item) const
 {
-    switch (_filterField) {
+    switch (filterField) {
     case 0: // Artist
         return item->data().contains(filterRegExp());
     case 1: // Album
@@ -88,7 +88,7 @@ bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem * const 
 
 bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem * const item) const
 {
-    switch (_filterField) {
+    switch (filterField) {
     case 0: // Artist
         return item->parent()->data().contains(filterRegExp());
     case 1: // Album
@@ -116,7 +116,7 @@ bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem * const i
 
 bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem * const item) const
 {
-    switch (_filterField) {
+    switch (filterField) {
     case 0: // Artist
         return item->parent()->parent()->data().contains(filterRegExp());
     case 1: // Album
@@ -136,7 +136,7 @@ bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem * const it
 
 bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (_filterGenre.isEmpty() && filterRegExp().isEmpty()) {
+    if (filterGenre.isEmpty() && filterRegExp().isEmpty()) {
         return true;
     }
     if (!isChildOfRoot(sourceParent)) {
@@ -146,7 +146,7 @@ bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     const MusicLibraryItem * const item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
-    if (!_filterGenre.isEmpty() && !item->hasGenre(_filterGenre)) {
+    if (!filterGenre.isEmpty() && !item->hasGenre(filterGenre)) {
         return false;
     }
 
@@ -201,18 +201,13 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
 
 void MusicLibraryProxyModel::setFilterField(int field)
 {
-    _filterField = field;
-}
-
-int MusicLibraryProxyModel::filterField() const
-{
-    return _filterField;
+    filterField = field;
 }
 
 void MusicLibraryProxyModel::setFilterGenre(const QString &genre)
 {
-    if (_filterGenre!=genre) {
+    if (filterGenre!=genre) {
         invalidate();
     }
-    _filterGenre=genre;
+    filterGenre=genre;
 }

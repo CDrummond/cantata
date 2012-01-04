@@ -28,10 +28,10 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QInputDialog>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KAction>
-#include <KLocale>
-#include <KActionCollection>
-#include <KMessageBox>
+#include <KDE/KAction>
+#include <KDE/KLocale>
+#include <KDE/KActionCollection>
+#include <KDE/KMessageBox>
 #else
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
@@ -73,11 +73,11 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     rem->setEnabled(false);
     renPlaylist->setEnabled(false);
 
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Playlists"));
-#else
+    #else
     view->setTopText(tr("Playlists"));
-#endif
+    #endif
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(removeAction);

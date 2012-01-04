@@ -51,8 +51,9 @@ QString MPDParseUtils::getDir(const QString &f)
 
     int slashPos(d.lastIndexOf('/'));
 
-    if(slashPos!=-1)
+    if(slashPos!=-1) {
         d.remove(slashPos+1, d.length());
+    }
 
     if (!d.isEmpty() && !d.endsWith("/")) {
         d=d+"/";
@@ -243,11 +244,11 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
     }
 
     if (song.genre.isEmpty()) {
-#ifdef ENABLE_KDE_SUPPORT
+        #ifdef ENABLE_KDE_SUPPORT
         song.genre = i18n("Unknown");
-#else
+        #else
         song.genre = QObject::tr("Unknown");
-#endif
+        #endif
     }
 
     if (!albumartist.isEmpty() && albumartist != song.artist) {
@@ -347,10 +348,11 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
             line.remove(0, 6);
             QStringList parts = line.split("/");
 
-            if (currentDir->type() == DirViewItem::Type_Root)
+            if (currentDir->type() == DirViewItem::Type_Root) {
                 static_cast<DirViewItemRoot *>(currentDir)->insertFile(parts.at(parts.size() - 1));
-            else
+            } else {
                 static_cast<DirViewItemDir *>(currentDir)->insertFile(parts.at(parts.size() - 1));
+            }
         } else if (line.startsWith("directory: ")) {
             line.remove(0, 11);
             QStringList parts = line.split("/");
@@ -358,8 +360,9 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
             /* Check how much matches */
             int depth = 0;
             for (int j = 0; j < currentDirList.size() && j < parts.size(); j++) {
-                if (currentDirList.at(j) != parts.at(j))
+                if (currentDirList.at(j) != parts.at(j)) {
                     break;
+                }
                 depth++;
             }
 
@@ -367,10 +370,11 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
                 currentDir = currentDir->parent();
             }
 
-            if (currentDir->type() == DirViewItem::Type_Root)
+            if (currentDir->type() == DirViewItem::Type_Root) {
                 currentDir = static_cast<DirViewItemRoot *>(currentDir)->createDirectory(parts.at(parts.size() - 1));
-            else
+            } else {
                 currentDir = static_cast<DirViewItemDir *>(currentDir)->createDirectory(parts.at(parts.size() - 1));
+            }
 
             currentDirList = parts;
         }
@@ -414,15 +418,15 @@ QString MPDParseUtils::formatDuration(const quint32 totalseconds)
     //Convert hour,minutes and seconds to a QTime for easier parsing
     QTime time(hours, minutes, seconds);
 
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     return 0==days
             ? time.toString("hh:mm:ss")
             : i18np("1 day %2", "%1 days %2", days, time.toString("hh:mm:ss"));
-#else
+    #else
     return 0==days
             ? time.toString("hh:mm:ss")
             : 1==days
                 ? QObject::tr("1 day %1").arg(time.toString("hh:mm:ss"))
                 : QObject::tr("%1 days %2").arg(days).arg(time.toString("hh:mm:ss"));
-#endif
+    #endif
 }

@@ -94,7 +94,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DisplayRole) {
             switch (section) {
-#ifdef ENABLE_KDE_SUPPORT
+            #ifdef ENABLE_KDE_SUPPORT
             case COL_TITLE:
                 return i18n("Title");
             case COL_ARTIST:
@@ -111,7 +111,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
                 return i18n("Year");
             case COL_GENRE:
                 return i18n("Genre");
-#else
+            #else
             case COL_TITLE:
                 return tr("Title");
             case COL_ARTIST:
@@ -128,7 +128,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
                 return tr("Year");
             case COL_GENRE:
                 return tr("Genre");
-#endif
+            #endif
             default:
                 break;
             }
@@ -153,11 +153,9 @@ int PlayQueueModel::columnCount(const QModelIndex &) const
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 {
 
-    if (!index.isValid())
+    if (!index.isValid() || index.row() >= songs.size()) {
         return QVariant();
-
-    if (index.row() >= songs.size())
-        return QVariant();
+    }
 
     // Mark background of song currently being played
 
@@ -217,10 +215,11 @@ Qt::DropActions PlayQueueModel::supportedDropActions() const
 
 Qt::ItemFlags PlayQueueModel::flags(const QModelIndex &index) const
 {
-    if (index.isValid())
+    if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-    else
+    } else {
         return Qt::ItemIsDropEnabled;
+    }
 }
 
 /**
@@ -252,8 +251,9 @@ QMimeData *PlayQueueModel::mimeData(const QModelIndexList &indexes) const
     QList<int> rows;
     foreach(QModelIndex index, indexes) {
         if (index.isValid()) {
-            if (rows.contains(index.row()))
+            if (rows.contains(index.row())) {
                 continue;
+            }
 
             positions.append(QString::number(getPosByRow(index.row())));
             rows.append(index.row());
@@ -350,20 +350,12 @@ void PlayQueueModel::addFiles(const QStringList &filenames, int row)
 
 qint32 PlayQueueModel::getIdByRow(qint32 row) const
 {
-    if (songs.size() <= row) {
-        return -1;
-    }
-
-    return songs.at(row).id;
+    return row>=songs.size() ? -1 : songs.at(row).id;
 }
 
 qint32 PlayQueueModel::getPosByRow(qint32 row) const
 {
-    if (songs.size() <= row) {
-        return -1;
-    }
-
-    return songs.at(row).pos;
+    return row>=songs.size() ? -1 : songs.at(row).pos;
 }
 
 qint32 PlayQueueModel::getRowById(qint32 id) const
@@ -379,11 +371,7 @@ qint32 PlayQueueModel::getRowById(qint32 id) const
 
 Song PlayQueueModel::getSongByRow(const qint32 row) const
 {
-    if (songs.size() <= row) {
-        return Song();
-    }
-
-    return songs.at(row);
+    return row>=songs.size() ? Song() : songs.at(row);
 }
 
 void PlayQueueModel::updateCurrentSong(quint32 id)
@@ -393,8 +381,9 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
     oldIndex = song_id;
     song_id = id;
 
-    if (oldIndex != -1)
+    if (-1!=oldIndex) {
         emit dataChanged(index(getRowById(oldIndex), 0), index(getRowById(oldIndex), 2));
+    }
 
     emit dataChanged(index(getRowById(song_id), 0), index(getRowById(song_id), 2));
 }

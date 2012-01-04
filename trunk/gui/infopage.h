@@ -24,7 +24,7 @@
 #ifndef INFOPAGE_H
 #define INFOPAGE_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 #include "song.h"
 
 class QComboBox;

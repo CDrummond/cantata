@@ -25,9 +25,9 @@
 #define PREFERENCES_DIALOG_H
 
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDialog>
+#include <KDE/KDialog>
 #else
-#include <QDialog>
+#include <QtGui/QDialog>
 class ProxySettings;
 class QDialogButtonBox;
 class QAbstractButton;

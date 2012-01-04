@@ -28,7 +28,7 @@
 #ifndef SONG_H
 #define SONG_H
 
-#include <QString>
+#include <QtCore/QString>
 
 struct Song
 {

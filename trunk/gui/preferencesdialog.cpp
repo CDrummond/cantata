@@ -74,13 +74,13 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     : QDialog(parent)
 #endif
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     KPageWidget *widget = new KPageWidget(this);
-#else
+    #else
     FancyTabWidget *widget = new FancyTabWidget(this);
     widget->setAllowContextMenu(false);
     widget->setDrawBorder(true);
-#endif
+    #endif
 
     server = new ServerSettings(widget);
     playback = new PlaybackSettings(widget);
@@ -95,7 +95,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     ext->load();
     const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
     lyrics->Load(lprov);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     KPageWidgetItem *page=widget->addPage(server, i18n("Server"));
     page->setHeader(i18n("MPD Backend Settings"));
     page->setIcon(KIcon("server-database"));
@@ -118,7 +118,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
 
     setButtons(KDialog::Ok | KDialog::Apply | KDialog::Cancel);
     setCaption(i18n("Configure"));
-#else
+    #else
     widget->AddTab(new ConfigPage(this, tr("MPD Backend Settings"), QIcon::fromTheme("server-database"), server),
                    QIcon::fromTheme("server-database"), tr("Server"));
     widget->AddTab(new ConfigPage(this, tr("Playback Settings"), QIcon::fromTheme("media-playback-start"), playback),
@@ -146,7 +146,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-#endif
+    #endif
     resize(600, 400);
 }
 
@@ -158,9 +158,9 @@ void PreferencesDialog::writeSettings()
     output->save();
     interface->save();
     ext->save();
-#ifndef ENABLE_KDE_SUPPORT
+    #ifndef ENABLE_KDE_SUPPORT
     proxy->save();
-#endif
+    #endif
     Settings::self()->saveLyricProviders(lyrics->EnabledProviders());
     Settings::self()->save();
     emit settingsSaved();

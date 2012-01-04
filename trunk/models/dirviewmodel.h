@@ -26,9 +26,9 @@
 #ifndef DIRVIEWMODEL_H
 #define DIRVIEWMODEL_H
 
-#include <QAbstractItemModel>
-#include <QList>
-#include <QModelIndex>
+#include <QtCore/QAbstractItemModel>
+#include <QtCore/QList>
+#include <QtCore/QModelIndex>
 #include "dirviewitemroot.h"
 
 class DirViewModel : public QAbstractItemModel

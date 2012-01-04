@@ -27,8 +27,8 @@
 #ifndef MPD_STATUS_H
 #define MPD_STATUS_H
 
-#include <QtCore>
-#include <QtGlobal>
+#include <QtCore/QtCore>
+#include <QtCore/QtGlobal>
 
 class MPDStatus
 {

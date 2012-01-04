@@ -28,11 +28,11 @@
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KAction>
-#include <KLocale>
-#include <KActionCollection>
+#include <KDE/KAction>
+#include <KDE/KLocale>
+#include <KDE/KActionCollection>
 #else
-#include <QAction>
+#include <QtGui/QAction>
 #endif
 
 AlbumsPage::AlbumsPage(MainWindow *p)
@@ -49,11 +49,11 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
 
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Albums"));
-#else
+    #else
     view->setTopText(tr("Albums"));
-#endif
+    #endif
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
@@ -143,11 +143,11 @@ void AlbumsPage::searchItems()
 void AlbumsPage::updateGenres(const QStringList &genres)
 {
     QStringList entries;
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     entries << i18n("All Genres");
-#else
+    #else
     entries << tr("All Genres");
-#endif
+    #endif
     entries+=genres;
 
     bool diff=genreCombo->count() != entries.count();

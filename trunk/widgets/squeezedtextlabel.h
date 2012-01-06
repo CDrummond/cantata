@@ -38,10 +38,58 @@ public:
 };
 #else
 #include <QtGui/QLabel>
+#include <QtGui/QFontMetrics>
+class QResizeEvent;
+
 class SqueezedTextLabel : public QLabel
 {
 public:
-    SqueezedTextLabel(QWidget *p) : QLabel(p) { }
+    SqueezedTextLabel(QWidget *p)
+        : QLabel(p) {
+        bool rtl=Qt::RightToLeft==layoutDirection();
+        elideMode=rtl ? Qt::ElideLeft : Qt::ElideRight;
+        setAlignment(rtl ? Qt::AlignRight : Qt::AlignLeft);
+        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    }
+
+    void setText(const QString &text) {
+        fullText=text;
+        elideText();
+    }
+
+protected:
+    QSize minimumSizeHint() const {
+        QSize sh = QLabel::minimumSizeHint();
+        sh.setWidth(-1);
+        return sh;
+    }
+
+    QSize sizeHint() const {
+        return QSize(fontMetrics().width(fullText), QLabel::sizeHint().height());
+    }
+
+    void resizeEvent(QResizeEvent *) {
+        elideText();
+    }
+
+private:
+    void elideText() {
+        QFontMetrics fm(fontMetrics());
+        int labelWidth = size().width();
+        int lineWidth = fm.width(fullText);
+
+        if (lineWidth > labelWidth) {
+            QLabel::setText(fm.elidedText(fullText, elideMode, labelWidth));
+            setToolTip(fullText);
+        } else {
+            QLabel::setText(fullText);
+            setToolTip(QString());
+        }
+    }
+
+private:
+    QString fullText;
+    Qt::TextElideMode elideMode;
 };
 #endif
 

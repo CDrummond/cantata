@@ -290,28 +290,29 @@ public:
             painter->drawText(childRect, childText, textOpt);
         }
 
-        if (option.state & QStyle::State_MouseOver) {
-            if (iconMode) {
-                r=r2;
+        if (!(option.state & QStyle::State_MouseOver)) {
+            painter->setOpacity(painter->opacity()*0.2);
+        }
+        if (iconMode) {
+            r=r2;
+        }
+        QRect actionRect=calcActionRect(rtl, iconMode, r);
+        if (act1) {
+            pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+            if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
+                drawBgnd(painter, actionRect);
+                painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
+                                    actionRect.y()+(actionRect.height()-pix.height())/2, pix);
             }
-            QRect actionRect=calcActionRect(rtl, iconMode, r);
-            if (act1) {
-                pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-                    drawBgnd(painter, actionRect);
-                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-                }
-            }
+        }
 
-            if (act1 && act2) {
-                adjustActionRect(rtl, iconMode, actionRect);
-                pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-                    drawBgnd(painter, actionRect);
-                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-                }
+        if (act1 && act2) {
+            adjustActionRect(rtl, iconMode, actionRect);
+            pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+            if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
+                drawBgnd(painter, actionRect);
+                painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
+                                    actionRect.y()+(actionRect.height()-pix.height())/2, pix);
             }
         }
         painter->restore();

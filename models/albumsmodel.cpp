@@ -225,7 +225,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 if (al->songs.count()) {
                     s.file=al->songs.first()->file;
                 }
-                Covers::self()->get(s);
+                Covers::self()->get(s, al->isSingleTracks);
                 al->coverRequested=true;
             }
             return *theDefaultIcon;

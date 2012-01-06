@@ -31,6 +31,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QPixmap>
 #include "musiclibraryitem.h"
+#include "song.h"
 
 class MusicLibraryItemArtist;
 class MusicLibraryItemSong;
@@ -64,7 +65,9 @@ public:
     quint32 year() const { return m_year; }
     void addTracks(MusicLibraryItemAlbum *other);
     bool isSingleTracks() const { return m_singleTracks; }
-    void setIsSingleTracks() { m_singleTracks=true; }
+    void setIsSingleTracks();
+    bool isSingleTrackFile(const Song &s) const { return m_singleTrackFiles.contains(s.file); }
+    void append(MusicLibraryItem *i);
 
 private:
     QString m_dir;
@@ -72,6 +75,7 @@ private:
     bool m_coverIsDefault;
     QPixmap *m_cover;
     bool m_singleTracks;
+    QSet<QString> m_singleTrackFiles;
 };
 
 #endif

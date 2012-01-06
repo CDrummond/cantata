@@ -127,7 +127,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.albumartist=parent()->data();
             song.album=m_itemData;
             song.file=m_dir;
-            Covers::self()->get(song);
+            Covers::self()->get(song, m_singleTracks);
         }
         return *theDefaultIcon;
     }
@@ -152,6 +152,23 @@ void MusicLibraryItemAlbum::addTracks(MusicLibraryItemAlbum *other)
 {
     m_singleTracks=true;
     foreach (MusicLibraryItem *track, other->m_childItems) {
+        m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(track)->song().file);
         track->setParent(this);
+    }
+}
+
+void MusicLibraryItemAlbum::setIsSingleTracks()
+{
+    foreach (MusicLibraryItem *track, m_childItems) {
+        m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(track)->song().file);
+    }
+    m_singleTracks=true;
+}
+
+void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
+{
+    MusicLibraryItem::append(i);
+    if (m_singleTracks) {
+        m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(i)->song().file);
     }
 }

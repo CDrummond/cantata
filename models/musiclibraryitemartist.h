@@ -50,6 +50,7 @@ public:
     }
     bool allSingleTrack() const;
     void addToSingleTracks(MusicLibraryItemArtist *other);
+    bool isFromSingleTracks(const Song &s) const;
 
 private:
     bool m_various;

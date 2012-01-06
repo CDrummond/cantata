@@ -53,6 +53,7 @@ public:
     QStringList filenames(const QModelIndexList &indexes) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     const MusicLibraryItemRoot * root() const { return rootItem; }
+    bool isFromSingleTracks(const Song &s) const { return rootItem->isFromSingleTracks(s); }
 
     bool fromXML(const QDateTime db_update);
     void clearUpdateTime() { databaseTime=QDateTime(); }

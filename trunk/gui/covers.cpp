@@ -30,7 +30,11 @@
 #include <QtCore/QFile>
 #include <QtCore/QCryptographicHash>
 #include <QtNetwork/QNetworkReply>
+#include <QtGui/QIcon>
 #include <QtGui/QImage>
+#include <QtGui/QPixmap>
+#include <QtGui/QPainter>
+#include <QtGui/QFont>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
@@ -43,6 +47,27 @@ static const QLatin1String constCoverDir("covers/");
 static const QLatin1String constFileName("cover");
 static const QLatin1String constExtension(".jpg");
 static const QLatin1String constAltExtension(".png");
+static const QLatin1String constSingleTracksFile("SingleTracks.png");
+
+static QImage createSingleTracksCover(const QString &fileName)
+{
+    static const int constSize=128;
+    QImage img(constSize, constSize, QImage::Format_ARGB32);
+    QPixmap pix(QIcon::fromTheme("media-optical").pixmap(128, 128));
+    QPainter p(&img);
+    p.fillRect(QRect(0, 0, constSize, constSize), QColor(96, 96, 96));
+    p.drawPixmap((constSize-pix.width())/2,(constSize-pix.height())/2, pix);
+    QFont font(QLatin1String("serif"));
+    font.setBold(true);
+    font.setItalic(true);
+    font.setPixelSize(constSize*0.8);
+    p.setFont(font);
+    p.setPen(Qt::black);
+    p.drawText(QRect(0, 0, constSize, constSize), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+    p.end();
+    img.save(fileName);
+    return img;
+}
 
 static const QString typeFromRaw(const QByteArray &raw)
 {
@@ -177,8 +202,18 @@ Covers::Covers()
 {
 }
 
-void Covers::get(const Song &song)
+void Covers::get(const Song &song, bool isSingleTracks)
 {
+    if (isSingleTracks) {
+         QString fileName(Network::cacheDir(constCoverDir)+constSingleTracksFile);
+         if (QFile::exists(fileName)) {
+             emit cover(song.albumArtist(), song.album, QImage(fileName), fileName);
+         } else {
+             emit cover(song.albumArtist(), song.album, createSingleTracksCover(fileName), fileName);
+         }
+         return;
+    }
+
     QString dirName;
     QStringList extensions;
     extensions << constAltExtension << constExtension;

@@ -88,3 +88,20 @@ void MusicLibraryItemRoot::groupSingleTracks()
         }
     }
 }
+
+bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
+{
+    if (!s.file.isEmpty()) {
+        #ifdef ENABLE_KDE_SUPPORT
+        QHash<QString, int>::ConstIterator it=m_indexes.find(i18n("Various Artists"));
+        #else
+        QHash<QString, int>::ConstIterator it=m_indexes.find(QObject::tr("Various Artists"));
+        #endif
+
+        if (m_indexes.end()!=it) {
+            return static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it))->isFromSingleTracks(s);
+        }
+    }
+    return false;
+}
+

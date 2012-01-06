@@ -382,6 +382,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
                 if (track->disc() != 0) {
                     writer.writeAttribute("disc", QString::number(track->disc()));
                 }
+                writer.writeAttribute("id", QString::number(track->song().id));
                 writer.writeAttribute("genre", track->genre());
             }
             writer.writeEndElement();
@@ -488,6 +489,8 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                     song.disc=str.isEmpty() ? 0 : str.toUInt();
                     str=reader.attributes().value("time").toString();
                     song.time=str.isEmpty() ? 0 : str.toUInt();
+                    str=reader.attributes().value("id").toString();
+                    song.id=str.isEmpty() ? 0 : str.toUInt();
 
                     songItem = new MusicLibraryItemSong(song, albumItem);
 

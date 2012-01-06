@@ -1446,9 +1446,9 @@ void MainWindow::updatePlayListStatus()
     status+=i18np("1 Album, ", "%1 Albums, ", stats->playlistAlbums());
     status+=i18np("1 Track", "%1 Tracks", stats->playlistSongs());
     #else
-    status += QString::number(stats->playlistArtists())+QString(1==stats->playlistArtists() ? " Artist, " : "Artists, ");
-    status += QString::number(stats->playlistAlbums())+QString(1==stats->playlistAlbums() ? " Album, " : "Albums, ");
-    status += QString::number(stats->playlistSongs())+QString(1==stats->playlistSongs() ? " Track" : "Tracks");
+    status += QString::number(stats->playlistArtists())+QString(1==stats->playlistArtists() ? tr(" Artist,") : tr(" Artists, "));
+    status += QString::number(stats->playlistAlbums())+QString(1==stats->playlistAlbums() ? tr(" Album,") : tr(" Albums, "));
+    status += QString::number(stats->playlistSongs())+QString(1==stats->playlistSongs() ? tr(" Track") : tr(" Tracks"));
     #endif
     status += " (";
     status += MPDParseUtils::formatDuration(stats->playlistTime());

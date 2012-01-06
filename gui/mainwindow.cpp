@@ -1103,6 +1103,8 @@ void MainWindow::updateCurrentSong(const Song &song)
 {
     current=song;
 
+    positionSlider->setEnabled(!currentIsStream());
+
     // Determine if album cover should be updated
     const QString &albumArtist=song.albumArtist();
     if (coverWidget->property("artist").toString() != albumArtist || coverWidget->property("album").toString() != song.album) {

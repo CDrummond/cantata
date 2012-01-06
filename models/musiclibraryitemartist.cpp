@@ -27,6 +27,7 @@
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
+#include "musiclibraryitemsong.h"
 #include "song.h"
 #include "mpdparseutils.h"
 #ifdef ENABLE_KDE_SUPPORT
@@ -90,5 +91,19 @@ void MusicLibraryItemArtist::addToSingleTracks(MusicLibraryItemArtist *other)
     foreach (MusicLibraryItem *album, other->children()) {
         single->addTracks(static_cast<MusicLibraryItemAlbum *>(album));
     }
+}
+
+bool MusicLibraryItemArtist::isFromSingleTracks(const Song &s) const
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    QHash<QString, int>::ConstIterator it=m_indexes.find(i18n("Single Tracks"));
+    #else
+    QHash<QString, int>::ConstIterator it=m_indexes.find(QObject::tr("Single Tracks"));
+    #endif
+
+    if (m_indexes.end()!=it) {
+        return static_cast<MusicLibraryItemAlbum *>(m_childItems.at(*it))->isSingleTrackFile(s);
+    }
+    return false;
 }
 

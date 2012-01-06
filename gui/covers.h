@@ -51,7 +51,7 @@ public:
     static Covers * self();
     Covers();
 
-    void get(const Song &song);
+    void get(const Song &song, bool isSingleTracks=false);
     void setMpdDir(const QString &dir) { mpdDir=dir; }
 
 Q_SIGNALS:

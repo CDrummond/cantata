@@ -65,7 +65,7 @@ public:
         m_parentItem->m_childItems.append(this);
     }
 
-    void append(MusicLibraryItem *i) {
+    virtual void append(MusicLibraryItem *i) {
         m_childItems.append(i);
     }
 

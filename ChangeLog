@@ -24,6 +24,7 @@
     opacity.
 14. Disable position slider when playing a stream.
 15. Basic elided-text class for Qt-only build.
+16. Dont build libMaia as a library, just compile into cantata.
 
 0.1.2
 -----

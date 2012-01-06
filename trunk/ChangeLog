@@ -26,6 +26,7 @@
 15. Basic elided-text class for Qt-only build.
 16. Dont build libMaia as a library, just compile into cantata.
 17. Expand/collapse interface via clicking on album cover.
+18. Spanish translation - thanks to Omar Campagne.
 
 0.1.2
 -----

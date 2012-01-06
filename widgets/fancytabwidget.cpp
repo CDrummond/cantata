@@ -59,6 +59,7 @@
 using namespace Core;
 using namespace Internal;
 
+const int FancyTabBar::m_iconSize = 32;
 const int FancyTabBar::m_rounding = 22;
 const int FancyTabBar::m_textPadding = 4;
 
@@ -96,9 +97,9 @@ static void drawRoundedRect(QPainter *p, const QRect &r, double radius, const QC
 }
 #endif
 
-static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p)
+static void drawIcon(const QIcon &icon, const QRect &r, QPainter *p, const QSize &iconSize)
 {
-    QPixmap px = icon.pixmap(r.size());
+    QPixmap px = icon.pixmap(iconSize);
     p->drawPixmap(r.x()+(r.width()-px.width())/2.0, r.y()+(r.height()-px.height())/2.0, px.width(), px.height(), px);
 }
 
@@ -206,7 +207,7 @@ void FancyTabProxyStyle::drawControl(
 //   p->setPen(selected ? QColor(60, 60, 60) : Utils::StyleHelper::panelTextColor());
     p->setPen(selected ? QApplication::palette().highlightedText().color() : QApplication::palette().foreground().color());
 
-  drawIcon(v_opt->icon, icon_rect, p);
+  drawIcon(v_opt->icon, icon_rect, p, v_opt->iconSize);
 
   QString txt=text;
   txt.replace("&", "");
@@ -311,12 +312,11 @@ QSize FancyTab::sizeHint() const {
   QFontMetrics fm(font());
   int spacing = 8;
   int width = 60 + spacing + 2;
-  int iconHeight = 32;
-  QSize ret(width, iconHeight + spacing + fm.height());
+  QSize ret(width, FancyTabBar::m_iconSize + spacing + fm.height());
   return ret;
 }
 
-QSize FancyTabBar::tabSizeHint(bool minimum) const
+QSize FancyTabBar::tabSizeHint() const
 {
 //   QFont boldFont(font());
 //   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
@@ -324,8 +324,7 @@ QSize FancyTabBar::tabSizeHint(bool minimum) const
   QFontMetrics fm(font());
   int spacing = 8;
   int width = 60 + spacing + 2;
-  int iconHeight = minimum ? 0 : 32;
-  return QSize(width, iconHeight + spacing + fm.height());
+  return QSize(width, m_iconSize + spacing + fm.height());
 }
 
 void FancyTabBar::paintEvent(QPaintEvent *event)
@@ -360,7 +359,7 @@ QSize FancyTabBar::sizeHint() const
 
 QSize FancyTabBar::minimumSizeHint() const
 {
-    QSize sh = tabSizeHint(true);
+    QSize sh = tabSizeHint();
     return QSize(sh.width(), sh.height() * m_tabs.count());
 }
 
@@ -465,7 +464,7 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     const int textHeight = painter->fontMetrics().height();
     tabIconRect.adjust(0, 4, 0, -textHeight);
 //     Utils::StyleHelper::drawIconWithShadow(tabIcon(tabIndex), tabIconRect, painter, QIcon::Normal);
-    drawIcon(tabIcon(tabIndex), tabIconRect, painter);
+    drawIcon(tabIcon(tabIndex), tabIconRect, painter, QSize(m_iconSize, m_iconSize));
 
 
 //     painter->translate(0, -1);

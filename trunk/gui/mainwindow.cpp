@@ -1119,16 +1119,17 @@ void MainWindow::updateCurrentSong(const Song &song)
         trackLabel->setText(QString("%1 (%2)").arg(song.title).arg(song.name));
     }
     if (song.album.isEmpty()) {
-        #ifdef ENABLE_KDE_SUPPORT
-        artistLabel->setText(i18n("<i>By</i> %1", song.artist));
-        #else
-        artistLabel->setText(tr("<i>By</i> %1").arg(song.artist));
-        #endif
-
+        artistLabel->setText(song.artist);
     } else {
+        QString album=song.album;
+
+        if (song.year>0) {
+            album+=QString(" (%1)").arg(song.year);
+        }
         #ifdef ENABLE_KDE_SUPPORT
-        artistLabel->setText(i18n("<i>By</i> %1 <i>, from</i> %2", song.artist, song.album));
+        artistLabel->setText(i18nc("artist - album", "%1 - %2", song.artist, album));
         #else
+        artistLabel->setText(tr("%1 - %2").arg(song.artist).arg(album));
         #endif
     }
 
@@ -1139,16 +1140,16 @@ void MainWindow::updateCurrentSong(const Song &song)
             setWindowTitle("Cantata");
         } else {
             #ifdef ENABLE_KDE_SUPPORT
-            setWindowTitle(i18n("%1 :: Cantata", trackLabel->text()));
+            setWindowTitle(i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->text()));
             #else
             setWindowTitle(tr("%1 :: Cantata").arg(trackLabel->text()));
             #endif
         }
     } else {
         #ifdef ENABLE_KDE_SUPPORT
-        setWindowTitle(i18n("%1 - %2 :: Cantata", song.artist, trackLabel->text()));
+        setWindowTitle(i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->text(), song.artist));
         #else
-        setWindowTitle(tr("%1 - %2 :: Cantata").arg(song.artist).arg(trackLabel->text()));
+        setWindowTitle(tr("%1 - %2 :: Cantata").arg(trackLabel->text()).arg(song.artist));
         #endif
     }
     if (PAGE_LYRICS==tabWidget->current_index()) {

@@ -225,7 +225,7 @@ int Settings::sidebar()
 
 bool Settings::libraryYear()
 {
-    return GET_BOOL("libraryYear", false);
+    return GET_BOOL("libraryYear", true);
 }
 
 bool Settings::groupSingle()
@@ -271,7 +271,7 @@ QStringList Settings::hiddenPages()
 
 bool Settings::mpris()
 {
-    return GET_BOOL("mpris", false);
+    return GET_BOOL("mpris", true);
 }
 
 bool Settings::dockManager()

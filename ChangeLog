@@ -4,18 +4,24 @@
  2. Show 'Various Artists' at the top of the library view.
  3. Add option to group single track artist/albums under
     'Various Artists'/'Single Tracks'/'Artist - Track'
- 4. Improve time slider accuracy, by checking the time elapsed at each interval.
- 5. Fix inconsistency between adding items via drag'n'drop and using the 'add to'
-    and 'replace' actions.
+ 4. Improve time slider accuracy, by checking the time elapsed at each
+    interval.
+ 5. Fix inconsistency between adding items via drag'n'drop and using the 'add
+    to' and 'replace' actions.
  6. Add basic MPRISv2 interface - mainly so that Cantata can be controlled via
     IconTasks' media buttons.
- 7. Add option to set icon in dockmanager docks (IconTasks, Docky, DockBarX, etc)
-    to that of the current track.
- 8. Provide a simple script to convert amarok radio streams into cantata streams.
+ 7. Add option to set icon in dockmanager docks (IconTasks, Docky, DockBarX,
+    etc) to that of the current track.
+ 8. Provide a simple script to convert amarok radio streams into cantata
+    streams.
  9. Use .cantata extension for import/export of cantata streams.
 10. Only export selected strema categories.
-11. Show track details in titlebar, so that these also appear in taskbar tooltips.
-12. Use 'play' icon for 'replace play queue', and 'add' icon for 'add to play queue'
+11. Show track details in titlebar, so that these also appear in taskbar
+    tooltips.
+12. Use 'play' icon for 'replace play queue', and 'add' icon for 'add to play
+    queue'
+13. In list/icon view, show actions of not selected/highlighted items at 20%
+    opacity.
 
 0.1.2
 -----
@@ -32,13 +38,14 @@
 -----
 1. Play/Pause track when middle click on tray icon. (KDE only). Thanks to Piotr
    Wicijowski for the idea/patch.
-2. Only connecto to QTreeView::activated when in single-click. Double-click already
-   expands/collapses the item - so if we also do this on activated, then the item
-   is re-collapsed/expanded.
+2. Only connecto to QTreeView::activated when in single-click. Double-click
+   already expands/collapses the item - so if we also do this on activated,
+   then the item is re-collapsed/expanded.
 3. Only create the tray icon once!
 4. Add context menu to toolbar buttons to enable using smaller buttons.
 5. Polish translation - thanks to Piotr Wicijowski
-6. To be more consistent with other apps, show expander for root items in tree views.
+6. To be more consistent with other apps, show expander for root items in tree
+   views.
 7. Show spinner over library/folder view when loading. (KDE only)
 8. Fix some right-to-left issues.
 9. Czech translation - thanks to Pavel Fric
@@ -53,9 +60,9 @@
 5. In library list, use album-artist (if available, artist otherwise) to group
    albums.
 6. Remove search combo, and always default to searching in all fields.
-7. Removed warning when add to playlist, and nothing selected - was inconsistent
-   with playlist view. (Add to playlist actions should now only be enabled if
-   there is something selected)
+7. Removed warning when add to playlist, and nothing selected - was
+   inconsistent with playlist view. (Add to playlist actions should now only be
+   enabled if there is something selected)
 8. Fix call to setupGUI so as to not create a statusbar
 9. If compiled with KDE support;
     - use KMessageBox
@@ -68,8 +75,8 @@
 13. Only 2 socket connections to MPD - one for commands, and one for idle
     messages.
 14. Only load data for a tab when the tab is selected.
-15. If saving to a pre-existing playlist, ask the user if it is ok to overwrite.
-    If so, delete the existing one first, then save.
+15. If saving to a pre-existing playlist, ask the user if it is ok to
+    overwrite. If so, delete the existing one first, then save.
 16. Add a combo to filter on genre.
 17. Check for cover (cover.png/jpg) within folder of current track to get
     cover-art, otherwise download.

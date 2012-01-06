@@ -137,14 +137,16 @@ signals:
 public slots:
     void emitCurrentIndex();
 
+public:
+    static const int m_iconSize;
+
 private:
     static const int m_rounding;
     static const int m_textPadding;
     int m_currentIndex;
     QList<FancyTab*> m_tabs;
     QTimer m_triggerTimer;
-    QSize tabSizeHint(bool minimum = false) const;
-
+    QSize tabSizeHint() const;
 };
 
 class FancyTabWidget : public QWidget {

@@ -253,6 +253,11 @@ public:
                 }
             }
         }
+
+        if (!(option.state & QStyle::State_MouseOver)) {
+            drawIcons(painter, iconMode ? r2 : r, false, rtl, iconMode);
+        }
+
         QFont textFont(QApplication::font());
         QFontMetrics textMetrics(textFont);
         QRect textRect;
@@ -290,15 +295,23 @@ public:
             painter->drawText(childRect, childText, textOpt);
         }
 
-        if (!(option.state & QStyle::State_MouseOver)) {
-            painter->setOpacity(painter->opacity()*0.2);
+        if (option.state & QStyle::State_MouseOver) {
+            drawIcons(painter, iconMode ? r2 : r, true, rtl, iconMode);
         }
-        if (iconMode) {
-            r=r2;
+
+        painter->restore();
+    }
+
+    void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, bool iconMode) const
+    {
+        double opacity=painter->opacity();
+        if (!mouseOver) {
+            painter->setOpacity(opacity*0.2);
         }
+
         QRect actionRect=calcActionRect(rtl, iconMode, r);
         if (act1) {
-            pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+            QPixmap pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
             if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
                 drawBgnd(painter, actionRect);
                 painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
@@ -308,14 +321,16 @@ public:
 
         if (act1 && act2) {
             adjustActionRect(rtl, iconMode, actionRect);
-            pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+            QPixmap pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
             if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
                 drawBgnd(painter, actionRect);
                 painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                     actionRect.y()+(actionRect.height()-pix.height())/2, pix);
             }
         }
-        painter->restore();
+        if (!mouseOver) {
+            painter->setOpacity(opacity);
+        }
     }
 
     QAction *act1;

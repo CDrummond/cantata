@@ -191,30 +191,30 @@ void VolumeControl::setValue(int v)
     slider->setValue(v);
 }
 
-// CoverEventHandler::CoverEventHandler(MainWindow *w)
-//     : QObject(w), window(w)
-// {
-// }
-//
-// bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
-// {
-//     switch(event->type()) {
-//     case QEvent::MouseButtonPress:
-//         if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
-//             pressed=true;
-//         }
-//         break;
-//     case QEvent::MouseButtonRelease:
-//         if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
-//             window->expandInterfaceAction->trigger();
-//         }
-//         pressed=false;
-//         break;
-//     default:
-//         break;
-//     }
-//     return QObject::eventFilter(obj, event);
-// }
+CoverEventHandler::CoverEventHandler(MainWindow *w)
+    : QObject(w), window(w)
+{
+}
+
+bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
+{
+    switch(event->type()) {
+    case QEvent::MouseButtonPress:
+        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
+            pressed=true;
+        }
+        break;
+    case QEvent::MouseButtonRelease:
+        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
+            window->expandInterfaceAction->trigger();
+        }
+        pressed=false;
+        break;
+    default:
+        break;
+    }
+    return QObject::eventFilter(obj, event);
+}
 
 #ifdef ENABLE_KDE_SUPPORT
 MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent),
@@ -417,7 +417,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
-//     coverEventHandler = new CoverEventHandler(this);
 
     volumeControl = new VolumeControl(volumeButton);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
@@ -606,7 +605,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
 
-//     coverWidget->installEventFilter(coverEventHandler);
+    coverWidget->installEventFilter(new CoverEventHandler(this));
 
     connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
@@ -1499,13 +1498,12 @@ void MainWindow::togglePlaylist()
     if (splitter->isVisible()==expandInterfaceAction->isChecked()) {
         return;
     }
-    static int lastHeight=0;
+    static QSize lastSize;
 
-    int widthB4=size().width();
     bool showing=expandInterfaceAction->isChecked();
 
     if (!showing) {
-        lastHeight=size().height();
+        lastSize=size();
     } else {
         setMinimumHeight(0);
         setMaximumHeight(65535);
@@ -1514,10 +1512,10 @@ void MainWindow::togglePlaylist()
     QApplication::processEvents();
     adjustSize();
 
-    bool adjustWidth=size().width()<widthB4;
-    bool adjustHeight=showing && size().height()<lastHeight;
+    bool adjustWidth=showing && size().width()<lastSize.width();
+    bool adjustHeight=showing && size().height()<lastSize.height();
     if (adjustWidth || adjustHeight) {
-        resize(adjustWidth ? widthB4 : size().width(), adjustHeight ? lastHeight : size().height());
+        resize(adjustWidth ? lastSize.width() : size().width(), adjustHeight ? lastSize.height() : size().height());
     }
 
     if (!showing) {

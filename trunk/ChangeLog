@@ -22,6 +22,7 @@
     queue'
 13. In list/icon view, show actions of not selected/highlighted items at 20%
     opacity.
+14. Disable position slider when playing a stream.
 
 0.1.2
 -----

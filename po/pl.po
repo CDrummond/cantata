@@ -1,13 +1,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Piotr Wicijowski <piwsko@gmail.com>, 2011.
+# Piotr Wicijowski <piwsko@gmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-06 19:45+0000\n"
-"PO-Revision-Date: 2011-12-22 16:01+0100\n"
+"PO-Revision-Date: 2012-01-08 18:37+0100\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -177,19 +177,17 @@ msgstr "Utracono połączenie z MPD"
 #: gui/mainwindow.cpp:1129
 msgctxt "artist - album"
 msgid "%1 - %2"
-msgstr ""
+msgstr "%1 - %2"
 
 #: gui/mainwindow.cpp:1142
-#, fuzzy
 msgctxt "track :: Cantata"
 msgid "%1 :: Cantata"
-msgstr "Cantata"
+msgstr "%1 :: Cantata"
 
 #: gui/mainwindow.cpp:1149
-#, fuzzy
 msgctxt "track - artist :: Cantata"
 msgid "%1 - %2 :: Cantata"
-msgstr "Cantata"
+msgstr "%1 - %2 :: Cantata"
 
 #: gui/mainwindow.cpp:1171
 msgid ""
@@ -335,12 +333,11 @@ msgstr "Ustawienia interfejsu"
 
 #: gui/preferencesdialog.cpp:111
 msgid "External"
-msgstr ""
+msgstr "Zewnętrzne"
 
 #: gui/preferencesdialog.cpp:112
-#, fuzzy
 msgid "External Settings"
-msgstr "Ustawienia interfejsu"
+msgstr "Ustawienia zewnętrzne"
 
 #: gui/preferencesdialog.cpp:115
 msgid "Lyrics Settings"
@@ -383,19 +380,16 @@ msgid "Export Streams"
 msgstr "Eksportuj strumienie"
 
 #: gui/streamspage.cpp:55
-#, fuzzy
 msgid "Remove Stream/Category"
-msgstr "Usuń strumień"
+msgstr "Usuń strumień/kategorię "
 
 #: gui/streamspage.cpp:57
-#, fuzzy
 msgid "Edit Stream/Category"
-msgstr "Edytuj strumień"
+msgstr "Edytuj strumień/Kategorię"
 
 #: gui/streamspage.cpp:164 gui/streamspage.cpp:201
-#, fuzzy
 msgid "*.cantata|Cantata Streams"
-msgstr "*.streams|Strumienie Cantata"
+msgstr "*.cantata|Strumienie Cantata"
 
 #: gui/streamspage.cpp:175
 msgid ""
@@ -552,14 +546,12 @@ msgstr[2] "%1 Elementów"
 
 #: models/musiclibraryitemartist.cpp:45 models/musiclibraryitemroot.cpp:59
 #: models/musiclibraryitemroot.cpp:96
-#, fuzzy
 msgid "Various Artists"
-msgstr "Artyści:"
+msgstr "Various Artists"
 
 #: models/musiclibraryitemartist.cpp:86 models/musiclibraryitemartist.cpp:99
-#, fuzzy
 msgid "Single Tracks"
-msgstr "Następny utwór"
+msgstr "Pojedyncze utwory"
 
 #: models/musiclibrarymodel.cpp:182
 msgid ""
@@ -733,7 +725,7 @@ msgstr "Formularz"
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:9 rc.cpp:9
 msgid "Show icon in notification area:"
-msgstr "Pokarz ikonę w tacce systemowej:"
+msgstr "Pokaż ikonę w tacce systemowej:"
 
 #. i18n: file: gui/externalsettings.ui:43
 #. i18n: ectx: property (text), widget (QLabel, label_5)
@@ -745,13 +737,13 @@ msgstr "Pokazuj wyskakujące okienka przy zmianie utworu:"
 #. i18n: ectx: property (text), widget (QLabel, label_5b)
 #: po/rc.cpp:15 rc.cpp:15
 msgid "Enable basic MPRISv2 interface:"
-msgstr ""
+msgstr "Uruchom podstawowy interfejs MPRISv2:"
 
 #. i18n: file: gui/externalsettings.ui:77
 #. i18n: ectx: property (text), widget (QLabel, label_5c)
 #: po/rc.cpp:18 rc.cpp:18
 msgid "Use current cover as dock icon:"
-msgstr ""
+msgstr "Używaj obecnej okładki jako ikony doku:"
 
 #. i18n: file: gui/interfacesettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -854,15 +846,14 @@ msgstr "Duże"
 #. i18n: file: gui/interfacesettings.ui:81
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:51 rc.cpp:51
-#, fuzzy
 msgid "Show album year in library view:"
-msgstr "Okładki w widoku biblioteki:"
+msgstr "Pokaż datę albumu w widoku biblioteki:"
 
 #. i18n: file: gui/interfacesettings.ui:98
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: po/rc.cpp:54 rc.cpp:54
 msgid "Group single track albums:"
-msgstr ""
+msgstr "Grupuj pojedyncze utwory:"
 
 #. i18n: file: gui/interfacesettings.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_3a)
@@ -1050,12 +1041,11 @@ msgstr "Katalog z muzyką:"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:213 rc.cpp:213
 msgid "Host (or local socket):"
-msgstr ""
+msgstr "Host (albo gniazdo lokalne):"
 
 #. i18n: file: gui/serversettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:216 rc.cpp:216
-#, fuzzy
 msgid ""
 "<p><i><b>NOTE:</b> The 'Music Folder' settings is only used to lookup cover-"
 "art (<code>cover.jpg</code> or <code>cover.png</code>). If you also have "
@@ -1067,7 +1057,9 @@ msgstr ""
 "<i><b>UWAGA:</b> Ustawienie 'Katalog z muzyką' służy jedynie do poszukiwania "
 "okładek (<code>cover.jpg</code> albo <code>cover.png</code>). Jeśli "
 "posiadasz prawa zapisu do tego katalogu (i podkatalogów), to Cantata będzie "
-"zapisywała wszystkie pobrane okładki do odpowiednich katalogów.</i>"
+"zapisywała wszystkie pobrane okładki do odpowiednich katalogów.<br/><br/>\n"
+"<b>UWAGA:</b> Przy używaniu gniazda lokalnego konieczne jest ustawienie "
+"absolutnej ścieżki do gniazda. (Numer portu nie jest wymagany.)</i></p>"
 
 #. i18n: file: lyrics/lyricsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -1169,7 +1161,7 @@ msgstr "Karty z boku"
 
 #: widgets/fancytabwidget.cpp:774
 msgid "Tabs On Top"
-msgstr "Kary u góry"
+msgstr "Karty u góry"
 
 #: widgets/fancytabwidget.cpp:775
 msgid "Tabs On Top (Icons Only)"
@@ -1177,7 +1169,7 @@ msgstr "Karty u góry (tylko ikony)"
 
 #: widgets/fancytabwidget.cpp:776
 msgid "Tabs On Bottom"
-msgstr "Kary u dołu"
+msgstr "Karty u dołu"
 
 #: widgets/fancytabwidget.cpp:777
 msgid "Tabs On Bottom (Icons Only)"

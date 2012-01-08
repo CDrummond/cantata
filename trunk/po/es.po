@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-06 19:45+0000\n"
-"PO-Revision-Date: 2012-01-06 12:04+0200\n"
+"PO-Revision-Date: 2012-01-07 12:16+0200\n"
 "Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: es\n"
@@ -75,11 +75,11 @@ msgstr "Detener"
 
 #: gui/mainwindow.cpp:295
 msgid "Increase Volume"
-msgstr "Aumentar volumen"
+msgstr "Subir volumen"
 
 #: gui/mainwindow.cpp:299
 msgid "Decrease Volume"
-msgstr "Reducir volumen"
+msgstr "Bajar volumen"
 
 #: gui/mainwindow.cpp:303
 msgid "Add To Play Queue"
@@ -176,18 +176,17 @@ msgstr "Se ha perdido la conexión a MPD"
 #: gui/mainwindow.cpp:1129
 msgctxt "artist - album"
 msgid "%1 - %2"
-msgstr ""
+msgstr "%1 - %2"
 
 #: gui/mainwindow.cpp:1142
-#, fuzzy
 msgctxt "track :: Cantata"
 msgid "%1 :: Cantata"
-msgstr "Cantata"
+msgstr "%1 :: Cantata"
 
 #: gui/mainwindow.cpp:1149
 msgctxt "track - artist :: Cantata"
 msgid "%1 - %2 :: Cantata"
-msgstr ""
+msgstr "%1 - %2 :: Cantata"
 
 #: gui/mainwindow.cpp:1171
 msgid ""
@@ -198,10 +197,10 @@ msgid ""
 "tr></table>"
 msgstr ""
 "<table><tr><td align=\"right\"><b>Artista:</b></td><td>%1</td></tr><tr><td "
-"align=\"right\"><b>Álbum:</b></td><td>%2</td></tr><tr><td align=\"right"
-"\"><b>Canción:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Pista:</"
-"b></td><td>%4</td></tr><tr><td align=\"right\"><b>Duración:</b></td><td>%5</"
-"td></tr></table>"
+"align=\"right\"><b>Álbum:</b></td><td>%2</td></tr><tr><td "
+"align=\"right\"><b>Canción:</b></td><td>%3</td></tr><tr><td "
+"align=\"right\"><b>Pista:</b></td><td>%4</td></tr><tr><td "
+"align=\"right\"><b>Duración:</b></td><td>%5</td></tr></table>"
 
 #: gui/mainwindow.cpp:1225 gui/mainwindow.cpp:1226
 msgid "Volume %1%"
@@ -218,8 +217,8 @@ msgstr "Introduzca un nombre para la lista de reproducción"
 #: gui/mainwindow.cpp:1390
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
 msgstr ""
-"Se ha detectado una lista de reproducción llamada <b>%1</b>. ¿Desea añadir a "
-"esa lista de reproducción?"
+"Se ha detectado una lista de reproducción llamada <b>%1</b>.<br/> ¿Desea "
+"añadir a esa lista de reproducción?"
 
 #: gui/mainwindow.cpp:1391
 msgid "Existing Playlist"
@@ -287,11 +286,12 @@ msgstr "¿Eliminar?"
 #: gui/playlistspage.cpp:191 gui/playlistspage.cpp:222
 msgid "A playlist named <b>%1</b> already exists!<br/>Overwrite?"
 msgstr ""
-"Se ha detectado una lista de reproducción llamada <b>%1</b>. ¿Sobrescribir?"
+"Se ha detectado una lista de reproducción llamada <b>%1</b><br/>. "
+"¿Sobrescribir?"
 
 #: gui/playlistspage.cpp:191 gui/playlistspage.cpp:222
 msgid "Overwrite Playlist?"
-msgstr "¿Sobrescribir lista de reproducción?"
+msgstr "¿Desea sobrescribir la lista de reproducción?"
 
 #: gui/playlistspage.cpp:214
 msgid "Enter new name for playlist: %1"
@@ -329,16 +329,15 @@ msgstr "Interfaz"
 
 #: gui/preferencesdialog.cpp:109
 msgid "Interface Settings"
-msgstr "Configuración de interfaz"
+msgstr "Configuración de la interfaz"
 
 #: gui/preferencesdialog.cpp:111
 msgid "External"
-msgstr ""
+msgstr "Externa"
 
 #: gui/preferencesdialog.cpp:112
-#, fuzzy
 msgid "External Settings"
-msgstr "Configuración de interfaz"
+msgstr "Configuraciones externas"
 
 #: gui/preferencesdialog.cpp:115
 msgid "Lyrics Settings"
@@ -381,19 +380,16 @@ msgid "Export Streams"
 msgstr "Exportar flujos"
 
 #: gui/streamspage.cpp:55
-#, fuzzy
 msgid "Remove Stream/Category"
-msgstr "Eliminar flujo"
+msgstr "Eliminar flujo/categoría"
 
 #: gui/streamspage.cpp:57
-#, fuzzy
 msgid "Edit Stream/Category"
-msgstr "Editar flujo"
+msgstr "Editar flujo/categoría"
 
 #: gui/streamspage.cpp:164 gui/streamspage.cpp:201
-#, fuzzy
 msgid "*.cantata|Cantata Streams"
-msgstr "*.streams|Flujos de Cantata"
+msgstr "*.cantata|Flujos de Cantata"
 
 #: gui/streamspage.cpp:175
 msgid ""
@@ -402,11 +398,11 @@ msgstr "Fallo al importar <b>%1</b>.<br/>Compruebe que es del tipo correcto."
 
 #: gui/streamspage.cpp:212
 msgid "Failed to create <b>%1</b>!"
-msgstr "Fallo al crear <b>%1</b>"
+msgstr "Fallo al crear <b>%1</b>."
 
 #: gui/streamspage.cpp:231
 msgid "Stream already exists!<br/><b>%1</b>"
-msgstr "El flujo ya existe<br/><b>%1</b>"
+msgstr "El flujo ya existe<br/><b>%1</b>."
 
 #: gui/streamspage.cpp:240
 msgid "A stream named <b>%1</b> already exists!"
@@ -486,12 +482,11 @@ msgstr "No se han encontrado letras"
 
 #: main.cpp:36
 msgid "A simple interface to MPD"
-msgstr "Una sencilla interfaz para MPS"
+msgstr "Una sencilla interfaz para MPD"
 
 #: main.cpp:38
-#, fuzzy
 msgid "Copyright (C) 2011-2012 Craig Drummond"
-msgstr "Derechos de autor (C) 2011 Craig Drummond"
+msgstr "Derechos de autor (C) 2011-2012 Craig Drummond"
 
 #: main.cpp:39
 msgid "Based upon QtMPC - (C) 2007-2010  The QtMPC Authors"
@@ -542,14 +537,12 @@ msgstr[1] "%1 Entradas"
 
 #: models/musiclibraryitemartist.cpp:45 models/musiclibraryitemroot.cpp:59
 #: models/musiclibraryitemroot.cpp:96
-#, fuzzy
 msgid "Various Artists"
-msgstr "Artistas:"
+msgstr "Varios artistas:"
 
 #: models/musiclibraryitemartist.cpp:86 models/musiclibraryitemartist.cpp:99
-#, fuzzy
 msgid "Single Tracks"
-msgstr "Pista siguiente"
+msgstr "Pistas únicas"
 
 #: models/musiclibrarymodel.cpp:182
 msgid ""
@@ -726,13 +719,13 @@ msgstr "Mostrar mensajes emergentes al cambiar de pista:"
 #. i18n: ectx: property (text), widget (QLabel, label_5b)
 #: po/rc.cpp:15 rc.cpp:15
 msgid "Enable basic MPRISv2 interface:"
-msgstr ""
+msgstr "Activar interfaz básica MPRISv2:"
 
 #. i18n: file: gui/externalsettings.ui:77
 #. i18n: ectx: property (text), widget (QLabel, label_5c)
 #: po/rc.cpp:18 rc.cpp:18
 msgid "Use current cover as dock icon:"
-msgstr ""
+msgstr "Utilizar la portada actual como el icono de la barra de tareas:"
 
 #. i18n: file: gui/interfacesettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -835,15 +828,14 @@ msgstr "Grande"
 #. i18n: file: gui/interfacesettings.ui:81
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:51 rc.cpp:51
-#, fuzzy
 msgid "Show album year in library view:"
-msgstr "Portadas en la vista de biblioteca:"
+msgstr "Mostrar el año de publicación en la vista de biblioteca:"
 
 #. i18n: file: gui/interfacesettings.ui:98
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: po/rc.cpp:54 rc.cpp:54
 msgid "Group single track albums:"
-msgstr ""
+msgstr "Agrupar álbumes de pista única:"
 
 #. i18n: file: gui/interfacesettings.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_3a)
@@ -1031,12 +1023,11 @@ msgstr "Directorio de música:"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:213 rc.cpp:213
 msgid "Host (or local socket):"
-msgstr ""
+msgstr "Host (o socket local):"
 
 #. i18n: file: gui/serversettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:216 rc.cpp:216
-#, fuzzy
 msgid ""
 "<p><i><b>NOTE:</b> The 'Music Folder' settings is only used to lookup cover-"
 "art (<code>cover.jpg</code> or <code>cover.png</code>). If you also have "
@@ -1045,11 +1036,13 @@ msgid ""
 "<b>NOTE:</b> When using a local domain socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i></p>"
 msgstr ""
-"<i><b>NOTA:</b> Las opciones de «Directorio de música» solo se utilizan para "
-"obtener las portadas (<code>cover.jpg</code> o <code>cover.png</code>). Si "
-"también tiene permisos de escritura en el directorio (y subdirectorio), "
+"<p><i><b>NOTA:</b> Las opciones de «Directorio de música» solo se utilizan "
+"para obtener las portadas (<code>cover.jpg</code> o <code>cover.png</code>). "
+"Si también tiene permisos de escritura en el directorio (y subdirectorios), "
 "Cantata guardará cualquier portada descargada en la carpeta respectiva de "
-"cada álbum.</i>"
+"cada álbum.<br/><br/>\n"
+"<b>NOTE:</b>Al utilizar un socket de dominio local, se debe especificar la "
+"ruta absoluta al socket. (El número de puerto no es necesario.)</i></p>"
 
 #. i18n: file: lyrics/lyricsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -1109,7 +1102,7 @@ msgstr "Port"
 #. i18n: ectx: property (title), widget (QGroupBox, proxyAuth)
 #: po/rc.cpp:259 rc.cpp:259
 msgid "Use authentication"
-msgstr "Utilizar autenticación"
+msgstr "Utilizar autentificación"
 
 #. i18n: file: network/proxysettings.ui:112
 #. i18n: ectx: property (text), widget (QLabel, label_16)

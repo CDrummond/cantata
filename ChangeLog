@@ -1,6 +1,8 @@
 0.2.1
 -----
 1. Updated polish translation.
+2. When editing a stream category name, show the current name in the entry
+   field.
 
 0.2.0
 -----

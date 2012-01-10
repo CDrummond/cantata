@@ -436,7 +436,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
                 if (pl) {
                     int index=items.indexOf(pl);
                     beginRemoveRows(parent, index, index);
-                    items.removeAt(index);
+                    delete items.takeAt(index);
                     endRemoveRows();
                 }
             }
@@ -479,7 +479,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
                     // Remove all remaining...
                     beginRemoveRows(parent, i, count);
                     for (int j=i; j<count; ++j) {
-                        pl->songs.removeAt(i);
+                        delete pl->songs.takeAt(i);
                     }
                     endRemoveRows();
                     break;
@@ -491,7 +491,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
                         addFrom=i;
                         beginRemoveRows(parent, i, count);
                         for (int j=i; j<count; ++j) {
-                            pl->songs.removeAt(i);
+                            delete pl->songs.takeAt(i);
                         }
                         endRemoveRows();
                         break;
@@ -540,7 +540,7 @@ void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<int> &
         }
         beginRemoveRows(parent, rowBegin-adjust, rowEnd-adjust);
         for (int i=rowBegin; i<=rowEnd; ++i) {
-            pl->songs.removeAt(rowBegin-adjust);
+            delete pl->songs.takeAt(rowBegin-adjust);
             adjust++;
         }
         endRemoveRows();

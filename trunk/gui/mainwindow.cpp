@@ -29,7 +29,6 @@
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
-#include <QtGui/QInputDialog>
 #include <QtGui/QProxyStyle>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
@@ -47,7 +46,9 @@
 #include <KDE/KMenuBar>
 #include <KDE/KMenu>
 #include <KDE/KStatusNotifierItem>
+#include <KDE/KInputDialog>
 #else
+#include <QtGui/QInputDialog>
 #include <QtGui/QMenuBar>
 #include <QtGui/QMessageBox>
 #include "networkproxyfactory.h"
@@ -1380,7 +1381,7 @@ void MainWindow::addToNewStoredPlaylist()
 {
     for(;;) {
         #ifdef ENABLE_KDE_SUPPORT
-        QString name = QInputDialog::getText(this, i18n("Playlist Name"), i18n("Enter a name for the playlist:"));
+        QString name = KInputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
         #else
         QString name = QInputDialog::getText(this, tr("Playlist Name"), tr("Enter a name for the playlist:"));
         #endif

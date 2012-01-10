@@ -4,6 +4,7 @@
 2. When editing a stream category name, show the current name in the entry
    field.
 3. Use KInputDialog, not QInputDiallog, for KDE build.
+4. Fix memory leak in playlistsmodel.
 
 0.2.0
 -----

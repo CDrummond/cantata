@@ -308,9 +308,9 @@ void StreamsPage::edit()
     if (item->isCategory()) {
         for(;;) {
             #ifdef ENABLE_KDE_SUPPORT
-            QString name = QInputDialog::getText(this, i18n("Category Name"), i18n("Enter a name for the category:"));
+            QString name = QInputDialog::getText(this, i18n("Category Name"), i18n("Enter a name for the category:"), QLineEdit::Normal, item->name);
             #else
-            QString name = QInputDialog::getText(this, tr("Category Name"), tr("Enter a name for the category:"));
+            QString name = QInputDialog::getText(this, tr("Category Name"), tr("Enter a name for the category:"), QLineEdit::Normal, item->name);
             #endif
 
             if (name.isEmpty()) {

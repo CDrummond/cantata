@@ -26,13 +26,14 @@
 #include "mpdconnection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
-#include <QtGui/QInputDialog>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
 #include <KDE/KMessageBox>
+#include <KDE/KInputDialog>
 #else
+#include <QtGui/QInputDialog>
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
 #endif
@@ -180,7 +181,7 @@ void PlaylistsPage::removeItems()
 void PlaylistsPage::savePlaylist()
 {
     #ifdef ENABLE_KDE_SUPPORT
-    QString name = QInputDialog::getText(this, i18n("Playlist Name"), i18n("Enter a name for the playlist:"));
+    QString name = KInputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
     #else
     QString name = QInputDialog::getText(this, tr("Playlist Name"), tr("Enter a name for the playlist:"));
     #endif
@@ -211,7 +212,7 @@ void PlaylistsPage::renamePlaylist()
         QModelIndex sourceIndex = proxy.mapToSource(items.first());
         QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
         #ifdef ENABLE_KDE_SUPPORT
-        QString newName = QInputDialog::getText(this, i18n("Rename Playlist"), i18n("Enter new name for playlist: %1").arg(name));
+        QString newName = KInputDialog::getText(i18n("Rename Playlist"), i18n("Enter new name for playlist: %1").arg(name), QString(), 0, this);
         #else
         QString newName = QInputDialog::getText(this, tr("Rename Playlist"), tr("Enter new name for playlist: %1").arg(name));
         #endif

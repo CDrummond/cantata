@@ -26,14 +26,15 @@
 #include "mpdconnection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
-#include <QtGui/QInputDialog>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
 #include <KDE/KMessageBox>
 #include <KDE/KFileDialog>
+#include <KDE/KInputDialog>
 #else
+#include <QtGui/QInputDialog>
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
 #include <QtGui/QFileDialog>
@@ -308,7 +309,7 @@ void StreamsPage::edit()
     if (item->isCategory()) {
         for(;;) {
             #ifdef ENABLE_KDE_SUPPORT
-            QString name = QInputDialog::getText(this, i18n("Category Name"), i18n("Enter a name for the category:"), QLineEdit::Normal, item->name);
+            QString name = KInputDialog::getText(i18n("Category Name"), i18n("Enter a name for the category:"), item->name, 0, this);
             #else
             QString name = QInputDialog::getText(this, tr("Category Name"), tr("Enter a name for the category:"), QLineEdit::Normal, item->name);
             #endif

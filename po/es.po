@@ -4,7 +4,7 @@
 # Omar Campagne <ocampagne@gmail.com>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-06 19:45+0000\n"
 "PO-Revision-Date: 2012-01-07 12:16+0200\n"

@@ -536,13 +536,14 @@ void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<int> &
             } else {
                 it=next;
                 rowEnd=*next;
+                next++;
             }
         }
         beginRemoveRows(parent, rowBegin-adjust, rowEnd-adjust);
         for (int i=rowBegin; i<=rowEnd; ++i) {
             delete pl->songs.takeAt(rowBegin-adjust);
-            adjust++;
         }
+        adjust+=(rowEnd-rowBegin)+1;
         endRemoveRows();
         it++;
     }

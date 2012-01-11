@@ -114,7 +114,7 @@ static QString encodeName(QString name)
 static QString xdgConfig()
 {
     QString env = QString::fromLocal8Bit(qgetenv("XDG_CONFIG_HOME"));
-    QString dir = (env.isEmpty() ? QDir::homePath() + "/.config/" : env);
+    QString dir = (env.isEmpty() ? QDir::homePath() + QLatin1String("/.config/") : env);
     if (!dir.endsWith("/")) {
         dir=dir+'/';
     }
@@ -153,16 +153,16 @@ static AppCover otherAppCover(const Covers::Job &job)
     QString kdeDir=kdeHome();
     #endif
     AppCover app;
-    app.filename=kdeDir+"/share/apps/amarok/albumcovers/large/"+
+    app.filename=kdeDir+QLatin1String("/share/apps/amarok/albumcovers/large/")+
                  QCryptographicHash::hash(job.artist.toLower().toLocal8Bit()+job.album.toLower().toLocal8Bit(),
                                           QCryptographicHash::Md5).toHex();
 
     app.img=QImage(app.filename);
 
     if (app.img.isNull()) {
-        app.filename=xdgConfig()+"/Clementine/albumcovers/"+
+        app.filename=xdgConfig()+QLatin1String("/Clementine/albumcovers/")+
                      QCryptographicHash::hash(job.artist.toLower().toUtf8()+job.album.toLower().toUtf8(),
-                                              QCryptographicHash::Sha1).toHex()+".jpg";
+                                              QCryptographicHash::Sha1).toHex()+QLatin1String(".jpg");
 
         app.img=QImage(app.filename);
     }
@@ -217,16 +217,21 @@ void Covers::get(const Song &song, bool isSingleTracks)
     QString dirName;
     QStringList extensions;
     extensions << constAltExtension << constExtension;
+    bool haveAbsPath=song.file.startsWith("/");
 
-    if (!mpdDir.isEmpty()) {
-        dirName=song.file.endsWith("/") ? mpdDir+song.file : MPDParseUtils::getDir(mpdDir+song.file);
-        foreach (const QString &ext, extensions) {
-            if (QFile::exists(dirName+constFileName+ext)) {
-                QImage img(dirName+constFileName+ext);
+    if (haveAbsPath || !mpdDir.isEmpty()) {
+        dirName=song.file.endsWith("/") ? (haveAbsPath ? QString() : mpdDir)+song.file : MPDParseUtils::getDir((haveAbsPath ? QString() : mpdDir)+song.file);
+        QStringList fileNames;
+        fileNames << constFileName << QLatin1String("AlbumArt");
+        foreach (const QString &fileName, fileNames) {
+            foreach (const QString &ext, extensions) {
+                if (QFile::exists(dirName+fileName+ext)) {
+                    QImage img(dirName+fileName+ext);
 
-                if (!img.isNull()) {
-                    emit cover(song.albumArtist(), song.album, img, dirName+constFileName+ext);
-                    return;
+                    if (!img.isNull()) {
+                        emit cover(song.albumArtist(), song.album, img, dirName+fileName+ext);
+                        return;
+                    }
                 }
             }
         }
@@ -295,7 +300,8 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
 
         while (!doc.atEnd() && url.isEmpty()) {
             doc.readNext();
-            if (url.isEmpty() && doc.isStartElement() && doc.name() == "image" && doc.attributes().value("size").toString() == "extralarge") {
+            if (url.isEmpty() && doc.isStartElement() &&
+                QLatin1String("image")==doc.name() && QLatin1String("extralarge")==doc.attributes().value("size").toString()) {
                 url = doc.readElementText();
             }
         }

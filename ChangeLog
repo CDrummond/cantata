@@ -6,6 +6,7 @@
 3. Use KInputDialog, not QInputDiallog, for KDE build.
 4. Fix memory leak in playlistsmodel.
 5. Fix crash when removing items from playlist.
+6. When checking for existing covers, also check AlbumArt.jpg/png
 
 0.2.0
 -----

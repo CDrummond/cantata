@@ -33,6 +33,10 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     setupUi(this);
     connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
+    #ifndef ENABLE_DEVICES_SUPPORT
+    showDeleteAction->setVisible(false);
+    showDeleteActionLabel->setVisible(false);
+    #endif
 };
 
 void InterfaceSettings::load()
@@ -46,6 +50,9 @@ void InterfaceSettings::load()
     playlistsView->setCurrentIndex(Settings::self()->playlistsView());
     streamsView->setCurrentIndex(Settings::self()->streamsView());
     groupSingle->setChecked(Settings::self()->groupSingle());
+    #ifdef ENABLE_DEVICES_SUPPORT
+    showDeleteAction->setChecked(Settings::self()->showDeleteAction());
+    #endif
 }
 
 void InterfaceSettings::save()
@@ -59,6 +66,9 @@ void InterfaceSettings::save()
     Settings::self()->savePlaylistsView(playlistsView->currentIndex());
     Settings::self()->saveStreamsView(streamsView->currentIndex());
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
+    #ifdef ENABLE_DEVICES_SUPPORT
+    Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
+    #endif
 }
 
 void InterfaceSettings::albumsViewChanged()

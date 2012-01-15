@@ -90,6 +90,11 @@ void DevicesPage::clear()
     view->setLevel(0);
 }
 
+void DevicesPage::enableDeleteAction(bool e)
+{
+    removeAction->setVisible(e);
+}
+
 void DevicesPage::itemDoubleClicked(const QModelIndex &)
 {
 //     const QModelIndexList selected = view->selectedIndexes();

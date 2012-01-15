@@ -26,23 +26,30 @@
 
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemartist.h"
+#include "musiclibraryitemsong.h"
 #include "song.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
 
-MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s)
+MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create)
 {
     QString aa=s.albumArtist();
     QHash<QString, int>::ConstIterator it=m_indexes.find(aa);
 
     if (m_indexes.end()==it) {
-        MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, this);
-        m_indexes.insert(aa, m_childItems.count());
-        m_childItems.append(item);
-        return item;
+        return create ? createArtist(s) : 0;
     }
     return static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
+}
+
+MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s)
+{
+    QString aa=s.albumArtist();
+    MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, this);
+    m_indexes.insert(aa, m_childItems.count());
+    m_childItems.append(item);
+    return item;
 }
 
 void MusicLibraryItemRoot::groupSingleTracks()
@@ -105,3 +112,44 @@ bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
     return false;
 }
 
+void MusicLibraryItemRoot::refreshIndexes()
+{
+    m_indexes.clear();
+    int i=0;
+    foreach (MusicLibraryItem *item, m_childItems) {
+        m_indexes.insert(item->data(), i++);
+    }
+}
+
+void MusicLibraryItemRoot::remove(MusicLibraryItemArtist *artist)
+{
+    int index=m_childItems.indexOf(artist);
+
+    if (index<0 || index>=m_childItems.count()) {
+        return;
+    }
+
+    QHash<QString, int>::Iterator it=m_indexes.begin();
+    QHash<QString, int>::Iterator end=m_indexes.end();
+
+    for (; it!=end; ++it) {
+        if ((*it)>index) {
+            (*it)--;
+        }
+    }
+    delete m_childItems.takeAt(index);
+}
+
+QSet<Song> MusicLibraryItemRoot::allSongs() const
+{
+    QSet<Song> songs;
+
+    foreach (const MusicLibraryItem *artist, m_childItems) {
+        foreach (const MusicLibraryItem *album, artist->children()) {
+            foreach (const MusicLibraryItem *song, album->children()) {
+                songs.insert(static_cast<const MusicLibraryItemSong *>(song)->song());
+            }
+        }
+    }
+    return songs;
+}

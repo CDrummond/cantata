@@ -32,6 +32,7 @@
 #include "playqueuemodel.h"
 #include "settings.h"
 #include "config.h"
+#include "covers.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "network.h"
@@ -45,9 +46,26 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QStringList>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIcon>
 #include <KDE/KLocale>
+#include <KDE/KGlobal>
 #endif
+
+#ifdef ENABLE_KDE_SUPPORT
+K_GLOBAL_STATIC(MusicLibraryModel, instance)
+#endif
+
+MusicLibraryModel * MusicLibraryModel::self()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return instance;
+    #else
+    static MusicLibraryModel *instance=0;;
+    if(!instance) {
+        instance=new MusicLibraryModel;
+    }
+    return instance;
+    #endif
+}
 
 static const QLatin1String constLibraryCache("library/");
 static const QLatin1String constLibraryExt(".xml");
@@ -56,6 +74,8 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent)
     : QAbstractItemModel(parent),
       rootItem(new MusicLibraryItemRoot)
 {
+    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
+            this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
 }
 
 MusicLibraryModel::~MusicLibraryModel()
@@ -265,28 +285,104 @@ void MusicLibraryModel::clear()
     emit updateGenres(QStringList());
 }
 
-void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime db_update, bool fromFile)
+bool MusicLibraryModel::songExists(const Song &s) const
 {
-//     libraryMutex.lock();
-    const MusicLibraryItemRoot *oldRoot = rootItem;
+    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
+    if (artistItem) {
+        MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
+        if (albumItem) {
+            foreach (const MusicLibraryItem *songItem, albumItem->children()) {
+                if (songItem->data()==s.title) {
+                    return true;
+                }
+            }
+        }
+    }
 
-    if (databaseTime > db_update) {
-//         libraryMutex.unlock();
+    return false;
+}
+
+void MusicLibraryModel::addSongToList(const Song &s)
+{
+    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
+    if (!artistItem) {
+        beginInsertRows(QModelIndex(), rootItem->childCount(), rootItem->childCount());
+        artistItem = rootItem->createArtist(s);
+        endInsertRows();
+    }
+    MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
+    if (!albumItem) {
+        QModelIndex idx=index(rootItem->children().indexOf(artistItem), 0, QModelIndex());
+        beginInsertRows(idx, artistItem->childCount(), artistItem->childCount());
+        albumItem = artistItem->createAlbum(s);
+        endInsertRows();
+    }
+    foreach (const MusicLibraryItem *songItem, albumItem->children()) {
+        if (songItem->data()==s.title) {
+            return;
+        }
+    }
+
+    QModelIndex idx=index(artistItem->children().indexOf(albumItem), 0,
+                        index(rootItem->children().indexOf(artistItem), 0, QModelIndex()));
+    beginInsertRows(idx, albumItem->childCount(), albumItem->childCount());
+    MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
+    albumItem->append(songItem);
+    endInsertRows();
+}
+
+void MusicLibraryModel::removeSongFromList(const Song &s)
+{
+}
+
+void MusicLibraryModel::removeCache()
+{
+    //Check if dir exists
+    QString cacheFile = Network::cacheDir(constLibraryCache);
+
+    if (cacheFile.isEmpty()) {
         return;
     }
 
-    beginResetModel();
+    cacheFile+=QFile::encodeName(Settings::self()->connectionHost() + constLibraryExt);
+    if (QFile::exists(cacheFile)) {
+        QFile::remove(cacheFile);
+        databaseTime = QDateTime();
+    }
+}
 
-    databaseTime = db_update;
-    rootItem = newroot;
-    delete oldRoot;
+void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
+{
+    if (databaseTime > dbUpdate) {
+        return;
+    }
 
-    endResetModel();
+    if (rootItem->childCount() && newroot->childCount()) {
+        QSet<Song> currentSongs=rootItem->allSongs();
+        QSet<Song> updateSongs=newroot->allSongs();
+        QSet<Song> removed=currentSongs-updateSongs;
+        QSet<Song> added=updateSongs-currentSongs;
+
+        foreach (const Song &s, added) {
+            addSongToList(s);
+        }
+        foreach (const Song &s, removed) {
+            removeSongFromList(s);
+        }
+        delete newroot;
+    } else {
+        const MusicLibraryItemRoot *oldRoot = rootItem;
+        beginResetModel();
+
+        databaseTime = dbUpdate;
+        rootItem = newroot;
+        delete oldRoot;
+        endResetModel();
+    }
 
     if (!fromFile) {
-        toXML(db_update);
+        toXML(rootItem, dbUpdate);
     }
-//     libraryMutex.unlock();
 
     QStringList genres=QStringList(rootItem->genres().toList());
     genres.sort();
@@ -305,46 +401,60 @@ void MusicLibraryModel::setCover(const QString &artist, const QString &album, co
         return;
     }
 
-    for (int i = 0; i < rootItem->childCount(); i++) {
-        MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemArtist*>(rootItem->child(i));
-        if (artistItem->data()==artist) {
-            for (int j = 0; j < artistItem->childCount(); j++) {
-                MusicLibraryItemAlbum *albumItem = static_cast<MusicLibraryItemAlbum*>(artistItem->child(j));
-                if (albumItem->data()==album) {
-                    if (albumItem->setCover(img)) {
-                        QModelIndex idx=index(j, 0, index(i, 0, QModelIndex()));
-                        emit dataChanged(idx, idx);
-                    }
-                    break;
-                }
+    Song song;
+    song.artist=artist;
+    song.album=album;
+    MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
+    if (artistItem) {
+        MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+        if (albumItem) {
+            if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
+                QModelIndex idx=index(artistItem->children().indexOf(albumItem), 0, index(rootItem->children().indexOf(artistItem), 0, QModelIndex()));
+                emit dataChanged(idx, idx);
             }
         }
     }
+
+//     int i=0;
+//     foreach (const MusicLibraryItem *artistItem, rootItem->children()) {
+//         if (artistItem->data()==artist) {
+//             int j=0;
+//             foreach (const MusicLibraryItem *albumItem, artistItem->children()) {
+//                 if (albumItem->data()==album) {
+//                     if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
+//                         QModelIndex idx=index(j, 0, index(i, 0, QModelIndex()));
+//                         emit dataChanged(idx, idx);
+//                     }
+//                     return;
+//                 }
+//                 j++;
+//             }
+//         }
+//         i++;
+//     }
 }
 
+static quint32 constVersion=4;
+static QLatin1String constTopTag("CantataLibrary");
 /**
  * Writes the musiclibrarymodel to and xml file so we can store it on
  * disk for faster startup the next time
  *
  * @param filename The name of the file to write the xml to
  */
-void MusicLibraryModel::toXML(const QDateTime db_update)
+void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime &date)
 {
     //Check if dir exists
     QString dir = Network::cacheDir(constLibraryCache);
 
     if (dir.isEmpty()) {
-        qWarning("Couldn't create directory for storing database file");
         return;
     }
 
-    //Create the filename
-    QString hostname = Settings::self()->connectionHost();
-    QString filename(QFile::encodeName(hostname + constLibraryExt));
-
-    //Open the file
-    QFile file(dir + filename);
-    file.open(QIODevice::WriteOnly);
+    QFile file(dir+QFile::encodeName(Settings::self()->connectionHost() + constLibraryExt));
+    if (!file.open(QIODevice::WriteOnly)) {
+        return;
+    }
 
     //Write the header info
     QXmlStreamWriter writer(&file);
@@ -352,28 +462,28 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
     writer.writeStartDocument();
 
     //Start with the document
-    writer.writeStartElement("MPD_database");
-    writer.writeAttribute("version", "4");
-    writer.writeAttribute("date", QString::number(db_update.toTime_t()));
+    writer.writeStartElement(constTopTag);
+    writer.writeAttribute("version", QString::number(constVersion));
+    writer.writeAttribute("date", QString::number(date.toTime_t()));
+    writer.writeAttribute("groupSingle", Settings::self()->groupSingle() ? "true" : "false");
     //Loop over all artist, albums and tracks.
-    for (int i = 0; i < rootItem->childCount(); i++) {
-        MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist*>(rootItem->child(i));
+    foreach (const MusicLibraryItem *a, root->children()) {
+        const MusicLibraryItemArtist *artist = static_cast<const MusicLibraryItemArtist *>(a);
         writer.writeStartElement("Artist");
         writer.writeAttribute("name", artist->data());
-        for (int j = 0; j < artist->childCount(); j++) {
-            MusicLibraryItemAlbum *album = static_cast<MusicLibraryItemAlbum*>(artist->child(j));
+        foreach (const MusicLibraryItem *al, artist->children()) {
+            const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
             writer.writeStartElement("Album");
-            writer.writeAttribute("title", album->data());
-            writer.writeAttribute("dir", album->dir());
+            writer.writeAttribute("name", album->data());
             writer.writeAttribute("year", QString::number(album->year()));
             if (album->isSingleTracks()) {
                 writer.writeAttribute("singleTracks", "true");
             }
-            for (int k = 0; k < album->childCount(); k++) {
-                MusicLibraryItemSong *track = static_cast<MusicLibraryItemSong*>(album->child(k));
+            foreach (const MusicLibraryItem *t, album->children()) {
+                const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
                 writer.writeEmptyElement("Track");
-                writer.writeAttribute("title", track->data());
-                writer.writeAttribute("filename", track->file());
+                writer.writeAttribute("name", track->data());
+                writer.writeAttribute("file", track->file());
                 writer.writeAttribute("time", QString::number(track->time()));
                 //Only write track number if it is set
                 if (track->track() != 0) {
@@ -382,7 +492,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
                 if (track->disc() != 0) {
                     writer.writeAttribute("disc", QString::number(track->disc()));
                 }
-                writer.writeAttribute("id", QString::number(track->song().id));
+//                 writer.writeAttribute("id", QString::number(track->song().id));
                 writer.writeAttribute("genre", track->genre());
             }
             writer.writeEndElement();
@@ -394,7 +504,7 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
     writer.writeEndDocument();
     file.close();
 
-    emit xmlWritten(db_update);
+    emit xmlWritten(date);
 }
 
 /**
@@ -406,29 +516,26 @@ void MusicLibraryModel::toXML(const QDateTime db_update)
  * TODO: check for hostname
  * TODO: check for database version
  */
-bool MusicLibraryModel::fromXML(const QDateTime db_update)
+bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
 {
-    QString dir(Network::cacheDir(constLibraryCache, false));
-    QString hostname = Settings::self()->connectionHost();
-    QString filename(QFile::encodeName(hostname + constLibraryExt));
+    QString filename(Network::cacheDir(constLibraryCache, false)+QFile::encodeName(Settings::self()->connectionHost() + constLibraryExt));
 
     //Check if file exists
-    if (dir.isEmpty()) {
+    if (!QFile::exists(filename)) {
         return false;
     }
 
-    QFile file(dir + filename);
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return false;
+    }
 
-    MusicLibraryItemRoot * const rootItem = new MusicLibraryItemRoot;
+    MusicLibraryItemRoot *root = 0;
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;
     Song song;
-
-    file.open(QIODevice::ReadOnly);
-
     QXmlStreamReader reader(&file);
-    bool valid = false;
 
     while (!reader.atEnd()) {
         reader.readNext();
@@ -439,35 +546,26 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
         if (!reader.error() && reader.isStartElement()) {
             QString element = reader.name().toString();
 
-            if (element == "MPD_database") {
+            if (constTopTag == element) {
                 quint32 version = reader.attributes().value("version").toString().toUInt();
-                quint32 time_t = reader.attributes().value("date").toString().toUInt();
+                quint32 date = reader.attributes().value("date").toString().toUInt();
+                bool groupSingle = QLatin1String("true")==reader.attributes().value("groupSingle").toString();
 
-                //Incompatible version
-                if (version < 4) {
-                    break;
+                if ( version < constVersion || date != dbUpdate.toTime_t() || groupSingle!=Settings::self()->groupSingle()) {
+                    return false;
                 }
 
-                //Outdated
-                if (time_t != db_update.toTime_t()) {
-                    break;
-                }
-
-                valid = true;
+                root = new MusicLibraryItemRoot;
             }
 
             //Only check for other elements when we are valid!
-            if (valid) {
-                //New artist element. Create it an add it
-                if (element == "Artist") {
+            if (root) {
+                if (QLatin1String("Artist")==element) {
                     song.artist=reader.attributes().value("name").toString();
-                    artistItem = rootItem->artist(song);
+                    artistItem = root->artist(song);
                 }
-
-                // New album element. Create it and add it to the artist
-                if (element == "Album") {
-                    song.album=reader.attributes().value("title").toString();
-                    song.file=reader.attributes().value("dir").toString();
+                else if (QLatin1String("Album")==element) {
+                    song.album=reader.attributes().value("name").toString();
                     song.year=reader.attributes().value("year").toString().toUInt();
                     if (!song.file.isEmpty()) {
                         song.file.append("dummy.mp3");
@@ -477,11 +575,9 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                         albumItem->setIsSingleTracks();
                     }
                 }
-
-                // New track element. Create it and add it to the album
-                if (element == "Track") {
-                    song.title=reader.attributes().value("title").toString();
-                    song.file=reader.attributes().value("filename").toString();
+                else if (QLatin1String("Track")==element) {
+                    song.title=reader.attributes().value("name").toString();
+                    song.file=reader.attributes().value("file").toString();
 
                     QString str=reader.attributes().value("track").toString();
                     song.track=str.isEmpty() ? 0 : str.toUInt();
@@ -489,8 +585,8 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                     song.disc=str.isEmpty() ? 0 : str.toUInt();
                     str=reader.attributes().value("time").toString();
                     song.time=str.isEmpty() ? 0 : str.toUInt();
-                    str=reader.attributes().value("id").toString();
-                    song.id=str.isEmpty() ? 0 : str.toUInt();
+//                     str=reader.attributes().value("id").toString();
+//                     song.id=str.isEmpty() ? 0 : str.toUInt();
 
                     songItem = new MusicLibraryItemSong(song, albumItem);
 
@@ -500,20 +596,19 @@ bool MusicLibraryModel::fromXML(const QDateTime db_update)
                     albumItem->addGenre(genre);
                     artistItem->addGenre(genre);
                     songItem->addGenre(genre);
-                    rootItem->addGenre(genre);
+                    root->addGenre(genre);
                 }
             }
         }
     }
 
     //If not valid we need to cleanup
-    if (!valid) {
-        delete rootItem;
+    if (!root) {
         return false;
     }
 
     file.close();
-    updateMusicLibrary(rootItem, QDateTime(), true);
+    updateMusicLibrary(root, QDateTime(), true);
     return true;
 }
 
@@ -535,8 +630,8 @@ QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes) const
 
         switch (item->type()) {
         case MusicLibraryItem::Type_Artist:
-            for (int i = 0; i < item->childCount(); i++) {
-                QStringList sorted=static_cast<MusicLibraryItemAlbum*>(item->child(i))->sortedTracks();
+            foreach (const MusicLibraryItem *album, item->children()) {
+                QStringList sorted=static_cast<const MusicLibraryItemAlbum *>(album)->sortedTracks();
                 foreach (const QString &f, sorted) {
                     if(!fnames.contains(f)) {
                         fnames << f;
@@ -554,7 +649,7 @@ QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes) const
             break;
         }
         case MusicLibraryItem::Type_Song:
-            if (item->type() == MusicLibraryItem::Type_Song && !fnames.contains(static_cast<MusicLibraryItemSong*>(item)->file())) {
+            if (!fnames.contains(static_cast<MusicLibraryItemSong*>(item)->file())) {
                 fnames << static_cast<MusicLibraryItemSong*>(item)->file();
             }
             break;
@@ -563,6 +658,46 @@ QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes) const
         }
     }
     return fnames;
+}
+
+QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
+{
+    QList<Song> songs;
+    QString mpdDir=Settings::self()->mpdDir();
+
+    foreach(QModelIndex index, indexes) {
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+
+        switch (item->type()) {
+        case MusicLibraryItem::Type_Artist:
+            foreach (const MusicLibraryItem *album, item->children()) {
+                foreach (MusicLibraryItem *song, album->children()) {
+                    if (MusicLibraryItem::Type_Song==song->type() && !songs.contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
+                        static_cast<MusicLibraryItemSong*>(song)->song().updateSize(mpdDir);
+                        songs << static_cast<MusicLibraryItemSong*>(song)->song();
+                    }
+                }
+            }
+            break;
+        case MusicLibraryItem::Type_Album:
+            foreach (MusicLibraryItem *song, item->children()) {
+                if (MusicLibraryItem::Type_Song==song->type() && !songs.contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
+                    static_cast<MusicLibraryItemSong*>(song)->song().updateSize(mpdDir);
+                    songs << static_cast<MusicLibraryItemSong*>(song)->song();
+                }
+            }
+            break;
+        case MusicLibraryItem::Type_Song:
+            if (!songs.contains(static_cast<MusicLibraryItemSong*>(item)->song())) {
+                static_cast<MusicLibraryItemSong*>(item)->song().updateSize(mpdDir);
+                songs << static_cast<MusicLibraryItemSong*>(item)->song();
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    return songs;
 }
 
 /**

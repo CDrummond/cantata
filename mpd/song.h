@@ -29,6 +29,7 @@
 #define SONG_H
 
 #include <QtCore/QString>
+#include <QtCore/QSet>
 
 struct Song
 {
@@ -46,11 +47,13 @@ struct Song
     quint32 year;
     QString genre;
     QString name;
+    mutable qint64 size;
 
     Song();
     Song(const Song &o) { *this=o; }
     Song & operator=(const Song &o);
     bool operator==(const Song &o) const;
+    bool operator<(const Song &o) const;
     virtual ~Song() { }
     bool isEmpty() const;
     void fillEmptyFields();
@@ -61,6 +64,12 @@ struct Song
     QString artistSong() const;
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     const QString & displayTitle() const { return modifiedtitle.isEmpty() ? title : modifiedtitle; }
+    void updateSize(const QString &dir) const;
 };
+
+inline uint qHash(const Song &key)
+{
+    return qHash(key.file);
+}
 
 #endif

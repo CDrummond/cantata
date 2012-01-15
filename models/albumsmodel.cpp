@@ -321,6 +321,25 @@ QStringList AlbumsModel::filenames(const QModelIndexList &indexes) const
     return fnames;
 }
 
+QList<Song> AlbumsModel::songs(const QModelIndexList &indexes) const
+{
+    QList<Song> songs;
+    foreach(QModelIndex index, indexes) {
+        Item *item=static_cast<Item *>(index.internalPointer());
+
+        if (item->isAlbum()) {
+            foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
+                if (!songs.contains(*s)) {
+                    songs << *s;
+                }
+            }
+        } else if (!songs.contains(*static_cast<SongItem*>(item))) {
+            songs << *static_cast<SongItem*>(item);
+        }
+    }
+    return songs;
+}
+
 QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();

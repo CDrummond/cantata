@@ -53,6 +53,7 @@ public:
 
     void get(const Song &song, bool isSingleTracks=false);
     void setMpdDir(const QString &dir) { mpdDir=dir; }
+    QString mpd() const { return mpdDir; }
 
 Q_SIGNALS:
     void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);

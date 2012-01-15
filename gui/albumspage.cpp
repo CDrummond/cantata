@@ -31,6 +31,9 @@
 #include <KDE/KAction>
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
+#ifdef ENABLE_DEVICES_SUPPORT
+#include <KDE/KMessageBox>
+#endif
 #else
 #include <QtGui/QAction>
 #endif
@@ -57,6 +60,10 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addAction(p->copyToDeviceAction);
+    view->addAction(p->deleteSongsAction);
+    #endif
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
@@ -126,6 +133,52 @@ void AlbumsPage::addSelectionToPlaylist(const QString &name)
         view->clearSelection();
     }
 }
+
+#ifdef ENABLE_DEVICES_SUPPORT
+void AlbumsPage::addSelectionToDevice(const QString &udi)
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return;
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    QList<Song> songs=model.songs(mapped);
+
+    if (!songs.isEmpty()) {
+        emit addToDevice(QString(), udi, songs);
+        view->clearSelection();
+    }
+}
+
+void AlbumsPage::deleteSongs()
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return;
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    QList<Song> songs=model.songs(mapped);
+
+    if (!songs.isEmpty()) {
+        if (KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
+            emit deleteSongs(QString(), songs);
+        }
+        view->clearSelection();
+    }
+}
+#endif
 
 void AlbumsPage::itemActivated(const QModelIndex &)
 {

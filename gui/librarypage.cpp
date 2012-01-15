@@ -24,6 +24,7 @@
 #include "librarypage.h"
 #include "mpdconnection.h"
 #include "covers.h"
+#include "musiclibrarymodel.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "mainwindow.h"
@@ -34,6 +35,9 @@
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
 #include <KDE/KGlobalSettings>
+#ifdef ENABLE_DEVICES_SUPPORT
+#include <KDE/KMessageBox>
+#endif
 #else
 #include <QtGui/QAction>
 #endif
@@ -55,21 +59,24 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addAction(p->copyToDeviceAction);
+    view->addAction(p->deleteSongsAction);
+    #endif
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)), &model, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
+    connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
+            MusicLibraryModel::self(), SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
-    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-            &model, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
-    connect(&model, SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
+    connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
     connect(this, SIGNAL(listAllInfo(const QDateTime &)), MPDConnection::self(), SLOT(listAllInfo(const QDateTime &)));
     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
-    proxy.setSourceModel(&model);
+    proxy.setSourceModel(MusicLibraryModel::self());
     #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Library"));
     #else
@@ -87,10 +94,10 @@ void LibraryPage::refresh(Refresh type)
 {
     view->setLevel(0);
     if (RefreshForce==type) {
-        model.clearUpdateTime();
+        MusicLibraryModel::self()->clearUpdateTime();
     }
 
-    if (RefreshFromCache!=type || !model.fromXML(MPDStats::self()->dbUpdate())) {
+    if (RefreshFromCache!=type || !MusicLibraryModel::self()->fromXML(MPDStats::self()->dbUpdate())) {
         view->showSpinner();
         emit listAllInfo(MPDStats::self()->dbUpdate());
     }
@@ -98,7 +105,7 @@ void LibraryPage::refresh(Refresh type)
 
 void LibraryPage::clear()
 {
-    model.clear();
+    MusicLibraryModel::self()->clear();
     view->setLevel(0);
 }
 
@@ -115,7 +122,7 @@ void LibraryPage::addSelectionToPlaylist(const QString &name)
         mapped.append(proxy.mapToSource(idx));
     }
 
-    QStringList files=model.filenames(mapped);
+    QStringList files=MusicLibraryModel::self()->filenames(mapped);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
@@ -126,6 +133,52 @@ void LibraryPage::addSelectionToPlaylist(const QString &name)
         view->clearSelection();
     }
 }
+
+#ifdef ENABLE_DEVICES_SUPPORT
+void LibraryPage::addSelectionToDevice(const QString &udi)
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return;
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    QList<Song> songs=MusicLibraryModel::self()->songs(mapped);
+
+    if (!songs.isEmpty()) {
+        emit addToDevice(QString(), udi, songs);
+        view->clearSelection();
+    }
+}
+
+void LibraryPage::deleteSongs()
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return;
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    QList<Song> songs=MusicLibraryModel::self()->songs(mapped);
+
+    if (!songs.isEmpty()) {
+        if (KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
+            emit deleteSongs(QString(), songs);
+        }
+        view->clearSelection();
+    }
+}
+#endif
 
 void LibraryPage::itemDoubleClicked(const QModelIndex &)
 {

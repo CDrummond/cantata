@@ -606,6 +606,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(mpdDir).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
+    deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
+    devicesPage->enableDeleteAction(Settings::self()->showDeleteAction());
     #endif
     lyricsPage->setMpdDir(mpdDir);
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
@@ -982,6 +984,8 @@ void MainWindow::updateSettings()
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(mpdDir).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
+    deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
+    devicesPage->enableDeleteAction(Settings::self()->showDeleteAction());
     #endif
     lyricsPage->setMpdDir(mpdDir);
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());

@@ -32,6 +32,7 @@ class Wallet;
 #else
 #include <QtCore/QSettings>
 #endif
+#include "config.h"
 
 class QTimer;
 
@@ -51,9 +52,9 @@ public:
     bool showPlaylist();
     QByteArray playQueueHeaderState();
     QByteArray splitterState();
-#ifndef ENABLE_KDE_SUPPORT
+    #ifndef ENABLE_KDE_SUPPORT
     QSize mainWindowSize();
-#endif
+    #endif
     bool useSystemTray();
     bool showPopups();
     bool stopOnExit();
@@ -75,12 +76,15 @@ public:
     QStringList hiddenPages();
     bool mpris();
     bool dockManager();
+    #ifdef ENABLE_DEVICES_SUPPORT
     QString filenameScheme();
     bool vfatSafeFilenames();
     bool asciiOnlyFilenames();
     bool ignoreTheInFilenames();
     bool replaceSpacesInFilenames();
     bool overwriteSongs();
+    bool showDeleteAction();
+    #endif
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -91,9 +95,9 @@ public:
     void saveSmallControlButtons(bool v);
     void savePlayQueueHeaderState(const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
-#ifndef ENABLE_KDE_SUPPORT
+    #ifndef ENABLE_KDE_SUPPORT
     void saveMainWindowSize(const QSize &v);
-#endif
+    #endif
     void saveUseSystemTray(bool v);
     void saveShowPopups(bool v);
     void saveMpdDir(const QString &v);
@@ -112,29 +116,32 @@ public:
     void saveHiddenPages(const QStringList &p);
     void saveMpris(bool v);
     void saveDockManager(bool v);
+    #ifdef ENABLE_DEVICES_SUPPORT
     void saveFilenameScheme(const QString &v);
     void saveVfatSafeFilenames(bool v);
     void saveAsciiOnlyFilenames(bool v);
     void saveIgnoreTheInFilenames(bool v);
     void saveReplaceSpacesInFilenames(bool v);
     void saveOverwriteSongs(bool v);
+    void saveShowDeleteAction(bool v);
+    #endif
     void save(bool force=false);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();
-#endif
+    #endif
 
 private Q_SLOTS:
     void actualSave();
 
 private:
     QTimer *timer;
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg;
     KWallet::Wallet *wallet;
     QString passwd;
-#else
+    #else
     QSettings cfg;
-#endif
+    #endif
 };
 
 #endif

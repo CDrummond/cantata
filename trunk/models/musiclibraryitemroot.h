@@ -30,23 +30,32 @@
 #include <QtCore/QList>
 #include <QtCore/QVariant>
 #include <QtCore/QHash>
+#include <QtCore/QSet>
 #include "musiclibraryitem.h"
+#include "song.h"
 
-class Song;
 class MusicLibraryItemArtist;
 
 class MusicLibraryItemRoot : public MusicLibraryItem
 {
 public:
-    MusicLibraryItemRoot()
-        : MusicLibraryItem(QString(), MusicLibraryItem::Type_Root, 0) {
+    MusicLibraryItemRoot(const QString &name=QString())
+        : MusicLibraryItem(name, MusicLibraryItem::Type_Root, 0) {
     }
     virtual ~MusicLibraryItemRoot() {
     }
 
-    MusicLibraryItemArtist * artist(const Song &s);
+    virtual QString icon() const {
+        return QString();
+    }
+
+    MusicLibraryItemArtist * artist(const Song &s, bool create=true);
+    MusicLibraryItemArtist * createArtist(const Song &s);
     void groupSingleTracks();
     bool isFromSingleTracks(const Song &s) const;
+    void refreshIndexes();
+    void remove(MusicLibraryItemArtist *artist);
+    QSet<Song> allSongs() const;
 
 private:
     QHash<QString, int> m_indexes;

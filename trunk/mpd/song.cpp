@@ -31,6 +31,7 @@
 #else
 #include <QtCore/QObject>
 #endif
+#include <QtCore/QFileInfo>
 
 Song::Song()
     : id(-1),
@@ -38,7 +39,8 @@ Song::Song()
       track(0),
       pos(0),
       disc(0),
-      year(0)
+      year(0),
+      size(0)
 {
 }
 
@@ -58,12 +60,36 @@ Song & Song::operator=(const Song &s)
     year = s.year;
     genre = s.genre;
     name = s.name;
+    size = s.size;
     return *this;
 }
 
 bool Song::operator==(const Song &o) const
 {
-    return id==o.id;
+    return file == o.file;
+}
+
+bool Song::operator<(const Song &o) const
+{
+    int compare=albumArtist().localeAwareCompare(o.albumArtist());
+    if (0!=compare) {
+        return compare<0;
+    }
+    compare=album.localeAwareCompare(o.album);
+    if (0!=compare) {
+        return compare<0;
+    }
+    if (track!=o.track) {
+        return track<o.track;
+    }
+    if (year!=o.year) {
+        return year<o.year;
+    }
+    compare=file.compare(o.file);
+    if (0!=compare) {
+        return compare<0;
+    }
+    return time<o.time;
 }
 
 bool Song::isEmpty() const
@@ -114,6 +140,7 @@ void Song::clear()
     year = 0;
     genre.clear();
     name.clear();
+    size = 0;
 }
 
 QString Song::formattedTime(const quint32 &seconds)
@@ -165,5 +192,12 @@ QString Song::entryName() const
 QString Song::artistSong() const
 {
     return artist+QLatin1String(" - ")+title;
+}
+
+void Song::updateSize(const QString &dir) const
+{
+    if (size<=0) {
+        size=QFileInfo(dir+file).size();
+    }
 }
 

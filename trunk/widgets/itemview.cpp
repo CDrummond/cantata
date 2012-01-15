@@ -32,7 +32,6 @@
 #include <QtGui/QStyleOptionViewItem>
 #include <QtGui/QPainter>
 #include <QtGui/QAction>
-#include <QtGui/QRadialGradient>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #include <KDE/KPixmapSequence>
@@ -72,6 +71,7 @@ static const int constBorder = 1;
 static const int constActionBorder = 4;
 static const int constActionIconSize=16;
 static const int constImageSize=22;
+static const int constDevImageSize=32;
 
 QRect calcActionRect(bool rtl, bool iconMode, const QRect &rect)
 {
@@ -109,73 +109,32 @@ static void adjustActionRect(bool rtl, bool iconMode, QRect &rect)
     }
 }
 
-class TreeDelegate : public QStyledItemDelegate
+static bool hasActions(const QModelIndex &index, int actLevel)
 {
-public:
-    TreeDelegate(QObject *p, QAction *a1, QAction *a2)
-        : QStyledItemDelegate(p)
-        , act1(a1)
-        , act2(a2)
-    {
+    if (actLevel<0) {
+        return true;
     }
 
-    virtual ~TreeDelegate()
-    {
-    }
+    int level=0;
 
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        QSize sz(QStyledItemDelegate::sizeHint(option, index));
-
-        return QSize(sz.width(), sz.height()+2);
-    }
-
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        QStyledItemDelegate::paint(painter, option, index);
-        if (!index.isValid()) {
-            return;
+    QModelIndex idx=index;
+    while(idx.parent().isValid()) {
+        if (++level>actLevel) {
+            return false;
         }
-
-        if (option.state & QStyle::State_MouseOver) {
-            QRect r(option.rect);
-            painter->save();
-            painter->setClipRect(r);
-            bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
-            QRect actionRect=calcActionRect(rtl, false, r);
-            if (act1) {
-                QPixmap pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-                    drawBgnd(painter, actionRect);
-                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-                }
-            }
-
-            if (act1 && act2) {
-                adjustActionRect(rtl, false, actionRect);
-                QPixmap pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-                    drawBgnd(painter, actionRect);
-                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-                }
-            }
-            painter->restore();
-        }
+        idx=idx.parent();
     }
-
-    QAction *act1;
-    QAction *act2;
-};
+    return true;
+}
 
 class ListDelegate : public QStyledItemDelegate
 {
 public:
-    ListDelegate(QObject *p, QAction *a1, QAction *a2)
+    ListDelegate(QObject *p, QAction *a1, QAction *a2, int actionLevel)
         : QStyledItemDelegate(p)
         , act1(a1)
         , act2(a2)
+        , actLevel(actionLevel)
     {
     }
 
@@ -197,10 +156,15 @@ public:
             return QSize(imageSize + (constBorder * 2), textHeight+imageSize + (constBorder*2));
         } else {
             bool oneLine = index.data(ItemView::Role_SubText).toString().isEmpty();
+            bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
             int textHeight = QApplication::fontMetrics().height()*(oneLine ? 1 : 2);
 
+            if (showCapacity) {
+                imageSize=constDevImageSize;
+            }
             return QSize(qMax(64, imageSize) + (constBorder * 2),
-                        qMax(qMax(textHeight, sz.height()), imageSize)  + (constBorder*2));
+                        qMax(qMax(textHeight, sz.height()), imageSize) + (constBorder*2) +
+                        (showCapacity ? textHeight+2 : 0));
         }
     }
 
@@ -211,11 +175,13 @@ public:
         }
         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
 
+        QString capacityText=index.data(ItemView::Role_CapacityText).toString();
+        bool showCapacity = !capacityText.isEmpty();
         QString text = index.data(Qt::DisplayRole).toString();
         QRect r(option.rect);
-        QRect r2;
+        QRect r2(r);
         QString childText = index.data(ItemView::Role_SubText).toString();
-        int imageSize = index.data(ItemView::Role_ImageSize).toInt();
+        int imageSize = showCapacity ? constDevImageSize : index.data(ItemView::Role_ImageSize).toInt();
 
         if (imageSize<0) {
             imageSize=constImageSize;
@@ -233,6 +199,15 @@ public:
 
         painter->save();
         painter->setClipRect(r);
+
+        QFont textFont(QApplication::font());
+        QFontMetrics textMetrics(textFont);
+        int textHeight=textMetrics.height();
+
+        if (showCapacity) {
+            r.adjust(0, 0, 0, -(textHeight+8));
+        }
+
         if (iconMode) {
             r.adjust(constBorder, constBorder, -constBorder, -constBorder);
             r2=r;
@@ -254,14 +229,11 @@ public:
             }
         }
 
-        if (!(option.state & QStyle::State_MouseOver)) {
+        if (!(option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
             drawIcons(painter, iconMode ? r2 : r, false, rtl, iconMode);
         }
 
-        QFont textFont(QApplication::font());
-        QFontMetrics textMetrics(textFont);
         QRect textRect;
-        int textHeight=textMetrics.height();
         bool selected=option.state&QStyle::State_Selected;
         QColor color(QApplication::palette().color(selected ? QPalette::HighlightedText : QPalette::Text));
         QTextOption textOpt(iconMode ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
@@ -295,7 +267,25 @@ public:
             painter->drawText(childRect, childText, textOpt);
         }
 
-        if (option.state & QStyle::State_MouseOver) {
+        if (showCapacity) {
+            QStyleOptionProgressBar opt;
+            double capacity=index.data(ItemView::Role_Capacity).toDouble();
+
+            opt.minimum=0;
+            opt.maximum=1000;
+            opt.progress=capacity<0 ? 0 : (index.data(ItemView::Role_Capacity).toDouble()*1000);
+            opt.textVisible=true;
+            opt.text=capacityText;
+            opt.rect=QRect(r2.x()+4, r2.bottom()-(textHeight+8), r2.width()-8, textHeight);
+            opt.state=QStyle::State_Enabled;
+            opt.palette=option.palette;
+            opt.direction=QApplication::layoutDirection();
+            opt.fontMetrics=textMetrics;
+
+            QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, 0L);
+        }
+
+        if ((option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
             drawIcons(painter, iconMode ? r2 : r, true, rtl, iconMode);
         }
 
@@ -335,11 +325,55 @@ public:
 
     QAction *act1;
     QAction *act2;
+    int actLevel;
+};
+
+class TreeDelegate : public ListDelegate
+{
+public:
+    TreeDelegate(QObject *p, QAction *a1, QAction *a2, int actionLevel)
+        : ListDelegate(p, a1, a2, actionLevel)
+    {
+    }
+
+    virtual ~TreeDelegate()
+    {
+    }
+
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if (!index.data(ItemView::Role_CapacityText).toString().isEmpty()) {
+            return ListDelegate::sizeHint(option, index);
+        }
+
+        QSize sz(QStyledItemDelegate::sizeHint(option, index));
+
+        return QSize(sz.width(), sz.height()+2);
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if (!index.isValid()) {
+            return;
+        }
+
+        if(!index.data(ItemView::Role_CapacityText).toString().isEmpty()) {
+            ListDelegate::paint(painter, option, index);
+            return;
+        }
+
+        QStyledItemDelegate::paint(painter, option, index);
+
+        if ((option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
+            drawIcons(painter, option.rect, true, Qt::RightToLeft==QApplication::layoutDirection(), false);
+        }
+    }
 };
 
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
     , itemModel(0)
+    , actLevel(-1)
     , act1(0)
     , act2(0)
 {
@@ -362,7 +396,7 @@ ItemView::~ItemView()
 {
 }
 
-void ItemView::init(QAction *a1, QAction *a2)
+void ItemView::init(QAction *a1, QAction *a2, int actionLevel)
 {
     if (act1 || act2) {
         return;
@@ -370,8 +404,9 @@ void ItemView::init(QAction *a1, QAction *a2)
 
     act1=a1;
     act2=a2;
-    listView->setItemDelegate(new ListDelegate(this, a1, a2));
-    treeView->setItemDelegate(new TreeDelegate(this, a1, a2));
+    actLevel=actionLevel;
+    listView->setItemDelegate(new ListDelegate(this, a1, a2, actionLevel));
+    treeView->setItemDelegate(new TreeDelegate(this, a1, a2, actionLevel));
     connect(treeSearch, SIGNAL(returnPressed()), this, SIGNAL(searchItems()));
     connect(treeSearch, SIGNAL(textChanged(const QString)), this, SIGNAL(searchItems()));
     connect(listSearch, SIGNAL(returnPressed()), this, SIGNAL(searchItems()));
@@ -596,7 +631,8 @@ QAction * ItemView::getAction(const QModelIndex &index)
     bool iconMode=Mode_IconTop==mode && index.child(0, 0).isValid();
     QRect rect(view()->visualRect(index));
     rect.moveTo(view()->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
-    if (Mode_Tree!=mode) {
+    bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
+    if (Mode_Tree!=mode || showCapacity) {
         if (iconMode) {
             rect.adjust(constBorder, constBorder, -constBorder, -constBorder);
         } else {
@@ -604,8 +640,12 @@ QAction * ItemView::getAction(const QModelIndex &index)
         }
     }
 
-    QRect actionRect=calcActionRect(rtl, iconMode, rect);
+    if (showCapacity) {
+        int textHeight=QFontMetrics(QApplication::font()).height();
+        rect.adjust(0, 0, 0, -(textHeight+8));
+    }
 
+    QRect actionRect=calcActionRect(rtl, iconMode, rect);
     QRect actionRect2(actionRect);
     adjustActionRect(rtl, iconMode, actionRect2);
 
@@ -623,17 +663,21 @@ QAction * ItemView::getAction(const QModelIndex &index)
 
 void ItemView::itemClicked(const QModelIndex &index)
 {
-    QAction *act=getAction(index);
-    if (act) {
-        act->trigger();
+    if (hasActions(index, actLevel)) {
+        QAction *act=getAction(index);
+        if (act) {
+            act->trigger();
+        }
     }
 }
 
 void ItemView::itemActivated(const QModelIndex &index)
 {
-    QAction *act=getAction(index);
-    if (act) {
-        return;
+    if (hasActions(index, actLevel)) {
+        QAction *act=getAction(index);
+        if (act) {
+            return;
+        }
     }
 
     if (Mode_Tree==mode) {

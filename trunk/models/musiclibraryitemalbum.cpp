@@ -78,9 +78,8 @@ bool MusicLibraryItemAlbum::showDate()
     return useDate;
 }
 
-MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, const QString &dir, quint32 year, MusicLibraryItem *parent)
+MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItem *parent)
     : MusicLibraryItem(data, MusicLibraryItem::Type_Album, parent)
-    , m_dir(dir)
     , m_year(year)
     , m_coverIsDefault(false)
     , m_cover(0)
@@ -93,7 +92,7 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
     delete m_cover;
 }
 
-bool MusicLibraryItemAlbum::setCover(const QImage &img)
+bool MusicLibraryItemAlbum::setCover(const QImage &img) const
 {
     if (m_coverIsDefault) {
         m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -122,11 +121,11 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                                         .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         m_coverIsDefault = true;
-        if (parent() && iSize) {
+        if (parent() && iSize && childCount()) {
             Song song;
             song.albumartist=parent()->data();
             song.album=m_itemData;
-            song.file=m_dir;
+            song.file=static_cast<MusicLibraryItemSong*>(child(0))->file();
             Covers::self()->get(song, m_singleTracks);
         }
         return *theDefaultIcon;
@@ -135,7 +134,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
     return *m_cover;
 }
 
-QStringList MusicLibraryItemAlbum::sortedTracks()
+QStringList MusicLibraryItemAlbum::sortedTracks() const
 {
     QMap<int, QString> tracks;
     quint32 trackWithoutNumberIndex=0xFFFF; // *Very* unlikely to have tracks numbered greater than 65535!!!
@@ -171,4 +170,9 @@ void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
     if (m_singleTracks) {
         m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(i)->song().file);
     }
+}
+
+void MusicLibraryItemAlbum::remove(int row)
+{
+    delete m_childItems.takeAt(row);
 }

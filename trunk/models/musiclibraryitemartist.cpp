@@ -51,17 +51,22 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibrary
     }
 }
 
-MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s)
+MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {
     QHash<QString, int>::ConstIterator it=m_indexes.find(s.album);
 
     if (m_indexes.end()==it) {
-        MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, MPDParseUtils::getDir(s.file), s.year, this);
-        m_indexes.insert(s.album, m_childItems.count());
-        m_childItems.append(item);
-        return item;
+        return create ? createAlbum(s) : 0;
     }
     return static_cast<MusicLibraryItemAlbum *>(m_childItems.at(*it));
+}
+
+MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
+{
+    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, s.year, this);
+    m_indexes.insert(s.album, m_childItems.count());
+    m_childItems.append(item);
+    return item;
 }
 
 const QString & MusicLibraryItemArtist::baseArtist() const
@@ -107,3 +112,21 @@ bool MusicLibraryItemArtist::isFromSingleTracks(const Song &s) const
     return false;
 }
 
+void MusicLibraryItemArtist::remove(MusicLibraryItemAlbum *album)
+{
+    int index=m_childItems.indexOf(album);
+
+    if (index<0 || index>=m_childItems.count()) {
+        return;
+    }
+
+    QHash<QString, int>::Iterator it=m_indexes.begin();
+    QHash<QString, int>::Iterator end=m_indexes.end();
+
+    for (; it!=end; ++it) {
+        if ((*it)>index) {
+            (*it)--;
+        }
+    }
+    delete m_childItems.takeAt(index);
+}

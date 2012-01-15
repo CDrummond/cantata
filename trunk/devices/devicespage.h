@@ -21,53 +21,46 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef LIBRARYPAGE_H
-#define LIBRARYPAGE_H
+#ifndef DEVICESPAGE_H
+#define DEVICESPAGE_H
 
-#include "ui_librarypage.h"
+#include "ui_devicespage.h"
 #include "mainwindow.h"
 #include "musiclibraryproxymodel.h"
 
-class LibraryPage : public QWidget, public Ui::LibraryPage
+class KAction;
+
+class DevicesPage : public QWidget, public Ui::DevicesPage
 {
     Q_OBJECT
+
 public:
+    DevicesPage(MainWindow *p);
+    virtual ~DevicesPage();
 
-    enum Refresh
-    {
-        RefreshFromCache,
-        RefreshForce,
-        RefreshStandard
-    };
-
-    LibraryPage(MainWindow *p);
-    virtual ~LibraryPage();
-
-    void refresh(Refresh type);
     void clear();
-    void addSelectionToPlaylist(const QString &name=QString());
-    #ifdef ENABLE_DEVICES_SUPPORT
-    void addSelectionToDevice(const QString &udi);
-    void deleteSongs();
-    #endif
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
-
-Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
-    void add(const QStringList &files);
-    void addSongsToPlaylist(const QString &name, const QStringList &files);
-    void listAllInfo(const QDateTime &);
-
-    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
-    void deleteSongs(const QString &from, const QList<Song> &songs);
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
+    void selectionChanged();
+    void copyToLibrary();
+    void configureDevice();
+    void refreshDevice();
+    void deleteSongs();
+
+Q_SIGNALS:
+    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+    void deleteSongs(const QString &from, const QList<Song> &songs);
 
 private:
     MusicLibraryProxyModel proxy;
+    KAction *configureAction;
+    KAction *refreshAction;
+    KAction *copyAction;
+    KAction *removeAction;
 };
 
 #endif

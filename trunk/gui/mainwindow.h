@@ -48,6 +48,7 @@
 #include "playqueueproxymodel.h"
 #include "mpdstatus.h"
 #include "song.h"
+#include "config.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 class KAction;
@@ -68,6 +69,9 @@ class LyricsPage;
 class StreamsPage;
 class InfoPage;
 class ServerInfoPage;
+#ifdef ENABLE_KDE_SUPPORT
+class DevicesPage;
+#endif
 class QThread;
 class QAbstractItemView;
 class DockManager;
@@ -161,6 +165,9 @@ public:
         PAGE_LYRICS,
         PAGE_INFO,
         PAGE_SERVER_INFO
+        #ifdef ENABLE_KDE_SUPPORT
+        , PAGE_DEVICES
+        #endif
     };
 
     MainWindow(QWidget *parent = 0);
@@ -206,9 +213,9 @@ private Q_SLOTS:
     void updateSettings();
     void mpdConnectionDied();
     void updateDb();
-#ifndef ENABLE_KDE_SUPPORT
+    #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
-#endif
+    #endif
     void positionSliderPressed();
     void positionSliderReleased();
     void stopTrack();
@@ -228,11 +235,11 @@ private Q_SLOTS:
     void addToPlaylist();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     void trayItemScrollRequested(int delta, Qt::Orientation orientation);
-#else
+    #else
     void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
-#endif
+    #endif
     void playQueueContextMenuClicked();
     void togglePlayQueueHeaderItem(const bool visible);
     void cropPlaylist();
@@ -249,8 +256,17 @@ private Q_SLOTS:
     void showLyricsTab() { showTab(PAGE_LYRICS); }
     void showInfoTab() { showTab(PAGE_INFO); }
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
+    #ifdef ENABLE_KDE_SUPPORT
+    void showDevicesTab() { showTab(PAGE_DEVICES); }
+    #endif
     void toggleMpris();
     void toggleDockManager();
+    #ifdef ENABLE_DEVICES_SUPPORT
+    void addToDevice(const QString &udi);
+    void deleteSongs();
+    void copyToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+    void deleteSongs(const QString &from, const QList<Song> &songs);
+    #endif
 
 private:
     bool currentIsStream();
@@ -304,6 +320,11 @@ private:
     Action *infoTabAction;
     #endif
     Action *serverInfoTabAction;
+    #ifdef ENABLE_DEVICES_SUPPORT
+    Action *devicesTabAction;
+    Action *copyToDeviceAction;
+    Action *deleteSongsAction;
+    #endif
     Action *updateDbAction;
     Action *smallPlaybackButtonsAction;
     Action *smallControlButtonsAction;
@@ -337,6 +358,9 @@ private:
     #ifdef ENABLE_WEBKIT
     InfoPage *infoPage;
     #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    DevicesPage *devicesPage;
+    #endif
     ServerInfoPage *serverInfoPage;
     QThread *mpdThread;
     DockManager *dock;
@@ -351,6 +375,9 @@ private:
     friend class LyricsPage;
     friend class InfoPage;
     friend class ServerInfoPage;
+    #ifdef ENABLE_DEVICES_SUPPORT
+    friend class DevicesPage;
+    #endif
 };
 
 #endif

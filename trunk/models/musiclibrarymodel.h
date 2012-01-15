@@ -41,6 +41,8 @@ class MusicLibraryModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
+    static MusicLibraryModel * self();
+
     MusicLibraryModel(QObject *parent = 0);
     ~MusicLibraryModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
@@ -51,16 +53,20 @@ public:
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes) const;
+    QList<Song> songs(const QModelIndexList &indexes) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     const MusicLibraryItemRoot * root() const { return rootItem; }
     bool isFromSingleTracks(const Song &s) const { return rootItem->isFromSingleTracks(s); }
-
     bool fromXML(const QDateTime db_update);
     void clearUpdateTime() { databaseTime=QDateTime(); }
     void clear();
+    bool songExists(const Song &s) const;
+    void addSongToList(const Song &s);
+    void removeSongFromList(const Song &s);
+    void removeCache();
 
 public Q_SLOTS:
-    void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime db_update = QDateTime(), bool fromFile = false);
+    void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
 
 Q_SIGNALS:
@@ -69,9 +75,10 @@ Q_SIGNALS:
     void updateGenres(const QStringList &genres);
 
 private:
-    const MusicLibraryItemRoot * rootItem;
+    void toXML(const MusicLibraryItemRoot *root, const QDateTime &date);
 
-    void toXML(const QDateTime db_update);
+private:
+    MusicLibraryItemRoot *rootItem;
     QDateTime databaseTime;
 };
 

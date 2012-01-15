@@ -64,6 +64,7 @@
 #include "settings.h"
 #include "updatedialog.h"
 #include "config.h"
+#include "musiclibrarymodel.h"
 #include "musiclibraryitemalbum.h"
 #include "librarypage.h"
 #include "albumspage.h"
@@ -72,6 +73,11 @@
 #include "lyricspage.h"
 #include "infopage.h"
 #include "serverinfopage.h"
+#ifdef ENABLE_DEVICES_SUPPORT
+#include "devicespage.h"
+#include "devicesmodel.h"
+#include "actiondialog.h"
+#endif
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -304,7 +310,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     addToPlaylistAction->setText(i18n("Add To Play Queue"));
 
     addToStoredPlaylistAction = actionCollection()->addAction("addtostoredplaylist");
-    addToStoredPlaylistAction->setText(i18n("Add To"));
+    addToStoredPlaylistAction->setText(i18n("Add To Playlist"));
+
+    #ifdef ENABLE_DEVICES_SUPPORT
+    copyToDeviceAction = actionCollection()->addAction("copytodevice");
+    copyToDeviceAction->setText(i18n("Copy To Device"));
+    copyToDeviceAction->setIcon(QIcon::fromTheme("multimedia-player"));
+    deleteSongsAction = actionCollection()->addAction("deletesongs");
+    #endif
 
     replacePlaylistAction = actionCollection()->addAction("replaceplaylist");
     replacePlaylistAction->setText(i18n("Replace Play Queue"));
@@ -364,6 +377,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     serverInfoTabAction = actionCollection()->addAction("showserverinfotab");
     serverInfoTabAction->setText(i18n("Server Info"));
+
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesTabAction = actionCollection()->addAction("showdevicestab");
+    devicesTabAction->setText(i18n("Devices"));
+    #endif // ENABLE_DEVICES_SUPPORT
+
     #else
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -379,7 +398,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     increaseVolumeAction = new QAction(tr("Increase Volume"), this);
     decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
     addToPlaylistAction = new QAction(tr("Add To Play Queue"), this);
-    addToStoredPlaylistAction = new QAction(tr("Add To"), this);
+    addToStoredPlaylistAction = new QAction(tr("Add To Playlist"), this);
     replacePlaylistAction = new QAction(tr("Replace Play Queue"), this);
     removeFromPlaylistAction = new QAction(tr("Remove From PlayList"), this);
     copyTrackInfoAction = new QAction(tr("Copy Track Info"), this);
@@ -403,17 +422,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     #endif // ENABLE_WEBKIT
     serverInfoTabAction = new QAction(tr("Server Info"), this);
     #endif // ENABLE_KDE_SUPPORT
-    libraryTabAction->setShortcut(Qt::Key_F5);
-    albumsTabAction->setShortcut(Qt::Key_F6);
-    foldersTabAction->setShortcut(Qt::Key_F7);
-    playlistsTabAction->setShortcut(Qt::Key_F8);
-    streamsTabAction->setShortcut(Qt::Key_F9);
-    lyricsTabAction->setShortcut(Qt::Key_F10);
+    libraryTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F1);
+    albumsTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F2);
+    foldersTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F3);
+    playlistsTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F4);
+    streamsTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F5);
+    lyricsTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F6);
     #ifdef ENABLE_WEBKIT
-    infoTabAction->setShortcut(Qt::Key_F11);
-    serverInfoTabAction->setShortcut(Qt::Key_F12);
+    infoTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F7);
+    serverInfoTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F8);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F9);
+    #endif // ENABLE_DEVICES_SUPPORT
     #else // ENABLE_WEBKIT
-    serverInfoTabAction->setShortcut(Qt::Key_F11);
+    serverInfoTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F7);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F8);
+    #endif // ENABLE_DEVICES_SUPPORT
     #endif // ENABLE_WEBKIT
 
     // Setup event handler for volume adjustment
@@ -457,8 +482,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     infoTabAction->setIcon(QIcon::fromTheme("dialog-information"));
     #endif
     serverInfoTabAction->setIcon(QIcon::fromTheme("server-database"));
-
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesTabAction->setIcon(QIcon::fromTheme("multimedia-player"));
+    copyToDeviceAction->setMenu(DevicesModel::self()->menu());
+    deleteSongsAction->setIcon(QIcon::fromTheme("edit-delete"));
+    deleteSongsAction->setText(i18n("Delete Songs"));
+    #endif
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
+    addToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
 
     menuButton->setIcon(QIcon::fromTheme("configure"));
     volumeButton->setIcon(QIcon::fromTheme("player-volume"));
@@ -483,9 +514,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     infoPage = new InfoPage(this);
     #endif
     serverInfoPage = new ServerInfoPage(this);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesPage = new DevicesPage(this);
+    #endif
 
-    connect(&libraryPage->getModel(), SIGNAL(updated(const MusicLibraryItemRoot *)), albumsPage, SLOT(update(const MusicLibraryItemRoot *)));
-    connect(&libraryPage->getModel(), SIGNAL(updateGenres(const QStringList &)), albumsPage, SLOT(updateGenres(const QStringList &)));
+    connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), albumsPage, SLOT(update(const MusicLibraryItemRoot *)));
+    connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QStringList &)), albumsPage, SLOT(updateGenres(const QStringList &)));
 
     setVisible(true);
 
@@ -507,6 +541,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabWidget->AddTab(infoPage, infoTabAction->icon(), infoTabAction->text(), !hiddenPages.contains(infoPage->metaObject()->className()));
     #endif
     tabWidget->AddTab(serverInfoPage, serverInfoTabAction->icon(), serverInfoTabAction->text(), !hiddenPages.contains(serverInfoPage->metaObject()->className()));
+    #ifdef ENABLE_DEVICES_SUPPORT
+    tabWidget->AddTab(devicesPage, devicesTabAction->icon(), devicesTabAction->text(), !hiddenPages.contains(devicesPage->metaObject()->className()));
+    #endif
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
@@ -566,6 +603,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     repeatPlaylistAction->setChecked(false);
     consumePlaylistAction->setChecked(false);
     mpdDir=Settings::self()->mpdDir();
+    #ifdef ENABLE_DEVICES_SUPPORT
+    copyToDeviceAction->setEnabled(QDir(mpdDir).isReadable());
+    deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
+    #endif
     lyricsPage->setMpdDir(mpdDir);
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     Covers::self()->setMpdDir(mpdDir);
@@ -692,6 +733,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(infoTabAction, SIGNAL(activated()), this, SLOT(showInfoTab()));
     #endif
     connect(serverInfoTabAction, SIGNAL(activated()), this, SLOT(showServerInfoTab()));
+    #ifdef ENABLE_DEVICES_SUPPORT
+    connect(devicesTabAction, SIGNAL(activated()), this, SLOT(showDevicesTab()));
+    connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
+    connect(libraryPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(albumsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(deleteSongsAction, SIGNAL(triggered()), SLOT(deleteSongs()));
+    connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    #endif
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
@@ -927,6 +979,10 @@ void MainWindow::updateSettings()
 {
     emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
     mpdDir=Settings::self()->mpdDir();
+    #ifdef ENABLE_DEVICES_SUPPORT
+    copyToDeviceAction->setEnabled(QDir(mpdDir).isReadable());
+    deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
+    #endif
     lyricsPage->setMpdDir(mpdDir);
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     Covers::self()->setMpdDir(mpdDir);
@@ -1108,7 +1164,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     // Determine if album cover should be updated
     const QString &albumArtist=song.albumArtist();
     if (coverWidget->property("artist").toString() != albumArtist || coverWidget->property("album").toString() != song.album) {
-        Covers::self()->get(song, MPDParseUtils::groupSingle() && libraryPage->getModel().isFromSingleTracks(song));
+        Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
         coverWidget->setProperty("artist", albumArtist);
         coverWidget->setProperty("album", song.album);
     }
@@ -1747,6 +1803,9 @@ void MainWindow::currentTabChanged(int index)
         break;
     #endif
     case PAGE_SERVER_INFO:
+    #ifdef ENABLE_DEVICES_SUPPORT
+    case PAGE_DEVICES:
+    #endif
     default:
         break;
     }
@@ -1799,3 +1858,35 @@ void MainWindow::toggleDockManager()
 
     dock->setEnabled(Settings::self()->dockManager());
 }
+
+#ifdef ENABLE_DEVICES_SUPPORT
+void MainWindow::addToDevice(const QString &udi)
+{
+    if (libraryPage->isVisible()) {
+        libraryPage->addSelectionToDevice(udi);
+    } else if (albumsPage->isVisible()) {
+        albumsPage->addSelectionToDevice(udi);
+    }
+}
+
+void MainWindow::deleteSongs()
+{
+    if (libraryPage->isVisible()) {
+        libraryPage->deleteSongs();
+    } else if (devicesPage->isVisible()) {
+        albumsPage->deleteSongs();
+    }
+}
+
+void MainWindow::copyToDevice(const QString &from, const QString &to, const QList<Song> &songs)
+{
+    ActionDialog *dlg=new ActionDialog(this, updateDbAction);
+    dlg->copy(from, to, songs);
+}
+
+void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
+{
+    ActionDialog *dlg=new ActionDialog(this, updateDbAction);
+    dlg->remove(from, songs);
+}
+#endif

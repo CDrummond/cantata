@@ -1,0 +1,230 @@
+0.2.1
+-----
+1. Updated polish translation.
+2. When editing a stream category name, show the current name in the entry
+   field.
+3. Use KInputDialog, not QInputDiallog, for KDE build.
+4. Fix memory leak in playlistsmodel.
+5. Fix crash when removing items from playlist.
+6. When checking for existing covers, also check AlbumArt.jpg/png
+
+0.2.0
+-----
+ 1. Add option to show (and sort by) year of albums in library view.
+ 2. Show 'Various Artists' at the top of the library view.
+ 3. Add option to group single track artist/albums under
+    'Various Artists'/'Single Tracks'/'Artist - Track'
+ 4. Improve time slider accuracy, by checking the time elapsed at each
+    interval.
+ 5. Fix inconsistency between adding items via drag'n'drop and using the 'add
+    to' and 'replace' actions.
+ 6. Add basic MPRISv2 interface - mainly so that Cantata can be controlled via
+    IconTasks' media buttons.
+ 7. Add option to set icon in dockmanager docks (IconTasks, Docky, DockBarX,
+    etc) to that of the current track.
+ 8. Provide a simple script to convert amarok radio streams into cantata
+    streams.
+ 9. Use .cantata extension for import/export of cantata streams.
+10. Only export selected strema categories.
+11. Show track details in titlebar, so that these also appear in taskbar
+    tooltips.
+12. Use 'play' icon for 'replace play queue', and 'add' icon for 'add to play
+    queue'
+13. In list/icon view, show actions of not selected/highlighted items at 20%
+    opacity.
+14. Disable position slider when playing a stream.
+15. Basic elided-text class for Qt-only build.
+16. Dont build libMaia as a library, just compile into cantata.
+17. Expand/collapse interface via clicking on album cover.
+18. Spanish translation - thanks to Omar Campagne.
+
+0.1.2
+-----
+1. Explicitly link each Qt library.
+2. Fix playqueue header hiding/restoring.
+3. Allow to connect to local UNIX domain socket.
+4. Jump to track position by clicking on position slider. Thanks to Piotr
+   Wicijowski for the idea/patch.
+5. Fix name of Polish translations file.
+6. Better detection of when mouse is in action rect.
+7. More opaque action background.
+
+0.1.1
+-----
+1. Play/Pause track when middle click on tray icon. (KDE only). Thanks to Piotr
+   Wicijowski for the idea/patch.
+2. Only connecto to QTreeView::activated when in single-click. Double-click
+   already expands/collapses the item - so if we also do this on activated,
+   then the item is re-collapsed/expanded.
+3. Only create the tray icon once!
+4. Add context menu to toolbar buttons to enable using smaller buttons.
+5. Polish translation - thanks to Piotr Wicijowski
+6. To be more consistent with other apps, show expander for root items in tree
+   views.
+7. Show spinner over library/folder view when loading. (KDE only)
+8. Fix some right-to-left issues.
+9. Czech translation - thanks to Pavel Fric
+
+0.1.0
+-----
+[Changes from QtMPC]
+1. Use XDG_CACHE_HOME to store XML and covers
+2. Hide listview headers
+3. Dir view -> Folders, Library view -> Library
+4. Removed setting of font style and size - only bold now set
+5. In library list, use album-artist (if available, artist otherwise) to group
+   albums.
+6. Remove search combo, and always default to searching in all fields.
+7. Removed warning when add to playlist, and nothing selected - was
+   inconsistent with playlist view. (Add to playlist actions should now only be
+   enabled if there is something selected)
+8. Fix call to setupGUI so as to not create a statusbar
+9. If compiled with KDE support;
+    - use KMessageBox
+    - store config via KConfig
+    - make app a KUniqueApplication, and
+    - use KWallet to store password
+10. Show cover on top-left
+11. Fix blank item showing in playlist when playlist is empty
+12. Hide password in preferences dialog
+13. Only 2 socket connections to MPD - one for commands, and one for idle
+    messages.
+14. Only load data for a tab when the tab is selected.
+15. If saving to a pre-existing playlist, ask the user if it is ok to
+    overwrite. If so, delete the existing one first, then save.
+16. Add a combo to filter on genre.
+17. Check for cover (cover.png/jpg) within folder of current track to get
+    cover-art, otherwise download.
+18. Fetch lyrics
+19. Also check mpdFolder+filename.lyrics for lyrics file
+20. Use QNetworkAccessManager for HTTP downloads. If compiled woth KDE support,
+    use KIO::Integration::AccessManager so that we can gain access to KDE's
+    proxy settings.
+21. Use sidebar instead of tabbar.
+22. Support replaygain setting.
+23. Split config into pages.
+24. Add option to stop playback when cantata exits.
+25. Fixed thread usage - now sockets are in their own thread.
+26. Add album-cover view
+27. Support radio streams
+28. Query artist/album information via wikipedia - show in a K/QWebView
+29. Port to KStatusNotifierItem
+
+--------------QtMPC ChangeLog--------------------
+
+RELEASE 0.6.1
+-------------
+
+* Gracefully handle connection problems (ticket #35)
+* Fixed song parsing when track or disc is num/totalnum (ticket #213)
+* Crop playlist support (ticket #207)
+* Shuffle support (ticket #209)
+* Renaming of playlists (ticket #210)
+* Output support (enable/disable) outputs (ticket #7)
+* Copy song info to clipboard from playlist selection (ticket #184)
+
+RELEASE 0.6.0
+-------------
+
+SVN:Thu Oct  6 20:45:11 CEST 2010
+* Added idle support
+* Removed bitrate from window status bar
+* Removed tooltip (ticket #204) for now since it was not being updated
+
+SVN:Wed Oct  5 22:48:21 CEST 2010
+* Ask for confirmation when deleting playlists
+* Remember window size & position
+* Mutex the library to prevent conflicting updates
+
+SVN:Tue Oct  5 22:48:21 CEST 2010
+* Fixed loading playlists with spaces, quotes (") and backslashed (\)
+
+SVN:Mon Oct  4 21:35:02 CEST 2010
+* new icons for library view (credits go to the folks from amarok where i stole them)
+* sortable playlists view
+* fixed bug which was introduced by PlaylistProxyModel, playlist headers not showing on startup
+* delete keyhandler for playlists view
+* keep a row in playlist selected when removing entries (subsequent delete button presses)
+
+SVN:Sat Oct  2 01:12:24 CEST 2010
+* removed last.fm error message popups (modal popup for such unimportant errors was a bit over the top)
+* added "Replace Playlist" button to all views (has been only been in rightclick menu so far)
+* two modes for loading saved playlists "Add to Playlist" adds to current playlist, "Load" replaces current playlist (doubleclick adds to current)
+* added right click menu to "Playlists" tab page
+* added doubleclick handler for DirView
+* only execute doubleclick handler on Songs/Files, doubleclick on higher levels only expands the treenode
+* caseinsensitive and locale aware sorting for library and dir view
+* searchable dirview
+* enabled autoplay on drag&drop
+* start playing again when replacing playlist and mpd has been playing before
+* fixed moving around songs in playlist which are not in sequential order (Ctrl+Click -> Move)
+  (all songs are moved together in sequential order onto the destination position, spaces between them disappear)
+* preserve playlist selections over refreshs (primary usefull when moving around songs in playlist)
+* searchable playlist
+* added icons to library view (different icons for nodetypes and maybe scaled down albumart upcoming)
+
+SVN:Tue Sep 28 22:32:12 CEST 2010
+* enabled clear button for kde search field in library view
+* added right click menus
+* enabled password protected connections
+* adapted row height for playlist
+* fixed dropping of files from the library into the playlist, when the droptarget is not a song
+* removed search button; search box searches onChange anyway
+* clickable sliders
+* added date to playlist
+* fixed delete key for playlist in kde build
+* implemented clear playlist rightclick item
+* implemented drag & drop for directory view
+
+SVN:
+fixed:
+* Dragging and dropping of albums and artists now also works! (ticket #145)
+* Initial sorting of music library and filesystem view on startup
+new:
+* Added support for enabling/disabling consume mode (items from playlist are removed once played)
+* No more Qt 4.4 checks. Qt 4.4 is stable so move on!
+* Better KDE integration (ticket #183, patch by aanisimov)
+* Completely disjunctive searching (patch by M. Grachten)
+* Playlist support
+removed:
+* Last.fm scrobbling support has been removed
+
+0.5.0:
+fixed:
+* a file name containing a " character would make it impossible to add it to the play list
+* fix a segfault when adding a selection containing one or more artists to the playlist
+* Now only items displayed in the library can be added to the playlist (usefull when searching)
+* Fixed the restoring of the playlist
+* Check for duplicates when adding from the DirView
+* Re-search when chaning album/artist etc
+new:
+* separate connection for database commands
+* variable update interval for stats/status
+* Dir view (ticket #36)
+* Disc number support
+  - Visible in playlist
+  - Sort Musiclibrary tracks not only by track number but also by disc number
+* Better memory usage for musiclibrary and dirview
+* Use libmaia (xml-rpc)
+* Use last.fm for album covers instead of amazon
+* last.fm scrobbling support
+  - Follow last.fm guide lines
+	- scrobbling is own thread so the rest of the program had nothing to do with
+		it.
+* synchttp for synchornous http support
+* show album release date
+
+0.4.1:
+new:
+* Playlist stats use QSet instead of QList
+* mpdstat converted to a singleton
+* mpdstatus converted to a singleton
+* only load QSettings when needed
+* GUI tweaks
+* search direct trough playlist
+* display playlist stats also in stats window
+
+fixed:
+* some valgrind warnings
+* reset position of slider to 00:00
+* add playlist item in the order they are in the music lib

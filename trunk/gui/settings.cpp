@@ -279,6 +279,7 @@ bool Settings::dockManager()
     return GET_BOOL("dockManager", false);
 }
 
+#ifdef ENABLE_DEVICES_SUPPORT
 QString Settings::filenameScheme()
 {
     return GET_STRING("filenameScheme", QString());
@@ -308,6 +309,12 @@ bool Settings::overwriteSongs()
 {
     return GET_BOOL("overwriteSongs", false);
 }
+
+bool Settings::showDeleteAction()
+{
+    return GET_BOOL("showDeleteAction", false);
+}
+#endif
 
 void Settings::Settings::saveConnectionHost(const QString &v)
 {
@@ -471,6 +478,7 @@ void Settings::saveDockManager(bool v)
     SET_VALUE("dockManager", v);
 }
 
+#ifdef ENABLE_DEVICES_SUPPORT
 void Settings::saveFilenameScheme(const QString &v)
 {
     SET_VALUE("filenameScheme", v);
@@ -500,6 +508,12 @@ void Settings::saveOverwriteSongs(bool v)
 {
     SET_VALUE("overwriteSongs", v);
 }
+
+void Settings::saveShowDeleteAction(bool v)
+{
+    SET_VALUE("showDeleteAction", v);
+}
+#endif
 
 void Settings::save(bool force)
 {

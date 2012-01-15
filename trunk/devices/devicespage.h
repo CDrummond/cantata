@@ -40,6 +40,7 @@ public:
 
     void clear();
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
+    void enableDeleteAction(bool e);
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);

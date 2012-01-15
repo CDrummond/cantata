@@ -31,7 +31,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QSet>
 
-class MusicLibraryItem
+class MusicLibraryItem : public QObject
 {
 public:
     enum Type {
@@ -63,6 +63,7 @@ public:
         }
         m_parentItem=p;
         m_parentItem->m_childItems.append(this);
+        m_parentItem->m_genres+=m_genres;
     }
 
     virtual void append(MusicLibraryItem *i) {
@@ -77,7 +78,7 @@ public:
         return m_childItems.count();
     }
 
-    const QList<MusicLibraryItem *> & children() {
+    const QList<MusicLibraryItem *> & children() const {
         return m_childItems;
     }
 

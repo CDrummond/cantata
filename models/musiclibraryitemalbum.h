@@ -54,26 +54,25 @@ public:
     static void setShowDate(bool sd);
     static bool showDate();
 
-    MusicLibraryItemAlbum(const QString &data, const QString &dir, quint32 year, MusicLibraryItem *parent);
+    MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItem *parent);
     virtual ~MusicLibraryItemAlbum();
 
-    bool setCover(const QImage &img);
+    bool setCover(const QImage &img) const;
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }
-    const QString & dir() const { return m_dir; }
-    QStringList sortedTracks();
+    QStringList sortedTracks() const;
     quint32 year() const { return m_year; }
     void addTracks(MusicLibraryItemAlbum *other);
     bool isSingleTracks() const { return m_singleTracks; }
     void setIsSingleTracks();
     bool isSingleTrackFile(const Song &s) const { return m_singleTrackFiles.contains(s.file); }
     void append(MusicLibraryItem *i);
+    void remove(int row);
 
 private:
-    QString m_dir;
     quint32 m_year;
-    bool m_coverIsDefault;
-    QPixmap *m_cover;
+    mutable bool m_coverIsDefault;
+    mutable QPixmap *m_cover;
     bool m_singleTracks;
     QSet<QString> m_singleTrackFiles;
 };

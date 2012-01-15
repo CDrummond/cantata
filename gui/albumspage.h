@@ -40,6 +40,10 @@ public:
 
     void clear();
     void addSelectionToPlaylist(const QString &name=QString());
+    #ifdef ENABLE_DEVICES_SUPPORT
+    void addSelectionToDevice(const QString &udi);
+    void deleteSongs();
+    #endif
     void setView(int v);
     ItemView::Mode viewMode() const { return view->viewMode(); }
 
@@ -50,6 +54,9 @@ Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
     void add(const QStringList &files);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
+
+    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+    void deleteSongs(const QString &from, const QList<Song> &songs);
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);

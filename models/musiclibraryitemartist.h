@@ -43,7 +43,8 @@ public:
     virtual ~MusicLibraryItemArtist() {
     }
 
-    MusicLibraryItemAlbum * album(const Song &s);
+    MusicLibraryItemAlbum * album(const Song &s, bool create=true);
+    MusicLibraryItemAlbum * createAlbum(const Song &s);
     const QString & baseArtist() const;
     bool isVarious() const {
         return m_various;
@@ -51,6 +52,7 @@ public:
     bool allSingleTrack() const;
     void addToSingleTracks(MusicLibraryItemArtist *other);
     bool isFromSingleTracks(const Song &s) const;
+    void remove(MusicLibraryItemAlbum *album);
 
 private:
     bool m_various;

@@ -279,7 +279,37 @@ bool Settings::dockManager()
     return GET_BOOL("dockManager", false);
 }
 
-void Settings::saveConnectionHost(const QString &v)
+QString Settings::filenameScheme()
+{
+    return GET_STRING("filenameScheme", QString());
+}
+
+bool Settings::vfatSafeFilenames()
+{
+    return GET_BOOL("vfatSafeFilenames", true);
+}
+
+bool Settings::asciiOnlyFilenames()
+{
+    return GET_BOOL("asciiOnlyFilenames", false);
+}
+
+bool Settings::ignoreTheInFilenames()
+{
+    return GET_BOOL("ignoreTheInFilenames", false);
+}
+
+bool Settings::replaceSpacesInFilenames()
+{
+    return GET_BOOL("replaceSpacesInFilenames", false);
+}
+
+bool Settings::overwriteSongs()
+{
+    return GET_BOOL("overwriteSongs", false);
+}
+
+void Settings::Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
 }
@@ -439,6 +469,36 @@ void Settings::saveMpris(bool v)
 void Settings::saveDockManager(bool v)
 {
     SET_VALUE("dockManager", v);
+}
+
+void Settings::saveFilenameScheme(const QString &v)
+{
+    SET_VALUE("filenameScheme", v);
+}
+
+void Settings::saveVfatSafeFilenames(bool v)
+{
+    SET_VALUE("vfatSafeFilenames", v);
+}
+
+void Settings::saveAsciiOnlyFilenames(bool v)
+{
+    SET_VALUE("asciiOnlyFilenames", v);
+}
+
+void Settings::saveIgnoreTheInFilenames(bool v)
+{
+    SET_VALUE("ignoreTheInFilenames", v);
+}
+
+void Settings::saveReplaceSpacesInFilenames(bool v)
+{
+    SET_VALUE("replaceSpacesInFilenames", v);
+}
+
+void Settings::saveOverwriteSongs(bool v)
+{
+    SET_VALUE("overwriteSongs", v);
 }
 
 void Settings::save(bool force)

@@ -50,13 +50,15 @@ public:
     {
         Role_ImageSize = Qt::UserRole+256,
         Role_SubText,
-        Role_Image
+        Role_Image,
+        Role_Capacity,
+        Role_CapacityText
     };
 
     ItemView(QWidget *p);
     virtual ~ItemView();
 
-    void init(QAction *a1, QAction *a2);
+    void init(QAction *a1, QAction *a2, int actionLevel=-1);
     void addAction(QAction *act);
     void setMode(Mode m);
     Mode viewMode() const { return mode; }
@@ -75,6 +77,7 @@ public:
     QSize gridSize() const { return listView->gridSize(); }
     void update() { Mode_Tree==mode ? treeView->update() : listView->update(); }
     void setDeleteAction(QAction *act);
+    void setRootIsDecorated(bool v) { treeView->setRootIsDecorated(v); }
 
 public Q_SLOTS:
     void showSpinner();
@@ -96,6 +99,7 @@ private:
 private:
     ProxyModel *itemModel;
     QAction *backAction;
+    int actLevel;
     QAction *act1;
     QAction *act2;
     int currentLevel;

@@ -1,3 +1,9 @@
+0.3.0
+-----
+1. Basic copy to/from device support.
+2. When refreshing library/albums, only affect parts of the model that have
+   changed. (Previously the whole model was replaced).
+
 0.2.1
 -----
 1. Updated polish translation.

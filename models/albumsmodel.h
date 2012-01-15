@@ -95,6 +95,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes) const;
+    QList<Song> songs(const QModelIndexList &indexes) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void update(const MusicLibraryItemRoot *root);
     void clear();

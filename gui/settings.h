@@ -75,6 +75,12 @@ public:
     QStringList hiddenPages();
     bool mpris();
     bool dockManager();
+    QString filenameScheme();
+    bool vfatSafeFilenames();
+    bool asciiOnlyFilenames();
+    bool ignoreTheInFilenames();
+    bool replaceSpacesInFilenames();
+    bool overwriteSongs();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -106,6 +112,12 @@ public:
     void saveHiddenPages(const QStringList &p);
     void saveMpris(bool v);
     void saveDockManager(bool v);
+    void saveFilenameScheme(const QString &v);
+    void saveVfatSafeFilenames(bool v);
+    void saveAsciiOnlyFilenames(bool v);
+    void saveIgnoreTheInFilenames(bool v);
+    void saveReplaceSpacesInFilenames(bool v);
+    void saveOverwriteSongs(bool v);
     void save(bool force=false);
 #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

@@ -89,7 +89,7 @@ void MusicScanner::scanFolder(const QString &f, int level)
     if (level<4) {
         QDir d(f);
         QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
-        foreach (const QFileInfo info, entries) {
+        foreach (const QFileInfo &info, entries) {
             if (stopRequested) {
                 return;
             }

@@ -52,26 +52,22 @@ StreamsPage::StreamsPage(MainWindow *p)
     exportAction->setText(i18n("Export Streams"));
     addAction = p->actionCollection()->addAction("addstream");
     addAction->setText(i18n("Add Stream"));
-    removeAction = p->actionCollection()->addAction("removestream");
-    removeAction->setText(i18n("Remove Stream/Category"));
     editAction = p->actionCollection()->addAction("editstream");
-    editAction->setText(i18n("Edit Stream/Category"));
+    editAction->setText(i18n("Edit"));
     #else
     importAction = new QAction(tr("Import Streams"), this);
     exportAction = new QAction(tr("Export Streams"), this);
     addAction = new QAction(tr("Add Stream"), this);
-    removeAction = new QAction(tr("Remove Stream/Category"), this);
-    editAction = new QAction(tr("Edit Stream/Category"), this);
+    editAction = new QAction(tr("Edit"), this);
     #endif
     importAction->setIcon(QIcon::fromTheme("document-import"));
     exportAction->setIcon(QIcon::fromTheme("document-export"));
     addAction->setIcon(QIcon::fromTheme("list-add"));
-    removeAction->setIcon(QIcon::fromTheme("list-remove"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
     importStreams->setDefaultAction(importAction);
     exportStreams->setDefaultAction(exportAction);
     addStream->setDefaultAction(addAction);
-    removeStream->setDefaultAction(removeAction);
+    removeStream->setDefaultAction(p->removeAction);
     editStream->setDefaultAction(editAction);
 //     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
@@ -80,7 +76,6 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
-    connect(removeAction, SIGNAL(triggered(bool)), this, SLOT(remove()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
@@ -103,13 +98,12 @@ StreamsPage::StreamsPage(MainWindow *p)
     #endif
 //     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
-    view->addAction(removeAction);
     view->addAction(editAction);
-    view->addAction(removeAction);
     view->addAction(exportAction);
+    view->addAction(p->removeAction);
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
-    view->setDeleteAction(removeAction);
+    view->setDeleteAction(p->removeAction);
     view->init(p->replacePlaylistAction, 0);
 }
 
@@ -247,7 +241,7 @@ void StreamsPage::add()
     exportAction->setEnabled(model.rowCount()>0);
 }
 
-void StreamsPage::remove()
+void StreamsPage::removeItems()
 {
     QStringList streams;
     QModelIndexList selected = view->selectedIndexes();

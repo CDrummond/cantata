@@ -27,6 +27,7 @@
 #include "devicepropertiesdialog.h"
 #include "settings.h"
 #include "musiclibrarymodel.h"
+#include "mpdparseutils.h"
 #include <KDE/KAction>
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
@@ -96,9 +97,6 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         namingOptions=readMpdOpts();
         setPage(PAGE_START);
         mode=Copy;
-        if (!mpdDir.endsWith('/')) {
-            mpdDir+QChar('/');
-        }
         show();
     } else {
         KMessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
@@ -113,6 +111,10 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 {
     init(udi, QString(), songs, Remove);
     setPage(PAGE_PROGRESS);
+    QString baseDir=udi.isEmpty() ? mpdDir : QString();
+    foreach (const Song &s, songsToAction) {
+        dirsToClean.insert(baseDir+MPDParseUtils::getDir(s.file));
+    }
     show();
     doNext();
 }
@@ -121,6 +123,9 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
 {
     resize(400, 160);
     mpdDir=Settings::self()->mpdDir();
+    if (!mpdDir.endsWith('/')) {
+        mpdDir+QChar('/');
+    }
     sourceUdi=srcUdi;
     destUdi=dstUdi;
     songsToAction=songs;
@@ -129,7 +134,7 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     qSort(songsToAction);
     progressLabel->setText(QString());
     progressBar->setValue(0);
-    progressBar->setRange(0, songsToAction.count());
+    progressBar->setRange(0, songsToAction.count()+(Copy==mode ? 0 : 1));
     autoSkip=false;
     performingAction=false;
     paused=false;
@@ -208,8 +213,9 @@ void ActionDialog::doNext()
                     currentSong.file=mpdDir+currentSong.file;
                     dev->addSong(currentSong, overwrite->isChecked());
                 } else {
-                    destFile=mpdDir+namingOptions.createFilename(currentSong);
-                    dev->copySongTo(currentSong, destFile, overwrite->isChecked());
+                    QString fileName=namingOptions.createFilename(currentSong);
+                    destFile=mpdDir+fileName;
+                    dev->copySongTo(currentSong, mpdDir, fileName, overwrite->isChecked());
                 }
                 progressLabel->setText(formatSong(currentSong));
             } else {
@@ -235,6 +241,18 @@ void ActionDialog::doNext()
                 }
             }
         }
+    } else if (Remove==mode && dirsToClean.count()) {
+        Device *dev=sourceUdi.isEmpty() ? 0 : DevicesModel::self()->device(sourceUdi);
+        QString base=sourceUdi.isEmpty() ? mpdDir : (dev ? dev->path() : QString());
+        progressLabel->setText(i18n("Clearing unused folders"));
+        if (!base.isEmpty()) {
+            foreach (const QString &d, dirsToClean) {
+                Device::cleanDir(d, base);
+            }
+        }
+        dirsToClean.clear();
+        progressBar->setValue(progressBar->value()+1);
+        doNext();
     } else {
         refreshMpd();
         accept();
@@ -244,7 +262,6 @@ void ActionDialog::doNext()
 void ActionDialog::actionStatus(int status)
 {
     int origStatus=status;
-    // TODO: Add separator between error message and song details!
     if (Device::Ok!=status && Device::NotConnected!=status && autoSkip) {
         status=Device::Ok;
     }

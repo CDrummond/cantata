@@ -28,6 +28,7 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "covers.h"
 #include <solid/portablemediaplayer.h>
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
@@ -300,6 +301,59 @@ Device * Device::create(DevicesModel *m, const QString &udi)
         }
     }
     return 0;
+}
+
+QString fixDir(const QString &d)
+{
+    QString dir=d;
+    dir.replace(QLatin1String("//"), QLatin1String("/"));
+    if (!dir.endsWith('/')){
+        dir+='/';
+    }
+    return dir;
+}
+
+void Device::cleanDir(const QString &dir, const QString &base, int level)
+{
+    QDir d(dir);
+    if (d.exists()) {
+        QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
+        QList<QString> coverFiles;
+        foreach (const QFileInfo &info, entries) {
+            if (info.isDir()) {
+                return;
+            }
+            if (!Covers::isCoverFile(info.fileName())) {
+                return;
+            }
+            coverFiles.append(info.absoluteFilePath());
+        }
+
+        foreach (const QString &cf, coverFiles) {
+            if (!QFile::remove(cf)) {
+                return;
+            }
+        }
+
+        if (fixDir(dir)==fixDir(base)) {
+            return;
+        }
+        QString dirName=d.dirName();
+        if (dirName.isEmpty()) {
+            return;
+        }
+        d.cdUp();
+        if (!d.rmdir(dirName)) {
+            return;
+        }
+        if (level>=3) {
+            return;
+        }
+        QString upDir=d.absolutePath();
+        if (fixDir(upDir)!=fixDir(base)) {
+            cleanDir(upDir, base, level+1);
+        }
+    }
 }
 
 void Device::applyUpdate()

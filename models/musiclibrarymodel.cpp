@@ -312,8 +312,7 @@ void MusicLibraryModel::addSongToList(const Song &s)
     }
     MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
     if (!albumItem) {
-        QModelIndex idx=index(rootItem->children().indexOf(artistItem), 0, QModelIndex());
-        beginInsertRows(idx, artistItem->childCount(), artistItem->childCount());
+        beginInsertRows(createIndex(rootItem->children().indexOf(artistItem), 0, artistItem), artistItem->childCount(), artistItem->childCount());
         albumItem = artistItem->createAlbum(s);
         endInsertRows();
     }
@@ -323,9 +322,7 @@ void MusicLibraryModel::addSongToList(const Song &s)
         }
     }
 
-    QModelIndex idx=index(artistItem->children().indexOf(albumItem), 0,
-                        index(rootItem->children().indexOf(artistItem), 0, QModelIndex()));
-    beginInsertRows(idx, albumItem->childCount(), albumItem->childCount());
+    beginInsertRows(createIndex(artistItem->children().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
     MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
     albumItem->append(songItem);
     endInsertRows();
@@ -354,7 +351,6 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
         return;
     }
 
-
     if (1==artistItem->childCount() && 1==albumItem->childCount()) {
         // 1 album with 1 song - so remove whole artist
         int row=rootItem->children().indexOf(artistItem);
@@ -366,18 +362,15 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
 
     if (1==albumItem->childCount()) {
         // multiple albums, but this album only has 1 song - remove album
-        QModelIndex idx=index(children().indexOf(artistItem), 0, QModelIndex());
         int row=artistItem->children().indexOf(albumItem);
-        beginRemoveRows(idx, row, row);
+        beginRemoveRows(createIndex(rootItem->children().indexOf(artistItem), 0, artistItem), row, row);
         artistItem->remove(albumItem);
         endRemoveRows();
         return;
     }
 
     // Just remove particular song
-    QModelIndex idx=index(artistItem->children().indexOf(albumItem), 0,
-                        index(children().indexOf(artistItem), 0, QModelIndex()));
-    beginRemoveRows(idx, songRow, songRow);
+    beginRemoveRows(createIndex(artistItem->children().indexOf(albumItem), 0, albumItem), songRow, songRow);
     albumItem->remove(songRow);
     endRemoveRows();
 }

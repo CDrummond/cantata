@@ -33,6 +33,7 @@
 #include <KDE/KMessageBox>
 #include <KDE/KIO/FileCopyJob>
 #include <KDE/KIO/Job>
+#include <QtCore/QDebug>
 
 enum Pages
 {
@@ -73,7 +74,6 @@ ActionDialog::ActionDialog(QWidget *parent, KAction *updateDbAct)
     configureButton->setIcon(QIcon::fromTheme("configure"));
     overwrite->setChecked(Settings::self()->overwriteSongs());
     connect(configureButton, SIGNAL(pressed()), SLOT(configureDest()));
-    resize(400, 100);
 }
 
 void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)
@@ -99,6 +99,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         if (!mpdDir.endsWith('/')) {
             mpdDir+QChar('/');
         }
+        resize(600, 200);
         show();
     } else {
         KMessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
@@ -113,6 +114,7 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 {
     init(udi, QString(), songs, Remove);
     setPage(PAGE_PROGRESS);
+    resize(600, 200);
     show();
     doNext();
 }
@@ -143,6 +145,7 @@ void ActionDialog::slotButtonClicked(int button)
         switch (button) {
         case KDialog::Ok:
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
+            setPage(PAGE_PROGRESS);
             doNext();
             break;
         case KDialog::Cancel:
@@ -190,6 +193,7 @@ void ActionDialog::doNext()
 {
     if (songsToAction.count()) {
         currentSong=songsToAction.takeFirst();
+        qWarning() << currentSong.file;
         if(Copy==mode) {
             bool copyToDev=sourceUdi.isEmpty();
             Device *dev=DevicesModel::self()->device(copyToDev ? destUdi : sourceUdi);
@@ -240,11 +244,17 @@ void ActionDialog::doNext()
 
 void ActionDialog::actionStatus(int status)
 {
+    int origStatus=status;
     // TODO: Add separator between error message and song details!
+    if (Device::Ok!=status && Device::NotConnected!=status && autoSkip) {
+        status=Device::Ok;
+    }
     switch (status) {
     case Device::Ok:
         performingAction=false;
-        actionedSongs.append(currentSong);
+        if (Device::Ok==origStatus) {
+            actionedSongs.append(currentSong);
+        }
         if (1==actionedSongs.count() && !sourceUdi.isEmpty()) {
             // Cache is now out of date, so need to remove!
             MusicLibraryModel::self()->removeCache();

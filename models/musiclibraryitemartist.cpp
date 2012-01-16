@@ -128,5 +128,6 @@ void MusicLibraryItemArtist::remove(MusicLibraryItemAlbum *album)
             (*it)--;
         }
     }
+    m_indexes.remove(album->data());
     delete m_childItems.takeAt(index);
 }

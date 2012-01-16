@@ -333,6 +333,53 @@ void MusicLibraryModel::addSongToList(const Song &s)
 
 void MusicLibraryModel::removeSongFromList(const Song &s)
 {
+    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
+    if (!artistItem) {
+        return;
+    }
+    MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
+    if (!albumItem) {
+        return;
+    }
+    MusicLibraryItem *songItem=0;
+    int songRow=0;
+    foreach (MusicLibraryItem *song, albumItem->children()) {
+        if (static_cast<MusicLibraryItemSong *>(song)->song().title==s.title) {
+            songItem=song;
+            break;
+        }
+        songRow++;
+    }
+    if (!songItem) {
+        return;
+    }
+
+
+    if (1==artistItem->childCount() && 1==albumItem->childCount()) {
+        // 1 album with 1 song - so remove whole artist
+        int row=rootItem->children().indexOf(artistItem);
+        beginRemoveRows(QModelIndex(), row, row);
+        rootItem->remove(artistItem);
+        endRemoveRows();
+        return;
+    }
+
+    if (1==albumItem->childCount()) {
+        // multiple albums, but this album only has 1 song - remove album
+        QModelIndex idx=index(children().indexOf(artistItem), 0, QModelIndex());
+        int row=artistItem->children().indexOf(albumItem);
+        beginRemoveRows(idx, row, row);
+        artistItem->remove(albumItem);
+        endRemoveRows();
+        return;
+    }
+
+    // Just remove particular song
+    QModelIndex idx=index(artistItem->children().indexOf(albumItem), 0,
+                        index(children().indexOf(artistItem), 0, QModelIndex()));
+    beginRemoveRows(idx, songRow, songRow);
+    albumItem->remove(songRow);
+    endRemoveRows();
 }
 
 void MusicLibraryModel::removeCache()

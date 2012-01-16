@@ -376,7 +376,7 @@ void Device::removeSongFromList(const Song &s)
     MusicLibraryItem *songItem=0;
     int songRow=0;
     foreach (MusicLibraryItem *song, albumItem->children()) {
-        if (songItem->data()==s.title) {
+        if (static_cast<MusicLibraryItemSong *>(song)->song().title==s.title) {
             songItem=song;
             break;
         }
@@ -386,30 +386,32 @@ void Device::removeSongFromList(const Song &s)
         return;
     }
 
-    if (1==albumItem->childCount()) {
-        if (1==artistItem->childCount()) {
-            // Remove artist
-            QModelIndex idx=model->index(model->devices.indexOf(this), 0, QModelIndex());
-            int row=m_childItems.indexOf(artistItem);
-            model->beginRemoveRows(idx, row, row);
-            remove(artistItem);
-            model->endRemoveRows();
-        } else {
-            // Remove album from artist
-            QModelIndex idx=model->index(children().indexOf(artistItem), 0,
-                                model->index(model->devices.indexOf(this), 0, QModelIndex()));
-            int row=artistItem->children().indexOf(albumItem);
-            model->beginRemoveRows(idx, row, row);
-            artistItem->remove(albumItem);
-            model->endRemoveRows();
-        }
-    } else {
-        // Remove song frmo album
-        QModelIndex idx=model->index(artistItem->children().indexOf(albumItem), 0,
-                            model->index(children().indexOf(artistItem), 0,
-                                model->index(model->devices.indexOf(this), 0, QModelIndex())));
-        model->beginRemoveRows(idx, songRow, songRow);
-        albumItem->remove(songRow);
+    if (1==artistItem->childCount() && 1==albumItem->childCount()) {
+        // 1 album with 1 song - so remove whole artist
+        QModelIndex idx=model->index(model->devices.indexOf(this), 0, QModelIndex());
+        int row=m_childItems.indexOf(artistItem);
+        model->beginRemoveRows(idx, row, row);
+        remove(artistItem);
         model->endRemoveRows();
+        return;
     }
+
+    if (1==albumItem->childCount()) {
+        // multiple albums, but this album only has 1 song - remove album
+        QModelIndex idx=model->index(children().indexOf(artistItem), 0,
+                            model->index(model->devices.indexOf(this), 0, QModelIndex()));
+        int row=artistItem->children().indexOf(albumItem);
+        model->beginRemoveRows(idx, row, row);
+        artistItem->remove(albumItem);
+        model->endRemoveRows();
+        return;
+    }
+
+    // Just remove particular song
+    QModelIndex idx=model->index(artistItem->children().indexOf(albumItem), 0,
+                        model->index(children().indexOf(artistItem), 0,
+                            model->index(model->devices.indexOf(this), 0, QModelIndex())));
+    model->beginRemoveRows(idx, songRow, songRow);
+    albumItem->remove(songRow);
+    model->endRemoveRows();
 }

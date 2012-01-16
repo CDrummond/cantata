@@ -36,6 +36,7 @@
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
+#include "musiclibrarymodel.h"
 #include "playqueuemodel.h"
 #include "song.h"
 #include "covers.h"
@@ -133,9 +134,8 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al)
 
 AlbumsModel::AlbumsModel(QObject *parent)
     : QAbstractItemModel(parent)
+    , enabled(false)
 {
-    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-            this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
 }
 
 AlbumsModel::~AlbumsModel()
@@ -369,6 +369,10 @@ QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
 
 void AlbumsModel::update(const MusicLibraryItemRoot *root)
 {
+    if (!enabled) {
+        return;
+    }
+
     QList<AlbumItem *>::Iterator it=items.begin();
     QList<AlbumItem *>::Iterator end=items.end();
 
@@ -454,6 +458,26 @@ void AlbumsModel::clear()
     qDeleteAll(items);
     items.clear();
     endResetModel();
+}
+
+void AlbumsModel::setEnabled(bool e)
+{
+    if (e==enabled) {
+        return;
+    }
+    enabled=e;
+
+    if (enabled) {
+        connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
+                this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
+        connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
+        update(MusicLibraryModel::self()->root());
+    } else {
+        clear();
+        disconnect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
+                    this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
+        disconnect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
+    }
 }
 
 AlbumsModel::AlbumItem::~AlbumItem()

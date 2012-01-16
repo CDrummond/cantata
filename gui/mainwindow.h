@@ -247,6 +247,7 @@ private Q_SLOTS:
     void copyTrackInfo();
     void togglePlaylist();
     void currentTabChanged(int index);
+    void tabToggled(int index);
     void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
     void showLibraryTab() { showTab(PAGE_LIBRARY); }
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }

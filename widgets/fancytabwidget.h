@@ -213,6 +213,7 @@ public slots:
 signals:
   void CurrentChanged(int index);
   void ModeChanged(FancyTabWidget::Mode mode);
+  void TabToggled(int index);
 
 protected:
   void paintEvent(QPaintEvent *event);

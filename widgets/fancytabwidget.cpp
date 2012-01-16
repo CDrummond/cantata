@@ -718,6 +718,7 @@ void FancyTabWidget::ToggleTab(int tab, bool show) {
         Mode m=mode_;
         mode_=Mode_None;
         SetMode(m);
+        emit TabToggled(tab);
     }
 }
 

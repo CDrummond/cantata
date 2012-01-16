@@ -26,7 +26,6 @@
 
 #include "ui_albumspage.h"
 #include "mainwindow.h"
-#include "albumsmodel.h"
 #include "albumsproxymodel.h"
 
 class MusicLibraryItemRoot;
@@ -62,10 +61,8 @@ public Q_SLOTS:
     void updateGenres(const QStringList &genres);
     void itemActivated(const QModelIndex &);
     void searchItems();
-    void update(const MusicLibraryItemRoot *root) { model.update(root); }
 
 private:
-    AlbumsModel model;
     AlbumsProxyModel proxy;
 };
 

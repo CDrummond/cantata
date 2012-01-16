@@ -25,6 +25,7 @@
 #include "mpdconnection.h"
 #include "covers.h"
 #include "musiclibraryitemsong.h"
+#include "albumsmodel.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
@@ -64,7 +65,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->addAction(p->copyToDeviceAction);
     view->addAction(p->deleteSongsAction);
     #endif
-    proxy.setSourceModel(&model);
+    proxy.setSourceModel(AlbumsModel::self());
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
 
@@ -73,8 +74,6 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
-    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-            &model, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
 }
@@ -91,7 +90,7 @@ void AlbumsPage::setView(int v)
 
 void AlbumsPage::clear()
 {
-    model.clear();
+    AlbumsModel::self()->clear();
     view->update();
 }
 
@@ -122,7 +121,7 @@ void AlbumsPage::addSelectionToPlaylist(const QString &name)
         mapped.append(proxy.mapToSource(idx));
     }
 
-    QStringList files=model.filenames(mapped);
+    QStringList files=AlbumsModel::self()->filenames(mapped);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
@@ -148,7 +147,7 @@ void AlbumsPage::addSelectionToDevice(const QString &udi)
         mapped.append(proxy.mapToSource(idx));
     }
 
-    QList<Song> songs=model.songs(mapped);
+    QList<Song> songs=AlbumsModel::self()->songs(mapped);
 
     if (!songs.isEmpty()) {
         emit addToDevice(QString(), udi, songs);
@@ -169,7 +168,7 @@ void AlbumsPage::deleteSongs()
         mapped.append(proxy.mapToSource(idx));
     }
 
-    QList<Song> songs=model.songs(mapped);
+    QList<Song> songs=AlbumsModel::self()->songs(mapped);
 
     if (!songs.isEmpty()) {
         if (KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {

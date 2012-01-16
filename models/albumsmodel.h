@@ -84,6 +84,8 @@ public:
         bool isSingleTracks;
     };
 
+    static AlbumsModel * self();
+
     AlbumsModel(QObject *parent=0);
     ~AlbumsModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -97,7 +99,6 @@ public:
     QStringList filenames(const QModelIndexList &indexes) const;
     QList<Song> songs(const QModelIndexList &indexes) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
-    void update(const MusicLibraryItemRoot *root);
     void clear();
 
 Q_SIGNALS:
@@ -105,6 +106,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
+    void update(const MusicLibraryItemRoot *root);
 
 private:
     mutable QList<AlbumItem *> items;

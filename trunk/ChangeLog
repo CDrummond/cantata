@@ -3,6 +3,7 @@
 1. Basic copy to/from device support.
 2. When refreshing library/albums, only affect parts of the model that have
    changed. (Previously the whole model was replaced).
+3. When changing name of playlist, show the original name in the line-edit.
 
 0.2.1
 -----

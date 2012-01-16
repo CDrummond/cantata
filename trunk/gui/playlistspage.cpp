@@ -208,9 +208,9 @@ void PlaylistsPage::renamePlaylist()
         QModelIndex sourceIndex = proxy.mapToSource(items.first());
         QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
         #ifdef ENABLE_KDE_SUPPORT
-        QString newName = KInputDialog::getText(i18n("Rename Playlist"), i18n("Enter new name for playlist: %1").arg(name), QString(), 0, this);
+        QString newName = KInputDialog::getText(i18n("Rename Playlist"), i18n("Enter new name for playlist:"), name, 0, this);
         #else
-        QString newName = QInputDialog::getText(this, tr("Rename Playlist"), tr("Enter new name for playlist: %1").arg(name));
+        QString newName = QInputDialog::getText(this, tr("Rename Playlist"), tr("Enter new name for playlist:"), QLineEdit::Normal, name);
         #endif
 
         if (!newName.isEmpty()) {

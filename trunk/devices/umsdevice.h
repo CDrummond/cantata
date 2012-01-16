@@ -85,7 +85,7 @@ private:
 
 private Q_SLOTS:
     void libraryUpdated();
-    void saveProperties(const QString &newPath, const Device::NameOptions &opts);
+    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::NameOptions &opts);
     void addSongResult(KJob *job);
     void copySongToResult(KJob *job);
     void removeSongResult(KJob *job);
@@ -95,6 +95,7 @@ private:
     MusicScanner *scanner;
     DevicePropertiesDialog *propDlg;
     QString audioFolder;
+    QString coverFileName;
     QStringList unusedParams;
     QString currentBaseDir;
     QString currentMusicPath;

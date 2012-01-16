@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>491</width>
-    <height>197</height>
+    <width>524</width>
+    <height>224</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,14 +20,30 @@
    <item>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="musicFolderLabel">
        <property name="text">
         <string>Music folder:</string>
+       </property>
+       <property name="buddy">
+        <cstring>musicFolder</cstring>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
       <widget class="DirRequester" name="musicFolder"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="albumCoversLabel">
+       <property name="text">
+        <string>Copy album covers as:</string>
+       </property>
+       <property name="buddy">
+        <cstring>albumCovers</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="albumCovers"/>
      </item>
     </layout>
    </item>
@@ -37,23 +53,9 @@
       <string>Filenames</string>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>VFAT safe:</string>
-        </property>
-        <property name="buddy">
-         <cstring>vfatSafe</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="vfatSafe">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
@@ -139,6 +141,23 @@
         </item>
        </layout>
       </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="vfatSafe">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>VFAT safe:</string>
+        </property>
+        <property name="buddy">
+         <cstring>vfatSafe</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -170,6 +189,16 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>musicFolder</tabstop>
+  <tabstop>albumCovers</tabstop>
+  <tabstop>vfatSafe</tabstop>
+  <tabstop>asciiOnly</tabstop>
+  <tabstop>replaceSpaces</tabstop>
+  <tabstop>ignoreThe</tabstop>
+  <tabstop>filenameScheme</tabstop>
+  <tabstop>configFilename</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

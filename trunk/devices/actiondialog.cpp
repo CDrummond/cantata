@@ -312,7 +312,7 @@ void ActionDialog::configureDest()
             propDlg=new DevicePropertiesDialog(this);
             connect(propDlg, SIGNAL(updatedSettings(const QString &, const Device::NameOptions &)), SLOT(saveProperties(const QString &, const Device::NameOptions &)));
         }
-        propDlg->show(mpdDir, readMpdOpts(), false);
+        propDlg->show(mpdDir, QString(), readMpdOpts(), false);
     } else {
         Device *dev=DevicesModel::self()->device(destUdi);
         if (dev) {

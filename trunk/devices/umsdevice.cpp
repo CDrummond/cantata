@@ -51,6 +51,8 @@ static const QLatin1String constAsciiOnlyKey("ascii_only");
 static const QLatin1String constIgnoreTheKey("ignore_the");
 static const QLatin1String constReplaceSpacesKey("replace_spaces");
 // static const QLatin1String constUseAutomaticallyKey("use_automatically");
+static const QLatin1String constCoverFileName("cover_filename"); // Cantata extension!
+static const QLatin1String constDefCoverFileName("cover.jpg");
 
 MusicScanner::MusicScanner(const QString &f)
     : QThread(0)
@@ -161,9 +163,10 @@ void UmsDevice::configure(QWidget *parent)
 {
     if (!propDlg) {
         propDlg=new DevicePropertiesDialog(parent);
-        connect(propDlg, SIGNAL(updatedSettings(const QString &, const Device::NameOptions &)), SLOT(saveProperties(const QString &, const Device::NameOptions &)));
+        connect(propDlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::NameOptions &)),
+                SLOT(saveProperties(const QString &, const QString &, const Device::NameOptions &)));
     }
-    propDlg->show(audioFolder, nameOpts);
+    propDlg->show(audioFolder, coverFileName, nameOpts);
 }
 
 void UmsDevice::rescan()
@@ -271,7 +274,7 @@ void UmsDevice::addSongResult(KJob *job)
         QString destFile=audioFolder+nameOpts.createFilename(currentSong);
 
         currentSong.file=destFile;
-        Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), false);
+        Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), coverFileName);
         addSongToList(currentSong);
         emit actionStatus(Ok);
     }
@@ -284,7 +287,7 @@ void UmsDevice::copySongToResult(KJob *job)
     } else {
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
-        Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), true);
+        Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), QString());
         MusicLibraryModel::self()->addSongToList(currentSong);
         emit actionStatus(Ok);
     }
@@ -366,7 +369,7 @@ void UmsDevice::setup()
                 }
 //             } else if (line.startsWith(constPodcastFolderKey+"=")) {
 //                 podcastFolder=line.section('=', 1, 1);
-            } else if (line.startsWith( constMusicFilenameSchemeKey+"=")) {
+            } else if (line.startsWith(constMusicFilenameSchemeKey+"=")) {
                 QString scheme = line.section('=', 1, 1);
                 //protect against empty setting.
                 if( !scheme.isEmpty() ) {
@@ -382,10 +385,19 @@ void UmsDevice::setup()
                 nameOpts.replaceSpaces = QLatin1String("true")==line.section('=', 1, 1);
 //             } else if (line.startsWith(constUseAutomaticallyKey+"="))  {
 //                 useAutomatically = QLatin1String("true")==line.section('=', 1, 1);
+            } else if (line.startsWith(constCoverFileName+"=")) {
+                coverFileName=line.section('=', 1, 1);
+                if (!Covers::standardNames().contains(coverFileName)) {
+                    coverFileName=QString();
+                }
             } else {
                 unusedParams+=line;
             }
         }
+    }
+
+    if (coverFileName.isEmpty()) {
+        coverFileName=constDefCoverFileName;
     }
 
     // No setting, see if any standard dirs exist in path...
@@ -441,9 +453,9 @@ void UmsDevice::libraryUpdated()
     }
 }
 
-void UmsDevice::saveProperties(const QString &newPath, const Device::NameOptions &opts)
+void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::NameOptions &opts)
 {
-    if (opts==nameOpts && newPath==audioFolder) {
+    if (opts==nameOpts && newPath==audioFolder && newCoverFileName==coverFileName) {
         return;
     }
     nameOpts=opts;
@@ -495,6 +507,9 @@ void UmsDevice::saveProperties(const QString &newPath, const Device::NameOptions
 //         if (useAutomatically) {
 //             out << constUseAutomaticallyKey << '=' << (useAutomatically ? "true" : "false") << '\n';
 //         }
+        if (coverFileName!=constDefCoverFileName) {
+            out << constCoverFileName << '=' << coverFileName << '\n';
+        }
         foreach (const QString &u, unusedParams) {
             out << u << '\n';
         }

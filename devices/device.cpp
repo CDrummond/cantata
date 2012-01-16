@@ -24,6 +24,7 @@
 #include "device.h"
 #include "devicesmodel.h"
 #include "umsdevice.h"
+#include "mtpdevice.h"
 #include "song.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
@@ -279,12 +280,11 @@ Device * Device::create(DevicesModel *m, const QString &udi)
 
     if (device.is<Solid::PortableMediaPlayer>())
     {
-        // TODO!!!
-//         Solid::PortableMediaPlayer *pmp = device.as<Solid::PortableMediaPlayer>();
-//
-//         if (pmp->supportedProtocols().contains(QLatin1String(""mtp"))) {
-//             return new MtpDevice(m, udi, name);
-//         }
+        Solid::PortableMediaPlayer *pmp = device.as<Solid::PortableMediaPlayer>();
+
+        if (pmp->supportedProtocols().contains(QLatin1String("mtp"))) {
+            return new MtpDevice(m, device);
+        }
     } else if (device.is<Solid::StorageAccess>()) {
 
         // TODO: Check bus type - only want USB devices!

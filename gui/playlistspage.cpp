@@ -43,21 +43,18 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
-    removeAction = p->actionCollection()->addAction("removeplaylist");
-    removeAction->setText(i18n("Remove Playlist"));
     renamePlaylistAction = p->actionCollection()->addAction("renameplaylist");
-    renamePlaylistAction->setText(i18n("Rename Playlist"));
+    renamePlaylistAction->setText(i18n("Rename"));
     #else
-    removeAction = new QAction(tr("Remove Playlist"), this);
-    renamePlaylistAction = new QAction(tr("Rename Playlist"), this);
+    removeAction = new QAction(tr("Remove"), this);
+    renamePlaylistAction = new QAction(tr("Rename"), this);
     #endif
-    removeAction->setIcon(QIcon::fromTheme("list-remove"));
     renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
 
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->updateDbAction);
-    rem->setDefaultAction(removeAction);
+    rem->setDefaultAction(p->removeAction);
     renPlaylist->setDefaultAction(renamePlaylistAction);
     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
@@ -81,8 +78,8 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     #endif
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
-    view->addAction(removeAction);
     view->addAction(renamePlaylistAction);
+    view->addAction(p->removeAction);
     view->setUniformRowHeights(true);
     view->setAcceptDrops(true);
     view->setDragDropOverwriteMode(true);
@@ -91,7 +88,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
-    view->setDeleteAction(removeAction);
+    view->setDeleteAction(p->removeAction);
 
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(selectionChanged()));
@@ -102,7 +99,6 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<int> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<int> &)));
-    connect(removeAction, SIGNAL(activated()), this, SLOT(removeItems()));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
 }

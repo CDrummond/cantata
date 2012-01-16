@@ -45,11 +45,13 @@ public:
 Q_SIGNALS:
     void add(const QStringList &streams);
 
+public Q_SLOTS:
+    void removeItems();
+
 private Q_SLOTS:
     void importXml();
     void exportXml();
     void add();
-    void remove();
     void edit();
     void controlActions();
     void searchItems();
@@ -63,7 +65,6 @@ private:
     Action *importAction;
     Action *exportAction;
     Action *addAction;
-    Action *removeAction;
     Action *editAction;
     StreamsModel model;
     StreamsProxyModel proxy;

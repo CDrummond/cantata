@@ -319,6 +319,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     deleteSongsAction = actionCollection()->addAction("deletesongs");
     #endif
 
+    removeAction = actionCollection()->addAction("removeitems");
+    removeAction->setText(i18n("Remove"));
+
     replacePlaylistAction = actionCollection()->addAction("replaceplaylist");
     replacePlaylistAction->setText(i18n("Replace Play Queue"));
 
@@ -399,6 +402,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
     addToPlaylistAction = new QAction(tr("Add To Play Queue"), this);
     addToStoredPlaylistAction = new QAction(tr("Add To Playlist"), this);
+    removeAction = new QAction(tr("Remove"), this);
     replacePlaylistAction = new QAction(tr("Replace Play Queue"), this);
     removeFromPlaylistAction = new QAction(tr("Remove From PlayList"), this);
     copyTrackInfoAction = new QAction(tr("Copy Track Info"), this);
@@ -459,6 +463,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     repeatPlaylistAction->setIcon(QIcon::fromTheme("edit-redo"));
     randomPlaylistAction->setIcon(QIcon::fromTheme("media-playlist-shuffle"));
     consumePlaylistAction->setIcon(QIcon::fromTheme("format-list-unordered"));
+    removeAction->setIcon(QIcon::fromTheme("list-remove"));
     addToPlaylistAction->setIcon(QIcon::fromTheme("list-add"));
     replacePlaylistAction->setIcon(QIcon::fromTheme("media-playback-start"));
 
@@ -715,6 +720,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(searchPlaylistLineEdit, SIGNAL(returnPressed()), this, SLOT(searchPlaylist()));
     connect(searchPlaylistLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchPlaylist()));
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playlistItemActivated(const QModelIndex &)));
+    connect(removeAction, SIGNAL(activated()), this, SLOT(removeItems()));
     connect(addToPlaylistAction, SIGNAL(activated()), this, SLOT(addToPlaylist()));
     connect(replacePlaylistAction, SIGNAL(activated()), this, SLOT(replacePlaylist()));
     connect(removeFromPlaylistAction, SIGNAL(activated()), this, SLOT(removeFromPlaylist()));
@@ -1489,6 +1495,15 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name)
         albumsPage->addSelectionToPlaylist(name);
     } else if (folderPage->isVisible()) {
         folderPage->addSelectionToPlaylist(name);
+    }
+}
+
+void MainWindow::removeItems()
+{
+    if (playlistsPage->isVisible()) {
+        playlistsPage->removeItems();
+    } else if (streamsPage->isVisible()) {
+        streamsPage->removeItems();
     }
 }
 

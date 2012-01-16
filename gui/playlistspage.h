@@ -53,8 +53,10 @@ Q_SIGNALS:
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes);
 
-private Q_SLOTS:
+public Q_SLOTS:
     void removeItems();
+
+private Q_SLOTS:
     void savePlaylist();
     void renamePlaylist();
     void itemDoubleClicked(const QModelIndex &index);
@@ -62,7 +64,6 @@ private Q_SLOTS:
     void searchItems();
 
 private:
-    Action *removeAction;
     Action *renamePlaylistAction;
     PlaylistsProxyModel proxy;
 };

@@ -235,6 +235,7 @@ private Q_SLOTS:
     void addToPlaylist();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
+    void removeItems();
     #ifdef ENABLE_KDE_SUPPORT
     void trayItemScrollRequested(int delta, Qt::Orientation orientation);
     #else
@@ -317,6 +318,7 @@ private:
     Action *playlistsTabAction;
     Action *lyricsTabAction;
     Action *streamsTabAction;
+    Action *removeAction;
     #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
     #endif

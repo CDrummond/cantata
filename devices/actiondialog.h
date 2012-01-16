@@ -59,7 +59,7 @@ private:
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
     void slotButtonClicked(int button);
     void setPage(int page, const QString &msg=QString());
-    QString formatSong(const Song &s);
+    QString formatSong(const Song &s, bool showFiles=false);
     void refreshMpd();
     void removeSong(const Song &s);
 

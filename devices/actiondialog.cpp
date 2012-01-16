@@ -99,7 +99,6 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         if (!mpdDir.endsWith('/')) {
             mpdDir+QChar('/');
         }
-        resize(600, 200);
         show();
     } else {
         KMessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
@@ -114,13 +113,13 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 {
     init(udi, QString(), songs, Remove);
     setPage(PAGE_PROGRESS);
-    resize(600, 200);
     show();
     doNext();
 }
 
 void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m)
 {
+    resize(400, 160);
     mpdDir=Settings::self()->mpdDir();
     sourceUdi=srcUdi;
     destUdi=dstUdi;
@@ -265,23 +264,23 @@ void ActionDialog::actionStatus(int status)
         }
         break;
     case Device::FileExists:
-        setPage(PAGE_SKIP, i18n("<p>The destination filename already exists!</br></br>%1</p>", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("The destination filename already exists!</br></br>%1", formatSong(currentSong)));
         break;
     case Device::SongExists:
-        setPage(PAGE_SKIP, i18n("<p>Song already exists!</br></br>%1</p>", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Song already exists!</br></br>%1", formatSong(currentSong)));
         break;
     case Device::DirCreationFaild:
-        setPage(PAGE_SKIP, i18n("<p>Failed to create destination folder!</br>Please check you have sufficient permissions.</br></br>%1</p>", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Failed to create destination folder!</br>Please check you have sufficient permissions.</br></br>%1", formatSong(currentSong)));
         break;
     case Device::SourceFileDoesNotExist:
-        setPage(PAGE_SKIP, i18n("<p>Source file nolonger exists?</br></br>%1</p>", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Source file nolonger exists?</br></br>%1", formatSong(currentSong)));
         break;
     case Device::Failed:
-        setPage(PAGE_SKIP, Copy==mode ? i18n("<p>Failed to copy.</br></br>%1</p>", formatSong(currentSong))
-                                      : i18n("<p>Failed to delete.</br></br>%1</p>", formatSong(currentSong)));
+        setPage(PAGE_SKIP, Copy==mode ? i18n("<p>Failed to copy.</br></br>%1", formatSong(currentSong))
+                                      : i18n("<p>Failed to delete.</br></br>%1", formatSong(currentSong)));
         break;
     case Device::NotConnected:
-        setPage(PAGE_ERROR, i18n("<p>Lost connection to device.</br></br>%1</p>", formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Lost connection to device.</br></br>%1", formatSong(currentSong)));
         break;
     default:
         break;
@@ -327,34 +326,42 @@ void ActionDialog::setPage(int page, const QString &msg)
             setButtons(Cancel);
             break;
         case PAGE_SKIP:
-            skipText->setText(i18n("<h3>Error</h3>")+QLatin1String("<p>")+msg+QLatin1String("</p>"));
+            skipText->setText(i18n("<b>Error</b><br/>")+msg);
+            skipText->setToolTip(formatSong(currentSong, true));
             setButtons(Cancel|User1|User2);
             setButtonText(User1, i18n("Skip"));
             setButtonText(User2, i18n("Auto Skip"));
             break;
         case PAGE_ERROR:
-            errorText->setText(i18n("<h3>Error</h3>")+QLatin1String("<p>")+msg+QLatin1String("</p>"));
+            errorText->setText(i18n("<b>Error</b><br/>")+msg);
+            errorText->setToolTip(formatSong(currentSong, true));
             setButtons(Cancel);
             break;
     }
 }
 
-QString ActionDialog::formatSong(const Song &s)
+QString ActionDialog::formatSong(const Song &s, bool showFiles)
 {
-    return Copy==mode
-            ? i18n("<table>"
-                   "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
-                   "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
-                   "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
-                   "<tr><td align=\"right\">Source file:</td><td>%4</td></tr>"
-                   "<tr><td align=\"right\">Destination file:</td><td>%5</td></tr>"
-                   "</table>", s.artist, s.album, s.title, s.file, destFile)
+    return showFiles
+            ? Copy==mode
+                ? i18n("<table>"
+                       "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
+                       "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
+                       "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
+                       "<tr><td align=\"right\">Source file:</td><td>%4</td></tr>"
+                       "<tr><td align=\"right\">Destination file:</td><td>%5</td></tr>"
+                       "</table>", s.artist, s.album, s.title, s.file, destFile)
+                : i18n("<table>"
+                       "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
+                       "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
+                       "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
+                       "<tr><td align=\"right\">File:</td><td>%4</td></tr>"
+                       "</table>", s.artist, s.album, s.title, s.file)
             : i18n("<table>"
                    "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
                    "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
                    "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
-                   "<tr><td align=\"right\">File:</td><td>%4</td></tr>"
-                   "</table>", s.artist, s.album, s.title, s.file);
+                   "</table>", s.artist, s.album, s.title);
 }
 
 void ActionDialog::refreshMpd()

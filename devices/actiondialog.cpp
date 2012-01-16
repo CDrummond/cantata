@@ -264,23 +264,23 @@ void ActionDialog::actionStatus(int status)
         }
         break;
     case Device::FileExists:
-        setPage(PAGE_SKIP, i18n("The destination filename already exists!</br></br>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("The destination filename already exists!<hr/>%1", formatSong(currentSong)));
         break;
     case Device::SongExists:
-        setPage(PAGE_SKIP, i18n("Song already exists!</br></br>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Song already exists!<hr/>%1", formatSong(currentSong)));
         break;
     case Device::DirCreationFaild:
-        setPage(PAGE_SKIP, i18n("Failed to create destination folder!</br>Please check you have sufficient permissions.</br></br>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Failed to create destination folder!<br/>Please check you have sufficient permissions.<hr/>%1", formatSong(currentSong)));
         break;
     case Device::SourceFileDoesNotExist:
-        setPage(PAGE_SKIP, i18n("Source file nolonger exists?</br></br>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Source file nolonger exists?<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
     case Device::Failed:
-        setPage(PAGE_SKIP, Copy==mode ? i18n("<p>Failed to copy.</br></br>%1", formatSong(currentSong))
-                                      : i18n("<p>Failed to delete.</br></br>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, Copy==mode ? i18n("<p>Failed to copy.<hr/>%1", formatSong(currentSong))
+                                      : i18n("<p>Failed to delete.<hr/>%1", formatSong(currentSong)));
         break;
     case Device::NotConnected:
-        setPage(PAGE_ERROR, i18n("Lost connection to device.</br></br>%1", formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Lost connection to device.<hr/>%1", formatSong(currentSong)));
         break;
     default:
         break;

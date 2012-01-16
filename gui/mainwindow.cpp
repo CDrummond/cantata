@@ -1771,6 +1771,9 @@ enum Tabs
 void MainWindow::currentTabChanged(int index)
 {
     switch(index) {
+    #ifdef ENABLE_DEVICES_SUPPORT
+    case PAGE_DEVICES: // Need library to be loaded to check if song exists...
+    #endif
     case PAGE_LIBRARY:
     case PAGE_ALBUMS: // Albums shares refresh with library...
         if (!(loaded&TAB_LIBRARY)) {
@@ -1807,9 +1810,7 @@ void MainWindow::currentTabChanged(int index)
         break;
     #endif
     case PAGE_SERVER_INFO:
-    #ifdef ENABLE_DEVICES_SUPPORT
-    case PAGE_DEVICES:
-    #endif
+        break;
     default:
         break;
     }

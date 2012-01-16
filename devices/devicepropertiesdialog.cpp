@@ -23,6 +23,7 @@
 
 #include "devicepropertiesdialog.h"
 #include "filenameschemedialog.h"
+#include "covers.h"
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
@@ -44,9 +45,11 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
     connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(enableOkButton()));
+
+    albumCovers->insertItems(0, QStringList() << i18n("Don't copy covers") << Covers::standardNames());
 }
 
-void DevicePropertiesDialog::show(const QString &path, const Device::NameOptions &opts, bool pathEditable)
+void DevicePropertiesDialog::show(const QString &path, const QString &coverName, const Device::NameOptions &opts, bool isDevice)
 {
     filenameScheme->setText(opts.scheme);
     vfatSafe->setChecked(opts.vfatSafe);
@@ -54,9 +57,22 @@ void DevicePropertiesDialog::show(const QString &path, const Device::NameOptions
     ignoreThe->setChecked(opts.ignoreThe);
     replaceSpaces->setChecked(opts.replaceSpaces);
     musicFolder->setText(path);
-    musicFolder->setEnabled(pathEditable);
+    musicFolder->setVisible(isDevice);
+    musicFolderLabel->setVisible(isDevice);
+    albumCovers->setVisible(isDevice);
+    albumCoversLabel->setVisible(isDevice);
+    albumCovers->setCurrentIndex(0);
+    if (coverName!=QLatin1String("-")) {
+        for (int i=1; i<albumCovers->count(); ++i) {
+            if (albumCovers->itemText(i)==coverName) {
+                albumCovers->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
     origOpts=opts;
     origMusicFolder=path;
+    origCoverName=coverName;
     KDialog::show();
     enableButtonOk(false);
 }
@@ -64,14 +80,14 @@ void DevicePropertiesDialog::show(const QString &path, const Device::NameOptions
 void DevicePropertiesDialog::enableOkButton()
 {
     Device::NameOptions opts=settings();
-    enableButtonOk(musicFolder->text().trimmed()!=origMusicFolder || (!opts.scheme.isEmpty() && opts!=origOpts));
+    enableButtonOk(musicFolder->text().trimmed()!=origMusicFolder || (!opts.scheme.isEmpty() && opts!=origOpts) || albumCovers->currentText()!=origCoverName);
 }
 
 void DevicePropertiesDialog::slotButtonClicked(int button)
 {
     switch (button) {
     case KDialog::Ok:
-        emit updatedSettings(musicFolder->text().trimmed(), settings());
+        emit updatedSettings(musicFolder->text().trimmed(), 0==albumCovers->currentIndex() ? QString("-") : albumCovers->currentText(), settings());
         break;
     case KDialog::Cancel:
         reject();

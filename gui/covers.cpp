@@ -216,7 +216,7 @@ bool Covers::isCoverFile(const QString &file)
     return coverFileNames.contains(file);
 }
 
-void Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, bool preferStdName)
+void Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name)
 {
     initCoverNames();
 
@@ -230,11 +230,20 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     // No cover found, try to copy from source folder
     foreach (const QString &coverFile, coverFileNames) {
         if (QFile::exists(sourceDir+coverFile)) {
-            if (preferStdName && coverFileNames.at(0)!=coverFile) {
-                QString ext(coverFile.endsWith(constExtensions.at(0)) ? constExtensions.at(0) : constExtensions.at(1));
-                QFile::copy(sourceDir+coverFile, destDir+constFileName+ext);
+            QString destName(name);
+            if (destName.isEmpty()) { // copying into mpd dir, so we want cover.jpg/png...
+                if (coverFileNames.at(0)!=coverFile) { // source is not 'cover.xxx'
+                    QString ext(coverFile.endsWith(constExtensions.at(0)) ? constExtensions.at(0) : constExtensions.at(1));
+                    destName=constFileName+ext;
+                } else {
+                    destName=coverFile;
+                }
+            }
+            // Diff extensions, so need to convert image type...
+            if (destName.right(4)!=coverFile.right(4)) {
+                QImage(sourceDir+coverFile).save(destDir+destName);
             } else {
-                QFile::copy(sourceDir+coverFile, destDir+coverFile);
+                QFile::copy(sourceDir+coverFile, destDir+destName);
             }
             return;
         }
@@ -250,6 +259,12 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
             return;
         }
     }
+}
+
+QStringList Covers::standardNames()
+{
+    initCoverNames();
+    return coverFileNames;
 }
 
 Covers::Covers()

@@ -398,11 +398,14 @@ void MusicLibraryModel::removeCache()
     }
 }
 
+#include <QtCore/QDebug>
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
 {
     if (databaseTime > dbUpdate) {
         return;
     }
+
+    bool updatedSongs=false;
 
     if (rootItem->childCount() && newroot->childCount()) {
         QSet<Song> currentSongs=rootItem->allSongs();
@@ -410,6 +413,8 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         QSet<Song> removed=currentSongs-updateSongs;
         QSet<Song> added=updateSongs-currentSongs;
 
+        qWarning() << "LIBRARY INCREMENTAL" << added.count() << removed.count();
+        updatedSongs=added.count()||removed.count();
         foreach (const Song &s, added) {
             addSongToList(s);
         }
@@ -418,23 +423,26 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         }
         delete newroot;
     } else {
+        qWarning() << "LIBRARY FULL";
         const MusicLibraryItemRoot *oldRoot = rootItem;
         beginResetModel();
-
         databaseTime = dbUpdate;
         rootItem = newroot;
         delete oldRoot;
         endResetModel();
+        updatedSongs=true;
     }
 
-    if (!fromFile) {
-        toXML(rootItem, dbUpdate);
-    }
+    if (updatedSongs) {
+        if (!fromFile) {
+            toXML(rootItem, dbUpdate);
+        }
 
-    QStringList genres=QStringList(rootItem->genres().toList());
-    genres.sort();
-    emit updated(rootItem);
-    emit updateGenres(genres);
+        QStringList genres=QStringList(rootItem->genres().toList());
+        genres.sort();
+        emit updated(rootItem);
+        emit updateGenres(genres);
+    }
 }
 
 void MusicLibraryModel::setCover(const QString &artist, const QString &album, const QImage &img, const QString &file)

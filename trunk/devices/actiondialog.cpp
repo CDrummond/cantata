@@ -27,6 +27,7 @@
 #include "devicepropertiesdialog.h"
 #include "settings.h"
 #include "musiclibrarymodel.h"
+#include "albumsmodel.h"
 #include "mpdparseutils.h"
 #include <KDE/KAction>
 #include <KDE/KGlobal>
@@ -385,6 +386,7 @@ void ActionDialog::refreshMpd()
 {
     if (!actionedSongs.isEmpty() && ( (Copy==mode && !sourceUdi.isEmpty()) ||
                                       (Remove==mode && sourceUdi.isEmpty()) ) ) {
+        AlbumsModel::self()->update(MusicLibraryModel::self()->root());
         updateDbAction->trigger();
     }
 }

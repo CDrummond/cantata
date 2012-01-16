@@ -39,7 +39,6 @@
 #include <KDE/KLocale>
 #include <KDE/KIO/FileCopyJob>
 #include <KDE/KIO/Job>
-#include <QtCore/QDebug>
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");
@@ -249,9 +248,6 @@ void UmsDevice::copySongTo(const Song &s, const QString &fullDest, bool overwrit
 
 void UmsDevice::removeSong(const Song &s)
 {
-    emit actionStatus(Failed);
-    return;
-
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;

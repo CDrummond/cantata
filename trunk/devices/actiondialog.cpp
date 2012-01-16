@@ -33,7 +33,6 @@
 #include <KDE/KMessageBox>
 #include <KDE/KIO/FileCopyJob>
 #include <KDE/KIO/Job>
-#include <QtCore/QTimer>
 
 enum Pages
 {
@@ -96,7 +95,6 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
         namingOptions=readMpdOpts();
         setPage(PAGE_START);
-        mpdDir=Settings::self()->mpdDir();
         mode=Copy;
         if (!mpdDir.endsWith('/')) {
             mpdDir+QChar('/');
@@ -121,6 +119,7 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 
 void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m)
 {
+    mpdDir=Settings::self()->mpdDir();
     sourceUdi=srcUdi;
     destUdi=dstUdi;
     songsToAction=songs;
@@ -144,7 +143,7 @@ void ActionDialog::slotButtonClicked(int button)
         switch (button) {
         case KDialog::Ok:
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
-            QTimer::singleShot(0, this, SLOT(doNext()));
+            doNext();
             break;
         case KDialog::Cancel:
             refreshMpd();
@@ -215,6 +214,9 @@ void ActionDialog::doNext()
             }
         } else {
             if (sourceUdi.isEmpty()) {
+                performingAction=true;
+                currentSong.file=mpdDir+currentSong.file;
+                removeSong(currentSong);
             } else {
                 Device *dev=DevicesModel::self()->device(sourceUdi);
                 if (dev) {
@@ -223,7 +225,6 @@ void ActionDialog::doNext()
                         currentDev=dev;
                     }
                     performingAction=true;
-                    destFile=dev->path()+dev->namingOptions().createFilename(currentSong);
                     dev->removeSong(currentSong);
                     progressLabel->setText(formatSong(currentSong));
                 } else {
@@ -343,31 +344,26 @@ QString ActionDialog::formatSong(const Song &s)
                    "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
                    "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
                    "<tr><td align=\"right\">File:</td><td>%4</td></tr>"
-                   "</table>", s.artist, s.album, s.title, destFile);
+                   "</table>", s.artist, s.album, s.title, s.file);
 }
 
 void ActionDialog::refreshMpd()
 {
     if (!actionedSongs.isEmpty() && ( (Copy==mode && !sourceUdi.isEmpty()) ||
                                       (Remove==mode && sourceUdi.isEmpty()) ) ) {
-        // This causes MPD to be refreshed, but also the library iew is recreated.
-        // *Really* need library view to be doing incremental updates.
         updateDbAction->trigger();
     }
 }
 
 void ActionDialog::removeSong(const Song &s)
 {
-    actionStatus(Device::Failed);
-    return;
-
-    if (!QFile::exists(mpdDir+s.file)) {
+    if (!QFile::exists(s.file)) {
         actionStatus(Device::SourceFileDoesNotExist);
         return;
     }
 
-    KIO::SimpleJob *job=KIO::file_delete(KUrl(mpdDir+s.file), KIO::HideProgressInfo);
-    connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *job)));
+    KIO::SimpleJob *job=KIO::file_delete(KUrl(s.file), KIO::HideProgressInfo);
+    connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *)));
 }
 
 void ActionDialog::removeSongResult(KJob *job)
@@ -376,6 +372,6 @@ void ActionDialog::removeSongResult(KJob *job)
         actionStatus(Device::Failed);
     } else {
         MusicLibraryModel::self()->removeSongFromList(currentSong);
-        actionStatus(Ok);
+        actionStatus(Device::Ok);
     }
 }

@@ -40,6 +40,11 @@
 #include <taglib/vorbisfile.h>
 #include <taglib/wavfile.h>
 #include <taglib/wavpackfile.h>
+#include <taglib/asftag.h>
+#include <taglib/apetag.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/mp4tag.h>
+#include <taglib/xiphcomment.h>
 #ifdef TAGLIB_EXTRAS_FOUND
 #include <taglib-extras/audiblefiletyperesolver.h>
 #include <taglib-extras/realmediafiletyperesolver.h>
@@ -90,25 +95,53 @@ static QString tString2QString(const TagLib::String &str)
 // {
 // }
 
-static void readID3v2Tags(const TagLib::FileRef fileref, Song &song)
+static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song &song)
 {
-    // TPE2
+    TagLib::ID3v2::FrameList list = tag->frameListMap()["TPE2"];
+
+    if (!list.isEmpty()) {
+        song.albumartist=tString2QString(list.front()->toString());
+    }
 }
 
-static void readAPETags(const TagLib::FileRef fileref, Song &song)
+static void readAPETags(TagLib::APE::Tag *tag, Song &song)
 {
+    TagLib::APE::ItemListMap map = tag->itemListMap();
+
+    if (map.contains("Album Artist")) {
+        song.albumartist=tString2QString(map["Album Artist"].toString());
+    }
 }
 
-static void readVorbisCommentTags(const TagLib::FileRef fileref, Song &song)
+static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song &song)
 {
+    if (!tag->contains("ALBUMARTIST")) {
+        return;
+    }
+
+    TagLib::StringList list = tag->fieldListMap()["ALBUMARTIST"];
+
+    if (!list.isEmpty()) {
+        song.albumartist=tString2QString(list.front());
+    }
 }
 
-static void readMP4Tags(const TagLib::FileRef fileref, Song &song)
+static void readMP4Tags(TagLib::MP4::Tag *tag, Song &song)
 {
+    TagLib::MP4::ItemListMap map = tag->itemListMap();
+
+    if (map.contains("aART") && !map["aART"].toStringList().isEmpty()) {
+        song.albumartist=tString2QString(map["aART"].toStringList().front());
+    }
 }
 
-static void readASFTags(const TagLib::FileRef fileref, Song &song)
+static void readASFTags(TagLib::ASF::Tag *tag, Song &song)
 {
+    TagLib::ASF::AttributeListMap map = tag->attributeListMap();
+
+    if (map.contains("WM/AlbumTitle") && !map["WM/AlbumTitle"].isEmpty()) {
+        song.albumartist=tString2QString(map["WM/AlbumTitle"].front().toString());
+    }
 }
 
 static Song readTags(const TagLib::FileRef fileref)
@@ -122,81 +155,70 @@ static Song readTags(const TagLib::FileRef fileref)
     song.track=tag->track();
     song.year=tag->year();
 
-    if(TagLib::MPEG::File *file = dynamic_cast< TagLib::MPEG::File * >(fileref.file()))
-    {
-        if(file->ID3v2Tag(false))
-            readID3v2Tags(fileref, song);
-        else if(file->APETag())
-            readAPETags(fileref, song);
-//         else if(file->ID3v1Tag())
+    if(TagLib::MPEG::File *file = dynamic_cast< TagLib::MPEG::File * >(fileref.file())) {
+        if(file->ID3v2Tag()) {
+            readID3v2Tags(file->ID3v2Tag(), song);
+        } else if(file->APETag()) {
+            readAPETags(file->APETag(), song);
+//         } else if(file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song);
-    }
-    else if(TagLib::Ogg::Vorbis::File *file = dynamic_cast< TagLib::Ogg::Vorbis::File * >(fileref.file()))
-    {
-        if(file->tag())
-            readVorbisCommentTags(fileref, song);
-    }
-    else if(TagLib::Ogg::FLAC::File *file = dynamic_cast< TagLib::Ogg::FLAC::File * >(fileref.file()))
-    {
-        if(file->tag())
-            readVorbisCommentTags(fileref, song);
-    }
-    else if(TagLib::Ogg::Speex::File *file = dynamic_cast< TagLib::Ogg::Speex::File * >(fileref.file()))
-    {
-        if(file->tag())
-            readVorbisCommentTags(fileref, song);
-    }
-    else if(TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file()))
-    {
-        if(file->xiphComment())
-            readVorbisCommentTags(fileref, song);
-        else if(file->ID3v2Tag())
-            readID3v2Tags(fileref, song);
-//         else if(file->ID3v1Tag())
+        }
+    } else if(TagLib::Ogg::Vorbis::File *file = dynamic_cast< TagLib::Ogg::Vorbis::File * >(fileref.file()))  {
+        if(file->tag()) {
+            readVorbisCommentTags(file->tag(), song);
+        }
+    } else if(TagLib::Ogg::FLAC::File *file = dynamic_cast< TagLib::Ogg::FLAC::File * >(fileref.file())) {
+        if(file->tag()) {
+            readVorbisCommentTags(file->tag(), song);
+        }
+    } else if(TagLib::Ogg::Speex::File *file = dynamic_cast< TagLib::Ogg::Speex::File * >(fileref.file())) {
+        if(file->tag()) {
+            readVorbisCommentTags(file->tag(), song);
+        }
+    } else if(TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
+        if(file->xiphComment()) {
+            readVorbisCommentTags(file->xiphComment(), song);
+        } else if(file->ID3v2Tag()) {
+            readID3v2Tags(file->ID3v2Tag(), song);
+//         } else if(file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song);
-    }
-    else if(TagLib::MP4::File *file = dynamic_cast< TagLib::MP4::File * >(fileref.file()))
-    {
+        }
+    } else if(TagLib::MP4::File *file = dynamic_cast< TagLib::MP4::File * >(fileref.file())) {
         TagLib::MP4::Tag *tag = dynamic_cast< TagLib::MP4::Tag * >(file->tag());
-        if(tag)
-            readMP4Tags(fileref, song);
-    }
-    else if(TagLib::MPC::File *file = dynamic_cast< TagLib::MPC::File * >(fileref.file()))
-    {
-        if(file->APETag(false))
-            readAPETags(fileref, song);
-//         else if(file->ID3v1Tag())
+        if(tag) {
+            readMP4Tags(tag, song);
+        }
+    } else if(TagLib::MPC::File *file = dynamic_cast< TagLib::MPC::File * >(fileref.file())) {
+        if(file->APETag()) {
+            readAPETags(file->APETag(), song);
+//         } else if(file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song);
-    }
-    else if(TagLib::RIFF::AIFF::File *file = dynamic_cast< TagLib::RIFF::AIFF::File * >(fileref.file()))
-    {
-        if(file->tag())
-            readID3v2Tags(fileref, song);
-    }
-    else if(TagLib::RIFF::WAV::File *file = dynamic_cast< TagLib::RIFF::WAV::File * >(fileref.file()))
-    {
-        if(file->tag())
-            readID3v2Tags(fileref, song);
-    }
-    else if(TagLib::ASF::File *file = dynamic_cast< TagLib::ASF::File * >(fileref.file()))
-    {
+        }
+    } else if(TagLib::RIFF::AIFF::File *file = dynamic_cast< TagLib::RIFF::AIFF::File * >(fileref.file())) {
+        if(file->tag()) {
+            readID3v2Tags(file->tag(), song);
+        }
+    } else if(TagLib::RIFF::WAV::File *file = dynamic_cast< TagLib::RIFF::WAV::File * >(fileref.file())) {
+        if(file->tag()) {
+            readID3v2Tags(file->tag(), song);
+        }
+    } else if(TagLib::ASF::File *file = dynamic_cast< TagLib::ASF::File * >(fileref.file())) {
         TagLib::ASF::Tag *tag = dynamic_cast< TagLib::ASF::Tag * >(file->tag());
-        if(tag)
-            readASFTags(fileref, song);
-    }
-    else if(TagLib::TrueAudio::File *file = dynamic_cast< TagLib::TrueAudio::File * >(fileref.file()))
-    {
-        if(file->ID3v2Tag(false))
-            readID3v2Tags(fileref, song);
-//         else if(file->ID3v1Tag())
+        if(tag) {
+            readASFTags(tag, song);
+        }
+    } else if(TagLib::TrueAudio::File *file = dynamic_cast< TagLib::TrueAudio::File * >(fileref.file())) {
+        if(file->ID3v2Tag(false)) {
+            readID3v2Tags(file->ID3v2Tag(false), song);
+//         } else if(file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song);
-    }
-    else if(TagLib::WavPack::File *file = dynamic_cast< TagLib::WavPack::File * >(fileref.file()))
-    {
-        if(file->APETag(false))
-            readAPETags(fileref, song);
-//         else if(file->ID3v1Tag())
+        }
+    } else if(TagLib::WavPack::File *file = dynamic_cast< TagLib::WavPack::File * >(fileref.file())) {
+        if(file->APETag()) {
+            readAPETags(file->APETag(), song);
+//         } else if(file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song);
+        }
     }
 
     return song;

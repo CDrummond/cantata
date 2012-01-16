@@ -35,12 +35,12 @@ class DevicePropertiesDialog : public KDialog, Ui::DevicePropertiesDialog
 
 public:
     DevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const Device::NameOptions &opts, bool pathEditable=true);
+    void show(const QString &path, const QString &coverName, const Device::NameOptions &opts, bool isDevice=true);
 
     Device::NameOptions settings();
 
 Q_SIGNALS:
-    void updatedSettings(const QString &path, const Device::NameOptions &opts);
+    void updatedSettings(const QString &path, const QString &coverName, const Device::NameOptions &opts);
 
 private Q_SLOTS:
     void configureFilenameScheme();
@@ -53,6 +53,7 @@ private:
     FilenameSchemeDialog *schemeDlg;
     Device::NameOptions origOpts;
     QString origMusicFolder;
+    QString origCoverName;
 };
 
 #endif

@@ -42,13 +42,13 @@
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");
-static const QLatin1String constPodcastFolderKey("podcast_folder");
+// static const QLatin1String constPodcastFolderKey("podcast_folder");
 static const QLatin1String constMusicFilenameSchemeKey("music_filenamescheme");
 static const QLatin1String constVfatSafeKey("vfat_safe");
 static const QLatin1String constAsciiOnlyKey("ascii_only");
 static const QLatin1String constIgnoreTheKey("ignore_the");
 static const QLatin1String constReplaceSpacesKey("replace_spaces");
-static const QLatin1String constUseAutomaticallyKey("use_automatically");
+// static const QLatin1String constUseAutomaticallyKey("use_automatically");
 
 MusicScanner::MusicScanner(const QString &f)
     : QThread(0)
@@ -346,7 +346,7 @@ void UmsDevice::setup()
     QString audioFolderSetting;
 
     nameOpts=Device::NameOptions();
-    podcastFolder=QString();
+//     podcastFolder=QString();
     if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         QTextStream in(&file);
         while (!in.atEnd()) {
@@ -359,8 +359,8 @@ void UmsDevice::setup()
                 if (!QDir(audioFolder).exists()) {
                     audioFolder = path;
                 }
-            } else if (line.startsWith(constPodcastFolderKey+"=")) {
-                podcastFolder=line.section('=', 1, 1);
+//             } else if (line.startsWith(constPodcastFolderKey+"=")) {
+//                 podcastFolder=line.section('=', 1, 1);
             } else if (line.startsWith( constMusicFilenameSchemeKey+"=")) {
                 QString scheme = line.section('=', 1, 1);
                 //protect against empty setting.
@@ -375,8 +375,10 @@ void UmsDevice::setup()
                 nameOpts.ignoreThe = QLatin1String("true")==line.section('=', 1, 1);
             } else if (line.startsWith(constReplaceSpacesKey+"="))  {
                 nameOpts.replaceSpaces = QLatin1String("true")==line.section('=', 1, 1);
-            } else if (line.startsWith(constUseAutomaticallyKey+"="))  {
-                useAutomatically = QLatin1String("true")==line.section('=', 1, 1);
+//             } else if (line.startsWith(constUseAutomaticallyKey+"="))  {
+//                 useAutomatically = QLatin1String("true")==line.section('=', 1, 1);
+            } else {
+                unusedParams+=line;
             }
         }
     }
@@ -467,9 +469,9 @@ void UmsDevice::saveProperties(const QString &newPath, const Device::NameOptions
         if (!fixedPath.isEmpty()) {
             out << constMusicFolderKey << '=' << fixedPath << '\n';
         }
-        if (!podcastFolder.isEmpty()) {
-            out << constPodcastFolderKey << '=' << podcastFolder << '\n';
-        }
+//         if (!podcastFolder.isEmpty()) {
+//             out << constPodcastFolderKey << '=' << podcastFolder << '\n';
+//         }
         if (nameOpts.scheme!=def.scheme) {
             out << constMusicFilenameSchemeKey << '=' << nameOpts.scheme << '\n';
         }
@@ -485,8 +487,11 @@ void UmsDevice::saveProperties(const QString &newPath, const Device::NameOptions
         if (nameOpts.replaceSpaces!=def.replaceSpaces) {
             out << constReplaceSpacesKey << '=' << (nameOpts.replaceSpaces ? "true" : "false") << '\n';
         }
-        if (useAutomatically) {
-            out << constUseAutomaticallyKey << '=' << (useAutomatically ? "true" : "false") << '\n';
+//         if (useAutomatically) {
+//             out << constUseAutomaticallyKey << '=' << (useAutomatically ? "true" : "false") << '\n';
+//         }
+        foreach (const QString &u, unusedParams) {
+            out << u << '\n';
         }
     }
 

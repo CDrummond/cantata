@@ -28,6 +28,7 @@
 #include "song.h"
 #include <solid/storageaccess.h>
 #include <QtCore/QThread>
+#include <QtCore/QStringList>
 
 class MusicLibraryItemRoot;
 class DevicePropertiesDialog;
@@ -94,8 +95,7 @@ private:
     MusicScanner *scanner;
     DevicePropertiesDialog *propDlg;
     QString audioFolder;
-    QString podcastFolder;
-    bool useAutomatically;
+    QStringList unusedParams;
 };
 
 #endif

@@ -152,6 +152,29 @@ QString vfatPath(const QString &path)
     return s;
 }
 
+static void manipulateThe(QString &str, bool reverse)
+{
+    if (reverse)
+    {
+        if (!str.startsWith("the ", Qt::CaseInsensitive)) {
+            return;
+        }
+
+        QString begin = str.left(3);
+        str = str.append(", %1").arg(begin);
+        str = str.mid(4);
+        return;
+    }
+
+    if(!str.endsWith(", the", Qt::CaseInsensitive)) {
+        return;
+    }
+
+    QString end = str.right(3);
+    str = str.prepend("%1 ").arg(end);
+    str.truncate(str.length() - end.length() - 2);
+}
+
 const QLatin1String Device::NameOptions::constAlbumArtist("%albumartist%");
 const QLatin1String Device::NameOptions::constAlbumTitle("%album%");
 const QLatin1String Device::NameOptions::constTrackArtist("%artist%");
@@ -198,6 +221,10 @@ QString Device::NameOptions::clean(const QString &str) const
 Song Device::NameOptions::clean(const Song &s) const
 {
     Song copy=s;
+    if (ignoreThe) {
+        manipulateThe(copy.albumartist, true);
+        manipulateThe(copy.artist, true);
+    }
     copy.albumartist=clean(copy.albumartist);
     copy.artist=clean(copy.artist);
     copy.album=clean(copy.album);
@@ -278,7 +305,7 @@ Device * Device::create(DevicesModel *m, const QString &udi)
 void Device::applyUpdate()
 {
     if (m_childItems.count() && update && update->childCount()) {
-        qWarning() << "INCREMENTAL UPDATE";
+        qWarning() << "INCREMENTAL UPDATE" << m_childItems.count() << update->childCount();
         QSet<Song> currentSongs=allSongs();
         QSet<Song> updateSongs=update->allSongs();
         QSet<Song> removed=currentSongs-updateSongs;

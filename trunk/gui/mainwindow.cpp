@@ -518,7 +518,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     devicesPage = new DevicesPage(this);
     #endif
 
-    connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
     connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QStringList &)), albumsPage, SLOT(updateGenres(const QStringList &)));
 
     setVisible(true);
@@ -544,9 +543,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     #ifdef ENABLE_DEVICES_SUPPORT
     tabWidget->AddTab(devicesPage, devicesTabAction->icon(), devicesTabAction->text(), !hiddenPages.contains(devicesPage->metaObject()->className()));
     #endif
+    AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
+    connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
 
     expandInterfaceAction->setCheckable(true);
     randomPlaylistAction->setCheckable(true);
@@ -1813,6 +1814,13 @@ void MainWindow::currentTabChanged(int index)
         break;
     default:
         break;
+    }
+}
+
+void MainWindow::tabToggled(int index)
+{
+    if(PAGE_ALBUMS==index) {
+        AlbumsModel::self()->setEnabled(!AlbumsModel::self()->isEnabled());
     }
 }
 

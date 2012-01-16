@@ -100,6 +100,8 @@ public:
     QList<Song> songs(const QModelIndexList &indexes) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void clear();
+    bool isEnabled() const { return enabled; }
+    void setEnabled(bool e);
 
 Q_SIGNALS:
     void updated();
@@ -109,6 +111,7 @@ public Q_SLOTS:
     void update(const MusicLibraryItemRoot *root);
 
 private:
+    bool enabled;
     mutable QList<AlbumItem *> items;
 };
 

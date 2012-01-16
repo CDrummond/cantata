@@ -491,6 +491,7 @@ void UmsDevice::saveProperties(const QString &newPath, const Device::NameOptions
     }
 
     if (oldPath!=newPath) {
+        audioFolder=newPath;
         rescan();
     }
 }

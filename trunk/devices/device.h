@@ -68,6 +68,7 @@ public:
     };
 
     static Device * create(DevicesModel *m, const QString &udi);
+    static void cleanDir(const QString &dir, const QString &base, int level=0);
 
     enum Status {
         Ok,
@@ -100,7 +101,7 @@ public:
     virtual void configure(QWidget *parent)=0;
     virtual QString path()=0;
     virtual void addSong(const Song &s, bool overwrite)=0;
-    virtual void copySongTo(const Song &s, const QString &fullDest, bool overwrite)=0;
+    virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)=0;
     virtual void removeSong(const Song &s)=0;
     virtual double usedCapacity()=0;
     virtual QString capacityString()=0;

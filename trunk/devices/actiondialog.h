@@ -69,6 +69,7 @@ private:
     QString destUdi;
     QList<Song> songsToAction;
     QList<Song> actionedSongs;
+    QSet<QString> dirsToClean;
     Song currentSong;
     DevicePropertiesDialog *propDlg;
     bool autoSkip;

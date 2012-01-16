@@ -29,6 +29,8 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
 #include "devicepropertiesdialog.h"
+#include "covers.h"
+#include "mpdparseutils.h"
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
@@ -188,12 +190,7 @@ void UmsDevice::addSong(const Song &s, bool overwrite)
         return;
     }
 
-    QString destFile=audioFolder;
-    if (!destFile.endsWith('/')) {
-        destFile+='/';
-    }
-
-    destFile+=nameOpts.createFilename(s);
+    QString destFile=audioFolder+nameOpts.createFilename(s);
 
     if (!overwrite && QFile::exists(destFile)) {
         emit actionStatus(FileExists);
@@ -211,7 +208,7 @@ void UmsDevice::addSong(const Song &s, bool overwrite)
     connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *job)));
 }
 
-void UmsDevice::copySongTo(const Song &s, const QString &fullDest, bool overwrite)
+void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
 {
     if (!isConnected()) {
         emit actionStatus(NotConnected);
@@ -230,12 +227,14 @@ void UmsDevice::copySongTo(const Song &s, const QString &fullDest, bool overwrit
         return;
     }
 
-    if (!overwrite && QFile::exists(fullDest)) {
+    if (!overwrite && QFile::exists(baseDir+musicPath)) {
         emit actionStatus(FileExists);
         return;
     }
 
-    KUrl dest(fullDest);
+    currentBaseDir=baseDir;
+    currentMusicPath=musicPath;
+    KUrl dest(currentBaseDir+currentMusicPath);
     QDir dir(dest.directory());
     if (!dir.exists() && !dir.mkpath( "." )) {
         emit actionStatus(DirCreationFaild);
@@ -268,7 +267,11 @@ void UmsDevice::addSongResult(KJob *job)
     if (job->error()) {
         emit actionStatus(Failed);
     } else {
-        currentSong.file=nameOpts.createFilename(currentSong);
+        QString sourceDir=MPDParseUtils::getDir(currentSong.file);
+        QString destFile=audioFolder+nameOpts.createFilename(currentSong);
+
+        currentSong.file=destFile;
+        Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), false);
         addSongToList(currentSong);
         emit actionStatus(Ok);
     }
@@ -279,7 +282,9 @@ void UmsDevice::copySongToResult(KJob *job)
     if (job->error()) {
         emit actionStatus(Failed);
     } else {
-        currentSong.file=nameOpts.createFilename(currentSong);
+        QString sourceDir=MPDParseUtils::getDir(currentSong.file);
+        currentSong.file=currentMusicPath; // MPD's paths are not full!!!
+        Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), true);
         MusicLibraryModel::self()->addSongToList(currentSong);
         emit actionStatus(Ok);
     }
@@ -497,6 +502,9 @@ void UmsDevice::saveProperties(const QString &newPath, const Device::NameOptions
 
     if (oldPath!=newPath) {
         audioFolder=newPath;
+        if (!audioFolder.endsWith('/')) {
+            audioFolder+='/';
+        }
         rescan();
     }
 }

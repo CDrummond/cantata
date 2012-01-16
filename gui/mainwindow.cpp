@@ -518,7 +518,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     devicesPage = new DevicesPage(this);
     #endif
 
-    connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), albumsPage, SLOT(update(const MusicLibraryItemRoot *)));
+    connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
     connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QStringList &)), albumsPage, SLOT(updateGenres(const QStringList &)));
 
     setVisible(true);

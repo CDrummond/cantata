@@ -29,6 +29,7 @@
 #include <QtGui/QPainter>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
+#include <KDE/KGlobal>
 #endif
 #include "albumsmodel.h"
 #include "settings.h"
@@ -40,6 +41,23 @@
 #include "covers.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
+
+#ifdef ENABLE_KDE_SUPPORT
+K_GLOBAL_STATIC(AlbumsModel, instance)
+#endif
+
+AlbumsModel * AlbumsModel::self()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return instance;
+    #else
+    static AlbumsModel *instance=0;;
+    if(!instance) {
+        instance=new AlbumsModel;
+    }
+    return instance;
+    #endif
+}
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverMedium;
 static QPixmap *theDefaultIcon=0;
@@ -116,6 +134,8 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al)
 AlbumsModel::AlbumsModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
+    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
+            this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
 }
 
 AlbumsModel::~AlbumsModel()

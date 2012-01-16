@@ -62,6 +62,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     view->addAction(copyAction);
     view->addAction(removeAction);
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
+    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(selectionChanged()));

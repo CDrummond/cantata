@@ -35,6 +35,7 @@
 
 FolderPage::FolderPage(MainWindow *p)
     : QWidget(p)
+    , enabled(false)
 {
     setupUi(this);
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
@@ -59,9 +60,6 @@ FolderPage::FolderPage(MainWindow *p)
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
-    connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &model, SLOT(updateDirView(DirViewItemRoot *)));
-    connect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(showSpinner()));
-    connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
     connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
@@ -75,10 +73,31 @@ FolderPage::~FolderPage()
 {
 }
 
+void FolderPage::setEnabled(bool e)
+{
+    if (e==enabled) {
+        return;
+    }
+    enabled=e;
+
+    if (enabled) {
+        connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &model, SLOT(updateDirView(DirViewItemRoot *)));
+        connect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(showSpinner()));
+        connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
+        refresh();
+    } else {
+        disconnect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &model, SLOT(updateDirView(DirViewItemRoot *)));
+        disconnect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(showSpinner()));
+        disconnect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
+    }
+}
+
 void FolderPage::refresh()
 {
-    view->showSpinner();
-    emit listAll();
+    if (enabled) {
+        view->showSpinner();
+        emit listAll();
+    }
 }
 
 void FolderPage::clear()

@@ -35,7 +35,6 @@
 #include <KDE/KMessageBox>
 #include <KDE/KIO/FileCopyJob>
 #include <KDE/KIO/Job>
-#include <QtCore/QDebug>
 
 enum Pages
 {
@@ -198,7 +197,6 @@ void ActionDialog::doNext()
 {
     if (songsToAction.count()) {
         currentSong=songsToAction.takeFirst();
-        qWarning() << currentSong.file;
         if(Copy==mode) {
             bool copyToDev=sourceUdi.isEmpty();
             Device *dev=DevicesModel::self()->device(copyToDev ? destUdi : sourceUdi);

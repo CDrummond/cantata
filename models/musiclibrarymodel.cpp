@@ -391,7 +391,6 @@ void MusicLibraryModel::removeCache()
     }
 }
 
-#include <QtCore/QDebug>
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
 {
     if (databaseTime > dbUpdate) {
@@ -406,7 +405,6 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         QSet<Song> removed=currentSongs-updateSongs;
         QSet<Song> added=updateSongs-currentSongs;
 
-        qWarning() << "LIBRARY INCREMENTAL" << added.count() << removed.count();
         updatedSongs=added.count()||removed.count();
         foreach (const Song &s, added) {
             addSongToList(s);
@@ -416,7 +414,6 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         }
         delete newroot;
     } else {
-        qWarning() << "LIBRARY FULL";
         const MusicLibraryItemRoot *oldRoot = rootItem;
         beginResetModel();
         databaseTime = dbUpdate;

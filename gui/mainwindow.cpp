@@ -549,6 +549,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabWidget->AddTab(devicesPage, devicesTabAction->icon(), devicesTabAction->text(), !hiddenPages.contains(devicesPage->metaObject()->className()));
     #endif
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
+    folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
@@ -1836,6 +1837,8 @@ void MainWindow::tabToggled(int index)
 {
     if(PAGE_ALBUMS==index) {
         AlbumsModel::self()->setEnabled(!AlbumsModel::self()->isEnabled());
+    } else if(PAGE_FOLDERS==index) {
+        folderPage->setEnabled(!folderPage->isEnabled());
     }
 }
 

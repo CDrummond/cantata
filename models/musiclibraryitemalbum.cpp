@@ -24,6 +24,7 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "musiclibraryitemroot.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
@@ -126,7 +127,8 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.albumartist=parent()->data();
             song.album=m_itemData;
             song.file=static_cast<MusicLibraryItemSong*>(child(0))->file();
-            Covers::self()->get(song, m_singleTracks);
+            bool isLocal=!(parent() && parent()->parent() && static_cast<MusicLibraryItemRoot *>(parent()->parent())->isDevice());
+            Covers::self()->get(song, m_singleTracks, isLocal);
         }
         return *theDefaultIcon;
     }

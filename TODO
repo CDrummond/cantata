@@ -28,6 +28,4 @@
 
 - PlayQueue - slow with over 2000 entries, due to sort-filter-proxy??
 
-- media device sync support
-
 - icecast?

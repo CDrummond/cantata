@@ -35,6 +35,7 @@
 #include <KDE/KMessageBox>
 #include <KDE/KIO/FileCopyJob>
 #include <KDE/KIO/Job>
+#include <KDE/KDiskFreeSpaceInfo>
 
 enum Pages
 {
@@ -80,6 +81,14 @@ ActionDialog::ActionDialog(QWidget *parent, KAction *updateDbAct)
 void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)
 {
     init(srcUdi, dstUdi, songs, Copy);
+    Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+
+    if (dev && !dev->isIdle()) {
+        KMessageBox::error(parentWidget(), i18n("Device is currently busy."));
+        deleteLater();
+        return;
+    }
+
     // check space...
     qint64 spaceRequired=0;
     foreach (const Song &s, songsToAction) {
@@ -88,10 +97,16 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         }
     }
 
-    qint64 spaceAvailable=DevicesModel::self()->freeSpace(destUdi);
+    qint64 spaceAvailable=0;
+
+    if (dev) {
+        spaceAvailable=dev->freeSpace();
+    } else {
+        KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(mpdDir);
+        spaceAvailable =inf.size()-inf.used();
+    }
 
     if (spaceAvailable>spaceRequired) {
-        Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
         sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
         destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
         namingOptions=readMpdOpts();
@@ -242,11 +257,14 @@ void ActionDialog::doNext()
         }
     } else if (Remove==mode && dirsToClean.count()) {
         Device *dev=sourceUdi.isEmpty() ? 0 : DevicesModel::self()->device(sourceUdi);
-        QString base=sourceUdi.isEmpty() ? mpdDir : (dev ? dev->path() : QString());
-        progressLabel->setText(i18n("Clearing unused folders"));
-        if (!base.isEmpty()) {
+        if (sourceUdi.isEmpty() || dev) {
+            progressLabel->setText(i18n("Clearing unused folders"));
             foreach (const QString &d, dirsToClean) {
-                Device::cleanDir(d, base, dev ? dev->coverFile() : QString());
+                if (dev) {
+                    dev->cleanDir(d);
+                } else {
+                    Device::cleanDir(d, mpdDir, QString());
+                }
             }
         }
         dirsToClean.clear();
@@ -286,18 +304,21 @@ void ActionDialog::actionStatus(int status)
     case Device::SongExists:
         setPage(PAGE_SKIP, i18n("Song already exists!<hr/>%1", formatSong(currentSong)));
         break;
+    case Device::SongDoesNotExist:
+        setPage(PAGE_SKIP, i18n("Song does not exist!<hr/>%1", formatSong(currentSong)));
+        break;
     case Device::DirCreationFaild:
         setPage(PAGE_SKIP, i18n("Failed to create destination folder!<br/>Please check you have sufficient permissions.<hr/>%1", formatSong(currentSong)));
         break;
     case Device::SourceFileDoesNotExist:
-        setPage(PAGE_SKIP, i18n("Source file nolonger exists?<br/><br/<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Source file no longer exists?<br/><br/<hr/>%1", formatSong(currentSong)));
         break;
     case Device::Failed:
-        setPage(PAGE_SKIP, Copy==mode ? i18n("<p>Failed to copy.<hr/>%1", formatSong(currentSong))
-                                      : i18n("<p>Failed to delete.<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, Copy==mode ? i18n("Failed to copy.<hr/>%1", formatSong(currentSong))
+                                      : i18n("Failed to delete.<hr/>%1", formatSong(currentSong)));
         break;
     case Device::NotConnected:
-        setPage(PAGE_ERROR, i18n("Lost connection to device.<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Not connected to device.<hr/>%1", formatSong(currentSong)));
         break;
     default:
         break;

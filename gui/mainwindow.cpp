@@ -547,6 +547,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabWidget->AddTab(serverInfoPage, serverInfoTabAction->icon(), serverInfoTabAction->text(), !hiddenPages.contains(serverInfoPage->metaObject()->className()));
     #ifdef ENABLE_DEVICES_SUPPORT
     tabWidget->AddTab(devicesPage, devicesTabAction->icon(), devicesTabAction->text(), !hiddenPages.contains(devicesPage->metaObject()->className()));
+    DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
+    copyToDeviceAction->setVisible(DevicesModel::self()->isEnabled());
     #endif
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
@@ -1844,6 +1846,13 @@ void MainWindow::tabToggled(int index)
         break;
     case PAGE_STREAMS:
         streamsPage->setEnabled(!streamsPage->isEnabled());
+        break;
+    #ifdef ENABLE_DEVICES_SUPPORT
+    case PAGE_DEVICES:
+        DevicesModel::self()->setEnabled(!DevicesModel::self()->isEnabled());
+        copyToDeviceAction->setVisible(DevicesModel::self()->isEnabled());
+        break;
+    #endif
     default:
         break;
     }

@@ -39,7 +39,6 @@
 #include <KDE/KIcon>
 #include <KDE/KLocale>
 #include <KDE/KGlobal>
-#include <KDE/KDiskFreeSpaceInfo>
 #endif
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -62,20 +61,10 @@ DevicesModel * DevicesModel::self()
 DevicesModel::DevicesModel(QObject *parent)
     : QAbstractItemModel(parent)
     , itemMenu(0)
+    , enabled(false)
 {
-    connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), SLOT(deviceAdded(const QString &)));
-    connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), SLOT(deviceRemoved(const QString &)));
-    connect(MediaDeviceCache::self(), SIGNAL(accessibilityChanged(bool, const QString &)), SLOT(deviceAccessibilityChanged(bool, const QString &)));
-    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-            this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
-    MediaDeviceCache::self()->refreshCache();
-    QStringList deviceUdiList=MediaDeviceCache::self()->getAll();
-    foreach (const QString &udi, deviceUdiList) {
-        deviceAdded(udi);
-    }
-    if (devices.isEmpty()) {
-        updateItemMenu();
-    }
+    connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
+    updateItemMenu();
 }
 
 DevicesModel::~DevicesModel()
@@ -238,11 +227,11 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         case MusicLibraryItem::Type_Root: {
             Device *dev=static_cast<Device *>(item);
 
+            if (!dev->statusMessage().isEmpty()) {
+                return dev->statusMessage();
+            }
             if (!dev->isConnected()) {
                 return i18n("Not Connected");
-            }
-            if (dev->isRefreshing()) {
-                return i18n("Updating...");
             }
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Artist", "%1 Artists", item->childCount());
@@ -303,26 +292,39 @@ void DevicesModel::clear()
 {
     beginResetModel();
     qDeleteAll(devices);
+    devices.clear();
     indexes.clear();
     endResetModel();
+    updateItemMenu();
 //     emit updated(rootItem);
     emit updateGenres(QStringList());
 }
 
-qint64 DevicesModel::freeSpace(const QString &udi)
+void DevicesModel::setEnabled(bool e)
 {
-    if (udi.isEmpty()) { // local library!
-        #ifdef ENABLE_KDE_SUPPORT
-        KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(Settings::self()->mpdDir());
-        return (inf.size()-inf.used());
-        #else
-        return true;
-        #endif
-    } else if (indexes.contains(udi)) {
-        return devices.at(indexes[udi])->freeSpace();
+    if (e==enabled) {
+        return;
     }
 
-    return 0;
+    enabled=e;
+
+    if (enabled) {
+        connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
+        connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
+                this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
+        MediaDeviceCache::self()->refreshCache();
+        QStringList deviceUdiList=MediaDeviceCache::self()->getAll();
+        foreach (const QString &udi, deviceUdiList) {
+            deviceAdded(udi);
+        }
+        if (devices.isEmpty()) {
+            updateItemMenu();
+        }
+    } else {
+        disconnect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
+        disconnect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
+                   this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
+    }
 }
 
 Device * DevicesModel::device(const QString &udi)
@@ -414,10 +416,6 @@ void DevicesModel::deviceRemoved(const QString &udi)
         endRemoveRows();
         updateItemMenu();
     }
-}
-
-void DevicesModel::deviceAccessibilityChanged(bool accessible, const QString &udi)
-{
 }
 
 void DevicesModel::deviceUpdating(const QString &udi, bool state)

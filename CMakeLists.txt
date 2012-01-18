@@ -230,6 +230,9 @@ IF( ENABLE_KDE_SUPPORT )
             include_directories(${TAGLIB-EXTRAS_INCLUDES})
             add_definitions(${TAGLIB-EXTRAS_CFLAGS})
         endif (TAGLIB-EXTRAS_FOUND)
+
+        find_package(Mtp)
+
         SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp
              devices/device.cpp devices/umsdevice.cpp devices/mtpdevice.cpp models/devicesmodel.cpp devices/filetyperesolver.cpp
              devices/tagreader.cpp devices/actiondialog.cpp devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp)
@@ -239,6 +242,11 @@ IF( ENABLE_KDE_SUPPORT )
         SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertiesdialog.ui
              devices/filenameschemedialog.ui )
         include_directories(${CMAKE_SOURCE_DIR}/devices)
+
+        if (MTP_FOUND)
+            SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mtpdevice.cpp )
+            SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h )
+        endif (MTP_FOUND)
     endif (TAGLIB_FOUND)
 
     include_directories( ${KDE4_INCLUDES})
@@ -254,6 +262,10 @@ IF( ENABLE_KDE_SUPPORT )
         if (TAGLIB-EXTRAS_FOUND)
             TARGET_LINK_LIBRARIES(cantata ${TAGLIB-EXTRAS_LIBRARIES})
         endif (TAGLIB-EXTRAS_FOUND)
+        if (MTP_FOUND)
+            TARGET_LINK_LIBRARIES(cantata ${MTP_LIBRARIES})
+            SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h )
+        endif (MTP_FOUND)
     endif (TAGLIB_FOUND)
     install( TARGETS cantata ${INSTALL_TARGETS_DEFAULT_ARGS} )
     install( FILES cantataui.rc DESTINATION ${DATA_INSTALL_DIR}/cantata )

@@ -31,12 +31,13 @@
 
 class MusicLibraryItemRoot;
 class QThread;
+class MtpDevice;
 
 class MtpConnection : public QObject
 {
     Q_OBJECT
 public:
-    MtpConnection();
+    MtpConnection(MtpDevice *p);
     virtual ~MtpConnection();
 
     bool isConnected() const { return 0!=device; }
@@ -75,6 +76,7 @@ private:
     uint64_t size;
     uint64_t used;
     uint32_t musicFolderId;
+    MtpDevice *dev;
 };
 
 class MtpDevice : public Device
@@ -117,6 +119,7 @@ private:
     MtpConnection *connection;
     Song currentSong;
     bool mtpUpdating;
+    friend class MtpConnection;
 };
 
 #endif

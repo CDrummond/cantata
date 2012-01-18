@@ -27,8 +27,55 @@
 #include "device.h"
 #include "song.h"
 #include <solid/portablemediaplayer.h>
+#include <libmtp.h>
 
-// class KJob;
+class MusicLibraryItemRoot;
+class QThread;
+
+class MtpConnection : public QObject
+{
+    Q_OBJECT
+public:
+    MtpConnection();
+    virtual ~MtpConnection();
+
+    bool isConnected() const { return 0!=device; }
+    MusicLibraryItemRoot * takeLibrary();
+    uint64_t capacity() const { return size; }
+    uint64_t usedSpace() const { return used; }
+
+public Q_SLOTS:
+    void connectToDevice();
+    void disconnectFromDevice();
+    void updateLibrary();
+    void putSong(const Song &song);
+    void getSong(const Song &song, const QString &dest);
+    void delSong(const Song &song);
+
+Q_SIGNALS:
+    void statusMessage(const QString &message);
+    void putSongStatus(bool, int, const QString &);
+    void getSongStatus(bool);
+    void delSongStatus(bool);
+    void libraryUpdated();
+
+private:
+    void parseFolder(LIBMTP_folder_t *folder);
+    uint32_t getMusicFolderId();
+    uint32_t getFolderId(const char *name, LIBMTP_folder_t *f);
+    void destroyData();
+
+private:
+    LIBMTP_mtpdevice_t *device;
+    LIBMTP_folder_t *folders;
+    LIBMTP_track_t *tracks;
+    QMap<int, QString> folderMap;
+    QMap<int, LIBMTP_track_t *> trackMap;
+    MusicLibraryItemRoot *library;
+    uint64_t size;
+    uint64_t used;
+    uint32_t musicFolderId;
+};
 
 class MtpDevice : public Device
 {
@@ -38,34 +85,38 @@ public:
     MtpDevice(DevicesModel *m, Solid::Device &dev);
     virtual ~MtpDevice();
 
-    void connectTo();
-    void disconnectFrom();
-    bool isConnected();
-    void rescan();
+    bool isConnected() const;
     bool isRefreshing() const { return false; }// return 0!=scanner; }
-    void configure(QWidget *parent);
     QString path() const { return QString(); } // audioFolder; }
     void addSong(const Song &s, bool overwrite);
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
     void removeSong(const Song &s);
+    void cleanDir(const QString &dir);
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
 
-private:
-    void setup();
-    void startScanner();
-    void stopScanner();
+Q_SIGNALS:
+    // These are for talking to connection thread...
+    void updateLibrary();
+    void putSong(const Song &song);
+    void getSong(const Song &song, const QString &dest);
+    void delSong(const Song &song);
 
 private Q_SLOTS:
     void libraryUpdated();
+    void rescan();
 //     void saveProperties(const QString &newPath, const Device::NameOptions &opts);
-//     void addSongResult(KJob *job);
-//     void copySongToResult(KJob *job);
-//     void removeSongResult(KJob *job);
+    void putSongStatus(bool ok, int id, const QString &file);
+    void getSongStatus(bool ok);
+    void delSongStatus(bool ok);
 
 private:
     Solid::PortableMediaPlayer *pmp;
+    QThread *thread;
+    MtpConnection *connection;
+    Song currentSong;
+    bool mtpUpdating;
 };
 
 #endif

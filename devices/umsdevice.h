@@ -64,9 +64,7 @@ public:
     UmsDevice(DevicesModel *m, Solid::Device &dev);
     virtual ~UmsDevice();
 
-    void connectTo();
-    void disconnectFrom();
-    bool isConnected();
+    bool isConnected() const;
     void rescan();
     bool isRefreshing() const { return 0!=scanner; }
     void configure(QWidget *parent);
@@ -75,6 +73,7 @@ public:
     void addSong(const Song &s, bool overwrite);
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
     void removeSong(const Song &s);
+    void cleanDir(const QString &dir) { Device::cleanDir(dir, audioFolder, coverFileName); }
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
@@ -98,8 +97,6 @@ private:
     QString audioFolder;
     QString coverFileName;
     QStringList unusedParams;
-    QString currentBaseDir;
-    QString currentMusicPath;
 };
 
 #endif

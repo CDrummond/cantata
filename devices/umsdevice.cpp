@@ -135,26 +135,7 @@ UmsDevice::~UmsDevice() {
     stopScanner();
 }
 
-void UmsDevice::connectTo()
-{
-    if (access && !isConnected()) {
-        if (access->setup()) {
-            emit connected(solidDev.udi());
-            setup();
-        }
-    }
-}
-
-void UmsDevice::disconnectFrom()
-{
-    if (access && !isConnected()) {
-        if (access->teardown()) {
-            emit disconnected(solidDev.udi());
-        }
-    }
-}
-
-bool UmsDevice::isConnected()
+bool UmsDevice::isConnected() const
 {
     return access && access->isAccessible();
 }
@@ -310,7 +291,7 @@ double UmsDevice::usedCapacity()
     }
 
     KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(access->filePath());
-    return (inf.used()*1.0)/(inf.size()*1.0);
+    return inf.size()>0 ? (inf.used()*1.0)/(inf.size()*1.0) : -1.0;
 }
 
 QString UmsDevice::capacityString()
@@ -427,6 +408,7 @@ void UmsDevice::startScanner()
     scanner=new MusicScanner(audioFolder);
     connect(scanner, SIGNAL(finished()), this, SLOT(libraryUpdated()));
     scanner->start();
+    setStatusMessage(i18n("Updating..."));
     emit updating(solidDev.udi(), true);
 }
 
@@ -438,6 +420,7 @@ void UmsDevice::stopScanner()
         scanner->deleteLater();
         scanner->stop();
         scanner=0;
+        setStatusMessage(QString());
         emit updating(solidDev.udi(), false);
     }
 }

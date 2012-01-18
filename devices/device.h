@@ -76,6 +76,7 @@ public:
         SongExists,
         DirCreationFaild,
         SourceFileDoesNotExist,
+        SongDoesNotExist,
         Failed,
         NotConnected
     };
@@ -96,16 +97,16 @@ public:
         return QString();
     }
 
-    virtual void connectTo()=0;
-    virtual void disconnectFrom()=0;
-    virtual bool isConnected()=0;
+    virtual bool isConnected() const=0;
     virtual void rescan()=0;
     virtual bool isRefreshing() const=0;
-    virtual void configure(QWidget *parent)=0;
+    bool isIdle() const { return isConnected() && !isRefreshing(); }
+    virtual void configure(QWidget *) { }
     virtual QString path() const =0;
     virtual void addSong(const Song &s, bool overwrite)=0;
     virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)=0;
     virtual void removeSong(const Song &s)=0;
+    virtual void cleanDir(const QString &dir)=0;
     virtual double usedCapacity()=0;
     virtual QString capacityString()=0;
     virtual qint64 freeSpace()=0;
@@ -113,7 +114,6 @@ public:
     const Solid::Device & dev() const {
         return solidDev;
     }
-
     void applyUpdate();
     bool haveUpdate() const {
         return 0!=update;
@@ -124,8 +124,16 @@ public:
     const NameOptions & namingOptions() const {
         return nameOpts;
     }
-
+    const QString & statusMessage() const {
+        return statusMsg;
+    }
+    bool isDevice() const {
+        return true;
+    }
     bool songExists(const Song &s) const;
+
+public Q_SLOTS:
+    void setStatusMessage(const QString &message);
 
 protected:
     void addSongToList(const Song &s);
@@ -143,6 +151,9 @@ protected:
     Solid::Device solidDev;
     MusicLibraryItemRoot *update;
     Song currentSong;
+    QString currentBaseDir;
+    QString currentMusicPath;
+    QString statusMsg;
 };
 
 #endif

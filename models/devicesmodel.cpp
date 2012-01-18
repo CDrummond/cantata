@@ -41,7 +41,6 @@
 #include <KDE/KGlobal>
 #include <KDE/KDiskFreeSpaceInfo>
 #endif
-#include <QtCore/QDebug>
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(DevicesModel, instance)
@@ -396,7 +395,6 @@ void DevicesModel::deviceAdded(const QString &udi)
         Device *dev=Device::create(this, udi);
         if (dev) {
             beginInsertRows(QModelIndex(), devices.count(), devices.count());
-            qWarning() << udi << " -> " << devices.count();
             indexes.insert(udi, devices.count());
             devices.append(dev);
             endInsertRows();

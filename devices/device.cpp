@@ -34,7 +34,6 @@
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
 #include <QtCore/QDir>
-#include <QtCore/QDebug>
 #include <KDE/KLocale>
 
 static QString cleanPath(const QString &path)
@@ -287,15 +286,10 @@ Device * Device::create(DevicesModel *m, const QString &udi)
         }
     } else if (device.is<Solid::StorageAccess>()) {
 
-        // TODO: Check bus type - only want USB devices!
-        if (device.is<Solid::StorageDrive>()) {
-            qWarning() << "DRIVE";
-        }
         //HACK: ignore apple stuff until we have common MediaDeviceFactory.
         if (!device.vendor().contains("apple", Qt::CaseInsensitive)) {
 //             Solid::StorageAccess *sa = device.as<Solid::StorageAccess>();
 //             if (QLatin1String("usb")==sa->bus) {
-    qWarning() << "UMS" << udi;
                 return new UmsDevice(m, device);
 //             }
         }
@@ -361,13 +355,11 @@ void Device::cleanDir(const QString &dir, const QString &base, int level)
 void Device::applyUpdate()
 {
     if (m_childItems.count() && update && update->childCount()) {
-        qWarning() << "INCREMENTAL UPDATE" << m_childItems.count() << update->childCount();
         QSet<Song> currentSongs=allSongs();
         QSet<Song> updateSongs=update->allSongs();
         QSet<Song> removed=currentSongs-updateSongs;
         QSet<Song> added=updateSongs-currentSongs;
 
-        qWarning() << "ADDED:" << added.count() << "REMOVED:" << removed.count();
         foreach (const Song &s, added) {
             addSongToList(s);
         }
@@ -376,7 +368,6 @@ void Device::applyUpdate()
         }
         delete update;
     } else {
-        qWarning() << "FULL UPDATE";
         int oldCount=childCount();
         if (oldCount>0) {
             model->beginRemoveRows(model->createIndex(model->devices.indexOf(this), 0, this), 0, oldCount-1);

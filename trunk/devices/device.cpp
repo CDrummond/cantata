@@ -318,18 +318,20 @@ void Device::cleanDir(const QString &dir, const QString &base, int level)
     QDir d(dir);
     if (d.exists()) {
         QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
-        QList<QString> coverFiles;
+        QList<QString> extraFiles;
+        QSet<QString> others = QSet<QString>() << "albumart.pamp";
+
         foreach (const QFileInfo &info, entries) {
             if (info.isDir()) {
                 return;
             }
-            if (!Covers::isCoverFile(info.fileName())) {
+            if (!Covers::isCoverFile(info.fileName()) && !others.contains(info.fileName())) {
                 return;
             }
-            coverFiles.append(info.absoluteFilePath());
+            extraFiles.append(info.absoluteFilePath());
         }
 
-        foreach (const QString &cf, coverFiles) {
+        foreach (const QString &cf, extraFiles) {
             if (!QFile::remove(cf)) {
                 return;
             }

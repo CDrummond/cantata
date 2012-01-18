@@ -54,6 +54,7 @@ private:
     Device::NameOptions origOpts;
     QString origMusicFolder;
     QString origCoverName;
+    QString noCoverText;
 };
 
 #endif

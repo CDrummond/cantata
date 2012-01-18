@@ -272,7 +272,8 @@ void ActionDialog::actionStatus(int status)
         if (Device::Ok==origStatus) {
             actionedSongs.append(currentSong);
         }
-        if (1==actionedSongs.count() && !sourceUdi.isEmpty()) {
+        if (1==actionedSongs.count() && ( (Copy==mode && !sourceUdi.isEmpty()) ||
+                                          (Remove==mode && sourceUdi.isEmpty()) ) ) {
             // Cache is now out of date, so need to remove!
             MusicLibraryModel::self()->removeCache();
         }

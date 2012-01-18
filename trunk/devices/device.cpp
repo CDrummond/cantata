@@ -307,19 +307,20 @@ QString fixDir(const QString &d)
     return dir;
 }
 
-void Device::cleanDir(const QString &dir, const QString &base, int level)
+void Device::cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level)
 {
     QDir d(dir);
     if (d.exists()) {
         QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
         QList<QString> extraFiles;
-        QSet<QString> others = QSet<QString>() << "albumart.pamp";
+        QSet<QString> others=Covers::standardNames().toSet();
+        others << coverFile << "albumart.pamp";
 
         foreach (const QFileInfo &info, entries) {
             if (info.isDir()) {
                 return;
             }
-            if (!Covers::isCoverFile(info.fileName()) && !others.contains(info.fileName())) {
+            if (!others.contains(info.fileName())) {
                 return;
             }
             extraFiles.append(info.absoluteFilePath());
@@ -347,7 +348,7 @@ void Device::cleanDir(const QString &dir, const QString &base, int level)
         }
         QString upDir=d.absolutePath();
         if (fixDir(upDir)!=fixDir(base)) {
-            cleanDir(upDir, base, level+1);
+            cleanDir(upDir, base, coverFile, level+1);
         }
     }
 }

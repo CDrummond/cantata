@@ -36,13 +36,17 @@
 #include <KDE/KLocale>
 #include <KDE/KUrl>
 #include <QtCore/QDebug>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
-MtpConnection::MtpConnection()
+MtpConnection::MtpConnection(MtpDevice *p)
     : device(0)
     , folders(0)
     , tracks(0)
     , library(0)
     , musicFolderId(0)
+    , dev(p)
 {
     size=0;
     used=0;
@@ -214,7 +218,7 @@ void MtpConnection::parseFolder(LIBMTP_folder_t *folder)
     }
 }
 
-static const char * createString(const QString &str)
+static char * createString(const QString &str)
 {
     return str.isEmpty() ? qstrdup("") : qstrdup( str.toUtf8());
 }
@@ -224,15 +228,14 @@ void MtpConnection::putSong(const Song &song)
     bool added=false;
     LIBMTP_track_t *meta=0;
     if (device) {
-        /*
-         * Work out destfilename, split into drs, and check that each exists -of not create...
-        QString destName=nameOpts.createFilename(song);
-        QStringList dirs=destName.split('/')';
-        uint32_t parentId=musicFolderId; XXXXXX
+        QString destName=dev->nameOpts.createFilename(song);
+        QStringList dirs=destName.split('/');
+        uint32_t parentId=musicFolderId; // TODO!!!!XXXXXX
         if (dirs.count()>2) {
-            dirs.takeLast();
+            destName=dirs.takeLast();
             foreach (const QString &d, dirs) {
-
+                // CREATE DEST FOLDERS IF THEY DO NOT EXIST
+                // THEN SET parentId to LOWEST LEVEL FOLDER
             }
         }
         meta=LIBMTP_new_track_t();
@@ -241,27 +244,25 @@ void MtpConnection::putSong(const Song &song)
         meta->parent_id=parentId;
         meta->title=createString(song.title);
         meta->artist=createString(song.artist);
-        meta->composer=createString(song.composer);
+        meta->composer=createString(QString());
         meta->genre=createString(song.genre);
         meta->album=createString(song.album);
-        meta->date=createString(song.date);
-        meta->filename=createString(song.filename); ZZZZ
+        meta->date=createString(QString::number(song.year));
+        meta->filename=createString(destName);
         meta->tracknumber=song.track;
-        meta->duration=song.track;
-        meta->samplerate=song.track;
-        meta->nochannels=song.track;
-        meta->wavecodec=song.track;
-        meta->bitrate=song.track;
-        meta->bitratetype=song.track;
-        meta->rating=song.track;
-        meta->usecount=song.track;
-        meta->filesize=song.track;
-        meta->modificationdate=song.track;
-        meta->filetype=song.track;
+        meta->duration=song.size;
+        meta->rating=0;
+        meta->usecount=0;
+
+        struct stat statBuf;
+        if (0==stat(QFile::encodeName(song.file).constData(), &statBuf)) {
+            meta->filesize=statBuf.st_size;
+            meta->modificationdate=statBuf.st_mtime;
+        }
+        // TODO: Filetype meta->filetype=song.track;
         meta->next=0;
 
         LIBMTP_Send_Track_From_File(device, song.file.toUtf8(), meta, 0, 0);
-        */
     }
     if (added) {
         trackMap.insert(meta->item_id, meta);
@@ -278,7 +279,7 @@ void MtpConnection::getSong(const Song &song, const QString &dest)
 
 void MtpConnection::delSong(const Song &song)
 {
-    // TODO: After delete, need to check if all songs of thisalbum are gone, if so delete the folder, etc.
+    // TODO: After delete, need to check if all songs of this album are gone, if so delete the folder, etc.
     bool deleted=device && trackMap.contains(song.id) && 0==LIBMTP_Delete_Object(device, song.id);
     if (deleted) {
         LIBMTP_destroy_track_t(trackMap[song.id]);
@@ -311,7 +312,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     , mtpUpdating(false)
 {
     thread=new QThread(this);
-    connection=new MtpConnection();
+    connection=new MtpConnection(this);
     connection->moveToThread(thread);
     thread->start();
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));

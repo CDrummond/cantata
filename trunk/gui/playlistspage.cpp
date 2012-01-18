@@ -46,7 +46,6 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     renamePlaylistAction = p->actionCollection()->addAction("renameplaylist");
     renamePlaylistAction->setText(i18n("Rename"));
     #else
-    removeAction = new QAction(tr("Remove"), this);
     renamePlaylistAction = new QAction(tr("Rename"), this);
     #endif
     renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));

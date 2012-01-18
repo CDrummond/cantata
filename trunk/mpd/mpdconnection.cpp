@@ -52,6 +52,11 @@ MPDConnection * MPDConnection::self()
     #endif
 }
 
+static QByteArray encodeName(const QString &name)
+{
+    return '\"'+name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"")+'\"';
+}
+
 static QByteArray readFromSocket(MpdSocket &socket)
 {
     QByteArray data;
@@ -698,7 +703,7 @@ void MPDConnection::listPlaylists()
 void MPDConnection::playlistInfo(const QString &name)
 {
     QByteArray data = "listplaylistinfo ";
-    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += encodeName(name);
     Response response=sendCommand(data);
     if (response.ok) {
         emit playlistInfoRetrieved(name, MPDParseUtils::parseSongs(response.data));
@@ -708,7 +713,7 @@ void MPDConnection::playlistInfo(const QString &name)
 void MPDConnection::loadPlaylist(QString name)
 {
     QByteArray data("load ");
-    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += encodeName(name);
 
     if (sendCommand(data).ok) {
         emit playlistLoaded(name);
@@ -718,9 +723,9 @@ void MPDConnection::loadPlaylist(QString name)
 void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
 {
     QByteArray data("rename ");
-    data += "\"" + oldName.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += encodeName(oldName);
     data += " ";
-    data += "\"" + newName.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += encodeName(newName);
 
     if (!sendCommand(data).ok && ui) {
         #ifdef ENABLE_KDE_SUPPORT
@@ -735,7 +740,7 @@ void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
 void MPDConnection::removePlaylist(QString name)
 {
     QByteArray data("rm ");
-    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += encodeName(name);
 
     sendCommand(data);
 }
@@ -743,7 +748,7 @@ void MPDConnection::removePlaylist(QString name)
 void MPDConnection::savePlaylist(QString name)
 {
     QByteArray data("save ");
-    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += encodeName(name);
 
     if (!sendCommand(data).ok && ui) {
         #ifdef ENABLE_KDE_SUPPORT
@@ -761,14 +766,14 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs)
         return;
     }
 
-    QByteArray encodedName=name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"");
+    QByteArray encodedName=encodeName(name);
 
     QStringList added;
     foreach (const QString &s, songs) {
         QByteArray data = "playlistadd ";
-        data += "\"" + encodedName + "\"";
+        data += encodedName;
         data += " ";
-        data += s.toUtf8();
+        data += encodeName(s);
         if (sendCommand(data).ok) {
             added << s;
         } else {
@@ -787,7 +792,7 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<int> &po
         return;
     }
 
-    QByteArray encodedName=name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"");
+    QByteArray encodedName=encodeName(name);
     QList<int> sorted=positions;
 
     qSort(sorted);
@@ -800,7 +805,7 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<int> &po
     QList<int> removed;
     for (int i=0; i<fixedPositions.count(); ++i) {
         QByteArray data = "playlistdelete ";
-        data += "\"" + encodedName + "\"";
+        data += encodedName;
         data += " ";
         data += QByteArray::number(fixedPositions.at(i));
         if (sendCommand(data).ok) {
@@ -818,7 +823,7 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<int> &po
 void MPDConnection::moveInPlaylist(const QString &name, int from, int to)
 {
     QByteArray data = "playlistmove ";
-    data += "\"" + name.toUtf8().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    data += encodeName(name);
     data += " ";
     data += QByteArray::number(from);
     data += " ";

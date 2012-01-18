@@ -550,6 +550,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     #endif
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
+    streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
@@ -1029,7 +1030,6 @@ void MainWindow::updateSettings()
         libraryPage->refresh(LibraryPage::RefreshForce);
     }
 
-    streamsPage->refresh();
     libraryPage->setView(0==Settings::self()->libraryView());
     playlistsPage->setView(0==Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
@@ -1835,10 +1835,17 @@ void MainWindow::currentTabChanged(int index)
 
 void MainWindow::tabToggled(int index)
 {
-    if(PAGE_ALBUMS==index) {
+    switch (index) {
+    case PAGE_ALBUMS:
         AlbumsModel::self()->setEnabled(!AlbumsModel::self()->isEnabled());
-    } else if(PAGE_FOLDERS==index) {
+        break;
+    case PAGE_FOLDERS:
         folderPage->setEnabled(!folderPage->isEnabled());
+        break;
+    case PAGE_STREAMS:
+        streamsPage->setEnabled(!streamsPage->isEnabled());
+    default:
+        break;
     }
 }
 

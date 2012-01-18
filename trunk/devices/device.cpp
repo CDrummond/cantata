@@ -21,10 +21,13 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "config.h"
 #include "device.h"
 #include "devicesmodel.h"
 #include "umsdevice.h"
+#ifdef MTP_FOUND
 #include "mtpdevice.h"
+#endif
 #include "song.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
@@ -279,11 +282,13 @@ Device * Device::create(DevicesModel *m, const QString &udi)
 
     if (device.is<Solid::PortableMediaPlayer>())
     {
+        #ifdef MTP_FOUND
         Solid::PortableMediaPlayer *pmp = device.as<Solid::PortableMediaPlayer>();
 
         if (pmp->supportedProtocols().contains(QLatin1String("mtp"))) {
             return new MtpDevice(m, device);
         }
+        #endif
     } else if (device.is<Solid::StorageAccess>()) {
 
         //HACK: ignore apple stuff until we have common MediaDeviceFactory.
@@ -478,4 +483,11 @@ void Device::removeSongFromList(const Song &s)
     model->beginRemoveRows(model->createIndex(artistItem->children().indexOf(albumItem), 0, albumItem), songRow, songRow);
     albumItem->remove(songRow);
     model->endRemoveRows();
+}
+
+void Device::setStatusMessage(const QString &msg)
+{
+    statusMsg=msg;
+    QModelIndex modelIndex=model->createIndex(model->devices.indexOf(this), 0, this);
+    emit model->dataChanged(modelIndex, modelIndex);
 }

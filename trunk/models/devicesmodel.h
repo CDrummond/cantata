@@ -51,14 +51,14 @@ public:
     QList<Song> songs(const QModelIndexList &indexes) const;
     void clear();
     QMenu * menu() { return itemMenu; }
-    qint64 freeSpace(const QString &udi);
     Device * device(const QString &udi);
+    bool isEnabled() const { return enabled; }
+    void setEnabled(bool e);
 
 public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
     void deviceAdded(const QString &udi);
     void deviceRemoved(const QString &udi);
-    void deviceAccessibilityChanged(bool accessible, const QString &udi);
     void deviceUpdating(const QString &udi, bool state);
     void emitAddToDevice();
 
@@ -74,6 +74,7 @@ private:
     QList<Device *> devices;
     QHash<QString, int> indexes;
     QMenu *itemMenu;
+    bool enabled;
 
     friend class Device;
 };

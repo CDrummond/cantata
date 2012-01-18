@@ -41,11 +41,12 @@ class Covers : public QObject
 public:
     struct Job
     {
-        Job(const QString &ar, const QString &al, const QString &d)
-            : artist(ar), album(al), dir(d) { }
+        Job(const QString &ar, const QString &al, const QString &d, bool l)
+            : artist(ar), album(al), dir(d), isLocal(l) { }
         QString artist;
         QString album;
         QString dir;
+        bool isLocal;
     };
 
     static Covers * self();
@@ -55,7 +56,7 @@ public:
 
     Covers();
 
-    void get(const Song &song, bool isSingleTracks=false);
+    void get(const Song &song, bool isSingleTracks=false, bool isLocal=false);
     void setMpdDir(const QString &dir) { mpdDir=dir; }
     QString mpd() const { return mpdDir; }
 

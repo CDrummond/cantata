@@ -22,263 +22,480 @@
  */
 
 #include "mtpdevice.h"
-#include "tagreader.h"
 #include "musiclibrarymodel.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
 #include "covers.h"
+#include "song.h"
+#include <QtCore/QThread>
+#include <QtCore/QTimer>
+#include <QtCore/QDir>
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
+#include <KDE/KUrl>
+#include <QtCore/QDebug>
+
+MtpConnection::MtpConnection()
+    : device(0)
+    , folders(0)
+    , tracks(0)
+    , library(0)
+    , musicFolderId(0)
+{
+    size=0;
+    used=0;
+    LIBMTP_Init();
+}
+
+MtpConnection::~MtpConnection()
+{
+    disconnectFromDevice();
+}
+
+MusicLibraryItemRoot * MtpConnection::takeLibrary()
+{
+    MusicLibraryItemRoot *lib=library;
+    library=0;
+    return lib;
+}
+
+void MtpConnection::connectToDevice()
+{
+    device = 0;
+    musicFolderId=0;
+    LIBMTP_raw_device_t *rawDevices;
+    int numDev;
+
+    emit statusMessage(i18n("Connecting to device..."));
+    if (LIBMTP_ERROR_NONE!=LIBMTP_Detect_Raw_Devices(&rawDevices, &numDev) || 0==numDev) {
+        qWarning() << "failed to detect raw dev";
+        emit statusMessage(i18n("No devices found"));
+        return;
+    }
+
+    LIBMTP_mtpdevice_t *dev=0;
+    for (int i = 0; i < numDev; i++) {
+        if ((dev = LIBMTP_Open_Raw_Device(&rawDevices[i]))) {
+            break;
+        }
+    }
+
+    size=0;
+    used=0;
+    if (dev && LIBMTP_ERROR_NONE==LIBMTP_Get_Storage(dev, LIBMTP_STORAGE_SORTBY_NOTSORTED) && dev->storage) {
+        size=dev->storage->MaxCapacity;
+        used=size-dev->storage->FreeSpaceInBytes;
+    }
+    device=dev;
+    free(rawDevices);
+    if (!device) {
+        emit statusMessage(i18n("No devices found"));
+        return;
+    }
+
+    musicFolderId = device->default_music_folder;
+    emit statusMessage(i18n("Connected to device"));
+}
+
+void MtpConnection::disconnectFromDevice()
+{
+    if (device) {
+        destroyData();
+        LIBMTP_Release_Device(device);
+        device=0;
+        emit statusMessage(i18n("Disconnected from device"));
+    }
+}
+
+void MtpConnection::updateLibrary()
+{
+    if (!isConnected()) {
+        connectToDevice();
+    }
+
+    destroyData();
+
+    if (!isConnected()) {
+        emit libraryUpdated();
+        return;
+    }
+
+    library = new MusicLibraryItemRoot;
+    emit statusMessage(i18n("Updating folders..."));
+    folders=LIBMTP_Get_Folder_List(device);
+    parseFolder(folders);
+    emit statusMessage(i18n("Updating tracks..."));
+    tracks=LIBMTP_Get_Tracklisting_With_Callback(device, 0, 0);
+    LIBMTP_track_t *track=tracks;
+    QMap<int, QString>::ConstIterator folderEnd=folderMap.constEnd();
+    while (track) {
+        QMap<int, QString>::ConstIterator it=folderMap.find(track->parent_id);
+        Song s;
+        s.id=track->item_id;
+        if (it!=folderEnd) {
+            s.file=it.value()+track->filename;
+        } else {
+            s.file=track->filename;
+        }
+        s.album=track->album;
+        s.artist=track->artist;
+        s.albumartist=s.artist; // libMTP does not support album artist :-(
+        // Use LIBMTP_Get_File_To_File_Descriptor to pass to TagLib!!!
+        s.year=QString::fromUtf8(track->date).mid(0, 4).toUInt();
+        s.title=track->title;
+        s.genre=track->genre;
+        s.track=track->tracknumber;
+        s.fillEmptyFields();
+        trackMap.insert(track->item_id, track);
+        MusicLibraryItemArtist *artistItem = library->artist(s);
+        MusicLibraryItemAlbum *albumItem = artistItem->album(s);
+        MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
+
+        albumItem->append(songItem);
+        albumItem->addGenre(s.genre);
+        artistItem->addGenre(s.genre);
+        songItem->addGenre(s.genre);
+        library->addGenre(s.genre);
+        track=track->next;
+    }
+    emit libraryUpdated();
+}
+
+uint32_t MtpConnection::getMusicFolderId()
+{
+    return musicFolderId ? musicFolderId
+                         : folders
+                            ? getFolderId("Music", folders)
+                            : 0;
+}
+
+uint32_t MtpConnection::getFolderId(const char *name, LIBMTP_folder_t *f)
+{
+
+    if (!f) {
+        return 0;
+    }
+
+    if (!strcasecmp(name, f->name)) {
+        return f->folder_id;
+    }
+
+    uint32_t i;
+
+//     if ((i=getFolderId(name, f->child))) {
+//         return i;
+//     }
+    if ((i=getFolderId(name, f->sibling))) {
+        return i;
+    }
+
+    return 0;
+}
+
+void MtpConnection::parseFolder(LIBMTP_folder_t *folder)
+{
+    if (!folder) {
+        return;
+    }
+
+    QMap<int, QString>::ConstIterator it=folderMap.find(folder->parent_id);
+    if (it!=folderMap.constEnd()) {
+        folderMap.insert(folder->folder_id, it.value()+folder->name+QChar('/'));
+    } else {
+        folderMap.insert(folder->folder_id, QString(folder->name)+QChar('/'));
+    }
+    if (folder->child) {
+        parseFolder(folder->child);
+    }
+    if (folder->sibling) {
+        parseFolder(folder->sibling);
+    }
+}
+
+static const char * createString(const QString &str)
+{
+    return str.isEmpty() ? qstrdup("") : qstrdup( str.toUtf8());
+}
+
+void MtpConnection::putSong(const Song &song)
+{
+    bool added=false;
+    LIBMTP_track_t *meta=0;
+    if (device) {
+        /*
+         * Work out destfilename, split into drs, and check that each exists -of not create...
+        QString destName=nameOpts.createFilename(song);
+        QStringList dirs=destName.split('/')';
+        uint32_t parentId=musicFolderId; XXXXXX
+        if (dirs.count()>2) {
+            dirs.takeLast();
+            foreach (const QString &d, dirs) {
+
+            }
+        }
+        meta=LIBMTP_new_track_t();
+        meta->item_id=0;
+        meta->storage_id=0;
+        meta->parent_id=parentId;
+        meta->title=createString(song.title);
+        meta->artist=createString(song.artist);
+        meta->composer=createString(song.composer);
+        meta->genre=createString(song.genre);
+        meta->album=createString(song.album);
+        meta->date=createString(song.date);
+        meta->filename=createString(song.filename); ZZZZ
+        meta->tracknumber=song.track;
+        meta->duration=song.track;
+        meta->samplerate=song.track;
+        meta->nochannels=song.track;
+        meta->wavecodec=song.track;
+        meta->bitrate=song.track;
+        meta->bitratetype=song.track;
+        meta->rating=song.track;
+        meta->usecount=song.track;
+        meta->filesize=song.track;
+        meta->modificationdate=song.track;
+        meta->filetype=song.track;
+        meta->next=0;
+
+        LIBMTP_Send_Track_From_File(device, song.file.toUtf8(), meta, 0, 0);
+        */
+    }
+    if (added) {
+        trackMap.insert(meta->item_id, meta);
+    } else if (meta) {
+        LIBMTP_destroy_track_t(meta);
+    }
+    emit putSongStatus(added, meta ? meta->item_id : 0, meta ? meta->filename : 0);
+}
+
+void MtpConnection::getSong(const Song &song, const QString &dest)
+{
+    emit getSongStatus(device && 0==LIBMTP_Get_File_To_File(device, song.id, dest.toUtf8(), 0, 0));
+}
+
+void MtpConnection::delSong(const Song &song)
+{
+    // TODO: After delete, need to check if all songs of thisalbum are gone, if so delete the folder, etc.
+    bool deleted=device && trackMap.contains(song.id) && 0==LIBMTP_Delete_Object(device, song.id);
+    if (deleted) {
+        LIBMTP_destroy_track_t(trackMap[song.id]);
+        trackMap.remove(song.id);
+    }
+    emit delSongStatus(deleted);
+}
+
+void MtpConnection::destroyData()
+{
+    folderMap.empty();
+    if (folders) {
+        LIBMTP_destroy_folder_t(folders);
+        folders=0;
+    }
+    trackMap.empty();
+    if (tracks) {
+        LIBMTP_destroy_track_t(tracks);
+        tracks=0;
+    }
+    if (library) {
+        delete library;
+        library=0;
+    }
+}
 
 MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     : Device(m, dev)
     , pmp(dev.as<Solid::PortableMediaPlayer>())
-//     , scanner(0)
-//     , propDlg(0)
+    , mtpUpdating(false)
 {
-    setup();
+    thread=new QThread(this);
+    connection=new MtpConnection();
+    connection->moveToThread(thread);
+    thread->start();
+    connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
+    connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
+    connect(this, SIGNAL(putSong(const Song &)), connection, SLOT(putSong(const Song &)));
+    connect(connection, SIGNAL(putSongStatus(bool, int, const QString &)), this, SLOT(putSongStatus(bool, int, const QString &)));
+    connect(this, SIGNAL(getSong(const Song &, const QString &)), connection, SLOT(getSong(const Song &, const QString &)));
+    connect(connection, SIGNAL(getSongStatus(bool)), this, SLOT(getSongStatus(bool)));
+    connect(this, SIGNAL(delSong(const Song &)), connection, SLOT(delSong(const Song &)));
+    connect(connection, SIGNAL(delSongStatus(bool)), this, SLOT(delSongStatus(bool)));
+    connect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
+    QTimer::singleShot(0, this, SLOT(rescan()));
 }
 
-MtpDevice::~MtpDevice() {
-    stopScanner();
+struct Thread : public QThread
+{
+    static void sleep() { QThread::msleep(100); }
+};
+
+MtpDevice::~MtpDevice()
+{
+    thread->quit();
+    for(int i=0; i<10 && thread->isRunning(); ++i)
+        Thread::sleep();
+    thread->deleteLater();
+    thread=0;
 }
 
-void MtpDevice::connectTo()
+bool MtpDevice::isConnected() const
 {
-    if (pmp && !isConnected()) {
-//         if (pmp->setup()) {
-//             emit connected(solidDev.udi());
-//             setup();
-//         }
-    }
-}
-
-void MtpDevice::disconnectFrom()
-{
-    if (pmp && !isConnected()) {
-//         if (pmp->teardown()) {
-//             emit disconnected(solidDev.udi());
-//         }
-    }
-}
-
-bool MtpDevice::isConnected()
-{
-    return pmp /*&& pmp->isAccessible()*/;
-}
-
-void MtpDevice::configure(QWidget *parent)
-{
-//     if (!propDlg) {
-//         propDlg=new DevicePropertiesDialog(parent);
-//         connect(propDlg, SIGNAL(updatedSettings(const QString &, const Device::NameOptions &)), SLOT(saveProperties(const QString &, const Device::NameOptions &)));
-//     }
-//     propDlg->show(audioFolder, nameOpts);
+    return pmp && connection->isConnected();
 }
 
 void MtpDevice::rescan()
 {
-    if (isConnected()) {
-        startScanner();
+    if (mtpUpdating) {
+        return;
     }
+    mtpUpdating=true;
+    emit updating(solidDev.udi(), true);
+    emit updateLibrary();
 }
 
 void MtpDevice::addSong(const Song &s, bool overwrite)
 {
-//     if (!isConnected()) {
-//         emit actionStatus(NotConnected);
-//         return;
-//     }
-//
-//     if (!overwrite && songExists(s)) {
-//         emit actionStatus(SongExists);
-//         return;
-//     }
-//
-//     if (!QFile::exists(s.file)) {
-//         emit actionStatus(SourceFileDoesNotExist);
-//         return;
-//     }
-//
-//     QString destFile=audioFolder+nameOpts.createFilename(s);
-//
-//     if (!overwrite && QFile::exists(destFile)) {
-//         emit actionStatus(FileExists);
-//         return;
-//     }
-//
-//     KUrl dest(destFile);
-//     QDir dir(dest.directory());
-//     if( !dir.exists() && !dir.mkpath( "." ) ) {
-//         emit actionStatus(DirCreationFaild);
-//     }
-//
-//     currentSong=s;
-//     KIO::FileCopyJob *job=KIO::file_copy(KUrl(s.file), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
-//     connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *job)));
+    if (!isConnected()) {
+        emit actionStatus(NotConnected);
+        return;
+    }
+
+    if (!overwrite && songExists(s)) {
+        emit actionStatus(SongExists);
+        return;
+    }
+
+    if (!QFile::exists(s.file)) {
+        emit actionStatus(SourceFileDoesNotExist);
+        return;
+    }
+
+    emit putSong(s);
 }
 
 void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
 {
-//     if (!isConnected()) {
-//         emit actionStatus(NotConnected);
-//         return;
-//     }
-//
-//     if (!overwrite && MusicLibraryModel::self()->songExists(s)) {
-//         emit actionStatus(SongExists);
-//         return;
-//     }
-//
-//     QString source=s.file; // Device files have full path!!!
-//
-//     if (!QFile::exists(source)) {
-//         emit actionStatus(SourceFileDoesNotExist);
-//         return;
-//     }
-//
-//     if (!overwrite && QFile::exists(baseDir+musicPath)) {
-//         emit actionStatus(FileExists);
-//         return;
-//     }
-//
-//     currentBaseDir=baseDir;
-//     currentMusicPath=musicPath;
-//     KUrl dest(currentBaseDir+currentMusicPath);
-//     QDir dir(dest.directory());
-//     if (!dir.exists() && !dir.mkpath( "." )) {
-//         emit actionStatus(DirCreationFaild);
-//     }
-//
-//     currentSong=s;
-//     KIO::FileCopyJob *job=KIO::file_copy(KUrl(source), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
-//     connect(job, SIGNAL(result(KJob *)), SLOT(copySongToResult(KJob *)));
+    if (!isConnected()) {
+        emit actionStatus(NotConnected);
+        return;
+    }
+
+    if (!overwrite && MusicLibraryModel::self()->songExists(s)) {
+        emit actionStatus(SongExists);
+        return;
+    }
+
+    if (!songExists(s)) {
+        emit actionStatus(SongDoesNotExist);
+        return;
+    }
+
+    currentBaseDir=baseDir;
+    currentMusicPath=musicPath;
+    KUrl dest(currentBaseDir+currentMusicPath);
+    QDir dir(dest.directory());
+    if (!dir.exists() && !dir.mkpath( "." )) {
+        emit actionStatus(DirCreationFaild);
+    }
+
+    currentSong=s;
+    emit getSong(s, musicPath+musicPath);
 }
 
 void MtpDevice::removeSong(const Song &s)
 {
-//     if (!isConnected()) {
-//         emit actionStatus(NotConnected);
-//         return;
-//     }
-//
-//     if (!QFile::exists(s.file)) {
-//         emit actionStatus(SourceFileDoesNotExist);
-//         return;
-//     }
-//
-//     currentSong=s;
-//     KIO::SimpleJob *job=KIO::file_delete(KUrl(s.file), KIO::HideProgressInfo);
-//     connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *job)));
+    if (!isConnected()) {
+        emit actionStatus(NotConnected);
+        return;
+    }
+
+    if (!songExists(s)) {
+        emit actionStatus(SongDoesNotExist);
+        return;
+    }
+
+    currentSong=s;
+    emit delSong(s);
 }
 
-// void MtpDevice::addSongResult(KJob *job)
-// {
-//     if (job->error()) {
-//         emit actionStatus(Failed);
-//     } else {
-//         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
-//         QString destFile=audioFolder+nameOpts.createFilename(currentSong);
-//
-//         currentSong.file=destFile;
+void MtpDevice::cleanDir(const QString &dir)
+{
+    Q_UNUSED(dir)
+}
+
+void MtpDevice::putSongStatus(bool ok, int id, const QString &file)
+{
+    if (!ok) {
+        emit actionStatus(Failed);
+    } else {
+        currentSong.id=id;
+        currentSong.file=file;
 //         Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), false);
-//         addSongToList(currentSong);
-//         emit actionStatus(Ok);
-//     }
-// }
-//
-// void MtpDevice::copySongToResult(KJob *job)
-// {
-//     if (job->error()) {
-//         emit actionStatus(Failed);
-//     } else {
+        addSongToList(currentSong);
+        emit actionStatus(Ok);
+    }
+}
+
+void MtpDevice::getSongStatus(bool ok)
+{
+    if (!ok) {
+        emit actionStatus(Failed);
+    } else {
 //         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
-//         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
+        currentSong.file=currentMusicPath; // MPD's paths are not full!!!
+// TODO: Get covers???
 //         Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), true);
-//         MusicLibraryModel::self()->addSongToList(currentSong);
-//         emit actionStatus(Ok);
-//     }
-// }
-//
-// void MtpDevice::removeSongResult(KJob *job)
-// {
-//     if (job->error()) {
-//         emit actionStatus(Failed);
-//     } else {
-//         removeSongFromList(currentSong);
-//         emit actionStatus(Ok);
-//     }
-// }
+        MusicLibraryModel::self()->addSongToList(currentSong);
+        emit actionStatus(Ok);
+    }
+}
+
+void MtpDevice::delSongStatus(bool ok)
+{
+    if (!ok) {
+        emit actionStatus(Failed);
+    } else {
+        removeSongFromList(currentSong);
+        emit actionStatus(Ok);
+    }
+}
 
 double MtpDevice::usedCapacity()
 {
-//     if (!isConnected()) {
+    if (!isConnected()) {
         return -1.0;
-//     }
-//
-//     KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(pmp->filePath());
-//     return (inf.used()*1.0)/(inf.size()*1.0);
+    }
+
+    return connection->capacity()>0 ? (connection->usedSpace()*1.0)/(connection->capacity()*1.0) : -1.0;
 }
 
 QString MtpDevice::capacityString()
 {
-//     if (!isConnected()) {
+    if (!isConnected()) {
         return i18n("Not Connected");
-//     }
-//
-//     KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(pmp->filePath());
-//     return i18n("%1 Free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
+    }
+
+    return i18n("%1 Free", KGlobal::locale()->formatByteSize(connection->capacity()-connection->usedSpace()), 1);
 }
 
 qint64 MtpDevice::freeSpace()
 {
-//     if (!isConnected()) {
-        return 0;
-//     }
-//
-//     KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(pmp->filePath());
-//     return inf.size()-inf.used();
-}
-
-void MtpDevice::setup()
-{
     if (!isConnected()) {
-        return;
+        return 0;
     }
 
-    rescan();
-}
-
-void MtpDevice::startScanner()
-{
-//     stopScanner();
-//     scanner=new MusicScanner(audioFolder);
-//     connect(scanner, SIGNAL(finished()), this, SLOT(libraryUpdated()));
-//     scanner->start();
-//     emit updating(solidDev.udi(), true);
-}
-
-void MtpDevice::stopScanner()
-{
-    // Scan for music in a separate thread...
-//     if (scanner) {
-//         disconnect(scanner, SIGNAL(finished()), this, SLOT(libraryUpdated()));
-//         scanner->deleteLater();
-//         scanner->stop();
-//         scanner=0;
-//         emit updating(solidDev.udi(), false);
-//     }
+    return connection->capacity()-connection->usedSpace();
 }
 
 void MtpDevice::libraryUpdated()
 {
-//     if (scanner) {
-//         if (update) {
-//             delete update;
-//         }
-//         update=scanner->takeLibrary();
-//         stopScanner();
-//     }
+    if (update) {
+        delete update;
+    }
+    update=connection->takeLibrary();
+    setStatusMessage(QString());
+    emit updating(solidDev.udi(), false);
+    mtpUpdating=false;
 }

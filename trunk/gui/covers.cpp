@@ -181,7 +181,7 @@ static AppCover otherAppCover(const Covers::Job &job)
         app.img=QImage(app.filename);
     }
 
-    if (!app.img.isNull() && !job.dir.isEmpty()) {
+    if (!app.img.isNull() && !job.dir.isEmpty() && job.isLocal) {
         QFile f(app.filename);
         if (f.open(QIODevice::ReadOnly)) {
             QByteArray raw=f.readAll();
@@ -273,7 +273,7 @@ Covers::Covers()
 {
 }
 
-void Covers::get(const Song &song, bool isSingleTracks)
+void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
 {
     if (isSingleTracks) {
          QString fileName(Network::cacheDir(constCoverDir)+constSingleTracksFile);
@@ -288,7 +288,7 @@ void Covers::get(const Song &song, bool isSingleTracks)
     QString dirName;
     bool haveAbsPath=song.file.startsWith("/");
 
-    if (haveAbsPath || !mpdDir.isEmpty()) {
+    if (isLocal && (haveAbsPath || !mpdDir.isEmpty())) {
         dirName=song.file.endsWith("/") ? (haveAbsPath ? QString() : mpdDir)+song.file : MPDParseUtils::getDir((haveAbsPath ? QString() : mpdDir)+song.file);
         initCoverNames();
         foreach (const QString &fileName, coverFileNames) {
@@ -321,7 +321,7 @@ void Covers::get(const Song &song, bool isSingleTracks)
         return;
     }
 
-    Job job(song.albumArtist(), song.album, dirName);
+    Job job(song.albumArtist(), song.album, dirName, isLocal);
 
     // See if amarok, or clementine, has it...
     AppCover app=otherAppCover(job);
@@ -414,7 +414,7 @@ void Covers::jobFinished(QNetworkReply *reply)
             img = QImage();
         }
 
-        if (!img.isNull()) {
+        if (!img.isNull() && job.isLocal) {
             fileName=saveImg(job, img, data);
         }
 

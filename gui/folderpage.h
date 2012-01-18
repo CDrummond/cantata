@@ -36,6 +36,8 @@ public:
     FolderPage(MainWindow *p);
     virtual ~FolderPage();
 
+    void setEnabled(bool e);
+    bool isEnabled() const { return enabled; }
     void refresh();
     void clear();
     void addSelectionToPlaylist(const QString &name=QString());
@@ -55,6 +57,7 @@ private:
     QStringList walk(QModelIndex rootItem);
 
 private:
+    bool enabled;
     DirViewModel model;
     DirViewProxyModel proxy;
 };

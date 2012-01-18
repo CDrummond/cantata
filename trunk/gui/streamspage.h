@@ -37,6 +37,8 @@ public:
     StreamsPage(MainWindow *p);
     virtual ~StreamsPage();
 
+    void setEnabled(bool e);
+    bool isEnabled() const { return enabled; }
     void refresh();
     void save();
     void addSelectionToPlaylist();
@@ -62,6 +64,7 @@ private:
     QStringList getCategories();
 
 private:
+    bool enabled;
     Action *importAction;
     Action *exportAction;
     Action *addAction;

@@ -43,6 +43,7 @@
 
 StreamsPage::StreamsPage(MainWindow *p)
     : QWidget(p)
+    , enabled(false)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
@@ -111,10 +112,24 @@ StreamsPage::~StreamsPage()
 {
 }
 
+void StreamsPage::setEnabled(bool e)
+{
+    if (e==enabled) {
+        return;
+    }
+    enabled=e;
+
+    if (enabled) {
+        refresh();
+    }
+}
+
 void StreamsPage::refresh()
 {
-    model.reload();
-    exportAction->setEnabled(model.rowCount()>0);
+    if (enabled) {
+        model.reload();
+        exportAction->setEnabled(model.rowCount()>0);
+    }
 }
 
 void StreamsPage::save()

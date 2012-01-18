@@ -27,10 +27,59 @@
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
+#include <QtGui/QValidator>
+
+class CoverNameValidator : public QValidator
+{
+    public:
+
+    CoverNameValidator(QObject *parent) : QValidator(parent) { }
+
+    State validate(QString &input, int &) const
+    {
+        int dotCount(0);
+
+        for (int i=0; i<input.length(); ++i) {
+            if (QChar('.')==input[i]) {
+                if (++dotCount>1) {
+                    return Invalid;
+                }
+            }
+            else if (!input[i].isLetterOrNumber() || input[i].isSpace()) {
+                return Invalid;
+            }
+        }
+        if (input.endsWith('.')) {
+            return Intermediate;
+        }
+
+        return Acceptable;
+    }
+
+//     void fixup(QString &input) const
+//     {
+//         QString out;
+//         int dotCount(0);
+//         for (int i=0; i<input.length(); ++i) {
+//             if (input[i].isLetterOrNumber() && !input[i].isSpace()) {
+//                 out+=input[i];
+//             } else if (QChar('.')==input[i] && ++dotCount<1) {
+//                 out+=input[i];
+//             }
+//         }
+//
+//         if (!out.endsWith(".jpg") && !out.endsWith(".png")) {
+//             out.replace(".", "");
+//             out+=".jpg";
+//         }
+//         input=out;
+//     }
+};
 
 DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     : KDialog(parent)
     , schemeDlg(0)
+    , noCoverText(i18n("Don't copy covers"))
 {
     setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Device Properties"));
@@ -45,8 +94,9 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
     connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(enableOkButton()));
+    connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(enableOkButton()));
 
-    albumCovers->insertItems(0, QStringList() << i18n("Don't copy covers") << Covers::standardNames());
+    albumCovers->insertItems(0, QStringList() << noCoverText << Covers::standardNames());
 }
 
 void DevicePropertiesDialog::show(const QString &path, const QString &coverName, const Device::NameOptions &opts, bool isDevice)
@@ -62,17 +112,20 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     albumCovers->setVisible(isDevice);
     albumCoversLabel->setVisible(isDevice);
     albumCovers->setCurrentIndex(0);
-    if (coverName!=QLatin1String("-")) {
-        for (int i=1; i<albumCovers->count(); ++i) {
-            if (albumCovers->itemText(i)==coverName) {
-                albumCovers->setCurrentIndex(i);
-                break;
-            }
+    origCoverName=coverName;
+    if (origCoverName==QLatin1String("-")) {
+        origCoverName=noCoverText;
+    }
+    for (int i=0; i<albumCovers->count(); ++i) {
+        if (albumCovers->itemText(i)==origCoverName) {
+            albumCovers->setCurrentIndex(i);
+            break;
         }
     }
     origOpts=opts;
     origMusicFolder=path;
-    origCoverName=coverName;
+    albumCovers->setValidator(new CoverNameValidator(this));
+
     KDialog::show();
     enableButtonOk(false);
 }
@@ -87,7 +140,7 @@ void DevicePropertiesDialog::slotButtonClicked(int button)
 {
     switch (button) {
     case KDialog::Ok:
-        emit updatedSettings(musicFolder->text().trimmed(), 0==albumCovers->currentIndex() ? QString("-") : albumCovers->currentText(), settings());
+        emit updatedSettings(musicFolder->text().trimmed(), albumCovers->currentText()==noCoverText ? QString("-") : albumCovers->currentText(), settings());
         break;
     case KDialog::Cancel:
         reject();

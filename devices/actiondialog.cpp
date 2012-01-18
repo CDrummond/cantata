@@ -246,7 +246,7 @@ void ActionDialog::doNext()
         progressLabel->setText(i18n("Clearing unused folders"));
         if (!base.isEmpty()) {
             foreach (const QString &d, dirsToClean) {
-                Device::cleanDir(d, base);
+                Device::cleanDir(d, base, dev ? dev->coverFile() : QString());
             }
         }
         dirsToClean.clear();

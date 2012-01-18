@@ -68,7 +68,7 @@ public:
     };
 
     static Device * create(DevicesModel *m, const QString &udi);
-    static void cleanDir(const QString &dir, const QString &base, int level=0);
+    static void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
 
     enum Status {
         Ok,
@@ -92,6 +92,9 @@ public:
     QString icon() const {
         return solidDev.icon();
     }
+    virtual QString coverFile() const {
+        return QString();
+    }
 
     virtual void connectTo()=0;
     virtual void disconnectFrom()=0;
@@ -99,7 +102,7 @@ public:
     virtual void rescan()=0;
     virtual bool isRefreshing() const=0;
     virtual void configure(QWidget *parent)=0;
-    virtual QString path()=0;
+    virtual QString path() const =0;
     virtual void addSong(const Song &s, bool overwrite)=0;
     virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)=0;
     virtual void removeSong(const Song &s)=0;

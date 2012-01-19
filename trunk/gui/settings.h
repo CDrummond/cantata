@@ -84,6 +84,7 @@ public:
     bool replaceSpacesInFilenames();
     bool overwriteSongs();
     bool showDeleteAction();
+    int devicesView();
     #endif
 
     void saveConnectionHost(const QString &v);
@@ -124,6 +125,7 @@ public:
     void saveReplaceSpacesInFilenames(bool v);
     void saveOverwriteSongs(bool v);
     void saveShowDeleteAction(bool v);
+    void saveDevicesView(int v);
     #endif
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT

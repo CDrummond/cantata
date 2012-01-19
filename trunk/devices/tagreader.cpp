@@ -24,6 +24,8 @@
 #include "tagreader.h"
 #include "filetyperesolver.h"
 #include <QtCore/QFile>
+#include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
 #include <QtCore/QTextCodec>
 #include <taglib/fileref.h>
 #include <taglib/aifffile.h>
@@ -224,8 +226,12 @@ static Song readTags(const TagLib::FileRef fileref)
     return song;
 }
 
+static QMutex mutex;
+
 Song read(const QString &fileName)
 {
+    QMutexLocker locker(&mutex);
+
     ensureFileTypeResolvers();
 
     Song song;

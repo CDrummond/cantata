@@ -70,7 +70,11 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     init(srcUdi, dstUdi, songs, Copy);
     Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
 
-    if (dev && !dev->isIdle()) {
+    if (!dev) { // No dev????
+        return;
+    }
+
+    if (!dev->isIdle()) {
         KMessageBox::error(parentWidget(), i18n("Device is currently busy."));
         deleteLater();
         return;
@@ -88,7 +92,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     double usedCapacity=0.0;
     QString capacityString;
 
-    if (dev) {
+    if (sourceUdi.isEmpty()) { // If source UDI is empty, then we are copying from MPD->device, so need device free space.
         spaceAvailable=dev->freeSpace();
         capacityString=dev->capacityString();
         usedCapacity=dev->usedCapacity();

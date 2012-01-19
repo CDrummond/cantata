@@ -37,7 +37,6 @@
 #include <KDE/KLocale>
 #include <KDE/KUrl>
 #include <KDE/KMimeType>
-#include <QtCore/QDebug>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -77,7 +76,6 @@ void MtpConnection::connectToDevice()
 
     emit statusMessage(i18n("Connecting to device..."));
     if (LIBMTP_ERROR_NONE!=LIBMTP_Detect_Raw_Devices(&rawDevices, &numDev) || 0==numDev) {
-        qWarning() << "failed to detect raw dev";
         emit statusMessage(i18n("No devices found"));
         return;
     }
@@ -232,7 +230,7 @@ uint32_t MtpConnection::createFolder(const char *name, uint32_t parentId)
     }
     char *nameCopy = qstrdup(name);
     uint32_t newFolderId=LIBMTP_Create_Folder(device, nameCopy, parentId, storageId);
-    delete(nameCopy);
+    delete nameCopy;
     if (0==newFolderId)  {
         return 0;
     }
@@ -479,7 +477,6 @@ void MtpDevice::rescan()
 
 void MtpDevice::addSong(const Song &s, bool overwrite)
 {
-    qWarning() << "ADD SONG";
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -494,7 +491,6 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
         emit actionStatus(SourceFileDoesNotExist);
         return;
     }
-    qWarning() << "EMIT PUT SONG";
     currentSong=s;
     // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
     currentSong.albumartist=currentSong.artist;

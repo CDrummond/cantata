@@ -27,6 +27,7 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
+#include "devicepropertiesdialog.h"
 #include "covers.h"
 #include "song.h"
 #include <QtCore/QThread>
@@ -135,10 +136,12 @@ void MtpConnection::updateLibrary()
     tracks=LIBMTP_Get_Tracklisting_With_Callback(device, 0, 0);
     LIBMTP_track_t *track=tracks;
     QMap<int, Folder>::ConstIterator folderEnd=folderMap.constEnd();
-    QMap<int, Folder>::ConstIterator musicFolder=folderMap.find(musicFolderId);
-    if (musicFolder!=folderEnd) {
-        musicFolderStorageId=musicFolder.value().entry->storage_id;
-        musicPath=musicFolder.value().path;
+    if (0!=musicFolderId) {
+        QMap<int, Folder>::ConstIterator musicFolder=folderMap.find(musicFolderId);
+        if (musicFolder!=folderEnd) {
+            musicFolderStorageId=musicFolder.value().entry->storage_id;
+            musicPath=musicFolder.value().path;
+        }
     }
     while (track) {
         QMap<int, Folder>::ConstIterator it=folderMap.find(track->parent_id);
@@ -329,7 +332,7 @@ void MtpConnection::putSong(const Song &song)
         meta->storage_id=musicFolderStorageId;
 
         QString destName=musicPath+dev->nameOpts.createFilename(song);
-        QStringList dirs=destName.split('/');
+        QStringList dirs=destName.split('/', QString::SkipEmptyParts);
         if (dirs.count()>2) {
             destName=dirs.takeLast();
             meta->parent_id=checkFolderStructure(dirs);
@@ -398,9 +401,17 @@ void MtpConnection::destroyData()
     }
 }
 
+QString cfgKey(Solid::Device &dev)
+{
+    QString key=QLatin1String("MTP-")+dev.vendor()+QChar('-')+dev.product();
+    key.replace('/', '_');
+    return key;
+}
+
 MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     : Device(m, dev)
     , pmp(dev.as<Solid::PortableMediaPlayer>())
+    , propDlg(0)
     , mtpUpdating(false)
 {
     thread=new QThread(this);
@@ -417,6 +428,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(delSongStatus(bool)), this, SLOT(delSongStatus(bool)));
     connect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
     QTimer::singleShot(0, this, SLOT(rescan()));
+    nameOpts.load(cfgKey(solidDev));
 }
 
 struct Thread : public QThread
@@ -436,6 +448,16 @@ MtpDevice::~MtpDevice()
 bool MtpDevice::isConnected() const
 {
     return pmp && connection->isConnected();
+}
+
+void MtpDevice::configure(QWidget *parent)
+{
+    if (!propDlg) {
+        propDlg=new DevicePropertiesDialog(parent);
+        connect(propDlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::NameOptions &)),
+                SLOT(saveProperties(const QString &, const QString &, const Device::NameOptions &)));
+    }
+    propDlg->show(QString(), QString(), nameOpts, false, false);
 }
 
 void MtpDevice::rescan()
@@ -593,4 +615,13 @@ void MtpDevice::libraryUpdated()
     setStatusMessage(QString());
     emit updating(solidDev.udi(), false);
     mtpUpdating=false;
+}
+
+void MtpDevice::saveProperties(const QString &, const QString &, const Device::NameOptions &opts)
+{
+    if (opts==nameOpts) {
+        return;
+    }
+    nameOpts=opts;
+    nameOpts.save(cfgKey(solidDev));
 }

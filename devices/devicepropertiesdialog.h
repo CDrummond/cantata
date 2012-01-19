@@ -35,7 +35,7 @@ class DevicePropertiesDialog : public KDialog, Ui::DevicePropertiesDialog
 
 public:
     DevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const QString &coverName, const Device::NameOptions &opts, bool isDevice=true);
+    void show(const QString &path, const QString &coverName, const Device::NameOptions &opts, bool showFolder, bool showCovers);
 
     Device::NameOptions settings();
 

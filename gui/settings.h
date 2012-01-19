@@ -77,11 +77,6 @@ public:
     bool mpris();
     bool dockManager();
     #ifdef ENABLE_DEVICES_SUPPORT
-    QString filenameScheme();
-    bool vfatSafeFilenames();
-    bool asciiOnlyFilenames();
-    bool ignoreTheInFilenames();
-    bool replaceSpacesInFilenames();
     bool overwriteSongs();
     bool showDeleteAction();
     int devicesView();
@@ -118,11 +113,6 @@ public:
     void saveMpris(bool v);
     void saveDockManager(bool v);
     #ifdef ENABLE_DEVICES_SUPPORT
-    void saveFilenameScheme(const QString &v);
-    void saveVfatSafeFilenames(bool v);
-    void saveAsciiOnlyFilenames(bool v);
-    void saveIgnoreTheInFilenames(bool v);
-    void saveReplaceSpacesInFilenames(bool v);
     void saveOverwriteSongs(bool v);
     void saveShowDeleteAction(bool v);
     void saveDevicesView(int v);

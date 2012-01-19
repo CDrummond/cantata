@@ -38,6 +38,9 @@
 #include <solid/storagedrive.h>
 #include <QtCore/QDir>
 #include <KDE/KLocale>
+#include <KDE/KGlobal>
+#include <KDE/KConfig>
+#include <KDE/KConfigGroup>
 
 static QString cleanPath(const QString &path)
 {
@@ -198,6 +201,27 @@ Device::NameOptions::NameOptions()
     , ignoreThe(false)
     , replaceSpaces(false)
 {
+}
+
+void Device::NameOptions::load(const QString &group)
+{
+    KConfigGroup grp(KGlobal::config(), group);
+    scheme=grp.readEntry("scheme", scheme);
+    vfatSafe=grp.readEntry("vfatSafe", vfatSafe);
+    asciiOnly=grp.readEntry("asciiOnly", asciiOnly);
+    ignoreThe=grp.readEntry("ignoreThe", ignoreThe);
+    replaceSpaces=grp.readEntry("replaceSpaces", replaceSpaces);
+}
+
+void Device::NameOptions::save(const QString &group)
+{
+    KConfigGroup grp(KGlobal::config(), group);
+    grp.writeEntry("scheme", scheme);
+    grp.writeEntry("vfatSafe", vfatSafe);
+    grp.writeEntry("asciiOnly", asciiOnly);
+    grp.writeEntry("ignoreThe", ignoreThe);
+    grp.writeEntry("replaceSpaces", replaceSpaces);
+    grp.sync();
 }
 
 QString Device::NameOptions::clean(const QString &str) const

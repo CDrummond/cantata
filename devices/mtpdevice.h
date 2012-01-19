@@ -32,6 +32,7 @@
 class MusicLibraryItemRoot;
 class QThread;
 class MtpDevice;
+class DevicePropertiesDialog;
 
 class MtpConnection : public QObject
 {
@@ -103,6 +104,7 @@ public:
 
     bool isConnected() const;
     bool isRefreshing() const { return mtpUpdating; }
+    void configure(QWidget *parent);
     QString path() const { return QString(); } // audioFolder; }
     void addSong(const Song &s, bool overwrite);
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
@@ -126,11 +128,13 @@ private Q_SLOTS:
     void putSongStatus(bool ok, int id, const QString &file);
     void getSongStatus(bool ok);
     void delSongStatus(bool ok);
+    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::NameOptions &opts);
 
 private:
     Solid::PortableMediaPlayer *pmp;
     QThread *thread;
     MtpConnection *connection;
+    DevicePropertiesDialog *propDlg;
     Song currentSong;
     bool mtpUpdating;
     friend class MtpConnection;

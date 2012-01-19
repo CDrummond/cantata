@@ -151,8 +151,8 @@ void MtpConnection::updateLibrary()
         }
         s.album=track->album;
         s.artist=track->artist;
-        s.albumartist=s.artist; // libMTP does not support album artist :-(
-        // Use LIBMTP_Get_File_To_File_Descriptor to pass to TagLib!!!
+        // TODO: ALBUMARTIST: Read from 'track' when libMTP supports album artist!
+        s.albumartist=s.artist;
         s.year=QString::fromUtf8(track->date).mid(0, 4).toUInt();
         s.title=track->title;
         s.genre=track->genre;
@@ -495,7 +495,9 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
         return;
     }
     qWarning() << "EMIT PUT SONG";
-
+    currentSong=s;
+    // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
+    currentSong.albumartist=currentSong.artist;
     emit putSong(s);
 }
 

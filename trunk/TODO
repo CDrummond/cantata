@@ -29,3 +29,11 @@
 - PlayQueue - slow with over 2000 entries, due to sort-filter-proxy??
 
 - icecast?
+
+- libMTP album artist usage.
+  - libMTP does not provide an album artist tag.
+  - song.cpp has a heck to see if this.albumartist=other.album artist, so that when
+    library is frefreshed the file is in the correct place.
+  - mtpdevice.cpp will remove albumartist from 'Song' entries copied to it, so that
+    these are placed in the correct part of the model.
+  - If libMPT is 'fixed' then the above can be rmeoved.

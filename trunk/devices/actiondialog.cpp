@@ -359,12 +359,14 @@ void ActionDialog::setPage(int page, const QString &msg)
             setButtons(Cancel);
             break;
         case PAGE_SKIP:
-            skipText->setText(i18n("<b>Error</b><br/>")+msg);
-            skipText->setToolTip(formatSong(currentSong, true));
-            setButtons(Cancel|User1|User2);
-            setButtonText(User1, i18n("Skip"));
-            setButtonText(User2, i18n("Auto Skip"));
-            break;
+            if (songsToAction.count()) {
+                skipText->setText(i18n("<b>Error</b><br/>")+msg);
+                skipText->setToolTip(formatSong(currentSong, true));
+                setButtons(Cancel|User1|User2);
+                setButtonText(User1, i18n("Skip"));
+                setButtonText(User2, i18n("Auto Skip"));
+                break;
+            } // else just show error page...
         case PAGE_ERROR:
             errorText->setText(i18n("<b>Error</b><br/>")+msg);
             errorText->setToolTip(formatSong(currentSong, true));

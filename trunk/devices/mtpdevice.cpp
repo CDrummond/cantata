@@ -416,7 +416,6 @@ QString cfgKey(Solid::Device &dev)
 MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     : Device(m, dev)
     , pmp(dev.as<Solid::PortableMediaPlayer>())
-    , propDlg(0)
     , mtpUpdating(false)
 {
     thread=new QThread(this);
@@ -457,12 +456,10 @@ bool MtpDevice::isConnected() const
 
 void MtpDevice::configure(QWidget *parent)
 {
-    if (!propDlg) {
-        propDlg=new DevicePropertiesDialog(parent);
-        connect(propDlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::NameOptions &)),
-                SLOT(saveProperties(const QString &, const QString &, const Device::NameOptions &)));
-    }
-    propDlg->show(QString(), QString(), nameOpts, false, false);
+    DevicePropertiesDialog *dlg=new DevicePropertiesDialog(parent);
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::NameOptions &)),
+            SLOT(saveProperties(const QString &, const QString &, const Device::NameOptions &)));
+    dlg->show(QString(), QString(), nameOpts, false, false);
 }
 
 void MtpDevice::rescan()

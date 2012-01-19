@@ -48,7 +48,6 @@ enum Pages
 
 ActionDialog::ActionDialog(QWidget *parent, KAction *updateDbAct)
     : KDialog(parent)
-    , propDlg(0)
     , currentDev(0)
     , updateDbAction(updateDbAct)
 {
@@ -328,12 +327,10 @@ void ActionDialog::actionStatus(int status)
 void ActionDialog::configureDest()
 {
     if (destUdi.isEmpty()) {
-        if (!propDlg) {
-            propDlg=new DevicePropertiesDialog(this);
-            connect(propDlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::NameOptions &)),
-                    SLOT(saveProperties(const QString &, const QString &, const Device::NameOptions &)));
-        }
-        propDlg->show(mpdDir, QString(), namingOptions, false, false);
+        DevicePropertiesDialog *dlg=new DevicePropertiesDialog(this);
+        connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::NameOptions &)),
+                SLOT(saveProperties(const QString &, const QString &, const Device::NameOptions &)));
+        dlg->show(mpdDir, QString(), namingOptions, false, false);
     } else {
         Device *dev=DevicesModel::self()->device(destUdi);
         if (dev) {

@@ -83,6 +83,7 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
 {
     setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Device Properties"));
+    setAttribute(Qt::WA_DeleteOnClose);
     setWindowModality(Qt::WindowModal);
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);

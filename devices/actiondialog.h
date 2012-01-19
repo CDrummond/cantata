@@ -31,7 +31,6 @@
 
 class KAction;
 class KJob;
-class DevicePropertiesDialog;
 
 class ActionDialog : public KDialog, Ui::ActionDialog
 {
@@ -71,7 +70,6 @@ private:
     QList<Song> actionedSongs;
     QSet<QString> dirsToClean;
     Song currentSong;
-    DevicePropertiesDialog *propDlg;
     bool autoSkip;
     bool paused;
     bool performingAction;

@@ -31,7 +31,6 @@
 #include <QtCore/QStringList>
 
 class MusicLibraryItemRoot;
-class DevicePropertiesDialog;
 class KJob;
 
 class MusicScanner : public QThread
@@ -93,7 +92,6 @@ private Q_SLOTS:
 private:
     Solid::StorageAccess *access;
     MusicScanner *scanner;
-    DevicePropertiesDialog *propDlg;
     QString audioFolder;
     QString coverFileName;
     QStringList unusedParams;

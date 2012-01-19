@@ -32,7 +32,6 @@
 class MusicLibraryItemRoot;
 class QThread;
 class MtpDevice;
-class DevicePropertiesDialog;
 
 class MtpConnection : public QObject
 {
@@ -135,7 +134,6 @@ private:
     Solid::PortableMediaPlayer *pmp;
     QThread *thread;
     MtpConnection *connection;
-    DevicePropertiesDialog *propDlg;
     Song currentSong;
     bool mtpUpdating;
     friend class MtpConnection;

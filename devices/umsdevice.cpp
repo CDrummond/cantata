@@ -301,7 +301,7 @@ QString UmsDevice::capacityString()
     }
 
     KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(access->filePath());
-    return i18n("%1 Free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
+    return i18n("%1 free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
 }
 
 qint64 UmsDevice::freeSpace()

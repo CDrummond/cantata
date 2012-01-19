@@ -65,6 +65,7 @@ public Q_SLOTS:
     void updateGenres(const QStringList &genres);
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
+    void databaseUpdated();
 
 private:
     MusicLibraryProxyModel proxy;

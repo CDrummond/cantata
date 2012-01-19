@@ -41,6 +41,9 @@
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
 #include <KDE/KConfigGroup>
+#include <KDE/KStandardDirs>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 static QString cleanPath(const QString &path)
 {
@@ -380,6 +383,27 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
             cleanDir(upDir, base, coverFile, level+1);
         }
     }
+}
+
+void Device::setFilePerms(const QString &file)
+{
+    //
+    // Clear any umask before setting file perms
+    mode_t oldMask(umask(0000));
+    ::chmod(QFile::encodeName(file).constData(), 0644);
+    // Reset umask
+    ::umask(oldMask);
+}
+
+bool Device::createDir(const QString &dir)
+{
+    //
+    // Clear any umask before dir is created
+    mode_t oldMask(umask(0000));
+    bool   status(KStandardDirs::makeDir(dir, 0755));
+    // Reset umask
+    ::umask(oldMask);
+    return status;
 }
 
 void Device::applyUpdate()

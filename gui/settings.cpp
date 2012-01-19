@@ -314,6 +314,12 @@ bool Settings::showDeleteAction()
 {
     return GET_BOOL("showDeleteAction", false);
 }
+
+int Settings::devicesView()
+{
+    return GET_INT("devicesView", (int)ItemView::Mode_Tree);
+
+}
 #endif
 
 void Settings::Settings::saveConnectionHost(const QString &v)
@@ -512,6 +518,11 @@ void Settings::saveOverwriteSongs(bool v)
 void Settings::saveShowDeleteAction(bool v)
 {
     SET_VALUE("showDeleteAction", v);
+}
+
+void Settings::saveDevicesView(int v)
+{
+    SET_VALUE("devicesView", v);
 }
 #endif
 

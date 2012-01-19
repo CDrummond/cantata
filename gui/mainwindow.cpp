@@ -797,6 +797,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     playlistsPage->setView(0==Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesPage->setView(0==Settings::self()->devicesView());
+    #endif
 //     currentTabChanged(tabWidget->current_index());
     playlistsPage->refresh();
     toggleMpris();
@@ -1036,7 +1039,9 @@ void MainWindow::updateSettings()
     playlistsPage->setView(0==Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
-
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesPage->setView(0==Settings::self()->devicesView());
+    #endif
     setupTrayIcon();
     toggleDockManager();
     toggleMpris();

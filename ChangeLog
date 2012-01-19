@@ -6,6 +6,7 @@
    changed. (Previously the whole model was replaced).
 3. When changing name of playlist, show the original name in the line-edit.
 4. Fix adding songs with spaces in their filenames to stored playlists
+5. When we recieve an updated signal frmo MPD, refresh library view.
 
 0.2.1
 -----

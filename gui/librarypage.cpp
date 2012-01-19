@@ -70,6 +70,7 @@ LibraryPage::LibraryPage(MainWindow *p)
             MusicLibraryModel::self(), SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
+    connect(MPDConnection::self(), SIGNAL(databaseUpdated()), this, SLOT(databaseUpdated()));
     connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
     connect(this, SIGNAL(listAllInfo(const QDateTime &)), MPDConnection::self(), SLOT(listAllInfo(const QDateTime &)));
     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
@@ -101,6 +102,11 @@ void LibraryPage::refresh(Refresh type)
         view->showSpinner();
         emit listAllInfo(MPDStats::self()->dbUpdate());
     }
+}
+
+void LibraryPage::databaseUpdated()
+{
+    refresh(RefreshFromCache);
 }
 
 void LibraryPage::clear()

@@ -66,7 +66,10 @@ Song & Song::operator=(const Song &s)
 
 bool Song::operator==(const Song &o) const
 {
-    return file == o.file;
+    // When transfferring off an MPT device we will not have AlbumArtist, as libMTP does not handle this.
+    // But, MPD does, so if the labum artist is different - then treat as a new file.
+    // TODO: ALBUMARTIST: This check can be removed when libMTP supports album artist.
+    return file == o.file && albumartist==o.albumartist;
 }
 
 bool Song::operator<(const Song &o) const

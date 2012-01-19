@@ -91,11 +91,8 @@ void MtpConnection::connectToDevice()
 
     size=0;
     used=0;
-    if (dev && LIBMTP_ERROR_NONE==LIBMTP_Get_Storage(dev, LIBMTP_STORAGE_SORTBY_NOTSORTED) && dev->storage) {
-        size=dev->storage->MaxCapacity;
-        used=size-dev->storage->FreeSpaceInBytes;
-    }
     device=dev;
+    updateCapacity();
     free(rawDevices);
     if (!device) {
         emit statusMessage(i18n("No devices found"));
@@ -216,6 +213,14 @@ void MtpConnection::updateFolders()
     }
     folders=LIBMTP_Get_Folder_List(device);
     parseFolder(folders);
+}
+
+void MtpConnection::updateCapacity()
+{
+    if (device && LIBMTP_ERROR_NONE==LIBMTP_Get_Storage(device, LIBMTP_STORAGE_SORTBY_NOTSORTED) && device->storage) {
+        size=device->storage->MaxCapacity;
+        used=size-device->storage->FreeSpaceInBytes;
+    }
 }
 
 uint32_t MtpConnection::createFolder(const char *name, uint32_t parentId)
@@ -361,6 +366,7 @@ void MtpConnection::putSong(const Song &song)
     }
     if (added) {
         trackMap.insert(meta->item_id, meta);
+        updateCapacity();
     } else if (meta) {
         LIBMTP_destroy_track_t(meta);
     }
@@ -379,6 +385,7 @@ void MtpConnection::delSong(const Song &song)
     if (deleted) {
         LIBMTP_destroy_track_t(trackMap[song.id]);
         trackMap.remove(song.id);
+        updateCapacity();
     }
     emit delSongStatus(deleted);
 }

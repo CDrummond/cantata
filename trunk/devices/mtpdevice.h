@@ -63,6 +63,7 @@ Q_SIGNALS:
 
 private:
     void updateFolders();
+    void updateCapacity();
     uint32_t createFolder(const char *name, uint32_t parentId);
     uint32_t getFolder(const QString &path);
     uint32_t checkFolderStructure(const QStringList &dirs);

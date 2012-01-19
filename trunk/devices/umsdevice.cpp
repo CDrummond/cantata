@@ -183,13 +183,13 @@ void UmsDevice::addSong(const Song &s, bool overwrite)
 
     KUrl dest(destFile);
     QDir dir(dest.directory());
-    if( !dir.exists() && !dir.mkpath( "." ) ) {
+    if(!dir.exists() && !Device::createDir(dir.absolutePath())) {
         emit actionStatus(DirCreationFaild);
     }
 
     currentSong=s;
     KIO::FileCopyJob *job=KIO::file_copy(KUrl(s.file), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
-    connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *job)));
+    connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
 }
 
 void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
@@ -220,7 +220,7 @@ void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     currentMusicPath=musicPath;
     KUrl dest(currentBaseDir+currentMusicPath);
     QDir dir(dest.directory());
-    if (!dir.exists() && !dir.mkpath( "." )) {
+    if (!dir.exists() && !Device::createDir(dir.absolutePath())) {
         emit actionStatus(DirCreationFaild);
     }
 
@@ -266,6 +266,7 @@ void UmsDevice::copySongToResult(KJob *job)
     if (job->error()) {
         emit actionStatus(Failed);
     } else {
+        Device::setFilePerms(currentSong.file);
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
         Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), QString());

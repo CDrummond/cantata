@@ -46,7 +46,7 @@
 
 #define DEBUG_BLOCK
 #include <QtCore/QDebug>
-#define debug qDebug
+#define debug qWarning
 
 MediaDeviceCache* MediaDeviceCache::s_instance = 0;
 

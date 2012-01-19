@@ -147,7 +147,7 @@ void UmsDevice::configure(QWidget *parent)
         connect(propDlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::NameOptions &)),
                 SLOT(saveProperties(const QString &, const QString &, const Device::NameOptions &)));
     }
-    propDlg->show(audioFolder, coverFileName, nameOpts);
+    propDlg->show(audioFolder, coverFileName, nameOpts, true, true);
 }
 
 void UmsDevice::rescan()

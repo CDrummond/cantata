@@ -99,7 +99,7 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     albumCovers->insertItems(0, QStringList() << noCoverText << Covers::standardNames());
 }
 
-void DevicePropertiesDialog::show(const QString &path, const QString &coverName, const Device::NameOptions &opts, bool isDevice)
+void DevicePropertiesDialog::show(const QString &path, const QString &coverName, const Device::NameOptions &opts, bool showFolder, bool showCovers)
 {
     filenameScheme->setText(opts.scheme);
     vfatSafe->setChecked(opts.vfatSafe);
@@ -107,10 +107,10 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     ignoreThe->setChecked(opts.ignoreThe);
     replaceSpaces->setChecked(opts.replaceSpaces);
     musicFolder->setText(path);
-    musicFolder->setVisible(isDevice);
-    musicFolderLabel->setVisible(isDevice);
-    albumCovers->setVisible(isDevice);
-    albumCoversLabel->setVisible(isDevice);
+    musicFolder->setVisible(showFolder);
+    musicFolderLabel->setVisible(showFolder);
+    albumCovers->setVisible(showCovers);
+    albumCoversLabel->setVisible(showCovers);
     albumCovers->setCurrentIndex(0);
     origCoverName=coverName;
     if (origCoverName==QLatin1String("-")) {

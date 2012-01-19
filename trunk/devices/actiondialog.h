@@ -50,7 +50,7 @@ public:
 
 private Q_SLOTS:
     void configureDest();
-    void saveProperties(const QString &path, const Device::NameOptions &opts);
+    void saveProperties(const QString &path, const QString &coverFile, const Device::NameOptions &opts);
     void actionStatus(int status);
     void doNext();
     void removeSongResult(KJob *job);

@@ -50,6 +50,9 @@ public:
 
         NameOptions();
 
+        void load(const QString &group);
+        void save(const QString &group);
+
         bool operator==(const NameOptions &o) const {
             return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe && replaceSpaces==o.replaceSpaces && scheme==o.scheme;
         }

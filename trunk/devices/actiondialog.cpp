@@ -45,20 +45,6 @@ enum Pages
     PAGE_PROGRESS
 };
 
-static Device::NameOptions readMpdOpts()
-{
-    Device::NameOptions opts;
-    QString scheme=Settings::self()->filenameScheme();
-    if (!scheme.isEmpty()) {
-        opts.scheme=scheme;
-    }
-    opts.vfatSafe=Settings::self()->vfatSafeFilenames();
-    opts.asciiOnly=Settings::self()->asciiOnlyFilenames();
-    opts.ignoreThe=Settings::self()->ignoreTheInFilenames();
-    opts.replaceSpaces=Settings::self()->replaceSpacesInFilenames();
-    return opts;
-}
-
 ActionDialog::ActionDialog(QWidget *parent, KAction *updateDbAct)
     : KDialog(parent)
     , propDlg(0)
@@ -109,7 +95,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     if (spaceAvailable>spaceRequired) {
         sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
         destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
-        namingOptions=readMpdOpts();
+        namingOptions.load("mpd");
         setPage(PAGE_START);
         mode=Copy;
         show();
@@ -330,9 +316,10 @@ void ActionDialog::configureDest()
     if (destUdi.isEmpty()) {
         if (!propDlg) {
             propDlg=new DevicePropertiesDialog(this);
-            connect(propDlg, SIGNAL(updatedSettings(const QString &, const Device::NameOptions &)), SLOT(saveProperties(const QString &, const Device::NameOptions &)));
+            connect(propDlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::NameOptions &)),
+                    SLOT(saveProperties(const QString &, const QString &, const Device::NameOptions &)));
         }
-        propDlg->show(mpdDir, QString(), readMpdOpts(), false);
+        propDlg->show(mpdDir, QString(), namingOptions, false, false);
     } else {
         Device *dev=DevicesModel::self()->device(destUdi);
         if (dev) {
@@ -341,14 +328,12 @@ void ActionDialog::configureDest()
     }
 }
 
-void ActionDialog::saveProperties(const QString &path, const Device::NameOptions &opts)
+void ActionDialog::saveProperties(const QString &path, const QString &coverFile, const Device::NameOptions &opts)
 {
     Q_UNUSED(path)
-    Settings::self()->saveFilenameScheme(opts.scheme);
-    Settings::self()->saveVfatSafeFilenames(opts.vfatSafe);
-    Settings::self()->saveAsciiOnlyFilenames(opts.asciiOnly);
-    Settings::self()->saveIgnoreTheInFilenames(opts.ignoreThe);
-    Settings::self()->saveReplaceSpacesInFilenames(opts.replaceSpaces);
+    Q_UNUSED(coverFile)
+    namingOptions=opts;
+    namingOptions.save("mpd");
 }
 
 void ActionDialog::setPage(int page, const QString &msg)

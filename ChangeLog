@@ -1,7 +1,7 @@
 0.3.0
 -----
 1. Basic copy to/from device support - USB mass storage (UMS) and MTP support
-   only. MTP is *very* slow.
+   only. MTP is *very* slow. (KDE only)
 2. When refreshing library/albums, only affect parts of the model that have
    changed. (Previously the whole model was replaced).
 3. When changing name of playlist, show the original name in the line-edit.

@@ -61,21 +61,35 @@ Q_SIGNALS:
     void libraryUpdated();
 
 private:
+    void updateFolders();
+    uint32_t createFolder(const char *name, uint32_t parentId);
+    uint32_t getFolder(const QString &path);
+    uint32_t checkFolderStructure(const QStringList &dirs);
     void parseFolder(LIBMTP_folder_t *folder);
     uint32_t getMusicFolderId();
     uint32_t getFolderId(const char *name, LIBMTP_folder_t *f);
     void destroyData();
 
 private:
+    struct Folder {
+        Folder(const QString &p, LIBMTP_folder_t *e)
+            : path(p)
+            , entry(e) {
+        }
+        QString path;
+        LIBMTP_folder_t *entry;
+    };
     LIBMTP_mtpdevice_t *device;
     LIBMTP_folder_t *folders;
     LIBMTP_track_t *tracks;
-    QMap<int, QString> folderMap;
+    QMap<int, Folder> folderMap;
     QMap<int, LIBMTP_track_t *> trackMap;
     MusicLibraryItemRoot *library;
     uint64_t size;
     uint64_t used;
     uint32_t musicFolderId;
+    uint32_t musicFolderStorageId;
+    QString musicPath;
     MtpDevice *dev;
 };
 
@@ -88,7 +102,7 @@ public:
     virtual ~MtpDevice();
 
     bool isConnected() const;
-    bool isRefreshing() const { return false; }// return 0!=scanner; }
+    bool isRefreshing() const { return mtpUpdating; }
     QString path() const { return QString(); } // audioFolder; }
     void addSong(const Song &s, bool overwrite);
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);

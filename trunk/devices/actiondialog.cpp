@@ -36,6 +36,7 @@
 #include <KDE/KIO/FileCopyJob>
 #include <KDE/KIO/Job>
 #include <KDE/KDiskFreeSpaceInfo>
+#include <kcapacitybar.h>
 
 enum Pages
 {
@@ -84,12 +85,18 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     }
 
     qint64 spaceAvailable=0;
+    double usedCapacity=0.0;
+    QString capacityString;
 
     if (dev) {
         spaceAvailable=dev->freeSpace();
+        capacityString=dev->capacityString();
+        usedCapacity=dev->usedCapacity();
     } else {
         KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(mpdDir);
-        spaceAvailable =inf.size()-inf.used();
+        spaceAvailable=inf.size()-inf.used();
+        usedCapacity=(inf.used()*1.0)/(inf.size()*1.0);
+        capacityString=i18n("%1 Free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
     }
 
     if (spaceAvailable>spaceRequired) {
@@ -98,6 +105,9 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         namingOptions.load("mpd");
         setPage(PAGE_START);
         mode=Copy;
+        capacity->setText(capacityString);
+        capacity->setValue((usedCapacity*100)+0.5);
+        capacity->setDrawTextMode(KCapacityBar::DrawTextInline);
         show();
     } else {
         KMessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
@@ -122,7 +132,7 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 
 void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m)
 {
-    resize(400, 160);
+    resize(500, 160);
     mpdDir=Settings::self()->mpdDir();
     if (!mpdDir.endsWith('/')) {
         mpdDir+QChar('/');

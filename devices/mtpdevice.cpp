@@ -599,7 +599,7 @@ QString MtpDevice::capacityString()
         return i18n("Not Connected");
     }
 
-    return i18n("%1 Free", KGlobal::locale()->formatByteSize(connection->capacity()-connection->usedSpace()), 1);
+    return i18n("%1 free", KGlobal::locale()->formatByteSize(connection->capacity()-connection->usedSpace()), 1);
 }
 
 qint64 MtpDevice::freeSpace()

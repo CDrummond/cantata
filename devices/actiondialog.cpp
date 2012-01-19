@@ -100,7 +100,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(mpdDir);
         spaceAvailable=inf.size()-inf.used();
         usedCapacity=(inf.used()*1.0)/(inf.size()*1.0);
-        capacityString=i18n("%1 Free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
+        capacityString=i18n("%1 free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
     }
 
     if (spaceAvailable>spaceRequired) {

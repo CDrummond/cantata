@@ -55,7 +55,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void statusMessage(const QString &message);
-    void putSongStatus(bool, int, const QString &);
+    void putSongStatus(bool, int, const QString &, bool);
     void getSongStatus(bool);
     void delSongStatus(bool);
     void libraryUpdated();
@@ -125,7 +125,7 @@ private Q_SLOTS:
     void libraryUpdated();
     void rescan();
 //     void saveProperties(const QString &newPath, const Device::NameOptions &opts);
-    void putSongStatus(bool ok, int id, const QString &file);
+    void putSongStatus(bool ok, int id, const QString &file, bool fixedVa);
     void getSongStatus(bool ok);
     void delSongStatus(bool ok);
     void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::NameOptions &opts);

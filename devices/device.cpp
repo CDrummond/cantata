@@ -408,7 +408,7 @@ bool Device::createDir(const QString &dir)
     return status;
 }
 
-bool Device::fixVariousArtists(const QString &file, Song &song)
+bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
 {
 //     qWarning() << "FIX:" << file << song.artist << song.albumartist << song.title;
     Song orig=song;
@@ -424,7 +424,7 @@ bool Device::fixVariousArtists(const QString &file, Song &song)
 
     bool needsUpdating=false;
 
-    if (song.artist==song.albumartist) { // Then real artist is embedded in track title...
+    if (!applyFix && song.artist==song.albumartist) { // Then real artist is embedded in track title...
         int sepPos=song.title.indexOf(QLatin1String(" - "));
         if (sepPos>0 && sepPos<song.title.length()-3) {
             song.artist=song.title.left(sepPos);
@@ -432,7 +432,7 @@ bool Device::fixVariousArtists(const QString &file, Song &song)
             needsUpdating=true;
 //             qWarning() << "UNFIXING" << "A:" << song.artist << "T:" << song.title;
         }
-    } else { // We must be copying to device, and need to place song artist into title...
+    } else if (applyFix) { // We must be copying to device, and need to place song artist into title...
         QString artist=song.artist;
         artist.replace(" - ", ", ");
         song.title=song.artistSong();

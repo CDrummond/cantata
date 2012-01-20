@@ -388,6 +388,7 @@ void ActionDialog::setPage(int page, const QString &msg)
                 break;
             } // else just show error page...
         case PAGE_ERROR:
+            stack->setCurrentIndex(PAGE_ERROR);
             errorText->setText(i18n("<b>Error</b><br/>")+msg);
             errorText->setToolTip(formatSong(currentSong, true));
             setButtons(Cancel);

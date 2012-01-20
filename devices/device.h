@@ -74,7 +74,7 @@ public:
     static void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
     static void setFilePerms(const QString &file);
     static bool createDir(const QString &dir);
-    static bool fixVariousArtists(const QString &file, Song &song);
+    static bool fixVariousArtists(const QString &file, Song &song, bool applyFix);
 
     enum Status {
         Ok,

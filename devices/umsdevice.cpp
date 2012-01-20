@@ -167,7 +167,7 @@ void UmsDevice::addSong(const Song &s, bool overwrite, bool fixVa)
         Song check=s;
 
         if (needToFixVa) {
-            Device::fixVariousArtists(QString(), check);
+            Device::fixVariousArtists(QString(), check, true);
         }
         if (songExists(check)) {
             emit actionStatus(SongExists);
@@ -211,7 +211,7 @@ void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
         Song check=s;
 
         if (needToFixVa) {
-            Device::fixVariousArtists(QString(), check);
+            Device::fixVariousArtists(QString(), check, false);
         }
         if (MusicLibraryModel::self()->songExists(check)) {
             emit actionStatus(SongExists);
@@ -273,7 +273,7 @@ void UmsDevice::addSongResult(KJob *job)
         Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), coverFileName);
 
         if (needToFixVa) {
-            Device::fixVariousArtists(destFile, currentSong);
+            Device::fixVariousArtists(destFile, currentSong, true);
         }
         addSongToList(currentSong);
         emit actionStatus(Ok);
@@ -290,7 +290,7 @@ void UmsDevice::copySongToResult(KJob *job)
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
         Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), QString());
         if (needToFixVa) {
-            Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong);
+            Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
         }
         MusicLibraryModel::self()->addSongToList(currentSong);
         emit actionStatus(Ok);

@@ -243,7 +243,7 @@ void ActionDialog::doNext()
                 } else {
                     Song copy=currentSong;
                     if (vaWorkaround->isChecked() && currentSong.isVariousArtists()) {
-                        Device::fixVariousArtists(QString(), copy);
+                        Device::fixVariousArtists(QString(), copy, false);
                     }
                     QString fileName=namingOptions.createFilename(copy);
                     destFile=mpdDir+fileName;

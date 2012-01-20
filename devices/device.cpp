@@ -28,6 +28,7 @@
 #ifdef MTP_FOUND
 #include "mtpdevice.h"
 #endif
+#include "tagreader.h"
 #include "song.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
@@ -37,6 +38,7 @@
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
 #include <QtCore/QDir>
+#include <QtCore/QDebug>
 #include <KDE/KLocale>
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
@@ -400,10 +402,51 @@ bool Device::createDir(const QString &dir)
     //
     // Clear any umask before dir is created
     mode_t oldMask(umask(0000));
-    bool   status(KStandardDirs::makeDir(dir, 0755));
+    bool status(KStandardDirs::makeDir(dir, 0755));
     // Reset umask
     ::umask(oldMask);
     return status;
+}
+
+bool Device::fixVariousArtists(const QString &file, Song &song)
+{
+//     qWarning() << "FIX:" << file << song.artist << song.albumartist << song.title;
+    Song orig=song;
+    if (!file.isEmpty() && song.albumartist.isEmpty()) {
+        song=TagReader::read(file);
+    }
+
+    if (song.artist.isEmpty() || song.albumartist.isEmpty() || !Song::isVariousArtists(song.albumartist)) {
+        song=orig;
+//         qWarning() << "NOT VA";
+        return false;
+    }
+
+    bool needsUpdating=false;
+
+    if (song.artist==song.albumartist) { // Then real artist is embedded in track title...
+        int sepPos=song.title.indexOf(QLatin1String(" - "));
+        if (sepPos>0 && sepPos<song.title.length()-3) {
+            song.artist=song.title.left(sepPos);
+            song.title=song.title.mid(sepPos+3);
+            needsUpdating=true;
+//             qWarning() << "UNFIXING" << "A:" << song.artist << "T:" << song.title;
+        }
+    } else { // We must be copying to device, and need to place song artist into title...
+        QString artist=song.artist;
+        artist.replace(" - ", ", ");
+        song.title=song.artistSong();
+        song.artist=song.albumartist;
+        needsUpdating=true;
+//         qWarning() << "FIXING";
+    }
+
+    if (needsUpdating && (file.isEmpty() || TagReader::updateArtistAndTitleTags(file, song))) {
+//         qWarning() << "SAVED:" << file;
+        return true;
+    }
+    song=orig;
+    return false;
 }
 
 void Device::applyUpdate()

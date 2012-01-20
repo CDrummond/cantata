@@ -40,13 +40,7 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibrary
 {
     if (m_itemData.startsWith(QLatin1String("The "))) {
         m_nonTheArtist=m_itemData.mid(4);
-    } else if(QLatin1String("Various Artists")==m_itemData ||
-            #ifdef ENABLE_KDE_SUPPORT
-            i18n("Various Artists")==m_itemData
-            #else
-            QObject::tr("Various Artists")==m_itemData
-            #endif
-                                                   ) {
+    } else if (Song::isVariousArtists(m_itemData)) {
         m_various=true;
     }
 }

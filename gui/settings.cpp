@@ -295,6 +295,11 @@ int Settings::devicesView()
     return GET_INT("devicesView", (int)ItemView::Mode_Tree);
 
 }
+
+bool Settings::vaWorkaround()
+{
+    return GET_BOOL("vaWorkaround", false);
+}
 #endif
 
 void Settings::Settings::saveConnectionHost(const QString &v)
@@ -473,6 +478,11 @@ void Settings::saveShowDeleteAction(bool v)
 void Settings::saveDevicesView(int v)
 {
     SET_VALUE("devicesView", v);
+}
+
+void Settings::saveVaWorkaround(bool v)
+{
+    SET_VALUE("vaWorkaround", v);
 }
 #endif
 

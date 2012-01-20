@@ -182,10 +182,14 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
             if (static_cast<MusicLibraryItemAlbum *>(song->parent())->isSingleTracks()) {
                 return song->song().artistSong();
-            } else if (song->track()>9) {
-                return QString::number(song->track())+QLatin1String(" - ")+item->data();
-            } else if (song->track()>0) {
-                return QChar('0')+QString::number(song->track())+QLatin1String(" - ")+item->data();
+            } else {
+                bool isVa=static_cast<MusicLibraryItemArtist *>(song->parent()->parent())->isVarious() &&
+                          !Song::isVariousArtists(song->song().artist);
+                if (song->track()>9) {
+                    return QString::number(song->track())+QLatin1String(" - ")+(isVa ? song->song().artistSong() : item->data());
+                } else if (song->track()>0) {
+                    return QChar('0')+QString::number(song->track())+QLatin1String(" - ")+(isVa ? song->song().artistSong() : item->data());
+                }
             }
         } else if(MusicLibraryItem::Type_Album==item->type() && MusicLibraryItemAlbum::showDate() &&
                   static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {
@@ -479,7 +483,7 @@ void MusicLibraryModel::setCover(const QString &artist, const QString &album, co
 //     }
 }
 
-static quint32 constVersion=4;
+static quint32 constVersion=5;
 static QLatin1String constTopTag("CantataLibrary");
 /**
  * Writes the musiclibrarymodel to and xml file so we can store it on
@@ -536,6 +540,9 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
                 }
                 if (track->disc() != 0) {
                     writer.writeAttribute("disc", QString::number(track->disc()));
+                }
+                if (track->song().albumartist!=track->song().artist) {
+                    writer.writeAttribute("artist", track->song().artist);
                 }
 //                 writer.writeAttribute("id", QString::number(track->song().id));
                 writer.writeAttribute("genre", track->genre());
@@ -606,7 +613,7 @@ bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
             //Only check for other elements when we are valid!
             if (root) {
                 if (QLatin1String("Artist")==element) {
-                    song.artist=reader.attributes().value("name").toString();
+                    song.albumartist=reader.attributes().value("name").toString();
                     artistItem = root->artist(song);
                 }
                 else if (QLatin1String("Album")==element) {
@@ -623,6 +630,10 @@ bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
                 else if (QLatin1String("Track")==element) {
                     song.title=reader.attributes().value("name").toString();
                     song.file=reader.attributes().value("file").toString();
+                    song.artist=reader.attributes().value("artist").toString();
+                    if (song.artist.isEmpty()) {
+                        song.artist=song.albumartist;
+                    }
 
                     QString str=reader.attributes().value("track").toString();
                     song.track=str.isEmpty() ? 0 : str.toUInt();

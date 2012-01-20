@@ -37,6 +37,7 @@
 #include <KDE/KLocale>
 #include <KDE/KUrl>
 #include <KDE/KMimeType>
+#include <KDE/KTemporaryFile>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -325,7 +326,7 @@ static LIBMTP_filetype_t mtpFileType(const Song &s)
     return LIBMTP_FILETYPE_UNDEF_AUDIO;
 }
 
-void MtpConnection::putSong(const Song &song)
+void MtpConnection::putSong(const Song &s, bool fixVa)
 {
     bool added=false;
     LIBMTP_track_t *meta=0;
@@ -334,6 +335,7 @@ void MtpConnection::putSong(const Song &song)
         meta->parent_id=musicFolderId;
         meta->storage_id=musicFolderStorageId;
 
+        Song song=s;
         QString destName=musicPath+dev->nameOpts.createFilename(song);
         QStringList dirs=destName.split('/', QString::SkipEmptyParts);
         if (dirs.count()>2) {
@@ -341,8 +343,24 @@ void MtpConnection::putSong(const Song &song)
             meta->parent_id=checkFolderStructure(dirs);
         }
         meta->item_id=0;
+        QString fileName=song.file;
+        KTemporaryFile *temp=0;
+
+        if (fixVa) {
+            // Need to 'workaround' broek various artists handling, so write to a temporary file first...
+            temp=new KTemporaryFile();
+            temp->setAutoRemove(false);
+            if (temp->open()) {
+                fileName=temp->fileName();
+                temp->close();
+                if (!QFile::copy(song.file, fileName) || !Device::fixVariousArtists(fileName, song)) {
+                    fileName=song.file;
+                }
+            }
+        }
         meta->title=createString(song.title);
         meta->artist=createString(song.artist);
+
         meta->composer=createString(QString());
         meta->genre=createString(song.genre);
         meta->album=createString(song.album);
@@ -354,13 +372,18 @@ void MtpConnection::putSong(const Song &song)
         meta->usecount=0;
 
         struct stat statBuf;
-        if (0==stat(QFile::encodeName(song.file).constData(), &statBuf)) {
+        if (0==stat(QFile::encodeName(fileName).constData(), &statBuf)) {
             meta->filesize=statBuf.st_size;
             meta->modificationdate=statBuf.st_mtime;
         }
         meta->filetype=mtpFileType(song);
         meta->next=0;
-        added=0==LIBMTP_Send_Track_From_File(device, song.file.toUtf8(), meta, 0, 0);
+        added=0==LIBMTP_Send_Track_From_File(device, fileName.toUtf8(), meta, 0, 0);
+        if (temp) {
+            // Delete the temp file...
+            temp->remove();
+            delete temp;
+        }
     }
     if (added) {
         trackMap.insert(meta->item_id, meta);
@@ -424,7 +447,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     thread->start();
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
-    connect(this, SIGNAL(putSong(const Song &)), connection, SLOT(putSong(const Song &)));
+    connect(this, SIGNAL(putSong(const Song &, bool)), connection, SLOT(putSong(const Song &, bool)));
     connect(connection, SIGNAL(putSongStatus(bool, int, const QString &)), this, SLOT(putSongStatus(bool, int, const QString &)));
     connect(this, SIGNAL(getSong(const Song &, const QString &)), connection, SLOT(getSong(const Song &, const QString &)));
     connect(connection, SIGNAL(getSongStatus(bool)), this, SLOT(getSongStatus(bool)));
@@ -472,16 +495,25 @@ void MtpDevice::rescan()
     emit updateLibrary();
 }
 
-void MtpDevice::addSong(const Song &s, bool overwrite)
+void MtpDevice::addSong(const Song &s, bool overwrite, bool fixVa)
 {
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
     }
 
-    if (!overwrite && songExists(s)) {
-        emit actionStatus(SongExists);
-        return;
+    needToFixVa=fixVa && s.isVariousArtists();
+
+    if (!overwrite) {
+        Song check=s;
+
+        if (needToFixVa) {
+            Device::fixVariousArtists(QString(), check);
+        }
+        if (songExists(check)) {
+            emit actionStatus(SongExists);
+            return;
+        }
     }
 
     if (!QFile::exists(s.file)) {
@@ -490,20 +522,31 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
     }
     currentSong=s;
     // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
-    currentSong.albumartist=currentSong.artist;
-    emit putSong(s);
+    if (!fixVa) {
+        currentSong.albumartist=currentSong.artist;
+    }
+    emit putSong(s, needToFixVa);
 }
 
-void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
+void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa)
 {
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
     }
 
-    if (!overwrite && MusicLibraryModel::self()->songExists(s)) {
-        emit actionStatus(SongExists);
-        return;
+    needToFixVa=fixVa && s.isVariousArtists();
+
+    if (!overwrite) {
+        Song check=s;
+
+        if (needToFixVa) {
+            Device::fixVariousArtists(QString(), check);
+        }
+        if (MusicLibraryModel::self()->songExists(check)) {
+            emit actionStatus(SongExists);
+            return;
+        }
     }
 
     if (!songExists(s)) {
@@ -552,6 +595,7 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file)
         currentSong.id=id;
         currentSong.file=file;
 //         Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), false);
+        Device::fixVariousArtists(QString(), currentSong);
         addSongToList(currentSong);
         emit actionStatus(Ok);
     }
@@ -567,6 +611,9 @@ void MtpDevice::getSongStatus(bool ok)
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
 // TODO: Get covers???
 //         Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), true);
+        if (needToFixVa) {
+            Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong);
+        }
         MusicLibraryModel::self()->addSongToList(currentSong);
         emit actionStatus(Ok);
     }

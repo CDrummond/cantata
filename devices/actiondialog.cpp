@@ -60,7 +60,13 @@ ActionDialog::ActionDialog(QWidget *parent, KAction *updateDbAct)
     errorIcon->setPixmap(QIcon::fromTheme("dialog-error").pixmap(64, 64));
     skipIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(64, 64));
     configureButton->setIcon(QIcon::fromTheme("configure"));
-    overwrite->setChecked(Settings::self()->overwriteSongs());
+    vaWorkaround->setToolTip(i18n("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
+                                  "then Cantata will set the 'Artist' tag of all tracks to 'Various Artists' and the "
+                                  "track 'Title' tag to 'TrackArtist - TrackTitle'.<hr/> When copying from a device, Cantata "
+                                  "will check if 'Album Artist' and 'Artist' are both set to 'Various Artists'. If so, it "
+                                  "will attempt to extract the real artist from the 'Title' tag, and remove the artist name "
+                                  "from the 'Title' tag.</p>"));
+    vaWorkaroundLabel->setToolTip(vaWorkaround->toolTip());
     connect(configureButton, SIGNAL(pressed()), SLOT(configureDest()));
 }
 
@@ -81,9 +87,13 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
 
     // check space...
     qint64 spaceRequired=0;
+    bool haveVa=false;
     foreach (const Song &s, songsToAction) {
-        if(s.size>0) {
+        if (s.size>0) {
             spaceRequired+=s.size;
+        }
+        if (!haveVa && s.isVariousArtists()) {
+            haveVa=true;
         }
     }
 
@@ -103,6 +113,10 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     }
 
     if (spaceAvailable>spaceRequired) {
+        overwrite->setChecked(Settings::self()->overwriteSongs());
+        vaWorkaround->setChecked(Settings::self()->vaWorkaround());
+        vaWorkaround->setVisible(haveVa);
+        vaWorkaroundLabel->setVisible(haveVa);
         sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
         destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
         namingOptions.load("mpd");
@@ -163,6 +177,7 @@ void ActionDialog::slotButtonClicked(int button)
         switch (button) {
         case KDialog::Ok:
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
+            Settings::self()->saveVaWorkaround(vaWorkaround->isChecked());
             setPage(PAGE_PROGRESS);
             doNext();
             break;
@@ -224,11 +239,15 @@ void ActionDialog::doNext()
                 if (copyToDev) {
                     destFile=dev->path()+dev->namingOptions().createFilename(currentSong);
                     currentSong.file=mpdDir+currentSong.file;
-                    dev->addSong(currentSong, overwrite->isChecked());
+                    dev->addSong(currentSong, overwrite->isChecked(), vaWorkaround->isChecked());
                 } else {
-                    QString fileName=namingOptions.createFilename(currentSong);
+                    Song copy=currentSong;
+                    if (vaWorkaround->isChecked() && currentSong.isVariousArtists()) {
+                        Device::fixVariousArtists(QString(), copy);
+                    }
+                    QString fileName=namingOptions.createFilename(copy);
                     destFile=mpdDir+fileName;
-                    dev->copySongTo(currentSong, mpdDir, fileName, overwrite->isChecked());
+                    dev->copySongTo(currentSong, mpdDir, fileName, overwrite->isChecked(), vaWorkaround->isChecked());
                 }
                 progressLabel->setText(formatSong(currentSong));
             } else {

@@ -53,6 +53,7 @@ private Q_SLOTS:
     void actionStatus(int status);
     void doNext();
     void removeSongResult(KJob *job);
+    void copyPercent(unsigned long percent);
 
 private:
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
@@ -61,6 +62,7 @@ private:
     QString formatSong(const Song &s, bool showFiles=false);
     void refreshMpd();
     void removeSong(const Song &s);
+    void incProgress();
 
 private:
     Mode mode;
@@ -69,6 +71,7 @@ private:
     QList<Song> songsToAction;
     QList<Song> actionedSongs;
     QSet<QString> dirsToClean;
+    unsigned long count;
     Song currentSong;
     bool autoSkip;
     bool paused;

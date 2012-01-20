@@ -150,6 +150,7 @@ Q_SIGNALS:
     void disconnected(const QString &udi);
     void updating(const QString &udi, bool s);
     void actionStatus(int);
+    void progress(unsigned long percent);
 
 protected:
     DevicesModel *model;

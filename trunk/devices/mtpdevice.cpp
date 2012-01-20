@@ -353,7 +353,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
             if (temp->open()) {
                 fileName=temp->fileName();
                 temp->close();
-                if (!QFile::copy(song.file, fileName) || !Device::fixVariousArtists(fileName, song)) {
+                if (!QFile::copy(song.file, fileName) || !Device::fixVariousArtists(fileName, song, true)) {
                     fileName=song.file;
                 }
             }
@@ -508,7 +508,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool fixVa)
         Song check=s;
 
         if (needToFixVa) {
-            Device::fixVariousArtists(QString(), check);
+            Device::fixVariousArtists(QString(), check, true);
         }
         if (songExists(check)) {
             emit actionStatus(SongExists);
@@ -541,7 +541,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
         Song check=s;
 
         if (needToFixVa) {
-            Device::fixVariousArtists(QString(), check);
+            Device::fixVariousArtists(QString(), check, false);
         }
         if (MusicLibraryModel::self()->songExists(check)) {
             emit actionStatus(SongExists);
@@ -595,7 +595,7 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file)
         currentSong.id=id;
         currentSong.file=file;
 //         Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), false);
-        Device::fixVariousArtists(QString(), currentSong);
+        Device::fixVariousArtists(QString(), currentSong, true);
         addSongToList(currentSong);
         emit actionStatus(Ok);
     }
@@ -612,7 +612,7 @@ void MtpDevice::getSongStatus(bool ok)
 // TODO: Get covers???
 //         Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), true);
         if (needToFixVa) {
-            Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong);
+            Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
         }
         MusicLibraryModel::self()->addSongToList(currentSong);
         emit actionStatus(Ok);

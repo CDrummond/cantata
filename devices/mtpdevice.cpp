@@ -43,6 +43,12 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
+{
+    ((MtpConnection *)data)->emitProgress((unsigned long)(((processed*1.0)/(total*1.0)*100.0)+0.5));
+    return 0;
+}
+
 MtpConnection::MtpConnection(MtpDevice *p)
     : device(0)
     , folders(0)
@@ -66,6 +72,11 @@ MusicLibraryItemRoot * MtpConnection::takeLibrary()
     MusicLibraryItemRoot *lib=library;
     library=0;
     return lib;
+}
+
+void MtpConnection::emitProgress(unsigned long percent)
+{
+    emit progress(percent);
 }
 
 void MtpConnection::connectToDevice()
@@ -393,7 +404,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
         }
         meta->filetype=mtpFileType(song);
         meta->next=0;
-        added=0==LIBMTP_Send_Track_From_File(device, fileName.toUtf8(), meta, 0, 0);
+        added=0==LIBMTP_Send_Track_From_File(device, fileName.toUtf8(), meta, &progressMonitor, this);
         if (temp) {
             // Delete the temp file...
             temp->remove();
@@ -411,7 +422,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
 
 void MtpConnection::getSong(const Song &song, const QString &dest)
 {
-    emit getSongStatus(device && 0==LIBMTP_Get_File_To_File(device, song.id, dest.toUtf8(), 0, 0));
+    emit getSongStatus(device && 0==LIBMTP_Get_File_To_File(device, song.id, dest.toUtf8(), &progressMonitor, this));
 }
 
 void MtpConnection::delSong(const Song &song)
@@ -462,6 +473,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     thread->start();
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
+    connect(connection, SIGNAL(progress(unsigned long)), this, SIGNAL(progress(unsigned long)));
     connect(this, SIGNAL(putSong(const Song &, bool)), connection, SLOT(putSong(const Song &, bool)));
     connect(connection, SIGNAL(putSongStatus(bool, int, const QString &, bool)), this, SLOT(putSongStatus(bool, int, const QString &, bool)));
     connect(this, SIGNAL(getSong(const Song &, const QString &)), connection, SLOT(getSong(const Song &, const QString &)));

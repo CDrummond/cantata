@@ -162,12 +162,13 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     qSort(songsToAction);
     progressLabel->setText(QString());
     progressBar->setValue(0);
-    progressBar->setRange(0, songsToAction.count()+(Copy==mode ? 0 : 1));
+    progressBar->setRange(0, Copy==mode ? (songsToAction.count()*100) : (songsToAction.count()+1));
     autoSkip=false;
     performingAction=false;
     paused=false;
     actionedSongs.clear();
     currentDev=0;
+    count=0;
 }
 
 void ActionDialog::slotButtonClicked(int button)
@@ -194,10 +195,12 @@ void ActionDialog::slotButtonClicked(int button)
         setPage(PAGE_PROGRESS);
         switch(button) {
         case User1:
+            incProgress();
             doNext();
             break;
         case User2:
             autoSkip=true;
+            incProgress();
             doNext();
             break;
         default:
@@ -217,6 +220,7 @@ void ActionDialog::slotButtonClicked(int button)
             reject();
         } else if (!performingAction && PAGE_PROGRESS==stack->currentIndex()) {
             paused=false;
+            incProgress();
             doNext();
         }
     }
@@ -233,6 +237,7 @@ void ActionDialog::doNext()
             if (dev) {
                 if (dev!=currentDev) {
                     connect(dev, SIGNAL(actionStatus(int)), this, SLOT(actionStatus(int)));
+                    connect(dev, SIGNAL(progress(unsigned long)), this, SLOT(copyPercent(unsigned long)));
                     currentDev=dev;
                 }
                 performingAction=true;
@@ -286,7 +291,7 @@ void ActionDialog::doNext()
             }
         }
         dirsToClean.clear();
-        progressBar->setValue(progressBar->value()+1);
+        incProgress();
         doNext();
     } else {
         refreshMpd();
@@ -311,8 +316,8 @@ void ActionDialog::actionStatus(int status)
             // Cache is now out of date, so need to remove!
             MusicLibraryModel::self()->removeCache();
         }
-        progressBar->setValue(progressBar->value()+1);
         if (!paused) {
+            incProgress();
             doNext();
         }
         break;
@@ -449,3 +454,19 @@ void ActionDialog::removeSongResult(KJob *job)
         actionStatus(Device::Ok);
     }
 }
+
+void ActionDialog::copyPercent(unsigned long percent)
+{
+    progressBar->setValue((100*count)+percent);
+}
+
+void ActionDialog::incProgress()
+{
+    if (Copy==mode) {
+        count++;
+        progressBar->setValue(100*count);
+    } else {
+        progressBar->setValue(progressBar->value()+1);
+    }
+}
+

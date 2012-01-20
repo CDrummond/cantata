@@ -44,6 +44,7 @@ public:
     MusicLibraryItemRoot * takeLibrary();
     uint64_t capacity() const { return size; }
     uint64_t usedSpace() const { return used; }
+    void emitProgress(unsigned long percent);
 
 public Q_SLOTS:
     void connectToDevice();
@@ -59,6 +60,7 @@ Q_SIGNALS:
     void getSongStatus(bool);
     void delSongStatus(bool);
     void libraryUpdated();
+    void progress(unsigned long);
 
 private:
     void updateFolders();

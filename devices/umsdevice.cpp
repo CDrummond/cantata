@@ -196,6 +196,7 @@ void UmsDevice::addSong(const Song &s, bool overwrite, bool fixVa)
     currentSong=s;
     KIO::FileCopyJob *job=KIO::file_copy(KUrl(s.file), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
     connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
+    connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
 }
 
 void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa)
@@ -242,6 +243,7 @@ void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     currentSong=s;
     KIO::FileCopyJob *job=KIO::file_copy(KUrl(source), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
     connect(job, SIGNAL(result(KJob *)), SLOT(copySongToResult(KJob *)));
+    connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
 }
 
 void UmsDevice::removeSong(const Song &s)
@@ -259,6 +261,12 @@ void UmsDevice::removeSong(const Song &s)
     currentSong=s;
     KIO::SimpleJob *job=KIO::file_delete(KUrl(s.file), KIO::HideProgressInfo);
     connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *)));
+}
+
+void UmsDevice::percent(KJob *job, unsigned long percent)
+{
+    Q_UNUSED(job)
+    emit progress(percent);
 }
 
 void UmsDevice::addSongResult(KJob *job)

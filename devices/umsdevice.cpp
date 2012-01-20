@@ -154,16 +154,25 @@ void UmsDevice::rescan()
     }
 }
 
-void UmsDevice::addSong(const Song &s, bool overwrite)
+void UmsDevice::addSong(const Song &s, bool overwrite, bool fixVa)
 {
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
     }
 
-    if (!overwrite && songExists(s)) {
-        emit actionStatus(SongExists);
-        return;
+    needToFixVa=fixVa && s.isVariousArtists();
+
+    if (!overwrite) {
+        Song check=s;
+
+        if (needToFixVa) {
+            Device::fixVariousArtists(QString(), check);
+        }
+        if (songExists(check)) {
+            emit actionStatus(SongExists);
+            return;
+        }
     }
 
     if (!QFile::exists(s.file)) {
@@ -189,16 +198,25 @@ void UmsDevice::addSong(const Song &s, bool overwrite)
     connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
 }
 
-void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
+void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa)
 {
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
     }
 
-    if (!overwrite && MusicLibraryModel::self()->songExists(s)) {
-        emit actionStatus(SongExists);
-        return;
+    needToFixVa=fixVa && s.isVariousArtists();
+
+    if (!overwrite) {
+        Song check=s;
+
+        if (needToFixVa) {
+            Device::fixVariousArtists(QString(), check);
+        }
+        if (MusicLibraryModel::self()->songExists(check)) {
+            emit actionStatus(SongExists);
+            return;
+        }
     }
 
     QString source=s.file; // Device files have full path!!!
@@ -240,7 +258,7 @@ void UmsDevice::removeSong(const Song &s)
 
     currentSong=s;
     KIO::SimpleJob *job=KIO::file_delete(KUrl(s.file), KIO::HideProgressInfo);
-    connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *job)));
+    connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *)));
 }
 
 void UmsDevice::addSongResult(KJob *job)
@@ -253,6 +271,10 @@ void UmsDevice::addSongResult(KJob *job)
 
         currentSong.file=destFile;
         Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), coverFileName);
+
+        if (needToFixVa) {
+            Device::fixVariousArtists(destFile, currentSong);
+        }
         addSongToList(currentSong);
         emit actionStatus(Ok);
     }
@@ -267,6 +289,9 @@ void UmsDevice::copySongToResult(KJob *job)
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
         Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), QString());
+        if (needToFixVa) {
+            Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong);
+        }
         MusicLibraryModel::self()->addSongToList(currentSong);
         emit actionStatus(Ok);
     }

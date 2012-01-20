@@ -69,8 +69,8 @@ public:
     void configure(QWidget *parent);
     QString path() const { return audioFolder; }
     QString coverFile() const { return coverFileName; }
-    void addSong(const Song &s, bool overwrite);
-    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
+    void addSong(const Song &s, bool overwrite, bool fixVa);
+    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa);
     void removeSong(const Song &s);
     void cleanDir(const QString &dir) { Device::cleanDir(dir, audioFolder, coverFileName); }
     double usedCapacity();

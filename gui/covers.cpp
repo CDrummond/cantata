@@ -54,7 +54,7 @@ void initCoverNames()
 {
     if (coverFileNames.isEmpty()) {
         QStringList fileNames;
-        fileNames << constFileName << QLatin1String("AlbumArt");
+        fileNames << constFileName << QLatin1String("AlbumArt") << QLatin1String("folder");
         foreach (const QString &fileName, fileNames) {
             foreach (const QString &ext, constExtensions) {
                 coverFileNames << fileName+ext;
@@ -288,7 +288,7 @@ void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
     QString dirName;
     bool haveAbsPath=song.file.startsWith("/");
 
-    if (isLocal && (haveAbsPath || !mpdDir.isEmpty())) {
+    if (haveAbsPath || !mpdDir.isEmpty()) {
         dirName=song.file.endsWith("/") ? (haveAbsPath ? QString() : mpdDir)+song.file : MPDParseUtils::getDir((haveAbsPath ? QString() : mpdDir)+song.file);
         initCoverNames();
         foreach (const QString &fileName, coverFileNames) {

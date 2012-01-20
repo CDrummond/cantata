@@ -49,7 +49,7 @@ public Q_SLOTS:
     void connectToDevice();
     void disconnectFromDevice();
     void updateLibrary();
-    void putSong(const Song &song);
+    void putSong(const Song &song, bool fixVa);
     void getSong(const Song &song, const QString &dest);
     void delSong(const Song &song);
 
@@ -106,8 +106,8 @@ public:
     bool isRefreshing() const { return mtpUpdating; }
     void configure(QWidget *parent);
     QString path() const { return QString(); } // audioFolder; }
-    void addSong(const Song &s, bool overwrite);
-    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
+    void addSong(const Song &s, bool overwrite, bool fixVa);
+    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa);
     void removeSong(const Song &s);
     void cleanDir(const QString &dir);
     double usedCapacity();
@@ -117,7 +117,7 @@ public:
 Q_SIGNALS:
     // These are for talking to connection thread...
     void updateLibrary();
-    void putSong(const Song &song);
+    void putSong(const Song &song, bool fixVa);
     void getSong(const Song &song, const QString &dest);
     void delSong(const Song &song);
 

@@ -65,6 +65,8 @@ struct Song
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     const QString & displayTitle() const { return modifiedtitle.isEmpty() ? title : modifiedtitle; }
     void updateSize(const QString &dir) const;
+    static bool isVariousArtists(const QString &str);
+    bool isVariousArtists() const { return isVariousArtists(albumArtist()); }
 };
 
 inline uint qHash(const Song &key)

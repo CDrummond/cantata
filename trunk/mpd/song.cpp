@@ -204,3 +204,14 @@ void Song::updateSize(const QString &dir) const
     }
 }
 
+bool Song::isVariousArtists(const QString &str)
+{
+    return QLatin1String("Various Artists")==str ||
+            #ifdef ENABLE_KDE_SUPPORT
+            i18n("Various Artists")==str
+            #else
+            QObject::tr("Various Artists")==str
+            #endif
+            ;
+}
+

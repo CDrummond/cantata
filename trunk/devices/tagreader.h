@@ -29,6 +29,7 @@
 namespace TagReader
 {
     extern Song read(const QString &fileName);
+    extern bool updateArtistAndTitleTags(const QString &fileName, const Song &song);
 };
 
 #endif

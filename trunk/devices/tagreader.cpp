@@ -93,6 +93,12 @@ static QString tString2QString(const TagLib::String &str)
     return codec->toUnicode(str.toCString(true)).trimmed();
 }
 
+TagLib::String qString2TString(const QString &str)
+{
+    QString val = str.trimmed();
+    return val.isEmpty() ? TagLib::String::null : TagLib::String(val.toUtf8().data(), TagLib::String::UTF8);
+}
+
 // static void readID3v1Tags(const TagLib::FileRef fileref, Song &song)
 // {
 // }
@@ -249,6 +255,25 @@ Song read(const QString &fileName)
     }
 
     return song;
+}
+
+bool updateArtistAndTitleTags(const QString &fileName, const Song &song)
+{
+    QMutexLocker locker(&mutex);
+
+    ensureFileTypeResolvers();
+
+    TagLib::FileRef fileref = getFileRef(fileName);
+
+    if (fileref.isNull()) {
+        return false;
+    }
+
+    TagLib::Tag *tag=fileref.tag();
+    tag->setTitle(qString2TString(song.title));
+    tag->setArtist(qString2TString(song.artist));
+    TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
+    return mpeg ? mpeg->save(TagLib::MPEG::File::ID3v2) : fileref.file()->save();
 }
 
 }

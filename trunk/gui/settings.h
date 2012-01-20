@@ -80,6 +80,7 @@ public:
     bool overwriteSongs();
     bool showDeleteAction();
     int devicesView();
+    bool vaWorkaround();
     #endif
 
     void saveConnectionHost(const QString &v);
@@ -116,6 +117,7 @@ public:
     void saveOverwriteSongs(bool v);
     void saveShowDeleteAction(bool v);
     void saveDevicesView(int v);
+    void saveVaWorkaround(bool v);
     #endif
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT

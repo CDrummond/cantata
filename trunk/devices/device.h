@@ -74,6 +74,7 @@ public:
     static void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
     static void setFilePerms(const QString &file);
     static bool createDir(const QString &dir);
+    static bool fixVariousArtists(const QString &file, Song &song);
 
     enum Status {
         Ok,
@@ -108,8 +109,8 @@ public:
     bool isIdle() const { return isConnected() && !isRefreshing(); }
     virtual void configure(QWidget *) { }
     virtual QString path() const =0;
-    virtual void addSong(const Song &s, bool overwrite)=0;
-    virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)=0;
+    virtual void addSong(const Song &s, bool overwrite, bool fixVa)=0;
+    virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa)=0;
     virtual void removeSong(const Song &s)=0;
     virtual void cleanDir(const QString &dir)=0;
     virtual double usedCapacity()=0;
@@ -159,6 +160,7 @@ protected:
     QString currentBaseDir;
     QString currentMusicPath;
     QString statusMsg;
+    bool needToFixVa;
 };
 
 #endif

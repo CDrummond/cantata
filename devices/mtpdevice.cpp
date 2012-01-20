@@ -33,6 +33,7 @@
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtCore/QDir>
+#include <QtCore/QDebug>
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
 #include <KDE/KUrl>
@@ -128,6 +129,11 @@ void MtpConnection::updateLibrary()
     library = new MusicLibraryItemRoot;
     emit statusMessage(i18n("Updating folders..."));
     updateFolders();
+    if (folderMap.isEmpty()) {
+        destroyData();
+        emit libraryUpdated();
+        return;
+    }
     emit statusMessage(i18n("Updating tracks..."));
     tracks=LIBMTP_Get_Tracklisting_With_Callback(device, 0, 0);
     LIBMTP_track_t *track=tracks;
@@ -329,6 +335,7 @@ static LIBMTP_filetype_t mtpFileType(const Song &s)
 void MtpConnection::putSong(const Song &s, bool fixVa)
 {
     bool added=false;
+    bool fixedVa=false;
     LIBMTP_track_t *meta=0;
     if (device) {
         meta=LIBMTP_new_track_t();
@@ -349,12 +356,20 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
         if (fixVa) {
             // Need to 'workaround' broek various artists handling, so write to a temporary file first...
             temp=new KTemporaryFile();
+            int index=song.file.lastIndexOf('.');
+            if (index>0) {
+                temp->setSuffix(song.file.mid(index));
+            }
             temp->setAutoRemove(false);
             if (temp->open()) {
                 fileName=temp->fileName();
                 temp->close();
-                if (!QFile::copy(song.file, fileName) || !Device::fixVariousArtists(fileName, song, true)) {
-                    fileName=song.file;
+                if (QFile::exists(fileName)) {
+                    QFile::remove(fileName); // Copy will *not* overwrite file!
+                }
+                if (QFile::copy(song.file, fileName) && Device::fixVariousArtists(fileName, song, true)) {
+                    song.file=fileName;
+                    fixedVa=true;
                 }
             }
         }
@@ -391,7 +406,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
     } else if (meta) {
         LIBMTP_destroy_track_t(meta);
     }
-    emit putSongStatus(added, meta ? meta->item_id : 0, meta ? meta->filename : 0);
+    emit putSongStatus(added, meta ? meta->item_id : 0, meta ? meta->filename : 0, fixedVa);
 }
 
 void MtpConnection::getSong(const Song &song, const QString &dest)
@@ -448,7 +463,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
     connect(this, SIGNAL(putSong(const Song &, bool)), connection, SLOT(putSong(const Song &, bool)));
-    connect(connection, SIGNAL(putSongStatus(bool, int, const QString &)), this, SLOT(putSongStatus(bool, int, const QString &)));
+    connect(connection, SIGNAL(putSongStatus(bool, int, const QString &, bool)), this, SLOT(putSongStatus(bool, int, const QString &, bool)));
     connect(this, SIGNAL(getSong(const Song &, const QString &)), connection, SLOT(getSong(const Song &, const QString &)));
     connect(connection, SIGNAL(getSongStatus(bool)), this, SLOT(getSongStatus(bool)));
     connect(this, SIGNAL(delSong(const Song &)), connection, SLOT(delSong(const Song &)));
@@ -587,7 +602,7 @@ void MtpDevice::cleanDir(const QString &dir)
     Q_UNUSED(dir)
 }
 
-void MtpDevice::putSongStatus(bool ok, int id, const QString &file)
+void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa)
 {
     if (!ok) {
         emit actionStatus(Failed);
@@ -595,7 +610,9 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file)
         currentSong.id=id;
         currentSong.file=file;
 //         Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), false);
-        Device::fixVariousArtists(QString(), currentSong, true);
+        if (needToFixVa && fixedVa) {
+            Device::fixVariousArtists(QString(), currentSong, true);
+        }
         addSongToList(currentSong);
         emit actionStatus(Ok);
     }

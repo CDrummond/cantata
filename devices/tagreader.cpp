@@ -273,6 +273,7 @@ bool updateArtistAndTitleTags(const QString &fileName, const Song &song)
     tag->setTitle(qString2TString(song.title));
     tag->setArtist(qString2TString(song.artist));
     TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
+
     return mpeg ? mpeg->save(TagLib::MPEG::File::ID3v2) : fileref.file()->save();
 }
 

@@ -9,6 +9,7 @@
 5. When we recieve an updated signal frmo MPD, refresh library view.
 6. When disaplying songs of various artists albums, show as 'track number -
    artist - song'
+7. German translation - thanks to Lutz Lüttke
 
 0.2.1
 -----

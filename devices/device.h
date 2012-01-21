@@ -54,7 +54,8 @@ public:
         void save(const QString &group);
 
         bool operator==(const Options &o) const {
-            return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe && replaceSpaces==o.replaceSpaces && scheme==o.scheme;
+            return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&
+                   replaceSpaces==o.replaceSpaces && scheme==o.scheme && fixVariousArtists==o.fixVariousArtists;
         }
         bool operator!=(const Options &o) const {
             return !(*this==o);

@@ -45,7 +45,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     setupUi(this);
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
-    libraryUpdate->setDefaultAction(p->updateDbAction);
+    libraryUpdate->setDefaultAction(p->refreshAction);
 
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);

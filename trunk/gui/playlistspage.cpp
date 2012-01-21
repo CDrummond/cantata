@@ -52,7 +52,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
 
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
-    libraryUpdate->setDefaultAction(p->updateDbAction);
+    libraryUpdate->setDefaultAction(p->refreshAction);
     rem->setDefaultAction(p->removeAction);
     renPlaylist->setDefaultAction(renamePlaylistAction);
     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));

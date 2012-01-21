@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-21 21:27+0000\n"
+"POT-Creation-Date: 2012-01-21 23:22+0000\n"
 "PO-Revision-Date: 2011-12-22 16:01+0100\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -18,98 +18,114 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 1.2\n"
 
-#: devices/actiondialog.cpp:76
+#: devices/actiondialog.cpp:78
 msgid "Device is currently busy."
 msgstr ""
 
-#: devices/actiondialog.cpp:101 devices/mtpdevice.cpp:679
-#: devices/umsdevice.cpp:337
+#: devices/actiondialog.cpp:107 devices/mtpdevice.cpp:683
+#: devices/umsdevice.cpp:341
 msgid "%1 free"
 msgstr ""
 
-#: devices/actiondialog.cpp:106 devices/actiondialog.cpp:107
+#: devices/actiondialog.cpp:112 devices/actiondialog.cpp:113
 msgid "Local Music Library"
 msgstr ""
 
-#: devices/actiondialog.cpp:116
+#: devices/actiondialog.cpp:126
 msgid ""
 "There is insufficient space left on the destination.\n"
 "The selected songs consume %1, but there is only %2 left."
 msgstr ""
 
-#: devices/actiondialog.cpp:147
+#: devices/actiondialog.cpp:157
 #, fuzzy
 msgid "Copy Songs"
 msgstr "Utwory:"
 
-#: devices/actiondialog.cpp:147 gui/mainwindow.cpp:499
+#: devices/actiondialog.cpp:157 gui/mainwindow.cpp:499
 msgid "Delete Songs"
 msgstr ""
 
-#: devices/actiondialog.cpp:203
+#: devices/actiondialog.cpp:178
+msgid ""
+"<p>You have not configured the destination device.<br/>Continue with the "
+"default settings?</p>"
+msgstr ""
+
+#: devices/actiondialog.cpp:181
+msgid ""
+"<p>You have not configured the source device.<br/>Continue with the default "
+"settings?</p>"
+msgstr ""
+
+#: devices/actiondialog.cpp:222
 #, fuzzy
 msgid "Are you sure you wish to cancel?"
 msgstr "Czy na pewno usunąć <b>%1</b>?"
 
-#: devices/actiondialog.cpp:244 devices/actiondialog.cpp:262
+#: devices/actiondialog.cpp:263 devices/actiondialog.cpp:281
 msgid "Device has been removed"
 msgstr ""
 
-#: devices/actiondialog.cpp:269
+#: devices/actiondialog.cpp:288
 msgid "Clearing unused folders"
 msgstr ""
 
-#: devices/actiondialog.cpp:310
+#: devices/actiondialog.cpp:329
 #, fuzzy
 msgid "The destination filename already exists!<hr/>%1"
 msgstr "Strumień już istnieje!<br/><b>%1</b>"
 
-#: devices/actiondialog.cpp:313
+#: devices/actiondialog.cpp:332
 #, fuzzy
 msgid "Song already exists!<hr/>%1"
 msgstr "Strumień już istnieje!<br/><b>%1</b>"
 
-#: devices/actiondialog.cpp:316
+#: devices/actiondialog.cpp:335
 msgid "Song does not exist!<hr/>%1"
 msgstr ""
 
-#: devices/actiondialog.cpp:319
+#: devices/actiondialog.cpp:338
 msgid ""
 "Failed to create destination folder!<br/>Please check you have sufficient "
 "permissions.<hr/>%1"
 msgstr ""
 
-#: devices/actiondialog.cpp:322
+#: devices/actiondialog.cpp:341
 msgid "Source file no longer exists?<br/><br/<hr/>%1"
 msgstr ""
 
-#: devices/actiondialog.cpp:325
+#: devices/actiondialog.cpp:344
 #, fuzzy
 msgid "Failed to copy.<hr/>%1"
 msgstr "Utworzenie <b>%1</b> nie powiodło się!"
 
-#: devices/actiondialog.cpp:326
+#: devices/actiondialog.cpp:345
 #, fuzzy
 msgid "Failed to delete.<hr/>%1"
 msgstr "Utworzenie <b>%1</b> nie powiodło się!"
 
-#: devices/actiondialog.cpp:329
+#: devices/actiondialog.cpp:348
 msgid "Not connected to device.<hr/>%1"
 msgstr ""
 
-#: devices/actiondialog.cpp:373 devices/actiondialog.cpp:382
+#: devices/actiondialog.cpp:373
+msgid "Local Music Library Properties"
+msgstr ""
+
+#: devices/actiondialog.cpp:407 devices/actiondialog.cpp:417
 msgid "<b>Error</b><br/>"
 msgstr ""
 
-#: devices/actiondialog.cpp:376
+#: devices/actiondialog.cpp:410
 msgid "Skip"
 msgstr ""
 
-#: devices/actiondialog.cpp:377
+#: devices/actiondialog.cpp:411
 msgid "Auto Skip"
 msgstr ""
 
-#: devices/actiondialog.cpp:393
+#: devices/actiondialog.cpp:428
 #, fuzzy
 msgid ""
 "<table><tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align="
@@ -123,7 +139,7 @@ msgstr ""
 "td><td>%4</td></tr><tr><td align=\"right\"><b>Długość:</b></td><td>%5</td></"
 "tr></table>"
 
-#: devices/actiondialog.cpp:400
+#: devices/actiondialog.cpp:435
 #, fuzzy
 msgid ""
 "<table><tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align="
@@ -136,7 +152,7 @@ msgstr ""
 "td><td>%4</td></tr><tr><td align=\"right\"><b>Długość:</b></td><td>%5</td></"
 "tr></table>"
 
-#: devices/actiondialog.cpp:406
+#: devices/actiondialog.cpp:441
 #, fuzzy
 msgid ""
 "<table><tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align="
@@ -149,7 +165,7 @@ msgstr ""
 "td><td>%4</td></tr><tr><td align=\"right\"><b>Długość:</b></td><td>%5</td></"
 "tr></table>"
 
-#: devices/device.cpp:306 mpd/mpdparseutils.cpp:248 mpd/song.cpp:107
+#: devices/device.cpp:307 mpd/mpdparseutils.cpp:248 mpd/song.cpp:107
 #: mpd/song.cpp:111 mpd/song.cpp:115
 msgid "Unknown"
 msgstr "Nieznany"
@@ -252,39 +268,39 @@ msgid ""
 "tr><tr><td>%8</td><td>The genre of the album.</td></tr></table></p>"
 msgstr ""
 
-#: devices/mtpdevice.cpp:90
+#: devices/mtpdevice.cpp:91
 msgid "Connecting to device..."
 msgstr ""
 
-#: devices/mtpdevice.cpp:92 devices/mtpdevice.cpp:109
+#: devices/mtpdevice.cpp:93 devices/mtpdevice.cpp:110
 #, fuzzy
 msgid "No devices found"
 msgstr "Nie znaleziono tekstów"
 
-#: devices/mtpdevice.cpp:114
+#: devices/mtpdevice.cpp:115
 msgid "Connected to device"
 msgstr ""
 
-#: devices/mtpdevice.cpp:123
+#: devices/mtpdevice.cpp:124
 msgid "Disconnected from device"
 msgstr ""
 
-#: devices/mtpdevice.cpp:141
+#: devices/mtpdevice.cpp:142
 msgid "Updating folders..."
 msgstr ""
 
-#: devices/mtpdevice.cpp:148
+#: devices/mtpdevice.cpp:149
 #, fuzzy
 msgid "Updating tracks..."
 msgstr "Uaktualnianie"
 
-#: devices/mtpdevice.cpp:676 devices/umsdevice.cpp:333
+#: devices/mtpdevice.cpp:680 devices/umsdevice.cpp:337
 #: models/devicesmodel.cpp:234
 #, fuzzy
 msgid "Not Connected"
 msgstr "Utracono połączenie z MPD"
 
-#: devices/umsdevice.cpp:453
+#: devices/umsdevice.cpp:449
 #, fuzzy
 msgid "Updating..."
 msgstr "Uaktualnianie"
@@ -535,8 +551,8 @@ msgstr "Cantata"
 #. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
 #. i18n: file: gui/interfacesettings.ui:155
 #. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
-#: gui/playbacksettings.cpp:36 po/rc.cpp:123 po/rc.cpp:156 rc.cpp:123
-#: rc.cpp:156
+#: gui/playbacksettings.cpp:36 po/rc.cpp:129 po/rc.cpp:162 rc.cpp:129
+#: rc.cpp:162
 msgid "None"
 msgstr "Brak"
 
@@ -579,7 +595,7 @@ msgstr "Proszę wpisać nową nazwę dla playlisty: %1"
 
 #. i18n: file: gui/serverinfopage.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: gui/preferencesdialog.cpp:99 po/rc.cpp:243 rc.cpp:243
+#: gui/preferencesdialog.cpp:99 po/rc.cpp:249 rc.cpp:249
 msgid "Server"
 msgstr "Serwer"
 
@@ -887,13 +903,13 @@ msgstr "Płyta"
 
 #. i18n: file: devices/filenameschemedialog.ui:274
 #. i18n: ectx: property (text), widget (KPushButton, year)
-#: models/playqueuemodel.cpp:111 po/rc.cpp:84 rc.cpp:84
+#: models/playqueuemodel.cpp:111 po/rc.cpp:90 rc.cpp:90
 msgid "Year"
 msgstr "Rok"
 
 #. i18n: file: devices/filenameschemedialog.ui:254
 #. i18n: ectx: property (text), widget (KPushButton, genre)
-#: models/playqueuemodel.cpp:113 po/rc.cpp:81 rc.cpp:81
+#: models/playqueuemodel.cpp:113 po/rc.cpp:87 rc.cpp:87
 msgid "Genre"
 msgstr "Gatunek"
 
@@ -1012,13 +1028,13 @@ msgstr[2] "%1 dni %2"
 #. i18n: ectx: property (windowTitle), widget (QWidget, ProxySettings)
 #. i18n: file: widgets/itemview.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, ItemView)
-#: po/rc.cpp:3 po/rc.cpp:24 po/rc.cpp:54 po/rc.cpp:87 po/rc.cpp:90
-#: po/rc.cpp:105 po/rc.cpp:108 po/rc.cpp:207 po/rc.cpp:210 po/rc.cpp:219
-#: po/rc.cpp:222 po/rc.cpp:237 po/rc.cpp:240 po/rc.cpp:297 po/rc.cpp:316
-#: po/rc.cpp:319 po/rc.cpp:331 po/rc.cpp:334 po/rc.cpp:364 rc.cpp:3 rc.cpp:24
-#: rc.cpp:54 rc.cpp:87 rc.cpp:90 rc.cpp:105 rc.cpp:108 rc.cpp:207 rc.cpp:210
-#: rc.cpp:219 rc.cpp:222 rc.cpp:237 rc.cpp:240 rc.cpp:297 rc.cpp:316
-#: rc.cpp:319 rc.cpp:331 rc.cpp:334 rc.cpp:364
+#: po/rc.cpp:3 po/rc.cpp:30 po/rc.cpp:60 po/rc.cpp:93 po/rc.cpp:96
+#: po/rc.cpp:111 po/rc.cpp:114 po/rc.cpp:213 po/rc.cpp:216 po/rc.cpp:225
+#: po/rc.cpp:228 po/rc.cpp:243 po/rc.cpp:246 po/rc.cpp:303 po/rc.cpp:322
+#: po/rc.cpp:325 po/rc.cpp:337 po/rc.cpp:340 po/rc.cpp:370 rc.cpp:3 rc.cpp:30
+#: rc.cpp:60 rc.cpp:93 rc.cpp:96 rc.cpp:111 rc.cpp:114 rc.cpp:213 rc.cpp:216
+#: rc.cpp:225 rc.cpp:228 rc.cpp:243 rc.cpp:246 rc.cpp:303 rc.cpp:322
+#: rc.cpp:325 rc.cpp:337 rc.cpp:340 rc.cpp:370
 msgid "Form"
 msgstr "Formularz"
 
@@ -1028,11 +1044,11 @@ msgstr "Formularz"
 msgid "Copy songs from:"
 msgstr ""
 
-#. i18n: file: devices/actiondialog.ui:40
+#. i18n: file: devices/actiondialog.ui:42
 #. i18n: ectx: property (text), widget (QLabel, sourceLabel)
-#. i18n: file: devices/actiondialog.ui:56
+#. i18n: file: devices/actiondialog.ui:85
 #. i18n: ectx: property (text), widget (QLabel, destinationLabel)
-#. i18n: file: devices/actiondialog.ui:206
+#. i18n: file: devices/actiondialog.ui:307
 #. i18n: ectx: property (text), widget (QLabel, progressLabel)
 #. i18n: file: gui/serverinfopage.ui:55
 #. i18n: ectx: property (text), widget (QLabel, version)
@@ -1050,11 +1066,11 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, totalDuration)
 #. i18n: file: gui/serverinfopage.ui:216
 #. i18n: ectx: property (text), widget (QLabel, lastUpdate)
-#. i18n: file: devices/actiondialog.ui:40
+#. i18n: file: devices/actiondialog.ui:42
 #. i18n: ectx: property (text), widget (QLabel, sourceLabel)
-#. i18n: file: devices/actiondialog.ui:56
+#. i18n: file: devices/actiondialog.ui:85
 #. i18n: ectx: property (text), widget (QLabel, destinationLabel)
-#. i18n: file: devices/actiondialog.ui:206
+#. i18n: file: devices/actiondialog.ui:307
 #. i18n: ectx: property (text), widget (QLabel, progressLabel)
 #. i18n: file: gui/serverinfopage.ui:55
 #. i18n: ectx: property (text), widget (QLabel, version)
@@ -1072,26 +1088,38 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, totalDuration)
 #. i18n: file: gui/serverinfopage.ui:216
 #. i18n: ectx: property (text), widget (QLabel, lastUpdate)
-#: po/rc.cpp:9 po/rc.cpp:15 po/rc.cpp:21 po/rc.cpp:249 po/rc.cpp:255
-#: po/rc.cpp:261 po/rc.cpp:270 po/rc.cpp:276 po/rc.cpp:282 po/rc.cpp:288
-#: po/rc.cpp:294 rc.cpp:9 rc.cpp:15 rc.cpp:21 rc.cpp:249 rc.cpp:255 rc.cpp:261
-#: rc.cpp:270 rc.cpp:276 rc.cpp:282 rc.cpp:288 rc.cpp:294
+#: po/rc.cpp:9 po/rc.cpp:15 po/rc.cpp:27 po/rc.cpp:255 po/rc.cpp:261
+#: po/rc.cpp:267 po/rc.cpp:276 po/rc.cpp:282 po/rc.cpp:288 po/rc.cpp:294
+#: po/rc.cpp:300 rc.cpp:9 rc.cpp:15 rc.cpp:27 rc.cpp:255 rc.cpp:261 rc.cpp:267
+#: rc.cpp:276 rc.cpp:282 rc.cpp:288 rc.cpp:294 rc.cpp:300
 msgid "TextLabel"
 msgstr ""
 
-#. i18n: file: devices/actiondialog.ui:47
-#. i18n: ectx: property (text), widget (QLabel, label_3)
-#: po/rc.cpp:12 rc.cpp:12
-msgid "Copy songs to:"
+#. i18n: file: devices/actiondialog.ui:61
+#. i18n: ectx: property (text), widget (QLabel, configureSourceLabel)
+#. i18n: file: devices/actiondialog.ui:104
+#. i18n: ectx: property (text), widget (QLabel, configureDestLabel)
+#. i18n: file: devices/actiondialog.ui:61
+#. i18n: ectx: property (text), widget (QLabel, configureSourceLabel)
+#. i18n: file: devices/actiondialog.ui:104
+#. i18n: ectx: property (text), widget (QLabel, configureDestLabel)
+#: po/rc.cpp:12 po/rc.cpp:18 rc.cpp:12 rc.cpp:18
+msgid "(Needs configuring)"
 msgstr ""
 
-#. i18n: file: devices/actiondialog.ui:95
+#. i18n: file: devices/actiondialog.ui:126
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:18 rc.cpp:18
+#: po/rc.cpp:21 rc.cpp:21
 #, fuzzy
 msgid "Overwrite songs:"
 msgstr "Nadpisać playlistę?"
 
+#. i18n: file: devices/actiondialog.ui:153
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: po/rc.cpp:24 rc.cpp:24
+msgid "Copy songs to:"
+msgstr ""
+
 #. i18n: file: devices/devicepropertiesdialog.ui:28
 #. i18n: ectx: property (text), widget (QLabel, musicFolderLabel)
 #. i18n: file: gui/serversettings.ui:68
@@ -1100,140 +1128,140 @@ msgstr "Nadpisać playlistę?"
 #. i18n: ectx: property (text), widget (QLabel, musicFolderLabel)
 #. i18n: file: gui/serversettings.ui:68
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: po/rc.cpp:27 po/rc.cpp:306 rc.cpp:27 rc.cpp:306
+#: po/rc.cpp:33 po/rc.cpp:312 rc.cpp:33 rc.cpp:312
 msgid "Music folder:"
 msgstr "Katalog z muzyką:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:41
 #. i18n: ectx: property (text), widget (QLabel, albumCoversLabel)
-#: po/rc.cpp:30 rc.cpp:30
+#: po/rc.cpp:36 rc.cpp:36
 msgid "Copy album covers as:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertiesdialog.ui:58
 #. i18n: ectx: property (text), widget (QLabel, fixVariousArtistsLabel)
-#: po/rc.cpp:33 rc.cpp:33
+#: po/rc.cpp:39 rc.cpp:39
 #, fuzzy
 msgid "'Various Artists' workaround:"
 msgstr "Artyści:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:73
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#: po/rc.cpp:36 rc.cpp:36
+#: po/rc.cpp:42 rc.cpp:42
 #, fuzzy
 msgid "Filenames"
 msgstr "Zmień nazwę"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:82
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: po/rc.cpp:39 rc.cpp:39
+#: po/rc.cpp:45 rc.cpp:45
 msgid "Use only ASCII characters:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertiesdialog.ui:99
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: po/rc.cpp:42 rc.cpp:42
+#: po/rc.cpp:48 rc.cpp:48
 msgid "Replace spaces with underscores:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertiesdialog.ui:116
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: po/rc.cpp:45 rc.cpp:45
+#: po/rc.cpp:51 rc.cpp:51
 msgid "Ignore 'The' in artist names:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertiesdialog.ui:133
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: po/rc.cpp:48 rc.cpp:48
+#: po/rc.cpp:54 rc.cpp:54
 msgid "Filename scheme:"
 msgstr ""
 
 #. i18n: file: devices/devicepropertiesdialog.ui:174
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:51 rc.cpp:51
+#: po/rc.cpp:57 rc.cpp:57
 msgid "VFAT safe:"
 msgstr ""
 
 #. i18n: file: devices/filenameschemedialog.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
-#: po/rc.cpp:57 rc.cpp:57
+#: po/rc.cpp:63 rc.cpp:63
 msgid "Example:"
 msgstr ""
 
 #. i18n: file: devices/filenameschemedialog.ui:152
 #. i18n: ectx: property (text), widget (KUrlLabel, help)
-#: po/rc.cpp:60 rc.cpp:60
+#: po/rc.cpp:66 rc.cpp:66
 msgid "About filename schemes"
 msgstr ""
 
 #. i18n: file: devices/filenameschemedialog.ui:176
 #. i18n: ectx: property (text), widget (KPushButton, albumArtist)
-#: po/rc.cpp:63 rc.cpp:63
+#: po/rc.cpp:69 rc.cpp:69
 #, fuzzy
 msgid "Album Artist"
 msgstr "Artysta"
 
 #. i18n: file: devices/filenameschemedialog.ui:195
 #. i18n: ectx: property (text), widget (KPushButton, albumTitle)
-#: po/rc.cpp:66 rc.cpp:66
+#: po/rc.cpp:72 rc.cpp:72
 #, fuzzy
 msgid "Album Title"
 msgstr "Widok albumów:"
 
 #. i18n: file: devices/filenameschemedialog.ui:214
 #. i18n: ectx: property (text), widget (KPushButton, trackArtist)
-#: po/rc.cpp:69 rc.cpp:69
+#: po/rc.cpp:75 rc.cpp:75
 #, fuzzy
 msgid "Track Artist"
 msgstr "Artysta"
 
 #. i18n: file: devices/filenameschemedialog.ui:233
 #. i18n: ectx: property (text), widget (KPushButton, trackTitle)
-#: po/rc.cpp:72 rc.cpp:72
+#: po/rc.cpp:78 rc.cpp:78
 #, fuzzy
 msgid "Track Title"
 msgstr "Numer"
 
 #. i18n: file: devices/filenameschemedialog.ui:240
 #. i18n: ectx: property (text), widget (KPushButton, trackNo)
-#: po/rc.cpp:75 rc.cpp:75
+#: po/rc.cpp:81 rc.cpp:81
 #, fuzzy
 msgid "Track #"
 msgstr "Numer"
 
 #. i18n: file: devices/filenameschemedialog.ui:247
 #. i18n: ectx: property (text), widget (KPushButton, cdNo)
-#: po/rc.cpp:78 rc.cpp:78
+#: po/rc.cpp:84 rc.cpp:84
 msgid "CD #"
 msgstr ""
 
 #. i18n: file: gui/externalsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: po/rc.cpp:93 rc.cpp:93
+#: po/rc.cpp:99 rc.cpp:99
 msgid "Show icon in notification area:"
 msgstr "Pokarz ikonę w tacce systemowej:"
 
 #. i18n: file: gui/externalsettings.ui:43
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: po/rc.cpp:96 rc.cpp:96
+#: po/rc.cpp:102 rc.cpp:102
 msgid "Show popup up messages when changing tracks:"
 msgstr "Pokazuj wyskakujące okienka przy zmianie utworu:"
 
 #. i18n: file: gui/externalsettings.ui:60
 #. i18n: ectx: property (text), widget (QLabel, label_5b)
-#: po/rc.cpp:99 rc.cpp:99
+#: po/rc.cpp:105 rc.cpp:105
 msgid "Enable basic MPRISv2 interface:"
 msgstr ""
 
 #. i18n: file: gui/externalsettings.ui:77
 #. i18n: ectx: property (text), widget (QLabel, label_5c)
-#: po/rc.cpp:102 rc.cpp:102
+#: po/rc.cpp:108 rc.cpp:108
 msgid "Use current cover as dock icon:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:111 rc.cpp:111
+#: po/rc.cpp:117 rc.cpp:117
 msgid "Library view:"
 msgstr "Widok biblioteki:"
 
@@ -1261,9 +1289,9 @@ msgstr "Widok biblioteki:"
 #. i18n: ectx: property (text), item, widget (QComboBox, streamsView)
 #. i18n: file: gui/interfacesettings.ui:261
 #. i18n: ectx: property (text), item, widget (QComboBox, devicesView)
-#: po/rc.cpp:114 po/rc.cpp:144 po/rc.cpp:171 po/rc.cpp:180 po/rc.cpp:189
-#: po/rc.cpp:198 rc.cpp:114 rc.cpp:144 rc.cpp:171 rc.cpp:180 rc.cpp:189
-#: rc.cpp:198
+#: po/rc.cpp:120 po/rc.cpp:150 po/rc.cpp:177 po/rc.cpp:186 po/rc.cpp:195
+#: po/rc.cpp:204 rc.cpp:120 rc.cpp:150 rc.cpp:177 rc.cpp:186 rc.cpp:195
+#: rc.cpp:204
 msgid "Tree"
 msgstr "Drzewo"
 
@@ -1291,15 +1319,15 @@ msgstr "Drzewo"
 #. i18n: ectx: property (text), item, widget (QComboBox, streamsView)
 #. i18n: file: gui/interfacesettings.ui:266
 #. i18n: ectx: property (text), item, widget (QComboBox, devicesView)
-#: po/rc.cpp:117 po/rc.cpp:147 po/rc.cpp:174 po/rc.cpp:183 po/rc.cpp:192
-#: po/rc.cpp:201 rc.cpp:117 rc.cpp:147 rc.cpp:174 rc.cpp:183 rc.cpp:192
-#: rc.cpp:201
+#: po/rc.cpp:123 po/rc.cpp:153 po/rc.cpp:180 po/rc.cpp:189 po/rc.cpp:198
+#: po/rc.cpp:207 rc.cpp:123 rc.cpp:153 rc.cpp:180 rc.cpp:189 rc.cpp:198
+#: rc.cpp:207
 msgid "List"
 msgstr "Lista"
 
 #. i18n: file: gui/interfacesettings.ui:47
 #. i18n: ectx: property (text), widget (QLabel, label_5b)
-#: po/rc.cpp:120 rc.cpp:120
+#: po/rc.cpp:126 rc.cpp:126
 msgid "Covers in library view:"
 msgstr "Okładki w widoku biblioteki:"
 
@@ -1311,7 +1339,7 @@ msgstr "Okładki w widoku biblioteki:"
 #. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
 #. i18n: file: gui/interfacesettings.ui:160
 #. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
-#: po/rc.cpp:126 po/rc.cpp:159 rc.cpp:126 rc.cpp:159
+#: po/rc.cpp:132 po/rc.cpp:165 rc.cpp:132 rc.cpp:165
 msgid "Small"
 msgstr "Małe"
 
@@ -1323,7 +1351,7 @@ msgstr "Małe"
 #. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
 #. i18n: file: gui/interfacesettings.ui:165
 #. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
-#: po/rc.cpp:129 po/rc.cpp:162 rc.cpp:129 rc.cpp:162
+#: po/rc.cpp:135 po/rc.cpp:168 rc.cpp:135 rc.cpp:168
 msgid "Medium"
 msgstr "Średnie"
 
@@ -1335,183 +1363,183 @@ msgstr "Średnie"
 #. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
 #. i18n: file: gui/interfacesettings.ui:170
 #. i18n: ectx: property (text), item, widget (QComboBox, albumsCoverSize)
-#: po/rc.cpp:132 po/rc.cpp:165 rc.cpp:132 rc.cpp:165
+#: po/rc.cpp:138 po/rc.cpp:171 rc.cpp:138 rc.cpp:171
 msgid "Large"
 msgstr "Duże"
 
 #. i18n: file: gui/interfacesettings.ui:81
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: po/rc.cpp:135 rc.cpp:135
+#: po/rc.cpp:141 rc.cpp:141
 #, fuzzy
 msgid "Show album year in library view:"
 msgstr "Okładki w widoku biblioteki:"
 
 #. i18n: file: gui/interfacesettings.ui:98
 #. i18n: ectx: property (text), widget (QLabel, label_7)
-#: po/rc.cpp:138 rc.cpp:138
+#: po/rc.cpp:144 rc.cpp:144
 msgid "Group single track albums:"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_3a)
-#: po/rc.cpp:141 rc.cpp:141
+#: po/rc.cpp:147 rc.cpp:147
 msgid "Albums view:"
 msgstr "Widok albumów:"
 
 #. i18n: file: gui/interfacesettings.ui:136
 #. i18n: ectx: property (text), item, widget (QComboBox, albumsView)
-#: po/rc.cpp:150 rc.cpp:150
+#: po/rc.cpp:156 rc.cpp:156
 msgid "Icon/List"
 msgstr "Ikony/Lista"
 
 #. i18n: file: gui/interfacesettings.ui:144
 #. i18n: ectx: property (text), widget (QLabel, label_5c)
-#: po/rc.cpp:153 rc.cpp:153
+#: po/rc.cpp:159 rc.cpp:159
 msgid "Covers in albums view:"
 msgstr "Okładki w widoku albumów:"
 
 #. i18n: file: gui/interfacesettings.ui:178
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:168 rc.cpp:168
+#: po/rc.cpp:174 rc.cpp:174
 msgid "Folder view:"
 msgstr "Widok folderów:"
 
 #. i18n: file: gui/interfacesettings.ui:202
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: po/rc.cpp:177 rc.cpp:177
+#: po/rc.cpp:183 rc.cpp:183
 msgid "Playlists view:"
 msgstr "Widok playlist:"
 
 #. i18n: file: gui/interfacesettings.ui:226
 #. i18n: ectx: property (text), widget (QLabel, label_x)
-#: po/rc.cpp:186 rc.cpp:186
+#: po/rc.cpp:192 rc.cpp:192
 msgid "Streams view:"
 msgstr "Widok strumieni:"
 
 #. i18n: file: gui/interfacesettings.ui:250
 #. i18n: ectx: property (text), widget (QLabel, devicesViewLabel)
-#: po/rc.cpp:195 rc.cpp:195
+#: po/rc.cpp:201 rc.cpp:201
 #, fuzzy
 msgid "Devices view:"
 msgstr "Widok strumieni:"
 
 #. i18n: file: gui/interfacesettings.ui:274
 #. i18n: ectx: property (text), widget (QLabel, showDeleteActionLabel)
-#: po/rc.cpp:204 rc.cpp:204
+#: po/rc.cpp:210 rc.cpp:210
 msgid "Show delete action in context menus:"
 msgstr ""
 
 #. i18n: file: gui/mainwindow.ui:84
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)
-#: po/rc.cpp:213 rc.cpp:213
+#: po/rc.cpp:219 rc.cpp:219
 msgid "SqueezedTextLabel"
 msgstr ""
 
 #. i18n: file: gui/mainwindow.ui:129
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, songTimeElapsedLabel)
-#: po/rc.cpp:216 rc.cpp:216
+#: po/rc.cpp:222 rc.cpp:222
 msgid "(00:00)"
 msgstr ""
 
 #. i18n: file: gui/playbacksettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: po/rc.cpp:225 rc.cpp:225
+#: po/rc.cpp:231 rc.cpp:231
 msgid "Crossfading:"
 msgstr "Crossfading:"
 
 #. i18n: file: gui/playbacksettings.ui:33
 #. i18n: ectx: property (suffix), widget (QSpinBox, crossfading)
-#: po/rc.cpp:228 rc.cpp:228
+#: po/rc.cpp:234 rc.cpp:234
 msgid " seconds"
 msgstr " sekund"
 
 #. i18n: file: gui/playbacksettings.ui:43
 #. i18n: ectx: property (text), widget (QLabel, label_6a)
-#: po/rc.cpp:231 rc.cpp:231
+#: po/rc.cpp:237 rc.cpp:237
 msgid "Replay gain:"
 msgstr "Replay gain:"
 
 #. i18n: file: gui/playbacksettings.ui:56
 #. i18n: ectx: property (text), widget (QLabel, label_6b)
-#: po/rc.cpp:234 rc.cpp:234
+#: po/rc.cpp:240 rc.cpp:240
 msgid "Stop playback on exit:"
 msgstr "Zatrzymaj odtwarzanie przy wyjściu:"
 
 #. i18n: file: gui/serverinfopage.ui:45
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: po/rc.cpp:246 rc.cpp:246
+#: po/rc.cpp:252 rc.cpp:252
 msgid "Version:"
 msgstr "Wersja:"
 
 #. i18n: file: gui/serverinfopage.ui:75
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: po/rc.cpp:252 rc.cpp:252
+#: po/rc.cpp:258 rc.cpp:258
 msgid "Uptime:"
 msgstr "Czas działania:"
 
 #. i18n: file: gui/serverinfopage.ui:92
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: po/rc.cpp:258 rc.cpp:258
+#: po/rc.cpp:264 rc.cpp:264
 msgid "Time playing:"
 msgstr "Czas odtwarzania:"
 
 #. i18n: file: gui/serverinfopage.ui:131
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:264 rc.cpp:264
+#: po/rc.cpp:270 rc.cpp:270
 msgid "Database"
 msgstr "Baza danych"
 
 #. i18n: file: gui/serverinfopage.ui:138
 #. i18n: ectx: property (text), widget (QLabel, label_10)
-#: po/rc.cpp:267 rc.cpp:267
+#: po/rc.cpp:273 rc.cpp:273
 msgid "Artists:"
 msgstr "Artyści:"
 
 #. i18n: file: gui/serverinfopage.ui:155
 #. i18n: ectx: property (text), widget (QLabel, label_11)
-#: po/rc.cpp:273 rc.cpp:273
+#: po/rc.cpp:279 rc.cpp:279
 msgid "Albums:"
 msgstr "Albumy:"
 
 #. i18n: file: gui/serverinfopage.ui:172
 #. i18n: ectx: property (text), widget (QLabel, label_12)
-#: po/rc.cpp:279 rc.cpp:279
+#: po/rc.cpp:285 rc.cpp:285
 msgid "Songs:"
 msgstr "Utwory:"
 
 #. i18n: file: gui/serverinfopage.ui:189
 #. i18n: ectx: property (text), widget (QLabel, label_9)
-#: po/rc.cpp:285 rc.cpp:285
+#: po/rc.cpp:291 rc.cpp:291
 msgid "Total duration:"
 msgstr "Całkowity czas trwania:"
 
 #. i18n: file: gui/serverinfopage.ui:206
 #. i18n: ectx: property (text), widget (QLabel, label_13)
-#: po/rc.cpp:291 rc.cpp:291
+#: po/rc.cpp:297 rc.cpp:297
 msgid "Last update:"
 msgstr "Ostatnia aktualizacja:"
 
 #. i18n: file: gui/serversettings.ui:28
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: po/rc.cpp:300 rc.cpp:300
+#: po/rc.cpp:306 rc.cpp:306
 msgid "Port:"
 msgstr "Port:"
 
 #. i18n: file: gui/serversettings.ui:51
 #. i18n: ectx: property (text), widget (QLabel, label_3b)
-#: po/rc.cpp:303 rc.cpp:303
+#: po/rc.cpp:309 rc.cpp:309
 msgid "Password:"
 msgstr "Hasło:"
 
 #. i18n: file: gui/serversettings.ui:81
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:309 rc.cpp:309
+#: po/rc.cpp:315 rc.cpp:315
 msgid "Host (or local socket):"
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:110
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: po/rc.cpp:312 rc.cpp:312
+#: po/rc.cpp:318 rc.cpp:318
 #, fuzzy
 msgid ""
 "<p><i><b>NOTE:</b> The 'Music Folder' settings is only used to lookup cover-"
@@ -1528,82 +1556,82 @@ msgstr ""
 
 #. i18n: file: lyrics/lyricsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:322 rc.cpp:322
+#: po/rc.cpp:328 rc.cpp:328
 msgid "Choose the websites you want to use when searching for lyrics."
 msgstr "Proszę wybrać strony z tekstami."
 
 #. i18n: file: lyrics/lyricsettings.ui:43
 #. i18n: ectx: property (text), widget (QPushButton, up)
-#: po/rc.cpp:325 rc.cpp:325
+#: po/rc.cpp:331 rc.cpp:331
 msgid "Move Up"
 msgstr "Przesuń do góry"
 
 #. i18n: file: lyrics/lyricsettings.ui:53
 #. i18n: ectx: property (text), widget (QPushButton, down)
-#: po/rc.cpp:328 rc.cpp:328
+#: po/rc.cpp:334 rc.cpp:334
 msgid "Move Down"
 msgstr "Przesuń w dół"
 
 #. i18n: file: network/proxysettings.ui:23
 #. i18n: ectx: property (text), widget (QRadioButton, proxySystem)
-#: po/rc.cpp:337 rc.cpp:337
+#: po/rc.cpp:343 rc.cpp:343
 msgid "Use the system proxy settings"
 msgstr "Użyj systemowych ustawień proxy"
 
 #. i18n: file: network/proxysettings.ui:33
 #. i18n: ectx: property (text), widget (QRadioButton, proxyDirect)
-#: po/rc.cpp:340 rc.cpp:340
+#: po/rc.cpp:346 rc.cpp:346
 msgid "Direct internet connection"
 msgstr "Bezpośrednie połączenie internetowe"
 
 #. i18n: file: network/proxysettings.ui:40
 #. i18n: ectx: property (text), widget (QRadioButton, proxyManual)
-#: po/rc.cpp:343 rc.cpp:343
+#: po/rc.cpp:349 rc.cpp:349
 msgid "Manual proxy configuration"
 msgstr "Ręczne ustawienie proxy"
 
 #. i18n: file: network/proxysettings.ui:59
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:346 rc.cpp:346
+#: po/rc.cpp:352 rc.cpp:352
 msgid "HTTP Proxy"
 msgstr "HTTP Proxy"
 
 #. i18n: file: network/proxysettings.ui:64
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:349 rc.cpp:349
+#: po/rc.cpp:355 rc.cpp:355
 msgid "SOCKS Proxy"
 msgstr "SOCKS Proxy"
 
 #. i18n: file: network/proxysettings.ui:75
 #. i18n: ectx: property (text), widget (QLabel, label_15)
-#: po/rc.cpp:352 rc.cpp:352
+#: po/rc.cpp:358 rc.cpp:358
 msgid "Port"
 msgstr "Port"
 
 #. i18n: file: network/proxysettings.ui:97
 #. i18n: ectx: property (title), widget (QGroupBox, proxyAuth)
-#: po/rc.cpp:355 rc.cpp:355
+#: po/rc.cpp:361 rc.cpp:361
 msgid "Use authentication"
 msgstr "Użyj uwierzytelniania"
 
 #. i18n: file: network/proxysettings.ui:112
 #. i18n: ectx: property (text), widget (QLabel, label_16)
-#: po/rc.cpp:358 rc.cpp:358
+#: po/rc.cpp:364 rc.cpp:364
 msgid "Username"
 msgstr "Użytkownik"
 
 #. i18n: file: network/proxysettings.ui:129
 #. i18n: ectx: property (text), widget (QLabel, label_17)
-#: po/rc.cpp:361 rc.cpp:361
+#: po/rc.cpp:367 rc.cpp:367
 msgid "Password"
 msgstr "Hasło"
 
-#: po/rc.cpp:365 rc.cpp:365
+#: po/rc.cpp:371 rc.cpp:371
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Piotr Wicijowski"
 
-#: po/rc.cpp:366 rc.cpp:366
+#: po/rc.cpp:372 rc.cpp:372
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr ""

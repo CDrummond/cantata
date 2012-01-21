@@ -10,6 +10,8 @@
 6. When disaplying songs of various artists albums, show as 'track number -
    artist - song'
 7. German translation - thanks to Lutz Lüttke
+8. Rename 'Update Database' action to 'Refresh', as the curent view is now also
+   refreshed.
 
 0.2.1
 -----

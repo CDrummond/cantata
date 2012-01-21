@@ -212,7 +212,7 @@ private Q_SLOTS:
     void showPreferencesDialog();
     void updateSettings();
     void mpdConnectionDied();
-    void updateDb();
+    void refresh();
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
     #endif
@@ -328,7 +328,7 @@ private:
     Action *copyToDeviceAction;
     Action *deleteSongsAction;
     #endif
-    Action *updateDbAction;
+    Action *refreshAction;
     Action *smallPlaybackButtonsAction;
     Action *smallControlButtonsAction;
     QList<QAction *> viewActions;

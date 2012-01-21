@@ -29,7 +29,7 @@
 #include "musiclibrarymodel.h"
 #include "albumsmodel.h"
 #include "mpdparseutils.h"
-#include <KDE/KAction>
+#include "mpdconnection.h"
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
@@ -46,10 +46,9 @@ enum Pages
     PAGE_PROGRESS
 };
 
-ActionDialog::ActionDialog(QWidget *parent, KAction *updateDbAct)
+ActionDialog::ActionDialog(QWidget *parent)
     : KDialog(parent)
     , currentDev(0)
-    , updateDbAction(updateDbAct)
 {
     setButtons(KDialog::Ok|KDialog::Cancel);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -61,6 +60,7 @@ ActionDialog::ActionDialog(QWidget *parent, KAction *updateDbAct)
     skipIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(64, 64));
     configureButton->setIcon(QIcon::fromTheme("configure"));
     connect(configureButton, SIGNAL(pressed()), SLOT(configureDest()));
+    connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
 }
 
 void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)
@@ -415,7 +415,7 @@ void ActionDialog::refreshMpd()
     if (!actionedSongs.isEmpty() && ( (Copy==mode && !sourceUdi.isEmpty()) ||
                                       (Remove==mode && sourceUdi.isEmpty()) ) ) {
         AlbumsModel::self()->update(MusicLibraryModel::self()->root());
-        updateDbAction->trigger();
+        emit updateMpd();
     }
 }
 

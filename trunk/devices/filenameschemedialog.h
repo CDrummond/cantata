@@ -35,7 +35,7 @@ class FilenameSchemeDialog : public KDialog, Ui::FilenameSchemeDialog
 
 public:
     FilenameSchemeDialog(QWidget *parent);
-    void show(const Device::NameOptions &opts);
+    void show(const Device::Options &opts);
 
 Q_SIGNALS:
     void scheme(const QString &text);
@@ -58,7 +58,7 @@ private:
     void insert(const QString &str);
 
 private:
-    Device::NameOptions origOpts;
+    Device::Options origOpts;
     Song exampleSong;
 };
 

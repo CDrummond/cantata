@@ -38,7 +38,7 @@ class Device : public MusicLibraryItemRoot
 
 public:
 
-    struct NameOptions {
+    struct Options {
         static const QLatin1String constAlbumArtist;
         static const QLatin1String constAlbumTitle;
         static const QLatin1String constTrackArtist;
@@ -48,15 +48,15 @@ public:
         static const QLatin1String constGenre;
         static const QLatin1String constYear;
 
-        NameOptions();
+        Options();
 
         void load(const QString &group);
         void save(const QString &group);
 
-        bool operator==(const NameOptions &o) const {
+        bool operator==(const Options &o) const {
             return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe && replaceSpaces==o.replaceSpaces && scheme==o.scheme;
         }
-        bool operator!=(const NameOptions &o) const {
+        bool operator!=(const Options &o) const {
             return !(*this==o);
         }
         QString clean(const QString &str) const;
@@ -68,6 +68,7 @@ public:
         bool asciiOnly;
         bool ignoreThe;
         bool replaceSpaces;
+        bool fixVariousArtists;
     };
 
     static Device * create(DevicesModel *m, const QString &udi);
@@ -109,8 +110,8 @@ public:
     bool isIdle() const { return isConnected() && !isRefreshing(); }
     virtual void configure(QWidget *) { }
     virtual QString path() const =0;
-    virtual void addSong(const Song &s, bool overwrite, bool fixVa)=0;
-    virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa)=0;
+    virtual void addSong(const Song &s, bool overwrite)=0;
+    virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)=0;
     virtual void removeSong(const Song &s)=0;
     virtual void cleanDir(const QString &dir)=0;
     virtual double usedCapacity()=0;
@@ -127,8 +128,8 @@ public:
     int newRows() const {
         return update ? update->childCount() : 0;
     }
-    const NameOptions & namingOptions() const {
-        return nameOpts;
+    const Options & options() const {
+        return opts;
     }
     const QString & statusMessage() const {
         return statusMsg;
@@ -154,7 +155,8 @@ Q_SIGNALS:
 
 protected:
     DevicesModel *model;
-    NameOptions nameOpts;
+    Options opts;
+    bool fixVa;
     Solid::Device solidDev;
     MusicLibraryItemRoot *update;
     Song currentSong;

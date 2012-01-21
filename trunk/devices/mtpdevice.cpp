@@ -354,7 +354,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
         meta->storage_id=musicFolderStorageId;
 
         Song song=s;
-        QString destName=musicPath+dev->nameOpts.createFilename(song);
+        QString destName=musicPath+dev->opts.createFilename(song);
         QStringList dirs=destName.split('/', QString::SkipEmptyParts);
         if (dirs.count()>2) {
             destName=dirs.takeLast();
@@ -482,7 +482,10 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(delSongStatus(bool)), this, SLOT(delSongStatus(bool)));
     connect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
     QTimer::singleShot(0, this, SLOT(rescan()));
-    nameOpts.load(cfgKey(solidDev));
+    opts.load(cfgKey(solidDev));
+
+    KConfigGroup grp(KGlobal::config(), cfgKey(solidDev));
+    fixVa=grp.readEntry("fixVariousArtists", false);
 }
 
 struct Thread : public QThread
@@ -507,9 +510,9 @@ bool MtpDevice::isConnected() const
 void MtpDevice::configure(QWidget *parent)
 {
     DevicePropertiesDialog *dlg=new DevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::NameOptions &)),
-            SLOT(saveProperties(const QString &, const QString &, const Device::NameOptions &)));
-    dlg->show(QString(), QString(), nameOpts, false, false);
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
+            SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));
+    dlg->show(QString(), QString(), opts, DevicePropertiesDialog::Prop_Va);
 }
 
 void MtpDevice::rescan()
@@ -522,7 +525,7 @@ void MtpDevice::rescan()
     emit updateLibrary();
 }
 
-void MtpDevice::addSong(const Song &s, bool overwrite, bool fixVa)
+void MtpDevice::addSong(const Song &s, bool overwrite)
 {
     if (!isConnected()) {
         emit actionStatus(NotConnected);
@@ -555,7 +558,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool fixVa)
     emit putSong(s, needToFixVa);
 }
 
-void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa)
+void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
 {
     if (!isConnected()) {
         emit actionStatus(NotConnected);
@@ -696,11 +699,11 @@ void MtpDevice::libraryUpdated()
     mtpUpdating=false;
 }
 
-void MtpDevice::saveProperties(const QString &, const QString &, const Device::NameOptions &opts)
+void MtpDevice::saveProperties(const QString &, const QString &, const Device::Options &newOpts)
 {
-    if (opts==nameOpts) {
+    if (opts==newOpts) {
         return;
     }
-    nameOpts=opts;
-    nameOpts.save(cfgKey(solidDev));
+    opts=newOpts;
+    opts.save(cfgKey(solidDev));
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>224</height>
+    <height>248</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,6 +19,9 @@
    </property>
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="musicFolderLabel">
        <property name="text">
@@ -48,6 +51,19 @@
         <bool>true</bool>
        </property>
       </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="fixVariousArtistsLabel">
+       <property name="text">
+        <string>'Various Artists' workaround:</string>
+       </property>
+       <property name="buddy">
+        <cstring>fixVariousArtists</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="fixVariousArtists"/>
      </item>
     </layout>
    </item>
@@ -196,6 +212,7 @@
  <tabstops>
   <tabstop>musicFolder</tabstop>
   <tabstop>albumCovers</tabstop>
+  <tabstop>fixVariousArtists</tabstop>
   <tabstop>vfatSafe</tabstop>
   <tabstop>asciiOnly</tabstop>
   <tabstop>replaceSpaces</tabstop>

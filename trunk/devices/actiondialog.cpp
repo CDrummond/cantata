@@ -339,6 +339,7 @@ void ActionDialog::configureDest()
         DevicePropertiesDialog *dlg=new DevicePropertiesDialog(this);
         connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
                 SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));
+        dlg->setCaption(i18n("Local Music Library Properties"));
         dlg->show(mpdDir, QString(), namingOptions, DevicePropertiesDialog::Prop_Basic);
     } else {
         Device *dev=DevicesModel::self()->device(destUdi);
@@ -366,9 +367,11 @@ void ActionDialog::setPage(int page, const QString &msg)
             setButtons(Ok|Cancel);
             break;
         case PAGE_PROGRESS:
+            actionLabel->startAnimation();
             setButtons(Cancel);
             break;
         case PAGE_SKIP:
+            actionLabel->stopAnimation();
             if (songsToAction.count()) {
                 skipText->setText(i18n("<b>Error</b><br/>")+msg);
                 skipText->setToolTip(formatSong(currentSong, true));
@@ -378,6 +381,7 @@ void ActionDialog::setPage(int page, const QString &msg)
                 break;
             } // else just show error page...
         case PAGE_ERROR:
+            actionLabel->stopAnimation();
             stack->setCurrentIndex(PAGE_ERROR);
             errorText->setText(i18n("<b>Error</b><br/>")+msg);
             errorText->setToolTip(formatSong(currentSong, true));
@@ -412,10 +416,11 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles)
 
 void ActionDialog::refreshMpd()
 {
+    actionLabel->stopAnimation();
     if (!actionedSongs.isEmpty() && ( (Copy==mode && !sourceUdi.isEmpty()) ||
                                       (Remove==mode && sourceUdi.isEmpty()) ) ) {
         AlbumsModel::self()->update(MusicLibraryModel::self()->root());
-        emit updateMpd();
+        emit getStats();
     }
 }
 

@@ -106,7 +106,7 @@ void LibraryPage::refresh(Refresh type)
 
 void LibraryPage::databaseUpdated()
 {
-    refresh(RefreshFromCache);
+//     refresh(RefreshFromCache);
 }
 
 void LibraryPage::clear()

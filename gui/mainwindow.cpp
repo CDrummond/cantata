@@ -84,6 +84,13 @@
 #include "mpris.h"
 #include "dockmanager.h"
 
+enum Tabs
+{
+    TAB_LIBRARY = 0x01,
+    TAB_FOLDERS = 0x02,
+    TAB_STREAMS = 0x04
+};
+
 class ProxyStyle : public QProxyStyle
 {
 public:
@@ -898,7 +905,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         emit getStats();
         emit playListInfo();
         loaded=0;
-        currentTabChanged(tabWidget->current_index());
+//         currentTabChanged(tabWidget->current_index());
     } else {
         libraryPage->clear();
         albumsPage->clear();
@@ -1270,8 +1277,13 @@ void MainWindow::updateStats()
      * Check if remote db is more recent than local one
      * Also update the dirview
      */
-    if (lastDbUpdate.isValid() && MPDStats::self()->dbUpdate() > lastDbUpdate) {
-        libraryPage->refresh(LibraryPage::RefreshStandard);
+    if (!lastDbUpdate.isValid() || MPDStats::self()->dbUpdate() > lastDbUpdate) {
+        loaded|=TAB_LIBRARY|TAB_FOLDERS;
+        libraryPage->clear();
+        albumsPage->clear();
+        folderPage->clear();
+        playlistsPage->clear();
+        libraryPage->refresh(LibraryPage::RefreshForce);
         folderPage->refresh();
         playlistsPage->refresh();
     }
@@ -1780,13 +1792,6 @@ void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
     }
 }
 #endif
-
-enum Tabs
-{
-    TAB_LIBRARY = 0x01,
-    TAB_FOLDERS = 0x02,
-    TAB_STREAMS = 0x04
-};
 
 void MainWindow::currentTabChanged(int index)
 {

@@ -35,6 +35,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <KDE/KGlobal>
+#include <KDE/KConfig>
 #include <KDE/KLocale>
 #include <KDE/KUrl>
 #include <KDE/KMimeType>
@@ -482,10 +483,10 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(delSongStatus(bool)), this, SLOT(delSongStatus(bool)));
     connect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
     QTimer::singleShot(0, this, SLOT(rescan()));
-    opts.load(cfgKey(solidDev));
 
-    KConfigGroup grp(KGlobal::config(), cfgKey(solidDev));
-    fixVa=grp.readEntry("fixVariousArtists", false);
+    QString configKey=cfgKey(solidDev);
+    opts.load(configKey);
+    configured=KGlobal::config()->hasGroup(configKey);
 }
 
 struct Thread : public QThread
@@ -532,7 +533,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
         return;
     }
 
-    needToFixVa=fixVa && s.isVariousArtists();
+    needToFixVa=opts.fixVariousArtists && s.isVariousArtists();
 
     if (!overwrite) {
         Song check=s;
@@ -552,7 +553,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
     }
     currentSong=s;
     // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
-    if (!fixVa) {
+    if (!opts.fixVariousArtists) {
         currentSong.albumartist=currentSong.artist;
     }
     emit putSong(s, needToFixVa);
@@ -565,7 +566,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
         return;
     }
 
-    needToFixVa=fixVa && s.isVariousArtists();
+    needToFixVa=opts.fixVariousArtists && s.isVariousArtists();
 
     if (!overwrite) {
         Song check=s;
@@ -701,9 +702,10 @@ void MtpDevice::libraryUpdated()
 
 void MtpDevice::saveProperties(const QString &, const QString &, const Device::Options &newOpts)
 {
-    if (opts==newOpts) {
+    if (configured && opts==newOpts) {
         return;
     }
+    configured=true;
     opts=newOpts;
     opts.save(cfgKey(solidDev));
 }

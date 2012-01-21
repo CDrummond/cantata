@@ -92,6 +92,7 @@ public:
     Device(DevicesModel *m, Solid::Device &dev)
         : MusicLibraryItemRoot(dev.vendor()+QChar(' ')+dev.product())
         , model(m)
+        , configured(false)
         , solidDev(dev)
         , update(0) {
     }
@@ -139,6 +140,9 @@ public:
         return true;
     }
     bool songExists(const Song &s) const;
+    bool isConfigured() {
+        return configured;
+    }
 
 public Q_SLOTS:
     void setStatusMessage(const QString &message);
@@ -157,7 +161,7 @@ Q_SIGNALS:
 protected:
     DevicesModel *model;
     Options opts;
-    bool fixVa;
+    bool configured;
     Solid::Device solidDev;
     MusicLibraryItemRoot *update;
     Song currentSong;

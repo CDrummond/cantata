@@ -60,7 +60,6 @@ class KMenu;
 #endif
 
 class MainWindow;
-class UpdateDialog;
 class LibraryPage;
 class AlbumsPage;
 class FolderPage;
@@ -345,7 +344,6 @@ private:
     QPixmap noCover;
     QPixmap noStreamCover;
     QPoint lastPos;
-    UpdateDialog *updateDialog;
     QString mpdDir;
     Song current;
     bool lyricsNeedUpdating;

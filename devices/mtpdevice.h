@@ -108,8 +108,8 @@ public:
     bool isRefreshing() const { return mtpUpdating; }
     void configure(QWidget *parent);
     QString path() const { return QString(); } // audioFolder; }
-    void addSong(const Song &s, bool overwrite, bool fixVa);
-    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa);
+    void addSong(const Song &s, bool overwrite);
+    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
     void removeSong(const Song &s);
     void cleanDir(const QString &dir);
     double usedCapacity();
@@ -126,11 +126,10 @@ Q_SIGNALS:
 private Q_SLOTS:
     void libraryUpdated();
     void rescan();
-//     void saveProperties(const QString &newPath, const Device::NameOptions &opts);
     void putSongStatus(bool ok, int id, const QString &file, bool fixedVa);
     void getSongStatus(bool ok);
     void delSongStatus(bool ok);
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::NameOptions &opts);
+    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
 
 private:
     Solid::PortableMediaPlayer *pmp;

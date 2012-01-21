@@ -96,11 +96,19 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
     connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(enableOkButton()));
     connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(enableOkButton()));
+    connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
 
     albumCovers->insertItems(0, QStringList() << noCoverText << Covers::standardNames());
+    fixVariousArtists->setToolTip(i18n("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
+                                       "then Cantata will set the 'Artist' tag of all tracks to 'Various Artists' and the "
+                                       "track 'Title' tag to 'TrackArtist - TrackTitle'.<hr/> When copying from a device, Cantata "
+                                       "will check if 'Album Artist' and 'Artist' are both set to 'Various Artists'. If so, it "
+                                       "will attempt to extract the real artist from the 'Title' tag, and remove the artist name "
+                                       "from the 'Title' tag.</p>"));
+    fixVariousArtistsLabel->setToolTip(fixVariousArtists->toolTip());
 }
 
-void DevicePropertiesDialog::show(const QString &path, const QString &coverName, const Device::NameOptions &opts, bool showFolder, bool showCovers)
+void DevicePropertiesDialog::show(const QString &path, const QString &coverName, const Device::Options &opts, int props)
 {
     filenameScheme->setText(opts.scheme);
     vfatSafe->setChecked(opts.vfatSafe);
@@ -108,10 +116,13 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     ignoreThe->setChecked(opts.ignoreThe);
     replaceSpaces->setChecked(opts.replaceSpaces);
     musicFolder->setText(path);
-    musicFolder->setVisible(showFolder);
-    musicFolderLabel->setVisible(showFolder);
-    albumCovers->setVisible(showCovers);
-    albumCoversLabel->setVisible(showCovers);
+    musicFolder->setVisible(props&Prop_Folder);
+    musicFolderLabel->setVisible(props&Prop_Folder);
+    albumCovers->setVisible(props&Prop_Covers);
+    albumCoversLabel->setVisible(props&Prop_Covers);
+    fixVariousArtists->setVisible(props&Prop_Va);
+    fixVariousArtistsLabel->setVisible(props&Prop_Va);
+    fixVariousArtists->setChecked(opts.fixVariousArtists);
     albumCovers->setCurrentIndex(0);
     origCoverName=coverName;
     if (origCoverName==QLatin1String("-")) {
@@ -133,7 +144,7 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
 
 void DevicePropertiesDialog::enableOkButton()
 {
-    Device::NameOptions opts=settings();
+    Device::Options opts=settings();
     enableButtonOk(musicFolder->text().trimmed()!=origMusicFolder || (!opts.scheme.isEmpty() && opts!=origOpts) || albumCovers->currentText()!=origCoverName);
 }
 
@@ -166,13 +177,14 @@ void DevicePropertiesDialog::configureFilenameScheme()
     schemeDlg->show(settings());
 }
 
-Device::NameOptions DevicePropertiesDialog::settings()
+Device::Options DevicePropertiesDialog::settings()
 {
-    Device::NameOptions opts;
+    Device::Options opts;
     opts.scheme=filenameScheme->text().trimmed();
     opts.vfatSafe=vfatSafe->isChecked();
     opts.asciiOnly=asciiOnly->isChecked();
     opts.ignoreThe=ignoreThe->isChecked();
     opts.replaceSpaces=replaceSpaces->isChecked();
+    opts.fixVariousArtists=fixVariousArtists->isChecked();
     return opts;
 }

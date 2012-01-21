@@ -60,7 +60,7 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     exampleSong.file="wibble.mp3";
 }
 
-void FilenameSchemeDialog::show(const Device::NameOptions &opts)
+void FilenameSchemeDialog::show(const Device::Options &opts)
 {
     origOpts=opts;
     pattern->setText(opts.scheme);
@@ -104,10 +104,10 @@ void FilenameSchemeDialog::showHelp()
                                "<tr><td>%6</td><td>The album number of a multi-album album. Often compilations consist of several albums.</td></tr>"
                                "<tr><td>%7</td><td>The year of the album's release.</td></tr>"
                                "<tr><td>%8</td><td>The genre of the album.</td></tr>"
-                               "</table></p>", Device::NameOptions::constAlbumArtist, Device::NameOptions::constAlbumTitle,
-                               Device::NameOptions::constTrackArtist, Device::NameOptions::constTrackTitle,
-                               Device::NameOptions::constTrackNumber, Device::NameOptions::constCdNumber, Device::NameOptions::constYear,
-                               Device::NameOptions::constGenre), help);
+                               "</table></p>", Device::Options::constAlbumArtist, Device::Options::constAlbumTitle,
+                               Device::Options::constTrackArtist, Device::Options::constTrackTitle,
+                               Device::Options::constTrackNumber, Device::Options::constCdNumber, Device::Options::constYear,
+                               Device::Options::constGenre), help);
 }
 
 void FilenameSchemeDialog::enableOkButton()
@@ -118,42 +118,42 @@ void FilenameSchemeDialog::enableOkButton()
 
 void FilenameSchemeDialog::insertAlbumArtist()
 {
-    insert(Device::NameOptions::constAlbumArtist);
+    insert(Device::Options::constAlbumArtist);
 }
 
 void FilenameSchemeDialog::insertAlbumTitle()
 {
-    insert(Device::NameOptions::constAlbumTitle);
+    insert(Device::Options::constAlbumTitle);
 }
 
 void FilenameSchemeDialog::insertTrackArtist()
 {
-    insert(Device::NameOptions::constTrackArtist);
+    insert(Device::Options::constTrackArtist);
 }
 
 void FilenameSchemeDialog::insertTrackTitle()
 {
-    insert(Device::NameOptions::constTrackTitle);
+    insert(Device::Options::constTrackTitle);
 }
 
 void FilenameSchemeDialog::insertTrackNumber()
 {
-    insert(Device::NameOptions::constTrackNumber);
+    insert(Device::Options::constTrackNumber);
 }
 
 void FilenameSchemeDialog::insertCdNumber()
 {
-    insert(Device::NameOptions::constCdNumber);
+    insert(Device::Options::constCdNumber);
 }
 
 void FilenameSchemeDialog::insertGenre()
 {
-    insert(Device::NameOptions::constGenre);
+    insert(Device::Options::constGenre);
 }
 
 void FilenameSchemeDialog::insertYear()
 {
-    insert(Device::NameOptions::constYear);
+    insert(Device::Options::constYear);
 }
 
 void FilenameSchemeDialog::insert(const QString &str)

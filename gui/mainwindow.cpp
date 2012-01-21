@@ -62,7 +62,6 @@
 #include "mpdstatus.h"
 #include "mpdparseutils.h"
 #include "settings.h"
-#include "updatedialog.h"
 #include "config.h"
 #include "musiclibrarymodel.h"
 #include "musiclibraryitemalbum.h"
@@ -237,7 +236,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     mpris(0)
 {
     loaded=0;
-    updateDialog = 0;
     trayItem = 0;
     lyricsNeedUpdating=false;
     #ifdef ENABLE_WEBKIT
@@ -969,11 +967,6 @@ void MainWindow::mpdConnectionDied()
 
 void MainWindow::refresh()
 {
-    if (!updateDialog) {
-        updateDialog = new UpdateDialog(this);
-        connect(MPDConnection::self(), SIGNAL(databaseUpdated()), updateDialog, SLOT(complete()));
-    }
-    updateDialog->show();
     MusicLibraryModel::self()->removeCache();
     lastDbUpdate=QDateTime();
     emit getStats();

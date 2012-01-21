@@ -282,7 +282,9 @@ void UmsDevice::addSongResult(KJob *job)
         QString destFile=audioFolder+opts.createFilename(currentSong);
 
         currentSong.file=destFile;
-        Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), coverFileName);
+        if (Device::constNoCover!=coverFileName) {
+            Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), coverFileName);
+        }
 
         if (needToFixVa) {
             Device::fixVariousArtists(destFile, currentSong, true);
@@ -485,6 +487,7 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
 
     configured=true;
     opts=newOpts;
+    coverFileName=newCoverFileName;
     QString oldPath=audioFolder;
     if (!isConnected()) {
         return;

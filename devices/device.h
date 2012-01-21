@@ -78,6 +78,8 @@ public:
     static bool createDir(const QString &dir);
     static bool fixVariousArtists(const QString &file, Song &song, bool applyFix);
 
+    static const QLatin1String constNoCover;
+
     enum Status {
         Ok,
         FileExists,

@@ -58,8 +58,10 @@ ActionDialog::ActionDialog(QWidget *parent)
     setMainWidget(mainWidet);
     errorIcon->setPixmap(QIcon::fromTheme("dialog-error").pixmap(64, 64));
     skipIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(64, 64));
-    configureButton->setIcon(QIcon::fromTheme("configure"));
-    connect(configureButton, SIGNAL(pressed()), SLOT(configureDest()));
+    configureSourceButton->setIcon(QIcon::fromTheme("configure"));
+    configureDestButton->setIcon(QIcon::fromTheme("configure"));
+    connect(configureSourceButton, SIGNAL(pressed()), SLOT(configureSource()));
+    connect(configureDestButton, SIGNAL(pressed()), SLOT(configureDest()));
     connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
 }
 
@@ -111,6 +113,10 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         capacity->setText(capacityString);
         capacity->setValue((usedCapacity*100)+0.5);
         capacity->setDrawTextMode(KCapacityBar::DrawTextInline);
+
+        bool destIsDev=sourceUdi.isEmpty();
+        configureDestLabel->setVisible(destIsDev && !dev->isConfigured());
+        configureSourceLabel->setVisible(!destIsDev && !dev->isConfigured());
         show();
     } else {
         KMessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
@@ -335,14 +341,26 @@ void ActionDialog::actionStatus(int status)
 
 void ActionDialog::configureDest()
 {
-    if (destUdi.isEmpty()) {
+    configureDestLabel->setVisible(false);
+    configure(destUdi);
+}
+
+void ActionDialog::configureSource()
+{
+    configureSourceLabel->setVisible(false);
+    configure(sourceUdi);
+}
+
+void ActionDialog::configure(const QString &udi)
+{
+    if (udi.isEmpty()) {
         DevicePropertiesDialog *dlg=new DevicePropertiesDialog(this);
         connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
                 SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));
         dlg->setCaption(i18n("Local Music Library Properties"));
         dlg->show(mpdDir, QString(), namingOptions, DevicePropertiesDialog::Prop_Basic);
     } else {
-        Device *dev=DevicesModel::self()->device(destUdi);
+        Device *dev=DevicesModel::self()->device(udi);
         if (dev) {
             dev->configure(this);
         }

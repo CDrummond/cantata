@@ -155,6 +155,7 @@ void DevicePropertiesDialog::slotButtonClicked(int button)
         emit updatedSettings(musicFolder->text().trimmed(), albumCovers->currentText()==noCoverText ? QString("-") : albumCovers->currentText(), settings());
         break;
     case KDialog::Cancel:
+        emit cancelled();
         reject();
         break;
     default:

@@ -85,6 +85,7 @@ private:
 private Q_SLOTS:
     void libraryUpdated();
     void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
+    void saveProperties();
     void percent(KJob *job, unsigned long percent);
     void addSongResult(KJob *job);
     void copySongToResult(KJob *job);

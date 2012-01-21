@@ -187,16 +187,16 @@ static void manipulateThe(QString &str, bool reverse)
     str.truncate(str.length() - end.length() - 2);
 }
 
-const QLatin1String Device::NameOptions::constAlbumArtist("%albumartist%");
-const QLatin1String Device::NameOptions::constAlbumTitle("%album%");
-const QLatin1String Device::NameOptions::constTrackArtist("%artist%");
-const QLatin1String Device::NameOptions::constTrackTitle("%title%");
-const QLatin1String Device::NameOptions::constTrackNumber("%track%");
-const QLatin1String Device::NameOptions::constCdNumber("%discnumber%");
-const QLatin1String Device::NameOptions::constGenre("%genre%");
-const QLatin1String Device::NameOptions::constYear("%year%");
+const QLatin1String Device::Options::constAlbumArtist("%albumartist%");
+const QLatin1String Device::Options::constAlbumTitle("%album%");
+const QLatin1String Device::Options::constTrackArtist("%artist%");
+const QLatin1String Device::Options::constTrackTitle("%title%");
+const QLatin1String Device::Options::constTrackNumber("%track%");
+const QLatin1String Device::Options::constCdNumber("%discnumber%");
+const QLatin1String Device::Options::constGenre("%genre%");
+const QLatin1String Device::Options::constYear("%year%");
 
-Device::NameOptions::NameOptions()
+Device::Options::Options()
     : scheme(constAlbumArtist+QChar('/')+
              constAlbumTitle+QChar('/')+
              constTrackNumber+QChar(' ')+
@@ -205,10 +205,11 @@ Device::NameOptions::NameOptions()
     , asciiOnly(false)
     , ignoreThe(false)
     , replaceSpaces(false)
+    , fixVariousArtists(false)
 {
 }
 
-void Device::NameOptions::load(const QString &group)
+void Device::Options::load(const QString &group)
 {
     KConfigGroup grp(KGlobal::config(), group);
     scheme=grp.readEntry("scheme", scheme);
@@ -216,9 +217,12 @@ void Device::NameOptions::load(const QString &group)
     asciiOnly=grp.readEntry("asciiOnly", asciiOnly);
     ignoreThe=grp.readEntry("ignoreThe", ignoreThe);
     replaceSpaces=grp.readEntry("replaceSpaces", replaceSpaces);
+    if (QLatin1String("mpd")!=group) {
+        fixVariousArtists=grp.readEntry("fixVariousArtists", fixVariousArtists);
+    }
 }
 
-void Device::NameOptions::save(const QString &group)
+void Device::Options::save(const QString &group)
 {
     KConfigGroup grp(KGlobal::config(), group);
     grp.writeEntry("scheme", scheme);
@@ -226,10 +230,13 @@ void Device::NameOptions::save(const QString &group)
     grp.writeEntry("asciiOnly", asciiOnly);
     grp.writeEntry("ignoreThe", ignoreThe);
     grp.writeEntry("replaceSpaces", replaceSpaces);
+    if (QLatin1String("mpd")!=group) {
+        grp.writeEntry("fixVariousArtists", fixVariousArtists);
+    }
     grp.sync();
 }
 
-QString Device::NameOptions::clean(const QString &str) const
+QString Device::Options::clean(const QString &str) const
 {
     QString result(str);
 
@@ -251,7 +258,7 @@ QString Device::NameOptions::clean(const QString &str) const
     return result;
 }
 
-Song Device::NameOptions::clean(const Song &s) const
+Song Device::Options::clean(const Song &s) const
 {
     Song copy=s;
     if (ignoreThe) {
@@ -266,7 +273,7 @@ Song Device::NameOptions::clean(const Song &s) const
     return copy;
 }
 
-QString Device::NameOptions::createFilename(const Song &s) const
+QString Device::Options::createFilename(const Song &s) const
 {
     QString path=scheme;
     static QStringList ignore;

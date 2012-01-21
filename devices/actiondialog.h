@@ -49,7 +49,7 @@ public:
 
 private Q_SLOTS:
     void configureDest();
-    void saveProperties(const QString &path, const QString &coverFile, const Device::NameOptions &opts);
+    void saveProperties(const QString &path, const QString &coverFile, const Device::Options &opts);
     void actionStatus(int status);
     void doNext();
     void removeSongResult(KJob *job);
@@ -79,7 +79,7 @@ private:
     Device *currentDev;
     QString mpdDir;
     QString destFile;
-    Device::NameOptions namingOptions;
+    Device::Options namingOptions;
     KAction *updateDbAction;
 };
 

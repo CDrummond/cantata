@@ -34,13 +34,22 @@ class DevicePropertiesDialog : public KDialog, Ui::DevicePropertiesDialog
     Q_OBJECT
 
 public:
-    DevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const QString &coverName, const Device::NameOptions &opts, bool showFolder, bool showCovers);
+    enum Properties {
+        Prop_Basic  = 0x00,
 
-    Device::NameOptions settings();
+        Prop_Folder = 0x01,
+        Prop_Covers = 0x02,
+        Prop_Va     = 0x04,
+
+        Prop_All    = 0xFF
+    };
+    DevicePropertiesDialog(QWidget *parent);
+    void show(const QString &path, const QString &coverName, const Device::Options &opts, int props);
+
+    Device::Options settings();
 
 Q_SIGNALS:
-    void updatedSettings(const QString &path, const QString &coverName, const Device::NameOptions &opts);
+    void updatedSettings(const QString &path, const QString &coverName, const Device::Options &opts);
 
 private Q_SLOTS:
     void configureFilenameScheme();
@@ -51,7 +60,7 @@ private:
 
 private:
     FilenameSchemeDialog *schemeDlg;
-    Device::NameOptions origOpts;
+    Device::Options origOpts;
     QString origMusicFolder;
     QString origCoverName;
     QString noCoverText;

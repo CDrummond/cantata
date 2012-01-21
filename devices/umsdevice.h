@@ -69,8 +69,8 @@ public:
     void configure(QWidget *parent);
     QString path() const { return audioFolder; }
     QString coverFile() const { return coverFileName; }
-    void addSong(const Song &s, bool overwrite, bool fixVa);
-    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool fixVa);
+    void addSong(const Song &s, bool overwrite);
+    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
     void removeSong(const Song &s);
     void cleanDir(const QString &dir) { Device::cleanDir(dir, audioFolder, coverFileName); }
     double usedCapacity();
@@ -84,7 +84,7 @@ private:
 
 private Q_SLOTS:
     void libraryUpdated();
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::NameOptions &opts);
+    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
     void percent(KJob *job, unsigned long percent);
     void addSongResult(KJob *job);
     void copySongToResult(KJob *job);

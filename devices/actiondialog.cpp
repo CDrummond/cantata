@@ -81,10 +81,14 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     }
 
     // check space...
+    haveVariousArtists=false;
     qint64 spaceRequired=0;
     foreach (const Song &s, songsToAction) {
         if (s.size>0) {
             spaceRequired+=s.size;
+        }
+        if (!haveVariousArtists && s.isVariousArtists()) {
+            haveVariousArtists=true;
         }
     }
 
@@ -169,6 +173,15 @@ void ActionDialog::slotButtonClicked(int button)
     case PAGE_START:
         switch (button) {
         case KDialog::Ok:
+            if (haveVariousArtists &&
+                ((configureDestLabel->isVisible() &&
+                  KMessageBox::No==KMessageBox::warningYesNo(this, i18n("<p>You have not configured the destination device.<br/>"
+                                                                       "Continue with the default settings?</p>"))) ||
+                 (configureSourceLabel->isVisible() &&
+                  KMessageBox::No==KMessageBox::warningYesNo(this, i18n("<p>You have not configured the source device.<br/>"
+                                                                       "Continue with the default settings?</p>"))))) {
+                return;
+            }
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
             setPage(PAGE_PROGRESS);
             doNext();

@@ -195,6 +195,7 @@ const QLatin1String Device::Options::constTrackNumber("%track%");
 const QLatin1String Device::Options::constCdNumber("%discnumber%");
 const QLatin1String Device::Options::constGenre("%genre%");
 const QLatin1String Device::Options::constYear("%year%");
+const QLatin1String Device::constNoCover("-");
 
 Device::Options::Options()
     : scheme(constAlbumArtist+QChar('/')+

@@ -130,6 +130,7 @@ private Q_SLOTS:
     void getSongStatus(bool ok);
     void delSongStatus(bool ok);
     void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
+    void saveProperties();
 
 private:
     Solid::PortableMediaPlayer *pmp;

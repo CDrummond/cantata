@@ -145,6 +145,9 @@ void UmsDevice::configure(QWidget *parent)
     DevicePropertiesDialog *dlg=new DevicePropertiesDialog(parent);
     connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
             SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));
+    if (!configured) {
+        connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
+    }
     dlg->show(audioFolder, coverFileName, opts, DevicePropertiesDialog::Prop_All);
 }
 
@@ -469,6 +472,11 @@ void UmsDevice::libraryUpdated()
     }
 }
 
+void UmsDevice::saveProperties()
+{
+    saveProperties(audioFolder, coverFileName, opts);
+}
+
 void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &newOpts)
 {
     if (configured && opts==newOpts && newPath==audioFolder && newCoverFileName==coverFileName) {
@@ -532,9 +540,7 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
         if (coverFileName!=constDefCoverFileName) {
             out << constCoverFileName << '=' << coverFileName << '\n';
         }
-        if(opts.fixVariousArtists) {
-            out << constVariousArtistsFix << '=' << (opts.fixVariousArtists ? "true" : "false") << '\n';
-        }
+        out << constVariousArtistsFix << '=' << (opts.fixVariousArtists ? "true" : "false") << '\n';
     }
 
     if (oldPath!=newPath) {

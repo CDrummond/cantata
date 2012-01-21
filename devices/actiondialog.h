@@ -51,6 +51,7 @@ Q_SIGNALS:
     void getStats();
 
 private Q_SLOTS:
+    void configureSource();
     void configureDest();
     void saveProperties(const QString &path, const QString &coverFile, const Device::Options &opts);
     void actionStatus(int status);
@@ -59,6 +60,7 @@ private Q_SLOTS:
     void copyPercent(unsigned long percent);
 
 private:
+    void configure(const QString &udi);
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
     void slotButtonClicked(int button);
     void setPage(int page, const QString &msg=QString());

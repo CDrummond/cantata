@@ -50,6 +50,7 @@ public:
 
 Q_SIGNALS:
     void updatedSettings(const QString &path, const QString &coverName, const Device::Options &opts);
+    void cancelled();
 
 private Q_SLOTS:
     void configureFilenameScheme();

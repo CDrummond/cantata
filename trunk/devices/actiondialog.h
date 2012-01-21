@@ -81,6 +81,7 @@ private:
     bool autoSkip;
     bool paused;
     bool performingAction;
+    bool haveVariousArtists;
     Device *currentDev;
     QString mpdDir;
     QString destFile;

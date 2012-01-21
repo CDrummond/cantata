@@ -24,7 +24,6 @@ SET( CANTATA_SRCS
     gui/mainwindow.cpp
     gui/preferencesdialog.cpp
     gui/settings.cpp
-    gui/updatedialog.cpp
     gui/covers.cpp
     gui/interfacesettings.cpp
     gui/externalsettings.cpp
@@ -83,7 +82,6 @@ SET( CANTATA_SRCS
 
 SET( CANTATA_MOC_HDRS
     gui/mainwindow.h
-    gui/updatedialog.h
     gui/covers.h
     gui/folderpage.h
     gui/librarypage.h

@@ -279,8 +279,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     smallControlButtonsAction = actionCollection()->addAction("smallcontrolbuttons");
     smallControlButtonsAction->setText(i18n("Small Control Buttons"));
 
-    updateDbAction = actionCollection()->addAction("updatedatabase");
-    updateDbAction->setText(i18n("Update Database"));
+    refreshAction = actionCollection()->addAction("refresh");
+    refreshAction->setText(i18n("Refresh"));
 
     prevTrackAction = actionCollection()->addAction("prevtrack");
     prevTrackAction->setText(i18n("Previous Track"));
@@ -393,7 +393,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     quitAction->setShortcut(QKeySequence::Quit);
     smallPlaybackButtonsAction = new QAction(tr("Small Playback Buttons"), this);
     smallControlButtonsAction = new QAction(tr("Small Control Buttons"), this);
-    updateDbAction = new QAction(tr("Update Database"), this);
+    refreshAction = new QAction(tr("Refresh"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
     playPauseTrackAction = new QAction(tr("Play/Pause"), this);
@@ -476,7 +476,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     savePlaylistAction->setIcon(QIcon::fromTheme("document-save-as"));
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     expandInterfaceAction->setIcon(QIcon::fromTheme("view-media-playlist"));
-    updateDbAction->setIcon(QIcon::fromTheme("view-refresh"));
+    refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
     libraryTabAction->setIcon(QIcon::fromTheme("audio-ac3"));
     albumsTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
     foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
@@ -704,8 +704,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(MPDConnection::self(), SIGNAL(mpdConnectionDied()), this, SLOT(mpdConnectionDied()));
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
-    connect(updateDbAction, SIGNAL(triggered(bool)), this, SLOT(updateDb()));
-    connect(updateDbAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
+    connect(refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
+    connect(refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
     connect(nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
     connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
@@ -967,13 +967,15 @@ void MainWindow::mpdConnectionDied()
     #endif
 }
 
-void MainWindow::updateDb()
+void MainWindow::refresh()
 {
     if (!updateDialog) {
         updateDialog = new UpdateDialog(this);
         connect(MPDConnection::self(), SIGNAL(databaseUpdated()), updateDialog, SLOT(complete()));
     }
     updateDialog->show();
+    MusicLibraryModel::self()->removeCache();
+    lastDbUpdate=QDateTime();
     emit getStats();
 }
 
@@ -1278,6 +1280,7 @@ void MainWindow::updateStats()
     if (lastDbUpdate.isValid() && MPDStats::self()->dbUpdate() > lastDbUpdate) {
         libraryPage->refresh(LibraryPage::RefreshStandard);
         folderPage->refresh();
+        playlistsPage->refresh();
     }
 
     lastDbUpdate = MPDStats::self()->dbUpdate();
@@ -1932,13 +1935,13 @@ void MainWindow::deleteSongs()
 
 void MainWindow::copyToDevice(const QString &from, const QString &to, const QList<Song> &songs)
 {
-    ActionDialog *dlg=new ActionDialog(this, updateDbAction);
+    ActionDialog *dlg=new ActionDialog(this);
     dlg->copy(from, to, songs);
 }
 
 void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
 {
-    ActionDialog *dlg=new ActionDialog(this, updateDbAction);
+    ActionDialog *dlg=new ActionDialog(this);
     dlg->remove(from, songs);
 }
 #endif

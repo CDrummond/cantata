@@ -29,7 +29,6 @@
 #include "device.h"
 #include "ui_actiondialog.h"
 
-class KAction;
 class KJob;
 
 class ActionDialog : public KDialog, Ui::ActionDialog
@@ -43,9 +42,13 @@ class ActionDialog : public KDialog, Ui::ActionDialog
     };
 
 public:
-    ActionDialog(QWidget *parent, KAction *updateDbAct);
+    ActionDialog(QWidget *parent);
     void copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs);
     void remove(const QString &udi, const QList<Song> &songs);
+
+Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    void updateMpd();
 
 private Q_SLOTS:
     void configureDest();
@@ -80,7 +83,6 @@ private:
     QString mpdDir;
     QString destFile;
     Device::Options namingOptions;
-    KAction *updateDbAction;
 };
 
 #endif

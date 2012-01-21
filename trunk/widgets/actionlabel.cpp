@@ -89,7 +89,7 @@ void ActionLabel::startAnimation()
 {
     count=0;
     setPixmap(*theIcons[0]);
-    timer->start(1000/constNumIcons);
+    timer->start(2000/constNumIcons);
 }
 
 void ActionLabel::stopAnimation()

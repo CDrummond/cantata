@@ -125,7 +125,7 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     fixVariousArtists->setChecked(opts.fixVariousArtists);
     albumCovers->setCurrentIndex(0);
     origCoverName=coverName;
-    if (origCoverName==QLatin1String("-")) {
+    if (origCoverName==Device::constNoCover) {
         origCoverName=noCoverText;
     }
     for (int i=0; i<albumCovers->count(); ++i) {
@@ -152,7 +152,7 @@ void DevicePropertiesDialog::slotButtonClicked(int button)
 {
     switch (button) {
     case KDialog::Ok:
-        emit updatedSettings(musicFolder->text().trimmed(), albumCovers->currentText()==noCoverText ? QString("-") : albumCovers->currentText(), settings());
+        emit updatedSettings(musicFolder->text().trimmed(), albumCovers->currentText()==noCoverText ? Device::constNoCover : albumCovers->currentText(), settings());
         break;
     case KDialog::Cancel:
         emit cancelled();

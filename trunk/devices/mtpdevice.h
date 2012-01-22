@@ -91,7 +91,6 @@ private:
     uint64_t size;
     uint64_t used;
     uint32_t musicFolderId;
-    uint32_t musicFolderStorageId;
     QString musicPath;
     MtpDevice *dev;
 };

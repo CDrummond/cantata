@@ -84,7 +84,6 @@ void MtpConnection::connectToDevice()
 {
     device=0;
     musicFolderId=0;
-    musicFolderStorageId=0;
     LIBMTP_raw_device_t *rawDevices;
     int numDev;
 
@@ -153,7 +152,6 @@ void MtpConnection::updateLibrary()
     if (0!=musicFolderId) {
         QMap<int, Folder>::ConstIterator musicFolder=folderMap.find(musicFolderId);
         if (musicFolder!=folderEnd) {
-            musicFolderStorageId=musicFolder.value().entry->storage_id;
             musicPath=musicFolder.value().path;
         }
     }
@@ -352,7 +350,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
     if (device) {
         meta=LIBMTP_new_track_t();
         meta->parent_id=musicFolderId;
-        meta->storage_id=musicFolderStorageId;
+        meta->storage_id=0;
 
         Song song=s;
         QString destName=musicPath+dev->opts.createFilename(song);

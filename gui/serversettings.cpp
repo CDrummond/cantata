@@ -23,11 +23,19 @@
 
 #include "serversettings.h"
 #include "settings.h"
+#ifdef ENABLE_DEVICES_SUPPORT
+#include <KDE/KLocale>
+#endif
 
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    musicFolderNoteLabel->setText(musicFolderNoteLabel->text()+
+                                  i18n("<i> This folder will also be used to locate music files "
+                                       "for transferring to (and from) devices.</i>"));
+    #endif
 };
 
 void ServerSettings::load()

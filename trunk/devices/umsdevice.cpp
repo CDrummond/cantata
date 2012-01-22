@@ -153,7 +153,7 @@ void UmsDevice::configure(QWidget *parent)
 
 void UmsDevice::rescan()
 {
-    if (isConnected()) {
+    if (isIdle()) {
         startScanner();
     }
 }

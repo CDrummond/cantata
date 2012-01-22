@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-21 23:22+0000\n"
+"POT-Creation-Date: 2012-01-22 19:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Device is currently busy."
 msgstr ""
 
-#: devices/actiondialog.cpp:107 devices/mtpdevice.cpp:683
+#: devices/actiondialog.cpp:107 devices/mtpdevice.cpp:681
 #: devices/umsdevice.cpp:341
 msgid "%1 free"
 msgstr ""
@@ -239,31 +239,31 @@ msgid ""
 "tr><tr><td>%8</td><td>The genre of the album.</td></tr></table></p>"
 msgstr ""
 
-#: devices/mtpdevice.cpp:91
+#: devices/mtpdevice.cpp:90
 msgid "Connecting to device..."
 msgstr ""
 
-#: devices/mtpdevice.cpp:93 devices/mtpdevice.cpp:110
+#: devices/mtpdevice.cpp:92 devices/mtpdevice.cpp:109
 msgid "No devices found"
 msgstr ""
 
-#: devices/mtpdevice.cpp:115
+#: devices/mtpdevice.cpp:114
 msgid "Connected to device"
 msgstr ""
 
-#: devices/mtpdevice.cpp:124
+#: devices/mtpdevice.cpp:123
 msgid "Disconnected from device"
 msgstr ""
 
-#: devices/mtpdevice.cpp:142
+#: devices/mtpdevice.cpp:141
 msgid "Updating folders..."
 msgstr ""
 
-#: devices/mtpdevice.cpp:149
+#: devices/mtpdevice.cpp:148
 msgid "Updating tracks..."
 msgstr ""
 
-#: devices/mtpdevice.cpp:680 devices/umsdevice.cpp:337
+#: devices/mtpdevice.cpp:678 devices/umsdevice.cpp:337
 #: models/devicesmodel.cpp:234
 msgid "Not Connected"
 msgstr ""
@@ -454,46 +454,46 @@ msgid ""
 "tr></table>"
 msgstr ""
 
-#: gui/mainwindow.cpp:1309 gui/mainwindow.cpp:1310
+#: gui/mainwindow.cpp:1311 gui/mainwindow.cpp:1312
 msgid "Volume %1%"
 msgstr ""
 
-#: gui/mainwindow.cpp:1467 gui/playlistspage.cpp:179
+#: gui/mainwindow.cpp:1469 gui/playlistspage.cpp:179
 msgid "Playlist Name"
 msgstr ""
 
-#: gui/mainwindow.cpp:1467 gui/playlistspage.cpp:179
+#: gui/mainwindow.cpp:1469 gui/playlistspage.cpp:179
 msgid "Enter a name for the playlist:"
 msgstr ""
 
-#: gui/mainwindow.cpp:1474
+#: gui/mainwindow.cpp:1476
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
 msgstr ""
 
-#: gui/mainwindow.cpp:1475
+#: gui/mainwindow.cpp:1477
 msgid "Existing Playlist"
 msgstr ""
 
-#: gui/mainwindow.cpp:1537
+#: gui/mainwindow.cpp:1539
 msgid "1 Artist, "
 msgid_plural "%1 Artists, "
 msgstr[0] ""
 msgstr[1] ""
 
-#: gui/mainwindow.cpp:1538
+#: gui/mainwindow.cpp:1540
 msgid "1 Album, "
 msgid_plural "%1 Albums, "
 msgstr[0] ""
 msgstr[1] ""
 
-#: gui/mainwindow.cpp:1539 models/devicesmodel.cpp:262
+#: gui/mainwindow.cpp:1541 models/devicesmodel.cpp:262
 #: models/musiclibrarymodel.cpp:261 models/playlistsmodel.cpp:176
 msgid "1 Track"
 msgid_plural "%1 Tracks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: gui/mainwindow.cpp:1732 main.cpp:35
+#: gui/mainwindow.cpp:1734 main.cpp:35
 msgid "Cantata"
 msgstr ""
 

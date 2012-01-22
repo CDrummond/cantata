@@ -459,7 +459,7 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
 
 void Device::applyUpdate()
 {
-    if (m_childItems.count() && update && update->childCount()) {
+    /*if (m_childItems.count() && update && update->childCount()) {
         QSet<Song> currentSongs=allSongs();
         QSet<Song> updateSongs=update->allSongs();
         QSet<Song> removed=currentSongs-updateSongs;
@@ -472,7 +472,7 @@ void Device::applyUpdate()
             removeSongFromList(s);
         }
         delete update;
-    } else {
+    } else*/ {
         int oldCount=childCount();
         if (oldCount>0) {
             model->beginRemoveRows(model->createIndex(model->devices.indexOf(this), 0, this), 0, oldCount-1);

@@ -1279,10 +1279,12 @@ void MainWindow::updateStats()
      */
     if (!lastDbUpdate.isValid() || MPDStats::self()->dbUpdate() > lastDbUpdate) {
         loaded|=TAB_LIBRARY|TAB_FOLDERS;
-        libraryPage->clear();
-        albumsPage->clear();
-        folderPage->clear();
-        playlistsPage->clear();
+        if (!lastDbUpdate.isValid()) {
+            libraryPage->clear();
+            albumsPage->clear();
+            folderPage->clear();
+            playlistsPage->clear();
+        }
         libraryPage->refresh(LibraryPage::RefreshForce);
         folderPage->refresh();
         playlistsPage->refresh();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>349</width>
-    <height>250</height>
+    <height>239</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -104,10 +104,35 @@
     </spacer>
    </item>
    <item>
-    <widget class="QLabel" name="label_4">
+    <widget class="QLabel" name="musicFolderNoteLabel">
      <property name="text">
-      <string>&lt;p&gt;&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music Folder' settings is only used to lookup cover-art (&lt;code&gt;cover.jpg&lt;/code&gt; or &lt;code&gt;cover.png&lt;/code&gt;). If you also have write permissions to this folder (and it's sub-folders), then Cantata will save any downloaded covers into the respective album folder.&lt;br/&gt;&lt;br/&gt;
-&lt;b&gt;NOTE:&lt;/b&gt; When using a local domain socket the full absolute path to the socket needs to be set. (Port number is not required.)&lt;/i&gt;&lt;/p&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music Folder' settings is used to lookup cover-art (&lt;code&gt;cover.jpg&lt;/code&gt;). If you also have write permissions to this folder (and it's sub-folders), then Cantata will save any downloaded covers into the respective album folder.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>4</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="socketNoteLabel">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When using a local domain socket the full absolute path to the socket needs to be set. (Port number is not required.)&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

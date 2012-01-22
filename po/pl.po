@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-22 19:10+0000\n"
+"POT-Creation-Date: 2012-01-22 19:33+0000\n"
 "PO-Revision-Date: 2011-12-22 16:01+0100\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -648,6 +648,12 @@ msgstr "Konfiguruj"
 msgid "Update MPD Information"
 msgstr "Uaktualnij informacje MPD"
 
+#: gui/serversettings.cpp:36
+msgid ""
+"<i> This folder will also be used to locate music files for transferring to "
+"(and from) devices.</i>"
+msgstr ""
+
 #: gui/streamdialog.cpp:58
 msgid "Name:"
 msgstr "Nazwa:"
@@ -1030,11 +1036,11 @@ msgstr[2] "%1 dni %2"
 #. i18n: ectx: property (windowTitle), widget (QWidget, ItemView)
 #: po/rc.cpp:3 po/rc.cpp:30 po/rc.cpp:60 po/rc.cpp:93 po/rc.cpp:96
 #: po/rc.cpp:111 po/rc.cpp:114 po/rc.cpp:213 po/rc.cpp:216 po/rc.cpp:225
-#: po/rc.cpp:228 po/rc.cpp:243 po/rc.cpp:246 po/rc.cpp:303 po/rc.cpp:322
-#: po/rc.cpp:325 po/rc.cpp:337 po/rc.cpp:340 po/rc.cpp:370 rc.cpp:3 rc.cpp:30
+#: po/rc.cpp:228 po/rc.cpp:243 po/rc.cpp:246 po/rc.cpp:303 po/rc.cpp:324
+#: po/rc.cpp:327 po/rc.cpp:339 po/rc.cpp:342 po/rc.cpp:372 rc.cpp:3 rc.cpp:30
 #: rc.cpp:60 rc.cpp:93 rc.cpp:96 rc.cpp:111 rc.cpp:114 rc.cpp:213 rc.cpp:216
-#: rc.cpp:225 rc.cpp:228 rc.cpp:243 rc.cpp:246 rc.cpp:303 rc.cpp:322
-#: rc.cpp:325 rc.cpp:337 rc.cpp:340 rc.cpp:370
+#: rc.cpp:225 rc.cpp:228 rc.cpp:243 rc.cpp:246 rc.cpp:303 rc.cpp:324
+#: rc.cpp:327 rc.cpp:339 rc.cpp:342 rc.cpp:372
 msgid "Form"
 msgstr "Formularz"
 
@@ -1537,101 +1543,107 @@ msgstr "Hasło:"
 msgid "Host (or local socket):"
 msgstr ""
 
-#. i18n: file: gui/serversettings.ui:110
-#. i18n: ectx: property (text), widget (QLabel, label_4)
+#. i18n: file: gui/serversettings.ui:109
+#. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
 #: po/rc.cpp:318 rc.cpp:318
 #, fuzzy
 msgid ""
-"<p><i><b>NOTE:</b> The 'Music Folder' settings is only used to lookup cover-"
-"art (<code>cover.jpg</code> or <code>cover.png</code>). If you also have "
-"write permissions to this folder (and it's sub-folders), then Cantata will "
-"save any downloaded covers into the respective album folder.<br/><br/>\n"
-"<b>NOTE:</b> When using a local domain socket the full absolute path to the "
-"socket needs to be set. (Port number is not required.)</i></p>"
+"<i><b>NOTE:</b> The 'Music Folder' settings is used to lookup cover-art "
+"(<code>cover.jpg</code>). If you also have write permissions to this folder "
+"(and it's sub-folders), then Cantata will save any downloaded covers into "
+"the respective album folder.</i>"
 msgstr ""
 "<i><b>UWAGA:</b> Ustawienie 'Katalog z muzyką' służy jedynie do poszukiwania "
 "okładek (<code>cover.jpg</code> albo <code>cover.png</code>). Jeśli "
 "posiadasz prawa zapisu do tego katalogu (i podkatalogów), to Cantata będzie "
 "zapisywała wszystkie pobrane okładki do odpowiednich katalogów.</i>"
 
+#. i18n: file: gui/serversettings.ui:135
+#. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
+#: po/rc.cpp:321 rc.cpp:321
+msgid ""
+"<i><b>NOTE:</b> When using a local domain socket the full absolute path to "
+"the socket needs to be set. (Port number is not required.)</i>"
+msgstr ""
+
 #. i18n: file: lyrics/lyricsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: po/rc.cpp:328 rc.cpp:328
+#: po/rc.cpp:330 rc.cpp:330
 msgid "Choose the websites you want to use when searching for lyrics."
 msgstr "Proszę wybrać strony z tekstami."
 
 #. i18n: file: lyrics/lyricsettings.ui:43
 #. i18n: ectx: property (text), widget (QPushButton, up)
-#: po/rc.cpp:331 rc.cpp:331
+#: po/rc.cpp:333 rc.cpp:333
 msgid "Move Up"
 msgstr "Przesuń do góry"
 
 #. i18n: file: lyrics/lyricsettings.ui:53
 #. i18n: ectx: property (text), widget (QPushButton, down)
-#: po/rc.cpp:334 rc.cpp:334
+#: po/rc.cpp:336 rc.cpp:336
 msgid "Move Down"
 msgstr "Przesuń w dół"
 
 #. i18n: file: network/proxysettings.ui:23
 #. i18n: ectx: property (text), widget (QRadioButton, proxySystem)
-#: po/rc.cpp:343 rc.cpp:343
+#: po/rc.cpp:345 rc.cpp:345
 msgid "Use the system proxy settings"
 msgstr "Użyj systemowych ustawień proxy"
 
 #. i18n: file: network/proxysettings.ui:33
 #. i18n: ectx: property (text), widget (QRadioButton, proxyDirect)
-#: po/rc.cpp:346 rc.cpp:346
+#: po/rc.cpp:348 rc.cpp:348
 msgid "Direct internet connection"
 msgstr "Bezpośrednie połączenie internetowe"
 
 #. i18n: file: network/proxysettings.ui:40
 #. i18n: ectx: property (text), widget (QRadioButton, proxyManual)
-#: po/rc.cpp:349 rc.cpp:349
+#: po/rc.cpp:351 rc.cpp:351
 msgid "Manual proxy configuration"
 msgstr "Ręczne ustawienie proxy"
 
 #. i18n: file: network/proxysettings.ui:59
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:352 rc.cpp:352
+#: po/rc.cpp:354 rc.cpp:354
 msgid "HTTP Proxy"
 msgstr "HTTP Proxy"
 
 #. i18n: file: network/proxysettings.ui:64
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
-#: po/rc.cpp:355 rc.cpp:355
+#: po/rc.cpp:357 rc.cpp:357
 msgid "SOCKS Proxy"
 msgstr "SOCKS Proxy"
 
 #. i18n: file: network/proxysettings.ui:75
 #. i18n: ectx: property (text), widget (QLabel, label_15)
-#: po/rc.cpp:358 rc.cpp:358
+#: po/rc.cpp:360 rc.cpp:360
 msgid "Port"
 msgstr "Port"
 
 #. i18n: file: network/proxysettings.ui:97
 #. i18n: ectx: property (title), widget (QGroupBox, proxyAuth)
-#: po/rc.cpp:361 rc.cpp:361
+#: po/rc.cpp:363 rc.cpp:363
 msgid "Use authentication"
 msgstr "Użyj uwierzytelniania"
 
 #. i18n: file: network/proxysettings.ui:112
 #. i18n: ectx: property (text), widget (QLabel, label_16)
-#: po/rc.cpp:364 rc.cpp:364
+#: po/rc.cpp:366 rc.cpp:366
 msgid "Username"
 msgstr "Użytkownik"
 
 #. i18n: file: network/proxysettings.ui:129
 #. i18n: ectx: property (text), widget (QLabel, label_17)
-#: po/rc.cpp:367 rc.cpp:367
+#: po/rc.cpp:369 rc.cpp:369
 msgid "Password"
 msgstr "Hasło"
 
-#: po/rc.cpp:371 rc.cpp:371
+#: po/rc.cpp:373 rc.cpp:373
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Piotr Wicijowski"
 
-#: po/rc.cpp:372 rc.cpp:372
+#: po/rc.cpp:374 rc.cpp:374
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr ""

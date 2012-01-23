@@ -1,13 +1,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Piotr Wicijowski <piwsko@gmail.com>, 2011.
+# Piotr Wicijowski <piwsko@gmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-22 19:33+0000\n"
-"PO-Revision-Date: 2011-12-22 16:01+0100\n"
+"PO-Revision-Date: 2012-01-22 21:44+0100\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -20,150 +20,145 @@ msgstr ""
 
 #: devices/actiondialog.cpp:78
 msgid "Device is currently busy."
-msgstr ""
+msgstr "Urządzenie jest obecnie zajęte."
 
 #: devices/actiondialog.cpp:107 devices/mtpdevice.cpp:681
 #: devices/umsdevice.cpp:341
 msgid "%1 free"
-msgstr ""
+msgstr "%1 wolnego miejsca"
 
 #: devices/actiondialog.cpp:112 devices/actiondialog.cpp:113
 msgid "Local Music Library"
-msgstr ""
+msgstr "Lokalna biblioteka muzyki"
 
 #: devices/actiondialog.cpp:126
 msgid ""
 "There is insufficient space left on the destination.\n"
 "The selected songs consume %1, but there is only %2 left."
 msgstr ""
+"Nie ma wystarczająco miejsca w lokalizacji docelowej.\n"
+"Zaznaczone utwory zajmują %1, jednak pozostało jedynie %2 miejsca."
 
 #: devices/actiondialog.cpp:157
-#, fuzzy
 msgid "Copy Songs"
-msgstr "Utwory:"
+msgstr "Skopiuj utwory"
 
 #: devices/actiondialog.cpp:157 gui/mainwindow.cpp:499
 msgid "Delete Songs"
-msgstr ""
+msgstr "Usuń utwory"
 
 #: devices/actiondialog.cpp:178
 msgid ""
 "<p>You have not configured the destination device.<br/>Continue with the "
 "default settings?</p>"
 msgstr ""
+"<p>Urządzenie docelowe nie zostało skonfigurowane.<br/>Czy kontynuować "
+"z domyślnymi ustawieniami?</p>"
 
 #: devices/actiondialog.cpp:181
 msgid ""
 "<p>You have not configured the source device.<br/>Continue with the default "
 "settings?</p>"
 msgstr ""
+"<p>Urządzenie źródłowe nie zostało skonfigurowane.<br/>Czy kontynuować "
+"z domyślnymi ustawieniami?</p>"
 
 #: devices/actiondialog.cpp:222
-#, fuzzy
 msgid "Are you sure you wish to cancel?"
-msgstr "Czy na pewno usunąć <b>%1</b>?"
+msgstr "Czy na pewno anulować?"
 
 #: devices/actiondialog.cpp:263 devices/actiondialog.cpp:281
 msgid "Device has been removed"
-msgstr ""
+msgstr "Urządzenie zostało usunięte"
 
 #: devices/actiondialog.cpp:288
 msgid "Clearing unused folders"
-msgstr ""
+msgstr "Czyszczenie nieużywanych folderów"
 
 #: devices/actiondialog.cpp:329
-#, fuzzy
 msgid "The destination filename already exists!<hr/>%1"
-msgstr "Strumień już istnieje!<br/><b>%1</b>"
+msgstr "Docelowa nazwa pliku już istnieje!<hr/>%1"
 
 #: devices/actiondialog.cpp:332
-#, fuzzy
 msgid "Song already exists!<hr/>%1"
-msgstr "Strumień już istnieje!<br/><b>%1</b>"
+msgstr "Utwór już istnieje!<hr/>%1"
 
 #: devices/actiondialog.cpp:335
 msgid "Song does not exist!<hr/>%1"
-msgstr ""
+msgstr "Utwór nie istnieje!<hr/>%1"
 
 #: devices/actiondialog.cpp:338
 msgid ""
 "Failed to create destination folder!<br/>Please check you have sufficient "
 "permissions.<hr/>%1"
 msgstr ""
+"Tworzenie katalogu docelowego nie powiodło się!<br/>Proszę upewnić się, że "
+"ustawione są odpowiednie prawa dostępu.<hr/>%1"
 
 #: devices/actiondialog.cpp:341
 msgid "Source file no longer exists?<br/><br/<hr/>%1"
-msgstr ""
+msgstr "Plik źródłowy już nie istnieje?<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:344
-#, fuzzy
 msgid "Failed to copy.<hr/>%1"
-msgstr "Utworzenie <b>%1</b> nie powiodło się!"
+msgstr "Kopiowanie nie powiodło się.<hr/>%1"
 
 #: devices/actiondialog.cpp:345
-#, fuzzy
 msgid "Failed to delete.<hr/>%1"
-msgstr "Utworzenie <b>%1</b> nie powiodło się!"
+msgstr "Usuwanie nie powiodło się.<hr/>%1"
 
 #: devices/actiondialog.cpp:348
 msgid "Not connected to device.<hr/>%1"
-msgstr ""
+msgstr "Brak połączenia z urządzeniem.<hr/>%1"
 
 #: devices/actiondialog.cpp:373
 msgid "Local Music Library Properties"
-msgstr ""
+msgstr "Ustawienia lokalnej biblioteki muzyki"
 
 #: devices/actiondialog.cpp:407 devices/actiondialog.cpp:417
 msgid "<b>Error</b><br/>"
-msgstr ""
+msgstr "<b>Błąd</b><br/>"
 
 #: devices/actiondialog.cpp:410
 msgid "Skip"
-msgstr ""
+msgstr "Pomiń"
 
 #: devices/actiondialog.cpp:411
 msgid "Auto Skip"
-msgstr ""
+msgstr "Automatycznie pomiń"
 
 #: devices/actiondialog.cpp:428
-#, fuzzy
 msgid ""
 "<table><tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align="
 "\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>"
 "%3</td></tr><tr><td align=\"right\">Source file:</td><td>%4</td></tr><tr><td "
 "align=\"right\">Destination file:</td><td>%5</td></tr></table>"
 msgstr ""
-"<table><tr><td align=\"right\"><b>Artysta:</b></td><td>%1</td></tr><tr><td "
-"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
-"\"><b>Utwór:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Numer:</b></"
-"td><td>%4</td></tr><tr><td align=\"right\"><b>Długość:</b></td><td>%5</td></"
-"tr></table>"
+"<table><tr><td align=\"right\">Artysta:</td><td>%1</td></tr><tr><td align="
+"\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Numer:</td><td>"
+"%3</td></tr><tr><td align=\"right\">Plik źródłowy:</td><td>%4</td></tr><tr><"
+"td "
+"align=\"right\">Plik docelowy:</td><td>%5</td></tr></table>"
 
 #: devices/actiondialog.cpp:435
-#, fuzzy
 msgid ""
 "<table><tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align="
 "\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>"
 "%3</td></tr><tr><td align=\"right\">File:</td><td>%4</td></tr></table>"
 msgstr ""
-"<table><tr><td align=\"right\"><b>Artysta:</b></td><td>%1</td></tr><tr><td "
-"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
-"\"><b>Utwór:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Numer:</b></"
-"td><td>%4</td></tr><tr><td align=\"right\"><b>Długość:</b></td><td>%5</td></"
-"tr></table>"
+"<table><tr><td align=\"right\">Artysta:</td><td>%1</td></tr><tr><td align="
+"\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Numer:</td><td>"
+"%3</td></tr><tr><td align=\"right\">Plik:</td><td>%4</td></tr></table>"
 
 #: devices/actiondialog.cpp:441
-#, fuzzy
 msgid ""
 "<table><tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align="
 "\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>"
 "%3</td></tr></table>"
 msgstr ""
-"<table><tr><td align=\"right\"><b>Artysta:</b></td><td>%1</td></tr><tr><td "
-"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
-"\"><b>Utwór:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Numer:</b></"
-"td><td>%4</td></tr><tr><td align=\"right\"><b>Długość:</b></td><td>%5</td></"
-"tr></table>"
+"<table><tr><td align=\"right\">Artysta:</td><td>%1</td></tr><tr><td align="
+"\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Numer:</td><td>"
+"%3</td></tr></table>"
 
 #: devices/device.cpp:307 mpd/mpdparseutils.cpp:248 mpd/song.cpp:107
 #: mpd/song.cpp:111 mpd/song.cpp:115
@@ -172,11 +167,11 @@ msgstr "Nieznany"
 
 #: devices/devicepropertiesdialog.cpp:82
 msgid "Don't copy covers"
-msgstr ""
+msgstr "Nie kopiuj okładek"
 
 #: devices/devicepropertiesdialog.cpp:85
 msgid "Device Properties"
-msgstr ""
+msgstr "Ustawienia urządzeń"
 
 #: devices/devicepropertiesdialog.cpp:102
 msgid ""
@@ -188,36 +183,44 @@ msgid ""
 "extract the real artist from the 'Title' tag, and remove the artist name "
 "from the 'Title' tag.</p>"
 msgstr ""
+"<p>W trakcie kopiowania utworów do urządzenia, gdy tag 'ArtystaAlbumu' jest "
+"ustawiony na "
+"'Various Artists', to Cantata ustawi tag 'Artysta' we wszystkich utworach na "
+"'Various Artists' natomiast tag 'Tytuł' na 'ArtystaUtworu - TytułUtworu'."
+"<hr/> W trakcie kopiowania z urządzenia, Cantata sprawdzi, czy oba tagi "
+"'ArtystaAlbumu' oraz "
+"'Artysta' są ustawione na 'Various Artists'. Jeśli tak, to program podejmie "
+"próbę przywrócenia"
+"rzeczywistej nazwy artysty z tagu 'Tytuł' oraz usunie nazwę artysty z tagu "
+"'Tytuł'.</p>"
 
 #: devices/devicespage.cpp:48
-#, fuzzy
 msgid "Configure Device"
-msgstr "Konfiguruj"
+msgstr "Konfiguruj urządzenie"
 
 #: devices/devicespage.cpp:51
-#, fuzzy
 msgid "Refresh Device"
-msgstr "Odśwież"
+msgstr "Odśwież urządzenie"
 
 #: devices/devicespage.cpp:54
-#, fuzzy
 msgid "Copy To Library"
-msgstr "Biblioteka"
+msgstr "Skopiuj do biblioteki"
 
 #: devices/devicespage.cpp:60
 msgid "Delete Songs From Device"
-msgstr ""
+msgstr "Usuń utwory z urządzenia"
 
 #: devices/devicespage.cpp:75 gui/mainwindow.cpp:391
 msgid "Devices"
-msgstr ""
+msgstr "Urządzenia"
 
 #: devices/devicespage.cpp:244 gui/albumspage.cpp:174 gui/librarypage.cpp:181
-#, fuzzy
 msgid ""
 "Are you sure you wish to remove the selected songs?\n"
 "This cannot be undone."
-msgstr "Czy jesteś pewien, że chcesz usunąć zaznaczone elementy?"
+msgstr ""
+"Czy jesteś pewien, że chcesz usunąć zaznaczone utwory?\n"
+"Ta operacja nie może być cofnięta."
 
 #: devices/devicespage.cpp:255 gui/albumspage.cpp:199 gui/librarypage.cpp:211
 msgid "All Genres"
@@ -225,33 +228,32 @@ msgstr "Wszystkie gatunki"
 
 #: devices/filenameschemedialog.cpp:35
 msgid "Filename Scheme"
-msgstr ""
+msgstr "Schemat nazwy pliku"
 
 #: devices/filenameschemedialog.cpp:52
-#, fuzzy
 msgctxt "Example album artist"
 msgid "Various Artists"
-msgstr "Artyści:"
+msgstr "Various Artists"
 
 #: devices/filenameschemedialog.cpp:53
 msgctxt "Example artist"
 msgid "Wibble"
-msgstr ""
+msgstr "Wibble"
 
 #: devices/filenameschemedialog.cpp:54
 msgctxt "Example album"
 msgid "Now 5001"
-msgstr ""
+msgstr "Now 5001"
 
 #: devices/filenameschemedialog.cpp:55
 msgctxt "Example song name"
 msgid "Wobble"
-msgstr ""
+msgstr "Wobble"
 
 #: devices/filenameschemedialog.cpp:59
 msgctxt "Example genre"
 msgid "Dance"
-msgstr ""
+msgstr "Dance"
 
 #: devices/filenameschemedialog.cpp:95
 msgid ""
@@ -267,43 +269,53 @@ msgid ""
 "albums.</td></tr><tr><td>%7</td><td>The year of the album's release.</td></"
 "tr><tr><td>%8</td><td>The genre of the album.</td></tr></table></p>"
 msgstr ""
+"<p>Następujące zmienne zostaną zastąpione odpowiednimi wartościami "
+"odpowiadającymi "
+"każdemu utworowi.</p><p><table border=\"1\"><tr><th><em>Zmienna</em></"
+"th><th><em>Opis</em></th></tr><tr><td>%1</td><td>Artysta albumu. Dla "
+"większości "
+"albumów będzie to taka sama wartość jak <i>Artysta utworu.</i> "
+"W przypadku kompilacji będzie to często <i>Various Artists.</i> </td></"
+"tr><tr><td>%2</td><td>Nazwa albumu.</td></tr><tr><td>%3</td><td>Artysta "
+"każdego z utworów.</td></tr><tr><td>%4</td><td>Tytuł utworu.</td></"
+"tr><tr><td>%5</td><td>Numer utworu.</td></tr><tr><td>%6</td><td>Numer albumu "
+"w przypadku albumu zawierającego kilka albumów. Częste dla kompilacji "
+"składających się z kilku albumów.</td></tr><tr><td>%7</td><td>Rok wydania "
+"albumu.</td></"
+"tr><tr><td>%8</td><td>Gatunek albumu.</td></tr></table></p>"
 
 #: devices/mtpdevice.cpp:90
 msgid "Connecting to device..."
-msgstr ""
+msgstr "Łączenie się z urządzeniem..."
 
 #: devices/mtpdevice.cpp:92 devices/mtpdevice.cpp:109
-#, fuzzy
 msgid "No devices found"
-msgstr "Nie znaleziono tekstów"
+msgstr "Nie znaleziono urządzeń"
 
 #: devices/mtpdevice.cpp:114
 msgid "Connected to device"
-msgstr ""
+msgstr "Połączono z urządzeniem"
 
 #: devices/mtpdevice.cpp:123
 msgid "Disconnected from device"
-msgstr ""
+msgstr "Rozłączono urządzenie"
 
 #: devices/mtpdevice.cpp:141
 msgid "Updating folders..."
-msgstr ""
+msgstr "Wysyłanie katalogów..."
 
 #: devices/mtpdevice.cpp:148
-#, fuzzy
 msgid "Updating tracks..."
-msgstr "Uaktualnianie"
+msgstr "Uaktualnianie utworów..."
 
 #: devices/mtpdevice.cpp:678 devices/umsdevice.cpp:337
 #: models/devicesmodel.cpp:234
-#, fuzzy
 msgid "Not Connected"
-msgstr "Utracono połączenie z MPD"
+msgstr "Nie połączono"
 
 #: devices/umsdevice.cpp:449
-#, fuzzy
 msgid "Updating..."
-msgstr "Uaktualnianie"
+msgstr "Uaktualnianie...."
 
 #: gui/albumspage.cpp:57 gui/mainwindow.cpp:367
 msgid "Albums"
@@ -370,13 +382,12 @@ msgid "Add To Play Queue"
 msgstr "Dodaj do kolejki odtwarzania"
 
 #: gui/mainwindow.cpp:318
-#, fuzzy
 msgid "Add To Playlist"
-msgstr "Dodaj do kolejki odtwarzania"
+msgstr "Dodaj do playlisty"
 
 #: gui/mainwindow.cpp:322
 msgid "Copy To Device"
-msgstr ""
+msgstr "Skopiuj do urządzenia"
 
 #: gui/mainwindow.cpp:328
 msgid "Remove"
@@ -469,19 +480,17 @@ msgstr "Utracono połączenie z MPD"
 #: gui/mainwindow.cpp:1207
 msgctxt "artist - album"
 msgid "%1 - %2"
-msgstr ""
+msgstr "%1 - %2"
 
 #: gui/mainwindow.cpp:1220
-#, fuzzy
 msgctxt "track :: Cantata"
 msgid "%1 :: Cantata"
-msgstr "Cantata"
+msgstr "%1 :: Cantata"
 
 #: gui/mainwindow.cpp:1227
-#, fuzzy
 msgctxt "track - artist :: Cantata"
 msgid "%1 - %2 :: Cantata"
-msgstr "Cantata"
+msgstr "%1 - %2 :: Cantata"
 
 #: gui/mainwindow.cpp:1249
 msgid ""
@@ -589,9 +598,8 @@ msgid "Rename Playlist"
 msgstr "Zmiana nazwy playlisty"
 
 #: gui/playlistspage.cpp:210
-#, fuzzy
 msgid "Enter new name for playlist:"
-msgstr "Proszę wpisać nową nazwę dla playlisty: %1"
+msgstr "Proszę wpisać nową nazwę dla playlisty:"
 
 #. i18n: file: gui/serverinfopage.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -629,12 +637,11 @@ msgstr "Ustawienia interfejsu"
 
 #: gui/preferencesdialog.cpp:111
 msgid "External"
-msgstr ""
+msgstr "Zewnętrzne"
 
 #: gui/preferencesdialog.cpp:112
-#, fuzzy
 msgid "External Settings"
-msgstr "Ustawienia interfejsu"
+msgstr "Ustawienia zewnętrzne"
 
 #: gui/preferencesdialog.cpp:115
 msgid "Lyrics Settings"
@@ -653,6 +660,8 @@ msgid ""
 "<i> This folder will also be used to locate music files for transferring to "
 "(and from) devices.</i>"
 msgstr ""
+"<i> Ten folder będzie dodatkowo użyty do odnajdywania plików w celu transferu "
+"do i z urządzeń.</i>"
 
 #: gui/streamdialog.cpp:58
 msgid "Name:"
@@ -687,9 +696,8 @@ msgid "Edit"
 msgstr "Edytuj"
 
 #: gui/streamspage.cpp:174 gui/streamspage.cpp:211
-#, fuzzy
 msgid "*.cantata|Cantata Streams"
-msgstr "*.streams|Strumienie Cantata"
+msgstr "*.cantata|Strumienie Cantata"
 
 #: gui/streamspage.cpp:185
 msgid ""
@@ -805,16 +813,21 @@ msgstr[2] ""
 "%2 Utworów"
 
 #: models/devicesmodel.cpp:180
-#, fuzzy
 msgid ""
 "%1\n"
 "1 Artist"
 msgid_plural ""
 "%1\n"
 "%2 Artists"
-msgstr[0] "1 Artysta, "
-msgstr[1] "%1 Artystów, "
-msgstr[2] "%1 Artystów, "
+msgstr[0] ""
+"%1\n"
+"1 Artysta"
+msgstr[1] ""
+"%1\n"
+"%2 Artystów"
+msgstr[2] ""
+"%1\n"
+"%2 Artystów"
 
 #: models/devicesmodel.cpp:191 models/musiclibrarymodel.cpp:206
 msgid ""
@@ -834,12 +847,11 @@ msgstr[2] ""
 "%2 Albumów"
 
 #: models/devicesmodel.cpp:237
-#, fuzzy
 msgid "1 Artist"
 msgid_plural "%1 Artists"
-msgstr[0] "1 Artysta, "
-msgstr[1] "%1 Artystów, "
-msgstr[2] "%1 Artystów, "
+msgstr[0] "1 Artysta"
+msgstr[1] "%1 Artystów"
+msgstr[2] "%1 Artystów"
 
 #: models/devicesmodel.cpp:245 models/musiclibrarymodel.cpp:244
 msgid "1 Album"
@@ -850,7 +862,7 @@ msgstr[2] "%1 Albumów"
 
 #: models/devicesmodel.cpp:571
 msgid "No Devices Attached"
-msgstr ""
+msgstr "Brak podłączonych urządzeń"
 
 #: models/dirviewmodel.cpp:143
 msgid ""
@@ -877,15 +889,13 @@ msgstr[1] "%1 Elementy"
 msgstr[2] "%1 Elementów"
 
 #: models/musiclibraryitemartist.cpp:85 models/musiclibraryitemartist.cpp:98
-#, fuzzy
 msgid "Single Tracks"
-msgstr "Następny utwór"
+msgstr "Pojedyncze utwory"
 
 #: models/musiclibraryitemroot.cpp:66 models/musiclibraryitemroot.cpp:103
 #: mpd/song.cpp:211
-#, fuzzy
 msgid "Various Artists"
-msgstr "Artyści:"
+msgstr "Various Artists"
 
 #: models/playlistsmodel.cpp:603
 msgid "New Playlist..."
@@ -1048,7 +1058,7 @@ msgstr "Formularz"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:6 rc.cpp:6
 msgid "Copy songs from:"
-msgstr ""
+msgstr "Kopiuj utwory z:"
 
 #. i18n: file: devices/actiondialog.ui:42
 #. i18n: ectx: property (text), widget (QLabel, sourceLabel)
@@ -1111,20 +1121,19 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, configureDestLabel)
 #: po/rc.cpp:12 po/rc.cpp:18 rc.cpp:12 rc.cpp:18
 msgid "(Needs configuring)"
-msgstr ""
+msgstr "(Wymaga konfiguracji)"
 
 #. i18n: file: devices/actiondialog.ui:126
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:21 rc.cpp:21
-#, fuzzy
 msgid "Overwrite songs:"
-msgstr "Nadpisać playlistę?"
+msgstr "Nadpisz utwory:"
 
 #. i18n: file: devices/actiondialog.ui:153
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: po/rc.cpp:24 rc.cpp:24
 msgid "Copy songs to:"
-msgstr ""
+msgstr "Kopiuj utwory do:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:28
 #. i18n: ectx: property (text), widget (QLabel, musicFolderLabel)
@@ -1142,104 +1151,97 @@ msgstr "Katalog z muzyką:"
 #. i18n: ectx: property (text), widget (QLabel, albumCoversLabel)
 #: po/rc.cpp:36 rc.cpp:36
 msgid "Copy album covers as:"
-msgstr ""
+msgstr "Kopiuj okładki albumów jako:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:58
 #. i18n: ectx: property (text), widget (QLabel, fixVariousArtistsLabel)
 #: po/rc.cpp:39 rc.cpp:39
-#, fuzzy
 msgid "'Various Artists' workaround:"
-msgstr "Artyści:"
+msgstr "Obejście dla 'Various Artists':"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:73
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:42 rc.cpp:42
-#, fuzzy
 msgid "Filenames"
-msgstr "Zmień nazwę"
+msgstr "Nazwy plików"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:82
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: po/rc.cpp:45 rc.cpp:45
 msgid "Use only ASCII characters:"
-msgstr ""
+msgstr "Używaj jedynie znaków ASCII:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:99
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:48 rc.cpp:48
 msgid "Replace spaces with underscores:"
-msgstr ""
+msgstr "Zastąp spacje znakami podkreślenia:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:116
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: po/rc.cpp:51 rc.cpp:51
 msgid "Ignore 'The' in artist names:"
-msgstr ""
+msgstr "Ignoruj 'The' w nazwach artystów:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:133
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:54 rc.cpp:54
 msgid "Filename scheme:"
-msgstr ""
+msgstr "Schemat nazwy pliku:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:174
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:57 rc.cpp:57
 msgid "VFAT safe:"
-msgstr ""
+msgstr "Bezpieczne dla VFAT:"
 
 #. i18n: file: devices/filenameschemedialog.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
 #: po/rc.cpp:63 rc.cpp:63
 msgid "Example:"
-msgstr ""
+msgstr "Przykład:"
 
 #. i18n: file: devices/filenameschemedialog.ui:152
 #. i18n: ectx: property (text), widget (KUrlLabel, help)
 #: po/rc.cpp:66 rc.cpp:66
 msgid "About filename schemes"
-msgstr ""
+msgstr "O schematach nazwy pliku"
 
 #. i18n: file: devices/filenameschemedialog.ui:176
 #. i18n: ectx: property (text), widget (KPushButton, albumArtist)
 #: po/rc.cpp:69 rc.cpp:69
-#, fuzzy
 msgid "Album Artist"
-msgstr "Artysta"
+msgstr "Artysta albumu"
 
 #. i18n: file: devices/filenameschemedialog.ui:195
 #. i18n: ectx: property (text), widget (KPushButton, albumTitle)
 #: po/rc.cpp:72 rc.cpp:72
-#, fuzzy
 msgid "Album Title"
-msgstr "Widok albumów:"
+msgstr "Tytuł albumu"
 
 #. i18n: file: devices/filenameschemedialog.ui:214
 #. i18n: ectx: property (text), widget (KPushButton, trackArtist)
 #: po/rc.cpp:75 rc.cpp:75
-#, fuzzy
 msgid "Track Artist"
-msgstr "Artysta"
+msgstr "Artysta utworu"
 
 #. i18n: file: devices/filenameschemedialog.ui:233
 #. i18n: ectx: property (text), widget (KPushButton, trackTitle)
 #: po/rc.cpp:78 rc.cpp:78
-#, fuzzy
 msgid "Track Title"
-msgstr "Numer"
+msgstr "Tytuł utworu"
 
 #. i18n: file: devices/filenameschemedialog.ui:240
 #. i18n: ectx: property (text), widget (KPushButton, trackNo)
 #: po/rc.cpp:81 rc.cpp:81
-#, fuzzy
 msgid "Track #"
-msgstr "Numer"
+msgstr "Numer utworu"
 
 #. i18n: file: devices/filenameschemedialog.ui:247
 #. i18n: ectx: property (text), widget (KPushButton, cdNo)
 #: po/rc.cpp:84 rc.cpp:84
 msgid "CD #"
-msgstr ""
+msgstr "Numer CD"
 
 #. i18n: file: gui/externalsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -1257,13 +1259,13 @@ msgstr "Pokazuj wyskakujące okienka przy zmianie utworu:"
 #. i18n: ectx: property (text), widget (QLabel, label_5b)
 #: po/rc.cpp:105 rc.cpp:105
 msgid "Enable basic MPRISv2 interface:"
-msgstr ""
+msgstr "Uruchom podstawowy interfejs MPRISv2:"
 
 #. i18n: file: gui/externalsettings.ui:77
 #. i18n: ectx: property (text), widget (QLabel, label_5c)
 #: po/rc.cpp:108 rc.cpp:108
 msgid "Use current cover as dock icon:"
-msgstr ""
+msgstr "Używaj obecnej okładki jako ikony doku:"
 
 #. i18n: file: gui/interfacesettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -1376,15 +1378,14 @@ msgstr "Duże"
 #. i18n: file: gui/interfacesettings.ui:81
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:141 rc.cpp:141
-#, fuzzy
 msgid "Show album year in library view:"
-msgstr "Okładki w widoku biblioteki:"
+msgstr "Pokaż datę albumu w widoku biblioteki:"
 
 #. i18n: file: gui/interfacesettings.ui:98
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: po/rc.cpp:144 rc.cpp:144
 msgid "Group single track albums:"
-msgstr ""
+msgstr "Grupuj pojedyncze utwory:"
 
 #. i18n: file: gui/interfacesettings.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_3a)
@@ -1425,15 +1426,14 @@ msgstr "Widok strumieni:"
 #. i18n: file: gui/interfacesettings.ui:250
 #. i18n: ectx: property (text), widget (QLabel, devicesViewLabel)
 #: po/rc.cpp:201 rc.cpp:201
-#, fuzzy
 msgid "Devices view:"
-msgstr "Widok strumieni:"
+msgstr "Widok urządzeń:"
 
 #. i18n: file: gui/interfacesettings.ui:274
 #. i18n: ectx: property (text), widget (QLabel, showDeleteActionLabel)
 #: po/rc.cpp:210 rc.cpp:210
 msgid "Show delete action in context menus:"
-msgstr ""
+msgstr "Pokazuj akcję usuwania w menu kontekstowym:"
 
 #. i18n: file: gui/mainwindow.ui:84
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)
@@ -1546,17 +1546,16 @@ msgstr ""
 #. i18n: file: gui/serversettings.ui:109
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
 #: po/rc.cpp:318 rc.cpp:318
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> The 'Music Folder' settings is used to lookup cover-art "
 "(<code>cover.jpg</code>). If you also have write permissions to this folder "
 "(and it's sub-folders), then Cantata will save any downloaded covers into "
 "the respective album folder.</i>"
 msgstr ""
-"<i><b>UWAGA:</b> Ustawienie 'Katalog z muzyką' służy jedynie do poszukiwania "
-"okładek (<code>cover.jpg</code> albo <code>cover.png</code>). Jeśli "
-"posiadasz prawa zapisu do tego katalogu (i podkatalogów), to Cantata będzie "
-"zapisywała wszystkie pobrane okładki do odpowiednich katalogów.</i>"
+"<i><b>UWAGA:</b> Ustawienie 'Katalog z muzyką' służy do poszukiwania "
+"okładek (<code>cover.jpg</code>). Jeśli posiadasz prawa zapisu do tego "
+"katalogu (i podkatalogów), to Cantata będzie zapisywała wszystkie pobrane "
+"okładki do odpowiednich katalogów.</i>"
 
 #. i18n: file: gui/serversettings.ui:135
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
@@ -1565,6 +1564,8 @@ msgid ""
 "<i><b>NOTE:</b> When using a local domain socket the full absolute path to "
 "the socket needs to be set. (Port number is not required.)</i>"
 msgstr ""
+"<i><b>UWAGA:</b> Przy używaniu gniazda lokalnego konieczne jest ustawienie "
+"absolutnej ścieżki do gniazda. (Numer portu nie jest wymagany.)</i>"
 
 #. i18n: file: lyrics/lyricsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)

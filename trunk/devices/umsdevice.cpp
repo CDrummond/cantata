@@ -51,6 +51,7 @@ static const QLatin1String constAsciiOnlyKey("ascii_only");
 static const QLatin1String constIgnoreTheKey("ignore_the");
 static const QLatin1String constReplaceSpacesKey("replace_spaces");
 // static const QLatin1String constUseAutomaticallyKey("use_automatically");
+static const QLatin1String constCantataSettingsFile("/.cantata");
 static const QLatin1String constCoverFileName("cover_filename"); // Cantata extension!
 static const QLatin1String constVariousArtistsFix("fix_various_artists"); // Cantata extension!
 static const QLatin1String constDefCoverFileName("cover.jpg");
@@ -403,14 +404,29 @@ void UmsDevice::setup()
                 opts.replaceSpaces = QLatin1String("true")==line.section('=', 1, 1);
 //             } else if (line.startsWith(constUseAutomaticallyKey+"="))  {
 //                 useAutomatically = QLatin1String("true")==line.section('=', 1, 1);
-            } else if (line.startsWith(constCoverFileName+"=")) {
-                coverFileName=line.section('=', 1, 1);
-                configured=true;
-            } else if(line.startsWith(constVariousArtistsFix+"=")) {
-                opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
-                configured=true;
+//             } else if (line.startsWith(constCoverFileName+"=")) {
+//                 coverFileName=line.section('=', 1, 1);
+//                 configured=true;
+//             } else if(line.startsWith(constVariousArtistsFix+"=")) {
+//                 opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
+//                 configured=true;
             } else {
                 unusedParams+=line;
+            }
+        }
+    }
+
+    QFile extra(path+constCantataSettingsFile);
+
+    if (extra.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        configured=true;
+        QTextStream in(&extra);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            if (line.startsWith(constCoverFileName+"=")) {
+                coverFileName=line.section('=', 1, 1);
+            } else if(line.startsWith(constVariousArtistsFix+"=")) {
+                opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
             }
         }
     }
@@ -540,10 +556,22 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
         foreach (const QString &u, unusedParams) {
             out << u << '\n';
         }
+//         if (coverFileName!=constDefCoverFileName) {
+//             out << constCoverFileName << '=' << coverFileName << '\n';
+//         }
+//         out << constVariousArtistsFix << '=' << (opts.fixVariousArtists ? "true" : "false") << '\n';
+    }
+
+    QFile extra(path+constCantataSettingsFile);
+
+    if (extra.open(QIODevice::WriteOnly|QIODevice::Text)) {
+        QTextStream out(&extra);
         if (coverFileName!=constDefCoverFileName) {
             out << constCoverFileName << '=' << coverFileName << '\n';
         }
-        out << constVariousArtistsFix << '=' << (opts.fixVariousArtists ? "true" : "false") << '\n';
+        if (opts.fixVariousArtists) {
+            out << constVariousArtistsFix << '=' << (opts.fixVariousArtists ? "true" : "false") << '\n';
+        }
     }
 
     if (oldPath!=newPath) {

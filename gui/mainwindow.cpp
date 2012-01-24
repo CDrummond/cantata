@@ -1035,7 +1035,7 @@ void MainWindow::updateSettings()
         albumsPage->clear();
     }
     if (diffLibCovers || diffAlCovers || diffLibYear || diffSingleGroup) {
-        libraryPage->refresh(LibraryPage::RefreshForce);
+        refresh();
     }
 
     libraryPage->setView(0==Settings::self()->libraryView());
@@ -1286,7 +1286,7 @@ void MainWindow::updateStats()
             folderPage->clear();
             playlistsPage->clear();
         }
-        libraryPage->refresh(LibraryPage::RefreshForce);
+        libraryPage->refresh();
         folderPage->refresh();
         playlistsPage->refresh();
     }
@@ -1806,7 +1806,7 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_ALBUMS: // Albums shares refresh with library...
         if (!(loaded&TAB_LIBRARY)) {
             loaded|=TAB_LIBRARY;
-            libraryPage->refresh(LibraryPage::RefreshFromCache);
+            libraryPage->refresh();
         }
         break;
     case PAGE_FOLDERS:

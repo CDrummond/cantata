@@ -472,13 +472,13 @@ void AlbumsModel::setEnabled(bool e)
     if (enabled) {
         connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
                 this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
-        connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
+//         connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
         update(MusicLibraryModel::self()->root());
     } else {
         clear();
         disconnect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
                     this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
-        disconnect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
+//         disconnect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
     }
 }
 

@@ -402,8 +402,13 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     }
 
     bool updatedSongs=false;
+    bool incremental=rootItem->childCount() && newroot->childCount();
 
-    if (rootItem->childCount() && newroot->childCount()) {
+    if (incremental && !QFile::exists(Network::cacheDir(constLibraryCache, false)+QFile::encodeName(Settings::self()->connectionHost() + constLibraryExt))) {
+        incremental=false;
+    }
+
+    if (incremental) {
         QSet<Song> currentSongs=rootItem->allSongs();
         QSet<Song> updateSongs=newroot->allSongs();
         QSet<Song> removed=currentSongs-updateSongs;

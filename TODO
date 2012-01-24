@@ -1,12 +1,13 @@
 - Library
-    - Artist icons ?
+  - Artist icons ?
 
 - Folders
   - Add delete file/folder option??
   - Incremental update of model? Not sure its worth the hassle
 
 - Playlists
-    - Lazy loading of playlist contents - current is not 100%, but is ok if we want genre filtering
+    - Lazy loading of playlist contents - current is not 100%, but is ok if we
+      want genre filtering
     - Add genre filtering
 
 - Streams
@@ -30,17 +31,20 @@
 - Devices
   - libMTP album artist usage.
     - libMTP does not provide an album artist tag.
-    - song.cpp has a heck to see if this.albumartist=other.album artist, so that when
-      library is frefreshed the file is in the correct place.
-    - mtpdevice.cpp will remove albumartist from 'Song' entries copied to it, so that
-      these are placed in the correct part of the model.
+    - song.cpp has a check to see if this.albumartist=other.album artist, so
+      that when library is frefreshed the file is in the correct place.
+    - mtpdevice.cpp will remove albumartist from 'Song' entries copied to it,
+      so that these are placed in the correct part of the model.
     - If libMPT is 'fixed' then the above can be removed.
   - Make Various 'Artists' fix applicable to all compilation albums?
     - Not sure how this could be done with MTP :-(
-    - MTP has no access to other tags, so whe converting back, how would I know this is a compilation?
+    - MTP has no access to other tags, so when converting back, how would I
+      know this is a compilation?
   - Allow to drag songs from albums/library to devices, and vice versa.
   - Allow to play UMS files
     - Will need 'IsPlayable' type to be added to ItemView
+  - Transcoding of songs when copying to/from
+    - use ffmpeg -i $input -map_metadata 0:0 $output
 
 - PlayQueue
   - Slow with over 2000 entries, due to sort-filter-proxy??
@@ -52,7 +56,6 @@
   - Use KMessageWidget to display errors?
   - Add local (non mpd) file support?
   
-
 - Sidebar
    - Allow to collapse current item
    - Icon only mode for Large/Small sidebar?

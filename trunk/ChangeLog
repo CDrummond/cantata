@@ -12,6 +12,7 @@
 7. German translation - thanks to Lutz Lüttke
 8. Rename 'Update Database' action to 'Refresh', as the curent view is now also
    refreshed.
+9. When determining cache filename, replace slashes with underscores.
 
 0.2.1
 -----

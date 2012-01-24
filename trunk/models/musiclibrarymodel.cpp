@@ -70,6 +70,14 @@ MusicLibraryModel * MusicLibraryModel::self()
 static const QLatin1String constLibraryCache("library/");
 static const QLatin1String constLibraryExt(".xml");
 
+static const QString cacheFileName()
+{
+
+    QString fileName=Settings::self()->connectionHost()+constLibraryExt;
+    fileName.replace('/', '_');
+    return Network::cacheDir(constLibraryCache)+fileName;
+}
+
 MusicLibraryModel::MusicLibraryModel(QObject *parent)
     : QAbstractItemModel(parent),
       rootItem(new MusicLibraryItemRoot)
@@ -382,13 +390,7 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
 void MusicLibraryModel::removeCache()
 {
     //Check if dir exists
-    QString cacheFile = Network::cacheDir(constLibraryCache);
-
-    if (cacheFile.isEmpty()) {
-        return;
-    }
-
-    cacheFile+=QFile::encodeName(Settings::self()->connectionHost() + constLibraryExt);
+    QString cacheFile(cacheFileName());
     if (QFile::exists(cacheFile)) {
         QFile::remove(cacheFile);
         databaseTime = QDateTime();
@@ -404,7 +406,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     bool updatedSongs=false;
     bool incremental=rootItem->childCount() && newroot->childCount();
 
-    if (incremental && !QFile::exists(Network::cacheDir(constLibraryCache, false)+QFile::encodeName(Settings::self()->connectionHost() + constLibraryExt))) {
+    if (incremental && !QFile::exists(cacheFileName())) {
         incremental=false;
     }
 
@@ -498,14 +500,7 @@ static QLatin1String constTopTag("CantataLibrary");
  */
 void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime &date)
 {
-    //Check if dir exists
-    QString dir = Network::cacheDir(constLibraryCache);
-
-    if (dir.isEmpty()) {
-        return;
-    }
-
-    QFile file(dir+QFile::encodeName(Settings::self()->connectionHost() + constLibraryExt));
+    QFile file(cacheFileName());
     if (!file.open(QIODevice::WriteOnly)) {
         return;
     }
@@ -575,14 +570,7 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
  */
 bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
 {
-    QString filename(Network::cacheDir(constLibraryCache, false)+QFile::encodeName(Settings::self()->connectionHost() + constLibraryExt));
-
-    //Check if file exists
-    if (!QFile::exists(filename)) {
-        return false;
-    }
-
-    QFile file(filename);
+    QFile file(cacheFileName());
     if (!file.open(QIODevice::ReadOnly)) {
         return false;
     }

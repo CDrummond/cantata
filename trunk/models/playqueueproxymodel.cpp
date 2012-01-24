@@ -34,11 +34,12 @@ PlayQueueProxyModel::PlayQueueProxyModel(QObject *parent) : QSortFilterProxyMode
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     //setSortCaseSensitivity(Qt::CaseInsensitive);
     //setSortLocaleAware(true);
+    enabled=false;
 }
 
 bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (filterRegExp().isEmpty()) {
+    if (!enabled) {
         return true;
     }
 

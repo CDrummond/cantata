@@ -300,6 +300,8 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
     QByteArray currentItem;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
+    MusicLibraryItemArtist *artistItem = 0;
+    MusicLibraryItemAlbum *albumItem = 0;
 
     for (int i = 0; i < amountOfLines; i++) {
         currentItem += lines.at(i);
@@ -313,8 +315,13 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
             }
 
             currentSong.fillEmptyFields();
-            MusicLibraryItemArtist *artistItem = rootItem->artist(currentSong);
-            MusicLibraryItemAlbum *albumItem = artistItem->album(currentSong);
+            if (!artistItem || currentSong.albumArtist()!=artistItem->data()) {
+                artistItem = rootItem->artist(currentSong);
+            }
+            if (!albumItem || albumItem->parent()!=artistItem || currentSong.album!=albumItem->data()) {
+                albumItem = artistItem->album(currentSong);
+            }
+
             MusicLibraryItemSong *songItem = new MusicLibraryItemSong(currentSong, albumItem);
 
             albumItem->append(songItem);

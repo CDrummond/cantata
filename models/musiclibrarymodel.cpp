@@ -607,7 +607,7 @@ bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
             if (root) {
                 if (QLatin1String("Artist")==element) {
                     song.albumartist=reader.attributes().value("name").toString();
-                    artistItem = root->artist(song);
+                    artistItem = root->createArtist(song);
                 }
                 else if (QLatin1String("Album")==element) {
                     song.album=reader.attributes().value("name").toString();
@@ -615,7 +615,7 @@ bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
                     if (!song.file.isEmpty()) {
                         song.file.append("dummy.mp3");
                     }
-                    albumItem = artistItem->album(song);
+                    albumItem = artistItem->createAlbum(song);
                     if (QLatin1String("true")==reader.attributes().value("singleTracks").toString()) {
                         albumItem->setIsSingleTracks();
                     }

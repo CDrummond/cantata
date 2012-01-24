@@ -95,6 +95,8 @@ void MusicScanner::scanFolder(const QString &f, int level)
     if (level<4) {
         QDir d(f);
         QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
+        MusicLibraryItemArtist *artistItem = 0;
+        MusicLibraryItemAlbum *albumItem = 0;
         foreach (const QFileInfo &info, entries) {
             if (stopRequested) {
                 return;
@@ -110,8 +112,12 @@ void MusicScanner::scanFolder(const QString &f, int level)
 
                 song.fillEmptyFields();
                 song.size=info.size();
-                MusicLibraryItemArtist *artistItem = library->artist(song);
-                MusicLibraryItemAlbum *albumItem = artistItem->album(song);
+                if (!artistItem || song.albumArtist()!=artistItem->data()) {
+                    artistItem = library->artist(song);
+                }
+                if (!albumItem || albumItem->parent()!=artistItem || song.album!=albumItem->data()) {
+                    albumItem = artistItem->album(song);
+                }
                 MusicLibraryItemSong *songItem = new MusicLibraryItemSong(song, albumItem);
 
                 albumItem->append(songItem);

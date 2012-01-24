@@ -1,18 +1,19 @@
 0.3.0
 -----
-1. Basic copy to/from device support - USB mass storage (UMS) and MTP support
-   only. MTP is *very* slow. (KDE only)
-2. When refreshing library/albums, only affect parts of the model that have
-   changed. (Previously the whole model was replaced).
-3. When changing name of playlist, show the original name in the line-edit.
-4. Fix adding songs with spaces in their filenames to stored playlists
-5. When we recieve an updated signal frmo MPD, refresh library view.
-6. When disaplying songs of various artists albums, show as 'track number -
-   artist - song'
-7. German translation - thanks to Lutz Lüttke
-8. Rename 'Update Database' action to 'Refresh', as the curent view is now also
-   refreshed.
-9. When determining cache filename, replace slashes with underscores.
+ 1. Basic copy to/from device support - USB mass storage (UMS) and MTP support
+    only. MTP is *very* slow. (KDE only)
+ 2. When refreshing library/albums, only affect parts of the model that have
+    changed. (Previously the whole model was replaced).
+ 3. When changing name of playlist, show the original name in the line-edit.
+ 4. Fix adding songs with spaces in their filenames to stored playlists
+ 5. When we recieve an updated signal frmo MPD, refresh library view.
+ 6. When disaplying songs of various artists albums, show as 'track number -
+    artist - song'
+ 7. German translation - thanks to Lutz Lüttke
+ 8. Rename 'Update Database' action to 'Refresh', as the curent view is now also
+    refreshed.
+ 9. When determining cache filename, replace slashes with underscores.
+10. Improve playqueue handling when we have 1000s of entries.
 
 0.2.1
 -----

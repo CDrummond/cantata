@@ -31,6 +31,7 @@
 #include <KDE/KGlobal>
 #endif
 #include <QtGui/QApplication>
+#include "debugtimer.h"
 
 //#undef qDebug
 //#define qDebug qWarning
@@ -661,6 +662,7 @@ void MPDConnection::update()
  */
 void MPDConnection::listAllInfo(const QDateTime &dbUpdate)
 {
+    TF_DEBUG
     emit updatingLibrary();
     Response response=sendCommand("listallinfo");
     if(response.ok) {
@@ -676,6 +678,7 @@ void MPDConnection::listAllInfo(const QDateTime &dbUpdate)
 */
 void MPDConnection::listAll()
 {
+    TF_DEBUG
     emit updatingFileList();
     Response response=sendCommand("listall");
     if(response.ok) {
@@ -694,6 +697,7 @@ void MPDConnection::listPlaylist()
 
 void MPDConnection::listPlaylists()
 {
+    TF_DEBUG
     Response response=sendCommand("listplaylists");
     if(response.ok) {
         emit playlistsRetrieved(MPDParseUtils::parsePlaylists(response.data));
@@ -702,6 +706,7 @@ void MPDConnection::listPlaylists()
 
 void MPDConnection::playlistInfo(const QString &name)
 {
+    TF_DEBUG
     QByteArray data = "listplaylistinfo ";
     data += encodeName(name);
     Response response=sendCommand(data);

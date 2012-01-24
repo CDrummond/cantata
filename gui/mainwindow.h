@@ -75,6 +75,7 @@ class QThread;
 class QAbstractItemView;
 class DockManager;
 class Mpris;
+class QTimer;
 
 class DeleteKeyEventHandler : public QObject
 {
@@ -223,6 +224,7 @@ private Q_SLOTS:
     void decreaseVolume();
     void setPosition();
     void searchPlaylist();
+    void realSearchPlaylist();
     void updatePlaylist(const QList<Song> &songs);
     void updateCurrentSong(const Song &song);
     void updateStats();
@@ -366,6 +368,7 @@ private:
     QThread *mpdThread;
     DockManager *dock;
     Mpris *mpris;
+    QTimer *playlistSearchTimer;
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
     friend class LibraryPage;

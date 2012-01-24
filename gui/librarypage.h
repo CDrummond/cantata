@@ -31,19 +31,12 @@
 class LibraryPage : public QWidget, public Ui::LibraryPage
 {
     Q_OBJECT
+
 public:
-
-    enum Refresh
-    {
-        RefreshFromCache,
-        RefreshForce,
-        RefreshStandard
-    };
-
     LibraryPage(MainWindow *p);
     virtual ~LibraryPage();
 
-    void refresh(Refresh type);
+    void refresh();
     void clear();
     void addSelectionToPlaylist(const QString &name=QString());
     #ifdef ENABLE_DEVICES_SUPPORT

@@ -58,7 +58,6 @@ public:
     const MusicLibraryItemRoot * root() const { return rootItem; }
     bool isFromSingleTracks(const Song &s) const { return rootItem->isFromSingleTracks(s); }
     bool fromXML(const QDateTime db_update);
-    void clearUpdateTime() { databaseTime=QDateTime(); }
     void clear();
     bool songExists(const Song &s) const;
     void addSongToList(const Song &s);
@@ -70,7 +69,6 @@ public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
 
 Q_SIGNALS:
-    void xmlWritten(QDateTime db_update);
     void updated(const MusicLibraryItemRoot *root);
     void updateGenres(const QStringList &genres);
 

@@ -91,14 +91,11 @@ LibraryPage::~LibraryPage()
 {
 }
 
-void LibraryPage::refresh(Refresh type)
+void LibraryPage::refresh()
 {
     view->setLevel(0);
-    if (RefreshForce==type) {
-        MusicLibraryModel::self()->clearUpdateTime();
-    }
 
-    if (RefreshFromCache!=type || !MusicLibraryModel::self()->fromXML(MPDStats::self()->dbUpdate())) {
+    if (!MusicLibraryModel::self()->fromXML(MPDStats::self()->dbUpdate())) {
         view->showSpinner();
         emit listAllInfo(MPDStats::self()->dbUpdate());
     }

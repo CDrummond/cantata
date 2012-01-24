@@ -521,7 +521,7 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
     //Start with the document
     writer.writeStartElement(constTopTag);
     writer.writeAttribute("version", QString::number(constVersion));
-    writer.writeAttribute("date", QString::number(databaseTime.toTime_t()));
+    writer.writeAttribute("date", QString::number(date.toTime_t()));
     writer.writeAttribute("groupSingle", Settings::self()->groupSingle() ? "true" : "false");
     //Loop over all artist, albums and tracks.
     foreach (const MusicLibraryItem *a, root->children()) {

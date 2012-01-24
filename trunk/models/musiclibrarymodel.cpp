@@ -38,6 +38,7 @@
 #include "network.h"
 #include <QtGui/QCommonStyle>
 #include <QtCore/QFile>
+#include <QtCore/QTimer>
 #include <QtXml/QXmlStreamReader>
 #include <QtXml/QXmlStreamWriter>
 #include <QtCore/QStringRef>
@@ -80,8 +81,8 @@ static const QString cacheFileName()
 }
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent)
-    : QAbstractItemModel(parent),
-      rootItem(new MusicLibraryItemRoot)
+    : QAbstractItemModel(parent)
+    , rootItem(new MusicLibraryItemRoot)
 {
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
             this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
@@ -406,6 +407,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
 
     TF_DEBUG
     bool updatedSongs=false;
+    bool needToSave=dbUpdate>databaseTime;
     bool incremental=rootItem->childCount() && newroot->childCount();
 
     if (incremental && !QFile::exists(cacheFileName())) {
@@ -426,6 +428,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
             removeSongFromList(s);
         }
         delete newroot;
+        databaseTime = dbUpdate;
     } else {
         const MusicLibraryItemRoot *oldRoot = rootItem;
         beginResetModel();
@@ -437,7 +440,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     }
 
     if (updatedSongs) {
-        if (!fromFile) {
+        if (!fromFile && needToSave) {
             toXML(rootItem, dbUpdate);
         }
 
@@ -515,7 +518,7 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
     //Start with the document
     writer.writeStartElement(constTopTag);
     writer.writeAttribute("version", QString::number(constVersion));
-    writer.writeAttribute("date", QString::number(date.toTime_t()));
+    writer.writeAttribute("date", QString::number(databaseTime.toTime_t()));
     writer.writeAttribute("groupSingle", Settings::self()->groupSingle() ? "true" : "false");
     //Loop over all artist, albums and tracks.
     foreach (const MusicLibraryItem *a, root->children()) {
@@ -557,8 +560,6 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
     writer.writeEndElement();
     writer.writeEndDocument();
     file.close();
-
-    emit xmlWritten(date);
 }
 
 /**
@@ -583,6 +584,7 @@ bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
     MusicLibraryItemSong *songItem = 0;
     Song song;
     QXmlStreamReader reader(&file);
+    quint32 date=0;
 
     while (!reader.atEnd()) {
         reader.readNext();
@@ -595,10 +597,10 @@ bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
 
             if (constTopTag == element) {
                 quint32 version = reader.attributes().value("version").toString().toUInt();
-                quint32 date = reader.attributes().value("date").toString().toUInt();
+                date = reader.attributes().value("date").toString().toUInt();
                 bool groupSingle = QLatin1String("true")==reader.attributes().value("groupSingle").toString();
 
-                if ( version < constVersion || date != dbUpdate.toTime_t() || groupSingle!=Settings::self()->groupSingle()) {
+                if ( version < constVersion || date < dbUpdate.toTime_t() || groupSingle!=Settings::self()->groupSingle()) {
                     return false;
                 }
 
@@ -659,7 +661,9 @@ bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
     }
 
     file.close();
-    updateMusicLibrary(root, QDateTime(), true);
+    QDateTime dt;
+    dt.setTime_t(date);
+    updateMusicLibrary(root, dt, true);
     return true;
 }
 

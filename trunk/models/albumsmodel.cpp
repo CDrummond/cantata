@@ -42,6 +42,7 @@
 #include "covers.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
+#include "debugtimer.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(AlbumsModel, instance)
@@ -373,6 +374,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
         return;
     }
 
+    TF_DEBUG
     QList<AlbumItem *>::Iterator it=items.begin();
     QList<AlbumItem *>::Iterator end=items.end();
 

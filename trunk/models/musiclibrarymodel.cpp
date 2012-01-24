@@ -49,6 +49,7 @@
 #include <KDE/KLocale>
 #include <KDE/KGlobal>
 #endif
+#include "debugtimer.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MusicLibraryModel, instance)
@@ -403,6 +404,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         return;
     }
 
+    TF_DEBUG
     bool updatedSongs=false;
     bool incremental=rootItem->childCount() && newroot->childCount();
 

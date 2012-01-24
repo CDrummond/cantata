@@ -39,6 +39,7 @@
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "streamfetcher.h"
+#include "debugtimer.h"
 
 static QStringList reverseList(const QStringList &orig)
 {
@@ -390,14 +391,17 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
 
 void PlayQueueModel::clear()
 {
+    beginResetModel();
     songs=QList<Song>();
-    reset();
+    endResetModel();
 }
 
 void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
 {
+    TF_DEBUG
+    beginResetModel();
     this->songs = songs;
-    reset();
+    endResetModel();
 }
 
 /**

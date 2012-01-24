@@ -26,6 +26,7 @@
 
 #include <QtCore/QSet>
 #include <QtCore/QString>
+#include <QtCore/QTimer>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
@@ -83,6 +84,7 @@
 #include "timeslider.h"
 #include "mpris.h"
 #include "dockmanager.h"
+#include "debugtimer.h"
 
 enum Tabs
 {
@@ -240,7 +242,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     nowPlayingFactor(0),
     draggingPositionSlider(false),
     dock(0),
-    mpris(0)
+    mpris(0),
+    playlistSearchTimer(0)
 {
     loaded=0;
     trayItem = 0;
@@ -688,6 +691,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueProxyModel);
+    playQueueProxyModel.setFilterKeyColumn(-1);
     playQueue->setAcceptDrops(true);
     playQueue->setDropIndicatorShown(true);
     playQueue->addAction(removeFromPlaylistAction);
@@ -1104,16 +1108,33 @@ void MainWindow::decreaseVolume()
 
 void MainWindow::searchPlaylist()
 {
-    if (searchPlaylistLineEdit->text().isEmpty()) {
-        playQueueProxyModel.setFilterRegExp("");
-        return;
+    if (!playlistSearchTimer) {
+        playlistSearchTimer=new QTimer(this);
+        connect(playlistSearchTimer, SIGNAL(timeout()), SLOT(realSearchPlaylist()));
     }
+    playlistSearchTimer->start(500);
+}
 
-    playQueueProxyModel.setFilterRegExp(searchPlaylistLineEdit->text());
+void MainWindow::realSearchPlaylist()
+{
+    if (playlistSearchTimer) {
+        playlistSearchTimer->stop();
+    }
+    QString text=searchPlaylistLineEdit->text().trimmed();
+    if (text.length()<4) {
+        playQueueProxyModel.setEnabled(false);
+        if (!playQueueProxyModel.filterRegExp().isEmpty()) {
+            playQueueProxyModel.setFilterRegExp(QString());
+        }
+    } else if (text!=playQueueProxyModel.filterRegExp().pattern()) {
+        playQueueProxyModel.setEnabled(true);
+        playQueueProxyModel.setFilterRegExp(text);
+    }
 }
 
 void MainWindow::updatePlaylist(const QList<Song> &songs)
 {
+    TF_DEBUG
     QList<qint32> selectedSongIds;
     qint32 firstSelectedSongId = -1;
     qint32 firstSelectedRow = -1;

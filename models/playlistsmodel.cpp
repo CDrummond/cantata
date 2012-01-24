@@ -37,6 +37,7 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 #include "mpdstats.h"
 #include "mpdconnection.h"
 #include "playqueuemodel.h"
+#include "debugtimer.h"
 
 PlaylistsModel * PlaylistsModel::self()
 {
@@ -400,6 +401,7 @@ void PlaylistsModel::clear()
 
 void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 {
+    TF_DEBUG
     if (items.isEmpty()) {
         if (playlists.isEmpty()) {
             return;
@@ -453,6 +455,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 
 void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song> &songs)
 {
+    TF_DEBUG
     PlaylistItem *pl=getPlaylist(name);
 
     if (pl) {

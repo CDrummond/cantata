@@ -155,6 +155,9 @@ void MtpConnection::updateLibrary()
             musicPath=musicFolder.value().path;
         }
     }
+
+    MusicLibraryItemArtist *artistItem = 0;
+    MusicLibraryItemAlbum *albumItem = 0;
     while (track) {
         QMap<int, Folder>::ConstIterator it=folderMap.find(track->parent_id);
         Song s;
@@ -174,8 +177,13 @@ void MtpConnection::updateLibrary()
         s.track=track->tracknumber;
         s.fillEmptyFields();
         trackMap.insert(track->item_id, track);
-        MusicLibraryItemArtist *artistItem = library->artist(s);
-        MusicLibraryItemAlbum *albumItem = artistItem->album(s);
+
+        if (!artistItem || s.albumArtist()!=artistItem->data()) {
+            artistItem = library->artist(s);
+        }
+        if (!albumItem || albumItem->parent()!=artistItem || s.album!=albumItem->data()) {
+            albumItem = artistItem->album(s);
+        }
         MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
 
         albumItem->append(songItem);

@@ -560,8 +560,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
-    connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
-    connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
 
     expandInterfaceAction->setCheckable(true);
     randomPlaylistAction->setCheckable(true);
@@ -794,6 +792,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
             break;
         }
     }
+
+    connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
+    connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
 
     libraryPage->setView(0==Settings::self()->libraryView());
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());

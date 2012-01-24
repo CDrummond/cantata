@@ -29,6 +29,7 @@
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
 #include "musiclibrarymodel.h"
+#include "albumsmodel.h"
 #include "playqueuemodel.h"
 #include "settings.h"
 #include "config.h"
@@ -295,7 +296,8 @@ void MusicLibraryModel::clear()
     delete oldRoot;
     endResetModel();
 
-    emit updated(rootItem);
+//     emit updated(rootItem);
+    AlbumsModel::self()->update(rootItem);
     emit updateGenres(QStringList());
 }
 
@@ -446,7 +448,8 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
 
         QStringList genres=QStringList(rootItem->genres().toList());
         genres.sort();
-        emit updated(rootItem);
+        AlbumsModel::self()->update(rootItem);
+//         emit updated(rootItem);
         emit updateGenres(genres);
     }
 }

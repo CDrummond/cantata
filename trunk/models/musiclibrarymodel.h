@@ -69,7 +69,7 @@ public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
 
 Q_SIGNALS:
-    void updated(const MusicLibraryItemRoot *root);
+//     void updated(const MusicLibraryItemRoot *root);
     void updateGenres(const QStringList &genres);
 
 private:

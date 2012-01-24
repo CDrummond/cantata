@@ -35,6 +35,7 @@
 #include "dirviewitem.h"
 #include "playqueuemodel.h"
 #include "itemview.h"
+#include "debugtimer.h"
 
 DirViewModel::DirViewModel(QObject *parent)
     : QAbstractItemModel(parent),
@@ -171,6 +172,7 @@ void DirViewModel::clear()
 
 void DirViewModel::updateDirView(DirViewItemRoot *newroot)
 {
+    TF_DEBUG
     const DirViewItemRoot *oldRoot = rootItem;
 
     beginResetModel();

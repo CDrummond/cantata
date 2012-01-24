@@ -44,6 +44,7 @@
 #include "song.h"
 #include "output.h"
 #include "covers.h"
+#include "debugtimer.h"
 
 QString MPDParseUtils::getDir(const QString &f)
 {
@@ -64,6 +65,7 @@ QString MPDParseUtils::getDir(const QString &f)
 
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 {
+    TF_DEBUG
     QList<Playlist> playlists;
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
@@ -95,6 +97,7 @@ QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 
 void MPDParseUtils::parseStats(const QByteArray &data)
 {
+    TF_DEBUG
     MPDStats * const stats = MPDStats::self();
     stats->acquireWriteLock();
 
@@ -128,6 +131,7 @@ void MPDParseUtils::parseStats(const QByteArray &data)
 
 void MPDParseUtils::parseStatus(const QByteArray &data)
 {
+    TF_DEBUG
     MPDStatus * const status = MPDStatus::self();
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
@@ -259,6 +263,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
 
 QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
 {
+    TF_DEBUG
     QList<Song> songs;
     QByteArray song;
 
@@ -296,6 +301,7 @@ void MPDParseUtils::setGroupSingle(bool g)
 
 MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
 {
+    TF_DEBUG
     MusicLibraryItemRoot * const rootItem = new MusicLibraryItemRoot;
     QByteArray currentItem;
     QList<QByteArray> lines = data.split('\n');
@@ -341,6 +347,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
 
 DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
 {
+    TF_DEBUG
     QList<QByteArray> lines = data.split('\n');
 
     DirViewItemRoot * rootItem = new DirViewItemRoot;

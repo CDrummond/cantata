@@ -689,9 +689,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(&playQueueModel, SIGNAL(playListStatsUpdated()), this,
             SLOT(updatePlayListStatus()));
 
+    usingProxy=false;
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueModel);
-    usingProxy=false;
     playQueue->setAcceptDrops(true);
     playQueue->setDropIndicatorShown(true);
     playQueue->addAction(removeFromPlaylistAction);
@@ -1117,12 +1117,20 @@ void MainWindow::searchPlaylist()
 
 void MainWindow::realSearchPlaylist()
 {
+    QList<qint32> selectedSongIds;
     if (playlistSearchTimer) {
         playlistSearchTimer->stop();
     }
     QString filter=searchPlaylistLineEdit->text().trimmed();
     if (filter.length()<2) {
-        if (playQueue->model()!=(&playQueueModel)) {
+        if (usingProxy) {
+            if (playQueue->selectionModel()->hasSelection()) {
+                QModelIndexList items = playQueue->selectionModel()->selectedRows();
+                foreach (const QModelIndex &index, items) {
+                    selectedSongIds.append(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(index).row()));
+                }
+            }
+
             playQueue->setModel(&playQueueModel);
             usingProxy=false;
         }
@@ -1131,12 +1139,26 @@ void MainWindow::realSearchPlaylist()
             playQueueProxyModel.setFilterRegExp(QString());
         }
     } else if (filter!=playQueueProxyModel.filterRegExp().pattern()) {
-        if (playQueue->model()!=(&playQueueProxyModel)) {
+        if (!usingProxy) {
+            if (playQueue->selectionModel()->hasSelection()) {
+                QModelIndexList items = playQueue->selectionModel()->selectedRows();
+                foreach (const QModelIndex &index, items) {
+                    selectedSongIds.append(playQueueModel.getIdByRow(index.row()));
+                }
+            }
             playQueue->setModel(&playQueueProxyModel);
             usingProxy=true;
         }
         playQueueProxyModel.setFilterEnabled(true);
         playQueueProxyModel.setFilterRegExp(filter);
+    }
+
+    if (selectedSongIds.size() > 0) {
+        foreach (qint32 i, selectedSongIds) {
+            qint32 row = playQueueModel.getRowById(i);
+            playQueue->selectionModel()->select(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0))
+                                                           : playQueueModel.index(row, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
     }
 }
 
@@ -1170,7 +1192,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         qint32 newCurrentRow = playQueueModel.getRowById(firstSelectedSongId);
         playQueue->setCurrentIndex(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(newCurrentRow, 0)) : playQueueModel.index(newCurrentRow, 0));
 
-        foreach (int i, selectedSongIds) {
+        foreach (qint32 i, selectedSongIds) {
             qint32 row = playQueueModel.getRowById(i);
             if (row >= 0) {
                 found = true;

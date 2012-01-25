@@ -1112,7 +1112,7 @@ void MainWindow::searchPlaylist()
         playlistSearchTimer=new QTimer(this);
         connect(playlistSearchTimer, SIGNAL(timeout()), SLOT(realSearchPlaylist()));
     }
-    playlistSearchTimer->start(500);
+    playlistSearchTimer->start(250);
 }
 
 void MainWindow::realSearchPlaylist()

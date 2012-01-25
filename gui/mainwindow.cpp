@@ -1486,8 +1486,8 @@ void MainWindow::removeFromPlaylist()
         return;
     }
 
-    for (int i = 0; i < items.size(); i++) {
-        toBeRemoved.append(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(items.at(i)).row() : i));
+    foreach (const QModelIndex &idx, items) {
+        toBeRemoved.append(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row()));
     }
 
     emit removeSongs(toBeRemoved);

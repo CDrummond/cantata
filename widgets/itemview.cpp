@@ -32,6 +32,7 @@
 #include <QtGui/QStyleOptionViewItem>
 #include <QtGui/QPainter>
 #include <QtGui/QAction>
+#include <QtCore/QTimer>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #include <KDE/KPixmapSequence>
@@ -372,6 +373,7 @@ public:
 
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
+    , searchTimer(0)
     , itemModel(0)
     , actLevel(-1)
     , act1(0)
@@ -407,10 +409,10 @@ void ItemView::init(QAction *a1, QAction *a2, int actionLevel)
     actLevel=actionLevel;
     listView->setItemDelegate(new ListDelegate(this, a1, a2, actionLevel));
     treeView->setItemDelegate(new TreeDelegate(this, a1, a2, actionLevel));
-    connect(treeSearch, SIGNAL(returnPressed()), this, SIGNAL(searchItems()));
-    connect(treeSearch, SIGNAL(textChanged(const QString)), this, SIGNAL(searchItems()));
-    connect(listSearch, SIGNAL(returnPressed()), this, SIGNAL(searchItems()));
-    connect(listSearch, SIGNAL(textChanged(const QString)), this, SIGNAL(searchItems()));
+    connect(treeSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
+    connect(treeSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
+    connect(listSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
+    connect(listSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
     connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
 #ifdef ENABLE_KDE_SUPPORT
     if (KGlobalSettings::singleClick()) {
@@ -693,5 +695,21 @@ void ItemView::itemActivated(const QModelIndex &index)
         listView->setRootIndex(index);
         itemModel->setRootIndex(index);
         listView->scrollToTop();
+    }
+}
+
+void ItemView::delaySearchItems()
+{
+    if ((Mode_Tree==mode && treeSearch->text().isEmpty()) || (Mode_Tree!=mode && listSearch->text().isEmpty())) {
+        if (searchTimer) {
+            searchTimer->stop();
+        }
+        emit searchItems();
+    } else {
+        if (!searchTimer) {
+            searchTimer=new QTimer(this);
+            connect(searchTimer, SIGNAL(timeout()), SIGNAL(searchItems()));
+        }
+        searchTimer->start(500);
     }
 }

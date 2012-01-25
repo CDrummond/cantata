@@ -107,7 +107,17 @@ void FolderPage::clear()
 
 void FolderPage::searchItems()
 {
-    proxy.setFilterRegExp(view->searchText());
+    QString filter=view->searchText().trimmed();
+
+    if (filter.isEmpty() ) {
+        proxy.setFilterEnabled(false);
+        if (!proxy.filterRegExp().isEmpty()) {
+             proxy.setFilterRegExp(QString());
+        }
+    } else if (filter!=proxy.filterRegExp().pattern()) {
+        proxy.setFilterEnabled(true);
+        proxy.setFilterRegExp(filter);
+    }
 }
 
 void FolderPage::itemDoubleClicked(const QModelIndex &)

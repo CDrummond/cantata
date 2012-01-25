@@ -1630,8 +1630,8 @@ void MainWindow::copyTrackInfo()
     foreach (const QModelIndex &idx, items) {
         Song s = playQueueModel.getSongByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
         if (s.isEmpty()) {
-            if (txt != "") {
-                txt += "\n";
+            if (!txt.isEmpty()) {
+                txt += QChar('\n');
             }
             txt += s.format();
         }

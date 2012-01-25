@@ -28,18 +28,19 @@
 #include "playqueueproxymodel.h"
 #include "playqueuemodel.h"
 
-PlayQueueProxyModel::PlayQueueProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
+PlayQueueProxyModel::PlayQueueProxyModel(QObject *parent)
+    : QSortFilterProxyModel(parent)
+    , filterEnabled(false)
 {
     //setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     //setSortCaseSensitivity(Qt::CaseInsensitive);
     //setSortLocaleAware(true);
-    enabled=false;
 }
 
 bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (!enabled) {
+    if (!filterEnabled) {
         return true;
     }
 

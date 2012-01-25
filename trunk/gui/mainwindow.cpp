@@ -1120,15 +1120,15 @@ void MainWindow::realSearchPlaylist()
     if (playlistSearchTimer) {
         playlistSearchTimer->stop();
     }
-    QString text=searchPlaylistLineEdit->text().trimmed();
-    if (text.length()<4) {
-        playQueueProxyModel.setEnabled(false);
+    QString filter=searchPlaylistLineEdit->text().trimmed();
+    if (filter.length()<2) {
+        playQueueProxyModel.setFilterEnabled(false);
         if (!playQueueProxyModel.filterRegExp().isEmpty()) {
             playQueueProxyModel.setFilterRegExp(QString());
         }
-    } else if (text!=playQueueProxyModel.filterRegExp().pattern()) {
-        playQueueProxyModel.setEnabled(true);
-        playQueueProxyModel.setFilterRegExp(text);
+    } else if (filter!=playQueueProxyModel.filterRegExp().pattern()) {
+        playQueueProxyModel.setFilterEnabled(true);
+        playQueueProxyModel.setFilterRegExp(filter);
     }
 }
 

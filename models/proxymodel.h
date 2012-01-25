@@ -30,7 +30,8 @@ class ProxyModel : public QSortFilterProxyModel
 {
 public:
     ProxyModel(QObject *parent)
-        : QSortFilterProxyModel(parent) {
+        : QSortFilterProxyModel(parent)
+        , filterEnabled(false) {
     }
     virtual ~ProxyModel() {
     }
@@ -54,7 +55,10 @@ public:
         return false;
     }
 
+    void setFilterEnabled(bool e) { filterEnabled=e; }
+
 private:
+    bool filterEnabled;
     QModelIndex rootIndex;
 };
 

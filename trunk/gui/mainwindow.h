@@ -369,6 +369,7 @@ private:
     DockManager *dock;
     Mpris *mpris;
     QTimer *playlistSearchTimer;
+    bool usingProxy;
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
     friend class LibraryPage;

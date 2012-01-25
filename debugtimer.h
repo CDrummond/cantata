@@ -1,17 +1,18 @@
 #ifndef DEBUG_TIMER
 #define DEBUG_TIMER
 
-#define USE_DBUG_TIMER
+#include "config.h"
 
-#ifdef USE_DBUG_TIMER
+#ifdef CANTATA_DBUG_TIMER
 #include <QtCore/QTime>
+#include <QtCore/QThread>
 #include <QtCore/QDebug>
 #define TF_DEBUG DebugTimer xxxx(__PRETTY_FUNCTION__);
 
 struct DebugTimer
 {
-    DebugTimer(const char *n) : name(n) { time.start(); }
-    ~DebugTimer() { qWarning() << name << time.elapsed(); }
+    DebugTimer(const char *n) : name(n) { time.start(); qWarning() << QThread::currentThreadId() << name << "ENTER"; }
+    ~DebugTimer() { qWarning() << QThread::currentThreadId() << name << "LEAVE" << time.elapsed(); }
     QString name;
     QTime time;
 };

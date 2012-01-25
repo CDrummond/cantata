@@ -1108,11 +1108,18 @@ void MainWindow::decreaseVolume()
 
 void MainWindow::searchPlaylist()
 {
-    if (!playlistSearchTimer) {
-        playlistSearchTimer=new QTimer(this);
-        connect(playlistSearchTimer, SIGNAL(timeout()), SLOT(realSearchPlaylist()));
+    if (searchPlaylistLineEdit->text().isEmpty()) {
+        if (playlistSearchTimer) {
+            playlistSearchTimer->stop();
+        }
+        realSearchPlaylist();
+    } else {
+        if (!playlistSearchTimer) {
+            playlistSearchTimer=new QTimer(this);
+            connect(playlistSearchTimer, SIGNAL(timeout()), SLOT(realSearchPlaylist()));
+        }
+        playlistSearchTimer->start(250);
     }
-    playlistSearchTimer->start(250);
 }
 
 void MainWindow::realSearchPlaylist()

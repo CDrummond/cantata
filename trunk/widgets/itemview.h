@@ -32,6 +32,7 @@ class KPixmapSequenceOverlayPainter;
 #endif
 
 class ProxyModel;
+class QTimer;
 
 class ItemView : public QWidget, public Ui::ItemView
 {
@@ -92,11 +93,13 @@ private Q_SLOTS:
     void backActivated();
     void itemClicked(const QModelIndex &index);
     void itemActivated(const QModelIndex &index);
+    void delaySearchItems();
 
 private:
     QAction * getAction(const QModelIndex &index);
 
 private:
+    QTimer *searchTimer;
     ProxyModel *itemModel;
     QAction *backAction;
     int actLevel;

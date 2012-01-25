@@ -690,8 +690,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
             SLOT(updatePlayListStatus()));
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
-    playQueue->setModel(&playQueueProxyModel);
-    playQueueProxyModel.setFilterKeyColumn(-1);
+    playQueue->setModel(&playQueueModel);
+    usingProxy=false;
     playQueue->setAcceptDrops(true);
     playQueue->setDropIndicatorShown(true);
     playQueue->addAction(removeFromPlaylistAction);
@@ -1122,11 +1122,19 @@ void MainWindow::realSearchPlaylist()
     }
     QString filter=searchPlaylistLineEdit->text().trimmed();
     if (filter.length()<2) {
+        if (playQueue->model()!=(&playQueueModel)) {
+            playQueue->setModel(&playQueueModel);
+            usingProxy=false;
+        }
         playQueueProxyModel.setFilterEnabled(false);
         if (!playQueueProxyModel.filterRegExp().isEmpty()) {
             playQueueProxyModel.setFilterRegExp(QString());
         }
     } else if (filter!=playQueueProxyModel.filterRegExp().pattern()) {
+        if (playQueue->model()!=(&playQueueProxyModel)) {
+            playQueue->setModel(&playQueueProxyModel);
+            usingProxy=true;
+        }
         playQueueProxyModel.setFilterEnabled(true);
         playQueueProxyModel.setFilterRegExp(filter);
     }
@@ -1142,11 +1150,9 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     // remember selected song ids and rownum of smallest selected row in proxymodel (because that represents the visible rows)
     if (playQueue->selectionModel()->hasSelection()) {
         QModelIndexList items = playQueue->selectionModel()->selectedRows();
-        QModelIndex index;
-        QModelIndex sourceIndex;
         // find smallest selected rownum
         foreach (const QModelIndex &index, items) {
-            sourceIndex = playQueueProxyModel.mapToSource(index);
+            QModelIndex sourceIndex = usingProxy ? playQueueProxyModel.mapToSource(index) : index;
             selectedSongIds.append(playQueueModel.getIdByRow(sourceIndex.row()));
             if (firstSelectedRow == -1 || index.row() < firstSelectedRow) {
                 firstSelectedRow = index.row();
@@ -1162,31 +1168,37 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     if (selectedSongIds.size() > 0) {
         bool found =  false;
         qint32 newCurrentRow = playQueueModel.getRowById(firstSelectedSongId);
-        QModelIndex newCurrentSourceIndex = playQueueModel.index(newCurrentRow, 0);
-        QModelIndex newCurrentIndex = playQueueProxyModel.mapFromSource(newCurrentSourceIndex);
-        playQueue->setCurrentIndex(newCurrentIndex);
+        playQueue->setCurrentIndex(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(newCurrentRow, 0)) : playQueueModel.index(newCurrentRow, 0));
 
-        qint32 row;
-        QModelIndex sourceIndex;
-        QModelIndex index;
         foreach (int i, selectedSongIds) {
-            row = playQueueModel.getRowById(i);
+            qint32 row = playQueueModel.getRowById(i);
             if (row >= 0) {
                 found = true;
             }
-            sourceIndex = playQueueModel.index(row, 0);
-            index = playQueueProxyModel.mapFromSource(sourceIndex);
-            playQueue->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+
+            playQueue->selectionModel()->select(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0))
+                                                           : playQueueModel.index(row, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
+
         if (!found) {
             // songids which were selected before the playlistupdate were not found anymore (they were removed) -> select firstSelectedRow again (should be the next song after the removed one)
             // firstSelectedRow contains the selected row of the proxymodel before we did the playlist refresh
             // check if rowcount of current proxymodel is smaller than that (last row as removed) and adjust firstSelectedRow when needed
-            index = playQueueProxyModel.index(firstSelectedRow, 0);
-            if (firstSelectedRow > playQueueProxyModel.rowCount(index) - 1) {
-                firstSelectedRow = playQueueProxyModel.rowCount(index) - 1;
+            QModelIndex index;
+
+            if (usingProxy) {
+                index = playQueueProxyModel.index(firstSelectedRow, 0);
+                if (firstSelectedRow > playQueueProxyModel.rowCount(index) - 1) {
+                    firstSelectedRow = playQueueProxyModel.rowCount(index) - 1;
+                }
+                index = playQueueProxyModel.index(firstSelectedRow, 0);
+            } else {
+                index = playQueueModel.index(firstSelectedRow, 0);
+                if (firstSelectedRow > playQueueModel.rowCount(index) - 1) {
+                    firstSelectedRow = playQueueModel.rowCount(index) - 1;
+                }
+                index = playQueueProxyModel.index(firstSelectedRow, 0);
             }
-            index = playQueueProxyModel.index(firstSelectedRow, 0);
             playQueue->setCurrentIndex(index);
             playQueue->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
@@ -1439,7 +1451,7 @@ void MainWindow::updateStatus()
 
 void MainWindow::playlistItemActivated(const QModelIndex &index)
 {
-    emit startPlayingSongId(playQueueModel.getIdByRow(playQueueProxyModel.mapToSource(index).row()));
+    emit startPlayingSongId(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(index).row() : index.row()));
 }
 
 void MainWindow::removeFromPlaylist()
@@ -1453,8 +1465,7 @@ void MainWindow::removeFromPlaylist()
     }
 
     for (int i = 0; i < items.size(); i++) {
-        sourceIndex = playQueueProxyModel.mapToSource(items.at(i));
-        toBeRemoved.append(playQueueModel.getIdByRow(sourceIndex.row()));
+        toBeRemoved.append(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(items.at(i)).row() : i));
     }
 
     emit removeSongs(toBeRemoved);
@@ -1587,17 +1598,15 @@ void MainWindow::updatePosition()
 void MainWindow::copyTrackInfo()
 {
     const QModelIndexList items = playQueue->selectionModel()->selectedRows();
-    QModelIndex sourceIndex;
-    QString txt = "";
+    QString txt;
     QClipboard *clipboard = QApplication::clipboard();
 
     if (items.isEmpty()) {
         return;
     }
 
-    for (int i = 0; i < items.size(); i++) {
-        sourceIndex = playQueueProxyModel.mapToSource(items.at(i));
-        Song s = playQueueModel.getSongByRow(sourceIndex.row());
+    foreach (const QModelIndex &idx, items) {
+        Song s = playQueueModel.getSongByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
         if (s.isEmpty()) {
             if (txt != "") {
                 txt += "\n";
@@ -1718,15 +1727,13 @@ void MainWindow::cropPlaylist()
     QSet<qint32> songs = playQueueModel.getSongIdSet();
     QSet<qint32> selected;
     const QModelIndexList items = playQueue->selectionModel()->selectedRows();
-    QModelIndex sourceIndex;
 
     if (items.isEmpty()) {
         return;
     }
 
-    for(int i = 0; i < items.size(); i++) {
-        sourceIndex = playQueueProxyModel.mapToSource(items.at(i));
-        selected << playQueueModel.getIdByRow(sourceIndex.row());
+    foreach (const QModelIndex &idx, items) {
+        selected << playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
     }
 
     QList<qint32> toBeRemoved = (songs - selected).toList();

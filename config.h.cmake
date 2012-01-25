@@ -10,6 +10,6 @@
 #cmakedefine COMPLEX_TAGLIB_FILENAME 1
 #cmakedefine TAGLIB_EXTRAS_FOUND 1
 #cmakedefine MTP_FOUND 1
-
+#cmakedefine CANTATA_DBUG_TIMER
 #endif
 

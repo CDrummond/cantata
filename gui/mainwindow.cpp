@@ -1145,8 +1145,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         QModelIndex index;
         QModelIndex sourceIndex;
         // find smallest selected rownum
-        for (int i = 0; i < items.size(); i++) {
-            index = items.at(i);
+        foreach (const QModelIndex &index, items) {
             sourceIndex = playQueueProxyModel.mapToSource(index);
             selectedSongIds.append(playQueueModel.getIdByRow(sourceIndex.row()));
             if (firstSelectedRow == -1 || index.row() < firstSelectedRow) {
@@ -1160,8 +1159,8 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     playQueueModel.updatePlaylist(songs);
 
     // reselect song ids or minrow if songids were not found (songs removed)
-    bool found =  false;
     if (selectedSongIds.size() > 0) {
+        bool found =  false;
         qint32 newCurrentRow = playQueueModel.getRowById(firstSelectedSongId);
         QModelIndex newCurrentSourceIndex = playQueueModel.index(newCurrentRow, 0);
         QModelIndex newCurrentIndex = playQueueProxyModel.mapFromSource(newCurrentSourceIndex);
@@ -1170,8 +1169,8 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         qint32 row;
         QModelIndex sourceIndex;
         QModelIndex index;
-        for (int i = 0; i < selectedSongIds.size(); i++) {
-            row = playQueueModel.getRowById(selectedSongIds.at(i));
+        foreach (int i, selectedSongIds) {
+            row = playQueueModel.getRowById(i);
             if (row >= 0) {
                 found = true;
             }

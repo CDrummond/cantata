@@ -147,6 +147,7 @@ void FancyTabProxyStyle::drawControl(
     styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
     styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
     styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+    styleOpt.showDecorationSelected=true;
     bool drawBgnd=true;
 
     if (!selected) {
@@ -429,6 +430,7 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled;
     styleOpt.rect=rect;
     styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+    styleOpt.showDecorationSelected=true;
     bool drawBgnd=true;
     if (!selected) {
         int fader=int(m_tabs[tabIndex]->fader());

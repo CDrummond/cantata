@@ -14,6 +14,7 @@
     refreshed.
  9. When determining cache filename, replace slashes with underscores.
 10. Improve playqueue handling when we have 1000s of entries.
+11. Fix sidebar painting for Qt styles (cleanlooks, plastique, etc.)
 
 0.2.1
 -----

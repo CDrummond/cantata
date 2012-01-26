@@ -187,6 +187,14 @@ void MtpConnection::updateLibrary()
         MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
 
         albumItem->append(songItem);
+
+        if (s.genre.isEmpty()) {
+            #ifdef ENABLE_KDE_SUPPORT
+            s.genre=i18n("Unknown");
+            #else
+            s.genre=QObject::tr("Unknown");
+            #endif
+        }
         albumItem->addGenre(s.genre);
         artistItem->addGenre(s.genre);
         songItem->addGenre(s.genre);

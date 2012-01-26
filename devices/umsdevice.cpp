@@ -121,6 +121,13 @@ void MusicScanner::scanFolder(const QString &f, int level)
                 MusicLibraryItemSong *songItem = new MusicLibraryItemSong(song, albumItem);
 
                 albumItem->append(songItem);
+                if (song.genre.isEmpty()) {
+                    #ifdef ENABLE_KDE_SUPPORT
+                    song.genre=i18n("Unknown");
+                    #else
+                    song.genre=QObject::tr("Unknown");
+                    #endif
+                }
                 albumItem->addGenre(song.genre);
                 artistItem->addGenre(song.genre);
                 songItem->addGenre(song.genre);

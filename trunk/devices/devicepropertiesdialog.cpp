@@ -145,7 +145,7 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
 void DevicePropertiesDialog::enableOkButton()
 {
     Device::Options opts=settings();
-    enableButtonOk(musicFolder->text().trimmed()!=origMusicFolder || (!opts.scheme.isEmpty() && opts!=origOpts) || albumCovers->currentText()!=origCoverName);
+    enableButtonOk(!opts.scheme.isEmpty() && (musicFolder->text().trimmed()!=origMusicFolder || opts!=origOpts || albumCovers->currentText()!=origCoverName));
 }
 
 void DevicePropertiesDialog::slotButtonClicked(int button)

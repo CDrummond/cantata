@@ -553,7 +553,9 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
                     writer.writeAttribute("artist", track->song().artist);
                 }
 //                 writer.writeAttribute("id", QString::number(track->song().id));
-                writer.writeAttribute("genre", track->genre());
+                if (!track->genre().isEmpty()) {
+                    writer.writeAttribute("genre", track->genre());
+                }
             }
             writer.writeEndElement();
         }
@@ -648,7 +650,15 @@ bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
 
                     albumItem->append(songItem);
 
-                    QString genre = reader.attributes().value("genre").toString();
+                    QString genre = reader.attributes().value("genre").toString().trimmed();
+                    if (genre.isEmpty()) {
+                        #ifdef ENABLE_KDE_SUPPORT
+                        genre=i18n("Unknown");
+                        #else
+                        genre=QObject::tr("Unknown");
+                        #endif
+                    }
+
                     albumItem->addGenre(genre);
                     artistItem->addGenre(genre);
                     songItem->addGenre(genre);

@@ -117,6 +117,14 @@ void MtpConnection::connectToDevice()
         return;
     }
 
+    char *ser=LIBMTP_Get_Serialnumber(device);
+    if (ser) {
+        emit deviceDetails(QString::fromUtf8(ser));
+        delete ser;
+    } else {
+        emit deviceDetails(QString());
+    }
+
     musicFolderId=device->default_music_folder;
     emit statusMessage(i18n("Connected to device"));
 }
@@ -477,9 +485,9 @@ void MtpConnection::destroyData()
     }
 }
 
-QString cfgKey(Solid::Device &dev)
+QString cfgKey(Solid::Device &dev, const QString &serial)
 {
-    QString key=QLatin1String("MTP-")+dev.vendor()+QChar('-')+dev.product();
+    QString key=QLatin1String("MTP-")+dev.vendor()+QChar('-')+dev.product()+QChar('-')+serial;
     key.replace('/', '_');
     return key;
 }
@@ -504,11 +512,8 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(this, SIGNAL(delSong(const Song &)), connection, SLOT(delSong(const Song &)));
     connect(connection, SIGNAL(delSongStatus(bool)), this, SLOT(delSongStatus(bool)));
     connect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
+    connect(connection, SIGNAL(deviceDetails(const QString &)), this, SLOT(deviceDetails(const QString &)));
     QTimer::singleShot(0, this, SLOT(rescan()));
-
-    QString configKey=cfgKey(solidDev);
-    opts.load(configKey);
-    configured=KGlobal::config()->hasGroup(configKey);
 }
 
 struct Thread : public QThread
@@ -524,6 +529,16 @@ MtpDevice::~MtpDevice()
     thread->deleteLater();
     thread=0;
     deleteTemp();
+}
+
+void MtpDevice::deviceDetails(const QString &s)
+{
+    if (s!=serial || serial.isEmpty()) {
+        serial=s;
+        QString configKey=cfgKey(solidDev, serial);
+        opts.load(configKey);
+        configured=KGlobal::config()->hasGroup(configKey);
+    }
 }
 
 bool MtpDevice::isConnected() const
@@ -819,7 +834,8 @@ void MtpDevice::saveProperties(const QString &, const QString &, const Device::O
 void MtpDevice::saveProperties()
 {
     configured=true;
-    opts.save(cfgKey(solidDev));
+    opts.save(cfgKey(solidDev, serial));
+
 }
 
 void MtpDevice::deleteTemp()

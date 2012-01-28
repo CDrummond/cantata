@@ -64,6 +64,7 @@ Q_SIGNALS:
     void delSongStatus(bool);
     void libraryUpdated();
     void progress(unsigned long);
+    void deviceDetails(const QString &serialNumber);
 
 private:
     void updateFolders();
@@ -126,6 +127,7 @@ Q_SIGNALS:
     void delSong(const Song &song);
 
 private Q_SLOTS:
+    void deviceDetails(const QString &s);
     void libraryUpdated();
     void rescan();
     void putSongStatus(bool ok, int id, const QString &file, bool fixedVa);
@@ -147,6 +149,7 @@ private:
     KTemporaryFile *tempFile;
     Song currentSong;
     bool mtpUpdating;
+    QString serial;
     friend class MtpConnection;
 };
 

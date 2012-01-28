@@ -207,6 +207,7 @@ Device::Options::Options()
     , ignoreThe(false)
     , replaceSpaces(false)
     , fixVariousArtists(false)
+    , transcoderValue(0)
 {
 }
 
@@ -220,6 +221,8 @@ void Device::Options::load(const QString &group)
     replaceSpaces=grp.readEntry("replaceSpaces", replaceSpaces);
     if (QLatin1String("mpd")!=group) {
         fixVariousArtists=grp.readEntry("fixVariousArtists", fixVariousArtists);
+        transcoderCodec=grp.readEntry("transcoderCodec", transcoderCodec);
+        transcoderValue=grp.readEntry("transcoderValue", transcoderValue);
     }
 }
 
@@ -233,6 +236,8 @@ void Device::Options::save(const QString &group)
     grp.writeEntry("replaceSpaces", replaceSpaces);
     if (QLatin1String("mpd")!=group) {
         grp.writeEntry("fixVariousArtists", fixVariousArtists);
+        grp.writeEntry("transcoderCodec", transcoderCodec);
+        grp.writeEntry("transcoderValue", transcoderValue);
     }
     grp.sync();
 }

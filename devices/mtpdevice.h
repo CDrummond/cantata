@@ -32,6 +32,8 @@
 class MusicLibraryItemRoot;
 class QThread;
 class MtpDevice;
+class KJob;
+class KTemporaryFile;
 
 class MtpConnection : public QObject
 {
@@ -126,15 +128,22 @@ private Q_SLOTS:
     void libraryUpdated();
     void rescan();
     void putSongStatus(bool ok, int id, const QString &file, bool fixedVa);
+    void transcodeSongResult(KJob *job);
+    void transcodePercent(KJob *job, unsigned long percent);
+    void emitProgress(unsigned long);
     void getSongStatus(bool ok);
     void delSongStatus(bool ok);
     void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
     void saveProperties();
 
 private:
+    void deleteTemp();
+
+private:
     Solid::PortableMediaPlayer *pmp;
     QThread *thread;
     MtpConnection *connection;
+    KTemporaryFile *tempFile;
     Song currentSong;
     bool mtpUpdating;
     friend class MtpConnection;

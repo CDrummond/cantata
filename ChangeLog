@@ -1,3 +1,7 @@
+0.4.0
+-----
+1. Transcode support when copying to devices.
+
 0.3.0
 -----
  1. Basic copy to/from device support - USB mass storage (UMS) and MTP support

@@ -30,6 +30,7 @@
 #include "albumsmodel.h"
 #include "mpdparseutils.h"
 #include "mpdconnection.h"
+#include "encoders.h"
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
@@ -107,7 +108,9 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         capacityString=i18n("%1 free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
     }
 
-    if (spaceAvailable>spaceRequired) {
+    bool enoughSpace=spaceAvailable>spaceRequired;
+
+    if (enoughSpace || (sourceUdi.isEmpty() && Encoders::getAvailable().count())) {
         overwrite->setChecked(Settings::self()->overwriteSongs());
         sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
         destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
@@ -122,6 +125,13 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         configureDestLabel->setVisible(destIsDev && !dev->isConfigured());
         configureSourceLabel->setVisible(!destIsDev && !dev->isConfigured());
         show();
+        if (!enoughSpace) {
+            KMessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"
+                                                "The selected songs consume %1, but there is only %2 left.\n",
+                                                "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.",
+                                                KGlobal::locale()->formatByteSize(spaceRequired),
+                                                KGlobal::locale()->formatByteSize(spaceAvailable)));
+        }
     } else {
         KMessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
                                                 "The selected songs consume %1, but there is only %2 left.",
@@ -238,7 +248,7 @@ void ActionDialog::doNext()
             bool copyToDev=sourceUdi.isEmpty();
             Device *dev=DevicesModel::self()->device(copyToDev ? destUdi : sourceUdi);
 
-            if (dev) {
+            if (dev || (currentDev && dev!=currentDev)) {
                 if (dev!=currentDev) {
                     connect(dev, SIGNAL(actionStatus(int)), this, SLOT(actionStatus(int)));
                     connect(dev, SIGNAL(progress(unsigned long)), this, SLOT(copyPercent(unsigned long)));
@@ -346,6 +356,15 @@ void ActionDialog::actionStatus(int status)
         break;
     case Device::NotConnected:
         setPage(PAGE_ERROR, i18n("Not connected to device.<hr/>%1", formatSong(currentSong)));
+        break;
+    case Device::CodecNotAvailable:
+        setPage(PAGE_ERROR, i18n("Selected codec is not available.<hr/>%1", formatSong(currentSong)));
+        break;
+    case Device::TranscodeFailed:
+        setPage(PAGE_SKIP, i18n("Transcoding failed.<br/><br/<hr/>%1", formatSong(currentSong)));
+        break;
+    case Device::FailedToCreateTempFile:
+        setPage(PAGE_ERROR, i18n("Failed to create temporary file.<br/>(Required for transcoding to MTP devices.)<hr/>%1", formatSong(currentSong)));
         break;
     default:
         break;

@@ -89,15 +89,6 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     setupUi(mainWidet);
     setMainWidget(mainWidet);
     configFilename->setIcon(QIcon::fromTheme("configure"));
-    connect(configFilename, SIGNAL(pressed()), SLOT(configureFilenameScheme()));
-    connect(filenameScheme, SIGNAL(textChanged(const QString &)), this, SLOT(enableOkButton()));
-    connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
-    connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
-    connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
-    connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(enableOkButton()));
-    connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(enableOkButton()));
-    connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
-
     albumCovers->insertItems(0, QStringList() << noCoverText << Covers::standardNames());
     fixVariousArtists->setToolTip(i18n("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
                                        "then Cantata will set the 'Artist' tag of all tracks to 'Various Artists' and the "
@@ -123,6 +114,39 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     fixVariousArtists->setVisible(props&Prop_Va);
     fixVariousArtistsLabel->setVisible(props&Prop_Va);
     fixVariousArtists->setChecked(opts.fixVariousArtists);
+    transcoderFrame->setVisible(props&Prop_Transcoder);
+    transcoderName->clear();
+    transcoderName->addItem(i18n("Do not transcode"), QString());
+    transcoderName->setCurrentIndex(0);
+    transcoderValue->setVisible(false);
+
+    if (props&Prop_Transcoder) {
+        QList<Encoders::Encoder> encs=Encoders::getAvailable();
+
+        if (encs.isEmpty()) {
+            transcoderFrame->setVisible(false);
+        } else {
+            foreach (const Encoders::Encoder &e, encs) {
+                transcoderName->addItem(i18n("Transcode to \"%1\"", e.name), e.codec);
+            }
+
+            if (opts.transcoderCodec.isEmpty()) {
+                transcoderChanged();
+            } else {
+                Encoders::Encoder enc=Encoders::getEncoder(opts.transcoderCodec);
+                if (!enc.isNull()) {
+                    for (int i=1; i<transcoderName->count(); ++i) {
+                        if (transcoderName->itemData(i).toString()==opts.transcoderCodec) {
+                            transcoderName->setCurrentIndex(i);
+                            transcoderChanged();
+                            transcoderValue->setValue(opts.transcoderValue);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
     albumCovers->setCurrentIndex(0);
     origCoverName=coverName;
     if (origCoverName==Device::constNoCover) {
@@ -138,8 +162,38 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     origMusicFolder=path;
     albumCovers->setValidator(new CoverNameValidator(this));
 
+    connect(configFilename, SIGNAL(pressed()), SLOT(configureFilenameScheme()));
+    connect(filenameScheme, SIGNAL(textChanged(const QString &)), this, SLOT(enableOkButton()));
+    connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
+    connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
+    connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
+    connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(enableOkButton()));
+    connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(enableOkButton()));
+    connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
+    connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
+    connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(enableOkButton()));
+
     KDialog::show();
     enableButtonOk(false);
+}
+
+void DevicePropertiesDialog::transcoderChanged()
+{
+    QString codec=transcoderName->itemData(transcoderName->currentIndex()).toString();
+    if (codec.isEmpty()) {
+        transcoderName->setToolTip(QString());
+        transcoderValue->setVisible(false);
+    } else {
+        Encoders::Encoder enc=Encoders::getEncoder(codec);
+        transcoderName->setToolTip(enc.description);
+        if (enc.values.count()) {
+            transcoderValue->setValues(enc);
+            transcoderValue->setVisible(true);
+        } else {
+            transcoderValue->setVisible(false);
+        }
+    }
+    enableOkButton();
 }
 
 void DevicePropertiesDialog::enableOkButton()
@@ -187,5 +241,18 @@ Device::Options DevicePropertiesDialog::settings()
     opts.ignoreThe=ignoreThe->isChecked();
     opts.replaceSpaces=replaceSpaces->isChecked();
     opts.fixVariousArtists=fixVariousArtists->isChecked();
+    opts.transcoderCodec=QString();
+    opts.transcoderValue=0;
+    if (transcoderFrame->isVisible()) {
+        opts.transcoderCodec=transcoderName->itemData(transcoderName->currentIndex()).toString();
+
+        if (!opts.transcoderCodec.isEmpty()) {
+            Encoders::Encoder enc=Encoders::getEncoder(opts.transcoderCodec);
+
+            if (!enc.isNull() && transcoderValue->value()<enc.values.count()) {
+                opts.transcoderValue=enc.values.at(transcoderValue->value()).value;
+            }
+        }
+    }
     return opts;
 }

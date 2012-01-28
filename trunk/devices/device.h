@@ -57,7 +57,8 @@ public:
         bool operator==(const Options &o) const {
             return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&
                    replaceSpaces==o.replaceSpaces && scheme==o.scheme && fixVariousArtists==o.fixVariousArtists &&
-                   transcoderCodec==o.transcoderCodec && (transcoderCodec.isEmpty() || transcoderValue==o.transcoderValue);
+                   transcoderCodec==o.transcoderCodec &&
+                   (transcoderCodec.isEmpty() || (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent));
         }
         bool operator!=(const Options &o) const {
             return !(*this==o);
@@ -74,6 +75,7 @@ public:
         bool fixVariousArtists;
         QString transcoderCodec;
         int transcoderValue;
+        bool transcoderWhenDifferent;
     };
 
     static Device * create(DevicesModel *m, const QString &udi);
@@ -188,6 +190,7 @@ protected:
     QString statusMsg;
     bool needToFixVa;
     bool jobAbortRequested;
+    bool transcoding;
     Encoders::Encoder encoder;
 };
 

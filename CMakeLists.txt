@@ -10,7 +10,7 @@ set(DEBIAN_PACKAGE_DESCRIPTION "Qt4/KDE4 Client for MPD")
 set(DEBIAN_PACKAGE_SECTION "kde4")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "3")
+set(CPACK_PACKAGE_VERSION_MINOR "4")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_PACKAGE_CONTACT "Craig Drummond <craig.p.drummond@gmail.com>")
 set(CANTATA_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
@@ -235,10 +235,11 @@ IF( ENABLE_KDE_SUPPORT )
 
         SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp
              devices/device.cpp devices/umsdevice.cpp devices/mtpdevice.cpp models/devicesmodel.cpp devices/filetyperesolver.cpp
-             devices/tagreader.cpp devices/actiondialog.cpp devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp)
+             devices/tagreader.cpp devices/actiondialog.cpp devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp
+             devices/encoders.cpp devices/transcodingjob.cpp devices/valueslider.cpp)
         SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h
              devices/device.h devices/umsdevice.h devices/mtpdevice.h models/devicesmodel.h devices/actiondialog.h devices/devicepropertiesdialog.h
-             devices/filenameschemedialog.h)
+             devices/filenameschemedialog.h devices/transcodingjob.h devices/valueslider.h)
         SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertiesdialog.ui
              devices/filenameschemedialog.ui )
         include_directories(${CMAKE_SOURCE_DIR}/devices)

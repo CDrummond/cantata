@@ -30,6 +30,8 @@
 #include "devicepropertiesdialog.h"
 #include "covers.h"
 #include "song.h"
+#include "encoders.h"
+#include "transcodingjob.h"
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtCore/QDir>
@@ -380,7 +382,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
         KTemporaryFile *temp=0;
 
         if (fixVa) {
-            // Need to 'workaround' broek various artists handling, so write to a temporary file first...
+            // Need to 'workaround' broken various artists handling, so write to a temporary file first...
             temp=new KTemporaryFile();
             int index=song.file.lastIndexOf('.');
             if (index>0) {
@@ -480,6 +482,7 @@ QString cfgKey(Solid::Device &dev)
 MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     : Device(m, dev)
     , pmp(dev.as<Solid::PortableMediaPlayer>())
+    , tempFile(0)
     , mtpUpdating(false)
 {
     thread=new QThread(this);
@@ -488,7 +491,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     thread->start();
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
-    connect(connection, SIGNAL(progress(unsigned long)), this, SIGNAL(progress(unsigned long)));
+    connect(connection, SIGNAL(progress(unsigned long)), this, SLOT(emitProgress(unsigned long)));
     connect(this, SIGNAL(putSong(const Song &, bool)), connection, SLOT(putSong(const Song &, bool)));
     connect(connection, SIGNAL(putSongStatus(bool, int, const QString &, bool)), this, SLOT(putSongStatus(bool, int, const QString &, bool)));
     connect(this, SIGNAL(getSong(const Song &, const QString &)), connection, SLOT(getSong(const Song &, const QString &)));
@@ -515,6 +518,7 @@ MtpDevice::~MtpDevice()
         Thread::sleep();
     thread->deleteLater();
     thread=0;
+    deleteTemp();
 }
 
 bool MtpDevice::isConnected() const
@@ -530,7 +534,7 @@ void MtpDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(QString(), QString(), opts, DevicePropertiesDialog::Prop_Va);
+    dlg->show(QString(), QString(), opts, DevicePropertiesDialog::Prop_Va|DevicePropertiesDialog::Prop_Transcoder);
 }
 
 void MtpDevice::rescan()
@@ -573,7 +577,38 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
     if (!opts.fixVariousArtists) {
         currentSong.albumartist=currentSong.artist;
     }
-    emit putSong(s, needToFixVa);
+
+    if (!opts.transcoderCodec.isEmpty()) {
+        encoder=Encoders::getEncoder(opts.transcoderCodec);
+        if (encoder.codec.isEmpty()) {
+            emit actionStatus(CodecNotAvailable);
+            return;
+        } else {
+            deleteTemp();
+            tempFile=new KTemporaryFile();
+            tempFile->setSuffix(encoder.extension);
+            tempFile->setAutoRemove(false);
+
+            if (!tempFile->open()) {
+                deleteTemp();
+                emit actionStatus(FailedToCreateTempFile);
+                return;
+            }
+            QString destFile=tempFile->fileName();
+            tempFile->close();
+            if (QFile::exists(destFile)) {
+                QFile::remove(destFile);
+            }
+
+            TranscodingJob *job=new TranscodingJob(encoder.params(opts.transcoderValue, s.file, destFile));
+            connect(job, SIGNAL(result(KJob *)), SLOT(transcodeSongResult(KJob *)));
+            connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(transcodePercent(KJob *, unsigned long)));
+            job->start();
+            return;
+        }
+    }
+
+    emit putSong(currentSong, needToFixVa);
 }
 
 void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
@@ -608,6 +643,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     QDir dir(dest.directory());
     if (!dir.exists() && !Device::createDir(dir.absolutePath())) {
         emit actionStatus(DirCreationFaild);
+        return;
     }
 
     currentSong=s;
@@ -637,6 +673,7 @@ void MtpDevice::cleanDir(const QString &dir)
 
 void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa)
 {
+    deleteTemp();
     if (!ok) {
         emit actionStatus(Failed);
     } else {
@@ -649,6 +686,27 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
         addSongToList(currentSong);
         emit actionStatus(Ok);
     }
+}
+
+void MtpDevice::transcodeSongResult(KJob *job)
+{
+    if (job->error()) {
+        deleteTemp();
+        emit actionStatus(TranscodeFailed);
+    } else {
+        emit putSong(currentSong, needToFixVa);
+    }
+}
+
+void MtpDevice::transcodePercent(KJob *job, unsigned long percent)
+{
+    Q_UNUSED(job)
+    emit progress(percent/2);
+}
+
+void MtpDevice::emitProgress(unsigned long percent)
+{
+    emit progress(opts.transcoderCodec.isEmpty() ? percent : (50+(percent/2)));
 }
 
 void MtpDevice::getSongStatus(bool ok)
@@ -730,4 +788,13 @@ void MtpDevice::saveProperties()
 {
     configured=true;
     opts.save(cfgKey(solidDev));
+}
+
+void MtpDevice::deleteTemp()
+{
+    if (tempFile) {
+        tempFile->remove();
+        delete tempFile;
+        tempFile=0;
+    }
 }

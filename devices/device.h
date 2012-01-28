@@ -26,6 +26,7 @@
 
 #include "musiclibraryitemroot.h"
 #include "song.h"
+#include "encoders.h"
 #include <QtCore/QObject>
 #include <solid/device.h>
 
@@ -55,7 +56,8 @@ public:
 
         bool operator==(const Options &o) const {
             return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&
-                   replaceSpaces==o.replaceSpaces && scheme==o.scheme && fixVariousArtists==o.fixVariousArtists;
+                   replaceSpaces==o.replaceSpaces && scheme==o.scheme && fixVariousArtists==o.fixVariousArtists &&
+                   transcoderCodec==o.transcoderCodec && (transcoderCodec.isEmpty() || transcoderValue==o.transcoderValue);
         }
         bool operator!=(const Options &o) const {
             return !(*this==o);
@@ -70,6 +72,8 @@ public:
         bool ignoreThe;
         bool replaceSpaces;
         bool fixVariousArtists;
+        QString transcoderCodec;
+        int transcoderValue;
     };
 
     static Device * create(DevicesModel *m, const QString &udi);
@@ -88,7 +92,10 @@ public:
         SourceFileDoesNotExist,
         SongDoesNotExist,
         Failed,
-        NotConnected
+        NotConnected,
+        CodecNotAvailable,
+        TranscodeFailed,
+        FailedToCreateTempFile
     };
 
     Device(DevicesModel *m, Solid::Device &dev)
@@ -171,6 +178,7 @@ protected:
     QString currentMusicPath;
     QString statusMsg;
     bool needToFixVa;
+    Encoders::Encoder encoder;
 };
 
 #endif

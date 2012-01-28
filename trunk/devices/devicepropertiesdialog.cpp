@@ -162,7 +162,7 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     origMusicFolder=path;
     albumCovers->setValidator(new CoverNameValidator(this));
 
-    connect(configFilename, SIGNAL(pressed()), SLOT(configureFilenameScheme()));
+    connect(configFilename, SIGNAL(clicked()), SLOT(configureFilenameScheme()));
     connect(filenameScheme, SIGNAL(textChanged(const QString &)), this, SLOT(enableOkButton()));
     connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
     connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));

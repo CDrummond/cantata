@@ -61,8 +61,8 @@ ActionDialog::ActionDialog(QWidget *parent)
     skipIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(64, 64));
     configureSourceButton->setIcon(QIcon::fromTheme("configure"));
     configureDestButton->setIcon(QIcon::fromTheme("configure"));
-    connect(configureSourceButton, SIGNAL(pressed()), SLOT(configureSource()));
-    connect(configureDestButton, SIGNAL(pressed()), SLOT(configureDest()));
+    connect(configureSourceButton, SIGNAL(clicked()), SLOT(configureSource()));
+    connect(configureDestButton, SIGNAL(clicked()), SLOT(configureDest()));
     connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
 }
 

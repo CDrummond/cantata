@@ -208,6 +208,7 @@ Device::Options::Options()
     , replaceSpaces(false)
     , fixVariousArtists(false)
     , transcoderValue(0)
+    , transcoderWhenDifferent(false)
 {
 }
 
@@ -223,6 +224,7 @@ void Device::Options::load(const QString &group)
         fixVariousArtists=grp.readEntry("fixVariousArtists", fixVariousArtists);
         transcoderCodec=grp.readEntry("transcoderCodec", transcoderCodec);
         transcoderValue=grp.readEntry("transcoderValue", transcoderValue);
+        transcoderWhenDifferent=grp.readEntry("transcoderWhenDifferent", transcoderWhenDifferent);
     }
 }
 
@@ -238,6 +240,7 @@ void Device::Options::save(const QString &group)
         grp.writeEntry("fixVariousArtists", fixVariousArtists);
         grp.writeEntry("transcoderCodec", transcoderCodec);
         grp.writeEntry("transcoderValue", transcoderValue);
+        grp.writeEntry("transcoderWhenDifferent", transcoderWhenDifferent);
     }
     grp.sync();
 }

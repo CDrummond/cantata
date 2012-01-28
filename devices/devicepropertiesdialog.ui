@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>338</height>
+    <height>365</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -191,6 +191,23 @@
        <widget class="QComboBox" name="transcoderName"/>
       </item>
       <item>
+       <layout class="QFormLayout" name="formLayout_3">
+        <item row="0" column="0">
+         <widget class="QLabel" name="transcoderWhenDifferentLabel">
+          <property name="text">
+           <string>Only transcode if source file is of a different format:</string>
+          </property>
+          <property name="buddy">
+           <cstring>transcoderWhenDifferent</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="transcoderWhenDifferent"/>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="ValueSlider" name="transcoderValue"/>
       </item>
      </layout>
@@ -239,6 +256,9 @@
   <tabstop>ignoreThe</tabstop>
   <tabstop>filenameScheme</tabstop>
   <tabstop>configFilename</tabstop>
+  <tabstop>transcoderName</tabstop>
+  <tabstop>transcoderWhenDifferent</tabstop>
+  <tabstop>transcoderValue</tabstop>
  </tabstops>
  <resources/>
  <connections/>

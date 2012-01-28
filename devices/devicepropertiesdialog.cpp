@@ -119,6 +119,9 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     transcoderName->addItem(i18n("Do not transcode"), QString());
     transcoderName->setCurrentIndex(0);
     transcoderValue->setVisible(false);
+    transcoderWhenDifferentLabel->setVisible(false);
+    transcoderWhenDifferent->setVisible(false);
+    transcoderWhenDifferent->setChecked(opts.transcoderWhenDifferent);
 
     if (props&Prop_Transcoder) {
         QList<Encoders::Encoder> encs=Encoders::getAvailable();
@@ -183,9 +186,13 @@ void DevicePropertiesDialog::transcoderChanged()
     if (codec.isEmpty()) {
         transcoderName->setToolTip(QString());
         transcoderValue->setVisible(false);
+        transcoderWhenDifferentLabel->setVisible(false);
+        transcoderWhenDifferent->setVisible(false);
     } else {
         Encoders::Encoder enc=Encoders::getEncoder(codec);
         transcoderName->setToolTip(enc.description);
+        transcoderWhenDifferentLabel->setVisible(true);
+        transcoderWhenDifferent->setVisible(true);
         if (enc.values.count()) {
             transcoderValue->setValues(enc);
             transcoderValue->setVisible(true);
@@ -243,12 +250,14 @@ Device::Options DevicePropertiesDialog::settings()
     opts.fixVariousArtists=fixVariousArtists->isChecked();
     opts.transcoderCodec=QString();
     opts.transcoderValue=0;
+    opts.transcoderWhenDifferent=false;
     if (transcoderFrame->isVisible()) {
         opts.transcoderCodec=transcoderName->itemData(transcoderName->currentIndex()).toString();
 
         if (!opts.transcoderCodec.isEmpty()) {
             Encoders::Encoder enc=Encoders::getEncoder(opts.transcoderCodec);
 
+            opts.transcoderWhenDifferent=transcoderWhenDifferent->isChecked();
             if (!enc.isNull() && transcoderValue->value()<enc.values.count()) {
                 opts.transcoderValue=enc.values.at(transcoderValue->value()).value;
             }

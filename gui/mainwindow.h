@@ -370,6 +370,7 @@ private:
     Mpris *mpris;
     QTimer *playlistSearchTimer;
     bool usingProxy;
+    bool isConnected;
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
     friend class LibraryPage;

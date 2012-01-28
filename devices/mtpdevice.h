@@ -47,6 +47,7 @@ public:
     uint64_t capacity() const { return size; }
     uint64_t usedSpace() const { return used; }
     void emitProgress(unsigned long percent);
+    bool abortRequested() const;
 
 public Q_SLOTS:
     void connectToDevice();

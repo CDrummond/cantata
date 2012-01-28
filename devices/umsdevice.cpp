@@ -33,6 +33,7 @@
 #include "mpdparseutils.h"
 #include "encoders.h"
 #include "transcodingjob.h"
+#include "actiondialog.h"
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
@@ -169,7 +170,9 @@ void UmsDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(audioFolder, coverFileName, opts, DevicePropertiesDialog::Prop_All);
+    dlg->show(audioFolder, coverFileName, opts,
+              qobject_cast<ActionDialog *>(parent) ? (DevicePropertiesDialog::Prop_All-DevicePropertiesDialog::Prop_Folder)
+                                                   : DevicePropertiesDialog::Prop_All);
 }
 
 void UmsDevice::rescan()
@@ -181,6 +184,7 @@ void UmsDevice::rescan()
 
 void UmsDevice::addSong(const Song &s, bool overwrite)
 {
+    jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -242,6 +246,7 @@ void UmsDevice::addSong(const Song &s, bool overwrite)
 
 void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
 {
+    jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -290,6 +295,7 @@ void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
 
 void UmsDevice::removeSong(const Song &s)
 {
+    jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -307,12 +313,18 @@ void UmsDevice::removeSong(const Song &s)
 
 void UmsDevice::percent(KJob *job, unsigned long percent)
 {
-    Q_UNUSED(job)
+    if (jobAbortRequested) {
+        job->kill(KJob::Quietly);
+        return;
+    }
     emit progress(percent);
 }
 
 void UmsDevice::addSongResult(KJob *job)
 {
+    if (jobAbortRequested) {
+        return;
+    }
     if (job->error()) {
         emit actionStatus(opts.transcoderCodec.isEmpty() ? Failed : TranscodeFailed);
     } else {
@@ -337,6 +349,9 @@ void UmsDevice::addSongResult(KJob *job)
 
 void UmsDevice::copySongToResult(KJob *job)
 {
+    if (jobAbortRequested) {
+        return;
+    }
     if (job->error()) {
         emit actionStatus(Failed);
     } else {
@@ -354,6 +369,9 @@ void UmsDevice::copySongToResult(KJob *job)
 
 void UmsDevice::removeSongResult(KJob *job)
 {
+    if (jobAbortRequested) {
+        return;
+    }
     if (job->error()) {
         emit actionStatus(Failed);
     } else {

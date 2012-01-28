@@ -2,6 +2,8 @@
 -----
 1. Transcode support when copying to devices.
 2. Don't allow editing of device properties when device is busy.
+3. Don't allow to change Music folder for UMS devices when properties dialog
+   is shown from copy dialog.
 
 0.3.0
 -----

@@ -49,7 +49,7 @@
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
     ((MtpConnection *)data)->emitProgress((unsigned long)(((processed*1.0)/(total*1.0)*100.0)+0.5));
-    return 0;
+    return ((MtpConnection *)data)->abortRequested() ? -1 : 0;
 }
 
 MtpConnection::MtpConnection(MtpDevice *p)
@@ -75,6 +75,11 @@ MusicLibraryItemRoot * MtpConnection::takeLibrary()
     MusicLibraryItemRoot *lib=library;
     library=0;
     return lib;
+}
+
+bool MtpConnection::abortRequested() const
+{
+    return dev->abortRequested();
 }
 
 void MtpConnection::emitProgress(unsigned long percent)
@@ -553,6 +558,7 @@ void MtpDevice::rescan()
 
 void MtpDevice::addSong(const Song &s, bool overwrite)
 {
+    jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -577,10 +583,6 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
         return;
     }
     currentSong=s;
-    // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
-    if (!opts.fixVariousArtists) {
-        currentSong.albumartist=currentSong.artist;
-    }
 
     if (!opts.transcoderCodec.isEmpty()) {
         encoder=Encoders::getEncoder(opts.transcoderCodec);
@@ -617,6 +619,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
 
 void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
 {
+    jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -656,6 +659,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
 
 void MtpDevice::removeSong(const Song &s)
 {
+    jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -678,14 +682,20 @@ void MtpDevice::cleanDir(const QString &dir)
 void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa)
 {
     deleteTemp();
+    if (jobAbortRequested) {
+        return;
+    }
     if (!ok) {
         emit actionStatus(Failed);
     } else {
+
         currentSong.id=id;
         currentSong.file=file;
 //         Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), false);
         if (needToFixVa && fixedVa) {
             Device::fixVariousArtists(QString(), currentSong, true);
+        } else if (!opts.fixVariousArtists) { // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
+            currentSong.albumartist=currentSong.artist;
         }
         addSongToList(currentSong);
         emit actionStatus(Ok);
@@ -694,8 +704,11 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
 
 void MtpDevice::transcodeSongResult(KJob *job)
 {
-    if (job->error()) {
+    if (jobAbortRequested) {
         deleteTemp();
+        return;
+    }
+    if (job->error()) {
         emit actionStatus(TranscodeFailed);
     } else {
         emit putSong(currentSong, needToFixVa);
@@ -704,17 +717,27 @@ void MtpDevice::transcodeSongResult(KJob *job)
 
 void MtpDevice::transcodePercent(KJob *job, unsigned long percent)
 {
+    if (jobAbortRequested) {
+        job->kill(KJob::EmitResult); // emit result so that temp file can be removed!
+        return;
+    }
     Q_UNUSED(job)
     emit progress(percent/2);
 }
 
 void MtpDevice::emitProgress(unsigned long percent)
 {
+    if (jobAbortRequested) {
+        return;
+    }
     emit progress(opts.transcoderCodec.isEmpty() ? percent : (50+(percent/2)));
 }
 
 void MtpDevice::getSongStatus(bool ok)
 {
+    if (jobAbortRequested) {
+        return;
+    }
     if (!ok) {
         emit actionStatus(Failed);
     } else {
@@ -733,6 +756,9 @@ void MtpDevice::getSongStatus(bool ok)
 
 void MtpDevice::delSongStatus(bool ok)
 {
+    if (jobAbortRequested) {
+        return;
+    }
     if (!ok) {
         emit actionStatus(Failed);
     } else {

@@ -183,16 +183,12 @@ bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
 
 bool MPDConnection::connectToMPD()
 {
-    State old=state;
     if (connectToMPD(sock) && connectToMPD(idleSocket, true)) {
         state=State_Connected;
     } else {
         state=State_Disconnected;
     }
 
-    if (state!=old) {
-        emit stateChanged(State_Connected==state);
-    }
     return State_Connected==state;
 }
 
@@ -210,9 +206,6 @@ void MPDConnection::disconnectFromMPD()
     }
     sock.close();
     idleSocket.close();
-    if (State_Connected==state) {
-        emit stateChanged(false);
-    }
     state=State_Disconnected;
 }
 
@@ -220,12 +213,21 @@ void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pa
 {
     if (hostname!=host || (!sock.isLocal() && port!=p) || password!=pass) {
         qDebug() << "setDetails" << host << p << (pass.isEmpty() ? false : true);
+        bool wasConnected=State_Connected==state;
         disconnectFromMPD();
         hostname=host;
         port=p;
         password=pass;
         qDebug() << "call connectToMPD";
-        connectToMPD();
+        if (connectToMPD()) {
+            if (!wasConnected) {
+                emit stateChanged(true);
+            }
+        } else {
+            if (wasConnected) {
+                emit stateChanged(false);
+            }
+        }
     }
 }
 
@@ -573,8 +575,8 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
         bool wasConnected=State_Connected==state;
         qDebug() << "onSocketStateChanged";
         disconnectFromMPD();
-        if (wasConnected) {
-            connectToMPD();
+        if (wasConnected && !connectToMPD()) {
+            emit stateChanged(false);
         }
     }
 }

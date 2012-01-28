@@ -28,12 +28,11 @@ ValueSlider::ValueSlider(QWidget *parent)
     : QWidget(parent)
 {
     defaultSetting=0;
-    QBoxLayout *mainLayout;
-    valueTypeLabel = new QLabel(this);
-    valueTypeLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    mainLayout = new QVBoxLayout(this);
+    QBoxLayout *mainLayout = new QVBoxLayout(this);
     QBoxLayout *secondaryTopLayout = new QHBoxLayout(this);
     QBoxLayout *secondaryBotLayout = new QHBoxLayout(this);
+    valueTypeLabel = new QLabel(this);
+    valueTypeLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     mainLayout->addWidget(valueTypeLabel);
     mainLayout->addLayout(secondaryTopLayout);
     mainLayout->addLayout(secondaryBotLayout);

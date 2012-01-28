@@ -231,19 +231,22 @@ bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
+MainWindow::MainWindow(QWidget *parent)
 #ifdef ENABLE_KDE_SUPPORT
-MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent),
+    : KXmlGuiWindow(parent)
 #else
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
+    : QMainWindow(parent)
 #endif
-    lastState(MPDStatus::State_Inactive),
-    lastSongId(-1),
-    fetchStatsFactor(0),
-    nowPlayingFactor(0),
-    draggingPositionSlider(false),
-    dock(0),
-    mpris(0),
-    playlistSearchTimer(0)
+    , lastState(MPDStatus::State_Inactive)
+    , lastSongId(-1)
+    , fetchStatsFactor(0)
+    , nowPlayingFactor(0)
+    , draggingPositionSlider(false)
+    , dock(0)
+    , mpris(0)
+    , playlistSearchTimer(0)
+    , usingProxy(false)
+    , isConnected(false)
 {
     loaded=0;
     trayItem = 0;
@@ -689,7 +692,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(&playQueueModel, SIGNAL(playListStatsUpdated()), this,
             SLOT(updatePlayListStatus()));
 
-    usingProxy=false;
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueModel);
     playQueue->setAcceptDrops(true);
@@ -905,6 +907,10 @@ void MainWindow::showError(const QString &message)
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
 {
+    if (connected==isConnected) {
+        return;
+    }
+    isConnected=connected;
     if (connected) {
         emit getStatus();
         emit getStats();

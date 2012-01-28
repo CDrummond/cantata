@@ -103,7 +103,9 @@ public:
         , model(m)
         , configured(false)
         , solidDev(dev)
-        , update(0) {
+        , update(0)
+        , needToFixVa(false)
+        , jobAbortRequested(false) {
     }
     virtual ~Device() {
     }
@@ -153,6 +155,13 @@ public:
         return configured;
     }
 
+    void abortJob() {
+        jobAbortRequested=true;
+    }
+    bool abortRequested() const {
+        return jobAbortRequested;
+    }
+
 public Q_SLOTS:
     void setStatusMessage(const QString &message);
 
@@ -178,6 +187,7 @@ protected:
     QString currentMusicPath;
     QString statusMsg;
     bool needToFixVa;
+    bool jobAbortRequested;
     Encoders::Encoder encoder;
 };
 

@@ -294,6 +294,11 @@ QString Encoder::changeExtension(const QString &file)
     return f+extension;
 }
 
+bool Encoder::isDifferent(const QString &file)
+{
+    return file!=changeExtension(file);
+}
+
 QStringList Encoder::params(int value, const QString &in, const QString &out)
 {
     QStringList p;

@@ -584,7 +584,8 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
     }
     currentSong=s;
 
-    if (!opts.transcoderCodec.isEmpty()) {
+    if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
+        transcoding=true;
         encoder=Encoders::getEncoder(opts.transcoderCodec);
         if (encoder.codec.isEmpty()) {
             emit actionStatus(CodecNotAvailable);
@@ -614,6 +615,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
         }
     }
 
+    transcoding=false;
     emit putSong(currentSong, needToFixVa);
 }
 
@@ -730,7 +732,7 @@ void MtpDevice::emitProgress(unsigned long percent)
     if (jobAbortRequested) {
         return;
     }
-    emit progress(opts.transcoderCodec.isEmpty() ? percent : (50+(percent/2)));
+    emit progress(transcoding ? (50+(percent/2)) : percent);
 }
 
 void MtpDevice::getSongStatus(bool ok)

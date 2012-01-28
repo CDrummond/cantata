@@ -60,6 +60,7 @@ namespace Encoders
             return name.isEmpty();
         }
         QString changeExtension(const QString &file);
+        bool isDifferent(const QString &file);
         QStringList params(int value, const QString &in, const QString &out);
         QString name;
         QString description;

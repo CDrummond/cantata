@@ -232,11 +232,13 @@ void UmsDevice::addSong(const Song &s, bool overwrite)
     }
 
     currentSong=s;
-    if (encoder.codec.isEmpty()) {
+    if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
+        transcoding=false;
         KIO::FileCopyJob *job=KIO::file_copy(KUrl(s.file), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
         connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
         connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
     } else {
+        transcoding=true;
         TranscodingJob *job=new TranscodingJob(encoder.params(opts.transcoderValue, s.file, destFile));
         connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
         connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
@@ -323,6 +325,9 @@ void UmsDevice::percent(KJob *job, unsigned long percent)
 void UmsDevice::addSongResult(KJob *job)
 {
     QString destFile=audioFolder+opts.createFilename(currentSong);
+    if (transcoding) {
+        destFile=encoder.changeExtension(destFile);
+    }
     if (jobAbortRequested) {
         if (0!=job->percent() && 100!=job->percent() && QFile::exists(destFile)) {
             QFile::remove(destFile);
@@ -330,13 +335,10 @@ void UmsDevice::addSongResult(KJob *job)
         return;
     }
     if (job->error()) {
-        emit actionStatus(opts.transcoderCodec.isEmpty() ? Failed : TranscodeFailed);
+        emit actionStatus(transcoding ? TranscodeFailed : Failed);
     } else {
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
 
-        if (!opts.transcoderCodec.isEmpty()) {
-            destFile=encoder.changeExtension(destFile);
-        }
         currentSong.file=destFile;
         if (Device::constNoCover!=coverFileName) {
             Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), coverFileName);
@@ -492,10 +494,11 @@ void UmsDevice::setup()
             } else if(line.startsWith(constVariousArtistsFix+"=")) {
                 opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
             } else if (line.startsWith(constTranscoder+"="))  {
-                QStringList parts=line.section('=', 1, 1).split('/');
-                if (2==parts.size()) {
+                QStringList parts=line.section('=', 1, 1).split(',');
+                if (3==parts.size()) {
                     opts.transcoderCodec=parts.at(0);
                     opts.transcoderValue=parts.at(1).toInt();
+                    opts.transcoderWhenDifferent=QLatin1String("true")==parts.at(2);
                 }
             }
         }
@@ -565,6 +568,11 @@ void UmsDevice::saveProperties()
     saveProperties(audioFolder, coverFileName, opts);
 }
 
+static inline QString toString(bool b)
+{
+    return b ? QLatin1String("true") : QLatin1String("false");
+}
+
 void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &newOpts)
 {
     if (configured && opts==newOpts && newPath==audioFolder && newCoverFileName==coverFileName) {
@@ -608,19 +616,19 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
             out << constMusicFilenameSchemeKey << '=' << opts.scheme << '\n';
         }
         if (opts.scheme!=def.scheme) {
-            out << constVfatSafeKey << '=' << (opts.vfatSafe ? "true" : "false") << '\n';
+            out << constVfatSafeKey << '=' << toString(opts.vfatSafe) << '\n';
         }
         if (opts.asciiOnly!=def.asciiOnly) {
-            out << constAsciiOnlyKey << '=' << (opts.asciiOnly ? "true" : "false") << '\n';
+            out << constAsciiOnlyKey << '=' << toString(opts.asciiOnly) << '\n';
         }
         if (opts.ignoreThe!=def.ignoreThe) {
-            out << constIgnoreTheKey << '=' << (opts.ignoreThe ? "true" : "false") << '\n';
+            out << constIgnoreTheKey << '=' << toString(opts.ignoreThe) << '\n';
         }
         if (opts.replaceSpaces!=def.replaceSpaces) {
-            out << constReplaceSpacesKey << '=' << (opts.replaceSpaces ? "true" : "false") << '\n';
+            out << constReplaceSpacesKey << '=' << toString(opts.replaceSpaces) << '\n';
         }
 //         if (useAutomatically) {
-//             out << constUseAutomaticallyKey << '=' << (useAutomatically ? "true" : "false") << '\n';
+//             out << constUseAutomaticallyKey << '=' << toString(useAutomatically) << '\n';
 //         }
 
         foreach (const QString &u, unusedParams) {
@@ -629,7 +637,7 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
 //         if (coverFileName!=constDefCoverFileName) {
 //             out << constCoverFileName << '=' << coverFileName << '\n';
 //         }
-//         out << constVariousArtistsFix << '=' << (opts.fixVariousArtists ? "true" : "false") << '\n';
+//         out << constVariousArtistsFix << '=' << toString(opts.fixVariousArtists) << '\n';
     }
 
     QFile extra(path+constCantataSettingsFile);
@@ -640,10 +648,10 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
             out << constCoverFileName << '=' << coverFileName << '\n';
         }
         if (opts.fixVariousArtists) {
-            out << constVariousArtistsFix << '=' << (opts.fixVariousArtists ? "true" : "false") << '\n';
+            out << constVariousArtistsFix << '=' << toString(opts.fixVariousArtists) << '\n';
         }
         if (!opts.transcoderCodec.isEmpty()) {
-            out << constTranscoder << '=' << opts.transcoderCodec << '/' << opts.transcoderValue;
+            out << constTranscoder << '=' << opts.transcoderCodec << ',' << opts.transcoderValue << ',' << toString(opts.transcoderWhenDifferent) << '\n';
         }
     }
 

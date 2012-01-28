@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>248</height>
+    <height>338</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -182,6 +182,21 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="transcoderFrame">
+     <property name="title">
+      <string>Transcoding</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QComboBox" name="transcoderName"/>
+      </item>
+      <item>
+       <widget class="ValueSlider" name="transcoderValue"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -207,6 +222,11 @@
    <extends>QLineEdit</extends>
    <header>dirrequester.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ValueSlider</class>
+   <extends>QSlider</extends>
+   <header>valueslider.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

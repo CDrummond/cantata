@@ -31,6 +31,8 @@
 #include "devicepropertiesdialog.h"
 #include "covers.h"
 #include "mpdparseutils.h"
+#include "encoders.h"
+#include "transcodingjob.h"
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
@@ -54,6 +56,7 @@ static const QLatin1String constReplaceSpacesKey("replace_spaces");
 static const QLatin1String constCantataSettingsFile("/.cantata");
 static const QLatin1String constCoverFileName("cover_filename"); // Cantata extension!
 static const QLatin1String constVariousArtistsFix("fix_various_artists"); // Cantata extension!
+static const QLatin1String constTranscoder("transcoder"); // Cantata extension!
 static const QLatin1String constDefCoverFileName("cover.jpg");
 
 MusicScanner::MusicScanner(const QString &f)
@@ -200,6 +203,15 @@ void UmsDevice::addSong(const Song &s, bool overwrite)
 
     QString destFile=audioFolder+opts.createFilename(s);
 
+    if (!opts.transcoderCodec.isEmpty()) {
+        encoder=Encoders::getEncoder(opts.transcoderCodec);
+        if (encoder.codec.isEmpty()) {
+            emit actionStatus(CodecNotAvailable);
+            return;
+        }
+        destFile=encoder.changeExtension(destFile);
+    }
+
     if (!overwrite && QFile::exists(destFile)) {
         emit actionStatus(FileExists);
         return;
@@ -212,9 +224,16 @@ void UmsDevice::addSong(const Song &s, bool overwrite)
     }
 
     currentSong=s;
-    KIO::FileCopyJob *job=KIO::file_copy(KUrl(s.file), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
-    connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
-    connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
+    if (encoder.codec.isEmpty()) {
+        KIO::FileCopyJob *job=KIO::file_copy(KUrl(s.file), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
+        connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
+        connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
+    } else {
+        TranscodingJob *job=new TranscodingJob(encoder.params(opts.transcoderValue, s.file, destFile));
+        connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
+        connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
+        job->start();
+    }
 }
 
 void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
@@ -256,6 +275,7 @@ void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     QDir dir(dest.directory());
     if (!dir.exists() && !Device::createDir(dir.absolutePath())) {
         emit actionStatus(DirCreationFaild);
+        return;
     }
 
     currentSong=s;
@@ -290,11 +310,14 @@ void UmsDevice::percent(KJob *job, unsigned long percent)
 void UmsDevice::addSongResult(KJob *job)
 {
     if (job->error()) {
-        emit actionStatus(Failed);
+        emit actionStatus(opts.transcoderCodec.isEmpty() ? Failed : TranscodeFailed);
     } else {
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
         QString destFile=audioFolder+opts.createFilename(currentSong);
 
+        if (!opts.transcoderCodec.isEmpty()) {
+            destFile=encoder.changeExtension(destFile);
+        }
         currentSong.file=destFile;
         if (Device::constNoCover!=coverFileName) {
             Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), coverFileName);
@@ -440,6 +463,12 @@ void UmsDevice::setup()
                 coverFileName=line.section('=', 1, 1);
             } else if(line.startsWith(constVariousArtistsFix+"=")) {
                 opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
+            } else if (line.startsWith(constTranscoder+"="))  {
+                QStringList parts=line.section('=', 1, 1).split('/');
+                if (2==parts.size()) {
+                    opts.transcoderCodec=parts.at(0);
+                    opts.transcoderValue=parts.at(1).toInt();
+                }
             }
         }
     }
@@ -584,6 +613,9 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
         }
         if (opts.fixVariousArtists) {
             out << constVariousArtistsFix << '=' << (opts.fixVariousArtists ? "true" : "false") << '\n';
+        }
+        if (!opts.transcoderCodec.isEmpty()) {
+            out << constTranscoder << '=' << opts.transcoderCodec << '/' << opts.transcoderValue;
         }
     }
 

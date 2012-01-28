@@ -35,13 +35,14 @@ class DevicePropertiesDialog : public KDialog, Ui::DevicePropertiesDialog
 
 public:
     enum Properties {
-        Prop_Basic  = 0x00,
+        Prop_Basic      = 0x00,
 
-        Prop_Folder = 0x01,
-        Prop_Covers = 0x02,
-        Prop_Va     = 0x04,
+        Prop_Folder     = 0x01,
+        Prop_Covers     = 0x02,
+        Prop_Va         = 0x04,
+        Prop_Transcoder = 0x08,
 
-        Prop_All    = 0xFF
+        Prop_All        = 0xFF
     };
     DevicePropertiesDialog(QWidget *parent);
     void show(const QString &path, const QString &coverName, const Device::Options &opts, int props);
@@ -55,6 +56,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void configureFilenameScheme();
     void enableOkButton();
+    void transcoderChanged();
 
 private:
     void slotButtonClicked(int button);

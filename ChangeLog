@@ -4,6 +4,8 @@
 2. Don't allow editing of device properties when device is busy.
 3. Don't allow to change Music folder for UMS devices when properties dialog
    is shown from copy dialog.
+4. Use LibMTP to read device's serial number, and use this as the config key
+   when saving properties to cantata's config file.
 
 0.3.0
 -----

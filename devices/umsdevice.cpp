@@ -159,6 +159,10 @@ bool UmsDevice::isConnected() const
 
 void UmsDevice::configure(QWidget *parent)
 {
+    if (!isIdle()) {
+        return;
+    }
+
     DevicePropertiesDialog *dlg=new DevicePropertiesDialog(parent);
     connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
             SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));

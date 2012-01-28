@@ -1,6 +1,7 @@
 0.4.0
 -----
 1. Transcode support when copying to devices.
+2. Don't allow editing of device properties when device is busy.
 
 0.3.0
 -----

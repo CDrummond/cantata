@@ -313,8 +313,8 @@ void UmsDevice::removeSong(const Song &s)
 
 void UmsDevice::percent(KJob *job, unsigned long percent)
 {
-    if (jobAbortRequested) {
-        job->kill(KJob::Quietly);
+    if (jobAbortRequested && 100!=percent) {
+        job->kill(KJob::EmitResult);
         return;
     }
     emit progress(percent);
@@ -322,14 +322,17 @@ void UmsDevice::percent(KJob *job, unsigned long percent)
 
 void UmsDevice::addSongResult(KJob *job)
 {
+    QString destFile=audioFolder+opts.createFilename(currentSong);
     if (jobAbortRequested) {
+        if (0!=job->percent() && 100!=job->percent() && QFile::exists(destFile)) {
+            QFile::remove(destFile);
+        }
         return;
     }
     if (job->error()) {
         emit actionStatus(opts.transcoderCodec.isEmpty() ? Failed : TranscodeFailed);
     } else {
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
-        QString destFile=audioFolder+opts.createFilename(currentSong);
 
         if (!opts.transcoderCodec.isEmpty()) {
             destFile=encoder.changeExtension(destFile);
@@ -350,6 +353,9 @@ void UmsDevice::addSongResult(KJob *job)
 void UmsDevice::copySongToResult(KJob *job)
 {
     if (jobAbortRequested) {
+        if (0!=job->percent() && 100!=job->percent() && QFile::exists(currentBaseDir+currentMusicPath)) {
+            QFile::remove(currentBaseDir+currentMusicPath);
+        }
         return;
     }
     if (job->error()) {

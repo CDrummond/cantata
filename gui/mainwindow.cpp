@@ -27,6 +27,7 @@
 #include <QtCore/QSet>
 #include <QtCore/QString>
 #include <QtCore/QTimer>
+#include <QtCore/QProcess>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
@@ -39,6 +40,7 @@
 #include <KDE/KActionCollection>
 #include <KDE/KNotification>
 #include <KDE/KStandardAction>
+#include <KDE/KStandardDirs>
 #include <KDE/KAboutApplicationDialog>
 #include <KDE/KLineEdit>
 #include <KDE/KXMLGUIFactory>
@@ -366,6 +368,15 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlaylistAction = actionCollection()->addAction("consumeplaylist");
     consumePlaylistAction->setText(i18n("Consume"));
 
+    burnAction = actionCollection()->addAction("burn");
+    burnAction->setText(i18n("Burn To CD/DVD"));
+
+    createAudioCdAction = actionCollection()->addAction("createaudiocd");
+    createAudioCdAction->setText(i18n("Create Audio CD"));
+
+    createDataCdAction = actionCollection()->addAction("createdatacd");
+    createDataCdAction->setText(i18n("Create Data CD/DVD"));
+
     libraryTabAction = actionCollection()->addAction("showlibrarytab");
     libraryTabAction->setText(i18n("Library"));
 
@@ -426,6 +437,9 @@ MainWindow::MainWindow(QWidget *parent)
     randomPlaylistAction = new QAction(tr("Random"), this);
     repeatPlaylistAction = new QAction(tr("Repeat"), this);
     consumePlaylistAction = new QAction(tr("Consume"), this);
+    burnAction = new QAction(tr("Burn To CD/DVD"), this);
+    createAudioCdAction = new QAction(tr("Create Audio CD"), this);
+    createDataCdAction = new QAction(tr("Create Data CD"), this);
     libraryTabAction = new QAction(tr("Library"), this);
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
@@ -477,6 +491,19 @@ MainWindow::MainWindow(QWidget *parent)
     removeAction->setIcon(QIcon::fromTheme("list-remove"));
     addToPlaylistAction->setIcon(QIcon::fromTheme("list-add"));
     replacePlaylistAction->setIcon(QIcon::fromTheme("media-playback-start"));
+
+    burnAction->setIcon(QIcon::fromTheme("tools-media-optical-burn"));
+    createDataCdAction->setIcon(QIcon::fromTheme("media-optical"));
+    createAudioCdAction->setIcon(QIcon::fromTheme("media-optical-audio"));
+    QMenu *cdMenu=new QMenu(this);
+    cdMenu->addAction(createAudioCdAction);
+    cdMenu->addAction(createDataCdAction);
+    burnAction->setMenu(cdMenu);
+    #ifdef ENABLE_KDE_SUPPORT
+    if (KStandardDirs::findExe("k3b").isEmpty()) {
+        burnAction->setVisible(false);
+    }
+    #endif
 
     prevTrackAction->setIcon(QIcon::fromTheme("media-skip-backward"));
     nextTrackAction->setIcon(QIcon::fromTheme("media-skip-forward"));
@@ -625,6 +652,8 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(mpdDir).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
+    burnAction->setEnabled(copyToDeviceAction->isEnabled());
+    createAudioCdAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     devicesPage->enableDeleteAction(Settings::self()->showDeleteAction());
     #endif
@@ -745,6 +774,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(expandInterfaceAction, SIGNAL(activated()), this, SLOT(togglePlaylist()));
     connect(positionSlider, SIGNAL(valueChanged(int)), this, SLOT(updatePosition()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
+    connect(createDataCdAction, SIGNAL(activated()), this, SLOT(createDataCd()));
+    connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
@@ -1011,6 +1042,8 @@ void MainWindow::updateSettings()
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(mpdDir).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
+    burnAction->setEnabled(copyToDeviceAction->isEnabled());
+    createAudioCdAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     devicesPage->enableDeleteAction(Settings::self()->showDeleteAction());
     #endif
@@ -1975,6 +2008,40 @@ void MainWindow::toggleDockManager()
     }
 
     dock->setEnabled(Settings::self()->dockManager());
+}
+
+void MainWindow::createDataCd()
+{
+    callK3b("data");
+}
+
+void MainWindow::createAudioCd()
+{
+    callK3b("audiocd");
+}
+
+void MainWindow::callK3b(const QString &type)
+{
+    QStringList files;
+    if (libraryPage->isVisible()) {
+        files=libraryPage->selectedFiles();
+    } else if (albumsPage->isVisible()) {
+        files=albumsPage->selectedFiles();
+    } else if (folderPage->isVisible()) {
+        files=folderPage->selectedFiles();
+    }
+
+    if (!files.isEmpty()) {
+        QStringList args;
+        args << QLatin1String("--")+type;
+        foreach (const QString &f, files) {
+            args << mpdDir+f;
+        }
+
+        QProcess *proc=new QProcess(this);
+        connect(proc, SIGNAL(finished(int, QProcess::ExitStatus)), proc, SLOT(deleteLater()));
+        proc->start(QLatin1String("k3b"), args);
+    }
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT

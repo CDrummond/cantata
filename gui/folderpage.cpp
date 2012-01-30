@@ -56,6 +56,7 @@ FolderPage::FolderPage(MainWindow *p)
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
+    view->addAction(p->burnAction);
 
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
@@ -133,12 +134,12 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
     }
 }
 
-void FolderPage::addSelectionToPlaylist(const QString &name)
+QStringList FolderPage::selectedFiles() const
 {
     const QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
-        return;
+        return QStringList();
     }
 
     QModelIndexList mapped;
@@ -146,7 +147,12 @@ void FolderPage::addSelectionToPlaylist(const QString &name)
         mapped.append(proxy.mapToSource(idx));
     }
 
-    QStringList files=model.filenames(mapped);
+    return model.filenames(mapped);
+}
+
+void FolderPage::addSelectionToPlaylist(const QString &name)
+{
+    QStringList files=selectedFiles();
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

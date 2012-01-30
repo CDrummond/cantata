@@ -264,6 +264,8 @@ private Q_SLOTS:
     #endif
     void toggleMpris();
     void toggleDockManager();
+    void createDataCd();
+    void createAudioCd();
     #ifdef ENABLE_DEVICES_SUPPORT
     void addToDevice(const QString &udi);
     void deleteSongs();
@@ -272,6 +274,7 @@ private Q_SLOTS:
     #endif
 
 private:
+    void callK3b(const QString &type);
     bool currentIsStream();
     void showTab(int page);
 
@@ -320,6 +323,9 @@ private:
     Action *lyricsTabAction;
     Action *streamsTabAction;
     Action *removeAction;
+    Action *burnAction;
+    Action *createDataCdAction;
+    Action *createAudioCdAction;
     #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
     #endif

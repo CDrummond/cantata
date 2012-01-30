@@ -61,6 +61,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
+    view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
     view->addAction(p->deleteSongsAction);
@@ -108,12 +109,12 @@ void AlbumsPage::setItemSize()
     }
 }
 
-void AlbumsPage::addSelectionToPlaylist(const QString &name)
+QStringList AlbumsPage::selectedFiles() const
 {
     const QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
-        return;
+        return QStringList();
     }
 
     QModelIndexList mapped;
@@ -121,7 +122,12 @@ void AlbumsPage::addSelectionToPlaylist(const QString &name)
         mapped.append(proxy.mapToSource(idx));
     }
 
-    QStringList files=AlbumsModel::self()->filenames(mapped);
+    return AlbumsModel::self()->filenames(mapped);
+}
+
+void AlbumsPage::addSelectionToPlaylist(const QString &name)
+{
+    QStringList files=selectedFiles();
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

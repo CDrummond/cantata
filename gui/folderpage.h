@@ -40,6 +40,7 @@ public:
     bool isEnabled() const { return enabled; }
     void refresh();
     void clear();
+    QStringList selectedFiles() const;
     void addSelectionToPlaylist(const QString &name=QString());
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 

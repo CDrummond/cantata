@@ -59,6 +59,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
+    view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
     view->addAction(p->deleteSongsAction);
@@ -112,12 +113,12 @@ void LibraryPage::clear()
     view->setLevel(0);
 }
 
-void LibraryPage::addSelectionToPlaylist(const QString &name)
+QStringList LibraryPage::selectedFiles() const
 {
     const QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
-        return;
+        return QStringList();
     }
 
     QModelIndexList mapped;
@@ -125,7 +126,12 @@ void LibraryPage::addSelectionToPlaylist(const QString &name)
         mapped.append(proxy.mapToSource(idx));
     }
 
-    QStringList files=MusicLibraryModel::self()->filenames(mapped);
+    return MusicLibraryModel::self()->filenames(mapped);
+}
+
+void LibraryPage::addSelectionToPlaylist(const QString &name)
+{
+    QStringList files=selectedFiles();
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

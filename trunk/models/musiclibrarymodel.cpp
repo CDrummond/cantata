@@ -731,7 +731,6 @@ QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes) const
 QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
 {
     QList<Song> songs;
-    QString mpdDir=Settings::self()->mpdDir();
 
     foreach(QModelIndex index, indexes) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
@@ -741,7 +740,7 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
             foreach (const MusicLibraryItem *album, item->children()) {
                 foreach (MusicLibraryItem *song, album->children()) {
                     if (MusicLibraryItem::Type_Song==song->type() && !songs.contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
-                        static_cast<MusicLibraryItemSong*>(song)->song().updateSize(mpdDir);
+                        static_cast<MusicLibraryItemSong*>(song)->song().updateSize(Settings::self()->mpdDir());
                         songs << static_cast<MusicLibraryItemSong*>(song)->song();
                     }
                 }
@@ -750,14 +749,14 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
         case MusicLibraryItem::Type_Album:
             foreach (MusicLibraryItem *song, item->children()) {
                 if (MusicLibraryItem::Type_Song==song->type() && !songs.contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
-                    static_cast<MusicLibraryItemSong*>(song)->song().updateSize(mpdDir);
+                    static_cast<MusicLibraryItemSong*>(song)->song().updateSize(Settings::self()->mpdDir());
                     songs << static_cast<MusicLibraryItemSong*>(song)->song();
                 }
             }
             break;
         case MusicLibraryItem::Type_Song:
             if (!songs.contains(static_cast<MusicLibraryItemSong*>(item)->song())) {
-                static_cast<MusicLibraryItemSong*>(item)->song().updateSize(mpdDir);
+                static_cast<MusicLibraryItemSong*>(item)->song().updateSize(Settings::self()->mpdDir());
                 songs << static_cast<MusicLibraryItemSong*>(item)->song();
             }
             break;
@@ -777,6 +776,14 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
 QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes));
+    QStringList files=filenames(indexes);
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, files);
+    if (!Settings::self()->mpdDir().isEmpty()) {
+        QStringList paths;
+        foreach (const QString &f, files) {
+            paths << Settings::Settings::self()->mpdDir()+f;
+        }
+        PlayQueueModel::encode(*mimeData, QLatin1String("text/uri-list"), paths);
+    }
     return mimeData;
 }

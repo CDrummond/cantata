@@ -174,13 +174,16 @@ bool Settings::smallControlButtons()
     return GET_BOOL("smallControlButtons", false);
 }
 
-QString Settings::mpdDir()
+const QString & Settings::mpdDir()
 {
-    QString d=GET_STRING("mpdDir", "/var/lib/mpd/music");
-    if (!d.endsWith("/")) {
-        d=d+"/";
+    if (mpdDirSetting.isEmpty()) {
+        QString d=GET_STRING("mpdDir", "/var/lib/mpd/music/");
+        if (!d.endsWith('/')) {
+            d+='/';
+        }
+        mpdDirSetting=d;
     }
-    return d;
+    return mpdDirSetting;
 }
 
 int Settings::libraryView()
@@ -377,11 +380,11 @@ void Settings::saveSmallControlButtons(bool v)
 
 void Settings::saveMpdDir(const QString &v)
 {
-    QString d(v);
-    if (!d.isEmpty() && !d.endsWith("/")) {
-        d=d+"/";
+    mpdDirSetting=v;
+    if (!mpdDirSetting.endsWith('/')) {
+        mpdDirSetting+='/';
     }
-    SET_VALUE("mpdDir", d);
+    SET_VALUE("mpdDir", mpdDirSetting);
 }
 
 void Settings::saveLibraryView(int v)

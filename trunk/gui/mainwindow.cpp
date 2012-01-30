@@ -2023,6 +2023,8 @@ void MainWindow::callK3b(const QString &type)
         files=albumsPage->selectedFiles();
     } else if (folderPage->isVisible()) {
         files=folderPage->selectedFiles();
+    } else if (playlistsPage->isVisible()) {
+        files=playlistsPage->selectedFiles();
     }
 
     if (!files.isEmpty()) {

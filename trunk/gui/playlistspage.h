@@ -37,6 +37,7 @@ public:
 
     void refresh();
     void clear();
+    QStringList selectedFiles() const;
     void addSelectionToPlaylist();
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 

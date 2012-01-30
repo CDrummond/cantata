@@ -240,7 +240,7 @@ Qt::DropActions PlaylistsModel::supportedDropActions() const
     return Qt::CopyAction | Qt::MoveAction;
 }
 
-QStringList PlaylistsModel::filenames(const QModelIndexList &indexes) const
+QStringList PlaylistsModel::filenames(const QModelIndexList &indexes, bool filesOnly) const
 {
     QStringList fnames;
     QSet<Item *> selectedPlaylists;
@@ -250,10 +250,14 @@ QStringList PlaylistsModel::filenames(const QModelIndexList &indexes) const
         if (item->isPlaylist()) {
             selectedPlaylists.insert(item);
             foreach (const SongItem *s, static_cast<PlaylistItem*>(item)->songs) {
-                fnames << s->file;
+                if (!filesOnly || !s->file.contains(':')) {
+                    fnames << s->file;
+                }
             }
         } else if (!selectedPlaylists.contains(static_cast<SongItem*>(item)->parent)) {
-            fnames << static_cast<SongItem*>(item)->file;
+            if (!filesOnly || !static_cast<SongItem*>(item)->file.contains(':')) {
+                fnames << static_cast<SongItem*>(item)->file;
+            }
         }
     }
 

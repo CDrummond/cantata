@@ -57,7 +57,7 @@ public:
         bool operator==(const Options &o) const {
             return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&
                    replaceSpaces==o.replaceSpaces && scheme==o.scheme && fixVariousArtists==o.fixVariousArtists &&
-                   transcoderCodec==o.transcoderCodec &&
+                   useCache==o.useCache && transcoderCodec==o.transcoderCodec &&
                    (transcoderCodec.isEmpty() || (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent));
         }
         bool operator!=(const Options &o) const {
@@ -76,6 +76,7 @@ public:
         QString transcoderCodec;
         int transcoderValue;
         bool transcoderWhenDifferent;
+        bool useCache;
     };
 
     static Device * create(DevicesModel *m, const QString &udi);
@@ -132,6 +133,10 @@ public:
     virtual double usedCapacity()=0;
     virtual QString capacityString()=0;
     virtual qint64 freeSpace()=0;
+    virtual void saveCache() {
+    }
+    virtual void removeCache() {
+    }
 
     const Solid::Device & dev() const {
         return solidDev;

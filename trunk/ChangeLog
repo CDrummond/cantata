@@ -6,6 +6,7 @@
    is shown from copy dialog.
 4. Use LibMTP to read device's serial number, and use this as the config key
    when saving properties to cantata's config file.
+5. Add create audio/data cd actions to library/folder/albums pages.
 
 0.3.0
 -----

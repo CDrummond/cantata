@@ -44,7 +44,6 @@ public:
     void setEnabledProviders(const QStringList &providerList);
     void update(const Song &song, bool force=false);
     const QList<UltimateLyricsProvider *> & getProviders() { return providers; }
-    void setMpdDir(const QString &d) { mpdDir=d; }
 
 Q_SIGNALS:
     void providersUpdated();
@@ -61,7 +60,6 @@ private:
 //     void ultimateLyricsParsed();
 
 private:
-    QString mpdDir;
 //     QScopedPointer<UltimateLyricsReader> reader;
     QList<UltimateLyricsProvider *> providers;
     int currentProvider;

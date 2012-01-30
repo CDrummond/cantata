@@ -83,7 +83,6 @@ private:
     bool performingAction;
     bool haveVariousArtists;
     Device *currentDev;
-    QString mpdDir;
     QString destFile;
     Device::Options namingOptions;
 };

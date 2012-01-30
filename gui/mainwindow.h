@@ -352,7 +352,6 @@ private:
     QPixmap noCover;
     QPixmap noStreamCover;
     QPoint lastPos;
-    QString mpdDir;
     Song current;
     bool lyricsNeedUpdating;
     #ifdef ENABLE_WEBKIT

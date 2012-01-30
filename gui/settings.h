@@ -60,7 +60,7 @@ public:
     bool stopOnExit();
     bool smallPlaybackButtons();
     bool smallControlButtons();
-    QString mpdDir();
+    const QString & mpdDir();
     int libraryView();
     int albumsView();
     int folderView();
@@ -126,6 +126,7 @@ private Q_SLOTS:
     void actualSave();
 
 private:
+    QString mpdDirSetting;
     QTimer *timer;
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg;

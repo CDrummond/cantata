@@ -26,6 +26,7 @@
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyricsreader.h"
 #include "network.h"
+#include "settings.h"
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -146,9 +147,9 @@ void LyricsPage::update(const Song &song, bool force)
             return;
         }
 
-        if (!mpdDir.isEmpty()) {
+        if (!Settings::self()->mpdDir().isEmpty()) {
             // Check for MPD file...
-            QString mpdLyrics=changeExt(mpdDir+song.file, constExtension);
+            QString mpdLyrics=changeExt(Settings::self()->mpdDir()+song.file, constExtension);
 
             if (QFile::exists(mpdLyrics)) {
                 QFile f(mpdLyrics);

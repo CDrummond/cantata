@@ -648,18 +648,15 @@ MainWindow::MainWindow(QWidget *parent)
     randomPlaylistAction->setChecked(false);
     repeatPlaylistAction->setChecked(false);
     consumePlaylistAction->setChecked(false);
-    mpdDir=Settings::self()->mpdDir();
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setEnabled(QDir(mpdDir).isReadable());
+    copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
     burnAction->setEnabled(copyToDeviceAction->isEnabled());
     createAudioCdAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     devicesPage->enableDeleteAction(Settings::self()->showDeleteAction());
     #endif
-    lyricsPage->setMpdDir(mpdDir);
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
-    Covers::self()->setMpdDir(mpdDir);
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
@@ -1038,18 +1035,15 @@ void MainWindow::showPreferencesDialog()
 void MainWindow::updateSettings()
 {
     emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
-    mpdDir=Settings::self()->mpdDir();
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setEnabled(QDir(mpdDir).isReadable());
+    copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
     burnAction->setEnabled(copyToDeviceAction->isEnabled());
     createAudioCdAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     devicesPage->enableDeleteAction(Settings::self()->showDeleteAction());
     #endif
-    lyricsPage->setMpdDir(mpdDir);
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
-    Covers::self()->setMpdDir(mpdDir);
     Settings::self()->save();
     bool useLibSizeForAl=Settings::self()->albumsView()!=ItemView::Mode_IconTop;
     bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize();
@@ -2035,7 +2029,7 @@ void MainWindow::callK3b(const QString &type)
         QStringList args;
         args << QLatin1String("--")+type;
         foreach (const QString &f, files) {
-            args << mpdDir+f;
+            args << Settings::self()->mpdDir()+f;
         }
 
         QProcess *proc=new QProcess(this);

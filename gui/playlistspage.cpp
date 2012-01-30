@@ -79,6 +79,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     view->addAction(p->replacePlaylistAction);
     view->addAction(renamePlaylistAction);
     view->addAction(p->removeAction);
+    view->addAction(p->burnAction);
     view->setUniformRowHeights(true);
     view->setAcceptDrops(true);
     view->setDragDropOverwriteMode(true);
@@ -114,6 +115,22 @@ void PlaylistsPage::refresh()
 void PlaylistsPage::clear()
 {
     PlaylistsModel::self()->clear();
+}
+
+QStringList PlaylistsPage::selectedFiles() const
+{
+    const QModelIndexList &indexes=view->selectedIndexes();
+
+    if (0==indexes.size()) {
+        return QStringList();
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, indexes) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    return PlaylistsModel::self()->filenames(mapped, true);
 }
 
 void PlaylistsPage::addSelectionToPlaylist()

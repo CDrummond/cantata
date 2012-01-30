@@ -34,7 +34,6 @@
 #endif
 #include <QtXml/QXmlStreamReader>
 #include <QtXml/QXmlStreamWriter>
-#include <QtCore/QDateTime>
 #include <QtCore/QFile>
 
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create)
@@ -163,7 +162,7 @@ QSet<Song> MusicLibraryItemRoot::allSongs() const
 static quint32 constVersion=5;
 static QLatin1String constTopTag("CantataLibrary");
 
-void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date, bool groupSingle) const
+void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRemove, const QDateTime &date, bool groupSingle) const
 {
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -197,7 +196,11 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date,
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
                 writer.writeEmptyElement("Track");
                 writer.writeAttribute("name", track->data());
-                writer.writeAttribute("file", track->file());
+                if (pathRemove.isEmpty() || !track->file().startsWith(pathRemove)) {
+                    writer.writeAttribute("file", track->file());
+                } else {
+                    writer.writeAttribute("file", track->file().mid(pathRemove.length()));
+                }
                 writer.writeAttribute("time", QString::number(track->time()));
                 //Only write track number if it is set
                 if (track->track() != 0) {
@@ -224,7 +227,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date,
     file.close();
 }
 
-quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, bool groupSingle)
+quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pathAppend, const QDateTime &date, bool groupSingle)
 {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -266,6 +269,9 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
                 song.year=reader.attributes().value("year").toString().toUInt();
                 if (!song.file.isEmpty()) {
                     song.file.append("dummy.mp3");
+                }
+                if (!pathAppend.isEmpty()) {
+                    song.file=pathAppend+song.file;
                 }
                 albumItem = artistItem->createAlbum(song);
                 if (QLatin1String("true")==reader.attributes().value("singleTracks").toString()) {

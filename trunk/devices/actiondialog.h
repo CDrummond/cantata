@@ -65,7 +65,7 @@ private:
     void slotButtonClicked(int button);
     void setPage(int page, const QString &msg=QString());
     QString formatSong(const Song &s, bool showFiles=false);
-    void refreshMpd();
+    void refreshLibrary();
     void removeSong(const Song &s);
     void incProgress();
 

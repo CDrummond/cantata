@@ -193,7 +193,7 @@ void ActionDialog::slotButtonClicked(int button)
             doNext();
             break;
         case KDialog::Cancel:
-            refreshMpd();
+            refreshLibrary();
             reject();
             break;
         default:
@@ -214,19 +214,19 @@ void ActionDialog::slotButtonClicked(int button)
             doNext();
             break;
         default:
-            refreshMpd();
+            refreshLibrary();
             reject();
             break;
         }
         break;
     case PAGE_ERROR:
-        refreshMpd();
+        refreshLibrary();
         reject();
         break;
     case PAGE_PROGRESS:
         paused=true;
         if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Are you sure you wish to cancel?"))) {
-            refreshMpd();
+            refreshLibrary();
             reject();
         } else if (!performingAction && PAGE_PROGRESS==stack->currentIndex()) {
             paused=false;
@@ -304,7 +304,7 @@ void ActionDialog::doNext()
         incProgress();
         doNext();
     } else {
-        refreshMpd();
+        refreshLibrary();
         accept();
     }
 }
@@ -460,13 +460,22 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles)
                    "</table>", s.artist, s.album, s.title);
 }
 
-void ActionDialog::refreshMpd()
+void ActionDialog::refreshLibrary()
 {
     actionLabel->stopAnimation();
-    if (!actionedSongs.isEmpty() && ( (Copy==mode && !sourceUdi.isEmpty()) ||
-                                      (Remove==mode && sourceUdi.isEmpty()) ) ) {
-        AlbumsModel::self()->update(MusicLibraryModel::self()->root());
-        emit getStats();
+    if (!actionedSongs.isEmpty()) {
+        if ( (Copy==mode && !sourceUdi.isEmpty()) ||
+             (Remove==mode && sourceUdi.isEmpty()) ) {
+            AlbumsModel::self()->update(MusicLibraryModel::self()->root());
+            emit getStats();
+        } else if ( (Copy==mode && sourceUdi.isEmpty()) ||
+                    (Remove==mode && !sourceUdi.isEmpty()) ) {
+            Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+
+            if (dev) {
+                dev->saveCache();
+            }
+        }
     }
 }
 

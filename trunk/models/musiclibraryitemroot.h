@@ -31,6 +31,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QHash>
 #include <QtCore/QSet>
+#include <QtCore/QDateTime>
 #include "musiclibraryitem.h"
 #include "song.h"
 
@@ -62,8 +63,8 @@ public:
     void remove(MusicLibraryItemArtist *artist);
     QSet<Song> allSongs() const;
 
-    void toXML(const QString &filename, const QDateTime &date, bool groupSingle) const;
-    quint32 fromXML(const QString &filename, const QDateTime &date, bool groupSingle);
+    void toXML(const QString &filename, const QString &pathRemove, const QDateTime &date=QDateTime(), bool groupSingle=false) const;
+    quint32 fromXML(const QString &filename, const QString &pathAppend, const QDateTime &date=QDateTime(), bool groupSingle=false);
 
 private:
     QHash<QString, int> m_indexes;

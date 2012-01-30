@@ -97,6 +97,14 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
                                        "will attempt to extract the real artist from the 'Title' tag, and remove the artist name "
                                        "from the 'Title' tag.</p>"));
     fixVariousArtistsLabel->setToolTip(fixVariousArtists->toolTip());
+
+    useCache->setToolTip(i18n("<p>If you enable this, then Cantata will create a cache of the device's music library. "
+                              "This will help to speed up subsequent library scans (as the cache file will be used instead of "
+                              "having to read the tags of each file.)<hr/><b>NOTE:</b> If you use another application to update "
+                              "the device's library, then this cache will become out-of-date. To rectify this, simply "
+                              "click on the 'refresh' icon in the device list. This will cause the cache file to be removed, and "
+                              "the contents of the device re-scanned.</p>"));
+    useCacheLabel->setToolTip(useCache->toolTip());
 }
 
 void DevicePropertiesDialog::show(const QString &path, const QString &coverName, const Device::Options &opts, int props)
@@ -114,6 +122,9 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     fixVariousArtists->setVisible(props&Prop_Va);
     fixVariousArtistsLabel->setVisible(props&Prop_Va);
     fixVariousArtists->setChecked(opts.fixVariousArtists);
+    useCache->setVisible(props&Prop_Cache);
+    useCacheLabel->setVisible(props&Prop_Cache);
+    useCache->setChecked(opts.useCache);
     transcoderFrame->setVisible(props&Prop_Transcoder);
     transcoderName->clear();
     transcoderName->addItem(i18n("Do not transcode"), QString());
@@ -175,6 +186,7 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
     connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
     connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
     connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(enableOkButton()));
+    connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(enableOkButton()));
 
     KDialog::show();
     enableButtonOk(false);
@@ -248,6 +260,7 @@ Device::Options DevicePropertiesDialog::settings()
     opts.ignoreThe=ignoreThe->isChecked();
     opts.replaceSpaces=replaceSpaces->isChecked();
     opts.fixVariousArtists=fixVariousArtists->isChecked();
+    opts.useCache=useCache->isChecked();
     opts.transcoderCodec=QString();
     opts.transcoderValue=0;
     opts.transcoderWhenDifferent=false;

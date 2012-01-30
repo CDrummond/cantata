@@ -102,7 +102,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         capacityString=dev->capacityString();
         usedCapacity=dev->usedCapacity();
     } else {
-        KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(mpdDir);
+        KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(Settings::self()->mpdDir());
         spaceAvailable=inf.size()-inf.used();
         usedCapacity=(inf.used()*1.0)/(inf.size()*1.0);
         capacityString=i18n("%1 free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
@@ -145,7 +145,7 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 {
     init(udi, QString(), songs, Remove);
     setPage(PAGE_PROGRESS);
-    QString baseDir=udi.isEmpty() ? mpdDir : QString();
+    QString baseDir=udi.isEmpty() ? Settings::self()->mpdDir() : QString();
     foreach (const Song &s, songsToAction) {
         dirsToClean.insert(baseDir+MPDParseUtils::getDir(s.file));
     }
@@ -156,10 +156,6 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m)
 {
     resize(500, 160);
-    mpdDir=Settings::self()->mpdDir();
-    if (!mpdDir.endsWith('/')) {
-        mpdDir+QChar('/');
-    }
     sourceUdi=srcUdi;
     destUdi=dstUdi;
     songsToAction=songs;
@@ -257,7 +253,7 @@ void ActionDialog::doNext()
                 performingAction=true;
                 if (copyToDev) {
                     destFile=dev->path()+dev->options().createFilename(currentSong);
-                    currentSong.file=mpdDir+currentSong.file;
+                    currentSong.file=Settings::self()->mpdDir()+currentSong.file;
                     dev->addSong(currentSong, overwrite->isChecked());
                 } else {
                     Song copy=currentSong;
@@ -265,8 +261,8 @@ void ActionDialog::doNext()
                         Device::fixVariousArtists(QString(), copy, false);
                     }
                     QString fileName=namingOptions.createFilename(copy);
-                    destFile=mpdDir+fileName;
-                    dev->copySongTo(currentSong, mpdDir, fileName, overwrite->isChecked());
+                    destFile=Settings::self()->mpdDir()+fileName;
+                    dev->copySongTo(currentSong, Settings::self()->mpdDir(), fileName, overwrite->isChecked());
                 }
                 progressLabel->setText(formatSong(currentSong));
             } else {
@@ -275,7 +271,7 @@ void ActionDialog::doNext()
         } else {
             if (sourceUdi.isEmpty()) {
                 performingAction=true;
-                currentSong.file=mpdDir+currentSong.file;
+                currentSong.file=Settings::self()->mpdDir()+currentSong.file;
                 removeSong(currentSong);
             } else {
                 Device *dev=DevicesModel::self()->device(sourceUdi);
@@ -300,7 +296,7 @@ void ActionDialog::doNext()
                 if (dev) {
                     dev->cleanDir(d);
                 } else {
-                    Device::cleanDir(d, mpdDir, QString());
+                    Device::cleanDir(d, Settings::self()->mpdDir(), QString());
                 }
             }
         }
@@ -390,7 +386,7 @@ void ActionDialog::configure(const QString &udi)
         connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
                 SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));
         dlg->setCaption(i18n("Local Music Library Properties"));
-        dlg->show(mpdDir, QString(), namingOptions, DevicePropertiesDialog::Prop_Basic);
+        dlg->show(Settings::self()->mpdDir(), QString(), namingOptions, DevicePropertiesDialog::Prop_Basic);
     } else {
         Device *dev=DevicesModel::self()->device(udi);
         if (dev) {

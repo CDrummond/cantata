@@ -27,6 +27,7 @@
 #include "maiaXmlRpcClient.h"
 #include "networkaccessmanager.h"
 #include "network.h"
+#include "settings.h"
 #include <QtCore/QFile>
 #include <QtCore/QCryptographicHash>
 #include <QtNetwork/QNetworkReply>
@@ -288,8 +289,9 @@ void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
     QString dirName;
     bool haveAbsPath=song.file.startsWith("/");
 
-    if (haveAbsPath || !mpdDir.isEmpty()) {
-        dirName=song.file.endsWith("/") ? (haveAbsPath ? QString() : mpdDir)+song.file : MPDParseUtils::getDir((haveAbsPath ? QString() : mpdDir)+song.file);
+    if (haveAbsPath || !Settings::self()->mpdDir().isEmpty()) {
+        dirName=song.file.endsWith("/") ? (haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file
+                                        : MPDParseUtils::getDir((haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file);
         initCoverNames();
         foreach (const QString &fileName, coverFileNames) {
             if (QFile::exists(dirName+fileName)) {

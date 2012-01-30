@@ -35,6 +35,7 @@
 #include "dirviewitem.h"
 #include "playqueuemodel.h"
 #include "itemview.h"
+#include "settings.h"
 #include "debugtimer.h"
 
 DirViewModel::DirViewModel(QObject *parent)
@@ -204,7 +205,15 @@ QStringList DirViewModel::filenames(const QModelIndexList &indexes) const
 QMimeData *DirViewModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes));
+    QStringList files=filenames(indexes);
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, files);
+    if (!Settings::self()->mpdDir().isEmpty()) {
+        QStringList paths;
+        foreach (const QString &f, files) {
+            paths << Settings::self()->mpdDir()+f;
+        }
+        PlayQueueModel::encode(*mimeData, QLatin1String("text/uri-list"), paths);
+    }
     return mimeData;
 }
 

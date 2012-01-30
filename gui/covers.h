@@ -57,8 +57,6 @@ public:
     Covers();
 
     void get(const Song &song, bool isSingleTracks=false, bool isLocal=false);
-    void setMpdDir(const QString &dir) { mpdDir=dir; }
-    QString mpd() const { return mpdDir; }
 
 Q_SIGNALS:
     void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
@@ -73,7 +71,6 @@ private:
     QHash<QNetworkReply *, Job>::Iterator findJob(const Song &song);
 
 private:
-    QString mpdDir;
     MaiaXmlRpcClient *rpc;
     NetworkAccessManager *manager;
     QHash<QNetworkReply *, Job> jobs;

@@ -364,7 +364,15 @@ QList<Song> AlbumsModel::songs(const QModelIndexList &indexes) const
 QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes));
+    QStringList files=filenames(indexes);
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, files);
+    if (!Settings::self()->mpdDir().isEmpty()) {
+        QStringList paths;
+        foreach (const QString &f, files) {
+            paths << Settings::self()->mpdDir()+f;
+        }
+        PlayQueueModel::encode(*mimeData, QLatin1String("text/uri-list"), paths);
+    }
     return mimeData;
 }
 

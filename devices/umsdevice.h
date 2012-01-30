@@ -76,6 +76,9 @@ public:
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
+    QString cacheFileName() const;
+    void saveCache();
+    void removeCache();
 
 private:
     void setup();
@@ -83,6 +86,7 @@ private:
     void stopScanner();
 
 private Q_SLOTS:
+    void cacheRead();
     void libraryUpdated();
     void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
     void saveProperties();

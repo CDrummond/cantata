@@ -209,6 +209,7 @@ Device::Options::Options()
     , fixVariousArtists(false)
     , transcoderValue(0)
     , transcoderWhenDifferent(false)
+    , useCache(false)
 {
 }
 
@@ -467,6 +468,9 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
 
 void Device::applyUpdate()
 {
+    if (!update) {
+        return;
+    }
     /*if (m_childItems.count() && update && update->childCount()) {
         QSet<Song> currentSongs=allSongs();
         QSet<Song> updateSongs=update->allSongs();

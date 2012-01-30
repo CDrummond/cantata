@@ -7,6 +7,7 @@
 4. Use LibMTP to read device's serial number, and use this as the config key
    when saving properties to cantata's config file.
 5. Add create audio/data cd actions to library/folder/albums pages.
+6. Add option to cache contents of UMS library to an XML file on the device.
 
 0.3.0
 -----

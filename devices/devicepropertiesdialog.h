@@ -41,6 +41,7 @@ public:
         Prop_Covers     = 0x02,
         Prop_Va         = 0x04,
         Prop_Transcoder = 0x08,
+        Prop_Cache      = 0x10,
 
         Prop_All        = 0xFF
     };

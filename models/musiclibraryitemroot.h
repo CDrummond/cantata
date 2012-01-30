@@ -34,6 +34,7 @@
 #include "musiclibraryitem.h"
 #include "song.h"
 
+class QDateTime;
 class MusicLibraryItemArtist;
 
 class MusicLibraryItemRoot : public MusicLibraryItem
@@ -60,6 +61,9 @@ public:
     void refreshIndexes();
     void remove(MusicLibraryItemArtist *artist);
     QSet<Song> allSongs() const;
+
+    void toXML(const QString &filename, const QDateTime &date, bool groupSingle) const;
+    quint32 fromXML(const QString &filename, const QDateTime &date, bool groupSingle);
 
 private:
     QHash<QString, int> m_indexes;

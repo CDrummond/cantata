@@ -26,11 +26,16 @@
 
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemartist.h"
+#include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "song.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
+#include <QtXml/QXmlStreamReader>
+#include <QtXml/QXmlStreamWriter>
+#include <QtCore/QDateTime>
+#include <QtCore/QFile>
 
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create)
 {
@@ -153,4 +158,158 @@ QSet<Song> MusicLibraryItemRoot::allSongs() const
         }
     }
     return songs;
+}
+
+static quint32 constVersion=5;
+static QLatin1String constTopTag("CantataLibrary");
+
+void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date, bool groupSingle) const
+{
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly)) {
+        return;
+    }
+
+    //Write the header info
+    QXmlStreamWriter writer(&file);
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+
+    //Start with the document
+    writer.writeStartElement(constTopTag);
+    writer.writeAttribute("version", QString::number(constVersion));
+    writer.writeAttribute("date", QString::number(date.toTime_t()));
+    writer.writeAttribute("groupSingle", groupSingle ? "true" : "false");
+    //Loop over all artist, albums and tracks.
+    foreach (const MusicLibraryItem *a, children()) {
+        const MusicLibraryItemArtist *artist = static_cast<const MusicLibraryItemArtist *>(a);
+        writer.writeStartElement("Artist");
+        writer.writeAttribute("name", artist->data());
+        foreach (const MusicLibraryItem *al, artist->children()) {
+            const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
+            writer.writeStartElement("Album");
+            writer.writeAttribute("name", album->data());
+            writer.writeAttribute("year", QString::number(album->year()));
+            if (album->isSingleTracks()) {
+                writer.writeAttribute("singleTracks", "true");
+            }
+            foreach (const MusicLibraryItem *t, album->children()) {
+                const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
+                writer.writeEmptyElement("Track");
+                writer.writeAttribute("name", track->data());
+                writer.writeAttribute("file", track->file());
+                writer.writeAttribute("time", QString::number(track->time()));
+                //Only write track number if it is set
+                if (track->track() != 0) {
+                    writer.writeAttribute("track", QString::number(track->track()));
+                }
+                if (track->disc() != 0) {
+                    writer.writeAttribute("disc", QString::number(track->disc()));
+                }
+                if (track->song().albumartist!=track->song().artist) {
+                    writer.writeAttribute("artist", track->song().artist);
+                }
+//                 writer.writeAttribute("id", QString::number(track->song().id));
+                if (!track->genre().isEmpty()) {
+                    writer.writeAttribute("genre", track->genre());
+                }
+            }
+            writer.writeEndElement();
+        }
+        writer.writeEndElement();
+    }
+
+    writer.writeEndElement();
+    writer.writeEndDocument();
+    file.close();
+}
+
+quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, bool groupSingle)
+{
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+
+    MusicLibraryItemArtist *artistItem = 0;
+    MusicLibraryItemAlbum *albumItem = 0;
+    MusicLibraryItemSong *songItem = 0;
+    Song song;
+    QXmlStreamReader reader(&file);
+    quint32 xmlDate=0;
+
+    while (!reader.atEnd()) {
+        reader.readNext();
+
+        /**
+         * TODO: CHECK FOR ERRORS
+         */
+        if (!reader.error() && reader.isStartElement()) {
+            QString element = reader.name().toString();
+
+            if (constTopTag == element) {
+                quint32 version = reader.attributes().value("version").toString().toUInt();
+                xmlDate = reader.attributes().value("date").toString().toUInt();
+                bool gs = QLatin1String("true")==reader.attributes().value("groupSingle").toString();
+
+                if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t()) || gs!=groupSingle) {
+                    return 0;
+                }
+            }
+
+            if (QLatin1String("Artist")==element) {
+                song.albumartist=reader.attributes().value("name").toString();
+                artistItem = createArtist(song);
+            }
+            else if (QLatin1String("Album")==element) {
+                song.album=reader.attributes().value("name").toString();
+                song.year=reader.attributes().value("year").toString().toUInt();
+                if (!song.file.isEmpty()) {
+                    song.file.append("dummy.mp3");
+                }
+                albumItem = artistItem->createAlbum(song);
+                if (QLatin1String("true")==reader.attributes().value("singleTracks").toString()) {
+                    albumItem->setIsSingleTracks();
+                }
+            }
+            else if (QLatin1String("Track")==element) {
+                song.title=reader.attributes().value("name").toString();
+                song.file=reader.attributes().value("file").toString();
+                song.artist=reader.attributes().value("artist").toString();
+                if (song.artist.isEmpty()) {
+                    song.artist=song.albumartist;
+                }
+
+                QString str=reader.attributes().value("track").toString();
+                song.track=str.isEmpty() ? 0 : str.toUInt();
+                str=reader.attributes().value("disc").toString();
+                song.disc=str.isEmpty() ? 0 : str.toUInt();
+                str=reader.attributes().value("time").toString();
+                song.time=str.isEmpty() ? 0 : str.toUInt();
+//                 str=reader.attributes().value("id").toString();
+//                 song.id=str.isEmpty() ? 0 : str.toUInt();
+
+                songItem = new MusicLibraryItemSong(song, albumItem);
+
+                albumItem->append(songItem);
+
+                QString genre = reader.attributes().value("genre").toString().trimmed();
+                if (genre.isEmpty()) {
+                    #ifdef ENABLE_KDE_SUPPORT
+                    genre=i18n("Unknown");
+                    #else
+                    genre=QObject::tr("Unknown");
+                    #endif
+                }
+
+                albumItem->addGenre(genre);
+                artistItem->addGenre(genre);
+                songItem->addGenre(genre);
+                addGenre(genre);
+            }
+        }
+    }
+
+    file.close();
+    return xmlDate;
 }

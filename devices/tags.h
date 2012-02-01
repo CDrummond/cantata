@@ -21,15 +21,15 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef TAGREADER_H
-#define TAGREADER_H
+#ifndef TAGS_H
+#define TAGS_H
 
 #include "song.h"
 
-namespace TagReader
+namespace Tags
 {
     extern Song read(const QString &fileName);
-    extern bool updateArtistAndTitleTags(const QString &fileName, const Song &song);
+    extern bool updateArtistAndTitle(const QString &fileName, const Song &song);
     extern bool update(const QString &fileName, const Song &from, const Song &to);
 };
 

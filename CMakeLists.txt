@@ -236,7 +236,7 @@ if(TAGLIB_FOUND)
 
     find_package(Mtp)
 
-    SET( CANTATA_SRCS ${CANTATA_SRCS} gui/tageditor.cpp devices/tagreader.cpp )
+    SET( CANTATA_SRCS ${CANTATA_SRCS} gui/tageditor.cpp devices/tags.cpp )
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/tageditor.h)
     SET( CANTATA_UIS ${CANTATA_UIS} gui/tageditor.ui )
 endif (TAGLIB_FOUND)

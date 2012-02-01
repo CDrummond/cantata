@@ -48,7 +48,7 @@ public:
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
-    void getStats();
+    void update();
 
 private Q_SLOTS:
     void configureSource();

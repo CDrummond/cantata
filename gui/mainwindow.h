@@ -266,6 +266,9 @@ private Q_SLOTS:
     void toggleDockManager();
     void createDataCd();
     void createAudioCd();
+    #ifdef TAGLIB_FOUND
+    void editTags();
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     void addToDevice(const QString &udi);
     void deleteSongs();
@@ -326,6 +329,9 @@ private:
     Action *burnAction;
     Action *createDataCdAction;
     Action *createAudioCdAction;
+    #ifdef TAGLIB_FOUND
+    Action *editTagsAction;
+    #endif
     #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
     #endif

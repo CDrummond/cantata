@@ -205,7 +205,6 @@ public Q_SLOTS:
 Q_SIGNALS:
     void stateChanged(bool connected);
     void currentSongUpdated(const Song &song);
-    void mpdConnectionDied();
     void playlistUpdated(const QList<Song> &songs);
     void statsUpdated();
     void statusUpdated();

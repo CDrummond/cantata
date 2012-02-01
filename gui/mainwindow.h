@@ -211,7 +211,6 @@ private Q_SLOTS:
     void showVolumeControl();
     void showPreferencesDialog();
     void updateSettings();
-    void mpdConnectionDied();
     void refresh();
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();

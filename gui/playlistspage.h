@@ -42,7 +42,7 @@ public:
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void loadPlaylist(QString name);
     void removePlaylist(const QString &name);
     void savePlaylist(const QString &name);

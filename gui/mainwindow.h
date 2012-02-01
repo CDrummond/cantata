@@ -181,7 +181,7 @@ private:
     void setupPlaylistView();
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void setDetails(const QString &host, quint16 port, const QString &pass);
     void removeSongs(const QList<qint32> &);
     void pause(bool p);

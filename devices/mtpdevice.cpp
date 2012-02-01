@@ -190,6 +190,7 @@ void MtpConnection::updateLibrary()
         s.title=track->title;
         s.genre=track->genre;
         s.track=track->tracknumber;
+        s.time=(track->duration/1000.0)+0.5;
         s.fillEmptyFields();
         trackMap.insert(track->item_id, track);
 
@@ -423,7 +424,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
         meta->date=createString(QString::number(song.year));
         meta->filename=createString(destName);
         meta->tracknumber=song.track;
-        meta->duration=song.size;
+        meta->duration=song.time*1000;
         meta->rating=0;
         meta->usecount=0;
 

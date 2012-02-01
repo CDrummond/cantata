@@ -567,7 +567,7 @@ Song read(const QString &fileName)
 
     song=readTags(fileref);
     song.file=fileName;
-    song.time=fileref.audioProperties() ? (fileref.audioProperties()->length() * 1000) : 0;
+    song.time=fileref.audioProperties() ? fileref.audioProperties()->length() : 0;
     if (!song.albumartist.isEmpty() && song.albumartist != song.artist) {
         song.modifiedtitle = song.artist + QLatin1String(" - ") + song.title;
     }

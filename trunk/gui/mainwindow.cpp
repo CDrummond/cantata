@@ -750,7 +750,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(statusUpdated()), this, SLOT(updateStatus())/*, Qt::DirectConnection*/);
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlaylist(const QList<Song> &)));
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
-    connect(MPDConnection::self(), SIGNAL(mpdConnectionDied()), this, SLOT(mpdConnectionDied()));
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
@@ -1005,27 +1004,6 @@ void MainWindow::playlistItemsSelected(bool s)
         cropPlaylistAction->setEnabled(playQueue->haveUnSelectedItems());
         shufflePlaylistAction->setEnabled(true);
     }
-}
-
-void MainWindow::mpdConnectionDied()
-{
-    positionSlider->stopTimer();
-
-    // Reset GUI
-    positionSlider->setValue(0);
-    songTimeElapsedLabel->setText("0:00 / 0:00");
-
-    playPauseTrackAction->setIcon(playbackPlay);
-    playPauseTrackAction->setEnabled(true);
-    stopTrackAction->setEnabled(false);
-
-    // Show warning message
-    #ifdef ENABLE_KDE_SUPPORT
-    KMessageBox::error(this, i18n("The MPD connection died unexpectedly.<br/>TThis error is unrecoverable, please restart %1.").arg(PACKAGE_NAME),
-                       i18n("Lost MPD Connection"));
-    #else
-    QMessageBox::critical(this, tr("MPD connection gone"), tr("The MPD connection died unexpectedly.<br/>This error is unrecoverable, please restart %1.").arg(PACKAGE_NAME));
-    #endif
 }
 
 void MainWindow::refresh()

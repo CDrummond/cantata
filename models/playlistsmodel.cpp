@@ -198,7 +198,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 if (duration.startsWith(QLatin1String("00:"))) {
                     duration=duration.mid(1);
                 }
-                text=text+QChar('\n')+duration;
+                text+=QLatin1String("<br/>")+duration;
+                text+=QLatin1String("<br/><small><i>")+s->file+QLatin1String("</i></small>");
             }
             return text;
         }

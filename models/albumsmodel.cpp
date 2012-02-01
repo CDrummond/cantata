@@ -288,7 +288,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             if (duration.startsWith(QLatin1String("00:"))) {
                 duration=duration.mid(1);
             }
-            return data(index, Qt::DisplayRole).toString()+QChar('\n')+duration;
+            return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+duration+
+                   QLatin1String("<br/><small><i>")+si->file+QLatin1String("</i></small>");
         }
         case Qt::DisplayRole:
             if (si->parent->isSingleTracks) {

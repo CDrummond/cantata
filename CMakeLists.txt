@@ -191,51 +191,63 @@ IF( KDE4_FOUND )
     ENDIF( WANT_KDE_SUPPORT )
 ENDIF( KDE4_FOUND )
 
-IF( ENABLE_KDE_SUPPORT )
+IF( KDE4_FOUND )
+    # TODO: Remove this if/when we fix tag dialog for qt-only build!!!!
     set(TAGLIB_MIN_VERSION "1.6")
     find_package(Taglib)
+ENDIF( KDE4_FOUND )
 
+
+if(TAGLIB_FOUND)
+    include(CheckCXXSourceCompiles)
+    set(CMAKE_REQUIRED_INCLUDES "${TAGLIB_INCLUDES}")
+    set(CMAKE_REQUIRED_LIBRARIES "${TAGLIB_LIBRARIES}")
+
+    check_cxx_source_compiles("#include <asftag.h>
+    int main() { TagLib::ASF::Tag tag; return 0;}" TAGLIB_ASF_FOUND)
+    if( NOT TAGLIB_ASF_FOUND )
+        message(FATAL_ERROR "TagLib does not have ASF support compiled in.")
+    endif( NOT TAGLIB_ASF_FOUND )
+
+    check_cxx_source_compiles("#include <mp4tag.h>
+    int main() { TagLib::MP4::Tag tag(0, 0); return 0;}" TAGLIB_MP4_FOUND)
+    if( NOT TAGLIB_MP4_FOUND )
+        message(FATAL_ERROR "TagLib does not have MP4 support compiled in.")
+    endif( NOT TAGLIB_MP4_FOUND )
+
+    set(CMAKE_REQUIRED_INCLUDES)
+    set(CMAKE_REQUIRED_LIBRARIES)
+
+    set(TAGLIB-EXTRAS_MIN_VERSION "1.0")
+    find_package(Taglib-Extras)
+    set(TAGLIB_EXTRAS_FOUND ${TAGLIB-EXTRAS_FOUND}) # we need a c-compatible name for the include file
+
+    include(CheckTagLibFileName)
+
+    check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
+
+    set (ENABLE_DEVICES_SUPPORT 1)
+    include_directories(${TAGLIB_INCLUDES})
+    add_definitions(${TAGLIB_CFLAGS})
+    if (TAGLIB-EXTRAS_FOUND)
+        include_directories(${TAGLIB-EXTRAS_INCLUDES})
+        add_definitions(${TAGLIB-EXTRAS_CFLAGS})
+    endif (TAGLIB-EXTRAS_FOUND)
+
+    find_package(Mtp)
+
+    SET( CANTATA_SRCS ${CANTATA_SRCS} gui/tageditor.cpp devices/tagreader.cpp )
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/tageditor.h)
+    SET( CANTATA_UIS ${CANTATA_UIS} gui/tageditor.ui )
+endif (TAGLIB_FOUND)
+
+IF( ENABLE_KDE_SUPPORT )
     if(TAGLIB_FOUND)
-        include(CheckCXXSourceCompiles)
-        set(CMAKE_REQUIRED_INCLUDES "${TAGLIB_INCLUDES}")
-        set(CMAKE_REQUIRED_LIBRARIES "${TAGLIB_LIBRARIES}")
-
-        check_cxx_source_compiles("#include <asftag.h>
-        int main() { TagLib::ASF::Tag tag; return 0;}" TAGLIB_ASF_FOUND)
-        if( NOT TAGLIB_ASF_FOUND )
-            message(FATAL_ERROR "TagLib does not have ASF support compiled in.")
-        endif( NOT TAGLIB_ASF_FOUND )
-
-        check_cxx_source_compiles("#include <mp4tag.h>
-        int main() { TagLib::MP4::Tag tag(0, 0); return 0;}" TAGLIB_MP4_FOUND)
-        if( NOT TAGLIB_MP4_FOUND )
-            message(FATAL_ERROR "TagLib does not have MP4 support compiled in.")
-        endif( NOT TAGLIB_MP4_FOUND )
-
-        set(CMAKE_REQUIRED_INCLUDES)
-        set(CMAKE_REQUIRED_LIBRARIES)
-
-        set(TAGLIB-EXTRAS_MIN_VERSION "1.0")
-        find_package(Taglib-Extras)
-        set(TAGLIB_EXTRAS_FOUND ${TAGLIB-EXTRAS_FOUND}) # we need a c-compatible name for the include file
-
-        include(CheckTagLibFileName)
-
-        check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
-
-        set (ENABLE_DEVICES_SUPPORT 1)
-        include_directories(${TAGLIB_INCLUDES})
-        add_definitions(${TAGLIB_CFLAGS})
-        if (TAGLIB-EXTRAS_FOUND)
-            include_directories(${TAGLIB-EXTRAS_INCLUDES})
-            add_definitions(${TAGLIB-EXTRAS_CFLAGS})
-        endif (TAGLIB-EXTRAS_FOUND)
-
         find_package(Mtp)
 
         SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp
              devices/device.cpp devices/umsdevice.cpp devices/mtpdevice.cpp models/devicesmodel.cpp devices/filetyperesolver.cpp
-             devices/tagreader.cpp devices/actiondialog.cpp devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp
+             devices/actiondialog.cpp devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp
              devices/encoders.cpp devices/transcodingjob.cpp devices/valueslider.cpp)
         SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h
              devices/device.h devices/umsdevice.h devices/mtpdevice.h models/devicesmodel.h devices/actiondialog.h devices/devicepropertiesdialog.h
@@ -257,17 +269,9 @@ IF( ENABLE_KDE_SUPPORT )
     KDE4_ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
     TARGET_LINK_LIBRARIES( cantata ${KDE4_KDEWEBKIT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} ${KDE4_SOLID_LIBS}
                            ${QT_QTWEBKIT_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTDBUS_LIBRARY} )
-    if(TAGLIB_FOUND)
-        TARGET_LINK_LIBRARIES(cantata ${TAGLIB_LIBRARIES})
-
-        if (TAGLIB-EXTRAS_FOUND)
-            TARGET_LINK_LIBRARIES(cantata ${TAGLIB-EXTRAS_LIBRARIES})
-        endif (TAGLIB-EXTRAS_FOUND)
-        if (MTP_FOUND)
-            TARGET_LINK_LIBRARIES(cantata ${MTP_LIBRARIES})
-            SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h )
-        endif (MTP_FOUND)
-    endif (TAGLIB_FOUND)
+    if (MTP_FOUND)
+        TARGET_LINK_LIBRARIES(cantata ${MTP_LIBRARIES})
+    endif (MTP_FOUND)
     install( TARGETS cantata ${INSTALL_TARGETS_DEFAULT_ARGS} )
     install( FILES cantataui.rc DESTINATION ${DATA_INSTALL_DIR}/cantata )
     install( FILES cantata.notifyrc DESTINATION ${DATA_INSTALL_DIR}/cantata )
@@ -287,6 +291,13 @@ ELSE( ENABLE_KDE_SUPPORT )
     install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
     ADD_DEFINITIONS( -DQT_NO_STL -DQT_NO_CAST_TO_ASCII -Wall -Wextra )
 ENDIF( ENABLE_KDE_SUPPORT )
+
+if(TAGLIB_FOUND)
+    TARGET_LINK_LIBRARIES(cantata ${TAGLIB_LIBRARIES})
+    if (TAGLIB-EXTRAS_FOUND)
+        TARGET_LINK_LIBRARIES(cantata ${TAGLIB-EXTRAS_LIBRARIES})
+    endif (TAGLIB-EXTRAS_FOUND)
+endif (TAGLIB_FOUND)
 
 if (ENABLE_WEBKIT)
     SET( CANTATA_SRCS ${CANTATA_SRCS} gui/infopage.cpp )

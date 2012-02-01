@@ -8,6 +8,7 @@
    when saving properties to cantata's config file.
 5. Add create audio/data cd actions to library/albums/folder/playlists pages.
 6. Add option to cache contents of UMS library to an XML file on the device.
+7. Basic tag editing. (KDE only)
 
 0.3.0
 -----

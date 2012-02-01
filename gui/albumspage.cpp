@@ -61,6 +61,9 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
+    #ifdef TAGLIB_FOUND
+    view->addAction(p->editTagsAction);
+    #endif
     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
@@ -123,6 +126,22 @@ QStringList AlbumsPage::selectedFiles() const
     }
 
     return AlbumsModel::self()->filenames(mapped);
+}
+
+QList<Song> AlbumsPage::selectedSongs() const
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return QList<Song>();
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    return AlbumsModel::self()->songs(mapped);
 }
 
 void AlbumsPage::addSelectionToPlaylist(const QString &name)

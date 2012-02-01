@@ -63,7 +63,7 @@ ActionDialog::ActionDialog(QWidget *parent)
     configureDestButton->setIcon(QIcon::fromTheme("configure"));
     connect(configureSourceButton, SIGNAL(clicked()), SLOT(configureSource()));
     connect(configureDestButton, SIGNAL(clicked()), SLOT(configureDest()));
-    connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
+    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
 }
 
 void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)
@@ -467,7 +467,7 @@ void ActionDialog::refreshLibrary()
         if ( (Copy==mode && !sourceUdi.isEmpty()) ||
              (Remove==mode && sourceUdi.isEmpty()) ) {
             AlbumsModel::self()->update(MusicLibraryModel::self()->root());
-            emit getStats();
+            emit update();
         } else if ( (Copy==mode && sourceUdi.isEmpty()) ||
                     (Remove==mode && !sourceUdi.isEmpty()) ) {
             Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);

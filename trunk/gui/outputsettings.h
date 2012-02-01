@@ -40,7 +40,7 @@ public:
     void save();
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void outputs();
     void enable(int id);
     void disable(int id);

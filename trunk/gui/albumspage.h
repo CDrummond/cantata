@@ -52,7 +52,7 @@ private:
     void setItemSize();
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void add(const QStringList &files);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
 

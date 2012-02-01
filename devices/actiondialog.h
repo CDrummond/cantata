@@ -47,7 +47,7 @@ public:
     void remove(const QString &udi, const QList<Song> &songs);
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via singal/slots)
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void update();
 
 private Q_SLOTS:

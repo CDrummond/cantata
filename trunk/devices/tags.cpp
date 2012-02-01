@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "tagreader.h"
+#include "tags.h"
 #include "filetyperesolver.h"
 #include <QtCore/QFile>
 #include <QtCore/QMutex>
@@ -55,7 +55,7 @@
 #include <taglib-extras/realmediafiletyperesolver.h>
 #endif
 
-namespace TagReader
+namespace Tags
 {
 
 static TagLib::FileRef getFileRef(const QString &path)
@@ -575,7 +575,7 @@ Song read(const QString &fileName)
     return song;
 }
 
-bool updateArtistAndTitleTags(const QString &fileName, const Song &song)
+bool updateArtistAndTitle(const QString &fileName, const Song &song)
 {
     QMutexLocker locker(&mutex);
     ensureFileTypeResolvers();

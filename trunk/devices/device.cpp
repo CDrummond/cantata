@@ -28,7 +28,7 @@
 #ifdef MTP_FOUND
 #include "mtpdevice.h"
 #endif
-#include "tagreader.h"
+#include "tags.h"
 #include "song.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
@@ -430,7 +430,7 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
 //     qWarning() << "FIX:" << file << song.artist << song.albumartist << song.title;
     Song orig=song;
     if (!file.isEmpty() && song.albumartist.isEmpty()) {
-        song=TagReader::read(file);
+        song=Tags::read(file);
     }
 
     if (song.artist.isEmpty() || song.albumartist.isEmpty() || !Song::isVariousArtists(song.albumartist)) {
@@ -458,7 +458,7 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
 //         qWarning() << "FIXING";
     }
 
-    if (needsUpdating && (file.isEmpty() || TagReader::updateArtistAndTitleTags(file, song))) {
+    if (needsUpdating && (file.isEmpty() || Tags::updateArtistAndTitle(file, song))) {
 //         qWarning() << "SAVED:" << file;
         return true;
     }

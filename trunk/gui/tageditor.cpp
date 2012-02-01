@@ -22,7 +22,7 @@
  */
 
 #include "tageditor.h"
-#include "tagreader.h"
+#include "tags.h"
 #include "musiclibrarymodel.h"
 #include "mpdconnection.h"
 #include "settings.h"
@@ -332,7 +332,7 @@ void TagEditor::applyUpdates()
         if (equalTags(orig, edit, false)) {
             continue;
         }
-        if (TagReader::update(Settings::self()->mpdDir()+orig.file, orig, edit)) {
+        if (Tags::update(Settings::self()->mpdDir()+orig.file, orig, edit)) {
             MusicLibraryModel::self()->removeSongFromList(orig);
             MusicLibraryModel::self()->addSongToList(edit);
             updated=true;

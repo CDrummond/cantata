@@ -10,6 +10,7 @@
 6. Add option to cache contents of UMS library to an XML file on the device.
 7. Basic tag editing. (KDE only)
 8. Fix UMS and MTP song durations.
+9. Show file location in tooltips.
 
 0.3.0
 -----

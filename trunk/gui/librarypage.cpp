@@ -59,6 +59,9 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
+    #ifdef TAGLIB_FOUND
+    view->addAction(p->editTagsAction);
+    #endif
     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
@@ -127,6 +130,22 @@ QStringList LibraryPage::selectedFiles() const
     }
 
     return MusicLibraryModel::self()->filenames(mapped);
+}
+
+QList<Song> LibraryPage::selectedSongs() const
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return QList<Song>();
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    return MusicLibraryModel::self()->songs(mapped);
 }
 
 void LibraryPage::addSelectionToPlaylist(const QString &name)

@@ -399,6 +399,11 @@ void MusicLibraryModel::removeCache()
     }
 }
 
+void MusicLibraryModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
+{
+    rootItem->getDetails(artists, albumArtists, albums, genres);
+}
+
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
 {
     if (databaseTime > dbUpdate) {

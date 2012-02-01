@@ -29,6 +29,7 @@
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QDateTime>
+#include <QtCore/QSet>
 #include "musiclibraryitemroot.h"
 #include "song.h"
 
@@ -63,6 +64,7 @@ public:
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
     void removeCache();
+    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);

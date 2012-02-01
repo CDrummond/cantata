@@ -80,6 +80,9 @@
 #include "devicesmodel.h"
 #include "actiondialog.h"
 #endif
+#ifdef TAGLIB_FOUND
+#include "tageditor.h"
+#endif
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -377,6 +380,11 @@ MainWindow::MainWindow(QWidget *parent)
     createDataCdAction = actionCollection()->addAction("createdatacd");
     createDataCdAction->setText(i18n("Create Data CD/DVD"));
 
+    #ifdef TAGLIB_FOUND
+    editTagsAction = actionCollection()->addAction("edittags");
+    editTagsAction->setText(i18n("Edit Tags"));
+    #endif
+
     libraryTabAction = actionCollection()->addAction("showlibrarytab");
     libraryTabAction->setText(i18n("Library"));
 
@@ -440,6 +448,9 @@ MainWindow::MainWindow(QWidget *parent)
     burnAction = new QAction(tr("Burn To CD/DVD"), this);
     createAudioCdAction = new QAction(tr("Create Audio CD"), this);
     createDataCdAction = new QAction(tr("Create Data CD"), this);
+    #ifdef TAGLIB_FOUND
+    editTagsAction = new QAction(tr("Edit Tags"), this);
+    #endif
     libraryTabAction = new QAction(tr("Library"), this);
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
@@ -495,6 +506,9 @@ MainWindow::MainWindow(QWidget *parent)
     burnAction->setIcon(QIcon::fromTheme("tools-media-optical-burn"));
     createDataCdAction->setIcon(QIcon::fromTheme("media-optical"));
     createAudioCdAction->setIcon(QIcon::fromTheme("media-optical-audio"));
+    #ifdef TAGLIB_FOUND
+    editTagsAction->setIcon(QIcon::fromTheme("documentinfo"));
+    #endif
     QMenu *cdMenu=new QMenu(this);
     cdMenu->addAction(createAudioCdAction);
     cdMenu->addAction(createDataCdAction);
@@ -648,11 +662,11 @@ MainWindow::MainWindow(QWidget *parent)
     randomPlaylistAction->setChecked(false);
     repeatPlaylistAction->setChecked(false);
     consumePlaylistAction->setChecked(false);
+    burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+    createAudioCdAction->setEnabled(burnAction->isEnabled());
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
-    deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
-    burnAction->setEnabled(copyToDeviceAction->isEnabled());
-    createAudioCdAction->setEnabled(copyToDeviceAction->isEnabled());
+    copyToDeviceAction->setEnabled(burnAction->isEnabled());
+    deleteSongsAction->setEnabled(burnAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     devicesPage->enableDeleteAction(Settings::self()->showDeleteAction());
     #endif
@@ -773,6 +787,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     connect(createDataCdAction, SIGNAL(activated()), this, SLOT(createDataCd()));
     connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
+    #ifdef TAGLIB_FOUND
+    connect(editTagsAction, SIGNAL(activated()), this, SLOT(editTags()));
+    #endif
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
@@ -2039,6 +2056,28 @@ void MainWindow::callK3b(const QString &type)
         proc->start(QLatin1String("k3b"), args);
     }
 }
+
+#ifdef TAGLIB_FOUND
+void MainWindow::editTags()
+{
+    QList<Song> songs;
+    if (libraryPage->isVisible()) {
+        songs=libraryPage->selectedSongs();
+    } else if (albumsPage->isVisible()) {
+        songs=albumsPage->selectedSongs();
+    }
+
+    if (!songs.isEmpty()) {
+        QSet<QString> artists;
+        QSet<QString> albumArtists;
+        QSet<QString> albums;
+        QSet<QString> genres;
+        MusicLibraryModel::self()->getDetails(artists, albumArtists, albums, genres);
+        TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, albums, genres);
+        dlg->show();
+    }
+}
+#endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void MainWindow::addToDevice(const QString &udi)

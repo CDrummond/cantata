@@ -157,9 +157,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     foreach (const Song &s, original) {
         if (first) {
             #ifdef ENABLE_KDE_SUPPORT
-            trackName->insertItem(trackName->count(), i18n("Tags for all tracks"));
+            trackName->insertItem(trackName->count(), i18n("All tracks"));
             #else
-            trackName->insertItem(trackName->count(), tr("Tags for all tracks"));
+            trackName->insertItem(trackName->count(), tr("All tracks"));
             #endif
             first=false;
         } else {
@@ -218,9 +218,9 @@ void TagEditor::updateTrackName(int index, bool edited)
     if (edited) {
         if (isAll) {
             #ifdef ENABLE_KDE_SUPPORT
-            trackName->setItemText(index, i18n("Tags for all tracks [modified]"));
+            trackName->setItemText(index, i18n("All tracks [modified]"));
             #else
-            trackName->setItemText(index, tr("Tags for all tracks [modified]"));
+            trackName->setItemText(index, tr("All tracks [modified]"));
             #endif
         } else {
             #ifdef ENABLE_KDE_SUPPORT
@@ -232,9 +232,9 @@ void TagEditor::updateTrackName(int index, bool edited)
     } else {
         if (isAll) {
             #ifdef ENABLE_KDE_SUPPORT
-            trackName->setItemText(index, i18n("Tags for all tracks"));
+            trackName->setItemText(index, i18n("All tracks"));
             #else
-            trackName->setItemText(index, tr("Tags for all tracks"));
+            trackName->setItemText(index, tr("All tracks"));
             #endif
         } else {
             trackName->setItemText(index, original.at(index).file);

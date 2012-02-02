@@ -40,6 +40,7 @@ public:
         setAutoCompletion(false);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+        view()->setTextElideMode(Qt::ElideRight);
     }
 
     void setEnabled(bool e) {

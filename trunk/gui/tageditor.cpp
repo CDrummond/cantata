@@ -119,6 +119,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 
     trackName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     trackName->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    trackName->view()->setTextElideMode(Qt::ElideLeft);
     resize(500, 200);
 
     original=songs;

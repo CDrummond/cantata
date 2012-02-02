@@ -242,6 +242,7 @@ MainWindow::MainWindow(QWidget *parent)
 #else
     : QMainWindow(parent)
 #endif
+    , prevPage(-1)
     , lastState(MPDStatus::State_Inactive)
     , lastSongId(-1)
     , fetchStatsFactor(0)
@@ -1926,6 +1927,13 @@ void MainWindow::currentTabChanged(int index)
     default:
         break;
     }
+
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if ((index!=prevPage) && ((PAGE_DEVICES==index) || (PAGE_DEVICES==prevPage)) && DevicesModel::self()->isEnabled()) {
+        devicesPage->controlActions(PAGE_DEVICES==index);
+    }
+    #endif
+    prevPage=index;
 }
 
 void MainWindow::tabToggled(int index)
@@ -2021,6 +2029,14 @@ void MainWindow::callK3b(const QString &type)
     } else if (playlistsPage->isVisible()) {
         files=playlistsPage->selectedFiles();
     }
+#ifdef ENABLE_DEVICES_SUPPORT
+    else if (devicesPage->isVisible()) {
+        QList<Song> songs=devicesPage->selectedSongs();
+        foreach (const Song &s, songs) {
+            files.append(s.file);
+        }
+    }
+#endif
 
     if (!files.isEmpty()) {
         QStringList args;
@@ -2044,12 +2060,22 @@ void MainWindow::editTags()
     } else if (albumsPage->isVisible()) {
         songs=albumsPage->selectedSongs();
     }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    else if (devicesPage->isVisible()) {
+        songs=devicesPage->selectedSongs();
+    }
+    #endif
 
     if (!songs.isEmpty()) {
         QSet<QString> artists;
         QSet<QString> albumArtists;
         QSet<QString> albums;
         QSet<QString> genres;
+        #ifdef ENABLE_DEVICES_SUPPORT
+        if (devicesPage->isVisible()) {
+            DevicesModel::self()->getDetails(artists, albumArtists, albums, genres);
+        } else
+        #endif
         MusicLibraryModel::self()->getDetails(artists, albumArtists, albums, genres);
         TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, albums, genres);
         dlg->show();

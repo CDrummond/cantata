@@ -118,6 +118,7 @@ public:
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
+    Type type() const { return Mtp; }
 
 Q_SIGNALS:
     // These are for talking to connection thread...

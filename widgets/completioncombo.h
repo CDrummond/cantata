@@ -71,6 +71,7 @@ public:
         : QComboBox(p) {
         setEditable(true);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
     }
 
     void setText(const QString &text) {

@@ -76,6 +76,7 @@ public:
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
+    Type type() const { return Ums; }
     QString cacheFileName() const;
     void saveCache();
     void removeCache();

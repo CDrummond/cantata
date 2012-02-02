@@ -31,6 +31,9 @@
 #else
 #include <QtGui/QDialogButtonBox>
 #endif
+#ifdef ENABLE_DEVICES_SUPPORT
+#include "devicesmodel.h"
+#endif
 
 static bool equalTags(const Song &a, const Song &b, bool isAllTracks)
 {
@@ -114,6 +117,8 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     genre->clear();
     genre->insertItems(0, strings);
 
+    trackName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    trackName->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
     resize(500, 200);
 
     original=songs;
@@ -332,6 +337,14 @@ void TagEditor::applyUpdates()
         if (equalTags(orig, edit, false)) {
             continue;
         }
+
+        #ifdef ENABLE_DEVICES_SUPPORT
+        if (orig.file.startsWith('/')) {  // Device paths are complete, MPD paths are not :-)
+            if (Tags::update(orig.file, orig, edit)) {
+                DevicesModel::self()->updateSong(orig, edit);
+            }
+        } else
+        #endif
         if (Tags::update(Settings::self()->mpdDir()+orig.file, orig, edit)) {
             MusicLibraryModel::self()->removeSongFromList(orig);
             MusicLibraryModel::self()->addSongToList(edit);

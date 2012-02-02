@@ -54,6 +54,8 @@ public:
     Device * device(const QString &udi);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
+    void updateSong(const Song &orig, const Song &edit);
+    void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
 
 public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);

@@ -101,6 +101,11 @@ public:
         FailedToCreateTempFile
     };
 
+    enum Type {
+        Ums,
+        Mtp
+    };
+
     Device(DevicesModel *m, Solid::Device &dev)
         : MusicLibraryItemRoot(dev.vendor()+QChar(' ')+dev.product())
         , model(m)
@@ -133,6 +138,7 @@ public:
     virtual double usedCapacity()=0;
     virtual QString capacityString()=0;
     virtual qint64 freeSpace()=0;
+    virtual Type type() const=0;
     virtual void saveCache() {
     }
     virtual void removeCache() {
@@ -172,7 +178,7 @@ public:
 public Q_SLOTS:
     void setStatusMessage(const QString &message);
 
-protected:
+public:
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
 

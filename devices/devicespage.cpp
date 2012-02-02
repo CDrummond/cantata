@@ -41,6 +41,7 @@
 
 DevicesPage::DevicesPage(MainWindow *p)
     : QWidget(p)
+    , mw(p)
 {
     setupUi(this);
 
@@ -60,6 +61,10 @@ DevicesPage::DevicesPage(MainWindow *p)
     removeAction->setText(i18n("Delete Songs From Device"));
     removeAction->setIcon(QIcon::fromTheme("edit-delete"));
     view->addAction(copyAction);
+    #ifdef TAGLIB_FOUND
+    view->addAction(p->editTagsAction);
+    #endif
+    view->addAction(p->burnAction);
     view->addAction(removeAction);
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -91,9 +96,56 @@ void DevicesPage::clear()
     view->setLevel(0);
 }
 
+QList<Song> DevicesPage::selectedSongs() const
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return QList<Song>();
+    }
+
+    // Ensure all songs are from UMS devices...
+    QString udi;
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        QModelIndex index = proxy.mapToSource(idx);
+        mapped.append(index);
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
+        if (item && MusicLibraryItem::Type_Root==item->type()) {
+            return QList<Song>();
+        } else {
+            MusicLibraryItem *p=item;
+            while(p->parent()) {
+                p=p->parent();
+            }
+            if (MusicLibraryItem::Type_Root==p->type()) {
+                Device *dev=static_cast<Device *>(p);
+
+                if (Device::Ums!=dev->type()) {
+                    return QList<Song>();
+                }
+            }
+        }
+    }
+
+    return DevicesModel::self()->songs(mapped);
+}
+
 void DevicesPage::enableDeleteAction(bool e)
 {
     removeAction->setVisible(e);
+}
+
+void DevicesPage::controlActions(bool activePage)
+{
+    if (activePage) {
+        selectionChanged();
+    } else {
+        #ifdef TAGLIB_FOUND
+        mw->editTagsAction->setEnabled(true);
+        #endif
+        mw->burnAction->setEnabled(true);
+    }
 }
 
 void DevicesPage::itemDoubleClicked(const QModelIndex &)
@@ -132,7 +184,7 @@ void DevicesPage::selectionChanged()
 {
     QModelIndexList selected=view->selectedIndexes();
     bool enable=!selected.isEmpty();
-    QString udi;
+    bool onlyUms=true;
 
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
@@ -147,11 +199,9 @@ void DevicesPage::selectionChanged()
             }
             if (MusicLibraryItem::Type_Root==p->type()) {
                 Device *dev=static_cast<Device *>(p);
-                if (!udi.isEmpty() && udi!=dev->dev().udi()) {
-                    enable=false;
-                    break;
+                if (Device::Ums!=dev->type()) {
+                    onlyUms=false;
                 }
-                udi=dev->dev().udi();
             }
         }
     }
@@ -160,6 +210,10 @@ void DevicesPage::selectionChanged()
     refreshAction->setEnabled(!enable && 1==selected.count());
     copyAction->setEnabled(enable);
     removeAction->setEnabled(enable);
+    #ifdef TAGLIB_FOUND
+    mw->editTagsAction->setEnabled(enable && onlyUms);
+    #endif
+    mw->burnAction->setEnabled(enable && onlyUms);
 }
 
 void DevicesPage::copyToLibrary()

@@ -39,8 +39,10 @@ public:
     virtual ~DevicesPage();
 
     void clear();
+    QList<Song> selectedSongs() const;
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
     void enableDeleteAction(bool e);
+    void controlActions(bool activePage);
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);
@@ -57,6 +59,7 @@ Q_SIGNALS:
     void deleteSongs(const QString &from, const QList<Song> &songs);
 
 private:
+    MainWindow *mw;
     MusicLibraryProxyModel proxy;
     KAction *configureAction;
     KAction *refreshAction;

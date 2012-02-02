@@ -2071,8 +2071,10 @@ void MainWindow::deleteSongs()
 {
     if (libraryPage->isVisible()) {
         libraryPage->deleteSongs();
-    } else if (devicesPage->isVisible()) {
+    } else if (albumsPage->isVisible()) {
         albumsPage->deleteSongs();
+    } else if (devicesPage->isVisible()) {
+        devicesPage->deleteSongs();
     }
 }
 

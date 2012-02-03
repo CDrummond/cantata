@@ -60,6 +60,7 @@ private Q_SLOTS:
     void copyPercent(unsigned long percent);
 
 private:
+    Device * getDevice(const QString &udi);
     void configure(const QString &udi);
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
     void slotButtonClicked(int button);

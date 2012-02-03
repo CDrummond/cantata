@@ -67,6 +67,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
+    view->addAction(p->organiseFilesAction);
     view->addAction(p->deleteSongsAction);
     #endif
     proxy.setSourceModel(AlbumsModel::self());

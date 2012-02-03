@@ -48,6 +48,9 @@ public:
     const QString & file() const {
         return m_song.file;
     }
+    void setFile(const QString &f) {
+        m_song.file=f;
+    }
     quint32 track() const {
         return m_song.track;
     }

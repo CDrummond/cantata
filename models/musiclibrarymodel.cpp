@@ -390,6 +390,11 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
     endRemoveRows();
 }
 
+void MusicLibraryModel::updateSongFile(const Song &from, const Song &to)
+{
+    rootItem->updateSongFile(from, to);
+}
+
 void MusicLibraryModel::removeCache()
 {
     //Check if dir exists

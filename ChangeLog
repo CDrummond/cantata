@@ -13,6 +13,8 @@
  9. Show file location in tooltips.
 10. Only save streams file if it has been modified.
 11. Basic support for configurable stream/category icons. (KDE only)
+12. Add track organiser dialog - so that files/folders can be renamed to match
+    library/device scheme. (KDE only)
 
 0.3.0
 -----

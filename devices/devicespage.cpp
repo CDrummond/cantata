@@ -26,7 +26,6 @@
 #include "musiclibraryitemsong.h"
 #include "mainwindow.h"
 #include "devicesmodel.h"
-#include "device.h"
 #include "settings.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
@@ -63,6 +62,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     view->addAction(p->editTagsAction);
     #endif
     view->addAction(p->burnAction);
+    view->addAction(p->organiseFilesAction);
     view->addAction(p->deleteSongsAction);
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -91,6 +91,37 @@ void DevicesPage::clear()
 {
     DevicesModel::self()->clear();
     view->setLevel(0);
+}
+
+QString DevicesPage::activeUmsDeviceUdi() const
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return QString();
+    }
+
+    foreach (const QModelIndex &idx, selected) {
+        QModelIndex index = proxy.mapToSource(idx);
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
+        if (item && MusicLibraryItem::Type_Root==item->type()) {
+            return QString();
+        } else {
+            MusicLibraryItem *p=item;
+            while(p->parent()) {
+                p=p->parent();
+            }
+            if (MusicLibraryItem::Type_Root==p->type()) {
+                Device *dev=static_cast<Device *>(p);
+                if (Device::Ums!=dev->type()) {
+                    return QString();
+                }
+                return dev->dev().udi();
+            }
+        }
+    }
+
+    return QString();
 }
 
 QList<Song> DevicesPage::selectedSongs() const
@@ -165,6 +196,8 @@ void DevicesPage::selectionChanged()
     QModelIndexList selected=view->selectedIndexes();
     bool enable=!selected.isEmpty();
     bool onlyUms=true;
+    bool singleUdi=true;
+    QString udi;
 
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
@@ -182,6 +215,11 @@ void DevicesPage::selectionChanged()
                 if (Device::Ums!=dev->type()) {
                     onlyUms=false;
                 }
+                if (udi.isEmpty()) {
+                    udi=dev->dev().udi();
+                } else if (udi!=dev->dev().udi()) {
+                    singleUdi=false;
+                }
             }
         }
     }
@@ -194,6 +232,7 @@ void DevicesPage::selectionChanged()
     mw->editTagsAction->setEnabled(enable && onlyUms);
     #endif
     mw->burnAction->setEnabled(enable && onlyUms);
+    mw->organiseFilesAction->setEnabled(enable && onlyUms && singleUdi);
 }
 
 void DevicesPage::copyToLibrary()

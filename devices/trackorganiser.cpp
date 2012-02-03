@@ -142,6 +142,7 @@ void TrackOrganiser::updateView()
     f.setItalic(true);
     files->clear();
     bool different=false;
+    readOptions();
     foreach (const Song &s, origSongs) {
         QString modified=opts.createFilename(s);
         //different=different||(modified!=s.file);

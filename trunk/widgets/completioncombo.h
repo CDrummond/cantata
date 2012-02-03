@@ -28,6 +28,7 @@
 #include <KDE/KComboBox>
 #include <KDE/KLineEdit>
 #include <KDE/KGlobalSettings>
+#include <QtGui/QAbstractItemView>
 
 class CompletionCombo : public KComboBox
 {

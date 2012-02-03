@@ -32,6 +32,7 @@ SET( CANTATA_SRCS
     gui/outputsettings.cpp
     gui/streamspage.cpp
     gui/streamdialog.cpp
+    gui/streamcategorydialog.cpp
     gui/librarypage.cpp
     gui/albumspage.cpp
     gui/folderpage.cpp
@@ -92,6 +93,7 @@ SET( CANTATA_MOC_HDRS
     gui/infopage.h
     gui/serverinfopage.h
     gui/streamdialog.h
+    gui/streamcategorydialog.h
     gui/playbacksettings.h
     gui/outputsettings.h
     gui/preferencesdialog.h

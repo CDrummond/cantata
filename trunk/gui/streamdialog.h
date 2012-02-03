@@ -31,9 +31,11 @@
 class QDialogButtonBox;
 #endif
 #include "lineedit.h"
-#include <QtGui/QComboBox>
+#include "completioncombo.h"
 
 #ifdef ENABLE_KDE_SUPPORT
+class QPushButton;
+
 class StreamDialog : public KDialog
 #else
 class StreamDialog : public QDialog
@@ -44,25 +46,40 @@ class StreamDialog : public QDialog
 public:
     StreamDialog(const QStringList &categories, QWidget *parent);
 
-    void setEdit(const QString &cat, const QString &editName, const QString &editUrl);
+    void setEdit(const QString &cat, const QString &editName, const QString &editIconName, const QString &editUrl);
 
     QString name() const { return nameEntry->text().trimmed(); }
     QString url() const { return urlEntry->text().trimmed(); }
     QString category() const { return catCombo->currentText().trimmed(); }
+    #ifdef ENABLE_KDE_SUPPORT
+    QString icon() const { return iconName; }
+    #endif
 
 private Q_SLOTS:
     void changed();
+    #ifdef ENABLE_KDE_SUPPORT
+    void setIcon();
+    #endif
+
+#ifdef ENABLE_KDE_SUPPORT
+private:
+    void setIcon(const QString &icn);
+#endif
 
 private:
     QString prevName;
     QString prevUrl;
     QString prevCat;
-#ifndef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
+    QString prevIconName;
+    QString iconName;
+    QPushButton *iconButton;
+    #else
     QDialogButtonBox *buttonBox;
-#endif
+    #endif
     LineEdit *nameEntry;
     LineEdit *urlEntry;
-    QComboBox *catCombo;
+    CompletionCombo *catCombo;
 };
 
 #endif

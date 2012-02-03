@@ -35,18 +35,23 @@ class StreamsModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
+
+    static const QLatin1String constDefaultCategoryIcon;
+    static const QLatin1String constDefaultStreamIcon;
+
     struct Item
     {
-        Item(const QString &n) : name(n) { }
+        Item(const QString &n, const QString &i) : name(n), icon(i) { }
         virtual bool isCategory() = 0;
         virtual ~Item() { }
         QString name;
+        QString icon;
     };
 
     struct CategoryItem;
     struct StreamItem : public Item
     {
-        StreamItem(const QString &n, const QUrl &u, CategoryItem *p=0) : Item(n), url(u), parent(p) { }
+        StreamItem(const QString &n, const QString &i, const QUrl &u, CategoryItem *p=0) : Item(n, i), url(u), parent(p) { }
         bool isCategory() { return false; }
         QUrl url;
         CategoryItem *parent;
@@ -54,7 +59,7 @@ public:
 
     struct CategoryItem : public Item
     {
-        CategoryItem(const QString &n) : Item(n) { }
+        CategoryItem(const QString &n, const QString &i=QString()) : Item(n, i) { }
         virtual ~CategoryItem() { clearStreams(); }
         bool isCategory() { return true; }
         void clearStreams();
@@ -75,9 +80,9 @@ public:
     void save(bool force=false);
     bool save(const QString &filename, const QModelIndexList &selection=QModelIndexList());
     bool import(const QString &filename) { return load(filename, false); }
-    bool add(const QString &cat, const QString &name, const QString &url);
+    bool add(const QString &cat, const QString &name, const QString &icon, const QString &url);
     void editCategory(const QModelIndex &index, const QString &name);
-    void editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &url);
+    void editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &icon, const QString &url);
     void remove(const QModelIndex &index);
     QString name(const QString &cat, const QString &url) { return name(getCategory(cat), url); }
     bool entryExists(const QString &cat, const QString &name, const QUrl &url=QUrl()) { return entryExists(getCategory(cat), name, url); }

@@ -245,7 +245,7 @@ void StreamsPage::add()
             return;
         }
 
-        if (!model.add(cat, name, url)) {
+        if (!model.add(cat, name, QString(), url)) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", name));
             #else
@@ -368,7 +368,7 @@ void StreamsPage::edit()
             QMessageBox::critical(this, tr("Error"), tr("A stream named <b>%1 (%2)</b> already exists!").arg(newName).arg(newCat));
             #endif
         } else {
-            model.editStream(index, cat, newCat, newName, newUrl);
+            model.editStream(index, cat, newCat, newName, QString(), newUrl);
         }
     }
 }

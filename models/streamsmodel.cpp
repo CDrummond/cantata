@@ -336,7 +336,7 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &i
     return true;
 }
 
-void StreamsModel::editCategory(const QModelIndex &index, const QString &name)
+void StreamsModel::editCategory(const QModelIndex &index, const QString &name, const QString &icon)
 {
     if (!index.isValid()) {
         return;
@@ -344,8 +344,9 @@ void StreamsModel::editCategory(const QModelIndex &index, const QString &name)
 
     Item *item=static_cast<Item *>(index.internalPointer());
 
-    if (item->isCategory() && item->name!=name) {
+    if (item->isCategory() && (item->name!=name || item->icon!=icon)) {
         item->name=name;
+        item->icon=icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon;
         emit dataChanged(index, index);
         modified=true;
         save();

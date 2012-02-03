@@ -23,6 +23,7 @@
 
 #include "streamspage.h"
 #include "streamdialog.h"
+#include "streamcategorydialog.h"
 #include "mpdconnection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
@@ -314,43 +315,28 @@ void StreamsPage::edit()
 
     QModelIndex index=proxy.mapToSource(selected.first());
     StreamsModel::Item *item=static_cast<StreamsModel::Item *>(index.internalPointer());
+    QString name=item->name;
+    QString icon=item->icon;
 
     if (item->isCategory()) {
-        for(;;) {
-            #ifdef ENABLE_KDE_SUPPORT
-            QString name = KInputDialog::getText(i18n("Category Name"), i18n("Enter a name for the category:"), item->name, 0, this);
-            #else
-            QString name = QInputDialog::getText(this, tr("Category Name"), tr("Enter a name for the category:"), QLineEdit::Normal, item->name);
-            #endif
-
-            if (name.isEmpty()) {
-                break;
-            }
-
-            if (getCategories().contains(name)) {
-                #ifdef ENABLE_KDE_SUPPORT
-                KMessageBox::error(this, i18n("A category named <b>%1</b> already exists!").arg(name));
-                #else
-                QMessageBox::critical(this, tr("Error"), tr("A category named <b>%1</b> already exists!").arg(name));
-                #endif
-            } else {
-                model.editCategory(index, name);
-                break;
-            }
+        StreamCategoryDialog dlg(getCategories(), this);
+        dlg.setEdit(name, icon);
+        if (QDialog::Accepted==dlg.exec()) {
+            model.editCategory(index, dlg.name(), dlg.icon());
         }
         return;
     }
 
     StreamDialog dlg(getCategories(), this);
     StreamsModel::StreamItem *stream=static_cast<StreamsModel::StreamItem *>(item);
-    QString name=stream->name;
     QString url=stream->url.toString();
     QString cat=stream->parent->name;
 
-    dlg.setEdit(cat, name, url);
+    dlg.setEdit(cat, name, icon, url);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString newName=dlg.name();
+        QString newIcon=dlg.icon();
         QString newUrl=dlg.url();
         QString newCat=dlg.category();
         QString existingNameForUrl=newUrl!=url ? model.name(newCat, newUrl) : QString();
@@ -368,7 +354,7 @@ void StreamsPage::edit()
             QMessageBox::critical(this, tr("Error"), tr("A stream named <b>%1 (%2)</b> already exists!").arg(newName).arg(newCat));
             #endif
         } else {
-            model.editStream(index, cat, newCat, newName, QString(), newUrl);
+            model.editStream(index, cat, newCat, newName, newIcon, newUrl);
         }
     }
 }

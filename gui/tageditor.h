@@ -83,6 +83,7 @@ private:
     int currentSongIndex;
     QSet<int> editedIndexes;
     bool updating;
+    bool saveable;
 };
 
 #endif

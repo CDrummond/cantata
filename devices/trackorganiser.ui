@@ -130,6 +130,15 @@
    </item>
    <item>
     <widget class="QTreeWidget" name="files">
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="uniformRowHeights">
+      <bool>true</bool>
+     </property>
+     <property name="allColumnsShowFocus">
+      <bool>true</bool>
+     </property>
      <column>
       <property name="text">
        <string>Orignal Name</string>
@@ -151,6 +160,15 @@
    <header>lineedit.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>vfatSafe</tabstop>
+  <tabstop>asciiOnly</tabstop>
+  <tabstop>replaceSpaces</tabstop>
+  <tabstop>ignoreThe</tabstop>
+  <tabstop>filenameScheme</tabstop>
+  <tabstop>configFilename</tabstop>
+  <tabstop>files</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

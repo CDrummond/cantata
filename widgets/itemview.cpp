@@ -184,7 +184,7 @@ public:
         QString childText = index.data(ItemView::Role_SubText).toString();
         int imageSize = showCapacity ? constDevImageSize : index.data(ItemView::Role_ImageSize).toInt();
 
-        if (imageSize<0) {
+        if (imageSize<=0) {
             imageSize=constImageSize;
         }
 

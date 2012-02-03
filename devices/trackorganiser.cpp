@@ -47,10 +47,6 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     setMainWidget(mainWidet);
     configFilename->setIcon(QIcon::fromTheme("configure"));
     setButtonGuiItem(Ok, KGuiItem(i18n("Rename"), "edit-rename"));
-
-    // TODO: Move to UI!
-    files->setRootIsDecorated(false);
-    files->setAllColumnsShowFocus(true);
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
 }
 
@@ -163,7 +159,6 @@ void TrackOrganiser::updateView()
 
 void TrackOrganiser::startRename()
 {
-    //TODO: Save options - either mpd or device...
     optionsBox->setEnabled(false);
     enableButtonOk(false);
     index=0;

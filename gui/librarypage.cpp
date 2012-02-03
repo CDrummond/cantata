@@ -65,6 +65,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
+    view->addAction(p->organiseFilesAction);
     view->addAction(p->deleteSongsAction);
     #endif
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));

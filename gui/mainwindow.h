@@ -269,6 +269,7 @@ private Q_SLOTS:
     void editTags();
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
+    void organiseFiles();
     void addToDevice(const QString &udi);
     void deleteSongs();
     void copyToDevice(const QString &from, const QString &to, const QList<Song> &songs);
@@ -340,6 +341,7 @@ private:
     Action *devicesTabAction;
     Action *copyToDeviceAction;
     Action *deleteSongsAction;
+    Action *organiseFilesAction;
     #endif
     Action *refreshAction;
     Action *smallPlaybackButtonsAction;

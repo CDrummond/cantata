@@ -6,24 +6,19 @@
   - Incremental update of model? Not sure its worth the hassle
 
 - Playlists
-    - Lazy loading of playlist contents - current is not 100%, but is ok if we
-      want genre filtering
-    - Add genre filtering
+  - Lazy loading of playlist contents - current is not 100%, but is ok if we
+    want genre filtering
+  - Add genre filtering
 
 - Streams
-    - allow drag'n'drop within categories
-    - add genre support?
+  - add genre support?
     - will need to place some items in a menu.
     - Perhaps import/export/edit could go into a 'Tools' menu
-    - Handle xspf/spiff playlists
-    - Handle more than 1st entry?? Not sure
-    - Check that MPD can handle protocols before adding
-    - Display list of schemas in 'Info' page
-    - Icecast?
-    - Add category icons
-      - Embed into .xml file?
-      - External ref?
-      - Use standard only?
+  - Handle xspf/spiff playlists
+  - Handle more than 1st entry?? Not sure
+  - Check that MPD can handle protocols before adding
+  - Display list of schemas in 'Info' page
+  - Icecast?
 
 - Lyrics
   - Add next/prev provider buttons - so that can try others.
@@ -43,11 +38,8 @@
   - Allow to drag songs from albums/library to devices, and vice versa.
   - Allow to play UMS files
     - Will need 'IsPlayable' type to be added to ItemView
-  - Transcoding of songs when copying to/from
-    - use ffmpeg -i $input -map_metadata 0:0 $output
 
 - PlayQueue
-  - Slow with over 2000 entries, due to sort-filter-proxy??
   - Add (optional) simple, non-table-like view?
 
 - General
@@ -57,5 +49,5 @@
   - Add local (non mpd) file support?
   
 - Sidebar
-   - Allow to collapse current item
-   - Icon only mode for Large/Small sidebar?
+  - Allow to collapse current item
+  - Icon only mode for Large/Small sidebar?

@@ -63,6 +63,7 @@ public:
     bool songExists(const Song &s) const;
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
+    void updateSongFile(const Song &from, const Song &to);
     void removeCache();
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
 

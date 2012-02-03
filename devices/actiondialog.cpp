@@ -72,6 +72,8 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
 
     if (!dev) { // No dev????
+        KMessageBox::error(parentWidget(), i18n("Device has been removed!"));
+        deleteLater();
         return;
     }
 
@@ -236,16 +238,38 @@ void ActionDialog::slotButtonClicked(int button)
     }
 }
 
+Device * ActionDialog::getDevice(const QString &udi)
+{
+    Device *dev=DevicesModel::self()->device(udi);
+    if (!dev) {
+        setPage(PAGE_ERROR, i18n("Device has been removed!"));
+        return 0;
+    }
+
+    if (currentDev && dev!=currentDev) {
+        setPage(PAGE_ERROR, i18n("Device has been changed?"));
+        return 0;
+    }
+
+    if (dev->isIdle()) {
+        return dev;
+    }
+
+    setPage(PAGE_ERROR, i18n("Device is busy?"));
+
+    return 0;
+}
+
 void ActionDialog::doNext()
 {
     if (songsToAction.count()) {
         currentSong=songsToAction.takeFirst();
         if(Copy==mode) {
             bool copyToDev=sourceUdi.isEmpty();
-            Device *dev=DevicesModel::self()->device(copyToDev ? destUdi : sourceUdi);
+            Device *dev=getDevice(copyToDev ? destUdi : sourceUdi);
 
-            if (dev || (currentDev && dev!=currentDev)) {
-                if (dev!=currentDev) {
+            if (dev) {
+                if (!currentDev) {
                     connect(dev, SIGNAL(actionStatus(int)), this, SLOT(actionStatus(int)));
                     connect(dev, SIGNAL(progress(unsigned long)), this, SLOT(copyPercent(unsigned long)));
                     currentDev=dev;
@@ -264,9 +288,6 @@ void ActionDialog::doNext()
                     destFile=Settings::self()->mpdDir()+fileName;
                     dev->copySongTo(currentSong, Settings::self()->mpdDir(), fileName, overwrite->isChecked());
                 }
-                progressLabel->setText(formatSong(currentSong));
-            } else {
-                setPage(PAGE_ERROR, i18n("Device has been removed"));
             }
         } else {
             if (sourceUdi.isEmpty()) {
@@ -274,7 +295,7 @@ void ActionDialog::doNext()
                 currentSong.file=Settings::self()->mpdDir()+currentSong.file;
                 removeSong(currentSong);
             } else {
-                Device *dev=DevicesModel::self()->device(sourceUdi);
+                Device *dev=getDevice(sourceUdi);
                 if (dev) {
                     if (dev!=currentDev) {
                         connect(dev, SIGNAL(actionStatus(int)), this, SLOT(actionStatus(int)));
@@ -283,8 +304,6 @@ void ActionDialog::doNext()
                     performingAction=true;
                     dev->removeSong(currentSong);
                     progressLabel->setText(formatSong(currentSong));
-                } else {
-                    setPage(PAGE_ERROR, i18n("Device has been removed"));
                 }
             }
         }

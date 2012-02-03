@@ -176,6 +176,22 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
     }
 }
 
+void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
+{
+    MusicLibraryItemArtist *art=artist(from, false);
+    if (art) {
+        MusicLibraryItemAlbum *alb=art->album(from, false);
+        if (alb) {
+            foreach (MusicLibraryItem *song, alb->children()) {
+                if (static_cast<MusicLibraryItemSong *>(song)->file()==from.file) {
+                    static_cast<MusicLibraryItemSong *>(song)->setFile(to.file);
+                    return;
+                }
+            }
+        }
+    }
+}
+
 static quint32 constVersion=6;
 static QLatin1String constTopTag("CantataLibrary");
 

@@ -226,15 +226,12 @@ if(TAGLIB_FOUND)
 
     check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
 
-    set (ENABLE_DEVICES_SUPPORT 1)
     include_directories(${TAGLIB_INCLUDES})
     add_definitions(${TAGLIB_CFLAGS})
     if (TAGLIB-EXTRAS_FOUND)
         include_directories(${TAGLIB-EXTRAS_INCLUDES})
         add_definitions(${TAGLIB-EXTRAS_CFLAGS})
     endif (TAGLIB-EXTRAS_FOUND)
-
-    find_package(Mtp)
 
     SET( CANTATA_SRCS ${CANTATA_SRCS} gui/tageditor.cpp devices/tags.cpp )
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/tageditor.h)
@@ -243,6 +240,7 @@ endif (TAGLIB_FOUND)
 
 IF( ENABLE_KDE_SUPPORT )
     if(TAGLIB_FOUND)
+        set (ENABLE_DEVICES_SUPPORT 1)
         find_package(Mtp)
 
         SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp

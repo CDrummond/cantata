@@ -1,16 +1,17 @@
 0.4.0
 -----
-1. Transcode support when copying to devices.
-2. Don't allow editing of device properties when device is busy.
-3. Don't allow to change Music folder for UMS devices when properties dialog
-   is shown from copy dialog.
-4. Use LibMTP to read device's serial number, and use this as the config key
-   when saving properties to cantata's config file.
-5. Add create audio/data cd actions to library/albums/folder/playlists pages.
-6. Add option to cache contents of UMS library to an XML file on the device.
-7. Basic tag editing. (KDE only)
-8. Fix UMS and MTP song durations.
-9. Show file location in tooltips.
+ 1. Transcode support when copying to devices.
+ 2. Don't allow editing of device properties when device is busy.
+ 3. Don't allow to change Music folder for UMS devices when properties dialog
+    is shown from copy dialog.
+ 4. Use LibMTP to read device's serial number, and use this as the config key
+    when saving properties to cantata's config file.
+ 5. Add create audio/data cd actions to library/albums/folder/playlists pages.
+ 6. Add option to cache contents of UMS library to an XML file on the device.
+ 7. Basic tag editing. (KDE only)
+ 8. Fix UMS and MTP song durations.
+ 9. Show file location in tooltips.
+10. Only save streams file if it has been modified.
 
 0.3.0
 -----

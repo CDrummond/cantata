@@ -287,10 +287,10 @@ void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
     }
 
     QString dirName;
-    bool haveAbsPath=song.file.startsWith("/");
+    bool haveAbsPath=song.file.startsWith('/');
 
     if (haveAbsPath || !Settings::self()->mpdDir().isEmpty()) {
-        dirName=song.file.endsWith("/") ? (haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file
+        dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file
                                         : MPDParseUtils::getDir((haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file);
         initCoverNames();
         foreach (const QString &fileName, coverFileNames) {

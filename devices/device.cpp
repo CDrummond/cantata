@@ -34,6 +34,7 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "covers.h"
+#include "mpdparseutils.h"
 #include <solid/portablemediaplayer.h>
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
@@ -348,16 +349,6 @@ Device * Device::create(DevicesModel *m, const QString &udi)
     return 0;
 }
 
-QString fixDir(const QString &d)
-{
-    QString dir=d;
-    dir.replace(QLatin1String("//"), QLatin1String("/"));
-    if (!dir.endsWith('/')){
-        dir+='/';
-    }
-    return dir;
-}
-
 void Device::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)
 {
     QDir d(from);
@@ -411,7 +402,7 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
             }
         }
 
-        if (fixDir(dir)==fixDir(base)) {
+        if (MPDParseUtils::fixPath(dir)==MPDParseUtils::fixPath(base)) {
             return;
         }
         QString dirName=d.dirName();
@@ -426,7 +417,7 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
             return;
         }
         QString upDir=d.absolutePath();
-        if (fixDir(upDir)!=fixDir(base)) {
+        if (MPDParseUtils::fixPath(upDir)!=MPDParseUtils::fixPath(base)) {
             cleanDir(upDir, base, coverFile, level+1);
         }
     }

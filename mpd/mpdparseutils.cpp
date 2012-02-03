@@ -46,6 +46,16 @@
 #include "covers.h"
 #include "debugtimer.h"
 
+QString MPDParseUtils::fixPath(const QString &f)
+{
+    QString d(f);
+    if (!d.isEmpty() && !d.endsWith('/')) {
+        d.replace(QLatin1String("//"), QChar('/'));
+        d+='/';
+    }
+    return d;
+}
+
 QString MPDParseUtils::getDir(const QString &f)
 {
     QString d(f);
@@ -56,11 +66,7 @@ QString MPDParseUtils::getDir(const QString &f)
         d.remove(slashPos+1, d.length());
     }
 
-    if (!d.isEmpty() && !d.endsWith("/")) {
-        d=d+"/";
-    }
-
-    return d;
+    return fixPath(d);
 }
 
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)

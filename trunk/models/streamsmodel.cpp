@@ -40,6 +40,9 @@
 #include "playqueuemodel.h"
 #include "config.h"
 
+const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
+const QLatin1String StreamsModel::constDefaultStreamIcon("applications-internet");
+
 static QString configDir()
 {
     QString env = qgetenv("XDG_CONFIG_HOME");
@@ -150,7 +153,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                         ? tr("%1\n%2 Streams").arg(cat->name).arg(cat->streams.count())
                         : tr("%1\n1 Stream").arg(cat->name));
                     #endif
-        case Qt::DecorationRole: return QIcon::fromTheme("inode-directory");
+        case Qt::DecorationRole: return QIcon::fromTheme(cat->icon.isEmpty() ? constDefaultCategoryIcon : cat->icon);
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Stream", "%1 Streams", cat->streams.count());
@@ -164,10 +167,10 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
     } else {
         StreamItem *stream=static_cast<StreamItem *>(item);
         switch(role) {
-        case Qt::DisplayRole:         return stream->name;
+        case Qt::DisplayRole:    return stream->name;
         case ItemView::Role_SubText:
-        case Qt::ToolTipRole:         return stream->url;
-        case Qt::DecorationRole:      return QIcon::fromTheme("applications-internet");
+        case Qt::ToolTipRole:    return stream->url;
+        case Qt::DecorationRole: return QIcon::fromTheme(stream->icon.isEmpty() ? constDefaultStreamIcon : stream->icon);
         default: break;
         }
     }
@@ -179,6 +182,8 @@ void StreamsModel::reload()
 {
     beginResetModel();
     clearCategories();
+    // clearCategories sets modified, so we need to reset here - otherwise we save file on exit, eventhough nothing has changed!
+    modified=false;
     load(getInternalFile(), true);
     endResetModel();
 }
@@ -216,11 +221,16 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
         while (!category.isNull()) {
             if (category.hasAttribute("name")) {
                 QString catName=category.attribute("name");
+                QString catIcon=category.attribute("icon");
                 CategoryItem *cat=getCategory(catName, true, !isInternal);
+                if (cat && cat->icon.isEmpty() && !catIcon.isEmpty() && QIcon::hasThemeIcon(catIcon)) {
+                    cat->icon=catIcon;
+                }
                 QDomElement stream = category.firstChildElement("stream");
                 while (!stream.isNull()) {
                     if (stream.hasAttribute("name") && stream.hasAttribute("url")) {
                         QString name=stream.attribute("name");
+                        QString icon=stream.attribute("icon");
                         QString origName=name;
                         QUrl url=QUrl(stream.attribute("url"));
 
@@ -237,7 +247,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                                 if (!isInternal) {
                                     beginInsertRows(createIndex(items.indexOf(cat), 0, cat), cat->streams.count(), cat->streams.count());
                                 }
-                                StreamItem *stream=new StreamItem(name, url, cat);
+                                StreamItem *stream=new StreamItem(name, QIcon::hasThemeIcon(icon) ? icon : QString(), url, cat);
                                 cat->itemMap.insert(url.toString(), stream);
                                 cat->streams.append(stream);
                                 if (!isInternal) {
@@ -280,11 +290,17 @@ bool StreamsModel::save(const QString &filename, const QModelIndexList &selectio
         if (selectedItems.isEmpty() || selectedItems.contains(c)) {
             QDomElement cat = doc.createElement("category");
             cat.setAttribute("name", c->name);
+            if (!c->icon.isEmpty() && c->icon!=constDefaultCategoryIcon) {
+                cat.setAttribute("icon", c->icon);
+            }
             root.appendChild(cat);
             foreach (const StreamItem *s, c->streams) {
                 QDomElement stream = doc.createElement("stream");
                 stream.setAttribute("name", s->name);
                 stream.setAttribute("url", s->url.toString());
+                if (!s->icon.isEmpty() && s->icon!=constDefaultStreamIcon) {
+                    stream.setAttribute("icon", c->icon);
+                }
                 cat.appendChild(stream);
             }
         }
@@ -294,7 +310,7 @@ bool StreamsModel::save(const QString &filename, const QModelIndexList &selectio
     return true;
 }
 
-bool StreamsModel::add(const QString &cat, const QString &name, const QString &url)
+bool StreamsModel::add(const QString &cat, const QString &name, const QString &icon, const QString &url)
 {
     QUrl u(url);
     CategoryItem *c=getCategory(cat, true, true);
@@ -304,7 +320,7 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &u
     }
 
     beginInsertRows(createIndex(items.indexOf(c), 0, c), c->streams.count(), c->streams.count());
-    StreamItem *stream=new StreamItem(name, QUrl(url), c);
+    StreamItem *stream=new StreamItem(name, icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon, QUrl(url), c);
     c->itemMap.insert(url, stream);
     c->streams.append(stream);
     endInsertRows();
@@ -329,7 +345,7 @@ void StreamsModel::editCategory(const QModelIndex &index, const QString &name)
     }
 }
 
-void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &url)
+void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &icon, const QString &url)
 {
     if (!index.isValid()) {
         return;
@@ -342,7 +358,7 @@ void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, c
     }
 
     if (!newCat.isEmpty() && oldCat!=newCat) {
-        if(add(newCat, name, url)) {
+        if(add(newCat, name, icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon, url)) {
             remove(index);
         }
         return;

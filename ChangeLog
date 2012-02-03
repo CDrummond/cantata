@@ -12,6 +12,7 @@
  8. Fix UMS and MTP song durations.
  9. Show file location in tooltips.
 10. Only save streams file if it has been modified.
+11. Basic support for configurable stream/category icons. (KDE only)
 
 0.3.0
 -----

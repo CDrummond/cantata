@@ -89,6 +89,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
     connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
 
+    resize(800, 500);
     KDialog::show();
     enableButtonOk(false);
     updateView();

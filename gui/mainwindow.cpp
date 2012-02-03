@@ -1931,9 +1931,7 @@ void MainWindow::currentTabChanged(int index)
         if (PAGE_DEVICES==index) {
             devicesPage->selectionChanged();
         } else {
-            #ifdef TAGLIB_FOUND
             editTagsAction->setEnabled(true);
-            #endif
             burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
             deleteSongsAction->setEnabled(burnAction->isEnabled());
         }

@@ -34,6 +34,7 @@
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
 #endif
+#include <QtCore/QDir>
 
 static bool equalTags(const Song &a, const Song &b, bool isAllTracks)
 {
@@ -184,6 +185,12 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(year, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+
+    if (original.count()>0) {
+        saveable=original.at(0).file.startsWith('/') || QDir(Settings::self()->mpdDir()).isReadable();
+    } else {
+        saveable=false;
+    }
 }
 
 void TagEditor::fillSong(Song &s, bool skipEmpty) const
@@ -199,6 +206,10 @@ void TagEditor::fillSong(Song &s, bool skipEmpty) const
 
 void TagEditor::enableOkButton()
 {
+    if (!saveable) {
+        return;
+    }
+
     bool isAll=0==currentSongIndex && original.count()>1;
     bool allEdited=isAll && editedIndexes.contains(0);
 

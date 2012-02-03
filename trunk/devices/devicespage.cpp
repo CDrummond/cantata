@@ -27,6 +27,7 @@
 #include "mainwindow.h"
 #include "devicesmodel.h"
 #include "device.h"
+#include "settings.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
@@ -57,15 +58,12 @@ DevicesPage::DevicesPage(MainWindow *p)
     copyToLibraryButton->setDefaultAction(copyAction);
     copyToLibraryButton->setAutoRaise(true);
     copyToLibraryButton->setEnabled(false);
-    removeAction = p->actionCollection()->addAction("removefromdevice");
-    removeAction->setText(i18n("Delete Songs From Device"));
-    removeAction->setIcon(QIcon::fromTheme("edit-delete"));
     view->addAction(copyAction);
     #ifdef TAGLIB_FOUND
     view->addAction(p->editTagsAction);
     #endif
     view->addAction(p->burnAction);
-    view->addAction(removeAction);
+    view->addAction(p->deleteSongsAction);
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -74,7 +72,6 @@ DevicesPage::DevicesPage(MainWindow *p)
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(configureAction, SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshDevice()));
-    connect(removeAction, SIGNAL(triggered()), this, SLOT(deleteSongs()));
     proxy.setSourceModel(DevicesModel::self());
     #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Devices"));
@@ -129,23 +126,6 @@ QList<Song> DevicesPage::selectedSongs() const
     }
 
     return DevicesModel::self()->songs(mapped);
-}
-
-void DevicesPage::enableDeleteAction(bool e)
-{
-    removeAction->setVisible(e);
-}
-
-void DevicesPage::controlActions(bool activePage)
-{
-    if (activePage) {
-        selectionChanged();
-    } else {
-        #ifdef TAGLIB_FOUND
-        mw->editTagsAction->setEnabled(true);
-        #endif
-        mw->burnAction->setEnabled(true);
-    }
 }
 
 void DevicesPage::itemDoubleClicked(const QModelIndex &)
@@ -209,7 +189,7 @@ void DevicesPage::selectionChanged()
     configureAction->setEnabled(!enable && 1==selected.count());
     refreshAction->setEnabled(!enable && 1==selected.count());
     copyAction->setEnabled(enable);
-    removeAction->setEnabled(enable);
+    mw->deleteSongsAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND
     mw->editTagsAction->setEnabled(enable && onlyUms);
     #endif

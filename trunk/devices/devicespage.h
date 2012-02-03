@@ -41,8 +41,6 @@ public:
     void clear();
     QList<Song> selectedSongs() const;
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
-    void enableDeleteAction(bool e);
-    void controlActions(bool activePage);
 
 public Q_SLOTS:
     void updateGenres(const QStringList &genres);
@@ -64,7 +62,6 @@ private:
     KAction *configureAction;
     KAction *refreshAction;
     KAction *copyAction;
-    KAction *removeAction;
 };
 
 #endif

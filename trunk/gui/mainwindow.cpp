@@ -297,7 +297,7 @@ MainWindow::MainWindow(QWidget *parent)
     smallControlButtonsAction->setText(i18n("Small Control Buttons"));
 
     refreshAction = actionCollection()->addAction("refresh");
-    refreshAction->setText(i18n("Refresh"));
+    refreshAction->setText(i18n("Refresh Database"));
 
     prevTrackAction = actionCollection()->addAction("prevtrack");
     prevTrackAction->setText(i18n("Previous Track"));

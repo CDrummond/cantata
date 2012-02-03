@@ -669,7 +669,6 @@ MainWindow::MainWindow(QWidget *parent)
     copyToDeviceAction->setEnabled(burnAction->isEnabled());
     deleteSongsAction->setEnabled(burnAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
-    devicesPage->enableDeleteAction(Settings::self()->showDeleteAction());
     #endif
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
@@ -1037,7 +1036,6 @@ void MainWindow::updateSettings()
     burnAction->setEnabled(copyToDeviceAction->isEnabled());
     createAudioCdAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
-    devicesPage->enableDeleteAction(Settings::self()->showDeleteAction());
     #endif
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     Settings::self()->save();
@@ -1930,7 +1928,15 @@ void MainWindow::currentTabChanged(int index)
 
     #ifdef ENABLE_DEVICES_SUPPORT
     if ((index!=prevPage) && ((PAGE_DEVICES==index) || (PAGE_DEVICES==prevPage)) && DevicesModel::self()->isEnabled()) {
-        devicesPage->controlActions(PAGE_DEVICES==index);
+        if (PAGE_DEVICES==index) {
+            devicesPage->selectionChanged();
+        } else {
+            #ifdef TAGLIB_FOUND
+            editTagsAction->setEnabled(true);
+            #endif
+            burnAction->setEnabled(true);
+            deleteSongsAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+        }
     }
     #endif
     prevPage=index;

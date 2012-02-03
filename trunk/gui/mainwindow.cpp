@@ -79,6 +79,7 @@
 #include "devicespage.h"
 #include "devicesmodel.h"
 #include "actiondialog.h"
+#include "trackorganiser.h"
 #endif
 #ifdef TAGLIB_FOUND
 #include "tageditor.h"
@@ -334,6 +335,7 @@ MainWindow::MainWindow(QWidget *parent)
     copyToDeviceAction->setText(i18n("Copy To Device"));
     copyToDeviceAction->setIcon(QIcon::fromTheme("multimedia-player"));
     deleteSongsAction = actionCollection()->addAction("deletesongs");
+    organiseFilesAction = actionCollection()->addAction("organizefiles");
     #endif
 
     removeAction = actionCollection()->addAction("removeitems");
@@ -545,6 +547,8 @@ MainWindow::MainWindow(QWidget *parent)
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
     deleteSongsAction->setIcon(QIcon::fromTheme("edit-delete"));
     deleteSongsAction->setText(i18n("Delete Songs"));
+    organiseFilesAction->setIcon(QIcon::fromTheme("inode-directory"));
+    organiseFilesAction->setText(i18n("Organize Files"));
     #endif
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
@@ -806,6 +810,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(albumsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(deleteSongsAction, SIGNAL(triggered()), SLOT(deleteSongs()));
+    connect(organiseFilesAction, SIGNAL(triggered()), SLOT(organiseFiles()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
@@ -1033,6 +1038,7 @@ void MainWindow::updateSettings()
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
+    organiseFilesAction->setEnabled(copyToDeviceAction->isEnabled());
     burnAction->setEnabled(copyToDeviceAction->isEnabled());
     createAudioCdAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
@@ -1934,6 +1940,7 @@ void MainWindow::currentTabChanged(int index)
             editTagsAction->setEnabled(true);
             burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
             deleteSongsAction->setEnabled(burnAction->isEnabled());
+            organiseFilesAction->setEnabled(burnAction->isEnabled());
         }
     }
     #endif
@@ -2088,6 +2095,31 @@ void MainWindow::editTags()
 #endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
+void MainWindow::organiseFiles()
+{
+    QList<Song> songs;
+    if (libraryPage->isVisible()) {
+        songs=libraryPage->selectedSongs();
+    } else if (albumsPage->isVisible()) {
+        songs=albumsPage->selectedSongs();
+    } else if (devicesPage->isVisible()) {
+        songs=devicesPage->selectedSongs();
+    }
+
+    if (!songs.isEmpty()) {
+        QString udi;
+        if (devicesPage->isVisible()) {
+            udi=devicesPage->activeUmsDeviceUdi();
+            if (udi.isEmpty()) {
+                return;
+            }
+        }
+
+        TrackOrganiser *dlg=new TrackOrganiser(this);
+        dlg->show(songs, udi);
+    }
+}
+
 void MainWindow::addToDevice(const QString &udi)
 {
     if (libraryPage->isVisible()) {

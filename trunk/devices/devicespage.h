@@ -27,6 +27,7 @@
 #include "ui_devicespage.h"
 #include "mainwindow.h"
 #include "musiclibraryproxymodel.h"
+#include "device.h"
 
 class KAction;
 
@@ -39,6 +40,7 @@ public:
     virtual ~DevicesPage();
 
     void clear();
+    QString activeUmsDeviceUdi() const;
     QList<Song> selectedSongs() const;
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 

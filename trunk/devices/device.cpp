@@ -358,6 +358,34 @@ QString fixDir(const QString &d)
     return dir;
 }
 
+void Device::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)
+{
+    QDir d(from);
+    if (d.exists()) {
+        QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
+        QList<QString> extraFiles;
+        QSet<QString> others=Covers::standardNames().toSet();
+        others << coverFile << "albumart.pamp";
+
+        foreach (const QFileInfo &info, entries) {
+            if (info.isDir()) {
+                return;
+            }
+            if (!others.contains(info.fileName())) {
+                return;
+            }
+            extraFiles.append(info.fileName());
+        }
+
+        foreach (const QString &cf, extraFiles) {
+            if (!QFile::rename(from+'/'+cf, to+'/'+cf)) {
+                return;
+            }
+        }
+        cleanDir(from, base, coverFile);
+    }
+}
+
 void Device::cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level)
 {
     QDir d(dir);

@@ -248,12 +248,12 @@ IF( ENABLE_KDE_SUPPORT )
         SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp
              devices/device.cpp devices/umsdevice.cpp devices/mtpdevice.cpp models/devicesmodel.cpp devices/filetyperesolver.cpp
              devices/actiondialog.cpp devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp
-             devices/encoders.cpp devices/transcodingjob.cpp devices/valueslider.cpp)
+             devices/encoders.cpp devices/transcodingjob.cpp devices/valueslider.cpp devices/trackorganiser.cpp)
         SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h
              devices/device.h devices/umsdevice.h devices/mtpdevice.h models/devicesmodel.h devices/actiondialog.h devices/devicepropertiesdialog.h
-             devices/filenameschemedialog.h devices/transcodingjob.h devices/valueslider.h)
+             devices/filenameschemedialog.h devices/transcodingjob.h devices/valueslider.h devices/trackorganiser.h)
         SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertiesdialog.ui
-             devices/filenameschemedialog.ui )
+             devices/filenameschemedialog.ui devices/trackorganiser.ui)
         include_directories(${CMAKE_SOURCE_DIR}/devices)
 
         if (MTP_FOUND)

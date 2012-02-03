@@ -80,6 +80,7 @@ public:
     QString cacheFileName() const;
     void saveCache();
     void removeCache();
+    void saveOptions();
 
 private:
     void setup();

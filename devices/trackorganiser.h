@@ -49,7 +49,7 @@ private Q_SLOTS:
 
 private:
     void slotButtonClicked(int button);
-    Device::Options settings();
+    void readOptions();
     Device * getDevice(QWidget *p=0);
     void finish(bool ok);
 
@@ -61,6 +61,7 @@ private:
     bool autoSkip;
     bool paused;
     bool updated;
+    Device::Options opts;
 };
 
 #endif

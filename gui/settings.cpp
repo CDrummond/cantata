@@ -27,6 +27,7 @@
 #include "fancytabwidget.h"
 #include "albumsmodel.h"
 #include "itemview.h"
+#include "mpdparseutils.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
@@ -177,11 +178,7 @@ bool Settings::smallControlButtons()
 const QString & Settings::mpdDir()
 {
     if (mpdDirSetting.isEmpty()) {
-        QString d=GET_STRING("mpdDir", "/var/lib/mpd/music/");
-        if (!d.endsWith('/')) {
-            d+='/';
-        }
-        mpdDirSetting=d;
+        mpdDirSetting=MPDParseUtils::fixPath(GET_STRING("mpdDir", "/var/lib/mpd/music/"));
     }
     return mpdDirSetting;
 }
@@ -380,10 +377,7 @@ void Settings::saveSmallControlButtons(bool v)
 
 void Settings::saveMpdDir(const QString &v)
 {
-    mpdDirSetting=v;
-    if (!mpdDirSetting.endsWith('/')) {
-        mpdDirSetting+='/';
-    }
+    mpdDirSetting=MPDParseUtils::fixPath(v);
     SET_VALUE("mpdDir", mpdDirSetting);
 }
 

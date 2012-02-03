@@ -836,7 +836,11 @@ void MtpDevice::saveProperties()
 {
     configured=true;
     opts.save(cfgKey(solidDev, serial));
+}
 
+void MtpDevice::saveOptions()
+{
+    opts.save(cfgKey(solidDev, serial));
 }
 
 void MtpDevice::deleteTemp()

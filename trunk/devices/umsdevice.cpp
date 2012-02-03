@@ -428,15 +428,7 @@ void UmsDevice::setup()
         return;
     }
 
-    QString path=access->filePath();
-    if (path.isEmpty()) {
-        return;
-    }
-
-    if (!path.endsWith('/')) {
-        path+='/';
-    }
-
+    QString path=MPDParseUtils::fixPath(access->filePath());
     audioFolder = path;
 
     QFile file(path+constSettingsFile);
@@ -597,39 +589,11 @@ static inline QString toString(bool b)
     return b ? QLatin1String("true") : QLatin1String("false");
 }
 
-void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &newOpts)
+void UmsDevice::saveOptions()
 {
-    if (configured && opts==newOpts && newPath==audioFolder && newCoverFileName==coverFileName) {
-        return;
-    }
-
-    configured=true;
-    bool diffCacheSettings=opts.useCache!=newOpts.useCache;
-    opts=newOpts;
-    if (diffCacheSettings) {
-        if (opts.useCache) {
-            saveCache();
-        } else {
-            removeCache();
-        }
-    }
-    coverFileName=newCoverFileName;
-    QString oldPath=audioFolder;
-    if (!isConnected()) {
-        return;
-    }
-
-    QString path=access->filePath();
-    if (path.isEmpty()) {
-        return;
-    }
-
-    if (!path.endsWith('/')) {
-        path+='/';
-    }
-
+    QString path=MPDParseUtils::fixPath(access->filePath());
     QFile file(path+constSettingsFile);
-    QString fixedPath(newPath);
+    QString fixedPath(audioFolder);
 
     if (fixedPath.startsWith(path)) {
         fixedPath=QLatin1String("./")+fixedPath.mid(path.length());
@@ -671,8 +635,36 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
 //         }
 //         out << constVariousArtistsFixKey << '=' << toString(opts.fixVariousArtists) << '\n';
     }
+}
 
+void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &newOpts)
+{
+    QString nPath=MPDParseUtils::fixPath(newPath);
+    if (configured && opts==newOpts && nPath==audioFolder && newCoverFileName==coverFileName) {
+        return;
+    }
+
+    configured=true;
+    bool diffCacheSettings=opts.useCache!=newOpts.useCache;
+    opts=newOpts;
+    if (diffCacheSettings) {
+        if (opts.useCache) {
+            saveCache();
+        } else {
+            removeCache();
+        }
+    }
+    coverFileName=newCoverFileName;
+    QString oldPath=audioFolder;
+    if (!isConnected()) {
+        return;
+    }
+
+    QString path=MPDParseUtils::fixPath(access->filePath());
     QFile extra(path+constCantataSettingsFile);
+
+    audioFolder=nPath;
+    saveOptions();
 
     if (extra.open(QIODevice::WriteOnly|QIODevice::Text)) {
         QTextStream out(&extra);
@@ -690,11 +682,7 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
         }
     }
 
-    if (oldPath!=newPath) {
-        audioFolder=newPath;
-        if (!audioFolder.endsWith('/')) {
-            audioFolder+='/';
-        }
+    if (oldPath!=audioFolder) {
         rescan();
     }
 }
@@ -718,5 +706,3 @@ void UmsDevice::removeCache()
         QFile::remove(cacheFile);
     }
 }
-
-

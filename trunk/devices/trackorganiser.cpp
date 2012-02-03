@@ -56,8 +56,6 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
 
 void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
 {
-    Device::Options opts;
-
     if (udi.isEmpty()) {
         opts.load("mpd");
         origSongs=songs;
@@ -128,25 +126,23 @@ void TrackOrganiser::configureFilenameScheme()
         schemeDlg=new FilenameSchemeDialog(this);
         connect(schemeDlg, SIGNAL(scheme(const QString &)), filenameScheme, SLOT(setText(const QString &)));
     }
-    schemeDlg->show(settings());
+    readOptions();
+    schemeDlg->show(opts);
 }
 
-Device::Options TrackOrganiser::settings()
+void TrackOrganiser::readOptions()
 {
-    Device::Options opts;
     opts.scheme=filenameScheme->text().trimmed();
     opts.vfatSafe=vfatSafe->isChecked();
     opts.asciiOnly=asciiOnly->isChecked();
     opts.ignoreThe=ignoreThe->isChecked();
     opts.replaceSpaces=replaceSpaces->isChecked();
-    return opts;
 }
 
 void TrackOrganiser::updateView()
 {
     QFont f(font());
     f.setItalic(true);
-    Device::Options opts=settings();
     files->clear();
     bool different=false;
     foreach (const Song &s, origSongs) {
@@ -172,6 +168,16 @@ void TrackOrganiser::startRename()
     enableButtonOk(false);
     index=0;
     paused=autoSkip=false;
+    readOptions();
+    if (!deviceUdi.isEmpty()) {
+        Device *dev=getDevice();
+        if (!dev) {
+            return;
+        }
+        dev->setOptions(opts);
+    } else {
+        opts.save("mpd");
+    }
     QTimer::singleShot(100, this, SLOT(renameFile()));
 }
 
@@ -183,7 +189,6 @@ void TrackOrganiser::renameFile()
 
     QTreeWidgetItem *item=files->topLevelItem(index);
     files->scrollToItem(item);
-    Device::Options opts=settings();
     Song s=origSongs.at(index);
     QString modified=opts.createFilename(s);
     QString musicFolder;

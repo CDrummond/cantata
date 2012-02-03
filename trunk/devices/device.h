@@ -158,6 +158,11 @@ public:
     const Options & options() const {
         return opts;
     }
+    void setOptions(const Options &o) {
+        opts=o;
+        saveOptions();
+    }
+    virtual void saveOptions()=0;
     const QString & statusMessage() const {
         return statusMsg;
     }

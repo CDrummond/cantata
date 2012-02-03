@@ -43,6 +43,11 @@
 const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
 const QLatin1String StreamsModel::constDefaultStreamIcon("applications-internet");
 
+static bool iconIsValid(const QString &icon)
+{
+    return icon.startsWith('/') ? QFile::exists(icon) : QIcon::hasThemeIcon(icon);
+}
+
 static QString configDir()
 {
     QString env = qgetenv("XDG_CONFIG_HOME");
@@ -153,7 +158,8 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                         ? tr("%1\n%2 Streams").arg(cat->name).arg(cat->streams.count())
                         : tr("%1\n1 Stream").arg(cat->name));
                     #endif
-        case Qt::DecorationRole: return QIcon::fromTheme(cat->icon.isEmpty() ? constDefaultCategoryIcon : cat->icon);
+        case Qt::DecorationRole: return cat->icon.isEmpty() ? QIcon::fromTheme(constDefaultCategoryIcon)
+                                                            : cat->icon.startsWith('/') ? QIcon(cat->icon) : QIcon::fromTheme(cat->icon);
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Stream", "%1 Streams", cat->streams.count());
@@ -170,7 +176,8 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:    return stream->name;
         case ItemView::Role_SubText:
         case Qt::ToolTipRole:    return stream->url;
-        case Qt::DecorationRole: return QIcon::fromTheme(stream->icon.isEmpty() ? constDefaultStreamIcon : stream->icon);
+        case Qt::DecorationRole: return stream->icon.isEmpty() ? QIcon::fromTheme(constDefaultStreamIcon)
+                                                               : stream->icon.startsWith('/') ? QIcon(stream->icon) : QIcon::fromTheme(stream->icon);
         default: break;
         }
     }
@@ -223,7 +230,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                 QString catName=category.attribute("name");
                 QString catIcon=category.attribute("icon");
                 CategoryItem *cat=getCategory(catName, true, !isInternal);
-                if (cat && cat->icon.isEmpty() && !catIcon.isEmpty() && QIcon::hasThemeIcon(catIcon)) {
+                if (cat && cat->icon.isEmpty() && !catIcon.isEmpty() && iconIsValid(catIcon)) {
                     cat->icon=catIcon;
                 }
                 QDomElement stream = category.firstChildElement("stream");
@@ -247,7 +254,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                                 if (!isInternal) {
                                     beginInsertRows(createIndex(items.indexOf(cat), 0, cat), cat->streams.count(), cat->streams.count());
                                 }
-                                StreamItem *stream=new StreamItem(name, QIcon::hasThemeIcon(icon) ? icon : QString(), url, cat);
+                                StreamItem *stream=new StreamItem(name, iconIsValid(icon) ? icon : QString(), url, cat);
                                 cat->itemMap.insert(url.toString(), stream);
                                 cat->streams.append(stream);
                                 if (!isInternal) {

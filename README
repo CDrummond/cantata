@@ -1,11 +1,27 @@
 Introduction
 ============
 
-Cantata is a GUI front-end for MPD. The code is forked from QtMPC.
+Cantata is a GUI front-end for MPD. The code is forked from QtMPC. However,
+both the code itself, and the GUI are now *very* different to QtMPC.
+
+
+Dependencies
+============
+
+Cantata requires the following libraries:
+
+1. Qt4
+2. KDElibs4 - if Cantata is not built with KDE4 support, then tag editing and
+   device support will not be available.
+3. QtWebKit - required for the artist/album information page. If QtWebKit is
+   not found, the page will not be built.
+4. TagLib - required to for the tag edit dialog, and for UMS device support.
+5. LibMTP - required to support MTP devices.
 
 
 Amarok Radio Streams
 ====================
+
 The script amarok2cantata.sh may be used to covert Amarok Radio plugins
 into an XML file suitable to be imported into Cantata. The script is
 rather basic and requires the Amarok plugin to list its streams in 'main.js'

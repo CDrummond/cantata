@@ -1927,15 +1927,15 @@ void MainWindow::currentTabChanged(int index)
     }
 
     #ifdef ENABLE_DEVICES_SUPPORT
-    if ((index!=prevPage) && ((PAGE_DEVICES==index) || (PAGE_DEVICES==prevPage)) && DevicesModel::self()->isEnabled()) {
+    if (index!=prevPage && (PAGE_DEVICES==index || PAGE_DEVICES==prevPage || -1==prevPage) && DevicesModel::self()->isEnabled()) {
         if (PAGE_DEVICES==index) {
             devicesPage->selectionChanged();
         } else {
             #ifdef TAGLIB_FOUND
             editTagsAction->setEnabled(true);
             #endif
-            burnAction->setEnabled(true);
-            deleteSongsAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+            burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+            deleteSongsAction->setEnabled(burnAction->isEnabled());
         }
     }
     #endif
@@ -2101,6 +2101,9 @@ void MainWindow::addToDevice(const QString &udi)
 
 void MainWindow::deleteSongs()
 {
+    if (!deleteSongsAction->isVisible()) {
+        return;
+    }
     if (libraryPage->isVisible()) {
         libraryPage->deleteSongs();
     } else if (albumsPage->isVisible()) {

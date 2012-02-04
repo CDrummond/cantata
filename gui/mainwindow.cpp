@@ -1696,6 +1696,9 @@ void MainWindow::togglePlaylist()
         setMaximumHeight(65535);
     }
     splitter->setVisible(showing);
+    if (!showing) {
+        setWindowState(windowState()&~Qt::WindowMaximized);
+    }
     QApplication::processEvents();
     adjustSize();
 

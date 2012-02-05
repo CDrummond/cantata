@@ -460,21 +460,10 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
 
     bool needsUpdating=false;
 
-    if (!applyFix && song.artist==song.albumartist) { // Then real artist is embedded in track title...
-        int sepPos=song.title.indexOf(QLatin1String(" - "));
-        if (sepPos>0 && sepPos<song.title.length()-3) {
-            song.artist=song.title.left(sepPos);
-            song.title=song.title.mid(sepPos+3);
-            needsUpdating=true;
-//             qWarning() << "UNFIXING" << "A:" << song.artist << "T:" << song.title;
-        }
+    if (!applyFix) { // Then real artist is embedded in track title...
+        needsUpdating=song.revertVariousArtists();
     } else if (applyFix) { // We must be copying to device, and need to place song artist into title...
-        QString artist=song.artist;
-        artist.replace(" - ", ", ");
-        song.title=song.artistSong();
-        song.artist=song.albumartist;
-        needsUpdating=true;
-//         qWarning() << "FIXING";
+        needsUpdating=song.fixVariousArtists();
     }
 
     if (needsUpdating && (file.isEmpty() || Tags::updateArtistAndTitle(file, song))) {

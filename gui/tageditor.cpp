@@ -28,12 +28,14 @@
 #include "settings.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardGuiItem>
+#include <KDE/KMessageBox>
 #else
 #include <QtGui/QDialogButtonBox>
 #endif
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
 #endif
+#include <QtGui/QMenu>
 #include <QtCore/QDir>
 
 static bool equalTags(const Song &a, const Song &b, bool isAllTracks)
@@ -64,25 +66,30 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     setupUi(mainWidet);
     #ifdef ENABLE_KDE_SUPPORT
     setMainWidget(mainWidet);
-    ButtonCodes buttons=Ok|Cancel|User1;
+    ButtonCodes buttons=Ok|Cancel|Reset|User3;
     if (songs.count()>1) {
-        buttons|=User3|User2;
+        buttons|=User2|User1;
     }
     setButtons(buttons);
 
     setCaption(i18n("Tags"));
     if (songs.count()>1) {
-        setButtonGuiItem(User3, KStandardGuiItem::back(KStandardGuiItem::UseRTL));
-        setButtonText(User3, i18n("Previous"));
-        setButtonGuiItem(User2, KStandardGuiItem::forward(KStandardGuiItem::UseRTL));
-        setButtonText(User2, i18n("Next"));
+        setButtonGuiItem(User2, KStandardGuiItem::back(KStandardGuiItem::UseRTL));
+        setButtonText(User2, i18n("Previous"));
+        setButtonGuiItem(User1, KStandardGuiItem::forward(KStandardGuiItem::UseRTL));
+        setButtonText(User1, i18n("Next"));
+        enableButton(User1, false);
         enableButton(User2, false);
-        enableButton(User3, false);
     }
     setButtonGuiItem(Ok, KStandardGuiItem::save());
-    setButtonGuiItem(User1, KStandardGuiItem::reset());
+    setButtonGuiItem(User3, KGuiItem(i18n("Tools"), "tools-wizard"));
+    QMenu *toolsMenu=new QMenu(this);
+    toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
+    toolsMenu->addAction(i18n("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
+    toolsMenu->addAction(i18n("Capitalize"), this, SLOT(capitalise()));
+    setButtonMenu(User3, toolsMenu, InstantPopup);
     enableButton(Ok, false);
-    enableButton(User1, false);
+    enableButton(Reset, false);
     #else
     setWindowTitle(tr("Tags"));
 
@@ -215,7 +222,110 @@ void TagEditor::enableOkButton()
 
     enableButton(Ok, (isAll && allEdited) ||
                      (!isAll && ((allEdited && editedIndexes.count()>1) || (!allEdited && editedIndexes.count()>0))));
-    enableButton(User1, isButtonEnabled(Ok));
+    enableButton(Reset, isButtonEnabled(Ok));
+}
+
+void TagEditor::applyVa()
+{
+    bool isAll=0==currentSongIndex && original.count()>1;
+
+    if (KMessageBox::No==KMessageBox::questionYesNo(this, (isAll ? i18n("Apply \"Various Artists\" workaround to <b>all</b> tracks?")
+                                                                  : i18n("Apply \"Various Artists\" workaround?"))+
+                                                           QLatin1String("<br/><hr/><br/>")+
+                                                           i18n("<i>This will set 'Album artist' and 'Artist' to "
+                                                                "\"Various Artists\", and set 'Title' to "
+                                                                "\"TrackArtist - TrackTitle\"</i>"))) {
+        return;
+    }
+
+    if (isAll) {
+        for (int i=0; i<edited.count(); ++i) {
+            Song s=edited.at(i);
+            if (s.fixVariousArtists()) {
+                edited.replace(i, s);
+                updateEditedStatus(i);
+                if (i==currentSongIndex) {
+                    setSong(s);
+                }
+            }
+        }
+    } else {
+        Song s=edited.at(currentSongIndex);
+        if (s.fixVariousArtists()) {
+            edited.replace(currentSongIndex, s);
+            updateEditedStatus(currentSongIndex);
+            setSong(s);
+        }
+    }
+}
+
+void TagEditor::revertVa()
+{
+    bool isAll=0==currentSongIndex && original.count()>1;
+
+    if (KMessageBox::No==KMessageBox::questionYesNo(this, (isAll ? i18n("Revert \"Various Artists\" workaround on <b>all</b> tracks?")
+                                                                  : i18n("Revert \"Various Artists\" workaround"))+
+                                                           QLatin1String("<br/><hr/><br/>")+
+                                                           i18n("<i>Where the 'Album artist' is the same as 'Artist' "
+                                                                "and the 'Title' is of the format \"TrackArtist - TrackTitle\", "
+                                                                "'Artist' will be taken from 'Title' and 'Title' itself will be "
+                                                                "set to just the title. e.g. <br/><br/>"
+                                                                "If 'Title' is \"Wibble - Wobble\", then 'Artist' will be set to "
+                                                                "\"Wibble\" and 'Title' will be set to \"Wobble\"</i>"))) {
+        return;
+    }
+
+    if (isAll) {
+        for (int i=0; i<edited.count(); ++i) {
+            Song s=edited.at(i);
+            if (s.revertVariousArtists()) {
+                edited.replace(i, s);
+                updateEditedStatus(i);
+                if (i==currentSongIndex) {
+                    setSong(s);
+                }
+            }
+        }
+    } else {
+        Song s=edited.at(currentSongIndex);
+        if (s.revertVariousArtists()) {
+            edited.replace(currentSongIndex, s);
+            updateEditedStatus(currentSongIndex);
+            setSong(s);
+        }
+    }
+}
+
+void TagEditor::capitalise()
+{
+    bool isAll=0==currentSongIndex && original.count()>1;
+
+    if (KMessageBox::No==KMessageBox::questionYesNo(this, isAll ? i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
+                                                                        "'Album' of <b>all</b> tracks?")
+                                                                 : i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
+                                                                        "'Album'"))) {
+        return;
+    }
+
+    if (isAll) {
+        for (int i=0; i<edited.count(); ++i) {
+            Song s=edited.at(i);
+            if (s.capitalise()) {
+                edited.replace(i, s);
+                updateEditedStatus(i);
+                if (i==currentSongIndex) {
+                    setSong(s);
+                }
+            }
+        }
+    } else {
+        Song s=edited.at(currentSongIndex);
+        if (s.capitalise()) {
+            edited.replace(currentSongIndex, s);
+            updateEditedStatus(currentSongIndex);
+            setSong(s);
+        }
+    }
 }
 
 void TagEditor::checkChanged()
@@ -256,6 +366,25 @@ void TagEditor::updateTrackName(int index, bool edited)
         } else {
             trackName->setItemText(index, original.at(index).file);
         }
+    }
+}
+
+void TagEditor::updateEditedStatus(int index)
+{
+    bool isAll=0==index && original.count()>1;
+    Song s=edited.at(index);
+    if (equalTags(s, original.at(index), isAll)) {
+        if (editedIndexes.contains(index)) {
+            editedIndexes.remove(index);
+            updateTrackName(index, false);
+            edited.replace(index, s);
+        }
+    } else {
+        if (!editedIndexes.contains(index)) {
+            editedIndexes.insert(index);
+            updateTrackName(index, true);
+        }
+        edited.replace(index, s);
     }
 }
 
@@ -318,8 +447,8 @@ void TagEditor::setIndex(int idx)
     }
 
     if (original.count()>1) {
-        enableButton(User2, !isMultiple && idx<(original.count()-1)); // Next
-        enableButton(User3, !isMultiple && idx>1); // Prev
+        enableButton(User1, !isMultiple && idx<(original.count()-1)); // Next
+        enableButton(User2, !isMultiple && idx>1); // Prev
     }
     enableOkButton();
     trackName->setCurrentIndex(idx);
@@ -379,13 +508,13 @@ void TagEditor::slotButtonClicked(int button)
         accept();
         break;
     }
-    case User1: // Reset
+    case Reset: // Reset
         setSong(original.at(currentSongIndex));
         break;
-    case User2: // Next
+    case User1: // Next
         setIndex(currentSongIndex+1);
         break;
-    case User3: // Prev
+    case User2: // Prev
         setIndex(currentSongIndex-1);
         break;
     case Cancel:

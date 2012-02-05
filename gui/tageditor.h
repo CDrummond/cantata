@@ -63,9 +63,13 @@ private:
     void slotButtonClicked(int button);
 #endif
     void updateTrackName(int index, bool edited);
+    void updateEditedStatus(int index);
     void applyUpdates();
 
 private Q_SLOTS:
+    void applyVa();
+    void revertVa();
+    void capitalise();
     void checkChanged();
     void updateEdited(bool skipEmpty=false);
     void setSong(const Song &s);

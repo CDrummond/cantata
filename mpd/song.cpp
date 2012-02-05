@@ -215,3 +215,61 @@ bool Song::isVariousArtists(const QString &str)
             ;
 }
 
+bool Song::fixVariousArtists()
+{
+    if (isVariousArtists()) {
+        artist.replace(" - ", ", ");
+        title=artistSong();
+        artist=albumartist;
+        return true;
+    }
+    return false;
+}
+
+bool Song::revertVariousArtists()
+{
+    if (artist==albumartist) { // Then real artist is embedded in track title...
+        int sepPos=title.indexOf(QLatin1String(" - "));
+        if (sepPos>0 && sepPos<title.length()-3) {
+            artist=title.left(sepPos);
+            title=title.mid(sepPos+3);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+QString Song::capitalize(const QString &s)
+{
+    if (s.isEmpty()) {
+        return s;
+    }
+
+    QStringList words = s.split(' ', QString::SkipEmptyParts);
+    for (int i = 0; i < words.count(); i++) {
+        QString word = words[i].toLower();
+        int j = 0;
+        while ( ('('==word[j] || '['==word[j] || '{'==word[j]) && j < word.length()) {
+            j++;
+        }
+        word[j] = word[j].toUpper();
+        words[i] = word;
+    }
+    return words.join(" ");
+}
+
+bool Song::capitalise()
+{
+    QString origArtist=artist;
+    QString origAlbumArtist=albumartist;
+    QString origAlbum=album;
+    QString origTitle=title;
+
+    artist=capitalize(artist);
+    albumartist=capitalize(albumartist);
+    album=capitalize(album);
+    title=capitalize(title);
+
+    return artist!=origArtist || albumartist!=origAlbumArtist || album!=origAlbum || title!=origTitle;
+}

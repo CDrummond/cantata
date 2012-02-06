@@ -58,12 +58,12 @@ DevicesPage::DevicesPage(MainWindow *p)
     copyToLibraryButton->setAutoRaise(true);
     copyToLibraryButton->setEnabled(false);
     view->addAction(copyAction);
+//     view->addAction(p->burnAction);
+    view->addAction(p->deleteSongsAction);
+    view->addAction(p->organiseFilesAction);
     #ifdef TAGLIB_FOUND
     view->addAction(p->editTagsAction);
     #endif
-//     view->addAction(p->burnAction);
-    view->addAction(p->organiseFilesAction);
-    view->addAction(p->deleteSongsAction);
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));

@@ -91,6 +91,7 @@ void MessageWidgetPrivate::init(MessageWidget *q_ptr)
     KAction* closeAction = KStandardAction::close(q, SLOT(animatedHide()), q);
     #else
     QAction* closeAction = new QAction(q);
+    closeAction->setIcon(QIcon::fromTheme("dialog-close"));
     QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
     #endif
 
@@ -261,6 +262,7 @@ void MessageWidget::setMessageType(MessageWidget::MessageType type)
         );
     #else
     QColor bgnd;
+    QColor border;
     QColor text;
 //     switch (type) {
 //     case PositiveMessageType:
@@ -285,10 +287,11 @@ void MessageWidget::setMessageType(MessageWidget::MessageType type)
 //         fgRole = KColorScheme::NegativeText;
 //         break;
 //     }
-    bgnd=Qt::red;
+    border=Qt::red;
+    bgnd=QColor(0xeb, 0xbb, 0xbb);
     text=Qt::black;
 //     const int size = QIcon::fromThemeLoader::global()->currentSize(QIcon::fromThemeLoader::MainToolbar);
-    d->iconLabel->setPixmap(icon.pixmap(22, 22));
+    d->iconLabel->setPixmap(QIcon::fromTheme("dialog-error").pixmap(22, 22));
 
 //     KColorScheme scheme(QPalette::Active, colorSet);
 //     QBrush bg = scheme.background(bgRole);
@@ -303,7 +306,7 @@ void MessageWidget::setMessageType(MessageWidget::MessageType type)
             ".QLabel { color: %3; }"
             )
         .arg(bgnd.name())
-        .arg(bgnd.name())
+        .arg(border.name())
         .arg(text.name())
         );
     #endif

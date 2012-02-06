@@ -32,6 +32,7 @@
 #include <QtCore/QObject>
 #endif
 #include <QtCore/QFileInfo>
+#include <QtCore/QStringList>
 
 Song::Song()
     : id(-1),

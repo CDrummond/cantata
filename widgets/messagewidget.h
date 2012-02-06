@@ -69,7 +69,7 @@ public:
  * 02110-1301  USA
  */
 
-#include <QFrame>
+#include <QtGui/QFrame>
 
 class MessageWidgetPrivate;
 

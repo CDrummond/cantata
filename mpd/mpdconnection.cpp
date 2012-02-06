@@ -33,8 +33,8 @@
 #include <QtGui/QApplication>
 #include "debugtimer.h"
 
-#undef qDebug
-#define qDebug qWarning
+// #undef qDebug
+// #define qDebug qWarning
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
@@ -91,9 +91,21 @@ MPDConnection::Response readReply(MpdSocket &socket)
     return MPDConnection::Response(data.endsWith("OK\n"), data);
 }
 
+MPDConnection::Response::Response(bool o, const QByteArray &d)
+    : ok(o)
+    , data(d)
+{
+    if (!ok && data.size()>0) {
+        int pos=data.indexOf("} ");
+        if (-1!=pos) {
+            pos+=2;
+            data=data.mid(pos, data.length()-(data.endsWith('\n') ? pos+1 : pos));
+        }
+    }
+}
+
 MPDConnection::MPDConnection()
     : ver(0)
-    , ui(0)
     , sock(this)
     , idleSocket(this)
     , state(State_Blank)
@@ -231,7 +243,7 @@ void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pa
     }
 }
 
-MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command)
+MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bool emitErrors)
 {
     if (!connectToMPD()) {
         return Response(false);
@@ -246,6 +258,9 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command)
 
     if (!response.ok) {
         qDebug() << command << "failed";
+        if (emitErrors) {
+            emit error(response.data);
+        }
     }
     return response;
 }
@@ -733,13 +748,12 @@ void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
     data += " ";
     data += encodeName(newName);
 
-    if (!sendCommand(data).ok && ui) {
+    if (!sendCommand(data, false).ok) {
         #ifdef ENABLE_KDE_SUPPORT
-        QString message=i18n("Sorry, failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName);
+        emit error(i18n("Failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName));
         #else
-        QString message=tr("Sorry, failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName);
+        emit error(tr("Failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName));
         #endif
-        QMetaObject::invokeMethod(ui, "showError", Qt::QueuedConnection, Q_ARG(QString, message));
     }
 }
 
@@ -756,13 +770,12 @@ void MPDConnection::savePlaylist(QString name)
     QByteArray data("save ");
     data += encodeName(name);
 
-    if (!sendCommand(data).ok && ui) {
+    if (!sendCommand(data, false).ok) {
         #ifdef ENABLE_KDE_SUPPORT
-        QString message=i18n("Sorry, failed to save <b>%1</b>").arg(name);
+        emit error(i18n("Failed to save <b>%1</b>").arg(name));
         #else
-        QString message=tr("Sorry, failed to save <b>%1</b>").arg(name);
+        emit error(tr("Failed to save <b>%1</b>").arg(name));
         #endif
-        QMetaObject::invokeMethod(ui, "showError", Qt::QueuedConnection, Q_ARG(QString, message));
     }
 }
 

@@ -18,6 +18,8 @@
 13. Unmaximise window when using compact interface.
 14. When using local UNIX domain socket, allow playback of non database files.
     (This local UNIX only restriction comes from MPD)
+15. Use KMessageWidget to show errors - copy of KDE code taken for pre KDE4.7 and
+    Qt only builds.
 
 0.3.0
 -----

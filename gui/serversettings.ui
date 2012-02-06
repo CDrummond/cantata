@@ -132,7 +132,7 @@
    <item>
     <widget class="QLabel" name="socketNoteLabel">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When using a local domain socket the full absolute path to the socket needs to be set. (Port number is not required.)&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When using a local socket the full absolute path to the socket needs to be set. (Port number is not required.)&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

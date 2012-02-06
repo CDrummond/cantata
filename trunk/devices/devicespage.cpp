@@ -61,7 +61,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     #ifdef TAGLIB_FOUND
     view->addAction(p->editTagsAction);
     #endif
-    view->addAction(p->burnAction);
+//     view->addAction(p->burnAction);
     view->addAction(p->organiseFilesAction);
     view->addAction(p->deleteSongsAction);
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));

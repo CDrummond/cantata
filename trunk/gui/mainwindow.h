@@ -263,8 +263,8 @@ private Q_SLOTS:
     #endif
     void toggleMpris();
     void toggleDockManager();
-    void createDataCd();
-    void createAudioCd();
+//     void createDataCd();
+//     void createAudioCd();
     #ifdef TAGLIB_FOUND
     void editTags();
     #endif
@@ -277,7 +277,7 @@ private Q_SLOTS:
     #endif
 
 private:
-    void callK3b(const QString &type);
+//     void callK3b(const QString &type);
     bool currentIsStream();
     void showTab(int page);
 
@@ -328,8 +328,8 @@ private:
     Action *streamsTabAction;
     Action *removeAction;
     Action *burnAction;
-    Action *createDataCdAction;
-    Action *createAudioCdAction;
+//     Action *createDataCdAction;
+//     Action *createAudioCdAction;
     #ifdef TAGLIB_FOUND
     Action *editTagsAction;
     #endif

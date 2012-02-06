@@ -512,7 +512,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     createDataCdAction->setIcon(QIcon::fromTheme("media-optical"));
 //     createAudioCdAction->setIcon(QIcon::fromTheme("media-optical-audio"));
     #ifdef TAGLIB_FOUND
-    editTagsAction->setIcon(QIcon::fromTheme("documentinfo"));
+    editTagsAction->setIcon(QIcon::fromTheme("document-edit"));
     #endif
 //     QMenu *cdMenu=new QMenu(this);
 //     cdMenu->addAction(createAudioCdAction);

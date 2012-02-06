@@ -61,15 +61,18 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
-    #ifdef TAGLIB_FOUND
-    view->addAction(p->editTagsAction);
-    #endif
 //     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
     view->addAction(p->organiseFilesAction);
+    #endif
+    #ifdef TAGLIB_FOUND
+    view->addAction(p->editTagsAction);
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->deleteSongsAction);
     #endif
+
     proxy.setSourceModel(AlbumsModel::self());
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);

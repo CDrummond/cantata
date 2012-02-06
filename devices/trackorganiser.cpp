@@ -77,7 +77,6 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
     qSort(origSongs);
 
     filenameScheme->setText(opts.scheme);
-    filenameScheme->setReadOnly(true);
     vfatSafe->setChecked(opts.vfatSafe);
     asciiOnly->setChecked(opts.asciiOnly);
     ignoreThe->setChecked(opts.ignoreThe);

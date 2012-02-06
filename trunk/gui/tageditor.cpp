@@ -38,11 +38,11 @@
 #include <QtGui/QMenu>
 #include <QtCore/QDir>
 
-static bool equalTags(const Song &a, const Song &b, bool isAllTracks)
+static bool equalTags(const Song &a, const Song &b, bool compareCommon)
 {
-    return (isAllTracks || a.track==b.track) && a.year==b.year && a.disc==b.disc &&
+    return (compareCommon || a.track==b.track) && a.year==b.year && a.disc==b.disc &&
            a.artist==b.artist && a.genre==b.genre && a.album==b.album &&
-           a.albumartist==b.albumartist && (isAllTracks || a.title==b.title);
+           a.albumartist==b.albumartist && (compareCommon || a.title==b.title);
 }
 
 static void setString(QString &str, const QString &v, bool skipEmpty) {
@@ -334,8 +334,22 @@ void TagEditor::checkChanged()
         return;
     }
 
+    bool allWasEdited=editedIndexes.contains(0);
+
     updateEdited();
     enableOkButton();
+
+    bool allEdited=editedIndexes.contains(0);
+    bool isAll=0==currentSongIndex && original.count()>1;
+
+    if (isAll && (allEdited || allWasEdited)) {
+        int save=currentSongIndex;
+        for (int i=1; i<edited.count(); ++i) {
+            currentSongIndex=i;
+            updateEdited(true);
+        }
+        currentSongIndex=save;
+    }
 }
 
 void TagEditor::updateTrackName(int index, bool edited)
@@ -393,7 +407,7 @@ void TagEditor::updateEdited(bool skipEmpty)
     Song s=edited.at(currentSongIndex);
     bool isAll=0==currentSongIndex && original.count()>1;
     fillSong(s, skipEmpty);
-    if (equalTags(s, original.at(currentSongIndex), isAll)) {
+    if (equalTags(s, original.at(currentSongIndex), skipEmpty || isAll)) {
         if (editedIndexes.contains(currentSongIndex)) {
             editedIndexes.remove(currentSongIndex);
             updateTrackName(currentSongIndex, false);
@@ -457,16 +471,6 @@ void TagEditor::setIndex(int idx)
 
 void TagEditor::applyUpdates()
 {
-    bool allEdited=editedIndexes.contains(0);
-    bool isAll=0==currentSongIndex && original.count()>1;
-
-    if (isAll && allEdited) {
-        for (int i=1; i<edited.count(); ++i) {
-            currentSongIndex=i;
-            updateEdited(true);
-        }
-    }
-
     bool updated=false;
     bool skipFirst=original.count()>1;
     foreach (int idx, editedIndexes) {

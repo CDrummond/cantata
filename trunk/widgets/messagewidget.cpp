@@ -17,8 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
-#include "MessageWidget.h"
+#include "messagewidget.h"
 
+#ifdef ENABLE_KDE_SUPPORT
 #include <kaction.h>
 #include <kcolorscheme.h>
 #include <kdebug.h>
@@ -26,15 +27,18 @@
 #include <kicon.h>
 #include <kiconloader.h>
 #include <kstandardaction.h>
+#endif
 
-#include <QEvent>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QPainter>
-#include <QShowEvent>
-#include <QTimeLine>
-#include <QToolButton>
+#include <QtGui/QIcon>
+#include <QtCore/QEvent>
+#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QPainter>
+#include <QtGui/QShowEvent>
+#include <QtCore/QTimeLine>
+#include <QtGui/QToolButton>
+#include <QtGui/QAction>
 
 //---------------------------------------------------------------------
 // MessageWidgetPrivate
@@ -83,7 +87,12 @@ void MessageWidgetPrivate::init(MessageWidget *q_ptr)
     textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     textLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
+    #ifdef ENABLE_KDE_SUPPORT
     KAction* closeAction = KStandardAction::close(q, SLOT(animatedHide()), q);
+    #else
+    QAction* closeAction = new QAction(q);
+    QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
+    #endif
 
     closeButton = new QToolButton(content);
     closeButton->setAutoRaise(true);
@@ -200,6 +209,10 @@ MessageWidget::MessageType MessageWidget::messageType() const
 void MessageWidget::setMessageType(MessageWidget::MessageType type)
 {
     d->messageType = type;
+    QIcon icon;
+
+    #ifdef ENABLE_KDE_SUPPORT
+    d->messageType = type;
     KIcon icon;
     KColorScheme::BackgroundRole bgRole;
     KColorScheme::ForegroundRole fgRole;
@@ -246,6 +259,54 @@ void MessageWidget::setMessageType(MessageWidget::MessageType type)
         .arg(border.color().name())
         .arg(fg.color().name())
         );
+    #else
+    QColor bgnd;
+    QColor text;
+//     switch (type) {
+//     case PositiveMessageType:
+//         icon = QIcon::fromTheme("dialog-ok");
+//         bgRole = KColorScheme::PositiveBackground;
+//         fgRole = KColorScheme::PositiveText;
+//         break;
+//     case InformationMessageType:
+//         icon = QIcon::fromTheme("dialog-information");
+//         bgRole = KColorScheme::NormalBackground;
+//         fgRole = KColorScheme::NormalText;
+//         colorSet = KColorScheme::Tooltip;
+//         break;
+//     case WarningMessageType:
+//         icon = QIcon::fromTheme("dialog-warning");
+//         bgRole = KColorScheme::NeutralBackground;
+//         fgRole = KColorScheme::NeutralText;
+//         break;
+//     case ErrorMessageType:
+//         icon = QIcon::fromTheme("dialog-error");
+//         bgRole = KColorScheme::NegativeBackground;
+//         fgRole = KColorScheme::NegativeText;
+//         break;
+//     }
+    bgnd=Qt::red;
+    text=Qt::black;
+//     const int size = QIcon::fromThemeLoader::global()->currentSize(QIcon::fromThemeLoader::MainToolbar);
+    d->iconLabel->setPixmap(icon.pixmap(22, 22));
+
+//     KColorScheme scheme(QPalette::Active, colorSet);
+//     QBrush bg = scheme.background(bgRole);
+//     QBrush border = scheme.foreground(fgRole);
+//     QBrush fg = scheme.foreground();
+    d->content->setStyleSheet(
+        QString(".QFrame {"
+            "background-color: %1;"
+            "border-radius: 5px;"
+            "border: 1px solid %2;"
+            "}"
+            ".QLabel { color: %3; }"
+            )
+        .arg(bgnd.name())
+        .arg(bgnd.name())
+        .arg(text.name())
+        );
+    #endif
 }
 
 bool MessageWidget::event(QEvent* event)
@@ -320,11 +381,12 @@ void MessageWidget::removeAction(QAction* action)
 
 void MessageWidget::animatedShow()
 {
+    #ifdef ENABLE_KDE_SUPPORT
     if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
         show();
         return;
     }
-
+    #endif
     QFrame::show();
     setFixedHeight(0);
     int wantedHeight = d->content->sizeHint().height();
@@ -357,10 +419,12 @@ void MessageWidget::slotTimeLineFinished()
 
 void MessageWidget::animatedHide()
 {
+    #ifdef ENABLE_KDE_SUPPORT
     if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
         hide();
         return;
     }
+    #endif
 
     d->content->move(0, -d->content->height());
     d->updateSnapShot();

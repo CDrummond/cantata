@@ -193,11 +193,11 @@ IF( KDE4_FOUND )
     ENDIF( WANT_KDE_SUPPORT )
 ENDIF( KDE4_FOUND )
 
-IF( KDE4_FOUND )
+IF( KDE4_FOUND AND WANT_KDE_SUPPORT)
     # TODO: Remove this if/when we fix tag dialog for qt-only build!!!!
     set(TAGLIB_MIN_VERSION "1.6")
     find_package(Taglib)
-ENDIF( KDE4_FOUND )
+ENDIF( KDE4_FOUND AND WANT_KDE_SUPPORT)
 
 
 if(TAGLIB_FOUND)

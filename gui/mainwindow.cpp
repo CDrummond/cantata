@@ -863,7 +863,13 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif
-//     currentTabChanged(tabWidget->current_index());
+
+    #ifndef ENABLE_KDE_SUPPORT
+    // For some reason Qt-only build is not loading initial page at start-up. Pages are loaded if you switch to another
+    // and switch back. So, for now just simulate this...
+    currentTabChanged(tabWidget->current_index());
+    #endif
+
     playlistsPage->refresh();
     toggleMpris();
     toggleDockManager();

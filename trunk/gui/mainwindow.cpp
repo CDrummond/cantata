@@ -90,6 +90,7 @@
 #include "timeslider.h"
 #include "mpris.h"
 #include "dockmanager.h"
+#include "messagewidget.h"
 #include "debugtimer.h"
 
 enum Tabs
@@ -267,6 +268,7 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(widget);
     QMenu *mainMenu=new QMenu(this);
 
+    messageWidget->hide();
     #ifndef ENABLE_KDE_SUPPORT
     setWindowIcon(QIcon(":/icons/cantata.svg"));
     setWindowTitle("Cantata");
@@ -756,6 +758,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
+    connect(MPDConnection::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
     connect(refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
@@ -836,7 +839,6 @@ MainWindow::MainWindow(QWidget *parent)
     mpdThread=new QThread(this);
     MPDConnection::self()->moveToThread(mpdThread);
     mpdThread->start();
-    MPDConnection::self()->setUi(this); // For questions, errors, etc.
     emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
 
     QString page=Settings::self()->page();
@@ -947,11 +949,7 @@ void MainWindow::songLoaded()
 
 void MainWindow::showError(const QString &message)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    KMessageBox::error(this, message);
-    #else
-    QMessageBox::critical(this, tr("Error"), message);
-    #endif
+    messageWidget->setError(message);
 }
 
 void MainWindow::mpdConnectionStateChanged(bool connected)

@@ -45,9 +45,7 @@
 - General
   - Need better repeat icon.
   - When displaying search results, should expand items to show matched entry
-  - Use KMessageWidget to display errors?
-  - Add local (non mpd) file support?
-  
+
 - Sidebar
   - Allow to collapse current item
   - Icon only mode for Large/Small sidebar?

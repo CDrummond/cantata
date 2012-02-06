@@ -645,7 +645,7 @@ QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
         foreach (const QString &f, files) {
             paths << Settings::Settings::self()->mpdDir()+f;
         }
-        PlayQueueModel::encode(*mimeData, QLatin1String("text/uri-list"), paths);
+        PlayQueueModel::encode(*mimeData, PlayQueueModel::constUriMimeType, paths);
     }
     return mimeData;
 }

@@ -16,6 +16,8 @@
 12. Add track organiser dialog - so that files/folders can be renamed to match
     library/device scheme. (KDE only)
 13. Unmaximise window when using compact interface.
+14. When using local UNIX domain socket, allow playback of non database files.
+    (This local UNIX only restriction comes from MPD)
 
 0.3.0
 -----

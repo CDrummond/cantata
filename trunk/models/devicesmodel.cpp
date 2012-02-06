@@ -26,6 +26,7 @@
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
 #include "devicesmodel.h"
+#include "playqueuemodel.h"
 #include "settings.h"
 #include "config.h"
 #include "covers.h"
@@ -35,6 +36,7 @@
 #include "umsdevice.h"
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
+#include <QtCore/QMimeData>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
 #include <KDE/KLocale>
@@ -448,17 +450,27 @@ void DevicesModel::deviceUpdating(const QString &udi, bool state)
 Qt::ItemFlags DevicesModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
-        return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+        return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled;
     }
     return Qt::ItemIsEnabled;
 }
 
-QStringList DevicesModel::filenames(const QModelIndexList &indexes) const
+QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool umsOnly) const
 {
     QStringList fnames;
 
     foreach(QModelIndex index, indexes) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+
+        if (!umsOnly) {
+            MusicLibraryItem *parent=item;
+            while (parent->parent()) {
+                parent=parent->parent();
+            }
+            if (parent && Device::Ums!=static_cast<Device *>(parent)->type()) {
+                continue;
+            }
+        }
 
         switch (item->type()) {
         case MusicLibraryItem::Type_Root:
@@ -602,4 +614,16 @@ void DevicesModel::updateItemMenu()
             itemMenu->addAction(QIcon::fromTheme(it.value()->icon()), it.key(), this, SLOT(emitAddToDevice()))->setData(it.value()->dev().udi());
         }
     }
+}
+
+QMimeData * DevicesModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData=0;
+    QStringList paths=filenames(indexes, true);
+
+    if (!paths.isEmpty()) {
+        mimeData=new QMimeData();
+        PlayQueueModel::encode(*mimeData, PlayQueueModel::constUriMimeType, paths);
+    }
+    return mimeData;
 }

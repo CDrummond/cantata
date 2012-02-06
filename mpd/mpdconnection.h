@@ -133,7 +133,7 @@ public:
     static MPDConnection * self();
 
     struct Response {
-        Response(bool o=true, const QByteArray &d=QByteArray()) : ok(o), data(d) { }
+        Response(bool o=true, const QByteArray &d=QByteArray());
         bool ok;
         QByteArray data;
     };
@@ -202,8 +202,6 @@ public Q_SLOTS:
     void removeFromPlaylist(const QString &name, const QList<int> &positions);
     void moveInPlaylist(const QString &name, int id, int pos);
 
-    void setUi(QObject *u) { ui=u; }
-
 Q_SIGNALS:
     void stateChanged(bool connected);
     void currentSongUpdated(const Song &song);
@@ -227,6 +225,7 @@ Q_SIGNALS:
     void updatedLibrary();
     void updatingFileList();
     void updatedFileList();
+    void error(const QString &err);
 
 private Q_SLOTS:
     void idleDataReady();
@@ -236,13 +235,12 @@ private:
     bool connectToMPD();
     void disconnectFromMPD();
     bool connectToMPD(MpdSocket &socket, bool enableIdle=false);
-    Response sendCommand(const QByteArray &command);
+    Response sendCommand(const QByteArray &command, bool emitErrors=true);
     void initialize();
     void parseIdleReturn(const QByteArray &data);
 
 private:
     long ver;
-    QObject *ui;
     QString hostname;
     quint16 port;
     QString password;

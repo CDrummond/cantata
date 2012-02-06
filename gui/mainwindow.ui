@@ -141,6 +141,16 @@
     </widget>
    </item>
    <item row="3" column="0" colspan="4">
+    <widget class="MessageWidget" name="messageWidget">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="4">
     <widget class="QSplitter" name="splitter">
      <property name="enabled">
       <bool>true</bool>
@@ -299,6 +309,12 @@
    <class>FancyTabWidget</class>
    <extends>QTabWidget</extends>
    <header>fancytabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MessageWidget</class>
+   <extends>QFrame</extends>
+   <header>messagewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

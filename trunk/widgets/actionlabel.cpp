@@ -22,7 +22,11 @@
  */
 
 #include "actionlabel.h"
+#ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIconLoader>
+#else
+#include <QtGui/QIcon>
+#endif
 #include <QtGui/QLabel>
 #include <QtCore/QTimer>
 #include <QtGui/QPixmap>
@@ -60,7 +64,11 @@ ActionLabel::ActionLabel(QWidget *parent)
     setAlignment(Qt::AlignCenter);
 
     if(0==theUsageCount++) {
+        #ifdef ENABLE_KDE_SUPPORT
         QImage img(KIconLoader::global()->loadIcon("audio-x-generic", KIconLoader::NoGroup, 48).toImage());
+        #else
+        QImage img(QIcon::fromTheme("audio-x-generic").pixmap(48, 48).toImage());
+        #endif
         double increment=360.0/constNumIcons;
 
         for(int i=0; i<constNumIcons; ++i) {

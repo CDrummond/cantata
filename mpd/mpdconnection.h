@@ -141,6 +141,8 @@ public:
     MPDConnection();
     ~MPDConnection();
 
+    bool isLocal() const { return hostname.startsWith('/'); }
+
 public Q_SLOTS:
     void setDetails(const QString &host, quint16 port, const QString &pass);
     // Current Playlist

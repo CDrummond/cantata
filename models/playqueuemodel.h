@@ -57,6 +57,7 @@ public:
 
     static const QLatin1String constMoveMimeType;
     static const QLatin1String constFileNameMimeType;
+    static const QLatin1String constUriMimeType;
 
     static void encode(QMimeData &mimeData, const QString &mime, const QStringList &values);
     static QStringList decode(const QMimeData &mimeData, const QString &mime);

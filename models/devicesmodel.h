@@ -47,7 +47,7 @@ public:
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    QStringList filenames(const QModelIndexList &indexes) const;
+    QStringList filenames(const QModelIndexList &indexes, bool umsOnly=false) const;
     QList<Song> songs(const QModelIndexList &indexes) const;
     void clear();
     QMenu * menu() { return itemMenu; }
@@ -56,6 +56,7 @@ public:
     void setEnabled(bool e);
     void updateSong(const Song &orig, const Song &edit);
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
+    QMimeData * mimeData(const QModelIndexList &indexes) const;
 
 public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);

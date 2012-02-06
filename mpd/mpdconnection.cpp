@@ -33,8 +33,8 @@
 #include <QtGui/QApplication>
 #include "debugtimer.h"
 
-//#undef qDebug
-//#define qDebug qWarning
+#undef qDebug
+#define qDebug qWarning
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
@@ -259,9 +259,9 @@ void MPDConnection::add(const QStringList &files)
     QByteArray send = "command_list_begin\n";
 
     for (int i = 0; i < files.size(); i++) {
-        send += "add \"";
-        send += files.at(i).toUtf8();
-        send += "\"\n";
+        send += "add ";
+        send += encodeName(files.at(i));
+        send += "\n";
     }
 
     send += "command_list_end";
@@ -287,9 +287,8 @@ void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size)
     QByteArray send = "command_list_begin\n";
     int cur_size = size;
     for (int i = 0; i < files.size(); i++) {
-        send += "add \"";
-        send += files.at(i).toUtf8();
-        send += "\"";
+        send += "add ";
+        send += encodeName(files.at(i));
         send += "\n";
         send += "move ";
         send += QByteArray::number(cur_size);

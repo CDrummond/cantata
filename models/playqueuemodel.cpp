@@ -35,6 +35,7 @@
 #include <KDE/KLocale>
 #endif
 #include "playqueuemodel.h"
+#include "mpdconnection.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
 #include "mpdstatus.h"
@@ -50,8 +51,14 @@ static QStringList reverseList(const QStringList &orig)
     return rev;
 }
 
+static QString unencodeUrl(QString u)
+{
+    return u.replace("%20", " ").replace("%5C", "\\");
+}
+
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
+const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
 
 void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStringList &values)
 {
@@ -231,6 +238,9 @@ QStringList PlayQueueModel::mimeTypes() const
     QStringList types;
     types << constMoveMimeType;
     types << constFileNameMimeType;
+    if (MPDConnection::self()->isLocal()) {
+        types << constUriMimeType;
+    }
     return types;
 }
 
@@ -306,6 +316,21 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         //Act on moves from the music library and dir view
         addItems(reverseList(decode(*data, constFileNameMimeType)), row);
         return true;
+    } else if(data->hasFormat(constUriMimeType) && MPDConnection::self()->isLocal()) {
+        QStringList orig=reverseList(decode(*data, constUriMimeType));
+        QStringList useable;
+
+        foreach (QString u, orig) {
+            if (u.startsWith('/')) {
+                useable.append(QLatin1String("file://")+unencodeUrl(u));
+            } else if (u.startsWith("file:///")) {
+                useable.append(unencodeUrl(u));
+            }
+        }
+        if (useable.count()) {
+            addItems(useable, row);
+            return true;
+        }
     }
 
     return false;

@@ -336,7 +336,11 @@ void StreamsPage::edit()
 
     if (QDialog::Accepted==dlg.exec()) {
         QString newName=dlg.name();
+        #ifdef ENABLE_KDE_SUPPORT
         QString newIcon=dlg.icon();
+        #else
+        QString newIcon;
+        #endif
         QString newUrl=dlg.url();
         QString newCat=dlg.category();
         QString existingNameForUrl=newUrl!=url ? model.name(newCat, newUrl) : QString();

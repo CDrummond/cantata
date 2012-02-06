@@ -376,14 +376,14 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlaylistAction = actionCollection()->addAction("consumeplaylist");
     consumePlaylistAction->setText(i18n("Consume"));
 
-    burnAction = actionCollection()->addAction("burn");
-    burnAction->setText(i18n("Burn To CD/DVD"));
-
-    createAudioCdAction = actionCollection()->addAction("createaudiocd");
-    createAudioCdAction->setText(i18n("Create Audio CD"));
-
-    createDataCdAction = actionCollection()->addAction("createdatacd");
-    createDataCdAction->setText(i18n("Create Data CD/DVD"));
+//     burnAction = actionCollection()->addAction("burn");
+//     burnAction->setText(i18n("Burn To CD/DVD"));
+//
+//     createAudioCdAction = actionCollection()->addAction("createaudiocd");
+//     createAudioCdAction->setText(i18n("Create Audio CD"));
+//
+//     createDataCdAction = actionCollection()->addAction("createdatacd");
+//     createDataCdAction->setText(i18n("Create Data CD/DVD"));
 
     #ifdef TAGLIB_FOUND
     editTagsAction = actionCollection()->addAction("edittags");
@@ -450,9 +450,9 @@ MainWindow::MainWindow(QWidget *parent)
     randomPlaylistAction = new QAction(tr("Random"), this);
     repeatPlaylistAction = new QAction(tr("Repeat"), this);
     consumePlaylistAction = new QAction(tr("Consume"), this);
-    burnAction = new QAction(tr("Burn To CD/DVD"), this);
-    createAudioCdAction = new QAction(tr("Create Audio CD"), this);
-    createDataCdAction = new QAction(tr("Create Data CD"), this);
+//     burnAction = new QAction(tr("Burn To CD/DVD"), this);
+//     createAudioCdAction = new QAction(tr("Create Audio CD"), this);
+//     createDataCdAction = new QAction(tr("Create Data CD"), this);
     #ifdef TAGLIB_FOUND
     editTagsAction = new QAction(tr("Edit Tags"), this);
     #endif
@@ -508,21 +508,21 @@ MainWindow::MainWindow(QWidget *parent)
     addToPlaylistAction->setIcon(QIcon::fromTheme("list-add"));
     replacePlaylistAction->setIcon(QIcon::fromTheme("media-playback-start"));
 
-    burnAction->setIcon(QIcon::fromTheme("tools-media-optical-burn"));
-    createDataCdAction->setIcon(QIcon::fromTheme("media-optical"));
-    createAudioCdAction->setIcon(QIcon::fromTheme("media-optical-audio"));
+//     burnAction->setIcon(QIcon::fromTheme("tools-media-optical-burn"));
+//     createDataCdAction->setIcon(QIcon::fromTheme("media-optical"));
+//     createAudioCdAction->setIcon(QIcon::fromTheme("media-optical-audio"));
     #ifdef TAGLIB_FOUND
     editTagsAction->setIcon(QIcon::fromTheme("documentinfo"));
     #endif
-    QMenu *cdMenu=new QMenu(this);
-    cdMenu->addAction(createAudioCdAction);
-    cdMenu->addAction(createDataCdAction);
-    burnAction->setMenu(cdMenu);
-    #ifdef ENABLE_KDE_SUPPORT
-    if (KStandardDirs::findExe("k3b").isEmpty()) {
-        burnAction->setVisible(false);
-    }
-    #endif
+//     QMenu *cdMenu=new QMenu(this);
+//     cdMenu->addAction(createAudioCdAction);
+//     cdMenu->addAction(createDataCdAction);
+//     burnAction->setMenu(cdMenu);
+//     #ifdef ENABLE_KDE_SUPPORT
+//     if (KStandardDirs::findExe("k3b").isEmpty()) {
+//         burnAction->setVisible(false);
+//     }
+//     #endif
 
     prevTrackAction->setIcon(QIcon::fromTheme("media-skip-backward"));
     nextTrackAction->setIcon(QIcon::fromTheme("media-skip-forward"));
@@ -669,11 +669,10 @@ MainWindow::MainWindow(QWidget *parent)
     randomPlaylistAction->setChecked(false);
     repeatPlaylistAction->setChecked(false);
     consumePlaylistAction->setChecked(false);
-    burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
-    createAudioCdAction->setEnabled(burnAction->isEnabled());
+//     burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setEnabled(burnAction->isEnabled());
-    deleteSongsAction->setEnabled(burnAction->isEnabled());
+    copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+    deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
@@ -791,8 +790,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(expandInterfaceAction, SIGNAL(activated()), this, SLOT(togglePlaylist()));
     connect(positionSlider, SIGNAL(valueChanged(int)), this, SLOT(updatePosition()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
-    connect(createDataCdAction, SIGNAL(activated()), this, SLOT(createDataCd()));
-    connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
+//     connect(createDataCdAction, SIGNAL(activated()), this, SLOT(createDataCd()));
+//     connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
     #ifdef TAGLIB_FOUND
     connect(editTagsAction, SIGNAL(activated()), this, SLOT(editTags()));
     #endif
@@ -1043,8 +1042,7 @@ void MainWindow::updateSettings()
     copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
     organiseFilesAction->setEnabled(copyToDeviceAction->isEnabled());
-    burnAction->setEnabled(copyToDeviceAction->isEnabled());
-    createAudioCdAction->setEnabled(copyToDeviceAction->isEnabled());
+//     burnAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
@@ -1945,9 +1943,9 @@ void MainWindow::currentTabChanged(int index)
             devicesPage->selectionChanged();
         } else {
             editTagsAction->setEnabled(true);
-            burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
-            deleteSongsAction->setEnabled(burnAction->isEnabled());
-            organiseFilesAction->setEnabled(burnAction->isEnabled());
+            organiseFilesAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+//             burnAction->setEnabled(organiseFilesAction->isEnabled());
+            deleteSongsAction->setEnabled(organiseFilesAction->isEnabled());
         }
     }
     #endif
@@ -2025,49 +2023,49 @@ void MainWindow::toggleDockManager()
     dock->setEnabled(Settings::self()->dockManager());
 }
 
-void MainWindow::createDataCd()
-{
-    callK3b("data");
-}
-
-void MainWindow::createAudioCd()
-{
-    callK3b("audiocd");
-}
-
-void MainWindow::callK3b(const QString &type)
-{
-    QStringList files;
-    if (libraryPage->isVisible()) {
-        files=libraryPage->selectedFiles();
-    } else if (albumsPage->isVisible()) {
-        files=albumsPage->selectedFiles();
-    } else if (folderPage->isVisible()) {
-        files=folderPage->selectedFiles();
-    } else if (playlistsPage->isVisible()) {
-        files=playlistsPage->selectedFiles();
-    }
-#ifdef ENABLE_DEVICES_SUPPORT
-    else if (devicesPage->isVisible()) {
-        QList<Song> songs=devicesPage->selectedSongs();
-        foreach (const Song &s, songs) {
-            files.append(s.file);
-        }
-    }
-#endif
-
-    if (!files.isEmpty()) {
-        QStringList args;
-        args << QLatin1String("--")+type;
-        foreach (const QString &f, files) {
-            args << Settings::self()->mpdDir()+f;
-        }
-
-        QProcess *proc=new QProcess(this);
-        connect(proc, SIGNAL(finished(int, QProcess::ExitStatus)), proc, SLOT(deleteLater()));
-        proc->start(QLatin1String("k3b"), args);
-    }
-}
+// void MainWindow::createDataCd()
+// {
+//     callK3b("data");
+// }
+//
+// void MainWindow::createAudioCd()
+// {
+//     callK3b("audiocd");
+// }
+//
+// void MainWindow::callK3b(const QString &type)
+// {
+//     QStringList files;
+//     if (libraryPage->isVisible()) {
+//         files=libraryPage->selectedFiles();
+//     } else if (albumsPage->isVisible()) {
+//         files=albumsPage->selectedFiles();
+//     } else if (folderPage->isVisible()) {
+//         files=folderPage->selectedFiles();
+//     } else if (playlistsPage->isVisible()) {
+//         files=playlistsPage->selectedFiles();
+//     }
+// #ifdef ENABLE_DEVICES_SUPPORT
+//     else if (devicesPage->isVisible()) {
+//         QList<Song> songs=devicesPage->selectedSongs();
+//         foreach (const Song &s, songs) {
+//             files.append(s.file);
+//         }
+//     }
+// #endif
+//
+//     if (!files.isEmpty()) {
+//         QStringList args;
+//         args << QLatin1String("--")+type;
+//         foreach (const QString &f, files) {
+//             args << Settings::self()->mpdDir()+f;
+//         }
+//
+//         QProcess *proc=new QProcess(this);
+//         connect(proc, SIGNAL(finished(int, QProcess::ExitStatus)), proc, SLOT(deleteLater()));
+//         proc->start(QLatin1String("k3b"), args);
+//     }
+// }
 
 #ifdef TAGLIB_FOUND
 void MainWindow::editTags()

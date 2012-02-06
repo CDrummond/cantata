@@ -56,7 +56,7 @@ FolderPage::FolderPage(MainWindow *p)
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
-    view->addAction(p->burnAction);
+//     view->addAction(p->burnAction);
 
     proxy.setSourceModel(&model);
     view->setModel(&proxy);

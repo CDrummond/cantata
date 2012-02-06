@@ -62,7 +62,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     #ifdef TAGLIB_FOUND
     view->addAction(p->editTagsAction);
     #endif
-    view->addAction(p->burnAction);
+//     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
     view->addAction(p->organiseFilesAction);

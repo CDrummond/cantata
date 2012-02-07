@@ -1494,7 +1494,7 @@ void MainWindow::updateStatus()
             #ifdef ENABLE_KDE_SUPPORT
             trayItem->setIconByName("media-playback-pause");
             #else
-            trayItem->setIcon(playbackPlay);
+            trayItem->setIcon(playbackPause);
             #endif
         }
 

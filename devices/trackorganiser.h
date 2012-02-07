@@ -39,7 +39,7 @@ public:
     void show(const QList<Song> &songs, const QString &udi);
 
 Q_SIGNALS:
-    void update();
+    void getStats();
 
 private Q_SLOTS:
     void configureFilenameScheme();

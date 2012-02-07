@@ -43,12 +43,13 @@ public:
 
     enum Columns
     {
+        COL_STATUS,
+        COL_TRACK,
+        COL_DISC,
         COL_TITLE,
         COL_ARTIST,
         COL_ALBUM,
-        COL_TRACK,
         COL_LENGTH,
-        COL_DISC,
         COL_YEAR,
         COL_GENRE,
 

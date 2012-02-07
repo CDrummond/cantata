@@ -26,6 +26,7 @@
 
 #include <QtGui/QPalette>
 #include <QtGui/QFont>
+#include <QtGui/QIcon>
 #include <QtCore/QModelIndex>
 #include <QtCore/QMimeData>
 #include <QtCore/QTextStream>
@@ -99,49 +100,46 @@ PlayQueueModel::~PlayQueueModel()
 
 QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (orientation == Qt::Horizontal) {
-        if (role == Qt::DisplayRole) {
+    if (Qt::Horizontal==orientation) {
+        if (Qt::DisplayRole==role) {
             switch (section) {
+            case COL_STATUS: return QString();
             #ifdef ENABLE_KDE_SUPPORT
-            case COL_TITLE:
-                return i18n("Title");
-            case COL_ARTIST:
-                return i18n("Artist");
-            case COL_ALBUM:
-                return i18n("Album");
-            case COL_TRACK:
-                return i18n("Track");
-            case COL_LENGTH:
-                return i18n("Length");
-            case COL_DISC:
-                return i18n("Disc");
-            case COL_YEAR:
-                return i18n("Year");
-            case COL_GENRE:
-                return i18n("Genre");
+            case COL_TITLE:  return i18n("Title");
+            case COL_ARTIST: return i18n("Artist");
+            case COL_ALBUM:  return i18n("Album");
+            case COL_TRACK:  return i18n("#");
+            case COL_LENGTH: return i18n("Length");
+            case COL_DISC:   return i18n("Disc");
+            case COL_YEAR:   return i18n("Year");
+            case COL_GENRE:  return i18n("Genre");
             #else
-            case COL_TITLE:
-                return tr("Title");
-            case COL_ARTIST:
-                return tr("Artist");
-            case COL_ALBUM:
-                return tr("Album");
-            case COL_TRACK:
-                return tr("Track");
-            case COL_LENGTH:
-                return tr("Length");
-            case COL_DISC:
-                return tr("Disc");
-            case COL_YEAR:
-                return tr("Year");
-            case COL_GENRE:
-                return tr("Genre");
+            case COL_TITLE:  return tr("Title");
+            case COL_ARTIST: return tr("Artist");
+            case COL_ALBUM:  return tr("Album");
+            case COL_TRACK:  return tr("#");
+            case COL_LENGTH: return tr("Length");
+            case COL_DISC:   return tr("Disc");
+            case COL_YEAR:   return tr("Year");
+            case COL_GENRE:  return tr("Genre");
             #endif
-            default:
-                break;
+            default:         break;
             }
-        } else if (role == Qt::TextAlignmentRole) {
-            return section<COL_TRACK ? Qt::AlignLeft : Qt::AlignRight;
+        } else if (Qt::TextAlignmentRole==role) {
+            switch (section) {
+            case COL_TITLE:
+            case COL_ARTIST:
+            case COL_ALBUM:
+            case COL_GENRE:
+            default:
+                return int(Qt::AlignVCenter|Qt::AlignLeft);
+            case COL_STATUS:
+            case COL_TRACK:
+            case COL_LENGTH:
+            case COL_DISC:
+            case COL_YEAR:
+                return int(Qt::AlignVCenter|Qt::AlignRight);
+            }
         }
     }
 
@@ -167,20 +165,23 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 
     // Mark background of song currently being played
 
-    if (role == Qt::BackgroundRole && songs.at(index.row()).id == song_id) {
-        QPalette palette;
-        QColor col(palette.color(QPalette::Highlight));
-        col.setAlphaF(0.2);
-        return QVariant(col);
-    }
+//     if (role == Qt::BackgroundRole && songs.at(index.row()).id == song_id) {
+//         QPalette palette;
+//         QColor col(palette.color(QPalette::Highlight));
+//         col.setAlphaF(0.2);
+//         return QVariant(col);
+//     }
 
-    if (role == Qt::FontRole && songs.at(index.row()).id == song_id) {
-        QFont font;
-        font.setBold(true);
-        return font;
-    }
+    switch (role) {
+    case Qt::FontRole:
+        if (songs.at(index.row()).id == song_id) {
+            QFont font;
+            font.setBold(true);
+            return font;
+        }
+        break;
 
-    if (role == Qt::DisplayRole) {
+    case Qt::DisplayRole: {
         const Song &song = songs.at(index.row());
         switch (index.column()) {
         case COL_TITLE:
@@ -209,8 +210,32 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         default:
             break;
         }
-    } else if (role == Qt::TextAlignmentRole) {
-        return index.column()<COL_TRACK || COL_GENRE==index.column() ? Qt::AlignLeft : Qt::AlignRight;
+        break;
+    }
+    case Qt::TextAlignmentRole:
+        switch (index.column()) {
+        case COL_TITLE:
+        case COL_ARTIST:
+        case COL_ALBUM:
+        case COL_GENRE:
+        default:
+            return int(Qt::AlignVCenter|Qt::AlignLeft);
+        case COL_STATUS:
+        case COL_TRACK:
+        case COL_LENGTH:
+        case COL_DISC:
+        case COL_YEAR:
+            return int(Qt::AlignVCenter|Qt::AlignRight);
+        }
+    case Qt::DecorationRole:
+        if (COL_STATUS==index.column() && songs.at(index.row()).id == song_id) {
+            return QIcon::fromTheme("media-playback-start");
+        }
+        break;
+    case Qt::SizeHintRole:
+        return QSize(18, 18);
+    default:
+        break;
     }
 
     return QVariant();

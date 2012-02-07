@@ -34,6 +34,8 @@ class Wallet;
 #endif
 #include "config.h"
 
+#define CANTATA_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
+
 class QTimer;
 
 class Settings : public QObject
@@ -81,6 +83,7 @@ public:
     bool showDeleteAction();
     int devicesView();
     #endif
+    int version();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -128,6 +131,7 @@ private Q_SLOTS:
 private:
     QString mpdDirSetting;
     QTimer *timer;
+    int ver;
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg;
     KWallet::Wallet *wallet;

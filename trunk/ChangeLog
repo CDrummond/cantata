@@ -22,6 +22,7 @@
     and Qt only builds.
 16. Fix updating of views when genre filter is changed.
 17. Improve sidebar style context menu - icon only is a separate checkbox.
+18. Improve look of play queue. Display 'play' icon next to current track.
 
 0.3.0
 -----

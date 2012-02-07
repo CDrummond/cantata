@@ -1720,14 +1720,15 @@ void MainWindow::togglePlaylist()
 void MainWindow::setupPlaylistView()
 {
     playQueueHeader = playQueue->header();
-
-    playQueueHeader->setMovable(true);
     playQueueHeader->setResizeMode(QHeaderView::Interactive);
     playQueueHeader->setContextMenuPolicy(Qt::CustomContextMenu);
+    playQueueHeader->resizeSection(PlayQueueModel::COL_STATUS, 20);
+    playQueueHeader->resizeSection(PlayQueueModel::COL_TRACK, QFontMetrics(playQueue->font()).width("999"));
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_STATUS, QHeaderView::Fixed);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_TITLE, QHeaderView::Interactive);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_ARTIST, QHeaderView::Interactive);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_ALBUM, QHeaderView::Stretch);
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_TRACK, QHeaderView::ResizeToContents);
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_TRACK, QHeaderView::Fixed);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_LENGTH, QHeaderView::ResizeToContents);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_DISC, QHeaderView::ResizeToContents);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_YEAR, QHeaderView::ResizeToContents);
@@ -1737,7 +1738,15 @@ void MainWindow::setupPlaylistView()
     connect(streamsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
 
     //Restore state
-    QByteArray state = Settings::self()->playQueueHeaderState();
+    QByteArray state;
+
+    if (Settings::self()->version()>=CANTATA_MAKE_VERSION(0, 4, 0)) {
+        state=Settings::self()->playQueueHeaderState();
+    }
+
+    QList<int> hideAble;
+    hideAble << PlayQueueModel::COL_TRACK << PlayQueueModel::COL_ALBUM << PlayQueueModel::COL_LENGTH
+             << PlayQueueModel::COL_DISC << PlayQueueModel::COL_YEAR << PlayQueueModel::COL_GENRE;
 
     //Restore
     if (state.isEmpty()) {
@@ -1747,17 +1756,25 @@ void MainWindow::setupPlaylistView()
     } else {
         playQueueHeader->restoreState(state);
 
-        for(int i=PlayQueueModel::COL_ALBUM; i<PlayQueueModel::COL_COUNT; ++i) {
-            if (playQueueHeader->isSectionHidden(i) || playQueueHeader->sectionSize(i) == 0) {
-                playQueueHeader->setSectionHidden(i, true);
+        foreach (int col, hideAble) {
+            if (playQueueHeader->isSectionHidden(col) || 0==playQueueHeader->sectionSize(col)) {
+                playQueueHeader->setSectionHidden(col, true);
             }
         }
     }
 
     playQueueMenu = new QMenu(this);
 
-    for (int col=PlayQueueModel::COL_ALBUM; col<PlayQueueModel::COL_COUNT; ++col) {
-        QAction *act=new QAction(playQueueModel.headerData(col, Qt::Horizontal, Qt::DisplayRole).toString(), playQueueMenu);
+    foreach (int col, hideAble) {
+        QString text=PlayQueueModel::COL_TRACK==col
+                        ?
+                            #ifdef ENABLE_KDE_SUPPORT
+                            i18n("Track")
+                            #else
+                            tr("Track")
+                            #endif
+                        : playQueueModel.headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
+        QAction *act=new QAction(text, playQueueMenu);
         act->setCheckable(true);
         act->setChecked(!playQueueHeader->isSectionHidden(col));
         playQueueMenu->addAction(act);

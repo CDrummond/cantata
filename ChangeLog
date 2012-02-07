@@ -20,6 +20,7 @@
     (This local UNIX only restriction comes from MPD)
 15. Use KMessageWidget to show errors - copy of KDE code taken for pre KDE4.7 and
     Qt only builds.
+16. Fix updating of views when genre filter is changed.
 
 0.3.0
 -----

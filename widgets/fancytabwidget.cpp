@@ -59,7 +59,6 @@
 using namespace Core;
 using namespace Internal;
 
-const int FancyTabBar::m_iconSize = 32;
 const int FancyTabBar::m_rounding = 22;
 const int FancyTabBar::m_textPadding = 4;
 
@@ -280,12 +279,14 @@ void FancyTab::setFader(float value)
     tabbar->update();
 }
 
-FancyTabBar::FancyTabBar(QWidget *parent)
+FancyTabBar::FancyTabBar(QWidget *parent, bool text, int iSize)
     : QWidget(parent)
+    , m_showText(text)
+    , m_iconSize(iSize)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     setStyle(new QWindowsStyle);
-    setMinimumWidth(qMax(2 * m_rounding, 40));
+    setMinimumWidth(28);
     setAttribute(Qt::WA_Hover, true);
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true); // Needed for hover events
@@ -310,11 +311,16 @@ QSize FancyTab::sizeHint() const {
 //   QFont boldFont(font());
 //   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
 //   boldFont.setBold(true);
-  QFontMetrics fm(font());
-  int spacing = 8;
-  int width = 60 + spacing + 2;
-  QSize ret(width, FancyTabBar::m_iconSize + spacing + fm.height());
-  return ret;
+    int iconSize=static_cast<FancyTabBar *>(parent())->iconSize();
+    const int spacing = 8;
+    if (static_cast<FancyTabBar *>(parent())->showText()) {
+        QFontMetrics fm(font());
+        int width = 60 + spacing + 2;
+        QSize ret(width, iconSize + spacing + fm.height());
+        return ret;
+    } else {
+        return QSize(iconSize + spacing, iconSize + spacing);
+    }
 }
 
 QSize FancyTabBar::tabSizeHint() const
@@ -322,10 +328,14 @@ QSize FancyTabBar::tabSizeHint() const
 //   QFont boldFont(font());
 //   boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
 //   boldFont.setBold(true);
-  QFontMetrics fm(font());
-  int spacing = 8;
-  int width = 60 + spacing + 2;
-  return QSize(width, m_iconSize + spacing + fm.height());
+    const int spacing = 8;
+    if (m_showText) {
+        QFontMetrics fm(font());
+        int width = 60 + spacing + 2;
+        return QSize(width, m_iconSize + spacing + fm.height());
+    } else {
+        return QSize(m_iconSize + spacing, m_iconSize + spacing);
+    }
 }
 
 void FancyTabBar::paintEvent(QPaintEvent *event)
@@ -405,6 +415,9 @@ void FancyTabBar::addTab(const QIcon& icon, const QString& label) {
   tab->icon = icon;
   tab->text = label;
   m_tabs.append(tab);
+  if (!m_showText) {
+      tab->setToolTip(label);
+  }
   qobject_cast<QVBoxLayout*>(layout())->insertWidget(layout()->count()-1, tab);
 }
 
@@ -449,24 +462,28 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
 //    drawRoundedRect(painter, rect, 3, col);
 
 
-    QString tabText(painter->fontMetrics().elidedText(this->tabText(tabIndex), Qt::ElideMiddle, width()));
-    QRect tabTextRect(tabRect(tabIndex));
-    QRect tabIconRect(tabTextRect);
-    tabIconRect.adjust(+4, +4, -4, -4);
-    tabTextRect.translate(0, -2);
-//     QFont boldFont(painter->font());
-//     boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
-//     boldFont.setBold(true);
-//     painter->setFont(boldFont);
-//     painter->setPen(selected ? QColor(255, 255, 255, 160) : QColor(0, 0, 0, 110));
-    painter->setPen(selected ? palette().highlightedText().color() : palette().foreground().color());
-    int textFlags = Qt::AlignCenter | Qt::AlignBottom;
-    painter->drawText(tabTextRect, textFlags, tabText);
+    if (m_showText) {
+        QString tabText(painter->fontMetrics().elidedText(this->tabText(tabIndex), Qt::ElideMiddle, width()));
+        QRect tabTextRect(tabRect(tabIndex));
+        QRect tabIconRect(tabTextRect);
+        tabIconRect.adjust(+4, +4, -4, -4);
+        tabTextRect.translate(0, -2);
+//         QFont boldFont(painter->font());
+//         boldFont.setPointSizeF(Utils::StyleHelper::sidebarFontSize());
+//         boldFont.setBold(true);
+//         painter->setFont(boldFont);
+//         painter->setPen(selected ? QColor(255, 255, 255, 160) : QColor(0, 0, 0, 110));
+        painter->setPen(selected ? palette().highlightedText().color() : palette().foreground().color());
+        int textFlags = Qt::AlignCenter | Qt::AlignBottom;
+        painter->drawText(tabTextRect, textFlags, tabText);
 
-    const int textHeight = painter->fontMetrics().height();
-    tabIconRect.adjust(0, 4, 0, -textHeight);
-//     Utils::StyleHelper::drawIconWithShadow(tabIcon(tabIndex), tabIconRect, painter, QIcon::Normal);
-    drawIcon(tabIcon(tabIndex), tabIconRect, painter, QSize(m_iconSize, m_iconSize));
+        const int textHeight = painter->fontMetrics().height();
+        tabIconRect.adjust(0, 4, 0, -textHeight);
+//         Utils::StyleHelper::drawIconWithShadow(tabIcon(tabIndex), tabIconRect, painter, QIcon::Normal);
+        drawIcon(tabIcon(tabIndex), tabIconRect, painter, QSize(m_iconSize, m_iconSize));
+    } else {
+        drawIcon(tabIcon(tabIndex), rect, painter, QSize(m_iconSize, m_iconSize));
+    }
 
 
 //     painter->translate(0, -1);
@@ -648,8 +665,10 @@ void FancyTabWidget::SetMode(Mode mode) {
 //       qDebug() << "Unknown fancy tab mode" << mode;
       // fallthrough
 
+    case Mode_IconOnlySmallSidebar:
+    case Mode_IconOnlyLargeSidebar:
     case Mode_LargeSidebar: {
-      FancyTabBar* bar = new FancyTabBar(this);
+      FancyTabBar* bar = new FancyTabBar(this, Mode_LargeSidebar==mode, Mode_IconOnlySmallSidebar==mode ? 16 : 32);
       side_layout_->insertWidget(0, bar);
       tab_bar_ = bar;
 
@@ -704,6 +723,10 @@ void FancyTabWidget::SetMode(Mode mode) {
 //    case Mode_PlainSidebar:
     case Mode_SideTabs:
       MakeTabBar(Qt::RightToLeft==QApplication::layoutDirection() ? QTabBar::RoundedEast : QTabBar::RoundedWest, true, true, false);
+      break;
+
+    case Mode_IconOnlySideTabs:
+      MakeTabBar(Qt::RightToLeft==QApplication::layoutDirection() ? QTabBar::RoundedEast : QTabBar::RoundedWest, false, true, false);
       break;
   }
 
@@ -765,41 +788,38 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     }
     menu_->addSeparator();
 
-    QSignalMapper* mapper = new QSignalMapper(this);
     QActionGroup* group = new QActionGroup(this);
     QMenu *modeMenu=new QMenu(this);
     QAction *modeAct;
-#ifdef ENABLE_KDE_SUPPORT
+    QAction *iconOnlyAct;
+    #ifdef ENABLE_KDE_SUPPORT
+    iconOnlyAct=new QAction(i18n("Icons Only"), this);
     modeAct=new QAction(i18n("Style"), this);
-    AddMenuItem(mapper, group, i18n("Large Sidebar"), Mode_LargeSidebar);
-    AddMenuItem(mapper, group, i18n("Small Sidebar"), Mode_SmallSidebar);
-    AddMenuItem(mapper, group, i18n("Tabs On Side"), Mode_SideTabs);
-    AddMenuItem(mapper, group, i18n("Tabs On Top"), Mode_TopTabs);
-    AddMenuItem(mapper, group, i18n("Tabs On Top (Icons Only)"), Mode_IconOnlyTopTabs);
-    AddMenuItem(mapper, group, i18n("Tabs On Bottom"), Mode_BotTabs);
-    AddMenuItem(mapper, group, i18n("Tabs On Bottom (Icons Only)"), Mode_IconOnlyBotTabs);
-    //AddMenuItem(mapper, group, i18n("Plain Sidebar"), Mode_PlainSidebar);
-    //AddMenuItem(mapper, group, i18n("Tabs On Top"), Mode_Tabs);
-    //AddMenuItem(mapper, group, i18n("Icons On Top"), Mode_IconOnlyTabs);
-#else
+    AddMenuItem(group, i18n("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
+    AddMenuItem(group, i18n("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
+    AddMenuItem(group, i18n("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);
+    AddMenuItem(group, i18n("Tabs On Top"), Mode_TopTabs, Mode_IconOnlyTopTabs);
+    AddMenuItem(group, i18n("Tabs On Bottom"), Mode_BotTabs, Mode_IconOnlyBotTabs);
+    #else
     modeAct=new QAction(tr("Style"), this);
-    AddMenuItem(mapper, group, tr("Large Sidebar"), Mode_LargeSidebar);
-    AddMenuItem(mapper, group, tr("Small Sidebar"), Mode_SmallSidebar);
-    AddMenuItem(mapper, group, tr("Tabs On Side"), Mode_SideTabs);
-    AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_TopTabs);
-    AddMenuItem(mapper, group, tr("Tabs On Top (Icons Only)"), Mode_IconOnlyTopTabs);
-    AddMenuItem(mapper, group, tr("Tabs On Bottom"), Mode_BotTabs);
-    AddMenuItem(mapper, group, tr("Tabs On Bottom (Icons Only)"), Mode_IconOnlyBotTabs);
-    //AddMenuItem(mapper, group, tr("Plain Sidebar"), Mode_PlainSidebar);
-    //AddMenuItem(mapper, group, tr("Tabs On Top"), Mode_Tabs);
-    //AddMenuItem(mapper, group, tr("Icons On Top"), Mode_IconOnlyTabs);
-#endif
+    iconOnlyAct=new QAction(i18n("Icons Only"), this);
+    AddMenuItem(group, tr("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
+    AddMenuItem(group, tr("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
+    AddMenuItem(group, tr("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);
+    AddMenuItem(group, tr("Tabs On Top"), Mode_TopTabs, Mode_IconOnlyTopTabs);
+    AddMenuItem(group, tr("Tabs On Bottom"), Mode_BotTabs, Mode_IconOnlyBotTabs);
+    #endif
     modeMenu->addActions(group->actions());
+    iconOnlyAct->setCheckable(true);
+    iconOnlyAct->setChecked(Mode_IconOnlyLargeSidebar==mode_ || Mode_IconOnlySmallSidebar==mode_ ||
+                            Mode_IconOnlySideTabs==mode_ || Mode_IconOnlyTopTabs==mode_ ||
+                            Mode_IconOnlyBotTabs==mode_);
+    iconOnlyAct->setData(0);
+    connect(iconOnlyAct, SIGNAL(triggered()), this, SLOT(SetMode()));
+    modeMenu->addAction(iconOnlyAct);
     modeAct->setMenu(modeMenu);
     modeAct->setData(-1);
     menu_->addAction(modeAct);
-
-    connect(mapper, SIGNAL(mapped(int)), SLOT(SetMode(int)));
   }
 
   foreach (QAction *act, menu_->actions()) {
@@ -812,16 +832,52 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
   menu_->popup(e->globalPos());
 }
 
-void FancyTabWidget::AddMenuItem(QSignalMapper* mapper, QActionGroup* group,
-                                 const QString& text, Mode mode) {
+void FancyTabWidget::AddMenuItem(QActionGroup* group, const QString& text, Mode mode, Mode iconMode) {
   QAction* action = group->addAction(text);
   action->setCheckable(true);
-  action->setData(-1);
-  mapper->setMapping(action, mode);
-  connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
+  action->setData(mode);
+  connect(action, SIGNAL(triggered()), this, SLOT(SetMode()));
 
-  if (mode == mode_)
+  if (mode == mode_ || iconMode==mode_) {
     action->setChecked(true);
+  }
+}
+
+void FancyTabWidget::SetMode()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+
+    if (act) {
+        int data=act->data().toInt();
+
+        if (0==data) {
+            switch (mode_) {
+            case Mode_LargeSidebar:         SetMode(Mode_IconOnlyLargeSidebar); break;
+            case Mode_SmallSidebar:         SetMode(Mode_IconOnlySmallSidebar); break;
+            case Mode_SideTabs:             SetMode(Mode_IconOnlySideTabs); break;
+            case Mode_TopTabs:              SetMode(Mode_IconOnlyTopTabs); break;
+            case Mode_IconOnlyTopTabs:      SetMode(Mode_TopTabs); break;
+            case Mode_BotTabs:              SetMode(Mode_IconOnlyBotTabs); break;
+            case Mode_IconOnlyBotTabs:      SetMode(Mode_BotTabs); break;
+            case Mode_IconOnlyLargeSidebar: SetMode(Mode_LargeSidebar); break;
+            case Mode_IconOnlySmallSidebar: SetMode(Mode_SmallSidebar); break;
+            case Mode_IconOnlySideTabs:     SetMode(Mode_SideTabs); break;
+            default: break;
+            }
+        } else {
+            bool iconOnly=Mode_IconOnlyLargeSidebar==mode_ || Mode_IconOnlySmallSidebar==mode_ ||
+                          Mode_IconOnlySideTabs==mode_ || Mode_IconOnlyTopTabs==mode_ ||
+                          Mode_IconOnlyBotTabs==mode_;
+            switch (data) {
+            case Mode_LargeSidebar: SetMode(iconOnly ? Mode_IconOnlyLargeSidebar : Mode_LargeSidebar); break;
+            case Mode_SmallSidebar: SetMode(iconOnly ? Mode_IconOnlySmallSidebar : Mode_SmallSidebar); break;
+            case Mode_SideTabs:     SetMode(iconOnly ? Mode_IconOnlySideTabs : Mode_SideTabs); break;
+            case Mode_TopTabs:      SetMode(iconOnly ? Mode_IconOnlyTopTabs : Mode_TopTabs); break;
+            case Mode_BotTabs:      SetMode(iconOnly ? Mode_IconOnlyBotTabs : Mode_BotTabs); break;
+            default: break;
+            }
+        }
+    }
 }
 
 void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons,

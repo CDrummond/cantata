@@ -234,12 +234,16 @@ void LibraryPage::searchItems()
         proxy.setFilterGenre(genre);
         if (!proxy.filterRegExp().isEmpty()) {
              proxy.setFilterRegExp(QString());
+        } else {
+            proxy.invalidate();
         }
     } else {
         proxy.setFilterEnabled(true);
         proxy.setFilterGenre(genre);
         if (filter!=proxy.filterRegExp().pattern()) {
             proxy.setFilterRegExp(filter);
+        } else {
+            proxy.invalidate();
         }
     }
 }

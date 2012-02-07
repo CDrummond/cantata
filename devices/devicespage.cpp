@@ -231,7 +231,7 @@ void DevicesPage::selectionChanged()
     #ifdef TAGLIB_FOUND
     mw->editTagsAction->setEnabled(enable && onlyUms);
     #endif
-    mw->burnAction->setEnabled(enable && onlyUms);
+    //mw->burnAction->setEnabled(enable && onlyUms);
     mw->organiseFilesAction->setEnabled(enable && onlyUms && singleUdi);
 }
 

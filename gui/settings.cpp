@@ -54,6 +54,7 @@ Settings * Settings::self()
 
 Settings::Settings()
     : timer(0)
+    , ver(-1)
     #ifdef ENABLE_KDE_SUPPORT
     , cfg(KGlobal::config(), "General")
     , wallet(0)
@@ -296,6 +297,21 @@ int Settings::devicesView()
 
 }
 #endif
+#include <QtCore/QDebug>
+int Settings::version()
+{
+    if (-1==ver) {
+        QStringList parts=GET_STRING("version", QLatin1String("0.0.0")).split('.');
+        if (3==parts.size()) {
+            ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
+        } else {
+            ver=0;
+            SET_VALUE("version", PACKAGE_VERSION);
+        }
+        qWarning() << "VERSION:" << ver << CANTATA_MAKE_VERSION(0, 4, 0);
+    }
+    return ver;
+}
 
 void Settings::Settings::saveConnectionHost(const QString &v)
 {
@@ -476,6 +492,7 @@ void Settings::saveDevicesView(int v)
 void Settings::save(bool force)
 {
     if (force) {
+        SET_VALUE("version", PACKAGE_VERSION);
         #ifdef ENABLE_KDE_SUPPORT
         KGlobal::config()->sync();
         #else

@@ -1207,6 +1207,11 @@ void MainWindow::realSearchPlaylist()
 void MainWindow::updatePlaylist(const QList<Song> &songs)
 {
     TF_DEBUG
+
+    playPauseTrackAction->setEnabled(0!=songs.count());
+    nextTrackAction->setEnabled(songs.count()>1);
+    prevTrackAction->setEnabled(songs.count()>1);
+
     QList<qint32> selectedSongIds;
     qint32 firstSelectedSongId = -1;
     qint32 firstSelectedRow = -1;
@@ -1446,7 +1451,7 @@ void MainWindow::updateStatus()
     switch (status->state()) {
     case MPDStatus::State_Playing:
         playPauseTrackAction->setIcon(playbackPause);
-        playPauseTrackAction->setEnabled(true);
+        playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         //playPauseTrackButton->setChecked(false);
         stopTrackAction->setEnabled(true);
         positionSlider->startTimer();
@@ -1463,7 +1468,7 @@ void MainWindow::updateStatus()
     case MPDStatus::State_Inactive:
     case MPDStatus::State_Stopped:
         playPauseTrackAction->setIcon(playbackPlay);
-        playPauseTrackAction->setEnabled(true);
+        playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         stopTrackAction->setEnabled(false);
         trackLabel->setText(QString());
         artistLabel->setText(QString());
@@ -1482,8 +1487,8 @@ void MainWindow::updateStatus()
         break;
     case MPDStatus::State_Paused:
         playPauseTrackAction->setIcon(playbackPlay);
-        playPauseTrackAction->setEnabled(true);
-        stopTrackAction->setEnabled(true);
+        playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
+        stopTrackAction->setEnabled(0!=playQueueModel.rowCount());
 
         if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT

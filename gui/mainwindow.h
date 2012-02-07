@@ -327,7 +327,7 @@ private:
     Action *lyricsTabAction;
     Action *streamsTabAction;
     Action *removeAction;
-    Action *burnAction;
+//     Action *burnAction;
 //     Action *createDataCdAction;
 //     Action *createAudioCdAction;
     #ifdef TAGLIB_FOUND

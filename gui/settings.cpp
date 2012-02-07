@@ -297,7 +297,7 @@ int Settings::devicesView()
 
 }
 #endif
-#include <QtCore/QDebug>
+
 int Settings::version()
 {
     if (-1==ver) {
@@ -308,7 +308,6 @@ int Settings::version()
             ver=0;
             SET_VALUE("version", PACKAGE_VERSION);
         }
-        qWarning() << "VERSION:" << ver << CANTATA_MAKE_VERSION(0, 4, 0);
     }
     return ver;
 }

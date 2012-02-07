@@ -103,7 +103,7 @@ class FancyTabBar : public QWidget
     Q_OBJECT
 
 public:
-    FancyTabBar(QWidget *parent = 0);
+    FancyTabBar(QWidget *parent, bool text, int iSize );
     ~FancyTabBar();
 
     void paintEvent(QPaintEvent *event);
@@ -130,6 +130,8 @@ public:
     QString tabText(int index) const { return m_tabs.at(index)->text; }
     int count() const {return m_tabs.count(); }
     QRect tabRect(int index) const;
+    bool showText() const { return m_showText; }
+    int iconSize() const { return m_iconSize; }
 
 signals:
     void currentChanged(int);
@@ -138,7 +140,6 @@ public slots:
     void emitCurrentIndex();
 
 public:
-    static const int m_iconSize;
 
 private:
     static const int m_rounding;
@@ -147,6 +148,8 @@ private:
     QList<FancyTab*> m_tabs;
     QTimer m_triggerTimer;
     QSize tabSizeHint() const;
+    bool m_showText;
+    int m_iconSize;
 };
 
 class FancyTabWidget : public QWidget {
@@ -168,7 +171,10 @@ public:
     Mode_TopTabs = 4,
     Mode_IconOnlyTopTabs = 5,
     Mode_BotTabs = 6,
-    Mode_IconOnlyBotTabs = 7
+    Mode_IconOnlyBotTabs = 7,
+    Mode_IconOnlyLargeSidebar = 8,
+    Mode_IconOnlySmallSidebar = 9,
+    Mode_IconOnlySideTabs = 10
   };
 
   struct Item {
@@ -220,13 +226,13 @@ protected:
   void contextMenuEvent(QContextMenuEvent* e);
 
 private slots:
+  void SetMode();
   void ShowWidget(int index);
   void ToggleTab();
 
 private:
   void MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
-  void AddMenuItem(QSignalMapper* mapper, QActionGroup* group,
-                   const QString& text, Mode mode);
+  void AddMenuItem(QActionGroup* group,  const QString& text, Mode mode, Mode iconMode);
   int TabToIndex(int tab) const;
   int IndexToTab(int index) const { return index>=0 && index<items_.count() ? items_[index].index_ : 0; }
 

@@ -39,7 +39,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
 {
     updated=false;
     setButtons(KDialog::Ok|KDialog::Cancel);
-    setCaption(i18n("Track Organizer"));
+    setCaption(i18n("Organize Files"));
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowModality(Qt::WindowModal);
     QWidget *mainWidet = new QWidget(this);

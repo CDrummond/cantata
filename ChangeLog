@@ -26,6 +26,8 @@
 19. When sending track change notification, also include cover (if we have one)
 20. Optionally fade-out track when stopping.
 21. Add genre filtering to playlists page.
+22. When pressing play after pressing stop, start playnig at current song -
+    don't start at begining of play queue.
 
 0.3.0
 -----

@@ -82,6 +82,7 @@ public:
     QSet<qint32> getSongIdSet();
     void playListStats();
     void clear();
+    qint32 currentSong() const { return currentSongId; }
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row);
@@ -99,7 +100,7 @@ private Q_SLOTS:
 
 private:
     QList<Song> songs;
-    qint32 song_id;
+    qint32 currentSongId;
     StreamFetcher *fetcher;
 };
 

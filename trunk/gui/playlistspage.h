@@ -56,6 +56,7 @@ private:
 
 public Q_SLOTS:
     void removeItems();
+    void updateGenres(const QStringList &genres);
 
 private Q_SLOTS:
     void savePlaylist();

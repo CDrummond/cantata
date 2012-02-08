@@ -59,6 +59,8 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), rem, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), renPlaylist, SLOT(setEnabled(bool)));
+    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
+    connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
 
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
@@ -101,6 +103,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<int> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<int> &)));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
+    updateGenres(QStringList());
 }
 
 PlaylistsPage::~PlaylistsPage()
@@ -314,15 +317,70 @@ void PlaylistsPage::selectionChanged()
 
 void PlaylistsPage::searchItems()
 {
+    QString genre=0==genreCombo->currentIndex() ? QString() : genreCombo->currentText();
     QString filter=view->searchText().trimmed();
 
-    if (filter.isEmpty() ) {
+    if (filter.isEmpty() && genre.isEmpty()) {
         proxy.setFilterEnabled(false);
+        proxy.setFilterGenre(genre);
         if (!proxy.filterRegExp().isEmpty()) {
              proxy.setFilterRegExp(QString());
+        } else {
+            proxy.invalidate();
         }
-    } else if (filter!=proxy.filterRegExp().pattern()) {
+    } else {
         proxy.setFilterEnabled(true);
-        proxy.setFilterRegExp(filter);
+        proxy.setFilterGenre(genre);
+        if (filter!=proxy.filterRegExp().pattern()) {
+            proxy.setFilterRegExp(filter);
+        } else {
+            proxy.invalidate();
+        }
+    }
+}
+
+void PlaylistsPage::updateGenres(const QStringList &genres)
+{
+    QStringList entries;
+    #ifdef ENABLE_KDE_SUPPORT
+    entries << i18n("All Genres");
+    #else
+    entries << tr("All Genres");
+    #endif
+    entries+=genres;
+
+    bool diff=genreCombo->count() != entries.count();
+    if (!diff) {
+        // Check items...
+        for (int i=1; i<genreCombo->count() && !diff; ++i) {
+            if (genreCombo->itemText(i) != entries.at(i)) {
+                diff=true;
+            }
+        }
+    }
+
+    if (!diff) {
+        return;
+    }
+
+    QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
+
+    genreCombo->clear();
+    genreCombo->addItems(entries);
+    if (0==genres.count()) {
+        genreCombo->setCurrentIndex(0);
+    } else {
+        if (!currentFilter.isEmpty()) {
+            bool found=false;
+            for (int i=1; i<genreCombo->count() && !found; ++i) {
+                if (genreCombo->itemText(i) == currentFilter) {
+                    genreCombo->setCurrentIndex(i);
+                    found=true;
+                }
+            }
+            if (!found) {
+                genreCombo->setCurrentIndex(0);
+            }
+        }
     }
 }

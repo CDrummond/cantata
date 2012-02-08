@@ -505,9 +505,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     playbackPlay = QIcon::fromTheme("media-playback-start");
     playbackPause = QIcon::fromTheme("media-playback-pause");
-    repeatPlaylistAction->setIcon(QIcon::fromTheme("edit-redo"));
+    repeatPlaylistAction->setIcon(QIcon::fromTheme("cantata-view-media-repeat"));
     randomPlaylistAction->setIcon(QIcon::fromTheme("media-playlist-shuffle"));
-    consumePlaylistAction->setIcon(QIcon::fromTheme("format-list-unordered"));
+    consumePlaylistAction->setIcon(QIcon::fromTheme("cantata-view-media-consume"));
     removeAction->setIcon(QIcon::fromTheme("list-remove"));
     addToPlaylistAction->setIcon(QIcon::fromTheme("list-add"));
     replacePlaylistAction->setIcon(QIcon::fromTheme("media-playback-start"));

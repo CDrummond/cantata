@@ -28,6 +28,7 @@
 #include <QtCore/QString>
 #include <QtCore/QTimer>
 #include <QtCore/QProcess>
+#include <QtCore/QPropertyAnimation>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
@@ -255,6 +256,9 @@ MainWindow::MainWindow(QWidget *parent)
     , playlistSearchTimer(0)
     , usingProxy(false)
     , isConnected(false)
+    , volumeFade(0)
+    , origVolume(0)
+    , stopState(StopState_None)
 {
     loaded=0;
     trayItem = 0;
@@ -765,6 +769,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
     connect(stopTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopTrack()));
     connect(volumeControl, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
+    connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(increaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(increaseVolume()));
     connect(decreaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(decreaseVolume()));
     connect(increaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
@@ -869,6 +874,8 @@ MainWindow::MainWindow(QWidget *parent)
     currentTabChanged(tabWidget->current_index());
     #endif
 
+    fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
+
     playlistsPage->refresh();
     toggleMpris();
     toggleDockManager();
@@ -948,6 +955,7 @@ void MainWindow::setControlButtonsSize(bool small)
 void MainWindow::songLoaded()
 {
     if (MPDStatus::State_Stopped==MPDStatus::self()->state()) {
+        stopVolumeFade();
         emit play();
     }
 }
@@ -1037,6 +1045,12 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::updateSettings()
 {
+    int stopFadeDuration=Settings::self()->stopFadeDuration();
+    fadeStop=stopFadeDuration>Settings::MinFade;
+    if (volumeFade) {
+        volumeFade->setDuration(stopFadeDuration);
+    }
+
     emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
@@ -1109,8 +1123,53 @@ void MainWindow::positionSliderReleased()
 
 void MainWindow::stopTrack()
 {
-    emit stop();
+    if (!fadeStop) {
+        emit stop();
+    }
     stopTrackAction->setEnabled(false);
+    startVolumeFade(/*true*/);
+}
+
+void MainWindow::startVolumeFade(/*bool stop*/)
+{
+    if (!fadeStop) {
+        return;
+    }
+
+    stopState=/*stop ? */StopState_Stopping/* : StopState_Pausing*/;
+    if (!volumeFade) {
+        volumeFade = new QPropertyAnimation(this, "volume");
+        volumeFade->setDuration(Settings::self()->stopFadeDuration());
+    }
+    origVolume=volume;
+    volumeFade->setStartValue(volume);
+    volumeFade->setEndValue(-1);
+    volumeFade->start();
+}
+
+void MainWindow::stopVolumeFade()
+{
+    if (stopState) {
+        stopState=StopState_None;
+        volumeFade->stop();
+        setMpdVolume(-1);
+    }
+}
+
+void MainWindow::setMpdVolume(int v)
+{
+    if (-1==v) {
+        if (StopState_Stopping==stopState) {
+            emit stop();
+        } /*else if (StopState_Pausing==stopState) {
+            emit pause(true);
+        }*/
+        stopState=StopState_None;
+        volume=origVolume;
+        emit setVolume(origVolume);
+    } else {
+        emit setVolume(v);
+    }
 }
 
 void MainWindow::playPauseTrack()
@@ -1118,10 +1177,16 @@ void MainWindow::playPauseTrack()
     MPDStatus * const status = MPDStatus::self();
 
     if (status->state() == MPDStatus::State_Playing) {
-        emit pause(true);
+        /*if (fadeStop) {
+            startVolumeFade(false);
+        } else*/ {
+            emit pause(true);
+        }
     } else if (status->state() == MPDStatus::State_Paused) {
+        stopVolumeFade();
         emit pause(false);
     } else {
+        stopVolumeFade();
         emit play();
     }
 }
@@ -1419,25 +1484,27 @@ void MainWindow::updateStatus()
         }
     }
 
-    int vol=status->volume();
-    #ifdef ENABLE_KDE_SUPPORT
-    volumeButton->setToolTip(i18n("Volume %1%").arg(vol));
-    volumeControl->setToolTip(i18n("Volume %1%").arg(vol));
-    #else
-    volumeButton->setToolTip(tr("Volume %1%").arg(vol));
-    volumeControl->setToolTip(tr("Volume %1%").arg(vol));
-    #endif
-    volumeButton->setIcon(QIcon::fromTheme("player-volume"));
-    volumeControl->setValue(vol);
+    if (!stopState) {
+        volume=status->volume();
+        #ifdef ENABLE_KDE_SUPPORT
+        volumeButton->setToolTip(i18n("Volume %1%").arg(volume));
+        volumeControl->setToolTip(i18n("Volume %1%").arg(volume));
+        #else
+        volumeButton->setToolTip(tr("Volume %1%").arg(volume));
+        volumeControl->setToolTip(tr("Volume %1%").arg(volume));
+        #endif
+        volumeButton->setIcon(QIcon::fromTheme("player-volume"));
+        volumeControl->setValue(volume);
 
-    if (0==vol) {
-        volumeButton->setIcon(QIcon::fromTheme("audio-volume-muted"));
-    } else if (vol<=33) {
-        volumeButton->setIcon(QIcon::fromTheme("audio-volume-low"));
-    } else if (vol<=67) {
-        volumeButton->setIcon(QIcon::fromTheme("audio-volume-medium"));
-    } else {
-        volumeButton->setIcon(QIcon::fromTheme("audio-volume-high"));
+        if (0==volume) {
+            volumeButton->setIcon(QIcon::fromTheme("audio-volume-muted"));
+        } else if (volume<=33) {
+            volumeButton->setIcon(QIcon::fromTheme("audio-volume-low"));
+        } else if (volume<=67) {
+            volumeButton->setIcon(QIcon::fromTheme("audio-volume-medium"));
+        } else {
+            volumeButton->setIcon(QIcon::fromTheme("audio-volume-high"));
+        }
     }
 
     randomPlaylistAction->setChecked(status->random());

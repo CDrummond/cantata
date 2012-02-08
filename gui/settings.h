@@ -43,6 +43,13 @@ class Settings : public QObject
     Q_OBJECT
 
 public:
+    enum Constants
+    {
+        MinFade     = 400,
+        MaxFade     = 4000,
+        DefaultFade = 2000
+    };
+
     static Settings *self();
 
     Settings();
@@ -84,6 +91,7 @@ public:
     int devicesView();
     #endif
     int version();
+    int stopFadeDuration();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -120,6 +128,7 @@ public:
     void saveShowDeleteAction(bool v);
     void saveDevicesView(int v);
     #endif
+    void saveStopFadeDuration(int v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

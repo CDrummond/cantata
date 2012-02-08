@@ -25,6 +25,7 @@
 18. Improve look of play queue. Display 'play' icon next to current track.
 19. Disable playback buttons depending upon size of play queue.
 20. When sending track change notification, also include cover (if we have one)
+21. Optionally fade-out track when stopping.
 
 0.3.0
 -----

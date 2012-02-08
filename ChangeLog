@@ -6,26 +6,25 @@
     is shown from copy dialog.
  4. Use LibMTP to read device's serial number, and use this as the config key
     when saving properties to cantata's config file.
- 5. Add create audio/data cd actions to library/albums/folder/playlists pages.
- 6. Add option to cache contents of UMS library to an XML file on the device.
- 7. Basic tag editing. (KDE only)
- 8. Fix UMS and MTP song durations.
- 9. Show file location in tooltips.
-10. Only save streams file if it has been modified.
-11. Basic support for configurable stream/category icons. (KDE only)
-12. Add track organiser dialog - so that files/folders can be renamed to match
+ 5. Add option to cache contents of UMS library to an XML file on the device.
+ 6. Basic tag editing. (KDE only)
+ 7. Fix UMS and MTP song durations.
+ 8. Show file location in tooltips.
+ 9. Only save streams file if it has been modified.
+10. Basic support for configurable stream/category icons. (KDE only)
+11. Add track organiser dialog - so that files/folders can be renamed to match
     library/device scheme. (KDE only)
-13. Unmaximise window when using compact interface.
-14. When using local UNIX domain socket, allow playback of non database files.
+12. Unmaximise window when using compact interface.
+13. When using local UNIX domain socket, allow playback of non database files.
     (This local UNIX only restriction comes from MPD)
-15. Use KMessageWidget to show errors - copy of KDE code taken for pre KDE4.7
+14. Use KMessageWidget to show errors - copy of KDE code taken for pre KDE4.7
     and Qt only builds.
-16. Fix updating of views when genre filter is changed.
-17. Improve sidebar style context menu - icon only is a separate checkbox.
-18. Improve look of play queue. Display 'play' icon next to current track.
-19. Disable playback buttons depending upon size of play queue.
-20. When sending track change notification, also include cover (if we have one)
-21. Optionally fade-out track when stopping.
+15. Fix updating of views when genre filter is changed.
+16. Improve sidebar style context menu - icon only is a separate checkbox.
+17. Improve look of play queue. Display 'play' icon next to current track.
+18. Disable playback buttons depending upon size of play queue.
+19. When sending track change notification, also include cover (if we have one)
+20. Optionally fade-out track when stopping.
 
 0.3.0
 -----

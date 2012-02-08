@@ -36,11 +36,17 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     replayGain->addItem(i18n("None"), QVariant("off"));
     replayGain->addItem(i18n("Track"), QVariant("track"));
     replayGain->addItem(i18n("Album"), QVariant("album"));
+    stopFadeDuration->setSpecialValueText(i18n("Do not fadeout"));
+    stopFadeDuration->setSuffix(i18n(" ms"));
     #else
     replayGain->addItem(tr("None"), QVariant("off"));
     replayGain->addItem(tr("Track"), QVariant("track"));
     replayGain->addItem(tr("Album"), QVariant("album"));
+    stopFadeDuration->setSpecialValueText(tr("Do not fadeout"));
+    stopFadeDuration->setSuffix(tr(" ms"));
     #endif
+    stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
+    stopFadeDuration->setSingleStep(100);
     connect(MPDConnection::self(), SIGNAL(replayGain(const QString &)), this, SLOT(replayGainSetting(const QString &)));
     connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
@@ -52,6 +58,7 @@ void PlaybackSettings::load()
     crossfading->setValue(MPDStatus::self()->crossFade());
     emit getReplayGain();
     stopOnExit->setChecked(Settings::self()->stopOnExit());
+    stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
 }
 
 void PlaybackSettings::save()
@@ -59,6 +66,7 @@ void PlaybackSettings::save()
     emit setCrossFade(crossfading->value());
     emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
+    Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
 }
 
 void PlaybackSettings::replayGainSetting(const QString &rg)

@@ -312,6 +312,17 @@ int Settings::version()
     return ver;
 }
 
+int Settings::stopFadeDuration()
+{
+    int def=version()<CANTATA_MAKE_VERSION(0, 4, 0) ? MinFade : DefaultFade;
+    int v=GET_INT("stopFadeDuration", def);
+
+    if (0!=v && (v<MinFade || v>MaxFade)) {
+        v=DefaultFade;
+    }
+    return v;
+}
+
 void Settings::Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -487,6 +498,16 @@ void Settings::saveDevicesView(int v)
     SET_VALUE("devicesView", v);
 }
 #endif
+
+void Settings::saveStopFadeDuration(int v)
+{
+    if (v<=MinFade) {
+        v=0;
+    } else if(v>MaxFade) {
+        v=MaxFade;
+    }
+    SET_VALUE("stopFadeDuration", v);
+}
 
 void Settings::save(bool force)
 {

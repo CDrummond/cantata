@@ -76,6 +76,7 @@ class QAbstractItemView;
 class DockManager;
 class Mpris;
 class QTimer;
+class QPropertyAnimation;
 
 class DeleteKeyEventHandler : public QObject
 {
@@ -170,9 +171,14 @@ public:
         #endif
     };
 
+    Q_PROPERTY(int volume READ mpdVolume WRITE setMpdVolume)
+
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    int mpdVolume() const {
+        return volume;
+    }
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -194,6 +200,7 @@ Q_SIGNALS:
     void currentSong();
     void setSeekId(quint32, quint32);
     void startPlayingSongId(quint32);
+    void setVolume(int);
 
     void coverFile(const QString &);
 
@@ -201,6 +208,7 @@ public Q_SLOTS:
     void showError(const QString &message);
 
 private Q_SLOTS:
+    void setMpdVolume(int );
     void playbackButtonsMenu();
     void controlButtonsMenu();
     void setPlaybackButtonsSize(bool small);
@@ -277,6 +285,8 @@ private Q_SLOTS:
     #endif
 
 private:
+    void startVolumeFade(/*bool stop*/);
+    void stopVolumeFade();
 //     void callK3b(const QString &type);
     bool currentIsStream();
     void showTab(int page);
@@ -385,6 +395,19 @@ private:
     QTimer *playlistSearchTimer;
     bool usingProxy;
     bool isConnected;
+
+    enum StopState {
+        StopState_None     = 0,
+        StopState_Stopping = 1
+//         StopState_Pausing  = 2
+    };
+
+    bool fadeStop;
+    QPropertyAnimation *volumeFade;
+    int volume;
+    int origVolume;
+    StopState stopState;
+
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
     friend class LibraryPage;

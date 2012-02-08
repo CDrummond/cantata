@@ -24,6 +24,7 @@
 17. Improve sidebar style context menu - icon only is a separate checkbox.
 18. Improve look of play queue. Display 'play' icon next to current track.
 19. Disable playback buttons depending upon size of play queue.
+20. When sending track change notification, also include cover (if we have one)
 
 0.3.0
 -----

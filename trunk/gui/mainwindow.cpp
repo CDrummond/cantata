@@ -1348,6 +1348,14 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
 
 void MainWindow::updateCurrentSong(const Song &song)
 {
+    if (fadeStop && StopState_None!=stopState) {
+        if (StopState_Stopping==stopState) {
+            emit stop();
+        } /*else if (StopState_Pausing==stopState) {
+            emit pause(true);
+        }*/
+    }
+
     current=song;
 
     positionSlider->setEnabled(!currentIsStream());

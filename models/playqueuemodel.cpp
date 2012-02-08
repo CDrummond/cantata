@@ -87,7 +87,7 @@ QStringList PlayQueueModel::decode(const QMimeData &mimeData, const QString &mim
 
 PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractTableModel(parent),
-      song_id(-1)
+      currentSongId(-1)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(playListReset()));
@@ -165,7 +165,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 
     // Mark background of song currently being played
 
-//     if (role == Qt::BackgroundRole && songs.at(index.row()).id == song_id) {
+//     if (role == Qt::BackgroundRole && songs.at(index.row()).id == currentSongId) {
 //         QPalette palette;
 //         QColor col(palette.color(QPalette::Highlight));
 //         col.setAlphaF(0.2);
@@ -174,14 +174,14 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case Qt::FontRole:
-        if (songs.at(index.row()).id == song_id) {
+        if (songs.at(index.row()).id == currentSongId) {
             QFont font;
             font.setBold(true);
             return font;
         }
         break;
     case Qt::BackgroundRole:
-        if (songs.at(index.row()).id == song_id) {
+        if (songs.at(index.row()).id == currentSongId) {
             QColor col(QPalette().color(QPalette::Highlight));
             col.setAlphaF(0.2);
             return QVariant(col);
@@ -234,7 +234,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return int(Qt::AlignVCenter|Qt::AlignRight);
         }
     case Qt::DecorationRole:
-        if (COL_STATUS==index.column() && songs.at(index.row()).id == song_id) {
+        if (COL_STATUS==index.column() && songs.at(index.row()).id == currentSongId) {
             return QIcon::fromTheme("media-playback-start");
         }
         break;
@@ -435,14 +435,14 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
 {
     qint32 oldIndex = -1;
 
-    oldIndex = song_id;
-    song_id = id;
+    oldIndex = currentSongId;
+    currentSongId = id;
 
     if (-1!=oldIndex) {
         emit dataChanged(index(getRowById(oldIndex), 0), index(getRowById(oldIndex), 2));
     }
 
-    emit dataChanged(index(getRowById(song_id), 0), index(getRowById(song_id), 2));
+    emit dataChanged(index(getRowById(currentSongId), 0), index(getRowById(currentSongId), 2));
 }
 
 void PlayQueueModel::clear()

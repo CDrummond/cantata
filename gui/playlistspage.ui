@@ -24,17 +24,7 @@
     <widget class="QToolButton" name="libraryUpdate"/>
    </item>
    <item row="1" column="1">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>130</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+    <widget class="QComboBox" name="genreCombo"/>
    </item>
    <item row="1" column="2">
     <widget class="QToolButton" name="rem"/>

@@ -515,11 +515,13 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
                 endInsertRows();
             }
         }
+        pl->updateGenres();
         QModelIndex idx=index(items.indexOf(pl), 0, QModelIndex());
         emit dataChanged(idx, idx);
     } else {
         emit listPlaylists();
     }
+    updateGenreList();
 }
 
 void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<int> &positions)
@@ -554,7 +556,9 @@ void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<int> &
         adjust+=(rowEnd-rowBegin)+1;
         endRemoveRows();
         it++;
+        pl->updateGenres();
     }
+    updateGenreList();
 }
 
 void PlaylistsModel::movedInPlaylist(const QString &name, int from, int to)
@@ -638,6 +642,19 @@ void PlaylistsModel::clearPlaylists()
 {
     qDeleteAll(items);
     items.clear();
+    updateGenreList();
+}
+
+void PlaylistsModel::updateGenreList()
+{
+    QSet<QString> genres;
+    foreach (PlaylistItem *p, items) {
+        genres+=p->genres;
+    }
+
+    QStringList list=genres.toList();
+    list.sort();
+    emit updateGenres(list);
 }
 
 PlaylistsModel::PlaylistItem::~PlaylistItem()
@@ -645,10 +662,19 @@ PlaylistsModel::PlaylistItem::~PlaylistItem()
     clearSongs();
 }
 
+void PlaylistsModel::PlaylistItem::updateGenres()
+{
+    genres.clear();
+    foreach (const SongItem *s, songs) {
+        genres.insert(s->genre);
+    }
+}
+
 void PlaylistsModel::PlaylistItem::clearSongs()
 {
     qDeleteAll(songs);
     songs.clear();
+    updateGenres();
 }
 
 PlaylistsModel::SongItem * PlaylistsModel::PlaylistItem::getSong(const Song &song)

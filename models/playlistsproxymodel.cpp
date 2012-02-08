@@ -36,9 +36,17 @@ PlaylistsProxyModel::PlaylistsProxyModel(QObject *parent)
     setSortLocaleAware(true);
 }
 
+void PlaylistsProxyModel::setFilterGenre(const QString &genre)
+{
+    if (filterGenre!=genre) {
+        invalidate();
+    }
+    filterGenre=genre;
+}
+
 bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (filterRegExp().isEmpty()) {
+    if (filterGenre.isEmpty() && filterRegExp().isEmpty()) {
         return true;
     }
     if (!isChildOfRoot(sourceParent)) {
@@ -50,6 +58,11 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 
     if (item->isPlaylist()) {
         PlaylistsModel::PlaylistItem *pl = static_cast<PlaylistsModel::PlaylistItem *>(item);
+
+        if (!filterGenre.isEmpty() && !pl->genres.contains(filterGenre)) {
+            return false;
+        }
+
         if (pl->name.contains(filterRegExp())) {
             return true;
         }
@@ -61,6 +74,10 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
         }
     } else {
         PlaylistsModel::SongItem *s = static_cast<PlaylistsModel::SongItem *>(item);
+
+        if (!filterGenre.isEmpty() && s->genre!=filterGenre) {
+            return false;
+        }
         return s->entryName().contains(filterRegExp());
     }
 

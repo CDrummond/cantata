@@ -1366,6 +1366,10 @@ void MainWindow::updateCurrentSong(const Song &song)
 
             KNotification *notification = new KNotification("CurrentTrackChanged", this);
             notification->setText(text);
+            if (!coverSong.album.isEmpty () && coverSong.albumArtist()==current.albumArtist() &&
+                coverSong.album==current.album && coverWidget->pixmap()) {
+                notification->setPixmap(*(coverWidget->pixmap()));
+            }
             notification->sendEvent();
             #else
             const QString text("album:  " + song.album + "\n"
@@ -2013,9 +2017,11 @@ void MainWindow::cover(const QString &artist, const QString &album, const QImage
 {
     if (artist==current.albumArtist() && album==current.album) {
         if (img.isNull()) {
+            coverSong=Song();
             coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
             emit coverFile(QString());
         } else {
+            coverSong=current;
             coverWidget->setPixmap(QPixmap::fromImage(img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             emit coverFile(file);
         }

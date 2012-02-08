@@ -84,6 +84,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
+    updateGenres(QStringList());
 }
 
 AlbumsPage::~AlbumsPage()
@@ -266,10 +267,10 @@ void AlbumsPage::updateGenres(const QStringList &genres)
     QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
 
     genreCombo->clear();
-    if (genres.count()<2) {
+    genreCombo->addItems(entries);
+    if (0==genres.count()) {
         genreCombo->setCurrentIndex(0);
     } else {
-        genreCombo->addItems(entries);
         if (!currentFilter.isEmpty()) {
             bool found=false;
             for (int i=1; i<genreCombo->count() && !found; ++i) {

@@ -361,6 +361,7 @@ private:
     QPixmap noStreamCover;
     QPoint lastPos;
     Song current;
+    Song coverSong;
     bool lyricsNeedUpdating;
     #ifdef ENABLE_WEBKIT
     bool infoNeedsUpdating;

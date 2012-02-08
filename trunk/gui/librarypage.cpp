@@ -93,6 +93,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     #endif
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
+    updateGenres(QStringList());
 }
 
 LibraryPage::~LibraryPage()
@@ -275,10 +276,10 @@ void LibraryPage::updateGenres(const QStringList &genres)
     QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
 
     genreCombo->clear();
-    if (genres.count()<2) {
+    genreCombo->addItems(entries);
+    if (0==genres.count()) {
         genreCombo->setCurrentIndex(0);
     } else {
-        genreCombo->addItems(entries);
         if (!currentFilter.isEmpty()) {
             bool found=false;
             for (int i=1; i<genreCombo->count() && !found; ++i) {

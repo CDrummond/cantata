@@ -1211,6 +1211,9 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     playPauseTrackAction->setEnabled(0!=songs.count());
     nextTrackAction->setEnabled(songs.count()>1);
     prevTrackAction->setEnabled(songs.count()>1);
+    if (0==songs.count()) {
+        updateCurrentSong(Song());
+    }
 
     QList<qint32> selectedSongIds;
     qint32 firstSelectedSongId = -1;
@@ -1287,7 +1290,11 @@ void MainWindow::updateCurrentSong(const Song &song)
     // Determine if album cover should be updated
     const QString &albumArtist=song.albumArtist();
     if (coverWidget->property("artist").toString() != albumArtist || coverWidget->property("album").toString() != song.album) {
-        Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
+        if (!albumArtist.isEmpty() && !song.album.isEmpty()) {
+            Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
+        } else if (!currentIsStream()) {
+            coverWidget->setPixmap(noCover);
+        }
         coverWidget->setProperty("artist", albumArtist);
         coverWidget->setProperty("album", song.album);
     }

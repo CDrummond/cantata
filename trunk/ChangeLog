@@ -28,6 +28,7 @@
 21. Add genre filtering to playlists page.
 22. When pressing play after pressing stop, start playnig at current song -
     don't start at begining of play queue.
+23. Better repeat and consume icons.
 
 0.3.0
 -----

@@ -61,10 +61,12 @@ public:
         PlaylistItem(const QString &n) : Playlist(n), loaded(false) { }
         virtual ~PlaylistItem();
         bool isPlaylist() { return true; }
+        void updateGenres();
         SongItem * getSong(const Song &song);
         void clearSongs();
         bool loaded;
         QList<SongItem *> songs;
+        QSet<QString> genres;
     };
 
     static PlaylistsModel * self();
@@ -102,6 +104,7 @@ Q_SIGNALS:
 
     void addToNew();
     void addToExisting(const QString &name);
+    void updateGenres(const QStringList &genres);
 
 private Q_SLOTS:
     void setPlaylists(const QList<Playlist> &playlists);
@@ -111,6 +114,7 @@ private Q_SLOTS:
     void emitAddToExisting();
 
 private:
+    void updateGenreList();
     void updateItemMenu();
     PlaylistItem * getPlaylist(const QString &name);
     void clearPlaylists();

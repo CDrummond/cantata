@@ -5,11 +5,6 @@
   - Add delete file/folder option??
   - Incremental update of model? Not sure its worth the hassle
 
-- Playlists
-  - Lazy loading of playlist contents - current is not 100%, but is ok if we
-    want genre filtering
-  - Add genre filtering
-
 - Streams
   - add genre support?
     - will need to place some items in a menu.

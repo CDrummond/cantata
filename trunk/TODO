@@ -28,8 +28,6 @@
     - MTP has no access to other tags, so when converting back, how would I
       know this is a compilation?
   - Allow to drag songs from albums/library to devices, and vice versa.
-  - Allow to play UMS files
-    - Will need 'IsPlayable' type to be added to ItemView
 
 - PlayQueue
   - Add (optional) simple, non-table-like view?

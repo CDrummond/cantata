@@ -6,9 +6,6 @@
   - Incremental update of model? Not sure its worth the hassle
 
 - Streams
-  - add genre support?
-    - will need to place some items in a menu.
-    - Perhaps import/export/edit could go into a 'Tools' menu
   - Handle xspf/spiff playlists
   - Handle more than 1st entry?? Not sure
   - Check that MPD can handle protocols before adding

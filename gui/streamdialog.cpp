@@ -118,6 +118,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     connect(iconButton, SIGNAL(clicked()), SLOT(setIcon()));
     #endif
     nameEntry->setFocus();
+    resize(400, 100);
 }
 
 void StreamDialog::setEdit(const QString &cat, const QString &editName, const QString &editGenre, const QString &editIconName, const QString &editUrl)

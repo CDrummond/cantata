@@ -652,9 +652,7 @@ void PlaylistsModel::updateGenreList()
         genres+=p->genres;
     }
 
-    QStringList list=genres.toList();
-    list.sort();
-    emit updateGenres(list);
+    emit updateGenres(genres);
 }
 
 PlaylistsModel::PlaylistItem::~PlaylistItem()

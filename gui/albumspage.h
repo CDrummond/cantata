@@ -60,12 +60,13 @@ Q_SIGNALS:
     void deleteSongs(const QString &from, const QList<Song> &songs);
 
 public Q_SLOTS:
-    void updateGenres(const QStringList &genres);
+    void updateGenres(const QSet<QString> &g);
     void itemActivated(const QModelIndex &);
     void searchItems();
 
 private:
     AlbumsProxyModel proxy;
+    QSet<QString> genres;
 };
 
 #endif

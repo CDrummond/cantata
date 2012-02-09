@@ -300,7 +300,7 @@ void DevicesModel::clear()
     endResetModel();
     updateItemMenu();
 //     emit updated(rootItem);
-    emit updateGenres(QStringList());
+    emit updateGenres(QSet<QString>());
 }
 
 void DevicesModel::setEnabled(bool e)
@@ -440,9 +440,7 @@ void DevicesModel::deviceUpdating(const QString &udi, bool state)
             foreach (Device *dev, devices) {
                 genres+=dev->genres();
             }
-            QStringList genreList=genres.toList();
-            genreList.sort();
-            emit updateGenres(genreList);
+            emit updateGenres(genres);
         }
     }
 }

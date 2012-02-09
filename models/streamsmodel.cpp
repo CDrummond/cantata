@@ -555,7 +555,7 @@ void StreamsModel::updateGenres()
         }
     }
 
-    emit genresUpdated(genres);
+    emit updateGenres(genres);
 }
 
 void StreamsModel::clearCategories()

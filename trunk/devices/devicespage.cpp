@@ -59,11 +59,11 @@ DevicesPage::DevicesPage(MainWindow *p)
     copyToLibraryButton->setEnabled(false);
     view->addAction(copyAction);
 //     view->addAction(p->burnAction);
-    view->addAction(p->deleteSongsAction);
     view->addAction(p->organiseFilesAction);
     #ifdef TAGLIB_FOUND
     view->addAction(p->editTagsAction);
     #endif
+    view->addAction(p->deleteSongsAction);
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -72,6 +72,20 @@ DevicesPage::DevicesPage(MainWindow *p)
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(configureAction, SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshDevice()));
+    menuButton->setAutoRaise(true);
+    menuButton->setPopupMode(QToolButton::InstantPopup);
+    QMenu *menu=new QMenu(this);
+    menu->addAction(configureAction);
+    menu->addAction(refreshAction);
+    menu->addSeparator();
+//     menu->addAction(copyAction);
+    menu->addAction(p->organiseFilesAction);
+    #ifdef TAGLIB_FOUND
+    menu->addAction(p->editTagsAction);
+    #endif
+    menu->addAction(p->deleteSongsAction);
+    menuButton->setMenu(menu);
+    menuButton->setIcon(QIcon::fromTheme("system-run"));
     proxy.setSourceModel(DevicesModel::self());
     #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Devices"));

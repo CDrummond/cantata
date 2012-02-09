@@ -35,7 +35,6 @@
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtCore/QDir>
-#include <QtCore/QDebug>
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
 #include <KDE/KLocale>
@@ -600,16 +599,17 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
     }
     currentSong=s;
 
-    if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
-        transcoding=true;
+    if (!opts.transcoderCodec.isEmpty()) {
         encoder=Encoders::getEncoder(opts.transcoderCodec);
         if (encoder.codec.isEmpty()) {
             emit actionStatus(CodecNotAvailable);
             return;
-        } else {
+        }
+
+        if (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) {
             deleteTemp();
             tempFile=new KTemporaryFile();
-            tempFile->setSuffix(encoder.extension);
+            tempFile->setSuffix("."+encoder.extension);
             tempFile->setAutoRemove(false);
 
             if (!tempFile->open()) {
@@ -622,15 +622,15 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
             if (QFile::exists(destFile)) {
                 QFile::remove(destFile);
             }
-
+            transcoding=true;
             TranscodingJob *job=new TranscodingJob(encoder.params(opts.transcoderValue, s.file, destFile));
             connect(job, SIGNAL(result(KJob *)), SLOT(transcodeSongResult(KJob *)));
             connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(transcodePercent(KJob *, unsigned long)));
             job->start();
+            currentSong.file=destFile;
             return;
         }
     }
-
     transcoding=false;
     emit putSong(currentSong, needToFixVa);
 }

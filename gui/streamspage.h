@@ -58,10 +58,12 @@ private Q_SLOTS:
     void controlActions();
     void searchItems();
     void itemDoubleClicked(const QModelIndex &index);
+    void genresUpdated(const QSet<QString> &g);
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes);
     QStringList getCategories();
+    QStringList getGenres();
 
 private:
     bool enabled;
@@ -71,6 +73,7 @@ private:
     Action *editAction;
     StreamsModel model;
     StreamsProxyModel proxy;
+    QSet<QString> genres;
 };
 
 #endif

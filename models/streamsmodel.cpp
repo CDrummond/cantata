@@ -238,6 +238,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                     if (stream.hasAttribute("name") && stream.hasAttribute("url")) {
                         QString name=stream.attribute("name");
                         QString icon=stream.attribute("icon");
+                        QString genre=stream.attribute("genre");
                         QString origName=name;
                         QUrl url=QUrl(stream.attribute("url"));
 
@@ -254,7 +255,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                                 if (!isInternal) {
                                     beginInsertRows(createIndex(items.indexOf(cat), 0, cat), cat->streams.count(), cat->streams.count());
                                 }
-                                StreamItem *stream=new StreamItem(name, iconIsValid(icon) ? icon : QString(), url, cat);
+                                StreamItem *stream=new StreamItem(name, genre, iconIsValid(icon) ? icon : QString(), url, cat);
                                 cat->itemMap.insert(url.toString(), stream);
                                 cat->streams.append(stream);
                                 if (!isInternal) {
@@ -270,6 +271,9 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
         }
     }
 
+    if (haveInserted) {
+        updateGenres();
+    }
     if (haveInserted && !isInternal) {
         modified=true;
         save();
@@ -306,7 +310,10 @@ bool StreamsModel::save(const QString &filename, const QModelIndexList &selectio
                 stream.setAttribute("name", s->name);
                 stream.setAttribute("url", s->url.toString());
                 if (!s->icon.isEmpty() && s->icon!=constDefaultStreamIcon) {
-                    stream.setAttribute("icon", c->icon);
+                    stream.setAttribute("icon", s->icon);
+                }
+                if (!s->genre.isEmpty()) {
+                    stream.setAttribute("genre", s->genre);
                 }
                 cat.appendChild(stream);
             }
@@ -317,7 +324,7 @@ bool StreamsModel::save(const QString &filename, const QModelIndexList &selectio
     return true;
 }
 
-bool StreamsModel::add(const QString &cat, const QString &name, const QString &icon, const QString &url)
+bool StreamsModel::add(const QString &cat, const QString &name, const QString &genre, const QString &icon, const QString &url)
 {
     QUrl u(url);
     CategoryItem *c=getCategory(cat, true, true);
@@ -327,7 +334,7 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &i
     }
 
     beginInsertRows(createIndex(items.indexOf(c), 0, c), c->streams.count(), c->streams.count());
-    StreamItem *stream=new StreamItem(name, icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon, QUrl(url), c);
+    StreamItem *stream=new StreamItem(name, genre, icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon, QUrl(url), c);
     c->itemMap.insert(url, stream);
     c->streams.append(stream);
     endInsertRows();
@@ -353,7 +360,7 @@ void StreamsModel::editCategory(const QModelIndex &index, const QString &name, c
     }
 }
 
-void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &icon, const QString &url)
+void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &genre, const QString &icon, const QString &url)
 {
     if (!index.isValid()) {
         return;
@@ -366,7 +373,8 @@ void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, c
     }
 
     if (!newCat.isEmpty() && oldCat!=newCat) {
-        if(add(newCat, name, icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon, url)) {
+        if(add(newCat, name, genre, icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon, url)) {
+            updateGenres();
             remove(index);
         }
         return;
@@ -383,6 +391,10 @@ void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, c
         if (oldUrl!=url) {
             cat->itemMap.remove(oldUrl);
             cat->itemMap.insert(url, stream);
+        }
+        if (stream->genre!=genre) {
+            stream->genre=genre;
+            updateGenres();
         }
         emit dataChanged(index, index);
         modified=true;
@@ -406,6 +418,7 @@ void StreamsModel::remove(const QModelIndex &index)
             delete old;
             endRemoveRows();
             modified=true;
+            updateGenres();
         }
     } else {
         StreamItem *stream=static_cast<StreamItem *>(item);
@@ -425,6 +438,7 @@ void StreamsModel::remove(const QModelIndex &index)
                 cat->itemMap.remove(old->url.toString());
                 endRemoveRows();
                 delete old;
+                updateGenres();
             }
             modified=true;
         }
@@ -526,6 +540,22 @@ void StreamsModel::persist()
         save(getInternalFile());
         modified=false;
     }
+}
+
+void StreamsModel::updateGenres()
+{
+    QSet<QString> genres;
+    foreach (CategoryItem *c, items) {
+        c->genres.clear();
+        foreach (const StreamItem *s, c->streams) {
+            if (!s->genre.isEmpty()) {
+                c->genres.insert(s->genre);
+                genres.insert(s->genre);
+            }
+        }
+    }
+
+    emit genresUpdated(genres);
 }
 
 void StreamsModel::clearCategories()

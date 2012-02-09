@@ -666,7 +666,9 @@ void PlaylistsModel::PlaylistItem::updateGenres()
 {
     genres.clear();
     foreach (const SongItem *s, songs) {
-        genres.insert(s->genre);
+        if (!s->genre.isEmpty()) {
+            genres.insert(s->genre);
+        }
     }
 }
 

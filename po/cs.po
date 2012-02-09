@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-09 19:44+0000\n"
+"POT-Creation-Date: 2012-02-09 21:24+0000\n"
 "PO-Revision-Date: 2012-01-22 21:29+0100\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -196,7 +196,7 @@ msgstr ""
 "\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Skladba:</"
 "td><td>%3</td></tr></table>"
 
-#: devices/device.cpp:317 devices/mtpdevice.cpp:209 devices/umsdevice.cpp:133
+#: devices/device.cpp:317 devices/mtpdevice.cpp:208 devices/umsdevice.cpp:133
 #: models/musiclibraryitemroot.cpp:349 mpd/mpdparseutils.cpp:258
 #: mpd/song.cpp:108 mpd/song.cpp:112 mpd/song.cpp:116
 msgid "Unknown"
@@ -534,27 +534,27 @@ msgstr ""
 "často skládají z více alb.</td></tr><tr><td>%7</td><td>Rok vydání alba.</"
 "td></tr><tr><td>%8</td><td>Žánr alba.</td></tr></table></p>"
 
-#: devices/mtpdevice.cpp:97
+#: devices/mtpdevice.cpp:96
 msgid "Connecting to device..."
 msgstr "Připojuje se k zařízení..."
 
-#: devices/mtpdevice.cpp:99 devices/mtpdevice.cpp:116
+#: devices/mtpdevice.cpp:98 devices/mtpdevice.cpp:115
 msgid "No devices found"
 msgstr "Nenalezeno žádné zařízení"
 
-#: devices/mtpdevice.cpp:129
+#: devices/mtpdevice.cpp:128
 msgid "Connected to device"
 msgstr "Připojeno k zařízení"
 
-#: devices/mtpdevice.cpp:138
+#: devices/mtpdevice.cpp:137
 msgid "Disconnected from device"
 msgstr "Odpojeno od zařízení"
 
-#: devices/mtpdevice.cpp:156
+#: devices/mtpdevice.cpp:155
 msgid "Updating folders..."
 msgstr "Obnovují se složky..."
 
-#: devices/mtpdevice.cpp:163
+#: devices/mtpdevice.cpp:162
 msgid "Updating tracks..."
 msgstr "Obnovují se skladby..."
 

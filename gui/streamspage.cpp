@@ -81,6 +81,8 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
+    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
+    connect(&model, SIGNAL(genresUpdated(const QSet<QString> &)), SLOT(genresUpdated(const QSet<QString> &)));
     importStreams->setAutoRaise(true);
     exportStreams->setAutoRaise(true);
     addStream->setAutoRaise(true);
@@ -169,6 +171,43 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
     addItemsToPlayQueue(indexes);
 }
 
+void StreamsPage::genresUpdated(const QSet<QString> &g)
+{
+    if (genreCombo->count() && g==genres) {
+        return;
+    }
+
+    genres=g;
+    QStringList entries=g.toList();
+    qSort(entries);
+    #ifdef ENABLE_KDE_SUPPORT
+    entries.prepend(i18n("All Genres"));
+    #else
+    entries.prepend(tr("All Genres"));
+    #endif
+
+    QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
+
+    genreCombo->clear();
+    genreCombo->addItems(entries);
+    if (0==genres.count()) {
+        genreCombo->setCurrentIndex(0);
+    } else {
+        if (!currentFilter.isEmpty()) {
+            bool found=false;
+            for (int i=1; i<genreCombo->count() && !found; ++i) {
+                if (genreCombo->itemText(i) == currentFilter) {
+                    genreCombo->setCurrentIndex(i);
+                    found=true;
+                }
+            }
+            if (!found) {
+                genreCombo->setCurrentIndex(0);
+            }
+        }
+    }
+}
+
 void StreamsPage::importXml()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -229,12 +268,13 @@ void StreamsPage::exportXml()
 
 void StreamsPage::add()
 {
-    StreamDialog dlg(getCategories(), this);
+    StreamDialog dlg(getCategories(), getGenres(), this);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString name=dlg.name();
         QString url=dlg.url();
         QString cat=dlg.category();
+        QString genre=dlg.genre();
 
         QString existing=model.name(cat, url);
         if (!existing.isEmpty()) {
@@ -246,7 +286,7 @@ void StreamsPage::add()
             return;
         }
 
-        if (!model.add(cat, name, QString(), url)) {
+        if (!model.add(cat, name, genre, QString(), url)) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", name));
             #else
@@ -327,12 +367,13 @@ void StreamsPage::edit()
         return;
     }
 
-    StreamDialog dlg(getCategories(), this);
+    StreamDialog dlg(getCategories(), getGenres(), this);
     StreamsModel::StreamItem *stream=static_cast<StreamsModel::StreamItem *>(item);
     QString url=stream->url.toString();
     QString cat=stream->parent->name;
+    QString genre=stream->genre;
 
-    dlg.setEdit(cat, name, icon, url);
+    dlg.setEdit(cat, name, genre, icon, url);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString newName=dlg.name();
@@ -343,6 +384,7 @@ void StreamsPage::edit()
         #endif
         QString newUrl=dlg.url();
         QString newCat=dlg.category();
+        QString newGenre=dlg.genre();
         QString existingNameForUrl=newUrl!=url ? model.name(newCat, newUrl) : QString();
 //
         if (!existingNameForUrl.isEmpty()) {
@@ -358,7 +400,7 @@ void StreamsPage::edit()
             QMessageBox::critical(this, tr("Error"), tr("A stream named <b>%1 (%2)</b> already exists!").arg(newName).arg(newCat));
             #endif
         } else {
-            model.editStream(index, cat, newCat, newName, newIcon, newUrl);
+            model.editStream(index, cat, newCat, newName, newGenre, newIcon, newUrl);
         }
     }
 }
@@ -386,16 +428,25 @@ void StreamsPage::controlActions()
 
 void StreamsPage::searchItems()
 {
+    QString genre=0==genreCombo->currentIndex() ? QString() : genreCombo->currentText();
     QString filter=view->searchText().trimmed();
 
-    if (filter.isEmpty() ) {
+    if (filter.isEmpty() && genre.isEmpty()) {
         proxy.setFilterEnabled(false);
+        proxy.setFilterGenre(genre);
         if (!proxy.filterRegExp().isEmpty()) {
              proxy.setFilterRegExp(QString());
+        } else {
+            proxy.invalidate();
         }
-    } else if (filter!=proxy.filterRegExp().pattern()) {
+    } else {
         proxy.setFilterEnabled(true);
-        proxy.setFilterRegExp(filter);
+        proxy.setFilterGenre(genre);
+        if (filter!=proxy.filterRegExp().pattern()) {
+            proxy.setFilterRegExp(filter);
+        } else {
+            proxy.invalidate();
+        }
     }
 }
 
@@ -419,4 +470,11 @@ QStringList StreamsPage::getCategories()
 
     qSort(categories);
     return categories;
+}
+
+QStringList StreamsPage::getGenres()
+{
+    QStringList g=genres.toList();
+    qSort(g);
+    return g;
 }

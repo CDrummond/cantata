@@ -36,7 +36,7 @@
 #include <QtGui/QPushButton>
 #endif
 
-StreamDialog::StreamDialog(const QStringList &categories, QWidget *parent)
+StreamDialog::StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent)
 #ifdef ENABLE_KDE_SUPPORT
     : KDialog(parent)
 #else
@@ -50,11 +50,14 @@ StreamDialog::StreamDialog(const QStringList &categories, QWidget *parent)
     urlEntry = new LineEdit(wid);
     catCombo = new CompletionCombo(wid);
     catCombo->setEditable(true);
+    genreCombo = new CompletionCombo(wid);
+
     QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(catCombo->sizePolicy().hasHeightForWidth());
     catCombo->setSizePolicy(sizePolicy);
+    genreCombo->setSizePolicy(sizePolicy);
     int row=0;
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -83,6 +86,12 @@ StreamDialog::StreamDialog(const QStringList &categories, QWidget *parent)
     #endif
     layout->setWidget(row++, QFormLayout::FieldRole, catCombo);
     #ifdef ENABLE_KDE_SUPPORT
+    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Genre:"), wid));
+    #else
+    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Genre:"), wid));
+    #endif
+    layout->setWidget(row++, QFormLayout::FieldRole, genreCombo);
+    #ifdef ENABLE_KDE_SUPPORT
     setMainWidget(wid);
     setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Add Stream"));
@@ -99,17 +108,19 @@ StreamDialog::StreamDialog(const QStringList &categories, QWidget *parent)
     #endif
     catCombo->clear();
     catCombo->insertItems(0, categories);
-
+    genreCombo->clear();
+    genreCombo->insertItems(0, genres);
     connect(nameEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
     connect(urlEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
     connect(catCombo, SIGNAL(editTextChanged(const QString &)), SLOT(changed()));
+    connect(genreCombo, SIGNAL(editTextChanged(const QString &)), SLOT(changed()));
     #ifdef ENABLE_KDE_SUPPORT
     connect(iconButton, SIGNAL(clicked()), SLOT(setIcon()));
     #endif
     nameEntry->setFocus();
 }
 
-void StreamDialog::setEdit(const QString &cat, const QString &editName, const QString &editIconName, const QString &editUrl)
+void StreamDialog::setEdit(const QString &cat, const QString &editName, const QString &editGenre, const QString &editIconName, const QString &editUrl)
 {
     #ifdef ENABLE_KDE_SUPPORT
     setCaption(i18n("Edit Stream"));
@@ -124,9 +135,11 @@ void StreamDialog::setEdit(const QString &cat, const QString &editName, const QS
     prevName=editName;
     prevUrl=editUrl;
     prevCat=cat;
+    prevGenre=editGenre;
     nameEntry->setText(editName);
     urlEntry->setText(editUrl);
     catCombo->setEditText(cat);
+    genreCombo->setEditText(editGenre);
 }
 
 void StreamDialog::changed()
@@ -134,7 +147,8 @@ void StreamDialog::changed()
     QString n=name();
     QString u=url();
     QString c=category();
-    bool enableOk=!n.isEmpty() && !u.isEmpty() && !c.isEmpty() && (n!=prevName || u!=prevUrl || c!=prevCat);
+    QString g=genre();
+    bool enableOk=!n.isEmpty() && !u.isEmpty() && !c.isEmpty() && (n!=prevName || u!=prevUrl || c!=prevCat || g!=prevGenre);
 
     #ifdef ENABLE_KDE_SUPPORT
     enableOk=enableOk || icon()!=prevIconName;

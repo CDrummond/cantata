@@ -33,13 +33,49 @@ StreamsProxyModel::StreamsProxyModel(QObject *parent)
     sort(0);
 }
 
+void StreamsProxyModel::setFilterGenre(const QString &genre)
+{
+    if (filterGenre!=genre) {
+        invalidate();
+    }
+    filterGenre=genre;
+}
+
 bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (filterRegExp().isEmpty()) {
+    if (filterGenre.isEmpty() && filterRegExp().isEmpty()) {
         return true;
     }
     if (!isChildOfRoot(sourceParent)) {
         return true;
     }
-    return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
+    const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+    StreamsModel::Item *item = static_cast<StreamsModel::Item *>(index.internalPointer());
+
+    if (item->isCategory()) {
+        StreamsModel::CategoryItem *cat = static_cast<StreamsModel::CategoryItem *>(item);
+
+        if (!filterGenre.isEmpty() && !cat->genres.contains(filterGenre)) {
+            return false;
+        }
+
+        if (cat->name.contains(filterRegExp())) {
+            return true;
+        }
+
+        foreach (StreamsModel::StreamItem *s, cat->streams) {
+            if (s->name.contains(filterRegExp())) {
+                return true;
+            }
+        }
+    } else {
+        StreamsModel::StreamItem *s = static_cast<StreamsModel::StreamItem *>(item);
+
+        if (!filterGenre.isEmpty() && s->genre!=filterGenre) {
+            return false;
+        }
+        return s->name.contains(filterRegExp());
+    }
+
+    return false;
 }

@@ -27,6 +27,7 @@
 #include <QtCore/QList>
 #include <QtCore/QUrl>
 #include <QtCore/QHash>
+#include <QtCore/QSet>
 
 class QTimer;
 
@@ -51,8 +52,9 @@ public:
     struct CategoryItem;
     struct StreamItem : public Item
     {
-        StreamItem(const QString &n, const QString &i, const QUrl &u, CategoryItem *p=0) : Item(n, i), url(u), parent(p) { }
+        StreamItem(const QString &n, const QString &g, const QString &i, const QUrl &u, CategoryItem *p=0) : Item(n, i), genre(g), url(u), parent(p) { }
         bool isCategory() { return false; }
+        QString genre;
         QUrl url;
         CategoryItem *parent;
     };
@@ -65,6 +67,7 @@ public:
         void clearStreams();
         QHash<QString, StreamItem *> itemMap;
         QList<StreamItem *> streams;
+        QSet<QString> genres;
     };
 
     StreamsModel();
@@ -80,9 +83,9 @@ public:
     void save(bool force=false);
     bool save(const QString &filename, const QModelIndexList &selection=QModelIndexList());
     bool import(const QString &filename) { return load(filename, false); }
-    bool add(const QString &cat, const QString &name, const QString &icon, const QString &url);
+    bool add(const QString &cat, const QString &name, const QString &genre, const QString &icon, const QString &url);
     void editCategory(const QModelIndex &index, const QString &name, const QString &icon);
-    void editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &icon, const QString &url);
+    void editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &genre, const QString &icon, const QString &url);
     void remove(const QModelIndex &index);
     QString name(const QString &cat, const QString &url) { return name(getCategory(cat), url); }
     bool entryExists(const QString &cat, const QString &name, const QUrl &url=QUrl()) { return entryExists(getCategory(cat), name, url); }
@@ -91,7 +94,11 @@ public:
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void mark(const QList<int> &rows, bool f);
 
+Q_SIGNALS:
+    void genresUpdated(const QSet<QString> &genres);
+
 private:
+    void updateGenres();
     void clearCategories();
     bool load(const QString &filename, bool isInternal);
     CategoryItem * getCategory(const QString &name, bool create=false, bool signal=false);

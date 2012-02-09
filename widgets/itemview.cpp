@@ -506,23 +506,18 @@ void ItemView::setLevel(int l, bool haveChildren)
     if (view()->selectionModel()) {
         view()->selectionModel()->clearSelection();
     }
-    #ifdef ENABLE_KDE_SUPPORT
+
     if (0==currentLevel) {
+        #ifdef ENABLE_KDE_SUPPORT
         listSearch->setPlaceholderText(i18n("Search %1...", topText));
-    } else if (prev>currentLevel) {
-        listSearch->setPlaceholderText(prevText[currentLevel]);
-    } else {
-        prevText.insert(prev, listSearch->placeholderText());
-    }
-    #else
-    if (0==currentLevel) {
+        #else
         listSearch->setPlaceholderText(tr("Search %1...").arg(topText));
+        #endif
     } else if (prev>currentLevel) {
         listSearch->setPlaceholderText(prevText[currentLevel]);
     } else {
         prevText.insert(prev, listSearch->placeholderText());
     }
-    #endif
 }
 
 QAbstractItemView * ItemView::view() const

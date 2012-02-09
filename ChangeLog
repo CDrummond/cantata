@@ -29,6 +29,7 @@
 22. When pressing play after pressing stop, start playing at current song -
     don't start at begining of play queue.
 23. Better repeat and consume icons.
+24. Fix search placeholder text when navigating back in list style devices.
 
 0.3.0
 -----

@@ -25,8 +25,8 @@
 18. Disable playback buttons depending upon size of play queue.
 19. When sending track change notification, also include cover (if we have one)
 20. Optionally fade-out track when stopping.
-21. Add genre filtering to playlists page.
-22. When pressing play after pressing stop, start playnig at current song -
+21. Add genre filtering to playlists and streams pages.
+22. When pressing play after pressing stop, start playing at current song -
     don't start at begining of play queue.
 23. Better repeat and consume icons.
 

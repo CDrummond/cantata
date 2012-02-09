@@ -44,13 +44,14 @@ class StreamDialog : public QDialog
     Q_OBJECT
 
 public:
-    StreamDialog(const QStringList &categories, QWidget *parent);
+    StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent);
 
-    void setEdit(const QString &cat, const QString &editName, const QString &editIconName, const QString &editUrl);
+    void setEdit(const QString &cat, const QString &editName, const QString &editGenre, const QString &editIconName, const QString &editUrl);
 
     QString name() const { return nameEntry->text().trimmed(); }
     QString url() const { return urlEntry->text().trimmed(); }
     QString category() const { return catCombo->currentText().trimmed(); }
+    QString genre() const { return genreCombo->currentText().trimmed(); }
     #ifdef ENABLE_KDE_SUPPORT
     QString icon() const { return iconName; }
     #endif
@@ -70,6 +71,7 @@ private:
     QString prevName;
     QString prevUrl;
     QString prevCat;
+    QString prevGenre;
     #ifdef ENABLE_KDE_SUPPORT
     QString prevIconName;
     QString iconName;
@@ -80,6 +82,7 @@ private:
     LineEdit *nameEntry;
     LineEdit *urlEntry;
     CompletionCombo *catCombo;
+    CompletionCombo *genreCombo;
 };
 
 #endif

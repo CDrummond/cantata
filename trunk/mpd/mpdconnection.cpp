@@ -578,6 +578,14 @@ void MPDConnection::getStatus()
     }
 }
 
+void MPDConnection::getUrlHandlers()
+{
+    Response response=sendCommand("urlhandlers");
+    if(response.ok) {
+        emit urlHandlers(MPDParseUtils::parseUrlHandlers(response.data));
+    }
+}
+
 /*
  * Data is written during idle.
  * Retrieve it and parse it

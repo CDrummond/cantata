@@ -223,32 +223,32 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
         value = tokens.join(":");
         value = value.trimmed();
 
-        if (element == "file") {
+        if (element == QLatin1String("file")) {
             song.file = value;
             song.file.replace("\"", "\\\"");
-        } else if (element == "Time") {
+        } else if (element == QLatin1String("Time") ){
             song.time = value.toUInt();
-        } else if (element == "Album") {
+        } else if (element == QLatin1String("Album")) {
             song.album = value;
-        } else if (element == "Artist") {
+        } else if (element == QLatin1String("Artist")) {
             song.artist = value;
-        } else if (element == "AlbumArtist") {
+        } else if (element == QLatin1String("AlbumArtist")) {
             song.albumartist = value;
-        } else if (element == "Title") {
+        } else if (element == QLatin1String("Title")) {
             song.title = value;
-        } else if (element == "Track") {
+        } else if (element == QLatin1String("Track")) {
             song.track = value.split("/").at(0).toInt();
-        } else if (element == "Pos") {
+        } else if (element == QLatin1String("Pos")) {
             song.pos = value.toInt();
-        } else if (element == "Id") {
+        } else if (element == QLatin1String("Id")) {
             song.id = value.toUInt();
-        } else if (element == "Disc") {
+        } else if (element == QLatin1String("Disc")) {
             song.disc = value.split("/").at(0).toUInt();
-        } else if (element == "Date") {
+        } else if (element == QLatin1String("Date")) {
             song.year = value.toUInt();
-        } else if (element == "Genre") {
+        } else if (element == QLatin1String("Genre")) {
             song.genre = value;
-        }  else if (element == "Name") {
+        }  else if (element == QLatin1String("Name")) {
             song.name = value;
         }
     }
@@ -280,7 +280,7 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
     for (int i = 0; i < amountOfLines; i++) {
         song += lines.at(i);
         // Skip the "OK" line, this is NOT a song!!!
-        if("OK"==song) {
+        if ("OK"==song) {
             continue;
         }
         song += "\n";
@@ -291,6 +291,28 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
     }
 
     return songs;
+}
+
+QStringList MPDParseUtils::parseUrlHandlers(const QByteArray &data)
+{
+    TF_DEBUG
+    QStringList urls;
+    QByteArray song;
+    QList<QByteArray> lines = data.split('\n');
+    int amountOfLines = lines.size();
+
+    for (int i = 0; i < amountOfLines; i++) {
+        QString url(lines.at(i));
+        // Skip the "OK" line, this is NOT a url handler!!!
+        if (QLatin1String("OK")==url) {
+            continue;
+        }
+        if (url.startsWith(QLatin1String("handler: "))) {
+            urls.append(url.mid(9).replace("://", ""));
+        }
+    }
+
+    return urls;
 }
 
 static bool groupSingleTracks=false;

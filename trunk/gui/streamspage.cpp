@@ -266,7 +266,7 @@ void StreamsPage::exportXml()
 
 void StreamsPage::add()
 {
-    StreamDialog dlg(getCategories(), getGenres(), this);
+    StreamDialog dlg(getCategories(), getGenres(), model.urlHandlers(), this);
 
     if (QDialog::Accepted==dlg.exec()) {
         QString name=dlg.name();
@@ -365,7 +365,7 @@ void StreamsPage::edit()
         return;
     }
 
-    StreamDialog dlg(getCategories(), getGenres(), this);
+    StreamDialog dlg(getCategories(), getGenres(), model.urlHandlers(), this);
     StreamsModel::StreamItem *stream=static_cast<StreamsModel::StreamItem *>(item);
     QString url=stream->url.toString();
     QString cat=stream->parent->name;

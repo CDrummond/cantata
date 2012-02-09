@@ -38,9 +38,14 @@ public:
 
     void clear();
 
+Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
+    void getUrlHandlers();
+
 private Q_SLOTS:
     void statsUpdated();
     void mpdVersion(long v);
+    void urlHandlers(const QStringList &handlers);
 
 private:
     Action *updateAction;

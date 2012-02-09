@@ -30,6 +30,7 @@
     don't start at begining of play queue.
 23. Better repeat and consume icons.
 24. Fix search placeholder text when navigating back in list style devices.
+25. Query MPD for list of supported protocols - and only allow supported URLs.
 
 0.3.0
 -----

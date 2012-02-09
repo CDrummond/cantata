@@ -91,12 +91,11 @@ InfoPage::InfoPage(QWidget *parent)
     combo->insertItem(0, tr("Artist Information"));
     combo->insertItem(1, tr("Album Information"));
     #endif
-    layout->addWidget(view, 0, 0, 1, 5);
+    layout->addWidget(view, 0, 0, 1, 4);
     layout->addWidget(refreshBtn, 1, 0, 1, 1);
     layout->addWidget(backBtn, 1, 1, 1, 1);
     layout->addWidget(forwardBtn, 1, 2, 1, 1);
-    layout->addItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 3, 1, 1);
-    layout->addWidget(combo, 1, 4, 1, 1);
+    layout->addWidget(combo, 1, 3, 1, 1);
     layout->setContentsMargins(0, 0, 0, 0);
 
     view->page()->action(QWebPage::Reload)->setShortcut(QKeySequence());

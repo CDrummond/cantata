@@ -86,6 +86,7 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
     connect(iconButton, SIGNAL(clicked()), SLOT(setIcon()));
     #endif
     nameEntry->setFocus();
+    resize(400, 100);
 }
 
 void StreamCategoryDialog::setEdit(const QString &editName, const QString &editIconName)

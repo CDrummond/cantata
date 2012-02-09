@@ -6,7 +6,6 @@
   - Incremental update of model? Not sure its worth the hassle
 
 - Streams
-  - Handle xspf/spiff playlists
   - Handle more than 1st entry?? Not sure
   - Check that MPD can handle protocols before adding
   - Display list of schemas in 'Info' page

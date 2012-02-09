@@ -33,6 +33,7 @@ class QDialogButtonBox;
 #include "lineedit.h"
 #include "completioncombo.h"
 
+class QLabel;
 #ifdef ENABLE_KDE_SUPPORT
 class QPushButton;
 
@@ -44,7 +45,7 @@ class StreamDialog : public QDialog
     Q_OBJECT
 
 public:
-    StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent);
+    StreamDialog(const QStringList &categories, const QStringList &genres, const QSet<QString> &uh, QWidget *parent);
 
     void setEdit(const QString &cat, const QString &editName, const QString &editGenre, const QString &editIconName, const QString &editUrl);
 
@@ -83,6 +84,8 @@ private:
     LineEdit *urlEntry;
     CompletionCombo *catCombo;
     CompletionCombo *genreCombo;
+    QLabel *statusText;
+    QSet<QString> urlHandlers;
 };
 
 #endif

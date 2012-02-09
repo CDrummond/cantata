@@ -36,12 +36,13 @@
 #include <QtGui/QPushButton>
 #endif
 
-StreamDialog::StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent)
+StreamDialog::StreamDialog(const QStringList &categories, const QStringList &genres, const QSet<QString> &uh, QWidget *parent)
 #ifdef ENABLE_KDE_SUPPORT
     : KDialog(parent)
 #else
     : QDialog(parent)
 #endif
+    , urlHandlers(uh)
 {
     QWidget *wid = new QWidget(this);
     QFormLayout *layout = new QFormLayout(wid);
@@ -51,6 +52,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     catCombo = new CompletionCombo(wid);
     catCombo->setEditable(true);
     genreCombo = new CompletionCombo(wid);
+    statusText = new QLabel(this);
 
     QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     sizePolicy.setHorizontalStretch(0);
@@ -92,6 +94,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     #endif
     layout->setWidget(row++, QFormLayout::FieldRole, genreCombo);
     #ifdef ENABLE_KDE_SUPPORT
+    layout->setWidget(row++, QFormLayout::SpanningRole, statusText);
     setMainWidget(wid);
     setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Add Stream"));
@@ -150,9 +153,17 @@ void StreamDialog::changed()
     QString c=category();
     QString g=genre();
     bool enableOk=!n.isEmpty() && !u.isEmpty() && !c.isEmpty() && (n!=prevName || u!=prevUrl || c!=prevCat || g!=prevGenre);
+    bool validProtocol=u.isEmpty() || urlHandlers.contains(QUrl(u).scheme()) || urlHandlers.contains(u);
 
     #ifdef ENABLE_KDE_SUPPORT
-    enableOk=enableOk || icon()!=prevIconName;
+    statusText->setText(validProtocol ? QString() : i18n("<i>Invalid protocol</i>"));
+    #else
+    statusText->setText(validProtocol ? QString() : tr("<i>Invalid protocol</i>"));
+    #endif
+
+    enableOk=enableOk && validProtocol;
+    #ifdef ENABLE_KDE_SUPPORT
+    enableOk=enableOk && icon()!=prevIconName;
     enableButton(KDialog::Ok, enableOk);
     #else
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enableOk);

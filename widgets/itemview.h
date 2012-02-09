@@ -25,13 +25,14 @@
 #define ITEMVIEW_H
 
 #include "ui_itemview.h"
-class QAction;
+#include <QtCore/QMap>
 
 #ifdef ENABLE_KDE_SUPPORT
 class KPixmapSequenceOverlayPainter;
 #endif
 
 class ProxyModel;
+class QAction;
 class QTimer;
 
 class ItemView : public QWidget, public Ui::ItemView
@@ -108,7 +109,7 @@ private:
     int currentLevel;
     Mode mode;
     QString topText;
-    QString prevText;
+    QMap<int, QString> prevText;
     QModelIndex prevTopIndex;
     QSize iconGridSize;
     QSize listGridSize;

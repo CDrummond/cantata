@@ -510,17 +510,17 @@ void ItemView::setLevel(int l, bool haveChildren)
     if (0==currentLevel) {
         listSearch->setPlaceholderText(i18n("Search %1...", topText));
     } else if (prev>currentLevel) {
-        listSearch->setPlaceholderText(prevText);
+        listSearch->setPlaceholderText(prevText[currentLevel]);
     } else {
-        prevText=listSearch->placeholderText();
+        prevText.insert(prev, listSearch->placeholderText());
     }
     #else
     if (0==currentLevel) {
         listSearch->setPlaceholderText(tr("Search %1...").arg(topText));
     } else if (prev>currentLevel) {
-        listSearch->setPlaceholderText(prevText);
+        listSearch->setPlaceholderText(prevText[currentLevel]);
     } else {
-        prevText=listSearch->placeholderText();
+        prevText.insert(prev, listSearch->placeholderText());
     }
     #endif
 }

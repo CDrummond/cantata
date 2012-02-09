@@ -7,8 +7,6 @@
 
 - Streams
   - Handle more than 1st entry?? Not sure
-  - Check that MPD can handle protocols before adding
-  - Display list of schemas in 'Info' page
   - Icecast?
 
 - Lyrics

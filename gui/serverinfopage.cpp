@@ -51,6 +51,9 @@ ServerInfoPage::ServerInfoPage(MainWindow *p)
     connect(updateAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(getStats()));
     connect(MPDConnection::self(), SIGNAL(statsUpdated()), SLOT(statsUpdated()));
     connect(MPDConnection::self(), SIGNAL(version(long)), SLOT(mpdVersion(long)));
+    connect(MPDConnection::self(), SIGNAL(version(long)), SIGNAL(getUrlHandlers()));
+    connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
+    connect(this, SIGNAL(getUrlHandlers()), MPDConnection::self(), SLOT(getUrlHandlers()));
 
     updateInfo->setAutoRaise(true);
     clear();
@@ -70,6 +73,7 @@ void ServerInfoPage::clear()
     album->setText(QString());
     songs->setText(QString());
     lastUpdate->setText(QString());
+    urlhandlers->setText(QString());
 }
 
 void ServerInfoPage::statsUpdated()
@@ -90,4 +94,9 @@ void ServerInfoPage::statsUpdated()
 void ServerInfoPage::mpdVersion(long v)
 {
     version->setText(QString("%1.%2.%3").arg((v>>16)&0xFF).arg((v>>8)&0xFF).arg(v&0xFF));
+}
+
+void ServerInfoPage::urlHandlers(const QStringList &handlers)
+{
+    urlhandlers->setText(handlers.join(", "));
 }

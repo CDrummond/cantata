@@ -90,9 +90,14 @@ public:
     QString name(const QString &cat, const QString &url) { return name(getCategory(cat), url); }
     bool entryExists(const QString &cat, const QString &name, const QUrl &url=QUrl()) { return entryExists(getCategory(cat), name, url); }
     Qt::ItemFlags flags(const QModelIndex &index) const;
+    bool validProtocol(const QString &file) const;
     QStringList filenames(const QModelIndexList &indexes) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void mark(const QList<int> &rows, bool f);
+
+    const QSet<QString> & urlHandlers() const {
+        return handlers;
+    }
 
 Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
@@ -107,11 +112,13 @@ private:
 
 private Q_SLOTS:
     void persist();
+    void urlHandlers(const QStringList &h);
 
 private:
     QList<CategoryItem *> items;
     bool modified;
     QTimer *timer;
+    QSet<QString> handlers;
 };
 
 #endif

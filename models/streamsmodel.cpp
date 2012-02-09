@@ -38,6 +38,7 @@
 #include "itemview.h"
 #include "streamsmodel.h"
 #include "playqueuemodel.h"
+#include "mpdconnection.h"
 #include "config.h"
 
 const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
@@ -66,6 +67,7 @@ StreamsModel::StreamsModel()
     , modified(false)
     , timer(0)
 {
+    connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
 }
 
 StreamsModel::~StreamsModel()
@@ -501,6 +503,12 @@ Qt::ItemFlags StreamsModel::flags(const QModelIndex &index) const
         return Qt::NoItemFlags;
 }
 
+bool StreamsModel::validProtocol(const QString &file) const
+{
+    QString scheme=QUrl(file).scheme();
+    return scheme.isEmpty() || handlers.contains(scheme);
+}
+
 QStringList StreamsModel::filenames(const QModelIndexList &indexes) const
 {
     QStringList fnames;
@@ -512,13 +520,13 @@ QStringList StreamsModel::filenames(const QModelIndexList &indexes) const
             selectedCategories.insert(item);
             foreach (const StreamItem *s, static_cast<CategoryItem*>(item)->streams) {
                 QString f=s->url.toString();
-                if (!fnames.contains(f)) {
+                if (!fnames.contains(f) && validProtocol(f)) {
                     fnames << f;
                 }
             }
         } else if (!selectedCategories.contains(static_cast<StreamItem*>(item)->parent)) {
             QString f=static_cast<StreamItem*>(item)->url.toString();
-            if (!fnames.contains(f)) {
+            if (!fnames.contains(f) && validProtocol(f)) {
                 fnames << f;
             }
         }
@@ -540,6 +548,11 @@ void StreamsModel::persist()
         save(getInternalFile());
         modified=false;
     }
+}
+
+void StreamsModel::urlHandlers(const QStringList &h)
+{
+    handlers=h.toSet();
 }
 
 void StreamsModel::updateGenres()

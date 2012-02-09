@@ -182,6 +182,7 @@ public Q_SLOTS:
     // Miscellaneous
     void getStats();
     void getStatus();
+    void getUrlHandlers();
 
     // Database
     void listAllInfo(const QDateTime &dbUpdate);
@@ -226,6 +227,7 @@ Q_SIGNALS:
     void updatingFileList();
     void updatedFileList();
     void error(const QString &err);
+    void urlHandlers(const QStringList &handlers);
 
 private Q_SLOTS:
     void idleDataReady();

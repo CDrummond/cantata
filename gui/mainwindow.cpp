@@ -868,14 +868,8 @@ MainWindow::MainWindow(QWidget *parent)
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif
 
-    #ifndef ENABLE_KDE_SUPPORT
-    // For some reason Qt-only build is not loading initial page at start-up. Pages are loaded if you switch to another
-    // and switch back. So, for now just simulate this...
     currentTabChanged(tabWidget->current_index());
-    #endif
-
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
-
     playlistsPage->refresh();
     toggleMpris();
     toggleDockManager();
@@ -2049,18 +2043,30 @@ void MainWindow::currentTabChanged(int index)
         break;
     }
 
-    #ifdef ENABLE_DEVICES_SUPPORT
-    if (index!=prevPage && (PAGE_DEVICES==index || PAGE_DEVICES==prevPage || -1==prevPage) && DevicesModel::self()->isEnabled()) {
-        if (PAGE_DEVICES==index) {
-            devicesPage->selectionChanged();
-        } else {
-            editTagsAction->setEnabled(true);
-            organiseFilesAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
-//             burnAction->setEnabled(organiseFilesAction->isEnabled());
-            deleteSongsAction->setEnabled(organiseFilesAction->isEnabled());
+    if (index!=prevPage) {
+        if ((PAGE_STREAMS==index || PAGE_STREAMS==prevPage || PAGE_PLAYLISTS==index || PAGE_PLAYLISTS==prevPage || -1==prevPage)) {
+            if (PAGE_STREAMS==index && streamsPage->isEnabled()) {
+                streamsPage->controlActions();
+            } else if (PAGE_PLAYLISTS==index/* && PlaylistsModel::self()->isEnabled()*/) {
+                playlistsPage->controlActions();
+            }else {
+                removeAction->setEnabled(true);
+            }
         }
+
+        #ifdef ENABLE_DEVICES_SUPPORT
+        if ((PAGE_DEVICES==index || PAGE_DEVICES==prevPage || -1==prevPage) && DevicesModel::self()->isEnabled()) {
+            if (PAGE_DEVICES==index) {
+                devicesPage->selectionChanged();
+            } else {
+                editTagsAction->setEnabled(true);
+                organiseFilesAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+//                 burnAction->setEnabled(organiseFilesAction->isEnabled());
+                deleteSongsAction->setEnabled(organiseFilesAction->isEnabled());
+            }
+        }
+        #endif
     }
-    #endif
     prevPage=index;
 }
 

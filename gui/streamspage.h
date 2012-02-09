@@ -49,13 +49,13 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void removeItems();
+    void controlActions();
 
 private Q_SLOTS:
     void importXml();
     void exportXml();
     void add();
     void edit();
-    void controlActions();
     void searchItems();
     void itemDoubleClicked(const QModelIndex &index);
     void updateGenres(const QSet<QString> &g);
@@ -74,6 +74,7 @@ private:
     StreamsModel model;
     StreamsProxyModel proxy;
     QSet<QString> genres;
+    MainWindow *mw;
 };
 
 #endif

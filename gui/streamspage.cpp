@@ -45,12 +45,14 @@
 StreamsPage::StreamsPage(MainWindow *p)
     : QWidget(p)
     , enabled(false)
+    , mw(p)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
     importAction = p->actionCollection()->addAction("importstreams");
     importAction->setText(i18n("Import Streams"));
-    exportAction = p->actionCollection()->addAction("exportstreams");
+    exportAction = p->actionCollection()->addAction(
+        "exportstreams");
     exportAction->setText(i18n("Export Streams"));
     addAction = p->actionCollection()->addAction("addstream");
     addAction->setText(i18n("Add Stream"));
@@ -66,12 +68,6 @@ StreamsPage::StreamsPage(MainWindow *p)
     exportAction->setIcon(QIcon::fromTheme("document-export"));
     addAction->setIcon(QIcon::fromTheme("list-add"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
-    importStreams->setDefaultAction(importAction);
-    exportStreams->setDefaultAction(exportAction);
-    addStream->setDefaultAction(addAction);
-    removeStream->setDefaultAction(p->removeAction);
-    editStream->setDefaultAction(editAction);
-//     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -83,16 +79,17 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(&model, SIGNAL(updateGenres(const QSet<QString> &)), SLOT(updateGenres(const QSet<QString> &)));
-    importStreams->setAutoRaise(true);
-    exportStreams->setAutoRaise(true);
-    addStream->setAutoRaise(true);
-    removeStream->setAutoRaise(true);
-    editStream->setAutoRaise(true);
-//     addToPlaylist->setAutoRaise(true);
+    menuButton->setAutoRaise(true);
+    menuButton->setPopupMode(QToolButton::InstantPopup);
+    QMenu *menu=new QMenu(this);
+    menu->addAction(addAction);
+    menu->addAction(p->removeAction);
+    menu->addAction(editAction);
+    menu->addAction(importAction);
+    menu->addAction(exportAction);
+    menuButton->setMenu(menu);
+    menuButton->setIcon(QIcon::fromTheme("system-run"));
     replacePlaylist->setAutoRaise(true);
-    removeStream->setEnabled(false);
-    editStream->setEnabled(false);
-//     addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -411,8 +408,8 @@ void StreamsPage::controlActions()
     QModelIndexList selected=view->selectedIndexes();
     editAction->setEnabled(1==selected.size());
     replacePlaylist->setEnabled(selected.count());
-    removeStream->setEnabled(selected.count());
-    editStream->setEnabled(1==selected.size());
+    mw->removeAction->setEnabled(selected.count());
+    editAction->setEnabled(1==selected.size());
 
     bool enableExport=selected.size()>0;
     if (selected.size()) {

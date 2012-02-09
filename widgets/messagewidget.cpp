@@ -232,6 +232,7 @@ void MessageWidget::setMessageType(MessageWidget::MessageType type)
         bgRole = KColorScheme::NeutralBackground;
         fgRole = KColorScheme::NeutralText;
         break;
+    default:
     case ErrorMessageType:
         icon = KIcon("dialog-error");
         bgRole = KColorScheme::NegativeBackground;

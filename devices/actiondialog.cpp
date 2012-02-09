@@ -303,10 +303,10 @@ void ActionDialog::doNext()
                     }
                     performingAction=true;
                     dev->removeSong(currentSong);
-                    progressLabel->setText(formatSong(currentSong));
                 }
             }
         }
+        progressLabel->setText(formatSong(currentSong));
     } else if (Remove==mode && dirsToClean.count()) {
         Device *dev=sourceUdi.isEmpty() ? 0 : DevicesModel::self()->device(sourceUdi);
         if (sourceUdi.isEmpty() || dev) {

@@ -45,7 +45,7 @@ public:
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 
 public Q_SLOTS:
-    void updateGenres(const QStringList &genres);
+    void updateGenres(const QSet<QString> &g);
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
     void selectionChanged();
@@ -64,6 +64,7 @@ private:
     KAction *configureAction;
     KAction *refreshAction;
     KAction *copyAction;
+    QSet<QString> genres;
 };
 
 #endif

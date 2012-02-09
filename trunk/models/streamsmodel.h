@@ -95,7 +95,7 @@ public:
     void mark(const QList<int> &rows, bool f);
 
 Q_SIGNALS:
-    void genresUpdated(const QSet<QString> &genres);
+    void updateGenres(const QSet<QString> &genres);
 
 private:
     void updateGenres();

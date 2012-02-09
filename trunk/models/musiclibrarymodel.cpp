@@ -297,7 +297,7 @@ void MusicLibraryModel::clear()
 
 //     emit updated(rootItem);
     AlbumsModel::self()->update(rootItem);
-    emit updateGenres(QStringList());
+    emit updateGenres(QSet<QString>());
 }
 
 bool MusicLibraryModel::songExists(const Song &s) const
@@ -455,11 +455,9 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
             toXML(rootItem, dbUpdate);
         }
 
-        QStringList genres=QStringList(rootItem->genres().toList());
-        genres.sort();
         AlbumsModel::self()->update(rootItem);
 //         emit updated(rootItem);
-        emit updateGenres(genres);
+        emit updateGenres(rootItem->genres());
     }
 }
 

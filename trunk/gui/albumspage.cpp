@@ -84,7 +84,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
-    updateGenres(QStringList());
+    updateGenres(QSet<QString>());
 }
 
 AlbumsPage::~AlbumsPage()
@@ -240,29 +240,20 @@ void AlbumsPage::searchItems()
     }
 }
 
-void AlbumsPage::updateGenres(const QStringList &genres)
+void AlbumsPage::updateGenres(const QSet<QString> &g)
 {
-    QStringList entries;
-    #ifdef ENABLE_KDE_SUPPORT
-    entries << i18n("All Genres");
-    #else
-    entries << tr("All Genres");
-    #endif
-    entries+=genres;
-
-    bool diff=genreCombo->count() != entries.count();
-    if (!diff) {
-        // Check items...
-        for (int i=1; i<genreCombo->count() && !diff; ++i) {
-            if (genreCombo->itemText(i) != entries.at(i)) {
-                diff=true;
-            }
-        }
-    }
-
-    if (!diff) {
+    if (genreCombo->count() && g==genres) {
         return;
     }
+
+    genres=g;
+    QStringList entries=g.toList();
+    qSort(entries);
+    #ifdef ENABLE_KDE_SUPPORT
+    entries.prepend(i18n("All Genres"));
+    #else
+    entries.prepend(tr("All Genres"));
+    #endif
 
     QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
 

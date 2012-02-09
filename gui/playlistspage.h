@@ -57,18 +57,19 @@ private:
 public Q_SLOTS:
     void removeItems();
     void updateGenres(const QSet<QString> &g);
+    void controlActions();
 
 private Q_SLOTS:
     void savePlaylist();
     void renamePlaylist();
     void itemDoubleClicked(const QModelIndex &index);
-    void selectionChanged();
     void searchItems();
 
 private:
     Action *renamePlaylistAction;
     PlaylistsProxyModel proxy;
     QSet<QString> genres;
+    MainWindow *mw;
 };
 
 #endif

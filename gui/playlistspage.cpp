@@ -40,6 +40,7 @@
 
 PlaylistsPage::PlaylistsPage(MainWindow *p)
     : QWidget(p)
+    , mw(p)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
@@ -93,7 +94,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     view->setDeleteAction(p->removeAction);
 
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    connect(view, SIGNAL(itemsSelected(bool)), SLOT(selectionChanged()));
+    connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     //connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(loadPlaylist(const QString &)));
@@ -299,7 +300,7 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
     }
 }
 
-void PlaylistsPage::selectionChanged()
+void PlaylistsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
     bool enable=false;
@@ -313,6 +314,7 @@ void PlaylistsPage::selectionChanged()
     }
     renamePlaylistAction->setEnabled(enable);
     renPlaylist->setEnabled(enable);
+    mw->removeAction->setEnabled(enable);
 }
 
 void PlaylistsPage::searchItems()

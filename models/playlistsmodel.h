@@ -104,7 +104,7 @@ Q_SIGNALS:
 
     void addToNew();
     void addToExisting(const QString &name);
-    void updateGenres(const QStringList &genres);
+    void updateGenres(const QSet<QString> &genres);
 
 private Q_SLOTS:
     void setPlaylists(const QList<Playlist> &playlists);

@@ -60,7 +60,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), rem, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(itemsSelected(bool)), renPlaylist, SLOT(setEnabled(bool)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
+    connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
 
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
@@ -103,7 +103,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<int> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<int> &)));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
-    updateGenres(QStringList());
+    updateGenres(QSet<QString>());
 }
 
 PlaylistsPage::~PlaylistsPage()
@@ -339,29 +339,20 @@ void PlaylistsPage::searchItems()
     }
 }
 
-void PlaylistsPage::updateGenres(const QStringList &genres)
+void PlaylistsPage::updateGenres(const QSet<QString> &g)
 {
-    QStringList entries;
-    #ifdef ENABLE_KDE_SUPPORT
-    entries << i18n("All Genres");
-    #else
-    entries << tr("All Genres");
-    #endif
-    entries+=genres;
-
-    bool diff=genreCombo->count() != entries.count();
-    if (!diff) {
-        // Check items...
-        for (int i=1; i<genreCombo->count() && !diff; ++i) {
-            if (genreCombo->itemText(i) != entries.at(i)) {
-                diff=true;
-            }
-        }
-    }
-
-    if (!diff) {
+    if (genreCombo->count() && g==genres) {
         return;
     }
+
+    genres=g;
+    QStringList entries=g.toList();
+    qSort(entries);
+    #ifdef ENABLE_KDE_SUPPORT
+    entries.prepend(i18n("All Genres"));
+    #else
+    entries.prepend(tr("All Genres"));
+    #endif
 
     QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
 

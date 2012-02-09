@@ -64,7 +64,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     #ifdef TAGLIB_FOUND
     view->addAction(p->editTagsAction);
     #endif
-    connect(DevicesModel::self(), SIGNAL(updateGenres(const QStringList &)), this, SLOT(updateGenres(const QStringList &)));
+    connect(DevicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -81,6 +81,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     view->setModel(&proxy);
     view->init(configureAction, refreshAction, 0);
     view->setRootIsDecorated(false);
+    updateGenres(QSet<QString>());
 }
 
 DevicesPage::~DevicesPage()
@@ -339,37 +340,28 @@ void DevicesPage::deleteSongs()
     }
 }
 
-void DevicesPage::updateGenres(const QStringList &genres)
+void DevicesPage::updateGenres(const QSet<QString> &g)
 {
-    QStringList entries;
-    #ifdef ENABLE_KDE_SUPPORT
-    entries << i18n("All Genres");
-    #else
-    entries << tr("All Genres");
-    #endif
-    entries+=genres;
-
-    bool diff=genreCombo->count() != entries.count();
-    if (!diff) {
-        // Check items...
-        for (int i=1; i<genreCombo->count() && !diff; ++i) {
-            if (genreCombo->itemText(i) != entries.at(i)) {
-                diff=true;
-            }
-        }
-    }
-
-    if (!diff) {
+    if (genreCombo->count() && g==genres) {
         return;
     }
+
+    genres=g;
+    QStringList entries=g.toList();
+    qSort(entries);
+    #ifdef ENABLE_KDE_SUPPORT
+    entries.prepend(i18n("All Genres"));
+    #else
+    entries.prepend(tr("All Genres"));
+    #endif
 
     QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
 
     genreCombo->clear();
-    if (genres.count()<2) {
+    genreCombo->addItems(entries);
+    if (0==genres.count()) {
         genreCombo->setCurrentIndex(0);
     } else {
-        genreCombo->addItems(entries);
         if (!currentFilter.isEmpty()) {
             bool found=false;
             for (int i=1; i<genreCombo->count() && !found; ++i) {

@@ -56,7 +56,7 @@ private:
 
 public Q_SLOTS:
     void removeItems();
-    void updateGenres(const QStringList &genres);
+    void updateGenres(const QSet<QString> &g);
 
 private Q_SLOTS:
     void savePlaylist();
@@ -68,6 +68,7 @@ private Q_SLOTS:
 private:
     Action *renamePlaylistAction;
     PlaylistsProxyModel proxy;
+    QSet<QString> genres;
 };
 
 #endif

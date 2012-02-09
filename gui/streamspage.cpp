@@ -82,7 +82,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(&model, SIGNAL(genresUpdated(const QSet<QString> &)), SLOT(genresUpdated(const QSet<QString> &)));
+    connect(&model, SIGNAL(updateGenres(const QSet<QString> &)), SLOT(updateGenres(const QSet<QString> &)));
     importStreams->setAutoRaise(true);
     exportStreams->setAutoRaise(true);
     addStream->setAutoRaise(true);
@@ -109,6 +109,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->setModel(&proxy);
     view->setDeleteAction(p->removeAction);
     view->init(p->replacePlaylistAction, 0);
+    updateGenres(QSet<QString>());
 }
 
 StreamsPage::~StreamsPage()
@@ -171,7 +172,7 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
     addItemsToPlayQueue(indexes);
 }
 
-void StreamsPage::genresUpdated(const QSet<QString> &g)
+void StreamsPage::updateGenres(const QSet<QString> &g)
 {
     if (genreCombo->count() && g==genres) {
         return;

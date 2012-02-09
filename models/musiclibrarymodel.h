@@ -73,7 +73,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
 //     void updated(const MusicLibraryItemRoot *root);
-    void updateGenres(const QStringList &genres);
+   void updateGenres(const QSet<QString> &genres);
 
 private:
     void toXML(const MusicLibraryItemRoot *root, const QDateTime &date);

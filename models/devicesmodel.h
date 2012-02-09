@@ -70,7 +70,7 @@ private:
 
 Q_SIGNALS:
 //     void updated(const MusicLibraryItemRoot *root);
-    void updateGenres(const QStringList &genres);
+    void updateGenres(const QSet<QString> &genres);
     void addToDevice(const QString &udi);
 
 private:

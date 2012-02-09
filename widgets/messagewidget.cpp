@@ -209,9 +209,6 @@ MessageWidget::MessageType MessageWidget::messageType() const
 
 void MessageWidget::setMessageType(MessageWidget::MessageType type)
 {
-    d->messageType = type;
-    QIcon icon;
-
     #ifdef ENABLE_KDE_SUPPORT
     d->messageType = type;
     KIcon icon;
@@ -261,6 +258,8 @@ void MessageWidget::setMessageType(MessageWidget::MessageType type)
         .arg(fg.color().name())
         );
     #else
+    d->messageType = type;
+    QIcon icon;
     QColor bgnd;
     QColor border;
     QColor text;

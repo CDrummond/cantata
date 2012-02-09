@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-09 19:44+0000\n"
+"POT-Creation-Date: 2012-02-09 21:24+0000\n"
 "PO-Revision-Date: 2012-01-07 12:16+0200\n"
 "Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -194,7 +194,7 @@ msgstr ""
 "b></td><td>%4</td></tr><tr><td align=\"right\"><b>Duración:</b></td><td>%5</"
 "td></tr></table>"
 
-#: devices/device.cpp:317 devices/mtpdevice.cpp:209 devices/umsdevice.cpp:133
+#: devices/device.cpp:317 devices/mtpdevice.cpp:208 devices/umsdevice.cpp:133
 #: models/musiclibraryitemroot.cpp:349 mpd/mpdparseutils.cpp:258
 #: mpd/song.cpp:108 mpd/song.cpp:112 mpd/song.cpp:116
 msgid "Unknown"
@@ -518,28 +518,28 @@ msgid ""
 "tr><tr><td>%8</td><td>The genre of the album.</td></tr></table></p>"
 msgstr ""
 
-#: devices/mtpdevice.cpp:97
+#: devices/mtpdevice.cpp:96
 msgid "Connecting to device..."
 msgstr ""
 
-#: devices/mtpdevice.cpp:99 devices/mtpdevice.cpp:116
+#: devices/mtpdevice.cpp:98 devices/mtpdevice.cpp:115
 #, fuzzy
 msgid "No devices found"
 msgstr "No se han encontrado letras"
 
-#: devices/mtpdevice.cpp:129
+#: devices/mtpdevice.cpp:128
 msgid "Connected to device"
 msgstr ""
 
-#: devices/mtpdevice.cpp:138
+#: devices/mtpdevice.cpp:137
 msgid "Disconnected from device"
 msgstr ""
 
-#: devices/mtpdevice.cpp:156
+#: devices/mtpdevice.cpp:155
 msgid "Updating folders..."
 msgstr ""
 
-#: devices/mtpdevice.cpp:163
+#: devices/mtpdevice.cpp:162
 #, fuzzy
 msgid "Updating tracks..."
 msgstr "Actualizando"

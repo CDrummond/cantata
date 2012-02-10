@@ -27,6 +27,7 @@
 #include "devicepropertiesdialog.h"
 #include "settings.h"
 #include "musiclibrarymodel.h"
+#include "dirviewmodel.h"
 #include "albumsmodel.h"
 #include "mpdparseutils.h"
 #include "mpdconnection.h"
@@ -515,6 +516,7 @@ void ActionDialog::removeSongResult(KJob *job)
         actionStatus(Device::Failed);
     } else {
         MusicLibraryModel::self()->removeSongFromList(currentSong);
+        DirViewModel::self()->removeFileFromList(currentSong.file);
         actionStatus(Device::Ok);
     }
 }

@@ -36,17 +36,50 @@
 #include "playqueuemodel.h"
 #include "itemview.h"
 #include "settings.h"
+#include "mpdconnection.h"
 #include "debugtimer.h"
 
+#ifdef ENABLE_KDE_SUPPORT
+K_GLOBAL_STATIC(DirViewModel, instance)
+#endif
+
+DirViewModel * DirViewModel::self()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return instance;
+    #else
+    static DirViewModel *instance=0;;
+    if(!instance) {
+        instance=new AlbumsModel;
+    }
+    return instance;
+    #endif
+}
+
 DirViewModel::DirViewModel(QObject *parent)
-    : QAbstractItemModel(parent),
-      rootItem(new DirViewItemRoot)
+    : QAbstractItemModel(parent)
+    , rootItem(new DirViewItemRoot)
+    , enabled(false)
 {
 }
 
 DirViewModel::~DirViewModel()
 {
     delete rootItem;
+}
+
+void DirViewModel::setEnabled(bool e)
+{
+    if (e==enabled) {
+        return;
+    }
+    enabled=e;
+
+    if (enabled) {
+        connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), this, SLOT(updateDirView(DirViewItemRoot *)));
+    } else {
+        disconnect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), this, SLOT(updateDirView(DirViewItemRoot *)));
+    }
 }
 
 QModelIndex DirViewModel::index(int row, int column, const QModelIndex &parent) const
@@ -174,7 +207,7 @@ void DirViewModel::clear()
 void DirViewModel::updateDirView(DirViewItemRoot *newroot)
 {
     TF_DEBUG
-    bool incremental=rootItem->childCount() && newroot->childCount();
+    bool incremental=enabled && rootItem->childCount() && newroot->childCount();
 
     if (incremental) {
         QSet<QString> currentFiles=rootItem->allFiles();
@@ -200,11 +233,17 @@ void DirViewModel::updateDirView(DirViewItemRoot *newroot)
 
 void DirViewModel::addFileToList(const QString &file)
 {
+    if (!enabled) {
+        return;
+    }
     addFileToList(file.split('/'), QModelIndex(), rootItem);
 }
 
 void DirViewModel::removeFileFromList(const QString &file)
 {
+    if (!enabled) {
+        return;
+    }
     removeFileFromList(file.split('/'), QModelIndex(), rootItem);
 }
 

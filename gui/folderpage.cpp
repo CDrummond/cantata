@@ -37,7 +37,6 @@
 
 FolderPage::FolderPage(MainWindow *p)
     : QWidget(p)
-    , enabled(false)
     , mw(p)
 {
     setupUi(this);
@@ -69,7 +68,7 @@ FolderPage::FolderPage(MainWindow *p)
     view->addAction(p->deleteSongsAction);
     #endif
 
-    proxy.setSourceModel(&model);
+    proxy.setSourceModel(DirViewModel::self());
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
     connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
@@ -86,18 +85,16 @@ FolderPage::~FolderPage()
 
 void FolderPage::setEnabled(bool e)
 {
-    if (e==enabled) {
+    if (e==DirViewModel::self()->isEnabled()) {
         return;
     }
-    enabled=e;
 
-    if (enabled) {
-        connect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &model, SLOT(updateDirView(DirViewItemRoot *)));
+    DirViewModel::self()->setEnabled(e);
+    if (e) {
         connect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(showSpinner()));
         connect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
         refresh();
     } else {
-        disconnect(MPDConnection::self(), SIGNAL(dirViewUpdated(DirViewItemRoot *)), &model, SLOT(updateDirView(DirViewItemRoot *)));
         disconnect(MPDConnection::self(), SIGNAL(updatingFileList()), view, SLOT(showSpinner()));
         disconnect(MPDConnection::self(), SIGNAL(updatedFileList()), view, SLOT(hideSpinner()));
     }
@@ -105,7 +102,7 @@ void FolderPage::setEnabled(bool e)
 
 void FolderPage::refresh()
 {
-    if (enabled) {
+    if (DirViewModel::self()->isEnabled()) {
         view->showSpinner();
         emit listAll();
     }
@@ -113,7 +110,7 @@ void FolderPage::refresh()
 
 void FolderPage::clear()
 {
-    model.clear();
+    DirViewModel::self()->clear();
 }
 
 void FolderPage::searchItems()
@@ -177,7 +174,7 @@ QList<Song> FolderPage::selectedSongs() const
         mapped.append(proxy.mapToSource(idx));
     }
 
-    return MusicLibraryModel::self()->songs(model.filenames(mapped));
+    return MusicLibraryModel::self()->songs(DirViewModel::self()->filenames(mapped));
 }
 
 QStringList FolderPage::selectedFiles() const
@@ -193,7 +190,7 @@ QStringList FolderPage::selectedFiles() const
         mapped.append(proxy.mapToSource(idx));
     }
 
-    return model.filenames(mapped);
+    return DirViewModel::self()->filenames(mapped);
 }
 
 void FolderPage::addSelectionToPlaylist(const QString &name)

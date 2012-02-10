@@ -36,6 +36,8 @@ class DirViewModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
+    static DirViewModel * self();
+
     DirViewModel(QObject *parent = 0);
     ~DirViewModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
@@ -50,6 +52,8 @@ public:
     void clear();
     void addFileToList(const QString &file);
     void removeFileFromList(const QString &file);
+    bool isEnabled() const { return enabled; }
+    void setEnabled(bool e);
 
 public Q_SLOTS:
     void updateDirView(DirViewItemRoot *newroot);
@@ -57,10 +61,11 @@ public Q_SLOTS:
 private:
     void addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
     void removeFileFromList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
+    void recurseDirItems(DirViewItem &parent, QStringList &filenames) const;
 
 private:
     DirViewItemRoot *rootItem;
-    void recurseDirItems(DirViewItem &parent, QStringList &filenames) const;
+    bool enabled;
 };
 
 #endif

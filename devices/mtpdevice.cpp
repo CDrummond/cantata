@@ -27,6 +27,7 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
+#include "dirviewmodel.h"
 #include "devicepropertiesdialog.h"
 #include "covers.h"
 #include "song.h"
@@ -768,6 +769,7 @@ void MtpDevice::getSongStatus(bool ok)
             Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
         }
         MusicLibraryModel::self()->addSongToList(currentSong);
+        DirViewModel::self()->addFileToList(currentSong.file);
         emit actionStatus(Ok);
     }
 }

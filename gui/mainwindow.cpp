@@ -1749,24 +1749,24 @@ void MainWindow::updatePosition()
 void MainWindow::copyTrackInfo()
 {
     const QModelIndexList items = playQueue->selectionModel()->selectedRows();
-    QString txt;
-    QClipboard *clipboard = QApplication::clipboard();
 
     if (items.isEmpty()) {
         return;
     }
 
+    QString txt;
+    QTextStream str(&txt);
+
     foreach (const QModelIndex &idx, items) {
         Song s = playQueueModel.getSongByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
-        if (s.isEmpty()) {
+        if (!s.isEmpty()) {
             if (!txt.isEmpty()) {
-                txt += QChar('\n');
+                str << QChar('\n');
             }
-            txt += s.format();
+            str << s.format();
         }
     }
-
-    clipboard->setText(txt);
+    QApplication::clipboard()->setText(txt);
 }
 
 void MainWindow::togglePlaylist()

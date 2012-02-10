@@ -51,8 +51,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     #ifdef ENABLE_KDE_SUPPORT
     importAction = p->actionCollection()->addAction("importstreams");
     importAction->setText(i18n("Import Streams"));
-    exportAction = p->actionCollection()->addAction(
-        "exportstreams");
+    exportAction = p->actionCollection()->addAction("exportstreams");
     exportAction->setText(i18n("Export Streams"));
     addAction = p->actionCollection()->addAction("addstream");
     addAction->setText(i18n("Add Stream"));
@@ -230,11 +229,6 @@ void StreamsPage::importXml()
 void StreamsPage::exportXml()
 {
     QModelIndexList selected=view->selectedIndexes();
-
-    if (selected.isEmpty()) {
-        return;
-    }
-
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
         mapped.append(proxy.mapToSource(idx));
@@ -409,19 +403,7 @@ void StreamsPage::controlActions()
     editAction->setEnabled(1==selected.size());
     replacePlaylist->setEnabled(selected.count());
     mw->removeAction->setEnabled(selected.count());
-    editAction->setEnabled(1==selected.size());
-
-    bool enableExport=selected.size()>0;
-    if (selected.size()) {
-        foreach (const QModelIndex &idx, selected) {
-            QModelIndex index=proxy.mapToSource(idx);
-            if(!static_cast<StreamsModel::Item *>(index.internalPointer())->isCategory()) {
-                enableExport=false;
-                break;
-            }
-        }
-    }
-    exportAction->setEnabled(enableExport);
+    exportAction->setEnabled(model.rowCount()>0);
 }
 
 void StreamsPage::searchItems()

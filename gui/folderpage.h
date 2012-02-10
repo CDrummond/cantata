@@ -50,8 +50,9 @@ Q_SIGNALS:
     void addSongsToPlaylist(const QString &name, const QStringList &files);
     void listAll();
 
-private Q_SLOTS:
+public Q_SLOTS:
     void searchItems();
+    void controlActions();
     void itemDoubleClicked(const QModelIndex &);
 
 private:
@@ -61,6 +62,7 @@ private:
     bool enabled;
     DirViewModel model;
     DirViewProxyModel proxy;
+    MainWindow *mw;
 };
 
 #endif

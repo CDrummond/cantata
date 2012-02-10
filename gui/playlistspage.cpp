@@ -309,7 +309,9 @@ void PlaylistsPage::controlActions()
     }
     renamePlaylistAction->setEnabled(enable);
     renamePlaylistAction->setEnabled(enable);
-    mw->removeAction->setEnabled(enable);
+    mw->removeAction->setEnabled(selected.count()>0);
+    mw->replacePlaylistAction->setEnabled(selected.count()>0);
+    mw->addToPlaylistAction->setEnabled(selected.count()>0);
 }
 
 void PlaylistsPage::searchItems()

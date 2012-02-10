@@ -245,7 +245,6 @@ MainWindow::MainWindow(QWidget *parent)
 #else
     : QMainWindow(parent)
 #endif
-    , prevPage(-1)
     , lastState(MPDStatus::State_Inactive)
     , lastSongId(-1)
     , fetchStatsFactor(0)
@@ -2001,6 +2000,8 @@ void MainWindow::currentTabChanged(int index)
     switch(index) {
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES: // Need library to be loaded to check if song exists...
+        devicesPage->controlActions();
+        break;
     #endif
     case PAGE_LIBRARY:
     case PAGE_ALBUMS: // Albums shares refresh with library...
@@ -2008,20 +2009,28 @@ void MainWindow::currentTabChanged(int index)
             loaded|=TAB_LIBRARY;
             libraryPage->refresh();
         }
+        if (PAGE_LIBRARY==index) {
+             libraryPage->controlActions();
+        } else {
+             albumsPage->controlActions();
+        }
         break;
     case PAGE_FOLDERS:
         if (!(loaded&TAB_FOLDERS)) {
             loaded|=TAB_FOLDERS;
             folderPage->refresh();
         }
+        folderPage->controlActions();
         break;
     case PAGE_PLAYLISTS:
+        playlistsPage->controlActions();
         break;
     case PAGE_STREAMS:
         if (!(loaded&TAB_STREAMS)) {
             loaded|=TAB_STREAMS;
             streamsPage->refresh();
         }
+        streamsPage->controlActions();
         break;
     case PAGE_LYRICS:
         if (lyricsNeedUpdating) {
@@ -2042,32 +2051,6 @@ void MainWindow::currentTabChanged(int index)
     default:
         break;
     }
-
-    if (index!=prevPage) {
-        if ((PAGE_STREAMS==index || PAGE_STREAMS==prevPage || PAGE_PLAYLISTS==index || PAGE_PLAYLISTS==prevPage || -1==prevPage)) {
-            if (PAGE_STREAMS==index && streamsPage->isEnabled()) {
-                streamsPage->controlActions();
-            } else if (PAGE_PLAYLISTS==index/* && PlaylistsModel::self()->isEnabled()*/) {
-                playlistsPage->controlActions();
-            }else {
-                removeAction->setEnabled(true);
-            }
-        }
-
-        #ifdef ENABLE_DEVICES_SUPPORT
-        if ((PAGE_DEVICES==index || PAGE_DEVICES==prevPage || -1==prevPage) && DevicesModel::self()->isEnabled()) {
-            if (PAGE_DEVICES==index) {
-                devicesPage->selectionChanged();
-            } else {
-                editTagsAction->setEnabled(true);
-                organiseFilesAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
-//                 burnAction->setEnabled(organiseFilesAction->isEnabled());
-                deleteSongsAction->setEnabled(organiseFilesAction->isEnabled());
-            }
-        }
-        #endif
-    }
-    prevPage=index;
 }
 
 void MainWindow::tabToggled(int index)

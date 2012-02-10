@@ -68,7 +68,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
-    connect(view, SIGNAL(itemsSelected(bool)), SLOT(selectionChanged()));
+    connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(configureAction, SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshDevice()));
@@ -210,7 +210,7 @@ void DevicesPage::searchItems()
     }
 }
 
-void DevicesPage::selectionChanged()
+void DevicesPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
     bool enable=!selected.isEmpty();

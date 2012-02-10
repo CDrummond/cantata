@@ -48,7 +48,7 @@ public Q_SLOTS:
     void updateGenres(const QSet<QString> &g);
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
-    void selectionChanged();
+    void controlActions();
     void copyToLibrary();
     void configureDevice();
     void refreshDevice();

@@ -31,7 +31,7 @@
 class DirViewItemFile : public DirViewItem
 {
 public:
-    DirViewItemFile(const QString name, DirViewItem *parent)
+    DirViewItemFile(const QString &name, DirViewItem *parent)
         : DirViewItem(name, DirViewItem::Type_File, parent) {
     }
     virtual ~DirViewItemFile() {

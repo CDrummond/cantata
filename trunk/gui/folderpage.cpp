@@ -36,6 +36,7 @@
 FolderPage::FolderPage(MainWindow *p)
     : QWidget(p)
     , enabled(false)
+    , mw(p)
 {
     setupUi(this);
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
@@ -45,8 +46,6 @@ FolderPage::FolderPage(MainWindow *p)
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
     libraryUpdate->setAutoRaise(true);
-    addToPlaylist->setEnabled(false);
-    replacePlaylist->setEnabled(false);
 
     #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Folders"));
@@ -65,8 +64,7 @@ FolderPage::FolderPage(MainWindow *p)
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
-    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
+    connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
 }
 
@@ -119,6 +117,16 @@ void FolderPage::searchItems()
         proxy.setFilterEnabled(true);
         proxy.setFilterRegExp(filter);
     }
+}
+
+void FolderPage::controlActions()
+{
+    QModelIndexList selected=view->selectedIndexes();
+    bool enable=selected.count()>0;
+
+    mw->addToPlaylistAction->setEnabled(enable);
+    mw->replacePlaylistAction->setEnabled(enable);
+    mw->addToStoredPlaylistAction->setEnabled(enable);
 }
 
 void FolderPage::itemDoubleClicked(const QModelIndex &)

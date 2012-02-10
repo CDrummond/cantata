@@ -60,11 +60,13 @@ public Q_SLOTS:
     void updateGenres(const QSet<QString> &g);
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
+    void controlActions();
     void databaseUpdated();
 
 private:
     MusicLibraryProxyModel proxy;
     QSet<QString> genres;
+    MainWindow *mw;
 };
 
 #endif

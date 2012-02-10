@@ -62,11 +62,13 @@ Q_SIGNALS:
 public Q_SLOTS:
     void updateGenres(const QSet<QString> &g);
     void itemActivated(const QModelIndex &);
+    void controlActions();
     void searchItems();
 
 private:
     AlbumsProxyModel proxy;
     QSet<QString> genres;
+    MainWindow *mw;
 };
 
 #endif

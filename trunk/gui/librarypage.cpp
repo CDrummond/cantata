@@ -44,6 +44,7 @@
 
 LibraryPage::LibraryPage(MainWindow *p)
     : QWidget(p)
+    , mw(p)
 {
     setupUi(this);
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
@@ -53,8 +54,6 @@ LibraryPage::LibraryPage(MainWindow *p)
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
     libraryUpdate->setAutoRaise(true);
-    addToPlaylist->setEnabled(false);
-    replacePlaylist->setEnabled(false);
 
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);
@@ -81,8 +80,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     connect(MPDConnection::self(), SIGNAL(databaseUpdated()), this, SLOT(databaseUpdated()));
     connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
     connect(this, SIGNAL(listAllInfo(const QDateTime &)), MPDConnection::self(), SLOT(listAllInfo(const QDateTime &)));
-    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
+    connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     proxy.setSourceModel(MusicLibraryModel::self());
@@ -247,6 +245,26 @@ void LibraryPage::searchItems()
             proxy.invalidate();
         }
     }
+}
+
+void LibraryPage::controlActions()
+{
+    QModelIndexList selected=view->selectedIndexes();
+    bool enable=selected.count()>0;
+
+    mw->addToPlaylistAction->setEnabled(enable);
+    mw->replacePlaylistAction->setEnabled(enable);
+    mw->addToStoredPlaylistAction->setEnabled(enable);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    mw->copyToDeviceAction->setEnabled(enable);
+    mw->organiseFilesAction->setEnabled(enable);
+    #endif
+    #ifdef TAGLIB_FOUND
+    mw->editTagsAction->setEnabled(enable);
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    mw->deleteSongsAction->setEnabled(enable);
+    #endif
 }
 
 void LibraryPage::updateGenres(const QSet<QString> &g)

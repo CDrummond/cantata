@@ -37,7 +37,7 @@ public:
     virtual ~FolderPage();
 
     void setEnabled(bool e);
-    bool isEnabled() const { return enabled; }
+    bool isEnabled() const { return DirViewModel::self()->isEnabled(); }
     void refresh();
     void clear();
     QStringList selectedFiles() const;
@@ -67,8 +67,6 @@ private:
     QStringList walk(QModelIndex rootItem);
 
 private:
-    bool enabled;
-    DirViewModel model;
     DirViewProxyModel proxy;
     MainWindow *mw;
 };

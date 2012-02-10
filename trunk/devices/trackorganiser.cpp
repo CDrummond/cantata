@@ -25,6 +25,7 @@
 #include "filenameschemedialog.h"
 #include "devicesmodel.h"
 #include "musiclibrarymodel.h"
+#include "dirviewmodel.h"
 #include "settings.h"
 #include "mpdconnection.h"
 #include <KDE/KGlobal>
@@ -283,6 +284,8 @@ void TrackOrganiser::renameFile()
 
             if (deviceUdi.isEmpty()) {
                 MusicLibraryModel::self()->updateSongFile(s, to);
+                DirViewModel::self()->removeFileFromList(s.file);
+                DirViewModel::self()->addFileToList(to.file);
             } else {
                 s.file=source;
                 to.file=dest;

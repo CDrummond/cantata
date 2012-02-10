@@ -29,6 +29,7 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 #include <QtCore/QVariant>
+#include <QtCore/QSet>
 
 class DirViewItem
 {
@@ -39,25 +40,28 @@ public:
         Type_File
     };
 
-    DirViewItem(const QString name, Type type, DirViewItem *p)
+    DirViewItem(const QString &name, Type type, DirViewItem *p)
         : m_parentItem(p)
         , m_name(name)
         , m_type(type) {
     }
     virtual ~DirViewItem() {
-        qDeleteAll(m_childItems);
     }
+
     int row() const {
-        return m_parentItem ? m_parentItem->m_childItems.indexOf(const_cast<DirViewItem *>(this)) : 0;
+        return m_parentItem ? m_parentItem->indexOf(const_cast<DirViewItem *>(this)) : 0;
+    }
+    virtual int indexOf(DirViewItem *) const {
+        return 0;
     }
     DirViewItem * parent() const {
         return m_parentItem;
     }
-    int childCount() const {
-        return m_childItems.count();;
+    virtual int childCount() const {
+        return 0;
     }
-    DirViewItem * child(int row) const {
-        return m_childItems.value(row);;
+    virtual DirViewItem * child(int) const {
+        return 0;
     }
     QString fullName();
     int columnCount() const {
@@ -75,7 +79,6 @@ public:
 
 protected:
     DirViewItem * m_parentItem;
-    QList<DirViewItem *> m_childItems;
     QString m_name;
     Type m_type;
 };

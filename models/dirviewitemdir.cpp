@@ -26,17 +26,65 @@
 
 #include "dirviewitemdir.h"
 #include "dirviewitemfile.h"
+#include <QtCore/QStringList>
 
-DirViewItem * DirViewItemDir::createDirectory(const QString dirName)
+DirViewItem * DirViewItemDir::createDirectory(const QString &dirName)
 {
     DirViewItemDir *dir = new DirViewItemDir(dirName, this);
+    m_indexes.insert(dirName, m_childItems.count());
     m_childItems.append(dir);
     return dir;
 }
 
-DirViewItem * DirViewItemDir::insertFile(const QString fileName)
+DirViewItem * DirViewItemDir::insertFile(const QString &fileName)
 {
     DirViewItemFile *file = new DirViewItemFile(fileName, this);
+    m_indexes.insert(fileName, m_childItems.count());
     m_childItems.append(file);
     return file;
+}
+
+void DirViewItemDir::insertFile(const QStringList &path)
+{
+    if (1==path.count()) {
+        insertFile(path[0]);
+    } else {
+        static_cast<DirViewItemDir *>(createDirectory(path[0]))->insertFile(path.mid(1));
+    }
+}
+
+void DirViewItemDir::remove(DirViewItem *dir)
+{
+    int index=m_childItems.indexOf(dir);
+
+    if (-1==index) {
+        return;
+    }
+    bool updateIndexes=(m_childItems.count()-1)!=index;
+    DirViewItem *d=m_childItems.takeAt(index);
+
+    if (updateIndexes) {
+        m_indexes.clear();
+        int idx=0;
+        foreach (DirViewItem *i,  m_childItems) {
+            m_indexes.insert(i->name(), idx++);
+        }
+    } else {
+        m_indexes.remove(d->name());
+    }
+}
+
+QSet<QString> DirViewItemDir::allFiles() const
+{
+    QSet<QString> files;
+
+    foreach (DirViewItem *i,  m_childItems) {
+        if (Type_Dir==i->type()) {
+            files+=static_cast<DirViewItemDir *>(i)->allFiles();
+        } else if (Type_File==i->type()) {
+            files.insert(i->fullName());
+        }
+    }
+
+    return files;
 }

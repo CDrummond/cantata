@@ -48,12 +48,18 @@ public:
     QStringList filenames(const QModelIndexList &indexes) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     void clear();
+    void addFileToList(const QString &file);
+    void removeFileFromList(const QString &file);
 
-public slots:
+public Q_SLOTS:
     void updateDirView(DirViewItemRoot *newroot);
 
 private:
-    const DirViewItemRoot *rootItem;
+    void addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
+    void removeFileFromList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
+
+private:
+    DirViewItemRoot *rootItem;
     void recurseDirItems(DirViewItem &parent, QStringList &filenames) const;
 };
 

@@ -1807,11 +1807,13 @@ void MainWindow::togglePlaylist()
 // PlayList view //
 void MainWindow::setupPlaylistView()
 {
+    QFontMetrics fm(playQueue->font());
     playQueueHeader = playQueue->header();
     playQueueHeader->setResizeMode(QHeaderView::Interactive);
     playQueueHeader->setContextMenuPolicy(Qt::CustomContextMenu);
     playQueueHeader->resizeSection(PlayQueueModel::COL_STATUS, 20);
-    playQueueHeader->resizeSection(PlayQueueModel::COL_TRACK, QFontMetrics(playQueue->font()).width("999"));
+    playQueueHeader->resizeSection(PlayQueueModel::COL_TRACK, fm.width("999"));
+    playQueueHeader->resizeSection(PlayQueueModel::COL_YEAR, fm.width("9999"));
     playQueueHeader->setResizeMode(PlayQueueModel::COL_STATUS, QHeaderView::Fixed);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_TITLE, QHeaderView::Interactive);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_ARTIST, QHeaderView::Interactive);
@@ -1819,7 +1821,7 @@ void MainWindow::setupPlaylistView()
     playQueueHeader->setResizeMode(PlayQueueModel::COL_TRACK, QHeaderView::Fixed);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_LENGTH, QHeaderView::ResizeToContents);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_DISC, QHeaderView::ResizeToContents);
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_YEAR, QHeaderView::ResizeToContents);
+    playQueueHeader->setResizeMode(PlayQueueModel::COL_YEAR, QHeaderView::Fixed);
     playQueueHeader->setStretchLastSection(false);
 
     connect(playQueueHeader, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(playQueueContextMenuClicked()));

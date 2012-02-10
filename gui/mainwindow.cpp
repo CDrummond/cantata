@@ -592,7 +592,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     savePlaylistPushButton->setDefaultAction(savePlaylistAction);
     removeAllFromPlaylistPushButton->setDefaultAction(clearPlaylistAction);
-    removeFromPlaylistPushButton->setDefaultAction(removeFromPlaylistAction);
     randomPushButton->setDefaultAction(randomPlaylistAction);
     repeatPushButton->setDefaultAction(repeatPlaylistAction);
     consumePushButton->setDefaultAction(consumePlaylistAction);
@@ -634,8 +633,7 @@ MainWindow::MainWindow(QWidget *parent)
     QList<QToolButton *> btns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     controlBtns << volumeButton << menuButton;
-    btns << repeatPushButton << randomPushButton << savePlaylistPushButton << removeAllFromPlaylistPushButton
-         << removeFromPlaylistPushButton << consumePushButton;
+    btns << repeatPushButton << randomPushButton << savePlaylistPushButton << removeAllFromPlaylistPushButton << consumePushButton;
 
     foreach (QToolButton *b, btns) {
         b->setAutoRaise(true);

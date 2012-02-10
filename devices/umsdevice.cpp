@@ -28,6 +28,7 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemroot.h"
+#include "dirviewmodel.h"
 #include "devicepropertiesdialog.h"
 #include "covers.h"
 #include "mpdparseutils.h"
@@ -375,6 +376,7 @@ void UmsDevice::copySongToResult(KJob *job)
             Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
         }
         MusicLibraryModel::self()->addSongToList(currentSong);
+        DirViewModel::self()->addFileToList(currentSong.file);
         emit actionStatus(Ok);
     }
 }

@@ -47,7 +47,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     setMainWidget(mainWidet);
     configFilename->setIcon(QIcon::fromTheme("configure"));
     setButtonGuiItem(Ok, KGuiItem(i18n("Rename"), "edit-rename"));
-    connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
+    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
 }
 
 void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
@@ -304,7 +304,7 @@ void TrackOrganiser::renameFile()
 void TrackOrganiser::finish(bool ok)
 {
     if (updated && deviceUdi.isEmpty()) {
-        emit getStats();
+        emit update();
     }
     if (ok) {
         accept();

@@ -51,27 +51,14 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     #endif
     renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
 
-    addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
-    rem->setDefaultAction(p->removeAction);
-    renPlaylist->setDefaultAction(renamePlaylistAction);
-    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), rem, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), renPlaylist, SLOT(setEnabled(bool)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
 
-    addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
     libraryUpdate->setAutoRaise(true);
-    rem->setAutoRaise(true);
-    renPlaylist->setAutoRaise(true);
-    addToPlaylist->setEnabled(false);
     replacePlaylist->setEnabled(false);
-    rem->setEnabled(false);
-    renPlaylist->setEnabled(false);
 
     #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Playlists"));
@@ -104,6 +91,14 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<int> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<int> &)));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
+    menuButton->setAutoRaise(true);
+    menuButton->setPopupMode(QToolButton::InstantPopup);
+    QMenu *menu=new QMenu(this);
+    menu->addAction(p->addToPlaylistAction);
+    menu->addAction(p->removeAction);
+    menu->addAction(renamePlaylistAction);
+    menuButton->setMenu(menu);
+    menuButton->setIcon(QIcon::fromTheme("system-run"));
     updateGenres(QSet<QString>());
 }
 
@@ -313,7 +308,7 @@ void PlaylistsPage::controlActions()
         }
     }
     renamePlaylistAction->setEnabled(enable);
-    renPlaylist->setEnabled(enable);
+    renamePlaylistAction->setEnabled(enable);
     mw->removeAction->setEnabled(enable);
 }
 

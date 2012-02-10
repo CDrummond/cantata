@@ -307,9 +307,6 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
                 if (!song.file.isEmpty()) {
                     song.file.append("dummy.mp3");
                 }
-                if (!pathAppend.isEmpty()) {
-                    song.file=pathAppend+song.file;
-                }
                 albumItem = artistItem->createAlbum(song);
                 if (QLatin1String("true")==attributes.value("singleTracks").toString()) {
                     albumItem->setIsSingleTracks();
@@ -318,7 +315,9 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
             else if (QLatin1String("Track")==element) {
                 song.title=attributes.value("name").toString();
                 song.file=attributes.value("file").toString();
-
+                if (!pathAppend.isEmpty()) {
+                    song.file=pathAppend+song.file;
+                }
                 if (attributes.hasAttribute("artist")) {
                     song.artist=attributes.value("artist").toString();
                 } else {

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-09 21:24+0000\n"
-"PO-Revision-Date: 2012-01-22 21:29+0100\n"
+"PO-Revision-Date: 2012-02-09 23:52+0100\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -17,13 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "X-Language: cs_CZ\n"
 "X-Source-Language: C\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: devices/actiondialog.cpp:75 devices/actiondialog.cpp:245
 #: devices/trackorganiser.cpp:320
-#, fuzzy
 msgid "Device has been removed!"
-msgstr "Zařízení bylo odstraněno"
+msgstr "Zařízení bylo odstraněno!"
 
 #: devices/actiondialog.cpp:81
 msgid "Device is currently busy."
@@ -39,13 +38,12 @@ msgid "Local Music Library"
 msgstr "Místní hudební knihovna"
 
 #: devices/actiondialog.cpp:131
-#, fuzzy
 msgid ""
 "There is insufficient space left on the destination device.\n"
 "The selected songs consume %1, but there is only %2 left.\n"
 msgstr ""
-"V cíli nezbývá dost místa.\n"
-"Vybrané písně zabírají %1, ale zbývá jen %2."
+"Na cílovém zařízení nezbývá dost místa.\n"
+"Vybrané písně zabírají %1, ale zbývá jen %2.\n"
 
 #: devices/actiondialog.cpp:138
 msgid ""
@@ -83,14 +81,12 @@ msgid "Are you sure you wish to cancel?"
 msgstr "Opravdu chcete dát zrušit?"
 
 #: devices/actiondialog.cpp:250
-#, fuzzy
 msgid "Device has been changed?"
-msgstr "Zařízení bylo odstraněno"
+msgstr "Zařízení bylo změněno?"
 
 #: devices/actiondialog.cpp:258 devices/trackorganiser.cpp:325
-#, fuzzy
 msgid "Device is busy?"
-msgstr "Zařízení je nyní zaneprázdněno"
+msgstr "Zařízení je zaneprázdněno?"
 
 #: devices/actiondialog.cpp:313
 msgid "Clearing unused folders"
@@ -134,17 +130,19 @@ msgstr "Nepřipojeno k zařízení.<hr/>%1"
 
 #: devices/actiondialog.cpp:376
 msgid "Selected codec is not available.<hr/>%1"
-msgstr ""
+msgstr "Vybraný kodek není dostupný.<hr/>%1"
 
 #: devices/actiondialog.cpp:379
 msgid "Transcoding failed.<br/><br/<hr/>%1"
-msgstr ""
+msgstr "Překódování se nezdařilo.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:382
 msgid ""
 "Failed to create temporary file.<br/>(Required for transcoding to MTP "
 "devices.)<hr/>%1"
 msgstr ""
+"Nepodařilo se vytvořit dočasný soubor.<br/>(Požadováno pro překódování "
+"na zařízení MTP.)<hr/>%1"
 
 #: devices/actiondialog.cpp:407
 msgid "Local Music Library Properties"
@@ -238,14 +236,22 @@ msgid ""
 "the 'refresh' icon in the device list. This will cause the cache file to be "
 "removed, and the contents of the device re-scanned.</p>"
 msgstr ""
+"<p>Pokud toto povolíte, Cantata vytvoří vyrovnávací paměť hudební knihovny "
+"zařízení. To pomůže urychlyt následné prohledávání knihovny (protože namísto "
+"čtení značky u každého souboru se použije vyrovnávací paměť.)<hr/"
+"><b>POZNÁMKA:</b> Pokud na obnovu knihovny zařízení použijete jiný program, "
+"potom se tato vyrovnávací paměť stane zastaralou. TAbyste to dal do pořádku, "
+"jednoduše klepněte na ikonu pro 'obnovu' v seznamu zařízení. To způsobí "
+"odstranění "
+"souboru s vyrovnávací paměťí a opětovné znovuprohledání obsahu zařízení.</p>"
 
 #: devices/devicepropertiesdialog.cpp:130
 msgid "Do not transcode"
-msgstr ""
+msgstr "Nepřekódovat"
 
 #: devices/devicepropertiesdialog.cpp:144
 msgid "Transcode to \"%1\""
-msgstr ""
+msgstr "Překódovat do \"%1\""
 
 #: devices/devicespage.cpp:49
 msgid "Configure Device"
@@ -278,7 +284,7 @@ msgstr "Všechny žánry"
 
 #: devices/encoders.cpp:53
 msgid "AAC (Non-Free)"
-msgstr ""
+msgstr "AAC (není zadarmo)"
 
 #: devices/encoders.cpp:56
 msgctxt ""
@@ -291,6 +297,11 @@ msgid ""
 "a reasonable choice for the iPod and some other portable music players. Non-"
 "Free implementation."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
+"Coding</a> (AAC) je patentovaný ztrátový kodek pro digitální zvuk.<br>AAC "
+"všeobecně dosahuje při podobných datových tocích lepší jakosti zvuku než "
+"MP3. Je rozumnou volbou pro iPod a některé další přenosné přehrávače hudby. "
+"Provedení není zdarma."
 
 #: devices/encoders.cpp:61
 msgid ""
@@ -309,25 +320,37 @@ msgid ""
 "<b>120kb/s</b> might be unsatisfactory for music and anything above <b>200kb/"
 "s</b> is probably overkill."
 msgstr ""
+"Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku "
+"skladby.<br>Kodér <b>AAC</b> používaný Cantatou podporuje nastavení<a "
+"href=http://en.wikipedia.org/wiki/"
+"Variable_bitrate#Advantages_and_disadvantages_of_VBR>proměnlivého datového "
+"toku (VBR)</a>, což znamená, že hodnota datového toku kolísá podle skladby "
+"vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou "
+"kódovány s větším datovým tokem než ty méně složité; tento přístup přináší "
+"úhrnně lepší jakost a menší soubor než stálý datový tok bitrate po celou "
+"dobu skladby.<br>Z tohoto důvodu je měřítko datového toku v tomto posuvníku "
+"jen odhadem <a href=http://www.ffmpeg.org/faq.html#SEC21>průměrného datového "
+"toku</a> kódované skladby.<br><b>150kb/s</b> je dobrou volbou pro poslech "
+"hudby v přenosném přehrávači.<br/>Cokoli pod <b>120kb/s</b> může být hudebně "
+"neuspokojivé a cokoli nad <b>200kb/s</b> je pravděpodobně až přespříliš."
 
 #: devices/encoders.cpp:78 devices/encoders.cpp:169
 msgid "Expected average bitrate for variable bitrate encoding"
-msgstr ""
+msgstr "Očekávaný datový tok pro kódování proměnlivého datového toku"
 
 #: devices/encoders.cpp:90 devices/encoders.cpp:143 devices/encoders.cpp:180
 #: devices/encoders.cpp:224 devices/encoders.cpp:257
-#, fuzzy
 msgid "Smaller file"
-msgstr "Malý postranní panel"
+msgstr "Menší soubor"
 
 #: devices/encoders.cpp:91 devices/encoders.cpp:181 devices/encoders.cpp:225
 #: devices/encoders.cpp:258
 msgid "Better sound quality"
-msgstr ""
+msgstr "Lepší kvalita zvuku"
 
 #: devices/encoders.cpp:94
 msgid "Apple Lossless"
-msgstr ""
+msgstr "Apple Lossless"
 
 #: devices/encoders.cpp:97
 msgctxt ""
@@ -339,10 +362,14 @@ msgid ""
 "<br>Recommended only for Apple music players and players that do not support "
 "FLAC."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/Apple_Lossless>Apple Lossless</a> "
+"(ALAC) je zvukový kodek pro bezztrátové zhuštění digitální hudby."
+"<br>Doporučováno pouze pro hudební přehrávače od firmy Apple a přehrávače "
+"nepodporující FLAC."
 
 #: devices/encoders.cpp:111
 msgid "FLAC"
-msgstr ""
+msgstr "FLAC"
 
 #: devices/encoders.cpp:114
 msgctxt ""
@@ -354,6 +381,11 @@ msgid ""
 "compression of digital music.<br>If you wish to store your music without "
 "compromising on audio quality, FLAC is an excellent choice."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free Lossless "
+"Audio Codec</a> (FLAC) je otevřený kodek bez poplatků za užívání pro "
+"bezztrátové zhuštění digitální hudby.<br>Pokud si svou hudbu přejete ukládat "
+"bez ústupků, co se týče jakosti zvuku, FLAC je prostě excelentní, tedy "
+"vynikající, skvělou, výbornou, znamenitou a prvotřídní volbou."
 
 #: devices/encoders.cpp:118
 msgid ""
@@ -369,18 +401,28 @@ msgid ""
 "dramatically increase compression time but create an only slightly smaller "
 "file, and are not recommended."
 msgstr ""
+"<a href=http://flac.sourceforge.net/documentation_tools_flac.html>Úroveň "
+"zhuštění</a> je hodnota celého čísla ležící mezi 0 a 8, která představuje "
+"vyvážení mezi velikostí souboru a rychlostí zhuštění během kódování s "
+"<b>FLAC</b>.<br/> Nastavení úrovně zhuštění na <b>0</b> dává nejkratší čas "
+"zhuštění, ale způsobuje srovnatelně velký soubor<br/>Na druhou stranu úroveň "
+"zhuštění <b>8</b> dělá zhušťování docela pomalým,ale vytvoří nejmenší soubor."
+"<br/>Uvědomte si, že vzhledem k tomu, že FLAC je ze své podstaty "
+"bezeztrátový kodek, je zvuková jakost výstupu přesně tatáž bez ohledu na "
+"úroveň zhuštění.<br/>Úrovně nad <b>5</b> kromě toho napínavě zvyšují čas "
+"zhuštění, ale vytvářejí jen nepatrně menší soubor, a nedoporučují se."
 
 #: devices/encoders.cpp:132
 msgid "Compression level"
-msgstr ""
+msgstr "Úroveň zhuštění"
 
 #: devices/encoders.cpp:142
 msgid "Faster compression"
-msgstr ""
+msgstr "Rychlejší zhuštění"
 
 #: devices/encoders.cpp:146
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: devices/encoders.cpp:149
 msgctxt ""
@@ -392,6 +434,11 @@ msgid ""
 "spite of its shortcomings, it is a common format for consumer audio storage, "
 "and is widely supported on portable music players."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) je "
+"patentem chráněný digitální zvukový kodek, který používá druh ztrátového "
+"zhuštění dat.<br>Navzdory svým slabinám je to běžný formát pro "
+"spotřebitelské ukládání zvuku a je široce podporován v přenosných "
+"přehrávačích hudby."
 
 #: devices/encoders.cpp:153
 msgid ""
@@ -408,10 +455,22 @@ msgid ""
 ">Anything below <b>120kb/s</b> might be unsatisfactory for music and "
 "anything above <b>205kb/s</b> is probably overkill."
 msgstr ""
+"Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku "
+"skladby.<br>Kodér <b>MP3</b></b> používaný Cantatou podporuje nastavení<a "
+"href=http://en.wikipedia.org/wiki/MP3#VBR>proměnlivého datového toku (VBR)</"
+"a>, což znamená, že hodnota datového toku kolísá podle skladby vycházejíc ze "
+"složitosti zvukového obsahu. Složitější úseky dat jsou kódovány s větším "
+"datovým tokem, než jsou kódovány ty méně složité; tento přístup přináší "
+"úhrnně lepší jakost a menší soubor než stálý datový tok po celou dobu "
+"skladby.<br>Z tohoto důvodu je měřítko datového toku v tomto posuvníku jen "
+"odhadem <a href=http://wwwffmpeg.org/faq.html#>průměrného datového toku</a> "
+"kódované skladby.<br><b>160kb/s</b> je dobrou volbou pro poslech hudby v "
+"přenosném přehrávači.<br/>Cokoli pod <b>120kb/s</b> může být hudebně "
+"neuspokojivé a cokoli nad <b>205kb/s</b> je pravděpodobně až přespříliš."
 
 #: devices/encoders.cpp:184
 msgid "Ogg Vorbis"
-msgstr ""
+msgstr "Ogg Vorbis"
 
 #: devices/encoders.cpp:187
 msgctxt ""
@@ -423,6 +482,11 @@ msgid ""
 "files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around "
 "excellent choice, especially for portable music players that support it."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> je otevřený kodek "
+"bez poplatků za užívání pro ztrátové zhuštění zvuku.<br>Vyrábí menší soubory "
+"než MP3 při stejné nebo vyšší kvalitě. Ogg Vorbis je všestranně vynikající, "
+"skvělou, výbornou, znamenitou a prvotřídní volbou pro přenosné přehrávače "
+"hudby, které jej podporují."
 
 #: devices/encoders.cpp:192
 msgid ""
@@ -442,14 +506,29 @@ msgid ""
 "player.<br/>Anything below <b>3</b> might be unsatisfactory for music and "
 "anything above <b>8</b> is probably overkill."
 msgstr ""
+"Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku "
+"skladby.<br>Kodér <b>Vorbis</b></b> používaný Cantatou podporuje nastavení<a "
+"href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder>proměnlivého "
+"datového toku (VBR)</a>, což znamená, že hodnota datového toku kolísá podle "
+"skladby vycházejíc ze složitosti zvukového obsahu. Složitější úseky dat jsou "
+"kódovány s větším datovým tokem, než jsou kódovány ty méně složité; tento "
+"přístup přináší úhrnně lepší jakost a menší soubor, než jaký dává stálý "
+"datový tok po celou dobu skladby.<br>Kodér Vorbis používá při hodnocení "
+"jakosti parameter \"-q\", což je hodnota mezi -1 a 10, aby stanovil určitou "
+"očekávanou úroveň kvality zvuku. Měřítko datového toku v tomto posuvníku je "
+"jen hrubým odhadem (obstaraným Vorbisem) průměrného datového toku kódované "
+"skladby daný hodnotou q. Vlastně je s novějšími a účinnějšími verzemi kodéru "
+"Vorbis skutečný datový tok dokonce nižší.<br><b>-q5</b> je dobrou volbou pro "
+"poslech hudby v přenosném přehrávači.<br/>Cokoli pod <b>-q3</b> může být "
+"hudebně neuspokojivé a cokoli nad <b>-q8</b> je pravděpodobně až přespříliš."
 
 #: devices/encoders.cpp:211
 msgid "Quality rating"
-msgstr ""
+msgstr "Hodnocení jakosti"
 
 #: devices/encoders.cpp:228
 msgid "Windows Media Audio"
-msgstr ""
+msgstr "Windows Media Audio"
 
 #: devices/encoders.cpp:231
 msgctxt ""
@@ -461,6 +540,10 @@ msgid ""
 "audio compression.<br>Recommended only for portable music players that do "
 "not support Ogg Vorbis."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/Windows_Media_Audio>Windows Media "
+"Audio</a> (WMA) je kodek, který je patentově chráněn, vyvíjený firmou "
+"Microsoft pro ztrátové zhuštění zvuku.<br>Doporučován jen pro přenosné "
+"přehrávače hudby, jež nepodporují formát Ogg Vorbis."
 
 #: devices/encoders.cpp:235
 msgid ""
@@ -475,10 +558,19 @@ msgid ""
 "s</b> might be unsatisfactory for music and anything above <b>182kb/s</b> is "
 "probably overkill."
 msgstr ""
+"Datový tok je měřítkem pro množství dat použitých na vyjádření sekundy zvuku "
+"skladby.<br>V důsledku omezení patentově chráněného formátu <b>WMA</b> a "
+"obtížnosti obráceného inženýrství soukromého kodéru, kodér WMA používaný "
+"Amarokem nastavuje <a href=http://en.wikipedia.org/wiki/"
+"Windows_Media_Audio#Windows_Media_Audio>stálý datový tok (CBR).<br>Z tohoto "
+"důvodu je měřítko datového toku v tomto posuvníku slušným odhadem datového "
+"toku kódované skladby.<br><b>136kb/s</b> je dobrou volbou pro poslech hudby "
+"v přenosném přehrávači.<br/>Cokoli pod <b>112kb/s</b> může být hudebně "
+"neuspokojivé a cokoli nad <b>182kb/s</b> je pravděpodobně až přespříliš."
 
 #: devices/encoders.cpp:248
 msgid "Bitrate"
-msgstr ""
+msgstr "Datový tok"
 
 #: devices/filenameschemedialog.cpp:35
 msgid "Filename Scheme"
@@ -565,7 +657,7 @@ msgstr "Nepřipojeno"
 
 #: devices/trackorganiser.cpp:42 gui/mainwindow.cpp:557
 msgid "Organize Files"
-msgstr ""
+msgstr "Uspořádat soubory"
 
 #: devices/trackorganiser.cpp:49 gui/playlistspage.cpp:48
 msgid "Rename"
@@ -573,24 +665,19 @@ msgstr "Přejmenovat"
 
 #: devices/trackorganiser.cpp:106
 msgid "Cancel renaming of files?"
-msgstr ""
+msgstr "Zrušit přejmenování všech souborů?"
 
 #: devices/trackorganiser.cpp:211
-#, fuzzy
 msgid "Destination file already exists!<br/>%1"
-msgstr "Souborový název cíle již existuje!<hr/>%1"
+msgstr "Cílový soubor již existuje!<hr/>%1"
 
 #: devices/trackorganiser.cpp:234
-#, fuzzy
 msgid "Failed to create destination folder!<br/>%1"
-msgstr ""
-"Nepodařilo se vytvořit cílovou složku!<br/>Prověřte, prosím, zda máte "
-"dostatečná oprávnění.<hr/>%1"
+msgstr "Nepodařilo se vytvořit cílovou složku!<br/>%1"
 
 #: devices/trackorganiser.cpp:254
-#, fuzzy
 msgid "Failed to copy %1 to %2"
-msgstr "Nepodařilo se zkopírovat.<hr/>%1"
+msgstr "Nepodařilo se zkopírovat %1 do %2"
 
 #: devices/umsdevice.cpp:551
 msgid "Updating..."
@@ -598,7 +685,7 @@ msgstr "Obnovuje se..."
 
 #: devices/valueslider.cpp:104
 msgid " (recommended)"
-msgstr ""
+msgstr " (doporučeno)"
 
 #: gui/albumspage.cpp:57 gui/mainwindow.cpp:401
 msgid "Albums"
@@ -633,9 +720,8 @@ msgid "Small Control Buttons"
 msgstr "Malá tlačítka pro ovládání"
 
 #: gui/mainwindow.cpp:307
-#, fuzzy
 msgid "Refresh Database"
-msgstr "Obnovit zařízení"
+msgstr "Obnovit databázi"
 
 #: gui/mainwindow.cpp:310
 msgid "Previous Track"
@@ -682,9 +768,8 @@ msgid "Replace Play Queue"
 msgstr "Nahradit řadu přehrávaných skladeb"
 
 #: gui/mainwindow.cpp:354
-#, fuzzy
 msgid "Remove From Play Queue"
-msgstr "Odstranit ze seznamu skladeb"
+msgstr "Odstranit z řady skladeb k přehrání"
 
 #: gui/mainwindow.cpp:357
 msgid "Copy Track Info"
@@ -723,9 +808,8 @@ msgid "Consume"
 msgstr "Strávit"
 
 #: gui/mainwindow.cpp:394
-#, fuzzy
 msgid "Edit Tags"
-msgstr "Upravit"
+msgstr "Upravit značky"
 
 #: gui/mainwindow.cpp:407 gui/playlistspage.cpp:77
 msgid "Playlists"
@@ -855,11 +939,11 @@ msgstr "Album"
 
 #: gui/playbacksettings.cpp:39
 msgid "Do not fadeout"
-msgstr ""
+msgstr "Nezeslabovat"
 
 #: gui/playbacksettings.cpp:40
 msgid " ms"
-msgstr ""
+msgstr " ms"
 
 #: gui/playlistspage.cpp:177
 msgid "Are you sure you wish to remove the selected items?"
@@ -953,17 +1037,15 @@ msgstr "Název:"
 
 #: gui/streamcategorydialog.cpp:63 gui/streamdialog.cpp:72
 msgid "Icon:"
-msgstr ""
+msgstr "Ikona:"
 
 #: gui/streamcategorydialog.cpp:71
-#, fuzzy
 msgid "Add Category"
-msgstr "Skupina:"
+msgstr "Přidat skupinu"
 
 #: gui/streamcategorydialog.cpp:95
-#, fuzzy
 msgid "Edit Category"
-msgstr "Upravit proud"
+msgstr "Upravit skupinu"
 
 #: gui/streamdialog.cpp:78
 msgid "Stream:"
@@ -976,9 +1058,8 @@ msgstr "Skupina:"
 #. i18n: file: gui/tageditor.ui:108
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: gui/streamdialog.cpp:91 po/rc.cpp:390 rc.cpp:390
-#, fuzzy
 msgid "Genre:"
-msgstr "Žánr"
+msgstr "Žánr:"
 
 #: gui/streamdialog.cpp:100 gui/streamspage.cpp:58
 msgid "Add Stream"
@@ -990,7 +1071,7 @@ msgstr "Upravit proud"
 
 #: gui/streamdialog.cpp:159
 msgid "<i>Invalid protocol</i>"
-msgstr ""
+msgstr "<i>Neplatný protokol</i>"
 
 #: gui/streamspage.cpp:53 gui/streamspage.cpp:212
 msgid "Import Streams"
@@ -1057,65 +1138,59 @@ msgstr "Obecné"
 
 #: gui/tageditor.cpp:75
 msgid "Tags"
-msgstr ""
+msgstr "Značky"
 
 #: gui/tageditor.cpp:78
-#, fuzzy
 msgid "Previous"
-msgstr "Předchozí skladba"
+msgstr "Předchozí"
 
 #: gui/tageditor.cpp:80
 msgid "Next"
-msgstr ""
+msgstr "Další"
 
 #: gui/tageditor.cpp:85
 msgid "Tools"
-msgstr ""
+msgstr "Nástroje"
 
 #: gui/tageditor.cpp:87
-#, fuzzy
 msgid "Apply \"Various Artists\" Workaround"
-msgstr "Ošetření pro 'Různí umělci':"
+msgstr "Použít zařazení pod Různí umělci"
 
 #: gui/tageditor.cpp:88
-#, fuzzy
 msgid "Revert \"Various Artists\" Workaround"
-msgstr "Ošetření pro 'Různí umělci':"
+msgstr "Zvrátit zařazení pod Různí umělci"
 
 #: gui/tageditor.cpp:89
 msgid "Capitalize"
-msgstr ""
+msgstr "Psát velkými písmeny"
 
 #: gui/tageditor.cpp:174 gui/tageditor.cpp:376
-#, fuzzy
 msgid "All tracks"
-msgstr "Jednotlivé skladby"
+msgstr "Všechny skladby"
 
 #: gui/tageditor.cpp:232
-#, fuzzy
 msgid "Apply \"Various Artists\" workaround to <b>all</b> tracks?"
-msgstr "Ošetření pro 'Různí umělci':"
+msgstr "Použít zařazení pod Různí umělci na <b>všechny</b> skladby?"
 
 #: gui/tageditor.cpp:233
-#, fuzzy
 msgid "Apply \"Various Artists\" workaround?"
-msgstr "Ošetření pro 'Různí umělci':"
+msgstr "Použít zařazení pod Různí umělci?"
 
 #: gui/tageditor.cpp:235
 msgid ""
 "<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
 "'Title' to \"TrackArtist - TrackTitle\"</i>"
 msgstr ""
+"<i>Toto nastaví Umělce alba a Umělce na Různí umělci, a nastaví "
+"Název na \"Umělec skladby - Název skladby\"</i>"
 
 #: gui/tageditor.cpp:266
-#, fuzzy
 msgid "Revert \"Various Artists\" workaround on <b>all</b> tracks?"
-msgstr "Ošetření pro 'Různí umělci':"
+msgstr "Zvrátit zařazení pod Různí umělci pro <b>všechny</b> skladby?"
 
 #: gui/tageditor.cpp:267
-#, fuzzy
 msgid "Revert \"Various Artists\" workaround"
-msgstr "Ošetření pro 'Různí umělci':"
+msgstr "Zvrátit zařazení pod Různí umělci"
 
 #: gui/tageditor.cpp:269
 msgid ""
@@ -1125,25 +1200,32 @@ msgid ""
 "is \"Wibble - Wobble\", then 'Artist' will be set to \"Wibble\" and 'Title' "
 "will be set to \"Wobble\"</i>"
 msgstr ""
+"<i>Tam, kde Umělec alba je stejný jako Umělec a Název je ve formátu "
+"\"Umělec skladby - Název skladby\", se Umělec vezme z Názvu "
+"a samotný název se nastaví na prostý Název. Např. <br/><br/>Pokud je Název "
+"\"Wibble - Wobble\", pak Umělec se nastaví na \"Wibble\" a Název "
+"na \"Wobble\"</i>"
 
 #: gui/tageditor.cpp:303
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
 "'Album' of <b>all</b> tracks?"
 msgstr ""
+"Psát velkým písmenem první písmeno Názvu, Umělce, Umělce alba a Alba "
+"u <b>všech</b> skladeb?"
 
 #: gui/tageditor.cpp:305
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"
-msgstr ""
+msgstr "Psát velkým písmenem první písmeno Názvu, Umělce, Umělce alba a Alba"
 
 #: gui/tageditor.cpp:362
 msgid "All tracks [modified]"
-msgstr ""
+msgstr "Všechny skladby [změněno]"
 
 #: gui/tageditor.cpp:368
 msgid "%1 [modified]"
-msgstr ""
+msgstr "%1 [změněno]"
 
 #: lyrics/lyricsettings.cpp:59
 msgid "(Polish Translations)"
@@ -1302,7 +1384,7 @@ msgstr "Umělec"
 
 #: models/playqueuemodel.cpp:111
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: models/playqueuemodel.cpp:112
 msgid "Length"
@@ -1350,23 +1432,23 @@ msgstr[2] "%1 proudů"
 
 #: mpd/mpdconnection.cpp:265
 msgid "Failed to load. Please check user \"mpd\" has read permission."
-msgstr ""
+msgstr "Nepodařilo se nahrát. Ověřte, prosím, zda má mpd oprávnění ke čtení."
 
 #: mpd/mpdconnection.cpp:271 mpd/mpdconnection.cpp:273
 msgid ""
 "Failed to load. \"MPD\" can only play local files if connected via a local "
 "socket."
 msgstr ""
+"Nepodařilo se nahrát. MPD může přehrát jen místní soubory, pokud je připojen "
+"přes místní zásuvku."
 
 #: mpd/mpdconnection.cpp:779
-#, fuzzy
 msgid "Failed to rename <b>%1</b> to <b>%2</b>"
-msgstr "Promiňte, ale nepodařilo se přejmenovat <b>%1</b> na <b>%2</b>"
+msgstr "Nepodařilo se přejmenovat <b>%1</b> to <b>%2</b>"
 
 #: mpd/mpdconnection.cpp:801
-#, fuzzy
 msgid "Failed to save <b>%1</b>"
-msgstr "Nepodařilo se vytvořit <b>%1</b>!"
+msgstr "Nepodařilo se uložit <b>%1</b>!"
 
 #: mpd/mpdparseutils.cpp:466
 msgid "1 day %2"
@@ -1575,7 +1657,7 @@ msgstr "Ošetření pro 'Různí umělci':"
 #. i18n: ectx: property (text), widget (QLabel, useCacheLabel)
 #: po/rc.cpp:42 rc.cpp:42
 msgid "Use cache:"
-msgstr ""
+msgstr "Použít vyrovnávací paměť:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:86
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -1653,13 +1735,13 @@ msgstr "VFAT bezpečný:"
 #. i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
 #: po/rc.cpp:63 rc.cpp:63
 msgid "Transcoding"
-msgstr ""
+msgstr "Překódování"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:211
 #. i18n: ectx: property (text), widget (QLabel, transcoderWhenDifferentLabel)
 #: po/rc.cpp:66 rc.cpp:66
 msgid "Only transcode if source file is of a different format:"
-msgstr ""
+msgstr "Překódovat pouze, když zdrojový soubor je v jiném formátu:"
 
 #. i18n: file: devices/filenameschemedialog.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
@@ -1713,14 +1795,13 @@ msgstr "CD #"
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
 #: po/rc.cpp:120 rc.cpp:120
 msgid "Orignal Name"
-msgstr ""
+msgstr "Původní název"
 
 #. i18n: file: devices/trackorganiser.ui:155
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
 #: po/rc.cpp:123 rc.cpp:123
-#, fuzzy
 msgid "New Name"
-msgstr "Název:"
+msgstr "Nový název"
 
 #. i18n: file: gui/externalsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -1948,7 +2029,7 @@ msgstr "Vyrovnání hlasitosti:"
 #. i18n: ectx: property (text), widget (QLabel, label_6b)
 #: po/rc.cpp:273 rc.cpp:273
 msgid "Fadeout on stop:"
-msgstr ""
+msgstr "Zeslabení při zastavení:"
 
 #. i18n: file: gui/playbacksettings.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label_6b)
@@ -2014,7 +2095,7 @@ msgstr "Poslední aktualizace:"
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:339 rc.cpp:339
 msgid "URL handlers:"
-msgstr ""
+msgstr "Zacházení s adresou (URL):"
 
 #. i18n: file: gui/serversettings.ui:28
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -2051,69 +2132,60 @@ msgstr ""
 #. i18n: file: gui/serversettings.ui:135
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
 #: po/rc.cpp:363 rc.cpp:363
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> When using a local socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i>"
 msgstr ""
-"<i><b>Poznámka:</b> Při použití místní zásuvky pro doménu je potřeba "
-"nastavit úplnou absolutní cestu k zásuvce. (Číslo přípojky požadováno není.)"
-"</i>"
+"<i><b>Poznámka:</b> Při použití místní zásuvky je potřeba nastavit úplnou "
+"absolutní cestu k zásuvce. (Číslo přípojky požadováno není.)</i>"
 
 #. i18n: file: gui/tageditor.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:369 rc.cpp:369
-#, fuzzy
 msgid "Track:"
-msgstr "Skladba"
+msgstr "Skladba:"
 
 #. i18n: file: gui/tageditor.ui:30
 #. i18n: ectx: property (text), widget (QLabel, titleLabel)
 #: po/rc.cpp:372 rc.cpp:372
-#, fuzzy
 msgid "Title:"
-msgstr "Název"
+msgstr "Název:"
 
 #. i18n: file: gui/tageditor.ui:43
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:375 rc.cpp:375
-#, fuzzy
 msgid "Artist:"
-msgstr "Umělci:"
+msgstr "Umělec:"
 
 #. i18n: file: gui/tageditor.ui:56
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: po/rc.cpp:378 rc.cpp:378
-#, fuzzy
 msgid "Album artist:"
-msgstr "Umělec alba"
+msgstr "Umělec alba:"
 
 #. i18n: file: gui/tageditor.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:381 rc.cpp:381
-#, fuzzy
 msgid "Album:"
-msgstr "Alba:"
+msgstr "Album:"
 
 #. i18n: file: gui/tageditor.ui:82
 #. i18n: ectx: property (text), widget (QLabel, trackLabel)
 #: po/rc.cpp:384 rc.cpp:384
-#, fuzzy
 msgid "Track number:"
-msgstr "Skladba #"
+msgstr "Číslo skladby:"
 
 #. i18n: file: gui/tageditor.ui:95
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:387 rc.cpp:387
 msgid "Disc number:"
-msgstr ""
+msgstr "Číslo disku:"
 
 #. i18n: file: gui/tageditor.ui:121
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:393 rc.cpp:393
-#, fuzzy
 msgid "Year:"
-msgstr "Rok"
+msgstr "Rok:"
 
 #. i18n: file: lyrics/lyricsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -2199,7 +2271,7 @@ msgstr "pavelfric@seznam.cz"
 
 #: widgets/fancytabwidget.cpp:796 widgets/fancytabwidget.cpp:805
 msgid "Icons Only"
-msgstr ""
+msgstr "Pouze ikony"
 
 #: widgets/fancytabwidget.cpp:797
 msgid "Style"

@@ -81,7 +81,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     void reload();
     void save(bool force=false);
-    bool save(const QString &filename, const QModelIndexList &selection=QModelIndexList());
+    bool save(const QString &filename, const QSet<StreamsModel::Item *> &selection=QSet<StreamsModel::Item *>());
     bool import(const QString &filename) { return load(filename, false); }
     bool add(const QString &cat, const QString &name, const QString &genre, const QString &icon, const QString &url);
     void editCategory(const QModelIndex &index, const QString &name, const QString &icon);

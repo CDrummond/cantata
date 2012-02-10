@@ -284,7 +284,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
     return haveInserted;
 }
 
-bool StreamsModel::save(const QString &filename, const QModelIndexList &selection)
+bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *> &selection)
 {
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -293,31 +293,30 @@ bool StreamsModel::save(const QString &filename, const QModelIndexList &selectio
 
     QDomDocument doc;
     QDomElement root = doc.createElement("cantata");
-    QSet<const Item *> selectedItems;
-    foreach (const QModelIndex &idx, selection) {
-        selectedItems.insert(static_cast<const Item *>(idx.internalPointer()));
-    }
+
     root.setAttribute("version", "1.0");
     doc.appendChild(root);
-    foreach (const CategoryItem *c, items) {
-        if (selectedItems.isEmpty() || selectedItems.contains(c)) {
+    foreach (CategoryItem *c, items) {
+        if (selection.isEmpty() || selection.contains(c)) {
             QDomElement cat = doc.createElement("category");
             cat.setAttribute("name", c->name);
             if (!c->icon.isEmpty() && c->icon!=constDefaultCategoryIcon) {
                 cat.setAttribute("icon", c->icon);
             }
             root.appendChild(cat);
-            foreach (const StreamItem *s, c->streams) {
-                QDomElement stream = doc.createElement("stream");
-                stream.setAttribute("name", s->name);
-                stream.setAttribute("url", s->url.toString());
-                if (!s->icon.isEmpty() && s->icon!=constDefaultStreamIcon) {
-                    stream.setAttribute("icon", s->icon);
+            foreach (StreamItem *s, c->streams) {
+                if (selection.isEmpty() || selection.contains(s)) {
+                    QDomElement stream = doc.createElement("stream");
+                    stream.setAttribute("name", s->name);
+                    stream.setAttribute("url", s->url.toString());
+                    if (!s->icon.isEmpty() && s->icon!=constDefaultStreamIcon) {
+                        stream.setAttribute("icon", s->icon);
+                    }
+                    if (!s->genre.isEmpty()) {
+                        stream.setAttribute("genre", s->genre);
+                    }
+                    cat.appendChild(stream);
                 }
-                if (!s->genre.isEmpty()) {
-                    stream.setAttribute("genre", s->genre);
-                }
-                cat.appendChild(stream);
             }
         }
     }

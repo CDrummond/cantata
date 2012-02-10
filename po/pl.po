@@ -7,22 +7,21 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-09 21:24+0000\n"
-"PO-Revision-Date: 2012-01-22 21:44+0100\n"
+"PO-Revision-Date: 2012-02-10 19:04+0100\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
-"Language: \n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 1.4\n"
 
 #: devices/actiondialog.cpp:75 devices/actiondialog.cpp:245
 #: devices/trackorganiser.cpp:320
-#, fuzzy
 msgid "Device has been removed!"
-msgstr "Urządzenie zostało usunięte"
+msgstr "Urządzenie zostało usunięte!"
 
 #: devices/actiondialog.cpp:81
 msgid "Device is currently busy."
@@ -38,13 +37,12 @@ msgid "Local Music Library"
 msgstr "Lokalna biblioteka muzyki"
 
 #: devices/actiondialog.cpp:131
-#, fuzzy
 msgid ""
 "There is insufficient space left on the destination device.\n"
 "The selected songs consume %1, but there is only %2 left.\n"
 msgstr ""
-"Nie ma wystarczająco miejsca w lokalizacji docelowej.\n"
-"Zaznaczone utwory zajmują %1, jednak pozostało jedynie %2 miejsca."
+"Nie ma wystarczająco miejsca w urządzeniu docelowym.\n"
+"Zaznaczone utwory zajmują %1, jednak pozostało jedynie %2 miejsca.\n"
 
 #: devices/actiondialog.cpp:138
 msgid ""
@@ -83,14 +81,12 @@ msgid "Are you sure you wish to cancel?"
 msgstr "Czy na pewno anulować?"
 
 #: devices/actiondialog.cpp:250
-#, fuzzy
 msgid "Device has been changed?"
-msgstr "Urządzenie zostało usunięte"
+msgstr "Urządzenie zostało zmienione?"
 
 #: devices/actiondialog.cpp:258 devices/trackorganiser.cpp:325
-#, fuzzy
 msgid "Device is busy?"
-msgstr "Urządzenie jest obecnie zajęte."
+msgstr "Urządzenie jest zajęte?"
 
 #: devices/actiondialog.cpp:313
 msgid "Clearing unused folders"
@@ -134,17 +130,19 @@ msgstr "Brak połączenia z urządzeniem.<hr/>%1"
 
 #: devices/actiondialog.cpp:376
 msgid "Selected codec is not available.<hr/>%1"
-msgstr ""
+msgstr "Wybrany kodek nie jest dostępny.<hr/>%1"
 
 #: devices/actiondialog.cpp:379
 msgid "Transcoding failed.<br/><br/<hr/>%1"
-msgstr ""
+msgstr "Transkodowanie nie powiodło się.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:382
 msgid ""
 "Failed to create temporary file.<br/>(Required for transcoding to MTP "
 "devices.)<hr/>%1"
 msgstr ""
+"Stworzenie pliku tymczasowego nie powiodło się.<br/>(Wymagane przy "
+"transkodowaniu do urządzeń MTP.)<hr/>%1"
 
 #: devices/actiondialog.cpp:407
 msgid "Local Music Library Properties"
@@ -220,13 +218,12 @@ msgid ""
 "from the 'Title' tag.</p>"
 msgstr ""
 "<p>W trakcie kopiowania utworów do urządzenia, gdy tag 'ArtystaAlbumu' jest "
-"ustawiony na 'Various Artists', to Cantata ustawi tag 'Artysta' we "
-"wszystkich utworach na 'Various Artists' natomiast tag 'Tytuł' na "
-"'ArtystaUtworu - TytułUtworu'.<hr/> W trakcie kopiowania z urządzenia, "
-"Cantata sprawdzi, czy oba tagi 'ArtystaAlbumu' oraz 'Artysta' są ustawione "
-"na 'Various Artists'. Jeśli tak, to program podejmie próbę "
-"przywróceniarzeczywistej nazwy artysty z tagu 'Tytuł' oraz usunie nazwę "
-"artysty z tagu 'Tytuł'.</p>"
+"ustawiony na 'Various Artists', to Cantata ustawi tag 'Artysta' we wszystkich "
+"utworach na 'Various Artists' natomiast tag 'Tytuł' na 'ArtystaUtworu - "
+"TytułUtworu'.<hr/> W trakcie kopiowania z urządzenia, Cantata sprawdzi, czy "
+"oba tagi 'ArtystaAlbumu' oraz 'Artysta' są ustawione na 'Various Artists'. "
+"Jeśli tak, to program podejmie próbę przywrócenia rzeczywistej nazwy artysty "
+"z tagu 'Tytuł' oraz usunie nazwę artysty z tagu 'Tytuł'.</p>"
 
 #: devices/devicepropertiesdialog.cpp:101
 msgid ""
@@ -238,14 +235,23 @@ msgid ""
 "the 'refresh' icon in the device list. This will cause the cache file to be "
 "removed, and the contents of the device re-scanned.</p>"
 msgstr ""
+"<p>Wybranie tej opcji spowoduje, że Cantata stworzy pamięć podręczną dla "
+"biblioteki muzyki wybranego urządzenia. Pozwoli to na przyspieszenie "
+"kolejnych skanowań biblioteki (ponieważ zamiast czytać tagi z plików, używane "
+"będą informacje z pamięci podręcznej.)<hr/><b>UWAGA:</b> Jeśli używana jest "
+"również inna aplikacja w celu zarządzania biblioteką muzyki na urządzeniu, to "
+"pamięć podręczna będzie nieaktualna. W celu jej ponownego utworzenia, należy "
+"użyć akcji 'odśwież', znajdującej się na liście urządzeń. Spowoduje to "
+"usunięcie pamięci podręcznej oraz ponowne przeskanowanie zawartości "
+"urządzenia.</p>"
 
 #: devices/devicepropertiesdialog.cpp:130
 msgid "Do not transcode"
-msgstr ""
+msgstr "Nie transkoduj"
 
 #: devices/devicepropertiesdialog.cpp:144
 msgid "Transcode to \"%1\""
-msgstr ""
+msgstr "Transkoduj do \"%1\""
 
 #: devices/devicespage.cpp:49
 msgid "Configure Device"
@@ -278,7 +284,7 @@ msgstr "Wszystkie gatunki"
 
 #: devices/encoders.cpp:53
 msgid "AAC (Non-Free)"
-msgstr ""
+msgstr "AAC (Non-Free)"
 
 #: devices/encoders.cpp:56
 msgctxt ""
@@ -291,6 +297,11 @@ msgid ""
 "a reasonable choice for the iPod and some other portable music players. Non-"
 "Free implementation."
 msgstr ""
+"<a href=http://pl.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
+"Coding</a> (AAC) to opatentowany algorytm stratnej kompresji danych "
+"dźwiękowych.<br>AAC generalnie osiąga lepszą jakość dźwięku niż MP3 przy "
+"podobnych rozmiarach pliku. Jest to dobry wybór dla IPodów oraz niektórych "
+"innych przenośnych odtwarzaczy muzycznych. Nie-otwarta implementacja."
 
 #: devices/encoders.cpp:61
 msgid ""
@@ -309,25 +320,37 @@ msgid ""
 "<b>120kb/s</b> might be unsatisfactory for music and anything above <b>200kb/"
 "s</b> is probably overkill."
 msgstr ""
+"Bitrate jest miarą ilości danych używanych do reprezentacji sekundy ścieżki "
+"muzycznej.<br>Kodek <b>AAC</b> używany przez program Cantata obsługuje <a "
+"href=http://pl.wikipedia.org/wiki/VBR>zmienny bitrate (VBR)</a> - ustawienie, "
+"które oznacza, że wartość bitrate waha się w trakcie utworu w zależności od "
+"stopnia skomplikowania zawartości pliku. Bardziej skomplikowane przedziały "
+"czasu kodowane są przy użyciu większej ilości danych niż przedziały mniej "
+"skomplikowane; takie podejście daje ogólnie lepszą jakość i mniejsze pliki "
+"niż użycie stałego bitrate'u w całym utworze.<br>Z tego powodu, wyświetlana "
+"wartość bitrate jest tylko oszacowaniem <a href=http://www.ffmpeg.org/faq."
+"html#SEC21>średniego bitrate'u</a> wynikowego utworu.<br><b>150kb/s</b> jest "
+"dobrym wyborem dla użytku w odtwarzaczach przenośnych.<br/>Wartości poniżej <"
+"b>120kb/s</b> mogą nie być satysfakcjonujące dla muzyki, a wszystko powyżej <"
+"b>200kb/s</b> jest prawdopodobnie nadmiarowe."
 
 #: devices/encoders.cpp:78 devices/encoders.cpp:169
 msgid "Expected average bitrate for variable bitrate encoding"
-msgstr ""
+msgstr "Szacowany średni bitrate przy kodowaniu ze zmiennym bitrate"
 
 #: devices/encoders.cpp:90 devices/encoders.cpp:143 devices/encoders.cpp:180
 #: devices/encoders.cpp:224 devices/encoders.cpp:257
-#, fuzzy
 msgid "Smaller file"
-msgstr "Mały panel boczny"
+msgstr "Mniejszy plik"
 
 #: devices/encoders.cpp:91 devices/encoders.cpp:181 devices/encoders.cpp:225
 #: devices/encoders.cpp:258
 msgid "Better sound quality"
-msgstr ""
+msgstr "Lepsza jakość dźwięku"
 
 #: devices/encoders.cpp:94
 msgid "Apple Lossless"
-msgstr ""
+msgstr "Apple Lossless"
 
 #: devices/encoders.cpp:97
 msgctxt ""
@@ -339,10 +362,14 @@ msgid ""
 "<br>Recommended only for Apple music players and players that do not support "
 "FLAC."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/Apple_Lossless>Apple Lossless</a> (ALAC) "
+"jest kodekiem audio do bezstratnej kompresji muzyki cyfrowej.<br>Polecane "
+"jedynie dla odtwarzaczy muzycznych firmy Apple oraz odtwarzaczy nie "
+"obsługujących format FLAC."
 
 #: devices/encoders.cpp:111
 msgid "FLAC"
-msgstr ""
+msgstr "FLAC"
 
 #: devices/encoders.cpp:114
 msgctxt ""
@@ -354,6 +381,10 @@ msgid ""
 "compression of digital music.<br>If you wish to store your music without "
 "compromising on audio quality, FLAC is an excellent choice."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free Lossless "
+"Audio Codec</a> (FLAC) jest bezstratnym kodekiem audio wydanym na licencji "
+"open-source nie wymagającym licencji patentowych.<br>Kodek ten jest polecany "
+"do przechowywania muzyki bez poświęcania jakości dźwięku."
 
 #: devices/encoders.cpp:118
 msgid ""
@@ -369,18 +400,29 @@ msgid ""
 "dramatically increase compression time but create an only slightly smaller "
 "file, and are not recommended."
 msgstr ""
+"<a href=http://flac.sourceforge.net/documentation_tools_flac.html>Poziom "
+"kompresji</a> jest liczbą całkowitą z przedziału od 0 do 8 reprezentującą "
+"kompromis pomiędzy rozmiarem pliku a prędkością kompresji przy użyciu formatu "
+"<b>FLAC</b>.<br/> Ustawienie poziomu kompresji na <b>0</b> daje najkrótsze "
+"czasy kompresji jednak generowane pliki są stosunkowo największe.<br/>Z "
+"drugiej strony, poziom kompresji równy <b>8</b> powoduje, że kompresja jest "
+"dosyć powolna, jednak generowane pliki są najmniejsze.<br/>Należy pamiętać, "
+"że z powodu bezstratności formatu FLAC, jakość dźwięku wyjściowego jest "
+"identyczna z oryginałem niezależnie od ustawienia poziomu kompresji.<br/>"
+"Ponadto, poziomy powyżej <b>5</b> dramatycznie podnoszą czas kompresji dając "
+"jedynie niewiele mniejsze pliki wyjściowe i są niezalecane."
 
 #: devices/encoders.cpp:132
 msgid "Compression level"
-msgstr ""
+msgstr "Poziom kompresji"
 
 #: devices/encoders.cpp:142
 msgid "Faster compression"
-msgstr ""
+msgstr "Szybsza kompresja"
 
 #: devices/encoders.cpp:146
 msgid "MP3"
-msgstr ""
+msgstr "MP3"
 
 #: devices/encoders.cpp:149
 msgctxt ""
@@ -392,6 +434,11 @@ msgid ""
 "spite of its shortcomings, it is a common format for consumer audio storage, "
 "and is widely supported on portable music players."
 msgstr ""
+"<a href=http://pl.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) jest "
+"opatentowanym cyfrowym kodekiem audio używającym stratnej kompresji danych.<"
+"br>Pomimo swoich słabych stron, jest bardzo popularnym formatem do "
+"przechowywania muzyki oraz jest szeroko wspierany w większości przenośnych "
+"odtwarzaczy muzycznych."
 
 #: devices/encoders.cpp:153
 msgid ""
@@ -408,10 +455,22 @@ msgid ""
 ">Anything below <b>120kb/s</b> might be unsatisfactory for music and "
 "anything above <b>205kb/s</b> is probably overkill."
 msgstr ""
+"Bitrate jest miarą ilości danych używanych do reprezentacji sekundy ścieżki "
+"muzycznej.<br>Kodek <b>MP3</b> używany przez program Cantata obsługuje <a "
+"href=http://pl.wikipedia.org/wiki/VBR>zmienny bitrate (VBR)</a> - ustawienie, "
+"które oznacza, że wartość bitrate waha się w trakcie utworu w zależności od "
+"stopnia skomplikowania zawartości pliku. Bardziej skomplikowane przedziały "
+"czasu kodowane są przy użyciu większej ilości danych niż przedziały mniej "
+"skomplikowane; takie podejście daje ogólnie lepszą jakość i mniejsze pliki "
+"niż użycie stałego bitrate'u w całym utworze.<br>Z tego powodu, wyświetlana "
+"wartość bitrate jest tylko oszacowaniem średniego bitrate'u wynikowego utworu."
+"<br><b>160kb/s</b> jest dobrym wyborem dla użytku w odtwarzaczach przenośnych."
+"<br/>Wartości poniżej <b>120kb/s</b> mogą nie być satysfakcjonujące dla "
+"muzyki, a wszystko powyżej <b>205kb/s</b> jest prawdopodobnie nadmiarowe."
 
 #: devices/encoders.cpp:184
 msgid "Ogg Vorbis"
-msgstr ""
+msgstr "Ogg Vorbis"
 
 #: devices/encoders.cpp:187
 msgctxt ""
@@ -423,6 +482,11 @@ msgid ""
 "files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around "
 "excellent choice, especially for portable music players that support it."
 msgstr ""
+"<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> jest stratnym "
+"kodekiem audio wydanym na licencji open-source nie wymagającym licencji "
+"patentowych.<br>Generuje mniejsze pliki niż format MP3 przy porównywalnych "
+"lub lepszych jakościach. Ogg Vorbis jest ogólnie doskonałym wyborem, "
+"szczególnie dla przenośnych odtwarzaczy obsługujących ten format."
 
 #: devices/encoders.cpp:192
 msgid ""
@@ -442,14 +506,30 @@ msgid ""
 "player.<br/>Anything below <b>3</b> might be unsatisfactory for music and "
 "anything above <b>8</b> is probably overkill."
 msgstr ""
+"Bitrate jest miarą ilości danych używanych do reprezentacji sekundy ścieżki "
+"muzycznej.<br>Kodek <b>Vorbis</b> używany przez program Cantata obsługuje <a "
+"href=http://pl.wikipedia.org/wiki/VBR>zmienny bitrate (VBR)</a> - ustawienie, "
+"które oznacza, że wartość bitrate waha się w trakcie utworu w zależności od "
+"stopnia skomplikowania zawartości pliku. Bardziej skomplikowane przedziały "
+"czasu kodowane są przy użyciu większej ilości danych niż przedziały mniej "
+"skomplikowane; takie podejście daje ogólnie lepszą jakość i mniejsze pliki "
+"niż użycie stałego bitrate'u w całym utworze.<br>Enkoder Vorbis używa "
+"wskaźnika jakości ze skali o zakresie -1 do 10 w celu oceny oczekiwanej "
+"jakości. Przedstawiona wartość bitrate jest tylko zgrubnym oszacowaniem "
+"(dostarczonym przez twórców kodeka Vorbis) średniej wartości bitrate'u "
+"wynikowego pliku przy zadanej jakości. W związku z tym, nowsze i bardziej "
+"efektywne wersje kodeka Vorbis tworzą pliki o jeszcze mniejszej wartości "
+"bitrate.<br><b>5</b> jest dobrym wyborem dla użytku w odtwarzaczach "
+"przenośnych.<br/>Wartości poniżej <b>3</b> mogą nie być satysfakcjonujące dla "
+"muzyki, a wszystko powyżej <b>8</b> jest prawdopodobnie nadmiarowe."
 
 #: devices/encoders.cpp:211
 msgid "Quality rating"
-msgstr ""
+msgstr "Wskaźnik jakości"
 
 #: devices/encoders.cpp:228
 msgid "Windows Media Audio"
-msgstr ""
+msgstr "Windows Media Audio"
 
 #: devices/encoders.cpp:231
 msgctxt ""
@@ -461,6 +541,10 @@ msgid ""
 "audio compression.<br>Recommended only for portable music players that do "
 "not support Ogg Vorbis."
 msgstr ""
+"<a href=http://pl.wikipedia.org/wiki/Windows_Media_Audio>Windows Media Audio<"
+"/a> (WMA) jest stworzonym przez firmę Microsoft własnościowym kodekiem audio "
+"służącym do stratnej kompresji dźwięku.<br>Zalecany jedynie dla odtwarzaczy "
+"muzycznych nie obsługujących formatu Ogg Vorbis."
 
 #: devices/encoders.cpp:235
 msgid ""
@@ -475,10 +559,20 @@ msgid ""
 "s</b> might be unsatisfactory for music and anything above <b>182kb/s</b> is "
 "probably overkill."
 msgstr ""
+"Bitrate jest miarą ilości danych używanych do reprezentacji sekundy ścieżki "
+"muzycznej.<br>W związku z ograniczeniami własnościowego formatu <b>WMA</b> "
+"oraz z trudnościami związanymi z analizą działania zamkniętego enkodera, "
+"używany przez program Cantata enkoder WMA używa opcji <a http://pl.wikipedia."
+"org/wiki/Sta%C5%82a_przep%C5%82ywno%C5%9B%C4%87>stały bitrate (CBR)</a>.<br>Z "
+"tego powodu wyświetlana "
+"wartość bitrate jest dosyć dokładnym oszacowaniem bitrate'u pliku wynikowego."
+"<br><b>136kb/s</b> jest dobrym wyborem dla użytku w odtwarzaczach przenośnych."
+"<br/>Wartości poniżej <b>112kb/s</b> mogą nie być satysfakcjonujące dla "
+"muzyki, a wszystko powyżej <b>182kb/s</b> jest prawdopodobnie nadmiarowe."
 
 #: devices/encoders.cpp:248
 msgid "Bitrate"
-msgstr ""
+msgstr "Bitrate"
 
 #: devices/filenameschemedialog.cpp:35
 msgid "Filename Scheme"
@@ -525,16 +619,15 @@ msgid ""
 msgstr ""
 "<p>Następujące zmienne zostaną zastąpione odpowiednimi wartościami "
 "odpowiadającymi każdemu utworowi.</p><p><table border="
-"\"1\"><tr><th><em>Zmienna</em></th><th><em>Opis</em></th></tr><tr><td>%1</"
-"td><td>Artysta albumu. Dla większości albumów będzie to taka sama wartość "
-"jak <i>Artysta utworu.</i> W przypadku kompilacji będzie to często "
-"<i>Various Artists.</i> </td></tr><tr><td>%2</td><td>Nazwa albumu.</td></"
-"tr><tr><td>%3</td><td>Artysta każdego z utworów.</td></tr><tr><td>%4</"
-"td><td>Tytuł utworu.</td></tr><tr><td>%5</td><td>Numer utworu.</td></"
-"tr><tr><td>%6</td><td>Numer albumu w przypadku albumu zawierającego kilka "
-"albumów. Częste dla kompilacji składających się z kilku albumów.</td></"
-"tr><tr><td>%7</td><td>Rok wydania albumu.</td></tr><tr><td>%8</"
-"td><td>Gatunek albumu.</td></tr></table></p>"
+"\"1\"><tr><th><em>Zmienna</em></th><th><em>Opis</em></th></tr><tr><td>%1</td>"
+"<td>Artysta albumu. Dla większości albumów będzie to taka sama wartość jak <i>"
+"Artysta utworu.</i> W przypadku kompilacji będzie to często <i>Various "
+"Artists.</i> </td></tr><tr><td>%2</td><td>Nazwa albumu.</td></tr><tr><td>%3<"
+"/td><td>Artysta każdego z utworów.</td></tr><tr><td>%4</td><td>Tytuł utworu.<"
+"/td></tr><tr><td>%5</td><td>Numer utworu.</td></tr><tr><td>%6</td><td>Numer "
+"albumu w przypadku albumu zawierającego kilka albumów. Częste dla kompilacji "
+"składających się z kilku albumów.</td></tr><tr><td>%7</td><td>Rok wydania "
+"albumu.</td></tr><tr><td>%8</td><td>Gatunek albumu.</td></tr></table></p>"
 
 #: devices/mtpdevice.cpp:96
 msgid "Connecting to device..."
@@ -567,7 +660,7 @@ msgstr "Nie połączono"
 
 #: devices/trackorganiser.cpp:42 gui/mainwindow.cpp:557
 msgid "Organize Files"
-msgstr ""
+msgstr "Organizuj pliki"
 
 #: devices/trackorganiser.cpp:49 gui/playlistspage.cpp:48
 msgid "Rename"
@@ -575,24 +668,19 @@ msgstr "Zmień nazwę"
 
 #: devices/trackorganiser.cpp:106
 msgid "Cancel renaming of files?"
-msgstr ""
+msgstr "Anulować zmianę nazw plików?"
 
 #: devices/trackorganiser.cpp:211
-#, fuzzy
 msgid "Destination file already exists!<br/>%1"
-msgstr "Docelowa nazwa pliku już istnieje!<hr/>%1"
+msgstr "Docelowy plik już istnieje!<br/>%1"
 
 #: devices/trackorganiser.cpp:234
-#, fuzzy
 msgid "Failed to create destination folder!<br/>%1"
-msgstr ""
-"Tworzenie katalogu docelowego nie powiodło się!<br/>Proszę upewnić się, że "
-"ustawione są odpowiednie prawa dostępu.<hr/>%1"
+msgstr "Tworzenie katalogu docelowego nie powiodło się!<br/>%1"
 
 #: devices/trackorganiser.cpp:254
-#, fuzzy
 msgid "Failed to copy %1 to %2"
-msgstr "Kopiowanie nie powiodło się.<hr/>%1"
+msgstr "Nie powiodło się kopiowanie z %1 do %2"
 
 #: devices/umsdevice.cpp:551
 msgid "Updating..."
@@ -600,7 +688,7 @@ msgstr "Uaktualnianie...."
 
 #: devices/valueslider.cpp:104
 msgid " (recommended)"
-msgstr ""
+msgstr " (zalecane)"
 
 #: gui/albumspage.cpp:57 gui/mainwindow.cpp:401
 msgid "Albums"
@@ -635,9 +723,8 @@ msgid "Small Control Buttons"
 msgstr "Małe przyciski sterujące"
 
 #: gui/mainwindow.cpp:307
-#, fuzzy
 msgid "Refresh Database"
-msgstr "Odśwież urządzenie"
+msgstr "Odśwież bazę danych"
 
 #: gui/mainwindow.cpp:310
 msgid "Previous Track"
@@ -684,9 +771,8 @@ msgid "Replace Play Queue"
 msgstr "Zastąp kolejkę odtwarzania"
 
 #: gui/mainwindow.cpp:354
-#, fuzzy
 msgid "Remove From Play Queue"
-msgstr "Usuń z playlisty"
+msgstr "Usuń z kolejki odtwarzania"
 
 #: gui/mainwindow.cpp:357
 msgid "Copy Track Info"
@@ -725,9 +811,8 @@ msgid "Consume"
 msgstr "Konsumuj"
 
 #: gui/mainwindow.cpp:394
-#, fuzzy
 msgid "Edit Tags"
-msgstr "Edytuj"
+msgstr "Edytuj tagi"
 
 #: gui/mainwindow.cpp:407 gui/playlistspage.cpp:77
 msgid "Playlists"
@@ -781,10 +866,10 @@ msgid ""
 "tr></table>"
 msgstr ""
 "<table><tr><td align=\"right\"><b>Artysta:</b></td><td>%1</td></tr><tr><td "
-"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
-"\"><b>Utwór:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Numer:</b></"
-"td><td>%4</td></tr><tr><td align=\"right\"><b>Długość:</b></td><td>%5</td></"
-"tr></table>"
+"align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right\"><b>"
+"Utwór:</b></td><td>%3</td></tr><tr><td align=\"right\"><b>Numer:</b></td><td>%"
+"4</td></tr><tr><td align=\"right\"><b>Długość:</b></td><td>%5</td></tr><"
+"/table>"
 
 #: gui/mainwindow.cpp:1496 gui/mainwindow.cpp:1497
 msgid "Volume %1%"
@@ -804,7 +889,7 @@ msgstr "Playlista o nazwie <b>%1</b> już istnieje!<br/>Dodać do tej playlisty?
 
 #: gui/mainwindow.cpp:1662
 msgid "Existing Playlist"
-msgstr "Opuszczanie playlisty"
+msgstr "Istniejąca playlista"
 
 #: gui/mainwindow.cpp:1724
 msgid "1 Artist, "
@@ -855,11 +940,11 @@ msgstr "Album"
 
 #: gui/playbacksettings.cpp:39
 msgid "Do not fadeout"
-msgstr ""
+msgstr "Nie wyciszaj"
 
 #: gui/playbacksettings.cpp:40
 msgid " ms"
-msgstr ""
+msgstr " ms"
 
 #: gui/playlistspage.cpp:177
 msgid "Are you sure you wish to remove the selected items?"
@@ -944,8 +1029,8 @@ msgid ""
 "<i> This folder will also be used to locate music files for transferring to "
 "(and from) devices.</i>"
 msgstr ""
-"<i> Ten folder będzie dodatkowo użyty do odnajdywania plików w celu "
-"transferu do i z urządzeń.</i>"
+"<i> Ten folder będzie dodatkowo użyty do odnajdywania plików w celu transferu "
+"do i z urządzeń.</i>"
 
 #: gui/streamcategorydialog.cpp:57 gui/streamdialog.cpp:66
 msgid "Name:"
@@ -953,17 +1038,15 @@ msgstr "Nazwa:"
 
 #: gui/streamcategorydialog.cpp:63 gui/streamdialog.cpp:72
 msgid "Icon:"
-msgstr ""
+msgstr "Ikona:"
 
 #: gui/streamcategorydialog.cpp:71
-#, fuzzy
 msgid "Add Category"
-msgstr "Kategoria:"
+msgstr "Dodaj kategorię"
 
 #: gui/streamcategorydialog.cpp:95
-#, fuzzy
 msgid "Edit Category"
-msgstr "Edytuj strumień"
+msgstr "Edytuj kategorię"
 
 #: gui/streamdialog.cpp:78
 msgid "Stream:"
@@ -976,9 +1059,8 @@ msgstr "Kategoria:"
 #. i18n: file: gui/tageditor.ui:108
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: gui/streamdialog.cpp:91 po/rc.cpp:390 rc.cpp:390
-#, fuzzy
 msgid "Genre:"
-msgstr "Gatunek"
+msgstr "Gatunek:"
 
 #: gui/streamdialog.cpp:100 gui/streamspage.cpp:58
 msgid "Add Stream"
@@ -990,7 +1072,7 @@ msgstr "Edytuj strumień"
 
 #: gui/streamdialog.cpp:159
 msgid "<i>Invalid protocol</i>"
-msgstr ""
+msgstr "<i>Niewłaściwy protokół</i>"
 
 #: gui/streamspage.cpp:53 gui/streamspage.cpp:212
 msgid "Import Streams"
@@ -1057,65 +1139,61 @@ msgstr "Ogólne"
 
 #: gui/tageditor.cpp:75
 msgid "Tags"
-msgstr ""
+msgstr "Tagi"
 
 #: gui/tageditor.cpp:78
-#, fuzzy
 msgid "Previous"
-msgstr "Poprzedni utwór"
+msgstr "Poprzedni"
 
 #: gui/tageditor.cpp:80
 msgid "Next"
-msgstr ""
+msgstr "Następny"
 
 #: gui/tageditor.cpp:85
 msgid "Tools"
-msgstr ""
+msgstr "Narzędzia"
 
 #: gui/tageditor.cpp:87
-#, fuzzy
 msgid "Apply \"Various Artists\" Workaround"
-msgstr "Obejście dla 'Various Artists':"
+msgstr "Zastosuj obejście dla 'Various Artists'"
 
 #: gui/tageditor.cpp:88
-#, fuzzy
 msgid "Revert \"Various Artists\" Workaround"
-msgstr "Obejście dla 'Various Artists':"
+msgstr "Cofnij obejście dla 'Various Artists'"
 
 #: gui/tageditor.cpp:89
 msgid "Capitalize"
-msgstr ""
+msgstr "Kapitaliki"
 
 #: gui/tageditor.cpp:174 gui/tageditor.cpp:376
-#, fuzzy
 msgid "All tracks"
-msgstr "Pojedyncze utwory"
+msgstr "Wszystkie utwory"
 
 #: gui/tageditor.cpp:232
-#, fuzzy
 msgid "Apply \"Various Artists\" workaround to <b>all</b> tracks?"
-msgstr "Obejście dla 'Various Artists':"
+msgstr ""
+"Czy zastosować obejście dla 'Various Artists' we <b>wszystkich</b> utworach?"
 
 #: gui/tageditor.cpp:233
-#, fuzzy
 msgid "Apply \"Various Artists\" workaround?"
-msgstr "Obejście dla 'Various Artists':"
+msgstr "Zastosować obejście dla 'Various Artists'?"
 
 #: gui/tageditor.cpp:235
 msgid ""
 "<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
 "'Title' to \"TrackArtist - TrackTitle\"</i>"
 msgstr ""
+"<i>Spowoduje to ustawienie tagów 'ArtysaAlbumu' oraz 'Artysta' na wartość "
+"\"Various Artists\", oraz tagu 'Tytuł' na \"ArtystaUtworu - TytułUtworu\"</i>"
 
 #: gui/tageditor.cpp:266
-#, fuzzy
 msgid "Revert \"Various Artists\" workaround on <b>all</b> tracks?"
-msgstr "Obejście dla 'Various Artists':"
+msgstr ""
+"Czy cofnąć obejście dla 'Various Artists' we <b>wszystkich</b> utworach?"
 
 #: gui/tageditor.cpp:267
-#, fuzzy
 msgid "Revert \"Various Artists\" workaround"
-msgstr "Obejście dla 'Various Artists':"
+msgstr "Cofnij obejście dla 'Various Artists'"
 
 #: gui/tageditor.cpp:269
 msgid ""
@@ -1125,25 +1203,34 @@ msgid ""
 "is \"Wibble - Wobble\", then 'Artist' will be set to \"Wibble\" and 'Title' "
 "will be set to \"Wobble\"</i>"
 msgstr ""
+"<i>W przypadku, gdy tag 'ArtystaAlbumu' jest taki sam jak 'Artysta' oraz tag "
+"'Tytuł' jest formatu \"ArtystaUtworu - TytułUtworu\", to tag 'Artysta' "
+"zostanie pobrany z tagu 'Tytuł' a sam 'Tytuł' zostanie przywrócony do "
+"wartości \"TytułUtworu\". np. <br/><br/>jeśli 'Tytuł' "
+"to \"Wibble - Wobble\", wtedy 'Artysta' zostanie ustawiony na \"Wibble\" "
+"natomiast 'Title' będzie miał wartość \"Wobble\"</i>"
 
 #: gui/tageditor.cpp:303
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
 "'Album' of <b>all</b> tracks?"
 msgstr ""
+"Czy ustawić pierwszą dużą literę tagów 'Title', 'Artist', 'Album artist', "
+"oraz 'Album' we <b>wszystkich</b> utworach?"
 
 #: gui/tageditor.cpp:305
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"
 msgstr ""
+"Duża pierwsza litera w tagach 'Title', 'Artist', 'Album artist', oraz 'Album'"
 
 #: gui/tageditor.cpp:362
 msgid "All tracks [modified]"
-msgstr ""
+msgstr "Wszystkie utwory [zmodyfikowano]"
 
 #: gui/tageditor.cpp:368
 msgid "%1 [modified]"
-msgstr ""
+msgstr "%1 [zmodyfikowano]"
 
 #: lyrics/lyricsettings.cpp:59
 msgid "(Polish Translations)"
@@ -1183,7 +1270,7 @@ msgstr "Craig Drummond"
 
 #: main.cpp:42
 msgid "Maintainer"
-msgstr ""
+msgstr "Opiekun"
 
 #: models/albumsmodel.cpp:259 models/devicesmodel.cpp:204
 #: models/musiclibrarymodel.cpp:226 models/playlistsmodel.cpp:167
@@ -1302,7 +1389,7 @@ msgstr "Artysta"
 
 #: models/playqueuemodel.cpp:111
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: models/playqueuemodel.cpp:112
 msgid "Length"
@@ -1351,22 +1438,24 @@ msgstr[2] "%1 Strumieni"
 #: mpd/mpdconnection.cpp:265
 msgid "Failed to load. Please check user \"mpd\" has read permission."
 msgstr ""
+"Załadowanie nie powiodło się. Proszę upewnić się, że użytkownik \"mpd\" ma "
+"prawa odczytu."
 
 #: mpd/mpdconnection.cpp:271 mpd/mpdconnection.cpp:273
 msgid ""
 "Failed to load. \"MPD\" can only play local files if connected via a local "
 "socket."
 msgstr ""
+"Załadowanie nie powiodło się. \"MPD\" może odtwarzać lokalne pliki tylko gdy "
+"jest połączony poprzez lokalne gniazdo."
 
 #: mpd/mpdconnection.cpp:779
-#, fuzzy
 msgid "Failed to rename <b>%1</b> to <b>%2</b>"
-msgstr "Zmiana nazwy z  <b>%1</b> na <b>%2</b> nie powiodła się"
+msgstr "Zmiana nazwy z <b>%1</b> na <b>%2</b> nie powiodła się"
 
 #: mpd/mpdconnection.cpp:801
-#, fuzzy
 msgid "Failed to save <b>%1</b>"
-msgstr "Utworzenie <b>%1</b> nie powiodło się!"
+msgstr "Zapisanie <b>%1</b> nie powiodło się"
 
 #: mpd/mpdparseutils.cpp:466
 msgid "1 day %2"
@@ -1521,7 +1610,7 @@ msgstr "Kopiuj utwory z:"
 #: rc.cpp:297 rc.cpp:303 rc.cpp:312 rc.cpp:318 rc.cpp:324 rc.cpp:330
 #: rc.cpp:336 rc.cpp:342
 msgid "TextLabel"
-msgstr ""
+msgstr "TextLabel"
 
 #. i18n: file: devices/actiondialog.ui:61
 #. i18n: ectx: property (text), widget (QLabel, configureSourceLabel)
@@ -1575,7 +1664,7 @@ msgstr "Obejście dla 'Various Artists':"
 #. i18n: ectx: property (text), widget (QLabel, useCacheLabel)
 #: po/rc.cpp:42 rc.cpp:42
 msgid "Use cache:"
-msgstr ""
+msgstr "Używaj pamięci podręcznej:"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:86
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -1653,13 +1742,13 @@ msgstr "Bezpieczne dla VFAT:"
 #. i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
 #: po/rc.cpp:63 rc.cpp:63
 msgid "Transcoding"
-msgstr ""
+msgstr "Transkodowanie"
 
 #. i18n: file: devices/devicepropertiesdialog.ui:211
 #. i18n: ectx: property (text), widget (QLabel, transcoderWhenDifferentLabel)
 #: po/rc.cpp:66 rc.cpp:66
 msgid "Only transcode if source file is of a different format:"
-msgstr ""
+msgstr "Transkoduj tylko gdy plik wejściowy jest w innym formacie:"
 
 #. i18n: file: devices/filenameschemedialog.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
@@ -1713,14 +1802,13 @@ msgstr "Numer CD"
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
 #: po/rc.cpp:120 rc.cpp:120
 msgid "Orignal Name"
-msgstr ""
+msgstr "Obecna nazwa"
 
 #. i18n: file: devices/trackorganiser.ui:155
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
 #: po/rc.cpp:123 rc.cpp:123
-#, fuzzy
 msgid "New Name"
-msgstr "Nazwa:"
+msgstr "Nowa nazwa"
 
 #. i18n: file: gui/externalsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -1858,7 +1946,7 @@ msgstr "Duże"
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:174 rc.cpp:174
 msgid "Show album year in library view:"
-msgstr "Pokaż datę albumu w widoku biblioteki:"
+msgstr "Pokaż rok albumu w widoku biblioteki:"
 
 #. i18n: file: gui/interfacesettings.ui:98
 #. i18n: ectx: property (text), widget (QLabel, label_7)
@@ -1918,13 +2006,13 @@ msgstr "Pokazuj akcję usuwania w menu kontekstowym:"
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)
 #: po/rc.cpp:252 rc.cpp:252
 msgid "SqueezedTextLabel"
-msgstr ""
+msgstr "SqueezedTextLabel"
 
 #. i18n: file: gui/mainwindow.ui:129
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, songTimeElapsedLabel)
 #: po/rc.cpp:255 rc.cpp:255
 msgid "(00:00)"
-msgstr ""
+msgstr "(00:00)"
 
 #. i18n: file: gui/playbacksettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label_6)
@@ -1948,7 +2036,7 @@ msgstr "Replay gain:"
 #. i18n: ectx: property (text), widget (QLabel, label_6b)
 #: po/rc.cpp:273 rc.cpp:273
 msgid "Fadeout on stop:"
-msgstr ""
+msgstr "Wycisz przy zatrzymaniu:"
 
 #. i18n: file: gui/playbacksettings.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label_6b)
@@ -2014,7 +2102,7 @@ msgstr "Ostatnia aktualizacja:"
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:339 rc.cpp:339
 msgid "URL handlers:"
-msgstr ""
+msgstr "Obsługiwane URL:"
 
 #. i18n: file: gui/serversettings.ui:28
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -2032,7 +2120,7 @@ msgstr "Hasło:"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:357 rc.cpp:357
 msgid "Host (or local socket):"
-msgstr ""
+msgstr "Host (albo gniazdo lokalne):"
 
 #. i18n: file: gui/serversettings.ui:109
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
@@ -2051,68 +2139,60 @@ msgstr ""
 #. i18n: file: gui/serversettings.ui:135
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
 #: po/rc.cpp:363 rc.cpp:363
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> When using a local socket the full absolute path to the "
 "socket needs to be set. (Port number is not required.)</i>"
 msgstr ""
 "<i><b>UWAGA:</b> Przy używaniu gniazda lokalnego konieczne jest ustawienie "
-"absolutnej ścieżki do gniazda. (Numer portu nie jest wymagany.)</i>"
+"pełnej absolutnej ścieżki do gniazda. (Numer portu nie jest wymagany.)</i>"
 
 #. i18n: file: gui/tageditor.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:369 rc.cpp:369
-#, fuzzy
 msgid "Track:"
-msgstr "Numer"
+msgstr "Utwór:"
 
 #. i18n: file: gui/tageditor.ui:30
 #. i18n: ectx: property (text), widget (QLabel, titleLabel)
 #: po/rc.cpp:372 rc.cpp:372
-#, fuzzy
 msgid "Title:"
-msgstr "Tytuł"
+msgstr "Tytuł:"
 
 #. i18n: file: gui/tageditor.ui:43
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:375 rc.cpp:375
-#, fuzzy
 msgid "Artist:"
-msgstr "Artyści:"
+msgstr "Artysta:"
 
 #. i18n: file: gui/tageditor.ui:56
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: po/rc.cpp:378 rc.cpp:378
-#, fuzzy
 msgid "Album artist:"
-msgstr "Artysta albumu"
+msgstr "Artysta albumu:"
 
 #. i18n: file: gui/tageditor.ui:69
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:381 rc.cpp:381
-#, fuzzy
 msgid "Album:"
-msgstr "Albumy:"
+msgstr "Album:"
 
 #. i18n: file: gui/tageditor.ui:82
 #. i18n: ectx: property (text), widget (QLabel, trackLabel)
 #: po/rc.cpp:384 rc.cpp:384
-#, fuzzy
 msgid "Track number:"
-msgstr "Numer utworu"
+msgstr "Numer utworu:"
 
 #. i18n: file: gui/tageditor.ui:95
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:387 rc.cpp:387
 msgid "Disc number:"
-msgstr ""
+msgstr "Numer płyty:"
 
 #. i18n: file: gui/tageditor.ui:121
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: po/rc.cpp:393 rc.cpp:393
-#, fuzzy
 msgid "Year:"
-msgstr "Rok"
+msgstr "Rok:"
 
 #. i18n: file: lyrics/lyricsettings.ui:23
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -2148,7 +2228,7 @@ msgstr "Bezpośrednie połączenie internetowe"
 #. i18n: ectx: property (text), widget (QRadioButton, proxyManual)
 #: po/rc.cpp:420 rc.cpp:420
 msgid "Manual proxy configuration"
-msgstr "Ręczne ustawienie proxy"
+msgstr "Ręczne ustawienia proxy"
 
 #. i18n: file: network/proxysettings.ui:59
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
@@ -2194,11 +2274,11 @@ msgstr "Piotr Wicijowski"
 #: po/rc.cpp:443 rc.cpp:443
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "piotr[dot]wicijowski[at]gmail[dot]com"
 
 #: widgets/fancytabwidget.cpp:796 widgets/fancytabwidget.cpp:805
 msgid "Icons Only"
-msgstr ""
+msgstr "Tylko ikony"
 
 #: widgets/fancytabwidget.cpp:797
 msgid "Style"

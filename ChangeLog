@@ -33,6 +33,8 @@
 25. Query MPD for list of supported protocols - and only allow supported URLs.
 26. Remove 'Copy Track Info' from play queue context menu - functionality is
     available via Ctrl-C
+27. Fix streams export.
+28. Save/restore maximised state when collpasing/expanding interface.
 
 0.3.0
 -----

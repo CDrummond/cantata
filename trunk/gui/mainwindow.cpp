@@ -355,6 +355,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     copyTrackInfoAction = actionCollection()->addAction("copytrackinfo");
     copyTrackInfoAction->setText(i18n("Copy Track Info"));
+    copyTrackInfoAction->setShortcut(QKeySequence::Copy);
 
     cropPlaylistAction = actionCollection()->addAction("cropplaylist");
     cropPlaylistAction->setText(i18n("Crop"));
@@ -747,7 +748,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(clearPlaylistAction);
     playQueue->addAction(cropPlaylistAction);
     playQueue->addAction(shufflePlaylistAction);
-    playQueue->addAction(copyTrackInfoAction);
+    //playQueue->addAction(copyTrackInfoAction);
     playQueue->installEventFilter(new DeleteKeyEventHandler(playQueue, removeFromPlaylistAction));
     playQueue->setRootIsDecorated(false);
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));

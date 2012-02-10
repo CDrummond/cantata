@@ -31,6 +31,8 @@
 23. Better repeat and consume icons.
 24. Fix search placeholder text when navigating back in list style devices.
 25. Query MPD for list of supported protocols - and only allow supported URLs.
+26. Remove 'Copy Track Info' from play queue context menu - functionality is
+    available via Ctrl-C
 
 0.3.0
 -----

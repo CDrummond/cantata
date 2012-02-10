@@ -1776,10 +1776,12 @@ void MainWindow::togglePlaylist()
         return;
     }
     static QSize lastSize;
+    static bool lastMax=false;
 
     bool showing=expandInterfaceAction->isChecked();
 
     if (!showing) {
+        lastMax=isMaximized();
         lastSize=size();
     } else {
         setMinimumHeight(0);
@@ -1798,7 +1800,11 @@ void MainWindow::togglePlaylist()
         resize(adjustWidth ? lastSize.width() : size().width(), adjustHeight ? lastSize.height() : size().height());
     }
 
-    if (!showing) {
+    if (showing) {
+        if (lastMax) {
+            showMaximized();
+        }
+    } else {
         setMinimumHeight(size().height());
         setMaximumHeight(size().height());
     }

@@ -229,15 +229,28 @@ void StreamsPage::importXml()
 void StreamsPage::exportXml()
 {
     QModelIndexList selected=view->selectedIndexes();
-    QModelIndexList mapped;
+    QSet<StreamsModel::Item *> items;
+    QSet<StreamsModel::Item *> categories;
     foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
+        QModelIndex i=proxy.mapToSource(idx);
+        StreamsModel::Item *itm=static_cast<StreamsModel::Item *>(i.internalPointer());
+        if (itm->isCategory()) {
+            if (!categories.contains(itm)) {
+                categories.insert(itm);
+            }
+            foreach (StreamsModel::StreamItem *s, static_cast<StreamsModel::CategoryItem *>(itm)->streams) {
+                items.insert(s);
+            }
+        } else {
+            items.insert(itm);
+            categories.insert(static_cast<StreamsModel::StreamItem *>(itm)->parent);
+        }
     }
 
     QString name;
 
-    if (1==mapped.count()) {
-        name=static_cast<StreamsModel::StreamItem*>(mapped.first().internalPointer())->name+QLatin1String(".cantata");
+    if (1==categories.count()) {
+        name=static_cast<StreamsModel::StreamItem *>(*(categories.begin()))->name+QLatin1String(".cantata");
     }
     #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getSaveFileName(name, i18n("*.cantata|Cantata Streams"), this, i18n("Export Streams"));
@@ -249,7 +262,7 @@ void StreamsPage::exportXml()
         return;
     }
 
-    if (!model.save(fileName, mapped)) {
+    if (!model.save(fileName, categories+items)) {
         #ifdef ENABLE_KDE_SUPPORT
         KMessageBox::error(this, i18n("Failed to create <b>%1</b>!", fileName));
         #else

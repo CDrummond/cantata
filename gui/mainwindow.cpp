@@ -814,12 +814,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
     connect(libraryPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
+    connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(deleteSongsAction, SIGNAL(triggered()), SLOT(deleteSongs()));
     connect(organiseFilesAction, SIGNAL(triggered()), SLOT(organiseFiles()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
@@ -1454,6 +1456,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 }
 
+#include <QtCore/QDebug>
 void MainWindow::updateStats()
 {
     /*
@@ -2186,6 +2189,8 @@ void MainWindow::editTags()
         songs=libraryPage->selectedSongs();
     } else if (albumsPage->isVisible()) {
         songs=albumsPage->selectedSongs();
+    } else if (folderPage->isVisible()) {
+        songs=folderPage->selectedSongs();
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     else if (devicesPage->isVisible()) {
@@ -2218,6 +2223,8 @@ void MainWindow::organiseFiles()
         songs=libraryPage->selectedSongs();
     } else if (albumsPage->isVisible()) {
         songs=albumsPage->selectedSongs();
+    } else if (folderPage->isVisible()) {
+        songs=folderPage->selectedSongs();
     } else if (devicesPage->isVisible()) {
         songs=devicesPage->selectedSongs();
     }
@@ -2242,6 +2249,8 @@ void MainWindow::addToDevice(const QString &udi)
         libraryPage->addSelectionToDevice(udi);
     } else if (albumsPage->isVisible()) {
         albumsPage->addSelectionToDevice(udi);
+    } else if (folderPage->isVisible()) {
+        folderPage->addSelectionToDevice(udi);
     }
 }
 
@@ -2254,6 +2263,8 @@ void MainWindow::deleteSongs()
         libraryPage->deleteSongs();
     } else if (albumsPage->isVisible()) {
         albumsPage->deleteSongs();
+    } else if (folderPage->isVisible()) {
+        folderPage->deleteSongs();
     } else if (devicesPage->isVisible()) {
         devicesPage->deleteSongs();
     }

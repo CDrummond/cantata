@@ -23,12 +23,14 @@
 
 #include "folderpage.h"
 #include "mpdconnection.h"
+#include "musiclibrarymodel.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
+#include <KDE/KMessageBox>
 #else
 #include <QtGui/QAction>
 #endif
@@ -56,6 +58,16 @@ FolderPage::FolderPage(MainWindow *p)
     view->addAction(p->replacePlaylistAction);
     view->addAction(p->addToStoredPlaylistAction);
 //     view->addAction(p->burnAction);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addAction(p->copyToDeviceAction);
+    view->addAction(p->organiseFilesAction);
+    #endif
+    #ifdef TAGLIB_FOUND
+    view->addAction(p->editTagsAction);
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    view->addAction(p->deleteSongsAction);
+    #endif
 
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
@@ -127,6 +139,16 @@ void FolderPage::controlActions()
     mw->addToPlaylistAction->setEnabled(enable);
     mw->replacePlaylistAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    mw->copyToDeviceAction->setEnabled(enable);
+    mw->organiseFilesAction->setEnabled(enable);
+    #endif
+    #ifdef TAGLIB_FOUND
+    mw->editTagsAction->setEnabled(enable);
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    mw->deleteSongsAction->setEnabled(enable);
+    #endif
 }
 
 void FolderPage::itemDoubleClicked(const QModelIndex &)
@@ -140,6 +162,22 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
     if (DirViewItem::Type_File==item->type()) {
         addSelectionToPlaylist();
     }
+}
+
+QList<Song> FolderPage::selectedSongs() const
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return QList<Song>();
+    }
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    return MusicLibraryModel::self()->songs(model.filenames(mapped));
 }
 
 QStringList FolderPage::selectedFiles() const
@@ -171,6 +209,30 @@ void FolderPage::addSelectionToPlaylist(const QString &name)
         view->clearSelection();
     }
 }
+
+#ifdef ENABLE_DEVICES_SUPPORT
+void FolderPage::addSelectionToDevice(const QString &udi)
+{
+    QList<Song> songs=selectedSongs();
+
+    if (!songs.isEmpty()) {
+        emit addToDevice(QString(), udi, songs);
+        view->clearSelection();
+    }
+}
+
+void FolderPage::deleteSongs()
+{
+    QList<Song> songs=selectedSongs();
+
+    if (!songs.isEmpty()) {
+        if (KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
+            emit deleteSongs(QString(), songs);
+        }
+        view->clearSelection();
+    }
+}
+#endif
 
 QStringList FolderPage::walk(QModelIndex rootItem)
 {

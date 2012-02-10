@@ -191,7 +191,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(genre, SIGNAL(editTextChanged(const QString &)), SLOT(checkChanged()));
     connect(year, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
     connect(trackName, SIGNAL(activated(int)), SLOT(setIndex(int)));
-    connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
+    connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
 
     if (original.count()>0) {
         saveable=original.at(0).file.startsWith('/') || QDir(Settings::self()->mpdDir()).isReadable();
@@ -499,7 +499,7 @@ void TagEditor::applyUpdates()
 
     if (updated) {
         MusicLibraryModel::self()->removeCache();
-        emit getStats();
+        emit update();
     }
 }
 

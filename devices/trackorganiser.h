@@ -39,7 +39,8 @@ public:
     void show(const QList<Song> &songs, const QString &udi);
 
 Q_SIGNALS:
-    void getStats();
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
+    void update();
 
 private Q_SLOTS:
     void configureFilenameScheme();

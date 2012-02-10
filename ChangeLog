@@ -35,6 +35,7 @@
     available via Ctrl-C
 27. Fix streams export.
 28. Save/restore maximised state when collpasing/expanding interface.
+29. Add 'copy to device', etc, actions to folders page.
 
 0.3.0
 -----

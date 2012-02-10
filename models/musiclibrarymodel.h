@@ -55,6 +55,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes) const;
     QList<Song> songs(const QModelIndexList &indexes) const;
+    QList<Song> songs(const QStringList &filenames) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     const MusicLibraryItemRoot * root() const { return rootItem; }
     bool isFromSingleTracks(const Song &s) const { return rootItem->isFromSingleTracks(s); }

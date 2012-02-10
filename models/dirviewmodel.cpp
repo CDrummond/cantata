@@ -174,12 +174,88 @@ void DirViewModel::clear()
 void DirViewModel::updateDirView(DirViewItemRoot *newroot)
 {
     TF_DEBUG
-    const DirViewItemRoot *oldRoot = rootItem;
+    bool incremental=rootItem->childCount() && newroot->childCount();
 
-    beginResetModel();
-    rootItem = newroot;
-    delete oldRoot;
-    endResetModel();
+    if (incremental) {
+        QSet<QString> currentFiles=rootItem->allFiles();
+        QSet<QString> updateFiles=newroot->allFiles();
+        QSet<QString> removed=currentFiles-updateFiles;
+        QSet<QString> added=updateFiles-currentFiles;
+
+        foreach (const QString &s, added) {
+            addFileToList(s);
+        }
+        foreach (const QString &s, removed) {
+            removeFileFromList(s);
+        }
+    } else {
+        const DirViewItemRoot *oldRoot = rootItem;
+
+        beginResetModel();
+        rootItem = newroot;
+        delete oldRoot;
+        endResetModel();
+    }
+}
+
+void DirViewModel::addFileToList(const QString &file)
+{
+    addFileToList(file.split('/'), QModelIndex(), rootItem);
+}
+
+void DirViewModel::removeFileFromList(const QString &file)
+{
+    removeFileFromList(file.split('/'), QModelIndex(), rootItem);
+}
+
+void DirViewModel::addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir)
+{
+    if (0==parts.count()) {
+        return;
+    }
+
+    QString p=parts[0];
+
+    DirViewItem *child=dir->child(p);
+    if (child) {
+        if (DirViewItem::Type_Dir==child->type()) {
+            addFileToList(parts.mid(1), index(dir->indexOf(child), 0, parent), static_cast<DirViewItemDir *>(child));
+        }
+    } else {
+        beginInsertRows(parent, dir->childCount(), dir->childCount());
+        dir->insertFile(parts);
+        endInsertRows();
+    }
+}
+
+void DirViewModel::removeFileFromList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir)
+{
+    if (0==parts.count()) {
+        return;
+    }
+
+    QString p=parts[0];
+
+    DirViewItem *child=dir->child(p);
+    if (child) {
+        if (DirViewItem::Type_Dir==child->type()) {
+            removeFileFromList(parts.mid(1), index(dir->indexOf(child), 0, parent), static_cast<DirViewItemDir *>(child));
+        } else if (DirViewItem::Type_File==child->type()) {
+            int index=dir->indexOf(child);
+            beginRemoveRows(parent, index, index);
+            dir->remove(child);
+            endRemoveRows();
+        }
+    }
+
+    if (0==dir->childCount() && dir->parent()) {
+        DirViewItemDir *pd=static_cast<DirViewItemDir *>(dir->parent());
+        int index=pd->indexOf(dir);
+        beginRemoveRows(parent.parent(), index, index);
+        pd->remove(dir);
+        delete dir;
+        endRemoveRows();
+    }
 }
 
 Qt::ItemFlags DirViewModel::flags(const QModelIndex &index) const

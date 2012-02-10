@@ -31,17 +31,42 @@
 class DirViewItemDir : public DirViewItem
 {
 public:
-    DirViewItemDir(const QString name, DirViewItem *parent)
+    DirViewItemDir(const QString &name, DirViewItem *parent)
         : DirViewItem(name, DirViewItem::Type_Dir, parent) {
     }
     DirViewItemDir()
         : DirViewItem(QString(), DirViewItem::Type_Root, 0) {
     }
     virtual ~DirViewItemDir() {
+        qDeleteAll(m_childItems);
     }
 
-    DirViewItem * createDirectory(const QString dirName);
-    DirViewItem * insertFile(const QString fileName);
+    virtual int indexOf(DirViewItem *c) const {
+        return m_childItems.indexOf(c);
+    }
+    int childCount() const {
+        return m_childItems.count();
+    }
+    DirViewItem * child(int row) const {
+        return m_childItems.value(row);
+    }
+    DirViewItem * child(const QString &name) const {
+        return m_indexes.contains(name) ? m_childItems.value(m_indexes[name]) : 0;
+    }
+    DirViewItem * createDirectory(const QString &dirName);
+    DirViewItem * insertFile(const QString &fileName);
+    void insertFile(const QStringList &path);
+    void remove(DirViewItem *dir);
+
+    bool hasChild(const QString &name) {
+        return m_indexes.contains(name);
+    }
+
+    QSet<QString> allFiles() const;
+
+private:
+    QHash<QString, int> m_indexes;
+    QList<DirViewItem *> m_childItems;
 };
 
 #endif

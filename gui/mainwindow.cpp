@@ -746,6 +746,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setDropIndicatorShown(true);
     playQueue->addAction(removeFromPlaylistAction);
     playQueue->addAction(clearPlaylistAction);
+    playQueue->addAction(savePlaylistAction);
     playQueue->addAction(cropPlaylistAction);
     playQueue->addAction(shufflePlaylistAction);
     //playQueue->addAction(copyTrackInfoAction);

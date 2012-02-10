@@ -41,6 +41,7 @@
 
 AlbumsPage::AlbumsPage(MainWindow *p)
     : QWidget(p)
+    , mw(p)
 {
     setupUi(this);
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
@@ -50,8 +51,6 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     addToPlaylist->setAutoRaise(true);
     replacePlaylist->setAutoRaise(true);
     libraryUpdate->setAutoRaise(true);
-    addToPlaylist->setEnabled(false);
-    replacePlaylist->setEnabled(false);
 
     #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Albums"));
@@ -80,8 +79,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
-    connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
-    connect(view, SIGNAL(itemsSelected(bool)), replacePlaylist, SLOT(setEnabled(bool)));
+    connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
     updateGenres(QSet<QString>());
@@ -238,6 +236,26 @@ void AlbumsPage::searchItems()
             proxy.invalidate();
         }
     }
+}
+
+void AlbumsPage::controlActions()
+{
+    QModelIndexList selected=view->selectedIndexes();
+    bool enable=selected.count()>0;
+
+    mw->addToPlaylistAction->setEnabled(enable);
+    mw->replacePlaylistAction->setEnabled(enable);
+    mw->addToStoredPlaylistAction->setEnabled(enable);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    mw->copyToDeviceAction->setEnabled(enable);
+    mw->organiseFilesAction->setEnabled(enable);
+    #endif
+    #ifdef TAGLIB_FOUND
+    mw->editTagsAction->setEnabled(enable);
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    mw->deleteSongsAction->setEnabled(enable);
+    #endif
 }
 
 void AlbumsPage::updateGenres(const QSet<QString> &g)

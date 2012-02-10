@@ -294,7 +294,6 @@ private:
 private:
     bool connectedToMpd;
     int loaded;
-    int prevPage;
     MPDStatus::State lastState;
     quint32 songTime;
     qint32 lastSongId;

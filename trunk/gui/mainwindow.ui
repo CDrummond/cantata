@@ -183,7 +183,7 @@
        <item row="0" column="0" colspan="9">
         <widget class="LineEdit" name="searchPlaylistLineEdit"/>
        </item>
-       <item row="1" column="0" colspan="9">
+       <item row="1" column="0" colspan="8">
         <widget class="TreeView" name="playQueue">
          <property name="contextMenuPolicy">
           <enum>Qt::CustomContextMenu</enum>
@@ -271,9 +271,6 @@
        </item>
        <item row="2" column="7">
         <widget class="QToolButton" name="removeAllFromPlaylistPushButton"/>
-       </item>
-       <item row="2" column="8">
-        <widget class="QToolButton" name="removeFromPlaylistPushButton"/>
        </item>
        <item row="2" column="4">
         <widget class="QToolButton" name="consumePushButton"/>

@@ -319,6 +319,7 @@ bool MusicLibraryModel::songExists(const Song &s) const
 
 void MusicLibraryModel::addSongToList(const Song &s)
 {
+    databaseTime=QDateTime();
     MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
     if (!artistItem) {
         beginInsertRows(QModelIndex(), rootItem->childCount(), rootItem->childCount());
@@ -366,6 +367,7 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
         return;
     }
 
+    databaseTime=QDateTime();
     if (1==artistItem->childCount() && 1==albumItem->childCount()) {
         // 1 album with 1 song - so remove whole artist
         int row=rootItem->children().indexOf(artistItem);
@@ -420,6 +422,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     bool updatedSongs=false;
     bool needToSave=dbUpdate>databaseTime;
     bool incremental=rootItem->childCount() && newroot->childCount();
+    bool needToUpdate=databaseTime.isNull();
 
     if (incremental && !QFile::exists(cacheFileName())) {
         incremental=false;
@@ -450,8 +453,8 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         updatedSongs=true;
     }
 
-    if (updatedSongs) {
-        if (!fromFile && needToSave) {
+    if (updatedSongs || needToUpdate) {
+        if (!fromFile && (needToSave || needToUpdate)) {
             toXML(rootItem, dbUpdate);
         }
 
@@ -624,6 +627,27 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
             break;
         }
     }
+    return songs;
+}
+
+QList<Song> MusicLibraryModel::songs(const QStringList &filenames) const
+{
+    QSet<QString> files=filenames.toSet();
+    QList<Song> songs;
+
+    foreach (MusicLibraryItem *artist, rootItem->children()) {
+        foreach (MusicLibraryItem *album, artist->children()) {
+            foreach (MusicLibraryItem *song, album->children()) {
+                QSet<QString>::Iterator it=files.find(static_cast<MusicLibraryItemSong*>(song)->file());
+
+                if (it!=files.end()) {
+                    files.erase(it);
+                    songs.append(static_cast<MusicLibraryItemSong*>(song)->song());
+                }
+            }
+        }
+    }
+
     return songs;
 }
 

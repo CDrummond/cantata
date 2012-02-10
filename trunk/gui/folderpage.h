@@ -41,7 +41,12 @@ public:
     void refresh();
     void clear();
     QStringList selectedFiles() const;
+    QList<Song> selectedSongs() const;
     void addSelectionToPlaylist(const QString &name=QString());
+    #ifdef ENABLE_DEVICES_SUPPORT
+    void addSelectionToDevice(const QString &udi);
+    void deleteSongs();
+    #endif
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 
 Q_SIGNALS:
@@ -49,6 +54,9 @@ Q_SIGNALS:
     void add(const QStringList &files);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
     void listAll();
+
+    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
+    void deleteSongs(const QString &from, const QList<Song> &songs);
 
 public Q_SLOTS:
     void searchItems();

@@ -708,7 +708,6 @@ void MPDConnection::listAllInfo(const QDateTime &dbUpdate)
     emit updatingLibrary();
     Response response=sendCommand("listallinfo");
     if(response.ok) {
-        qDebug() << "parseLibraryItems:" << response.data;
         emit musicLibraryUpdated(MPDParseUtils::parseLibraryItems(response.data), dbUpdate);
     }
     emit updatedLibrary();

@@ -168,18 +168,7 @@ void LibraryPage::addSelectionToPlaylist(const QString &name)
 #ifdef ENABLE_DEVICES_SUPPORT
 void LibraryPage::addSelectionToDevice(const QString &udi)
 {
-    const QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
-        return;
-    }
-
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
-    QList<Song> songs=MusicLibraryModel::self()->songs(mapped);
+    QList<Song> songs=selectedSongs();
 
     if (!songs.isEmpty()) {
         emit addToDevice(QString(), udi, songs);
@@ -189,18 +178,7 @@ void LibraryPage::addSelectionToDevice(const QString &udi)
 
 void LibraryPage::deleteSongs()
 {
-    const QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
-        return;
-    }
-
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
-    QList<Song> songs=MusicLibraryModel::self()->songs(mapped);
+    QList<Song> songs=selectedSongs();
 
     if (!songs.isEmpty()) {
         if (KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {

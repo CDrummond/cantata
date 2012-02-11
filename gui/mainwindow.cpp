@@ -935,6 +935,8 @@ void MainWindow::setPlaybackButtonsSize(bool small)
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     foreach (QToolButton *b, playbackBtns) {
         b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
+        b->setMinimumSize(small ? QSize(24, 24) : QSize(36, 36));
+        b->setToolButtonStyle(Qt::ToolButtonIconOnly);
     }
 }
 
@@ -945,6 +947,7 @@ void MainWindow::setControlButtonsSize(bool small)
 
     foreach (QToolButton *b, controlBtns) {
         b->setIconSize(small ? QSize(18, 18) : QSize(22, 22));
+        b->setToolButtonStyle(Qt::ToolButtonIconOnly);
     }
 }
 

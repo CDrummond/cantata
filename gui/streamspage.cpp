@@ -281,9 +281,8 @@ void StreamsPage::add()
         QString name=dlg.name();
         QString url=dlg.url();
         QString cat=dlg.category();
-        QString genre=dlg.genre();
-
         QString existing=model.name(cat, url);
+
         if (!existing.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>", existing));
@@ -293,7 +292,7 @@ void StreamsPage::add()
             return;
         }
 
-        if (!model.add(cat, name, genre, QString(), url)) {
+        if (!model.add(cat, name, dlg.genre(), dlg.icon(), url)) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", name));
             #else

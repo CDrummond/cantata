@@ -38,6 +38,7 @@
 29. Add 'copy to device', etc, actions to folders page.
 30. Incremental update of folder page items.
 31. Use current style for position slider.
+32. Fix some toolbutton clipping with some styles.
 
 0.3.0
 -----

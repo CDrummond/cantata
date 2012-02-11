@@ -163,9 +163,12 @@ void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
 
 void StreamsPage::itemDoubleClicked(const QModelIndex &index)
 {
-    QModelIndexList indexes;
-    indexes.append(index);
-    addItemsToPlayQueue(indexes);
+    QModelIndexList mapped=proxy.mapToSource(idx);
+    if (!static_cast<StreamsModel::Item *>(mapped.internalPointer())->isCategory()) {
+        QModelIndexList indexes;
+        indexes.append(index);
+        addItemsToPlayQueue(indexes);
+    }
 }
 
 void StreamsPage::updateGenres(const QSet<QString> &g)

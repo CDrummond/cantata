@@ -185,6 +185,8 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(artist, SIGNAL(editTextChanged(const QString &)), SLOT(checkChanged()));
     connect(albumArtist, SIGNAL(activated(int)), SLOT(checkChanged()));
     connect(albumArtist, SIGNAL(editTextChanged(const QString &)), SLOT(checkChanged()));
+    connect(album, SIGNAL(activated(int)), SLOT(checkChanged()));
+    connect(album, SIGNAL(editTextChanged(const QString &)), SLOT(checkChanged()));
     connect(genre, SIGNAL(activated(int)), SLOT(checkChanged()));
     connect(track, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
     connect(disc, SIGNAL(valueChanged(int)), SLOT(checkChanged()));
@@ -206,6 +208,7 @@ void TagEditor::fillSong(Song &s, bool skipEmpty) const
         setString(s.title, title->text().trimmed(), skipEmpty);
     }
     setString(s.artist, artist->text().trimmed(), skipEmpty);
+    setString(s.album, album->text().trimmed(), skipEmpty);
     setString(s.albumartist, albumArtist->text().trimmed(), skipEmpty);
     if (!skipEmpty) {
         s.track=track->value();

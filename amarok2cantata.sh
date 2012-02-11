@@ -52,7 +52,7 @@ for line in `cat "$1/main.js" | grep Station` ; do
     if [ "$name" != "" ] && [ "$url" != "" ] ; then
         if [ $found -eq 0 ] ; then
             echo "<cantata version=\"1.0\">" > "$cantataFile"
-            echo " <category=\""$scriptName"\">" >> "$cantataFile"
+            echo " <category name=\""$scriptName"\">" >> "$cantataFile"
         fi
         echo '  <stream name="'$name'" url="'$url'"/>' >> "$cantataFile"
         let "found=found +1"

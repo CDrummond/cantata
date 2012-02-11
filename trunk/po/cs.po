@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-09 21:24+0000\n"
-"PO-Revision-Date: 2012-02-09 23:52+0100\n"
+"PO-Revision-Date: 2012-02-10 22:40+0100\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -813,7 +813,7 @@ msgstr "Upravit značky"
 
 #: gui/mainwindow.cpp:407 gui/playlistspage.cpp:77
 msgid "Playlists"
-msgstr "Seznamy skladeb"
+msgstr "Seznamy"
 
 #: gui/mainwindow.cpp:410 gui/preferencesdialog.cpp:114
 msgid "Lyrics"
@@ -931,7 +931,7 @@ msgstr "Cantata"
 #: gui/playbacksettings.cpp:36 po/rc.cpp:162 po/rc.cpp:195 rc.cpp:162
 #: rc.cpp:195
 msgid "None"
-msgstr "Žádná"
+msgstr "Žádné"
 
 #: gui/playbacksettings.cpp:38 models/playqueuemodel.cpp:110
 msgid "Album"
@@ -2124,7 +2124,7 @@ msgid ""
 "(and it's sub-folders), then Cantata will save any downloaded covers into "
 "the respective album folder.</i>"
 msgstr ""
-"<i><b>Poznámka:</b> Nastavení pro \"složku s hudbou\" se používá pro hledání "
+"<i><b>Poznámka:</b> Nastavení Složka s hudbou se používá pro hledání "
 "obrázků obalů (<code>cover.jpg</code>). Pokud k této složce máte i oprávnění "
 "k zápisu (a do jejích podsložek), potom Cantata uloží všechny stažené obaly "
 "do příslušné složky alba.</i>"

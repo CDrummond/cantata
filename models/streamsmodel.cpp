@@ -389,6 +389,7 @@ void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, c
         QString oldUrl(stream->url.toString());
         stream->name=name;
         stream->url=url;
+        stream->icon=icon;
         if (oldUrl!=url) {
             cat->itemMap.remove(oldUrl);
             cat->itemMap.insert(url, stream);

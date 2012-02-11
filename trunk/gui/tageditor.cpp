@@ -202,10 +202,14 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 
 void TagEditor::fillSong(Song &s, bool skipEmpty) const
 {
-    setString(s.title, title->text().trimmed(), skipEmpty);
+    if (!skipEmpty) {
+        setString(s.title, title->text().trimmed(), skipEmpty);
+    }
     setString(s.artist, artist->text().trimmed(), skipEmpty);
     setString(s.albumartist, albumArtist->text().trimmed(), skipEmpty);
-    s.track=track->value();
+    if (!skipEmpty) {
+        s.track=track->value();
+    }
     s.disc=disc->value();
     setString(s.genre, genre->text().trimmed(), skipEmpty);
     s.year=year->value();

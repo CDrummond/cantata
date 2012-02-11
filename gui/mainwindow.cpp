@@ -107,14 +107,15 @@ public:
     ProxyStyle()
         : QProxyStyle()
     {
+        setBaseStyle(qApp->style());
     }
 
     int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
     {
         if(stylehint==QStyle::SH_Slider_AbsoluteSetButtons){
-            return Qt::LeftButton|QProxyStyle::styleHint(stylehint,opt,widget,returnData);
+            return Qt::LeftButton|QProxyStyle::styleHint(stylehint, opt, widget ,returnData);
         }else{
-            return QProxyStyle::styleHint(stylehint,opt,widget,returnData);
+            return QProxyStyle::styleHint(stylehint, opt, widget, returnData);
         }
     }
 };

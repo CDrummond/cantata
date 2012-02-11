@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>675</width>
-    <height>335</height>
+    <height>349</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -183,7 +183,7 @@
        <item row="0" column="0" colspan="9">
         <widget class="LineEdit" name="searchPlaylistLineEdit"/>
        </item>
-       <item row="1" column="0" colspan="8">
+       <item row="1" column="0" colspan="9">
         <widget class="TreeView" name="playQueue">
          <property name="contextMenuPolicy">
           <enum>Qt::CustomContextMenu</enum>

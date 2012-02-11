@@ -202,15 +202,15 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     }
 }
 
-void TagEditor::fillSong(Song &s, bool skipEmpty) const
+void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
 {
-    if (!skipEmpty) {
+    if (!isAll) {
         setString(s.title, title->text().trimmed(), skipEmpty);
     }
     setString(s.artist, artist->text().trimmed(), skipEmpty);
     setString(s.album, album->text().trimmed(), skipEmpty);
     setString(s.albumartist, albumArtist->text().trimmed(), skipEmpty);
-    if (!skipEmpty) {
+    if (!isAll) {
         s.track=track->value();
     }
     s.disc=disc->value();
@@ -224,11 +224,9 @@ void TagEditor::enableOkButton()
         return;
     }
 
-    bool isAll=0==currentSongIndex && original.count()>1;
-    bool allEdited=isAll && editedIndexes.contains(0);
-
-    enableButton(Ok, (isAll && allEdited) ||
-                     (!isAll && ((allEdited && editedIndexes.count()>1) || (!allEdited && editedIndexes.count()>0))));
+    enableButton(Ok, (editedIndexes.count()>1) ||
+                     (1==original.count() && 1==editedIndexes.count()) ||
+                     (1==editedIndexes.count() && !editedIndexes.contains(0)) );
     enableButton(Reset, isButtonEnabled(Ok));
 }
 
@@ -409,12 +407,12 @@ void TagEditor::updateEditedStatus(int index)
     }
 }
 
-void TagEditor::updateEdited(bool skipEmpty)
+void TagEditor::updateEdited(bool isFromAll)
 {
     Song s=edited.at(currentSongIndex);
     bool isAll=0==currentSongIndex && original.count()>1;
-    fillSong(s, skipEmpty);
-    if (equalTags(s, original.at(currentSongIndex), skipEmpty || isAll)) {
+    fillSong(s, isFromAll || isAll, isFromAll);
+    if (equalTags(s, original.at(currentSongIndex), isFromAll || isAll)) {
         if (editedIndexes.contains(currentSongIndex)) {
             editedIndexes.remove(currentSongIndex);
             updateTrackName(currentSongIndex, false);

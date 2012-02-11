@@ -152,7 +152,11 @@ void StreamDialog::changed()
     QString u=url();
     QString c=category();
     QString g=genre();
-    bool enableOk=!n.isEmpty() && !u.isEmpty() && !c.isEmpty() && (n!=prevName || u!=prevUrl || c!=prevCat || g!=prevGenre);
+    bool enableOk=!n.isEmpty() && !u.isEmpty() && !c.isEmpty() && (n!=prevName || u!=prevUrl || c!=prevCat || g!=prevGenre
+                                                                  #ifdef ENABLE_KDE_SUPPORT
+                                                                  || icon()!=prevIconName
+                                                                  #endif
+                                                                  );
     bool validProtocol=u.isEmpty() || urlHandlers.contains(QUrl(u).scheme()) || urlHandlers.contains(u);
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -163,7 +167,6 @@ void StreamDialog::changed()
 
     enableOk=enableOk && validProtocol;
     #ifdef ENABLE_KDE_SUPPORT
-    enableOk=enableOk && icon()!=prevIconName;
     enableButton(KDialog::Ok, enableOk);
     #else
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enableOk);

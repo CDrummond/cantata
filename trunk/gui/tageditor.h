@@ -58,7 +58,7 @@ Q_SIGNALS:
 
 private:
     void enableOkButton();
-    void fillSong(Song &s, bool skipEmpty=false) const;
+    void fillSong(Song &s, bool isAll, bool skipEmpty) const;
 #ifdef ENABLE_KDE_SUPPORT
     void slotButtonClicked(int button);
 #endif
@@ -71,7 +71,7 @@ private Q_SLOTS:
     void revertVa();
     void capitalise();
     void checkChanged();
-    void updateEdited(bool skipEmpty=false);
+    void updateEdited(bool isFromAll=false);
     void setSong(const Song &s);
     void setIndex(int idx);
 #ifndef ENABLE_KDE_SUPPORT

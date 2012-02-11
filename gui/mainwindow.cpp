@@ -1822,7 +1822,7 @@ void MainWindow::setupPlaylistView()
     playQueueHeader->setContextMenuPolicy(Qt::CustomContextMenu);
     playQueueHeader->resizeSection(PlayQueueModel::COL_STATUS, 20);
     playQueueHeader->resizeSection(PlayQueueModel::COL_TRACK, fm.width("999"));
-    playQueueHeader->resizeSection(PlayQueueModel::COL_YEAR, fm.width("9999"));
+    playQueueHeader->resizeSection(PlayQueueModel::COL_YEAR, fm.width("99999"));
     playQueueHeader->setResizeMode(PlayQueueModel::COL_STATUS, QHeaderView::Fixed);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_TITLE, QHeaderView::Interactive);
     playQueueHeader->setResizeMode(PlayQueueModel::COL_ARTIST, QHeaderView::Interactive);

@@ -61,16 +61,14 @@ namespace Tags
 
 static TagLib::FileRef getFileRef(const QString &path)
 {
-#ifdef Q_OS_WIN32
+    #ifdef Q_OS_WIN32
     const wchar_t *encodedName = reinterpret_cast< const wchar_t * >(path.utf16());
-#else
-#ifdef COMPLEX_TAGLIB_FILENAME
+    #elif defined COMPLEX_TAGLIB_FILENAME
     const wchar_t *encodedName = reinterpret_cast< const wchar_t * >(path.utf16());
-#else
+    #else
     QByteArray fileName = QFile::encodeName(path);
     const char *encodedName = fileName.constData(); // valid as long as fileName exists
-#endif
-#endif
+    #endif
     return TagLib::FileRef(encodedName, true, TagLib::AudioProperties::Fast);
 }
 
@@ -80,13 +78,13 @@ static void ensureFileTypeResolvers()
     if (!alreadyAdded) {
         alreadyAdded = true;
 
-#ifdef TAGLIB_FOUND
-#ifdef TAGLIB_EXTRAS_FOUND
+        #ifdef TAGLIB_FOUND
+        #ifdef TAGLIB_EXTRAS_FOUND
         TagLib::FileRef::addFileTypeResolver(new AudibleFileTypeResolver);
         TagLib::FileRef::addFileTypeResolver(new RealMediaFileTypeResolver);
-#endif
+        #endif
         TagLib::FileRef::addFileTypeResolver(new FileTypeResolver());
-#endif
+        #endif
     }
 }
 

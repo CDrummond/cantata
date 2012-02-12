@@ -47,6 +47,7 @@
 #include <taglib/asftag.h>
 #include <taglib/apetag.h>
 #include <taglib/id3v2tag.h>
+#include <taglib/id3v1tag.h>
 #include <taglib/mp4tag.h>
 #include <taglib/xiphcomment.h>
 #include <taglib/textidentificationframe.h>
@@ -586,12 +587,17 @@ bool updateArtistAndTitle(const QString &fileName, const Song &song)
         return false;
     }
 
+    TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
+    TagLib::ID3v1::Tag *v1=mpeg ? mpeg->ID3v1Tag(false) : 0;
+    bool haveV1=v1 && (!v1->title().isEmpty() || !v1->artist().isEmpty() || !v1->album().isEmpty());
     TagLib::Tag *tag=fileref.tag();
     tag->setTitle(qString2TString(song.title));
     tag->setArtist(qString2TString(song.artist));
-    TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
 
-    return mpeg ? mpeg->save(TagLib::MPEG::File::ID3v2) : fileref.file()->save();
+    if (mpeg && !haveV1) {
+        return mpeg->save(TagLib::MPEG::File::ID3v2);
+    }
+    return fileref.file()->save();
 }
 
 bool update(const QString &fileName, const Song &from, const Song &to)
@@ -605,9 +611,15 @@ bool update(const QString &fileName, const Song &from, const Song &to)
         return false;
     }
 
+    TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
+    TagLib::ID3v1::Tag *v1=mpeg ? mpeg->ID3v1Tag(false) : 0;
+    bool haveV1=v1 && (!v1->title().isEmpty() || !v1->artist().isEmpty() || !v1->album().isEmpty());
+
     if (writeTags(fileref, from, to)) {
-        TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
-        return mpeg ? mpeg->save(TagLib::MPEG::File::ID3v2) : fileref.file()->save();
+        if (mpeg && !haveV1) {
+            return mpeg->save(TagLib::MPEG::File::ID3v2);
+        }
+        return fileref.file()->save();
     }
     return false;
 }

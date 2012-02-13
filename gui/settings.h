@@ -36,12 +36,8 @@ class Wallet;
 
 #define CANTATA_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
 
-class QTimer;
-
 class Settings : public QObject
 {
-    Q_OBJECT
-
 public:
     enum Constants
     {
@@ -129,17 +125,13 @@ public:
     void saveDevicesView(int v);
     #endif
     void saveStopFadeDuration(int v);
-    void save(bool force=false);
+    void save();
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();
     #endif
 
-private Q_SLOTS:
-    void actualSave();
-
 private:
     QString mpdDirSetting;
-    QTimer *timer;
     int ver;
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg;

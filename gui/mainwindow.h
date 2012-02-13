@@ -179,6 +179,9 @@ public:
     int mpdVolume() const {
         return volume;
     }
+
+    void load(const QList<QUrl> &urls);
+
 protected:
     void closeEvent(QCloseEvent *event);
 

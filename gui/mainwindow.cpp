@@ -919,6 +919,21 @@ MainWindow::~MainWindow()
         Thread::sleep();
 }
 
+void MainWindow::load(const QList<QUrl> &urls)
+{
+    QStringList useable;
+    bool allowLocal=MPDConnection::self()->isLocal();
+
+    foreach (QUrl u, urls) {
+        if ((allowLocal && QLatin1String("file")==u.scheme()) || QLatin1String("http")==u.scheme()) {
+            useable.append(u.toString());
+        }
+    }
+    if (useable.count()) {
+        playQueueModel.addItems(useable, 0);
+    }
+}
+
 void MainWindow::playbackButtonsMenu()
 {
     playbackBtnsMenu->exec(QCursor::pos());

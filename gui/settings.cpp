@@ -34,6 +34,7 @@
 #include "kwallet.h"
 #include <QtGui/QApplication>
 #include <QtGui/QWidget>
+#include <QtCore/QTimer>
 
 K_GLOBAL_STATIC(Settings, instance)
 #endif
@@ -52,7 +53,8 @@ Settings * Settings::self()
 }
 
 Settings::Settings()
-    : ver(-1)
+    : timer(0)
+    , ver(-1)
     #ifdef ENABLE_KDE_SUPPORT
     , cfg(KGlobal::config(), "General")
     , wallet(0)
@@ -507,13 +509,28 @@ void Settings::saveStopFadeDuration(int v)
     SET_VALUE("stopFadeDuration", v);
 }
 
-void Settings::save()
+void Settings::save(bool force)
 {
-    SET_VALUE("version", PACKAGE_VERSION);
-    #ifdef ENABLE_KDE_SUPPORT
-    KGlobal::config()->sync();
-    #else
-    cfg.sync();
-    #endif
+    if (force) {
+        SET_VALUE("version", PACKAGE_VERSION);
+        #ifdef ENABLE_KDE_SUPPORT
+        KGlobal::config()->sync();
+        #else
+        cfg.sync();
+        #endif
+        if (timer) {
+            timer->stop();
+        }
+    } else {
+        if (!timer) {
+            timer=new QTimer(this);
+            connect(timer, SIGNAL(timeout()), this, SLOT(actualSave()));
+        }
+        timer->start(30*1000);
+    }
 }
 
+void Settings::actualSave()
+{
+    save(true);
+}

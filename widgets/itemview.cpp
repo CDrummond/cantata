@@ -619,7 +619,15 @@ void ItemView::backActivated()
     setLevel(currentLevel-1);
     itemModel->setRootIndex(listView->rootIndex().parent());
     listView->setRootIndex(listView->rootIndex().parent());
-    listView->scrollTo(prevTopIndex, QAbstractItemView::PositionAtTop);
+
+    if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
+        QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTopIndex);
+        if (idx.isValid()) {
+            listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
+        }
+    } else {
+        listView->scrollTo(prevTopIndex, QAbstractItemView::PositionAtTop);
+    }
 }
 
 QAction * ItemView::getAction(const QModelIndex &index)
@@ -681,6 +689,9 @@ void ItemView::itemActivated(const QModelIndex &index)
         treeView->setExpanded(index, !treeView->isExpanded(index));
     } else if (index.isValid() && index.child(0, 0).isValid()) {
         prevTopIndex=listView->indexAt(QPoint(0, 0));
+        if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
+            prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);
+        }
         setLevel(currentLevel+1, index.child(0, 0).child(0, 0).isValid());
         #ifdef ENABLE_KDE_SUPPORT
         listSearch->setPlaceholderText(i18n("Search %1...", index.data(Qt::DisplayRole).toString()));

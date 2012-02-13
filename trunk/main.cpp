@@ -49,6 +49,13 @@ public:
     {
     }
 
+    ~CantataApp() {
+        if (w) {
+            delete w;
+            w=0;
+        }
+    }
+
     int newInstance() {
         if (!w) {
             w=new MainWindow();

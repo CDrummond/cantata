@@ -129,7 +129,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     trackName->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
     trackName->view()->setTextElideMode(Qt::ElideLeft);
     resize(500, 200);
-
     original=songs;
     if (original.count()>1) {
         QSet<QString> songArtists;
@@ -231,6 +230,22 @@ void TagEditor::enableOkButton()
                      (1==original.count() && 1==editedIndexes.count()) ||
                      (1==editedIndexes.count() && !editedIndexes.contains(0)) );
     enableButton(Reset, isButtonEnabled(Ok));
+}
+
+void TagEditor::setLabelStates()
+{
+    Song o=original.at(currentSongIndex);
+    Song e=edited.at(currentSongIndex);
+    bool isAll=0==currentSongIndex && original.count()>1;
+
+    titleLabel->setOn(!isAll && o.title!=e.title);
+    artistLabel->setOn(o.artist!=e.artist);
+    albumArtistLabel->setOn(o.albumartist!=e.albumartist);
+    albumLabel->setOn(o.album!=e.album);
+    trackLabel->setOn(o.track!=e.track);
+    discLabel->setOn(!isAll && o.disc!=e.disc);
+    genreLabel->setOn(o.genre!=e.genre);
+    yearLabel->setOn(o.year!=e.year);
 }
 
 void TagEditor::applyVa()
@@ -346,6 +361,7 @@ void TagEditor::checkChanged()
 
     updateEdited();
     enableOkButton();
+    setLabelStates();
 
     bool allEdited=editedIndexes.contains(0);
     bool isAll=0==currentSongIndex && original.count()>1;
@@ -414,7 +430,25 @@ void TagEditor::updateEdited(bool isFromAll)
 {
     Song s=edited.at(currentSongIndex);
     bool isAll=0==currentSongIndex && original.count()>1;
-    fillSong(s, isFromAll || isAll, isFromAll);
+    fillSong(s, isFromAll || isAll, /*isFromAll*/false);
+
+    if (!isAll && isFromAll && original.count()>1) {
+        Song all=original.at(0);
+        Song o=original.at(currentSongIndex);
+        if (all.artist.isEmpty() && s.artist.isEmpty() && !o.artist.isEmpty()) {
+            s.artist=o.artist;
+        }
+        if (all.albumartist.isEmpty() && s.albumartist.isEmpty() && !o.albumartist.isEmpty()) {
+            s.albumartist=o.albumartist;
+        }
+        if (all.album.isEmpty() && s.album.isEmpty() && !o.album.isEmpty()) {
+            s.album=o.album;
+        }
+        if (all.genre.isEmpty() && s.genre.isEmpty() && !o.genre.isEmpty()) {
+            s.genre=o.genre;
+        }
+    }
+
     if (equalTags(s, original.at(currentSongIndex), isFromAll || isAll)) {
         if (editedIndexes.contains(currentSongIndex)) {
             editedIndexes.remove(currentSongIndex);
@@ -474,6 +508,7 @@ void TagEditor::setIndex(int idx)
     }
     enableOkButton();
     trackName->setCurrentIndex(idx);
+    setLabelStates();
     updating=false;
 }
 
@@ -521,7 +556,17 @@ void TagEditor::slotButtonClicked(int button)
         break;
     }
     case Reset: // Reset
-        setSong(original.at(currentSongIndex));
+        if (0==currentSongIndex && original.count()>1) {
+            for (int i=0; i<original.count(); ++i) {
+                edited.replace(i, original.at(i));
+                updateTrackName(i, false);
+            }
+            editedIndexes.clear();
+            setSong(original.at(currentSongIndex));
+        } else {
+            setSong(original.at(currentSongIndex));
+        }
+        enableOkButton();
         break;
     case User1: // Next
         setIndex(currentSongIndex+1);

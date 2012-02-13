@@ -40,6 +40,7 @@
 31. Use current style for position slider.
 32. Fix some toolbutton clipping with some styles.
 33. Fix amarok import script.
+34. Fix crash when navigating listviews.
 
 0.3.0
 -----

@@ -362,13 +362,7 @@ void TagEditor::updateTrackName(int index, bool edited)
     bool isAll=0==index && original.count()>1;
 
     if (edited) {
-        if (isAll) {
-            #ifdef ENABLE_KDE_SUPPORT
-            trackName->setItemText(index, i18n("All tracks [modified]"));
-            #else
-            trackName->setItemText(index, tr("All tracks [modified]"));
-            #endif
-        } else {
+        if (!isAll) {
             #ifdef ENABLE_KDE_SUPPORT
             trackName->setItemText(index, i18n("%1 [modified]", original.at(index).file));
             #else
@@ -376,13 +370,7 @@ void TagEditor::updateTrackName(int index, bool edited)
             #endif
         }
     } else {
-        if (isAll) {
-            #ifdef ENABLE_KDE_SUPPORT
-            trackName->setItemText(index, i18n("All tracks"));
-            #else
-            trackName->setItemText(index, tr("All tracks"));
-            #endif
-        } else {
+        if (!isAll) {
             trackName->setItemText(index, original.at(index).file);
         }
     }

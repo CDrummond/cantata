@@ -3,5 +3,6 @@ Type=Application
 Name=Cantata
 GenericName=Music Player Client
 Icon=cantata
-Exec=cantata
+Exec=cantata %U
 Categories=Qt;KDE;AudioVideo;Player;
+X-DBUS-StartupType=Unique

@@ -870,7 +870,6 @@ MainWindow::MainWindow(QWidget *parent)
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif
 
-    currentTabChanged(tabWidget->current_index());
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     playlistsPage->refresh();
     toggleMpris();
@@ -908,7 +907,7 @@ MainWindow::~MainWindow()
     }
     Settings::self()->saveHiddenPages(hiddenPages);
     streamsPage->save();
-    Settings::self()->save(true);
+    Settings::self()->save();
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopOnExit()) {
         emit stop();
@@ -981,16 +980,14 @@ void MainWindow::showError(const QString &message)
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
 {
-    if (connected==isConnected) {
-        return;
-    }
-    isConnected=connected;
     if (connected) {
-        emit getStatus();
-        emit getStats();
-        emit playListInfo();
-        loaded=0;
-//         currentTabChanged(tabWidget->current_index());
+        if (!isConnected) {
+            emit getStatus();
+            emit getStats();
+            emit playListInfo();
+            loaded=0;
+            currentTabChanged(tabWidget->current_index());
+        }
     } else {
         libraryPage->clear();
         albumsPage->clear();
@@ -999,8 +996,23 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         playQueueModel.clear();
         lyricsPage->text->clear();
         serverInfoPage->clear();
+        QString host=MPDConnection::self()->getHost();
+//         #ifdef ENABLE_KDE_SUPPORT
+//         if (host.startsWith('/')) {
+//             showError(i18n("Connection to %1 failed", host));
+//         } else {
+//             showError(i18nc("host:port", "Connection to %1:%2 failed", host, QString::number(MPDConnection::self()->getPort())));
+//         }
+//         #else
+//         if (host.startsWith('/')) {
+//             showError(tr("Connection to %1 failed").arg(host));
+//         } else {
+//             showError(tr("Connection to %1:%2 failed").arg(host).arg(QString::number(MPDConnection::self()->getPort())));
+//         }
+//         #endif
         showPreferencesDialog();
     }
+    isConnected=connected;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

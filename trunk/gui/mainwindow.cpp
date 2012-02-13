@@ -907,7 +907,7 @@ MainWindow::~MainWindow()
     }
     Settings::self()->saveHiddenPages(hiddenPages);
     streamsPage->save();
-    Settings::self()->save();
+    Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopOnExit()) {
         emit stop();

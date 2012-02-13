@@ -442,6 +442,7 @@ void TagEditor::setIndex(int idx)
     Song s=edited.at(!haveMultiple || idx==0 ? 0 : idx);
     setSong(s);
     currentSongIndex=idx;
+    setPlaceholderTexts();
 
     bool isMultiple=haveMultiple && 0==idx;
     title->setEnabled(!isMultiple);
@@ -493,6 +494,32 @@ void TagEditor::applyUpdates()
     if (updated) {
         MusicLibraryModel::self()->removeCache();
         emit update();
+    }
+}
+
+void TagEditor::setPlaceholderTexts()
+{
+    bool isAll=0==currentSongIndex && original.count()>1;
+
+    if (isAll) {
+        Song all=original.at(0);
+        if (!all.artist.isEmpty()) {
+            artist->setPlaceholderText(all.artist);
+        }
+        if (!all.album.isEmpty()) {
+            album->setPlaceholderText(all.album);
+        }
+        if (!all.albumartist.isEmpty()) {
+            albumArtist->setPlaceholderText(all.albumartist);
+        }
+        if (!all.genre.isEmpty()) {
+            genre->setPlaceholderText(all.genre);
+        }
+    } else {
+         artist->setPlaceholderText(QString());
+         album->setPlaceholderText(QString());
+         albumArtist->setPlaceholderText(QString());
+         genre->setPlaceholderText(QString());
     }
 }
 

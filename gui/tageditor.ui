@@ -12,7 +12,7 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="label_4">
+    <widget class="StateLabel" name="trackNameLabel">
      <property name="text">
       <string>Track:</string>
      </property>
@@ -25,7 +25,7 @@
     <widget class="QComboBox" name="trackName"/>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="titleLabel">
+    <widget class="StateLabel" name="titleLabel">
      <property name="text">
       <string>Title:</string>
      </property>
@@ -38,7 +38,7 @@
     <widget class="LineEdit" name="title"/>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="StateLabel" name="artistLabel">
      <property name="text">
       <string>Artist:</string>
      </property>
@@ -51,7 +51,7 @@
     <widget class="CompletionCombo" name="artist"/>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="label_3">
+    <widget class="StateLabel" name="albumArtistLabel">
      <property name="text">
       <string>Album artist:</string>
      </property>
@@ -64,7 +64,7 @@
     <widget class="CompletionCombo" name="albumArtist"/>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="label_2">
+    <widget class="StateLabel" name="albumLabel">
      <property name="text">
       <string>Album:</string>
      </property>
@@ -77,7 +77,7 @@
     <widget class="CompletionCombo" name="album"/>
    </item>
    <item row="5" column="0">
-    <widget class="QLabel" name="trackLabel">
+    <widget class="StateLabel" name="trackLabel">
      <property name="text">
       <string>Track number:</string>
      </property>
@@ -90,7 +90,7 @@
     <widget class="ClearSpinBox" name="track"/>
    </item>
    <item row="6" column="0">
-    <widget class="QLabel" name="label_6">
+    <widget class="StateLabel" name="discLabel">
      <property name="text">
       <string>Disc number:</string>
      </property>
@@ -103,7 +103,7 @@
     <widget class="ClearSpinBox" name="disc"/>
    </item>
    <item row="7" column="0">
-    <widget class="QLabel" name="label_7">
+    <widget class="StateLabel" name="genreLabel">
      <property name="text">
       <string>Genre:</string>
      </property>
@@ -116,7 +116,7 @@
     <widget class="CompletionCombo" name="genre"/>
    </item>
    <item row="8" column="0">
-    <widget class="QLabel" name="label_8">
+    <widget class="StateLabel" name="yearLabel">
      <property name="text">
       <string>Year:</string>
      </property>
@@ -145,6 +145,11 @@
    <class>ClearSpinBox</class>
    <extends>QSpinBox</extends>
    <header>clearspinbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>StateLabel</class>
+   <extends>QLabel</extends>
+   <header>statelabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

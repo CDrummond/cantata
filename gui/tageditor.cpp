@@ -204,17 +204,20 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 
 void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
 {
+    Song all=original.at(0);
+    bool haveAll=original.count()>1;
+
     if (!isAll) {
         setString(s.title, title->text().trimmed(), skipEmpty);
     }
-    setString(s.artist, artist->text().trimmed(), skipEmpty);
-    setString(s.album, album->text().trimmed(), skipEmpty);
-    setString(s.albumartist, albumArtist->text().trimmed(), skipEmpty);
+    setString(s.artist, artist->text().trimmed(), skipEmpty && (!haveAll || all.artist.isEmpty()));
+    setString(s.album, album->text().trimmed(), skipEmpty && (!haveAll || all.album.isEmpty()));
+    setString(s.albumartist, albumArtist->text().trimmed(), skipEmpty && (!haveAll || all.albumartist.isEmpty()));
     if (!isAll) {
         s.track=track->value();
     }
     s.disc=disc->value();
-    setString(s.genre, genre->text().trimmed(), skipEmpty);
+    setString(s.genre, genre->text().trimmed(), skipEmpty && (!haveAll || all.genre.isEmpty()));
     s.year=year->value();
 }
 
@@ -362,7 +365,13 @@ void TagEditor::updateTrackName(int index, bool edited)
     bool isAll=0==index && original.count()>1;
 
     if (edited) {
-        if (!isAll) {
+        if (isAll) {
+            #ifdef ENABLE_KDE_SUPPORT
+            trackName->setItemText(index, i18n("All tracks [modified]"));
+            #else
+            trackName->setItemText(index, tr("All tracks [modified]"));
+            #endif
+        } else {
             #ifdef ENABLE_KDE_SUPPORT
             trackName->setItemText(index, i18n("%1 [modified]", original.at(index).file));
             #else
@@ -370,7 +379,13 @@ void TagEditor::updateTrackName(int index, bool edited)
             #endif
         }
     } else {
-        if (!isAll) {
+        if (isAll) {
+            #ifdef ENABLE_KDE_SUPPORT
+            trackName->setItemText(index, i18n("All tracks"));
+            #else
+            trackName->setItemText(index, tr("All tracks"));
+            #endif
+        } else {
             trackName->setItemText(index, original.at(index).file);
         }
     }
@@ -442,7 +457,6 @@ void TagEditor::setIndex(int idx)
     Song s=edited.at(!haveMultiple || idx==0 ? 0 : idx);
     setSong(s);
     currentSongIndex=idx;
-    setPlaceholderTexts();
 
     bool isMultiple=haveMultiple && 0==idx;
     title->setEnabled(!isMultiple);
@@ -494,32 +508,6 @@ void TagEditor::applyUpdates()
     if (updated) {
         MusicLibraryModel::self()->removeCache();
         emit update();
-    }
-}
-
-void TagEditor::setPlaceholderTexts()
-{
-    bool isAll=0==currentSongIndex && original.count()>1;
-
-    if (isAll) {
-        Song all=original.at(0);
-        if (!all.artist.isEmpty()) {
-            artist->setPlaceholderText(all.artist);
-        }
-        if (!all.album.isEmpty()) {
-            album->setPlaceholderText(all.album);
-        }
-        if (!all.albumartist.isEmpty()) {
-            albumArtist->setPlaceholderText(all.albumartist);
-        }
-        if (!all.genre.isEmpty()) {
-            genre->setPlaceholderText(all.genre);
-        }
-    } else {
-         artist->setPlaceholderText(QString());
-         album->setPlaceholderText(QString());
-         albumArtist->setPlaceholderText(QString());
-         genre->setPlaceholderText(QString());
     }
 }
 

@@ -65,7 +65,6 @@ private:
     void updateTrackName(int index, bool edited);
     void updateEditedStatus(int index);
     void applyUpdates();
-    void setPlaceholderTexts();
 
 private Q_SLOTS:
     void applyVa();

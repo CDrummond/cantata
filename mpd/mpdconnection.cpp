@@ -236,9 +236,9 @@ void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pa
                 emit stateChanged(true);
             }
         } else {
-            if (wasConnected) {
+//             if (wasConnected) {
                 emit stateChanged(false);
-            }
+//             }
         }
     }
 }

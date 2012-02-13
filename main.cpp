@@ -31,6 +31,44 @@
 #include "config.h"
 #include "mainwindow.h"
 
+#ifdef ENABLE_KDE_SUPPORT
+class CantataApp : public KUniqueApplication
+{
+public:
+#ifdef Q_WS_X11
+    CantataApp(Display *display, Qt::HANDLE visual, Qt::HANDLE colormap)
+        : KUniqueApplication(display, visual, colormap)
+        , w(0)
+    {
+    }
+#endif
+
+    CantataApp()
+        : KUniqueApplication()
+        , w(0)
+    {
+    }
+
+    int newInstance() {
+        if (!w) {
+            w=new MainWindow();
+        }
+
+        KCmdLineArgs *args(KCmdLineArgs::parsedArgs());
+        QList<QUrl> urls;
+        for (int i = 0; i < args->count(); ++i) {
+            urls.append(QUrl(args->url(i)));
+        }
+        if (!urls.isEmpty()) {
+            w->load(urls);
+        }
+        return 0;
+    }
+
+    MainWindow *w;
+};
+#endif
+
 int main(int argc, char *argv[])
 {
 #ifdef ENABLE_KDE_SUPPORT
@@ -44,15 +82,20 @@ int main(int argc, char *argv[])
 
     aboutData.addAuthor(ki18n("Craig Drummond"), ki18n("Maintainer"), "craig.p.drummond@gmail.com");
     KCmdLineArgs::init(argc, argv, &aboutData);
+    KCmdLineOptions options;
+    options.add("+[URL]", ki18n("URL to open"));
+    KCmdLineArgs::addCmdLineOptions(options);
+    KUniqueApplication::addCmdLineOptions();
+    if (!KUniqueApplication::start())
+        exit(0);
 
-    KUniqueApplication app;
+    CantataApp app;
 #else
     QApplication app(argc, argv);
     QApplication::setApplicationName(PACKAGE_NAME);
     QApplication::setOrganizationName(PACKAGE_NAME);
-#endif
 
-    MainWindow w;
+#endif
 
     return app.exec();
 }

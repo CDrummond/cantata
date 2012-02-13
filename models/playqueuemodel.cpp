@@ -347,14 +347,15 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         //Act on moves from the music library and dir view
         addItems(reverseList(decode(*data, constFileNameMimeType)), row);
         return true;
-    } else if(data->hasFormat(constUriMimeType) && MPDConnection::self()->isLocal()) {
+    } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->isLocal()*/) {
         QStringList orig=reverseList(decode(*data, constUriMimeType));
         QStringList useable;
+        bool allowLocal=MPDConnection::self()->isLocal();
 
         foreach (QString u, orig) {
-            if (u.startsWith('/')) {
+            if (allowLocal && u.startsWith('/')) {
                 useable.append(QLatin1String("file://")+unencodeUrl(u));
-            } else if (u.startsWith("file:///")) {
+            } else if ((allowLocal && u.startsWith("file:///")) || u.startsWith("http://")) {
                 useable.append(unencodeUrl(u));
             }
         }

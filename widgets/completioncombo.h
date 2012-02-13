@@ -61,6 +61,10 @@ public:
     QString text() const {
         return qobject_cast<KLineEdit*>(lineEdit())->text();
     }
+
+    void setPlaceholderText(const QString &text) {
+        qobject_cast<KLineEdit*>(lineEdit())->setPlaceholderText(text);
+    }
 };
 #else
 #include <QtGui/QComboBox>
@@ -82,6 +86,10 @@ public:
 
     QString text() const {
         return qobject_cast<QLineEdit*>(lineEdit())->text();
+    }
+
+    void setPlaceholderText(const QString &text) {
+        qobject_cast<QLineEdit*>(lineEdit())->setPlaceholderText(text);
     }
 };
 #endif

@@ -84,6 +84,7 @@ SET( CANTATA_SRCS
 
 SET( CANTATA_MOC_HDRS
     gui/mainwindow.h
+    gui/settings.h
     gui/covers.h
     gui/folderpage.h
     gui/librarypage.h

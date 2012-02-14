@@ -270,7 +270,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
                     #ifdef ENABLE_KDE_SUPPORT
                     emit error(i18n("Failed to load. \"MPD\" can only play local files if connected via a local socket."));
                     #else
-                    emit error(i18n("Failed to load. \"MPD\" can only play local files if connected via a local socket."));
+                    emit error(tr("Failed to load. \"MPD\" can only play local files if connected via a local socket."));
                     #endif
                 } else {
                     emit error(response.data);

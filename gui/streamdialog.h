@@ -30,6 +30,7 @@
 #include <QtGui/QDialog>
 class QDialogButtonBox;
 #endif
+#include <QtCore/QSet>
 #include "lineedit.h"
 #include "completioncombo.h"
 
@@ -53,9 +54,7 @@ public:
     QString url() const { return urlEntry->text().trimmed(); }
     QString category() const { return catCombo->currentText().trimmed(); }
     QString genre() const { return genreCombo->currentText().trimmed(); }
-    #ifdef ENABLE_KDE_SUPPORT
     QString icon() const { return iconName; }
-    #endif
 
 private Q_SLOTS:
     void changed();
@@ -73,9 +72,9 @@ private:
     QString prevUrl;
     QString prevCat;
     QString prevGenre;
+    QString iconName;
     #ifdef ENABLE_KDE_SUPPORT
     QString prevIconName;
-    QString iconName;
     QPushButton *iconButton;
     #else
     QDialogButtonBox *buttonBox;

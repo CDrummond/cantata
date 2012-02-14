@@ -242,8 +242,8 @@ void TagEditor::setLabelStates()
     artistLabel->setOn(o.artist!=e.artist);
     albumArtistLabel->setOn(o.albumartist!=e.albumartist);
     albumLabel->setOn(o.album!=e.album);
-    trackLabel->setOn(o.track!=e.track);
-    discLabel->setOn(!isAll && o.disc!=e.disc);
+    trackLabel->setOn(!isAll && o.track!=e.track);
+    discLabel->setOn(o.disc!=e.disc);
     genreLabel->setOn(o.genre!=e.genre);
     yearLabel->setOn(o.year!=e.year);
 }

@@ -64,7 +64,7 @@
     <widget class="QSpinBox" name="stopFadeDuration"/>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="label_6b">
+    <widget class="QLabel" name="label_6c">
      <property name="text">
       <string>Stop playback on exit:</string>
      </property>

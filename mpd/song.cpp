@@ -249,7 +249,7 @@ QString Song::capitalize(const QString &s)
 
     QStringList words = s.split(' ', QString::SkipEmptyParts);
     for (int i = 0; i < words.count(); i++) {
-        QString word = words[i].toLower();
+        QString word = words[i]; //.toLower();
         int j = 0;
         while ( ('('==word[j] || '['==word[j] || '{'==word[j]) && j < word.length()) {
             j++;

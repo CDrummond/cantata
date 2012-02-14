@@ -41,6 +41,9 @@
 32. Fix some toolbutton clipping with some styles.
 33. Fix amarok import script.
 34. Fix crash when navigating listviews.
+35. Manually stop KStartupInfo when app is started. App is a KUniqueApplication
+    and furhter attempts to restart start a new startyp-info, which stays until
+    the timeout. This fix prevents. this.
 
 0.3.0
 -----

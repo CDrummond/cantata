@@ -802,7 +802,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     AddMenuItem(group, i18n("Tabs On Bottom"), Mode_BotTabs, Mode_IconOnlyBotTabs);
     #else
     modeAct=new QAction(tr("Style"), this);
-    iconOnlyAct=new QAction(i18n("Icons Only"), this);
+    iconOnlyAct=new QAction(tr("Icons Only"), this);
     AddMenuItem(group, tr("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
     AddMenuItem(group, tr("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
     AddMenuItem(group, tr("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);

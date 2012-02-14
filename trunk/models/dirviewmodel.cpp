@@ -50,7 +50,7 @@ DirViewModel * DirViewModel::self()
     #else
     static DirViewModel *instance=0;;
     if(!instance) {
-        instance=new AlbumsModel;
+        instance=new DirViewModel;
     }
     return instance;
     #endif

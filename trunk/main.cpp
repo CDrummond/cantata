@@ -104,6 +104,7 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName(PACKAGE_NAME);
     QApplication::setOrganizationName(PACKAGE_NAME);
 
+    MainWindow mw;
 #endif
 
     return app.exec();

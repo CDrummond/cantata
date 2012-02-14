@@ -55,7 +55,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     copyAction->setText(i18n("Copy To Library"));
     copyAction->setIcon(QIcon::fromTheme("document-import"));
     copyToLibraryButton->setDefaultAction(copyAction);
-    copyToLibraryButton->setAutoRaise(true);
+    MainWindow::initButton(copyToLibraryButton);
     copyToLibraryButton->setEnabled(false);
     view->addAction(copyAction);
 //     view->addAction(p->burnAction);
@@ -72,7 +72,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(configureAction, SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshDevice()));
-    menuButton->setAutoRaise(true);
+    MainWindow::initButton(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(configureAction);

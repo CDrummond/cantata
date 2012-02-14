@@ -1,19 +1,16 @@
-Windows
--------------------
-Simply run:
-
-1. qmake
-2. make release
-3. release/cantata.exe
-
-Linux
--------------------
-
+With KDE Support (Recommended)
+==============================
 1. mkdir build
 2. cd build
 3. cmake .. -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix`
 4. make
 5. sudo make install
 
-To disable KDE support, pass -DWANT_KDE_SUPPORT=NO to cmake
 
+Qt-Only
+=======
+1. mkdir build
+2. cd build
+3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DWANT_KDE_SUPPORT=NO
+4. make
+5. sudo make install

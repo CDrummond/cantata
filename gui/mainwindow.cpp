@@ -637,7 +637,7 @@ MainWindow::MainWindow(QWidget *parent)
     btns << repeatPushButton << randomPushButton << savePlaylistPushButton << removeAllFromPlaylistPushButton << consumePushButton;
 
     foreach (QToolButton *b, btns) {
-        b->setAutoRaise(true);
+        initButton(b);
     }
 
     smallControlButtonsAction->setCheckable(true);

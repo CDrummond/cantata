@@ -44,6 +44,7 @@
 35. Manually stop KStartupInfo when app is started. App is a KUniqueApplication
     and furhter attempts to restart start a new startyp-info, which stays until
     the timeout. This fix prevents. this.
+36. Fix toolbutton icon size - helps with cleanlooks.
 
 0.3.0
 -----

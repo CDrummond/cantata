@@ -78,7 +78,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(&model, SIGNAL(updateGenres(const QSet<QString> &)), SLOT(updateGenres(const QSet<QString> &)));
-    menuButton->setAutoRaise(true);
+    MainWindow::initButton(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(addAction);
@@ -88,7 +88,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     menu->addAction(exportAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(QIcon::fromTheme("system-run"));
-    replacePlaylist->setAutoRaise(true);
+    MainWindow::initButton(replacePlaylist);
     replacePlaylist->setEnabled(false);
 
     #ifdef ENABLE_KDE_SUPPORT

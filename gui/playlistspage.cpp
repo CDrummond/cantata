@@ -56,9 +56,9 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
 
-    replacePlaylist->setAutoRaise(true);
-    libraryUpdate->setAutoRaise(true);
-    replacePlaylist->setEnabled(false);
+    MainWindow::initButton(replacePlaylist);
+    MainWindow::initButton(libraryUpdate);
+    MainWindow::initButton(replacePlaylist);
 
     #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Playlists"));
@@ -91,7 +91,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<int> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<int> &)));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
-    menuButton->setAutoRaise(true);
+    MainWindow::initButton(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(p->addToPlaylistAction);

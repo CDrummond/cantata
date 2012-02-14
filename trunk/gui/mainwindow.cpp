@@ -1570,7 +1570,9 @@ void MainWindow::updateStatus()
         playPauseTrackAction->setIcon(playbackPause);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         //playPauseTrackButton->setChecked(false);
-        stopTrackAction->setEnabled(true);
+        if (StopState_Stopping!=stopState) {
+            stopTrackAction->setEnabled(true);
+        }
         positionSlider->startTimer();
 
         if (trayItem) {

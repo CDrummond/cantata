@@ -22,11 +22,12 @@
  */
 
 #ifdef ENABLE_KDE_SUPPORT
-#include <KUniqueApplication>
-#include <KAboutData>
-#include <KCmdLineArgs>
+#include <KDE/KUniqueApplication>
+#include <KDE/KAboutData>
+#include <KDE/KCmdLineArgs>
+#include <KDE/KStartupInfo>
 #else
-#include <QApplication>
+#include <QtGui/QApplication>
 #endif
 #include "config.h"
 #include "mainwindow.h"
@@ -69,6 +70,7 @@ public:
         if (!urls.isEmpty()) {
             w->load(urls);
         }
+        KStartupInfo::appStarted(startupId());
         return 0;
     }
 

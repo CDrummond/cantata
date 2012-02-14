@@ -41,6 +41,7 @@
 #endif
 #include "infopage.h"
 #include "network.h"
+#include "mainwindow.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 #define WEBVIEW_BASE KWebView
@@ -99,11 +100,11 @@ InfoPage::InfoPage(QWidget *parent)
     layout->setContentsMargins(0, 0, 0, 0);
 
     view->page()->action(QWebPage::Reload)->setShortcut(QKeySequence());
-    refreshBtn->setAutoRaise(true);
+    MainWindow::initButton(refreshBtn);
     refreshBtn->setDefaultAction(view->page()->action(QWebPage::Reload));
-    backBtn->setAutoRaise(true);
+    MainWindow::initButton(backBtn);
     backBtn->setDefaultAction(view->page()->action(QWebPage::Back));
-    forwardBtn->setAutoRaise(true);
+    MainWindow::initButton(forwardBtn);
     forwardBtn->setDefaultAction(view->page()->action(QWebPage::Forward));
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(changeView()));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)), SLOT(downloadRequested(const QNetworkRequest &)));

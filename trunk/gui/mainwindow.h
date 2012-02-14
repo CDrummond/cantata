@@ -36,12 +36,13 @@
 
 #include <QtGui/QMenu>
 #include <QtGui/QHeaderView>
-#include <QtCore/QStringList>
-#include <QtCore/QDateTime>
 #include <QtGui/QProxyStyle>
 #include <QtGui/QPixmap>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMoveEvent>
+#include <QtGui/QToolButton>
+#include <QtCore/QStringList>
+#include <QtCore/QDateTime>
 
 #include "ui_mainwindow.h"
 #include "playqueuemodel.h"
@@ -172,6 +173,11 @@ public:
     };
 
     Q_PROPERTY(int volume READ mpdVolume WRITE setMpdVolume)
+
+    static void initButton(QToolButton *btn) {
+        btn->setAutoRaise(true);
+        btn->setIconSize(QSize(16, 16));
+    }
 
     MainWindow(QWidget *parent = 0);
     ~MainWindow();

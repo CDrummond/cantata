@@ -55,7 +55,7 @@ ServerInfoPage::ServerInfoPage(MainWindow *p)
     connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
     connect(this, SIGNAL(getUrlHandlers()), MPDConnection::self(), SLOT(getUrlHandlers()));
 
-    updateInfo->setAutoRaise(true);
+    MainWindow::initButton(updateInfo);
     clear();
 }
 

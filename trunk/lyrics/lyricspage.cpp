@@ -27,6 +27,7 @@
 #include "ultimatelyricsreader.h"
 #include "network.h"
 #include "settings.h"
+#include "mainwindow.h"
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -104,7 +105,7 @@ LyricsPage::LyricsPage(QWidget *parent)
 #endif
     refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
-    refresh->setAutoRaise(true);
+    MainWindow::initButton(refresh);
     refresh->setDefaultAction(refreshAction);
 }
 

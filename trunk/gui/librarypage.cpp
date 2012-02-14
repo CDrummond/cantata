@@ -51,9 +51,9 @@ LibraryPage::LibraryPage(MainWindow *p)
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
 
-    addToPlaylist->setAutoRaise(true);
-    replacePlaylist->setAutoRaise(true);
-    libraryUpdate->setAutoRaise(true);
+    MainWindow::initButton(addToPlaylist);
+    MainWindow::initButton(replacePlaylist);
+    MainWindow::initButton(libraryUpdate);
 
     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlaylistAction);

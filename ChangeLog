@@ -45,6 +45,8 @@
     and furhter attempts to restart start a new startyp-info, which stays until
     the timeout. This fix prevents. this.
 36. Fix toolbutton icon size - helps with cleanlooks.
+37. When copying files to library, and user is a member of "audio" group - then
+    set files/dirs as writeable and owned by "audio" group.
 
 0.3.0
 -----

@@ -368,13 +368,13 @@ void UmsDevice::copySongToResult(KJob *job)
     if (job->error()) {
         emit actionStatus(Failed);
     } else {
-        Device::setFilePerms(currentSong.file);
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
         Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), QString());
         if (needToFixVa) {
             Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
         }
+        Device::setFilePerms(currentBaseDir+currentSong.file);
         MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(currentSong.file);
         emit actionStatus(Ok);

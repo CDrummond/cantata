@@ -761,13 +761,13 @@ void MtpDevice::getSongStatus(bool ok)
         emit actionStatus(Failed);
     } else {
 //         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
-        Device::setFilePerms(currentSong.file);
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
 // TODO: Get covers???
 //         Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), true);
         if (needToFixVa) {
             Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
         }
+        Device::setFilePerms(currentBaseDir+currentSong.file);
         MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(currentSong.file);
         emit actionStatus(Ok);

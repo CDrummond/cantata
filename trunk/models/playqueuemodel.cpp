@@ -86,8 +86,9 @@ QStringList PlayQueueModel::decode(const QMimeData &mimeData, const QString &mim
 }
 
 PlayQueueModel::PlayQueueModel(QObject *parent)
-    : QAbstractTableModel(parent),
-      currentSongId(-1)
+    : QAbstractTableModel(parent)
+    , currentSongId(-1)
+    , mpdState(MPDStatus::State_Inactive)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(playListReset()));
@@ -235,7 +236,12 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
     case Qt::DecorationRole:
         if (COL_STATUS==index.column() && songs.at(index.row()).id == currentSongId) {
-            return QIcon::fromTheme("media-playback-start");
+            switch (mpdState) {
+            case MPDStatus::State_Inactive:
+            case MPDStatus::State_Stopped: return QIcon::fromTheme("media-playback-stop");
+            case MPDStatus::State_Playing: return QIcon::fromTheme("media-playback-start");
+            case MPDStatus::State_Paused:  return QIcon::fromTheme("media-playback-pause");
+            }
         }
         break;
     case Qt::SizeHintRole:
@@ -451,6 +457,16 @@ void PlayQueueModel::clear()
     beginResetModel();
     songs=QList<Song>();
     endResetModel();
+}
+
+void PlayQueueModel::setState(MPDStatus::State st)
+{
+    if (st!=mpdState) {
+        mpdState=st;
+        if (-1!=currentSongId) {
+            emit dataChanged(index(getRowById(currentSongId), 0), index(getRowById(currentSongId), 2));
+        }
+    }
 }
 
 void PlayQueueModel::updatePlaylist(const QList<Song> &songs)

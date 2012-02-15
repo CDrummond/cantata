@@ -667,7 +667,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     currentMusicPath=musicPath;
     KUrl dest(currentBaseDir+currentMusicPath);
     QDir dir(dest.directory());
-    if (!dir.exists() && !Device::createDir(dir.absolutePath())) {
+    if (!dir.exists() && !Device::createDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
     }

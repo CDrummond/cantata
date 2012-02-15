@@ -228,7 +228,7 @@ void TrackOrganiser::renameFile()
         if (!skip) {
             KUrl d(dest);
             QDir dir(d.directory());
-            if(!dir.exists() && !Device::createDir(dir.absolutePath())) {
+            if(!dir.exists() && !Device::createDir(dir.absolutePath(), musicFolder)) {
                 if (autoSkip) {
                     skip=true;
                 } else {

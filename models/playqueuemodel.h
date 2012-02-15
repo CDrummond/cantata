@@ -32,6 +32,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QSet>
 #include "song.h"
+#include "mpdstatus.h"
 
 class StreamFetcher;
 
@@ -83,6 +84,7 @@ public:
     void playListStats();
     void clear();
     qint32 currentSong() const { return currentSongId; }
+    void setState(MPDStatus::State st);
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row);
@@ -102,6 +104,7 @@ private:
     QList<Song> songs;
     qint32 currentSongId;
     StreamFetcher *fetcher;
+    MPDStatus::State mpdState;
 };
 
 #endif

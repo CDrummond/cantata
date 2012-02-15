@@ -1565,6 +1565,7 @@ void MainWindow::updateStatus()
 
     songTimeElapsedLabel->setText(timeElapsedFormattedString);
 
+    playQueueModel.setState(status->state());
     switch (status->state()) {
     case MPDStatus::State_Playing:
         playPauseTrackAction->setIcon(playbackPause);

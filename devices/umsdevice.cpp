@@ -232,7 +232,7 @@ void UmsDevice::addSong(const Song &s, bool overwrite)
 
     KUrl dest(destFile);
     QDir dir(dest.directory());
-    if(!dir.exists() && !Device::createDir(dir.absolutePath())) {
+    if(!dir.exists() && !Device::createDir(dir.absolutePath(), QString())) {
         emit actionStatus(DirCreationFaild);
     }
 
@@ -289,7 +289,7 @@ void UmsDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     currentMusicPath=musicPath;
     KUrl dest(currentBaseDir+currentMusicPath);
     QDir dir(dest.directory());
-    if (!dir.exists() && !Device::createDir(dir.absolutePath())) {
+    if (!dir.exists() && !Device::createDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
     }

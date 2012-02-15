@@ -481,16 +481,24 @@ void Device::setFilePerms(const QString &file)
  * Create directory, and set its permissions.
  * If user is a memeber of "audio" group, then set dir as owned by and writeable by "audio" group.
  */
-bool Device::createDir(const QString &dir)
+#include <QtCore/QDebug>
+bool Device::createDir(const QString &dir, const QString &base)
 {
     //
     // Clear any umask before dir is created
     mode_t oldMask(umask(0000));
-    gid_t gid=getAudioGroupId();
+    gid_t gid=base.isEmpty() ? 0 : getAudioGroupId();
     bool status(KStandardDirs::makeDir(dir, 0==gid ? 0755 : 0775));
-    if (status && 0!=gid) {
-        int rv=::chown(QFile::encodeName(dir).constData(), geteuid(), gid);
-        Q_UNUSED(rv);
+    if (status && 0!=gid && dir.startsWith(base)) {
+        QStringList parts=dir.mid(base.length()).split('/');
+        QString d(base);
+
+        foreach (const QString &p, parts) {
+            d+='/'+p;
+            qWarning() << d;
+            int rv=::chown(QFile::encodeName(d).constData(), geteuid(), gid);
+            Q_UNUSED(rv);
+        }
     }
     // Reset umask
     ::umask(oldMask);

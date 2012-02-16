@@ -1,0 +1,16 @@
+With KDE Support (Recommended)
+==============================
+1. mkdir build
+2. cd build
+3. cmake .. -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix`
+4. make
+5. sudo make install
+
+
+Qt-Only
+=======
+1. mkdir build
+2. cd build
+3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DWANT_KDE_SUPPORT=NO
+4. make
+5. sudo make install

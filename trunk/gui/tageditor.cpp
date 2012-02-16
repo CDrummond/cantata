@@ -34,6 +34,7 @@
 #endif
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
+#include "device.h"
 #endif
 #include <QtGui/QMenu>
 #include <QtCore/QDir>
@@ -53,7 +54,11 @@ static void setString(QString &str, const QString &v, bool skipEmpty) {
 
 TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
                      const QSet<QString> &existingArtists, const QSet<QString> &existingAlbumArtists,
-                     const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres)
+                     const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres
+                     #ifdef ENABLE_DEVICES_SUPPORT
+                     , const QString &udi
+                     #endif
+                     )
 #ifdef ENABLE_KDE_SUPPORT
     : KDialog(parent)
 #else
@@ -62,6 +67,33 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , currentSongIndex(-1)
     , updating(false)
 {
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (udi.isEmpty()) {
+        isDevice=false;
+        original=songs;
+        baseDir=Settings::self()->mpdDir();
+    } else {
+        Device *dev=getDevice(udi, parentWidget());
+
+        if (!dev) {
+            deleteLater();
+            return;
+        }
+
+        baseDir=dev->path();
+        int pathLen=baseDir.length();
+        foreach (const Song &s, songs) {
+            Song m=s;
+            m.file=m.file.mid(pathLen);
+            original.append(m);
+        }
+        isDevice=true;
+    }
+    #else
+    original=songs;
+    baseDir=Settings::self()->mpdDir();
+    #endif
+
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
     #ifdef ENABLE_KDE_SUPPORT
@@ -129,7 +161,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     trackName->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
     trackName->view()->setTextElideMode(Qt::ElideLeft);
     resize(500, 200);
-    original=songs;
     if (original.count()>1) {
         QSet<QString> songArtists;
         QSet<QString> songAlbumArtists;
@@ -195,7 +226,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
 
     if (original.count()>0) {
-        saveable=original.at(0).file.startsWith('/') || QDir(Settings::self()->mpdDir()).isReadable();
+        saveable=QDir(baseDir).isReadable();
     } else {
         saveable=false;
     }
@@ -527,24 +558,21 @@ void TagEditor::applyUpdates()
             continue;
         }
 
-        #ifdef ENABLE_DEVICES_SUPPORT
-        if (orig.file.startsWith('/')) {  // Device paths are complete, MPD paths are not :-)
-            switch(Tags::update(orig.file, orig, edit)) {
-            case Tags::Update_Modified:
-                DevicesModel::self()->updateSong(orig, edit);
-                break;
-            case Tags::Update_Failed:
-                failed.append(orig.file);
-                break;
-            default:
-                break;
-            }
-        } else
-        #endif
-        switch(Tags::update(Settings::self()->mpdDir()+orig.file, orig, edit)) {
+        switch(Tags::update(baseDir+orig.file, orig, edit)) {
         case Tags::Update_Modified:
-            MusicLibraryModel::self()->removeSongFromList(orig);
-            MusicLibraryModel::self()->addSongToList(edit);
+            #ifdef ENABLE_DEVICES_SUPPORT
+            if (isDevice) {
+                Song o=orig;
+                o.file=baseDir+orig.file;
+                Song e=edit;
+                e.file=baseDir+edit.file;
+                DevicesModel::self()->updateSong(o, e);
+            } else
+            #endif
+            {
+                MusicLibraryModel::self()->removeSongFromList(orig);
+                MusicLibraryModel::self()->addSongToList(edit);
+            }
             updated=true;
             break;
         case Tags::Update_Failed:
@@ -615,5 +643,23 @@ void TagEditor::buttonPressed(QAbstractButton *button)
 //     default:
 //         break;
 //     }
+}
+#endif
+
+#ifdef ENABLE_DEVICES_SUPPORT
+Device * TagEditor::getDevice(const QString &udi, QWidget *p)
+{
+    Device *dev=DevicesModel::self()->device(udi);
+    if (!dev) {
+        KMessageBox::error(p ? p : this, i18n("Device has been removed!"));
+        reject();
+        return 0;
+    }
+    if (!dev->isIdle()) {
+        KMessageBox::error(p ? p : this, i18n("Device is busy?"));
+        reject();
+        return 0;
+    }
+    return dev;
 }
 #endif

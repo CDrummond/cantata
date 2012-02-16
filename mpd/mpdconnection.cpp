@@ -223,7 +223,7 @@ void MPDConnection::disconnectFromMPD()
 
 void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pass)
 {
-    if (hostname!=host || (!sock.isLocal() && port!=p) || password!=pass) {
+    if (hostname!=host || (!sock.isLocal() && port!=p) || password!=pass || State_Connected!=state) {
         qDebug() << "setDetails" << host << p << (pass.isEmpty() ? false : true);
         bool wasConnected=State_Connected==state;
         disconnectFromMPD();

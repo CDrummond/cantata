@@ -516,6 +516,7 @@ void TagEditor::applyUpdates()
 {
     bool updated=false;
     bool skipFirst=original.count()>1;
+    QStringList failed;
     foreach (int idx, editedIndexes) {
         if (skipFirst && 0==idx) {
             continue;
@@ -528,16 +529,34 @@ void TagEditor::applyUpdates()
 
         #ifdef ENABLE_DEVICES_SUPPORT
         if (orig.file.startsWith('/')) {  // Device paths are complete, MPD paths are not :-)
-            if (Tags::update(orig.file, orig, edit)) {
+            switch(Tags::update(orig.file, orig, edit)) {
+            case Tags::Update_Modified:
                 DevicesModel::self()->updateSong(orig, edit);
+                break;
+            case Tags::Update_Failed:
+                failed.append(orig.file);
+                break;
+            default:
+                break;
             }
         } else
         #endif
-        if (Tags::update(Settings::self()->mpdDir()+orig.file, orig, edit)) {
+        switch(Tags::update(Settings::self()->mpdDir()+orig.file, orig, edit)) {
+        case Tags::Update_Modified:
             MusicLibraryModel::self()->removeSongFromList(orig);
             MusicLibraryModel::self()->addSongToList(edit);
             updated=true;
+            break;
+        case Tags::Update_Failed:
+            failed.append(orig.file);
+            break;
+        default:
+            break;
         }
+    }
+
+    if (failed.count()) {
+        KMessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
     }
 
     if (updated) {

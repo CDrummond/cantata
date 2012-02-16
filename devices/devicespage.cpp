@@ -63,6 +63,12 @@ DevicesPage::DevicesPage(MainWindow *p)
     #ifdef TAGLIB_FOUND
     view->addAction(p->editTagsAction);
     #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    view->addAction(p->replaygainAction);
+    #endif
+    QAction *sep=new QAction(this);
+    sep->setSeparator(true);
+    view->addAction(sep);
     view->addAction(p->deleteSongsAction);
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -83,6 +89,10 @@ DevicesPage::DevicesPage(MainWindow *p)
     #ifdef TAGLIB_FOUND
     menu->addAction(p->editTagsAction);
     #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    menu->addAction(p->replaygainAction);
+    #endif
+    menu->addAction(sep);
     menu->addAction(p->deleteSongsAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(QIcon::fromTheme("system-run"));
@@ -249,6 +259,9 @@ void DevicesPage::controlActions()
     mw->deleteSongsAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND
     mw->editTagsAction->setEnabled(enable && onlyUms);
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    mw->replaygainAction->setEnabled(enable && onlyUms);
     #endif
     //mw->burnAction->setEnabled(enable && onlyUms);
     mw->organiseFilesAction->setEnabled(enable && onlyUms && singleUdi);

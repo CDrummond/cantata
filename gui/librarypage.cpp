@@ -66,7 +66,13 @@ LibraryPage::LibraryPage(MainWindow *p)
     #ifdef TAGLIB_FOUND
     view->addAction(p->editTagsAction);
     #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    view->addAction(p->replaygainAction);
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
+    QAction *sep=new QAction(this);
+    sep->setSeparator(true);
+    view->addAction(sep);
     view->addAction(p->deleteSongsAction);
     #endif
 
@@ -239,6 +245,9 @@ void LibraryPage::controlActions()
     #endif
     #ifdef TAGLIB_FOUND
     mw->editTagsAction->setEnabled(enable);
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    mw->replaygainAction->setEnabled(enable);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     mw->deleteSongsAction->setEnabled(enable);

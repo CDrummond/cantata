@@ -292,6 +292,9 @@ private Q_SLOTS:
     void copyToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void deleteSongs(const QString &from, const QList<Song> &songs);
     #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    void replayGain();
+    #endif
 
 private:
     void startVolumeFade(/*bool stop*/);
@@ -360,6 +363,9 @@ private:
     Action *copyToDeviceAction;
     Action *deleteSongsAction;
     Action *organiseFilesAction;
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    Action *replaygainAction;
     #endif
     Action *refreshAction;
     Action *smallPlaybackButtonsAction;

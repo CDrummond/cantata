@@ -527,7 +527,7 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
         needsUpdating=song.fixVariousArtists();
     }
 
-    if (needsUpdating && (file.isEmpty() || Tags::updateArtistAndTitle(file, song))) {
+    if (needsUpdating && (file.isEmpty() || Tags::Update_Modified==Tags::updateArtistAndTitle(file, song))) {
 //         qWarning() << "SAVED:" << file;
         return true;
     }

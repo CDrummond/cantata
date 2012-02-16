@@ -21,24 +21,52 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef TAGS_H
-#define TAGS_H
+#ifndef _SCANNER_H_
+#define _SCANNER_H_
 
-#include "song.h"
+#include <KDE/ThreadWeaver/Job>
+#include "ebur128.h"
 
-namespace Tags
+class Scanner : public ThreadWeaver::Job
 {
-    enum Update
+    Q_OBJECT
+
+public:
+    struct Data
     {
-        Update_Failed,
-        Update_None,
-        Update_Modified
+        Data()
+            : loudness(0.0)
+            , peak(0.0)
+            , truePeak(0.0) {
+        }
+        double loudness;
+        double peak;
+        double truePeak;
     };
 
-    extern Song read(const QString &fileName);
-    extern Update updateArtistAndTitle(const QString &fileName, const Song &song);
-    extern Update update(const QString &fileName, const Song &from, const Song &to);
-    extern Update updateReplaygain(const QString &fileName, double trackGain, double trackPeak, double albumGain, double albumPeak);
+    static Data global(const QList<Scanner *> &scanners);
+    static double clamp(double v);
+    static double reference(double v);
+
+    Scanner(QObject *p);
+    ~Scanner();
+
+    void setFile(const QString &fileName);
+    void requestAbort() { abortRequested=true; }
+
+    const Data & results() const { return data; }
+
+private:
+    void run();
+
+Q_SIGNALS:
+    void progress(Scanner *s, int v);
+
+private:
+    ebur128_state *state;
+    bool abortRequested;
+    Data data;
+    QString file;
 };
 
 #endif

@@ -11,5 +11,9 @@
 #cmakedefine TAGLIB_EXTRAS_FOUND 1
 #cmakedefine MTP_FOUND 1
 #cmakedefine CANTATA_DBUG_TIMER
+#cmakedefine FFMPEG_FOUND 1
+#cmakedefine EBUR128_USE_SPEEX_RESAMPLER 1
+#cmakedefine ENABLE_REPLAYGAIN_SUPPORT 1
+
 #endif
 

@@ -82,6 +82,9 @@
 #include "actiondialog.h"
 #include "trackorganiser.h"
 #endif
+#ifdef ENABLE_REPLAYGAIN_SUPPORT
+#include "rgdialog.h"
+#endif
 #ifdef TAGLIB_FOUND
 #include "tageditor.h"
 #endif
@@ -343,6 +346,9 @@ MainWindow::MainWindow(QWidget *parent)
     deleteSongsAction = actionCollection()->addAction("deletesongs");
     organiseFilesAction = actionCollection()->addAction("organizefiles");
     #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    replaygainAction = actionCollection()->addAction("replaygain");
+    #endif
 
     removeAction = actionCollection()->addAction("removeitems");
     removeAction->setText(i18n("Remove"));
@@ -556,6 +562,10 @@ MainWindow::MainWindow(QWidget *parent)
     deleteSongsAction->setText(i18n("Delete Songs"));
     organiseFilesAction->setIcon(QIcon::fromTheme("inode-directory"));
     organiseFilesAction->setText(i18n("Organize Files"));
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    replaygainAction->setIcon(QIcon::fromTheme("audio-x-generic"));
+    replaygainAction->setText(i18n("ReplayGain"));
     #endif
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
@@ -824,6 +834,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    connect(replaygainAction, SIGNAL(triggered()), SLOT(replayGain()));
+    #endif
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
@@ -1084,6 +1097,9 @@ void MainWindow::updateSettings()
     organiseFilesAction->setEnabled(copyToDeviceAction->isEnabled());
 //     burnAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    replaygainAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     #endif
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     Settings::self()->save();
@@ -2314,5 +2330,34 @@ void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
 {
     ActionDialog *dlg=new ActionDialog(this);
     dlg->remove(from, songs);
+}
+#endif
+
+#ifdef ENABLE_REPLAYGAIN_SUPPORT
+void MainWindow::replayGain()
+{
+    QList<Song> songs;
+    if (libraryPage->isVisible()) {
+        songs=libraryPage->selectedSongs();
+    } else if (albumsPage->isVisible()) {
+        songs=albumsPage->selectedSongs();
+    } else if (folderPage->isVisible()) {
+        songs=folderPage->selectedSongs();
+    } else if (devicesPage->isVisible()) {
+        songs=devicesPage->selectedSongs();
+    }
+
+    if (!songs.isEmpty()) {
+        QString udi;
+        if (devicesPage->isVisible()) {
+            udi=devicesPage->activeUmsDeviceUdi();
+            if (udi.isEmpty()) {
+                return;
+            }
+        }
+
+        RgDialog *dlg=new RgDialog(this);
+        dlg->show(songs, udi);
+    }
 }
 #endif

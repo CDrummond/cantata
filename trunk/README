@@ -8,7 +8,7 @@ both the code itself, and the GUI are now *very* different to QtMPC.
 Dependencies
 ============
 
-Cantata requires the following libraries:
+Cantata requires/uses the following libraries:
 
 1. Qt4
 2. KDElibs4 - if Cantata is not built with KDE4 support, then tag editing and
@@ -17,6 +17,8 @@ Cantata requires the following libraries:
    not found, the page will not be built.
 4. TagLib - required to for the tag edit dialog, and for UMS device support.
 5. LibMTP - required to support MTP devices.
+6. FFMPEG (libavcodec) - required for ReplayGain detection.
+7. SpeexDSP - used by ReplayGain detection code.
 
 
 Amarok Radio Streams

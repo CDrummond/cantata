@@ -2276,12 +2276,21 @@ void MainWindow::editTags()
         QSet<QString> albums;
         QSet<QString> genres;
         #ifdef ENABLE_DEVICES_SUPPORT
+        QString udi;
         if (devicesPage->isVisible()) {
             DevicesModel::self()->getDetails(artists, albumArtists, albums, genres);
+            udi=devicesPage->activeUmsDeviceUdi();
+            if (udi.isEmpty()) {
+                return;
+            }
         } else
         #endif
         MusicLibraryModel::self()->getDetails(artists, albumArtists, albums, genres);
-        TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, albums, genres);
+        TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, albums, genres
+                                    #ifdef ENABLE_DEVICES_SUPPORT
+                                    , udi
+                                    #endif
+                                    );
         dlg->show();
     }
 }

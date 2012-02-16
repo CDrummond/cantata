@@ -62,11 +62,17 @@ public Q_SLOTS:
     void searchItems();
     void controlActions();
     void itemDoubleClicked(const QModelIndex &);
+    #ifdef ENABLE_KDE_SUPPORT
+    void openFileManager();
+    #endif
 
 private:
     QStringList walk(QModelIndex rootItem);
 
 private:
+    #ifdef ENABLE_KDE_SUPPORT
+    Action *browseAction;
+    #endif
     DirViewProxyModel proxy;
     MainWindow *mw;
 };

@@ -24,13 +24,16 @@
 #include "folderpage.h"
 #include "mpdconnection.h"
 #include "musiclibrarymodel.h"
+#include "settings.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
+#include <QtCore/QDir>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
 #include <KDE/KMessageBox>
+#include <KDE/KRun>
 #else
 #include <QtGui/QAction>
 #endif
@@ -43,7 +46,11 @@ FolderPage::FolderPage(MainWindow *p)
     addToPlaylist->setDefaultAction(p->addToPlaylistAction);
     replacePlaylist->setDefaultAction(p->replacePlaylistAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
-
+    #ifdef ENABLE_KDE_SUPPORT
+    browseAction = p->actionCollection()->addAction("openfilemanager");
+    browseAction->setText(i18n("Open File Manager"));
+    browseAction->setIcon(QIcon::fromTheme("system-file-manager"));
+    #endif
     MainWindow::initButton(addToPlaylist);
     MainWindow::initButton(replacePlaylist);
     MainWindow::initButton(libraryUpdate);
@@ -67,7 +74,13 @@ FolderPage::FolderPage(MainWindow *p)
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     view->addAction(p->replaygainAction);
     #endif
+    #ifdef ENABLE_KDE_SUPPORT
+    view->addAction(browseAction);
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
+    QAction *sep=new QAction(this);
+    sep->setSeparator(true);
+    view->addAction(sep);
     view->addAction(p->deleteSongsAction);
     #endif
 
@@ -80,6 +93,9 @@ FolderPage::FolderPage(MainWindow *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    #ifdef ENABLE_KDE_SUPPORT
+    connect(browseAction, SIGNAL(triggered(bool)), this, SLOT(openFileManager()));
+    #endif
 }
 
 FolderPage::~FolderPage()
@@ -155,6 +171,13 @@ void FolderPage::controlActions()
     view->addAction(sep);
     mw->deleteSongsAction->setEnabled(enable);
     #endif
+    #ifdef ENABLE_KDE_SUPPORT
+    browseAction->setEnabled(false);
+    if (1==selected.count() && QDir(Settings::self()->mpdDir()).isReadable()) {
+        DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
+        browseAction->setEnabled(DirViewItem::Type_Dir==item->type());
+    }
+    #endif
 }
 
 void FolderPage::itemDoubleClicked(const QModelIndex &)
@@ -169,6 +192,21 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
         addSelectionToPlaylist();
     }
 }
+
+#ifdef ENABLE_KDE_SUPPORT
+void FolderPage::openFileManager()
+{
+    const QModelIndexList selected = view->selectedIndexes();
+    if (1!=selected.size()) {
+        return;
+    }
+
+    DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
+    if (DirViewItem::Type_Dir==item->type()) {
+        KRun::runUrl(KUrl(Settings::self()->mpdDir()+item->fullName()), "inode/directory", this);
+    }
+}
+#endif
 
 QList<Song> FolderPage::selectedSongs() const
 {

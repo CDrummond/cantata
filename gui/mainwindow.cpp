@@ -1137,6 +1137,9 @@ void MainWindow::updateSettings()
     playlistsPage->setView(0==Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
+    if (folderPage->isVisible()) {
+        folderPage->controlActions();
+    }
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif

@@ -258,10 +258,10 @@ void DevicesPage::controlActions()
     copyAction->setEnabled(enable);
     mw->deleteSongsAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND
-    mw->editTagsAction->setEnabled(enable && onlyUms);
+    mw->editTagsAction->setEnabled(enable && onlyUms && singleUdi);
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    mw->replaygainAction->setEnabled(enable && onlyUms);
+    mw->replaygainAction->setEnabled(enable && onlyUms && singleUdi);
     #endif
     //mw->burnAction->setEnabled(enable && onlyUms);
     mw->organiseFilesAction->setEnabled(enable && onlyUms && singleUdi);

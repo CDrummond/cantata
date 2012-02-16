@@ -2,6 +2,7 @@
 -----
 1. Add ability to calculate replaygain tags.
 2. Add "Open File Manager" action to folder page context menu.
+3. Open local files passed on commandline - if using local socket.
 
 0.4.0
 -----

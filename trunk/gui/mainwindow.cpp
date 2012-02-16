@@ -297,7 +297,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     #ifdef ENABLE_KDE_SUPPORT
-    KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
+    prefAction=KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
     quitAction=KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
     smallPlaybackButtonsAction = actionCollection()->addAction("smallplaybackbuttons");
@@ -305,6 +305,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     smallControlButtonsAction = actionCollection()->addAction("smallcontrolbuttons");
     smallControlButtonsAction->setText(i18n("Small Control Buttons"));
+
+    connectAction = actionCollection()->addAction("connect");
+    connectAction->setText(i18n("Connect"));
 
     refreshAction = actionCollection()->addAction("refresh");
     refreshAction->setText(i18n("Refresh Database"));
@@ -440,6 +443,7 @@ MainWindow::MainWindow(QWidget *parent)
     smallPlaybackButtonsAction = new QAction(tr("Small Playback Buttons"), this);
     smallControlButtonsAction = new QAction(tr("Small Control Buttons"), this);
     refreshAction = new QAction(tr("Refresh"), this);
+    connectAction = new QAction(tr("Connect"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
     playPauseTrackAction = new QAction(tr("Play/Pause"), this);
@@ -545,6 +549,7 @@ MainWindow::MainWindow(QWidget *parent)
     clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
     expandInterfaceAction->setIcon(QIcon::fromTheme("view-media-playlist"));
     refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
+    connectAction->setIcon(QIcon::fromTheme("network-connect"));
     libraryTabAction->setIcon(QIcon::fromTheme("audio-ac3"));
     albumsTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
     foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
@@ -708,7 +713,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     mainMenu->addAction(expandInterfaceAction);
     #ifdef ENABLE_KDE_SUPPORT
-    QAction *menuAct= mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+    QAction *menuAct=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(QIcon::fromTheme("configure"));
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
     mainMenu->addSeparator();
@@ -716,6 +721,7 @@ MainWindow::MainWindow(QWidget *parent)
     #else
     QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(QIcon::fromTheme("configure"));
+    prefAction=menuAct;
     mainMenu->addSeparator();
 //     QMenu *menu=new QMenu(tr("Help"), this);
 //     QAction *menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
@@ -774,6 +780,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
     connect(refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
+    connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
     connect(prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
     connect(nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
     connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
@@ -858,7 +865,7 @@ MainWindow::MainWindow(QWidget *parent)
     mpdThread=new QThread(this);
     MPDConnection::self()->moveToThread(mpdThread);
     mpdThread->start();
-    emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
+    connectToMpd();
 
     QString page=Settings::self()->page();
 
@@ -986,9 +993,16 @@ void MainWindow::songLoaded()
     }
 }
 
-void MainWindow::showError(const QString &message)
+void MainWindow::showError(const QString &message, bool showActions)
 {
     messageWidget->setError(message);
+    if (showActions) {
+        messageWidget->addAction(prefAction);
+        messageWidget->addAction(connectAction);
+    } else {
+        messageWidget->removeAction(prefAction);
+        messageWidget->removeAction(connectAction);
+    }
 }
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
@@ -1010,20 +1024,19 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         lyricsPage->text->clear();
         serverInfoPage->clear();
         QString host=MPDConnection::self()->getHost();
-//         #ifdef ENABLE_KDE_SUPPORT
-//         if (host.startsWith('/')) {
-//             showError(i18n("Connection to %1 failed", host));
-//         } else {
-//             showError(i18nc("host:port", "Connection to %1:%2 failed", host, QString::number(MPDConnection::self()->getPort())));
-//         }
-//         #else
-//         if (host.startsWith('/')) {
-//             showError(tr("Connection to %1 failed").arg(host));
-//         } else {
-//             showError(tr("Connection to %1:%2 failed").arg(host).arg(QString::number(MPDConnection::self()->getPort())));
-//         }
-//         #endif
-        showPreferencesDialog();
+        #ifdef ENABLE_KDE_SUPPORT
+        if (host.startsWith('/')) {
+            showError(i18n("Connection to %1 failed", host), true);
+        } else {
+            showError(i18nc("host:port", "Connection to %1:%2 failed", host, QString::number(MPDConnection::self()->getPort())), true);
+        }
+        #else
+        if (host.startsWith('/')) {
+            showError(tr("Connection to %1 failed").arg(host), true));
+        } else {
+            showError(tr("Connection to %1:%2 failed").arg(host).arg(QString::number(MPDConnection::self()->getPort())), true);
+        }
+        #endif
     }
     isConnected=connected;
 }
@@ -1061,6 +1074,12 @@ void MainWindow::playlistItemsSelected(bool s)
     }
 }
 
+void MainWindow::connectToMpd()
+{
+    messageWidget->hide();
+    emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
+}
+
 void MainWindow::refresh()
 {
     MusicLibraryModel::self()->removeCache();
@@ -1090,7 +1109,7 @@ void MainWindow::updateSettings()
         volumeFade->setDuration(stopFadeDuration);
     }
 
-    emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
+    connectToMpd();
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());

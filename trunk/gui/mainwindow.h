@@ -214,7 +214,7 @@ Q_SIGNALS:
     void coverFile(const QString &);
 
 public Q_SLOTS:
-    void showError(const QString &message);
+    void showError(const QString &message, bool showActions=false);
 
 private Q_SLOTS:
     void setMpdVolume(int );
@@ -228,6 +228,7 @@ private Q_SLOTS:
     void showVolumeControl();
     void showPreferencesDialog();
     void updateSettings();
+    void connectToMpd();
     void refresh();
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
@@ -321,6 +322,8 @@ private:
     QHeaderView *playQueueHeader;
     VolumeSliderEventHandler *volumeSliderEventHandler;
     VolumeControl *volumeControl;
+    Action *prefAction;
+    Action *connectAction;
     Action *prevTrackAction;
     Action *nextTrackAction;
     Action *playPauseTrackAction;

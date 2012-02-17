@@ -1032,7 +1032,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         }
         #else
         if (host.startsWith('/')) {
-            showError(tr("Connection to %1 failed").arg(host), true));
+            showError(tr("Connection to %1 failed").arg(host), true);
         } else {
             showError(tr("Connection to %1:%2 failed").arg(host).arg(QString::number(MPDConnection::self()->getPort())), true);
         }

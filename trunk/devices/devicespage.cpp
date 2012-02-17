@@ -92,8 +92,8 @@ DevicesPage::DevicesPage(MainWindow *p)
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     menu->addAction(p->replaygainAction);
     #endif
-    menu->addAction(sep);
-    menu->addAction(p->deleteSongsAction);
+    //menu->addAction(sep);
+    //menu->addAction(p->deleteSongsAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(QIcon::fromTheme("system-run"));
     proxy.setSourceModel(DevicesModel::self());

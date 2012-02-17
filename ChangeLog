@@ -5,6 +5,8 @@
 3. Open local files passed on commandline - if using local socket. (KDE only)
 4. When loose MPD connection, indicate via message widget.
 5. Dont show base dir when editing tags of tracks on UMS device.
+6. In tag editor dialog, if a field in the 'All tracks' section has multiple
+   values - set the placeholder text to '(Multiple values)'
 
 0.4.0
 -----

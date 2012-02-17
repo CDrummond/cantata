@@ -251,6 +251,51 @@ void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
     s.year=year->value();
 }
 
+void TagEditor::setPlaceholderTexts()
+{
+    QString artistText;
+    QString albumText;
+    QString albumArtistText;
+    QString genreText;
+
+    if(0==currentSongIndex && original.count()>1) {
+        Song all=original.at(0);
+        if (all.artist.isEmpty()) {
+            #ifdef ENABLE_KDE_SUPPORT
+            artistText=i18n("(Multiple values)");
+            #else
+            artistText=tr("(Multiple values)");
+            #endif
+        }
+        if (all.album.isEmpty()) {
+            #ifdef ENABLE_KDE_SUPPORT
+            albumText=i18n("(Multiple values)");
+            #else
+            albumText=tr("(Multiple values)");
+            #endif
+        }
+        if (all.albumartist.isEmpty()) {
+            #ifdef ENABLE_KDE_SUPPORT
+            albumArtistText=i18n("(Multiple values)");
+            #else
+            albumArtistText=tr("(Multiple values)");
+            #endif
+        }
+        if (all.genre.isEmpty()) {
+            #ifdef ENABLE_KDE_SUPPORT
+            genreText=i18n("(Multiple values)");
+            #else
+            genreText=tr("(Multiple values)");
+            #endif
+        }
+    }
+
+    artist->setPlaceholderText(artistText);
+    album->setPlaceholderText(albumText);
+    albumArtist->setPlaceholderText(albumArtistText);
+    genre->setPlaceholderText(genreText);
+}
+
 void TagEditor::enableOkButton()
 {
     if (!saveable) {
@@ -537,6 +582,7 @@ void TagEditor::setIndex(int idx)
         enableButton(User1, !isMultiple && idx<(original.count()-1)); // Next
         enableButton(User2, !isMultiple && idx>1); // Prev
     }
+    setPlaceholderTexts();
     enableOkButton();
     trackName->setCurrentIndex(idx);
     setLabelStates();

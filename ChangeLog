@@ -1,8 +1,8 @@
 0.5.0
 -----
-1. Add ability to calculate replaygain tags.
-2. Add "Open File Manager" action to folder page context menu.
-3. Open local files passed on commandline - if using local socket.
+1. Add ability to calculate replaygain tags. (KDE only)
+2. Add "Open File Manager" action to folder page context menu. (KDE only)
+3. Open local files passed on commandline - if using local socket. (KDE only)
 4. When loose MPD connection, indicate via message widget.
 5. Dont show base dir when editing tags of tracks on UMS device.
 

@@ -67,6 +67,7 @@ Q_SIGNALS:
 private:
     void enableOkButton();
     void setLabelStates();
+    void setPlaceholderTexts();
     void fillSong(Song &s, bool isAll, bool skipEmpty) const;
     #ifdef ENABLE_KDE_SUPPORT
     void slotButtonClicked(int button);

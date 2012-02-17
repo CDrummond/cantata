@@ -7,7 +7,25 @@ if(NOT GETTEXT_MSGFMT_EXECUTABLE)
 else(NOT GETTEXT_MSGFMT_EXECUTABLE)
     set(catalogname cantata)
     add_custom_target(translations ALL)
-    file(GLOB PO_FILES *.po)
+
+    if (CANTATA_CS_TRANSLATION)
+        LIST(APPEND PO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/cs.po")
+    endif (CANTATA_CS_TRANSLATION)
+
+    if (CANTATA_DE_TRANSLATION)
+        LIST(APPEND PO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/de.po")
+    endif (CANTATA_DE_TRANSLATION)
+
+    if (CANTATA_ES_TRANSLATION)
+        LIST(APPEND PO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/es.po")
+    endif (CANTATA_ES_TRANSLATION)
+
+    if (CANTATA_PL_TRANSLATION)
+        LIST(APPEND PO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pl.po")
+    endif (CANTATA_PL_TRANSLATION)
+
+    # file(GLOB PO_FILES *.po)
+
     foreach(_poFile ${PO_FILES})
         get_filename_component(_poFileName ${_poFile} NAME)
         string(REGEX REPLACE "^${catalogname}_?" "" _langCode ${_poFileName} )

@@ -322,7 +322,7 @@ IF( ENABLE_KDE_SUPPORT )
 
     ADD_SUBDIRECTORY( icons )
     add_subdirectory(po)
-    add_subdirectory( docs )
+    # add_subdirectory( docs )
 ELSE( ENABLE_KDE_SUPPORT )
     SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/dirrequester.cpp widgets/lineedit.cpp network/networkproxyfactory.cpp network/proxysettings.cpp widgets/messagewidget.cpp )
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} widgets/dirrequester.h widgets/lineedit.h network/proxysettings.h widgets/messagewidget.h )

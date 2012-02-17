@@ -6,6 +6,14 @@ With KDE Support (Recommended)
 4. make
 5. sudo make install
 
+The following options may be passed to CMake:
+
+    -DCANTATA_TRANSLATIONS=<list of translations to install>
+        Builds and installs the selected translations. Supported values are
+        cs, de, en, es, pl, and all. Entries should be separated with a semicolon
+        (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
+        Default: all
+
 
 Qt-Only
 =======

@@ -279,18 +279,18 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
 
     if (!rg.null) {
         ReplayGainStrings rgs(rg);
-        while (clearTxxxTag(tag, TagLib::String("replaygain_albumGain").upper()));
-        while (clearTxxxTag(tag, TagLib::String("replaygain_albumPeak").upper()));
+        while (clearTxxxTag(tag, TagLib::String("replaygain_album_gain").upper()));
+        while (clearTxxxTag(tag, TagLib::String("replaygain_album_peak").upper()));
         while (clearRva2Tag(tag, TagLib::String("album").upper()));
-        while (clearTxxxTag(tag, TagLib::String("replaygain_trackGain").upper()));
-        while (clearTxxxTag(tag, TagLib::String("replaygain_trackPeak").upper()));
+        while (clearTxxxTag(tag, TagLib::String("replaygain_track_gain").upper()));
+        while (clearTxxxTag(tag, TagLib::String("replaygain_track_peak").upper()));
         while (clearRva2Tag(tag, TagLib::String("track").upper()));
-        setTxxxTag(tag, "replaygain_trackGain", rgs.trackGain);
-        setTxxxTag(tag, "replaygain_trackPeak", rgs.trackPeak);
+        setTxxxTag(tag, "replaygain_track_gain", rgs.trackGain);
+        setTxxxTag(tag, "replaygain_track_peak", rgs.trackPeak);
         setRva2Tag(tag, "track", rg.trackGain, rg.trackPeak);
         if (rg.albumMode) {
-            setTxxxTag(tag, "replaygain_albumGain", rgs.albumGain);
-            setTxxxTag(tag, "replaygain_albumPeak", rgs.albumPeak);
+            setTxxxTag(tag, "replaygain_album_gain", rgs.albumGain);
+            setTxxxTag(tag, "replaygain_album_peak", rgs.albumPeak);
             setRva2Tag(tag, "album", rg.albumGain, rg.albumPeak);
         }
         changed=true;

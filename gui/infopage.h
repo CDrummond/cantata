@@ -55,6 +55,7 @@ private:
     WebView *view;
     QComboBox *combo;
     QString lastWikiQuestion;
+    bool iHaveAskedForArtist;
     Song song;
 };
 

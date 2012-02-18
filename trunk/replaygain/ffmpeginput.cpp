@@ -34,34 +34,36 @@ extern "C" {
 
 static QMutex mutex;
 
-#define BUFFER_SIZE (AVCODEC_MAX_AUDIO_FRAME_SIZE + FF_INPUT_BUFFER_PADDING_SIZE)
-
-struct Buffer {
-  uint8_t audioBuffer[BUFFER_SIZE];
-} __attribute__ ((aligned (8)));
+#define BUFFER_SIZE ((((AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2) * sizeof(int16_t)) + FF_INPUT_BUFFER_PADDING_SIZE)
 
 struct FfmpegInput::Handle {
     Handle()
         : formatContext(0)
         , codecContext(0)
         , codec(0)
-        , needNewFrame(false)
+        , needNewFrame(true)
         , audioStream(0)
         , oldData(0)
         , currentBytes(0) {
         av_init_packet(&packet);
+        audioBuffer = (int16_t*)av_malloc(BUFFER_SIZE);
     }
-  AVFormatContext *formatContext;
-  AVCodecContext *codecContext;
-  AVCodec *codec;
-  AVPacket packet;
-  bool needNewFrame;
-  int audioStream;
-  uint8_t *oldData;
-  struct Buffer audioBuffer;
-  float buffer[BUFFER_SIZE / 2 + 1];
-  QList<QByteArray> bufferList;
-  size_t currentBytes;
+    ~Handle() {
+        if (audioBuffer) {
+            av_free(audioBuffer);
+        }
+    }
+    AVFormatContext *formatContext;
+    AVCodecContext *codecContext;
+    AVCodec *codec;
+    AVPacket packet;
+    bool needNewFrame;
+    int audioStream;
+    uint8_t *oldData;
+    int16_t *audioBuffer;
+    float buffer[BUFFER_SIZE / 2 + 1];
+    QList<QByteArray> bufferList;
+    size_t currentBytes;
 };
 
 void FfmpegInput::init()
@@ -142,8 +144,6 @@ FfmpegInput::FfmpegInput(const QString &fileName)
 
     if (ok) {
         mutex.unlock();
-        handle->needNewFrame = true;
-        handle->oldData = NULL;
     } else {
         av_close_input_file(handle->formatContext);
         mutex.unlock();
@@ -274,12 +274,12 @@ size_t FfmpegInput::readOnePacket()
                 handle->oldData = handle->packet.data;
             }
             while (handle->packet.size > 0) {
-                int dataSize = sizeof(handle->audioBuffer);
+                int dataSize=BUFFER_SIZE;
                 #if LIBAVCODEC_VERSION_MAJOR >= 53 || \
                     (LIBAVCODEC_VERSION_MAJOR == 52 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 23, 0))
-                int len = avcodec_decode_audio3(handle->codecContext, (int16_t*) &handle->audioBuffer, &dataSize, &handle->packet);
+                int len = avcodec_decode_audio3(handle->codecContext, handle->audioBuffer, &dataSize, &handle->packet);
                 #else
-                int len = avcodec_decode_audio2(handle->codecContext, (int16_t*) &handle->audioBuffer, &dataSize, handle->packet.data, handle->packet.size);
+                int len = avcodec_decode_audio2(handle->codecContext, handle->audioBuffer, &dataSize, handle->packet.data, handle->packet.size);
                 #endif
                 if (len < 0) {
                     handle->packet.size = 0;
@@ -300,7 +300,7 @@ size_t FfmpegInput::readOnePacket()
     //                 fprintf(stderr, "8 bit audio not supported by libebur128!\n");
                     return 0;
                 case SAMPLE_FMT_S16: {
-                    int16_t *dataShort =  (int16_t*) &handle->audioBuffer;
+                    int16_t *dataShort = (int16_t*) handle->audioBuffer;
                     numberRead = (size_t) dataSize / sizeof(int16_t) / (size_t) handle->codecContext->channels;
                     for (i = 0; i < (size_t) dataSize / sizeof(int16_t); ++i) {
                         handle->buffer[i] = ((float) dataShort[i]) / qMax(-(float) SHRT_MIN, (float) SHRT_MAX);
@@ -308,7 +308,7 @@ size_t FfmpegInput::readOnePacket()
                     break;
                 }
                 case SAMPLE_FMT_S32: {
-                    int32_t *dataInt =    (int32_t*) &handle->audioBuffer;
+                    int32_t *dataInt = (int32_t*) handle->audioBuffer;
                     numberRead = (size_t) dataSize / sizeof(int32_t) / (size_t) handle->codecContext->channels;
                     for (i = 0; i < (size_t) dataSize / sizeof(int32_t); ++i) {
                         handle->buffer[i] = ((float) dataInt[i]) / qMax(-(float) INT_MIN, (float) INT_MAX);
@@ -316,7 +316,7 @@ size_t FfmpegInput::readOnePacket()
                     break;
                 }
                 case SAMPLE_FMT_FLT: {
-                    float *dataFloat =  (float*)   &handle->audioBuffer;
+                    float *dataFloat = (float*) handle->audioBuffer;
                     numberRead = (size_t) dataSize / sizeof(float) / (size_t) handle->codecContext->channels;
                     for (i = 0; i < (size_t) dataSize / sizeof(float); ++i) {
                         handle->buffer[i] = dataFloat[i];
@@ -324,7 +324,7 @@ size_t FfmpegInput::readOnePacket()
                     break;
                 }
                 case SAMPLE_FMT_DBL: {
-                    double *dataDouble = (double*)  &handle->audioBuffer;
+                    double *dataDouble = (double*) handle->audioBuffer;
                     numberRead = (size_t) dataSize / sizeof(double) / (size_t) handle->codecContext->channels;
                     for (i = 0; i < (size_t) dataSize / sizeof(double); ++i) {
                         handle->buffer[i] = (float) dataDouble[i];

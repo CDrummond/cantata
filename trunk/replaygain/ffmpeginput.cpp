@@ -51,13 +51,13 @@ struct FfmpegInput::Handle {
         , currentBytes(0) {
         av_init_packet(&packet);
     }
-  AVFormatContext* formatContext;
-  AVCodecContext* codecContext;
-  AVCodec* codec;
+  AVFormatContext *formatContext;
+  AVCodecContext *codecContext;
+  AVCodec *codec;
   AVPacket packet;
   bool needNewFrame;
   int audioStream;
-  uint8_t* oldData;
+  uint8_t *oldData;
   struct Buffer audioBuffer;
   float buffer[BUFFER_SIZE / 2 + 1];
   QList<QByteArray> bufferList;
@@ -270,7 +270,6 @@ size_t FfmpegInput::readOnePacket()
         }
         handle->needNewFrame = FALSE;
         if (handle->packet.stream_index == handle->audioStream) {
-
             if (!handle->oldData) {
                 handle->oldData = handle->packet.data;
             }

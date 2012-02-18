@@ -78,6 +78,7 @@ public:
 
 InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
+    , iHaveAskedForArtist(false)
 {
     QGridLayout *layout=new QGridLayout(this);
     view=new WebView(this);
@@ -139,14 +140,17 @@ void InfoPage::googleAnswer(const QString &ans)
     int start = answer.indexOf( "<h3" );
     if ( start > -1 ) {
         start = answer.indexOf( "href=\"", start ) + 6;
+        start = answer.indexOf( "http", start );
         int end = answer.indexOf( "\"", start );
+        end = qMin(end, answer.indexOf( "&amp", start ));
         answer = answer.mid( start, end - start );
     }
     else {
         answer.clear();
     }
 
-    if ( !answer.contains("wikipedia.org") || answer.contains( QRegExp("/.*:") ) ) {
+    if ( !iHaveAskedForArtist && (!answer.contains("wikipedia.org") || answer.contains( QRegExp("/.*:") ) )) {
+        iHaveAskedForArtist=true;
         askGoogle( song.artist );
         return;
     }
@@ -161,6 +165,7 @@ void InfoPage::googleAnswer(const QString &ans)
 
 void InfoPage::update(const Song &s)
 {
+    iHaveAskedForArtist=false;
     song=s;
     fetchInfo();
 }
@@ -183,7 +188,6 @@ void InfoPage::fetchInfo()
 
 void InfoPage::downloadRequested(const QNetworkRequest &request)
 {
-
     QString defaultFileName=QFileInfo(request.url().toString()).fileName();
     #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getSaveFileName(KUrl(), QString(), this);

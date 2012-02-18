@@ -945,11 +945,11 @@ void MainWindow::load(const QList<QUrl> &urls)
 
     foreach (QUrl u, urls) {
         if ((allowLocal && QLatin1String("file")==u.scheme()) || QLatin1String("http")==u.scheme()) {
-            useable.append(u.toString());
+            useable.prepend(u.toString());
         }
     }
     if (useable.count()) {
-        playQueueModel.addItems(useable, 0);
+        playQueueModel.addItems(useable, playQueueModel.rowCount());
     }
 }
 

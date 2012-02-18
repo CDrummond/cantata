@@ -77,6 +77,8 @@ void Network::get(const QUrl &url, QObject *receiver, const char *slot, const QS
     }
 
     QNetworkRequest request( url );
+    // lie to prevent google etc. from believing we'd be some automated tool, abusing their ... errr ;-P
+    request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/6.0");
     if (!lang.isEmpty()) {
         request.setRawHeader("Accept-Language", lang.toAscii() );
     }

@@ -237,18 +237,27 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
     // We only handle 1 job at a time!
     if (reply==job) {
         if (!reply->error()) {
-            QString u=parse(data, handlers);
-
-            if (u.isEmpty() || u==current) {
-                done.append(current);
-            } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
-                // Redirect...
-                current=u;
+            QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
+            if (redirect.isValid() && ++redirects<constMaxRedirects) {
+                reply->deleteLater();
+                current=redirect.toString();
                 data.clear();
-                job=manager->get(u);
+                job=manager->get(current);
                 connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
             } else {
-                done.append(u);
+                QString u=parse(data, handlers);
+
+                if (u.isEmpty() || u==current) {
+                    done.append(current);
+                } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
+                    // Redirect...
+                    current=u;
+                    data.clear();
+                    job=manager->get(u);
+                    connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+                } else {
+                    done.append(u);
+                }
             }
         } else {
             done.append(current);

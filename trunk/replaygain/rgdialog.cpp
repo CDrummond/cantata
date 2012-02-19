@@ -83,6 +83,7 @@ RgDialog::RgDialog(QWidget *parent)
     layout->addWidget(progress);
     setMainWidget(mainWidet);
     setButtonGuiItem(Ok, KStandardGuiItem::save());
+    setButtonGuiItem(Cancel, KStandardGuiItem::close());
     setButtonGuiItem(User1, KGuiItem(i18n("Scan"), "edit-find"));
     enableButton(Ok, false);
     enableButton(User1, false);
@@ -157,6 +158,7 @@ void RgDialog::slotButtonClicked(int button)
 
 void RgDialog::startScanning()
 {
+    setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     scanning=true;
     enableButton(Ok, false);
     enableButton(User1, false);
@@ -192,6 +194,7 @@ void RgDialog::stopScanning()
     }
     jobs.clear();
     scanners.clear();
+    setButtonGuiItem(Cancel, KStandardGuiItem::close());
 }
 
 void RgDialog::saveTags()

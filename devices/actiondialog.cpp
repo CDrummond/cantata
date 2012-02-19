@@ -24,6 +24,7 @@
 #include "actiondialog.h"
 #include "devicesmodel.h"
 #include "device.h"
+#include "utils.h"
 #include "devicepropertiesdialog.h"
 #include "settings.h"
 #include "musiclibrarymodel.h"
@@ -316,7 +317,7 @@ void ActionDialog::doNext()
                 if (dev) {
                     dev->cleanDir(d);
                 } else {
-                    Device::cleanDir(d, Settings::self()->mpdDir(), QString());
+                    Utils::cleanDir(d, Settings::self()->mpdDir(), QString());
                 }
             }
         }

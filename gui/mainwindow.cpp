@@ -2272,6 +2272,10 @@ void MainWindow::toggleDockManager()
 #ifdef TAGLIB_FOUND
 void MainWindow::editTags()
 {
+    if (0!=TagEditor::instanceCount()) {
+        return;
+    }
+
     QList<Song> songs;
     if (libraryPage->isVisible()) {
         songs=libraryPage->selectedSongs();
@@ -2315,6 +2319,10 @@ void MainWindow::editTags()
 #ifdef ENABLE_DEVICES_SUPPORT
 void MainWindow::organiseFiles()
 {
+    if (0!=TrackOrganiser::instanceCount()) {
+        return;
+    }
+
     QList<Song> songs;
     if (libraryPage->isVisible()) {
         songs=libraryPage->selectedSongs();
@@ -2369,12 +2377,20 @@ void MainWindow::deleteSongs()
 
 void MainWindow::copyToDevice(const QString &from, const QString &to, const QList<Song> &songs)
 {
+    if (0!=ActionDialog::instanceCount()) {
+        return;
+    }
+
     ActionDialog *dlg=new ActionDialog(this);
     dlg->copy(from, to, songs);
 }
 
 void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
 {
+    if (0!=ActionDialog::instanceCount()) {
+        return;
+    }
+
     ActionDialog *dlg=new ActionDialog(this);
     dlg->remove(from, songs);
 }
@@ -2383,6 +2399,10 @@ void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
 void MainWindow::replayGain()
 {
+    if (0!=RgDialog::instanceCount()) {
+        return;
+    }
+
     QList<Song> songs;
     if (libraryPage->isVisible()) {
         songs=libraryPage->selectedSongs();

@@ -37,7 +37,11 @@ class RgDialog : public KDialog
     Q_OBJECT
 
 public:
+    static int instanceCount();
+
     RgDialog(QWidget *parent);
+    virtual ~RgDialog();
+
     void show(const QList<Song> &songs, const QString &basePath);
 
 Q_SIGNALS:

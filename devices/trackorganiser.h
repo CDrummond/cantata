@@ -35,7 +35,11 @@ class TrackOrganiser : public KDialog, Ui::TrackOrganiser
     Q_OBJECT
 
 public:
+    static int instanceCount();
+
     TrackOrganiser(QWidget *parent);
+    virtual ~TrackOrganiser();
+
     void show(const QList<Song> &songs, const QString &udi);
 
 Q_SIGNALS:

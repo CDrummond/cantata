@@ -80,10 +80,6 @@ public:
     };
 
     static Device * create(DevicesModel *m, const QString &udi);
-    static void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
-    static void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
-    static void setFilePerms(const QString &file);
-    static bool createDir(const QString &dir, const QString &base);
     static bool fixVariousArtists(const QString &file, Song &song, bool applyFix);
 
     static const QLatin1String constNoCover;

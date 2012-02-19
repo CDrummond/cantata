@@ -28,6 +28,7 @@
 #include "dirviewmodel.h"
 #include "settings.h"
 #include "mpdconnection.h"
+#include "utils.h"
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
@@ -228,7 +229,7 @@ void TrackOrganiser::renameFile()
         if (!skip) {
             KUrl d(dest);
             QDir dir(d.directory());
-            if(!dir.exists() && !Device::createDir(dir.absolutePath(), musicFolder)) {
+            if(!dir.exists() && !Utils::createDir(dir.absolutePath(), musicFolder)) {
                 if (autoSkip) {
                     skip=true;
                 } else {
@@ -274,7 +275,7 @@ void TrackOrganiser::renameFile()
             QDir dDir(du.directory());
             Device *dev=deviceUdi.isEmpty() ? 0 : getDevice();
             if (sDir.absolutePath()!=dDir.absolutePath()) {
-                Device::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile() : QString());
+                Utils::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile() : QString());
             }
             item->setText(0, modified);
             Song to=s;

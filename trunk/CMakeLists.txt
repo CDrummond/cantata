@@ -80,6 +80,7 @@ SET( CANTATA_SRCS
     libmaia/maiaObject.cpp
     libmaia/maiaFault.cpp
     libmaia/maiaXmlRpcClient.cpp
+    devices/utils.cpp
 )
 
 SET( CANTATA_MOC_HDRS

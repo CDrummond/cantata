@@ -26,6 +26,7 @@
 
 #include "device.h"
 #include "song.h"
+#include "utils.h"
 #include <solid/storageaccess.h>
 #include <QtCore/QThread>
 #include <QtCore/QStringList>
@@ -72,7 +73,7 @@ public:
     void addSong(const Song &s, bool overwrite);
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
     void removeSong(const Song &s);
-    void cleanDir(const QString &dir) { Device::cleanDir(dir, audioFolder, coverFileName); }
+    void cleanDir(const QString &dir) { Utils::cleanDir(dir, audioFolder, coverFileName); }
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();

@@ -23,6 +23,7 @@
 
 #include "scanner.h"
 #include "ffmpeginput.h"
+#include "config.h"
 
 #define RG_REFERENCE_LEVEL -18.0
 
@@ -92,7 +93,11 @@ void Scanner::run()
         setFinished(false);
         return;
     }
-    state=ebur128_init(input.channels(), input.sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK/*|EBUR128_MODE_TRUE_PEAK|EBUR128_MODE_HISTOGRAM*/);
+    #ifdef EBUR128_USE_SPEEX_RESAMPLER
+    state=ebur128_init(input.channels(), input.sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_TRUE_PEAK);
+    #else
+    state=ebur128_init(input.channels(), input.sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK);
+    #endif
     int *channelMap=new int [state->channels];
     if (input.setChannelMap(channelMap)) {
         for (unsigned int i = 0; i < state->channels; ++i) {
@@ -141,7 +146,7 @@ void Scanner::run()
             }
         }
     }
-#ifdef EBUR128_USE_SPEEX_RESAMPLER
+    #ifdef EBUR128_USE_SPEEX_RESAMPLER
     if ((state->mode & EBUR128_MODE_TRUE_PEAK) == EBUR128_MODE_TRUE_PEAK) {
         for (unsigned i = 0; i < state->channels; ++i) {
             double tp;
@@ -151,6 +156,6 @@ void Scanner::run()
             }
         }
     }
-#endif
+    #endif
     setFinished(true);
 }

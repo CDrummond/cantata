@@ -307,7 +307,7 @@ QStringList Encoder::params(int value, const QString &in, const QString &out)
         bool increase=values.at(0).value<values.at(1).value;
         int v=values.at(defaultValueIndex).value;
         foreach (const Setting &s, values) {
-            if ((increase && s.value>=value) || (!increase && s.value<=value)) {
+            if ((increase && s.value>value) || (!increase && s.value<value)) {
                 break;
             } else {
                 v=s.value;

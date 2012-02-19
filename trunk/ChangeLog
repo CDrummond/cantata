@@ -11,6 +11,7 @@
    should be built and installed. e.g.
        -DCANTATA_TRANSLATIONS="en;pl"
 8. Add some basic documentation.
+9. When playing, centre on current track.
 
 0.4.0
 -----

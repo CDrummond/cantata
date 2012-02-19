@@ -1308,6 +1308,7 @@ void MainWindow::realSearchPlaylist()
 
             playQueue->setModel(&playQueueModel);
             usingProxy=false;
+            scrollPlayQueue();
         }
         playQueueProxyModel.setFilterEnabled(false);
         if (!playQueueProxyModel.filterRegExp().isEmpty()) {
@@ -1412,6 +1413,10 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
     }
+
+    if (songs.count()) {
+        scrollPlayQueue();
+    }
 }
 
 void MainWindow::updateCurrentSong(const Song &song)
@@ -1461,6 +1466,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     playQueueModel.updateCurrentSong(song.id);
+    scrollPlayQueue();
 
     if (song.artist.isEmpty()) {
         if (trackLabel->text().isEmpty()) {
@@ -1525,7 +1531,17 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 }
 
-#include <QtCore/QDebug>
+void MainWindow::scrollPlayQueue()
+{
+    if (MPDStatus::State_Playing==MPDStatus::self()->state()) {
+        qint32 row=playQueueModel.currentSongRow();
+        if (row>=0) {
+            QModelIndex idx=usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0)) : playQueueModel.index(row, 0);
+            playQueue->scrollTo(idx, QAbstractItemView::PositionAtCenter);
+        }
+    }
+}
+
 void MainWindow::updateStats()
 {
     /*

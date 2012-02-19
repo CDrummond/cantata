@@ -792,7 +792,7 @@ Update updateReplaygain(const QString &fileName, double trackGain, double trackP
     TagLib::ID3v1::Tag *v1=mpeg ? mpeg->ID3v1Tag(false) : 0;
     bool haveV1=v1 && (!v1->title().isEmpty() || !v1->artist().isEmpty() || !v1->album().isEmpty());
 
-    if (writeTags(fileref, Song(), Song(), ReplayGain(trackGain, trackPeak, albumGain, albumPeak))) {
+    if (writeTags(fileref, Song(), Song(), ReplayGain(trackGain, albumGain, trackPeak, albumPeak))) {
         if (mpeg && !haveV1) {
             return mpeg->save(TagLib::MPEG::File::ID3v2) ? Update_Modified : Update_Failed;
         }

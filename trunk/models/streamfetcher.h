@@ -47,8 +47,12 @@ private:
 
 public Q_SLOTS:
     void cancel();
+    void urlHandlers(const QStringList &uh);
 
 Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
+    void getUrlHandlers();
+
     void result(const QStringList &items, int insertRow);
 
 private Q_SLOTS:
@@ -64,6 +68,7 @@ private:
     int row;
     int redirects;
     QByteArray data;
+    QStringList handlers;
 };
 
 #endif

@@ -417,7 +417,8 @@ void StreamsPage::controlActions()
     editAction->setEnabled(1==selected.size());
     replacePlaylist->setEnabled(selected.count());
     mw->removeAction->setEnabled(selected.count());
-    exportAction->setEnabled(model.rowCount()>0);
+    exportAction->setEnabled(model.rowCount());
+    mw->replacePlaylistAction->setEnabled(selected.count());
 }
 
 void StreamsPage::searchItems()

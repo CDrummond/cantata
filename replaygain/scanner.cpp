@@ -125,11 +125,11 @@ void Scanner::run()
         setFinished(false);
         return;
     }
-    #ifdef EBUR128_USE_SPEEX_RESAMPLER
-    state=ebur128_init(input->channels(), input->sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_TRUE_PEAK);
-    #else
+//     #ifdef EBUR128_USE_SPEEX_RESAMPLER
+//     state=ebur128_init(input->channels(), input->sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_TRUE_PEAK);
+//     #else
     state=ebur128_init(input->channels(), input->sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK);
-    #endif
+//     #endif
     int *channelMap=new int [state->channels];
     if (input->setChannelMap(channelMap)) {
         for (unsigned int i = 0; i < state->channels; ++i) {

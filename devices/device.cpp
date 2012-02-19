@@ -33,8 +33,6 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "covers.h"
-#include "mpdparseutils.h"
 #include <solid/portablemediaplayer.h>
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
@@ -46,10 +44,6 @@
 #include <KDE/KConfigGroup>
 #include <KDE/KStandardDirs>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <grp.h>
-#include <pwd.h>
 
 static QString cleanPath(const QString &path)
 {
@@ -350,159 +344,6 @@ Device * Device::create(DevicesModel *m, const QString &udi)
         }
     }
     return 0;
-}
-
-void Device::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)
-{
-    QDir d(from);
-    if (d.exists()) {
-        QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
-        QList<QString> extraFiles;
-        QSet<QString> others=Covers::standardNames().toSet();
-        others << coverFile << "albumart.pamp";
-
-        foreach (const QFileInfo &info, entries) {
-            if (info.isDir()) {
-                return;
-            }
-            if (!others.contains(info.fileName())) {
-                return;
-            }
-            extraFiles.append(info.fileName());
-        }
-
-        foreach (const QString &cf, extraFiles) {
-            if (!QFile::rename(from+'/'+cf, to+'/'+cf)) {
-                return;
-            }
-        }
-        cleanDir(from, base, coverFile);
-    }
-}
-
-void Device::cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level)
-{
-    QDir d(dir);
-    if (d.exists()) {
-        QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
-        QList<QString> extraFiles;
-        QSet<QString> others=Covers::standardNames().toSet();
-        others << coverFile << "albumart.pamp";
-
-        foreach (const QFileInfo &info, entries) {
-            if (info.isDir()) {
-                return;
-            }
-            if (!others.contains(info.fileName())) {
-                return;
-            }
-            extraFiles.append(info.absoluteFilePath());
-        }
-
-        foreach (const QString &cf, extraFiles) {
-            if (!QFile::remove(cf)) {
-                return;
-            }
-        }
-
-        if (MPDParseUtils::fixPath(dir)==MPDParseUtils::fixPath(base)) {
-            return;
-        }
-        QString dirName=d.dirName();
-        if (dirName.isEmpty()) {
-            return;
-        }
-        d.cdUp();
-        if (!d.rmdir(dirName)) {
-            return;
-        }
-        if (level>=3) {
-            return;
-        }
-        QString upDir=d.absolutePath();
-        if (MPDParseUtils::fixPath(upDir)!=MPDParseUtils::fixPath(base)) {
-            cleanDir(upDir, base, coverFile, level+1);
-        }
-    }
-}
-
-// Check if $USER is in group "audio", if so we can set files to be owned by this group :-)
-static gid_t getAudioGroupId()
-{
-    static bool init=false;
-    static gid_t gid=0;
-
-    if (init) {
-        return gid;
-    }
-
-    init=true;
-
-    struct passwd *pw=getpwuid(geteuid());
-
-    if (!pw) {
-        return gid;
-    }
-
-    struct group *audioGroup=getgrnam("audio");
-
-    if (audioGroup) {
-        for (int i=0; audioGroup->gr_mem[i]; ++i) {
-            if (0==strcmp(audioGroup->gr_mem[i], pw->pw_name)) {
-                gid=audioGroup->gr_gid;
-                return gid;
-            }
-        }
-    }
-    return gid;
-}
-
-/*
- * Set file permissions.
- * If user is a memeber of "audio" group, then set file as owned by and writeable by "audio" group.
- */
-void Device::setFilePerms(const QString &file)
-{
-    //
-    // Clear any umask before setting file perms
-    mode_t oldMask(umask(0000));
-    gid_t gid=getAudioGroupId();
-    QByteArray fn=QFile::encodeName(file);
-    ::chmod(fn.constData(), 0==gid ? 0644 : 0664);
-    if (0!=gid) {
-        int rv=::chown(fn.constData(), geteuid(), gid);
-        Q_UNUSED(rv);
-    }
-    // Reset umask
-    ::umask(oldMask);
-}
-
-/*
- * Create directory, and set its permissions.
- * If user is a memeber of "audio" group, then set dir as owned by and writeable by "audio" group.
- */
-#include <QtCore/QDebug>
-bool Device::createDir(const QString &dir, const QString &base)
-{
-    //
-    // Clear any umask before dir is created
-    mode_t oldMask(umask(0000));
-    gid_t gid=base.isEmpty() ? 0 : getAudioGroupId();
-    bool status(KStandardDirs::makeDir(dir, 0==gid ? 0755 : 0775));
-    if (status && 0!=gid && dir.startsWith(base)) {
-        QStringList parts=dir.mid(base.length()).split('/');
-        QString d(base);
-
-        foreach (const QString &p, parts) {
-            d+='/'+p;
-            qWarning() << d;
-            int rv=::chown(QFile::encodeName(d).constData(), geteuid(), gid);
-            Q_UNUSED(rv);
-        }
-    }
-    // Reset umask
-    ::umask(oldMask);
-    return status;
 }
 
 bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)

@@ -23,6 +23,7 @@
 
 #include "covers.h"
 #include "song.h"
+#include "utils.h"
 #include "mpdparseutils.h"
 #include "maiaXmlRpcClient.h"
 #include "networkaccessmanager.h"
@@ -103,6 +104,9 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
 
         QFile f(filePrefix+mimeType);
         if (f.open(QIODevice::WriteOnly) && raw.size()==f.write(raw)) {
+            if (!Settings::self()->mpdDir().isEmpty() && filePrefix.startsWith(Settings::self()->mpdDir())) {
+                Utils::setFilePerms(filePrefix+mimeType);
+            }
             return filePrefix+mimeType;
         }
     }
@@ -113,6 +117,9 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
         }
 
         if (img.save(filePrefix+extension)) {
+            if (!Settings::self()->mpdDir().isEmpty() && filePrefix.startsWith(Settings::self()->mpdDir())) {
+                Utils::setFilePerms(filePrefix+mimeType);
+            }
             return filePrefix+extension;
         }
     }
@@ -246,6 +253,7 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
             } else {
                 QFile::copy(sourceDir+coverFile, destDir+destName);
             }
+            Utils::setFilePerms(destDir+destName);
             return;
         }
     }
@@ -257,6 +265,7 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     foreach (const QString &ext, constExtensions) {
         if (QFile::exists(dir+album+ext)) {
             QFile::copy(dir+album+ext, destDir+constFileName+ext);
+            Utils::setFilePerms(destDir+constFileName+ext);
             return;
         }
     }

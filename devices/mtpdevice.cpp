@@ -33,6 +33,7 @@
 #include "song.h"
 #include "encoders.h"
 #include "transcodingjob.h"
+#include "utils.h"
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtCore/QDir>
@@ -667,7 +668,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     currentMusicPath=musicPath;
     KUrl dest(currentBaseDir+currentMusicPath);
     QDir dir(dest.directory());
-    if (!dir.exists() && !Device::createDir(dir.absolutePath(), baseDir)) {
+    if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
     }
@@ -767,7 +768,7 @@ void MtpDevice::getSongStatus(bool ok)
         if (needToFixVa) {
             Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
         }
-        Device::setFilePerms(currentBaseDir+currentSong.file);
+        Utils::setFilePerms(currentBaseDir+currentSong.file);
         MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(currentSong.file);
         emit actionStatus(Ok);

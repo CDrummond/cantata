@@ -17,8 +17,9 @@ Cantata requires/uses the following libraries:
    not found, the page will not be built.
 4. TagLib - required to for the tag edit dialog, and for UMS device support.
 5. LibMTP - required to support MTP devices.
-6. FFMPEG (libavcodec) - required for ReplayGain detection.
+6. FFMPEG (libavcodec) - used for ReplayGain detection.
 7. SpeexDSP - used by ReplayGain detection code.
+8. MPG123 - used for ReplayGain detection (optional).
 
 
 Amarok Radio Streams

@@ -238,6 +238,7 @@ void RgDialog::updateView()
         progress->setVisible(false);
         scanning=false;
         enableButton(Ok, true);
+        setButtonGuiItem(Cancel, KStandardGuiItem::close());
 
         QMap<QString, Album>::iterator a(albums.begin());
         QMap<QString, Album>::iterator ae(albums.end());

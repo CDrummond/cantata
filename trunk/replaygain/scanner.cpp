@@ -22,8 +22,13 @@
  */
 
 #include "scanner.h"
-#include "ffmpeginput.h"
 #include "config.h"
+#ifdef MPG123_FOUND
+#include "mpg123input.h"
+#endif
+#ifdef FFMPEG_FOUND
+#include "ffmpeginput.h"
+#endif
 
 #define RG_REFERENCE_LEVEL -18.0
 
@@ -73,7 +78,12 @@ Scanner::Scanner(QObject *p)
     , state(0)
     , abortRequested(false)
 {
+    #ifdef MPG123_FOUND
+    Mpg123Input::init();
+    #endif
+    #ifdef FFMPEG_FOUND
     FfmpegInput::init();
+    #endif
 }
 
 Scanner::~Scanner()
@@ -87,19 +97,41 @@ void Scanner::setFile(const QString &fileName)
 
 void Scanner::run()
 {
-    FfmpegInput input(file);
+    Input *input=0;
+    #if MPG123_FOUND
+    if (file.endsWith(".mp3", Qt::CaseInsensitive)) {
+        Mpg123Input *mpg123=new Mpg123Input(file);
+        if (*mpg123) {
+            input=mpg123;
+        } else {
+            delete mpg123;
+        }
+    }
+    #endif
+
+    #ifdef FFMPEG_FOUND
+    if (!input) {
+        FfmpegInput *ffmpeg=new FfmpegInput(file);
+        if (*ffmpeg) {
+            input=ffmpeg;
+        } else {
+            delete ffmpeg;
+        }
+    }
+    #endif
 
     if (!input) {
         setFinished(false);
+        delete input;
         return;
     }
     #ifdef EBUR128_USE_SPEEX_RESAMPLER
-    state=ebur128_init(input.channels(), input.sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_TRUE_PEAK);
+    state=ebur128_init(input->channels(), input->sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_TRUE_PEAK);
     #else
-    state=ebur128_init(input.channels(), input.sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK);
+    state=ebur128_init(input->channels(), input->sampleRate(), EBUR128_MODE_M|EBUR128_MODE_I|EBUR128_MODE_SAMPLE_PEAK);
     #endif
     int *channelMap=new int [state->channels];
-    if (input.setChannelMap(channelMap)) {
+    if (input->setChannelMap(channelMap)) {
         for (unsigned int i = 0; i < state->channels; ++i) {
             ebur128_set_channel(state, i, channelMap[i]);
         }
@@ -113,21 +145,25 @@ void Scanner::run()
 
     size_t numFramesRead=0;
     size_t totalRead=0;
-    while ((numFramesRead = input.readFrames())) {
+    input->allocateBuffer();
+    while ((numFramesRead = input->readFrames())) {
         if (abortRequested) {
             setFinished(false);
+            delete input;
             return;
         }
         totalRead+=numFramesRead;
-        emit progress(this, (int)((totalRead*100.0/input.totalFrames())+0.5));
-        if (ebur128_add_frames_float(state, input.buffer(), numFramesRead)) {
+        emit progress(this, (int)((totalRead*100.0/input->totalFrames())+0.5));
+        if (ebur128_add_frames_float(state, input->buffer(), numFramesRead)) {
             setFinished(false);
+            delete input;
             return;
         }
     }
 
     if (abortRequested) {
         setFinished(false);
+        delete input;
         return;
     }
 
@@ -158,4 +194,5 @@ void Scanner::run()
     }
     #endif
     setFinished(true);
+    delete input;
 }

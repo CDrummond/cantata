@@ -23,6 +23,7 @@
 
 #include "streamfetcher.h"
 #include "networkaccessmanager.h"
+#include "mpdconnection.h"
 #include <QtCore/QRegExp>
 #include <QtCore/QUrl>
 #include <QtXml/QDomDocument>
@@ -31,51 +32,19 @@
 static const int constMaxRedirects = 3;
 static const int constMaxData = 12 * 1024;
 
-static QString parsePlaylist(const QByteArray &data, const QString &key)
+static QString parsePlaylist(const QByteArray &data, const QString &key, const QStringList &handlers)
 {
     QStringList lines=QString(data).split('\n', QString::SkipEmptyParts);
 
     foreach (QString line, lines) {
         if (line.startsWith(key, Qt::CaseInsensitive)) {
-            int index=line.indexOf(QLatin1String("=http://"), Qt::CaseInsensitive);
-            if (index>-1 && index<7) {
-                line.remove('\n');
-                line.remove('\r');
-                return line.mid(index+1);
-            }
-        }
-    }
-
-    return QString();
-}
-
-static QString parseExt3Mu(const QByteArray &data)
-{
-    QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
-
-    foreach (QString line, lines) {
-        if (line.startsWith(QLatin1String("http://"), Qt::CaseInsensitive)) {
-            line.remove('\n');
-            line.remove('\r');
-            return line;
-        }
-    }
-
-    return QString();
-}
-
-static QString parseAsx(const QByteArray &data)
-{
-    QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r|/>)")), QString::SkipEmptyParts);
-
-    foreach (QString line, lines) {
-        int ref=line.indexOf(QLatin1String(" href "), Qt::CaseInsensitive);
-        int http=-1==ref ? -1 : line.indexOf(QLatin1String("http://"), Qt::CaseInsensitive);
-        if (-1!=http) {
-            QStringList parts=line.split('\"');
-            foreach (QString part, parts) {
-                if (part.startsWith(QLatin1String("http://"))) {
-                    return part;
+            foreach (const QString &handler, handlers) {
+                QString protocol(handler+QLatin1String("://"));
+                int index=line.indexOf(protocol, Qt::CaseInsensitive);
+                if (index>-1 && index<7) {
+                    line.remove('\n');
+                    line.remove('\r');
+                    return line.mid(index+1);
                 }
             }
         }
@@ -84,7 +53,50 @@ static QString parseAsx(const QByteArray &data)
     return QString();
 }
 
-static QString parseXml(const QByteArray &data)
+static QString parseExt3Mu(const QByteArray &data, const QStringList &handlers)
+{
+    QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
+
+    foreach (QString line, lines) {
+        foreach (const QString &handler, handlers) {
+            QString protocol(handler+QLatin1String("://"));
+            if (line.startsWith(protocol, Qt::CaseInsensitive)) {
+                line.remove('\n');
+                line.remove('\r');
+                return line;
+            }
+        }
+    }
+
+    return QString();
+}
+
+static QString parseAsx(const QByteArray &data, const QStringList &handlers)
+{
+    QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r|/>)")), QString::SkipEmptyParts);
+
+    foreach (QString line, lines) {
+        int ref=line.indexOf(QLatin1String("<ref href="), Qt::CaseInsensitive);
+        if (-1!=ref) {
+            foreach (const QString &handler, handlers) {
+                QString protocol(handler+QLatin1String("://"));
+                int prot=line.indexOf(protocol, Qt::CaseInsensitive);
+                if (-1!=prot) {
+                    QStringList parts=line.split('\"');
+                    foreach (QString part, parts) {
+                        if (part.startsWith(protocol)) {
+                            return part;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return QString();
+}
+
+static QString parseXml(const QByteArray &data, const QStringList &handlers)
 {
     // XSPF / SPIFF
     QDomDocument doc;
@@ -99,8 +111,10 @@ static QString parseXml(const QByteArray &data)
                 QDomElement l = root.firstChildElement(QLatin1String("location"));
                 while (!l.isNull()) {
                     QString node=l.nodeValue();
-                    if (node.startsWith(QLatin1String("http://"))) {
-                        return node;
+                    foreach (const QString &handler, handlers) {
+                        if (node.startsWith(handler+QLatin1String("://"))) {
+                            return node;
+                        }
                     }
                     l=l.nextSiblingElement(QLatin1String("location"));
                 }
@@ -113,20 +127,20 @@ static QString parseXml(const QByteArray &data)
     return QString();
 }
 
-static QString parse(const QByteArray &data)
+static QString parse(const QByteArray &data, const QStringList &handlers)
 {
     if (data.length()>10 && !strncasecmp(data.constData(), "[playlist]", 10)) {
-        return parsePlaylist(data, QLatin1String("File"));
+        return parsePlaylist(data, QLatin1String("File"), handlers);
     } else if (data.length()>7 && (!strncasecmp(data.constData(), "#EXTM3U", 7) || !strncasecmp(data.constData(), "http://", 7))) {
-        return parseExt3Mu(data);
+        return parseExt3Mu(data, handlers);
     } else if (data.length()>5 && !strncasecmp(data.constData(), "<asx ", 5)) {
-        return parseAsx(data);
+        return parseAsx(data, handlers);
     } else if (data.length()>11 && !strncasecmp(data.constData(), "[reference]", 11)) {
-        return parsePlaylist(data, QLatin1String("Ref"));
+        return parsePlaylist(data, QLatin1String("Ref"), handlers);
     }
     else if (data.length()>5 && !strncasecmp(data.constData(), "<?xml", 5)) {
         QString rv;
-        rv=parseXml(data);
+        rv=parseXml(data, handlers);
     }
 
     return QString();
@@ -137,6 +151,9 @@ StreamFetcher::StreamFetcher(QObject *p)
     , manager(0)
     , job(0)
 {
+    handlers.append("http");
+    connect(this, SIGNAL(getUrlHandlers()), MPDConnection::self(), SLOT(getUrlHandlers()));
+    connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
 }
 
 StreamFetcher::~StreamFetcher()
@@ -197,6 +214,12 @@ void StreamFetcher::cancel()
     job=0;
 }
 
+void StreamFetcher::urlHandlers(const QStringList &uh)
+{
+    handlers=uh;
+    handlers.removeAll("file");
+}
+
 void StreamFetcher::dataReady()
 {
     data+=job->readAll();
@@ -214,7 +237,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
     // We only handle 1 job at a time!
     if (reply==job) {
         if (!reply->error()) {
-            QString u=parse(data);
+            QString u=parse(data, handlers);
 
             if (u.isEmpty() || u==current) {
                 done.append(current);

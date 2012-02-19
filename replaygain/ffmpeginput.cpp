@@ -193,7 +193,7 @@ float * FfmpegInput::buffer() const
     return handle ? handle->buffer : 0;
 }
 
-bool FfmpegInput::setChannelMap(int *st)
+bool FfmpegInput::setChannelMap(int *st) const
 {
     if (handle && handle->codecContext->channel_layout) {
         unsigned int mapIndex = 0;

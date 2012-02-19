@@ -42,7 +42,11 @@ class ActionDialog : public KDialog, Ui::ActionDialog
     };
 
 public:
+    static int instanceCount();
+
     ActionDialog(QWidget *parent);
+    virtual ~ActionDialog();
+
     void copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs);
     void remove(const QString &udi, const QList<Song> &songs);
 

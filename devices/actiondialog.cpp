@@ -41,6 +41,13 @@
 #include <KDE/KDiskFreeSpaceInfo>
 #include <kcapacitybar.h>
 
+static int iCount=0;
+
+int ActionDialog::instanceCount()
+{
+    return iCount;
+}
+
 enum Pages
 {
     PAGE_START,
@@ -53,9 +60,9 @@ ActionDialog::ActionDialog(QWidget *parent)
     : KDialog(parent)
     , currentDev(0)
 {
+    iCount++;
     setButtons(KDialog::Ok|KDialog::Cancel);
     setAttribute(Qt::WA_DeleteOnClose);
-    setWindowModality(Qt::WindowModal);
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
     setMainWidget(mainWidet);
@@ -66,6 +73,11 @@ ActionDialog::ActionDialog(QWidget *parent)
     connect(configureSourceButton, SIGNAL(clicked()), SLOT(configureSource()));
     connect(configureDestButton, SIGNAL(clicked()), SLOT(configureDest()));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+}
+
+ActionDialog::~ActionDialog()
+{
+    iCount--;
 }
 
 void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)

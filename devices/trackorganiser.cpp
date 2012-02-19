@@ -35,21 +35,33 @@
 #include <QtCore/QTimer>
 #include <QtCore/QDebug>
 
+static int iCount=0;
+
+int TrackOrganiser::instanceCount()
+{
+    return iCount;
+}
+
 TrackOrganiser::TrackOrganiser(QWidget *parent)
     : KDialog(parent)
     , schemeDlg(0)
 {
+    iCount++;
     updated=false;
     setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Organize Files"));
     setAttribute(Qt::WA_DeleteOnClose);
-    setWindowModality(Qt::WindowModal);
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
     setMainWidget(mainWidet);
     configFilename->setIcon(QIcon::fromTheme("configure"));
     setButtonGuiItem(Ok, KGuiItem(i18n("Rename"), "edit-rename"));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+}
+
+TrackOrganiser::~TrackOrganiser()
+{
+    iCount--;
 }
 
 void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)

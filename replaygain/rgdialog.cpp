@@ -253,7 +253,7 @@ void RgDialog::updateView()
                 foreach (int idx, (*a).tracks) {
                     QTreeWidgetItem *item=view->topLevelItem(idx);
                     item->setText(COL_ALBUMGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(Scanner::reference((*a).data.loudness), 2)));
-                    item->setText(COL_ALBUMPEAK, KGlobal::locale()->formatNumber((*a).data.peak, 2));
+                    item->setText(COL_ALBUMPEAK, KGlobal::locale()->formatNumber((*a).data.peak, 6));
                 }
             }
         }
@@ -301,7 +301,7 @@ void RgDialog::scannerDone(ThreadWeaver::Job *j)
             if (s->success()) {
                 (*it).progress=100;
                 item->setText(COL_TRACKGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(Scanner::reference(s->results().loudness), 2)));
-                item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(s->results().peak, 2));
+                item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(s->results().peak, 6));
             } else {
                 item->setText(COL_TRACKGAIN, i18n("Failed"));
                 item->setText(COL_TRACKPEAK, i18n("Failed"));

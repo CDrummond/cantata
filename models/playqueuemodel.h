@@ -84,6 +84,7 @@ public:
     void playListStats();
     void clear();
     qint32 currentSong() const { return currentSongId; }
+    qint32 currentSongRow() const { return getRowById(currentSongId); }
     void setState(MPDStatus::State st);
 
 public Q_SLOTS:

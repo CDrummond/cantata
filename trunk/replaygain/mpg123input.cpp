@@ -134,7 +134,7 @@ float * Mpg123Input::buffer() const
 bool Mpg123Input::setChannelMap(int *st) const
 {
     Q_UNUSED(st);
-    return true;
+    return false;
 }
 
 size_t Mpg123Input::readFrames()

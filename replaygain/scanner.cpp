@@ -122,7 +122,6 @@ void Scanner::run()
 
     if (!input) {
         setFinished(false);
-        delete input;
         return;
     }
     #ifdef EBUR128_USE_SPEEX_RESAMPLER

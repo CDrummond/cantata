@@ -50,6 +50,8 @@ class TagEditor : public QDialog, Ui::TagEditor
     Q_OBJECT
 
 public:
+    static int instanceCount();
+
     TagEditor(QWidget *parent, const QList<Song> &songs,
               const QSet<QString> &existingArtists, const QSet<QString> &existingAlbumArtists,
               const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres
@@ -57,8 +59,7 @@ public:
               , const QString &udi
               #endif
              );
-    virtual ~TagEditor() {
-    }
+    virtual ~TagEditor();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

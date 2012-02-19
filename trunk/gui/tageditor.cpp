@@ -52,6 +52,13 @@ static void setString(QString &str, const QString &v, bool skipEmpty) {
     }
 }
 
+static int iCount=0;
+
+int TagEditor::instanceCount()
+{
+    return iCount;
+}
+
 TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
                      const QSet<QString> &existingArtists, const QSet<QString> &existingAlbumArtists,
                      const QSet<QString> &existingAlbums, const QSet<QString> &existingGenres
@@ -67,6 +74,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , currentSongIndex(-1)
     , updating(false)
 {
+    iCount++;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
         isDevice=false;
@@ -134,7 +142,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     #endif
-    setWindowModality(Qt::WindowModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
     QStringList strings=existingArtists.toList();
@@ -230,6 +237,11 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     } else {
         saveable=false;
     }
+}
+
+TagEditor::~TagEditor()
+{
+    iCount--;
 }
 
 void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const

@@ -45,14 +45,21 @@ enum Columns
     COL_TRACKPEAK
 };
 
+static int iCount=0;
+
+int RgDialog::instanceCount()
+{
+    return iCount;
+}
+
 RgDialog::RgDialog(QWidget *parent)
     : KDialog(parent)
     , scanning(false)
 {
+    iCount++;
     setButtons(User1|Ok|Cancel);
     setCaption(i18n("ReplayGain"));
     setAttribute(Qt::WA_DeleteOnClose);
-    setWindowModality(Qt::WindowModal);
     QWidget *mainWidet = new QWidget(this);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, mainWidet);
     view = new QTreeWidget(this);
@@ -88,6 +95,11 @@ RgDialog::RgDialog(QWidget *parent)
     enableButton(Ok, false);
     enableButton(User1, false);
     resize(800, 400);
+}
+
+RgDialog::~RgDialog()
+{
+    iCount--;
 }
 
 void RgDialog::show(const QList<Song> &songs, const QString &udi)

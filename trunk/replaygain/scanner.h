@@ -39,6 +39,7 @@ public:
             , peak(0.0)
             , truePeak(0.0) {
         }
+        double peakValue() const { return truePeak>peak ? truePeak : peak; }
         double loudness;
         double peak;
         double truePeak;

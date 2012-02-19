@@ -205,8 +205,8 @@ void RgDialog::saveTags()
         foreach (int idx, (*a).tracks) {
             Scanner *s=scanners[idx];
             if (s && s->success() && Tags::Update_Failed==Tags::updateReplaygain(base+origSongs.at(idx).file,
-                                                                                Scanner::reference(s->results().loudness), s->results().peak,
-                                                                                Scanner::reference((*a).data.loudness), (*a).data.peak)) {
+                                                                                Scanner::reference(s->results().loudness), s->results().peakValue(),
+                                                                                Scanner::reference((*a).data.loudness), (*a).data.peakValue())) {
                 failed.append(origSongs.at(idx).file);
             }
         }
@@ -301,7 +301,7 @@ void RgDialog::scannerDone(ThreadWeaver::Job *j)
             if (s->success()) {
                 (*it).progress=100;
                 item->setText(COL_TRACKGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(Scanner::reference(s->results().loudness), 2)));
-                item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(s->results().peak, 6));
+                item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(s->results().peakValue(), 6));
             } else {
                 item->setText(COL_TRACKGAIN, i18n("Failed"));
                 item->setText(COL_TRACKPEAK, i18n("Failed"));

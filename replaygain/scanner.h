@@ -27,6 +27,8 @@
 #include <KDE/ThreadWeaver/Job>
 #include "ebur128.h"
 
+class Input;
+
 class Scanner : public ThreadWeaver::Job
 {
     Q_OBJECT
@@ -68,6 +70,7 @@ private:
     bool abortRequested;
     Data data;
     QString file;
+    Input *input;
 };
 
 #endif

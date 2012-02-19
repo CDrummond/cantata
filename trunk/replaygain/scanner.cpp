@@ -77,6 +77,7 @@ Scanner::Scanner(QObject *p)
     : ThreadWeaver::Job(p)
     , state(0)
     , abortRequested(false)
+    , input(0)
 {
     #ifdef MPG123_FOUND
     Mpg123Input::init();
@@ -88,6 +89,7 @@ Scanner::Scanner(QObject *p)
 
 Scanner::~Scanner()
 {
+    delete input;
 }
 
 void Scanner::setFile(const QString &fileName)
@@ -97,7 +99,6 @@ void Scanner::setFile(const QString &fileName)
 
 void Scanner::run()
 {
-    Input *input=0;
     #if MPG123_FOUND
     if (file.endsWith(".mp3", Qt::CaseInsensitive)) {
         Mpg123Input *mpg123=new Mpg123Input(file);
@@ -148,21 +149,18 @@ void Scanner::run()
     while ((numFramesRead = input->readFrames())) {
         if (abortRequested) {
             setFinished(false);
-            delete input;
             return;
         }
         totalRead+=numFramesRead;
         emit progress(this, (int)((totalRead*100.0/input->totalFrames())+0.5));
         if (ebur128_add_frames_float(state, input->buffer(), numFramesRead)) {
             setFinished(false);
-            delete input;
             return;
         }
     }
 
     if (abortRequested) {
         setFinished(false);
-        delete input;
         return;
     }
 
@@ -193,5 +191,4 @@ void Scanner::run()
     }
     #endif
     setFinished(true);
-    delete input;
 }

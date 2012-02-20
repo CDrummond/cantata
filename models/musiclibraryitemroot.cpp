@@ -192,7 +192,7 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
     }
 }
 
-static quint32 constVersion=6;
+static quint32 constVersion=7;
 static QLatin1String constTopTag("CantataLibrary");
 
 void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRemove, const QDateTime &date, bool groupSingle) const
@@ -251,6 +251,9 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
 //                 writer.writeAttribute("id", QString::number(track->song().id));
                 if (!track->song().genre.isEmpty()) {
                     writer.writeAttribute("genre", track->song().genre);
+                }
+                if (album->isSingleTracks()) {
+                    writer.writeAttribute("album", track->song().album);
                 }
             }
             writer.writeEndElement();
@@ -338,6 +341,12 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
 //                 str=attributes.value("id").toString();
 //                 song.id=str.isEmpty() ? 0 : str.toUInt();
 
+                if (albumItem->isSingleTracks()) {
+                    str=attributes.value("album").toString();
+                    if (!str.isEmpty()) {
+                        song.album=str;
+                    }
+                }
                 songItem = new MusicLibraryItemSong(song, albumItem);
 
                 albumItem->append(songItem);

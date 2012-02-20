@@ -290,6 +290,8 @@ void TrackOrganiser::renameFile()
                 Utils::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile() : QString());
             }
             item->setText(0, modified);
+            item->setFont(0, font());
+            item->setFont(1, font());
             Song to=s;
             to.file=modified;
             origSongs.replace(index, to);

@@ -265,7 +265,7 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(KMessageBox::questionYesNoCancel(this, i18n("Failed to copy %1 to %2", source, dest),
+                switch(KMessageBox::questionYesNoCancel(this, i18n("Failed to rename %1 to %2", source, dest),
                                                         QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
                 case KMessageBox::Yes:
                     skip=true;

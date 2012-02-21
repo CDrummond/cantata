@@ -131,10 +131,11 @@ static bool hasActions(const QModelIndex &index, int actLevel)
 class ListDelegate : public QStyledItemDelegate
 {
 public:
-    ListDelegate(QObject *p, QAction *a1, QAction *a2, int actionLevel)
+    ListDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
         : QStyledItemDelegate(p)
         , act1(a1)
         , act2(a2)
+        , toggle(t)
         , actLevel(actionLevel)
     {
     }
@@ -231,7 +232,7 @@ public:
         }
 
         if (!(option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
-            drawIcons(painter, iconMode ? r2 : r, false, rtl, iconMode);
+            drawIcons(painter, iconMode ? r2 : r, false, rtl, iconMode, index);
         }
 
         QRect textRect;
@@ -287,13 +288,13 @@ public:
         }
 
         if ((option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
-            drawIcons(painter, iconMode ? r2 : r, true, rtl, iconMode);
+            drawIcons(painter, iconMode ? r2 : r, true, rtl, iconMode, index);
         }
 
         painter->restore();
     }
 
-    void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, bool iconMode) const
+    void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, bool iconMode, const QModelIndex &index) const
     {
         double opacity=painter->opacity();
         if (!mouseOver) {
@@ -319,6 +320,20 @@ public:
                                     actionRect.y()+(actionRect.height()-pix.height())/2, pix);
             }
         }
+
+        if (act1 && act2 && toggle) {
+            QString iconName=index.data(ItemView::Role_ToggleIconName).toString();
+
+            if (!iconName.isEmpty()) {
+                adjustActionRect(rtl, iconMode, actionRect);
+                QPixmap pix=QIcon::fromTheme(iconName).pixmap(QSize(constActionIconSize, constActionIconSize));
+                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
+                    drawBgnd(painter, actionRect);
+                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
+                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
+                }
+            }
+        }
         if (!mouseOver) {
             painter->setOpacity(opacity);
         }
@@ -326,14 +341,15 @@ public:
 
     QAction *act1;
     QAction *act2;
+    QAction *toggle;
     int actLevel;
 };
 
 class TreeDelegate : public ListDelegate
 {
 public:
-    TreeDelegate(QObject *p, QAction *a1, QAction *a2, int actionLevel)
-        : ListDelegate(p, a1, a2, actionLevel)
+    TreeDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
+        : ListDelegate(p, a1, a2, t, actionLevel)
     {
     }
 
@@ -366,7 +382,7 @@ public:
         QStyledItemDelegate::paint(painter, option, index);
 
         if ((option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
-            drawIcons(painter, option.rect, true, Qt::RightToLeft==QApplication::layoutDirection(), false);
+            drawIcons(painter, option.rect, true, Qt::RightToLeft==QApplication::layoutDirection(), false, index);
         }
     }
 };
@@ -378,6 +394,7 @@ ItemView::ItemView(QWidget *p)
     , actLevel(-1)
     , act1(0)
     , act2(0)
+    , toggle(0)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
@@ -398,17 +415,18 @@ ItemView::~ItemView()
 {
 }
 
-void ItemView::init(QAction *a1, QAction *a2, int actionLevel)
+void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
 {
-    if (act1 || act2) {
+    if (act1 || act2 || toggle) {
         return;
     }
 
     act1=a1;
     act2=a2;
+    toggle=t;
     actLevel=actionLevel;
-    listView->setItemDelegate(new ListDelegate(this, a1, a2, actionLevel));
-    treeView->setItemDelegate(new TreeDelegate(this, a1, a2, actionLevel));
+    listView->setItemDelegate(new ListDelegate(this, a1, a2, toggle, actionLevel));
+    treeView->setItemDelegate(new TreeDelegate(this, a1, a2, toggle, actionLevel));
     connect(treeSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(treeSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
     connect(listSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
@@ -663,6 +681,13 @@ QAction * ItemView::getAction(const QModelIndex &index)
     if (act2 && actionRect.contains(QCursor::pos())) {
         return act2;
     }
+
+    adjustActionRect(rtl, iconMode, actionRect);
+
+    if (toggle && actionRect.contains(QCursor::pos())) {
+        return toggle;
+    }
+
     return 0;
 }
 

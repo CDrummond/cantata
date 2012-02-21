@@ -63,7 +63,11 @@ DevicesPage::DevicesPage(MainWindow *p)
     forgetDeviceAction=p->actionCollection()->addAction("forgetremotedevice");
     forgetDeviceAction->setText(i18n("Forget Remote Device"));
     forgetDeviceAction->setIcon(QIcon::fromTheme("list-remove"));
+    toggleDeviceAction=p->actionCollection()->addAction("toggledevice");
+    toggleDeviceAction->setText(i18n("Toggle Device"));
+    toggleDeviceAction->setIcon(QIcon::fromTheme("network-connect"));
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
+    connect(toggleDeviceAction, SIGNAL(triggered()), this, SLOT(toggleDevice()));
     #endif
     MainWindow::initButton(copyToLibraryButton);
     copyToLibraryButton->setEnabled(false);
@@ -128,7 +132,11 @@ DevicesPage::DevicesPage(MainWindow *p)
     view->setTopText(tr("Devices"));
     #endif
     view->setModel(&proxy);
+    #ifdef ENABLE_REMOTE_DEVICES
+    view->init(configureAction, refreshAction, toggleDeviceAction, 0);
+    #else
     view->init(configureAction, refreshAction, 0);
+    #endif
     view->setRootIsDecorated(false);
     updateGenres(QSet<QString>());
 }
@@ -414,6 +422,21 @@ void DevicesPage::forgetRemoteDevice()
     QString udi=activeFsDeviceUdi();
     if (!udi.isEmpty() && KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to forget the selected device?"))) {
         DevicesModel::self()->removeRemoteDevice(udi);
+    }
+}
+
+void DevicesPage::toggleDevice()
+{
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (1!=selected.size()) {
+        return;
+    }
+
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+
+    if (MusicLibraryItem::Type_Root==item->type() && Device::Remote==static_cast<Device *>(item)->type()) {
+        static_cast<RemoteDevice *>(item)->toggle();
     }
 }
 #endif

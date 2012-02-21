@@ -65,9 +65,6 @@ DevicesModel::DevicesModel(QObject *parent)
     , enabled(false)
 {
     connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
-    #ifdef ENABLE_REMOTE_DEVICES
-    loadRemote();
-    #endif
     updateItemMenu();
 }
 

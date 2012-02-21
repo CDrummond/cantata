@@ -76,6 +76,7 @@ public:
     RemoteDevice(DevicesModel *m, const Details &d);
     virtual ~RemoteDevice();
 
+    void toggle();
     void mount();
     void unmount();
     bool isConnected() const;

@@ -163,6 +163,15 @@ RemoteDevice::~RemoteDevice() {
     stopScanner();
 }
 
+void RemoteDevice::toggle()
+{
+    if (isConnected()) {
+        unmount();
+    } else {
+        mount();
+    }
+}
+
 void RemoteDevice::mount()
 {
     if (Prot_File==details.protocol) {

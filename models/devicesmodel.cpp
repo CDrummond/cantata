@@ -311,6 +311,13 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             return static_cast<Device *>(item)->capacityString();
         }
         return QVariant();
+    case ItemView::Role_ToggleIconName:
+        #ifdef ENABLE_REMOTE_DEVICES
+        if (MusicLibraryItem::Type_Root==item->type() && Device::Remote==static_cast<Device *>(item)->type()) {
+            return QLatin1String(static_cast<Device *>(item)->isConnected() ? "network-connect" : "network-disconnect");
+        }
+        #endif
+        return QVariant();
     default:
         return QVariant();
     }

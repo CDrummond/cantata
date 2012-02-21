@@ -59,6 +59,7 @@ public Q_SLOTS:
     #ifdef ENABLE_REMOTE_DEVICES
     void addRemoteDevice();
     void forgetRemoteDevice();
+    void toggleDevice();
     #endif
 
 Q_SIGNALS:
@@ -73,6 +74,7 @@ private:
     KAction *copyAction;
     #ifdef ENABLE_REMOTE_DEVICES
     KAction *forgetDeviceAction;
+    KAction *toggleDeviceAction;
     #endif
     QSet<QString> genres;
 };

@@ -54,13 +54,15 @@ public:
         Role_SubText,
         Role_Image,
         Role_Capacity,
-        Role_CapacityText
+        Role_CapacityText,
+        Role_ToggleIconName
     };
 
     ItemView(QWidget *p);
     virtual ~ItemView();
 
-    void init(QAction *a1, QAction *a2, int actionLevel=-1);
+    void init(QAction *a1, QAction *a2, int actionLevel=-1) { init(a1, a2, 0, actionLevel); }
+    void init(QAction *a1, QAction *a2, QAction *toggle, int actionLevel=-1);
     void addAction(QAction *act);
     void setMode(Mode m);
     Mode viewMode() const { return mode; }
@@ -106,6 +108,7 @@ private:
     int actLevel;
     QAction *act1;
     QAction *act2;
+    QAction *toggle;
     int currentLevel;
     Mode mode;
     QString topText;

@@ -192,7 +192,8 @@ void RemoteDevice::mount()
             cmd=KStandardDirs::findExe("sshfs");
             if (!cmd.isEmpty()) {
                 args << details.user+QChar('@')+details.host+QChar(':')+details.folder << QLatin1String("-p")
-                     << QString::number(details.port) << details.mountPoint(true);
+                     << QString::number(details.port) << details.mountPoint(true)
+                     << QLatin1String("-o") << QLatin1String("ServerAliveInterval=15");
             }
         }
         break;
@@ -231,7 +232,7 @@ void RemoteDevice::unmount()
         if (!mp.isEmpty()) {
             cmd=KStandardDirs::findExe("fusermount");
             if (!cmd.isEmpty()) {
-                args << QLatin1String("-u") << mp;
+                args << QLatin1String("-u") << QLatin1String("-z") << mp;
             }
         }
         break;

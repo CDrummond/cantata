@@ -15,6 +15,7 @@
 #cmakedefine MPG123_FOUND 1
 #cmakedefine EBUR128_USE_SPEEX_RESAMPLER 1
 #cmakedefine ENABLE_REPLAYGAIN_SUPPORT 1
+#cmakedefine ENABLE_REMOTE_DEVICES 1
 
 #endif
 

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RemoteDevicePropertiesWidget</class>
+ <widget class="QWidget" name="RemoteDevicePropertiesWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>148</height>
+   </rect>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Name:</string>
+     </property>
+     <property name="buddy">
+      <cstring>name</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="LineEdit" name="name"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Host:</string>
+     </property>
+     <property name="buddy">
+      <cstring>host</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="LineEdit" name="host"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Port:</string>
+     </property>
+     <property name="buddy">
+      <cstring>port</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QSpinBox" name="port">
+     <property name="maximum">
+      <number>65535</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>User:</string>
+     </property>
+     <property name="buddy">
+      <cstring>user</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="LineEdit" name="user"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>Folder:</string>
+     </property>
+     <property name="buddy">
+      <cstring>folder</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="LineEdit" name="folder"/>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>name</tabstop>
+  <tabstop>host</tabstop>
+  <tabstop>port</tabstop>
+  <tabstop>user</tabstop>
+  <tabstop>folder</tabstop>
+ </tabstops>
+ <customwidgets>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

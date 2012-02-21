@@ -830,6 +830,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     connect(devicesTabAction, SIGNAL(activated()), this, SLOT(showDevicesTab()));
     connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
+    connect(DevicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
     connect(libraryPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
@@ -908,6 +909,9 @@ MainWindow::~MainWindow()
     }
     #ifndef ENABLE_KDE_SUPPORT
     Settings::self()->saveMainWindowSize(size());
+    #endif
+    #ifdef ENABLE_REMOTE_DEVICES
+    DevicesModel::self()->unmountRemote();
     #endif
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
@@ -2299,7 +2303,7 @@ void MainWindow::editTags()
         QString udi;
         if (devicesPage->isVisible()) {
             DevicesModel::self()->getDetails(artists, albumArtists, albums, genres);
-            udi=devicesPage->activeUmsDeviceUdi();
+            udi=devicesPage->activeFsDeviceUdi();
             if (udi.isEmpty()) {
                 return;
             }
@@ -2337,7 +2341,7 @@ void MainWindow::organiseFiles()
     if (!songs.isEmpty()) {
         QString udi;
         if (devicesPage->isVisible()) {
-            udi=devicesPage->activeUmsDeviceUdi();
+            udi=devicesPage->activeFsDeviceUdi();
             if (udi.isEmpty()) {
                 return;
             }
@@ -2417,7 +2421,7 @@ void MainWindow::replayGain()
     if (!songs.isEmpty()) {
         QString udi;
         if (devicesPage->isVisible()) {
-            udi=devicesPage->activeUmsDeviceUdi();
+            udi=devicesPage->activeFsDeviceUdi();
             if (udi.isEmpty()) {
                 return;
             }

@@ -38,6 +38,10 @@
 #else
 #include <QtGui/QAction>
 #endif
+#ifdef ENABLE_REMOTE_DEVICES
+#include "remotedevicepropertiesdialog.h"
+#include "devicepropertieswidget.h"
+#endif
 
 DevicesPage::DevicesPage(MainWindow *p)
     : QWidget(p)
@@ -55,6 +59,12 @@ DevicesPage::DevicesPage(MainWindow *p)
     copyAction->setText(i18n("Copy To Library"));
     copyAction->setIcon(QIcon::fromTheme("document-import"));
     copyToLibraryButton->setDefaultAction(copyAction);
+    #ifdef ENABLE_REMOTE_DEVICES
+    forgetDeviceAction=p->actionCollection()->addAction("forgetremotedevice");
+    forgetDeviceAction->setText(i18n("Forget Remote Device"));
+    forgetDeviceAction->setIcon(QIcon::fromTheme("list-remove"));
+    connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
+    #endif
     MainWindow::initButton(copyToLibraryButton);
     copyToLibraryButton->setEnabled(false);
     view->addAction(copyAction);
@@ -65,6 +75,12 @@ DevicesPage::DevicesPage(MainWindow *p)
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     view->addAction(p->replaygainAction);
+    #endif
+    #ifdef ENABLE_REMOTE_DEVICES
+    QAction *sepA=new QAction(this);
+    sepA->setSeparator(true);
+    view->addAction(sepA);
+    view->addAction(forgetDeviceAction);;
     #endif
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
@@ -84,6 +100,15 @@ DevicesPage::DevicesPage(MainWindow *p)
     menu->addAction(configureAction);
     menu->addAction(refreshAction);
     menu->addSeparator();
+    #ifdef ENABLE_REMOTE_DEVICES
+    KAction *addRemote=p->actionCollection()->addAction("addremotedevice");
+    addRemote->setText(i18n("Add Remote Device"));
+    addRemote->setIcon(QIcon::fromTheme("network-server"));
+    connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
+    menu->addAction(addRemote);
+    menu->addAction(forgetDeviceAction);
+    menu->addSeparator();
+    #endif
 //     menu->addAction(copyAction);
     menu->addAction(p->organiseFilesAction);
     #ifdef TAGLIB_FOUND
@@ -118,7 +143,7 @@ void DevicesPage::clear()
     view->setLevel(0);
 }
 
-QString DevicesPage::activeUmsDeviceUdi() const
+QString DevicesPage::activeFsDeviceUdi() const
 {
     const QModelIndexList selected = view->selectedIndexes();
 
@@ -129,20 +154,19 @@ QString DevicesPage::activeUmsDeviceUdi() const
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
+
+        if (item && MusicLibraryItem::Type_Root!=item->type()) {
+            while(item->parent()) {
+                item=item->parent();
+            }
+        }
+
         if (item && MusicLibraryItem::Type_Root==item->type()) {
-            return QString();
-        } else {
-            MusicLibraryItem *p=item;
-            while(p->parent()) {
-                p=p->parent();
+            Device *dev=static_cast<Device *>(item);
+            if (Device::Ums!=dev->type() && Device::Remote!=dev->type()) {
+                return QString();
             }
-            if (MusicLibraryItem::Type_Root==p->type()) {
-                Device *dev=static_cast<Device *>(p);
-                if (Device::Ums!=dev->type()) {
-                    return QString();
-                }
-                return dev->dev().udi();
-            }
+            return dev->udi();
         }
     }
 
@@ -157,26 +181,24 @@ QList<Song> DevicesPage::selectedSongs() const
         return QList<Song>();
     }
 
-    // Ensure all songs are from UMS devices...
+    // Ensure all songs are from UMS/Remote devices...
     QString udi;
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
         mapped.append(index);
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
-        if (item && MusicLibraryItem::Type_Root==item->type()) {
-            return QList<Song>();
-        } else {
-            MusicLibraryItem *p=item;
-            while(p->parent()) {
-                p=p->parent();
-            }
-            if (MusicLibraryItem::Type_Root==p->type()) {
-                Device *dev=static_cast<Device *>(p);
 
-                if (Device::Ums!=dev->type()) {
-                    return QList<Song>();
-                }
+        if (item && MusicLibraryItem::Type_Root!=item->type()) {
+            while(item->parent()) {
+                item=item->parent();
+            }
+        }
+
+        if (item && MusicLibraryItem::Type_Root==item->type()) {
+            Device *dev=static_cast<Device *>(item);
+            if (Device::Ums!=dev->type() && Device::Remote!=dev->type()) {
+                return QList<Song>();
             }
         }
     }
@@ -223,32 +245,40 @@ void DevicesPage::searchItems()
 void DevicesPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
-    bool enable=!selected.isEmpty();
-    bool onlyUms=true;
+    bool enable=false;
+    bool onlyFs=true;
     bool singleUdi=true;
+    #ifdef ENABLE_REMOTE_DEVICES
+    bool remoteDev=false;
+    #endif
     QString udi;
 
     foreach (const QModelIndex &idx, selected) {
-        QModelIndex index = proxy.mapToSource(idx);
-        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
-        if (item && MusicLibraryItem::Type_Root==item->type()) {
-            enable=false;
-            break;
-        } else {
-            MusicLibraryItem *p=item;
-            while(p->parent()) {
-                p=p->parent();
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
+
+        if (item && MusicLibraryItem::Type_Root!=item->type()) {
+            while(item->parent()) {
+                item=item->parent();
             }
-            if (MusicLibraryItem::Type_Root==p->type()) {
-                Device *dev=static_cast<Device *>(p);
-                if (Device::Ums!=dev->type()) {
-                    onlyUms=false;
-                }
-                if (udi.isEmpty()) {
-                    udi=dev->dev().udi();
-                } else if (udi!=dev->dev().udi()) {
-                    singleUdi=false;
-                }
+        }
+
+        if (item && MusicLibraryItem::Type_Root==item->type()) {
+            Device *dev=static_cast<Device *>(item);
+            if (Device::Ums!=dev->type() && Device::Remote!=dev->type()) {
+                onlyFs=false;
+            }
+            #ifdef ENABLE_REMOTE_DEVICES
+            if (Device::Remote==dev->type()) {
+                remoteDev=true;
+            }
+            #endif
+            if (udi.isEmpty()) {
+                udi=dev->udi();
+            } else if (udi!=dev->udi()) {
+                singleUdi=false;
+            }
+            if (!enable) {
+                enable=dev->childCount()>0;
             }
         }
     }
@@ -258,13 +288,16 @@ void DevicesPage::controlActions()
     copyAction->setEnabled(enable);
     mw->deleteSongsAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND
-    mw->editTagsAction->setEnabled(enable && onlyUms && singleUdi);
+    mw->editTagsAction->setEnabled(enable && onlyFs && singleUdi);
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    mw->replaygainAction->setEnabled(enable && onlyUms && singleUdi);
+    mw->replaygainAction->setEnabled(enable && onlyFs && singleUdi);
     #endif
-    //mw->burnAction->setEnabled(enable && onlyUms);
-    mw->organiseFilesAction->setEnabled(enable && onlyUms && singleUdi);
+    //mw->burnAction->setEnabled(enable && onlyFs);
+    mw->organiseFilesAction->setEnabled(enable && onlyFs && singleUdi);
+    #ifdef ENABLE_REMOTE_DEVICES
+    forgetDeviceAction->setEnabled(singleUdi && remoteDev);
+    #endif
 }
 
 void DevicesPage::copyToLibrary()
@@ -286,7 +319,7 @@ void DevicesPage::copyToLibrary()
     }
     QString udi;
     if (MusicLibraryItem::Type_Root==item->type()) {
-        udi=static_cast<Device *>(item)->dev().udi();
+        udi=static_cast<Device *>(item)->udi();
     }
 
     if (udi.isEmpty()) {
@@ -350,7 +383,7 @@ void DevicesPage::deleteSongs()
     }
     QString udi;
     if (MusicLibraryItem::Type_Root==item->type()) {
-        udi=static_cast<Device *>(item)->dev().udi();
+        udi=static_cast<Device *>(item)->udi();
     }
 
     if (udi.isEmpty()) {
@@ -366,6 +399,24 @@ void DevicesPage::deleteSongs()
         view->clearSelection();
     }
 }
+
+#ifdef ENABLE_REMOTE_DEVICES
+void DevicesPage::addRemoteDevice()
+{
+    RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(this);
+    dlg->show("Music", "cover.jpg", Device::Options(), RemoteDevice::Details(), DevicePropertiesWidget::Prop_All, true);
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &, const RemoteDevice::Details &)),
+            DevicesModel::self(), SLOT(addRemoteDevice(const QString &, const QString &, const Device::Options &, const RemoteDevice::Details &)));
+}
+
+void DevicesPage::forgetRemoteDevice()
+{
+    QString udi=activeFsDeviceUdi();
+    if (!udi.isEmpty() && KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to forget the selected device?"))) {
+        DevicesModel::self()->removeRemoteDevice(udi);
+    }
+}
+#endif
 
 void DevicesPage::updateGenres(const QSet<QString> &g)
 {

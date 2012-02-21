@@ -29,6 +29,7 @@
 #include "musiclibraryitemroot.h"
 #include "dirviewmodel.h"
 #include "devicepropertiesdialog.h"
+#include "devicepropertieswidget.h"
 #include "covers.h"
 #include "song.h"
 #include "encoders.h"
@@ -560,7 +561,7 @@ void MtpDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(QString(), QString(), opts, DevicePropertiesDialog::Prop_Va|DevicePropertiesDialog::Prop_Transcoder);
+    dlg->show(QString(), QString(), opts, DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
 }
 
 void MtpDevice::rescan()

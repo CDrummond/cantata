@@ -100,7 +100,8 @@ public:
 
     enum Type {
         Ums,
-        Mtp
+        Mtp,
+        Remote
     };
 
     Device(DevicesModel *m, Solid::Device &dev)
@@ -112,10 +113,18 @@ public:
         , needToFixVa(false)
         , jobAbortRequested(false) {
     }
+    Device(DevicesModel *m, const QString &name)
+        : MusicLibraryItemRoot(name)
+        , model(m)
+        , configured(false)
+        , update(0)
+        , needToFixVa(false)
+        , jobAbortRequested(false) {
+    }
     virtual ~Device() {
     }
 
-    QString icon() const {
+    virtual QString icon() const {
         return solidDev.icon();
     }
     virtual QString coverFile() const {
@@ -141,8 +150,8 @@ public:
     virtual void removeCache() {
     }
 
-    const Solid::Device & dev() const {
-        return solidDev;
+    virtual QString udi() const {
+        return solidDev.udi();
     }
     void applyUpdate();
     bool haveUpdate() const {
@@ -190,6 +199,7 @@ Q_SIGNALS:
     void updating(const QString &udi, bool s);
     void actionStatus(int);
     void progress(unsigned long percent);
+    void error(const QString &);
 
 protected:
     DevicesModel *model;

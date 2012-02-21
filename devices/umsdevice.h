@@ -24,39 +24,9 @@
 #ifndef UMSDEVICE_H
 #define UMSDEVICE_H
 
-#include "device.h"
-#include "song.h"
-#include "utils.h"
-#include <solid/storageaccess.h>
-#include <QtCore/QThread>
-#include <QtCore/QStringList>
+#include "fsdevice.h"
 
-class MusicLibraryItemRoot;
-class KJob;
-
-class MusicScanner : public QThread
-{
-    Q_OBJECT
-
-public:
-    MusicScanner(const QString &f);
-    virtual ~MusicScanner();
-
-    void run();
-    void stop();
-    bool wasStopped() const { return stopRequested; }
-    MusicLibraryItemRoot * takeLibrary();
-
-private:
-    void scanFolder(const QString &f, int level);
-
-private:
-    QString folder;
-    MusicLibraryItemRoot *library;
-    bool stopRequested;
-};
-
-class UmsDevice : public Device
+class UmsDevice : public FsDevice
 {
     Q_OBJECT
 
@@ -65,44 +35,22 @@ public:
     virtual ~UmsDevice();
 
     bool isConnected() const;
-    void rescan();
-    bool isRefreshing() const { return 0!=scanner; }
-    void configure(QWidget *parent);
-    QString path() const { return audioFolder; }
-    QString coverFile() const { return coverFileName; }
-    void addSong(const Song &s, bool overwrite);
-    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
-    void removeSong(const Song &s);
-    void cleanDir(const QString &dir) { Utils::cleanDir(dir, audioFolder, coverFileName); }
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
     Type type() const { return Ums; }
-    QString cacheFileName() const;
-    void saveCache();
-    void removeCache();
     void saveOptions();
+    void configure(QWidget *parent);
 
 private:
     void setup();
-    void startScanner();
-    void stopScanner();
 
 private Q_SLOTS:
-    void cacheRead();
-    void libraryUpdated();
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
     void saveProperties();
-    void percent(KJob *job, unsigned long percent);
-    void addSongResult(KJob *job);
-    void copySongToResult(KJob *job);
-    void removeSongResult(KJob *job);
+    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
 
 private:
     Solid::StorageAccess *access;
-    MusicScanner *scanner;
-    QString audioFolder;
-    QString coverFileName;
     QStringList unusedParams;
 };
 

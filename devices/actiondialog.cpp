@@ -132,7 +132,11 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     }
 
     bool enoughSpace=spaceAvailable>spaceRequired;
-
+    #ifdef ENABLE_REMOTE_DEVICES
+    if (!enoughSpace && sourceUdi.isEmpty() && 0==spaceAvailable && usedCapacity<0.0 && Device::Remote==dev->type()) {
+        enoughSpace=true;
+    }
+    #endif
     if (enoughSpace || (sourceUdi.isEmpty() && Encoders::getAvailable().count())) {
         overwrite->setChecked(Settings::self()->overwriteSongs());
         sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));

@@ -193,6 +193,7 @@ void RemoteDevice::mount()
     }
 
     if (!cmd.isEmpty()) {
+        setStatusMessage(i18n("Connecting..."));
         proc=new QProcess(this);
         proc->setProperty("mount", true);
         connect(proc, SIGNAL(finished(int)), SLOT(procFinished(int)));
@@ -232,6 +233,7 @@ void RemoteDevice::unmount()
     }
 
     if (!cmd.isEmpty()) {
+        setStatusMessage(i18n("Disconnecting..."));
         proc=new QProcess(this);
         proc->setProperty("unmount", true);
         connect(proc, SIGNAL(finished(int)), SLOT(procFinished(int)));
@@ -248,10 +250,12 @@ void RemoteDevice::procFinished(int exitCode)
     if (0!=exitCode) {
         emit error(wasMount ? i18n("Failed to mount \"%1\"", details.name)
                             : i18n("Failed to unmount \"%1\"", details.name));
-    }
-    if (wasMount) {
+        setStatusMessage(QString());
+    } else if (wasMount) {
+         setStatusMessage(i18n("Updating tracks..."));
         load();
     } else {
+        setStatusMessage(QString());
         update=new MusicLibraryItemRoot;
         emit updating(udi(), false);
     }

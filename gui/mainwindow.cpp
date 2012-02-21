@@ -867,7 +867,9 @@ MainWindow::MainWindow(QWidget *parent)
     MPDConnection::self()->moveToThread(mpdThread);
     mpdThread->start();
     connectToMpd();
-
+    #ifdef ENABLE_REMOTE_DEVICES
+    DevicesModel::self()->loadRemote();
+    #endif
     QString page=Settings::self()->page();
 
     for (int i=0; i<tabWidget->count(); ++i) {

@@ -25,6 +25,10 @@
 
 #include <QtCore/QAbstractItemModel>
 #include "song.h"
+#include "config.h"
+#ifdef ENABLE_REMOTE_DEVICES
+#include "remotedevice.h"
+#endif
 
 class QMimeData;
 class Device;
@@ -35,11 +39,14 @@ class DevicesModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-
     static DevicesModel * self();
 
     DevicesModel(QObject *parent = 0);
     ~DevicesModel();
+    #ifdef ENABLE_REMOTE_DEVICES
+    void loadRemote();
+    void unmountRemote();
+    #endif
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -64,6 +71,11 @@ public Q_SLOTS:
     void deviceRemoved(const QString &udi);
     void deviceUpdating(const QString &udi, bool state);
     void emitAddToDevice();
+    #ifdef ENABLE_REMOTE_DEVICES
+    void addRemoteDevice(const QString &path, const QString &coverFileName, const Device::Options &opts, const RemoteDevice::Details &details);
+    void removeRemoteDevice(const QString &udi);
+    void changeDeviceUdi(const QString &from, const QString &to);
+    #endif
 
 private:
     void updateItemMenu();
@@ -72,6 +84,7 @@ Q_SIGNALS:
 //     void updated(const MusicLibraryItemRoot *root);
     void updateGenres(const QSet<QString> &genres);
     void addToDevice(const QString &udi);
+    void error(const QString &text);
 
 private:
     QList<Device *> devices;

@@ -21,35 +21,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DEVICEPROPERTIESDIALOG_H
-#define DEVICEPROPERTIESDIALOG_H
+#ifndef REMOTEDEVICEPROPERTIESWIDGET_H
+#define REMOTEDEVICEPROPERTIESWIDGET_H
 
-#include <KDE/KDialog>
-#include "device.h"
+#include "ui_remotedevicepropertieswidget.h"
+#include "remotedevice.h"
 
-class FilenameSchemeDialog;
-class DevicePropertiesWidget;
-
-class DevicePropertiesDialog : public KDialog
+class RemoteDevicePropertiesWidget : public QWidget, Ui::RemoteDevicePropertiesWidget
 {
     Q_OBJECT
 
 public:
-    DevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const QString &coverName, const Device::Options &opts, int props);
+
+    RemoteDevicePropertiesWidget(QWidget *parent);
+    virtual ~RemoteDevicePropertiesWidget() { }
+    void update(const RemoteDevice::Details &d, bool create=false);
+    RemoteDevice::Details details();
+    const RemoteDevice::Details & origDetails() const { return orig; }
+    bool isSaveable() const { return saveable; }
 
 Q_SIGNALS:
-    void updatedSettings(const QString &path, const QString &coverName, const Device::Options &opts);
-    void cancelled();
+    void updated();
 
 private Q_SLOTS:
-    void enableOkButton();
+    void checkSaveable();
 
 private:
-    void slotButtonClicked(int button);
-
-private:
-    DevicePropertiesWidget *devProp;
+    RemoteDevice::Details orig;
+    bool saveable;
+    bool isCreating;
 };
 
 #endif

@@ -26,6 +26,7 @@
 #include "device.h"
 #include "utils.h"
 #include "devicepropertiesdialog.h"
+#include "devicepropertieswidget.h"
 #include "settings.h"
 #include "musiclibrarymodel.h"
 #include "dirviewmodel.h"
@@ -87,6 +88,12 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
 
     if (!dev) { // No dev????
         KMessageBox::error(parentWidget(), i18n("Device has been removed!"));
+        deleteLater();
+        return;
+    }
+
+    if (!dev->isConnected()) {
+        KMessageBox::error(parentWidget(), i18n("Device is not connected."));
         deleteLater();
         return;
     }
@@ -419,7 +426,7 @@ void ActionDialog::configure(const QString &udi)
         connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
                 SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));
         dlg->setCaption(i18n("Local Music Library Properties"));
-        dlg->show(Settings::self()->mpdDir(), QString(), namingOptions, DevicePropertiesDialog::Prop_Basic);
+        dlg->show(Settings::self()->mpdDir(), QString(), namingOptions, DevicePropertiesWidget::Prop_Basic);
     } else {
         Device *dev=DevicesModel::self()->device(udi);
         if (dev) {

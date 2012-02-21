@@ -262,16 +262,25 @@ IF( ENABLE_KDE_SUPPORT )
         find_package(Mtp)
 
         SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp
-             devices/device.cpp devices/umsdevice.cpp devices/mtpdevice.cpp models/devicesmodel.cpp devices/filetyperesolver.cpp
-             devices/actiondialog.cpp devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp
-             devices/encoders.cpp devices/transcodingjob.cpp devices/valueslider.cpp devices/trackorganiser.cpp)
+             devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp devices/mtpdevice.cpp
+             models/devicesmodel.cpp devices/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
+             devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp devices/encoders.cpp
+             devices/transcodingjob.cpp devices/valueslider.cpp devices/trackorganiser.cpp)
         SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h
-             devices/device.h devices/umsdevice.h devices/mtpdevice.h models/devicesmodel.h devices/actiondialog.h devices/devicepropertiesdialog.h
+             devices/device.h devices/fsdevice.h devices/umsdevice.h devices/mtpdevice.h models/devicesmodel.h
+             devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
              devices/filenameschemedialog.h devices/transcodingjob.h devices/valueslider.h devices/trackorganiser.h)
-        SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertiesdialog.ui
+        SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui
              devices/filenameschemedialog.ui devices/trackorganiser.ui)
         include_directories(${CMAKE_SOURCE_DIR}/devices)
 
+        if (ENABLE_REMOTE_DEVICES)
+            SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotedevice.cpp devices/remotedevicepropertiesdialog.cpp
+                devices/remotedevicepropertieswidget.cpp)
+            SET(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/remotedevice.h devices/remotedevicepropertiesdialog.h
+                devices/remotedevicepropertieswidget.h)
+            SET(CANTATA_UIS ${CANTATA_UIS} devices/remotedevicepropertieswidget.ui)
+        endif (ENABLE_REMOTE_DEVICES)
         if (MTP_FOUND)
             SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mtpdevice.cpp )
             SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h )
@@ -389,12 +398,13 @@ IF( ENABLE_KDE_SUPPORT )
     message("        - Open files via command line")
     if(TAGLIB_FOUND)
         message("        - Tag editor")
-        if (MTP_FOUND)
-            message("        - MTP Device sync")
-            message("        - UMS Device sync")
-        else (MTP_FOUND)
-            message("        - UMS Device sync")
-        endif (MTP_FOUND)
+        message("        - UMS device sync")
+        if (TAGLIB_FOUND AND MTP_FOUND)
+            message("        - MTP device sync")
+        endif (TAGLIB_FOUND AND MTP_FOUND)
+        if (TAGLIB_FOUND AND ENABLE_REMOTE_DEVICES)
+            message("        - Remote device sync (EXPERIMENTAL)")
+        endif (TAGLIB_FOUND AND ENABLE_REMOTE_DEVICES)
         if(FFMPEG_FOUND AND MPG123_FOUND)
             message("        - ReplayGain calculation")
         endif(FFMPEG_FOUND AND MPG123_FOUND)
@@ -403,11 +413,14 @@ IF( ENABLE_KDE_SUPPORT )
         message("      Disabled features:")
         if(NOT TAGLIB_FOUND)
             message("        - Tag editor (taglib required)")
-            message("        - UMS Device sync (taglib required)")
+            message("        - UMS device sync (taglib required)")
         endif(NOT TAGLIB_FOUND)
-        if (TAGLIB_FOUND AND NOT MTP_FOUND)
-            message("        - MTP Device sync (taglib and libmtp required)")
-        endif (TAGLIB_FOUND AND NOT MTP_FOUND)
+        if (NOT TAGLIB_FOUND OR NOT MTP_FOUND)
+            message("        - MTP device sync (taglib and libmtp required)")
+        endif (NOT TAGLIB_FOUND OR NOT MTP_FOUND)
+        #if (NOT TAGLIB_FOUND OR NOT ENABLE_REMOTE_DEVICES)
+        #    message("        - Remote device sync (EXPERIMENTAL)")
+        #endif (NOT TAGLIB_FOUND OR NOT ENABLE_REMOTE_DEVICES)
         if(NOT FFMPEG_FOUND OR NOT MPG123_FOUND)
             message("        - ReplayGain calculation (ffmpeg AND mpg123 required)")
         endif(NOT FFMPEG_FOUND OR NOT MPG123_FOUND)

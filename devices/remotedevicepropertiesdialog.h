@@ -21,25 +21,26 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DEVICEPROPERTIESDIALOG_H
-#define DEVICEPROPERTIESDIALOG_H
+#ifndef REMOTEDEVICEPROPERTIESDIALOG_H
+#define REMOTEDEVICEPROPERTIESDIALOG_H
 
 #include <KDE/KDialog>
-#include "device.h"
+#include "remotedevice.h"
 
 class FilenameSchemeDialog;
 class DevicePropertiesWidget;
+class RemoteDevicePropertiesWidget;
 
-class DevicePropertiesDialog : public KDialog
+class RemoteDevicePropertiesDialog : public KDialog
 {
     Q_OBJECT
 
 public:
-    DevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const QString &coverName, const Device::Options &opts, int props);
+    RemoteDevicePropertiesDialog(QWidget *parent);
+    void show(const QString &path, const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det, int props, bool creating=false);
 
 Q_SIGNALS:
-    void updatedSettings(const QString &path, const QString &coverName, const Device::Options &opts);
+    void updatedSettings(const QString &path, const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det);
     void cancelled();
 
 private Q_SLOTS:
@@ -49,6 +50,7 @@ private:
     void slotButtonClicked(int button);
 
 private:
+    RemoteDevicePropertiesWidget *remoteProp;
     DevicePropertiesWidget *devProp;
 };
 

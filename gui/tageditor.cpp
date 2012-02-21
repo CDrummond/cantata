@@ -713,6 +713,11 @@ Device * TagEditor::getDevice(const QString &udi, QWidget *p)
         reject();
         return 0;
     }
+    if (!dev->isConnected()) {
+        KMessageBox::error(p ? p : this, i18n("Device is not connected."));
+        reject();
+        return 0;
+    }
     if (!dev->isIdle()) {
         KMessageBox::error(p ? p : this, i18n("Device is busy?"));
         reject();

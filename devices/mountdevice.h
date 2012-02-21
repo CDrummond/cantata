@@ -21,35 +21,44 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DEVICEPROPERTIESDIALOG_H
-#define DEVICEPROPERTIESDIALOG_H
+#ifndef MOUNTDEVICE_H
+#define MOUNTDEVICE_H
 
-#include <KDE/KDialog>
-#include "device.h"
+#include "fsdevice.h"
+#include <sys/types.h>
 
-class FilenameSchemeDialog;
-class DevicePropertiesWidget;
-
-class DevicePropertiesDialog : public KDialog
+class MountDevice : public FsDevice
 {
     Q_OBJECT
 
 public:
-    DevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const QString &coverName, const Device::Options &opts, int props);
+    MountDevice(DevicesModel *m, const QString &mp, const QString &dp);
+    virtual ~MountDevice();
 
-Q_SIGNALS:
-    void updatedSettings(const QString &path, const QString &coverName, const Device::Options &opts);
-    void cancelled();
+    virtual bool mount()=0;
+    virtual bool unmount()=0;
+    virtual QString key()=0;
+    bool isConnected() const;
+    double usedCapacity();
+    QString capacityString();
+    qint64 freeSpace();
 
-private Q_SLOTS:
-    void enableOkButton();
+    virtual QString icon() const {
+        return QLatin1String("network-server");
+    }
 
-private:
-    void slotButtonClicked(int button);
+protected:
+    void setup();
 
-private:
-    DevicePropertiesWidget *devProp;
+protected Q_SLOTS:
+    void saveProperties();
+    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
+
+protected:
+    mutable time_t lastCheck;
+    mutable bool isMounted;
+    QString mountPoint;
+    QString devPath;
 };
 
 #endif

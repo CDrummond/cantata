@@ -308,7 +308,7 @@ bool RemoteDevice::isConnected() const
 
 double RemoteDevice::usedCapacity()
 {
-    if (!isConnected()) {
+    if (!isConnected() || Prot_Sshfs==details.protocol) {
         return -1.0;
     }
 
@@ -322,13 +322,16 @@ QString RemoteDevice::capacityString()
         return i18n("Not Connected");
     }
 
+    if (Prot_Sshfs==details.protocol) {
+        return i18n("Capacity Unknown");
+    }
     KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(details.mountPoint(false));
     return i18n("%1 free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
 }
 
 qint64 RemoteDevice::freeSpace()
 {
-    if (!isConnected()) {
+    if (!isConnected() || Prot_Sshfs==details.protocol) {
         return 0;
     }
 

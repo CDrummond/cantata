@@ -246,8 +246,8 @@ void RemoteDevice::procFinished(int exitCode)
     proc=0;
 
     if (0!=exitCode) {
-        emit error(wasMount ? i18n("Failed to mount \"%1\" (error code %2)", details.name, exitCode)
-                            : i18n("Failed to unmount \"%1\" (error code %2)", details.name, exitCode));
+        emit error(wasMount ? i18n("Failed to mount \"%1\"", details.name)
+                            : i18n("Failed to unmount \"%1\"", details.name));
     }
     if (wasMount) {
         load();

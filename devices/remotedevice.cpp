@@ -248,8 +248,8 @@ void RemoteDevice::procFinished(int exitCode)
     proc=0;
 
     if (0!=exitCode) {
-        emit error(wasMount ? i18n("Failed to mount \"%1\"", details.name)
-                            : i18n("Failed to unmount \"%1\"", details.name));
+        emit error(wasMount ? i18n("Failed to connect to \"%1\"", details.name)
+                            : i18n("Failed to disconnect from \"%1\"", details.name));
         setStatusMessage(QString());
     } else if (wasMount) {
          setStatusMessage(i18n("Updating tracks..."));

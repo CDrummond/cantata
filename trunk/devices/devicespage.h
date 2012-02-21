@@ -28,6 +28,9 @@
 #include "mainwindow.h"
 #include "musiclibraryproxymodel.h"
 #include "device.h"
+#ifdef ENABLE_REMOTE_DEVICES
+#include "remotedevice.h"
+#endif
 
 class KAction;
 
@@ -40,7 +43,7 @@ public:
     virtual ~DevicesPage();
 
     void clear();
-    QString activeUmsDeviceUdi() const;
+    QString activeFsDeviceUdi() const;
     QList<Song> selectedSongs() const;
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 
@@ -53,6 +56,10 @@ public Q_SLOTS:
     void configureDevice();
     void refreshDevice();
     void deleteSongs();
+    #ifdef ENABLE_REMOTE_DEVICES
+    void addRemoteDevice();
+    void forgetRemoteDevice();
+    #endif
 
 Q_SIGNALS:
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
@@ -64,6 +71,9 @@ private:
     KAction *configureAction;
     KAction *refreshAction;
     KAction *copyAction;
+    #ifdef ENABLE_REMOTE_DEVICES
+    KAction *forgetDeviceAction;
+    #endif
     QSet<QString> genres;
 };
 

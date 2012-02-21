@@ -28,7 +28,6 @@
 #include "devicesmodel.h"
 #include "playqueuemodel.h"
 #include "settings.h"
-#include "config.h"
 #include "covers.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
@@ -66,6 +65,9 @@ DevicesModel::DevicesModel(QObject *parent)
     , enabled(false)
 {
     connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
+    #ifdef ENABLE_REMOTE_DEVICES
+    loadRemote();
+    #endif
     updateItemMenu();
 }
 
@@ -73,6 +75,33 @@ DevicesModel::~DevicesModel()
 {
     qDeleteAll(devices);
 }
+
+#ifdef ENABLE_REMOTE_DEVICES
+void DevicesModel::loadRemote()
+{
+    QList<Device *> rem=RemoteDevice::loadAll(this);
+    if (rem.count()) {
+        beginInsertRows(QModelIndex(), devices.count(), devices.count()+(rem.count()-1));
+        foreach (Device *dev, rem) {
+            indexes.insert(dev->udi(), devices.count());
+            devices.append(dev);
+            connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
+            connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
+            connect(static_cast<RemoteDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+        }
+        endInsertRows();
+    }
+}
+
+void DevicesModel::unmountRemote()
+{
+    foreach (Device *dev, devices) {
+        if (Device::Remote==dev->type()) {
+            static_cast<RemoteDevice *>(dev)->unmount();
+        }
+    }
+}
+#endif
 
 QModelIndex DevicesModel::index(int row, int column, const QModelIndex &parent) const
 {
@@ -404,6 +433,7 @@ void DevicesModel::deviceAdded(const QString &udi)
             devices.append(dev);
             endInsertRows();
             connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
+            connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
             updateItemMenu();
         }
     }
@@ -588,6 +618,44 @@ void DevicesModel::emitAddToDevice()
     }
 }
 
+#ifdef ENABLE_REMOTE_DEVICES
+void DevicesModel::addRemoteDevice(const QString &path, const QString &coverFileName, const Device::Options &opts, const RemoteDevice::Details &details)
+{
+    RemoteDevice *dev=RemoteDevice::create(this, path, coverFileName, opts, details);
+
+    if (dev) {
+        beginInsertRows(QModelIndex(), devices.count(), devices.count());
+        indexes.insert(dev->udi(), devices.count());
+        devices.append(dev);
+        endInsertRows();
+        connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
+        connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
+        connect(dev, SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+        updateItemMenu();
+    }
+}
+
+void DevicesModel::removeRemoteDevice(const QString &udi)
+{
+    Device *dev=device(udi);
+
+    if (dev && Device::Remote==dev->type()) {
+        RemoteDevice::remove(static_cast<RemoteDevice *>(dev));
+        deviceRemoved(udi);
+        dev->deleteLater();
+    }
+}
+
+void DevicesModel::changeDeviceUdi(const QString &from, const QString &to)
+{
+    if (indexes.contains(from)) {
+        int idx=indexes[from];
+        indexes.remove(from);
+        indexes.insert(to, idx);
+    }
+}
+#endif
+
 void DevicesModel::updateItemMenu()
 {
     if (!itemMenu) {
@@ -609,7 +677,7 @@ void DevicesModel::updateItemMenu()
         QMultiMap<QString, const Device *>::ConstIterator end(items.end());
 
         for (; it!=end; ++it) {
-            itemMenu->addAction(QIcon::fromTheme(it.value()->icon()), it.key(), this, SLOT(emitAddToDevice()))->setData(it.value()->dev().udi());
+            itemMenu->addAction(QIcon::fromTheme(it.value()->icon()), it.key(), this, SLOT(emitAddToDevice()))->setData(it.value()->udi());
         }
     }
 }

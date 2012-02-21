@@ -21,35 +21,27 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DEVICEPROPERTIESDIALOG_H
-#define DEVICEPROPERTIESDIALOG_H
+#ifndef SSHFSDEVICE_H
+#define SSHFSDEVICE_H
 
-#include <KDE/KDialog>
-#include "device.h"
+#include "mountdevice.h"
 
-class FilenameSchemeDialog;
-class DevicePropertiesWidget;
-
-class DevicePropertiesDialog : public KDialog
+class SshFsDevice : public MountDevice
 {
     Q_OBJECT
 
 public:
-    DevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const QString &coverName, const Device::Options &opts, int props);
+    SshFsDevice(DevicesModel *m, const QString &host, unsigned short port, const QString &mp);
+    virtual ~SshFsDevice();
 
-Q_SIGNALS:
-    void updatedSettings(const QString &path, const QString &coverName, const Device::Options &opts);
-    void cancelled();
-
-private Q_SLOTS:
-    void enableOkButton();
+    bool mount();
+    bool unmount();
+    QString key() { return cfgKey; }
 
 private:
-    void slotButtonClicked(int button);
-
-private:
-    DevicePropertiesWidget *devProp;
+    QString host;
+    unsigned short port;
+    QString cfgKey;
 };
 
 #endif

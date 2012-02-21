@@ -157,7 +157,6 @@ RemoteDevice::RemoteDevice(DevicesModel *m, const Details &d)
     , proc(0)
 {
     setup();
-    mount();
 }
 
 RemoteDevice::~RemoteDevice() {

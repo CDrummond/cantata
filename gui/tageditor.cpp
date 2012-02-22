@@ -265,47 +265,19 @@ void TagEditor::fillSong(Song &s, bool isAll, bool skipEmpty) const
 
 void TagEditor::setPlaceholderTexts()
 {
-    QString artistText;
-    QString albumText;
-    QString albumArtistText;
-    QString genreText;
+    #ifdef ENABLE_KDE_SUPPORT
+    QString various=i18n("(Various)");
+    #else
+    QString various=tr("(Various)");
+    #endif
 
     if(0==currentSongIndex && original.count()>1) {
         Song all=original.at(0);
-        if (all.artist.isEmpty()) {
-            #ifdef ENABLE_KDE_SUPPORT
-            artistText=i18n("(Multiple values)");
-            #else
-            artistText=tr("(Multiple values)");
-            #endif
-        }
-        if (all.album.isEmpty()) {
-            #ifdef ENABLE_KDE_SUPPORT
-            albumText=i18n("(Multiple values)");
-            #else
-            albumText=tr("(Multiple values)");
-            #endif
-        }
-        if (all.albumartist.isEmpty()) {
-            #ifdef ENABLE_KDE_SUPPORT
-            albumArtistText=i18n("(Multiple values)");
-            #else
-            albumArtistText=tr("(Multiple values)");
-            #endif
-        }
-        if (all.genre.isEmpty()) {
-            #ifdef ENABLE_KDE_SUPPORT
-            genreText=i18n("(Multiple values)");
-            #else
-            genreText=tr("(Multiple values)");
-            #endif
-        }
+        artist->setPlaceholderText(all.artist.isEmpty() ? various : QString());
+        album->setPlaceholderText(all.album.isEmpty() ? various : QString());
+        albumArtist->setPlaceholderText(all.albumartist.isEmpty() ? various : QString());
+        genre->setPlaceholderText(all.genre.isEmpty() ? various : QString());
     }
-
-    artist->setPlaceholderText(artistText);
-    album->setPlaceholderText(albumText);
-    albumArtist->setPlaceholderText(albumArtistText);
-    genre->setPlaceholderText(genreText);
 }
 
 void TagEditor::enableOkButton()

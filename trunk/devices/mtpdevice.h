@@ -65,6 +65,7 @@ Q_SIGNALS:
     void libraryUpdated();
     void progress(unsigned long);
     void deviceDetails(const QString &serialNumber);
+    void songCount(int);
 
 private:
     void updateFolders();

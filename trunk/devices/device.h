@@ -191,6 +191,7 @@ public:
 
 public Q_SLOTS:
     void setStatusMessage(const QString &message);
+    void songCount(int c);
 
 public:
     void addSongToList(const Song &s);

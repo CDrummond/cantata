@@ -508,3 +508,8 @@ void Device::setStatusMessage(const QString &msg)
     QModelIndex modelIndex=model->createIndex(model->devices.indexOf(this), 0, this);
     emit model->dataChanged(modelIndex, modelIndex);
 }
+
+void Device::songCount(int c)
+{
+    setStatusMessage(i18n("Updating (%1)...", c));
+}

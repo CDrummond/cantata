@@ -79,6 +79,7 @@ public:
     void toggle();
     void mount();
     void unmount();
+    bool supportsDisconnect() const { return Prot_File!=details.protocol; }
     bool isConnected() const;
     double usedCapacity();
     QString capacityString();

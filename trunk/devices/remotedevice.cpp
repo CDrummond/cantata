@@ -175,9 +175,6 @@ void RemoteDevice::toggle()
 void RemoteDevice::mount()
 {
     if (Prot_File==details.protocol) {
-        if (isConnected()) {
-            load();
-        }
         return;
     }
     if (isConnected() || proc) {
@@ -213,10 +210,6 @@ void RemoteDevice::mount()
 void RemoteDevice::unmount()
 {
     if (Prot_File==details.protocol) {
-        if (isConnected()) {
-            update=new MusicLibraryItemRoot;
-            emit updating(udi(), false);
-        }
         return;
     }
 

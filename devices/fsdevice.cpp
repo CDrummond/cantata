@@ -65,6 +65,7 @@ MusicScanner::~MusicScanner()
 
 void MusicScanner::run()
 {
+    count=0;
     library = new MusicLibraryItemRoot;
     scanFolder(folder, 0);
 }
@@ -102,6 +103,10 @@ void MusicScanner::scanFolder(const QString &f, int level)
 
                 if (song.isEmpty()) {
                     continue;
+                }
+                count++;
+                if (0!=count && 0==count%25) {
+                    emit songCount(count);
                 }
 
                 song.fillEmptyFields();
@@ -373,6 +378,7 @@ void FsDevice::startScanner()
     stopScanner();
     scanner=new MusicScanner(audioFolder);
     connect(scanner, SIGNAL(finished()), this, SLOT(libraryUpdated()));
+    connect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
     scanner->start();
     setStatusMessage(i18n("Updating..."));
     emit updating(udi(), true);

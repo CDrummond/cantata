@@ -47,6 +47,9 @@ public:
     bool wasStopped() const { return stopRequested; }
     MusicLibraryItemRoot * takeLibrary();
 
+Q_SIGNALS:
+    void songCount(int c);
+
 private:
     void scanFolder(const QString &f, int level);
 
@@ -54,6 +57,7 @@ private:
     QString folder;
     MusicLibraryItemRoot *library;
     bool stopRequested;
+    int count;
 };
 
 class FsDevice : public Device

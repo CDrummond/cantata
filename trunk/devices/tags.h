@@ -28,6 +28,23 @@
 
 namespace Tags
 {
+    struct ReplayGain
+    {
+        ReplayGain(double tg=0.0, double ag=0.0, double tp=0.0, double ap=0.0)
+            : trackGain(tg)
+            , albumGain(ag)
+            , trackPeak(tp)
+            , albumPeak(ap) {
+        }
+
+        bool isEmpty() const;
+
+        double trackGain;
+        double albumGain;
+        double trackPeak;
+        double albumPeak;
+    };
+
     enum Update
     {
         Update_Failed,
@@ -38,7 +55,8 @@ namespace Tags
     extern Song read(const QString &fileName);
     extern Update updateArtistAndTitle(const QString &fileName, const Song &song);
     extern Update update(const QString &fileName, const Song &from, const Song &to);
-    extern Update updateReplaygain(const QString &fileName, double trackGain, double trackPeak, double albumGain, double albumPeak);
+    extern ReplayGain readReplaygain(const QString &fileName);
+    extern Update updateReplaygain(const QString &fileName, const ReplayGain &rg);
 };
 
 #endif

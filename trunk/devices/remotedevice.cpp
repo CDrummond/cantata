@@ -191,6 +191,8 @@ void RemoteDevice::mount()
                 args << details.user+QChar('@')+details.host+QChar(':')+details.folder << QLatin1String("-p")
                      << QString::number(details.port) << details.mountPoint(true)
                      << QLatin1String("-o") << QLatin1String("ServerAliveInterval=15");
+            } else {
+                emit error(i18n("\"sshfs\" is not installed!"));
             }
         }
         break;
@@ -226,6 +228,8 @@ void RemoteDevice::unmount()
             cmd=KStandardDirs::findExe("fusermount");
             if (!cmd.isEmpty()) {
                 args << QLatin1String("-u") << QLatin1String("-z") << mp;
+            } else {
+                emit error(i18n("\"fusermount\" is not installed!"));
             }
         }
         break;

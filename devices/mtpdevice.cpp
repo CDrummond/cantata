@@ -175,7 +175,12 @@ void MtpConnection::updateLibrary()
 
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
+    int count=0;
     while (track) {
+        count++;
+        if (0!=count && 0==count%25) {
+            emit songCount(count);
+        }
         QMap<int, Folder>::ConstIterator it=folderMap.find(track->parent_id);
         Song s;
         s.id=track->item_id;
@@ -516,6 +521,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(delSongStatus(bool)), this, SLOT(delSongStatus(bool)));
     connect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
     connect(connection, SIGNAL(deviceDetails(const QString &)), this, SLOT(deviceDetails(const QString &)));
+    connect(connection, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
     QTimer::singleShot(0, this, SLOT(rescan()));
 }
 

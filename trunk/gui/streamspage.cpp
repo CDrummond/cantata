@@ -330,23 +330,36 @@ void StreamsPage::removeItems()
     #endif
 
     // Ensure that if we have a category selected, we dont also try to remove one of its children
-    QSet<StreamsModel::Item *> selectedCategories;
+    QSet<StreamsModel::CategoryItem *> removeCategories;
+    QList<StreamsModel::StreamItem *> removeStreams;
     QModelIndexList remove;
+    //..obtain catagories to remove...
     foreach(QModelIndex index, selected) {
         QModelIndex idx=proxy.mapToSource(index);
         StreamsModel::Item *item=static_cast<StreamsModel::Item *>(idx.internalPointer());
 
         if (item->isCategory()) {
-            selectedCategories.insert(item);
-            remove.append(idx);
-        } else if (!selectedCategories.contains(static_cast<StreamsModel::StreamItem*>(item)->parent)) {
-            remove.append(idx);
+            removeCategories.insert(static_cast<StreamsModel::CategoryItem *>(item));
+        }
+    }
+    // Obtain streams in non-selected categories...
+    foreach(QModelIndex index, selected) {
+        QModelIndex idx=proxy.mapToSource(index);
+        StreamsModel::Item *item=static_cast<StreamsModel::Item *>(idx.internalPointer());
+
+        if (!item->isCategory()) {
+            removeStreams.append(static_cast<StreamsModel::StreamItem *>(item));
         }
     }
 
-    foreach (const QModelIndex &idx, remove) {
-        model.remove(idx);
+    foreach (StreamsModel::CategoryItem *i, removeCategories) {
+        model.removeCategory(i);
     }
+
+    foreach (StreamsModel::StreamItem *i, removeStreams) {
+        model.removeStream(i);
+    }
+    model.updateGenres();
     exportAction->setEnabled(model.rowCount()>0);
 }
 

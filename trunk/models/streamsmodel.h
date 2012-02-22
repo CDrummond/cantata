@@ -87,6 +87,8 @@ public:
     void editCategory(const QModelIndex &index, const QString &name, const QString &icon);
     void editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &genre, const QString &icon, const QString &url);
     void remove(const QModelIndex &index);
+    void removeCategory(CategoryItem *cat);
+    void removeStream(StreamItem *stream);
     QString name(const QString &cat, const QString &url) { return name(getCategory(cat), url); }
     bool entryExists(const QString &cat, const QString &name, const QUrl &url=QUrl()) { return entryExists(getCategory(cat), name, url); }
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -94,6 +96,7 @@ public:
     QStringList filenames(const QModelIndexList &indexes) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void mark(const QList<int> &rows, bool f);
+    void updateGenres();
 
     const QSet<QString> & urlHandlers() const {
         return handlers;
@@ -103,7 +106,6 @@ Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
 
 private:
-    void updateGenres();
     void clearCategories();
     bool load(const QString &filename, bool isInternal);
     CategoryItem * getCategory(const QString &name, bool create=false, bool signal=false);

@@ -14,6 +14,18 @@ The following options may be passed to CMake:
         (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
         Default: all
 
+    -DENABLE_REMOTE_DEVICES=1
+        Compile support for sshfs, and local folder, device support.
+        Default: off
+
+    -DENABLE_WEBKIT=1
+        Compile with WebKit, used for info page.
+        Default: on
+
+    -DWANT_KDE_SUPPORT=NO
+        Disable KDE support - not recommended.
+        Default: on
+
 
 Qt-Only
 =======

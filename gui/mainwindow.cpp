@@ -95,6 +95,7 @@
 #include "mpris.h"
 #include "dockmanager.h"
 #include "messagewidget.h"
+#include "httpserver.h"
 #include "debugtimer.h"
 
 enum Tabs
@@ -867,6 +868,9 @@ MainWindow::MainWindow(QWidget *parent)
     MPDConnection::self()->moveToThread(mpdThread);
     mpdThread->start();
     connectToMpd();
+    if (Settings::self()->enableHttp()) {
+        HttpServer::self()->setPort(Settings::self()->httpPort());
+    }
     #ifdef ENABLE_REMOTE_DEVICES
     DevicesModel::self()->loadRemote();
     #endif
@@ -1116,6 +1120,7 @@ void MainWindow::updateSettings()
     }
 
     connectToMpd();
+    HttpServer::self()->setPort(Settings::self()->enableHttp() ? Settings::self()->httpPort() : 0);
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
@@ -1436,6 +1441,15 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     current=song;
+
+    if (current.file.startsWith("http") && HttpServer::self()->isOurs(current.file)) {
+        Song mod=HttpServer::self()->decodeUrl(current.file);
+        if (!mod.title.isEmpty()) {
+            current=mod;
+            current.id=song.id;
+            current.file="XXX";
+        }
+    }
 
     positionSlider->setEnabled(!currentIsStream());
 

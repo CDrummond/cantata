@@ -29,6 +29,7 @@ SET( CANTATA_SRCS
     gui/externalsettings.cpp
     gui/playbacksettings.cpp
     gui/serversettings.cpp
+    gui/httpserversettings.cpp
     gui/outputsettings.cpp
     gui/streamspage.cpp
     gui/streamdialog.cpp
@@ -81,6 +82,8 @@ SET( CANTATA_SRCS
     libmaia/maiaFault.cpp
     libmaia/maiaXmlRpcClient.cpp
     devices/utils.cpp
+    http/httpserver.cpp
+    http/httpsocket.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -130,6 +133,7 @@ SET( CANTATA_MOC_HDRS
     libmaia/maiaObject.h
     libmaia/maiaFault.h
     libmaia/maiaXmlRpcClient.h
+    http/httpsocket.h
 )
 
 SET( CANTATA_UIS
@@ -144,6 +148,7 @@ SET( CANTATA_UIS
     gui/externalsettings.ui
     gui/playbacksettings.ui
     gui/serversettings.ui
+    gui/httpserversettings.ui
     gui/outputsettings.ui
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
@@ -160,6 +165,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
                      ${CMAKE_SOURCE_DIR}/lyrics
                      ${CMAKE_SOURCE_DIR}/network
                      ${CMAKE_SOURCE_DIR}/dbus
+                     ${CMAKE_SOURCE_DIR}/http
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
 )

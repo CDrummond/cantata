@@ -24,6 +24,7 @@
 #include "streamfetcher.h"
 #include "networkaccessmanager.h"
 #include "mpdconnection.h"
+#include "httpserver.h"
 #include <QtCore/QRegExp>
 #include <QtCore/QUrl>
 #include <QtXml/QDomDocument>
@@ -185,7 +186,7 @@ void StreamFetcher::doNext()
         current=todo.takeFirst();
         QUrl u(current);
 
-        if (QLatin1String("http")==u.scheme()) {
+        if (QLatin1String("http")==u.scheme() && !HttpServer::self()->isOurs(current)) {
             data.clear();
             job=manager->get(u);
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));

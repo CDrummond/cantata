@@ -21,40 +21,42 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef UMSDEVICE_H
-#define UMSDEVICE_H
+#ifndef _HTTP_SERVER_H
+#define _HTTP_SERVER_H
 
-#include "fsdevice.h"
+#include <QtCore/qglobal.h>
+#include <QtCore/QByteArray>
+#include "song.h"
 
-class UmsDevice : public FsDevice
+class HttpSocket;
+class QThread;
+
+class HttpServer
 {
-    Q_OBJECT
-
 public:
-    UmsDevice(DevicesModel *m, Solid::Device &dev);
-    virtual ~UmsDevice();
+    static HttpServer * self();
 
-    bool isConnected() const;
-    double usedCapacity();
-    QString capacityString();
-    qint64 freeSpace();
-    Type type() const { return Ums; }
-    void saveOptions();
-    void configure(QWidget *parent);
-    virtual bool canPlaySongs() const {
-        return true;
+    HttpServer()
+        : thread(0)
+        , socket(0) {
     }
 
-private:
-    void setup();
+    virtual ~HttpServer() {
+    }
 
-private Q_SLOTS:
-    void saveProperties();
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
+    void stop();
+    bool isAlive() const;
+    bool setPort(quint16 port);
+    QString address() const;
+    bool isOurs(const QString &url) const;
+    QByteArray encodeUrl(const Song &s) const;
+    QByteArray encodeUrl(const QString &file) const;
+    Song decodeUrl(const QString &url) const;
 
 private:
-    Solid::StorageAccess *access;
-    QStringList unusedParams;
+    QThread *thread;
+    HttpSocket *socket;
 };
 
 #endif
+

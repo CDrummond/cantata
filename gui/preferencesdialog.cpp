@@ -29,6 +29,7 @@
 #include "playbacksettings.h"
 #include "outputsettings.h"
 #include "serversettings.h"
+#include "httpserversettings.h"
 #include "lyricsettings.h"
 #include "lyricspage.h"
 #ifdef ENABLE_KDE_SUPPORT
@@ -87,12 +88,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     output = new OutputSettings(widget);
     interface = new InterfaceSettings(widget);
     ext = new ExternalSettings(widget);
+    http = new HttpServerSettings(widget);
     lyrics = new LyricSettings(widget);
     server->load();
     playback->load();
     output->load();
     interface->load();
     ext->load();
+    http->load();
     const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
     lyrics->Load(lprov);
     #ifdef ENABLE_KDE_SUPPORT
@@ -111,6 +114,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page=widget->addPage(ext, i18n("External"));
     page->setHeader(i18n("External Settings"));
     page->setIcon(KIcon("video-display"));
+    page=widget->addPage(http, i18n("HTTP Server"));
+    page->setHeader(i18n("HTTP Server Settings"));
+    page->setIcon(KIcon("network-server"));
     page=widget->addPage(lyrics, i18n("Lyrics"));
     page->setHeader(i18n("Lyrics Settings"));
     page->setIcon(KIcon("view-media-lyrics"));
@@ -129,6 +135,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
                    QIcon::fromTheme("preferences-desktop-color"), tr("Interface"));
     widget->AddTab(new ConfigPage(this, tr("External Settings"), QIcon::fromTheme("video-display"), ext),
                    QIcon::fromTheme("video-display"), tr("External"));
+    widget->AddTab(new ConfigPage(this, tr("HTTP Server Settings"), QIcon::fromTheme("network-server"), http),
+                   QIcon::fromTheme("network-server"), tr("HTTP Server"));
     widget->AddTab(new ConfigPage(this, tr("Lyrics Settings"), QIcon::fromTheme("view-media-lyrics"), lyrics),
                    QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
     proxy = new ProxySettings(this);
@@ -147,7 +155,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     #endif
-    resize(600, 400);
+    resize(600, 480);
 }
 
 void PreferencesDialog::writeSettings()
@@ -158,6 +166,7 @@ void PreferencesDialog::writeSettings()
     output->save();
     interface->save();
     ext->save();
+    http->save();
     #ifndef ENABLE_KDE_SUPPORT
     proxy->save();
     #endif

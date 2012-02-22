@@ -21,40 +21,34 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef UMSDEVICE_H
-#define UMSDEVICE_H
+#ifndef _HTTP_SOCKET_H_
+#define _HTTP_SOCKET_H_
 
-#include "fsdevice.h"
+#include <QtNetwork/QTcpServer>
 
-class UmsDevice : public FsDevice
+class HttpSocket : public QTcpServer
 {
     Q_OBJECT
 
 public:
-    UmsDevice(DevicesModel *m, Solid::Device &dev);
-    virtual ~UmsDevice();
+     HttpSocket(quint16 p);
 
-    bool isConnected() const;
-    double usedCapacity();
-    QString capacityString();
-    qint64 freeSpace();
-    Type type() const { return Ums; }
-    void saveOptions();
-    void configure(QWidget *parent);
-    virtual bool canPlaySongs() const {
-        return true;
-    }
+     virtual ~HttpSocket() {
+     }
 
-private:
-    void setup();
+     void terminate();
+     void incomingConnection(int socket);
+     quint16 port() const {
+         return portNumber;
+     }
 
 private Q_SLOTS:
-    void saveProperties();
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
+     void readClient();
+     void discardClient();
 
 private:
-    Solid::StorageAccess *access;
-    QStringList unusedParams;
+    quint16 portNumber;
+    bool terminated;
 };
 
 #endif

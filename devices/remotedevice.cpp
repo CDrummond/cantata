@@ -386,7 +386,7 @@ void RemoteDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(audioFolder, coverFileName, opts, details,
+    dlg->show(audioFolderSetting, coverFileName, opts, details,
               qobject_cast<ActionDialog *>(parent) ? (DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder)
                                                    : DevicePropertiesWidget::Prop_All);
 }

@@ -60,8 +60,8 @@ DevicesPage::DevicesPage(MainWindow *p)
     copyAction->setIcon(QIcon::fromTheme("document-import"));
     copyToLibraryButton->setDefaultAction(copyAction);
     #ifdef ENABLE_REMOTE_DEVICES
-    forgetDeviceAction=p->actionCollection()->addAction("forgetremotedevice");
-    forgetDeviceAction->setText(i18n("Forget Remote Device"));
+    forgetDeviceAction=p->actionCollection()->addAction("forgetdevice");
+    forgetDeviceAction->setText(i18n("Forget Device"));
     forgetDeviceAction->setIcon(QIcon::fromTheme("list-remove"));
     toggleDeviceAction=p->actionCollection()->addAction("toggledevice");
     toggleDeviceAction->setText(i18n("Toggle Device"));
@@ -105,8 +105,8 @@ DevicesPage::DevicesPage(MainWindow *p)
     menu->addAction(refreshAction);
     menu->addSeparator();
     #ifdef ENABLE_REMOTE_DEVICES
-    KAction *addRemote=p->actionCollection()->addAction("addremotedevice");
-    addRemote->setText(i18n("Add Remote Device"));
+    KAction *addRemote=p->actionCollection()->addAction("adddevice");
+    addRemote->setText(i18n("Add Device"));
     addRemote->setIcon(QIcon::fromTheme("network-server"));
     connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
     menu->addAction(addRemote);

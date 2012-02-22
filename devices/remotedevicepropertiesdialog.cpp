@@ -36,7 +36,7 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     , isCreate(false)
 {
     setButtons(KDialog::Ok|KDialog::Cancel);
-    setCaption(i18n("Remote Device Properties"));
+    setCaption(i18n("Device Properties"));
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowModality(Qt::WindowModal);
     QTabWidget *tab=new QTabWidget(this);
@@ -51,10 +51,10 @@ void RemoteDevicePropertiesDialog::show(const QString &path, const QString &cove
 {
     isCreate=create;
     if (isCreate) {
-        setCaption(i18n("Add Remote Device"));
+        setCaption(i18n("Add Device"));
     }
     devProp->update(path, coverName, opts, props);
-    remoteProp->update(det);
+    remoteProp->update(det, create);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
     connect(remoteProp, SIGNAL(updated()), SLOT(enableOkButton()));
     KDialog::show();

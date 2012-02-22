@@ -37,12 +37,17 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
 {
     setupUi(this);
     if (qobject_cast<QTabWidget *>(parent)) {
-        formLayout->setMargin(4);
+        verticalLayout->setMargin(4);
     }
+    type->addItem(i18n("Secure Shell (sshfs)"), (int)RemoteDevice::Prot_Sshfs);
+    type->addItem(i18n("Locally Mounted Folder"), (int)RemoteDevice::Prot_File);
 }
 
-void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d)
+void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d, bool create)
 {
+    infoLabel->setVisible(create);
+    typeLabel->setEnabled(create);
+    type->setEnabled(create);
     orig=d;
     name->setText(d.name);
     host->setText(d.host);
@@ -50,13 +55,35 @@ void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d)
     folder->setText(d.folder);
     port->setValue(d.port);
 
+    for (int i=1; i<type->count(); ++i) {
+        if (type->itemData(i).toInt()==d.protocol) {
+            type->setCurrentIndex(i);
+            break;
+        }
+    }
+
     connect(name, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(host, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(user, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(folder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(port, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
+    connect(type, SIGNAL(currentIndexChanged(int)), this, SLOT(setType()));
+
     modified=false;
+    setType();
     checkSaveable();
+}
+
+void RemoteDevicePropertiesWidget::setType()
+{
+    int t=type->itemData(type->currentIndex()).toInt();
+    hostLabel->setEnabled(RemoteDevice::Prot_File!=t);
+    host->setEnabled(RemoteDevice::Prot_File!=t);
+    userLabel->setEnabled(RemoteDevice::Prot_File!=t);
+    user->setEnabled(RemoteDevice::Prot_File!=t);
+    portLabel->setEnabled(RemoteDevice::Prot_File!=t);
+    port->setEnabled(RemoteDevice::Prot_File!=t);
+    folder->setButtonVisible(RemoteDevice::Prot_File==t);
 }
 
 void RemoteDevicePropertiesWidget::checkSaveable()
@@ -75,6 +102,6 @@ RemoteDevice::Details RemoteDevicePropertiesWidget::details()
     det.user=user->text().trimmed();
     det.folder=folder->text().trimmed();
     det.port=port->value();
-    det.protocol=RemoteDevice::Prot_Sshfs; // Only sshfs at the moment!!!
+    det.protocol=(RemoteDevice::Protocol)type->itemData(type->currentIndex()).toInt();
     return det;
 }

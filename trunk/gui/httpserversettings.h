@@ -21,40 +21,19 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef UMSDEVICE_H
-#define UMSDEVICE_H
+#ifndef HTTPSERVERSETTINGS_H
+#define HTTPSERVERSETTINGS_H
 
-#include "fsdevice.h"
+#include "ui_httpserversettings.h"
 
-class UmsDevice : public FsDevice
+class HttpServerSettings : public QWidget, private Ui::HttpServerSettings
 {
-    Q_OBJECT
-
 public:
-    UmsDevice(DevicesModel *m, Solid::Device &dev);
-    virtual ~UmsDevice();
+    HttpServerSettings(QWidget *p);
+    virtual ~HttpServerSettings() { }
 
-    bool isConnected() const;
-    double usedCapacity();
-    QString capacityString();
-    qint64 freeSpace();
-    Type type() const { return Ums; }
-    void saveOptions();
-    void configure(QWidget *parent);
-    virtual bool canPlaySongs() const {
-        return true;
-    }
-
-private:
-    void setup();
-
-private Q_SLOTS:
-    void saveProperties();
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
-
-private:
-    Solid::StorageAccess *access;
-    QStringList unusedParams;
+    void load();
+    void save();
 };
 
 #endif

@@ -54,8 +54,8 @@ public:
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    QStringList filenames(const QModelIndexList &indexes, bool umsOnly=false) const;
-    QList<Song> songs(const QModelIndexList &indexes) const;
+    QStringList filenames(const QModelIndexList &indexes, bool playableOnly=false) const;
+    QList<Song> songs(const QModelIndexList &indexes, bool playableOnly=false) const;
     void clear();
     QMenu * menu() { return itemMenu; }
     Device * device(const QString &udi);

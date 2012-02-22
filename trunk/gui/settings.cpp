@@ -323,7 +323,22 @@ int Settings::stopFadeDuration()
     return v;
 }
 
-void Settings::Settings::saveConnectionHost(const QString &v)
+int Settings::httpPort()
+{
+    return GET_INT("httpPort", 9001);
+}
+
+bool Settings::enableHttp()
+{
+    return GET_BOOL("enableHttp", false);
+}
+
+bool Settings::alwaysUseHttp()
+{
+    return GET_BOOL("alwaysUseHttp", false);
+}
+
+void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
 }
@@ -507,6 +522,21 @@ void Settings::saveStopFadeDuration(int v)
         v=MaxFade;
     }
     SET_VALUE("stopFadeDuration", v);
+}
+
+void Settings::saveHttpPort(int v)
+{
+    SET_VALUE("httpPort", v);
+}
+
+void Settings::saveEnableHttp(bool v)
+{
+    SET_VALUE("enableHttp", v);
+}
+
+void Settings::saveAlwaysUseHttp(bool v)
+{
+    SET_VALUE("alwaysUseHttp", v);
 }
 
 void Settings::save(bool force)

@@ -41,6 +41,8 @@
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "streamfetcher.h"
+#include "httpserver.h"
+#include "settings.h"
 #include "debugtimer.h"
 
 static QStringList reverseList(const QStringList &orig)
@@ -275,7 +277,7 @@ QStringList PlayQueueModel::mimeTypes() const
     QStringList types;
     types << constMoveMimeType;
     types << constFileNameMimeType;
-    if (MPDConnection::self()->isLocal()) {
+    if (MPDConnection::self()->isLocal() || HttpServer::self()->isAlive()) {
         types << constUriMimeType;
     }
     return types;
@@ -356,13 +358,23 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
     } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->isLocal()*/) {
         QStringList orig=reverseList(decode(*data, constUriMimeType));
         QStringList useable;
-        bool allowLocal=MPDConnection::self()->isLocal();
+        bool haveHttp=HttpServer::self()->isAlive();
+        bool alwaysUseHttp=haveHttp && Settings::self()->alwaysUseHttp();
+        bool mpdLocal=MPDConnection::self()->isLocal();
+        bool allowLocal=haveHttp || mpdLocal;
 
         foreach (QString u, orig) {
-            if (allowLocal && u.startsWith('/')) {
-                useable.append(QLatin1String("file://")+unencodeUrl(u));
-            } else if ((allowLocal && u.startsWith("file:///")) || u.startsWith("http://")) {
-                useable.append(unencodeUrl(u));
+            if (u.startsWith("http://")) {
+                useable.append(u);
+            } else if (allowLocal && (u.startsWith('/') || u.startsWith("file:///"))) {
+                if (u.startsWith("file://")) {
+                    u=u.mid(7);
+                }
+                if (alwaysUseHttp || !mpdLocal) {
+                    useable.append(HttpServer::self()->encodeUrl(unencodeUrl(u)));
+                } else {
+                    useable.append(QLatin1String("file://")+unencodeUrl(u));
+                }
             }
         }
         if (useable.count()) {
@@ -473,7 +485,25 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
 {
     TF_DEBUG
     beginResetModel();
-    this->songs = songs;
+    if (HttpServer::self()->isAlive()) {
+        QList<Song> songList;
+        foreach (const Song &s, songs) {
+            if (s.file.startsWith("http") && HttpServer::self()->isOurs(s.file)) {
+                Song mod=HttpServer::self()->decodeUrl(s.file);
+                if (mod.title.isEmpty()) {
+                    songList.append(s);
+                } else {
+                    mod.id=s.id;
+                    songList.append(mod);
+                }
+            } else {
+                songList.append(s);
+            }
+        }
+        this->songs = songList;
+    } else {
+        this->songs = songs;
+    }
     endResetModel();
 }
 

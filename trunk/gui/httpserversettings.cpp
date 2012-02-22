@@ -21,40 +21,25 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef UMSDEVICE_H
-#define UMSDEVICE_H
+#include "httpserversettings.h"
+#include "settings.h"
 
-#include "fsdevice.h"
-
-class UmsDevice : public FsDevice
+HttpServerSettings::HttpServerSettings(QWidget *p)
+    : QWidget(p)
 {
-    Q_OBJECT
-
-public:
-    UmsDevice(DevicesModel *m, Solid::Device &dev);
-    virtual ~UmsDevice();
-
-    bool isConnected() const;
-    double usedCapacity();
-    QString capacityString();
-    qint64 freeSpace();
-    Type type() const { return Ums; }
-    void saveOptions();
-    void configure(QWidget *parent);
-    virtual bool canPlaySongs() const {
-        return true;
-    }
-
-private:
-    void setup();
-
-private Q_SLOTS:
-    void saveProperties();
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
-
-private:
-    Solid::StorageAccess *access;
-    QStringList unusedParams;
+    setupUi(this);
 };
 
-#endif
+void HttpServerSettings::load()
+{
+    enableHttp->setChecked(Settings::self()->enableHttp());
+    alwaysUseHttp->setChecked(Settings::self()->alwaysUseHttp());
+    httpPort->setValue(Settings::self()->httpPort());
+}
+
+void HttpServerSettings::save()
+{
+    Settings::self()->saveEnableHttp(enableHttp->isChecked());
+    Settings::self()->saveAlwaysUseHttp(alwaysUseHttp->isChecked());
+    Settings::self()->saveHttpPort(httpPort->value());
+}

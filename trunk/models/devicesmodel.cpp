@@ -33,6 +33,7 @@
 #include "mpdparseutils.h"
 #include "mediadevicecache.h"
 #include "umsdevice.h"
+#include "httpserver.h"
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>
@@ -488,19 +489,19 @@ Qt::ItemFlags DevicesModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled;
 }
 
-QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool umsOnly) const
+QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool playableOnly) const
 {
     QStringList fnames;
 
     foreach(QModelIndex index, indexes) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
-        if (!umsOnly) {
+        if (playableOnly) {
             MusicLibraryItem *parent=item;
             while (parent->parent()) {
                 parent=parent->parent();
             }
-            if (parent && Device::Ums!=static_cast<Device *>(parent)->type()) {
+            if (parent && !static_cast<Device *>(parent)->canPlaySongs()) {
                 continue;
             }
         }
@@ -549,12 +550,22 @@ QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool umsOnly
     return fnames;
 }
 
-QList<Song> DevicesModel::songs(const QModelIndexList &indexes) const
+QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnly) const
 {
     QList<Song> songs;
 
     foreach(QModelIndex index, indexes) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+
+        if (playableOnly) {
+            MusicLibraryItem *parent=item;
+            while (parent->parent()) {
+                parent=parent->parent();
+            }
+            if (parent && !static_cast<Device *>(parent)->canPlaySongs()) {
+                continue;
+            }
+        }
 
         switch (item->type()) {
         case MusicLibraryItem::Type_Root:
@@ -690,7 +701,15 @@ void DevicesModel::updateItemMenu()
 QMimeData * DevicesModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData=0;
-    QStringList paths=filenames(indexes, true);
+    QStringList paths;
+    if (HttpServer::self()->isAlive()) {
+        QList<Song> songList=songs(indexes, true);
+        foreach (const Song &s, songList) {
+            paths.append(HttpServer::self()->encodeUrl(s));
+        }
+    } else {
+        paths=filenames(indexes, true);
+    }
 
     if (!paths.isEmpty()) {
         mimeData=new QMimeData();

@@ -185,6 +185,9 @@ public:
     bool abortRequested() const {
         return jobAbortRequested;
     }
+    virtual bool canPlaySongs() const {
+        return false;
+    }
 
 public Q_SLOTS:
     void setStatusMessage(const QString &message);

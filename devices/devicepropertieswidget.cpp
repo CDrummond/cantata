@@ -81,8 +81,8 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     : QWidget(parent)
     , schemeDlg(0)
     , noCoverText(i18n("Don't copy covers"))
+    , modified(false)
     , saveable(false)
-    , isCreating(false)
 {
     setupUi(this);
     configFilename->setIcon(QIcon::fromTheme("configure"));
@@ -108,9 +108,8 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     }
 }
 
-void DevicePropertiesWidget::update(const QString &path, const QString &coverName, const Device::Options &opts, int props, bool create)
+void DevicePropertiesWidget::update(const QString &path, const QString &coverName, const Device::Options &opts, int props)
 {
-    isCreating=create;
     filenameScheme->setText(opts.scheme);
     vfatSafe->setChecked(opts.vfatSafe);
     asciiOnly->setChecked(opts.asciiOnly);
@@ -189,6 +188,7 @@ void DevicePropertiesWidget::update(const QString &path, const QString &coverNam
     connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
     connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    modified=false;
     checkSaveable();
 }
 
@@ -219,9 +219,8 @@ void DevicePropertiesWidget::checkSaveable()
 {
     Device::Options opts=settings();
 
-    saveable=isCreating
-                ? (!opts.scheme.isEmpty() && !musicFolder->text().trimmed().isEmpty() && !albumCovers->currentText().isEmpty())
-                : (!opts.scheme.isEmpty() && (musicFolder->text().trimmed()!=origMusicFolder || opts!=origOpts || albumCovers->currentText()!=origCoverName));
+    modified=musicFolder->text().trimmed()!=origMusicFolder || opts!=origOpts || albumCovers->currentText()!=origCoverName;
+    saveable=!opts.scheme.isEmpty() && !musicFolder->text().trimmed().isEmpty() && !albumCovers->currentText().isEmpty();
     emit updated();
 }
 

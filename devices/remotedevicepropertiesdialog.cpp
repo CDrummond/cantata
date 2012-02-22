@@ -33,6 +33,7 @@
 
 RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     : KDialog(parent)
+    , isCreate(false)
 {
     setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Remote Device Properties"));
@@ -48,11 +49,12 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
 
 void RemoteDevicePropertiesDialog::show(const QString &path, const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det, int props, bool create)
 {
-    if (create) {
+    isCreate=create;
+    if (isCreate) {
         setCaption(i18n("Add Remote Device"));
     }
-    devProp->update(path, coverName, opts, props, create);
-    remoteProp->update(det, create);
+    devProp->update(path, coverName, opts, props);
+    remoteProp->update(det);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
     connect(remoteProp, SIGNAL(updated()), SLOT(enableOkButton()));
     KDialog::show();
@@ -61,7 +63,8 @@ void RemoteDevicePropertiesDialog::show(const QString &path, const QString &cove
 
 void RemoteDevicePropertiesDialog::enableOkButton()
 {
-    enableButtonOk(remoteProp->isSaveable() && devProp->isSaveable());
+    enableButtonOk(remoteProp->isSaveable() && devProp->isSaveable() &&
+                   (isCreate || remoteProp->isModified() || devProp->isModified()));
 }
 
 void RemoteDevicePropertiesDialog::slotButtonClicked(int button)

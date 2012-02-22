@@ -52,6 +52,7 @@ private:
 private:
     RemoteDevicePropertiesWidget *remoteProp;
     DevicePropertiesWidget *devProp;
+    bool isCreate;
 };
 
 #endif

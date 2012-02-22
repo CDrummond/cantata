@@ -32,7 +32,8 @@
 
 RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     : QWidget(parent)
-    , isCreating(false)
+    , modified(false)
+    , saveable(false)
 {
     setupUi(this);
     if (qobject_cast<QTabWidget *>(parent)) {
@@ -40,9 +41,8 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     }
 }
 
-void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d, bool create)
+void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d)
 {
-    isCreating=create;
     orig=d;
     name->setText(d.name);
     host->setText(d.host);
@@ -55,13 +55,15 @@ void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d, bool c
     connect(user, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(folder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(port, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
+    modified=false;
     checkSaveable();
 }
 
 void RemoteDevicePropertiesWidget::checkSaveable()
 {
     RemoteDevice::Details det=details();
-    saveable=isCreating ? !det.isEmpty() : (!det.isEmpty() && det!=orig);
+    modified=det!=orig;
+    saveable=!det.isEmpty();
     emit updated();
 }
 

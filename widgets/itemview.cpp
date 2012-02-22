@@ -655,6 +655,7 @@ QAction * ItemView::getAction(const QModelIndex &index)
     QRect rect(view()->visualRect(index));
     rect.moveTo(view()->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
     bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
+    bool haveToggle = toggle && !index.data(ItemView::Role_ToggleIconName).toString().isEmpty();
     if (Mode_Tree!=mode || showCapacity) {
         if (iconMode) {
             rect.adjust(constBorder, constBorder, -constBorder, -constBorder);
@@ -682,10 +683,12 @@ QAction * ItemView::getAction(const QModelIndex &index)
         return act2;
     }
 
-    adjustActionRect(rtl, iconMode, actionRect);
+    if (haveToggle) {
+        adjustActionRect(rtl, iconMode, actionRect);
 
-    if (toggle && actionRect.contains(QCursor::pos())) {
-        return toggle;
+        if (toggle && actionRect.contains(QCursor::pos())) {
+            return toggle;
+        }
     }
 
     return 0;

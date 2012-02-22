@@ -27,10 +27,13 @@
 #include <KDE/KDialog>
 #include "scanner.h"
 #include "song.h"
+#include "tags.h"
 
 class QTreeWidget;
+class QLabel;
 class QProgressBar;
 class Device;
+class TagReader;
 
 class RgDialog : public KDialog
 {
@@ -52,6 +55,8 @@ private:
     void slotButtonClicked(int button);
     void startScanning();
     void stopScanning();
+    void startReadingTags();
+    void stopReadingTags();
     void saveTags();
     void updateView();
     Device * getDevice(const QString &udi, QWidget *p);
@@ -59,28 +64,40 @@ private:
 private Q_SLOTS:
     void scannerProgress(Scanner *s, int p);
     void scannerDone(ThreadWeaver::Job *j);
+    void songTags(int index, Tags::ReplayGain tags);
+    void tagReaderDone(ThreadWeaver::Job *j);
 
 private:
-    QTreeWidget *view;
-    QProgressBar *progress;
-    bool scanning;
-    QString base;
-    QList<Song> origSongs;
-    struct JobStatus
-    {
+    enum State {
+        State_Idle,
+        State_ScanningTags,
+        State_ScanningFiles
+    };
+
+    struct JobStatus {
         JobStatus(int i) : index(i), progress(0), finished(false) { }
         int index;
         int progress;
         bool finished;
     };
-    QMap<Scanner *, JobStatus> jobs;
-    QMap<int, Scanner *> scanners;
-    struct Album
-    {
+
+    struct Album {
         QList<int> tracks;
         Scanner::Data data;
     };
+
+    QTreeWidget *view;
+    QLabel *statusLabel;
+    QProgressBar *progress;
+    State state;
+    QString base;
+    QList<Song> origSongs;
+    QMap<Scanner *, JobStatus> jobs;
+    QMap<int, Scanner *> scanners;
     QMap<QString, Album> albums;
+    QMap<int, Tags::ReplayGain> origTags;
+    QSet<int> needToSave;
+    TagReader *tagReader;
 };
 
 #endif

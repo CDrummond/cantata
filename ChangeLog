@@ -6,7 +6,7 @@
  4. When loose MPD connection, indicate via message widget.
  5. Dont show base dir when editing tags of tracks on UMS device.
  6. In tag editor dialog, if a field in the 'All tracks' section has multiple
-    values - set the placeholder text to '(Multiple values)'
+    values - set the placeholder text to '(Various)'
  7. Add a cmake option CANTATA_TRANSLATIONS, used to specify which translations
     should be built and installed. e.g.
         -DCANTATA_TRANSLATIONS="en;pl"

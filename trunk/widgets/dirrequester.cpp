@@ -22,7 +22,6 @@
  */
 
 #include "dirrequester.h"
-#include <QtGui/QToolButton>
 #include <QtGui/QFileDialog>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QIcon>
@@ -33,7 +32,7 @@ DirRequester::DirRequester(QWidget *parent)
     QHBoxLayout *layout=new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     edit=new LineEdit(this);
-    QToolButton *button=new QToolButton(this);
+    button=new QToolButton(this);
     layout->addWidget(edit);
     layout->addWidget(button);
     button->setAutoRaise(true);

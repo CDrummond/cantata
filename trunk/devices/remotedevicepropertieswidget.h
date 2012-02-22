@@ -35,7 +35,7 @@ public:
 
     RemoteDevicePropertiesWidget(QWidget *parent);
     virtual ~RemoteDevicePropertiesWidget() { }
-    void update(const RemoteDevice::Details &d);
+    void update(const RemoteDevice::Details &d, bool create);
     RemoteDevice::Details details();
     const RemoteDevice::Details & origDetails() const { return orig; }
     bool isModified() const { return modified; }
@@ -46,6 +46,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void checkSaveable();
+    void setType();
 
 private:
     RemoteDevice::Details orig;

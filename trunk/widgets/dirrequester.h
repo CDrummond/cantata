@@ -32,10 +32,13 @@ public:
     DirRequester(QWidget *parent) : KUrlRequester(parent) {
         setMode(KFile::Directory|KFile::ExistingOnly|KFile::LocalOnly);
     }
+
+    void setButtonVisible(bool v) { button()->setVisible(v); }
 };
 
 #else
 #include "lineedit.h"
+#include <QtGui/QToolButton>
 class DirRequester : public QWidget
 {
     Q_OBJECT
@@ -45,12 +48,14 @@ public:
 
     QString text() const { return edit->text(); }
     void setText(const QString &t) { edit->setText(t); }
+    void setButtonVisible(bool v) { button->setVisible(v); }
 
 private Q_SLOTS:
     void chooseDir();
 
 private:
     LineEdit *edit;
+    QToolButton *button;
 };
 #endif
 

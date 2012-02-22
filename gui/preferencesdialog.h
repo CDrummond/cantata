@@ -40,6 +40,7 @@ class InterfaceSettings;
 class LyricSettings;
 class LyricsPage;
 class ExternalSettings;
+class HttpServerSettings;
 
 #ifdef ENABLE_KDE_SUPPORT
 class PreferencesDialog : public KDialog
@@ -73,6 +74,7 @@ private:
     InterfaceSettings *interface;
     ExternalSettings *ext;
     LyricSettings *lyrics;
+    HttpServerSettings *http;
 #ifndef ENABLE_KDE_SUPPORT
     QDialogButtonBox *buttonBox;
     ProxySettings *proxy;

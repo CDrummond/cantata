@@ -27,6 +27,7 @@
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
 #include "network.h"
+#include "httpserver.h"
 #include <QtCore/QTimer>
 #include <QtCore/QProcess>
 #include <KDE/KUrl>
@@ -393,6 +394,11 @@ void RemoteDevice::configure(QWidget *parent)
     dlg->show(audioFolderSetting, coverFileName, opts, details,
               qobject_cast<ActionDialog *>(parent) ? (DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder)
                                                    : DevicePropertiesWidget::Prop_All);
+}
+
+bool RemoteDevice::canPlaySongs() const
+{
+    return Prot_File==details.protocol || HttpServer::self()->isAlive();
 }
 
 static inline QString toString(bool b)

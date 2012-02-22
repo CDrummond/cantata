@@ -92,6 +92,9 @@ public:
     #endif
     int version();
     int stopFadeDuration();
+    int httpPort();
+    bool enableHttp();
+    bool alwaysUseHttp();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -129,6 +132,9 @@ public:
     void saveDevicesView(int v);
     #endif
     void saveStopFadeDuration(int v);
+    void saveHttpPort(int v);
+    void saveEnableHttp(bool v);
+    void saveAlwaysUseHttp(bool v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

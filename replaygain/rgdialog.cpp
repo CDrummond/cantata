@@ -26,7 +26,9 @@
 #include "devicesmodel.h"
 #include "settings.h"
 #include "tags.h"
+#include "tagreader.h"
 #include <QtGui/QTreeWidget>
+#include <QtGui/QLabel>
 #include <QtGui/QProgressBar>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QHeaderView>
@@ -54,7 +56,8 @@ int RgDialog::instanceCount()
 
 RgDialog::RgDialog(QWidget *parent)
     : KDialog(parent)
-    , scanning(false)
+    , state(State_Idle)
+    , tagReader(0)
 {
     iCount++;
     setButtons(User1|Ok|Cancel);
@@ -63,6 +66,8 @@ RgDialog::RgDialog(QWidget *parent)
     QWidget *mainWidet = new QWidget(this);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, mainWidet);
     view = new QTreeWidget(this);
+    statusLabel = new QLabel(this);
+    statusLabel->setVisible(false);
     progress = new QProgressBar(this);
     progress->setVisible(false);
     view->setRootIsDecorated(false);
@@ -87,6 +92,7 @@ RgDialog::RgDialog(QWidget *parent)
     hv->setStretchLastSection(false);
 
     layout->addWidget(view);
+    layout->addWidget(statusLabel);
     layout->addWidget(progress);
     setMainWidget(mainWidet);
     setButtonGuiItem(Ok, KStandardGuiItem::save());
@@ -95,6 +101,7 @@ RgDialog::RgDialog(QWidget *parent)
     enableButton(Ok, false);
     enableButton(User1, false);
     resize(800, 400);
+    qRegisterMetaType<Tags::ReplayGain>("Tags::ReplayGain");
 }
 
 RgDialog::~RgDialog()
@@ -128,7 +135,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
             origSongs.append(m);
         }
     }
-    scanning=false;
+    state=State_Idle;
     enableButton(User1, songs.count());
     view->clear();
     int i=0;
@@ -138,6 +145,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
         new QTreeWidgetItem(view, QStringList() << s.albumArtist() << s.album << s.title);
     }
     KDialog::show();
+    startReadingTags();
 }
 
 void RgDialog::slotButtonClicked(int button)
@@ -154,13 +162,21 @@ void RgDialog::slotButtonClicked(int button)
         startScanning();
         break;
     case Cancel:
-        if (scanning) {
+        switch (state) {
+        case State_ScanningFiles:
             if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Cancel scanning of files?"))) {
                 stopScanning();
             }
-        } else {
+            break;
+        case State_ScanningTags:
+            if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Cancel reading of existing tags?"))) {
+                stopReadingTags();
+            }
+            break;
+        case State_Idle:
             stopScanning();
             reject();
+            break;
         }
         break;
     default:
@@ -170,31 +186,42 @@ void RgDialog::slotButtonClicked(int button)
 
 void RgDialog::startScanning()
 {
+    bool all=KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Do you wish to scan all files, or only files without existing tags?"), QString(),
+                                                          KGuiItem(i18n("All Tracks")), KGuiItem(i18n("Untagged Tracks")));
+    if (!all && origTags.count()==origSongs.count()) {
+        return;
+    }
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
-    scanning=true;
+    state=State_ScanningFiles;
     enableButton(Ok, false);
     enableButton(User1, false);
-    progress->setRange(0, 100*origSongs.count());
     progress->setVisible(true);
-
+    statusLabel->setText(i18n("Scanning files..."));
+    statusLabel->setVisible(true);
     jobs.clear();
     scanners.clear();
+    int count=0;
     for (int i=0; i<origSongs.count(); ++i) {
-        Scanner *s=new Scanner(this);
-        s->setFile(base+origSongs.at(i).file);
-        connect(s, SIGNAL(progress(Scanner *, int)), this, SLOT(scannerProgress(Scanner *, int)));
-        connect(s, SIGNAL(done(ThreadWeaver::Job *)), this, SLOT(scannerDone(ThreadWeaver::Job *)));
-        jobs.insert(s, JobStatus(i));
-        scanners.insert(i, s);
-        ThreadWeaver::Weaver::instance()->enqueue(s);
+        if (all || !origTags.contains(i)) {
+            Scanner *s=new Scanner(this);
+            s->setFile(base+origSongs.at(i).file);
+            connect(s, SIGNAL(progress(Scanner *, int)), this, SLOT(scannerProgress(Scanner *, int)));
+            connect(s, SIGNAL(done(ThreadWeaver::Job *)), this, SLOT(scannerDone(ThreadWeaver::Job *)));
+            jobs.insert(s, JobStatus(i));
+            scanners.insert(i, s);
+            ThreadWeaver::Weaver::instance()->enqueue(s);
+            count++;
+        }
     }
+    progress->setRange(0, 100*count);
 }
 
 void RgDialog::stopScanning()
 {
-    scanning=false;
+    state=State_Idle;
     enableButton(User1, true);
     progress->setVisible(false);
+    statusLabel->setVisible(false);
 
     QList<Scanner *> scanners=jobs.keys();
     foreach (Scanner *s, scanners) {
@@ -209,20 +236,59 @@ void RgDialog::stopScanning()
     setButtonGuiItem(Cancel, KStandardGuiItem::close());
 }
 
+void RgDialog::startReadingTags()
+{
+    if (tagReader) {
+        return;
+    }
+    setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
+    state=State_ScanningTags;
+    enableButton(Ok, false);
+    enableButton(User1, false);
+    progress->setRange(0, origSongs.count());
+    progress->setVisible(true);
+    statusLabel->setText(i18n("Reading existing tags..."));
+    statusLabel->setVisible(true);
+    tagReader=new TagReader(this);
+    tagReader->setDetails(origSongs, base);
+    connect(tagReader, SIGNAL(progress(int, Tags::ReplayGain)), this, SLOT(songTags(int, Tags::ReplayGain)));
+    connect(tagReader, SIGNAL(done(ThreadWeaver::Job *)), this, SLOT(tagReaderDone(ThreadWeaver::Job *)));
+    ThreadWeaver::Weaver::instance()->enqueue(tagReader);
+}
+
+void RgDialog::stopReadingTags()
+{
+    if (!tagReader) {
+        return;
+    }
+
+    state=State_Idle;
+    enableButton(User1, true);
+    progress->setVisible(false);
+    statusLabel->setVisible(false);
+    disconnect(tagReader, SIGNAL(progress(int, Tags::ReplayGain)), this, SLOT(songTags(int, Tags::ReplayGain)));
+    disconnect(tagReader, SIGNAL(done(ThreadWeaver::Job *)), this, SLOT(tagReaderDone(ThreadWeaver::Job *)));
+    tagReader->requestAbort();
+    tagReader=0;
+}
+
 void RgDialog::saveTags()
 {
     QStringList failed;
-
     QMap<QString, Album>::iterator a(albums.begin());
     QMap<QString, Album>::iterator ae(albums.end());
 
     for (; a!=ae; ++a) {
         foreach (int idx, (*a).tracks) {
-            Scanner *s=scanners[idx];
-            if (s && s->success() && Tags::Update_Failed==Tags::updateReplaygain(base+origSongs.at(idx).file,
-                                                                                Scanner::reference(s->results().loudness), s->results().peakValue(),
-                                                                                Scanner::reference((*a).data.loudness), (*a).data.peakValue())) {
-                failed.append(origSongs.at(idx).file);
+            if (needToSave.contains(idx)) {
+                Scanner *s=scanners[idx];
+                if (s && s->success() && Tags::Update_Failed==Tags::updateReplaygain(base+origSongs.at(idx).file,
+                                                                                     Tags::ReplayGain(Scanner::reference(s->results().loudness),
+                                                                                                      Scanner::reference((*a).data.loudness),
+                                                                                                      s->results().peakValue(),
+                                                                                                      (*a).data.peakValue()))) {
+                    failed.append(origSongs.at(idx).file);
+                }
             }
         }
     }
@@ -248,12 +314,14 @@ void RgDialog::updateView()
 
     if (allFinished) {
         progress->setVisible(false);
-        scanning=false;
-        enableButton(Ok, true);
+        statusLabel->setVisible(false);
+        state=State_Idle;
         setButtonGuiItem(Cancel, KStandardGuiItem::close());
 
         QMap<QString, Album>::iterator a(albums.begin());
         QMap<QString, Album>::iterator ae(albums.end());
+        QFont f(font());
+        f.setItalic(true);
 
         for (; a!=ae; ++a) {
             QList<Scanner *> as;
@@ -270,8 +338,22 @@ void RgDialog::updateView()
                     QTreeWidgetItem *item=view->topLevelItem(idx);
                     item->setText(COL_ALBUMGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(Scanner::reference((*a).data.loudness), 2)));
                     item->setText(COL_ALBUMPEAK, KGlobal::locale()->formatNumber((*a).data.peak, 6));
+
+                    if (origTags.contains(idx)) {
+                        Tags::ReplayGain t=origTags[idx];
+                        if (!Utils::equal(t.albumGain, Scanner::reference((*a).data.loudness), 0.01)) {
+                            item->setFont(COL_ALBUMGAIN, f);
+                            needToSave.insert(idx);
+                        }
+                        if (!Utils::equal(t.albumPeak, (*a).data.peak, 0.000001)) {
+                            item->setFont(COL_ALBUMPEAK, f);
+                            needToSave.insert(idx);
+                        }
+                    }
                 }
             }
+
+            enableButton(Ok, needToSave.count());
         }
 
     } else {
@@ -323,11 +405,59 @@ void RgDialog::scannerDone(ThreadWeaver::Job *j)
                 (*it).progress=100;
                 item->setText(COL_TRACKGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(Scanner::reference(s->results().loudness), 2)));
                 item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(s->results().peakValue(), 6));
+
+                if (origTags.contains((*it).index)) {
+                    Tags::ReplayGain t=origTags[(*it).index];
+                    bool diff=false;
+                    QFont f(font());
+                    f.setItalic(true);
+                    if (!Utils::equal(t.trackGain, Scanner::reference(s->results().loudness), 0.01)) {
+                        item->setFont(COL_TRACKGAIN, f);
+                        diff=true;
+                    }
+                    if (!Utils::equal(t.trackPeak, s->results().peakValue(), 0.000001)) {
+                        item->setFont(COL_TRACKPEAK, f);
+                        diff=true;
+                    }
+                    if (diff) {
+                        needToSave.insert((*it).index);
+                    } else {
+                        needToSave.remove((*it).index);
+                    }
+                } else {
+                    needToSave.insert((*it).index);
+                }
             } else {
                 item->setText(COL_TRACKGAIN, i18n("Failed"));
                 item->setText(COL_TRACKPEAK, i18n("Failed"));
+                needToSave.remove((*it).index);
             }
             updateView();
         }
     }
+}
+
+void RgDialog::songTags(int index, Tags::ReplayGain tags)
+{
+    if (index>=0 && index<origSongs.count() && !tags.isEmpty()) {
+        origTags[index]=tags;
+
+        QTreeWidgetItem *item=view->topLevelItem(index);
+        if (!item) {
+            return;
+        }
+        item->setText(COL_TRACKGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(tags.trackGain, 2)));
+        item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(tags.trackPeak, 6));
+        item->setText(COL_ALBUMGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(tags.albumGain, 2)));
+        item->setText(COL_ALBUMPEAK, KGlobal::locale()->formatNumber(tags.albumPeak, 6));
+    }
+}
+
+void RgDialog::tagReaderDone(ThreadWeaver::Job *j)
+{
+    Q_UNUSED(j)
+    state=State_Idle;
+    enableButton(User1, true);
+    progress->setVisible(false);
+    statusLabel->setVisible(false);
 }

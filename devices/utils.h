@@ -24,10 +24,17 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <math.h>
+
 class QString;
 
 namespace Utils
 {
+    inline bool equal(double d1, double d2, double precision=0.0001)
+    {
+        return (fabs(d1 - d2) < precision);
+    }
+
     extern void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
     extern void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
     extern void setFilePerms(const QString &file);

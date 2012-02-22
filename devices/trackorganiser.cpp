@@ -33,7 +33,6 @@
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
 #include <QtCore/QTimer>
-#include <QtCore/QDebug>
 
 static int iCount=0;
 

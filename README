@@ -36,3 +36,13 @@ Each station must be on its own line, and must be all in one line.
 
 'script.spec' is used to ascertain the Amarok plugin name, for this the
 script will look for the line starting with "Name="
+
+
+Credits
+=======
+
+Cantata contains code from;
+    Amarok      - amarok.kde.org
+    Clementine  - www.clementine-player.org
+    libmaia     - https://github.com/wiedi/libmaia
+    libebur128  = https://github.com/jiixyj/libebur12

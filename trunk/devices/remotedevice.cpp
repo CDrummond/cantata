@@ -39,7 +39,6 @@
 #include <kde_file.h>
 #include <stdio.h>
 #include <mntent.h>
-#include <QtCore/QDebug>
 
 QString RemoteDevice::Details::mountPoint(bool create) const
 {

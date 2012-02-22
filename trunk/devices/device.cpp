@@ -37,7 +37,6 @@
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
 #include <QtCore/QDir>
-#include <QtCore/QDebug>
 #include <KDE/KLocale>
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
@@ -348,7 +347,6 @@ Device * Device::create(DevicesModel *m, const QString &udi)
 
 bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
 {
-//     qWarning() << "FIX:" << file << song.artist << song.albumartist << song.title;
     Song orig=song;
     if (!file.isEmpty() && song.albumartist.isEmpty()) {
         song=Tags::read(file);
@@ -356,7 +354,6 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
 
     if (song.artist.isEmpty() || song.albumartist.isEmpty() || !Song::isVariousArtists(song.albumartist)) {
         song=orig;
-//         qWarning() << "NOT VA";
         return false;
     }
 
@@ -369,7 +366,6 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
     }
 
     if (needsUpdating && (file.isEmpty() || Tags::Update_Modified==Tags::updateArtistAndTitle(file, song))) {
-//         qWarning() << "SAVED:" << file;
         return true;
     }
     song=orig;

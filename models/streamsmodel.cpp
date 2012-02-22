@@ -416,7 +416,7 @@ void StreamsModel::remove(const QModelIndex &index)
         if (row<items.count()) {
             CategoryItem *old=items.at(row);
             beginRemoveRows(QModelIndex(), row, row);
-            items.removeAt(index.row());
+            items.removeAt(row);
             delete old;
             endRemoveRows();
             modified=true;
@@ -436,7 +436,7 @@ void StreamsModel::remove(const QModelIndex &index)
                 endRemoveRows();
             } else*/ {
                 beginRemoveRows(createIndex(items.indexOf(cat), 0, cat), row, row);
-                cat->streams.removeAt(index.row());
+                cat->streams.removeAt(row);
                 cat->itemMap.remove(old->url.toString());
                 endRemoveRows();
                 delete old;
@@ -447,6 +447,38 @@ void StreamsModel::remove(const QModelIndex &index)
     }
 
     save();
+}
+
+void StreamsModel::removeCategory(CategoryItem *cat)
+{
+    int row=items.indexOf(cat);
+    if (-1==row) {
+        return;
+    }
+    beginRemoveRows(QModelIndex(), row, row);
+    items.removeAt(row);
+    delete cat;
+    endRemoveRows();
+    modified=true;
+}
+
+void StreamsModel::removeStream(StreamItem *stream)
+{
+    int parentRow=items.indexOf(stream->parent);
+    if (-1==parentRow) {
+        return;
+    }
+    CategoryItem *cat=stream->parent;
+    int row=cat->streams.indexOf(stream);
+    if (-1==row) {
+        return;
+    }
+    beginRemoveRows(createIndex(parentRow, 0, cat), row, row);
+    cat->streams.removeAt(row);
+    cat->itemMap.remove(stream->url.toString());
+    endRemoveRows();
+    delete stream;
+    modified=true;
 }
 
 StreamsModel::CategoryItem * StreamsModel::getCategory(const QString &name, bool create, bool signal)

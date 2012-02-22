@@ -14,8 +14,9 @@
  9. When playing, centre on current track.
 10. Use correct value for transcoder parameter.
 11. When saving cache file, if a track is filed under 'single artists' then
-    store its acutal album name in the cache file. Then when cache is loaded,
+    store its actual album name in the cache file. Then when cache is loaded,
     we have the correct album to use for the tag editor.
+12. Fix crash when deleting streams.
 
 0.4.0
 -----

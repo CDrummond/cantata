@@ -47,7 +47,7 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
 
 void DevicePropertiesDialog::enableOkButton()
 {
-    enableButtonOk(devProp->isSaveable());
+    enableButtonOk(devProp->isSaveable() && devProp->isModified());
 }
 
 void DevicePropertiesDialog::slotButtonClicked(int button)

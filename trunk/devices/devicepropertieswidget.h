@@ -46,8 +46,9 @@ public:
     };
     DevicePropertiesWidget(QWidget *parent);
     virtual ~DevicePropertiesWidget() { }
-    void update(const QString &path, const QString &coverName, const Device::Options &opts, int props, bool create=false);
+    void update(const QString &path, const QString &coverName, const Device::Options &opts, int props);
     Device::Options settings();
+    bool isModified() const { return modified; }
     bool isSaveable() const { return saveable; }
     QString music() const { return musicFolder->text().trimmed(); }
     QString cover() const;
@@ -66,8 +67,8 @@ private:
     QString origMusicFolder;
     QString origCoverName;
     QString noCoverText;
+    bool modified;
     bool saveable;
-    bool isCreating;
 };
 
 #endif

@@ -390,10 +390,6 @@ void PlayQueueModel::addItems(const QStringList &items, int row)
 {
     bool haveHttp=false;
 
-    if (row<0) {
-        row=songs.size();
-    }
-
     foreach (const QString &f, items) {
         QUrl u(f);
 
@@ -404,7 +400,7 @@ void PlayQueueModel::addItems(const QStringList &items, int row)
     }
 
     if (haveHttp) {
-        fetcher->get(items, 0);
+        fetcher->get(items, row);
     } else {
         addFiles(items, row);
     }

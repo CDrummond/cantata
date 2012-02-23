@@ -36,6 +36,7 @@
 #include <KDE/KLocale>
 #endif
 #include "playqueuemodel.h"
+#include "playqueueview.h"
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
@@ -91,6 +92,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractTableModel(parent)
     , currentSongId(-1)
     , mpdState(MPDStatus::State_Inactive)
+    , grouped(false)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(playListReset()));
@@ -156,7 +158,7 @@ int PlayQueueModel::rowCount(const QModelIndex &) const
 
 int PlayQueueModel::columnCount(const QModelIndex &) const
 {
-    return COL_COUNT;
+    return grouped ? 1 : COL_COUNT;
 }
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
@@ -176,6 +178,31 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 //     }
 
     switch (role) {
+    case PlayQueueView::Role_Key:
+        return songs.at(index.row()).key;
+    case PlayQueueView::Role_AlbumArtist:
+        return songs.at(index.row()).albumArtist();
+    case PlayQueueView::Role_Artist: {
+        const Song &song = songs.at(index.row());
+        return song.album.isEmpty() && !song.name.isEmpty() && (song.file.isEmpty() || song.file.contains("://"))
+                ? song.name : song.album;
+    }
+    case PlayQueueView::Role_Title:
+        return songs.at(index.row()).displayTitle();
+    case PlayQueueView::Role_Track:
+        return songs.at(index.row()).track;
+    case PlayQueueView::Role_Duration:
+        return songs.at(index.row()).time;
+    case PlayQueueView::Role_StatusIcon:
+        if (songs.at(index.row()).id == currentSongId) {
+            switch (mpdState) {
+            case MPDStatus::State_Inactive:
+            case MPDStatus::State_Stopped: return QIcon::fromTheme("media-playback-stop");
+            case MPDStatus::State_Playing: return QIcon::fromTheme("media-playback-start");
+            case MPDStatus::State_Paused:  return QIcon::fromTheme("media-playback-pause");
+            }
+        }
+        return QVariant();
     case Qt::FontRole:
         if (songs.at(index.row()).id == currentSongId) {
             QFont font;
@@ -477,28 +504,87 @@ void PlayQueueModel::setState(MPDStatus::State st)
     }
 }
 
+void PlayQueueModel::setGrouped(bool g)
+{
+    if (g==grouped) {
+        return;
+    }
+    grouped=g;
+    if (grouped && songs.count()) {
+        updatePlaylist(songs);
+    }
+}
+
 void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
 {
     TF_DEBUG
     beginResetModel();
+    QMap<QString, unsigned short> albums;
+    QMap<QString, unsigned short> artists;
     if (HttpServer::self()->isAlive()) {
         QList<Song> songList;
         foreach (const Song &s, songs) {
-            if (s.file.startsWith("http") && HttpServer::self()->isOurs(s.file)) {
-                Song mod=HttpServer::self()->decodeUrl(s.file);
-                if (mod.title.isEmpty()) {
-                    songList.append(s);
+            Song song(s);
+
+            if (grouped) {
+                QMap<QString, unsigned short>::ConstIterator al=albums.find(song.album);
+                QMap<QString, unsigned short>::ConstIterator ar=artists.find(song.albumArtist());
+                song.key=0;
+
+                if (al==albums.end()) {
+                    song.key+=albums.size()&0xFFFF;
+                    albums.insert(song.album, albums.size());
                 } else {
-                    mod.id=s.id;
-                    songList.append(mod);
+                    song.key+=al.value()&0xFFFF;
+                }
+                if (ar==artists.end()) {
+                    song.key=(artists.size()&0xFFFF)<<16;
+                    artists.insert(song.albumArtist(), artists.size());
+                } else {
+                    song.key=(ar.value()&0xFFFF)<<16;
+                }
+            }
+
+            if (song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
+                Song mod=HttpServer::self()->decodeUrl(song.file);
+                if (mod.title.isEmpty()) {
+                    songList.append(song);
+                } else {
+                    song.id=s.id;
+                    songList.append(song);
                 }
             } else {
-                songList.append(s);
+                songList.append(song);
             }
         }
         this->songs = songList;
     } else {
-        this->songs = songs;
+        if (grouped) {
+            QList<Song> songList;
+            foreach (const Song &s, songs) {
+                Song song(s);
+                QMap<QString, unsigned short>::ConstIterator al=albums.find(song.album);
+                QMap<QString, unsigned short>::ConstIterator ar=artists.find(song.albumArtist());
+                song.key=0;
+
+                if (al==albums.end()) {
+                    song.key+=albums.size()&0xFFFF;
+                    albums.insert(song.album, albums.size());
+                } else {
+                    song.key+=al.value()&0xFFFF;
+                }
+                if (ar==artists.end()) {
+                    song.key=(artists.size()&0xFFFF)<<16;
+                    artists.insert(song.albumArtist(), artists.size());
+                } else {
+                    song.key=(ar.value()&0xFFFF)<<16;
+                }
+                songList.append(song);
+            }
+            this->songs = songList;
+        } else {
+            this->songs = songs;
+        }
     }
     endResetModel();
 }

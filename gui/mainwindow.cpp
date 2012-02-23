@@ -771,6 +771,8 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setRootIsDecorated(false);
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
     setupPlaylistView();
+    playQueue->setGrouped(Settings::self()->groupedPlayQueue());
+    playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated()), this, SLOT(updateStats()));
     connect(MPDConnection::self(), SIGNAL(statusUpdated()), this, SLOT(updateStatus())/*, Qt::DirectConnection*/);
@@ -1178,6 +1180,9 @@ void MainWindow::updateSettings()
     setupTrayIcon();
     toggleDockManager();
     toggleMpris();
+
+    playQueue->setGrouped(Settings::self()->groupedPlayQueue());
+    playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
 }
 
 #ifndef ENABLE_KDE_SUPPORT

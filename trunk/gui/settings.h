@@ -77,6 +77,7 @@ public:
     int streamsView();
     int libraryCoverSize();
     int albumsCoverSize();
+    bool albumFirst();
     int sidebar();
     bool libraryYear();
     bool groupSingle();
@@ -118,6 +119,7 @@ public:
     void saveStreamsView(int v);
     void saveLibraryCoverSize(int v);
     void saveAlbumsCoverSize(int v);
+    void saveAlbumFirst(bool v);
     void saveSidebar(int v);
     void saveLibraryYear(bool v);
     void saveGroupSingle(bool v);

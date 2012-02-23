@@ -48,6 +48,7 @@ void InterfaceSettings::load()
     libraryYear->setChecked(Settings::self()->libraryYear());
     albumsView->setCurrentIndex(Settings::self()->albumsView());
     albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
+    albumFirst->setCurrentIndex(Settings::self()->albumFirst() ? 0 : 1);
     folderView->setCurrentIndex(Settings::self()->folderView());
     playlistsView->setCurrentIndex(Settings::self()->playlistsView());
     streamsView->setCurrentIndex(Settings::self()->streamsView());
@@ -65,6 +66,7 @@ void InterfaceSettings::save()
     Settings::self()->saveLibraryYear(libraryYear->isChecked());
     Settings::self()->saveAlbumsView(albumsView->currentIndex());
     Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
+    Settings::self()->saveAlbumFirst(0==albumFirst->currentIndex());
     Settings::self()->saveFolderView(folderView->currentIndex());
     Settings::self()->savePlaylistsView(playlistsView->currentIndex());
     Settings::self()->saveStreamsView(streamsView->currentIndex());

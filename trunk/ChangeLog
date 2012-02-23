@@ -23,6 +23,8 @@
     store its actual album name in the cache file. Then when cache is loaded,
     we have the correct album to use for the tag editor.
 14. Fix crash when deleting streams.
+15. Add option to sort albums in albums view by either; album-artist, or
+    artist-album.
 
 0.4.0
 -----

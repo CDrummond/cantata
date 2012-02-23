@@ -180,15 +180,22 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case PlayQueueView::Role_Key:
         return songs.at(index.row()).key;
+//     case PlayQueueView::Role_Artist:
+//         return songs.at(index.row()).artist;
     case PlayQueueView::Role_AlbumArtist:
         return songs.at(index.row()).albumArtist();
-    case PlayQueueView::Role_Artist: {
+    case PlayQueueView::Role_Album: {
         const Song &song = songs.at(index.row());
         return song.album.isEmpty() && !song.name.isEmpty() && (song.file.isEmpty() || song.file.contains("://"))
                 ? song.name : song.album;
     }
-    case PlayQueueView::Role_Title:
-        return songs.at(index.row()).displayTitle();
+    case PlayQueueView::Role_Title: {
+        const Song &song = songs.at(index.row());
+        if (!song.albumartist.isEmpty() && song.albumartist != song.artist) {
+            return song.title + " - " + song.artist;
+        }
+        return song.title;
+    }
     case PlayQueueView::Role_Track:
         return songs.at(index.row()).track;
     case PlayQueueView::Role_Duration:

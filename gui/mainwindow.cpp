@@ -926,7 +926,9 @@ MainWindow::~MainWindow()
     #endif
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
-    Settings::self()->savePlayQueueHeaderState(playQueueHeader->saveState());
+    if (!Settings::self()->groupedPlayQueue()) {
+        Settings::self()->savePlayQueueHeaderState(playQueueHeader->saveState());
+    }
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     Settings::self()->saveSmallPlaybackButtons(smallPlaybackButtonsAction->isChecked());
@@ -1934,6 +1936,9 @@ void MainWindow::togglePlaylist()
 // PlayList view //
 void MainWindow::setupPlaylistView()
 {
+    if (Settings::self()->groupedPlayQueue()) {
+        return;
+    }
     QFontMetrics fm(playQueue->font());
     playQueueHeader = playQueue->header();
     playQueueHeader->setResizeMode(QHeaderView::Interactive);

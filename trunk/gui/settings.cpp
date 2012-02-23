@@ -343,6 +343,11 @@ bool Settings::alwaysUseHttp()
     return GET_BOOL("alwaysUseHttp", false);
 }
 
+bool Settings::groupedPlayQueue()
+{
+    return GET_BOOL("groupedPlayQueue", false);
+}
+
 void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -547,6 +552,11 @@ void Settings::saveEnableHttp(bool v)
 void Settings::saveAlwaysUseHttp(bool v)
 {
     SET_VALUE("alwaysUseHttp", v);
+}
+
+void Settings::saveGroupedPlayQueue(bool v)
+{
+    SET_VALUE("groupedPlayQueue", v);
 }
 
 void Settings::save(bool force)

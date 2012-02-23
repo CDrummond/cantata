@@ -49,6 +49,9 @@ struct Song
     QString name;
     mutable qint64 size;
 
+    // Only used in PlayQueue...
+    unsigned int key;
+
     Song();
     Song(const Song &o) { *this=o; }
     Song & operator=(const Song &o);

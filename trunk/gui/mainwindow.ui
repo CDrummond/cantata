@@ -184,38 +184,7 @@
         <widget class="LineEdit" name="searchPlaylistLineEdit"/>
        </item>
        <item row="1" column="0" colspan="9">
-        <widget class="TreeView" name="playQueue">
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
-         <property name="acceptDrops">
-          <bool>true</bool>
-         </property>
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="dragDropOverwriteMode">
-          <bool>false</bool>
-         </property>
-         <property name="dragDropMode">
-          <enum>QAbstractItemView::DragDrop</enum>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::ExtendedSelection</enum>
-         </property>
-         <property name="indentation">
-          <number>0</number>
-         </property>
-         <property name="uniformRowHeights">
-          <bool>true</bool>
-         </property>
-         <property name="itemsExpandable">
-          <bool>false</bool>
-         </property>
-         <property name="expandsOnDoubleClick">
-          <bool>false</bool>
-         </property>
-        </widget>
+        <widget class="PlayQueueView" name="playQueue"/>
        </item>
        <item row="2" column="0">
         <widget class="SqueezedTextLabel" name="playListStatsLabel"/>
@@ -293,9 +262,9 @@
    <header>lineedit.h</header>
   </customwidget>
   <customwidget>
-   <class>TreeView</class>
+   <class>PlayQueueView</class>
    <extends>QTreeView</extends>
-   <header>treeview.h</header>
+   <header>playqueueview.h</header>
   </customwidget>
   <customwidget>
    <class>TimeSlider</class>

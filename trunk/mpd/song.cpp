@@ -41,7 +41,8 @@ Song::Song()
       pos(0),
       disc(0),
       year(0),
-      size(0)
+      size(0),
+      key(0xFFFFFFFF)
 {
 }
 
@@ -62,6 +63,7 @@ Song & Song::operator=(const Song &s)
     genre = s.genre;
     name = s.name;
     size = s.size;
+    key = s.key;
     return *this;
 }
 

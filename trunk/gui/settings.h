@@ -96,6 +96,7 @@ public:
     int httpPort();
     bool enableHttp();
     bool alwaysUseHttp();
+    bool groupedPlayQueue();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -137,6 +138,7 @@ public:
     void saveHttpPort(int v);
     void saveEnableHttp(bool v);
     void saveAlwaysUseHttp(bool v);
+    void saveGroupedPlayQueue(bool v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

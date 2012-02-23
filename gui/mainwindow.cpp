@@ -862,6 +862,8 @@ MainWindow::MainWindow(QWidget *parent)
     } else {
         splitter->restoreState(Settings::self()->splitterState());
     }
+    splitter->setAutoHideEnabled(Settings::self()->splitterAutoHide());
+    splitter->setAutohidable(0, true);
 
     playlistItemsSelected(false);
     playQueue->setFocus();
@@ -1183,6 +1185,7 @@ void MainWindow::updateSettings()
 
     playQueue->setGrouped(Settings::self()->groupedPlayQueue());
     playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
+    splitter->setAutoHideEnabled(Settings::self()->splitterAutoHide());
 }
 
 #ifndef ENABLE_KDE_SUPPORT

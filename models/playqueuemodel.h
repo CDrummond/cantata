@@ -86,6 +86,7 @@ public:
     qint32 currentSong() const { return currentSongId; }
     qint32 currentSongRow() const { return getRowById(currentSongId); }
     void setState(MPDStatus::State st);
+    void setGrouped(bool g);
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row);
@@ -106,6 +107,7 @@ private:
     qint32 currentSongId;
     StreamFetcher *fetcher;
     MPDStatus::State mpdState;
+    bool grouped;
 };
 
 #endif

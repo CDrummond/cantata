@@ -69,6 +69,7 @@ SET( CANTATA_SRCS
     widgets/itemview.cpp
     widgets/timeslider.cpp
     widgets/actionlabel.cpp
+    widgets/playqueueview.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp

@@ -67,6 +67,7 @@ SET( CANTATA_SRCS
     widgets/fancytabwidget.cpp
     widgets/listview.cpp
     widgets/itemview.cpp
+    widgets/autohidingsplitter.cpp
     widgets/timeslider.cpp
     widgets/actionlabel.cpp
     widgets/playqueueview.cpp
@@ -121,6 +122,7 @@ SET( CANTATA_MOC_HDRS
     widgets/treeview.h
     widgets/listview.h
     widgets/itemview.h
+    widgets/autohidingsplitter.h
     widgets/timeslider.h
     widgets/actionlabel.h
     lyrics/lyricspage.h

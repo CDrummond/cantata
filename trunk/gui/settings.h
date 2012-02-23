@@ -61,6 +61,7 @@ public:
     bool showPlaylist();
     QByteArray playQueueHeaderState();
     QByteArray splitterState();
+    bool splitterAutoHide();
     #ifndef ENABLE_KDE_SUPPORT
     QSize mainWindowSize();
     #endif
@@ -107,6 +108,7 @@ public:
     void saveSmallControlButtons(bool v);
     void savePlayQueueHeaderState(const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
+    void saveSplitterAutoHide(bool v);
     #ifndef ENABLE_KDE_SUPPORT
     void saveMainWindowSize(const QSize &v);
     #endif

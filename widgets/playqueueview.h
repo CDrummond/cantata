@@ -32,7 +32,8 @@ class PlayQueueView : public TreeView
 public:
     enum Roles {
         Role_Key = Qt::UserRole+512,
-        Role_Artist,
+        Role_Album,
+//         Role_Artist,
         Role_AlbumArtist,
         Role_Title,
         Role_Track,

@@ -27,6 +27,7 @@
 #include "settings.h"
 #include "tags.h"
 #include "tagreader.h"
+#include "utils.h"
 #include <QtGui/QTreeWidget>
 #include <QtGui/QLabel>
 #include <QtGui/QProgressBar>

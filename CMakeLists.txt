@@ -169,6 +169,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
                      ${CMAKE_SOURCE_DIR}/network
                      ${CMAKE_SOURCE_DIR}/dbus
                      ${CMAKE_SOURCE_DIR}/http
+                     ${CMAKE_SOURCE_DIR}/devices
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
 )
@@ -281,7 +282,6 @@ IF( ENABLE_KDE_SUPPORT )
              devices/filenameschemedialog.h devices/transcodingjob.h devices/valueslider.h devices/trackorganiser.h)
         SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui
              devices/filenameschemedialog.ui devices/trackorganiser.ui)
-        include_directories(${CMAKE_SOURCE_DIR}/devices)
 
         if (ENABLE_REMOTE_DEVICES)
             SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotedevice.cpp devices/remotedevicepropertiesdialog.cpp

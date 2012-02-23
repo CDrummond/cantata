@@ -1272,7 +1272,7 @@ void MainWindow::playPauseTrack()
         emit pause(false);
     } else {
         stopVolumeFade();
-        if (-1!=playQueueModel.currentSong()) {
+        if (-1!=playQueueModel.currentSong() && -1!=playQueueModel.currentSongRow()) {
             emit startPlayingSongId(playQueueModel.currentSong());
         } else {
             emit play();

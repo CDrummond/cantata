@@ -90,7 +90,7 @@ public:
         }
         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
 
-        Type type=getType(index);
+//         Type type=getType(index);
     }
 };
 
@@ -106,6 +106,9 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     setDragDropOverwriteMode(false);
     setDragDropMode(QAbstractItemView::DragDrop);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setIndentation(0);
+    setItemsExpandable(false);
+    setExpandsOnDoubleClick(false);
     setGrouped(false);
 }
 

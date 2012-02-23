@@ -123,19 +123,10 @@ void AlbumsModel::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
     }
 }
 
-AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al)
-    : artist(ar)
-    , album(al)
-    , cover(0)
-    , updated(false)
-    , coverRequested(false)
-{
-    name=album+QLatin1String(" - ")+artist;
-}
-
 AlbumsModel::AlbumsModel(QObject *parent)
     : QAbstractItemModel(parent)
     , enabled(false)
+    , sortAlbumFirst(true)
 {
 }
 
@@ -263,12 +254,12 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                         : tr("%1\n1 Track").arg(al->name));
                     #endif
         case Qt::DisplayRole:
-            return al->album;
+            return sortAlbumFirst ? al->album : al->artist;
         case ItemView::Role_ImageSize: {
             return iconSize();
         }
         case ItemView::Role_SubText:
-            return al->artist;
+            return sortAlbumFirst ? al->artist : al->album;
         case Qt::SizeHintRole:
             if (!itemSize.isNull()) {
                 return itemSize;
@@ -413,7 +404,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
             }
 
             if (!found) {
-                AlbumItem *a=new AlbumItem(artist, album);
+                AlbumItem *a=new AlbumItem(artist, album, sortAlbumFirst);
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
@@ -491,6 +482,28 @@ void AlbumsModel::setEnabled(bool e)
     }
 }
 
+void AlbumsModel::setAlbumFirst(bool a)
+{
+    if (a!=sortAlbumFirst) {
+        beginResetModel();
+        sortAlbumFirst=a;
+        foreach (AlbumItem *a, items) {
+            a->setName(sortAlbumFirst);
+        }
+        endResetModel();
+    }
+}
+
+AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, bool albumFirst)
+    : artist(ar)
+    , album(al)
+    , cover(0)
+    , updated(false)
+    , coverRequested(false)
+{
+    setName(albumFirst);
+}
+
 AlbumsModel::AlbumItem::~AlbumItem()
 {
     qDeleteAll(songs);
@@ -507,3 +520,9 @@ void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
     }
 }
 
+void AlbumsModel::AlbumItem::setName(bool albumFirst)
+{
+    name=albumFirst
+            ? (album+QLatin1String(" - ")+artist)
+            : (artist+QLatin1String(" - ")+album);
+}

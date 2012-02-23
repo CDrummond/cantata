@@ -219,6 +219,11 @@ int Settings::albumsCoverSize()
     return GET_INT("albumsCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
 }
 
+bool Settings::albumFirst()
+{
+    return GET_BOOL("albumFirst", true);
+}
+
 int Settings::sidebar()
 {
     return GET_INT("sidebar", (int)(FancyTabWidget::Mode_LargeSidebar));
@@ -455,6 +460,11 @@ void Settings::saveLibraryCoverSize(int v)
 void Settings::saveAlbumsCoverSize(int v)
 {
     SET_VALUE("albumsCoverSize", v);
+}
+
+void Settings::saveAlbumFirst(bool v)
+{
+    SET_VALUE("albumFirst", v);
 }
 
 void Settings::saveSidebar(int v)

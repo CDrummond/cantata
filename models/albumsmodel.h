@@ -69,10 +69,11 @@ public:
 
     struct AlbumItem : public Item
     {
-        AlbumItem(const QString &ar, const QString &al);
+        AlbumItem(const QString &ar, const QString &al, bool albumFirst);
         virtual ~AlbumItem();
         bool isAlbum() { return true; }
         void setSongs(MusicLibraryItemAlbum *ai);
+        void setName(bool albumFirst);
         QString artist;
         QString album;
         QString name;
@@ -102,6 +103,8 @@ public:
     void clear();
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
+    bool albumFirst() const { return sortAlbumFirst; }
+    void setAlbumFirst(bool a);
 
 Q_SIGNALS:
     void updated();
@@ -112,6 +115,7 @@ public Q_SLOTS:
 
 private:
     bool enabled;
+    bool sortAlbumFirst;
     mutable QList<AlbumItem *> items;
 };
 

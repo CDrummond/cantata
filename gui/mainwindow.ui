@@ -151,7 +151,7 @@
     </widget>
    </item>
    <item row="4" column="0" colspan="4">
-    <widget class="QSplitter" name="splitter">
+    <widget class="AutohidingSplitter" name="splitter">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -180,6 +180,9 @@
        </sizepolicy>
       </property>
       <layout class="QGridLayout" name="gridLayout">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item row="0" column="0" colspan="9">
         <widget class="LineEdit" name="searchPlaylistLineEdit"/>
        </item>
@@ -281,6 +284,12 @@
    <class>MessageWidget</class>
    <extends>QFrame</extends>
    <header>messagewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AutohidingSplitter</class>
+   <extends>QSplitter</extends>
+   <header>autohidingsplitter.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -144,6 +144,11 @@ QByteArray Settings::splitterState()
     return GET_BYTE_ARRAY("splitterState");
 }
 
+bool Settings::splitterAutoHide()
+{
+    return GET_BOOL("splitterAutoHide", false);
+}
+
 #ifndef ENABLE_KDE_SUPPORT
 QSize Settings::mainWindowSize()
 {
@@ -392,6 +397,11 @@ void Settings::savePlayQueueHeaderState(const QByteArray &v)
 void Settings::saveSplitterState(const QByteArray &v)
 {
     SET_VALUE("splitterState", v);
+}
+
+void Settings::saveSplitterAutoHide(bool v)
+{
+    SET_VALUE("splitterAutoHide", v);
 }
 
 #ifndef ENABLE_KDE_SUPPORT

@@ -172,7 +172,7 @@ public:
         QString title;
         QString track;
         QString duration=Song::formattedTime(song.time);
-        bool isCurrent=index.data(PlayQueueView::Role_Status).toBool();
+        int state=index.data(PlayQueueView::Role_Status).toInt();
         int indent=0;
         QString trackTitle=!song.albumartist.isEmpty() && song.albumartist != song.artist
                     ? song.title + " - " + song.artist
@@ -218,7 +218,6 @@ public:
         painter->setPen(col);
         QTextOption textOpt(Qt::AlignVCenter);
         QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
-//         QRect sr(r);
         bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
 
         if (!title.isEmpty()) {
@@ -247,7 +246,6 @@ public:
             drawFadedLine(painter, r.adjusted(0, r.height()/2, 0, 0), col);
             r.adjust(0, textHeight+constBorder, 0, 0);
             r=QRect(r.x(), r.y()+r.height()-(textHeight+1), r.width(), textHeight);
-//             sr.adjust(0, textHeight+constBorder, 0, 0);
 //             f.setItalic(true);
             painter->setFont(f);
             if (rtl) {
@@ -257,9 +255,37 @@ public:
             r.adjust(constCoverSize+constBorder, 0, 0, 0);
         }
 
-        if (isCurrent) {
+        if (state) {
             f.setBold(true);
             painter->setFont(f);
+            int size=9;
+            QRect ir(r.x()-(size+6), r.y()+(r.height()-size)/2, size, size);
+            switch (state) {
+            case PlayQueueView::State_Stopped:
+                painter->fillRect(ir, Qt::white);
+                painter->fillRect(ir.adjusted(1, 1, -1, -1), Qt::black);
+                break;
+            case PlayQueueView::State_Paused:
+                painter->fillRect(ir, Qt::white);
+                painter->fillRect(ir.x()+1, ir.y()+1, 3, size-2, Qt::black);
+                painter->fillRect(ir.x()+size-4, ir.y()+1, 3, size-2, Qt::black);
+                break;
+            case PlayQueueView::State_Playing: {
+                ir.adjust(2, 0, -2, 0);
+                QRectF irf(ir.x()+0.5, ir.y()+0.5, ir.width(), ir.height());
+                QPoint p1[3]={ QPoint(ir.x(), ir.y()), QPoint(ir.x()+(size-4), ir.y()+4), QPoint(ir.x(), ir.y()+(ir.height()-1)) };
+                QPoint p2[3]={ QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-4), ir.y()+4), QPoint(ir.x(), ir.y()+ir.height()) };
+                painter->save();
+                painter->setBrush(Qt::white);
+                painter->setPen(Qt::white);
+                painter->drawPolygon(p1, 3);
+                painter->setBrush(Qt::black);
+                painter->drawPolygon(p2, 3);
+                painter->restore();
+                break;
+            }
+            }
+            painter->setPen(col);
 //             QPixmap pix=statusIcon.value<QIcon>().pixmap(constIconSize, constIconSize);
 //             int adjust=(constCoverSize-constIconSize)-constBorder;
 //             QRect pixRect=rtl

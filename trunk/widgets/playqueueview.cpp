@@ -227,15 +227,15 @@ public:
                 painter->fillRect(ir.x()+size-4, ir.y()+1, 3, size-2, Qt::black);
                 break;
             case PlayQueueView::State_Playing: {
-                ir.adjust(2, -1, -2, 1);
-                QPoint p1[3]={ QPoint(ir.x(), ir.y()), QPoint(ir.x()+(size-3), ir.y()+5), QPoint(ir.x(), ir.y()+(ir.height()-1)) };
-                QPoint p2[3]={ QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-3), ir.y()+5), QPoint(ir.x(), ir.y()+ir.height()) };
+                ir.adjust(2, 0, -2, 0);
+                QPoint p1[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-4), ir.y()+4), QPoint(ir.x(), ir.y()+(ir.height()-1)), QPoint(ir.x()-2, ir.y()+(ir.height()-1)) };
+                QPoint p2[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-4), ir.y()+4), QPoint(ir.x(), ir.y()+ir.height()), QPoint(ir.x()-2, ir.y()+ir.height()) };
                 painter->save();
                 painter->setBrush(Qt::white);
                 painter->setPen(Qt::white);
-                painter->drawPolygon(p1, 3);
+                painter->drawPolygon(p1, 5);
                 painter->setBrush(Qt::black);
-                painter->drawPolygon(p2, 3);
+                painter->drawPolygon(p2, 5);
                 painter->restore();
                 break;
             }

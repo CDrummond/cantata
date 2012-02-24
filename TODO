@@ -22,9 +22,6 @@
       know this is a compilation?
   - Allow to drag songs from albums/library to devices, and vice versa.
 
-- PlayQueue
-  - Add (optional) simple, non-table-like view?
-
 - General
   - When displaying search results, should expand items to show matched entry
 

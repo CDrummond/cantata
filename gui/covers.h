@@ -26,9 +26,11 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QHash>
+#include <QtCore/QCache>
+#include <QtGui/QImage>
+#include <QtGui/QPixmap>
 
 class Song;
-class QImage;
 class QString;
 class NetworkAccessManager;
 class QNetworkReply;
@@ -49,6 +51,17 @@ public:
         bool isLocal;
     };
 
+    struct Image
+    {
+        Image(const QImage &i, const QString &f)
+            : img(i)
+            , fileName(f) {
+        }
+
+        QImage img;
+        QString fileName;
+    };
+
     static Covers * self();
     static bool isCoverFile(const QString &file);
     static void copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name=QString());
@@ -56,6 +69,8 @@ public:
 
     Covers();
 
+    QPixmap * get(const Song &song, int size, bool isSingleTracks=false, bool isLocal=false);
+    Image getImage(const Song &song, bool isSingleTracks=false, bool isLocal=false);
     void get(const Song &song, bool isSingleTracks=false, bool isLocal=false);
 
 Q_SIGNALS:
@@ -74,6 +89,7 @@ private:
     MaiaXmlRpcClient *rpc;
     NetworkAccessManager *manager;
     QHash<QNetworkReply *, Job> jobs;
+    QCache<QString, QPixmap> cache;
 };
 
 #endif

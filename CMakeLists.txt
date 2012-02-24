@@ -125,6 +125,7 @@ SET( CANTATA_MOC_HDRS
     widgets/autohidingsplitter.h
     widgets/timeslider.h
     widgets/actionlabel.h
+    widgets/playqueueview.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h

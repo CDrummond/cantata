@@ -24,32 +24,81 @@
 #ifndef PLAYQUEUEVIEW_H
 #define PLAYQUEUEVIEW_H
 
+#include <QtGui/QStackedWidget>
+#include <QtGui/QAbstractItemView>
 #include "treeview.h"
-class QAbstractItemDelegate;
 
-class PlayQueueView : public TreeView
+class PlayQueueListView;
+class QAbstractItemModel;
+class QAction;
+class QItemSelectionModel;
+class QHeaderView;
+class QModelIndex;
+class QMenu;
+
+class PlayQueueTreeView : public TreeView
 {
+    Q_OBJECT
+
+public:
+    PlayQueueTreeView(QWidget *p);
+    virtual ~PlayQueueTreeView();
+
+    void initHeader();
+    void saveHeader();
+
+private Q_SLOTS:
+    void showMenu();
+    void toggleHeaderItem(bool visible);
+
+private:
+    QMenu *menu;
+};
+
+class PlayQueueView : public QStackedWidget
+{
+    Q_OBJECT
+
 public:
     enum Roles {
         Role_Key = Qt::UserRole+512,
-        Role_Album,
-//         Role_Artist,
-        Role_AlbumArtist,
-        Role_Title,
-        Role_Track,
-        Role_Duration,
-        Role_StatusIcon
+        Role_Song,
+        Role_AlbumDuration,
+        Role_Status
     };
 
     PlayQueueView(QWidget *parent=0);
     virtual ~PlayQueueView();
 
+    void initHeader() {
+        treeView->initHeader();
+    }
+    void saveHeader();
     void setGrouped(bool g);
+    void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);
+    void setModel(QAbstractItemModel *m);
+    void addAction(QAction *a);
+    void setFocus();
+    QAbstractItemModel * model();
+    void setContextMenuPolicy(Qt::ContextMenuPolicy policy);
+    bool haveUnSelectedItems();
+    QItemSelectionModel * selectionModel() const;
+    void setCurrentIndex(const QModelIndex &index);
+    QHeaderView * header();
+    QAbstractItemView * tree();
+    QAbstractItemView * list();
+
+Q_SIGNALS:
+    void itemsSelected(bool);
+    void doubleClicked(const QModelIndex &);
+
+private Q_SLOTS:
+    void itemClicked(const QModelIndex &idx);
 
 private:
-    bool grouped;
-    QAbstractItemDelegate *prev;
-    QAbstractItemDelegate *custom;
+    PlayQueueListView *listView;
+    PlayQueueTreeView *treeView;
 };
 
 #endif
+

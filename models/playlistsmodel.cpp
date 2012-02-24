@@ -191,14 +191,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             QString text=s->entryName();
 
             if (Qt::ToolTipRole==role && !s->title.isEmpty()) {
-                QString duration=MPDParseUtils::formatDuration(s->time);
-                if (duration.startsWith(QLatin1String("00:"))) {
-                    duration=duration.mid(3);
-                }
-                if (duration.startsWith(QLatin1String("00:"))) {
-                    duration=duration.mid(1);
-                }
-                text+=QLatin1String("<br/>")+duration;
+                text+=QLatin1String("<br/>")+Song::formattedTime(s->time);
                 text+=QLatin1String("<br/><small><i>")+s->file+QLatin1String("</i></small>");
             }
             return text;
@@ -206,17 +199,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case Qt::DecorationRole:
             return QIcon::fromTheme(s->title.isEmpty() ? "applications-internet" : "audio-x-generic");
         case ItemView::Role_SubText:
-            if (!s->title.isEmpty()) {
-                QString duration=MPDParseUtils::formatDuration(s->time);
-                if (duration.startsWith(QLatin1String("00:"))) {
-                    duration=duration.mid(3);
-                }
-                if (duration.startsWith(QLatin1String("00:"))) {
-                    duration=duration.mid(1);
-                }
-                return duration;
-            }
-            return QString();
+            return s->title.isEmpty() ? QString() : Song::formattedTime(s->time);
         }
     }
 

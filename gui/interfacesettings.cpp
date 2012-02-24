@@ -57,6 +57,7 @@ void InterfaceSettings::load()
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     devicesView->setCurrentIndex(Settings::self()->devicesView());
     #endif
+    groupedPlayQueue->setCurrentIndex(Settings::self()->groupedPlayQueue() ? 1 : 0);
 }
 
 void InterfaceSettings::save()
@@ -75,6 +76,7 @@ void InterfaceSettings::save()
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     Settings::self()->saveDevicesView(devicesView->currentIndex());
     #endif
+    Settings::self()->saveGroupedPlayQueue(1==groupedPlayQueue->currentIndex());
 }
 
 void InterfaceSettings::albumsViewChanged()

@@ -234,17 +234,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
                         ? tr("%1\n%2 Tracks").arg(item->data()).arg(item->childCount())
                         : tr("%1\n1 Track").arg(item->data()));
                     #endif
-        case MusicLibraryItem::Type_Song: {
-            QString duration=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
-            if (duration.startsWith(QLatin1String("00:"))) {
-                duration=duration.mid(3);
-            }
-            if (duration.startsWith(QLatin1String("00:"))) {
-                duration=duration.mid(1);
-            }
-            return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+duration+
+        case MusicLibraryItem::Type_Song:
+            return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+
                    QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
-        }
         default: return QVariant();
         }
     case ItemView::Role_ImageSize:
@@ -277,16 +269,8 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             return 1==item->childCount() ? tr("1 Album") : tr("%1 Albums").arg(item->childCount());
             #endif
             break;
-        case MusicLibraryItem::Type_Song: {
-            QString text=MPDParseUtils::formatDuration(static_cast<MusicLibraryItemSong *>(item)->time());
-            if (text.startsWith(QLatin1String("00:"))) {
-                return text.mid(3);
-            }
-            if (text.startsWith(QLatin1String("00:"))) {
-                return text.mid(1);
-            }
-            return text.mid(1);
-        }
+        case MusicLibraryItem::Type_Song:
+            return Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time());
         case MusicLibraryItem::Type_Album:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track", "%1 Tracks", item->childCount());

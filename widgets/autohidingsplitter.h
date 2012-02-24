@@ -29,6 +29,9 @@
 #include <QtCore/QList>
 #include <QtCore/QQueue>
 #include <QtCore/QVariantAnimation>
+#include <QtCore/QSet>
+#include <QtGui/QAbstractItemView>
+
 
 Q_DECLARE_METATYPE(QList<int>)
 
@@ -74,12 +77,15 @@ public:
     bool restoreState( const QByteArray &state);
     QByteArray saveState() const;
     bool eventFilter(QObject *watched, QEvent *event);
-    bool autoHideEnabled() const {
-        return hideEnabled;
+    void setAutoHideEnabled(bool ah);
+    bool isAutoHideEnabled() const {
+        return autoHideEnabled;
     }
 
 public Q_SLOTS:
-    void setAutoHideEnabled(bool ah);
+    void setHideEnabled(bool en) {
+        autoHideEnabled=en;
+    }
 
 protected:
     virtual QSplitterHandle * createHandle();
@@ -97,16 +103,21 @@ private Q_SLOTS:
     void setWidgetForHiding();
     void startAnimation();
     void updateAfterSplitterMoved(int pos, int index);
+    void inhibitModifications(){haltModifications = true;}
+    void resumeModifications(){haltModifications = false;}
 
 private:
-    bool hideEnabled;
+    bool autoHideEnabled;
+    bool haltModifications;
     QList<int> getSizesAfterHiding()const;
     SplitterSizeAnimation *autohideAnimation;
     QList<QTimer *> animationDelayTimer;
     QList<bool> widgetAutohidden;
+    QList<bool> widgetAutohiddenPrev;
     QList<bool> widgetAutohidable;
     QList<int> expandedSizes;
     QQueue<QList<int> > targetSizes;
+    QSet<QAbstractItemView *> comboViews;
     friend class AutohidingSplitterHandle;
 };
 

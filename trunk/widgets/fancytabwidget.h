@@ -215,11 +215,13 @@ public slots:
   void SetMode(Mode mode);
   void SetMode(int mode) { SetMode(Mode(mode)); }
   void ToggleTab(int tab, bool show);
+  void SetAutoHide();
 
 signals:
   void CurrentChanged(int index);
   void ModeChanged(FancyTabWidget::Mode mode);
   void TabToggled(int index);
+  void AutoHideChanged(bool ah);
 
 protected:
   void paintEvent(QPaintEvent *event);

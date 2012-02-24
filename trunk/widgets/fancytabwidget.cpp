@@ -34,6 +34,7 @@
 **************************************************************************/
 
 #include "fancytabwidget.h"
+#include "settings.h"
 // #include "stylehelper.h"
 
 // #include <QtGui/QColorDialog>
@@ -792,9 +793,11 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     QMenu *modeMenu=new QMenu(this);
     QAction *modeAct;
     QAction *iconOnlyAct;
+    QAction *autoHideAct;
     #ifdef ENABLE_KDE_SUPPORT
     iconOnlyAct=new QAction(i18n("Icons Only"), this);
     modeAct=new QAction(i18n("Style"), this);
+    autoHideAct=new QAction(i18n("Auto Hide"), this);
     AddMenuItem(group, i18n("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
     AddMenuItem(group, i18n("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
     AddMenuItem(group, i18n("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);
@@ -803,6 +806,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     #else
     modeAct=new QAction(tr("Style"), this);
     iconOnlyAct=new QAction(tr("Icons Only"), this);
+    autoHideAct=new QAction(tr("Icons Only"), this);
     AddMenuItem(group, tr("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
     AddMenuItem(group, tr("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
     AddMenuItem(group, tr("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);
@@ -820,6 +824,11 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     modeAct->setMenu(modeMenu);
     modeAct->setData(-1);
     menu_->addAction(modeAct);
+    autoHideAct->setCheckable(true);
+    autoHideAct->setChecked(Settings::self()->splitterAutoHide());
+    autoHideAct->setData(-1);
+    connect(autoHideAct, SIGNAL(triggered()), this, SLOT(SetAutoHide()));
+    menu_->addAction(autoHideAct);
   }
 
   foreach (QAction *act, menu_->actions()) {
@@ -841,6 +850,14 @@ void FancyTabWidget::AddMenuItem(QActionGroup* group, const QString& text, Mode 
   if (mode == mode_ || iconMode==mode_) {
     action->setChecked(true);
   }
+}
+
+void FancyTabWidget::SetAutoHide()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        emit AutoHideChanged(act->isChecked());
+    }
 }
 
 void FancyTabWidget::SetMode()

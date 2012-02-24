@@ -889,6 +889,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
+    connect(tabWidget, SIGNAL(AutoHideChanged(bool)), splitter, SLOT(setAutoHideEnabled(bool)));
 
     libraryPage->setView(0==Settings::self()->libraryView());
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
@@ -930,6 +931,7 @@ MainWindow::~MainWindow()
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     Settings::self()->saveSmallPlaybackButtons(smallPlaybackButtonsAction->isChecked());
     Settings::self()->saveSmallControlButtons(smallControlButtonsAction->isChecked());
+    Settings::self()->saveSplitterAutoHide(splitter->autoHideEnabled());
     playQueue->saveHeader();
     QStringList hiddenPages;
     for (int i=0; i<tabWidget->count(); ++i) {
@@ -1186,7 +1188,6 @@ void MainWindow::updateSettings()
     playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
     playQueue->setGrouped(Settings::self()->groupedPlayQueue());
     playQueueModel.refresh();
-    splitter->setAutoHideEnabled(Settings::self()->splitterAutoHide());
 }
 
 #ifndef ENABLE_KDE_SUPPORT

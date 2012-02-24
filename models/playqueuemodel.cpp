@@ -88,6 +88,33 @@ QStringList PlayQueueModel::decode(const QMimeData &mimeData, const QString &mim
     return rv;
 }
 
+QString PlayQueueModel::headerText(int col)
+{
+    switch (col) {
+    case COL_STATUS: return QString();
+    #ifdef ENABLE_KDE_SUPPORT
+    case COL_TITLE:  return i18n("Title");
+    case COL_ARTIST: return i18n("Artist");
+    case COL_ALBUM:  return i18n("Album");
+    case COL_TRACK:  return i18n("#");
+    case COL_LENGTH: return i18n("Length");
+    case COL_DISC:   return i18n("Disc");
+    case COL_YEAR:   return i18n("Year");
+    case COL_GENRE:  return i18n("Genre");
+    #else
+    case COL_TITLE:  return tr("Title");
+    case COL_ARTIST: return tr("Artist");
+    case COL_ALBUM:  return tr("Album");
+    case COL_TRACK:  return tr("#");
+    case COL_LENGTH: return tr("Length");
+    case COL_DISC:   return tr("Disc");
+    case COL_YEAR:   return tr("Year");
+    case COL_GENRE:  return tr("Genre");
+    #endif
+    default:         return QString();
+    }
+}
+
 PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractTableModel(parent)
     , currentSongId(-1)
@@ -107,29 +134,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
 {
     if (Qt::Horizontal==orientation) {
         if (Qt::DisplayRole==role) {
-            switch (section) {
-            case COL_STATUS: return QString();
-            #ifdef ENABLE_KDE_SUPPORT
-            case COL_TITLE:  return i18n("Title");
-            case COL_ARTIST: return i18n("Artist");
-            case COL_ALBUM:  return i18n("Album");
-            case COL_TRACK:  return i18n("#");
-            case COL_LENGTH: return i18n("Length");
-            case COL_DISC:   return i18n("Disc");
-            case COL_YEAR:   return i18n("Year");
-            case COL_GENRE:  return i18n("Genre");
-            #else
-            case COL_TITLE:  return tr("Title");
-            case COL_ARTIST: return tr("Artist");
-            case COL_ALBUM:  return tr("Album");
-            case COL_TRACK:  return tr("#");
-            case COL_LENGTH: return tr("Length");
-            case COL_DISC:   return tr("Disc");
-            case COL_YEAR:   return tr("Year");
-            case COL_GENRE:  return tr("Genre");
-            #endif
-            default:         break;
-            }
+            return headerText(section);
         } else if (Qt::TextAlignmentRole==role) {
             switch (section) {
             case COL_TITLE:
@@ -180,36 +185,45 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case PlayQueueView::Role_Key:
         return songs.at(index.row()).key;
+    case PlayQueueView::Role_Song: {
+        QVariant var;
+        var.setValue<Song>(songs.at(index.row()));
+        return var;
+    }
 //     case PlayQueueView::Role_Artist:
 //         return songs.at(index.row()).artist;
-    case PlayQueueView::Role_AlbumArtist:
-        return songs.at(index.row()).albumArtist();
-    case PlayQueueView::Role_Album: {
-        const Song &song = songs.at(index.row());
-        return song.album.isEmpty() && !song.name.isEmpty() && (song.file.isEmpty() || song.file.contains("://"))
-                ? song.name : song.album;
-    }
-    case PlayQueueView::Role_Title: {
-        const Song &song = songs.at(index.row());
-        if (!song.albumartist.isEmpty() && song.albumartist != song.artist) {
-            return song.title + " - " + song.artist;
-        }
-        return song.title;
-    }
-    case PlayQueueView::Role_Track:
-        return songs.at(index.row()).track;
-    case PlayQueueView::Role_Duration:
-        return songs.at(index.row()).time;
-    case PlayQueueView::Role_StatusIcon:
-        if (songs.at(index.row()).id == currentSongId) {
-            switch (mpdState) {
-            case MPDStatus::State_Inactive:
-            case MPDStatus::State_Stopped: return QIcon::fromTheme("media-playback-stop");
-            case MPDStatus::State_Playing: return QIcon::fromTheme("media-playback-start");
-            case MPDStatus::State_Paused:  return QIcon::fromTheme("media-playback-pause");
+//     case PlayQueueView::Role_AlbumArtist:
+//         return songs.at(index.row()).albumArtist();
+//     case PlayQueueView::Role_Album: {
+//         const Song &song = songs.at(index.row());
+//         return song.album.isEmpty() && !song.name.isEmpty() && (song.file.isEmpty() || song.file.contains("://"))
+//                 ? song.name : song.album;
+//     }
+//     case PlayQueueView::Role_Title: {
+//         const Song &song = songs.at(index.row());
+//         if (!song.albumartist.isEmpty() && song.albumartist != song.artist) {
+//             return song.title + " - " + song.artist;
+//         }
+//         return song.title;
+//     }
+//     case PlayQueueView::Role_Track:
+//         return songs.at(index.row()).track;
+//     case PlayQueueView::Role_Duration:
+//         return songs.at(index.row()).time;
+    case PlayQueueView::Role_AlbumDuration: {
+        const Song &first = songs.at(index.row());
+        quint32 d=first.time;
+        for (int i=index.row()+1; i<songs.count(); ++i) {
+            const Song &song = songs.at(i);
+            if (song.key!=first.key) {
+                break;
             }
+            d+=song.time;
         }
-        return QVariant();
+        return d;
+    }
+    case PlayQueueView::Role_Status:
+        return songs.at(index.row()).id == currentSongId;
     case Qt::FontRole:
         if (songs.at(index.row()).id == currentSongId) {
             QFont font;
@@ -513,11 +527,12 @@ void PlayQueueModel::setState(MPDStatus::State st)
 
 void PlayQueueModel::setGrouped(bool g)
 {
-    if (g==grouped) {
-        return;
-    }
     grouped=g;
-    if (grouped && songs.count()) {
+}
+
+void PlayQueueModel::refresh()
+{
+    if (songs.count()) {
         updatePlaylist(songs);
     }
 }

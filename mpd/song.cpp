@@ -26,6 +26,7 @@
 
 #include <cmath>
 #include "song.h"
+#include "mpdparseutils.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #else
@@ -151,16 +152,16 @@ void Song::clear()
 
 QString Song::formattedTime(const quint32 &seconds)
 {
-    QString result;
+    static const quint32 constHour=60*60;
+    if (seconds>constHour) {
+        return MPDParseUtils::formatDuration(seconds);
+    }
 
-    result += QString::number(floor(seconds / 60.0));
-    result += ":";
+    QString result(QString::number(floor(seconds / 60.0))+QChar(':'));
     if (seconds % 60 < 10) {
         result += "0";
     }
-    result += QString::number(seconds % 60);
-
-    return result;
+    return result+QString::number(seconds % 60);
 }
 
 /*

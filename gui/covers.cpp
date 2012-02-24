@@ -280,19 +280,36 @@ QStringList Covers::standardNames()
 Covers::Covers()
     : rpc(0)
     , manager(0)
+    , cache(150000)
 {
 }
 
-void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
+QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks, bool isLocal)
+{
+    QString key=song.albumArtist()+QLatin1String(" - ")+song.album;
+    QPixmap *pix(cache.object(key));
+
+    if (!pix) {
+        Covers::Image img=getImage(song, isSingleTracks, isLocal);
+
+        if (!img.img.isNull()) {
+            pix=new QPixmap(QPixmap::fromImage(img.img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
+        }
+    }
+
+    return pix;
+}
+
+Covers::Image Covers::getImage(const Song &song, bool isSingleTracks, bool isLocal)
 {
     if (isSingleTracks) {
          QString fileName(Network::cacheDir(constCoverDir)+constSingleTracksFile);
          if (QFile::exists(fileName)) {
-             emit cover(song.albumArtist(), song.album, QImage(fileName), fileName);
+             return Image(QImage(fileName), fileName);
          } else {
-             emit cover(song.albumArtist(), song.album, createSingleTracksCover(fileName), fileName);
+             return Image(createSingleTracksCover(fileName), fileName);
          }
-         return;
     }
 
     QString dirName;
@@ -307,8 +324,7 @@ void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
                 QImage img(dirName+fileName);
 
                 if (!img.isNull()) {
-                    emit cover(song.albumArtist(), song.album, img, dirName+fileName);
-                    return;
+                    return Image(img, dirName+fileName);
                 }
             }
         }
@@ -322,14 +338,9 @@ void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
         if (QFile::exists(dir+album+ext)) {
             QImage img(dir+album+ext);
             if (!img.isNull()) {
-                emit cover(artist, album, img, dir+album+ext);
-                return;
+                return Image(img, dir+album+ext);
             }
         }
-    }
-
-    if (jobs.end()!=findJob(song)) {
-        return;
     }
 
     Job job(song.albumArtist(), song.album, dirName, isLocal);
@@ -337,9 +348,33 @@ void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
     // See if amarok, or clementine, has it...
     AppCover app=otherAppCover(job);
     if (!app.img.isNull()) {
-        emit cover(artist, album, app.img, app.filename);
+        return Image(app.img, app.filename);
+    }
+
+    return Image(QImage(), QString());
+}
+
+void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
+{
+    Image img=getImage(song, isSingleTracks, isLocal);
+
+    if (!img.img.isNull()) {
+        emit cover(song.albumArtist(), song.album, img.img, img.fileName);
         return;
     }
+    if (jobs.end()!=findJob(song)) {
+        return;
+    }
+
+    bool haveAbsPath=song.file.startsWith('/');
+    QString dirName;
+
+    if (haveAbsPath || !Settings::self()->mpdDir().isEmpty()) {
+        dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file
+                                        : MPDParseUtils::getDir((haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file);
+    }
+
+    Job job(song.albumArtist(), song.album, dirName, isLocal);
 
     // Query lastfm...
     if (!rpc) {

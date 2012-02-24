@@ -271,17 +271,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case Qt::DecorationRole:
             return QIcon::fromTheme("audio-x-generic");
-        case Qt::ToolTipRole: {
-            QString duration=MPDParseUtils::formatDuration(si->time);
-            if (duration.startsWith(QLatin1String("00:"))) {
-                duration=duration.mid(3);
-            }
-            if (duration.startsWith(QLatin1String("00:"))) {
-                duration=duration.mid(1);
-            }
-            return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+duration+
+        case Qt::ToolTipRole:
+            return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(si->time)+
                    QLatin1String("<br/><small><i>")+si->file+QLatin1String("</i></small>");
-        }
         case Qt::DisplayRole:
             if (si->parent->isSingleTracks) {
                 return si->artistSong();
@@ -292,14 +284,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 return QChar('0')+QString::number(si->track)+QLatin1String(" - ")+si->title;
             }
         case ItemView::Role_SubText: {
-            QString text=MPDParseUtils::formatDuration(si->time);
-            if (text.startsWith(QLatin1String("00:"))) {
-                return text.mid(3);
-            }
-            if (text.startsWith(QLatin1String("00:"))) {
-                return text.mid(1);
-            }
-            return text.mid(1);
+            return Song::formattedTime(si->time);
         }
         }
     }

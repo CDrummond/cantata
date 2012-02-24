@@ -759,20 +759,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueModel);
-    playQueue->setAcceptDrops(true);
-    playQueue->setDropIndicatorShown(true);
     playQueue->addAction(removeFromPlaylistAction);
     playQueue->addAction(clearPlaylistAction);
     playQueue->addAction(savePlaylistAction);
     playQueue->addAction(cropPlaylistAction);
     playQueue->addAction(shufflePlaylistAction);
     //playQueue->addAction(copyTrackInfoAction);
-    playQueue->installEventFilter(new DeleteKeyEventHandler(playQueue, removeFromPlaylistAction));
-    playQueue->setRootIsDecorated(false);
+    playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlaylistAction));
+    playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlaylistAction));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
-    setupPlaylistView();
-    playQueue->setGrouped(Settings::self()->groupedPlayQueue());
+    connect(streamsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
     playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
+    playQueue->setGrouped(Settings::self()->groupedPlayQueue());
+    playQueueModel.refresh();
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated()), this, SLOT(updateStats()));
     connect(MPDConnection::self(), SIGNAL(statusUpdated()), this, SLOT(updateStatus())/*, Qt::DirectConnection*/);
@@ -867,6 +866,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     playlistItemsSelected(false);
     playQueue->setFocus();
+    playQueue->initHeader();
 
     mpdThread=new QThread(this);
     MPDConnection::self()->moveToThread(mpdThread);
@@ -926,13 +926,11 @@ MainWindow::~MainWindow()
     #endif
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
-    if (!Settings::self()->groupedPlayQueue()) {
-        Settings::self()->savePlayQueueHeaderState(playQueueHeader->saveState());
-    }
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     Settings::self()->saveSmallPlaybackButtons(smallPlaybackButtonsAction->isChecked());
     Settings::self()->saveSmallControlButtons(smallControlButtonsAction->isChecked());
+    playQueue->saveHeader();
     QStringList hiddenPages;
     for (int i=0; i<tabWidget->count(); ++i) {
         if (!tabWidget->isEnabled(i)) {
@@ -1185,8 +1183,9 @@ void MainWindow::updateSettings()
     toggleDockManager();
     toggleMpris();
 
-    playQueue->setGrouped(Settings::self()->groupedPlayQueue());
     playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
+    playQueue->setGrouped(Settings::self()->groupedPlayQueue());
+    playQueueModel.refresh();
     splitter->setAutoHideEnabled(Settings::self()->splitterAutoHide());
 }
 
@@ -1930,96 +1929,6 @@ void MainWindow::togglePlaylist()
     } else {
         setMinimumHeight(size().height());
         setMaximumHeight(size().height());
-    }
-}
-
-// PlayList view //
-void MainWindow::setupPlaylistView()
-{
-    if (Settings::self()->groupedPlayQueue()) {
-        return;
-    }
-    QFontMetrics fm(playQueue->font());
-    playQueueHeader = playQueue->header();
-    playQueueHeader->setResizeMode(QHeaderView::Interactive);
-    playQueueHeader->setContextMenuPolicy(Qt::CustomContextMenu);
-    playQueueHeader->resizeSection(PlayQueueModel::COL_STATUS, 20);
-    playQueueHeader->resizeSection(PlayQueueModel::COL_TRACK, fm.width("999"));
-    playQueueHeader->resizeSection(PlayQueueModel::COL_YEAR, fm.width("99999"));
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_STATUS, QHeaderView::Fixed);
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_TITLE, QHeaderView::Interactive);
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_ARTIST, QHeaderView::Interactive);
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_ALBUM, QHeaderView::Stretch);
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_TRACK, QHeaderView::Fixed);
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_LENGTH, QHeaderView::ResizeToContents);
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_DISC, QHeaderView::ResizeToContents);
-    playQueueHeader->setResizeMode(PlayQueueModel::COL_YEAR, QHeaderView::Fixed);
-    playQueueHeader->setStretchLastSection(false);
-
-    connect(playQueueHeader, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(playQueueContextMenuClicked()));
-    connect(streamsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
-
-    //Restore state
-    QByteArray state;
-
-    if (Settings::self()->version()>=CANTATA_MAKE_VERSION(0, 4, 0)) {
-        state=Settings::self()->playQueueHeaderState();
-    }
-
-    QList<int> hideAble;
-    hideAble << PlayQueueModel::COL_TRACK << PlayQueueModel::COL_ALBUM << PlayQueueModel::COL_LENGTH
-             << PlayQueueModel::COL_DISC << PlayQueueModel::COL_YEAR << PlayQueueModel::COL_GENRE;
-
-    //Restore
-    if (state.isEmpty()) {
-        playQueueHeader->setSectionHidden(PlayQueueModel::COL_YEAR, true);
-        playQueueHeader->setSectionHidden(PlayQueueModel::COL_DISC, true);
-        playQueueHeader->setSectionHidden(PlayQueueModel::COL_GENRE, true);
-    } else {
-        playQueueHeader->restoreState(state);
-
-        foreach (int col, hideAble) {
-            if (playQueueHeader->isSectionHidden(col) || 0==playQueueHeader->sectionSize(col)) {
-                playQueueHeader->setSectionHidden(col, true);
-            }
-        }
-    }
-
-    playQueueMenu = new QMenu(this);
-
-    foreach (int col, hideAble) {
-        QString text=PlayQueueModel::COL_TRACK==col
-                        ?
-                            #ifdef ENABLE_KDE_SUPPORT
-                            i18n("Track")
-                            #else
-                            tr("Track")
-                            #endif
-                        : playQueueModel.headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
-        QAction *act=new QAction(text, playQueueMenu);
-        act->setCheckable(true);
-        act->setChecked(!playQueueHeader->isSectionHidden(col));
-        playQueueMenu->addAction(act);
-        act->setData(col);
-        viewActions.append(act);
-        connect(act, SIGNAL(toggled(bool)), this, SLOT(togglePlayQueueHeaderItem(bool)));
-    }
-}
-
-void MainWindow::playQueueContextMenuClicked()
-{
-    playQueueMenu->exec(QCursor::pos());
-}
-
-void MainWindow::togglePlayQueueHeaderItem(bool visible)
-{
-    QAction *act=qobject_cast<QAction *>(sender());
-
-    if (act) {
-        int index=act->data().toInt();
-        if (-1!=index) {
-            playQueueHeader->setSectionHidden(index, !visible);
-        }
     }
 }
 

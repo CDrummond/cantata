@@ -220,8 +220,12 @@ void AutohidingSplitter::setAutoHideEnabled(bool ah)
 
     autoHideEnabled=ah;
     if (autoHideEnabled) {
+        expandedSizes = sizes();
         connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     } else {
+        for(int i = 0; i < widgetAutohidden.count() ; ++i) {
+            widgetAutohidden[i]=false;
+        }
         disconnect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     }
 }

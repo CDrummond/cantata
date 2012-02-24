@@ -77,15 +77,12 @@ public:
     bool restoreState( const QByteArray &state);
     QByteArray saveState() const;
     bool eventFilter(QObject *watched, QEvent *event);
-    void setAutoHideEnabled(bool ah);
     bool isAutoHideEnabled() const {
         return autoHideEnabled;
     }
 
 public Q_SLOTS:
-    void setHideEnabled(bool en) {
-        autoHideEnabled=en;
-    }
+    void setAutoHideEnabled(bool en);
 
 protected:
     virtual QSplitterHandle * createHandle();

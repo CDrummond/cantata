@@ -227,10 +227,9 @@ public:
                 painter->fillRect(ir.x()+size-4, ir.y()+1, 3, size-2, Qt::black);
                 break;
             case PlayQueueView::State_Playing: {
-                ir.adjust(2, 0, -2, 0);
-                QRectF irf(ir.x()+0.5, ir.y()+0.5, ir.width(), ir.height());
-                QPoint p1[3]={ QPoint(ir.x(), ir.y()), QPoint(ir.x()+(size-4), ir.y()+4), QPoint(ir.x(), ir.y()+(ir.height()-1)) };
-                QPoint p2[3]={ QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-4), ir.y()+4), QPoint(ir.x(), ir.y()+ir.height()) };
+                ir.adjust(2, -1, -2, 1);
+                QPoint p1[3]={ QPoint(ir.x(), ir.y()), QPoint(ir.x()+(size-3), ir.y()+5), QPoint(ir.x(), ir.y()+(ir.height()-1)) };
+                QPoint p2[3]={ QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-3), ir.y()+5), QPoint(ir.x(), ir.y()+ir.height()) };
                 painter->save();
                 painter->setBrush(Qt::white);
                 painter->setPen(Qt::white);

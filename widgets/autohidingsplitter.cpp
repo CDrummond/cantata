@@ -125,7 +125,7 @@ void AutohidingSplitter::removeChild(QObject *pObject)
 
 void AutohidingSplitter::childEvent(QChildEvent *e)
 {
-    if (!autoHideEnabled) {
+    if (!hideEnabled) {
         QSplitter::childEvent(e);
         return;
     }
@@ -142,7 +142,7 @@ void AutohidingSplitter::childEvent(QChildEvent *e)
 
 bool AutohidingSplitter::eventFilter(QObject *target, QEvent *e)
 {
-    if (!autoHideEnabled) {
+    if (!hideEnabled) {
         return QSplitter::eventFilter(target, e);
     }
     switch (e->type()) {
@@ -171,12 +171,12 @@ bool AutohidingSplitter::eventFilter(QObject *target, QEvent *e)
 
 void AutohidingSplitter::setAutoHideEnabled(bool ah)
 {
-    if (ah==autoHideEnabled) {
+    if (ah==hideEnabled) {
         return;
     }
 
-    autoHideEnabled=ah;
-    if (autoHideEnabled) {
+    hideEnabled=ah;
+    if (hideEnabled) {
         connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     } else {
         disconnect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
@@ -185,7 +185,7 @@ void AutohidingSplitter::setAutoHideEnabled(bool ah)
 
 void AutohidingSplitter::resizeEvent(QResizeEvent *event)
 {
-    if (autoHideEnabled) {
+    if (hideEnabled) {
         int oldUsableSize = event->oldSize().width()/*-(count()-1)*handleWidth()*/;
         int newUsableSize = event->size().width()/*-(count()-1)*handleWidth()*/;
         int leftToDistribute = newUsableSize-oldUsableSize;
@@ -241,7 +241,7 @@ QByteArray AutohidingSplitter::saveState() const
 void AutohidingSplitter::widgetHoverStarted(int index)
 {
 //    int index = indexOf(qobject_cast<QWidget *>(QObject::sender()));
-    if (!autoHideEnabled || index<0 || index > count()) {
+    if (!hideEnabled || index<0 || index > count()) {
         return;
     }
     if (animationDelayTimer.at(index)->isActive()) {
@@ -256,7 +256,7 @@ void AutohidingSplitter::widgetHoverStarted(int index)
 void AutohidingSplitter::widgetHoverFinished(int index)
 {
 //    int index = indexOf(qobject_cast<QWidget *>(QObject::sender()));
-    if (!autoHideEnabled || index<0 || index > count()) {
+    if (!hideEnabled || index<0 || index > count()) {
         return;
     }
     if (!widgetAutohidden.at(index) && widgetAutohidable.at(index)) {
@@ -267,7 +267,7 @@ void AutohidingSplitter::widgetHoverFinished(int index)
 
 void AutohidingSplitter::handleHoverStarted()
 {
-    if (!autoHideEnabled) {
+    if (!hideEnabled) {
         return;
     }
 
@@ -292,7 +292,7 @@ void AutohidingSplitter::handleHoverStarted()
 
 void AutohidingSplitter::handleHoverFinished()
 {
-    if (!autoHideEnabled) {
+    if (!hideEnabled) {
         return;
     }
 
@@ -309,7 +309,7 @@ void AutohidingSplitter::handleHoverFinished()
 
 void AutohidingSplitter::updateResizeQueue()
 {
-    if (!autoHideEnabled) {
+    if (!hideEnabled) {
         return;
     }
 
@@ -356,7 +356,7 @@ QList<int> AutohidingSplitter::getSizesAfterHiding() const
 
 void AutohidingSplitter::startAnimation()
 {
-    if (!autoHideEnabled) {
+    if (!hideEnabled) {
         return;
     }
 
@@ -385,7 +385,7 @@ void AutohidingSplitter::setWidgetForHiding()
 void AutohidingSplitter::updateAfterSplitterMoved(int pos, int index)
 {
     Q_UNUSED(pos);
-    if (!autoHideEnabled || index<=0 || index>count()) {
+    if (!hideEnabled || index<=0 || index>count()) {
         return;
     }
     QList<int> currentTemporarySizes = sizes();

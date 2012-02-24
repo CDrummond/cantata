@@ -74,6 +74,11 @@ public:
     bool restoreState( const QByteArray &state);
     QByteArray saveState() const;
     bool eventFilter(QObject *watched, QEvent *event);
+    bool autoHideEnabled() const {
+        return hideEnabled;
+    }
+
+public Q_SLOTS:
     void setAutoHideEnabled(bool ah);
 
 protected:
@@ -94,7 +99,7 @@ private Q_SLOTS:
     void updateAfterSplitterMoved(int pos, int index);
 
 private:
-    bool autoHideEnabled;
+    bool hideEnabled;
     QList<int> getSizesAfterHiding()const;
     SplitterSizeAnimation *autohideAnimation;
     QList<QTimer *> animationDelayTimer;

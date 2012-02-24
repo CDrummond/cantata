@@ -63,6 +63,7 @@ public:
 
     static void encode(QMimeData &mimeData, const QString &mime, const QStringList &values);
     static QStringList decode(const QMimeData &mimeData, const QString &mime);
+    static QString headerText(int col);
 
     PlayQueueModel(QObject *parent = 0);
     ~PlayQueueModel();
@@ -87,6 +88,7 @@ public:
     qint32 currentSongRow() const { return getRowById(currentSongId); }
     void setState(MPDStatus::State st);
     void setGrouped(bool g);
+    void refresh();
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row);

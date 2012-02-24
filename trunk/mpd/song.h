@@ -30,6 +30,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QSet>
+#include <QtCore/QMetaType>
 
 struct Song
 {
@@ -75,6 +76,8 @@ struct Song
     static QString capitalize(const QString &s);
     bool capitalise();
 };
+
+Q_DECLARE_METATYPE(Song)
 
 inline uint qHash(const Song &key)
 {

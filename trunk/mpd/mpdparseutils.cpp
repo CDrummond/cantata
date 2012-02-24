@@ -462,13 +462,13 @@ QString MPDParseUtils::formatDuration(const quint32 totalseconds)
 
     #ifdef ENABLE_KDE_SUPPORT
     return 0==days
-            ? time.toString("hh:mm:ss")
-            : i18np("1 day %2", "%1 days %2", days, time.toString("hh:mm:ss"));
+            ? time.toString("h:mm:ss")
+            : i18np("1 day %2", "%1 days %2", days, time.toString("h:mm:ss"));
     #else
     return 0==days
-            ? time.toString("hh:mm:ss")
+            ? time.toString("h:mm:ss")
             : 1==days
-                ? QObject::tr("1 day %1").arg(time.toString("hh:mm:ss"))
-                : QObject::tr("%1 days %2").arg(days).arg(time.toString("hh:mm:ss"));
+                ? QObject::tr("1 day %1").arg(time.toString("h:mm:ss"))
+                : QObject::tr("%1 days %2").arg(days).arg(time.toString("h:mm:ss"));
     #endif
 }

@@ -35,7 +35,6 @@
 #endif
 
 #include <QtGui/QMenu>
-#include <QtGui/QHeaderView>
 #include <QtGui/QProxyStyle>
 #include <QtGui/QPixmap>
 #include <QtGui/QResizeEvent>
@@ -193,7 +192,6 @@ protected:
 
 private:
     void setupTrayIcon();
-    void setupPlaylistView();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -260,8 +258,6 @@ private Q_SLOTS:
     #else
     void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
-    void playQueueContextMenuClicked();
-    void togglePlayQueueHeaderItem(const bool visible);
     void cropPlaylist();
     void updatePlayListStatus();
     void copyTrackInfo();
@@ -320,7 +316,6 @@ private:
     bool draggingPositionSlider;
     QIcon playbackPause;
     QIcon playbackPlay;
-    QHeaderView *playQueueHeader;
     VolumeSliderEventHandler *volumeSliderEventHandler;
     VolumeControl *volumeControl;
     Action *prefAction;
@@ -374,7 +369,6 @@ private:
     Action *refreshAction;
     Action *smallPlaybackButtonsAction;
     Action *smallControlButtonsAction;
-    QList<QAction *> viewActions;
     #ifdef ENABLE_KDE_SUPPORT
     KStatusNotifierItem *trayItem;
     KMenu *trayItemMenu;
@@ -384,7 +378,6 @@ private:
     #endif
     QMenu *playbackBtnsMenu;
     QMenu *controlBtnsMenu;
-    QMenu *playQueueMenu;
     QPixmap noCover;
     QPixmap noStreamCover;
     QPoint lastPos;

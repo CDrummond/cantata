@@ -43,26 +43,9 @@ static const int constCoverSize=32;
 static const int constIconSize=16;
 static const int constBorder=1;
 
-// static void drawBgnd(QPainter *painter, const QRect &rx)
-// {
-//     QRectF r(rx.x()-0.5, rx.y()-0.5, rx.width()+1, rx.height()+1);
-//     QPainterPath p;//(buildPath(r, r.width()/2.0));
-//     QColor c(Qt::white);
-//
-//     p.addEllipse(r);
-//     painter->setRenderHint(QPainter::Antialiasing, true);
-//     c.setAlphaF(0.75);
-//     painter->fillPath(p, c);
-// //     c.setAlphaF(0.95);
-// //     painter->setPen(c);
-// //     painter->drawPath(p);
-//     painter->setRenderHint(QPainter::Antialiasing, false);
-// }
-
 enum Type {
     AlbumHeader,
     AlbumTrack
-//     SingleTrack
 };
 
 static Type getType(const QModelIndex &index)
@@ -71,18 +54,7 @@ static Type getType(const QModelIndex &index)
     unsigned long thisKey=index.data(PlayQueueView::Role_Key).toUInt();
     unsigned long prevKey=prev.isValid() ? prev.data(PlayQueueView::Role_Key).toUInt() : 0xFFFFFFFF;
 
-    if (thisKey==prevKey) {
-        // Album Track
-        return AlbumTrack;
-    }
-//     QModelIndex next=index.sibling(index.row()+1, 0);
-//     unsigned long nextKey=next.isValid() ? next.data(PlayQueueView::Role_Key).toUInt() : 0xFFFFFFFF;
-//     if (thisKey==nextKey) {
-//         Album header...
-    return AlbumHeader;
-//     }
-//     Single track
-//     return SingleTrack;
+    return thisKey==prevKey ? AlbumTrack : AlbumHeader;
 }
 
 class PlayQueueDelegate : public QStyledItemDelegate
@@ -173,7 +145,6 @@ public:
         QString track;
         QString duration=Song::formattedTime(song.time);
         int state=index.data(PlayQueueView::Role_Status).toInt();
-        int indent=0;
         QString trackTitle=!song.albumartist.isEmpty() && song.albumartist != song.artist
                     ? song.title + " - " + song.artist
                     : song.title;
@@ -191,28 +162,14 @@ public:
             title=tr("%1 - %2").arg(song.albumartist()).arg(album);
             #endif
             track=formatNumber(song.track)+QChar(' ')+trackTitle;
-//             indent=8;
             break;
         }
         case AlbumTrack:
             track=formatNumber(song.track)+QChar(' ')+trackTitle;
-//             indent=8;
             break;
-//         case SingleTrack:
-//             #ifdef ENABLE_KDE_SUPPORT
-//             track=i18nc("TrackNum TrackTitle, from Album by Artist", "%1 %2, from %3 by %4",
-//                                 formatNumber(song.track), trackTitle, song.album, song.artist);
-//             #else
-//             track=tr("TrackNum TrackTitle, from Album by Artist", "%1 %2, from %3 by %4")
-//                      .arg(formatNumber(song.track).arg(index.data(trackTitle).arg(index.data(song.album).arg(song.artist);
-//             #endif
-//             break;
         }
 
         painter->save();
-//         if (AlbumTrack==type) {
-//             f.setItalic(true);
-//         }
         painter->setFont(f);
         QColor col(QApplication::palette().color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
         painter->setPen(col);
@@ -246,7 +203,6 @@ public:
             drawFadedLine(painter, r.adjusted(0, r.height()/2, 0, 0), col);
             r.adjust(0, textHeight+constBorder, 0, 0);
             r=QRect(r.x(), r.y()+r.height()-(textHeight+1), r.width(), textHeight);
-//             f.setItalic(true);
             painter->setFont(f);
             if (rtl) {
                 r.adjust(0, 0, (constCoverSize+constBorder), 0);
@@ -286,18 +242,10 @@ public:
             }
             }
             painter->setPen(col);
-//             QPixmap pix=statusIcon.value<QIcon>().pixmap(constIconSize, constIconSize);
-//             int adjust=(constCoverSize-constIconSize)-constBorder;
-//             QRect pixRect=rtl
-//                     ? QRect(sr.x()+sr.width()-(pix.width()+constBorder+adjust), sr.y()+((sr.height()-pix.height())/2), pix.width(), pix.height())
-//                     : QRect(sr.x()+adjust, sr.y()+((sr.height()-pix.height())/2), pix.width(), pix.height());
-//
-//             drawBgnd(painter, pixRect.adjusted(-1, -1, 1, 1));
-//             painter->drawPixmap(pixRect, pix);
         }
         int durationWidth=fm.width(duration)+8;
-        QRect duratioRect(r.x()+indent, r.y(), r.width()-indent, textHeight);
-        QRect textRect(r.x()+indent, r.y(), r.width()-(indent+durationWidth), textHeight);
+        QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
+        QRect textRect(r.x(), r.y(), r.width()-durationWidth, textHeight);
         track = fm.elidedText(track, Qt::ElideRight, textRect.width(), QPalette::WindowText);
         painter->drawText(textRect, track, textOpt);
         painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));

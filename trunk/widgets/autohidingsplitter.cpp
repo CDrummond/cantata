@@ -27,6 +27,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QChildEvent>
 #include <QtGui/QResizeEvent>
+#include <QtGui/QComboBox>
 
 class SplitterSizeAnimation:public QVariantAnimation
 {
@@ -63,6 +64,7 @@ private:
 AutohidingSplitter::AutohidingSplitter(Qt::Orientation orientation, QWidget *parent)
     : QSplitter(orientation, parent)
 {
+    haltModifications = false;
     autohideAnimation = new SplitterSizeAnimation(this);
     autohideAnimation->setSplitter(this);
     autohideAnimation->setDuration(100);
@@ -73,6 +75,7 @@ AutohidingSplitter::AutohidingSplitter(Qt::Orientation orientation, QWidget *par
 AutohidingSplitter::AutohidingSplitter(QWidget *parent)
     : QSplitter(parent)
 {
+    haltModifications = false;
     autohideAnimation = new SplitterSizeAnimation(this);
     autohideAnimation->setSplitter(this);
     autohideAnimation->setDuration(100);
@@ -110,11 +113,16 @@ void AutohidingSplitter::addChild(QObject *pObject)
             addChild(obj);
         }
     }
+    QComboBox * combo = qobject_cast<QComboBox *>(pObject);
+    if(combo){
+        comboViews.insert(combo->view());
+        addChild(combo->view());
+    }
 }
 
 void AutohidingSplitter::removeChild(QObject *pObject)
 {
-    if (pObject && pObject->isWidgetType()) {
+    if (pObject && (pObject->isWidgetType())) {
         pObject->removeEventFilter(this);
         const QObjectList& childList = pObject->children();
         foreach (QObject *obj, childList) {
@@ -125,10 +133,10 @@ void AutohidingSplitter::removeChild(QObject *pObject)
 
 void AutohidingSplitter::childEvent(QChildEvent *e)
 {
-    if (!hideEnabled) {
-        QSplitter::childEvent(e);
-        return;
-    }
+//     if (!autoHideEnabled) {
+//         QSplitter::childEvent(e);
+//         return;
+//     }
     if (e->child()->isWidgetType()) {
         if (QEvent::ChildAdded==e->type()) {
             addChild(e->child());
@@ -137,14 +145,11 @@ void AutohidingSplitter::childEvent(QChildEvent *e)
         }
     }
 
-    QWidget::childEvent(e);
+    QSplitter::childEvent(e);
 }
 
 bool AutohidingSplitter::eventFilter(QObject *target, QEvent *e)
 {
-    if (!hideEnabled) {
-        return QSplitter::eventFilter(target, e);
-    }
     switch (e->type()) {
     case QEvent::ChildAdded: {
         QChildEvent *ce = (QChildEvent*)e;
@@ -156,27 +161,65 @@ bool AutohidingSplitter::eventFilter(QObject *target, QEvent *e)
         removeChild(ce->child());
         break;
     }
+    default:
+        break;
+    }
+    if (!autoHideEnabled) {
+        return QSplitter::eventFilter(target, e);
+    }
+    switch (e->type()) {
     case QEvent::Enter:
         this->widgetHoverStarted(indexOf(qobject_cast<QWidget *>(target)));
+        if(comboViews.contains(qobject_cast<QAbstractItemView *>(target))) {
+            haltModifications = true;
+        }
         break;
     case QEvent::Leave:
         this->widgetHoverFinished(indexOf(qobject_cast<QWidget *>(target)));
+        if(comboViews.contains(qobject_cast<QAbstractItemView *>(target))) {
+            haltModifications = false;
+        }
         break;
+    case QEvent::MouseButtonPress:
+        if(qobject_cast<AutohidingSplitterHandle *>(target)){
+            foreach(QTimer * timer, animationDelayTimer) {
+                timer->stop();
+            }
+            haltModifications = true;
+        }
+        break;
+    case QEvent::MouseButtonRelease:{
+        if(qobject_cast<AutohidingSplitterHandle *>(target)){
+            haltModifications = false;
+            targetSizes.clear();
+        }
+        break;
+    }
+    case QEvent::FocusIn:{
+//     QFocusEvent *ce = (QFocusEvent *)e;
+        haltModifications = false;
+        break;
+    }
+    case QEvent::FocusOut:{
+//     QFocusEvent *ce = (QFocusEvent *)e;
+        haltModifications = true;
+        break;
+    }
     default:
         break;
     }
 
-    return QWidget::eventFilter(target, e);
+    return QSplitter::eventFilter(target, e);
 }
 
 void AutohidingSplitter::setAutoHideEnabled(bool ah)
 {
-    if (ah==hideEnabled) {
+    if (ah==autoHideEnabled) {
         return;
     }
 
-    hideEnabled=ah;
-    if (hideEnabled) {
+    autoHideEnabled=ah;
+    if (autoHideEnabled) {
         connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     } else {
         disconnect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
@@ -185,7 +228,7 @@ void AutohidingSplitter::setAutoHideEnabled(bool ah)
 
 void AutohidingSplitter::resizeEvent(QResizeEvent *event)
 {
-    if (hideEnabled) {
+    if (autoHideEnabled) {
         int oldUsableSize = event->oldSize().width()/*-(count()-1)*handleWidth()*/;
         int newUsableSize = event->size().width()/*-(count()-1)*handleWidth()*/;
         int leftToDistribute = newUsableSize-oldUsableSize;
@@ -213,6 +256,7 @@ void AutohidingSplitter::addWidget(QWidget *widget)
         connect(sat, SIGNAL(timeout()), this, SLOT(setWidgetForHiding()));
         animationDelayTimer.append(sat);
         widgetAutohidden.append(false);
+        widgetAutohiddenPrev.append(false);
         widgetAutohidable.append(false);
     }
 }
@@ -226,6 +270,9 @@ bool AutohidingSplitter::restoreState(const QByteArray &state)
 
 QByteArray AutohidingSplitter::saveState() const
 {
+    if (!autoHideEnabled) {
+        return QSplitter::saveState();
+    }
     AutohidingSplitter *tmpSplitter = new AutohidingSplitter(/*qobject_cast<QWidget *>(parent())*/);
 
     for (int i = 0; i < count(); ++ i) {
@@ -240,76 +287,78 @@ QByteArray AutohidingSplitter::saveState() const
 
 void AutohidingSplitter::widgetHoverStarted(int index)
 {
-//    int index = indexOf(qobject_cast<QWidget *>(QObject::sender()));
-    if (!hideEnabled || index<0 || index > count()) {
+    if (!autoHideEnabled || index<0 || index > count()) {
         return;
     }
-    if (animationDelayTimer.at(index)->isActive()) {
-        animationDelayTimer.at(index)->stop();
-    }
-    if (widgetAutohidden.at(index) && widgetAutohidable.at(index)) {
-        widgetAutohidden[index] = false;
-        updateResizeQueue();
+    if(!haltModifications){
+        if (animationDelayTimer.at(index)->isActive()) {
+            animationDelayTimer.at(index)->stop();
+        }
+        if (widgetAutohidden.at(index) && widgetAutohidable.at(index)) {
+            widgetAutohiddenPrev[index] = widgetAutohidden[index];
+            widgetAutohidden[index] = false;
+            updateResizeQueue();
+        }
     }
 }
 
 void AutohidingSplitter::widgetHoverFinished(int index)
 {
-//    int index = indexOf(qobject_cast<QWidget *>(QObject::sender()));
-    if (!hideEnabled || index<0 || index > count()) {
+    if (!autoHideEnabled || index<0 || index > count()) {
         return;
     }
     if (!widgetAutohidden.at(index) && widgetAutohidable.at(index)) {
-//        sidebarCollapsed[index] = true;
         animationDelayTimer.at(index)->start();
     }
 }
 
 void AutohidingSplitter::handleHoverStarted()
 {
-    if (!hideEnabled) {
+    if (!autoHideEnabled) {
         return;
     }
 
-    int index = indexOf(qobject_cast<QWidget *>(QObject::sender()));
-
-    if (animationDelayTimer.at(index)->isActive()) {
-        animationDelayTimer.at(index)->stop();
-    }
-    if (widgetAutohidden.at(index) && widgetAutohidable.at(index)) {
-        widgetAutohidden[index] = false;
-        updateResizeQueue();
-    }
-
-    if (index > 0 && animationDelayTimer.at(index-1)->isActive()) {
-        animationDelayTimer.at(index-1)->stop();
-    }
-    if (index > 0 && widgetAutohidden.at(index-1) && widgetAutohidable.at(index-1)) {
-        widgetAutohidden[index-1] = false;
-        updateResizeQueue();
+    if(!haltModifications){
+        int index = indexOf(qobject_cast<QWidget *>(QObject::sender()));
+        if (animationDelayTimer.at(index)->isActive()) {
+            animationDelayTimer.at(index)->stop();
+        }
+        if (widgetAutohidden.at(index) && widgetAutohidable.at(index)) {
+            widgetAutohiddenPrev[index] = widgetAutohidden[index];
+            widgetAutohidden[index] = false;
+            updateResizeQueue();
+        }
+        if (index > 0 && animationDelayTimer.at(index-1)->isActive()) {
+            animationDelayTimer.at(index-1)->stop();
+        }
+        if (index > 0 && widgetAutohidden.at(index-1) && widgetAutohidable.at(index-1)) {
+            widgetAutohiddenPrev[index-1] = widgetAutohidden[index-1];
+            widgetAutohidden[index-1] = false;
+            updateResizeQueue();
+        }
     }
 }
 
 void AutohidingSplitter::handleHoverFinished()
 {
-    if (!hideEnabled) {
+    if (!autoHideEnabled) {
         return;
     }
 
-    int index = indexOf(qobject_cast<QWidget *>(QObject::sender()));
-    if (!widgetAutohidden.at(index) && widgetAutohidable.at(index)) {
-//        sidebarCollapsed[index] = true;
-        animationDelayTimer.at(index)->start();
-    }
-    if (index>0 && !widgetAutohidden.at(index-1) && widgetAutohidable.at(index-1)) {
-//        sidebarCollapsed[index-1] = true;
-        animationDelayTimer.at(index-1)->start();
+    if(!haltModifications){
+        int index = indexOf(qobject_cast<QWidget *>(QObject::sender()));
+        if (!widgetAutohidden.at(index) && widgetAutohidable.at(index)) {
+            animationDelayTimer.at(index)->start();
+        }
+        if (index>0 && !widgetAutohidden.at(index-1) && widgetAutohidable.at(index-1)) {
+            animationDelayTimer.at(index-1)->start();
+        }
     }
 }
 
 void AutohidingSplitter::updateResizeQueue()
 {
-    if (!hideEnabled) {
+    if (!autoHideEnabled) {
         return;
     }
 
@@ -333,15 +382,17 @@ QList<int> AutohidingSplitter::getSizesAfterHiding() const
             } else {
                 toDistribute+=result.at(i)-expandedSizes.at(i);
                 result[i]=expandedSizes.at(i);
-//                numberOfExpanded++;
+                if(widgetAutohidden.at(i)==widgetAutohiddenPrev.at(i))
+                    numberOfExpanded++;
             }
         } else {
+            toDistribute+=result.at(i)-expandedSizes.at(i);
             result[i]=expandedSizes.at(i);
             numberOfExpanded++;
         }
     }
     for (int i = 0 ; i<widgetAutohidden.count(); ++i) {
-        if ( (widgetAutohidable.at(i)&&!widgetAutohidden.at(i)&&sizes().at(i)==result[i]) || !widgetAutohidable.at(i)) {
+        if( (widgetAutohidable.at(i)&&!widgetAutohidden.at(i)&&widgetAutohidden.at(i)==widgetAutohiddenPrev.at(i)) || !widgetAutohidable.at(i)) {
                 numberOfExpanded--;
                 if (numberOfExpanded) {
                     result[i]+=int(qreal(toDistribute)/(numberOfExpanded+1));
@@ -356,7 +407,7 @@ QList<int> AutohidingSplitter::getSizesAfterHiding() const
 
 void AutohidingSplitter::startAnimation()
 {
-    if (!hideEnabled) {
+    if (!autoHideEnabled) {
         return;
     }
 
@@ -376,16 +427,19 @@ void AutohidingSplitter::setWidgetForHiding()
 {
 
     int index = animationDelayTimer.indexOf(qobject_cast<QTimer *>(QObject::sender()));
-    if (!widgetAutohidden.at(index)) {
-        widgetAutohidden[index] = true;
-        updateResizeQueue();
+    if(!haltModifications){
+        if (!widgetAutohidden.at(index)) {
+            widgetAutohiddenPrev[index] = widgetAutohidden[index];
+            widgetAutohidden[index] = true;
+            updateResizeQueue();
+        }
     }
 }
 
 void AutohidingSplitter::updateAfterSplitterMoved(int pos, int index)
 {
     Q_UNUSED(pos);
-    if (!hideEnabled || index<=0 || index>count()) {
+    if (!autoHideEnabled || index<=0 || index>count()) {
         return;
     }
     QList<int> currentTemporarySizes = sizes();

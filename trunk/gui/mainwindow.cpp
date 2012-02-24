@@ -931,7 +931,7 @@ MainWindow::~MainWindow()
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     Settings::self()->saveSmallPlaybackButtons(smallPlaybackButtonsAction->isChecked());
     Settings::self()->saveSmallControlButtons(smallControlButtonsAction->isChecked());
-    Settings::self()->saveSplitterAutoHide(splitter->autoHideEnabled());
+    Settings::self()->saveSplitterAutoHide(splitter->isAutoHideEnabled());
     playQueue->saveHeader();
     QStringList hiddenPages;
     for (int i=0; i<tabWidget->count(); ++i) {

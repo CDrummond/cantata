@@ -571,10 +571,10 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
                     song.key+=al.value()&0xFFFF;
                 }
                 if (ar==artists.end()) {
-                    song.key=(artists.size()&0xFFFF)<<16;
+                    song.key+=(artists.size()&0xFFFF)<<16;
                     artists.insert(song.albumArtist(), artists.size());
                 } else {
-                    song.key=(ar.value()&0xFFFF)<<16;
+                    song.key+=(ar.value()&0xFFFF)<<16;
                 }
             }
 
@@ -607,10 +607,10 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
                     song.key+=al.value()&0xFFFF;
                 }
                 if (ar==artists.end()) {
-                    song.key=(artists.size()&0xFFFF)<<16;
+                    song.key+=(artists.size()&0xFFFF)<<16;
                     artists.insert(song.albumArtist(), artists.size());
                 } else {
-                    song.key=(ar.value()&0xFFFF)<<16;
+                    song.key+=(ar.value()&0xFFFF)<<16;
                 }
                 songList.append(song);
             }

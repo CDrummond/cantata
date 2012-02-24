@@ -60,6 +60,13 @@ class PlayQueueView : public QStackedWidget
     Q_OBJECT
 
 public:
+    enum Status {
+        State_Default,
+        State_Playing,
+        State_Paused,
+        State_Stopped
+    };
+
     enum Roles {
         Role_Key = Qt::UserRole+512,
         Role_Song,

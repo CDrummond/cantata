@@ -222,8 +222,19 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         return d;
     }
+//     case PlayQueueView::Role_Status:
+//         return songs.at(index.row()).id == currentSongId;
     case PlayQueueView::Role_Status:
-        return songs.at(index.row()).id == currentSongId;
+        if (songs.at(index.row()).id == currentSongId) {
+            switch (mpdState) {
+            case MPDStatus::State_Inactive:
+            case MPDStatus::State_Stopped: return (int)PlayQueueView::State_Stopped;
+            case MPDStatus::State_Playing: return (int)PlayQueueView::State_Playing;
+            case MPDStatus::State_Paused:  return (int)PlayQueueView::State_Paused;
+            }
+        }
+        return (int)PlayQueueView::State_Default;
+        break;
     case Qt::FontRole:
         if (songs.at(index.row()).id == currentSongId) {
             QFont font;

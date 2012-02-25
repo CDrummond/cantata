@@ -1,5 +1,8 @@
 - Library
-  - Artist icons ?
+  - Artist icons?
+
+- Albums
+  - Coverflow view?
 
 - Streams
   - Handle more than 1st entry?? Not sure
@@ -21,9 +24,22 @@
     - MTP has no access to other tags, so when converting back, how would I
       know this is a compilation?
   - Allow to drag songs from albums/library to devices, and vice versa.
+  - Detect AudioCDs
+    - call audex/kaudiocoverter/soundKonverter/k3b?
+    - or list via audiocd:// ???
+
+- PlayQueue
+  - Add copy to device to context menu?
+    - Will need to be careful that songs are not from device
+    - Also, check that songs are not streams!
+  - Tabbed mode, to show other play lists?
 
 - General
   - When displaying search results, should expand items to show matched entry
+  - Ratings (use KRatingWidget?)
+  - mpdscribble management?
+  - Combine 'Page' classes
+  - Better menu icon?
 
 - Sidebar
   - Allow to collapse current item

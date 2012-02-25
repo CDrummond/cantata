@@ -806,7 +806,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     #else
     modeAct=new QAction(tr("Style"), this);
     iconOnlyAct=new QAction(tr("Icons Only"), this);
-    autoHideAct=new QAction(tr("Icons Only"), this);
+    autoHideAct=new QAction(tr("Auto Hide"), this);
     AddMenuItem(group, tr("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
     AddMenuItem(group, tr("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
     AddMenuItem(group, tr("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);

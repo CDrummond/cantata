@@ -159,7 +159,7 @@ public:
             #ifdef ENABLE_KDE_SUPPORT
             title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
             #else
-            title=tr("%1 - %2").arg(song.albumartist()).arg(album);
+            title=tr("%1 - %2").arg(song.albumArtist()).arg(album);
             #endif
             track=formatNumber(song.track)+QChar(' ')+trackTitle;
             break;

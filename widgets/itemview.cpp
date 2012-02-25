@@ -511,6 +511,7 @@ void ItemView::setLevel(int l, bool haveChildren)
                 listView->setResizeMode(QListView::Adjust);
                 listView->setAlternatingRowColors(false);
                 listView->setWordWrap(true);
+                listView->setDragDropMode(QAbstractItemView::DragOnly);
             }
         } else if(QListView::ListMode!=listView->viewMode()) {
             listView->setGridSize(listGridSize);
@@ -518,6 +519,7 @@ void ItemView::setLevel(int l, bool haveChildren)
             listView->setResizeMode(QListView::Fixed);
             listView->setAlternatingRowColors(true);
             listView->setWordWrap(false);
+            listView->setDragDropMode(QAbstractItemView::DragOnly);
         }
     }
 

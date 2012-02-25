@@ -87,6 +87,7 @@ public:
     qint32 currentSong() const { return currentSongId; }
     qint32 currentSongRow() const { return getRowById(currentSongId); }
     void setState(MPDStatus::State st);
+    bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
     void refresh();
 

@@ -294,10 +294,11 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
 
 Qt::ItemFlags AlbumsModel::flags(const QModelIndex &index) const
 {
-    if (index.isValid())
+    if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-    else
+    } else {
         return Qt::NoItemFlags;
+    }
 }
 
 QStringList AlbumsModel::filenames(const QModelIndexList &indexes) const

@@ -154,7 +154,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         show();
         if (!enoughSpace) {
             KMessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"
-                                                "The selected songs consume %1, but there is only %2 left.\n",
+                                                "The selected songs consume %1, but there is only %2 left.\n"
                                                 "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.",
                                                 KGlobal::locale()->formatByteSize(spaceRequired),
                                                 KGlobal::locale()->formatByteSize(spaceAvailable)));

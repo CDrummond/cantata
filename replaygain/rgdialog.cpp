@@ -441,17 +441,20 @@ void RgDialog::scannerDone(ThreadWeaver::Job *j)
 
 void RgDialog::songTags(int index, Tags::ReplayGain tags)
 {
-    if (index>=0 && index<origSongs.count() && !tags.isEmpty()) {
-        origTags[index]=tags;
+    if (index>=0 && index<origSongs.count()) {
+        progress->setValue(progress->value()+1);
+        if (!tags.isEmpty()) {
+            origTags[index]=tags;
 
-        QTreeWidgetItem *item=view->topLevelItem(index);
-        if (!item) {
-            return;
+            QTreeWidgetItem *item=view->topLevelItem(index);
+            if (!item) {
+                return;
+            }
+            item->setText(COL_TRACKGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(tags.trackGain, 2)));
+            item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(tags.trackPeak, 6));
+            item->setText(COL_ALBUMGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(tags.albumGain, 2)));
+            item->setText(COL_ALBUMPEAK, KGlobal::locale()->formatNumber(tags.albumPeak, 6));
         }
-        item->setText(COL_TRACKGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(tags.trackGain, 2)));
-        item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(tags.trackPeak, 6));
-        item->setText(COL_ALBUMGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(tags.albumGain, 2)));
-        item->setText(COL_ALBUMPEAK, KGlobal::locale()->formatNumber(tags.albumPeak, 6));
     }
 }
 

@@ -187,7 +187,8 @@ void RgDialog::slotButtonClicked(int button)
 
 void RgDialog::startScanning()
 {
-    bool all=KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Do you wish to scan all files, or only files without existing tags?"), QString(),
+    bool all=origTags.isEmpty() ||
+             KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Do you wish to scan all files, or only files without existing tags?"), QString(),
                                                           KGuiItem(i18n("All Tracks")), KGuiItem(i18n("Untagged Tracks")));
     if (!all && origTags.count()==origSongs.count()) {
         return;

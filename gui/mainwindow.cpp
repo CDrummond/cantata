@@ -1569,7 +1569,7 @@ void MainWindow::scrollPlayQueue()
         qint32 row=playQueueModel.currentSongRow();
         if (row>=0) {
             QModelIndex idx=usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0)) : playQueueModel.index(row, 0);
-            playQueue->scrollTo(idx, QAbstractItemView::EnsureVisible);
+            playQueue->scrollTo(idx, QAbstractItemView::PositionAtCenter);
         }
     }
 }

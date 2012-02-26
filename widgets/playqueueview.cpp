@@ -88,10 +88,10 @@ public:
         return num<10 ? "0"+text : text;
     }
 
-    void drawFadedLine(QPainter *p, const QRect &r, const QColor &col) const
+    static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
     {
         QPoint start(r.x(), r.y());
-        QPoint  end(r.x()+r.width()-1, r.y());
+        QPoint end(r.x()+r.width()-1, r.y());
         QLinearGradient grad(start, end);
         QColor c(col);
         c.setAlphaF(0.45);
@@ -114,6 +114,19 @@ public:
         p->setPen(QPen(QBrush(grad), 1));
         p->drawLine(start, end);
         p->restore();
+    }
+
+    static QPainterPath buildPath(const QRectF &r, double radius)
+    {
+        QPainterPath path;
+        double diameter(radius*2);
+
+        path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
+        path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
+        path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
+        path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
+        path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
+        return path;
     }
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -172,10 +185,34 @@ public:
         painter->save();
         painter->setFont(f);
         QColor col(QApplication::palette().color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
-        painter->setPen(col);
         QTextOption textOpt(Qt::AlignVCenter);
         QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
         bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
+
+        if (state) {
+            QRectF border(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
+            if (!title.isEmpty()) {
+                border.adjust(0, textHeight+constBorder, 0, 0);
+            }
+            QLinearGradient g(border.topLeft(), border.bottomLeft());
+            QColor gradCol(QApplication::palette().color(QPalette::Highlight));
+            gradCol.setAlphaF(option.state&QStyle::State_Selected ? 0.6 : 0.35);
+//             g.setColorAt(0, gradCol.light(185));
+//             g.setColorAt(0.49999, gradCol.dark(110));
+//             g.setColorAt(0.5, gradCol.dark(125));
+//             g.setColorAt(1, gradCol.light(145));
+
+            g.setColorAt(0, gradCol.dark(175));
+            g.setColorAt(1, gradCol.light(150));
+
+            painter->setRenderHint(QPainter::Antialiasing, true);
+            painter->fillPath(buildPath(border, 3), g);
+            painter->setPen(QPen(option.state&QStyle::State_Selected ? col : gradCol, 1));
+            painter->drawPath(buildPath(border, 3));
+            painter->setRenderHint(QPainter::Antialiasing, false);
+        }
+
+        painter->setPen(col);
 
         if (!title.isEmpty()) {
             // Draw cover...
@@ -212,8 +249,8 @@ public:
         }
 
         if (state) {
-            f.setBold(true);
-            painter->setFont(f);
+//             f.setBold(true);
+//             painter->setFont(f);
             int size=9;
             QRect ir(r.x()-(size+6), r.y()+(r.height()-size)/2, size, size);
             switch (state) {

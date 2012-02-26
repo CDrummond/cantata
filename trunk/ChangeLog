@@ -31,7 +31,7 @@
 17. Fix build with "-DCMAKE_BUILD_TYPE=debugfull" set - thanks to Martin.
 18. Fix drag'n'drop of tracks from album view into play queue - affected list
     and icon/list modes.
-19. Add a workaround for dockmanager issues - dealy registration for .25secs.
+19. Add a workaround for dockmanager issues - delay registration for .25secs.
 
 0.4.0
 -----

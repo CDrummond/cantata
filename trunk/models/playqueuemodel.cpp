@@ -242,13 +242,13 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return font;
         }
         break;
-    case Qt::BackgroundRole:
-        if (songs.at(index.row()).id == currentSongId) {
-            QColor col(QPalette().color(QPalette::Highlight));
-            col.setAlphaF(0.2);
-            return QVariant(col);
-        }
-        break;
+//     case Qt::BackgroundRole:
+//         if (songs.at(index.row()).id == currentSongId) {
+//             QColor col(QPalette().color(QPalette::Highlight));
+//             col.setAlphaF(0.2);
+//             return QVariant(col);
+//         }
+//         break;
     case Qt::DisplayRole: {
         const Song &song = songs.at(index.row());
         switch (index.column()) {

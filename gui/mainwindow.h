@@ -383,6 +383,7 @@ private:
     QPoint lastPos;
     Song current;
     Song coverSong;
+    QString coverFileName;
     bool lyricsNeedUpdating;
     #ifdef ENABLE_WEBKIT
     bool infoNeedsUpdating;

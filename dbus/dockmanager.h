@@ -36,6 +36,7 @@ class DockManager : public QObject
 public:
     DockManager(QObject *p);
     void setEnabled(bool e);
+    bool enabled() const { return isEnabled; }
 
 public Q_SLOTS:
     void setIcon(const QString &file);

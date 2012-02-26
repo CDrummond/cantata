@@ -906,7 +906,9 @@ MainWindow::MainWindow(QWidget *parent)
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     playlistsPage->refresh();
     toggleMpris();
-    toggleDockManager();
+    if (Settings::self()->dockManager()) {
+        QTimer::singleShot(250, this, SLOT(toggleDockManager()));
+    }
 }
 
 struct Thread : public QThread
@@ -2131,10 +2133,12 @@ void MainWindow::cover(const QString &artist, const QString &album, const QImage
         if (img.isNull()) {
             coverSong=Song();
             coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
+            coverFileName=QString();
             emit coverFile(QString());
         } else {
             coverSong=current;
             coverWidget->setPixmap(QPixmap::fromImage(img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            coverFileName=file;
             emit coverFile(file);
         }
     }
@@ -2167,7 +2171,11 @@ void MainWindow::toggleDockManager()
         connect(this, SIGNAL(coverFile(const QString &)), dock, SLOT(setIcon(const QString &)));
     }
 
+    bool wasEnabled=dock->enabled();
     dock->setEnabled(Settings::self()->dockManager());
+    if (dock->enabled() && !wasEnabled && !coverFileName.isEmpty()) {
+        emit coverFile(coverFileName);
+    }
 }
 
 // void MainWindow::createDataCd()

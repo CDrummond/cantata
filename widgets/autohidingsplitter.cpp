@@ -28,6 +28,7 @@
 #include <QtCore/QChildEvent>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QComboBox>
+#include <QtGui/QMenu>
 
 class SplitterSizeAnimation:public QVariantAnimation
 {
@@ -115,8 +116,8 @@ void AutohidingSplitter::addChild(QObject *pObject)
     }
     QComboBox * combo = qobject_cast<QComboBox *>(pObject);
     if(combo){
-        comboViews.insert(combo->view());
-        addChild(combo->view());
+        popupsBlockingAutohiding.insert(combo->view());
+//        addChild(combo->view());
     }
 }
 
@@ -170,13 +171,13 @@ bool AutohidingSplitter::eventFilter(QObject *target, QEvent *e)
     switch (e->type()) {
     case QEvent::Enter:
         this->widgetHoverStarted(indexOf(qobject_cast<QWidget *>(target)));
-        if(comboViews.contains(qobject_cast<QAbstractItemView *>(target))) {
+        if(popupsBlockingAutohiding.contains(qobject_cast<QWidget *>(target))) {
             haltModifications = true;
         }
         break;
     case QEvent::Leave:
         this->widgetHoverFinished(indexOf(qobject_cast<QWidget *>(target)));
-        if(comboViews.contains(qobject_cast<QAbstractItemView *>(target))) {
+        if(popupsBlockingAutohiding.contains(qobject_cast<QWidget *>(target))) {
             haltModifications = false;
         }
         break;
@@ -230,10 +231,18 @@ void AutohidingSplitter::setAutoHideEnabled(bool ah)
     }
 }
 
+void AutohidingSplitter::setVisible(bool visible){
+    haltModifications=!visible;
+    QSplitter::setVisible(visible);
+}
+
 void AutohidingSplitter::resizeEvent(QResizeEvent *event)
 {
-    if (autoHideEnabled) {
-        int oldUsableSize = event->oldSize().width()/*-(count()-1)*handleWidth()*/;
+    if (autoHideEnabled && !haltModifications && event->oldSize().width() > 0) {
+//        int oldUsableSize = event->oldSize().width()/*-(count()-1)*handleWidth()*/;
+        int oldUsableSize = 0;
+        foreach(int size, expandedSizes)
+            oldUsableSize+=size;
         int newUsableSize = event->size().width()/*-(count()-1)*handleWidth()*/;
         int leftToDistribute = newUsableSize-oldUsableSize;
 

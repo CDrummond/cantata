@@ -83,6 +83,7 @@ public:
 
 public Q_SLOTS:
     void setAutoHideEnabled(bool en);
+    void setVisible(bool visible);
 
 protected:
     virtual QSplitterHandle * createHandle();
@@ -114,7 +115,7 @@ private:
     QList<bool> widgetAutohidable;
     QList<int> expandedSizes;
     QQueue<QList<int> > targetSizes;
-    QSet<QAbstractItemView *> comboViews;
+    QSet<QWidget *> popupsBlockingAutohiding;
     friend class AutohidingSplitterHandle;
 };
 

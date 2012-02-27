@@ -353,6 +353,11 @@ bool Settings::groupedPlayQueue()
     return GET_BOOL("groupedPlayQueue", version()>=CANTATA_MAKE_VERSION(0, 5, 0));
 }
 
+bool Settings::autoCollapsePlayQueue()
+{
+    return GET_BOOL("autoCollapsePlayQueue", true);
+}
+
 void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -567,6 +572,11 @@ void Settings::saveAlwaysUseHttp(bool v)
 void Settings::saveGroupedPlayQueue(bool v)
 {
     SET_VALUE("groupedPlayQueue", v);
+}
+
+void Settings::saveAutoCollapsePlayQueue(bool v)
+{
+    SET_VALUE("autoCollapsePlayQueue", v);
 }
 
 void Settings::save(bool force)

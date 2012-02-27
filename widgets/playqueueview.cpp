@@ -27,6 +27,7 @@
 #include "listview.h"
 #include "treeview.h"
 #include "settings.h"
+#include "mpdstatus.h"
 #include <QtGui/QStyledItemDelegate>
 #include <QtGui/QApplication>
 #include <QtGui/QFontMetrics>
@@ -35,6 +36,7 @@
 #include <QtGui/QHeaderView>
 #include <QtGui/QMenu>
 #include <QtGui/QAction>
+#include <QtGui/QDropEvent>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -48,11 +50,36 @@ enum Type {
     AlbumTrack
 };
 
+static const quint32 constNullAlbum=0xFFFF;
+
+class PlayQueueListView : public ListView
+{
+public:
+    PlayQueueListView(QWidget *parent=0);
+    virtual ~PlayQueueListView();
+
+    void setFilterActive(bool f);
+    bool isFilterActive() const { return filterActive; }
+    void setAutoCollapsingEnabled(bool ac) { autoCollapsingEnabled=ac; }
+    bool isAutoCollapsingEnabled() const { return autoCollapsingEnabled; }
+    void setCurrentRow(quint32 row);
+    bool isExpanded(quint32 key) const { return filterActive || currentAlbum==key || userExpandedAlbums.contains(key); }
+    void toggle(const QModelIndex &idx);
+    QModelIndexList selectedIndexes() const;
+    void dropEvent(QDropEvent *event);
+
+private:
+    bool autoCollapsingEnabled;
+    bool filterActive;
+    quint32 currentAlbum;
+    QSet<quint32> userExpandedAlbums;
+};
+
 static Type getType(const QModelIndex &index)
 {
     QModelIndex prev=index.row()>0 ? index.sibling(index.row()-1, 0) : QModelIndex();
-    unsigned long thisKey=index.data(PlayQueueView::Role_Key).toUInt();
-    unsigned long prevKey=prev.isValid() ? prev.data(PlayQueueView::Role_Key).toUInt() : 0xFFFFFFFF;
+    quint32 thisKey=index.data(PlayQueueView::Role_Key).toUInt();
+    quint32 prevKey=prev.isValid() ? prev.data(PlayQueueView::Role_Key).toUInt() : constNullAlbum;
 
     return thisKey==prevKey ? AlbumTrack : AlbumHeader;
 }
@@ -60,8 +87,9 @@ static Type getType(const QModelIndex &index)
 class PlayQueueDelegate : public QStyledItemDelegate
 {
 public:
-    PlayQueueDelegate(QObject *p)
+    PlayQueueDelegate(PlayQueueListView *p)
         : QStyledItemDelegate(p)
+        , view(p)
     {
     }
 
@@ -215,6 +243,7 @@ public:
         }
 
         painter->setPen(col);
+        bool showTrackDuration=true;
 
         if (!title.isEmpty()) {
             // Draw cover...
@@ -245,6 +274,16 @@ public:
             painter->setFont(f);
             if (rtl) {
                 r.adjust(0, 0, (constCoverSize+constBorder), 0);
+            }
+
+            quint32 key=index.data(PlayQueueView::Role_Key).toUInt();
+            if (!view->isExpanded(key)) {
+                showTrackDuration=false;
+                #ifdef ENABLE_KDE_SUPPORT
+                track=i18np("1 Track", "%1 Tracks", index.data(PlayQueueView::Role_SongCount).toUInt());
+                #else
+                track=tr("%1 Track(s)").arg(index.data(PlayQueueView::Role_SongCount).toUInt());
+                #endif
             }
         } else if (!rtl) {
             r.adjust(constCoverSize+constBorder, 0, 0, 0);
@@ -281,26 +320,27 @@ public:
             }
             painter->setPen(col);
         }
-        int durationWidth=fm.width(duration)+8;
+        int durationWidth=showTrackDuration ? fm.width(duration)+8 : 0;
         QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
         QRect textRect(r.x(), r.y(), r.width()-durationWidth, textHeight);
         track = fm.elidedText(track, Qt::ElideRight, textRect.width(), QPalette::WindowText);
         painter->drawText(textRect, track, textOpt);
-        painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
+        if (showTrackDuration) {
+            painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
+        }
         painter->restore();
     }
-};
 
-class PlayQueueListView : public ListView
-{
-public:
-
-    PlayQueueListView(QWidget *parent=0);
-    virtual ~PlayQueueListView();
+private:
+    PlayQueueListView *view;
 };
 
 PlayQueueListView::PlayQueueListView(QWidget *parent)
-        : ListView(parent)
+    : ListView(parent)
+//     , inDropEvent(false)
+    , autoCollapsingEnabled(false)
+    , filterActive(false)
+    , currentAlbum(constNullAlbum)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setAcceptDrops(true);
@@ -315,6 +355,145 @@ PlayQueueListView::PlayQueueListView(QWidget *parent)
 
 PlayQueueListView::~PlayQueueListView()
 {
+}
+
+void PlayQueueListView::setFilterActive(bool f)
+{
+    if (f!=filterActive) {
+        filterActive=f;
+        if (filterActive && model()) {
+            quint32 count=model()->rowCount();
+            for (quint32 i=0; i<count; ++i) {
+                setRowHidden(i, false);
+            }
+        }
+    }
+}
+
+void PlayQueueListView::setCurrentRow(quint32 row)
+{
+    currentAlbum=0xFFFF;
+
+    if (!model() || row>(quint32)model()->rowCount()) {
+        return;
+    }
+
+    if (filterActive && model() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
+        scrollTo(model()->index(row, 0), QAbstractItemView::PositionAtCenter);
+        return;
+    }
+
+    if (model()) {
+        quint32 count=model()->rowCount();
+        quint32 showRow=row;
+        quint32 lastKey=constNullAlbum;
+        currentAlbum=model()->index(row, 0).data(PlayQueueView::Role_Key).toUInt();
+        for (quint32 i=0; i<count; ++i) {
+            quint32 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
+            bool hide=autoCollapsingEnabled && key==lastKey && (key!=currentAlbum && !userExpandedAlbums.contains(key));
+            setRowHidden(i, hide);
+            if (hide && i<row) {
+                showRow--;
+            }
+            lastKey=key;
+        }
+        if (MPDStatus::State_Playing==MPDStatus::self()->state()) {
+            scrollTo(model()->index(showRow, 0), QAbstractItemView::PositionAtCenter);
+        }
+    }
+}
+
+void PlayQueueListView::toggle(const QModelIndex &idx)
+{
+    quint32 indexKey=idx.data(PlayQueueView::Role_Key).toUInt();
+
+    if (indexKey==currentAlbum) {
+        return;
+    }
+
+    bool toBeHidden=false;
+    if (userExpandedAlbums.contains(indexKey)) {
+        userExpandedAlbums.remove(indexKey);
+        toBeHidden=true;
+    } else {
+        userExpandedAlbums.insert(indexKey);
+    }
+
+    if (model()) {
+        quint32 count=model()->rowCount();
+        for (quint32 i=idx.row()+1; i<count; ++i) {
+            quint32 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
+            if (indexKey==key) {
+                setRowHidden(i, toBeHidden);
+            } else {
+                break;
+            }
+        }
+    }
+}
+
+QModelIndexList PlayQueueListView::selectedIndexes() const
+{
+    QModelIndexList indexes = ListView::selectedIndexes();
+    QModelIndexList allIndexes;
+    quint32 rowCount=model()->rowCount();
+
+    foreach (const QModelIndex &idx, indexes) {
+        quint32 key=idx.data(PlayQueueView::Role_Key).toUInt();
+        allIndexes.append(idx);
+        if (!isExpanded(key)) {
+            for (quint32 i=idx.row()+1; i<rowCount; ++i) {
+                QModelIndex next=idx.sibling(i, 0);
+                if (next.isValid()) {
+                    quint32 nextKey=next.data(PlayQueueView::Role_Key).toUInt();
+                    if (nextKey==key) {
+                        allIndexes.append(next);
+                    } else {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    return allIndexes;
+}
+
+void PlayQueueListView::dropEvent(QDropEvent *event)
+{
+    quint32 dropRowAdjust=0;
+    PlayQueueModel *m=qobject_cast<PlayQueueModel *>(model());
+    if (m && viewport()->rect().contains(event->pos())) {
+        QModelIndex idx=ListView::indexAt(event->pos());
+        if (idx.isValid() && AlbumHeader==getType(idx)) {
+            QRect rect(visualRect(idx));
+            if (event->pos().y()>(rect.y()+(rect.height()/2))) {
+                quint32 key=idx.data(PlayQueueView::Role_Key).toUInt();
+                if (!isExpanded(key)) {
+                    quint32 rowCount=model()->rowCount();
+                    for (quint32 i=idx.row()+1; i<rowCount; ++i) {
+                        QModelIndex next=idx.sibling(i, 0);
+                        if (next.isValid()) {
+                            quint32 nextKey=next.data(PlayQueueView::Role_Key).toUInt();
+                            if (nextKey==key) {
+                                dropRowAdjust++;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    m->setDropAdjust(dropRowAdjust);
+                }
+            }
+        }
+    }
+
+    ListView::dropEvent(event);
+    m->setDropAdjust(0);
 }
 
 PlayQueueTreeView::PlayQueueTreeView(QWidget *parent)
@@ -481,11 +660,35 @@ void PlayQueueView::setGrouped(bool g)
     }
 }
 
-void PlayQueueView::scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint)
+void PlayQueueView::setAutoCollapsingEnabled(bool ac)
+{
+    listView->setAutoCollapsingEnabled(ac);
+}
+
+bool PlayQueueView::isAutoCollapsingEnabled() const
+{
+    return listView->isAutoCollapsingEnabled();
+}
+
+void PlayQueueView::setFilterActive(bool f)
+{
+    listView->setFilterActive(f);
+}
+
+void PlayQueueView::setCurrentRow(quint32 row)
 {
     if (currentWidget()==listView) {
+        listView->setCurrentRow(row);
+    }
+}
+
+void PlayQueueView::scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint)
+{
+    if (currentWidget()==listView && !listView->isFilterActive()) {
+        return;
+    }
+    if (MPDStatus::State_Playing==MPDStatus::self()->state()) {
         listView->scrollTo(index, hint);
-    } else {
         treeView->scrollTo(index, hint);
     }
 }
@@ -558,10 +761,16 @@ QAbstractItemView * PlayQueueView::list()
 void PlayQueueView::itemClicked(const QModelIndex &idx)
 {
     if (listView==currentWidget() && AlbumHeader==getType(idx)) {
-        QRect rect(listView->visualRect(idx));
-        rect.setHeight(rect.height()/2);
-        rect.moveTo(listView->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
-        if (rect.contains(QCursor::pos())) {
+        QRect indexRect(listView->visualRect(idx));
+        QRect icon(indexRect.x()+constBorder+4, indexRect.y()+constBorder+((indexRect.height()-constCoverSize)/2),
+                   constCoverSize, constCoverSize);
+        QRect header(indexRect);
+        header.setHeight(header.height()/2);
+        header.moveTo(listView->viewport()->mapToGlobal(QPoint(header.x(), header.y())));
+        icon.moveTo(listView->viewport()->mapToGlobal(QPoint(icon.x(), icon.y())));
+        if (icon.contains(QCursor::pos())) {
+            listView->toggle(idx);
+        } else if (header.contains(QCursor::pos())) {
             QModelIndexList list;
             unsigned int key=idx.data(PlayQueueView::Role_Key).toUInt();
             QModelIndex i=idx.sibling(idx.row()+1, 0);

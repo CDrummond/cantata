@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>368</width>
-    <height>300</height>
+    <width>400</width>
+    <height>384</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -333,6 +333,23 @@
      </item>
     </widget>
    </item>
+   <item row="13" column="1">
+    <widget class="QCheckBox" name="autoCollapsePlayQueue">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Automatically collapse albums in play queue:</string>
+     </property>
+     <property name="buddy">
+      <cstring>autoCollapsePlayQueue</cstring>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
@@ -349,6 +366,7 @@
   <tabstop>devicesView</tabstop>
   <tabstop>showDeleteAction</tabstop>
   <tabstop>groupedPlayQueue</tabstop>
+  <tabstop>autoCollapsePlayQueue</tabstop>
  </tabstops>
  <resources/>
  <connections/>

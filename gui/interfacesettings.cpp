@@ -33,6 +33,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     setupUi(this);
     connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
+    connect(groupedPlayQueue, SIGNAL(currentIndexChanged(int)), SLOT(groupedPlayQueueChanged()));
     #ifndef ENABLE_DEVICES_SUPPORT
     devicesView->setVisible(false);
     devicesViewLabel->setVisible(false);
@@ -58,6 +59,7 @@ void InterfaceSettings::load()
     devicesView->setCurrentIndex(Settings::self()->devicesView());
     #endif
     groupedPlayQueue->setCurrentIndex(Settings::self()->groupedPlayQueue() ? 1 : 0);
+    autoCollapsePlayQueue->setChecked(Settings::self()->autoCollapsePlayQueue());
 }
 
 void InterfaceSettings::save()
@@ -77,6 +79,7 @@ void InterfaceSettings::save()
     Settings::self()->saveDevicesView(devicesView->currentIndex());
     #endif
     Settings::self()->saveGroupedPlayQueue(1==groupedPlayQueue->currentIndex());
+    Settings::self()->saveAutoCollapsePlayQueue(autoCollapsePlayQueue->isChecked());
 }
 
 void InterfaceSettings::albumsViewChanged()
@@ -92,3 +95,9 @@ void InterfaceSettings::albumsCoverSizeChanged()
         albumsView->setCurrentIndex(1);
     }
 }
+
+void InterfaceSettings::groupedPlayQueueChanged()
+{
+    autoCollapsePlayQueue->setEnabled(1==Settings::self()->groupedPlayQueue());
+}
+

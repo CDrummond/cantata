@@ -168,7 +168,6 @@ int PlayQueueModel::columnCount(const QModelIndex &) const
 
 QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 {
-
     if (!index.isValid() || index.row() >= songs.size()) {
         return QVariant();
     }

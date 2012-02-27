@@ -27,6 +27,7 @@
 #include <QtCore/QByteArray>
 #include "playqueueproxymodel.h"
 #include "playqueuemodel.h"
+#include "song.h"
 
 PlayQueueProxyModel::PlayQueueProxyModel(QObject *parent)
     : QSortFilterProxyModel(parent)
@@ -44,14 +45,28 @@ bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
         return true;
     }
 
-    int columnCount = sourceModel()->columnCount(sourceParent);
+    Q_UNUSED(sourceParent)
+    PlayQueueModel *m=static_cast<PlayQueueModel *>(sourceModel());
+    Song s=m->getSongByRow(sourceRow);
+    QRegExp re=filterRegExp();
 
-    for (int i = 0; i < columnCount; i++) {
-        QModelIndex index = sourceModel()->index(sourceRow, i, sourceParent);
-        if (sourceModel()->data(index).toString().contains(filterRegExp())) {
-            return true;
-        }
+    /*if (m->isGrouped()) {
+        return QString(!s.albumartist.isEmpty() && s.albumartist != s.artist
+                        ? s.title + " - " + s.artist
+                        : s.title).contains(re);
+    } else*/ {
+        return s.album.contains(re) || s.artist.contains(re) || s.genre.contains(re) ||
+               (s.title.isEmpty() ? s.file.contains(re) : s.title.contains(re));
     }
+
+//     int columnCount = sourceModel()->columnCount(sourceParent);
+//
+//     for (int i = 0; i < columnCount; i++) {
+//         QModelIndex index = sourceModel()->index(sourceRow, i, sourceParent);
+//         if (sourceModel()->data(index).toString().contains(filterRegExp())) {
+//             return true;
+//         }
+//     }
     return false;
 }
 

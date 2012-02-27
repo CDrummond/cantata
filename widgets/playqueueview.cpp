@@ -196,18 +196,20 @@ public:
             }
             QLinearGradient g(border.topLeft(), border.bottomLeft());
             QColor gradCol(QApplication::palette().color(QPalette::Highlight));
-            gradCol.setAlphaF(option.state&QStyle::State_Selected ? 0.6 : 0.35);
+            gradCol.setAlphaF(option.state&QStyle::State_Selected ? 0.6 : 0.45);
 //             g.setColorAt(0, gradCol.light(185));
 //             g.setColorAt(0.49999, gradCol.dark(110));
 //             g.setColorAt(0.5, gradCol.dark(125));
 //             g.setColorAt(1, gradCol.light(145));
 
-            g.setColorAt(0, gradCol.dark(175));
-            g.setColorAt(1, gradCol.light(150));
+            g.setColorAt(0, gradCol.dark(165));
+            g.setColorAt(1, gradCol.light(165));
 
             painter->setRenderHint(QPainter::Antialiasing, true);
             painter->fillPath(buildPath(border, 3), g);
-            painter->setPen(QPen(option.state&QStyle::State_Selected ? col : gradCol, 1));
+            painter->setPen(QPen(gradCol, 1));
+            painter->drawPath(buildPath(border.adjusted(-1, -1, 1, 1), 3.5));
+            painter->setPen(QPen(QApplication::palette().color(QPalette::HighlightedText), 1));
             painter->drawPath(buildPath(border, 3));
             painter->setRenderHint(QPainter::Antialiasing, false);
         }
@@ -237,7 +239,7 @@ public:
             painter->setFont(tf);
             painter->drawText(textRect, title, textOpt);
             painter->drawText(duratioRect, totalDuration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
-            drawFadedLine(painter, r.adjusted(0, r.height()/2, 0, 0), col);
+            drawFadedLine(painter, r.adjusted(0, (r.height()/2)-1, 0, 0), col);
             r.adjust(0, textHeight+constBorder, 0, 0);
             r=QRect(r.x(), r.y()+r.height()-(textHeight+1), r.width(), textHeight);
             painter->setFont(f);

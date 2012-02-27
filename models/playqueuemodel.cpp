@@ -512,10 +512,10 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
     currentSongId = id;
 
     if (-1!=oldIndex) {
-        emit dataChanged(index(getRowById(oldIndex), 0), index(getRowById(oldIndex), 2));
+        emit dataChanged(index(getRowById(oldIndex), 0), index(getRowById(oldIndex), columnCount(QModelIndex())-1));
     }
 
-    emit dataChanged(index(getRowById(currentSongId), 0), index(getRowById(currentSongId), 2));
+    emit dataChanged(index(getRowById(currentSongId), 0), index(getRowById(currentSongId), columnCount(QModelIndex())-1));
 }
 
 void PlayQueueModel::clear()

@@ -99,6 +99,7 @@ public:
     QHeaderView * header();
     QAbstractItemView * tree();
     QAbstractItemView * list();
+    QModelIndexList selectedIndexes() const;
 
 Q_SIGNALS:
     void itemsSelected(bool);

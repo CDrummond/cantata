@@ -120,6 +120,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , currentSongId(-1)
     , mpdState(MPDStatus::State_Inactive)
     , grouped(false)
+    , dropAdjust(0)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(playListReset()));
@@ -219,7 +220,37 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             }
             d+=song.time;
         }
+        if (index.row()>1) {
+            for (int i=index.row()-1; i<=0; ++i) {
+                const Song &song = songs.at(i);
+                if (song.key!=first.key) {
+                    break;
+                }
+                d+=song.time;
+            }
+        }
         return d;
+    }
+    case PlayQueueView::Role_SongCount: {
+        const Song &first = songs.at(index.row());
+        quint32 count=1;
+        for (int i=index.row()+1; i<songs.count(); ++i) {
+            const Song &song = songs.at(i);
+            if (song.key!=first.key) {
+                break;
+            }
+            count++;
+        }
+        if (index.row()>1) {
+            for (int i=index.row()-1; i<=0; ++i) {
+                const Song &song = songs.at(i);
+                if (song.key!=first.key) {
+                    break;
+                }
+                count++;
+            }
+        }
+        return count;
     }
 //     case PlayQueueView::Role_Status:
 //         return songs.at(index.row()).id == currentSongId;
@@ -387,12 +418,13 @@ QMimeData *PlayQueueModel::mimeData(const QModelIndexList &indexes) const
  * @return bool if we accest the drop
  */
 bool PlayQueueModel::dropMimeData(const QMimeData *data,
-                                      Qt::DropAction action, int row, int /*column*/, const QModelIndex & /*parent*/)
+                                  Qt::DropAction action, int row, int /*column*/, const QModelIndex & /*parent*/)
 {
     if (Qt::IgnoreAction==action) {
         return true;
     }
 
+    row+=dropAdjust;
     if (data->hasFormat(constMoveMimeType)) {
         //Act on internal moves
         QStringList positions=decode(*data, constMoveMimeType);
@@ -555,26 +587,18 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
     QMap<QString, unsigned short> artists;
     if (HttpServer::self()->isAlive()) {
         QList<Song> songList;
+        QString album;
+        QString artist;
+        quint32 key=0;
         foreach (const Song &s, songs) {
             Song song(s);
-
             if (grouped) {
-                QMap<QString, unsigned short>::ConstIterator al=albums.find(song.album);
-                QMap<QString, unsigned short>::ConstIterator ar=artists.find(song.albumArtist());
-                song.key=0;
-
-                if (al==albums.end()) {
-                    song.key+=albums.size()&0xFFFF;
-                    albums.insert(song.album, albums.size());
-                } else {
-                    song.key+=al.value()&0xFFFF;
+                if (song.album!=album || song.albumArtist()!=artist) {
+                    key++;
+                    album=song.album;
+                    artist=song.albumArtist();
                 }
-                if (ar==artists.end()) {
-                    song.key+=(artists.size()&0xFFFF)<<16;
-                    artists.insert(song.albumArtist(), artists.size());
-                } else {
-                    song.key+=(ar.value()&0xFFFF)<<16;
-                }
+                song.key=key;
             }
 
             if (song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
@@ -592,25 +616,18 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
         this->songs = songList;
     } else {
         if (grouped) {
+            QString album;
+            QString artist;
+            quint32 key=0;
             QList<Song> songList;
             foreach (const Song &s, songs) {
                 Song song(s);
-                QMap<QString, unsigned short>::ConstIterator al=albums.find(song.album);
-                QMap<QString, unsigned short>::ConstIterator ar=artists.find(song.albumArtist());
-                song.key=0;
-
-                if (al==albums.end()) {
-                    song.key+=albums.size()&0xFFFF;
-                    albums.insert(song.album, albums.size());
-                } else {
-                    song.key+=al.value()&0xFFFF;
+                if (song.album!=album || song.albumArtist()!=artist) {
+                    key++;
+                    album=song.album;
+                    artist=song.albumArtist();
                 }
-                if (ar==artists.end()) {
-                    song.key+=(artists.size()&0xFFFF)<<16;
-                    artists.insert(song.albumArtist(), artists.size());
-                } else {
-                    song.key+=(ar.value()&0xFFFF)<<16;
-                }
+                song.key=key;
                 songList.append(song);
             }
             this->songs = songList;

@@ -771,6 +771,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(streamsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
     playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
     playQueue->setGrouped(Settings::self()->groupedPlayQueue());
+    playQueue->setAutoCollapsingEnabled(Settings::self()->autoCollapsePlayQueue());
     playQueueModel.refresh();
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated()), this, SLOT(updateStats()));
@@ -1187,9 +1188,16 @@ void MainWindow::updateSettings()
     toggleDockManager();
     toggleMpris();
 
-    playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
-    playQueue->setGrouped(Settings::self()->groupedPlayQueue());
-    playQueueModel.refresh();
+    bool wasAutoCollapsing=playQueue->isAutoCollapsingEnabled();
+    playQueue->setAutoCollapsingEnabled(Settings::self()->autoCollapsePlayQueue());
+
+    if (Settings::self()->groupedPlayQueue()!=playQueueModel.isGrouped() ||
+        (playQueueModel.isGrouped() && !wasAutoCollapsing && playQueue->isAutoCollapsingEnabled())) {
+        playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
+        playQueue->setGrouped(Settings::self()->groupedPlayQueue());
+        playQueueModel.refresh();
+        playQueue->setCurrentRow(usingProxy ? 0xFFFF : playQueueModel.currentSongRow());
+    }
 }
 
 #ifndef ENABLE_KDE_SUPPORT
@@ -1333,6 +1341,8 @@ void MainWindow::realSearchPlaylist()
 
             playQueue->setModel(&playQueueModel);
             usingProxy=false;
+            playQueue->setFilterActive(false);
+            playQueue->setCurrentRow(playQueueModel.currentSongRow());
             scrollPlayQueue();
         }
         playQueueProxyModel.setFilterEnabled(false);
@@ -1349,6 +1359,8 @@ void MainWindow::realSearchPlaylist()
             }
             playQueue->setModel(&playQueueProxyModel);
             usingProxy=true;
+            playQueue->setCurrentRow(0xFFFF);
+            playQueue->setFilterActive(true);
         }
         playQueueProxyModel.setFilterEnabled(true);
         playQueueProxyModel.setFilterRegExp(filter);
@@ -1435,6 +1447,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         }
     }
 
+    playQueue->setCurrentRow(usingProxy ? 0xFFFF : playQueueModel.currentSongRow());
     if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
     }
@@ -1500,6 +1513,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     playQueueModel.updateCurrentSong(song.id);
+    playQueue->setCurrentRow(usingProxy ? 0xFFFF : playQueueModel.getRowById(song.id));
     scrollPlayQueue();
 
     if (song.artist.isEmpty()) {

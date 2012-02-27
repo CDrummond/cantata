@@ -51,7 +51,7 @@ struct Song
     mutable qint64 size;
 
     // Only used in PlayQueue...
-    unsigned int key;
+    quint32 key;
 
     Song();
     Song(const Song &o) { *this=o; }

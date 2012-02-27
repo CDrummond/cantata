@@ -90,6 +90,7 @@ public:
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
     void refresh();
+    void setDropAdjust(quint32 a) { dropAdjust=a; }
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row);
@@ -111,6 +112,7 @@ private:
     StreamFetcher *fetcher;
     MPDStatus::State mpdState;
     bool grouped;
+    quint32 dropAdjust;
 };
 
 #endif

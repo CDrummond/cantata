@@ -71,7 +71,8 @@ public:
         Role_Key = Qt::UserRole+512,
         Role_Song,
         Role_AlbumDuration,
-        Role_Status
+        Role_Status,
+        Role_SongCount
     };
 
     PlayQueueView(QWidget *parent=0);
@@ -82,6 +83,10 @@ public:
     }
     void saveHeader();
     void setGrouped(bool g);
+    void setAutoCollapsingEnabled(bool ac);
+    bool isAutoCollapsingEnabled() const;
+    void setFilterActive(bool f);
+    void setCurrentRow(quint32 row);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);
     void setModel(QAbstractItemModel *m);
     void addAction(QAction *a);
@@ -108,4 +113,3 @@ private:
 };
 
 #endif
-

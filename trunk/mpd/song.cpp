@@ -43,7 +43,7 @@ Song::Song()
       disc(0),
       year(0),
       size(0),
-      key(0xFFFFFFFF)
+      key(0xFFFF)
 {
 }
 

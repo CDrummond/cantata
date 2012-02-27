@@ -1747,7 +1747,7 @@ void MainWindow::playlistItemActivated(const QModelIndex &index)
 
 void MainWindow::removeFromPlaylist()
 {
-    const QModelIndexList items = playQueue->selectionModel()->selectedRows();
+    const QModelIndexList items = playQueue->selectedIndexes();
     QModelIndex sourceIndex;
     QList<qint32> toBeRemoved;
 
@@ -1888,7 +1888,7 @@ void MainWindow::updatePosition()
 
 void MainWindow::copyTrackInfo()
 {
-    const QModelIndexList items = playQueue->selectionModel()->selectedRows();
+    const QModelIndexList items = playQueue->selectedIndexes();
 
     if (items.isEmpty()) {
         return;
@@ -1958,7 +1958,7 @@ void MainWindow::cropPlaylist()
 {
     QSet<qint32> songs = playQueueModel.getSongIdSet();
     QSet<qint32> selected;
-    const QModelIndexList items = playQueue->selectionModel()->selectedRows();
+    const QModelIndexList items = playQueue->selectedIndexes();
 
     if (items.isEmpty()) {
         return;

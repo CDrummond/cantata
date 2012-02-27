@@ -758,6 +758,11 @@ QAbstractItemView * PlayQueueView::list()
     return listView;
 }
 
+QModelIndexList PlayQueueView::selectedIndexes() const
+{
+    return listView==currentWidget() ? listView->selectedIndexes() : selectionModel()->selectedRows();
+}
+
 void PlayQueueView::itemClicked(const QModelIndex &idx)
 {
     if (listView==currentWidget() && AlbumHeader==getType(idx)) {

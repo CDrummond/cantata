@@ -561,6 +561,7 @@ FancyTabWidget::FancyTabWidget(QWidget* parent)
 void FancyTabWidget::AddTab(QWidget* tab, const QIcon& icon, const QString& label, bool enabled) {
   stack_->addWidget(tab);
   items_ << Item(icon, label, enabled);
+  setMinimumWidth(128);
 }
 
 void FancyTabWidget::AddSpacer(int size) {

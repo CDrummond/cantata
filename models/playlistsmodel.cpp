@@ -396,7 +396,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         }
         beginResetModel();
         foreach (const Playlist &p, playlists) {
-            items.append(new PlaylistItem(p));
+            items.append(new PlaylistItem(p.name));
         }
         endResetModel();
         updateItemMenu();

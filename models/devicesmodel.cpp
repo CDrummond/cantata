@@ -88,6 +88,7 @@ void DevicesModel::loadRemote()
             connect(static_cast<RemoteDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
         }
         endInsertRows();
+        updateItemMenu();
     }
 }
 

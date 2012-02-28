@@ -591,17 +591,6 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
     return songs;
 }
 
-void DevicesModel::updateSong(const Song &orig, const Song &edit)
-{
-    foreach (Device *dev, devices) {
-        if (Device::Ums==dev->type() && orig.file.startsWith(dev->path())) {
-            dev->removeSongFromList(orig);
-            dev->addSongToList(edit);
-            return;
-        }
-    }
-}
-
 void DevicesModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
 {
     foreach (Device *dev, devices) {

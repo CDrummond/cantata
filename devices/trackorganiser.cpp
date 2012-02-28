@@ -320,8 +320,15 @@ void TrackOrganiser::renameFile()
 
 void TrackOrganiser::finish(bool ok)
 {
-    if (updated && deviceUdi.isEmpty()) {
-        emit update();
+    if (updated) {
+        if (deviceUdi.isEmpty()) {
+            emit update();
+        } else {
+            Device *dev=getDevice();
+            if (dev) {
+                dev->saveCache();
+            }
+        }
     }
     if (ok) {
         accept();

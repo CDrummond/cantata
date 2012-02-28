@@ -54,16 +54,16 @@ public:
         PlaylistItem *parent;
     };
 
-    struct PlaylistItem : public Item, public Playlist
+    struct PlaylistItem : public Item
     {
         PlaylistItem() : loaded(false) { }
-        PlaylistItem(const Playlist &p) : Playlist(p), loaded(false) { }
-        PlaylistItem(const QString &n) : Playlist(n), loaded(false) { }
+        PlaylistItem(const QString &n) : name(n), loaded(false) { }
         virtual ~PlaylistItem();
         bool isPlaylist() { return true; }
         void updateGenres();
         SongItem * getSong(const Song &song);
         void clearSongs();
+        QString name;
         bool loaded;
         QList<SongItem *> songs;
         QSet<QString> genres;

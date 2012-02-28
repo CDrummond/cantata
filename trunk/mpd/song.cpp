@@ -35,6 +35,8 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
+const quint16 Song::constNullKey(0xFFFF);
+
 Song::Song()
     : id(-1),
       time(0),
@@ -43,7 +45,7 @@ Song::Song()
       disc(0),
       year(0),
       size(0),
-      key(0xFFFF)
+      key(constNullKey)
 {
 }
 

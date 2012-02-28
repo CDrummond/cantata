@@ -34,6 +34,8 @@
 
 struct Song
 {
+    static const quint16 constNullKey;
+
     qint32 id;
     QString file;
     quint32 time;
@@ -51,7 +53,7 @@ struct Song
     mutable qint64 size;
 
     // Only used in PlayQueue...
-    quint32 key;
+    quint16 key;
 
     Song();
     Song(const Song &o) { *this=o; }

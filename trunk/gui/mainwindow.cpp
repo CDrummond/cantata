@@ -1196,7 +1196,7 @@ void MainWindow::updateSettings()
         playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
         playQueue->setGrouped(Settings::self()->groupedPlayQueue());
         playQueueModel.refresh();
-        playQueue->setCurrentRow(usingProxy ? 0xFFFF : playQueueModel.currentSongRow());
+        playQueue->setCurrentRow(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow());
     }
 }
 
@@ -1359,7 +1359,7 @@ void MainWindow::realSearchPlaylist()
             }
             playQueue->setModel(&playQueueProxyModel);
             usingProxy=true;
-            playQueue->setCurrentRow(0xFFFF);
+            playQueue->setCurrentRow(playQueueModel.rowCount()+10);
             playQueue->setFilterActive(true);
         }
         playQueueProxyModel.setFilterEnabled(true);
@@ -1447,7 +1447,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         }
     }
 
-    playQueue->setCurrentRow(usingProxy ? 0xFFFF : playQueueModel.currentSongRow());
+    playQueue->setCurrentRow(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow());
     if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
     }
@@ -1513,7 +1513,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     playQueueModel.updateCurrentSong(song.id);
-    playQueue->setCurrentRow(usingProxy ? 0xFFFF : playQueueModel.getRowById(song.id));
+    playQueue->setCurrentRow(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(song.id));
     scrollPlayQueue();
 
     if (song.artist.isEmpty()) {

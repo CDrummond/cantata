@@ -64,6 +64,7 @@ private:
 
 AutohidingSplitter::AutohidingSplitter(Qt::Orientation orientation, QWidget *parent)
     : QSplitter(orientation, parent)
+    , autoHideEnabled(false)
 {
     haltModifications = false;
     autohideAnimation = new SplitterSizeAnimation(this);
@@ -76,6 +77,7 @@ AutohidingSplitter::AutohidingSplitter(Qt::Orientation orientation, QWidget *par
 
 AutohidingSplitter::AutohidingSplitter(QWidget *parent)
     : QSplitter(parent)
+    , autoHideEnabled(false)
 {
     haltModifications = false;
     autohideAnimation = new SplitterSizeAnimation(this);

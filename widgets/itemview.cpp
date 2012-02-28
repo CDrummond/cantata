@@ -395,6 +395,8 @@ ItemView::ItemView(QWidget *p)
     , act1(0)
     , act2(0)
     , toggle(0)
+    , currentLevel(0)
+    , mode(Mode_Tree)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT

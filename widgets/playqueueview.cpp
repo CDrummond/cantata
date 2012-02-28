@@ -226,14 +226,8 @@ public:
             QLinearGradient g(border.topLeft(), border.bottomLeft());
             QColor gradCol(QApplication::palette().color(QPalette::Highlight));
             gradCol.setAlphaF(option.state&QStyle::State_Selected ? 0.6 : 0.45);
-//             g.setColorAt(0, gradCol.light(185));
-//             g.setColorAt(0.49999, gradCol.dark(110));
-//             g.setColorAt(0.5, gradCol.dark(125));
-//             g.setColorAt(1, gradCol.light(145));
-
             g.setColorAt(0, gradCol.dark(165));
             g.setColorAt(1, gradCol.light(165));
-
             painter->setRenderHint(QPainter::Antialiasing, true);
             painter->fillPath(buildPath(border, 3), g);
             painter->setPen(QPen(gradCol, 1));
@@ -291,8 +285,6 @@ public:
         }
 
         if (state) {
-//             f.setBold(true);
-//             painter->setFont(f);
             int size=9;
             QRect ir(r.x()-(size+6), r.y()+(((r.height()-size)/2.0)+0.5), size, size);
             switch (state) {
@@ -338,7 +330,6 @@ private:
 
 PlayQueueListView::PlayQueueListView(QWidget *parent)
     : ListView(parent)
-//     , inDropEvent(false)
     , autoCollapsingEnabled(false)
     , filterActive(false)
     , currentAlbum(Song::constNullKey)

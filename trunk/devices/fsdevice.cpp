@@ -50,6 +50,11 @@
 
 static const QLatin1String constCantataCacheFile("/.cache.xml");
 
+struct Thread : public QThread
+{
+    static void sleep() { QThread::msleep(100); }
+};
+
 MusicScanner::MusicScanner(const QString &f)
     : QThread(0)
     , folder(f)
@@ -73,6 +78,9 @@ void MusicScanner::run()
 void MusicScanner::stop()
 {
     stopRequested=true;
+    quit();
+    for(int i=0; i<10 && isRunning(); ++i)
+        Thread::sleep();
 }
 
 MusicLibraryItemRoot * MusicScanner::takeLibrary()

@@ -152,7 +152,7 @@ void Song::clear()
     size = 0;
 }
 
-QString Song::formattedTime(const quint32 &seconds)
+QString Song::formattedTime(quint32 seconds)
 {
     static const quint32 constHour=60*60;
     if (seconds>constHour) {

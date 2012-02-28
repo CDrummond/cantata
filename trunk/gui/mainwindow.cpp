@@ -257,11 +257,19 @@ MainWindow::MainWindow(QWidget *parent)
 #else
     : QMainWindow(parent)
 #endif
+    , loaded(0)
     , lastState(MPDStatus::State_Inactive)
+    , songTime(0)
     , lastSongId(-1)
+    , lastPlaylist(0)
     , fetchStatsFactor(0)
     , nowPlayingFactor(0)
     , draggingPositionSlider(false)
+    , trayItem(0)
+    , lyricsNeedUpdating(false)
+    #ifdef ENABLE_WEBKIT
+    , infoNeedsUpdating(false)
+    #endif
     , dock(0)
     , mpris(0)
     , playlistSearchTimer(0)
@@ -272,13 +280,6 @@ MainWindow::MainWindow(QWidget *parent)
     , stopState(StopState_None)
 {
     setMinimumHeight(256);
-    loaded=0;
-    trayItem = 0;
-    lyricsNeedUpdating=false;
-    #ifdef ENABLE_WEBKIT
-    infoNeedsUpdating=false;
-    #endif
-
     QWidget *widget = new QWidget(this);
     setupUi(widget);
     setCentralWidget(widget);

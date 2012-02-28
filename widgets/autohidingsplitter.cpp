@@ -276,6 +276,13 @@ void AutohidingSplitter::addWidget(QWidget *widget)
     }
 }
 
+void AutohidingSplitter::setAutohidable(int index, bool autohidable) {
+    widgetAutohidable[index]=autohidable;
+    widgetAutohidden[index]=autohidable;
+//     updateResizeQueue();
+    setSizes(getSizesAfterHiding());
+}
+
 bool AutohidingSplitter::restoreState(const QByteArray &state)
 {
     bool result = QSplitter::restoreState(state);

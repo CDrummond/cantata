@@ -70,9 +70,7 @@ public:
     explicit AutohidingSplitter(QWidget *parent=0);
     virtual ~AutohidingSplitter();
 
-    void setAutohidable(int index, bool autohidable = true) {
-        widgetAutohidable[index]=autohidable;
-    }
+    void setAutohidable(int index, bool autohidable = true);
     void addWidget(QWidget *widget);
     bool restoreState( const QByteArray &state);
     QByteArray saveState() const;

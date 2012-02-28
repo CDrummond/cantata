@@ -262,10 +262,10 @@ public:
             QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
             int totalDurationWidth=fm.width(totalDuration)+8;
             QRect textRect(r.x(), r.y(), r.width()-totalDurationWidth, textHeight);
-            title = fm.elidedText(title, Qt::ElideRight, textRect.width(), QPalette::WindowText);
             QFont tf(f);
             tf.setBold(true);
             tf.setItalic(true);
+            title = QFontMetrics(tf).elidedText(title, Qt::ElideRight, textRect.width(), QPalette::WindowText);
             painter->setFont(tf);
             painter->drawText(textRect, title, textOpt);
             painter->drawText(duratioRect, totalDuration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));

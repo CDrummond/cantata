@@ -61,7 +61,6 @@ public:
     Device * device(const QString &udi);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
-    void updateSong(const Song &orig, const Song &edit);
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     QMimeData * mimeData(const QModelIndexList &indexes) const;
 

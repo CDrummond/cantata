@@ -98,7 +98,7 @@ private:
     #endif
     QString baseDir;
     #ifdef ENABLE_DEVICES_SUPPORT
-    bool isDevice;
+    QString deviceUdi;
     #endif
     QList<Song> original;
     QList<Song> edited;

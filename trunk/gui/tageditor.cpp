@@ -66,18 +66,20 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
                      , const QString &udi
                      #endif
                      )
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     : KDialog(parent)
-#else
+    #else
     : QDialog(parent)
-#endif
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    , deviceUdi(udi)
+    #endif
     , currentSongIndex(-1)
     , updating(false)
 {
     iCount++;
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (udi.isEmpty()) {
-        isDevice=false;
+    if (deviceUdi.isEmpty()) {
         original=songs;
         baseDir=Settings::self()->mpdDir();
     } else {
@@ -95,7 +97,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
             m.file=m.file.mid(pathLen);
             original.append(m);
         }
-        isDevice=true;
     }
     #else
     original=songs;
@@ -578,6 +579,16 @@ void TagEditor::applyUpdates()
     bool updated=false;
     bool skipFirst=original.count()>1;
     QStringList failed;
+    #ifdef ENABLE_DEVICES_SUPPORT
+    Device * dev=0;
+    if (!deviceUdi.isEmpty()) {
+        dev=getDevice(deviceUdi, this);
+        if (!dev) {
+            return;
+        }
+    }
+    #endif
+
     foreach (int idx, editedIndexes) {
         if (skipFirst && 0==idx) {
             continue;
@@ -591,12 +602,13 @@ void TagEditor::applyUpdates()
         switch(Tags::update(baseDir+orig.file, orig, edit)) {
         case Tags::Update_Modified:
             #ifdef ENABLE_DEVICES_SUPPORT
-            if (isDevice) {
+            if (!deviceUdi.isEmpty()) {
                 Song o=orig;
                 o.file=baseDir+orig.file;
                 Song e=edit;
                 e.file=baseDir+edit.file;
-                DevicesModel::self()->updateSong(o, e);
+                dev->removeSongFromList(orig);
+                dev->addSongToList(edit);
             } else
             #endif
             {
@@ -618,8 +630,15 @@ void TagEditor::applyUpdates()
     }
 
     if (updated) {
-        MusicLibraryModel::self()->removeCache();
-        emit update();
+        #ifdef ENABLE_DEVICES_SUPPORT
+        if (!deviceUdi.isEmpty()) {
+            dev->saveCache();
+        } else
+        #endif
+        {
+            MusicLibraryModel::self()->removeCache();
+            emit update();
+        }
     }
 }
 

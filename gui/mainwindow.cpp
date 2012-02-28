@@ -46,7 +46,6 @@
 #include <KDE/KLineEdit>
 #include <KDE/KXMLGUIFactory>
 #include <KDE/KMessageBox>
-#include <KDE/KIcon>
 #include <KDE/KMenuBar>
 #include <KDE/KMenu>
 #include <KDE/KStatusNotifierItem>
@@ -97,6 +96,14 @@
 #include "messagewidget.h"
 #include "httpserver.h"
 #include "debugtimer.h"
+
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KIcon>
+#define Icon(X) KIcon(X)
+#else
+#include <QtGui/QIcon>
+#define Icon(X) QIcon::fromTheme(X)
+#endif
 
 enum Tabs
 {
@@ -282,12 +289,12 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("Cantata");
 
 //     quitAction=menu->addAction(tr("Quit"), qApp, SLOT(quit()));
-//     menuAct->setIcon(QIcon::fromTheme("application-exit"));
+//     menuAct->setIcon(Icon("application-exit"));
 //     menuBar()->addMenu(menu);
 //     menu=new QMenu(tr("Tools"), this);
 //     menu=new QMenu(tr("Settings"), this);
 //     menuAct=menu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-//     menuAct->setIcon(QIcon::fromTheme("configure"));
+//     menuAct->setIcon(Icon("configure"));
 //     menuBar()->addMenu(menu);
 //     menu=new QMenu(tr("Help"), this);
 //     menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
@@ -346,7 +353,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction = actionCollection()->addAction("copytodevice");
     copyToDeviceAction->setText(i18n("Copy To Device"));
-    copyToDeviceAction->setIcon(QIcon::fromTheme("multimedia-player"));
+    copyToDeviceAction->setIcon(Icon("multimedia-player"));
     deleteSongsAction = actionCollection()->addAction("deletesongs");
     organiseFilesAction = actionCollection()->addAction("organizefiles");
     #endif
@@ -439,7 +446,7 @@ MainWindow::MainWindow(QWidget *parent)
     #else
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-    quitAction->setIcon(QIcon::fromTheme("application-exit"));
+    quitAction->setIcon(Icon("application-exit"));
     quitAction->setShortcut(QKeySequence::Quit);
     smallPlaybackButtonsAction = new QAction(tr("Small Playback Buttons"), this);
     smallControlButtonsAction = new QAction(tr("Small Control Buttons"), this);
@@ -511,24 +518,24 @@ MainWindow::MainWindow(QWidget *parent)
 
     positionSlider->setStyle(new ProxyStyle());
 
-    noCover = QIcon::fromTheme("media-optical-audio").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    noStreamCover = QIcon::fromTheme("applications-internet").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    noCover = Icon("media-optical-audio").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    noStreamCover = Icon("applications-internet").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     coverWidget->setPixmap(noCover);
 
-    playbackPlay = QIcon::fromTheme("media-playback-start");
-    playbackPause = QIcon::fromTheme("media-playback-pause");
-    repeatPlaylistAction->setIcon(QIcon::fromTheme("cantata-view-media-repeat"));
-    randomPlaylistAction->setIcon(QIcon::fromTheme("media-playlist-shuffle"));
-    consumePlaylistAction->setIcon(QIcon::fromTheme("cantata-view-media-consume"));
-    removeAction->setIcon(QIcon::fromTheme("list-remove"));
-    addToPlaylistAction->setIcon(QIcon::fromTheme("list-add"));
-    replacePlaylistAction->setIcon(QIcon::fromTheme("media-playback-start"));
+    playbackPlay = Icon("media-playback-start");
+    playbackPause = Icon("media-playback-pause");
+    repeatPlaylistAction->setIcon(Icon("cantata-view-media-repeat"));
+    randomPlaylistAction->setIcon(Icon("media-playlist-shuffle"));
+    consumePlaylistAction->setIcon(Icon("cantata-view-media-consume"));
+    removeAction->setIcon(Icon("list-remove"));
+    addToPlaylistAction->setIcon(Icon("list-add"));
+    replacePlaylistAction->setIcon(Icon("media-playback-start"));
 
-//     burnAction->setIcon(QIcon::fromTheme("tools-media-optical-burn"));
-//     createDataCdAction->setIcon(QIcon::fromTheme("media-optical"));
-//     createAudioCdAction->setIcon(QIcon::fromTheme("media-optical-audio"));
+//     burnAction->setIcon(Icon("tools-media-optical-burn"));
+//     createDataCdAction->setIcon(Icon("media-optical"));
+//     createAudioCdAction->setIcon(Icon("media-optical-audio"));
     #ifdef TAGLIB_FOUND
-    editTagsAction->setIcon(QIcon::fromTheme("document-edit"));
+    editTagsAction->setIcon(Icon("document-edit"));
     #endif
 //     QMenu *cdMenu=new QMenu(this);
 //     cdMenu->addAction(createAudioCdAction);
@@ -540,44 +547,44 @@ MainWindow::MainWindow(QWidget *parent)
 //     }
 //     #endif
 
-    prevTrackAction->setIcon(QIcon::fromTheme("media-skip-backward"));
-    nextTrackAction->setIcon(QIcon::fromTheme("media-skip-forward"));
+    prevTrackAction->setIcon(Icon("media-skip-backward"));
+    nextTrackAction->setIcon(Icon("media-skip-forward"));
     playPauseTrackAction->setIcon(playbackPlay);
-    stopTrackAction->setIcon(QIcon::fromTheme("media-playback-stop"));
-    removeFromPlaylistAction->setIcon(QIcon::fromTheme("list-remove"));
-    clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
-    savePlaylistAction->setIcon(QIcon::fromTheme("document-save-as"));
-    clearPlaylistAction->setIcon(QIcon::fromTheme("edit-clear-list"));
-    expandInterfaceAction->setIcon(QIcon::fromTheme("view-media-playlist"));
-    refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
-    connectAction->setIcon(QIcon::fromTheme("network-connect"));
-    libraryTabAction->setIcon(QIcon::fromTheme("audio-ac3"));
-    albumsTabAction->setIcon(QIcon::fromTheme("media-optical-audio"));
-    foldersTabAction->setIcon(QIcon::fromTheme("inode-directory"));
-    playlistsTabAction->setIcon(QIcon::fromTheme("view-media-playlist"));
-    lyricsTabAction->setIcon(QIcon::fromTheme("view-media-lyrics"));
-    streamsTabAction->setIcon(QIcon::fromTheme("applications-internet"));
+    stopTrackAction->setIcon(Icon("media-playback-stop"));
+    removeFromPlaylistAction->setIcon(Icon("list-remove"));
+    clearPlaylistAction->setIcon(Icon("edit-clear-list"));
+    savePlaylistAction->setIcon(Icon("document-save-as"));
+    clearPlaylistAction->setIcon(Icon("edit-clear-list"));
+    expandInterfaceAction->setIcon(Icon("view-media-playlist"));
+    refreshAction->setIcon(Icon("view-refresh"));
+    connectAction->setIcon(Icon("network-connect"));
+    libraryTabAction->setIcon(Icon("audio-ac3"));
+    albumsTabAction->setIcon(Icon("media-optical-audio"));
+    foldersTabAction->setIcon(Icon("inode-directory"));
+    playlistsTabAction->setIcon(Icon("view-media-playlist"));
+    lyricsTabAction->setIcon(Icon("view-media-lyrics"));
+    streamsTabAction->setIcon(Icon("applications-internet"));
     #ifdef ENABLE_WEBKIT
-    infoTabAction->setIcon(QIcon::fromTheme("dialog-information"));
+    infoTabAction->setIcon(Icon("dialog-information"));
     #endif
-    serverInfoTabAction->setIcon(QIcon::fromTheme("server-database"));
+    serverInfoTabAction->setIcon(Icon("server-database"));
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setIcon(QIcon::fromTheme("multimedia-player"));
+    devicesTabAction->setIcon(Icon("multimedia-player"));
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
-    deleteSongsAction->setIcon(QIcon::fromTheme("edit-delete"));
+    deleteSongsAction->setIcon(Icon("edit-delete"));
     deleteSongsAction->setText(i18n("Delete Songs"));
-    organiseFilesAction->setIcon(QIcon::fromTheme("inode-directory"));
+    organiseFilesAction->setIcon(Icon("inode-directory"));
     organiseFilesAction->setText(i18n("Organize Files"));
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction->setIcon(QIcon::fromTheme("audio-x-generic"));
+    replaygainAction->setIcon(Icon("audio-x-generic"));
     replaygainAction->setText(i18n("ReplayGain"));
     #endif
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
 
-    menuButton->setIcon(QIcon::fromTheme("configure"));
-    volumeButton->setIcon(QIcon::fromTheme("player-volume"));
+    menuButton->setIcon(Icon("configure"));
+    volumeButton->setIcon(Icon("player-volume"));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
             SLOT(cover(const QString &, const QString &, const QImage &, const QString &)));
 
@@ -715,13 +722,13 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(expandInterfaceAction);
     #ifdef ENABLE_KDE_SUPPORT
     QAction *menuAct=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-    menuAct->setIcon(QIcon::fromTheme("configure"));
+    menuAct->setIcon(Icon("configure"));
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
     mainMenu->addSeparator();
     mainMenu->addMenu(helpMenu());
     #else
     QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-    menuAct->setIcon(QIcon::fromTheme("configure"));
+    menuAct->setIcon(Icon("configure"));
     prefAction=menuAct;
     mainMenu->addSeparator();
 //     QMenu *menu=new QMenu(tr("Help"), this);
@@ -988,9 +995,16 @@ void MainWindow::setPlaybackButtonsSize(bool small)
     QList<QToolButton *> playbackBtns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     foreach (QToolButton *b, playbackBtns) {
-        b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
-        b->setMinimumSize(small ? QSize(24, 24) : QSize(36, 36));
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
+        #ifdef ENABLE_KDE_SUPPORT
+        b->setMinimumSize(small ? QSize(26, 26) : QSize(32, 32));
+        b->setMaximumSize(small ? QSize(26, 26) : QSize(32, 32));
+        b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
+        #else
+        b->setMinimumSize(small ? QSize(26, 26) : QSize(34, 34));
+        b->setMaximumSize(small ? QSize(26, 26) : QSize(34, 34));
+        b->setIconSize(small ? QSize(24, 24) : QSize(28, 28));
+        #endif
     }
 }
 
@@ -1000,8 +1014,14 @@ void MainWindow::setControlButtonsSize(bool small)
     controlBtns << volumeButton << menuButton;
 
     foreach (QToolButton *b, controlBtns) {
-        b->setIconSize(small ? QSize(18, 18) : QSize(22, 22));
+        b->setMinimumSize(small ? QSize(22, 22) : QSize(26, 26));
+        b->setMaximumSize(small ? QSize(22, 22) : QSize(26, 26));
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
+        #ifdef ENABLE_KDE_SUPPORT
+        b->setIconSize(small ? QSize(16, 16) : QSize(22, 22));
+        #else
+        b->setIconSize(small ? QSize(18, 18) : QSize(22, 22));
+        #endif
     }
 }
 
@@ -1638,17 +1658,17 @@ void MainWindow::updateStatus()
         volumeButton->setToolTip(tr("Volume %1%").arg(volume));
         volumeControl->setToolTip(tr("Volume %1%").arg(volume));
         #endif
-        volumeButton->setIcon(QIcon::fromTheme("player-volume"));
+        volumeButton->setIcon(Icon("player-volume"));
         volumeControl->setValue(volume);
 
         if (0==volume) {
-            volumeButton->setIcon(QIcon::fromTheme("audio-volume-muted"));
+            volumeButton->setIcon(Icon("audio-volume-muted"));
         } else if (volume<=33) {
-            volumeButton->setIcon(QIcon::fromTheme("audio-volume-low"));
+            volumeButton->setIcon(Icon("audio-volume-low"));
         } else if (volume<=67) {
-            volumeButton->setIcon(QIcon::fromTheme("audio-volume-medium"));
+            volumeButton->setIcon(Icon("audio-volume-medium"));
         } else {
-            volumeButton->setIcon(QIcon::fromTheme("audio-volume-high"));
+            volumeButton->setIcon(Icon("audio-volume-high"));
         }
     }
 

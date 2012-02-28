@@ -574,8 +574,11 @@ void PlayQueueModel::setGrouped(bool g)
 
 void PlayQueueModel::refresh()
 {
-    if (songs.count()) {
-        updatePlaylist(songs);
+    if (grouped && songs.count()) {
+        Song s=songs.at(0);
+        if (0==s.key || Song::constNullKey==s.key) {
+            updatePlaylist(songs);
+        }
     }
 }
 

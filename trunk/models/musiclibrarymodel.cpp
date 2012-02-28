@@ -399,7 +399,8 @@ void MusicLibraryModel::getDetails(QSet<QString> &artists, QSet<QString> &albumA
 
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)
 {
-    if (databaseTime > dbUpdate) {
+    if (databaseTime >= dbUpdate) {
+        delete newroot;
         return;
     }
 

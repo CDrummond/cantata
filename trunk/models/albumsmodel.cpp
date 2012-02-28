@@ -361,15 +361,18 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     }
 
     TF_DEBUG
+    bool empty=items.isEmpty();
+    if (empty) {
+        beginResetModel();
+    }
     QList<AlbumItem *>::Iterator it=items.begin();
     QList<AlbumItem *>::Iterator end=items.end();
 
     for (; it!=end; ++it) {
         (*it)->updated=false;
-        (*it)->coverRequested=false;
+        //(*it)->coverRequested=false;
     }
 
-    bool changed=false;
     for (int i = 0; i < root->childCount(); i++) {
         MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemArtist*>(root->child(i));
         QString artist=artistItem->data();
@@ -395,28 +398,34 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 a->genres=albumItem->genres();
                 a->updated=true;
                 a->isSingleTracks=albumItem->isSingleTracks();
+                if (!empty) {
+                    beginInsertRows(QModelIndex(), items.count(), items.count());
+                }
                 items.append(a);
-                changed=true;
+                if (!empty) {
+                    endInsertRows();
+                }
             }
         }
     }
 
-    for (it=items.begin(); it!=items.end();) {
-        if (!(*it)->updated) {
-            changed=true;
-            QList<AlbumItem *>::Iterator cur=it;
-            delete (*it);
-            ++it;
-            items.erase(cur);
-        } else {
-            ++it;
-        }
-    }
-
-    if (changed) {
-        beginResetModel();
+    if (empty) {
         endResetModel();
-        emit updated();
+    } else {
+        int row=0;
+        for (it=items.begin(); it!=items.end();) {
+            if (!(*it)->updated) {
+                beginRemoveRows(QModelIndex(), row, row);
+                QList<AlbumItem *>::Iterator cur=it;
+                delete (*it);
+                ++it;
+                items.erase(cur);
+                endRemoveRows();
+            } else {
+                ++row;
+                ++it;
+            }
+        }
     }
 }
 

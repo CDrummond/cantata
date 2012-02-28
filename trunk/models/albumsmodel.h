@@ -106,9 +106,6 @@ public:
     bool albumFirst() const { return sortAlbumFirst; }
     void setAlbumFirst(bool a);
 
-Q_SIGNALS:
-    void updated();
-
 public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
     void update(const MusicLibraryItemRoot *root);

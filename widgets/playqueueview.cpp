@@ -294,7 +294,7 @@ public:
 //             f.setBold(true);
 //             painter->setFont(f);
             int size=9;
-            QRect ir(r.x()-(size+6), r.y()+(r.height()-size)/2, size, size);
+            QRect ir(r.x()-(size+6), r.y()+(((r.height()-size)/2.0)+0.5), size, size);
             switch (state) {
             case PlayQueueView::State_Stopped:
                 painter->fillRect(ir, Qt::white);

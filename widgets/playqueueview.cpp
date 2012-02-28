@@ -60,6 +60,8 @@ public:
     bool isFilterActive() const { return filterActive; }
     void setAutoCollapsingEnabled(bool ac) { autoCollapsingEnabled=ac; }
     bool isAutoCollapsingEnabled() const { return autoCollapsingEnabled; }
+    QSet<qint32> getExpandedSongIds() const { return expandedSongIds; }
+    void setExpanded(const QSet<quint16> &keys) { userExpandedAlbums=keys; }
     void setCurrentRow(quint32 row);
     bool isExpanded(quint16 key) const { return filterActive || currentAlbum==key || userExpandedAlbums.contains(key); }
     void toggle(const QModelIndex &idx);
@@ -70,6 +72,7 @@ private:
     bool autoCollapsingEnabled;
     bool filterActive;
     quint16 currentAlbum;
+    QSet<qint32> expandedSongIds;
     QSet<quint16> userExpandedAlbums;
 };
 
@@ -409,12 +412,15 @@ void PlayQueueListView::toggle(const QModelIndex &idx)
         return;
     }
 
+    qint32 id=idx.data(PlayQueueView::Role_Id).toInt();
     bool toBeHidden=false;
     if (userExpandedAlbums.contains(indexKey)) {
         userExpandedAlbums.remove(indexKey);
+        expandedSongIds.remove(id);
         toBeHidden=true;
     } else {
         userExpandedAlbums.insert(indexKey);
+        expandedSongIds.insert(id);
     }
 
     if (model()) {
@@ -666,6 +672,16 @@ void PlayQueueView::setAutoCollapsingEnabled(bool ac)
 bool PlayQueueView::isAutoCollapsingEnabled() const
 {
     return listView->isAutoCollapsingEnabled();
+}
+
+QSet<qint32> PlayQueueView::getExpandedSongIds() const
+{
+    return currentWidget()==listView ? listView->getExpandedSongIds() : QSet<qint32>();
+}
+
+void PlayQueueView::setExpanded(const QSet<quint16> &keys)
+{
+    listView->setExpanded(keys);
 }
 
 void PlayQueueView::setFilterActive(bool f)

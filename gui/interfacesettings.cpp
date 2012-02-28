@@ -98,6 +98,7 @@ void InterfaceSettings::albumsCoverSizeChanged()
 
 void InterfaceSettings::groupedPlayQueueChanged()
 {
-    autoCollapsePlayQueue->setEnabled(1==Settings::self()->groupedPlayQueue());
+    autoCollapsePlayQueue->setEnabled(1==groupedPlayQueue->currentIndex());
+    autoCollapsePlayQueueLabel->setEnabled(1==groupedPlayQueue->currentIndex());
 }
 

@@ -185,6 +185,8 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case PlayQueueView::Role_Key:
         return songs.at(index.row()).key;
+    case PlayQueueView::Role_Id:
+        return songs.at(index.row()).id;
     case PlayQueueView::Role_Song: {
         QVariant var;
         var.setValue<Song>(songs.at(index.row()));
@@ -529,6 +531,23 @@ qint32 PlayQueueModel::getRowById(qint32 id) const
     }
 
     return -1;
+}
+
+QSet<quint16> PlayQueueModel::getKeysByIds(QSet<qint32> ids) const
+{
+    QSet<quint16> keys;
+    if (grouped) {
+        foreach (const Song &s, songs) {
+            if (ids.contains(s.id)) {
+                keys.insert(s.key);
+                ids.remove(s.id);
+                if (ids.isEmpty()) {
+                    break;
+                }
+            }
+        }
+    }
+    return keys;
 }
 
 Song PlayQueueModel::getSongByRow(const qint32 row) const

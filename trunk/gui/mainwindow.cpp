@@ -1405,7 +1405,11 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     }
 
     // refresh playlist
+    QSet<qint32> expandedSongIds=playQueue->getExpandedSongIds();
     playQueueModel.updatePlaylist(songs);
+    if (expandedSongIds.count()) {
+        playQueue->setExpanded(playQueueModel.getKeysByIds(expandedSongIds));
+    }
 
     // reselect song ids or minrow if songids were not found (songs removed)
     if (selectedSongIds.size() > 0) {

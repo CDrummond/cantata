@@ -75,6 +75,7 @@ public:
     qint32 getIdByRow(qint32 row) const;
     qint32 getPosByRow(qint32 row) const;
     qint32 getRowById(qint32 id) const;
+    QSet<quint16> getKeysByIds(QSet<qint32> ids) const;
     Song getSongByRow(const qint32 row) const;
     Qt::DropActions supportedDropActions() const;
     Qt::ItemFlags flags(const QModelIndex &index) const;

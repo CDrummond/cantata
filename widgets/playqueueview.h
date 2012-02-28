@@ -26,6 +26,7 @@
 
 #include <QtGui/QStackedWidget>
 #include <QtGui/QAbstractItemView>
+#include <QtCore/QSet>
 #include "treeview.h"
 
 class PlayQueueListView;
@@ -69,6 +70,7 @@ public:
 
     enum Roles {
         Role_Key = Qt::UserRole+512,
+        Role_Id,
         Role_Song,
         Role_AlbumDuration,
         Role_Status,
@@ -85,6 +87,8 @@ public:
     void setGrouped(bool g);
     void setAutoCollapsingEnabled(bool ac);
     bool isAutoCollapsingEnabled() const;
+    QSet<qint32> getExpandedSongIds() const;
+    void setExpanded(const QSet<quint16> &keys);
     void setFilterActive(bool f);
     void setCurrentRow(quint32 row);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);

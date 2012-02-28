@@ -271,6 +271,7 @@ MainWindow::MainWindow(QWidget *parent)
     , origVolume(0)
     , stopState(StopState_None)
 {
+    setMinimumHeight(256);
     loaded=0;
     trayItem = 0;
     lyricsNeedUpdating=false;
@@ -1944,10 +1945,11 @@ void MainWindow::togglePlaylist()
     bool showing=expandInterfaceAction->isChecked();
 
     if (!showing) {
+        setMinimumHeight(0);
         lastMax=isMaximized();
         lastSize=size();
     } else {
-        setMinimumHeight(0);
+        setMinimumHeight(256);
         setMaximumHeight(65535);
     }
     splitter->setVisible(showing);

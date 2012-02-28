@@ -111,6 +111,9 @@ LyricsPage::LyricsPage(QWidget *parent)
 
 LyricsPage::~LyricsPage()
 {
+    foreach (UltimateLyricsProvider* provider, providers) {
+        delete provider;
+    }
 }
 
 void LyricsPage::setEnabledProviders(const QStringList &providerList)

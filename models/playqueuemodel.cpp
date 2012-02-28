@@ -583,13 +583,11 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
 {
     TF_DEBUG
     beginResetModel();
-    QMap<QString, unsigned short> albums;
-    QMap<QString, unsigned short> artists;
     if (HttpServer::self()->isAlive()) {
         QList<Song> songList;
         QString album;
         QString artist;
-        quint32 key=0;
+        quint16 key=0;
         foreach (const Song &s, songs) {
             Song song(s);
             if (grouped) {
@@ -618,7 +616,7 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
         if (grouped) {
             QString album;
             QString artist;
-            quint32 key=0;
+            quint16 key=0;
             QList<Song> songList;
             foreach (const Song &s, songs) {
                 Song song(s);

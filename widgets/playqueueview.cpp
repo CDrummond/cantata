@@ -50,8 +50,6 @@ enum Type {
     AlbumTrack
 };
 
-static const quint32 constNullAlbum=0xFFFF;
-
 class PlayQueueListView : public ListView
 {
 public:
@@ -63,7 +61,7 @@ public:
     void setAutoCollapsingEnabled(bool ac) { autoCollapsingEnabled=ac; }
     bool isAutoCollapsingEnabled() const { return autoCollapsingEnabled; }
     void setCurrentRow(quint32 row);
-    bool isExpanded(quint32 key) const { return filterActive || currentAlbum==key || userExpandedAlbums.contains(key); }
+    bool isExpanded(quint16 key) const { return filterActive || currentAlbum==key || userExpandedAlbums.contains(key); }
     void toggle(const QModelIndex &idx);
     QModelIndexList selectedIndexes() const;
     void dropEvent(QDropEvent *event);
@@ -71,15 +69,15 @@ public:
 private:
     bool autoCollapsingEnabled;
     bool filterActive;
-    quint32 currentAlbum;
-    QSet<quint32> userExpandedAlbums;
+    quint16 currentAlbum;
+    QSet<quint16> userExpandedAlbums;
 };
 
 static Type getType(const QModelIndex &index)
 {
     QModelIndex prev=index.row()>0 ? index.sibling(index.row()-1, 0) : QModelIndex();
-    quint32 thisKey=index.data(PlayQueueView::Role_Key).toUInt();
-    quint32 prevKey=prev.isValid() ? prev.data(PlayQueueView::Role_Key).toUInt() : constNullAlbum;
+    quint16 thisKey=index.data(PlayQueueView::Role_Key).toUInt();
+    quint16 prevKey=prev.isValid() ? prev.data(PlayQueueView::Role_Key).toUInt() : Song::constNullKey;
 
     return thisKey==prevKey ? AlbumTrack : AlbumHeader;
 }
@@ -276,7 +274,7 @@ public:
                 r.adjust(0, 0, (constCoverSize+constBorder), 0);
             }
 
-            quint32 key=index.data(PlayQueueView::Role_Key).toUInt();
+            quint16 key=index.data(PlayQueueView::Role_Key).toUInt();
             if (!view->isExpanded(key)) {
                 showTrackDuration=false;
                 #ifdef ENABLE_KDE_SUPPORT
@@ -340,7 +338,7 @@ PlayQueueListView::PlayQueueListView(QWidget *parent)
 //     , inDropEvent(false)
     , autoCollapsingEnabled(false)
     , filterActive(false)
-    , currentAlbum(constNullAlbum)
+    , currentAlbum(Song::constNullKey)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setAcceptDrops(true);
@@ -372,7 +370,7 @@ void PlayQueueListView::setFilterActive(bool f)
 
 void PlayQueueListView::setCurrentRow(quint32 row)
 {
-    currentAlbum=0xFFFF;
+    currentAlbum=Song::constNullKey;
 
     if (!model() || row>(quint32)model()->rowCount()) {
         return;
@@ -386,10 +384,10 @@ void PlayQueueListView::setCurrentRow(quint32 row)
     if (model()) {
         quint32 count=model()->rowCount();
         quint32 showRow=row;
-        quint32 lastKey=constNullAlbum;
+        quint16 lastKey=Song::constNullKey;
         currentAlbum=model()->index(row, 0).data(PlayQueueView::Role_Key).toUInt();
         for (quint32 i=0; i<count; ++i) {
-            quint32 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
+            quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
             bool hide=autoCollapsingEnabled && key==lastKey && (key!=currentAlbum && !userExpandedAlbums.contains(key));
             setRowHidden(i, hide);
             if (hide && i<row) {
@@ -405,7 +403,7 @@ void PlayQueueListView::setCurrentRow(quint32 row)
 
 void PlayQueueListView::toggle(const QModelIndex &idx)
 {
-    quint32 indexKey=idx.data(PlayQueueView::Role_Key).toUInt();
+    quint16 indexKey=idx.data(PlayQueueView::Role_Key).toUInt();
 
     if (indexKey==currentAlbum) {
         return;
@@ -422,7 +420,7 @@ void PlayQueueListView::toggle(const QModelIndex &idx)
     if (model()) {
         quint32 count=model()->rowCount();
         for (quint32 i=idx.row()+1; i<count; ++i) {
-            quint32 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
+            quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
             if (indexKey==key) {
                 setRowHidden(i, toBeHidden);
             } else {
@@ -439,13 +437,13 @@ QModelIndexList PlayQueueListView::selectedIndexes() const
     quint32 rowCount=model()->rowCount();
 
     foreach (const QModelIndex &idx, indexes) {
-        quint32 key=idx.data(PlayQueueView::Role_Key).toUInt();
+        quint16 key=idx.data(PlayQueueView::Role_Key).toUInt();
         allIndexes.append(idx);
         if (!isExpanded(key)) {
             for (quint32 i=idx.row()+1; i<rowCount; ++i) {
                 QModelIndex next=idx.sibling(i, 0);
                 if (next.isValid()) {
-                    quint32 nextKey=next.data(PlayQueueView::Role_Key).toUInt();
+                    quint16 nextKey=next.data(PlayQueueView::Role_Key).toUInt();
                     if (nextKey==key) {
                         allIndexes.append(next);
                     } else {
@@ -470,13 +468,13 @@ void PlayQueueListView::dropEvent(QDropEvent *event)
         if (idx.isValid() && AlbumHeader==getType(idx)) {
             QRect rect(visualRect(idx));
             if (event->pos().y()>(rect.y()+(rect.height()/2))) {
-                quint32 key=idx.data(PlayQueueView::Role_Key).toUInt();
+                quint16 key=idx.data(PlayQueueView::Role_Key).toUInt();
                 if (!isExpanded(key)) {
                     quint32 rowCount=model()->rowCount();
                     for (quint32 i=idx.row()+1; i<rowCount; ++i) {
                         QModelIndex next=idx.sibling(i, 0);
                         if (next.isValid()) {
-                            quint32 nextKey=next.data(PlayQueueView::Role_Key).toUInt();
+                            quint16 nextKey=next.data(PlayQueueView::Role_Key).toUInt();
                             if (nextKey==key) {
                                 dropRowAdjust++;
                             } else {

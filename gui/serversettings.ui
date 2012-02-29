@@ -106,7 +106,7 @@
    <item>
     <widget class="QLabel" name="musicFolderNoteLabel">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music Folder' settings is used to lookup cover-art (&lt;code&gt;cover.jpg&lt;/code&gt;). If you also have write permissions to this folder (and it's sub-folders), then Cantata will save any downloaded covers into the respective album folder.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' settings is used to lookup cover-art (&lt;code&gt;cover.jpg&lt;/code&gt;). If you also have write permissions to this folder (and it's sub-folders), then Cantata will save any downloaded covers into the respective album folder.&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

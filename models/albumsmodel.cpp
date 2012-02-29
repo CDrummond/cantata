@@ -278,10 +278,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             if (si->parent->isSingleTracks) {
                 return si->artistSong();
             }
-            else if (si->track>9) {
-                return QString::number(si->track)+QLatin1String(" - ")+si->title;
-            } else if (si->track>0) {
-                return QChar('0')+QString::number(si->track)+QLatin1String(" - ")+si->title;
+            else {
+                return si->trackAndTitleStr(Song::isVariousArtists(si->parent->artist) && !Song::isVariousArtists(si->artist));
             }
         case ItemView::Role_SubText: {
             return Song::formattedTime(si->time);

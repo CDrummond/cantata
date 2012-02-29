@@ -70,6 +70,7 @@ struct Song
     QString artistSong() const;
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
     const QString & displayTitle() const { return modifiedtitle.isEmpty() ? title : modifiedtitle; }
+    QString trackAndTitleStr(bool addArtist=false) const;
     void updateSize(const QString &dir) const;
     static bool isVariousArtists(const QString &str);
     bool isVariousArtists() const { return isVariousArtists(albumArtist()); }

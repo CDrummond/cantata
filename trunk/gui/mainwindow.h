@@ -381,6 +381,7 @@ private:
     QPixmap noCover;
     QPixmap noStreamCover;
     QPoint lastPos;
+    QSize lastSize;
     Song current;
     Song coverSong;
     QString coverFileName;

@@ -97,6 +97,9 @@ QList<Device *> RemoteDevice::loadAll(DevicesModel *m)
             devices.append(new RemoteDevice(m, d));
         }
     }
+    if (devices.count()!=names.count()) {
+        KGlobal::config()->sync();
+    }
     return devices;
 }
 
@@ -124,6 +127,7 @@ void RemoteDevice::remove(RemoteDevice *dev)
         names.removeAll(dev->details.name);
         KGlobal::config()->deleteGroup(dev->udi());
         grp.writeEntry(constCfgKey, names);
+        KGlobal::config()->sync();
     }
     if (dev->isConnected()) {
         dev->unmount();
@@ -258,7 +262,7 @@ void RemoteDevice::procFinished(int exitCode)
                             : i18n("Failed to disconnect from \"%1\"", details.name));
         setStatusMessage(QString());
     } else if (wasMount) {
-         setStatusMessage(i18n("Updating tracks..."));
+        setStatusMessage(i18n("Updating tracks..."));
         load();
     } else {
         setStatusMessage(QString());
@@ -354,6 +358,21 @@ void RemoteDevice::load()
     }
 }
 
+void RemoteDevice::renamed(const QString &oldName)
+{
+    KConfigGroup grp(KGlobal::config(), "General");
+    QStringList names=grp.readEntry(constCfgKey, QStringList());
+    if (names.contains(oldName)) {
+        names.removeAll(oldName);
+        KGlobal::config()->deleteGroup(createUdi(oldName));
+    }
+    if (!names.contains(details.name)) {
+        names.append(details.name);
+    }
+    grp.writeEntry(constCfgKey, names);
+    KGlobal::config()->sync();
+}
+
 void RemoteDevice::setup()
 {
     QString key=udi();
@@ -445,8 +464,10 @@ void RemoteDevice::saveProperties(const QString &newPath, const QString &newCove
     grp.writeEntry("audioFolder", audioFolderSetting);
 
     if (!oldName.isEmpty() && oldName!=details.name) {
-        KGlobal::config()->deleteGroup(createUdi(oldName));
-        udiChanged(createUdi(oldName), createUdi(details.name));
+        renamed(oldName);
+        emit udiChanged(createUdi(oldName), createUdi(details.name));
+        m_itemData=details.name;
+        setStatusMessage(QString());
         if (isConnected()) {
             unmount();
         }

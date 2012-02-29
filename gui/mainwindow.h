@@ -221,6 +221,7 @@ private Q_SLOTS:
     void setPlaybackButtonsSize(bool small);
     void setControlButtonsSize(bool small);
     void songLoaded();
+    void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
     void playlistItemsSelected(bool s);
     void showVolumeControl();

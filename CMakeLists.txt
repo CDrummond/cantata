@@ -71,6 +71,7 @@ SET( CANTATA_SRCS
     widgets/timeslider.cpp
     widgets/actionlabel.cpp
     widgets/playqueueview.cpp
+    widgets/messagewidget.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -126,6 +127,7 @@ SET( CANTATA_MOC_HDRS
     widgets/timeslider.h
     widgets/actionlabel.h
     widgets/playqueueview.h
+    widgets/messagewidget.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h
@@ -300,8 +302,8 @@ IF( ENABLE_KDE_SUPPORT )
     macro_ensure_version("4.7.0" ${KDE_VERSION} KDE_VERSION_47)
 
     if (NOT KDE_VERSION_47)
-        SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/messagewidget.cpp )
-        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} widgets/messagewidget.h )
+        SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/kmessagewidget.cpp )
+        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} widgets/kmessagewidget.h )
     endif (NOT KDE_VERSION_47)
 
     include_directories( ${KDE4_INCLUDES})
@@ -347,8 +349,8 @@ IF( ENABLE_KDE_SUPPORT )
     add_subdirectory(po)
     # add_subdirectory( docs )
 ELSE( ENABLE_KDE_SUPPORT )
-    SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/dirrequester.cpp widgets/lineedit.cpp network/networkproxyfactory.cpp network/proxysettings.cpp widgets/messagewidget.cpp )
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} widgets/dirrequester.h widgets/lineedit.h network/proxysettings.h widgets/messagewidget.h )
+    SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/dirrequester.cpp widgets/lineedit.cpp network/networkproxyfactory.cpp network/proxysettings.cpp widgets/kmessagewidget.cpp )
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} widgets/dirrequester.h widgets/lineedit.h network/proxysettings.h widgets/kmessagewidget.h )
     SET( CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui )
     SET( CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc )
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )

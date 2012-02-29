@@ -37,6 +37,7 @@
 22. Better height for collapsed interface.
 23. Save/restore height of expanded interface, even when interface is
     collapsed.
+24. Expand inerface when shoing error messages.
 
 0.4.0
 -----

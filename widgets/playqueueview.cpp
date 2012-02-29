@@ -62,7 +62,7 @@ public:
     bool isAutoCollapsingEnabled() const { return autoCollapsingEnabled; }
     QSet<qint32> getExpandedSongIds() const { return expandedSongIds; }
     void setExpanded(const QSet<quint16> &keys) { userExpandedAlbums=keys; }
-    void setCurrentRow(quint32 row);
+    void setCurrentRow(qint32 row);
     bool isExpanded(quint16 key) const { return filterActive || currentAlbum==key || userExpandedAlbums.contains(key); }
     void toggle(const QModelIndex &idx);
     QModelIndexList selectedIndexes() const;
@@ -362,11 +362,15 @@ void PlayQueueListView::setFilterActive(bool f)
     }
 }
 
-void PlayQueueListView::setCurrentRow(quint32 row)
+void PlayQueueListView::setCurrentRow(qint32 row)
 {
     currentAlbum=Song::constNullKey;
 
-    if (!model() || row>(quint32)model()->rowCount()) {
+    if (row<0) {
+        row=0;
+    }
+
+    if (!model() || row>model()->rowCount()) {
         return;
     }
 
@@ -376,11 +380,11 @@ void PlayQueueListView::setCurrentRow(quint32 row)
     }
 
     if (model()) {
-        quint32 count=model()->rowCount();
-        quint32 showRow=row;
+        qint32 count=model()->rowCount();
+        qint32 showRow=row;
         quint16 lastKey=Song::constNullKey;
         currentAlbum=model()->index(row, 0).data(PlayQueueView::Role_Key).toUInt();
-        for (quint32 i=0; i<count; ++i) {
+        for (qint32 i=0; i<count; ++i) {
             quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
             bool hide=autoCollapsingEnabled && key==lastKey && (key!=currentAlbum && !userExpandedAlbums.contains(key));
             setRowHidden(i, hide);
@@ -680,7 +684,7 @@ void PlayQueueView::setFilterActive(bool f)
     listView->setFilterActive(f);
 }
 
-void PlayQueueView::setCurrentRow(quint32 row)
+void PlayQueueView::setCurrentRow(qint32 row)
 {
     if (currentWidget()==listView) {
         listView->setCurrentRow(row);

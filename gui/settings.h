@@ -62,9 +62,7 @@ public:
     QByteArray playQueueHeaderState();
     QByteArray splitterState();
     bool splitterAutoHide();
-    #ifndef ENABLE_KDE_SUPPORT
     QSize mainWindowSize();
-    #endif
     bool useSystemTray();
     bool showPopups();
     bool stopOnExit();
@@ -110,9 +108,7 @@ public:
     void savePlayQueueHeaderState(const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
     void saveSplitterAutoHide(bool v);
-    #ifndef ENABLE_KDE_SUPPORT
     void saveMainWindowSize(const QSize &v);
-    #endif
     void saveUseSystemTray(bool v);
     void saveShowPopups(bool v);
     void saveMpdDir(const QString &v);

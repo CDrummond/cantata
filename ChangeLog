@@ -34,6 +34,9 @@
 19. Add a workaround for dockmanager issues - delay registration for .25secs.
 20. Change default settings; use tree style for library, playlists, and streams.
 21. Better playback button sizes.
+22. Better height for collapsed interface.
+23. Save/restore height of expanded interface, even when interface is
+    collapsed.
 
 0.4.0
 -----

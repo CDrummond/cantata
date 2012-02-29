@@ -149,12 +149,10 @@ bool Settings::splitterAutoHide()
     return GET_BOOL("splitterAutoHide", false);
 }
 
-#ifndef ENABLE_KDE_SUPPORT
 QSize Settings::mainWindowSize()
 {
     return GET_SIZE("mainWindowSize");
 }
-#endif
 
 bool Settings::useSystemTray()
 {
@@ -409,12 +407,10 @@ void Settings::saveSplitterAutoHide(bool v)
     SET_VALUE("splitterAutoHide", v);
 }
 
-#ifndef ENABLE_KDE_SUPPORT
 void Settings::saveMainWindowSize(const QSize &v)
 {
     SET_VALUE("mainWindowSize", v);
 }
-#endif
 
 void Settings::saveUseSystemTray(bool v)
 {

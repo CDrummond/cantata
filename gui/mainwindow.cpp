@@ -715,12 +715,12 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
     menuBar()->setVisible(false);
-    #else
+    #endif
     QSize sz=Settings::self()->mainWindowSize();
     if (!sz.isEmpty()) {
+        lastSize=sz;
         resize(sz);
     }
-    #endif
 
     mainMenu->addAction(expandInterfaceAction);
     #ifdef ENABLE_KDE_SUPPORT
@@ -926,9 +926,11 @@ MainWindow::~MainWindow()
     if (dock) {
         dock->setIcon(QString());
     }
-    #ifndef ENABLE_KDE_SUPPORT
-    Settings::self()->saveMainWindowSize(size());
-    #endif
+    if (lastSize.isValid() && !splitter->isVisible()) {
+        Settings::self()->saveMainWindowSize(lastSize);
+    } else {
+        Settings::self()->saveMainWindowSize(size());
+    }
     #ifdef ENABLE_REMOTE_DEVICES
     DevicesModel::self()->unmountRemote();
     #endif
@@ -1933,7 +1935,6 @@ void MainWindow::togglePlaylist()
     if (splitter->isVisible()==expandInterfaceAction->isChecked()) {
         return;
     }
-    static QSize lastSize;
     static bool lastMax=false;
 
     bool showing=expandInterfaceAction->isChecked();
@@ -1946,6 +1947,7 @@ void MainWindow::togglePlaylist()
         setMinimumHeight(256);
         setMaximumHeight(65535);
     }
+    int prevWidth=size().width();
     splitter->setVisible(showing);
     if (!showing) {
         setWindowState(windowState()&~Qt::WindowMaximized);
@@ -1953,17 +1955,19 @@ void MainWindow::togglePlaylist()
     QApplication::processEvents();
     adjustSize();
 
-    bool adjustWidth=showing && size().width()<lastSize.width();
-    bool adjustHeight=showing && size().height()<lastSize.height();
-    if (adjustWidth || adjustHeight) {
-        resize(adjustWidth ? lastSize.width() : size().width(), adjustHeight ? lastSize.height() : size().height());
-    }
-
     if (showing) {
+        bool adjustWidth=size().width()!=lastSize.width();
+        bool adjustHeight=size().height()!=lastSize.height();
+        if (adjustWidth || adjustHeight) {
+            resize(adjustWidth ? lastSize.width() : size().width(), adjustHeight ? lastSize.height() : size().height());
+        }
         if (lastMax) {
             showMaximized();
         }
     } else {
+        // For some reason height is always larger than it needs to be - so fix this to cover height +4
+        // Widths also sometimes expands, so make sure this is no larger than it was before...
+        resize(size().width()>prevWidth ? prevWidth : size().width(), coverWidget->height()+4);
         setMinimumHeight(size().height());
         setMaximumHeight(size().height());
     }

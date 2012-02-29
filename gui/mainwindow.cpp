@@ -2268,12 +2268,26 @@ void MainWindow::toggleDockManager()
 //     }
 // }
 
+#ifdef ENABLE_KDE_SUPPORT
+#define DIALOG_ERROR KMessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
+#endif
+
 #ifdef TAGLIB_FOUND
 void MainWindow::editTags()
 {
     if (0!=TagEditor::instanceCount()) {
         return;
     }
+
+    if (0!=ActionDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
+
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (0!=TrackOrganiser::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
 
     QList<Song> songs;
     if (libraryPage->isVisible()) {
@@ -2321,6 +2335,16 @@ void MainWindow::organiseFiles()
     if (0!=TrackOrganiser::instanceCount()) {
         return;
     }
+
+    if (0!=TagEditor::instanceCount() || 0!=ActionDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
+
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    if (0!=RgDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
 
     QList<Song> songs;
     if (libraryPage->isVisible()) {
@@ -2380,6 +2404,21 @@ void MainWindow::copyToDevice(const QString &from, const QString &to, const QLis
         return;
     }
 
+    if (0!=TagEditor::instanceCount()) {
+        DIALOG_ERROR;
+    }
+
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (0!=TrackOrganiser::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    if (0!=RgDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
+
     ActionDialog *dlg=new ActionDialog(this);
     dlg->copy(from, to, songs);
 }
@@ -2389,6 +2428,21 @@ void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
     if (0!=ActionDialog::instanceCount()) {
         return;
     }
+
+    if (0!=TagEditor::instanceCount()) {
+        DIALOG_ERROR;
+    }
+
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (0!=TrackOrganiser::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    if (0!=RgDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
 
     ActionDialog *dlg=new ActionDialog(this);
     dlg->remove(from, songs);
@@ -2401,6 +2455,16 @@ void MainWindow::replayGain()
     if (0!=RgDialog::instanceCount()) {
         return;
     }
+
+    if (0!=ActionDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
+
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (0!=TrackOrganiser::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
 
     QList<Song> songs;
     if (libraryPage->isVisible()) {

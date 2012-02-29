@@ -83,13 +83,18 @@ int main(int argc, char *argv[])
 #ifdef ENABLE_KDE_SUPPORT
     KAboutData aboutData(PACKAGE_NAME, 0,
                          ki18n("Cantata"), PACKAGE_VERSION,
-                         ki18n("A simple interface to MPD"),
+                         ki18n("A KDE client for MPD"),
                          KAboutData::License_GPL_V2,
                          ki18n("Copyright (C) 2011-2012 Craig Drummond"),
-                         ki18n("Based upon QtMPC - (C) 2007-2010  The QtMPC Authors"),
+                         KLocalizedString(),
                          QByteArray(), "craig.p.drummond@gmail.com");
 
     aboutData.addAuthor(ki18n("Craig Drummond"), ki18n("Maintainer"), "craig.p.drummond@gmail.com");
+    aboutData.addAuthor(ki18n("Piotr Wicijowski"), ki18n("UI Improvements"), "piotr.wicijowski@gmail.com");
+    aboutData.addAuthor(ki18n("Sander Knopper"), ki18n("QtMPC author"));
+    aboutData.addAuthor(ki18n("Roeland Douma"), ki18n("QtMPC author"));
+    aboutData.addAuthor(ki18n("Daniel Selinger"), ki18n("QtMPC author"));
+    aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"));
     KCmdLineArgs::init(argc, argv, &aboutData);
     KCmdLineOptions options;
     options.add("+[URL]", ki18n("URL to open"));

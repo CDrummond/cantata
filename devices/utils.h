@@ -27,6 +27,7 @@
 #include <math.h>
 
 class QString;
+class QThread;
 
 namespace Utils
 {
@@ -39,6 +40,9 @@ namespace Utils
     extern void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
     extern void setFilePerms(const QString &file);
     extern bool createDir(const QString &dir, const QString &base);
+    extern void msleep(int msecs);
+    inline void sleep() { msleep(100); }
+    extern void stopThread(QThread *thread);
 };
 
 #endif

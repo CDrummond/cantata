@@ -525,16 +525,9 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     QTimer::singleShot(0, this, SLOT(rescan()));
 }
 
-struct Thread : public QThread
-{
-    static void sleep() { QThread::msleep(100); }
-};
-
 MtpDevice::~MtpDevice()
 {
-    thread->quit();
-    for(int i=0; i<10 && thread->isRunning(); ++i)
-        Thread::sleep();
+    Utils::stopThread(thread);
     thread->deleteLater();
     thread=0;
     deleteTemp();

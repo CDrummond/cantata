@@ -427,6 +427,7 @@ void RemoteDevice::saveProperties(const QString &newPath, const QString &newCove
     QString oldPath=audioFolderSetting;
     QString oldName=details.name;
     opts=newOpts;
+    details=newDetails;
     if (diffCacheSettings) {
         if (opts.useCache) {
             saveCache();

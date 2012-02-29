@@ -35,7 +35,6 @@ class QAbstractButton;
 
 class ServerSettings;
 class PlaybackSettings;
-class OutputSettings;
 class InterfaceSettings;
 class LyricSettings;
 class LyricsPage;
@@ -70,7 +69,6 @@ Q_SIGNALS:
 private:
     ServerSettings *server;
     PlaybackSettings *playback;
-    OutputSettings *output;
     InterfaceSettings *interface;
     ExternalSettings *ext;
     LyricSettings *lyrics;

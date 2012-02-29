@@ -38,6 +38,7 @@
 23. Save/restore height of expanded interface, even when interface is
     collapsed.
 24. Expand inerface when shoing error messages.
+25. Combine playback and output config pages.
 
 0.4.0
 -----

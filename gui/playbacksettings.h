@@ -25,6 +25,8 @@
 #define PLAYBACKSETTINGS_H
 
 #include "ui_playbacksettings.h"
+#include "output.h"
+#include <QtCore/QList>
 
 class PlaybackSettings : public QWidget, private Ui::PlaybackSettings
 {
@@ -37,14 +39,18 @@ public:
     void load();
     void save();
 
-private Q_SLOTS:
-    void replayGainSetting(const QString &rg);
-
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void getReplayGain();
     void setReplayGain(const QString &);
     void setCrossFade(int secs);
+    void outputs();
+    void enable(int id);
+    void disable(int id);
+
+private Q_SLOTS:
+    void replayGainSetting(const QString &rg);
+    void updateOutpus(const QList<Output> &outputs);
 };
 
 #endif

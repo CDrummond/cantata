@@ -27,6 +27,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
+#include <QtGui/QListWidget>
 
 PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
@@ -48,6 +49,10 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
     connect(MPDConnection::self(), SIGNAL(replayGain(const QString &)), this, SLOT(replayGainSetting(const QString &)));
+    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(updateOutpus(const QList<Output> &)));
+    connect(this, SIGNAL(enable(int)), MPDConnection::self(), SLOT(enableOutput(int)));
+    connect(this, SIGNAL(disable(int)), MPDConnection::self(), SLOT(disableOutput(int)));
+    connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
     connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
@@ -57,6 +62,7 @@ void PlaybackSettings::load()
 {
     crossfading->setValue(MPDStatus::self()->crossFade());
     emit getReplayGain();
+    emit outputs();
     stopOnExit->setChecked(Settings::self()->stopOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
 }
@@ -67,6 +73,15 @@ void PlaybackSettings::save()
     emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
+    for (int i=0; i<view->count(); ++i) {
+        QListWidgetItem *item=view->item(i);
+
+        if (Qt::Checked==item->checkState()) {
+            emit enable(item->data(Qt::UserRole).toInt());
+        } else {
+            emit disable(item->data(Qt::UserRole).toInt());
+        }
+    }
 }
 
 void PlaybackSettings::replayGainSetting(const QString &rg)
@@ -81,3 +96,12 @@ void PlaybackSettings::replayGainSetting(const QString &rg)
     }
 }
 
+void PlaybackSettings::updateOutpus(const QList<Output> &outputs)
+{
+    view->clear();
+    foreach(const Output &output, outputs) {
+        QListWidgetItem *item=new QListWidgetItem(output.name, view);
+        item->setCheckState(output.enabled ? Qt::Checked : Qt::Unchecked);
+        item->setData(Qt::UserRole, output.id);
+    }
+}

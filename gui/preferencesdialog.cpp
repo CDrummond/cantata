@@ -27,7 +27,6 @@
 #include "interfacesettings.h"
 #include "externalsettings.h"
 #include "playbacksettings.h"
-#include "outputsettings.h"
 #include "serversettings.h"
 #include "httpserversettings.h"
 #include "lyricsettings.h"
@@ -85,14 +84,12 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
 
     server = new ServerSettings(widget);
     playback = new PlaybackSettings(widget);
-    output = new OutputSettings(widget);
     interface = new InterfaceSettings(widget);
     ext = new ExternalSettings(widget);
     http = new HttpServerSettings(widget);
     lyrics = new LyricSettings(widget);
     server->load();
     playback->load();
-    output->load();
     interface->load();
     ext->load();
     http->load();
@@ -105,7 +102,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page=widget->addPage(playback, i18n("Playback"));
     page->setHeader(i18n("Playback Settings"));
     page->setIcon(KIcon("media-playback-start"));
-    page=widget->addPage(output, i18n("Output"));
     page->setHeader(i18n("Control Active Outputs"));
     page->setIcon(KIcon("speaker"));
     page=widget->addPage(interface, i18n("Interface"));
@@ -129,8 +125,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
                    QIcon::fromTheme("server-database"), tr("Server"));
     widget->AddTab(new ConfigPage(this, tr("Playback Settings"), QIcon::fromTheme("media-playback-start"), playback),
                    QIcon::fromTheme("media-playback-start"), tr("Playback"));
-    widget->AddTab(new ConfigPage(this, tr("Control Active Outputs"), QIcon::fromTheme("speaker"), output),
-                   QIcon::fromTheme("speaker"), tr("Output"));
     widget->AddTab(new ConfigPage(this, tr("Interface Settings"), QIcon::fromTheme("preferences-desktop-color"), interface),
                    QIcon::fromTheme("preferences-desktop-color"), tr("Interface"));
     widget->AddTab(new ConfigPage(this, tr("External Settings"), QIcon::fromTheme("video-display"), ext),
@@ -155,7 +149,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     #endif
-    resize(600, 480);
+    resize(600, 450);
 }
 
 void PreferencesDialog::writeSettings()
@@ -163,7 +157,6 @@ void PreferencesDialog::writeSettings()
     // *Must* save server settings first, so that MPD settings go to the correct instance!
     server->save();
     playback->save();
-    output->save();
     interface->save();
     ext->save();
     http->save();

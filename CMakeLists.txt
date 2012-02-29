@@ -30,7 +30,6 @@ SET( CANTATA_SRCS
     gui/playbacksettings.cpp
     gui/serversettings.cpp
     gui/httpserversettings.cpp
-    gui/outputsettings.cpp
     gui/streamspage.cpp
     gui/streamdialog.cpp
     gui/streamcategorydialog.cpp
@@ -103,7 +102,6 @@ SET( CANTATA_MOC_HDRS
     gui/streamdialog.h
     gui/streamcategorydialog.h
     gui/playbacksettings.h
-    gui/outputsettings.h
     gui/preferencesdialog.h
     gui/interfacesettings.h
     gui/externalsettings.h
@@ -155,7 +153,6 @@ SET( CANTATA_UIS
     gui/playbacksettings.ui
     gui/serversettings.ui
     gui/httpserversettings.ui
-    gui/outputsettings.ui
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
     widgets/itemview.ui

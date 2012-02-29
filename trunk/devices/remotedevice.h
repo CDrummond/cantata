@@ -97,6 +97,7 @@ Q_SIGNALS:
     void udiChanged(const QString &from, const QString &to);
 
 protected:
+    void renamed(const QString &oldName);
     void load();
     void setup();
     void setAudioFolder();

@@ -50,12 +50,15 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     stopFadeDuration->setSingleStep(100);
     connect(MPDConnection::self(), SIGNAL(replayGain(const QString &)), this, SLOT(replayGainSetting(const QString &)));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(updateOutpus(const QList<Output> &)));
+    connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(mpdConnectionStateChanged(bool)));
     connect(this, SIGNAL(enable(int)), MPDConnection::self(), SLOT(enableOutput(int)));
     connect(this, SIGNAL(disable(int)), MPDConnection::self(), SLOT(disableOutput(int)));
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
     connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
+    mpdConnectionStateChanged(MPDConnection::self()->isConnected());
+    errorIcon->setPixmap(QIcon::fromTheme("dialog-error").pixmap(32, 32));
 };
 
 void PlaybackSettings::load()
@@ -104,4 +107,15 @@ void PlaybackSettings::updateOutpus(const QList<Output> &outputs)
         item->setCheckState(output.enabled ? Qt::Checked : Qt::Unchecked);
         item->setData(Qt::UserRole, output.id);
     }
+}
+
+void PlaybackSettings::mpdConnectionStateChanged(bool c)
+{
+    errorIcon->setVisible(!c);
+    errorLabel->setVisible(!c);
+    outputFrame->setEnabled(c);
+    crossfading->setEnabled(c);
+    replayGain->setEnabled(c);
+    crossfadingLabel->setEnabled(c);
+    replayGainLabel->setEnabled(c);
 }

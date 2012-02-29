@@ -7,20 +7,20 @@
     <x>0</x>
     <y>0</y>
     <width>341</width>
-    <height>270</height>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QGridLayout" name="gridLayout">
    <property name="margin">
     <number>0</number>
    </property>
-   <item>
+   <item row="0" column="0" colspan="2">
     <layout class="QFormLayout" name="formLayout_2">
      <item row="0" column="0">
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="crossfadingLabel">
        <property name="text">
         <string>Crossfading:</string>
        </property>
@@ -40,7 +40,7 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_6a">
+      <widget class="QLabel" name="replayGainLabel">
        <property name="text">
         <string>Replay gain:</string>
        </property>
@@ -80,8 +80,8 @@
      </item>
     </layout>
    </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
+   <item row="1" column="0" colspan="2">
+    <widget class="QGroupBox" name="outputFrame">
      <property name="title">
       <string>Output</string>
      </property>
@@ -90,6 +90,41 @@
        <widget class="QListWidget" name="view"/>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="errorIcon">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="errorLabel">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;Not Connected.&lt;/b&gt;&lt;br/&gt;Some of the entries above cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>

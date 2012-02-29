@@ -144,6 +144,7 @@ public:
     bool isLocal() const { return hostname.startsWith('/'); }
     const QString & getHost() const { return hostname; }
     quint16 getPort() const { return port; }
+    bool isConnected() const { return State_Connected==state; }
 
 public Q_SLOTS:
     void setDetails(const QString &host, quint16 port, const QString &pass);

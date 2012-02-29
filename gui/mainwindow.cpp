@@ -1053,6 +1053,7 @@ void MainWindow::messageWidgetVisibility(bool v)
 void MainWindow::mpdConnectionStateChanged(bool connected)
 {
     if (connected) {
+        messageWidget->hide();
         if (!isConnected) {
             emit getStatus();
             emit getStats();

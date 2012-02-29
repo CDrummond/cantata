@@ -871,8 +871,7 @@ MainWindow::MainWindow(QWidget *parent)
     } else {
         splitter->restoreState(Settings::self()->splitterState());
     }
-    splitter->setAutoHideEnabled(Settings::self()->splitterAutoHide());
-    splitter->setAutohidable(0, true);
+    toggleSplitterAutoHide(Settings::self()->splitterAutoHide());
 
     playlistItemsSelected(false);
     playQueue->setFocus();
@@ -899,7 +898,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
-    connect(tabWidget, SIGNAL(AutoHideChanged(bool)), splitter, SLOT(setAutoHideEnabled(bool)));
+    connect(tabWidget, SIGNAL(AutoHideChanged(bool)), this, SLOT(toggleSplitterAutoHide(bool)));
 
     libraryPage->setView(0==Settings::self()->libraryView());
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
@@ -2183,6 +2182,12 @@ void MainWindow::cover(const QString &artist, const QString &album, const QImage
             emit coverFile(file);
         }
     }
+}
+
+void MainWindow::toggleSplitterAutoHide(bool ah)
+{
+    splitter->setAutoHideEnabled(ah);
+    splitter->setAutohidable(0, ah);
 }
 
 void MainWindow::showTab(int page)

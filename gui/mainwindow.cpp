@@ -900,6 +900,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(AutoHideChanged(bool)), this, SLOT(toggleSplitterAutoHide(bool)));
+    connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
     libraryPage->setView(0==Settings::self()->libraryView());
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
@@ -1039,6 +1040,13 @@ void MainWindow::showError(const QString &message, bool showActions)
     } else {
         messageWidget->removeAction(prefAction);
         messageWidget->removeAction(connectAction);
+    }
+}
+
+void MainWindow::messageWidgetVisibility(bool v)
+{
+    if (v && !splitter->isVisible()) {
+        expandInterfaceAction->trigger();
     }
 }
 
@@ -1932,6 +1940,10 @@ void MainWindow::copyTrackInfo()
 
 void MainWindow::togglePlaylist()
 {
+    if (!expandInterfaceAction->isChecked() && messageWidget->isVisible()) {
+        expandInterfaceAction->trigger();
+        return;
+    }
     if (splitter->isVisible()==expandInterfaceAction->isChecked()) {
         return;
     }
@@ -1960,6 +1972,10 @@ void MainWindow::togglePlaylist()
         bool adjustHeight=size().height()!=lastSize.height();
         if (adjustWidth || adjustHeight) {
             resize(adjustWidth ? lastSize.width() : size().width(), adjustHeight ? lastSize.height() : size().height());
+        }
+        if (messageWidget->isVisible()) {
+            messageWidget->adjustSize();
+            QApplication::processEvents();
         }
         if (lastMax) {
             showMaximized();

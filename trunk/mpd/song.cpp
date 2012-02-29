@@ -203,6 +203,12 @@ QString Song::artistSong() const
     return artist+QLatin1String(" - ")+title;
 }
 
+QString Song::trackAndTitleStr(bool addArtist) const
+{
+    return (track>9 ? QString::number(track) : (QChar('0')+QString::number(track)))
+           +QLatin1String(" - ")+(addArtist ? artistSong() : title);
+}
+
 void Song::updateSize(const QString &dir) const
 {
     if (size<=0) {

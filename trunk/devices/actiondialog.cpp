@@ -490,18 +490,21 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles)
                        "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
                        "<tr><td align=\"right\">Source file:</td><td>%4</td></tr>"
                        "<tr><td align=\"right\">Destination file:</td><td>%5</td></tr>"
-                       "</table>", s.artist, s.album, s.title, s.file, destFile)
+                       "</table>", s.albumArtist(), s.album,
+                       s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)), s.file, destFile)
                 : i18n("<table>"
                        "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
                        "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
                        "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
                        "<tr><td align=\"right\">File:</td><td>%4</td></tr>"
-                       "</table>", s.artist, s.album, s.title, s.file)
+                       "</table>", s.albumArtist(), s.album,
+                       s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)), s.file)
             : i18n("<table>"
                    "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
                    "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
                    "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
-                   "</table>", s.artist, s.album, s.title);
+                   "</table>", s.albumArtist(), s.album,
+                   s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)));
 }
 
 void ActionDialog::refreshLibrary()

@@ -190,10 +190,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
             if (static_cast<MusicLibraryItemAlbum *>(song->parent())->isSingleTracks()) {
                 return song->song().artistSong();
-            } else if (song->track()>9) {
-                return QString::number(song->track())+QLatin1String(" - ")+item->data();
-            } else if (song->track()>0) {
-                return QChar('0')+QString::number(song->track())+QLatin1String(" - ")+item->data();
+            } else {
+                return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parent()->parent())->isVarious() &&
+                                                     !Song::isVariousArtists(song->song().artist));
             }
         } else if(MusicLibraryItem::Type_Album==item->type() && MusicLibraryItemAlbum::showDate() &&
                   static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {

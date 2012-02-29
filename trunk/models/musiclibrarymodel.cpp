@@ -192,13 +192,8 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             if (static_cast<MusicLibraryItemAlbum *>(song->parent())->isSingleTracks()) {
                 return song->song().artistSong();
             } else {
-                bool isVa=static_cast<MusicLibraryItemArtist *>(song->parent()->parent())->isVarious() &&
-                          !Song::isVariousArtists(song->song().artist);
-                if (song->track()>9) {
-                    return QString::number(song->track())+QLatin1String(" - ")+(isVa ? song->song().artistSong() : item->data());
-                } else if (song->track()>0) {
-                    return QChar('0')+QString::number(song->track())+QLatin1String(" - ")+(isVa ? song->song().artistSong() : item->data());
-                }
+                return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parent()->parent())->isVarious() &&
+                                                     !Song::isVariousArtists(song->song().artist));
             }
         } else if(MusicLibraryItem::Type_Album==item->type() && MusicLibraryItemAlbum::showDate() &&
                   static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {

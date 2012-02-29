@@ -66,6 +66,7 @@
 #include "mpdparseutils.h"
 #include "settings.h"
 #include "config.h"
+#include "utils.h"
 #include "musiclibrarymodel.h"
 #include "musiclibraryitemalbum.h"
 #include "librarypage.h"
@@ -920,11 +921,6 @@ MainWindow::MainWindow(QWidget *parent)
     }
 }
 
-struct Thread : public QThread
-{
-    static void sleep() { QThread::msleep(100); }
-};
-
 MainWindow::~MainWindow()
 {
     if (dock) {
@@ -959,11 +955,9 @@ MainWindow::~MainWindow()
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopOnExit()) {
         emit stop();
-        Thread::sleep();
+        Utils::sleep();
     }
-    mpdThread->quit();
-    for(int i=0; i<10 && mpdThread->isRunning(); ++i)
-        Thread::sleep();
+    Utils::stopThread(mpdThread);
 }
 
 void MainWindow::load(const QList<QUrl> &urls)

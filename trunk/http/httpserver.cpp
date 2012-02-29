@@ -23,17 +23,13 @@
 
 #include "httpserver.h"
 #include "httpsocket.h"
+#include "utils.h"
 #include <QtCore/QUrl>
 #include <QtCore/QThread>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(HttpServer, instance)
 #endif
-
-struct Thread : public QThread
-{
-    static void sleep() { QThread::msleep(100); }
-};
 
 HttpServer * HttpServer::self()
 {
@@ -56,10 +52,9 @@ void HttpServer::stop()
     }
 
     if (thread) {
-        thread->quit();
-        for(int i=0; i<10 && thread->isRunning(); ++i) {
-            Thread::sleep();
-        }
+        Utils::stopThread(thread);
+        thread->deleteLater();
+        thread=0;
     }
 }
 

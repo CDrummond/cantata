@@ -28,6 +28,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtCore/QSet>
+#include <QtCore/QThread>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #endif
@@ -190,5 +191,24 @@ bool Utils::createDir(const QString &dir, const QString &base)
     // Reset umask
     ::umask(oldMask);
     return status;
+}
+
+
+struct Thread : public QThread
+{
+    static void sleep(int msecs) { QThread::msleep(msecs); }
+};
+
+void Utils::msleep(int msecs)
+{
+    Thread::sleep(msecs);
+}
+
+void Utils::stopThread(QThread *thread)
+{
+    thread->quit();
+    for(int i=0; i<10 && thread->isRunning(); ++i) {
+        sleep();
+    }
 }
 

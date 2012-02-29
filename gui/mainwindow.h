@@ -273,6 +273,7 @@ private Q_SLOTS:
     void showLyricsTab() { showTab(PAGE_LYRICS); }
     void showInfoTab() { showTab(PAGE_INFO); }
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
+    void toggleSplitterAutoHide(bool ah);
     #ifdef ENABLE_KDE_SUPPORT
     void showDevicesTab() { showTab(PAGE_DEVICES); }
     #endif

@@ -49,8 +49,10 @@
 QString MPDParseUtils::fixPath(const QString &f)
 {
     QString d(f);
-    if (!d.isEmpty() && !d.endsWith('/')) {
+    if (!d.isEmpty()) {
         d.replace(QLatin1String("//"), QChar('/'));
+    }
+    if (!d.isEmpty() && !d.endsWith('/')) {
         d+='/';
     }
     return d;

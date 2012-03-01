@@ -29,6 +29,8 @@
 #endif
 #include <QtGui/QListWidget>
 
+static const int constIconSize=48;
+
 PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
 {
@@ -58,7 +60,9 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
-    errorIcon->setPixmap(QIcon::fromTheme("dialog-error").pixmap(32, 32));
+    errorIcon->setMinimumSize(constIconSize, constIconSize);
+    errorIcon->setMaximumSize(constIconSize, constIconSize);
+    errorIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(constIconSize, constIconSize));
 };
 
 void PlaybackSettings::load()

@@ -262,9 +262,6 @@ MainWindow::MainWindow(QWidget *parent)
     , lastState(MPDStatus::State_Inactive)
     , songTime(0)
     , lastSongId(-1)
-    , lastPlaylist(0)
-    , fetchStatsFactor(0)
-    , nowPlayingFactor(0)
     , autoScrollPlayQueue(true)
     , draggingPositionSlider(false)
     , trayItem(0)
@@ -1776,7 +1773,6 @@ void MainWindow::updateStatus()
     // Update status info
     lastState = status->state();
     lastSongId = status->songId();
-    lastPlaylist = status->playlist();
 }
 
 void MainWindow::playlistItemActivated(const QModelIndex &index)

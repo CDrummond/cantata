@@ -1252,7 +1252,7 @@ void MainWindow::positionSliderReleased()
 
 void MainWindow::stopTrack()
 {
-    if (!fadeStop) {
+    if (!fadeStop || MPDStatus::State_Paused==MPDStatus::self()->state()) {
         emit stop();
     }
     stopTrackAction->setEnabled(false);
@@ -1305,13 +1305,13 @@ void MainWindow::playPauseTrack()
 {
     MPDStatus * const status = MPDStatus::self();
 
-    if (status->state() == MPDStatus::State_Playing) {
+    if (MPDStatus::State_Playing==status->state()) {
         /*if (fadeStop) {
             startVolumeFade(false);
         } else*/ {
             emit pause(true);
         }
-    } else if (status->state() == MPDStatus::State_Paused) {
+    } else if (MPDStatus::State_Paused==status->state()) {
         stopVolumeFade();
         emit pause(false);
     } else {

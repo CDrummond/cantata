@@ -40,6 +40,7 @@
 24. Expand inerface when shoing error messages.
 25. Combine playback and output config pages.
 26. Disable MPD config items if not connected to MPD.
+27. Save expanded and collapsed sizes to config file.
 
 0.4.0
 -----

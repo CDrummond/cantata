@@ -154,6 +154,11 @@ QSize Settings::mainWindowSize()
     return GET_SIZE("mainWindowSize");
 }
 
+QSize Settings::mainWindowCollapsedSize()
+{
+    return GET_SIZE("mainWindowCollapsedSize");
+}
+
 bool Settings::useSystemTray()
 {
     return GET_BOOL("useSystemTray", false);
@@ -410,6 +415,11 @@ void Settings::saveSplitterAutoHide(bool v)
 void Settings::saveMainWindowSize(const QSize &v)
 {
     SET_VALUE("mainWindowSize", v);
+}
+
+void Settings::saveMainWindowCollapsedSize(const QSize &v)
+{
+    SET_VALUE("mainWindowCollapsedSize", v);
 }
 
 void Settings::saveUseSystemTray(bool v)

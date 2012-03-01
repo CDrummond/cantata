@@ -361,6 +361,11 @@ bool Settings::autoCollapsePlayQueue()
     return GET_BOOL("autoCollapsePlayQueue", true);
 }
 
+bool Settings::scrollPlayQueue()
+{
+    return GET_BOOL("scrollPlayQueue", true);
+}
+
 void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -583,6 +588,11 @@ void Settings::saveGroupedPlayQueue(bool v)
 void Settings::saveAutoCollapsePlayQueue(bool v)
 {
     SET_VALUE("autoCollapsePlayQueue", v);
+}
+
+void Settings::saveScrollPlayQueue(bool v)
+{
+    SET_VALUE("scrollPlayQueue", v);
 }
 
 void Settings::save(bool force)

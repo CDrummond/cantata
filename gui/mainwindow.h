@@ -314,6 +314,7 @@ private:
     int nowPlayingFactor;
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
+    bool autoScrollPlayQueue;
     bool draggingPositionSlider;
     QIcon playbackPause;
     QIcon playbackPlay;

@@ -218,9 +218,13 @@ void DevicePropertiesWidget::transcoderChanged()
 void DevicePropertiesWidget::checkSaveable()
 {
     Device::Options opts=settings();
+    bool checkFolder=musicFolder->isVisible();
 
-    modified=musicFolder->text().trimmed()!=origMusicFolder || opts!=origOpts || albumCovers->currentText()!=origCoverName;
-    saveable=!opts.scheme.isEmpty() && !musicFolder->text().trimmed().isEmpty() && !albumCovers->currentText().isEmpty();
+    modified=opts!=origOpts || albumCovers->currentText()!=origCoverName;
+    if (!modified && checkFolder) {
+        modified=musicFolder->text().trimmed()!=origMusicFolder;
+    }
+    saveable=!opts.scheme.isEmpty() && (!checkFolder || !musicFolder->text().trimmed().isEmpty()) && !albumCovers->currentText().isEmpty();
     emit updated();
 }
 

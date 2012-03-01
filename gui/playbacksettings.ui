@@ -78,6 +78,19 @@
      <item row="3" column="1">
       <widget class="QCheckBox" name="stopOnExit"/>
      </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="scrollPlayQueueLabel">
+       <property name="text">
+        <string>Scroll play queue to current track:</string>
+       </property>
+       <property name="buddy">
+        <cstring>scrollPlayQueue</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QCheckBox" name="scrollPlayQueue"/>
+     </item>
     </layout>
    </item>
    <item row="1" column="0" colspan="2">

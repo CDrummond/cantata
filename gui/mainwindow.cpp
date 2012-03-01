@@ -265,6 +265,7 @@ MainWindow::MainWindow(QWidget *parent)
     , lastPlaylist(0)
     , fetchStatsFactor(0)
     , nowPlayingFactor(0)
+    , autoScrollPlayQueue(true)
     , draggingPositionSlider(false)
     , trayItem(0)
     , lyricsNeedUpdating(false)
@@ -788,6 +789,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlaylistAction));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
     connect(streamsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
+    autoScrollPlayQueue=Settings::self()->scrollPlayQueue();
     playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
     playQueue->setGrouped(Settings::self()->groupedPlayQueue());
     playQueue->setAutoCollapsingEnabled(Settings::self()->autoCollapsePlayQueue());
@@ -1219,6 +1221,7 @@ void MainWindow::updateSettings()
     setupTrayIcon();
     toggleDockManager();
     toggleMpris();
+    autoScrollPlayQueue=Settings::self()->scrollPlayQueue();
 
     bool wasAutoCollapsing=playQueue->isAutoCollapsingEnabled();
     playQueue->setAutoCollapsingEnabled(Settings::self()->autoCollapsePlayQueue());
@@ -1617,7 +1620,7 @@ void MainWindow::updateCurrentSong(const Song &song)
 
 void MainWindow::scrollPlayQueue()
 {
-    if (MPDStatus::State_Playing==MPDStatus::self()->state()) {
+    if (autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state()) {
         qint32 row=playQueueModel.currentSongRow();
         if (row>=0) {
             QModelIndex idx=usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0)) : playQueueModel.index(row, 0);

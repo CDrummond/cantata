@@ -145,10 +145,11 @@ RemoteDevice::RemoteDevice(DevicesModel *m, const QString &audio, const QString 
     , isMounted(false)
     , details(d)
     , proc(0)
-    , audioFolderSetting(audio)
+//     , audioFolderSetting(audio)
 {
     coverFileName=cover;
     opts=options;
+    details.folder=MPDParseUtils::fixPath(details.folder);
     load();
     mount();
 }
@@ -378,20 +379,22 @@ void RemoteDevice::setup()
     QString key=udi();
     opts.load(key);
     details.load(key);
+    details.folder=MPDParseUtils::fixPath(details.folder);
     KConfigGroup grp(KGlobal::config(), key);
     opts.useCache=grp.readEntry("useCache", true);
     coverFileName=grp.readEntry("coverFileName", "cover.jpg");
-    audioFolderSetting=grp.readEntry("audioFolder", "Music/");
+//     audioFolderSetting=grp.readEntry("audioFolder", "Music/");
     configured=KGlobal::config()->hasGroup(key);
     load();
 }
 
 void RemoteDevice::setAudioFolder()
 {
-    KUrl url = KUrl(details.mountPoint(true));
-    url.addPath(audioFolderSetting);
-    url.cleanPath();
-    audioFolder=url.toLocalFile();
+//     KUrl url = KUrl(details.mountPoint(true));
+//     url.addPath(audioFolderSetting);
+//     url.cleanPath();
+//     audioFolder=url.toLocalFile();
+    audioFolder=details.mountPoint(true);
     if (!audioFolder.endsWith('/')) {
         audioFolder+='/';
     }
@@ -409,9 +412,8 @@ void RemoteDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(audioFolderSetting, coverFileName, opts, details,
-              qobject_cast<ActionDialog *>(parent) ? (DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder)
-                                                   : DevicePropertiesWidget::Prop_All);
+    dlg->show(QString(), coverFileName, opts, details,
+              DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder);
 }
 
 bool RemoteDevice::canPlaySongs() const
@@ -431,22 +433,26 @@ void RemoteDevice::saveOptions()
 
 void RemoteDevice::saveProperties()
 {
-    saveProperties(audioFolder, coverFileName, opts, details);
+    saveProperties(QString(), coverFileName, opts, details);
 }
 
 void RemoteDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &newOpts, const Details &newDetails)
 {
-    QString nPath=MPDParseUtils::fixPath(newPath);
-    if (configured && opts==newOpts && nPath==audioFolderSetting && newCoverFileName==coverFileName && details==newDetails) {
+    Q_UNUSED(newPath);
+
+//     QString nPath=MPDParseUtils::fixPath(newPath);
+    if (configured && opts==newOpts && /*nPath==audioFolderSetting && */newCoverFileName==coverFileName && details==newDetails) {
         return;
     }
 
     configured=true;
     bool diffCacheSettings=opts.useCache!=newOpts.useCache;
-    QString oldPath=audioFolderSetting;
+//     QString oldPath=audioFolderSetting;
     QString oldName=details.name;
+    QString oldFolder=details.folder;
     opts=newOpts;
     details=newDetails;
+    details.folder=MPDParseUtils::fixPath(details.folder);
     if (diffCacheSettings) {
         if (opts.useCache) {
             saveCache();
@@ -457,11 +463,11 @@ void RemoteDevice::saveProperties(const QString &newPath, const QString &newCove
     coverFileName=newCoverFileName;
     QString key=udi();
     details.save(key);
-    audioFolderSetting=newPath;
+//     audioFolderSetting=newPath;
     KConfigGroup grp(KGlobal::config(), key);
     grp.writeEntry("useCache", opts.useCache);
     grp.writeEntry("coverFileName", coverFileName);
-    grp.writeEntry("audioFolder", audioFolderSetting);
+//     grp.writeEntry("audioFolder", audioFolderSetting);
 
     if (!oldName.isEmpty() && oldName!=details.name) {
         renamed(oldName);
@@ -471,10 +477,15 @@ void RemoteDevice::saveProperties(const QString &newPath, const QString &newCove
         if (isConnected()) {
             unmount();
         }
-    } else if (oldPath!=audioFolderSetting) {
+    } else if (oldFolder!=details.folder) {
+        if (isConnected()) {
+            removeCache();
+            unmount();
+        }
+    } /*else if (oldPath!=audioFolderSetting) {
         if (isConnected()) {
             setAudioFolder();
         }
         rescan();
-    }
+    }*/
 }

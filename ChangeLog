@@ -41,6 +41,8 @@
 25. Combine playback and output config pages.
 26. Disable MPD config items if not connected to MPD.
 27. Save expanded and collapsed sizes to config file.
+28. Change order of actions in system tray menu to be consistent with main
+    window.
 
 0.4.0
 -----

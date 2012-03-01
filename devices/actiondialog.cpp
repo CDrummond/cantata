@@ -222,6 +222,8 @@ void ActionDialog::slotButtonClicked(int button)
         case KDialog::Cancel:
             refreshLibrary();
             reject();
+            // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+            KDialog::slotButtonClicked(button);
             break;
         default:
             KDialog::slotButtonClicked(button);
@@ -243,6 +245,8 @@ void ActionDialog::slotButtonClicked(int button)
         default:
             refreshLibrary();
             reject();
+            // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+            KDialog::slotButtonClicked(button);
             break;
         }
         break;
@@ -255,6 +259,8 @@ void ActionDialog::slotButtonClicked(int button)
         if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Are you sure you wish to cancel?"))) {
             refreshLibrary();
             reject();
+            // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+            KDialog::slotButtonClicked(button);
         } else if (!performingAction && PAGE_PROGRESS==stack->currentIndex()) {
             paused=false;
             incProgress();

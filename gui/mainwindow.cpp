@@ -1956,6 +1956,7 @@ void MainWindow::togglePlaylist()
     static bool lastMax=false;
 
     bool showing=expandInterfaceAction->isChecked();
+    QPoint p(isVisible() ? pos() : QPoint());
 
     if (!showing) {
         setMinimumHeight(0);
@@ -1994,6 +1995,10 @@ void MainWindow::togglePlaylist()
                coverWidget->height()+4);
         setMinimumHeight(size().height());
         setMaximumHeight(size().height());
+    }
+
+    if (!p.isNull()) {
+        move(p);
     }
 }
 

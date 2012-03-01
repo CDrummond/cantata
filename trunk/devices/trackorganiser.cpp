@@ -123,6 +123,8 @@ void TrackOrganiser::slotButtonClicked(int button)
             }
         }
         finish(false);
+        // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+        KDialog::slotButtonClicked(button);
         break;
     default:
         break;

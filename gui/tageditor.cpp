@@ -672,12 +672,12 @@ void TagEditor::slotButtonClicked(int button)
         break;
     case Cancel:
         reject();
+        // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+        KDialog::slotButtonClicked(button);
         break;
     default:
         break;
     }
-
-    KDialog::slotButtonClicked(button);
 }
 #else
 void TagEditor::buttonPressed(QAbstractButton *button)

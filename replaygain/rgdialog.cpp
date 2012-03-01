@@ -167,16 +167,23 @@ void RgDialog::slotButtonClicked(int button)
         case State_ScanningFiles:
             if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Cancel scanning of files?"))) {
                 stopScanning();
+                // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+                KDialog::slotButtonClicked(button);
             }
             break;
         case State_ScanningTags:
             if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Cancel reading of existing tags?"))) {
                 stopReadingTags();
+                // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+                KDialog::slotButtonClicked(button);
             }
             break;
+        default:
         case State_Idle:
             stopScanning();
             reject();
+            // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+            KDialog::slotButtonClicked(button);
             break;
         }
         break;

@@ -33,7 +33,6 @@
 #include <QtGui/QMainWindow>
 #include <QtGui/QSystemTrayIcon>
 #endif
-
 #include <QtGui/QMenu>
 #include <QtGui/QProxyStyle>
 #include <QtGui/QPixmap>
@@ -42,7 +41,6 @@
 #include <QtGui/QToolButton>
 #include <QtCore/QStringList>
 #include <QtCore/QDateTime>
-
 #include "ui_mainwindow.h"
 #include "playqueuemodel.h"
 #include "playqueueproxymodel.h"
@@ -308,10 +306,7 @@ private:
     MPDStatus::State lastState;
     quint32 songTime;
     qint32 lastSongId;
-    quint32 lastPlaylist;
     QDateTime lastDbUpdate;
-    int fetchStatsFactor;
-    int nowPlayingFactor;
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;

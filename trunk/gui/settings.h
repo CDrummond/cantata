@@ -98,6 +98,7 @@ public:
     bool alwaysUseHttp();
     bool groupedPlayQueue();
     bool autoCollapsePlayQueue();
+    bool scrollPlayQueue();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -141,6 +142,7 @@ public:
     void saveAlwaysUseHttp(bool v);
     void saveGroupedPlayQueue(bool v);
     void saveAutoCollapsePlayQueue(bool v);
+    void saveScrollPlayQueue(bool v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

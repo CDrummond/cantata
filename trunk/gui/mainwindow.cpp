@@ -711,16 +711,25 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
 
     setupTrayIcon();
+    expandedSize=Settings::self()->mainWindowSize();
+    collapsedSize=Settings::self()->mainWindowCollapsedSize();
+    if (!expandedSize.isEmpty()) {
+        resize(expandedSize);
+    }
     togglePlaylist();
+    if (expandInterfaceAction->isChecked()) {
+        if (!expandedSize.isEmpty()) {
+            resize(expandedSize);
+        }
+    } else {
+         if (!collapsedSize.isEmpty()) {
+            resize(collapsedSize);
+        }
+    }
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
     menuBar()->setVisible(false);
     #endif
-    QSize sz=Settings::self()->mainWindowSize();
-    if (!sz.isEmpty()) {
-        lastSize=sz;
-        resize(sz);
-    }
 
     mainMenu->addAction(expandInterfaceAction);
     #ifdef ENABLE_KDE_SUPPORT
@@ -927,11 +936,8 @@ MainWindow::~MainWindow()
     if (dock) {
         dock->setIcon(QString());
     }
-    if (lastSize.isValid() && !splitter->isVisible()) {
-        Settings::self()->saveMainWindowSize(lastSize);
-    } else {
-        Settings::self()->saveMainWindowSize(size());
-    }
+    Settings::self()->saveMainWindowSize(splitter->isVisible() ? size() : expandedSize);
+    Settings::self()->saveMainWindowCollapsedSize(splitter->isVisible() ? collapsedSize : size());
     #ifdef ENABLE_REMOTE_DEVICES
     DevicesModel::self()->unmountRemote();
     #endif
@@ -1955,8 +1961,9 @@ void MainWindow::togglePlaylist()
     if (!showing) {
         setMinimumHeight(0);
         lastMax=isMaximized();
-        lastSize=size();
+        expandedSize=size();
     } else {
+        collapsedSize=size();
         setMinimumHeight(256);
         setMaximumHeight(65535);
     }
@@ -1969,10 +1976,10 @@ void MainWindow::togglePlaylist()
     adjustSize();
 
     if (showing) {
-        bool adjustWidth=size().width()!=lastSize.width();
-        bool adjustHeight=size().height()!=lastSize.height();
+        bool adjustWidth=size().width()!=expandedSize.width();
+        bool adjustHeight=size().height()!=expandedSize.height();
         if (adjustWidth || adjustHeight) {
-            resize(adjustWidth ? lastSize.width() : size().width(), adjustHeight ? lastSize.height() : size().height());
+            resize(adjustWidth ? expandedSize.width() : size().width(), adjustHeight ? expandedSize.height() : size().height());
         }
         if (messageWidget->isVisible()) {
             messageWidget->adjustSize();
@@ -1984,7 +1991,8 @@ void MainWindow::togglePlaylist()
     } else {
         // For some reason height is always larger than it needs to be - so fix this to cover height +4
         // Widths also sometimes expands, so make sure this is no larger than it was before...
-        resize(size().width()>prevWidth ? prevWidth : size().width(), coverWidget->height()+4);
+        resize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()),
+               coverWidget->height()+4);
         setMinimumHeight(size().height());
         setMaximumHeight(size().height());
     }

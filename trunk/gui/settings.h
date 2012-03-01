@@ -63,6 +63,7 @@ public:
     QByteArray splitterState();
     bool splitterAutoHide();
     QSize mainWindowSize();
+    QSize mainWindowCollapsedSize();
     bool useSystemTray();
     bool showPopups();
     bool stopOnExit();
@@ -109,6 +110,7 @@ public:
     void saveSplitterState(const QByteArray &v);
     void saveSplitterAutoHide(bool v);
     void saveMainWindowSize(const QSize &v);
+    void saveMainWindowCollapsedSize(const QSize &v);
     void saveUseSystemTray(bool v);
     void saveShowPopups(bool v);
     void saveMpdDir(const QString &v);

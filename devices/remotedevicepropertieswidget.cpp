@@ -84,6 +84,13 @@ void RemoteDevicePropertiesWidget::setType()
     portLabel->setEnabled(RemoteDevice::Prot_File!=t);
     port->setEnabled(RemoteDevice::Prot_File!=t);
     folder->setButtonVisible(RemoteDevice::Prot_File==t);
+
+    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionAuto, RemoteDevice::Prot_File!=t);
+    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionMan, RemoteDevice::Prot_File!=t);
+    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionShell, RemoteDevice::Prot_File!=t);
+    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionPopup, RemoteDevice::Prot_File!=t);
+    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionPopupAuto, RemoteDevice::Prot_File!=t);
+    folder->lineEdit()->setCompletionMode(RemoteDevice::Prot_File==t ? KGlobalSettings::completionMode() : KGlobalSettings::CompletionNone);
 }
 
 void RemoteDevicePropertiesWidget::checkSaveable()

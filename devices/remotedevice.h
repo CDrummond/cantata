@@ -112,7 +112,7 @@ protected:
     mutable bool isMounted;
     Details details;
     QProcess *proc;
-    QString audioFolderSetting;
+//     QString audioFolderSetting;
 };
 
 #endif

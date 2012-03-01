@@ -412,7 +412,7 @@ void DevicesPage::deleteSongs()
 void DevicesPage::addRemoteDevice()
 {
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(this);
-    dlg->show("Music", "cover.jpg", Device::Options(), RemoteDevice::Details(), DevicePropertiesWidget::Prop_All, true);
+    dlg->show("Music", "cover.jpg", Device::Options(), RemoteDevice::Details(), DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder, true);
     connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &, const RemoteDevice::Details &)),
             DevicesModel::self(), SLOT(addRemoteDevice(const QString &, const QString &, const Device::Options &, const RemoteDevice::Details &)));
 }

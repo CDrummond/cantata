@@ -2044,9 +2044,9 @@ void MainWindow::setupTrayIcon()
 
     trayItemMenu = new KMenu(this);
     trayItemMenu->addAction(prevTrackAction);
-    trayItemMenu->addAction(nextTrackAction);
-    trayItemMenu->addAction(stopTrackAction);
     trayItemMenu->addAction(playPauseTrackAction);
+    trayItemMenu->addAction(stopTrackAction);
+    trayItemMenu->addAction(nextTrackAction);
     trayItem->setContextMenu(trayItemMenu);
     connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
     connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), this, SLOT(playPauseTrack()));
@@ -2060,9 +2060,9 @@ void MainWindow::setupTrayIcon()
     trayItem->installEventFilter(volumeSliderEventHandler);
     trayItemMenu = new QMenu(this);
     trayItemMenu->addAction(prevTrackAction);
-    trayItemMenu->addAction(nextTrackAction);
-    trayItemMenu->addAction(stopTrackAction);
     trayItemMenu->addAction(playPauseTrackAction);
+    trayItemMenu->addAction(stopTrackAction);
+    trayItemMenu->addAction(nextTrackAction);
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(quitAction);
     trayItem->setContextMenu(trayItemMenu);

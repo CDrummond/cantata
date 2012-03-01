@@ -2305,13 +2305,16 @@ void MainWindow::editTags()
     if (0!=TagEditor::instanceCount()) {
         return;
     }
-
     if (0!=ActionDialog::instanceCount()) {
         DIALOG_ERROR;
     }
-
     #ifdef ENABLE_DEVICES_SUPPORT
     if (0!=TrackOrganiser::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    if (0!=RgDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #endif
@@ -2430,11 +2433,9 @@ void MainWindow::copyToDevice(const QString &from, const QString &to, const QLis
     if (0!=ActionDialog::instanceCount()) {
         return;
     }
-
     if (0!=TagEditor::instanceCount()) {
         DIALOG_ERROR;
     }
-
     #ifdef ENABLE_DEVICES_SUPPORT
     if (0!=TrackOrganiser::instanceCount()) {
         DIALOG_ERROR;
@@ -2455,11 +2456,9 @@ void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
     if (0!=ActionDialog::instanceCount()) {
         return;
     }
-
     if (0!=TagEditor::instanceCount()) {
         DIALOG_ERROR;
     }
-
     #ifdef ENABLE_DEVICES_SUPPORT
     if (0!=TrackOrganiser::instanceCount()) {
         DIALOG_ERROR;
@@ -2482,11 +2481,9 @@ void MainWindow::replayGain()
     if (0!=RgDialog::instanceCount()) {
         return;
     }
-
-    if (0!=ActionDialog::instanceCount()) {
+    if (0!=ActionDialog::instanceCount() || 0!=TagEditor::instanceCount()) {
         DIALOG_ERROR;
     }
-
     #ifdef ENABLE_DEVICES_SUPPORT
     if (0!=TrackOrganiser::instanceCount()) {
         DIALOG_ERROR;

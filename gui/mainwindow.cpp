@@ -1228,7 +1228,7 @@ void MainWindow::updateSettings()
         playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
         playQueue->setGrouped(Settings::self()->groupedPlayQueue());
         playQueueModel.refresh();
-        playQueue->setCurrentRow(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow());
+        playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), true);
     }
 }
 
@@ -1374,7 +1374,7 @@ void MainWindow::realSearchPlaylist()
             playQueue->setModel(&playQueueModel);
             usingProxy=false;
             playQueue->setFilterActive(false);
-            playQueue->setCurrentRow(playQueueModel.currentSongRow());
+            playQueue->updateRows(playQueueModel.currentSongRow(), true);
             scrollPlayQueue();
         }
         playQueueProxyModel.setFilterEnabled(false);
@@ -1391,7 +1391,7 @@ void MainWindow::realSearchPlaylist()
             }
             playQueue->setModel(&playQueueProxyModel);
             usingProxy=true;
-            playQueue->setCurrentRow(playQueueModel.rowCount()+10);
+            playQueue->updateRows(playQueueModel.rowCount()+10, false);
             playQueue->setFilterActive(true);
         }
         playQueueProxyModel.setFilterEnabled(true);
@@ -1483,7 +1483,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         }
     }
 
-    playQueue->setCurrentRow(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow());
+    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
     if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
     }
@@ -1551,7 +1551,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     playQueueModel.updateCurrentSong(song.id);
-    playQueue->setCurrentRow(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(song.id));
+    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(song.id), !usingProxy);
     scrollPlayQueue();
 
     if (song.artist.isEmpty()) {
@@ -1619,7 +1619,7 @@ void MainWindow::updateCurrentSong(const Song &song)
 
 void MainWindow::scrollPlayQueue()
 {
-    if (autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state()) {
+    if (autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state() && !playQueueModel.isGrouped()) {
         qint32 row=playQueueModel.currentSongRow();
         if (row>=0) {
             QModelIndex idx=usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0)) : playQueueModel.index(row, 0);

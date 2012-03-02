@@ -247,7 +247,7 @@ public:
         if (!title.isEmpty()) {
             // Draw cover...
             QPixmap *cover=Covers::self()->get(song, constCoverSize);
-            QPixmap pix=cover ? *cover : QIcon::fromTheme("media-optical-audio").pixmap(constCoverSize, constCoverSize);
+            QPixmap pix=cover ? *cover : QIcon::fromTheme(stream ? "applications-internet" : "media-optical-audio").pixmap(constCoverSize, constCoverSize);
 
             if (rtl) {
                 painter->drawPixmap(r.x()+r.width()-(pix.width()+constBorder), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);

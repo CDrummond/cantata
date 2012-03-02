@@ -165,8 +165,7 @@ public:
                 imageSize=constDevImageSize;
             }
             return QSize(qMax(64, imageSize) + (constBorder * 2),
-                        qMax(qMax(textHeight, sz.height()), imageSize) + (constBorder*2) +
-                        (showCapacity ? textHeight+2 : 0));
+                        qMax(qMax(textHeight, imageSize) + (constBorder*2) + (int)((showCapacity ? textHeight*0.8 : 0)+0.5), sz.height()));
         }
     }
 
@@ -207,7 +206,7 @@ public:
         int textHeight=textMetrics.height();
 
         if (showCapacity) {
-            r.adjust(0, 0, 0, -(textHeight+8));
+            r.adjust(2, 0, 0, -(textHeight+4));
         }
 
         if (iconMode) {
@@ -278,7 +277,7 @@ public:
             opt.progress=capacity<0 ? 0 : (index.data(ItemView::Role_Capacity).toDouble()*1000);
             opt.textVisible=true;
             opt.text=capacityText;
-            opt.rect=QRect(r2.x()+4, r2.bottom()-(textHeight+8), r2.width()-8, textHeight);
+            opt.rect=QRect(r2.x()+4, r2.bottom()-(textHeight+4), r2.width()-8, textHeight);
             opt.state=QStyle::State_Enabled;
             opt.palette=option.palette;
             opt.direction=QApplication::layoutDirection();

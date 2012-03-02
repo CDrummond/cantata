@@ -641,6 +641,7 @@ void DevicesModel::changeDeviceUdi(const QString &from, const QString &to)
         int idx=indexes[from];
         indexes.remove(from);
         indexes.insert(to, idx);
+        updateItemMenu();
     }
 }
 #endif

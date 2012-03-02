@@ -612,6 +612,14 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
         quint16 key=0;
         foreach (const Song &s, songs) {
             Song song(s);
+            if (song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
+                Song mod=HttpServer::self()->decodeUrl(song.file);
+                if (!mod.title.isEmpty()) {
+                    mod.id=s.id;
+                    song=mod;
+                }
+            }
+
             if (grouped) {
                 if (song.album!=album || song.albumArtist()!=artist) {
                     key++;
@@ -621,17 +629,7 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
                 song.key=key;
             }
 
-            if (song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
-                Song mod=HttpServer::self()->decodeUrl(song.file);
-                if (mod.title.isEmpty()) {
-                    songList.append(song);
-                } else {
-                    mod.id=s.id;
-                    songList.append(mod);
-                }
-            } else {
-                songList.append(song);
-            }
+            songList.append(song);
         }
         this->songs = songList;
     } else {

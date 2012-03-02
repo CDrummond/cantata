@@ -1488,9 +1488,9 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         updateCurrentSong(songs.at(0));
     }
 
-    if (songs.count()) {
-        scrollPlayQueue();
-    }
+//     if (songs.count()) {
+//         scrollPlayQueue();
+//     }
 }
 
 void MainWindow::updateCurrentSong(const Song &song)

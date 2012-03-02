@@ -165,9 +165,6 @@ public:
         }
 
         Type type=getType(index);
-        QFont f(QApplication::font());
-        QFontMetrics fm(f);
-        int textHeight=fm.height();
 
         if (AlbumHeader==type) {
             QStyleOptionViewItem opt(option);
@@ -186,10 +183,17 @@ public:
         QString title;
         QString track;
         QString duration=Song::formattedTime(song.time);
+        bool stream=song.file.isEmpty() || song.file.contains("://");
         int state=index.data(PlayQueueView::Role_Status).toInt();
         QString trackTitle=!song.albumartist.isEmpty() && song.albumartist != song.artist
                     ? song.title + " - " + song.artist
                     : song.title;
+        QFont f(QApplication::font());
+        if (stream) {
+            f.setItalic(true);
+        }
+        QFontMetrics fm(f);
+        int textHeight=fm.height();
 
         switch(type) {
         case AlbumHeader: {

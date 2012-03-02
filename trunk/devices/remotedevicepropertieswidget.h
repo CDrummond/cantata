@@ -35,7 +35,7 @@ public:
 
     RemoteDevicePropertiesWidget(QWidget *parent);
     virtual ~RemoteDevicePropertiesWidget() { }
-    void update(const RemoteDevice::Details &d, bool create);
+    void update(const RemoteDevice::Details &d, bool create, bool isConnected);
     RemoteDevice::Details details();
     const RemoteDevice::Details & origDetails() const { return orig; }
     bool isModified() const { return modified; }

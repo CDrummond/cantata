@@ -39,7 +39,7 @@
 #include <kmountpoint.h>
 #include <kde_file.h>
 #include <stdio.h>
-#include <mntent.h>
+#include <unistd.h>
 
 QString RemoteDevice::Details::mountPoint(bool create) const
 {
@@ -400,7 +400,8 @@ void RemoteDevice::configure(QWidget *parent)
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
     dlg->show(coverFileName, opts, details,
-              DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder);
+              DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder,
+              false, isConnected());
 }
 
 bool RemoteDevice::canPlaySongs() const
@@ -431,8 +432,7 @@ void RemoteDevice::saveProperties(const QString &newCoverFileName, const Device:
 
     configured=true;
     bool diffCacheSettings=opts.useCache!=newOpts.useCache;
-    QString oldName=details.name;
-    QString oldFolder=details.folder;
+    Details oldDetails=details;
     opts=newOpts;
     details=newDetails;
     details.folder=MPDParseUtils::fixPath(details.folder);
@@ -450,15 +450,19 @@ void RemoteDevice::saveProperties(const QString &newCoverFileName, const Device:
     grp.writeEntry("useCache", opts.useCache);
     grp.writeEntry("coverFileName", coverFileName);
 
-    if (!oldName.isEmpty() && oldName!=details.name) {
-        renamed(oldName);
-        emit udiChanged(createUdi(oldName), createUdi(details.name));
+    if (!oldDetails.name.isEmpty() && oldDetails.name!=details.name) {
+        QString oldMount=oldDetails.mountPoint(false);
+        if (!oldMount.isEmpty() && QDir(oldMount).exists()) {
+            ::rmdir(QFile::encodeName(oldMount).constData());
+        }
+        renamed(oldDetails.name);
+        emit udiChanged(createUdi(oldDetails.name), createUdi(details.name));
         m_itemData=details.name;
         setStatusMessage(QString());
         if (isConnected()) {
             unmount();
         }
-    } else if (oldFolder!=details.folder) {
+    } else if (oldDetails.folder!=details.folder) {
         if (isConnected()) {
             removeCache();
             unmount();

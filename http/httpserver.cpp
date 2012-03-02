@@ -140,6 +140,9 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
     if (s.time) {
         url.addQueryItem("time", QString::number(s.time));
     }
+    if (s.track) {
+        url.addQueryItem("track", QString::number(s.track));
+    }
     url.addQueryItem("cantata", "song");
     return url.toEncoded();
 }
@@ -186,6 +189,9 @@ Song HttpServer::decodeUrl(const QString &url) const
             }
             if (u.hasQueryItem("time")) {
                 s.time=u.queryItemValue("time").toInt();
+            }
+            if (u.hasQueryItem("track")) {
+                s.track=u.queryItemValue("track").toInt();
             }
         }
     }

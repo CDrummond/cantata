@@ -1518,7 +1518,9 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     // Determine if album cover should be updated
     const QString &albumArtist=song.albumArtist();
-    if (coverWidget->property("artist").toString() != albumArtist || coverWidget->property("album").toString() != song.album) {
+    QString covArtist=coverWidget->property("artist").toString();
+    QString covAlbum=coverWidget->property("album").toString();
+    if (covArtist!= albumArtist || covAlbum != song.album || (covArtist.isEmpty() && covAlbum.isEmpty())) {
         if (!albumArtist.isEmpty() && !song.album.isEmpty()) {
             Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
         } else {

@@ -25,6 +25,7 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
+#include "musiclibrarymodel.h"
 #include "devicesmodel.h"
 #include "playqueuemodel.h"
 #include "settings.h"
@@ -475,80 +476,31 @@ Qt::ItemFlags DevicesModel::flags(const QModelIndex &index) const
 
 QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool playableOnly) const
 {
+    QList<Song> songList=songs(indexes, playableOnly);
     QStringList fnames;
-
-    foreach(QModelIndex index, indexes) {
-        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
-
-        if (playableOnly) {
-            MusicLibraryItem *parent=item;
-            while (parent->parent()) {
-                parent=parent->parent();
-            }
-            if (parent && !static_cast<Device *>(parent)->canPlaySongs()) {
-                continue;
-            }
-        }
-
-        switch (item->type()) {
-        case MusicLibraryItem::Type_Root:
-            foreach (const MusicLibraryItem *artist, item->children()) {
-                foreach (const MusicLibraryItem *album, artist->children()) {
-                    QStringList sorted=static_cast<const MusicLibraryItemAlbum *>(album)->sortedTracks();
-                    foreach (const QString &f, sorted) {
-                        if(!fnames.contains(f)) {
-                            fnames << f;
-                        }
-                    }
-                }
-            }
-            break;
-        case MusicLibraryItem::Type_Artist:
-            foreach (const MusicLibraryItem *album, item->children()) {
-                QStringList sorted=static_cast<const MusicLibraryItemAlbum *>(album)->sortedTracks();
-                foreach (const QString &f, sorted) {
-                    if(!fnames.contains(f)) {
-                        fnames << f;
-                    }
-                }
-            }
-            break;
-        case MusicLibraryItem::Type_Album: {
-            QStringList sorted=static_cast<MusicLibraryItemAlbum*>(item)->sortedTracks();
-                foreach (const QString &f, sorted) {
-                    if(!fnames.contains(f)) {
-                        fnames << f;
-                    }
-                }
-            break;
-        }
-        case MusicLibraryItem::Type_Song:
-            if (item->type() == MusicLibraryItem::Type_Song && !fnames.contains(static_cast<MusicLibraryItemSong*>(item)->file())) {
-                fnames << static_cast<MusicLibraryItemSong*>(item)->file();
-            }
-            break;
-        default:
-            break;
-        }
+    foreach (const Song &s, songList) {
+        fnames.append(s.file);
     }
     return fnames;
 }
 
 QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnly) const
 {
-    QList<Song> songs;
+    QMap<MusicLibraryItem *, QList<Song> > devSongs;
 
     foreach(QModelIndex index, indexes) {
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+        MusicLibraryItem *parent=item;
 
-        if (playableOnly) {
-            MusicLibraryItem *parent=item;
-            while (parent->parent()) {
-                parent=parent->parent();
-            }
-            if (parent && !static_cast<Device *>(parent)->canPlaySongs()) {
-                continue;
-            }
+        while (parent->parent()) {
+            parent=parent->parent();
+        }
+
+        if (!parent) {
+            continue;
+        }
+        if (playableOnly && !static_cast<Device *>(parent)->canPlaySongs()) {
+            continue;
         }
 
         switch (item->type()) {
@@ -556,8 +508,8 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
             foreach (const MusicLibraryItem *artist, item->children()) {
                 foreach (const MusicLibraryItem *album, artist->children()) {
                     foreach (MusicLibraryItem *song, album->children()) {
-                        if (MusicLibraryItem::Type_Song==song->type() && !songs.contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
-                            songs << static_cast<MusicLibraryItemSong*>(song)->song();
+                        if (MusicLibraryItem::Type_Song==song->type() && !devSongs[parent].contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
+                            devSongs[parent] << static_cast<MusicLibraryItemSong*>(song)->song();
                         }
                     }
                 }
@@ -566,28 +518,38 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
         case MusicLibraryItem::Type_Artist:
             foreach (const MusicLibraryItem *album, item->children()) {
                 foreach (MusicLibraryItem *song, album->children()) {
-                    if (MusicLibraryItem::Type_Song==song->type() && !songs.contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
-                        songs << static_cast<MusicLibraryItemSong*>(song)->song();
+                    if (MusicLibraryItem::Type_Song==song->type() && !devSongs[parent].contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
+                        devSongs[parent] << static_cast<MusicLibraryItemSong*>(song)->song();
                     }
                 }
             }
             break;
         case MusicLibraryItem::Type_Album:
             foreach (MusicLibraryItem *song, item->children()) {
-                if (MusicLibraryItem::Type_Song==song->type() && !songs.contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
-                    songs << static_cast<MusicLibraryItemSong*>(song)->song();
+                if (MusicLibraryItem::Type_Song==song->type() && !devSongs[parent].contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
+                    devSongs[parent] << static_cast<MusicLibraryItemSong*>(song)->song();
                 }
             }
             break;
         case MusicLibraryItem::Type_Song:
-            if (!songs.contains(static_cast<MusicLibraryItemSong*>(item)->song())) {
-                songs << static_cast<MusicLibraryItemSong*>(item)->song();
+            if (!devSongs[parent].contains(static_cast<MusicLibraryItemSong*>(item)->song())) {
+                devSongs[parent] << static_cast<MusicLibraryItemSong*>(item)->song();
             }
             break;
         default:
             break;
         }
     }
+
+    QList<Song> songs;
+    QMap<MusicLibraryItem *, QList<Song> >::Iterator it(devSongs.begin());
+    QMap<MusicLibraryItem *, QList<Song> >::Iterator end(devSongs.end());
+
+    for (; it!=end; ++it) {
+        qSort(it.value());
+        songs.append(it.value());
+    }
+
     return songs;
 }
 

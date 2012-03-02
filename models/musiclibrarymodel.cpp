@@ -535,39 +535,10 @@ Qt::ItemFlags MusicLibraryModel::flags(const QModelIndex &index) const
 
 QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes) const
 {
+    QList<Song> songList=songs(indexes);
     QStringList fnames;
-
-    foreach(QModelIndex index, indexes) {
-        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
-
-        switch (item->type()) {
-        case MusicLibraryItem::Type_Artist:
-            foreach (const MusicLibraryItem *album, item->children()) {
-                QStringList sorted=static_cast<const MusicLibraryItemAlbum *>(album)->sortedTracks();
-                foreach (const QString &f, sorted) {
-                    if(!fnames.contains(f)) {
-                        fnames << f;
-                    }
-                }
-            }
-            break;
-        case MusicLibraryItem::Type_Album: {
-            QStringList sorted=static_cast<MusicLibraryItemAlbum*>(item)->sortedTracks();
-                foreach (const QString &f, sorted) {
-                    if(!fnames.contains(f)) {
-                        fnames << f;
-                    }
-                }
-            break;
-        }
-        case MusicLibraryItem::Type_Song:
-            if (!fnames.contains(static_cast<MusicLibraryItemSong*>(item)->file())) {
-                fnames << static_cast<MusicLibraryItemSong*>(item)->file();
-            }
-            break;
-        default:
-            break;
-        }
+    foreach (const Song &s, songList) {
+        fnames.append(s.file);
     }
     return fnames;
 }
@@ -608,6 +579,7 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
             break;
         }
     }
+    qSort(songs);
     return songs;
 }
 

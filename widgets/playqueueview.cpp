@@ -217,7 +217,7 @@ public:
 
         painter->save();
         painter->setFont(f);
-        QColor col(QApplication::palette().color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
+        QColor col(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
         QTextOption textOpt(Qt::AlignVCenter);
         QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
         bool rtl=Qt::RightToLeft==QApplication::layoutDirection();

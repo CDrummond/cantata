@@ -237,7 +237,7 @@ public:
 
         QRect textRect;
         bool selected=option.state&QStyle::State_Selected;
-        QColor color(QApplication::palette().color(selected ? QPalette::HighlightedText : QPalette::Text));
+        QColor color(option.palette.color(selected ? QPalette::HighlightedText : QPalette::Text));
         QTextOption textOpt(iconMode ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
 
         if (oneLine) {

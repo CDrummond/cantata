@@ -37,10 +37,10 @@ class RemoteDevicePropertiesDialog : public KDialog
 
 public:
     RemoteDevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det, int props, bool creating=false);
+    void show(const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det, int props, bool creating=false);
 
 Q_SIGNALS:
-    void updatedSettings(const QString &path, const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det);
+    void updatedSettings(const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det);
     void cancelled();
 
 private Q_SLOTS:

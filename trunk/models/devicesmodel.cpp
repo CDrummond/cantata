@@ -608,9 +608,9 @@ void DevicesModel::emitAddToDevice()
 }
 
 #ifdef ENABLE_REMOTE_DEVICES
-void DevicesModel::addRemoteDevice(const QString &path, const QString &coverFileName, const Device::Options &opts, const RemoteDevice::Details &details)
+void DevicesModel::addRemoteDevice(const QString &coverFileName, const Device::Options &opts, const RemoteDevice::Details &details)
 {
-    RemoteDevice *dev=RemoteDevice::create(this, path, coverFileName, opts, details);
+    RemoteDevice *dev=RemoteDevice::create(this, coverFileName, opts, details);
 
     if (dev) {
         beginInsertRows(QModelIndex(), devices.count(), devices.count());

@@ -455,6 +455,7 @@ void RemoteDevice::saveProperties(const QString &newCoverFileName, const Device:
         if (!oldMount.isEmpty() && QDir(oldMount).exists()) {
             ::rmdir(QFile::encodeName(oldMount).constData());
         }
+        setData(details.name);
         renamed(oldDetails.name);
         emit udiChanged(createUdi(oldDetails.name), createUdi(details.name));
         m_itemData=details.name;

@@ -267,13 +267,24 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         return (int)PlayQueueView::State_Default;
         break;
-    case Qt::FontRole:
-        if (songs.at(index.row()).id == currentSongId) {
+    case Qt::FontRole: {
+        Song s=songs.at(index.row());
+
+        if (s.file.isEmpty() || s.file.contains("://")) {
+            QFont font;
+            if (songs.at(index.row()).id == currentSongId) {
+                font.setBold(true);
+            }
+            font.setItalic(true);
+            return font;
+        }
+        else if (songs.at(index.row()).id == currentSongId) {
             QFont font;
             font.setBold(true);
             return font;
         }
         break;
+    }
 //     case Qt::BackgroundRole:
 //         if (songs.at(index.row()).id == currentSongId) {
 //             QColor col(QPalette().color(QPalette::Highlight));

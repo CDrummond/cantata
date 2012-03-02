@@ -106,6 +106,10 @@ public:
         return m_itemData;
     }
 
+    void setData(const QString &d) {
+        m_itemData=d;
+    }
+
     MusicLibraryItem::Type type() const {
         return m_type;
     }

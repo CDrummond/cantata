@@ -27,6 +27,7 @@
 #include <cmath>
 #include "song.h"
 #include "mpdparseutils.h"
+#include "musiclibraryitemalbum.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #else
@@ -80,19 +81,24 @@ bool Song::operator==(const Song &o) const
 
 bool Song::operator<(const Song &o) const
 {
+    bool sortDateBeforeAlbum=MusicLibraryItemAlbum::showDate();
     int compare=albumArtist().localeAwareCompare(o.albumArtist());
+
     if (0!=compare) {
         return compare<0;
+    }
+    if (sortDateBeforeAlbum && year!=o.year) {
+        return year<o.year;
     }
     compare=album.localeAwareCompare(o.album);
     if (0!=compare) {
         return compare<0;
     }
+    if (!sortDateBeforeAlbum && year!=o.year) {
+        return year<o.year;
+    }
     if (track!=o.track) {
         return track<o.track;
-    }
-    if (year!=o.year) {
-        return year<o.year;
     }
     compare=file.compare(o.file);
     if (0!=compare) {

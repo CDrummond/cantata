@@ -301,19 +301,10 @@ Qt::ItemFlags AlbumsModel::flags(const QModelIndex &index) const
 
 QStringList AlbumsModel::filenames(const QModelIndexList &indexes) const
 {
+    QList<Song> songList=songs(indexes);
     QStringList fnames;
-    foreach(QModelIndex index, indexes) {
-        Item *item=static_cast<Item *>(index.internalPointer());
-
-        if (item->isAlbum()) {
-            foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
-                if (!fnames.contains(s->file)) {
-                    fnames << s->file;
-                }
-            }
-        } else if (!fnames.contains(static_cast<SongItem*>(item)->file)) {
-            fnames << static_cast<SongItem*>(item)->file;
-        }
+    foreach (const Song &s, songList) {
+        fnames.append(s.file);
     }
     return fnames;
 }
@@ -334,6 +325,7 @@ QList<Song> AlbumsModel::songs(const QModelIndexList &indexes) const
             songs << *static_cast<SongItem*>(item);
         }
     }
+    qSort(songs);
     return songs;
 }
 

@@ -90,7 +90,7 @@ public:
     QSet<qint32> getExpandedSongIds() const;
     void setExpanded(const QSet<quint16> &keys);
     void setFilterActive(bool f);
-    void setCurrentRow(qint32 row);
+    void updateRows(qint32 row, bool scroll);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);
     void setModel(QAbstractItemModel *m);
     void addAction(QAction *a);

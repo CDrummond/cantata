@@ -62,7 +62,7 @@ public:
     bool isAutoCollapsingEnabled() const { return autoCollapsingEnabled; }
     QSet<qint32> getExpandedSongIds() const { return expandedSongIds; }
     void setExpanded(const QSet<quint16> &keys) { userExpandedAlbums=keys; }
-    void setCurrentRow(qint32 row);
+    void updateRows(qint32 row, bool scroll);
     bool isExpanded(quint16 key) const { return filterActive || currentAlbum==key || userExpandedAlbums.contains(key); }
     void toggle(const QModelIndex &idx);
     QModelIndexList selectedIndexes() const;
@@ -366,7 +366,7 @@ void PlayQueueListView::setFilterActive(bool f)
     }
 }
 
-void PlayQueueListView::setCurrentRow(qint32 row)
+void PlayQueueListView::updateRows(qint32 row, bool scroll)
 {
     currentAlbum=Song::constNullKey;
 
@@ -379,27 +379,27 @@ void PlayQueueListView::setCurrentRow(qint32 row)
     }
 
     if (filterActive && model() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
-        scrollTo(model()->index(row, 0), QAbstractItemView::PositionAtCenter);
+        if (scroll) {
+            scrollTo(model()->index(row, 0), QAbstractItemView::PositionAtCenter);
+        }
         return;
     }
 
-    if (model()) {
-        qint32 count=model()->rowCount();
-        qint32 showRow=row;
-        quint16 lastKey=Song::constNullKey;
-        currentAlbum=model()->index(row, 0).data(PlayQueueView::Role_Key).toUInt();
-        for (qint32 i=0; i<count; ++i) {
-            quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
-            bool hide=autoCollapsingEnabled && key==lastKey && (key!=currentAlbum && !userExpandedAlbums.contains(key));
-            setRowHidden(i, hide);
-            if (hide && i<row) {
-                showRow--;
-            }
-            lastKey=key;
+    qint32 count=model()->rowCount();
+    qint32 showRow=row;
+    quint16 lastKey=Song::constNullKey;
+    currentAlbum=model()->index(row, 0).data(PlayQueueView::Role_Key).toUInt();
+    for (qint32 i=0; i<count; ++i) {
+        quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
+        bool hide=autoCollapsingEnabled && key==lastKey && (key!=currentAlbum && !userExpandedAlbums.contains(key));
+        setRowHidden(i, hide);
+        if (hide && i<row) {
+            showRow--;
         }
-        if (MPDStatus::State_Playing==MPDStatus::self()->state()) {
-            scrollTo(model()->index(showRow, 0), QAbstractItemView::PositionAtCenter);
-        }
+        lastKey=key;
+    }
+    if (MPDStatus::State_Playing==MPDStatus::self()->state() && scroll) {
+        scrollTo(model()->index(showRow, 0), QAbstractItemView::PositionAtCenter);
     }
 }
 
@@ -688,10 +688,10 @@ void PlayQueueView::setFilterActive(bool f)
     listView->setFilterActive(f);
 }
 
-void PlayQueueView::setCurrentRow(qint32 row)
+void PlayQueueView::updateRows(qint32 row, bool scroll)
 {
     if (currentWidget()==listView) {
-        listView->setCurrentRow(row);
+        listView->updateRows(row, scroll);
     }
 }
 
@@ -701,7 +701,7 @@ void PlayQueueView::scrollTo(const QModelIndex &index, QAbstractItemView::Scroll
         return;
     }
     if (MPDStatus::State_Playing==MPDStatus::self()->state()) {
-        listView->scrollTo(index, hint);
+//         listView->scrollTo(index, hint);
         treeView->scrollTo(index, hint);
     }
 }

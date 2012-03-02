@@ -47,14 +47,14 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     setMainWidget(tab);
 }
 
-void RemoteDevicePropertiesDialog::show(const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det, int props, bool create)
+void RemoteDevicePropertiesDialog::show(const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det, int props, bool create, bool isConnected)
 {
     isCreate=create;
     if (isCreate) {
         setCaption(i18n("Add Device"));
     }
     devProp->update(QString(), coverName, opts, props);
-    remoteProp->update(det, create);
+    remoteProp->update(det, create, isConnected);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
     connect(remoteProp, SIGNAL(updated()), SLOT(enableOkButton()));
     KDialog::show();

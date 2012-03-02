@@ -37,7 +37,7 @@ class RemoteDevicePropertiesDialog : public KDialog
 
 public:
     RemoteDevicePropertiesDialog(QWidget *parent);
-    void show(const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det, int props, bool creating=false);
+    void show(const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det, int props, bool creating=false, bool isConnected=false);
 
 Q_SIGNALS:
     void updatedSettings(const QString &coverName, const Device::Options &opts, const RemoteDevice::Details &det);

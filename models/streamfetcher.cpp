@@ -45,7 +45,7 @@ static QString parsePlaylist(const QByteArray &data, const QString &key, const Q
                 if (index>-1 && index<7) {
                     line.remove('\n');
                     line.remove('\r');
-                    return line.mid(index+1);
+                    return line.mid(index);
                 }
             }
         }

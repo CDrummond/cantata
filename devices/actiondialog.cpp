@@ -242,6 +242,10 @@ void ActionDialog::slotButtonClicked(int button)
             incProgress();
             doNext();
             break;
+        case User3:
+            songsToAction.prepend(origCurrentSong);
+            doNext();
+            break;
         default:
             refreshLibrary();
             reject();
@@ -294,7 +298,7 @@ Device * ActionDialog::getDevice(const QString &udi)
 void ActionDialog::doNext()
 {
     if (songsToAction.count()) {
-        currentSong=songsToAction.takeFirst();
+        currentSong=origCurrentSong=songsToAction.takeFirst();
         if(Copy==mode) {
             bool copyToDev=sourceUdi.isEmpty();
             Device *dev=getDevice(copyToDev ? destUdi : sourceUdi);
@@ -468,14 +472,17 @@ void ActionDialog::setPage(int page, const QString &msg)
             break;
         case PAGE_SKIP:
             actionLabel->stopAnimation();
+            skipText->setText(i18n("<b>Error</b><br/>")+msg);
+            skipText->setToolTip(formatSong(currentSong, true));
             if (songsToAction.count()) {
-                skipText->setText(i18n("<b>Error</b><br/>")+msg);
-                skipText->setToolTip(formatSong(currentSong, true));
-                setButtons(Cancel|User1|User2);
+                setButtons(Cancel|User1|User2|User3);
                 setButtonText(User1, i18n("Skip"));
                 setButtonText(User2, i18n("Auto Skip"));
-                break;
-            } // else just show error page...
+            } else {
+                setButtons(Cancel|User3);
+            }
+            setButtonText(User3, i18n("Retry"));
+            break;
         case PAGE_ERROR:
             actionLabel->stopAnimation();
             stack->setCurrentIndex(PAGE_ERROR);

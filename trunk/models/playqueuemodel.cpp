@@ -626,8 +626,8 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
                 if (mod.title.isEmpty()) {
                     songList.append(song);
                 } else {
-                    song.id=s.id;
-                    songList.append(song);
+                    mod.id=s.id;
+                    songList.append(mod);
                 }
             } else {
                 songList.append(song);

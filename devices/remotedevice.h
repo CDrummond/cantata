@@ -109,7 +109,6 @@ protected Q_SLOTS:
 
 protected:
     mutable time_t lastCheck;
-    mutable bool isMounted;
     Details details;
     QProcess *proc;
 //     QString audioFolderSetting;

@@ -36,6 +36,7 @@
 #include <KDE/KLocale>
 #include <KDE/KConfigGroup>
 #include <KDE/KStandardDirs>
+#include <kmountpoint.h>
 #include <kde_file.h>
 #include <stdio.h>
 #include <mntent.h>
@@ -142,7 +143,6 @@ QString RemoteDevice::createUdi(const QString &n)
 RemoteDevice::RemoteDevice(DevicesModel *m, const QString &audio, const QString &cover, const Options &options, const Details &d)
     : FsDevice(m, d.name)
     , lastCheck(0)
-    , isMounted(false)
     , details(d)
     , proc(0)
 //     , audioFolderSetting(audio)
@@ -157,7 +157,6 @@ RemoteDevice::RemoteDevice(DevicesModel *m, const QString &audio, const QString 
 RemoteDevice::RemoteDevice(DevicesModel *m, const Details &d)
     : FsDevice(m, d.name)
     , lastCheck(0)
-    , isMounted(false)
     , details(d)
     , proc(0)
 {
@@ -278,35 +277,25 @@ bool RemoteDevice::isConnected() const
         return QDir(details.folder).exists();
     }
 
-    QString mp=details.mountPoint(false);
-
-    if (mp.isEmpty()) {
+    QString mountPoint=details.mountPoint(false);
+    if (mountPoint.isEmpty()) {
         return false;
     }
 
-    mp=MPDParseUtils::fixPath(mp);
-    KDE_struct_stat info;
-    bool statOk=0==KDE_lstat("/etc/mtab", &info);
-    if (!statOk || info.st_mtime>lastCheck) {
-        if (statOk) {
-            lastCheck=info.st_mtime;
-        }
-
-        FILE *mtab = setmntent("/etc/mtab", "r");
-        struct mntent *part = 0;
-        isMounted = false;
-
-        if (mtab) {
-            while ((part=getmntent(mtab)) && !isMounted) {
-                if (part->mnt_dir && MPDParseUtils::fixPath(part->mnt_dir)==mp) {
-                    isMounted = true;
-                }
-            }
-            endmntent(mtab);
-        }
+    if (opts.useCache && !audioFolder.isEmpty() && QFile::exists(cacheFileName())) {
+        return true;
     }
 
-    return isMounted;
+    if (mountPoint.endsWith('/')) {
+        mountPoint=mountPoint.left(mountPoint.length()-1);
+    }
+    KMountPoint::List list=KMountPoint::currentMountPoints();
+    foreach (KMountPoint::Ptr p, list) {
+        if (p->mountPoint()==mountPoint) {
+            return true;
+        }
+    }
+    return false;
 }
 
 double RemoteDevice::usedCapacity()

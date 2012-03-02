@@ -191,7 +191,7 @@ void RemoteDevice::mount()
         if (!details.isEmpty()) {
             cmd=KStandardDirs::findExe("sshfs");
             if (!cmd.isEmpty()) {
-                if (!QDir(details.mountPoint(true)).entryList(QDir::NoDotDot|QDir::AllEntries|QDir::Hidden).isEmpty()) {
+                if (!QDir(details.mountPoint(true)).entryList(QDir::NoDot|QDir::NoDotDot|QDir::AllEntries|QDir::Hidden).isEmpty()) {
                     emit error(i18n("Mount point (\"%1\") is not empty!", details.mountPoint(true)));
                     return;
                 }

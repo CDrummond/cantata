@@ -68,11 +68,11 @@ public:
     };
 
     static QList<Device *> loadAll(DevicesModel *m);
-    static RemoteDevice * create(DevicesModel *m, const QString &audio, const QString &cover, const Options &options, const Details &d);
+    static RemoteDevice * create(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
     static void remove(RemoteDevice *dev);
     static QString createUdi(const QString &n);
 
-    RemoteDevice(DevicesModel *m, const QString &audio, const QString &cover, const Options &options, const Details &d);
+    RemoteDevice(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
     RemoteDevice(DevicesModel *m, const Details &d);
     virtual ~RemoteDevice();
 
@@ -104,7 +104,7 @@ protected:
 
 protected Q_SLOTS:
     void saveProperties();
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &newOpts, const RemoteDevice::Details &newDetails);
+    void saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, const RemoteDevice::Details &newDetails);
     void procFinished(int exitCode);
 
 protected:

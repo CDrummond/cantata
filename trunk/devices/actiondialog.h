@@ -82,6 +82,7 @@ private:
     QList<Song> actionedSongs;
     QSet<QString> dirsToClean;
     unsigned long count;
+    Song origCurrentSong;
     Song currentSong;
     bool autoSkip;
     bool paused;

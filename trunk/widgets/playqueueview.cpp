@@ -183,7 +183,7 @@ public:
         QString title;
         QString track;
         QString duration=Song::formattedTime(song.time);
-        bool stream=song.file.isEmpty() || song.file.contains("://");
+        bool stream=song.isStream();
         int state=index.data(PlayQueueView::Role_Status).toInt();
         QString trackTitle=!song.albumartist.isEmpty() && song.albumartist != song.artist
                     ? song.title + " - " + song.artist

@@ -1510,19 +1510,19 @@ void MainWindow::updateCurrentSong(const Song &song)
         if (!mod.title.isEmpty()) {
             current=mod;
             current.id=song.id;
-            current.file="XXX";
+//             current.file="XXX";
         }
     }
 
-    positionSlider->setEnabled(!currentIsStream());
+    positionSlider->setEnabled(!current.isStream());
 
     // Determine if album cover should be updated
     const QString &albumArtist=song.albumArtist();
     if (coverWidget->property("artist").toString() != albumArtist || coverWidget->property("album").toString() != song.album) {
         if (!albumArtist.isEmpty() && !song.album.isEmpty()) {
             Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
-        } else if (!currentIsStream()) {
-            coverWidget->setPixmap(noCover);
+        } else {
+            coverWidget->setPixmap(current.isStream() ? noStreamCover : noCover);
         }
         coverWidget->setProperty("artist", albumArtist);
         coverWidget->setProperty("album", song.album);
@@ -1690,7 +1690,7 @@ void MainWindow::updateStatus()
 
     QString timeElapsedFormattedString;
 
-    if (!currentIsStream()) {
+    if (!current.isStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal())) {
         if (status->state() == MPDStatus::State_Stopped || status->state() == MPDStatus::State_Inactive) {
             timeElapsedFormattedString = "0:00 / 0:00";
         } else {
@@ -2189,17 +2189,12 @@ void MainWindow::tabToggled(int index)
     }
 }
 
-bool MainWindow::currentIsStream()
-{
-    return !current.title.isEmpty() && (current.file.isEmpty() || current.file.contains("://"));
-}
-
 void MainWindow::cover(const QString &artist, const QString &album, const QImage &img, const QString &file)
 {
     if (artist==current.albumArtist() && album==current.album) {
         if (img.isNull()) {
             coverSong=Song();
-            coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
+            coverWidget->setPixmap(current.isStream() ? noStreamCover : noCover);
             coverFileName=QString();
             emit coverFile(QString());
         } else {

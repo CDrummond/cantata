@@ -43,7 +43,7 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     type->addItem(i18n("Locally Mounted Folder"), (int)RemoteDevice::Prot_File);
 }
 
-void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d, bool create)
+void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d, bool create, bool isConnected)
 {
     infoLabel->setVisible(create);
     typeLabel->setEnabled(create);
@@ -62,6 +62,7 @@ void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d, bool c
         }
     }
 
+    name->setEnabled(d.protocol==RemoteDevice::Prot_File || !isConnected);
     connect(name, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(host, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(user, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));

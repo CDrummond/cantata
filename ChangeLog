@@ -43,6 +43,7 @@
 27. Save expanded and collapsed sizes to config file.
 28. Change order of actions in system tray menu to be consistent with main
     window.
+29. Use italic font for stream items in playqueue.
 
 0.4.0
 -----

@@ -298,7 +298,6 @@ private:
     void startVolumeFade(/*bool stop*/);
     void stopVolumeFade();
 //     void callK3b(const QString &type);
-    bool currentIsStream();
     void showTab(int page);
 
 private:

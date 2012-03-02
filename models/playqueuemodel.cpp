@@ -192,26 +192,6 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         var.setValue<Song>(songs.at(index.row()));
         return var;
     }
-//     case PlayQueueView::Role_Artist:
-//         return songs.at(index.row()).artist;
-//     case PlayQueueView::Role_AlbumArtist:
-//         return songs.at(index.row()).albumArtist();
-//     case PlayQueueView::Role_Album: {
-//         const Song &song = songs.at(index.row());
-//         return song.album.isEmpty() && !song.name.isEmpty() && (song.file.isEmpty() || song.file.contains("://"))
-//                 ? song.name : song.album;
-//     }
-//     case PlayQueueView::Role_Title: {
-//         const Song &song = songs.at(index.row());
-//         if (!song.albumartist.isEmpty() && song.albumartist != song.artist) {
-//             return song.title + " - " + song.artist;
-//         }
-//         return song.title;
-//     }
-//     case PlayQueueView::Role_Track:
-//         return songs.at(index.row()).track;
-//     case PlayQueueView::Role_Duration:
-//         return songs.at(index.row()).time;
     case PlayQueueView::Role_AlbumDuration: {
         const Song &first = songs.at(index.row());
         quint32 d=first.time;
@@ -270,7 +250,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     case Qt::FontRole: {
         Song s=songs.at(index.row());
 
-        if (s.file.isEmpty() || s.file.contains("://")) {
+        if (s.isStream()) {
             QFont font;
             if (songs.at(index.row()).id == currentSongId) {
                 font.setBold(true);
@@ -300,8 +280,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_ARTIST:
             return song.artist;
         case COL_ALBUM:
-            return song.album.isEmpty() && !song.name.isEmpty() && (song.file.isEmpty() || song.file.contains("://"))
-                    ? song.name : song.album;
+            return song.album.isEmpty() && !song.name.isEmpty() && song.isStream() ? song.name : song.album;
         case COL_TRACK:
             if (song.track <= 0)
                 return QVariant();

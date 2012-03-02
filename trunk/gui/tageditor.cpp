@@ -102,6 +102,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     original=songs;
     baseDir=Settings::self()->mpdDir();
     #endif
+    qSort(original);
 
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);

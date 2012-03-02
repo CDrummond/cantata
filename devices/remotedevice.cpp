@@ -104,7 +104,7 @@ QList<Device *> RemoteDevice::loadAll(DevicesModel *m)
     return devices;
 }
 
-RemoteDevice * RemoteDevice::create(DevicesModel *m, const QString &audio, const QString &cover, const Options &options, const Details &d)
+RemoteDevice * RemoteDevice::create(DevicesModel *m, const QString &cover, const Options &options, const Details &d)
 {
     if (d.isEmpty()) {
         return false;
@@ -117,7 +117,7 @@ RemoteDevice * RemoteDevice::create(DevicesModel *m, const QString &audio, const
     names.append(d.name);
     grp.writeEntry(constCfgKey, names);
     d.save(constCfgPrefix+d.name);
-    return new RemoteDevice(m, audio, cover, options, d);
+    return new RemoteDevice(m, cover, options, d);
 }
 
 void RemoteDevice::remove(RemoteDevice *dev)
@@ -140,12 +140,11 @@ QString RemoteDevice::createUdi(const QString &n)
     return constCfgPrefix+n;
 }
 
-RemoteDevice::RemoteDevice(DevicesModel *m, const QString &audio, const QString &cover, const Options &options, const Details &d)
+RemoteDevice::RemoteDevice(DevicesModel *m, const QString &cover, const Options &options, const Details &d)
     : FsDevice(m, d.name)
     , lastCheck(0)
     , details(d)
     , proc(0)
-//     , audioFolderSetting(audio)
 {
     coverFileName=cover;
     opts=options;
@@ -376,17 +375,12 @@ void RemoteDevice::setup()
     KConfigGroup grp(KGlobal::config(), key);
     opts.useCache=grp.readEntry("useCache", true);
     coverFileName=grp.readEntry("coverFileName", "cover.jpg");
-//     audioFolderSetting=grp.readEntry("audioFolder", "Music/");
     configured=KGlobal::config()->hasGroup(key);
     load();
 }
 
 void RemoteDevice::setAudioFolder()
 {
-//     KUrl url = KUrl(details.mountPoint(true));
-//     url.addPath(audioFolderSetting);
-//     url.cleanPath();
-//     audioFolder=url.toLocalFile();
     audioFolder=details.mountPoint(true);
     if (!audioFolder.endsWith('/')) {
         audioFolder+='/';
@@ -400,12 +394,12 @@ void RemoteDevice::configure(QWidget *parent)
     }
 
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &, const RemoteDevice::Details &)),
-            SLOT(saveProperties(const QString &, const QString &, const Device::Options &, const RemoteDevice::Details &)));
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const Device::Options &, const RemoteDevice::Details &)),
+            SLOT(saveProperties(const QString &, const Device::Options &, const RemoteDevice::Details &)));
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(QString(), coverFileName, opts, details,
+    dlg->show(coverFileName, opts, details,
               DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder);
 }
 
@@ -426,21 +420,17 @@ void RemoteDevice::saveOptions()
 
 void RemoteDevice::saveProperties()
 {
-    saveProperties(QString(), coverFileName, opts, details);
+    saveProperties(coverFileName, opts, details);
 }
 
-void RemoteDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &newOpts, const Details &newDetails)
+void RemoteDevice::saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, const Details &newDetails)
 {
-    Q_UNUSED(newPath);
-
-//     QString nPath=MPDParseUtils::fixPath(newPath);
-    if (configured && opts==newOpts && /*nPath==audioFolderSetting && */newCoverFileName==coverFileName && details==newDetails) {
+    if (configured && opts==newOpts && newCoverFileName==coverFileName && details==newDetails) {
         return;
     }
 
     configured=true;
     bool diffCacheSettings=opts.useCache!=newOpts.useCache;
-//     QString oldPath=audioFolderSetting;
     QString oldName=details.name;
     QString oldFolder=details.folder;
     opts=newOpts;
@@ -456,11 +446,9 @@ void RemoteDevice::saveProperties(const QString &newPath, const QString &newCove
     coverFileName=newCoverFileName;
     QString key=udi();
     details.save(key);
-//     audioFolderSetting=newPath;
     KConfigGroup grp(KGlobal::config(), key);
     grp.writeEntry("useCache", opts.useCache);
     grp.writeEntry("coverFileName", coverFileName);
-//     grp.writeEntry("audioFolder", audioFolderSetting);
 
     if (!oldName.isEmpty() && oldName!=details.name) {
         renamed(oldName);
@@ -475,10 +463,5 @@ void RemoteDevice::saveProperties(const QString &newPath, const QString &newCove
             removeCache();
             unmount();
         }
-    } /*else if (oldPath!=audioFolderSetting) {
-        if (isConnected()) {
-            setAudioFolder();
-        }
-        rescan();
-    }*/
+    }
 }

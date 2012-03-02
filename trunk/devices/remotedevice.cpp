@@ -192,6 +192,10 @@ void RemoteDevice::mount()
         if (!details.isEmpty()) {
             cmd=KStandardDirs::findExe("sshfs");
             if (!cmd.isEmpty()) {
+                if (!QDir(details.mountPoint(true)).entryList(QDir::NoDotDot|QDir::AllEntries|QDir::Hidden).isEmpty()) {
+                    emit error(i18n("Mount point (\"%1\") is not empty!", details.mountPoint(true)));
+                    return;
+                }
                 args << details.user+QChar('@')+details.host+QChar(':')+details.folder << QLatin1String("-p")
                      << QString::number(details.port) << details.mountPoint(true)
                      << QLatin1String("-o") << QLatin1String("ServerAliveInterval=15");

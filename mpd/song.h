@@ -78,6 +78,7 @@ struct Song
     bool revertVariousArtists();
     static QString capitalize(const QString &s);
     bool capitalise();
+    bool isStream() const { return file.isEmpty() || file.contains("://"); }
 };
 
 Q_DECLARE_METATYPE(Song)

@@ -1224,7 +1224,7 @@ void MainWindow::updateSettings()
     playQueue->setAutoCollapsingEnabled(Settings::self()->autoCollapsePlayQueue());
 
     if (Settings::self()->groupedPlayQueue()!=playQueueModel.isGrouped() ||
-        (playQueueModel.isGrouped() && !wasAutoCollapsing && playQueue->isAutoCollapsingEnabled())) {
+        (playQueueModel.isGrouped() && wasAutoCollapsing!=playQueue->isAutoCollapsingEnabled())) {
         playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
         playQueue->setGrouped(Settings::self()->groupedPlayQueue());
         playQueueModel.refresh();
@@ -1437,10 +1437,10 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     }
 
     // refresh playlist
-    QSet<qint32> expandedSongIds=playQueue->getExpandedSongIds();
+    QSet<qint32> controlledSongIds=playQueue->getControlledSongIds();
     playQueueModel.updatePlaylist(songs);
-    if (expandedSongIds.count()) {
-        playQueue->setExpanded(playQueueModel.getKeysByIds(expandedSongIds));
+    if (controlledSongIds.count()) {
+        playQueue->setControlled(playQueueModel.getKeysByIds(controlledSongIds));
     }
 
     // reselect song ids or minrow if songids were not found (songs removed)

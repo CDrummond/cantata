@@ -87,8 +87,8 @@ public:
     void setGrouped(bool g);
     void setAutoCollapsingEnabled(bool ac);
     bool isAutoCollapsingEnabled() const;
-    QSet<qint32> getExpandedSongIds() const;
-    void setExpanded(const QSet<quint16> &keys);
+    QSet<qint32> getControlledSongIds() const;
+    void setControlled(const QSet<quint16> &keys);
     void setFilterActive(bool f);
     void updateRows(qint32 row, bool scroll);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);

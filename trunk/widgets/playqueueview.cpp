@@ -58,12 +58,14 @@ public:
 
     void setFilterActive(bool f);
     bool isFilterActive() const { return filterActive; }
-    void setAutoCollapsingEnabled(bool ac) { autoCollapsingEnabled=ac; }
+    void setAutoCollapsingEnabled(bool ac);
     bool isAutoCollapsingEnabled() const { return autoCollapsingEnabled; }
-    QSet<qint32> getExpandedSongIds() const { return expandedSongIds; }
-    void setExpanded(const QSet<quint16> &keys) { userExpandedAlbums=keys; }
+    QSet<qint32> getControlledSongIds() const { return controlledSongIds; }
+    void setControlled(const QSet<quint16> &keys) { controlledAlbums=keys; }
     void updateRows(qint32 row, bool scroll);
-    bool isExpanded(quint16 key) const { return filterActive || currentAlbum==key || userExpandedAlbums.contains(key); }
+    bool isExpanded(quint16 key) const { return filterActive || currentAlbum==key ||
+                                                (autoCollapsingEnabled && controlledAlbums.contains(key)) ||
+                                                (!autoCollapsingEnabled && !controlledAlbums.contains(key)); }
     void toggle(const QModelIndex &idx);
     QModelIndexList selectedIndexes() const;
     void dropEvent(QDropEvent *event);
@@ -72,8 +74,8 @@ private:
     bool autoCollapsingEnabled;
     bool filterActive;
     quint16 currentAlbum;
-    QSet<qint32> expandedSongIds;
-    QSet<quint16> userExpandedAlbums;
+    QSet<qint32> controlledSongIds;
+    QSet<quint16> controlledAlbums;
 };
 
 static Type getType(const QModelIndex &index)
@@ -355,15 +357,27 @@ PlayQueueListView::~PlayQueueListView()
 
 void PlayQueueListView::setFilterActive(bool f)
 {
-    if (f!=filterActive) {
-        filterActive=f;
-        if (filterActive && model()) {
-            quint32 count=model()->rowCount();
-            for (quint32 i=0; i<count; ++i) {
-                setRowHidden(i, false);
-            }
+    if (f==filterActive) {
+        return;
+    }
+    filterActive=f;
+    if (filterActive && model()) {
+        quint32 count=model()->rowCount();
+        for (quint32 i=0; i<count; ++i) {
+            setRowHidden(i, false);
         }
     }
+}
+
+void PlayQueueListView::setAutoCollapsingEnabled(bool ac)
+{
+    if (ac==autoCollapsingEnabled) {
+        return;
+    }
+    controlledSongIds.clear();
+    controlledAlbums.clear();
+    qWarning() << controlledAlbums;
+    autoCollapsingEnabled=ac;
 }
 
 void PlayQueueListView::updateRows(qint32 row, bool scroll)
@@ -391,7 +405,8 @@ void PlayQueueListView::updateRows(qint32 row, bool scroll)
     currentAlbum=model()->index(row, 0).data(PlayQueueView::Role_Key).toUInt();
     for (qint32 i=0; i<count; ++i) {
         quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
-        bool hide=autoCollapsingEnabled && key==lastKey && (key!=currentAlbum && !userExpandedAlbums.contains(key));
+        bool hide=key==lastKey && key!=currentAlbum && (( autoCollapsingEnabled && !controlledAlbums.contains(key)) ||
+                                                        ( !autoCollapsingEnabled && controlledAlbums.contains(key)));
         setRowHidden(i, hide);
         if (hide && i<row) {
             showRow--;
@@ -413,13 +428,14 @@ void PlayQueueListView::toggle(const QModelIndex &idx)
 
     qint32 id=idx.data(PlayQueueView::Role_Id).toInt();
     bool toBeHidden=false;
-    if (userExpandedAlbums.contains(indexKey)) {
-        userExpandedAlbums.remove(indexKey);
-        expandedSongIds.remove(id);
-        toBeHidden=true;
+    if (controlledAlbums.contains(indexKey)) {
+        controlledAlbums.remove(indexKey);
+        controlledSongIds.remove(id);
+        toBeHidden=autoCollapsingEnabled;
     } else {
-        userExpandedAlbums.insert(indexKey);
-        expandedSongIds.insert(id);
+        controlledAlbums.insert(indexKey);
+        controlledSongIds.insert(id);
+        toBeHidden=!autoCollapsingEnabled;
     }
 
     if (model()) {
@@ -673,14 +689,14 @@ bool PlayQueueView::isAutoCollapsingEnabled() const
     return listView->isAutoCollapsingEnabled();
 }
 
-QSet<qint32> PlayQueueView::getExpandedSongIds() const
+QSet<qint32> PlayQueueView::getControlledSongIds() const
 {
-    return currentWidget()==listView ? listView->getExpandedSongIds() : QSet<qint32>();
+    return currentWidget()==listView ? listView->getControlledSongIds() : QSet<qint32>();
 }
 
-void PlayQueueView::setExpanded(const QSet<quint16> &keys)
+void PlayQueueView::setControlled(const QSet<quint16> &keys)
 {
-    listView->setExpanded(keys);
+    listView->setControlled(keys);
 }
 
 void PlayQueueView::setFilterActive(bool f)

@@ -376,7 +376,6 @@ void PlayQueueListView::setAutoCollapsingEnabled(bool ac)
     }
     controlledSongIds.clear();
     controlledAlbums.clear();
-    qWarning() << controlledAlbums;
     autoCollapsingEnabled=ac;
 }
 

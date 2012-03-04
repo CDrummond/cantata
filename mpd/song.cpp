@@ -115,30 +115,31 @@ bool Song::isEmpty() const
 void Song::fillEmptyFields()
 {
     #ifdef ENABLE_KDE_SUPPORT
-    if (artist.isEmpty()) {
-        artist = i18n("Unknown");
-    }
-
-    if (album.isEmpty()) {
-        album = i18n("Unknown");
-    }
-
-    if (title.isEmpty()) {
-        title = i18n("Unknown");
-    }
+    QString unknown=i18n("Unknown");;
     #else
+    QString unknown=QObject::tr("Unknown");;
+    #endif
     if (artist.isEmpty()) {
-        artist = QObject::tr("Unknown");
+        artist = unknown;
     }
 
     if (album.isEmpty()) {
-        album = QObject::tr("Unknown");
+        album = unknown;
     }
 
     if (title.isEmpty()) {
-        title = QObject::tr("Unknown");
+        title = unknown;
     }
+}
+
+bool Song::isUnknown() const
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    QString unknown=i18n("Unknown");;
+    #else
+    QString unknown=QObject::tr("Unknown");;
     #endif
+    return (artist.isEmpty() || artist==unknown) && (album.isEmpty() || album==unknown) && (title.isEmpty() || title==unknown);
 }
 
 void Song::clear()

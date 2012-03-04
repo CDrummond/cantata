@@ -1522,44 +1522,44 @@ void MainWindow::updateCurrentSong(const Song &song)
     positionSlider->setEnabled(!currentIsStream());
 
     // Determine if album cover should be updated
-    const QString &albumArtist=song.albumArtist();
+    const QString &albumArtist=current.albumArtist();
     QString covArtist=coverWidget->property("artist").toString();
     QString covAlbum=coverWidget->property("album").toString();
-    if (covArtist!= albumArtist || covAlbum != song.album || (covArtist.isEmpty() && covAlbum.isEmpty())) {
-        if (!albumArtist.isEmpty() && !song.album.isEmpty()) {
+    if (covArtist!= albumArtist || covAlbum != current.album || (covArtist.isEmpty() && covAlbum.isEmpty())) {
+        if (!albumArtist.isEmpty() && !current.album.isEmpty()) {
             Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
         } else {
             coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
         }
         coverWidget->setProperty("artist", albumArtist);
-        coverWidget->setProperty("album", song.album);
+        coverWidget->setProperty("album", current.album);
     }
 
-    if (song.name.isEmpty()) {
-        trackLabel->setText(song.title);
+    if (current.name.isEmpty()) {
+        trackLabel->setText(current.title);
     } else {
-        trackLabel->setText(QString("%1 (%2)").arg(song.title).arg(song.name));
+        trackLabel->setText(QString("%1 (%2)").arg(current.title).arg(current.name));
     }
-    if (song.album.isEmpty()) {
-        artistLabel->setText(song.artist);
+    if (current.album.isEmpty()) {
+        artistLabel->setText(current.artist);
     } else {
-        QString album=song.album;
+        QString album=current.album;
 
-        if (song.year>0) {
-            album+=QString(" (%1)").arg(song.year);
+        if (current.year>0) {
+            album+=QString(" (%1)").arg(current.year);
         }
         #ifdef ENABLE_KDE_SUPPORT
-        artistLabel->setText(i18nc("artist - album", "%1 - %2", song.artist, album));
+        artistLabel->setText(i18nc("artist - album", "%1 - %2", current.artist, album));
         #else
-        artistLabel->setText(tr("%1 - %2").arg(song.artist).arg(album));
+        artistLabel->setText(tr("%1 - %2").arg(current.artist).arg(album));
         #endif
     }
 
-    playQueueModel.updateCurrentSong(song.id);
-    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(song.id), !usingProxy);
+    playQueueModel.updateCurrentSong(current.id);
+    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(current.id), !usingProxy);
     scrollPlayQueue();
 
-    if (song.artist.isEmpty()) {
+    if (current.artist.isEmpty()) {
         if (trackLabel->text().isEmpty()) {
             setWindowTitle("Cantata");
         } else {
@@ -1571,9 +1571,9 @@ void MainWindow::updateCurrentSong(const Song &song)
         }
     } else {
         #ifdef ENABLE_KDE_SUPPORT
-        setWindowTitle(i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->text(), song.artist));
+        setWindowTitle(i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->text(), current.artist));
         #else
-        setWindowTitle(tr("%1 - %2 :: Cantata").arg(trackLabel->text()).arg(song.artist));
+        setWindowTitle(tr("%1 - %2 :: Cantata").arg(trackLabel->text()).arg(current.artist));
         #endif
     }
     if (PAGE_LYRICS==tabWidget->current_index()) {
@@ -1591,7 +1591,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     #endif
 
     if (Settings::self()->showPopups()) { //(trayIcon && trayIcon->isVisible() && isHidden()) {
-        if (!song.title.isEmpty() && !song.artist.isEmpty() && !song.album.isEmpty()) {
+        if (!current.title.isEmpty() && !current.artist.isEmpty() && !current.album.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
             const QString text(i18n("<table>"
                                     "<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
@@ -1599,8 +1599,8 @@ void MainWindow::updateCurrentSong(const Song &song)
                                     "<tr><td align=\"right\"><b>Song:</b></td><td>%3</td></tr>"
                                     "<tr><td align=\"right\"><b>Track:</b></td><td>%4</td></tr>"
                                     "<tr><td align=\"right\"><b>Length:</b></td><td>%5</td></tr>"
-                                    "</table>").arg(song.artist).arg(song.album).arg(song.title)
-                                               .arg(song.track).arg(Song::formattedTime(song.time)));
+                                    "</table>").arg(current.artist).arg(current.album).arg(current.title)
+                                               .arg(current.track).arg(Song::formattedTime(current.time)));
 
             KNotification *notification = new KNotification("CurrentTrackChanged", this);
             notification->setText(text);
@@ -1610,12 +1610,12 @@ void MainWindow::updateCurrentSong(const Song &song)
             }
             notification->sendEvent();
             #else
-            const QString text("album:  " + song.album + "\n"
-                            + "track:  " + QString::number(song.track) + "\n"
-                            + "length: " + Song::formattedTime(song.time));
+            const QString text("album:  " + current.album + "\n"
+                            + "track:  " + QString::number(current.track) + "\n"
+                            + "length: " + Song::formattedTime(current.time));
 
             if (trayItem) {
-                trayItem->showMessage(song.artist + " - " + song.title, text, QSystemTrayIcon::Information, 5000);
+                trayItem->showMessage(current.artist + " - " + current.title, text, QSystemTrayIcon::Information, 5000);
             }
             #endif
         }

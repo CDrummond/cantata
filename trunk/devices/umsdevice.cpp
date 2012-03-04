@@ -65,7 +65,7 @@ UmsDevice::~UmsDevice() {
 
 bool UmsDevice::isConnected() const
 {
-    return access && access->isAccessible();
+    return access && access->isValid() && access->isAccessible();
 }
 
 double UmsDevice::usedCapacity()

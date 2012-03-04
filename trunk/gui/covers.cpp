@@ -286,6 +286,10 @@ Covers::Covers()
 
 QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks, bool isLocal)
 {
+    if (song.isUnknown()) {
+        return 0;
+    }
+
     QString key=song.albumArtist()+QLatin1String(" - ")+song.album+QChar(':')+QString::number(size);
     QPixmap *pix(cache.object(key));
 

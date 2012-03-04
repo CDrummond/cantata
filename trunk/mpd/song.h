@@ -74,6 +74,7 @@ struct Song
     void updateSize(const QString &dir) const;
     static bool isVariousArtists(const QString &str);
     bool isVariousArtists() const { return isVariousArtists(albumArtist()); }
+    bool isUnknown() const;
     bool fixVariousArtists();
     bool revertVariousArtists();
     static QString capitalize(const QString &s);

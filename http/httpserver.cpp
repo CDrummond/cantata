@@ -198,3 +198,16 @@ Song HttpServer::decodeUrl(const QString &url) const
 
     return s;
 }
+
+QString HttpServer::decodeFileUrl(const QString &file) const
+{
+    if (isAlive()) {
+        QUrl u(file);
+
+        if (u.hasQueryItem("cantata") && u.queryItemValue("cantata")=="file") {
+            return u.path();
+        }
+    }
+
+    return QString();
+}

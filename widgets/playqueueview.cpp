@@ -28,6 +28,7 @@
 #include "treeview.h"
 #include "settings.h"
 #include "mpdstatus.h"
+#include "httpserver.h"
 #include <QtGui/QStyledItemDelegate>
 #include <QtGui/QApplication>
 #include <QtGui/QFontMetrics>
@@ -207,6 +208,19 @@ public:
         case AlbumHeader: {
             QString album=song.album;
 
+            if (stream && album.isEmpty() && song.albumArtist().isEmpty()) {
+                title=song.file;
+                if (HttpServer::self()->isOurs(title)) {
+                    QString decoded=HttpServer::self()->decodeFileUrl(title);
+                    if (!decoded.isEmpty()) {
+                        title=decoded;
+                    }
+                }
+                if (song.title.isEmpty()) {
+                    trackTitle=QString();
+                }
+                break;
+            }
             if (song.year>0) {
                 album+=QString(" (%1)").arg(song.year);
             }

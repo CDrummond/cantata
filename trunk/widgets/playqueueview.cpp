@@ -210,12 +210,6 @@ public:
 
             if (stream && album.isEmpty() && song.albumArtist().isEmpty()) {
                 title=song.file;
-                if (HttpServer::self()->isOurs(title)) {
-                    QString decoded=HttpServer::self()->decodeFileUrl(title);
-                    if (!decoded.isEmpty()) {
-                        title=decoded;
-                    }
-                }
                 if (song.title.isEmpty()) {
                     trackTitle=QString();
                 }

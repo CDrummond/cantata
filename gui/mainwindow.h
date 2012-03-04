@@ -295,6 +295,7 @@ private Q_SLOTS:
     #endif
 
 private:
+    bool currentIsStream() const;
     void startVolumeFade(/*bool stop*/);
     void stopVolumeFade();
 //     void callK3b(const QString &type);

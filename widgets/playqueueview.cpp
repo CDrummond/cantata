@@ -37,6 +37,7 @@
 #include <QtGui/QMenu>
 #include <QtGui/QAction>
 #include <QtGui/QDropEvent>
+#include <QtGui/QScrollBar>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -100,17 +101,22 @@ public:
     {
     }
 
+    QSize sizeHint(Type type) const
+    {
+        int textHeight = QApplication::fontMetrics().height();
+
+        if (AlbumHeader==type) {
+            return QSize(64, qMax(constCoverSize, (qMax(constIconSize, textHeight)*2))+(3*constBorder));
+        }
+        return QSize(64, qMax(constIconSize, textHeight)+(2*constBorder));
+    }
+
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
         if (0==index.column()) {
-            int textHeight = QApplication::fontMetrics().height();
-
-            if (AlbumHeader==getType(index)) {
-                return QSize(64, qMax(constCoverSize, (qMax(constIconSize, textHeight)*2))+(3*constBorder));
-            }
-            return QSize(64, qMax(constIconSize, textHeight)+(2*constBorder));
+            return sizeHint(getType(index));
         }
-        return QStyledItemDelegate::sizeHint(option, index);;
+        return QStyledItemDelegate::sizeHint(option, index);
     }
 
     inline QString formatNumber(int num) const
@@ -379,6 +385,8 @@ void PlayQueueListView::setAutoCollapsingEnabled(bool ac)
     autoCollapsingEnabled=ac;
 }
 
+#define FIX_SCROLL_TO
+
 void PlayQueueListView::updateRows(qint32 row, bool scroll)
 {
     currentAlbum=Song::constNullKey;
@@ -399,21 +407,60 @@ void PlayQueueListView::updateRows(qint32 row, bool scroll)
     }
 
     qint32 count=model()->rowCount();
-    qint32 showRow=row;
     quint16 lastKey=Song::constNullKey;
+
+    #ifdef FIX_SCROLL_TO
+    // scrollTo() is broken if some rows are hidden!
+    quint32 titleHeight=scroll ? static_cast<PlayQueueDelegate *>(itemDelegate())->sizeHint(AlbumHeader).height() : 0;
+    quint32 trackHeight=scroll ? static_cast<PlayQueueDelegate *>(itemDelegate())->sizeHint(AlbumTrack).height() : 0;
+    quint32 totalHeight=0;
+    quint32 heightToRow=0;
+    bool haveHidden=false;
+    #endif
+
     currentAlbum=model()->index(row, 0).data(PlayQueueView::Role_Key).toUInt();
     for (qint32 i=0; i<count; ++i) {
         quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
         bool hide=key==lastKey && key!=currentAlbum && (( autoCollapsingEnabled && !controlledAlbums.contains(key)) ||
                                                         ( !autoCollapsingEnabled && controlledAlbums.contains(key)));
         setRowHidden(i, hide);
+
+        #ifdef FIX_SCROLL_TO
         if (hide && i<row) {
-            showRow--;
+            haveHidden=true;
         }
+
+        if (scroll && !hide) {
+            totalHeight+=(key==lastKey ? trackHeight : titleHeight);
+            if (i<row) {
+                heightToRow=totalHeight;
+            }
+        }
+        #endif
         lastKey=key;
     }
+
     if (MPDStatus::State_Playing==MPDStatus::self()->state() && scroll) {
-        scrollTo(model()->index(showRow, 0), QAbstractItemView::PositionAtCenter);
+        #ifdef FIX_SCROLL_TO
+        if (!haveHidden) {
+            scrollTo(model()->index(row, 0), QAbstractItemView::PositionAtCenter);
+        } else if(totalHeight) {
+            unsigned int viewHeight=viewport()->size().height();
+            unsigned int halfViewHeight=viewHeight/2;
+            unsigned int max=verticalScrollBar()->maximum();
+            unsigned int min=verticalScrollBar()->minimum();
+            if (heightToRow<halfViewHeight) {
+                verticalScrollBar()->setValue(min);
+            } else if ((heightToRow)>(totalHeight-halfViewHeight)) {
+                verticalScrollBar()->setValue(max);
+            } else {
+                unsigned int pos=min+(((max-min)*((1.0*(heightToRow-halfViewHeight))/(1.0*(totalHeight-viewHeight))))+0.5);
+                verticalScrollBar()->setValue(pos<min ? min : (pos>max ? max : pos));
+            }
+        }
+        #else
+        scrollTo(model()->index(row, 0), QAbstractItemView::PositionAtCenter);
+        #endif
     }
 }
 

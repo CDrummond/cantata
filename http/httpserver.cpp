@@ -24,6 +24,7 @@
 #include "httpserver.h"
 #include "httpsocket.h"
 #include "utils.h"
+#include "tags.h"
 #include <QtCore/QUrl>
 #include <QtCore/QThread>
 #ifdef ENABLE_KDE_SUPPORT
@@ -149,13 +150,9 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
 
 QByteArray HttpServer::encodeUrl(const QString &file) const
 {
-    QUrl url;
-    url.setScheme("http");
-    url.setHost("127.0.0.1");
-    url.setPort(socket->port());
-    url.setPath(file);
-    url.addQueryItem("cantata", "file");
-    return url.toEncoded();
+    Song s=Tags::read(file);
+    s.fillEmptyFields();
+    return encodeUrl(s);
 }
 
 Song HttpServer::decodeUrl(const QString &url) const
@@ -197,17 +194,4 @@ Song HttpServer::decodeUrl(const QString &url) const
     }
 
     return s;
-}
-
-QString HttpServer::decodeFileUrl(const QString &file) const
-{
-    if (isAlive()) {
-        QUrl u(file);
-
-        if (u.hasQueryItem("cantata") && u.queryItemValue("cantata")=="file") {
-            return u.path();
-        }
-    }
-
-    return QString();
 }

@@ -52,7 +52,6 @@ public:
     QByteArray encodeUrl(const Song &s) const;
     QByteArray encodeUrl(const QString &file) const;
     Song decodeUrl(const QString &url) const;
-    QString decodeFileUrl(const QString &file) const;
 
 private:
     QThread *thread;

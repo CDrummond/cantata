@@ -1493,6 +1493,11 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
 //     }
 }
 
+bool MainWindow::currentIsStream() const
+{
+    return playQueueModel.rowCount() && current.isStream();
+}
+
 void MainWindow::updateCurrentSong(const Song &song)
 {
     if (fadeStop && StopState_None!=stopState) {
@@ -1514,7 +1519,7 @@ void MainWindow::updateCurrentSong(const Song &song)
         }
     }
 
-    positionSlider->setEnabled(!current.isStream());
+    positionSlider->setEnabled(!currentIsStream());
 
     // Determine if album cover should be updated
     const QString &albumArtist=song.albumArtist();
@@ -1524,7 +1529,7 @@ void MainWindow::updateCurrentSong(const Song &song)
         if (!albumArtist.isEmpty() && !song.album.isEmpty()) {
             Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
         } else {
-            coverWidget->setPixmap(current.isStream() ? noStreamCover : noCover);
+            coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
         }
         coverWidget->setProperty("artist", albumArtist);
         coverWidget->setProperty("album", song.album);
@@ -1692,7 +1697,7 @@ void MainWindow::updateStatus()
 
     QString timeElapsedFormattedString;
 
-    if (!current.isStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal())) {
+    if (!currentIsStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal())) {
         if (status->state() == MPDStatus::State_Stopped || status->state() == MPDStatus::State_Inactive) {
             timeElapsedFormattedString = "0:00 / 0:00";
         } else {
@@ -2196,7 +2201,7 @@ void MainWindow::cover(const QString &artist, const QString &album, const QImage
     if (artist==current.albumArtist() && album==current.album) {
         if (img.isNull()) {
             coverSong=Song();
-            coverWidget->setPixmap(current.isStream() ? noStreamCover : noCover);
+            coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
             coverFileName=QString();
             emit coverFile(QString());
         } else {

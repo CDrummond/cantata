@@ -39,6 +39,24 @@
 #include <KDE/KPixmapSequenceOverlayPainter>
 #endif
 
+EscapeKeyEventHandler::EscapeKeyEventHandler(QAbstractItemView *v, QAction *a)
+    : QObject(v)
+    , view(v)
+    , act(a)
+{
+}
+
+bool EscapeKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
+{
+    if (view->hasFocus() && QEvent::KeyRelease==event->type() && static_cast<QKeyEvent *>(event)->key()==Qt::Key_Escape) {
+        if (act->isEnabled()) {
+            act->trigger();
+        }
+        return true;
+    }
+    return QObject::eventFilter(obj, event);
+}
+
 // static QPainterPath buildPath(const QRectF &r, double radius)
 // {
 //     QPainterPath path;
@@ -410,6 +428,7 @@ ItemView::ItemView(QWidget *p)
     backButton->setAutoRaise(true);
     treeView->setPageDefaults();
     iconGridSize=listGridSize=listView->gridSize();
+    listView->installEventFilter(new EscapeKeyEventHandler(listView, backAction));
 }
 
 ItemView::~ItemView()

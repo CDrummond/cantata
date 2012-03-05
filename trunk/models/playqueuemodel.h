@@ -33,6 +33,7 @@
 #include <QtCore/QSet>
 #include "song.h"
 #include "mpdstatus.h"
+#include "config.h"
 
 class StreamFetcher;
 
@@ -109,6 +110,7 @@ private Q_SLOTS:
 
 private:
     QList<Song> songs;
+    QSet<qint32> ids;
     qint32 currentSongId;
     StreamFetcher *fetcher;
     MPDStatus::State mpdState;

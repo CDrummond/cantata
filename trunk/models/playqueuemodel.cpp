@@ -125,6 +125,10 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(playListReset()));
     connect(fetcher, SIGNAL(result(const QStringList &, int)), SLOT(addFiles(const QStringList &, int)));
+    connect(this, SIGNAL(filesAddedInPlaylist(const QStringList, quint32, quint32)),
+            MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32)));
+    connect(this, SIGNAL(moveInPlaylist(const QList<quint32> &, quint32, quint32)),
+            MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
 }
 
 PlayQueueModel::~PlayQueueModel()
@@ -431,7 +435,6 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         } else {
             emit moveInPlaylist(items, row, songs.size());
         }
-
         return true;
     } else if (data->hasFormat(constFileNameMimeType)) {
         //Act on moves from the music library and dir view
@@ -464,7 +467,6 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
             return true;
         }
     }
-
     return false;
 }
 
@@ -591,16 +593,16 @@ void PlayQueueModel::refresh()
 //     }
 }
 
-void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
+void PlayQueueModel::updatePlaylist(const QList<Song> &newSongs)
 {
     TF_DEBUG
-    beginResetModel();
+    QList<Song> songList;
+    QSet<qint32> newIds;
     if (HttpServer::self()->isAlive()) {
-        QList<Song> songList;
         QString album;
         QString artist;
         quint16 key=0;
-        foreach (const Song &s, songs) {
+        foreach (const Song &s, newSongs) {
             Song song(s);
             if (song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
                 Song mod=HttpServer::self()->decodeUrl(song.file);
@@ -610,40 +612,68 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songs)
                 }
             }
 
-            if (grouped) {
-                if (song.album!=album || song.albumArtist()!=artist) {
-                    key++;
-                    album=song.album;
-                    artist=song.albumArtist();
-                }
-                song.key=key;
+            if (song.album!=album || song.albumArtist()!=artist) {
+                key++;
+                album=song.album;
+                artist=song.albumArtist();
             }
-
+            song.key=key;
             songList.append(song);
+            newIds.insert(s.id);
         }
-        this->songs = songList;
     } else {
-        if (grouped) {
-            QString album;
-            QString artist;
-            quint16 key=0;
-            QList<Song> songList;
-            foreach (const Song &s, songs) {
-                Song song(s);
-                if (song.album!=album || song.albumArtist()!=artist) {
-                    key++;
-                    album=song.album;
-                    artist=song.albumArtist();
-                }
-                song.key=key;
-                songList.append(song);
+        QString album;
+        QString artist;
+        quint16 key=0;
+        QList<Song> songList;
+        foreach (const Song &s, newSongs) {
+            Song song(s);
+            if (song.album!=album || song.albumArtist()!=artist) {
+                key++;
+                album=song.album;
+                artist=song.albumArtist();
             }
-            this->songs = songList;
-        } else {
-            this->songs = songs;
+            song.key=key;
+            songList.append(song);
+            newIds.insert(s.id);
         }
     }
-    endResetModel();
+
+    if (songs.isEmpty() || songList.isEmpty()) {
+        beginResetModel();
+        songs=songList;
+        ids=newIds;
+        endResetModel();
+    } else {
+        QSet<qint32> removed=ids-newIds;
+        foreach (qint32 id, removed) {
+            qint32 row=getRowById(id);
+            if (row!=-1) {
+                beginRemoveRows(QModelIndex(), row, row);
+                songs.removeAt(row);
+                endRemoveRows();
+            }
+        }
+        for (qint32 i=0; i<songList.count(); ++i) {
+            Song s=songList.at(i);
+            if (i>=songs.count() || s.id!=songs.at(i).id) {
+                qint32 existing=getRowById(s.id);
+                if (-1==existing) {
+                    beginInsertRows(QModelIndex(), i, i);
+                    songs.insert(i, s);
+                    endInsertRows();
+                } else {
+                    beginMoveRows(QModelIndex(), existing, existing, QModelIndex(), i>existing ? i+1 : i);
+                    songs.takeAt(existing);
+                    songs.insert(i, s);
+                    endMoveRows();
+                }
+            } else {
+                songs.replace(i, s);
+            }
+        }
+        ids=newIds;
+    }
 }
 
 /**

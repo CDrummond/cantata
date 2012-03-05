@@ -204,12 +204,8 @@ IF( KDE4_FOUND )
     ENDIF( WANT_KDE_SUPPORT )
 ENDIF( KDE4_FOUND )
 
-IF( KDE4_FOUND AND WANT_KDE_SUPPORT)
-    # TODO: Remove this if/when we fix tag dialog for qt-only build!!!!
-    set(TAGLIB_MIN_VERSION "1.6")
-    find_package(Taglib)
-ENDIF( KDE4_FOUND AND WANT_KDE_SUPPORT)
-
+set(TAGLIB_MIN_VERSION "1.6")
+find_package(Taglib)
 
 if(TAGLIB_FOUND)
     include(CheckCXXSourceCompiles)
@@ -246,11 +242,13 @@ if(TAGLIB_FOUND)
         add_definitions(${TAGLIB-EXTRAS_CFLAGS})
     endif (TAGLIB-EXTRAS_FOUND)
 
-    SET( CANTATA_SRCS ${CANTATA_SRCS} gui/tageditor.cpp devices/tags.cpp )
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/tageditor.h)
-    SET( CANTATA_UIS ${CANTATA_UIS} gui/tageditor.ui )
+    SET( CANTATA_SRCS ${CANTATA_SRCS} devices/tags.cpp )
 
     IF( ENABLE_KDE_SUPPORT )
+        SET( CANTATA_SRCS ${CANTATA_SRCS} gui/tageditor.cpp )
+        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/tageditor.h)
+        SET( CANTATA_UIS ${CANTATA_UIS} gui/tageditor.ui )
+
         find_package(FFMPEG)
         find_package(MPG123)
         if(FFMPEG_FOUND AND MPG123_FOUND)
@@ -268,6 +266,7 @@ endif (TAGLIB_FOUND)
 
 IF( ENABLE_KDE_SUPPORT )
     if(TAGLIB_FOUND)
+        set (ENABLE_TAG_EDITOR_SUPPORT 1)
         set (ENABLE_DEVICES_SUPPORT 1)
         find_package(Mtp)
 

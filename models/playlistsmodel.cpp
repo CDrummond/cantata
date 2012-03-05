@@ -198,8 +198,10 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         }
         case Qt::DecorationRole:
             return QIcon::fromTheme(s->title.isEmpty() ? "applications-internet" : "audio-x-generic");
+        case ItemView::Role_MainText:
+            return s->title.isEmpty() ? s->file : s->title;
         case ItemView::Role_SubText:
-            return s->title.isEmpty() ? QString() : Song::formattedTime(s->time);
+            return s->artist+QLatin1String(" - ")+s->album;
         }
     }
 

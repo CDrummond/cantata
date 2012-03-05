@@ -724,10 +724,14 @@ void ItemView::itemActivated(const QModelIndex &index)
             prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);
         }
         setLevel(currentLevel+1, index.child(0, 0).child(0, 0).isValid());
+        QString text=index.data(Role_Search).toString();
+        if (text.isEmpty()) {
+            text=index.data(Qt::DisplayRole).toString();
+        }
         #ifdef ENABLE_KDE_SUPPORT
-        listSearch->setPlaceholderText(i18n("Search %1...", index.data(Qt::DisplayRole).toString()));
+        listSearch->setPlaceholderText(i18n("Search %1...", text));
         #else
-        listSearch->setPlaceholderText(tr("Search %1...").arg(index.data(Qt::DisplayRole).toString()));
+        listSearch->setPlaceholderText(tr("Search %1...").arg(text));
         #endif
         listView->setRootIndex(index);
         itemModel->setRootIndex(index);

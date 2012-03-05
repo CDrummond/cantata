@@ -253,6 +253,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                         ? tr("%1\n%2 Tracks").arg(al->name).arg(al->songs.count())
                         : tr("%1\n1 Track").arg(al->name));
                     #endif
+        case ItemView::Role_Search:
+            return al->album;
         case Qt::DisplayRole:
             return sortAlbumFirst ? al->album : al->artist;
         case ItemView::Role_ImageSize: {

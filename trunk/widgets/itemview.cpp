@@ -196,7 +196,10 @@ public:
 
         QString capacityText=index.data(ItemView::Role_CapacityText).toString();
         bool showCapacity = !capacityText.isEmpty();
-        QString text = index.data(Qt::DisplayRole).toString();
+        QString text = index.data(ItemView::Role_MainText).toString();
+        if (text.isEmpty()) {
+            text=index.data(Qt::DisplayRole).toString();
+        }
         QRect r(option.rect);
         QRect r2(r);
         QString childText = index.data(ItemView::Role_SubText).toString();

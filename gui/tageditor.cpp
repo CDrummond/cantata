@@ -29,6 +29,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardGuiItem>
 #include <KDE/KMessageBox>
+#include <KDE/KInputDialog>
 #else
 #include <QtGui/QDialogButtonBox>
 #endif
@@ -129,6 +130,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
     toolsMenu->addAction(i18n("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
     toolsMenu->addAction(i18n("Capitalize"), this, SLOT(capitalise()));
+    toolsMenu->addAction(i18n("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
     setButtonMenu(User3, toolsMenu, InstantPopup);
     enableButton(Ok, false);
     enableButton(Reset, false);
@@ -410,6 +412,37 @@ void TagEditor::capitalise()
             updateEditedStatus(currentSongIndex);
             setSong(s);
         }
+    }
+}
+
+void TagEditor::adjustTrackNumbers()
+{
+    bool isAll=0==currentSongIndex && original.count()>1;
+    bool ok=false;
+    int inc=KInputDialog::getInteger(i18n("Adjust Track Numbers"), isAll ? i18n("Increment the value of each track number by:")
+                                                                         : i18n("Increment track number by:"),
+                                     0, 1, 500, 1, 10, &ok, this);
+
+    if (!ok || inc<=0) {
+        return;
+    }
+
+    if (isAll) {
+        for (int i=0; i<edited.count(); ++i) {
+            Song s=edited.at(i);
+            s.track+=inc;
+            edited.replace(i, s);
+            updateEditedStatus(i);
+            if (i==currentSongIndex) {
+                setSong(s);
+            }
+        }
+    } else {
+        Song s=edited.at(currentSongIndex);
+        s.track+=inc;
+        edited.replace(currentSongIndex, s);
+        updateEditedStatus(currentSongIndex);
+        setSong(s);
     }
 }
 

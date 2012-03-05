@@ -85,7 +85,7 @@
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
 #include "rgdialog.h"
 #endif
-#ifdef TAGLIB_FOUND
+#ifdef ENABLE_TAG_EDITOR_SUPPORT
 #include "tageditor.h"
 #endif
 #include "streamsmodel.h"
@@ -408,7 +408,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     createDataCdAction = actionCollection()->addAction("createdatacd");
 //     createDataCdAction->setText(i18n("Create Data CD/DVD"));
 
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     editTagsAction = actionCollection()->addAction("edittags");
     editTagsAction->setText(i18n("Edit Tags"));
     #endif
@@ -477,7 +477,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     burnAction = new QAction(tr("Burn To CD/DVD"), this);
 //     createAudioCdAction = new QAction(tr("Create Audio CD"), this);
 //     createDataCdAction = new QAction(tr("Create Data CD"), this);
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     editTagsAction = new QAction(tr("Edit Tags"), this);
     #endif
     libraryTabAction = new QAction(tr("Library"), this);
@@ -535,7 +535,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     burnAction->setIcon(Icon("tools-media-optical-burn"));
 //     createDataCdAction->setIcon(Icon("media-optical"));
 //     createAudioCdAction->setIcon(Icon("media-optical-audio"));
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     editTagsAction->setIcon(Icon("document-edit"));
     #endif
 //     QMenu *cdMenu=new QMenu(this);
@@ -835,7 +835,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
 //     connect(createDataCdAction, SIGNAL(activated()), this, SLOT(createDataCd()));
 //     connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     connect(editTagsAction, SIGNAL(activated()), this, SLOT(editTags()));
     #endif
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
@@ -2299,9 +2299,11 @@ void MainWindow::toggleDockManager()
 
 #ifdef ENABLE_KDE_SUPPORT
 #define DIALOG_ERROR KMessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
+#else
+#define DIALOG_ERROR QMessageBox::information(this, tr("Action is not currently possible, due to other open dialogs."), QMessageBox::Ok); return
 #endif
 
-#ifdef TAGLIB_FOUND
+#ifdef ENABLE_TAG_EDITOR_SUPPORT
 void MainWindow::editTags()
 {
     if (0!=TagEditor::instanceCount()) {

@@ -65,7 +65,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->addAction(p->copyToDeviceAction);
     view->addAction(p->organiseFilesAction);
     #endif
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     view->addAction(p->editTagsAction);
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -234,7 +234,7 @@ void AlbumsPage::controlActions()
     mw->copyToDeviceAction->setEnabled(enable);
     mw->organiseFilesAction->setEnabled(enable);
     #endif
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     mw->editTagsAction->setEnabled(enable);
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT

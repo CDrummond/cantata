@@ -766,13 +766,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
     connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
     connect(this, SIGNAL(setDetails(const QString &, quint16, const QString &)), MPDConnection::self(), SLOT(setDetails(const QString &, quint16, const QString &)));
-
-    connect(&playQueueModel, SIGNAL(filesAddedInPlaylist(const QStringList, quint32, quint32)),
-            MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32)));
-    connect(&playQueueModel, SIGNAL(moveInPlaylist(const QList<quint32> &, quint32, quint32)),
-            MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
-    connect(&playQueueModel, SIGNAL(playListStatsUpdated()), this,
-            SLOT(updatePlayListStatus()));
+    connect(&playQueueModel, SIGNAL(playListStatsUpdated()), this, SLOT(updatePlayListStatus()));
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueModel);
@@ -1418,6 +1412,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         updateCurrentSong(Song());
     }
 
+    #if 0
     QList<qint32> selectedSongIds;
     qint32 firstSelectedSongId = -1;
     qint32 firstSelectedRow = -1;
@@ -1438,7 +1433,9 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
 
     // refresh playlist
     QSet<qint32> controlledSongIds=playQueue->getControlledSongIds();
+    #endif
     playQueueModel.updatePlaylist(songs);
+    #if 0
     if (controlledSongIds.count()) {
         playQueue->setControlled(playQueueModel.getKeysByIds(controlledSongIds));
     }
@@ -1484,6 +1481,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     }
 
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
+    #endif
     if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
     }

@@ -200,7 +200,7 @@ QString Song::entryName() const
     QString text=title.isEmpty() ? file : title;
 
     if (!title.isEmpty()) {
-        text=artist+QLatin1String(" - ")+text;
+        text+=QLatin1String(" - ")+artist+QLatin1String(" - ")+album;
     }
     return text;
 }

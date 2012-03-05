@@ -66,6 +66,7 @@ public:
     enum Role
     {
         Role_ImageSize = Qt::UserRole+256,
+        Role_MainText,
         Role_SubText,
         Role_Image,
         Role_Capacity,

@@ -35,6 +35,21 @@ class ProxyModel;
 class QAction;
 class QTimer;
 
+class EscapeKeyEventHandler : public QObject
+{
+    Q_OBJECT
+
+public:
+    EscapeKeyEventHandler(QAbstractItemView *v, QAction *a);
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
+private:
+    QAbstractItemView *view;
+    QAction *act;
+};
+
 class ItemView : public QWidget, public Ui::ItemView
 {
     Q_OBJECT

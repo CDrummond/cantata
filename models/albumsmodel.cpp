@@ -256,6 +256,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         case ItemView::Role_Search:
             return al->album;
         case Qt::DisplayRole:
+            return al->name;
+        case ItemView::Role_MainText:
             return sortAlbumFirst ? al->album : al->artist;
         case ItemView::Role_ImageSize: {
             return iconSize();

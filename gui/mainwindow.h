@@ -280,7 +280,7 @@ private Q_SLOTS:
     void toggleDockManager();
 //     void createDataCd();
 //     void createAudioCd();
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     void editTags();
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -347,7 +347,7 @@ private:
 //     Action *burnAction;
 //     Action *createDataCdAction;
 //     Action *createAudioCdAction;
-    #ifdef TAGLIB_FOUND
+    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     Action *editTagsAction;
     #endif
     #ifdef ENABLE_WEBKIT

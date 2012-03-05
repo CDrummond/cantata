@@ -43,6 +43,7 @@
 //---------------------------------------------------------------------
 // KMessageWidgetPrivate
 //---------------------------------------------------------------------
+#if 0
 class KMessageWidgetPrivate
 {
 public:
@@ -63,13 +64,16 @@ public:
     void createLayout();
     void updateSnapShot();
     void updateLayout();
+    void slotTimeLineChanged(qreal);
+    void slotTimeLineFinished();
 };
+#endif
 
 void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
 {
     q = q_ptr;
 
-    q->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    q->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
     timeLine = new QTimeLine(500, q);
     QObject::connect(timeLine, SIGNAL(valueChanged(qreal)), q, SLOT(slotTimeLineChanged(qreal)));
@@ -99,7 +103,7 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
     closeButton->setAutoRaise(true);
     closeButton->setDefaultAction(closeAction);
 
-    q->setMessageType(KMessageWidget::InformationMessageType);
+    q->setMessageType(KMessageWidget::Information);
 }
 
 void KMessageWidgetPrivate::createLayout()
@@ -114,6 +118,7 @@ void KMessageWidgetPrivate::createLayout()
     Q_FOREACH(QAction* action, q->actions()) {
         QToolButton* button = new QToolButton(content);
         button->setDefaultAction(action);
+        button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         buttons.append(button);
     }
 
@@ -168,20 +173,37 @@ void KMessageWidgetPrivate::updateSnapShot()
     content->render(&contentSnapShot, QPoint(), QRegion(), QWidget::DrawChildren);
 }
 
+void KMessageWidgetPrivate::slotTimeLineChanged(qreal value)
+{
+    q->setFixedHeight(qMin(value * 2, qreal(1.0)) * content->height());
+    q->update();
+}
+
+void KMessageWidgetPrivate::slotTimeLineFinished()
+{
+    if (timeLine->direction() == QTimeLine::Forward) {
+        // Show
+        content->move(0, 0);
+    } else {
+        // Hide
+        q->hide();
+    }
+}
+
 
 //---------------------------------------------------------------------
 // KMessageWidget
 //---------------------------------------------------------------------
 KMessageWidget::KMessageWidget(QWidget* parent)
-: QFrame(parent)
-, d(new KMessageWidgetPrivate)
+    : QFrame(parent)
+    , d(new KMessageWidgetPrivate)
 {
     d->init(this);
 }
 
 KMessageWidget::KMessageWidget(const QString& text, QWidget* parent)
-: QFrame(parent)
-, d(new KMessageWidgetPrivate)
+    : QFrame(parent)
+    , d(new KMessageWidgetPrivate)
 {
     d->init(this);
     setText(text);
@@ -200,6 +222,7 @@ QString KMessageWidget::text() const
 void KMessageWidget::setText(const QString& text)
 {
     d->textLabel->setText(text);
+    updateGeometry();
 }
 
 KMessageWidget::MessageType KMessageWidget::messageType() const
@@ -216,24 +239,23 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
     KColorScheme::ForegroundRole fgRole;
     KColorScheme::ColorSet colorSet = KColorScheme::Window;
     switch (type) {
-    case PositiveMessageType:
+    case Positive:
         icon = KIcon("dialog-ok");
         bgRole = KColorScheme::PositiveBackground;
         fgRole = KColorScheme::PositiveText;
         break;
-    case InformationMessageType:
+    case Information:
         icon = KIcon("dialog-information");
         bgRole = KColorScheme::NormalBackground;
         fgRole = KColorScheme::NormalText;
         colorSet = KColorScheme::Tooltip;
         break;
-    case WarningMessageType:
+    case Warning:
         icon = KIcon("dialog-warning");
         bgRole = KColorScheme::NeutralBackground;
         fgRole = KColorScheme::NeutralText;
         break;
-    default:
-    case ErrorMessageType:
+    case Error:
         icon = KIcon("dialog-error");
         bgRole = KColorScheme::NegativeBackground;
         fgRole = KColorScheme::NegativeText;
@@ -310,6 +332,18 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
         .arg(text.name())
         );
     #endif
+}
+
+QSize KMessageWidget::sizeHint() const
+{
+    ensurePolished();
+    return d->content->sizeHint();
+}
+
+QSize KMessageWidget::minimumSizeHint() const
+{
+    ensurePolished();
+    return d->content->minimumSizeHint();
 }
 
 bool KMessageWidget::event(QEvent* event)
@@ -390,6 +424,11 @@ void KMessageWidget::animatedShow()
         return;
     }
     #endif
+
+    if (isVisible()) {
+        return;
+    }
+
     QFrame::show();
     setFixedHeight(0);
     int wantedHeight = d->content->sizeHint().height();
@@ -403,23 +442,6 @@ void KMessageWidget::animatedShow()
     }
 }
 
-void KMessageWidget::slotTimeLineChanged(qreal value)
-{
-    setFixedHeight(qMin(value * 2, 1.) * d->content->height());
-    repaint();
-}
-
-void KMessageWidget::slotTimeLineFinished()
-{
-    if (d->timeLine->direction() == QTimeLine::Forward) {
-        // Show
-        d->content->move(0, 0);
-    } else {
-        // Hide
-        hide();
-    }
-}
-
 void KMessageWidget::animatedHide()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -429,6 +451,10 @@ void KMessageWidget::animatedHide()
     }
     #endif
 
+    if (!isVisible()) {
+        return;
+    }
+
     d->content->move(0, -d->content->height());
     d->updateSnapShot();
 
@@ -437,3 +463,4 @@ void KMessageWidget::animatedHide()
         d->timeLine->start();
     }
 }
+

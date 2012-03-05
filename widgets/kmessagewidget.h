@@ -1,6 +1,3 @@
-#ifndef K_MESSAGEWIDGET_H
-#define K_MESSAGEWIDGET_H
-
 /* This file is part of the KDE libraries
  *
  * Copyright (c) 2011 Aurélien Gâteau <agateau@kde.org>
@@ -20,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
+#ifndef KMESSAGEWIDGET_H
+#define KMESSAGEWIDGET_H
 
 #include <QtGui/QFrame>
 
@@ -99,10 +98,10 @@ class KMessageWidget : public QFrame
     Q_PROPERTY(MessageType messageType READ messageType WRITE setMessageType)
 public:
     enum MessageType {
-        PositiveMessageType,
-        InformationMessageType,
-        WarningMessageType,
-        ErrorMessageType
+        Positive,
+        Information,
+        Warning,
+        Error
     };
 
     /**
@@ -122,39 +121,77 @@ public:
 
     MessageType messageType() const;
 
-    void addAction(QAction* action);
+    void addAction(QAction *action);
 
-    void removeAction(QAction* action);
+    void removeAction(QAction *action);
+
+    QSize sizeHint() const;
+
+    QSize minimumSizeHint() const;
 
 public Q_SLOTS:
-    void setText(const QString &);
+    void setText(const QString &text);
 
-    void setWordWrap(bool);
+    void setWordWrap(bool wordWrap);
 
-    void setCloseButtonVisible(bool);
+    void setCloseButtonVisible(bool visible);
 
-    void setMessageType(KMessageWidget::MessageType);
+    void setMessageType(KMessageWidget::MessageType type);
 
+    /**
+     * Show the widget using an animation, unless
+     * KGlobalSettings::graphicsEffectLevel() does not allow simple effects.
+     */
     void animatedShow();
 
+    /**
+     * Hide the widget using an animation, unless
+     * KGlobalSettings::graphicsEffectLevel() does not allow simple effects.
+     */
     void animatedHide();
 
 protected:
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent *event);
 
-    bool event(QEvent*);
+    bool event(QEvent *event);
 
-    void resizeEvent(QResizeEvent*);
+    void resizeEvent(QResizeEvent *event);
 
-    void showEvent(QShowEvent*);
+    void showEvent(QShowEvent *event);
 
 private:
     KMessageWidgetPrivate *const d;
     friend class KMessageWidgetPrivate;
 
-private Q_SLOTS:
+    Q_PRIVATE_SLOT(d, void slotTimeLineChanged(qreal))
+    Q_PRIVATE_SLOT(d, void slotTimeLineFinished())
+};
+
+class QTimeLine;
+class QLabel;
+class QToolButton;
+class KMessageWidgetPrivate
+{
+public:
+    void init(KMessageWidget*);
+
+    KMessageWidget* q;
+    QFrame* content;
+    QLabel* iconLabel;
+    QLabel* textLabel;
+    QToolButton* closeButton;
+    QTimeLine* timeLine;
+
+    KMessageWidget::MessageType messageType;
+    bool wordWrap;
+    QList<QToolButton*> buttons;
+    QPixmap contentSnapShot;
+
+    void createLayout();
+    void updateSnapShot();
+    void updateLayout();
     void slotTimeLineChanged(qreal);
     void slotTimeLineFinished();
 };
 
-#endif
+#endif /* KMESSAGEWIDGET_H */

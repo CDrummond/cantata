@@ -465,39 +465,31 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
             endRemoveRows();
         } else {
             QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
-            int count=pl->songs.count();
-            int addFrom=songs.count()>count ? count : -1;
-            for (int i=0; i<count; ++i) {
-                if (i>=songs.count()) {
-                    // Remove all remaining...
-                    beginRemoveRows(parent, i, count);
-                    for (int j=i; j<count; ++j) {
-                        delete pl->songs.takeAt(i);
-                    }
-                    endRemoveRows();
-                    break;
-                } else {
-                    Song n=songs.at(i);
-                    const SongItem *o=pl->songs.at(i);
-
-                    if (o->file!=n.file) {
-                        addFrom=i;
-                        beginRemoveRows(parent, i, count);
-                        for (int j=i; j<count; ++j) {
-                            delete pl->songs.takeAt(i);
-                        }
-                        endRemoveRows();
-                        break;
+            for (qint32 i=0; i<songs.count(); ++i) {
+                Song s=songs.at(i);
+                if (i>=pl->songs.count() || !(s==*static_cast<Song *>(pl->songs.at(i)))) {
+                    SongItem *si=pl->getSong(s);
+                    if (!si) {
+                        beginInsertRows(parent, i, i);
+                        pl->songs.insert(i, new SongItem(s, pl));
+                        endInsertRows();
+                    } else {
+                        int existing=pl->songs.indexOf(si);
+                        beginMoveRows(parent, existing, existing, parent, i>existing ? i+1 : i);
+                        SongItem *si=pl->songs.takeAt(existing);
+                        pl->songs.insert(i, si);
+                        endMoveRows();
                     }
                 }
             }
 
-            if (addFrom>=0) {
-                beginInsertRows(parent, pl->songs.count(), pl->songs.count()+(songs.count()-(1+addFrom)));
-                for (int i=addFrom; i<songs.count(); ++i) {
-                    pl->songs.append(new SongItem(songs.at(i), pl));
+            if (pl->songs.count()>songs.count()) {
+                int toRemove=pl->songs.count()-songs.count();
+                beginRemoveRows(parent, pl->songs.count()-(toRemove+1), pl->songs.count()-1);
+                for (int i=0; i<toRemove; ++i) {
+                    delete pl->songs.takeLast();
                 }
-                endInsertRows();
+                endRemoveRows();
             }
         }
         pl->updateGenres();
@@ -554,12 +546,17 @@ void PlaylistsModel::movedInPlaylist(const QString &name, int from, int to)
         return;
     }
     QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
-    beginRemoveRows(parent, from, from);
+
+    beginMoveRows(parent, from, from, parent, to>from ? to+1 : to);
     SongItem *si=pl->songs.takeAt(from);
-    endRemoveRows();
-    beginInsertRows(parent, to<from ? to : to-1, to<from ? to : to-1);
     pl->songs.insert(to, si);
-    endInsertRows();
+    endMoveRows();
+//     beginRemoveRows(parent, from, from);
+//     SongItem *si=pl->songs.takeAt(from);
+//     endRemoveRows();
+//     beginInsertRows(parent, to<from ? to : to-1, to<from ? to : to-1);
+//     pl->songs.insert(to, si);
+//     endInsertRows();
 }
 
 static QString qt_strippedText(QString s)

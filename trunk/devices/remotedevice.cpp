@@ -446,6 +446,7 @@ void RemoteDevice::saveProperties(const QString &newCoverFileName, const Device:
     coverFileName=newCoverFileName;
     QString key=udi();
     details.save(key);
+    opts.save(key);
     KConfigGroup grp(KGlobal::config(), key);
     grp.writeEntry("useCache", opts.useCache);
     grp.writeEntry("coverFileName", coverFileName);

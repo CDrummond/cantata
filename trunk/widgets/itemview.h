@@ -55,7 +55,8 @@ public:
         Role_Image,
         Role_Capacity,
         Role_CapacityText,
-        Role_ToggleIconName
+        Role_ToggleIconName,
+        Role_Search
     };
 
     ItemView(QWidget *p);

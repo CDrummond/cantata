@@ -85,6 +85,7 @@ private Q_SLOTS:
     void revertVa();
     void capitalise();
     void checkChanged();
+    void adjustTrackNumbers();
     void updateEdited(bool isFromAll=false);
     void setSong(const Song &s);
     void setIndex(int idx);

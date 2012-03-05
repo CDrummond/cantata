@@ -45,6 +45,7 @@
     window.
 29. Use italic font for stream items in playqueue.
 30. Update copy of KMessageWidget
+31. Add ability to increment track numbers to tag editor.
 
 0.4.0
 -----

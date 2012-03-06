@@ -74,6 +74,7 @@ public:
         bool isAlbum() { return true; }
         void setSongs(MusicLibraryItemAlbum *ai);
         void setName(bool albumFirst);
+        quint32 totalTime();
         QString artist;
         QString album;
         QString name;
@@ -83,6 +84,7 @@ public:
         bool updated;
         bool coverRequested;
         bool isSingleTracks;
+        quint32 time;
     };
 
     static AlbumsModel * self();

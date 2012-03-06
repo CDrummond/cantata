@@ -1479,9 +1479,9 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
             playQueue->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         }
     }
-
-    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
     #endif
+    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
+
     if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
     }

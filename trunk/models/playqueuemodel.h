@@ -98,7 +98,7 @@ public Q_SLOTS:
     void addItems(const QStringList &items, int row);
     void addItems(const QStringList &items) { addItems(items, -1); }
     void addFiles(const QStringList &filenames, int row);
-    void updatePlaylist(const QList<Song> &songs);
+    void updatePlaylist(const QList<Song> &songList);
 
 Q_SIGNALS:
     void filesAddedInPlaylist(const QStringList filenames, const quint32 row, const quint32 size);

@@ -247,11 +247,11 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 ? al->name
                 :
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Track", "%1\n%2 Tracks", al->name, al->songs.count());
+                    i18np("%1\n1 Track (%3)", "%1\n%2 Tracks (%3)", al->name, al->songs.count(), Song::formattedTime(al->totalTime()));
                     #else
                     (al->songs.count()>1
-                        ? tr("%1\n%2 Tracks").arg(al->name).arg(al->songs.count())
-                        : tr("%1\n1 Track").arg(al->name));
+                        ? tr("%1\n%2 Tracks (%3)").arg(al->name).arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
+                        : tr("%1\n1 Track (%2)").arg(al->name).arg(Song::formattedTime(al->totalTime())));
                     #endif
         case ItemView::Role_Search:
             return al->album;
@@ -489,6 +489,7 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, bool alb
     , cover(0)
     , updated(false)
     , coverRequested(false)
+    , time(0)
 {
     setName(albumFirst);
 }
@@ -502,6 +503,7 @@ AlbumsModel::AlbumItem::~AlbumItem()
 
 void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
 {
+    time=0;
     qDeleteAll(songs);
     songs.clear();
     foreach (MusicLibraryItem *item, ai->children()) {
@@ -514,4 +516,14 @@ void AlbumsModel::AlbumItem::setName(bool albumFirst)
     name=albumFirst
             ? (album+QLatin1String(" - ")+artist)
             : (artist+QLatin1String(" - ")+album);
+}
+
+quint32 AlbumsModel::AlbumItem::totalTime()
+{
+    if (0==time) {
+        foreach (SongItem *s, songs) {
+            time+=s->time;
+        }
+    }
+    return time;
 }

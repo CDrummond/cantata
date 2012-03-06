@@ -164,21 +164,21 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                 ? pl->name
                 :
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Track", "%1\n%2 Tracks", pl->name, pl->songs.count());
+                    i18np("%1\n1 Track (%3)", "%1\n%2 Tracks (%3)", pl->name, pl->songs.count(), Song::formattedTime(pl->totalTime()));
                     #else
                     (pl->songs.count()>1
-                        ? tr("%1\n%2 Tracks").arg(pl->name).arg(pl->songs.count())
-                        : tr("%1\n1 Track").arg(pl->name));
+                        ? tr("%1\n%2 Tracks (%3)").arg(pl->name).arg(pl->songs.count()).arg(Song::formattedTime(pl->totalTime()))
+                        : tr("%1\n1 Track (%2)").arg(pl->name).arg(Song::formattedTime(pl->totalTime())));
                     #endif
         case Qt::DecorationRole:
             return QIcon::fromTheme("view-media-playlist");
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Track", "%1 Tracks", pl->songs.count());
+            return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
             #else
             return (pl->songs.count()>1
-                ? tr("%1 Tracks").arg(pl->songs.count())
-                : tr("1 Track"));
+                ? tr("%1 Tracks (%2)").arg(pl->songs.count()).arg(Song::formattedTime(pl->totalTime()))
+                : tr("1 Track (%1)").arg(Song::formattedTime(pl->totalTime())));
             #endif
         default: break;
         }
@@ -668,4 +668,14 @@ PlaylistsModel::SongItem * PlaylistsModel::PlaylistItem::getSong(const Song &son
     }
 
     return 0;
+}
+
+quint32 PlaylistsModel::PlaylistItem::totalTime()
+{
+    if (0==time) {
+        foreach (SongItem *s, songs) {
+            time+=s->time;
+        }
+    }
+    return time;
 }

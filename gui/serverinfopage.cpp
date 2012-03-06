@@ -78,16 +78,17 @@ void ServerInfoPage::clear()
 
 void ServerInfoPage::statsUpdated()
 {
-    uptime->setText(MPDParseUtils::formatDuration(MPDStats::self()->uptime()));
-    timePlaying->setText(MPDParseUtils::formatDuration(MPDStats::self()->playtime()));
-    totalDuration->setText(MPDParseUtils::formatDuration(MPDStats::self()->dbPlaytime()));
-    artists->setText(QString::number(MPDStats::self()->artists()));
-    album->setText(QString::number(MPDStats::self()->albums()));
-    songs->setText(QString::number(MPDStats::self()->songs()));
+    MPDStats::Values stats=MPDStats::get();
+    uptime->setText(MPDParseUtils::formatDuration(stats.uptime));
+    timePlaying->setText(MPDParseUtils::formatDuration(stats.playtime));
+    totalDuration->setText(MPDParseUtils::formatDuration(stats.dbPlaytime));
+    artists->setText(QString::number(stats.artists));
+    album->setText(QString::number(stats.albums));
+    songs->setText(QString::number(stats.songs));
     #ifdef ENABLE_KDE_SUPPORT
-    lastUpdate->setText(KGlobal::locale()->formatDateTime(MPDStats::self()->dbUpdate()));
+    lastUpdate->setText(KGlobal::locale()->formatDateTime(stats.dbUpdate));
     #else
-    lastUpdate->setText(MPDStats::self()->dbUpdate().toString());
+    lastUpdate->setText(stats.dbUpdate.toString());
     #endif
 }
 

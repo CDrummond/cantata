@@ -636,22 +636,9 @@ void PlayQueueModel::playListReset()
  */
 void PlayQueueModel::playListStats()
 {
-    MPDStats * const stats = MPDStats::self();
     QSet<QString> artists;
     QSet<QString> albums;
     quint32 time = 0;
-
-    //If playlist is empty return empty stats
-    if (songs.size() == 1 && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty()) {
-        stats->acquireWriteLock();
-        stats->setPlaylistArtists(0);
-        stats->setPlaylistAlbums(0);
-        stats->setPlaylistSongs(0);
-        stats->setPlaylistTime(0);
-        stats->releaseWriteLock();
-        emit playListStatsUpdated();
-        return;
-    }
 
     //Loop over all songs
     foreach(const Song &song, songs) {
@@ -660,13 +647,7 @@ void PlayQueueModel::playListStats()
         time += song.time;
     }
 
-    stats->acquireWriteLock();
-    stats->setPlaylistArtists(artists.size());
-    stats->setPlaylistAlbums(albums.size());
-    stats->setPlaylistSongs(songs.size());
-    stats->setPlaylistTime(time);
-    stats->releaseWriteLock();
-    emit playListStatsUpdated();
+    emit statsUpdated(artists.size(), albums.size(), songs.size(), time);
 }
 
 QSet<qint32>  PlayQueueModel::getSongIdSet()

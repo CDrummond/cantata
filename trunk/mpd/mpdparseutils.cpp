@@ -107,35 +107,31 @@ QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 void MPDParseUtils::parseStats(const QByteArray &data)
 {
     TF_DEBUG
-    MPDStats * const stats = MPDStats::self();
-    stats->acquireWriteLock();
-
+    MPDStats::Values v;
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
-
     int amountOfLines = lines.size();
 
     for (int i = 0; i < amountOfLines; i++) {
         tokens = lines.at(i).split(':');
 
         if (tokens.at(0) == "artists") {
-            stats->setArtists(tokens.at(1).toUInt());
+            v.artists=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "albums") {
-            stats->setAlbums(tokens.at(1).toUInt());
+            v.albums=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "songs") {
-            stats->setSongs(tokens.at(1).toUInt());
+            v.songs=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "uptime") {
-            stats->setUptime(tokens.at(1).toUInt());
+            v.uptime=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "playtime") {
-            stats->setPlaytime(tokens.at(1).toUInt());
+            v.playtime=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "db_playtime") {
-            stats->setDbPlaytime(tokens.at(1).toUInt());
+            v.dbPlaytime=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "db_update") {
-            stats->setDbUpdate(tokens.at(1).toUInt());
+            v.dbUpdate.setTime_t(tokens.at(1).toUInt());
         }
     }
-
-    stats->releaseWriteLock();
+    MPDStats::set(v);
 }
 
 void MPDParseUtils::parseStatus(const QByteArray &data)

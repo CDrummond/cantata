@@ -25,178 +25,37 @@
  */
 
 #include "mpdstats.h"
+#include <QtCore/QReadWriteLock>
 
-MPDStats * MPDStats::self()
+static QReadWriteLock lock;
+static MPDStats::Values values;
+
+void MPDStats::set(const Values &v)
 {
-    static MPDStats instance;
-    return &instance;
+    lock.lockForWrite();
+    // Music model relies on correct dbUpdate, so make sure this is valid!
+    QDateTime oldDbUpdate=values.dbUpdate;
+    values=v;
+    if (!values.dbUpdate.isValid() && oldDbUpdate.isValid()) {
+        values.dbUpdate=oldDbUpdate;
+    }
+    lock.unlock();
 }
 
-MPDStats::MPDStats()
-    : m_artists(0)
-    , m_albums(0)
-    , m_songs(0)
-    , m_uptime(0)
-    , m_playtime(0)
-    , m_db_playtime(0)
-    , m_playlist_artists(0)
-    , m_playlist_albums(0)
-    , m_playlist_songs(0)
-    , m_playlist_time(0)
+MPDStats::Values MPDStats::get()
 {
+    Values v;
+    lock.lockForRead();
+    v=values;
+    lock.unlock();
+    return v;
 }
 
-void MPDStats::acquireWriteLock()
+QDateTime MPDStats::getDbUpdate()
 {
-    m_lock.lockForWrite();
-}
-
-void MPDStats::releaseWriteLock()
-{
-    m_lock.unlock();
-}
-
-// Getters
-quint32 MPDStats::artists()
-{
-    m_lock.lockForRead();
-    quint32 artists = m_artists;
-    m_lock.unlock();
-    return artists;
-}
-
-quint32 MPDStats::albums()
-{
-    m_lock.lockForRead();
-    quint32 albums = m_albums;
-    m_lock.unlock();
-    return albums;
-}
-
-quint32 MPDStats::songs()
-{
-    m_lock.lockForRead();
-    quint32 songs = m_songs;
-    m_lock.unlock();
-    return songs;
-}
-
-quint32 MPDStats::uptime()
-{
-    m_lock.lockForRead();
-    quint32 uptime = m_uptime;
-    m_lock.unlock();
-    return uptime;
-}
-
-quint32 MPDStats::playtime()
-{
-    m_lock.lockForRead();
-    quint32 playtime = m_playtime;
-    m_lock.unlock();
-    return playtime;
-}
-
-quint32 MPDStats::dbPlaytime()
-{
-    m_lock.lockForRead();
-    quint32 db_playtime = m_db_playtime;
-    m_lock.unlock();
-    return db_playtime;
-}
-
-QDateTime MPDStats::dbUpdate()
-{
-    m_lock.lockForRead();
-    QDateTime db_update = m_db_update;
-    m_lock.unlock();
-    return db_update;
-}
-
-quint32 MPDStats::playlistArtists()
-{
-    m_lock.lockForRead();
-    quint32 playlistArtists = m_playlist_artists;
-    m_lock.unlock();
-    return playlistArtists;
-}
-
-quint32 MPDStats::playlistAlbums()
-{
-    m_lock.lockForRead();
-    quint32 playlistAlbums = m_playlist_albums;
-    m_lock.unlock();
-    return playlistAlbums;
-}
-
-quint32 MPDStats::playlistSongs()
-{
-    m_lock.lockForRead();
-    quint32 playlistSongs = m_playlist_songs;
-    m_lock.unlock();
-    return playlistSongs;
-}
-
-quint32 MPDStats::playlistTime()
-{
-    m_lock.lockForRead();
-    quint32 playlistTime = m_playlist_time;
-    m_lock.unlock();
-    return playlistTime;
-}
-
-// Setters
-void MPDStats::setArtists(quint32 artists)
-{
-    m_artists = artists;
-}
-
-void MPDStats::setAlbums(quint32 albums)
-{
-    m_albums = albums;
-}
-
-void MPDStats::setSongs(quint32 songs)
-{
-    m_songs = songs;
-}
-
-void MPDStats::setUptime(quint32 uptime)
-{
-    m_uptime = uptime;
-}
-
-void MPDStats::setPlaytime(quint32 playtime)
-{
-    m_playtime = playtime;
-}
-
-void MPDStats::setDbPlaytime(quint32 db_playtime)
-{
-    m_db_playtime = db_playtime;
-}
-
-void MPDStats::setDbUpdate(uint seconds)
-{
-    m_db_update.setTime_t(seconds);
-}
-
-void MPDStats::setPlaylistArtists(quint32 artists)
-{
-    m_playlist_artists = artists;
-}
-
-void MPDStats::setPlaylistAlbums(quint32 albums)
-{
-    m_playlist_albums = albums;
-}
-
-void MPDStats::setPlaylistSongs(quint32 songs)
-{
-    m_playlist_songs = songs;
-}
-
-void MPDStats::setPlaylistTime(quint32 time)
-{
-    m_playlist_time = time;
+    QDateTime v;
+    lock.lockForRead();
+    v=values.dbUpdate;
+    lock.unlock();
+    return v;
 }

@@ -44,6 +44,7 @@
 #include "song.h"
 #include "output.h"
 #include "covers.h"
+#include "httpserver.h"
 #include "debugtimer.h"
 
 QString MPDParseUtils::fixPath(const QString &f)
@@ -273,22 +274,39 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
 {
     TF_DEBUG
     QList<Song> songs;
-    QByteArray song;
-
+    QByteArray line;
     QList<QByteArray> lines = data.split('\n');
-
     int amountOfLines = lines.size();
+    QString album;
+    QString artist;
+    quint16 key=0;
 
     for (int i = 0; i < amountOfLines; i++) {
-        song += lines.at(i);
+        line += lines.at(i);
         // Skip the "OK" line, this is NOT a song!!!
-        if ("OK"==song) {
+        if ("OK"==line) {
             continue;
         }
-        song += "\n";
+        line += "\n";
         if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:")) {
-            songs.append(parseSong(song));
-            song.clear();
+            Song song=parseSong(line);
+
+            if (song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
+                Song mod=HttpServer::self()->decodeUrl(song.file);
+                if (!mod.title.isEmpty()) {
+                    mod.id=song.id;
+                    song=mod;
+                }
+            }
+
+            if (song.album!=album || song.albumArtist()!=artist) {
+                key++;
+                album=song.album;
+                artist=song.albumArtist();
+            }
+            song.key=key;
+            songs.append(song);
+            line.clear();
         }
     }
 

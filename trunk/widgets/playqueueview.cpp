@@ -505,6 +505,8 @@ void PlayQueueListView::toggle(const QModelIndex &idx)
     }
 }
 
+// Calculate list of selected indexes. If a collapsed album is selected, we also pretend all of its tracks
+// are selected.
 QModelIndexList PlayQueueListView::selectedIndexes() const
 {
     QModelIndexList indexes = ListView::selectedIndexes();
@@ -534,6 +536,9 @@ QModelIndexList PlayQueueListView::selectedIndexes() const
     return allIndexes;
 }
 
+// If we are dropping onto a collapsed album, and we are in the bottom 1/2 of the row - then
+// we need to drop the item at the end of the album's tracks. So, we adjust the 'drop row'
+// by the amount of tracks.
 void PlayQueueListView::dropEvent(QDropEvent *event)
 {
     quint32 dropRowAdjust=0;

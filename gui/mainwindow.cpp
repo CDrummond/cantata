@@ -1416,7 +1416,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
 
 bool MainWindow::currentIsStream() const
 {
-    return playQueueModel.rowCount() && current.isStream();
+    return playQueueModel.rowCount() && -1!=current.id && current.isStream();
 }
 
 void MainWindow::updateCurrentSong(const Song &song)

@@ -766,7 +766,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
     connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
     connect(this, SIGNAL(setDetails(const QString &, quint16, const QString &)), MPDConnection::self(), SLOT(setDetails(const QString &, quint16, const QString &)));
-    connect(&playQueueModel, SIGNAL(playListStatsUpdated()), this, SLOT(updatePlayListStatus()));
+    connect(&playQueueModel, SIGNAL(statsUpdated(int, int, int, quint32)), this, SLOT(updatePlayQueueStats(int, int, int, quint32)));
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueModel);
@@ -1563,7 +1563,8 @@ void MainWindow::updateStats()
      * Check if remote db is more recent than local one
      * Also update the dirview
      */
-    if (!lastDbUpdate.isValid() || MPDStats::self()->dbUpdate() > lastDbUpdate) {
+    QDateTime dbUpdate=MPDStats::getDbUpdate();
+    if (!lastDbUpdate.isValid() || dbUpdate > lastDbUpdate) {
         loaded|=TAB_LIBRARY|TAB_FOLDERS;
         if (!lastDbUpdate.isValid()) {
             libraryPage->clear();
@@ -1576,7 +1577,7 @@ void MainWindow::updateStats()
         playlistsPage->refresh();
     }
 
-    lastDbUpdate = MPDStats::self()->dbUpdate();
+    lastDbUpdate = dbUpdate;
 }
 
 void MainWindow::updateStatus()
@@ -1814,29 +1815,26 @@ void MainWindow::removeItems()
     }
 }
 
-void MainWindow::updatePlayListStatus()
+void MainWindow::updatePlayQueueStats(int artists, int albums, int songs, quint32 time)
 {
-    MPDStats * const stats = MPDStats::self();
-    QString status = "";
-
-    if (stats->playlistSongs() == 0) {
-        playListStatsLabel->setText(status);
+    if (0==time) {
+        playListStatsLabel->setText(QString());
         return;
     }
 
+    QString status;
     #ifdef ENABLE_KDE_SUPPORT
-    status+=i18np("1 Artist, ", "%1 Artists, ", stats->playlistArtists());
-    status+=i18np("1 Album, ", "%1 Albums, ", stats->playlistAlbums());
-    status+=i18np("1 Track", "%1 Tracks", stats->playlistSongs());
+    status+=i18np("1 Artist, ", "%1 Artists, ", artists);
+    status+=i18np("1 Album, ", "%1 Albums, ", albums);
+    status+=i18np("1 Track", "%1 Tracks", songs);
     #else
-    status += QString::number(stats->playlistArtists())+QString(1==stats->playlistArtists() ? tr(" Artist,") : tr(" Artists, "));
-    status += QString::number(stats->playlistAlbums())+QString(1==stats->playlistAlbums() ? tr(" Album,") : tr(" Albums, "));
-    status += QString::number(stats->playlistSongs())+QString(1==stats->playlistSongs() ? tr(" Track") : tr(" Tracks"));
+    status += QString::number(artists)+QString(1==stats->playlistArtists() ? tr(" Artist,") : tr(" Artists, "));
+    status += QString::number(albums)+QString(1==stats->playlistAlbums() ? tr(" Album,") : tr(" Albums, "));
+    status += QString::number(songs)+QString(1==stats->playlistSongs() ? tr(" Track") : tr(" Tracks"));
     #endif
     status += " (";
-    status += MPDParseUtils::formatDuration(stats->playlistTime());
+    status += MPDParseUtils::formatDuration(time);
     status += ")";
-
     playListStatsLabel->setText(status);
 }
 

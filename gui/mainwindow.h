@@ -258,7 +258,7 @@ private Q_SLOTS:
     void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
     void cropPlaylist();
-    void updatePlayListStatus();
+    void updatePlayQueueStats(int artists, int albums, int songs, quint32 time);
     void copyTrackInfo();
     void togglePlaylist();
     void currentTabChanged(int index);

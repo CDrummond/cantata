@@ -108,9 +108,10 @@ void LibraryPage::refresh()
 {
     view->setLevel(0);
 
-    if (!MusicLibraryModel::self()->fromXML(MPDStats::self()->dbUpdate())) {
+    QDateTime dbUpdate=MPDStats::getDbUpdate();
+    if (!MusicLibraryModel::self()->fromXML(dbUpdate)) {
         view->showSpinner();
-        emit listAllInfo(MPDStats::self()->dbUpdate());
+        emit listAllInfo(dbUpdate);
     }
 }
 

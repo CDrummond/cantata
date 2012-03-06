@@ -102,7 +102,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void filesAddedInPlaylist(const QStringList filenames, const quint32 row, const quint32 size);
     void moveInPlaylist(const QList<quint32> &items, const quint32 row, const quint32 size);
-    void playListStatsUpdated();
+    void statsUpdated(int artists, int albums, int songs, quint32 time);
 
 private Q_SLOTS:
     void playListReset();

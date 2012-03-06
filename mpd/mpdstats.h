@@ -27,61 +27,31 @@
 #ifndef MPD_STATS_H
 #define MPD_STATS_H
 
-#include <QDateTime>
-#include <QReadWriteLock>
+#include <QtCore/QDateTime>
 
-class MPDStats
+namespace MPDStats
 {
-public:
-    static MPDStats * self();
+    struct Values {
+        Values()
+            : artists(0)
+            , albums(0)
+            , songs(0)
+            , uptime(0)
+            , playtime(0)
+            , dbPlaytime(0) {
+        }
+        quint32 artists;
+        quint32 albums;
+        quint32 songs;
+        quint32 uptime;
+        quint32 playtime;
+        quint32 dbPlaytime;
+        QDateTime dbUpdate;
+    };
 
-    void acquireWriteLock();
-    void releaseWriteLock();
-
-    // Getters
-    quint32 artists();
-    quint32 albums();
-    quint32 songs();
-    quint32 uptime();
-    quint32 playtime();
-    quint32 dbPlaytime();
-    QDateTime dbUpdate();
-    quint32 playlistArtists();
-    quint32 playlistAlbums();
-    quint32 playlistSongs();
-    quint32 playlistTime();
-
-    // Setters
-    void setArtists(quint32 artists);
-    void setAlbums(quint32 albums);
-    void setSongs(quint32 songs);
-    void setUptime(quint32 uptime);
-    void setPlaytime(quint32 playtime);
-    void setDbPlaytime(quint32 db_playtime);
-    void setDbUpdate(uint seconds);
-    void setPlaylistArtists(quint32 artists);
-    void setPlaylistAlbums(quint32 albums);
-    void setPlaylistSongs(quint32 songs);
-    void setPlaylistTime(quint32 time);
-
-private:
-    quint32 m_artists;
-    quint32 m_albums;
-    quint32 m_songs;
-    quint32 m_uptime;
-    quint32 m_playtime;
-    quint32 m_db_playtime;
-    QDateTime m_db_update;
-    QReadWriteLock m_lock;
-    quint32 m_playlist_artists;
-    quint32 m_playlist_albums;
-    quint32 m_playlist_songs;
-    quint32 m_playlist_time;
-
-    MPDStats();
-    ~MPDStats() {}
-    MPDStats(const MPDStats&);
-    MPDStats& operator=(const MPDStats& other);
+    extern void set(const Values &v);
+    extern Values get();
+    extern QDateTime getDbUpdate();
 };
 
 #endif

@@ -237,16 +237,17 @@ public:
             r.adjust(constBorder, 0, -constBorder, 0);
         }
         if (!pix.isNull()) {
+            int adjust=qMax(pix.width(), pix.height());
             if (iconMode) {
                 painter->drawPixmap(r.x()+((r.width()-pix.width())/2), r.y(), pix.width(), pix.height(), pix);
-                r.adjust(0, qMax(pix.width(), pix.height())+3, 0, -3);
+                r.adjust(0, adjust+3, 0, -3);
             } else {
                 if (rtl) {
                     painter->drawPixmap(r.x()+r.width()-pix.width(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-                    r.adjust(3, 0, -(3+pix.width()), 0);
+                    r.adjust(3, 0, -(3+adjust), 0);
                 } else {
                     painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
-                    r.adjust(pix.width()+3, 0, -3, 0);
+                    r.adjust(adjust+3, 0, -3, 0);
                 }
             }
         }

@@ -190,9 +190,12 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole: {
             QString text=s->entryName();
 
-            if (Qt::ToolTipRole==role && !s->title.isEmpty()) {
-                text+=QLatin1String("<br/>")+Song::formattedTime(s->time);
-                text+=QLatin1String("<br/><small><i>")+s->file+QLatin1String("</i></small>");
+            if (Qt::ToolTipRole==role) {
+                text=text.replace("\n", "<br/>");
+                if (!s->title.isEmpty()) {
+                    text+=QLatin1String("<br/>")+Song::formattedTime(s->time);
+                    text+=QLatin1String("<br/><small><i>")+s->file+QLatin1String("</i></small>");
+                }
             }
             return text;
         }

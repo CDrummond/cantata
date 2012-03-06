@@ -354,7 +354,6 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
     }
 
     send += "command_list_end";
-
     sendCommand(send);
 }
 
@@ -398,7 +397,6 @@ void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
     }
 
     send += "command_list_end";
-
     sendCommand(send);
 }
 
@@ -413,7 +411,6 @@ void MPDConnection::shuffle(quint32 from, quint32 to)
     command += QByteArray::number(from);
     command += ":";
     command += QByteArray::number(to + 1);
-
     sendCommand(command);
 }
 
@@ -469,11 +466,7 @@ void MPDConnection::goToNext()
 void MPDConnection::setPause(bool toggle)
 {
     QByteArray data = "pause ";
-    if (toggle == true)
-        data += "1";
-    else
-        data += "0";
-
+    data+=toggle ? "1" : "0";
     sendCommand(data);
 }
 
@@ -499,33 +492,21 @@ void MPDConnection::goToPrevious()
 void MPDConnection::setConsume(bool toggle)
 {
     QByteArray data = "consume ";
-    if (toggle == true)
-        data += "1";
-    else
-        data += "0";
-
+    data+=toggle ? "1" : "0";
     sendCommand(data);
 }
 
 void MPDConnection::setRandom(bool toggle)
 {
     QByteArray data = "random ";
-    if (toggle == true)
-        data += "1";
-    else
-        data += "0";
-
+    data+=toggle ? "1" : "0";
     sendCommand(data);
 }
 
 void MPDConnection::setRepeat(bool toggle)
 {
     QByteArray data = "repeat ";
-    if (toggle == true)
-        data += "1";
-    else
-        data += "0";
-
+    data+=toggle ? "1" : "0";
     sendCommand(data);
 }
 
@@ -535,7 +516,6 @@ void MPDConnection::setSeek(quint32 song, quint32 time)
     data += QByteArray::number(song);
     data += " ";
     data += QByteArray::number(time);
-
     sendCommand(data);
 }
 
@@ -786,7 +766,6 @@ void MPDConnection::removePlaylist(QString name)
 {
     QByteArray data("rm ");
     data += encodeName(name);
-
     sendCommand(data);
 }
 

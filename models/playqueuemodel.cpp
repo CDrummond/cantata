@@ -593,50 +593,12 @@ void PlayQueueModel::refresh()
 //     }
 }
 
-void PlayQueueModel::updatePlaylist(const QList<Song> &newSongs)
+void PlayQueueModel::updatePlaylist(const QList<Song> &songList)
 {
     TF_DEBUG
-    QList<Song> songList;
     QSet<qint32> newIds;
-    if (HttpServer::self()->isAlive()) {
-        QString album;
-        QString artist;
-        quint16 key=0;
-        foreach (const Song &s, newSongs) {
-            Song song(s);
-            if (song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
-                Song mod=HttpServer::self()->decodeUrl(song.file);
-                if (!mod.title.isEmpty()) {
-                    mod.id=s.id;
-                    song=mod;
-                }
-            }
-
-            if (song.album!=album || song.albumArtist()!=artist) {
-                key++;
-                album=song.album;
-                artist=song.albumArtist();
-            }
-            song.key=key;
-            songList.append(song);
-            newIds.insert(s.id);
-        }
-    } else {
-        QString album;
-        QString artist;
-        quint16 key=0;
-        QList<Song> songList;
-        foreach (const Song &s, newSongs) {
-            Song song(s);
-            if (song.album!=album || song.albumArtist()!=artist) {
-                key++;
-                album=song.album;
-                artist=song.albumArtist();
-            }
-            song.key=key;
-            songList.append(song);
-            newIds.insert(s.id);
-        }
+    foreach (const Song &s, songList) {
+        newIds.insert(s.id);
     }
 
     if (songs.isEmpty() || songList.isEmpty()) {

@@ -202,9 +202,9 @@ QString Song::entryName() const
     }
 
     #ifdef ENABLE_KDE_SUPPORT
-    return i18nc("Song (Artist - Album)", "%1 (%2 - %3)", title, artist, album);
+    return i18nc("Song\nArtist\nAlbum", "%1\n%2\n%3", title, artist, album);
     #else
-    return QObject::tr("%1 (%2 - %3)").arg(title).arg(artist).arg(album);
+    return QObject::tr("%1\n%2\n%3").arg(title).arg(artist).arg(album);
     #endif
 }
 

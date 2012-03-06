@@ -92,6 +92,11 @@ static const int constActionIconSize=16;
 static const int constImageSize=22;
 static const int constDevImageSize=32;
 
+static inline double subTextAlpha(bool selected)
+{
+    return selected ? 0.7 : 0.6;
+}
+
 QRect calcActionRect(bool rtl, bool iconMode, const QRect &rect)
 {
     return rtl
@@ -164,7 +169,7 @@ public:
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
-        QSize sz(QStyledItemDelegate::sizeHint(option, index));
+        Q_UNUSED(option)
         int imageSize = index.data(ItemView::Role_ImageSize).toInt();
 
         if (imageSize<0) {
@@ -183,7 +188,7 @@ public:
                 imageSize=constDevImageSize;
             }
             return QSize(qMax(64, imageSize) + (constBorder * 2),
-                        qMax(qMax(textHeight, imageSize) + (constBorder*2) + (int)((showCapacity ? textHeight*0.8 : 0)+0.5), sz.height()));
+                         qMax(textHeight, imageSize) + (constBorder*2) + (int)((showCapacity ? textHeight*0.8 : 0)+0.5));
         }
     }
 
@@ -284,7 +289,7 @@ public:
             painter->drawText(textRect, text, textOpt);
 
             childText = childMetrics.elidedText(childText, Qt::ElideRight, childRect.width(), QPalette::WindowText);
-            color.setAlphaF(selected ? 0.8 : 0.7);
+            color.setAlphaF(subTextAlpha(selected));
             painter->setPen(color);
             painter->setFont(childFont);
             painter->drawText(childRect, childText, textOpt);
@@ -400,10 +405,61 @@ public:
             return;
         }
 
-        QStyledItemDelegate::paint(painter, option, index);
+        QStringList text=index.data(Qt::DisplayRole).toString().split("\n");
+        bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
+
+        if (1==text.count()) {
+             QStyledItemDelegate::paint(painter, option, index);
+        } else {
+            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+
+            QRect r(option.rect);
+            r.adjust(4, 0, -4, 0);
+            QPixmap pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constActionIconSize, constActionIconSize);
+            if (!pix.isNull()) {
+                int adjust=qMax(pix.width(), pix.height());
+                if (rtl) {
+                    painter->drawPixmap(r.x()+r.width()-pix.width(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                    r.adjust(3, 0, -(3+adjust), 0);
+                } else {
+                    painter->drawPixmap(r.x(), r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
+                    r.adjust(adjust+3, 0, -3, 0);
+                }
+            }
+
+            if (text.count()>0) {
+                QFont textFont(QApplication::font());
+                QFontMetrics textMetrics(textFont);
+                int textHeight=textMetrics.height();
+                bool selected=option.state&QStyle::State_Selected;
+                QColor color(option.palette.color(selected ? QPalette::HighlightedText : QPalette::Text));
+                QTextOption textOpt(Qt::AlignVCenter);
+                QRect textRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
+                QString str=textMetrics.elidedText(text.at(0), Qt::ElideRight, textRect.width(), QPalette::WindowText);
+
+                painter->save();
+                painter->setPen(color);
+                painter->setFont(textFont);
+                painter->drawText(textRect, str, textOpt);
+
+                if (text.count()>1) {
+                    int mainWidth=textMetrics.width(str);
+                    text.takeFirst();
+                    str=text.join(" - ");
+                    textRect=QRect(r.x()+(mainWidth+8), r.y()+((r.height()-textHeight)/2), r.width()-(mainWidth+8), textHeight);
+                    if (textRect.width()>4) {
+                        str = textMetrics.elidedText(str, Qt::ElideRight, textRect.width(), QPalette::WindowText);
+                        color.setAlphaF(subTextAlpha(selected));
+                        painter->setPen(color);
+                        painter->drawText(textRect, str, textOpt/*QTextOption(Qt::AlignVCenter|Qt::AlignRight)*/);
+                    }
+                }
+                painter->restore();
+            }
+        }
 
         if ((option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
-            drawIcons(painter, option.rect, true, Qt::RightToLeft==QApplication::layoutDirection(), false, index);
+            drawIcons(painter, option.rect, true, rtl, false, index);
         }
     }
 };

@@ -283,7 +283,7 @@ public:
             painter->drawText(textRect, text, textOpt);
 
             childText = childMetrics.elidedText(childText, Qt::ElideRight, childRect.width(), QPalette::WindowText);
-            color.setAlphaF(selected ? 0.65 : 0.5);
+            color.setAlphaF(selected ? 0.8 : 0.7);
             painter->setPen(color);
             painter->setFont(childFont);
             painter->drawText(childRect, childText, textOpt);

@@ -84,6 +84,8 @@ private Q_SLOTS:
 private:
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<QNetworkReply *, Job>::Iterator findJob(const Song &song);
+    void download(const Song &song, bool isLocal);
+    void clearDummyCache(const QString &artist, const QString &album);
 
 private:
     MaiaXmlRpcClient *rpc;

@@ -284,25 +284,53 @@ Covers::Covers()
 {
 }
 
+static inline QString cacheKey(const QString &artist, const QString &album, int size)
+{
+    return artist+QLatin1String(" - ")+album+QChar(':')+QString::number(size);
+}
+
+static QSet<int> cacheSizes;
+
 QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks, bool isLocal)
 {
     if (song.isUnknown()) {
         return 0;
     }
 
-    QString key=song.albumArtist()+QLatin1String(" - ")+song.album+QChar(':')+QString::number(size);
+    QString key=cacheKey(song.albumArtist(), song.album, size);
     QPixmap *pix(cache.object(key));
 
     if (!pix) {
         Covers::Image img=getImage(song, isSingleTracks, isLocal);
 
+        cacheSizes.insert(size);
         if (!img.img.isNull()) {
             pix=new QPixmap(QPixmap::fromImage(img.img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
             cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
+        } else {
+            // Attempt to download cover...
+            download(song, isLocal);
+            // Create a dummy pixmap so that we dont keep on stating files that do not exist!
+            pix=new QPixmap(1, 1);
+            cache.insert(key, pix, 4);
         }
     }
 
-    return pix;
+    return pix && pix->width()>1 ? pix : 0;
+}
+
+// If we have downloaded a cover, we can remove the dumym entry - so that the next time get() is called,
+// it can read the saved file!
+void Covers::clearDummyCache(const QString &artist, const QString &album)
+{
+    foreach (int s, cacheSizes) {
+        QString key=cacheKey(artist, album, s);
+        QPixmap *pix(cache.object(key));
+
+        if (pix && pix->width()<2) {
+            cache.remove(key);
+        }
+    }
 }
 
 Covers::Image Covers::getImage(const Song &song, bool isSingleTracks, bool isLocal)
@@ -366,6 +394,11 @@ void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
         emit cover(song.albumArtist(), song.album, img.img, img.fileName);
         return;
     }
+    download(song, isLocal);
+}
+
+void Covers::download(const Song &song, bool isLocal)
+{
     if (jobs.end()!=findJob(song)) {
         return;
     }
@@ -491,6 +524,7 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     if (!job.dir.isEmpty()) {
         savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
         if (!savedName.isEmpty()) {
+            clearDummyCache(job.artist, job.album);
             return savedName;
         }
     }
@@ -500,6 +534,7 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     if (!dir.isEmpty()) {
         savedName=save(mimeType, extension, dir+encodeName(job.album), img, raw);
         if (!savedName.isEmpty()) {
+            clearDummyCache(job.artist, job.album);
             return savedName;
         }
     }

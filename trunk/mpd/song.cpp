@@ -197,12 +197,15 @@ QString Song::format()
 
 QString Song::entryName() const
 {
-    QString text=title.isEmpty() ? file : title;
-
-    if (!title.isEmpty()) {
-        text+=QLatin1String(" - ")+artist+QLatin1String(" - ")+album;
+    if (title.isEmpty()) {
+        return file;
     }
-    return text;
+
+    #ifdef ENABLE_KDE_SUPPORT
+    return i18nc("Song (Artist - Album)", "%1 (%2 - %3)", title, artist, album);
+    #else
+    return QObject::tr("%1 (%2 - %3)").arg(title).arg(artist).arg(album);
+    #endif
 }
 
 QString Song::artistSong() const

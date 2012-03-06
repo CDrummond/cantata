@@ -784,7 +784,6 @@ MainWindow::MainWindow(QWidget *parent)
     playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
     playQueue->setGrouped(Settings::self()->groupedPlayQueue());
     playQueue->setAutoCollapsingEnabled(Settings::self()->autoCollapsePlayQueue());
-    playQueueModel.refresh();
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated()), this, SLOT(updateStats()));
     connect(MPDConnection::self(), SIGNAL(statusUpdated()), this, SLOT(updateStatus())/*, Qt::DirectConnection*/);
@@ -1221,7 +1220,6 @@ void MainWindow::updateSettings()
         (playQueueModel.isGrouped() && wasAutoCollapsing!=playQueue->isAutoCollapsingEnabled())) {
         playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
         playQueue->setGrouped(Settings::self()->groupedPlayQueue());
-        playQueueModel.refresh();
         playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), true);
     }
 }

@@ -90,7 +90,6 @@ public:
     void setState(MPDStatus::State st);
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
-    void refresh();
     void setDropAdjust(quint32 a) { dropAdjust=a; }
 
 public Q_SLOTS:

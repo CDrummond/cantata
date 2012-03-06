@@ -566,16 +566,6 @@ void PlayQueueModel::setGrouped(bool g)
     grouped=g;
 }
 
-void PlayQueueModel::refresh()
-{
-//     if (grouped && songs.count()) {
-//         Song s=songs.at(0);
-//         if (0==s.key || Song::constNullKey==s.key) {
-            updatePlaylist(songs);
-//         }
-//     }
-}
-
 void PlayQueueModel::updatePlaylist(const QList<Song> &songList)
 {
     TF_DEBUG

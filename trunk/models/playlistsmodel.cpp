@@ -493,8 +493,6 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
             }
         }
         pl->updateGenres();
-        QModelIndex idx=index(items.indexOf(pl), 0, QModelIndex());
-        emit dataChanged(idx, idx);
     } else {
         emit listPlaylists();
     }

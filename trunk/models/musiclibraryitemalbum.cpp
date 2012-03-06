@@ -149,6 +149,16 @@ QStringList MusicLibraryItemAlbum::sortedTracks() const
     return tracks.values();
 }
 
+quint32 MusicLibraryItemAlbum::totalTime()
+{
+    if (0==m_totalTime) {
+        foreach (MusicLibraryItem *i, m_childItems) {
+            m_totalTime+=static_cast<MusicLibraryItemSong *>(i)->time();
+        }
+    }
+    return m_totalTime;
+}
+
 void MusicLibraryItemAlbum::addTracks(MusicLibraryItemAlbum *other)
 {
     m_singleTracks=true;
@@ -172,9 +182,11 @@ void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
     if (m_singleTracks) {
         m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(i)->song().file);
     }
+    m_totalTime=0;
 }
 
 void MusicLibraryItemAlbum::remove(int row)
 {
     delete m_childItems.takeAt(row);
+    m_totalTime=0;
 }

@@ -62,6 +62,7 @@ public:
     bool hasRealCover() const { return !m_coverIsDefault; }
     QStringList sortedTracks() const;
     quint32 year() const { return m_year; }
+    quint32 totalTime();
     void addTracks(MusicLibraryItemAlbum *other);
     bool isSingleTracks() const { return m_singleTracks; }
     void setIsSingleTracks();
@@ -71,6 +72,7 @@ public:
 
 private:
     quint32 m_year;
+    quint32 m_totalTime;
     mutable bool m_coverIsDefault;
     mutable QPixmap *m_cover;
     bool m_singleTracks;

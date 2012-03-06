@@ -218,11 +218,11 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                 ? item->data()
                 :
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Track", "%1\n%2 Tracks", item->data(), item->childCount());
+                    i18np("%1\n1 Track (%3)", "%1\n%2 Tracks (%3)", item->data(), item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
                     #else
                     (item->childCount()>1
-                        ? tr("%1\n%2 Tracks").arg(item->data()).arg(item->childCount())
-                        : tr("%1\n1 Track").arg(item->data()));
+                        ? tr("%1\n%2 Tracks (%3)").arg(item->data()).arg(item->childCount()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()))
+                        : tr("%1\n1 Track (%3)").arg(item->data()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime())));
                     #endif
         case MusicLibraryItem::Type_Song: {
             return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+
@@ -248,9 +248,10 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             return Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time());
         case MusicLibraryItem::Type_Album:
             #ifdef ENABLE_KDE_SUPPORT
-            return i18np("1 Track", "%1 Tracks", item->childCount());
+            return i18np("1 Track (%2)", "%1 Tracks (%2)", item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
             #else
-            return 1==item->childCount() ? tr("1 Track") : tr("%1 Tracks").arg(item->childCount());
+            return 1==item->childCount() ? tr("1 Track (%1)").arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()))
+                                         : tr("%1 Tracks (%2)").arg(item->childCount()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
             #endif
         default: return QVariant();
         }

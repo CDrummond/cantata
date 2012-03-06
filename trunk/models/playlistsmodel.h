@@ -56,17 +56,19 @@ public:
 
     struct PlaylistItem : public Item
     {
-        PlaylistItem() : loaded(false) { }
-        PlaylistItem(const QString &n) : name(n), loaded(false) { }
+        PlaylistItem() : loaded(false), time(0) { }
+        PlaylistItem(const QString &n) : name(n), loaded(false), time(0) { }
         virtual ~PlaylistItem();
         bool isPlaylist() { return true; }
         void updateGenres();
         SongItem * getSong(const Song &song);
         void clearSongs();
+        quint32 totalTime();
         QString name;
         bool loaded;
         QList<SongItem *> songs;
         QSet<QString> genres;
+        quint32 time;
     };
 
     static PlaylistsModel * self();

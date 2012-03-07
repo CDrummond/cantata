@@ -74,6 +74,7 @@ public:
 
 Q_SIGNALS:
     void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
+    void coverRetrieved(const QString &artist, const QString &album);
 
 private Q_SLOTS:
     void albumInfo(QVariant &value, QNetworkReply *reply);

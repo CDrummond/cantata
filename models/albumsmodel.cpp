@@ -247,11 +247,14 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 ? al->name
                 :
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Track (%3)", "%1\n%2 Tracks (%3)", al->name, al->songs.count(), Song::formattedTime(al->totalTime()));
+                    i18np("%1\n%2\n1 Track (%4)", "%1\n%2\n%3 Tracks (%4)", al->artist, al->album,
+                          al->songs.count(), Song::formattedTime(al->totalTime()));
                     #else
                     (al->songs.count()>1
-                        ? tr("%1\n%2 Tracks (%3)").arg(al->name).arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
-                        : tr("%1\n1 Track (%2)").arg(al->name).arg(Song::formattedTime(al->totalTime())));
+                        ? tr("%1\n%2\n%3 Tracks (%3)").arg(al->artist).arg(al->album)
+                             .arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
+                        : tr("%1\n%2\n1 Track (%3)").arg(al->artist).arg(al->album)
+                             .arg(Song::formattedTime(al->totalTime())));
                     #endif
         case ItemView::Role_Search:
             return al->album;
@@ -276,8 +279,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         case Qt::DecorationRole:
             return QIcon::fromTheme("audio-x-generic");
         case Qt::ToolTipRole:
-            return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(si->time)+
-                   QLatin1String("<br/><small><i>")+si->file+QLatin1String("</i></small>");
+            return si->parent->artist+QLatin1String("<br/>")+
+                   si->parent->album+QLatin1String("<br/>")+
+                   data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
+                   Song::formattedTime(si->time)+QLatin1String("<br/><small><i>")+si->file+QLatin1String("</i></small>");
         case Qt::DisplayRole:
             if (si->parent->isSingleTracks) {
                 return si->artistSong();

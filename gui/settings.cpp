@@ -209,12 +209,12 @@ int Settings::folderView()
 
 int Settings::playlistsView()
 {
-    return GET_INT("playlistsView", (int)ItemView::Mode_List);
+    return GET_INT("playlistsView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
 }
 
 int Settings::streamsView()
 {
-    return GET_INT("streamsView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : (int)ItemView::Mode_List));
+    return GET_INT("streamsView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
 }
 
 int Settings::libraryCoverSize()

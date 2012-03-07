@@ -127,8 +127,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.albumartist=parent()->data();
             song.album=m_itemData;
             song.file=static_cast<MusicLibraryItemSong*>(child(0))->file();
-            bool isLocal=!(parent() && parent()->parent() && static_cast<MusicLibraryItemRoot *>(parent()->parent())->isDevice());
-            Covers::self()->get(song, m_singleTracks, isLocal);
+            Covers::self()->get(song, m_singleTracks);
         }
         return *theDefaultIcon;
     }

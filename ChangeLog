@@ -8,7 +8,7 @@
     browser pages when the mouse is not over them. Thanks to Piotr Wicijowski
     for implementing this.
  5. Add support for mounting a 'device' via sshfs, and for treating a local
-    folder as a device. Currently NOT in main build, to use pass the
+    folder as a device. Currently NOT in main build, to use pass
     -DENABLE_REMOTE_DEVICES=1 to cmake
  6. Add "Open File Manager" action to folder page context menu. (KDE only)
  7. Open local files passed on commandline - if using local socket, or http
@@ -26,18 +26,19 @@
     store its actual album name in the cache file. Then when cache is loaded,
     the correct album name is available to use for the tag editor.
 15. Fix crash when deleting streams.
-16. Add option to sort albums in albums view by either; album-artist, or
+16. Add option to sort albums in albums view by either album-artist or
     artist-album.
 17. Fix build with "-DCMAKE_BUILD_TYPE=debugfull" set - thanks to Martin.
 18. Fix drag'n'drop of tracks from album view into play queue - affected list
     and icon/list modes.
 19. Add a workaround for dockmanager issues - delay registration for .25secs.
-20. Change default settings; use tree style for library, playlists, and streams.
+20. Change default settings; use tree style for library, playlists, and
+    streams.
 21. Better playback button sizes.
 22. Better height for collapsed interface.
 23. Save/restore height of expanded interface, even when interface is
     collapsed.
-24. Expand inerface when shoing error messages.
+24. Expand interface when showing error messages.
 25. Combine playback and output config pages.
 26. Disable MPD config items if not connected to MPD.
 27. Save expanded and collapsed sizes to config file.
@@ -92,8 +93,8 @@
 33. Fix amarok import script.
 34. Fix crash when navigating listviews.
 35. Manually stop KStartupInfo when app is started. App is a KUniqueApplication
-    and furhter attempts to restart start a new startyp-info, which stays until
-    the timeout. This fix prevents. this.
+    and further attempts to restart start a new startup-info, which stays until
+    the timeout. This fix prevents this.
 36. Fix toolbutton icon size - helps with cleanlooks.
 37. When copying files to library, and user is a member of "audio" group - then
     set files/dirs as writeable and owned by "audio" group.

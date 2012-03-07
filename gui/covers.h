@@ -43,12 +43,11 @@ class Covers : public QObject
 public:
     struct Job
     {
-        Job(const QString &ar, const QString &al, const QString &d, bool l)
-            : artist(ar), album(al), dir(d), isLocal(l) { }
+        Job(const QString &ar, const QString &al, const QString &d)
+            : artist(ar), album(al), dir(d) { }
         QString artist;
         QString album;
         QString dir;
-        bool isLocal;
     };
 
     struct Image
@@ -69,9 +68,9 @@ public:
 
     Covers();
 
-    QPixmap * get(const Song &song, int size, bool isSingleTracks=false, bool isLocal=false);
-    Image getImage(const Song &song, bool isSingleTracks=false, bool isLocal=false);
-    void get(const Song &song, bool isSingleTracks=false, bool isLocal=false);
+    QPixmap * get(const Song &song, int size, bool isSingleTracks=false);
+    Image getImage(const Song &song, bool isSingleTracks=false);
+    void get(const Song &song, bool isSingleTracks=false);
 
 Q_SIGNALS:
     void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
@@ -84,7 +83,7 @@ private Q_SLOTS:
 private:
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<QNetworkReply *, Job>::Iterator findJob(const Song &song);
-    void download(const Song &song, bool isLocal);
+    void download(const Song &song);
     void clearDummyCache(const QString &artist, const QString &album);
 
 private:

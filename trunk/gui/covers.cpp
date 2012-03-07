@@ -324,17 +324,23 @@ QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks)
     return pix && pix->width()>1 ? pix : 0;
 }
 
-// If we have downloaded a cover, we can remove the dumym entry - so that the next time get() is called,
+// If we have downloaded a cover, we can remove the dummy entry - so that the next time get() is called,
 // it can read the saved file!
 void Covers::clearDummyCache(const QString &artist, const QString &album)
 {
+    bool hadDummy=false;
     foreach (int s, cacheSizes) {
         QString key=cacheKey(artist, album, s);
         QPixmap *pix(cache.object(key));
 
         if (pix && pix->width()<2) {
             cache.remove(key);
+            hadDummy=true;
         }
+    }
+
+    if (hadDummy) {
+        emit coverRetrieved(artist, album);
     }
 }
 

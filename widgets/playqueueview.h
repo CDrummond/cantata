@@ -111,6 +111,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void itemClicked(const QModelIndex &idx);
+    void coverRetrieved(const QString &artist, const QString &album);
 
 private:
     PlayQueueListView *listView;

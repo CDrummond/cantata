@@ -71,6 +71,7 @@ public:
     void toggle(const QModelIndex &idx);
     QModelIndexList selectedIndexes() const;
     void dropEvent(QDropEvent *event);
+    void coverRetrieved(const QString &artist, const QString &album);
 
 private:
     bool autoCollapsingEnabled;
@@ -574,6 +575,29 @@ void PlayQueueListView::dropEvent(QDropEvent *event)
     m->setDropAdjust(0);
 }
 
+void PlayQueueListView::coverRetrieved(const QString &artist, const QString &album)
+{
+    if (filterActive) {
+        return;
+    }
+
+    qint32 count=model()->rowCount();
+    quint16 lastKey=Song::constNullKey;
+
+    for (qint32 i=0; i<count; ++i) {
+        QModelIndex index=model()->index(i, 0);
+        quint16 key=index.data(PlayQueueView::Role_Key).toUInt();
+
+        if (key!=lastKey && !isRowHidden(i)) {
+            Song song=index.data(PlayQueueView::Role_Song).value<Song>();
+            if (song.albumArtist()==artist && song.album==album) {
+                dataChanged(index, index);
+            }
+        }
+        lastKey=key;
+    }
+}
+
 PlayQueueTreeView::PlayQueueTreeView(QWidget *parent)
     : TreeView(parent)
     , menu(0)
@@ -706,6 +730,7 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)), SLOT(itemClicked(const QModelIndex &)));
+    connect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), this, SLOT(coverRetrieved(const QString &, const QString &)));
 }
 
 PlayQueueView::~PlayQueueView()
@@ -891,4 +916,13 @@ void PlayQueueView::itemClicked(const QModelIndex &idx)
             }
         }
     }
+}
+
+void PlayQueueView::coverRetrieved(const QString &artist, const QString &album)
+{
+    if (listView!=currentWidget()) {
+        return;
+    }
+
+    listView->coverRetrieved(artist, album);
 }

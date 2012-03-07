@@ -65,6 +65,11 @@ void initCoverNames()
     }
 }
 
+static bool canSaveTo(const QString &dir)
+{
+    return !dir.isEmpty() && !Settings::self()->mpdDir().isEmpty() && QDir(Settings::self()->mpdDir()).exists() && dir.startsWith(Settings::self()->mpdDir());
+}
+
 static QImage createSingleTracksCover(const QString &fileName)
 {
     static const int constSize=128;
@@ -189,7 +194,7 @@ static AppCover otherAppCover(const Covers::Job &job)
         app.img=QImage(app.filename);
     }
 
-    if (!app.img.isNull() && !job.dir.isEmpty() && job.isLocal) {
+    if (!app.img.isNull() && canSaveTo(job.dir)) {
         QFile f(app.filename);
         if (f.open(QIODevice::ReadOnly)) {
             QByteArray raw=f.readAll();
@@ -291,7 +296,7 @@ static inline QString cacheKey(const QString &artist, const QString &album, int 
 
 static QSet<int> cacheSizes;
 
-QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks, bool isLocal)
+QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks)
 {
     if (song.isUnknown()) {
         return 0;
@@ -301,7 +306,7 @@ QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks, bool isLo
     QPixmap *pix(cache.object(key));
 
     if (!pix) {
-        Covers::Image img=getImage(song, isSingleTracks, isLocal);
+        Covers::Image img=getImage(song, isSingleTracks);
 
         cacheSizes.insert(size);
         if (!img.img.isNull()) {
@@ -309,7 +314,7 @@ QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks, bool isLo
             cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
         } else {
             // Attempt to download cover...
-            download(song, isLocal);
+            download(song);
             // Create a dummy pixmap so that we dont keep on stating files that do not exist!
             pix=new QPixmap(1, 1);
             cache.insert(key, pix, 4);
@@ -333,7 +338,7 @@ void Covers::clearDummyCache(const QString &artist, const QString &album)
     }
 }
 
-Covers::Image Covers::getImage(const Song &song, bool isSingleTracks, bool isLocal)
+Covers::Image Covers::getImage(const Song &song, bool isSingleTracks)
 {
     if (isSingleTracks) {
          QString fileName(Network::cacheDir(constCoverDir)+constSingleTracksFile);
@@ -375,7 +380,7 @@ Covers::Image Covers::getImage(const Song &song, bool isSingleTracks, bool isLoc
         }
     }
 
-    Job job(song.albumArtist(), song.album, dirName, isLocal);
+    Job job(song.albumArtist(), song.album, dirName);
 
     // See if amarok, or clementine, has it...
     AppCover app=otherAppCover(job);
@@ -386,18 +391,18 @@ Covers::Image Covers::getImage(const Song &song, bool isSingleTracks, bool isLoc
     return Image(QImage(), QString());
 }
 
-void Covers::get(const Song &song, bool isSingleTracks, bool isLocal)
+void Covers::get(const Song &song, bool isSingleTracks)
 {
-    Image img=getImage(song, isSingleTracks, isLocal);
+    Image img=getImage(song, isSingleTracks);
 
     if (!img.img.isNull()) {
         emit cover(song.albumArtist(), song.album, img.img, img.fileName);
         return;
     }
-    download(song, isLocal);
+    download(song);
 }
 
-void Covers::download(const Song &song, bool isLocal)
+void Covers::download(const Song &song)
 {
     if (jobs.end()!=findJob(song)) {
         return;
@@ -411,7 +416,7 @@ void Covers::download(const Song &song, bool isLocal)
                                         : MPDParseUtils::getDir((haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file);
     }
 
-    Job job(song.albumArtist(), song.album, dirName, isLocal);
+    Job job(song.albumArtist(), song.album, dirName);
 
     // Query lastfm...
     if (!rpc) {
@@ -497,7 +502,7 @@ void Covers::jobFinished(QNetworkReply *reply)
             img = QImage();
         }
 
-        if (!img.isNull() && job.isLocal) {
+        if (!img.isNull()) {
             fileName=saveImg(job, img, data);
         }
 
@@ -521,7 +526,7 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     QString savedName;
 
     // Try to save as cover.jpg in album dir...
-    if (!job.dir.isEmpty()) {
+    if (canSaveTo(job.dir)) {
         savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
         if (!savedName.isEmpty()) {
             clearDummyCache(job.artist, job.album);

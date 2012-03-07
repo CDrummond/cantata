@@ -525,6 +525,23 @@ qint32 PlayQueueModel::getRowById(qint32 id) const
     return -1;
 }
 
+QSet<quint16> PlayQueueModel::getKeysByIds(QSet<qint32> ids) const
+{
+    QSet<quint16> keys;
+    if (grouped) {
+        foreach (const Song &s, songs) {
+            if (ids.contains(s.id)) {
+                keys.insert(s.key);
+                ids.remove(s.id);
+                if (ids.isEmpty()) {
+                    break;
+                }
+            }
+        }
+    }
+    return keys;
+}
+
 Song PlayQueueModel::getSongByRow(const qint32 row) const
 {
     return row>=songs.size() ? Song() : songs.at(row);

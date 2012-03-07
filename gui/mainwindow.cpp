@@ -1405,7 +1405,11 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     playPauseTrackAction->setEnabled(0!=songs.count());
     nextTrackAction->setEnabled(songs.count()>1);
     prevTrackAction->setEnabled(songs.count()>1);
+    QSet<qint32> controlledSongIds=playQueue->getControlledSongIds();
     playQueueModel.updatePlaylist(songs);
+    if (controlledSongIds.count()) {
+        playQueue->setControlled(playQueueModel.getKeysByIds(controlledSongIds));
+    }
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
     if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));

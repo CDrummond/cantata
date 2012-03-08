@@ -1220,7 +1220,8 @@ void MainWindow::updateSettings()
         (playQueueModel.isGrouped() && wasAutoCollapsing!=playQueue->isAutoCollapsingEnabled())) {
         playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
         playQueue->setGrouped(Settings::self()->groupedPlayQueue());
-        playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), true);
+        playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(),
+                              !usingProxy && autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state());
     }
 }
 
@@ -1366,7 +1367,7 @@ void MainWindow::realSearchPlaylist()
             playQueue->setModel(&playQueueModel);
             usingProxy=false;
             playQueue->setFilterActive(false);
-            playQueue->updateRows(playQueueModel.currentSongRow(), true);
+            playQueue->updateRows(playQueueModel.currentSongRow(), autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state());
             scrollPlayQueue();
         }
         playQueueProxyModel.setFilterEnabled(false);
@@ -1541,7 +1542,8 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     playQueueModel.updateCurrentSong(current.id);
-    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(current.id), !usingProxy);
+    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(current.id),
+                          !usingProxy && autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state());
     scrollPlayQueue();
 
     if (current.artist.isEmpty()) {

@@ -52,7 +52,34 @@ enum Type {
     AlbumTrack
 };
 
-class PlayQueueListView : public ListView
+/*
+ * QScrollView seems to have *many* issues when items are hidden! And sometimes when not...
+ * 1. scrollTo() is broken when we have hidden items (see https://bugreports.qt-project.org/browse/QTBUG-21115)
+ * 2. The model using beginRemoveRows() seems to cause the view to scroll back to the top!
+ *
+ * So, as a work-around, just use a treeview!
+ */
+// #define USE_LISTVIEW_FOR_LIST
+
+#ifdef USE_LISTVIEW_FOR_LIST
+#define LIST_PARENT ListView
+#define FIX_SCROLL_TO
+#define ROW_HIDDEN(A) isRowHidden(A)
+#define SET_ROW_HIDDEN(A, B) setRowHidden(A, B)
+#define LIST_DEFAULTS setUniformItemSizes(false);
+#else
+#define LIST_PARENT TreeView
+#define ROW_HIDDEN(A) isRowHidden(A, QModelIndex())
+#define SET_ROW_HIDDEN(A, B) setRowHidden(A, QModelIndex(), B)
+#define LIST_DEFAULTS \
+    setRootIsDecorated(false); \
+    setHeaderHidden(true); \
+    setIndentation(0); \
+    setItemsExpandable(false); \
+    setExpandsOnDoubleClick(false);
+#endif
+
+class PlayQueueListView : public LIST_PARENT
 {
 public:
     PlayQueueListView(QWidget *parent=0);
@@ -350,7 +377,7 @@ private:
 };
 
 PlayQueueListView::PlayQueueListView(QWidget *parent)
-    : ListView(parent)
+    : LIST_PARENT(parent)
     , autoCollapsingEnabled(false)
     , filterActive(false)
     , currentAlbum(Song::constNullKey)
@@ -361,7 +388,7 @@ PlayQueueListView::PlayQueueListView(QWidget *parent)
     setDragDropMode(QAbstractItemView::DragDrop);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setDropIndicatorShown(true);
-    setUniformItemSizes(false);
+    LIST_DEFAULTS
     setSelectionBehavior(SelectRows);
     setItemDelegate(new PlayQueueDelegate(this));
 }
@@ -379,7 +406,7 @@ void PlayQueueListView::setFilterActive(bool f)
     if (filterActive && model()) {
         quint32 count=model()->rowCount();
         for (quint32 i=0; i<count; ++i) {
-            setRowHidden(i, false);
+            SET_ROW_HIDDEN(i, false);
         }
     }
 }
@@ -393,8 +420,6 @@ void PlayQueueListView::setAutoCollapsingEnabled(bool ac)
     controlledAlbums.clear();
     autoCollapsingEnabled=ac;
 }
-
-#define FIX_SCROLL_TO
 
 void PlayQueueListView::updateRows(qint32 row, bool scroll)
 {
@@ -432,7 +457,7 @@ void PlayQueueListView::updateRows(qint32 row, bool scroll)
         quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
         bool hide=key==lastKey && key!=currentAlbum && (( autoCollapsingEnabled && !controlledAlbums.contains(key)) ||
                                                         ( !autoCollapsingEnabled && controlledAlbums.contains(key)));
-        setRowHidden(i, hide);
+        SET_ROW_HIDDEN(i, hide);
 
         #ifdef FIX_SCROLL_TO
         if (hide && i<row) {
@@ -498,7 +523,7 @@ void PlayQueueListView::toggle(const QModelIndex &idx)
         for (quint32 i=idx.row()+1; i<count; ++i) {
             quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
             if (indexKey==key) {
-                setRowHidden(i, toBeHidden);
+                SET_ROW_HIDDEN(i, toBeHidden);
             } else {
                 break;
             }
@@ -510,7 +535,7 @@ void PlayQueueListView::toggle(const QModelIndex &idx)
 // are selected.
 QModelIndexList PlayQueueListView::selectedIndexes() const
 {
-    QModelIndexList indexes = ListView::selectedIndexes();
+    QModelIndexList indexes = LIST_PARENT::selectedIndexes();
     QModelIndexList allIndexes;
     quint32 rowCount=model()->rowCount();
 
@@ -545,7 +570,7 @@ void PlayQueueListView::dropEvent(QDropEvent *event)
     quint32 dropRowAdjust=0;
     PlayQueueModel *m=qobject_cast<PlayQueueModel *>(model());
     if (m && viewport()->rect().contains(event->pos())) {
-        QModelIndex idx=ListView::indexAt(event->pos());
+        QModelIndex idx=LIST_PARENT::indexAt(event->pos());
         if (idx.isValid() && AlbumHeader==getType(idx)) {
             QRect rect(visualRect(idx));
             if (event->pos().y()>(rect.y()+(rect.height()/2))) {
@@ -571,7 +596,7 @@ void PlayQueueListView::dropEvent(QDropEvent *event)
         }
     }
 
-    ListView::dropEvent(event);
+    LIST_PARENT::dropEvent(event);
     m->setDropAdjust(0);
 }
 
@@ -588,7 +613,7 @@ void PlayQueueListView::coverRetrieved(const QString &artist, const QString &alb
         QModelIndex index=model()->index(i, 0);
         quint16 key=index.data(PlayQueueView::Role_Key).toUInt();
 
-        if (key!=lastKey && !isRowHidden(i)) {
+        if (key!=lastKey && !ROW_HIDDEN(i)) {
             Song song=index.data(PlayQueueView::Role_Song).value<Song>();
             if (song.albumArtist()==artist && song.album==album) {
                 dataChanged(index, index);

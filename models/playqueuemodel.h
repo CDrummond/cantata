@@ -76,7 +76,6 @@ public:
     qint32 getIdByRow(qint32 row) const;
     qint32 getPosByRow(qint32 row) const;
     qint32 getRowById(qint32 id) const;
-    QSet<quint16> getKeysByIds(QSet<qint32> ids) const;
     Song getSongByRow(const qint32 row) const;
     Qt::DropActions supportedDropActions() const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -91,12 +90,12 @@ public:
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
     void setDropAdjust(quint32 a) { dropAdjust=a; }
+    QSet<quint16> updatePlaylist(const QList<Song> &songList, QSet<qint32> controlledIds);
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row);
     void addItems(const QStringList &items) { addItems(items, -1); }
     void addFiles(const QStringList &filenames, int row);
-    void updatePlaylist(const QList<Song> &songList);
 
 Q_SIGNALS:
     void filesAddedInPlaylist(const QStringList filenames, const quint32 row, const quint32 size);

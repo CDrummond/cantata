@@ -525,23 +525,6 @@ qint32 PlayQueueModel::getRowById(qint32 id) const
     return -1;
 }
 
-QSet<quint16> PlayQueueModel::getKeysByIds(QSet<qint32> ids) const
-{
-    QSet<quint16> keys;
-    if (grouped) {
-        foreach (const Song &s, songs) {
-            if (ids.contains(s.id)) {
-                keys.insert(s.key);
-                ids.remove(s.id);
-                if (ids.isEmpty()) {
-                    break;
-                }
-            }
-        }
-    }
-    return keys;
-}
-
 Song PlayQueueModel::getSongByRow(const qint32 row) const
 {
     return row>=songs.size() ? Song() : songs.at(row);
@@ -583,10 +566,13 @@ void PlayQueueModel::setGrouped(bool g)
     grouped=g;
 }
 
-void PlayQueueModel::updatePlaylist(const QList<Song> &songList)
+// Update playqueue with contents returned from MPD.
+// Also, return set of artist-album keys associated with songs in 'ids'
+QSet<quint16> PlayQueueModel::updatePlaylist(const QList<Song> &songList, QSet<qint32> controlledIds)
 {
     TF_DEBUG
     QSet<qint32> newIds;
+    QSet<quint16> keys;
     foreach (const Song &s, songList) {
         newIds.insert(s.id);
     }
@@ -596,6 +582,18 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songList)
         songs=songList;
         ids=newIds;
         endResetModel();
+
+        if (grouped && !ids.isEmpty()) {
+            foreach (const Song &s, songs) {
+                if (controlledIds.contains(s.id)) {
+                    keys.insert(s.key);
+                    controlledIds.remove(s.id);
+                    if (controlledIds.isEmpty()) {
+                        break;
+                    }
+                }
+            }
+        }
     } else {
         QSet<QString> artists;
         QSet<QString> albums;
@@ -631,10 +629,17 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songList)
             artists.insert(s.artist);
             albums.insert(s.album);
             time += s.time;
+
+            if (controlledIds.contains(s.id)) {
+                keys.insert(s.key);
+                controlledIds.remove(s.id);
+            }
         }
         ids=newIds;
         emit statsUpdated(artists.size(), albums.size(), songs.size(), time);
     }
+
+    return keys;
 }
 
 void PlayQueueModel::playListStats()

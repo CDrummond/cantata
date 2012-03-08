@@ -1405,12 +1405,72 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     playPauseTrackAction->setEnabled(0!=songs.count());
     nextTrackAction->setEnabled(songs.count()>1);
     prevTrackAction->setEnabled(songs.count()>1);
+
+    // remember selected song ids and rownum of smallest selected row in proxymodel (because that represents the visible rows)
+    QList<qint32> selectedSongIds;
+    qint32 firstSelectedSongId = -1;
+    qint32 firstSelectedRow = -1;
+
+    if (playQueue->selectionModel()->hasSelection()) {
+        QModelIndexList items = playQueue->selectionModel()->selectedRows();
+        // find smallest selected rownum
+        foreach (const QModelIndex &index, items) {
+            QModelIndex sourceIndex = usingProxy ? playQueueProxyModel.mapToSource(index) : index;
+            selectedSongIds.append(playQueueModel.getIdByRow(sourceIndex.row()));
+            if (firstSelectedRow == -1 || index.row() < firstSelectedRow) {
+                firstSelectedRow = index.row();
+                firstSelectedSongId = playQueueModel.getIdByRow(sourceIndex.row());
+            }
+        }
+    }
+
     QSet<qint32> controlledSongIds=playQueue->getControlledSongIds();
     QSet<quint16> keys=playQueueModel.updatePlaylist(songs, controlledSongIds);
     if (controlledSongIds.count()) {
         playQueue->setControlled(keys);
     }
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
+
+    // reselect song ids or minrow if songids were not found (songs removed)
+    if (selectedSongIds.size() > 0) {
+        bool found =  false;
+        qint32 newCurrentRow = playQueueModel.getRowById(firstSelectedSongId);
+        playQueue->setCurrentIndex(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(newCurrentRow, 0)) : playQueueModel.index(newCurrentRow, 0));
+
+        foreach (qint32 i, selectedSongIds) {
+            qint32 row = playQueueModel.getRowById(i);
+            if (row >= 0) {
+                found = true;
+            }
+
+            playQueue->selectionModel()->select(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0))
+                                                           : playQueueModel.index(row, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
+
+        if (!found) {
+            // songids which were selected before the playlistupdate were not found anymore (they were removed) -> select firstSelectedRow again (should be the next song after the removed one)
+            // firstSelectedRow contains the selected row of the proxymodel before we did the playlist refresh
+            // check if rowcount of current proxymodel is smaller than that (last row as removed) and adjust firstSelectedRow when needed
+            QModelIndex index;
+
+            if (usingProxy) {
+                index = playQueueProxyModel.index(firstSelectedRow, 0);
+                if (firstSelectedRow > playQueueProxyModel.rowCount(index) - 1) {
+                    firstSelectedRow = playQueueProxyModel.rowCount(index) - 1;
+                }
+                index = playQueueProxyModel.index(firstSelectedRow, 0);
+            } else {
+                index = playQueueModel.index(firstSelectedRow, 0);
+                if (firstSelectedRow > playQueueModel.rowCount(index) - 1) {
+                    firstSelectedRow = playQueueModel.rowCount(index) - 1;
+                }
+                index = playQueueProxyModel.index(firstSelectedRow, 0);
+            }
+            playQueue->setCurrentIndex(index);
+            playQueue->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
+    }
+
     if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
     } else if (0==songs.count()) {

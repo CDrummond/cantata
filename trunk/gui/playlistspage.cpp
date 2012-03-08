@@ -249,9 +249,11 @@ void PlaylistsPage::renamePlaylist()
 
 void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
-    QModelIndexList indexes;
-    indexes.append(index);
-    addItemsToPlayQueue(indexes);
+    if (!static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
+        QModelIndexList indexes;
+        indexes.append(index);
+        addItemsToPlayQueue(indexes);
+    }   
 }
 
 void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)

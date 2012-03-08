@@ -318,7 +318,7 @@ int Settings::version()
         if (3==parts.size()) {
             ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
         } else {
-            ver=0;
+            ver=CANTATA_MAKE_VERSION(0, 5, 0);
             SET_VALUE("version", PACKAGE_VERSION);
         }
     }
@@ -353,7 +353,7 @@ bool Settings::alwaysUseHttp()
 
 bool Settings::groupedPlayQueue()
 {
-    return GET_BOOL("groupedPlayQueue", version()>=CANTATA_MAKE_VERSION(0, 5, 0));
+    return GET_BOOL("groupedPlayQueue", true);
 }
 
 bool Settings::autoCollapsePlayQueue()

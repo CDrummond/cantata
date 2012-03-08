@@ -583,7 +583,7 @@ QSet<quint16> PlayQueueModel::updatePlaylist(const QList<Song> &songList, QSet<q
         ids=newIds;
         endResetModel();
 
-        if (grouped && !ids.isEmpty()) {
+        if (grouped && !controlledIds.isEmpty()) {
             foreach (const Song &s, songs) {
                 if (controlledIds.contains(s.id)) {
                     keys.insert(s.key);

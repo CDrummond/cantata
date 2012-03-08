@@ -84,7 +84,6 @@ public:
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
     QSet<qint32> getSongIdSet();
-    void playListStats();
     void clear();
     qint32 currentSong() const { return currentSongId; }
     qint32 currentSongRow() const { return getRowById(currentSongId); }
@@ -105,7 +104,7 @@ Q_SIGNALS:
     void statsUpdated(int artists, int albums, int songs, quint32 time);
 
 private Q_SLOTS:
-    void playListReset();
+    void playListStats();
 
 private:
     QList<Song> songs;

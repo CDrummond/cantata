@@ -32,6 +32,7 @@
 #include <KDE/KActionCollection>
 #include <KDE/KMessageBox>
 #include <KDE/KInputDialog>
+#include <KDE/KGlobalSettings>
 #else
 #include <QtGui/QInputDialog>
 #include <QtGui/QAction>
@@ -249,7 +250,11 @@ void PlaylistsPage::renamePlaylist()
 
 void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
-    if (!static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
+    if (
+        #ifdef ENABLE_KDE_SUPPORT
+        KGlobalSettings::singleClick() ||
+        #endif
+        !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
         QModelIndexList indexes;
         indexes.append(index);
         addItemsToPlayQueue(indexes);

@@ -123,7 +123,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , dropAdjust(0)
 {
     fetcher=new StreamFetcher(this);
-    connect(this, SIGNAL(modelReset()), this, SLOT(playListReset()));
+    connect(this, SIGNAL(modelReset()), this, SLOT(playListStats()));
     connect(fetcher, SIGNAL(result(const QStringList &, int)), SLOT(addFiles(const QStringList &, int)));
     connect(this, SIGNAL(filesAddedInPlaylist(const QStringList, quint32, quint32)),
             MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32)));
@@ -597,6 +597,10 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songList)
         ids=newIds;
         endResetModel();
     } else {
+        QSet<QString> artists;
+        QSet<QString> albums;
+        quint32 time = 0;
+
         QSet<qint32> removed=ids-newIds;
         foreach (qint32 id, removed) {
             qint32 row=getRowById(id);
@@ -623,24 +627,16 @@ void PlayQueueModel::updatePlaylist(const QList<Song> &songList)
             } else {
                 songs.replace(i, s);
             }
+
+            artists.insert(s.artist);
+            albums.insert(s.album);
+            time += s.time;
         }
         ids=newIds;
+        emit statsUpdated(artists.size(), albums.size(), songs.size(), time);
     }
 }
 
-/**
- * Act on a resetted playlist.
- *
- * --Update stats
- */
-void PlayQueueModel::playListReset()
-{
-    playListStats();
-}
-
-/**
- * Set all the statistics to the stats singleton
- */
 void PlayQueueModel::playListStats()
 {
     QSet<QString> artists;

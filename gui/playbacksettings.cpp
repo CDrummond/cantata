@@ -72,7 +72,6 @@ void PlaybackSettings::load()
     emit outputs();
     stopOnExit->setChecked(Settings::self()->stopOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
-    scrollPlayQueue->setChecked(Settings::self()->scrollPlayQueue());
 }
 
 void PlaybackSettings::save()
@@ -81,7 +80,6 @@ void PlaybackSettings::save()
     emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
-    Settings::self()->saveScrollPlayQueue(scrollPlayQueue->isChecked());
     for (int i=0; i<view->count(); ++i) {
         QListWidgetItem *item=view->item(i);
 

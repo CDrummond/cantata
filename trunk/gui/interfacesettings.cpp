@@ -61,6 +61,10 @@ void InterfaceSettings::load()
     playQueueGrouped->setCurrentIndex(Settings::self()->playQueueGrouped() ? 1 : 0);
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
+    playQueueScroll->setChecked(Settings::self()->playQueueScroll());
+    albumsViewChanged();
+    albumsCoverSizeChanged();
+    playQueueGroupedChanged();
 }
 
 void InterfaceSettings::save()
@@ -82,6 +86,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueGrouped(1==playQueueGrouped->currentIndex());
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
+    Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
 }
 
 void InterfaceSettings::albumsViewChanged()

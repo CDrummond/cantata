@@ -366,9 +366,9 @@ bool Settings::playQueueStartClosed()
     return GET_BOOL("playQueueStartClosed", true);
 }
 
-bool Settings::scrollPlayQueue()
+bool Settings::playQueueScroll()
 {
-    return GET_BOOL("scrollPlayQueue", true);
+    return GET_BOOL("playQueueScroll", true);
 }
 
 void Settings::saveConnectionHost(const QString &v)
@@ -600,9 +600,9 @@ void Settings::savePlayQueueStartClosed(bool v)
     SET_VALUE("playQueueStartClosed", v);
 }
 
-void Settings::saveScrollPlayQueue(bool v)
+void Settings::savePlayQueueScroll(bool v)
 {
-    SET_VALUE("scrollPlayQueue", v);
+    SET_VALUE("playQueueScroll", v);
 }
 
 void Settings::save(bool force)

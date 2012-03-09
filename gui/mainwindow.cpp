@@ -780,7 +780,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlaylistAction));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
     connect(streamsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
-    autoScrollPlayQueue=Settings::self()->scrollPlayQueue();
+    autoScrollPlayQueue=Settings::self()->playQueueScroll();
     playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
@@ -1212,7 +1212,7 @@ void MainWindow::updateSettings()
     setupTrayIcon();
     toggleDockManager();
     toggleMpris();
-    autoScrollPlayQueue=Settings::self()->scrollPlayQueue();
+    autoScrollPlayQueue=Settings::self()->playQueueScroll();
 
     bool wasAutoExpand=playQueue->isAutoExpand();
     bool wasStartClosed=playQueue->isStartClosed();

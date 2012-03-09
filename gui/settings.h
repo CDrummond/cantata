@@ -99,7 +99,7 @@ public:
     bool playQueueGrouped();
     bool playQueueAutoExpand();
     bool playQueueStartClosed();
-    bool scrollPlayQueue();
+    bool playQueueScroll();
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -144,7 +144,7 @@ public:
     void savePlayQueueGrouped(bool v);
     void savePlayQueueAutoExpand(bool v);
     void savePlayQueueStartClosed(bool v);
-    void saveScrollPlayQueue(bool v);
+    void savePlayQueueScroll(bool v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

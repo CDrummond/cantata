@@ -6,377 +6,429 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>377</width>
-    <height>376</height>
+    <width>437</width>
+    <height>194</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
-   <property name="fieldGrowthPolicy">
-    <enum>QFormLayout::ExpandingFieldsGrow</enum>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Library view:</string>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="buddy">
-      <cstring>libraryView</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QComboBox" name="libraryView">
-     <item>
-      <property name="text">
-       <string>Tree</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>List</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_5b">
-     <property name="text">
-      <string>Covers in library view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>libraryCoverSize</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QComboBox" name="libraryCoverSize">
-     <item>
-      <property name="text">
-       <string>None</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Small</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Medium</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Large</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_6">
-     <property name="text">
-      <string>Show album year in library view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>libraryYear</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QCheckBox" name="libraryYear">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>Group single track albums:</string>
-     </property>
-     <property name="buddy">
-      <cstring>groupSingle</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QCheckBox" name="groupSingle">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_3a">
-     <property name="text">
-      <string>Albums view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>albumsView</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QComboBox" name="albumsView">
-     <item>
-      <property name="text">
-       <string>Tree</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>List</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Icon/List</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_5c">
-     <property name="text">
-      <string>Covers in albums view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>albumsCoverSize</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QComboBox" name="albumsCoverSize">
-     <item>
-      <property name="text">
-       <string>None</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Small</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Medium</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Large</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="label_5x">
-     <property name="text">
-      <string>Sort albums in albums view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>albumsCoverSize</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1">
-    <widget class="QComboBox" name="albumFirst">
-     <item>
-      <property name="text">
-       <string>Album - Artist</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Artist - Album</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="7" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Folder view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>folderView</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="1">
-    <widget class="QComboBox" name="folderView">
-     <item>
-      <property name="text">
-       <string>Tree</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>List</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Playlists view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>playlistsView</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="1">
-    <widget class="QComboBox" name="playlistsView">
-     <item>
-      <property name="text">
-       <string>Tree</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>List</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="9" column="0">
-    <widget class="QLabel" name="label_x">
-     <property name="text">
-      <string>Streams view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>streamsView</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="1">
-    <widget class="QComboBox" name="streamsView">
-     <item>
-      <property name="text">
-       <string>Tree</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>List</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="10" column="0">
-    <widget class="QLabel" name="devicesViewLabel">
-     <property name="text">
-      <string>Devices view:</string>
-     </property>
-     <property name="buddy">
-      <cstring>devicesView</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="1">
-    <widget class="QComboBox" name="devicesView">
-     <item>
-      <property name="text">
-       <string>Tree</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>List</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="11" column="0">
-    <widget class="QLabel" name="showDeleteActionLabel">
-     <property name="text">
-      <string>Show delete action in context menus:</string>
-     </property>
-     <property name="buddy">
-      <cstring>showDeleteAction</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="1">
-    <widget class="QCheckBox" name="showDeleteAction">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="0">
-    <widget class="QLabel" name="playQueueGroupedLabel">
-     <property name="text">
-      <string>Play queue style:</string>
-     </property>
-     <property name="buddy">
-      <cstring>playQueueGrouped</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="1">
-    <widget class="QComboBox" name="playQueueGrouped">
-     <item>
-      <property name="text">
-       <string>Table</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Grouped Albums</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="13" column="1">
-    <widget class="QCheckBox" name="playQueueAutoExpand">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="13" column="0">
-    <widget class="QLabel" name="playQueueAutoExpandLabel">
-     <property name="text">
-      <string>Automatically expand current album in play queue:</string>
-     </property>
-     <property name="buddy">
-      <cstring>playQueueAutoExpand</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="14" column="1">
-    <widget class="QCheckBox" name="playQueueStartClosed">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="14" column="0">
-    <widget class="QLabel" name="playQueueStartClosedLabel">
-     <property name="text">
-      <string>Initially collapse albums in play queue:</string>
-     </property>
-     <property name="buddy">
-      <cstring>playQueueStartClosed</cstring>
-     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Library View</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>libraryView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="libraryView">
+         <item>
+          <property name="text">
+           <string>Tree</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>List</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_5b">
+         <property name="text">
+          <string>Covers:</string>
+         </property>
+         <property name="buddy">
+          <cstring>libraryCoverSize</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="libraryCoverSize">
+         <item>
+          <property name="text">
+           <string>None</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Small</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Medium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Large</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Show album year:</string>
+         </property>
+         <property name="buddy">
+          <cstring>libraryYear</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QCheckBox" name="libraryYear">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Albums View</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_3a">
+         <property name="text">
+          <string>Style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>albumsView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="albumsView">
+         <item>
+          <property name="text">
+           <string>Tree</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>List</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Icon/List</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_5c">
+         <property name="text">
+          <string>Covers:</string>
+         </property>
+         <property name="buddy">
+          <cstring>albumsCoverSize</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="albumsCoverSize">
+         <item>
+          <property name="text">
+           <string>None</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Small</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Medium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Large</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_5x">
+         <property name="text">
+          <string>Sort albums:</string>
+         </property>
+         <property name="buddy">
+          <cstring>albumsCoverSize</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="albumFirst">
+         <item>
+          <property name="text">
+           <string>Album - Artist</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Artist - Album</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Other Views</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_3">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Folder view style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>folderView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="folderView">
+         <item>
+          <property name="text">
+           <string>Tree</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>List</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Playlists view style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playlistsView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="playlistsView">
+         <item>
+          <property name="text">
+           <string>Tree</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>List</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_x">
+         <property name="text">
+          <string>Streams view style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>streamsView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="streamsView">
+         <item>
+          <property name="text">
+           <string>Tree</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>List</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="devicesViewLabel">
+         <property name="text">
+          <string>Devices view style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>devicesView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="devicesView">
+         <item>
+          <property name="text">
+           <string>Tree</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>List</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_4">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Group single track albums:</string>
+         </property>
+         <property name="buddy">
+          <cstring>groupSingle</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QCheckBox" name="groupSingle">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="showDeleteActionLabel">
+         <property name="text">
+          <string>Show delete action in context menus:</string>
+         </property>
+         <property name="buddy">
+          <cstring>showDeleteAction</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QCheckBox" name="showDeleteAction">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Play Queue</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_5">
+       <item row="0" column="0">
+        <widget class="QLabel" name="playQueueScrollLabel">
+         <property name="text">
+          <string>Scroll to current track:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playQueueScroll</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QCheckBox" name="playQueueScroll"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="playQueueGroupedLabel">
+         <property name="text">
+          <string>Style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playQueueGrouped</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="playQueueGrouped">
+         <item>
+          <property name="text">
+           <string>Table</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Grouped Albums</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="playQueueAutoExpandLabel">
+         <property name="text">
+          <string>Automatically expand current album:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playQueueAutoExpand</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QCheckBox" name="playQueueAutoExpand">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="playQueueStartClosedLabel">
+         <property name="text">
+          <string>Initially collapse albums:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playQueueStartClosed</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="playQueueStartClosed">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
  </widget>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
   <tabstop>libraryView</tabstop>
   <tabstop>libraryCoverSize</tabstop>
   <tabstop>libraryYear</tabstop>
-  <tabstop>groupSingle</tabstop>
   <tabstop>albumsView</tabstop>
   <tabstop>albumsCoverSize</tabstop>
   <tabstop>albumFirst</tabstop>
@@ -384,7 +436,9 @@
   <tabstop>playlistsView</tabstop>
   <tabstop>streamsView</tabstop>
   <tabstop>devicesView</tabstop>
+  <tabstop>groupSingle</tabstop>
   <tabstop>showDeleteAction</tabstop>
+  <tabstop>playQueueScroll</tabstop>
   <tabstop>playQueueGrouped</tabstop>
   <tabstop>playQueueAutoExpand</tabstop>
   <tabstop>playQueueStartClosed</tabstop>

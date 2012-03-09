@@ -1252,6 +1252,8 @@ void MainWindow::stopTrack()
         emit stop();
     }
     stopTrackAction->setEnabled(false);
+    nextTrackAction->setEnabled(false);
+    prevTrackAction->setEnabled(false);
     startVolumeFade(/*true*/);
 }
 
@@ -1407,8 +1409,8 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
 {
     TF_DEBUG
     playPauseTrackAction->setEnabled(0!=songs.count());
-    nextTrackAction->setEnabled(songs.count()>1);
-    prevTrackAction->setEnabled(songs.count()>1);
+    nextTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
+    prevTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
 
     // remember selected song ids and rownum of smallest selected row in proxymodel (because that represents the visible rows)
     QList<qint32> selectedSongIds;
@@ -1709,6 +1711,8 @@ void MainWindow::updateStatus()
         //playPauseTrackButton->setChecked(false);
         if (StopState_Stopping!=stopState) {
             stopTrackAction->setEnabled(true);
+            nextTrackAction->setEnabled(true);
+            prevTrackAction->setEnabled(true);
         }
         positionSlider->startTimer();
 
@@ -1726,6 +1730,8 @@ void MainWindow::updateStatus()
         playPauseTrackAction->setIcon(playbackPlay);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         stopTrackAction->setEnabled(false);
+        nextTrackAction->setEnabled(false);
+        prevTrackAction->setEnabled(false);
         trackLabel->setText(QString());
         artistLabel->setText(QString());
         setWindowTitle("Cantata");
@@ -1745,7 +1751,8 @@ void MainWindow::updateStatus()
         playPauseTrackAction->setIcon(playbackPlay);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         stopTrackAction->setEnabled(0!=playQueueModel.rowCount());
-
+        nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
+        prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
         if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT
             trayItem->setIconByName("media-playback-pause");

@@ -1891,9 +1891,9 @@ void MainWindow::updatePlayQueueStats(int artists, int albums, int songs, quint3
     status+=i18np("1 Album, ", "%1 Albums, ", albums);
     status+=i18np("1 Track", "%1 Tracks", songs);
     #else
-    status += QString::number(artists)+QString(1==stats->playlistArtists() ? tr(" Artist,") : tr(" Artists, "));
-    status += QString::number(albums)+QString(1==stats->playlistAlbums() ? tr(" Album,") : tr(" Albums, "));
-    status += QString::number(songs)+QString(1==stats->playlistSongs() ? tr(" Track") : tr(" Tracks"));
+    status += QString::number(artists)+QString(1==artists ? tr(" Artist,") : tr(" Artists, "));
+    status += QString::number(albums)+QString(1==albums ? tr(" Album,") : tr(" Albums, "));
+    status += QString::number(songs)+QString(1==songs ? tr(" Track") : tr(" Tracks"));
     #endif
     status += " (";
     status += MPDParseUtils::formatDuration(time);

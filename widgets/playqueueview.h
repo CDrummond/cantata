@@ -74,6 +74,7 @@ public:
         Role_Song,
         Role_AlbumDuration,
         Role_Status,
+        Role_CurrentStatus,
         Role_SongCount
     };
 
@@ -85,8 +86,10 @@ public:
     }
     void saveHeader();
     void setGrouped(bool g);
-    void setAutoCollapsingEnabled(bool ac);
-    bool isAutoCollapsingEnabled() const;
+    void setAutoExpand(bool ae);
+    bool isAutoExpand() const;
+    void setStartClosed(bool sc);
+    bool isStartClosed() const;
     QSet<qint32> getControlledSongIds() const;
     void setControlled(const QSet<quint16> &keys);
     void setFilterActive(bool f);

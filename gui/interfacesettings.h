@@ -40,7 +40,7 @@ public:
 private Q_SLOTS:
     void albumsViewChanged();
     void albumsCoverSizeChanged();
-    void groupedPlayQueueChanged();
+    void playQueueGroupedChanged();
 };
 
 #endif

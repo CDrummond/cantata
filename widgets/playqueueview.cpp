@@ -87,21 +87,26 @@ public:
 
     void setFilterActive(bool f);
     bool isFilterActive() const { return filterActive; }
-    void setAutoCollapsingEnabled(bool ac);
-    bool isAutoCollapsingEnabled() const { return autoCollapsingEnabled; }
+    void setAutoExpand(bool ae) { autoExpand=ae; }
+    bool isAutoExpand() const { return autoExpand; }
+    void setStartClosed(bool sc);
+    bool isStartClosed() const { return startClosed; }
     QSet<qint32> getControlledSongIds() const { return controlledSongIds; }
     void setControlled(const QSet<quint16> &keys) { controlledAlbums=keys; }
     void updateRows(qint32 row, bool scroll);
-    bool isExpanded(quint16 key) const { return filterActive || currentAlbum==key ||
-                                                (autoCollapsingEnabled && controlledAlbums.contains(key)) ||
-                                                (!autoCollapsingEnabled && !controlledAlbums.contains(key)); }
+    bool isCurrentAlbum(quint16 key) const { return key==currentAlbum; }
+    bool isExpanded(quint16 key) const { return filterActive ||
+                                                (autoExpand && currentAlbum==key) ||
+                                                (startClosed && controlledAlbums.contains(key)) ||
+                                                (!startClosed && !controlledAlbums.contains(key)); }
     void toggle(const QModelIndex &idx);
     QModelIndexList selectedIndexes() const;
     void dropEvent(QDropEvent *event);
     void coverRetrieved(const QString &artist, const QString &album);
 
 private:
-    bool autoCollapsingEnabled;
+    bool startClosed;
+    bool autoExpand;
     bool filterActive;
     quint16 currentAlbum;
     QSet<qint32> controlledSongIds;
@@ -202,6 +207,8 @@ public:
         }
 
         Type type=getType(index);
+        Song song=index.data(PlayQueueView::Role_Song).value<Song>();
+        int state=index.data(PlayQueueView::Role_Status).toInt();
 
         if (AlbumHeader==type) {
             QStyleOptionViewItem opt(option);
@@ -213,15 +220,16 @@ public:
             painter->setClipRect(option.rect.adjusted(0, option.rect.height()/2, 0, 0), Qt::IntersectClip);
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
             painter->restore();
+            if (!state && !view->isExpanded(song.key) && view->isCurrentAlbum(song.key)) {
+                state=index.data(PlayQueueView::Role_CurrentStatus).toInt();
+            }
         } else {
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
         }
-        Song song=index.data(PlayQueueView::Role_Song).value<Song>();
         QString title;
         QString track;
         QString duration=Song::formattedTime(song.time);
         bool stream=song.isStream();
-        int state=index.data(PlayQueueView::Role_Status).toInt();
         QString trackTitle=!song.albumartist.isEmpty() && song.albumartist != song.artist
                     ? song.title + " - " + song.artist
                     : song.title;
@@ -232,8 +240,7 @@ public:
         QFontMetrics fm(f);
         int textHeight=fm.height();
 
-        switch(type) {
-        case AlbumHeader: {
+        if(AlbumHeader==type) {
             QString album=song.album;
 
             if (stream && album.isEmpty() && song.albumArtist().isEmpty()) {
@@ -241,22 +248,20 @@ public:
                 if (song.title.isEmpty()) {
                     trackTitle=QString();
                 }
-                break;
             }
             if (song.year>0) {
                 album+=QString(" (%1)").arg(song.year);
             }
-            #ifdef ENABLE_KDE_SUPPORT
-            title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
-            #else
-            title=tr("%1 - %2").arg(song.albumArtist()).arg(album);
-            #endif
+            if (title.isEmpty()) {
+                #ifdef ENABLE_KDE_SUPPORT
+                title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
+                #else
+                title=tr("%1 - %2").arg(song.albumArtist()).arg(album);
+                #endif
+                track=formatNumber(song.track)+QChar(' ')+trackTitle;
+            }
+        } else {
             track=formatNumber(song.track)+QChar(' ')+trackTitle;
-            break;
-        }
-        case AlbumTrack:
-            track=formatNumber(song.track)+QChar(' ')+trackTitle;
-            break;
         }
 
         painter->save();
@@ -288,7 +293,7 @@ public:
         painter->setPen(col);
         bool showTrackDuration=true;
 
-        if (!title.isEmpty()) {
+        if (AlbumHeader==type) {
             // Draw cover...
             QPixmap *cover=Covers::self()->get(song, constCoverSize);
             QPixmap pix=cover ? *cover : QIcon::fromTheme(stream ? "applications-internet" : "media-optical-audio").pixmap(constCoverSize, constCoverSize);
@@ -319,8 +324,7 @@ public:
                 r.adjust(0, 0, (constCoverSize+constBorder), 0);
             }
 
-            quint16 key=index.data(PlayQueueView::Role_Key).toUInt();
-            if (!view->isExpanded(key)) {
+            if (!view->isExpanded(song.key)) {
                 showTrackDuration=false;
                 #ifdef ENABLE_KDE_SUPPORT
                 track=i18np("1 Track", "%1 Tracks", index.data(PlayQueueView::Role_SongCount).toUInt());
@@ -378,7 +382,8 @@ private:
 
 PlayQueueListView::PlayQueueListView(QWidget *parent)
     : LIST_PARENT(parent)
-    , autoCollapsingEnabled(false)
+    , startClosed(true)
+    , autoExpand(true)
     , filterActive(false)
     , currentAlbum(Song::constNullKey)
 {
@@ -411,14 +416,14 @@ void PlayQueueListView::setFilterActive(bool f)
     }
 }
 
-void PlayQueueListView::setAutoCollapsingEnabled(bool ac)
+void PlayQueueListView::setStartClosed(bool sc)
 {
-    if (ac==autoCollapsingEnabled) {
+    if (sc==startClosed) {
         return;
     }
     controlledSongIds.clear();
     controlledAlbums.clear();
-    autoCollapsingEnabled=ac;
+    startClosed=sc;
 }
 
 void PlayQueueListView::updateRows(qint32 row, bool scroll)
@@ -455,8 +460,10 @@ void PlayQueueListView::updateRows(qint32 row, bool scroll)
     currentAlbum=model()->index(row, 0).data(PlayQueueView::Role_Key).toUInt();
     for (qint32 i=0; i<count; ++i) {
         quint16 key=model()->index(i, 0).data(PlayQueueView::Role_Key).toUInt();
-        bool hide=key==lastKey && key!=currentAlbum && (( autoCollapsingEnabled && !controlledAlbums.contains(key)) ||
-                                                        ( !autoCollapsingEnabled && controlledAlbums.contains(key)));
+        bool hide=key==lastKey &&
+                        !(key==currentAlbum && autoExpand) &&
+                        ( ( startClosed && !controlledAlbums.contains(key)) ||
+                          ( !startClosed && controlledAlbums.contains(key)));
         SET_ROW_HIDDEN(i, hide);
 
         #ifdef FIX_SCROLL_TO
@@ -502,7 +509,7 @@ void PlayQueueListView::toggle(const QModelIndex &idx)
 {
     quint16 indexKey=idx.data(PlayQueueView::Role_Key).toUInt();
 
-    if (indexKey==currentAlbum) {
+    if (indexKey==currentAlbum && autoExpand) {
         return;
     }
 
@@ -511,11 +518,11 @@ void PlayQueueListView::toggle(const QModelIndex &idx)
     if (controlledAlbums.contains(indexKey)) {
         controlledAlbums.remove(indexKey);
         controlledSongIds.remove(id);
-        toBeHidden=autoCollapsingEnabled;
+        toBeHidden=startClosed;
     } else {
         controlledAlbums.insert(indexKey);
         controlledSongIds.insert(id);
-        toBeHidden=!autoCollapsingEnabled;
+        toBeHidden=!startClosed;
     }
 
     if (model()) {
@@ -788,14 +795,24 @@ void PlayQueueView::setGrouped(bool g)
     }
 }
 
-void PlayQueueView::setAutoCollapsingEnabled(bool ac)
+void PlayQueueView::setAutoExpand(bool ae)
 {
-    listView->setAutoCollapsingEnabled(ac);
+    listView->setAutoExpand(ae);
 }
 
-bool PlayQueueView::isAutoCollapsingEnabled() const
+bool PlayQueueView::isAutoExpand() const
 {
-    return listView->isAutoCollapsingEnabled();
+    return listView->isAutoExpand();
+}
+
+void PlayQueueView::setStartClosed(bool sc)
+{
+    listView->setStartClosed(sc);
+}
+
+bool PlayQueueView::isStartClosed() const
+{
+    return listView->isStartClosed();
 }
 
 QSet<qint32> PlayQueueView::getControlledSongIds() const

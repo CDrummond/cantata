@@ -351,14 +351,19 @@ bool Settings::alwaysUseHttp()
     return GET_BOOL("alwaysUseHttp", false);
 }
 
-bool Settings::groupedPlayQueue()
+bool Settings::playQueueGrouped()
 {
-    return GET_BOOL("groupedPlayQueue", true);
+    return GET_BOOL("playQueueGrouped", true);
 }
 
-bool Settings::autoCollapsePlayQueue()
+bool Settings::playQueueAutoExpand()
 {
-    return GET_BOOL("autoCollapsePlayQueue", true);
+    return GET_BOOL("playQueueAutoExpand", true);
+}
+
+bool Settings::playQueueStartClosed()
+{
+    return GET_BOOL("playQueueStartClosed", true);
 }
 
 bool Settings::scrollPlayQueue()
@@ -580,14 +585,19 @@ void Settings::saveAlwaysUseHttp(bool v)
     SET_VALUE("alwaysUseHttp", v);
 }
 
-void Settings::saveGroupedPlayQueue(bool v)
+void Settings::savePlayQueueGrouped(bool v)
 {
-    SET_VALUE("groupedPlayQueue", v);
+    SET_VALUE("playQueueGrouped", v);
 }
 
-void Settings::saveAutoCollapsePlayQueue(bool v)
+void Settings::savePlayQueueAutoExpand(bool v)
 {
-    SET_VALUE("autoCollapsePlayQueue", v);
+    SET_VALUE("playQueueAutoExpand", v);
+}
+
+void Settings::savePlayQueueStartClosed(bool v)
+{
+    SET_VALUE("playQueueStartClosed", v);
 }
 
 void Settings::saveScrollPlayQueue(bool v)

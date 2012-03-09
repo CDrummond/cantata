@@ -781,9 +781,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
     connect(streamsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
     autoScrollPlayQueue=Settings::self()->scrollPlayQueue();
-    playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
-    playQueue->setGrouped(Settings::self()->groupedPlayQueue());
-    playQueue->setAutoCollapsingEnabled(Settings::self()->autoCollapsePlayQueue());
+    playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
+    playQueue->setGrouped(Settings::self()->playQueueGrouped());
+    playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
+    playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated()), this, SLOT(updateStats()));
     connect(MPDConnection::self(), SIGNAL(statusUpdated()), this, SLOT(updateStatus())/*, Qt::DirectConnection*/);
@@ -1213,13 +1214,15 @@ void MainWindow::updateSettings()
     toggleMpris();
     autoScrollPlayQueue=Settings::self()->scrollPlayQueue();
 
-    bool wasAutoCollapsing=playQueue->isAutoCollapsingEnabled();
-    playQueue->setAutoCollapsingEnabled(Settings::self()->autoCollapsePlayQueue());
+    bool wasAutoExpand=playQueue->isAutoExpand();
+    bool wasStartClosed=playQueue->isStartClosed();
+    playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
+    playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
 
-    if (Settings::self()->groupedPlayQueue()!=playQueueModel.isGrouped() ||
-        (playQueueModel.isGrouped() && wasAutoCollapsing!=playQueue->isAutoCollapsingEnabled())) {
-        playQueueModel.setGrouped(Settings::self()->groupedPlayQueue());
-        playQueue->setGrouped(Settings::self()->groupedPlayQueue());
+    if (Settings::self()->playQueueGrouped()!=playQueueModel.isGrouped() ||
+        (playQueueModel.isGrouped() && (wasAutoExpand!=playQueue->isAutoExpand() || wasStartClosed!=playQueue->isStartClosed())) ) {
+        playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
+        playQueue->setGrouped(Settings::self()->playQueueGrouped());
         playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(),
                               !usingProxy && autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state());
     }

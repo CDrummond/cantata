@@ -96,8 +96,9 @@ public:
     int httpPort();
     bool enableHttp();
     bool alwaysUseHttp();
-    bool groupedPlayQueue();
-    bool autoCollapsePlayQueue();
+    bool playQueueGrouped();
+    bool playQueueAutoExpand();
+    bool playQueueStartClosed();
     bool scrollPlayQueue();
 
     void saveConnectionHost(const QString &v);
@@ -140,8 +141,9 @@ public:
     void saveHttpPort(int v);
     void saveEnableHttp(bool v);
     void saveAlwaysUseHttp(bool v);
-    void saveGroupedPlayQueue(bool v);
-    void saveAutoCollapsePlayQueue(bool v);
+    void savePlayQueueGrouped(bool v);
+    void savePlayQueueAutoExpand(bool v);
+    void savePlayQueueStartClosed(bool v);
     void saveScrollPlayQueue(bool v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT

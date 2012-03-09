@@ -33,7 +33,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     setupUi(this);
     connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
-    connect(groupedPlayQueue, SIGNAL(currentIndexChanged(int)), SLOT(groupedPlayQueueChanged()));
+    connect(playQueueGrouped, SIGNAL(currentIndexChanged(int)), SLOT(playQueueGroupedChanged()));
     #ifndef ENABLE_DEVICES_SUPPORT
     devicesView->setVisible(false);
     devicesViewLabel->setVisible(false);
@@ -58,8 +58,9 @@ void InterfaceSettings::load()
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     devicesView->setCurrentIndex(Settings::self()->devicesView());
     #endif
-    groupedPlayQueue->setCurrentIndex(Settings::self()->groupedPlayQueue() ? 1 : 0);
-    autoCollapsePlayQueue->setChecked(Settings::self()->autoCollapsePlayQueue());
+    playQueueGrouped->setCurrentIndex(Settings::self()->playQueueGrouped() ? 1 : 0);
+    playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
+    playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
 }
 
 void InterfaceSettings::save()
@@ -78,8 +79,9 @@ void InterfaceSettings::save()
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     Settings::self()->saveDevicesView(devicesView->currentIndex());
     #endif
-    Settings::self()->saveGroupedPlayQueue(1==groupedPlayQueue->currentIndex());
-    Settings::self()->saveAutoCollapsePlayQueue(autoCollapsePlayQueue->isChecked());
+    Settings::self()->savePlayQueueGrouped(1==playQueueGrouped->currentIndex());
+    Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
+    Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
 }
 
 void InterfaceSettings::albumsViewChanged()
@@ -96,9 +98,11 @@ void InterfaceSettings::albumsCoverSizeChanged()
     }
 }
 
-void InterfaceSettings::groupedPlayQueueChanged()
+void InterfaceSettings::playQueueGroupedChanged()
 {
-    autoCollapsePlayQueue->setEnabled(1==groupedPlayQueue->currentIndex());
-    autoCollapsePlayQueueLabel->setEnabled(1==groupedPlayQueue->currentIndex());
+    playQueueAutoExpand->setEnabled(1==playQueueGrouped->currentIndex());
+    playQueueAutoExpandLabel->setEnabled(1==playQueueGrouped->currentIndex());
+    playQueueStartClosed->setEnabled(1==playQueueGrouped->currentIndex());
+    playQueueStartClosedLabel->setEnabled(1==playQueueGrouped->currentIndex());
 }
 

@@ -313,17 +313,17 @@
     </widget>
    </item>
    <item row="12" column="0">
-    <widget class="QLabel" name="groupedPlayQueueLabel">
+    <widget class="QLabel" name="playQueueGroupedLabel">
      <property name="text">
       <string>Play queue style:</string>
      </property>
      <property name="buddy">
-      <cstring>groupedPlayQueue</cstring>
+      <cstring>playQueueGrouped</cstring>
      </property>
     </widget>
    </item>
    <item row="12" column="1">
-    <widget class="QComboBox" name="groupedPlayQueue">
+    <widget class="QComboBox" name="playQueueGrouped">
      <item>
       <property name="text">
        <string>Table</string>
@@ -337,19 +337,36 @@
     </widget>
    </item>
    <item row="13" column="1">
-    <widget class="QCheckBox" name="autoCollapsePlayQueue">
+    <widget class="QCheckBox" name="playQueueAutoExpand">
      <property name="text">
       <string/>
      </property>
     </widget>
    </item>
    <item row="13" column="0">
-    <widget class="QLabel" name="autoCollapsePlayQueueLabel">
+    <widget class="QLabel" name="playQueueAutoExpandLabel">
      <property name="text">
-      <string>Automatically collapse albums in play queue:</string>
+      <string>Automatically expand current album in play queue:</string>
      </property>
      <property name="buddy">
-      <cstring>autoCollapsePlayQueue</cstring>
+      <cstring>playQueueAutoExpand</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="1">
+    <widget class="QCheckBox" name="playQueueStartClosed">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0">
+    <widget class="QLabel" name="playQueueStartClosedLabel">
+     <property name="text">
+      <string>Initially collapse albums in play queue:</string>
+     </property>
+     <property name="buddy">
+      <cstring>playQueueStartClosed</cstring>
      </property>
     </widget>
    </item>
@@ -368,8 +385,9 @@
   <tabstop>streamsView</tabstop>
   <tabstop>devicesView</tabstop>
   <tabstop>showDeleteAction</tabstop>
-  <tabstop>groupedPlayQueue</tabstop>
-  <tabstop>autoCollapsePlayQueue</tabstop>
+  <tabstop>playQueueGrouped</tabstop>
+  <tabstop>playQueueAutoExpand</tabstop>
+  <tabstop>playQueueStartClosed</tabstop>
  </tabstops>
  <resources/>
  <connections/>

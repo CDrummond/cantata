@@ -48,6 +48,7 @@
 30. Update copy of KMessageWidget
 31. Add ability to increment track numbers to tag editor.
 32. Esc key navigates back in list views - if view has focus.
+33. Better control over prev/next track buttons.
 
 0.4.0
 -----

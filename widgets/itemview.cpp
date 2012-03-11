@@ -828,6 +828,7 @@ void ItemView::delaySearchItems()
     } else {
         if (!searchTimer) {
             searchTimer=new QTimer(this);
+            searchTimer->setSingleShot(true);
             connect(searchTimer, SIGNAL(timeout()), SIGNAL(searchItems()));
         }
         searchTimer->start(500);

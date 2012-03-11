@@ -1347,6 +1347,7 @@ void MainWindow::searchPlaylist()
     } else {
         if (!playlistSearchTimer) {
             playlistSearchTimer=new QTimer(this);
+            playlistSearchTimer->setSingleShot(true);
             connect(playlistSearchTimer, SIGNAL(timeout()), SLOT(realSearchPlaylist()));
         }
         playlistSearchTimer->start(250);

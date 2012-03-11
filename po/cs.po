@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-09 18:05+0000\n"
-"PO-Revision-Date: 2012-02-10 22:40+0100\n"
+"POT-Creation-Date: 2012-03-11 19:46+0000\n"
+"PO-Revision-Date: 2012-03-09 21:20+0100\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -27,9 +27,8 @@ msgstr "Zařízení bylo odstraněno!"
 
 #: devices/actiondialog.cpp:96 devices/trackorganiser.cpp:351
 #: gui/tageditor.cpp:742 replaygain/rgdialog.cpp:382
-#, fuzzy
 msgid "Device is not connected."
-msgstr "Zařízení bylo změněno?"
+msgstr "Zařízení není připojeno."
 
 #: devices/actiondialog.cpp:102
 msgid "Device is currently busy."
@@ -45,7 +44,6 @@ msgid "Local Music Library"
 msgstr "Místní hudební knihovna"
 
 #: devices/actiondialog.cpp:156
-#, fuzzy
 msgid ""
 "There is insufficient space left on the destination device.\n"
 "The selected songs consume %1, but there is only %2 left.\n"
@@ -54,6 +52,8 @@ msgid ""
 msgstr ""
 "Na cílovém zařízení nezbývá dost místa.\n"
 "Vybrané písně zabírají %1, ale zbývá jen %2.\n"
+"Písně bude třeba překódovat na menší velikost souborů, aby mohly být úspěšně "
+"zkopírovány."
 
 #: devices/actiondialog.cpp:163
 msgid ""
@@ -174,7 +174,7 @@ msgstr "Automaticky přeskočit"
 
 #: devices/actiondialog.cpp:484
 msgid "Retry"
-msgstr ""
+msgstr "Zkusit znovu"
 
 #: devices/actiondialog.cpp:500
 msgid ""
@@ -216,9 +216,8 @@ msgid "Unknown"
 msgstr "Neznámý"
 
 #: devices/device.cpp:514
-#, fuzzy
 msgid "Updating (%1)..."
-msgstr "Obnovuje se..."
+msgstr "Obnovuje se (%1)..."
 
 #: devices/devicepropertiesdialog.cpp:33
 #: devices/remotedevicepropertiesdialog.cpp:39
@@ -287,19 +286,16 @@ msgid "Copy To Library"
 msgstr "Kopírovat do knihovny"
 
 #: devices/devicespage.cpp:64
-#, fuzzy
 msgid "Forget Device"
-msgstr "Nastavit zařízení"
+msgstr "Zapomenout zařízení"
 
 #: devices/devicespage.cpp:67
-#, fuzzy
 msgid "Toggle Device"
-msgstr "Nastavit zařízení"
+msgstr "Přepnout zařízení"
 
 #: devices/devicespage.cpp:109 devices/remotedevicepropertiesdialog.cpp:54
-#, fuzzy
 msgid "Add Device"
-msgstr "Zařízení"
+msgstr "Přidat zařízení"
 
 #: devices/devicespage.cpp:130 gui/mainwindow.cpp:444
 msgid "Devices"
@@ -315,9 +311,8 @@ msgstr ""
 "Tento krok nelze vrátit zpět."
 
 #: devices/devicespage.cpp:423
-#, fuzzy
 msgid "Are you sure you wish to forget the selected device?"
-msgstr "Opravdu chcete odstranit vybrané položky?"
+msgstr "Opravdu chcete zapomenout vybrané zařízení?"
 
 #: devices/devicespage.cpp:454 gui/albumspage.cpp:258 gui/librarypage.cpp:268
 #: gui/playlistspage.cpp:358 gui/streamspage.cpp:183
@@ -703,64 +698,59 @@ msgstr "Nepřipojeno"
 
 #: devices/remotedevice.cpp:195
 msgid "Mount point (\"%1\") is not empty!"
-msgstr ""
+msgstr "Bod připojení (\"%1\") není prázdný!"
 
 #: devices/remotedevice.cpp:202
 msgid "\"sshfs\" is not installed!"
-msgstr ""
+msgstr "\"sshfs\" není nainstalován!"
 
 #: devices/remotedevice.cpp:211
-#, fuzzy
 msgid "Connecting..."
-msgstr "Připojuje se k zařízení..."
+msgstr "Připojuje se..."
 
 #: devices/remotedevice.cpp:239
 msgid "\"fusermount\" is not installed!"
-msgstr ""
+msgstr "\"fusermount\" není nainstalován!"
 
 #: devices/remotedevice.cpp:249
-#, fuzzy
 msgid "Disconnecting..."
-msgstr "Připojuje se k zařízení..."
+msgstr "Odpojuje se..."
 
 #: devices/remotedevice.cpp:264
-#, fuzzy
 msgid "Failed to connect to \"%1\""
-msgstr "Nepodařilo se zkopírovat %1 do %2"
+msgstr "Nepodařilo se připojit k \"%1\""
 
 #: devices/remotedevice.cpp:265
-#, fuzzy
 msgid "Failed to disconnect from \"%1\""
-msgstr "Nepodařilo se zkopírovat %1 do %2"
+msgstr "Nepodařilo se odpojit od \"%1\""
 
 #: devices/remotedevice.cpp:321
-#, fuzzy
 msgid "Capacity Unknown"
-msgstr "Neznámý"
+msgstr "Neznámá velikost"
 
 #: devices/remotedevicepropertiesdialog.cpp:45
-#, fuzzy
 msgid "Connection"
-msgstr "Ztraceno spojení s MPD"
+msgstr "Spojení"
 
 #: devices/remotedevicepropertiesdialog.cpp:46
-#, fuzzy
 msgid "Music Library"
-msgstr "Místní hudební knihovna"
+msgstr "Hudební knihovna"
 
 #: devices/remotedevicepropertiesdialog.cpp:76
 msgid ""
 "A remote device named \"%1\" already exists!\n"
 "Please choose a different name"
 msgstr ""
+"Vzdálené zařízení s názvem \"%1\" již existuje!\n"
+"Vyberte, prosím, jiný název"
 
 #: devices/remotedevicepropertieswidget.cpp:42
 msgid "Secure Shell (sshfs)"
-msgstr ""
+msgstr "Bezpečný shell (sshfs)"
 
 #: devices/remotedevicepropertieswidget.cpp:43
 msgid "Locally Mounted Folder"
-msgstr ""
+msgstr "Místně připojená složka"
 
 #: devices/trackorganiser.cpp:51 gui/mainwindow.cpp:578
 msgid "Organize Files"
@@ -783,9 +773,8 @@ msgid "Failed to create destination folder!<br/>%1"
 msgstr "Nepodařilo se vytvořit cílovou složku!<br/>%1"
 
 #: devices/trackorganiser.cpp:269
-#, fuzzy
 msgid "Failed to rename %1 to %2"
-msgstr "Nepodařilo se zkopírovat %1 do %2"
+msgstr "Nepodařilo se přejmenovat %1 na %2"
 
 #: devices/valueslider.cpp:104
 msgid " (recommended)"
@@ -797,7 +786,7 @@ msgstr "Alba"
 
 #: gui/folderpage.cpp:51
 msgid "Open File Manager"
-msgstr ""
+msgstr "Otevřít správce souborů"
 
 #: gui/folderpage.cpp:59 gui/mainwindow.cpp:423
 msgid "Folders"
@@ -828,9 +817,8 @@ msgid "Small Control Buttons"
 msgstr "Malá tlačítka pro ovládání"
 
 #: gui/mainwindow.cpp:319
-#, fuzzy
 msgid "Connect"
-msgstr "Nepřipojeno"
+msgstr "Spojit"
 
 #: gui/mainwindow.cpp:322
 msgid "Refresh Database"
@@ -945,9 +933,8 @@ msgid "Server Info"
 msgstr "Informace o serveru"
 
 #: gui/mainwindow.cpp:582 replaygain/rgdialog.cpp:65
-#, fuzzy
 msgid "ReplayGain"
-msgstr "Vyrovnání hlasitosti:"
+msgstr "Vyrovnání hlasitosti"
 
 #: gui/mainwindow.cpp:652
 msgid "Search Play Queue..."
@@ -958,15 +945,13 @@ msgid "Configure Cantata..."
 msgstr "Nastavit Cantatu..."
 
 #: gui/mainwindow.cpp:1074
-#, fuzzy
 msgid "Connection to %1 failed"
-msgstr "Připojuje se k zařízení..."
+msgstr "Nepodařilo se připojit k %1"
 
 #: gui/mainwindow.cpp:1076
-#, fuzzy
 msgctxt "host:port"
 msgid "Connection to %1:%2 failed"
-msgstr "Připojuje se k zařízení..."
+msgstr "Nepodařilo se připojit k %1:%2"
 
 #: gui/mainwindow.cpp:1543 widgets/playqueueview.cpp:257
 msgctxt "artist - album"
@@ -1046,7 +1031,7 @@ msgstr "Cantata"
 
 #: gui/mainwindow.cpp:2296
 msgid "Action is not currently possible, due to other open dialogs."
-msgstr ""
+msgstr "Krok nyní není možný kvůli jiným otevřeným dialogům."
 
 #. i18n: file: gui/interfacesettings.ui:68
 #. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
@@ -1141,14 +1126,12 @@ msgid "External Settings"
 msgstr "Vnější nastavení"
 
 #: gui/preferencesdialog.cpp:113
-#, fuzzy
 msgid "HTTP Server"
-msgstr "Server"
+msgstr "Server HTTP"
 
 #: gui/preferencesdialog.cpp:114
-#, fuzzy
 msgid "HTTP Server Settings"
-msgstr "Nastavení rozhraní"
+msgstr "Nastavení serveru HTTP"
 
 #: gui/preferencesdialog.cpp:117
 msgid "Lyrics Settings"
@@ -1309,9 +1292,8 @@ msgid "Capitalize"
 msgstr "Psát velkými písmeny"
 
 #: gui/tageditor.cpp:133 gui/tageditor.cpp:422
-#, fuzzy
 msgid "Adjust Track Numbers"
-msgstr "Číslo skladby:"
+msgstr "Upravit čísla skladeb"
 
 #: gui/tageditor.cpp:215 gui/tageditor.cpp:495
 msgid "All tracks"
@@ -1319,7 +1301,7 @@ msgstr "Všechny skladby"
 
 #: gui/tageditor.cpp:273
 msgid "(Various)"
-msgstr ""
+msgstr "(Různí)"
 
 #: gui/tageditor.cpp:319
 msgid "Apply \"Various Artists\" workaround to <b>all</b> tracks?"
@@ -1373,12 +1355,11 @@ msgstr "Psát velkým písmenem první písmeno Názvu, Umělce, Umělce alba a 
 
 #: gui/tageditor.cpp:422
 msgid "Increment the value of each track number by:"
-msgstr ""
+msgstr "Zvýšit hodnotu čísla každé skladby o:"
 
 #: gui/tageditor.cpp:423
-#, fuzzy
 msgid "Increment track number by:"
-msgstr "Číslo skladby:"
+msgstr "Zvýšit hodnotu číslo skladby o:"
 
 #: gui/tageditor.cpp:481
 msgid "All tracks [modified]"
@@ -1390,7 +1371,7 @@ msgstr "%1 [změněno]"
 
 #: gui/tageditor.cpp:663 replaygain/rgdialog.cpp:306
 msgid "Failed to update the tags of the following tracks:"
-msgstr ""
+msgstr "Nepodařilo se zaktualizovat značky následujících skladeb:"
 
 #: lyrics/lyricsettings.cpp:59
 msgid "(Polish Translations)"
@@ -1414,7 +1395,7 @@ msgstr "Nenalezen žádný text písně"
 
 #: main.cpp:86
 msgid "A KDE client for MPD"
-msgstr ""
+msgstr "KDE klient pro MPD"
 
 #: main.cpp:88
 msgid "Copyright (C) 2011-2012 Craig Drummond"
@@ -1430,38 +1411,37 @@ msgstr "Správce"
 
 #: main.cpp:93
 msgid "Piotr Wicijowski"
-msgstr ""
+msgstr "Piotr Wicijowski"
 
 #: main.cpp:93
 msgid "UI Improvements"
-msgstr ""
+msgstr "Vylepšení rozhraní"
 
 #: main.cpp:94
 msgid "Sander Knopper"
-msgstr ""
+msgstr "Sander Knopper"
 
 #: main.cpp:94 main.cpp:95 main.cpp:96 main.cpp:97
 msgid "QtMPC author"
-msgstr ""
+msgstr "Autor QtMPC"
 
 #: main.cpp:95
 msgid "Roeland Douma"
-msgstr ""
+msgstr "Roeland Douma"
 
 #: main.cpp:96
 msgid "Daniel Selinger"
-msgstr ""
+msgstr "Daniel Selinger"
 
 #: main.cpp:97
 msgid "Armin Walland"
-msgstr ""
+msgstr "Armin Walland"
 
 #: main.cpp:100
 msgid "URL to open"
-msgstr ""
+msgstr "Adresa (URL) k otevření"
 
 #: models/albumsmodel.cpp:250
-#, fuzzy
 msgid ""
 "%1\n"
 "%2\n"
@@ -1472,13 +1452,16 @@ msgid_plural ""
 "%3 Tracks (%4)"
 msgstr[0] ""
 "%1\n"
-"1 skladba"
+"%2\n"
+"1 skladba (%4)"
 msgstr[1] ""
 "%1\n"
-"%2 skladby"
+"%2\n"
+"%3 skladby (%4)"
 msgstr[2] ""
 "%1\n"
-"%2 skladeb"
+"%2\n"
+"%3 skladeb (%4)"
 
 #: models/devicesmodel.cpp:210
 msgid ""
@@ -1515,7 +1498,6 @@ msgstr[2] ""
 "%2 alb"
 
 #: models/devicesmodel.cpp:232 models/playlistsmodel.cpp:167
-#, fuzzy
 msgid ""
 "%1\n"
 "1 Track (%3)"
@@ -1524,13 +1506,13 @@ msgid_plural ""
 "%2 Tracks (%3)"
 msgstr[0] ""
 "%1\n"
-"1 skladba"
+"1 skladba (%3)"
 msgstr[1] ""
 "%1\n"
-"%2 skladby"
+"%2 skladby (%3)"
 msgstr[2] ""
 "%1\n"
-"%2 skladeb"
+"%2 skladeb (%3)"
 
 #: models/devicesmodel.cpp:260
 msgid "1 Artist"
@@ -1548,12 +1530,11 @@ msgstr[2] "%1 alb"
 
 #: models/devicesmodel.cpp:277 models/musiclibrarymodel.cpp:253
 #: models/playlistsmodel.cpp:177
-#, fuzzy
 msgid "1 Track (%2)"
 msgid_plural "%1 Tracks (%2)"
-msgstr[0] "Jedna skladba"
-msgstr[1] "%1 skladby"
-msgstr[2] "%1 skladeb"
+msgstr[0] "Jedna skladba (%2)"
+msgstr[1] "%1 skladby (%2)"
+msgstr[2] "%1 skladeb (%2)"
 
 #: models/devicesmodel.cpp:621
 msgid "No Devices Attached"
@@ -1593,32 +1574,18 @@ msgid "Various Artists"
 msgstr "Různí umělci"
 
 #: models/musiclibrarymodel.cpp:210
-#, fuzzy
 msgid "%1<br/>1 Album"
 msgid_plural "%1<br/>%2 Albums"
-msgstr[0] ""
-"%1\n"
-"1 album"
-msgstr[1] ""
-"%1\n"
-"%2 alba"
-msgstr[2] ""
-"%1\n"
-"%2 alb"
+msgstr[0] "%1<br/>1 album"
+msgstr[1] "%1<br/>%2 alba"
+msgstr[2] "%1<br/>%2 alb"
 
 #: models/musiclibrarymodel.cpp:221
-#, fuzzy
 msgid "%1<br/>1 Track (%3)"
 msgid_plural "%1<br/>%2 Tracks (%3)"
-msgstr[0] ""
-"%1\n"
-"1 skladba"
-msgstr[1] ""
-"%1\n"
-"%2 skladby"
-msgstr[2] ""
-"%1\n"
-"%2 skladeb"
+msgstr[0] "%1<br/>1 skladba (%3)"
+msgstr[1] "%1<br/>%2 skladby (%3)"
+msgstr[2] "%1<br/>%2 skladeb (%3)"
 
 #: models/playlistsmodel.cpp:598
 msgid "New Playlist..."
@@ -1633,6 +1600,8 @@ msgid "Artist"
 msgstr "Umělec"
 
 #: models/playqueuemodel.cpp:99
+#, fuzzy
+msgctxt "Track Number (#)"
 msgid "#"
 msgstr "#"
 
@@ -1685,7 +1654,6 @@ msgid "Failed to load. Please check user \"mpd\" has read permission."
 msgstr "Nepodařilo se nahrát. Ověřte, prosím, zda má mpd oprávnění ke čtení."
 
 #: mpd/mpdconnection.cpp:271
-#, fuzzy
 msgid ""
 "Failed to load. MPD can only play local files if connected via a local "
 "socket."
@@ -1695,7 +1663,7 @@ msgstr ""
 
 #: mpd/mpdconnection.cpp:758
 msgid "Failed to rename <b>%1</b> to <b>%2</b>"
-msgstr "Nepodařilo se přejmenovat <b>%1</b> to <b>%2</b>"
+msgstr "Nepodařilo se přejmenovat <b>%1</b> na <b>%2</b>"
 
 #: mpd/mpdconnection.cpp:779
 msgid "Failed to save <b>%1</b>"
@@ -1718,6 +1686,9 @@ msgid ""
 "%2\n"
 "%3"
 msgstr ""
+"%1\n"
+"%2\n"
+"%3"
 
 #. i18n: file: devices/actiondialog.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, ActionDialog)
@@ -2049,7 +2020,7 @@ msgstr "CD #"
 #. i18n: ectx: property (text), widget (QLabel, typeLabel)
 #: po/rc.cpp:99 rc.cpp:99
 msgid "Type:"
-msgstr ""
+msgstr "Typ:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:45
 #. i18n: ectx: property (text), widget (QLabel, hostLabel)
@@ -2076,16 +2047,14 @@ msgstr "Přípojka:"
 #. i18n: file: devices/remotedevicepropertieswidget.ui:75
 #. i18n: ectx: property (text), widget (QLabel, userLabel)
 #: po/rc.cpp:111 rc.cpp:111
-#, fuzzy
 msgid "User:"
-msgstr "Uživatelské jméno"
+msgstr "Uživatel:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:88
 #. i18n: ectx: property (text), widget (QLabel, folderLabel)
 #: po/rc.cpp:114 rc.cpp:114
-#, fuzzy
 msgid "Folder:"
-msgstr "Složky"
+msgstr "Složka:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:125
 #. i18n: ectx: property (text), widget (QLabel, infoLabel)
@@ -2095,6 +2064,10 @@ msgid ""
 "access locally mounted folders. For normal media players, attached via USB, "
 "Cantata will automatically display the device when it is attached.</i>"
 msgstr ""
+"<i><b>Poznámka:</b>Tento dialog se používá jen pro přidání vzdálených "
+"zařízení (sshfs) nebo pro přístup k místně připojeným složkám. Pro běžné "
+"přehrávače záznamů, připojené přes USB, Cantata zobrazí zařízení "
+"automaticky, když je připojeno.</i>"
 
 #. i18n: file: devices/trackorganiser.ui:150
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
@@ -2136,13 +2109,13 @@ msgstr "Použít nynější obal jako ikonu pro panel:"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: po/rc.cpp:165 rc.cpp:165
 msgid "Enable HTTP server:"
-msgstr ""
+msgstr "Povolit server HTTP"
 
 #. i18n: file: gui/httpserversettings.ui:39
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:168 rc.cpp:168
 msgid "Always use server:"
-msgstr ""
+msgstr "Vždy použít server:"
 
 #. i18n: file: gui/httpserversettings.ui:94
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -2158,13 +2131,21 @@ msgid ""
 "always pass server URLs to MPD for files, even when you have  connected via "
 "a local socket.</i>"
 msgstr ""
+"<i><b>Poznámka:</b> MPD obvykle přehraje jen písně, které jsou uloženy v "
+"jeho složkách. Pokud jste se připojil přes místní zásuvku, pak může MPD "
+"přehrát i soubory umístěné na vašem souborovém systému. Pokud používáte "
+"zásuvku, která není místní, (např. zadal jste název hostitele nebo adresu IP "
+"v poli \"Hostitel\" stránky s nastavením pro \"Server\"), potom Cantata "
+"obsahuje velice malý server HTTP, který se dá použít pro podávání souborů "
+"MPD. Toto však bude pracovat, jen když Cantata poběží. Pokud povolíte \"Vždy "
+"použít server\", pak Cantata vždy bude předávat adresy serveru (URL) MPD "
+"kvůli souborům, i když byste se připojil přes místní zásuvku.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:27
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: po/rc.cpp:180 rc.cpp:180
-#, fuzzy
 msgid "Library View"
-msgstr "Pohled s knihovnou:"
+msgstr "Pohled s knihovnou"
 
 #. i18n: file: gui/interfacesettings.ui:33
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -2179,9 +2160,8 @@ msgstr "Pohled s knihovnou:"
 #. i18n: file: gui/interfacesettings.ui:366
 #. i18n: ectx: property (text), widget (QLabel, playQueueGroupedLabel)
 #: po/rc.cpp:183 po/rc.cpp:213 po/rc.cpp:303 rc.cpp:183 rc.cpp:213 rc.cpp:303
-#, fuzzy
 msgid "Style:"
-msgstr "Styl"
+msgstr "Styl:"
 
 #. i18n: file: gui/interfacesettings.ui:44
 #. i18n: ectx: property (text), item, widget (QComboBox, libraryView)
@@ -2253,7 +2233,7 @@ msgstr "Seznam"
 #. i18n: ectx: property (text), widget (QLabel, label_5c)
 #: po/rc.cpp:192 po/rc.cpp:225 rc.cpp:192 rc.cpp:225
 msgid "Covers:"
-msgstr ""
+msgstr "Obaly:"
 
 #. i18n: file: gui/interfacesettings.ui:73
 #. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
@@ -2294,16 +2274,14 @@ msgstr "Velký"
 #. i18n: file: gui/interfacesettings.ui:91
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:207 rc.cpp:207
-#, fuzzy
 msgid "Show album year:"
-msgstr "Ukázat rok alba v pohledu s knihovnou:"
+msgstr "Ukázat rok alba:"
 
 #. i18n: file: gui/interfacesettings.ui:109
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #: po/rc.cpp:210 rc.cpp:210
-#, fuzzy
 msgid "Albums View"
-msgstr "Pohled s alby:"
+msgstr "Pohled s alby"
 
 #. i18n: file: gui/interfacesettings.ui:136
 #. i18n: ectx: property (text), item, widget (QComboBox, albumsView)
@@ -2314,57 +2292,50 @@ msgstr "Ikona/Seznam"
 #. i18n: file: gui/interfacesettings.ui:178
 #. i18n: ectx: property (text), widget (QLabel, label_5x)
 #: po/rc.cpp:240 rc.cpp:240
-#, fuzzy
 msgid "Sort albums:"
-msgstr "Alba:"
+msgstr "Třídit alba:"
 
 #. i18n: file: gui/interfacesettings.ui:189
 #. i18n: ectx: property (text), item, widget (QComboBox, albumFirst)
 #: po/rc.cpp:243 rc.cpp:243
-#, fuzzy
 msgid "Album - Artist"
-msgstr "Umělec alba"
+msgstr "Album - Umělec"
 
 #. i18n: file: gui/interfacesettings.ui:194
 #. i18n: ectx: property (text), item, widget (QComboBox, albumFirst)
 #: po/rc.cpp:246 rc.cpp:246
-#, fuzzy
 msgid "Artist - Album"
-msgstr "Umělec"
+msgstr "Umělec - Album"
 
 #. i18n: file: gui/interfacesettings.ui:203
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
 #: po/rc.cpp:249 rc.cpp:249
 msgid "Other Views"
-msgstr ""
+msgstr "Jiné pohledy"
 
 #. i18n: file: gui/interfacesettings.ui:209
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:252 rc.cpp:252
-#, fuzzy
 msgid "Folder view style:"
-msgstr "Pohled se složkou:"
+msgstr "Styl pohledu se složkami:"
 
 #. i18n: file: gui/interfacesettings.ui:233
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: po/rc.cpp:261 rc.cpp:261
-#, fuzzy
 msgid "Playlists view style:"
-msgstr "Pohled se seznamy skladeb:"
+msgstr "Styl pohled se seznamy skladeb:"
 
 #. i18n: file: gui/interfacesettings.ui:257
 #. i18n: ectx: property (text), widget (QLabel, label_x)
 #: po/rc.cpp:270 rc.cpp:270
-#, fuzzy
 msgid "Streams view style:"
-msgstr "Pohled s proudy:"
+msgstr "Styl pohledu s proudy:"
 
 #. i18n: file: gui/interfacesettings.ui:281
 #. i18n: ectx: property (text), widget (QLabel, devicesViewLabel)
 #: po/rc.cpp:279 rc.cpp:279
-#, fuzzy
 msgid "Devices view style:"
-msgstr "Pohled se zařízeními:"
+msgstr "Styl pohled se zařízeními:"
 
 #. i18n: file: gui/interfacesettings.ui:312
 #. i18n: ectx: property (text), widget (QLabel, label_7)
@@ -2381,40 +2352,38 @@ msgstr "Ukázat krok pro smazání v souvisejících nabídkách:"
 #. i18n: file: gui/interfacesettings.ui:347
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
 #: po/rc.cpp:297 rc.cpp:297
-#, fuzzy
 msgid "Play Queue"
-msgstr "Přidat do řady přehrávaných skladeb"
+msgstr "Přehrát pořadí"
 
 #. i18n: file: gui/interfacesettings.ui:353
 #. i18n: ectx: property (text), widget (QLabel, playQueueScrollLabel)
 #: po/rc.cpp:300 rc.cpp:300
 msgid "Scroll to current track:"
-msgstr ""
+msgstr "Projíždět k nynější skladbě:"
 
 #. i18n: file: gui/interfacesettings.ui:377
 #. i18n: ectx: property (text), item, widget (QComboBox, playQueueGrouped)
 #: po/rc.cpp:306 rc.cpp:306
 msgid "Table"
-msgstr ""
+msgstr "Tabulka"
 
 #. i18n: file: gui/interfacesettings.ui:382
 #. i18n: ectx: property (text), item, widget (QComboBox, playQueueGrouped)
 #: po/rc.cpp:309 rc.cpp:309
-#, fuzzy
 msgid "Grouped Albums"
-msgstr "Seskupit alba s jednotlivými skladbami:"
+msgstr "Seskupená alba"
 
 #. i18n: file: gui/interfacesettings.ui:390
 #. i18n: ectx: property (text), widget (QLabel, playQueueAutoExpandLabel)
 #: po/rc.cpp:312 rc.cpp:312
 msgid "Automatically expand current album:"
-msgstr ""
+msgstr "Automaticky rozbalit nynější album:"
 
 #. i18n: file: gui/interfacesettings.ui:407
 #. i18n: ectx: property (text), widget (QLabel, playQueueStartClosedLabel)
 #: po/rc.cpp:315 rc.cpp:315
 msgid "Initially collapse albums:"
-msgstr ""
+msgstr "Nejprve složit alba:"
 
 #. i18n: file: gui/mainwindow.ui:84
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)
@@ -2471,6 +2440,8 @@ msgid ""
 "<i><b>Not Connected.</b><br/>Some of the entries above cannot be modified, "
 "as Cantata is not connected to MPD.</i>"
 msgstr ""
+"<i><b>Nepřipojeno.</b><br/>Některé ze záznamů výše nelze změnit, protože "
+"Cantata není připojena k MPD.</i>"
 
 #. i18n: file: gui/serverinfopage.ui:45
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -2547,7 +2518,6 @@ msgstr "Hostitel (nebo místní zásuvka):"
 #. i18n: file: gui/serversettings.ui:109
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
 #: po/rc.cpp:435 rc.cpp:435
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' settings is used to lookup cover-art "
 "(<code>cover.jpg</code>). If you also have write permissions to this folder "
@@ -2700,74 +2670,66 @@ msgid "Your emails"
 msgstr "pavelfric@seznam.cz"
 
 #: replaygain/rgdialog.cpp:80
-#, fuzzy
 msgid "Album Gain"
-msgstr "Umělec alba:"
+msgstr "Zesílení alba"
 
 #: replaygain/rgdialog.cpp:81
-#, fuzzy
 msgid "Track Gain"
-msgstr "Skladba #"
+msgstr "Zesílení skladby"
 
 #: replaygain/rgdialog.cpp:82
-#, fuzzy
 msgid "Album Peak"
-msgstr "Název alba"
+msgstr "Vrchol alba"
 
 #: replaygain/rgdialog.cpp:83
-#, fuzzy
 msgid "Track Peak"
-msgstr "Skladba #"
+msgstr "Vrchol skladby"
 
 #: replaygain/rgdialog.cpp:101
 msgid "Scan"
-msgstr ""
+msgstr "Prohledat"
 
 #: replaygain/rgdialog.cpp:156
 msgid "Update ReplayGain tags in files?"
-msgstr ""
+msgstr "Obnovit značky vyrovnání hlasitosti v souborech?"
 
 #: replaygain/rgdialog.cpp:168
-#, fuzzy
 msgid "Cancel scanning of files?"
-msgstr "Zrušit přejmenování všech souborů?"
+msgstr "Zrušit prohledávání souborů?"
 
 #: replaygain/rgdialog.cpp:175
-#, fuzzy
 msgid "Cancel reading of existing tags?"
-msgstr "Zrušit přejmenování všech souborů?"
+msgstr "Zrušit čtení stávajících značek?"
 
 #: replaygain/rgdialog.cpp:198
 msgid "Do you wish to scan all files, or only files without existing tags?"
 msgstr ""
+"Chcete prohledat všechny značky nebo pouze soubory bez existujících značek"
 
 #: replaygain/rgdialog.cpp:199
-#, fuzzy
 msgid "All Tracks"
 msgstr "Všechny skladby"
 
 #: replaygain/rgdialog.cpp:199
-#, fuzzy
 msgid "Untagged Tracks"
-msgstr "Jednotlivé skladby"
+msgstr "Skladby bez značek"
 
 #: replaygain/rgdialog.cpp:208
-#, fuzzy
 msgid "Scanning files..."
-msgstr "Obnovují se složky..."
+msgstr "Prohledávají se soubory..."
 
 #: replaygain/rgdialog.cpp:259
 msgid "Reading existing tags..."
-msgstr ""
+msgstr "Čtou se stávající značky..."
 
 #: replaygain/rgdialog.cpp:348 replaygain/rgdialog.cpp:415
 #: replaygain/rgdialog.cpp:460 replaygain/rgdialog.cpp:462
 msgid "%1 dB"
-msgstr ""
+msgstr "%1 dB"
 
 #: replaygain/rgdialog.cpp:440 replaygain/rgdialog.cpp:441
 msgid "Failed"
-msgstr ""
+msgstr "Nepodařilo se"
 
 #: widgets/fancytabwidget.cpp:799
 msgid "Icons Only"
@@ -2778,9 +2740,8 @@ msgid "Style"
 msgstr "Styl"
 
 #: widgets/fancytabwidget.cpp:801
-#, fuzzy
 msgid "Auto Hide"
-msgstr "Automaticky přeskočit"
+msgstr "Automatické skrývání"
 
 #: widgets/fancytabwidget.cpp:802
 msgid "Large Sidebar"

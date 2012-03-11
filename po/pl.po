@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-09 18:05+0000\n"
-"PO-Revision-Date: 2012-03-09 15:30+0100\n"
+"POT-Creation-Date: 2012-03-11 19:46+0000\n"
+"PO-Revision-Date: 2012-03-10 21:59+0100\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
@@ -1612,6 +1612,8 @@ msgid "Artist"
 msgstr "Artysta"
 
 #: models/playqueuemodel.cpp:99
+#, fuzzy
+msgctxt "Track Number (#)"
 msgid "#"
 msgstr "#"
 
@@ -2156,9 +2158,8 @@ msgstr ""
 #. i18n: file: gui/interfacesettings.ui:27
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: po/rc.cpp:180 rc.cpp:180
-#, fuzzy
 msgid "Library View"
-msgstr "Widok biblioteki:"
+msgstr "Widok biblioteki"
 
 #. i18n: file: gui/interfacesettings.ui:33
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -2173,9 +2174,8 @@ msgstr "Widok biblioteki:"
 #. i18n: file: gui/interfacesettings.ui:366
 #. i18n: ectx: property (text), widget (QLabel, playQueueGroupedLabel)
 #: po/rc.cpp:183 po/rc.cpp:213 po/rc.cpp:303 rc.cpp:183 rc.cpp:213 rc.cpp:303
-#, fuzzy
 msgid "Style:"
-msgstr "Styl"
+msgstr "Styl:"
 
 #. i18n: file: gui/interfacesettings.ui:44
 #. i18n: ectx: property (text), item, widget (QComboBox, libraryView)
@@ -2247,7 +2247,7 @@ msgstr "Lista"
 #. i18n: ectx: property (text), widget (QLabel, label_5c)
 #: po/rc.cpp:192 po/rc.cpp:225 rc.cpp:192 rc.cpp:225
 msgid "Covers:"
-msgstr ""
+msgstr "Okładki:"
 
 #. i18n: file: gui/interfacesettings.ui:73
 #. i18n: ectx: property (text), item, widget (QComboBox, libraryCoverSize)
@@ -2288,16 +2288,14 @@ msgstr "Duże"
 #. i18n: file: gui/interfacesettings.ui:91
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:207 rc.cpp:207
-#, fuzzy
 msgid "Show album year:"
-msgstr "Pokaż rok albumu w widoku biblioteki:"
+msgstr "Pokaż rok albumu:"
 
 #. i18n: file: gui/interfacesettings.ui:109
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #: po/rc.cpp:210 rc.cpp:210
-#, fuzzy
 msgid "Albums View"
-msgstr "Widok albumów:"
+msgstr "Widok albumów"
 
 #. i18n: file: gui/interfacesettings.ui:136
 #. i18n: ectx: property (text), item, widget (QComboBox, albumsView)
@@ -2308,9 +2306,8 @@ msgstr "Ikony/Lista"
 #. i18n: file: gui/interfacesettings.ui:178
 #. i18n: ectx: property (text), widget (QLabel, label_5x)
 #: po/rc.cpp:240 rc.cpp:240
-#, fuzzy
 msgid "Sort albums:"
-msgstr "Albumy:"
+msgstr "Sortuj albumy:"
 
 #. i18n: file: gui/interfacesettings.ui:189
 #. i18n: ectx: property (text), item, widget (QComboBox, albumFirst)
@@ -2328,35 +2325,31 @@ msgstr "Artysta - Album"
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
 #: po/rc.cpp:249 rc.cpp:249
 msgid "Other Views"
-msgstr ""
+msgstr "Inne widoki"
 
 #. i18n: file: gui/interfacesettings.ui:209
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:252 rc.cpp:252
-#, fuzzy
 msgid "Folder view style:"
-msgstr "Widok folderów:"
+msgstr "Styl widoku folderów:"
 
 #. i18n: file: gui/interfacesettings.ui:233
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: po/rc.cpp:261 rc.cpp:261
-#, fuzzy
 msgid "Playlists view style:"
-msgstr "Widok playlist:"
+msgstr "Styl widoku playlist:"
 
 #. i18n: file: gui/interfacesettings.ui:257
 #. i18n: ectx: property (text), widget (QLabel, label_x)
 #: po/rc.cpp:270 rc.cpp:270
-#, fuzzy
 msgid "Streams view style:"
-msgstr "Widok strumieni:"
+msgstr "Styl widoku strumieni:"
 
 #. i18n: file: gui/interfacesettings.ui:281
 #. i18n: ectx: property (text), widget (QLabel, devicesViewLabel)
 #: po/rc.cpp:279 rc.cpp:279
-#, fuzzy
 msgid "Devices view style:"
-msgstr "Widok urządzeń:"
+msgstr "Styl widoku urządzeń:"
 
 #. i18n: file: gui/interfacesettings.ui:312
 #. i18n: ectx: property (text), widget (QLabel, label_7)
@@ -2373,16 +2366,14 @@ msgstr "Pokazuj akcję usuwania w menu kontekstowym:"
 #. i18n: file: gui/interfacesettings.ui:347
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
 #: po/rc.cpp:297 rc.cpp:297
-#, fuzzy
 msgid "Play Queue"
-msgstr "Dodaj do kolejki odtwarzania"
+msgstr "Kolejka odtwarzania"
 
 #. i18n: file: gui/interfacesettings.ui:353
 #. i18n: ectx: property (text), widget (QLabel, playQueueScrollLabel)
 #: po/rc.cpp:300 rc.cpp:300
-#, fuzzy
 msgid "Scroll to current track:"
-msgstr "Przewiń listę odtwarzania do obecnego utworu:"
+msgstr "Przewiń do obecnego utworu:"
 
 #. i18n: file: gui/interfacesettings.ui:377
 #. i18n: ectx: property (text), item, widget (QComboBox, playQueueGrouped)
@@ -2400,14 +2391,13 @@ msgstr "Grupuj Albumy"
 #. i18n: ectx: property (text), widget (QLabel, playQueueAutoExpandLabel)
 #: po/rc.cpp:312 rc.cpp:312
 msgid "Automatically expand current album:"
-msgstr ""
+msgstr "Automatycznie rozwijaj obecny album:"
 
 #. i18n: file: gui/interfacesettings.ui:407
 #. i18n: ectx: property (text), widget (QLabel, playQueueStartClosedLabel)
 #: po/rc.cpp:315 rc.cpp:315
-#, fuzzy
 msgid "Initially collapse albums:"
-msgstr "Automatycznie zwijaj albumy w liście odtwarzania:"
+msgstr "Zwiń albumy przy uruchomieniu:"
 
 #. i18n: file: gui/mainwindow.ui:84
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)

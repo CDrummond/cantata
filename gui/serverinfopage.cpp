@@ -85,11 +85,11 @@ void ServerInfoPage::statsUpdated(const MPDStats &stats)
     artists->setText(QString::number(stats.artists));
     album->setText(QString::number(stats.albums));
     songs->setText(QString::number(stats.songs));
-    #ifdef ENABLE_KDE_SUPPORT
-    lastUpdate->setText(KGlobal::locale()->formatDateTime(stats.dbUpdate));
-    #else
-    lastUpdate->setText(stats.dbUpdate.toString());
-    #endif
+//     #ifdef ENABLE_KDE_SUPPORT
+//     lastUpdate->setText(KGlobal::locale()->formatDateTime(stats.dbUpdate));
+//     #else
+    lastUpdate->setText(stats.dbUpdate.toString(Qt::SystemLocaleShortDate));
+//     #endif
 }
 
 void ServerInfoPage::mpdVersion(long v)

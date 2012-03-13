@@ -31,6 +31,8 @@
 #include <KDE/KGlobal>
 #endif
 #include <QtGui/QApplication>
+#include <QtCore/QDebug>
+#include <QtCore/QThread>
 #include "debugtimer.h"
 
 // #undef qDebug
@@ -119,6 +121,8 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<QList<quint32> >("QList<quint32>");
     qRegisterMetaType<QList<qint32> >("QList<qint32>");
     qRegisterMetaType<QAbstractSocket::SocketState >("QAbstractSocket::SocketState");
+    qRegisterMetaType<MPDStats>("MPDStats");
+    qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
 }
 
 MPDConnection::~MPDConnection()
@@ -544,8 +548,7 @@ void MPDConnection::getStats()
 {
     Response response=sendCommand("stats");
     if(response.ok) {
-        MPDParseUtils::parseStats(response.data);
-        emit statsUpdated();
+        emit statsUpdated(MPDParseUtils::parseStats(response.data));
     }
 }
 
@@ -553,8 +556,7 @@ void MPDConnection::getStatus()
 {
     Response response=sendCommand("status");
     if(response.ok) {
-        MPDParseUtils::parseStatus(response.data);
-        emit statusUpdated();
+        emit statusUpdated(MPDParseUtils::parseStatus(response.data));
     }
 }
 

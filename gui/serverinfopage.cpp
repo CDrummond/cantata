@@ -49,7 +49,7 @@ ServerInfoPage::ServerInfoPage(MainWindow *p)
     updateAction->setIcon(QIcon::fromTheme("view-refresh"));
     updateInfo->setDefaultAction(updateAction);
     connect(updateAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(getStats()));
-    connect(MPDConnection::self(), SIGNAL(statsUpdated()), SLOT(statsUpdated()));
+    connect(MPDConnection::self(), SIGNAL(statsUpdated(const MPDStats &)), SLOT(statsUpdated(const MPDStats &)));
     connect(MPDConnection::self(), SIGNAL(version(long)), SLOT(mpdVersion(long)));
     connect(MPDConnection::self(), SIGNAL(version(long)), SIGNAL(getUrlHandlers()));
     connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
@@ -76,9 +76,9 @@ void ServerInfoPage::clear()
     urlhandlers->setText(QString());
 }
 
-void ServerInfoPage::statsUpdated()
+void ServerInfoPage::statsUpdated(const MPDStats &stats)
 {
-    MPDStats::Values stats=MPDStats::get();
+    dbUpdate=stats.dbUpdate;
     uptime->setText(MPDParseUtils::formatDuration(stats.uptime));
     timePlaying->setText(MPDParseUtils::formatDuration(stats.playtime));
     totalDuration->setText(MPDParseUtils::formatDuration(stats.dbPlaytime));

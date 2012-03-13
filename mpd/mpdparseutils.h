@@ -34,6 +34,8 @@ class Playlist;
 class DirViewItemRoot;
 class MusicLibraryItemRoot;
 class Output;
+class MPDStats;
+class MPDStatusValues;
 
 class MPDParseUtils
 {
@@ -41,8 +43,8 @@ public:
     static QString fixPath(const QString &f);
     static QString getDir(const QString &f);
     static QList<Playlist> parsePlaylists(const QByteArray &data);
-    static void parseStats(const QByteArray &data);
-    static void parseStatus(const QByteArray &data);
+    static MPDStats parseStats(const QByteArray &data);
+    static MPDStatusValues parseStatus(const QByteArray &data);
     static Song parseSong(const QByteArray &data);
     static QList<Song> parseSongs(const QByteArray &data);
     static QStringList parseUrlHandlers(const QByteArray &data);

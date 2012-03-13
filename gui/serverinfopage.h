@@ -25,8 +25,11 @@
 #define SERVERINFOPAGE_H
 
 #include <QtGui/QWidget>
+#include <QtCore/QDateTime>
 #include "ui_serverinfopage.h"
 #include "mainwindow.h"
+
+class MPDStats;
 
 class ServerInfoPage : public QWidget, public Ui::ServerInfoPage
 {
@@ -37,18 +40,22 @@ public:
     ~ServerInfoPage();
 
     void clear();
+    const QDateTime & getDbUpdate() const {
+        return dbUpdate;
+    }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void getUrlHandlers();
 
 private Q_SLOTS:
-    void statsUpdated();
+    void statsUpdated(const MPDStats &stats);
     void mpdVersion(long v);
     void urlHandlers(const QStringList &handlers);
 
 private:
     Action *updateAction;
+    QDateTime dbUpdate;
 };
 
 #endif

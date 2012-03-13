@@ -25,6 +25,7 @@
  */
 
 #include <QtCore/QModelIndex>
+#include <QtCore/QMimeData>
 #include <QtGui/QMenu>
 #include "playlistsmodel.h"
 #include "itemview.h"

@@ -86,7 +86,7 @@ public:
     void clear();
     qint32 currentSong() const { return currentSongId; }
     qint32 currentSongRow() const { return getRowById(currentSongId); }
-    void setState(MPDStatus::State st);
+    void setState(MPDState st);
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
     void setDropAdjust(quint32 a) { dropAdjust=a; }
@@ -110,7 +110,7 @@ private:
     QSet<qint32> ids;
     qint32 currentSongId;
     StreamFetcher *fetcher;
-    MPDStatus::State mpdState;
+    MPDState mpdState;
     bool grouped;
     quint32 dropAdjust;
 };

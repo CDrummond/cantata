@@ -259,7 +259,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 #endif
     , loaded(0)
-    , lastState(MPDStatus::State_Inactive)
+    , lastState(MPDState_Inactive)
     , songTime(0)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
@@ -786,8 +786,8 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
 
-    connect(MPDConnection::self(), SIGNAL(statsUpdated()), this, SLOT(updateStats()));
-    connect(MPDConnection::self(), SIGNAL(statusUpdated()), this, SLOT(updateStatus())/*, Qt::DirectConnection*/);
+    connect(MPDConnection::self(), SIGNAL(statsUpdated(const MPDStats &)), this, SLOT(updateStats()));
+    connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlaylist(const QList<Song> &)));
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), MPDConnection::self(), SLOT(listPlaylists()));
@@ -977,6 +977,11 @@ void MainWindow::load(const QList<QUrl> &urls)
     }
 }
 
+const QDateTime & MainWindow::getDbUpdate() const
+{
+    return serverInfoPage->getDbUpdate();
+}
+
 void MainWindow::playbackButtonsMenu()
 {
     playbackBtnsMenu->exec(QCursor::pos());
@@ -1024,7 +1029,7 @@ void MainWindow::setControlButtonsSize(bool small)
 
 void MainWindow::songLoaded()
 {
-    if (MPDStatus::State_Stopped==MPDStatus::self()->state()) {
+    if (MPDState_Stopped==MPDStatus::self()->state()) {
         stopVolumeFade();
         emit play();
     }
@@ -1224,7 +1229,7 @@ void MainWindow::updateSettings()
         playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
         playQueue->setGrouped(Settings::self()->playQueueGrouped());
         playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(),
-                              !usingProxy && autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state());
+                              !usingProxy && autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
     }
 }
 
@@ -1248,7 +1253,7 @@ void MainWindow::positionSliderReleased()
 
 void MainWindow::stopTrack()
 {
-    if (!fadeStop || MPDStatus::State_Paused==MPDStatus::self()->state()) {
+    if (!fadeStop || MPDState_Paused==MPDStatus::self()->state()) {
         emit stop();
     }
     stopTrackAction->setEnabled(false);
@@ -1303,13 +1308,13 @@ void MainWindow::playPauseTrack()
 {
     MPDStatus * const status = MPDStatus::self();
 
-    if (MPDStatus::State_Playing==status->state()) {
+    if (MPDState_Playing==status->state()) {
         /*if (fadeStop) {
             startVolumeFade(false);
         } else*/ {
             emit pause(true);
         }
-    } else if (MPDStatus::State_Paused==status->state()) {
+    } else if (MPDState_Paused==status->state()) {
         stopVolumeFade();
         emit pause(false);
     } else {
@@ -1373,7 +1378,7 @@ void MainWindow::realSearchPlaylist()
             playQueue->setModel(&playQueueModel);
             usingProxy=false;
             playQueue->setFilterActive(false);
-            playQueue->updateRows(playQueueModel.currentSongRow(), autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state());
+            playQueue->updateRows(playQueueModel.currentSongRow(), autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
             scrollPlayQueue();
         }
         playQueueProxyModel.setFilterEnabled(false);
@@ -1478,7 +1483,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         }
     }
 
-    if (1==songs.count() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
+    if (1==songs.count() && MPDState_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
     } else if (0==songs.count()) {
         updateCurrentSong(Song());
@@ -1549,7 +1554,7 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     playQueueModel.updateCurrentSong(current.id);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(current.id),
-                          !usingProxy && autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state());
+                          !usingProxy && autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
     scrollPlayQueue();
 
     if (current.artist.isEmpty()) {
@@ -1617,7 +1622,7 @@ void MainWindow::updateCurrentSong(const Song &song)
 
 void MainWindow::scrollPlayQueue()
 {
-    if (autoScrollPlayQueue && MPDStatus::State_Playing==MPDStatus::self()->state() && !playQueueModel.isGrouped()) {
+    if (autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state() && !playQueueModel.isGrouped()) {
         qint32 row=playQueueModel.currentSongRow();
         if (row>=0) {
             QModelIndex idx=usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0)) : playQueueModel.index(row, 0);
@@ -1632,8 +1637,7 @@ void MainWindow::updateStats()
      * Check if remote db is more recent than local one
      * Also update the dirview
      */
-    QDateTime dbUpdate=MPDStats::getDbUpdate();
-    if (!lastDbUpdate.isValid() || dbUpdate > lastDbUpdate) {
+    if (!lastDbUpdate.isValid() || serverInfoPage->getDbUpdate() > lastDbUpdate) {
         loaded|=TAB_LIBRARY|TAB_FOLDERS;
         if (!lastDbUpdate.isValid()) {
             libraryPage->clear();
@@ -1646,7 +1650,7 @@ void MainWindow::updateStats()
         playlistsPage->refresh();
     }
 
-    lastDbUpdate = dbUpdate;
+    lastDbUpdate = serverInfoPage->getDbUpdate();
 }
 
 void MainWindow::updateStatus()
@@ -1654,7 +1658,7 @@ void MainWindow::updateStatus()
     MPDStatus * const status = MPDStatus::self();
 
     if (!draggingPositionSlider) {
-        if (MPDStatus::State_Stopped==status->state() || MPDStatus::State_Inactive==status->state()) {
+        if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
             positionSlider->setValue(0);
         } else {
             positionSlider->setRange(0, status->timeTotal());
@@ -1692,7 +1696,7 @@ void MainWindow::updateStatus()
     QString timeElapsedFormattedString;
 
     if (!currentIsStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal())) {
-        if (status->state() == MPDStatus::State_Stopped || status->state() == MPDStatus::State_Inactive) {
+        if (status->state() == MPDState_Stopped || status->state() == MPDState_Inactive) {
             timeElapsedFormattedString = "0:00 / 0:00";
         } else {
             timeElapsedFormattedString += Song::formattedTime(status->timeElapsed());
@@ -1706,7 +1710,7 @@ void MainWindow::updateStatus()
 
     playQueueModel.setState(status->state());
     switch (status->state()) {
-    case MPDStatus::State_Playing:
+    case MPDState_Playing:
         playPauseTrackAction->setIcon(playbackPause);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         //playPauseTrackButton->setChecked(false);
@@ -1726,8 +1730,8 @@ void MainWindow::updateStatus()
         }
 
         break;
-    case MPDStatus::State_Inactive:
-    case MPDStatus::State_Stopped:
+    case MPDState_Inactive:
+    case MPDState_Stopped:
         playPauseTrackAction->setIcon(playbackPlay);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         stopTrackAction->setEnabled(false);
@@ -1748,7 +1752,7 @@ void MainWindow::updateStatus()
 
         positionSlider->stopTimer();
         break;
-    case MPDStatus::State_Paused:
+    case MPDState_Paused:
         playPauseTrackAction->setIcon(playbackPlay);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         stopTrackAction->setEnabled(0!=playQueueModel.rowCount());
@@ -1771,8 +1775,8 @@ void MainWindow::updateStatus()
 
     // Check if song has changed or we're playing again after being stopped
     // and update song info if needed
-    if (lastState == MPDStatus::State_Inactive
-            || (lastState == MPDStatus::State_Stopped && status->state() == MPDStatus::State_Playing)
+    if (lastState == MPDState_Inactive
+            || (lastState == MPDState_Stopped && status->state() == MPDState_Playing)
             || lastSongId != status->songId()) {
         emit currentSong();
     }

@@ -38,6 +38,24 @@
 #include <grp.h>
 #include <pwd.h>
 
+QString Utils::changeExtension(const QString &file, const QString &extension)
+{
+    if (extension.isEmpty()) {
+        return file;
+    }
+
+    QString f(file);
+    int pos=f.lastIndexOf('.');
+    if (pos>1) {
+        f=f.left(pos+1);
+    }
+
+    if (f.endsWith('.')) {
+        return f+(extension.startsWith('.') ? extension.mid(1) : extension);
+    }
+    return f+(extension.startsWith('.') ? extension : (QChar('.')+extension));
+}
+
 void Utils::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)
 {
     QDir d(from);

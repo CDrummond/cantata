@@ -36,6 +36,7 @@ namespace Utils
         return (fabs(d1 - d2) < precision);
     }
 
+    extern QString changeExtension(const QString &file, const QString &extension);
     extern void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
     extern void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
     extern void setFilePerms(const QString &file);

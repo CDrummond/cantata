@@ -29,6 +29,7 @@
 #include "settings.h"
 #include "mpdconnection.h"
 #include "utils.h"
+#include "lyricspage.h"
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
@@ -264,7 +265,8 @@ void TrackOrganiser::renameFile()
             }
         }
 
-        if (!skip && !QFile::rename(source, dest)) {
+        bool renamed=false;
+        if (!skip && !(renamed=QFile::rename(source, dest))) {
             if (autoSkip) {
                 skip=true;
             } else {
@@ -280,6 +282,16 @@ void TrackOrganiser::renameFile()
                     finish(false);
                     return;
                 }
+            }
+        }
+
+        // If file was renamed, then also rename any lyrics file...
+        if (renamed) {
+            QString lyricsSource=Utils::changeExtension(source, LyricsPage::constExtension);
+            QString lyricsDest=Utils::changeExtension(dest, LyricsPage::constExtension);
+
+            if (QFile::exists(lyricsSource) && !QFile::exists(lyricsDest)) {
+                QFile::rename(lyricsSource, lyricsDest);
             }
         }
 

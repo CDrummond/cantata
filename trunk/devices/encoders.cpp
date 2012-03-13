@@ -23,6 +23,7 @@
  ****************************************************************************************/
 
 #include "encoders.h"
+#include "utils.h"
 #include <KDE/KLocale>
 #include <KDE/KStandardDirs>
 #include <QtCore/QRegExp>
@@ -282,16 +283,7 @@ static void init()
 
 QString Encoder::changeExtension(const QString &file)
 {
-    if (extension.isEmpty()) {
-        return file;
-    }
-
-    QString f(file);
-    int pos=f.lastIndexOf('.');
-    if (pos>1) {
-        f=f.left(pos+1);
-    }
-    return f+extension;
+    return Utils::changeExtension(file, extension);
 }
 
 bool Encoder::isDifferent(const QString &file)

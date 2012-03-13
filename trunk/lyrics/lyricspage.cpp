@@ -59,13 +59,13 @@ static QString changeExt(const QString &f, const QString &newExt)
 }
 
 static const QLatin1String constLyricsDir("lyrics/");
-static const QLatin1String constExtension(".lyrics");
+const QLatin1String LyricsPage::constExtension(".lyrics");
 
 static QString cacheFile(QString artist, QString title, bool createDir=false)
 {
     title.replace("/", "_");
     artist.replace("/", "_");
-    return QDir::toNativeSeparators(Network::cacheDir(constLyricsDir+artist+'/', createDir))+title+constExtension;
+    return QDir::toNativeSeparators(Network::cacheDir(constLyricsDir+artist+'/', createDir))+title+LyricsPage::constExtension;
 }
 
 typedef QList<UltimateLyricsProvider *> ProviderList;

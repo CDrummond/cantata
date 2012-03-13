@@ -2,6 +2,7 @@
 -----
 1. Reduce QMutex usage - have MPDStats/MPDStatus emitted as objects, and
    stored in relevant classes.
+2. When renaming files, rename file.lyrics if it exists.
 
 0.5.0
 -----

@@ -38,6 +38,8 @@ class LyricsPage : public QWidget, public Ui::LyricsPage
   Q_OBJECT
 
 public:
+    static const QLatin1String constExtension;
+
     LyricsPage(QWidget *parent);
     ~LyricsPage();
 

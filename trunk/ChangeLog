@@ -1,3 +1,8 @@
+0.5.1
+-----
+1. Reduce QMutex usage - have MPDStats/MPDStatus emitted as objects, and
+   stored in relevant classes.
+
 0.5.0
 -----
  1. Add ability to calculate replaygain tags. (KDE only)

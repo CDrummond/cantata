@@ -184,6 +184,7 @@ public:
     }
 
     void load(const QList<QUrl> &urls);
+    const QDateTime & getDbUpdate() const;
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -303,7 +304,7 @@ private:
 
 private:
     int loaded;
-    MPDStatus::State lastState;
+    MPDState lastState;
     quint32 songTime;
     qint32 lastSongId;
     QDateTime lastDbUpdate;

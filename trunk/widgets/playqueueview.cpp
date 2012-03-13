@@ -438,7 +438,7 @@ void PlayQueueListView::updateRows(qint32 row, bool scroll)
         return;
     }
 
-    if (filterActive && model() && MPDStatus::State_Playing==MPDStatus::self()->state()) {
+    if (filterActive && model() && MPDState_Playing==MPDStatus::self()->state()) {
         if (scroll) {
             scrollTo(model()->index(row, 0), QAbstractItemView::PositionAtCenter);
         }
@@ -481,7 +481,7 @@ void PlayQueueListView::updateRows(qint32 row, bool scroll)
         lastKey=key;
     }
 
-    if (MPDStatus::State_Playing==MPDStatus::self()->state() && scroll) {
+    if (MPDState_Playing==MPDStatus::self()->state() && scroll) {
         #ifdef FIX_SCROLL_TO
         if (!haveHidden) {
             scrollTo(model()->index(row, 0), QAbstractItemView::PositionAtCenter);
@@ -842,7 +842,7 @@ void PlayQueueView::scrollTo(const QModelIndex &index, QAbstractItemView::Scroll
     if (currentWidget()==listView && !listView->isFilterActive()) {
         return;
     }
-    if (MPDStatus::State_Playing==MPDStatus::self()->state()) {
+    if (MPDState_Playing==MPDStatus::self()->state()) {
 //         listView->scrollTo(index, hint);
         treeView->scrollTo(index, hint);
     }

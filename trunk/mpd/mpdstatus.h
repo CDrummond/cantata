@@ -27,92 +27,136 @@
 #ifndef MPD_STATUS_H
 #define MPD_STATUS_H
 
-#include <QtCore/QtCore>
-#include <QtCore/QtGlobal>
+#include <QtCore/QObject>
 
-class MPDStatus
+enum MPDState {
+    MPDState_Inactive,
+    MPDState_Playing,
+    MPDState_Stopped,
+    MPDState_Paused
+};
+
+struct MPDStatusValues {
+    MPDStatusValues()
+        : volume(0)
+        , consume(false)
+        , repeat(false)
+        , random(false)
+        , playlist(0)
+        , playlistLength(-1)
+        , playlistQueue(-1)
+        , crossFade(0)
+        , state(MPDState_Inactive)
+        , song(-1)
+        , songId(-1)
+        , timeElapsed(-1)
+        , timeTotal(-1)
+        , bitrate(0)
+        , samplerate(0)
+        , bits(0)
+        , channels(0)
+        , updatingDb(0) {
+    }
+    quint8 volume;
+    bool consume;
+    bool repeat;
+    bool random;
+    quint32 playlist;
+    qint32 playlistLength;
+    qint32 playlistQueue;
+    qint32 crossFade;
+    MPDState state;
+    qint32 song;
+    qint32 songId;
+    qint32 timeElapsed;
+    qint32 timeTotal;
+    quint16 bitrate;
+    quint16 samplerate;
+    quint8 bits;
+    quint8 channels;
+    qint32 updatingDb;
+    QString error;
+};
+
+class MPDStatus : public QObject
 {
-public:
-    enum State {
-        State_Inactive,
-        State_Playing,
-        State_Stopped,
-        State_Paused
-    };
+    Q_OBJECT
 
+public:
     static MPDStatus * self();
 
-    void acquireWriteLock();
-    void releaseWriteLock();
+    quint8 volume() const {
+        return values.volume;
+    }
+    bool consume() const {
+        return values.consume;
+    }
+    bool repeat() const {
+        return values.repeat;
+    }
+    bool random() const {
+        return values.random;
+    }
+    quint32 playlist() const {
+        return values.playlist;
+    }
+    qint32 playlistLength() const {
+        return values.playlistLength;
+    }
+    qint32 playlistQueue() const {
+        return values.playlistQueue;
+    }
+    qint32 crossFade() const {
+        return values.crossFade;
+    }
+    MPDState state() const {
+        return values.state;
+    }
+    qint32 song() const {
+        return values.song;
+    }
+    qint32 songId() const {
+        return values.songId;
+    }
+    qint32 timeElapsed() const {
+        return values.timeElapsed;
+    }
+    qint32 timeTotal() const {
+        return values.timeTotal;
+    }
+    quint16 bitrate() const {
+        return values.bitrate;
+    }
+    quint16 samplerate() const {
+        return values.samplerate;
+    }
+    quint8 bits() const {
+        return values.bits;
+    }
+    quint8 channels() const {
+        return values.channels;
+    }
+    qint32 updatingDb() const {
+        return values.updatingDb;
+    }
+    const QString & error() const {
+        return values.error;
+    }
 
-    // Getters
-    quint8 volume();
-    bool consume();
-    bool repeat();
-    bool random();
-    quint32 playlist();
-    qint32 playlistLength();
-    qint32 playlistQueue();
-    qint32 crossFade();
-    State state();
-    qint32 song();
-    qint32 songId();
-    qint32 timeElapsed();
-    qint32 timeTotal();
-    quint16 bitrate();
-    quint16 samplerate();
-    quint8 bits();
-    quint8 channels();
-    qint32 updatingDb();
-    QString error();
+public Q_SLOTS:
+    void update(const MPDStatusValues &v);
 
-    // Setters
-    void setVolume(quint8 volume);
-    void setConsume(bool consume);
-    void setRepeat(bool repeat);
-    void setRandom(bool random);
-    void setPlaylist(quint32 playlist);
-    void setPlaylistLength(qint32 playlist_length);
-    void setPlaylistQueue(qint32 playlist_queue);
-    void setCrossFade(qint32 xfade);
-    void setState(State state);
-    void setSong(qint32 song);
-    void setSongId(qint32 song_id);
-    void setTimeElapsed(qint32 time_elapsed);
-    void setTimeTotal(qint32 time_total);
-    void setBitrate(quint16 bitrate);
-    void setSamplerate(quint16 samplerate);
-    void setBits(quint8 bits);
-    void setChannels(quint8 channels);
-    void setUpdatingDb(qint32 updating_db);
-    void setError(QString error);
+Q_SIGNALS:
+    void updated();
 
 private:
-    quint8 m_volume;
-    bool m_consume;
-    bool m_repeat;
-    bool m_random;
-    quint32 m_playlist;
-    qint32 m_playlist_length;
-    qint32 m_playlist_queue;
-    qint32 m_xfade;
-    State m_state;
-    qint32 m_song;
-    qint32 m_song_id;
-    qint32 m_time_elapsed;
-    qint32 m_time_total;
-    quint16 m_bitrate;
-    quint16 m_samplerate;
-    quint8 m_bits;
-    quint8 m_channels;
-    qint32 m_updating_db;
-    QString m_error;
-    QReadWriteLock m_lock;
-
     MPDStatus();
     ~MPDStatus() {}
     MPDStatus(const MPDStatus&);
     MPDStatus& operator=(const MPDStatus& other);
+
+private:
+    MPDStatusValues values;
 };
 
 #endif

@@ -38,8 +38,8 @@
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
 #include "mpdparseutils.h"
-#include "mpdstats.h"
 #include "mpdstatus.h"
+#include "mpdstats.h"
 #include "playlist.h"
 #include "song.h"
 #include "output.h"
@@ -104,10 +104,10 @@ QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
     return playlists;
 }
 
-void MPDParseUtils::parseStats(const QByteArray &data)
+MPDStats MPDParseUtils::parseStats(const QByteArray &data)
 {
     TF_DEBUG
-    MPDStats::Values v;
+    MPDStats v;
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
     int amountOfLines = lines.size();
@@ -131,83 +131,69 @@ void MPDParseUtils::parseStats(const QByteArray &data)
             v.dbUpdate.setTime_t(tokens.at(1).toUInt());
         }
     }
-    MPDStats::set(v);
+    return v;
 }
 
-void MPDParseUtils::parseStatus(const QByteArray &data)
+MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
 {
     TF_DEBUG
-    MPDStatus * const status = MPDStatus::self();
+    MPDStatusValues v;
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
-
-    status->acquireWriteLock();
-
     int amountOfLines = lines.size();
 
     for (int i = 0; i < amountOfLines; i++) {
         tokens = lines.at(i).split(':');
 
         if (tokens.at(0) == "volume") {
-            status->setVolume(tokens.at(1).toUInt());
+            v.volume=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "consume") {
-            if (tokens.at(1).trimmed() == "1") {
-                status->setConsume(true);
-            } else {
-                status->setConsume(false);
-            }
+            v.consume=tokens.at(1).trimmed() == "1";
         } else if (tokens.at(0) == "repeat") {
-            if (tokens.at(1).trimmed() == "1") {
-                status->setRepeat(true);
-            } else {
-                status->setRepeat(false);
-            }
+            v.repeat=tokens.at(1).trimmed() == "1";
         } else if (tokens.at(0) == "random") {
-            if (tokens.at(1).trimmed() == "1") {
-                status->setRandom(true);
-            } else {
-                status->setRandom(false);
-            }
+            v.random=tokens.at(1).trimmed() == "1";
         } else if (tokens.at(0) == "playlist") {
-            status->setPlaylist(tokens.at(1).toUInt());
+            v.playlist=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "playlistlength") {
-            status->setPlaylistLength(tokens.at(1).toInt());
+            v.playlistLength=tokens.at(1).toInt();
         } else if (tokens.at(0) == "playlistqueue") {
-            status->setPlaylistQueue(tokens.at(1).toInt());
+            v.playlistQueue=tokens.at(1).toInt();
         } else if (tokens.at(0) == "xfade") {
-            status->setCrossFade(tokens.at(1).toInt());
+            v.crossFade=tokens.at(1).toInt();
         } else if (tokens.at(0) == "state") {
             if (tokens.at(1).contains("play")) {
-                status->setState(MPDStatus::State_Playing);
+                v.state=MPDState_Playing;
             } else if (tokens.at(1).contains("stop")) {
-                status->setState(MPDStatus::State_Stopped);
+                v.state=MPDState_Stopped;
             } else {
-                status->setState(MPDStatus::State_Paused);
+                v.state=MPDState_Paused;
             }
         } else if (tokens.at(0) == "song") {
-            status->setSong(tokens.at(1).toInt());
+            v.song=tokens.at(1).toInt();
         } else if (tokens.at(0) == "songid") {
-            status->setSongId(tokens.at(1).toInt());
+            v.songId=tokens.at(1).toInt();
         } else if (tokens.at(0) == "time") {
-            status->setTimeElapsed(tokens.at(1).toInt());
-            status->setTimeTotal(tokens.at(2).toInt());
+            v.timeElapsed=tokens.at(1).toInt();
+            v.timeTotal=tokens.at(2).toInt();
         } else if (tokens.at(0) == "bitrate") {
-            status->setBitrate(tokens.at(1).toUInt());
+            v.bitrate=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "audio") {
         } else if (tokens.at(0) == "updating_db") {
-            status->setUpdatingDb(tokens.at(1).toInt());
+            v.updatingDb=tokens.at(1).toInt();
         } else if (tokens.at(0) == "error") {
-            status->setError(tokens.at(1));
+            v.error=tokens.at(1);
         }
     }
 
-    status->releaseWriteLock();
+    return v;
 }
 
 Song MPDParseUtils::parseSong(const QByteArray &data)
 {
     Song song;
     QString tmpData = QString::fromUtf8(data.constData());
+
     QStringList lines = tmpData.split('\n');
     QStringList tokens;
     QString element;

@@ -29,29 +29,23 @@
 
 #include <QtCore/QDateTime>
 
-namespace MPDStats
+struct MPDStats
 {
-    struct Values {
-        Values()
-            : artists(0)
-            , albums(0)
-            , songs(0)
-            , uptime(0)
-            , playtime(0)
-            , dbPlaytime(0) {
-        }
-        quint32 artists;
-        quint32 albums;
-        quint32 songs;
-        quint32 uptime;
-        quint32 playtime;
-        quint32 dbPlaytime;
-        QDateTime dbUpdate;
-    };
-
-    extern void set(const Values &v);
-    extern Values get();
-    extern QDateTime getDbUpdate();
+    MPDStats()
+        : artists(0)
+        , albums(0)
+        , songs(0)
+        , uptime(0)
+        , playtime(0)
+        , dbPlaytime(0) {
+    }
+    quint32 artists;
+    quint32 albums;
+    quint32 songs;
+    quint32 uptime;
+    quint32 playtime;
+    quint32 dbPlaytime;
+    QDateTime dbUpdate;
 };
 
 #endif

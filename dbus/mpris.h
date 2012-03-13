@@ -63,9 +63,9 @@ public:
     void PlayPause() {
         MPDStatus * const status = MPDStatus::self();
 
-        if (MPDStatus::State_Playing==status->state()) {
+        if (MPDState_Playing==status->state()) {
             emit setPause(true);
-        } else if (MPDStatus::State_Paused==status->state()) {
+        } else if (MPDState_Paused==status->state()) {
             emit setPause(false);
         } else {
             emit startPlayingSong();
@@ -91,10 +91,10 @@ public:
 
     QString PlaybackStatus() {
         switch(MPDStatus::self()->state()) {
-        case MPDStatus::State_Playing: return QLatin1String("Playing");
-        case MPDStatus::State_Paused: return QLatin1String("Paused");
+        case MPDState_Playing: return QLatin1String("Playing");
+        case MPDState_Paused: return QLatin1String("Paused");
         default:
-        case MPDStatus::State_Stopped: return QLatin1String("Stopped");
+        case MPDState_Stopped: return QLatin1String("Stopped");
         }
     }
 

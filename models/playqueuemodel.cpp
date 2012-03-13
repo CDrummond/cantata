@@ -118,7 +118,7 @@ QString PlayQueueModel::headerText(int col)
 PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractTableModel(parent)
     , currentSongId(-1)
-    , mpdState(MPDStatus::State_Inactive)
+    , mpdState(MPDState_Inactive)
     , grouped(false)
     , dropAdjust(0)
 {
@@ -240,19 +240,19 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     }
     case PlayQueueView::Role_CurrentStatus: {
         switch (mpdState) {
-        case MPDStatus::State_Inactive:
-        case MPDStatus::State_Stopped: return (int)PlayQueueView::State_Stopped;
-        case MPDStatus::State_Playing: return (int)PlayQueueView::State_Playing;
-        case MPDStatus::State_Paused:  return (int)PlayQueueView::State_Paused;
+        case MPDState_Inactive:
+        case MPDState_Stopped: return (int)PlayQueueView::State_Stopped;
+        case MPDState_Playing: return (int)PlayQueueView::State_Playing;
+        case MPDState_Paused:  return (int)PlayQueueView::State_Paused;
         }
     }
     case PlayQueueView::Role_Status:
         if (songs.at(index.row()).id == currentSongId) {
             switch (mpdState) {
-            case MPDStatus::State_Inactive:
-            case MPDStatus::State_Stopped: return (int)PlayQueueView::State_Stopped;
-            case MPDStatus::State_Playing: return (int)PlayQueueView::State_Playing;
-            case MPDStatus::State_Paused:  return (int)PlayQueueView::State_Paused;
+            case MPDState_Inactive:
+            case MPDState_Stopped: return (int)PlayQueueView::State_Stopped;
+            case MPDState_Playing: return (int)PlayQueueView::State_Playing;
+            case MPDState_Paused:  return (int)PlayQueueView::State_Paused;
             }
         }
         return (int)PlayQueueView::State_Default;
@@ -330,10 +330,10 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         if (COL_STATUS==index.column() && songs.at(index.row()).id == currentSongId) {
             switch (mpdState) {
-            case MPDStatus::State_Inactive:
-            case MPDStatus::State_Stopped: return QIcon::fromTheme("media-playback-stop");
-            case MPDStatus::State_Playing: return QIcon::fromTheme("media-playback-start");
-            case MPDStatus::State_Paused:  return QIcon::fromTheme("media-playback-pause");
+            case MPDState_Inactive:
+            case MPDState_Stopped: return QIcon::fromTheme("media-playback-stop");
+            case MPDState_Playing: return QIcon::fromTheme("media-playback-start");
+            case MPDState_Paused:  return QIcon::fromTheme("media-playback-pause");
             }
         }
         break;
@@ -557,7 +557,7 @@ void PlayQueueModel::clear()
     endResetModel();
 }
 
-void PlayQueueModel::setState(MPDStatus::State st)
+void PlayQueueModel::setState(MPDState st)
 {
     if (st!=mpdState) {
         mpdState=st;

@@ -210,8 +210,8 @@ Q_SIGNALS:
     void stateChanged(bool connected);
     void currentSongUpdated(const Song &song);
     void playlistUpdated(const QList<Song> &songs);
-    void statsUpdated();
-    void statusUpdated();
+    void statsUpdated(const MPDStats &stats);
+    void statusUpdated(const MPDStatusValues &status);
     void storedPlayListUpdated();
     void outputsUpdated(const QList<Output> &outputs);
     void musicLibraryUpdated(MusicLibraryItemRoot * root, QDateTime db_update);

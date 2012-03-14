@@ -40,9 +40,13 @@
 #include <QtCore/QTextCodec>
 #include <taglib/fileref.h>
 #include <taglib/aifffile.h>
+#ifdef TAGLIB_ASF_FOUND
 #include <taglib/asffile.h>
+#endif
 #include <taglib/flacfile.h>
+#ifdef TAGLIB_MP4_FOUND
 #include <taglib/mp4file.h>
+#endif
 #include <taglib/mpcfile.h>
 #include <taglib/mpegfile.h>
 #include <taglib/oggfile.h>
@@ -53,11 +57,15 @@
 #include <taglib/vorbisfile.h>
 #include <taglib/wavfile.h>
 #include <taglib/wavpackfile.h>
+#ifdef TAGLIB_ASF_FOUND
 #include <taglib/asftag.h>
+#endif
 #include <taglib/apetag.h>
 #include <taglib/id3v2tag.h>
 #include <taglib/id3v1tag.h>
+#ifdef TAGLIB_MP4_FOUND
 #include <taglib/mp4tag.h>
+#endif
 #include <taglib/xiphcomment.h>
 #include <taglib/textidentificationframe.h>
 #include <taglib/relativevolumeframe.h>
@@ -499,6 +507,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
     return changed;
 }
 
+#ifdef TAGLIB_MP4_FOUND
 static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg)
 {
     TagLib::MP4::ItemListMap &map = tag->itemListMap();
@@ -572,7 +581,9 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
     }
     return changed;
 }
+#endif
 
+#ifdef TAGLIB_ASF_FOUND
 static void readASFTags(TagLib::ASF::Tag *tag, Song *song, ReplayGain *rg)
 {
     Q_UNUSED(rg)
@@ -621,6 +632,7 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
     }
     return changed;
 }
+#endif
 
 static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg)
 {
@@ -662,11 +674,13 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg)
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
+    #ifdef TAGLIB_MP4_FOUND
     } else if (TagLib::MP4::File *file = dynamic_cast< TagLib::MP4::File * >(fileref.file())) {
         TagLib::MP4::Tag *tag = dynamic_cast< TagLib::MP4::Tag * >(file->tag());
         if (tag) {
             readMP4Tags(tag, song, rg);
         }
+    #endif
     } else if (TagLib::MPC::File *file = dynamic_cast< TagLib::MPC::File * >(fileref.file())) {
         if (file->APETag()) {
             readAPETags(file->APETag(), song, rg);
@@ -681,11 +695,13 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg)
         if (file->tag()) {
             readID3v2Tags(file->tag(), song, rg);
         }
+    #ifdef TAGLIB_ASF_FOUND
     } else if (TagLib::ASF::File *file = dynamic_cast< TagLib::ASF::File * >(fileref.file())) {
         TagLib::ASF::Tag *tag = dynamic_cast< TagLib::ASF::Tag * >(file->tag());
         if (tag) {
             readASFTags(tag, song, rg);
         }
+    #endif
     } else if (TagLib::TrueAudio::File *file = dynamic_cast< TagLib::TrueAudio::File * >(fileref.file())) {
         if (file->ID3v2Tag(false)) {
             readID3v2Tags(file->ID3v2Tag(false), song, rg);
@@ -763,11 +779,13 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
         } else if (file->ID3v2Tag(true)) {
             changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg) || changed;
         }
+    #ifdef TAGLIB_MP4_FOUND
     } else if (TagLib::MP4::File *file = dynamic_cast< TagLib::MP4::File * >(fileref.file())) {
         TagLib::MP4::Tag *tag = dynamic_cast<TagLib::MP4::Tag * >(file->tag());
         if (tag) {
             changed=writeMP4Tags(tag, from, to, rg) || changed;
         }
+    #endif
     } else if (TagLib::MPC::File *file = dynamic_cast< TagLib::MPC::File * >(fileref.file())) {
         if (file->APETag(true)) {
             changed=writeAPETags(file->APETag(), from, to, rg) || changed;
@@ -782,11 +800,13 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
         if (file->tag()) {
             changed=writeID3v2Tags(file->tag(), from, to, rg) || changed;
         }
+    #ifdef TAGLIB_ASF_FOUND
     } else if (TagLib::ASF::File *file = dynamic_cast< TagLib::ASF::File * >(fileref.file())) {
         TagLib::ASF::Tag *tag = dynamic_cast< TagLib::ASF::Tag * >(file->tag());
         if (tag) {
             changed=writeASFTags(tag, from, to, rg) || changed;
         }
+    #endif
     } else if (TagLib::TrueAudio::File *file = dynamic_cast< TagLib::TrueAudio::File * >(fileref.file())) {
         if (file->ID3v2Tag(true)) {
             changed=writeID3v2Tags(file->ID3v2Tag(), from, to, rg) || changed;

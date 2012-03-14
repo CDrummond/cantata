@@ -270,6 +270,16 @@ QStringList Settings::lyricProviders()
     return GET_STRINGLIST("lyricProviders", def);
 }
 
+int Settings::lyricsZoom()
+{
+    return GET_INT("lyricsZoom", 0);
+}
+
+int Settings::infoZoom()
+{
+    return GET_INT("infoZoom", 0);
+}
+
 QString Settings::page()
 {
     return GET_STRING("page", QString());
@@ -521,6 +531,16 @@ void Settings::saveGroupSingle(bool v)
 void Settings::saveLyricProviders(const QStringList &p)
 {
     SET_VALUE("lyricProviders", p);
+}
+
+void Settings::saveLyricsZoom(int v)
+{
+    SET_VALUE("lyricsZoom", v);
+}
+
+void Settings::saveInfoZoom(int v)
+{
+    SET_VALUE("infoZoom", v);
 }
 
 void Settings::savePage(const QString &v)

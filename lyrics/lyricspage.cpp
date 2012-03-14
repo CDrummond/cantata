@@ -107,6 +107,7 @@ LyricsPage::LyricsPage(QWidget *parent)
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
     MainWindow::initButton(refresh);
     refresh->setDefaultAction(refreshAction);
+    text->setZoom(Settings::self()->lyricsZoom());
 }
 
 LyricsPage::~LyricsPage()
@@ -114,6 +115,11 @@ LyricsPage::~LyricsPage()
     foreach (UltimateLyricsProvider* provider, providers) {
         delete provider;
     }
+}
+
+void LyricsPage::save()
+{
+    Settings::self()->saveLyricsZoom(text->zoom());
 }
 
 void LyricsPage::setEnabledProviders(const QStringList &providerList)

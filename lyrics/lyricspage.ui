@@ -18,7 +18,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="2">
-    <widget class="QTextBrowser" name="text">
+    <widget class="TextBrowser" name="text">
      <property name="openLinks">
       <bool>false</bool>
      </property>
@@ -42,6 +42,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TextBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>textbrowser.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

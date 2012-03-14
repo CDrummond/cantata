@@ -82,6 +82,8 @@ public:
     bool libraryYear();
     bool groupSingle();
     QStringList lyricProviders();
+    int lyricsZoom();
+    int infoZoom();
     QString page();
     QStringList hiddenPages();
     bool mpris();
@@ -128,6 +130,8 @@ public:
     void saveLibraryYear(bool v);
     void saveGroupSingle(bool v);
     void saveLyricProviders(const QStringList &p);
+    void saveLyricsZoom(int v);
+    void saveInfoZoom(int v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &p);
     void saveMpris(bool v);

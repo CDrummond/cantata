@@ -21,44 +21,33 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INFOPAGE_H
-#define INFOPAGE_H
+#ifndef TEXTBROWSER_H
+#define TEXTBROWSER_H
 
-#include <QtGui/QWidget>
-#include "song.h"
+#include <QtGui/QTextBrowser>
 
-class QComboBox;
-class WebView;
-class QNetworkRequest;
-
-class InfoPage : public QWidget
+class TextBrowser : public QTextBrowser
 {
-    Q_OBJECT
-
 public:
-    InfoPage(QWidget *parent);
-    virtual ~InfoPage() { }
+    TextBrowser(QWidget *p)
+        : QTextBrowser(p) {
+        orig=font().pointSize();
+    }
 
-    void save();
-    void update(const Song &s);
+    virtual ~TextBrowser() {
+    }
 
+    void setZoom(int diff) {
+        if (diff) {
+            zoomIn(diff);
+        }
+    }
+
+    int zoom() const {
+        return font().pointSize()-orig;
+    }
 private:
-    void fetchInfo();
-    void askGoogle(const QString &query);
-    void fetchWiki(QString query);
-
-private Q_SLOTS:
-    void changeView();
-    void googleAnswer(const QString &answer);
-    void downloadRequested(const QNetworkRequest &);
-    void downloadingFinished();
-
-private:
-    WebView *view;
-    QComboBox *combo;
-    QString lastWikiQuestion;
-    bool iHaveAskedForArtist;
-    Song song;
+    int orig;
 };
 
 #endif

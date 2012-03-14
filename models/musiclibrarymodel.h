@@ -68,6 +68,9 @@ public:
     void removeCache();
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
 
+    #ifndef ENABLE_KDE_SUPPORT
+    const QIcon & vaIcon() const;
+    #endif
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);

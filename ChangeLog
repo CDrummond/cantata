@@ -7,6 +7,8 @@
    update in server info page.
 4. TagLib is required for build.
 5. Enable tag editor for Qt builds.
+6. Qt-only build does not install icons, so we need to embed the 16px and
+   22px version of each into the application.
 
 0.5.0
 -----

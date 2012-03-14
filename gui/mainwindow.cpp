@@ -519,9 +519,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     playbackPlay = Icon("media-playback-start");
     playbackPause = Icon("media-playback-pause");
-    repeatPlaylistAction->setIcon(Icon("cantata-view-media-repeat"));
     randomPlaylistAction->setIcon(Icon("media-playlist-shuffle"));
+    #ifdef ENABLE_KDE_SUPPORT
     consumePlaylistAction->setIcon(Icon("cantata-view-media-consume"));
+    repeatPlaylistAction->setIcon(Icon("cantata-view-media-repeat"));
+    #else
+    QIcon consumeIcon(":consume16.png");
+    consumeIcon.addFile(":consume22.png");
+    QIcon repeatIcon(":repeat16.png");
+    repeatIcon.addFile(":repeat22.png");
+    consumePlaylistAction->setIcon(consumeIcon);
+    repeatPlaylistAction->setIcon(repeatIcon);
+    #endif
     removeAction->setIcon(Icon("list-remove"));
     addToPlaylistAction->setIcon(Icon("list-add"));
     replacePlaylistAction->setIcon(Icon("media-playback-start"));

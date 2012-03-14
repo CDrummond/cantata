@@ -998,13 +998,13 @@ void MainWindow::setPlaybackButtonsSize(bool small)
     foreach (QToolButton *b, playbackBtns) {
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
         #ifdef ENABLE_KDE_SUPPORT
+        b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
         b->setMinimumSize(small ? QSize(26, 26) : QSize(32, 32));
         b->setMaximumSize(small ? QSize(26, 26) : QSize(32, 32));
-        b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
         #else
-        b->setMinimumSize(small ? QSize(26, 26) : QSize(34, 34));
-        b->setMaximumSize(small ? QSize(26, 26) : QSize(34, 34));
         b->setIconSize(small ? QSize(24, 24) : QSize(28, 28));
+        b->setMinimumSize(small ? QSize(26, 26) : QSize(36, 36));
+        b->setMaximumSize(small ? QSize(26, 26) : QSize(36, 36));
         #endif
     }
 }

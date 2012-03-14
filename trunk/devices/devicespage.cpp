@@ -74,9 +74,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     view->addAction(copyAction);
 //     view->addAction(p->burnAction);
     view->addAction(p->organiseFilesAction);
-    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     view->addAction(p->editTagsAction);
-    #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     view->addAction(p->replaygainAction);
     #endif
@@ -115,9 +113,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     #endif
 //     menu->addAction(copyAction);
     menu->addAction(p->organiseFilesAction);
-    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     menu->addAction(p->editTagsAction);
-    #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     menu->addAction(p->replaygainAction);
     #endif
@@ -295,9 +291,7 @@ void DevicesPage::controlActions()
     refreshAction->setEnabled(!enable && 1==selected.count());
     copyAction->setEnabled(enable);
     mw->deleteSongsAction->setEnabled(enable);
-    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     mw->editTagsAction->setEnabled(enable && onlyFs && singleUdi);
-    #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     mw->replaygainAction->setEnabled(enable && onlyFs && singleUdi);
     #endif

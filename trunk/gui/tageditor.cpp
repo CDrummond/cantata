@@ -32,6 +32,9 @@
 #include <KDE/KInputDialog>
 #else
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QMessageBox>
+#include <QtGui/QInputDialog>
+#include <QtGui/QPushButton>
 #endif
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
@@ -139,12 +142,29 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
 
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
     layout->addWidget(mainWidet);
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply,
-                                     Qt::Horizontal, this);
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Reset, Qt::Horizontal, this);
+    if (songs.count()>1) {
+        prevBtn=new QPushButton(QIcon::fromTheme("go-previous"), tr("Previous"), this);
+        nextBtn=new QPushButton(QIcon::fromTheme("go-next"), tr("Next"), this);
+        buttonBox->addButton(prevBtn, QDialogButtonBox::ActionRole);
+        buttonBox->addButton(nextBtn, QDialogButtonBox::ActionRole);
+        prevBtn->setEnabled(false);
+        nextBtn->setEnabled(false);
+    } else {
+        prevBtn=nextBtn=0;
+    }
+    toolsBtn=new QPushButton(QIcon::fromTheme("tools-wizard"), tr("Tools"), this);
+    buttonBox->addButton(toolsBtn, QDialogButtonBox::ActionRole);
+    QMenu *toolsMenu=new QMenu(this);
+    toolsMenu->addAction(tr("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
+    toolsMenu->addAction(tr("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
+    toolsMenu->addAction(tr("Capitalize"), this, SLOT(capitalise()));
+    toolsMenu->addAction(tr("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
+    toolsBtn->setMenu(toolsMenu);
     layout->addWidget(buttonBox);
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+//     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+//     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     #endif
     setAttribute(Qt::WA_DeleteOnClose);
 
@@ -290,10 +310,17 @@ void TagEditor::enableOkButton()
         return;
     }
 
+    #ifdef ENABLE_KDE_SUPPORT
     enableButton(Ok, (editedIndexes.count()>1) ||
                      (1==original.count() && 1==editedIndexes.count()) ||
                      (1==editedIndexes.count() && !editedIndexes.contains(0)) );
     enableButton(Reset, isButtonEnabled(Ok));
+    #else
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled((editedIndexes.count()>1) ||
+                                                        (1==original.count() && 1==editedIndexes.count()) ||
+                                                        (1==editedIndexes.count() && !editedIndexes.contains(0)));
+    buttonBox->button(QDialogButtonBox::Reset)->setEnabled(buttonBox->button(QDialogButtonBox::Ok)->isEnabled());
+    #endif
 }
 
 void TagEditor::setLabelStates()
@@ -316,14 +343,27 @@ void TagEditor::applyVa()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
+    #ifdef ENABLE_KDE_SUPPORT
     if (KMessageBox::No==KMessageBox::questionYesNo(this, (isAll ? i18n("Apply \"Various Artists\" workaround to <b>all</b> tracks?")
-                                                                  : i18n("Apply \"Various Artists\" workaround?"))+
+                                                                 : i18n("Apply \"Various Artists\" workaround?"))+
                                                            QLatin1String("<br/><hr/><br/>")+
                                                            i18n("<i>This will set 'Album artist' and 'Artist' to "
                                                                 "\"Various Artists\", and set 'Title' to "
                                                                 "\"TrackArtist - TrackTitle\"</i>"))) {
         return;
     }
+    #else
+    if (QMessageBox::No==QMessageBox::question(this, tr("Various Artists"),
+                                               (isAll ? tr("Apply \"Various Artists\" workaround to <b>all</b> tracks?")
+                                                      : tr("Apply \"Various Artists\" workaround?"))+
+                                               QLatin1String("<br/><hr/><br/>")+
+                                               tr("<i>This will set 'Album artist' and 'Artist' to "
+                                                  "\"Various Artists\", and set 'Title' to "
+                                                  "\"TrackArtist - TrackTitle\"</i>"),
+                                               QMessageBox::Yes|QMessageBox::No)) {
+        return;
+    }
+    #endif
 
     if (isAll) {
         for (int i=0; i<edited.count(); ++i) {
@@ -350,6 +390,7 @@ void TagEditor::revertVa()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
+    #ifdef ENABLE_KDE_SUPPORT
     if (KMessageBox::No==KMessageBox::questionYesNo(this, (isAll ? i18n("Revert \"Various Artists\" workaround on <b>all</b> tracks?")
                                                                   : i18n("Revert \"Various Artists\" workaround"))+
                                                            QLatin1String("<br/><hr/><br/>")+
@@ -361,6 +402,21 @@ void TagEditor::revertVa()
                                                                 "\"Wibble\" and 'Title' will be set to \"Wobble\"</i>"))) {
         return;
     }
+    #else
+    if (QMessageBox::No==QMessageBox::question(this, tr("Various Artists"),
+                                               (isAll ? tr("Revert \"Various Artists\" workaround on <b>all</b> tracks?")
+                                                      : tr("Revert \"Various Artists\" workaround"))+
+                                               QLatin1String("<br/><hr/><br/>")+
+                                               tr("<i>Where the 'Album artist' is the same as 'Artist' "
+                                                  "and the 'Title' is of the format \"TrackArtist - TrackTitle\", "
+                                                  "'Artist' will be taken from 'Title' and 'Title' itself will be "
+                                                  "set to just the title. e.g. <br/><br/>"
+                                                  "If 'Title' is \"Wibble - Wobble\", then 'Artist' will be set to "
+                                                  "\"Wibble\" and 'Title' will be set to \"Wobble\"</i>"),
+                                               QMessageBox::Yes|QMessageBox::No)) {
+        return;
+    }
+    #endif
 
     if (isAll) {
         for (int i=0; i<edited.count(); ++i) {
@@ -387,12 +443,23 @@ void TagEditor::capitalise()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
+    #ifdef ENABLE_KDE_SUPPORT
     if (KMessageBox::No==KMessageBox::questionYesNo(this, isAll ? i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
                                                                         "'Album' of <b>all</b> tracks?")
                                                                  : i18n("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
                                                                         "'Album'"))) {
         return;
     }
+    #else
+    if (QMessageBox::No==QMessageBox::question(this, tr("Capitalize"),
+                                               isAll ? tr("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
+                                                          "'Album' of <b>all</b> tracks?")
+                                                     : tr("Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
+                                                          "'Album'"),
+                                               QMessageBox::Yes|QMessageBox::No)) {
+        return;
+    }
+    #endif
 
     if (isAll) {
         for (int i=0; i<edited.count(); ++i) {
@@ -419,9 +486,15 @@ void TagEditor::adjustTrackNumbers()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
     bool ok=false;
+    #ifdef ENABLE_KDE_SUPPORT
     int inc=KInputDialog::getInteger(i18n("Adjust Track Numbers"), isAll ? i18n("Increment the value of each track number by:")
                                                                          : i18n("Increment track number by:"),
                                      0, 1, 500, 1, 10, &ok, this);
+    #else
+    int inc=QInputDialog::getInt(this, tr("Adjust Track Numbers"), isAll ? tr("Increment the value of each track number by:")
+                                                                         : tr("Increment track number by:"),
+                                 0, 1, 500, 1, &ok);
+    #endif
 
     if (!ok || inc<=0) {
         return;
@@ -455,8 +528,6 @@ void TagEditor::checkChanged()
     bool allWasEdited=editedIndexes.contains(0);
 
     updateEdited();
-    enableOkButton();
-    setLabelStates();
 
     bool allEdited=editedIndexes.contains(0);
     bool isAll=0==currentSongIndex && original.count()>1;
@@ -469,6 +540,8 @@ void TagEditor::checkChanged()
         }
         currentSongIndex=save;
     }
+    enableOkButton();
+    setLabelStates();
 }
 
 void TagEditor::updateTrackName(int index, bool edited)
@@ -598,8 +671,13 @@ void TagEditor::setIndex(int idx)
     }
 
     if (original.count()>1) {
+        #ifdef ENABLE_KDE_SUPPORT
         enableButton(User1, !isMultiple && idx<(original.count()-1)); // Next
         enableButton(User2, !isMultiple && idx>1); // Prev
+        #else
+        nextBtn->setEnabled(!isMultiple && idx<(original.count()-1));
+        prevBtn->setEnabled(!isMultiple && idx>1);
+        #endif
     }
     setPlaceholderTexts();
     enableOkButton();
@@ -660,7 +738,13 @@ void TagEditor::applyUpdates()
     }
 
     if (failed.count()) {
+        #ifdef ENABLE_KDE_SUPPORT
         KMessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
+        #else
+        QMessageBox::warning(this, tr("Warning"), 1==failed.count()
+                                                    ? tr("Failed to update the tags of the %1").arg(failed.at(0))
+                                                    : tr("Failed to update the tags of the %2 tracks").arg(failed.count()));
+        #endif
     }
 
     if (updated) {
@@ -716,16 +800,28 @@ void TagEditor::slotButtonClicked(int button)
 #else
 void TagEditor::buttonPressed(QAbstractButton *button)
 {
-//     switch (buttonBox->buttonRole(button)) {
-//     case QDialogButtonBox::AcceptRole:
-//     case QDialogButtonBox::ApplyRole:
-//         writeSettings();
-//         break;
-//     case QDialogButtonBox::RejectRole:
-//         break;
-//     default:
-//         break;
-//     }
+    if (button==buttonBox->button(QDialogButtonBox::Ok)) {
+        applyUpdates();
+        accept();
+    } else if(button==buttonBox->button(QDialogButtonBox::Reset)) {
+        if (0==currentSongIndex && original.count()>1) {
+            for (int i=0; i<original.count(); ++i) {
+                edited.replace(i, original.at(i));
+                updateTrackName(i, false);
+            }
+            editedIndexes.clear();
+            setSong(original.at(currentSongIndex));
+        } else {
+            setSong(original.at(currentSongIndex));
+        }
+        enableOkButton();
+    } else if(button==nextBtn) {
+        setIndex(currentSongIndex+1);
+    } else if(button==prevBtn) {
+        setIndex(currentSongIndex-1);
+    } else if(button==buttonBox->button(QDialogButtonBox::Cancel)) {
+        reject();
+    }
 }
 #endif
 

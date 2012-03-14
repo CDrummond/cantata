@@ -6,6 +6,7 @@
 3. Use QDateTime::toString(Qt::SystemLocaleShortDate) to show server last
    update in server info page.
 4. TagLib is required for build.
+5. Enable tag editor for Qt builds.
 
 0.5.0
 -----

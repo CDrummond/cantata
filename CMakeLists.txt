@@ -217,13 +217,15 @@ set(CMAKE_REQUIRED_LIBRARIES "${TAGLIB_LIBRARIES}")
 check_cxx_source_compiles("#include <asftag.h>
 int main() { TagLib::ASF::Tag tag; return 0;}" TAGLIB_ASF_FOUND)
 if( NOT TAGLIB_ASF_FOUND )
-    message(FATAL_ERROR "TagLib does not have ASF support compiled in.")
+#    message(FATAL_ERROR "TagLib does not have ASF support compiled in.")
+    message("TagLib does not have ASF support compiled in.")
 endif( NOT TAGLIB_ASF_FOUND )
 
 check_cxx_source_compiles("#include <mp4tag.h>
 int main() { TagLib::MP4::Tag tag(0, 0); return 0;}" TAGLIB_MP4_FOUND)
 if( NOT TAGLIB_MP4_FOUND )
-    message(FATAL_ERROR "TagLib does not have MP4 support compiled in.")
+#    message(FATAL_ERROR "TagLib does not have MP4 support compiled in.")
+    message("TagLib does not have MP4 support compiled in.")
 endif( NOT TAGLIB_MP4_FOUND )
 
 set(CMAKE_REQUIRED_INCLUDES)

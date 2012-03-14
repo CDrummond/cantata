@@ -33,6 +33,7 @@
 #include <QtGui/QApplication>
 #include <QtCore/QDebug>
 #include <QtCore/QThread>
+#include <QtCore/QStringList>
 #include "debugtimer.h"
 
 // #undef qDebug

@@ -5,6 +5,7 @@
 2. When renaming files, rename file.lyrics if it exists.
 3. Use QDateTime::toString(Qt::SystemLocaleShortDate) to show server last
    update in server info page.
+4. TagLib is required for build.
 
 0.5.0
 -----

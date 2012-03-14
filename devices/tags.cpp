@@ -150,13 +150,11 @@ static void ensureFileTypeResolvers()
     if (!alreadyAdded) {
         alreadyAdded = true;
 
-        #ifdef TAGLIB_FOUND
         #ifdef TAGLIB_EXTRAS_FOUND
         TagLib::FileRef::addFileTypeResolver(new AudibleFileTypeResolver);
         TagLib::FileRef::addFileTypeResolver(new RealMediaFileTypeResolver);
         #endif
-        TagLib::FileRef::addFileTypeResolver(new FileTypeResolver());
-        #endif
+        TagLib::FileRef::addFileTypeResolver(new Meta::Tag::FileTypeResolver());
     }
 }
 

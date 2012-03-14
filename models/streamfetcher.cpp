@@ -138,10 +138,8 @@ static QString parse(const QByteArray &data, const QStringList &handlers)
         return parseAsx(data, handlers);
     } else if (data.length()>11 && !strncasecmp(data.constData(), "[reference]", 11)) {
         return parsePlaylist(data, QLatin1String("Ref"), handlers);
-    }
-    else if (data.length()>5 && !strncasecmp(data.constData(), "<?xml", 5)) {
-        QString rv;
-        rv=parseXml(data, handlers);
+    } else if (data.length()>5 && !strncasecmp(data.constData(), "<?xml", 5)) {
+        return parseXml(data, handlers);
     }
 
     return QString();

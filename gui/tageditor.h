@@ -31,6 +31,7 @@
 #include <QtGui/QDialog>
 class QDialogButtonBox;
 class QAbstractButton;
+class QPushButton;
 #endif
 #include "ui_tageditor.h"
 #include "song.h"
@@ -96,6 +97,9 @@ private Q_SLOTS:
 private:
     #ifndef ENABLE_KDE_SUPPORT
     QDialogButtonBox *buttonBox;
+    QPushButton *prevBtn;
+    QPushButton *nextBtn;
+    QPushButton *toolsBtn;
     #endif
     QString baseDir;
     #ifdef ENABLE_DEVICES_SUPPORT

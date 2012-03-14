@@ -39,6 +39,7 @@ SET( CANTATA_SRCS
     gui/infopage.cpp
     gui/serverinfopage.cpp
     gui/playlistspage.cpp
+    gui/tageditor.cpp
     models/musiclibraryitemroot.cpp
     models/musiclibraryitemartist.cpp
     models/musiclibraryitemalbum.cpp
@@ -104,6 +105,7 @@ SET( CANTATA_MOC_HDRS
     gui/preferencesdialog.h
     gui/interfacesettings.h
     gui/externalsettings.h
+    gui/tageditor.h
     models/musiclibrarymodel.h
     models/musiclibraryproxymodel.h
     models/playlistsmodel.h
@@ -153,6 +155,7 @@ SET( CANTATA_UIS
     gui/playbacksettings.ui
     gui/serversettings.ui
     gui/httpserversettings.ui
+    gui/tageditor.ui
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
     widgets/itemview.ui
@@ -244,10 +247,6 @@ endif (TAGLIB-EXTRAS_FOUND)
 SET( CANTATA_SRCS ${CANTATA_SRCS} devices/tags.cpp )
 
 IF( ENABLE_KDE_SUPPORT )
-    SET( CANTATA_SRCS ${CANTATA_SRCS} gui/tageditor.cpp )
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/tageditor.h)
-    SET( CANTATA_UIS ${CANTATA_UIS} gui/tageditor.ui )
-
     find_package(FFMPEG)
     find_package(MPG123)
     if(FFMPEG_FOUND AND MPG123_FOUND)
@@ -396,7 +395,6 @@ IF( ENABLE_KDE_SUPPORT )
     message("      Enabled features:")
     message("        - Track organizer")
     message("        - Open files via command line")
-    message("        - Tag editor")
     message("        - UMS device sync")
     if (MTP_FOUND)
         message("        - MTP device sync")
@@ -420,6 +418,6 @@ IF( ENABLE_KDE_SUPPORT )
         endif(NOT FFMPEG_FOUND OR NOT MPG123_FOUND)
     endif( NOT MTP_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
 ELSE( ENABLE_KDE_SUPPORT )
-    message("INFO: Building WITHOUT KDE support - Device Sync, Tag Editing, Track Organizer, ReplayGain, and CommandLine support DISABLED")
+    message("INFO: Building WITHOUT KDE support - Device Sync, Track Organizer, ReplayGain, and CommandLine support DISABLED")
 ENDIF( ENABLE_KDE_SUPPORT )
 message("")

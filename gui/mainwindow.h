@@ -281,9 +281,7 @@ private Q_SLOTS:
     void toggleDockManager();
 //     void createDataCd();
 //     void createAudioCd();
-    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     void editTags();
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     void organiseFiles();
     void addToDevice(const QString &udi);
@@ -348,9 +346,7 @@ private:
 //     Action *burnAction;
 //     Action *createDataCdAction;
 //     Action *createAudioCdAction;
-    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     Action *editTagsAction;
-    #endif
     #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
     #endif

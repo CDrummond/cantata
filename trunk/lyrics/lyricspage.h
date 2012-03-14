@@ -43,6 +43,7 @@ public:
     LyricsPage(QWidget *parent);
     ~LyricsPage();
 
+    void save();
     void setEnabledProviders(const QStringList &providerList);
     void update(const Song &song, bool force=false);
     const QList<UltimateLyricsProvider *> & getProviders() { return providers; }

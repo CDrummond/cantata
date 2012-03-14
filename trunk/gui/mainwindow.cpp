@@ -952,6 +952,10 @@ MainWindow::~MainWindow()
     }
     Settings::self()->saveHiddenPages(hiddenPages);
     streamsPage->save();
+    lyricsPage->save();
+    #ifdef ENABLE_WEBKIT
+    infoPage->save();
+    #endif
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopOnExit()) {

@@ -9,6 +9,7 @@
 5. Enable tag editor for Qt builds.
 6. Qt-only build does not install icons, so we need to embed the 16px and
    22px version of each into the application.
+7. Save lyrics and info pages zoom settings.
 
 0.5.0
 -----

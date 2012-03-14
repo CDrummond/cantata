@@ -162,6 +162,19 @@ int MusicLibraryModel::columnCount(const QModelIndex &parent) const
     }
 }
 
+#ifndef ENABLE_KDE_SUPPORT
+const QIcon & MusicLibraryModel::vaIcon() const
+{
+    static QIcon icon;
+
+    if (icon.isNull()) {
+        icon.addFile(":va16.png");
+        icon.addFile(":va22.png");
+    }
+    return icon;
+}
+#endif
+
 QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -175,7 +188,11 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         switch (item->type()) {
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
+            #ifdef ENABLE_KDE_SUPPORT
             return artist->isVarious() ? QIcon::fromTheme("cantata-view-media-artist-various") : QIcon::fromTheme("view-media-artist");
+            #else
+            return artist->isVarious() ? vaIcon() : QIcon::fromTheme("view-media-artist");
+            #endif
         }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {

@@ -143,6 +143,14 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
     layout->addWidget(mainWidet);
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Reset, Qt::Horizontal, this);
+    toolsBtn=new QPushButton(QIcon::fromTheme("tools-wizard"), tr("Tools"), this);
+    buttonBox->addButton(toolsBtn, QDialogButtonBox::ActionRole);
+    QMenu *toolsMenu=new QMenu(this);
+    toolsMenu->addAction(tr("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
+    toolsMenu->addAction(tr("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
+    toolsMenu->addAction(tr("Capitalize"), this, SLOT(capitalise()));
+    toolsMenu->addAction(tr("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
+    toolsBtn->setMenu(toolsMenu);
     if (songs.count()>1) {
         prevBtn=new QPushButton(QIcon::fromTheme("go-previous"), tr("Previous"), this);
         nextBtn=new QPushButton(QIcon::fromTheme("go-next"), tr("Next"), this);
@@ -153,14 +161,6 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     } else {
         prevBtn=nextBtn=0;
     }
-    toolsBtn=new QPushButton(QIcon::fromTheme("tools-wizard"), tr("Tools"), this);
-    buttonBox->addButton(toolsBtn, QDialogButtonBox::ActionRole);
-    QMenu *toolsMenu=new QMenu(this);
-    toolsMenu->addAction(tr("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
-    toolsMenu->addAction(tr("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
-    toolsMenu->addAction(tr("Capitalize"), this, SLOT(capitalise()));
-    toolsMenu->addAction(tr("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
-    toolsBtn->setMenu(toolsMenu);
     layout->addWidget(buttonBox);
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
 //     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));

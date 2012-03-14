@@ -85,9 +85,7 @@
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
 #include "rgdialog.h"
 #endif
-#ifdef ENABLE_TAG_EDITOR_SUPPORT
 #include "tageditor.h"
-#endif
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -408,10 +406,8 @@ MainWindow::MainWindow(QWidget *parent)
 //     createDataCdAction = actionCollection()->addAction("createdatacd");
 //     createDataCdAction->setText(i18n("Create Data CD/DVD"));
 
-    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     editTagsAction = actionCollection()->addAction("edittags");
     editTagsAction->setText(i18n("Edit Tags"));
-    #endif
 
     libraryTabAction = actionCollection()->addAction("showlibrarytab");
     libraryTabAction->setText(i18n("Library"));
@@ -477,9 +473,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     burnAction = new QAction(tr("Burn To CD/DVD"), this);
 //     createAudioCdAction = new QAction(tr("Create Audio CD"), this);
 //     createDataCdAction = new QAction(tr("Create Data CD"), this);
-    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     editTagsAction = new QAction(tr("Edit Tags"), this);
-    #endif
     libraryTabAction = new QAction(tr("Library"), this);
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
@@ -535,9 +529,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     burnAction->setIcon(Icon("tools-media-optical-burn"));
 //     createDataCdAction->setIcon(Icon("media-optical"));
 //     createAudioCdAction->setIcon(Icon("media-optical-audio"));
-    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     editTagsAction->setIcon(Icon("document-edit"));
-    #endif
 //     QMenu *cdMenu=new QMenu(this);
 //     cdMenu->addAction(createAudioCdAction);
 //     cdMenu->addAction(createDataCdAction);
@@ -829,9 +821,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
 //     connect(createDataCdAction, SIGNAL(activated()), this, SLOT(createDataCd()));
 //     connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
-    #ifdef ENABLE_TAG_EDITOR_SUPPORT
     connect(editTagsAction, SIGNAL(activated()), this, SLOT(editTags()));
-    #endif
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
@@ -2303,16 +2293,15 @@ void MainWindow::toggleDockManager()
 #define DIALOG_ERROR QMessageBox::information(this, tr("Action is not currently possible, due to other open dialogs."), QMessageBox::Ok); return
 #endif
 
-#ifdef ENABLE_TAG_EDITOR_SUPPORT
 void MainWindow::editTags()
 {
     if (0!=TagEditor::instanceCount()) {
         return;
     }
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (0!=ActionDialog::instanceCount()) {
         DIALOG_ERROR;
     }
-    #ifdef ENABLE_DEVICES_SUPPORT
     if (0!=TrackOrganiser::instanceCount()) {
         DIALOG_ERROR;
     }
@@ -2361,7 +2350,6 @@ void MainWindow::editTags()
         dlg->show();
     }
 }
-#endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void MainWindow::organiseFiles()

@@ -241,7 +241,7 @@ if (TAGLIB-EXTRAS_FOUND)
     add_definitions(${TAGLIB-EXTRAS_CFLAGS})
 endif (TAGLIB-EXTRAS_FOUND)
 
-SET( CANTATA_SRCS ${CANTATA_SRCS} devices/tags.cpp devices/filetyperesolver.cpp )
+SET( CANTATA_SRCS ${CANTATA_SRCS} devices/tags.cpp )
 
 IF( ENABLE_KDE_SUPPORT )
     SET( CANTATA_SRCS ${CANTATA_SRCS} gui/tageditor.cpp )
@@ -268,7 +268,7 @@ IF( ENABLE_KDE_SUPPORT )
 
     SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp
             devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
-            models/devicesmodel.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
+            models/devicesmodel.cpp devices/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
             devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp devices/encoders.cpp
             devices/transcodingjob.cpp devices/valueslider.cpp devices/trackorganiser.cpp)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h

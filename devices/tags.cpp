@@ -22,7 +22,9 @@
  */
 
 #include "tags.h"
+#ifdef ENABLE_KDE_SUPPORT
 #include "filetyperesolver.h"
+#endif
 #include "utils.h"
 #include <algorithm>
 #include <cctype>
@@ -154,7 +156,9 @@ static void ensureFileTypeResolvers()
         TagLib::FileRef::addFileTypeResolver(new AudibleFileTypeResolver);
         TagLib::FileRef::addFileTypeResolver(new RealMediaFileTypeResolver);
         #endif
+        #ifdef ENABLE_KDE_SUPPORT
         TagLib::FileRef::addFileTypeResolver(new Meta::Tag::FileTypeResolver());
+        #endif
     }
 }
 

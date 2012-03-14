@@ -42,6 +42,7 @@
 #include "infopage.h"
 #include "network.h"
 #include "mainwindow.h"
+#include "settings.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 #define WEBVIEW_BASE KWebView
@@ -50,7 +51,6 @@
 #endif
 
 class WebView : public WEBVIEW_BASE
-
 {
 public:
     WebView(QWidget *p) : WEBVIEW_BASE(p) { }
@@ -109,6 +109,12 @@ InfoPage::InfoPage(QWidget *parent)
     forwardBtn->setDefaultAction(view->page()->action(QWebPage::Forward));
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(changeView()));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)), SLOT(downloadRequested(const QNetworkRequest &)));
+    view->setZoomFactor(Settings::self()->infoZoom()/100.0);
+}
+
+void InfoPage::save()
+{
+    Settings::self()->saveInfoZoom(view->zoomFactor()*100);
 }
 
 void InfoPage::askGoogle(const QString &query)

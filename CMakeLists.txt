@@ -183,7 +183,6 @@ SET( QT_USE_QTDBUS TRUE )
 
 # this command finds Qt4 libraries and sets all required variables
 FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )
-FIND_PACKAGE( KDE4 )
 
 qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
 qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockItem.xml )
@@ -193,19 +192,17 @@ IF( NOT DEFINED WANT_KDE_SUPPORT )
     SET( WANT_KDE_SUPPORT ON )
 ENDIF( NOT DEFINED WANT_KDE_SUPPORT )
 
+IF( WANT_KDE_SUPPORT )
+    FIND_PACKAGE( KDE4 )
+    IF( KDE4_FOUND )
+        ADD_DEFINITIONS( -DENABLE_KDE_SUPPORT )
+        SET( ENABLE_KDE_SUPPORT TRUE )
+    ENDIF( KDE4_FOUND )
+ENDIF( WANT_KDE_SUPPORT )
+
 IF( NOT DEFINED ENABLE_WEBKIT )
     SET( ENABLE_WEBKIT TRUE )
 ENDIF( NOT DEFINED ENABLE_WEBKIT )
-
-IF( KDE4_FOUND )
-    IF( WANT_KDE_SUPPORT )
-        MESSAGE("KDE 4 has been found, will build extra features...")
-        ADD_DEFINITIONS( -DENABLE_KDE_SUPPORT )
-        SET( ENABLE_KDE_SUPPORT TRUE )
-    ELSE( WANT_KDE_SUPPORT )
-        MESSAGE("KDE 4 has been found, but won't be used by user request")
-    ENDIF( WANT_KDE_SUPPORT )
-ENDIF( KDE4_FOUND )
 
 set(TAGLIB_MIN_VERSION "1.6")
 find_package(Taglib REQUIRED)

@@ -63,6 +63,8 @@ using namespace Internal;
 const int FancyTabBar::m_rounding = 22;
 const int FancyTabBar::m_textPadding = 4;
 
+static const int constBorderPad=4;
+
 #if 0
 static QPainterPath createPath(const QRect &rect, double radius)
 {
@@ -325,7 +327,6 @@ QSize FancyTab::sizeHint() const {
     }
 }
 
-#include <QtCore/QDebug>
 QSize FancyTabBar::tabSizeHint() const
 {
 //   QFont boldFont(font());
@@ -339,9 +340,11 @@ QSize FancyTabBar::tabSizeHint() const
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
         int width = qMax(60 + spacing + 2, maxTw);
-        return QSize(width, m_iconSize + spacing + fm.height());
+        return QSize(width+(static_cast<FancyTabWidget *>(parent())->drawBorder() ? constBorderPad : 0),
+                     m_iconSize + spacing + fm.height());
     } else {
-        return QSize(m_iconSize + spacing, m_iconSize + spacing);
+        return QSize(m_iconSize + spacing + (static_cast<FancyTabWidget *>(parent())->drawBorder() ? constBorderPad : 0),
+                     m_iconSize + spacing);
     }
 }
 
@@ -442,6 +445,9 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     painter->save();
 
     QRect rect = tabRect(tabIndex);
+    if (static_cast<FancyTabWidget *>(parent())->drawBorder()) {
+        rect.adjust(1, 0, -constBorderPad, 0);
+    }
     bool selected = (tabIndex == m_currentIndex);
 
     QStyleOptionViewItemV4 styleOpt;
@@ -579,6 +585,36 @@ void FancyTabWidget::SetBackgroundPixmap(const QPixmap& pixmap) {
   update();
 }
 
+static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
+{
+    QPoint start(r.x(), r.y());
+    QPoint end(r.x(), r.y()+r.height()-1);
+    QLinearGradient grad(start, end);
+    QColor c(col);
+    c.setAlphaF(0.45);
+    QColor fade(c);
+    const int fadeSize=32;
+    double fadePos=1.0-((r.height()-(fadeSize*2))/(r.height()*1.0));
+
+    fade.setAlphaF(0.0);
+    if(fadePos>=0 && fadePos<=1.0) {
+        grad.setColorAt(0, fade);
+        grad.setColorAt(fadePos, c);
+    } else {
+        grad.setColorAt(0, c);
+    }
+    if(fadePos>=0 && fadePos<=1.0) {
+        grad.setColorAt(1.0-fadePos, c);
+        grad.setColorAt(1, fade);
+    } else {
+        grad.setColorAt(1, c);
+    }
+    p->save();
+    p->setPen(QPen(QBrush(grad), 1));
+    p->drawLine(start, end);
+    p->restore();
+}
+
 void FancyTabWidget::paintEvent(QPaintEvent*e) {
     QWidget::paintEvent(e);
     if (!drawBorder_) {
@@ -588,8 +624,10 @@ void FancyTabWidget::paintEvent(QPaintEvent*e) {
     QPainter painter(this);
     QRect rect = side_widget_->rect().adjusted(0, 0, 1, 0);
     rect = style()->visualRect(layoutDirection(), geometry(), rect);
-    painter.setPen(QApplication::palette().mid().color());
-    painter.drawLine(rect.topRight(), rect.bottomRight());
+    drawFadedLine(&painter, rect, palette().foreground().color());
+    drawFadedLine(&painter, rect.adjusted(rect.width()-(constBorderPad+1), 0, 0, 0), palette().foreground().color());
+//     painter.setPen(QApplication::palette().mid().color());
+//     painter.drawLine(rect.topRight(), rect.bottomRight());
 //   if (!use_background_)
 //     return;
 //

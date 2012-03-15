@@ -337,7 +337,6 @@ IF( ENABLE_KDE_SUPPORT )
         endif (trans STREQUAL "all")
     endforeach(trans ${CANTATA_TRANSLATIONS})
 
-    ADD_SUBDIRECTORY( icons )
     add_subdirectory(po)
 ELSE( ENABLE_KDE_SUPPORT )
     SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/dirrequester.cpp widgets/lineedit.cpp network/networkproxyfactory.cpp network/proxysettings.cpp widgets/kmessagewidget.cpp )
@@ -354,6 +353,8 @@ ELSE( ENABLE_KDE_SUPPORT )
     ADD_DEFINITIONS( -DQT_NO_STL -DQT_NO_CAST_TO_ASCII -Wall -Wextra )
     SET( XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications" )
 ENDIF( ENABLE_KDE_SUPPORT )
+
+ADD_SUBDIRECTORY( icons )
 
 TARGET_LINK_LIBRARIES(cantata ${TAGLIB_LIBRARIES})
 include_directories( ${TAGLIB_INCLUDES})

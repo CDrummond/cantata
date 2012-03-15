@@ -63,8 +63,6 @@ using namespace Internal;
 const int FancyTabBar::m_rounding = 22;
 const int FancyTabBar::m_textPadding = 4;
 
-static const int constBorderPad=4;
-
 #if 0
 static QPainterPath createPath(const QRect &rect, double radius)
 {
@@ -339,12 +337,9 @@ QSize FancyTabBar::tabSizeHint() const
         foreach (FancyTab *tab, m_tabs) {
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
-        int width = qMax(60 + spacing + 2, maxTw);
-        return QSize(width+(static_cast<FancyTabWidget *>(parent())->drawBorder() ? constBorderPad : 0),
-                     m_iconSize + spacing + fm.height());
+        return QSize(qMax(60 + spacing + 2, maxTw), m_iconSize + spacing + fm.height());
     } else {
-        return QSize(m_iconSize + spacing + (static_cast<FancyTabWidget *>(parent())->drawBorder() ? constBorderPad : 0),
-                     m_iconSize + spacing);
+        return QSize(m_iconSize + spacing, m_iconSize + spacing);
     }
 }
 
@@ -445,9 +440,6 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     painter->save();
 
     QRect rect = tabRect(tabIndex);
-    if (static_cast<FancyTabWidget *>(parent())->drawBorder()) {
-        rect.adjust(1, 0, -constBorderPad, 0);
-    }
     bool selected = (tabIndex == m_currentIndex);
 
     QStyleOptionViewItemV4 styleOpt;
@@ -625,7 +617,7 @@ void FancyTabWidget::paintEvent(QPaintEvent*e) {
     QRect rect = side_widget_->rect().adjusted(0, 0, 1, 0);
     rect = style()->visualRect(layoutDirection(), geometry(), rect);
     drawFadedLine(&painter, rect, palette().foreground().color());
-    drawFadedLine(&painter, rect.adjusted(rect.width()-(constBorderPad+1), 0, 0, 0), palette().foreground().color());
+    drawFadedLine(&painter, rect.adjusted(rect.width()-2, 0, 0, 0), palette().foreground().color());
 //     painter.setPen(QApplication::palette().mid().color());
 //     painter.drawLine(rect.topRight(), rect.bottomRight());
 //   if (!use_background_)

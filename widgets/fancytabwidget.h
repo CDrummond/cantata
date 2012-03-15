@@ -209,7 +209,6 @@ public:
   Mode mode() const { return mode_; }
   void setAllowContextMenu(bool a) { allowContext_=a; }
   void setDrawBorder(bool b) { drawBorder_=b; }
-  bool drawBorder() const { return drawBorder_; }
 
 public slots:
   void SetCurrentIndex(int index);

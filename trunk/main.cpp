@@ -28,6 +28,9 @@
 #include <KDE/KStartupInfo>
 #else
 #include <QtGui/QApplication>
+#include <QtGui/QIcon>
+#include <QtCore/QFile>
+#include <QtCore/QDir>
 #endif
 #include "config.h"
 #include "mainwindow.h"
@@ -76,6 +79,34 @@ public:
 
     MainWindow *w;
 };
+#else
+void setupIconTheme()
+{
+    // Check that we have certain icons in the selected icon theme. If not, and oxygen is installed, then
+    // set icon theme to oxygen.
+    QString theme=QIcon::themeName();
+    if (QLatin1String("oxygen")!=theme) {
+        QStringList check=QStringList() << "actions/edit-clear-list" << "actions/view-media-playlist"
+                                        << "actions/view-media-lyrics" << "actions/configure"
+                                        << "actions/view-choose" << "actions/view-media-artist"
+                                        << "places/server-database" << "mimetypes/audio-ac3"
+                                        << "devices/media-optical-audio";
+
+        foreach (const QString &icn, check) {
+            if (!QIcon::hasThemeIcon(icn)) {
+                QStringList paths=QIcon::themeSearchPaths();
+
+                foreach (const QString &p, paths) {
+                    if (QDir(p+QLatin1String("/oxygen")).exists()) {
+                        QIcon::setThemeName(QLatin1String("oxygen"));
+                        return;
+                    }
+                }
+                return;
+            }
+        }
+    }
+}
 #endif
 
 int main(int argc, char *argv[])
@@ -109,6 +140,7 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName(PACKAGE_NAME);
     QApplication::setOrganizationName(PACKAGE_NAME);
 
+    setupIconTheme();
     MainWindow mw;
 #endif
 

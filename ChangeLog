@@ -1,20 +1,21 @@
 0.5.1
 -----
-1. Reduce QMutex usage - have MPDStats/MPDStatus emitted as objects, and
-   stored in relevant classes.
-2. When renaming files, rename file.lyrics if it exists.
-3. Use QDateTime::toString(Qt::SystemLocaleShortDate) to show server last
-   update in server info page.
-4. TagLib is required for build.
-5. Enable tag editor for Qt builds.
-6. Qt-only build does not install icons, so we need to embed the 16px and
-   22px version of each into the application.
-7. Save lyrics and info pages zoom settings.
-8. If compiled for Qt-only, and icon theme is not oxygen, then check to see
-   if current icon theme has required icons (devices/media-optical-audio, etc)
-   If not, then if oxygen is installed - set icon theme to oxygen.
-9. Allocate more space for tab if required - up to a max of 50% extra. This
-   fixes "HTTP Server" config page title under Ubuntu with Qt-only build.
+ 1. Reduce QMutex usage - have MPDStats/MPDStatus emitted as objects, and
+    stored in relevant classes.
+ 2. When renaming files, rename file.lyrics if it exists.
+ 3. Use QDateTime::toString(Qt::SystemLocaleShortDate) to show server last
+    update in server info page.
+ 4. TagLib is required for build.
+ 5. Enable tag editor for Qt builds.
+ 6. Qt-only build does not install icons, so we need to embed the 16px and
+    22px version of each into the application.
+ 7. Save lyrics and info pages zoom settings.
+ 8. If compiled for Qt-only, and icon theme is not oxygen, then check to see
+    if current icon theme has required icons (devices/media-optical-audio, etc)
+    If not, then if oxygen is installed - set icon theme to oxygen.
+ 9. Allocate more space for tab if required - up to a max of 50% extra. This
+    fixes "HTTP Server" config page title under Ubuntu with Qt-only build.
+10. Install icon for Qt-only build.
 
 0.5.0
 -----

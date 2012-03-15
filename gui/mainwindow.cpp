@@ -585,7 +585,7 @@ MainWindow::MainWindow(QWidget *parent)
     addToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
 
     menuButton->setIcon(Icon("configure"));
-    volumeButton->setIcon(Icon("player-volume"));
+    volumeButton->setIcon(Icon("audio-volume-high"));
     connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
             SLOT(cover(const QString &, const QString &, const QImage &, const QString &)));
 
@@ -1677,7 +1677,6 @@ void MainWindow::updateStatus()
         volumeButton->setToolTip(tr("Volume %1%").arg(volume));
         volumeControl->setToolTip(tr("Volume %1%").arg(volume));
         #endif
-        volumeButton->setIcon(Icon("player-volume"));
         volumeControl->setValue(volume);
 
         if (0==volume) {

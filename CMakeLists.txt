@@ -86,6 +86,7 @@ SET( CANTATA_SRCS
     devices/utils.cpp
     http/httpserver.cpp
     http/httpsocket.cpp
+    devices/tags.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -177,10 +178,6 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
                      ${CMAKE_BINARY_DIR}
 )
 
-SET( QT_USE_QTNETWORK TRUE )
-SET( QT_USE_QTXML TRUE )
-SET( QT_USE_QTDBUS TRUE )
-
 # this command finds Qt4 libraries and sets all required variables
 FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )
 
@@ -211,15 +208,13 @@ include(CheckCXXSourceCompiles)
 set(CMAKE_REQUIRED_INCLUDES "${TAGLIB_INCLUDES}")
 set(CMAKE_REQUIRED_LIBRARIES "${TAGLIB_LIBRARIES}")
 
-check_cxx_source_compiles("#include <asftag.h>
-int main() { TagLib::ASF::Tag tag; return 0;}" TAGLIB_ASF_FOUND)
+check_cxx_source_compiles("#include <asftag.h> int main() { TagLib::ASF::Tag tag; return 0;}" TAGLIB_ASF_FOUND)
 if( NOT TAGLIB_ASF_FOUND )
 #    message(FATAL_ERROR "TagLib does not have ASF support compiled in.")
     message("TagLib does not have ASF support compiled in.")
 endif( NOT TAGLIB_ASF_FOUND )
 
-check_cxx_source_compiles("#include <mp4tag.h>
-int main() { TagLib::MP4::Tag tag(0, 0); return 0;}" TAGLIB_MP4_FOUND)
+check_cxx_source_compiles("#include <mp4tag.h> int main() { TagLib::MP4::Tag tag(0, 0); return 0;}" TAGLIB_MP4_FOUND)
 if( NOT TAGLIB_MP4_FOUND )
 #    message(FATAL_ERROR "TagLib does not have MP4 support compiled in.")
     message("TagLib does not have MP4 support compiled in.")
@@ -233,7 +228,6 @@ find_package(Taglib-Extras)
 set(TAGLIB_EXTRAS_FOUND ${TAGLIB-EXTRAS_FOUND}) # we need a c-compatible name for the include file
 
 include(CheckTagLibFileName)
-
 check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
 
 include_directories(${TAGLIB_INCLUDES})
@@ -242,8 +236,6 @@ if (TAGLIB-EXTRAS_FOUND)
     include_directories(${TAGLIB-EXTRAS_INCLUDES})
     add_definitions(${TAGLIB-EXTRAS_CFLAGS})
 endif (TAGLIB-EXTRAS_FOUND)
-
-SET( CANTATA_SRCS ${CANTATA_SRCS} devices/tags.cpp )
 
 IF( ENABLE_KDE_SUPPORT )
     find_package(FFMPEG)

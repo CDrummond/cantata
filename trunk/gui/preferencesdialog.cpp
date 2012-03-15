@@ -106,7 +106,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page->setIcon(KIcon("speaker"));
     page=widget->addPage(interface, i18n("Interface"));
     page->setHeader(i18n("Interface Settings"));
-    page->setIcon(KIcon("preferences-desktop-color"));
+    page->setIcon(KIcon("view-choose"));
     page=widget->addPage(ext, i18n("External"));
     page->setHeader(i18n("External Settings"));
     page->setIcon(KIcon("video-display"));
@@ -125,8 +125,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
                    QIcon::fromTheme("server-database"), tr("Server"));
     widget->AddTab(new ConfigPage(this, tr("Playback Settings"), QIcon::fromTheme("media-playback-start"), playback),
                    QIcon::fromTheme("media-playback-start"), tr("Playback"));
-    widget->AddTab(new ConfigPage(this, tr("Interface Settings"), QIcon::fromTheme("preferences-desktop-color"), interface),
-                   QIcon::fromTheme("preferences-desktop-color"), tr("Interface"));
+    widget->AddTab(new ConfigPage(this, tr("Interface Settings"), QIcon::fromTheme("view-choose"), interface),
+                   QIcon::fromTheme("view-choose"), tr("Interface"));
     widget->AddTab(new ConfigPage(this, tr("External Settings"), QIcon::fromTheme("video-display"), ext),
                    QIcon::fromTheme("video-display"), tr("External"));
     widget->AddTab(new ConfigPage(this, tr("HTTP Server Settings"), QIcon::fromTheme("network-server"), http),

@@ -556,7 +556,6 @@ MainWindow::MainWindow(QWidget *parent)
     removeFromPlaylistAction->setIcon(Icon("list-remove"));
     clearPlaylistAction->setIcon(Icon("edit-clear-list"));
     savePlaylistAction->setIcon(Icon("document-save-as"));
-    clearPlaylistAction->setIcon(Icon("edit-clear-list"));
     expandInterfaceAction->setIcon(Icon("view-media-playlist"));
     refreshAction->setIcon(Icon("view-refresh"));
     connectAction->setIcon(Icon("network-connect"));

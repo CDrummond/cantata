@@ -10,6 +10,9 @@
 6. Qt-only build does not install icons, so we need to embed the 16px and
    22px version of each into the application.
 7. Save lyrics and info pages zoom settings.
+8. If compiled for Qt-only, and icon theme is not oxygen, then check to see
+   if current icon theme has required icons (devices/media-optical-audio, etc)
+   If not, then if oxygen is installed - set icon theme to oxygen.
 
 0.5.0
 -----

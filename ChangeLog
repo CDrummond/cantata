@@ -13,6 +13,8 @@
 8. If compiled for Qt-only, and icon theme is not oxygen, then check to see
    if current icon theme has required icons (devices/media-optical-audio, etc)
    If not, then if oxygen is installed - set icon theme to oxygen.
+9. Allocate more space for tab if required - up to a max of 50% extra. This
+   fixes "HTTP Server" config page title under Ubuntu with Qt-only build.
 
 0.5.0
 -----

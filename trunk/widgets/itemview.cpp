@@ -22,12 +22,13 @@
  */
 
 #include "itemview.h"
+#include "groupedview.h"
 #include "mainwindow.h"
 #include "covers.h"
 #include "proxymodel.h"
+#include "actionitemdelegate.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
-#include <QtGui/QStyledItemDelegate>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionViewItem>
 #include <QtGui/QPainter>
@@ -57,38 +58,6 @@ bool EscapeKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
-// static QPainterPath buildPath(const QRectF &r, double radius)
-// {
-//     QPainterPath path;
-//     double diameter(radius*2);
-//
-//     path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-//     path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-//     path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-//     path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-//     path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-//     return path;
-// }
-
-static void drawBgnd(QPainter *painter, const QRect &rx)
-{
-    QRectF r(rx.x()-0.5, rx.y()-0.5, rx.width()+1, rx.height()+1);
-    QPainterPath p;//(buildPath(r, r.width()/2.0));
-    QColor c(Qt::white);
-
-    p.addEllipse(r);
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    c.setAlphaF(0.75);
-    painter->fillPath(p, c);
-//     c.setAlphaF(0.95);
-//     painter->setPen(c);
-//     painter->drawPath(p);
-    painter->setRenderHint(QPainter::Antialiasing, false);
-}
-
-static const int constBorder = 1;
-static const int constActionBorder = 4;
-static const int constActionIconSize=16;
 static const int constImageSize=22;
 static const int constDevImageSize=32;
 
@@ -97,69 +66,11 @@ static inline double subTextAlpha(bool selected)
     return selected ? 0.7 : 0.6;
 }
 
-QRect calcActionRect(bool rtl, bool iconMode, const QRect &rect)
-{
-    return rtl
-                ? iconMode
-                    ? QRect(rect.x()+constActionBorder,
-                            rect.y()+constActionBorder,
-                            constActionIconSize, constActionIconSize)
-                    : QRect(rect.x()+constActionBorder,
-                            rect.y()+((rect.height()-constActionIconSize)/2),
-                            constActionIconSize, constActionIconSize)
-                : iconMode
-                    ? QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
-                            rect.y()+constActionBorder,
-                            constActionIconSize, constActionIconSize)
-                    : QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
-                            rect.y()+((rect.height()-constActionIconSize)/2),
-                            constActionIconSize, constActionIconSize);
-}
-
-static void adjustActionRect(bool rtl, bool iconMode, QRect &rect)
-{
-    if (rtl) {
-        if (iconMode) {
-            rect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
-        } else {
-            rect.adjust(constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder, 0);
-        }
-    } else {
-        if (iconMode) {
-            rect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
-        } else {
-            rect.adjust(-(constActionIconSize+constActionBorder), 0, -(constActionIconSize+constActionBorder), 0);
-        }
-    }
-}
-
-static bool hasActions(const QModelIndex &index, int actLevel)
-{
-    if (actLevel<0) {
-        return true;
-    }
-
-    int level=0;
-
-    QModelIndex idx=index;
-    while(idx.parent().isValid()) {
-        if (++level>actLevel) {
-            return false;
-        }
-        idx=idx.parent();
-    }
-    return true;
-}
-
-class ListDelegate : public QStyledItemDelegate
+class ListDelegate : public ActionItemDelegate
 {
 public:
-    ListDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
-        : QStyledItemDelegate(p)
-        , act1(a1)
-        , act2(a2)
-        , toggle(t)
-        , actLevel(actionLevel)
+    ListDelegate(QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
+        : ActionItemDelegate(p, a1, a2, t, actionLevel)
     {
     }
 
@@ -319,62 +230,12 @@ public:
 
         painter->restore();
     }
-
-    void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, bool iconMode, const QModelIndex &index) const
-    {
-        double opacity=painter->opacity();
-        if (!mouseOver) {
-            painter->setOpacity(opacity*0.2);
-        }
-
-        QRect actionRect=calcActionRect(rtl, iconMode, r);
-        if (act1) {
-            QPixmap pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-            if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-                drawBgnd(painter, actionRect);
-                painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                    actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-            }
-        }
-
-        if (act1 && act2) {
-            adjustActionRect(rtl, iconMode, actionRect);
-            QPixmap pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-            if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-                drawBgnd(painter, actionRect);
-                painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                    actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-            }
-        }
-
-        if (act1 && act2 && toggle) {
-            QString iconName=index.data(ItemView::Role_ToggleIconName).toString();
-
-            if (!iconName.isEmpty()) {
-                adjustActionRect(rtl, iconMode, actionRect);
-                QPixmap pix=QIcon::fromTheme(iconName).pixmap(QSize(constActionIconSize, constActionIconSize));
-                if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-                    drawBgnd(painter, actionRect);
-                    painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                        actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-                }
-            }
-        }
-        if (!mouseOver) {
-            painter->setOpacity(opacity);
-        }
-    }
-
-    QAction *act1;
-    QAction *act2;
-    QAction *toggle;
-    int actLevel;
 };
 
 class TreeDelegate : public ListDelegate
 {
 public:
-    TreeDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
+    TreeDelegate(QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
         : ListDelegate(p, a1, a2, t, actionLevel)
     {
     }
@@ -474,6 +335,7 @@ ItemView::ItemView(QWidget *p)
     , toggle(0)
     , currentLevel(0)
     , mode(Mode_Tree)
+    , groupedView(0)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
@@ -495,6 +357,22 @@ ItemView::~ItemView()
 {
 }
 
+void ItemView::allowGroupedView()
+{
+    if (!groupedView) {
+        groupedView=new GroupedView(stackedWidget);
+        treeLayout->addWidget(groupedView);
+        connect(groupedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
+        #ifdef ENABLE_KDE_SUPPORT
+        if (KGlobalSettings::singleClick()) {
+            connect(groupedView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
+        }
+        #endif
+        connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
+        connect(groupedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
+    }
+}
+
 void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
 {
     if (act1 || act2 || toggle) {
@@ -505,8 +383,11 @@ void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
     act2=a2;
     toggle=t;
     actLevel=actionLevel;
-    listView->setItemDelegate(new ListDelegate(this, a1, a2, toggle, actionLevel));
-    treeView->setItemDelegate(new TreeDelegate(this, a1, a2, toggle, actionLevel));
+    listView->setItemDelegate(new ListDelegate(listView, a1, a2, toggle, actionLevel));
+    treeView->setItemDelegate(new TreeDelegate(treeView, a1, a2, toggle, actionLevel));
+    if (groupedView) {
+        groupedView->init(a1, a2, toggle, actionLevel);
+    }
     connect(treeSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(treeSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
     connect(listSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
@@ -532,10 +413,17 @@ void ItemView::addAction(QAction *act)
 {
     treeView->addAction(act);
     listView->addAction(act);
+    if (groupedView) {
+        groupedView->addAction(act);
+    }
 }
 
 void ItemView::setMode(Mode m)
 {
+    if (m<0 || m>Mode_GroupedTree || (Mode_GroupedTree==m && !groupedView)) {
+        m=Mode_Tree;
+    }
+
     if (m==mode) {
         return;
     }
@@ -546,9 +434,24 @@ void ItemView::setMode(Mode m)
     if (Mode_Tree==mode) {
         treeView->setModel(itemModel);
         listView->setModel(0);
+        if (groupedView) {
+            groupedView->setHidden(true);
+            groupedView->setModel(0);
+        }
+        treeView->setHidden(false);
+        itemModel->setRootIndex(QModelIndex());
+    } else if (Mode_GroupedTree==mode) {
+        treeView->setModel(0);
+        listView->setModel(0);
+        groupedView->setHidden(false);
+        treeView->setHidden(true);
+        groupedView->setModel(itemModel);
         itemModel->setRootIndex(QModelIndex());
     } else {
         treeView->setModel(0);
+        if (groupedView) {
+            groupedView->setModel(0);
+        }
         listView->setModel(itemModel);
         setLevel(0);
         listView->setRootIndex(QModelIndex());
@@ -561,7 +464,7 @@ void ItemView::setMode(Mode m)
             listView->setWordWrap(false);
         }
     }
-    stackedWidget->setCurrentIndex(Mode_Tree==mode ? 0 : 1);
+    stackedWidget->setCurrentIndex(Mode_Tree==mode || Mode_GroupedTree==mode ? 0 : 1);
     #ifdef ENABLE_KDE_SUPPORT
     if (spinner) {
         spinner->setWidget(view()->viewport());
@@ -574,7 +477,12 @@ void ItemView::setMode(Mode m)
 
 QModelIndexList ItemView::selectedIndexes() const
 {
-    return Mode_Tree==mode ? treeView->selectedIndexes() : listView->selectedIndexes();
+    if (Mode_Tree==mode) {
+        return treeView->selectedIndexes();
+    } else if(Mode_GroupedTree==mode) {
+        return groupedView->selectedIndexes();
+    }
+    return listView->selectedIndexes();
 }
 
 void ItemView::setLevel(int l, bool haveChildren)
@@ -622,7 +530,13 @@ void ItemView::setLevel(int l, bool haveChildren)
 
 QAbstractItemView * ItemView::view() const
 {
-    return Mode_Tree==mode ? (QAbstractItemView *)treeView : (QAbstractItemView *)listView;
+    if (Mode_Tree==mode) {
+        return treeView;
+    } else if(Mode_GroupedTree==mode) {
+        return groupedView;
+    } else {
+        return listView;
+    }
 }
 
 void ItemView::setModel(ProxyModel *m)
@@ -633,7 +547,7 @@ void ItemView::setModel(ProxyModel *m)
 
 QString ItemView::searchText() const
 {
-    return Mode_Tree==mode ? treeSearch->text() : listSearch->text();
+    return Mode_Tree==mode || Mode_GroupedTree==mode ? treeSearch->text() : listSearch->text();
 }
 
 void ItemView::setTopText(const QString &text)
@@ -681,10 +595,50 @@ void ItemView::setGridSize(const QSize &sz)
     iconGridSize=sz;
 }
 
+void ItemView::update()
+{
+    if (Mode_Tree==mode) {
+        treeView->update();
+    } else if(Mode_GroupedTree==mode) {
+        groupedView->update();
+    } else {
+        listView->update();
+    }
+}
+
 void ItemView::setDeleteAction(QAction *act)
 {
     listView->installEventFilter(new DeleteKeyEventHandler(listView, act));
     treeView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
+    if (groupedView) {
+        groupedView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
+    }
+}
+
+void ItemView::setStartClosed(bool sc)
+{
+    if (groupedView) {
+        groupedView->setStartClosed(sc);
+    }
+}
+
+bool ItemView::isStartClosed()
+{
+    return groupedView ? groupedView->isStartClosed() : false;
+}
+
+void ItemView::updateRows()
+{
+    if (groupedView) {
+        groupedView->updateCollectionRows();
+    }
+}
+
+void ItemView::updateRows(const QModelIndex &idx)
+{
+    if (groupedView) {
+        groupedView->updateRows(idx);
+    }
 }
 
 void ItemView::showSpinner()
@@ -711,9 +665,16 @@ void ItemView::hideSpinner()
     #endif
 }
 
+void ItemView::collectionRemoved(quint32 key)
+{
+    if (groupedView) {
+        groupedView->collectionRemoved(key);
+    }
+}
+
 void ItemView::backActivated()
 {
-    if (Mode_Tree==mode) {
+    if (Mode_Tree==mode || Mode_GroupedTree==mode) {
         return;
     }
     setLevel(currentLevel-1);
@@ -740,9 +701,9 @@ QAction * ItemView::getAction(const QModelIndex &index)
     bool haveToggle = toggle && !index.data(ItemView::Role_ToggleIconName).toString().isEmpty();
     if (Mode_Tree!=mode || showCapacity) {
         if (iconMode) {
-            rect.adjust(constBorder, constBorder, -constBorder, -constBorder);
+            rect.adjust(ActionItemDelegate::constBorder, ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder);
         } else {
-            rect.adjust(constBorder+3, 0, -(constBorder+3), 0);
+            rect.adjust(ActionItemDelegate::constBorder+3, 0, -(ActionItemDelegate::constBorder+3), 0);
         }
     }
 
@@ -751,22 +712,22 @@ QAction * ItemView::getAction(const QModelIndex &index)
         rect.adjust(0, 0, 0, -(textHeight+8));
     }
 
-    QRect actionRect=calcActionRect(rtl, iconMode, rect);
+    QRect actionRect=ActionItemDelegate::calcActionRect(rtl, iconMode, rect);
     QRect actionRect2(actionRect);
-    adjustActionRect(rtl, iconMode, actionRect2);
+    ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect2);
 
     if (act1 && actionRect.contains(QCursor::pos())) {
         return act1;
     }
 
-    adjustActionRect(rtl, iconMode, actionRect);
+    ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
 
     if (act2 && actionRect.contains(QCursor::pos())) {
         return act2;
     }
 
     if (haveToggle) {
-        adjustActionRect(rtl, iconMode, actionRect);
+        ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
 
         if (toggle && actionRect.contains(QCursor::pos())) {
             return toggle;
@@ -778,7 +739,7 @@ QAction * ItemView::getAction(const QModelIndex &index)
 
 void ItemView::itemClicked(const QModelIndex &index)
 {
-    if (hasActions(index, actLevel)) {
+    if (ActionItemDelegate::hasActions(index, actLevel)) {
         QAction *act=getAction(index);
         if (act) {
             act->trigger();
@@ -788,7 +749,7 @@ void ItemView::itemClicked(const QModelIndex &index)
 
 void ItemView::itemActivated(const QModelIndex &index)
 {
-    if (hasActions(index, actLevel)) {
+    if (ActionItemDelegate::hasActions(index, actLevel)) {
         QAction *act=getAction(index);
         if (act) {
             return;
@@ -797,6 +758,10 @@ void ItemView::itemActivated(const QModelIndex &index)
 
     if (Mode_Tree==mode) {
         treeView->setExpanded(index, !treeView->isExpanded(index));
+    } else if (Mode_GroupedTree==mode) {
+        if (!index.parent().isValid()) {
+            groupedView->setExpanded(index, !groupedView->TreeView::isExpanded(index));
+        }
     } else if (index.isValid() && index.child(0, 0).isValid()) {
         prevTopIndex=listView->indexAt(QPoint(0, 0));
         if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
@@ -820,7 +785,8 @@ void ItemView::itemActivated(const QModelIndex &index)
 
 void ItemView::delaySearchItems()
 {
-    if ((Mode_Tree==mode && treeSearch->text().isEmpty()) || (Mode_Tree!=mode && listSearch->text().isEmpty())) {
+    bool isTree=Mode_Tree==mode || Mode_GroupedTree==mode;
+    if ((isTree && treeSearch->text().isEmpty()) || (!isTree && listSearch->text().isEmpty())) {
         if (searchTimer) {
             searchTimer->stop();
         }

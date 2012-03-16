@@ -23,7 +23,7 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="page">
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="treeLayout">
        <property name="margin">
         <number>0</number>
        </property>

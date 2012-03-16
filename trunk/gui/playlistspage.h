@@ -35,11 +35,14 @@ public:
     PlaylistsPage(MainWindow *p);
     virtual ~PlaylistsPage();
 
+    void setStartClosed(bool sc);
+    bool isStartClosed();
+    void updateRows();
     void refresh();
     void clear();
     QStringList selectedFiles() const;
     void addSelectionToPlaylist();
-    void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
+    void setView(int mode) { view->setMode((ItemView::Mode)mode); }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -64,6 +67,7 @@ private Q_SLOTS:
     void renamePlaylist();
     void itemDoubleClicked(const QModelIndex &index);
     void searchItems();
+    void updated(const QModelIndex &index);
 
 private:
     Action *renamePlaylistAction;

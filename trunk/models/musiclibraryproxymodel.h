@@ -41,6 +41,9 @@ public:
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 //     void setFilterField(int field);
     void setFilterGenre(const QString &genre);
+    bool isEmpty() const {
+        return filterGenre.isEmpty() && filterRegExp().isEmpty();
+    }
 
 private:
     bool filterAcceptsRoot(const MusicLibraryItem * const item) const;

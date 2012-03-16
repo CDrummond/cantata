@@ -785,6 +785,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
+    playlistsPage->setStartClosed(Settings::self()->playQueueStartClosed());
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated(const MPDStats &)), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
@@ -907,7 +908,7 @@ MainWindow::MainWindow(QWidget *parent)
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::setUseLibrarySizes(Settings::self()->albumsView()!=ItemView::Mode_IconTop);
     AlbumsModel::self()->setAlbumFirst(Settings::self()->albumFirst());
-    playlistsPage->setView(0==Settings::self()->playlistsView());
+    playlistsPage->setView(Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -1207,7 +1208,7 @@ void MainWindow::updateSettings()
     }
 
     libraryPage->setView(0==Settings::self()->libraryView());
-    playlistsPage->setView(0==Settings::self()->playlistsView());
+    playlistsPage->setView(Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
     if (folderPage->isVisible()) {
@@ -1232,6 +1233,12 @@ void MainWindow::updateSettings()
         playQueue->setGrouped(Settings::self()->playQueueGrouped());
         playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(),
                               !usingProxy && autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
+    }
+
+    wasStartClosed=playlistsPage->isStartClosed();
+    playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
+    if (ItemView::Mode_GroupedTree==Settings::self()->playlistsView() && wasStartClosed!=playlistsPage->isStartClosed()) {
+        playlistsPage->updateRows();
     }
 }
 
@@ -1438,11 +1445,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         }
     }
 
-    QSet<qint32> controlledSongIds=playQueue->getControlledSongIds();
-    QSet<quint16> keys=playQueueModel.updatePlaylist(songs, controlledSongIds);
-    if (controlledSongIds.count()) {
-        playQueue->setControlled(keys);
-    }
+    playQueue->setControlledAlbums(playQueueModel.updatePlaylist(songs, playQueue->getControlledAlbums()));
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
 
     // reselect song ids or minrow if songids were not found (songs removed)

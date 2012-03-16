@@ -756,7 +756,9 @@ void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
     data += " ";
     data += encodeName(newName);
 
-    if (!sendCommand(data, false).ok) {
+    if (sendCommand(data, false).ok) {
+        emit playlistRenamed(oldName, newName);
+    } else {
         #ifdef ENABLE_KDE_SUPPORT
         emit error(i18n("Failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName));
         #else

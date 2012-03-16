@@ -61,6 +61,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     MainWindow::initButton(libraryUpdate);
     MainWindow::initButton(replacePlaylist);
 
+    view->allowGroupedView();
     #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Playlists"));
     #else
@@ -92,6 +93,8 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<int> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<int> &)));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
+    connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
+    connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
     MainWindow::initButton(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
@@ -105,6 +108,21 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
 
 PlaylistsPage::~PlaylistsPage()
 {
+}
+
+void PlaylistsPage::setStartClosed(bool sc)
+{
+    view->setStartClosed(sc);
+}
+
+bool PlaylistsPage::isStartClosed()
+{
+    return view->isStartClosed();
+}
+
+void PlaylistsPage::updateRows()
+{
+    view->updateRows();
 }
 
 void PlaylistsPage::refresh()
@@ -258,7 +276,7 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
         QModelIndexList indexes;
         indexes.append(index);
         addItemsToPlayQueue(indexes);
-    }   
+    }
 }
 
 void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
@@ -323,15 +341,16 @@ void PlaylistsPage::controlActions()
 
 void PlaylistsPage::searchItems()
 {
-    QString genre=0==genreCombo->currentIndex() ? QString() : genreCombo->currentText();
+    QString genre=genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText();
     QString filter=view->searchText().trimmed();
 
     if (filter.isEmpty() && genre.isEmpty()) {
+        bool wasEmpty=proxy.isEmpty();
         proxy.setFilterEnabled(false);
         proxy.setFilterGenre(genre);
         if (!proxy.filterRegExp().isEmpty()) {
              proxy.setFilterRegExp(QString());
-        } else {
+        } else if (!wasEmpty) {
             proxy.invalidate();
         }
     } else {
@@ -343,6 +362,11 @@ void PlaylistsPage::searchItems()
             proxy.invalidate();
         }
     }
+}
+
+void PlaylistsPage::updated(const QModelIndex &index)
+{
+    view->updateRows(proxy.mapFromSource(index));
 }
 
 void PlaylistsPage::updateGenres(const QSet<QString> &g)

@@ -198,15 +198,16 @@ void AlbumsPage::itemActivated(const QModelIndex &)
 
 void AlbumsPage::searchItems()
 {
-    QString genre=0==genreCombo->currentIndex() ? QString() : genreCombo->currentText();
+    QString genre=genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText();
     QString filter=view->searchText().trimmed();
 
     if (filter.isEmpty() && genre.isEmpty()) {
+        bool wasEmpty=proxy.isEmpty();
         proxy.setFilterEnabled(false);
         proxy.setFilterGenre(genre);
         if (!proxy.filterRegExp().isEmpty()) {
              proxy.setFilterRegExp(QString());
-        } else {
+        } else if (!wasEmpty) {
             proxy.invalidate();
         }
     } else {

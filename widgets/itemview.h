@@ -34,6 +34,7 @@ class KPixmapSequenceOverlayPainter;
 class ProxyModel;
 class QAction;
 class QTimer;
+class GroupedView;
 
 class EscapeKeyEventHandler : public QObject
 {
@@ -59,6 +60,7 @@ public:
         Mode_Tree,
         Mode_List,
         Mode_IconTop,
+        Mode_GroupedTree,
 
         Mode_Count
     };
@@ -78,6 +80,7 @@ public:
     ItemView(QWidget *p);
     virtual ~ItemView();
 
+    void allowGroupedView();
     void init(QAction *a1, QAction *a2, int actionLevel=-1) { init(a1, a2, 0, actionLevel); }
     void init(QAction *a1, QAction *a2, QAction *toggle, int actionLevel=-1);
     void addAction(QAction *act);
@@ -96,13 +99,19 @@ public:
     void setDragDropMode(QAbstractItemView::DragDropMode v);
     void setGridSize(const QSize &sz);
     QSize gridSize() const { return listView->gridSize(); }
-    void update() { Mode_Tree==mode ? treeView->update() : listView->update(); }
+    void update();
     void setDeleteAction(QAction *act);
     void setRootIsDecorated(bool v) { treeView->setRootIsDecorated(v); }
+
+    void setStartClosed(bool sc);
+    bool isStartClosed();
+    void updateRows();
+    void updateRows(const QModelIndex &idx);
 
 public Q_SLOTS:
     void showSpinner();
     void hideSpinner();
+    void collectionRemoved(quint32 key);
 
 Q_SIGNALS:
     void searchItems();
@@ -133,6 +142,7 @@ private:
     QModelIndex prevTopIndex;
     QSize iconGridSize;
     QSize listGridSize;
+    GroupedView *groupedView;
     #ifdef ENABLE_KDE_SUPPORT
     bool spinnerActive;
     KPixmapSequenceOverlayPainter *spinner;

@@ -36,7 +36,7 @@
 #include <KDE/KLocale>
 #endif
 #include "playqueuemodel.h"
-#include "playqueueview.h"
+#include "groupedview.h"
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
 #include "mpdstats.h"
@@ -187,16 +187,20 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
 //     }
 
     switch (role) {
-    case PlayQueueView::Role_Key:
+    case GroupedView::Role_IsCollection:
+        return false;
+    case GroupedView::Role_CollectionId:
+        return 0;
+    case GroupedView::Role_Key:
         return songs.at(index.row()).key;
-    case PlayQueueView::Role_Id:
+    case GroupedView::Role_Id:
         return songs.at(index.row()).id;
-    case PlayQueueView::Role_Song: {
+    case GroupedView::Role_Song: {
         QVariant var;
         var.setValue<Song>(songs.at(index.row()));
         return var;
     }
-    case PlayQueueView::Role_AlbumDuration: {
+    case GroupedView::Role_AlbumDuration: {
         const Song &first = songs.at(index.row());
         quint32 d=first.time;
         for (int i=index.row()+1; i<songs.count(); ++i) {
@@ -217,7 +221,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         return d;
     }
-    case PlayQueueView::Role_SongCount: {
+    case GroupedView::Role_SongCount: {
         const Song &first = songs.at(index.row());
         quint32 count=1;
         for (int i=index.row()+1; i<songs.count(); ++i) {
@@ -238,24 +242,24 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         return count;
     }
-    case PlayQueueView::Role_CurrentStatus: {
+    case GroupedView::Role_CurrentStatus: {
         switch (mpdState) {
         case MPDState_Inactive:
-        case MPDState_Stopped: return (int)PlayQueueView::State_Stopped;
-        case MPDState_Playing: return (int)PlayQueueView::State_Playing;
-        case MPDState_Paused:  return (int)PlayQueueView::State_Paused;
+        case MPDState_Stopped: return (int)GroupedView::State_Stopped;
+        case MPDState_Playing: return (int)GroupedView::State_Playing;
+        case MPDState_Paused:  return (int)GroupedView::State_Paused;
         }
     }
-    case PlayQueueView::Role_Status:
+    case GroupedView::Role_Status:
         if (songs.at(index.row()).id == currentSongId) {
             switch (mpdState) {
             case MPDState_Inactive:
-            case MPDState_Stopped: return (int)PlayQueueView::State_Stopped;
-            case MPDState_Playing: return (int)PlayQueueView::State_Playing;
-            case MPDState_Paused:  return (int)PlayQueueView::State_Paused;
+            case MPDState_Stopped: return (int)GroupedView::State_Stopped;
+            case MPDState_Playing: return (int)GroupedView::State_Playing;
+            case MPDState_Paused:  return (int)GroupedView::State_Paused;
             }
         }
-        return (int)PlayQueueView::State_Default;
+        return (int)GroupedView::State_Default;
         break;
     case Qt::FontRole: {
         Song s=songs.at(index.row());
@@ -344,6 +348,16 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
     }
 
     return QVariant();
+}
+
+bool PlayQueueModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (GroupedView::Role_DropAdjust==role) {
+        dropAdjust=value.toUInt();
+        return true;
+    } else {
+        return QAbstractTableModel::setData(index, value, role);
+    }
 }
 
 Qt::DropActions PlayQueueModel::supportedDropActions() const
@@ -574,13 +588,21 @@ void PlayQueueModel::setGrouped(bool g)
 
 // Update playqueue with contents returned from MPD.
 // Also, return set of artist-album keys associated with songs in 'ids'
-QSet<quint16> PlayQueueModel::updatePlaylist(const QList<Song> &songList, QSet<qint32> controlledIds)
+QSet<quint16> PlayQueueModel::updatePlaylist(const QList<Song> &songList, QSet<quint16> controlledAlbums)
 {
     TF_DEBUG
     QSet<qint32> newIds;
+    QSet<qint32> controlledIds;
     QSet<quint16> keys;
     foreach (const Song &s, songList) {
         newIds.insert(s.id);
+    }
+
+    // Map from album keys, into song ids...
+    foreach (const Song &s, songs) {
+        if (controlledAlbums.contains(s.key)) {
+            controlledIds.insert(s.id);
+        }
     }
 
     if (songs.isEmpty() || songList.isEmpty()) {

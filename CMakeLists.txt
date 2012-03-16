@@ -10,8 +10,8 @@ set(DEBIAN_PACKAGE_DESCRIPTION "Qt4/KDE4 Client for MPD")
 set(DEBIAN_PACKAGE_SECTION "kde4")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "5")
-set(CPACK_PACKAGE_VERSION_PATCH "1")
+set(CPACK_PACKAGE_VERSION_MINOR "6")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_PACKAGE_CONTACT "Craig Drummond <craig.p.drummond@gmail.com>")
 set(CANTATA_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
 set(CANTATA_VERSION_FULL "${CANTATA_VERSION}.${CPACK_PACKAGE_VERSION_PATCH}")
@@ -70,7 +70,9 @@ SET( CANTATA_SRCS
     widgets/timeslider.cpp
     widgets/actionlabel.cpp
     widgets/playqueueview.cpp
+    widgets/groupedview.cpp
     widgets/messagewidget.cpp
+    widgets/actionitemdelegate.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -128,6 +130,7 @@ SET( CANTATA_MOC_HDRS
     widgets/timeslider.h
     widgets/actionlabel.h
     widgets/playqueueview.h
+    widgets/groupedview.h
     widgets/messagewidget.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h

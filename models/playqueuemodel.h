@@ -72,6 +72,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &, int) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     void updateCurrentSong(quint32 id);
     qint32 getIdByRow(qint32 row) const;
     qint32 getPosByRow(qint32 row) const;
@@ -89,8 +90,7 @@ public:
     void setState(MPDState st);
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
-    void setDropAdjust(quint32 a) { dropAdjust=a; }
-    QSet<quint16> updatePlaylist(const QList<Song> &songList, QSet<qint32> controlledIds);
+    QSet<quint16> updatePlaylist(const QList<Song> &songList, QSet<quint16> controlled);
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row);

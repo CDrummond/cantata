@@ -26,13 +26,64 @@
 #include "itemview.h"
 #include <QtGui/QComboBox>
 #include <QtGui/QCheckBox>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KLocale>
+#endif
+
+static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=false)
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    box->addItem(i18n("Tree"), ItemView::Mode_Tree);
+    if (groupedTree) {
+        box->addItem(i18n("Grouped Tree"), ItemView::Mode_GroupedTree);
+    }
+    box->addItem(i18n("List"), ItemView::Mode_List);
+    if (iconMode) {
+        box->addItem(i18n("Icon/List"), ItemView::Mode_IconTop);
+    }
+    #else
+    box->addItem(tr("Tree"), ItemView::Mode_Tree);
+    if (groupedTree) {
+        box->addItem(tr("Grouped Tree"), ItemView::Mode_GroupedTree);
+    }
+    box->addItem(i18n("List")tr, ItemView::Mode_List);
+    if (iconMode) {
+        box->addItem(tr("Icon/List"), ItemView::Mode_IconTop);
+    }
+    #endif
+}
+
+static void selectEntry(QComboBox *box, int v)
+{
+    for (int i=1; i<box->count(); ++i) {
+        if (box->itemData(i).toInt()==v) {
+            box->setCurrentIndex(i);
+            return;
+        }
+    }
+
+}
+
+static inline int getViewType(QComboBox *box)
+{
+    return box->itemData(box->currentIndex()).toInt();
+}
 
 InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
+    addViewTypes(libraryView);
+    addViewTypes(albumsView, true);
+    addViewTypes(folderView);
+    addViewTypes(playlistsView, false, true);
+    addViewTypes(streamsView);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    addViewTypes(devicesView);
+    #endif
     connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
+    connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playListsStyleChanged()));
     connect(playQueueGrouped, SIGNAL(currentIndexChanged(int)), SLOT(playQueueGroupedChanged()));
     #ifndef ENABLE_DEVICES_SUPPORT
     devicesView->setVisible(false);
@@ -44,19 +95,20 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
-    libraryView->setCurrentIndex(Settings::self()->libraryView());
+    selectEntry(libraryView, Settings::self()->libraryView());
     libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
     libraryYear->setChecked(Settings::self()->libraryYear());
-    albumsView->setCurrentIndex(Settings::self()->albumsView());
+    selectEntry(albumsView, Settings::self()->albumsView());
     albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
     albumFirst->setCurrentIndex(Settings::self()->albumFirst() ? 0 : 1);
-    folderView->setCurrentIndex(Settings::self()->folderView());
-    playlistsView->setCurrentIndex(Settings::self()->playlistsView());
-    streamsView->setCurrentIndex(Settings::self()->streamsView());
+    selectEntry(folderView, Settings::self()->folderView());
+    selectEntry(playlistsView, Settings::self()->playlistsView());
+    playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
+    selectEntry(streamsView, Settings::self()->streamsView());
     groupSingle->setChecked(Settings::self()->groupSingle());
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
-    devicesView->setCurrentIndex(Settings::self()->devicesView());
+    selectEntry(devicesView, Settings::self()->devicesView());
     #endif
     playQueueGrouped->setCurrentIndex(Settings::self()->playQueueGrouped() ? 1 : 0);
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
@@ -64,24 +116,26 @@ void InterfaceSettings::load()
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
     albumsViewChanged();
     albumsCoverSizeChanged();
+    playListsStyleChanged();
     playQueueGroupedChanged();
 }
 
 void InterfaceSettings::save()
 {
-    Settings::self()->saveLibraryView(libraryView->currentIndex());
+    Settings::self()->saveLibraryView(getViewType(libraryView));
     Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
     Settings::self()->saveLibraryYear(libraryYear->isChecked());
-    Settings::self()->saveAlbumsView(albumsView->currentIndex());
+    Settings::self()->saveAlbumsView(getViewType(albumsView));
     Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
     Settings::self()->saveAlbumFirst(0==albumFirst->currentIndex());
-    Settings::self()->saveFolderView(folderView->currentIndex());
-    Settings::self()->savePlaylistsView(playlistsView->currentIndex());
-    Settings::self()->saveStreamsView(streamsView->currentIndex());
+    Settings::self()->saveFolderView(getViewType(folderView));
+    Settings::self()->savePlaylistsView(getViewType(playlistsView));
+    Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
+    Settings::self()->saveStreamsView(getViewType(streamsView));
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
-    Settings::self()->saveDevicesView(devicesView->currentIndex());
+    Settings::self()->saveDevicesView(getViewType(devicesView));
     #endif
     Settings::self()->savePlayQueueGrouped(1==playQueueGrouped->currentIndex());
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
@@ -91,14 +145,14 @@ void InterfaceSettings::save()
 
 void InterfaceSettings::albumsViewChanged()
 {
-    if (ItemView::Mode_IconTop==albumsView->currentIndex() && 0==albumsCoverSize->currentIndex()) {
+    if (ItemView::Mode_IconTop==getViewType(albumsView) && 0==albumsCoverSize->currentIndex()) {
         albumsCoverSize->setCurrentIndex(2);
     }
 }
 
 void InterfaceSettings::albumsCoverSizeChanged()
 {
-    if (ItemView::Mode_IconTop==albumsView->currentIndex() && 0==albumsCoverSize->currentIndex()) {
+    if (ItemView::Mode_IconTop==getViewType(albumsView) && 0==albumsCoverSize->currentIndex()) {
         albumsView->setCurrentIndex(1);
     }
 }
@@ -111,3 +165,9 @@ void InterfaceSettings::playQueueGroupedChanged()
     playQueueStartClosedLabel->setEnabled(1==playQueueGrouped->currentIndex());
 }
 
+void InterfaceSettings::playListsStyleChanged()
+{
+    bool grouped=getViewType(playlistsView)==ItemView::Mode_GroupedTree;
+    playListsStartClosed->setEnabled(grouped);
+    playListsStartClosedLabel->setEnabled(grouped);
+}

@@ -29,6 +29,7 @@
 #include <QtGui/QMenu>
 #include "playlistsmodel.h"
 #include "itemview.h"
+#include "groupedview.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #include <KDE/KGlobal>
@@ -60,6 +61,7 @@ PlaylistsModel::PlaylistsModel(QObject *parent)
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
     connect(MPDConnection::self(), SIGNAL(playlistInfoRetrieved(const QString &, const QList<Song> &)), this, SLOT(playlistInfoRetrieved(const QString &, const QList<Song> &)));
     connect(MPDConnection::self(), SIGNAL(removedFromPlaylist(const QString &, const QList<int> &)), this, SLOT(removedFromPlaylist(const QString &, const QList<int> &)));
+    connect(MPDConnection::self(), SIGNAL(playlistRenamed(const QString &, const QString &)), this, SLOT(playlistRenamed(const QString &, const QString &)));
     connect(this, SIGNAL(listPlaylists()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(this, SIGNAL(playlistInfo(const QString &)), MPDConnection::self(), SLOT(playlistInfo(const QString &)));
     connect(this, SIGNAL(addToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
@@ -154,6 +156,24 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         PlaylistItem *pl=static_cast<PlaylistItem *>(item);
 
         switch(role) {
+        case GroupedView::Role_IsCollection:
+            return true;
+        case GroupedView::Role_CollectionId:
+            return pl->key;
+        case GroupedView::Role_Key:
+            return 0;
+        case GroupedView::Role_Song: {
+            QVariant var;
+            var.setValue<Song>(Song());
+            return var;
+        }
+        case GroupedView::Role_AlbumDuration:
+            return pl->totalTime();
+        case GroupedView::Role_SongCount:
+            return pl->songs.count();
+        case GroupedView::Role_CurrentStatus:
+        case GroupedView::Role_Status:
+            return (int)GroupedView::State_Default;
         case Qt::DisplayRole:
             if (!pl->loaded) {
                 pl->loaded=true;
@@ -187,6 +207,60 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         SongItem *s=static_cast<SongItem *>(item);
 
         switch (role) {
+        case GroupedView::Role_IsCollection:
+            return false;
+        case GroupedView::Role_CollectionId:
+            return s->parent->key;
+        case GroupedView::Role_Key:
+            return s->key;
+        case GroupedView::Role_Song: {
+            QVariant var;
+            var.setValue<Song>(*s);
+            return var;
+        }
+        case GroupedView::Role_AlbumDuration: {
+            quint32 d=s->time;
+            for (int i=index.row()+1; i<s->parent->songs.count(); ++i) {
+                const SongItem *song = s->parent->songs.at(i);
+                if (song->key!=s->key) {
+                    break;
+                }
+                d+=song->time;
+            }
+            if (index.row()>1) {
+                for (int i=index.row()-1; i<=0; ++i) {
+                    const SongItem *song = s->parent->songs.at(i);
+                    if (song->key!=s->key) {
+                        break;
+                    }
+                    d+=song->time;
+                }
+            }
+            return d;
+        }
+        case GroupedView::Role_SongCount:{
+            quint32 count=1;
+            for (int i=index.row()+1; i<s->parent->songs.count(); ++i) {
+                const SongItem *song = s->parent->songs.at(i);
+                if (song->key!=s->key) {
+                    break;
+                }
+                count++;
+            }
+            if (index.row()>1) {
+                for (int i=index.row()-1; i<=0; ++i) {
+                    const SongItem *song = s->parent->songs.at(i);
+                    if (song->key!=s->key) {
+                        break;
+                    }
+                    count++;
+                }
+            }
+            return count;
+        }
+        case GroupedView::Role_CurrentStatus:
+        case GroupedView::Role_Status:
+            return (int)GroupedView::State_Default;
         case Qt::DisplayRole:
         case Qt::ToolTipRole: {
             QString text=s->entryName();
@@ -402,7 +476,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         }
         beginResetModel();
         foreach (const Playlist &p, playlists) {
-            items.append(new PlaylistItem(p.name));
+            items.append(new PlaylistItem(p.name, allocateKey()));
         }
         endResetModel();
         updateItemMenu();
@@ -432,6 +506,8 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
                 if (pl) {
                     int index=items.indexOf(pl);
                     beginRemoveRows(parent, index, index);
+                    usedKeys.remove(pl->key);
+                    emit playlistRemoved(pl->key);
                     delete items.takeAt(index);
                     endRemoveRows();
                 }
@@ -440,7 +516,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         if (added.count()) {
             beginInsertRows(parent, items.count(), items.count()+added.count()-1);
             foreach (const QString &p, added) {
-                items.append(new PlaylistItem(p));
+                items.append(new PlaylistItem(p, allocateKey()));
             }
             endInsertRows();
         }
@@ -457,12 +533,14 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
             if (songs.isEmpty()) {
                 return;
             }
-            beginInsertRows(createIndex(items.indexOf(pl), 0, pl), 0, songs.count()-1);
+            QModelIndex idx=createIndex(items.indexOf(pl), 0, pl);
+            beginInsertRows(idx, 0, songs.count()-1);
             foreach (const Song &s, songs) {
                 pl->songs.append(new SongItem(s, pl));
             }
             endInsertRows();
             updateItemMenu();
+            emit updated(idx);
         } else if (songs.isEmpty()) {
             beginRemoveRows(createIndex(items.indexOf(pl), 0, pl), 0, pl->songs.count()-1);
             pl->clearSongs();
@@ -495,6 +573,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
                 }
                 endRemoveRows();
             }
+            emit updated(parent);
         }
         pl->updateGenres();
     } else {
@@ -588,6 +667,15 @@ void PlaylistsModel::emitAddToExisting()
     }
 }
 
+void PlaylistsModel::playlistRenamed(const QString &from, const QString &to)
+{
+    PlaylistItem *pl=getPlaylist(from);
+
+    if (pl) {
+        pl->name=to;
+    }
+}
+
 void PlaylistsModel::updateItemMenu()
 {
     if (!itemMenu) {
@@ -624,6 +712,11 @@ PlaylistsModel::PlaylistItem * PlaylistsModel::getPlaylist(const QString &name)
 
 void PlaylistsModel::clearPlaylists()
 {
+    foreach (PlaylistItem *p, items) {
+        usedKeys.remove(p->key);
+        emit playlistRemoved(p->key);
+    }
+
     qDeleteAll(items);
     items.clear();
     updateGenreList();
@@ -637,6 +730,18 @@ void PlaylistsModel::updateGenreList()
     }
 
     emit updateGenres(genres);
+}
+
+quint32 PlaylistsModel::allocateKey()
+{
+    for(quint32 k=1; k<0xFFFFFFFE; ++k) {
+        if (!usedKeys.contains(k)) {
+            usedKeys.insert(k);
+            return k;
+        }
+    }
+
+    return 0xFFFFFFFF;
 }
 
 PlaylistsModel::PlaylistItem::~PlaylistItem()

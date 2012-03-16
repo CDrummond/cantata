@@ -22,9 +22,12 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <property name="movable">
+      <bool>true</bool>
+     </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Library View</string>
+       <string>Library</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0">
@@ -38,18 +41,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QComboBox" name="libraryView">
-         <item>
-          <property name="text">
-           <string>Tree</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>List</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="libraryView"/>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_5b">
@@ -106,7 +98,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Albums View</string>
+       <string>Albums</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_2">
        <item row="0" column="0">
@@ -120,23 +112,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QComboBox" name="albumsView">
-         <item>
-          <property name="text">
-           <string>Tree</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>List</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Icon/List</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="albumsView"/>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_5c">
@@ -198,11 +174,51 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab_6">
+      <attribute name="title">
+       <string>Playlists</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_6">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playlistsView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="playlistsView"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="playListsStartClosedLabel">
+         <property name="text">
+          <string>Initially collapse albums:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playListsStartClosed</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QCheckBox" name="playListsStartClosed">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
        <string>Other Views</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_3">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
        <item row="0" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
@@ -214,44 +230,9 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QComboBox" name="folderView">
-         <item>
-          <property name="text">
-           <string>Tree</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>List</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="folderView"/>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Playlists view style:</string>
-         </property>
-         <property name="buddy">
-          <cstring>playlistsView</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="playlistsView">
-         <item>
-          <property name="text">
-           <string>Tree</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>List</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="2" column="0">
         <widget class="QLabel" name="label_x">
          <property name="text">
           <string>Streams view style:</string>
@@ -261,21 +242,10 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="streamsView">
-         <item>
-          <property name="text">
-           <string>Tree</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>List</string>
-          </property>
-         </item>
-        </widget>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="streamsView"/>
        </item>
-       <item row="3" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="devicesViewLabel">
          <property name="text">
           <string>Devices view style:</string>
@@ -285,19 +255,8 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QComboBox" name="devicesView">
-         <item>
-          <property name="text">
-           <string>Tree</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>List</string>
-          </property>
-         </item>
-        </widget>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="devicesView"/>
        </item>
       </layout>
      </widget>
@@ -432,8 +391,9 @@
   <tabstop>albumsView</tabstop>
   <tabstop>albumsCoverSize</tabstop>
   <tabstop>albumFirst</tabstop>
-  <tabstop>folderView</tabstop>
   <tabstop>playlistsView</tabstop>
+  <tabstop>playListsStartClosed</tabstop>
+  <tabstop>folderView</tabstop>
   <tabstop>streamsView</tabstop>
   <tabstop>devicesView</tabstop>
   <tabstop>groupSingle</tabstop>

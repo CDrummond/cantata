@@ -218,6 +218,7 @@ Q_SIGNALS:
     void dirViewUpdated(DirViewItemRoot * root);
     void playlistsRetrieved(const QList<Playlist> &data);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
+    void playlistRenamed(const QString &from, const QString &to);
     void removedFromPlaylist(const QString &name, const QList<int> &positions);
     void movedInPlaylist(const QString &name, int from, int to);
     void databaseUpdated();

@@ -324,7 +324,7 @@ int Settings::devicesView()
 int Settings::version()
 {
     if (-1==ver) {
-        QStringList parts=GET_STRING("version", QLatin1String("0.0.0")).split('.');
+        QStringList parts=GET_STRING("version", QLatin1String(PACKAGE_VERSION)).split('.');
         if (3==parts.size()) {
             ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
         } else {
@@ -379,6 +379,11 @@ bool Settings::playQueueStartClosed()
 bool Settings::playQueueScroll()
 {
     return GET_BOOL("playQueueScroll", true);
+}
+
+bool Settings::playListsStartClosed()
+{
+    return GET_BOOL("playListsStartClosed", true);
 }
 
 void Settings::saveConnectionHost(const QString &v)
@@ -623,6 +628,11 @@ void Settings::savePlayQueueStartClosed(bool v)
 void Settings::savePlayQueueScroll(bool v)
 {
     SET_VALUE("playQueueScroll", v);
+}
+
+void Settings::savePlayListsStartClosed(bool v)
+{
+    SET_VALUE("playListsStartClosed", v);
 }
 
 void Settings::save(bool force)

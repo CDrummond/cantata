@@ -32,6 +32,9 @@ public:
     StreamsProxyModel(QObject *parent = 0);
     void setFilterGenre(const QString &genre);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    bool isEmpty() const {
+        return filterGenre.isEmpty() && filterRegExp().isEmpty();
+    }
 
 private:
     QString filterGenre;

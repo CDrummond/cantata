@@ -29,7 +29,7 @@
 #include <QtCore/QSet>
 #include "treeview.h"
 
-class PlayQueueListView;
+class GroupedView;
 class QAbstractItemModel;
 class QAction;
 class QItemSelectionModel;
@@ -61,23 +61,6 @@ class PlayQueueView : public QStackedWidget
     Q_OBJECT
 
 public:
-    enum Status {
-        State_Default,
-        State_Playing,
-        State_Paused,
-        State_Stopped
-    };
-
-    enum Roles {
-        Role_Key = Qt::UserRole+512,
-        Role_Id,
-        Role_Song,
-        Role_AlbumDuration,
-        Role_Status,
-        Role_CurrentStatus,
-        Role_SongCount
-    };
-
     PlayQueueView(QWidget *parent=0);
     virtual ~PlayQueueView();
 
@@ -90,8 +73,8 @@ public:
     bool isAutoExpand() const;
     void setStartClosed(bool sc);
     bool isStartClosed() const;
-    QSet<qint32> getControlledSongIds() const;
-    void setControlled(const QSet<quint16> &keys);
+    QSet<quint16> getControlledAlbums() const;
+    void setControlledAlbums(const QSet<quint16> &keys);
     void setFilterActive(bool f);
     void updateRows(qint32 row, bool scroll);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);
@@ -113,11 +96,10 @@ Q_SIGNALS:
     void doubleClicked(const QModelIndex &);
 
 private Q_SLOTS:
-    void itemClicked(const QModelIndex &idx);
     void coverRetrieved(const QString &artist, const QString &album);
 
 private:
-    PlayQueueListView *listView;
+    GroupedView *groupedView;
     PlayQueueTreeView *treeView;
 };
 

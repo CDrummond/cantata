@@ -56,8 +56,8 @@ public:
 
     struct PlaylistItem : public Item
     {
-        PlaylistItem() : loaded(false), time(0) { }
-        PlaylistItem(const QString &n) : name(n), loaded(false), time(0) { }
+        PlaylistItem(quint32 k) : loaded(false), time(0), key(k) { }
+        PlaylistItem(const QString &n, quint32 k) : name(n), loaded(false), time(0), key(k) { }
         virtual ~PlaylistItem();
         bool isPlaylist() { return true; }
         void updateGenres();
@@ -69,6 +69,7 @@ public:
         QList<SongItem *> songs;
         QSet<QString> genres;
         quint32 time;
+        quint32 key;
     };
 
     static PlaylistsModel * self();
@@ -107,6 +108,8 @@ Q_SIGNALS:
     void addToNew();
     void addToExisting(const QString &name);
     void updateGenres(const QSet<QString> &genres);
+    void updated(const QModelIndex &idx);
+    void playlistRemoved(quint32 key);
 
 private Q_SLOTS:
     void setPlaylists(const QList<Playlist> &playlists);
@@ -114,15 +117,18 @@ private Q_SLOTS:
     void removedFromPlaylist(const QString &name, const QList<int> &positions);
     void movedInPlaylist(const QString &name, int from, int to);
     void emitAddToExisting();
+    void playlistRenamed(const QString &from, const QString &to);
 
 private:
     void updateGenreList();
     void updateItemMenu();
     PlaylistItem * getPlaylist(const QString &name);
     void clearPlaylists();
+    quint32 allocateKey();
 
 private:
     QList<PlaylistItem *> items;
+    QSet<quint32> usedKeys;
     QMenu *itemMenu;
 };
 

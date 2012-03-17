@@ -491,20 +491,22 @@ QModelIndexList GroupedView::selectedIndexes() const
     quint32 rowCount=model()->rowCount();
 
     foreach (const QModelIndex &idx, indexes) {
-        quint16 key=idx.data(GroupedView::Role_Key).toUInt();
         allIndexes.append(idx);
-        if (!isExpanded(key)) {
-            for (quint32 i=idx.row()+1; i<rowCount; ++i) {
-                QModelIndex next=idx.sibling(i, 0);
-                if (next.isValid()) {
-                    quint16 nextKey=next.data(GroupedView::Role_Key).toUInt();
-                    if (nextKey==key) {
-                        allIndexes.append(next);
+        if (!idx.data(GroupedView::Role_IsCollection).toBool()) {
+            quint16 key=idx.data(GroupedView::Role_Key).toUInt();
+            if (!isExpanded(key)) {
+                for (quint32 i=idx.row()+1; i<rowCount; ++i) {
+                    QModelIndex next=idx.sibling(i, 0);
+                    if (next.isValid()) {
+                        quint16 nextKey=next.data(GroupedView::Role_Key).toUInt();
+                        if (nextKey==key) {
+                            allIndexes.append(next);
+                        } else {
+                            break;
+                        }
                     } else {
                         break;
                     }
-                } else {
-                    break;
                 }
             }
         }

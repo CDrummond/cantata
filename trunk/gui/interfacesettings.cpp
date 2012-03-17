@@ -42,13 +42,13 @@ static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=f
         box->addItem(i18n("Icon/List"), ItemView::Mode_IconTop);
     }
     #else
-    box->addItem(tr("Tree"), ItemView::Mode_Tree);
+    box->addItem(QObject::tr("Tree"), ItemView::Mode_Tree);
     if (groupedTree) {
-        box->addItem(tr("Grouped Tree"), ItemView::Mode_GroupedTree);
+        box->addItem(QObject::tr("Grouped Tree"), ItemView::Mode_GroupedTree);
     }
-    box->addItem(i18n("List")tr, ItemView::Mode_List);
+    box->addItem(QObject::tr("List"), ItemView::Mode_List);
     if (iconMode) {
-        box->addItem(tr("Icon/List"), ItemView::Mode_IconTop);
+        box->addItem(QObject::tr("Icon/List"), ItemView::Mode_IconTop);
     }
     #endif
 }

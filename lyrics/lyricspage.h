@@ -59,6 +59,16 @@ private:
     UltimateLyricsProvider * providerByName(const QString &name) const;
     void getLyrics();
 
+    /**
+     * Reads the lyrics from the given filePath and updates
+     * the UI with those lyrics.
+     * 
+     * @param filePath The path to the lyrics file which will be read.
+     * 
+     * @return Returns true if the file could be read; otherwise false.
+     */
+    bool setLyricsFromFile(const QString &filePath) const;
+
 // private Q_SLOTS:
 //     void ultimateLyricsParsed();
 

@@ -1593,9 +1593,10 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
     #endif
 
-    if (Settings::self()->showPopups()) { //(trayIcon && trayIcon->isVisible() && isHidden()) {
+    if (Settings::self()->showPopups() || trayItem) {
         if (!current.title.isEmpty() && !current.artist.isEmpty() && !current.album.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
+            QPixmap *coverPixmap = 0;
             const QString text(i18n("<table>"
                                     "<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
                                     "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
@@ -1604,23 +1605,44 @@ void MainWindow::updateCurrentSong(const Song &song)
                                     "<tr><td align=\"right\"><b>Length:</b></td><td>%5</td></tr>"
                                     "</table>").arg(current.artist).arg(current.album).arg(current.title)
                                                .arg(current.track).arg(Song::formattedTime(current.time)));
-
-            KNotification *notification = new KNotification("CurrentTrackChanged", this);
-            notification->setText(text);
             if (!coverSong.album.isEmpty () && coverSong.albumArtist()==current.albumArtist() &&
                 coverSong.album==current.album && coverWidget->pixmap()) {
-                notification->setPixmap(*(coverWidget->pixmap()));
+                coverPixmap = const_cast<QPixmap*>(coverWidget->pixmap());
             }
-            notification->sendEvent();
-            #else
-            const QString text("album:  " + current.album + "\n"
-                            + "track:  " + QString::number(current.track) + "\n"
-                            + "length: " + Song::formattedTime(current.time));
+
+            if (Settings::self()->showPopups()) {
+                KNotification *notification = new KNotification("CurrentTrackChanged", this);
+                notification->setText(text);
+                if (coverPixmap) {
+                    notification->setPixmap(*coverPixmap);
+                }
+                notification->sendEvent();
+            }
 
             if (trayItem) {
-                trayItem->showMessage(current.artist + " - " + current.title, text, QSystemTrayIcon::Information, 5000);
+                trayItem->setToolTip("cantata", i18n("Cantata"), text);
+
+                // Use the cover as icon pixmap.
+                if (coverPixmap) {
+                    trayItem->setToolTipIconByPixmap(*coverPixmap);
+                }
             }
+            #else
+            // The pure Qt implementation needs both, the tray icon
+            // and the setting checked.
+            if (Settings::self()->showPopups() && trayItem)
+                const QString text("album:  " + current.album + "\n"
+                                   + "track:  " + QString::number(current.track) + "\n"
+                                   + "length: " + Song::formattedTime(current.time));
+
+                trayItem->showMessage(current.artist + " - " + current.title, text, QSystemTrayIcon::Information, 5000);
             #endif
+        } else {
+            if (trayItem) {
+                #ifdef ENABLE_KDE_SUPPORT
+                    trayItem->setToolTip("cantata", i18n("Cantata"), QString());
+                #endif
+            }
         }
     }
 }
@@ -1749,6 +1771,7 @@ void MainWindow::updateStatus()
         if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT
             trayItem->setIconByName("cantata");
+            trayItem->setToolTip("cantata", i18n("Cantata"), "<i>Playback stopped</i>");
             #else
             trayItem->setIcon(windowIcon());
             #endif
@@ -2057,6 +2080,7 @@ void MainWindow::setupTrayIcon()
     trayItem->setCategory(KStatusNotifierItem::ApplicationStatus);
     trayItem->setTitle(i18n("Cantata"));
     trayItem->setIconByName("cantata");
+    trayItem->setToolTip("cantata", i18n("Cantata"), QString());
 
     trayItemMenu = new KMenu(this);
     trayItemMenu->addAction(prevTrackAction);

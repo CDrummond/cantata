@@ -161,32 +161,27 @@ void LyricsPage::update(const Song &song, bool force)
             // Check for MPD file...
             QString mpdLyrics=changeExt(Settings::self()->mpdDir()+song.file, constExtension);
 
-            if (QFile::exists(mpdLyrics)) {
-                QFile f(mpdLyrics);
-
-                if (f.open(QIODevice::ReadOnly)) {
-                    text->setText(f.readAll());
-                    f.close();
-                    return;
-                }
+            // Stop here if we found lyrics in the mpd dir.
+            if (setLyricsFromFile(mpdLyrics)) {
+                return;
             }
         }
 
         // Check for cached file...
         QString file=cacheFile(song.artist, song.title);
 
-        if (QFile::exists(file)) {
-            if (force) {
-                QFile::remove(file);
-            } else {
-                QFile f(file);
-
-                if (f.open(QIODevice::ReadOnly)) {
-                    text->setText(f.readAll());
-                    f.close();
-                    return;
-                }
-            }
+        if (force && QFile::exists(file)) {
+            // Delete the cached lyrics file when the user
+            // is force-fully re-fetching the lyrics.
+            // Afterwards we'll simply do getLyrics() to get
+            // the new ones.
+            QFile::remove(file);
+        } else if (setLyricsFromFile(file)) {
+           // We just wanted a normal update without
+           // explicit re-fetching. We can return
+           // here because we got cached lyrics and
+           // we don't want an explicit re-fetch.
+           return;
         }
 
         getLyrics();
@@ -247,6 +242,26 @@ void LyricsPage::getLyrics()
            return;
         }
     }
+}
+
+bool LyricsPage::setLyricsFromFile(const QString &filePath) const
+{
+    bool success = false;
+
+    QFile f(filePath);
+
+    if (f.exists() && f.open(QIODevice::ReadOnly)) {
+        // Read the file using a QTextStream so we get
+        // automatic UTF8 detection.
+        QTextStream inputStream(&f);
+
+        text->setText(inputStream.readAll());
+        f.close();
+
+        success = true;
+    }
+
+    return success;
 }
 
 // void LyricsPage::ultimateLyricsParsed()

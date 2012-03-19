@@ -1,6 +1,8 @@
 0.6.0
 -----
 1. Grouped style for playlists.
+2. Fix reading of lyrics files with special characters - thanks to Martin
+   Blumenstingl for the patch.
 
 0.5.1
 -----
@@ -51,7 +53,8 @@
 15. Fix crash when deleting streams.
 16. Add option to sort albums in albums view by either album-artist or
     artist-album.
-17. Fix build with "-DCMAKE_BUILD_TYPE=debugfull" set - thanks to Martin.
+17. Fix build with "-DCMAKE_BUILD_TYPE=debugfull" set - thanks to Martin
+    Blumenstingl.
 18. Fix drag'n'drop of tracks from album view into play queue - affected list
     and icon/list modes.
 19. Add a workaround for dockmanager issues - delay registration for .25secs.

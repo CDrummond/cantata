@@ -174,6 +174,7 @@ public:
     bool isDevice() const {
         return true;
     }
+    const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
     bool isConfigured() {
         return configured;

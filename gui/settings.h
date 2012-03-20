@@ -81,6 +81,7 @@ public:
     int sidebar();
     bool libraryYear();
     bool groupSingle();
+    bool groupMultiple();
     QStringList lyricProviders();
     int lyricsZoom();
     int infoZoom();
@@ -130,6 +131,7 @@ public:
     void saveSidebar(int v);
     void saveLibraryYear(bool v);
     void saveGroupSingle(bool v);
+    void saveGroupMultiple(bool v);
     void saveLyricProviders(const QStringList &p);
     void saveLyricsZoom(int v);
     void saveInfoZoom(int v);

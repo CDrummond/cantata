@@ -905,6 +905,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     libraryPage->setView(0==Settings::self()->libraryView());
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
+    MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::setUseLibrarySizes(Settings::self()->albumsView()!=ItemView::Mode_IconTop);
     AlbumsModel::self()->setAlbumFirst(Settings::self()->albumFirst());
@@ -1182,7 +1183,8 @@ void MainWindow::updateSettings()
                       albumsPage->viewMode()!=Settings::self()->albumsView() ||
                       useLibSizeForAl!=AlbumsModel::useLibrarySizes();
     bool diffLibYear=MusicLibraryItemAlbum::showDate()!=Settings::self()->libraryYear();
-    bool diffSingleGroup=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle();
+    bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
+                      MPDParseUtils::groupMultiple()!=Settings::self()->groupMultiple();
 
     if (diffLibCovers) {
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
@@ -1193,17 +1195,16 @@ void MainWindow::updateSettings()
     if (diffAlCovers) {
         AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
     }
-    if (diffSingleGroup) {
-        MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
-    }
+    MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
+    MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
     AlbumsModel::setUseLibrarySizes(useLibSizeForAl);
     AlbumsModel::self()->setAlbumFirst(Settings::self()->albumFirst());
     albumsPage->setView(Settings::self()->albumsView());
-    if (diffAlCovers || diffSingleGroup) {
+    if (diffAlCovers || diffGrouping) {
         albumsPage->clear();
     }
-    if (diffLibCovers || diffAlCovers || diffLibYear || diffSingleGroup) {
+    if (diffLibCovers || diffAlCovers || diffLibYear || diffGrouping) {
         refresh();
     }
 

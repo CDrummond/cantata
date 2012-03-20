@@ -13,6 +13,7 @@
 8. When an album is collapsed/expanded in playqueue, call dataChanged() so that
    title row is redrawn - otherwise, for single-track albums, the view might
    not get refreshed.
+9. Provide option to *not* store downloaded covers in MPD dir.
 
 0.5.1
 -----

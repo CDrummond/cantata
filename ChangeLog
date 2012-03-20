@@ -33,6 +33,9 @@
  9. Allocate more space for tab if required - up to a max of 50% extra. This
     fixes "HTTP Server" config page title under Ubuntu with Qt-only build.
 10. Install icon for Qt-only build.
+11. When loading covers, if we fail to find one of the standard names
+    (cover.jpg/png, AlbumArt.jpg/png, folder.jpg/png), then use the first image
+    found.
 
 0.5.0
 -----

@@ -1164,6 +1164,7 @@ void MainWindow::updateSettings()
     }
 
     connectToMpd();
+    Covers::self()->setSaveInMpdDir(Settings::self()->storeDownloadsInMpdDir());
     HttpServer::self()->setPort(Settings::self()->enableHttp() ? Settings::self()->httpPort() : 0);
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());

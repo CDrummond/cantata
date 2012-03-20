@@ -192,6 +192,11 @@ const QString & Settings::mpdDir()
     return mpdDirSetting;
 }
 
+bool Settings::storeDownloadsInMpdDir()
+{
+    return GET_BOOL("storeDownloadsInMpdDir", true);
+}
+
 int Settings::libraryView()
 {
     return GET_INT("libraryView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
@@ -481,6 +486,11 @@ void Settings::saveMpdDir(const QString &v)
 {
     mpdDirSetting=MPDParseUtils::fixPath(v);
     SET_VALUE("mpdDir", mpdDirSetting);
+}
+
+void Settings::saveStoreDownloadsInMpdDir(bool v)
+{
+    SET_VALUE("storeDownloadsInMpdDir", v);
 }
 
 void Settings::saveLibraryView(int v)

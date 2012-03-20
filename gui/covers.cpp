@@ -51,6 +51,7 @@ static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
 static const QLatin1String constSingleTracksFile("SingleTracks.png");
 
 static QStringList coverFileNames;
+static bool saveInMpdDir=true;
 
 void initCoverNames()
 {
@@ -194,7 +195,7 @@ static AppCover otherAppCover(const Covers::Job &job)
         app.img=QImage(app.filename);
     }
 
-    if (!app.img.isNull() && canSaveTo(job.dir)) {
+    if (!app.img.isNull() && saveInMpdDir && canSaveTo(job.dir)) {
         QFile f(app.filename);
         if (f.open(QIODevice::ReadOnly)) {
             QByteArray raw=f.readAll();
@@ -287,6 +288,7 @@ Covers::Covers()
     , manager(0)
     , cache(150000)
 {
+    saveInMpdDir=Settings::self()->storeDownloadsInMpdDir();
 }
 
 static inline QString cacheKey(const QString &artist, const QString &album, int size)
@@ -406,6 +408,11 @@ void Covers::get(const Song &song, bool isSingleTracks)
         return;
     }
     download(song);
+}
+
+void Covers::setSaveInMpdDir(bool s)
+{
+    saveInMpdDir=s;
 }
 
 void Covers::download(const Song &song)
@@ -532,7 +539,7 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     QString savedName;
 
     // Try to save as cover.jpg in album dir...
-    if (canSaveTo(job.dir)) {
+    if (saveInMpdDir && canSaveTo(job.dir)) {
         savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
         if (!savedName.isEmpty()) {
             clearDummyCache(job.artist, job.album);

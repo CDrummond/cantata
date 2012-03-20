@@ -70,6 +70,7 @@ public:
     bool smallPlaybackButtons();
     bool smallControlButtons();
     const QString & mpdDir();
+    bool storeDownloadsInMpdDir();
     int libraryView();
     int albumsView();
     int folderView();
@@ -120,6 +121,7 @@ public:
     void saveUseSystemTray(bool v);
     void saveShowPopups(bool v);
     void saveMpdDir(const QString &v);
+    void saveStoreDownloadsInMpdDir(bool v);
     void saveLibraryView(int v);
     void saveAlbumsView(int v);
     void saveFolderView(int v);

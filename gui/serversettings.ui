@@ -19,6 +19,16 @@
    </property>
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Host (or local socket):</string>
+       </property>
+       <property name="buddy">
+        <cstring>hostLineEdit</cstring>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="LineEdit" name="hostLineEdit"/>
      </item>
@@ -75,15 +85,18 @@
      <item row="3" column="1">
       <widget class="DirRequester" name="mpdDir"/>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
+     <item row="4" column="0">
+      <widget class="QLabel" name="storeDownloadsInMpdDirLabel">
        <property name="text">
-        <string>Host (or local socket):</string>
+        <string>Save downloaded covers in music folder:</string>
        </property>
        <property name="buddy">
-        <cstring>hostLineEdit</cstring>
+        <cstring>storeDownloadsInMpdDir</cstring>
        </property>
       </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QCheckBox" name="storeDownloadsInMpdDir"/>
      </item>
     </layout>
    </item>

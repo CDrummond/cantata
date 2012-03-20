@@ -373,6 +373,15 @@ Covers::Image Covers::getImage(const Song &song, bool isSingleTracks)
                 }
             }
         }
+
+        QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
+        foreach (const QString &fileName, files) {
+            QImage img(fileName);
+
+            if (!img.isNull()) {
+                return Image(img, fileName);
+            }
+        }
     }
 
     QString artist=encodeName(song.albumArtist());

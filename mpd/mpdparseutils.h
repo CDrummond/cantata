@@ -50,6 +50,8 @@ public:
     static QStringList parseUrlHandlers(const QByteArray &data);
     static bool groupSingle();
     static void setGroupSingle(bool g);
+    static bool groupMultiple();
+    static void setGroupMultiple(bool g);
     static MusicLibraryItemRoot * parseLibraryItems(const QByteArray &data);
     static DirViewItemRoot * parseDirViewItems(const QByteArray &data);
     static QList<Output> parseOuputs(const QByteArray &data);

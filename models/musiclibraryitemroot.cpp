@@ -28,6 +28,7 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "mpdparseutils.h"
 #include "song.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
@@ -65,15 +66,14 @@ void MusicLibraryItemRoot::groupSingleTracks()
     for (; it!=m_childItems.end(); ) {
         if (various!=(*it) && static_cast<MusicLibraryItemArtist *>(*it)->allSingleTrack()) {
             if (!various) {
-                Song s;
                 #ifdef ENABLE_KDE_SUPPORT
-                s.artist=i18n("Various Artists");
+                QString artist=i18n("Various Artists");
                 #else
-                s.artist=QObject::tr("Various Artists");
+                QString artist=QObject::tr("Various Artists");
                 #endif
-                QHash<QString, int>::ConstIterator it=m_indexes.find(s.albumArtist());
+                QHash<QString, int>::ConstIterator it=m_indexes.find(artist);
                 if (m_indexes.end()==it) {
-                    various=new MusicLibraryItemArtist(s.albumArtist(), this);
+                    various=new MusicLibraryItemArtist(artist, this);
                     created=true;
                 } else {
                     various=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
@@ -88,6 +88,60 @@ void MusicLibraryItemRoot::groupSingleTracks()
     }
 
     if (various) {
+        m_indexes.clear();
+        if (created) {
+            m_childItems.append(various);
+        }
+        it=m_childItems.begin();
+        QList<MusicLibraryItem *>::iterator end=m_childItems.end();
+        for (int i=0; it!=end; ++it, ++i) {
+            m_indexes.insert((*it)->data(), i);
+        }
+    }
+}
+
+void MusicLibraryItemRoot::groupMultipleArtists()
+{
+    QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
+    MusicLibraryItemArtist *various=0;
+    bool created=false;
+
+    for (; it!=m_childItems.end(); ) {
+        if (various!=(*it) && !static_cast<MusicLibraryItemArtist *>(*it)->isVarious()) {
+            QList<MusicLibraryItem *>mutipleAlbums=static_cast<MusicLibraryItemArtist *>(*it)->takeMutipleArtistAlbums();
+
+            if (mutipleAlbums.count()) {
+                if (!various) {
+                    #ifdef ENABLE_KDE_SUPPORT
+                    QString artist=i18n("Various Artists");
+                    #else
+                    QString artist=QObject::tr("Various Artists");
+                    #endif
+                    QHash<QString, int>::ConstIterator it=m_indexes.find(artist);
+                    if (m_indexes.end()==it) {
+                        various=new MusicLibraryItemArtist(artist, this);
+                        created=true;
+                    } else {
+                        various=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));
+                    }
+                }
+
+                foreach (MusicLibraryItem *i, mutipleAlbums) {
+                    various->append(i);
+                }
+
+                if (0==(*it)->childCount()) {
+                    delete (*it);
+                    it=m_childItems.erase(it);
+                    continue;
+                }
+            }
+        }
+        ++it;
+    }
+
+    if (various) {
+        various->updateIndexes();
         m_indexes.clear();
         if (created) {
             m_childItems.append(various);
@@ -192,10 +246,10 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
     }
 }
 
-static quint32 constVersion=7;
+static quint32 constVersion=8;
 static QLatin1String constTopTag("CantataLibrary");
 
-void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRemove, const QDateTime &date, bool groupSingle) const
+void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRemove, const QDateTime &date) const
 {
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -211,7 +265,8 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
     writer.writeStartElement(constTopTag);
     writer.writeAttribute("version", QString::number(constVersion));
     writer.writeAttribute("date", QString::number(date.toTime_t()));
-    writer.writeAttribute("groupSingle", groupSingle ? "true" : "false");
+    writer.writeAttribute("groupSingle", MPDParseUtils::groupSingle() ? "true" : "false");
+    writer.writeAttribute("groupMultiple", MPDParseUtils::groupMultiple() ? "true" : "false");
     //Loop over all artist, albums and tracks.
     foreach (const MusicLibraryItem *a, children()) {
         const MusicLibraryItemArtist *artist = static_cast<const MusicLibraryItemArtist *>(a);
@@ -224,6 +279,9 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
             writer.writeAttribute("year", QString::number(album->year()));
             if (album->isSingleTracks()) {
                 writer.writeAttribute("singleTracks", "true");
+            }
+            if (album->isMultipleArtists()) {
+                writer.writeAttribute("multipleArtists", "true");
             }
             foreach (const MusicLibraryItem *t, album->children()) {
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
@@ -266,7 +324,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
     file.close();
 }
 
-quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pathAppend, const QDateTime &date, bool groupSingle)
+quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pathAppend, const QDateTime &date)
 {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -294,8 +352,9 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
                 quint32 version = attributes.value("version").toString().toUInt();
                 xmlDate = attributes.value("date").toString().toUInt();
                 bool gs = QLatin1String("true")==attributes.value("groupSingle").toString();
+                bool gm = QLatin1String("true")==attributes.value("groupMultiple").toString();
 
-                if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t()) || gs!=groupSingle) {
+                if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t()) || gs!=MPDParseUtils::groupSingle() || gm!=MPDParseUtils::groupMultiple()) {
                     return 0;
                 }
             }
@@ -313,6 +372,9 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
                 albumItem = artistItem->createAlbum(song);
                 if (QLatin1String("true")==attributes.value("singleTracks").toString()) {
                     albumItem->setIsSingleTracks();
+                }
+                if (QLatin1String("true")==attributes.value("multipleArtists").toString()) {
+                    albumItem->setIsMultipleArtists();
                 }
             }
             else if (QLatin1String("Track")==element) {

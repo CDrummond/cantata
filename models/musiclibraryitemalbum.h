@@ -69,6 +69,9 @@ public:
     bool isSingleTrackFile(const Song &s) const { return m_singleTrackFiles.contains(s.file); }
     void append(MusicLibraryItem *i);
     void remove(int row);
+    bool detectIfIsMultipleArtists();
+    bool isMultipleArtists() const { return m_multipleArtists; }
+    void setIsMultipleArtists() { m_multipleArtists=true; }
 
 private:
     quint32 m_year;
@@ -77,6 +80,7 @@ private:
     mutable QPixmap *m_cover;
     bool m_singleTracks;
     QSet<QString> m_singleTrackFiles;
+    bool m_multipleArtists;
 };
 
 #endif

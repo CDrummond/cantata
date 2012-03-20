@@ -244,7 +244,12 @@ bool Settings::libraryYear()
 
 bool Settings::groupSingle()
 {
-    return GET_BOOL("groupSingle", false);
+    return GET_BOOL("groupSingle", MPDParseUtils::groupSingle());
+}
+
+bool Settings::groupMultiple()
+{
+    return GET_BOOL("groupMultiple", MPDParseUtils::groupMultiple());
 }
 
 QStringList Settings::lyricProviders()
@@ -531,6 +536,11 @@ void Settings::saveLibraryYear(bool v)
 void Settings::saveGroupSingle(bool v)
 {
     SET_VALUE("groupSingle", v);
+}
+
+void Settings::saveGroupMultiple(bool v)
+{
+    SET_VALUE("groupMultiple", v);
 }
 
 void Settings::saveLyricProviders(const QStringList &p)

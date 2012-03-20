@@ -81,6 +81,13 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #ifdef ENABLE_DEVICES_SUPPORT
     addViewTypes(devicesView);
     #endif
+    #ifdef ENABLE_KDE_SUPPORT
+    groupMultiple->addItem(i18n("Grouped by \'Album Artist\'"));
+    groupMultiple->addItem(i18n("Grouped under \'Various Artists\'"));
+    #else
+    groupMultiple->addItem(tr("Grouped by \'Album Artist\'"));
+    groupMultiple->addItem(tr("Grouped under \'Various Artists\'"));
+    #endif
     connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playListsStyleChanged()));
@@ -106,6 +113,7 @@ void InterfaceSettings::load()
     playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
     selectEntry(streamsView, Settings::self()->streamsView());
     groupSingle->setChecked(Settings::self()->groupSingle());
+    groupMultiple->setCurrentIndex(Settings::self()->groupMultiple() ? 1 : 0);
     #ifdef ENABLE_DEVICES_SUPPORT
     showDeleteAction->setChecked(Settings::self()->showDeleteAction());
     selectEntry(devicesView, Settings::self()->devicesView());
@@ -133,6 +141,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
     Settings::self()->saveStreamsView(getViewType(streamsView));
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
+    Settings::self()->saveGroupMultiple(1==groupMultiple->currentIndex());
     #ifdef ENABLE_DEVICES_SUPPORT
     Settings::self()->saveShowDeleteAction(showDeleteAction->isChecked());
     Settings::self()->saveDevicesView(getViewType(devicesView));

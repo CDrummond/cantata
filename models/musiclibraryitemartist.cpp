@@ -125,3 +125,31 @@ void MusicLibraryItemArtist::remove(MusicLibraryItemAlbum *album)
     m_indexes.remove(album->data());
     delete m_childItems.takeAt(index);
 }
+
+QList<MusicLibraryItem *> MusicLibraryItemArtist::takeMutipleArtistAlbums()
+{
+    QList<MusicLibraryItem *> ma;
+    QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
+    QList<MusicLibraryItem *>::iterator end=m_childItems.end();
+    while (it!=end) {
+        if (static_cast<MusicLibraryItemAlbum *>(*it)->detectIfIsMultipleArtists()) {
+            ma.append(*it);
+            QList<MusicLibraryItem *>::iterator a=it;
+            it++;
+            m_childItems.erase(a);
+        } else {
+            it++;
+        }
+    }
+    return ma;
+}
+
+void MusicLibraryItemArtist::updateIndexes()
+{
+    m_indexes.clear();
+    QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
+    QList<MusicLibraryItem *>::iterator end=m_childItems.end();
+    for (int i=0; it!=end; ++it, ++i) {
+        m_indexes.insert((*it)->data(), i);
+    }
+}

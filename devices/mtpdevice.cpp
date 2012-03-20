@@ -228,6 +228,9 @@ void MtpConnection::updateLibrary()
     if (MPDParseUtils::groupSingle()) {
         library->groupSingleTracks();
     }
+    if (MPDParseUtils::groupMultiple()) {
+        library->groupMultipleArtists();
+    }
     emit libraryUpdated();
 }
 

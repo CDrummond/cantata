@@ -58,14 +58,15 @@ public:
     MusicLibraryItemArtist * artist(const Song &s, bool create=true);
     MusicLibraryItemArtist * createArtist(const Song &s);
     void groupSingleTracks();
+    void groupMultipleArtists();
     bool isFromSingleTracks(const Song &s) const;
     void refreshIndexes();
     void remove(MusicLibraryItemArtist *artist);
     QSet<Song> allSongs() const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     void updateSongFile(const Song &from, const Song &to);
-    void toXML(const QString &filename, const QString &pathRemove, const QDateTime &date=QDateTime(), bool groupSingle=false) const;
-    quint32 fromXML(const QString &filename, const QString &pathAppend, const QDateTime &date=QDateTime(), bool groupSingle=false);
+    void toXML(const QString &filename, const QString &pathRemove, const QDateTime &date=QDateTime()) const;
+    quint32 fromXML(const QString &filename, const QString &pathAppend, const QDateTime &date=QDateTime());
 
 private:
     QHash<QString, int> m_indexes;

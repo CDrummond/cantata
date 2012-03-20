@@ -22,6 +22,7 @@
  */
 
 #include "listview.h"
+#include "config.h"
 #include <QtCore/QMimeData>
 #include <QtGui/QDrag>
 #include <QtGui/QIcon>
@@ -77,7 +78,7 @@ void ListView::startDrag(Qt::DropActions supportedActions)
         QDrag *drag = new QDrag(this);
         drag->setMimeData(data);
         if (indexes.count()>1) {
-            drag->setPixmap(QIcon::fromTheme("media-optical-audio").pixmap(64, 64));
+            drag->setPixmap(QIcon::fromTheme(DEFAULT_ALBUM_ICON).pixmap(64, 64));
         } else {
             drag->setPixmap(QPixmap::fromImage(model()->data(indexes.first(), Qt::DecorationRole).value<QImage>()
                             .scaled(QSize(64, 64), Qt::KeepAspectRatio, Qt::SmoothTransformation)));

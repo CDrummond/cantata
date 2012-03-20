@@ -42,7 +42,7 @@
 #include "config.h"
 
 const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
-const QLatin1String StreamsModel::constDefaultStreamIcon("applications-internet");
+const QLatin1String StreamsModel::constDefaultStreamIcon(DEFAULT_STREAM_ICON);
 
 static bool iconIsValid(const QString &icon)
 {

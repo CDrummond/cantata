@@ -513,8 +513,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     positionSlider->setStyle(new ProxyStyle());
 
-    noCover = Icon("media-optical-audio").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    noStreamCover = Icon("applications-internet").pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    noCover = Icon(DEFAULT_ALBUM_ICON).pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    noStreamCover = Icon(DEFAULT_STREAM_ICON).pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     coverWidget->setPixmap(noCover);
 
     playbackPlay = Icon("media-playback-start");
@@ -537,7 +537,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 //     burnAction->setIcon(Icon("tools-media-optical-burn"));
 //     createDataCdAction->setIcon(Icon("media-optical"));
-//     createAudioCdAction->setIcon(Icon("media-optical-audio"));
+//     createAudioCdAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
     editTagsAction->setIcon(Icon("document-edit"));
 //     QMenu *cdMenu=new QMenu(this);
 //     cdMenu->addAction(createAudioCdAction);
@@ -560,11 +560,11 @@ MainWindow::MainWindow(QWidget *parent)
     refreshAction->setIcon(Icon("view-refresh"));
     connectAction->setIcon(Icon("network-connect"));
     libraryTabAction->setIcon(Icon("audio-ac3"));
-    albumsTabAction->setIcon(Icon("media-optical-audio"));
+    albumsTabAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
     foldersTabAction->setIcon(Icon("inode-directory"));
     playlistsTabAction->setIcon(Icon("view-media-playlist"));
     lyricsTabAction->setIcon(Icon("view-media-lyrics"));
-    streamsTabAction->setIcon(Icon("applications-internet"));
+    streamsTabAction->setIcon(Icon(DEFAULT_STREAM_ICON));
     #ifdef ENABLE_WEBKIT
     infoTabAction->setIcon(Icon("dialog-information"));
     #endif

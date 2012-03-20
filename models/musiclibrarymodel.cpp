@@ -300,14 +300,58 @@ void MusicLibraryModel::clear()
     emit updateGenres(QSet<QString>());
 }
 
-bool MusicLibraryModel::songExists(const Song &s) const
+const MusicLibraryItem * MusicLibraryModel::findSong(const Song &s) const
 {
-    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
+    MusicLibraryItemArtist *artistItem = ((MusicLibraryItemRoot *)this)->artist(s, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
         if (albumItem) {
             foreach (const MusicLibraryItem *songItem, albumItem->children()) {
                 if (songItem->data()==s.title) {
+                    return songItem;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+bool MusicLibraryModel::songExists(const Song &s) const
+{
+    const MusicLibraryItem *song=findSong(s);
+
+    if (song) {
+        return true;
+    }
+
+    if (!s.isVariousArtists()) {
+        Song mod(s);
+        #ifdef ENABLE_KDE_SUPPORT
+        mod.albumartist=i18n("Various Artists");
+        #else
+        mod.albumartist=tr("Various Artists");
+        #endif
+        if (MPDParseUtils::groupMultiple()) {
+            song=findSong(mod);
+            if (song) {
+                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
+                if (sng.albumArtist()==s.albumArtist()) {
+                    return true;
+                }
+            }
+        }
+        if (MPDParseUtils::groupSingle()) {
+            #ifdef ENABLE_KDE_SUPPORT
+            mod.album=i18n("Single Tracks");
+            #else
+            mod.album=QObject::tr("Single Tracks");
+            #endif
+
+            song=findSong(mod);
+            if (song) {
+                Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();
+                if (sng.albumArtist()==s.albumArtist() && sng.album==s.album) {
                     return true;
                 }
             }

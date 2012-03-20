@@ -61,6 +61,7 @@ public:
     bool isFromSingleTracks(const Song &s) const { return rootItem->isFromSingleTracks(s); }
     bool fromXML(const QDateTime db_update);
     void clear();
+    const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);

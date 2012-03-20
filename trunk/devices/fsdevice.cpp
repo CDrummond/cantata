@@ -71,6 +71,9 @@ void MusicScanner::run()
     if (MPDParseUtils::groupSingle()) {
         library->groupSingleTracks();
     }
+    if (MPDParseUtils::groupMultiple()) {
+        library->groupMultipleArtists();
+    }
 }
 
 void MusicScanner::stop()

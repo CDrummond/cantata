@@ -318,6 +318,7 @@ QStringList MPDParseUtils::parseUrlHandlers(const QByteArray &data)
 }
 
 static bool groupSingleTracks=false;
+static bool groupMultipleArtists=false;
 
 bool MPDParseUtils::groupSingle()
 {
@@ -327,6 +328,16 @@ bool MPDParseUtils::groupSingle()
 void MPDParseUtils::setGroupSingle(bool g)
 {
     groupSingleTracks=g;
+}
+
+bool MPDParseUtils::groupMultiple()
+{
+    return groupMultipleArtists;
+}
+
+void MPDParseUtils::setGroupMultiple(bool g)
+{
+    groupMultipleArtists=g;
 }
 
 MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
@@ -370,6 +381,9 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
 
     if (groupSingleTracks) {
         rootItem->groupSingleTracks();
+    }
+    if (groupMultipleArtists) {
+        rootItem->groupMultipleArtists();
     }
 
     return rootItem;

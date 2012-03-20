@@ -517,7 +517,7 @@ void MusicLibraryModel::setCover(const QString &artist, const QString &album, co
  */
 void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime &date)
 {
-    root->toXML(cacheFileName(), QString(), date, Settings::self()->groupSingle());
+    root->toXML(cacheFileName(), QString(), date);
 }
 
 /**
@@ -532,7 +532,7 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
 bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
 {
     MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-    quint32 date=root->fromXML(cacheFileName(), QString(), dbUpdate, Settings::self()->groupSingle());
+    quint32 date=root->fromXML(cacheFileName(), QString(), dbUpdate);
     if (!date) {
         delete root;
         return false;

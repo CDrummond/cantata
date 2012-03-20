@@ -85,6 +85,7 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, quint32 year, 
     , m_coverIsDefault(false)
     , m_cover(0)
     , m_singleTracks(false)
+    , m_multipleArtists(false)
 {
 }
 
@@ -188,4 +189,26 @@ void MusicLibraryItemAlbum::remove(int row)
 {
     delete m_childItems.takeAt(row);
     m_totalTime=0;
+}
+
+bool MusicLibraryItemAlbum::detectIfIsMultipleArtists()
+{
+    if (m_childItems.count()<2) {
+        return false;
+    }
+
+    if (!m_multipleArtists) {
+        QString a;
+
+        foreach (MusicLibraryItem *track, m_childItems) {
+            if (a.isEmpty()) {
+                a=track->data();
+            } else if (track->data()!=a) {
+                m_multipleArtists=true;
+                break;
+            }
+        }
+    }
+
+     return m_multipleArtists;
 }

@@ -479,6 +479,8 @@ void GroupedView::toggle(const QModelIndex &idx)
                 break;
             }
         }
+
+        dataChanged(idx, idx);
     }
 }
 

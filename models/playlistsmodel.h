@@ -57,7 +57,7 @@ public:
     struct PlaylistItem : public Item
     {
         PlaylistItem(quint32 k) : loaded(false), time(0), key(k) { }
-        PlaylistItem(const QString &n, quint32 k) : name(n), loaded(false), time(0), key(k) { }
+        PlaylistItem(const Playlist &pl, quint32 k) : name(pl.name), loaded(false), time(0), key(k), lastModified(pl.lastModified) { }
         virtual ~PlaylistItem();
         bool isPlaylist() { return true; }
         void updateGenres();
@@ -70,6 +70,7 @@ public:
         QSet<QString> genres;
         quint32 time;
         quint32 key;
+        QDateTime lastModified;
     };
 
     static PlaylistsModel * self();

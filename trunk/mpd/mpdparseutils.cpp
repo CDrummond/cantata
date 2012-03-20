@@ -91,11 +91,7 @@ QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
             tokens = lines.at(i).split(':');
 
             if (tokens.at(0) == "Last-Modified") {
-                QByteArray lastModified(tokens.at(1));
-                lastModified += tokens.at(2);
-                lastModified += tokens.at(3);
-                playlist.lastModified.fromString(lastModified, Qt::ISODate);
-
+                playlist.lastModified=QDateTime::fromString(tokens.at(1).trimmed()+':'+tokens.at(2)+':'+tokens.at(3), Qt::ISODate);
                 playlists.append(playlist);
             }
         }

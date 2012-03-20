@@ -68,6 +68,9 @@ void MusicScanner::run()
     count=0;
     library = new MusicLibraryItemRoot;
     scanFolder(folder, 0);
+    if (MPDParseUtils::groupSingle()) {
+        library->groupSingleTracks();
+    }
 }
 
 void MusicScanner::stop()

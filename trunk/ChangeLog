@@ -4,6 +4,7 @@
 2. Fix reading of lyrics files with special characters - thanks to Martin
    Blumenstingl for the patch.
 3. Give tray icon a tooltip - thanks to Martin Blumenstingl for the patch.
+4. Apply 'group single track albums' to devices.
 
 0.5.1
 -----

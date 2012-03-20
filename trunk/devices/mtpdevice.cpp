@@ -35,6 +35,7 @@
 #include "encoders.h"
 #include "transcodingjob.h"
 #include "utils.h"
+#include "mpdparseutils.h"
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtCore/QDir>
@@ -223,6 +224,9 @@ void MtpConnection::updateLibrary()
         songItem->addGenre(s.genre);
         library->addGenre(s.genre);
         track=track->next;
+    }
+    if (MPDParseUtils::groupSingle()) {
+        library->groupSingleTracks();
     }
     emit libraryUpdated();
 }

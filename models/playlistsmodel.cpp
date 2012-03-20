@@ -476,7 +476,7 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         }
         beginResetModel();
         foreach (const Playlist &p, playlists) {
-            items.append(new PlaylistItem(p.name, allocateKey()));
+            items.append(new PlaylistItem(p, allocateKey()));
         }
         endResetModel();
         updateItemMenu();
@@ -495,6 +495,14 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
 
         foreach (const Playlist &p, playlists) {
             retreived.insert(p.name);
+            PlaylistItem *pl=getPlaylist(p.name);
+
+            if (pl && pl->lastModified<p.lastModified) {
+                pl->lastModified=p.lastModified;
+                if (pl->loaded) {
+                    emit playlistInfo(pl->name);
+                }
+            }
         }
 
         removed=existing-retreived;
@@ -516,7 +524,10 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
         if (added.count()) {
             beginInsertRows(parent, items.count(), items.count()+added.count()-1);
             foreach (const QString &p, added) {
-                items.append(new PlaylistItem(p, allocateKey()));
+                int idx=playlists.indexOf(Playlist(p));
+                if (-1!=idx) {
+                    items.append(new PlaylistItem(playlists.at(idx), allocateKey()));
+                }
             }
             endInsertRows();
         }

@@ -8,6 +8,7 @@
 5. Add option to group albums with multiple artists under Various Artists.
 6. When checking whether a song exists in device, or library, need to also check
    'single tracks' and 'multiple artist' groupings - if these have been enabled.
+7. Update playlists if modified by another client.
 
 0.5.1
 -----

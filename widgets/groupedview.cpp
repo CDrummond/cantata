@@ -27,6 +27,7 @@
 #include "song.h"
 #include "actionitemdelegate.h"
 #include "itemview.h"
+#include "config.h"
 #include <QtGui/QStyledItemDelegate>
 #include <QtGui/QApplication>
 #include <QtGui/QFontMetrics>
@@ -243,7 +244,7 @@ public:
                 pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize);
             } else {
                 QPixmap *cover=Covers::self()->get(song, constCoverSize);
-                pix=cover ? *cover : QIcon::fromTheme(stream ? "applications-internet" : "media-optical-audio").pixmap(constCoverSize, constCoverSize);
+                pix=cover ? *cover : QIcon::fromTheme(stream ? DEFAULT_STREAM_ICON : DEFAULT_ALBUM_ICON).pixmap(constCoverSize, constCoverSize);
             }
 
             if (rtl) {
@@ -525,7 +526,7 @@ void GroupedView::dropEvent(QDropEvent *event)
     QModelIndex parent;
     quint32 dropRowAdjust=0;
     if (model() && viewport()->rect().contains(event->pos())) {
-        // Dont allow to drop on an already selected row - as this seems to cause a crash!!!
+        // Dont allow to drop on an already selected row - as this seems to cuase a crash!!!
         QModelIndex idx=TreeView::indexAt(event->pos());
         if (idx.isValid() && selectionModel() && selectionModel()->isSelected(idx)) {
             return;

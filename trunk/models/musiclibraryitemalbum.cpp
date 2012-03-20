@@ -30,6 +30,7 @@
 #include "musiclibraryitemsong.h"
 #include "song.h"
 #include "covers.h"
+#include "config.h"
 #include <QtGui/QIcon>
 #include <QtGui/QPixmap>
 
@@ -119,7 +120,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             if (0==cSize) {
                 cSize=22;
             }
-            theDefaultIcon = new QPixmap(QIcon::fromTheme("media-optical-audio").pixmap(cSize, cSize)
+            theDefaultIcon = new QPixmap(QIcon::fromTheme(DEFAULT_ALBUM_ICON).pixmap(cSize, cSize)
                                         .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         m_coverIsDefault = true;

@@ -58,6 +58,7 @@ SET( CANTATA_SRCS
     models/albumsmodel.cpp
     models/albumsproxymodel.cpp
     models/streamfetcher.cpp
+    models/proxymodel.cpp
     mpd/mpdconnection.cpp
     mpd/mpdparseutils.cpp
     mpd/mpdstatus.cpp

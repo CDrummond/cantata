@@ -30,13 +30,9 @@
 #include "song.h"
 
 PlayQueueProxyModel::PlayQueueProxyModel(QObject *parent)
-    : QSortFilterProxyModel(parent)
-    , filterEnabled(false)
+    : ProxyModel(parent)
 {
-    //setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
-    //setSortCaseSensitivity(Qt::CaseInsensitive);
-    //setSortLocaleAware(true);
 }
 
 bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
@@ -50,27 +46,11 @@ bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     Song s=m->getSongByRow(sourceRow);
     QRegExp re=filterRegExp();
 
-    /*if (m->isGrouped()) {
-        return QString(!s.albumartist.isEmpty() && s.albumartist != s.artist
-                        ? s.title + " - " + s.artist
-                        : s.title).contains(re);
-    } else*/ {
-        return s.album.contains(re) || s.artist.contains(re) || s.genre.contains(re) ||
-               (s.title.isEmpty() ? s.file.contains(re) : s.title.contains(re));
-    }
-
-//     int columnCount = sourceModel()->columnCount(sourceParent);
-//
-//     for (int i = 0; i < columnCount; i++) {
-//         QModelIndex index = sourceModel()->index(sourceRow, i, sourceParent);
-//         if (sourceModel()->data(index).toString().contains(filterRegExp())) {
-//             return true;
-//         }
-//     }
-    return false;
+    return s.album.contains(re) || s.artist.contains(re) || s.genre.contains(re) ||
+            (s.title.isEmpty() ? s.file.contains(re) : s.title.contains(re));
+;
 }
 
-/* map proxy to real indexes and redirect to sourceModel */
 QMimeData *PlayQueueProxyModel::mimeData(const QModelIndexList &indexes) const
 {
     QModelIndexList sourceIndexes;
@@ -82,7 +62,6 @@ QMimeData *PlayQueueProxyModel::mimeData(const QModelIndexList &indexes) const
     return sourceModel()->mimeData(sourceIndexes);
 }
 
-/* map proxy to real indexes and redirect to sourceModel */
 bool PlayQueueProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
     const QModelIndex sourceIndex = mapToSource(index(row, column, parent));

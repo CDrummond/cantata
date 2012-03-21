@@ -36,17 +36,9 @@ PlaylistsProxyModel::PlaylistsProxyModel(QObject *parent)
     setSortLocaleAware(true);
 }
 
-void PlaylistsProxyModel::setFilterGenre(const QString &genre)
-{
-    if (filterGenre!=genre) {
-        invalidate();
-    }
-    filterGenre=genre;
-}
-
 bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (filterGenre.isEmpty() && filterRegExp().isEmpty()) {
+    if (!filterEnabled) {
         return true;
     }
     if (!isChildOfRoot(sourceParent)) {

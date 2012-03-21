@@ -73,7 +73,7 @@ bool DirViewProxyModel::filterAcceptsDirViewItem(const DirViewItem * const item,
 
 bool DirViewProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (filterRegExp().isEmpty()) {
+    if (!filterEnabled) {
         return true;
     }
     if (!isChildOfRoot(sourceParent)) {

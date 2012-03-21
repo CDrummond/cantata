@@ -27,9 +27,9 @@
 #ifndef PLAYQUEUEPROXYMODEL_H
 #define PLAYQUEUEPROXYMODEL_H
 
-#include <QSortFilterProxyModel>
+#include "proxymodel.h"
 
-class PlayQueueProxyModel : public QSortFilterProxyModel
+class PlayQueueProxyModel : public ProxyModel
 {
     Q_OBJECT
 
@@ -39,10 +39,6 @@ public:
 
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
-    void setFilterEnabled(bool e) { filterEnabled=e; }
-
-private:
-    bool filterEnabled;
 };
 
 #endif

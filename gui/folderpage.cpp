@@ -132,17 +132,7 @@ void FolderPage::clear()
 
 void FolderPage::searchItems()
 {
-    QString filter=view->searchText().trimmed();
-
-    if (filter.isEmpty() ) {
-        proxy.setFilterEnabled(false);
-        if (!proxy.filterRegExp().isEmpty()) {
-             proxy.setFilterRegExp(QString());
-        }
-    } else if (filter!=proxy.filterRegExp().pattern()) {
-        proxy.setFilterEnabled(true);
-        proxy.setFilterRegExp(filter);
-    }
+    proxy.update(view->searchText().trimmed());
 }
 
 void FolderPage::controlActions()

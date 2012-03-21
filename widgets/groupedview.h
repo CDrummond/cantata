@@ -69,7 +69,7 @@ public:
     void updateRows(const QModelIndex &parent);
     void updateCollectionRows();
     bool isCurrentAlbum(quint16 key) const { return key==currentAlbum; }
-    bool isExpanded(quint16 key, quint32 collection=0) const { return filterActive ||
+    bool isExpanded(quint16 key, quint32 collection) const { return filterActive ||
                                                 (autoExpand && currentAlbum==key) ||
                                                 (startClosed && controlledAlbums[collection].contains(key)) ||
                                                 (!startClosed && !controlledAlbums[collection].contains(key)); }

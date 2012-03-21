@@ -90,7 +90,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
-    connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<int> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<int> &)));
+    connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<quint32> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<quint32> &)));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
@@ -159,7 +159,7 @@ void PlaylistsPage::addSelectionToPlaylist()
 void PlaylistsPage::removeItems()
 {
     QSet<QString> remPlaylists;
-    QMap<QString, QList<int> > remSongs;
+    QMap<QString, QList<quint32> > remSongs;
     QModelIndexList selected = view->selectedIndexes();
 
     foreach(const QModelIndex &index, selected) {
@@ -201,8 +201,8 @@ void PlaylistsPage::removeItems()
     foreach (const QString &pl, remPlaylists) {
         emit removePlaylist(pl);
     }
-    QMap<QString, QList<int> >::ConstIterator it=remSongs.constBegin();
-    QMap<QString, QList<int> >::ConstIterator end=remSongs.constEnd();
+    QMap<QString, QList<quint32> >::ConstIterator it=remSongs.constBegin();
+    QMap<QString, QList<quint32> >::ConstIterator end=remSongs.constEnd();
     for (; it!=end; ++it) {
         emit removeFromPlaylist(it.key(), it.value());
     }

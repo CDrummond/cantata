@@ -50,7 +50,7 @@ Q_SIGNALS:
     void removePlaylist(const QString &name);
     void savePlaylist(const QString &name);
     void renamePlaylist(const QString &oldname, const QString &newname);
-    void removeFromPlaylist(const QString &name, const QList<int> &positions);
+    void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
 
     void add(const QStringList &files);
 

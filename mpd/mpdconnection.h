@@ -202,9 +202,10 @@ public Q_SLOTS:
     void renamePlaylist(const QString oldName, const QString newName);
     void removePlaylist(QString name);
     void savePlaylist(QString name);
-    void addToPlaylist(const QString &name, const QStringList &songs);
-    void removeFromPlaylist(const QString &name, const QList<int> &positions);
-    void moveInPlaylist(const QString &name, int id, int pos);
+    void addToPlaylist(const QString &name, const QStringList &songs) { addToPlaylist(name, songs, 0, 0); }
+    void addToPlaylist(const QString &name, const QStringList &songs, quint32 pos, quint32 size);
+    void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
+    void moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 row, quint32 size);
 
 Q_SIGNALS:
     void stateChanged(bool connected);
@@ -219,8 +220,8 @@ Q_SIGNALS:
     void playlistsRetrieved(const QList<Playlist> &data);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
     void playlistRenamed(const QString &from, const QString &to);
-    void removedFromPlaylist(const QString &name, const QList<int> &positions);
-    void movedInPlaylist(const QString &name, int from, int to);
+//     void removedFromPlaylist(const QString &name, const QList<int> &positions);
+//     void movedInPlaylist(const QString &name, int from, int to);
     void databaseUpdated();
     void playlistLoaded(const QString &playlist);
     void added(const QStringList &files);
@@ -244,6 +245,7 @@ private:
     Response sendCommand(const QByteArray &command, bool emitErrors=true);
     void initialize();
     void parseIdleReturn(const QByteArray &data);
+    bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
 
 private:
     long ver;

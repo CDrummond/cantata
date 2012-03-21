@@ -93,14 +93,14 @@ bool AlbumsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
         if (leftItem->isSingleTracks != rightItem->isSingleTracks) {
             return leftItem->isSingleTracks > rightItem->isSingleTracks;
         }
-        return leftItem->name.localeAwareCompare(rightItem->name)<0;
+        return compareStrings(leftItem->name, rightItem->name)<0;
     } else if(!l->isAlbum() && !r->isAlbum()) {
         const AlbumsModel::SongItem * const leftItem = static_cast<AlbumsModel::SongItem *>(l);
         const AlbumsModel::SongItem * const rightItem = static_cast<AlbumsModel::SongItem *>(r);
         bool singleTracks=leftItem->parent->isSingleTracks;
 
         if (singleTracks) {
-            int compare=leftItem->artistSong().localeAwareCompare(rightItem->artistSong());
+            int compare=compareStrings(leftItem->artistSong(), rightItem->artistSong());
             if (0!=compare) {
                 return compare<0;
             }

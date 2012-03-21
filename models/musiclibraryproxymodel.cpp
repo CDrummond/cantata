@@ -161,7 +161,7 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
         bool isSingleTracks=static_cast<MusicLibraryItemAlbum *>(leftItem->parent())->isSingleTracks();
 
         if (isSingleTracks) {
-            int compare=leftItem->song().artistSong().localeAwareCompare(rightItem->song().artistSong());
+            int compare=compareStrings(leftItem->song().artistSong(), rightItem->song().artistSong());
             if (0!=compare) {
                 return compare<0;
             }
@@ -186,7 +186,7 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
         if (leftItem->isVarious() != rightItem->isVarious()) {
             return leftItem->isVarious() > rightItem->isVarious();
         }
-        return leftItem->baseArtist().localeAwareCompare(rightItem->baseArtist())<0;
+        return compareStrings(leftItem->baseArtist(), rightItem->baseArtist())<0;
     }
 
     return QSortFilterProxyModel::lessThan(left, right);

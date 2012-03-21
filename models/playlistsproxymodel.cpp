@@ -82,7 +82,7 @@ bool PlaylistsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &r
     PlaylistsModel::Item *r=static_cast<PlaylistsModel::Item *>(right.internalPointer());
 
     if (l->isPlaylist() && r->isPlaylist()) {
-        return static_cast<PlaylistsModel::PlaylistItem *>(l)->name.localeAwareCompare(static_cast<PlaylistsModel::PlaylistItem *>(r)->name)<0;
+        return compareStrings(static_cast<PlaylistsModel::PlaylistItem *>(l)->name, static_cast<PlaylistsModel::PlaylistItem *>(r)->name)<0;
     } else if(!l->isPlaylist() && !r->isPlaylist()) {
         return left.row()<right.row();
     }

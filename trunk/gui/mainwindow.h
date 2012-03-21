@@ -282,6 +282,7 @@ private Q_SLOTS:
 //     void createDataCd();
 //     void createAudioCd();
     void editTags();
+    void editPlayQueueTags();
     #ifdef ENABLE_DEVICES_SUPPORT
     void organiseFiles();
     void addToDevice(const QString &udi);
@@ -294,6 +295,7 @@ private Q_SLOTS:
     #endif
 
 private:
+    void editTags(const QList<Song> &songs, bool isPlayQueue);
     bool currentIsStream() const;
     void startVolumeFade(/*bool stop*/);
     void stopVolumeFade();
@@ -347,6 +349,7 @@ private:
 //     Action *createDataCdAction;
 //     Action *createAudioCdAction;
     Action *editTagsAction;
+    Action *editPlayQueueTagsAction;
     #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
     #endif

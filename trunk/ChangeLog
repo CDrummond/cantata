@@ -16,6 +16,9 @@
  9. Provide option to *not* store downloaded covers in MPD dir.
 10. If fading out to stop, and cantata is closed, then send stop command.
 11. Add 'Edit Song Tags' action to playqueue context menu.
+12. When loading covers, if we fail to find one of the standard names
+    (cover.jpg/png, AlbumArt.jpg/png, folder.jpg/png), then use the first image
+    found.
 
 0.5.1
 -----
@@ -35,9 +38,6 @@
  9. Allocate more space for tab if required - up to a max of 50% extra. This
     fixes "HTTP Server" config page title under Ubuntu with Qt-only build.
 10. Install icon for Qt-only build.
-11. When loading covers, if we fail to find one of the standard names
-    (cover.jpg/png, AlbumArt.jpg/png, folder.jpg/png), then use the first image
-    found.
 
 0.5.0
 -----

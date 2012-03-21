@@ -959,7 +959,7 @@ MainWindow::~MainWindow()
     #endif
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
-    if (Settings::self()->stopOnExit()) {
+    if (Settings::self()->stopOnExit() || (fadeStop && StopState_Stopping==stopState)) {
         emit stop();
         Utils::sleep();
     }

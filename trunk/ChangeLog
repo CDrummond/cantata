@@ -1,19 +1,20 @@
 0.6.0
 -----
-1. Grouped style for playlists.
-2. Fix reading of lyrics files with special characters - thanks to Martin
-   Blumenstingl for the patch.
-3. Give tray icon a tooltip - thanks to Martin Blumenstingl for the patch.
-4. Apply 'group single track albums' to devices.
-5. Add option to group albums with multiple artists under Various Artists.
-6. When checking whether a song exists in device, or library, need to also
-   check 'single tracks' and 'multiple artist' groupings - if these have been
-   enabled.
-7. Update playlists if modified by another client.
-8. When an album is collapsed/expanded in playqueue, call dataChanged() so that
-   title row is redrawn - otherwise, for single-track albums, the view might
-   not get refreshed.
-9. Provide option to *not* store downloaded covers in MPD dir.
+ 1. Grouped style for playlists.
+ 2. Fix reading of lyrics files with special characters - thanks to Martin
+    Blumenstingl for the patch.
+ 3. Give tray icon a tooltip - thanks to Martin Blumenstingl for the patch.
+ 4. Apply 'group single track albums' to devices.
+ 5. Add option to group albums with multiple artists under Various Artists.
+ 6. When checking whether a song exists in device, or library, need to also
+    check 'single tracks' and 'multiple artist' groupings - if these have been
+    enabled.
+ 7. Update playlists if modified by another client.
+ 8. When an album is collapsed/expanded in playqueue, call dataChanged() so that
+    title row is redrawn - otherwise, for single-track albums, the view might
+    not get refreshed.
+ 9. Provide option to *not* store downloaded covers in MPD dir.
+10. If fading out to stop, and cantata is closed, then send stop command.
 
 0.5.1
 -----

@@ -274,6 +274,7 @@ MainWindow::MainWindow(QWidget *parent)
     , isConnected(false)
     , volumeFade(0)
     , origVolume(0)
+    , lastVolume(0)
     , stopState(StopState_None)
 {
     setMinimumHeight(256);
@@ -1281,7 +1282,7 @@ void MainWindow::positionSliderReleased()
 
 void MainWindow::stopTrack()
 {
-    if (!fadeStop || MPDState_Paused==MPDStatus::self()->state()) {
+    if (!fadeStop || MPDState_Paused==MPDStatus::self()->state() || 0==volume) {
         emit stop();
     }
     stopTrackAction->setEnabled(false);
@@ -1302,6 +1303,7 @@ void MainWindow::startVolumeFade(/*bool stop*/)
         volumeFade->setDuration(Settings::self()->stopFadeDuration());
     }
     origVolume=volume;
+    lastVolume=volume;
     volumeFade->setStartValue(volume);
     volumeFade->setEndValue(-1);
     volumeFade->start();
@@ -1327,8 +1329,9 @@ void MainWindow::setMpdVolume(int v)
         stopState=StopState_None;
         volume=origVolume;
         emit setVolume(origVolume);
-    } else {
+    } else if (lastVolume!=v) {
         emit setVolume(v);
+        lastVolume=v;
     }
 }
 

@@ -203,16 +203,14 @@ bool MusicLibraryItemAlbum::detectIfIsMultipleArtists()
 
     if (!m_multipleArtists) {
         QString a;
-
         foreach (MusicLibraryItem *track, m_childItems) {
             if (a.isEmpty()) {
-                a=track->data();
-            } else if (track->data()!=a) {
+                a=static_cast<MusicLibraryItemSong*>(track)->song().artist;
+            } else if (static_cast<MusicLibraryItemSong*>(track)->song().artist!=a) {
                 m_multipleArtists=true;
                 break;
             }
         }
     }
-
-     return m_multipleArtists;
+    return m_multipleArtists;
 }

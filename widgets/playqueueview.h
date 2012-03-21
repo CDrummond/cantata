@@ -28,6 +28,7 @@
 #include <QtGui/QAbstractItemView>
 #include <QtCore/QSet>
 #include "treeview.h"
+#include "song.h"
 
 class GroupedView;
 class QAbstractItemModel;
@@ -89,7 +90,9 @@ public:
     QHeaderView * header();
     QAbstractItemView * tree();
     QAbstractItemView * list();
+    bool hasFocus() const;
     QModelIndexList selectedIndexes() const;
+    QList<Song> selectedSongs() const;
 
 Q_SIGNALS:
     void itemsSelected(bool);

@@ -32,6 +32,7 @@
 #include <QtGui/QHeaderView>
 #include <QtGui/QMenu>
 #include <QtGui/QAction>
+#include <QtCore/QFile>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -322,9 +323,29 @@ QAbstractItemView * PlayQueueView::list()
     return groupedView;
 }
 
+bool PlayQueueView::hasFocus() const
+{
+    return currentWidget()==groupedView ? groupedView->hasFocus() : treeView->hasFocus();
+}
+
 QModelIndexList PlayQueueView::selectedIndexes() const
 {
     return groupedView==currentWidget() ? groupedView->selectedIndexes() : selectionModel()->selectedRows();
+}
+
+QList<Song> PlayQueueView::selectedSongs() const
+{
+    const QModelIndexList selected = selectedIndexes();
+    QList<Song> songs;
+
+    foreach (const QModelIndex &idx, selected) {
+        Song song=idx.data(GroupedView::Role_Song).value<Song>();
+        if (!song.file.isEmpty() && !song.file.contains(":/") && !song.file.startsWith('/') && QFile::exists(Settings::self()->mpdDir()+song.file)) {
+            songs.append(song);
+        }
+    }
+
+    return songs;
 }
 
 void PlayQueueView::coverRetrieved(const QString &artist, const QString &album)

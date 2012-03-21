@@ -21,17 +21,41 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef STREAMSPROXYMODEL_H
-#define STREAMSPROXYMODEL_H
-
 #include "proxymodel.h"
 
-class StreamsProxyModel : public ProxyModel
+void ProxyModel::update(const QString &text, const QString &genre)
 {
-public:
-    StreamsProxyModel(QObject *parent = 0);
-    void setFilterGenre(const QString &genre);
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-};
+    if (text.length()<2 && genre.isEmpty()) {
+        bool wasEmpty=isEmpty();
+        filterEnabled=false;
+        filterGenre=genre;
+        if (!filterRegExp().isEmpty()) {
+             setFilterRegExp(QString());
+        } else if (!wasEmpty) {
+            invalidate();
+        }
+    } else {
+        filterEnabled=true;
+        filterGenre=genre;
+        if (text!=filterRegExp().pattern()) {
+            setFilterRegExp(text);
+        } else {
+            invalidate();
+        }
+    }
+}
 
-#endif
+bool ProxyModel::isChildOfRoot(const QModelIndex &idx) const {
+    if (!rootIndex.isValid()) {
+        return true;
+    }
+
+    QModelIndex i=idx;
+    while(i.isValid()) {
+        if (i==rootIndex) {
+            return true;
+        }
+        i=i.parent();
+    }
+    return false;
+}

@@ -36,29 +36,18 @@ public:
     virtual ~ProxyModel() {
     }
 
+    void update(const QString &text, const QString &genre=QString());
     void setRootIndex(const QModelIndex &idx) {
         rootIndex=idx.isValid() ? mapToSource(idx) : idx;
     }
-
-    bool isChildOfRoot(const QModelIndex &idx) const {
-        if (!rootIndex.isValid()) {
-            return true;
-        }
-
-        QModelIndex i=idx;
-        while(i.isValid()) {
-            if (i==rootIndex) {
-                return true;
-            }
-            i=i.parent();
-        }
-        return false;
+    bool isChildOfRoot(const QModelIndex &idx) const;
+    bool isEmpty() const {
+        return filterGenre.isEmpty() && filterRegExp().isEmpty();
     }
 
-    void setFilterEnabled(bool e) { filterEnabled=e; }
-
-private:
+protected:
     bool filterEnabled;
+    QString filterGenre;
     QModelIndex rootIndex;
 };
 

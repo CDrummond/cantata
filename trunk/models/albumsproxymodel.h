@@ -31,19 +31,12 @@ class AlbumsProxyModel : public ProxyModel
 {
 public:
     AlbumsProxyModel(QObject *parent = 0);
-    void setFilterGenre(const QString &genre);
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-    bool isEmpty() const {
-        return filterGenre.isEmpty() && filterRegExp().isEmpty();
-    }
 
 private:
     bool filterAcceptsAlbum(AlbumsModel::Item *item) const;
     bool filterAcceptsSong(AlbumsModel::Item *item) const;
-
-private:
-    QString filterGenre;
 };
 
 #endif

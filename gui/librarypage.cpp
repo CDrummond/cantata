@@ -241,27 +241,7 @@ void LibraryPage::itemDoubleClicked(const QModelIndex &)
 
 void LibraryPage::searchItems()
 {
-    QString genre=genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText();
-    QString filter=view->searchText().trimmed();
-
-    if (filter.isEmpty() && genre.isEmpty()) {
-        bool wasEmpty=proxy.isEmpty();
-        proxy.setFilterEnabled(false);
-        proxy.setFilterGenre(genre);
-        if (!proxy.filterRegExp().isEmpty()) {
-             proxy.setFilterRegExp(QString());
-        } else if (!wasEmpty) {
-            proxy.invalidate();
-        }
-    } else {
-        proxy.setFilterEnabled(true);
-        proxy.setFilterGenre(genre);
-        if (filter!=proxy.filterRegExp().pattern()) {
-            proxy.setFilterRegExp(filter);
-        } else {
-            proxy.invalidate();
-        }
-    }
+    proxy.update(view->searchText().trimmed(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
 }
 
 void LibraryPage::controlActions()

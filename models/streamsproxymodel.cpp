@@ -33,17 +33,9 @@ StreamsProxyModel::StreamsProxyModel(QObject *parent)
     sort(0);
 }
 
-void StreamsProxyModel::setFilterGenre(const QString &genre)
-{
-    if (filterGenre!=genre) {
-        invalidate();
-    }
-    filterGenre=genre;
-}
-
 bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (filterGenre.isEmpty() && filterRegExp().isEmpty()) {
+    if (!filterEnabled) {
         return true;
     }
     if (!isChildOfRoot(sourceParent)) {

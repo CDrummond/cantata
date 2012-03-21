@@ -65,7 +65,7 @@ bool AlbumsProxyModel::filterAcceptsSong(AlbumsModel::Item *item) const
 
 bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (filterGenre.isEmpty() && filterRegExp().isEmpty()) {
+    if (!filterEnabled) {
         return true;
     }
     if (!isChildOfRoot(sourceParent)) {
@@ -80,14 +80,6 @@ bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &source
     }
 
     return item->isAlbum() ? filterAcceptsAlbum(item) : filterAcceptsSong(item);
-}
-
-void AlbumsProxyModel::setFilterGenre(const QString &genre)
-{
-    if (filterGenre!=genre) {
-        invalidate();
-    }
-    filterGenre=genre;
 }
 
 bool AlbumsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const

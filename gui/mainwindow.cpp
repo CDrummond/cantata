@@ -1412,10 +1412,6 @@ void MainWindow::realSearchPlaylist()
             playQueue->updateRows(playQueueModel.currentSongRow(), autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
             scrollPlayQueue();
         }
-        playQueueProxyModel.setFilterEnabled(false);
-        if (!playQueueProxyModel.filterRegExp().isEmpty()) {
-            playQueueProxyModel.setFilterRegExp(QString());
-        }
     } else if (filter!=playQueueProxyModel.filterRegExp().pattern()) {
         if (!usingProxy) {
             if (playQueue->selectionModel()->hasSelection()) {
@@ -1429,9 +1425,8 @@ void MainWindow::realSearchPlaylist()
             playQueue->updateRows(playQueueModel.rowCount()+10, false);
             playQueue->setFilterActive(true);
         }
-        playQueueProxyModel.setFilterEnabled(true);
-        playQueueProxyModel.setFilterRegExp(filter);
     }
+    playQueueProxyModel.update(filter);
 
     if (selectedSongIds.size() > 0) {
         foreach (qint32 i, selectedSongIds) {

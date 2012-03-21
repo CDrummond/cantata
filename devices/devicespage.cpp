@@ -224,26 +224,7 @@ void DevicesPage::itemDoubleClicked(const QModelIndex &)
 
 void DevicesPage::searchItems()
 {
-    QString genre=0==genreCombo->currentIndex() ? QString() : genreCombo->currentText();
-    QString filter=view->searchText().trimmed();
-
-    if (filter.isEmpty() && genre.isEmpty()) {
-        proxy.setFilterEnabled(false);
-        proxy.setFilterGenre(genre);
-        if (!proxy.filterRegExp().isEmpty()) {
-             proxy.setFilterRegExp(QString());
-        } else {
-            proxy.invalidate();
-        }
-    } else {
-        proxy.setFilterEnabled(true);
-        proxy.setFilterGenre(genre);
-        if (filter!=proxy.filterRegExp().pattern()) {
-            proxy.setFilterRegExp(filter);
-        } else {
-            proxy.invalidate();
-        }
-    }
+    proxy.update(view->searchText().trimmed(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
 }
 
 void DevicesPage::controlActions()

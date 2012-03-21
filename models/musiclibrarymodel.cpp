@@ -300,9 +300,26 @@ void MusicLibraryModel::clear()
     emit updateGenres(QSet<QString>());
 }
 
+QModelIndex MusicLibraryModel::findSongIndex(const Song &s) const
+{
+    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
+    if (artistItem) {
+        MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
+        if (albumItem) {
+            foreach (MusicLibraryItem *songItem, albumItem->children()) {
+                if (songItem->data()==s.title) {
+                    return createIndex(albumItem->children().indexOf(songItem), 0, songItem);
+                }
+            }
+        }
+    }
+
+    return QModelIndex();
+}
+
 const MusicLibraryItem * MusicLibraryModel::findSong(const Song &s) const
 {
-    MusicLibraryItemArtist *artistItem = ((MusicLibraryItemRoot *)this)->artist(s, false);
+    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
         if (albumItem) {

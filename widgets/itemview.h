@@ -102,6 +102,7 @@ public:
     void update();
     void setDeleteAction(QAction *act);
     void setRootIsDecorated(bool v) { treeView->setRootIsDecorated(v); }
+    void showIndex(const QModelIndex &idx, bool scrollTo);
 
     void setStartClosed(bool sc);
     bool isStartClosed();

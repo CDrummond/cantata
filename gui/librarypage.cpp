@@ -193,6 +193,40 @@ void LibraryPage::deleteSongs()
 }
 #endif
 
+void LibraryPage::showSongs(const QList<Song> &songs)
+{
+    // Filter out non-mpd file songs...
+    QList<Song> sngs;
+    foreach (const Song &s, songs) {
+        if (!s.file.isEmpty() && !s.file.contains(":/") && !s.file.startsWith('/')) {
+            sngs.append(s);
+        }
+    }
+
+    if (sngs.isEmpty()) {
+        return;
+    }
+
+    bool first=true;
+    foreach (const Song &s, sngs) {
+        QModelIndex idx=MusicLibraryModel::self()->findSongIndex(s);
+        if (idx.isValid()) {
+            QModelIndex p=proxy.mapFromSource(idx);
+            if (p.isValid()) {
+                if (ItemView::Mode_Tree==view->viewMode() || first) {
+                    view->showIndex(p, first);
+                }
+                if (first) {
+                    first=false;
+                }
+                if (ItemView::Mode_Tree!=view->viewMode()) {
+                    return;
+                }
+            }
+        }
+    }
+}
+
 void LibraryPage::itemDoubleClicked(const QModelIndex &)
 {
     const QModelIndexList selected = view->selectedIndexes();

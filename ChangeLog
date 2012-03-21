@@ -19,6 +19,8 @@
 12. When loading covers, if we fail to find one of the standard names
     (cover.jpg/png, AlbumArt.jpg/png, folder.jpg/png), then use the first image
     found.
+13. Add a 'Locate In Library' action, to locate the selected play queue track
+    in the library page.
 
 0.5.1
 -----

@@ -600,7 +600,7 @@ void ItemView::update()
 {
     if (Mode_Tree==mode) {
         treeView->update();
-    } else if(Mode_GroupedTree==mode) {
+    } else if (Mode_GroupedTree==mode) {
         groupedView->update();
     } else {
         listView->update();
@@ -614,6 +614,48 @@ void ItemView::setDeleteAction(QAction *act)
     if (groupedView) {
         groupedView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
     }
+}
+
+void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
+{
+    if (Mode_Tree==mode) {
+        QModelIndex i=idx;
+        while (i.isValid()) {
+            treeView->setExpanded(i, true);
+            i=i.parent();
+        }
+        if (scrollTo) {
+            treeView->scrollTo(idx, QAbstractItemView::PositionAtTop);
+        }
+    } else if (Mode_GroupedTree==mode) {
+        QModelIndex i=idx;
+        while (i.isValid()) {
+            groupedView->setExpanded(i, true);
+            i=i.parent();
+        }
+        if (scrollTo) {
+            groupedView->scrollTo(idx, QAbstractItemView::PositionAtTop);
+        }
+    } else {
+        if (idx.parent().isValid()) {
+            QList<QModelIndex> indexes;
+            QModelIndex i=idx.parent();
+            while (i.isValid()) {
+                indexes.prepend(i);
+                i=i.parent();
+            }
+            setLevel(0);
+            listView->setRootIndex(QModelIndex());
+            foreach (const QModelIndex &i, indexes) {
+                itemActivated(i);
+            }
+            if (scrollTo) {
+                listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
+            }
+        }
+    }
+
+    view()->selectionModel()->select(idx, QItemSelectionModel::Select|QItemSelectionModel::Rows);
 }
 
 void ItemView::setStartClosed(bool sc)

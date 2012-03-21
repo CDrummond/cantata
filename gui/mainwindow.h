@@ -274,6 +274,7 @@ private Q_SLOTS:
     void showInfoTab() { showTab(PAGE_INFO); }
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
     void toggleSplitterAutoHide(bool ah);
+    void locateTrack();
     #ifdef ENABLE_KDE_SUPPORT
     void showDevicesTab() { showTab(PAGE_DEVICES); }
     #endif
@@ -338,6 +339,7 @@ private:
     Action *consumePlaylistAction;
     Action *expandInterfaceAction;
     Action *quitAction;
+    Action *locateTrackAction;
     Action *libraryTabAction;
     Action *albumsTabAction;
     Action *foldersTabAction;

@@ -419,6 +419,7 @@ private:
     QPropertyAnimation *volumeFade;
     int volume;
     int origVolume;
+    int lastVolume;
     StopState stopState;
 
     friend class VolumeSliderEventHandler;

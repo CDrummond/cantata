@@ -408,15 +408,14 @@ Covers::Image Covers::getImage(const Song &song, bool isSingleTracks)
     return Image(QImage(), QString());
 }
 
-void Covers::get(const Song &song, bool isSingleTracks)
+Covers::Image Covers::get(const Song &song, bool isSingleTracks)
 {
     Image img=getImage(song, isSingleTracks);
 
-    if (!img.img.isNull()) {
-        emit cover(song.albumArtist(), song.album, img.img, img.fileName);
-        return;
+    if (img.img.isNull()) {
+        download(song);
     }
-    download(song);
+    return img;
 }
 
 void Covers::setSaveInMpdDir(bool s)

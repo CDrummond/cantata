@@ -70,7 +70,7 @@ public:
 
     QPixmap * get(const Song &song, int size, bool isSingleTracks=false);
     Image getImage(const Song &song, bool isSingleTracks=false);
-    void get(const Song &song, bool isSingleTracks=false);
+    Image get(const Song &song, bool isSingleTracks=false);
     void setSaveInMpdDir(bool s);
 
 Q_SIGNALS:

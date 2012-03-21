@@ -794,7 +794,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
-    playlistsPage->setStartClosed(Settings::self()->playQueueStartClosed());
+    playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
     connect(MPDConnection::self(), SIGNAL(statsUpdated(const MPDStats &)), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));

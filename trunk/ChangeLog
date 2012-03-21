@@ -21,6 +21,7 @@
     found.
 13. Add a 'Locate In Library' action, to locate the selected play queue track
     in the library page.
+14. Fix crash when quiting Cantata whilst devices are being scanned.
 
 0.5.1
 -----

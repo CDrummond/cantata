@@ -425,6 +425,7 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
 //                         if (dest>source) {
 //                             source-=offset++;
 //                         }
+qWarning() << "MOVE" << pos;
                         emit moveInPlaylist(pl->name, pos, parent.row() < 0 ? pl->songs.size() : parent.row(), pl->songs.size());
 //                         emit moveInPlaylist(pl->name, source, dest);
 //                     }
@@ -555,7 +556,8 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
             QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
             for (qint32 i=0; i<songs.count(); ++i) {
                 Song s=songs.at(i);
-                if (i>=pl->songs.count() || !(s==*static_cast<Song *>(pl->songs.at(i)))) {
+                SongItem *si=i<pl->songs.count() ? pl->songs.at(i) : 0;
+                if (i>=pl->songs.count() || !(s==*static_cast<Song *>(si))) {
                     SongItem *si=pl->getSong(s);
                     if (!si) {
                         beginInsertRows(parent, i, i);
@@ -569,6 +571,8 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
                         pl->songs.insert(i, si);
                         endMoveRows();
                     }
+                } else if (si) {
+                    si->key=s.key;
                 }
             }
 

@@ -409,6 +409,9 @@ MainWindow::MainWindow(QWidget *parent)
     editTagsAction = actionCollection()->addAction("edittags");
     editTagsAction->setText(i18n("Edit Tags"));
 
+    editPlayQueueTagsAction = actionCollection()->addAction("editpqtags");
+    editPlayQueueTagsAction->setText(i18n("Edit Song Tags"));
+
     libraryTabAction = actionCollection()->addAction("showlibrarytab");
     libraryTabAction->setText(i18n("Library"));
 
@@ -474,6 +477,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     createAudioCdAction = new QAction(tr("Create Audio CD"), this);
 //     createDataCdAction = new QAction(tr("Create Data CD"), this);
     editTagsAction = new QAction(tr("Edit Tags"), this);
+    editPlayQueueTagsAction = new QAction(tr("Edit Song Tags"), this);
     libraryTabAction = new QAction(tr("Library"), this);
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
@@ -539,6 +543,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     createDataCdAction->setIcon(Icon("media-optical"));
 //     createAudioCdAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
     editTagsAction->setIcon(Icon("document-edit"));
+    editPlayQueueTagsAction->setIcon(Icon("document-edit"));
 //     QMenu *cdMenu=new QMenu(this);
 //     cdMenu->addAction(createAudioCdAction);
 //     cdMenu->addAction(createDataCdAction);
@@ -775,6 +780,10 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(savePlaylistAction);
     playQueue->addAction(cropPlaylistAction);
     playQueue->addAction(shufflePlaylistAction);
+    Action *sep=new Action(this);
+    sep->setSeparator(true);
+    playQueue->addAction(sep);
+    playQueue->addAction(editPlayQueueTagsAction);
     //playQueue->addAction(copyTrackInfoAction);
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlaylistAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlaylistAction));
@@ -831,6 +840,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     connect(createDataCdAction, SIGNAL(activated()), this, SLOT(createDataCd()));
 //     connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
     connect(editTagsAction, SIGNAL(activated()), this, SLOT(editTags()));
+    connect(editPlayQueueTagsAction, SIGNAL(activated()), this, SLOT(editPlayQueueTags()));
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
@@ -2327,14 +2337,40 @@ void MainWindow::toggleDockManager()
 //     }
 // }
 
+void MainWindow::editTags()
+{
+    QList<Song> songs;
+    if (libraryPage->isVisible()) {
+        songs=libraryPage->selectedSongs();
+    } else if (albumsPage->isVisible()) {
+        songs=albumsPage->selectedSongs();
+    } else if (folderPage->isVisible()) {
+        songs=folderPage->selectedSongs();
+    }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    else if (devicesPage->isVisible()) {
+        songs=devicesPage->selectedSongs();
+    }
+    #endif
+    editTags(songs, false);
+}
+
+void MainWindow::editPlayQueueTags()
+{
+    editTags(playQueue->selectedSongs(), true);
+}
+
 #ifdef ENABLE_KDE_SUPPORT
 #define DIALOG_ERROR KMessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
 #else
 #define DIALOG_ERROR QMessageBox::information(this, tr("Action is not currently possible, due to other open dialogs."), QMessageBox::Ok); return
 #endif
 
-void MainWindow::editTags()
+void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
 {
+    if (songs.isEmpty()) {
+        return;
+    }
     if (0!=TagEditor::instanceCount()) {
         return;
     }
@@ -2352,43 +2388,29 @@ void MainWindow::editTags()
     }
     #endif
 
-    QList<Song> songs;
-    if (libraryPage->isVisible()) {
-        songs=libraryPage->selectedSongs();
-    } else if (albumsPage->isVisible()) {
-        songs=albumsPage->selectedSongs();
-    } else if (folderPage->isVisible()) {
-        songs=folderPage->selectedSongs();
-    }
+    QSet<QString> artists;
+    QSet<QString> albumArtists;
+    QSet<QString> albums;
+    QSet<QString> genres;
     #ifdef ENABLE_DEVICES_SUPPORT
-    else if (devicesPage->isVisible()) {
-        songs=devicesPage->selectedSongs();
-    }
+    QString udi;
+    if (!isPlayQueue) {
+        DevicesModel::self()->getDetails(artists, albumArtists, albums, genres);
+        udi=devicesPage->activeFsDeviceUdi();
+        if (udi.isEmpty()) {
+            return;
+        }
+    } else
+    #else
+    Q_UNUSED(isPlayQueue)
     #endif
-
-    if (!songs.isEmpty()) {
-        QSet<QString> artists;
-        QSet<QString> albumArtists;
-        QSet<QString> albums;
-        QSet<QString> genres;
-        #ifdef ENABLE_DEVICES_SUPPORT
-        QString udi;
-        if (devicesPage->isVisible()) {
-            DevicesModel::self()->getDetails(artists, albumArtists, albums, genres);
-            udi=devicesPage->activeFsDeviceUdi();
-            if (udi.isEmpty()) {
-                return;
-            }
-        } else
-        #endif
-        MusicLibraryModel::self()->getDetails(artists, albumArtists, albums, genres);
-        TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, albums, genres
-                                    #ifdef ENABLE_DEVICES_SUPPORT
-                                    , udi
-                                    #endif
-                                    );
-        dlg->show();
-    }
+    MusicLibraryModel::self()->getDetails(artists, albumArtists, albums, genres);
+    TagEditor *dlg=new TagEditor(this, songs, artists, albumArtists, albums, genres
+                                #ifdef ENABLE_DEVICES_SUPPORT
+                                , udi
+                                #endif
+                                );
+    dlg->show();
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT

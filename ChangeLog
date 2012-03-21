@@ -15,6 +15,7 @@
     not get refreshed.
  9. Provide option to *not* store downloaded covers in MPD dir.
 10. If fading out to stop, and cantata is closed, then send stop command.
+11. Add 'Edit Song Tags' action to playqueue context menu.
 
 0.5.1
 -----

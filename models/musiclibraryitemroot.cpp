@@ -108,8 +108,7 @@ void MusicLibraryItemRoot::groupMultipleArtists()
 
     for (; it!=m_childItems.end(); ) {
         if (various!=(*it) && !static_cast<MusicLibraryItemArtist *>(*it)->isVarious()) {
-            QList<MusicLibraryItem *>mutipleAlbums=static_cast<MusicLibraryItemArtist *>(*it)->takeMutipleArtistAlbums();
-
+            QList<MusicLibraryItem *> mutipleAlbums=static_cast<MusicLibraryItemArtist *>(*it)->mutipleArtistAlbums();
             if (mutipleAlbums.count()) {
                 if (!various) {
                     #ifdef ENABLE_KDE_SUPPORT
@@ -127,13 +126,15 @@ void MusicLibraryItemRoot::groupMultipleArtists()
                 }
 
                 foreach (MusicLibraryItem *i, mutipleAlbums) {
-                    various->append(i);
+                    i->setParent(various);
                 }
 
                 if (0==(*it)->childCount()) {
                     delete (*it);
                     it=m_childItems.erase(it);
                     continue;
+                } else {
+                    static_cast<MusicLibraryItemArtist *>(*it)->updateIndexes();
                 }
             }
         }

@@ -51,7 +51,7 @@ public:
 
 public Q_SLOTS:
     void connectToDevice();
-    void disconnectFromDevice();
+    void disconnectFromDevice(bool showStatus=true);
     void updateLibrary();
     void putSong(const Song &song, bool fixVa);
     void getSong(const Song &song, const QString &dest);

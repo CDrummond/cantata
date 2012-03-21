@@ -163,7 +163,7 @@ RemoteDevice::RemoteDevice(DevicesModel *m, const Details &d)
 }
 
 RemoteDevice::~RemoteDevice() {
-    stopScanner();
+    stopScanner(false);
 }
 
 void RemoteDevice::toggle()

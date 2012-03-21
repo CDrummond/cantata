@@ -156,7 +156,7 @@ FsDevice::FsDevice(DevicesModel *m, const QString &name)
 }
 
 FsDevice::~FsDevice() {
-    stopScanner();
+    stopScanner(false);
 }
 
 void FsDevice::rescan()
@@ -391,7 +391,7 @@ void FsDevice::startScanner()
     emit updating(udi(), true);
 }
 
-void FsDevice::stopScanner()
+void FsDevice::stopScanner(bool showStatus)
 {
     // Scan for music in a separate thread...
     if (scanner) {
@@ -399,8 +399,10 @@ void FsDevice::stopScanner()
         scanner->deleteLater();
         scanner->stop();
         scanner=0;
-        setStatusMessage(QString());
-        emit updating(udi(), false);
+        if (showStatus) {
+            setStatusMessage(QString());
+            emit updating(udi(), false);
+        }
     }
 }
 

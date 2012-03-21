@@ -361,6 +361,7 @@ void ItemView::allowGroupedView()
 {
     if (!groupedView) {
         groupedView=new GroupedView(stackedWidget);
+        groupedView->setAutoExpand(false);
         treeLayout->addWidget(groupedView);
         connect(groupedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         #ifdef ENABLE_KDE_SUPPORT

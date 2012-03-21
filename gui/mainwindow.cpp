@@ -2421,7 +2421,7 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
     QSet<QString> genres;
     #ifdef ENABLE_DEVICES_SUPPORT
     QString udi;
-    if (!isPlayQueue) {
+    if (!isPlayQueue && devicesPage->isVisible()) {
         DevicesModel::self()->getDetails(artists, albumArtists, albums, genres);
         udi=devicesPage->activeFsDeviceUdi();
         if (udi.isEmpty()) {

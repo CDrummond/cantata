@@ -425,7 +425,6 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
 //                         if (dest>source) {
 //                             source-=offset++;
 //                         }
-qWarning() << "MOVE" << pos;
                         emit moveInPlaylist(pl->name, pos, parent.row() < 0 ? pl->songs.size() : parent.row(), pl->songs.size());
 //                         emit moveInPlaylist(pl->name, source, dest);
 //                     }

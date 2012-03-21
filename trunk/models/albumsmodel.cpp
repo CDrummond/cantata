@@ -237,8 +237,12 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 if (al->songs.count()) {
                     s.file=al->songs.first()->file;
                 }
-                Covers::self()->get(s, al->isSingleTracks);
+                Covers::Image img=Covers::self()->get(s, al->isSingleTracks);
                 al->coverRequested=true;
+                if (!img.img.isNull()) {
+                    al->cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+                    return *(al->cover);
+                }
             }
             return *theDefaultIcon;
         }

@@ -1548,7 +1548,13 @@ void MainWindow::updateCurrentSong(const Song &song)
     QString covAlbum=coverWidget->property("album").toString();
     if (covArtist!= albumArtist || covAlbum != current.album || (covArtist.isEmpty() && covAlbum.isEmpty())) {
         if (!albumArtist.isEmpty() && !current.album.isEmpty()) {
-            Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
+            Covers::Image img=Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
+            if (!img.img.isNull()) {
+                coverSong=current;
+                coverWidget->setPixmap(QPixmap::fromImage(img.img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                coverFileName=img.fileName;
+                emit coverFile(img.fileName);
+            }
         } else {
             coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
         }

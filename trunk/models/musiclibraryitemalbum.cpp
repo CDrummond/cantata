@@ -129,7 +129,10 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.albumartist=parent()->data();
             song.album=m_itemData;
             song.file=static_cast<MusicLibraryItemSong*>(child(0))->file();
-            Covers::self()->get(song, m_singleTracks);
+            Covers::Image img=Covers::self()->get(song, m_singleTracks);
+            if (setCover(img.img)) {
+                return *m_cover;
+            }
         }
         return *theDefaultIcon;
     }

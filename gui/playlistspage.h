@@ -42,7 +42,7 @@ public:
     void clear();
     QStringList selectedFiles() const;
     void addSelectionToPlaylist();
-    void setView(int mode) { view->setMode((ItemView::Mode)mode); }
+    void setView(int mode);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

@@ -156,6 +156,16 @@ void PlaylistsPage::addSelectionToPlaylist()
     addItemsToPlayQueue(view->selectedIndexes());
 }
 
+void PlaylistsPage::setView(int mode)
+{
+    bool diff=view->viewMode()!=mode;
+    view->setMode((ItemView::Mode)mode);
+    if (diff) {
+        clear();
+        refresh();
+    }
+}
+
 void PlaylistsPage::removeItems()
 {
     QSet<QString> remPlaylists;

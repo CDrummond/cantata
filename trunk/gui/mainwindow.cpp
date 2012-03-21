@@ -397,6 +397,9 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlaylistAction = actionCollection()->addAction("consumeplaylist");
     consumePlaylistAction->setText(i18n("Consume"));
 
+    locateTrackAction = actionCollection()->addAction("locatetrack");
+    locateTrackAction->setText(i18n("Locate In Library"));
+
 //     burnAction = actionCollection()->addAction("burn");
 //     burnAction->setText(i18n("Burn To CD/DVD"));
 //
@@ -473,6 +476,7 @@ MainWindow::MainWindow(QWidget *parent)
     randomPlaylistAction = new QAction(tr("Random"), this);
     repeatPlaylistAction = new QAction(tr("Repeat"), this);
     consumePlaylistAction = new QAction(tr("Consume"), this);
+    locateTrackAction = new QAction(tr("Locate In Library"), this);
 //     burnAction = new QAction(tr("Burn To CD/DVD"), this);
 //     createAudioCdAction = new QAction(tr("Create Audio CD"), this);
 //     createDataCdAction = new QAction(tr("Create Data CD"), this);
@@ -524,6 +528,7 @@ MainWindow::MainWindow(QWidget *parent)
     playbackPlay = Icon("media-playback-start");
     playbackPause = Icon("media-playback-pause");
     randomPlaylistAction->setIcon(Icon("media-playlist-shuffle"));
+    locateTrackAction->setIcon(Icon("edit-find"));
     #ifdef ENABLE_KDE_SUPPORT
     consumePlaylistAction->setIcon(Icon("cantata-view-media-consume"));
     repeatPlaylistAction->setIcon(Icon("cantata-view-media-repeat"));
@@ -783,6 +788,7 @@ MainWindow::MainWindow(QWidget *parent)
     Action *sep=new Action(this);
     sep->setSeparator(true);
     playQueue->addAction(sep);
+    playQueue->addAction(locateTrackAction);
     playQueue->addAction(editPlayQueueTagsAction);
     //playQueue->addAction(copyTrackInfoAction);
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlaylistAction));
@@ -841,6 +847,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
     connect(editTagsAction, SIGNAL(activated()), this, SLOT(editTags()));
     connect(editPlayQueueTagsAction, SIGNAL(activated()), this, SLOT(editPlayQueueTags()));
+    connect(locateTrackAction, SIGNAL(activated()), this, SLOT(locateTrack()));
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
@@ -2216,6 +2223,9 @@ void MainWindow::currentTabChanged(int index)
 void MainWindow::tabToggled(int index)
 {
     switch (index) {
+    case PAGE_LIBRARY:
+        locateTrackAction->setVisible(tabWidget->isEnabled(index));
+        break;
     case PAGE_ALBUMS:
         AlbumsModel::self()->setEnabled(!AlbumsModel::self()->isEnabled());
         break;
@@ -2257,6 +2267,14 @@ void MainWindow::toggleSplitterAutoHide(bool ah)
 {
     splitter->setAutoHideEnabled(ah);
     splitter->setAutohidable(0, ah);
+}
+
+void MainWindow::locateTrack()
+{
+    if (!libraryPage->isVisible()) {
+        showLibraryTab();
+    }
+    libraryPage->showSongs(playQueue->selectedSongs());
 }
 
 void MainWindow::showTab(int page)

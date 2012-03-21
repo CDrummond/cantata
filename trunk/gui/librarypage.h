@@ -46,6 +46,7 @@ public:
     void deleteSongs();
     #endif
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
+    void showSongs(const QList<Song> &songs);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

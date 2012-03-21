@@ -150,6 +150,7 @@ public:
         bool isCollection=index.data(GroupedView::Role_IsCollection).toBool();
         Song song=index.data(GroupedView::Role_Song).value<Song>();
         int state=index.data(GroupedView::Role_Status).toInt();
+        quint32 collection=index.data(GroupedView::Role_CollectionId).toUInt();
 
         if (!isCollection && AlbumHeader==type) {
             QStyleOptionViewItem opt(option);
@@ -161,7 +162,7 @@ public:
             painter->setClipRect(option.rect.adjusted(0, option.rect.height()/2, 0, 0), Qt::IntersectClip);
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
             painter->restore();
-            if (!state && !view->isExpanded(song.key) && view->isCurrentAlbum(song.key)) {
+            if (!state && !view->isExpanded(song.key, collection) && view->isCurrentAlbum(song.key)) {
                 state=index.data(GroupedView::Role_CurrentStatus).toInt();
             }
         } else {
@@ -180,7 +181,6 @@ public:
         }
         QFontMetrics fm(f);
         int textHeight=fm.height();
-        quint32 collection=index.data(GroupedView::Role_CollectionId).toUInt();
 
         if (isCollection) {
             title=index.data(Qt::DisplayRole).toString();
@@ -491,18 +491,21 @@ QModelIndexList GroupedView::selectedIndexes() const
 {
     QModelIndexList indexes = TreeView::selectedIndexes();
     QModelIndexList allIndexes;
-    quint32 rowCount=model()->rowCount();
 
     foreach (const QModelIndex &idx, indexes) {
         allIndexes.append(idx);
         if (!idx.data(GroupedView::Role_IsCollection).toBool()) {
             quint16 key=idx.data(GroupedView::Role_Key).toUInt();
-            if (!isExpanded(key)) {
+            quint32 collection=idx.data(GroupedView::Role_CollectionId).toUInt();
+            if (!isExpanded(key, collection)) {
+                quint32 rowCount=model()->rowCount(idx.parent());
                 for (quint32 i=idx.row()+1; i<rowCount; ++i) {
                     QModelIndex next=idx.sibling(i, 0);
                     if (next.isValid()) {
                         quint16 nextKey=next.data(GroupedView::Role_Key).toUInt();
-                        if (nextKey==key) {
+                        quint32 nextCollection=idx.data(GroupedView::Role_CollectionId).toUInt();
+
+                        if (nextCollection==collection && nextKey==key) {
                             allIndexes.append(next);
                         } else {
                             break;
@@ -514,7 +517,6 @@ QModelIndexList GroupedView::selectedIndexes() const
             }
         }
     }
-
     return allIndexes;
 }
 
@@ -535,7 +537,8 @@ void GroupedView::dropEvent(QDropEvent *event)
             QRect rect(visualRect(idx));
             if (event->pos().y()>(rect.y()+(rect.height()/2))) {
                 quint16 key=idx.data(GroupedView::Role_Key).toUInt();
-                if (!isExpanded(key)) {
+                quint32 collection=idx.data(GroupedView::Role_CollectionId).toUInt();
+                if (!isExpanded(key, collection)) {
                     parent=idx.parent();
                     quint32 rowCount=model()->rowCount(parent);
                     for (quint32 i=idx.row()+1; i<rowCount; ++i) {

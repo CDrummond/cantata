@@ -53,7 +53,7 @@ public:
     void addToSingleTracks(MusicLibraryItemArtist *other);
     bool isFromSingleTracks(const Song &s) const;
     void remove(MusicLibraryItemAlbum *album);
-    QList<MusicLibraryItem *> takeMutipleArtistAlbums();
+    QList<MusicLibraryItem *> mutipleArtistAlbums();
     void updateIndexes();
 
 private:

@@ -565,6 +565,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
                         int existing=pl->songs.indexOf(si);
                         beginMoveRows(parent, existing, existing, parent, i>existing ? i+1 : i);
                         SongItem *si=pl->songs.takeAt(existing);
+                        si->key=s.key;
                         pl->songs.insert(i, si);
                         endMoveRows();
                     }

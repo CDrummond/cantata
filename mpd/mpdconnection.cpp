@@ -372,6 +372,8 @@ void MPDConnection::move(quint32 from, quint32 to)
 
 void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
 {
+    doMoveInPlaylist(QString(), items, pos, size);
+    #if 0
     QByteArray send = "command_list_begin\n";
     QList<quint32> moveItems;
 
@@ -403,6 +405,7 @@ void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
 
     send += "command_list_end";
     sendCommand(send);
+    #endif
 }
 
 void MPDConnection::shuffle()
@@ -788,7 +791,7 @@ void MPDConnection::savePlaylist(QString name)
     }
 }
 
-void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs)
+void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs, quint32 pos, quint32 size)
 {
     if (songs.isEmpty()) {
         return;
@@ -810,55 +813,84 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs)
     }
 
     if (!added.isEmpty()) {
-        playlistInfo(name);
+        if (size>0) {
+            QList<quint32> items;
+            for(int i=0; i<added.count(); ++i) {
+                items.append(size+i);
+            }
+            doMoveInPlaylist(name, items, pos, size+added.count());
+        }
     }
+    playlistInfo(name);
 }
 
-void MPDConnection::removeFromPlaylist(const QString &name, const QList<int> &positions)
+void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32> &positions)
 {
     if (positions.isEmpty()) {
         return;
     }
 
     QByteArray encodedName=encodeName(name);
-    QList<int> sorted=positions;
+    QList<quint32> sorted=positions;
 
     qSort(sorted);
-    QList<int> fixedPositions;
-    QMap<int, int> map;
+    QList<quint32> fixedPositions;
+    QMap<quint32, quint32> map;
 
     for (int i=0; i<sorted.count(); ++i) {
         fixedPositions << (sorted.at(i)-i);
     }
-    QList<int> removed;
     for (int i=0; i<fixedPositions.count(); ++i) {
         QByteArray data = "playlistdelete ";
         data += encodedName;
         data += " ";
         data += QByteArray::number(fixedPositions.at(i));
-        if (sendCommand(data).ok) {
-            removed << sorted.at(i);
-        } else {
+        if (!sendCommand(data).ok) {
             break;
         }
     }
 
-    if (!removed.isEmpty()) {
-        emit removedFromPlaylist(name, removed);
-    }
+    playlistInfo(name);
 }
 
-void MPDConnection::moveInPlaylist(const QString &name, int from, int to)
+void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)
 {
-    QByteArray data = "playlistmove ";
-    data += encodeName(name);
-    data += " ";
-    data += QByteArray::number(from);
-    data += " ";
-    data += QByteArray::number(to);
-    if (sendCommand(data).ok) {
-        emit movedInPlaylist(name, from, to);
+    doMoveInPlaylist(name, items, pos, size);
+    playlistInfo(name);
+}
+
+bool MPDConnection::doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)
+{
+    QByteArray cmd = name.isEmpty() ? "move " : ("playlistmove "+encodeName(name)+" ");
+    QByteArray send = "command_list_begin\n";
+    QList<quint32> moveItems=items;
+    int posOffset = 0;
+
+    qSort(moveItems);
+
+    //first move all items (starting with the biggest) to the end so we don't have to deal with changing rownums
+    for (int i = moveItems.size() - 1; i >= 0; i--) {
+        if (moveItems.at(i) < pos && moveItems.at(i) != size - 1) {
+            // we are moving away an item that resides before the destinatino row, manipulate destination row
+            posOffset++;
+        }
+        send += cmd;
+        send += QByteArray::number(moveItems.at(i));
+        send += " ";
+        send += QByteArray::number(size - 1);
+        send += "\n";
     }
+    //now move all of them to the destination position
+    for (int i = moveItems.size() - 1; i >= 0; i--) {
+        send += cmd;
+        send += QByteArray::number(size - 1 - i);
+        send += " ";
+        send += QByteArray::number(pos - posOffset);
+        send += "\n";
+    }
+
+    send += "command_list_end";
+    return sendCommand(send).ok;
 }
 
 MpdSocket::MpdSocket(QObject *parent)

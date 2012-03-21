@@ -83,7 +83,7 @@ public:
 
 protected:
     void startScanner();
-    void stopScanner();
+    void stopScanner(bool showStatus=true);
 
 protected Q_SLOTS:
     void cacheRead();

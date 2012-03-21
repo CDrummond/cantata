@@ -70,7 +70,7 @@ MtpConnection::MtpConnection(MtpDevice *p)
 
 MtpConnection::~MtpConnection()
 {
-    disconnectFromDevice();
+    disconnectFromDevice(false);
 }
 
 MusicLibraryItemRoot * MtpConnection::takeLibrary()
@@ -132,13 +132,15 @@ void MtpConnection::connectToDevice()
     emit statusMessage(i18n("Connected to device"));
 }
 
-void MtpConnection::disconnectFromDevice()
+void MtpConnection::disconnectFromDevice(bool showStatus)
 {
     if (device) {
         destroyData();
         LIBMTP_Release_Device(device);
         device=0;
-        emit statusMessage(i18n("Disconnected from device"));
+        if (showStatus) {
+            emit statusMessage(i18n("Disconnected from device"));
+        }
     }
 }
 

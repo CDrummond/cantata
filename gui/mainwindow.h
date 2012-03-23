@@ -256,7 +256,7 @@ private Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
     void trayItemScrollRequested(int delta, Qt::Orientation orientation);
     #else
-    void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
+    void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
     void cropPlaylist();
     void updatePlayQueueStats(int artists, int albums, int songs, quint32 time);

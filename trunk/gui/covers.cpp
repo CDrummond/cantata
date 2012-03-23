@@ -158,8 +158,9 @@ static QString kdeHome()
         if (kdeHomePath.isEmpty())  {
             QDir homeDir(QDir::homePath());
             QString kdeConfDir(QLatin1String("/.kde"));
-            if (homeDir.exists(QLatin1String(".kde4")))
+            if (homeDir.exists(QLatin1String(".kde4"))) {
                 kdeConfDir = QLatin1String("/.kde4");
+            }
             kdeHomePath = QDir::homePath() + kdeConfDir;
         }
     }

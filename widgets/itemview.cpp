@@ -577,18 +577,27 @@ void ItemView::setAcceptDrops(bool v)
 {
     listView->setAcceptDrops(v);
     treeView->setAcceptDrops(v);
+    if (groupedView) {
+        groupedView->setAcceptDrops(v);
+    }
 }
 
 void ItemView::setDragDropOverwriteMode(bool v)
 {
     listView->setDragDropOverwriteMode(v);
     treeView->setDragDropOverwriteMode(v);
+    if (groupedView) {
+        groupedView->setDragDropOverwriteMode(v);
+    }
 }
 
 void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
 {
     listView->setDragDropMode(v);
     treeView->setDragDropMode(v);
+    if (groupedView) {
+        groupedView->setDragDropMode(v);
+    }
 }
 
 void ItemView::setGridSize(const QSize &sz)

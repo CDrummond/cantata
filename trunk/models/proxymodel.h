@@ -49,11 +49,11 @@ public:
     }
 
     static int compareStrings(const QString &a, const QString &b) {
-        #ifdef ENABLE_KDE_SUPPORT
-        return KStringHandler::naturalCompare(a, b, Qt::CaseInsensitive) < 0;
-        #else
+//         #ifdef ENABLE_KDE_SUPPORT
+//         return KStringHandler::naturalCompare(a, b, Qt::CaseInsensitive) < 0;
+//         #else
         return a.localeAwareCompare(b);
-        #endif
+//         #endif
     }
 
 protected:

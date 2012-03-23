@@ -76,13 +76,18 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     return false;
 }
 
+bool PlaylistsProxyModel::compareNames(const QString &l, const QString &r)
+{
+    return compareStrings(l, r)<0;
+}
+
 bool PlaylistsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
     PlaylistsModel::Item *l=static_cast<PlaylistsModel::Item *>(left.internalPointer());
     PlaylistsModel::Item *r=static_cast<PlaylistsModel::Item *>(right.internalPointer());
 
     if (l->isPlaylist() && r->isPlaylist()) {
-        return compareStrings(static_cast<PlaylistsModel::PlaylistItem *>(l)->name, static_cast<PlaylistsModel::PlaylistItem *>(r)->name)<0;
+        return compareNames(static_cast<PlaylistsModel::PlaylistItem *>(l)->name, static_cast<PlaylistsModel::PlaylistItem *>(r)->name);
     } else if(!l->isPlaylist() && !r->isPlaylist()) {
         return left.row()<right.row();
     }

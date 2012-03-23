@@ -300,11 +300,11 @@ bool PlaylistsModel::setData(const QModelIndex &index, const QVariant &value, in
 Qt::ItemFlags PlaylistsModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
-//         if (static_cast<Item *>(index.internalPointer())->isPlaylist()) {
+        if (static_cast<Item *>(index.internalPointer())->isPlaylist()) {
             return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
-//         } else {
-//             return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-//         }
+        } else {
+            return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
+        }
     } else {
         return 0;
     }
@@ -341,6 +341,7 @@ QStringList PlaylistsModel::filenames(const QModelIndexList &indexes, bool files
 
 static const QLatin1String constPlaylistNameMimeType("cantata/playlistnames");
 static const QLatin1String constPositionsMimeType("cantata/positions");
+static const char *constPlaylistProp="hasPlaylist";
 
 QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
 {
@@ -360,6 +361,7 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
                 playlists << static_cast<PlaylistItem*>(item)->name;
                 positions << QString::number(pos++);
             }
+            mimeData->setProperty(constPlaylistProp, true);
         } else if (!selectedPlaylists.contains(static_cast<SongItem*>(item)->parent)) {
             filenames << static_cast<SongItem*>(item)->file;
             playlists << static_cast<SongItem*>(item)->parent->name;
@@ -375,7 +377,17 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
 
 bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int col, const QModelIndex &parent)
 {
+    // Dont allow drag'n' drop of complete playlists...
+    if (data->property(constPlaylistProp).isValid()) {
+        return false;
+    }
+
+    // We may have dropped onto a song, so use songs row number...
+    if (row<0) {
+        row=parent.row();
+    }
     row+=dropAdjust;
+
     Q_UNUSED(col)
 
     if (Qt::IgnoreAction==action) {

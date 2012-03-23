@@ -61,7 +61,6 @@ static void selectEntry(QComboBox *box, int v)
             return;
         }
     }
-
 }
 
 static inline int getViewType(QComboBox *box)

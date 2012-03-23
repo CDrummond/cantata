@@ -45,7 +45,7 @@ public:
 private:
     void fetchInfo();
     void askGoogle(const QString &query);
-    void fetchWiki(QString query);
+//     void fetchWiki(QString query);
 
 private Q_SLOTS:
     void changeView();

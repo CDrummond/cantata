@@ -130,9 +130,11 @@ void RemoteDevice::remove(RemoteDevice *dev)
         grp.writeEntry(constCfgKey, names);
         KGlobal::config()->sync();
     }
+    dev->stopScanner(false);
     if (dev->isConnected()) {
         dev->unmount();
     }
+    dev->deleteLater();
 }
 
 QString RemoteDevice::createUdi(const QString &n)

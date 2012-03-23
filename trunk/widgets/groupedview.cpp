@@ -323,7 +323,7 @@ public:
             painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
         }
 
-        if ((option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
+        if ((option.state & QStyle::State_MouseOver) && (act1 || act2 || toggle) && hasActions(index, actLevel)) {
             drawIcons(painter, option.rect, true, rtl, false, index);
         }
         painter->restore();

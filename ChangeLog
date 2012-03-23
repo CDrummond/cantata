@@ -24,6 +24,7 @@
 14. Fix crash when quiting Cantata whilst devices are being scanned.
 15. Disable JavaScript for webview, this removes the 'Show'/'Hide' buttons from
     wikipedia pages.
+16. Adjust min and max sizes for sidebar.
 
 0.5.1
 -----

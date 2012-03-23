@@ -74,7 +74,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
 //     view->addAction(p->burnAction);
     view->setUniformRowHeights(true);
     view->setAcceptDrops(true);
-    view->setDragDropOverwriteMode(true);
+    view->setDragDropOverwriteMode(false);
     view->setDragDropMode(QAbstractItemView::DragDrop);
 
     proxy.setSourceModel(PlaylistsModel::self());

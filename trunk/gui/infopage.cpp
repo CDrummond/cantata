@@ -31,6 +31,7 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
+#include <QtWebKit/QWebSettings>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KWebView>
 #include <KDE/KLocale>
@@ -110,6 +111,9 @@ InfoPage::InfoPage(QWidget *parent)
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(changeView()));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)), SLOT(downloadRequested(const QNetworkRequest &)));
     view->setZoomFactor(Settings::self()->infoZoom()/100.0);
+    view->settings()->setAttribute(QWebSettings::PrivateBrowsingEnabled, true);
+    view->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
+    QWebSettings::globalSettings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
 }
 
 void InfoPage::save()
@@ -123,17 +127,17 @@ void InfoPage::askGoogle(const QString &query)
         return;
     }
 
-    QUrl question( "http://www.google.com/search?as_q=" + query + "&ft=i&num=1&as_sitesearch=wikipedia.org" );
+    QUrl question("http://www.google.com/search?as_q=" + query + "&ft=i&num=1&as_sitesearch=wikipedia.org");
     QString lang = QLocale::languageToString(QLocale::system().language());
-    Network::self()->get( question, this, "googleAnswer", lang );
+    Network::self()->get(question, this, "googleAnswer", lang);
 }
 
-void InfoPage::fetchWiki(QString query)
-{
-    QUrl wikiArtist("http://en.wikipedia.org/wiki/" + query.replace(' ', '_') );
-//     QUrl wikiArtist("http://en.wikipedia.org/wiki/" + query.replace(' ', '_') );
-    Network::self()->get( wikiArtist, this, "setArtistWiki" );
-}
+// void InfoPage::fetchWiki(QString query)
+// {
+//     QUrl wikiArtist("http://en.wikipedia.org/wiki/" + query.replace(' ', '_'));
+// //     QUrl wikiArtist("http://en.wikipedia.org/wiki/" + query.replace(' ', '_'));
+//     Network::self()->get(wikiArtist, this, "setArtistWiki");
+// }
 
 void InfoPage::changeView()
 {
@@ -143,29 +147,31 @@ void InfoPage::changeView()
 void InfoPage::googleAnswer(const QString &ans)
 {
     QString answer(ans);
-    int start = answer.indexOf( "<h3" );
-    if ( start > -1 ) {
-        start = answer.indexOf( "href=\"", start ) + 6;
-        start = answer.indexOf( "http", start );
-        int end = answer.indexOf( "\"", start );
-        end = qMin(end, answer.indexOf( "&amp", start ));
-        answer = answer.mid( start, end - start );
+    int start = answer.indexOf("<h3");
+    if (start > -1) {
+        start = answer.indexOf("href=\"", start) + 6;
+        start = answer.indexOf("http", start);
+        int end = answer.indexOf("\"", start);
+        end = qMin(end, answer.indexOf("&amp", start));
+        answer = answer.mid(start, end - start);
     }
     else {
         answer.clear();
     }
 
-    if ( !iHaveAskedForArtist && (!answer.contains("wikipedia.org") || answer.contains( QRegExp("/.*:") ) )) {
+    if (!iHaveAskedForArtist && (!answer.contains("wikipedia.org") || answer.contains(QRegExp("/.*:")))) {
         iHaveAskedForArtist=true;
-        askGoogle( song.artist );
+        askGoogle(song.artist);
         return;
     }
-    QUrl wikiInfo; //( answer.mid( start, end - start ).replace("/wiki/", "/wiki/Special:Export/").toUtf8() );
-    if (!answer.contains("mobile.wikipedia.org")) {
-        answer.replace("wikipedia.org", "mobile.wikipedia.org");
-    }
-    wikiInfo.setEncodedUrl( answer/*.replace("/wiki/", "/wiki/Special:Export/")*/.toUtf8() );
+    QUrl wikiInfo; //(answer.mid(start, end - start).replace("/wiki/", "/wiki/Special:Export/").toUtf8());
+//     if (!answer.contains("m.wikipedia.org")) {
+//         answer.replace("wikipedia.org", "m.wikipedia.org");
+//     }
+    wikiInfo.setEncodedUrl(answer/*.replace("/wiki/", "/wiki/Special:Export/")*/.toUtf8());
     wikiInfo.addQueryItem("action", "view");
+    wikiInfo.addQueryItem("useskin", "monobook");
+    wikiInfo.addQueryItem("useformat", "mobile");
     view->setUrl(wikiInfo);
 }
 
@@ -179,7 +185,7 @@ void InfoPage::update(const Song &s)
 void InfoPage::fetchInfo()
 {
     QString question = 0==combo->currentIndex() ? song.artist : (song.artist.isEmpty() && song.album.isEmpty() ? song.title : song.artist + " " + song.album);
-    if ( !question.isEmpty() && lastWikiQuestion != question ) {
+    if (!question.isEmpty() && lastWikiQuestion != question) {
         lastWikiQuestion = question;
         #ifdef ENABLE_KDE_SUPPORT
         view->setHtml(i18n("<h3><i>Loading...</i></h3>"));
@@ -187,8 +193,8 @@ void InfoPage::fetchInfo()
         view->setHtml(tr("<h3><i>Loading...</i></h3>"));
         #endif
 
-        askGoogle( question );
-//         fetchWiki( artist );
+        askGoogle(question);
+//         fetchWiki(artist);
     }
 }
 

@@ -592,9 +592,15 @@ void DevicesModel::removeRemoteDevice(const QString &udi)
     Device *dev=device(udi);
 
     if (dev && Device::Remote==dev->type()) {
+        int idx=indexes[udi];
+        beginRemoveRows(QModelIndex(), idx, idx);
+        // Remove device from list, but do NOT delete - it may be scanning!!!!
+        devices.takeAt(idx);
+        indexes.remove(udi);
+        endRemoveRows();
+        updateItemMenu();
+        // Remove will stop device, and delete it
         RemoteDevice::remove(static_cast<RemoteDevice *>(dev));
-        deviceRemoved(udi);
-        dev->deleteLater();
     }
 }
 

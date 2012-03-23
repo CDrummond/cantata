@@ -387,7 +387,7 @@ void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
     listView->setItemDelegate(new ListDelegate(listView, a1, a2, toggle, actionLevel));
     treeView->setItemDelegate(new TreeDelegate(treeView, a1, a2, toggle, actionLevel));
     if (groupedView) {
-        groupedView->init(a1, a2, toggle, actionLevel);
+        groupedView->init(0, 0, 0, 0); // No actions in grouped view :-(
     }
     connect(treeSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(treeSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
@@ -791,7 +791,7 @@ QAction * ItemView::getAction(const QModelIndex &index)
 
 void ItemView::itemClicked(const QModelIndex &index)
 {
-    if (ActionItemDelegate::hasActions(index, actLevel)) {
+    if ((act1 || act2 || toggle) && ActionItemDelegate::hasActions(index, actLevel)) {
         QAction *act=getAction(index);
         if (act) {
             act->trigger();
@@ -801,11 +801,8 @@ void ItemView::itemClicked(const QModelIndex &index)
 
 void ItemView::itemActivated(const QModelIndex &index)
 {
-    if (ActionItemDelegate::hasActions(index, actLevel)) {
-        QAction *act=getAction(index);
-        if (act) {
-            return;
-        }
+    if ((act1 || act2 || toggle) && ActionItemDelegate::hasActions(index, actLevel) && getAction(index)) {
+        return;
     }
 
     if (Mode_Tree==mode) {

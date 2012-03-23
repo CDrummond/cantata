@@ -1653,19 +1653,18 @@ void MainWindow::updateCurrentSong(const Song &song)
             #else
             // The pure Qt implementation needs both, the tray icon
             // and the setting checked.
-            if (Settings::self()->showPopups() && trayItem)
-                const QString text("album:  " + current.album + "\n"
-                                   + "track:  " + QString::number(current.track) + "\n"
-                                   + "length: " + Song::formattedTime(current.time));
+            if (Settings::self()->showPopups() && trayItem) {
+                const QString text=tr("Album: %1\n"
+                                      "Track: %2\n"
+                                      "Length: %3").arg(current.album).arg(current.track).arg(Song::formattedTime(current.time));
 
-                trayItem->showMessage(current.artist + " - " + current.title, text, QSystemTrayIcon::Information, 5000);
-            #endif
-        } else {
-            if (trayItem) {
-                #ifdef ENABLE_KDE_SUPPORT
-                    trayItem->setToolTip("cantata", i18n("Cantata"), QString());
-                #endif
+                trayItem->showMessage(tr("%1 - %2").arg(current.artist).arg(current.title), text, QSystemTrayIcon::Information, 5000);
             }
+            #endif
+        } else if (trayItem) {
+            #ifdef ENABLE_KDE_SUPPORT
+            trayItem->setToolTip("cantata", i18n("Cantata"), QString());
+            #endif
         }
     }
 }
@@ -2148,7 +2147,7 @@ void MainWindow::trayItemScrollRequested(int delta, Qt::Orientation orientation)
     }
 }
 #else
-void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
+void MainWindow::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
     case QSystemTrayIcon::Trigger:

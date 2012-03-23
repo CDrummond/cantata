@@ -588,7 +588,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
 
             if (pl->songs.count()>songs.count()) {
                 int toRemove=pl->songs.count()-songs.count();
-                beginRemoveRows(parent, pl->songs.count()-(toRemove+1), pl->songs.count()-1);
+                beginRemoveRows(parent, pl->songs.count()-toRemove, pl->songs.count()-1);
                 for (int i=0; i<toRemove; ++i) {
                     delete pl->songs.takeLast();
                 }

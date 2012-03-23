@@ -84,6 +84,7 @@ public:
     QModelIndex parent(const QModelIndex &index) const;
     QModelIndex index(int row, int col, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
     Qt::ItemFlags flags(const QModelIndex &index) const;
     Qt::DropActions supportedDropActions() const;
     QStringList filenames(const QModelIndexList &indexes, bool filesOnly=false) const;
@@ -131,6 +132,7 @@ private:
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;
     QMenu *itemMenu;
+    quint32 dropAdjust;
 };
 
 #endif

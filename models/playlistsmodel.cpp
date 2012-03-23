@@ -57,6 +57,7 @@ PlaylistsModel * PlaylistsModel::self()
 PlaylistsModel::PlaylistsModel(QObject *parent)
     : QAbstractItemModel(parent)
     , itemMenu(0)
+    , dropAdjust(0)
 {
     connect(MPDConnection::self(), SIGNAL(playlistsRetrieved(const QList<Playlist> &)), this, SLOT(setPlaylists(const QList<Playlist> &)));
     connect(MPDConnection::self(), SIGNAL(playlistInfoRetrieved(const QString &, const QList<Song> &)), this, SLOT(playlistInfoRetrieved(const QString &, const QList<Song> &)));
@@ -286,6 +287,16 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+bool PlaylistsModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (GroupedView::Role_DropAdjust==role) {
+        dropAdjust=value.toUInt();
+        return true;
+    } else {
+        return QAbstractItemModel::setData(index, value, role);
+    }
+}
+
 Qt::ItemFlags PlaylistsModel::flags(const QModelIndex &index) const
 {
     if (index.isValid()) {
@@ -364,7 +375,7 @@ QMimeData * PlaylistsModel::mimeData(const QModelIndexList &indexes) const
 
 bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int col, const QModelIndex &parent)
 {
-    Q_UNUSED(row)
+    row+=dropAdjust;
     Q_UNUSED(col)
 
     if (Qt::IgnoreAction==action) {
@@ -389,8 +400,8 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
 
         if (data->hasFormat(PlayQueueModel::constMoveMimeType)) {
             emit addToPlaylist(pl->name, filenames,
-                               parent.row() < 0 || item->isPlaylist() ? 0 : parent.row(),
-                               parent.row() < 0 || item->isPlaylist() ? 0 : pl->songs.size());
+                               row < 0 || item->isPlaylist() ? 0 : row,
+                               row < 0 || item->isPlaylist() ? 0 : pl->songs.size());
             return true;
         } else if (data->hasFormat(constPlaylistNameMimeType)) {
             QStringList playlists=PlayQueueModel::decode(*data, constPlaylistNameMimeType);
@@ -409,7 +420,7 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
                 }
             }
             if (fromThis) {
-                if (!item->isPlaylist()) {
+//                 if (!item->isPlaylist()) {
                     QStringList list=PlayQueueModel::decode(*data, constPositionsMimeType);
                     QList<quint32> pos;
 
@@ -425,15 +436,15 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
 //                         if (dest>source) {
 //                             source-=offset++;
 //                         }
-                        emit moveInPlaylist(pl->name, pos, parent.row() < 0 ? pl->songs.size() : parent.row(), pl->songs.size());
+                        emit moveInPlaylist(pl->name, pos, row < 0 ? pl->songs.size() : row, pl->songs.size());
 //                         emit moveInPlaylist(pl->name, source, dest);
 //                     }
                     return true;
-                }
+//                 }
             } else {
                 emit addToPlaylist(pl->name, filenames,
-                                   parent.row() < 0 || item->isPlaylist() ? 0 : parent.row(),
-                                   parent.row() < 0 || item->isPlaylist() ? 0 : pl->songs.size());
+                                   row < 0 || item->isPlaylist() ? 0 : row,
+                                   row < 0 || item->isPlaylist() ? 0 : pl->songs.size());
                 return true;
             }
         }

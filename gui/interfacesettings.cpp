@@ -35,7 +35,7 @@ static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=f
     #ifdef ENABLE_KDE_SUPPORT
     box->addItem(i18n("Tree"), ItemView::Mode_Tree);
     if (groupedTree) {
-        box->addItem(i18n("Grouped Tree"), ItemView::Mode_GroupedTree);
+        box->addItem(i18n("Grouped Albums"), ItemView::Mode_GroupedTree);
     }
     box->addItem(i18n("List"), ItemView::Mode_List);
     if (iconMode) {
@@ -44,7 +44,7 @@ static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=f
     #else
     box->addItem(QObject::tr("Tree"), ItemView::Mode_Tree);
     if (groupedTree) {
-        box->addItem(QObject::tr("Grouped Tree"), ItemView::Mode_GroupedTree);
+        box->addItem(QObject::tr("Grouped Albums"), ItemView::Mode_GroupedTree);
     }
     box->addItem(QObject::tr("List"), ItemView::Mode_List);
     if (iconMode) {

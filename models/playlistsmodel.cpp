@@ -28,6 +28,7 @@
 #include <QtCore/QMimeData>
 #include <QtGui/QMenu>
 #include "playlistsmodel.h"
+#include "playlistsproxymodel.h"
 #include "itemview.h"
 #include "groupedview.h"
 #ifdef ENABLE_KDE_SUPPORT
@@ -729,7 +730,7 @@ void PlaylistsModel::updateItemMenu()
     foreach (const PlaylistItem *p, items) {
         names << p->name;
     }
-    qSort(names);
+    qSort(names.begin(), names.end(), PlaylistsProxyModel::compareNames);
     foreach (const QString &n, names) {
         itemMenu->addAction(n, this, SLOT(emitAddToExisting()));
     }

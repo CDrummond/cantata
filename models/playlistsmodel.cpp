@@ -549,6 +549,10 @@ void PlaylistsModel::setPlaylists(const QList<Playlist> &playlists)
             }
             endInsertRows();
         }
+
+        if (added.count() || removed.count()) {
+            updateItemMenu();
+        }
     }
 }
 
@@ -568,7 +572,6 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
                 pl->songs.append(new SongItem(s, pl));
             }
             endInsertRows();
-            updateItemMenu();
             emit updated(idx);
         } else if (songs.isEmpty()) {
             beginRemoveRows(createIndex(items.indexOf(pl), 0, pl), 0, pl->songs.count()-1);

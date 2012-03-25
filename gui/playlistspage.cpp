@@ -319,7 +319,7 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, indexes) {
-        mapped.append(proxy.mapToSource(idx));
+        mapped.prepend(proxy.mapToSource(idx));
     }
 
     QStringList files=PlaylistsModel::self()->filenames(mapped);

@@ -183,7 +183,7 @@ void LyricsPage::update()
     #else
     if (Mode_Edit==mode && QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
         return;
-    } else if(mpdExists && QMessageBox::No==QMessageBox::question(this, tr("Question"), i18n("Delete saved copy of lyrics, and re-download?"))) {
+    } else if(mpdExists && QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Delete saved copy of lyrics, and re-download?"))) {
         return;
     }
     #endif
@@ -240,7 +240,7 @@ void LyricsPage::cancel()
         return;
     }
     #else
-    if (QMessageBox::No==QMessageBox::question(this, tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
+    if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
         return;
     }
     #endif
@@ -272,7 +272,7 @@ void LyricsPage::del()
 
 void LyricsPage::update(const Song &song, bool force)
 {
-    if (Mode_Edit==mode !force) {
+    if (Mode_Edit==mode && !force) {
         return;
     }
 

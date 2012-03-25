@@ -192,9 +192,14 @@ const QString & Settings::mpdDir()
     return mpdDirSetting;
 }
 
-bool Settings::storeDownloadsInMpdDir()
+bool Settings::storeCoversInMpdDir()
 {
-    return GET_BOOL("storeDownloadsInMpdDir", true);
+    return GET_BOOL("storeCoversInMpdDir", true);
+}
+
+bool Settings::storeLyricsInMpdDir()
+{
+    return GET_BOOL("storeLyricsInMpdDir", true);
 }
 
 int Settings::libraryView()
@@ -488,9 +493,14 @@ void Settings::saveMpdDir(const QString &v)
     SET_VALUE("mpdDir", mpdDirSetting);
 }
 
-void Settings::saveStoreDownloadsInMpdDir(bool v)
+void Settings::saveStoreCoversInMpdDir(bool v)
 {
-    SET_VALUE("storeDownloadsInMpdDir", v);
+    SET_VALUE("storeCoversInMpdDir", v);
+}
+
+void Settings::saveStoreLyricsInMpdDir(bool v)
+{
+    SET_VALUE("storeLyricsInMpdDir", v);
 }
 
 void Settings::saveLibraryView(int v)

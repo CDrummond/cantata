@@ -19,6 +19,9 @@
    </property>
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
@@ -84,19 +87,6 @@
      </item>
      <item row="3" column="1">
       <widget class="DirRequester" name="mpdDir"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="storeDownloadsInMpdDirLabel">
-       <property name="text">
-        <string>Save downloaded covers in music folder:</string>
-       </property>
-       <property name="buddy">
-        <cstring>storeDownloadsInMpdDir</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QCheckBox" name="storeDownloadsInMpdDir"/>
      </item>
     </layout>
    </item>

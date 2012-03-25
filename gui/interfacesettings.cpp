@@ -121,6 +121,8 @@ void InterfaceSettings::load()
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
+    storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
+    storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
     albumsViewChanged();
     albumsCoverSizeChanged();
     playListsStyleChanged();
@@ -149,6 +151,8 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
+    Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
+    Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
 }
 
 void InterfaceSettings::albumsViewChanged()

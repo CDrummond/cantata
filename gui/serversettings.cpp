@@ -44,7 +44,6 @@ void ServerSettings::load()
     portSpinBox->setValue(Settings::self()->connectionPort());
     passwordLineEdit->setText(Settings::self()->connectionPasswd());
     mpdDir->setText(Settings::self()->mpdDir());
-    storeDownloadsInMpdDir->setChecked(Settings::self()->storeDownloadsInMpdDir());
 }
 
 void ServerSettings::save()
@@ -53,5 +52,4 @@ void ServerSettings::save()
     Settings::self()->saveConnectionPort(portSpinBox->value());
     Settings::self()->saveConnectionPasswd(passwordLineEdit->text());
     Settings::self()->saveMpdDir(mpdDir->text());
-    Settings::self()->saveStoreDownloadsInMpdDir(storeDownloadsInMpdDir->isChecked());
 }

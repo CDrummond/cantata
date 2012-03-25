@@ -390,6 +390,36 @@
          </property>
         </widget>
        </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="storeCoversInMpdDirLabel">
+         <property name="text">
+          <string>Save downloaded covers in music folder:</string>
+         </property>
+         <property name="buddy">
+          <cstring>storeCoversInMpdDir</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="storeCoversInMpdDir"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Save downloaded lyrics in music folder:</string>
+         </property>
+         <property name="buddy">
+          <cstring>storeLyricsInMpdDir</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QCheckBox" name="storeLyricsInMpdDir">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -416,6 +446,8 @@
   <tabstop>groupSingle</tabstop>
   <tabstop>groupMultiple</tabstop>
   <tabstop>showDeleteAction</tabstop>
+  <tabstop>storeCoversInMpdDir</tabstop>
+  <tabstop>storeLyricsInMpdDir</tabstop>
  </tabstops>
  <resources/>
  <connections/>

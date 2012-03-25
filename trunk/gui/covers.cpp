@@ -289,7 +289,7 @@ Covers::Covers()
     , manager(0)
     , cache(150000)
 {
-    saveInMpdDir=Settings::self()->storeDownloadsInMpdDir();
+    saveInMpdDir=Settings::self()->storeCoversInMpdDir();
 }
 
 static inline QString cacheKey(const QString &artist, const QString &album, int size)

@@ -25,6 +25,7 @@
 15. Disable JavaScript for webview, this removes the 'Show'/'Hide' buttons from
     wikipedia pages.
 16. Adjust min and max sizes for sidebar.
+17. Add basic lyrics editing.
 
 0.5.1
 -----

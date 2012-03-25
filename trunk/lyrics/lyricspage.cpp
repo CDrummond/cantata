@@ -35,6 +35,7 @@
 #include <QTextBrowser>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QFileInfo>
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
@@ -42,6 +43,9 @@
 #include <KDE/KLocale>
 #include <KDE/KXMLGUIClient>
 #include <KDE/KActionCollection>
+#include <KDE/KMessageBox>
+#else
+#include <QtGui/QMessageBox>
 #endif
 
 static QString changeExt(const QString &f, const QString &newExt)
@@ -74,10 +78,11 @@ bool CompareLyricProviders(const UltimateLyricsProvider* a, const UltimateLyrics
     return a->relevance() < b->relevance();
 }
 
-LyricsPage::LyricsPage(QWidget *parent)
-    : QWidget(parent)
+LyricsPage::LyricsPage(MainWindow *p)
+    : QWidget(p)
 //     , reader(new UltimateLyricsReader(this))
     , currentRequest(0)
+    , mode(Mode_Display)
 {
     setupUi(this);
 
@@ -92,22 +97,46 @@ LyricsPage::LyricsPage(QWidget *parent)
 //     QFutureWatcher<ProviderList> *watcher = new QFutureWatcher<ProviderList>(this);
 //     watcher->setFuture(future);
 //     connect(watcher, SIGNAL(finished()), SLOT(ultimateLyricsParsed()));
-#ifdef ENABLE_KDE_SUPPORT
-    KXMLGUIClient *client=dynamic_cast<KXMLGUIClient *>(parent);
-    if (client) {
-        refreshAction = client->actionCollection()->addAction("refreshlyrics");
-    } else {
-        refreshAction = new KAction(this);
-    }
+    #ifdef ENABLE_KDE_SUPPORT
+    refreshAction = p->actionCollection()->addAction("refreshlyrics");
     refreshAction->setText(i18n("Refresh"));
-#else
+    editAction = p->actionCollection()->addAction("editlyrics");
+    editAction->setText(i18n("Edit"));
+    saveAction = p->actionCollection()->addAction("savelyrics");
+    saveAction->setText(i18n("Save"));
+    cancelAction = p->actionCollection()->addAction("canceleditlyrics");
+    cancelAction->setText(i18n("Cancel"));
+    delAction = p->actionCollection()->addAction("dellyrics");
+    delAction->setText(i18n("Delete"));
+    #else
     refreshAction = new QAction(tr("Refresh"), this);
-#endif
+    editAction = new QAction(tr("Refresh"), this);
+    saveAction = new QAction(tr("Refresh"), this);
+    cancelAction = new QAction(tr("Refresh"), this);
+    delAction = new QAction(tr("Refresh"), this);
+    #endif
     refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
+    editAction->setIcon(QIcon::fromTheme("document-edit"));
+    saveAction->setIcon(QIcon::fromTheme("document-save"));
+    cancelAction->setIcon(QIcon::fromTheme("dialog-cancel"));
+    delAction->setIcon(QIcon::fromTheme("edit-delete"));
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
-    MainWindow::initButton(refresh);
-    refresh->setDefaultAction(refreshAction);
+    connect(editAction, SIGNAL(triggered()), SLOT(edit()));
+    connect(saveAction, SIGNAL(triggered()), SLOT(save()));
+    connect(cancelAction, SIGNAL(triggered()), SLOT(cancel()));
+    connect(delAction, SIGNAL(triggered()), SLOT(del()));
+    MainWindow::initButton(refreshBtn);
+    MainWindow::initButton(editBtn);
+    MainWindow::initButton(saveBtn);
+    MainWindow::initButton(cancelBtn);
+    MainWindow::initButton(delBtn);
+    refreshBtn->setDefaultAction(refreshAction);
+    editBtn->setDefaultAction(editAction);
+    saveBtn->setDefaultAction(saveAction);
+    cancelBtn->setDefaultAction(cancelAction);
+    delBtn->setDefaultAction(delAction);
     text->setZoom(Settings::self()->lyricsZoom());
+    setMode(Mode_Blank);
 }
 
 LyricsPage::~LyricsPage()
@@ -117,7 +146,7 @@ LyricsPage::~LyricsPage()
     }
 }
 
-void LyricsPage::save()
+void LyricsPage::saveSettings()
 {
     Settings::self()->saveLyricsZoom(text->zoom());
 }
@@ -143,12 +172,112 @@ void LyricsPage::setEnabledProviders(const QStringList &providerList)
 
 void LyricsPage::update()
 {
+    QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
+    bool mpdExists=QFile::exists(mpdName);
+    #ifdef ENABLE_KDE_SUPPORT
+    if (Mode_Edit==mode && KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+        return;
+    } else if(mpdExists && KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Delete saved copy of lyrics, and re-download?"))) {
+        return;
+    }
+    #else
+    if (Mode_Edit==mode && QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
+        return;
+    } else if(mpdExists && QMessageBox::No==QMessageBox::question(this, tr("Question"), i18n("Delete saved copy of lyrics, and re-download?"))) {
+        return;
+    }
+    #endif
+    if (mpdExists) {
+        QFile::remove(mpdName);
+    }
+    QString cacheName=cacheFile(currentSong.artist, currentSong.title);
+    if (QFile::exists(cacheName)) {
+        QFile::remove(cacheName);
+    }
     update(currentSong, true);
+}
+
+void LyricsPage::edit()
+{
+    preEdit=text->toPlainText();
+    setMode(Mode_Edit);
+}
+
+void LyricsPage::save()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Save updated lyrics?"))) {
+        return;
+    }
+    #else
+    if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Save updated lyrics?"), QMessageBox::Yes|QMessageBox::No)) {
+        return;
+    }
+    #endif
+
+    QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
+    QString cacheName=cacheFile(currentSong.artist, currentSong.title);
+    if (saveFile(mpdName)) {
+        if (QFile::exists(cacheName)) {
+            QFile::remove(cacheName);
+        }
+    } else if (!saveFile(cacheName)) {
+        #ifdef ENABLE_KDE_SUPPORT
+        KMessageBox::error(this, i18n("Failed to save lyrics."));
+        #else
+        QMessageBox::critical(this, tr("Error"), tr("Save updated lyrics?"));
+        #endif
+        return;
+    }
+
+    setMode(Mode_Display);
+}
+
+void LyricsPage::cancel()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+        return;
+    }
+    #else
+    if (QMessageBox::No==QMessageBox::question(this, tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
+        return;
+    }
+    #endif
+    text->setText(preEdit);
+    setMode(Mode_Display);
+}
+
+void LyricsPage::del()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Delete lyrics file?"))) {
+        return;
+    }
+    #else
+    if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Delete lyrics file?"),  QMessageBox::Yes|QMessageBox::No)) {
+        return;
+    }
+    #endif
+
+    QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
+    QString cacheName=cacheFile(currentSong.artist, currentSong.title);
+    if (QFile::exists(cacheName)) {
+        QFile::remove(cacheName);
+    }
+    if (QFile::exists(mpdName)) {
+        QFile::remove(mpdName);
+    }
 }
 
 void LyricsPage::update(const Song &song, bool force)
 {
+    if (Mode_Edit==mode !force) {
+        return;
+    }
+
     if (force || song.artist!=currentSong.artist || song.title!=currentSong.title) {
+        setMode(Mode_Blank);
         currentRequest++;
         currentSong=song;
         currentProvider=-1;
@@ -161,8 +290,14 @@ void LyricsPage::update(const Song &song, bool force)
             // Check for MPD file...
             QString mpdLyrics=changeExt(Settings::self()->mpdDir()+song.file, constExtension);
 
-            // Stop here if we found lyrics in the mpd dir.
+//             if (force && QFile::exists(mpdLyrics)) {
+//                 QFile::remove(mpdLyrics);
+//             }
+
+            // Stop here if we found lyrics in the cache dir.
             if (setLyricsFromFile(mpdLyrics)) {
+                lyricsFile=mpdLyrics;
+                setMode(Mode_Display);
                 return;
             }
         }
@@ -170,17 +305,19 @@ void LyricsPage::update(const Song &song, bool force)
         // Check for cached file...
         QString file=cacheFile(song.artist, song.title);
 
-        if (force && QFile::exists(file)) {
+        /*if (force && QFile::exists(file)) {
             // Delete the cached lyrics file when the user
             // is force-fully re-fetching the lyrics.
             // Afterwards we'll simply do getLyrics() to get
             // the new ones.
             QFile::remove(file);
-        } else if (setLyricsFromFile(file)) {
+        } else */if (setLyricsFromFile(file)) {
            // We just wanted a normal update without
            // explicit re-fetching. We can return
            // here because we got cached lyrics and
            // we don't want an explicit re-fetch.
+           lyricsFile=file;
+           setMode(Mode_Display);
            return;
         }
 
@@ -197,14 +334,27 @@ void LyricsPage::resultReady(int id, const QString &lyrics)
         getLyrics();
     } else {
         text->setText(lyrics);
-
-        QFile f(cacheFile(currentSong.artist, currentSong.title, true));
-
-        if (f.open(QIODevice::WriteOnly)) {
-            QTextStream(&f) << text->toPlainText();
-            f.close();
+        lyricsFile=QString();
+        if (! ( Settings::self()->storeLyricsInMpdDir() &&
+                saveFile(changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension))) ) {
+            saveFile(cacheFile(currentSong.artist, currentSong.title, true));
         }
+        setMode(Mode_Display);
     }
+}
+
+bool LyricsPage::saveFile(const QString &fileName)
+{
+    QFile f(fileName);
+
+    if (f.open(QIODevice::WriteOnly)) {
+        QTextStream(&f) << text->toPlainText();
+        f.close();
+        lyricsFile=fileName;
+        return true;
+    }
+
+    return false;
 }
 
 UltimateLyricsProvider* LyricsPage::providerByName(const QString &name) const
@@ -239,9 +389,24 @@ void LyricsPage::getLyrics()
            text->setText(tr("No lyrics found"));
 #endif
            currentProvider=-1;
+           setMode(Mode_Blank);
            return;
         }
     }
+}
+
+void LyricsPage::setMode(Mode m)
+{
+    if (mode==m) {
+        return;
+    }
+    mode=m;
+    bool editable=Mode_Display==m && !lyricsFile.isEmpty() && QFileInfo(lyricsFile).isWritable();
+    saveAction->setEnabled(Mode_Edit==m);
+    cancelAction->setEnabled(Mode_Edit==m);
+    editAction->setEnabled(editable);
+    delAction->setEnabled(editable);
+    text->setReadOnly(Mode_Edit!=m);
 }
 
 bool LyricsPage::setLyricsFromFile(const QString &filePath) const

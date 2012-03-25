@@ -971,7 +971,7 @@ MainWindow::~MainWindow()
     }
     Settings::self()->saveHiddenPages(hiddenPages);
     streamsPage->save();
-    lyricsPage->save();
+    lyricsPage->saveSettings();
     #ifdef ENABLE_WEBKIT
     infoPage->save();
     #endif
@@ -1182,7 +1182,7 @@ void MainWindow::updateSettings()
     }
 
     connectToMpd();
-    Covers::self()->setSaveInMpdDir(Settings::self()->storeDownloadsInMpdDir());
+    Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
     HttpServer::self()->setPort(Settings::self()->enableHttp() ? Settings::self()->httpPort() : 0);
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());

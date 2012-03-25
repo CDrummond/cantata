@@ -29,6 +29,7 @@
 #include "song.h"
 #include "ui_lyricspage.h"
 
+class MainWindow;
 class UltimateLyricsProvider;
 // class UltimateLyricsReader;
 class UltimateLyricsProvider;
@@ -37,13 +38,19 @@ class LyricsPage : public QWidget, public Ui::LyricsPage
 {
   Q_OBJECT
 
+    enum Mode {
+        Mode_Blank,
+        Mode_Display,
+        Mode_Edit
+    };
+
 public:
     static const QLatin1String constExtension;
 
-    LyricsPage(QWidget *parent);
+    LyricsPage(MainWindow *p);
     ~LyricsPage();
 
-    void save();
+    void saveSettings();
     void setEnabledProviders(const QStringList &providerList);
     void update(const Song &song, bool force=false);
     const QList<UltimateLyricsProvider *> & getProviders() { return providers; }
@@ -54,17 +61,23 @@ Q_SIGNALS:
 protected Q_SLOTS:
     void resultReady(int id, const QString &lyrics);
     void update();
+    void edit();
+    void save();
+    void cancel();
+    void del();
 
 private:
     UltimateLyricsProvider * providerByName(const QString &name) const;
     void getLyrics();
+    void setMode(Mode m);
+    bool saveFile(const QString &fileName);
 
     /**
      * Reads the lyrics from the given filePath and updates
      * the UI with those lyrics.
-     * 
+     *
      * @param filePath The path to the lyrics file which will be read.
-     * 
+     *
      * @return Returns true if the file could be read; otherwise false.
      */
     bool setLyricsFromFile(const QString &filePath) const;
@@ -79,6 +92,13 @@ private:
     int currentRequest;
     Song currentSong;
     QAction *refreshAction;
+    QAction *editAction;
+    QAction *saveAction;
+    QAction *cancelAction;
+    QAction *delAction;
+    Mode mode;
+    QString lyricsFile;
+    QString preEdit;
 };
 
 #endif

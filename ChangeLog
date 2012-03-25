@@ -26,6 +26,8 @@
     wikipedia pages.
 16. Adjust min and max sizes for sidebar.
 17. Add basic lyrics editing.
+18. Fix order of items added from playlist to playqueue, when individual items
+    of the list were selected.
 
 0.5.1
 -----

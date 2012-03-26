@@ -795,7 +795,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlaylistAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlaylistAction));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playlistItemsSelected(bool)));
-    connect(streamsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
+    connect(streamsPage, SIGNAL(add(const QStringList &, bool)), &playQueueModel, SLOT(addItems(const QStringList &, bool)));
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
@@ -879,7 +879,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
-    connect(playlistsPage, SIGNAL(add(const QStringList &)), &playQueueModel, SLOT(addItems(const QStringList &)));
+    connect(playlistsPage, SIGNAL(add(const QStringList &, bool)), &playQueueModel, SLOT(addItems(const QStringList &, bool)));
 
     QByteArray state=Settings::self()->splitterState();
 
@@ -995,7 +995,7 @@ void MainWindow::load(const QList<QUrl> &urls)
         }
     }
     if (useable.count()) {
-        playQueueModel.addItems(useable, playQueueModel.rowCount());
+        playQueueModel.addItems(useable, playQueueModel.rowCount(), false);
     }
 }
 
@@ -1858,24 +1858,29 @@ void MainWindow::removeFromPlaylist()
 
 void MainWindow::replacePlaylist()
 {
-    emit clear();
-    emit getStatus();
-    addToPlaylist();
+//     emit clear();
+//     emit getStatus();
+    addToPlaylist(true);
 }
 
 void MainWindow::addToPlaylist()
 {
+    addToPlaylist(false);
+}
+
+void MainWindow::addToPlaylist(bool replace)
+{
     searchPlaylistLineEdit->clear();
     if (libraryPage->isVisible()) {
-        libraryPage->addSelectionToPlaylist();
+        libraryPage->addSelectionToPlaylist(QString(), replace);
     } else if (albumsPage->isVisible()) {
-        albumsPage->addSelectionToPlaylist();
+        albumsPage->addSelectionToPlaylist(QString(), replace);
     } else if (folderPage->isVisible()) {
-        folderPage->addSelectionToPlaylist();
+        folderPage->addSelectionToPlaylist(QString(), replace);
     } else if (playlistsPage->isVisible()) {
-        playlistsPage->addSelectionToPlaylist();
+        playlistsPage->addSelectionToPlaylist(replace);
     } else if (streamsPage->isVisible()) {
-        streamsPage->addSelectionToPlaylist();
+        streamsPage->addSelectionToPlaylist(replace);
     }
 }
 

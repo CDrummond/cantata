@@ -149,8 +149,8 @@ public:
 public Q_SLOTS:
     void setDetails(const QString &host, quint16 port, const QString &pass);
     // Current Playlist
-    void add(const QStringList &files);
-    void addid(const QStringList &files, quint32 pos, quint32 size);
+    void add(const QStringList &files, bool replace);
+    void addid(const QStringList &files, quint32 pos, quint32 size, bool replace);
     void currentSong();
     void playListInfo();
     void removeSongs(const QList<qint32> &items);
@@ -198,10 +198,10 @@ public Q_SLOTS:
     void listPlaylist();
     void listPlaylists();
     void playlistInfo(const QString &name);
-    void loadPlaylist(QString name);
+    void loadPlaylist(const QString &name, bool replace);
     void renamePlaylist(const QString oldName, const QString newName);
-    void removePlaylist(QString name);
-    void savePlaylist(QString name);
+    void removePlaylist(const QString &name);
+    void savePlaylist(const QString &name);
     void addToPlaylist(const QString &name, const QStringList &songs) { addToPlaylist(name, songs, 0, 0); }
     void addToPlaylist(const QString &name, const QStringList &songs, quint32 pos, quint32 size);
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);

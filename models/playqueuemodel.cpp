@@ -124,9 +124,9 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(playListStats()));
-    connect(fetcher, SIGNAL(result(const QStringList &, int)), SLOT(addFiles(const QStringList &, int)));
-    connect(this, SIGNAL(filesAddedInPlaylist(const QStringList, quint32, quint32)),
-            MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32)));
+    connect(fetcher, SIGNAL(result(const QStringList &, int, bool)), SLOT(addFiles(const QStringList &, int, bool)));
+    connect(this, SIGNAL(filesAddedInPlaylist(const QStringList, quint32, quint32, bool)),
+            MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32, bool)));
     connect(this, SIGNAL(moveInPlaylist(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
 }
@@ -458,7 +458,7 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         return true;
     } else if (data->hasFormat(constFileNameMimeType)) {
         //Act on moves from the music library and dir view
-        addItems(reverseList(decode(*data, constFileNameMimeType)), row);
+        addItems(reverseList(decode(*data, constFileNameMimeType)), row, false);
         return true;
     } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->isLocal()*/) {
         QStringList orig=reverseList(decode(*data, constUriMimeType));
@@ -483,14 +483,14 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
             }
         }
         if (useable.count()) {
-            addItems(useable, row);
+            addItems(useable, row, false);
             return true;
         }
     }
     return false;
 }
 
-void PlayQueueModel::addItems(const QStringList &items, int row)
+void PlayQueueModel::addItems(const QStringList &items, int row, bool replace)
 {
     bool haveHttp=false;
 
@@ -504,22 +504,22 @@ void PlayQueueModel::addItems(const QStringList &items, int row)
     }
 
     if (haveHttp) {
-        fetcher->get(items, row);
+        fetcher->get(items, row, replace);
     } else {
-        addFiles(items, row);
+        addFiles(items, row, replace);
     }
 }
 
-void PlayQueueModel::addFiles(const QStringList &filenames, int row)
+void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replace)
 {
     //Check for empty playlist
-    if (songs.size() == 1 && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty()) {
-        emit filesAddedInPlaylist(filenames, 0, 0);
+    if (replace || (songs.size() == 1 && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty())) {
+        emit filesAddedInPlaylist(filenames, 0, 0, replace);
     } else {
         if (row < 0) {
-            emit filesAddedInPlaylist(filenames, songs.size(), songs.size());
+            emit filesAddedInPlaylist(filenames, songs.size(), songs.size(), false);
         } else {
-            emit filesAddedInPlaylist(filenames, row, songs.size());
+            emit filesAddedInPlaylist(filenames, row, songs.size(), false);
         }
     }
 }

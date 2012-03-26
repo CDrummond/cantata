@@ -159,7 +159,7 @@ StreamFetcher::~StreamFetcher()
 {
 }
 
-void StreamFetcher::get(const QStringList &items, int insertRow)
+void StreamFetcher::get(const QStringList &items, int insertRow, bool replace)
 {
     if (items.isEmpty()) {
         return;
@@ -168,6 +168,7 @@ void StreamFetcher::get(const QStringList &items, int insertRow)
     todo=items;
     done.clear();
     row=insertRow;
+    replacePlayQueue=replace;
     current=QString();
     if (!manager) {
         manager=new NetworkAccessManager(this);
@@ -195,7 +196,7 @@ void StreamFetcher::doNext()
     }
 
     if (todo.isEmpty() && !done.isEmpty()) {
-        emit result(done, row);
+        emit result(done, row, replacePlayQueue);
     }
 }
 

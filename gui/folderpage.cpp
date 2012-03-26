@@ -86,7 +86,7 @@ FolderPage::FolderPage(MainWindow *p)
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
     connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
-    connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    connect(this, SIGNAL(add(const QStringList &, bool)), MPDConnection::self(), SLOT(add(const QStringList &, bool)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
@@ -226,13 +226,13 @@ QStringList FolderPage::selectedFiles() const
     return DirViewModel::self()->filenames(mapped);
 }
 
-void FolderPage::addSelectionToPlaylist(const QString &name)
+void FolderPage::addSelectionToPlaylist(const QString &name, bool replace)
 {
     QStringList files=selectedFiles();
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files);
+            emit add(files, replace);
         } else {
             emit addSongsToPlaylist(name, files);
         }

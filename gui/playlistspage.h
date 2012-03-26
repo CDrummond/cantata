@@ -41,21 +41,21 @@ public:
     void refresh();
     void clear();
     QStringList selectedFiles() const;
-    void addSelectionToPlaylist();
+    void addSelectionToPlaylist(bool replace);
     void setView(int mode);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void loadPlaylist(QString name);
+    void loadPlaylist(const QString &name, bool replace);
     void removePlaylist(const QString &name);
     void savePlaylist(const QString &name);
     void renamePlaylist(const QString &oldname, const QString &newname);
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
 
-    void add(const QStringList &files);
+    void add(const QStringList &files, bool replace);
 
 private:
-    void addItemsToPlayQueue(const QModelIndexList &indexes);
+    void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace);
 
 public Q_SLOTS:
     void removeItems();

@@ -836,7 +836,7 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
             doMoveInPlaylist(name, items, pos, size+added.count());
         }
     }
-    playlistInfo(name);
+//     playlistInfo(name);
 }
 
 void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32> &positions)
@@ -865,13 +865,13 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32>
         }
     }
 
-    playlistInfo(name);
+//     playlistInfo(name);
 }
 
 void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)
 {
     doMoveInPlaylist(name, items, pos, size);
-    playlistInfo(name);
+//     playlistInfo(name);
 }
 
 bool MPDConnection::doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)

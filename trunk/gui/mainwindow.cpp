@@ -904,7 +904,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (Settings::self()->enableHttp()) {
         HttpServer::self()->setPort(Settings::self()->httpPort());
     }
-    #ifdef ENABLE_REMOTE_DEVICES
+    #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->loadRemote();
     #endif
     QString page=Settings::self()->page();
@@ -949,7 +949,7 @@ MainWindow::~MainWindow()
     }
     Settings::self()->saveMainWindowSize(splitter->isVisible() ? size() : expandedSize);
     Settings::self()->saveMainWindowCollapsedSize(splitter->isVisible() ? collapsedSize : size());
-    #ifdef ENABLE_REMOTE_DEVICES
+    #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->unmountRemote();
     #endif
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());

@@ -61,7 +61,7 @@ public:
         virtual ~PlaylistItem();
         bool isPlaylist() { return true; }
         void updateGenres();
-        SongItem * getSong(const Song &song);
+        SongItem * getSong(const Song &song, int offset);
         void clearSongs();
         quint32 totalTime();
         QString name;

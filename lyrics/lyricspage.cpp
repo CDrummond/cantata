@@ -101,13 +101,13 @@ LyricsPage::LyricsPage(MainWindow *p)
     refreshAction = p->actionCollection()->addAction("refreshlyrics");
     refreshAction->setText(i18n("Refresh"));
     editAction = p->actionCollection()->addAction("editlyrics");
-    editAction->setText(i18n("Edit"));
+    editAction->setText(i18n("Edit Lyrics"));
     saveAction = p->actionCollection()->addAction("savelyrics");
-    saveAction->setText(i18n("Save"));
+    saveAction->setText(i18n("Save Lyrics"));
     cancelAction = p->actionCollection()->addAction("canceleditlyrics");
-    cancelAction->setText(i18n("Cancel"));
+    cancelAction->setText(i18n("Cancel Editing Lyrics"));
     delAction = p->actionCollection()->addAction("dellyrics");
-    delAction->setText(i18n("Delete"));
+    delAction->setText(i18n("Delete Lyrics File"));
     #else
     refreshAction = new QAction(tr("Refresh"), this);
     editAction = new QAction(tr("Refresh"), this);

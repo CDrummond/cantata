@@ -231,17 +231,17 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
             if (!al->coverRequested && iSize) {
-                Song s;
-                s.artist=al->artist;
-                s.album=al->album;
-                if (al->songs.count()) {
-                    s.file=al->songs.first()->file;
-                }
-                Covers::Image img=Covers::self()->get(s, al->isSingleTracks);
-                al->coverRequested=true;
-                if (!img.img.isNull()) {
-                    al->cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-                    return *(al->cover);
+                if (al->isSingleTracks) {
+                    Song s;
+                    Covers::Image img=Covers::self()->get(s, al->isSingleTracks);
+                    al->coverRequested=true;
+                    if (!img.img.isNull()) {
+                        al->cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+                        return *(al->cover);
+                    }
+                } else {
+                    al->getCover(true);
+                    al->coverRequested=true;
                 }
             }
             return *theDefaultIcon;
@@ -364,7 +364,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     }
 
     TF_DEBUG
-    bool empty=items.isEmpty();
+    bool empty=items.isEmpty() || 0==root->childCount();
     if (empty) {
         beginResetModel();
     }
@@ -407,6 +407,9 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 items.append(a);
                 if (!empty) {
                     endInsertRows();
+                }
+                if (!a->isSingleTracks ) {
+                    a->getCover(false);
                 }
             }
         }
@@ -535,4 +538,15 @@ quint32 AlbumsModel::AlbumItem::totalTime()
         }
     }
     return time;
+}
+
+void AlbumsModel::AlbumItem::getCover(bool urgent)
+{
+    if ((urgent || !isSingleTracks) && songs.count()) {
+        Song s;
+        s.artist=artist;
+        s.album=album;
+        s.file=songs.first()->file;
+        Covers::self()->requestCover(s, urgent);
+    }
 }

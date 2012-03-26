@@ -41,11 +41,11 @@ public:
     bool isEnabled() const { return enabled; }
     void refresh();
     void save();
-    void addSelectionToPlaylist();
+    void addSelectionToPlaylist(bool replace);
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
 
 Q_SIGNALS:
-    void add(const QStringList &streams);
+    void add(const QStringList &streams, bool replace);
 
 public Q_SLOTS:
     void removeItems();
@@ -61,7 +61,7 @@ private Q_SLOTS:
     void updateGenres(const QSet<QString> &g);
 
 private:
-    void addItemsToPlayQueue(const QModelIndexList &indexes);
+    void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace);
     QStringList getCategories();
     QStringList getGenres();
 

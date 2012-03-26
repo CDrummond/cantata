@@ -173,7 +173,7 @@ void LyricsPage::setEnabledProviders(const QStringList &providerList)
 void LyricsPage::update()
 {
     QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
-    bool mpdExists=QFile::exists(mpdName);
+    bool mpdExists=!Settings::self()->mpdDir().isEmpty() && QFile::exists(mpdName);
     #ifdef ENABLE_KDE_SUPPORT
     if (Mode_Edit==mode && KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
         return;
@@ -405,7 +405,7 @@ void LyricsPage::setMode(Mode m)
     saveAction->setEnabled(Mode_Edit==m);
     cancelAction->setEnabled(Mode_Edit==m);
     editAction->setEnabled(editable);
-    delAction->setEnabled(editable);
+    delAction->setEnabled(editable && !Settings::self()->mpdDir().isEmpty() && QFile::exists(changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension)));
     text->setReadOnly(Mode_Edit!=m);
 }
 

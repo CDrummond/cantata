@@ -105,7 +105,7 @@ Q_SIGNALS:
     void listPlaylists();
     void playlistInfo(const QString &name) const;
     void addToPlaylist(const QString &name, const QStringList &songs, quint32 pos, quint32 size);
-    void moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
+    void moveInPlaylist(const QString &name, const QList<quint32> &idx, quint32 pos, quint32 size);
 
     void addToNew();
     void addToExisting(const QString &name);
@@ -116,8 +116,8 @@ Q_SIGNALS:
 private Q_SLOTS:
     void setPlaylists(const QList<Playlist> &playlists);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
-//     void removedFromPlaylist(const QString &name, const QList<int> &positions);
-//     void movedInPlaylist(const QString &name, int from, int to);
+    void removedFromPlaylist(const QString &name, const QList<quint32> &positions);
+    void movedInPlaylist(const QString &name, const QList<quint32> &idx, quint32 pos);
     void emitAddToExisting();
     void playlistRenamed(const QString &from, const QString &to);
 

@@ -813,8 +813,8 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
     }
 
     QByteArray encodedName=encodeName(name);
-
     QStringList added;
+
     foreach (const QString &s, songs) {
         QByteArray data = "playlistadd ";
         data += encodedName;
@@ -836,6 +836,7 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
             doMoveInPlaylist(name, items, pos, size+added.count());
         }
     }
+
 //     playlistInfo(name);
 }
 
@@ -851,6 +852,7 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32>
     qSort(sorted);
     QList<quint32> fixedPositions;
     QMap<quint32, quint32> map;
+    bool ok=true;
 
     for (int i=0; i<sorted.count(); ++i) {
         fixedPositions << (sorted.at(i)-i);
@@ -861,16 +863,22 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32>
         data += " ";
         data += QByteArray::number(fixedPositions.at(i));
         if (!sendCommand(data).ok) {
+            ok=false;
             break;
         }
     }
 
+    if (ok) {
+        emit removedFromPlaylist(name, positions);
+    }
 //     playlistInfo(name);
 }
 
 void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)
 {
-    doMoveInPlaylist(name, items, pos, size);
+    if (doMoveInPlaylist(name, items, pos, size)) {
+        emit movedInPlaylist(name, items, pos);
+    }
 //     playlistInfo(name);
 }
 

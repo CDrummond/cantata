@@ -215,13 +215,13 @@ Q_SIGNALS:
     void statusUpdated(const MPDStatusValues &status);
     void storedPlayListUpdated();
     void outputsUpdated(const QList<Output> &outputs);
-    void musicLibraryUpdated(MusicLibraryItemRoot * root, QDateTime db_update);
-    void dirViewUpdated(DirViewItemRoot * root);
+    void musicLibraryUpdated(MusicLibraryItemRoot *root, QDateTime dbUpdate);
+    void dirViewUpdated(DirViewItemRoot *root);
     void playlistsRetrieved(const QList<Playlist> &data);
     void playlistInfoRetrieved(const QString &name, const QList<Song> &songs);
     void playlistRenamed(const QString &from, const QString &to);
-//     void removedFromPlaylist(const QString &name, const QList<int> &positions);
-//     void movedInPlaylist(const QString &name, int from, int to);
+    void removedFromPlaylist(const QString &name, const QList<quint32> &positions);
+    void movedInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos);
     void databaseUpdated();
     void playlistLoaded(const QString &playlist);
     void added(const QStringList &files);

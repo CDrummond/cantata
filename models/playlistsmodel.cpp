@@ -584,7 +584,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
                 Song s=songs.at(i);
                 SongItem *si=i<pl->songs.count() ? pl->songs.at(i) : 0;
                 if (i>=pl->songs.count() || !(s==*static_cast<Song *>(si))) {
-                    SongItem *si=pl->getSong(s);
+                    si=i<pl->songs.count() ? pl->getSong(s, i) : 0;
                     if (!si) {
                         beginInsertRows(parent, i, i);
                         pl->songs.insert(i, new SongItem(s, pl));
@@ -803,9 +803,13 @@ void PlaylistsModel::PlaylistItem::clearSongs()
     updateGenres();
 }
 
-PlaylistsModel::SongItem * PlaylistsModel::PlaylistItem::getSong(const Song &song)
+PlaylistsModel::SongItem * PlaylistsModel::PlaylistItem::getSong(const Song &song, int offset)
 {
+    int i=0;
     foreach (SongItem *s, songs) {
+        if (++i<offset) {
+            continue;
+        }
         if (*s==song) {
             return s;
         }

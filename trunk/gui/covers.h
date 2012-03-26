@@ -29,12 +29,39 @@
 #include <QtCore/QCache>
 #include <QtGui/QImage>
 #include <QtGui/QPixmap>
+#include "song.h"
 
-class Song;
-class QString;
 class NetworkAccessManager;
-class QNetworkReply;
 class MaiaXmlRpcClient;
+class QString;
+class QThread;
+class QNetworkReply;
+class QMutex;
+
+class CoverQueue : public QObject
+{
+    Q_OBJECT
+
+public:
+    CoverQueue();
+
+    ~CoverQueue() {
+    }
+
+    void getCover(const Song &s, bool urgent);
+
+private Q_SLOTS:
+    void getNextCover();
+
+Q_SIGNALS:
+    void getNext();
+    void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
+    void download(const Song &song);
+
+private:
+    QMutex *mutex;
+    QList<Song> songs;
+};
 
 class Covers : public QObject
 {
@@ -67,11 +94,16 @@ public:
     static QStringList standardNames();
 
     Covers();
+    void stop();
 
     QPixmap * get(const Song &song, int size, bool isSingleTracks=false);
     Image getImage(const Song &song, bool isSingleTracks=false);
     Image get(const Song &song, bool isSingleTracks=false);
+    void requestCover(const Song &song, bool urgent=false);
     void setSaveInMpdDir(bool s);
+
+public Q_SLOTS:
+    void download(const Song &song);
 
 Q_SIGNALS:
     void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
@@ -85,7 +117,6 @@ private Q_SLOTS:
 private:
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<QNetworkReply *, Job>::Iterator findJob(const Song &song);
-    void download(const Song &song);
     void clearDummyCache(const QString &artist, const QString &album);
 
 private:
@@ -93,6 +124,8 @@ private:
     NetworkAccessManager *manager;
     QHash<QNetworkReply *, Job> jobs;
     QCache<QString, QPixmap> cache;
+    CoverQueue *queue;
+    QThread *queueThread;
 };
 
 #endif

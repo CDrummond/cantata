@@ -982,6 +982,7 @@ MainWindow::~MainWindow()
         Utils::sleep();
     }
     Utils::stopThread(mpdThread);
+    Covers::self()->stop();
 }
 
 void MainWindow::load(const QList<QUrl> &urls)
@@ -1690,7 +1691,7 @@ void MainWindow::updateStats()
         loaded|=TAB_LIBRARY|TAB_FOLDERS;
         if (!lastDbUpdate.isValid()) {
             libraryPage->clear();
-            albumsPage->clear();
+            //albumsPage->clear();
             folderPage->clear();
             playlistsPage->clear();
         }

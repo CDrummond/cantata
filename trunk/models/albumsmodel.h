@@ -75,6 +75,7 @@ public:
         void setSongs(MusicLibraryItemAlbum *ai);
         void setName(bool albumFirst);
         quint32 totalTime();
+        void getCover(bool urgent);
         QString artist;
         QString album;
         QString name;

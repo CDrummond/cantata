@@ -239,7 +239,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                     #else
                     (item->childCount()>1
                         ? tr("%1<br/>%2 Tracks (%3)").arg(item->data()).arg(item->childCount()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()))
-                        : tr("%1<br/>1 Track (%3)").arg(item->data()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime())))
+                        : tr("%1<br/>1 Track (%2)").arg(item->data()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime())))
                     #endif
                 );
         case MusicLibraryItem::Type_Song: {

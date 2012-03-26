@@ -31,6 +31,8 @@
 #include "settings.h"
 #include <QtCore/QFile>
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QThread>
+#include <QtCore/QMutex>
 #include <QtNetwork/QNetworkReply>
 #include <QtGui/QIcon>
 #include <QtGui/QImage>
@@ -288,8 +290,19 @@ Covers::Covers()
     : rpc(0)
     , manager(0)
     , cache(150000)
+    , queue(0)
+    , queueThread(0)
 {
     saveInMpdDir=Settings::self()->storeCoversInMpdDir();
+}
+
+void Covers::stop()
+{
+    if (queueThread) {
+        disconnect(queue, SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)), this, SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)));
+        disconnect(queue, SIGNAL(download(const Song &)), this, SLOT(download(const Song &)));
+        Utils::stopThread(queueThread);
+    }
 }
 
 static inline QString cacheKey(const QString &artist, const QString &album, int size)
@@ -417,6 +430,64 @@ Covers::Image Covers::get(const Song &song, bool isSingleTracks)
         download(song);
     }
     return img;
+}
+
+void Covers::requestCover(const Song &song, bool urgent)
+{
+    if (!queueThread) {
+        queue=new CoverQueue;
+        queueThread=new QThread(this);
+        queue->moveToThread(queueThread);
+        connect(queue, SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)), this, SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)));
+        connect(queue, SIGNAL(download(const Song &)), this, SLOT(download(const Song &)));
+        queueThread->start();
+    }
+    queue->getCover(song, urgent);
+}
+
+CoverQueue::CoverQueue()
+    : mutex(new QMutex)
+{
+    connect(this, SIGNAL(getNext()), this, SLOT(getNextCover()), Qt::QueuedConnection);
+}
+
+void CoverQueue::getCover(const Song &song, bool urgent)
+{
+    mutex->lock();
+    bool added=false;
+    int idx=songs.indexOf(song);
+    if (urgent) {
+        if  (-1!=idx) {
+            songs.removeAt(idx);
+        }
+        songs.prepend(song);
+        added=true;
+    } else if (-1==idx) {
+        songs.append(song);
+        added=true;
+    }
+    mutex->unlock();
+
+    if (added) {
+        emit getNext();
+    }
+}
+
+void CoverQueue::getNextCover()
+{
+    mutex->lock();
+    if (songs.isEmpty()) {
+        mutex->unlock();
+        return;
+    }
+    Song song=songs.takeAt(0);
+    mutex->unlock();
+    Covers::Image img=Covers::self()->getImage(song, false);
+    if (img.img.isNull()) {
+        emit download(song);
+    } else {
+        emit cover(song.albumArtist(), song.album, img.img, img.fileName);
+    }
 }
 
 void Covers::setSaveInMpdDir(bool s)

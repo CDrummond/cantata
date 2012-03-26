@@ -255,7 +255,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                           al->songs.count(), Song::formattedTime(al->totalTime()));
                     #else
                     (al->songs.count()>1
-                        ? tr("%1\n%2\n%3 Tracks (%3)").arg(al->artist).arg(al->album)
+                        ? tr("%1\n%2\n%3 Tracks (%4)").arg(al->artist).arg(al->album)
                              .arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
                         : tr("%1\n%2\n1 Track (%3)").arg(al->artist).arg(al->album)
                              .arg(Song::formattedTime(al->totalTime())));

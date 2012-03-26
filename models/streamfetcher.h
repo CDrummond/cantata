@@ -40,7 +40,7 @@ public:
     StreamFetcher(QObject *p);
     virtual ~StreamFetcher();
 
-    void get(const QStringList &items, int insertRow);
+    void get(const QStringList &items, int insertRow, bool replace);
 
 private:
     void doNext();
@@ -53,7 +53,7 @@ Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void getUrlHandlers();
 
-    void result(const QStringList &items, int insertRow);
+    void result(const QStringList &items, int insertRow, bool replace);
 
 private Q_SLOTS:
     void dataReady();
@@ -66,6 +66,7 @@ private:
     QStringList todo;
     QStringList done;
     int row;
+    bool replacePlayQueue;
     int redirects;
     QByteArray data;
     QStringList handlers;

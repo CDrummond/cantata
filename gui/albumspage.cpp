@@ -80,7 +80,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->setModel(&proxy);
     view->init(p->replacePlaylistAction, p->addToPlaylistAction);
 
-    connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    connect(this, SIGNAL(add(const QStringList &, bool)), MPDConnection::self(), SLOT(add(const QStringList &, bool)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
@@ -151,13 +151,13 @@ QList<Song> AlbumsPage::selectedSongs() const
     return AlbumsModel::self()->songs(mapped);
 }
 
-void AlbumsPage::addSelectionToPlaylist(const QString &name)
+void AlbumsPage::addSelectionToPlaylist(const QString &name, bool replace)
 {
     QStringList files=selectedFiles();
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files);
+            emit add(files, replace);
         } else {
             emit addSongsToPlaylist(name, files);
         }

@@ -292,8 +292,13 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
  * Playlist commands
  */
 
-void MPDConnection::add(const QStringList &files)
+void MPDConnection::add(const QStringList &files, bool replace)
 {
+    if (replace) {
+        clear();
+        getStatus();
+    }
+
     QByteArray send = "command_list_begin\n";
 
     for (int i = 0; i < files.size(); i++) {
@@ -320,8 +325,13 @@ void MPDConnection::add(const QStringList &files)
  * @param pos Position to add the files
  * @param size The size of the current playlist
  */
-void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size)
+void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size, bool replace)
 {
+    if (replace) {
+        clear();
+        getStatus();
+    }
+
     QByteArray send = "command_list_begin\n";
     int cur_size = size;
     for (int i = 0; i < files.size(); i++) {
@@ -742,8 +752,13 @@ void MPDConnection::playlistInfo(const QString &name)
     }
 }
 
-void MPDConnection::loadPlaylist(QString name)
+void MPDConnection::loadPlaylist(const QString &name, bool replace)
 {
+    if (replace) {
+        clear();
+        getStatus();
+    }
+
     QByteArray data("load ");
     data += encodeName(name);
 
@@ -770,14 +785,14 @@ void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
     }
 }
 
-void MPDConnection::removePlaylist(QString name)
+void MPDConnection::removePlaylist(const QString &name)
 {
     QByteArray data("rm ");
     data += encodeName(name);
     sendCommand(data);
 }
 
-void MPDConnection::savePlaylist(QString name)
+void MPDConnection::savePlaylist(const QString &name)
 {
     QByteArray data("save ");
     data += encodeName(name);

@@ -296,6 +296,7 @@ private Q_SLOTS:
     #endif
 
 private:
+    void addToPlaylist(bool replace);
     void editTags(const QList<Song> &songs, bool isPlayQueue);
     bool currentIsStream() const;
     void startVolumeFade(/*bool stop*/);

@@ -74,7 +74,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->addAction(p->deleteSongsAction);
     #endif
 
-    connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
+    connect(this, SIGNAL(add(const QStringList &, bool)), MPDConnection::self(), SLOT(add(const QStringList &, bool)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
@@ -155,13 +155,13 @@ QList<Song> LibraryPage::selectedSongs() const
     return MusicLibraryModel::self()->songs(mapped);
 }
 
-void LibraryPage::addSelectionToPlaylist(const QString &name)
+void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace)
 {
     QStringList files=selectedFiles();
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files);
+            emit add(files, replace);
         } else {
             emit addSongsToPlaylist(name, files);
         }

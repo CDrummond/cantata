@@ -137,12 +137,12 @@ void StreamsPage::save()
     model.save(true);
 }
 
-void StreamsPage::addSelectionToPlaylist()
+void StreamsPage::addSelectionToPlaylist(bool replace)
 {
-    addItemsToPlayQueue(view->selectedIndexes());
+    addItemsToPlayQueue(view->selectedIndexes(), replace);
 }
 
-void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
+void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace)
 {
     if (0==indexes.size()) {
         return;
@@ -156,7 +156,7 @@ void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
     QStringList files=model.filenames(mapped);
 
     if (!files.isEmpty()) {
-        emit add(files);
+        emit add(files, replace);
         view->clearSelection();
     }
 }
@@ -166,7 +166,7 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
     if (!static_cast<StreamsModel::Item *>(proxy.mapToSource(index).internalPointer())->isCategory()) {
         QModelIndexList indexes;
         indexes.append(index);
-        addItemsToPlayQueue(indexes);
+        addItemsToPlayQueue(indexes, false);
     }
 }
 

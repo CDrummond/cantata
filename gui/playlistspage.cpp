@@ -86,7 +86,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     //connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
-    connect(this, SIGNAL(loadPlaylist(const QString &)), MPDConnection::self(), SLOT(loadPlaylist(const QString &)));
+    connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
@@ -151,9 +151,9 @@ QStringList PlaylistsPage::selectedFiles() const
     return PlaylistsModel::self()->filenames(mapped, true);
 }
 
-void PlaylistsPage::addSelectionToPlaylist()
+void PlaylistsPage::addSelectionToPlaylist(bool replace)
 {
-    addItemsToPlayQueue(view->selectedIndexes());
+    addItemsToPlayQueue(view->selectedIndexes(), replace);
 }
 
 void PlaylistsPage::setView(int mode)
@@ -285,11 +285,11 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
         !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
         QModelIndexList indexes;
         indexes.append(index);
-        addItemsToPlayQueue(indexes);
+        addItemsToPlayQueue(indexes, false);
     }
 }
 
-void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
+void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace)
 {
     if (0==indexes.size()) {
         return;
@@ -311,7 +311,7 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
             }
 
             if (loadable) {
-                emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name);
+                emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name, replace);
                 return;
             }
         }
@@ -325,7 +325,7 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes)
     QStringList files=PlaylistsModel::self()->filenames(mapped);
 
     if (!files.isEmpty()) {
-        emit add(files);
+        emit add(files, replace);
         view->clearSelection();
     }
 }

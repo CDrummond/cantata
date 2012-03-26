@@ -374,23 +374,23 @@ void LyricsPage::getLyrics()
         if (currentProvider<providers.count()) {
             UltimateLyricsProvider *prov=providers.at(currentProvider++);
             if (prov && prov->is_enabled()) {
-#ifdef ENABLE_KDE_SUPPORT
+                #ifdef ENABLE_KDE_SUPPORT
                 text->setText(i18n("Fetching lyrics via %1", prov->name()));
-#else
+                #else
                 text->setText(tr("Fetching lyrics via %1").arg(prov->name()));
-#endif
+                #endif
                 prov->FetchInfo(currentRequest, currentSong);
                 return;
             }
         } else {
-#ifdef ENABLE_KDE_SUPPORT
-           text->setText(i18n("No lyrics found"));
-#else
-           text->setText(tr("No lyrics found"));
-#endif
-           currentProvider=-1;
-           setMode(Mode_Blank);
-           return;
+            #ifdef ENABLE_KDE_SUPPORT
+            text->setText(i18n("No lyrics found"));
+            #else
+            text->setText(tr("No lyrics found"));
+            #endif
+            currentProvider=-1;
+            setMode(Mode_Blank);
+            return;
         }
     }
 }

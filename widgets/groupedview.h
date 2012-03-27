@@ -78,6 +78,8 @@ public:
     void dropEvent(QDropEvent *event);
     void coverRetrieved(const QString &artist, const QString &album);
     void collectionRemoved(quint32 key);
+    void expandAll();
+    void expand(const QModelIndex &idx);
 
 private Q_SLOTS:
     void itemClicked(const QModelIndex &index);

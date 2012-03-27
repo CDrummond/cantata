@@ -66,7 +66,7 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
     return false;
 }
 
-void ProxyModel::update(const QString &text, const QString &genre)
+bool ProxyModel::update(const QString &text, const QString &genre)
 {
     filterStrings = text.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
     unmatchedStrings = 0;
@@ -76,13 +76,16 @@ void ProxyModel::update(const QString &text, const QString &genre)
     }
 
     if (text.length()<2 && genre.isEmpty()) {
-        bool wasEmpty=isEmpty();
-        filterEnabled=false;
-        filterGenre=genre;
-        if (!filterRegExp().isEmpty()) {
-             setFilterRegExp(QString());
-        } else if (!wasEmpty) {
-            invalidate();
+        if (filterEnabled) {
+            bool wasEmpty=isEmpty();
+            filterEnabled=false;
+            filterGenre=genre;
+            if (!filterRegExp().isEmpty()) {
+                setFilterRegExp(QString());
+            } else if (!wasEmpty) {
+                invalidate();
+            }
+            return true;
         }
     } else {
         filterEnabled=true;
@@ -92,7 +95,10 @@ void ProxyModel::update(const QString &text, const QString &genre)
         } else {
             invalidate();
         }
+        return true;
     }
+
+    return false;
 }
 
 bool ProxyModel::isChildOfRoot(const QModelIndex &idx) const {

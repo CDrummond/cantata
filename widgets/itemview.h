@@ -109,6 +109,8 @@ public:
     void updateRows();
     void updateRows(const QModelIndex &idx);
 
+    void expandAll();
+
 public Q_SLOTS:
     void showSpinner();
     void hideSpinner();

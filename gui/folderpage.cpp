@@ -133,6 +133,9 @@ void FolderPage::clear()
 void FolderPage::searchItems()
 {
     proxy.update(view->searchText().trimmed());
+    if (proxy.enabled()) {
+        view->expandAll();
+    }
 }
 
 void FolderPage::controlActions()

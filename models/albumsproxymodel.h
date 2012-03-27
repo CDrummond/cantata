@@ -35,8 +35,8 @@ public:
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 private:
-    bool filterAcceptsAlbum(AlbumsModel::Item *item) const;
-    bool filterAcceptsSong(AlbumsModel::Item *item) const;
+    bool filterAcceptsAlbum(const AlbumsModel::AlbumItem *item) const;
+    bool filterAcceptsSong(const AlbumsModel::SongItem *item) const;
 };
 
 #endif

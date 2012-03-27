@@ -60,7 +60,7 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
         }
 
         foreach (PlaylistsModel::SongItem *s, pl->songs) {
-            if (s->entryName().contains(filterRegExp())) {
+            if (matchesFilter(*s)) {
                 return true;
             }
         }
@@ -70,7 +70,7 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
         if (!filterGenre.isEmpty() && s->genre!=filterGenre) {
             return false;
         }
-        return s->entryName().contains(filterRegExp());
+        return matchesFilter(*s);
     }
 
     return false;

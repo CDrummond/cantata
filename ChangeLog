@@ -33,6 +33,8 @@
 20. Improve albums page responsiveness when loading covers.
 21. Better searching - search on all strings, in any order.
 22. Automatically expand treeview items when searching.
+23. Add custom icons for library and info pages.
+24. Use cd icon (without music note) for albums page.
 
 0.5.1
 -----

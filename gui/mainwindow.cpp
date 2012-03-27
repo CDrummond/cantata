@@ -570,14 +570,26 @@ MainWindow::MainWindow(QWidget *parent)
     expandInterfaceAction->setIcon(Icon("view-media-playlist"));
     refreshAction->setIcon(Icon("view-refresh"));
     connectAction->setIcon(Icon("network-connect"));
-    libraryTabAction->setIcon(Icon("audio-ac3"));
+    #ifdef ENABLE_KDE_SUPPORT
+    libraryTabAction->setIcon(Icon("cantata-view-media-library"));
+    #else
+    QIcon libraryIcon(":lib16.png");
+    libraryIcon.addFile(":lib32.png");
+    libraryTabAction->setIcon(libraryIcon);
+    #endif
     albumsTabAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
     foldersTabAction->setIcon(Icon("inode-directory"));
     playlistsTabAction->setIcon(Icon("view-media-playlist"));
     lyricsTabAction->setIcon(Icon("view-media-lyrics"));
     streamsTabAction->setIcon(Icon(DEFAULT_STREAM_ICON));
     #ifdef ENABLE_WEBKIT
-    infoTabAction->setIcon(Icon("dialog-information"));
+    #ifdef ENABLE_KDE_SUPPORT
+    infoTabAction->setIcon(Icon("cantata-view-wikipedia"));
+    #else // ENABLE_KDE_SUPPORT
+    QIcon wikiIcon(":wiki16.png");
+    wikiIcon.addFile(":wiki32.png");
+    infoTabAction->setIcon(wikiIcon);
+    #endif // ENABLE_KDE_SUPPORT
     #endif
     serverInfoTabAction->setIcon(Icon("server-database"));
     #ifdef ENABLE_DEVICES_SUPPORT

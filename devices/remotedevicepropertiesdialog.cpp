@@ -43,7 +43,7 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     remoteProp=new RemoteDevicePropertiesWidget(tab);
     devProp=new DevicePropertiesWidget(tab);
     tab->addTab(remoteProp, QIcon::fromTheme("network-server"), i18n("Connection"));
-    tab->addTab(devProp, QIcon::fromTheme("audio-ac3"), i18n("Music Library"));
+    tab->addTab(devProp, KIcon("cantata-view-media-library"), i18n("Music Library"));
     setMainWidget(tab);
 }
 

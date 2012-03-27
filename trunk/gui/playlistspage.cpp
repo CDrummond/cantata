@@ -351,7 +351,12 @@ void PlaylistsPage::controlActions()
 
 void PlaylistsPage::searchItems()
 {
-    proxy.update(view->searchText().trimmed(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+    bool updated=proxy.update(view->searchText().trimmed(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+    if (proxy.enabled()) {
+        view->expandAll();
+    } else if(updated) {
+        view->updateRows();
+    }
 }
 
 void PlaylistsPage::updated(const QModelIndex &index)

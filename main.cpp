@@ -89,8 +89,7 @@ void setupIconTheme()
         QStringList check=QStringList() << "actions/edit-clear-list" << "actions/view-media-playlist"
                                         << "actions/view-media-lyrics" << "actions/configure"
                                         << "actions/view-choose" << "actions/view-media-artist"
-                                        << "places/server-database" << "mimetypes/audio-ac3"
-                                        << "devices/media-optical-audio";
+                                        << "places/server-database" << "devices/media-optical-audio";
 
         foreach (const QString &icn, check) {
             if (!QIcon::hasThemeIcon(icn)) {

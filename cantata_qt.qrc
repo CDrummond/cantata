@@ -8,5 +8,11 @@
 <file alias="repeat22.png">icons/hi22-action-cantata-view-media-repeat.png</file>
 <file alias="va16.png">icons/hi16-action-cantata-view-media-artist-various.png</file>
 <file alias="va22.png">icons/hi22-action-cantata-view-media-artist-various.png</file>
+<file alias="lib16.png">hi16-action-cantata-view-media-library.png</file>
+<file alias="lib32.png">hi32-action-cantata-view-media-library.png</file>
+<file alias="wiki16.png">hi16-action-cantata-view-wikipedia.png</file>
+<file alias="wiki32.png">hi32-action-cantata-view-wikipedia.png</file>
+<file alias="streams16.png">hi16-action-cantata-view-media-streams.png</file>
+<file alias="streams32.png">hi32-action-cantata-view-media-streams.png</file>
 </qresource>
 </RCC>

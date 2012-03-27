@@ -42,31 +42,9 @@ MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
 
 bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem * const item) const
 {
-    if (item->data().contains(filterRegExp())) {
-        return true;
-    }
-
     foreach (const MusicLibraryItem *i, item->children()) {
-        if (i->data().contains(filterRegExp())) {
+        if (filterAcceptsArtist(i)) {
             return true;
-        }
-    }
-
-    foreach (const MusicLibraryItem *i, item->children()) {
-        foreach (const MusicLibraryItem *j, i->children()) {
-            if (j->data().contains(filterRegExp())) {
-                return true;
-            }
-        }
-    }
-
-    foreach (const MusicLibraryItem *i, item->children()) {
-        foreach (const MusicLibraryItem *j, i->children()) {
-            foreach (const MusicLibraryItem *k, j->children()) {
-                if (k->data().contains(filterRegExp())) {
-                    return true;
-                }
-            }
         }
     }
 
@@ -75,21 +53,9 @@ bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem * const it
 
 bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem * const item) const
 {
-    if (item->data().contains(filterRegExp())) {
-        return true;
-    }
-
     foreach (const MusicLibraryItem *i, item->children()) {
-        if (i->data().contains(filterRegExp())) {
+        if (filterAcceptsAlbum(i)) {
             return true;
-        }
-    }
-
-    foreach (const MusicLibraryItem *i, item->children()) {
-        foreach (const MusicLibraryItem *j, i->children()) {
-            if (j->data().contains(filterRegExp())) {
-                return true;
-            }
         }
     }
 
@@ -98,12 +64,8 @@ bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem * const 
 
 bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem * const item) const
 {
-    if (item->parent()->data().contains(filterRegExp()) || item->data().contains(filterRegExp())) {
-        return true;
-    }
-
     foreach (const MusicLibraryItem *i, item->children()) {
-        if (i->data().contains(filterRegExp())) {
+        if (filterAcceptsSong(i)) {
             return true;
         }
     }
@@ -113,9 +75,7 @@ bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem * const i
 
 bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem * const item) const
 {
-    return item->parent()->parent()->data().contains(filterRegExp()) ||
-            item->parent()->data().contains(filterRegExp()) ||
-            item->data().contains(filterRegExp());
+    return matchesFilter(static_cast<const MusicLibraryItemSong *>(item)->song());
 }
 
 bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const

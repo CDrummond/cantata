@@ -25,9 +25,11 @@
 #define PROXYMODEL_H
 
 #include <QtGui/QSortFilterProxyModel>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KStringHandler>
-#endif
+// #ifdef ENABLE_KDE_SUPPORT
+// #include <KDE/KStringHandler>
+// #endif
+#include <QtCore/QStringList>
+#include "song.h"
 
 class ProxyModel : public QSortFilterProxyModel
 {
@@ -57,9 +59,15 @@ public:
     }
 
 protected:
+    bool matchesFilter(const Song &s) const;
+    bool matchesFilter(const QStringList &strings) const;
+
+protected:
     bool filterEnabled;
     QString filterGenre;
     QModelIndex rootIndex;
+    QStringList filterStrings;
+    uint unmatchedStrings;
 };
 
 #endif

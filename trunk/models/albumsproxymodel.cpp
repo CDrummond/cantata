@@ -33,34 +33,27 @@ AlbumsProxyModel::AlbumsProxyModel(QObject *parent)
     sort(0);
 }
 
-bool AlbumsProxyModel::filterAcceptsAlbum(AlbumsModel::Item *item) const
+bool AlbumsProxyModel::filterAcceptsAlbum(const AlbumsModel::AlbumItem *item) const
 {
-    AlbumsModel::AlbumItem *ai = static_cast<AlbumsModel::AlbumItem *>(item);
-    if (!filterGenre.isEmpty() && !ai->genres.contains(filterGenre)) {
+    if (!filterGenre.isEmpty() && !item->genres.contains(filterGenre)) {
         return false;
     }
 
-    if(ai->artist.contains(filterRegExp()) || ai->album.contains(filterRegExp())) {
-        return true;
-    }
-
-    foreach (const AlbumsModel::SongItem *song, ai->songs) {
-        if (song->displayTitle().contains(filterRegExp())) {
+    foreach (const AlbumsModel::SongItem *song, item->songs) {
+        if (filterAcceptsSong(song)) {
             return true;
         }
     }
     return false;
 }
 
-bool AlbumsProxyModel::filterAcceptsSong(AlbumsModel::Item *item) const
+bool AlbumsProxyModel::filterAcceptsSong(const AlbumsModel::SongItem *item) const
 {
-    AlbumsModel::SongItem *si = static_cast<AlbumsModel::SongItem *>(item);
-
-    if (!filterGenre.isEmpty() && si->genre!=filterGenre) {
+    if (!filterGenre.isEmpty() && item->genre!=filterGenre) {
         return false;
     }
 
-    return si->displayTitle().contains(filterRegExp()) || si->parent->artist.contains(filterRegExp()) || si->parent->album.contains(filterRegExp());
+    return matchesFilter(*item);
 }
 
 bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
@@ -79,7 +72,7 @@ bool AlbumsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &source
         return false;
     }
 
-    return item->isAlbum() ? filterAcceptsAlbum(item) : filterAcceptsSong(item);
+    return item->isAlbum() ? filterAcceptsAlbum(static_cast<AlbumsModel::AlbumItem *>(item)) : filterAcceptsSong(static_cast<AlbumsModel::SongItem *>(item));
 }
 
 bool AlbumsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const

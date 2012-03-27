@@ -37,39 +37,21 @@ DirViewProxyModel::DirViewProxyModel(QObject *parent)
     setSortLocaleAware(true);
 }
 
-bool DirViewProxyModel::filterAcceptsDirViewItem(const DirViewItem * const item, bool first) const
+bool DirViewProxyModel::filterAcceptsDirViewItem(const DirViewItem * const item, QStringList strings) const
 {
-    DirViewItem *child;
-    DirViewItem *parent;
-
-    // check if self matches regex
-    if (item->data().contains(filterRegExp())) {
+    strings << item->data();
+    if (matchesFilter(strings)) {
         return true;
     }
 
-    // check if a parent matches regex
-    if (first) {
-        // only need to check parents on first level of recursion
-        parent = item->parent();
-        while (parent->type() != DirViewItem::Type_Root) {
-            if (parent->data().contains(filterRegExp())) {
-                return true;
-            }
-            parent = parent->parent();
-        }
-    }
-
-    // check if child matches regex
     for (int i = 0; i < item->childCount(); i++) {
-        child = item->child(i);
-        if (filterAcceptsDirViewItem(child, false)) {
+        if (filterAcceptsDirViewItem(item->child(i), strings)) {
             return true;
         }
     }
 
     return false;
 }
-
 
 bool DirViewProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
@@ -82,8 +64,30 @@ bool DirViewProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     DirViewItem *item = static_cast<DirViewItem *>(index.internalPointer());
+    QModelIndex idx=index.parent();
+    QStringList strings;
 
-    return filterAcceptsDirViewItem(item, true);
+    // Traverse back up tree, so we get parent strings...
+    while (idx.isValid()) {
+        DirViewItem *i = static_cast<DirViewItem *>(idx.internalPointer());
+        if (DirViewItem::Type_Dir!=i->type()) {
+            break;
+        }
+        strings << i->data();
+        idx=idx.parent();
+    }
+
+    if (DirViewItem::Type_Dir==item->type()) {
+        // Check *all* children...
+        if (filterAcceptsDirViewItem(item, strings)) {
+            return true;
+        }
+    } else {
+        strings << item->data();
+        return matchesFilter(strings);
+    }
+
+    return false;
 }
 
 bool DirViewProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const

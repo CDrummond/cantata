@@ -42,13 +42,7 @@ bool PlayQueueProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     }
 
     Q_UNUSED(sourceParent)
-    PlayQueueModel *m=static_cast<PlayQueueModel *>(sourceModel());
-    Song s=m->getSongByRow(sourceRow);
-    QRegExp re=filterRegExp();
-
-    return s.album.contains(re) || s.artist.contains(re) || s.genre.contains(re) ||
-            (s.title.isEmpty() ? s.file.contains(re) : s.title.contains(re));
-;
+    return matchesFilter(static_cast<PlayQueueModel *>(sourceModel())->getSongByRow(sourceRow));
 }
 
 QMimeData *PlayQueueProxyModel::mimeData(const QModelIndexList &indexes) const

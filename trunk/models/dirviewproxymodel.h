@@ -40,7 +40,7 @@ public:
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 private:
-    bool filterAcceptsDirViewItem(const DirViewItem * const item, bool first) const;
+    bool filterAcceptsDirViewItem(const DirViewItem * const item, QStringList strings) const;
 };
 
 #endif

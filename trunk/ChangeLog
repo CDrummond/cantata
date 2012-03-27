@@ -31,6 +31,7 @@
 19. Fix logic of replacing play queue - the clear message is sent in the MPD
     thread just before the add message.
 20. Improve albums page responsiveness when loading covers.
+21. Better filtering.
 
 0.5.1
 -----

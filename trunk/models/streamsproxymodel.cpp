@@ -56,7 +56,7 @@ bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
         }
 
         foreach (StreamsModel::StreamItem *s, cat->streams) {
-            if (s->name.contains(filterRegExp())) {
+            if (matchesFilter(QStringList() << cat->name << s->name)) {
                 return true;
             }
         }
@@ -66,7 +66,7 @@ bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
         if (!filterGenre.isEmpty() && s->genre!=filterGenre) {
             return false;
         }
-        return s->name.contains(filterRegExp());
+        return matchesFilter(QStringList() << s->name);
     }
 
     return false;

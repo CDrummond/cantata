@@ -693,6 +693,15 @@ void ItemView::updateRows(const QModelIndex &idx)
     }
 }
 
+void ItemView::expandAll()
+{
+    if (Mode_Tree==mode) {
+        treeView->expandAll();
+    } else if (Mode_GroupedTree==mode && groupedView) {
+        groupedView->expandAll();
+    }
+}
+
 void ItemView::showSpinner()
 {
     #ifdef ENABLE_KDE_SUPPORT

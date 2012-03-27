@@ -35,7 +35,6 @@
   - Tabbed mode, to show other play lists?
 
 - General
-  - When displaying search results, should expand items to show matched entry
   - Ratings (use KRatingWidget?)
   - mpdscribble management?
   - Combine 'Page' classes

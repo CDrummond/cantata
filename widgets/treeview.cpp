@@ -85,3 +85,22 @@ QModelIndexList TreeView::selectedIndexes() const
     }
     return sort.values();
 }
+
+void TreeView::expandAll()
+{
+    quint32 count=model()->rowCount();
+    for (quint32 i=0; i<count; ++i) {
+        expand(model()->index(i, 0));
+    }
+}
+
+void TreeView::expand(const QModelIndex &idx)
+{
+    if (idx.isValid()) {
+        setExpanded(idx, true);
+        quint32 count=model()->rowCount(idx);
+        for (quint32 i=0; i<count; ++i) {
+            expand(idx.child(i, 0));
+        }
+    }
+}

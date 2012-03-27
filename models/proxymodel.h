@@ -41,7 +41,7 @@ public:
     virtual ~ProxyModel() {
     }
 
-    void update(const QString &text, const QString &genre=QString());
+    bool update(const QString &text, const QString &genre=QString());
     void setRootIndex(const QModelIndex &idx) {
         rootIndex=idx.isValid() ? mapToSource(idx) : idx;
     }
@@ -56,6 +56,10 @@ public:
 //         #else
         return a.localeAwareCompare(b);
 //         #endif
+    }
+
+    bool enabled() const {
+        return filterEnabled;
     }
 
 protected:

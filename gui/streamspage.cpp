@@ -437,6 +437,9 @@ void StreamsPage::controlActions()
 void StreamsPage::searchItems()
 {
     proxy.update(view->searchText().trimmed(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+    if (proxy.enabled()) {
+        view->expandAll();
+    }
 }
 
 QStringList StreamsPage::getCategories()

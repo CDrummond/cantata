@@ -41,6 +41,8 @@ public:
     bool haveUnSelectedItems() const;
     void mouseReleaseEvent(QMouseEvent *event);
     QModelIndexList selectedIndexes() const;
+    void expandAll();
+    void expand(const QModelIndex &idx);
 
 Q_SIGNALS:
     bool itemsSelected(bool);

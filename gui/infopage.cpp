@@ -67,8 +67,7 @@ public:
         foreach (QAction *act, menu->actions()) {
             if (act==page()->action(QWebPage::OpenLinkInNewWindow) ||
                 act==page()->action(QWebPage::OpenFrameInNewWindow) ||
-                act==page()->action(QWebPage::OpenImageInNewWindow) ||
-                act==page()->action(QWebPage::OpenFrameInNewWindow)) {
+                act==page()->action(QWebPage::OpenImageInNewWindow)) {
                 act->setVisible(false);
             }
         }

@@ -225,16 +225,6 @@ bool PlayQueueView::isStartClosed() const
     return groupedView->isStartClosed();
 }
 
-QSet<quint16> PlayQueueView::getControlledAlbums() const
-{
-    return currentWidget()==groupedView ? groupedView->getControlledAlbums() : QSet<quint16>();
-}
-
-void PlayQueueView::setControlledAlbums(const QSet<quint16> &keys)
-{
-    groupedView->setControlledAlbums(keys);
-}
-
 void PlayQueueView::setFilterActive(bool f)
 {
     groupedView->setFilterActive(f);

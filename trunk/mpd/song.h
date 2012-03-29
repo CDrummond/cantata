@@ -45,7 +45,7 @@ struct Song
     QString title;
     QString modifiedtitle;
     qint32 track;
-    quint32 pos;
+//     quint32 pos;
     quint32 disc;
     quint32 year;
     QString genre;
@@ -63,6 +63,7 @@ struct Song
     virtual ~Song() { }
     bool isEmpty() const;
     void fillEmptyFields();
+    void setKey();
     virtual void clear();
     static QString formattedTime(quint32 seconds);
     QString format();

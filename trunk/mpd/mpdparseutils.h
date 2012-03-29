@@ -40,6 +40,14 @@ class MPDStatusValues;
 class MPDParseUtils
 {
 public:
+    struct IdPos {
+        IdPos(qint32 i, quint32 p)
+            : id(i)
+            , pos(p) {
+        }
+        qint32 id;
+        quint32 pos;
+    };
     static QString fixPath(const QString &f);
     static QString getDir(const QString &f);
     static QList<Playlist> parsePlaylists(const QByteArray &data);
@@ -47,6 +55,7 @@ public:
     static MPDStatusValues parseStatus(const QByteArray &data);
     static Song parseSong(const QByteArray &data);
     static QList<Song> parseSongs(const QByteArray &data);
+    static QList<IdPos> parseChanges(const QByteArray &data);
     static QStringList parseUrlHandlers(const QByteArray &data);
     static bool groupSingle();
     static void setGroupSingle(bool g);

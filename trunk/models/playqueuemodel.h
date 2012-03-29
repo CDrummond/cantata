@@ -75,7 +75,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     void updateCurrentSong(quint32 id);
     qint32 getIdByRow(qint32 row) const;
-    qint32 getPosByRow(qint32 row) const;
+//     qint32 getPosByRow(qint32 row) const;
     qint32 getRowById(qint32 id) const;
     Song getSongByRow(const qint32 row) const;
     Qt::DropActions supportedDropActions() const;
@@ -90,7 +90,7 @@ public:
     void setState(MPDState st);
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
-    QSet<quint16> updatePlaylist(const QList<Song> &songList, QSet<quint16> controlled);
+    void updatePlaylist(const QList<Song> &songList);
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace);

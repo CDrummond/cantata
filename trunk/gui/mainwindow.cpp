@@ -105,7 +105,7 @@
 #define Icon(X) QIcon::fromTheme(X)
 #endif
 
-static QPixmap createSingleIconPixmap(int size)
+static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
 {
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
@@ -115,7 +115,8 @@ static QPixmap createSingleIconPixmap(int size)
     font.setItalic(false);
     font.setPixelSize(size*0.9);
     p.setFont(font);
-    p.setPen(Qt::black);
+    p.setPen(col);
+    p.setOpacity(opacity);
     p.setRenderHint(QPainter::Antialiasing, true);
     p.drawText(QRect(0, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
     p.drawText(QRect(1, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
@@ -128,8 +129,14 @@ static QPixmap createSingleIconPixmap(int size)
 static QIcon createSingleIcon()
 {
     QIcon icon;
-    icon.addPixmap(createSingleIconPixmap(16));
-    icon.addPixmap(createSingleIconPixmap(22));
+    QColor col=QColor(Qt::black);
+    icon.addPixmap(createSingleIconPixmap(16, col, 100.0));
+    icon.addPixmap(createSingleIconPixmap(22, col, 100.0));
+    icon.addPixmap(createSingleIconPixmap(16, col, 50.0), QIcon::Disabled);
+    icon.addPixmap(createSingleIconPixmap(22, col, 50.0), QIcon::Disabled);
+    col=QColor(48, 48, 48);
+    icon.addPixmap(createSingleIconPixmap(16, col, 100.0), QIcon::Active);
+    icon.addPixmap(createSingleIconPixmap(22, col, 100.0), QIcon::Active);
     return icon;
 }
 
@@ -426,9 +433,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     singlePlaylistAction = actionCollection()->addAction("singleplaylist");
     singlePlaylistAction->setText(i18n("Single"));
+    singlePlaylistAction->setWhatsThis(i18n("When single is activated, playback is stopped after current song, or song is repeated if the 'repeat' mode is enabled."));
 
     consumePlaylistAction = actionCollection()->addAction("consumeplaylist");
     consumePlaylistAction->setText(i18n("Consume"));
+    consumePlaylistAction->setWhatsThis(i18n("When consume is activated, a song is removed from the play queue after it has been played."));
 
     locateTrackAction = actionCollection()->addAction("locatetrack");
     locateTrackAction->setText(i18n("Locate In Library"));
@@ -509,7 +518,9 @@ MainWindow::MainWindow(QWidget *parent)
     randomPlaylistAction = new QAction(tr("Random"), this);
     repeatPlaylistAction = new QAction(tr("Repeat"), this);
     singlePlaylistAction = new QAction(tr("Single"), this);
+    singlePlaylistAction->setWhatsThis(tr("When single is activated, playback is stopped after current song, or song is repeated if the 'repeat' mode is enabled."));
     consumePlaylistAction = new QAction(tr("Consume"), this);
+    consumePlaylistAction->setWhatsThis(tr("When consume is activated, a song is removed from the play queue after it has been played."));
     locateTrackAction = new QAction(tr("Locate In Library"), this);
 //     burnAction = new QAction(tr("Burn To CD/DVD"), this);
 //     createAudioCdAction = new QAction(tr("Create Audio CD"), this);

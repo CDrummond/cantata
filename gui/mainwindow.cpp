@@ -1602,26 +1602,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     positionSlider->setEnabled(!currentIsStream());
-
-    // Determine if album cover should be updated
-    const QString &albumArtist=current.albumArtist();
-    QString covArtist=coverWidget->property("artist").toString();
-    QString covAlbum=coverWidget->property("album").toString();
-    if (covArtist!= albumArtist || covAlbum != current.album || (covArtist.isEmpty() && covAlbum.isEmpty())) {
-        if (!albumArtist.isEmpty() && !current.album.isEmpty()) {
-            Covers::Image img=Covers::self()->get(song, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(song));
-            if (!img.img.isNull()) {
-                coverSong=current;
-                coverWidget->setPixmap(QPixmap::fromImage(img.img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                coverFileName=img.fileName;
-                emit coverFile(img.fileName);
-            }
-        } else {
-            coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
-        }
-        coverWidget->setProperty("artist", albumArtist);
-        coverWidget->setProperty("album", current.album);
-    }
+    updateCurrentCover();
 
     if (current.name.isEmpty()) {
         trackLabel->setText(current.title);
@@ -1729,6 +1710,32 @@ void MainWindow::updateCurrentSong(const Song &song)
             trayItem->setToolTip("cantata", i18n("Cantata"), QString());
             #endif
         }
+    }
+}
+
+void MainWindow::updateCurrentCover()
+{
+    // Determine if album cover should be updated
+    const QString &albumArtist=current.albumArtist();
+    QString covArtist=coverWidget->property("artist").toString();
+    QString covAlbum=coverWidget->property("album").toString();
+    if (covArtist!= albumArtist || covAlbum != current.album || (covArtist.isEmpty() && covAlbum.isEmpty())) {
+        if (!albumArtist.isEmpty() && !current.album.isEmpty()) {
+            Covers::Image img=Covers::self()->get(current, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(current));
+            if (!img.img.isNull()) {
+                coverSong=current;
+                coverWidget->setPixmap(QPixmap::fromImage(img.img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                coverFileName=img.fileName;
+                emit coverFile(img.fileName);
+            }
+        } else {
+            coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
+            if (dock && dock->enabled()) {
+                emit coverFile(QString());
+            }
+        }
+        coverWidget->setProperty("artist", albumArtist);
+        coverWidget->setProperty("album", current.album);
     }
 }
 
@@ -1849,8 +1856,12 @@ void MainWindow::updateStatus()
         stopTrackAction->setEnabled(false);
         nextTrackAction->setEnabled(false);
         prevTrackAction->setEnabled(false);
-        trackLabel->setText(QString());
-        artistLabel->setText(QString());
+        if (!playPauseTrackAction->isEnabled()) {
+            trackLabel->setText(QString());
+            artistLabel->setText(QString());
+            current=Song();
+            updateCurrentCover();
+        }
         setWindowTitle("Cantata");
         current.id=0;
 

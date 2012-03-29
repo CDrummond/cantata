@@ -841,10 +841,12 @@ void MPDConnection::listAll()
 /*
  * Playlists commands
  */
-void MPDConnection::listPlaylist()
-{
-    sendCommand("listplaylist");
-}
+// void MPDConnection::listPlaylist(const QString &name)
+// {
+//     QByteArray data = "listplaylist ";
+//     data += encodeName(name);
+//     sendCommand(data);
+// }
 
 void MPDConnection::listPlaylists()
 {

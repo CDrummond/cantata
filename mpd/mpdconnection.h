@@ -197,7 +197,7 @@ public Q_SLOTS:
     void update();
 
     // Playlists
-    void listPlaylist();
+//     void listPlaylist(const QString &name);
     void listPlaylists();
     void playlistInfo(const QString &name);
     void loadPlaylist(const QString &name, bool replace);

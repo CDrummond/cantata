@@ -262,6 +262,7 @@ private Q_SLOTS:
     void updatePlayQueueStats(int artists, int albums, int songs, quint32 time);
     void copyTrackInfo();
     void togglePlaylist();
+    void sidebarModeChanged();
     void currentTabChanged(int index);
     void tabToggled(int index);
     void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
@@ -296,6 +297,7 @@ private Q_SLOTS:
     #endif
 
 private:
+    int calcMinHeight();
     void addToPlaylist(bool replace);
     void editTags(const QList<Song> &songs, bool isPlayQueue);
     bool currentIsStream() const;

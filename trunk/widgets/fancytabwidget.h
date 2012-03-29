@@ -206,6 +206,7 @@ public:
   bool isEnabled(int index) const { return index>=0 && index<items_.count() ? items_[index].enabled_ : false; }
   QWidget * widget(int index) const;
   int count() const;
+  int visibleCount() const;
   Mode mode() const { return mode_; }
   void setAllowContextMenu(bool a) { allowContext_=a; }
   void setDrawBorder(bool b) { drawBorder_=b; }

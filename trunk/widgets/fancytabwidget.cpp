@@ -665,6 +665,17 @@ int FancyTabWidget::count() const {
   return stack_->count();
 }
 
+int FancyTabWidget::visibleCount() const {
+    int c=0;
+
+    foreach (const Item &i, items_) {
+        if (i.enabled_) {
+            c++;
+        }
+    }
+    return c;
+}
+
 void FancyTabWidget::SetCurrentIndex(int idx) {
   int index=IndexToTab(idx);
   if (FancyTabBar* bar = qobject_cast<FancyTabBar*>(tab_bar_)) {

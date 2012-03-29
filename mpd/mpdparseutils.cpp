@@ -186,7 +186,6 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
 {
     Song song;
     QString tmpData = QString::fromUtf8(data.constData());
-
     QStringList lines = tmpData.split('\n');
     QStringList tokens;
     QString element;
@@ -216,8 +215,8 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
             song.title = value;
         } else if (element == QLatin1String("Track")) {
             song.track = value.split("/").at(0).toInt();
-        } else if (element == QLatin1String("Pos")) {
-            song.pos = value.toInt();
+//         } else if (element == QLatin1String("Pos")) {
+//             song.pos = value.toInt();
         } else if (element == QLatin1String("Id")) {
             song.id = value.toUInt();
         } else if (element == QLatin1String("Disc")) {
@@ -252,9 +251,6 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
     QByteArray line;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
-    QString album;
-    QString artist;
-    quint16 key=0;
 
     for (int i = 0; i < amountOfLines; i++) {
         line += lines.at(i);
@@ -274,18 +270,53 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
                 }
             }
 
-            if (song.album!=album || song.albumArtist()!=artist) {
-                key++;
-                album=song.album;
-                artist=song.albumArtist();
-            }
-            song.key=key;
+            song.setKey();
             songs.append(song);
             line.clear();
         }
     }
 
     return songs;
+}
+
+QList<MPDParseUtils::IdPos> MPDParseUtils::parseChanges(const QByteArray &data)
+{
+    TF_DEBUG
+    QList<IdPos> changes;
+    QList<QByteArray> lines = data.split('\n');
+    int amountOfLines = lines.size();
+    quint32 cpos=0;
+    bool foundCpos=false;
+
+    for (int i = 0; i < amountOfLines; i++) {
+        QByteArray line = lines.at(i);
+        // Skip the "OK" line, this is NOT a song!!!
+        if ("OK"==line || line.length()<1) {
+            continue;
+        }
+        QList<QByteArray> tokens = line.split(':');
+        if (2!=tokens.count()) {
+            return QList<IdPos>();
+        }
+        QByteArray element = tokens.takeFirst();
+        QByteArray value = tokens.takeFirst();
+        if (element == "cpos") {
+            if (foundCpos) {
+                return QList<IdPos>();
+            }
+            foundCpos=true;
+            cpos = value.toInt();
+        } else if (element == "Id") {
+            if (!foundCpos) {
+                return QList<IdPos>();
+            }
+            foundCpos=false;
+            qint32 id=value.toInt();
+            changes.append(IdPos(id, cpos));
+        }
+    }
+
+    return changes;
 }
 
 QStringList MPDParseUtils::parseUrlHandlers(const QByteArray &data)

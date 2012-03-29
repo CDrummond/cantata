@@ -63,8 +63,6 @@ public:
     bool isAutoExpand() const { return autoExpand; }
     void setStartClosed(bool sc);
     bool isStartClosed() const { return startClosed; }
-    QSet<quint16> getControlledAlbums(quint32 collection=0) const { return controlledAlbums[collection]; }
-    void setControlledAlbums(const QSet<quint16> &keys, quint32 collection=0) { controlledAlbums[collection]=keys; }
     void updateRows(qint32 row, bool scroll, const QModelIndex &parent=QModelIndex());
     void updateRows(const QModelIndex &parent);
     void updateCollectionRows();

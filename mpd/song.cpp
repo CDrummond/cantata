@@ -42,7 +42,7 @@ Song::Song()
     : id(-1),
       time(0),
       track(0),
-      pos(0),
+//       pos(0),
       disc(0),
       year(0),
       size(0),
@@ -61,7 +61,7 @@ Song & Song::operator=(const Song &s)
     title = s.title;
     modifiedtitle = s.modifiedtitle;
     track = s.track;
-    pos = s.pos;
+//     pos = s.pos;
     disc = s.disc;
     year = s.year;
     genre = s.genre;
@@ -132,6 +132,22 @@ void Song::fillEmptyFields()
     }
 }
 
+void Song::setKey()
+{
+    static quint16 currentKey=0;
+    static QMap<QString, quint16> keys;
+
+    QString albumAndArtist=albumArtist()+QLatin1String("::")+album;
+    QMap<QString, quint16>::ConstIterator it=keys.find(albumAndArtist);
+    if (it!=keys.end()) {
+        key=it.value();
+    } else {
+        currentKey++;
+        keys.insert(albumAndArtist, currentKey);
+        key=currentKey;
+    }
+}
+
 bool Song::isUnknown() const
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -151,7 +167,7 @@ void Song::clear()
     artist.clear();
     title.clear();
     track = 0;
-    pos = 0;
+//     pos = 0;
     disc = 0;
     year = 0;
     genre.clear();

@@ -242,6 +242,7 @@ private Q_SLOTS:
     void realSearchPlaylist();
     void updatePlaylist(const QList<Song> &songs);
     void updateCurrentSong(const Song &song);
+    void updateCurrentCover();
     void scrollPlayQueue();
     void updateStats();
     void updateStatus();

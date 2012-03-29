@@ -38,11 +38,14 @@
 #include "musiclibraryitemroot.h"
 #include "musiclibrarymodel.h"
 #include "playqueuemodel.h"
+#include "proxymodel.h"
 #include "song.h"
 #include "covers.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "debugtimer.h"
+
+static int sortAlbums=AlbumsModel::Sort_AlbumArtist;
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(AlbumsModel, instance)
@@ -126,7 +129,6 @@ void AlbumsModel::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 AlbumsModel::AlbumsModel(QObject *parent)
     : QAbstractItemModel(parent)
     , enabled(false)
-    , sortAlbumFirst(true)
 {
 }
 
@@ -265,12 +267,12 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:
             return al->name;
         case ItemView::Role_MainText:
-            return sortAlbumFirst ? al->album : al->artist;
+            return Sort_AlbumArtist==sortAlbums ? al->album : al->artist;
         case ItemView::Role_ImageSize: {
             return iconSize();
         }
         case ItemView::Role_SubText:
-            return sortAlbumFirst ? al->artist : al->album;
+            return Sort_AlbumArtist==sortAlbums ? al->artist : al->album;
         case Qt::SizeHintRole:
             if (!itemSize.isNull()) {
                 return itemSize;
@@ -396,7 +398,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
             }
 
             if (!found) {
-                AlbumItem *a=new AlbumItem(artist, album, sortAlbumFirst);
+                AlbumItem *a=new AlbumItem(artist, album);
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
@@ -483,19 +485,24 @@ void AlbumsModel::setEnabled(bool e)
     }
 }
 
-void AlbumsModel::setAlbumFirst(bool a)
+int AlbumsModel::albumSort() const
 {
-    if (a!=sortAlbumFirst) {
+    return sortAlbums;
+}
+
+void AlbumsModel::setAlbumSort(int s)
+{
+    if (s!=sortAlbums) {
         beginResetModel();
-        sortAlbumFirst=a;
+        sortAlbums=s;
         foreach (AlbumItem *a, items) {
-            a->setName(sortAlbumFirst);
+            a->setName();
         }
         endResetModel();
     }
 }
 
-AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, bool albumFirst)
+AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al)
     : artist(ar)
     , album(al)
     , cover(0)
@@ -503,7 +510,7 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, bool alb
     , coverRequested(false)
     , time(0)
 {
-    setName(albumFirst);
+    setName();
 }
 
 AlbumsModel::AlbumItem::~AlbumItem()
@@ -511,6 +518,22 @@ AlbumsModel::AlbumItem::~AlbumItem()
     qDeleteAll(songs);
     songs.clear();
     delete cover;
+}
+
+bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
+{
+    if (AlbumsModel::Sort_ArtistAlbumYear==sortAlbums) {
+        int compare=ProxyModel::compareStrings(artist, o.artist);
+        if (0==compare) {
+            int y=songs.count() ? songs.at(0)->year : 0;
+            int oy=o.songs.count() ? o.songs.at(0)->year : 0;
+            return y<oy || (y==oy && ProxyModel::compareStrings(album, o.album)<0);
+        } else {
+            return compare<0;
+        }
+    } else {
+        return ProxyModel::compareStrings(name, o.name)<0;
+    }
 }
 
 void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
@@ -523,9 +546,9 @@ void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
     }
 }
 
-void AlbumsModel::AlbumItem::setName(bool albumFirst)
+void AlbumsModel::AlbumItem::setName()
 {
-    name=albumFirst
+    name=AlbumsModel::Sort_AlbumArtist==sortAlbums
             ? (album+QLatin1String(" - ")+artist)
             : (artist+QLatin1String(" - ")+album);
 }

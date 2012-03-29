@@ -106,7 +106,7 @@ void InterfaceSettings::load()
     libraryYear->setChecked(Settings::self()->libraryYear());
     selectEntry(albumsView, Settings::self()->albumsView());
     albumsCoverSize->setCurrentIndex(Settings::self()->albumsCoverSize());
-    albumFirst->setCurrentIndex(Settings::self()->albumFirst() ? 0 : 1);
+    albumSort->setCurrentIndex(Settings::self()->albumSort());
     selectEntry(folderView, Settings::self()->folderView());
     selectEntry(playlistsView, Settings::self()->playlistsView());
     playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
@@ -136,7 +136,7 @@ void InterfaceSettings::save()
     Settings::self()->saveLibraryYear(libraryYear->isChecked());
     Settings::self()->saveAlbumsView(getViewType(albumsView));
     Settings::self()->saveAlbumsCoverSize(albumsCoverSize->currentIndex());
-    Settings::self()->saveAlbumFirst(0==albumFirst->currentIndex());
+    Settings::self()->saveAlbumSort(albumSort->currentIndex());
     Settings::self()->saveFolderView(getViewType(folderView));
     Settings::self()->savePlaylistsView(getViewType(playlistsView));
     Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());

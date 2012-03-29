@@ -988,7 +988,7 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::setUseLibrarySizes(Settings::self()->albumsView()!=ItemView::Mode_IconTop);
-    AlbumsModel::self()->setAlbumFirst(Settings::self()->albumFirst());
+    AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
     playlistsPage->setView(Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
@@ -1281,7 +1281,7 @@ void MainWindow::updateSettings()
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
     AlbumsModel::setUseLibrarySizes(useLibSizeForAl);
-    AlbumsModel::self()->setAlbumFirst(Settings::self()->albumFirst());
+    AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
     albumsPage->setView(Settings::self()->albumsView());
     if (diffAlCovers || diffGrouping) {
         albumsPage->clear();

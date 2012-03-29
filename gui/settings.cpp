@@ -237,9 +237,12 @@ int Settings::albumsCoverSize()
     return GET_INT("albumsCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
 }
 
-bool Settings::albumFirst()
+int Settings::albumSort()
 {
-    return GET_BOOL("albumFirst", true);
+    if (version()<CANTATA_MAKE_VERSION(0, 6, 0)) {
+        return GET_BOOL("albumFirst", true) ? 0 : 1;
+    }
+    return GET_INT("albumSort", 0);
 }
 
 int Settings::sidebar()
@@ -538,9 +541,9 @@ void Settings::saveAlbumsCoverSize(int v)
     SET_VALUE("albumsCoverSize", v);
 }
 
-void Settings::saveAlbumFirst(bool v)
+void Settings::saveAlbumSort(int v)
 {
-    SET_VALUE("albumFirst", v);
+    SET_VALUE("albumSort", v);
 }
 
 void Settings::saveSidebar(int v)

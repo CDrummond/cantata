@@ -46,6 +46,13 @@ public:
     static void setUseLibrarySizes(bool u);
     static bool useLibrarySizes();
 
+    enum Sort
+    {
+        Sort_AlbumArtist,
+        Sort_ArtistAlbum,
+        Sort_ArtistAlbumYear
+    };
+
     enum Columnms
     {
         COL_NAME,
@@ -69,11 +76,12 @@ public:
 
     struct AlbumItem : public Item
     {
-        AlbumItem(const QString &ar, const QString &al, bool albumFirst);
+        AlbumItem(const QString &ar, const QString &al);
         virtual ~AlbumItem();
+        bool operator<(const AlbumItem &o) const;
         bool isAlbum() { return true; }
         void setSongs(MusicLibraryItemAlbum *ai);
-        void setName(bool albumFirst);
+        void setName();
         quint32 totalTime();
         void getCover(bool urgent);
         QString artist;
@@ -106,8 +114,8 @@ public:
     void clear();
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
-    bool albumFirst() const { return sortAlbumFirst; }
-    void setAlbumFirst(bool a);
+    int albumSort() const;
+    void setAlbumSort(int s);
 
 public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
@@ -115,7 +123,6 @@ public Q_SLOTS:
 
 private:
     bool enabled;
-    bool sortAlbumFirst;
     mutable QList<AlbumItem *> items;
 };
 

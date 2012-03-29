@@ -107,58 +107,58 @@ QString MPDConnection::Response::getError()
     }
 
     if (!ok && data.size()>0) {
-        int codeStart=data.indexOf(" [");
-        int codeEnd=data.indexOf("@", codeStart);
-        int cmdStart=data.indexOf(" {", codeEnd);
+//         int codeStart=data.indexOf(" [");
+//         int codeEnd=data.indexOf("@", codeStart);
+//         int cmdStart=data.indexOf(" {", codeEnd);
         int cmdEnd=data.indexOf("} ");
         if (-1!=cmdEnd) {
-            int code=data.mid(codeStart+2, codeEnd-(codeStart+2)).toInt();
-
-            #ifdef ENABLE_KDE_SUPPORT
-            switch (code) {
-            case 1: // MPD_SERVER_ERROR_NOT_LIST
-            case 2: // MPD_SERVER_ERROR_ARG
-            case 3: // MPD_SERVER_ERROR_PASSWORD
-                break;
-            case 4: // MPD_SERVER_ERROR_PERMISSION
-                return i18n("Permission denied");
-            case 5: // MPD_SERVER_ERROR_UNKNOWN_CMD
-                return i18n("%1 - Uknown command", QString::fromUtf8(data.mid(cmdStart+2, cmdEnd-(cmdStart+2))));
-            case 50: // MPD_SERVER_ERROR_NO_EXIST
-                return i18n("Song does not exist");
-            case 51: // MPD_SERVER_ERROR_PLAYLIST_MAX
-                return i18n("Playlist limit reached");
-            case 52: // MPD_SERVER_ERROR_SYSTEM
-            case 53: // MPD_SERVER_ERROR_PLAYLIST_LOAD
-            case 54: // MPD_SERVER_ERROR_UPDATE_ALREADY
-            case 55: // MPD_SERVER_ERROR_PLAYER_SYNC
-            case 56: // MPD_SERVER_ERROR_EXIST
-            default:
-                break;
-            }
-            #else
-             switch (code) {
-            case 1: // MPD_SERVER_ERROR_NOT_LIST
-            case 2: // MPD_SERVER_ERROR_ARG
-            case 3: // MPD_SERVER_ERROR_PASSWORD
-                break;
-            case 4: // MPD_SERVER_ERROR_PERMISSION
-                return QObject::tr("Permission denied");
-            case 5: // MPD_SERVER_ERROR_UNKNOWN_CMD
-                return QObject::tr("%1 - Uknown command").arg(QString::fromUtf8(data.mid(cmdStart+2, cmdEnd-(cmdStart+2))));
-            case 50: // MPD_SERVER_ERROR_NO_EXIST
-                return QObject::tr("Song does not exist");
-            case 51: // MPD_SERVER_ERROR_PLAYLIST_MAX
-                return QObject::tr("Playlist limit reached");
-            case 52: // MPD_SERVER_ERROR_SYSTEM
-            case 53: // MPD_SERVER_ERROR_PLAYLIST_LOAD
-            case 54: // MPD_SERVER_ERROR_UPDATE_ALREADY
-            case 55: // MPD_SERVER_ERROR_PLAYER_SYNC
-            case 56: // MPD_SERVER_ERROR_EXIST
-            default:
-                break;
-            }
-            #endif
+//             int code=data.mid(codeStart+2, codeEnd-(codeStart+2)).toInt();
+//
+//             #ifdef ENABLE_KDE_SUPPORT
+//             switch (code) {
+//             case 1: // MPD_SERVER_ERROR_NOT_LIST
+//             case 2: // MPD_SERVER_ERROR_ARG
+//             case 3: // MPD_SERVER_ERROR_PASSWORD
+//                 break;
+//             case 4: // MPD_SERVER_ERROR_PERMISSION
+//                 return i18n("Permission denied");
+//             case 5: // MPD_SERVER_ERROR_UNKNOWN_CMD
+//                 return i18n("%1 - Uknown command", QString::fromUtf8(data.mid(cmdStart+2, cmdEnd-(cmdStart+2))));
+//             case 50: // MPD_SERVER_ERROR_NO_EXIST
+//                 return i18n("Song does not exist");
+//             case 51: // MPD_SERVER_ERROR_PLAYLIST_MAX
+//                 return i18n("Playlist limit reached");
+//             case 52: // MPD_SERVER_ERROR_SYSTEM
+//             case 53: // MPD_SERVER_ERROR_PLAYLIST_LOAD
+//             case 54: // MPD_SERVER_ERROR_UPDATE_ALREADY
+//             case 55: // MPD_SERVER_ERROR_PLAYER_SYNC
+//             case 56: // MPD_SERVER_ERROR_EXIST
+//             default:
+//                 break;
+//             }
+//             #else
+//              switch (code) {
+//             case 1: // MPD_SERVER_ERROR_NOT_LIST
+//             case 2: // MPD_SERVER_ERROR_ARG
+//             case 3: // MPD_SERVER_ERROR_PASSWORD
+//                 break;
+//             case 4: // MPD_SERVER_ERROR_PERMISSION
+//                 return QObject::tr("Permission denied");
+//             case 5: // MPD_SERVER_ERROR_UNKNOWN_CMD
+//                 return QObject::tr("%1 - Uknown command").arg(QString::fromUtf8(data.mid(cmdStart+2, cmdEnd-(cmdStart+2))));
+//             case 50: // MPD_SERVER_ERROR_NO_EXIST
+//                 return QObject::tr("Song does not exist");
+//             case 51: // MPD_SERVER_ERROR_PLAYLIST_MAX
+//                 return QObject::tr("Playlist limit reached");
+//             case 52: // MPD_SERVER_ERROR_SYSTEM
+//             case 53: // MPD_SERVER_ERROR_PLAYLIST_LOAD
+//             case 54: // MPD_SERVER_ERROR_UPDATE_ALREADY
+//             case 55: // MPD_SERVER_ERROR_PLAYER_SYNC
+//             case 56: // MPD_SERVER_ERROR_EXIST
+//             default:
+//                 break;
+//             }
+//             #endif
             cmdEnd+=2;
             data=data.mid(cmdEnd, data.length()-(data.endsWith('\n') ? cmdEnd+1 : cmdEnd));
         }

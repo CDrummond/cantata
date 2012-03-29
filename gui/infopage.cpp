@@ -1,4 +1,4 @@
-/*
+    /*
  * Cantata
  *
  * Copyright (c) 2011-2012 Craig Drummond <craig.p.drummond@gmail.com>
@@ -36,6 +36,7 @@
 #include <KDE/KWebView>
 #include <KDE/KLocale>
 #include <KDE/KFileDialog>
+#include <KDE/KGlobalSettings>
 #else
 #include <QtGui/QFileDialog>
 #include <QtWebKit/QWebView>
@@ -113,6 +114,11 @@ InfoPage::InfoPage(QWidget *parent)
     view->settings()->setAttribute(QWebSettings::PrivateBrowsingEnabled, true);
     view->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+
+    #ifdef ENABLE_KDE_SUPPORT
+    connect(KGlobalSettings::self(), SIGNAL(appearanceChanged()), SLOT(updateFonts()));
+    updateFonts();
+    #endif
 }
 
 void InfoPage::save()
@@ -171,6 +177,12 @@ void InfoPage::googleAnswer(const QString &ans)
     wikiInfo.addQueryItem("action", "view");
     wikiInfo.addQueryItem("useskin", "monobook");
     wikiInfo.addQueryItem("useformat", "mobile");
+
+//     view->settings()->resetFontSize(QWebSettings::MinimumFontSize);
+//     view->settings()->resetFontSize(QWebSettings::MinimumLogicalFontSize);
+//     view->settings()->resetFontSize(QWebSettings::DefaultFontSize);
+//     view->settings()->resetFontSize(QWebSettings::DefaultFixedFontSize);
+//     view->settings()->resetFontFamily(QWebSettings::StandardFont);
     view->setUrl(wikiInfo);
 }
 
@@ -226,3 +238,15 @@ void InfoPage::downloadingFinished()
         file.write(reply->readAll());
     }
 }
+
+#ifdef ENABLE_KDE_SUPPORT
+void InfoPage::updateFonts()
+{
+    view->settings()->setFontFamily(QWebSettings::StandardFont, KGlobalSettings::generalFont().family());
+    view->settings()->setFontFamily(QWebSettings::SerifFont, KGlobalSettings::generalFont().family());
+    view->settings()->setFontFamily(QWebSettings::SansSerifFont, KGlobalSettings::generalFont().family());
+    view->settings()->setFontFamily(QWebSettings::FixedFont, KGlobalSettings::fixedFont().family());
+
+}
+#endif
+

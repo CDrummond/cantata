@@ -42,6 +42,7 @@
     less data needs to be read from MPD per playqueue update.
 28. Support 'single' mode.
 29. Attempt to translate some error messages.
+30. When using large sizdebar, attempt to calculate correct min size.
 
 0.5.1
 -----

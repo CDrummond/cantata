@@ -206,29 +206,31 @@ void LyricsPage::edit()
 
 void LyricsPage::save()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Save updated lyrics?"))) {
-        return;
-    }
-    #else
-    if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Save updated lyrics?"), QMessageBox::Yes|QMessageBox::No)) {
-        return;
-    }
-    #endif
-
-    QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
-    QString cacheName=cacheFile(currentSong.artist, currentSong.title);
-    if (saveFile(mpdName)) {
-        if (QFile::exists(cacheName)) {
-            QFile::remove(cacheName);
-        }
-    } else if (!saveFile(cacheName)) {
+    if (preEdit!=text->toPlainText()) {
         #ifdef ENABLE_KDE_SUPPORT
-        KMessageBox::error(this, i18n("Failed to save lyrics."));
+        if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Save updated lyrics?"))) {
+            return;
+        }
         #else
-        QMessageBox::critical(this, tr("Error"), tr("Save updated lyrics?"));
+        if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Save updated lyrics?"), QMessageBox::Yes|QMessageBox::No)) {
+            return;
+        }
         #endif
-        return;
+
+        QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
+        QString cacheName=cacheFile(currentSong.artist, currentSong.title);
+        if (saveFile(mpdName)) {
+            if (QFile::exists(cacheName)) {
+                QFile::remove(cacheName);
+            }
+        } else if (!saveFile(cacheName)) {
+            #ifdef ENABLE_KDE_SUPPORT
+            KMessageBox::error(this, i18n("Failed to save lyrics."));
+            #else
+            QMessageBox::critical(this, tr("Error"), tr("Save updated lyrics?"));
+            #endif
+            return;
+        }
     }
 
     setMode(Mode_Display);
@@ -236,15 +238,17 @@ void LyricsPage::save()
 
 void LyricsPage::cancel()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
-        return;
+    if (preEdit!=text->toPlainText()) {
+        #ifdef ENABLE_KDE_SUPPORT
+        if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+            return;
+        }
+        #else
+        if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
+            return;
+        }
+        #endif
     }
-    #else
-    if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
-        return;
-    }
-    #endif
     text->setText(preEdit);
     setMode(Mode_Display);
 }

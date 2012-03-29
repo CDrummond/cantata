@@ -183,10 +183,10 @@
        <property name="margin">
         <number>0</number>
        </property>
-       <item row="0" column="0" colspan="9">
+       <item row="0" column="0" colspan="10">
         <widget class="LineEdit" name="searchPlaylistLineEdit"/>
        </item>
-       <item row="1" column="0" colspan="9">
+       <item row="1" column="0" colspan="10">
         <widget class="PlayQueueView" name="playQueue"/>
        </item>
        <item row="2" column="0">
@@ -216,13 +216,23 @@
         </widget>
        </item>
        <item row="2" column="3">
+        <widget class="QToolButton" name="singlePushButton">
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4">
         <widget class="QToolButton" name="randomPushButton">
          <property name="checkable">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="5">
+       <item row="2" column="6">
         <spacer name="horizontalSpacer_4">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -238,13 +248,13 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="6">
+       <item row="2" column="7">
         <widget class="QToolButton" name="savePlaylistPushButton"/>
        </item>
-       <item row="2" column="7">
+       <item row="2" column="8">
         <widget class="QToolButton" name="removeAllFromPlaylistPushButton"/>
        </item>
-       <item row="2" column="4">
+       <item row="2" column="5">
         <widget class="QToolButton" name="consumePushButton"/>
        </item>
       </layout>

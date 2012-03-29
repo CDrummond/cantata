@@ -147,6 +147,8 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
             v.consume=tokens.at(1).trimmed() == "1";
         } else if (tokens.at(0) == "repeat") {
             v.repeat=tokens.at(1).trimmed() == "1";
+        } else if (tokens.at(0) == "single") {
+            v.single=tokens.at(1).trimmed() == "1";
         } else if (tokens.at(0) == "random") {
             v.random=tokens.at(1).trimmed() == "1";
         } else if (tokens.at(0) == "playlist") {

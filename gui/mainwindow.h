@@ -337,6 +337,7 @@ private:
     Action *savePlaylistAction;
     Action *randomPlaylistAction;
     Action *repeatPlaylistAction;
+    Action *singlePlaylistAction;
     Action *consumePlaylistAction;
     Action *expandInterfaceAction;
     Action *quitAction;

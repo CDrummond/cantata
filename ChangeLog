@@ -40,6 +40,7 @@
     clipping.
 27. Use 'plchangesposid' MPD command to get list of playqueue changes - means
     less data needs to be read from MPD per playqueue update.
+28. Support 'single' mode.
 
 0.5.1
 -----

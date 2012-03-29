@@ -630,6 +630,13 @@ void MPDConnection::setRepeat(bool toggle)
     sendCommand(data);
 }
 
+void MPDConnection::setSingle(bool toggle)
+{
+    QByteArray data = "single ";
+    data+=toggle ? "1" : "0";
+    sendCommand(data);
+}
+
 void MPDConnection::setSeek(quint32 song, quint32 time)
 {
     QByteArray data = "seek ";

@@ -969,6 +969,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(AutoHideChanged(bool)), this, SLOT(toggleSplitterAutoHide(bool)));
+    connect(tabWidget, SIGNAL(ModeChanged(FancyTabWidget::Mode)), this, SLOT(sidebarModeChanged()));
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
     libraryPage->setView(0==Settings::self()->libraryView());
@@ -2057,6 +2058,16 @@ void MainWindow::copyTrackInfo()
     QApplication::clipboard()->setText(txt);
 }
 
+int MainWindow::calcMinHeight()
+{
+    if (FancyTabWidget::Mode_LargeSidebar==tabWidget->mode()) {
+        return coverWidget->height()+(tabWidget->visibleCount()*(32+fontMetrics().height()+4));
+    } else if (FancyTabWidget::Mode_IconOnlyLargeSidebar==tabWidget->mode()) {
+        return coverWidget->height()+(tabWidget->visibleCount()*(32+6));
+    }
+    return 256;
+}
+
 void MainWindow::togglePlaylist()
 {
     if (!expandInterfaceAction->isChecked() && messageWidget->isVisible()) {
@@ -2064,6 +2075,7 @@ void MainWindow::togglePlaylist()
         return;
     }
     if (splitter->isVisible()==expandInterfaceAction->isChecked()) {
+        setMinimumHeight(calcMinHeight());
         return;
     }
     static bool lastMax=false;
@@ -2083,7 +2095,7 @@ void MainWindow::togglePlaylist()
                            coverWidget->height()+spacing);
     } else {
         collapsedSize=size();
-        setMinimumHeight(256);
+        setMinimumHeight(calcMinHeight());
         setMaximumHeight(65535);
     }
     int prevWidth=size().width();
@@ -2116,6 +2128,13 @@ void MainWindow::togglePlaylist()
 
     if (!p.isNull()) {
         move(p);
+    }
+}
+
+void MainWindow::sidebarModeChanged()
+{
+    if (splitter->isVisible()) {
+        setMinimumHeight(calcMinHeight());
     }
 }
 
@@ -2308,6 +2327,7 @@ void MainWindow::tabToggled(int index)
     default:
         break;
     }
+    sidebarModeChanged();
 }
 
 void MainWindow::cover(const QString &artist, const QString &album, const QImage &img, const QString &file)

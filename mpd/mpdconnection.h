@@ -173,6 +173,7 @@ public Q_SLOTS:
     void setConsume(bool toggle);
     void setRandom(bool toggle);
     void setRepeat(bool toggle);
+    void setSingle(bool toggle);
     void setSeek(quint32 song, quint32 time);
     void setSeekId(quint32 songId, quint32 time);
     void setVolume(int vol);

@@ -33,6 +33,7 @@
 #include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
 #include <QtGui/QProxyStyle>
+#include <QtGui/QPainter>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KApplication>
@@ -103,6 +104,34 @@
 #include <QtGui/QIcon>
 #define Icon(X) QIcon::fromTheme(X)
 #endif
+
+static QPixmap createSingleIconPixmap(int size)
+{
+    QPixmap pix(size, size);
+    pix.fill(Qt::transparent);
+    QPainter p(&pix);
+    QFont font(QLatin1String("sans"));
+    font.setBold(false);
+    font.setItalic(false);
+    font.setPixelSize(size*0.9);
+    p.setFont(font);
+    p.setPen(Qt::black);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.drawText(QRect(0, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+    p.drawText(QRect(1, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+    p.drawText(QRect(-1, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+    p.setRenderHint(QPainter::Antialiasing, false);
+    p.end();
+    return pix;
+}
+
+static QIcon createSingleIcon()
+{
+    QIcon icon;
+    icon.addPixmap(createSingleIconPixmap(16));
+    icon.addPixmap(createSingleIconPixmap(22));
+    return icon;
+}
 
 enum Tabs
 {
@@ -395,6 +424,9 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlaylistAction = actionCollection()->addAction("repeatplaylist");
     repeatPlaylistAction->setText(i18n("Repeat"));
 
+    singlePlaylistAction = actionCollection()->addAction("singleplaylist");
+    singlePlaylistAction->setText(i18n("Single"));
+
     consumePlaylistAction = actionCollection()->addAction("consumeplaylist");
     consumePlaylistAction->setText(i18n("Consume"));
 
@@ -476,6 +508,7 @@ MainWindow::MainWindow(QWidget *parent)
     expandInterfaceAction = new QAction(tr("Expanded Interface"), this);
     randomPlaylistAction = new QAction(tr("Random"), this);
     repeatPlaylistAction = new QAction(tr("Repeat"), this);
+    singlePlaylistAction = new QAction(tr("Single"), this);
     consumePlaylistAction = new QAction(tr("Consume"), this);
     locateTrackAction = new QAction(tr("Locate In Library"), this);
 //     burnAction = new QAction(tr("Burn To CD/DVD"), this);
@@ -541,6 +574,7 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlaylistAction->setIcon(consumeIcon);
     repeatPlaylistAction->setIcon(repeatIcon);
     #endif
+    singlePlaylistAction->setIcon(createSingleIcon());
     removeAction->setIcon(Icon("list-remove"));
     addToPlaylistAction->setIcon(Icon("list-add"));
     replacePlaylistAction->setIcon(Icon("media-playback-start"));
@@ -642,6 +676,7 @@ MainWindow::MainWindow(QWidget *parent)
     removeAllFromPlaylistPushButton->setDefaultAction(clearPlaylistAction);
     randomPushButton->setDefaultAction(randomPlaylistAction);
     repeatPushButton->setDefaultAction(repeatPlaylistAction);
+    singlePushButton->setDefaultAction(singlePlaylistAction);
     consumePushButton->setDefaultAction(consumePlaylistAction);
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
@@ -669,6 +704,7 @@ MainWindow::MainWindow(QWidget *parent)
     expandInterfaceAction->setCheckable(true);
     randomPlaylistAction->setCheckable(true);
     repeatPlaylistAction->setCheckable(true);
+    singlePlaylistAction->setCheckable(true);
     consumePlaylistAction->setCheckable(true);
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -681,7 +717,7 @@ MainWindow::MainWindow(QWidget *parent)
     QList<QToolButton *> btns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     controlBtns << volumeButton << menuButton;
-    btns << repeatPushButton << randomPushButton << savePlaylistPushButton << removeAllFromPlaylistPushButton << consumePushButton;
+    btns << repeatPushButton << singlePushButton << randomPushButton << savePlaylistPushButton << removeAllFromPlaylistPushButton << consumePushButton;
 
     foreach (QToolButton *b, btns) {
         initButton(b);
@@ -718,6 +754,7 @@ MainWindow::MainWindow(QWidget *parent)
     expandInterfaceAction->setChecked(Settings::self()->showPlaylist());
     randomPlaylistAction->setChecked(false);
     repeatPlaylistAction->setChecked(false);
+    singlePlaylistAction->setChecked(false);
     consumePlaylistAction->setChecked(false);
 //     burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -840,6 +877,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(positionSliderReleased()));
     connect(randomPlaylistAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(repeatPlaylistAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
+    connect(singlePlaylistAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
     connect(consumePlaylistAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setConsume(bool)));
     connect(searchPlaylistLineEdit, SIGNAL(returnPressed()), this, SLOT(searchPlaylist()));
     connect(searchPlaylistLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchPlaylist()));
@@ -1752,6 +1790,7 @@ void MainWindow::updateStatus()
 
     randomPlaylistAction->setChecked(status->random());
     repeatPlaylistAction->setChecked(status->repeat());
+    singlePlaylistAction->setChecked(status->single());
     consumePlaylistAction->setChecked(status->consume());
 
     QString timeElapsedFormattedString;

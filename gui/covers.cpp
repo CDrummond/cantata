@@ -79,7 +79,7 @@ static QImage createSingleTracksCover(const QString &fileName)
     QImage img(constSize, constSize, QImage::Format_ARGB32);
     QPixmap pix(QIcon::fromTheme("media-optical").pixmap(128, 128));
     QPainter p(&img);
-    p.fillRect(QRect(0, 0, constSize, constSize), QColor(96, 96, 96));
+    p.fillRect(QRect(0, 0, constSize, constSize), Qt::transparent);
     p.drawPixmap((constSize-pix.width())/2,(constSize-pix.height())/2, pix);
     QFont font(QLatin1String("serif"));
     font.setBold(true);

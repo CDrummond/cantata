@@ -159,6 +159,10 @@ void InfoPage::googleAnswer(const QString &ans)
         int end = answer.indexOf("\"", start);
         end = qMin(end, answer.indexOf("&amp", start));
         answer = answer.mid(start, end - start);
+        // For "Queensrÿche" google returns http://en.wikipedia.org/wiki/Queensr%25C3%25BFche
+        // ...but (I think) this should be http://en.wikipedia.org/wiki/Queensr%C3%BFche
+        // ...so, replace %25 with % :-)
+        answer.replace("%25", "%");
     }
     else {
         answer.clear();

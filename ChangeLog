@@ -36,6 +36,8 @@
 23. Automatically expand treeview items when searching.
 24. Add custom icons for library and info pages.
 25. Use CD icon (without music note) for albums page.
+26. Better size calculation of compact view height - should prevent text
+    clipping.
 
 0.5.1
 -----

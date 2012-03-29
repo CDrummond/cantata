@@ -52,6 +52,9 @@ private Q_SLOTS:
     void googleAnswer(const QString &answer);
     void downloadRequested(const QNetworkRequest &);
     void downloadingFinished();
+    #ifdef ENABLE_KDE_SUPPORT
+    void updateFonts();
+    #endif
 
 private:
     WebView *view;

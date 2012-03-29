@@ -24,17 +24,18 @@
 14. Fix crash when quiting Cantata whilst devices are being scanned.
 15. Disable JavaScript for webview, this removes the 'Show'/'Hide' buttons from
     wikipedia pages.
-16. Adjust min and max sizes for sidebar.
-17. Add basic lyrics editing.
-18. Fix order of items added from playlist to playqueue, when individual items
+16. Set font family for info page. (KDE only)
+17. Adjust min and max sizes for sidebar.
+18. Add basic lyrics editing.
+19. Fix order of items added from playlist to playqueue, when individual items
     of the list were selected.
-19. Fix logic of replacing play queue - the clear message is sent in the MPD
+20. Fix logic of replacing play queue - the clear message is sent in the MPD
     thread just before the add message.
-20. Improve albums page responsiveness when loading covers.
-21. Better searching - search on all strings, in any order.
-22. Automatically expand treeview items when searching.
-23. Add custom icons for library and info pages.
-24. Use cd icon (without music note) for albums page.
+21. Improve albums page responsiveness when loading covers.
+22. Better searching - search on all strings, in any order.
+23. Automatically expand treeview items when searching.
+24. Add custom icons for library and info pages.
+25. Use CD icon (without music note) for albums page.
 
 0.5.1
 -----

@@ -28,6 +28,7 @@
 #include "network.h"
 #include "settings.h"
 #include "mainwindow.h"
+#include "squeezedtextlabel.h"
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -407,6 +408,12 @@ void LyricsPage::setMode(Mode m)
     editAction->setEnabled(editable);
     delAction->setEnabled(editable && !Settings::self()->mpdDir().isEmpty() && QFile::exists(changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension)));
     text->setReadOnly(Mode_Edit!=m);
+    songLabel->setVisible(Mode_Edit==m);
+    #ifdef ENABLE_KDE_SUPPORT
+    songLabel->setText(Mode_Edit==m ? i18nc("title, by artist", "%1, by %2", currentSong.title, currentSong.artist) : QString());
+    #else
+    songLabel->setText(Mode_Edit==m ? tr("%1, by %2").arg(currentSong.title).arg(currentSong.artist) : QString());
+    #endif
 }
 
 bool LyricsPage::setLyricsFromFile(const QString &filePath) const

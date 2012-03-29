@@ -1475,7 +1475,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         }
     }
 
-    playQueue->setControlledAlbums(playQueueModel.updatePlaylist(songs, playQueue->getControlledAlbums()));
+    playQueueModel.updatePlaylist(songs);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
 
     // reselect song ids or minrow if songids were not found (songs removed)

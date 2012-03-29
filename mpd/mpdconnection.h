@@ -152,6 +152,7 @@ public Q_SLOTS:
     void add(const QStringList &files, bool replace);
     void addid(const QStringList &files, quint32 pos, quint32 size, bool replace);
     void currentSong();
+    void playListChanges();
     void playListInfo();
     void removeSongs(const QList<qint32> &items);
     void move(quint32 from, quint32 to);
@@ -256,6 +257,11 @@ private:
     // Cant use 1, as we could write a command just as an idle event is ready to read
     MpdSocket sock;
     MpdSocket idleSocket;
+
+    // The three items are used so that we can do quick playqueue updates...
+    QList<qint32> playQueueIds;
+    quint32 lastStatusPlayQueueVersion;
+    quint32 lastUpdatePlayQueueVersion;
 
     enum State
     {

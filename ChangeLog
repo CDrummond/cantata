@@ -38,6 +38,8 @@
 25. Use CD icon (without music note) for albums page.
 26. Better size calculation of compact view height - should prevent text
     clipping.
+27. Use 'plchangesposid' MPD command to get list of playqueue changes - means
+    less data needs to be read from MPD per playqueue update.
 
 0.5.1
 -----

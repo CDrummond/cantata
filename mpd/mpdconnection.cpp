@@ -49,7 +49,7 @@ MPDConnection * MPDConnection::self()
     return conn;
     #else
     static MPDConnection *conn=0;;
-    if(!conn) {
+    if (!conn) {
         conn=new MPDConnection;
     }
     return conn;
@@ -79,7 +79,7 @@ static QByteArray readFromSocket(MpdSocket &socket)
             break;
         }
     }
-    if(data.size()>256) {
+    if (data.size()>256) {
         qDebug() << (void *)(&socket) << "Read (bytes):" << data.size();
     } else {
         qDebug() << (void *)(&socket) << "Read:" << data;
@@ -153,6 +153,8 @@ bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
                 qDebug("Received identification string");
             }
 
+            lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=0;
+            playQueueIds.clear();
             int min, maj, patch;
             if (3==sscanf(&(recvdata.constData()[7]), "%d.%d.%d", &maj, &min, &patch)) {
                 long v=((maj&0xFF)<<16)+((min&0xFF)<<8)+(patch&0xFF);
@@ -180,7 +182,7 @@ bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
                 }
             }
 
-            if(enableIdle) {
+            if (enableIdle) {
                 connect(&socket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
                 qDebug() << "Enabling idle";
                 socket.write("idle\n");
@@ -355,7 +357,10 @@ void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size, b
 
 void MPDConnection::clear()
 {
-    sendCommand("clear");
+    if (sendCommand("clear").ok) {
+        lastUpdatePlayQueueVersion=0;
+        playQueueIds.clear();
+    }
 }
 
 void MPDConnection::removeSongs(const QList<qint32> &items)
@@ -435,16 +440,113 @@ void MPDConnection::shuffle(quint32 from, quint32 to)
 void MPDConnection::currentSong()
 {
     Response response=sendCommand("currentsong");
-    if(response.ok) {
+    if (response.ok) {
         emit currentSongUpdated(MPDParseUtils::parseSong(response.data));
     }
+}
+
+/*
+ * Call "plchangesposid" to recieve a list of positions+ids that have been changed since the last update.
+ * If we have ids in this list that we don't know about, then these are new songs - so we call
+ * "playlistinfo <pos>" to get the song information.
+ *
+ * Any songs that are know about, will actually be sent with empty data - as the playqueue model will
+ * already hold these songs.
+ */
+void MPDConnection::playListChanges()
+{
+    if (0==lastUpdatePlayQueueVersion || 0==playQueueIds.size()) {
+        playListInfo();
+        return;
+    }
+
+    QByteArray data = "plchangesposid ";
+    data += QByteArray::number(lastUpdatePlayQueueVersion);
+    Response response=sendCommand(data);
+    if (response.ok) {
+        // We need an updated status so as to detect deletes at end of list...
+        Response status=sendCommand("status");
+        if (status.ok) {
+            MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
+            lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=sv.playlist;
+            emit statusUpdated(sv);
+            QList<MPDParseUtils::IdPos> changes=MPDParseUtils::parseChanges(response.data);
+            if (!changes.isEmpty()) {
+                bool first=true;
+                quint32 firstPos=0;
+                QList<Song> songs;
+                QList<qint32> ids;
+                QSet<qint32> prevIds=playQueueIds.toSet();
+
+                foreach (const MPDParseUtils::IdPos &idp, changes) {
+                    if (first) {
+                        first=false;
+                        firstPos=idp.pos;
+                        if (idp.pos!=0) {
+                            for (quint32 i=0; i<idp.pos; ++i) {
+                                Song s;
+                                s.id=playQueueIds.at(i);
+                                songs.append(s);
+                                ids.append(s.id);
+                            }
+                        }
+                    }
+
+                    if (prevIds.contains(idp.id)) {
+                        Song s;
+                        s.id=idp.id;
+//                         s.pos=idp.pos;
+                        songs.append(s);
+                    } else {
+                        // New song!
+                        data = "playlistinfo ";
+                        data += QByteArray::number(idp.pos);
+                        response=sendCommand(data);
+                        if (!response.ok) {
+                            playListInfo();
+                            return;
+                        }
+                        Song s=MPDParseUtils::parseSong(response.data);
+                        s.setKey();
+                        s.id=idp.id;
+//                         s.pos=idp.pos;
+                        songs.append(s);
+                    }
+                    ids.append(idp.id);
+                }
+
+                // Dont think this sectio nis ever called, bu leave here to be safe!!!
+                // For some reason if we have 10 songs in our playlist and we move pos 2 to pos 1, MPD sends all ids from pos 1 onwards
+                if (firstPos+changes.size()<sv.playlistLength && (sv.playlistLength<=(unsigned int)playQueueIds.length())) {
+                    for (quint32 i=firstPos+changes.size(); i<sv.playlistLength; ++i) {
+                        Song s;
+                        s.id=playQueueIds.at(i);
+                        songs.append(s);
+                        ids.append(s.id);
+                    }
+                }
+
+                playQueueIds=ids;
+                emit playlistUpdated(songs);
+                return;
+            }
+        }
+    }
+
+    playListInfo();
 }
 
 void MPDConnection::playListInfo()
 {
     Response response=sendCommand("playlistinfo");
-    if(response.ok) {
-        emit playlistUpdated(MPDParseUtils::parseSongs(response.data));
+    if (response.ok) {
+        lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion;
+        QList<Song> songs=MPDParseUtils::parseSongs(response.data);
+        playQueueIds.clear();
+        foreach (const Song &s, songs) {
+            playQueueIds.append(s.id);
+        }
+        emit playlistUpdated(songs);
     }
 }
 
@@ -561,7 +663,7 @@ void MPDConnection::stopPlaying()
 void MPDConnection::getStats()
 {
     Response response=sendCommand("stats");
-    if(response.ok) {
+    if (response.ok) {
         emit statsUpdated(MPDParseUtils::parseStats(response.data));
     }
 }
@@ -569,15 +671,17 @@ void MPDConnection::getStats()
 void MPDConnection::getStatus()
 {
     Response response=sendCommand("status");
-    if(response.ok) {
-        emit statusUpdated(MPDParseUtils::parseStatus(response.data));
+    if (response.ok) {
+        MPDStatusValues sv=MPDParseUtils::parseStatus(response.data);
+        lastStatusPlayQueueVersion=sv.playlist;
+        emit statusUpdated(sv);
     }
 }
 
 void MPDConnection::getUrlHandlers()
 {
     Response response=sendCommand("urlhandlers");
-    if(response.ok) {
+    if (response.ok) {
         emit urlHandlers(MPDParseUtils::parseUrlHandlers(response.data));
     }
 }
@@ -625,23 +729,26 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
     qDebug() << "parseIdleReturn:" << data;
     QList<QByteArray> lines = data.split('\n');
 
-    QByteArray line;
-
     /*
      * See http://www.musicpd.org/doc/protocol/ch02.html
      */
-    foreach(line, lines) {
+    bool playListUpdated=false;
+    foreach(const QByteArray &line, lines) {
         if (line == "changed: database") {
             /*
              * Temp solution
              */
             getStats();
+            playListInfo();
+            playListUpdated=true;
         } else if (line == "changed: update") {
             emit databaseUpdated();
         } else if (line == "changed: stored_playlist") {
             emit storedPlayListUpdated();
         } else if (line == "changed: playlist") {
-            playListInfo();
+            if (!playListUpdated) {
+                playListChanges();
+            }
         } else if (line == "changed: player") {
             getStatus();
         } else if (line == "changed: mixer") {
@@ -661,7 +768,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
 void MPDConnection::outputs()
 {
     Response response=sendCommand("outputs");
-    if(response.ok) {
+    if (response.ok) {
         emit outputsUpdated(MPDParseUtils::parseOuputs(response.data));
     }
 }
@@ -703,7 +810,7 @@ void MPDConnection::listAllInfo(const QDateTime &dbUpdate)
     TF_DEBUG
     emit updatingLibrary();
     Response response=sendCommand("listallinfo");
-    if(response.ok) {
+    if (response.ok) {
         emit musicLibraryUpdated(MPDParseUtils::parseLibraryItems(response.data), dbUpdate);
     }
     emit updatedLibrary();
@@ -718,7 +825,7 @@ void MPDConnection::listAll()
     TF_DEBUG
     emit updatingFileList();
     Response response=sendCommand("listall");
-    if(response.ok) {
+    if (response.ok) {
         emit dirViewUpdated(MPDParseUtils::parseDirViewItems(response.data));
     }
     emit updatedFileList();
@@ -736,7 +843,7 @@ void MPDConnection::listPlaylists()
 {
     TF_DEBUG
     Response response=sendCommand("listplaylists");
-    if(response.ok) {
+    if (response.ok) {
         emit playlistsRetrieved(MPDParseUtils::parsePlaylists(response.data));
     }
 }

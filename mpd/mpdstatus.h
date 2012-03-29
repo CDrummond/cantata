@@ -61,7 +61,7 @@ struct MPDStatusValues {
     bool repeat;
     bool random;
     quint32 playlist;
-    qint32 playlistLength;
+    quint32 playlistLength;
     qint32 crossFade;
     MPDState state;
     qint32 song;
@@ -98,7 +98,7 @@ public:
     quint32 playlist() const {
         return values.playlist;
     }
-    qint32 playlistLength() const {
+    quint32 playlistLength() const {
         return values.playlistLength;
     }
     qint32 crossFade() const {

@@ -74,8 +74,6 @@ public:
     bool isAutoExpand() const;
     void setStartClosed(bool sc);
     bool isStartClosed() const;
-    QSet<quint16> getControlledAlbums() const;
-    void setControlledAlbums(const QSet<quint16> &keys);
     void setFilterActive(bool f);
     void updateRows(qint32 row, bool scroll);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);

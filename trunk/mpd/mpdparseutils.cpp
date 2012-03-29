@@ -153,8 +153,6 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
             v.playlist=tokens.at(1).toUInt();
         } else if (tokens.at(0) == "playlistlength") {
             v.playlistLength=tokens.at(1).toInt();
-        } else if (tokens.at(0) == "playlistqueue") {
-            v.playlistQueue=tokens.at(1).toInt();
         } else if (tokens.at(0) == "xfade") {
             v.crossFade=tokens.at(1).toInt();
         } else if (tokens.at(0) == "state") {
@@ -181,7 +179,6 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
             v.error=tokens.at(1);
         }
     }
-
     return v;
 }
 

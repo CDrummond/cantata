@@ -44,7 +44,6 @@ struct MPDStatusValues {
         , random(false)
         , playlist(0)
         , playlistLength(-1)
-        , playlistQueue(-1)
         , crossFade(0)
         , state(MPDState_Inactive)
         , song(-1)
@@ -63,7 +62,6 @@ struct MPDStatusValues {
     bool random;
     quint32 playlist;
     qint32 playlistLength;
-    qint32 playlistQueue;
     qint32 crossFade;
     MPDState state;
     qint32 song;
@@ -102,9 +100,6 @@ public:
     }
     qint32 playlistLength() const {
         return values.playlistLength;
-    }
-    qint32 playlistQueue() const {
-        return values.playlistQueue;
     }
     qint32 crossFade() const {
         return values.crossFade;

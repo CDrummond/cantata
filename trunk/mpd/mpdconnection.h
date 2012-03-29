@@ -134,6 +134,7 @@ public:
 
     struct Response {
         Response(bool o=true, const QByteArray &d=QByteArray());
+        QString getError();
         bool ok;
         QByteArray data;
     };

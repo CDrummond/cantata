@@ -41,6 +41,7 @@ struct MPDStatusValues {
         : volume(0)
         , consume(false)
         , repeat(false)
+        , single(false)
         , random(false)
         , playlist(0)
         , playlistLength(-1)
@@ -59,6 +60,7 @@ struct MPDStatusValues {
     quint8 volume;
     bool consume;
     bool repeat;
+    bool single;
     bool random;
     quint32 playlist;
     quint32 playlistLength;
@@ -91,6 +93,9 @@ public:
     }
     bool repeat() const {
         return values.repeat;
+    }
+    bool single() const {
+        return values.single;
     }
     bool random() const {
         return values.random;

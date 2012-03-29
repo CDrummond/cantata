@@ -2031,11 +2031,17 @@ void MainWindow::togglePlaylist()
 
     bool showing=expandInterfaceAction->isChecked();
     QPoint p(isVisible() ? pos() : QPoint());
+    int compactHeight=0;
 
     if (!showing) {
         setMinimumHeight(0);
         lastMax=isMaximized();
         expandedSize=size();
+        int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
+        // For some reason height is always larger than it needs to be - so fix this to cover height +4
+        compactHeight=qMax(qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height())+
+                           songTimeElapsedLabel->height()+positionSlider->height()+(spacing*3),
+                           coverWidget->height()+spacing);
     } else {
         collapsedSize=size();
         setMinimumHeight(256);
@@ -2063,10 +2069,8 @@ void MainWindow::togglePlaylist()
             showMaximized();
         }
     } else {
-        // For some reason height is always larger than it needs to be - so fix this to cover height +4
         // Widths also sometimes expands, so make sure this is no larger than it was before...
-        resize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()),
-               coverWidget->height()+4);
+        resize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
         setMinimumHeight(size().height());
         setMaximumHeight(size().height());
     }

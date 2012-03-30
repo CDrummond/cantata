@@ -61,6 +61,7 @@ Q_SIGNALS:
 protected Q_SLOTS:
     void resultReady(int id, const QString &lyrics);
     void update();
+    void search();
     void edit();
     void save();
     void cancel();
@@ -92,6 +93,7 @@ private:
     int currentRequest;
     Song currentSong;
     QAction *refreshAction;
+    QAction *searchAction;
     QAction *editAction;
     QAction *saveAction;
     QAction *cancelAction;

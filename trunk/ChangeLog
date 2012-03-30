@@ -43,6 +43,8 @@
 28. Support 'single' mode.
 29. When using large sizdebar, attempt to calculate correct min size.
 30. Add option to sort albumview by artist/year/album.
+31. Add dialog where user can specify artist and title to fetch lyrics - useful
+    if automatic fetching fails.
 
 0.5.1
 -----

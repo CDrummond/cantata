@@ -23,6 +23,7 @@
 
 #include "songinfoprovider.h"
 #include "lyricspage.h"
+#include "lyricsdialog.h"
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyricsreader.h"
 #include "network.h"
@@ -101,6 +102,8 @@ LyricsPage::LyricsPage(MainWindow *p)
     #ifdef ENABLE_KDE_SUPPORT
     refreshAction = p->actionCollection()->addAction("refreshlyrics");
     refreshAction->setText(i18n("Refresh"));
+    searchAction = p->actionCollection()->addAction("searchlyrics");
+    searchAction->setText(i18n("Search"));
     editAction = p->actionCollection()->addAction("editlyrics");
     editAction->setText(i18n("Edit Lyrics"));
     saveAction = p->actionCollection()->addAction("savelyrics");
@@ -111,27 +114,32 @@ LyricsPage::LyricsPage(MainWindow *p)
     delAction->setText(i18n("Delete Lyrics File"));
     #else
     refreshAction = new QAction(tr("Refresh"), this);
+    searchAction = new QAction(tr("Search"), this);
     editAction = new QAction(tr("Refresh"), this);
     saveAction = new QAction(tr("Refresh"), this);
     cancelAction = new QAction(tr("Refresh"), this);
     delAction = new QAction(tr("Refresh"), this);
     #endif
     refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
+    searchAction->setIcon(QIcon::fromTheme("edit-find"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
     saveAction->setIcon(QIcon::fromTheme("document-save"));
     cancelAction->setIcon(QIcon::fromTheme("dialog-cancel"));
     delAction->setIcon(QIcon::fromTheme("edit-delete"));
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
+    connect(searchAction, SIGNAL(triggered()), SLOT(search()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
     connect(saveAction, SIGNAL(triggered()), SLOT(save()));
     connect(cancelAction, SIGNAL(triggered()), SLOT(cancel()));
     connect(delAction, SIGNAL(triggered()), SLOT(del()));
     MainWindow::initButton(refreshBtn);
+    MainWindow::initButton(searchBtn);
     MainWindow::initButton(editBtn);
     MainWindow::initButton(saveBtn);
     MainWindow::initButton(cancelBtn);
     MainWindow::initButton(delBtn);
     refreshBtn->setDefaultAction(refreshAction);
+    searchBtn->setDefaultAction(searchAction);
     editBtn->setDefaultAction(editAction);
     saveBtn->setDefaultAction(saveAction);
     cancelBtn->setDefaultAction(cancelAction);
@@ -196,6 +204,43 @@ void LyricsPage::update()
         QFile::remove(cacheName);
     }
     update(currentSong, true);
+}
+
+void LyricsPage::search()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    if (Mode_Edit==mode && KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+        return;
+    }
+    #else
+    if (Mode_Edit==mode && QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
+        return;
+    }
+    #endif
+    setMode(Mode_Display);
+
+    Song song=currentSong;
+    LyricsDialog dlg(currentSong, this);
+    if (QDialog::Accepted==dlg.exec()) {
+        if ((song.artist!=currentSong.artist || song.title!=currentSong.title) &&
+                #ifdef ENABLE_KDE_SUPPORT
+                KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Current playing song has changed, still perform search?")))
+                #else
+                QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Current playing song has changed, still perform search?"),  QMessageBox::Yes|QMessageBox::No))
+                #endif
+            {
+            return;
+        }
+        QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
+        if (!Settings::self()->mpdDir().isEmpty() && QFile::exists(mpdName)) {
+            QFile::remove(mpdName);
+        }
+        QString cacheName=cacheFile(currentSong.artist, currentSong.title);
+        if (QFile::exists(cacheName)) {
+            QFile::remove(cacheName);
+        }
+        update(dlg.song(), true);
+    }
 }
 
 void LyricsPage::edit()
@@ -380,18 +425,19 @@ void LyricsPage::getLyrics()
             UltimateLyricsProvider *prov=providers.at(currentProvider++);
             if (prov && prov->is_enabled()) {
                 #ifdef ENABLE_KDE_SUPPORT
-                text->setText(i18n("Fetching lyrics via %1", prov->name()));
+                text->setText(i18nc("<title> by <artist>\nFetching lyrics via <url>", "%1 by %2\nFetching lyrics via %3",
+                                    currentSong.title, currentSong.artist, prov->name()));
                 #else
-                text->setText(tr("Fetching lyrics via %1").arg(prov->name()));
+                text->setText(tr("%1 by %2\nFetching lyrics via %3").arg(currentSong.title).arg(currentSong.artist).arg(prov->name()));
                 #endif
                 prov->FetchInfo(currentRequest, currentSong);
                 return;
             }
         } else {
             #ifdef ENABLE_KDE_SUPPORT
-            text->setText(i18n("No lyrics found"));
+            text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics", currentSong.title, currentSong.artist));
             #else
-            text->setText(tr("No lyrics found"));
+            text->setText(tr("%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
             #endif
             currentProvider=-1;
             setMode(Mode_Blank);

@@ -68,6 +68,8 @@ LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
     icn->setMinimumSize(iconSize, iconSize);
     icn->setMaximumSize(iconSize, iconSize);
     icn->setPixmap(QIcon::fromTheme("dialog-information").pixmap(iconSize, iconSize));
+    mainLayout->setMargin(0);
+    layout->setMargin(0);
     mainLayout->addWidget(icn, 0, 0, 1, 1);
     mainLayout->addWidget(lbl, 0, 1, 1, 1);
     mainLayout->addItem(new QSpacerItem(8, 4, QSizePolicy::Fixed, QSizePolicy::Fixed), 1, 0);

@@ -248,20 +248,31 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             }
             return *theDefaultIcon;
         }
-        case Qt::ToolTipRole:
+        case Qt::ToolTipRole: {
+            quint32 year=al->songs.count() ? al->songs.at(0)->year : 0;
             return 0==al->songs.count()
                 ? al->name
                 :
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n%2\n1 Track (%4)", "%1\n%2\n%3 Tracks (%4)", al->artist, al->album,
-                          al->songs.count(), Song::formattedTime(al->totalTime()));
+                    year>0
+                        ? i18np("%1\n%2 (%3)\n1 Track (%5)", "%1\n%2 (%3)\n%4 Tracks (%5)", al->artist, al->album,
+                                QString::number(year), al->songs.count(), Song::formattedTime(al->totalTime()))
+                        : i18np("%1\n%2\n1 Track (%4)", "%1\n%2\n Tracks (%4)", al->artist, al->album,
+                                al->songs.count(), Song::formattedTime(al->totalTime()));
                     #else
                     (al->songs.count()>1
-                        ? tr("%1\n%2\n%3 Tracks (%4)").arg(al->artist).arg(al->album)
-                             .arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
-                        : tr("%1\n%2\n1 Track (%3)").arg(al->artist).arg(al->album)
-                             .arg(Song::formattedTime(al->totalTime())));
+                        ? year>0
+                            ? tr("%1\n%2 (%3)\n%4 Tracks (%5)").arg(al->artist).arg(al->album).arg(QString::number(year))
+                                 .arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
+                            : tr("%1\n%2\n%3 Tracks (%4)").arg(al->artist).arg(al->album)
+                                 .arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
+                        : year>0
+                            ? tr("%1\n%2 (%3)\n1 Track (%4)").arg(al->artist).arg(al->album).arg(QString::number(year))
+                                .arg(Song::formattedTime(al->totalTime()))
+                            : tr("%1\n%2\n1 Track (%3)").arg(al->artist).arg(al->album)
+                                .arg(Song::formattedTime(al->totalTime())));
                     #endif
+        }
         case ItemView::Role_Search:
             return al->album;
         case Qt::DisplayRole:
@@ -284,11 +295,13 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case Qt::DecorationRole:
             return QIcon::fromTheme("audio-x-generic");
-        case Qt::ToolTipRole:
+        case Qt::ToolTipRole: {
+            quint32 year=si->parent->songs.count() ? si->parent->songs.at(0)->year : 0;
             return si->parent->artist+QLatin1String("<br/>")+
-                   si->parent->album+QLatin1String("<br/>")+
+                   si->parent->album+(year>0 ? (QLatin1String(" (")+QString::number(year)+QChar(')')) : QString())+QLatin1String("<br/>")+
                    data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
                    Song::formattedTime(si->time)+QLatin1String("<br/><small><i>")+si->file+QLatin1String("</i></small>");
+        }
         case Qt::DisplayRole:
             if (si->parent->isSingleTracks) {
                 return si->artistSong();

@@ -79,6 +79,7 @@ SET( CANTATA_SRCS
     lyrics/ultimatelyricsprovider.cpp
     lyrics/ultimatelyricsreader.cpp
     lyrics/songinfoprovider.cpp
+    lyrics/lyricsdialog.cpp
     network/networkaccessmanager.cpp
     network/network.cpp
     dbus/mpris.cpp
@@ -137,6 +138,7 @@ SET( CANTATA_MOC_HDRS
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h
     lyrics/songinfoprovider.h
+    lyrics/lyricsdialog.h
     network/networkaccessmanager.h
     network/network.h
     dbus/mpris.h

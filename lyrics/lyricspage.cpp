@@ -442,7 +442,11 @@ void LyricsPage::getLyrics()
             text->setText(tr("%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
             #endif
             currentProvider=-1;
-            setMode(Mode_Blank);
+            // Set lyrics file anyway - so that editing is enabled!
+            lyricsFile=Settings::self()->storeLyricsInMpdDir()
+                        ? changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension)
+                        : cacheFile(currentSong.artist, currentSong.title);
+            setMode(Mode_Display);
             return;
         }
     }
@@ -454,7 +458,7 @@ void LyricsPage::setMode(Mode m)
         return;
     }
     mode=m;
-    bool editable=Mode_Display==m && !lyricsFile.isEmpty() && QFileInfo(lyricsFile).isWritable();
+    bool editable=Mode_Display==m && !lyricsFile.isEmpty() && (!QFile::exists(lyricsFile) || QFileInfo(lyricsFile).isWritable());
     saveAction->setEnabled(Mode_Edit==m);
     cancelAction->setEnabled(Mode_Edit==m);
     editAction->setEnabled(editable);

@@ -384,6 +384,8 @@ void LyricsPage::resultReady(int id, const QString &lyrics)
         getLyrics();
     } else {
         text->setText(lyrics);
+        // Remove formatting, as we dont save this anyway...
+        text->setText(text->toPlainText());
         lyricsFile=QString();
         if (! ( Settings::self()->storeLyricsInMpdDir() &&
                 saveFile(changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension))) ) {

@@ -2282,9 +2282,10 @@ void MainWindow::currentTabChanged(int index)
             libraryPage->refresh();
         }
         if (PAGE_LIBRARY==index) {
-             libraryPage->controlActions();
+            libraryPage->controlActions();
         } else {
-             albumsPage->controlActions();
+            AlbumsModel::self()->getCovers();
+            albumsPage->controlActions();
         }
         break;
     case PAGE_FOLDERS:

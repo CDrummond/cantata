@@ -423,9 +423,9 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 if (!empty) {
                     endInsertRows();
                 }
-                if (!a->isSingleTracks ) {
-                    a->getCover(false);
-                }
+//                 if (!a->isSingleTracks ) {
+//                     a->getCover(false);
+//                 }
             }
         }
     }
@@ -446,6 +446,20 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 ++row;
                 ++it;
             }
+        }
+    }
+}
+
+void AlbumsModel::getCovers()
+{
+    if (!enabled) {
+        return;
+    }
+
+    foreach (AlbumItem *a, items) {
+        if (!a->isSingleTracks && !a->coverRequested) {
+            a->coverRequested=true;
+            a->getCover(false);
         }
     }
 }

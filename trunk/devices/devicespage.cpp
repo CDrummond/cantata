@@ -161,8 +161,8 @@ QString DevicesPage::activeFsDeviceUdi() const
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
 
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
-            while(item->parent()) {
-                item=item->parent();
+            while(item->parentItem()) {
+                item=item->parentItem();
             }
         }
 
@@ -198,8 +198,8 @@ QList<Song> DevicesPage::selectedSongs() const
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
 
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
-            while(item->parent()) {
-                item=item->parent();
+            while(item->parentItem()) {
+                item=item->parentItem();
             }
         }
 
@@ -249,8 +249,8 @@ void DevicesPage::controlActions()
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
 
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
-            while(item->parent()) {
-                item=item->parent();
+            while(item->parentItem()) {
+                item=item->parentItem();
             }
         }
 
@@ -304,8 +304,8 @@ void DevicesPage::copyToLibrary()
     }
 
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(mapped.first().internalPointer());
-    while (item->parent()) {
-        item=item->parent();
+    while (item->parentItem()) {
+        item=item->parentItem();
     }
     QString udi;
     if (MusicLibraryItem::Type_Root==item->itemType()) {
@@ -368,8 +368,8 @@ void DevicesPage::deleteSongs()
     }
 
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(mapped.first().internalPointer());
-    while (item->parent()) {
-        item=item->parent();
+    while (item->parentItem()) {
+        item=item->parentItem();
     }
     QString udi;
     if (MusicLibraryItem::Type_Root==item->itemType()) {

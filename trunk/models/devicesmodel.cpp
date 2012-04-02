@@ -113,7 +113,7 @@ QModelIndex DevicesModel::index(int row, int column, const QModelIndex &parent) 
         MusicLibraryItem *p=static_cast<MusicLibraryItem *>(parent.internalPointer());
 
         if (p) {
-            return row<p->childCount() ? createIndex(row, column, p->child(row)) : QModelIndex();
+            return row<p->childCount() ? createIndex(row, column, p->childItem(row)) : QModelIndex();
         }
     } else {
         return row<devices.count() ? createIndex(row, column, devices.at(row)) : QModelIndex();
@@ -129,10 +129,10 @@ QModelIndex DevicesModel::parent(const QModelIndex &index) const
     }
 
     MusicLibraryItem *childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
-    MusicLibraryItem *parentItem = childItem->parent();
+    MusicLibraryItem *parentItem = childItem->parentItem();
 
     if (parentItem) {
-        return createIndex(parentItem->parent() ? parentItem->row() : devices.indexOf(static_cast<Device *>(parentItem)), 0, parentItem);
+        return createIndex(parentItem->parentItem() ? parentItem->row() : devices.indexOf(static_cast<Device *>(parentItem)), 0, parentItem);
     } else {
         return QModelIndex();
     }
@@ -189,10 +189,10 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
-            if (static_cast<MusicLibraryItemAlbum *>(song->parent())->isSingleTracks()) {
+            if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
                 return song->song().artistSong();
             } else {
-                return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parent()->parent())->isVarious() &&
+                return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
                                                      !Song::isVariousArtists(song->song().artist));
             }
         } else if(MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
@@ -493,8 +493,8 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
         MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
         MusicLibraryItem *parent=item;
 
-        while (parent->parent()) {
-            parent=parent->parent();
+        while (parent->parentItem()) {
+            parent=parent->parentItem();
         }
 
         if (!parent) {

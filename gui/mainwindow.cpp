@@ -1146,7 +1146,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         if (CS_Connected!=connectedState) {
             emit getStatus();
             emit getStats();
-            //emit playListInfo();
+            emit playListInfo();
             if (CS_Init!=connectedState) {
                 loaded=0;
                 currentTabChanged(tabWidget->current_index());

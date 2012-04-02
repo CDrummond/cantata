@@ -72,6 +72,9 @@ public:
     bool hasGenre(const QString &genre) const {
         return m_song.genre==genre;
     }
+    QSet<QString> allGenres() const {
+        return QSet<QString>()<<m_song.genre;
+    }
 
 private:
     Song m_song;

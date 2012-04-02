@@ -32,7 +32,7 @@
 #include <QtCore/QSet>
 
 class MusicLibraryItemContainer;
-class MusicLibraryItem : public QObject
+class MusicLibraryItem
 {
 public:
     enum Type {
@@ -69,7 +69,10 @@ public:
     void setData(const QString &d) {
         m_itemData=d;
     }
+    void setParent(MusicLibraryItemContainer *p);
+
     virtual bool hasGenre(const QString &genre) const=0;
+    virtual QSet<QString> allGenres() const=0;
     virtual Type itemType() const=0;
 
 protected:
@@ -88,18 +91,6 @@ public:
         qDeleteAll(m_childItems);
     }
 
-    void setParent(MusicLibraryItemContainer *p) {
-        if (p==m_parentItem) {
-            return;
-        }
-        if (m_parentItem) {
-            m_parentItem->m_childItems.removeAll(this);
-        }
-        m_parentItem=p;
-        m_parentItem->m_childItems.append(this);
-        m_parentItem->m_genres+=m_genres;
-    }
-
     virtual void append(MusicLibraryItem *i) {
         m_childItems.append(i);
     }
@@ -111,7 +102,7 @@ public:
     int childCount() const {
         return m_childItems.count();
     }
-    const QList<MusicLibraryItem *> & children() const {
+    const QList<MusicLibraryItem *> & childItems() const {
         return m_childItems;
     }
     void addGenre(const QString &genre) {
@@ -123,6 +114,9 @@ public:
     const QSet<QString> & genres() const {
         return m_genres;
     }
+    QSet<QString> allGenres() const {
+        return genres();
+    }
 
 protected:
     friend class MusicLibraryItem;
@@ -133,6 +127,19 @@ protected:
 inline int MusicLibraryItem::row() const
 {
     return m_parentItem ? m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItem*>(this)) : 0;
+}
+
+inline void MusicLibraryItem::setParent(MusicLibraryItemContainer *p)
+{
+    if (p==m_parentItem) {
+        return;
+    }
+    if (m_parentItem) {
+        m_parentItem->m_childItems.removeAll(this);
+    }
+    m_parentItem=p;
+    m_parentItem->m_childItems.append(this);
+    m_parentItem->m_genres+=allGenres();
 }
 
 #endif

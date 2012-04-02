@@ -570,7 +570,7 @@ void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
     time=0;
     qDeleteAll(songs);
     songs.clear();
-    foreach (MusicLibraryItem *item, ai->children()) {
+    foreach (MusicLibraryItem *item, ai->childItems()) {
         songs.append(new SongItem(static_cast<MusicLibraryItemSong*>(item)->song(), this));
     }
 }

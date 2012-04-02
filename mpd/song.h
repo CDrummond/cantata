@@ -36,6 +36,12 @@ struct Song
 {
     static const quint16 constNullKey;
 
+    enum Type {
+        Standard,
+        SingleTracks,
+        MultipleArtists
+    };
+
     qint32 id;
     QString file;
     QString album;
@@ -51,6 +57,7 @@ struct Song
     QString genre;
     QString name;
     mutable qint32 size;
+    mutable Type type;
 
     // Only used in PlayQueue...
     quint16 key;

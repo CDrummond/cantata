@@ -39,14 +39,15 @@
 const quint16 Song::constNullKey(0xFFFF);
 
 Song::Song()
-    : id(-1),
-      time(0),
-      track(0),
-//       pos(0),
-      disc(0),
-      year(0),
-      size(0),
-      key(constNullKey)
+    : id(-1)
+      , time(0)
+      , track(0)
+//       , pos(0)
+      , disc(0)
+      , year(0)
+      , size(0)
+      , type(Standard)
+      , key(constNullKey)
 {
 }
 
@@ -68,6 +69,7 @@ Song & Song::operator=(const Song &s)
     name = s.name;
     size = s.size;
     key = s.key;
+    type = s.type;
     return *this;
 }
 
@@ -174,6 +176,7 @@ void Song::clear()
     genre.clear();
     name.clear();
     size = 0;
+    type = Standard;
 }
 
 QString Song::formattedTime(quint32 seconds)

@@ -85,8 +85,7 @@ MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, quint32 year, 
     , m_year(year)
     , m_coverIsDefault(false)
     , m_cover(0)
-    , m_singleTracks(false)
-    , m_multipleArtists(false)
+    , m_type(Song::Standard)
 {
 }
 
@@ -129,7 +128,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.albumartist=parent()->data();
             song.album=m_itemData;
             song.file=static_cast<MusicLibraryItemSong*>(child(0))->file();
-            Covers::Image img=Covers::self()->get(song, m_singleTracks);
+            Covers::Image img=Covers::self()->get(song, Song::SingleTracks==m_type);
             if (setCover(img.img)) {
                 return *m_cover;
             }
@@ -165,8 +164,9 @@ quint32 MusicLibraryItemAlbum::totalTime()
 
 void MusicLibraryItemAlbum::addTracks(MusicLibraryItemAlbum *other)
 {
-    m_singleTracks=true;
+    m_type=Song::SingleTracks;
     foreach (MusicLibraryItem *track, other->m_childItems) {
+        static_cast<MusicLibraryItemSong*>(track)->song().type=Song::SingleTracks;
         m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(track)->song().file);
         track->setParent(this);
     }
@@ -175,16 +175,29 @@ void MusicLibraryItemAlbum::addTracks(MusicLibraryItemAlbum *other)
 void MusicLibraryItemAlbum::setIsSingleTracks()
 {
     foreach (MusicLibraryItem *track, m_childItems) {
+        static_cast<MusicLibraryItemSong*>(track)->song().type=Song::SingleTracks;
         m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(track)->song().file);
     }
-    m_singleTracks=true;
+    m_type=Song::SingleTracks;
+}
+
+void MusicLibraryItemAlbum::setIsMultipleArtists()
+{
+    foreach (MusicLibraryItem *track, m_childItems) {
+        static_cast<MusicLibraryItemSong*>(track)->song().type=Song::MultipleArtists;
+        m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(track)->song().file);
+    }
+    m_type=Song::MultipleArtists;
 }
 
 void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
 {
     MusicLibraryItemContainer::append(i);
-    if (m_singleTracks) {
+    if (Song::SingleTracks==m_type) {
+        static_cast<MusicLibraryItemSong*>(i)->song().type=Song::SingleTracks;
         m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(i)->song().file);
+    } else if (Song::MultipleArtists==m_type) {
+        static_cast<MusicLibraryItemSong*>(i)->song().type=Song::MultipleArtists;
     }
     m_totalTime=0;
 }
@@ -201,16 +214,16 @@ bool MusicLibraryItemAlbum::detectIfIsMultipleArtists()
         return false;
     }
 
-    if (!m_multipleArtists) {
+    if (Song::Standard==m_type) {
         QString a;
         foreach (MusicLibraryItem *track, m_childItems) {
             if (a.isEmpty()) {
                 a=static_cast<MusicLibraryItemSong*>(track)->song().artist;
             } else if (static_cast<MusicLibraryItemSong*>(track)->song().artist!=a) {
-                m_multipleArtists=true;
+                m_type=Song::MultipleArtists;
                 break;
             }
         }
     }
-    return m_multipleArtists;
+    return Song::MultipleArtists==m_type;
 }

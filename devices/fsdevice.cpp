@@ -121,7 +121,7 @@ void MusicScanner::scanFolder(const QString &f, int level)
                 if (!artistItem || song.albumArtist()!=artistItem->data()) {
                     artistItem = library->artist(song);
                 }
-                if (!albumItem || albumItem->parent()!=artistItem || song.album!=albumItem->data()) {
+                if (!albumItem || albumItem->parentItem()!=artistItem || song.album!=albumItem->data()) {
                     albumItem = artistItem->album(song);
                 }
                 MusicLibraryItemSong *songItem = new MusicLibraryItemSong(song, albumItem);

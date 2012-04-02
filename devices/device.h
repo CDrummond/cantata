@@ -33,7 +33,7 @@
 class QWidget;
 class DevicesModel;
 
-class Device : public QObject, public MusicLibraryItemRoot
+class Device : public MusicLibraryItemRoot
 {
     Q_OBJECT
 

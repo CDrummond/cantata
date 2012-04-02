@@ -118,7 +118,7 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
     if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Song) {
         const MusicLibraryItemSong *leftItem = static_cast<MusicLibraryItemSong *>(left.internalPointer());
         const MusicLibraryItemSong *rightItem = static_cast<MusicLibraryItemSong *>(right.internalPointer());
-        bool isSingleTracks=static_cast<MusicLibraryItemAlbum *>(leftItem->parent())->isSingleTracks();
+        bool isSingleTracks=static_cast<MusicLibraryItemAlbum *>(leftItem->parentItem())->isSingleTracks();
 
         if (isSingleTracks) {
             int compare=compareStrings(leftItem->song().artistSong(), rightItem->song().artistSong());

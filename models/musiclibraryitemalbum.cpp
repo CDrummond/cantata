@@ -123,11 +123,11 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                                         .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         m_coverIsDefault = true;
-        if (parent() && iSize && childCount()) {
+        if (parentItem() && iSize && childCount()) {
             Song song;
-            song.albumartist=parent()->data();
+            song.albumartist=parentItem()->data();
             song.album=m_itemData;
-            song.file=static_cast<MusicLibraryItemSong*>(child(0))->file();
+            song.file=static_cast<MusicLibraryItemSong*>(childItem(0))->file();
             Covers::Image img=Covers::self()->get(song, Song::SingleTracks==m_type);
             if (setCover(img.img)) {
                 return *m_cover;
@@ -145,7 +145,7 @@ QStringList MusicLibraryItemAlbum::sortedTracks() const
     quint32 trackWithoutNumberIndex=0xFFFF; // *Very* unlikely to have tracks numbered greater than 65535!!!
 
     for (int i = 0; i < childCount(); i++) {
-        MusicLibraryItemSong *trackItem = static_cast<MusicLibraryItemSong*>(child(i));
+        MusicLibraryItemSong *trackItem = static_cast<MusicLibraryItemSong*>(childItem(i));
         tracks.insert(0==trackItem->track() || trackItem->track()>0xFFFF ? trackWithoutNumberIndex++ : trackItem->track(), trackItem->file());
     }
 

@@ -207,7 +207,7 @@ void MtpConnection::updateLibrary()
         if (!artistItem || s.albumArtist()!=artistItem->data()) {
             artistItem = library->artist(s);
         }
-        if (!albumItem || albumItem->parent()!=artistItem || s.album!=albumItem->data()) {
+        if (!albumItem || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
             albumItem = artistItem->album(s);
         }
         MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);

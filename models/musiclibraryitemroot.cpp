@@ -37,9 +37,21 @@
 #include <QtXml/QXmlStreamWriter>
 #include <QtCore/QFile>
 
+static QString songArtist(const Song &s)
+{
+    if (Song::Standard==s.type) {
+        return s.albumArtist();
+    }
+    #ifdef ENABLE_KDE_SUPPORT
+    return i18n("Various Artists");
+    #else
+    return QObject::tr("Various Artists");
+    #endif
+}
+
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create)
 {
-    QString aa=s.albumArtist();
+    QString aa=songArtist(s);
     QHash<QString, int>::ConstIterator it=m_indexes.find(aa);
 
     if (m_indexes.end()==it) {
@@ -50,7 +62,7 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create
 
 MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s)
 {
-    QString aa=s.albumArtist();
+    QString aa=songArtist(s);
     MusicLibraryItemArtist *item=new MusicLibraryItemArtist(aa, this);
     m_indexes.insert(aa, m_childItems.count());
     m_childItems.append(item);
@@ -127,6 +139,7 @@ void MusicLibraryItemRoot::groupMultipleArtists()
 
                 foreach (MusicLibraryItem *i, mutipleAlbums) {
                     i->setParent(various);
+                    static_cast<MusicLibraryItemAlbum *>(i)->setIsMultipleArtists();
                 }
 
                 if (0==(*it)->childCount()) {

@@ -34,6 +34,18 @@
 #include <KDE/KLocale>
 #endif
 
+static QString songAlbum(const Song &s)
+{
+    if (Song::Standard==s.type) {
+        return s.album;
+    }
+    #ifdef ENABLE_KDE_SUPPORT
+    return i18n("Single Tracks");
+    #else
+    return QObject::tr("Single Tracks");
+    #endif
+}
+
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
     , m_various(false)
@@ -47,7 +59,7 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibrary
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {
-    QHash<QString, int>::ConstIterator it=m_indexes.find(s.album);
+    QHash<QString, int>::ConstIterator it=m_indexes.find(songAlbum(s));
 
     if (m_indexes.end()==it) {
         return create ? createAlbum(s) : 0;
@@ -57,8 +69,9 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
 {
-    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, s.year, this);
-    m_indexes.insert(s.album, m_childItems.count());
+    QString albumName=songAlbum(s);
+    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(albumName, s.year, this);
+    m_indexes.insert(albumName, m_childItems.count());
     m_childItems.append(item);
     return item;
 }
@@ -94,6 +107,10 @@ void MusicLibraryItemArtist::addToSingleTracks(MusicLibraryItemArtist *other)
 
 bool MusicLibraryItemArtist::isFromSingleTracks(const Song &s) const
 {
+    if (Song::SingleTracks==s.type) {
+        return true;
+    }
+
     #ifdef ENABLE_KDE_SUPPORT
     QHash<QString, int>::ConstIterator it=m_indexes.find(i18n("Single Tracks"));
     #else

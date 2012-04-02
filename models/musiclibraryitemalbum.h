@@ -64,14 +64,14 @@ public:
     quint32 year() const { return m_year; }
     quint32 totalTime();
     void addTracks(MusicLibraryItemAlbum *other);
-    bool isSingleTracks() const { return m_singleTracks; }
+    bool isSingleTracks() const { return Song::SingleTracks==m_type; }
     void setIsSingleTracks();
     bool isSingleTrackFile(const Song &s) const { return m_singleTrackFiles.contains(s.file); }
     void append(MusicLibraryItem *i);
     void remove(int row);
     bool detectIfIsMultipleArtists();
-    bool isMultipleArtists() const { return m_multipleArtists; }
-    void setIsMultipleArtists() { m_multipleArtists=true; }
+    bool isMultipleArtists() const { return Song::MultipleArtists==m_type; }
+    void setIsMultipleArtists();
     Type itemType() const {
         return Type_Album;
     }
@@ -81,9 +81,8 @@ private:
     quint32 m_totalTime;
     mutable bool m_coverIsDefault;
     mutable QPixmap *m_cover;
-    bool m_singleTracks;
+    Song::Type m_type;
     QSet<QString> m_singleTrackFiles;
-    bool m_multipleArtists;
 };
 
 #endif

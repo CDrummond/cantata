@@ -293,8 +293,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
             writer.writeAttribute("year", QString::number(album->year()));
             if (album->isSingleTracks()) {
                 writer.writeAttribute("singleTracks", "true");
-            }
-            if (album->isMultipleArtists()) {
+            } else if (album->isMultipleArtists()) {
                 writer.writeAttribute("multipleArtists", "true");
             }
             foreach (const MusicLibraryItem *t, album->childItems()) {
@@ -326,6 +325,8 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
                 }
                 if (album->isSingleTracks()) {
                     writer.writeAttribute("album", track->song().album);
+                } else if (album->isMultipleArtists()) {
+                    writer.writeAttribute("artist", track->song().artist);
                 }
             }
             writer.writeEndElement();
@@ -386,9 +387,12 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
                 albumItem = artistItem->createAlbum(song);
                 if (QLatin1String("true")==attributes.value("singleTracks").toString()) {
                     albumItem->setIsSingleTracks();
-                }
-                if (QLatin1String("true")==attributes.value("multipleArtists").toString()) {
+                    song.type=Song::SingleTracks;
+                } else if (QLatin1String("true")==attributes.value("multipleArtists").toString()) {
                     albumItem->setIsMultipleArtists();
+                    song.type=Song::MultipleArtists;
+                } else {
+                    song.type=Song::Standard;
                 }
             }
             else if (QLatin1String("Track")==element) {
@@ -422,7 +426,13 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
                     if (!str.isEmpty()) {
                         song.album=str;
                     }
+                } else if (albumItem->isMultipleArtists()) {
+                    str=attributes.value("artist").toString();
+                    if (!str.isEmpty()) {
+                        song.artist=str;
+                    }
                 }
+
                 song.fillEmptyFields();
                 songItem = new MusicLibraryItemSong(song, albumItem);
                 albumItem->append(songItem);

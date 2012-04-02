@@ -86,7 +86,7 @@ public:
     qint64 freeSpace();
     void saveOptions();
     void configure(QWidget *parent);
-    Type type() const { return Remote; }
+    DevType devType() const { return Remote; }
     QString udi() const { return createUdi(details.name); }
     QString icon() const {
         return QLatin1String(Prot_File==details.protocol ? "inode-directory" : "network-server");

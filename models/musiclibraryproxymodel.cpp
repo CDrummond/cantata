@@ -40,9 +40,9 @@ MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
     setSortLocaleAware(true);
 }
 
-bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem * const item) const
+bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem *item) const
 {
-    foreach (const MusicLibraryItem *i, item->children()) {
+    foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
         if (filterAcceptsArtist(i)) {
             return true;
         }
@@ -51,9 +51,9 @@ bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem * const it
     return false;
 }
 
-bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem * const item) const
+bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem *item) const
 {
-    foreach (const MusicLibraryItem *i, item->children()) {
+    foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
         if (filterAcceptsAlbum(i)) {
             return true;
         }
@@ -62,9 +62,9 @@ bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem * const 
     return false;
 }
 
-bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem * const item) const
+bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem *item) const
 {
-    foreach (const MusicLibraryItem *i, item->children()) {
+    foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
         if (filterAcceptsSong(i)) {
             return true;
         }
@@ -73,7 +73,7 @@ bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem * const i
     return false;
 }
 
-bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem * const item) const
+bool MusicLibraryProxyModel::filterAcceptsSong(const MusicLibraryItem *item) const
 {
     return matchesFilter(static_cast<const MusicLibraryItemSong *>(item)->song());
 }
@@ -88,13 +88,13 @@ bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
     }
 
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-    const MusicLibraryItem * const item = static_cast<MusicLibraryItem *>(index.internalPointer());
+    const MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
     if (!filterGenre.isEmpty() && !item->hasGenre(filterGenre)) {
         return false;
     }
 
-    switch (item->type()) {
+    switch (item->itemType()) {
     case MusicLibraryItem::Type_Root:
         return filterAcceptsRoot(item);
     case MusicLibraryItem::Type_Artist:
@@ -115,9 +115,9 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
     if (left.row()<0 || right.row()<0) {
         return left.row()<0;
     }
-    if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Song) {
-        const MusicLibraryItemSong * const leftItem = static_cast<MusicLibraryItemSong *>(left.internalPointer());
-        const MusicLibraryItemSong * const rightItem = static_cast<MusicLibraryItemSong *>(right.internalPointer());
+    if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Song) {
+        const MusicLibraryItemSong *leftItem = static_cast<MusicLibraryItemSong *>(left.internalPointer());
+        const MusicLibraryItemSong *rightItem = static_cast<MusicLibraryItemSong *>(right.internalPointer());
         bool isSingleTracks=static_cast<MusicLibraryItemAlbum *>(leftItem->parent())->isSingleTracks();
 
         if (isSingleTracks) {
@@ -130,9 +130,9 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
             return leftItem->disc() < rightItem->disc();
         }
         return leftItem->track() < rightItem->track();
-    } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Album) {
-        const MusicLibraryItemAlbum * const leftItem = static_cast<MusicLibraryItemAlbum *>(left.internalPointer());
-        const MusicLibraryItemAlbum * const rightItem = static_cast<MusicLibraryItemAlbum *>(right.internalPointer());
+    } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Album) {
+        const MusicLibraryItemAlbum *leftItem = static_cast<MusicLibraryItemAlbum *>(left.internalPointer());
+        const MusicLibraryItemAlbum *rightItem = static_cast<MusicLibraryItemAlbum *>(right.internalPointer());
 
         if (leftItem->isSingleTracks() != rightItem->isSingleTracks()) {
             return leftItem->isSingleTracks() > rightItem->isSingleTracks();
@@ -140,9 +140,9 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
         if (MusicLibraryItemAlbum::showDate() && (leftItem->year() != rightItem->year())) {
             return leftItem->year() < rightItem->year();
         }
-    } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->type() == MusicLibraryItem::Type_Artist) {
-        const MusicLibraryItemArtist * const leftItem = static_cast<MusicLibraryItemArtist *>(left.internalPointer());
-        const MusicLibraryItemArtist * const rightItem = static_cast<MusicLibraryItemArtist *>(right.internalPointer());
+    } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Artist) {
+        const MusicLibraryItemArtist *leftItem = static_cast<MusicLibraryItemArtist *>(left.internalPointer());
+        const MusicLibraryItemArtist *rightItem = static_cast<MusicLibraryItemArtist *>(right.internalPointer());
         if (leftItem->isVarious() != rightItem->isVarious()) {
             return leftItem->isVarious() > rightItem->isVarious();
         }

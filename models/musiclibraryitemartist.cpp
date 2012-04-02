@@ -34,8 +34,8 @@
 #include <KDE/KLocale>
 #endif
 
-MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItem *parent)
-    : MusicLibraryItem(data, MusicLibraryItem::Type_Artist, parent)
+MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent)
+    : MusicLibraryItemContainer(data, parent)
     , m_various(false)
 {
     if (m_itemData.startsWith(QLatin1String("The "))) {

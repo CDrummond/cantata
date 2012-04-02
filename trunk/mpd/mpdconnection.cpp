@@ -792,7 +792,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
  */
 void MPDConnection::parseIdleReturn(const QByteArray &data)
 {
-    qDebug() << "parseIdleReturn:" << data;
+    qWarning() << "parseIdleReturn:" << data;
     QList<QByteArray> lines = data.split('\n');
 
     /*

@@ -387,6 +387,7 @@ void FsDevice::stopScanner(bool showStatus)
     // Scan for music in a separate thread...
     if (scanner) {
         disconnect(scanner, SIGNAL(finished()), this, SLOT(libraryUpdated()));
+        disconnect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
         scanner->deleteLater();
         scanner->stop();
         scanner=0;

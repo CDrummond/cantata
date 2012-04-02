@@ -307,7 +307,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mpris(0)
     , playlistSearchTimer(0)
     , usingProxy(false)
-    , isConnected(false)
+    , connectedState(CS_Init)
     , volumeFade(0)
     , origVolume(0)
     , lastVolume(0)
@@ -1143,12 +1143,15 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
 {
     if (connected) {
         messageWidget->hide();
-        if (!isConnected) {
+        if (CS_Connected!=connectedState) {
             emit getStatus();
             emit getStats();
-            emit playListInfo();
-            loaded=0;
-            currentTabChanged(tabWidget->current_index());
+            //emit playListInfo();
+            if (CS_Init!=connectedState) {
+                loaded=0;
+                currentTabChanged(tabWidget->current_index());
+            }
+            connectedState=CS_Connected;
         }
     } else {
         libraryPage->clear();
@@ -1172,8 +1175,8 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             showError(tr("Connection to %1:%2 failed").arg(host).arg(QString::number(MPDConnection::self()->getPort())), true);
         }
         #endif
+        connectedState=CS_Disconnected;
     }
-    isConnected=connected;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -1764,6 +1767,7 @@ void MainWindow::updateStats()
             folderPage->clear();
             playlistsPage->clear();
         }
+        loaded|=TAB_LIBRARY|TAB_FOLDERS;
         libraryPage->refresh();
         folderPage->refresh();
         playlistsPage->refresh();

@@ -32,7 +32,7 @@
 #include <QtCore/QSet>
 
 class MusicLibraryItemContainer;
-class MusicLibraryItem
+class MusicLibraryItem : public QObject
 {
 public:
     enum Type {
@@ -50,10 +50,10 @@ public:
     virtual ~MusicLibraryItem() {
     }
 
-    MusicLibraryItemContainer * parent() const {
+    MusicLibraryItemContainer * parentItem() const {
         return m_parentItem;
     }
-    virtual MusicLibraryItem * child(int) const {
+    virtual MusicLibraryItem * childItem(int) const {
         return 0;
     }
     virtual int childCount() const {
@@ -95,7 +95,7 @@ public:
         m_childItems.append(i);
     }
 
-    virtual MusicLibraryItem * child(int row) const {
+    virtual MusicLibraryItem * childItem(int row) const {
         return m_childItems.value(row);
     }
 

@@ -106,7 +106,7 @@ QModelIndex MusicLibraryModel::index(int row, int column, const QModelIndex &par
         parentItem = static_cast<MusicLibraryItem *>(parent.internalPointer());
     }
 
-    MusicLibraryItem * const childItem = parentItem->child(row);
+    MusicLibraryItem * const childItem = parentItem->childItem(row);
     if (childItem) {
         return createIndex(row, column, childItem);
     }
@@ -121,7 +121,7 @@ QModelIndex MusicLibraryModel::parent(const QModelIndex &index) const
     }
 
     const MusicLibraryItem * const childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
-    MusicLibraryItem * const parentItem = childItem->parent();
+    MusicLibraryItem * const parentItem = childItem->parentItem();
 
     if (parentItem == rootItem) {
         return QModelIndex();
@@ -206,10 +206,10 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
-            if (static_cast<MusicLibraryItemAlbum *>(song->parent())->isSingleTracks()) {
+            if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
                 return song->song().artistSong();
             } else {
-                return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parent()->parent())->isVarious() &&
+                return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
                                                      !Song::isVariousArtists(song->song().artist));
             }
         } else if(MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
@@ -231,7 +231,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                         : tr("%1<br/>1 Album").arg(item->data()));
                     #endif
         case MusicLibraryItem::Type_Album:
-            return item->parent()->data()+QLatin1String("<br/>")+(0==item->childCount()
+            return item->parentItem()->data()+QLatin1String("<br/>")+(0==item->childCount()
                 ? item->data()
                 :
                     #ifdef ENABLE_KDE_SUPPORT
@@ -243,7 +243,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                     #endif
                 );
         case MusicLibraryItem::Type_Song: {
-            return item->parent()->parent()->data()+QLatin1String("<br/>")+item->parent()->data()+QLatin1String("<br/>")+
+            return item->parentItem()->parentItem()->data()+QLatin1String("<br/>")+item->parentItem()->data()+QLatin1String("<br/>")+
                    data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+
                    QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
         }

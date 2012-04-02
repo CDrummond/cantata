@@ -306,9 +306,9 @@ QModelIndex MusicLibraryModel::findSongIndex(const Song &s) const
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
         if (albumItem) {
-            foreach (MusicLibraryItem *songItem, albumItem->children()) {
+            foreach (MusicLibraryItem *songItem, albumItem->childItems()) {
                 if (songItem->data()==s.title) {
-                    return createIndex(albumItem->children().indexOf(songItem), 0, songItem);
+                    return createIndex(albumItem->childItems().indexOf(songItem), 0, songItem);
                 }
             }
         }
@@ -323,7 +323,7 @@ const MusicLibraryItem * MusicLibraryModel::findSong(const Song &s) const
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
         if (albumItem) {
-            foreach (const MusicLibraryItem *songItem, albumItem->children()) {
+            foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
                 if (songItem->data()==s.title) {
                     return songItem;
                 }
@@ -389,17 +389,17 @@ void MusicLibraryModel::addSongToList(const Song &s)
     }
     MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
     if (!albumItem) {
-        beginInsertRows(createIndex(rootItem->children().indexOf(artistItem), 0, artistItem), artistItem->childCount(), artistItem->childCount());
+        beginInsertRows(createIndex(rootItem->childItems().indexOf(artistItem), 0, artistItem), artistItem->childCount(), artistItem->childCount());
         albumItem = artistItem->createAlbum(s);
         endInsertRows();
     }
-    foreach (const MusicLibraryItem *songItem, albumItem->children()) {
+    foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
         if (songItem->data()==s.title) {
             return;
         }
     }
 
-    beginInsertRows(createIndex(artistItem->children().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
+    beginInsertRows(createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
     MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
     albumItem->append(songItem);
     endInsertRows();
@@ -417,7 +417,7 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
     }
     MusicLibraryItem *songItem=0;
     int songRow=0;
-    foreach (MusicLibraryItem *song, albumItem->children()) {
+    foreach (MusicLibraryItem *song, albumItem->childItems()) {
         if (static_cast<MusicLibraryItemSong *>(song)->song().title==s.title) {
             songItem=song;
             break;
@@ -431,7 +431,7 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
     databaseTime=QDateTime();
     if (1==artistItem->childCount() && 1==albumItem->childCount()) {
         // 1 album with 1 song - so remove whole artist
-        int row=rootItem->children().indexOf(artistItem);
+        int row=rootItem->childItems().indexOf(artistItem);
         beginRemoveRows(QModelIndex(), row, row);
         rootItem->remove(artistItem);
         endRemoveRows();
@@ -440,15 +440,15 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
 
     if (1==albumItem->childCount()) {
         // multiple albums, but this album only has 1 song - remove album
-        int row=artistItem->children().indexOf(albumItem);
-        beginRemoveRows(createIndex(rootItem->children().indexOf(artistItem), 0, artistItem), row, row);
+        int row=artistItem->childItems().indexOf(albumItem);
+        beginRemoveRows(createIndex(rootItem->childItems().indexOf(artistItem), 0, artistItem), row, row);
         artistItem->remove(albumItem);
         endRemoveRows();
         return;
     }
 
     // Just remove particular song
-    beginRemoveRows(createIndex(artistItem->children().indexOf(albumItem), 0, albumItem), songRow, songRow);
+    beginRemoveRows(createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), songRow, songRow);
     albumItem->remove(songRow);
     endRemoveRows();
 }
@@ -545,17 +545,17 @@ void MusicLibraryModel::setCover(const QString &artist, const QString &album, co
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
         if (albumItem) {
             if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
-                QModelIndex idx=index(artistItem->children().indexOf(albumItem), 0, index(rootItem->children().indexOf(artistItem), 0, QModelIndex()));
+                QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
                 emit dataChanged(idx, idx);
             }
         }
     }
 
 //     int i=0;
-//     foreach (const MusicLibraryItem *artistItem, rootItem->children()) {
+//     foreach (const MusicLibraryItem *artistItem, rootItem->childItems()) {
 //         if (artistItem->data()==artist) {
 //             int j=0;
-//             foreach (const MusicLibraryItem *albumItem, artistItem->children()) {
+//             foreach (const MusicLibraryItem *albumItem, artistItem->childItems()) {
 //                 if (albumItem->data()==album) {
 //                     if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
 //                         QModelIndex idx=index(j, 0, index(i, 0, QModelIndex()));
@@ -633,8 +633,8 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
 
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist:
-            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
+            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
+                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                     if (MusicLibraryItem::Type_Song==song->itemType() && !songs.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
                         static_cast<const MusicLibraryItemSong*>(song)->song().updateSize(Settings::self()->mpdDir());
                         songs << static_cast<const MusicLibraryItemSong*>(song)->song();
@@ -643,7 +643,7 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
             }
             break;
         case MusicLibraryItem::Type_Album:
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                 if (MusicLibraryItem::Type_Song==song->itemType() && !songs.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
                     static_cast<const MusicLibraryItemSong*>(song)->song().updateSize(Settings::self()->mpdDir());
                     songs << static_cast<const MusicLibraryItemSong*>(song)->song();
@@ -669,9 +669,9 @@ QList<Song> MusicLibraryModel::songs(const QStringList &filenames) const
     QSet<QString> files=filenames.toSet();
     QList<Song> songs;
 
-    foreach (const MusicLibraryItem *artist, static_cast<const MusicLibraryItemContainer *>(rootItem)->children()) {
-        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->children()) {
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
+    foreach (const MusicLibraryItem *artist, static_cast<const MusicLibraryItemContainer *>(rootItem)->childItems()) {
+        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                 QSet<QString>::Iterator it=files.find(static_cast<const MusicLibraryItemSong*>(song)->file());
 
                 if (it!=files.end()) {

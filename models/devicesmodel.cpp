@@ -113,7 +113,7 @@ QModelIndex DevicesModel::index(int row, int column, const QModelIndex &parent) 
         MusicLibraryItem *p=static_cast<MusicLibraryItem *>(parent.internalPointer());
 
         if (p) {
-            return row<p->children().count() ? createIndex(row, column, p->child(row)) : QModelIndex();
+            return row<p->childCount() ? createIndex(row, column, p->child(row)) : QModelIndex();
         }
     } else {
         return row<devices.count() ? createIndex(row, column, devices.at(row)) : QModelIndex();
@@ -380,7 +380,7 @@ void DevicesModel::setCover(const QString &artist, const QString &album, const Q
             MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
             if (albumItem) {
                 if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
-                    QModelIndex idx=index(artistItem->children().indexOf(albumItem), 0, index(device->children().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
+                    QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(static_cast<MusicLibraryItemContainer *>(device)->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
                     emit dataChanged(idx, idx);
                 }
             }
@@ -391,10 +391,10 @@ void DevicesModel::setCover(const QString &artist, const QString &album, const Q
 //     foreach (const MusicLibraryItem *device, devices) {
 //         bool found=false;
 //         int j=0;
-//         foreach (const MusicLibraryItem *artistItem, device->children()) {
+//         foreach (const MusicLibraryItem *artistItem, device->childItems()) {
 //             if (artistItem->data()==artist) {
 //                 int k=0;
-//                 foreach (const MusicLibraryItem *albumItem, artistItem->children()) {
+//                 foreach (const MusicLibraryItem *albumItem, artistItem->childItems()) {
 //                     if (albumItem->data()==album) {
 //                         if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
 //                             QModelIndex idx=index(k, 0, index(j, 0, index(i, 0, QModelIndex())));
@@ -506,9 +506,9 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
 
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root:
-            foreach (const MusicLibraryItem *artist, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
-                foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->children()) {
-                    foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
+            foreach (const MusicLibraryItem *artist, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
+                foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {
+                    foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                         if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
                             devSongs[parent] << static_cast<const MusicLibraryItemSong*>(song)->song();
                         }
@@ -517,8 +517,8 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
             }
             break;
         case MusicLibraryItem::Type_Artist:
-            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
+            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
+                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                     if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
                         devSongs[parent] << static_cast<const MusicLibraryItemSong*>(song)->song();
                     }
@@ -526,7 +526,7 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
             }
             break;
         case MusicLibraryItem::Type_Album:
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                 if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
                     devSongs[parent] << static_cast<const MusicLibraryItemSong*>(song)->song();
                 }

@@ -155,6 +155,7 @@ QString DevicesPage::activeFsDeviceUdi() const
         return QString();
     }
 
+    QString udi;
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
@@ -170,11 +171,14 @@ QString DevicesPage::activeFsDeviceUdi() const
             if (Device::Ums!=dev->devType() && Device::Remote!=dev->devType()) {
                 return QString();
             }
-            return dev->udi();
+            if (!udi.isEmpty()) {
+                return QString();
+            }
+            udi=dev->udi();
         }
     }
 
-    return QString();
+    return udi;
 }
 
 QList<Song> DevicesPage::selectedSongs() const

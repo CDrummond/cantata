@@ -186,7 +186,9 @@ void PlaylistsPage::removeItems()
                     }
                 } else {
                     PlaylistsModel::SongItem *song=static_cast<PlaylistsModel::SongItem *>(item);
-                    remSongs[song->parent->name].append(song->parent->songs.indexOf(song));
+                    if (!remPlaylists.contains(song->parent->name)) {
+                        remSongs[song->parent->name].append(song->parent->songs.indexOf(song));
+                    }
                 }
             }
         }

@@ -87,7 +87,7 @@ void MusicLibraryItemArtist::addToSingleTracks(MusicLibraryItemArtist *other)
     s.album=QObject::tr("Single Tracks");
     #endif
     MusicLibraryItemAlbum *single=album(s);
-    foreach (MusicLibraryItem *album, other->children()) {
+    foreach (MusicLibraryItem *album, other->childItems()) {
         single->addTracks(static_cast<MusicLibraryItemAlbum *>(album));
     }
 }

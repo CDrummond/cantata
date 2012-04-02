@@ -402,7 +402,7 @@ void Device::applyUpdate()
         int newCount=newRows();
         if (newCount>0) {
             model->beginInsertRows(model->createIndex(model->devices.indexOf(this), 0, this), 0, newCount-1);
-            foreach (MusicLibraryItem *item, update->children()) {
+            foreach (MusicLibraryItem *item, update->childItems()) {
                 item->setParent(this);
             }
             delete update;
@@ -419,7 +419,7 @@ const MusicLibraryItem * Device::findSong(const Song &s) const
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
         if (albumItem) {
-            foreach (const MusicLibraryItem *songItem, albumItem->children()) {
+            foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
                 if (songItem->data()==s.title) {
                     return songItem;
                 }
@@ -484,17 +484,17 @@ void Device::addSongToList(const Song &s)
     }
     MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
     if (!albumItem) {
-        model->beginInsertRows(model->createIndex(children().indexOf(artistItem), 0, artistItem), artistItem->childCount(), artistItem->childCount());
+        model->beginInsertRows(model->createIndex(childItems().indexOf(artistItem), 0, artistItem), artistItem->childCount(), artistItem->childCount());
         albumItem = artistItem->createAlbum(s);
         model->endInsertRows();
     }
-    foreach (const MusicLibraryItem *songItem, albumItem->children()) {
+    foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
         if (songItem->data()==s.title) {
             return;
         }
     }
 
-    model->beginInsertRows(model->createIndex(artistItem->children().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
+    model->beginInsertRows(model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
     MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
     albumItem->append(songItem);
     model->endInsertRows();
@@ -512,7 +512,7 @@ void Device::removeSongFromList(const Song &s)
     }
     MusicLibraryItem *songItem=0;
     int songRow=0;
-    foreach (MusicLibraryItem *song, albumItem->children()) {
+    foreach (MusicLibraryItem *song, albumItem->childItems()) {
         if (static_cast<MusicLibraryItemSong *>(song)->song().title==s.title) {
             songItem=song;
             break;
@@ -534,15 +534,15 @@ void Device::removeSongFromList(const Song &s)
 
     if (1==albumItem->childCount()) {
         // multiple albums, but this album only has 1 song - remove album
-        int row=artistItem->children().indexOf(albumItem);
-        model->beginRemoveRows(model->createIndex(children().indexOf(artistItem), 0, artistItem), row, row);
+        int row=artistItem->childItems().indexOf(albumItem);
+        model->beginRemoveRows(model->createIndex(childItems().indexOf(artistItem), 0, artistItem), row, row);
         artistItem->remove(albumItem);
         model->endRemoveRows();
         return;
     }
 
     // Just remove particular song
-    model->beginRemoveRows(model->createIndex(artistItem->children().indexOf(albumItem), 0, albumItem), songRow, songRow);
+    model->beginRemoveRows(model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), songRow, songRow);
     albumItem->remove(songRow);
     model->endRemoveRows();
 }

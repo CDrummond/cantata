@@ -42,7 +42,7 @@ MusicLibraryProxyModel::MusicLibraryProxyModel(QObject *parent)
 
 bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem *item) const
 {
-    foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
+    foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
         if (filterAcceptsArtist(i)) {
             return true;
         }
@@ -53,7 +53,7 @@ bool MusicLibraryProxyModel::filterAcceptsRoot(const MusicLibraryItem *item) con
 
 bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem *item) const
 {
-    foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
+    foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
         if (filterAcceptsAlbum(i)) {
             return true;
         }
@@ -64,7 +64,7 @@ bool MusicLibraryProxyModel::filterAcceptsArtist(const MusicLibraryItem *item) c
 
 bool MusicLibraryProxyModel::filterAcceptsAlbum(const MusicLibraryItem *item) const
 {
-    foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
+    foreach (const MusicLibraryItem *i, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
         if (filterAcceptsSong(i)) {
             return true;
         }

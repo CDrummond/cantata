@@ -205,8 +205,8 @@ QSet<Song> MusicLibraryItemRoot::allSongs() const
     QSet<Song> songs;
 
     foreach (const MusicLibraryItem *artist, m_childItems) {
-        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->children()) {
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
+        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                 songs.insert(static_cast<const MusicLibraryItemSong *>(song)->song());
             }
         }
@@ -217,8 +217,8 @@ QSet<Song> MusicLibraryItemRoot::allSongs() const
 void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
 {
     foreach (const MusicLibraryItem *artist, m_childItems) {
-        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->children()) {
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
+        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                 const Song &s=static_cast<const MusicLibraryItemSong *>(song)->song();
                 artists.insert(s.artist);
                 albumArtists.insert(s.albumArtist());
@@ -237,7 +237,7 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
     if (art) {
         MusicLibraryItemAlbum *alb=art->album(from, false);
         if (alb) {
-            foreach (MusicLibraryItem *song, alb->children()) {
+            foreach (MusicLibraryItem *song, alb->childItems()) {
                 if (static_cast<MusicLibraryItemSong *>(song)->file()==from.file) {
                     static_cast<MusicLibraryItemSong *>(song)->setFile(to.file);
                     return;
@@ -269,11 +269,11 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
     writer.writeAttribute("groupSingle", MPDParseUtils::groupSingle() ? "true" : "false");
     writer.writeAttribute("groupMultiple", MPDParseUtils::groupMultiple() ? "true" : "false");
     //Loop over all artist, albums and tracks.
-    foreach (const MusicLibraryItem *a, children()) {
+    foreach (const MusicLibraryItem *a, childItems()) {
         const MusicLibraryItemArtist *artist = static_cast<const MusicLibraryItemArtist *>(a);
         writer.writeStartElement("Artist");
         writer.writeAttribute("name", artist->data());
-        foreach (const MusicLibraryItem *al, artist->children()) {
+        foreach (const MusicLibraryItem *al, artist->childItems()) {
             const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
             writer.writeStartElement("Album");
             writer.writeAttribute("name", album->data());
@@ -284,7 +284,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
             if (album->isMultipleArtists()) {
                 writer.writeAttribute("multipleArtists", "true");
             }
-            foreach (const MusicLibraryItem *t, album->children()) {
+            foreach (const MusicLibraryItem *t, album->childItems()) {
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
                 writer.writeEmptyElement("Track");
                 writer.writeAttribute("name", track->data());

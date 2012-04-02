@@ -396,11 +396,9 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
             }
 
             MusicLibraryItemSong *songItem = new MusicLibraryItemSong(currentSong, albumItem);
-
             albumItem->append(songItem);
             albumItem->addGenre(currentSong.genre);
             artistItem->addGenre(currentSong.genre);
-            songItem->addGenre(currentSong.genre);
             rootItem->addGenre(currentSong.genre);
         }
     }

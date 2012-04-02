@@ -133,7 +133,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
 
     bool enoughSpace=spaceAvailable>spaceRequired;
     #ifdef ENABLE_REMOTE_DEVICES
-    if (!enoughSpace && sourceUdi.isEmpty() && 0==spaceAvailable && usedCapacity<0.0 && Device::Remote==dev->type()) {
+    if (!enoughSpace && sourceUdi.isEmpty() && 0==spaceAvailable && usedCapacity<0.0 && Device::Remote==dev->devType()) {
         enoughSpace=true;
     }
     #endif

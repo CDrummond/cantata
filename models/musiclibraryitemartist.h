@@ -36,10 +36,10 @@ class Song;
 class MusicLibraryItemRoot;
 class MusicLibraryItemAlbum;
 
-class MusicLibraryItemArtist : public MusicLibraryItem
+class MusicLibraryItemArtist : public MusicLibraryItemContainer
 {
 public:
-    MusicLibraryItemArtist(const QString &data, MusicLibraryItem *parent = 0);
+    MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent = 0);
     virtual ~MusicLibraryItemArtist() {
     }
 
@@ -55,6 +55,9 @@ public:
     void remove(MusicLibraryItemAlbum *album);
     QList<MusicLibraryItem *> mutipleArtistAlbums();
     void updateIndexes();
+    Type itemType() const {
+        return Type_Artist;
+    }
 
 private:
     bool m_various;

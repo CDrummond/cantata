@@ -38,11 +38,11 @@
 class QDateTime;
 class MusicLibraryItemArtist;
 
-class MusicLibraryItemRoot : public MusicLibraryItem
+class MusicLibraryItemRoot : public MusicLibraryItemContainer
 {
 public:
     MusicLibraryItemRoot(const QString &name=QString())
-        : MusicLibraryItem(name, MusicLibraryItem::Type_Root, 0) {
+        : MusicLibraryItemContainer(name, 0) {
     }
     virtual ~MusicLibraryItemRoot() {
     }
@@ -67,6 +67,9 @@ public:
     void updateSongFile(const Song &from, const Song &to);
     void toXML(const QString &filename, const QString &pathRemove, const QDateTime &date=QDateTime()) const;
     quint32 fromXML(const QString &filename, const QString &pathAppend, const QDateTime &date=QDateTime());
+    Type itemType() const {
+        return Type_Root;
+    }
 
 private:
     QHash<QString, int> m_indexes;

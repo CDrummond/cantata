@@ -98,7 +98,7 @@ public:
         FailedToCreateTempFile
     };
 
-    enum Type {
+    enum DevType {
         Ums,
         Mtp,
         Remote
@@ -144,7 +144,7 @@ public:
     virtual double usedCapacity()=0;
     virtual QString capacityString()=0;
     virtual qint64 freeSpace()=0;
-    virtual Type type() const=0;
+    virtual DevType devType() const=0;
     virtual void saveCache() {
     }
     virtual void removeCache() {

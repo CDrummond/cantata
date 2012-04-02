@@ -185,7 +185,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case Qt::DecorationRole:
-        switch (item->type()) {
+        switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
             #ifdef ENABLE_KDE_SUPPORT
@@ -204,7 +204,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         default: return QVariant();
         }
     case Qt::DisplayRole:
-        if (MusicLibraryItem::Type_Song==item->type()) {
+        if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
             if (static_cast<MusicLibraryItemAlbum *>(song->parent())->isSingleTracks()) {
                 return song->song().artistSong();
@@ -212,13 +212,13 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                 return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parent()->parent())->isVarious() &&
                                                      !Song::isVariousArtists(song->song().artist));
             }
-        } else if(MusicLibraryItem::Type_Album==item->type() && MusicLibraryItemAlbum::showDate() &&
+        } else if(MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
                   static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {
             return QString::number(static_cast<MusicLibraryItemAlbum *>(item)->year())+QLatin1String(" - ")+item->data();
         }
         return item->data();
     case Qt::ToolTipRole:
-        switch (item->type()) {
+        switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist:
             return 0==item->childCount()
                 ? item->data()
@@ -250,12 +250,12 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         default: return QVariant();
         }
     case ItemView::Role_ImageSize:
-        if (MusicLibraryItem::Type_Album==item->type()) {
+        if (MusicLibraryItem::Type_Album==item->itemType()) {
             return MusicLibraryItemAlbum::iconSize();
         }
         break;
     case ItemView::Role_SubText:
-        switch (item->type()) {
+        switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Album", "%1 Albums", item->childCount());
@@ -275,7 +275,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         default: return QVariant();
         }
     case ItemView::Role_Image:
-        if (MusicLibraryItem::Type_Album==item->type()) {
+        if (MusicLibraryItem::Type_Album==item->itemType()) {
             QVariant v;
             v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
             return v;
@@ -629,31 +629,31 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
     QList<Song> songs;
 
     foreach(QModelIndex index, indexes) {
-        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+        const MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
-        switch (item->type()) {
+        switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist:
-            foreach (const MusicLibraryItem *album, item->children()) {
-                foreach (MusicLibraryItem *song, album->children()) {
-                    if (MusicLibraryItem::Type_Song==song->type() && !songs.contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
-                        static_cast<MusicLibraryItemSong*>(song)->song().updateSize(Settings::self()->mpdDir());
-                        songs << static_cast<MusicLibraryItemSong*>(song)->song();
+            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
+                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
+                    if (MusicLibraryItem::Type_Song==song->itemType() && !songs.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
+                        static_cast<const MusicLibraryItemSong*>(song)->song().updateSize(Settings::self()->mpdDir());
+                        songs << static_cast<const MusicLibraryItemSong*>(song)->song();
                     }
                 }
             }
             break;
         case MusicLibraryItem::Type_Album:
-            foreach (MusicLibraryItem *song, item->children()) {
-                if (MusicLibraryItem::Type_Song==song->type() && !songs.contains(static_cast<MusicLibraryItemSong*>(song)->song())) {
-                    static_cast<MusicLibraryItemSong*>(song)->song().updateSize(Settings::self()->mpdDir());
-                    songs << static_cast<MusicLibraryItemSong*>(song)->song();
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->children()) {
+                if (MusicLibraryItem::Type_Song==song->itemType() && !songs.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
+                    static_cast<const MusicLibraryItemSong*>(song)->song().updateSize(Settings::self()->mpdDir());
+                    songs << static_cast<const MusicLibraryItemSong*>(song)->song();
                 }
             }
             break;
         case MusicLibraryItem::Type_Song:
-            if (!songs.contains(static_cast<MusicLibraryItemSong*>(item)->song())) {
-                static_cast<MusicLibraryItemSong*>(item)->song().updateSize(Settings::self()->mpdDir());
-                songs << static_cast<MusicLibraryItemSong*>(item)->song();
+            if (!songs.contains(static_cast<const MusicLibraryItemSong*>(item)->song())) {
+                static_cast<const MusicLibraryItemSong*>(item)->song().updateSize(Settings::self()->mpdDir());
+                songs << static_cast<const MusicLibraryItemSong*>(item)->song();
             }
             break;
         default:
@@ -669,14 +669,14 @@ QList<Song> MusicLibraryModel::songs(const QStringList &filenames) const
     QSet<QString> files=filenames.toSet();
     QList<Song> songs;
 
-    foreach (MusicLibraryItem *artist, rootItem->children()) {
-        foreach (MusicLibraryItem *album, artist->children()) {
-            foreach (MusicLibraryItem *song, album->children()) {
-                QSet<QString>::Iterator it=files.find(static_cast<MusicLibraryItemSong*>(song)->file());
+    foreach (const MusicLibraryItem *artist, static_cast<const MusicLibraryItemContainer *>(rootItem)->children()) {
+        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->children()) {
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
+                QSet<QString>::Iterator it=files.find(static_cast<const MusicLibraryItemSong*>(song)->file());
 
                 if (it!=files.end()) {
                     files.erase(it);
-                    songs.append(static_cast<MusicLibraryItemSong*>(song)->song());
+                    songs.append(static_cast<const MusicLibraryItemSong*>(song)->song());
                 }
             }
         }

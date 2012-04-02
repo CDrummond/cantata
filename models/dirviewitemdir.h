@@ -31,12 +31,10 @@
 class DirViewItemDir : public DirViewItem
 {
 public:
-    DirViewItemDir(const QString &name, DirViewItem *parent)
-        : DirViewItem(name, DirViewItem::Type_Dir, parent) {
+    DirViewItemDir(const QString &name=QString(), DirViewItem *parent=0)
+        : DirViewItem(name, parent) {
     }
-    DirViewItemDir()
-        : DirViewItem(QString(), DirViewItem::Type_Root, 0) {
-    }
+
     virtual ~DirViewItemDir() {
         qDeleteAll(m_childItems);
     }
@@ -63,6 +61,9 @@ public:
     }
 
     QSet<QString> allFiles() const;
+    Type type() const {
+        return Type_Dir;
+    }
 
 private:
     QHash<QString, int> m_indexes;

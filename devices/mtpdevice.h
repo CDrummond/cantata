@@ -119,7 +119,7 @@ public:
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
-    Type type() const { return Mtp; }
+    DevType devType() const { return Mtp; }
     void saveOptions();
 
 Q_SIGNALS:

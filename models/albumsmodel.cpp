@@ -380,8 +380,8 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     }
 
     TF_DEBUG
-    bool empty=items.isEmpty() || 0==root->childCount();
-    if (empty) {
+    bool resettingModel=items.isEmpty() || 0==root->childCount();
+    if (resettingModel) {
         beginResetModel();
     }
     QList<AlbumItem *>::Iterator it=items.begin();
@@ -403,7 +403,24 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
             end=items.end();
             for (; it!=end; ++it) {
                 if ((*it)->artist==artist && (*it)->album==album) {
+                    if (!resettingModel) {
+                        QModelIndex albumIndex=index(items.indexOf(*it), 0, QModelIndex());
+                        bool hadSongs=!(*it)->songs.isEmpty();
+                        if (hadSongs) {
+                            beginRemoveRows(albumIndex, 0, (*it)->songs.count()-1);
+                        }
+                        (*it)->clearSongs();
+                        if (hadSongs) {
+                            endRemoveRows();
+                        }
+                        if (albumItem->childCount()) {
+                            beginInsertRows(albumIndex, 0, albumItem->childCount()-1);
+                        }
+                    }
                     (*it)->setSongs(albumItem);
+                    if (!resettingModel && albumItem->childCount()) {
+                        endInsertRows();
+                    }
                     (*it)->genres=albumItem->genres();
                     (*it)->updated=true;
                     found=true;
@@ -417,11 +434,11 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 a->genres=albumItem->genres();
                 a->updated=true;
                 a->isSingleTracks=albumItem->isSingleTracks();
-                if (!empty) {
+                if (!resettingModel) {
                     beginInsertRows(QModelIndex(), items.count(), items.count());
                 }
                 items.append(a);
-                if (!empty) {
+                if (!resettingModel) {
                     endInsertRows();
                 }
 //                 if (!a->isSingleTracks ) {
@@ -431,21 +448,17 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
         }
     }
 
-    if (empty) {
+    if (resettingModel) {
         endResetModel();
     } else {
-        int row=0;
-        for (it=items.begin(); it!=items.end();) {
-            if (!(*it)->updated) {
-                beginRemoveRows(QModelIndex(), row, row);
-                QList<AlbumItem *>::Iterator cur=it;
-                delete (*it);
-                ++it;
-                items.erase(cur);
+        for (int i=0; i<items.count();) {
+            AlbumItem *ai=items.at(i);
+            if (!ai->updated) {
+                beginRemoveRows(QModelIndex(), i, i);
+                delete items.takeAt(i);
                 endRemoveRows();
             } else {
-                ++row;
-                ++it;
+                ++i;
             }
         }
     }
@@ -544,8 +557,7 @@ AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al)
 
 AlbumsModel::AlbumItem::~AlbumItem()
 {
-    qDeleteAll(songs);
-    songs.clear();
+    clearSongs();
     delete cover;
 }
 
@@ -565,11 +577,15 @@ bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
     }
 }
 
-void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
+void AlbumsModel::AlbumItem::clearSongs()
 {
     time=0;
     qDeleteAll(songs);
     songs.clear();
+}
+
+void AlbumsModel::AlbumItem::setSongs(MusicLibraryItemAlbum *ai)
+{
     foreach (MusicLibraryItem *item, ai->childItems()) {
         songs.append(new SongItem(static_cast<MusicLibraryItemSong*>(item)->song(), this));
     }

@@ -80,6 +80,7 @@ public:
         virtual ~AlbumItem();
         bool operator<(const AlbumItem &o) const;
         bool isAlbum() { return true; }
+        void clearSongs();
         void setSongs(MusicLibraryItemAlbum *ai);
         void setName();
         quint32 totalTime();

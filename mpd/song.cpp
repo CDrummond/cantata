@@ -40,13 +40,13 @@ const quint16 Song::constNullKey(0xFFFF);
 
 Song::Song()
     : id(-1)
-      , time(0)
-      , track(0)
 //       , pos(0)
       , disc(0)
+      , time(0)
+      , track(0)
       , year(0)
-      , size(0)
       , type(Standard)
+      , size(0)
       , key(constNullKey)
 {
 }
@@ -60,7 +60,6 @@ Song & Song::operator=(const Song &s)
     artist = s.artist;
     albumartist = s.albumartist;
     title = s.title;
-    modifiedtitle = s.modifiedtitle;
     track = s.track;
 //     pos = s.pos;
     disc = s.disc;

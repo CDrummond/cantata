@@ -37,9 +37,9 @@ struct Song
     static const quint16 constNullKey;
 
     enum Type {
-        Standard,
-        SingleTracks,
-        MultipleArtists
+        Standard        = 0,
+        SingleTracks    = 1,
+        MultipleArtists = 2
     };
 
     qint32 id;
@@ -48,18 +48,17 @@ struct Song
     QString artist;
     QString albumartist;
     QString title;
-    QString modifiedtitle;
-    quint16 time;
-    qint16 track;
-//     quint32 pos;
-    quint16 disc;
-    quint16 year;
     QString genre;
     QString name;
+//     quint32 pos;
+    quint16 disc;
+    quint16 time;
+    qint16 track;
+    quint16 year : 14;
+    mutable Type type : 2;
     mutable qint32 size;
-    mutable Type type;
 
-    // Only used in PlayQueue...
+    // Only used in PlayQueue/PlayLists...
     quint16 key;
 
     Song();
@@ -77,7 +76,7 @@ struct Song
     QString entryName() const;
     QString artistSong() const;
     const QString & albumArtist() const { return albumartist.isEmpty() ? artist : albumartist; }
-    const QString & displayTitle() const { return modifiedtitle.isEmpty() ? title : modifiedtitle; }
+    QString displayTitle() const { return !albumartist.isEmpty() && albumartist!=artist ? artistSong() : title; }
     QString trackAndTitleStr(bool addArtist=false) const;
     void updateSize(const QString &dir) const;
     static bool isVariousArtists(const QString &str);

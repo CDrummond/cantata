@@ -124,6 +124,7 @@ public Q_SLOTS:
 
 private:
     bool enabled;
+    bool coversRequested;
     mutable QList<AlbumItem *> items;
 };
 

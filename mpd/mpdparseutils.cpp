@@ -240,9 +240,6 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
         #endif
     }
 
-    if (!albumartist.isEmpty() && albumartist != song.artist) {
-        song.modifiedtitle = song.artist + " - " + song.title;
-    }
     return song;
 }
 

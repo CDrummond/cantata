@@ -412,7 +412,14 @@ private:
     Mpris *mpris;
     QTimer *playlistSearchTimer;
     bool usingProxy;
-    bool isConnected;
+
+    enum ConnState {
+        CS_Init,
+        CS_Connected,
+        CS_Disconnected
+    };
+
+    ConnState connectedState;
 
     enum StopState {
         StopState_None     = 0,

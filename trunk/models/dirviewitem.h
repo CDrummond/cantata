@@ -40,10 +40,9 @@ public:
         Type_File
     };
 
-    DirViewItem(const QString &name, Type type, DirViewItem *p)
+    DirViewItem(const QString &name=QString(), DirViewItem *p=0)
         : m_parentItem(p)
-        , m_name(name)
-        , m_type(type) {
+        , m_name(name) {
     }
     virtual ~DirViewItem() {
     }
@@ -70,17 +69,14 @@ public:
     const QString & data() const {
         return m_name;
     }
-    const QString & name() {
+    const QString & name() const {
         return m_name;
     }
-    DirViewItem::Type type() const {
-        return m_type;
-    }
+    virtual Type type() const=0;
 
 protected:
     DirViewItem * m_parentItem;
     QString m_name;
-    Type m_type;
 };
 
 #endif

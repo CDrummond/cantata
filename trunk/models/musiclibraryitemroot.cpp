@@ -205,8 +205,8 @@ QSet<Song> MusicLibraryItemRoot::allSongs() const
     QSet<Song> songs;
 
     foreach (const MusicLibraryItem *artist, m_childItems) {
-        foreach (const MusicLibraryItem *album, artist->children()) {
-            foreach (const MusicLibraryItem *song, album->children()) {
+        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->children()) {
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
                 songs.insert(static_cast<const MusicLibraryItemSong *>(song)->song());
             }
         }
@@ -217,8 +217,8 @@ QSet<Song> MusicLibraryItemRoot::allSongs() const
 void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
 {
     foreach (const MusicLibraryItem *artist, m_childItems) {
-        foreach (const MusicLibraryItem *album, artist->children()) {
-            foreach (const MusicLibraryItem *song, album->children()) {
+        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->children()) {
+            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->children()) {
                 const Song &s=static_cast<const MusicLibraryItemSong *>(song)->song();
                 artists.insert(s.artist);
                 albumArtists.insert(s.albumArtist());
@@ -410,25 +410,12 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
                         song.album=str;
                     }
                 }
+                song.fillEmptyFields();
                 songItem = new MusicLibraryItemSong(song, albumItem);
-
                 albumItem->append(songItem);
-
-                QString genre = attributes.value("genre").toString().trimmed();
-                if (genre.isEmpty()) {
-                    #ifdef ENABLE_KDE_SUPPORT
-                    genre=i18n("Unknown");
-                    #else
-                    genre=QObject::tr("Unknown");
-                    #endif
-                } else {
-                    song.genre=genre;
-                }
-
-                albumItem->addGenre(genre);
-                artistItem->addGenre(genre);
-                songItem->addGenre(genre);
-                addGenre(genre);
+                albumItem->addGenre(song.genre);
+                artistItem->addGenre(song.genre);
+                addGenre(song.genre);
             }
         }
     }

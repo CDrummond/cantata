@@ -80,8 +80,8 @@ bool MusicLibraryItemAlbum::showDate()
     return useDate;
 }
 
-MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItem *parent)
-    : MusicLibraryItem(data, MusicLibraryItem::Type_Album, parent)
+MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItemContainer *parent)
+    : MusicLibraryItemContainer(data, parent)
     , m_year(year)
     , m_coverIsDefault(false)
     , m_cover(0)
@@ -182,7 +182,7 @@ void MusicLibraryItemAlbum::setIsSingleTracks()
 
 void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
 {
-    MusicLibraryItem::append(i);
+    MusicLibraryItemContainer::append(i);
     if (m_singleTracks) {
         m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(i)->song().file);
     }

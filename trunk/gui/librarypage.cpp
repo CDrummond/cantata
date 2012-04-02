@@ -234,7 +234,7 @@ void LibraryPage::itemDoubleClicked(const QModelIndex &)
         return; //doubleclick should only have one selected item
     }
     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-    if (MusicLibraryItem::Type_Song==item->type()) {
+    if (MusicLibraryItem::Type_Song==item->itemType()) {
         addSelectionToPlaylist();
     }
 }

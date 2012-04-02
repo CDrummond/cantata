@@ -37,8 +37,8 @@ class MusicLibraryItemAlbum;
 class MusicLibraryItemSong : public MusicLibraryItem
 {
 public:
-    MusicLibraryItemSong(const Song &s, MusicLibraryItem *parent)
-        : MusicLibraryItem(s.displayTitle(), MusicLibraryItem::Type_Song, parent)
+    MusicLibraryItemSong(const Song &s, MusicLibraryItemContainer *parent)
+        : MusicLibraryItem(s.displayTitle(), parent)
         , m_song(s) {
     }
 
@@ -60,12 +60,19 @@ public:
     quint32 time() const {
         return m_song.time;
     }
-    QString genre() const {
-        return m_genres.isEmpty() ? QString() : *m_genres.constBegin();
+    const QString & genre() const {
+        return m_song.genre;
     }
     const Song & song() const {
         return m_song;
     }
+    Type itemType() const {
+        return Type_Song;
+    }
+    bool hasGenre(const QString &genre) const {
+        return m_song.genre==genre;
+    }
+
 private:
     Song m_song;
 };

@@ -159,15 +159,15 @@ QString DevicesPage::activeFsDeviceUdi() const
         QModelIndex index = proxy.mapToSource(idx);
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
 
-        if (item && MusicLibraryItem::Type_Root!=item->type()) {
+        if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parent()) {
                 item=item->parent();
             }
         }
 
-        if (item && MusicLibraryItem::Type_Root==item->type()) {
+        if (item && MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
-            if (Device::Ums!=dev->type() && Device::Remote!=dev->type()) {
+            if (Device::Ums!=dev->devType() && Device::Remote!=dev->devType()) {
                 return QString();
             }
             return dev->udi();
@@ -193,15 +193,15 @@ QList<Song> DevicesPage::selectedSongs() const
         mapped.append(index);
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
 
-        if (item && MusicLibraryItem::Type_Root!=item->type()) {
+        if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parent()) {
                 item=item->parent();
             }
         }
 
-        if (item && MusicLibraryItem::Type_Root==item->type()) {
+        if (item && MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
-            if (Device::Ums!=dev->type() && Device::Remote!=dev->type()) {
+            if (Device::Ums!=dev->devType() && Device::Remote!=dev->devType()) {
                 return QList<Song>();
             }
         }
@@ -217,7 +217,7 @@ void DevicesPage::itemDoubleClicked(const QModelIndex &)
 //         return; //doubleclick should only have one selected item
 //     }
 //     MusicDevicesItem *item = static_cast<MusicDevicesItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-//     if (MusicDevicesItem::Type_Song==item->type()) {
+//     if (MusicDevicesItem::Type_Song==item->itemType()) {
 //         addSelectionToPlaylist();
 //     }
 }
@@ -244,19 +244,19 @@ void DevicesPage::controlActions()
     foreach (const QModelIndex &idx, selected) {
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
 
-        if (item && MusicLibraryItem::Type_Root!=item->type()) {
+        if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parent()) {
                 item=item->parent();
             }
         }
 
-        if (item && MusicLibraryItem::Type_Root==item->type()) {
+        if (item && MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
-            if (Device::Ums!=dev->type() && Device::Remote!=dev->type()) {
+            if (Device::Ums!=dev->devType() && Device::Remote!=dev->devType()) {
                 onlyFs=false;
             }
             #ifdef ENABLE_REMOTE_DEVICES
-            if (Device::Remote==dev->type()) {
+            if (Device::Remote==dev->devType()) {
                 remoteDev=true;
             }
             #endif
@@ -304,7 +304,7 @@ void DevicesPage::copyToLibrary()
         item=item->parent();
     }
     QString udi;
-    if (MusicLibraryItem::Type_Root==item->type()) {
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
         udi=static_cast<Device *>(item)->udi();
     }
 
@@ -330,7 +330,7 @@ void DevicesPage::configureDevice()
 
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
-    if (MusicLibraryItem::Type_Root==item->type()) {
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
         static_cast<Device *>(item)->configure(this);
     }
 }
@@ -345,7 +345,7 @@ void DevicesPage::refreshDevice()
 
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
-    if (MusicLibraryItem::Type_Root==item->type()) {
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
         static_cast<Device *>(item)->rescan();
     }
 }
@@ -368,7 +368,7 @@ void DevicesPage::deleteSongs()
         item=item->parent();
     }
     QString udi;
-    if (MusicLibraryItem::Type_Root==item->type()) {
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
         udi=static_cast<Device *>(item)->udi();
     }
 
@@ -413,7 +413,7 @@ void DevicesPage::toggleDevice()
 
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
-    if (MusicLibraryItem::Type_Root==item->type() && Device::Remote==static_cast<Device *>(item)->type()) {
+    if (MusicLibraryItem::Type_Root==item->itemType() && Device::Remote==static_cast<Device *>(item)->devType()) {
         static_cast<RemoteDevice *>(item)->toggle();
     }
 }

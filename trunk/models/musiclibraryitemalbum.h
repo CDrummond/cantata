@@ -36,7 +36,7 @@
 class MusicLibraryItemArtist;
 class MusicLibraryItemSong;
 
-class MusicLibraryItemAlbum : public MusicLibraryItem
+class MusicLibraryItemAlbum : public MusicLibraryItemContainer
 {
 public:
     enum CoverSize
@@ -54,7 +54,7 @@ public:
     static void setShowDate(bool sd);
     static bool showDate();
 
-    MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItem *parent);
+    MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItemAlbum();
 
     bool setCover(const QImage &img) const;
@@ -72,6 +72,9 @@ public:
     bool detectIfIsMultipleArtists();
     bool isMultipleArtists() const { return m_multipleArtists; }
     void setIsMultipleArtists() { m_multipleArtists=true; }
+    Type itemType() const {
+        return Type_Album;
+    }
 
 private:
     quint32 m_year;

@@ -31,6 +31,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QSet>
 
+class MusicLibraryItemContainer;
 class MusicLibraryItem : public QObject
 {
 public:
@@ -40,21 +41,54 @@ public:
         Type_Album,
         Type_Song
     };
-    MusicLibraryItem(const QString &data, Type type, MusicLibraryItem *parent)
+
+    MusicLibraryItem(const QString &data, MusicLibraryItemContainer *parent)
         : m_parentItem(parent)
-        , m_type(type)
         , m_itemData(data) {
     }
 
     virtual ~MusicLibraryItem() {
+    }
+
+    MusicLibraryItemContainer * parent() const {
+        return m_parentItem;
+    }
+    virtual MusicLibraryItem * child(int) const {
+        return 0;
+    }
+    virtual int childCount() const {
+        return 0;
+    }
+    int row() const;
+    int columnCount() const {
+        return 1;
+    }
+    const QString & data() const {
+        return m_itemData;
+    }
+    void setData(const QString &d) {
+        m_itemData=d;
+    }
+    virtual bool hasGenre(const QString &genre) const=0;
+    virtual Type itemType() const=0;
+
+protected:
+    MusicLibraryItemContainer *m_parentItem;
+    QString m_itemData;
+};
+
+class MusicLibraryItemContainer : public MusicLibraryItem
+{
+public:
+    MusicLibraryItemContainer(const QString &data, MusicLibraryItemContainer *parent)
+        : MusicLibraryItem(data, parent) {
+    }
+
+    virtual ~MusicLibraryItemContainer() {
         qDeleteAll(m_childItems);
     }
 
-    MusicLibraryItem * parent() const {
-        return m_parentItem;
-    }
-
-    void setParent(MusicLibraryItem *p) {
+    void setParent(MusicLibraryItemContainer *p) {
         if (p==m_parentItem) {
             return;
         }
@@ -70,56 +104,35 @@ public:
         m_childItems.append(i);
     }
 
-    MusicLibraryItem * child(int row) const {
+    virtual MusicLibraryItem * child(int row) const {
         return m_childItems.value(row);
     }
 
     int childCount() const {
         return m_childItems.count();
     }
-
     const QList<MusicLibraryItem *> & children() const {
         return m_childItems;
     }
-
-    int row() const {
-        return m_parentItem ? m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItem*>(this)) : 0;
-    }
-
-    int columnCount() const {
-        return 1;
-    }
-
     void addGenre(const QString &genre) {
         m_genres.insert(genre);
     }
-
     bool hasGenre(const QString &genre) const {
         return m_genres.contains(genre);
     }
-
     const QSet<QString> & genres() const {
         return m_genres;
     }
 
-    const QString & data() const {
-        return m_itemData;
-    }
-
-    void setData(const QString &d) {
-        m_itemData=d;
-    }
-
-    MusicLibraryItem::Type type() const {
-        return m_type;
-    }
-
 protected:
-    MusicLibraryItem *m_parentItem;
+    friend class MusicLibraryItem;
     QList<MusicLibraryItem *> m_childItems;
-    Type m_type;
-    QString m_itemData;
     QSet<QString> m_genres;
 };
+
+inline int MusicLibraryItem::row() const
+{
+    return m_parentItem ? m_parentItem->m_childItems.indexOf(const_cast<MusicLibraryItem*>(this)) : 0;
+}
 
 #endif

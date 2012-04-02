@@ -35,6 +35,9 @@ public:
     }
     virtual ~DirViewItemRoot() {
     }
+    Type type() const {
+        return Type_Root;
+    }
 };
 
 #endif

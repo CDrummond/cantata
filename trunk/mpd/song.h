@@ -38,19 +38,19 @@ struct Song
 
     qint32 id;
     QString file;
-    quint32 time;
     QString album;
     QString artist;
     QString albumartist;
     QString title;
     QString modifiedtitle;
-    qint32 track;
+    quint16 time;
+    qint16 track;
 //     quint32 pos;
-    quint32 disc;
-    quint32 year;
+    quint16 disc;
+    quint16 year;
     QString genre;
     QString name;
-    mutable qint64 size;
+    mutable qint32 size;
 
     // Only used in PlayQueue...
     quint16 key;

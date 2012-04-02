@@ -38,7 +38,7 @@ public:
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
-    Type type() const { return Ums; }
+    DevType devType() const { return Ums; }
     void saveOptions();
     void configure(QWidget *parent);
     virtual bool canPlaySongs() const {

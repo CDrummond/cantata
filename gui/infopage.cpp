@@ -174,9 +174,9 @@ void InfoPage::googleAnswer(const QString &ans)
         return;
     }
     QUrl wikiInfo; //(answer.mid(start, end - start).replace("/wiki/", "/wiki/Special:Export/").toUtf8());
-//     if (!answer.contains("m.wikipedia.org")) {
-//         answer.replace("wikipedia.org", "m.wikipedia.org");
-//     }
+    if (!answer.contains("m.wikipedia.org")) {
+        answer.replace("wikipedia.org", "m.wikipedia.org");
+    }
     wikiInfo.setEncodedUrl(answer/*.replace("/wiki/", "/wiki/Special:Export/")*/.toUtf8());
     wikiInfo.addQueryItem("action", "view");
     wikiInfo.addQueryItem("useskin", "monobook");

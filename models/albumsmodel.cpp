@@ -129,7 +129,7 @@ void AlbumsModel::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 AlbumsModel::AlbumsModel(QObject *parent)
     : QAbstractItemModel(parent)
     , enabled(false)
-    , coversRequested(false)
+//     , coversRequested(false)
 {
 }
 
@@ -464,19 +464,19 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
     }
 }
 
-void AlbumsModel::getCovers()
-{
-    if (!enabled || coversRequested || items.isEmpty()) {
-        return;
-    }
-
-    coversRequested=true;
-    foreach (AlbumItem *a, items) {
-        if (!a->isSingleTracks && !a->coverRequested) {
-            a->getCover(false);
-        }
-    }
-}
+// void AlbumsModel::getCovers()
+// {
+//     if (!enabled || coversRequested || items.isEmpty()) {
+//         return;
+//     }
+//
+//     coversRequested=true;
+//     foreach (AlbumItem *a, items) {
+//         if (!a->isSingleTracks && !a->coverRequested) {
+//             a->getCover(false);
+//         }
+//     }
+// }
 
 void AlbumsModel::setCover(const QString &artist, const QString &album, const QImage &img, const QString &file)
 {
@@ -504,7 +504,7 @@ void AlbumsModel::clear()
     qDeleteAll(items);
     items.clear();
     endResetModel();
-    coversRequested=false;
+//     coversRequested=false;
 }
 
 void AlbumsModel::setEnabled(bool e)

@@ -1767,7 +1767,6 @@ void MainWindow::updateStats()
             folderPage->clear();
             playlistsPage->clear();
         }
-        loaded|=TAB_LIBRARY|TAB_FOLDERS;
         libraryPage->refresh();
         folderPage->refresh();
         playlistsPage->refresh();

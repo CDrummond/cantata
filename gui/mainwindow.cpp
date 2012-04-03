@@ -2288,7 +2288,7 @@ void MainWindow::currentTabChanged(int index)
         if (PAGE_LIBRARY==index) {
             libraryPage->controlActions();
         } else {
-            AlbumsModel::self()->getCovers();
+//             AlbumsModel::self()->getCovers();
             albumsPage->controlActions();
         }
         break;

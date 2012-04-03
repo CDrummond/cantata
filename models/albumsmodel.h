@@ -117,7 +117,7 @@ public:
     void setEnabled(bool e);
     int albumSort() const;
     void setAlbumSort(int s);
-    void getCovers();
+//     void getCovers();
 
 public Q_SLOTS:
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
@@ -125,7 +125,7 @@ public Q_SLOTS:
 
 private:
     bool enabled;
-    bool coversRequested;
+//     bool coversRequested;
     mutable QList<AlbumItem *> items;
 };
 

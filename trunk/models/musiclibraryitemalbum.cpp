@@ -185,7 +185,6 @@ void MusicLibraryItemAlbum::setIsMultipleArtists()
 {
     foreach (MusicLibraryItem *track, m_childItems) {
         static_cast<MusicLibraryItemSong*>(track)->song().type=Song::MultipleArtists;
-        m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(track)->song().file);
     }
     m_type=Song::MultipleArtists;
 }

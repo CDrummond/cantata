@@ -92,7 +92,7 @@ public:
     void setState(MPDState st);
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
-    void updatePlaylist(const QList<Song> &songList);
+    void update(const QList<Song> &songList);
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace);

@@ -598,7 +598,7 @@ void PlayQueueModel::setGrouped(bool g)
 }
 
 // Update playqueue with contents returned from MPD.
-void PlayQueueModel::updatePlaylist(const QList<Song> &songList)
+void PlayQueueModel::update(const QList<Song> &songList)
 {
     TF_DEBUG
     QSet<qint32> newIds;

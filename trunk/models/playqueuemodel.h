@@ -27,7 +27,7 @@
 #ifndef PLAYQUEUEMODEL_H
 #define PLAYQUEUEMODEL_H
 
-#include <QtCore/QAbstractTableModel>
+#include <QtCore/QAbstractItemModel>
 #include <QtCore/QList>
 #include <QtCore/QStringList>
 #include <QtCore/QSet>
@@ -37,7 +37,7 @@
 
 class StreamFetcher;
 
-class PlayQueueModel : public QAbstractTableModel
+class PlayQueueModel : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -68,6 +68,8 @@ public:
 
     PlayQueueModel(QObject *parent = 0);
     ~PlayQueueModel();
+    QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const;
+    QModelIndex parent(const QModelIndex &idx) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &) const;

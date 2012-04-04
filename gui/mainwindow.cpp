@@ -1510,7 +1510,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     nextTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
     prevTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
 
-    // remember selected song ids and rownum of smallest selected row in proxymodel (because that represents the visible rows)
+    // Remeber first row and first song id
     QList<qint32> selectedSongIds;
     qint32 firstSelectedSongId = -1;
     qint32 firstSelectedRow = -1;
@@ -1531,43 +1531,24 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     playQueueModel.updatePlaylist(songs);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
 
-    // reselect song ids or minrow if songids were not found (songs removed)
     if (selectedSongIds.size() > 0) {
-        bool found =  false;
+        // We had a selection before the update, and we will still have one now - as the model does add/del/move...
+        // *But* the current index seems to get messed up
+        // ...and if we have deleted all the selected items,we want to select the next one
         qint32 newCurrentRow = playQueueModel.getRowById(firstSelectedSongId);
-        playQueue->setCurrentIndex(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(newCurrentRow, 0)) : playQueueModel.index(newCurrentRow, 0));
+        if (newCurrentRow<0) {
+            // Previously selected row was deleted, so select row nearest to it...
+            if (!playQueue->selectionModel()->hasSelection()) {
+                QModelIndex index=usingProxy
+                                    ? playQueueProxyModel.index(qBound(0, firstSelectedRow, playQueueProxyModel.rowCount() - 1), 0)
+                                    : playQueueModel.index(qBound(0, firstSelectedRow, playQueueModel.rowCount() - 1), 0);
 
-        foreach (qint32 i, selectedSongIds) {
-            qint32 row = playQueueModel.getRowById(i);
-            if (row >= 0) {
-                found = true;
+                playQueue->setCurrentIndex(index);
+                playQueue->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
             }
-
-            playQueue->selectionModel()->select(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(row, 0))
-                                                           : playQueueModel.index(row, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
-        }
-
-        if (!found) {
-            // songids which were selected before the playlistupdate were not found anymore (they were removed) -> select firstSelectedRow again (should be the next song after the removed one)
-            // firstSelectedRow contains the selected row of the proxymodel before we did the playlist refresh
-            // check if rowcount of current proxymodel is smaller than that (last row as removed) and adjust firstSelectedRow when needed
-            QModelIndex index;
-
-            if (usingProxy) {
-                index = playQueueProxyModel.index(firstSelectedRow, 0);
-                if (firstSelectedRow > playQueueProxyModel.rowCount(index) - 1) {
-                    firstSelectedRow = playQueueProxyModel.rowCount(index) - 1;
-                }
-                index = playQueueProxyModel.index(firstSelectedRow, 0);
-            } else {
-                index = playQueueModel.index(firstSelectedRow, 0);
-                if (firstSelectedRow > playQueueModel.rowCount(index) - 1) {
-                    firstSelectedRow = playQueueModel.rowCount(index) - 1;
-                }
-                index = playQueueProxyModel.index(firstSelectedRow, 0);
-            }
-            playQueue->setCurrentIndex(index);
-            playQueue->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        } else {
+            // The row was not deleted, could have been moved, so we need t set the current index
+            playQueue->setCurrentIndex(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(newCurrentRow, 0)) : playQueueModel.index(newCurrentRow, 0));
         }
     }
 

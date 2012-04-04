@@ -116,7 +116,7 @@ QString PlayQueueModel::headerText(int col)
 }
 
 PlayQueueModel::PlayQueueModel(QObject *parent)
-    : QAbstractTableModel(parent)
+    : QAbstractItemModel(parent)
     , currentSongId(-1)
     , mpdState(MPDState_Inactive)
     , grouped(false)
@@ -133,6 +133,17 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
 
 PlayQueueModel::~PlayQueueModel()
 {
+}
+
+QModelIndex PlayQueueModel::index(int row, int column, const QModelIndex &parent) const
+{
+    return hasIndex(row, column, parent) ? createIndex(row, column, 0) : QModelIndex();
+}
+
+QModelIndex PlayQueueModel::parent(const QModelIndex &idx) const
+{
+    Q_UNUSED(idx)
+    return QModelIndex();
 }
 
 QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -356,7 +367,7 @@ bool PlayQueueModel::setData(const QModelIndex &index, const QVariant &value, in
         dropAdjust=value.toUInt();
         return true;
     } else {
-        return QAbstractTableModel::setData(index, value, role);
+        return QAbstractItemModel::setData(index, value, role);
     }
 }
 

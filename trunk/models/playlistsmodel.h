@@ -110,6 +110,7 @@ Q_SIGNALS:
     void addToNew();
     void addToExisting(const QString &name);
     void updateGenres(const QSet<QString> &genres);
+    void updating(const QModelIndex &idx);
     void updated(const QModelIndex &idx);
     void playlistRemoved(quint32 key);
 

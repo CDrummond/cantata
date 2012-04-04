@@ -89,7 +89,10 @@ public:
     void setLevel(int level, bool haveChildren=true);
     QAbstractItemView * view() const;
     void setModel(ProxyModel *m);
-    void clearSelection() { view()->selectionModel()->clearSelection(); }
+    void clearSelection() { selectionModel()->clearSelection(); }
+    QItemSelectionModel * selectionModel() const { return view()->selectionModel(); }
+    void setCurrentIndex(const QModelIndex &idx) { view()->setCurrentIndex(idx); }
+    void select(const QModelIndex &idx);
     QModelIndexList selectedIndexes() const;
     QString searchText() const;
     void setTopText(const QString &text);

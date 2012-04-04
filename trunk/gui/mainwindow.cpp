@@ -1511,16 +1511,16 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     prevTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
 
     // Remeber first row and first song id
-    QList<qint32> selectedSongIds;
+    bool hadSelection=false;
     qint32 firstSelectedSongId = -1;
     qint32 firstSelectedRow = -1;
 
     if (playQueue->selectionModel()->hasSelection()) {
         QModelIndexList items = playQueue->selectionModel()->selectedRows();
+        hadSelection=true;
         // find smallest selected rownum
         foreach (const QModelIndex &index, items) {
             QModelIndex sourceIndex = usingProxy ? playQueueProxyModel.mapToSource(index) : index;
-            selectedSongIds.append(playQueueModel.getIdByRow(sourceIndex.row()));
             if (firstSelectedRow == -1 || index.row() < firstSelectedRow) {
                 firstSelectedRow = index.row();
                 firstSelectedSongId = playQueueModel.getIdByRow(sourceIndex.row());
@@ -1531,7 +1531,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     playQueueModel.update(songs);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
 
-    if (selectedSongIds.size() > 0) {
+    if (hadSelection) {
         // We had a selection before the update, and we will still have one now - as the model does add/del/move...
         // *But* the current index seems to get messed up
         // ...and if we have deleted all the selected items,we want to select the next one

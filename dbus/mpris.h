@@ -49,35 +49,50 @@ public:
     }
 
     void Next() {
-        emit goToNext();
+        if (MPDStatus::self()->playlistLength()>1) {
+            emit goToNext();
+        }
     }
 
     void Previous() {
-        emit goToPrevious();
+        if (MPDStatus::self()->playlistLength()>1) {
+            emit goToPrevious();
+        }
     }
 
     void Pause() {
-        emit setPause(true);
+        if (MPDState_Playing==MPDStatus::self()->state()) {
+            emit setPause(true);
+        }
     }
 
     void PlayPause() {
         MPDStatus * const status = MPDStatus::self();
 
-        if (MPDState_Playing==status->state()) {
-            emit setPause(true);
-        } else if (MPDState_Paused==status->state()) {
-            emit setPause(false);
-        } else {
-            emit startPlayingSong();
+        if (status->playlistLength()) {
+            if (MPDState_Playing==status->state()) {
+                emit setPause(true);
+            } else if (MPDState_Paused==status->state()) {
+                emit setPause(false);
+            } else {
+                emit startPlayingSong();
+            }
         }
     }
 
     void Stop() {
-        emit stopPlaying();
+        MPDStatus * const status = MPDStatus::self();
+        if (MPDState_Playing==status->state() || MPDState_Paused==status->state()) {
+            emit stopPlaying();
+        }
     }
 
     void Play() {
-        emit startPlayingSong();
+        MPDStatus * const status = MPDStatus::self();
+
+        if (status->playlistLength() && MPDState_Playing!=status->state()) {
+            emit startPlayingSong();
+        }
     }
 
     void Seek(qlonglong) {

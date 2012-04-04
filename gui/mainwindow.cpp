@@ -1528,7 +1528,7 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
         }
     }
 
-    playQueueModel.updatePlaylist(songs);
+    playQueueModel.update(songs);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
 
     if (selectedSongIds.size() > 0) {

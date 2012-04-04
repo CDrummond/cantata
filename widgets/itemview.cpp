@@ -623,7 +623,7 @@ void ItemView::setDeleteAction(QAction *act)
     listView->installEventFilter(new DeleteKeyEventHandler(listView, act));
     treeView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
     if (groupedView) {
-        groupedView->installEventFilter(new DeleteKeyEventHandler(treeView, act));
+        groupedView->installEventFilter(new DeleteKeyEventHandler(groupedView, act));
     }
 }
 

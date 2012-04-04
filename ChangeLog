@@ -50,6 +50,8 @@
     (asf/wmv/mp4v) - these seem to crash TagLib.
 34. When using MPRISv2 interface, dont attempt to play a song if the playqueue
     is empty!
+35. Use SH_ItemView_ActivateItemOnSingleClick to detect single click mode in Qt
+    build.
 
 0.5.1
 -----

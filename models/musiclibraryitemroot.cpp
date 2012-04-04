@@ -375,7 +375,8 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
             }
 
             if (QLatin1String("Artist")==element) {
-                song.albumartist=attributes.value("name").toString();
+                song.type=Song::Standard;
+                song.artist=song.albumartist=attributes.value("name").toString();
                 artistItem = createArtist(song);
             }
             else if (QLatin1String("Album")==element) {

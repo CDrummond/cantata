@@ -586,6 +586,7 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
             endRemoveRows();
         } else {
             QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
+            emit updating(parent);
             for (qint32 i=0; i<songs.count(); ++i) {
                 Song s=songs.at(i);
                 SongItem *si=i<pl->songs.count() ? pl->songs.at(i) : 0;
@@ -635,6 +636,7 @@ void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<quint3
 
     quint32 adjust=0;
     QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
+    emit updating(parent);
     QList<quint32>::ConstIterator it=positions.constBegin();
     QList<quint32>::ConstIterator end=positions.constEnd();
     while(it!=end) {
@@ -659,6 +661,7 @@ void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<quint3
         it++;
         pl->updateGenres();
     }
+    emit updated(parent);
     updateGenreList();
 }
 
@@ -672,6 +675,7 @@ void PlaylistsModel::movedInPlaylist(const QString &name, const QList<quint32> &
 
     QList<quint32> indexes=idx;
     QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
+    emit updating(parent);
     while (indexes.count()) {
         quint32 from=indexes.takeLast();
         beginMoveRows(parent, from, from, parent, pos>from ? pos+1 : pos);
@@ -679,6 +683,7 @@ void PlaylistsModel::movedInPlaylist(const QString &name, const QList<quint32> &
         pl->songs.insert(pos, si);
         endMoveRows();
     }
+    emit updated(parent);
 }
 
 static QString qt_strippedText(QString s)

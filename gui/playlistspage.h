@@ -67,6 +67,7 @@ private Q_SLOTS:
     void renamePlaylist();
     void itemDoubleClicked(const QModelIndex &index);
     void searchItems();
+    void updating(const QModelIndex &index);
     void updated(const QModelIndex &index);
 
 private:
@@ -74,6 +75,9 @@ private:
     PlaylistsProxyModel proxy;
     QSet<QString> genres;
     MainWindow *mw;
+    int beingUpdated;
+    int firstSelectedRow;
+    void *currentItem;
 };
 
 #endif

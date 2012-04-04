@@ -69,16 +69,16 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
         result = new TagLib::MP4::File(fileName, readProperties, propertiesStyle);
     }
     else if( mimetype->is( QLatin1String("audio/x-ms-wma") )
-            || mimetype->is( QLatin1String("video/x-ms-asf") )
+            /*|| mimetype->is( QLatin1String("video/x-ms-asf") )
             || mimetype->is( QLatin1String("video/x-msvideo") )
-            || mimetype->is( QLatin1String("video/x-ms-wmv") ) )
+            || mimetype->is( QLatin1String("video/x-ms-wmv") )*/ )
     {
         result = new TagLib::ASF::File(fileName, readProperties, propertiesStyle);
     }
 #ifdef TAGLIB_EXTRAS_FOUND
     else if( mimetype->is( QLatin1String("audio/vnd.rn-realaudio") )
             || mimetype->is( QLatin1String("audio/x-pn-realaudioplugin") )
-            || mimetype->is( QLatin1String("audio/vnd.rn-realvideo") ) )
+            /*|| mimetype->is( QLatin1String("audio/vnd.rn-realvideo") )*/ )
     {
         result = new TagLibExtras::RealMedia::File(fileName, readProperties, propertiesStyle);
     }
@@ -126,8 +126,8 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
         || suffix == QLatin1String("m4b")
         || suffix == QLatin1String("m4p")
         || suffix == QLatin1String("mp4")
-        || suffix == QLatin1String("m4v")
-        || suffix == QLatin1String("mp4v") )
+        /*|| suffix == QLatin1String("m4v")
+        || suffix == QLatin1String("mp4v") */)
     {
         result = new TagLib::MP4::File(fileName, readProperties, propertiesStyle);
     }
@@ -136,7 +136,7 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
         result = new TagLib::RIFF::WAV::File(fileName, readProperties, propertiesStyle);
     }
     else if( suffix == QLatin1String("wma")
-             || suffix == QLatin1String("asf") )
+             /*|| suffix == QLatin1String("asf")*/ )
     {
         result = new TagLib::ASF::File(fileName, readProperties, propertiesStyle);
     }

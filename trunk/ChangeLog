@@ -46,6 +46,8 @@
 31. Add dialog where user can specify artist and title to fetch lyrics - useful
     if automatic fetching fails.
 32. Fix crash in albums model when library updated after albums removed.
+33. Fix filetype resolver so that we dont attmept to read tags from video files
+    (asf/wmv/mp4v) - these seem to crash TagLib.
 
 0.5.1
 -----

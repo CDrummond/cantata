@@ -37,6 +37,7 @@
 #include <QtGui/QInputDialog>
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
+#include <QtGui/QStyle>
 #endif
 
 PlaylistsPage::PlaylistsPage(MainWindow *p)
@@ -282,9 +283,11 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
 {
     if (
         #ifdef ENABLE_KDE_SUPPORT
-        KGlobalSettings::singleClick() ||
+        KGlobalSettings::singleClick()
+        #else
+        style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
         #endif
-        !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
+        || !static_cast<PlaylistsModel::Item *>(proxy.mapToSource(index).internalPointer())->isPlaylist()) {
         QModelIndexList indexes;
         indexes.append(index);
         addItemsToPlayQueue(indexes, false);

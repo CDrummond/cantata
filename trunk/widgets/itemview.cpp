@@ -40,6 +40,12 @@
 #include <KDE/KPixmapSequenceOverlayPainter>
 #endif
 
+#ifdef ENABLE_KDE_SUPPORT
+#define SINGLE_CLICK KGlobalSettings::singleClick()
+#else
+#define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
+#endif
+
 EscapeKeyEventHandler::EscapeKeyEventHandler(QAbstractItemView *v, QAction *a)
     : QObject(v)
     , view(v)
@@ -364,11 +370,9 @@ void ItemView::allowGroupedView()
         groupedView->setAutoExpand(false);
         treeLayout->addWidget(groupedView);
         connect(groupedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
-        #ifdef ENABLE_KDE_SUPPORT
-        if (KGlobalSettings::singleClick()) {
+        if (SINGLE_CLICK) {
             connect(groupedView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
         }
-        #endif
         connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(groupedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
     }
@@ -394,11 +398,9 @@ void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
     connect(listSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(listSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
     connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
-#ifdef ENABLE_KDE_SUPPORT
-    if (KGlobalSettings::singleClick()) {
+    if (SINGLE_CLICK) {
         connect(treeView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
     }
-#endif
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(treeView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(listView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));

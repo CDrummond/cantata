@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-31 20:43+0100\n"
-"PO-Revision-Date: 2012-03-11 21:18+0100\n"
+"PO-Revision-Date: 2012-04-02 20:10+0200\n"
 "Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: es\n"
@@ -845,14 +845,12 @@ msgid "Icon/List"
 msgstr "Icono/Lista"
 
 #: gui/interfacesettings.cpp:84
-#, fuzzy
 msgid "Grouped by 'Album Artist'"
-msgstr "Álbumes agrupados"
+msgstr "Agrupado por \"Artista del álbum\""
 
 #: gui/interfacesettings.cpp:85
-#, fuzzy
 msgid "Grouped under 'Various Artists'"
-msgstr "Varios artistas"
+msgstr "Agrupado bajo \"Varios artistas\""
 
 #. i18n: file: gui/interfacesettings.ui:30
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
@@ -957,7 +955,6 @@ msgid "Repeat"
 msgstr "Repetir"
 
 #: gui/mainwindow.cpp:435
-#, fuzzy
 msgid "Single"
 msgstr "Pistas únicas"
 
@@ -966,6 +963,8 @@ msgid ""
 "When single is activated, playback is stopped after current song, or song is "
 "repeated if the 'repeat' mode is enabled."
 msgstr ""
+"Cuando se activa \"pistas únicas\", la reproducción se detiene tras la canción "
+"actual, o se repite si se activa el modo de repetición."
 
 #: gui/mainwindow.cpp:439
 msgid "Consume"
@@ -976,20 +975,20 @@ msgid ""
 "When consume is activated, a song is removed from the play queue after it "
 "has been played."
 msgstr ""
+"Cuando se activa esta opción, se elimina la canción de la cola de "
+"reproudcción tras su reproducción"
 
 #: gui/mainwindow.cpp:443
-#, fuzzy
 msgid "Locate In Library"
-msgstr "Biblioteca de música local"
+msgstr "Ubicar en biblioteca"
 
 #: gui/mainwindow.cpp:455
 msgid "Edit Tags"
 msgstr "Editar etiquetas"
 
 #: gui/mainwindow.cpp:458
-#, fuzzy
 msgid "Edit Song Tags"
-msgstr "Editar etiquetas"
+msgstr "Editar etiquetas de canciones"
 
 #. i18n: file: gui/interfacesettings.ui:184
 #. i18n: ectx: attribute (title), widget (QWidget, tab_6)
@@ -1419,9 +1418,9 @@ msgid ""
 msgstr ""
 "<i>Si «Artista del álbum» es igual a «Artista» y «Título» tiene el formato "
 "«Artista de pista - Título de pista», el valor para «Artista» se tomará de "
-"«Título», y «Título» se definirá solo con el título de pista. Por ejemplo:"
-"<br/><br/>si «Título» es «Wibble - Wobble», entonces «Artista» se define "
-"como «Wibble», y «Título» se define como «Wobble»</i>"
+"«Título», y «Título» se definirá solo con el título de pista. Por "
+"ejemplo:<br/><br/>si «Título» es «Wibble - Wobble», entonces «Artista» se "
+"define como «Wibble», y «Título» se define como «Wobble»</i>"
 
 #: gui/tageditor.cpp:447
 msgid ""
@@ -1468,6 +1467,13 @@ msgid ""
 "If this search does find new lyrics, these will still be associated with the "
 "original song title and artist as displayed in Cantata."
 msgstr ""
+"Si Cantata no encuentra letras, o encuentra una equivocadas, utilice este "
+"diálogo para introducir detalles de la búsqueda. Por ejemplo, la canción "
+"actual puede ser una versión. Si es así, puede ser útil buscarlas  letras "
+"por el autor original.\n"
+"\n"
+"Si está búsqueda ofrece letras nuevas, seguirán asociadas al título de la "
+"canción y artista original que Cantata muestra. "
 
 #. i18n: file: gui/tageditor.ui:30
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
@@ -1483,7 +1489,7 @@ msgstr "Artista:"
 
 #: lyrics/lyricsdialog.cpp:87
 msgid "Search For Lyrics"
-msgstr ""
+msgstr "Búsqueda de letras"
 
 #: lyrics/lyricsettings.cpp:59
 msgid "(Polish Translations)"
@@ -1498,63 +1504,60 @@ msgid "Refresh"
 msgstr "Actualizar"
 
 #: lyrics/lyricspage.cpp:106
-#, fuzzy
 msgid "Search"
-msgstr "Buscar %1..."
+msgstr "Buscar"
 
 #: lyrics/lyricspage.cpp:108
-#, fuzzy
 msgid "Edit Lyrics"
-msgstr "Letras"
+msgstr "Editar letras"
 
 #: lyrics/lyricspage.cpp:110
-#, fuzzy
 msgid "Save Lyrics"
-msgstr "Letras"
+msgstr "Guardar letras"
 
 #: lyrics/lyricspage.cpp:112
 msgid "Cancel Editing Lyrics"
-msgstr ""
+msgstr "Cancelar edición de letras"
 
 #: lyrics/lyricspage.cpp:114
 msgid "Delete Lyrics File"
-msgstr ""
+msgstr "Eliminar fichero de letras"
 
 #: lyrics/lyricspage.cpp:187 lyrics/lyricspage.cpp:212
 #: lyrics/lyricspage.cpp:288
 msgid "Abort editing of lyrics?"
-msgstr ""
+msgstr "¿Desea interrumpir la edición de letras?"
 
 #: lyrics/lyricspage.cpp:189
 msgid "Delete saved copy of lyrics, and re-download?"
-msgstr ""
+msgstr "¿Desea eliminar y descargar otra vez la copia de las letras?"
 
 #: lyrics/lyricspage.cpp:227
 msgid "Current playing song has changed, still perform search?"
-msgstr ""
+msgstr "La canción en reproducción ha cambiado, ¿quiere realizar la búsqueda?"
 
 #: lyrics/lyricspage.cpp:256
 msgid "Save updated lyrics?"
-msgstr ""
+msgstr "¿Desea guardar las letras actualizadas?"
 
 #: lyrics/lyricspage.cpp:273
-#, fuzzy
 msgid "Failed to save lyrics."
-msgstr "Fallo al crear <b>%1</b>"
+msgstr "Fallo al guardar las letras"
 
 #: lyrics/lyricspage.cpp:304
 msgid "Delete lyrics file?"
-msgstr ""
+msgstr "¿Desea eliminar el fichero de letras?"
 
 #: lyrics/lyricspage.cpp:430
-#, fuzzy
 msgctxt ""
 "<title> by <artist>\n"
 "Fetching lyrics via <url>"
 msgid ""
 "%1 by %2\n"
 "Fetching lyrics via %3"
-msgstr "Obteniendo letras mediante %1"
+msgstr ""
+"%1 por 2%\n"
+"Obteniendo letras mediante %3"
 
 #: lyrics/lyricspage.cpp:440
 msgctxt ""
@@ -1564,12 +1567,13 @@ msgid ""
 "%1 by %2\n"
 "Failed to fetch lyrics"
 msgstr ""
+"%1 by %2\n"
+"Fallo al obtener letras"
 
 #: lyrics/lyricspage.cpp:469
-#, fuzzy
 msgctxt "title, by artist"
 msgid "%1, by %2"
-msgstr "1 día %2"
+msgstr "%1, por %2"
 
 #: main.cpp:116
 msgid "A KDE client for MPD"
@@ -1620,7 +1624,6 @@ msgid "URL to open"
 msgstr "URL a abrir"
 
 #: models/albumsmodel.cpp:258
-#, fuzzy
 msgid ""
 "%1\n"
 "%2 (%3)\n"
@@ -1631,15 +1634,14 @@ msgid_plural ""
 "%4 Tracks (%5)"
 msgstr[0] ""
 "%1\n"
-"%2\n"
-"1 pista (%4)"
+"%2 (%3)\n"
+"1 pista (%5)"
 msgstr[1] ""
 "%1\n"
-"%2\n"
-"%3 pistas (%4)"
+"%2 (%3)\n"
+"%4 pistas (%5)"
 
 #: models/albumsmodel.cpp:260
-#, fuzzy
 msgid ""
 "%1\n"
 "%2\n"
@@ -1655,7 +1657,7 @@ msgstr[0] ""
 msgstr[1] ""
 "%1\n"
 "%2\n"
-"%3 pistas (%4)"
+"Pistas (%4)"
 
 #: models/devicesmodel.cpp:210
 msgid ""
@@ -1767,10 +1769,9 @@ msgid "Artist"
 msgstr "Artista"
 
 #: models/playqueuemodel.cpp:99
-#, fuzzy
 msgctxt "Track Number (#)"
 msgid "#"
-msgstr "#"
+msgstr "Núm."
 
 #: models/playqueuemodel.cpp:100
 msgid "Length"
@@ -2391,23 +2392,20 @@ msgstr "Organizar álbumes:"
 #. i18n: file: gui/interfacesettings.ui:165
 #. i18n: ectx: property (text), item, widget (QComboBox, albumSort)
 #: po/rc.cpp:228 rc.cpp:228
-#, fuzzy
 msgid "Album/Artist"
-msgstr "Artista del álbum"
+msgstr "Álbum/Artista"
 
 #. i18n: file: gui/interfacesettings.ui:170
 #. i18n: ectx: property (text), item, widget (QComboBox, albumSort)
 #: po/rc.cpp:231 rc.cpp:231
-#, fuzzy
 msgid "Artist/Album"
-msgstr "Artista - Álbum"
+msgstr "Artista/Álbum"
 
 #. i18n: file: gui/interfacesettings.ui:175
 #. i18n: ectx: property (text), item, widget (QComboBox, albumSort)
 #: po/rc.cpp:234 rc.cpp:234
-#, fuzzy
 msgid "Artist/Year/Album"
-msgstr "Artista - Álbum"
+msgstr "Artista/Año/Álbum"
 
 #. i18n: file: gui/interfacesettings.ui:203
 #. i18n: ectx: property (text), widget (QLabel, playListsStartClosedLabel)
@@ -2479,7 +2477,7 @@ msgstr "Agrupar álbumes de pista única:"
 #. i18n: ectx: property (text), widget (QLabel, groupMultipleLabel)
 #: po/rc.cpp:285 rc.cpp:285
 msgid "Multiple artist albums:"
-msgstr ""
+msgstr "Álbumes de varios artistas:"
 
 #. i18n: file: gui/interfacesettings.ui:384
 #. i18n: ectx: property (text), widget (QLabel, showDeleteActionLabel)
@@ -2491,13 +2489,13 @@ msgstr "Mostrar la acción de eliminar en el menú contextual:"
 #. i18n: ectx: property (text), widget (QLabel, storeCoversInMpdDirLabel)
 #: po/rc.cpp:291 rc.cpp:291
 msgid "Save downloaded covers in music folder:"
-msgstr ""
+msgstr "Guardar portadas descargadas en el directorio de música:"
 
 #. i18n: file: gui/interfacesettings.ui:414
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:294 rc.cpp:294
 msgid "Save downloaded lyrics in music folder:"
-msgstr ""
+msgstr "Guardar letras descargadas en el directorio de música:"
 
 #. i18n: file: gui/mainwindow.ui:84
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)

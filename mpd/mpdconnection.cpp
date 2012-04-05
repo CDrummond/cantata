@@ -426,9 +426,9 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
 {
     QByteArray send = "command_list_begin\n";
 
-    for (int i = 0; i < items.size(); i++) {
+    foreach (qint32 i, items) {
         send += "deleteid ";
-        send += QByteArray::number(items.at(i));
+        send += QByteArray::number(i);
         send += "\n";
     }
 
@@ -438,10 +438,7 @@ void MPDConnection::removeSongs(const QList<qint32> &items)
 
 void MPDConnection::move(quint32 from, quint32 to)
 {
-    QByteArray send = "move " + QByteArray::number(from) + " " + QByteArray::number(to);
-
-    qDebug() << send;
-    sendCommand(send);
+    sendCommand("move "+QByteArray::number(from)+' '+QByteArray::number(to));
 }
 
 void MPDConnection::move(const QList<quint32> &items, quint32 pos, quint32 size)
@@ -489,11 +486,7 @@ void MPDConnection::shuffle()
 
 void MPDConnection::shuffle(quint32 from, quint32 to)
 {
-    QByteArray command = "shuffle ";
-    command += QByteArray::number(from);
-    command += ":";
-    command += QByteArray::number(to + 1);
-    sendCommand(command);
+    sendCommand("shuffle "+QByteArray::number(from)+':'+QByteArray::number(to+1));
 }
 
 void MPDConnection::currentSong()
@@ -614,16 +607,12 @@ void MPDConnection::playListInfo()
  */
 void MPDConnection::setCrossFade(int secs)
 {
-    QByteArray data = "crossfade ";
-    data += QByteArray::number(secs);
-    sendCommand(data);
+    sendCommand("crossfade "+QByteArray::number(secs));
 }
 
 void MPDConnection::setReplayGain(const QString &v)
 {
-    QByteArray data = "replay_gain_mode ";
-    data += v.toLatin1();
-    sendCommand(data);
+    sendCommand("replay_gain_mode "+v.toLatin1());
 }
 
 void MPDConnection::getReplayGain()
@@ -642,25 +631,24 @@ void MPDConnection::goToNext()
     sendCommand("next");
 }
 
+static inline QByteArray value(bool b)
+{
+    return b ? "1" : "0";
+}
+
 void MPDConnection::setPause(bool toggle)
 {
-    QByteArray data = "pause ";
-    data+=toggle ? "1" : "0";
-    sendCommand(data);
+    sendCommand("pause "+value(toggle));
 }
 
 void MPDConnection::startPlayingSong(quint32 song)
 {
-    QByteArray data = "play ";
-    data += QByteArray::number(song);
-    sendCommand(data);
+    sendCommand("play "+QByteArray::number(song));
 }
 
-void MPDConnection::startPlayingSongId(quint32 song_id)
+void MPDConnection::startPlayingSongId(quint32 songId)
 {
-    QByteArray data = "playid ";
-    data += QByteArray::number(song_id);
-    sendCommand(data);
+    sendCommand("playid "+QByteArray::number(songId));
 }
 
 void MPDConnection::goToPrevious()
@@ -670,55 +658,37 @@ void MPDConnection::goToPrevious()
 
 void MPDConnection::setConsume(bool toggle)
 {
-    QByteArray data = "consume ";
-    data+=toggle ? "1" : "0";
-    sendCommand(data);
+    sendCommand("consume "+value(toggle));
 }
 
 void MPDConnection::setRandom(bool toggle)
 {
-    QByteArray data = "random ";
-    data+=toggle ? "1" : "0";
-    sendCommand(data);
+    sendCommand("random "+value(toggle));
 }
 
 void MPDConnection::setRepeat(bool toggle)
 {
-    QByteArray data = "repeat ";
-    data+=toggle ? "1" : "0";
-    sendCommand(data);
+    sendCommand("repeat "+value(toggle));
 }
 
 void MPDConnection::setSingle(bool toggle)
 {
-    QByteArray data = "single ";
-    data+=toggle ? "1" : "0";
-    sendCommand(data);
+    sendCommand("single "+value(toggle));
 }
 
 void MPDConnection::setSeek(quint32 song, quint32 time)
 {
-    QByteArray data = "seek ";
-    data += QByteArray::number(song);
-    data += " ";
-    data += QByteArray::number(time);
-    sendCommand(data);
+    sendCommand("seek "+QByteArray::number(song)+' '+QByteArray::number(time));
 }
 
-void MPDConnection::setSeekId(quint32 song_id, quint32 time)
+void MPDConnection::setSeekId(quint32 songId, quint32 time)
 {
-    QByteArray data = "seekid ";
-    data += QByteArray::number(song_id);
-    data += " ";
-    data += QByteArray::number(time);
-    sendCommand(data);
+    sendCommand("seekid "+QByteArray::number(songId)+' '+QByteArray::number(time));
 }
 
 void MPDConnection::setVolume(int vol)
 {
-    QByteArray data = "setvol ";
-    data += QByteArray::number(vol);
-    sendCommand(data);
+    sendCommand("setvol "+QByteArray::number(vol));
 }
 
 void MPDConnection::stopPlaying()
@@ -841,16 +811,12 @@ void MPDConnection::outputs()
 
 void MPDConnection::enableOutput(int id)
 {
-    QByteArray data = "enableoutput ";
-    data += QByteArray::number(id);
-    sendCommand(data);
+    sendCommand("enableoutput "+QByteArray::number(id));
 }
 
 void MPDConnection::disableOutput(int id)
 {
-    QByteArray data = "disableoutput ";
-    data += QByteArray::number(id);
-    sendCommand(data);
+    sendCommand("disableoutput "+QByteArray::number(id));
 }
 
 /*
@@ -919,9 +885,7 @@ void MPDConnection::listPlaylists()
 void MPDConnection::playlistInfo(const QString &name)
 {
     TF_DEBUG
-    QByteArray data = "listplaylistinfo ";
-    data += encodeName(name);
-    Response response=sendCommand(data);
+    Response response=sendCommand("listplaylistinfo "+encodeName(name));
     if (response.ok) {
         emit playlistInfoRetrieved(name, MPDParseUtils::parseSongs(response.data));
     }
@@ -934,22 +898,14 @@ void MPDConnection::loadPlaylist(const QString &name, bool replace)
         getStatus();
     }
 
-    QByteArray data("load ");
-    data += encodeName(name);
-
-    if (sendCommand(data).ok) {
+    if (sendCommand("load "+encodeName(name)).ok) {
         emit playlistLoaded(name);
     }
 }
 
 void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
 {
-    QByteArray data("rename ");
-    data += encodeName(oldName);
-    data += " ";
-    data += encodeName(newName);
-
-    if (sendCommand(data, false).ok) {
+    if (sendCommand("rename "+encodeName(oldName)+' '+encodeName(newName), false).ok) {
         emit playlistRenamed(oldName, newName);
     } else {
         #ifdef ENABLE_KDE_SUPPORT
@@ -962,17 +918,12 @@ void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
 
 void MPDConnection::removePlaylist(const QString &name)
 {
-    QByteArray data("rm ");
-    data += encodeName(name);
-    sendCommand(data);
+    sendCommand("rm "+encodeName(name));
 }
 
 void MPDConnection::savePlaylist(const QString &name)
 {
-    QByteArray data("save ");
-    data += encodeName(name);
-
-    if (!sendCommand(data, false).ok) {
+    if (!sendCommand("save "+encodeName(name), false).ok) {
         #ifdef ENABLE_KDE_SUPPORT
         emit error(i18n("Failed to save <b>%1</b>").arg(name));
         #else

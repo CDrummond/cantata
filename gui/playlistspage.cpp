@@ -204,6 +204,7 @@ void PlaylistsPage::removeItems()
         return;
     }
 
+    #if 0
     #ifdef ENABLE_KDE_SUPPORT
     if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected items?"), i18n("Remove?"))) {
         return;
@@ -213,6 +214,7 @@ void PlaylistsPage::removeItems()
                                               QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
         return;
     }
+    #endif
     #endif
 
     foreach (const QString &pl, remPlaylists) {

@@ -1023,28 +1023,25 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32>
 
     QByteArray encodedName=encodeName(name);
     QList<quint32> sorted=positions;
+    QList<quint32> removed;
 
     qSort(sorted);
-    QList<quint32> fixedPositions;
-    QMap<quint32, quint32> map;
-    bool ok=true;
 
-    for (int i=0; i<sorted.count(); ++i) {
-        fixedPositions << (sorted.at(i)-i);
-    }
-    for (int i=0; i<fixedPositions.count(); ++i) {
+    for (int i=sorted.count()-1; i>=0; --i) {
+        quint32 idx=sorted.at(i);
         QByteArray data = "playlistdelete ";
         data += encodedName;
         data += " ";
-        data += QByteArray::number(fixedPositions.at(i));
-        if (!sendCommand(data).ok) {
-            ok=false;
+        data += QByteArray::number(idx);
+        if (sendCommand(data).ok) {
+            removed.append(idx);
+        } else {
             break;
         }
     }
 
-    if (ok) {
-        emit removedFromPlaylist(name, positions);
+    if (removed.count()) {
+        emit removedFromPlaylist(name, removed);
     }
 //     playlistInfo(name);
 }

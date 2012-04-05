@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-31 20:43+0100\n"
-"PO-Revision-Date: 2012-03-09 21:20+0100\n"
+"PO-Revision-Date: 2012-04-01 17:02+0200\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -836,14 +836,12 @@ msgid "Icon/List"
 msgstr "Ikona/Seznam"
 
 #: gui/interfacesettings.cpp:84
-#, fuzzy
 msgid "Grouped by 'Album Artist'"
-msgstr "Seskupená alba"
+msgstr "Seskupeno podle Umělec alba"
 
 #: gui/interfacesettings.cpp:85
-#, fuzzy
 msgid "Grouped under 'Various Artists'"
-msgstr "Různí umělci"
+msgstr "Seskupeno podle Různí umělci"
 
 #. i18n: file: gui/interfacesettings.ui:30
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
@@ -948,39 +946,41 @@ msgid "Repeat"
 msgstr "Opakovat"
 
 #: gui/mainwindow.cpp:435
-#, fuzzy
 msgid "Single"
-msgstr "Jednotlivé skladby"
+msgstr "Jednotlivé"
 
 #: gui/mainwindow.cpp:436
 msgid ""
 "When single is activated, playback is stopped after current song, or song is "
 "repeated if the 'repeat' mode is enabled."
 msgstr ""
+"Když jsou zapnuty jednotlivé, je přehrávání zastaveno po nynější písni, nebo "
+"je píseň opakována, pokud je povolen režim opakování."
 
 #: gui/mainwindow.cpp:439
 msgid "Consume"
-msgstr "Strávit"
+msgstr "Sníst"
 
 #: gui/mainwindow.cpp:440
 msgid ""
 "When consume is activated, a song is removed from the play queue after it "
 "has been played."
 msgstr ""
+"Když je zapnuto snězení, píseň je odstraněna z řady skladeb k přehrání, poté "
+"co "
+"byla přehrána"
 
 #: gui/mainwindow.cpp:443
-#, fuzzy
 msgid "Locate In Library"
-msgstr "Místní hudební knihovna"
+msgstr "Najít v knihovně"
 
 #: gui/mainwindow.cpp:455
 msgid "Edit Tags"
 msgstr "Upravit značky"
 
 #: gui/mainwindow.cpp:458
-#, fuzzy
 msgid "Edit Song Tags"
-msgstr "Upravit značky"
+msgstr "Upravit značky písně"
 
 #. i18n: file: gui/interfacesettings.ui:184
 #. i18n: ectx: attribute (title), widget (QWidget, tab_6)
@@ -990,7 +990,7 @@ msgstr "Seznamy"
 
 #: gui/mainwindow.cpp:473 gui/preferencesdialog.cpp:116
 msgid "Lyrics"
-msgstr "Text písně"
+msgstr "Slova písně"
 
 #: gui/mainwindow.cpp:476 gui/streamspage.cpp:95
 msgid "Streams"
@@ -1456,6 +1456,13 @@ msgid ""
 "If this search does find new lyrics, these will still be associated with the "
 "original song title and artist as displayed in Cantata."
 msgstr ""
+"Pokud se Cantatě nepodařilo najít slova písně, nebo našla špatná, použijte "
+"tento dialog pro zadání nových podrobností hledání. Například může být "
+"nynější píseň ve skutečnosti přezpívaná verze. Je-li tomu tak, může pomoci "
+"hledání slov písně podle původního umělce.\n"
+"\n"
+"Pokud toto vyhledávání nenalezne nová slova, tato pořád budou spojena s "
+"původním názvem písně a umělcem, jak je zobrazen v Cantatě."
 
 #. i18n: file: gui/tageditor.ui:30
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
@@ -1471,7 +1478,7 @@ msgstr "Umělec:"
 
 #: lyrics/lyricsdialog.cpp:87
 msgid "Search For Lyrics"
-msgstr ""
+msgstr "Hledat slova písně"
 
 #: lyrics/lyricsettings.cpp:59
 msgid "(Polish Translations)"
@@ -1486,63 +1493,60 @@ msgid "Refresh"
 msgstr "Obnovit"
 
 #: lyrics/lyricspage.cpp:106
-#, fuzzy
 msgid "Search"
-msgstr "Hledání %1..."
+msgstr "Hledat"
 
 #: lyrics/lyricspage.cpp:108
-#, fuzzy
 msgid "Edit Lyrics"
-msgstr "Text písně"
+msgstr "Upravit slova písně"
 
 #: lyrics/lyricspage.cpp:110
-#, fuzzy
 msgid "Save Lyrics"
-msgstr "Text písně"
+msgstr "Uložit slova písně"
 
 #: lyrics/lyricspage.cpp:112
 msgid "Cancel Editing Lyrics"
-msgstr ""
+msgstr "Zrušit upravování slov písně"
 
 #: lyrics/lyricspage.cpp:114
 msgid "Delete Lyrics File"
-msgstr ""
+msgstr "Smazat soubor se slovy písně"
 
 #: lyrics/lyricspage.cpp:187 lyrics/lyricspage.cpp:212
 #: lyrics/lyricspage.cpp:288
 msgid "Abort editing of lyrics?"
-msgstr ""
+msgstr "Zrušit upravování slov písně?"
 
 #: lyrics/lyricspage.cpp:189
 msgid "Delete saved copy of lyrics, and re-download?"
-msgstr ""
+msgstr "Smazat uloženou kopii slov písně a stáhnout znovu?"
 
 #: lyrics/lyricspage.cpp:227
 msgid "Current playing song has changed, still perform search?"
-msgstr ""
+msgstr "Nyní hrající píseň se změnila. Pořád ještě provést hledání?"
 
 #: lyrics/lyricspage.cpp:256
 msgid "Save updated lyrics?"
-msgstr ""
+msgstr "Uložit obnovená slova písně?"
 
 #: lyrics/lyricspage.cpp:273
-#, fuzzy
 msgid "Failed to save lyrics."
-msgstr "Nepodařilo se uložit <b>%1</b>!"
+msgstr "Nepodařilo se uložit slova písně"
 
 #: lyrics/lyricspage.cpp:304
 msgid "Delete lyrics file?"
-msgstr ""
+msgstr "Smazat soubor se slovy písně?"
 
 #: lyrics/lyricspage.cpp:430
-#, fuzzy
 msgctxt ""
 "<title> by <artist>\n"
 "Fetching lyrics via <url>"
 msgid ""
 "%1 by %2\n"
 "Fetching lyrics via %3"
-msgstr "Natahuje se text písně přes %1"
+msgstr ""
+"%1 od %2\n"
+"Natahují se slova písně přes %3"
 
 #: lyrics/lyricspage.cpp:440
 msgctxt ""
@@ -1552,12 +1556,13 @@ msgid ""
 "%1 by %2\n"
 "Failed to fetch lyrics"
 msgstr ""
+"%1 od %2\n"
+"Nepodařilo se natáhnout slova písně"
 
 #: lyrics/lyricspage.cpp:469
-#, fuzzy
 msgctxt "title, by artist"
 msgid "%1, by %2"
-msgstr "Jeden den %2"
+msgstr "%1, od %2"
 
 #: main.cpp:116
 msgid "A KDE client for MPD"
@@ -1608,7 +1613,6 @@ msgid "URL to open"
 msgstr "Adresa (URL) k otevření"
 
 #: models/albumsmodel.cpp:258
-#, fuzzy
 msgid ""
 "%1\n"
 "%2 (%3)\n"
@@ -1619,19 +1623,18 @@ msgid_plural ""
 "%4 Tracks (%5)"
 msgstr[0] ""
 "%1\n"
-"%2\n"
-"1 skladba (%4)"
+"%2 (%3)\n"
+"1 skladba (%5)"
 msgstr[1] ""
 "%1\n"
-"%2\n"
-"%3 skladby (%4)"
+"%2 (%3)\n"
+"%4 skladby (%5)"
 msgstr[2] ""
 "%1\n"
-"%2\n"
-"%3 skladeb (%4)"
+"%2 (%3)\n"
+"%4 skladeb (%5)"
 
 #: models/albumsmodel.cpp:260
-#, fuzzy
 msgid ""
 "%1\n"
 "%2\n"
@@ -1647,11 +1650,11 @@ msgstr[0] ""
 msgstr[1] ""
 "%1\n"
 "%2\n"
-"%3 skladby (%4)"
+" Skladby (%4)"
 msgstr[2] ""
 "%1\n"
 "%2\n"
-"%3 skladeb (%4)"
+" Skladeb (%4)"
 
 #: models/devicesmodel.cpp:210
 msgid ""
@@ -1781,7 +1784,6 @@ msgid "Artist"
 msgstr "Umělec"
 
 #: models/playqueuemodel.cpp:99
-#, fuzzy
 msgctxt "Track Number (#)"
 msgid "#"
 msgstr "#"
@@ -2406,23 +2408,20 @@ msgstr "Třídit alba:"
 #. i18n: file: gui/interfacesettings.ui:165
 #. i18n: ectx: property (text), item, widget (QComboBox, albumSort)
 #: po/rc.cpp:228 rc.cpp:228
-#, fuzzy
 msgid "Album/Artist"
-msgstr "Umělec alba"
+msgstr "Album/Umělec"
 
 #. i18n: file: gui/interfacesettings.ui:170
 #. i18n: ectx: property (text), item, widget (QComboBox, albumSort)
 #: po/rc.cpp:231 rc.cpp:231
-#, fuzzy
 msgid "Artist/Album"
-msgstr "Umělec - Album"
+msgstr "Umělec/Album"
 
 #. i18n: file: gui/interfacesettings.ui:175
 #. i18n: ectx: property (text), item, widget (QComboBox, albumSort)
 #: po/rc.cpp:234 rc.cpp:234
-#, fuzzy
 msgid "Artist/Year/Album"
-msgstr "Umělec - Album"
+msgstr "Umělec/Rok/Album"
 
 #. i18n: file: gui/interfacesettings.ui:203
 #. i18n: ectx: property (text), widget (QLabel, playListsStartClosedLabel)
@@ -2494,7 +2493,7 @@ msgstr "Seskupit alba s jednotlivými skladbami:"
 #. i18n: ectx: property (text), widget (QLabel, groupMultipleLabel)
 #: po/rc.cpp:285 rc.cpp:285
 msgid "Multiple artist albums:"
-msgstr ""
+msgstr "Alba s více umělci:"
 
 #. i18n: file: gui/interfacesettings.ui:384
 #. i18n: ectx: property (text), widget (QLabel, showDeleteActionLabel)
@@ -2506,13 +2505,13 @@ msgstr "Ukázat krok pro smazání v souvisejících nabídkách:"
 #. i18n: ectx: property (text), widget (QLabel, storeCoversInMpdDirLabel)
 #: po/rc.cpp:291 rc.cpp:291
 msgid "Save downloaded covers in music folder:"
-msgstr ""
+msgstr "Uložit stažené obaly ve složce s hudbou:"
 
 #. i18n: file: gui/interfacesettings.ui:414
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:294 rc.cpp:294
 msgid "Save downloaded lyrics in music folder:"
-msgstr ""
+msgstr "Uložit stažená slova písně ve složce s hudbou:"
 
 #. i18n: file: gui/mainwindow.ui:84
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)

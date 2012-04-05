@@ -985,7 +985,7 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32>
         data += " ";
         data += QByteArray::number(idx);
         if (sendCommand(data).ok) {
-            removed.append(idx);
+            removed.prepend(idx);
         } else {
             break;
         }

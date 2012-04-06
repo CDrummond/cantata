@@ -399,6 +399,7 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
             else if (QLatin1String("Track")==element) {
                 song.title=attributes.value("name").toString();
                 song.file=attributes.value("file").toString();
+                song.genre=attributes.value("genre").toString();
                 if (!pathAppend.isEmpty()) {
                     song.file=pathAppend+song.file;
                 }

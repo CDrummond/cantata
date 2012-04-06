@@ -402,6 +402,7 @@ void MusicLibraryModel::addSongToList(const Song &s)
     beginInsertRows(createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), albumItem->childCount(), albumItem->childCount());
     MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
     albumItem->append(songItem);
+    rootItem->addGenre(s.genre);
     endInsertRows();
 }
 

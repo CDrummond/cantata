@@ -362,10 +362,12 @@ void PlaylistsPage::controlActions()
 
 void PlaylistsPage::searchItems()
 {
-    bool updated=proxy.update(view->searchText().trimmed(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
-    if (proxy.enabled()) {
+    QString text=view->searchText().trimmed();
+    bool updated=proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+    if (proxy.enabled() && !text.isEmpty()) {
         view->expandAll();
-    } else if(updated) {
+    }
+    if(updated) {
         view->updateRows();
     }
 }

@@ -262,6 +262,7 @@ private:
 
     // The three items are used so that we can do quick playqueue updates...
     QList<qint32> playQueueIds;
+    QSet<qint32> streamIds;
     quint32 lastStatusPlayQueueVersion;
     quint32 lastUpdatePlayQueueVersion;
 

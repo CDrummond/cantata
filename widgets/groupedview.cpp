@@ -170,8 +170,8 @@ public:
         }
         QString title;
         QString track;
-        QString duration=Song::formattedTime(song.time);
-        bool stream=!isCollection && song.isStream();
+        QString duration=song.time>0 ? Song::formattedTime(song.time) : QString();
+        bool stream=!isCollection && (song.isStream() && !song.isCantataStream());
         QString trackTitle=!song.albumartist.isEmpty() && song.albumartist != song.artist
                     ? song.title + " - " + song.artist
                     : song.title;
@@ -185,27 +185,46 @@ public:
         if (isCollection) {
             title=index.data(Qt::DisplayRole).toString();
         } else if (AlbumHeader==type) {
-            QString album=song.album;
+            if (stream) {
+                #ifdef ENABLE_KDE_SUPPORT
+                title=i18n("Streams");
+                #else
+                title=tr("Streams");
+                #endif
+                if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
+                    track=song.title.isEmpty() && song.name.isEmpty() ? song.file : (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
+                } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
+                    track=song.artist + " - " + (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
+                } else {
+                    track=trackTitle;
+                }
+            } else {
+                QString album=song.album;
 
-            if (stream && album.isEmpty() && song.albumArtist().isEmpty()) {
-                title=song.file;
-                if (song.title.isEmpty()) {
-                    trackTitle=QString();
+                if (song.year>0) {
+                    album+=QString(" (%1)").arg(song.year);
+                }
+                if (title.isEmpty()) {
+                    #ifdef ENABLE_KDE_SUPPORT
+                    title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
+                    #else
+                    title=tr("%1 - %2").arg(song.albumArtist()).arg(album);
+                    #endif
+                    track=formatNumber(song.track)+QChar(' ')+trackTitle;
                 }
             }
-            if (song.year>0) {
-                album+=QString(" (%1)").arg(song.year);
-            }
-            if (title.isEmpty()) {
-                #ifdef ENABLE_KDE_SUPPORT
-                title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
-                #else
-                title=tr("%1 - %2").arg(song.albumArtist()).arg(album);
-                #endif
+        } else {
+            if (stream) {
+                if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
+                    track=song.title.isEmpty() && song.name.isEmpty() ? song.file : (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
+                } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
+                    track=song.artist + " - " + (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
+                } else {
+                    track=trackTitle;
+                }
+            } else {
                 track=formatNumber(song.track)+QChar(' ')+trackTitle;
             }
-        } else {
-            track=formatNumber(song.track)+QChar(' ')+trackTitle;
         }
 
         painter->save();
@@ -235,7 +254,7 @@ public:
         }
 
         painter->setPen(col);
-        bool showTrackDuration=true;
+        bool showTrackDuration=!duration.isEmpty();
 
         if (isCollection || AlbumHeader==type) {
             QPixmap pix;
@@ -254,7 +273,8 @@ public:
                 painter->drawPixmap(r.x()-2, r.y()+((r.height()-pix.height())/2), pix.width(), pix.height(), pix);
                 r.adjust(constCoverSize+constBorder, 0, 0, 0);
             }
-            QString totalDuration=Song::formattedTime(index.data(GroupedView::Role_AlbumDuration).toUInt());
+            int td=index.data(GroupedView::Role_AlbumDuration).toUInt();
+            QString totalDuration=td>0 ? Song::formattedTime(td) : QString();
             QRect duratioRect(r.x(), r.y(), r.width(), textHeight);
             int totalDurationWidth=fm.width(totalDuration)+8;
             QRect textRect(r.x(), r.y(), r.width()-totalDurationWidth, textHeight);
@@ -264,7 +284,9 @@ public:
             title = QFontMetrics(tf).elidedText(title, Qt::ElideRight, textRect.width(), QPalette::WindowText);
             painter->setFont(tf);
             painter->drawText(textRect, title, textOpt);
-            painter->drawText(duratioRect, totalDuration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
+            if (!totalDuration.isEmpty()) {
+                painter->drawText(duratioRect, totalDuration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
+            }
             drawFadedLine(painter, r.adjusted(0, (r.height()/2)-1, 0, 0), col);
             r.adjust(0, textHeight+constBorder, 0, 0);
             r=QRect(r.x(), r.y()+r.height()-(textHeight+1), r.width(), textHeight);

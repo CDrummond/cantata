@@ -569,10 +569,12 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
     currentSongId = id;
 
     if (-1!=oldIndex) {
-        emit dataChanged(index(getRowById(oldIndex), 0), index(getRowById(oldIndex), columnCount(QModelIndex())-1));
+        int row=getRowById(oldIndex);
+        emit dataChanged(index(row, 0), index(row, columnCount(QModelIndex())-1));
     }
 
-    emit dataChanged(index(getRowById(currentSongId), 0), index(getRowById(currentSongId), columnCount(QModelIndex())-1));
+    int row=getRowById(currentSongId);
+    emit dataChanged(index(row, 0), index(row, columnCount(QModelIndex())-1));
 }
 
 void PlayQueueModel::clear()
@@ -648,6 +650,9 @@ void PlayQueueModel::update(const QList<Song> &songList)
                 s=curentSongAtPos;
             } else {
                 songs.replace(i, s);
+                if (s.name!=curentSongAtPos.name || s.title!=curentSongAtPos.title || s.artist!=curentSongAtPos.artist) {
+                    emit dataChanged(index(i, 0), index(i, columnCount(QModelIndex())-1));
+                }
             }
 
             artists.insert(s.artist);

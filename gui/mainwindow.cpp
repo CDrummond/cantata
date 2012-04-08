@@ -1576,7 +1576,7 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     current=song;
 
-    if (current.file.startsWith("http") && HttpServer::self()->isOurs(current.file)) {
+    if (current.isCantataStream()) {
         Song mod=HttpServer::self()->decodeUrl(current.file);
         if (!mod.title.isEmpty()) {
             current=mod;

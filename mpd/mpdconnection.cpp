@@ -529,6 +529,7 @@ void MPDConnection::playListChanges()
                 QList<Song> songs;
                 QList<qint32> ids;
                 QSet<qint32> prevIds=playQueueIds.toSet();
+                QSet<qint32> strmIds;
 
                 foreach (const MPDParseUtils::IdPos &idp, changes) {
                     if (first) {
@@ -540,11 +541,14 @@ void MPDConnection::playListChanges()
                                 s.id=playQueueIds.at(i);
                                 songs.append(s);
                                 ids.append(s.id);
+                                if (streamIds.contains(s.id)) {
+                                    strmIds.insert(s.id);
+                                }
                             }
                         }
                     }
 
-                    if (prevIds.contains(idp.id)) {
+                    if (prevIds.contains(idp.id) && !streamIds.contains(idp.id)) {
                         Song s;
                         s.id=idp.id;
 //                         s.pos=idp.pos;
@@ -563,11 +567,14 @@ void MPDConnection::playListChanges()
                         s.id=idp.id;
 //                         s.pos=idp.pos;
                         songs.append(s);
+                        if (s.isStream() && !s.isCantataStream()) {
+                            strmIds.insert(s.id);
+                        }
                     }
                     ids.append(idp.id);
                 }
 
-                // Dont think this sectio nis ever called, bu leave here to be safe!!!
+                // Dont think this section is ever called, but leave here to be safe!!!
                 // For some reason if we have 10 songs in our playlist and we move pos 2 to pos 1, MPD sends all ids from pos 1 onwards
                 if (firstPos+changes.size()<sv.playlistLength && (sv.playlistLength<=(unsigned int)playQueueIds.length())) {
                     for (quint32 i=firstPos+changes.size(); i<sv.playlistLength; ++i) {
@@ -575,10 +582,14 @@ void MPDConnection::playListChanges()
                         s.id=playQueueIds.at(i);
                         songs.append(s);
                         ids.append(s.id);
+                        if (s.isStream() && !s.isCantataStream()) {
+                            strmIds.insert(s.id);
+                        }
                     }
                 }
 
                 playQueueIds=ids;
+                streamIds=strmIds;
                 emit playlistUpdated(songs);
                 return;
             }
@@ -595,8 +606,12 @@ void MPDConnection::playListInfo()
         lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion;
         QList<Song> songs=MPDParseUtils::parseSongs(response.data);
         playQueueIds.clear();
+        streamIds.clear();
         foreach (const Song &s, songs) {
             playQueueIds.append(s.id);
+            if (s.isStream() && !s.isCantataStream()) {
+                streamIds.insert(s.id);
+            }
         }
         emit playlistUpdated(songs);
     }

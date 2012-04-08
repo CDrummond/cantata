@@ -261,7 +261,7 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
         if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:")) {
             Song song=parseSong(line);
 
-            if (song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
+            if (song.isCantataStream()) {
                 Song mod=HttpServer::self()->decodeUrl(song.file);
                 if (!mod.title.isEmpty()) {
                     mod.id=song.id;

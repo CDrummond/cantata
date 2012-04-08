@@ -28,6 +28,7 @@
 #include "song.h"
 #include "mpdparseutils.h"
 #include "musiclibraryitemalbum.h"
+#include "httpserver.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #else
@@ -139,12 +140,17 @@ void Song::setKey()
     static quint16 currentKey=0;
     static QMap<QString, quint16> keys;
 
+    if (isStream() && !isCantataStream()) {
+        key=0;
+        return;
+    }
+
     QString albumAndArtist=albumArtist()+QLatin1String("::")+album;
     QMap<QString, quint16>::ConstIterator it=keys.find(albumAndArtist);
     if (it!=keys.end()) {
         key=it.value();
     } else {
-        currentKey++;
+        currentKey++; // Key 0 is for streams, so we need to increment before setting...
         keys.insert(albumAndArtist, currentKey);
         key=currentKey;
     }
@@ -313,4 +319,9 @@ bool Song::capitalise()
     title=capitalize(title);
 
     return artist!=origArtist || albumartist!=origAlbumArtist || album!=origAlbum || title!=origTitle;
+}
+
+bool Song::isCantataStream() const
+{
+    return !file.isEmpty() && file.startsWith("http") && HttpServer::self()->isOurs(file);
 }

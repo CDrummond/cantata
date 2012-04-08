@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-31 20:43+0100\n"
-"PO-Revision-Date: 2012-03-10 21:59+0100\n"
+"PO-Revision-Date: 2012-04-08 12:02+0200\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
@@ -844,14 +844,12 @@ msgid "Icon/List"
 msgstr "Ikony/Lista"
 
 #: gui/interfacesettings.cpp:84
-#, fuzzy
 msgid "Grouped by 'Album Artist'"
-msgstr "Grupuj Albumy"
+msgstr "Pogrupowane według 'Artysta albumu'"
 
 #: gui/interfacesettings.cpp:85
-#, fuzzy
 msgid "Grouped under 'Various Artists'"
-msgstr "Various Artists"
+msgstr "Pogrupowane według 'Various Artists'"
 
 #. i18n: file: gui/interfacesettings.ui:30
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
@@ -956,15 +954,16 @@ msgid "Repeat"
 msgstr "Powtarzaj"
 
 #: gui/mainwindow.cpp:435
-#, fuzzy
 msgid "Single"
-msgstr "Pojedyncze utwory"
+msgstr "Tryb pojedynczy"
 
 #: gui/mainwindow.cpp:436
 msgid ""
 "When single is activated, playback is stopped after current song, or song is "
 "repeated if the 'repeat' mode is enabled."
 msgstr ""
+"Gdy tryb pojedynczy jest aktywny, odtwarzanie jest zatrzymywane po obecnym "
+"utworze, albo utwór jest zapętlany gdy tryb 'powtarzaj' jest włączony."
 
 #: gui/mainwindow.cpp:439
 msgid "Consume"
@@ -975,20 +974,20 @@ msgid ""
 "When consume is activated, a song is removed from the play queue after it "
 "has been played."
 msgstr ""
+"Gdy tryb konsumowania jest aktywny, obecny utwór jest usuwany z kolejki po "
+"jego zakończeniu."
 
 #: gui/mainwindow.cpp:443
-#, fuzzy
 msgid "Locate In Library"
-msgstr "Lokalna biblioteka muzyki"
+msgstr "Znajdź w bibliotece"
 
 #: gui/mainwindow.cpp:455
 msgid "Edit Tags"
 msgstr "Edytuj tagi"
 
 #: gui/mainwindow.cpp:458
-#, fuzzy
 msgid "Edit Song Tags"
-msgstr "Edytuj tagi"
+msgstr "Edytuj tagi utworów"
 
 #. i18n: file: gui/interfacesettings.ui:184
 #. i18n: ectx: attribute (title), widget (QWidget, tab_6)
@@ -1468,6 +1467,14 @@ msgid ""
 "If this search does find new lyrics, these will still be associated with the "
 "original song title and artist as displayed in Cantata."
 msgstr ""
+"Jeśli Cantata nie może znaleźć tekstów, albo znalazła nieprawidłowe, to można "
+"użyć tego okna dialogowego do wprowadzenia nowych parametrów wyszukiwania. Na "
+"przykład, obecny utwór może być coverem - jeśli tak, to wyszukiwanie tekstu "
+"według oryginalnego artysty może pomóc.\n"
+"\n"
+"Jeśli to wyszukiwanie się powiedzie, to znalezione teksty zostaną "
+"przyporządkowane oryginalnemu utworowi i artyście, tak jak jest to "
+"wyświetlane w Cantacie."
 
 #. i18n: file: gui/tageditor.ui:30
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
@@ -1483,7 +1490,7 @@ msgstr "Artysta:"
 
 #: lyrics/lyricsdialog.cpp:87
 msgid "Search For Lyrics"
-msgstr ""
+msgstr "Szukaj tekstów"
 
 #: lyrics/lyricsettings.cpp:59
 msgid "(Polish Translations)"
@@ -1498,63 +1505,61 @@ msgid "Refresh"
 msgstr "Odśwież"
 
 #: lyrics/lyricspage.cpp:106
-#, fuzzy
 msgid "Search"
-msgstr "Szukaj w: %1..."
+msgstr "Szukaj"
 
 #: lyrics/lyricspage.cpp:108
-#, fuzzy
 msgid "Edit Lyrics"
-msgstr "Teksty"
+msgstr "Edytuj teksty"
 
 #: lyrics/lyricspage.cpp:110
-#, fuzzy
 msgid "Save Lyrics"
-msgstr "Teksty"
+msgstr "Zapisz teksty"
 
 #: lyrics/lyricspage.cpp:112
 msgid "Cancel Editing Lyrics"
-msgstr ""
+msgstr "Anuluj edycję tekstów"
 
 #: lyrics/lyricspage.cpp:114
 msgid "Delete Lyrics File"
-msgstr ""
+msgstr "Usuń plik z tekstami"
 
 #: lyrics/lyricspage.cpp:187 lyrics/lyricspage.cpp:212
 #: lyrics/lyricspage.cpp:288
 msgid "Abort editing of lyrics?"
-msgstr ""
+msgstr "Przerwać edycję tekstów?"
 
 #: lyrics/lyricspage.cpp:189
 msgid "Delete saved copy of lyrics, and re-download?"
-msgstr ""
+msgstr "Usunąć zapisaną kopię tekstów i pobrać ponownie?"
 
 #: lyrics/lyricspage.cpp:227
 msgid "Current playing song has changed, still perform search?"
 msgstr ""
+"Obecnie odtwarzany utwór uległ zmianie. Czy nadal wykonać wyszukiwanie?"
 
 #: lyrics/lyricspage.cpp:256
 msgid "Save updated lyrics?"
-msgstr ""
+msgstr "Zapisać uaktualnione teksty?"
 
 #: lyrics/lyricspage.cpp:273
-#, fuzzy
 msgid "Failed to save lyrics."
-msgstr "Zapisanie <b>%1</b> nie powiodło się"
+msgstr "Zapisanie tekstów nie powiodło się."
 
 #: lyrics/lyricspage.cpp:304
 msgid "Delete lyrics file?"
-msgstr ""
+msgstr "Usunąć plik z tekstami?"
 
 #: lyrics/lyricspage.cpp:430
-#, fuzzy
 msgctxt ""
 "<title> by <artist>\n"
 "Fetching lyrics via <url>"
 msgid ""
 "%1 by %2\n"
 "Fetching lyrics via %3"
-msgstr "Pobieranie tekstów z %1"
+msgstr ""
+"%1 w wykonaniu %2\n"
+"Pobieranie utworów z %3"
 
 #: lyrics/lyricspage.cpp:440
 msgctxt ""
@@ -1564,12 +1569,13 @@ msgid ""
 "%1 by %2\n"
 "Failed to fetch lyrics"
 msgstr ""
+"%1 w wykonaniu %2\n"
+"Wyszukiwanie tekstów nie powiodło się"
 
 #: lyrics/lyricspage.cpp:469
-#, fuzzy
 msgctxt "title, by artist"
 msgid "%1, by %2"
-msgstr "1 dzień %2"
+msgstr "%1, w wykonaniu  %2"
 
 #: main.cpp:116
 msgid "A KDE client for MPD"
@@ -1620,7 +1626,6 @@ msgid "URL to open"
 msgstr "URL do otwarcia"
 
 #: models/albumsmodel.cpp:258
-#, fuzzy
 msgid ""
 "%1\n"
 "%2 (%3)\n"
@@ -1631,19 +1636,18 @@ msgid_plural ""
 "%4 Tracks (%5)"
 msgstr[0] ""
 "%1\n"
-"%2\n"
-"1 Utwór (%4)"
+"%2 (%3)\n"
+"1 Utwór (%5)"
 msgstr[1] ""
 "%1\n"
-"%2\n"
-"%3 Utwory (%4)"
+"%2 (%3)\n"
+"%4 Utwory (%5)"
 msgstr[2] ""
 "%1\n"
-"%2\n"
-"%3 Utworów (%4)"
+"%2 (%3)\n"
+"%4 Utworów (%5)"
 
 #: models/albumsmodel.cpp:260
-#, fuzzy
 msgid ""
 "%1\n"
 "%2\n"
@@ -1659,11 +1663,11 @@ msgstr[0] ""
 msgstr[1] ""
 "%1\n"
 "%2\n"
-"%3 Utwory (%4)"
+" Utwory (%4)"
 msgstr[2] ""
 "%1\n"
 "%2\n"
-"%3 Utworów (%4)"
+" Utworów (%4)"
 
 #: models/devicesmodel.cpp:210
 msgid ""
@@ -1793,7 +1797,6 @@ msgid "Artist"
 msgstr "Artysta"
 
 #: models/playqueuemodel.cpp:99
-#, fuzzy
 msgctxt "Track Number (#)"
 msgid "#"
 msgstr "#"
@@ -2420,23 +2423,20 @@ msgstr "Sortuj albumy:"
 #. i18n: file: gui/interfacesettings.ui:165
 #. i18n: ectx: property (text), item, widget (QComboBox, albumSort)
 #: po/rc.cpp:228 rc.cpp:228
-#, fuzzy
 msgid "Album/Artist"
-msgstr "Artysta albumu"
+msgstr "Album/Artysta"
 
 #. i18n: file: gui/interfacesettings.ui:170
 #. i18n: ectx: property (text), item, widget (QComboBox, albumSort)
 #: po/rc.cpp:231 rc.cpp:231
-#, fuzzy
 msgid "Artist/Album"
-msgstr "Artysta - Album"
+msgstr "Artysta/Album"
 
 #. i18n: file: gui/interfacesettings.ui:175
 #. i18n: ectx: property (text), item, widget (QComboBox, albumSort)
 #: po/rc.cpp:234 rc.cpp:234
-#, fuzzy
 msgid "Artist/Year/Album"
-msgstr "Artysta - Album"
+msgstr "Artysta/Rok/Album"
 
 #. i18n: file: gui/interfacesettings.ui:203
 #. i18n: ectx: property (text), widget (QLabel, playListsStartClosedLabel)
@@ -2508,7 +2508,7 @@ msgstr "Grupuj pojedyncze utwory:"
 #. i18n: ectx: property (text), widget (QLabel, groupMultipleLabel)
 #: po/rc.cpp:285 rc.cpp:285
 msgid "Multiple artist albums:"
-msgstr ""
+msgstr "Wiele artystów albumu:"
 
 #. i18n: file: gui/interfacesettings.ui:384
 #. i18n: ectx: property (text), widget (QLabel, showDeleteActionLabel)
@@ -2520,13 +2520,13 @@ msgstr "Pokazuj akcję usuwania w menu kontekstowym:"
 #. i18n: ectx: property (text), widget (QLabel, storeCoversInMpdDirLabel)
 #: po/rc.cpp:291 rc.cpp:291
 msgid "Save downloaded covers in music folder:"
-msgstr ""
+msgstr "Zapisz pobrane okładki w katalogu muzyki:"
 
 #. i18n: file: gui/interfacesettings.ui:414
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:294 rc.cpp:294
 msgid "Save downloaded lyrics in music folder:"
-msgstr ""
+msgstr "Zapisz pobrane teksty w katalogu muzyki:"
 
 #. i18n: file: gui/mainwindow.ui:84
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, trackLabel)

@@ -30,6 +30,7 @@
 #include "settings.h"
 #include "mainwindow.h"
 #include "squeezedtextlabel.h"
+#include "utils.h"
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -268,6 +269,7 @@ void LyricsPage::save()
             if (QFile::exists(cacheName)) {
                 QFile::remove(cacheName);
             }
+            Utils::setFilePerms(mpdName);
         } else if (!saveFile(cacheName)) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("Failed to save lyrics."));

@@ -1,0 +1,24 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="net.launchpad.DockItem">
+    <property name="DesktopFile" type="s" access="read"/>
+    <property name="Uri" type="s" access="read"/>
+    <signal name="MenuItemActivated">
+      <arg name="id" type="u" direction="out"/>
+    </signal>
+    <method name="AddMenuItem">
+      <arg type="u" direction="out"/>
+      <arg name="hints" type="a{sv}" direction="in"/>
+      <annotation name="com.trolltech.QtDBus.QtTypeName.In0" value="QVariantMap"/>
+    </method>
+    <method name="RemoveMenuItem">
+      <arg name="id" type="u" direction="in"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+    <method name="UpdateDockItem">
+      <arg name="hints" type="a{sv}" direction="in"/>
+      <annotation name="com.trolltech.QtDBus.QtTypeName.In0" value="QVariantMap"/>
+      <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
+    </method>
+  </interface>
+</node>

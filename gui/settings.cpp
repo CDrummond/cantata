@@ -391,7 +391,7 @@ bool Settings::playQueueAutoExpand()
 
 bool Settings::playQueueStartClosed()
 {
-    return GET_BOOL("playQueueStartClosed", true);
+    return GET_BOOL("playQueueStartClosed", version()<CANTATA_MAKE_VERSION(0, 6, 1));
 }
 
 bool Settings::playQueueScroll()

@@ -163,7 +163,10 @@ public:
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
             painter->restore();
             if (!state && !view->isExpanded(song.key, collection) && view->isCurrentAlbum(song.key)) {
-                state=index.data(GroupedView::Role_CurrentStatus).toInt();
+                QVariant cs=index.data(GroupedView::Role_CurrentStatus);
+                if (cs.isValid()) {
+                    state=cs.toInt();
+                }
             }
         } else {
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
@@ -493,13 +496,13 @@ void GroupedView::toggle(const QModelIndex &idx)
     }
 
     if (model()) {
+        QModelIndex parent=idx.parent();
         quint32 count=model()->rowCount(idx.parent());
-        for (quint32 i=idx.row()+1; i<count; ++i) {
-            quint16 key=model()->index(i, 0, idx.parent()).data(GroupedView::Role_Key).toUInt();
-            if (indexKey==key) {
-                setRowHidden(i, idx.parent(), toBeHidden);
-            } else {
-                break;
+        for (quint32 i=0; i<count; ++i) {
+            QModelIndex index=model()->index(i, 0, parent);
+            quint16 key=index.data(GroupedView::Role_Key).toUInt();
+            if (indexKey==key && !isAlbumHeader(index)) {
+                setRowHidden(i, parent, toBeHidden);
             }
         }
 

@@ -1,3 +1,8 @@
+0.6.1
+-----
+1. Fix grouped playqueue when we have repeated instances of an album. Now when
+   an album is expanded/collapsed - all instances are expanded/collapsed.
+
 0.6.0
 -----
  1. Grouped style for playlists.

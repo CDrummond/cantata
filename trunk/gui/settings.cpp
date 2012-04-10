@@ -174,6 +174,11 @@ bool Settings::stopOnExit()
     return GET_BOOL("stopOnExit", false);
 }
 
+bool Settings::stopDynamizerOnExit()
+{
+    return GET_BOOL("stopDynamizerOnExit", false);
+}
+
 bool Settings::smallPlaybackButtons()
 {
     return GET_BOOL("smallPlaybackButtons", false);
@@ -478,6 +483,11 @@ void Settings::saveShowPopups(bool v)
 void Settings::saveStopOnExit(bool v)
 {
     SET_VALUE("stopOnExit", v);
+}
+
+void Settings::saveStopDynamizerOnExit(bool v)
+{
+    SET_VALUE("stopDynamizerOnExit", v);
 }
 
 void Settings::saveSmallPlaybackButtons(bool v)

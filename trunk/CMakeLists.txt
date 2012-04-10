@@ -10,8 +10,8 @@ set(DEBIAN_PACKAGE_DESCRIPTION "Qt4/KDE4 Client for MPD")
 set(DEBIAN_PACKAGE_SECTION "kde4")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "6")
-set(CPACK_PACKAGE_VERSION_PATCH "1")
+set(CPACK_PACKAGE_VERSION_MINOR "7")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_PACKAGE_CONTACT "Craig Drummond <craig.p.drummond@gmail.com>")
 set(CANTATA_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
 set(CANTATA_VERSION_FULL "${CANTATA_VERSION}.${CPACK_PACKAGE_VERSION_PATCH}")
@@ -91,6 +91,11 @@ SET( CANTATA_SRCS
     http/httpserver.cpp
     http/httpsocket.cpp
     devices/tags.cpp
+    dynamic/dynamic.cpp
+    dynamic/dynamicpage.cpp
+    dynamic/dynamicproxymodel.cpp
+    dynamic/dynamicruledialog.cpp
+    dynamic/dynamicrulesdialog.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -147,6 +152,10 @@ SET( CANTATA_MOC_HDRS
     libmaia/maiaFault.h
     libmaia/maiaXmlRpcClient.h
     http/httpsocket.h
+    dynamic/dynamic.h
+    dynamic/dynamicpage.h
+    dynamic/dynamicruledialog.h
+    dynamic/dynamicrulesdialog.h
 )
 
 SET( CANTATA_UIS
@@ -166,6 +175,9 @@ SET( CANTATA_UIS
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
     widgets/itemview.ui
+    dynamic/dynamicpage.ui
+    dynamic/dynamicrule.ui
+    dynamic/dynamicrules.ui
 )
 
 SET( CANTATA_RCS cantata.qrc )
@@ -180,6 +192,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
                      ${CMAKE_SOURCE_DIR}/dbus
                      ${CMAKE_SOURCE_DIR}/http
                      ${CMAKE_SOURCE_DIR}/devices
+                     ${CMAKE_SOURCE_DIR}/dynamic
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
 )
@@ -305,6 +318,7 @@ IF( ENABLE_KDE_SUPPORT )
         include_directories( ${MTP_INCLUDE_DIR})
     endif (MTP_FOUND)
     install( TARGETS cantata ${INSTALL_TARGETS_DEFAULT_ARGS} )
+    install( PROGRAMS dynamic/cantata-dynamic DESTINATION ${LIBEXEC_INSTALL_DIR})
     install( FILES cantataui.rc DESTINATION ${DATA_INSTALL_DIR}/cantata )
     install( FILES cantata.notifyrc DESTINATION ${DATA_INSTALL_DIR}/cantata )
 
@@ -345,6 +359,7 @@ ELSE( ENABLE_KDE_SUPPORT )
     ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
     TARGET_LINK_LIBRARIES( cantata ${QT_QTWEBKIT_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTDBUS_LIBRARY} )
     install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
+    install( PROGRAMS dynamic/cantata-dynamic RUNTIME DESTINATION bin)
     ADD_DEFINITIONS( -DQT_NO_STL -DQT_NO_CAST_TO_ASCII -Wall -Wextra )
     SET( XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications" )
 ENDIF( ENABLE_KDE_SUPPORT )

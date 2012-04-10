@@ -40,7 +40,7 @@
       </layout>
      </widget>
      <widget class="QWidget" name="page_2">
-      <layout class="QGridLayout" name="gridLayout_2">
+      <layout class="QGridLayout" name="listLayout">
        <property name="margin">
         <number>0</number>
        </property>

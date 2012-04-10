@@ -20,34 +20,26 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+#include "dynamicproxymodel.h"
+#include "dynamic.h"
 
-#include "messagewidget.h"
-
-MessageWidget::MessageWidget(QWidget *parent)
-    : KMessageWidget(parent)
+DynamicProxyModel::DynamicProxyModel(QObject *parent)
+    : ProxyModel(parent)
 {
+    setDynamicSortFilter(true);
+    setFilterCaseSensitivity(Qt::CaseInsensitive);
+    setSortCaseSensitivity(Qt::CaseInsensitive);
+    setSortLocaleAware(true);
+    sort(0);
 }
 
-MessageWidget::~MessageWidget()
+bool DynamicProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-}
-
-void MessageWidget::setError(const QString &msg)
-{
-    setText(msg);
-    setMessageType(Error);
-    animatedShow();
-}
-
-void MessageWidget::setInformation(const QString &msg)
-{
-    setText(msg);
-    setMessageType(Information);
-    animatedShow();
-}
-
-void MessageWidget::setVisible(bool v)
-{
-    KMessageWidget::setVisible(v);
-    emit visible(v);
+    if (!filterEnabled) {
+        return true;
+    }
+    if (!isChildOfRoot(sourceParent)) {
+        return true;
+    }
+    return matchesFilter(QStringList() << sourceModel()->data(sourceModel()->index(sourceRow, 0, sourceParent), Qt::DisplayRole).toString());
 }

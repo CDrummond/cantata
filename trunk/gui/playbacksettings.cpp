@@ -71,6 +71,7 @@ void PlaybackSettings::load()
     emit getReplayGain();
     emit outputs();
     stopOnExit->setChecked(Settings::self()->stopOnExit());
+    stopDynamizerOnExit->setChecked(Settings::self()->stopDynamizerOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
 }
 
@@ -79,6 +80,7 @@ void PlaybackSettings::save()
     emit setCrossFade(crossfading->value());
     emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
+    Settings::self()->saveStopDynamizerOnExit(stopDynamizerOnExit->isChecked());
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
     for (int i=0; i<view->count(); ++i) {
         QListWidgetItem *item=view->item(i);

@@ -85,6 +85,7 @@ public:
     void init(QAction *a1, QAction *a2, QAction *toggle, int actionLevel=-1);
     void addAction(QAction *act);
     void setMode(Mode m);
+    void hideBackButton();
     Mode viewMode() const { return mode; }
     void setLevel(int level, bool haveChildren=true);
     QAbstractItemView * view() const;

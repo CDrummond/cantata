@@ -21,33 +21,41 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "messagewidget.h"
+#ifndef DYNAMICPAGE_H
+#define DYNAMICPAGE_H
 
-MessageWidget::MessageWidget(QWidget *parent)
-    : KMessageWidget(parent)
-{
-}
+#include "ui_dynamicpage.h"
+#include "mainwindow.h"
+#include "dynamicproxymodel.h"
 
-MessageWidget::~MessageWidget()
+class DynamicPage : public QWidget, public Ui::DynamicPage
 {
-}
+    Q_OBJECT
 
-void MessageWidget::setError(const QString &msg)
-{
-    setText(msg);
-    setMessageType(Error);
-    animatedShow();
-}
+public:
+    DynamicPage(MainWindow *p);
+    virtual ~DynamicPage();
 
-void MessageWidget::setInformation(const QString &msg)
-{
-    setText(msg);
-    setMessageType(Information);
-    animatedShow();
-}
+public Q_SLOTS:
+    void itemDoubleClicked(const QModelIndex &);
+    void searchItems();
+    void controlActions();
 
-void MessageWidget::setVisible(bool v)
-{
-    KMessageWidget::setVisible(v);
-    emit visible(v);
-}
+private Q_SLOTS:
+    void add();
+    void edit();
+    void remove();
+    void start();
+    void stop();
+    void running(bool status);
+
+private:
+    DynamicProxyModel proxy;
+    QAction *addAction;
+    QAction *editAction;
+    QAction *removeAction;
+    QAction *startAction;
+    QAction *stopAction;
+};
+
+#endif

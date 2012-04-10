@@ -67,6 +67,7 @@ public:
     bool useSystemTray();
     bool showPopups();
     bool stopOnExit();
+    bool stopDynamizerOnExit();
     bool smallPlaybackButtons();
     bool smallControlButtons();
     const QString & mpdDir();
@@ -112,6 +113,7 @@ public:
     void saveConnectionPort(int v);
     void saveShowPlaylist(bool v);
     void saveStopOnExit(bool v);
+    void saveStopDynamizerOnExit(bool v);
     void saveSmallPlaybackButtons(bool v);
     void saveSmallControlButtons(bool v);
     void savePlayQueueHeaderState(const QByteArray &v);

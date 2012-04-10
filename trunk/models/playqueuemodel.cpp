@@ -254,12 +254,22 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         return count;
     }
     case GroupedView::Role_CurrentStatus: {
-        switch (mpdState) {
-        case MPDState_Inactive:
-        case MPDState_Stopped: return (int)GroupedView::State_Stopped;
-        case MPDState_Playing: return (int)GroupedView::State_Playing;
-        case MPDState_Paused:  return (int)GroupedView::State_Paused;
+        quint16 key=songs.at(index.row()).key;
+        for (int i=index.row()+1; i<songs.count(); ++i) {
+            const Song &s=songs.at(i);
+            if (s.key!=key) {
+                return QVariant();
+            }
+            if (s.id==currentSongId) {
+                switch (mpdState) {
+                case MPDState_Inactive:
+                case MPDState_Stopped: return (int)GroupedView::State_Stopped;
+                case MPDState_Playing: return (int)GroupedView::State_Playing;
+                case MPDState_Paused:  return (int)GroupedView::State_Paused;
+                }
+            }
         }
+        return QVariant();
     }
     case GroupedView::Role_Status:
         if (songs.at(index.row()).id == currentSongId) {

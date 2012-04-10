@@ -286,34 +286,32 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
     QColor bgnd;
     QColor border;
     QColor text;
-//     switch (type) {
+    switch (type) {
 //     case PositiveMessageType:
 //         icon = QIcon::fromTheme("dialog-ok");
 //         bgRole = KColorScheme::PositiveBackground;
 //         fgRole = KColorScheme::PositiveText;
 //         break;
-//     case InformationMessageType:
-//         icon = QIcon::fromTheme("dialog-information");
-//         bgRole = KColorScheme::NormalBackground;
-//         fgRole = KColorScheme::NormalText;
-//         colorSet = KColorScheme::Tooltip;
-//         break;
+    case InformationMessageType:
+        d->iconLabel->setPixmap(QIcon::fromTheme("dialog-information").pixmap(22, 22));
+        border=Qt::blue;
+        bgnd=QColor(0xa5, 0xc1, 0xe4);
+        text=Qt::black;
+        break;
 //     case WarningMessageType:
 //         icon = QIcon::fromTheme("dialog-warning");
 //         bgRole = KColorScheme::NeutralBackground;
 //         fgRole = KColorScheme::NeutralText;
 //         break;
-//     case ErrorMessageType:
-//         icon = QIcon::fromTheme("dialog-error");
-//         bgRole = KColorScheme::NegativeBackground;
-//         fgRole = KColorScheme::NegativeText;
-//         break;
-//     }
-    border=Qt::red;
-    bgnd=QColor(0xeb, 0xbb, 0xbb);
-    text=Qt::black;
+    case ErrorMessageType:
+        d->iconLabel->setPixmap(QIcon::fromTheme("dialog-error").pixmap(22, 22));
+        border=Qt::red;
+        bgnd=QColor(0xeb, 0xbb, 0xbb);
+        text=Qt::black;
+        break;
+    }
+
 //     const int size = QIcon::fromThemeLoader::global()->currentSize(QIcon::fromThemeLoader::MainToolbar);
-    d->iconLabel->setPixmap(QIcon::fromTheme("dialog-error").pixmap(22, 22));
 
 //     KColorScheme scheme(QPalette::Active, colorSet);
 //     QBrush bg = scheme.background(bgRole);

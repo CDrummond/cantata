@@ -21,33 +21,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "messagewidget.h"
+#ifndef DYNAMICPROXYMODEL_H
+#define DYNAMICPROXYMODEL_H
 
-MessageWidget::MessageWidget(QWidget *parent)
-    : KMessageWidget(parent)
-{
-}
+#include "proxymodel.h"
 
-MessageWidget::~MessageWidget()
+class DynamicProxyModel : public ProxyModel
 {
-}
+public:
+    DynamicProxyModel(QObject *parent = 0);
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+};
 
-void MessageWidget::setError(const QString &msg)
-{
-    setText(msg);
-    setMessageType(Error);
-    animatedShow();
-}
-
-void MessageWidget::setInformation(const QString &msg)
-{
-    setText(msg);
-    setMessageType(Information);
-    animatedShow();
-}
-
-void MessageWidget::setVisible(bool v)
-{
-    KMessageWidget::setVisible(v);
-    emit visible(v);
-}
+#endif

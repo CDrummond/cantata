@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DynamicRules</class>
+ <widget class="QWidget" name="DynamicRules">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>486</width>
+    <height>302</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0" colspan="2">
+    <widget class="LineEdit" name="nameText">
+     <property name="placeholderText">
+      <string>Name of Dynamic Rules</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" rowspan="4">
+    <widget class="QListWidget" name="rulesList"/>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="addBtn">
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QPushButton" name="editBtn">
+     <property name="text">
+      <string>Edit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QPushButton" name="removeBtn">
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>53</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;p&gt;&lt;i&gt;&lt;b&gt;NOTE&lt;/b&gt; The rules listed above will be 'ORed' together, e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following:&lt;ul&gt;&lt;li&gt;AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt;Cantata will randomly select a rule, query your library using the rule, and then randomly select one of the matching items. This will be repeated to keep the play queue filled with 10 entries.&lt;/p&gt;&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KPushButton</class>
+   <extends>QPushButton</extends>
+   <header>kpushbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

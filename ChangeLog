@@ -1,3 +1,7 @@
+0.7.0
+-----
+1. Add dynamic playlist support.
+
 0.6.1
 -----
 1. Fix grouped playqueue when we have repeated instances of an album. Now when

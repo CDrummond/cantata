@@ -42,6 +42,7 @@ public:
     MessageWidget(QWidget *parent);
     virtual ~MessageWidget();
     void setError(const QString &msg);
+    void setInformation(const QString &msg);
     void setVisible(bool v);
 
 Q_SIGNALS:

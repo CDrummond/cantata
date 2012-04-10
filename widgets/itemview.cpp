@@ -478,6 +478,16 @@ void ItemView::setMode(Mode m)
     #endif
 }
 
+void ItemView::hideBackButton()
+{
+    backButton->setVisible(false);
+    listLayout->removeWidget(backButton);
+    listLayout->removeWidget(listSearch);
+    listLayout->removeWidget(listView);
+    listLayout->addWidget(listSearch, 0, 0, 1, 1);
+    listLayout->addWidget(listView, 1, 0, 1, 1);
+}
+
 QModelIndexList ItemView::selectedIndexes() const
 {
     if (Mode_Tree==mode) {

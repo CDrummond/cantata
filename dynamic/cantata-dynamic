@@ -1,0 +1,249 @@
+#!/bin/bash
+
+#  Cantata
+#
+#  Copyright (c) 2011-2012 Craig Drummond <craig.p.drummond@gmail.com>
+#
+#  ----
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; see the file COPYING.  If not, write to
+#  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+#  Boston, MA 02110-1301, USA.
+
+#
+# This file is based upon mpdynamizer from BE::MPC
+# Copyright (C) 2010/11 Thomas Luebking <thomas.luebking@web.de>
+#
+
+getRule() {
+    #
+    # File format:
+    #
+    #   Rule
+    #   <Tag>:<Value>
+    #   <Tag>:<Value>
+    #   Rule
+    #
+    # e.g.
+    #
+    #   Rule
+    #   AlbumArtist:Various Artists
+    #   Genre:Dance
+    #   Rule
+    #   AlbumArtist:Wibble
+    #   Album:Wobble
+    #
+    # Obtain number of rules in file...
+    unset rule
+    numRules=`cat $* | egrep "^Rule$" | wc -l`
+    if [ $numRules -le 0 ] ; then
+        return
+    fi
+    # Determine which rule we want
+    ruleNum=$((RANDOM%numRules))
+    ruleCount=0
+
+    exec 9<$*
+    key=""
+    while read -u9 line ; do
+        if [ -z "$line" ] || [[ $line == \#* ]]; then
+            continue
+        fi
+
+        if [[ $line == \Rule ]] && [ ! -z "$rule" ] ; then
+            if [ $ruleCount = $ruleNum ] ; then
+                # Use this rule!
+                return
+            else
+                let "ruleCount=ruleCount+1"
+                unset rule
+                continue
+            fi
+        fi
+
+        # Extact <key>:<value>
+        key=${line%%:*}
+        val=${line#*:}
+        # Check key is a recognised key!!
+        for k in Artist Album AlbumArtist Title Genre Date ; do
+            if [ "$key" = "$k" ] ; then
+                rule=("${rule[@]}" "$key" "$val")
+                break
+            fi
+        done
+    done
+}
+
+playQueueDesiredLength=10
+currentTrackPos=5
+if [ -z "$XDG_CACHE_HOME" ] ; then
+    XDG_CACHE_HOME=$HOME/.cache
+fi
+baseDir=$XDG_CACHE_HOME/cantata/dynamic
+if [ ! -d "$baseDir" ] ; then
+    echo "Config folder ($baseDir) does not exist!"
+    exit
+fi
+
+lockFile=$baseDir/lock
+rulesFile=$baseDir/rules
+timeout=20
+
+start() {
+    if [ "`which mpc`" = "" ] ; then
+        echo "'mpc' is not installed!"
+        exit
+    fi
+    if [ ! -e "$rulesFile" ]; then
+        echo "Parameters file ($rulesFile) does not exist!"
+        exit
+    fi
+    if [ ! -e "$lockFile" ]; then
+#         $0 "daemon"  &
+        nohup $0 "$@" "daemon" >/dev/null 2>&1  &
+        echo $! > "$lockFile"
+    fi
+}
+
+stop() {
+    if [ -e "$lockFile" ]; then
+        pid=$(cat "$lockFile")
+        kill $pid
+        pkill -P $pid
+    fi
+}
+
+echo $*
+
+case "$1" in
+  start)
+    start
+    exit
+    ;;
+  stop)
+    stop
+    exit
+    ;;
+  daemon)
+    ;;
+ *)
+    echo -e "Usage: $0 start|stop|restart"
+    exit
+esac
+
+trap 'rm "$lockFile"; exit' INT TERM EXIT
+
+failures=0
+while true; do
+    if ! mpc status; then
+        sleep $timeout
+        continue
+    fi
+    # get status
+#     status="$(mpc status | head -2 | tail -1)"
+    status="$(mpc status | grep -E "(pause|playing)")"
+    status=${status#*\#}
+    status=${status%% *}
+
+    if [ -z $status ]; then # we're not playing or mpd isn't up
+        playQueueLength=`mpc playlist | wc -l`
+#         mpc idle player playlist
+#         continue
+    else
+        # current playlist entry id
+        playQueueCurrent=${status%%/*}; playQueueCurrent=${playQueueCurrent##\#}
+        # amount of tunes in the playlist
+        playQueueLength=${status##*/};
+    fi
+
+    # trim playlist start so that current becomes <=$currentTrackPos
+    for (( i=0; i < playQueueCurrent - currentTrackPos; ++i )); do
+        ((--playQueueLength))
+        mpc del 1
+    done
+
+    if [ $playQueueLength -lt 0 ] ; then
+        playQueueLength=0
+    fi
+    failures=0
+    repeats=0
+    waited=0
+    # fill up playlist to 10 random tunes
+    while (( playQueueLength < playQueueDesiredLength )); do
+        if [ ! -e "$rulesFile" ] ; then
+            sleep 1s
+            let waited="waited+1"
+            if [ $waited -lt 15 ] ; then
+                continue
+            else
+                break
+            fi
+        else
+            waited=0
+        fi
+
+        getRule "$rulesFile"
+        count=0 # ${#reply[@]} returns garbage
+
+        if (( ! ${#rule[*]} )); then
+            # empty query -> "list all"
+            n=$(mpc stats | grep -i songs)
+            n=${n##* }
+            n=$(( RANDOM % n ))
+
+            while read line; do
+                if (( count == n )); then
+                    mpc add "$line"
+                    break
+                fi
+                ((++count))
+            done < <(mpc listall)
+            failures=0
+            repeats=0
+        else
+            # redirect search reply into 'reply'
+            while read line; do
+                reply[$count]="$line"
+                ((++count))
+            done < <(mpc find "${rule[@]}")  # Use 'find' not 'search' as want exact matches
+
+            if ((count == 0)); then # didn't find anything, try again
+                let "failures=failures+1"
+                if [ $failures -gt 200 ] ; then
+                    echo "ERROR: Failed to locate any songs :-("
+                    exit
+                fi
+                continue #sleep 5 # WAIT? to not stress cpu??
+            fi
+            toAdd="${reply[$((RANDOM % count))]}"
+            # Make sure we have not already added this track in the last 3 attempts
+            if [ $repeats -lt 10 ] && ( [ "$toAdd" = "$lastAdd0" ] || [ "$toAdd" = "$lastAdd1" ] || [ "$toAdd" = "$lastAdd2" ] ) ; then
+                let "repeats=repeats+1"
+                continue
+            fi
+            lastAdd2=$lastAdd1
+            lastAdd1=$lastAdd0
+            lastAdd0=$toAdd
+            mpc add "$toAdd"
+            failures=0
+            repeats=0
+        fi
+        ((++playQueueLength))
+    done
+    # wait untile something happens
+    mpc idle player playlist
+done
+
+rm $lockFile
+trap - INT TERM EXIT

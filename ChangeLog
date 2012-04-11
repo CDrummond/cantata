@@ -1,6 +1,7 @@
 0.7.0
 -----
 1. Add dynamic playlist support.
+2. Fix detection of non standard filename covers.
 
 0.6.1
 -----

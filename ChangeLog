@@ -2,6 +2,7 @@
 -----
 1. Add dynamic playlist support.
 2. Fix detection of non standard filename covers.
+3. clear any existing search when 'Locate In Library' is activated.
 
 0.6.1
 -----

@@ -563,6 +563,11 @@ QString ItemView::searchText() const
     return Mode_Tree==mode || Mode_GroupedTree==mode ? treeSearch->text() : listSearch->text();
 }
 
+void ItemView::clearSearchText()
+{
+    return Mode_Tree==mode || Mode_GroupedTree==mode ? treeSearch->setText(QString()) : listSearch->setText(QString());
+}
+
 void ItemView::setTopText(const QString &text)
 {
     topText=text;

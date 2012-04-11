@@ -96,6 +96,7 @@ public:
     void select(const QModelIndex &idx);
     QModelIndexList selectedIndexes() const;
     QString searchText() const;
+    void clearSearchText();
     void setTopText(const QString &text);
     void setUniformRowHeights(bool v);
     void setAcceptDrops(bool v);

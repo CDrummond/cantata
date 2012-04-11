@@ -207,6 +207,9 @@ void LibraryPage::showSongs(const QList<Song> &songs)
         return;
     }
 
+    genreCombo->setCurrentIndex(0);
+    view->clearSearchText();
+
     bool first=true;
     foreach (const Song &s, sngs) {
         QModelIndex idx=MusicLibraryModel::self()->findSongIndex(s);

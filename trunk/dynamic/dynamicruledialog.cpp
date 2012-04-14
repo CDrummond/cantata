@@ -121,7 +121,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
         if (-1==idx) {
             dateFrom=date.toInt();
         } else {
-            dateFrom=date.left(idx+1).toInt();
+            dateFrom=date.left(idx).toInt();
             dateTo=date.mid(idx+1).toInt();
         }
     }

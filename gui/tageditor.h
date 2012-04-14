@@ -111,6 +111,10 @@ private:
     QSet<int> editedIndexes;
     bool updating;
     bool saveable;
+    bool haveArtists;
+    bool haveAlbumArtists;
+    bool haveAlbums;
+    bool haveGenres;
 };
 
 #endif

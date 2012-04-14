@@ -29,6 +29,9 @@
 minDate=1800
 maxDate=2100
 
+# lastRuleNum=1000000000000000
+# lastDateOffset=1000000000000000
+
 getRule() {
     #
     # File format:
@@ -59,7 +62,6 @@ getRule() {
     # Determine which rule we want
     ruleNum=$((RANDOM%numRules))
     ruleCount=0
-
     exec 9<$*
     key=""
     while read -u9 line ; do
@@ -98,10 +100,18 @@ getRule() {
                             # Calculate the range...
                             let "range=(dateTo+1)-dateFrom"
                             # Now pick a random value in this range
-                            offset=$((RANDOM%range))
-
+                            dateOffset=$((RANDOM%range))
+#                             # If this offset is the same as the last (and we're gonna be using this rule), then try again...
+#                             if [ $ruleCount -eq $ruleNum ] && [ $lastRuleNum -eq $ruleNum ] && [ $lastDateOffset -eq $dateOffset ] ; then
+#                                 for x in `seq 1 50` ; do
+#                                     dateOffset=$((RANDOM%range))
+#                                     if [ $lastDateOffset -ne $dateOffset ] ; then
+#                                         break
+#                                     fi
+#                                 done
+#                             fi
                             # Set value...
-                            let "val=dateFrom+offset"
+                            let "val=dateFrom+dateOffset"
                             rule=("${rule[@]}" "$key" "$val")
                         fi
                     fi
@@ -271,6 +281,8 @@ while true; do
             mpc add "$toAdd"
             failures=0
             repeats=0
+#             lastRuleNum=$ruleNum
+#             lastDateOffset=$dateOffset
         fi
         ((++playQueueLength))
     done

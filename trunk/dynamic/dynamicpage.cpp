@@ -64,7 +64,7 @@ DynamicPage::DynamicPage(MainWindow *p)
     addAction->setIcon(QIcon::fromTheme("list-add"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
     removeAction->setIcon(QIcon::fromTheme("list-remove"));
-    startAction->setIcon(QIcon::fromTheme("system-run"));
+    startAction->setIcon(QIcon::fromTheme("media-playback-start"));
     stopAction->setIcon(QIcon::fromTheme("process-stop"));
 
     MainWindow::initButton(addBtn);

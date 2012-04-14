@@ -31,43 +31,61 @@
 #include <QtGui/QMessageBox>
 #endif
 
-static QString translateKey(const QString &key)
+static QString translateStr(const QString &key)
 {
-    if (QLatin1String("Artist")==key) {
+    if (Dynamic::constArtistKey==key) {
         #ifdef ENABLE_KDE_SUPPORT
         return i18n("Artist");
         #else
         return QObject::tr("Artist");
         #endif
-    } else if (QLatin1String("AlbumArtist")==key) {
+    } else if (Dynamic::constAlbumArtistKey==key) {
         #ifdef ENABLE_KDE_SUPPORT
         return i18n("AlbumArtist");
         #else
         return QObject::tr("AlbumArtist");
         #endif
-    } else if (QLatin1String("Album")==key) {
+    } else if (Dynamic::constAlbumKey==key) {
         #ifdef ENABLE_KDE_SUPPORT
         return i18n("Album");
         #else
         return QObject::tr("Album");
         #endif
-    } else if (QLatin1String("Title")==key) {
+    } else if (Dynamic::constTitleKey==key) {
         #ifdef ENABLE_KDE_SUPPORT
         return i18n("Title");
         #else
         return QObject::tr("Title");
         #endif
-    } else if (QLatin1String("Genre")==key) {
+    } else if (Dynamic::constGenreKey==key) {
         #ifdef ENABLE_KDE_SUPPORT
         return i18n("Genre");
         #else
         return QObject::tr("Genre");
         #endif
-    } else if (QLatin1String("Date")==key) {
+    } else if (Dynamic::constDateKey==key) {
         #ifdef ENABLE_KDE_SUPPORT
         return i18n("Date");
         #else
         return QObject::tr("Date");
+        #endif
+    } else if (Dynamic::constExactKey==key) {
+        #ifdef ENABLE_KDE_SUPPORT
+        return i18n("Exact");
+        #else
+        return QObject::tr("Exact");
+        #endif
+    } else if (QLatin1String("true")==key) {
+        #ifdef ENABLE_KDE_SUPPORT
+        return i18n("true");
+        #else
+        return QObject::tr("true");
+        #endif
+    } else if (QLatin1String("false")==key) {
+        #ifdef ENABLE_KDE_SUPPORT
+        return i18n("false");
+        #else
+        return QObject::tr("false");
         #endif
     } else {
         return key;
@@ -81,7 +99,7 @@ static void update(QListWidgetItem *i, const Dynamic::Rule &rule)
     QString str;
 
     for (int count=0; it!=end; ++it, ++count) {
-        str+=QString("%1=%2").arg(translateKey(it.key()), it.value());
+        str+=QString("%1=%2").arg(translateStr(it.key()), it.key()==Dynamic::constExactKey ? translateStr(it.value()) : it.value());
         if (count<rule.count()-1) {
             str+=' ';
         }

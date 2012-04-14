@@ -50,6 +50,7 @@ getRule() {
 
     # Reset data
     unset rule
+    matchType="find"
     # Obtain number of rules in file...
     numRules=`cat $* | egrep "^Rule$" | wc -l`
     if [ $numRules -le 0 ] ; then
@@ -84,7 +85,7 @@ getRule() {
             continue
         fi
         # Check key is a recognised key!!
-        for k in Artist Album AlbumArtist Title Genre Date ; do
+        for k in Artist Album AlbumArtist Title Genre Date Exact ; do
             if [ "$key" = "$k" ] ; then
                 if [ "$key" = "Date" ] ; then # Check that its a number, and in range!
                     if [ "`expr $val - $val 2>/dev/null`" == "0" ] && [ $val -ge $minDate ] && [ $val -le $maxDate ] ; then
@@ -103,6 +104,12 @@ getRule() {
                             let "val=dateFrom+offset"
                             rule=("${rule[@]}" "$key" "$val")
                         fi
+                    fi
+                elif [ "$key" = "Exact" ] ; then
+                    if [ "$val" = "false" ] ; then
+                        matchType="search"
+                    else
+                        matchType="find"  # Does an exact match
                     fi
                 else
                     rule=("${rule[@]}" "$key" "$val")
@@ -242,7 +249,7 @@ while true; do
             while read line; do
                 reply[$count]="$line"
                 ((++count))
-            done < <(mpc find "${rule[@]}")  # Use 'find' not 'search' as want exact matches
+            done < <(mpc $matchType "${rule[@]}")
 
             if ((count == 0)); then # didn't find anything, try again
                 let "failures=failures+1"

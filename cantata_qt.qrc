@@ -6,6 +6,8 @@
 <file alias="consume22.png">icons/hi22-action-cantata-view-media-consume.png</file>
 <file alias="repeat16.png">icons/hi16-action-cantata-view-media-repeat.png</file>
 <file alias="repeat22.png">icons/hi22-action-cantata-view-media-repeat.png</file>
+<file alias="shuffle16.png">icons/hi16-action-cantata-view-shuffle.png</file>
+<file alias="shuffle22.png">icons/hi22-action-cantata-view-shuffle.png</file>
 <file alias="va16.png">icons/hi16-action-cantata-view-media-artist-various.png</file>
 <file alias="va22.png">icons/hi22-action-cantata-view-media-artist-various.png</file>
 <file alias="lib16.png">icons/hi16-action-cantata-view-media-library.png</file>

@@ -1540,7 +1540,7 @@ void MainWindow::realSearchPlaylist()
 void MainWindow::updatePlaylist(const QList<Song> &songs)
 {
     TF_DEBUG
-    playPauseTrackAction->setEnabled(0!=songs.count());
+    playPauseTrackAction->setEnabled(!songs.isEmpty());
     nextTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
     prevTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
 
@@ -1619,7 +1619,7 @@ void MainWindow::updateCurrentSong(const Song &song)
         }
     }
 
-    positionSlider->setEnabled(!currentIsStream());
+    positionSlider->setEnabled(-1!=current.id && !currentIsStream());
     updateCurrentCover();
 
     if (current.name.isEmpty()) {

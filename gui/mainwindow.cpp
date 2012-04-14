@@ -289,11 +289,11 @@ bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
 }
 
 MainWindow::MainWindow(QWidget *parent)
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     : KXmlGuiWindow(parent)
-#else
+    #else
     : QMainWindow(parent)
-#endif
+    #endif
     , loaded(0)
     , lastState(MPDState_Inactive)
     , songTime(0)
@@ -301,6 +301,9 @@ MainWindow::MainWindow(QWidget *parent)
     , autoScrollPlayQueue(true)
     , draggingPositionSlider(false)
     , trayItem(0)
+    #ifdef ENABLE_KDE_SUPPORT
+    , notification(0)
+    #endif
     , dynamicModeEnabled(false)
     , lyricsNeedUpdating(false)
     #ifdef ENABLE_WEBKIT
@@ -1696,7 +1699,11 @@ void MainWindow::updateCurrentSong(const Song &song)
             }
 
             if (Settings::self()->showPopups()) {
-                KNotification *notification = new KNotification("CurrentTrackChanged", this);
+                if (notification) {
+                    notification->close();
+                }
+                notification = new KNotification("CurrentTrackChanged", this);
+                connect(notification, SIGNAL(closed()), this, SLOT(notificationClosed()));
                 notification->setText(text);
                 if (coverPixmap) {
                     notification->setPixmap(*coverPixmap);
@@ -2272,6 +2279,13 @@ void MainWindow::trayItemScrollRequested(int delta, Qt::Orientation orientation)
         } else if(delta<0) {
             decreaseVolumeAction->trigger();
         }
+    }
+}
+
+void MainWindow::notificationClosed()
+{
+    if (sender() == notification) {
+        notification=0;
     }
 }
 #else

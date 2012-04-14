@@ -5,8 +5,7 @@
 3. Clear any existing search when 'Locate In Library' is activated.
 4. In tag-editor, only set placeholder text to '(Various)' for fields where
    there are actually some values set.
-5. Add a custom random/shuffle icon - matches repeat icon better.
-6. Add now playing info to MPRIS interface - thanks to Martin Blumenstingl
+5. Add now playing info to MPRIS interface - thanks to Martin Blumenstingl
    for the patch.
 
 0.6.1

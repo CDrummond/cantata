@@ -5,6 +5,7 @@
 3. Clear any existing search when 'Locate In Library' is activated.
 4. In tag-editor, only set placeholder text to '(Various)' for fields where
    there are actually some values set.
+5. Add a custom random/shuffle icon - matches repeat icon better.
 
 0.6.1
 -----

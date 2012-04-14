@@ -80,6 +80,10 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     #endif
     , currentSongIndex(-1)
     , updating(false)
+    , haveArtists(false)
+    , haveAlbumArtists(false)
+    , haveAlbums(false)
+    , haveGenres(false)
 {
     iCount++;
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -201,10 +205,18 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         QSet<int> songDiscs;
 
         foreach (const Song &s, songs) {
-            songArtists.insert(s.artist);
-            songAlbumArtists.insert(s.albumartist);
-            songAlbums.insert(s.album);
-            songGenres.insert(s.genre);
+            if (!s.artist.isEmpty()) {
+                songArtists.insert(s.artist);
+            }
+            if (!s.albumartist.isEmpty()) {
+                songAlbumArtists.insert(s.albumartist);
+            }
+            if (!s.album.isEmpty()) {
+                songAlbums.insert(s.album);
+            }
+            if (!s.genre.isEmpty()) {
+                songGenres.insert(s.genre);
+            }
             songYears.insert(s.year);
             songDiscs.insert(s.disc);
             if (songArtists.count()>1 && songAlbumArtists.count()>1 && songAlbums.count()>1 && songGenres.count()>1 && songYears.count()>1 && songDiscs.count()>1) {
@@ -223,6 +235,10 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         all.disc=1==songDiscs.count() ? *(songDiscs.begin()) : 0;
         original.prepend(all);
         artist->setFocus();
+        haveArtists=!songArtists.isEmpty();
+        haveAlbumArtists=!songAlbumArtists.isEmpty();
+        haveAlbums=!songAlbums.isEmpty();
+        haveGenres=!songGenres.isEmpty();
     } else {
         title->setFocus();
     }
@@ -297,10 +313,10 @@ void TagEditor::setPlaceholderTexts()
 
     if(0==currentSongIndex && original.count()>1) {
         Song all=original.at(0);
-        artist->setPlaceholderText(all.artist.isEmpty() ? various : QString());
-        album->setPlaceholderText(all.album.isEmpty() ? various : QString());
-        albumArtist->setPlaceholderText(all.albumartist.isEmpty() ? various : QString());
-        genre->setPlaceholderText(all.genre.isEmpty() ? various : QString());
+        artist->setPlaceholderText(all.artist.isEmpty() && haveArtists ? various : QString());
+        album->setPlaceholderText(all.album.isEmpty() && haveAlbums ? various : QString());
+        albumArtist->setPlaceholderText(all.albumartist.isEmpty() && haveAlbumArtists ? various : QString());
+        genre->setPlaceholderText(all.genre.isEmpty() && haveGenres ? various : QString());
     }
 }
 

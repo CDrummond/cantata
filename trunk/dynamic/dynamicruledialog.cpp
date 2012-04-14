@@ -24,6 +24,10 @@
 #include "dynamicruledialog.h"
 #include "musiclibrarymodel.h"
 
+static const int constMinDate=1800;
+static const int constMaxDate=2100;
+static const QChar constDateSep('-');
+
 DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     : KDialog(parent)
@@ -51,6 +55,8 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     connect(albumText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(titleText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), SLOT(enableOkButton()));
+    connect(dateFromSpin, SIGNAL(valueChanged(int)), SLOT(enableOkButton()));
+    connect(dateToSpin, SIGNAL(valueChanged(int)), SLOT(enableOkButton()));
 
     QSet<QString> artists;
     QSet<QString> albumArtists;
@@ -82,6 +88,8 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     strings.prepend(tr("All Genres"));
     #endif
     genreCombo->insertItems(0, strings);
+    dateFromSpin->setRange(constMinDate-1, constMaxDate);
+    dateToSpin->setRange(constMinDate-1, constMaxDate);
 }
 
 DynamicRuleDialog::~DynamicRuleDialog()
@@ -90,11 +98,11 @@ DynamicRuleDialog::~DynamicRuleDialog()
 
 bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
 {
-    artistText->setText(rule["Artist"]);
-    albumArtistText->setText(rule["AlbumArtist"]);
-    albumText->setText(rule["Album"]);
-    titleText->setText(rule["Title"]);
-    QString genre=rule["Genre"];
+    artistText->setText(rule[Dynamic::constArtistKey]);
+    albumArtistText->setText(rule[Dynamic::constAlbumArtistKey]);
+    albumText->setText(rule[Dynamic::constAlbumKey]);
+    titleText->setText(rule[Dynamic::constTitleKey]);
+    QString genre=rule[Dynamic::constGenreKey];
     genreCombo->setCurrentIndex(0);
     if (!genre.isEmpty()) {
         for (int i=1; i<genreCombo->count(); ++i) {
@@ -104,6 +112,28 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
             }
         }
     }
+
+    QString date=rule[Dynamic::constDateKey];
+    int dateFrom=0;
+    int dateTo=0;
+    if (!date.isEmpty()) {
+        int idx=date.indexOf(constDateSep);
+        if (-1==idx) {
+            dateFrom=date.toInt();
+        } else {
+            dateFrom=date.left(idx+1).toInt();
+            dateTo=date.mid(idx+1).toInt();
+        }
+    }
+
+    if (dateFrom<constMinDate || dateFrom>constMaxDate) {
+        dateFrom=constMinDate-1;
+    }
+    if (dateTo<constMinDate || dateTo>constMaxDate) {
+        dateTo=constMinDate-1;
+    }
+    dateFromSpin->setValue(dateFrom);
+    dateToSpin->setValue(dateTo);
     return QDialog::Accepted==exec();
 }
 
@@ -111,26 +141,43 @@ Dynamic::Rule DynamicRuleDialog::rule() const
 {
     Dynamic::Rule r;
     if (!artist().isEmpty()) {
-        r.insert("Artist", artist());
+        r.insert(Dynamic::constArtistKey, artist());
     }
     if (!albumArtist().isEmpty()) {
-        r.insert("AlbumArtist", albumArtist());
+        r.insert(Dynamic::constAlbumArtistKey, albumArtist());
     }
     if (!album().isEmpty()) {
-        r.insert("Album", album());
+        r.insert(Dynamic::constAlbumKey, album());
     }
     if (!title().isEmpty()) {
-        r.insert("Title", title());
+        r.insert(Dynamic::constTitleKey, title());
     }
     if (!genre().isEmpty()) {
-        r.insert("Genre", genre());
+        r.insert(Dynamic::constGenreKey, genre());
+    }
+    int dateFrom=dateFromSpin->value();
+    int dateTo=dateToSpin->value();
+    bool haveFrom=dateFrom>=constMinDate && dateFrom<=constMaxDate;
+    bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
+
+    if (haveFrom && haveTo) {
+        r.insert(Dynamic::constDateKey, QString::number(dateFrom)+constDateSep+QString::number(dateTo));
+    } else if (haveFrom) {
+        r.insert(Dynamic::constDateKey, QString::number(dateFrom));
+    } else if (haveTo) {
+        r.insert(Dynamic::constDateKey, QString::number(dateTo));
     }
     return r;
 }
 
 void DynamicRuleDialog::enableOkButton()
 {
-    bool enable=!artist().isEmpty() || !albumArtist().isEmpty() || !album().isEmpty() || !title().isEmpty() || !genre().isEmpty();
+    int dateFrom=dateFromSpin->value();
+    int dateTo=dateToSpin->value();
+    bool haveFrom=dateFrom>=constMinDate && dateFrom<=constMaxDate;
+    bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
+    bool enable=(!haveFrom || !haveTo || haveTo>=haveFrom) &&
+                (haveFrom || haveTo || !artist().isEmpty() || !albumArtist().isEmpty() || !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
     #ifdef ENABLE_KDE_SUPPORT
     enableButton(Ok, enable);
     #else

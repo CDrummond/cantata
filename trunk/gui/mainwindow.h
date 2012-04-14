@@ -52,6 +52,7 @@
 class KAction;
 class KStatusNotifierItem;
 class KMenu;
+class KNotification;
 #define Action KAction
 #else
 #define Action QAction
@@ -259,6 +260,7 @@ private Q_SLOTS:
     void removeItems();
     #ifdef ENABLE_KDE_SUPPORT
     void trayItemScrollRequested(int delta, Qt::Orientation orientation);
+    void notificationClosed();
     #else
     void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
@@ -381,6 +383,7 @@ private:
     #ifdef ENABLE_KDE_SUPPORT
     KStatusNotifierItem *trayItem;
     KMenu *trayItemMenu;
+    KNotification *notification;
     #else
     QSystemTrayIcon *trayItem;
     QMenu *trayItemMenu;

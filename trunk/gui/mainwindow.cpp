@@ -588,8 +588,8 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     consumePlaylistAction->setIcon(Icon("cantata-view-media-consume"));
     repeatPlaylistAction->setIcon(Icon("cantata-view-media-repeat"));
-    randomPlaylistAction->setIcon(Icon("cantata-view-shuffle"));
-    shufflePlaylistAction->setIcon(Icon("cantata-view-shuffle"));
+    randomPlaylistAction->setIcon(Icon("cantata-view-media-shuffle"));
+    shufflePlaylistAction->setIcon(Icon("cantata-view-media-shuffle"));
     #else
     QIcon consumeIcon(":consume16.png");
     consumeIcon.addFile(":consume22.png");

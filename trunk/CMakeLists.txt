@@ -201,6 +201,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
 FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )
 
 qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
+qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.root.xml dbus/mpris.h Mpris)
 qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockItem.xml )
 qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockManager.xml)
 

@@ -17,6 +17,7 @@ qt4_add_dbus_adaptor(tasks_SRCS net.launchpad.DockManager.xml dockmanager.h Dock
 qt4_add_dbus_adaptor(tasks_SRCS net.launchpad.DockItem.xml dockitem.h DockItem)
 
 qt4_add_dbus_interface(tasks_SRCS org.mpris.MediaPlayer2.Player.xml playerv2interface)
+qt4_add_dbus_interface(tasks_SRCS org.mpris.MediaPlayer2.root.xml rootv2interface)
 
 MACRO(QT4_ADD_DBUS_INTERFACE_EX _sources _interface _basename _extrainclude)
 #   GET_FILENAME_COMPONENT(_infile ${_interface} ABSOLUTE)

@@ -134,6 +134,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
     }
     dateFromSpin->setValue(dateFrom);
     dateToSpin->setValue(dateTo);
+    exactCheck->setChecked(QLatin1String("false")!=rule[Dynamic::constExactKey]);
     return QDialog::Accepted==exec();
 }
 
@@ -166,6 +167,10 @@ Dynamic::Rule DynamicRuleDialog::rule() const
         r.insert(Dynamic::constDateKey, QString::number(dateFrom));
     } else if (haveTo) {
         r.insert(Dynamic::constDateKey, QString::number(dateTo));
+    }
+
+    if (!exactCheck->isChecked()) {
+        r.insert(Dynamic::constExactKey, QLatin1String("false"));
     }
     return r;
 }

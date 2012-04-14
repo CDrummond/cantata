@@ -79,6 +79,7 @@ const QString Dynamic::constAlbumKey=QLatin1String("Album");
 const QString Dynamic::constTitleKey=QLatin1String("Title");
 const QString Dynamic::constGenreKey=QLatin1String("Genre");
 const QString Dynamic::constDateKey=QLatin1String("Date");
+const QString Dynamic::constExactKey=QLatin1String("Exact");
 
 Dynamic::Dynamic()
     : timer(0)

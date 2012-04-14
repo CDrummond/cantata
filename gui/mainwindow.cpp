@@ -583,24 +583,24 @@ MainWindow::MainWindow(QWidget *parent)
 
     playbackPlay = Icon("media-playback-start");
     playbackPause = Icon("media-playback-pause");
-//     randomPlaylistAction->setIcon(Icon("media-playlist-shuffle"));
+    randomPlaylistAction->setIcon(Icon("media-playlist-shuffle"));
     locateTrackAction->setIcon(Icon("edit-find"));
     #ifdef ENABLE_KDE_SUPPORT
     consumePlaylistAction->setIcon(Icon("cantata-view-media-consume"));
     repeatPlaylistAction->setIcon(Icon("cantata-view-media-repeat"));
-    randomPlaylistAction->setIcon(Icon("cantata-view-media-shuffle"));
-    shufflePlaylistAction->setIcon(Icon("cantata-view-media-shuffle"));
+//     randomPlaylistAction->setIcon(Icon("cantata-view-media-shuffle"));
+//     shufflePlaylistAction->setIcon(Icon("cantata-view-media-shuffle"));
     #else
     QIcon consumeIcon(":consume16.png");
     consumeIcon.addFile(":consume22.png");
     QIcon repeatIcon(":repeat16.png");
     repeatIcon.addFile(":repeat22.png");
-    QIcon shuffleIcon(":shuffle16.png");
-    repeatIcon.addFile(":shuffle22.png");
+//     QIcon shuffleIcon(":shuffle16.png");
+//     repeatIcon.addFile(":shuffle22.png");
     consumePlaylistAction->setIcon(consumeIcon);
     repeatPlaylistAction->setIcon(repeatIcon);
-    randomPlaylistAction->setIcon(shuffleIcon);
-    shufflePlaylistAction->setIcon(shuffleIcon);
+//     randomPlaylistAction->setIcon(shuffleIcon);
+//     shufflePlaylistAction->setIcon(shuffleIcon);
     #endif
     singlePlaylistAction->setIcon(createSingleIcon());
     removeAction->setIcon(Icon("list-remove"));

@@ -26,6 +26,9 @@
 # Copyright (C) 2010/11 Thomas Luebking <thomas.luebking@web.de>
 #
 
+minDate=1800
+maxDate=2100
+
 getRule() {
     #
     # File format:
@@ -44,8 +47,10 @@ getRule() {
     #   AlbumArtist:Wibble
     #   Album:Wobble
     #
-    # Obtain number of rules in file...
+
+    # Reset data
     unset rule
+    # Obtain number of rules in file...
     numRules=`cat $* | egrep "^Rule$" | wc -l`
     if [ $numRules -le 0 ] ; then
         return
@@ -75,10 +80,33 @@ getRule() {
         # Extact <key>:<value>
         key=${line%%:*}
         val=${line#*:}
+        if [ "$val" = "" ] ; then
+            continue
+        fi
         # Check key is a recognised key!!
         for k in Artist Album AlbumArtist Title Genre Date ; do
             if [ "$key" = "$k" ] ; then
-                rule=("${rule[@]}" "$key" "$val")
+                if [ "$key" = "Date" ] ; then # Check that its a number, and in range!
+                    if [ "`expr $val - $val 2>/dev/null`" == "0" ] && [ $val -ge $minDate ] && [ $val -le $maxDate ] ; then
+                        rule=("${rule[@]}" "$key" "$val")
+                    else
+                        dateFrom=${val%%-*}
+                        dateTo=${val#*-}
+                        if [ ! -z $dateFrom ] && [ "`expr $dateFrom - $dateFrom 2>/dev/null`" == "0" ] && [ $dateFrom -ge $minDate ] && [ $dateFrom -le $maxDate ] && \
+                           [ ! -z $dateTo ] && [ "`expr $dateTo - $dateTo 2>/dev/null`" == "0" ] && [ $dateTo -ge $minDate ] && [ $dateTo -le $maxDate ] && [ $dateTo -gt $dateFrom ]; then
+                            # Calculate the range...
+                            let "range=(dateTo+1)-dateFrom"
+                            # Now pick a random value in this range
+                            offset=$((RANDOM%range))
+
+                            # Set value...
+                            let "val=dateFrom+offset"
+                            rule=("${rule[@]}" "$key" "$val")
+                        fi
+                    fi
+                else
+                    rule=("${rule[@]}" "$key" "$val")
+                fi
                 break
             fi
         done
@@ -123,8 +151,6 @@ stop() {
         pkill -P $pid
     fi
 }
-
-echo $*
 
 case "$1" in
   start)

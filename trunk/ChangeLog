@@ -3,6 +3,8 @@
 1. Add dynamic playlist support.
 2. Fix detection of non standard filename covers.
 3. Clear any existing search when 'Locate In Library' is activated.
+4. In tag-editor, only set placeholder text to '(Various)' for fields where
+   there are actually some values set.
 
 0.6.1
 -----

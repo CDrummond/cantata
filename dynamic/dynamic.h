@@ -44,6 +44,14 @@ public:
 
     static Dynamic * self();
 
+    static const QString constRuleKey;
+    static const QString constArtistKey;
+    static const QString constAlbumArtistKey;
+    static const QString constAlbumKey;
+    static const QString constTitleKey;
+    static const QString constGenreKey;
+    static const QString constDateKey;
+
     Dynamic();
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

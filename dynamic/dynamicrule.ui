@@ -19,10 +19,16 @@
    </property>
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Artist:</string>
+       </property>
+       <property name="buddy">
+        <cstring>artistText</cstring>
        </property>
       </widget>
      </item>
@@ -34,37 +40,49 @@
        <property name="text">
         <string>Album Artist:</string>
        </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Album:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Title:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Genre</string>
+       <property name="buddy">
+        <cstring>albumArtistText</cstring>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="CompletionCombo" name="albumArtistText"/>
      </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Album:</string>
+       </property>
+       <property name="buddy">
+        <cstring>albumText</cstring>
+       </property>
+      </widget>
+     </item>
      <item row="2" column="1">
       <widget class="CompletionCombo" name="albumText"/>
      </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Title:</string>
+       </property>
+       <property name="buddy">
+        <cstring>titleText</cstring>
+       </property>
+      </widget>
+     </item>
      <item row="3" column="1">
       <widget class="LineEdit" name="titleText"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Genre</string>
+       </property>
+       <property name="buddy">
+        <cstring>genreCombo</cstring>
+       </property>
+      </widget>
      </item>
      <item row="4" column="1">
       <widget class="QComboBox" name="genreCombo">
@@ -75,6 +93,53 @@
         </sizepolicy>
        </property>
       </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Year:</string>
+       </property>
+       <property name="buddy">
+        <cstring>dateFromSpin</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QSpinBox" name="dateFromSpin">
+         <property name="minimumSize">
+          <size>
+           <width>72</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="specialValueText">
+          <string>Any</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>-</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="dateToSpin">
+         <property name="minimumSize">
+          <size>
+           <width>72</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="specialValueText">
+          <string>Any</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

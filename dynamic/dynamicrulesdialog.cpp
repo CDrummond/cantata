@@ -31,19 +31,63 @@
 #include <QtGui/QMessageBox>
 #endif
 
+static QString translateKey(const QString &key)
+{
+    if (QLatin1String("Artist")==key) {
+        #ifdef ENABLE_KDE_SUPPORT
+        return i18n("Artist");
+        #else
+        return QObject::tr("Artist");
+        #endif
+    } else if (QLatin1String("AlbumArtist")==key) {
+        #ifdef ENABLE_KDE_SUPPORT
+        return i18n("AlbumArtist");
+        #else
+        return QObject::tr("AlbumArtist");
+        #endif
+    } else if (QLatin1String("Album")==key) {
+        #ifdef ENABLE_KDE_SUPPORT
+        return i18n("Album");
+        #else
+        return QObject::tr("Album");
+        #endif
+    } else if (QLatin1String("Title")==key) {
+        #ifdef ENABLE_KDE_SUPPORT
+        return i18n("Title");
+        #else
+        return QObject::tr("Title");
+        #endif
+    } else if (QLatin1String("Genre")==key) {
+        #ifdef ENABLE_KDE_SUPPORT
+        return i18n("Genre");
+        #else
+        return QObject::tr("Genre");
+        #endif
+    } else if (QLatin1String("Date")==key) {
+        #ifdef ENABLE_KDE_SUPPORT
+        return i18n("Date");
+        #else
+        return QObject::tr("Date");
+        #endif
+    } else {
+        return key;
+    }
+}
 static void update(QListWidgetItem *i, const Dynamic::Rule &rule)
 {
     Dynamic::Rule::ConstIterator it(rule.constBegin());
     Dynamic::Rule::ConstIterator end(rule.constEnd());
     QMap<QString, QVariant> v;
     QString str;
+
     for (int count=0; it!=end; ++it, ++count) {
-        str+=QString("%1=%2").arg(it.key(), it.value());
+        str+=QString("%1=%2").arg(translateKey(it.key()), it.value());
         if (count<rule.count()-1) {
             str+=' ';
         }
         v.insert(it.key(), it.value());
     }
+
     i->setText(str);
     i->setData(Qt::UserRole, v);
 }
@@ -71,8 +115,6 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this);
     layout->addWidget(buttonBox);
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
-//     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-//     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     #endif
     setAttribute(Qt::WA_DeleteOnClose);
     connect(addBtn, SIGNAL(clicked()), SLOT(add()));
@@ -99,8 +141,7 @@ void DynamicRulesDialog::edit(const QString &name)
     rulesList->clear();
     nameText->setText(name);
     foreach (const Dynamic::Rule &r, e.rules) {
-        QListWidgetItem *i=new QListWidgetItem(rulesList);
-        ::update(i, r);
+        ::update(new QListWidgetItem(rulesList), r);
     }
     origName=name;
     show();
@@ -161,8 +202,7 @@ void DynamicRulesDialog::add()
         dlg=new DynamicRuleDialog(this);
     }
     if (dlg->edit(Dynamic::Rule())) {
-        QListWidgetItem *i=new QListWidgetItem(rulesList);
-        ::update(i, dlg->rule());
+        ::update(new QListWidgetItem(rulesList), dlg->rule());
     }
 }
 

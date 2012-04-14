@@ -72,6 +72,14 @@ Dynamic * Dynamic::self()
     #endif
 }
 
+const QString Dynamic::constRuleKey=QLatin1String("Rule");
+const QString Dynamic::constArtistKey=QLatin1String("Artist");
+const QString Dynamic::constAlbumArtistKey=QLatin1String("AlbumArtist");
+const QString Dynamic::constAlbumKey=QLatin1String("Album");
+const QString Dynamic::constTitleKey=QLatin1String("Title");
+const QString Dynamic::constGenreKey=QLatin1String("Genre");
+const QString Dynamic::constDateKey=QLatin1String("Date");
+
 Dynamic::Dynamic()
     : timer(0)
 {
@@ -83,8 +91,8 @@ Dynamic::Dynamic()
         foreach (const QString &rf, rulesFiles) {
             QFile f(dirName+rf);
             if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
-                QStringList keys=QStringList() << QLatin1String("Artist") << QLatin1String("AlbumArtist")
-                                               << QLatin1String("Album") << QLatin1String("Title") << QLatin1String("Genre");
+                QStringList keys=QStringList() << constArtistKey << constAlbumArtistKey << constDateKey
+                                               << constAlbumKey << constTitleKey << constGenreKey;
 
                 Entry e;
                 e.name=rf.left(rf.length()-constExtension.length());
@@ -96,7 +104,7 @@ Dynamic::Dynamic()
                         continue;
                     }
 
-                    if (str==QLatin1String("Rule")) {
+                    if (str==constRuleKey) {
                         if (!r.isEmpty()) {
                             e.rules.append(r);
                             r.clear();
@@ -209,7 +217,7 @@ bool Dynamic::save(const Entry &e)
         QTextStream str(&f);
         foreach (const Rule &rule, e.rules) {
             if (!rule.isEmpty()) {
-                str << QLatin1String("Rule") << '\n';
+                str << constRuleKey << '\n';
                 Rule::ConstIterator it(rule.constBegin());
                 Rule::ConstIterator end(rule.constEnd());
                 for (; it!=end; ++it) {

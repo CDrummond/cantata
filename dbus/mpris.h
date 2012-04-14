@@ -25,6 +25,11 @@
 #define MPRIS_H
 
 #include <QtCore/QObject>
+#include <QtCore/QStringList>
+#include <QtCore/QVariantMap>
+#include <QtGui/QApplication>
+
+#include "song.h"
 #include "mpdstatus.h"
 
 class QDBusObjectPath;
@@ -33,7 +38,7 @@ class Mpris : public QObject
 {
     Q_OBJECT
 
-    Q_CLASSINFO("D-Bus Interface", "org.mpris.MediaPlayer2.Player")
+    // org.mpris.MediaPlayer2.Player
     Q_PROPERTY( double Rate READ Rate WRITE SetRate )
     Q_PROPERTY( qlonglong Position READ Position )
     Q_PROPERTY( double MinimumRate READ MinimumRate )
@@ -41,6 +46,17 @@ class Mpris : public QObject
     Q_PROPERTY( bool CanControl READ CanControl )
     Q_PROPERTY( QString PlaybackStatus READ PlaybackStatus )
     Q_PROPERTY( QString LoopStatus READ LoopStatus WRITE SetLoopStatus)
+    Q_PROPERTY( QVariantMap Metadata READ metadata )
+
+    // org.mpris.MediaPlayer2
+    Q_PROPERTY( bool CanQuit READ canQuit )
+    Q_PROPERTY( bool CanRaise READ canRaise )
+    Q_PROPERTY( QString DesktopEntry READ desktopEntry )
+    Q_PROPERTY( bool HasTrackList READ hasTrackList )
+    Q_PROPERTY( QString Identity READ identity )
+    Q_PROPERTY( QStringList SupportedMimeTypes READ supportedMimeTypes )
+    Q_PROPERTY( QStringList SupportedUriSchemes READ supportedUriSchemes )
+    
 
 public:
     Mpris(QObject *p);
@@ -48,6 +64,7 @@ public:
     virtual ~Mpris() {
     }
 
+    // org.mpris.MediaPlayer2.Player
     void Next() {
         if (MPDStatus::self()->playlistLength()>1) {
             emit goToNext();
@@ -121,6 +138,22 @@ public:
         emit setRepeat(QLatin1String("None")!=s);
     }
 
+    QVariantMap metadata() const
+    {
+        QVariantMap metadataMap;
+
+        if (!currentSong.title.isEmpty() && !currentSong.artist.isEmpty() && !currentSong.album.isEmpty())
+        {
+            metadataMap.insert("mpris:trackid", currentSong.id);
+            metadataMap.insert("mpris:length", currentSong.time / 1000 / 1000);
+            metadataMap.insert("xesam:album", currentSong.album);
+            metadataMap.insert("xesam:artist", currentSong.artist);
+            metadataMap.insert("xesam:title", currentSong.title);
+        }
+
+        return metadataMap;
+    }
+
     int Rate() const {
         return 1.0;
     }
@@ -156,7 +189,54 @@ public:
         return true;
     }
 
+    // org.mpris.MediaPlayer2
+    bool canQuit() const
+    {
+        return true;
+    }
+
+    bool canRaise() const
+    {
+        return false;
+    }
+
+    bool hasTrackList() const
+    {
+        return false;
+    }
+
+    QString identity() const
+    {
+        return QString( "Cantata" );
+    }
+
+    QString desktopEntry() const
+    {
+        return QString( "cantata" );
+    }
+
+    QStringList supportedUriSchemes() const
+    {
+        return QStringList();
+    }
+
+    QStringList supportedMimeTypes() const
+    {
+        return QStringList();
+    }
+
+public slots:
+    void Raise()
+    {
+    }
+
+    void Quit()
+    {
+        QApplication::quit();
+    }
+
 Q_SIGNALS:
+    // org.mpris.MediaPlayer2.Player
     void goToNext();
     void setPause(bool toggle);
     void startPlayingSong(quint32 song = 0);
@@ -167,6 +247,12 @@ Q_SIGNALS:
     void setSeekId(quint32 songId, quint32 time);
     void setVolume(int vol);
     void stopPlaying();
+
+private slots:
+    void updateCurrentSong(const Song &song);
+
+private:
+    Song currentSong;
 };
 
 #endif

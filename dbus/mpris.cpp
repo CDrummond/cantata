@@ -24,11 +24,21 @@
 #include "mpris.h"
 #include "mpdconnection.h"
 #include "playeradaptor.h"
+#include "rootadaptor.h"
 
 Mpris::Mpris(QObject *p)
     : QObject(p)
 {
+    // Comes from playeradaptor.h which is auto-generated
+    // in the top-level CMakeLists.txt with qt4_add_dbus_adaptor.
     new PlayerAdaptor(this);
+
+    // Comes from rootadaptor.h which is auto-generated
+    // in the top-level CMakeLists.txt with qt4_add_dbus_adaptor.    
+    new MediaPlayer2Adaptor(this);
+
+    currentSong = Song();
+
     QDBusConnection::sessionBus().registerService("org.mpris.MediaPlayer2.cantata");
     QDBusConnection::sessionBus().registerObject("/org/mpris/MediaPlayer2", this);
     connect(this, SIGNAL(goToNext()), MPDConnection::self(), SLOT(goToNext()));
@@ -41,4 +51,11 @@ Mpris::Mpris(QObject *p)
     connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(this, SIGNAL(stopPlaying()), MPDConnection::self(), SLOT(stopPlaying()));
+
+    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
+}
+
+void Mpris::updateCurrentSong(const Song &song)
+{
+    currentSong = song;
 }

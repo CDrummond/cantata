@@ -90,6 +90,8 @@ void ServerInfoPage::statsUpdated(const MPDStats &stats)
 //     #else
     lastUpdate->setText(stats.dbUpdate.toString(Qt::SystemLocaleShortDate));
 //     #endif
+
+    emit getUrlHandlers();
 }
 
 void ServerInfoPage::mpdVersion(long v)

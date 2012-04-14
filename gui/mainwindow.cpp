@@ -1053,7 +1053,7 @@ MainWindow::~MainWindow()
     #endif
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
-    if (Settings::self()->stopDynamizerOnExit()) {
+    if (Settings::self()->stopDynamizerOnExit() || Settings::self()->stopOnExit()) {
         Dynamic::self()->stop();
     }
     if (Settings::self()->stopOnExit() || (fadeStop && StopState_Stopping==stopState)) {

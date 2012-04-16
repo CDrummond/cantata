@@ -94,6 +94,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<quint32> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<quint32> &)));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
+    connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
     MainWindow::initButton(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
@@ -365,6 +366,11 @@ void PlaylistsPage::searchItems()
     if(updated) {
         view->updateRows();
     }
+}
+
+void PlaylistsPage::updated(const QModelIndex &index)
+{
+    view->updateRows(proxy.mapFromSource(index));
 }
 
 void PlaylistsPage::updateGenres(const QSet<QString> &g)

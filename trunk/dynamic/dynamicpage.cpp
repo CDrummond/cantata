@@ -61,6 +61,7 @@ DynamicPage::DynamicPage(MainWindow *p)
     startAction = new QAction(tr("Start Dynamic Mode"), this);
     stopAction = new QAction(tr("Stop Dynamic Mode"), this);
     #endif
+    toggleAction = new QAction(this);
     addAction->setIcon(QIcon::fromTheme("list-add"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
     removeAction->setIcon(QIcon::fromTheme("list-remove"));
@@ -90,6 +91,7 @@ DynamicPage::DynamicPage(MainWindow *p)
     connect(removeAction, SIGNAL(triggered()), SLOT(remove()));
     connect(startAction, SIGNAL(triggered()), SLOT(start()));
     connect(stopAction, SIGNAL(triggered()), SLOT(stop()));
+    connect(toggleAction, SIGNAL(triggered()), SLOT(toggle()));
     connect(Dynamic::self(), SIGNAL(running(bool)), SLOT(running(bool)));
 
     stopAction->setEnabled(false);
@@ -101,7 +103,7 @@ DynamicPage::DynamicPage(MainWindow *p)
     #endif
     view->setModel(&proxy);
     view->hideBackButton();
-    view->init(startAction, 0);
+    view->init(0, 0, toggleAction);
     view->setMode(ItemView::Mode_List);
     controlActions();
 }
@@ -188,6 +190,17 @@ void DynamicPage::start()
 void DynamicPage::stop()
 {
     Dynamic::self()->stop();
+}
+
+void DynamicPage::toggle()
+{
+    QModelIndexList selected=view->selectedIndexes();
+
+    if (1!=selected.count()) {
+        return;
+    }
+
+    Dynamic::self()->toggle(selected.at(0).data(Qt::DisplayRole).toString());
 }
 
 void DynamicPage::running(bool status)

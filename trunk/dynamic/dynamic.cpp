@@ -171,7 +171,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         return entryList.at(index.row()).name;
     case Qt::DecorationRole:
-        return QIcon::fromTheme("media-playlist-shuffle");
+        return !currentEntry.isEmpty() && entryList.at(index.row()).name==currentEntry ? QIcon::fromTheme("media-playback-start") : QIcon::fromTheme("media-playlist-shuffle");
     case ItemView::Role_SubText: {
         #ifdef ENABLE_KDE_SUPPORT
         return i18np("1 Rule", "%1 Rules", entryList.at(index.row()).rules.count());
@@ -180,6 +180,8 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         return count!=1 ? tr("%1 Rules").arg(count) : tr("1 Rule");
         #endif
     }
+    case ItemView::Role_ToggleIconName:
+        return !currentEntry.isEmpty() && entryList.at(index.row()).name==currentEntry ? "process-stop" : "media-playback-start";
     default:
         return QVariant();
     }
@@ -289,6 +291,21 @@ bool Dynamic::start(const QString &name)
         return false;
     }
 
+    int i=currentEntry.isEmpty() ? -1 : entryList.indexOf(currentEntry);
+    QModelIndex idx=index(i, 0, QModelIndex());
+
+    currentEntry=name;
+
+    if (idx.isValid()) {
+        emit dataChanged(idx, idx);
+    }
+
+    i=entryList.indexOf(currentEntry);
+    idx=index(i, 0, QModelIndex());
+    if (idx.isValid()) {
+        emit dataChanged(idx, idx);
+    }
+
     if (isRunning()) {
         emit clear();
         return true;
@@ -303,23 +320,42 @@ bool Dynamic::start(const QString &name)
 
 bool Dynamic::stop()
 {
+    int i=currentEntry.isEmpty() ? -1 : entryList.indexOf(currentEntry);
+    QModelIndex idx=index(i, 0, QModelIndex());
     int pid=getPid();
 
     if (!pid) {
+        currentEntry=QString();
         emit running(false);
+        if (idx.isValid()) {
+            emit dataChanged(idx, idx);
+        }
         return true;
     }
 
     if (0!=::kill(pid, 0)) {
+        currentEntry=QString();
         emit running(false);
+        if (idx.isValid()) {
+            emit dataChanged(idx, idx);
+        }
         return true;
     }
 
     if (controlApp(false)) {
+        currentEntry=QString();
         emit running(isRunning());
+        if (idx.isValid()) {
+            emit dataChanged(idx, idx);
+        }
         return true;
     }
     return false;
+}
+
+bool Dynamic::toggle(const QString &name)
+{
+    return name==currentEntry ? stop() : start(name);
 }
 
 bool Dynamic::isRunning()
@@ -408,6 +444,18 @@ void Dynamic::checkHelper()
                 timer->start(constAppCheck);
             }
         } else { // No timer => app startup!
+            // Attempt to read current name...
+            QFileInfo inf(Network::cacheDir(constDir, false)+constActiveRules);
+
+            if (inf.exists() && inf.isSymLink()) {
+                QString link=inf.readLink();
+                if (!link.isEmpty()) {
+                    QString fname=QFileInfo(link).fileName();
+                    if (fname.endsWith(constExtension)) {
+                        currentEntry=fname.left(fname.length()-constExtension.length());
+                    }
+                }
+            }
             emit running(true);
         }
     }

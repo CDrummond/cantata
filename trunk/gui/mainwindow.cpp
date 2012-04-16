@@ -1553,47 +1553,8 @@ void MainWindow::updatePlaylist(const QList<Song> &songs)
     nextTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
     prevTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
 
-    // Remeber first row and first song id
-    bool hadSelection=false;
-    qint32 firstSelectedSongId = -1;
-    qint32 firstSelectedRow = -1;
-
-    if (playQueue->selectionModel()->hasSelection()) {
-        QModelIndexList items = playQueue->selectionModel()->selectedRows();
-        hadSelection=true;
-        // find smallest selected rownum
-        foreach (const QModelIndex &index, items) {
-            QModelIndex sourceIndex = usingProxy ? playQueueProxyModel.mapToSource(index) : index;
-            if (firstSelectedRow == -1 || index.row() < firstSelectedRow) {
-                firstSelectedRow = index.row();
-                firstSelectedSongId = playQueueModel.getIdByRow(sourceIndex.row());
-            }
-        }
-    }
-
     playQueueModel.update(songs);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
-
-    if (hadSelection) {
-        // We had a selection before the update, and we will still have one now - as the model does add/del/move...
-        // *But* the current index seems to get messed up
-        // ...and if we have deleted all the selected items,we want to select the next one
-        qint32 newCurrentRow = playQueueModel.getRowById(firstSelectedSongId);
-        if (newCurrentRow<0) {
-            // Previously selected row was deleted, so select row nearest to it...
-            if (!playQueue->selectionModel()->hasSelection()) {
-                QModelIndex index=usingProxy
-                                    ? playQueueProxyModel.index(qBound(0, firstSelectedRow, playQueueProxyModel.rowCount() - 1), 0)
-                                    : playQueueModel.index(qBound(0, firstSelectedRow, playQueueModel.rowCount() - 1), 0);
-
-                playQueue->setCurrentIndex(index);
-                playQueue->selectionModel()->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-            }
-        } else {
-            // The row was not deleted, could have been moved, so we need t set the current index
-            playQueue->setCurrentIndex(usingProxy ? playQueueProxyModel.mapFromSource(playQueueModel.index(newCurrentRow, 0)) : playQueueModel.index(newCurrentRow, 0));
-        }
-    }
 
     if (1==songs.count() && MPDState_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));

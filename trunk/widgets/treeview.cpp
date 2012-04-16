@@ -104,3 +104,25 @@ void TreeView::expand(const QModelIndex &idx)
         }
     }
 }
+
+void TreeView::setModel(QAbstractItemModel *m)
+{
+    QAbstractItemModel *old=model();
+    QTreeView::setModel(m);
+
+    if (old) {
+        disconnect(old, SIGNAL(layoutChanged()), this, SLOT(correctSelection()));
+    }
+
+    if (m && old!=m) {
+        connect(m, SIGNAL(layoutChanged()), this, SLOT(correctSelection()));
+    }
+}
+
+// Workaround for https://bugreports.qt-project.org/browse/QTBUG-18009
+void TreeView::correctSelection()
+{
+    QItemSelection s = selectionModel()->selection();
+    setCurrentIndex(currentIndex());
+    selectionModel()->select(s, QItemSelectionModel::SelectCurrent);
+}

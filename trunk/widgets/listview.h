@@ -41,6 +41,10 @@ public:
     void startDrag(Qt::DropActions supportedActions);
     void mouseReleaseEvent(QMouseEvent *event);
     QModelIndexList selectedIndexes() const;
+    virtual void setModel(QAbstractItemModel *m);
+
+private Q_SLOTS:
+    void correctSelection();
 
 Q_SIGNALS:
     bool itemsSelected(bool);

@@ -30,7 +30,7 @@
     <widget class="QToolButton" name="menuButton"/>
    </item>
    <item row="1" column="3">
-    <widget class="QToolButton" name="replacePlaylist"/>
+    <widget class="QToolButton" name="replacePlayQueue"/>
    </item>
   </layout>
  </widget>

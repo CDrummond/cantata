@@ -56,7 +56,7 @@ class Mpris : public QObject
     Q_PROPERTY( QString Identity READ identity )
     Q_PROPERTY( QStringList SupportedMimeTypes READ supportedMimeTypes )
     Q_PROPERTY( QStringList SupportedUriSchemes READ supportedUriSchemes )
-    
+
 
 public:
     Mpris(QObject *p);
@@ -197,7 +197,11 @@ public:
 
     bool canRaise() const
     {
+        #ifdef ENABLE_KDE_SUPPORT
+        return true;
+        #else
         return false;
+        #endif
     }
 
     bool hasTrackList() const
@@ -226,9 +230,7 @@ public:
     }
 
 public slots:
-    void Raise()
-    {
-    }
+    void Raise();
 
     void Quit()
     {

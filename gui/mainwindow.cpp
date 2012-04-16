@@ -552,23 +552,23 @@ MainWindow::MainWindow(QWidget *parent)
     #endif // ENABLE_WEBKIT
     serverInfoTabAction = new QAction(tr("Server Info"), this);
     #endif // ENABLE_KDE_SUPPORT
-    libraryTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F1);
-    albumsTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F2);
-    foldersTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F3);
-    playlistsTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F4);
-    dynamicTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F5);
-    streamsTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F6);
-    lyricsTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F7);
+    libraryTabAction->setShortcut(Qt::AltModifier+Qt::Key_1);
+    albumsTabAction->setShortcut(Qt::AltModifier+Qt::Key_2);
+    foldersTabAction->setShortcut(Qt::AltModifier+Qt::Key_3);
+    playlistsTabAction->setShortcut(Qt::AltModifier+Qt::Key_4);
+    dynamicTabAction->setShortcut(Qt::AltModifier+Qt::Key_5);
+    streamsTabAction->setShortcut(Qt::AltModifier+Qt::Key_6);
+    lyricsTabAction->setShortcut(Qt::AltModifier+Qt::Key_7);
     #ifdef ENABLE_WEBKIT
-    infoTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F8);
-    serverInfoTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F9);
+    infoTabAction->setShortcut(Qt::AltModifier+Qt::Key_8);
+    serverInfoTabAction->setShortcut(Qt::AltModifier+Qt::Key_9);
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F10);
+    devicesTabAction->setShortcut(Qt::AltModifier+Qt::Key_0);
     #endif // ENABLE_DEVICES_SUPPORT
     #else // ENABLE_WEBKIT
-    serverInfoTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F8);
+    serverInfoTabAction->setShortcut(Qt::AltModifier+Qt::Key_8);
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setShortcut(Qt::MetaModifier+Qt::Key_F9);
+    devicesTabAction->setShortcut(Qt::AltModifier+Qt::Key_9);
     #endif // ENABLE_DEVICES_SUPPORT
     #endif // ENABLE_WEBKIT
 

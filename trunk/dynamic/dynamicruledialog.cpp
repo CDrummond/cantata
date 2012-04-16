@@ -23,6 +23,10 @@
 
 #include "dynamicruledialog.h"
 #include "musiclibrarymodel.h"
+#ifndef ENABLE_KDE_SUPPORT
+#include <QtGui/QDialogButtonBox>
+#include <QtGui/QPushButton>
+#endif
 
 static const int constMinDate=1800;
 static const int constMaxDate=2100;

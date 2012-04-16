@@ -61,6 +61,11 @@ public:
 
 private Q_SLOTS:
     void enableOkButton();
+
+#ifndef ENABLE_KDE_SUPPORT
+private:
+    QDialogButtonBox *buttonBox;
+#endif
 };
 
 #endif

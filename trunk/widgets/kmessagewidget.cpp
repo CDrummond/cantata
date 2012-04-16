@@ -292,7 +292,7 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
 //         bgRole = KColorScheme::PositiveBackground;
 //         fgRole = KColorScheme::PositiveText;
 //         break;
-    case InformationMessageType:
+    case Information:
         d->iconLabel->setPixmap(QIcon::fromTheme("dialog-information").pixmap(22, 22));
         border=Qt::blue;
         bgnd=QColor(0xa5, 0xc1, 0xe4);
@@ -303,7 +303,8 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
 //         bgRole = KColorScheme::NeutralBackground;
 //         fgRole = KColorScheme::NeutralText;
 //         break;
-    case ErrorMessageType:
+    default:
+    case Error:
         d->iconLabel->setPixmap(QIcon::fromTheme("dialog-error").pixmap(22, 22));
         border=Qt::red;
         bgnd=QColor(0xeb, 0xbb, 0xbb);

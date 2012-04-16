@@ -36,6 +36,8 @@ public:
     DynamicPage(MainWindow *p);
     virtual ~DynamicPage();
 
+    void focusSearch() { view->focusSearch(); }
+
 public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();

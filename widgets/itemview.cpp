@@ -684,6 +684,15 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
     view()->selectionModel()->select(idx, QItemSelectionModel::Select|QItemSelectionModel::Rows);
 }
 
+void ItemView::focusSearch()
+{
+    if (Mode_Tree==mode || Mode_GroupedTree==mode) {
+        treeSearch->setFocus();
+    } else {
+        listSearch->setFocus();
+    }
+}
+
 void ItemView::setStartClosed(bool sc)
 {
     if (groupedView) {

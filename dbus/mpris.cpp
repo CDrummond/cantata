@@ -25,13 +25,15 @@
 #include "mpdconnection.h"
 #include "playeradaptor.h"
 #include "rootadaptor.h"
+#include "uiadaptor.h"
+#include "mainwindow.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMainWindow>
 #include <KDE/KWindowSystem>
 #endif
 
-Mpris::Mpris(QObject *p)
+Mpris::Mpris(MainWindow *p)
     : QObject(p)
+    , mw(p)
 {
     // Comes from playeradaptor.h which is auto-generated
     // in the top-level CMakeLists.txt with qt4_add_dbus_adaptor.
@@ -41,7 +43,9 @@ Mpris::Mpris(QObject *p)
     // in the top-level CMakeLists.txt with qt4_add_dbus_adaptor.
     new MediaPlayer2Adaptor(this);
 
-    currentSong = Song();
+    // Comes from uiadaptor.h which is auto-generated
+    // in the top-level CMakeLists.txt with qt4_add_dbus_adaptor.
+    new UiAdaptor(this);
 
     QDBusConnection::sessionBus().registerService("org.mpris.MediaPlayer2.cantata");
     QDBusConnection::sessionBus().registerObject("/org/mpris/MediaPlayer2", this);
@@ -67,10 +71,40 @@ void Mpris::updateCurrentSong(const Song &song)
 void Mpris::Raise()
 {
     #ifdef ENABLE_KDE_SUPPORT
-    if (1==KMainWindow::memberList().count()) {
-        KMainWindow *window = KMainWindow::memberList().at(0);
-        window->show();
-        KWindowSystem::forceActiveWindow(window->winId());
-    }
+    mw->show();
+    KWindowSystem::forceActiveWindow(mw->winId());
     #endif
 }
+
+ void Mpris::showPage(const QString &page, bool focusSearch)
+ {
+    QString p=page.toLower();
+    if (QLatin1String("library")==p) {
+        mw->showTab(MainWindow::PAGE_LIBRARY);
+    } else if (QLatin1String("albums")==p) {
+        mw->showTab(MainWindow::PAGE_ALBUMS);
+    } else if (QLatin1String("folders")==p) {
+        mw->showTab(MainWindow::PAGE_FOLDERS);
+    } else if (QLatin1String("playlists")==p) {
+        mw->showTab(MainWindow::PAGE_PLAYLISTS);
+    } else if (QLatin1String("dynamic")==p) {
+        mw->showTab(MainWindow::PAGE_DYNAMIC);
+    } else if (QLatin1String("streams")==p) {
+        mw->showTab(MainWindow::PAGE_STREAMS);
+    } else if (QLatin1String("lyrics")==p) {
+        mw->showTab(MainWindow::PAGE_LYRICS);
+    } else if (QLatin1String("info")==p) {
+        mw->showTab(MainWindow::PAGE_INFO);
+    } else if (QLatin1String("serverinfo")==p) {
+        mw->showTab(MainWindow::PAGE_SERVER_INFO);
+    }
+    #ifdef ENABLE_KDE_SUPPORT
+    else if (QLatin1String("devices")==p) {
+        mw->showTab(MainWindow::PAGE_DEVICES);
+    }
+    #endif
+    if (focusSearch) {
+        mw->focusTabSearch();
+    }
+ }
+

@@ -80,6 +80,7 @@ public:
     void setModel(QAbstractItemModel *m);
     void addAction(QAction *a);
     void setFocus();
+    bool hasFocus();
     QAbstractItemModel * model();
     void setContextMenuPolicy(Qt::ContextMenuPolicy policy);
     bool haveUnSelectedItems();

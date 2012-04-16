@@ -43,6 +43,10 @@ public:
     QModelIndexList selectedIndexes() const;
     void expandAll();
     void expand(const QModelIndex &idx);
+    virtual void setModel(QAbstractItemModel *m);
+
+private Q_SLOTS:
+    void correctSelection();
 
 Q_SIGNALS:
     bool itemsSelected(bool);

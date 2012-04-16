@@ -43,9 +43,6 @@
 PlaylistsPage::PlaylistsPage(MainWindow *p)
     : QWidget(p)
     , mw(p)
-    , beingUpdated(-1)
-    , firstSelectedRow(-1)
-    , currentItem(0)
 {
     setupUi(this);
     #ifdef ENABLE_KDE_SUPPORT
@@ -97,8 +94,6 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<quint32> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<quint32> &)));
     connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
-    connect(PlaylistsModel::self(), SIGNAL(updating(const QModelIndex &)), this, SLOT(updating(const QModelIndex &)));
-    connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
     MainWindow::initButton(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
@@ -370,68 +365,6 @@ void PlaylistsPage::searchItems()
     if(updated) {
         view->updateRows();
     }
-}
-
-void PlaylistsPage::updating(const QModelIndex &index)
-{
-    beingUpdated=index.row();
-    firstSelectedRow=-1;
-    if (view->selectionModel()->hasSelection()) {
-        QModelIndex p=proxy.mapFromSource(index);
-        QModelIndexList items = view->selectionModel()->selectedRows();
-        // find smallest selected rownum
-        firstSelectedRow=proxy.rowCount(p);
-        foreach (const QModelIndex &index, items) {
-            if (index.parent()==p && index.row()<firstSelectedRow) {
-                firstSelectedRow=index.row();
-                currentItem=proxy.mapToSource(index).internalPointer();
-            }
-        }
-    }
-}
-
-void PlaylistsPage::updated(const QModelIndex &index)
-{
-    view->updateRows(proxy.mapFromSource(index));
-
-    // Attempt to ensure we have items selected, if there were items selected before...
-    // Also, try to update current index...
-    if (index.row()==beingUpdated && -1!=firstSelectedRow) {
-        QModelIndex p=proxy.mapFromSource(index);
-        int count=proxy.rowCount(p);
-        QModelIndex currentIndex;
-        for (int i=0; i<count; ++i) {
-            QModelIndex pIndex=proxy.index(i, 0, p);
-            QModelIndex idx=proxy.mapToSource(pIndex);
-            if (idx.internalPointer()==currentItem) {
-                currentIndex=pIndex;
-                break;
-            }
-        }
-
-        if (currentIndex.isValid()) {
-            view->setCurrentIndex(currentIndex);
-        } else {
-            bool haveSelection=false;
-            QModelIndexList items = view->selectionModel()->selectedRows();
-            foreach (const QModelIndex &index, items) {
-                if (index.parent()==p) {
-                    haveSelection=true;
-                    break;
-                }
-            }
-
-            if (!haveSelection) {
-                // No selection anymore, so select nearest to 'firstSelectedRow'
-                QModelIndex idx=proxy.index(qBound(0, firstSelectedRow, proxy.rowCount(p) - 1), 0, p);
-                view->setCurrentIndex(idx);
-                view->selectionModel()->select(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-            }
-        }
-    }
-
-    beingUpdated=-1;
-    firstSelectedRow=-1;
 }
 
 void PlaylistsPage::updateGenres(const QSet<QString> &g)

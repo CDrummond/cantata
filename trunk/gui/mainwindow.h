@@ -302,6 +302,7 @@ private Q_SLOTS:
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     void replayGain();
     #endif
+    void focusSearch();
 
 private:
     int calcMinHeight();
@@ -312,6 +313,7 @@ private:
     void stopVolumeFade();
 //     void callK3b(const QString &type);
     void showTab(int page);
+    void focusTabSearch();
 
 private:
     int loaded;
@@ -378,6 +380,7 @@ private:
     Action *replaygainAction;
     #endif
     Action *refreshAction;
+    Action *searchAction;
     Action *smallPlaybackButtonsAction;
     Action *smallControlButtonsAction;
     #ifdef ENABLE_KDE_SUPPORT
@@ -458,6 +461,7 @@ private:
     #ifdef ENABLE_DEVICES_SUPPORT
     friend class DevicesPage;
     #endif
+    friend class Mpris;
 };
 
 #endif

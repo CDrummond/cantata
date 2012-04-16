@@ -268,6 +268,11 @@ void PlayQueueView::setFocus()
     currentWidget()->setFocus();
 }
 
+bool PlayQueueView::hasFocus()
+{
+    return currentWidget()->hasFocus();
+}
+
 QAbstractItemModel * PlayQueueView::model()
 {
     return currentWidget()==groupedView ? groupedView->model() : treeView->model();

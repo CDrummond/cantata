@@ -677,6 +677,9 @@ int FancyTabWidget::visibleCount() const {
 }
 
 void FancyTabWidget::SetCurrentIndex(int idx) {
+  if (!isEnabled(idx)) {
+    return;
+  }
   int index=IndexToTab(idx);
   if (FancyTabBar* bar = qobject_cast<FancyTabBar*>(tab_bar_)) {
     bar->setCurrentIndex(index);

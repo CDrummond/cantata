@@ -184,13 +184,13 @@
         <number>0</number>
        </property>
        <item row="0" column="0" colspan="10">
-        <widget class="LineEdit" name="searchPlaylistLineEdit"/>
+        <widget class="LineEdit" name="searchPlayQueueLineEdit"/>
        </item>
        <item row="1" column="0" colspan="10">
         <widget class="PlayQueueView" name="playQueue"/>
        </item>
        <item row="2" column="0">
-        <widget class="SqueezedTextLabel" name="playListStatsLabel"/>
+        <widget class="SqueezedTextLabel" name="playQueueStatsLabel"/>
        </item>
        <item row="2" column="1">
         <spacer>
@@ -249,10 +249,10 @@
         </spacer>
        </item>
        <item row="2" column="7">
-        <widget class="QToolButton" name="savePlaylistPushButton"/>
+        <widget class="QToolButton" name="savePlayQueuePushButton"/>
        </item>
        <item row="2" column="8">
-        <widget class="QToolButton" name="removeAllFromPlaylistPushButton"/>
+        <widget class="QToolButton" name="removeAllFromPlayQueuePushButton"/>
        </item>
        <item row="2" column="5">
         <widget class="QToolButton" name="consumePushButton"/>

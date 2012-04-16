@@ -226,7 +226,7 @@ private Q_SLOTS:
     void songLoaded();
     void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
-    void playlistItemsSelected(bool s);
+    void playQueueItemsSelected(bool s);
     void showVolumeControl();
     void showPreferencesDialog();
     void updateSettings();
@@ -242,19 +242,19 @@ private Q_SLOTS:
     void increaseVolume();
     void decreaseVolume();
     void setPosition();
-    void searchPlaylist();
-    void realSearchPlaylist();
-    void updatePlaylist(const QList<Song> &songs);
+    void searchPlayQueue();
+    void realSearchPlayQueue();
+    void updatePlayQueue(const QList<Song> &songs);
     void updateCurrentSong(const Song &song);
     void updateCurrentCover();
     void scrollPlayQueue();
     void updateStats();
     void updateStatus();
     void updatePosition();
-    void playlistItemActivated(const QModelIndex &);
-    void removeFromPlaylist();
-    void replacePlaylist();
-    void addToPlaylist();
+    void playQueueItemActivated(const QModelIndex &);
+    void removeFromPlayQueue();
+    void replacePlayQueue();
+    void addToPlayQueue();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
     void removeItems();
@@ -264,10 +264,10 @@ private Q_SLOTS:
     #else
     void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
-    void cropPlaylist();
+    void cropPlayQueue();
     void updatePlayQueueStats(int artists, int albums, int songs, quint32 time);
     void copyTrackInfo();
-    void togglePlaylist();
+    void togglePlayQueue();
     void sidebarModeChanged();
     void currentTabChanged(int index);
     void tabToggled(int index);
@@ -306,7 +306,7 @@ private Q_SLOTS:
 
 private:
     int calcMinHeight();
-    void addToPlaylist(bool replace);
+    void addToPlayQueue(bool replace);
     void editTags(const QList<Song> &songs, bool isPlayQueue);
     bool currentIsStream() const;
     void startVolumeFade(/*bool stop*/);
@@ -337,19 +337,19 @@ private:
     Action *stopTrackAction;
     Action *increaseVolumeAction;
     Action *decreaseVolumeAction;
-    Action *addToPlaylistAction;
-    Action *replacePlaylistAction;
-    Action *removeFromPlaylistAction;
+    Action *addToPlayQueueAction;
+    Action *replacePlayQueueAction;
+    Action *removeFromPlayQueueAction;
     Action *addToStoredPlaylistAction;
-    Action *clearPlaylistAction;
+    Action *clearPlayQueueAction;
     Action *copyTrackInfoAction;
-    Action *cropPlaylistAction;
-    Action *shufflePlaylistAction;
-    Action *savePlaylistAction;
-    Action *randomPlaylistAction;
-    Action *repeatPlaylistAction;
-    Action *singlePlaylistAction;
-    Action *consumePlaylistAction;
+    Action *cropPlayQueueAction;
+    Action *shufflePlayQueueAction;
+    Action *savePlayQueueAction;
+    Action *randomPlayQueueAction;
+    Action *repeatPlayQueueAction;
+    Action *singlePlayQueueAction;
+    Action *consumePlayQueueAction;
     Action *expandInterfaceAction;
     Action *quitAction;
     Action *locateTrackAction;
@@ -423,7 +423,7 @@ private:
     QThread *mpdThread;
     DockManager *dock;
     Mpris *mpris;
-    QTimer *playlistSearchTimer;
+    QTimer *playQueueSearchTimer;
     bool usingProxy;
 
     enum ConnState {

@@ -43,16 +43,16 @@ FolderPage::FolderPage(MainWindow *p)
     , mw(p)
 {
     setupUi(this);
-    addToPlaylist->setDefaultAction(p->addToPlaylistAction);
-    replacePlaylist->setDefaultAction(p->replacePlaylistAction);
+    addToPlayQueue->setDefaultAction(p->addToPlayQueueAction);
+    replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
     #ifdef ENABLE_KDE_SUPPORT
     browseAction = p->actionCollection()->addAction("openfilemanager");
     browseAction->setText(i18n("Open File Manager"));
     browseAction->setIcon(QIcon::fromTheme("system-file-manager"));
     #endif
-    MainWindow::initButton(addToPlaylist);
-    MainWindow::initButton(replacePlaylist);
+    MainWindow::initButton(addToPlayQueue);
+    MainWindow::initButton(replacePlayQueue);
     MainWindow::initButton(libraryUpdate);
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -60,8 +60,8 @@ FolderPage::FolderPage(MainWindow *p)
     #else
     view->setTopText(tr("Folders"));
     #endif
-    view->addAction(p->addToPlaylistAction);
-    view->addAction(p->replacePlaylistAction);
+    view->addAction(p->addToPlayQueueAction);
+    view->addAction(p->replacePlayQueueAction);
     view->addAction(p->addToStoredPlaylistAction);
 //     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -84,7 +84,7 @@ FolderPage::FolderPage(MainWindow *p)
 
     proxy.setSourceModel(DirViewModel::self());
     view->setModel(&proxy);
-    view->init(p->replacePlaylistAction, p->addToPlaylistAction);
+    view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
     connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
     connect(this, SIGNAL(add(const QStringList &, bool)), MPDConnection::self(), SLOT(add(const QStringList &, bool)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
@@ -144,8 +144,8 @@ void FolderPage::controlActions()
     QModelIndexList selected=view->selectedIndexes();
     bool enable=selected.count()>0;
 
-    mw->addToPlaylistAction->setEnabled(enable);
-    mw->replacePlaylistAction->setEnabled(enable);
+    mw->addToPlayQueueAction->setEnabled(enable);
+    mw->replacePlayQueueAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
     #ifdef ENABLE_DEVICES_SUPPORT
     mw->copyToDeviceAction->setEnabled(enable);

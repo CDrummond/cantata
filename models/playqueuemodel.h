@@ -98,11 +98,11 @@ public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace);
     void addItems(const QStringList &items, bool replace) { addItems(items, -1, replace); }
     void addFiles(const QStringList &filenames, int row, bool replace);
-    void playListStats();
+    void stats();
 
 Q_SIGNALS:
-    void filesAddedInPlaylist(const QStringList filenames, const quint32 row, const quint32 size, bool replace);
-    void moveInPlaylist(const QList<quint32> &items, const quint32 row, const quint32 size);
+    void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, bool replace);
+    void move(const QList<quint32> &items, const quint32 row, const quint32 size);
     void statsUpdated(int artists, int albums, int songs, quint32 time);
 
 private:

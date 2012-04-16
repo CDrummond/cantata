@@ -53,14 +53,13 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     #endif
     renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
 
-    replacePlaylist->setDefaultAction(p->replacePlaylistAction);
+    replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
 
-    MainWindow::initButton(replacePlaylist);
+    MainWindow::initButton(replacePlayQueue);
     MainWindow::initButton(libraryUpdate);
-    MainWindow::initButton(replacePlaylist);
 
     view->allowGroupedView();
     #ifdef ENABLE_KDE_SUPPORT
@@ -68,8 +67,8 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     #else
     view->setTopText(tr("Playlists"));
     #endif
-    view->addAction(p->addToPlaylistAction);
-    view->addAction(p->replacePlaylistAction);
+    view->addAction(p->addToPlayQueueAction);
+    view->addAction(p->replacePlayQueueAction);
     view->addAction(renamePlaylistAction);
     view->addAction(p->removeAction);
 //     view->addAction(p->burnAction);
@@ -80,7 +79,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
 
     proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);
-    view->init(p->replacePlaylistAction, p->addToPlaylistAction);
+    view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
     view->setDeleteAction(p->removeAction);
 
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -92,14 +91,14 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<quint32> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<quint32> &)));
-    connect(p->savePlaylistAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
+    connect(p->savePlayQueueAction, SIGNAL(activated()), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
     MainWindow::initButton(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
-    menu->addAction(p->addToPlaylistAction);
+    menu->addAction(p->addToPlayQueueAction);
     menu->addAction(p->removeAction);
     menu->addAction(renamePlaylistAction);
     menuButton->setMenu(menu);
@@ -352,8 +351,8 @@ void PlaylistsPage::controlActions()
     renamePlaylistAction->setEnabled(enable);
     renamePlaylistAction->setEnabled(enable);
     mw->removeAction->setEnabled(selected.count()>0);
-    mw->replacePlaylistAction->setEnabled(selected.count()>0);
-    mw->addToPlaylistAction->setEnabled(selected.count()>0);
+    mw->replacePlayQueueAction->setEnabled(selected.count()>0);
+    mw->addToPlayQueueAction->setEnabled(selected.count()>0);
 }
 
 void PlaylistsPage::searchItems()

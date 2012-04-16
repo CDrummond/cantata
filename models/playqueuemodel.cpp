@@ -123,11 +123,11 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , dropAdjust(0)
 {
     fetcher=new StreamFetcher(this);
-    connect(this, SIGNAL(modelReset()), this, SLOT(playListStats()));
+    connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
     connect(fetcher, SIGNAL(result(const QStringList &, int, bool)), SLOT(addFiles(const QStringList &, int, bool)));
-    connect(this, SIGNAL(filesAddedInPlaylist(const QStringList, quint32, quint32, bool)),
+    connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, bool)),
             MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32, bool)));
-    connect(this, SIGNAL(moveInPlaylist(const QList<quint32> &, quint32, quint32)),
+    connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
 }
 
@@ -483,9 +483,9 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         }
 
         if (row < 0) {
-            emit moveInPlaylist(items, songs.size(), songs.size());
+            emit move(items, songs.size(), songs.size());
         } else {
-            emit moveInPlaylist(items, row, songs.size());
+            emit move(items, row, songs.size());
         }
         return true;
     } else if (data->hasFormat(constFileNameMimeType)) {
@@ -546,12 +546,12 @@ void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replac
 {
     //Check for empty playlist
     if (replace || (songs.size() == 1 && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty())) {
-        emit filesAddedInPlaylist(filenames, 0, 0, replace);
+        emit filesAdded(filenames, 0, 0, replace);
     } else {
         if (row < 0) {
-            emit filesAddedInPlaylist(filenames, songs.size(), songs.size(), false);
+            emit filesAdded(filenames, songs.size(), songs.size(), false);
         } else {
-            emit filesAddedInPlaylist(filenames, row, songs.size(), false);
+            emit filesAdded(filenames, row, songs.size(), false);
         }
     }
 }
@@ -686,7 +686,7 @@ void PlayQueueModel::update(const QList<Song> &songList)
     }
 }
 
-void PlayQueueModel::playListStats()
+void PlayQueueModel::stats()
 {
     QSet<QString> artists;
     QSet<QString> albums;

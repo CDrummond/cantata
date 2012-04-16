@@ -452,9 +452,11 @@ void GroupedView::updateRows(const QModelIndex &parent)
     qint32 count=model()->rowCount(parent);
     quint16 lastKey=Song::constNullKey;
     quint32 collection=parent.data(GroupedView::Role_CollectionId).toUInt();
+    QSet<quint16> keys;
 
     for (qint32 i=0; i<count; ++i) {
         quint16 key=model()->index(i, 0, parent).data(GroupedView::Role_Key).toUInt();
+        keys.insert(key);
         bool hide=key==lastKey &&
                         !(key==currentAlbum && autoExpand) &&
                         ( ( startClosed && !controlledAlbums[collection].contains(key)) ||
@@ -462,6 +464,9 @@ void GroupedView::updateRows(const QModelIndex &parent)
         setRowHidden(i, parent, hide);
         lastKey=key;
     }
+
+    // Check that 'controlledAlbums' only contains valid keys...
+    controlledAlbums[collection].intersect(keys);
 }
 
 void GroupedView::updateCollectionRows()

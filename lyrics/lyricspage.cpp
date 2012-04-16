@@ -104,7 +104,7 @@ LyricsPage::LyricsPage(MainWindow *p)
     refreshAction = p->actionCollection()->addAction("refreshlyrics");
     refreshAction->setText(i18n("Refresh"));
     searchAction = p->actionCollection()->addAction("searchlyrics");
-    searchAction->setText(i18n("Search"));
+    searchAction->setText(i18n("Search For Lyrics"));
     editAction = p->actionCollection()->addAction("editlyrics");
     editAction->setText(i18n("Edit Lyrics"));
     saveAction = p->actionCollection()->addAction("savelyrics");
@@ -115,7 +115,7 @@ LyricsPage::LyricsPage(MainWindow *p)
     delAction->setText(i18n("Delete Lyrics File"));
     #else
     refreshAction = new QAction(tr("Refresh"), this);
-    searchAction = new QAction(tr("Search"), this);
+    searchAction = new QAction(tr("Search For Lyrics"), this);
     editAction = new QAction(tr("Refresh"), this);
     saveAction = new QAction(tr("Refresh"), this);
     cancelAction = new QAction(tr("Refresh"), this);

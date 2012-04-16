@@ -337,6 +337,17 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         }
         break;
     }
+    case Qt::ToolTipRole: {
+        Song s=songs.at(index.row());
+        if (s.album.isEmpty() && s.isStream()) {
+            return s.file;
+        } else {
+            return s.albumArtist()+QLatin1String("<br/>")+
+                   s.album+(s.year>0 ? (QLatin1String(" (")+QString::number(s.year)+QChar(')')) : QString())+QLatin1String("<br/>")+
+                   s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()))+QLatin1String("<br/>")+
+                   Song::formattedTime(s.time)+QLatin1String("<br/><small><i>")+s.file+QLatin1String("</i></small>");
+        }
+    }
     case Qt::TextAlignmentRole:
         switch (index.column()) {
         case COL_TITLE:

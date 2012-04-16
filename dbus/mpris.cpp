@@ -25,6 +25,10 @@
 #include "mpdconnection.h"
 #include "playeradaptor.h"
 #include "rootadaptor.h"
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KMainWindow>
+#include <KDE/KWindowSystem>
+#endif
 
 Mpris::Mpris(QObject *p)
     : QObject(p)
@@ -34,7 +38,7 @@ Mpris::Mpris(QObject *p)
     new PlayerAdaptor(this);
 
     // Comes from rootadaptor.h which is auto-generated
-    // in the top-level CMakeLists.txt with qt4_add_dbus_adaptor.    
+    // in the top-level CMakeLists.txt with qt4_add_dbus_adaptor.
     new MediaPlayer2Adaptor(this);
 
     currentSong = Song();
@@ -58,4 +62,15 @@ Mpris::Mpris(QObject *p)
 void Mpris::updateCurrentSong(const Song &song)
 {
     currentSong = song;
+}
+
+void Mpris::Raise()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    if (1==KMainWindow::memberList().count()) {
+        KMainWindow *window = KMainWindow::memberList().at(0);
+        window->show();
+        KWindowSystem::forceActiveWindow(window->winId());
+    }
+    #endif
 }

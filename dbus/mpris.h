@@ -138,12 +138,10 @@ public:
         emit setRepeat(QLatin1String("None")!=s);
     }
 
-    QVariantMap metadata() const
-    {
+    QVariantMap metadata() const {
         QVariantMap metadataMap;
 
-        if (!currentSong.title.isEmpty() && !currentSong.artist.isEmpty() && !currentSong.album.isEmpty())
-        {
+        if (!currentSong.title.isEmpty() && !currentSong.artist.isEmpty() && !currentSong.album.isEmpty()) {
             metadataMap.insert("mpris:trackid", currentSong.id);
             metadataMap.insert("mpris:length", currentSong.time / 1000 / 1000);
             metadataMap.insert("xesam:album", currentSong.album);
@@ -190,13 +188,11 @@ public:
     }
 
     // org.mpris.MediaPlayer2
-    bool canQuit() const
-    {
+    bool canQuit() const {
         return true;
     }
 
-    bool canRaise() const
-    {
+    bool canRaise() const {
         #ifdef ENABLE_KDE_SUPPORT
         return true;
         #else
@@ -204,36 +200,30 @@ public:
         #endif
     }
 
-    bool hasTrackList() const
-    {
+    bool hasTrackList() const {
         return false;
     }
 
-    QString identity() const
-    {
-        return QString( "Cantata" );
+    QString identity() const {
+        return QLatin1String("Cantata");
     }
 
-    QString desktopEntry() const
-    {
-        return QString( "cantata" );
+    QString desktopEntry() const {
+        return QLatin1String("cantata");
     }
 
-    QStringList supportedUriSchemes() const
-    {
+    QStringList supportedUriSchemes() const {
         return QStringList();
     }
 
-    QStringList supportedMimeTypes() const
-    {
+    QStringList supportedMimeTypes() const {
         return QStringList();
     }
 
 public slots:
     void Raise();
 
-    void Quit()
-    {
+    void Quit() {
         QApplication::quit();
     }
 

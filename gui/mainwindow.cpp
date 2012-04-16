@@ -497,6 +497,9 @@ MainWindow::MainWindow(QWidget *parent)
     devicesTabAction->setText(i18n("Devices"));
     #endif // ENABLE_DEVICES_SUPPORT
 
+    searchAction = actionCollection()->addAction("search");
+    searchAction->setText(i18n("Search"));
+
     #else
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -536,6 +539,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     createDataCdAction = new QAction(tr("Create Data CD"), this);
     editTagsAction = new QAction(tr("Edit Tags"), this);
     editPlayQueueTagsAction = new QAction(tr("Edit Song Tags"), this);
+    searchAction = new QAction(tr("Search"), this);
     libraryTabAction = new QAction(tr("Library"), this);
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
@@ -568,6 +572,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif // ENABLE_DEVICES_SUPPORT
     #endif // ENABLE_WEBKIT
 
+    searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
 
@@ -663,6 +668,7 @@ MainWindow::MainWindow(QWidget *parent)
     organiseFilesAction->setIcon(Icon("inode-directory"));
     organiseFilesAction->setText(i18n("Organize Files"));
     #endif
+    searchAction->setIcon(Icon("edit-find"));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction->setIcon(Icon("audio-x-generic"));
     replaygainAction->setText(i18n("ReplayGain"));
@@ -943,6 +949,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(infoTabAction, SIGNAL(activated()), this, SLOT(showInfoTab()));
     #endif
     connect(serverInfoTabAction, SIGNAL(activated()), this, SLOT(showServerInfoTab()));
+    connect(searchAction, SIGNAL(activated()), this, SLOT(focusSearch()));
     #ifdef ENABLE_DEVICES_SUPPORT
     connect(devicesTabAction, SIGNAL(activated()), this, SLOT(showDevicesTab()));
     connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
@@ -2397,6 +2404,40 @@ void MainWindow::locateTrack()
 void MainWindow::showTab(int page)
 {
     tabWidget->SetCurrentIndex(page);
+}
+
+void MainWindow::focusSearch()
+{
+    if (searchPlaylistLineEdit->hasFocus()) {
+        return;
+    }
+    if (playQueue->hasFocus()) {
+        searchPlaylistLineEdit->setFocus();
+    } else {
+        focusTabSearch();
+    }
+}
+
+void MainWindow::focusTabSearch()
+{
+    if (libraryPage->isVisible()) {
+        libraryPage->focusSearch();
+    } else if (albumsPage->isVisible()) {
+        albumsPage->focusSearch();
+    } else if (folderPage->isVisible()) {
+        folderPage->focusSearch();
+    } else if (playlistsPage->isVisible()) {
+        playlistsPage->focusSearch();
+    } else if (dynamicPage->isVisible()) {
+        dynamicPage->focusSearch();
+    } else if (streamsPage->isVisible()) {
+        streamsPage->focusSearch();
+    }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    else if (devicesPage->isVisible()) {
+        devicesPage->focusSearch();
+    }
+    #endif
 }
 
 void MainWindow::toggleMpris()

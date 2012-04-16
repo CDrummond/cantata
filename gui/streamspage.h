@@ -43,6 +43,7 @@ public:
     void save();
     void addSelectionToPlaylist(bool replace);
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
+    void focusSearch() { view->focusSearch(); }
 
 Q_SIGNALS:
     void add(const QStringList &streams, bool replace);

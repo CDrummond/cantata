@@ -33,6 +33,7 @@
 #include "mpdstatus.h"
 
 class QDBusObjectPath;
+class MainWindow;
 
 class Mpris : public QObject
 {
@@ -59,7 +60,7 @@ class Mpris : public QObject
 
 
 public:
-    Mpris(QObject *p);
+    Mpris(MainWindow *p);
 
     virtual ~Mpris() {
     }
@@ -235,6 +236,9 @@ public slots:
         QApplication::quit();
     }
 
+    // org.kde.cantata.Mpris2Extensions.Player
+    void showPage(const QString &page, bool focusSearch);
+
 Q_SIGNALS:
     // org.mpris.MediaPlayer2.Player
     void goToNext();
@@ -252,6 +256,7 @@ private slots:
     void updateCurrentSong(const Song &song);
 
 private:
+    MainWindow *mw;
     Song currentSong;
 };
 

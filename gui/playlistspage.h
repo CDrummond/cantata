@@ -43,6 +43,7 @@ public:
     QStringList selectedFiles() const;
     void addSelectionToPlaylist(bool replace);
     void setView(int mode);
+    void focusSearch() { view->focusSearch(); }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

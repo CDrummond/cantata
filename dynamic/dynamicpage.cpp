@@ -103,6 +103,7 @@ DynamicPage::DynamicPage(MainWindow *p)
     #endif
     view->setModel(&proxy);
     view->hideBackButton();
+    view->setDeleteAction(removeAction);
     view->init(0, 0, toggleAction);
     view->setMode(ItemView::Mode_List);
     controlActions();

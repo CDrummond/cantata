@@ -807,14 +807,18 @@ QAction * ItemView::getAction(const QModelIndex &index)
         return act1;
     }
 
-    ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
+    if (act1) {
+        ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
+    }
 
     if (act2 && actionRect.contains(QCursor::pos())) {
         return act2;
     }
 
     if (haveToggle) {
-        ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
+        if (act1 || act2) {
+            ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
+        }
 
         if (toggle && actionRect.contains(QCursor::pos())) {
             return toggle;

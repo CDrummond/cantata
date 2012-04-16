@@ -49,6 +49,7 @@ private Q_SLOTS:
     void remove();
     void start();
     void stop();
+    void toggle();
     void running(bool status);
 
 private:
@@ -58,6 +59,7 @@ private:
     QAction *removeAction;
     QAction *startAction;
     QAction *stopAction;
+    QAction *toggleAction;
 };
 
 #endif

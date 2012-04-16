@@ -38,6 +38,8 @@ class Dynamic : public QAbstractItemModel
 public:
     typedef QMap<QString, QString> Rule;
     struct Entry {
+        Entry(const QString &n=QString()) : name(n) { }
+        bool operator==(const Entry &o) const { return name==o.name; }
         QString name;
         QList<Rule> rules;
     };
@@ -72,6 +74,7 @@ public:
     bool del(const QString &name);
     bool start(const QString &name);
     bool stop();
+    bool toggle(const QString &name);
     bool isRunning();
     QString current() const {
         return currentEntry;

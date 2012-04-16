@@ -176,10 +176,8 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         #ifdef ENABLE_KDE_SUPPORT
         return i18np("1 Rule", "%1 Rules", entryList.at(index.row()).rules.count());
         #else
-        int count=index.row()).rules.count();
-        return (pl->songs.count()!=1
-            ? tr("%1 Rules").arg(count)
-            : tr("1 Rule");
+        int count=entryList.at(index.row()).rules.count();
+        return count!=1 ? tr("%1 Rules").arg(count) : tr("1 Rule");
         #endif
     }
     default:

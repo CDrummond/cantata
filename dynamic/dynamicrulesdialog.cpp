@@ -28,6 +28,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMessageBox>
 #else
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QMessageBox>
 #endif
 

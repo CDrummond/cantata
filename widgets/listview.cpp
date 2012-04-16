@@ -100,3 +100,25 @@ QModelIndexList ListView::selectedIndexes() const
     qSort(indexes);
     return indexes;
 }
+
+void ListView::setModel(QAbstractItemModel *m)
+{
+    QAbstractItemModel *old=model();
+    QListView::setModel(m);
+
+    if (old) {
+        disconnect(old, SIGNAL(layoutChanged()), this, SLOT(correctSelection()));
+    }
+
+    if (m && old!=m) {
+        connect(m, SIGNAL(layoutChanged()), this, SLOT(correctSelection()));
+    }
+}
+
+// Workaround for https://bugreports.qt-project.org/browse/QTBUG-18009
+void ListView::correctSelection()
+{
+    QItemSelection s = selectionModel()->selection();
+    setCurrentIndex(currentIndex());
+    selectionModel()->select(s, QItemSelectionModel::SelectCurrent);
+}

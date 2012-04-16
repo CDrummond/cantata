@@ -7,6 +7,9 @@
    there are actually some values set.
 5. Add now playing info to MPRIS interface - thanks to Martin Blumenstingl
    for the patch.
+6. Better, less hacky, workaround for QAbstractItemView shif-select bug
+   (https://bugreports.qt-project.org/browse/QTBUG-18009). Thanks to Spitfire
+   from qtcentre.org forums for fix.
 
 0.6.1
 -----

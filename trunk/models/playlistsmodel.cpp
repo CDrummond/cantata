@@ -569,36 +569,33 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
     PlaylistItem *pl=getPlaylist(name);
 
     if (pl) {
+        QModelIndex idx=createIndex(items.indexOf(pl), 0, pl);
         if (pl->songs.isEmpty()) {
             if (songs.isEmpty()) {
                 return;
             }
-            QModelIndex idx=createIndex(items.indexOf(pl), 0, pl);
             beginInsertRows(idx, 0, songs.count()-1);
             foreach (const Song &s, songs) {
                 pl->songs.append(new SongItem(s, pl));
             }
             endInsertRows();
-            emit updated(idx);
         } else if (songs.isEmpty()) {
-            beginRemoveRows(createIndex(items.indexOf(pl), 0, pl), 0, pl->songs.count()-1);
+            beginRemoveRows(idx, 0, pl->songs.count()-1);
             pl->clearSongs();
             endRemoveRows();
         } else {
-            QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
-            emit updating(parent);
             for (qint32 i=0; i<songs.count(); ++i) {
                 Song s=songs.at(i);
                 SongItem *si=i<pl->songs.count() ? pl->songs.at(i) : 0;
                 if (i>=pl->songs.count() || !(s==*static_cast<Song *>(si))) {
                     si=i<pl->songs.count() ? pl->getSong(s, i) : 0;
                     if (!si) {
-                        beginInsertRows(parent, i, i);
+                        beginInsertRows(idx, i, i);
                         pl->songs.insert(i, new SongItem(s, pl));
                         endInsertRows();
                     } else {
                         int existing=pl->songs.indexOf(si);
-                        beginMoveRows(parent, existing, existing, parent, i>existing ? i+1 : i);
+                        beginMoveRows(idx, existing, existing, idx, i>existing ? i+1 : i);
                         SongItem *si=pl->songs.takeAt(existing);
                         si->key=s.key;
                         pl->songs.insert(i, si);
@@ -611,15 +608,15 @@ void PlaylistsModel::playlistInfoRetrieved(const QString &name, const QList<Song
 
             if (pl->songs.count()>songs.count()) {
                 int toRemove=pl->songs.count()-songs.count();
-                beginRemoveRows(parent, pl->songs.count()-toRemove, pl->songs.count()-1);
+                beginRemoveRows(idx, pl->songs.count()-toRemove, pl->songs.count()-1);
                 for (int i=0; i<toRemove; ++i) {
                     delete pl->songs.takeLast();
                 }
                 endRemoveRows();
             }
-            emit updated(parent);
         }
         pl->updateGenres();
+        emit updated(idx);
     } else {
         emit listPlaylists();
     }
@@ -636,7 +633,6 @@ void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<quint3
 
     quint32 adjust=0;
     QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
-    emit updating(parent);
     QList<quint32>::ConstIterator it=positions.constBegin();
     QList<quint32>::ConstIterator end=positions.constEnd();
     while(it!=end) {
@@ -675,7 +671,6 @@ void PlaylistsModel::movedInPlaylist(const QString &name, const QList<quint32> &
 
     QList<quint32> indexes=idx;
     QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
-    emit updating(parent);
     while (indexes.count()) {
         quint32 from=indexes.takeLast();
         beginMoveRows(parent, from, from, parent, pos>from ? pos+1 : pos);

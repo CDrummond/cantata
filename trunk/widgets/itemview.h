@@ -111,8 +111,6 @@ public:
 
     void setStartClosed(bool sc);
     bool isStartClosed();
-    void updateRows();
-    void updateRows(const QModelIndex &idx);
 
     void expandAll();
 
@@ -120,6 +118,8 @@ public Q_SLOTS:
     void showSpinner();
     void hideSpinner();
     void collectionRemoved(quint32 key);
+    void updateRows();
+    void updateRows(const QModelIndex &idx);
 
 Q_SIGNALS:
     void searchItems();

@@ -64,7 +64,6 @@ public:
     void setStartClosed(bool sc);
     bool isStartClosed() const { return startClosed; }
     void updateRows(qint32 row, bool scroll, const QModelIndex &parent=QModelIndex());
-    void updateRows(const QModelIndex &parent);
     void updateCollectionRows();
     bool isCurrentAlbum(quint16 key) const { return key==currentAlbum; }
     bool isExpanded(quint16 key, quint32 collection) const { return filterActive ||
@@ -78,6 +77,9 @@ public:
     void collectionRemoved(quint32 key);
     void expandAll();
     void expand(const QModelIndex &idx);
+
+public Q_SLOTS:
+    void updateRows(const QModelIndex &parent);
 
 private Q_SLOTS:
     void itemClicked(const QModelIndex &index);

@@ -343,7 +343,7 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
 {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly)) {
-        return false;
+        return 0;
     }
 
     MusicLibraryItemArtist *artistItem = 0;

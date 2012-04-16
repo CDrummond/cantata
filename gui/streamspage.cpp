@@ -67,7 +67,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     exportAction->setIcon(QIcon::fromTheme("document-export"));
     addAction->setIcon(QIcon::fromTheme("list-add"));
     editAction->setIcon(QIcon::fromTheme("document-edit"));
-    replacePlaylist->setDefaultAction(p->replacePlaylistAction);
+    replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -88,8 +88,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     menu->addAction(exportAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(QIcon::fromTheme("system-run"));
-    MainWindow::initButton(replacePlaylist);
-    replacePlaylist->setEnabled(false);
+    MainWindow::initButton(replacePlayQueue);
 
     #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Streams"));
@@ -97,14 +96,14 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->setTopText(tr("Streams"));
     #endif
 //     view->addAction(p->addToPlaylistAction);
-    view->addAction(p->replacePlaylistAction);
+    view->addAction(p->replacePlayQueueAction);
     view->addAction(editAction);
     view->addAction(exportAction);
     view->addAction(p->removeAction);
     proxy.setSourceModel(&model);
     view->setModel(&proxy);
     view->setDeleteAction(p->removeAction);
-    view->init(p->replacePlaylistAction, 0);
+    view->init(p->replacePlayQueueAction, 0);
     updateGenres(QSet<QString>());
 }
 
@@ -428,10 +427,9 @@ void StreamsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
     editAction->setEnabled(1==selected.size());
-    replacePlaylist->setEnabled(selected.count());
     mw->removeAction->setEnabled(selected.count());
     exportAction->setEnabled(model.rowCount());
-    mw->replacePlaylistAction->setEnabled(selected.count());
+    mw->replacePlayQueueAction->setEnabled(selected.count());
 }
 
 void StreamsPage::searchItems()

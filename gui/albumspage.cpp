@@ -44,12 +44,12 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     , mw(p)
 {
     setupUi(this);
-    addToPlaylist->setDefaultAction(p->addToPlaylistAction);
-    replacePlaylist->setDefaultAction(p->replacePlaylistAction);
+    addToPlayQueue->setDefaultAction(p->addToPlayQueueAction);
+    replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
 
-    MainWindow::initButton(addToPlaylist);
-    MainWindow::initButton(replacePlaylist);
+    MainWindow::initButton(addToPlayQueue);
+    MainWindow::initButton(replacePlayQueue);
     MainWindow::initButton(libraryUpdate);
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -57,8 +57,8 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     #else
     view->setTopText(tr("Albums"));
     #endif
-    view->addAction(p->addToPlaylistAction);
-    view->addAction(p->replacePlaylistAction);
+    view->addAction(p->addToPlayQueueAction);
+    view->addAction(p->replacePlayQueueAction);
     view->addAction(p->addToStoredPlaylistAction);
 //     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -78,7 +78,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
 
     proxy.setSourceModel(AlbumsModel::self());
     view->setModel(&proxy);
-    view->init(p->replacePlaylistAction, p->addToPlaylistAction);
+    view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
 
     connect(this, SIGNAL(add(const QStringList &, bool)), MPDConnection::self(), SLOT(add(const QStringList &, bool)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
@@ -210,8 +210,8 @@ void AlbumsPage::controlActions()
     QModelIndexList selected=view->selectedIndexes();
     bool enable=selected.count()>0;
 
-    mw->addToPlaylistAction->setEnabled(enable);
-    mw->replacePlaylistAction->setEnabled(enable);
+    mw->addToPlayQueueAction->setEnabled(enable);
+    mw->replacePlayQueueAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
     #ifdef ENABLE_DEVICES_SUPPORT
     mw->copyToDeviceAction->setEnabled(enable);

@@ -70,6 +70,9 @@ private Q_SLOTS:
 private:
     QString origName;
     DynamicRuleDialog *dlg;
+    #ifndef ENABLE_KDE_SUPPORT
+    QDialogButtonBox *buttonBox;
+    #endif
 };
 
 #endif

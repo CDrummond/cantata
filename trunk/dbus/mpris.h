@@ -209,7 +209,15 @@ public:
     }
 
     QString desktopEntry() const {
+        #ifdef ENABLE_KDE_SUPPORT
+        // Desktop file is installed in $prefix/share/applications/kde4/
+        // rather than in $prefix/share/applications. The standard way to
+        // represent this dir is with a "kde4-" prefix. See:
+        // http://standards.freedesktop.org/menu-spec/1.0/go01.html#term-desktop-file-id
+        return QLatin1String("kde4-cantata");
+        #else
         return QLatin1String("cantata");
+        #endif
     }
 
     QStringList supportedUriSchemes() const {

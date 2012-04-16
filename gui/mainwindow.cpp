@@ -1178,6 +1178,7 @@ void MainWindow::dynamicMode(bool on)
         return;
     }
     dynamicModeEnabled=on;
+    #if 0
     if (on) {
         #ifdef ENABLE_KDE_SUPPORT
         messageWidget->setInformation(i18n("Dynamic Mode Enabled"));
@@ -1185,6 +1186,7 @@ void MainWindow::dynamicMode(bool on)
         messageWidget->setInformation(tr("Dynamic Mode Enabled"));
         #endif
     }
+    #endif
 
     playQueueModel.playListStats();
 }

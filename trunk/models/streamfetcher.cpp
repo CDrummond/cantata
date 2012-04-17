@@ -151,7 +151,6 @@ StreamFetcher::StreamFetcher(QObject *p)
     , job(0)
 {
     handlers.append("http");
-    connect(this, SIGNAL(getUrlHandlers()), MPDConnection::self(), SLOT(getUrlHandlers()));
     connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
 }
 

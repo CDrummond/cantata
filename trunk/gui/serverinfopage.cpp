@@ -51,9 +51,7 @@ ServerInfoPage::ServerInfoPage(MainWindow *p)
     connect(updateAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(getStats()));
     connect(MPDConnection::self(), SIGNAL(statsUpdated(const MPDStats &)), SLOT(statsUpdated(const MPDStats &)));
     connect(MPDConnection::self(), SIGNAL(version(long)), SLOT(mpdVersion(long)));
-    connect(MPDConnection::self(), SIGNAL(version(long)), SIGNAL(getUrlHandlers()));
     connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
-    connect(this, SIGNAL(getUrlHandlers()), MPDConnection::self(), SLOT(getUrlHandlers()));
 
     MainWindow::initButton(updateInfo);
     clear();
@@ -90,8 +88,6 @@ void ServerInfoPage::statsUpdated(const MPDStats &stats)
 //     #else
     lastUpdate->setText(stats.dbUpdate.toString(Qt::SystemLocaleShortDate));
 //     #endif
-
-    emit getUrlHandlers();
 }
 
 void ServerInfoPage::mpdVersion(long v)

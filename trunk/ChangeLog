@@ -27,6 +27,7 @@
     disconnected, only reconnect that one. If a reconnect fails, then
     disconnect both. If we receive an empty reply to a command and socket has
     been closed - then attempt to reconnect and resend command.
+13. Request list of URL handlers immediately after connecting.
 
 0.6.1
 -----

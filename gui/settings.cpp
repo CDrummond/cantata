@@ -38,6 +38,8 @@
 
 K_GLOBAL_STATIC(Settings, instance)
 #endif
+#include <QtCore/QFile>
+#include <QtCore/QDir>
 
 Settings * Settings::self()
 {
@@ -52,22 +54,62 @@ Settings * Settings::self()
     #endif
 }
 
-Settings::Settings()
-    : timer(0)
-    , ver(-1)
-    #ifdef ENABLE_KDE_SUPPORT
-    , cfg(KGlobal::config(), "General")
-    , wallet(0)
-    #endif
+struct MpdDefaults
 {
-}
+    MpdDefaults()
+        : host("localhost")
+        , dir("/var/lib/mpd/music/")
+        , port(6600) {
+    }
 
-Settings::~Settings()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    delete wallet;
-    #endif
-}
+    static QString getVal(const QString &line) {
+        QStringList parts=line.split('\"');
+        return parts.count()>1 ? parts[1] : QString();
+    }
+
+    void read() {
+        QFile f("/etc/mpd.conf");
+
+        if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            while (!f.atEnd()) {
+                QString line = f.readLine().trimmed();
+                if (line.startsWith('#')) {
+                    continue;
+                } else if (line.startsWith(QLatin1String("music_directory"))) {
+                    QString val=getVal(line);
+                    if (!val.isEmpty() && QDir(val).exists()) {
+                        dir=val;
+                    }
+                } else if (line.startsWith(QLatin1String("bind_to_address"))) {
+                    QString val=getVal(line);
+                    if (!val.isEmpty()) {
+                        host=val;
+                    }
+                } else if (line.startsWith(QLatin1String("port"))) {
+                    int val=getVal(line).toInt();
+                    if (val>0) {
+                        port=val;
+                    }
+                } else if (line.startsWith(QLatin1String("password"))) {
+                    QString val=getVal(line);
+                    if (!val.isEmpty()) {
+                        QStringList parts=val.split('@');
+                        if (parts.count()) {
+                            passwd=parts[0];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    QString host;
+    QString dir;
+    QString passwd;
+    int port;
+};
+
+static MpdDefaults mpdDefaults;
 
 #ifdef ENABLE_KDE_SUPPORT
 #define GET_STRING(KEY, DEF)     (cfg.readEntry(KEY, QString(DEF)))
@@ -87,9 +129,30 @@ Settings::~Settings()
 #define SET_VALUE(KEY, V)        (cfg.setValue(KEY, V))
 #endif
 
+Settings::Settings()
+    : timer(0)
+    , ver(-1)
+    #ifdef ENABLE_KDE_SUPPORT
+    , cfg(KGlobal::config(), "General")
+    , wallet(0)
+    #endif
+{
+    // Only need to read system defaults if we have not previously been configured...
+    if (GET_STRING("connectionHost", QString()).isEmpty()) {
+        mpdDefaults.read();
+    }
+}
+
+Settings::~Settings()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    delete wallet;
+    #endif
+}
+
 QString Settings::connectionHost()
 {
-    return GET_STRING("connectionHost", "localhost");
+    return GET_STRING("connectionHost", mpdDefaults.host);
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -116,7 +179,7 @@ QString Settings::connectionPasswd()
 {
     #ifdef ENABLE_KDE_SUPPORT
     if(passwd.isEmpty() && GET_BOOL("connectionPasswd", false) && openWallet()) {
-        wallet->readPassword("mpd", passwd);
+        wallet->readPassword("mpd", mpdDefaults.passwd);
     }
     return passwd;
     #else
@@ -126,7 +189,7 @@ QString Settings::connectionPasswd()
 
 int Settings::connectionPort()
 {
-    return GET_INT("connectionPort", 6600);
+    return GET_INT("connectionPort", mpdDefaults.port);
 }
 
 bool Settings::showPlaylist()
@@ -192,7 +255,7 @@ bool Settings::smallControlButtons()
 const QString & Settings::mpdDir()
 {
     if (mpdDirSetting.isEmpty()) {
-        mpdDirSetting=MPDParseUtils::fixPath(GET_STRING("mpdDir", "/var/lib/mpd/music/"));
+        mpdDirSetting=MPDParseUtils::fixPath(GET_STRING("mpdDir", mpdDefaults.dir));
     }
     return mpdDirSetting;
 }

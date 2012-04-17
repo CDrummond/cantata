@@ -130,8 +130,7 @@ void Utils::cleanDir(const QString &dir, const QString &base, const QString &cov
     }
 }
 
-// Check if $USER is in group "audio", if so we can set files to be owned by this group :-)
-static gid_t getAudioGroupId()
+gid_t Utils::getAudioGroupId()
 {
     static bool init=false;
     static gid_t gid=0;

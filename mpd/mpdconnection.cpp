@@ -36,8 +36,8 @@
 #include <QtCore/QStringList>
 #include "debugtimer.h"
 
-#define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
-// #define DBUG qDebug()
+// #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
+#define DBUG qDebug()
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)

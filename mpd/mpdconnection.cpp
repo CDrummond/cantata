@@ -39,7 +39,8 @@
 // #undef qDebug
 // #define qDebug qWarning
 
-#define DBUG qDebug() << "MPDConnection" << QThread::currentThreadId()
+// #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
+#define DBUG qDebug()
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
@@ -189,7 +190,7 @@ MPDConnection::MPDConnection()
 
 MPDConnection::~MPDConnection()
 {
-    disconnect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+//     disconnect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
     sock.disconnectFromHost();
@@ -198,7 +199,7 @@ MPDConnection::~MPDConnection()
 
 bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
 {
-    if (socket.state() != QAbstractSocket::ConnectedState) {
+    if (QAbstractSocket::ConnectedState!=socket.state()) {
         DBUG << (void *)(&socket) << "Connecting" << (enableIdle ? "(idle)" : "(std)");
         if (hostname.isEmpty() || port == 0) {
             DBUG << "no hostname and/or port supplied.";
@@ -229,14 +230,9 @@ bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
 
             if (!password.isEmpty()) {
                 DBUG << (void *)(&socket) << "setting password...";
-                QByteArray senddata = "password ";
-                senddata += password.toUtf8();
-                senddata += "\n";
-                socket.write(senddata);
+                socket.write("password "+password.toUtf8()+"\n");
                 socket.waitForBytesWritten(5000);
-                if (readReply(socket).ok) {
-                    DBUG << (void *)(&socket) << "password accepted";
-                } else {
+                if (!readReply(socket).ok) {
                     DBUG << (void *)(&socket) << "password rejected";
                     socket.close();
                     return false;
@@ -245,11 +241,11 @@ bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
 
             if (enableIdle) {
                 connect(&socket, SIGNAL(readyRead()), this, SLOT(idleDataReady()), Qt::QueuedConnection);
+                connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)), Qt::QueuedConnection);
                 DBUG << (void *)(&socket) << "Enabling idle";
                 socket.write("idle\n");
                 socket.waitForBytesWritten();
             }
-            connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
             return true;
         } else {
             DBUG << (void *)(&socket) << "Couldn't connect";
@@ -279,7 +275,6 @@ bool MPDConnection::connectToMPD()
 void MPDConnection::disconnectFromMPD()
 {
     DBUG << "disconnectFromMPD";
-    disconnect(&sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
     if (QAbstractSocket::ConnectedState==sock.state()) {
@@ -315,21 +310,33 @@ void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pa
     }
 }
 
-MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bool emitErrors)
+MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bool emitErrors, bool retry)
 {
-    DBUG << (void *)(&sock) << "sendCommand:" << command;
-    if (!connectToMPD()) {
-        DBUG << (void *)(&sock) << "sendCommand - failed to connect";
-        return Response(false);
+    DBUG << (void *)(&sock) << "sendCommand:" << command << emitErrors << retry;
+
+    if (QAbstractSocket::ConnectedState!=sock.state()) {
+        sock.close();
+        if (!connectToMPD(sock)) {
+            // Failed to connect, so close *both* sockets!
+            disconnectFromMPD();
+            emit stateChanged(false);
+            return Response(false);
+        }
     }
 
-    sock.write(command);
-    sock.write("\n");
+    sock.write(command+"\n");
     sock.waitForBytesWritten(5000);
     Response response=readReply(sock);
 
     if (!response.ok) {
         DBUG << command << "failed";
+        if (response.data.isEmpty() && retry && QAbstractSocket::ConnectedState!=sock.state()) {
+            // Try one more time...
+            // This scenario, where socket seems to be closed during/after 'write' seems to occor more often
+            // when dynamizer is running. However, simply reconnecting seems to resolve the issue.
+            qWarning() << "Socket is not connected, so try reconnecting and re-send command";
+            return sendCommand(command, emitErrors, false);
+        }
         if (emitErrors) {
             if ((command.startsWith("add ") || command.startsWith("command_list_begin\nadd ")) && -1!=command.indexOf("\"file:///")) {
                 if (isLocal() && response.data=="Permission denied") {
@@ -359,7 +366,6 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 /*
  * Playlist commands
  */
-
 void MPDConnection::add(const QStringList &files, bool replace)
 {
     if (replace) {
@@ -766,10 +772,19 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
 {
     if (socketState == QAbstractSocket::ClosingState){
         bool wasConnected=State_Connected==state;
+        disconnect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
         DBUG << "onSocketStateChanged";
-        disconnectFromMPD();
-        if (wasConnected && !connectToMPD()) {
+        if (QAbstractSocket::ConnectedState==idleSocket.state()) {
+            idleSocket.disconnectFromHost();
+        }
+        idleSocket.close();
+        if (wasConnected && !connectToMPD(idleSocket, true)) {
+            // Failed to connect idle socket - so close *both*
+            disconnectFromMPD();
             emit stateChanged(false);
+        }
+        if (QAbstractSocket::ConnectedState==idleSocket.state()) {
+            connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
         }
     }
 }
@@ -788,8 +803,10 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
         idleSocket.waitForBytesWritten();
     } else {
         DBUG << "idle failed? reconnect";
-        disconnectFromMPD();
-        if (!connectToMPD()) {
+        idleSocket.close();
+        if (!connectToMPD(idleSocket, true)) {
+            // Failed to connect idle socket - so close *both*
+            disconnectFromMPD();
             emit stateChanged(false);
         }
         return;

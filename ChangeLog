@@ -23,6 +23,10 @@
      currently enabled.
 10. Show song information in playqueue tooltips.
 11. Default to 'Alt+<num>' for page shortcuts.
+12. Improve MPD connection reliability. When one socket (command or idle) is
+    disconnected, only reconnect that one. If a reconnect fails, then
+    disconnect both. If we receive an empty reply to a command and socket has
+    been closed - then attempt to reconnect and resend command.
 
 0.6.1
 -----

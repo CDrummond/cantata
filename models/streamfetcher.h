@@ -50,9 +50,6 @@ public Q_SLOTS:
     void urlHandlers(const QStringList &uh);
 
 Q_SIGNALS:
-    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void getUrlHandlers();
-
     void result(const QStringList &items, int insertRow, bool replace);
 
 private Q_SLOTS:

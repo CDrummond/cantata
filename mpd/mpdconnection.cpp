@@ -36,11 +36,8 @@
 #include <QtCore/QStringList>
 #include "debugtimer.h"
 
-// #undef qDebug
-// #define qDebug qWarning
-
-// #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
-#define DBUG qDebug()
+#define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
+// #define DBUG qDebug()
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
@@ -299,6 +296,7 @@ void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pa
         password=pass;
         DBUG << "call connectToMPD";
         if (connectToMPD()) {
+            getUrlHandlers();
             if (!wasConnected) {
                 emit stateChanged(true);
             }

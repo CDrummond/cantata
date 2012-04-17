@@ -52,9 +52,6 @@ function isPrevSong() {
 minDate=1800
 maxDate=2100
 
-# lastRuleNum=1000000000000000
-# lastDateOffset=1000000000000000
-
 getRule() {
     #
     # File format:
@@ -83,7 +80,11 @@ getRule() {
         return
     fi
     # Determine which rule we want
-    ruleNum=$((RANDOM%numRules))
+    if [ $numRules -le 1 ] ; then
+        ruleNum=1
+    else
+        ruleNum=$((RANDOM%numRules))
+    fi
     ruleCount=0
     exec 9<$*
     key=""
@@ -124,15 +125,6 @@ getRule() {
                             let "range=(dateTo+1)-dateFrom"
                             # Now pick a random value in this range
                             dateOffset=$((RANDOM%range))
-#                             # If this offset is the same as the last (and we're gonna be using this rule), then try again...
-#                             if [ $ruleCount -eq $ruleNum ] && [ $lastRuleNum -eq $ruleNum ] && [ $lastDateOffset -eq $dateOffset ] ; then
-#                                 for x in `seq 1 50` ; do
-#                                     dateOffset=$((RANDOM%range))
-#                                     if [ $lastDateOffset -ne $dateOffset ] ; then
-#                                         break
-#                                     fi
-#                                 done
-#                             fi
                             # Set value...
                             let "val=dateFrom+dateOffset"
                             rule=("${rule[@]}" "$key" "$val")
@@ -242,14 +234,24 @@ while true; do
     if [ $playQueueLength -lt 0 ] ; then
         playQueueLength=0
     fi
-    failures=0
-    addSongAttempts=0
-    waited=0
+    failures=0 # Number of times we looked for songs, but failed to find any...
+    addSongAttempts=0 # Number of times we attempted to add songs that were already in the play queue
+    waited=0 # Number of seconds we have waited for rules file to become available
+
+    # Check if MPD has been update - if not, and we only have 1 rule, no need to search again...
+    statsDate="$(mpc stats | grep "DB Updated")"
+    if [ "$statsDate" != "$mpdDbDate" ] ; then
+        mpdChanged=1
+        mpdDbDate=$statsDate
+    else
+        mpdChanged=0
+    fi
+
     # fill up playlist to 10 random tunes
     while (( playQueueLength < playQueueDesiredLength )); do
         if [ ! -e "$rulesFile" ] ; then
             sleep 1s
-            let waited="waited+1"
+            ((++waited))
             if [ $waited -lt 15 ] ; then
                 continue
             else
@@ -278,14 +280,18 @@ while true; do
             failures=0
             addSongAttempts=0
         else
-            # redirect search reply into 'reply'
-            while read line; do
-                reply[$count]="$line"
-                ((++count))
-            done < <(mpc $matchType "${rule[@]}")
+            # Only search if mpd's database has changed, or this rule is different to the last
+            if [ $mpdChanged -eq 1 ] || [ $failures -gt 10 ] || [ "${rule[*]}" != "$lastRule" ] ; then
+                # redirect search reply into 'reply'
+                while read line; do
+                    reply[$count]="$line"
+                    ((++count))
+                done < <(mpc $matchType "${rule[@]}")
+            fi
+            lastRule="${rule[*]}"
 
             if ((count == 0)); then # didn't find anything, try again
-                let "failures=failures+1"
+                ((++failures))
                 if [ $failures -gt 200 ] ; then
                     echo "ERROR: Failed to locate any songs :-("
                     exit
@@ -298,7 +304,7 @@ while true; do
                 isPrevSong "$toAdd"
                 rv=$?
                 if [ $rv -eq 1 ] ; then
-                    let "addSongAttempts=addSongAttempts+1"
+                    ((++addSongAttempts))
                     continue
                 fi
             fi
@@ -307,11 +313,10 @@ while true; do
             mpc add "$toAdd"
             failures=0
             addSongAttempts=0
-#             lastRuleNum=$ruleNum
-#             lastDateOffset=$dateOffset
         fi
         ((++playQueueLength))
     done
+
     # wait untile something happens
     mpc idle player playlist
 done

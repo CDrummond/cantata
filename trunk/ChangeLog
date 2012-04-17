@@ -28,6 +28,9 @@
     disconnect both. If we receive an empty reply to a command and socket has
     been closed - then attempt to reconnect and resend command.
 13. Request list of URL handlers immediately after connecting.
+14. Check if user is a member of 'audio' group at start-up, and warn if they
+    are not. If a user is a member of 'audio', then cantata will save covers,
+    lyrics, imported songs, etc as writeable by 'audio'
 
 0.6.1
 -----

@@ -26,12 +26,14 @@
 #include <KDE/KAboutData>
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
+#include <KDE/KMessageBox>
 #else
 #include <QtGui/QApplication>
 #include <QtGui/QIcon>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #endif
+#include "utils.h"
 #include "config.h"
 #include "mainwindow.h"
 
@@ -62,6 +64,15 @@ public:
 
     int newInstance() {
         if (!w) {
+            if (0==Utils::getAudioGroupId() && KMessageBox::Cancel==KMessageBox::warningContinueCancel(0,
+                    i18n("You are not currently a member of the \"audio\" group. "
+                         "Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you "
+                         "(or your administrator) add yourself to this group.\n\n"
+                         "Note, that if you do add yourself you will need to logout and back in for this to take effect.\n\n"
+                         "Select \"Continue\" to start Cantata as is."),
+                    i18n("Audio Group"), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "audioGroupWarning")) {
+                QApplication::exit(0);
+            }
             w=new MainWindow();
         }
 

@@ -26,6 +26,29 @@
 # Copyright (C) 2010/11 Thomas Luebking <thomas.luebking@web.de>
 #
 
+ # Keep track of previous songs, to try and not repeat...
+prevSongsPos=0
+maxPrevSongs=10
+
+function addPrevSong() {
+    prevSongs[$prevSongsPos]=$1
+    let "prevSongsPos=prevSongsPos+1"
+    if [ $prevSongsPos -ge $maxPrevSongs ] ; then
+        prevSongsPos=0
+    fi
+}
+
+function isPrevSong() {
+    for pos in `seq 0 $maxPrevSongs` ; do
+        if [ "$1" = "${prevSongs[$pos]}" ] ; then
+            return 1
+        elif [ "${prevSongs[$pos]}" = "" ] ; then
+            return 0
+        fi
+    done
+    return 0
+}
+
 minDate=1800
 maxDate=2100
 
@@ -220,7 +243,7 @@ while true; do
         playQueueLength=0
     fi
     failures=0
-    repeats=0
+    addSongAttempts=0
     waited=0
     # fill up playlist to 10 random tunes
     while (( playQueueLength < playQueueDesiredLength )); do
@@ -253,7 +276,7 @@ while true; do
                 ((++count))
             done < <(mpc listall)
             failures=0
-            repeats=0
+            addSongAttempts=0
         else
             # redirect search reply into 'reply'
             while read line; do
@@ -270,17 +293,20 @@ while true; do
                 continue #sleep 5 # WAIT? to not stress cpu??
             fi
             toAdd="${reply[$((RANDOM % count))]}"
-            # Make sure we have not already added this track in the last 3 attempts
-            if [ $repeats -lt 10 ] && ( [ "$toAdd" = "$lastAdd0" ] || [ "$toAdd" = "$lastAdd1" ] || [ "$toAdd" = "$lastAdd2" ] ) ; then
-                let "repeats=repeats+1"
-                continue
+            # Make sure we have not already added this track in the last X attempts
+            if [ $addSongAttempts -lt 20 ] ; then # If we have selected the SAME track in the last 20 attempts, give up and use it...
+                isPrevSong "$toAdd"
+                rv=$?
+                if [ $rv -eq 1 ] ; then
+                    let "addSongAttempts=addSongAttempts+1"
+                    continue
+                fi
             fi
-            lastAdd2=$lastAdd1
-            lastAdd1=$lastAdd0
-            lastAdd0=$toAdd
+            # Remember this song, so that we can try not to re-add it too soon!
+            addPrevSong "$toAdd"
             mpc add "$toAdd"
             failures=0
-            repeats=0
+            addSongAttempts=0
 #             lastRuleNum=$ruleNum
 #             lastDateOffset=$dateOffset
         fi

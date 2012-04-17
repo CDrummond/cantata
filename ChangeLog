@@ -31,6 +31,8 @@
 14. Check if user is a member of 'audio' group at start-up, and warn if they
     are not. If a user is a member of 'audio', then cantata will save covers,
     lyrics, imported songs, etc as writeable by 'audio'
+15. Attempt to read defaults from /etc/mpd.conf (This is usualyy readable by
+    'audio' group)
 
 0.6.1
 -----

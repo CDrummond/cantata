@@ -245,7 +245,7 @@ private:
     bool connectToMPD();
     void disconnectFromMPD();
     bool connectToMPD(MpdSocket &socket, bool enableIdle=false);
-    Response sendCommand(const QByteArray &command, bool emitErrors=true);
+    Response sendCommand(const QByteArray &command, bool emitErrors=true, bool retry=true);
     void initialize();
     void parseIdleReturn(const QByteArray &data);
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);

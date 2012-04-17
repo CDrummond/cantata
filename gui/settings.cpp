@@ -178,8 +178,14 @@ bool Settings::openWallet()
 QString Settings::connectionPasswd()
 {
     #ifdef ENABLE_KDE_SUPPORT
-    if(passwd.isEmpty() && GET_BOOL("connectionPasswd", false) && openWallet()) {
-        wallet->readPassword("mpd", mpdDefaults.passwd);
+    if(passwd.isEmpty()) {
+        if (GET_BOOL("connectionPasswd", false)) {
+            if (openWallet()) {
+                wallet->readPassword("mpd", passwd);
+            }
+        } else {
+            passwd=mpdDefaults.passwd;
+        }
     }
     return passwd;
     #else

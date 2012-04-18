@@ -247,6 +247,7 @@ private Q_SLOTS:
     void updatePlayQueue(const QList<Song> &songs);
     void updateCurrentSong(const Song &song);
     void updateCurrentCover();
+    void updateCoverToolTip();
     void scrollPlayQueue();
     void updateStats();
     void updateStatus();

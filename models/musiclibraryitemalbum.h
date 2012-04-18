@@ -41,10 +41,11 @@ class MusicLibraryItemAlbum : public MusicLibraryItemContainer
 public:
     enum CoverSize
     {
-        CoverNone   = 0,
-        CoverSmall  = 1,
-        CoverMedium = 2,
-        CoverLarge  = 3
+        CoverNone       = 0,
+        CoverSmall      = 1,
+        CoverMedium     = 2,
+        CoverLarge      = 3,
+        CoverExtraLarge = 4
     };
 
     static CoverSize currentCoverSize();

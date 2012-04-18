@@ -42,10 +42,11 @@ int MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverSize sz)
 {
     switch (sz) {
     default:
-    case MusicLibraryItemAlbum::CoverNone:   return 0;
-    case MusicLibraryItemAlbum::CoverSmall:  return 22;
-    case MusicLibraryItemAlbum::CoverMedium: return 32;
-    case MusicLibraryItemAlbum::CoverLarge:  return 48;
+    case MusicLibraryItemAlbum::CoverNone:       return 0;
+    case MusicLibraryItemAlbum::CoverSmall:      return 22;
+    case MusicLibraryItemAlbum::CoverMedium:     return 32;
+    case MusicLibraryItemAlbum::CoverLarge:      return 48;
+    case MusicLibraryItemAlbum::CoverExtraLarge: return 64;
     }
 }
 

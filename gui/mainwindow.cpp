@@ -1714,10 +1714,13 @@ void MainWindow::updateCurrentCover()
                 coverSong=current;
                 coverWidget->setPixmap(QPixmap::fromImage(img.img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
                 coverFileName=img.fileName;
+                updateCoverToolTip();
                 emit coverFile(img.fileName);
             }
         } else {
+            coverFileName=QString();
             coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
+            updateCoverToolTip();
             if (dock && dock->enabled()) {
                 emit coverFile(QString());
             }
@@ -1725,6 +1728,26 @@ void MainWindow::updateCurrentCover()
         coverWidget->setProperty("artist", albumArtist);
         coverWidget->setProperty("album", current.album);
     }
+}
+
+void MainWindow::updateCoverToolTip()
+{
+    QString toolTip("<table>");
+
+    #ifdef ENABLE_KDE_SUPPORT
+    toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
+                    "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
+                    "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.artist).arg(current.album).arg(current.year);
+    #else
+    toolTip+=tr("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
+                "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
+                "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.artist).arg(current.album).arg(current.year);
+    #endif
+    toolTip+="</table>";
+    if (!coverFileName.isEmpty()) {
+        toolTip+=QString("<br/><img src=\"%1\"/>").arg(coverFileName);
+    }
+    coverWidget->setToolTip(toolTip);
 }
 
 void MainWindow::scrollPlayQueue()
@@ -2373,6 +2396,7 @@ void MainWindow::cover(const QString &artist, const QString &album, const QImage
             coverFileName=file;
             emit coverFile(file);
         }
+        updateCoverToolTip();
     }
 }
 

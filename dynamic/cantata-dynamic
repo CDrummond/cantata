@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env perl
 
-#  Cantata
+#  Cantata-Dynamic
 #
 #  Copyright (c) 2011-2012 Craig Drummond <craig.p.drummond@gmail.com>
 #
@@ -21,305 +21,492 @@
 #  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 #  Boston, MA 02110-1301, USA.
 
-#
-# This file is based upon mpdynamizer from BE::MPC
-# Copyright (C) 2010/11 Thomas Luebking <thomas.luebking@web.de>
-#
+use IO::Socket::INET;
+use POSIX;
 
- # Keep track of previous songs, to try and not repeat...
-prevSongsPos=0
-maxPrevSongs=10
+$PLAY_QUEUE_DESIRED_LENGTH=10;
+$PLAY_QUEUE_CURRENT_POS=5;
 
-function addPrevSong() {
-    prevSongs[$prevSongsPos]=$1
-    let "prevSongsPos=prevSongsPos+1"
-    if [ $prevSongsPos -ge $maxPrevSongs ] ; then
-        prevSongsPos=0
-    fi
+$host="localhost";
+$port="6600";
+$passwd="";
+
+# Read MPDs host, port, and password details from env - if set
+sub readConnectionDetails() {
+    my $hostEnv=$ENV{'MPD_HOST'};
+    my $portEnv=$ENV{'MPD_PORT'};
+    if (length($portEnv)>2) {
+        $port=$portEnv;
+    }
+
+    if (length($hostEnv)>2) {
+        my $sep = index($hostEnv, '@');
+
+        if ($sep>0) {
+            $passwd=substr($hostEnv, 0, $sep);
+            $host=substr($hostEnv, $sep+1, length($hostEnv)-$sep);
+        } else {
+            $host=$hostEnv;
+        }
+    }
 }
 
-function isPrevSong() {
-    for pos in `seq 0 $maxPrevSongs` ; do
-        if [ "$1" = "${prevSongs[$pos]}" ] ; then
-            return 1
-        elif [ "${prevSongs[$pos]}" = "" ] ; then
-            return 0
-        fi
-    done
-    return 0
+$socketData="";
+sub readReply() {
+    local $data;
+    $socketData="";
+    while (1) {
+        $sock->recv($data, 1024);
+        if (! $data) {
+            return 0;
+        }
+        $socketData="${socketData}${data}";
+        $data="";
+
+        if (($socketData=~ m/(OK)$/) || ($socketData=~ m/^(OK)/) || ($socketData=~ m/^(ACK)/)) {
+            $ok=1;
+            return 1;
+        }
+    }
 }
 
-minDate=1800
-maxDate=2100
-
-getRule() {
-    #
-    # File format:
-    #
-    #   Rule
-    #   <Tag>:<Value>
-    #   <Tag>:<Value>
-    #   Rule
-    #
-    # e.g.
-    #
-    #   Rule
-    #   AlbumArtist:Various Artists
-    #   Genre:Dance
-    #   Rule
-    #   AlbumArtist:Wibble
-    #   Album:Wobble
-    #
-
-    # Reset data
-    unset rule
-    matchType="find"
-    # Obtain number of rules in file...
-    numRules=`cat $* | egrep "^Rule$" | wc -l`
-    if [ $numRules -le 0 ] ; then
-        return
-    fi
-    # Determine which rule we want
-    if [ $numRules -le 1 ] ; then
-        ruleNum=1
-    else
-        ruleNum=$((RANDOM%numRules))
-    fi
-    ruleCount=0
-    exec 9<$*
-    key=""
-    while read -u9 line ; do
-        if [ -z "$line" ] || [[ $line == \#* ]]; then
-            continue
-        fi
-
-        if [[ $line == \Rule ]] && [ ! -z "$rule" ] ; then
-            if [ $ruleCount = $ruleNum ] ; then
-                # Use this rule!
-                return
-            else
-                let "ruleCount=ruleCount+1"
-                unset rule
-                continue
-            fi
-        fi
-
-        # Extact <key>:<value>
-        key=${line%%:*}
-        val=${line#*:}
-        if [ "$val" = "" ] ; then
-            continue
-        fi
-        # Check key is a recognised key!!
-        for k in Artist Album AlbumArtist Title Genre Date Exact ; do
-            if [ "$key" = "$k" ] ; then
-                if [ "$key" = "Date" ] ; then # Check that its a number, and in range!
-                    if [ "`expr $val - $val 2>/dev/null`" == "0" ] && [ $val -ge $minDate ] && [ $val -le $maxDate ] ; then
-                        rule=("${rule[@]}" "$key" "$val")
-                    else
-                        dateFrom=${val%%-*}
-                        dateTo=${val#*-}
-                        if [ ! -z $dateFrom ] && [ "`expr $dateFrom - $dateFrom 2>/dev/null`" == "0" ] && [ $dateFrom -ge $minDate ] && [ $dateFrom -le $maxDate ] && \
-                           [ ! -z $dateTo ] && [ "`expr $dateTo - $dateTo 2>/dev/null`" == "0" ] && [ $dateTo -ge $minDate ] && [ $dateTo -le $maxDate ] && [ $dateTo -gt $dateFrom ]; then
-                            # Calculate the range...
-                            let "range=(dateTo+1)-dateFrom"
-                            # Now pick a random value in this range
-                            dateOffset=$((RANDOM%range))
-                            # Set value...
-                            let "val=dateFrom+dateOffset"
-                            rule=("${rule[@]}" "$key" "$val")
-                        fi
-                    fi
-                elif [ "$key" = "Exact" ] ; then
-                    if [ "$val" = "false" ] ; then
-                        matchType="search"
-                    else
-                        matchType="find"  # Does an exact match
-                    fi
-                else
-                    rule=("${rule[@]}" "$key" "$val")
-                fi
-                break
-            fi
-        done
-    done
+# Connect to MPD
+sub connectToMpd() {
+    if ($host=~ m/^(\/)/) {
+        $sock = new IO::Socket::UNIX(PeerAddr => $host, Type => SOCK_DGRAM);
+    } else {
+        $sock = new IO::Socket::INET(PeerAddr => $host, PeerPort => $port, Proto => 'tcp');
+    }
+    if ($sock->connected()) {
+        if (&readReply()) {
+            if ($passwd) {
+                $sock->send("password ${passwd} \n");
+                if (! &readReply()) {
+                    print "ERROR: Invalid password\n";
+                    close($sock);
+                    return 0;
+                }
+            }
+        } else {
+            close($sock);
+            return 0;
+        }
+        return 1;
+    }
+    return 0;
 }
 
-playQueueDesiredLength=10
-currentTrackPos=5
-if [ -z "$XDG_CACHE_HOME" ] ; then
-    XDG_CACHE_HOME=$HOME/.cache
-fi
-baseDir=$XDG_CACHE_HOME/cantata/dynamic
-if [ ! -d "$baseDir" ] ; then
-    echo "Config folder ($baseDir) does not exist!"
-    exit
-fi
-
-lockFile=$baseDir/lock
-rulesFile=$baseDir/rules
-timeout=20
-
-start() {
-    if [ "`which mpc`" = "" ] ; then
-        echo "'mpc' is not installed!"
-        exit
-    fi
-    if [ ! -e "$rulesFile" ]; then
-        echo "Parameters file ($rulesFile) does not exist!"
-        exit
-    fi
-    if [ ! -e "$lockFile" ]; then
-#         $0 "daemon"  &
-        nohup $0 "$@" "daemon" >/dev/null 2>&1  &
-        echo $! > "$lockFile"
-    fi
+# Disconnect from MPD
+sub disconnectFromMpd() {
+    if ($sock->connected()) {
+        close($sock);
+    }
 }
 
-stop() {
-    if [ -e "$lockFile" ]; then
-        pid=$(cat "$lockFile")
-        kill $pid
-        pkill -P $pid
-    fi
+sub sendCommand() {
+    my $cmd = shift;
+    my $status = 0;
+    if (&connectToMpd()) {
+        $sock->send("${cmd}\n");
+        if (&readReply()) {
+            $status=1;
+        }
+        &disconnectFromMpd();
+    }
+
+    return $status;
 }
 
-case "$1" in
-  start)
-    start
-    exit
-    ;;
-  stop)
-    stop
-    exit
-    ;;
-  daemon)
-    ;;
- *)
-    echo -e "Usage: $0 start|stop|restart"
-    exit
-esac
+sub waitForEvent() {
+    if (&connectToMpd()) {
+        $sock->send("idle playlist\n");
+        readReply();
+    }
+}
 
-trap 'rm "$lockFile"; exit' INT TERM EXIT
+# Check if MPD is running
+sub mpdIsRunning() {
+    if (&connectToMpd()) {
+        &disconnectFromMpd();
+        return 1;
+    }
 
-failures=0
-while true; do
-    if ! mpc status; then
-        sleep $timeout
-        continue
-    fi
-    # get status
-#     status="$(mpc status | head -2 | tail -1)"
-    status="$(mpc status | grep -E "(pause|playing)")"
-    status=${status#*\#}
-    status=${status%% *}
+    return 0;
+}
 
-    if [ -z $status ]; then # we're not playing or mpd isn't up
-        playQueueLength=`mpc playlist | wc -l`
-#         mpc idle player playlist
-#         continue
-    else
-        # current playlist entry id
-        playQueueCurrent=${status%%/*}; playQueueCurrent=${playQueueCurrent##\#}
-        # amount of tunes in the playlist
-        playQueueLength=${status##*/};
-    fi
+sub baseDir() {
+    my $cacheDir=$ENV{'XDG_CACHE_HOME'};
+    if (!$cacheDir) {
+        $cacheDir="$ENV{'HOME'}/.cache";
+    }
+    $cacheDir="${cacheDir}/cantata/dynamic";
+    return $cacheDir
+}
 
-    # trim playlist start so that current becomes <=$currentTrackPos
-    for (( i=0; i < playQueueCurrent - currentTrackPos; ++i )); do
-        ((--playQueueLength))
-        mpc del 1
-    done
+sub lockFile() {
+    my $fileName=&baseDir();
+    $fileName="${fileName}/lock";
+    return $fileName;
+}
 
-    if [ $playQueueLength -lt 0 ] ; then
-        playQueueLength=0
-    fi
-    failures=0 # Number of times we looked for songs, but failed to find any...
-    addSongAttempts=0 # Number of times we attempted to add songs that were already in the play queue
-    waited=0 # Number of seconds we have waited for rules file to become available
+$rulesChanged=1;
+$rules;
+$lastRules;
+$initialRead=1;
+sub checkRulesChanged() {
+    if ($initialRead==1) { # Always changed on first run...
+        $rulesChanged=1;
+        $initialRead=0;
+    } elsif (scalar(@lastRules)!=scalar(@rules)) {
+        $rulesChanged=1;
+    } else {
+        $rulesChanged=0;
+        for (my $i=0; $i<scalar(@rules) && $rulesChanged==0; $i++) {
+            if ($rules[$i] ne $lastRules[$i]) {
+                $rulesChanged=1;
+            }
+        }
+    }
+    @lastRules=@rules;
+}
 
-    # Check if MPD has been update - if not, and we only have 1 rule, no need to search again...
-    statsDate="$(mpc stats | grep "DB Updated")"
-    if [ "$statsDate" != "$mpdDbDate" ] ; then
-        mpdChanged=1
-        mpdDbDate=$statsDate
-    else
-        mpdChanged=0
-    fi
+# Read rules from ~/.cache/cantata/dynamic/rules
+sub readRules() {
+    ## TODO: Compare timestamp of rules file (where it links to) to check for changes...
+    my $fileName=&baseDir();
+    $fileName="${fileName}/rules";
 
-    # fill up playlist to 10 random tunes
-    while (( playQueueLength < playQueueDesiredLength )); do
-        if [ ! -e "$rulesFile" ] ; then
-            sleep 1s
-            ((++waited))
-            if [ $waited -lt 15 ] ; then
-                continue
-            else
-                break
-            fi
-        else
-            waited=0
-        fi
+    for(my $i=0; $i<10; $i++) {
+        open(HANDLE, $fileName);
+        if (tell(HANDLE) != -1) {
+            my @lines = <HANDLE>; # Read into an array...
+            my $ruleNum=-1;
+            my $ruleMatch="find";
+            my $dates="";
+            foreach my $line (@lines) {
+                if (! ($line=~ m/^(#)/)) {
+                    $line =~ s/\n//g;
+                    my $sep = index($line, ':');
 
-        getRule "$rulesFile"
-        count=0 # ${#reply[@]} returns garbage
+                    if ($sep>0) {
+                        $key=substr($line, 0, $sep);
+                        $val=substr($line, $sep+1, length($line)-$sep);
+                    } else {
+                        $key=$line;
+                        $val="";
+                    }
+                    if ($key=~ m/^(Rule)/) { # New rule...
+                        if ($ruleNum>=0 && scalar(@dates)>0) { # Create rule for each date (as MPDs search does not take ranges)
+                            my $baseRule=${rules[${ruleNum}]};
+                            foreach my $date (@dates) {
+                                $rules[$ruleNum]="${ruleMatch} ${baseRule} Date \"${date}\"";
+                                $ruleNum++;
+                            }
+                            $dates="";
+                        } else {
+                            if ($ruleNum>=0) {
+                                $rules[$ruleNum]="${ruleMatch} ${rules[$ruleNum]}";
+                            }
+                            $ruleNum++;
+                        }
+                    } elsif ($ruleNum >= 0) {
+                        if ($key eq "Date") {
+                            my @dateVals = split("-", $val);
+                            if (scalar(@dateVals)==2) {
+                                my $fromDate=scalar($dateVals[0]);
+                                my $toDate=scalar($dateVals[1]);
+                                if ($fromDate > $toDate) { # Fix dates if from>to!!!
+                                    my $tmp=$fromDate;
+                                    $fromDate=$toDate;
+                                    $toDate=$tmp;
+                                }
+                                my $pos=0;
+                                for(my $d=$fromDate; $d<=$toDate; $d++) {
+                                    $dates[$pos]=$d;
+                                    $pos++;
+                                }
+                            } else {
+                                @dates=($val)
+                            }
+                        } elsif ($key eq "Artist" || $key eq "Album" || $key eq "AlbumArtist" || $key eq "Title" || $key eq "Genre") {
+                            $rules[$ruleNum]="${rules[$ruleNum]} ${key} \"${val}\"";
+                        } elsif ($key eq "Exact" && $val eq "false") {
+                            $ruleMatch="search"
+                        }
+                    }
+                }
+            }
 
-        if (( ! ${#rule[*]} )); then
-            # empty query -> "list all"
-            n=$(mpc stats | grep -i songs)
-            n=${n##* }
-            n=$(( RANDOM % n ))
+            if ($ruleNum>=0) {
+                if (scalar(@dates)>0) { # Create rule for each date (as MPDs search does not take ranges)
+                    my $baseRule=${rules[${ruleNum}]};
+                    foreach my $date (@dates) {
+                        $rules[$ruleNum]="${ruleMatch} ${baseRule} Date \"${date}\"";
+                        $ruleNum++;
+                    }
+                } else {
+                    $rules[$ruleNum]="${ruleMatch} ${rules[$ruleNum]}";
+                }
+            }
 
-            while read line; do
-                if (( count == n )); then
-                    mpc add "$line"
-                    break
-                fi
-                ((++count))
-            done < <(mpc listall)
-            failures=0
-            addSongAttempts=0
-        else
-            # Only search if mpd's database has changed, or this rule is different to the last
-            if [ $mpdChanged -eq 1 ] || [ $failures -gt 10 ] || [ "${rule[*]}" != "$lastRule" ] ; then
-                # redirect search reply into 'reply'
-                while read line; do
-                    reply[$count]="$line"
-                    ((++count))
-                done < <(mpc $matchType "${rule[@]}")
-            fi
-            lastRule="${rule[*]}"
+            &checkRulesChanged();
+            return 1;
+        }
+        sleep 1
+    }
+    &checkRulesChanged();
+    return 0;
+}
 
-            if ((count == 0)); then # didn't find anything, try again
-                ((++failures))
-                if [ $failures -gt 200 ] ; then
-                    echo "ERROR: Failed to locate any songs :-("
-                    exit
-                fi
-                continue #sleep 5 # WAIT? to not stress cpu??
-            fi
-            toAdd="${reply[$((RANDOM % count))]}"
-            # Make sure we have not already added this track in the last X attempts
-            if [ $addSongAttempts -lt 20 ] ; then # If we have selected the SAME track in the last 20 attempts, give up and use it...
-                isPrevSong "$toAdd"
-                rv=$?
-                if [ $rv -eq 1 ] ; then
-                    ((++addSongAttempts))
-                    continue
-                fi
-            fi
-            # Remember this song, so that we can try not to re-add it too soon!
-            addPrevSong "$toAdd"
-            mpc add "$toAdd"
-            failures=0
-            addSongAttempts=0
-        fi
-        ((++playQueueLength))
-    done
+sub uniq {
+    my %seen = ();
+    my @r = ();
+    foreach my $a (@_) {
+        unless ($seen{$a}) {
+            push @r, $a;
+            $seen{$a} = 1;
+        }
+    }
+    return @r;
+}
 
-    # wait untile something happens
-    mpc idle player playlist
-done
+# Use rules to obtain a list of songs from MPD...
+sub getSongs() {
+    # If we have no current songs, or rules have changed, or MPD has been updated - then we need to run the rules against MPD to get song list...
+    if (scalar(@mpdSongs)<1 || $rulesChanged==1 || $mpdDbUpdate!=$lastMpdDbUpdate) {
+        if (scalar(@rules)>0) {
+            $mpdSongs="";
+            my $mpdSong=0;
+            foreach my $rule (@rules) {
+                &sendCommand($rule);
+                my @lines = split('\n', $socketData);
+                foreach my $line (@lines) {
+                    if ($line=~ m/^(file\:)/) {
+                        my $sep = index($line, ':');
+                        if ($sep>0) {
+                            $mpdSongs[$mpdSong]=substr($line, $sep+2, length($line)-($sep+1));
+                            $mpdSong++;
+                        }
+                    }
+                }
+            }
+            @mpdSongs=uniq(@mpdSongs);
+        } else {
+            # No rules, random *all* songs...
+            &sendCommand("listall");
+            my @lines = split('\n', $socketData);
+            foreach my $line (@lines) {
+                if ($line=~ m/^(file\:)/) {
+                    my $sep = index($line, ':');
+                    if ($sep>0) {
+                        $mpdSongs[$mpdSong]=substr($line, $sep+2, length($line)-($sep+1));
+                        $mpdSong++;
+                    }
+                }
+            }
+        }
+    }
+}
 
-rm $lockFile
-trap - INT TERM EXIT
+@playQueueHistory=();
+$playQueueHistoryLimit=0;
+$playQueueHistoryPos=0;
+sub canAdd() {
+    my $file=shift;
+    my $numSongs=shift;
+    my $pqLimit=0;
+
+    if ($numSongs>50) {
+        $pqLimit=50;
+    } elsif ($numSongs>25) {
+        $pqLimit=25;
+    } elsif ($numSongs>10) {
+        $pqLimit=10;
+    } elsif ($numSongs>5) {
+        $pqLimit=5;
+    } else {
+        $pqLimit=2;
+    }
+
+    if ($pqLimit != $playQueueHistoryLimit) {
+        $playQueueHistoryLimit=$pqLimit;
+        @playQueueHistory=();
+        return 1;
+    }
+
+    my $size=scalar(@playQueueHistory);
+    if ($size>$playQueueHistoryLimit) {
+        $size=$playQueueHistoryLimit;
+    }
+
+    for (my $i=0; $i<$size; ++$i) {
+        if ($playQueueHistory[$i] eq $file) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+sub storeSong() {
+    my $file=shift;
+    if ($playQueueHistoryLimit<=0) {
+        $playQueueHistoryLimit=5;
+    }
+
+    if ($playQueueHistoryPos>=$playQueueHistoryLimit) {
+        $playQueueHistoryPos=0;
+    }
+    $playQueueHistory[$playQueueHistoryPos]=$file;
+    $playQueueHistoryPos++;
+}
+
+sub populatePlayQueue() {
+    &readConnectionDetails();
+    my $mpdDbUpdate=0;
+    my $lastMpdDbUpdate=-1;
+    while (1) {
+        if (&sendCommand("status")) {
+            my @lines = split('\n', $socketData);
+            my $playQueueLength=0;
+            my $playQueueCurrentTrackPos=0;
+            foreach my $val (@lines) {
+                if ($val=~ m/^(song\:)/) {
+                    my @vals = split(": ", $val);
+                    if (scalar(@vals)==2) {
+                        $playQueueCurrentTrackPos=scalar($vals[1]);
+                    }
+                    break;
+                }
+            }
+
+            if (&sendCommand("stats")) {
+                my @lines = split('\n', $socketData);
+                foreach my $val (@lines) {
+                    if ($val=~ m/^(db_update\:)/) {
+                        my @vals = split(": ", $val);
+                        if (scalar(@vals)==2) {
+                            $mpdDbUpdate=scalar($vals[1]);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (&sendCommand("playlist")) {
+                my @lines = split('\n', $socketData);
+                my $playQueueLength=scalar(@lines);
+                if ($playQueueLength>0 && $lines[$playQueueLength-1]=~ m/^(OK)/) {
+                    $playQueueLength--;
+                }
+
+                # trim playlist start so that current becomes <=$PLAY_QUEUE_CURRENT_POS
+                for (my $i=0; $i < $playQueueCurrentTrackPos - ($PLAY_QUEUE_CURRENT_POS-1); $i++) {
+                    &sendCommand("delete 0");
+                    $playQueueLength--;
+                }
+                if ($playQueueLength<0) {
+                    $playQueueLength=0;
+                }
+
+                &readRules();
+                &getSongs();
+                my $numMpdSongs=scalar(@mpdSongs);
+                if ($numMpdSongs>0) {
+                    # fill up playlist to 10 random tunes
+                    my $failues=0;
+                    while ($playQueueLength < $PLAY_QUEUE_DESIRED_LENGTH) {
+                        my $pos=int(rand($numMpdSongs));
+                        if ($failues > 100 || &canAdd(${mpdSongs[$pos]}, $numMpdSongs)) {
+                            if (&sendCommand("add \"${mpdSongs[$pos]}\"")) {
+                                &storeSong(${mpdSongs[$pos]});
+                                $playQueueLength++;
+                                $failues=0;
+                            }
+                        } else { # Song is already in playqueue history...
+                            $failues++;
+                        }
+                    }
+                }
+
+               &waitForEvent();
+            } else {
+                sleep 5;
+            }
+        } else {
+            sleep 5;
+        }
+    }
+}
+
+sub readPid() {
+    my $fileName=&lockFile();
+
+    if (-e $fileName) {
+        open(HANDLE, $fileName);
+        my @lines = <HANDLE>;
+        if (scalar(@lines)>0) {
+            my $pid=$lines[0];
+            return scalar($pid);
+        }
+    }
+    return 0;
+}
+
+sub start() {
+    my $fileName=&lockFile();
+
+    if (-e $fileName) {
+        my $pid=&readPid();
+        if ($pid>0) {
+            $exists = kill 0, $pid;
+            if ($exists) {
+                print "PROCESS $pid is running!\n";
+                return;
+            }
+        }
+    }
+
+    chdir '/';
+    umask 0;
+    open STDIN,  '/dev/null'   or die "Can't read /dev/null: $!";
+    open STDOUT, '>>/dev/null' or die "Can't write to /dev/null: $!";
+    open STDERR, '>>/dev/null' or die "Can't write to /dev/null: $!";
+    defined( my $pid = fork ) or die "Can't fork: $!";
+    exit if $pid;
+
+    # dissociate this process from the controlling terminal that started it and stop being part
+    # of whatever process group this process was a part of.
+    POSIX::setsid() or die "Can't start a new session.";
+
+    # callback signal handler for signals.
+    $SIG{INT} = $SIG{TERM} = $SIG{HUP} = \&signalHandler;
+    $SIG{PIPE} = 'ignore';
+
+    open(HANDLE, ">${fileName}");
+    print HANDLE $$;
+    close HANDLE;
+    &populatePlayQueue();
+}
+
+sub signalHandler {
+    unlink(&lockFile());
+    exit(0);
+}
+
+sub stop() {
+    my $pid=&readPid();
+    if ($pid>0) {
+        system("kill", $pid);
+        system("pkill", "-P", $pid);
+    }
+}
+
+if ($ARGV[0] eq "start") {
+    &start();
+} elsif ($ARGV[0] eq "stop") {
+    &stop();
+} elsif ($ARGV[0] eq "test") {
+    &populatePlayQueue();
+} else {
+    print "Usage: $0 start|stop\n";
+}

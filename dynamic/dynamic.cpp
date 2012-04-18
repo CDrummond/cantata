@@ -381,12 +381,6 @@ int Dynamic::getPid() const
 bool Dynamic::controlApp(bool isStart)
 {
     #ifdef ENABLE_KDE_SUPPORT
-    QString mpc=KStandardDirs::findExe("mpc");
-
-    if (mpc.isEmpty()) {
-        emit error(i18n("Please install .mpc' before uisng Dynamic mode."));
-        return false;
-    }
     QString cmd=KStandardDirs::findExe("cantata-dynamic", KStandardDirs::installPath("libexec"));
 
     if (cmd.isEmpty()) {

@@ -64,7 +64,7 @@
    <item row="5" column="0" colspan="2">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;p&gt;&lt;i&gt;&lt;b&gt;NOTE&lt;/b&gt; The rules listed above will be 'ORed' together, e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following:&lt;ul&gt;&lt;li&gt;AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt;Cantata will randomly select a rule, query your library using the rule, and then randomly select one of the matching items. This will be repeated to keep the play queue filled with 10 entries.&lt;/p&gt;&lt;/i&gt;</string>
+      <string>&lt;p&gt;&lt;i&gt;&lt;b&gt;NOTE&lt;/b&gt; The rules listed above will be 'ORed' together, e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following:&lt;ul&gt;&lt;li&gt;AlbumArtist=Wibble Genre=Rock&lt;/li&gt;&lt;li&gt;AlbumArtist=Various Artists&lt;/li&gt;&lt;/ul&gt;Cantata will use all the rules to query your library using the rule, and then randomly select one of the matching items. This will be repeated to keep the play queue filled with 10 entries.&lt;/p&gt;&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

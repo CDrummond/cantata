@@ -895,7 +895,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
-    connect(MPDConnection::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
+    connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(dynamicMode(bool)));
     connect(refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
@@ -1214,19 +1214,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         lyricsPage->text->clear();
         serverInfoPage->clear();
         QString host=MPDConnection::self()->getHost();
-        #ifdef ENABLE_KDE_SUPPORT
-        if (host.startsWith('/')) {
-            showError(i18n("Connection to %1 failed", host), true);
-        } else {
-            showError(i18nc("host:port", "Connection to %1:%2 failed", host, QString::number(MPDConnection::self()->getPort())), true);
-        }
-        #else
-        if (host.startsWith('/')) {
-            showError(tr("Connection to %1 failed").arg(host), true);
-        } else {
-            showError(tr("Connection to %1:%2 failed").arg(host).arg(QString::number(MPDConnection::self()->getPort())), true);
-        }
-        #endif
         connectedState=CS_Disconnected;
     }
 }

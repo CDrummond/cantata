@@ -75,6 +75,11 @@
            <string>Large</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>Extra Large</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item row="2" column="0">
@@ -144,6 +149,11 @@
          <item>
           <property name="text">
            <string>Large</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Extra Large</string>
           </property>
          </item>
         </widget>

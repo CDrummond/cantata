@@ -54,6 +54,7 @@ public:
     static const QString constGenreKey;
     static const QString constDateKey;
     static const QString constExactKey;
+    static const QString constExcludeKey;
 
     Dynamic();
 

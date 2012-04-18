@@ -80,6 +80,7 @@ const QString Dynamic::constTitleKey=QLatin1String("Title");
 const QString Dynamic::constGenreKey=QLatin1String("Genre");
 const QString Dynamic::constDateKey=QLatin1String("Date");
 const QString Dynamic::constExactKey=QLatin1String("Exact");
+const QString Dynamic::constExcludeKey=QLatin1String("Exclude");
 
 Dynamic::Dynamic()
     : timer(0)
@@ -92,8 +93,8 @@ Dynamic::Dynamic()
         foreach (const QString &rf, rulesFiles) {
             QFile f(dirName+rf);
             if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
-                QStringList keys=QStringList() << constArtistKey << constAlbumArtistKey << constDateKey
-                                               << constAlbumKey << constTitleKey << constGenreKey;
+                QStringList keys=QStringList() << constArtistKey << constAlbumArtistKey << constDateKey << constExactKey
+                                               << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
 
                 Entry e;
                 e.name=rf.left(rf.length()-constExtension.length());

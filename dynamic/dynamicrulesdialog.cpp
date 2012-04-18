@@ -70,43 +70,59 @@ static QString translateStr(const QString &key)
         #else
         return QObject::tr("Date");
         #endif
-    } else if (Dynamic::constExactKey==key) {
-        #ifdef ENABLE_KDE_SUPPORT
-        return i18n("Exact");
-        #else
-        return QObject::tr("Exact");
-        #endif
-    } else if (QLatin1String("true")==key) {
-        #ifdef ENABLE_KDE_SUPPORT
-        return i18n("true");
-        #else
-        return QObject::tr("true");
-        #endif
-    } else if (QLatin1String("false")==key) {
-        #ifdef ENABLE_KDE_SUPPORT
-        return i18n("false");
-        #else
-        return QObject::tr("false");
-        #endif
     } else {
         return key;
     }
 }
+
 static void update(QListWidgetItem *i, const Dynamic::Rule &rule)
 {
     Dynamic::Rule::ConstIterator it(rule.constBegin());
     Dynamic::Rule::ConstIterator end(rule.constEnd());
     QMap<QString, QVariant> v;
     QString str;
+    #ifdef ENABLE_KDE_SUPPORT
+    QString type=i18n("Include");
+    #else
+    QString type=QObject::tr("Include");
+    #endif
+    bool exact=true;
 
     for (int count=0; it!=end; ++it, ++count) {
-        str+=QString("%1=%2").arg(translateStr(it.key()), it.key()==Dynamic::constExactKey ? translateStr(it.value()) : it.value());
-        if (count<rule.count()-1) {
-            str+=' ';
+        if (Dynamic::constExcludeKey==it.key()) {
+            if (QLatin1String("true")==it.value()) {
+                #ifdef ENABLE_KDE_SUPPORT
+                type=i18n("Exclude");
+                #else
+                type=QObject::tr("Exclude");
+                #endif
+            }
+        } else if (Dynamic::constExactKey==it.key()) {
+            if (QLatin1String("false")==it.value()) {
+                exact=false;
+            }
+        } else {
+            str+=QString("%1=%2").arg(translateStr(it.key()), it.value());
+            if (count<rule.count()-1) {
+                str+=' ';
+            }
         }
         v.insert(it.key(), it.value());
     }
 
+    if (str.isEmpty()) {
+        str=type;
+    } else {
+        str=type+' '+str;
+    }
+
+    if (exact) {
+        #ifdef ENABLE_KDE_SUPPORT
+        str+=i18n(" (Exact)");
+        #else
+        str+=QObject::tr(" (Exact)");
+        #endif
+    }
     i->setText(str);
     i->setData(Qt::UserRole, v);
 }

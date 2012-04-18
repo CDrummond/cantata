@@ -156,25 +156,65 @@ sub lockFile() {
 }
 
 $rulesChanged=1;
-$rules;
-$lastRules;
+$includeRules;
+$excludeRules;
+$lastIncludeRules;
+$lastExcludeRules;
 $initialRead=1;
 $rulesTimestamp=0;
 sub checkRulesChanged() {
     if ($initialRead==1) { # Always changed on first run...
         $rulesChanged=1;
         $initialRead=0;
-    } elsif (scalar(@lastRules)!=scalar(@rules)) { # Different number of rules
+    } elsif ( scalar(@lastIncludeRules)!=scalar(@includeRules) ||
+              scalar(@lastExcludeRules)!=scalar(@excludeRules)) { # Different number of rules
         $rulesChanged=1;
     } else { # Same number of rules, so need to check if the rules themselves have changed or not...
         $rulesChanged=0;
-        for (my $i=0; $i<scalar(@rules) && $rulesChanged==0; $i++) {
-            if ($rules[$i] ne $lastRules[$i]) {
+        for (my $i=0; $i<scalar(@includeRules) && $rulesChanged==0; $i++) {
+            if ($includeRules[$i] ne $lastIncludeRules[$i]) {
+                $rulesChanged=1;
+            }
+        }
+        for (my $i=0; $i<scalar(@excludeRules) && $rulesChanged==0; $i++) {
+            if ($excludeRules[$i] ne $lastExcludeRules[$i]) {
                 $rulesChanged=1;
             }
         }
     }
-    @lastRules=@rules;
+    @lastIncludeRules=@includeRules;
+    @lastExcludeRules=@excludeRules;
+}
+
+sub saveRule() {
+    my $rule=$_[0];
+    my @dates=@{ $_[1] };
+    my $ruleMatch=$_[2];
+    my $isInclude=$_[3];
+    my @type=();
+
+    if ($isInclude == 1) {
+        @type=@includeRules;
+    } else {
+        @type=@excludeRules;
+    }
+
+    my $ruleNum=scalar(@type);
+    if (scalar(@dates)>0) { # Create rule for each date (as MPDs search does not take ranges)
+        my $baseRule=$rule;
+        foreach my $date (@dates) {
+            $type[$ruleNum]="${ruleMatch} ${baseRule} Date \"${date}\"";
+            $ruleNum++;
+        }
+    } else {
+        $type[$ruleNum]="${ruleMatch} $rule";
+    }
+
+    if ($isInclude == 1) {
+        @includeRules=@type;
+    } else {
+        @excludeRules=@type;
+    }
 }
 
 # Read rules from ~/.cache/cantata/dynamic/rules
@@ -194,6 +234,8 @@ sub checkRulesChanged() {
 #   Rule
 #   AlbumArtist:Wibble
 #   Date:1980-1989
+#   Exact:false
+#   Exclude:true
 #
 
 sub readRules() {
@@ -213,9 +255,12 @@ sub readRules() {
         open(HANDLE, $fileName);
         if (tell(HANDLE) != -1) {
             my @lines = <HANDLE>; # Read into an array...
-            my $ruleNum=-1;
             my $ruleMatch="find";
-            my $dates="";
+            my @dates=();
+            my $isInclude=1;
+            my $currentRule="";
+            @includeRules=();
+            @excludeRules=();
             foreach my $line (@lines) {
                 if (! ($line=~ m/^(#)/)) {
                     $line =~ s/\n//g;
@@ -229,20 +274,12 @@ sub readRules() {
                         $val="";
                     }
                     if ($key=~ m/^(Rule)/) { # New rule...
-                        if ($ruleNum>=0 && scalar(@dates)>0) { # Create rule for each date (as MPDs search does not take ranges)
-                            my $baseRule=${rules[${ruleNum}]};
-                            foreach my $date (@dates) {
-                                $rules[$ruleNum]="${ruleMatch} ${baseRule} Date \"${date}\"";
-                                $ruleNum++;
-                            }
-                            $dates="";
-                        } else {
-                            if ($ruleNum>=0) {
-                                $rules[$ruleNum]="${ruleMatch} ${rules[$ruleNum]}";
-                            }
-                            $ruleNum++;
+                        if (length($currentRule)>1) {
+                            &saveRule($currentRule, \@dates, $ruleMatch, $isInclude);
                         }
-                    } elsif ($ruleNum >= 0) {
+                        $currentRule="";
+                        @dates=();
+                    } else {
                         if ($key eq "Date") {
                             my @dateVals = split("-", $val);
                             if (scalar(@dateVals)==2) {
@@ -262,26 +299,34 @@ sub readRules() {
                                 @dates=($val)
                             }
                         } elsif ($key eq "Artist" || $key eq "Album" || $key eq "AlbumArtist" || $key eq "Title" || $key eq "Genre") {
-                            $rules[$ruleNum]="${rules[$ruleNum]} ${key} \"${val}\"";
+                            $currentRule="${currentRule} ${key} \"${val}\"";
                         } elsif ($key eq "Exact" && $val eq "false") {
                             $ruleMatch="search"
+                        }  elsif ($key eq "Exclude" && $val eq "true") {
+                            $isInclude="0"
                         }
                     }
                 }
             }
 
-            if ($ruleNum>=0) {
-                if (scalar(@dates)>0) { # Create rule for each date (as MPDs search does not take ranges)
-                    my $baseRule=${rules[${ruleNum}]};
-                    foreach my $date (@dates) {
-                        $rules[$ruleNum]="${ruleMatch} ${baseRule} Date \"${date}\"";
-                        $ruleNum++;
-                    }
-                } else {
-                    $rules[$ruleNum]="${ruleMatch} ${rules[$ruleNum]}";
-                }
+            if (length($currentRule)>1) {
+                &saveRule($currentRule, \@dates, $ruleMatch, $isInclude);
             }
 
+            # If we only have exclude rules, need to addd a dummy rule to include all - so that we can then exlcude the excluded!
+            if (scalar(@excludeRules)>0 && 0==scalar(@includeRules)) {
+                $includeRules[0]=""; # Will include *all*
+            }
+
+#             print "INCLUDE--------------\n";
+#             foreach my $rule (@includeRules) {
+#                 print "${rule}\n";
+#             }
+#             print "EXCLUDE--------------\n";
+#             foreach my $rule (@excludeRules) {
+#                 print "${rule}\n";
+#             }
+#             print "---------------------\n";
             &checkRulesChanged();
             return 1;
         }
@@ -310,18 +355,43 @@ sub uniq {
 sub getSongs() {
     # If we have no current songs, or rules have changed, or MPD has been updated - then we need to run the rules against MPD to get song list...
     if (scalar(@mpdSongs)<1 || $rulesChanged==1 || $mpdDbUpdate!=$lastMpdDbUpdate) {
-        if (scalar(@rules)>0) {
-            $mpdSongs="";
+        my $excludeSongs="";
+        if (scalar(@excludeRules)>0) {
+            # Get list of songs that should now be removed from the song list...
+            my $excludeSongs="";
             my $mpdSong=0;
-            foreach my $rule (@rules) {
+            foreach my $rule (@excludeRules) {
                 &sendCommand($rule);
                 my @lines = split('\n', $socketData);
                 foreach my $line (@lines) {
                     if ($line=~ m/^(file\:)/) {
                         my $sep = index($line, ':');
                         if ($sep>0) {
-                            $mpdSongs[$mpdSong]=substr($line, $sep+2, length($line)-($sep+1));
+                            $excludeSongs[$mpdSong]=substr($line, $sep+2, length($line)-($sep+1));
                             $mpdSong++;
+                        }
+                    }
+                }
+            }
+            @excludeSongs=uniq(@excludeSongs);
+        }
+        %excludeSongSet = map { $_ => 1 } @excludeSongs;
+
+        if (scalar(@includeRules)>0) {
+            $mpdSongs="";
+            my $mpdSong=0;
+            foreach my $rule (@includeRules) {
+                &sendCommand($rule);
+                my @lines = split('\n', $socketData);
+                foreach my $line (@lines) {
+                    if ($line=~ m/^(file\:)/) {
+                        my $sep = index($line, ':');
+                        if ($sep>0) {
+                            my $song=substr($line, $sep+2, length($line)-($sep+1));
+                            if (! $excludeSongSet{$song}) {
+                                $mpdSongs[$mpdSong]=$song;
+                                $mpdSong++;
+                            }
                         }
                     }
                 }

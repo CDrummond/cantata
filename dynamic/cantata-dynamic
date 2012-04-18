@@ -547,10 +547,10 @@ sub populatePlayQueue() {
                 }
                &waitForEvent();
             } else {
-                sleep 5;
+                sleep 2;
             }
         } else {
-            sleep 5;
+            sleep 2;
         }
     }
 }

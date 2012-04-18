@@ -566,7 +566,7 @@ void MPDConnection::playListChanges()
             QList<MPDParseUtils::IdPos> changes=MPDParseUtils::parseChanges(response.data);
             if (!changes.isEmpty()) {
                 bool first=true;
-                quint32 firstPos=0;
+//                 quint32 firstPos=0;
                 QList<Song> songs;
                 QList<qint32> ids;
                 QSet<qint32> prevIds=playQueueIds.toSet();
@@ -575,7 +575,7 @@ void MPDConnection::playListChanges()
                 foreach (const MPDParseUtils::IdPos &idp, changes) {
                     if (first) {
                         first=false;
-                        firstPos=idp.pos;
+//                         firstPos=idp.pos;
                         if (idp.pos!=0) {
                             for (quint32 i=0; i<idp.pos; ++i) {
                                 Song s;
@@ -615,6 +615,7 @@ void MPDConnection::playListChanges()
                     ids.append(idp.id);
                 }
 
+                #if 0 // Remove, as causes oddities when dynamizer is running - I think becase plchangesposid/status are two separate calls.
                 // Dont think this section is ever called, but leave here to be safe!!!
                 // For some reason if we have 10 songs in our playlist and we move pos 2 to pos 1, MPD sends all ids from pos 1 onwards
                 if (firstPos+changes.size()<sv.playlistLength && (sv.playlistLength<=(unsigned int)playQueueIds.length())) {
@@ -628,6 +629,7 @@ void MPDConnection::playListChanges()
                         }
                     }
                 }
+                #endif
 
                 playQueueIds=ids;
                 streamIds=strmIds;

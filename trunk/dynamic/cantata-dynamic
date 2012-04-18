@@ -125,7 +125,7 @@ sub sendCommand() {
 
 sub waitForEvent() {
     if (&connectToMpd()) {
-        $sock->send("idle playlist\n");
+        $sock->send("idle player playlist\n");
         readReply();
     }
 }

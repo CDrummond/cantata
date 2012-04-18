@@ -23,6 +23,7 @@
 
 use IO::Socket::INET;
 use POSIX;
+use File::stat;
 
 $PLAY_QUEUE_DESIRED_LENGTH=10;
 $PLAY_QUEUE_CURRENT_POS=5;
@@ -153,13 +154,14 @@ $rulesChanged=1;
 $rules;
 $lastRules;
 $initialRead=1;
+$rulesTimestamp=0;
 sub checkRulesChanged() {
     if ($initialRead==1) { # Always changed on first run...
         $rulesChanged=1;
         $initialRead=0;
-    } elsif (scalar(@lastRules)!=scalar(@rules)) {
+    } elsif (scalar(@lastRules)!=scalar(@rules)) { # Different number of rules
         $rulesChanged=1;
-    } else {
+    } else { # Same number of rules, so need to check if the rules themselves have changed or not...
         $rulesChanged=0;
         for (my $i=0; $i<scalar(@rules) && $rulesChanged==0; $i++) {
             if ($rules[$i] ne $lastRules[$i]) {
@@ -171,10 +173,36 @@ sub checkRulesChanged() {
 }
 
 # Read rules from ~/.cache/cantata/dynamic/rules
+#
+# File format:
+#
+#   Rule
+#   <Tag>:<Value>
+#   <Tag>:<Value>
+#   Rule
+#
+# e.g.
+#
+#   Rule
+#   AlbumArtist:Various Artists
+#   Genre:Dance
+#   Rule
+#   AlbumArtist:Wibble
+#   Date:1980-1989
+#
+
 sub readRules() {
-    ## TODO: Compare timestamp of rules file (where it links to) to check for changes...
     my $fileName=&baseDir();
     $fileName="${fileName}/rules";
+
+    # Check if rules (well, the file it points to), has changed since the last read...
+    $fileTime = stat($fileName)->mtime;
+    if ($initialRead!=1 && $fileTime==$rulesTimestamp) {
+        # No change, so no need to read it again!
+        $rulesChanged=0;
+        return;
+    }
+    $rulesTimestamp=$fileTime;
 
     for(my $i=0; $i<10; $i++) {
         open(HANDLE, $fileName);
@@ -258,16 +286,19 @@ sub readRules() {
     return 0;
 }
 
+# Remove duplicate entries from an array...
 sub uniq {
-    my %seen = ();
-    my @r = ();
-    foreach my $a (@_) {
-        unless ($seen{$a}) {
-            push @r, $a;
-            $seen{$a} = 1;
-        }
-    }
-    return @r;
+#     my %seen = ();
+#     my @r = ();
+#     foreach my $a (@_) {
+#         unless ($seen{$a}) {
+#             push @r, $a;
+#             $seen{$a} = 1;
+#         }
+#     }
+#     return @r;
+
+    return keys %{{ map { $_ => 1 } @_ }};
 }
 
 # Use rules to obtain a list of songs from MPD...
@@ -292,7 +323,7 @@ sub getSongs() {
             }
             @mpdSongs=uniq(@mpdSongs);
         } else {
-            # No rules, random *all* songs...
+            # No rules => get all songs!
             &sendCommand("listall");
             my @lines = split('\n', $socketData);
             foreach my $line (@lines) {
@@ -308,6 +339,10 @@ sub getSongs() {
     }
 }
 
+#
+# Following canAdd/storeSong are used to remeber songs that have been added to the playqueue, so that
+# we don't re-add them too soon!
+#
 @playQueueHistory=();
 $playQueueHistoryLimit=0;
 $playQueueHistoryPos=0;
@@ -316,6 +351,7 @@ sub canAdd() {
     my $numSongs=shift;
     my $pqLimit=0;
 
+    # Calculate a reasonable level for the history...
     if ($numSongs>50) {
         $pqLimit=50;
     } elsif ($numSongs>25) {
@@ -328,6 +364,7 @@ sub canAdd() {
         $pqLimit=2;
     }
 
+    # If the history level has changed, then so must have the rules/mpd/whatever, so add this song anyway...
     if ($pqLimit != $playQueueHistoryLimit) {
         $playQueueHistoryLimit=$pqLimit;
         @playQueueHistory=();
@@ -360,12 +397,15 @@ sub storeSong() {
     $playQueueHistoryPos++;
 }
 
+#
+# This is the 'main' function of the dynamizer
+#
 sub populatePlayQueue() {
     &readConnectionDetails();
     my $mpdDbUpdate=0;
     my $lastMpdDbUpdate=-1;
     while (1) {
-        if (&sendCommand("status")) {
+        if (&sendCommand("status")) { # Use status to obtain the current song pos, and to check that MPD is running...
             my @lines = split('\n', $socketData);
             my $playQueueLength=0;
             my $playQueueCurrentTrackPos=0;
@@ -379,6 +419,8 @@ sub populatePlayQueue() {
                 }
             }
 
+            # Call stats, so that we can obtain the last time MPD was updated.
+            # We use this to determine when we need to refresh the searched set of songs
             if (&sendCommand("stats")) {
                 my @lines = split('\n', $socketData);
                 foreach my $val (@lines) {
@@ -392,6 +434,7 @@ sub populatePlayQueue() {
                 }
             }
 
+            # Get current playlist info
             if (&sendCommand("playlist")) {
                 my @lines = split('\n', $socketData);
                 my $playQueueLength=scalar(@lines);
@@ -427,7 +470,6 @@ sub populatePlayQueue() {
                         }
                     }
                 }
-
                &waitForEvent();
             } else {
                 sleep 5;
@@ -466,6 +508,7 @@ sub start() {
         }
     }
 
+    # daemonize process...
     chdir '/';
     umask 0;
     open STDIN,  '/dev/null'   or die "Can't read /dev/null: $!";
@@ -482,6 +525,7 @@ sub start() {
     $SIG{INT} = $SIG{TERM} = $SIG{HUP} = \&signalHandler;
     $SIG{PIPE} = 'ignore';
 
+    # Write our PID the lock file, so that 'stop' knows which PID to kill...
     open(HANDLE, ">${fileName}");
     print HANDLE $$;
     close HANDLE;

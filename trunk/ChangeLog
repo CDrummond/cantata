@@ -34,6 +34,9 @@
 15. Attempt to read defaults from /etc/mpd.conf (This is usualyy readable by
     'audio' group)
 16. If connection fails due to password, then state this in error message.
+17. Add extr-large  cover sizes (64pixels library, 160pixels albums).
+18. Show full size cover image in tooltip for current track cover preview
+    widget.
 
 0.6.1
 -----

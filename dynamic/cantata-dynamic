@@ -64,19 +64,23 @@ sub readReply() {
         $socketData="${socketData}${data}";
         $data="";
 
-        if (($socketData=~ m/(OK)$/) || ($socketData=~ m/^(OK)/) || ($socketData=~ m/^(ACK)/)) {
-            $ok=1;
+        if (($socketData=~ m/(OK)$/) || ($socketData=~ m/^(OK)/)) {
             return 1;
+        } elsif ($socketData=~ m/^(ACK)/) {
+            return 0;
         }
     }
 }
 
 # Connect to MPD
 sub connectToMpd() {
+    my $connDetails="";
     if ($host=~ m/^(\/)/) {
-        $sock = new IO::Socket::UNIX(PeerAddr => $host, Type => SOCK_DGRAM);
+        $sock = new IO::Socket::UNIX(Peer => $host, Type => 0);
+        $connDetails=$host;
     } else {
         $sock = new IO::Socket::INET(PeerAddr => $host, PeerPort => $port, Proto => 'tcp');
+        $connDetails="${host}:${port}";
     }
     if ($sock->connected()) {
         if (&readReply()) {
@@ -88,11 +92,13 @@ sub connectToMpd() {
                     return 0;
                 }
             }
+            return 1;
         } else {
+            print "ERROR: Failed to read connection reply fom MPD (${connDetails})\n";
             close($sock);
-            return 0;
         }
-        return 1;
+    } else {
+        print "ERROR: Failed to connect to MPD (${connDetails})\n";
     }
     return 0;
 }
@@ -114,7 +120,6 @@ sub sendCommand() {
         }
         &disconnectFromMpd();
     }
-
     return $status;
 }
 

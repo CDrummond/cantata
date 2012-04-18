@@ -102,6 +102,7 @@ DynamicRuleDialog::~DynamicRuleDialog()
 
 bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
 {
+    typeCombo->setCurrentIndex(QLatin1String("true")==rule[Dynamic::constExcludeKey] ? 1 : 0);
     artistText->setText(rule[Dynamic::constArtistKey]);
     albumArtistText->setText(rule[Dynamic::constAlbumArtistKey]);
     albumText->setText(rule[Dynamic::constAlbumKey]);
@@ -175,6 +176,9 @@ Dynamic::Rule DynamicRuleDialog::rule() const
 
     if (!exactCheck->isChecked()) {
         r.insert(Dynamic::constExactKey, QLatin1String("false"));
+    }
+    if (1==typeCombo->currentIndex()) {
+        r.insert(Dynamic::constExcludeKey, QLatin1String("true"));
     }
     return r;
 }

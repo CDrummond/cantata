@@ -212,6 +212,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void stateChanged(bool connected);
+    void passwordError();
     void currentSongUpdated(const Song &song);
     void playlistUpdated(const QList<Song> &songs);
     void statsUpdated(const MPDStats &stats);
@@ -234,7 +235,7 @@ Q_SIGNALS:
     void updatedLibrary();
     void updatingFileList();
     void updatedFileList();
-    void error(const QString &err);
+    void error(const QString &err, bool showActions=false);
     void urlHandlers(const QStringList &handlers);
 
 private Q_SLOTS:
@@ -242,9 +243,16 @@ private Q_SLOTS:
     void onSocketStateChanged(QAbstractSocket::SocketState socketState);
 
 private:
-    bool connectToMPD();
+    enum ConnectionReturn
+    {
+        Success,
+        Failed,
+        IncorrectPassword
+    };
+
+    ConnectionReturn connectToMPD();
     void disconnectFromMPD();
-    bool connectToMPD(MpdSocket &socket, bool enableIdle=false);
+    ConnectionReturn connectToMPD(MpdSocket &socket, bool enableIdle=false);
     Response sendCommand(const QByteArray &command, bool emitErrors=true, bool retry=true);
     void initialize();
     void parseIdleReturn(const QByteArray &data);

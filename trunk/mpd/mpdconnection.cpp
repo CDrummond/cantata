@@ -194,13 +194,13 @@ MPDConnection::~MPDConnection()
     idleSocket.disconnectFromHost();
 }
 
-bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
+MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
 {
     if (QAbstractSocket::ConnectedState!=socket.state()) {
         DBUG << (void *)(&socket) << "Connecting" << (enableIdle ? "(idle)" : "(std)");
         if (hostname.isEmpty() || port == 0) {
             DBUG << "no hostname and/or port supplied.";
-            return false;
+            return Failed;
         }
 
         socket.connectToHost(hostname, port);
@@ -232,7 +232,7 @@ bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
                 if (!readReply(socket).ok) {
                     DBUG << (void *)(&socket) << "password rejected";
                     socket.close();
-                    return false;
+                    return IncorrectPassword;
                 }
             }
 
@@ -243,30 +243,32 @@ bool MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)
                 socket.write("idle\n");
                 socket.waitForBytesWritten();
             }
-            return true;
+            return Success;
         } else {
             DBUG << (void *)(&socket) << "Couldn't connect";
-            return false;
+            return Failed;
         }
     }
 
 //     DBUG << "Already connected" << (enableIdle ? "(idle)" : "(std)");
-    return true;
+    return Success;
 }
 
-bool MPDConnection::connectToMPD()
+MPDConnection::ConnectionReturn MPDConnection::connectToMPD()
 {
     if (State_Connected==state && (QAbstractSocket::ConnectedState!=sock.state() || QAbstractSocket::ConnectedState!=idleSocket.state())) {
         DBUG << "Something has gone wrong with sockets, so disconnect";
         disconnectFromMPD();
     }
-    if (connectToMPD(sock) && connectToMPD(idleSocket, true)) {
+    ConnectionReturn status=Failed;
+    if (Success==(status=connectToMPD(sock)) && Success==(status=connectToMPD(idleSocket, true))) {
         state=State_Connected;
     } else {
+        disconnectFromMPD();
         state=State_Disconnected;
     }
 
-    return State_Connected==state;
+    return status;
 }
 
 void MPDConnection::disconnectFromMPD()
@@ -295,15 +297,45 @@ void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pa
         port=p;
         password=pass;
         DBUG << "call connectToMPD";
-        if (connectToMPD()) {
+        switch (connectToMPD()) {
+        case Success:
             getUrlHandlers();
             if (!wasConnected) {
                 emit stateChanged(true);
             }
-        } else {
-//             if (wasConnected) {
-                emit stateChanged(false);
-//             }
+            break;
+        case Failed:
+            emit stateChanged(false);
+            #ifdef ENABLE_KDE_SUPPORT
+            if (host.startsWith('/')) {
+                emit error(i18n("Connection to %1 failed", host), true);
+            } else {
+                emit error(i18nc("Connection to host:port", "Connection to %1:%2 failed", host, QString::number(MPDConnection::self()->getPort())), true);
+            }
+            #else
+            if (host.startsWith('/')) {
+                emit error(tr("Connection to %1 failed").arg(host), true);
+            } else {
+                emit error(tr("Connection to %1:%2 failed").arg(host).arg(QString::number(MPDConnection::self()->getPort())), true);
+            }
+            #endif
+            break;
+        case IncorrectPassword:
+            emit stateChanged(false);
+            #ifdef ENABLE_KDE_SUPPORT
+            if (host.startsWith('/')) {
+                emit error(i18n("Connection to %1 failed - incorrect password", host), true);
+            } else {
+                emit error(i18nc("Connection to host:port", "Connection to %1:%2 failed - incorrect password", host, QString::number(MPDConnection::self()->getPort())), true);
+            }
+            #else
+            if (host.startsWith('/')) {
+                emit error(tr("Connection to %1 failed - incorrect password").arg(host), true);
+            } else {
+                emit error(tr("Connection to %1:%2 failed - incorrect password").arg(host).arg(QString::number(MPDConnection::self()->getPort())), true);
+            }
+            #endif
+            break;
         }
     }
 }
@@ -314,7 +346,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 
     if (QAbstractSocket::ConnectedState!=sock.state()) {
         sock.close();
-        if (!connectToMPD(sock)) {
+        if (Success!=connectToMPD(sock)) {
             // Failed to connect, so close *both* sockets!
             disconnectFromMPD();
             emit stateChanged(false);
@@ -776,7 +808,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
             idleSocket.disconnectFromHost();
         }
         idleSocket.close();
-        if (wasConnected && !connectToMPD(idleSocket, true)) {
+        if (wasConnected && Success!=connectToMPD(idleSocket, true)) {
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);
@@ -802,7 +834,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
     } else {
         DBUG << "idle failed? reconnect";
         idleSocket.close();
-        if (!connectToMPD(idleSocket, true)) {
+        if (Success!=connectToMPD(idleSocket, true)) {
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);

@@ -19,6 +19,47 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CANTATA_VERSION_FULL
 set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CANTATA_VERSION_FULL}")
 include(CPack)
 
+macro(cantata_check_for_sse)
+    # check for SSE extensions
+    include(CheckCXXSourceRuns)
+    if( CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX )
+        set(CMAKE_REQUIRED_FLAGS "-msse3")
+        check_cxx_source_runs("
+            #include <pmmintrin.h>
+            int main() { __m128d a, b; double vals[2] = {0}; a = _mm_loadu_pd(vals); b = _mm_hadd_pd(a,a); _mm_storeu_pd(vals, b); return 0; }"
+            HAS_SSE3_EXTENSIONS)
+        if(HAS_SSE3_EXTENSIONS)
+            add_definitions("-msse3 -mfpmath=sse")
+        else(HAS_SSE3_EXTENSIONS)
+            # No sse3, check sse2
+            set(CMAKE_REQUIRED_FLAGS "-msse2")
+            check_cxx_source_runs("
+                #include <emmintrin.h>
+                int main() { __m128d a, b; double vals[2] = {0}; a = _mm_loadu_pd(vals); b = _mm_add_pd(a,a);  _mm_storeu_pd(vals,b); return 0; }"
+                HAS_SSE2_EXTENSIONS)
+            if(HAS_SSE2_EXTENSIONS)
+                add_definitions("-msse2 -mfpmath=sse")
+            else(HAS_SSE2_EXTENSIONS)
+                # No sse2, check sse
+                set(CMAKE_REQUIRED_FLAGS "-msse")
+                check_cxx_source_runs("
+                    #include <xmmintrin.h>
+                    int main() { __m128 a, b; float vals[4] = {0}; a = _mm_loadu_ps(vals); b = a; b = _mm_add_ps(a,b); _mm_storeu_ps(vals,b); return 0; }"
+                    HAS_SSE_EXTENSIONS)
+                if(HAS_SSE_EXTENSIONS)
+                    add_definitions("-msse -mfpmath=sse")
+                endif(HAS_SSE_EXTENSIONS)
+            endif(HAS_SSE2_EXTENSIONS)
+        endif(HAS_SSE3_EXTENSIONS)
+        set(CMAKE_REQUIRED_FLAGS)
+    elseif(MSVC)
+        check_cxx_source_runs("
+            #include <emmintrin.h>
+            int main() { __m128d a, b; double vals[2] = {0}; a = _mm_loadu_pd(vals);  b = _mm_add_pd(a,a);  _mm_storeu_pd(vals,b); return 0; }"
+            HAS_SSE2_EXTENSIONS)
+    endif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+endmacro(cantata_check_for_sse)
+
 SET( CANTATA_SRCS
     main.cpp
     gui/mainwindow.cpp
@@ -262,9 +303,10 @@ IF( ENABLE_KDE_SUPPORT )
     find_package(FFMPEG)
     find_package(MPG123)
     if(FFMPEG_FOUND AND MPG123_FOUND)
+        cantata_check_for_sse()
         set (ENABLE_REPLAYGAIN_SUPPORT 1)
         find_package(SPEEXDSP)
-        set(EBUR128_USE_SPEEX_RESAMPLER ${SPEEXDSP_FOUND})
+        set(USE_SPEEX_RESAMPLER ${SPEEXDSP_FOUND})
         SET(CANTATA_SRCS ${CANTATA_SRCS} replaygain/ffmpeginput.cpp replaygain/mpg123input.cpp)
         include_directories(${CMAKE_SOURCE_DIR}/replaygain )
         SET(CANTATA_SRCS ${CANTATA_SRCS} replaygain/ebur128.c replaygain/scanner.cpp replaygain/rgdialog.cpp replaygain/tagreader.cpp)

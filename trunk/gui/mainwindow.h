@@ -217,7 +217,6 @@ public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
 
 private Q_SLOTS:
-    void dynamicMode(bool on);
     void setMpdVolume(int );
     void playbackButtonsMenu();
     void controlButtonsMenu();
@@ -402,7 +401,6 @@ private:
     Song current;
     Song coverSong;
     QString coverFileName;
-    bool dynamicModeEnabled;
     bool lyricsNeedUpdating;
     #ifdef ENABLE_WEBKIT
     bool infoNeedsUpdating;

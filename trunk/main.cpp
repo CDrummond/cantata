@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
                          KAboutData::License_GPL_V2,
                          ki18n("Copyright (C) 2011-2012 Craig Drummond"),
                          KLocalizedString(),
-                         QByteArray(), "craig.p.drummond@gmail.com");
+                         "http://cantata.googlecode.com", "craig.p.drummond@gmail.com");
 
     aboutData.addAuthor(ki18n("Craig Drummond"), ki18n("Maintainer"), "craig.p.drummond@gmail.com");
     aboutData.addAuthor(ki18n("Piotr Wicijowski"), ki18n("UI Improvements"), "piotr.wicijowski@gmail.com");

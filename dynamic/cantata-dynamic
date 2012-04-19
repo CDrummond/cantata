@@ -301,9 +301,9 @@ sub readRules() {
                         } elsif ($key eq "Artist" || $key eq "Album" || $key eq "AlbumArtist" || $key eq "Title" || $key eq "Genre") {
                             $currentRule="${currentRule} ${key} \"${val}\"";
                         } elsif ($key eq "Exact" && $val eq "false") {
-                            $ruleMatch="search"
+                            $ruleMatch="search";
                         }  elsif ($key eq "Exclude" && $val eq "true") {
-                            $isInclude="0"
+                            $isInclude=0;
                         }
                     }
                 }
@@ -311,11 +311,6 @@ sub readRules() {
 
             if (length($currentRule)>1) {
                 &saveRule($currentRule, \@dates, $ruleMatch, $isInclude);
-            }
-
-            # If we only have exclude rules, need to addd a dummy rule to include all - so that we can then exlcude the excluded!
-            if (scalar(@excludeRules)>0 && 0==scalar(@includeRules)) {
-                $includeRules[0]=""; # Will include *all*
             }
 
 #             print "INCLUDE--------------\n";
@@ -330,7 +325,7 @@ sub readRules() {
             &checkRulesChanged();
             return 1;
         }
-        sleep 1
+        sleep 1;
     }
     &checkRulesChanged();
     return 0;
@@ -355,10 +350,9 @@ sub uniq {
 sub getSongs() {
     # If we have no current songs, or rules have changed, or MPD has been updated - then we need to run the rules against MPD to get song list...
     if (scalar(@mpdSongs)<1 || $rulesChanged==1 || $mpdDbUpdate!=$lastMpdDbUpdate) {
-        my $excludeSongs="";
+        my @excludeSongs=();
         if (scalar(@excludeRules)>0) {
-            # Get list of songs that should now be removed from the song list...
-            my $excludeSongs="";
+            # Get list of songs that should be removed from the song list...
             my $mpdSong=0;
             foreach my $rule (@excludeRules) {
                 &sendCommand($rule);
@@ -375,11 +369,12 @@ sub getSongs() {
             }
             @excludeSongs=uniq(@excludeSongs);
         }
-        %excludeSongSet = map { $_ => 1 } @excludeSongs;
 
+        my %excludeSongSet = map { $_ => 1 } @excludeSongs;
+
+        @mpdSongs=();
+        my $mpdSong=0;
         if (scalar(@includeRules)>0) {
-            $mpdSongs="";
-            my $mpdSong=0;
             foreach my $rule (@includeRules) {
                 &sendCommand($rule);
                 my @lines = split('\n', $socketData);
@@ -398,15 +393,18 @@ sub getSongs() {
             }
             @mpdSongs=uniq(@mpdSongs);
         } else {
-            # No rules => get all songs!
+            # No 'include' rules => get all songs!
             &sendCommand("listall");
             my @lines = split('\n', $socketData);
             foreach my $line (@lines) {
                 if ($line=~ m/^(file\:)/) {
                     my $sep = index($line, ':');
                     if ($sep>0) {
-                        $mpdSongs[$mpdSong]=substr($line, $sep+2, length($line)-($sep+1));
-                        $mpdSong++;
+                        my $song=substr($line, $sep+2, length($line)-($sep+1));
+                        if (! $excludeSongSet{$song}) {
+                            $mpdSongs[$mpdSong]=$song;
+                            $mpdSong++;
+                        }
                     }
                 }
             }

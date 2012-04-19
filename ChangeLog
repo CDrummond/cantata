@@ -37,6 +37,7 @@
 17. Add extr-large  cover sizes (64pixels library, 160pixels albums).
 18. Show full size cover image in tooltip for current track cover preview
     widget.
+19. Update copy of ebur128
 
 0.6.1
 -----

@@ -304,7 +304,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     , notification(0)
     #endif
-    , dynamicModeEnabled(false)
     , lyricsNeedUpdating(false)
     #ifdef ENABLE_WEBKIT
     , infoNeedsUpdating(false)
@@ -848,6 +847,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(quitAction);
 
     coverWidget->installEventFilter(new CoverEventHandler(this));
+    dynamicLabel->setVisible(false);
 
     connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
@@ -897,7 +897,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
-    connect(Dynamic::self(), SIGNAL(running(bool)), this, SLOT(dynamicMode(bool)));
+    connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     connect(refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
     connect(refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
@@ -1170,25 +1170,6 @@ void MainWindow::messageWidgetVisibility(bool v)
     if (v && !splitter->isVisible()) {
         expandInterfaceAction->trigger();
     }
-}
-
-void MainWindow::dynamicMode(bool on)
-{
-    if (on==dynamicModeEnabled) {
-        return;
-    }
-    dynamicModeEnabled=on;
-    #if 0
-    if (on) {
-        #ifdef ENABLE_KDE_SUPPORT
-        messageWidget->setInformation(i18n("Dynamic Mode Enabled"));
-        #else
-        messageWidget->setInformation(tr("Dynamic Mode Enabled"));
-        #endif
-    }
-    #endif
-
-    playQueueModel.stats();
 }
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
@@ -2041,14 +2022,6 @@ void MainWindow::updatePlayQueueStats(int artists, int albums, int songs, quint3
     }
 
     QString status;
-    if (dynamicModeEnabled) {
-        #ifdef ENABLE_KDE_SUPPORT
-        status+=i18n("[Dynamic]");
-        #else
-        status+=tr("[Dynamic]");
-        #endif
-        status+=' ';
-    }
     #ifdef ENABLE_KDE_SUPPORT
     status+=i18np("1 Artist, ", "%1 Artists, ", artists);
     status+=i18np("1 Album, ", "%1 Albums, ", albums);

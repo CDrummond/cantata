@@ -190,9 +190,22 @@
         <widget class="PlayQueueView" name="playQueue"/>
        </item>
        <item row="2" column="0">
-        <widget class="SqueezedTextLabel" name="playQueueStatsLabel"/>
+        <widget class="QLabel" name="dynamicLabel">
+         <property name="text">
+          <string>[Dynamic]</string>
+         </property>
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+        </widget>
        </item>
        <item row="2" column="1">
+        <widget class="SqueezedTextLabel" name="playQueueStatsLabel"/>
+       </item>
+       <item row="2" column="2">
         <spacer>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -205,7 +218,7 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="2">
+       <item row="2" column="3">
         <widget class="QToolButton" name="repeatPushButton">
          <property name="checkable">
           <bool>true</bool>
@@ -215,7 +228,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="3">
+       <item row="2" column="4">
         <widget class="QToolButton" name="singlePushButton">
          <property name="checkable">
           <bool>true</bool>
@@ -225,14 +238,14 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="4">
+       <item row="2" column="5">
         <widget class="QToolButton" name="randomPushButton">
          <property name="checkable">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="6">
+       <item row="2" column="7">
         <spacer name="horizontalSpacer_4">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -248,13 +261,13 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="7">
+       <item row="2" column="8">
         <widget class="QToolButton" name="savePlayQueuePushButton"/>
        </item>
-       <item row="2" column="8">
+       <item row="2" column="9">
         <widget class="QToolButton" name="removeAllFromPlayQueuePushButton"/>
        </item>
-       <item row="2" column="5">
+       <item row="2" column="6">
         <widget class="QToolButton" name="consumePushButton"/>
        </item>
       </layout>

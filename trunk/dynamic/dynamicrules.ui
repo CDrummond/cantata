@@ -18,14 +18,14 @@
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="2">
-    <widget class="LineEdit" name="nameText">
-     <property name="placeholderText">
+    <widget class="LineEdit" name="nameText" native="true">
+     <property name="placeholderText" stdset="0">
       <string>Name of Dynamic Rules</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0" rowspan="4">
-    <widget class="QListWidget" name="rulesList"/>
+    <widget class="ListView" name="rulesList"/>
    </item>
    <item row="1" column="1">
     <widget class="QPushButton" name="addBtn">
@@ -75,9 +75,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
+   <class>LineEdit</class>
+   <extends>QWidget</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ListView</class>
+   <extends>QListView</extends>
+   <header>listview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

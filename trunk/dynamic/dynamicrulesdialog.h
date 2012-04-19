@@ -36,6 +36,8 @@ class QPushButton;
 #include "ui_dynamicrules.h"
 
 class DynamicRuleDialog;
+class QStandardItemModel;
+class RulesSort;
 
 #ifdef ENABLE_KDE_SUPPORT
 class DynamicRulesDialog : public KDialog, Ui::DynamicRules
@@ -68,6 +70,8 @@ private Q_SLOTS:
     void remove();
 
 private:
+    RulesSort *proxy;
+    QStandardItemModel *model;
     QString origName;
     DynamicRuleDialog *dlg;
     #ifndef ENABLE_KDE_SUPPORT

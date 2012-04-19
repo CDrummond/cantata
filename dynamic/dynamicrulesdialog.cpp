@@ -31,6 +31,36 @@
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QMessageBox>
 #endif
+#include <QtGui/QStandardItem>
+#include <QtGui/QStandardItemModel>
+#include <QtGui/QSortFilterProxyModel>
+
+class RulesSort : public QSortFilterProxyModel
+{
+public:
+    RulesSort(QObject *parent)
+        : QSortFilterProxyModel(parent) {
+        setDynamicSortFilter(true);
+        setFilterCaseSensitivity(Qt::CaseInsensitive);
+        setSortCaseSensitivity(Qt::CaseInsensitive);
+        setSortLocaleAware(true);
+        sort(0);
+    }
+
+    virtual ~RulesSort() {
+    }
+
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const {
+        bool lInc=left.data(Qt::UserRole+2).toBool();
+        bool rInc=right.data(Qt::UserRole+2).toBool();
+
+        if (lInc==rInc) {
+            return left.data(Qt::DisplayRole).toString().localeAwareCompare(right.data(Qt::DisplayRole).toString())<0;
+        } else {
+            return lInc ? true : false;
+        }
+    }
+};
 
 static QString translateStr(const QString &key)
 {
@@ -75,7 +105,7 @@ static QString translateStr(const QString &key)
     }
 }
 
-static void update(QListWidgetItem *i, const Dynamic::Rule &rule)
+static void update(QStandardItem *i, const Dynamic::Rule &rule)
 {
     Dynamic::Rule::ConstIterator it(rule.constBegin());
     Dynamic::Rule::ConstIterator end(rule.constEnd());
@@ -87,6 +117,7 @@ static void update(QListWidgetItem *i, const Dynamic::Rule &rule)
     QString type=QObject::tr("Include");
     #endif
     bool exact=true;
+    bool include=true;
 
     for (int count=0; it!=end; ++it, ++count) {
         if (Dynamic::constExcludeKey==it.key()) {
@@ -96,6 +127,7 @@ static void update(QListWidgetItem *i, const Dynamic::Rule &rule)
                 #else
                 type=QObject::tr("Exclude");
                 #endif
+                include=false;
             }
         } else if (Dynamic::constExactKey==it.key()) {
             if (QLatin1String("false")==it.value()) {
@@ -124,7 +156,9 @@ static void update(QListWidgetItem *i, const Dynamic::Rule &rule)
         #endif
     }
     i->setText(str);
-    i->setData(Qt::UserRole, v);
+    i->setData(v);
+    i->setData(include, Qt::UserRole+2);
+    i->setFlags(Qt::ItemIsSelectable| Qt::ItemIsEnabled);
 }
 
 DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
@@ -160,8 +194,14 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     editBtn->setIcon(QIcon::fromTheme("document-edit"));
     removeBtn->setIcon(QIcon::fromTheme("list-remove"));
 
-    connect(rulesList, SIGNAL(itemSelectionChanged()), SLOT(controlButtons()));
+    connect(rulesList, SIGNAL(itemsSelected(bool)), SLOT(controlButtons()));
     connect(nameText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
+
+    model=new QStandardItemModel(this);
+    proxy=new RulesSort(this);
+    proxy->setSourceModel(model);
+    rulesList->setModel(proxy);
+
     controlButtons();
     resize(540, 400);
 }
@@ -173,10 +213,14 @@ DynamicRulesDialog::~DynamicRulesDialog()
 void DynamicRulesDialog::edit(const QString &name)
 {
     Dynamic::Entry e=Dynamic::self()->entry(name);
-    rulesList->clear();
+    if (model->rowCount()) {
+        model->removeRows(0, model->rowCount());
+    }
     nameText->setText(name);
     foreach (const Dynamic::Rule &r, e.rules) {
-        ::update(new QListWidgetItem(rulesList), r);
+        QStandardItem *item = new QStandardItem();
+        ::update(item, r);
+        model->setItem(model->rowCount(), 0, item);
     }
     origName=name;
     show();
@@ -226,7 +270,7 @@ void DynamicRulesDialog::buttonPressed(QAbstractButton *button)
 
 void DynamicRulesDialog::controlButtons()
 {
-    int numSel=rulesList->selectedItems().count();
+    int numSel=rulesList->selectedIndexes().count();
     removeBtn->setEnabled(numSel>0);
     editBtn->setEnabled(1==numSel);
 }
@@ -237,13 +281,15 @@ void DynamicRulesDialog::add()
         dlg=new DynamicRuleDialog(this);
     }
     if (dlg->edit(Dynamic::Rule())) {
-        ::update(new QListWidgetItem(rulesList), dlg->rule());
+        QStandardItem *item = new QStandardItem();
+        ::update(item, dlg->rule());
+        model->setItem(model->rowCount(), 0, item);
     }
 }
 
 void DynamicRulesDialog::edit()
 {
-    QList<QListWidgetItem*> items=rulesList->selectedItems();
+    QModelIndexList items=rulesList->selectedIndexes();
 
     if (1!=items.count()) {
         return;
@@ -251,23 +297,29 @@ void DynamicRulesDialog::edit()
     if (!dlg) {
         dlg=new DynamicRuleDialog(this);
     }
+    QStandardItem *item=model->itemFromIndex(proxy->mapToSource(items.at(0)));
     Dynamic::Rule rule;
-    QMap<QString, QVariant> v=items.at(0)->data(Qt::UserRole).toMap();
+    QMap<QString, QVariant> v=item->data().toMap();
     QMap<QString, QVariant>::ConstIterator it(v.constBegin());
     QMap<QString, QVariant>::ConstIterator end(v.constEnd());
     for (; it!=end; ++it) {
         rule.insert(it.key(), it.value().toString());
     }
     if (dlg->edit(rule)) {
-        ::update(items.at(0), dlg->rule());
+        ::update(item, dlg->rule());
     }
 }
 
 void DynamicRulesDialog::remove()
 {
-    QList<QListWidgetItem*> items=rulesList->selectedItems();
-    foreach (QListWidgetItem *i, items) {
-        delete i;
+    QModelIndexList items=rulesList->selectedIndexes();
+    QList<int> rows;
+    foreach (const QModelIndex &i, items) {
+        rows.append(proxy->mapToSource(i).row());
+    }
+    qSort(rows);
+    for (int r=rows.count()-1; r<=0; --r) {
+        model->removeRow(r);
     }
 }
 
@@ -296,10 +348,10 @@ bool DynamicRulesDialog::save()
 
     Dynamic::Entry entry;
     entry.name=name;
-    for (int i=0; i<rulesList->count(); ++i) {
-        QListWidgetItem *itm=rulesList->item(i);
+    for (int i=0; i<model->rowCount(); ++i) {
+        QStandardItem *itm=model->item(i);
         if (itm) {
-            QMap<QString, QVariant> v=itm->data(Qt::UserRole).toMap();
+            QMap<QString, QVariant> v=itm->data().toMap();
             QMap<QString, QVariant>::ConstIterator it(v.constBegin());
             QMap<QString, QVariant>::ConstIterator end(v.constEnd());
             Dynamic::Rule rule;

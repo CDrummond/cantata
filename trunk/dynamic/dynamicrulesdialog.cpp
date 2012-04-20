@@ -320,8 +320,8 @@ void DynamicRulesDialog::remove()
         rows.append(proxy->mapToSource(i).row());
     }
     qSort(rows);
-    for (int r=rows.count()-1; r<=0; --r) {
-        model->removeRow(r);
+    while (rows.count()) {
+        model->removeRow(rows.takeLast());
     }
 }
 

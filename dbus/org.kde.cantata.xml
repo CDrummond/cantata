@@ -3,10 +3,13 @@
 
 
 <node>
-  <interface name="org.kde.cantata.Mpris2Extensions.ui">
+  <interface name="org.kde.cantata">
     <method name="showPage">
         <arg type="s" name="page" direction="in"/>
         <arg type="b" name="focusSearch" direction="in"/>
+    </method>
+    <method name="showError">
+        <arg type="s" name="error" direction="in"/>
     </method>
   </interface>
 </node>

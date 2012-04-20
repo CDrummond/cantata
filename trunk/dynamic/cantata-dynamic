@@ -409,6 +409,14 @@ sub getSongs() {
                 }
             }
         }
+        if (scalar(@mpdSongs)<1) {
+            system("qdbus org.kde.cantata /cantata showError NO_SONGS");
+            if ( $? == -1 ) {
+                # Maybe qdbus is not installed? Try dbus-send...
+                system("dbus-send --type=method_call --session --dest=org.kde.cantata /cantata org.kde.cantata.showError string:NO_SONGS");
+            }
+            exit(0);
+        }
     }
 }
 

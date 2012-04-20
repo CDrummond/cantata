@@ -236,9 +236,6 @@ public slots:
         QApplication::quit();
     }
 
-    // org.kde.cantata.Mpris2Extensions.Player
-    void showPage(const QString &page, bool focusSearch);
-
 Q_SIGNALS:
     // org.mpris.MediaPlayer2.Player
     void goToNext();

@@ -94,6 +94,7 @@
 #include "timeslider.h"
 #include "mpris.h"
 #include "dockmanager.h"
+#include "cantataadaptor.h"
 #include "messagewidget.h"
 #include "httpserver.h"
 #include "dynamic.h"
@@ -318,6 +319,8 @@ MainWindow::MainWindow(QWidget *parent)
     , lastVolume(0)
     , stopState(StopState_None)
 {
+    new CantataAdaptor(this);
+    QDBusConnection::sessionBus().registerObject("/cantata", this);
     setMinimumHeight(256);
     QWidget *widget = new QWidget(this);
     setupUi(widget);
@@ -1155,7 +1158,15 @@ void MainWindow::songLoaded()
 
 void MainWindow::showError(const QString &message, bool showActions)
 {
-    messageWidget->setError(message);
+    if (QLatin1String("NO_SONGS")==message) {
+        #ifdef ENABLE_KDE_SUPPORT
+        messageWidget->setError(i18n("Failed to locate any songs matching the dynamic playlist rules."));
+        #else
+        messageWidget->setError(tr("Failed to locate any songs matching the dynamic playlist rules."));
+        #endif
+    } else {
+        messageWidget->setError(message);
+    }
     if (showActions) {
         messageWidget->addAction(prefAction);
         messageWidget->addAction(connectAction);
@@ -2385,6 +2396,38 @@ void MainWindow::locateTrack()
         showLibraryTab();
     }
     libraryPage->showSongs(playQueue->selectedSongs());
+}
+
+void MainWindow::showPage(const QString &page, bool focusSearch)
+{
+    QString p=page.toLower();
+    if (QLatin1String("library")==p) {
+        showTab(MainWindow::PAGE_LIBRARY);
+    } else if (QLatin1String("albums")==p) {
+        showTab(MainWindow::PAGE_ALBUMS);
+    } else if (QLatin1String("folders")==p) {
+        showTab(MainWindow::PAGE_FOLDERS);
+    } else if (QLatin1String("playlists")==p) {
+        showTab(MainWindow::PAGE_PLAYLISTS);
+    } else if (QLatin1String("dynamic")==p) {
+        showTab(MainWindow::PAGE_DYNAMIC);
+    } else if (QLatin1String("streams")==p) {
+        showTab(MainWindow::PAGE_STREAMS);
+    } else if (QLatin1String("lyrics")==p) {
+        showTab(MainWindow::PAGE_LYRICS);
+    } else if (QLatin1String("info")==p) {
+        showTab(MainWindow::PAGE_INFO);
+    } else if (QLatin1String("serverinfo")==p) {
+        showTab(MainWindow::PAGE_SERVER_INFO);
+    }
+    #ifdef ENABLE_KDE_SUPPORT
+    else if (QLatin1String("devices")==p) {
+        showTab(MainWindow::PAGE_DEVICES);
+    }
+    #endif
+    if (focusSearch) {
+        focusTabSearch();
+    }
 }
 
 void MainWindow::showTab(int page)

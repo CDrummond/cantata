@@ -172,7 +172,6 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     connect(treeView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
     connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
-    connect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), this, SLOT(coverRetrieved(const QString &, const QString &)));
 }
 
 PlayQueueView::~PlayQueueView()
@@ -202,6 +201,11 @@ void PlayQueueView::setGrouped(bool g)
         }
         grouped=g;
         setCurrentWidget(grouped ? static_cast<QWidget *>(groupedView) : static_cast<QWidget *>(treeView));
+        if (grouped) {
+            connect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), groupedView, SLOT(coverRetrieved(const QString &, const QString &)));
+        } else {
+            disconnect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), groupedView, SLOT(coverRetrieved(const QString &, const QString &)));
+        }
     }
 }
 
@@ -343,11 +347,3 @@ QList<Song> PlayQueueView::selectedSongs() const
     return songs;
 }
 
-void PlayQueueView::coverRetrieved(const QString &artist, const QString &album)
-{
-    if (groupedView!=currentWidget()) {
-        return;
-    }
-
-    groupedView->coverRetrieved(artist, album);
-}

@@ -97,9 +97,6 @@ Q_SIGNALS:
     void itemsSelected(bool);
     void doubleClicked(const QModelIndex &);
 
-private Q_SLOTS:
-    void coverRetrieved(const QString &artist, const QString &album);
-
 private:
     GroupedView *groupedView;
     PlayQueueTreeView *treeView;

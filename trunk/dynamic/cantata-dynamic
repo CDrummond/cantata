@@ -155,6 +155,7 @@ sub lockFile() {
     return $fileName;
 }
 
+$mpdDbUpdated=0;
 $rulesChanged=1;
 $includeRules;
 $excludeRules;
@@ -349,7 +350,7 @@ sub uniq {
 # Use rules to obtain a list of songs from MPD...
 sub getSongs() {
     # If we have no current songs, or rules have changed, or MPD has been updated - then we need to run the rules against MPD to get song list...
-    if (scalar(@mpdSongs)<1 || $rulesChanged==1 || $mpdDbUpdate!=$lastMpdDbUpdate) {
+    if (scalar(@mpdSongs)<1 || $rulesChanged==1 || $mpdDbUpdated==1) {
         my @excludeSongs=();
         if (scalar(@excludeRules)>0) {
             # Get list of songs that should be removed from the song list...
@@ -483,7 +484,6 @@ sub storeSong() {
 #
 sub populatePlayQueue() {
     &readConnectionDetails();
-    my $mpdDbUpdate=0;
     my $lastMpdDbUpdate=-1;
     while (1) {
         if (&sendCommand("status")) { # Use status to obtain the current song pos, and to check that MPD is running...
@@ -508,7 +508,11 @@ sub populatePlayQueue() {
                     if ($val=~ m/^(db_update\:)/) {
                         my @vals = split(": ", $val);
                         if (scalar(@vals)==2) {
-                            $mpdDbUpdate=scalar($vals[1]);
+                            my $mpdDbUpdate=scalar($vals[1]);
+                            if ($mpdDbUpdate!=$lastMpdDbUpdate) {
+                                $lastMpdDbUpdate=$mpdDbUpdate;
+                                $mpdDbUpdated=1;
+                            }
                         }
                         break;
                     }

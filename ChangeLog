@@ -39,6 +39,7 @@
 18. Show full size cover image in tooltip for current track cover preview
     widget.
 19. Update copy of ebur128
+20. Fix fetching of covers for grouped playlists.
 
 0.6.1
 -----

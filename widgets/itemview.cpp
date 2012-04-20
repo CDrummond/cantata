@@ -467,6 +467,13 @@ void ItemView::setMode(Mode m)
             listView->setWordWrap(false);
         }
     }
+
+    if (Mode_GroupedTree==mode) {
+        connect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), groupedView, SLOT(coverRetrieved(const QString &, const QString &)));
+    } else if (groupedView) {
+        disconnect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), groupedView, SLOT(coverRetrieved(const QString &, const QString &)));
+    }
+
     stackedWidget->setCurrentIndex(Mode_Tree==mode || Mode_GroupedTree==mode ? 0 : 1);
     #ifdef ENABLE_KDE_SUPPORT
     if (spinner) {

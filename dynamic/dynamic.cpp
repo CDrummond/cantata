@@ -429,6 +429,12 @@ void Dynamic::checkHelper()
 {
     if (!isRunning()) {
         emit running(false);
+        int i=currentEntry.isEmpty() ? -1 : entryList.indexOf(currentEntry);
+        currentEntry=QString();
+        if (i>-1) {
+            QModelIndex idx=index(i, 0, QModelIndex());
+            emit dataChanged(idx, idx);
+        }
         if (timer) {
             timer->stop();
         }

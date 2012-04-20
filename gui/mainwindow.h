@@ -215,6 +215,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
+    void showPage(const QString &page, bool focusSearch);
 
 private Q_SLOTS:
     void setMpdVolume(int );
@@ -460,7 +461,6 @@ private:
     #ifdef ENABLE_DEVICES_SUPPORT
     friend class DevicesPage;
     #endif
-    friend class Mpris;
 };
 
 #endif

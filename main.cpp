@@ -136,6 +136,7 @@ int main(int argc, char *argv[])
     aboutData.addAuthor(ki18n("Roeland Douma"), ki18n("QtMPC author"));
     aboutData.addAuthor(ki18n("Daniel Selinger"), ki18n("QtMPC author"));
     aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"));
+    aboutData.setOrganizationDomain("kde.org");
     KCmdLineArgs::init(argc, argv, &aboutData);
     KCmdLineOptions options;
     options.add("+[URL]", ki18n("URL to open"));

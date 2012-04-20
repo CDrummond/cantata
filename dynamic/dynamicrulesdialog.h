@@ -68,6 +68,7 @@ private Q_SLOTS:
     void add();
     void edit();
     void remove();
+    void showAbout();
 
 private:
     RulesSort *proxy;

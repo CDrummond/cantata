@@ -490,13 +490,18 @@ sub populatePlayQueue() {
             my @lines = split('\n', $socketData);
             my $playQueueLength=0;
             my $playQueueCurrentTrackPos=0;
+            my $isPlaying=0;
             foreach my $val (@lines) {
                 if ($val=~ m/^(song\:)/) {
                     my @vals = split(": ", $val);
                     if (scalar(@vals)==2) {
                         $playQueueCurrentTrackPos=scalar($vals[1]);
                     }
-                    break;
+                } elsif ($val=~ m/^(state\:)/) {
+                    my @vals = split(": ", $val);
+                    if (scalar(@vals)==2 && $vals[1]=~ m/^(play)/) {
+                        $isPlaying=1;
+                    }
                 }
             }
 
@@ -542,6 +547,7 @@ sub populatePlayQueue() {
                 if ($numMpdSongs>0) {
                     # fill up playlist to 10 random tunes
                     my $failues=0;
+                    my $added=0;
                     while ($playQueueLength < $PLAY_QUEUE_DESIRED_LENGTH) {
                         my $pos=int(rand($numMpdSongs));
                         if ($failues > 100 || &canAdd(${mpdSongs[$pos]}, $numMpdSongs)) {
@@ -549,10 +555,15 @@ sub populatePlayQueue() {
                                 &storeSong(${mpdSongs[$pos]});
                                 $playQueueLength++;
                                 $failues=0;
+                                $added++;
                             }
                         } else { # Song is already in playqueue history...
                             $failues++;
                         }
+                    }
+                    # If we are not currently playing and we filled playqueue - then play first!
+                    if ($isPlaying==0 && $added==$PLAY_QUEUE_DESIRED_LENGTH) {
+                        &sendCommand("play 0")
                     }
                 }
                &waitForEvent();

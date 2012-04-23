@@ -40,6 +40,9 @@
     widget.
 19. Update copy of ebur128
 20. Fix fetching of covers for grouped playlists.
+21. For sshfs devices; check ksshaskpass is installed, and check that cantata
+    was not launched from the commandline (otherwise ksshaskpass is not
+    invoked!)
 
 0.6.1
 -----

@@ -191,6 +191,14 @@ void RemoteDevice::mount()
     switch (details.protocol) {
     case Prot_Sshfs:
         if (!details.isEmpty()) {
+            if (ttyname(0)) {
+                emit error(i18n("Password prompting does not work when cantata is started from commandline."));
+                return;
+            }
+            if (KStandardDirs::findExe("ksshaskpass").isEmpty()) {
+                emit error(i18n("\"ksshaskpass\" is not installed! This is required for reading passwords"));
+                return;
+            }
             cmd=KStandardDirs::findExe("sshfs");
             if (!cmd.isEmpty()) {
                 if (!QDir(details.mountPoint(true)).entryList(QDir::NoDot|QDir::NoDotDot|QDir::AllEntries|QDir::Hidden).isEmpty()) {

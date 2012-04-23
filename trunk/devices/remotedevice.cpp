@@ -348,16 +348,9 @@ void RemoteDevice::load()
 {
     if (isConnected()) {
         setAudioFolder();
-        if (opts.useCache) {
-            MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-            if (root->fromXML(cacheFileName(), audioFolder)) {
-                update=root;
-                QTimer::singleShot(0, this, SLOT(cacheRead()));
-                return;
-            }
-            delete root;
+        if (!opts.useCache || !readCache()) {
+            rescan();
         }
-        rescan();
     }
 }
 
@@ -410,7 +403,7 @@ void RemoteDevice::configure(QWidget *parent)
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
     dlg->show(coverFileName, opts, details,
-              DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder,
+              DevicePropertiesWidget::Prop_All-(DevicePropertiesWidget::Prop_Folder+DevicePropertiesWidget::Prop_AutoScan),
               false, isConnected());
 }
 

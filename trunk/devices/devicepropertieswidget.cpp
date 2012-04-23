@@ -126,6 +126,9 @@ void DevicePropertiesWidget::update(const QString &path, const QString &coverNam
     useCache->setVisible(props&Prop_Cache);
     useCacheLabel->setVisible(props&Prop_Cache);
     useCache->setChecked(opts.useCache);
+    autoScan->setVisible(props&Prop_AutoScan);
+    autoScanLabel->setVisible(props&Prop_AutoScan);
+    autoScan->setChecked(opts.autoScan);
     transcoderFrame->setVisible(props&Prop_Transcoder);
     transcoderName->clear();
     transcoderName->addItem(i18n("Do not transcode"), QString());

@@ -136,12 +136,14 @@ void MusicScanner::scanFolder(const QString &f, int level)
 
 FsDevice::FsDevice(DevicesModel *m, Solid::Device &dev)
     : Device(m, dev)
+    , scanned(false)
     , scanner(0)
 {
 }
 
 FsDevice::FsDevice(DevicesModel *m, const QString &name)
     : Device(m, name)
+    , scanned(false)
     , scanner(0)
 {
 }
@@ -152,10 +154,28 @@ FsDevice::~FsDevice() {
 
 void FsDevice::rescan()
 {
-    if (isIdle()) {
+    // If this is the first scan (scanned=false) and we are set to use cache, attempt to load that before scanning
+    if (isIdle() && (scanned || !opts.useCache || !readCache())) {
+        scanned=true;
         removeCache();
         startScanner();
     }
+}
+
+bool FsDevice::readCache()
+{
+    if (opts.useCache) {
+        MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
+        if (root->fromXML(cacheFileName(), audioFolder)) {
+            update=root;
+            scanned=true;
+            QTimer::singleShot(0, this, SLOT(cacheRead()));
+            return true;
+        }
+        delete root;
+    }
+
+    return false;
 }
 
 void FsDevice::addSong(const Song &s, bool overwrite)

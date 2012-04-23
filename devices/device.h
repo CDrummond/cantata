@@ -57,7 +57,7 @@ public:
         bool operator==(const Options &o) const {
             return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&
                    replaceSpaces==o.replaceSpaces && scheme==o.scheme && fixVariousArtists==o.fixVariousArtists &&
-                   useCache==o.useCache && transcoderCodec==o.transcoderCodec &&
+                   useCache==o.useCache && transcoderCodec==o.transcoderCodec && autoScan==o.autoScan &&
                    (transcoderCodec.isEmpty() || (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent));
         }
         bool operator!=(const Options &o) const {
@@ -77,6 +77,7 @@ public:
         int transcoderValue;
         bool transcoderWhenDifferent;
         bool useCache;
+        bool autoScan;
     };
 
     static Device * create(DevicesModel *m, const QString &udi);

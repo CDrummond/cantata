@@ -52,6 +52,7 @@ static const QLatin1String constVariousArtistsFixKey("fix_various_artists"); // 
 static const QLatin1String constTranscoderKey("transcoder"); // Cantata extension!
 static const QLatin1String constUseCacheKey("use_cache"); // Cantata extension!
 static const QLatin1String constDefCoverFileName("cover.jpg");
+static const QLatin1String constAutoScanKey("auto_scan"); // Cantata extension!
 
 UmsDevice::UmsDevice(DevicesModel *m, Solid::Device &dev)
     : FsDevice(m, dev)
@@ -174,6 +175,8 @@ void UmsDevice::setup()
                 }
             } else if(line.startsWith(constUseCacheKey+"=")) {
                 opts.useCache=QLatin1String("true")==line.section('=', 1, 1);
+            } else if(line.startsWith(constAutoScanKey+"=")) {
+                opts.autoScan=QLatin1String("true")==line.section('=', 1, 1);
             }
         }
     }
@@ -200,16 +203,11 @@ void UmsDevice::setup()
         audioFolder+='/';
     }
 
-    if (opts.useCache) {
-        MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-        if (root->fromXML(cacheFileName(), audioFolder)) {
-            update=root;
-            QTimer::singleShot(0, this, SLOT(cacheRead()));
-            return;
-        }
-        delete root;
+    if ((opts.autoScan || scanned) && (!opts.useCache || !readCache())){ // Only scan if we are set to auto scan, or we have already scanned before...
+        rescan();
+    } else if (!scanned) {
+        setStatusMessage(i18n("Not Scanned"));
     }
-    rescan();
 }
 
 void UmsDevice::configure(QWidget *parent)
@@ -329,6 +327,9 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
         }
         if (opts.useCache) {
             out << constUseCacheKey << '=' << toString(opts.useCache) << '\n';
+        }
+        if (opts.autoScan) {
+            out << constAutoScanKey << '=' << toString(opts.autoScan) << '\n';
         }
     }
 

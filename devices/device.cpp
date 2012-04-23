@@ -208,6 +208,7 @@ Device::Options::Options()
     , transcoderValue(0)
     , transcoderWhenDifferent(false)
     , useCache(false)
+    , autoScan(false)
 {
 }
 

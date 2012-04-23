@@ -10,6 +10,7 @@
 
 - Lyrics
   - Add next/prev provider buttons - so that can try others.
+  - Background images?
 
 - Devices
   - libMTP album artist usage.
@@ -18,7 +19,7 @@
       that when library is frefreshed the file is in the correct place.
     - mtpdevice.cpp will remove albumartist from 'Song' entries copied to it,
       so that these are placed in the correct part of the model.
-    - If libMPT is 'fixed' then the above can be removed.
+    - If libMTP is 'fixed' then the above can be removed.
   - Make Various 'Artists' fix applicable to all compilation albums?
     - Not sure how this could be done with MTP :-(
     - MTP has no access to other tags, so when converting back, how would I
@@ -27,18 +28,22 @@
   - Detect AudioCDs
     - call audex/kaudiocoverter/soundKonverter/k3b?
     - or list via audiocd:// ???
+  - Sync option?
+    - Detect which songs are in library but not device, and vice versa.
 
 - PlayQueue
   - Add copy to device to context menu?
     - Will need to be careful that songs are not from device
     - Also, check that songs are not streams!
   - Tabbed mode, to show other play lists?
+  - Option to place in sidebar?
 
 - General
   - Ratings (use KRatingWidget?)
+    - Not sure, would need support in cantata-dynamic
   - mpdscribble management?
   - Combine 'Page' classes
   - Better menu icon?
-
-- Sidebar
-  - Allow to collapse current item
+  - Add with priority
+    - high, medium, low, normal
+    - need to check MPD verison support

@@ -7,7 +7,7 @@
     there are actually some values set.
  5. Add now playing info to MPRIS interface - thanks to Martin Blumenstingl
     for the patch.
- 6. Better, less hacky, workaround for QAbstractItemView shif-select bug
+ 6. Better, less hacky, workaround for QAbstractItemView shift-select bug
     (https://bugreports.qt-project.org/browse/QTBUG-18009). Thanks to Spitfire
     from qtcentre.org forums for fix.
  7. Add a 'search' action (Ctrl-F) that will move focus to curent tab's search
@@ -31,11 +31,11 @@
 13. Request list of URL handlers immediately after connecting.
 14. Check if user is a member of 'audio' group at start-up, and warn if they
     are not. If a user is a member of 'audio', then cantata will save covers,
-    lyrics, imported songs, etc as writeable by 'audio'
-15. Attempt to read defaults from /etc/mpd.conf (This is usualyy readable by
+    lyrics, imported songs, etc, as writable by 'audio'
+15. Attempt to read defaults from /etc/mpd.conf (This is usually readable by
     'audio' group)
 16. If connection fails due to password, then state this in error message.
-17. Add extr-large  cover sizes (64pixels library, 160pixels albums).
+17. Add extra-large  cover sizes (64pixels library, 160pixels albums).
 18. Show full size cover image in tooltip for current track cover preview
     widget.
 19. Update copy of ebur128
@@ -221,7 +221,7 @@
     the timeout. This fix prevents this.
 36. Fix toolbutton icon size - helps with cleanlooks.
 37. When copying files to library, and user is a member of "audio" group - then
-    set files/dirs as writeable and owned by "audio" group.
+    set files/dirs as writable and owned by "audio" group.
 
 0.3.0
 -----

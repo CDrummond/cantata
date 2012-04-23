@@ -43,6 +43,8 @@
 21. For sshfs devices; check ksshaskpass is installed, and check that cantata
     was not launched from the commandline (otherwise ksshaskpass is not
     invoked!)
+22. Add option for UMS devices to autoscan, or not, when detected - default is
+    set to not autoscan.
 
 0.6.1
 -----

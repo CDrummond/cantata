@@ -82,6 +82,7 @@ public:
     void removeCache();
 
 protected:
+    bool readCache();
     void startScanner();
     void stopScanner(bool showStatus=true);
 
@@ -94,6 +95,7 @@ protected Q_SLOTS:
     void removeSongResult(KJob *job);
 
 protected:
+    bool scanned;
     MusicScanner *scanner;
     QString audioFolder;
     QString coverFileName;

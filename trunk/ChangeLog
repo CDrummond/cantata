@@ -45,6 +45,7 @@
     invoked!)
 22. Add option for UMS devices to autoscan, or not, when detected - default is
     set to not autoscan.
+23. Fix detection of some UMS devices that are already mounted at startup.
 
 0.6.1
 -----

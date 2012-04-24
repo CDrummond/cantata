@@ -101,7 +101,8 @@ MediaDeviceCache::refreshCache()
 
         if( ssa )
         {
-            if( !device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus() )
+            if( (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
+                (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) )
             {
                 debug() << "Found Solid::DeviceInterface::StorageAccess that is not usb, skipping";
                 continue;

@@ -45,9 +45,8 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
 
 void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d, bool create, bool isConnected)
 {
+    setEnabled(!isConnected);
     infoLabel->setVisible(create);
-    typeLabel->setEnabled(create);
-    type->setEnabled(create);
     orig=d;
     name->setText(d.name);
     host->setText(d.host);

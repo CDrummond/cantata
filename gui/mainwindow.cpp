@@ -447,7 +447,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     singlePlayQueueAction = actionCollection()->addAction("singleplaylist");
     singlePlayQueueAction->setText(i18n("Single"));
-    singlePlayQueueAction->setWhatsThis(i18n("When single is activated, playback is stopped after current song, or song is repeated if the 'repeat' mode is enabled."));
+    singlePlayQueueAction->setWhatsThis(i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
 
     consumePlayQueueAction = actionCollection()->addAction("consumeplaylist");
     consumePlayQueueAction->setText(i18n("Consume"));

@@ -49,6 +49,8 @@
 24. Load library view covers in separate thread, as per albums view.
 25. Add expandAll (Ctrl +) / collpseAll (Ctrl -) actions to expand/collapse all
     items of currently    focused treeview.
+26. Emit dataChanged() for all album header items that match the album currently
+    being expanded/collpased in the groupedview.
 
 0.6.1
 -----

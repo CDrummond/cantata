@@ -92,6 +92,10 @@ void RemoteDevicePropertiesWidget::setType()
     folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionPopup, RemoteDevice::Prot_File!=t);
     folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionPopupAuto, RemoteDevice::Prot_File!=t);
     folder->lineEdit()->setCompletionMode(RemoteDevice::Prot_File==t ? KGlobalSettings::completionMode() : KGlobalSettings::CompletionNone);
+
+    if (RemoteDevice::Prot_Sshfs==t && 0==port->value()) {
+        port->setValue(22);
+    }
 }
 
 void RemoteDevicePropertiesWidget::checkSaveable()

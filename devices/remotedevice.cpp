@@ -196,7 +196,7 @@ void RemoteDevice::mount()
                 return;
             }
             if (KStandardDirs::findExe("ksshaskpass").isEmpty()) {
-                emit error(i18n("\"ksshaskpass\" is not installed! This is required for reading passwords"));
+                emit error(i18n("\"ksshaskpass\" is not installed! This is required for entering passwords"));
                 return;
             }
             cmd=KStandardDirs::findExe("sshfs");

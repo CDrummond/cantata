@@ -506,12 +506,14 @@ void GroupedView::toggle(const QModelIndex &idx)
         for (quint32 i=0; i<count; ++i) {
             QModelIndex index=model()->index(i, 0, parent);
             quint16 key=index.data(GroupedView::Role_Key).toUInt();
-            if (indexKey==key && !isAlbumHeader(index)) {
-                setRowHidden(i, parent, toBeHidden);
+            if (indexKey==key) {
+                if (isAlbumHeader(index)) {
+                    dataChanged(index, index);
+                } else {
+                    setRowHidden(i, parent, toBeHidden);
+                }
             }
         }
-
-        dataChanged(idx, idx);
     }
 }
 

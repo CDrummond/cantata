@@ -46,6 +46,7 @@
 22. Add option for UMS devices to autoscan, or not, when detected - default is
     set to not autoscan.
 23. Fix detection of some UMS devices that are already mounted at startup.
+24. Load library view covers in separate thread, as per albums view.
 
 0.6.1
 -----

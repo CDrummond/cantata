@@ -98,6 +98,7 @@
 #include "messagewidget.h"
 #include "httpserver.h"
 #include "dynamic.h"
+#include "groupedview.h"
 #include "debugtimer.h"
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -507,6 +508,11 @@ MainWindow::MainWindow(QWidget *parent)
     searchAction = actionCollection()->addAction("search");
     searchAction->setText(i18n("Search"));
 
+    expandAllAction = actionCollection()->addAction("expandall");
+    expandAllAction->setText(i18n("Expand All"));
+
+    collapseAllAction = actionCollection()->addAction("collapseall");
+    collapseAllAction->setText(i18n("Collapse All"));
     #else
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -547,6 +553,8 @@ MainWindow::MainWindow(QWidget *parent)
     editTagsAction = new QAction(tr("Edit Tags"), this);
     editPlayQueueTagsAction = new QAction(tr("Edit Song Tags"), this);
     searchAction = new QAction(tr("Search"), this);
+    expandAllAction = new QAction(tr("Expand All"), this);
+    collapseAllAction = new QAction(tr("Collapse All"), this);
     libraryTabAction = new QAction(tr("Library"), this);
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
@@ -580,6 +588,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif // ENABLE_WEBKIT
 
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
+    expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
+    collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
 
@@ -958,6 +968,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     connect(serverInfoTabAction, SIGNAL(activated()), this, SLOT(showServerInfoTab()));
     connect(searchAction, SIGNAL(activated()), this, SLOT(focusSearch()));
+    connect(expandAllAction, SIGNAL(activated()), this, SLOT(expandAll()));
+    connect(collapseAllAction, SIGNAL(activated()), this, SLOT(collapseAll()));
     #ifdef ENABLE_DEVICES_SUPPORT
     connect(devicesTabAction, SIGNAL(activated()), this, SLOT(showDevicesTab()));
     connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
@@ -2470,6 +2482,22 @@ void MainWindow::focusTabSearch()
         devicesPage->focusSearch();
     }
     #endif
+}
+
+void MainWindow::expandAll()
+{
+    QWidget *f=QApplication::focusWidget();
+    if (f && qobject_cast<QTreeView *>(f) && !qobject_cast<GroupedView *>(f)) {
+        static_cast<QTreeView *>(f)->expandAll();
+    }
+}
+
+void MainWindow::collapseAll()
+{
+    QWidget *f=QApplication::focusWidget();
+    if (f && qobject_cast<QTreeView *>(f) && !qobject_cast<GroupedView *>(f)) {
+        static_cast<QTreeView *>(f)->collapseAll();
+    }
 }
 
 void MainWindow::toggleMpris()

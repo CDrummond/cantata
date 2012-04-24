@@ -47,6 +47,8 @@
     set to not autoscan.
 23. Fix detection of some UMS devices that are already mounted at startup.
 24. Load library view covers in separate thread, as per albums view.
+25. Add expandAll (Ctrl +) / collpseAll (Ctrl -) actions to expand/collapse all
+    items of currently    focused treeview.
 
 0.6.1
 -----

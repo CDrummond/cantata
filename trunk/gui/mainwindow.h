@@ -304,6 +304,8 @@ private Q_SLOTS:
     void replayGain();
     #endif
     void focusSearch();
+    void expandAll();
+    void collapseAll();
 
 private:
     int calcMinHeight();
@@ -382,6 +384,8 @@ private:
     #endif
     Action *refreshAction;
     Action *searchAction;
+    Action *expandAllAction;
+    Action *collapseAllAction;
     Action *smallPlaybackButtonsAction;
     Action *smallControlButtonsAction;
     #ifdef ENABLE_KDE_SUPPORT

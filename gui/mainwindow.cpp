@@ -328,6 +328,11 @@ MainWindow::MainWindow(QWidget *parent)
     QMenu *mainMenu=new QMenu(this);
 
     messageWidget->hide();
+
+    // Need to set these values here, as used in library/device loading...
+    MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
+    MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
+
     #ifndef ENABLE_KDE_SUPPORT
     setWindowIcon(QIcon(":/icons/cantata.svg"));
     setWindowTitle("Cantata");
@@ -1017,8 +1022,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
     libraryPage->setView(0==Settings::self()->libraryView());
-    MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
-    MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
     albumsPage->setView(Settings::self()->albumsView());
     AlbumsModel::setUseLibrarySizes(Settings::self()->albumsView()!=ItemView::Mode_IconTop);
     AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());

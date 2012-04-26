@@ -22,6 +22,7 @@
  */
 
 #include "tags.h"
+#include "config.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include "filetyperesolver.h"
 #endif

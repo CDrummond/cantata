@@ -858,7 +858,7 @@ void ItemView::itemActivated(const QModelIndex &index)
             groupedView->setExpanded(index, !groupedView->TreeView::isExpanded(index));
         }
     } else if (index.isValid() && index.child(0, 0).isValid()) {
-        prevTopIndex=listView->indexAt(QPoint(0, 0));
+        prevTopIndex=listView->indexAt(QPoint(8, 8));
         if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
             prevTopIndex=static_cast<QSortFilterProxyModel *>(listView->model())->mapToSource(prevTopIndex);
         }

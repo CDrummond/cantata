@@ -63,6 +63,7 @@ public Q_SLOTS:
     void forgetRemoteDevice();
     void toggleDevice();
     #endif
+    void sync();
 
 Q_SIGNALS:
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
@@ -78,6 +79,7 @@ private:
     KAction *forgetDeviceAction;
     KAction *toggleDeviceAction;
     #endif
+    KAction *syncAction;
     QSet<QString> genres;
 };
 

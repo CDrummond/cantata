@@ -359,6 +359,7 @@ void ActionDialog::doNext()
         doNext();
     } else {
         refreshLibrary();
+        emit completed();
         accept();
     }
 }

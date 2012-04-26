@@ -82,6 +82,7 @@
 #include "devicesmodel.h"
 #include "actiondialog.h"
 #include "trackorganiser.h"
+#include "syncdialog.h"
 #endif
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
 #include "rgdialog.h"
@@ -2611,10 +2612,7 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
         return;
     }
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=ActionDialog::instanceCount()) {
-        DIALOG_ERROR;
-    }
-    if (0!=TrackOrganiser::instanceCount()) {
+    if (0!=ActionDialog::instanceCount() || 0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #endif
@@ -2656,7 +2654,7 @@ void MainWindow::organiseFiles()
         return;
     }
 
-    if (0!=TagEditor::instanceCount() || 0!=ActionDialog::instanceCount()) {
+    if (0!=TagEditor::instanceCount() || 0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
     }
 
@@ -2727,7 +2725,7 @@ void MainWindow::copyToDevice(const QString &from, const QString &to, const QLis
         DIALOG_ERROR;
     }
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=TrackOrganiser::instanceCount()) {
+    if (0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #endif
@@ -2750,7 +2748,7 @@ void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
         DIALOG_ERROR;
     }
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=TrackOrganiser::instanceCount()) {
+    if (0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #endif
@@ -2775,7 +2773,7 @@ void MainWindow::replayGain()
         DIALOG_ERROR;
     }
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=TrackOrganiser::instanceCount()) {
+    if (0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #endif

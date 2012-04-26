@@ -70,6 +70,7 @@ public:
     Type itemType() const {
         return Type_Root;
     }
+    void add(const QSet<Song> &songs);
 
 private:
     QHash<QString, int> m_indexes;

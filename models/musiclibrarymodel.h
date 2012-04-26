@@ -73,6 +73,8 @@ public:
     #ifndef ENABLE_KDE_SUPPORT
     const QIcon & vaIcon() const;
     #endif
+    bool update(const QSet<Song> &songs);
+
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
     void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);

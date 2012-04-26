@@ -448,3 +448,28 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
     file.close();
     return xmlDate;
 }
+
+void MusicLibraryItemRoot::add(const QSet<Song> &songs)
+{
+    MusicLibraryItemArtist *artistItem = 0;
+    MusicLibraryItemAlbum *albumItem = 0;
+
+    foreach (const Song &s, songs) {
+        if (s.isEmpty()) {
+            continue;
+        }
+
+        if (!artistItem || s.albumArtist()!=artistItem->data()) {
+            artistItem = artist(s);
+        }
+        if (!albumItem || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
+            albumItem = artistItem->album(s);
+        }
+
+        MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
+        albumItem->append(songItem);
+        albumItem->addGenre(s.genre);
+        artistItem->addGenre(s.genre);
+        addGenre(s.genre);
+    }
+}

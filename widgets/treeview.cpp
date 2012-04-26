@@ -131,11 +131,11 @@ void TreeView::correctSelection()
 
 void TreeView::paintEvent(QPaintEvent *e)
 {
-    QTreeView::paintEvent(e);
-
     if (!pixmap.isNull()) {
         QPainter p(viewport());
-        p.setOpacity(0.1);
+        p.setOpacity(0.15);
         p.drawPixmap((width() - pixmap.width())/2, (height() - pixmap.height())/2, pixmap);
     }
+
+    QTreeView::paintEvent(e);
 }

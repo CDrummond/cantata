@@ -48,6 +48,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     KAction *act=new KAction(action, this);
     connect(act, SIGNAL(triggered(bool)), SLOT(copySongs()));
     tree->addAction(act);
+    tree->setAlternatingRowColors(false); // Otherwise background gets corrrupted.
 }
 
 SyncCollectionWidget::~SyncCollectionWidget()

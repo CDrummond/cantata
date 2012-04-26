@@ -325,13 +325,13 @@ IF( ENABLE_KDE_SUPPORT )
             devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
             models/devicesmodel.cpp devices/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
             devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp devices/encoders.cpp
-            devices/transcodingjob.cpp devices/valueslider.cpp devices/trackorganiser.cpp)
+            devices/transcodingjob.cpp devices/valueslider.cpp devices/trackorganiser.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h
             devices/device.h devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
             devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
-            devices/filenameschemedialog.h devices/transcodingjob.h devices/valueslider.h devices/trackorganiser.h)
+            devices/filenameschemedialog.h devices/transcodingjob.h devices/valueslider.h devices/trackorganiser.h  devices/syncdialog.h devices/synccollectionwidget.h)
     SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui
-            devices/filenameschemedialog.ui devices/trackorganiser.ui)
+            devices/filenameschemedialog.ui devices/trackorganiser.ui devices/synccollectionwidget.ui)
 
     if (ENABLE_REMOTE_DEVICES)
         SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotedevice.cpp devices/remotedevicepropertiesdialog.cpp

@@ -42,6 +42,13 @@
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #endif
+#include "syncdialog.h"
+#ifdef ENABLE_REPLAYGAIN_SUPPORT
+#include "rgdialog.h"
+#endif
+#include "tageditor.h"
+#include "actiondialog.h"
+#include "trackorganiser.h"
 
 DevicesPage::DevicesPage(MainWindow *p)
     : QWidget(p)
@@ -59,6 +66,10 @@ DevicesPage::DevicesPage(MainWindow *p)
     copyAction->setText(i18n("Copy To Library"));
     copyAction->setIcon(QIcon::fromTheme("document-import"));
     copyToLibraryButton->setDefaultAction(copyAction);
+    syncAction = p->actionCollection()->addAction("syncdevice");
+    syncAction->setText(i18n("Sync"));
+    syncAction->setIcon(QIcon::fromTheme("folder-sync"));
+    connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction=p->actionCollection()->addAction("forgetdevice");
     forgetDeviceAction->setText(i18n("Forget Device"));
@@ -71,7 +82,9 @@ DevicesPage::DevicesPage(MainWindow *p)
     #endif
     MainWindow::initButton(copyToLibraryButton);
     copyToLibraryButton->setEnabled(false);
+    syncAction->setEnabled(false);
     view->addAction(copyAction);
+    view->addAction(syncAction);
 //     view->addAction(p->burnAction);
     view->addAction(p->organiseFilesAction);
     view->addAction(p->editTagsAction);
@@ -278,6 +291,7 @@ void DevicesPage::controlActions()
     configureAction->setEnabled(!enable && 1==selected.count());
     refreshAction->setEnabled(!enable && 1==selected.count());
     copyAction->setEnabled(enable);
+    syncAction->setEnabled(1==selected.count() && singleUdi);
     mw->deleteSongsAction->setEnabled(enable);
     mw->editTagsAction->setEnabled(enable && onlyFs && singleUdi);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -422,6 +436,41 @@ void DevicesPage::toggleDevice()
     }
 }
 #endif
+
+#ifdef ENABLE_KDE_SUPPORT
+#define DIALOG_ERROR KMessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
+#else
+#define DIALOG_ERROR QMessageBox::information(this, tr("Action is not currently possible, due to other open dialogs."), QMessageBox::Ok); return
+#endif
+
+void DevicesPage::sync()
+{
+    if (0!=SyncDialog::instanceCount()) {
+        return;
+    }
+
+    if (0!=TagEditor::instanceCount() || 0!=ActionDialog::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    if (0!=RgDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
+
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (1!=selected.size()) {
+        return;
+    }
+
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
+        SyncDialog *dlg=new SyncDialog(this);
+        dlg->sync(static_cast<Device *>(item)->udi());
+    }
+}
 
 void DevicesPage::updateGenres(const QSet<QString> &g)
 {

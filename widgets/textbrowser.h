@@ -25,12 +25,14 @@
 #define TEXTBROWSER_H
 
 #include <QtGui/QTextBrowser>
+#include <QtGui/QImage>
 
 class TextBrowser : public QTextBrowser
 {
 public:
     TextBrowser(QWidget *p)
-        : QTextBrowser(p) {
+        : QTextBrowser(p)
+        , drawImage(false) {
         orig=font().pointSize();
     }
 
@@ -46,8 +48,34 @@ public:
     int zoom() const {
         return font().pointSize()-orig;
     }
+
+    void setImage(const QImage &img) {
+        if (drawImage && (!img.isNull() || (image.isNull()!=image.isNull()))) {
+            image=img;
+            update();
+        }
+    }
+
+    void enableImage(bool e) {
+        if (e!=drawImage) {
+            drawImage=e;
+            if (!drawImage) {
+                image=QImage();
+            }
+            update();
+        }
+    }
+
+    bool imageEnabled() {
+        return drawImage;
+    }
+
+    void paintEvent(QPaintEvent *e);
+
 private:
     int orig;
+    QImage image;
+    bool drawImage;
 };
 
 #endif

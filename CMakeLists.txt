@@ -115,6 +115,7 @@ SET( CANTATA_SRCS
     widgets/groupedview.cpp
     widgets/messagewidget.cpp
     widgets/actionitemdelegate.cpp
+    widgets/textbrowser.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp

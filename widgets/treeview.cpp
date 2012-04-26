@@ -23,6 +23,8 @@
 
 #include "treeview.h"
 #include <QtGui/QMouseEvent>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QPainter>
 #include <QtCore/QMap>
 
 TreeView::TreeView(QWidget *parent)
@@ -125,4 +127,15 @@ void TreeView::correctSelection()
     QItemSelection s = selectionModel()->selection();
     setCurrentIndex(currentIndex());
     selectionModel()->select(s, QItemSelectionModel::SelectCurrent);
+}
+
+void TreeView::paintEvent(QPaintEvent *e)
+{
+    QTreeView::paintEvent(e);
+
+    if (!pixmap.isNull()) {
+        QPainter p(viewport());
+        p.setOpacity(0.1);
+        p.drawPixmap((width() - pixmap.width())/2, (height() - pixmap.height())/2, pixmap);
+    }
 }

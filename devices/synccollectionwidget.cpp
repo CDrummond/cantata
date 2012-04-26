@@ -27,6 +27,7 @@
 #include "musiclibraryproxymodel.h"
 #include <KDE/KAction>
 #include <KDE/KLocale>
+#include <KDE/KIcon>
 
 SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action)
     : QWidget(parent)
@@ -51,6 +52,11 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
 
 SyncCollectionWidget::~SyncCollectionWidget()
 {
+}
+
+void SyncCollectionWidget::setIcon(const QString &iconName)
+{
+    tree->setPixmap(KIcon(iconName).pixmap(128, 128));
 }
 
 void SyncCollectionWidget::update(const QSet<Song> &songs)

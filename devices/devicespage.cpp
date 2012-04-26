@@ -253,6 +253,7 @@ void DevicesPage::controlActions()
     bool enable=false;
     bool onlyFs=true;
     bool singleUdi=true;
+    bool connected=false;
     #ifdef ENABLE_REMOTE_DEVICES
     bool remoteDev=false;
     #endif
@@ -285,13 +286,14 @@ void DevicesPage::controlActions()
             if (!enable) {
                 enable=dev->childCount()>0;
             }
+            connected=dev->isConnected();
         }
     }
 
     configureAction->setEnabled(!enable && 1==selected.count());
     refreshAction->setEnabled(!enable && 1==selected.count());
     copyAction->setEnabled(enable);
-    syncAction->setEnabled(1==selected.count() && singleUdi);
+    syncAction->setEnabled(connected && 1==selected.count() && singleUdi);
     mw->deleteSongsAction->setEnabled(enable);
     mw->editTagsAction->setEnabled(enable && onlyFs && singleUdi);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT

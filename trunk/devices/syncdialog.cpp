@@ -164,6 +164,10 @@ bool SyncDialog::updateSongs(bool showMessage)
     }
     devWidget->update(inDev);
     libWidget->update(inLib);
+    if (!isVisible()) {
+        devWidget->setIcon(dev->icon());
+        libWidget->setIcon("cantata-view-media-library");
+    }
     return true;
 }
 

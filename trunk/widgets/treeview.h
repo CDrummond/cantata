@@ -25,6 +25,7 @@
 #define TREEVIEW_H
 
 #include <QtGui/QTreeView>
+#include <QtGui/QPixmap>
 
 class TreeView : public QTreeView
 {
@@ -44,12 +45,19 @@ public:
     void expandAll();
     void expand(const QModelIndex &idx);
     virtual void setModel(QAbstractItemModel *m);
+    void setPixmap(const QPixmap &pix) {
+        pixmap=pix;
+    }
+    void paintEvent(QPaintEvent *e);
 
 private Q_SLOTS:
     void correctSelection();
 
 Q_SIGNALS:
     bool itemsSelected(bool);
+
+private:
+    QPixmap pixmap;
 };
 
 #endif

@@ -1373,6 +1373,16 @@ void MainWindow::updateSettings()
     if (ItemView::Mode_GroupedTree==Settings::self()->playlistsView() && wasStartClosed!=playlistsPage->isStartClosed()) {
         playlistsPage->updateRows();
     }
+
+    if (Settings::self()->lyricsBgnd()!=lyricsPage->bgndImageEnabled()) {
+        lyricsPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
+        if (lyricsPage->bgndImageEnabled()) {
+            Covers::Image img=Covers::self()->get(coverSong, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(current));
+            if (!img.img.isNull()) {
+                lyricsPage->setImage(img.img);
+            }
+        }
+    }
 }
 
 #ifndef ENABLE_KDE_SUPPORT
@@ -1724,6 +1734,7 @@ void MainWindow::updateCurrentCover()
                 coverFileName=img.fileName;
                 updateCoverToolTip();
                 emit coverFile(img.fileName);
+                lyricsPage->setImage(img.img);
             }
         } else {
             coverFileName=QString();
@@ -1732,6 +1743,7 @@ void MainWindow::updateCurrentCover()
             if (dock && dock->enabled()) {
                 emit coverFile(QString());
             }
+            lyricsPage->setImage(QImage());
         }
         coverWidget->setProperty("artist", albumArtist);
         coverWidget->setProperty("album", current.album);
@@ -2390,11 +2402,13 @@ void MainWindow::cover(const QString &artist, const QString &album, const QImage
             coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
             coverFileName=QString();
             emit coverFile(QString());
+            lyricsPage->setImage(QImage());
         } else {
             coverSong=current;
             coverWidget->setPixmap(QPixmap::fromImage(img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             coverFileName=file;
             emit coverFile(file);
+            lyricsPage->setImage(img);
         }
         updateCoverToolTip();
     }

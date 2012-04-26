@@ -146,6 +146,7 @@ LyricsPage::LyricsPage(MainWindow *p)
     cancelBtn->setDefaultAction(cancelAction);
     delBtn->setDefaultAction(delAction);
     text->setZoom(Settings::self()->lyricsZoom());
+    setBgndImageEnabled(Settings::self()->lyricsBgnd());
     setMode(Mode_Blank);
 }
 

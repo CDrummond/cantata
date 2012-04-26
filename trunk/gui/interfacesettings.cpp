@@ -127,6 +127,7 @@ void InterfaceSettings::load()
     albumsCoverSizeChanged();
     playListsStyleChanged();
     playQueueGroupedChanged();
+    lyricsBgnd->setChecked(Settings::self()->lyricsBgnd());
 }
 
 void InterfaceSettings::save()
@@ -153,6 +154,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
     Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
     Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
+    Settings::self()->saveLyricsBgnd(lyricsBgnd->isChecked());
 }
 
 void InterfaceSettings::albumsViewChanged()

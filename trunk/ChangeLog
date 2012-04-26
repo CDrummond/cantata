@@ -55,6 +55,7 @@
     library, right has songs that are only on device. Each has a 'Copy to'
     action. When songs are copied, the lists are updated to show the remaining
     differences.
+28. Fix albums view position when going back from album contents.
 
 0.6.1
 -----

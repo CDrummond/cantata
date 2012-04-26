@@ -492,18 +492,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
     }
 
     if (incremental) {
-        QSet<Song> currentSongs=rootItem->allSongs();
-        QSet<Song> updateSongs=newroot->allSongs();
-        QSet<Song> removed=currentSongs-updateSongs;
-        QSet<Song> added=updateSongs-currentSongs;
-
-        updatedSongs=added.count()||removed.count();
-        foreach (const Song &s, added) {
-            addSongToList(s);
-        }
-        foreach (const Song &s, removed) {
-            removeSongFromList(s);
-        }
+        updatedSongs=update(newroot->allSongs());
         delete newroot;
         databaseTime = dbUpdate;
     } else {
@@ -525,6 +514,23 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
 //         emit updated(rootItem);
         emit updateGenres(rootItem->genres());
     }
+}
+
+bool MusicLibraryModel::update(const QSet<Song> &songs)
+{
+    QSet<Song> currentSongs=rootItem->allSongs();
+    QSet<Song> updateSongs=songs;
+    QSet<Song> removed=currentSongs-updateSongs;
+    QSet<Song> added=updateSongs-currentSongs;
+
+    bool updatedSongs=added.count()||removed.count();
+    foreach (const Song &s, added) {
+        addSongToList(s);
+    }
+    foreach (const Song &s, removed) {
+        removeSongFromList(s);
+    }
+    return updatedSongs;
 }
 
 void MusicLibraryModel::setCover(const QString &artist, const QString &album, const QImage &img, const QString &file)

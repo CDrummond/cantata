@@ -367,6 +367,11 @@ int Settings::lyricsZoom()
     return GET_INT("lyricsZoom", 0);
 }
 
+bool Settings::lyricsBgnd()
+{
+    return GET_BOOL("lyricsBgnd", true);
+}
+
 int Settings::infoZoom()
 {
     return GET_INT("infoZoom", 0);
@@ -653,6 +658,11 @@ void Settings::saveLyricProviders(const QStringList &p)
 void Settings::saveLyricsZoom(int v)
 {
     SET_VALUE("lyricsZoom", v);
+}
+
+void Settings::saveLyricsBgnd(bool v)
+{
+    SET_VALUE("lyricsBgnd", v);
 }
 
 void Settings::saveInfoZoom(int v)

@@ -87,6 +87,7 @@ public:
     bool groupMultiple();
     QStringList lyricProviders();
     int lyricsZoom();
+    bool lyricsBgnd();
     int infoZoom();
     QString page();
     QStringList hiddenPages();
@@ -140,6 +141,7 @@ public:
     void saveGroupMultiple(bool v);
     void saveLyricProviders(const QStringList &p);
     void saveLyricsZoom(int v);
+    void saveLyricsBgnd(bool v);
     void saveInfoZoom(int v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &p);

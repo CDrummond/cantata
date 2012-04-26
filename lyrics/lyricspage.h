@@ -28,11 +28,13 @@
 // #include <QtCore/QScopedPointer>
 #include "song.h"
 #include "ui_lyricspage.h"
+#include "textbrowser.h"
 
 class MainWindow;
 class UltimateLyricsProvider;
 // class UltimateLyricsReader;
 class UltimateLyricsProvider;
+class QImage;
 
 class LyricsPage : public QWidget, public Ui::LyricsPage
 {
@@ -54,6 +56,9 @@ public:
     void setEnabledProviders(const QStringList &providerList);
     void update(const Song &song, bool force=false);
     const QList<UltimateLyricsProvider *> & getProviders() { return providers; }
+    void setImage(const QImage &img) { text->setImage(img); }
+    void setBgndImageEnabled(bool e) { text->enableImage(e); }
+    bool bgndImageEnabled() { return text->imageEnabled(); }
 
 Q_SIGNALS:
     void providersUpdated();

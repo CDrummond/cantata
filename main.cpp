@@ -63,7 +63,9 @@ public:
     }
 
     int newInstance() {
-        if (!w) {
+        if (w) {
+            w->showNormal();
+        } else {
             if (0==Utils::getAudioGroupId() && KMessageBox::Cancel==KMessageBox::warningContinueCancel(0,
                     i18n("You are not currently a member of the \"audio\" group. "
                          "Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you "

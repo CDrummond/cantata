@@ -21,7 +21,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QLabel" name="label_4">
+    <widget class="BuddyLabel" name="label_4">
      <property name="text">
       <string>Show icon in notification area:</string>
      </property>
@@ -41,7 +41,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="label_5">
+    <widget class="BuddyLabel" name="label_5">
      <property name="text">
       <string>Show popup up messages when changing tracks:</string>
      </property>
@@ -58,7 +58,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="label_5b">
+    <widget class="BuddyLabel" name="label_5b">
      <property name="text">
       <string>Enable basic MPRISv2 interface:</string>
      </property>
@@ -75,7 +75,7 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="label_5c">
+    <widget class="BuddyLabel" name="label_5c">
      <property name="text">
       <string>Use current cover as dock icon:</string>
      </property>
@@ -93,6 +93,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>systemTrayCheckBox</tabstop>
   <tabstop>systemTrayPopup</tabstop>

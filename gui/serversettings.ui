@@ -23,7 +23,7 @@
       <enum>QFormLayout::ExpandingFieldsGrow</enum>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="BuddyLabel" name="label">
        <property name="text">
         <string>Host (or local socket):</string>
        </property>
@@ -36,7 +36,7 @@
       <widget class="LineEdit" name="hostLineEdit"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="BuddyLabel" name="label_2">
        <property name="text">
         <string>Port:</string>
        </property>
@@ -59,7 +59,7 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_3b">
+      <widget class="BuddyLabel" name="label_3b">
        <property name="text">
         <string>Password:</string>
        </property>
@@ -76,7 +76,7 @@
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_3">
+      <widget class="BuddyLabel" name="label_3">
        <property name="text">
         <string>Music folder:</string>
        </property>
@@ -168,6 +168,11 @@
    <extends>QLineEdit</extends>
    <header>dirrequester.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -312,8 +312,9 @@ sub readRules() {
 
             if (length($currentRule)>1) {
                 &saveRule($currentRule, \@dates, $ruleMatch, $isInclude);
+            } elsif (@dates) {
+                &saveRule('', \@dates, $ruleMatch, $isInclude);
             }
-
 #             print "INCLUDE--------------\n";
 #             foreach my $rule (@includeRules) {
 #                 print "${rule}\n";

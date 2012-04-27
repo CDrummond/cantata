@@ -249,8 +249,12 @@ bool Dynamic::del(const QString &name)
         return true;
     }
     QString fName(configDir(constDir, false)+name+constExtension);
+    bool isCurrent=currentEntry==name;
 
     if (!QFile::exists(fName) || QFile::remove(fName)) {
+        if (isCurrent) {
+            stop();
+        }
         beginRemoveRows(QModelIndex(), it-entryList.begin(), it-entryList.begin());
         entryList.erase(it);
         endRemoveRows();
@@ -274,7 +278,8 @@ bool Dynamic::start(const QString &name)
 
     QString rules(Network::cacheDir(constDir, true)+constActiveRules);
 
-    if (QFile::exists(rules) && !QFile::remove(rules)) {
+    QFile::remove(rules);
+    if (QFile::exists(rules)) {
         #ifdef ENABLE_KDE_SUPPORT
         emit error(i18n("Failed to remove previous rules file - %1", rules));
         #else

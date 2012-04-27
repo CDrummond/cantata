@@ -26,7 +26,7 @@
 
 #include <QtGui/QTextBrowser>
 #include <QtGui/QImage>
-
+#include <QtCore/QDebug>
 class TextBrowser : public QTextBrowser
 {
 public:
@@ -50,9 +50,9 @@ public:
     }
 
     void setImage(const QImage &img) {
-        if (drawImage && (!img.isNull() || (image.isNull()!=image.isNull()))) {
+        if (drawImage && (!img.isNull() || (img.isNull()!=image.isNull()))) {
             image=img;
-            update();
+            viewport()->update();
         }
     }
 
@@ -62,7 +62,7 @@ public:
             if (!drawImage) {
                 image=QImage();
             }
-            update();
+            viewport()->update();
         }
     }
 

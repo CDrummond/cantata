@@ -20,7 +20,7 @@
       <enum>QFormLayout::ExpandingFieldsGrow</enum>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="musicFolderLabel">
+      <widget class="BuddyLabel" name="musicFolderLabel">
        <property name="text">
         <string>Music folder:</string>
        </property>
@@ -33,7 +33,7 @@
       <widget class="DirRequester" name="musicFolder"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="albumCoversLabel">
+      <widget class="BuddyLabel" name="albumCoversLabel">
        <property name="text">
         <string>Copy album covers as:</string>
        </property>
@@ -50,7 +50,7 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="fixVariousArtistsLabel">
+      <widget class="BuddyLabel" name="fixVariousArtistsLabel">
        <property name="text">
         <string>'Various Artists' workaround:</string>
        </property>
@@ -63,7 +63,7 @@
       <widget class="QCheckBox" name="fixVariousArtists"/>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="autoScanLabel">
+      <widget class="BuddyLabel" name="autoScanLabel">
        <property name="text">
         <string>Automatically scan music when attached:</string>
        </property>
@@ -76,7 +76,7 @@
       <widget class="QCheckBox" name="autoScan"/>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="useCacheLabel">
+      <widget class="BuddyLabel" name="useCacheLabel">
        <property name="text">
         <string>Use cache:</string>
        </property>
@@ -100,7 +100,7 @@
        <enum>QFormLayout::ExpandingFieldsGrow</enum>
       </property>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="BuddyLabel" name="label_3">
         <property name="text">
          <string>Use only ASCII characters:</string>
         </property>
@@ -117,7 +117,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="BuddyLabel" name="label_4">
         <property name="text">
          <string>Replace spaces with underscores:</string>
         </property>
@@ -134,7 +134,7 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="BuddyLabel" name="label_5">
         <property name="text">
          <string>Ignore 'The' in artist names:</string>
         </property>
@@ -151,7 +151,7 @@
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="label_6">
+       <widget class="BuddyLabel" name="label_6">
         <property name="text">
          <string>Filename scheme:</string>
         </property>
@@ -195,7 +195,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
+       <widget class="BuddyLabel" name="label_2">
         <property name="text">
          <string>VFAT safe:</string>
         </property>
@@ -219,7 +219,7 @@
       <item>
        <layout class="QFormLayout" name="formLayout_3">
         <item row="0" column="0">
-         <widget class="QLabel" name="transcoderWhenDifferentLabel">
+         <widget class="BuddyLabel" name="transcoderWhenDifferentLabel">
           <property name="text">
            <string>Only transcode if source file is of a different format:</string>
           </property>
@@ -270,6 +270,11 @@
    <class>ValueSlider</class>
    <extends>QSlider</extends>
    <header>valueslider.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

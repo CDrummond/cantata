@@ -23,7 +23,7 @@
       <enum>QFormLayout::ExpandingFieldsGrow</enum>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="crossfadingLabel">
+      <widget class="BuddyLabel" name="crossfadingLabel">
        <property name="text">
         <string>Crossfading:</string>
        </property>
@@ -43,7 +43,7 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="replayGainLabel">
+      <widget class="BuddyLabel" name="replayGainLabel">
        <property name="text">
         <string>Replay gain:</string>
        </property>
@@ -56,7 +56,7 @@
       <widget class="QComboBox" name="replayGain"/>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_6b">
+      <widget class="BuddyLabel" name="label_6b">
        <property name="text">
         <string>Fadeout on stop:</string>
        </property>
@@ -69,7 +69,7 @@
       <widget class="QSpinBox" name="stopFadeDuration"/>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_6c">
+      <widget class="BuddyLabel" name="label_6c">
        <property name="text">
         <string>Stop playback on exit:</string>
        </property>
@@ -82,7 +82,7 @@
       <widget class="QCheckBox" name="stopOnExit"/>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="BuddyLabel" name="label">
        <property name="text">
         <string>Stop dynamizer on exit:</string>
        </property>
@@ -113,7 +113,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="errorIcon">
+    <widget class="BuddyLabel" name="errorIcon">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -137,6 +137,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>crossfading</tabstop>
   <tabstop>replayGain</tabstop>

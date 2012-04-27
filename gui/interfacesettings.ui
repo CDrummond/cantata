@@ -31,7 +31,7 @@
       </attribute>
       <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="BuddyLabel" name="label">
          <property name="text">
           <string>Style:</string>
          </property>
@@ -44,7 +44,7 @@
         <widget class="QComboBox" name="libraryView"/>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_5b">
+        <widget class="BuddyLabel" name="label_5b">
          <property name="text">
           <string>Covers:</string>
          </property>
@@ -83,7 +83,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="label_6">
+        <widget class="BuddyLabel" name="label_6">
          <property name="text">
           <string>Show album year:</string>
          </property>
@@ -107,7 +107,7 @@
       </attribute>
       <layout class="QFormLayout" name="formLayout_2">
        <item row="0" column="0">
-        <widget class="QLabel" name="label_3a">
+        <widget class="BuddyLabel" name="label_3a">
          <property name="text">
           <string>Style:</string>
          </property>
@@ -120,7 +120,7 @@
         <widget class="QComboBox" name="albumsView"/>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_5c">
+        <widget class="BuddyLabel" name="label_5c">
          <property name="text">
           <string>Covers:</string>
          </property>
@@ -159,7 +159,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="label_5x">
+        <widget class="BuddyLabel" name="label_5x">
          <property name="text">
           <string>Sort albums:</string>
          </property>
@@ -195,7 +195,7 @@
       </attribute>
       <layout class="QFormLayout" name="formLayout_6">
        <item row="0" column="0">
-        <widget class="QLabel" name="label_3">
+        <widget class="BuddyLabel" name="label_3">
          <property name="text">
           <string>Style:</string>
          </property>
@@ -208,7 +208,7 @@
         <widget class="QComboBox" name="playlistsView"/>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="playListsStartClosedLabel">
+        <widget class="BuddyLabel" name="playListsStartClosedLabel">
          <property name="text">
           <string>Initially collapse albums:</string>
          </property>
@@ -235,7 +235,7 @@
         <enum>QFormLayout::ExpandingFieldsGrow</enum>
        </property>
        <item row="0" column="0">
-        <widget class="QLabel" name="label_2">
+        <widget class="BuddyLabel" name="label_2">
          <property name="text">
           <string>Folder view style:</string>
          </property>
@@ -248,7 +248,7 @@
         <widget class="QComboBox" name="folderView"/>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_x">
+        <widget class="BuddyLabel" name="label_x">
          <property name="text">
           <string>Streams view style:</string>
          </property>
@@ -261,7 +261,7 @@
         <widget class="QComboBox" name="streamsView"/>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="devicesViewLabel">
+        <widget class="BuddyLabel" name="devicesViewLabel">
          <property name="text">
           <string>Devices view style:</string>
          </property>
@@ -274,7 +274,7 @@
         <widget class="QComboBox" name="devicesView"/>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="label_5">
+        <widget class="BuddyLabel" name="label_5">
          <property name="text">
           <string>Use cover as lyrics background:</string>
          </property>
@@ -298,7 +298,7 @@
       </attribute>
       <layout class="QFormLayout" name="formLayout_5">
        <item row="0" column="0">
-        <widget class="QLabel" name="playQueueScrollLabel">
+        <widget class="BuddyLabel" name="playQueueScrollLabel">
          <property name="text">
           <string>Scroll to current track:</string>
          </property>
@@ -311,7 +311,7 @@
         <widget class="QCheckBox" name="playQueueScroll"/>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="playQueueGroupedLabel">
+        <widget class="BuddyLabel" name="playQueueGroupedLabel">
          <property name="text">
           <string>Style:</string>
          </property>
@@ -335,7 +335,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="playQueueAutoExpandLabel">
+        <widget class="BuddyLabel" name="playQueueAutoExpandLabel">
          <property name="text">
           <string>Automatically expand current album:</string>
          </property>
@@ -352,7 +352,7 @@
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="playQueueStartClosedLabel">
+        <widget class="BuddyLabel" name="playQueueStartClosedLabel">
          <property name="text">
           <string>Initially collapse albums:</string>
          </property>
@@ -379,7 +379,7 @@
         <enum>QFormLayout::ExpandingFieldsGrow</enum>
        </property>
        <item row="0" column="0">
-        <widget class="QLabel" name="label_7">
+        <widget class="BuddyLabel" name="label_7">
          <property name="text">
           <string>Group single track albums:</string>
          </property>
@@ -396,7 +396,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="groupMultipleLabel">
+        <widget class="BuddyLabel" name="groupMultipleLabel">
          <property name="text">
           <string>Multiple artist albums:</string>
          </property>
@@ -409,7 +409,7 @@
         <widget class="QComboBox" name="groupMultiple"/>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="showDeleteActionLabel">
+        <widget class="BuddyLabel" name="showDeleteActionLabel">
          <property name="text">
           <string>Show delete action in context menus:</string>
          </property>
@@ -426,7 +426,7 @@
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="storeCoversInMpdDirLabel">
+        <widget class="BuddyLabel" name="storeCoversInMpdDirLabel">
          <property name="text">
           <string>Save downloaded covers in music folder:</string>
          </property>
@@ -439,7 +439,7 @@
         <widget class="QCheckBox" name="storeCoversInMpdDir"/>
        </item>
        <item row="4" column="0">
-        <widget class="QLabel" name="label_4">
+        <widget class="BuddyLabel" name="label_4">
          <property name="text">
           <string>Save downloaded lyrics in music folder:</string>
          </property>
@@ -461,6 +461,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>libraryView</tabstop>

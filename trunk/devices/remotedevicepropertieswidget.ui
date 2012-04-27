@@ -17,9 +17,12 @@
    <item>
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="typeLabel">
+      <widget class="BuddyLabel" name="typeLabel">
        <property name="text">
         <string>Type:</string>
+       </property>
+       <property name="buddy">
+        <cstring>type</cstring>
        </property>
       </widget>
      </item>
@@ -27,7 +30,7 @@
       <widget class="QComboBox" name="type"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="nameLabel">
+      <widget class="BuddyLabel" name="nameLabel">
        <property name="text">
         <string>Name:</string>
        </property>
@@ -40,7 +43,7 @@
       <widget class="LineEdit" name="name"/>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="hostLabel">
+      <widget class="BuddyLabel" name="hostLabel">
        <property name="text">
         <string>Host:</string>
        </property>
@@ -53,7 +56,7 @@
       <widget class="LineEdit" name="host"/>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="portLabel">
+      <widget class="BuddyLabel" name="portLabel">
        <property name="text">
         <string>Port:</string>
        </property>
@@ -70,7 +73,7 @@
       </widget>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="userLabel">
+      <widget class="BuddyLabel" name="userLabel">
        <property name="text">
         <string>User:</string>
        </property>
@@ -83,7 +86,7 @@
       <widget class="LineEdit" name="user"/>
      </item>
      <item row="5" column="0">
-      <widget class="QLabel" name="folderLabel">
+      <widget class="BuddyLabel" name="folderLabel">
        <property name="text">
         <string>Folder:</string>
        </property>
@@ -144,6 +147,11 @@
    <class>DirRequester</class>
    <extends>QLineEdit</extends>
    <header>dirrequester.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -57,6 +57,8 @@
     differences.
 28. Fix albums view position when going back from album contents.
 29. Add option to draw (15% opacity) tiled cover as background to lyrics page.
+30. When clicking on a label, pass focus to buddy widget. If this buddy is a
+    checkbox, then also toggle its state.
 
 0.6.1
 -----

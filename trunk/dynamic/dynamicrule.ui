@@ -23,7 +23,7 @@
       <enum>QFormLayout::ExpandingFieldsGrow</enum>
      </property>
      <item row="1" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="BuddyLabel" name="label">
        <property name="text">
         <string>Artist:</string>
        </property>
@@ -36,7 +36,7 @@
       <widget class="CompletionCombo" name="artistText"/>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="BuddyLabel" name="label_2">
        <property name="text">
         <string>Album Artist:</string>
        </property>
@@ -49,7 +49,7 @@
       <widget class="CompletionCombo" name="albumArtistText"/>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_3">
+      <widget class="BuddyLabel" name="label_3">
        <property name="text">
         <string>Album:</string>
        </property>
@@ -62,7 +62,7 @@
       <widget class="CompletionCombo" name="albumText"/>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="label_4">
+      <widget class="BuddyLabel" name="label_4">
        <property name="text">
         <string>Title:</string>
        </property>
@@ -75,7 +75,7 @@
       <widget class="LineEdit" name="titleText"/>
      </item>
      <item row="5" column="0">
-      <widget class="QLabel" name="label_5">
+      <widget class="BuddyLabel" name="label_5">
        <property name="text">
         <string>Genre</string>
        </property>
@@ -95,7 +95,7 @@
       </widget>
      </item>
      <item row="6" column="0">
-      <widget class="QLabel" name="label_6">
+      <widget class="BuddyLabel" name="label_6">
        <property name="text">
         <string>Year:</string>
        </property>
@@ -120,7 +120,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_8">
+        <widget class="BuddyLabel" name="label_8">
          <property name="text">
           <string>-</string>
          </property>
@@ -142,7 +142,7 @@
       </layout>
      </item>
      <item row="7" column="0">
-      <widget class="QLabel" name="label_5x">
+      <widget class="BuddyLabel" name="label_5x">
        <property name="text">
         <string>Exact match:</string>
        </property>
@@ -169,7 +169,7 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_9">
+      <widget class="BuddyLabel" name="label_9">
        <property name="text">
         <string>Type:</string>
        </property>
@@ -181,7 +181,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label_7">
+    <widget class="BuddyLabel" name="label_7">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
@@ -208,6 +208,11 @@
    <class>CompletionCombo</class>
    <extends>QComboBox</extends>
    <header>completioncombo.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

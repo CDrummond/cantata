@@ -210,15 +210,14 @@ bool Utils::createDir(const QString &dir, const QString &base)
     return status;
 }
 
-
 struct Thread : public QThread
 {
-    static void sleep(int msecs) { QThread::msleep(msecs); }
+    using QThread::msleep;
 };
 
 void Utils::msleep(int msecs)
 {
-    Thread::sleep(msecs);
+    Thread::msleep(msecs);
 }
 
 void Utils::stopThread(QThread *thread)

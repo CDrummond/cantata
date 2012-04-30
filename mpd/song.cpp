@@ -138,20 +138,20 @@ void Song::fillEmptyFields()
 void Song::setKey()
 {
     static quint16 currentKey=0;
-    static QMap<QString, quint16> keys;
+    static QMap<AlbumKey, quint16> keys;
 
     if (isStream() && !isCantataStream()) {
         key=0;
         return;
     }
 
-    QString albumAndArtist=albumArtist()+QLatin1String("::")+album;
-    QMap<QString, quint16>::ConstIterator it=keys.find(albumAndArtist);
+    AlbumKey albumKey(year, albumArtist()+QChar(':')+album);
+    QMap<AlbumKey, quint16>::ConstIterator it=keys.find(albumKey);
     if (it!=keys.end()) {
         key=it.value();
     } else {
         currentKey++; // Key 0 is for streams, so we need to increment before setting...
-        keys.insert(albumAndArtist, currentKey);
+        keys.insert(albumKey, currentKey);
         key=currentKey;
     }
 }

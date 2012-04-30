@@ -65,7 +65,7 @@ public:
     QMimeData * mimeData(const QModelIndexList &indexes) const;
 
 public Q_SLOTS:
-    void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
+    void setCover(const Song &song, const QImage &img, const QString &file);
     void deviceAdded(const QString &udi);
     void deviceRemoved(const QString &udi);
     void deviceUpdating(const QString &udi, bool state);

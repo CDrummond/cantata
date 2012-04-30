@@ -272,7 +272,7 @@ private Q_SLOTS:
     void sidebarModeChanged();
     void currentTabChanged(int index);
     void tabToggled(int index);
-    void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
+    void cover(const Song &song, const QImage &img, const QString &file);
     void showLibraryTab() { showTab(PAGE_LIBRARY); }
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }

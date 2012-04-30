@@ -77,7 +77,7 @@ public:
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
-    void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
+    void setCover(const Song &song, const QImage &img, const QString &file);
 
 Q_SIGNALS:
 //     void updated(const MusicLibraryItemRoot *root);

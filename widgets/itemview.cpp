@@ -469,9 +469,9 @@ void ItemView::setMode(Mode m)
     }
 
     if (Mode_GroupedTree==mode) {
-        connect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), groupedView, SLOT(coverRetrieved(const QString &, const QString &)));
+        connect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), groupedView, SLOT(coverRetrieved(const Song &)));
     } else if (groupedView) {
-        disconnect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), groupedView, SLOT(coverRetrieved(const QString &, const QString &)));
+        disconnect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), groupedView, SLOT(coverRetrieved(const Song &)));
     }
 
     stackedWidget->setCurrentIndex(Mode_Tree==mode || Mode_GroupedTree==mode ? 0 : 1);

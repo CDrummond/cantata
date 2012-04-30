@@ -55,7 +55,7 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void getNext();
-    void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
+    void cover(const Song &song, const QImage &img, const QString &file);
     void download(const Song &song);
 
 private:
@@ -70,10 +70,9 @@ class Covers : public QObject
 public:
     struct Job
     {
-        Job(const QString &ar, const QString &al, const QString &d)
-            : artist(ar), album(al), dir(d) { }
-        QString artist;
-        QString album;
+        Job(const Song &s, const QString &d)
+            : song(s), dir(d) { }
+        Song song;
         QString dir;
     };
 
@@ -106,8 +105,8 @@ public Q_SLOTS:
     void download(const Song &song);
 
 Q_SIGNALS:
-    void cover(const QString &artist, const QString &album, const QImage &img, const QString &file);
-    void coverRetrieved(const QString &artist, const QString &album);
+    void cover(const Song &song, const QImage &img, const QString &file);
+    void coverRetrieved(const Song &song);
 
 private Q_SLOTS:
     void albumInfo(QVariant &value, QNetworkReply *reply);
@@ -117,7 +116,7 @@ private Q_SLOTS:
 private:
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<QNetworkReply *, Job>::Iterator findJob(const Song &song);
-    void clearDummyCache(const QString &artist, const QString &album);
+    void clearDummyCache(const Song &song);
 
 private:
     MaiaXmlRpcClient *rpc;

@@ -59,6 +59,8 @@
 29. Add option to draw (15% opacity) tiled cover as background to lyrics page.
 30. When clicking on a label, pass focus to buddy widget. If this buddy is a
     checkbox, then also toggle its state.
+31. When groping songs into albums, take into account song year. Its possible
+    for an artist to release two albums with the same name in different years!
 
 0.6.1
 -----

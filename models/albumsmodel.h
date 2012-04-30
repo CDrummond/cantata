@@ -76,7 +76,7 @@ public:
 
     struct AlbumItem : public Item
     {
-        AlbumItem(const QString &ar, const QString &al);
+        AlbumItem(const QString &ar, const QString &al, quint16 y);
         virtual ~AlbumItem();
         bool operator<(const AlbumItem &o) const;
         bool isAlbum() { return true; }
@@ -88,6 +88,7 @@ public:
         QString artist;
         QString album;
         QString name;
+        quint16 year;
         QList<SongItem *> songs;
         QSet<QString> genres;
         QPixmap *cover;
@@ -120,7 +121,7 @@ public:
 //     void getCovers();
 
 public Q_SLOTS:
-    void setCover(const QString &artist, const QString &album, const QImage &img, const QString &file);
+    void setCover(const Song &song, const QImage &img, const QString &file);
     void update(const MusicLibraryItemRoot *root);
 
 private:

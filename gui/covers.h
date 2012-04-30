@@ -95,9 +95,9 @@ public:
     Covers();
     void stop();
 
-    QPixmap * get(const Song &song, int size, bool isSingleTracks=false);
-    Image getImage(const Song &song, bool isSingleTracks=false);
-    Image get(const Song &song, bool isSingleTracks=false);
+    QPixmap * get(const Song &song, int size);
+    Image getImage(const Song &song);
+    Image get(const Song &song);
     void requestCover(const Song &song, bool urgent=false);
     void setSaveInMpdDir(bool s);
 

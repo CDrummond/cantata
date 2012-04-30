@@ -61,6 +61,8 @@
     checkbox, then also toggle its state.
 31. When groping songs into albums, take into account song year. Its possible
     for an artist to release two albums with the same name in different years!
+32. Remove 'Single Tracks' cover creation. This is not used in grouped view,
+    etc.
 
 0.6.1
 -----

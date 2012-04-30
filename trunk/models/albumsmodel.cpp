@@ -424,7 +424,11 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
-                a->type=albumItem->songType();
+                if (Song::SingleTracks!=albumItem->songType() && artistItem->isVarious()) {
+                    a->type=Song::MultipleArtists;
+                } else {
+                    a->type=albumItem->songType();
+                }
                 if (!resettingModel) {
                     beginInsertRows(QModelIndex(), items.count(), items.count());
                 }

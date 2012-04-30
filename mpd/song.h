@@ -53,8 +53,8 @@ struct Song
 
     enum Type {
         Standard        = 0,
-        SingleTracks    = 1,
-        MultipleArtists = 2
+        MultipleArtists = 1,
+        SingleTracks    = 2
     };
 
     qint32 id;

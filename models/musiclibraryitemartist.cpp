@@ -59,7 +59,7 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibrary
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {
-    QHash<QString, int>::ConstIterator it=m_indexes.find(songAlbum(s));
+    QHash<Song::AlbumKey, int>::ConstIterator it=m_indexes.find(Song::AlbumKey(s.year, songAlbum(s)));
 
     if (m_indexes.end()==it) {
         return create ? createAlbum(s) : 0;
@@ -69,9 +69,9 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
 {
-    QString albumName=songAlbum(s);
-    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(albumName, s.year, this);
-    m_indexes.insert(albumName, m_childItems.count());
+    Song::AlbumKey key(s.year, songAlbum(s));
+    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(key.name, s.year, this);
+    m_indexes.insert(key, m_childItems.count());
     m_childItems.append(item);
     return item;
 }
@@ -112,9 +112,9 @@ bool MusicLibraryItemArtist::isFromSingleTracks(const Song &s) const
     }
 
     #ifdef ENABLE_KDE_SUPPORT
-    QHash<QString, int>::ConstIterator it=m_indexes.find(i18n("Single Tracks"));
+    QHash<Song::AlbumKey, int>::ConstIterator it=m_indexes.find(Song::AlbumKey(0, i18n("Single Tracks")));
     #else
-    QHash<QString, int>::ConstIterator it=m_indexes.find(QObject::tr("Single Tracks"));
+    QHash<Song::AlbumKey, int>::ConstIterator it=m_indexes.find(Song::AlbumKey(0, QObject::tr("Single Tracks")));
     #endif
 
     if (m_indexes.end()!=it) {
@@ -131,15 +131,15 @@ void MusicLibraryItemArtist::remove(MusicLibraryItemAlbum *album)
         return;
     }
 
-    QHash<QString, int>::Iterator it=m_indexes.begin();
-    QHash<QString, int>::Iterator end=m_indexes.end();
+    QHash<Song::AlbumKey, int>::Iterator it=m_indexes.begin();
+    QHash<Song::AlbumKey, int>::Iterator end=m_indexes.end();
 
     for (; it!=end; ++it) {
         if ((*it)>index) {
             (*it)--;
         }
     }
-    m_indexes.remove(album->data());
+    m_indexes.remove(Song::AlbumKey(album->year(), album->data()));
     delete m_childItems.takeAt(index);
 }
 
@@ -162,6 +162,6 @@ void MusicLibraryItemArtist::updateIndexes()
     QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
     QList<MusicLibraryItem *>::iterator end=m_childItems.end();
     for (int i=0; it!=end; ++it, ++i) {
-        m_indexes.insert((*it)->data(), i);
+        m_indexes.insert(Song::AlbumKey(static_cast<MusicLibraryItemAlbum *>(*it)->year(), (*it)->data()), i);
     }
 }

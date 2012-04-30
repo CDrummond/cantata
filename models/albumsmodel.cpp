@@ -395,15 +395,15 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
 
     for (int i = 0; i < root->childCount(); i++) {
         MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemArtist*>(root->childItem(i));
-        QString artist=artistItem->data();
+        const QString &artist=artistItem->data();
         for (int j = 0; j < artistItem->childCount(); j++) {
             MusicLibraryItemAlbum *albumItem = static_cast<MusicLibraryItemAlbum*>(artistItem->childItem(j));
-            QString album=albumItem->data();
+            const QString &album=albumItem->data();
             bool found=false;
             it=items.begin();
             end=items.end();
             for (; it!=end; ++it) {
-                if ((*it)->artist==artist && (*it)->album==album) {
+                if ((*it)->year==albumItem->year() && (*it)->artist==artist && (*it)->album==album) {
                     if (!resettingModel) {
                         QModelIndex albumIndex=index(items.indexOf(*it), 0, QModelIndex());
                         bool hadSongs=!(*it)->songs.isEmpty();
@@ -430,7 +430,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
             }
 
             if (!found) {
-                AlbumItem *a=new AlbumItem(artist, album);
+                AlbumItem *a=new AlbumItem(artist, album, albumItem->year());
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
@@ -479,7 +479,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
 //     }
 // }
 
-void AlbumsModel::setCover(const QString &artist, const QString &album, const QImage &img, const QString &file)
+void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
     Q_UNUSED(file)
     if (img.isNull()) {
@@ -490,7 +490,7 @@ void AlbumsModel::setCover(const QString &artist, const QString &album, const QI
     QList<AlbumItem *>::Iterator end=items.end();
 
     for (int row=0; it!=end; ++it, ++row) {
-        if ((*it)->artist==artist && (*it)->album==album) {
+        if ((*it)->year==song.year && (*it)->artist==song.albumArtist() && (*it)->album==song.album) {
             (*it)->cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
             QModelIndex idx=index(row, 0, QModelIndex());
             emit dataChanged(idx, idx);
@@ -516,14 +516,14 @@ void AlbumsModel::setEnabled(bool e)
     enabled=e;
 
     if (enabled) {
-        connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-                this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
+        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
 //         connect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
         update(MusicLibraryModel::self()->root());
     } else {
         clear();
-        disconnect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-                    this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
+        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                    this, SLOT(setCover(const Song&, const QImage &, const QString &)));
 //         disconnect(MusicLibraryModel::self(), SIGNAL(updated(const MusicLibraryItemRoot *)), AlbumsModel::self(), SLOT(update(const MusicLibraryItemRoot *)));
     }
 }
@@ -545,9 +545,10 @@ void AlbumsModel::setAlbumSort(int s)
     }
 }
 
-AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al)
+AlbumsModel::AlbumItem::AlbumItem(const QString &ar, const QString &al, quint16 y)
     : artist(ar)
     , album(al)
+    , year(y)
     , cover(0)
     , updated(false)
     , coverRequested(false)
@@ -567,9 +568,7 @@ bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
     if (AlbumsModel::Sort_ArtistAlbumYear==sortAlbums) {
         int compare=ProxyModel::compareStrings(artist, o.artist);
         if (0==compare) {
-            int y=songs.count() ? songs.at(0)->year : 0;
-            int oy=o.songs.count() ? o.songs.at(0)->year : 0;
-            return y<oy || (y==oy && ProxyModel::compareStrings(album, o.album)<0);
+            return year<o.year || (year==o.year && ProxyModel::compareStrings(album, o.album)<0);
         } else {
             return compare<0;
         }
@@ -615,6 +614,7 @@ void AlbumsModel::AlbumItem::getCover(bool urgent)
         Song s;
         s.artist=artist;
         s.album=album;
+        s.year=year;
         s.file=songs.first()->file;
         Covers::self()->requestCover(s, urgent);
     }

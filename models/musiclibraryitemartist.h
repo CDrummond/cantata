@@ -31,8 +31,8 @@
 #include <QtCore/QVariant>
 #include <QtCore/QHash>
 #include "musiclibraryitem.h"
+#include "song.h"
 
-class Song;
 class MusicLibraryItemRoot;
 class MusicLibraryItemAlbum;
 
@@ -62,7 +62,7 @@ public:
 private:
     bool m_various;
     QString m_nonTheArtist;
-    QHash<QString, int> m_indexes;
+    QHash<Song::AlbumKey, int> m_indexes;
 };
 
 #endif

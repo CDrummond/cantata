@@ -202,9 +202,9 @@ void PlayQueueView::setGrouped(bool g)
         grouped=g;
         setCurrentWidget(grouped ? static_cast<QWidget *>(groupedView) : static_cast<QWidget *>(treeView));
         if (grouped) {
-            connect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), groupedView, SLOT(coverRetrieved(const QString &, const QString &)));
+            connect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), groupedView, SLOT(coverRetrieved(const Song &)));
         } else {
-            disconnect(Covers::self(), SIGNAL(coverRetrieved(const QString &, const QString &)), groupedView, SLOT(coverRetrieved(const QString &, const QString &)));
+            disconnect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), groupedView, SLOT(coverRetrieved(const Song &)));
         }
     }
 }

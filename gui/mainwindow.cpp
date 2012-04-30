@@ -696,8 +696,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     menuButton->setIcon(Icon("configure"));
     volumeButton->setIcon(Icon("audio-volume-high"));
-    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-            SLOT(cover(const QString &, const QString &, const QImage &, const QString &)));
+    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(cover(const Song &, const QImage &, const QString &)));
 
     menuButton->setMenu(mainMenu);
     menuButton->setPopupMode(QToolButton::InstantPopup);
@@ -2394,9 +2393,9 @@ void MainWindow::tabToggled(int index)
     sidebarModeChanged();
 }
 
-void MainWindow::cover(const QString &artist, const QString &album, const QImage &img, const QString &file)
+void MainWindow::cover(const Song &song, const QImage &img, const QString &file)
 {
-    if (artist==current.albumArtist() && album==current.album) {
+    if (song.year==current.year && song.albumArtist()==current.albumArtist() && song.album==current.album) {
         if (img.isNull()) {
             coverSong=Song();
             coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);

@@ -1376,7 +1376,7 @@ void MainWindow::updateSettings()
     if (Settings::self()->lyricsBgnd()!=lyricsPage->bgndImageEnabled()) {
         lyricsPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
         if (lyricsPage->bgndImageEnabled()) {
-            Covers::Image img=Covers::self()->get(coverSong, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(current));
+            Covers::Image img=Covers::self()->get(coverSong);
             if (!img.img.isNull()) {
                 lyricsPage->setImage(img.img);
             }
@@ -1726,7 +1726,7 @@ void MainWindow::updateCurrentCover()
     QString covAlbum=coverWidget->property("album").toString();
     if (covArtist!= albumArtist || covAlbum != current.album || (covArtist.isEmpty() && covAlbum.isEmpty())) {
         if (!albumArtist.isEmpty() && !current.album.isEmpty()) {
-            Covers::Image img=Covers::self()->get(current, MPDParseUtils::groupSingle() && MusicLibraryModel::self()->isFromSingleTracks(current));
+            Covers::Image img=Covers::self()->get(current);
             if (!img.img.isNull()) {
                 coverSong=current;
                 coverWidget->setPixmap(QPixmap::fromImage(img.img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));

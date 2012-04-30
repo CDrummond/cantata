@@ -235,15 +235,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
             if (!al->coverRequested && iSize) {
-                if (al->isSingleTracks) {
-                    Song s;
-                    Covers::Image img=Covers::self()->get(s, al->isSingleTracks);
-                    al->coverRequested=true;
-                    if (!img.img.isNull()) {
-                        al->cover=new QPixmap(QPixmap::fromImage(img.img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-                        return *(al->cover);
-                    }
-                } else {
+                if (!al->isSingleTracks) {
                     al->getCover(true);
                     al->coverRequested=true;
                 }
@@ -610,7 +602,7 @@ quint32 AlbumsModel::AlbumItem::totalTime()
 
 void AlbumsModel::AlbumItem::getCover(bool urgent)
 {
-    if ((urgent || !isSingleTracks) && songs.count()) {
+    if (!isSingleTracks && songs.count()) {
         Song s;
         s.artist=artist;
         s.album=album;

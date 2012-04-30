@@ -50,7 +50,6 @@ static const QLatin1String constApiKey("11172d35eb8cc2fd33250a9e45a2d486");
 static const QLatin1String constCoverDir("covers/");
 static const QLatin1String constFileName("cover");
 static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
-static const QLatin1String constSingleTracksFile("SingleTracks.png");
 
 static QStringList coverFileNames;
 static bool saveInMpdDir=true;
@@ -71,26 +70,6 @@ void initCoverNames()
 static bool canSaveTo(const QString &dir)
 {
     return !dir.isEmpty() && !Settings::self()->mpdDir().isEmpty() && QDir(Settings::self()->mpdDir()).exists() && dir.startsWith(Settings::self()->mpdDir());
-}
-
-static QImage createSingleTracksCover(const QString &fileName)
-{
-    static const int constSize=128;
-    QImage img(constSize, constSize, QImage::Format_ARGB32);
-    QPixmap pix(QIcon::fromTheme("media-optical").pixmap(128, 128));
-    QPainter p(&img);
-    p.fillRect(QRect(0, 0, constSize, constSize), Qt::transparent);
-    p.drawPixmap((constSize-pix.width())/2,(constSize-pix.height())/2, pix);
-    QFont font(QLatin1String("serif"));
-    font.setBold(true);
-    font.setItalic(true);
-    font.setPixelSize(constSize*0.8);
-    p.setFont(font);
-    p.setPen(Qt::black);
-    p.drawText(QRect(0, 0, constSize, constSize), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
-    p.end();
-    img.save(fileName);
-    return img;
 }
 
 static const QString typeFromRaw(const QByteArray &raw)
@@ -312,7 +291,7 @@ static inline QString cacheKey(const Song &song, int size)
 
 static QSet<int> cacheSizes;
 
-QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks)
+QPixmap * Covers::get(const Song &song, int size)
 {
     if (song.isUnknown()) {
         return 0;
@@ -322,7 +301,7 @@ QPixmap * Covers::get(const Song &song, int size, bool isSingleTracks)
     QPixmap *pix(cache.object(key));
 
     if (!pix) {
-        Covers::Image img=getImage(song, isSingleTracks);
+        Covers::Image img=getImage(song);
 
         cacheSizes.insert(size);
         if (!img.img.isNull()) {
@@ -360,17 +339,8 @@ void Covers::clearDummyCache(const Song &song)
     }
 }
 
-Covers::Image Covers::getImage(const Song &song, bool isSingleTracks)
+Covers::Image Covers::getImage(const Song &song)
 {
-    if (isSingleTracks) {
-         QString fileName(Network::cacheDir(constCoverDir)+constSingleTracksFile);
-         if (QFile::exists(fileName)) {
-             return Image(QImage(fileName), fileName);
-         } else {
-             return Image(createSingleTracksCover(fileName), fileName);
-         }
-    }
-
     QString dirName;
     bool haveAbsPath=song.file.startsWith('/');
 
@@ -421,9 +391,9 @@ Covers::Image Covers::getImage(const Song &song, bool isSingleTracks)
     return Image(QImage(), QString());
 }
 
-Covers::Image Covers::get(const Song &song, bool isSingleTracks)
+Covers::Image Covers::get(const Song &song)
 {
-    Image img=getImage(song, isSingleTracks);
+    Image img=getImage(song);
 
     if (img.img.isNull()) {
         download(song);
@@ -481,7 +451,7 @@ void CoverQueue::getNextCover()
     }
     Song song=songs.takeAt(0);
     mutex->unlock();
-    Covers::Image img=Covers::self()->getImage(song, false);
+    Covers::Image img=Covers::self()->getImage(song);
     if (img.img.isNull()) {
         emit download(song);
     } else {

@@ -124,7 +124,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                                         .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         m_coverIsDefault = true;
-        if (parentItem() && iSize && childCount()) {
+        if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
             Song song;
             song.albumartist=parentItem()->data();
             song.album=m_itemData;

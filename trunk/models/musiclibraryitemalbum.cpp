@@ -125,16 +125,17 @@ const QPixmap & MusicLibraryItemAlbum::cover()
         }
         m_coverIsDefault = true;
         if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
+            MusicLibraryItemSong *firstSong=static_cast<MusicLibraryItemSong*>(childItem(0));
             Song song;
-            song.albumartist=parentItem()->data();
+            if (Song::MultipleArtists==m_type) { // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
+                song.artist=firstSong->song().albumArtist();
+            } else {
+                song.albumartist=parentItem()->data();
+            }
             song.album=m_itemData;
             song.year=m_year;
-            song.file=static_cast<MusicLibraryItemSong*>(childItem(0))->file();
+            song.file=firstSong->file();
             Covers::self()->requestCover(song, true);
-//             Covers::Image img=Covers::self()->get(song, Song::SingleTracks==m_type);
-//             if (setCover(img.img)) {
-//                 return *m_cover;
-//             }
         }
         return *theDefaultIcon;
     }

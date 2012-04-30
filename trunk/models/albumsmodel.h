@@ -85,6 +85,7 @@ public:
         void setName();
         quint32 totalTime();
         void getCover(bool urgent);
+        bool isSingleTracks() const { return Song::SingleTracks==type; }
         QString artist;
         QString album;
         QString name;
@@ -94,7 +95,7 @@ public:
         QPixmap *cover;
         bool updated;
         bool coverRequested;
-        bool isSingleTracks;
+        Song::Type type;
         quint32 time;
     };
 

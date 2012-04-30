@@ -72,6 +72,9 @@ public:
     void remove(int row);
     bool detectIfIsMultipleArtists();
     bool isMultipleArtists() const { return Song::MultipleArtists==m_type; }
+    Song::Type songType() const {
+        return m_type;
+    }
     void setIsMultipleArtists();
     Type itemType() const {
         return Type_Album;

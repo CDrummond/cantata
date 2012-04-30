@@ -39,12 +39,13 @@ public:
 
 protected:
     void mouseReleaseEvent(QMouseEvent *) {
-        if (buddy()) {
+        if (buddy() && buddy()->isEnabled()) {
             buddy()->setFocus();
-        }
-        QCheckBox *cb=qobject_cast<QCheckBox*>(buddy());
-        if (cb) {
-            cb->setChecked(!cb->isChecked());
+
+            QCheckBox *cb=qobject_cast<QCheckBox*>(buddy());
+            if (cb) {
+                cb->setChecked(!cb->isChecked());
+            }
         }
     }
 };

@@ -234,11 +234,9 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 theDefaultIcon = new QPixmap(QIcon::fromTheme(DEFAULT_ALBUM_ICON).pixmap(stdSize, stdSize)
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
-            if (!al->coverRequested && iSize) {
-                if (!al->isSingleTracks) {
-                    al->getCover(true);
-                    al->coverRequested=true;
-                }
+            if (!al->coverRequested && iSize && Song::SingleTracks!=al->type) {
+                al->getCover(true);
+                al->coverRequested=true;
             }
             return *theDefaultIcon;
         }
@@ -297,7 +295,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                    Song::formattedTime(si->time)+QLatin1String("<br/><small><i>")+si->file+QLatin1String("</i></small>");
         }
         case Qt::DisplayRole:
-            if (si->parent->isSingleTracks) {
+            if (Song::SingleTracks==si->parent->type) {
                 return si->artistSong();
             }
             else {
@@ -426,7 +424,7 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 a->setSongs(albumItem);
                 a->genres=albumItem->genres();
                 a->updated=true;
-                a->isSingleTracks=albumItem->isSingleTracks();
+                a->type=albumItem->songType();
                 if (!resettingModel) {
                     beginInsertRows(QModelIndex(), items.count(), items.count());
                 }
@@ -434,9 +432,6 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
                 if (!resettingModel) {
                     endInsertRows();
                 }
-//                 if (!a->isSingleTracks ) {
-//                     a->getCover(false);
-//                 }
             }
         }
     }
@@ -456,20 +451,6 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
         }
     }
 }
-
-// void AlbumsModel::getCovers()
-// {
-//     if (!enabled || coversRequested || items.isEmpty()) {
-//         return;
-//     }
-//
-//     coversRequested=true;
-//     foreach (AlbumItem *a, items) {
-//         if (!a->isSingleTracks && !a->coverRequested) {
-//             a->getCover(false);
-//         }
-//     }
-// }
 
 void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
@@ -602,12 +583,17 @@ quint32 AlbumsModel::AlbumItem::totalTime()
 
 void AlbumsModel::AlbumItem::getCover(bool urgent)
 {
-    if (!isSingleTracks && songs.count()) {
+    if (Song::SingleTracks!=type && songs.count()) {
+        SongItem *firstSong=songs.first();
         Song s;
-        s.artist=artist;
+        if (Song::MultipleArtists==type) {  // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
+            s.artist=firstSong->albumArtist();
+        } else {
+            s.artist=artist;
+        }
         s.album=album;
         s.year=year;
-        s.file=songs.first()->file;
+        s.file=firstSong->file;
         Covers::self()->requestCover(s, urgent);
     }
 }

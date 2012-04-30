@@ -36,6 +36,21 @@ struct Song
 {
     static const quint16 constNullKey;
 
+    struct AlbumKey {
+        AlbumKey(quint16 y, const QString &n)
+            : year(y)
+            , name(n) {
+        }
+        bool operator==(const AlbumKey &o) const {
+            return year==o.year && name==o.name;
+        }
+        bool operator<(const AlbumKey &o) const {
+            return year<o.year || (year==o.year && name<o.name);
+        }
+        quint16 year;
+        QString name;
+    };
+
     enum Type {
         Standard        = 0,
         SingleTracks    = 1,
@@ -95,6 +110,11 @@ Q_DECLARE_METATYPE(Song)
 inline uint qHash(const Song &key)
 {
     return qHash(key.file);
+}
+
+inline uint qHash(const Song::AlbumKey &key)
+{
+    return qHash(key.year)+qHash(key.name);
 }
 
 #endif

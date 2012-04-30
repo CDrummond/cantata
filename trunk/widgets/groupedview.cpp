@@ -596,7 +596,7 @@ void GroupedView::dropEvent(QDropEvent *event)
     model()->setData(parent, 0, Role_DropAdjust);
 }
 
-void GroupedView::coverRetrieved(const QString &artist, const QString &album)
+void GroupedView::coverRetrieved(const Song &s)
 {
     if (filterActive) {
         return;
@@ -621,7 +621,7 @@ void GroupedView::coverRetrieved(const QString &artist, const QString &album)
 
                 if (key!=lastKey && !isRowHidden(i, QModelIndex())) {
                     Song song=child.data(GroupedView::Role_Song).value<Song>();
-                    if (song.albumArtist()==artist && song.album==album) {
+                    if (song.year==s.year && song.albumArtist()==s.albumArtist() && song.album==s.album) {
                         dataChanged(child, child);
                     }
                 }
@@ -632,7 +632,7 @@ void GroupedView::coverRetrieved(const QString &artist, const QString &album)
 
             if (key!=lastKey && !isRowHidden(i, QModelIndex())) {
                 Song song=index.data(GroupedView::Role_Song).value<Song>();
-                if (song.albumArtist()==artist && song.album==album) {
+                if (song.year==s.year && song.albumArtist()==s.albumArtist() && song.album==s.album) {
                     dataChanged(index, index);
                 }
             }

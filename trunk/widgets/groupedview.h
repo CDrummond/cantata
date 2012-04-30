@@ -26,6 +26,7 @@
 
 #include <QtCore/QSet>
 #include "treeview.h"
+class Song;
 
 class GroupedView : public TreeView
 {
@@ -79,7 +80,7 @@ public:
 
 public Q_SLOTS:
     void updateRows(const QModelIndex &parent);
-    void coverRetrieved(const QString &artist, const QString &album);
+    void coverRetrieved(const Song &song);
 
 private Q_SLOTS:
     void itemClicked(const QModelIndex &index);

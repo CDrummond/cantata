@@ -388,7 +388,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
             if (!artistItem || currentSong.albumArtist()!=artistItem->data()) {
                 artistItem = rootItem->artist(currentSong);
             }
-            if (!albumItem || albumItem->parentItem()!=artistItem || currentSong.album!=albumItem->data()) {
+            if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.album!=albumItem->data()) {
                 albumItem = artistItem->album(currentSong);
             }
 

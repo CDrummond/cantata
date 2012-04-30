@@ -83,8 +83,8 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent)
     : QAbstractItemModel(parent)
     , rootItem(new MusicLibraryItemRoot)
 {
-    connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-            this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
+    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+            this, SLOT(setCover(const Song &, const QImage &, const QString &)));
 }
 
 MusicLibraryModel::~MusicLibraryModel()
@@ -533,7 +533,7 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
     return updatedSongs;
 }
 
-void MusicLibraryModel::setCover(const QString &artist, const QString &album, const QImage &img, const QString &file)
+void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
     Q_UNUSED(file)
     if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
@@ -544,9 +544,6 @@ void MusicLibraryModel::setCover(const QString &artist, const QString &album, co
         return;
     }
 
-    Song song;
-    song.artist=artist;
-    song.album=album;
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);

@@ -334,8 +334,8 @@ void DevicesModel::setEnabled(bool e)
 
     if (enabled) {
         connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
-        connect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-                this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
+        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         MediaDeviceCache::self()->refreshCache();
         QStringList deviceUdiList=MediaDeviceCache::self()->getAll();
         foreach (const QString &udi, deviceUdiList) {
@@ -346,8 +346,8 @@ void DevicesModel::setEnabled(bool e)
         }
     } else {
         disconnect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
-        disconnect(Covers::self(), SIGNAL(cover(const QString &, const QString &, const QImage &, const QString &)),
-                   this, SLOT(setCover(const QString &, const QString &, const QImage &, const QString &)));
+        disconnect(Covers::self(), SIGNAL(cover(cconst Song &, const QImage &, const QString &)),
+                   this, SLOT(setCover(const Song &, const QImage &, const QString &)));
     }
 }
 
@@ -359,7 +359,7 @@ Device * DevicesModel::device(const QString &udi)
     return 0;
 }
 
-void DevicesModel::setCover(const QString &artist, const QString &album, const QImage &img, const QString &file)
+void DevicesModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
     Q_UNUSED(file)
     if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
@@ -370,9 +370,6 @@ void DevicesModel::setCover(const QString &artist, const QString &album, const Q
         return;
     }
 
-    Song song;
-    song.artist=artist;
-    song.album=album;
     int i=0;
     foreach (MusicLibraryItem *device, devices) {
         MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemRoot *>(device)->artist(song, false);

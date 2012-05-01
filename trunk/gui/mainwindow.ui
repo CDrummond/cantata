@@ -18,7 +18,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0" rowspan="3">
-    <widget class="QLabel" name="coverWidget">
+    <widget class="CoverWidget" name="coverWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -314,6 +314,11 @@
    <extends>QSplitter</extends>
    <header>autohidingsplitter.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CoverWidget</class>
+   <extends>QLabel</extends>
+   <header>coverwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

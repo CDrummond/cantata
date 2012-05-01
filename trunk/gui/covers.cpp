@@ -193,6 +193,8 @@ static AppCover otherAppCover(const Covers::Job &job)
     return app;
 }
 
+const QSize Covers::constMaxSize(600, 600);
+
 Covers * Covers::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -565,6 +567,9 @@ void Covers::jobFinished(QNetworkReply *reply)
         }
 
         if (!img.isNull()) {
+            if (img.size().width()>constMaxSize.width() || img.size().height()>constMaxSize.height()) {
+                img=img.scaled(constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            }
             fileName=saveImg(job, img, data);
         }
 

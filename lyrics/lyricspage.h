@@ -56,12 +56,14 @@ public:
     void setEnabledProviders(const QStringList &providerList);
     void update(const Song &song, bool force=false);
     const QList<UltimateLyricsProvider *> & getProviders() { return providers; }
-    void setImage(const QImage &img) { text->setImage(img); }
     void setBgndImageEnabled(bool e) { text->enableImage(e); }
     bool bgndImageEnabled() { return text->imageEnabled(); }
 
 Q_SIGNALS:
     void providersUpdated();
+
+public Q_SLOTS:
+    void setImage(const QImage &img) { text->setImage(img); }
 
 protected Q_SLOTS:
     void resultReady(int id, const QString &lyrics);

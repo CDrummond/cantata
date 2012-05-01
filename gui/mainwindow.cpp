@@ -600,10 +600,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     positionSlider->setStyle(new ProxyStyle());
 
-    noCover = Icon(DEFAULT_ALBUM_ICON).pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    noStreamCover = Icon(DEFAULT_STREAM_ICON).pixmap(128, 128).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    coverWidget->setPixmap(noCover);
-
     playbackPlay = Icon("media-playback-start");
     playbackPause = Icon("media-playback-pause");
     randomPlayQueueAction->setIcon(Icon("media-playlist-shuffle"));
@@ -696,7 +692,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     menuButton->setIcon(Icon("configure"));
     volumeButton->setIcon(Icon("audio-volume-high"));
-    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(cover(const Song &, const QImage &, const QString &)));
 
     menuButton->setMenu(mainMenu);
     menuButton->setPopupMode(QToolButton::InstantPopup);
@@ -991,6 +986,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool)), &playQueueModel, SLOT(addItems(const QStringList &, bool)));
+    connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
 
     QByteArray state=Settings::self()->splitterState();
 
@@ -1375,8 +1371,8 @@ void MainWindow::updateSettings()
 
     if (Settings::self()->lyricsBgnd()!=lyricsPage->bgndImageEnabled()) {
         lyricsPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
-        if (lyricsPage->bgndImageEnabled()) {
-            Covers::Image img=Covers::self()->get(coverSong);
+        if (lyricsPage->bgndImageEnabled() && !coverWidget->isEmpty()) {
+            Covers::Image img=Covers::self()->get(coverWidget->song());
             if (!img.img.isNull()) {
                 lyricsPage->setImage(img.img);
             }
@@ -1603,7 +1599,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
 
     positionSlider->setEnabled(-1!=current.id && !currentIsStream());
-    updateCurrentCover();
+    coverWidget->update(current);
 
     if (current.name.isEmpty()) {
         trackLabel->setText(current.title);
@@ -1673,8 +1669,7 @@ void MainWindow::updateCurrentSong(const Song &song)
                                     "<tr><td align=\"right\"><b>Length:</b></td><td>%5</td></tr>"
                                     "</table>").arg(current.artist).arg(current.album).arg(current.title)
                                                .arg(current.track).arg(Song::formattedTime(current.time)));
-            if (!coverSong.album.isEmpty () && coverSong.albumArtist()==current.albumArtist() &&
-                coverSong.album==current.album && coverWidget->pixmap()) {
+            if (coverWidget->isValid()) {
                 coverPixmap = const_cast<QPixmap*>(coverWidget->pixmap());
             }
 
@@ -1716,57 +1711,6 @@ void MainWindow::updateCurrentSong(const Song &song)
             #endif
         }
     }
-}
-
-void MainWindow::updateCurrentCover()
-{
-    // Determine if album cover should be updated
-    const QString &albumArtist=current.albumArtist();
-    QString covArtist=coverWidget->property("artist").toString();
-    QString covAlbum=coverWidget->property("album").toString();
-    if (covArtist!= albumArtist || covAlbum != current.album || (covArtist.isEmpty() && covAlbum.isEmpty())) {
-        if (!albumArtist.isEmpty() && !current.album.isEmpty()) {
-            Covers::Image img=Covers::self()->get(current);
-            if (!img.img.isNull()) {
-                coverSong=current;
-                coverWidget->setPixmap(QPixmap::fromImage(img.img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-                coverFileName=img.fileName;
-                updateCoverToolTip();
-                emit coverFile(img.fileName);
-                lyricsPage->setImage(img.img);
-            }
-        } else {
-            coverFileName=QString();
-            coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
-            updateCoverToolTip();
-            if (dock && dock->enabled()) {
-                emit coverFile(QString());
-            }
-            lyricsPage->setImage(QImage());
-        }
-        coverWidget->setProperty("artist", albumArtist);
-        coverWidget->setProperty("album", current.album);
-    }
-}
-
-void MainWindow::updateCoverToolTip()
-{
-    QString toolTip("<table>");
-
-    #ifdef ENABLE_KDE_SUPPORT
-    toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
-                    "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
-                    "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.artist).arg(current.album).arg(current.year);
-    #else
-    toolTip+=tr("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
-                "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
-                "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.artist).arg(current.album).arg(current.year);
-    #endif
-    toolTip+="</table>";
-    if (!coverFileName.isEmpty()) {
-        toolTip+=QString("<br/><img src=\"%1\"/>").arg(coverFileName);
-    }
-    coverWidget->setToolTip(toolTip);
 }
 
 void MainWindow::scrollPlayQueue()
@@ -1890,7 +1834,7 @@ void MainWindow::updateStatus()
             trackLabel->setText(QString());
             artistLabel->setText(QString());
             current=Song();
-            updateCurrentCover();
+            coverWidget->update(current);
         }
         setWindowTitle("Cantata");
         current.id=0;
@@ -2393,26 +2337,6 @@ void MainWindow::tabToggled(int index)
     sidebarModeChanged();
 }
 
-void MainWindow::cover(const Song &song, const QImage &img, const QString &file)
-{
-    if (song.year==current.year && song.albumArtist()==current.albumArtist() && song.album==current.album) {
-        if (img.isNull()) {
-            coverSong=Song();
-            coverWidget->setPixmap(currentIsStream() ? noStreamCover : noCover);
-            coverFileName=QString();
-            emit coverFile(QString());
-            lyricsPage->setImage(QImage());
-        } else {
-            coverSong=current;
-            coverWidget->setPixmap(QPixmap::fromImage(img).scaled(coverWidget->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-            coverFileName=file;
-            emit coverFile(file);
-            lyricsPage->setImage(img);
-        }
-        updateCoverToolTip();
-    }
-}
-
 void MainWindow::toggleSplitterAutoHide(bool ah)
 {
     splitter->setAutoHideEnabled(ah);
@@ -2533,13 +2457,13 @@ void MainWindow::toggleDockManager()
 {
     if (!dock) {
         dock=new DockManager(this);
-        connect(this, SIGNAL(coverFile(const QString &)), dock, SLOT(setIcon(const QString &)));
+        connect(coverWidget, SIGNAL(coverFile(const QString &)), dock, SLOT(setIcon(const QString &)));
     }
 
     bool wasEnabled=dock->enabled();
     dock->setEnabled(Settings::self()->dockManager());
-    if (dock->enabled() && !wasEnabled && !coverFileName.isEmpty()) {
-        emit coverFile(coverFileName);
+    if (dock->enabled() && !wasEnabled && !coverWidget->fileName().isEmpty()) {
+        dock->setIcon(coverWidget->fileName());
     }
 }
 

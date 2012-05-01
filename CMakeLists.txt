@@ -116,6 +116,7 @@ SET( CANTATA_SRCS
     widgets/messagewidget.cpp
     widgets/actionitemdelegate.cpp
     widgets/textbrowser.cpp
+    widgets/coverwidget.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -181,6 +182,7 @@ SET( CANTATA_MOC_HDRS
     widgets/playqueueview.h
     widgets/groupedview.h
     widgets/messagewidget.h
+    widgets/coverwidget.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h

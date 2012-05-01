@@ -211,8 +211,6 @@ Q_SIGNALS:
     void startPlayingSongId(quint32);
     void setVolume(int);
 
-    void coverFile(const QString &);
-
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
     void showPage(const QString &page, bool focusSearch);
@@ -246,8 +244,6 @@ private Q_SLOTS:
     void realSearchPlayQueue();
     void updatePlayQueue(const QList<Song> &songs);
     void updateCurrentSong(const Song &song);
-    void updateCurrentCover();
-    void updateCoverToolTip();
     void scrollPlayQueue();
     void updateStats();
     void updateStatus();
@@ -272,7 +268,6 @@ private Q_SLOTS:
     void sidebarModeChanged();
     void currentTabChanged(int index);
     void tabToggled(int index);
-    void cover(const Song &song, const QImage &img, const QString &file);
     void showLibraryTab() { showTab(PAGE_LIBRARY); }
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
@@ -398,14 +393,10 @@ private:
     #endif
     QMenu *playbackBtnsMenu;
     QMenu *controlBtnsMenu;
-    QPixmap noCover;
-    QPixmap noStreamCover;
     QPoint lastPos;
     QSize expandedSize;
     QSize collapsedSize;
     Song current;
-    Song coverSong;
-    QString coverFileName;
     bool lyricsNeedUpdating;
     #ifdef ENABLE_WEBKIT
     bool infoNeedsUpdating;

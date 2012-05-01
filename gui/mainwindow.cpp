@@ -1565,9 +1565,9 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     playQueueModel.update(songs);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
 
-    if (1==songs.count() && MPDState_Playing==MPDStatus::self()->state()) {
+    /*if (1==songs.count() && MPDState_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
-    } else if (0==songs.count()) {
+    } else*/ if (0==songs.count()) {
         updateCurrentSong(Song());
     }
 }

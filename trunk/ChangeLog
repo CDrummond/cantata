@@ -63,7 +63,11 @@
     for an artist to release two albums with the same name in different years!
 32. Remove 'Single Tracks' cover creation. This is not used in grouped view,
     etc.
-33. Limit downloaded cocers to a max of 600x600 pixels.
+33. Limit downloaded covers to a max of 600x600 pixels.
+34. Dont update 'curent song' details when playqueue is updated - the current
+    song is updated by other means. As we now use 'plchangesposid' to speed
+    updates, we dont always have the full song info when playqueue is updated.
+    This fixes a bug where the cover widget sometimes gets reset to empty.
 
 0.6.1
 -----

@@ -68,9 +68,9 @@ TrackOrganiser::~TrackOrganiser()
 
 void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
 {
+    origSongs=songs;
     if (udi.isEmpty()) {
         opts.load("mpd");
-        origSongs=songs;
     } else {
         deviceUdi=udi;
         Device *dev=getDevice(parentWidget());
@@ -80,15 +80,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
             return;
         }
 
-        deviceUdi=udi;
         opts=dev->options();
-        int pathLen=dev->path().length();
-
-        foreach (const Song &s, songs) {
-            Song m=s;
-            m.file=m.file.mid(pathLen);
-            origSongs.append(m);
-        }
     }
     qSort(origSongs);
 
@@ -317,8 +309,6 @@ void TrackOrganiser::renameFile()
                 DirViewModel::self()->removeFileFromList(s.file);
                 DirViewModel::self()->addFileToList(to.file);
             } else {
-                s.file=source;
-                to.file=dest;
                 if (!dev) {
                     return;
                 }

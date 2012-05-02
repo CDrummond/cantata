@@ -86,9 +86,9 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , haveGenres(false)
 {
     iCount++;
+    original=songs;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (deviceUdi.isEmpty()) {
-        original=songs;
         baseDir=Settings::self()->mpdDir();
     } else {
         Device *dev=getDevice(udi, parentWidget());
@@ -99,15 +99,8 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         }
 
         baseDir=dev->path();
-        int pathLen=baseDir.length();
-        foreach (const Song &s, songs) {
-            Song m=s;
-            m.file=m.file.mid(pathLen);
-            original.append(m);
-        }
     }
     #else
-    original=songs;
     baseDir=Settings::self()->mpdDir();
     #endif
     qSort(original);
@@ -731,10 +724,6 @@ void TagEditor::applyUpdates()
         case Tags::Update_Modified:
             #ifdef ENABLE_DEVICES_SUPPORT
             if (!deviceUdi.isEmpty()) {
-                Song o=orig;
-                o.file=baseDir+orig.file;
-                Song e=edit;
-                e.file=baseDir+edit.file;
                 dev->removeSongFromList(orig);
                 dev->addSongToList(edit);
             } else

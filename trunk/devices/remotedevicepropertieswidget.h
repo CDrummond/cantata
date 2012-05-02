@@ -47,6 +47,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void checkSaveable();
     void setType();
+    void browseSftpFolder();
 
 private:
     RemoteDevice::Details orig;

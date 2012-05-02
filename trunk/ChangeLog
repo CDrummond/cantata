@@ -69,8 +69,11 @@
     updates, we dont always have the full song info when playqueue is updated.
     This fixes a bug where the cover widget sometimes gets reset to empty.
 35. When updating a non-MTP device, prompt the user as to whether to perform
-    a parial scan (only new songs are scanned), or a full scan (where all songs
+    a partial scan (only new songs are scanned), or a full scan (where all songs
     are rescanned).
+36. When creating/editing a SSHFS remote device, allow user to use
+    KDirRequester to select music folder. (KDirRequester is passed an sftp://
+    url to obtin folder listing).
 
 0.6.1
 -----

@@ -544,7 +544,7 @@ void MtpDevice::deviceDetails(const QString &s)
 
 bool MtpDevice::isConnected() const
 {
-    return pmp && pmp->isValid() && connection->isConnected();
+    return solidDev.isValid() && pmp && pmp->isValid() && connection->isConnected();
 }
 
 void MtpDevice::configure(QWidget *parent)

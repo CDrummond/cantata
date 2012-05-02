@@ -91,7 +91,7 @@ public:
     QString icon() const {
         return QLatin1String(Prot_File==details.protocol ? "inode-directory" : "network-server");
     }
-    virtual bool canPlaySongs() const;
+    bool canPlaySongs() const;
 
 Q_SIGNALS:
     void udiChanged(const QString &from, const QString &to);

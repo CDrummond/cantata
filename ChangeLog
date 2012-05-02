@@ -68,6 +68,9 @@
     song is updated by other means. As we now use 'plchangesposid' to speed
     updates, we dont always have the full song info when playqueue is updated.
     This fixes a bug where the cover widget sometimes gets reset to empty.
+35. When updating a non-MTP device, prompt the user as to whether to perform
+    a parial scan (only new songs are scanned), or a full scan (where all songs
+    are rescanned).
 
 0.6.1
 -----

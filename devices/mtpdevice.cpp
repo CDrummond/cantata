@@ -521,7 +521,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
     connect(connection, SIGNAL(deviceDetails(const QString &)), this, SLOT(deviceDetails(const QString &)));
     connect(connection, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
-    QTimer::singleShot(0, this, SLOT(rescan()));
+    QTimer::singleShot(0, this, SLOT(rescan(bool)));
 }
 
 MtpDevice::~MtpDevice()
@@ -562,8 +562,9 @@ void MtpDevice::configure(QWidget *parent)
     dlg->show(QString(), QString(), opts, DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
 }
 
-void MtpDevice::rescan()
+void MtpDevice::rescan(bool full)
 {
+    Q_UNUSED(full)
     if (mtpUpdating) {
         return;
     }

@@ -190,6 +190,12 @@ public:
     virtual bool canPlaySongs() const {
         return false;
     }
+    virtual bool supportsDisconnect() const {
+        return false;
+    }
+    virtual bool isStdFs() const {
+        return false;
+    }
 
 public Q_SLOTS:
     void setStatusMessage(const QString &message);

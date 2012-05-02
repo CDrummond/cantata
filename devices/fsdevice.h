@@ -85,6 +85,9 @@ public:
     QString cacheFileName() const;
     void saveCache();
     void removeCache();
+    bool isStdFs() const {
+        return true;
+    }
 
 protected:
     bool readCache();

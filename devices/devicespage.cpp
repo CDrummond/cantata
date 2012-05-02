@@ -270,7 +270,7 @@ void DevicesPage::controlActions()
 
         if (item && MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
-            if (Device::Ums!=dev->devType() && Device::Remote!=dev->devType()) {
+            if (dev->isStdFs()) {
                 onlyFs=false;
             }
             #ifdef ENABLE_REMOTE_DEVICES

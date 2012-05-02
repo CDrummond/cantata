@@ -107,7 +107,7 @@ void MusicScanner::scanFolder(const QString &f, int level)
                 scanFolder(info.absoluteFilePath(), level+1);
             } else if(info.isReadable()) {
                 Song song;
-                song.file=info.absoluteFilePath();
+                song.file=info.absoluteFilePath().mid(folder.length());
                 QSet<Song>::iterator it=existing.find(song);
                 if (existing.end()==it) {
                     song=Tags::read(info.absoluteFilePath());
@@ -174,7 +174,7 @@ bool FsDevice::readCache()
 {
     if (opts.useCache) {
         MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-        if (root->fromXML(cacheFileName(), audioFolder)) {
+        if (root->fromXML(cacheFileName())) {
             update=root;
             scanned=true;
             QTimer::singleShot(0, this, SLOT(cacheRead()));
@@ -272,7 +272,7 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
         }
     }
 
-    QString source=s.file; // Device files have full path!!!
+    QString source=audioFolder+s.file;
 
     if (!QFile::exists(source)) {
         emit actionStatus(SourceFileDoesNotExist);
@@ -307,13 +307,13 @@ void FsDevice::removeSong(const Song &s)
         return;
     }
 
-    if (!QFile::exists(s.file)) {
+    if (!QFile::exists(audioFolder+s.file)) {
         emit actionStatus(SourceFileDoesNotExist);
         return;
     }
 
     currentSong=s;
-    KIO::SimpleJob *job=KIO::file_delete(KUrl(s.file), KIO::HideProgressInfo);
+    KIO::SimpleJob *job=KIO::file_delete(KUrl(audioFolder+s.file), KIO::HideProgressInfo);
     connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *)));
 }
 
@@ -328,13 +328,13 @@ void FsDevice::percent(KJob *job, unsigned long percent)
 
 void FsDevice::addSongResult(KJob *job)
 {
-    QString destFile=audioFolder+opts.createFilename(currentSong);
+    QString destFileName=opts.createFilename(currentSong);
     if (transcoding) {
-        destFile=encoder.changeExtension(destFile);
+        destFileName=encoder.changeExtension(destFileName);
     }
     if (jobAbortRequested) {
-        if (0!=job->percent() && 100!=job->percent() && QFile::exists(destFile)) {
-            QFile::remove(destFile);
+        if (0!=job->percent() && 100!=job->percent() && QFile::exists(audioFolder+destFileName)) {
+            QFile::remove(audioFolder+destFileName);
         }
         return;
     }
@@ -343,13 +343,13 @@ void FsDevice::addSongResult(KJob *job)
     } else {
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
 
-        currentSong.file=destFile;
+        currentSong.file=destFileName;
         if (Device::constNoCover!=coverFileName) {
-            Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(currentSong.file), coverFileName);
+            Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(audioFolder+destFileName), coverFileName);
         }
 
         if (needToFixVa) {
-            Device::fixVariousArtists(destFile, currentSong, true);
+            Device::fixVariousArtists(audioFolder+destFileName, currentSong, true);
         }
         addSongToList(currentSong);
         emit actionStatus(Ok);
@@ -438,7 +438,7 @@ void FsDevice::libraryUpdated()
         }
         update=scanner->takeLibrary();
         if (opts.useCache && update) {
-            update->toXML(cacheFileName(), audioFolder);
+            update->toXML(cacheFileName());
         }
         stopScanner();
     }
@@ -457,7 +457,7 @@ QString FsDevice::cacheFileName() const
 void FsDevice::saveCache()
 {
     if (opts.useCache) {
-        toXML(cacheFileName(), audioFolder);
+        toXML(cacheFileName());
     }
 }
 

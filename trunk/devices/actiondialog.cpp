@@ -84,22 +84,9 @@ ActionDialog::~ActionDialog()
 void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)
 {
     init(srcUdi, dstUdi, songs, Copy);
-    Device *dev=DevicesModel::self()->device(sourceUdi.isEmpty() ? destUdi : sourceUdi);
+    Device *dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi);
 
-    if (!dev) { // No dev????
-        KMessageBox::error(parentWidget(), i18n("Device has been removed!"));
-        deleteLater();
-        return;
-    }
-
-    if (!dev->isConnected()) {
-        KMessageBox::error(parentWidget(), i18n("Device is not connected."));
-        deleteLater();
-        return;
-    }
-
-    if (!dev->isIdle()) {
-        KMessageBox::error(parentWidget(), i18n("Device is currently busy."));
+    if (!dev) {
         deleteLater();
         return;
     }
@@ -171,8 +158,22 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
 void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 {
     init(udi, QString(), songs, Remove);
+    QString baseDir;
+
+    if (udi.isEmpty()) {
+        baseDir=Settings::self()->mpdDir();
+    } else {
+        Device *dev=getDevice(udi);
+
+        if (!dev) {
+            deleteLater();
+            return;
+        }
+
+        baseDir=dev->path();
+    }
+
     setPage(PAGE_PROGRESS);
-    QString baseDir=udi.isEmpty() ? Settings::self()->mpdDir() : QString();
     foreach (const Song &s, songsToAction) {
         dirsToClean.insert(baseDir+MPDParseUtils::getDir(s.file));
     }
@@ -276,21 +277,26 @@ void ActionDialog::slotButtonClicked(int button)
 Device * ActionDialog::getDevice(const QString &udi)
 {
     Device *dev=DevicesModel::self()->device(udi);
+    QString error;
     if (!dev) {
-        setPage(PAGE_ERROR, i18n("Device has been removed!"));
-        return 0;
+        error=i18n("Device has been removed!");
+    } else if (!dev->isConnected()) {
+        error=i18n("Device is not connected!");
+    } else if (!dev->isIdle()) {
+        error=i18n("Device is busy?");
+    } else if (currentDev && dev!=currentDev) {
+        error=i18n("Device has been changed?");
     }
 
-    if (currentDev && dev!=currentDev) {
-        setPage(PAGE_ERROR, i18n("Device has been changed?"));
-        return 0;
-    }
-
-    if (dev->isIdle()) {
+    if (error.isEmpty()) {
         return dev;
     }
 
-    setPage(PAGE_ERROR, i18n("Device is busy?"));
+    if (isVisible()) {
+        setPage(PAGE_ERROR, error);
+    } else {
+        KMessageBox::error(parentWidget(), error);
+    }
 
     return 0;
 }

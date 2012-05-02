@@ -263,7 +263,7 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
 static quint32 constVersion=8;
 static QLatin1String constTopTag("CantataLibrary");
 
-void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRemove, const QDateTime &date) const
+void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date) const
 {
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -300,11 +300,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
                 writer.writeEmptyElement("Track");
                 writer.writeAttribute("name", track->data());
-                if (pathRemove.isEmpty() || !track->file().startsWith(pathRemove)) {
-                    writer.writeAttribute("file", track->file());
-                } else {
-                    writer.writeAttribute("file", track->file().mid(pathRemove.length()));
-                }
+                writer.writeAttribute("file", track->file());
                 writer.writeAttribute("time", QString::number(track->time()));
                 //Only write track number if it is set
                 if (track->track() != 0) {
@@ -339,7 +335,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QString &pathRem
     file.close();
 }
 
-quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pathAppend, const QDateTime &date)
+quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date)
 {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -400,9 +396,6 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QString &pa
                 song.title=attributes.value("name").toString();
                 song.file=attributes.value("file").toString();
                 song.genre=attributes.value("genre").toString();
-                if (!pathAppend.isEmpty()) {
-                    song.file=pathAppend+song.file;
-                }
                 if (attributes.hasAttribute("artist")) {
                     song.artist=attributes.value("artist").toString();
                 } else {

@@ -65,8 +65,8 @@ public:
     QSet<Song> allSongs() const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     void updateSongFile(const Song &from, const Song &to);
-    void toXML(const QString &filename, const QString &pathRemove, const QDateTime &date=QDateTime()) const;
-    quint32 fromXML(const QString &filename, const QString &pathAppend, const QDateTime &date=QDateTime());
+    void toXML(const QString &filename, const QDateTime &date=QDateTime()) const;
+    quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime());
     Type itemType() const {
         return Type_Root;
     }

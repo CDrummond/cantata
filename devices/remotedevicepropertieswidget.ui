@@ -96,7 +96,18 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="DirRequester" name="folder"/>
+      <layout class="QHBoxLayout" name="folderLayout">
+       <item>
+        <widget class="DirRequester" name="folder" />
+       </item>
+       <item>
+        <widget class="QToolButton" name="folderButton">
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

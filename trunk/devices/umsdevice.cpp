@@ -66,7 +66,7 @@ UmsDevice::~UmsDevice() {
 
 bool UmsDevice::isConnected() const
 {
-    return access && access->isValid() && access->isAccessible();
+    return solidDev.isValid() && access && access->isValid() && access->isAccessible();
 }
 
 double UmsDevice::usedCapacity()
@@ -239,6 +239,10 @@ static inline QString toString(bool b)
 
 void UmsDevice::saveOptions()
 {
+    if (!isConnected()) {
+        return;
+    }
+
     QString path=MPDParseUtils::fixPath(access->filePath());
     QFile file(path+constSettingsFile);
     QString fixedPath(audioFolder);

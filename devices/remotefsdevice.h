@@ -21,14 +21,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef REMOTEDEVICE_H
-#define REMOTEDEVICE_H
+#ifndef REMOTEFSDEVICE_H
+#define REMOTEFSDEVICE_H
 
 #include "fsdevice.h"
 #include <sys/types.h>
 
 class QProcess;
-class RemoteDevice : public FsDevice
+class RemoteFsDevice : public FsDevice
 {
     Q_OBJECT
 
@@ -68,13 +68,13 @@ public:
     };
 
     static QList<Device *> loadAll(DevicesModel *m);
-    static RemoteDevice * create(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
-    static void remove(RemoteDevice *dev);
+    static RemoteFsDevice * create(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
+    static void remove(RemoteFsDevice *dev);
     static QString createUdi(const QString &n);
 
-    RemoteDevice(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
-    RemoteDevice(DevicesModel *m, const Details &d);
-    virtual ~RemoteDevice();
+    RemoteFsDevice(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
+    RemoteFsDevice(DevicesModel *m, const Details &d);
+    virtual ~RemoteFsDevice();
 
     void toggle();
     void mount();
@@ -104,7 +104,7 @@ protected:
 
 protected Q_SLOTS:
     void saveProperties();
-    void saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, const RemoteDevice::Details &newDetails);
+    void saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, const RemoteFsDevice::Details &newDetails);
     void procFinished(int exitCode);
 
 protected:

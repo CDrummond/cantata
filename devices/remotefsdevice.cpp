@@ -21,7 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "remotedevice.h"
+#include "remotefsdevice.h"
 #include "mpdparseutils.h"
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
@@ -41,7 +41,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-QString RemoteDevice::Details::mountPoint(bool create) const
+QString RemoteFsDevice::Details::mountPoint(bool create) const
 {
     if (Prot_File==protocol) {
         return folder;
@@ -49,7 +49,7 @@ QString RemoteDevice::Details::mountPoint(bool create) const
     return Network::cacheDir("mount/"+name, create);
 }
 
-void RemoteDevice::Details::load(const QString &group)
+void RemoteFsDevice::Details::load(const QString &group)
 {
     KConfigGroup grp(KGlobal::config(), group);
 
@@ -63,7 +63,7 @@ void RemoteDevice::Details::load(const QString &group)
     folder=grp.readEntry("folder", folder);
 }
 
-void RemoteDevice::Details::save(const QString &group) const
+void RemoteFsDevice::Details::save(const QString &group) const
 {
     KConfigGroup grp(KGlobal::config(), group);
     if (Prot_File==protocol) {
@@ -81,10 +81,10 @@ void RemoteDevice::Details::save(const QString &group) const
     grp.sync();
 }
 
-static const QLatin1String constCfgPrefix("RemoteDevice-");
+static const QLatin1String constCfgPrefix("RemoteFsDevice-");
 static const QLatin1String constCfgKey("remoteDevices");
 
-QList<Device *> RemoteDevice::loadAll(DevicesModel *m)
+QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
 {
     QList<Device *> devices;
     KConfigGroup grp(KGlobal::config(), "General");
@@ -95,7 +95,7 @@ QList<Device *> RemoteDevice::loadAll(DevicesModel *m)
         if (d.isEmpty() || d.name!=n) {
             KGlobal::config()->deleteGroup(constCfgPrefix+n);
         } else {
-            devices.append(new RemoteDevice(m, d));
+            devices.append(new RemoteFsDevice(m, d));
         }
     }
     if (devices.count()!=names.count()) {
@@ -104,7 +104,7 @@ QList<Device *> RemoteDevice::loadAll(DevicesModel *m)
     return devices;
 }
 
-RemoteDevice * RemoteDevice::create(DevicesModel *m, const QString &cover, const Options &options, const Details &d)
+RemoteFsDevice * RemoteFsDevice::create(DevicesModel *m, const QString &cover, const Options &options, const Details &d)
 {
     if (d.isEmpty()) {
         return false;
@@ -117,10 +117,10 @@ RemoteDevice * RemoteDevice::create(DevicesModel *m, const QString &cover, const
     names.append(d.name);
     grp.writeEntry(constCfgKey, names);
     d.save(constCfgPrefix+d.name);
-    return new RemoteDevice(m, cover, options, d);
+    return new RemoteFsDevice(m, cover, options, d);
 }
 
-void RemoteDevice::remove(RemoteDevice *dev)
+void RemoteFsDevice::remove(RemoteFsDevice *dev)
 {
     KConfigGroup grp(KGlobal::config(), "General");
     QStringList names=grp.readEntry(constCfgKey, QStringList());
@@ -137,12 +137,12 @@ void RemoteDevice::remove(RemoteDevice *dev)
     dev->deleteLater();
 }
 
-QString RemoteDevice::createUdi(const QString &n)
+QString RemoteFsDevice::createUdi(const QString &n)
 {
     return constCfgPrefix+n;
 }
 
-RemoteDevice::RemoteDevice(DevicesModel *m, const QString &cover, const Options &options, const Details &d)
+RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const Options &options, const Details &d)
     : FsDevice(m, d.name)
     , lastCheck(0)
     , details(d)
@@ -155,7 +155,7 @@ RemoteDevice::RemoteDevice(DevicesModel *m, const QString &cover, const Options 
     mount();
 }
 
-RemoteDevice::RemoteDevice(DevicesModel *m, const Details &d)
+RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
     : FsDevice(m, d.name)
     , lastCheck(0)
     , details(d)
@@ -164,11 +164,11 @@ RemoteDevice::RemoteDevice(DevicesModel *m, const Details &d)
     setup();
 }
 
-RemoteDevice::~RemoteDevice() {
+RemoteFsDevice::~RemoteFsDevice() {
     stopScanner(false);
 }
 
-void RemoteDevice::toggle()
+void RemoteFsDevice::toggle()
 {
     if (isConnected()) {
         unmount();
@@ -177,7 +177,7 @@ void RemoteDevice::toggle()
     }
 }
 
-void RemoteDevice::mount()
+void RemoteFsDevice::mount()
 {
     if (Prot_File==details.protocol) {
         return;
@@ -227,7 +227,7 @@ void RemoteDevice::mount()
     }
 }
 
-void RemoteDevice::unmount()
+void RemoteFsDevice::unmount()
 {
     if (Prot_File==details.protocol) {
         return;
@@ -265,7 +265,7 @@ void RemoteDevice::unmount()
     }
 }
 
-void RemoteDevice::procFinished(int exitCode)
+void RemoteFsDevice::procFinished(int exitCode)
 {
     bool wasMount=proc->property("mount").isValid();
     proc->deleteLater();
@@ -285,7 +285,7 @@ void RemoteDevice::procFinished(int exitCode)
     }
 }
 
-bool RemoteDevice::isConnected() const
+bool RemoteFsDevice::isConnected() const
 {
     if (Prot_File==details.protocol) {
         return QDir(details.folder).exists();
@@ -312,7 +312,7 @@ bool RemoteDevice::isConnected() const
     return false;
 }
 
-double RemoteDevice::usedCapacity()
+double RemoteFsDevice::usedCapacity()
 {
     if (!isConnected() || Prot_Sshfs==details.protocol) {
         return -1.0;
@@ -322,7 +322,7 @@ double RemoteDevice::usedCapacity()
     return inf.size()>0 ? (inf.used()*1.0)/(inf.size()*1.0) : -1.0;
 }
 
-QString RemoteDevice::capacityString()
+QString RemoteFsDevice::capacityString()
 {
     if (!isConnected()) {
         return i18n("Not Connected");
@@ -335,7 +335,7 @@ QString RemoteDevice::capacityString()
     return i18n("%1 free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
 }
 
-qint64 RemoteDevice::freeSpace()
+qint64 RemoteFsDevice::freeSpace()
 {
     if (!isConnected() || Prot_Sshfs==details.protocol) {
         return 0;
@@ -345,7 +345,7 @@ qint64 RemoteDevice::freeSpace()
     return inf.size()-inf.used();
 }
 
-void RemoteDevice::load()
+void RemoteFsDevice::load()
 {
     if (isConnected()) {
         setAudioFolder();
@@ -355,7 +355,7 @@ void RemoteDevice::load()
     }
 }
 
-void RemoteDevice::renamed(const QString &oldName)
+void RemoteFsDevice::renamed(const QString &oldName)
 {
     KConfigGroup grp(KGlobal::config(), "General");
     QStringList names=grp.readEntry(constCfgKey, QStringList());
@@ -370,7 +370,7 @@ void RemoteDevice::renamed(const QString &oldName)
     KGlobal::config()->sync();
 }
 
-void RemoteDevice::setup()
+void RemoteFsDevice::setup()
 {
     QString key=udi();
     opts.load(key);
@@ -383,7 +383,7 @@ void RemoteDevice::setup()
     load();
 }
 
-void RemoteDevice::setAudioFolder()
+void RemoteFsDevice::setAudioFolder()
 {
     audioFolder=details.mountPoint(true);
     if (!audioFolder.endsWith('/')) {
@@ -391,15 +391,15 @@ void RemoteDevice::setAudioFolder()
     }
 }
 
-void RemoteDevice::configure(QWidget *parent)
+void RemoteFsDevice::configure(QWidget *parent)
 {
     if (isRefreshing()) {
         return;
     }
 
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const Device::Options &, const RemoteDevice::Details &)),
-            SLOT(saveProperties(const QString &, const Device::Options &, const RemoteDevice::Details &)));
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const Device::Options &, const RemoteFsDevice::Details &)),
+            SLOT(saveProperties(const QString &, const Device::Options &, const RemoteFsDevice::Details &)));
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
@@ -408,7 +408,7 @@ void RemoteDevice::configure(QWidget *parent)
               false, isConnected());
 }
 
-bool RemoteDevice::canPlaySongs() const
+bool RemoteFsDevice::canPlaySongs() const
 {
     return Prot_File==details.protocol || HttpServer::self()->isAlive();
 }
@@ -418,17 +418,17 @@ static inline QString toString(bool b)
     return b ? QLatin1String("true") : QLatin1String("false");
 }
 
-void RemoteDevice::saveOptions()
+void RemoteFsDevice::saveOptions()
 {
     opts.save(udi());
 }
 
-void RemoteDevice::saveProperties()
+void RemoteFsDevice::saveProperties()
 {
     saveProperties(coverFileName, opts, details);
 }
 
-void RemoteDevice::saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, const Details &newDetails)
+void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, const Details &newDetails)
 {
     if (configured && opts==newOpts && newCoverFileName==coverFileName && details==newDetails) {
         return;

@@ -30,7 +30,7 @@
 #include "device.h"
 #include "config.h"
 #ifdef ENABLE_REMOTE_DEVICES
-#include "remotedevice.h"
+#include "remotefsdevice.h"
 #endif
 
 class KAction;

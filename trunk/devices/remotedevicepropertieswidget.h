@@ -25,7 +25,7 @@
 #define REMOTEDEVICEPROPERTIESWIDGET_H
 
 #include "ui_remotedevicepropertieswidget.h"
-#include "remotedevice.h"
+#include "remotefsdevice.h"
 
 class RemoteDevicePropertiesWidget : public QWidget, Ui::RemoteDevicePropertiesWidget
 {
@@ -35,9 +35,9 @@ public:
 
     RemoteDevicePropertiesWidget(QWidget *parent);
     virtual ~RemoteDevicePropertiesWidget() { }
-    void update(const RemoteDevice::Details &d, bool create, bool isConnected);
-    RemoteDevice::Details details();
-    const RemoteDevice::Details & origDetails() const { return orig; }
+    void update(const RemoteFsDevice::Details &d, bool create, bool isConnected);
+    RemoteFsDevice::Details details();
+    const RemoteFsDevice::Details & origDetails() const { return orig; }
     bool isModified() const { return modified; }
     bool isSaveable() const { return saveable; }
 
@@ -50,7 +50,7 @@ private Q_SLOTS:
     void browseSftpFolder();
 
 private:
-    RemoteDevice::Details orig;
+    RemoteFsDevice::Details orig;
     bool modified;
     bool saveable;
 };

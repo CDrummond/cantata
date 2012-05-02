@@ -78,7 +78,7 @@ DevicesModel::~DevicesModel()
 #ifdef ENABLE_REMOTE_DEVICES
 void DevicesModel::loadRemote()
 {
-    QList<Device *> rem=RemoteDevice::loadAll(this);
+    QList<Device *> rem=RemoteFsDevice::loadAll(this);
     if (rem.count()) {
         beginInsertRows(QModelIndex(), devices.count(), devices.count()+(rem.count()-1));
         foreach (Device *dev, rem) {
@@ -86,7 +86,7 @@ void DevicesModel::loadRemote()
             devices.append(dev);
             connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
             connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
-            connect(static_cast<RemoteDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+            connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
         }
         endInsertRows();
         updateItemMenu();
@@ -97,7 +97,7 @@ void DevicesModel::unmountRemote()
 {
     foreach (Device *dev, devices) {
         if (Device::Remote==dev->devType()) {
-            static_cast<RemoteDevice *>(dev)->unmount();
+            static_cast<RemoteFsDevice *>(dev)->unmount();
         }
     }
 }
@@ -578,9 +578,9 @@ void DevicesModel::emitAddToDevice()
 }
 
 #ifdef ENABLE_REMOTE_DEVICES
-void DevicesModel::addRemoteDevice(const QString &coverFileName, const Device::Options &opts, const RemoteDevice::Details &details)
+void DevicesModel::addRemoteDevice(const QString &coverFileName, const Device::Options &opts, const RemoteFsDevice::Details &details)
 {
-    RemoteDevice *dev=RemoteDevice::create(this, coverFileName, opts, details);
+    RemoteFsDevice *dev=RemoteFsDevice::create(this, coverFileName, opts, details);
 
     if (dev) {
         beginInsertRows(QModelIndex(), devices.count(), devices.count());
@@ -607,7 +607,7 @@ void DevicesModel::removeRemoteDevice(const QString &udi)
         endRemoveRows();
         updateItemMenu();
         // Remove will stop device, and delete it
-        RemoteDevice::remove(static_cast<RemoteDevice *>(dev));
+        RemoteFsDevice::remove(static_cast<RemoteFsDevice *>(dev));
     }
 }
 

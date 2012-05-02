@@ -27,7 +27,7 @@
 #include "song.h"
 #include "config.h"
 #ifdef ENABLE_REMOTE_DEVICES
-#include "remotedevice.h"
+#include "remotefsdevice.h"
 #endif
 
 class QMimeData;
@@ -71,7 +71,7 @@ public Q_SLOTS:
     void deviceUpdating(const QString &udi, bool state);
     void emitAddToDevice();
     #ifdef ENABLE_REMOTE_DEVICES
-    void addRemoteDevice(const QString &coverFileName, const Device::Options &opts, const RemoteDevice::Details &details);
+    void addRemoteDevice(const QString &coverFileName, const Device::Options &opts, const RemoteFsDevice::Details &details);
     void removeRemoteDevice(const QString &udi);
     void changeDeviceUdi(const QString &from, const QString &to);
     #endif

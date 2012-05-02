@@ -95,17 +95,23 @@ FfmpegInput::FfmpegInput(const QString &fileName)
         handle=0;
         return;
     }
+    #if LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT(53, 21, 0)
+    if (ok && avformat_find_stream_info(handle->formatContext, 0) < 0) {
+        ok=false;
+    }
+    #else
     if (ok && av_find_stream_info(handle->formatContext) < 0) {
         ok=false;
     }
+    #endif
 
     // Find the first audio stream
     if (ok) {
         handle->audioStream = -1;
         for (size_t j = 0; j < handle->formatContext->nb_streams; ++j) {
             if (handle->formatContext->streams[j]->codec->codec_type ==
-                #if LIBAVCODEC_VERSION_MAJOR >= 53 || \
-                    (LIBAVCODEC_VERSION_MAJOR == 52 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0))
+                    #if LIBAVCODEC_VERSION_MAJOR >= 53 || \
+                        (LIBAVCODEC_VERSION_MAJOR == 52 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0))
                     AVMEDIA_TYPE_AUDIO
                     #else
                     CODEC_TYPE_AUDIO
@@ -145,7 +151,11 @@ FfmpegInput::FfmpegInput(const QString &fileName)
     if (ok) {
         mutex.unlock();
     } else {
+        #if LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT(53, 21, 0)
+        avformat_close_input(&handle->formatContext);
+        #else
         av_close_input_file(handle->formatContext);
+        #endif
         mutex.unlock();
         delete handle;
         handle=0;
@@ -157,7 +167,11 @@ FfmpegInput::~FfmpegInput()
     if (handle) {
         mutex.lock();
         avcodec_close(handle->codecContext);
+        #if LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT(53, 21, 0)
+        avformat_close_input(&handle->formatContext);
+        #else
         av_close_input_file(handle->formatContext);
+        #endif
         mutex.unlock();
         delete handle;
         handle=0;
@@ -258,6 +272,46 @@ size_t FfmpegInput::readFrames()
     return bufferPosition / sizeof(float) / channels();
 }
 
+#if LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT(53, 21, 0)
+// Blindy copied from avcodec.c so as to remove deprecated warning...
+static int decodeAudio(AVCodecContext *avctx, int16_t *samples, int *frame_size_ptr, AVPacket *avpkt)
+{
+    AVFrame frame;
+    int ret, got_frame = 0;
+
+    if (avctx->get_buffer != avcodec_default_get_buffer) {
+        avctx->get_buffer = avcodec_default_get_buffer;
+        avctx->release_buffer = avcodec_default_release_buffer;
+    }
+
+    ret = avcodec_decode_audio4(avctx, &frame, &got_frame, avpkt);
+
+    if (ret >= 0 && got_frame) {
+        int ch, plane_size;
+        int planar = av_sample_fmt_is_planar(avctx->sample_fmt);
+        int data_size = av_samples_get_buffer_size(&plane_size, avctx->channels, frame.nb_samples, avctx->sample_fmt, 1);
+        if (*frame_size_ptr < data_size) {
+            return AVERROR(EINVAL);
+        }
+
+        memcpy(samples, frame.extended_data[0], plane_size);
+
+        if (planar && avctx->channels > 1) {
+            uint8_t *out = ((uint8_t *)samples) + plane_size;
+            for (ch = 1; ch < avctx->channels; ch++) {
+                memcpy(out, frame.extended_data[ch], plane_size);
+                out += plane_size;
+            }
+        }
+        *frame_size_ptr = data_size;
+    } else {
+        *frame_size_ptr = 0;
+    }
+    return ret;
+}
+
+#endif
+
 size_t FfmpegInput::readOnePacket()
 {
     if (!handle) {
@@ -275,7 +329,9 @@ size_t FfmpegInput::readOnePacket()
             }
             while (handle->packet.size > 0) {
                 int dataSize=BUFFER_SIZE;
-                #if LIBAVCODEC_VERSION_MAJOR >= 53 || \
+                #if LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT(53, 21, 0)
+                int len = decodeAudio(handle->codecContext, handle->audioBuffer, &dataSize, &handle->packet);
+                #elif LIBAVCODEC_VERSION_MAJOR >= 53 || \
                     (LIBAVCODEC_VERSION_MAJOR == 52 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 23, 0))
                 int len = avcodec_decode_audio3(handle->codecContext, handle->audioBuffer, &dataSize, &handle->packet);
                 #else

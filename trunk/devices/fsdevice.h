@@ -43,6 +43,10 @@ public:
     virtual ~MusicScanner();
 
     void run();
+    void start(const QSet<Song> &existingSongs) {
+        existing=existingSongs;
+        QThread::start();
+    }
     void stop();
     bool wasStopped() const { return stopRequested; }
     MusicLibraryItemRoot * takeLibrary();
@@ -54,6 +58,7 @@ private:
     void scanFolder(const QString &f, int level);
 
 private:
+    QSet<Song> existing;
     QString folder;
     MusicLibraryItemRoot *library;
     bool stopRequested;
@@ -69,7 +74,7 @@ public:
     FsDevice(DevicesModel *m, const QString &name);
     virtual ~FsDevice();
 
-    void rescan();
+    void rescan(bool full=true);
     bool isRefreshing() const { return 0!=scanner; }
     QString path() const { return audioFolder; }
     QString coverFile() const { return coverFileName; }
@@ -83,7 +88,7 @@ public:
 
 protected:
     bool readCache();
-    void startScanner();
+    void startScanner(bool fullScan=true);
     void stopScanner(bool showStatus=true);
 
 protected Q_SLOTS:

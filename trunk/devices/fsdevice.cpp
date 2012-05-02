@@ -106,7 +106,15 @@ void MusicScanner::scanFolder(const QString &f, int level)
             if (info.isDir()) {
                 scanFolder(info.absoluteFilePath(), level+1);
             } else if(info.isReadable()) {
-                Song song=Tags::read(info.absoluteFilePath());
+                Song song;
+                song.file=info.absoluteFilePath();
+                QSet<Song>::iterator it=existing.find(song);
+                if (existing.end()==it) {
+                    song=Tags::read(info.absoluteFilePath());
+                } else {
+                    song=*it;
+                    existing.erase(it);
+                }
 
                 if (song.isEmpty()) {
                     continue;
@@ -152,13 +160,13 @@ FsDevice::~FsDevice() {
     stopScanner(false);
 }
 
-void FsDevice::rescan()
+void FsDevice::rescan(bool full)
 {
     // If this is the first scan (scanned=false) and we are set to use cache, attempt to load that before scanning
     if (isIdle() && (scanned || !opts.useCache || !readCache())) {
         scanned=true;
         removeCache();
-        startScanner();
+        startScanner(full);
     }
 }
 
@@ -391,13 +399,17 @@ void FsDevice::cacheRead()
     emit updating(udi(), false);
 }
 
-void FsDevice::startScanner()
+void FsDevice::startScanner(bool fullScan)
 {
     stopScanner();
     scanner=new MusicScanner(audioFolder);
     connect(scanner, SIGNAL(finished()), this, SLOT(libraryUpdated()));
     connect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
-    scanner->start();
+    QSet<Song> existingSongs;
+    if (!fullScan) {
+        existingSongs=allSongs();
+    }
+    scanner->start(existingSongs);
     setStatusMessage(i18n("Updating..."));
     emit updating(udi(), true);
 }

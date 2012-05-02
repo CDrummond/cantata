@@ -27,7 +27,9 @@
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
+#include <KDE/KDirSelectDialog>
 #include <QtGui/QTabWidget>
+#include <QtGui/QIcon>
 #include "lineedit.h"
 
 RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
@@ -41,6 +43,7 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     }
     type->addItem(i18n("Secure Shell (sshfs)"), (int)RemoteDevice::Prot_Sshfs);
     type->addItem(i18n("Locally Mounted Folder"), (int)RemoteDevice::Prot_File);
+    folderButton->setIcon(QIcon::fromTheme("document-open"));
 }
 
 void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d, bool create, bool isConnected)
@@ -68,6 +71,7 @@ void RemoteDevicePropertiesWidget::update(const RemoteDevice::Details &d, bool c
     connect(folder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(port, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     connect(type, SIGNAL(currentIndexChanged(int)), this, SLOT(setType()));
+    connect(folderButton, SIGNAL(clicked()), this, SLOT(browseSftpFolder()));
 
     modified=false;
     setType();
@@ -95,6 +99,23 @@ void RemoteDevicePropertiesWidget::setType()
     if (RemoteDevice::Prot_Sshfs==t && 0==port->value()) {
         port->setValue(22);
     }
+    folderButton->setVisible(RemoteDevice::Prot_Sshfs==t);
+}
+
+void RemoteDevicePropertiesWidget::browseSftpFolder()
+{
+    RemoteDevice::Details det=details();
+    KUrl url=KDirSelectDialog::selectDirectory(KUrl("sftp://"+ (det.user.isEmpty() ? QString() : (det.user+QChar('@')))
+                                                             + det.host + (det.port<=0 ? QString() : QString(QChar(':')+QString::number(det.port)))
+                                                             + (det.folder.startsWith("/") ? det.folder : (det.folder.isEmpty() ? QString("/") : det.folder))),
+                                               false, this, i18n("Select Music Folder"));
+
+    if (url.isValid() && QLatin1String("sftp")==url.protocol()) {
+        host->setText(url.host());
+        user->setText(url.user());
+        port->setValue(url.port());
+        folder->setText(url.path());
+    }
 }
 
 void RemoteDevicePropertiesWidget::checkSaveable()
@@ -102,6 +123,7 @@ void RemoteDevicePropertiesWidget::checkSaveable()
     RemoteDevice::Details det=details();
     modified=det!=orig;
     saveable=!det.isEmpty();
+    folderButton->setEnabled(!det.host.isEmpty() && det.port>0);
     emit updated();
 }
 

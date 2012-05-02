@@ -132,7 +132,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void deviceDetails(const QString &s);
     void libraryUpdated();
-    void rescan();
+    void rescan(bool full=true);
     void putSongStatus(bool ok, int id, const QString &file, bool fixedVa);
     void transcodeSongResult(KJob *job);
     void transcodePercent(KJob *job, unsigned long percent);

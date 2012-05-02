@@ -366,7 +366,28 @@ void DevicesPage::refreshDevice()
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
-        static_cast<Device *>(item)->rescan();
+        Device *dev=static_cast<Device *>(item);
+        bool full=true;
+        if (dev->childCount() && Device::Mtp!=dev->devType()) {
+            QString udi=dev->udi();
+            switch (KMessageBox::questionYesNoCancel(this, i18n("<p>Which type of refresh do you wish to perform?<ul>"
+                                                                "<li>Partial - Only new songs are scanned <i>(quick)</i></li>"
+                                                                "<li>Full - All songs are rescanned <i>(slow)</i></li></ul></p>"),
+                                                     i18n("Refresh"), KGuiItem(i18n("Partial")), KGuiItem(i18n("Full")))) {
+                case KMessageBox::Yes:
+                    full=false;
+                case KMessageBox::No:
+                    break;
+                default:
+                    return;
+            }
+            // We have to query for device again, as it could have been unplugged whilst the above question dialog was visible...
+            dev=DevicesModel::self()->device(udi);
+        }
+
+        if (dev) {
+            dev->rescan(full);
+        }
     }
 }
 

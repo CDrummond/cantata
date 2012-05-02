@@ -117,8 +117,8 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
         return;
     }
 
+    origSongs=songs;
     if (udi.isEmpty()) {
-        origSongs=songs;
         base=Settings::self()->mpdDir();
     } else {
         Device *dev=getDevice(udi, parentWidget());
@@ -129,12 +129,6 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
         }
 
         base=dev->path();
-        int pathLen=base.length();
-        foreach (const Song &s, songs) {
-            Song m=s;
-            m.file=m.file.mid(pathLen);
-            origSongs.append(m);
-        }
     }
     state=State_Idle;
     enableButton(User1, songs.count());

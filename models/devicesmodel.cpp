@@ -472,9 +472,9 @@ Qt::ItemFlags DevicesModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled;
 }
 
-QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool playableOnly) const
+QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool playableOnly, bool fullPath) const
 {
-    QList<Song> songList=songs(indexes, playableOnly);
+    QList<Song> songList=songs(indexes, playableOnly, fullPath);
     QStringList fnames;
     foreach (const Song &s, songList) {
         fnames.append(s.file);
@@ -482,7 +482,15 @@ QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool playabl
     return fnames;
 }
 
-QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnly) const
+static Song fixPath(Song s, const QString &path)
+{
+    if (!path.isEmpty()) {
+        s.file=path+s.file;
+    }
+    return s;
+}
+
+QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnly, bool fullPath) const
 {
     QMap<MusicLibraryItem *, QList<Song> > devSongs;
 
@@ -501,13 +509,15 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
             continue;
         }
 
+        QString base=fullPath ? static_cast<Device *>(parent)->path() : QString();
+
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root:
             foreach (const MusicLibraryItem *artist, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                 foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {
                     foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                         if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                            devSongs[parent] << static_cast<const MusicLibraryItemSong*>(song)->song();
+                            devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
                         }
                     }
                 }
@@ -517,7 +527,7 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
             foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                 foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
                     if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                        devSongs[parent] << static_cast<const MusicLibraryItemSong*>(song)->song();
+                        devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
                     }
                 }
             }
@@ -525,13 +535,13 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
         case MusicLibraryItem::Type_Album:
             foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                 if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                    devSongs[parent] << static_cast<const MusicLibraryItemSong*>(song)->song();
+                    devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
                 }
             }
             break;
         case MusicLibraryItem::Type_Song:
             if (!devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(item)->song())) {
-                devSongs[parent] << static_cast<const MusicLibraryItemSong*>(item)->song();
+                devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(item)->song(), base);
             }
             break;
         default:
@@ -643,12 +653,12 @@ QMimeData * DevicesModel::mimeData(const QModelIndexList &indexes) const
     QMimeData *mimeData=0;
     QStringList paths;
     if (HttpServer::self()->isAlive()) {
-        QList<Song> songList=songs(indexes, true);
+        QList<Song> songList=songs(indexes, true, true);
         foreach (const Song &s, songList) {
             paths.append(HttpServer::self()->encodeUrl(s));
         }
     } else {
-        paths=filenames(indexes, true);
+        paths=filenames(indexes, true, true);
     }
 
     if (!paths.isEmpty()) {

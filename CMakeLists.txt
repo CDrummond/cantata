@@ -337,9 +337,9 @@ IF( ENABLE_KDE_SUPPORT )
             devices/filenameschemedialog.ui devices/trackorganiser.ui devices/synccollectionwidget.ui)
 
     if (ENABLE_REMOTE_DEVICES)
-        SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotedevice.cpp devices/remotedevicepropertiesdialog.cpp
+        SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp
             devices/remotedevicepropertieswidget.cpp)
-        SET(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/remotedevice.h devices/remotedevicepropertiesdialog.h
+        SET(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/remotefsdevice.h devices/remotedevicepropertiesdialog.h
             devices/remotedevicepropertieswidget.h)
         SET(CANTATA_UIS ${CANTATA_UIS} devices/remotedevicepropertieswidget.ui)
     endif (ENABLE_REMOTE_DEVICES)
@@ -368,7 +368,7 @@ IF( ENABLE_KDE_SUPPORT )
     endif (MTP_FOUND)
     if (ENABLE_REMOTE_DEVICES)
         TARGET_LINK_LIBRARIES(cantata ${KDE4_KFILE_LIBS})
-    endif (MTP_FOUND)
+    endif (ENABLE_REMOTE_DEVICES)
     install( TARGETS cantata ${INSTALL_TARGETS_DEFAULT_ARGS} )
     install( PROGRAMS dynamic/cantata-dynamic DESTINATION ${LIBEXEC_INSTALL_DIR})
     install( FILES cantataui.rc DESTINATION ${DATA_INSTALL_DIR}/cantata )

@@ -640,6 +640,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
 void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
 {
     jobAbortRequested=false;
+    transcoding=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
         return;
@@ -694,9 +695,9 @@ void MtpDevice::removeSong(const Song &s)
     emit delSong(s);
 }
 
-void MtpDevice::cleanDir(const QString &dir)
+void MtpDevice::cleanDirs(const QSet<QString> &dirs)
 {
-    Q_UNUSED(dir)
+    Q_UNUSED(dirs)
 }
 
 void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa)

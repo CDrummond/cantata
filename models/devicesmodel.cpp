@@ -43,6 +43,9 @@
 #include <KDE/KLocale>
 #include <KDE/KGlobal>
 #endif
+#ifdef ENABLE_KIO_REMOTE_DEVICES
+#include "remotekiodevice.h"
+#endif
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(DevicesModel, instance)
@@ -86,7 +89,14 @@ void DevicesModel::loadRemote()
             devices.append(dev);
             connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
             connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
-            connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+            if (Device::RemoteFs==dev->devType()) {
+                connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+            }
+            #ifdef ENABLE_KIO_REMOTE_DEVICES
+            else if (Device::RemoteKio==dev->devType()) {
+                connect(static_cast<RemoteKioDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+            }
+            #endif
         }
         endInsertRows();
         updateItemMenu();
@@ -96,7 +106,7 @@ void DevicesModel::loadRemote()
 void DevicesModel::unmountRemote()
 {
     foreach (Device *dev, devices) {
-        if (Device::Remote==dev->devType()) {
+        if (Device::RemoteFs==dev->devType()) {
             static_cast<RemoteFsDevice *>(dev)->unmount();
         }
     }
@@ -300,7 +310,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         return QVariant();
     case ItemView::Role_ToggleIconName:
         #ifdef ENABLE_REMOTE_DEVICES
-        if (MusicLibraryItem::Type_Root==item->itemType() && Device::Remote==static_cast<Device *>(item)->devType() &&
+        if (MusicLibraryItem::Type_Root==item->itemType() && Device::RemoteFs==static_cast<Device *>(item)->devType() &&
             static_cast<Device *>(item)->supportsDisconnect()) {
             return QLatin1String(static_cast<Device *>(item)->isConnected() ? "network-connect" : "network-disconnect");
         }
@@ -578,9 +588,9 @@ void DevicesModel::emitAddToDevice()
 }
 
 #ifdef ENABLE_REMOTE_DEVICES
-void DevicesModel::addRemoteDevice(const QString &coverFileName, const Device::Options &opts, const RemoteFsDevice::Details &details)
+void DevicesModel::addRemoteDevice(const QString &coverFileName, const Device::Options &opts, RemoteFsDevice::Details details)
 {
-    RemoteFsDevice *dev=RemoteFsDevice::create(this, coverFileName, opts, details);
+    Device *dev=RemoteFsDevice::create(this, coverFileName, opts, details);
 
     if (dev) {
         beginInsertRows(QModelIndex(), devices.count(), devices.count());
@@ -589,7 +599,14 @@ void DevicesModel::addRemoteDevice(const QString &coverFileName, const Device::O
         endInsertRows();
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
-        connect(dev, SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+        if (Device::RemoteFs==dev->devType()) {
+            connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+        }
+        #ifdef ENABLE_KIO_REMOTE_DEVICES
+        else if (Device::RemoteKio==dev->devType()) {
+            connect(static_cast<RemoteKioDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+        }
+        #endif
         updateItemMenu();
     }
 }
@@ -598,7 +615,7 @@ void DevicesModel::removeRemoteDevice(const QString &udi)
 {
     Device *dev=device(udi);
 
-    if (dev && Device::Remote==dev->devType()) {
+    if (dev && (Device::RemoteFs==dev->devType() || Device::RemoteKio==dev->devType())) {
         int idx=indexes[udi];
         beginRemoveRows(QModelIndex(), idx, idx);
         // Remove device from list, but do NOT delete - it may be scanning!!!!
@@ -607,7 +624,7 @@ void DevicesModel::removeRemoteDevice(const QString &udi)
         endRemoveRows();
         updateItemMenu();
         // Remove will stop device, and delete it
-        RemoteFsDevice::remove(static_cast<RemoteFsDevice *>(dev));
+        RemoteFsDevice::remove(dev);
     }
 }
 

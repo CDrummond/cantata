@@ -77,6 +77,10 @@
 37. Add experimental support for accessing remote devices vi KIO slaves. Listing
     is *VERY* slow - hence feature is disabled by default.
     Pass -DENABLE_KIO_REMOTE_DEVICES=1 to enable.
+38. When refreshing lyrics, instead of startnig at first provider and iterating
+    them all again (which will result in the same hit again), start at the next
+    provider. This allows all providers to be checked. Thanks to Martin
+    Blumenstingl for the patch.
 
 0.6.1
 -----

@@ -329,14 +329,25 @@ void LyricsPage::update(const Song &song, bool force)
         return;
     }
 
-    if (force || song.artist!=currentSong.artist || song.title!=currentSong.title) {
+    bool songChanged = song.artist!=currentSong.artist || song.title!=currentSong.title;
+
+    if (force || songChanged) {
         setMode(Mode_Blank);
         currentRequest++;
         currentSong=song;
-        currentProvider=-1;
+
         if (song.title.isEmpty() || song.artist.isEmpty()) {
             text->setText(QString());
             return;
+        }
+
+        // Only reset the provider if the refresh
+        // was an automatic one or if the song has
+        // changed. Otherwise we'll keep the provider
+        // so the user can cycle through the lyrics
+        // offered by the various providers.
+        if (!force || songChanged) {
+            currentProvider=-1;
         }
 
         if (!Settings::self()->mpdDir().isEmpty()) {

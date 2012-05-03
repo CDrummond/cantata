@@ -25,6 +25,8 @@
     - Need *drastic* speed up in inital song scan
     - Copying of covers to/from needs implementing/checking
     - Removing of album, then artist, folders needs to be implemented.
+    - Pass top level window to kio functions, so that they can cache credentials
+    - Create dirs on device when copying songs
 
 - PlayQueue
   - Add copy to device to context menu?

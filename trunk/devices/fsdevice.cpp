@@ -317,6 +317,13 @@ void FsDevice::removeSong(const Song &s)
     connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *)));
 }
 
+void FsDevice::cleanDirs(const QSet<QString> &dirs)
+{
+    foreach (const QString &dir, dirs) {
+        Utils::cleanDir(dir, audioFolder, coverFileName);
+    }
+}
+
 void FsDevice::percent(KJob *job, unsigned long percent)
 {
     if (jobAbortRequested && 100!=percent) {

@@ -181,7 +181,7 @@ QString DevicesPage::activeFsDeviceUdi() const
 
         if (item && MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
-            if (Device::Ums!=dev->devType() && Device::Remote!=dev->devType()) {
+            if (Device::Ums!=dev->devType() && Device::RemoteFs!=dev->devType()) {
                 return QString();
             }
             if (!udi.isEmpty()) {
@@ -218,7 +218,7 @@ QList<Song> DevicesPage::selectedSongs() const
 
         if (item && MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
-            if (Device::Ums!=dev->devType() && Device::Remote!=dev->devType()) {
+            if (Device::Ums!=dev->devType() && Device::RemoteFs!=dev->devType()) {
                 return QList<Song>();
             }
         }
@@ -274,7 +274,7 @@ void DevicesPage::controlActions()
                 onlyFs=false;
             }
             #ifdef ENABLE_REMOTE_DEVICES
-            if (Device::Remote==dev->devType()) {
+            if (Device::RemoteFs==dev->devType() || Device::RemoteKio==dev->devType()) {
                 remoteDev=true;
             }
             #endif
@@ -432,8 +432,8 @@ void DevicesPage::addRemoteDevice()
 {
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(this);
     dlg->show("cover.jpg", Device::Options(), RemoteFsDevice::Details(), DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder, true);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const Device::Options &, const RemoteFsDevice::Details &)),
-            DevicesModel::self(), SLOT(addRemoteDevice(const QString &, const Device::Options &, const RemoteFsDevice::Details &)));
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const Device::Options &, RemoteFsDevice::Details)),
+            DevicesModel::self(), SLOT(addRemoteDevice(const QString &, const Device::Options &, RemoteFsDevice::Details)));
 }
 
 void DevicesPage::forgetRemoteDevice()
@@ -454,7 +454,7 @@ void DevicesPage::toggleDevice()
 
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
-    if (MusicLibraryItem::Type_Root==item->itemType() && Device::Remote==static_cast<Device *>(item)->devType()) {
+    if (MusicLibraryItem::Type_Root==item->itemType() && Device::RemoteFs==static_cast<Device *>(item)->devType()) {
         static_cast<RemoteFsDevice *>(item)->toggle();
     }
 }

@@ -36,6 +36,8 @@
 #include "song.h"
 
 class QDateTime;
+class QXmlStreamReader;
+class QXmlStreamWriter;
 class MusicLibraryItemArtist;
 
 class MusicLibraryItemRoot : public MusicLibraryItemContainer
@@ -66,7 +68,9 @@ public:
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     void updateSongFile(const Song &from, const Song &to);
     void toXML(const QString &filename, const QDateTime &date=QDateTime()) const;
+    void toXML(QXmlStreamWriter &writer, const QDateTime &date=QDateTime()) const;
     quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime());
+    quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime());
     Type itemType() const {
         return Type_Root;
     }

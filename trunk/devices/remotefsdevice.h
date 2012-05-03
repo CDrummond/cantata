@@ -26,6 +26,7 @@
 
 #include "fsdevice.h"
 #include <sys/types.h>
+#include <KDE/KUrl>
 
 class QProcess;
 class RemoteFsDevice : public FsDevice
@@ -33,43 +34,33 @@ class RemoteFsDevice : public FsDevice
     Q_OBJECT
 
 public:
-    enum Protocol
-    {
-        Prot_None  = 0,
-        Prot_Sshfs = 1,
-        Prot_File  = 2
-    };
-
     struct Details
     {
         void load(const QString &group);
         void save(const QString &group) const;
 
         bool operator==(const Details &o) const {
-            return protocol==o.protocol && port==o.port && name==o.name && host==o.host && user==o.user && folder==o.folder;
+            return name==o.name && url==o.url;
         }
         bool operator!=(const Details &o) const {
             return !(*this==o);
         }
-        Details()
-            : port(0)
-            , protocol(Prot_None) {
-        }
         bool isEmpty() const {
-            return Prot_None==protocol || name.isEmpty() || folder.isEmpty() || (Prot_Sshfs==protocol && (host.isEmpty() || user.isEmpty() || 0==port));
+            return name.isEmpty() || url.isEmpty();
         }
-        QString mountPoint(bool create=false) const;
+        bool isLocalFile() const {
+            return url.isLocalFile();
+        }
         QString name;
-        QString host;
-        QString user;
-        QString folder;
-        unsigned short port;
-        Protocol protocol;
+        KUrl url;
     };
 
+    static const QLatin1String constSshfsProtocol;
+
     static QList<Device *> loadAll(DevicesModel *m);
-    static RemoteFsDevice * create(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
-    static void remove(RemoteFsDevice *dev);
+    static Device * create(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
+    static void remove(Device *dev);
+    static void renamed(const QString &oldName, const QString &newName);
     static QString createUdi(const QString &n);
 
     RemoteFsDevice(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
@@ -79,17 +70,17 @@ public:
     void toggle();
     void mount();
     void unmount();
-    bool supportsDisconnect() const { return Prot_File!=details.protocol; }
+    bool supportsDisconnect() const { return !details.url.isLocalFile(); }
     bool isConnected() const;
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
     void saveOptions();
     void configure(QWidget *parent);
-    DevType devType() const { return Remote; }
+    DevType devType() const { return RemoteFs; }
     QString udi() const { return createUdi(details.name); }
     QString icon() const {
-        return QLatin1String(Prot_File==details.protocol ? "inode-directory" : "network-server");
+        return QLatin1String(details.url.isLocalFile() ? "inode-directory" : "network-server");
     }
     bool canPlaySongs() const;
 
@@ -97,14 +88,13 @@ Q_SIGNALS:
     void udiChanged(const QString &from, const QString &to);
 
 protected:
-    void renamed(const QString &oldName);
     void load();
     void setup();
     void setAudioFolder();
 
 protected Q_SLOTS:
     void saveProperties();
-    void saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, const RemoteFsDevice::Details &newDetails);
+    void saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, RemoteFsDevice::Details newDetails);
     void procFinished(int exitCode);
 
 protected:

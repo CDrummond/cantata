@@ -30,6 +30,7 @@
 #include <QtGui/QImage>
 #include <QtGui/QPixmap>
 #include "song.h"
+#include "config.h"
 
 class NetworkAccessManager;
 class MaiaXmlRpcClient;
@@ -37,6 +38,9 @@ class QString;
 class QThread;
 class QNetworkReply;
 class QMutex;
+#ifdef ENABLE_KDE_SUPPORT
+class KUrl;
+#endif
 
 class CoverQueue : public QObject
 {
@@ -91,7 +95,11 @@ public:
 
     static Covers * self();
     static bool isCoverFile(const QString &file);
+    #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KIO_REMOTE_DEVICES
+    static void copyCover(const Song &song, const KUrl &sourceDir, const KUrl &destDir, const QString &name=QString());
+    #else
     static void copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name=QString());
+    #endif
     static QStringList standardNames();
 
     Covers();

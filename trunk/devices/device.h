@@ -102,7 +102,8 @@ public:
     enum DevType {
         Ums,
         Mtp,
-        Remote
+        RemoteFs,
+        RemoteKio
     };
 
     Device(DevicesModel *m, Solid::Device &dev)
@@ -126,7 +127,7 @@ public:
     }
 
     virtual QString icon() const {
-        return solidDev.icon();
+        return solidDev.isValid() ? solidDev.icon() : QLatin1String("folder");
     }
     virtual QString coverFile() const {
         return QString();
@@ -141,7 +142,7 @@ public:
     virtual void addSong(const Song &s, bool overwrite)=0;
     virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)=0;
     virtual void removeSong(const Song &s)=0;
-    virtual void cleanDir(const QString &dir)=0;
+    virtual void cleanDirs(const QSet<QString> &dirs)=0;
     virtual double usedCapacity()=0;
     virtual QString capacityString()=0;
     virtual qint64 freeSpace()=0;

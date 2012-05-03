@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>334</width>
-    <height>271</height>
+    <width>357</width>
+    <height>306</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
-    <number>0</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
      <item row="0" column="0">
       <widget class="BuddyLabel" name="typeLabel">
        <property name="text">
@@ -42,74 +42,131 @@
      <item row="1" column="1">
       <widget class="LineEdit" name="name"/>
      </item>
-     <item row="2" column="0">
-      <widget class="BuddyLabel" name="hostLabel">
-       <property name="text">
-        <string>Host:</string>
-       </property>
-       <property name="buddy">
-        <cstring>host</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="LineEdit" name="host"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="BuddyLabel" name="portLabel">
-       <property name="text">
-        <string>Port:</string>
-       </property>
-       <property name="buddy">
-        <cstring>port</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QSpinBox" name="port">
-       <property name="maximum">
-        <number>65535</number>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="BuddyLabel" name="userLabel">
-       <property name="text">
-        <string>User:</string>
-       </property>
-       <property name="buddy">
-        <cstring>user</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="LineEdit" name="user"/>
-     </item>
-     <item row="5" column="0">
-      <widget class="BuddyLabel" name="folderLabel">
-       <property name="text">
-        <string>Folder:</string>
-       </property>
-       <property name="buddy">
-        <cstring>folder</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <layout class="QHBoxLayout" name="folderLayout">
-       <item>
-        <widget class="DirRequester" name="folder" />
-       </item>
-       <item>
-        <widget class="QToolButton" name="folderButton">
-         <property name="autoRaise">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="page">
+         <layout class="QFormLayout" name="formLayout_2">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
+          <item row="1" column="0">
+           <widget class="BuddyLabel" name="hostLabel">
+            <property name="text">
+             <string>Host:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sshHost</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="LineEdit" name="sshHost"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="BuddyLabel" name="portLabel">
+            <property name="text">
+             <string>Port:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sshPort</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="sshPort">
+            <property name="maximum">
+             <number>65535</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="BuddyLabel" name="userLabel">
+            <property name="text">
+             <string>User:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sshUser</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="LineEdit" name="sshUser"/>
+          </item>
+          <item row="4" column="0">
+           <widget class="BuddyLabel" name="folderLabel">
+            <property name="text">
+             <string>Folder:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sshFolder</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <layout class="QHBoxLayout" name="folderLayout">
+            <item>
+             <widget class="LineEdit" name="sshFolder"/>
+            </item>
+            <item>
+             <widget class="QToolButton" name="sshFolderButton">
+              <property name="autoRaise">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_2">
+         <layout class="QFormLayout" name="formLayout_3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Folder:</string>
+            </property>
+            <property name="buddy">
+             <cstring>fileFolder</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="KUrlRequester" name="fileFolder"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_3">
+         <layout class="QFormLayout" name="formLayout_4">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>URL:</string>
+            </property>
+            <property name="buddy">
+             <cstring>kioUrl</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="KUrlRequester" name="kioUrl"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -117,7 +174,7 @@
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
+      <enum>QSizePolicy::MinimumExpanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -130,13 +187,13 @@
    <item>
     <widget class="QLabel" name="infoLabel">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt;This dialog is only used to add remote (sshfs) devices, or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt;This dialog is only used to add remote (sshfs, webdav, etc.) devices, or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.&lt;/i&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -150,14 +207,14 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>KUrlRequester</class>
+   <extends>QFrame</extends>
+   <header>kurlrequester.h</header>
+  </customwidget>
+  <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>lineedit.h</header>
-  </customwidget>
-  <customwidget>
-   <class>DirRequester</class>
-   <extends>QLineEdit</extends>
-   <header>dirrequester.h</header>
   </customwidget>
   <customwidget>
    <class>BuddyLabel</class>
@@ -167,12 +224,24 @@
  </customwidgets>
  <tabstops>
   <tabstop>type</tabstop>
-  <tabstop>name</tabstop>
-  <tabstop>host</tabstop>
-  <tabstop>port</tabstop>
-  <tabstop>user</tabstop>
-  <tabstop>folder</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>type</sender>
+   <signal>activated(int)</signal>
+   <receiver>stackedWidget</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>101</x>
+     <y>94</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

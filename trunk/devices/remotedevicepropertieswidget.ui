@@ -11,6 +11,9 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QFormLayout" name="formLayout">
      <property name="fieldGrowthPolicy">
@@ -193,7 +196,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt;This dialog is only used to add remote (sshfs, webdav, etc.) devices, or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt;This dialog is only used to add remote devices (e.g. via sshfs), or to access locally mounted folders. For normal media players, attached via USB, Cantata will automatically display the device when it is attached.&lt;/i&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

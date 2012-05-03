@@ -18,6 +18,11 @@ The following options may be passed to CMake:
         Compile support for sshfs, and local folder, device support.
         Default: off
 
+    -DENABLE_KIO_REMOTE_DEVICES=1
+        Compile support for accessing devices via kio (e.g. sftp, webdav, etc).
+        Not, listing of songs is *VERY* slow. Also, requires -DENABLE_REMOTE_DEVICES=1
+        Default: off
+
     -DENABLE_WEBKIT=1
         Compile with WebKit, used for info page.
         Default: on

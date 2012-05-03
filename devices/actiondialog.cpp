@@ -120,7 +120,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
 
     bool enoughSpace=spaceAvailable>spaceRequired;
     #ifdef ENABLE_REMOTE_DEVICES
-    if (!enoughSpace && sourceUdi.isEmpty() && 0==spaceAvailable && usedCapacity<0.0 && Device::Remote==dev->devType()) {
+    if (!enoughSpace && sourceUdi.isEmpty() && 0==spaceAvailable && usedCapacity<0.0 && (Device::RemoteFs==dev->devType() || Device::RemoteKio==dev->devType())) {
         enoughSpace=true;
     }
     #endif
@@ -170,7 +170,9 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
             return;
         }
 
-        baseDir=dev->path();
+        if (Device::RemoteKio!=dev->devType()) {
+            baseDir=dev->path();
+        }
     }
 
     setPage(PAGE_PROGRESS);
@@ -352,10 +354,10 @@ void ActionDialog::doNext()
         Device *dev=sourceUdi.isEmpty() ? 0 : DevicesModel::self()->device(sourceUdi);
         if (sourceUdi.isEmpty() || dev) {
             progressLabel->setText(i18n("Clearing unused folders"));
-            foreach (const QString &d, dirsToClean) {
-                if (dev) {
-                    dev->cleanDir(d);
-                } else {
+            if (dev) {
+                dev->cleanDirs(dirsToClean);
+            } else {
+                foreach (const QString &d, dirsToClean) {
                     Utils::cleanDir(d, Settings::self()->mpdDir(), QString());
                 }
             }

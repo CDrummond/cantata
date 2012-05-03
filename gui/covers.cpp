@@ -43,6 +43,9 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #include <KDE/KGlobal>
+#include <KDE/KTemporaryFile>
+#include <KDE/KIO/NetAccess>
+#include <QtGui/QApplication>
 K_GLOBAL_STATIC(Covers, instance)
 #endif
 
@@ -214,20 +217,61 @@ bool Covers::isCoverFile(const QString &file)
     return coverFileNames.contains(file);
 }
 
+#if defined ENABLE_KDE_SUPPORT && defined ENABLE_KIO_REMOTE_DEVICES
+static bool fExists(const KUrl &dir, const QString &file)
+{
+    if (dir.isLocalFile()) {
+        return QFile::exists(dir.path()+file);
+    }
+
+    KUrl u(dir);
+    u.addPath(file);
+    return KIO::NetAccess::exists(u, KIO::NetAccess::SourceSide, QApplication::activeWindow());
+}
+
+static void fCopy(const KUrl &sDir, const QString &sFile, const KUrl &dDir, const QString &dFile)
+{
+    if (sDir.isLocalFile() && dDir.isLocalFile()) {
+        QFile::copy(sDir.path()+sFile, dDir.path()+dFile);
+    } else {
+        KUrl s(sDir);
+        s.addPath(sFile);
+        KUrl d(dDir);
+        d.addPath(dFile);
+        KIO::NetAccess::file_copy(s, d, QApplication::activeWindow());
+    }
+}
+
+#else
+static bool fExists(const QString &dir, const QString &file)
+{
+    return QFile::exists(dir+file);
+}
+
+static void fCopy(const QString &sDir, const QString &sFile, const QString &dDir, const QString &dFile)
+{
+    QFile::copy(sDir+sFile, dDir+dFile);
+}
+#endif
+
+#if defined ENABLE_KDE_SUPPORT && defined ENABLE_KIO_REMOTE_DEVICES
+void Covers::copyCover(const Song &song, const KUrl &sourceDir, const KUrl &destDir, const QString &name)
+#else
 void Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name)
+#endif
 {
     initCoverNames();
 
     // First, check if dir already has a cover file!
     foreach (const QString &coverFile, coverFileNames) {
-        if (QFile::exists(destDir+coverFile)) {
+        if (fExists(destDir, coverFile)) {
             return;
         }
     }
 
     // No cover found, try to copy from source folder
     foreach (const QString &coverFile, coverFileNames) {
-        if (QFile::exists(sourceDir+coverFile)) {
+        if (fExists(sourceDir, coverFile)) {
             QString destName(name);
             if (destName.isEmpty()) { // copying into mpd dir, so we want cover.jpg/png...
                 if (coverFileNames.at(0)!=coverFile) { // source is not 'cover.xxx'
@@ -239,11 +283,37 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
             }
             // Diff extensions, so need to convert image type...
             if (destName.right(4)!=coverFile.right(4)) {
+               #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KIO_REMOTE_DEVICES
+                if (sourceDir.isLocalFile() && destDir.isLocalFile()) {
+                    QImage(sourceDir.path()+coverFile).save(destDir.path()+destName);
+                } else if (sourceDir.isLocalFile()) {
+                    KTemporaryFile temp;
+                    temp.setSuffix(destName.right(4));
+                    temp.open();
+                    temp.close();
+                    QImage(sourceDir.path()+coverFile).save(temp.fileName());
+                    fCopy(KUrl("/"), temp.fileName(), destDir, destName);
+                    temp.remove();
+                } else if(destDir.isLocalFile()) {
+                    KTemporaryFile temp;
+                    temp.setSuffix(coverFile.right(4));
+                    fCopy(sourceDir, coverFile, KUrl("/"), temp.fileName());
+                    QImage(temp.fileName()).save(destDir.path()+destName);
+                    temp.remove();
+                }
+                #else
                 QImage(sourceDir+coverFile).save(destDir+destName);
+                #endif
             } else {
-                QFile::copy(sourceDir+coverFile, destDir+destName);
+                fCopy(sourceDir, coverFile, destDir, destName);
             }
+            #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KIO_REMOTE_DEVICES
+            if (destDir.isLocalFile()) {
+                Utils::setFilePerms(destDir.path()+destName);
+            }
+            #else
             Utils::setFilePerms(destDir+destName);
+            #endif
             return;
         }
     }
@@ -254,8 +324,14 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     QString dir(Network::cacheDir(constCoverDir+artist, false));
     foreach (const QString &ext, constExtensions) {
         if (QFile::exists(dir+album+ext)) {
-            QFile::copy(dir+album+ext, destDir+constFileName+ext);
+            fCopy(dir, album+ext, destDir, constFileName+ext);
+            #if defined ENABLE_KDE_SUPPORT && defined ENABLE_KIO_REMOTE_DEVICES
+            if (destDir.isLocalFile()) {
+                Utils::setFilePerms(destDir.path()+constFileName+ext);
+            }
+            #else
             Utils::setFilePerms(destDir+constFileName+ext);
+            #endif
             return;
         }
     }

@@ -272,6 +272,12 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date)
 
     //Write the header info
     QXmlStreamWriter writer(&file);
+    toXML(writer, date);
+    file.close();
+}
+
+void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date) const
+{
     writer.setAutoFormatting(true);
     writer.writeStartDocument();
 
@@ -332,7 +338,6 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date)
 
     writer.writeEndElement();
     writer.writeEndDocument();
-    file.close();
 }
 
 quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date)
@@ -342,11 +347,18 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
         return 0;
     }
 
+    QXmlStreamReader reader(&file);
+    quint32 rv=fromXML(reader, date);
+    file.close();
+    return rv;
+}
+
+quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date)
+{
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;
     Song song;
-    QXmlStreamReader reader(&file);
     quint32 xmlDate=0;
 
     while (!reader.atEnd()) {
@@ -438,7 +450,6 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
         }
     }
 
-    file.close();
     return xmlDate;
 }
 

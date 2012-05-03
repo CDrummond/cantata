@@ -74,6 +74,9 @@
 36. When creating/editing a SSHFS remote device, allow user to use
     KDirRequester to select music folder. (KDirRequester is passed an sftp://
     url to obtin folder listing).
+37. Add experimental support for accessing remote devices vi KIO slaves. Listing
+    is *VERY* slow - hence feature is disabled by default.
+    Pass -DENABLE_KIO_REMOTE_DEVICES=1 to enable.
 
 0.6.1
 -----

@@ -31,6 +31,15 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QIcon>
 #include "lineedit.h"
+#include "config.h"
+
+enum Type {
+    Type_SshFs,
+    Type_File
+    #ifdef ENABLE_KIO_REMOTE_DEVICES
+    , Type_Kio
+    #endif
+};
 
 RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     : QWidget(parent)
@@ -41,37 +50,68 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     if (qobject_cast<QTabWidget *>(parent)) {
         verticalLayout->setMargin(4);
     }
-    type->addItem(i18n("Secure Shell (sshfs)"), (int)RemoteFsDevice::Prot_Sshfs);
-    type->addItem(i18n("Locally Mounted Folder"), (int)RemoteFsDevice::Prot_File);
-    folderButton->setIcon(QIcon::fromTheme("document-open"));
+    type->addItem(i18n("Secure Shell (sshfs)"), (int)Type_SshFs);
+    type->addItem(i18n("Locally Mounted Folder"), (int)Type_File);
+    #ifdef ENABLE_KIO_REMOTE_DEVICES
+    type->addItem(i18n("Other Protocol"), (int)Type_Kio);
+    #endif
+    sshFolderButton->setIcon(QIcon::fromTheme("document-open"));
+    fileFolder->setMode(KFile::Directory|KFile::ExistingOnly|KFile::LocalOnly);
+    kioUrl->setMode(KFile::Directory|KFile::ExistingOnly);
 }
 
 void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool create, bool isConnected)
 {
-    setEnabled(!isConnected);
+    #ifdef ENABLE_KIO_REMOTE_DEVICES
+    int t=d.url.isLocalFile() ? Type_File : (d.isEmpty() || RemoteFsDevice::constSshfsProtocol==d.url.protocol() ? Type_SshFs : Type_Kio);
+    #else
+    int t=d.url.isLocalFile() ? Type_File : Type_SshFs;
+    #endif
+    setEnabled(d.url.isLocalFile() || !isConnected);
     infoLabel->setVisible(create);
     orig=d;
     name->setText(d.name);
-    host->setText(d.host);
-    user->setText(d.user);
-    folder->setText(d.folder);
-    port->setValue(d.port);
+    sshPort->setValue(22);
+    sshFolder->setText(QString());
+    sshHost->setText(QString());
+    sshUser->setText(QString());
+    fileFolder->setText(QString());
+    kioUrl->setUrl(KUrl());
+    switch (t) {
+    case Type_SshFs:
+        sshFolder->setText(d.url.path());
+        sshPort->setValue(d.url.port());
+        sshHost->setText(d.url.host());
+        sshUser->setText(d.url.user());
+        break;
+    case Type_File:
+        fileFolder->setText(d.url.path());
+        break;
+    #ifdef ENABLE_KIO_REMOTE_DEVICES
+    case Type_Kio:
+        kioUrl->setUrl(d.url);
+    #endif
+    }
 
+    name->setEnabled(d.url.isLocalFile() || !isConnected);
+
+    connect(type, SIGNAL(currentIndexChanged(int)), this, SLOT(setType()));
     for (int i=1; i<type->count(); ++i) {
-        if (type->itemData(i).toInt()==d.protocol) {
+        if (type->itemData(i).toInt()==t) {
             type->setCurrentIndex(i);
+            stackedWidget->setCurrentIndex(i);
             break;
         }
     }
-
-    name->setEnabled(d.protocol==RemoteFsDevice::Prot_File || !isConnected);
     connect(name, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(host, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(user, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(folder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(port, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
-    connect(type, SIGNAL(currentIndexChanged(int)), this, SLOT(setType()));
-    connect(folderButton, SIGNAL(clicked()), this, SLOT(browseSftpFolder()));
+    connect(sshHost, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(sshUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(sshFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(sshFolderButton, SIGNAL(clicked()), this, SLOT(browseSftpFolder()));
+    connect(sshPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
+    connect(fileFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(kioUrl, SIGNAL(urlSelected(const KUrl&)), this, SLOT(checkSaveable()));
+    connect(kioUrl, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
 
     modified=false;
     setType();
@@ -80,41 +120,23 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
 
 void RemoteDevicePropertiesWidget::setType()
 {
-    int t=type->itemData(type->currentIndex()).toInt();
-    hostLabel->setEnabled(RemoteFsDevice::Prot_File!=t);
-    host->setEnabled(RemoteFsDevice::Prot_File!=t);
-    userLabel->setEnabled(RemoteFsDevice::Prot_File!=t);
-    user->setEnabled(RemoteFsDevice::Prot_File!=t);
-    portLabel->setEnabled(RemoteFsDevice::Prot_File!=t);
-    port->setEnabled(RemoteFsDevice::Prot_File!=t);
-    folder->setButtonVisible(RemoteFsDevice::Prot_File==t);
-
-    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionAuto, RemoteFsDevice::Prot_File!=t);
-    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionMan, RemoteFsDevice::Prot_File!=t);
-    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionShell, RemoteFsDevice::Prot_File!=t);
-    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionPopup, RemoteFsDevice::Prot_File!=t);
-    folder->lineEdit()->setCompletionModeDisabled(KGlobalSettings::CompletionPopupAuto, RemoteFsDevice::Prot_File!=t);
-    folder->lineEdit()->setCompletionMode(RemoteFsDevice::Prot_File==t ? KGlobalSettings::completionMode() : KGlobalSettings::CompletionNone);
-
-    if (RemoteFsDevice::Prot_Sshfs==t && 0==port->value()) {
-        port->setValue(22);
+    if (Type_SshFs==type->itemData(type->currentIndex()).toInt() && 0==sshPort->value()) {
+        sshPort->setValue(22);
     }
-    folderButton->setVisible(RemoteFsDevice::Prot_Sshfs==t);
 }
 
 void RemoteDevicePropertiesWidget::browseSftpFolder()
 {
     RemoteFsDevice::Details det=details();
-    KUrl url=KDirSelectDialog::selectDirectory(KUrl("sftp://"+ (det.user.isEmpty() ? QString() : (det.user+QChar('@')))
-                                                             + det.host + (det.port<=0 ? QString() : QString(QChar(':')+QString::number(det.port)))
-                                                             + (det.folder.startsWith("/") ? det.folder : (det.folder.isEmpty() ? QString("/") : det.folder))),
-                                               false, this, i18n("Select Music Folder"));
+    KUrl start=det.url;
+    start.setProtocol(QLatin1String("sftp"));
+    KUrl url=KDirSelectDialog::selectDirectory(start, false, this, i18n("Select Music Folder"));
 
     if (url.isValid() && QLatin1String("sftp")==url.protocol()) {
-        host->setText(url.host());
-        user->setText(url.user());
-        port->setValue(url.port());
-        folder->setText(url.path());
+        sshHost->setText(url.host());
+        sshUser->setText(url.user());
+        sshPort->setValue(url.port());
+        sshFolder->setText(url.path());
     }
 }
 
@@ -123,18 +145,37 @@ void RemoteDevicePropertiesWidget::checkSaveable()
     RemoteFsDevice::Details det=details();
     modified=det!=orig;
     saveable=!det.isEmpty();
-    folderButton->setEnabled(!det.host.isEmpty() && det.port>0);
+    sshFolderButton->setEnabled(!det.url.host().isEmpty() && det.url.port()>0);
     emit updated();
 }
 
 RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
 {
+    int t=type->itemData(type->currentIndex()).toInt();
     RemoteFsDevice::Details det;
+
     det.name=name->text().trimmed();
-    det.host=host->text().trimmed();
-    det.user=user->text().trimmed();
-    det.folder=folder->text().trimmed();
-    det.port=port->value();
-    det.protocol=(RemoteFsDevice::Protocol)type->itemData(type->currentIndex()).toInt();
+    switch (t) {
+    case Type_SshFs: {
+        QString h=sshHost->text().trimmed();
+        QString u=sshUser->text().trimmed();
+        QString f=sshFolder->text().trimmed();
+        int p=sshPort->value();
+        det.url=KUrl(RemoteFsDevice::constSshfsProtocol+QLatin1String("://")+ (u.isEmpty() ? QString() : (u+QChar('@')))
+                                                             + h + (p<=0 ? QString() : QString(QChar(':')+QString::number(p)))
+                                                             + (f.startsWith("/") ? f : (f.isEmpty() ? QString("/") : f)));
+        break;
+    }
+    case Type_File: {
+        QString f=fileFolder->text().trimmed();
+        det.url=KUrl(QLatin1String("file://")+(f.startsWith("/") ? f : (f.isEmpty() ? QString("/") : f)));
+        break;
+    }
+    #ifdef ENABLE_KIO_REMOTE_DEVICES
+    case Type_Kio:
+        det.url=KUrl(kioUrl->url());
+        break;
+    #endif
+    }
     return det;
 }

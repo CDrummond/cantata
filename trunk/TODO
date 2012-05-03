@@ -1,16 +1,9 @@
-- Library
-  - Artist icons?
-
 - Albums
   - Coverflow view?
 
 - Streams
   - Handle more than 1st entry?? Not sure
   - Icecast?
-
-- Lyrics
-  - Add next/prev provider buttons - so that can try others.
-  - Background images?
 
 - Devices
   - libMTP album artist usage.
@@ -28,8 +21,10 @@
   - Detect AudioCDs
     - call audex/kaudiocoverter/soundKonverter/k3b?
     - or list via audiocd:// ???
-  - Sync option?
-    - Detect which songs are in library but not device, and vice versa.
+  - KIO device support
+    - Need *drastic* speed up in inital song scan
+    - Copying of covers to/from needs implementing/checking
+    - Removing of album, then artist, folders needs to be implemented.
 
 - PlayQueue
   - Add copy to device to context menu?

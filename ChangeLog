@@ -79,6 +79,8 @@
     provider. This allows all providers to be checked. Thanks to Martin
     Blumenstingl for the patch.
 38. Fix copying track from MTP devices.
+39. When performing a custom lytics seatch, and we have no current song, dont
+    attempt to save the file to MPDs music folder (there is no valid filename).
 
 0.6.1
 -----

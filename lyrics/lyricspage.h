@@ -75,6 +75,8 @@ protected Q_SLOTS:
     void del();
 
 private:
+    QString mpdFileName() const;
+    QString cacheFileName() const;
     UltimateLyricsProvider * providerByName(const QString &name) const;
     void getLyrics();
     void setMode(Mode m);

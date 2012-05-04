@@ -28,6 +28,7 @@
 #include <QtGui/QIcon>
 #include <QtCore/QEvent>
 #include <QtCore/QTimer>
+#include <QtCore/QVariant>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #include <KDE/KTemporaryFile>

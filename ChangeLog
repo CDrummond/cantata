@@ -31,7 +31,7 @@
 13. Request list of URL handlers immediately after connecting.
 14. Check if user is a member of 'audio' group at start-up, and warn if they
     are not. If a user is a member of 'audio', then cantata will save covers,
-    lyrics, imported songs, etc, as writable by 'audio'
+    lyrics, imported songs, etc, as writeable by 'audio'
 15. Attempt to read defaults from /etc/mpd.conf (This is usually readable by
     'audio' group)
 16. If connection fails due to password, then state this in error message.
@@ -64,7 +64,7 @@
 32. Remove 'Single Tracks' cover creation. This is not used in grouped view,
     etc.
 33. Limit downloaded covers to a max of 600x600 pixels.
-34. Dont update 'curent song' details when playqueue is updated - the current
+34. Dont update 'current song' details when playqueue is updated - the current
     song is updated by other means. As we now use 'plchangesposid' to speed
     updates, we dont always have the full song info when playqueue is updated.
     This fixes a bug where the cover widget sometimes gets reset to empty.
@@ -74,12 +74,12 @@
 36. When creating/editing a SSHFS remote device, allow user to use
     KDirRequester to select music folder. (KDirRequester is passed an sftp://
     url to obtin folder listing).
-37. When refreshing lyrics, instead of startnig at first provider and iterating
+37. When refreshing lyrics, instead of starting at first provider and iterating
     them all again (which will result in the same hit again), start at the next
     provider. This allows all providers to be checked. Thanks to Martin
     Blumenstingl for the patch.
 38. Fix copying track from MTP devices.
-39. When performing a custom lytics seatch, and we have no current song, dont
+39. When performing a custom lyrics search, and we have no current song, dont
     attempt to save the file to MPDs music folder (there is no valid filename).
 
 0.6.1
@@ -135,7 +135,7 @@
 31. Add dialog where user can specify artist and title to fetch lyrics - useful
     if automatic fetching fails.
 32. Fix crash in albums model when library updated after albums removed.
-33. Fix filetype resolver so that we dont attmept to read tags from video files
+33. Fix filetype resolver so that we dont attempt to read tags from video files
     (asf/wmv/mp4v) - these seem to crash TagLib.
 34. When using MPRISv2 interface, dont attempt to play a song if the playqueue
     is empty!
@@ -276,8 +276,8 @@
  6. When disaplying songs of various artists albums, show as 'track number -
     artist - song'
  7. German translation - thanks to Lutz Lüttke
- 8. Rename 'Update Database' action to 'Refresh', as the curent view is now also
-    refreshed. This cation will also completely refresh the model.
+ 8. Rename 'Update Database' action to 'Refresh', as the current view is now
+    also refreshed. This cation will also completely refresh the model.
  9. When determining cache filename, replace slashes with underscores.
 10. Improve playqueue handling when we have 1000s of entries.
 11. Fix sidebar painting for Qt styles (cleanlooks, plastique, etc.)
@@ -309,7 +309,7 @@
  8. Provide a simple script to convert amarok radio streams into cantata
     streams.
  9. Use .cantata extension for import/export of cantata streams.
-10. Only export selected strema categories.
+10. Only export selected stream categories.
 11. Show track details in titlebar, so that these also appear in taskbar
     tooltips.
 12. Use 'play' icon for 'replace play queue', and 'add' icon for 'add to play
@@ -337,7 +337,7 @@
 -----
 1. Play/Pause track when middle click on tray icon. (KDE only). Thanks to Piotr
    Wicijowski for the idea/patch.
-2. Only connecto to QTreeView::activated when in single-click. Double-click
+2. Only connect to QTreeView::activated when in single-click. Double-click
    already expands/collapses the item - so if we also do this on activated,
    then the item is re-collapsed/expanded.
 3. Only create the tray icon once!

@@ -248,7 +248,7 @@ void RemoteFsDevice::mount()
     QStringList args;
     if (!details.isLocalFile() && !details.isEmpty()) {
         if (ttyname(0)) {
-            emit error(i18n("Password prompting does not work when cantata is started from commandline."));
+            emit error(i18n("Password prompting does not work when cantata is started from the commandline."));
             return;
         }
         if (KStandardDirs::findExe("ksshaskpass").isEmpty()) {

@@ -675,7 +675,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     }
 
     currentSong=s;
-    emit getSong(s, musicPath+musicPath);
+    emit getSong(s, currentBaseDir+currentMusicPath);
 }
 
 void MtpDevice::removeSong(const Song &s)

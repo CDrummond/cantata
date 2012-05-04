@@ -183,8 +183,8 @@ void LyricsPage::setEnabledProviders(const QStringList &providerList)
 
 void LyricsPage::update()
 {
-    QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
-    bool mpdExists=!Settings::self()->mpdDir().isEmpty() && QFile::exists(mpdName);
+    QString mpdName=mpdFileName();
+    bool mpdExists=!mpdName.isEmpty() && QFile::exists(mpdName);
     #ifdef ENABLE_KDE_SUPPORT
     if (Mode_Edit==mode && KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
         return;
@@ -201,8 +201,8 @@ void LyricsPage::update()
     if (mpdExists) {
         QFile::remove(mpdName);
     }
-    QString cacheName=cacheFile(currentSong.artist, currentSong.title);
-    if (QFile::exists(cacheName)) {
+    QString cacheName=cacheFileName();
+    if (!cacheName.isEmpty() && QFile::exists(cacheName)) {
         QFile::remove(cacheName);
     }
     update(currentSong, true);
@@ -233,12 +233,12 @@ void LyricsPage::search()
             {
             return;
         }
-        QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
-        if (!Settings::self()->mpdDir().isEmpty() && QFile::exists(mpdName)) {
+        QString mpdName=mpdFileName();
+        if (!mpdName.isEmpty() && QFile::exists(mpdName)) {
             QFile::remove(mpdName);
         }
-        QString cacheName=cacheFile(currentSong.artist, currentSong.title);
-        if (QFile::exists(cacheName)) {
+        QString cacheName=cacheFileName();
+        if (!cacheName.isEmpty() && QFile::exists(cacheName)) {
             QFile::remove(cacheName);
         }
         update(dlg.song(), true);
@@ -264,18 +264,18 @@ void LyricsPage::save()
         }
         #endif
 
-        QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
-        QString cacheName=cacheFile(currentSong.artist, currentSong.title);
-        if (saveFile(mpdName)) {
+        QString mpdName=mpdFileName();
+        QString cacheName=cacheFileName();
+        if (!mpdName.isEmpty() && saveFile(mpdName)) {
             if (QFile::exists(cacheName)) {
                 QFile::remove(cacheName);
             }
             Utils::setFilePerms(mpdName);
-        } else if (!saveFile(cacheName)) {
+        } else if (cacheName.isEmpty() || !saveFile(cacheName)) {
             #ifdef ENABLE_KDE_SUPPORT
             KMessageBox::error(this, i18n("Failed to save lyrics."));
             #else
-            QMessageBox::critical(this, tr("Error"), tr("Save updated lyrics?"));
+            QMessageBox::critical(this, tr("Error"), tr("Failed to save lyrics."));
             #endif
             return;
         }
@@ -313,12 +313,12 @@ void LyricsPage::del()
     }
     #endif
 
-    QString mpdName=changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
-    QString cacheName=cacheFile(currentSong.artist, currentSong.title);
-    if (QFile::exists(cacheName)) {
+    QString mpdName=mpdFileName();
+    QString cacheName=cacheFileName();
+    if (!cacheName.isEmpty() && QFile::exists(cacheName)) {
         QFile::remove(cacheName);
     }
-    if (QFile::exists(mpdName)) {
+    if (!mpdName.isEmpty() && QFile::exists(mpdName)) {
         QFile::remove(mpdName);
     }
 }
@@ -350,7 +350,7 @@ void LyricsPage::update(const Song &song, bool force)
             currentProvider=-1;
         }
 
-        if (!Settings::self()->mpdDir().isEmpty()) {
+        if (!Settings::self()->mpdDir().isEmpty() && !song.file.isEmpty() && !song.isStream()) {
             // Check for MPD file...
             QString mpdLyrics=changeExt(Settings::self()->mpdDir()+song.file, constExtension);
 
@@ -421,6 +421,17 @@ bool LyricsPage::saveFile(const QString &fileName)
     }
 
     return false;
+}
+
+QString LyricsPage::mpdFileName() const
+{
+    return currentSong.file.isEmpty() || Settings::self()->mpdDir().isEmpty() || currentSong.isStream()
+            ? QString() : changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
+}
+
+QString LyricsPage::cacheFileName() const
+{
+    return currentSong.artist.isEmpty() || currentSong.title.isEmpty() ? QString() : cacheFile(currentSong.artist, currentSong.title);
 }
 
 UltimateLyricsProvider* LyricsPage::providerByName(const QString &name) const

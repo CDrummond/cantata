@@ -191,6 +191,7 @@ void DevicePropertiesWidget::update(const QString &path, const QString &coverNam
     connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
     connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    connect(autoScan, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     modified=false;
     checkSaveable();
 }

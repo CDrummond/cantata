@@ -340,7 +340,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     writer.writeEndDocument();
 }
 
-quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date)
+quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, const QString &baseFolder)
 {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -348,12 +348,12 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
     }
 
     QXmlStreamReader reader(&file);
-    quint32 rv=fromXML(reader, date);
+    quint32 rv=fromXML(reader, date, baseFolder);
     file.close();
     return rv;
 }
 
-quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date)
+quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, const QString &baseFolder)
 {
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
@@ -407,6 +407,9 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
             else if (QLatin1String("Track")==element) {
                 song.title=attributes.value("name").toString();
                 song.file=attributes.value("file").toString();
+                if (!baseFolder.isEmpty() && song.file.startsWith(baseFolder)) {
+                    song.file=song.file.mid(baseFolder.length());
+                }
                 song.genre=attributes.value("genre").toString();
                 if (attributes.hasAttribute("artist")) {
                     song.artist=attributes.value("artist").toString();

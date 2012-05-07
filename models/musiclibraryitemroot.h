@@ -69,8 +69,8 @@ public:
     void updateSongFile(const Song &from, const Song &to);
     void toXML(const QString &filename, const QDateTime &date=QDateTime()) const;
     void toXML(QXmlStreamWriter &writer, const QDateTime &date=QDateTime()) const;
-    quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime());
-    quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime());
+    quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime(), const QString &baseFolder=QString());
+    quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime(), const QString &baseFolder=QString());
     Type itemType() const {
         return Type_Root;
     }

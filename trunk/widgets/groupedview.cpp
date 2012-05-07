@@ -522,10 +522,10 @@ void GroupedView::toggle(const QModelIndex &idx)
 QModelIndexList GroupedView::selectedIndexes() const
 {
     QModelIndexList indexes = TreeView::selectedIndexes();
-    QModelIndexList allIndexes;
+    QSet<QModelIndex> allIndexes;
 
     foreach (const QModelIndex &idx, indexes) {
-        allIndexes.append(idx);
+        allIndexes.insert(idx);
         if (!idx.data(GroupedView::Role_IsCollection).toBool()) {
             quint16 key=idx.data(GroupedView::Role_Key).toUInt();
             quint32 collection=idx.data(GroupedView::Role_CollectionId).toUInt();
@@ -538,7 +538,7 @@ QModelIndexList GroupedView::selectedIndexes() const
                         quint32 nextCollection=idx.data(GroupedView::Role_CollectionId).toUInt();
 
                         if (nextCollection==collection && nextKey==key) {
-                            allIndexes.append(next);
+                            allIndexes.insert(next);
                         } else {
                             break;
                         }
@@ -549,7 +549,7 @@ QModelIndexList GroupedView::selectedIndexes() const
             }
         }
     }
-    return allIndexes;
+    return allIndexes.toList();
 }
 
 // If we are dropping onto a collapsed album, and we are in the bottom 1/2 of the row - then

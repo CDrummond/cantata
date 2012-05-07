@@ -107,12 +107,14 @@ void MusicScanner::scanFolder(const QString &f, int level)
                 scanFolder(info.absoluteFilePath(), level+1);
             } else if(info.isReadable()) {
                 Song song;
-                song.file=info.absoluteFilePath().mid(folder.length());
+                QString fname=info.absoluteFilePath().mid(folder.length());
+                song.file=fname;
                 QSet<Song>::iterator it=existing.find(song);
                 if (existing.end()==it) {
                     song=Tags::read(info.absoluteFilePath());
                 } else {
                     song=*it;
+                    song.file=fname;
                     existing.erase(it);
                 }
 
@@ -174,7 +176,7 @@ bool FsDevice::readCache()
 {
     if (opts.useCache) {
         MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-        if (root->fromXML(cacheFileName())) {
+        if (root->fromXML(cacheFileName(), QDateTime(), audioFolder)) {
             update=root;
             scanned=true;
             QTimer::singleShot(0, this, SLOT(cacheRead()));
@@ -301,6 +303,8 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
 
 void FsDevice::removeSong(const Song &s)
 {
+    emit actionStatus(NotConnected);
+    return;
     jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);

@@ -81,6 +81,8 @@
 38. Fix copying track from MTP devices.
 39. When performing a custom lyrics search, and we have no current song, dont
     attempt to save the file to MPDs music folder (there is no valid filename).
+40. When adding items to playqueue, only start to play if playqueue was
+    previously empty.
 
 0.6.1
 -----

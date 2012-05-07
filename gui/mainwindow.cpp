@@ -1163,7 +1163,9 @@ void MainWindow::songLoaded()
 {
     if (MPDState_Stopped==MPDStatus::self()->state()) {
         stopVolumeFade();
-        emit play();
+        if (0==playQueueModel.rowCount()) {
+            emit play();
+        }
     }
 }
 

@@ -1170,9 +1170,10 @@ void MainWindow::setControlButtonsSize(bool small)
 
 void MainWindow::songLoaded()
 {
-    if (MPDState_Stopped==MPDStatus::self()->state()) {
+    if (MPDState_Stopped==MPDStatus::self()->state() ||
+        (-1==playQueueModel.currentSong() && MPDState_Inactive==lastState && MPDState_Inactive==MPDStatus::self()->state()) ) {  // song was loaded from commandline when empty...
         stopVolumeFade();
-        if (0==playQueueModel.rowCount()) {
+        if (0==playQueueModel.rowCount() || -1==playQueueModel.currentSong()) {
             emit play();
         }
     }

@@ -1109,7 +1109,7 @@ void MainWindow::load(const QList<QUrl> &urls)
             if (alwaysUseHttp || !mpdLocal) {
                 useable.append(HttpServer::self()->encodeUrl(u.path()));
             } else {
-                useable.append(u.path());
+                useable.append(u.toString());
             }
         }
     }

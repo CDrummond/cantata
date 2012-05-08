@@ -64,7 +64,9 @@ public:
 
     int newInstance() {
         if (w) {
-            w->showNormal();
+            if (!w->isVisible()) {
+                w->showNormal();
+            }
         } else {
             if (0==Utils::getAudioGroupId() && KMessageBox::Cancel==KMessageBox::warningContinueCancel(0,
                     i18n("You are not currently a member of the \"audio\" group. "

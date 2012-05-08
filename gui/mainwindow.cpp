@@ -1097,11 +1097,20 @@ MainWindow::~MainWindow()
 void MainWindow::load(const QList<QUrl> &urls)
 {
     QStringList useable;
-    bool allowLocal=MPDConnection::self()->isLocal();
+    bool haveHttp=HttpServer::self()->isAlive();
+    bool alwaysUseHttp=haveHttp && Settings::self()->alwaysUseHttp();
+    bool mpdLocal=MPDConnection::self()->isLocal();
+    bool allowLocal=haveHttp || mpdLocal;
 
     foreach (QUrl u, urls) {
-        if ((allowLocal && QLatin1String("file")==u.scheme()) || QLatin1String("http")==u.scheme()) {
-            useable.prepend(u.toString());
+        if (QLatin1String("http")==u.scheme()) {
+            useable.append(u.toString());
+        } else if (allowLocal && QLatin1String("file")==u.scheme()) {
+            if (alwaysUseHttp || !mpdLocal) {
+                useable.append(HttpServer::self()->encodeUrl(u.path()));
+            } else {
+                useable.append(u.path());
+            }
         }
     }
     if (useable.count()) {

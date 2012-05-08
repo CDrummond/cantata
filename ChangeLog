@@ -85,6 +85,7 @@
     previously empty.
 41. When determining indexes to add to 'selectedIndexes' for a collapsed album
     (in grouped style play queue/lists), ensure each index is only added once.
+42. Fix loading of songs via commandline if we are set to use HTTP server.
 
 0.6.1
 -----

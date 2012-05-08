@@ -591,6 +591,7 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
         QXmlStreamReader doc(xmldoc);
         QString url;
         Job job=it.value();
+        jobs.erase(it);
 
         while (!doc.atEnd() && url.isEmpty()) {
             doc.readNext();
@@ -603,7 +604,6 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
         if (!url.isEmpty()) {
             QUrl u;
             u.setEncodedUrl(url.toLatin1());
-            jobs.remove(it.key());
             jobs.insert(manager->get(QNetworkRequest(u)), job);
         } else {
             emit cover(job.song, QImage(), QString());
@@ -621,7 +621,7 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
         Job job=it.value();
         AppCover app=otherAppCover(job);
         emit cover(job.song, app.img, app.filename);
-        jobs.remove(it.key());
+        jobs.erase(it);
     }
 
     reply->deleteLater();

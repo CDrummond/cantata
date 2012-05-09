@@ -379,7 +379,7 @@ msgstr ""
 "<a href=http://pl.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
 "Coding</a> (AAC) to opatentowany algorytm stratnej kompresji danych "
 "dźwiękowych.<br>AAC generalnie osiąga lepszą jakość dźwięku niż MP3 przy "
-"podobnych rozmiarach pliku. Jest to dobry wybór dla IPodów oraz niektórych "
+"podobnych rozmiarach pliku. Jest to dobry wybór dla iPodów oraz niektórych "
 "innych przenośnych odtwarzaczy muzycznych. Nie-otwarta implementacja."
 
 #: devices/encoders.cpp:62
@@ -1187,7 +1187,7 @@ msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
 msgstr ""
-"Gdy tryb 'Pojedyczny' jest aktywny, odtwarzanie jest zatrzymywane po obecnym "
+"Gdy tryb 'Pojedynczy' jest aktywny, odtwarzanie jest zatrzymywane po obecnym "
 "utworze; utwór jest zapętlany, jeśli dodatkowo jest włączony tryb 'Powtarzaj'."
 
 #: gui/mainwindow.cpp:454

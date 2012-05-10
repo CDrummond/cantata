@@ -379,6 +379,9 @@ void TagEditor::applyVa()
         for (int i=0; i<edited.count(); ++i) {
             Song s=edited.at(i);
             if (s.fixVariousArtists()) {
+                if (0==i && QLatin1String(" - ")==s.title) {
+                    s.title=QString();
+                }
                 edited.replace(i, s);
                 updateEditedStatus(i);
                 if (i==currentSongIndex) {
@@ -388,6 +391,7 @@ void TagEditor::applyVa()
         }
         updating=false;
         setLabelStates();
+        enableOkButton();
     } else {
         Song s=edited.at(currentSongIndex);
         if (s.fixVariousArtists()) {
@@ -431,9 +435,12 @@ void TagEditor::revertVa()
     #endif
 
     if (isAll) {
-        for (int i=0; i<edited.count(); ++i) {
+        updating=true;
+        QSet<QString> artists;
+        for (int i=1; i<edited.count(); ++i) {
             Song s=edited.at(i);
             if (s.revertVariousArtists()) {
+                artists.insert(s.artist);
                 edited.replace(i, s);
                 updateEditedStatus(i);
                 if (i==currentSongIndex) {
@@ -441,6 +448,14 @@ void TagEditor::revertVa()
                 }
             }
         }
+        Song s=edited.at(0);
+        s.artist=artists.count()!=1 ? QString() : *artists.constBegin();
+        edited.replace(0, s);
+        updateEditedStatus(0);
+        setSong(s);
+        updating=false;
+        setLabelStates();
+        enableOkButton();
     } else {
         Song s=edited.at(currentSongIndex);
         if (s.revertVariousArtists()) {

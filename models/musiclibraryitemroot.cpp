@@ -305,7 +305,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             foreach (const MusicLibraryItem *t, album->childItems()) {
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
                 writer.writeEmptyElement("Track");
-                writer.writeAttribute("name", track->data());
+                writer.writeAttribute("name", track->song().title);
                 writer.writeAttribute("file", track->file());
                 writer.writeAttribute("time", QString::number(track->time()));
                 //Only write track number if it is set
@@ -420,6 +420,12 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     song.albumartist=attributes.value("albumartist").toString();
                 } else {
                     song.albumartist=artistItem->data();
+                }
+
+                // Fix cache error - where MusicLibraryItemSong::data() was saved as name instead of song.name!!!!
+                if (!song.albumartist.isEmpty() && !song.artist.isEmpty() && song.albumartist!=song.artist &&
+                    song.title.startsWith(song.artist+QLatin1String(" - "))) {
+                    song.title=song.title.mid(song.artist.length()+3);
                 }
 
                 QString str=attributes.value("track").toString();

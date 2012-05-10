@@ -1,3 +1,9 @@
+0.7.1
+-----
+1. When saving track name to cache, save the actual name, no the displayed
+   name.
+2. Attempt to fix errors in cache where the displayed name was saved.
+
 0.7.0
 -----
  1. Add dynamic playlist support.

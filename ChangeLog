@@ -3,6 +3,7 @@
 1. When saving track name to cache, save the actual name, no the displayed
    name.
 2. Attempt to fix errors in cache where the displayed name was saved.
+3. Fix tag-editor's 'Various Artists' workaround when all tracks is selected.
 
 0.7.0
 -----

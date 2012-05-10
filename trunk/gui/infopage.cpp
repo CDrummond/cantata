@@ -113,6 +113,7 @@ InfoPage::InfoPage(QWidget *parent)
     view->setZoomFactor(Settings::self()->infoZoom()/100.0);
     view->settings()->setAttribute(QWebSettings::PrivateBrowsingEnabled, true);
     view->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
+    view->settings()->setFontSize(QWebSettings::MinimumFontSize, 8);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
 
     #ifdef ENABLE_KDE_SUPPORT

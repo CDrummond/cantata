@@ -375,6 +375,7 @@ void TagEditor::applyVa()
     #endif
 
     if (isAll) {
+        updating=true;
         for (int i=0; i<edited.count(); ++i) {
             Song s=edited.at(i);
             if (s.fixVariousArtists()) {
@@ -385,6 +386,8 @@ void TagEditor::applyVa()
                 }
             }
         }
+        updating=false;
+        setLabelStates();
     } else {
         Song s=edited.at(currentSongIndex);
         if (s.fixVariousArtists()) {

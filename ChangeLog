@@ -4,6 +4,7 @@
    name.
 2. Attempt to fix errors in cache where the displayed name was saved.
 3. Fix tag-editor's 'Various Artists' workaround when all tracks is selected.
+4. Set minimum font size for info page.
 
 0.7.0
 -----

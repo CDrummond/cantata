@@ -138,6 +138,9 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
     if (s.track) {
         url.addQueryItem("track", QString::number(s.track));
     }
+    if (!s.file.isEmpty()) {
+        url.addQueryItem("file", s.file);
+    }
     url.addQueryItem("cantata", "song");
     return url.toEncoded();
 }

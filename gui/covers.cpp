@@ -33,6 +33,7 @@
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QThread>
 #include <QtCore/QMutex>
+#include <QtCore/QUrl>
 #include <QtNetwork/QNetworkReply>
 #include <QtGui/QIcon>
 #include <QtGui/QImage>
@@ -420,11 +421,17 @@ void Covers::clearDummyCache(const Song &song)
 Covers::Image Covers::getImage(const Song &song)
 {
     QString dirName;
+    QString songFile=song.file;
     bool haveAbsPath=song.file.startsWith('/');
 
-    if (haveAbsPath || !Settings::self()->mpdDir().isEmpty()) {
-        dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file
-                                        : MPDParseUtils::getDir((haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file);
+    if (song.isCantataStream()) {
+        QUrl u(songFile);
+        songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
+    }
+    if (!songFile.isEmpty() &&
+        (haveAbsPath || !Settings::self()->mpdDir().isEmpty())) {
+        dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : Settings::self()->mpdDir())+songFile
+                                       : MPDParseUtils::getDir((haveAbsPath ? QString() : Settings::self()->mpdDir())+songFile);
         initCoverNames();
         foreach (const QString &fileName, coverFileNames) {
             if (QFile::exists(dirName+fileName)) {

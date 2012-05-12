@@ -411,7 +411,10 @@ void MPDConnection::add(const QStringList &files, bool replace)
     }
     send += "command_list_end";
 
-    if (sendCommand(send).ok){
+    if (sendCommand(send).ok) {
+        if (replace && !files.isEmpty()) {
+            startPlayingSong();
+        }
         emit added(files);
     }
 }

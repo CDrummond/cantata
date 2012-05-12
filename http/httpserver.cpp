@@ -93,17 +93,11 @@ bool HttpServer::isAlive() const
 
 QString HttpServer::address() const
 {
-    if (!isAlive()) {
-        return QString();
-    }
     return QLatin1String("http://127.0.0.1:")+QString::number(socket->port());
 }
 
 bool HttpServer::isOurs(const QString &url) const
 {
-    if (!isAlive()) {
-        return false;
-    }
     return url.startsWith(address()+"/");
 }
 
@@ -158,38 +152,35 @@ QByteArray HttpServer::encodeUrl(const QString &file) const
 Song HttpServer::decodeUrl(const QString &url) const
 {
     Song s;
+    QUrl u(url);
 
-    if (isAlive()) {
-        QUrl u(url);
-
-        if (u.hasQueryItem("cantata") && u.queryItemValue("cantata")=="song") {
-            if (u.hasQueryItem("album")) {
-                s.album=u.queryItemValue("album");
-            }
-            if (u.hasQueryItem("artist")) {
-                s.artist=u.queryItemValue("artist");
-            }
-            if (u.hasQueryItem("albumartist")) {
-                s.albumartist=u.queryItemValue("albumartist");
-            }
-            if (u.hasQueryItem("title")) {
-                s.title=u.queryItemValue("title");
-            }
-            if (u.hasQueryItem("genre")) {
-                s.genre=u.queryItemValue("genre");
-            }
-            if (u.hasQueryItem("disc")) {
-                s.disc=u.queryItemValue("disc").toInt();
-            }
-            if (u.hasQueryItem("year")) {
-                s.year=u.queryItemValue("year").toInt();
-            }
-            if (u.hasQueryItem("time")) {
-                s.time=u.queryItemValue("time").toInt();
-            }
-            if (u.hasQueryItem("track")) {
-                s.track=u.queryItemValue("track").toInt();
-            }
+    if (u.hasQueryItem("cantata") && u.queryItemValue("cantata")=="song") {
+        if (u.hasQueryItem("album")) {
+            s.album=u.queryItemValue("album");
+        }
+        if (u.hasQueryItem("artist")) {
+            s.artist=u.queryItemValue("artist");
+        }
+        if (u.hasQueryItem("albumartist")) {
+            s.albumartist=u.queryItemValue("albumartist");
+        }
+        if (u.hasQueryItem("title")) {
+            s.title=u.queryItemValue("title");
+        }
+        if (u.hasQueryItem("genre")) {
+            s.genre=u.queryItemValue("genre");
+        }
+        if (u.hasQueryItem("disc")) {
+            s.disc=u.queryItemValue("disc").toInt();
+        }
+        if (u.hasQueryItem("year")) {
+            s.year=u.queryItemValue("year").toInt();
+        }
+        if (u.hasQueryItem("time")) {
+            s.time=u.queryItemValue("time").toInt();
+        }
+        if (u.hasQueryItem("track")) {
+            s.track=u.queryItemValue("track").toInt();
         }
     }
 

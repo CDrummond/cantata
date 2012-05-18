@@ -1234,6 +1234,17 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
     }
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if ((Qt::Key_Enter==event->key() || Qt::Key_Return==event->key()) &&
+        playQueue->hasFocus() && !playQueue->selectionModel()->selectedRows().isEmpty()) {
+        //play the first selected song
+        QModelIndexList selection=playQueue->selectionModel()->selectedRows();
+        qSort(selection);
+        playQueueItemActivated(selection.first());
+    }
+}
+
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if (trayItem) {

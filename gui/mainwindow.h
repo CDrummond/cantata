@@ -190,6 +190,7 @@ public:
     const QDateTime & getDbUpdate() const;
 
 protected:
+    void keyPressEvent(QKeyEvent *event);
     void closeEvent(QCloseEvent *event);
 
 private:

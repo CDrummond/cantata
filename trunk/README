@@ -38,6 +38,43 @@ Each station must be on its own line, and must be all in one line.
 script will look for the line starting with "Name="
 
 
+Dynamic Helper Script
+=====================
+
+When a dynamic playlist is loaded in Cantata, the cantata-dynamic helper script
+is executed in the background to do the actual song selection. In this way the
+dynamic playlist can still function even when cantata is terminated. It is
+possible for this script to be controlled on the command line (although it was
+never written with this in mind).
+
+The list of dynamic playlists may be obtained by looking in
+~/.config/cantata/dynamic
+
+To 'load' a dynamic play list, all you need to do is symlink the desired one in
+~/.config/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can start
+the helper by calling '/usr/lib/kde4/libexec/cantata-dynamic start'  (or first
+call '/usr/lib/kde4/libexec/cantata-dynamic stop' to stop any current play list).
+
+To pass connection details, cantata-dynamic reads the same environment variables
+as mpc - namely MPD_HOST and MPD_PORT
+
+e.g. the following bash script (not tested!) will stop any current dynamic
+playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
+'hostname:1234' with password 'pass'
+
+    # Stop current dynamic playlist
+    /usr/lib/kde4/libexec/cantata-dynamic stop
+    # Clear the playqueue (this requires mpc)
+    MPD_HOST=pass@hostname MPD_PORT=1234 mpc clear
+    # 'Load' new playlist
+    if [ -f "$HOME/cache/cantata/dynamic/rules" ] ; then
+        rm "$HOME/cache/cantata/dynamic/rules"
+    fi
+    ln -s "$HOME/config/cantata/dynamic/MyPlaylist.rules" "$HOME/cache/cantata/dynamic/rules"
+    # Restart dyamic script
+    MPD_HOST=pass@hostname MPD_PORT=1234 /usr/lib/kde4/libexec/cantata-dynamic start
+
+
 Credits
 =======
 

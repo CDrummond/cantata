@@ -2396,6 +2396,11 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     }
 }
 
+void MainWindow::dynamicStatus(const QString &message)
+{
+    Dynamic::self()->helperMessage(message);
+}
+
 void MainWindow::showTab(int page)
 {
     tabWidget->SetCurrentIndex(page);

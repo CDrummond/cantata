@@ -348,6 +348,17 @@ sub uniq {
     return keys %{{ map { $_ => 1 } @_ }};
 }
 
+# Send message to Cantata application...
+sub sendMessage() {
+    my $method=shift;
+    my $argument=shift;
+    system("qdbus org.kde.cantata /cantata ${method} ${argument}");
+    if ( $? == -1 ) {
+        # Maybe qdbus is not installed? Try dbus-send...
+        system("dbus-send --type=method_call --session --dest=org.kde.cantata /cantata org.kde.cantata.${method} string:${argument}");
+    }
+}
+
 # Use rules to obtain a list of songs from MPD...
 sub getSongs() {
     # If we have no current songs, or rules have changed, or MPD has been updated - then we need to run the rules against MPD to get song list...
@@ -412,11 +423,7 @@ sub getSongs() {
             }
         }
         if (scalar(@mpdSongs)<1) {
-            system("qdbus org.kde.cantata /cantata showError NO_SONGS");
-            if ( $? == -1 ) {
-                # Maybe qdbus is not installed? Try dbus-send...
-                system("dbus-send --type=method_call --session --dest=org.kde.cantata /cantata org.kde.cantata.showError string:NO_SONGS");
-            }
+            &sendMessage("showError", "NO_SONGS");
             exit(0);
         }
     }
@@ -626,11 +633,13 @@ sub start() {
     open(HANDLE, ">${fileName}");
     print HANDLE $$;
     close HANDLE;
+    &sendMessage("dynamicStatus", "running");
     &populatePlayQueue();
 }
 
 sub signalHandler {
     unlink(&lockFile());
+    &sendMessage("dynamicStatus", "stopped");
     exit(0);
 }
 

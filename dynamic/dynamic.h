@@ -83,6 +83,10 @@ public:
     const QList<Entry> & entries() const {
         return entryList;
     }
+    void helperMessage(const QString &message) {
+        Q_UNUSED(message)
+        checkHelper();
+    }
 
 Q_SIGNALS:
     void running(bool status);

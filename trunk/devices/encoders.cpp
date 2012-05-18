@@ -307,7 +307,7 @@ QStringList Encoder::params(int value, const QString &in, const QString &out)
         }
         p << ffmpegParam << QString::number(v);
     }
-    p << QLatin1String("-map_metadata") << QLatin1String("0:0") << out;
+    p << out;
     return p;
 }
 

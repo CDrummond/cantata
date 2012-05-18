@@ -7,6 +7,8 @@
 4. Set minimum font size for info page.
 5. Only automatically start playing songs if we are replacing the playqueue, or
    the song is the first song added via the commandline.
+6. Fix transcoding with new ffmpeg - thanks to Martin Blumenstingl
+   for the patch.
 
 0.7.0
 -----

@@ -9,6 +9,9 @@
    the song is the first song added via the commandline.
 6. Fix transcoding with new ffmpeg - thanks to Martin Blumenstingl
    for the patch.
+7. Have cantata-dynamic helper script send a dbus message when it starts and
+   stops - so that cantata main window can show the current status if the helper
+   is started externally.
 
 0.7.0
 -----

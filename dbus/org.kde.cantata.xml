@@ -11,5 +11,8 @@
     <method name="showError">
         <arg type="s" name="error" direction="in"/>
     </method>
+    <method name="dynamicStatus">
+        <arg type="s" name="error" direction="in"/>
+    </method>
   </interface>
 </node>

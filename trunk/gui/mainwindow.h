@@ -214,6 +214,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
     void showPage(const QString &page, bool focusSearch);
+    void dynamicStatus(const QString &message);
 
 private Q_SLOTS:
     void setMpdVolume(int );

@@ -444,7 +444,7 @@ void Dynamic::checkHelper()
             timer->stop();
         }
     } else {
-        if (timer) {
+        if (timer && timer->isActive()) {
             static const int constAppCheck=15*1000;
             if (timer->interval()<constAppCheck) {
                 timer->start(constAppCheck);

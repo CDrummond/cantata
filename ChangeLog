@@ -14,6 +14,7 @@
    is started externally.
 8. When 'Return'/'Enter' is pressed when play queue has focus, start playing
    from the first selected song.
+9. Fix Qt-only install failure (cannot find RUNTIME)
 
 0.7.0
 -----

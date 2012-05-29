@@ -1,3 +1,8 @@
+0.8.0
+-----
+1. Add ability to play MPD HTTP output strem via phonon. Thanks to Marcel
+   Bosling for the idea and initial patch.
+
 0.7.1
 -----
 1. When saving track name to cache, save the actual name, no the displayed

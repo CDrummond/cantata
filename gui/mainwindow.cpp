@@ -57,9 +57,12 @@
 #include <QtGui/QMessageBox>
 #include "networkproxyfactory.h"
 #endif
+#include "mainwindow.h"
+#ifdef PHONON_FOUND
+#include <phonon/audiooutput.h>
+#endif
 #include "playlistsmodel.h"
 #include "covers.h"
-#include "mainwindow.h"
 #include "preferencesdialog.h"
 #include "mpdconnection.h"
 #include "mpdstats.h"
@@ -320,6 +323,10 @@ MainWindow::MainWindow(QWidget *parent)
     , origVolume(0)
     , lastVolume(0)
     , stopState(StopState_None)
+    #ifdef PHONON_FOUND
+    , phononStreamEnabled(false)
+    , phononStream(0)
+    #endif
 {
     new CantataAdaptor(this);
     QDBusConnection::sessionBus().registerObject("/cantata", this);
@@ -454,6 +461,12 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlayQueueAction->setText(i18n("Consume"));
     consumePlayQueueAction->setWhatsThis(i18n("When consume is activated, a song is removed from the play queue after it has been played."));
 
+    #ifdef PHONON_FOUND
+    streamPlayAction = actionCollection()->addAction("streamplay");
+    streamPlayAction->setText(i18n("Play Stream"));
+    streamPlayAction->setWhatsThis(i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
+    #endif
+
     locateTrackAction = actionCollection()->addAction("locatetrack");
     locateTrackAction->setText(i18n("Locate In Library"));
 
@@ -547,6 +560,10 @@ MainWindow::MainWindow(QWidget *parent)
     singlePlayQueueAction->setWhatsThis(tr("When single is activated, playback is stopped after current song, or song is repeated if the 'repeat' mode is enabled."));
     consumePlayQueueAction = new QAction(tr("Consume"), this);
     consumePlayQueueAction->setWhatsThis(tr("When consume is activated, a song is removed from the play queue after it has been played."));
+    #ifdef PHONON_FOUND
+    streamPlayAction= new QAction(tr("Play Stream"), this);
+    streamPlayAction->setWhatsThis(tr("When 'Play Stream' is activated, the enabled stream is played locally."));
+    #endif
     locateTrackAction = new QAction(tr("Locate In Library"), this);
 //     burnAction = new QAction(tr("Burn To CD/DVD"), this);
 //     createAudioCdAction = new QAction(tr("Create Audio CD"), this);
@@ -622,6 +639,9 @@ MainWindow::MainWindow(QWidget *parent)
 //     shufflePlayQueueAction->setIcon(shuffleIcon);
     #endif
     singlePlayQueueAction->setIcon(createSingleIcon());
+    #ifdef PHONON_FOUND
+    streamPlayAction->setIcon(Icon(DEFAULT_STREAM_ICON));
+    #endif
     removeAction->setIcon(Icon("list-remove"));
     addToPlayQueueAction->setIcon(Icon("list-add"));
     replacePlayQueueAction->setIcon(Icon("media-playback-start"));
@@ -726,6 +746,11 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPushButton->setDefaultAction(repeatPlayQueueAction);
     singlePushButton->setDefaultAction(singlePlayQueueAction);
     consumePushButton->setDefaultAction(consumePlayQueueAction);
+    #ifdef PHONON_FOUND
+    streamButton->setDefaultAction(streamPlayAction);
+    #else
+    streamButton->setVisible(false);
+    #endif
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
     tabWidget->AddTab(libraryPage, libraryTabAction->icon(), libraryTabAction->text(), !hiddenPages.contains(libraryPage->metaObject()->className()));
@@ -755,6 +780,9 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction->setCheckable(true);
     singlePlayQueueAction->setCheckable(true);
     consumePlayQueueAction->setCheckable(true);
+    #ifdef PHONON_FOUND
+    streamPlayAction->setCheckable(true);
+    #endif
 
     #ifdef ENABLE_KDE_SUPPORT
     searchPlayQueueLineEdit->setPlaceholderText(i18n("Search Play Queue..."));
@@ -765,7 +793,7 @@ MainWindow::MainWindow(QWidget *parent)
     QList<QToolButton *> controlBtns;
     QList<QToolButton *> btns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
-    controlBtns << volumeButton << menuButton;
+    controlBtns << volumeButton << menuButton << streamButton;
     btns << repeatPushButton << singlePushButton << randomPushButton << savePlayQueuePushButton << removeAllFromPlayQueuePushButton << consumePushButton;
 
     foreach (QToolButton *b, btns) {
@@ -805,6 +833,9 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction->setChecked(false);
     singlePlayQueueAction->setChecked(false);
     consumePlayQueueAction->setChecked(false);
+    #ifdef PHONON_FOUND
+    streamPlayAction->setChecked(false);
+    #endif
 //     burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
@@ -931,6 +962,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(repeatPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
     connect(singlePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
     connect(consumePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setConsume(bool)));
+    #ifdef PHONON_FOUND
+    connect(streamPlayAction, SIGNAL(triggered(bool)), this, SLOT(toggleStream(bool)));
+    #endif
     connect(searchPlayQueueLineEdit, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
     connect(searchPlayQueueLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchPlayQueue()));
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
@@ -1039,7 +1073,10 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif
-
+    #ifdef PHONON_FOUND
+    streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
+    streamPlayAction->setChecked(Settings::self()->playStream());
+    #endif
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     playlistsPage->refresh();
     toggleMpris();
@@ -1057,6 +1094,9 @@ MainWindow::~MainWindow()
     Settings::self()->saveMainWindowCollapsedSize(splitter->isVisible() ? collapsedSize : size());
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->unmountRemote();
+    #endif
+    #ifdef PHONON_FOUND
+    Settings::self()->savePlayStream(streamPlayAction->isChecked());
     #endif
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     Settings::self()->saveSplitterState(splitter->saveState());
@@ -1358,7 +1398,12 @@ void MainWindow::updateSettings()
     if (diffLibCovers || diffAlCovers || diffLibYear || diffGrouping) {
         refresh();
     }
-
+    #ifdef PHONON_FOUND
+    streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
+    if (phononStream && streamButton->isVisible()) {
+        phononStream->setCurrentSource(Settings::self()->streamUrl());
+    }
+    #endif
     libraryPage->setView(0==Settings::self()->libraryView());
     playlistsPage->setView(Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
@@ -1409,6 +1454,39 @@ void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, tr("About Cantata"),
                        tr("Simple GUI front-end for MPD.<br/><br/>(c) Craig Drummond 2011-2012.<br/>Released under the GPLv2<br/><br/><i><small>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>"));
+}
+#endif
+
+#ifdef PHONON_FOUND
+void MainWindow::toggleStream(bool s)
+{
+    MPDStatus * const status = MPDStatus::self();
+    phononStreamEnabled = s;
+    if (!s){
+        if (phononStream) {
+            phononStream->stop();
+        }
+    } else {
+        if (phononStream) {
+            switch (status->state()) {
+            case MPDState_Playing:
+                phononStream->play();
+                break;
+            case MPDState_Inactive:
+            case MPDState_Stopped:
+                phononStream->stop();
+            break;
+            case MPDState_Paused:
+                phononStream->pause();
+            default:
+            break;
+            }
+        } else {
+            phononStream=new Phonon::MediaObject(this);
+            Phonon::createPath(phononStream, new Phonon::AudioOutput(Phonon::MusicCategory, this));
+            phononStream->setCurrentSource(Settings::self()->streamUrl());
+        }
+    }
 }
 #endif
 
@@ -1828,6 +1906,11 @@ void MainWindow::updateStatus()
     playQueueModel.setState(status->state());
     switch (status->state()) {
     case MPDState_Playing:
+        #ifdef PHONON_FOUND
+        if (phononStreamEnabled && phononStream) {
+            phononStream->play();
+        }
+        #endif
         playPauseTrackAction->setIcon(playbackPause);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         //playPauseTrackButton->setChecked(false);
@@ -1849,6 +1932,11 @@ void MainWindow::updateStatus()
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
+        #ifdef PHONON_FOUND
+        if (phononStreamEnabled && phononStream) {
+            phononStream->stop();
+        }
+        #endif
         playPauseTrackAction->setIcon(playbackPlay);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         stopTrackAction->setEnabled(false);
@@ -1875,6 +1963,11 @@ void MainWindow::updateStatus()
         positionSlider->stopTimer();
         break;
     case MPDState_Paused:
+        #ifdef PHONON_FOUND
+        if (phononStreamEnabled && phononStream) {
+            phononStream->pause();
+        }
+        #endif
         playPauseTrackAction->setIcon(playbackPlay);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         stopTrackAction->setEnabled(0!=playQueueModel.rowCount());

@@ -47,6 +47,9 @@
 #include "mpdstatus.h"
 #include "song.h"
 #include "config.h"
+#ifdef PHONON_FOUND
+#include <phonon/mediaobject.h>
+#endif
 
 #ifdef ENABLE_KDE_SUPPORT
 class KAction;
@@ -235,6 +238,9 @@ private Q_SLOTS:
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
     #endif
+    #ifdef PHONON_FOUND
+    void toggleStream(bool s);
+    #endif
     void positionSliderPressed();
     void positionSliderReleased();
     void stopTrack();
@@ -350,6 +356,9 @@ private:
     Action *repeatPlayQueueAction;
     Action *singlePlayQueueAction;
     Action *consumePlayQueueAction;
+    #ifdef PHONON_FOUND
+    Action *streamPlayAction;
+    #endif
     Action *expandInterfaceAction;
     Action *quitAction;
     Action *locateTrackAction;
@@ -443,6 +452,10 @@ private:
     int origVolume;
     int lastVolume;
     StopState stopState;
+    #ifdef PHONON_FOUND
+    bool phononStreamEnabled;
+    Phonon::MediaObject *phononStream;
+    #endif
 
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;

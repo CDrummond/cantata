@@ -28,6 +28,7 @@
 #include <KDE/KLocale>
 #endif
 #include <QtGui/QListWidget>
+#include "config.h"
 
 static const int constIconSize=48;
 
@@ -59,6 +60,11 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
+    #ifndef PHONON_FOUND
+    streamUrl->setVisible(false);
+    streamUrlLabel->setVisible(false);
+    streamUrlInfoLabel->setVisible(false);
+    #endif
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
     errorIcon->setMinimumSize(constIconSize, constIconSize);
     errorIcon->setMaximumSize(constIconSize, constIconSize);
@@ -73,6 +79,9 @@ void PlaybackSettings::load()
     stopOnExit->setChecked(Settings::self()->stopOnExit());
     stopDynamizerOnExit->setChecked(Settings::self()->stopDynamizerOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
+    #ifdef PHONON_FOUND
+    streamUrl->setText(Settings::self()->streamUrl());
+    #endif
 }
 
 void PlaybackSettings::save()
@@ -91,6 +100,9 @@ void PlaybackSettings::save()
             emit disable(item->data(Qt::UserRole).toInt());
         }
     }
+    #ifdef PHONON_FOUND
+    Settings::self()->saveStreamUrl(streamUrl->text().trimmed());
+    #endif
 }
 
 void PlaybackSettings::replayGainSetting(const QString &rg)

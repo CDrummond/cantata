@@ -483,6 +483,18 @@ bool Settings::playListsStartClosed()
     return GET_BOOL("playListsStartClosed", true);
 }
 
+#ifdef PHONON_FOUND
+bool Settings::playStream()
+{
+    return GET_BOOL("playStream", false);
+}
+
+QString Settings::streamUrl()
+{
+    return GET_STRING("streamUrl", QString());
+}
+#endif
+
 void Settings::saveConnectionHost(const QString &v)
 {
     SET_VALUE("connectionHost", v);
@@ -756,6 +768,18 @@ void Settings::savePlayListsStartClosed(bool v)
 {
     SET_VALUE("playListsStartClosed", v);
 }
+
+#ifdef PHONON_FOUND
+void Settings::savePlayStream(bool v)
+{
+    SET_VALUE("playStream", v);
+}
+
+void Settings::saveStreamUrl(const QString &v)
+{
+    SET_VALUE("streamUrl", v);
+}
+#endif
 
 void Settings::save(bool force)
 {

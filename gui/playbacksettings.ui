@@ -98,9 +98,32 @@
        </property>
       </widget>
      </item>
+     <item row="5" column="0">
+      <widget class="BuddyLabel" name="streamUrlLabel">
+       <property name="text">
+        <string>Output HTTP stream:</string>
+       </property>
+       <property name="buddy">
+        <cstring>streamUrl</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="streamUrl"/>
+     </item>
     </layout>
    </item>
    <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="streamUrlInfoLabel">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Output HTTP stream is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
     <widget class="QGroupBox" name="outputFrame">
      <property name="title">
       <string>Output</string>
@@ -112,7 +135,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="BuddyLabel" name="errorIcon">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -125,7 +148,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <widget class="QLabel" name="errorLabel">
      <property name="text">
       <string>&lt;i&gt;&lt;b&gt;Not Connected.&lt;/b&gt;&lt;br/&gt;Some of the entries above cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</string>

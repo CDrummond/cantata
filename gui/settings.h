@@ -108,6 +108,10 @@ public:
     bool playQueueStartClosed();
     bool playQueueScroll();
     bool playListsStartClosed();
+    #ifdef PHONON_FOUND
+    bool playStream();
+    QString streamUrl();
+    #endif
 
     void saveConnectionHost(const QString &v);
     void saveConnectionPasswd(const QString &v);
@@ -161,6 +165,10 @@ public:
     void savePlayQueueStartClosed(bool v);
     void savePlayQueueScroll(bool v);
     void savePlayListsStartClosed(bool v);
+    #ifdef PHONON_FOUND
+    void savePlayStream(bool v);
+    void saveStreamUrl(const QString &v);
+    #endif
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

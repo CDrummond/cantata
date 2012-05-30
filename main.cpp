@@ -41,13 +41,13 @@
 class CantataApp : public KUniqueApplication
 {
 public:
-#ifdef Q_WS_X11
+    #ifdef Q_WS_X11
     CantataApp(Display *display, Qt::HANDLE visual, Qt::HANDLE colormap)
         : KUniqueApplication(display, visual, colormap)
         , w(0)
     {
     }
-#endif
+    #endif
 
     CantataApp()
         : KUniqueApplication()
@@ -125,7 +125,7 @@ void setupIconTheme()
 
 int main(int argc, char *argv[])
 {
-#ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     KAboutData aboutData(PACKAGE_NAME, 0,
                          ki18n("Cantata"), PACKAGE_VERSION,
                          ki18n("A KDE client for MPD"),
@@ -150,14 +150,18 @@ int main(int argc, char *argv[])
         exit(0);
 
     CantataApp app;
-#else
+    #else
     QApplication app(argc, argv);
     QApplication::setApplicationName(PACKAGE_NAME);
+    #ifdef Q_WS_WIN
+    QApplication::setOrganizationName("mpd");
+    #else
     QApplication::setOrganizationName(PACKAGE_NAME);
+    #endif
 
     setupIconTheme();
     MainWindow mw;
-#endif
+    #endif
 
     return app.exec();
 }

@@ -35,8 +35,10 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifndef Q_WS_WIN
 #include <grp.h>
 #include <pwd.h>
+#endif
 
 QString Utils::changeExtension(const QString &file, const QString &extension)
 {
@@ -130,6 +132,7 @@ void Utils::cleanDir(const QString &dir, const QString &base, const QString &cov
     }
 }
 
+#ifndef Q_WS_WIN
 gid_t Utils::getAudioGroupId()
 {
     static bool init=false;
@@ -179,6 +182,12 @@ void Utils::setFilePerms(const QString &file)
     // Reset umask
     ::umask(oldMask);
 }
+#else
+void Utils::setFilePerms(const QString &file)
+{
+    Q_UNUSED(file);
+}
+#endif
 
 /*
  * Create directory, and set its permissions.
@@ -186,15 +195,20 @@ void Utils::setFilePerms(const QString &file)
  */
 bool Utils::createDir(const QString &dir, const QString &base)
 {
+    #ifdef Q_WS_WIN
+    Q_UNUSED(base);
+    #else
     //
     // Clear any umask before dir is created
     mode_t oldMask(umask(0000));
     gid_t gid=base.isEmpty() ? 0 : getAudioGroupId();
+    #endif
     #ifdef ENABLE_KDE_SUPPORT
     bool status(KStandardDirs::makeDir(dir, 0==gid ? 0755 : 0775));
     #else
     bool status(QDir(dir).mkpath(dir));
     #endif
+    #ifndef Q_WS_WIN
     if (status && 0!=gid && dir.startsWith(base)) {
         QStringList parts=dir.mid(base.length()).split('/');
         QString d(base);
@@ -207,6 +221,7 @@ bool Utils::createDir(const QString &dir, const QString &base)
     }
     // Reset umask
     ::umask(oldMask);
+    #endif
     return status;
 }
 

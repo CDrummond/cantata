@@ -29,9 +29,13 @@
 #include <QtCore/QTimer>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/qglobal.h>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 #include <QtGui/QIcon>
+#ifdef Q_WS_WIN
+#include <QtGui/QDesktopServices>
+#endif
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -51,8 +55,12 @@ static bool iconIsValid(const QString &icon)
 
 static QString configDir()
 {
+    #ifdef Q_WS_WIN
+    QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/";
+    #else
     QString env = qgetenv("XDG_CONFIG_HOME");
     QString dir = (env.isEmpty() ? QDir::homePath() + "/.config/" : env) + QLatin1String("/"PACKAGE_NAME"/");
+    #endif
     QDir d(dir);
     return d.exists() || d.mkpath(dir) ? QDir::toNativeSeparators(dir) : QString();
 }

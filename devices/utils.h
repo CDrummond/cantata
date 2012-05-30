@@ -26,6 +26,7 @@
 
 #include <math.h>
 #include <sys/types.h>
+#include <QtCore/qglobal.h>
 
 class QString;
 class QThread;
@@ -40,7 +41,9 @@ namespace Utils
     extern QString changeExtension(const QString &file, const QString &extension);
     extern void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
     extern void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
+    #ifndef Q_WS_WIN
     extern gid_t getAudioGroupId(); // Return 0 if user is not in audio group, otherwise returns audio group ID
+    #endif
     extern void setFilePerms(const QString &file);
     extern bool createDir(const QString &dir, const QString &base);
     extern void msleep(int msecs);

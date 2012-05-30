@@ -33,7 +33,7 @@ public:
         : KSqueezedTextLabel(p) {
         bool rtl=Qt::RightToLeft==layoutDirection();
         setTextElideMode(rtl ? Qt::ElideLeft : Qt::ElideRight);
-        setAlignment(rtl ? Qt::AlignRight : Qt::AlignLeft);
+        setAlignment((rtl ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
     }
 };
 #else
@@ -48,7 +48,7 @@ public:
         : QLabel(p) {
         bool rtl=Qt::RightToLeft==layoutDirection();
         elideMode=rtl ? Qt::ElideLeft : Qt::ElideRight;
-        setAlignment(rtl ? Qt::AlignRight : Qt::AlignLeft);
+        setAlignment((rtl ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     }
 

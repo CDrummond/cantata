@@ -75,6 +75,20 @@ public:
         menu->exec(ev->globalPos());
         menu->deleteLater();
     }
+
+    #ifndef ENABLE_KDE_SUPPORT
+    void wheelEvent(QWheelEvent *event)
+    {
+        if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+            const int numDegrees = event->delta() / 8;
+            const int numSteps = numDegrees / 15;
+            setZoomFactor(zoomFactor() + numSteps * 0.1);
+            event->accept();
+            return;
+        }
+        QWebView::wheelEvent(event);
+    }
+    #endif
 };
 
 InfoPage::InfoPage(QWidget *parent)

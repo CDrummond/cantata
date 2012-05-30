@@ -2,6 +2,7 @@
 -----
 1. Add ability to play MPD HTTP output strem via phonon. Thanks to Marcel
    Bosling for the idea and initial patch.
+2. Implement Ctrl+MouseWheel zoom for Qt-only info view.
 
 0.7.1
 -----

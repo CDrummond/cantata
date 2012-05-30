@@ -29,6 +29,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QProcess>
 #include <QtCore/QPropertyAnimation>
+#include <QtCore/QThread>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
@@ -93,15 +94,17 @@
 #include "tageditor.h"
 #include "streamsmodel.h"
 #include "playlistspage.h"
-#include "dynamicpage.h"
 #include "fancytabwidget.h"
 #include "timeslider.h"
+#ifndef Q_WS_WIN
 #include "mpris.h"
 #include "dockmanager.h"
+#include "dynamicpage.h"
+#include "dynamic.h"
 #include "cantataadaptor.h"
+#endif
 #include "messagewidget.h"
 #include "httpserver.h"
-#include "dynamic.h"
 #include "groupedview.h"
 #include "debugtimer.h"
 
@@ -314,8 +317,10 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_WEBKIT
     , infoNeedsUpdating(false)
     #endif
+    #ifndef Q_WS_WIN
     , dock(0)
     , mpris(0)
+    #endif
     , playQueueSearchTimer(0)
     , usingProxy(false)
     , connectedState(CS_Init)
@@ -328,8 +333,10 @@ MainWindow::MainWindow(QWidget *parent)
     , phononStream(0)
     #endif
 {
+    #ifndef Q_WS_WIN
     new CantataAdaptor(this);
     QDBusConnection::sessionBus().registerObject("/cantata", this);
+    #endif
     setMinimumHeight(256);
     QWidget *widget = new QWidget(this);
     setupUi(widget);
@@ -497,8 +504,10 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsTabAction = actionCollection()->addAction("showplayliststab");
     playlistsTabAction->setText(i18n("Playlists"));
 
+    #ifndef Q_WS_WIN
     dynamicTabAction = actionCollection()->addAction("showdynamictab");
     dynamicTabAction->setText(i18n("Dynamic"));
+    #endif
 
     lyricsTabAction = actionCollection()->addAction("showlyricstab");
     lyricsTabAction->setText(i18n("Lyrics"));
@@ -577,7 +586,9 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
     playlistsTabAction = new QAction(tr("Playlists"), this);
+    #ifndef Q_WS_WIN
     dynamicTabAction = new QAction(tr("Dynamic"), this);
+    #endif
     lyricsTabAction = new QAction(tr("Lyrics"), this);
     streamsTabAction = new QAction(tr("Streams"), this);
     #ifdef ENABLE_WEBKIT
@@ -585,25 +596,24 @@ MainWindow::MainWindow(QWidget *parent)
     #endif // ENABLE_WEBKIT
     serverInfoTabAction = new QAction(tr("Server Info"), this);
     #endif // ENABLE_KDE_SUPPORT
-    libraryTabAction->setShortcut(Qt::AltModifier+Qt::Key_1);
-    albumsTabAction->setShortcut(Qt::AltModifier+Qt::Key_2);
-    foldersTabAction->setShortcut(Qt::AltModifier+Qt::Key_3);
-    playlistsTabAction->setShortcut(Qt::AltModifier+Qt::Key_4);
-    dynamicTabAction->setShortcut(Qt::AltModifier+Qt::Key_5);
-    streamsTabAction->setShortcut(Qt::AltModifier+Qt::Key_6);
-    lyricsTabAction->setShortcut(Qt::AltModifier+Qt::Key_7);
+    int pageKey=Qt::Key_1;
+    libraryTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    albumsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    foldersTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    playlistsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    #ifndef Q_WS_WIN
+    dynamicTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    #endif
+    streamsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    lyricsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+
     #ifdef ENABLE_WEBKIT
-    infoTabAction->setShortcut(Qt::AltModifier+Qt::Key_8);
-    serverInfoTabAction->setShortcut(Qt::AltModifier+Qt::Key_9);
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setShortcut(Qt::AltModifier+Qt::Key_0);
-    #endif // ENABLE_DEVICES_SUPPORT
-    #else // ENABLE_WEBKIT
-    serverInfoTabAction->setShortcut(Qt::AltModifier+Qt::Key_8);
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setShortcut(Qt::AltModifier+Qt::Key_9);
-    #endif // ENABLE_DEVICES_SUPPORT
+    infoTabAction->setShortcut(Qt::AltModifier+(pageKey++));
     #endif // ENABLE_WEBKIT
+    serverInfoTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    #endif // ENABLE_DEVICES_SUPPORT
 
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
@@ -681,7 +691,9 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
     foldersTabAction->setIcon(Icon("inode-directory"));
     playlistsTabAction->setIcon(Icon("view-media-playlist"));
+    #ifndef Q_WS_WIN
     dynamicTabAction->setIcon(Icon("media-playlist-shuffle"));
+    #endif
     lyricsTabAction->setIcon(Icon("view-media-lyrics"));
     streamsTabAction->setIcon(Icon(DEFAULT_STREAM_ICON));
     #ifdef ENABLE_WEBKIT
@@ -725,7 +737,9 @@ MainWindow::MainWindow(QWidget *parent)
     albumsPage = new AlbumsPage(this);
     folderPage = new FolderPage(this);
     playlistsPage = new PlaylistsPage(this);
+    #ifndef Q_WS_WIN
     dynamicPage = new DynamicPage(this);
+    #endif
     streamsPage = new StreamsPage(this);
     lyricsPage = new LyricsPage(this);
     #ifdef ENABLE_WEBKIT
@@ -757,7 +771,9 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(albumsPage, albumsTabAction->icon(), albumsTabAction->text(), !hiddenPages.contains(albumsPage->metaObject()->className()));
     tabWidget->AddTab(folderPage, foldersTabAction->icon(), foldersTabAction->text(), !hiddenPages.contains(folderPage->metaObject()->className()));
     tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text(), !hiddenPages.contains(playlistsPage->metaObject()->className()));
+    #ifndef Q_WS_WIN
     tabWidget->AddTab(dynamicPage, dynamicTabAction->icon(), dynamicTabAction->text(), !hiddenPages.contains(dynamicPage->metaObject()->className()));
+    #endif
     tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text(), !hiddenPages.contains(streamsPage->metaObject()->className()));
     tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text(), !hiddenPages.contains(lyricsPage->metaObject()->className()));
     #ifdef ENABLE_WEBKIT
@@ -940,8 +956,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
+    #ifndef Q_WS_WIN
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
+    #endif
     connect(refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
     connect(refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
@@ -989,7 +1007,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
     connect(playlistsTabAction, SIGNAL(activated()), this, SLOT(showPlaylistsTab()));
+    #ifndef Q_WS_WIN
     connect(dynamicTabAction, SIGNAL(activated()), this, SLOT(showDynamicTab()));
+    #endif
     connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
     connect(streamsTabAction, SIGNAL(activated()), this, SLOT(showStreamsTab()));
     #ifdef ENABLE_WEBKIT
@@ -1079,17 +1099,21 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     playlistsPage->refresh();
+    #ifndef Q_WS_WIN
     toggleMpris();
     if (Settings::self()->dockManager()) {
         QTimer::singleShot(250, this, SLOT(toggleDockManager()));
     }
+    #endif
 }
 
 MainWindow::~MainWindow()
 {
+    #ifndef Q_WS_WIN
     if (dock) {
         dock->setIcon(QString());
     }
+    #endif
     Settings::self()->saveMainWindowSize(splitter->isVisible() ? size() : expandedSize);
     Settings::self()->saveMainWindowCollapsedSize(splitter->isVisible() ? collapsedSize : size());
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
@@ -1123,9 +1147,11 @@ MainWindow::~MainWindow()
     #endif
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
+    #ifndef Q_WS_WIN
     if (Settings::self()->stopDynamizerOnExit() || Settings::self()->stopOnExit()) {
         Dynamic::self()->stop();
     }
+    #endif
     if (Settings::self()->stopOnExit() || (fadeStop && StopState_Stopping==stopState)) {
         emit stop();
         Utils::sleep();
@@ -1222,13 +1248,16 @@ void MainWindow::songLoaded()
 
 void MainWindow::showError(const QString &message, bool showActions)
 {
+    #ifndef Q_WS_WIN
     if (QLatin1String("NO_SONGS")==message) {
         #ifdef ENABLE_KDE_SUPPORT
         messageWidget->setError(i18n("Failed to locate any songs matching the dynamic playlist rules."));
         #else
         messageWidget->setError(tr("Failed to locate any songs matching the dynamic playlist rules."));
         #endif
-    } else {
+    } else
+    #endif
+    {
         messageWidget->setError(message);
     }
     if (showActions) {
@@ -1415,8 +1444,10 @@ void MainWindow::updateSettings()
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif
     setupTrayIcon();
+    #ifndef Q_WS_WIN
     toggleDockManager();
     toggleMpris();
+    #endif
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
 
     bool wasAutoExpand=playQueue->isAutoExpand();
@@ -2396,9 +2427,11 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_PLAYLISTS:
         playlistsPage->controlActions();
         break;
+    #ifndef Q_WS_WIN
     case PAGE_DYNAMIC:
         dynamicPage->controlActions();
         break;
+    #endif
     case PAGE_STREAMS:
         if (!(loaded&TAB_STREAMS)) {
             loaded|=TAB_STREAMS;
@@ -2479,9 +2512,13 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         showTab(MainWindow::PAGE_FOLDERS);
     } else if (QLatin1String("playlists")==p) {
         showTab(MainWindow::PAGE_PLAYLISTS);
-    } else if (QLatin1String("dynamic")==p) {
+    }
+    #ifndef Q_WS_WIN
+    else if (QLatin1String("dynamic")==p) {
         showTab(MainWindow::PAGE_DYNAMIC);
-    } else if (QLatin1String("streams")==p) {
+    }
+    #endif
+    else if (QLatin1String("streams")==p) {
         showTab(MainWindow::PAGE_STREAMS);
     } else if (QLatin1String("lyrics")==p) {
         showTab(MainWindow::PAGE_LYRICS);
@@ -2500,10 +2537,12 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     }
 }
 
+#ifndef Q_WS_WIN
 void MainWindow::dynamicStatus(const QString &message)
 {
     Dynamic::self()->helperMessage(message);
 }
+#endif
 
 void MainWindow::showTab(int page)
 {
@@ -2532,9 +2571,13 @@ void MainWindow::focusTabSearch()
         folderPage->focusSearch();
     } else if (playlistsPage->isVisible()) {
         playlistsPage->focusSearch();
-    } else if (dynamicPage->isVisible()) {
+    }
+    #ifndef Q_WS_WIN
+    else if (dynamicPage->isVisible()) {
         dynamicPage->focusSearch();
-    } else if (streamsPage->isVisible()) {
+    }
+    #endif
+    else if (streamsPage->isVisible()) {
         streamsPage->focusSearch();
     }
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -2560,6 +2603,7 @@ void MainWindow::collapseAll()
     }
 }
 
+#ifndef Q_WS_WIN
 void MainWindow::toggleMpris()
 {
     bool on=Settings::self()->mpris();
@@ -2588,6 +2632,7 @@ void MainWindow::toggleDockManager()
         dock->setIcon(coverWidget->fileName());
     }
 }
+#endif
 
 // void MainWindow::createDataCd()
 // {

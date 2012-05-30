@@ -125,8 +125,6 @@ SET( CANTATA_SRCS
     lyrics/lyricsdialog.cpp
     network/networkaccessmanager.cpp
     network/network.cpp
-    dbus/mpris.cpp
-    dbus/dockmanager.cpp
     libmaia/maiaObject.cpp
     libmaia/maiaFault.cpp
     libmaia/maiaXmlRpcClient.cpp
@@ -134,11 +132,6 @@ SET( CANTATA_SRCS
     http/httpserver.cpp
     http/httpsocket.cpp
     devices/tags.cpp
-    dynamic/dynamic.cpp
-    dynamic/dynamicpage.cpp
-    dynamic/dynamicproxymodel.cpp
-    dynamic/dynamicruledialog.cpp
-    dynamic/dynamicrulesdialog.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -190,16 +183,10 @@ SET( CANTATA_MOC_HDRS
     lyrics/lyricsdialog.h
     network/networkaccessmanager.h
     network/network.h
-    dbus/mpris.h
-    dbus/dockmanager.h
     libmaia/maiaObject.h
     libmaia/maiaFault.h
     libmaia/maiaXmlRpcClient.h
     http/httpsocket.h
-    dynamic/dynamic.h
-    dynamic/dynamicpage.h
-    dynamic/dynamicruledialog.h
-    dynamic/dynamicrulesdialog.h
 )
 
 SET( CANTATA_UIS
@@ -219,10 +206,34 @@ SET( CANTATA_UIS
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
     widgets/itemview.ui
-    dynamic/dynamicpage.ui
-    dynamic/dynamicrule.ui
-    dynamic/dynamicrules.ui
 )
+
+if (NOT WIN32)
+    SET( CANTATA_SRCS ${CANTATA_SRCS}
+        dbus/mpris.cpp
+        dbus/dockmanager.cpp
+        dynamic/dynamic.cpp
+        dynamic/dynamicpage.cpp
+        dynamic/dynamicproxymodel.cpp
+        dynamic/dynamicruledialog.cpp
+        dynamic/dynamicrulesdialog.cpp
+    )
+
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
+        dbus/mpris.h
+        dbus/dockmanager.h
+        dynamic/dynamic.h
+        dynamic/dynamicpage.h
+        dynamic/dynamicruledialog.h
+        dynamic/dynamicrulesdialog.h
+    )
+    SET( CANTATA_UIS ${CANTATA_UIS}
+        widgets/itemview.ui
+        dynamic/dynamicpage.ui
+        dynamic/dynamicrule.ui
+        dynamic/dynamicrules.ui
+)
+endif(NOT WIN32)
 
 SET( CANTATA_RCS cantata.qrc )
 
@@ -245,11 +256,13 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
 FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )
 FIND_PACKAGE( Phonon )
 
+if(NOT WIN32)
 qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
 qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.root.xml dbus/mpris.h Mpris)
 qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.kde.cantata.xml gui/mainwindow.h MainWindow)
 qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockItem.xml )
 qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockManager.xml)
+endif(NOT WIN32)
 
 IF( NOT DEFINED WANT_KDE_SUPPORT )
     SET( WANT_KDE_SUPPORT ON )
@@ -412,9 +425,24 @@ ELSE( ENABLE_KDE_SUPPORT )
     QT4_WRAP_UI( CANTATA_UI_HDRS ${CANTATA_UIS} )
     INCLUDE( ${QT_USE_FILE} )
     QT4_WRAP_CPP( CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS} )
-    ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
+
+    if (WIN32)
+        IF( MINGW )
+            # resource compilation for MinGW
+            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o
+                                COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/icons/cantataico.rc
+                                    -o ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o )
+            SET(CANTATA_SRCS ${CANTATA_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
+        ELSE( MINGW )
+            SET(CANTATA_SRCS ${CANTATA_SRCS} icons/cantataico.rc)
+        ENDIF( MINGW )
+        ADD_EXECUTABLE( cantata WIN32 ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
+    else (WIN32)
+        ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
+        install( PROGRAMS dynamic/cantata-dynamic DESTINATION bin)
+    endif (WIN32)
+
     install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
-    install( PROGRAMS dynamic/cantata-dynamic DESTINATION bin)
     ADD_DEFINITIONS( -DQT_NO_STL -DQT_NO_CAST_TO_ASCII -Wall -Wextra )
     SET( XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications" )
 ENDIF( ENABLE_KDE_SUPPORT )
@@ -497,6 +525,8 @@ IF( ENABLE_KDE_SUPPORT )
         endif(NOT FFMPEG_FOUND OR NOT MPG123_FOUND)
     endif( NOT MTP_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
 ELSE( ENABLE_KDE_SUPPORT )
-    message("INFO: Building WITHOUT KDE support - Device sync, Track organizer, ReplayGain calculation, and CommandLine support DISABLED")
+    if (NOT WIN32)
+        message("INFO: Building WITHOUT KDE support - Device sync, Track organizer, ReplayGain calculation, and CommandLine support DISABLED")
+    endif (NOT WIN32)
 ENDIF( ENABLE_KDE_SUPPORT )
 message("")

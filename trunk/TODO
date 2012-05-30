@@ -28,6 +28,9 @@
     - Pass top level window to kio functions, so that they can cache credentials
     - Create dirs on device when copying songs
 
+- Dynamic
+  - Port helper to c++?
+
 - PlayQueue
   - Add copy to device to context menu?
     - Will need to be careful that songs are not from device

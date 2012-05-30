@@ -58,7 +58,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="BuddyLabel" name="label_5b">
+    <widget class="BuddyLabel" name="mprisLabel">
      <property name="text">
       <string>Enable basic MPRISv2 interface:</string>
      </property>
@@ -75,7 +75,7 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="BuddyLabel" name="label_5c">
+    <widget class="BuddyLabel" name="dockManagerLabel">
      <property name="text">
       <string>Use current cover as dock icon:</string>
      </property>

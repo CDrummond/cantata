@@ -30,6 +30,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KXmlGuiWindow>
 #else
+#include <QtCore/qglobal.h>
 #include <QtGui/QMainWindow>
 #include <QtGui/QSystemTrayIcon>
 #endif
@@ -66,7 +67,9 @@ class LibraryPage;
 class AlbumsPage;
 class FolderPage;
 class PlaylistsPage;
+#ifndef Q_WS_WIN
 class DynamicPage;
+#endif
 class LyricsPage;
 class StreamsPage;
 class InfoPage;
@@ -76,8 +79,10 @@ class DevicesPage;
 #endif
 class QThread;
 class QAbstractItemView;
+#ifndef Q_WS_WIN
 class DockManager;
 class Mpris;
+#endif
 class QTimer;
 class QPropertyAnimation;
 
@@ -165,7 +170,9 @@ public:
         PAGE_ALBUMS,
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
+        #ifndef Q_WS_WIN
         PAGE_DYNAMIC,
+        #endif
         PAGE_STREAMS,
         PAGE_LYRICS,
         PAGE_INFO,
@@ -218,7 +225,9 @@ Q_SIGNALS:
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
     void showPage(const QString &page, bool focusSearch);
+    #ifndef Q_WS_WIN
     void dynamicStatus(const QString &message);
+    #endif
 
 private Q_SLOTS:
     void setMpdVolume(int );
@@ -280,7 +289,9 @@ private Q_SLOTS:
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
+    #ifndef Q_WS_WIN
     void showDynamicTab() { showTab(PAGE_DYNAMIC); }
+    #endif
     void showStreamsTab() { showTab(PAGE_STREAMS); }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
     void showInfoTab() { showTab(PAGE_INFO); }
@@ -290,8 +301,10 @@ private Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
     void showDevicesTab() { showTab(PAGE_DEVICES); }
     #endif
+    #ifndef Q_WS_WIN
     void toggleMpris();
     void toggleDockManager();
+    #endif
 //     void createDataCd();
 //     void createAudioCd();
     void editTags();
@@ -366,7 +379,9 @@ private:
     Action *albumsTabAction;
     Action *foldersTabAction;
     Action *playlistsTabAction;
+    #ifndef Q_WS_WIN
     Action *dynamicTabAction;
+    #endif
     Action *lyricsTabAction;
     Action *streamsTabAction;
     Action *removeAction;
@@ -416,7 +431,9 @@ private:
     AlbumsPage *albumsPage;
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
+    #ifndef Q_WS_WIN
     DynamicPage *dynamicPage;
+    #endif
     LyricsPage *lyricsPage;
     StreamsPage *streamsPage;
     #ifdef ENABLE_WEBKIT
@@ -427,8 +444,10 @@ private:
     #endif
     ServerInfoPage *serverInfoPage;
     QThread *mpdThread;
+    #ifndef Q_WS_WIN
     DockManager *dock;
     Mpris *mpris;
+    #endif
     QTimer *playQueueSearchTimer;
     bool usingProxy;
 
@@ -463,7 +482,9 @@ private:
     friend class AlbumsPage;
     friend class FolderPage;
     friend class PlaylistsPage;
+    #ifndef Q_WS_WIN
     friend class DynamicPage;
+    #endif
     friend class StreamsPage;
     friend class LyricsPage;
     friend class InfoPage;

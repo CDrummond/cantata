@@ -84,3 +84,19 @@ Cantata contains code/icons from:
     libmaia        - https://github.com/wiedi/libmaia
     libebur128     - https://github.com/jiixyj/libebur128
     wikipedia icon - Social Media Mini by Paul Robert Lloyd License: Commons licence: Attribution-Share Alike 2.0 UK: England & Wales
+
+
+Windows
+=======
+
+To compile for windows:
+
+1. Install Qt, MinGW, cmake, TagLib. TagLib will probably need compiling.
+2. Call cmake:
+    cmake ../cantata -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -G "MinGW Makefiles" -DTAGLIB_INCLUDES="C:\Program Files\taglib\include" -DTAGLIB_LIBRARIES="C:\Program Files\tagglib\lib\libtag.dll.a"
+3. make! :-)
+
+This build is as per Qt-only, but does not have support for dbus, dockmanager,
+or dynamic playlists.
+
+To run you will also need Oxygen icons.

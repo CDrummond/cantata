@@ -34,6 +34,7 @@
 #include <QtCore/QThread>
 #include <QtCore/QMutex>
 #include <QtCore/QUrl>
+#include <QtCore/qglobal.h>
 #include <QtNetwork/QNetworkReply>
 #include <QtGui/QIcon>
 #include <QtGui/QImage>
@@ -124,6 +125,7 @@ static QString encodeName(QString name)
     return name;
 }
 
+#ifndef Q_WS_WIN
 static QString xdgConfig()
 {
     QString env = QString::fromLocal8Bit(qgetenv("XDG_CONFIG_HOME"));
@@ -196,6 +198,7 @@ static AppCover otherAppCover(const Covers::Job &job)
     }
     return app;
 }
+#endif
 
 const QSize Covers::constMaxSize(600, 600);
 
@@ -467,11 +470,13 @@ Covers::Image Covers::getImage(const Song &song)
 
     Job job(song, dirName);
 
+    #ifndef Q_WS_WIN
     // See if amarok, or clementine, has it...
     AppCover app=otherAppCover(job);
     if (!app.img.isNull()) {
         return Image(app.img, app.filename);
     }
+    #endif
 
     return Image(QImage(), QString());
 }
@@ -626,8 +631,12 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
 
     if (it!=end) {
         Job job=it.value();
+        #ifdef Q_WS_WIN
+        emit cover(job.song, QImage(), QString());
+        #else
         AppCover app=otherAppCover(job);
         emit cover(job.song, app.img, app.filename);
+        #endif
         jobs.erase(it);
     }
 
@@ -659,8 +668,12 @@ void Covers::jobFinished(QNetworkReply *reply)
         jobs.remove(it.key());
 
         if (img.isNull()) {
+            #ifdef Q_WS_WIN
+            emit cover(job.song, QImage(), QString());
+            #else
             AppCover app=otherAppCover(job);
             emit cover(job.song, app.img, app.filename);
+            #endif
         } else {
             emit cover(job.song, img, fileName);
         }

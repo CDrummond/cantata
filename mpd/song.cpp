@@ -29,11 +29,7 @@
 #include "mpdparseutils.h"
 #include "musiclibraryitemalbum.h"
 #include "httpserver.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#else
-#include <QtCore/QObject>
-#endif
+#include "localize.h"
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
@@ -113,11 +109,8 @@ bool Song::isEmpty() const
 
 void Song::fillEmptyFields()
 {
-    #ifdef ENABLE_KDE_SUPPORT
     QString unknown=i18n("Unknown");
-    #else
-    QString unknown=QObject::tr("Unknown");
-    #endif
+
     if (artist.isEmpty()) {
         artist = unknown;
     }
@@ -155,11 +148,8 @@ void Song::setKey()
 
 bool Song::isUnknown() const
 {
-    #ifdef ENABLE_KDE_SUPPORT
     QString unknown=i18n("Unknown");;
-    #else
-    QString unknown=QObject::tr("Unknown");;
-    #endif
+
     return (artist.isEmpty() || artist==unknown) && (album.isEmpty() || album==unknown) && (title.isEmpty() || title==unknown);
 }
 
@@ -250,13 +240,7 @@ void Song::updateSize(const QString &dir) const
 
 bool Song::isVariousArtists(const QString &str)
 {
-    return QLatin1String("Various Artists")==str ||
-            #ifdef ENABLE_KDE_SUPPORT
-            i18n("Various Artists")==str
-            #else
-            QObject::tr("Various Artists")==str
-            #endif
-            ;
+    return QLatin1String("Various Artists")==str || i18n("Various Artists")==str;
 }
 
 bool Song::fixVariousArtists()

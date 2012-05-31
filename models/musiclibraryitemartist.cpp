@@ -30,20 +30,14 @@
 #include "musiclibraryitemsong.h"
 #include "song.h"
 #include "mpdparseutils.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
+#include "localize.h"
 
 static QString songAlbum(const Song &s)
 {
     if (Song::Standard==s.type) {
         return s.album;
     }
-    #ifdef ENABLE_KDE_SUPPORT
     return i18n("Single Tracks");
-    #else
-    return QObject::tr("Single Tracks");
-    #endif
 }
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent)
@@ -94,11 +88,7 @@ bool MusicLibraryItemArtist::allSingleTrack() const
 void MusicLibraryItemArtist::addToSingleTracks(MusicLibraryItemArtist *other)
 {
     Song s;
-    #ifdef ENABLE_KDE_SUPPORT
     s.album=i18n("Single Tracks");
-    #else
-    s.album=QObject::tr("Single Tracks");
-    #endif
     MusicLibraryItemAlbum *single=album(s);
     foreach (MusicLibraryItem *album, other->childItems()) {
         single->addTracks(static_cast<MusicLibraryItemAlbum *>(album));
@@ -111,11 +101,7 @@ bool MusicLibraryItemArtist::isFromSingleTracks(const Song &s) const
         return true;
     }
 
-    #ifdef ENABLE_KDE_SUPPORT
     QHash<Song::AlbumKey, int>::ConstIterator it=m_indexes.find(Song::AlbumKey(0, i18n("Single Tracks")));
-    #else
-    QHash<Song::AlbumKey, int>::ConstIterator it=m_indexes.find(Song::AlbumKey(0, QObject::tr("Single Tracks")));
-    #endif
 
     if (m_indexes.end()!=it) {
         return static_cast<MusicLibraryItemAlbum *>(m_childItems.at(*it))->isSingleTrackFile(s);

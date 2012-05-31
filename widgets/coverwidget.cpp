@@ -24,13 +24,13 @@
 #include "coverwidget.h"
 #include "covers.h"
 #include "config.h"
+#include "localize.h"
 #include <QtGui/QPixmap>
 #include <QtGui/QIcon>
 #include <QtCore/QEvent>
 #include <QtCore/QTimer>
 #include <QtCore/QVariant>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
 #include <KDE/KTemporaryFile>
 #else
 #include <QtCore/QTemporaryFile>
@@ -128,15 +128,9 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
     if (event->type()==QEvent::ToolTip) {
         QString toolTip=QLatin1String("<table>");
 
-        #ifdef ENABLE_KDE_SUPPORT
         toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
                       "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
                       "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.artist).arg(current.album).arg(current.year);
-        #else
-        toolTip+=tr("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
-                    "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
-                    "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.artist).arg(current.album).arg(current.year);
-        #endif
         toolTip+="</table>";
         if (!coverFileName.isEmpty() && !image.isNull()) {
             if (image.size().width()>Covers::constMaxSize.width() || image.size().height()>Covers::constMaxSize.height()) {

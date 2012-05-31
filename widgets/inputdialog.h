@@ -21,35 +21,27 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DYNAMIC_RULE_DIALOG_H
-#define DYNAMIC_RULE_DIALOG_H
+#ifndef INPUT_DIALOG_H
+#define INPUT_DIALOG_H
 
-#include "config.h"
-#include "dialog.h"
-#include "ui_dynamicrule.h"
-#include "dynamic.h"
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KInputDialog>
+#define InputDialog KInputDialog
+#else
+#include <QtGui/QInputDialog>
 
-
-class DynamicRuleDialog : public Dialog, Ui::DynamicRule
+namespace InputDialog
 {
-    Q_OBJECT
+    inline QString getText(const QString &caption, const QString &label, const QString &value=QString(), bool *ok=0, QWidget *parent=0) {
+        return QInputDialog::getText(parent, caption, label, QLineEdit::Normal, value);
+    }
 
-public:
-    DynamicRuleDialog(QWidget *parent);
-    virtual ~DynamicRuleDialog();
-
-    bool edit(const Dynamic::Rule &rule);
-    Dynamic::Rule rule() const;
-
-    QString artist() const { return artistText->text().trimmed(); }
-    QString albumArtist() const { return albumArtistText->text().trimmed(); }
-    QString album() const { return albumText->text().trimmed(); }
-    QString title() const { return titleText->text().trimmed(); }
-    QString genre() const { return 0==genreCombo->currentIndex() ? QString() : genreCombo->currentText(); }
-
-
-private Q_SLOTS:
-    void enableOkButton();
+    inline int getInteger(const QString &caption, const QString &label, int value=0, int minValue=INT_MIN, int maxValue=INT_MAX,
+                          int step=1, int base=10, bool *ok=0, QWidget *parent=0) {
+        Q_UNUSED(base)
+        return QInputDialog::getInt(parent, caption, label, value, minValue, maxValue, step, ok);
+    }
 };
-
 #endif
+
+#endif // URLLABEL_H

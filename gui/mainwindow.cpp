@@ -39,7 +39,6 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KApplication>
 #include <KDE/KAction>
-#include <KDE/KLocale>
 #include <KDE/KActionCollection>
 #include <KDE/KNotification>
 #include <KDE/KStandardAction>
@@ -47,21 +46,20 @@
 #include <KDE/KAboutApplicationDialog>
 #include <KDE/KLineEdit>
 #include <KDE/KXMLGUIFactory>
-#include <KDE/KMessageBox>
 #include <KDE/KMenuBar>
 #include <KDE/KMenu>
 #include <KDE/KStatusNotifierItem>
-#include <KDE/KInputDialog>
 #else
-#include <QtGui/QInputDialog>
 #include <QtGui/QMenuBar>
-#include <QtGui/QMessageBox>
 #include "networkproxyfactory.h"
 #endif
+#include "localize.h"
 #include "mainwindow.h"
 #ifdef PHONON_FOUND
 #include <phonon/audiooutput.h>
 #endif
+#include "messagebox.h"
+#include "inputdialog.h"
 #include "playlistsmodel.h"
 #include "covers.h"
 #include "preferencesdialog.h"
@@ -352,19 +350,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifndef ENABLE_KDE_SUPPORT
     setWindowIcon(QIcon(":/icons/cantata.svg"));
     setWindowTitle("Cantata");
-
-//     quitAction=menu->addAction(tr("Quit"), qApp, SLOT(quit()));
-//     menuAct->setIcon(Icon("application-exit"));
-//     menuBar()->addMenu(menu);
-//     menu=new QMenu(tr("Tools"), this);
-//     menu=new QMenu(tr("Settings"), this);
-//     menuAct=menu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-//     menuAct->setIcon(Icon("configure"));
-//     menuBar()->addMenu(menu);
-//     menu=new QMenu(tr("Help"), this);
-//     menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
-//     menuAct->setIcon(windowIcon());
-//     menuBar()->addMenu(menu);
 
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
     #endif
@@ -800,11 +785,7 @@ MainWindow::MainWindow(QWidget *parent)
     streamPlayAction->setCheckable(true);
     #endif
 
-    #ifdef ENABLE_KDE_SUPPORT
     searchPlayQueueLineEdit->setPlaceholderText(i18n("Search Play Queue..."));
-    #else
-    searchPlayQueueLineEdit->setPlaceholderText(tr("Search Play Queue..."));
-    #endif
     QList<QToolButton *> playbackBtns;
     QList<QToolButton *> controlBtns;
     QList<QToolButton *> btns;
@@ -886,15 +867,14 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
-    #ifdef ENABLE_KDE_SUPPORT
-    QAction *menuAct=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+    QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(Icon("configure"));
+    #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
     mainMenu->addSeparator();
     mainMenu->addMenu(helpMenu());
     #else
-    QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-    menuAct->setIcon(Icon("configure"));
+
     prefAction=menuAct;
     mainMenu->addSeparator();
 //     QMenu *menu=new QMenu(tr("Help"), this);
@@ -1250,11 +1230,7 @@ void MainWindow::showError(const QString &message, bool showActions)
 {
     #ifndef Q_WS_WIN
     if (QLatin1String("NO_SONGS")==message) {
-        #ifdef ENABLE_KDE_SUPPORT
         messageWidget->setError(i18n("Failed to locate any songs matching the dynamic playlist rules."));
-        #else
-        messageWidget->setError(tr("Failed to locate any songs matching the dynamic playlist rules."));
-        #endif
     } else
     #endif
     {
@@ -1894,13 +1870,8 @@ void MainWindow::updateStatus()
 
     if (!stopState) {
         volume=status->volume();
-        #ifdef ENABLE_KDE_SUPPORT
         volumeButton->setToolTip(i18n("Volume %1%").arg(volume));
         volumeControl->setToolTip(i18n("Volume %1%").arg(volume));
-        #else
-        volumeButton->setToolTip(tr("Volume %1%").arg(volume));
-        volumeControl->setToolTip(tr("Volume %1%").arg(volume));
-        #endif
         volumeControl->setValue(volume);
 
         if (0==volume) {
@@ -2084,37 +2055,19 @@ void MainWindow::addToPlayQueue(bool replace)
 void MainWindow::addToNewStoredPlaylist()
 {
     for(;;) {
-        #ifdef ENABLE_KDE_SUPPORT
-        QString name = KInputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
-        #else
-        QString name = QInputDialog::getText(this, tr("Playlist Name"), tr("Enter a name for the playlist:"));
-        #endif
+        QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
 
         if (PlaylistsModel::self()->exists(name)) {
-            #ifdef ENABLE_KDE_SUPPORT
-            switch(KMessageBox::warningYesNoCancel(this, i18n("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?").arg(name),
-                                                   i18n("Existing Playlist"))) {
-            case KMessageBox::Cancel:
+            switch(MessageBox::warningYesNoCancel(this, i18n("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?").arg(name),
+                                                  i18n("Existing Playlist"))) {
+            case MessageBox::Cancel:
                 return;
-            case KMessageBox::Yes:
+            case MessageBox::Yes:
                 break;
-            case KMessageBox::No:
+            case MessageBox::No:
             default:
                 continue;
             }
-            #else
-            switch(QMessageBox::warning(this, tr("Existing Playlist"),
-                                        tr("A playlist named <b>%1</b> already exists!<br/>Add to that playlist?").arg(name),
-                                        QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel, QMessageBox::Yes)) {
-            case QMessageBox::Cancel:
-                return;
-            case QMessageBox::Yes:
-                break;
-            case QMessageBox::No:
-            default:
-                continue;
-            }
-            #endif
         }
 
         if (!name.isEmpty()) {
@@ -2701,11 +2654,7 @@ void MainWindow::editPlayQueueTags()
     editTags(playQueue->selectedSongs(), true);
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-#define DIALOG_ERROR KMessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
-#else
-#define DIALOG_ERROR QMessageBox::information(this, tr("Action is not currently possible, due to other open dialogs."), QMessageBox::Ok); return
-#endif
+#define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
 
 void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
 {

@@ -24,19 +24,17 @@
 #include "playlistspage.h"
 #include "playlistsmodel.h"
 #include "mpdconnection.h"
+#include "messagebox.h"
+#include "inputdialog.h"
+#include "localize.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KLocale>
 #include <KDE/KActionCollection>
-#include <KDE/KMessageBox>
-#include <KDE/KInputDialog>
 #include <KDE/KGlobalSettings>
 #else
-#include <QtGui/QInputDialog>
 #include <QtGui/QAction>
-#include <QtGui/QMessageBox>
 #include <QtGui/QStyle>
 #endif
 
@@ -62,11 +60,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     MainWindow::initButton(libraryUpdate);
 
     view->allowGroupedView();
-    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Playlists"));
-    #else
-    view->setTopText(tr("Playlists"));
-    #endif
     view->addAction(p->addToPlayQueueAction);
     view->addAction(p->replacePlayQueueAction);
     view->addAction(renamePlaylistAction);
@@ -199,19 +193,6 @@ void PlaylistsPage::removeItems()
         return;
     }
 
-    #if 0
-    #ifdef ENABLE_KDE_SUPPORT
-    if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected items?"), i18n("Remove?"))) {
-        return;
-    }
-    #else
-    if (QMessageBox::No==QMessageBox::warning(this, tr("Remove?"), tr("Are you sure you wish to remove the selected items?"),
-                                              QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
-        return;
-    }
-    #endif
-    #endif
-
     foreach (const QString &pl, remPlaylists) {
         emit removePlaylist(pl);
     }
@@ -224,20 +205,11 @@ void PlaylistsPage::removeItems()
 
 void PlaylistsPage::savePlaylist()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    QString name = KInputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
-    #else
-    QString name = QInputDialog::getText(this, tr("Playlist Name"), tr("Enter a name for the playlist:"));
-    #endif
+    QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
 
     if (!name.isEmpty()) {
         if (PlaylistsModel::self()->exists(name)) {
-            #ifdef ENABLE_KDE_SUPPORT
-            if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("A playlist named <b>%1</b> already exists!<br/>Overwrite?").arg(name), i18n("Overwrite Playlist?"))) {
-            #else
-            if (QMessageBox::No==QMessageBox::warning(this, tr("Overwrite Playlist?"), tr("A playlist named <b>%1</b> already exists!<br/>Overwrite?").arg(name),
-                                                      QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
-            #endif
+            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("A playlist named <b>%1</b> already exists!<br/>Overwrite?").arg(name), i18n("Overwrite Playlist?"))) {
                 return;
             }
             else {
@@ -255,20 +227,11 @@ void PlaylistsPage::renamePlaylist()
     if (items.size() == 1) {
         QModelIndex sourceIndex = proxy.mapToSource(items.first());
         QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
-        #ifdef ENABLE_KDE_SUPPORT
-        QString newName = KInputDialog::getText(i18n("Rename Playlist"), i18n("Enter new name for playlist:"), name, 0, this);
-        #else
-        QString newName = QInputDialog::getText(this, tr("Rename Playlist"), tr("Enter new name for playlist:"), QLineEdit::Normal, name);
-        #endif
+        QString newName = InputDialog::getText(i18n("Rename Playlist"), i18n("Enter new name for playlist:"), name, 0, this);
 
         if (!newName.isEmpty()) {
             if (PlaylistsModel::self()->exists(newName)) {
-                #ifdef ENABLE_KDE_SUPPORT
-                if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("A playlist named <b>%1</b> already exists!<br/>Overwrite?").arg(newName), i18n("Overwrite Playlist?"))) {
-                #else
-                if (QMessageBox::No==QMessageBox::warning(this, tr("Overwrite Playlist?"), tr("A playlist named <b>%1</b> already exists!<br/>Overwrite?").arg(newName),
-                                                          QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
-                #endif
+                if (MessageBox::No==MessageBox::warningYesNo(this, i18n("A playlist named <b>%1</b> already exists!<br/>Overwrite?").arg(newName), i18n("Overwrite Playlist?"))) {
                     return;
                 }
                 else {
@@ -381,11 +344,7 @@ void PlaylistsPage::updateGenres(const QSet<QString> &g)
     genres=g;
     QStringList entries=g.toList();
     qSort(entries);
-    #ifdef ENABLE_KDE_SUPPORT
     entries.prepend(i18n("All Genres"));
-    #else
-    entries.prepend(tr("All Genres"));
-    #endif
 
     QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
 

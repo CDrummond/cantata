@@ -36,6 +36,7 @@
 #include "encoders.h"
 #include "transcodingjob.h"
 #include "actiondialog.h"
+#include "localize.h"
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
@@ -44,7 +45,6 @@
 #include <KDE/KUrl>
 #include <KDE/KDiskFreeSpaceInfo>
 #include <KDE/KGlobal>
-#include <KDE/KLocale>
 #include <KDE/KIO/FileCopyJob>
 #include <KDE/KIO/Job>
 

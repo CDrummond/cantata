@@ -25,9 +25,7 @@
 //#include "songinfoview.h"
 #include "ultimatelyricsprovider.h"
 #include "ui_lyricsettings.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
+#include "localize.h"
 #include <QtGui/QIcon>
 
 LyricSettings::LyricSettings(QWidget *parent)
@@ -55,13 +53,8 @@ void LyricSettings::Load(const QList<UltimateLyricsProvider*> &providers) {
   foreach (const UltimateLyricsProvider* provider, providers) {
     QListWidgetItem* item = new QListWidgetItem(ui_->providers);
     QString name(provider->name());
-#ifdef ENABLE_KDE_SUPPORT
     name.replace("(POLISH)", i18n("(Polish Translations)"));
     name.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
-#else
-    name.replace("(POLISH)", tr("(Polish Translations)"));
-    name.replace("(PORTUGUESE)", tr("(Portuguese Translations)"));
-#endif
     item->setText(name);
     item->setCheckState(provider->is_enabled() ? Qt::Checked : Qt::Unchecked);
 //     item->setForeground(provider->is_enabled() ? palette().color(QPalette::Active, QPalette::Text)

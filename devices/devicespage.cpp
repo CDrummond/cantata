@@ -27,14 +27,14 @@
 #include "mainwindow.h"
 #include "devicesmodel.h"
 #include "settings.h"
+#include "messagebox.h"
+#include "localize.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KLocale>
 #include <KDE/KActionCollection>
 #include <KDE/KGlobalSettings>
-#include <KDE/KMessageBox>
 #else
 #include <QtGui/QAction>
 #endif
@@ -135,11 +135,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     menuButton->setMenu(menu);
     menuButton->setIcon(QIcon::fromTheme("system-run"));
     proxy.setSourceModel(DevicesModel::self());
-    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Devices"));
-    #else
-    view->setTopText(tr("Devices"));
-    #endif
     view->setModel(&proxy);
     #ifdef ENABLE_REMOTE_DEVICES
     view->init(configureAction, refreshAction, toggleDeviceAction, 0);
@@ -420,7 +416,7 @@ void DevicesPage::deleteSongs()
     QList<Song> songs=DevicesModel::self()->songs(mapped);
 
     if (!songs.isEmpty()) {
-        if (KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
             emit deleteSongs(udi, songs);
         }
         view->clearSelection();
@@ -439,7 +435,7 @@ void DevicesPage::addRemoteDevice()
 void DevicesPage::forgetRemoteDevice()
 {
     QString udi=activeFsDeviceUdi();
-    if (!udi.isEmpty() && KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to forget the selected device?"))) {
+    if (!udi.isEmpty() && MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to forget the selected device?"))) {
         DevicesModel::self()->removeRemoteDevice(udi);
     }
 }
@@ -460,11 +456,7 @@ void DevicesPage::toggleDevice()
 }
 #endif
 
-#ifdef ENABLE_KDE_SUPPORT
-#define DIALOG_ERROR KMessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
-#else
-#define DIALOG_ERROR QMessageBox::information(this, tr("Action is not currently possible, due to other open dialogs."), QMessageBox::Ok); return
-#endif
+#define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
 
 void DevicesPage::sync()
 {
@@ -504,11 +496,7 @@ void DevicesPage::updateGenres(const QSet<QString> &g)
     genres=g;
     QStringList entries=g.toList();
     qSort(entries);
-    #ifdef ENABLE_KDE_SUPPORT
     entries.prepend(i18n("All Genres"));
-    #else
-    entries.prepend(tr("All Genres"));
-    #endif
 
     QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
 

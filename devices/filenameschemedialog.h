@@ -24,12 +24,12 @@
 #ifndef FILENAMESCHEMEDIALOG_H
 #define FILENAMESCHEMEDIALOG_H
 
-#include <KDE/KDialog>
 #include "ui_filenameschemedialog.h"
+#include "dialog.h"
 #include "song.h"
 #include "device.h"
 
-class FilenameSchemeDialog : public KDialog, Ui::FilenameSchemeDialog
+class FilenameSchemeDialog : public Dialog, Ui::FilenameSchemeDialog
 {
     Q_OBJECT
 

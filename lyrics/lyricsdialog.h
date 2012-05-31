@@ -24,20 +24,11 @@
 #ifndef LYRICSDIALOG_H
 #define LYRICSDIALOG_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KDialog>
-#else
-#include <QtGui/QDialog>
-class QDialogButtonBox;
-#endif
+#include "dialog.h"
 #include "lineedit.h"
 #include "song.h"
 
-#ifdef ENABLE_KDE_SUPPORT
-class LyricsDialog : public KDialog
-#else
-class LyricsDialog : public QDialog
-#endif
+class LyricsDialog : public Dialog
 {
     Q_OBJECT
 
@@ -51,9 +42,6 @@ private Q_SLOTS:
 
 private:
     Song prev;
-    #ifndef ENABLE_KDE_SUPPORT
-    QDialogButtonBox *buttonBox;
-    #endif
     LineEdit *titleEntry;
     LineEdit *artistEntry;
 };

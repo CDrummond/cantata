@@ -23,13 +23,13 @@
 
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
+#include "localize.h"
 #include <KDE/KGlobal>
-#include <KDE/KLocale>
 
 DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
-    : KDialog(parent)
+    : Dialog(parent)
 {
-    setButtons(KDialog::Ok|KDialog::Cancel);
+    setButtons(Ok|Cancel);
     setCaption(i18n("Device Properties"));
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowModality(Qt::WindowModal);
@@ -41,7 +41,7 @@ void DevicePropertiesDialog::show(const QString &path, const QString &coverName,
 {
     devProp->update(path, coverName, opts, props);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
-    KDialog::show();
+    Dialog::show();
     enableButtonOk(false);
 }
 
@@ -53,10 +53,10 @@ void DevicePropertiesDialog::enableOkButton()
 void DevicePropertiesDialog::slotButtonClicked(int button)
 {
     switch (button) {
-    case KDialog::Ok:
+    case Ok:
         emit updatedSettings(devProp->music(), devProp->cover(), devProp->settings());
         break;
-    case KDialog::Cancel:
+    case Cancel:
         emit cancelled();
         reject();
         break;
@@ -64,9 +64,9 @@ void DevicePropertiesDialog::slotButtonClicked(int button)
         break;
     }
 
-    if (KDialog::Ok==button) {
+    if (Ok==button) {
         accept();
     }
 
-    KDialog::slotButtonClicked(button);
+    Dialog::slotButtonClicked(button);
 }

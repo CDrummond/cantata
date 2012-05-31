@@ -24,7 +24,7 @@
 #ifndef _RGDIALOG_H_
 #define _RGDIALOG_H_
 
-#include <KDE/KDialog>
+#include "dialog.h"
 #include "scanner.h"
 #include "song.h"
 #include "tags.h"
@@ -35,7 +35,7 @@ class QProgressBar;
 class Device;
 class TagReader;
 
-class RgDialog : public KDialog
+class RgDialog : public Dialog
 {
     Q_OBJECT
 

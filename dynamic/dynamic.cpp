@@ -28,9 +28,9 @@
 #include "itemview.h"
 #include "network.h"
 #include "settings.h"
+#include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
-#include <KDE/KMessageBox>
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(Dynamic, instance)
 #endif
@@ -268,11 +268,7 @@ bool Dynamic::start(const QString &name)
     QString fName(configDir(constDir, false)+name+constExtension);
 
     if (!QFile::exists(fName)) {
-        #ifdef ENABLE_KDE_SUPPORT
-        emit error(i18n("Failed to locate rules file - %1", fName));
-        #else
-        emit error(tr("Failed to locate rules file - %1").arg(fName));
-        #endif
+        emit error(i18n("Failed to locate rules file - %1").arg(fName));
         return false;
     }
 
@@ -280,20 +276,12 @@ bool Dynamic::start(const QString &name)
 
     QFile::remove(rules);
     if (QFile::exists(rules)) {
-        #ifdef ENABLE_KDE_SUPPORT
-        emit error(i18n("Failed to remove previous rules file - %1", rules));
-        #else
-        emit error(tr("Failed to remove previous rules file - %1").arg(rules));
-        #endif
+        emit error(i18n("Failed to remove previous rules file - %1").arg(rules));
         return false;
     }
 
     if (!QFile::link(fName, rules)) {
-        #ifdef ENABLE_KDE_SUPPORT
-        emit error(i18n("Failed to install rules file - %1 -> %2", fName, rules));
-        #else
-        emit error(tr("Failed to install rules file - %1 -> %2").arg(fName).arg(rules));
-        #endif
+        emit error(i18n("Failed to install rules file - %1 -> %2").arg(fName).arg(rules));
         return false;
     }
 

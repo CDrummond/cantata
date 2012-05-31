@@ -24,15 +24,12 @@
 #include "interfacesettings.h"
 #include "settings.h"
 #include "itemview.h"
+#include "localize.h"
 #include <QtGui/QComboBox>
 #include <QtGui/QCheckBox>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
 
 static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=false)
 {
-    #ifdef ENABLE_KDE_SUPPORT
     box->addItem(i18n("Tree"), ItemView::Mode_Tree);
     if (groupedTree) {
         box->addItem(i18n("Grouped Albums"), ItemView::Mode_GroupedTree);
@@ -41,16 +38,6 @@ static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=f
     if (iconMode) {
         box->addItem(i18n("Icon/List"), ItemView::Mode_IconTop);
     }
-    #else
-    box->addItem(QObject::tr("Tree"), ItemView::Mode_Tree);
-    if (groupedTree) {
-        box->addItem(QObject::tr("Grouped Albums"), ItemView::Mode_GroupedTree);
-    }
-    box->addItem(QObject::tr("List"), ItemView::Mode_List);
-    if (iconMode) {
-        box->addItem(QObject::tr("Icon/List"), ItemView::Mode_IconTop);
-    }
-    #endif
 }
 
 static void selectEntry(QComboBox *box, int v)
@@ -80,13 +67,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #ifdef ENABLE_DEVICES_SUPPORT
     addViewTypes(devicesView);
     #endif
-    #ifdef ENABLE_KDE_SUPPORT
     groupMultiple->addItem(i18n("Grouped by \'Album Artist\'"));
     groupMultiple->addItem(i18n("Grouped under \'Various Artists\'"));
-    #else
-    groupMultiple->addItem(tr("Grouped by \'Album Artist\'"));
-    groupMultiple->addItem(tr("Grouped under \'Various Artists\'"));
-    #endif
     connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playListsStyleChanged()));

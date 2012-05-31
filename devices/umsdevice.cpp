@@ -26,6 +26,7 @@
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
+#include "localize.h"
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>

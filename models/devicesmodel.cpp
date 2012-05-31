@@ -35,12 +35,12 @@
 #include "mediadevicecache.h"
 #include "umsdevice.h"
 #include "httpserver.h"
+#include "localize.h"
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
-#include <KDE/KLocale>
 #include <KDE/KGlobal>
 #endif
 #ifdef ENABLE_KIO_REMOTE_DEVICES

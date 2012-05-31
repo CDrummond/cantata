@@ -24,22 +24,14 @@
 #ifndef STREAMCATEGORYDIALOG_H
 #define STREAMCATEGORYDIALOG_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KDialog>
-#else
-#include <QtGui/QDialog>
-class QDialogButtonBox;
-#endif
+#include "dialog.h"
 #include "lineedit.h"
 #include <QtCore/QSet>
 
 #ifdef ENABLE_KDE_SUPPORT
 class QPushButton;
-
-class StreamCategoryDialog : public KDialog
-#else
-class StreamCategoryDialog : public QDialog
 #endif
+class StreamCategoryDialog : public Dialog
 {
     Q_OBJECT
 
@@ -72,8 +64,6 @@ private:
     QString prevIconName;
     QString iconName;
     QPushButton *iconButton;
-    #else
-    QDialogButtonBox *buttonBox;
     #endif
     LineEdit *nameEntry;
     QSet<QString> existingCategories;

@@ -34,11 +34,11 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "localize.h"
 #include <solid/portablemediaplayer.h>
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
 #include <QtCore/QDir>
-#include <KDE/KLocale>
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
 #include <KDE/KConfigGroup>

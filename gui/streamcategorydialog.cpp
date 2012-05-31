@@ -28,20 +28,14 @@
 #include "mainwindow.h"
 #include "settings.h"
 #include "streamsmodel.h"
+#include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
 #include <KDE/KIconDialog>
-#else
-#include <QtGui/QDialogButtonBox>
 #include <QtGui/QPushButton>
 #endif
 
 StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidget *parent)
-#ifdef ENABLE_KDE_SUPPORT
-    : KDialog(parent)
-#else
-    : QDialog(parent)
-#endif
+    : Dialog(parent)
 {
     existingCategories=categories.toSet();
     QWidget *wid = new QWidget(this);
@@ -65,21 +59,10 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
     setIcon(QString());
     layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
     #endif
-    #ifdef ENABLE_KDE_SUPPORT
-    setMainWidget(wid);
-    setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Add Category"));
-    enableButton(KDialog::Ok, false);
-    #else
-    setWindowTitle(tr("Add Category"));
-    QBoxLayout *mainLayout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    mainLayout->addWidget(wid);
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this);
-    mainLayout->addWidget(buttonBox);
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    #endif
+    setMainWidget(wid);
+    setButtons(Ok|Cancel);
+    enableButton(Ok, false);
 
     connect(nameEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
     #ifdef ENABLE_KDE_SUPPORT
@@ -92,15 +75,13 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
 void StreamCategoryDialog::setEdit(const QString &editName, const QString &editIconName)
 {
     #ifdef ENABLE_KDE_SUPPORT
-    setCaption(i18n("Edit Category"));
-    enableButton(KDialog::Ok, false);
     prevIconName=iconName=editIconName;
     setIcon(prevIconName);
     #else
     Q_UNUSED(editIconName)
-    setWindowTitle(tr("Edit Category"));
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     #endif
+    setCaption(i18n("Edit Category"));
+    enableButton(Ok, false);
     prevName=editName;
     nameEntry->setText(editName);
 }
@@ -112,10 +93,8 @@ void StreamCategoryDialog::changed()
 
     #ifdef ENABLE_KDE_SUPPORT
     enableOk=enableOk || icon()!=prevIconName;
-    enableButton(KDialog::Ok, enableOk);
-    #else
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enableOk);
     #endif
+    enableButton(Ok, enableOk);
 }
 
 #ifdef ENABLE_KDE_SUPPORT

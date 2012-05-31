@@ -32,12 +32,12 @@
 #include "actiondialog.h"
 #include "network.h"
 #include "httpserver.h"
+#include "localize.h"
 #include <QtCore/QTimer>
 #include <QtCore/QProcess>
 #include <KDE/KUrl>
 #include <KDE/KDiskFreeSpaceInfo>
 #include <KDE/KGlobal>
-#include <KDE/KLocale>
 #include <KDE/KConfigGroup>
 #include <KDE/KStandardDirs>
 #include <kmountpoint.h>

@@ -36,9 +36,7 @@
 #ifdef Q_WS_WIN
 #include <QtGui/QDesktopServices>
 #endif
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
+#include "localize.h"
 #include "itemview.h"
 #include "streamsmodel.h"
 #include "playqueuemodel.h"

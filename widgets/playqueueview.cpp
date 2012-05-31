@@ -29,13 +29,11 @@
 #include "settings.h"
 #include "mpdstatus.h"
 #include "httpserver.h"
+#include "localize.h"
 #include <QtGui/QHeaderView>
 #include <QtGui/QMenu>
 #include <QtGui/QAction>
 #include <QtCore/QFile>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
 
 PlayQueueTreeView::PlayQueueTreeView(QWidget *parent)
     : TreeView(parent)
@@ -115,12 +113,7 @@ void PlayQueueTreeView::initHeader()
 
         foreach (int col, hideAble) {
             QString text=PlayQueueModel::COL_TRACK==col
-                            ?
-                                #ifdef ENABLE_KDE_SUPPORT
-                                i18n("Track")
-                                #else
-                                tr("Track")
-                                #endif
+                            ? i18n("Track")
                             : PlayQueueModel::headerText(col);
             QAction *act=new QAction(text, menu);
             act->setCheckable(true);
@@ -346,4 +339,3 @@ QList<Song> PlayQueueView::selectedSongs() const
 
     return songs;
 }
-

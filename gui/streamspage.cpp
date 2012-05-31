@@ -25,19 +25,16 @@
 #include "streamdialog.h"
 #include "streamcategorydialog.h"
 #include "mpdconnection.h"
+#include "messagebox.h"
+#include "localize.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KLocale>
 #include <KDE/KActionCollection>
-#include <KDE/KMessageBox>
 #include <KDE/KFileDialog>
-#include <KDE/KInputDialog>
 #else
-#include <QtGui/QInputDialog>
 #include <QtGui/QAction>
-#include <QtGui/QMessageBox>
 #include <QtGui/QFileDialog>
 #include <QtCore/QDir>
 #endif
@@ -90,11 +87,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     menuButton->setIcon(QIcon::fromTheme("system-run"));
     MainWindow::initButton(replacePlayQueue);
 
-    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Streams"));
-    #else
-    view->setTopText(tr("Streams"));
-    #endif
 //     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlayQueueAction);
     view->addAction(editAction);
@@ -178,11 +171,7 @@ void StreamsPage::updateGenres(const QSet<QString> &g)
     genres=g;
     QStringList entries=g.toList();
     qSort(entries);
-    #ifdef ENABLE_KDE_SUPPORT
     entries.prepend(i18n("All Genres"));
-    #else
-    entries.prepend(tr("All Genres"));
-    #endif
 
     QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
 
@@ -219,11 +208,7 @@ void StreamsPage::importXml()
     }
 
     if (!model.import(fileName)) {
-        #ifdef ENABLE_KDE_SUPPORT
-        KMessageBox::error(this, i18n("Failed to import <b>%1</b>!<br/>Please check this is of the correct type.", fileName));
-        #else
-        QMessageBox::critical(this, tr("Error"), tr("Failed to import <b>%1</b>!<br/>Please check this is of the correct type.").arg(fileName));
-        #endif
+        MessageBox::error(this, i18n("Failed to import <b>%1</b>!<br/>Please check this is of the correct type.").arg(fileName));
     }
 }
 
@@ -264,11 +249,7 @@ void StreamsPage::exportXml()
     }
 
     if (!model.save(fileName, categories+items)) {
-        #ifdef ENABLE_KDE_SUPPORT
-        KMessageBox::error(this, i18n("Failed to create <b>%1</b>!", fileName));
-        #else
-        QMessageBox::critical(this, tr("Error"), tr("Failed to create <b>%1</b>!").arg(fileName));
-        #endif
+        MessageBox::error(this, i18n("Failed to create <b>%1</b>!").arg(fileName));
     }
 }
 
@@ -283,20 +264,12 @@ void StreamsPage::add()
         QString existing=model.name(cat, url);
 
         if (!existing.isEmpty()) {
-            #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>", existing));
-            #else
-            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><b>%1</b>").arg(existing));
-            #endif
+            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1</b>").arg(existing));
             return;
         }
 
         if (!model.add(cat, name, dlg.genre(), dlg.icon(), url)) {
-            #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("A stream named <b>%1</b> already exists!", name));
-            #else
-            QMessageBox::critical(this, tr("Error"), tr("A stream named <b>%1</b> already exists!").arg(name));
-            #endif
+            MessageBox::error(this, i18n("A stream named <b>%1</b> already exists!").arg(name));
         }
     }
     exportAction->setEnabled(model.rowCount()>0);
@@ -313,20 +286,11 @@ void StreamsPage::removeItems()
 
     QModelIndex firstIndex=proxy.mapToSource(selected.first());
     QString firstName=model.data(firstIndex, Qt::DisplayRole).toString();
-    #ifdef ENABLE_KDE_SUPPORT
-    if (KMessageBox::No==KMessageBox::warningYesNo(this, selected.size()>1 ? i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
-                                                                           : i18n("Are you sure you wish to remove <b>%1</b>?").arg(firstName),
-                                                   selected.size()>1 ? i18n("Remove Streams?") : i18n("Remove Stream?"))) {
+    if (MessageBox::No==MessageBox::warningYesNo(this, selected.size()>1 ? i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
+                                                                         : i18n("Are you sure you wish to remove <b>%1</b>?").arg(firstName),
+                                                 selected.size()>1 ? i18n("Remove Streams?") : i18n("Remove Stream?"))) {
         return;
     }
-    #else
-    if (QMessageBox::No==QMessageBox::warning(this, selected.size()>1 ? tr("Remove Streams?") : tr("Remove Stream?"),
-                                              selected.size()>1 ? tr("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
-                                                                : tr("Are you sure you wish to remove <b>%1</b>?").arg(firstName),
-                                              QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
-        return;
-    }
-    #endif
 
     // Ensure that if we have a category selected, we dont also try to remove one of its children
     QSet<StreamsModel::CategoryItem *> removeCategories;
@@ -406,17 +370,9 @@ void StreamsPage::edit()
         QString existingNameForUrl=newUrl!=url ? model.name(newCat, newUrl) : QString();
 //
         if (!existingNameForUrl.isEmpty()) {
-            #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("Stream already exists!<br/><b>%1 (%2)</b>", existingNameForUrl, newCat));
-            #else
-            QMessageBox::critical(this, tr("Error"), tr("Stream already exists!<br/><b>%1 (%2)</b>").arg(existingNameForUrl).arg(newCat));
-            #endif
+            MessageBox::error(this, i18n("Stream already exists!<br/><b>%1 (%2)</b>").arg(existingNameForUrl).arg(newCat));
         } else if (newName!=name && model.entryExists(newCat, newName)) {
-            #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("A stream named <b>%1 (%2)</b> already exists!", newName, newCat));
-            #else
-            QMessageBox::critical(this, tr("Error"), tr("A stream named <b>%1 (%2)</b> already exists!").arg(newName).arg(newCat));
-            #endif
+            MessageBox::error(this, i18n("A stream named <b>%1 (%2)</b> already exists!").arg(newName).arg(newCat));
         } else {
             model.editStream(index, cat, newCat, newName, newGenre, newIcon, newUrl);
         }
@@ -452,11 +408,7 @@ QStringList StreamsPage::getCategories()
     }
 
     if (categories.isEmpty()) {
-        #ifdef ENABLE_KDE_SUPPORT
         categories.append(i18n("General"));
-        #else
-        categories.append(tr("General"));
-        #endif
     }
 
     qSort(categories);

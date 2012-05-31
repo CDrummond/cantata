@@ -37,6 +37,7 @@
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "network.h"
+#include "localize.h"
 #include <QtGui/QCommonStyle>
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
@@ -46,7 +47,6 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QStringList>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
 #include <KDE/KGlobal>
 #endif
 #include "debugtimer.h"
@@ -344,11 +344,7 @@ bool MusicLibraryModel::songExists(const Song &s) const
 
     if (!s.isVariousArtists()) {
         Song mod(s);
-        #ifdef ENABLE_KDE_SUPPORT
         mod.albumartist=i18n("Various Artists");
-        #else
-        mod.albumartist=tr("Various Artists");
-        #endif
         if (MPDParseUtils::groupMultiple()) {
             song=findSong(mod);
             if (song) {
@@ -359,11 +355,7 @@ bool MusicLibraryModel::songExists(const Song &s) const
             }
         }
         if (MPDParseUtils::groupSingle()) {
-            #ifdef ENABLE_KDE_SUPPORT
             mod.album=i18n("Single Tracks");
-            #else
-            mod.album=QObject::tr("Single Tracks");
-            #endif
 
             song=findSong(mod);
             if (song) {

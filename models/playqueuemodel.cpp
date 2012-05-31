@@ -32,9 +32,7 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QSet>
 #include <QtCore/QUrl>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
+#include "localize.h"
 #include "playqueuemodel.h"
 #include "groupedview.h"
 #include "mpdconnection.h"
@@ -92,25 +90,18 @@ QString PlayQueueModel::headerText(int col)
 {
     switch (col) {
     case COL_STATUS: return QString();
-    #ifdef ENABLE_KDE_SUPPORT
     case COL_TITLE:  return i18n("Title");
     case COL_ARTIST: return i18n("Artist");
     case COL_ALBUM:  return i18n("Album");
+    #ifdef ENABLE_KDE_SUPPORT
     case COL_TRACK:  return i18nc("Track Number (#)", "#");
+    #else
+    case COL_TRACK:  return QObject::tr("#");
+    #endif
     case COL_LENGTH: return i18n("Length");
     case COL_DISC:   return i18n("Disc");
     case COL_YEAR:   return i18n("Year");
     case COL_GENRE:  return i18n("Genre");
-    #else
-    case COL_TITLE:  return tr("Title");
-    case COL_ARTIST: return tr("Artist");
-    case COL_ALBUM:  return tr("Album");
-    case COL_TRACK:  return tr("#");
-    case COL_LENGTH: return tr("Length");
-    case COL_DISC:   return tr("Disc");
-    case COL_YEAR:   return tr("Year");
-    case COL_GENRE:  return tr("Genre");
-    #endif
     default:         return QString();
     }
 }

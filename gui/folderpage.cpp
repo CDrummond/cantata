@@ -25,14 +25,14 @@
 #include "mpdconnection.h"
 #include "musiclibrarymodel.h"
 #include "settings.h"
+#include "localize.h"
+#include "messagebox.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #include <QtCore/QDir>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KLocale>
 #include <KDE/KActionCollection>
-#include <KDE/KMessageBox>
 #include <KDE/KRun>
 #else
 #include <QtGui/QAction>
@@ -55,11 +55,7 @@ FolderPage::FolderPage(MainWindow *p)
     MainWindow::initButton(replacePlayQueue);
     MainWindow::initButton(libraryUpdate);
 
-    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Folders"));
-    #else
-    view->setTopText(tr("Folders"));
-    #endif
     view->addAction(p->addToPlayQueueAction);
     view->addAction(p->replacePlayQueueAction);
     view->addAction(p->addToStoredPlaylistAction);
@@ -260,7 +256,7 @@ void FolderPage::deleteSongs()
     QList<Song> songs=selectedSongs();
 
     if (!songs.isEmpty()) {
-        if (KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
             emit deleteSongs(QString(), songs);
         }
         view->clearSelection();

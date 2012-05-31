@@ -26,9 +26,9 @@
 #include "mpdstats.h"
 #include "mainwindow.h"
 #include "mpdparseutils.h"
+#include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KLocale>
 #include <KDE/KGlobal>
 #include <KDE/KActionCollection>
 #else

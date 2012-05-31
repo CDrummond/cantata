@@ -24,9 +24,7 @@
 #include "playbacksettings.h"
 #include "mpdconnection.h"
 #include "settings.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
+#include "localize.h"
 #include <QtGui/QListWidget>
 #include "config.h"
 
@@ -36,19 +34,11 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    #ifdef ENABLE_KDE_SUPPORT
     replayGain->addItem(i18n("None"), QVariant("off"));
     replayGain->addItem(i18n("Track"), QVariant("track"));
     replayGain->addItem(i18n("Album"), QVariant("album"));
     stopFadeDuration->setSpecialValueText(i18n("Do not fadeout"));
     stopFadeDuration->setSuffix(i18n(" ms"));
-    #else
-    replayGain->addItem(tr("None"), QVariant("off"));
-    replayGain->addItem(tr("Track"), QVariant("track"));
-    replayGain->addItem(tr("Album"), QVariant("album"));
-    stopFadeDuration->setSpecialValueText(tr("Do not fadeout"));
-    stopFadeDuration->setSuffix(tr(" ms"));
-    #endif
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
     connect(MPDConnection::self(), SIGNAL(replayGain(const QString &)), this, SLOT(replayGainSetting(const QString &)));

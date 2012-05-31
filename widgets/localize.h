@@ -21,35 +21,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DYNAMIC_RULE_DIALOG_H
-#define DYNAMIC_RULE_DIALOG_H
+#ifndef LOCALIZE_H
+#define LOCALIZE_H
 
-#include "config.h"
-#include "dialog.h"
-#include "ui_dynamicrule.h"
-#include "dynamic.h"
-
-
-class DynamicRuleDialog : public Dialog, Ui::DynamicRule
-{
-    Q_OBJECT
-
-public:
-    DynamicRuleDialog(QWidget *parent);
-    virtual ~DynamicRuleDialog();
-
-    bool edit(const Dynamic::Rule &rule);
-    Dynamic::Rule rule() const;
-
-    QString artist() const { return artistText->text().trimmed(); }
-    QString albumArtist() const { return albumArtistText->text().trimmed(); }
-    QString album() const { return albumText->text().trimmed(); }
-    QString title() const { return titleText->text().trimmed(); }
-    QString genre() const { return 0==genreCombo->currentIndex() ? QString() : genreCombo->currentText(); }
-
-
-private Q_SLOTS:
-    void enableOkButton();
-};
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KLocalizedString>
+#else
+#include <QtCore/QObject>
+#define i18n QObject::tr
+#endif
 
 #endif

@@ -34,13 +34,13 @@
 #include <QtWebKit/QWebSettings>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KWebView>
-#include <KDE/KLocale>
 #include <KDE/KFileDialog>
 #include <KDE/KGlobalSettings>
 #else
 #include <QtGui/QFileDialog>
 #include <QtWebKit/QWebView>
 #endif
+#include "localize.h"
 #include "infopage.h"
 #include "network.h"
 #include "mainwindow.h"
@@ -101,13 +101,8 @@ InfoPage::InfoPage(QWidget *parent)
     QToolButton *backBtn=new QToolButton(this);
     QToolButton *forwardBtn=new QToolButton(this);
     combo=new QComboBox(this);
-    #ifdef ENABLE_KDE_SUPPORT
     combo->insertItem(0, i18n("Artist Information"));
     combo->insertItem(1, i18n("Album Information"));
-    #else
-    combo->insertItem(0, tr("Artist Information"));
-    combo->insertItem(1, tr("Album Information"));
-    #endif
     layout->addWidget(view, 0, 0, 1, 4);
     layout->addWidget(refreshBtn, 1, 0, 1, 1);
     layout->addWidget(backBtn, 1, 1, 1, 1);
@@ -217,12 +212,7 @@ void InfoPage::fetchInfo()
     QString question = 0==combo->currentIndex() ? song.artist : (song.artist.isEmpty() && song.album.isEmpty() ? song.title : song.artist + " " + song.album);
     if (!question.isEmpty() && lastWikiQuestion != question) {
         lastWikiQuestion = question;
-        #ifdef ENABLE_KDE_SUPPORT
         view->setHtml(i18n("<h3><i>Loading...</i></h3>"));
-        #else
-        view->setHtml(tr("<h3><i>Loading...</i></h3>"));
-        #endif
-
         askGoogle(question);
 //         fetchWiki(artist);
     }

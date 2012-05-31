@@ -36,12 +36,12 @@
 #include "transcodingjob.h"
 #include "utils.h"
 #include "mpdparseutils.h"
+#include "localize.h"
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtCore/QDir>
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
-#include <KDE/KLocale>
 #include <KDE/KUrl>
 #include <KDE/KMimeType>
 #include <KDE/KTemporaryFile>

@@ -24,13 +24,13 @@
 #ifndef DEVICEPROPERTIESDIALOG_H
 #define DEVICEPROPERTIESDIALOG_H
 
-#include <KDE/KDialog>
+#include "dialog.h"
 #include "device.h"
 
 class FilenameSchemeDialog;
 class DevicePropertiesWidget;
 
-class DevicePropertiesDialog : public KDialog
+class DevicePropertiesDialog : public Dialog
 {
     Q_OBJECT
 

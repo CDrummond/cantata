@@ -23,37 +23,22 @@
 
 #include "dynamicruledialog.h"
 #include "musiclibrarymodel.h"
-#ifndef ENABLE_KDE_SUPPORT
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QPushButton>
-#endif
+#include "localize.h"
 
 static const int constMinDate=1800;
 static const int constMaxDate=2100;
 static const QChar constDateSep('-');
 
 DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
-    #ifdef ENABLE_KDE_SUPPORT
-    : KDialog(parent)
-    #else
-    : QDialog(parent)
-    #endif
+    : Dialog(parent)
 {
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
-    #ifdef ENABLE_KDE_SUPPORT
     setMainWidget(mainWidet);
     setButtons(Ok|Cancel);
-    setCaption(i18n("Dynamic Rule"));
     enableButton(Ok, false);
-    #else
-    setWindowTitle(tr("Dynamic Rule"));
+    setCaption(i18n("Dynamic Rule"));
 
-    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    layout->addWidget(mainWidet);
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this);
-    layout->addWidget(buttonBox);
-    #endif
     connect(artistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumArtistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
@@ -86,11 +71,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     strings=genres.toList();
     strings.sort();
     genreCombo->clear();
-    #ifdef ENABLE_KDE_SUPPORT
     strings.prepend(i18n("All Genres"));
-    #else
-    strings.prepend(tr("All Genres"));
-    #endif
     genreCombo->insertItems(0, strings);
     dateFromSpin->setRange(constMinDate-1, constMaxDate);
     dateToSpin->setRange(constMinDate-1, constMaxDate);
@@ -191,9 +172,5 @@ void DynamicRuleDialog::enableOkButton()
     bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
     bool enable=(!haveFrom || !haveTo || haveTo>=haveFrom) &&
                 (haveFrom || haveTo || !artist().isEmpty() || !albumArtist().isEmpty() || !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
-    #ifdef ENABLE_KDE_SUPPORT
     enableButton(Ok, enable);
-    #else
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enable);
-    #endif
 }

@@ -23,15 +23,15 @@
 
 #include "filenameschemedialog.h"
 #include "song.h"
-#include <KDE/KGlobal>
+#include "localize.h"
 #include <KDE/KLocale>
 #include <KDE/KMessageBox>
 #include <QtGui/QWhatsThis>
 
 FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
-    : KDialog(parent)
+    : Dialog(parent)
 {
-    setButtons(KDialog::Ok|KDialog::Cancel);
+    setButtons(Ok|Cancel);
     setCaption(i18n("Filename Scheme"));
     setWindowModality(Qt::WindowModal);
     QWidget *mainWidet = new QWidget(this);
@@ -65,28 +65,28 @@ void FilenameSchemeDialog::show(const Device::Options &opts)
     origOpts=opts;
     pattern->setText(opts.scheme);
     example->setText(origOpts.createFilename(exampleSong));
-    KDialog::show();
+    Dialog::show();
     enableButtonOk(false);
 }
 
 void FilenameSchemeDialog::slotButtonClicked(int button)
 {
     switch (button) {
-    case KDialog::Ok:
+    case Ok:
         emit scheme(pattern->text().trimmed());
         break;
-    case KDialog::Cancel:
+    case Cancel:
         reject();
         break;
     default:
         break;
     }
 
-    if (KDialog::Ok==button) {
+    if (Ok==button) {
         accept();
     }
 
-    KDialog::slotButtonClicked(button);
+    Dialog::slotButtonClicked(button);
 }
 
 void FilenameSchemeDialog::showHelp()

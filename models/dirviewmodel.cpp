@@ -28,9 +28,7 @@
 #include <QtCore/QString>
 #include <QtCore/QVariant>
 #include <QtCore/QMimeData>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
+#include "localize.h"
 #include "dirviewmodel.h"
 #include "dirviewitem.h"
 #include "playqueuemodel.h"

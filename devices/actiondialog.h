@@ -24,14 +24,14 @@
 #ifndef ACTION_DIALOG_H
 #define ACTION_DIALOG_H
 
-#include <KDE/KDialog>
+#include "dialog.h"
 #include "song.h"
 #include "device.h"
 #include "ui_actiondialog.h"
 
 class KJob;
 
-class ActionDialog : public KDialog, Ui::ActionDialog
+class ActionDialog : public Dialog, Ui::ActionDialog
 {
     Q_OBJECT
 

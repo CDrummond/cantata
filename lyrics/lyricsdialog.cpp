@@ -25,20 +25,13 @@
 #include <QtGui/QLabel>
 #include <QtGui/QIcon>
 #include "lyricsdialog.h"
+#include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
 #include <KDE/KIconDialog>
-#else
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QPushButton>
 #endif
 
 LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
-    #ifdef ENABLE_KDE_SUPPORT
-    : KDialog(parent)
-    #else
-    : QDialog(parent)
-    #endif
+    : Dialog(parent)
     , prev(s)
 {
     QWidget *mw=new QWidget(this);
@@ -46,21 +39,12 @@ LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
     QWidget *wid = new QWidget(mw);
     QFormLayout *layout = new QFormLayout(wid);
     int row=0;
-    #ifdef ENABLE_KDE_SUPPORT
     QLabel *lbl=new QLabel(i18n("If Cantata has failed to find lyrics, or has found the wrong ones, "
                                 "use this dialog to enter new search details. For example, the current "
                                 "song may actually be a cover-version - if so, then searching for "
                                 "lyrics by the original artist might help.\n\nIf this search does find "
                                 "new lyrics, these will still be associated with the original song title "
                                 "and artist as displayed in Cantata."), mw);
-    #else
-    QLabel *lbl=new QLabel(tr("If Cantata has failed to find lyrics, or has found the wrong ones, "
-                              "use this dialog to enter new search details. For example, the current "
-                              "song may actually be a cover-version - if so, then searching for "
-                              "lyrics by the original artist might help.\n\nIf this search does find "
-                              "new lyrics, these will still be associated with the original song title "
-                              "and artist as displayed in Cantata."), mw);
-    #endif
     lbl->setWordWrap(true);
     QLabel *icn=new QLabel(mw);
     icn->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
@@ -77,29 +61,14 @@ LyricsDialog::LyricsDialog(const Song &s, QWidget *parent)
     titleEntry = new LineEdit(wid);
     artistEntry = new LineEdit(wid);
 
-    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Title:"), wid));
     layout->setWidget(row++, QFormLayout::FieldRole, titleEntry);
     layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Artist:"), wid));
     layout->setWidget(row++, QFormLayout::FieldRole, artistEntry);
-    setMainWidget(mw);
-    setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Search For Lyrics"));
-    enableButton(KDialog::Ok, false);
-    #else
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Title:"), wid));
-    layout->setWidget(row++, QFormLayout::FieldRole, titleEntry);
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Artist:"), wid));
-    layout->setWidget(row++, QFormLayout::FieldRole, artistEntry);
-    setWindowTitle(tr("Search For Lyrics"));
-    QBoxLayout *dlgLayout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    dlgLayout->addWidget(mw);
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this);
-    dlgLayout->addWidget(buttonBox);
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    #endif
+    setMainWidget(mw);
+    setButtons(Ok|Cancel);
+    enableButton(Ok, false);
     connect(titleEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
     connect(artistEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
     titleEntry->setFocus();
@@ -118,10 +87,5 @@ Song LyricsDialog::song() const
 void LyricsDialog::changed()
 {
     Song s=song();
-
-    #ifdef ENABLE_KDE_SUPPORT
-    enableButton(KDialog::Ok, !s.artist.isEmpty() && !s.title.isEmpty() && (s.artist!=prev.artist || s.title!=prev.title));
-    #else
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!s.artist.isEmpty() && !s.title.isEmpty() && (s.artist!=prev.artist || s.title!=prev.title));
-    #endif
+    enableButton(Ok, !s.artist.isEmpty() && !s.title.isEmpty() && (s.artist!=prev.artist || s.title!=prev.title));
 }

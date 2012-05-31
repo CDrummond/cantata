@@ -30,9 +30,7 @@
 #include "musiclibraryitemsong.h"
 #include "mpdparseutils.h"
 #include "song.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
+#include "localize.h"
 #include <QtXml/QXmlStreamReader>
 #include <QtXml/QXmlStreamWriter>
 #include <QtCore/QFile>
@@ -42,11 +40,7 @@ static QString songArtist(const Song &s)
     if (Song::Standard==s.type) {
         return s.albumArtist();
     }
-    #ifdef ENABLE_KDE_SUPPORT
     return i18n("Various Artists");
-    #else
-    return QObject::tr("Various Artists");
-    #endif
 }
 
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create)
@@ -78,11 +72,7 @@ void MusicLibraryItemRoot::groupSingleTracks()
     for (; it!=m_childItems.end(); ) {
         if (various!=(*it) && static_cast<MusicLibraryItemArtist *>(*it)->allSingleTrack()) {
             if (!various) {
-                #ifdef ENABLE_KDE_SUPPORT
                 QString artist=i18n("Various Artists");
-                #else
-                QString artist=QObject::tr("Various Artists");
-                #endif
                 QHash<QString, int>::ConstIterator it=m_indexes.find(artist);
                 if (m_indexes.end()==it) {
                     various=new MusicLibraryItemArtist(artist, this);
@@ -123,11 +113,7 @@ void MusicLibraryItemRoot::groupMultipleArtists()
             QList<MusicLibraryItem *> mutipleAlbums=static_cast<MusicLibraryItemArtist *>(*it)->mutipleArtistAlbums();
             if (mutipleAlbums.count()) {
                 if (!various) {
-                    #ifdef ENABLE_KDE_SUPPORT
                     QString artist=i18n("Various Artists");
-                    #else
-                    QString artist=QObject::tr("Various Artists");
-                    #endif
                     QHash<QString, int>::ConstIterator it=m_indexes.find(artist);
                     if (m_indexes.end()==it) {
                         various=new MusicLibraryItemArtist(artist, this);
@@ -171,11 +157,7 @@ void MusicLibraryItemRoot::groupMultipleArtists()
 bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
 {
     if (!s.file.isEmpty()) {
-        #ifdef ENABLE_KDE_SUPPORT
         QHash<QString, int>::ConstIterator it=m_indexes.find(i18n("Various Artists"));
-        #else
-        QHash<QString, int>::ConstIterator it=m_indexes.find(QObject::tr("Various Artists"));
-        #endif
 
         if (m_indexes.end()!=it) {
             return static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it))->isFromSingleTracks(s);

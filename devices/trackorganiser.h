@@ -24,13 +24,13 @@
 #ifndef TRACKORGANISER_H
 #define TRACKORGANISER_H
 
-#include <KDE/KDialog>
 #include "ui_trackorganiser.h"
+#include "dialog.h"
 #include "song.h"
 #include "device.h"
 
 class FilenameSchemeDialog;
-class TrackOrganiser : public KDialog, Ui::TrackOrganiser
+class TrackOrganiser : public Dialog, Ui::TrackOrganiser
 {
     Q_OBJECT
 

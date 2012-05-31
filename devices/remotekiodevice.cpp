@@ -34,7 +34,7 @@
 #include "covers.h"
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
-#include <KDE/KLocale>
+#include "localize.h"
 #include <KDE/KTemporaryFile>
 #include <KDE/KConfigGroup>
 #include <KDE/KIO/ListJob>

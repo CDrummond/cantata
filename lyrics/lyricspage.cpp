@@ -31,6 +31,8 @@
 #include "mainwindow.h"
 #include "squeezedtextlabel.h"
 #include "utils.h"
+#include "messagebox.h"
+#include "localize.h"
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -43,12 +45,8 @@
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KLocale>
 #include <KDE/KXMLGUIClient>
 #include <KDE/KActionCollection>
-#include <KDE/KMessageBox>
-#else
-#include <QtGui/QMessageBox>
 #endif
 
 static QString changeExt(const QString &f, const QString &newExt)
@@ -185,19 +183,11 @@ void LyricsPage::update()
 {
     QString mpdName=mpdFileName();
     bool mpdExists=!mpdName.isEmpty() && QFile::exists(mpdName);
-    #ifdef ENABLE_KDE_SUPPORT
-    if (Mode_Edit==mode && KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+    if (Mode_Edit==mode && MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
         return;
-    } else if(mpdExists && KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Delete saved copy of lyrics, and re-download?"))) {
-        return;
-    }
-    #else
-    if (Mode_Edit==mode && QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
-        return;
-    } else if(mpdExists && QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Delete saved copy of lyrics, and re-download?"))) {
+    } else if(mpdExists && MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete saved copy of lyrics, and re-download?"))) {
         return;
     }
-    #endif
     if (mpdExists) {
         QFile::remove(mpdName);
     }
@@ -210,27 +200,16 @@ void LyricsPage::update()
 
 void LyricsPage::search()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    if (Mode_Edit==mode && KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+    if (Mode_Edit==mode && MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
         return;
     }
-    #else
-    if (Mode_Edit==mode && QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
-        return;
-    }
-    #endif
     setMode(Mode_Display);
 
     Song song=currentSong;
     LyricsDialog dlg(currentSong, this);
     if (QDialog::Accepted==dlg.exec()) {
         if ((song.artist!=currentSong.artist || song.title!=currentSong.title) &&
-                #ifdef ENABLE_KDE_SUPPORT
-                KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Current playing song has changed, still perform search?")))
-                #else
-                QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Current playing song has changed, still perform search?"),  QMessageBox::Yes|QMessageBox::No))
-                #endif
-            {
+                MessageBox::No==MessageBox::warningYesNo(this, i18n("Current playing song has changed, still perform search?"))) {
             return;
         }
         QString mpdName=mpdFileName();
@@ -254,15 +233,9 @@ void LyricsPage::edit()
 void LyricsPage::save()
 {
     if (preEdit!=text->toPlainText()) {
-        #ifdef ENABLE_KDE_SUPPORT
-        if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Save updated lyrics?"))) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Save updated lyrics?"))) {
             return;
         }
-        #else
-        if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Save updated lyrics?"), QMessageBox::Yes|QMessageBox::No)) {
-            return;
-        }
-        #endif
 
         QString mpdName=mpdFileName();
         QString cacheName=cacheFileName();
@@ -272,11 +245,7 @@ void LyricsPage::save()
             }
             Utils::setFilePerms(mpdName);
         } else if (cacheName.isEmpty() || !saveFile(cacheName)) {
-            #ifdef ENABLE_KDE_SUPPORT
-            KMessageBox::error(this, i18n("Failed to save lyrics."));
-            #else
-            QMessageBox::critical(this, tr("Error"), tr("Failed to save lyrics."));
-            #endif
+            MessageBox::error(this, i18n("Failed to save lyrics."));
             return;
         }
     }
@@ -287,15 +256,9 @@ void LyricsPage::save()
 void LyricsPage::cancel()
 {
     if (preEdit!=text->toPlainText()) {
-        #ifdef ENABLE_KDE_SUPPORT
-        if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Abort editing of lyrics?"))) {
             return;
         }
-        #else
-        if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Abort editing of lyrics?"),  QMessageBox::Yes|QMessageBox::No)) {
-            return;
-        }
-        #endif
     }
     text->setText(preEdit);
     setMode(Mode_Display);
@@ -303,15 +266,9 @@ void LyricsPage::cancel()
 
 void LyricsPage::del()
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("Delete lyrics file?"))) {
+    if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete lyrics file?"))) {
         return;
     }
-    #else
-    if (QMessageBox::No==QMessageBox::question(this, tr("Question"), tr("Delete lyrics file?"),  QMessageBox::Yes|QMessageBox::No)) {
-        return;
-    }
-    #endif
 
     QString mpdName=mpdFileName();
     QString cacheName=cacheFileName();

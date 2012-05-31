@@ -31,12 +31,12 @@
 #include "httpserversettings.h"
 #include "lyricsettings.h"
 #include "lyricspage.h"
+#include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KPageWidget>
 #include <KDE/KIcon>
 #else
 #include "fancytabwidget.h"
-#include <QtGui/QDialogButtonBox>
 #include "proxysettings.h"
 #endif
 
@@ -66,14 +66,11 @@ public:
 };
 #endif
 
-#ifdef ENABLE_KDE_SUPPORT
 PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
-    : KDialog(parent)
-#else
-PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
-    : QDialog(parent)
-#endif
+    : Dialog(parent)
 {
+    setButtons(Ok|Apply|Cancel);
+
     #ifdef ENABLE_KDE_SUPPORT
     KPageWidget *widget = new KPageWidget(this);
     #else
@@ -116,10 +113,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page=widget->addPage(lyrics, i18n("Lyrics"));
     page->setHeader(i18n("Lyrics Settings"));
     page->setIcon(KIcon("view-media-lyrics"));
-    setMainWidget(widget);
-
-    setButtons(KDialog::Ok | KDialog::Apply | KDialog::Cancel);
-    setCaption(i18n("Configure"));
     #else
     widget->AddTab(new ConfigPage(this, tr("MPD Backend Settings"), QIcon::fromTheme("server-database"), server),
                    QIcon::fromTheme("server-database"), tr("Server"));
@@ -138,17 +131,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     widget->AddTab(new ConfigPage(this, tr("Proxy Settings"), QIcon::fromTheme("preferences-system-network"), proxy),
                    QIcon::fromTheme("preferences-system-network"), tr("Proxy"));
     widget->SetMode(FancyTabWidget::Mode_LargeSidebar);
-    setWindowTitle(tr("Configure"));
-
-    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    layout->addWidget(widget);
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply,
-                                     Qt::Horizontal, this);
-    layout->addWidget(buttonBox);
-    connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     #endif
+    setCaption(i18n("Configure"));
+    setMainWidget(widget);
     resize(600, 450);
 }
 
@@ -168,39 +153,24 @@ void PreferencesDialog::writeSettings()
     emit settingsSaved();
 }
 
-#ifdef ENABLE_KDE_SUPPORT
 void PreferencesDialog::slotButtonClicked(int button)
 {
     switch (button) {
-    case KDialog::Ok:
-    case KDialog::Apply:
+    case Ok:
+    case Apply:
         writeSettings();
         break;
-    case KDialog::Cancel:
+    case Cancel:
         reject();
         break;
     default:
         break;
     }
 
-    if (KDialog::Ok==button) {
+    if (Ok==button) {
         accept();
     }
 
-    KDialog::slotButtonClicked(button);
+    Dialog::slotButtonClicked(button);
 }
-#else
-void PreferencesDialog::buttonPressed(QAbstractButton *button)
-{
-    switch (buttonBox->buttonRole(button)) {
-    case QDialogButtonBox::AcceptRole:
-    case QDialogButtonBox::ApplyRole:
-        writeSettings();
-        break;
-    case QDialogButtonBox::RejectRole:
-        break;
-    default:
-        break;
-    }
-}
-#endif
+

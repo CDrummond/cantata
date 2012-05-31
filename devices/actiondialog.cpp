@@ -34,8 +34,8 @@
 #include "mpdparseutils.h"
 #include "mpdconnection.h"
 #include "encoders.h"
+#include "localize.h"
 #include <KDE/KGlobal>
-#include <KDE/KLocale>
 #include <KDE/KMessageBox>
 #include <KDE/KIO/FileCopyJob>
 #include <KDE/KIO/Job>
@@ -58,11 +58,11 @@ enum Pages
 };
 
 ActionDialog::ActionDialog(QWidget *parent)
-    : KDialog(parent)
+    : Dialog(parent)
     , currentDev(0)
 {
     iCount++;
-    setButtons(KDialog::Ok|KDialog::Cancel);
+    setButtons(Ok|Cancel);
     setAttribute(Qt::WA_DeleteOnClose);
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
@@ -208,7 +208,7 @@ void ActionDialog::slotButtonClicked(int button)
     switch(stack->currentIndex()) {
     case PAGE_START:
         switch (button) {
-        case KDialog::Ok:
+        case Ok:
             if (haveVariousArtists &&
                 ((configureDestLabel->isVisible() &&
                   KMessageBox::No==KMessageBox::warningYesNo(this, i18n("<p>You have not configured the destination device.<br/>"
@@ -222,14 +222,14 @@ void ActionDialog::slotButtonClicked(int button)
             setPage(PAGE_PROGRESS);
             doNext();
             break;
-        case KDialog::Cancel:
+        case Cancel:
             refreshLibrary();
             reject();
             // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
-            KDialog::slotButtonClicked(button);
+            Dialog::slotButtonClicked(button);
             break;
         default:
-            KDialog::slotButtonClicked(button);
+            Dialog::slotButtonClicked(button);
             break;
         }
         break;
@@ -253,7 +253,7 @@ void ActionDialog::slotButtonClicked(int button)
             refreshLibrary();
             reject();
             // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
-            KDialog::slotButtonClicked(button);
+            Dialog::slotButtonClicked(button);
             break;
         }
         break;
@@ -267,7 +267,7 @@ void ActionDialog::slotButtonClicked(int button)
             refreshLibrary();
             reject();
             // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
-            KDialog::slotButtonClicked(button);
+            Dialog::slotButtonClicked(button);
         } else if (!performingAction && PAGE_PROGRESS==stack->currentIndex()) {
             paused=false;
             incProgress();

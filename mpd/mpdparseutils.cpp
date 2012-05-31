@@ -27,9 +27,7 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
+#include "localize.h"
 #include "dirviewitemroot.h"
 #include "dirviewitemdir.h"
 #include "dirviewitemfile.h"
@@ -233,11 +231,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
     }
 
     if (song.genre.isEmpty()) {
-        #ifdef ENABLE_KDE_SUPPORT
         song.genre = i18n("Unknown");
-        #else
-        song.genre = QObject::tr("Unknown");
-        #endif
     }
 
     return song;

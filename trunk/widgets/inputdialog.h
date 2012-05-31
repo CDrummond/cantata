@@ -33,7 +33,7 @@
 namespace InputDialog
 {
     inline QString getText(const QString &caption, const QString &label, const QString &value=QString(), bool *ok=0, QWidget *parent=0) {
-        return QInputDialog::getText(parent, caption, label, QLineEdit::Normal, value);
+        return QInputDialog::getText(parent, caption, label, QLineEdit::Normal, value, ok);
     }
 
     inline int getInteger(const QString &caption, const QString &label, int value=0, int minValue=INT_MIN, int maxValue=INT_MAX,

@@ -93,7 +93,7 @@ To compile for windows:
 
 1. Install Qt, MinGW, cmake, TagLib. TagLib will probably need compiling.
 2. Call cmake:
-    cmake ../cantata -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -G "MinGW Makefiles" -DTAGLIB_INCLUDES="C:\Program Files\taglib\include" -DTAGLIB_LIBRARIES="C:\Program Files\tagglib\lib\libtag.dll.a"
+     cmake ../cantata -G "MinGW Makefiles" -DTAGLIB_INCLUDES="C:\taglib\include" -DTAGLIB_LIBRARIES="C:\tagglib\bin\libtag.dll"
 3. make! :-)
 
 This build is as per Qt-only, but does not have support for dbus, dockmanager,

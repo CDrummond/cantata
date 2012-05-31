@@ -79,11 +79,11 @@
 #include "lyricspage.h"
 #include "infopage.h"
 #include "serverinfopage.h"
+#include "trackorganiser.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "devicespage.h"
 #include "devicesmodel.h"
 #include "actiondialog.h"
-#include "trackorganiser.h"
 #include "syncdialog.h"
 #endif
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -405,8 +405,8 @@ MainWindow::MainWindow(QWidget *parent)
     copyToDeviceAction->setText(i18n("Copy To Device"));
     copyToDeviceAction->setIcon(Icon("multimedia-player"));
     deleteSongsAction = actionCollection()->addAction("deletesongs");
-    organiseFilesAction = actionCollection()->addAction("organizefiles");
     #endif
+    organiseFilesAction = actionCollection()->addAction("organizefiles");
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction = actionCollection()->addAction("replaygain");
     #endif
@@ -538,6 +538,7 @@ MainWindow::MainWindow(QWidget *parent)
     decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
     addToPlayQueueAction = new QAction(tr("Add To Play Queue"), this);
     addToStoredPlaylistAction = new QAction(tr("Add To Playlist"), this);
+    organiseFilesAction = new QAction(tr("Organize Files"), this);
     removeAction = new QAction(tr("Remove"), this);
     replacePlayQueueAction = new QAction(tr("Replace Play Queue"), this);
     removeFromPlayQueueAction = new QAction(tr("Remove From Play Queue"), this);
@@ -696,9 +697,9 @@ MainWindow::MainWindow(QWidget *parent)
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
     deleteSongsAction->setIcon(Icon("edit-delete"));
     deleteSongsAction->setText(i18n("Delete Songs"));
+    #endif
     organiseFilesAction->setIcon(Icon("inode-directory"));
     organiseFilesAction->setText(i18n("Organize Files"));
-    #endif
     searchAction->setIcon(Icon("edit-find"));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction->setIcon(Icon("audio-x-generic"));
@@ -1008,12 +1009,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(deleteSongsAction, SIGNAL(triggered()), SLOT(deleteSongs()));
-    connect(organiseFilesAction, SIGNAL(triggered()), SLOT(organiseFiles()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
+    connect(organiseFilesAction, SIGNAL(triggered()), SLOT(organiseFiles()));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     connect(replaygainAction, SIGNAL(triggered()), SLOT(replayGain()));
     #endif
@@ -1361,10 +1362,10 @@ void MainWindow::updateSettings()
     connectToMpd();
     Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
     HttpServer::self()->setPort(Settings::self()->enableHttp() ? Settings::self()->httpPort() : 0);
+    organiseFilesAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
-    deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
-    organiseFilesAction->setEnabled(copyToDeviceAction->isEnabled());
+    copyToDeviceAction->setEnabled(organiseFilesAction->isEnabled());
+    deleteSongsAction->setEnabled(organiseFilesAction->isEnabled());
 //     burnAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
@@ -2700,17 +2701,21 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
     dlg->show();
 }
 
-#ifdef ENABLE_DEVICES_SUPPORT
 void MainWindow::organiseFiles()
 {
     if (0!=TrackOrganiser::instanceCount()) {
         return;
     }
 
-    if (0!=TagEditor::instanceCount() || 0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
+    if (0!=TagEditor::instanceCount()) {
         DIALOG_ERROR;
     }
 
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     if (0!=RgDialog::instanceCount()) {
         DIALOG_ERROR;
@@ -2724,24 +2729,30 @@ void MainWindow::organiseFiles()
         songs=albumsPage->selectedSongs();
     } else if (folderPage->isVisible()) {
         songs=folderPage->selectedSongs();
-    } else if (devicesPage->isVisible()) {
+    }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    else if (devicesPage->isVisible()) {
         songs=devicesPage->selectedSongs();
     }
+    #endif
 
     if (!songs.isEmpty()) {
         QString udi;
+        #ifdef ENABLE_DEVICES_SUPPORT
         if (devicesPage->isVisible()) {
             udi=devicesPage->activeFsDeviceUdi();
             if (udi.isEmpty()) {
                 return;
             }
         }
+        #endif
 
         TrackOrganiser *dlg=new TrackOrganiser(this);
         dlg->show(songs, udi);
     }
 }
 
+#ifdef ENABLE_DEVICES_SUPPORT
 void MainWindow::addToDevice(const QString &udi)
 {
     if (libraryPage->isVisible()) {

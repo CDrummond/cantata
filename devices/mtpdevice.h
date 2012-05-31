@@ -139,7 +139,7 @@ private Q_SLOTS:
     void emitProgress(unsigned long);
     void getSongStatus(bool ok);
     void delSongStatus(bool ok);
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &opts);
+    void saveProperties(const QString &newPath, const QString &newCoverFileName, const DeviceOptions &opts);
     void saveProperties();
 
 private:

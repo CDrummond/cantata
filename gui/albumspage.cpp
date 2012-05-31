@@ -57,8 +57,8 @@ AlbumsPage::AlbumsPage(MainWindow *p)
 //     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
-    view->addAction(p->organiseFilesAction);
     #endif
+    view->addAction(p->organiseFilesAction);
     view->addAction(p->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     view->addAction(p->replaygainAction);
@@ -209,8 +209,8 @@ void AlbumsPage::controlActions()
     mw->addToStoredPlaylistAction->setEnabled(enable);
     #ifdef ENABLE_DEVICES_SUPPORT
     mw->copyToDeviceAction->setEnabled(enable);
-    mw->organiseFilesAction->setEnabled(enable);
     #endif
+    mw->organiseFilesAction->setEnabled(enable);
     mw->editTagsAction->setEnabled(enable);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     mw->replaygainAction->setEnabled(enable);

@@ -47,8 +47,8 @@ public:
     };
     DevicePropertiesWidget(QWidget *parent);
     virtual ~DevicePropertiesWidget() { }
-    void update(const QString &path, const QString &coverName, const Device::Options &opts, int props);
-    Device::Options settings();
+    void update(const QString &path, const QString &coverName, const DeviceOptions &opts, int props);
+    DeviceOptions settings();
     bool isModified() const { return modified; }
     bool isSaveable() const { return saveable; }
     QString music() const { return musicFolder->text().trimmed(); }
@@ -64,7 +64,7 @@ private Q_SLOTS:
 
 private:
     FilenameSchemeDialog *schemeDlg;
-    Device::Options origOpts;
+    DeviceOptions origOpts;
     QString origMusicFolder;
     QString origCoverName;
     QString noCoverText;

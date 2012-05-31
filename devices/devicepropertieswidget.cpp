@@ -108,7 +108,7 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     }
 }
 
-void DevicePropertiesWidget::update(const QString &path, const QString &coverName, const Device::Options &opts, int props)
+void DevicePropertiesWidget::update(const QString &path, const QString &coverName, const DeviceOptions &opts, int props)
 {
     filenameScheme->setText(opts.scheme);
     vfatSafe->setChecked(opts.vfatSafe);
@@ -221,7 +221,7 @@ void DevicePropertiesWidget::transcoderChanged()
 
 void DevicePropertiesWidget::checkSaveable()
 {
-    Device::Options opts=settings();
+    DeviceOptions opts=settings();
     bool checkFolder=musicFolder->isVisible();
 
     modified=opts!=origOpts || albumCovers->currentText()!=origCoverName;
@@ -241,9 +241,9 @@ void DevicePropertiesWidget::configureFilenameScheme()
     schemeDlg->show(settings());
 }
 
-Device::Options DevicePropertiesWidget::settings()
+DeviceOptions DevicePropertiesWidget::settings()
 {
-    Device::Options opts;
+    DeviceOptions opts;
     opts.scheme=filenameScheme->text().trimmed();
     opts.vfatSafe=vfatSafe->isChecked();
     opts.asciiOnly=asciiOnly->isChecked();

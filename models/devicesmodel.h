@@ -72,7 +72,7 @@ public Q_SLOTS:
     void deviceUpdating(const QString &udi, bool state);
     void emitAddToDevice();
     #ifdef ENABLE_REMOTE_DEVICES
-    void addRemoteDevice(const QString &coverFileName, const Device::Options &opts, RemoteFsDevice::Details details);
+    void addRemoteDevice(const QString &coverFileName, const DeviceOptions &opts, RemoteFsDevice::Details details);
     void removeRemoteDevice(const QString &udi);
     void changeDeviceUdi(const QString &from, const QString &to);
     #endif

@@ -32,8 +32,6 @@
 #include "lyricspage.h"
 #include "localize.h"
 #include "messagebox.h"
-#include <KDE/KGlobal>
-#include <KDE/KLocale>
 #include <QtCore/QTimer>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
@@ -69,7 +67,10 @@ TrackOrganiser::~TrackOrganiser()
 
 void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
 {
+    Q_UNUSED(udi)
+
     origSongs=songs;
+    #ifdef ENABLE_KDE_SUPPORT
     if (udi.isEmpty()) {
         opts.load("mpd");
     } else {
@@ -83,6 +84,9 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
 
         opts=dev->options();
     }
+    #else
+    opts.load("mpd");
+    #endif
     qSort(origSongs);
 
     filenameScheme->setText(opts.scheme);
@@ -112,7 +116,7 @@ void TrackOrganiser::slotButtonClicked(int button)
     case Cancel:
         if (!optionsBox->isEnabled()) {
             paused=true;
-            if (KMessageBox::No==KMessageBox::questionYesNo(this, i18n("Cancel renaming of files?"))) {
+            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Cancel renaming of files?"))) {
                 paused=false;
                 QTimer::singleShot(0, this, SLOT(renameFile()));
                 return;
@@ -176,15 +180,17 @@ void TrackOrganiser::startRename()
     index=0;
     paused=autoSkip=false;
     readOptions();
+    #ifdef ENABLE_KDE_SUPPORT
     if (!deviceUdi.isEmpty()) {
         Device *dev=getDevice();
         if (!dev) {
             return;
         }
         dev->setOptions(opts);
-    } else {
+    } else
+    #endif
         opts.save("mpd");
-    }
+
     QTimer::singleShot(100, this, SLOT(renameFile()));
 }
 
@@ -200,15 +206,16 @@ void TrackOrganiser::renameFile()
     QString modified=opts.createFilename(s);
     QString musicFolder;
 
+    #ifdef ENABLE_KDE_SUPPORT
     if (!deviceUdi.isEmpty()) {
         Device *dev=getDevice();
         if (!dev) {
             return;
         }
         musicFolder=dev->path();
-    } else {
+    } else
+    #endif
         musicFolder=Settings::self()->mpdDir();
-    }
 
     if (modified!=s.file) {
         QString source=musicFolder+s.file;
@@ -236,8 +243,7 @@ void TrackOrganiser::renameFile()
 
         // Create dest folder...
         if (!skip) {
-            KUrl d(dest);
-            QDir dir(d.directory());
+            QDir dir(Utils::getDir(dest));
             if(!dir.exists() && !Utils::createDir(dir.absolutePath(), musicFolder)) {
                 if (autoSkip) {
                     skip=true;
@@ -289,14 +295,18 @@ void TrackOrganiser::renameFile()
         }
 
         if (!skip) {
-            KUrl su(source);
-            KUrl du(dest);
-            QDir sDir(su.directory());
-            QDir dDir(du.directory());
+            QDir sDir(Utils::getDir(source));
+            QDir dDir(Utils::getDir(dest));
+            #ifdef ENABLE_KDE_SUPPORT
             Device *dev=deviceUdi.isEmpty() ? 0 : getDevice();
             if (sDir.absolutePath()!=dDir.absolutePath()) {
                 Utils::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile() : QString());
             }
+            #else
+            if (sDir.absolutePath()!=dDir.absolutePath()) {
+                Utils::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, QString());
+            }
+            #endif
             item->setText(0, modified);
             item->setFont(0, font());
             item->setFont(1, font());
@@ -309,12 +319,15 @@ void TrackOrganiser::renameFile()
                 MusicLibraryModel::self()->updateSongFile(s, to);
                 DirViewModel::self()->removeFileFromList(s.file);
                 DirViewModel::self()->addFileToList(to.file);
-            } else {
+            }
+            #ifdef ENABLE_KDE_SUPPORT
+            else {
                 if (!dev) {
                     return;
                 }
                 dev->updateSongFile(s, to);
             }
+            #endif
         }
     }
     index++;
@@ -330,12 +343,15 @@ void TrackOrganiser::finish(bool ok)
     if (updated) {
         if (deviceUdi.isEmpty()) {
             emit update();
-        } else {
+        }
+        #ifdef ENABLE_KDE_SUPPORT
+        else {
             Device *dev=getDevice();
             if (dev) {
                 dev->saveCache();
             }
         }
+        #endif
     }
     if (ok) {
         accept();
@@ -344,6 +360,7 @@ void TrackOrganiser::finish(bool ok)
     }
 }
 
+#ifdef ENABLE_KDE_SUPPORT
 Device * TrackOrganiser::getDevice(QWidget *p)
 {
     Device *dev=DevicesModel::self()->device(deviceUdi);
@@ -364,3 +381,4 @@ Device * TrackOrganiser::getDevice(QWidget *p)
     }
     return dev;
 }
+#endif

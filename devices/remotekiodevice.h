@@ -92,7 +92,7 @@ class RemoteKioDevice : public Device
     Q_OBJECT
 
 public:
-    RemoteKioDevice(DevicesModel *m, const QString &cover, const Options &options, const RemoteFsDevice::Details &d);
+    RemoteKioDevice(DevicesModel *m, const QString &cover, const DeviceOptions &options, const RemoteFsDevice::Details &d);
     RemoteKioDevice(DevicesModel *m, const RemoteFsDevice::Details &d);
     virtual ~RemoteKioDevice();
 
@@ -132,7 +132,7 @@ private Q_SLOTS:
     void libraryUpdated(const QString &errorMsg);
     void rescan(bool full=true);
     void saveProperties();
-    void saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, RemoteFsDevice::Details newDetails);
+    void saveProperties(const QString &newCoverFileName, const DeviceOptions &newOpts, RemoteFsDevice::Details newDetails);
     void cacheRead();
 
 private:

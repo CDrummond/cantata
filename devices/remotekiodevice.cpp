@@ -310,7 +310,7 @@ void KioScanner::addSong(const Song &s)
 //     }
 }
 
-RemoteKioDevice::RemoteKioDevice(DevicesModel *m, const QString &cover, const Options &options, const RemoteFsDevice::Details &d)
+RemoteKioDevice::RemoteKioDevice(DevicesModel *m, const QString &cover, const DeviceOptions &options, const RemoteFsDevice::Details &d)
     : Device(m, d.name)
     , scanned(false)
     , scanner(0)
@@ -355,8 +355,8 @@ void RemoteKioDevice::configure(QWidget *parent)
     }
 
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const Device::Options &, RemoteFsDevice::Details)),
-            SLOT(saveProperties(const QString &, const Device::Options &, RemoteFsDevice::Details)));
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &, RemoteFsDevice::Details)),
+            SLOT(saveProperties(const QString &, const DeviceOptions &, RemoteFsDevice::Details)));
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
@@ -644,7 +644,7 @@ void RemoteKioDevice::saveProperties()
     saveProperties(coverFileName, opts, details);
 }
 
-void RemoteKioDevice::saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, RemoteFsDevice::Details newDetails)
+void RemoteKioDevice::saveProperties(const QString &newCoverFileName, const DeviceOptions &newOpts, RemoteFsDevice::Details newDetails)
 {
     if (configured && opts==newOpts && newCoverFileName==coverFileName && details==newDetails) {
         return;

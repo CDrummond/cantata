@@ -47,7 +47,7 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     setMainWidget(tab);
 }
 
-void RemoteDevicePropertiesDialog::show(const QString &coverName, const Device::Options &opts, const RemoteFsDevice::Details &det, int props, bool create, bool isConnected)
+void RemoteDevicePropertiesDialog::show(const QString &coverName, const DeviceOptions &opts, const RemoteFsDevice::Details &det, int props, bool create, bool isConnected)
 {
     isCreate=create;
     if (isCreate) {

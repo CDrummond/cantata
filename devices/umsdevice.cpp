@@ -112,7 +112,7 @@ void UmsDevice::setup()
     QFile file(path+constSettingsFile);
     QString audioFolderSetting;
 
-    opts=Device::Options();
+    opts=DeviceOptions();
 //     podcastFolder=QString();
     if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         QTextStream in(&file);
@@ -218,8 +218,8 @@ void UmsDevice::configure(QWidget *parent)
     }
 
     DevicePropertiesDialog *dlg=new DevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
-            SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const DeviceOptions &)),
+            SLOT(saveProperties(const QString &, const QString &, const DeviceOptions &)));
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
@@ -252,7 +252,7 @@ void UmsDevice::saveOptions()
         fixedPath=QLatin1String("./")+fixedPath.mid(path.length());
     }
 
-    Options def;
+    DeviceOptions def;
     if (file.open(QIODevice::WriteOnly|QIODevice::Text)) {
         QTextStream out(&file);
         if (!fixedPath.isEmpty()) {
@@ -290,7 +290,7 @@ void UmsDevice::saveOptions()
     }
 }
 
-void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const Device::Options &newOpts)
+void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const DeviceOptions &newOpts)
 {
     QString nPath=MPDParseUtils::fixPath(newPath);
     if (configured && opts==newOpts && nPath==audioFolder && newCoverFileName==coverFileName) {

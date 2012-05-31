@@ -27,6 +27,7 @@
 #include "covers.h"
 #include "proxymodel.h"
 #include "actionitemdelegate.h"
+#include "localize.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #include <QtGui/QStyle>
@@ -347,10 +348,8 @@ ItemView::ItemView(QWidget *p)
     #ifdef ENABLE_KDE_SUPPORT
     spinner=0;
     spinnerActive=false;
-    backAction = new QAction(i18n("Back"), this);
-    #else
-    backAction = new QAction(tr("Back"), this);
     #endif
+    backAction = new QAction(i18n("Back"), this);
     backAction->setIcon(QIcon::fromTheme("go-previous"));
     backButton->setDefaultAction(backAction);
     backButton->setAutoRaise(true);
@@ -536,11 +535,7 @@ void ItemView::setLevel(int l, bool haveChildren)
     }
 
     if (0==currentLevel) {
-        #ifdef ENABLE_KDE_SUPPORT
-        listSearch->setPlaceholderText(i18n("Search %1...", topText));
-        #else
-        listSearch->setPlaceholderText(tr("Search %1...").arg(topText));
-        #endif
+        listSearch->setPlaceholderText(i18n("Search %1...").arg(topText));
     } else if (prev>currentLevel) {
         listSearch->setPlaceholderText(prevText[currentLevel]);
     } else {
@@ -579,17 +574,9 @@ void ItemView::setTopText(const QString &text)
 {
     topText=text;
     if (0==currentLevel) {
-        #ifdef ENABLE_KDE_SUPPORT
-        listSearch->setPlaceholderText(i18n("Search %1...", topText));
-        #else
-        listSearch->setPlaceholderText(tr("Search %1...").arg(topText));
-        #endif
+        listSearch->setPlaceholderText(i18n("Search %1...").arg(topText));
     }
-    #ifdef ENABLE_KDE_SUPPORT
-    treeSearch->setPlaceholderText(i18n("Search %1...", topText));
-    #else
-    treeSearch->setPlaceholderText(tr("Search %1...").arg(topText));
-    #endif
+    treeSearch->setPlaceholderText(i18n("Search %1...").arg(topText));
 }
 
 void ItemView::setUniformRowHeights(bool v)
@@ -867,11 +854,7 @@ void ItemView::itemActivated(const QModelIndex &index)
         if (text.isEmpty()) {
             text=index.data(Qt::DisplayRole).toString();
         }
-        #ifdef ENABLE_KDE_SUPPORT
-        listSearch->setPlaceholderText(i18n("Search %1...", text));
-        #else
-        listSearch->setPlaceholderText(tr("Search %1...").arg(text));
-        #endif
+        listSearch->setPlaceholderText(i18n("Search %1...").arg(text));
         listView->setRootIndex(index);
         itemModel->setRootIndex(index);
         listView->scrollToTop();

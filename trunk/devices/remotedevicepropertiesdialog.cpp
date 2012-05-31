@@ -25,17 +25,17 @@
 #include "devicepropertieswidget.h"
 #include "remotedevicepropertieswidget.h"
 #include "devicesmodel.h"
+#include "localize.h"
+#include "messagebox.h"
 #include <QtGui/QTabWidget>
 #include <QtGui/QIcon>
 #include <KDE/KGlobal>
-#include <KDE/KLocale>
-#include <KDE/KMessageBox>
 
 RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
-    : KDialog(parent)
+    : Dialog(parent)
     , isCreate(false)
 {
-    setButtons(KDialog::Ok|KDialog::Cancel);
+    setButtons(Ok|Cancel);
     setCaption(i18n("Device Properties"));
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowModality(Qt::WindowModal);
@@ -57,7 +57,7 @@ void RemoteDevicePropertiesDialog::show(const QString &coverName, const Device::
     remoteProp->update(det, create, isConnected);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
     connect(remoteProp, SIGNAL(updated()), SLOT(enableOkButton()));
-    KDialog::show();
+    Dialog::show();
     enableButtonOk(false);
 }
 
@@ -70,22 +70,22 @@ void RemoteDevicePropertiesDialog::enableOkButton()
 void RemoteDevicePropertiesDialog::slotButtonClicked(int button)
 {
     switch (button) {
-    case KDialog::Ok: {
+    case Ok: {
         RemoteFsDevice::Details d=remoteProp->details();
         if (d.name!=remoteProp->origDetails().name && DevicesModel::self()->device(RemoteFsDevice::createUdi(d.name))) {
-            KMessageBox::error(this, i18n("A remote device named \"%1\" already exists!\nPlease choose a different name", d.name));
+            MessageBox::error(this, i18n("A remote device named \"%1\" already exists!\nPlease choose a different name", d.name));
         } else {
             emit updatedSettings(devProp->cover(), devProp->settings(), remoteProp->details());
             accept();
         }
         break;
     }
-    case KDialog::Cancel:
+    case Cancel:
         emit cancelled();
         reject();
         break;
     default:
-        KDialog::slotButtonClicked(button);
+        Dialog::slotButtonClicked(button);
         break;
     }
 }

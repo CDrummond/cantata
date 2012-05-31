@@ -25,25 +25,14 @@
 #define DYNAMIC_RULES_DIALOG_H
 
 #include "config.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KDialog>
-#else
-#include <QtGui/QDialog>
-class QDialogButtonBox;
-class QAbstractButton;
-class QPushButton;
-#endif
+#include "dialog.h"
 #include "ui_dynamicrules.h"
 
 class DynamicRuleDialog;
 class QStandardItemModel;
 class RulesSort;
 
-#ifdef ENABLE_KDE_SUPPORT
-class DynamicRulesDialog : public KDialog, Ui::DynamicRules
-#else
-class DynamicRulesDialog : public QDialog, Ui::DynamicRules
-#endif
+class DynamicRulesDialog : public Dialog, Ui::DynamicRules
 {
     Q_OBJECT
 
@@ -54,16 +43,11 @@ public:
     void edit(const QString &name);
 
 private:
-    #ifdef ENABLE_KDE_SUPPORT
     void slotButtonClicked(int button);
-    #endif
     bool save();
 
 private Q_SLOTS:
     void enableOkButton();
-    #ifndef ENABLE_KDE_SUPPORT
-    void buttonPressed(QAbstractButton *button);
-    #endif
     void controlButtons();
     void add();
     void edit();
@@ -75,9 +59,6 @@ private:
     QStandardItemModel *model;
     QString origName;
     DynamicRuleDialog *dlg;
-    #ifndef ENABLE_KDE_SUPPORT
-    QDialogButtonBox *buttonBox;
-    #endif
 };
 
 #endif

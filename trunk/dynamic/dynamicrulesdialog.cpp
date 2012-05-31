@@ -24,13 +24,9 @@
 #include "dynamicrulesdialog.h"
 #include "dynamicruledialog.h"
 #include "dynamic.h"
+#include "messagebox.h"
+#include "localize.h"
 #include <QtGui/QIcon>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KMessageBox>
-#else
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QMessageBox>
-#endif
 #include <QtGui/QStandardItem>
 #include <QtGui/QStandardItemModel>
 #include <QtGui/QSortFilterProxyModel>
@@ -66,41 +62,17 @@ public:
 static QString translateStr(const QString &key)
 {
     if (Dynamic::constArtistKey==key) {
-        #ifdef ENABLE_KDE_SUPPORT
         return i18n("Artist");
-        #else
-        return QObject::tr("Artist");
-        #endif
     } else if (Dynamic::constAlbumArtistKey==key) {
-        #ifdef ENABLE_KDE_SUPPORT
         return i18n("AlbumArtist");
-        #else
-        return QObject::tr("AlbumArtist");
-        #endif
     } else if (Dynamic::constAlbumKey==key) {
-        #ifdef ENABLE_KDE_SUPPORT
         return i18n("Album");
-        #else
-        return QObject::tr("Album");
-        #endif
     } else if (Dynamic::constTitleKey==key) {
-        #ifdef ENABLE_KDE_SUPPORT
         return i18n("Title");
-        #else
-        return QObject::tr("Title");
-        #endif
     } else if (Dynamic::constGenreKey==key) {
-        #ifdef ENABLE_KDE_SUPPORT
         return i18n("Genre");
-        #else
-        return QObject::tr("Genre");
-        #endif
     } else if (Dynamic::constDateKey==key) {
-        #ifdef ENABLE_KDE_SUPPORT
         return i18n("Date");
-        #else
-        return QObject::tr("Date");
-        #endif
     } else {
         return key;
     }
@@ -112,22 +84,14 @@ static void update(QStandardItem *i, const Dynamic::Rule &rule)
     Dynamic::Rule::ConstIterator end(rule.constEnd());
     QMap<QString, QVariant> v;
     QString str;
-    #ifdef ENABLE_KDE_SUPPORT
     QString type=i18n("Include");
-    #else
-    QString type=QObject::tr("Include");
-    #endif
     bool exact=true;
     bool include=true;
 
     for (int count=0; it!=end; ++it, ++count) {
         if (Dynamic::constExcludeKey==it.key()) {
             if (QLatin1String("true")==it.value()) {
-                #ifdef ENABLE_KDE_SUPPORT
                 type=i18n("Exclude");
-                #else
-                type=QObject::tr("Exclude");
-                #endif
                 include=false;
             }
         } else if (Dynamic::constExactKey==it.key()) {
@@ -150,11 +114,7 @@ static void update(QStandardItem *i, const Dynamic::Rule &rule)
     }
 
     if (exact) {
-        #ifdef ENABLE_KDE_SUPPORT
         str+=i18n(" (Exact)");
-        #else
-        str+=QObject::tr(" (Exact)");
-        #endif
     }
     i->setText(str);
     i->setData(v);
@@ -163,29 +123,15 @@ static void update(QStandardItem *i, const Dynamic::Rule &rule)
 }
 
 DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
-    #ifdef ENABLE_KDE_SUPPORT
-    : KDialog(parent)
-    #else
-    : QDialog(parent)
-    #endif
+    : Dialog(parent)
     , dlg(0)
 {
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
-    #ifdef ENABLE_KDE_SUPPORT
     setMainWidget(mainWidet);
     setButtons(Ok|Cancel);
-    setCaption(i18n("Dynamic Rules"));
     enableButton(Ok, false);
-    #else
-    setWindowTitle(tr("Dynamic Rules"));
-
-    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    layout->addWidget(mainWidet);
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this);
-    layout->addWidget(buttonBox);
-    connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonPressed(QAbstractButton *)));
-    #endif
+    setCaption(i18n("Dynamic Rules"));
     setAttribute(Qt::WA_DeleteOnClose);
     connect(addBtn, SIGNAL(clicked()), SLOT(add()));
     connect(editBtn, SIGNAL(clicked()), SLOT(edit()));
@@ -231,14 +177,9 @@ void DynamicRulesDialog::edit(const QString &name)
 void DynamicRulesDialog::enableOkButton()
 {
     bool enable=!nameText->text().trimmed().isEmpty();
-    #ifdef ENABLE_KDE_SUPPORT
     enableButton(Ok, enable);
-    #else
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enable);
-    #endif
 }
 
-#ifdef ENABLE_KDE_SUPPORT
 void DynamicRulesDialog::slotButtonClicked(int button)
 {
     switch (button) {
@@ -251,24 +192,12 @@ void DynamicRulesDialog::slotButtonClicked(int button)
     case Cancel:
         reject();
         // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
-        KDialog::slotButtonClicked(button);
+        Dialog::slotButtonClicked(button);
         break;
     default:
         break;
     }
 }
-#else
-void DynamicRulesDialog::buttonPressed(QAbstractButton *button)
-{
-    if (button==buttonBox->button(QDialogButtonBox::Ok)) {
-        if (save()) {
-            accept();
-        }
-    } else if(button==buttonBox->button(QDialogButtonBox::Cancel)) {
-        reject();
-    }
-}
-#endif
 
 void DynamicRulesDialog::controlButtons()
 {
@@ -328,7 +257,6 @@ void DynamicRulesDialog::remove()
 void DynamicRulesDialog::showAbout()
 {
     QWhatsThis::showText(aboutLabel->mapToGlobal(aboutLabel->geometry().topLeft()),
-                         #ifdef ENABLE_KDE_SUPPORT
                          i18n("<p>Cantata will query your library using all of the rules listed. "
                               "The list of <i>Include</i> rules will be used to build a set of songs that can be used. "
                               "The list of <i>Exclude</i> rules will be used to build a set of songs that cannot be used. "
@@ -339,18 +267,6 @@ void DynamicRulesDialog::showAbout()
                               "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude Album=Avc</li></ul>"
                               "After the set of usable songs has been created, Cantata will randomly select songs to "
                               "keep the play queue filled with 10 entries.</p>")
-                        #else
-                        tr("<p>Cantata will query your library using all of the rules listed. "
-                           "The list of <i>Include</i> rules will be used to build a set of songs that can be used. "
-                           "The list of <i>Exclude</i> rules will be used to build a set of songs that cannot be used. "
-                           "If there are no <i>Include</i> rules, Cantata will assume that all songs (bar those from <i>Exlude</i>) can be used. <br/>"
-                           "e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following: "
-                           "<ul><li>Include AlbumArtist=Wibble Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> "
-                           "to have Cantata look for 'Songs by Wibble but not from album Abc', you would need the following: "
-                           "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude Album=Avc</li></ul>"
-                           "After the set of usable songs has been created, Cantata will randomly select songs to "
-                           "keep the play queue filled with 10 entries.</p>")
-                        #endif
                         );
 
 }
@@ -363,19 +279,10 @@ bool DynamicRulesDialog::save()
         return false;
     }
 
-    if (name!=origName && Dynamic::self()->exists(name)) {
-        #ifdef ENABLE_KDE_SUPPORT
-        if (KMessageBox::No==KMessageBox::warningYesNo(this, i18n("A set of rules named \'%1\' already exists!\nOverwrite?", name),
-                                                       i18n("Already Exists"))) {
-            return false;
-        }
-        #else
-        if (QMessageBox::No==QMessageBox::warning(this, tr("Already Exists"),
-                                                tr("A set of rules named \'%1\' already exists!\nOverwrite?").arg(name),
-                                                QMessageBox::Yes|QMessageBox::No, QMessageBox::No)) {
-            return false;
-        }
-        #endif
+    if (name!=origName && Dynamic::self()->exists(name) &&
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("A set of rules named \'%1\' already exists!\nOverwrite?").arg(name),
+                                                     i18n("Already Exists"))) {
+        return false;
     }
 
     Dynamic::Entry entry;

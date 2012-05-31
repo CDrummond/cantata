@@ -28,20 +28,14 @@
 #include "mainwindow.h"
 #include "settings.h"
 #include "streamsmodel.h"
+#include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
 #include <KDE/KIconDialog>
-#else
-#include <QtGui/QDialogButtonBox>
 #include <QtGui/QPushButton>
 #endif
 
 StreamDialog::StreamDialog(const QStringList &categories, const QStringList &genres, const QSet<QString> &uh, QWidget *parent)
-#ifdef ENABLE_KDE_SUPPORT
-    : KDialog(parent)
-#else
-    : QDialog(parent)
-#endif
+    : Dialog(parent)
     , urlHandlers(uh)
 {
     QWidget *wid = new QWidget(this);
@@ -62,11 +56,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     genreCombo->setSizePolicy(sizePolicy);
     int row=0;
 
-    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Name:"), wid));
-    #else
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Name:"), wid));
-    #endif
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
     #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Icon:"), wid));
@@ -74,41 +64,18 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     setIcon(QString());
     layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
     #endif
-    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Stream:"), wid));
-    #else
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Stream:"), wid));
-    #endif
     layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
     urlEntry->setMinimumWidth(300);
-    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Category:"), wid));
-    #else
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Category:"), wid));
-    #endif
     layout->setWidget(row++, QFormLayout::FieldRole, catCombo);
-    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Genre:"), wid));
-    #else
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Genre:"), wid));
-    #endif
     layout->setWidget(row++, QFormLayout::FieldRole, genreCombo);
-    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row++, QFormLayout::SpanningRole, statusText);
-    setMainWidget(wid);
-    setButtons(KDialog::Ok|KDialog::Cancel);
     setCaption(i18n("Add Stream"));
-    enableButton(KDialog::Ok, false);
-    #else
-    setWindowTitle(tr("Add Stream"));
-    QBoxLayout *mainLayout=new QBoxLayout(QBoxLayout::TopToBottom, this);
-    mainLayout->addWidget(wid);
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal, this);
-    mainLayout->addWidget(buttonBox);
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    #endif
+    setMainWidget(wid);
+    setButtons(Ok|Cancel);
+    enableButton(Ok, false);
     catCombo->clear();
     catCombo->insertItems(0, categories);
     genreCombo->clear();
@@ -127,15 +94,13 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
 void StreamDialog::setEdit(const QString &cat, const QString &editName, const QString &editGenre, const QString &editIconName, const QString &editUrl)
 {
     #ifdef ENABLE_KDE_SUPPORT
-    setCaption(i18n("Edit Stream"));
-    enableButton(KDialog::Ok, false);
     prevIconName=iconName=editIconName;
     setIcon(prevIconName);
     #else
     Q_UNUSED(editIconName)
-    setWindowTitle(tr("Edit Stream"));
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     #endif
+    setCaption(i18n("Edit Stream"));
+    enableButton(Ok, false);
     prevName=editName;
     prevUrl=editUrl;
     prevCat=cat;
@@ -159,18 +124,10 @@ void StreamDialog::changed()
                                                                   );
     bool validProtocol=u.isEmpty() || urlHandlers.contains(QUrl(u).scheme()) || urlHandlers.contains(u);
 
-    #ifdef ENABLE_KDE_SUPPORT
     statusText->setText(validProtocol ? QString() : i18n("<i>Invalid protocol</i>"));
-    #else
-    statusText->setText(validProtocol ? QString() : tr("<i>Invalid protocol</i>"));
-    #endif
 
     enableOk=enableOk && validProtocol;
-    #ifdef ENABLE_KDE_SUPPORT
-    enableButton(KDialog::Ok, enableOk);
-    #else
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enableOk);
-    #endif
+    enableButton(Ok, enableOk);
 }
 
 #ifdef ENABLE_KDE_SUPPORT

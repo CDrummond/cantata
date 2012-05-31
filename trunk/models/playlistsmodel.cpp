@@ -31,8 +31,8 @@
 #include "playlistsproxymodel.h"
 #include "itemview.h"
 #include "groupedview.h"
+#include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(PlaylistsModel, instance)
 #endif

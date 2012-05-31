@@ -25,14 +25,7 @@
 #define TAG_EDITOR_H
 
 #include "config.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KDialog>
-#else
-#include <QtGui/QDialog>
-class QDialogButtonBox;
-class QAbstractButton;
-class QPushButton;
-#endif
+#include "dialog.h"
 #include "ui_tageditor.h"
 #include "song.h"
 #include <QtCore/QSet>
@@ -42,11 +35,7 @@ class QPushButton;
 class Device;
 #endif
 
-#ifdef ENABLE_KDE_SUPPORT
-class TagEditor : public KDialog, Ui::TagEditor
-#else
-class TagEditor : public QDialog, Ui::TagEditor
-#endif
+class TagEditor : public Dialog, Ui::TagEditor
 {
     Q_OBJECT
 
@@ -71,9 +60,7 @@ private:
     void setLabelStates();
     void setPlaceholderTexts();
     void fillSong(Song &s, bool isAll, bool skipEmpty) const;
-    #ifdef ENABLE_KDE_SUPPORT
     void slotButtonClicked(int button);
-    #endif
     void updateTrackName(int index, bool edited);
     void updateEditedStatus(int index);
     void applyUpdates();
@@ -90,17 +77,8 @@ private Q_SLOTS:
     void updateEdited(bool isFromAll=false);
     void setSong(const Song &s);
     void setIndex(int idx);
-    #ifndef ENABLE_KDE_SUPPORT
-    void buttonPressed(QAbstractButton *button);
-    #endif
 
 private:
-    #ifndef ENABLE_KDE_SUPPORT
-    QDialogButtonBox *buttonBox;
-    QPushButton *prevBtn;
-    QPushButton *nextBtn;
-    QPushButton *toolsBtn;
-    #endif
     QString baseDir;
     #ifdef ENABLE_DEVICES_SUPPORT
     QString deviceUdi;

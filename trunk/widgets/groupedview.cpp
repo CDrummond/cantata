@@ -28,6 +28,7 @@
 #include "actionitemdelegate.h"
 #include "itemview.h"
 #include "config.h"
+#include "localize.h"
 #include <QtGui/QStyledItemDelegate>
 #include <QtGui/QApplication>
 #include <QtGui/QFontMetrics>
@@ -35,9 +36,6 @@
 #include <QtGui/QLinearGradient>
 #include <QtGui/QAction>
 #include <QtGui/QDropEvent>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
-#endif
 
 static const int constCoverSize=32;
 static const int constIconSize=16;
@@ -189,11 +187,7 @@ public:
             title=index.data(Qt::DisplayRole).toString();
         } else if (AlbumHeader==type) {
             if (stream) {
-                #ifdef ENABLE_KDE_SUPPORT
                 title=i18n("Streams");
-                #else
-                title=tr("Streams");
-                #endif
                 if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
                     track=song.title.isEmpty() && song.name.isEmpty() ? song.file : (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
                 } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {

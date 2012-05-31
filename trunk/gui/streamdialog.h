@@ -24,24 +24,17 @@
 #ifndef STREAMDIALOG_H
 #define STREAMDIALOG_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KDialog>
-#else
-#include <QtGui/QDialog>
-class QDialogButtonBox;
-#endif
 #include <QtCore/QSet>
+#include "dialog.h"
 #include "lineedit.h"
 #include "completioncombo.h"
 
 class QLabel;
 #ifdef ENABLE_KDE_SUPPORT
 class QPushButton;
-
-class StreamDialog : public KDialog
-#else
-class StreamDialog : public QDialog
 #endif
+
+class StreamDialog : public Dialog
 {
     Q_OBJECT
 
@@ -76,8 +69,6 @@ private:
     #ifdef ENABLE_KDE_SUPPORT
     QString prevIconName;
     QPushButton *iconButton;
-    #else
-    QDialogButtonBox *buttonBox;
     #endif
     LineEdit *nameEntry;
     LineEdit *urlEntry;

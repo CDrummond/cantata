@@ -24,13 +24,13 @@
 #ifndef _SYNC_DIALOG_H_
 #define _SYNC_DIALOG_H_
 
-#include <KDE/KDialog>
+#include "dialog.h"
 #include "song.h"
 
 class Device;
 class SyncCollectionWidget;
 
-class SyncDialog : public KDialog
+class SyncDialog : public Dialog
 {
     Q_OBJECT
 

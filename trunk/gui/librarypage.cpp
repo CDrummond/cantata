@@ -28,6 +28,8 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "mainwindow.h"
+#include "localize.h"
+#include "messagebox.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
@@ -35,9 +37,6 @@
 #include <KDE/KLocale>
 #include <KDE/KActionCollection>
 #include <KDE/KGlobalSettings>
-#ifdef ENABLE_DEVICES_SUPPORT
-#include <KDE/KMessageBox>
-#endif
 #else
 #include <QtGui/QAction>
 #endif
@@ -88,11 +87,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     proxy.setSourceModel(MusicLibraryModel::self());
-    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Library"));
-    #else
-    view->setTopText(tr("Library"));
-    #endif
     view->setModel(&proxy);
     view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
     updateGenres(QSet<QString>());
@@ -185,7 +180,7 @@ void LibraryPage::deleteSongs()
     QList<Song> songs=selectedSongs();
 
     if (!songs.isEmpty()) {
-        if (KMessageBox::Yes==KMessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
+        if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {
             emit deleteSongs(QString(), songs);
         }
         view->clearSelection();
@@ -281,11 +276,7 @@ void LibraryPage::updateGenres(const QSet<QString> &g)
     genres=g;
     QStringList entries=g.toList();
     qSort(entries);
-    #ifdef ENABLE_KDE_SUPPORT
     entries.prepend(i18n("All Genres"));
-    #else
-    entries.prepend(tr("All Genres"));
-    #endif
 
     QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
 

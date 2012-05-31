@@ -27,8 +27,8 @@
 #include <QtCore/QStringList>
 #include <QtGui/QIcon>
 #include <QtGui/QPainter>
+#include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
 #include <KDE/KGlobal>
 #endif
 #include "albumsmodel.h"

@@ -25,16 +25,13 @@
 #include "dynamic.h"
 #include "dynamicrulesdialog.h"
 #include "mainwindow.h"
+#include "localize.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KLocale>
 #include <KDE/KActionCollection>
 #include <KDE/KGlobalSettings>
-#ifdef ENABLE_DEVICES_SUPPORT
-#include <KDE/KMessageBox>
-#endif
 #else
 #include <QtGui/QAction>
 #endif
@@ -96,11 +93,7 @@ DynamicPage::DynamicPage(MainWindow *p)
 
     stopAction->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());
-    #ifdef ENABLE_KDE_SUPPORT
     view->setTopText(i18n("Dynamic"));
-    #else
-    view->setTopText(tr("Dynamic"));
-    #endif
     view->setModel(&proxy);
     view->hideBackButton();
     view->setDeleteAction(removeAction);

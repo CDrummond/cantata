@@ -24,14 +24,14 @@
 #ifndef REMOTEDEVICEPROPERTIESDIALOG_H
 #define REMOTEDEVICEPROPERTIESDIALOG_H
 
-#include <KDE/KDialog>
+#include "dialog.h"
 #include "remotefsdevice.h"
 
 class FilenameSchemeDialog;
 class DevicePropertiesWidget;
 class RemoteDevicePropertiesWidget;
 
-class RemoteDevicePropertiesDialog : public KDialog
+class RemoteDevicePropertiesDialog : public Dialog
 {
     Q_OBJECT
 

@@ -24,7 +24,7 @@
 
 #include "encoders.h"
 #include "utils.h"
-#include <KDE/KLocale>
+#include "localize.h"
 #include <KDE/KStandardDirs>
 #include <QtCore/QRegExp>
 #include <QtCore/QProcess>

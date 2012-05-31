@@ -21,7 +21,7 @@
  ****************************************************************************************/
 
 #include "valueslider.h"
-#include "KDE/KLocalizedString"
+#include "localize.h"
 #include <QtGui/QHBoxLayout>
 
 ValueSlider::ValueSlider(QWidget *parent)

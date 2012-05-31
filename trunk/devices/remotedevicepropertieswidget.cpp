@@ -24,8 +24,8 @@
 #include "remotedevicepropertieswidget.h"
 #include "filenameschemedialog.h"
 #include "covers.h"
+#include "localize.h"
 #include <KDE/KGlobal>
-#include <KDE/KLocale>
 #include <KDE/KMessageBox>
 #include <KDE/KDirSelectDialog>
 #include <QtGui/QTabWidget>

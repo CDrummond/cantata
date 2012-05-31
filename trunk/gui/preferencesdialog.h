@@ -24,13 +24,9 @@
 #ifndef PREFERENCES_DIALOG_H
 #define PREFERENCES_DIALOG_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KDialog>
-#else
-#include <QtGui/QDialog>
+#include "dialog.h"
+#ifndef ENABLE_KDE_SUPPORT
 class ProxySettings;
-class QDialogButtonBox;
-class QAbstractButton;
 #endif
 
 class ServerSettings;
@@ -41,11 +37,7 @@ class LyricsPage;
 class ExternalSettings;
 class HttpServerSettings;
 
-#ifdef ENABLE_KDE_SUPPORT
-class PreferencesDialog : public KDialog
-#else
-class PreferencesDialog : public QDialog
-#endif
+class PreferencesDialog : public Dialog
 {
     Q_OBJECT
 
@@ -53,15 +45,10 @@ public:
     PreferencesDialog(QWidget *parent, LyricsPage *lp);
 
 private:
-#ifdef ENABLE_KDE_SUPPORT
     void slotButtonClicked(int button);
-#endif
 
 private Q_SLOTS:
     void writeSettings();
-#ifndef ENABLE_KDE_SUPPORT
-    void buttonPressed(QAbstractButton *button);
-#endif
 
 Q_SIGNALS:
     void settingsSaved();
@@ -74,7 +61,6 @@ private:
     LyricSettings *lyrics;
     HttpServerSettings *http;
 #ifndef ENABLE_KDE_SUPPORT
-    QDialogButtonBox *buttonBox;
     ProxySettings *proxy;
 #endif
 };

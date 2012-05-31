@@ -27,7 +27,8 @@
 #include "song.h"
 #include "musiclibrarymodel.h"
 #include "devicesmodel.h"
-#include <KDE/KMessageBox>
+#include "localize.h"
+#include "messagebox.h"
 #include <QtGui/QSplitter>
 
 struct SyncSong : public Song
@@ -91,7 +92,7 @@ int SyncDialog::instanceCount()
 }
 
 SyncDialog::SyncDialog(QWidget *parent)
-    : KDialog(parent)
+    : Dialog(parent)
     , currentDev(0)
 {
     iCount++;
@@ -175,12 +176,12 @@ Device * SyncDialog::getDevice()
 {
     Device *dev=DevicesModel::self()->device(devUdi);
     if (!dev) {
-        KMessageBox::error(isVisible() ? this : parentWidget(), i18n("Device has been removed!"));
+        MessageBox::error(isVisible() ? this : parentWidget(), i18n("Device has been removed!"));
         return 0;
     }
 
     if (currentDev && dev!=currentDev) {
-        KMessageBox::error(isVisible() ? this : parentWidget(), i18n("Device has been changed?"));
+        MessageBox::error(isVisible() ? this : parentWidget(), i18n("Device has been changed?"));
         return 0;
     }
 
@@ -188,6 +189,6 @@ Device * SyncDialog::getDevice()
         return dev;
     }
 
-    KMessageBox::error(isVisible() ? this : parentWidget(), i18n("Device is busy?"));
+    MessageBox::error(isVisible() ? this : parentWidget(), i18n("Device is busy?"));
     return 0;
 }

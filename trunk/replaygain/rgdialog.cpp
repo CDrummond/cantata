@@ -28,13 +28,14 @@
 #include "tags.h"
 #include "tagreader.h"
 #include "utils.h"
+#include "localize.h"
+#include "messagebox.h"
 #include <QtGui/QTreeWidget>
 #include <QtGui/QLabel>
 #include <QtGui/QProgressBar>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QHeaderView>
 #include <KDE/KLocale>
-#include <KDE/KMessageBox>
 #include <KDE/ThreadWeaver/Weaver>
 
 enum Columns
@@ -56,7 +57,7 @@ int RgDialog::instanceCount()
 }
 
 RgDialog::RgDialog(QWidget *parent)
-    : KDialog(parent)
+    : Dialog(parent)
     , state(State_Idle)
     , tagReader(0)
 {
@@ -139,7 +140,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
         albums[a].tracks.append(i++);
         new QTreeWidgetItem(view, QStringList() << s.albumArtist() << s.album << s.title);
     }
-    KDialog::show();
+    Dialog::show();
     startReadingTags();
 }
 
@@ -147,7 +148,7 @@ void RgDialog::slotButtonClicked(int button)
 {
     switch (button) {
     case Ok:
-        if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Update ReplayGain tags in files?"))) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Update ReplayGain tags in files?"))) {
             saveTags();
             stopScanning();
             accept();
@@ -159,17 +160,17 @@ void RgDialog::slotButtonClicked(int button)
     case Cancel:
         switch (state) {
         case State_ScanningFiles:
-            if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Cancel scanning of files?"))) {
+            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Cancel scanning of files?"))) {
                 stopScanning();
                 // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
-                KDialog::slotButtonClicked(button);
+                Dialog::slotButtonClicked(button);
             }
             break;
         case State_ScanningTags:
-            if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Cancel reading of existing tags?"))) {
+            if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Cancel reading of existing tags?"))) {
                 stopReadingTags();
                 // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
-                KDialog::slotButtonClicked(button);
+                Dialog::slotButtonClicked(button);
             }
             break;
         default:
@@ -177,7 +178,7 @@ void RgDialog::slotButtonClicked(int button)
             stopScanning();
             reject();
             // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
-            KDialog::slotButtonClicked(button);
+            Dialog::slotButtonClicked(button);
             break;
         }
         break;
@@ -189,8 +190,8 @@ void RgDialog::slotButtonClicked(int button)
 void RgDialog::startScanning()
 {
     bool all=origTags.isEmpty() ||
-             KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Do you wish to scan all files, or only files without existing tags?"), QString(),
-                                                          KGuiItem(i18n("All Tracks")), KGuiItem(i18n("Untagged Tracks")));
+             MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Do you wish to scan all files, or only files without existing tags?"), QString(),
+                                                        KGuiItem(i18n("All Tracks")), KGuiItem(i18n("Untagged Tracks")));
     if (!all && origTags.count()==origSongs.count()) {
         return;
     }

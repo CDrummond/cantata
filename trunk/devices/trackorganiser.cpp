@@ -30,9 +30,10 @@
 #include "mpdconnection.h"
 #include "utils.h"
 #include "lyricspage.h"
+#include "localize.h"
+#include "messagebox.h"
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
-#include <KDE/KMessageBox>
 #include <QtCore/QTimer>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
@@ -45,12 +46,12 @@ int TrackOrganiser::instanceCount()
 }
 
 TrackOrganiser::TrackOrganiser(QWidget *parent)
-    : KDialog(parent)
+    : Dialog(parent)
     , schemeDlg(0)
 {
     iCount++;
     updated=false;
-    setButtons(KDialog::Ok|KDialog::Cancel);
+    setButtons(Ok|Cancel);
     setCaption(i18n("Organize Files"));
     setAttribute(Qt::WA_DeleteOnClose);
     QWidget *mainWidet = new QWidget(this);
@@ -97,7 +98,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(updateView()));
 
     resize(800, 500);
-    KDialog::show();
+    Dialog::show();
     enableButtonOk(false);
     updateView();
 }
@@ -105,10 +106,10 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
 void TrackOrganiser::slotButtonClicked(int button)
 {
     switch (button) {
-    case KDialog::Ok:
+    case Ok:
         startRename();
         break;
-    case KDialog::Cancel:
+    case Cancel:
         if (!optionsBox->isEnabled()) {
             paused=true;
             if (KMessageBox::No==KMessageBox::questionYesNo(this, i18n("Cancel renaming of files?"))) {
@@ -119,7 +120,7 @@ void TrackOrganiser::slotButtonClicked(int button)
         }
         finish(false);
         // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
-        KDialog::slotButtonClicked(button);
+        Dialog::slotButtonClicked(button);
         break;
     default:
         break;
@@ -218,15 +219,15 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(KMessageBox::questionYesNoCancel(this, i18n("Destination file already exists!<br/>%1", dest),
-                                                        QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
-                case KMessageBox::Yes:
+                switch(MessageBox::questionYesNoCancel(this, i18n("Destination file already exists!<br/>%1").arg(dest),
+                                                       QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
+                case MessageBox::Yes:
                     skip=true;
                     break;
-                case KMessageBox::No:
+                case MessageBox::No:
                     autoSkip=skip=true;
                     break;
-                case KMessageBox::Cancel:
+                case MessageBox::Cancel:
                     finish(false);
                     return;
                 }
@@ -241,15 +242,15 @@ void TrackOrganiser::renameFile()
                 if (autoSkip) {
                     skip=true;
                 } else {
-                    switch(KMessageBox::questionYesNoCancel(this, i18n("Failed to create destination folder!<br/>%1", dir.absolutePath()),
-                                                            QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
-                    case KMessageBox::Yes:
+                    switch(MessageBox::questionYesNoCancel(this, i18n("Failed to create destination folder!<br/>%1").arg(dir.absolutePath()),
+                                                           QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
+                    case MessageBox::Yes:
                         skip=true;
                         break;
-                    case KMessageBox::No:
+                    case MessageBox::No:
                         autoSkip=skip=true;
                         break;
-                    case KMessageBox::Cancel:
+                    case MessageBox::Cancel:
                         finish(false);
                         return;
                     }
@@ -262,15 +263,15 @@ void TrackOrganiser::renameFile()
             if (autoSkip) {
                 skip=true;
             } else {
-                switch(KMessageBox::questionYesNoCancel(this, i18n("Failed to rename %1 to %2", source, dest),
-                                                        QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
-                case KMessageBox::Yes:
+                switch(MessageBox::questionYesNoCancel(this, i18n("Failed to rename %1 to %2").arg(source).arg(dest),
+                                                       QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
+                case MessageBox::Yes:
                     skip=true;
                     break;
-                case KMessageBox::No:
+                case MessageBox::No:
                     autoSkip=skip=true;
                     break;
-                case KMessageBox::Cancel:
+                case MessageBox::Cancel:
                     finish(false);
                     return;
                 }
@@ -347,17 +348,17 @@ Device * TrackOrganiser::getDevice(QWidget *p)
 {
     Device *dev=DevicesModel::self()->device(deviceUdi);
     if (!dev) {
-        KMessageBox::error(p ? p : this, i18n("Device has been removed!"));
+        MessageBox::error(p ? p : this, i18n("Device has been removed!"));
         reject();
         return 0;
     }
     if (!dev->isConnected()) {
-        KMessageBox::error(p ? p : this, i18n("Device is not connected."));
+        MessageBox::error(p ? p : this, i18n("Device is not connected."));
         reject();
         return 0;
     }
     if (!dev->isIdle()) {
-        KMessageBox::error(p ? p : this, i18n("Device is busy?"));
+        MessageBox::error(p ? p : this, i18n("Device is busy?"));
         reject();
         return 0;
     }

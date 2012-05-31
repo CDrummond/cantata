@@ -23,9 +23,7 @@
 
 #include "serversettings.h"
 #include "settings.h"
-#ifdef ENABLE_DEVICES_SUPPORT
-#include <KDE/KLocale>
-#endif
+#include "localize.h"
 
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)

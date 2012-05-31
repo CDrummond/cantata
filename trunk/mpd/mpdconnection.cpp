@@ -26,8 +26,8 @@
 
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
+#include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KLocale>
 #include <KDE/KGlobal>
 #endif
 #include <QtGui/QApplication>
@@ -370,17 +370,9 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         if (emitErrors) {
             if ((command.startsWith("add ") || command.startsWith("command_list_begin\nadd ")) && -1!=command.indexOf("\"file:///")) {
                 if (isLocal() && response.data=="Permission denied") {
-                    #ifdef ENABLE_KDE_SUPPORT
                     emit error(i18n("Failed to load. Please check user \"mpd\" has read permission."));
-                    #else
-                    emit error(tr("Failed to load. Please check user \"mpd\" has read permission."));
-                    #endif
                 } else if (!isLocal() && response.data=="Access denied") {
-                    #ifdef ENABLE_KDE_SUPPORT
                     emit error(i18n("Failed to load. MPD can only play local files if connected via a local socket."));
-                    #else
-                    emit error(tr("Failed to load. MPD can only play local files if connected via a local socket."));
-                    #endif
                 } else {
                     emit error(response.getError());
                 }

@@ -59,7 +59,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void configureSource();
     void configureDest();
-    void saveProperties(const QString &path, const QString &coverFile, const Device::Options &opts);
+    void saveProperties(const QString &path, const QString &coverFile, const DeviceOptions &opts);
     void actionStatus(int status);
     void doNext();
     void removeSongResult(KJob *job);
@@ -92,7 +92,7 @@ private:
     bool haveVariousArtists;
     Device *currentDev;
     QString destFile;
-    Device::Options namingOptions;
+    DeviceOptions namingOptions;
 };
 
 #endif

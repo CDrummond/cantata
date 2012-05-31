@@ -58,12 +58,12 @@ public:
     static const QLatin1String constSshfsProtocol;
 
     static QList<Device *> loadAll(DevicesModel *m);
-    static Device * create(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
+    static Device * create(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d);
     static void remove(Device *dev);
     static void renamed(const QString &oldName, const QString &newName);
     static QString createUdi(const QString &n);
 
-    RemoteFsDevice(DevicesModel *m, const QString &cover, const Options &options, const Details &d);
+    RemoteFsDevice(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d);
     RemoteFsDevice(DevicesModel *m, const Details &d);
     virtual ~RemoteFsDevice();
 
@@ -94,7 +94,7 @@ protected:
 
 protected Q_SLOTS:
     void saveProperties();
-    void saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, RemoteFsDevice::Details newDetails);
+    void saveProperties(const QString &newCoverFileName, const DeviceOptions &newOpts, RemoteFsDevice::Details newDetails);
     void procFinished(int exitCode);
 
 protected:

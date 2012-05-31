@@ -427,9 +427,9 @@ void DevicesPage::deleteSongs()
 void DevicesPage::addRemoteDevice()
 {
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(this);
-    dlg->show("cover.jpg", Device::Options(), RemoteFsDevice::Details(), DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder, true);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const Device::Options &, RemoteFsDevice::Details)),
-            DevicesModel::self(), SLOT(addRemoteDevice(const QString &, const Device::Options &, RemoteFsDevice::Details)));
+    dlg->show("cover.jpg", DeviceOptions(), RemoteFsDevice::Details(), DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder, true);
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &, RemoteFsDevice::Details)),
+            DevicesModel::self(), SLOT(addRemoteDevice(const QString &, const DeviceOptions &, RemoteFsDevice::Details)));
 }
 
 void DevicesPage::forgetRemoteDevice()

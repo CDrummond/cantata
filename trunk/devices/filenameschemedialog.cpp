@@ -24,8 +24,6 @@
 #include "filenameschemedialog.h"
 #include "song.h"
 #include "localize.h"
-#include <KDE/KLocale>
-#include <KDE/KMessageBox>
 #include <QtGui/QWhatsThis>
 
 FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
@@ -49,18 +47,26 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     connect(genre, SIGNAL(clicked()), this, SLOT(insertGenre()));
     connect(year, SIGNAL(clicked()), this, SLOT(insertYear()));
 
+    #ifdef ENABLE_KDE_SUPPORT
     exampleSong.albumartist=i18nc("Example album artist", "Various Artists");
     exampleSong.artist=i18nc("Example artist", "Wibble");
     exampleSong.album=i18nc("Example album", "Now 5001");
     exampleSong.title=i18nc("Example song name", "Wobble");
+    exampleSong.genre=i18nc("Example genre", "Dance");
+    #else
+    exampleSong.albumartist=tr("Various Artists");
+    exampleSong.artist=tr("Wibble");
+    exampleSong.album=tr("Now 5001");
+    exampleSong.title=tr("Wobble");
+    exampleSong.genre=tr("Dance");
+    #endif
     exampleSong.track=1;
     exampleSong.disc=2;
     exampleSong.year=2001;
-    exampleSong.genre=i18nc("Example genre", "Dance");
     exampleSong.file="wibble.mp3";
 }
 
-void FilenameSchemeDialog::show(const Device::Options &opts)
+void FilenameSchemeDialog::show(const DeviceOptions &opts)
 {
     origOpts=opts;
     pattern->setText(opts.scheme);
@@ -104,10 +110,10 @@ void FilenameSchemeDialog::showHelp()
                                "<tr><td>%6</td><td>The album number of a multi-album album. Often compilations consist of several albums.</td></tr>"
                                "<tr><td>%7</td><td>The year of the album's release.</td></tr>"
                                "<tr><td>%8</td><td>The genre of the album.</td></tr>"
-                               "</table></p>", Device::Options::constAlbumArtist, Device::Options::constAlbumTitle,
-                               Device::Options::constTrackArtist, Device::Options::constTrackTitle,
-                               Device::Options::constTrackNumber, Device::Options::constCdNumber, Device::Options::constYear,
-                               Device::Options::constGenre), help);
+                               "</table></p>").arg(DeviceOptions::constAlbumArtist).arg(DeviceOptions::constAlbumTitle)
+                               .arg(DeviceOptions::constTrackArtist).arg(DeviceOptions::constTrackTitle)
+                               .arg(DeviceOptions::constTrackNumber).arg(DeviceOptions::constCdNumber).arg(DeviceOptions::constYear)
+                               .arg(DeviceOptions::constGenre), help);
 }
 
 void FilenameSchemeDialog::enableOkButton()
@@ -118,42 +124,42 @@ void FilenameSchemeDialog::enableOkButton()
 
 void FilenameSchemeDialog::insertAlbumArtist()
 {
-    insert(Device::Options::constAlbumArtist);
+    insert(DeviceOptions::constAlbumArtist);
 }
 
 void FilenameSchemeDialog::insertAlbumTitle()
 {
-    insert(Device::Options::constAlbumTitle);
+    insert(DeviceOptions::constAlbumTitle);
 }
 
 void FilenameSchemeDialog::insertTrackArtist()
 {
-    insert(Device::Options::constTrackArtist);
+    insert(DeviceOptions::constTrackArtist);
 }
 
 void FilenameSchemeDialog::insertTrackTitle()
 {
-    insert(Device::Options::constTrackTitle);
+    insert(DeviceOptions::constTrackTitle);
 }
 
 void FilenameSchemeDialog::insertTrackNumber()
 {
-    insert(Device::Options::constTrackNumber);
+    insert(DeviceOptions::constTrackNumber);
 }
 
 void FilenameSchemeDialog::insertCdNumber()
 {
-    insert(Device::Options::constCdNumber);
+    insert(DeviceOptions::constCdNumber);
 }
 
 void FilenameSchemeDialog::insertGenre()
 {
-    insert(Device::Options::constGenre);
+    insert(DeviceOptions::constGenre);
 }
 
 void FilenameSchemeDialog::insertYear()
 {
-    insert(Device::Options::constYear);
+    insert(DeviceOptions::constYear);
 }
 
 void FilenameSchemeDialog::insert(const QString &str)

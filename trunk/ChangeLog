@@ -5,6 +5,7 @@
 2. Implement Ctrl+MouseWheel zoom for Qt-only info view.
 3. Initial attempt at a Windows port. (This is my 1st EVER windows build, so
    don't expect much!). See README.
+4. Add Track Organizer dialog to Qt-only build.
 
 0.7.1
 -----

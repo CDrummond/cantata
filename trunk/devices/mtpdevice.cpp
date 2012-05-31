@@ -554,8 +554,8 @@ void MtpDevice::configure(QWidget *parent)
     }
 
     DevicePropertiesDialog *dlg=new DevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
-            SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const DeviceOptions &)),
+            SLOT(saveProperties(const QString &, const QString &, const DeviceOptions &)));
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
@@ -827,7 +827,7 @@ void MtpDevice::libraryUpdated()
     mtpUpdating=false;
 }
 
-void MtpDevice::saveProperties(const QString &, const QString &, const Device::Options &newOpts)
+void MtpDevice::saveProperties(const QString &, const QString &, const DeviceOptions &newOpts)
 {
     if (configured && opts==newOpts) {
         return;

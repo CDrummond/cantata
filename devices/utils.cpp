@@ -40,6 +40,36 @@
 #include <pwd.h>
 #endif
 
+QString Utils::dirSyntax(const QString &d)
+{
+    if(!d.isEmpty())
+    {
+        QString ds(d);
+
+        ds.replace("//", "/");
+
+        int slashPos(ds.lastIndexOf('/'));
+
+        if(slashPos!=(((int)ds.length())-1))
+            ds.append('/');
+
+        return ds;
+    }
+
+    return d;
+}
+
+QString Utils::getDir(const QString &file)
+{
+    QString d(file);
+    int slashPos(d.lastIndexOf('/'));
+
+    if(slashPos!=-1)
+        d.remove(slashPos+1, d.length());
+
+    return dirSyntax(d);
+}
+
 QString Utils::changeExtension(const QString &file, const QString &extension)
 {
     if (extension.isEmpty()) {

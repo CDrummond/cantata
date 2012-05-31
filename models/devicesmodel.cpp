@@ -588,7 +588,7 @@ void DevicesModel::emitAddToDevice()
 }
 
 #ifdef ENABLE_REMOTE_DEVICES
-void DevicesModel::addRemoteDevice(const QString &coverFileName, const Device::Options &opts, RemoteFsDevice::Details details)
+void DevicesModel::addRemoteDevice(const QString &coverFileName, const DeviceOptions &opts, RemoteFsDevice::Details details)
 {
     Device *dev=RemoteFsDevice::create(this, coverFileName, opts, details);
 

@@ -32,7 +32,7 @@ typedef KDialog Dialog;
 #include <QtCore/QMap>
 
 struct KGuiItem {
-    KGuiItem(const QString &t, const QString &i)
+    KGuiItem(const QString &t=QString(), const QString &i=QString())
         : text(t), icon(i) {
     }
     QString text;
@@ -89,6 +89,9 @@ public:
     void setButtonGuiItem(ButtonCode button, const KGuiItem &item);
     void setButtonMenu(ButtonCode button, QMenu *menu, ButtonPopupMode popupmode=InstantPopup);
     void enableButton(ButtonCode button, bool enable);
+    void enableButtonOk(bool enable) {
+        enableButton(Ok, enable);
+    }
     bool isButtonEnabled(ButtonCode button);
     void setMainWidget(QWidget *widget);
     virtual void slotButtonClicked(int button);

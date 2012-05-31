@@ -23,6 +23,7 @@
 
 #include "messagebox.h"
 #include <QtGui/QAbstractButton>
+#include <QtGui/QIcon>
 
 MessageBox::ButtonCode map(QMessageBox::StandardButton c)
 {
@@ -35,8 +36,9 @@ MessageBox::ButtonCode map(QMessageBox::StandardButton c)
 }
 
 MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QString &message, const QString &title,
-                               const QString &yesText, const QString &noText, bool showCancel, bool isWarning) {
-    if (yesText.isEmpty() && noText.isEmpty()) {
+                               const KGuiItem &yesText, const KGuiItem &noText, bool showCancel, bool isWarning)
+{
+    if (yesText.text.isEmpty() && noText.text.isEmpty()) {
         return map(isWarning
                 ? QMessageBox::warning(parent, message, title.isEmpty() ? QObject::tr("Warning") : title,
                                        QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton))
@@ -48,11 +50,19 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
                         message, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent);
 
         box.setDefaultButton(QMessageBox::Yes);
-        if (!yesText.isEmpty()) {
-            box.button(QMessageBox::Yes)->setText(yesText);
+        if (!yesText.text.isEmpty()) {
+            QAbstractButton *btn=box.button(QMessageBox::Yes);
+            btn->setText(yesText.text);
+            if (!yesText.icon.isEmpty()) {
+                btn->setIcon(QIcon::fromTheme(yesText.icon));
+            }
         }
-        if (!noText.isEmpty()) {
-            box.button(QMessageBox::No)->setText(noText);
+        if (!noText.text.isEmpty()) {
+            QAbstractButton *btn=box.button(QMessageBox::No);
+            btn->setText(noText.text);
+            if (!noText.icon.isEmpty()) {
+                btn->setIcon(QIcon::fromTheme(noText.icon));
+            }
         }
         return -1==box.exec() ? Cancel : map(box.standardButton(box.clickedButton()));
     }

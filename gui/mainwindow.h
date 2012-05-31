@@ -309,8 +309,8 @@ private Q_SLOTS:
 //     void createAudioCd();
     void editTags();
     void editPlayQueueTags();
-    #ifdef ENABLE_DEVICES_SUPPORT
     void organiseFiles();
+    #ifdef ENABLE_DEVICES_SUPPORT
     void addToDevice(const QString &udi);
     void deleteSongs();
     void copyToDevice(const QString &from, const QString &to, const QList<Song> &songs);
@@ -398,8 +398,8 @@ private:
     Action *devicesTabAction;
     Action *copyToDeviceAction;
     Action *deleteSongsAction;
-    Action *organiseFilesAction;
     #endif
+    Action *organiseFilesAction;
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     Action *replaygainAction;
     #endif

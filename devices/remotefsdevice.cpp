@@ -122,7 +122,7 @@ QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
     return devices;
 }
 
-Device * RemoteFsDevice::create(DevicesModel *m, const QString &cover, const Options &options, const Details &d)
+Device * RemoteFsDevice::create(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d)
 {
     if (d.isEmpty()) {
         return false;
@@ -199,7 +199,7 @@ void RemoteFsDevice::renamed(const QString &oldName, const QString &newName)
     KGlobal::config()->sync();
 }
 
-RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const Options &options, const Details &d)
+RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d)
     : FsDevice(m, d.name)
     , lastCheck(0)
     , details(d)
@@ -430,8 +430,8 @@ void RemoteFsDevice::configure(QWidget *parent)
     }
 
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const Device::Options &, RemoteFsDevice::Details)),
-            SLOT(saveProperties(const QString &, const Device::Options &, RemoteFsDevice::Details)));
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &, RemoteFsDevice::Details)),
+            SLOT(saveProperties(const QString &, const DeviceOptions &, RemoteFsDevice::Details)));
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
@@ -460,7 +460,7 @@ void RemoteFsDevice::saveProperties()
     saveProperties(coverFileName, opts, details);
 }
 
-void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Device::Options &newOpts, Details newDetails)
+void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const DeviceOptions &newOpts, Details newDetails)
 {
     if (configured && opts==newOpts && newCoverFileName==coverFileName && details==newDetails) {
         return;

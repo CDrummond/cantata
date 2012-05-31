@@ -446,8 +446,8 @@ void ActionDialog::configure(const QString &udi)
 {
     if (udi.isEmpty()) {
         DevicePropertiesDialog *dlg=new DevicePropertiesDialog(this);
-        connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const Device::Options &)),
-                SLOT(saveProperties(const QString &, const QString &, const Device::Options &)));
+        connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const DeviceOptions &)),
+                SLOT(saveProperties(const QString &, const QString &, const DeviceOptions &)));
         dlg->setCaption(i18n("Local Music Library Properties"));
         dlg->show(Settings::self()->mpdDir(), QString(), namingOptions, DevicePropertiesWidget::Prop_Basic);
     } else {
@@ -458,7 +458,7 @@ void ActionDialog::configure(const QString &udi)
     }
 }
 
-void ActionDialog::saveProperties(const QString &path, const QString &coverFile, const Device::Options &opts)
+void ActionDialog::saveProperties(const QString &path, const QString &coverFile, const DeviceOptions &opts)
 {
     Q_UNUSED(path)
     Q_UNUSED(coverFile)

@@ -29,6 +29,7 @@
 typedef KMessageBox MessageBox;
 #else
 #include <QtGui/QMessageBox>
+#include "dialog.h"
 namespace MessageBox {
     enum ButtonCode {
         Yes=QMessageBox::Yes,
@@ -37,15 +38,15 @@ namespace MessageBox {
     };
 
     extern ButtonCode questionYesNoCancel(QWidget *parent, const QString &message, const QString &title=QString(),
-                               const QString &yesText=QString(), const QString &noText=QString(), bool showCancel=true, bool isWarning=false);
-    inline ButtonCode questionYesNo(QWidget *parent, const QString &message, const QString &title=QString(), const QString &yesText=QString(), const QString &noText=QString()) {
+                               const KGuiItem &yesText=KGuiItem(), const KGuiItem &noText=KGuiItem(), bool showCancel=true, bool isWarning=false);
+    inline ButtonCode questionYesNo(QWidget *parent, const QString &message, const QString &title=QString(), const KGuiItem &yesText=KGuiItem(), const KGuiItem &noText=KGuiItem()) {
         return questionYesNoCancel(parent, message, title, yesText, noText, false);
     }
     inline ButtonCode warningYesNoCancel(QWidget *parent, const QString &message, const QString &title=QString(),
-                               const QString &yesText=QString(), const QString &noText=QString()) {
+                               const KGuiItem &yesText=KGuiItem(), const KGuiItem &noText=KGuiItem()) {
         return questionYesNoCancel(parent, message, title, yesText, noText, true, true);
     }
-    inline ButtonCode warningYesNo(QWidget *parent, const QString &message, const QString &title=QString(), const QString &yesText=QString(), const QString &noText=QString()) {
+    inline ButtonCode warningYesNo(QWidget *parent, const QString &message, const QString &title=QString(), const KGuiItem &yesText=KGuiItem(), const KGuiItem &noText=KGuiItem()) {
         return questionYesNoCancel(parent, message, title, yesText, noText, false, true);
     }
     inline void error(QWidget *parent, const QString &message, const QString &title=QString()) {

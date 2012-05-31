@@ -27,7 +27,11 @@
 #include "ui_trackorganiser.h"
 #include "dialog.h"
 #include "song.h"
+#ifdef ENABLE_KDE_SUPPORT
 #include "device.h"
+#else
+#include "deviceoptions.h"
+#endif
 
 class FilenameSchemeDialog;
 class TrackOrganiser : public Dialog, Ui::TrackOrganiser
@@ -55,7 +59,9 @@ private Q_SLOTS:
 private:
     void slotButtonClicked(int button);
     void readOptions();
+    #ifdef ENABLE_KDE_SUPPORT
     Device * getDevice(QWidget *p=0);
+    #endif
     void finish(bool ok);
 
 private:
@@ -66,7 +72,7 @@ private:
     bool autoSkip;
     bool paused;
     bool updated;
-    Device::Options opts;
+    DeviceOptions opts;
 };
 
 #endif

@@ -128,9 +128,12 @@ SET( CANTATA_SRCS
     libmaia/maiaObject.cpp
     libmaia/maiaFault.cpp
     libmaia/maiaXmlRpcClient.cpp
+    devices/deviceoptions.cpp
+    devices/trackorganiser.cpp
     devices/utils.cpp
     http/httpserver.cpp
     http/httpsocket.cpp
+    devices/filenameschemedialog.cpp
     devices/tags.cpp
 )
 
@@ -187,6 +190,8 @@ SET( CANTATA_MOC_HDRS
     libmaia/maiaFault.h
     libmaia/maiaXmlRpcClient.h
     http/httpsocket.h
+    devices/filenameschemedialog.h
+    devices/trackorganiser.h
 )
 
 SET( CANTATA_UIS
@@ -206,6 +211,8 @@ SET( CANTATA_UIS
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
     widgets/itemview.ui
+    devices/filenameschemedialog.ui
+    devices/trackorganiser.ui
 )
 
 if (NOT WIN32)
@@ -341,14 +348,14 @@ IF( ENABLE_KDE_SUPPORT )
     SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp
             devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
             models/devicesmodel.cpp devices/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
-            devices/devicepropertiesdialog.cpp devices/filenameschemedialog.cpp devices/encoders.cpp
-            devices/transcodingjob.cpp devices/valueslider.cpp devices/trackorganiser.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp)
+            devices/devicepropertiesdialog.cpp devices/encoders.cpp
+            devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h
             devices/device.h devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
             devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
-            devices/filenameschemedialog.h devices/transcodingjob.h devices/valueslider.h devices/trackorganiser.h  devices/syncdialog.h devices/synccollectionwidget.h)
+            devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h devices/synccollectionwidget.h)
     SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui
-            devices/filenameschemedialog.ui devices/trackorganiser.ui devices/synccollectionwidget.ui)
+            devices/synccollectionwidget.ui)
 
     if (ENABLE_REMOTE_DEVICES)
         SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp
@@ -527,7 +534,7 @@ IF( ENABLE_KDE_SUPPORT )
     endif( NOT MTP_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
 ELSE( ENABLE_KDE_SUPPORT )
     if (NOT WIN32)
-        message("INFO: Building WITHOUT KDE support - Device sync, Track organizer, ReplayGain calculation, and CommandLine support DISABLED")
+        message("INFO: Building WITHOUT KDE support - Device sync, ReplayGain calculation, and CommandLine support DISABLED")
     endif (NOT WIN32)
 ENDIF( ENABLE_KDE_SUPPORT )
 message("")

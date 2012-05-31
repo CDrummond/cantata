@@ -53,7 +53,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="KUrlLabel" name="help">
+      <widget class="UrlLabel" name="help">
        <property name="text">
         <string>About filename schemes</string>
        </property>
@@ -65,7 +65,7 @@
     </layout>
    </item>
    <item row="4" column="0">
-    <widget class="KPushButton" name="albumArtist">
+    <widget class="QPushButton" name="albumArtist">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -84,7 +84,7 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="KPushButton" name="albumTitle">
+    <widget class="QPushButton" name="albumTitle">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -103,7 +103,7 @@
     </widget>
    </item>
    <item row="4" column="2">
-    <widget class="KPushButton" name="trackArtist">
+    <widget class="QPushButton" name="trackArtist">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -122,7 +122,7 @@
     </widget>
    </item>
    <item row="4" column="3">
-    <widget class="KPushButton" name="trackTitle">
+    <widget class="QPushButton" name="trackTitle">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -141,21 +141,21 @@
     </widget>
    </item>
    <item row="5" column="0">
-    <widget class="KPushButton" name="trackNo">
+    <widget class="QPushButton" name="trackNo">
      <property name="text">
       <string>Track #</string>
      </property>
     </widget>
    </item>
    <item row="5" column="1">
-    <widget class="KPushButton" name="cdNo">
+    <widget class="QPushButton" name="cdNo">
      <property name="text">
       <string>CD #</string>
      </property>
     </widget>
    </item>
    <item row="5" column="3">
-    <widget class="KPushButton" name="genre">
+    <widget class="QPushButton" name="genre">
      <property name="text">
       <string>Genre</string>
      </property>
@@ -175,7 +175,7 @@
     </spacer>
    </item>
    <item row="5" column="2">
-    <widget class="KPushButton" name="year">
+    <widget class="QPushButton" name="year">
      <property name="text">
       <string>Year</string>
      </property>
@@ -185,14 +185,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KUrlLabel</class>
+   <class>UrlLabel</class>
    <extends>QLabel</extends>
-   <header>kurllabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
+   <header>urllabel.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>

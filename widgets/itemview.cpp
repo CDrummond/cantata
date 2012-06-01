@@ -65,6 +65,76 @@ bool EscapeKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
+#ifndef ENABLE_KDE_SUPPORT
+Spinner::Spinner()
+    : QWidget(0)
+    , timer(0)
+    , value(0)
+{
+    setVisible(false);
+    setMinimumSize(32, 32);
+    setMaximumSize(32, 32);
+}
+
+void Spinner::start()
+{
+    value=0;
+    setVisible(true);
+    setPosition();
+    if (!timer) {
+        timer=new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    }
+    timer->start(100);
+}
+
+void Spinner::stop()
+{
+    setVisible(false);
+    if (timer) {
+        timer->stop();
+    }
+}
+
+static const int constSpinnerSteps=64;
+
+void Spinner::paintEvent(QPaintEvent *event)
+{
+    static const int constParts=8;
+    QPainter p(this);
+    QRectF rectangle(1.5, 1.5, size().width()-3, size().height()-3);
+    QColor col(palette().color(QPalette::Text));
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.setClipRect(event->rect());
+    double size=(360*16)/(2.0*constParts);
+    for (int i=0; i<constParts; ++i) {
+        col.setAlphaF((constParts-i)/(1.0*constParts));
+        p.setPen(QPen(col, 2));
+        p.drawArc(rectangle, (((constSpinnerSteps-value)*1.0)/(constSpinnerSteps*1.0)*360*16)+(i*2.0*size), size);
+    }
+    p.end();
+}
+
+void Spinner::timeout()
+{
+    setPosition();
+    update();
+    if (++value>=constSpinnerSteps) {
+        value=0;
+    }
+}
+
+void Spinner::setPosition()
+{
+    QPoint current=pos();
+    QPoint desired=QPoint(parentWidget()->size().width()-(size().width()+4), 4);
+
+    if (current!=desired) {
+        move(desired);
+    }
+}
+#endif
+
 static const int constImageSize=22;
 static const int constDevImageSize=32;
 
@@ -343,12 +413,10 @@ ItemView::ItemView(QWidget *p)
     , currentLevel(0)
     , mode(Mode_Tree)
     , groupedView(0)
+    , spinnerActive(false)
+    , spinner(0)
 {
     setupUi(this);
-    #ifdef ENABLE_KDE_SUPPORT
-    spinner=0;
-    spinnerActive=false;
-    #endif
     backAction = new QAction(i18n("Back"), this);
     backAction->setIcon(QIcon::fromTheme("go-previous"));
     backButton->setDefaultAction(backAction);
@@ -474,14 +542,12 @@ void ItemView::setMode(Mode m)
     }
 
     stackedWidget->setCurrentIndex(Mode_Tree==mode || Mode_GroupedTree==mode ? 0 : 1);
-    #ifdef ENABLE_KDE_SUPPORT
     if (spinner) {
         spinner->setWidget(view()->viewport());
         if (spinnerActive) {
             spinner->start();
         }
     }
-    #endif
 }
 
 void ItemView::hideBackButton()
@@ -724,26 +790,28 @@ void ItemView::expandAll()
 
 void ItemView::showSpinner()
 {
-    #ifdef ENABLE_KDE_SUPPORT
     if (!spinner) {
+        #ifdef ENABLE_KDE_SUPPORT
         spinner=new KPixmapSequenceOverlayPainter(this);
         spinner->setSequence(KPixmapSequence("process-working", KIconLoader::SizeSmallMedium));
+        #else
+        spinner=new Spinner();
+        #endif
     }
     spinnerActive=true;
     spinner->setWidget(view()->viewport());
+    #ifdef ENABLE_KDE_SUPPORT
     spinner->setAlignment(Qt::AlignTop | (Qt::RightToLeft==QApplication::layoutDirection() ? Qt::AlignLeft : Qt::AlignRight));
-    spinner->start();
     #endif
+    spinner->start();
 }
 
 void ItemView::hideSpinner()
 {
-    #ifdef ENABLE_KDE_SUPPORT
     if (spinner) {
         spinnerActive=false;
-        spinner->stop();
+        //spinner->stop();
     }
-    #endif
 }
 
 void ItemView::collectionRemoved(quint32 key)

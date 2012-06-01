@@ -73,10 +73,8 @@ Scanner::Data Scanner::global(const QList<Scanner *> &scanners)
     }
 }
 
-Scanner::Scanner(QObject *p)
-    : ThreadWeaver::Job(p)
-    , state(0)
-    , abortRequested(false)
+Scanner::Scanner()
+    : state(0)
     , input(0)
 {
     #ifdef MPG123_FOUND
@@ -152,7 +150,7 @@ void Scanner::run()
             return;
         }
         totalRead+=numFramesRead;
-        emit progress(this, (int)((totalRead*100.0/input->totalFrames())+0.5));
+        emit progress((int)((totalRead*100.0/input->totalFrames())+0.5));
         if (ebur128_add_frames_float(state, input->buffer(), numFramesRead)) {
             setFinished(false);
             return;

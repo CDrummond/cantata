@@ -219,8 +219,16 @@ void DeviceOptions::load(const QString &group)
         transcoderWhenDifferent=grp.readEntry("transcoderWhenDifferent", transcoderWhenDifferent);
     }
     #else
-    QSettings settings;
+    #define GET_STRING(KEY, DEF)     (cfg.contains(KEY) ? cfg.value(KEY).toString() : QString(DEF))
+    #define GET_BOOL(KEY, DEF)       (cfg.contains(KEY) ? cfg.value(KEY).toBool() : DEF)
 
+    QSettings cfg;
+    QString sep=group.isEmpty() ? QString() : (group+"/");
+    scheme=GET_STRING(sep+"scheme", scheme);
+    vfatSafe=GET_BOOL(sep+"vfatSafe", vfatSafe);
+    asciiOnly=GET_BOOL(sep+"asciiOnly", asciiOnly);
+    ignoreThe=GET_BOOL(sep+"ignoreThe", ignoreThe);
+    replaceSpaces=GET_BOOL(sep+"replaceSpaces", replaceSpaces);
     #endif
 }
 
@@ -241,6 +249,13 @@ void DeviceOptions::save(const QString &group)
     }
     grp.sync();
     #else
+    QSettings cfg;
+    QString sep=group.isEmpty() ? QString() : (group+"/");
+    cfg.setValue(sep+"scheme", scheme);
+    cfg.setValue(sep+"vfatSafe", vfatSafe);
+    cfg.setValue(sep+"asciiOnly", asciiOnly);
+    cfg.setValue(sep+"ignoreThe", ignoreThe);
+    cfg.setValue(sep+"replaceSpaces", replaceSpaces);
     #endif
 }
 

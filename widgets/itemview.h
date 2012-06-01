@@ -51,6 +51,36 @@ private:
     QAction *act;
 };
 
+#ifndef ENABLE_KDE_SUPPORT
+class Spinner : public QWidget
+{
+    Q_OBJECT
+
+public:
+    Spinner();
+    virtual ~Spinner() {
+    }
+
+    void setWidget(QWidget *widget) {
+        setParent(widget);
+    }
+
+    void start();
+    void stop();
+    void paintEvent(QPaintEvent *event);
+
+private Q_SLOTS:
+    void timeout();
+
+private:
+    void setPosition();
+
+private:
+    QTimer *timer;
+    int value;
+};
+#endif
+
 class ItemView : public QWidget, public Ui::ItemView
 {
     Q_OBJECT
@@ -152,9 +182,11 @@ private:
     QSize iconGridSize;
     QSize listGridSize;
     GroupedView *groupedView;
-    #ifdef ENABLE_KDE_SUPPORT
     bool spinnerActive;
+    #ifdef ENABLE_KDE_SUPPORT
     KPixmapSequenceOverlayPainter *spinner;
+    #else
+    Spinner *spinner;
     #endif
 };
 

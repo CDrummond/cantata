@@ -659,8 +659,8 @@ void TagEditor::applyUpdates()
         KMessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
         #else
         QMessageBox::warning(this, tr("Warning"), 1==failed.count()
-                                                    ? tr("Failed to update the tags of the %1").arg(failed.at(0))
-                                                    : tr("Failed to update the tags of the %2 tracks").arg(failed.count()));
+                                                    ? tr("Failed to update the tags of %1").arg(failed.at(0))
+                                                    : tr("Failed to update the tags of %2 tracks").arg(failed.count()));
         #endif
     }
 

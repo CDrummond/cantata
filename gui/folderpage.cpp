@@ -143,17 +143,16 @@ void FolderPage::controlActions()
     mw->addToPlayQueueAction->setEnabled(enable);
     mw->replacePlayQueueAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
-    #ifdef ENABLE_DEVICES_SUPPORT
-    mw->copyToDeviceAction->setEnabled(enable);
-    #endif
-    mw->organiseFilesAction->setEnabled(enable);
-    mw->editTagsAction->setEnabled(enable);
+    mw->organiseFilesAction->setEnabled(enable && Settings::self()->canReadMpdDir());
+    mw->editTagsAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    mw->replaygainAction->setEnabled(enable);
+    mw->replaygainAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    mw->deleteSongsAction->setEnabled(enable);
+    mw->deleteSongsAction->setEnabled(mw->organiseFilesAction->isEnabled());
+    mw->copyToDeviceAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #endif
+
     #ifdef ENABLE_KDE_SUPPORT
     browseAction->setEnabled(false);
     if (1==selected.count() && QDir(Settings::self()->mpdDir()).isReadable()) {

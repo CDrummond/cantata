@@ -11,6 +11,8 @@
    'locate in library'. Its possible that the configured MPD dir does not
    exist - but 'locate in library' should still work.
 7. Implement a basic spinner widgets for item views in Qt-only builds.
+8. Make Qt-only builds single instance apps, as per KDE build.
+9. Add commandline file loading support to Qt-only builds.
 
 0.7.1
 -----

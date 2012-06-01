@@ -21,107 +21,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "application.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KUniqueApplication>
 #include <KDE/KAboutData>
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
-#include <KDE/KMessageBox>
-#else
-#include <QtGui/QApplication>
-#include <QtGui/QIcon>
-#include <QtCore/QFile>
-#include <QtCore/QDir>
 #endif
 #include "utils.h"
 #include "config.h"
 #include "mainwindow.h"
-
-#ifdef ENABLE_KDE_SUPPORT
-class CantataApp : public KUniqueApplication
-{
-public:
-    #ifdef Q_WS_X11
-    CantataApp(Display *display, Qt::HANDLE visual, Qt::HANDLE colormap)
-        : KUniqueApplication(display, visual, colormap)
-        , w(0)
-    {
-    }
-    #endif
-
-    CantataApp()
-        : KUniqueApplication()
-        , w(0)
-    {
-    }
-
-    ~CantataApp() {
-        if (w) {
-            delete w;
-            w=0;
-        }
-    }
-
-    int newInstance() {
-        if (w) {
-            if (!w->isVisible()) {
-                w->showNormal();
-            }
-        } else {
-            if (0==Utils::getAudioGroupId() && KMessageBox::Cancel==KMessageBox::warningContinueCancel(0,
-                    i18n("You are not currently a member of the \"audio\" group. "
-                         "Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you "
-                         "(or your administrator) add yourself to this group.\n\n"
-                         "Note, that if you do add yourself you will need to logout and back in for this to take effect.\n\n"
-                         "Select \"Continue\" to start Cantata as is."),
-                    i18n("Audio Group"), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "audioGroupWarning")) {
-                QApplication::exit(0);
-            }
-            w=new MainWindow();
-        }
-
-        KCmdLineArgs *args(KCmdLineArgs::parsedArgs());
-        QList<QUrl> urls;
-        for (int i = 0; i < args->count(); ++i) {
-            urls.append(QUrl(args->url(i)));
-        }
-        if (!urls.isEmpty()) {
-            w->load(urls);
-        }
-        KStartupInfo::appStarted(startupId());
-        return 0;
-    }
-
-    MainWindow *w;
-};
-#else
-void setupIconTheme()
-{
-    // Check that we have certain icons in the selected icon theme. If not, and oxygen is installed, then
-    // set icon theme to oxygen.
-    QString theme=QIcon::themeName();
-    if (QLatin1String("oxygen")!=theme) {
-        QStringList check=QStringList() << "actions/edit-clear-list" << "actions/view-media-playlist"
-                                        << "actions/view-media-lyrics" << "actions/configure"
-                                        << "actions/view-choose" << "actions/view-media-artist"
-                                        << "places/server-database" << "devices/media-optical-audio";
-
-        foreach (const QString &icn, check) {
-            if (!QIcon::hasThemeIcon(icn)) {
-                QStringList paths=QIcon::themeSearchPaths();
-
-                foreach (const QString &p, paths) {
-                    if (QDir(p+QLatin1String("/oxygen")).exists()) {
-                        QIcon::setThemeName(QLatin1String("oxygen"));
-                        return;
-                    }
-                }
-                return;
-            }
-        }
-    }
-}
-#endif
 
 int main(int argc, char *argv[])
 {
@@ -149,18 +58,22 @@ int main(int argc, char *argv[])
     if (!KUniqueApplication::start())
         exit(0);
 
-    CantataApp app;
+    Application app;
     #else
-    QApplication app(argc, argv);
-    QApplication::setApplicationName(PACKAGE_NAME);
+    QCoreApplication::setApplicationName(PACKAGE_NAME);
     #ifdef Q_WS_WIN
-    QApplication::setOrganizationName("mpd");
+    QCoreApplication::setOrganizationName("mpd");
     #else
-    QApplication::setOrganizationName(PACKAGE_NAME);
+    QCoreApplication::setOrganizationName(PACKAGE_NAME);
     #endif
 
-    setupIconTheme();
+    Application app(argc, argv);
+    if (!app.start()) {
+        return 0;
+    }
     MainWindow mw;
+    app.setActivationWindow(&mw);
+    app.loadFiles();
     #endif
 
     return app.exec();

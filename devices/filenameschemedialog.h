@@ -27,7 +27,7 @@
 #include "ui_filenameschemedialog.h"
 #include "dialog.h"
 #include "song.h"
-#include "device.h"
+#include "deviceoptions.h"
 
 class FilenameSchemeDialog : public Dialog, Ui::FilenameSchemeDialog
 {

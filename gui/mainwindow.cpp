@@ -780,7 +780,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
 
-    editPlayQueueTagsAction->setEnabled(Settings::self()->canReadMpdDir());
     expandInterfaceAction->setCheckable(true);
     randomPlayQueueAction->setCheckable(true);
     repeatPlayQueueAction->setCheckable(true);
@@ -838,13 +837,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef PHONON_FOUND
     streamPlayAction->setChecked(false);
     #endif
-//     burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
-    #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setEnabled(Settings::self()->canReadMpdDir());
-    deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
-    deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
-    #endif
-    lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
+
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
@@ -927,7 +920,6 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
     connect(streamsPage, SIGNAL(add(const QStringList &, bool)), &playQueueModel, SLOT(addItems(const QStringList &, bool)));
-    autoScrollPlayQueue=Settings::self()->playQueueScroll();
     playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
@@ -1047,9 +1039,7 @@ MainWindow::MainWindow(QWidget *parent)
     MPDConnection::self()->moveToThread(mpdThread);
     mpdThread->start();
     connectToMpd();
-    if (Settings::self()->enableHttp()) {
-        HttpServer::self()->setPort(Settings::self()->httpPort());
-    }
+
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->loadRemote();
     #endif
@@ -1068,20 +1058,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(ModeChanged(FancyTabWidget::Mode)), this, SLOT(sidebarModeChanged()));
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
-    libraryPage->setView(0==Settings::self()->libraryView());
-    albumsPage->setView(Settings::self()->albumsView());
-    AlbumsModel::setUseLibrarySizes(Settings::self()->albumsView()!=ItemView::Mode_IconTop);
-    AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
-    playlistsPage->setView(Settings::self()->playlistsView());
-    streamsPage->setView(0==Settings::self()->streamsView());
-    folderPage->setView(0==Settings::self()->folderView());
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesPage->setView(0==Settings::self()->devicesView());
-    #endif
-    #ifdef PHONON_FOUND
-    streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
-    streamPlayAction->setChecked(Settings::self()->playStream());
-    #endif
+    readSettings();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     playlistsPage->refresh();
     #ifndef Q_WS_WIN
@@ -1355,15 +1332,10 @@ void MainWindow::showPreferencesDialog()
     }
 }
 
-void MainWindow::updateSettings()
+void MainWindow::readSettings()
 {
-    int stopFadeDuration=Settings::self()->stopFadeDuration();
-    fadeStop=stopFadeDuration>Settings::MinFade;
-    if (volumeFade) {
-        volumeFade->setDuration(stopFadeDuration);
-    }
-
-    connectToMpd();
+    // Force MPD dir setting to be read, and then checked if it is readable...
+    Settings::self()->mpdDir();
     Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
     HttpServer::self()->setPort(Settings::self()->enableHttp() ? Settings::self()->httpPort() : 0);
     editPlayQueueTagsAction->setEnabled(Settings::self()->canReadMpdDir());
@@ -1378,37 +1350,11 @@ void MainWindow::updateSettings()
     replaygainAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     #endif
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
-    Settings::self()->save();
-    bool useLibSizeForAl=Settings::self()->albumsView()!=ItemView::Mode_IconTop;
-    bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize();
-    bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumsCoverSize() ||
-                      albumsPage->viewMode()!=Settings::self()->albumsView() ||
-                      useLibSizeForAl!=AlbumsModel::useLibrarySizes();
-    bool diffLibYear=MusicLibraryItemAlbum::showDate()!=Settings::self()->libraryYear();
-    bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
-                      MPDParseUtils::groupMultiple()!=Settings::self()->groupMultiple();
-
-    if (diffLibCovers) {
-        MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
-    }
-    if (diffLibYear) {
-        MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
-    }
-    if (diffAlCovers) {
-        AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
-    }
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
-
-    AlbumsModel::setUseLibrarySizes(useLibSizeForAl);
-    AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
     albumsPage->setView(Settings::self()->albumsView());
-    if (diffAlCovers || diffGrouping) {
-        albumsPage->clear();
-    }
-    if (diffLibCovers || diffAlCovers || diffLibYear || diffGrouping) {
-        refresh();
-    }
+    AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
+
     #ifdef PHONON_FOUND
     streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
     if (phononStream && streamButton->isVisible()) {
@@ -1428,6 +1374,68 @@ void MainWindow::updateSettings()
     toggleMpris();
     #endif
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
+    switch (tabWidget->current_index()) {
+    #ifdef ENABLE_DEVICES_SUPPORT
+    case PAGE_DEVICES:   devicesPage->controlActions();    break;
+    #endif
+    case PAGE_LIBRARY:   libraryPage->controlActions();    break;
+    case PAGE_ALBUMS:    albumsPage->controlActions();     break;
+    case PAGE_FOLDERS:   folderPage->controlActions();     break;
+    case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
+    #ifndef Q_WS_WIN
+    case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
+    #endif
+    case PAGE_STREAMS:   streamsPage->controlActions();    break;
+    case PAGE_LYRICS:                                      break;
+    #ifdef ENABLE_WEBKIT
+    case PAGE_INFO:                                        break;
+    #endif
+    case PAGE_SERVER_INFO:                                 break;
+    default:                                               break;
+    }
+    #ifdef PHONON_FOUND
+    streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
+    streamPlayAction->setChecked(Settings::self()->playStream());
+    #endif
+}
+
+void MainWindow::updateSettings()
+{
+    int stopFadeDuration=Settings::self()->stopFadeDuration();
+    fadeStop=stopFadeDuration>Settings::MinFade;
+    if (volumeFade) {
+        volumeFade->setDuration(stopFadeDuration);
+    }
+
+    connectToMpd();
+    readSettings();
+    Settings::self()->save();
+    bool useLibSizeForAl=Settings::self()->albumsView()!=ItemView::Mode_IconTop;
+    bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize();
+    bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumsCoverSize() ||
+                      albumsPage->viewMode()!=Settings::self()->albumsView() ||
+                      useLibSizeForAl!=AlbumsModel::useLibrarySizes();
+    bool diffLibYear=MusicLibraryItemAlbum::showDate()!=Settings::self()->libraryYear();
+    bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
+                      MPDParseUtils::groupMultiple()!=Settings::self()->groupMultiple();
+
+    if (diffLibCovers) {
+        MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
+    }
+    if (diffLibYear) {
+        MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
+    }
+    if (diffAlCovers) {
+        AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
+    }
+
+    AlbumsModel::setUseLibrarySizes(useLibSizeForAl);
+    if (diffAlCovers || diffGrouping) {
+        albumsPage->clear();
+    }
+    if (diffLibCovers || diffAlCovers || diffLibYear || diffGrouping) {
+        refresh();
+    }
 
     bool wasAutoExpand=playQueue->isAutoExpand();
     bool wasStartClosed=playQueue->isStartClosed();
@@ -1456,26 +1464,6 @@ void MainWindow::updateSettings()
                 lyricsPage->setImage(img.img);
             }
         }
-    }
-
-    switch (tabWidget->current_index()) {
-    #ifdef ENABLE_DEVICES_SUPPORT
-    case PAGE_DEVICES:   devicesPage->controlActions();    break;
-    #endif
-    case PAGE_LIBRARY:   libraryPage->controlActions();    break;
-    case PAGE_ALBUMS:    albumsPage->controlActions();     break;
-    case PAGE_FOLDERS:   folderPage->controlActions();     break;
-    case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
-    #ifndef Q_WS_WIN
-    case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
-    #endif
-    case PAGE_STREAMS:   streamsPage->controlActions();    break;
-    case PAGE_LYRICS:                                      break;
-    #ifdef ENABLE_WEBKIT
-    case PAGE_INFO:                                        break;
-    #endif
-    case PAGE_SERVER_INFO:                                 break;
-    default:                                               break;
     }
 }
 

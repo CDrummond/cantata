@@ -332,7 +332,7 @@ QList<Song> PlayQueueView::selectedSongs() const
 
     foreach (const QModelIndex &idx, selected) {
         Song song=idx.data(GroupedView::Role_Song).value<Song>();
-        if (!song.file.isEmpty() && !song.file.contains(":/") && !song.file.startsWith('/') && QFile::exists(Settings::self()->mpdDir()+song.file)) {
+        if (!song.file.isEmpty() && !song.file.contains(":/") && !song.file.startsWith('/')) {
             songs.append(song);
         }
     }

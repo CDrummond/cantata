@@ -7,6 +7,9 @@
    don't expect much!). See README.
 4. Add Track Organizer dialog to Qt-only build.
 5. Disable 'Edit Tags' and 'Organize Files' actions if MPD dir is not readable.
+6. No need to check if playqueue song exists in MPD dir whe performing a
+   'locate in library'. Its possible that the configured MPD dir does not
+   exist - but 'locate in library' should still work.
 
 0.7.1
 -----

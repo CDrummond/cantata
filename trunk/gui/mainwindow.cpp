@@ -109,9 +109,24 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
 #define Icon(X) KIcon(X)
+#define getMediaIcon(X) KIcon(X)
 #else
 #include <QtGui/QIcon>
 #define Icon(X) QIcon::fromTheme(X)
+static QIcon getMediaIcon(const char *name)
+{
+    static QList<QIcon::Mode> modes=QList<QIcon::Mode>() << QIcon::Normal << QIcon::Disabled << QIcon::Active << QIcon::Selected;
+    QIcon icn;
+    QIcon icon=QIcon::fromTheme(name);
+
+    foreach (QIcon::Mode mode, modes) {
+        icn.addPixmap(icon.pixmap(QSize(64, 64), mode).scaled(QSize(28, 28), Qt::KeepAspectRatio, Qt::SmoothTransformation), mode);
+        icn.addPixmap(icon.pixmap(QSize(22, 22), mode), mode);
+    }
+
+    return icn;
+}
+
 #endif
 
 static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
@@ -616,8 +631,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     positionSlider->setStyle(new ProxyStyle());
 
-    playbackPlay = Icon("media-playback-start");
-    playbackPause = Icon("media-playback-pause");
+    playbackPlay = getMediaIcon("media-playback-start");
+    playbackPause = getMediaIcon("media-playback-pause");
     randomPlayQueueAction->setIcon(Icon("media-playlist-shuffle"));
     locateTrackAction->setIcon(Icon("edit-find"));
     #ifdef ENABLE_KDE_SUPPORT
@@ -660,10 +675,10 @@ MainWindow::MainWindow(QWidget *parent)
 //     }
 //     #endif
 
-    prevTrackAction->setIcon(Icon("media-skip-backward"));
-    nextTrackAction->setIcon(Icon("media-skip-forward"));
+    prevTrackAction->setIcon(getMediaIcon("media-skip-backward"));
+    nextTrackAction->setIcon(getMediaIcon("media-skip-forward"));
     playPauseTrackAction->setIcon(playbackPlay);
-    stopTrackAction->setIcon(Icon("media-playback-stop"));
+    stopTrackAction->setIcon(getMediaIcon("media-playback-stop"));
     removeFromPlayQueueAction->setIcon(Icon("list-remove"));
     clearPlayQueueAction->setIcon(Icon("edit-clear-list"));
     savePlayQueueAction->setIcon(Icon("document-save-as"));
@@ -1167,15 +1182,15 @@ void MainWindow::setPlaybackButtonsSize(bool small)
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     foreach (QToolButton *b, playbackBtns) {
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        #ifdef ENABLE_KDE_SUPPORT
+//         #ifdef ENABLE_KDE_SUPPORT
         b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
         b->setMinimumSize(small ? QSize(26, 26) : QSize(32, 32));
         b->setMaximumSize(small ? QSize(26, 26) : QSize(32, 32));
-        #else
-        b->setIconSize(small ? QSize(24, 24) : QSize(28, 28));
-        b->setMinimumSize(small ? QSize(26, 26) : QSize(36, 36));
-        b->setMaximumSize(small ? QSize(26, 26) : QSize(36, 36));
-        #endif
+//         #else
+//         b->setIconSize(small ? QSize(24, 24) : QSize(28, 28));
+//         b->setMinimumSize(small ? QSize(26, 26) : QSize(36, 36));
+//         b->setMaximumSize(small ? QSize(26, 26) : QSize(36, 36));
+//         #endif
     }
 }
 
@@ -1183,7 +1198,9 @@ void MainWindow::setControlButtonsSize(bool small)
 {
     QList<QToolButton *> controlBtns;
     controlBtns << volumeButton << menuButton;
-
+    #ifdef PHONON_FOUND
+    controlBtns << streamButton;
+    #endif
     foreach (QToolButton *b, controlBtns) {
         b->setMinimumSize(small ? QSize(22, 22) : QSize(26, 26));
         b->setMaximumSize(small ? QSize(22, 22) : QSize(26, 26));

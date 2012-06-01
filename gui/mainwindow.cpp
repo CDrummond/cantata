@@ -1153,7 +1153,7 @@ void MainWindow::load(const QList<QUrl> &urls)
     foreach (QUrl u, urls) {
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
-        } else if (allowLocal && QLatin1String("file")==u.scheme()) {
+        } else if (allowLocal && (u.scheme().isEmpty() || QLatin1String("file")==u.scheme())) {
             if (alwaysUseHttp || !mpdLocal) {
                 useable.append(HttpServer::self()->encodeUrl(u.path()));
             } else {

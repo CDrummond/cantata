@@ -40,9 +40,9 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
 {
     if (yesText.text.isEmpty() && noText.text.isEmpty()) {
         return map(isWarning
-                ? QMessageBox::warning(parent, message, title.isEmpty() ? QObject::tr("Warning") : title,
+                ? QMessageBox::warning(parent, title.isEmpty() ? QObject::tr("Warning") : title, message,
                                        QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton))
-                : QMessageBox::question(parent, message, title.isEmpty() ? QObject::tr("Question") : title,
+                : QMessageBox::question(parent, title.isEmpty() ? QObject::tr("Question") : title, message,
                                         QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton))
                );
     } else {

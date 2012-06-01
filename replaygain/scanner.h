@@ -24,12 +24,12 @@
 #ifndef _SCANNER_H_
 #define _SCANNER_H_
 
-#include <KDE/ThreadWeaver/Job>
+#include "jobcontroller.h"
 #include "ebur128.h"
 
 class Input;
 
-class Scanner : public ThreadWeaver::Job
+class Scanner : public Job
 {
     Q_OBJECT
 
@@ -51,23 +51,18 @@ public:
     static double clamp(double v);
     static double reference(double v);
 
-    Scanner(QObject *p);
+    Scanner();
     ~Scanner();
 
     void setFile(const QString &fileName);
-    void requestAbort() { abortRequested=true; }
 
     const Data & results() const { return data; }
 
 private:
     void run();
 
-Q_SIGNALS:
-    void progress(Scanner *s, int v);
-
 private:
     ebur128_state *state;
-    bool abortRequested;
     Data data;
     QString file;
     Input *input;

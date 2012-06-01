@@ -538,7 +538,10 @@ MainWindow::MainWindow(QWidget *parent)
     decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
     addToPlayQueueAction = new QAction(tr("Add To Play Queue"), this);
     addToStoredPlaylistAction = new QAction(tr("Add To Playlist"), this);
-    organiseFilesAction = new QAction(tr("Organize Files"), this);
+    organiseFilesAction = new QAction(this);
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    replaygainAction = new QAction(this);
+    #endif
     removeAction = new QAction(tr("Remove"), this);
     replacePlayQueueAction = new QAction(tr("Replace Play Queue"), this);
     removeFromPlayQueueAction = new QAction(tr("Remove From Play Queue"), this);
@@ -2852,11 +2855,11 @@ void MainWindow::replayGain()
     if (0!=RgDialog::instanceCount()) {
         return;
     }
-    if (0!=ActionDialog::instanceCount() || 0!=TagEditor::instanceCount()) {
+    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
         DIALOG_ERROR;
     }
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
+    if (0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #endif
@@ -2868,18 +2871,23 @@ void MainWindow::replayGain()
         songs=albumsPage->selectedSongs();
     } else if (folderPage->isVisible()) {
         songs=folderPage->selectedSongs();
-    } else if (devicesPage->isVisible()) {
+    }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    else if (devicesPage->isVisible()) {
         songs=devicesPage->selectedSongs();
     }
+    #endif
 
     if (!songs.isEmpty()) {
         QString udi;
+        #ifdef ENABLE_DEVICES_SUPPORT
         if (devicesPage->isVisible()) {
             udi=devicesPage->activeFsDeviceUdi();
             if (udi.isEmpty()) {
                 return;
             }
         }
+        #endif
 
         RgDialog *dlg=new RgDialog(this);
         dlg->show(songs, udi);

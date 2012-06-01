@@ -30,13 +30,27 @@
 #include "utils.h"
 #include "localize.h"
 #include "messagebox.h"
+#include "jobcontroller.h"
 #include <QtGui/QTreeWidget>
 #include <QtGui/QLabel>
 #include <QtGui/QProgressBar>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QHeaderView>
+#ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
-#include <KDE/ThreadWeaver/Weaver>
+#endif
+
+#ifdef ENABLE_DEVICES_SUPPORT
+static QString formatNumber(double number, int precision)
+{
+    return KGlobal::locale()->formatNumber(number, precision);
+}
+#else
+static QString formatNumber(double number, int precision)
+{
+    return QString::number(number, 'g', precision);
+}
+#endif
 
 enum Columns
 {
@@ -97,8 +111,13 @@ RgDialog::RgDialog(QWidget *parent)
     layout->addWidget(statusLabel);
     layout->addWidget(progress);
     setMainWidget(mainWidet);
+    #ifdef ENABLE_DEVICES_SUPPORT
     setButtonGuiItem(Ok, KStandardGuiItem::save());
     setButtonGuiItem(Cancel, KStandardGuiItem::close());
+    #else
+    setButtonGuiItem(Ok, KGuiItem(i18n("Save"), "document-save"));
+    setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
+    #endif
     setButtonGuiItem(User1, KGuiItem(i18n("Scan"), "edit-find"));
     enableButton(Ok, false);
     enableButton(User1, false);
@@ -108,6 +127,7 @@ RgDialog::RgDialog(QWidget *parent)
 
 RgDialog::~RgDialog()
 {
+    clearScanners();
     iCount--;
 }
 
@@ -119,6 +139,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
     }
 
     origSongs=songs;
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
         base=Settings::self()->mpdDir();
     } else {
@@ -131,6 +152,10 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
 
         base=dev->path();
     }
+    #else
+    Q_UNUSED(udi)
+    base=Settings::self()->mpdDir();
+    #endif
     state=State_Idle;
     enableButton(User1, songs.count());
     view->clear();
@@ -195,7 +220,11 @@ void RgDialog::startScanning()
     if (!all && origTags.count()==origSongs.count()) {
         return;
     }
+    #ifdef ENABLE_DEVICES_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
+    #else
+    setButtonGuiItem(Cancel, KGuiItem(i18n("Cancel"), "dialog-cancel"));
+    #endif
     state=State_ScanningFiles;
     enableButton(Ok, false);
     enableButton(User1, false);
@@ -203,17 +232,17 @@ void RgDialog::startScanning()
     statusLabel->setText(i18n("Scanning files..."));
     statusLabel->setVisible(true);
     jobs.clear();
-    scanners.clear();
+    clearScanners();
     int count=0;
     for (int i=0; i<origSongs.count(); ++i) {
         if (all || !origTags.contains(i)) {
-            Scanner *s=new Scanner(this);
+            Scanner *s=new Scanner();
             s->setFile(base+origSongs.at(i).file);
-            connect(s, SIGNAL(progress(Scanner *, int)), this, SLOT(scannerProgress(Scanner *, int)));
-            connect(s, SIGNAL(done(ThreadWeaver::Job *)), this, SLOT(scannerDone(ThreadWeaver::Job *)));
+            connect(s, SIGNAL(progress(int)), this, SLOT(scannerProgress(int)));
+            connect(s, SIGNAL(done()), this, SLOT(scannerDone()));
             jobs.insert(s, JobStatus(i));
             scanners.insert(i, s);
-            ThreadWeaver::Weaver::instance()->enqueue(s);
+            JobController::self()->add(s);
             count++;
         }
     }
@@ -227,17 +256,25 @@ void RgDialog::stopScanning()
     progress->setVisible(false);
     statusLabel->setVisible(false);
 
-    QList<Scanner *> scanners=jobs.keys();
-    foreach (Scanner *s, scanners) {
-        disconnect(s, SIGNAL(progress(Scanner *, int)), this, SLOT(scannerProgress(Scanner *, int)));
-        disconnect(s, SIGNAL(done(ThreadWeaver::Job *)), this, SLOT(scannerDone(ThreadWeaver::Job *)));
-        if (!ThreadWeaver::Weaver::instance()->dequeue(s)) {
-            s->requestAbort();
-        }
-    }
+    JobController::self()->cancel();
     jobs.clear();
+    clearScanners();
+    #ifdef ENABLE_DEVICES_SUPPORT
+    setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
+    #else
+    setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
+    #endif
+}
+
+void RgDialog::clearScanners()
+{
+    QMap<int, Scanner *>::ConstIterator it(scanners.constBegin());
+    QMap<int, Scanner *>::ConstIterator end(scanners.constEnd());
+
+    for (; it!=end; ++it) {
+        it.value()->stop();
+    }
     scanners.clear();
-    setButtonGuiItem(Cancel, KStandardGuiItem::close());
 }
 
 void RgDialog::startReadingTags()
@@ -245,7 +282,11 @@ void RgDialog::startReadingTags()
     if (tagReader) {
         return;
     }
+    #ifdef ENABLE_DEVICES_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
+    #else
+    setButtonGuiItem(Cancel, KGuiItem(i18n("Cancel"), "dialog-cancel"));
+    #endif
     state=State_ScanningTags;
     enableButton(Ok, false);
     enableButton(User1, false);
@@ -253,11 +294,11 @@ void RgDialog::startReadingTags()
     progress->setVisible(true);
     statusLabel->setText(i18n("Reading existing tags..."));
     statusLabel->setVisible(true);
-    tagReader=new TagReader(this);
+    tagReader=new TagReader();
     tagReader->setDetails(origSongs, base);
     connect(tagReader, SIGNAL(progress(int, Tags::ReplayGain)), this, SLOT(songTags(int, Tags::ReplayGain)));
-    connect(tagReader, SIGNAL(done(ThreadWeaver::Job *)), this, SLOT(tagReaderDone(ThreadWeaver::Job *)));
-    ThreadWeaver::Weaver::instance()->enqueue(tagReader);
+    connect(tagReader, SIGNAL(done()), this, SLOT(tagReaderDone()));
+    JobController::self()->add(tagReader);
 }
 
 void RgDialog::stopReadingTags()
@@ -271,7 +312,7 @@ void RgDialog::stopReadingTags()
     progress->setVisible(false);
     statusLabel->setVisible(false);
     disconnect(tagReader, SIGNAL(progress(int, Tags::ReplayGain)), this, SLOT(songTags(int, Tags::ReplayGain)));
-    disconnect(tagReader, SIGNAL(done(ThreadWeaver::Job *)), this, SLOT(tagReaderDone(ThreadWeaver::Job *)));
+    disconnect(tagReader, SIGNAL(done()), this, SLOT(tagReaderDone()));
     tagReader->requestAbort();
     tagReader=0;
 }
@@ -298,7 +339,13 @@ void RgDialog::saveTags()
     }
 
     if (failed.count()) {
+        #ifdef ENABLE_KDE_SUPPORT
         KMessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
+        #else
+        QMessageBox::warning(this, tr("Warning"), 1==failed.count()
+                                                    ? tr("Failed to update the tags of %1").arg(failed.at(0))
+                                                    : tr("Failed to update the tags of %2 tracks").arg(failed.count()));
+        #endif
     }
 }
 
@@ -320,7 +367,11 @@ void RgDialog::updateView()
         progress->setVisible(false);
         statusLabel->setVisible(false);
         state=State_Idle;
+        #ifdef ENABLE_DEVICES_SUPPORT
         setButtonGuiItem(Cancel, KStandardGuiItem::close());
+        #else
+        setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
+        #endif
 
         QMap<QString, Album>::iterator a(albums.begin());
         QMap<QString, Album>::iterator ae(albums.end());
@@ -340,8 +391,8 @@ void RgDialog::updateView()
                 (*a).data=Scanner::global(as);
                 foreach (int idx, (*a).tracks) {
                     QTreeWidgetItem *item=view->topLevelItem(idx);
-                    item->setText(COL_ALBUMGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(Scanner::reference((*a).data.loudness), 2)));
-                    item->setText(COL_ALBUMPEAK, KGlobal::locale()->formatNumber((*a).data.peak, 6));
+                    item->setText(COL_ALBUMGAIN, i18n("%1 dB").arg(formatNumber(Scanner::reference((*a).data.loudness), 2)));
+                    item->setText(COL_ALBUMPEAK, formatNumber((*a).data.peak, 6));
 
                     if (origTags.contains(idx)) {
                         Tags::ReplayGain t=origTags[idx];
@@ -365,6 +416,7 @@ void RgDialog::updateView()
     }
 }
 
+#ifdef ENABLE_DEVICES_SUPPORT
 Device * RgDialog::getDevice(const QString &udi, QWidget *p)
 {
     Device *dev=DevicesModel::self()->device(udi);
@@ -385,9 +437,15 @@ Device * RgDialog::getDevice(const QString &udi, QWidget *p)
     }
     return dev;
 }
+#endif
 
-void RgDialog::scannerProgress(Scanner *s, int p)
+void RgDialog::scannerProgress(int p)
 {
+    Scanner *s=qobject_cast<Scanner *>(sender());
+    if (!s) {
+        return;
+    }
+
     QMap<Scanner *, JobStatus>::iterator it=jobs.find(s);
     if (it!=jobs.end()) {
         if (p!=(*it).progress) {
@@ -397,9 +455,13 @@ void RgDialog::scannerProgress(Scanner *s, int p)
     }
 }
 
-void RgDialog::scannerDone(ThreadWeaver::Job *j)
+void RgDialog::scannerDone()
 {
-    Scanner *s=static_cast<Scanner *>(j);
+    Scanner *s=qobject_cast<Scanner *>(sender());
+    if (!s) {
+        return;
+    }
+
     QMap<Scanner *, JobStatus>::iterator it=jobs.find(s);
     if (it!=jobs.end()) {
         if (!(*it).finished) {
@@ -407,8 +469,8 @@ void RgDialog::scannerDone(ThreadWeaver::Job *j)
             QTreeWidgetItem *item=view->topLevelItem((*it).index);
             if (s->success()) {
                 (*it).progress=100;
-                item->setText(COL_TRACKGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(Scanner::reference(s->results().loudness), 2)));
-                item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(s->results().peakValue(), 6));
+                item->setText(COL_TRACKGAIN, i18n("%1 dB").arg(formatNumber(Scanner::reference(s->results().loudness), 2)));
+                item->setText(COL_TRACKPEAK, formatNumber(s->results().peakValue(), 6));
 
                 if (origTags.contains((*it).index)) {
                     Tags::ReplayGain t=origTags[(*it).index];
@@ -452,17 +514,24 @@ void RgDialog::songTags(int index, Tags::ReplayGain tags)
             if (!item) {
                 return;
             }
-            item->setText(COL_TRACKGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(tags.trackGain, 2)));
-            item->setText(COL_TRACKPEAK, KGlobal::locale()->formatNumber(tags.trackPeak, 6));
-            item->setText(COL_ALBUMGAIN, i18n("%1 dB", KGlobal::locale()->formatNumber(tags.albumGain, 2)));
-            item->setText(COL_ALBUMPEAK, KGlobal::locale()->formatNumber(tags.albumPeak, 6));
+            item->setText(COL_TRACKGAIN, i18n("%1 dB").arg(formatNumber(tags.trackGain, 2)));
+            item->setText(COL_TRACKPEAK, formatNumber(tags.trackPeak, 6));
+            item->setText(COL_ALBUMGAIN, i18n("%1 dB").arg(formatNumber(tags.albumGain, 2)));
+            item->setText(COL_ALBUMPEAK, formatNumber(tags.albumPeak, 6));
         }
     }
 }
 
-void RgDialog::tagReaderDone(ThreadWeaver::Job *j)
+void RgDialog::tagReaderDone()
 {
-    Q_UNUSED(j)
+    TagReader *t=qobject_cast<TagReader *>(sender());
+    if (!t) {
+        return;
+    }
+
+    t->stop();
+    tagReader=0;
+
     state=State_Idle;
     enableButton(User1, true);
     progress->setVisible(false);

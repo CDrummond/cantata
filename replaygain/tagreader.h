@@ -24,20 +24,21 @@
 #ifndef _TAGREADER_H_
 #define _TAGREADER_H_
 
-#include <KDE/ThreadWeaver/Job>
+#include "jobcontroller.h"
 #include "song.h"
 #include "tags.h"
 
-class TagReader : public ThreadWeaver::Job
+class TagReader : public Job
 {
     Q_OBJECT
 
 public:
-    TagReader(QObject *p);
-    ~TagReader();
+    TagReader() {
+    }
+    virtual ~TagReader() {
+    }
 
     void setDetails(const QList<Song> &s, const QString &dir);
-    void requestAbort() { abortRequested=true; }
 
 private:
     void run();
@@ -46,7 +47,6 @@ Q_SIGNALS:
     void progress(int index, Tags::ReplayGain);
 
 private:
-    bool abortRequested;
     QList<Song> songs;
     QString baseDir;
 };

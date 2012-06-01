@@ -21,24 +21,54 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "tagreader.h"
-#include "tags.h"
+#ifndef JOB_CONTROLLER
+#define JOB_CONTROLLER
 
-void TagReader::setDetails(const QList<Song> &s, const QString &dir)
+#include <QtCore/QThread>
+
+class Job : public QThread
 {
-    songs=s;
-    baseDir=dir;
-}
-
-void TagReader::run()
-{
-    for(int i=0; i<songs.count(); ++i) {
-        if (abortRequested) {
-            setFinished(false);
-            return;
-        }
-
-        emit progress(i, Tags::readReplaygain(baseDir+songs.at(i).file));
+    Q_OBJECT
+public:
+    Job()
+        : abortRequested(false)
+        , finished(false) {
     }
-    setFinished(true);
-}
+    virtual ~Job() {
+    }
+
+    void requestAbort() { abortRequested=true; }
+    void stop();
+    void setFinished(bool f);
+    bool success() { return finished; }
+
+Q_SIGNALS:
+    void progress(int);
+    void done();
+
+protected:
+    bool abortRequested;
+    bool finished;
+};
+
+class JobController : public QObject
+{
+    Q_OBJECT
+public:
+    static JobController * self();
+    JobController() {
+    }
+
+    void add(Job *job);
+    void startJobs();
+    void cancel();
+
+private Q_SLOTS:
+    void jobDone();
+
+private:
+    QList<Job *> active;
+    QList<Job *> jobs;
+};
+
+#endif

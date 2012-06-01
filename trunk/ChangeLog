@@ -1,18 +1,20 @@
 0.8.0
 -----
-1. Add ability to play MPD HTTP output strem via phonon. Thanks to Marcel
-   Bosling for the idea and initial patch.
-2. Implement Ctrl+MouseWheel zoom for Qt-only info view.
-3. Initial attempt at a Windows port. (This is my 1st EVER windows build, so
-   don't expect much!). See README.
-4. Add Track Organizer dialog to Qt-only build.
-5. Disable 'Edit Tags' and 'Organize Files' actions if MPD dir is not readable.
-6. No need to check if playqueue song exists in MPD dir whe performing a
-   'locate in library'. Its possible that the configured MPD dir does not
-   exist - but 'locate in library' should still work.
-7. Implement a basic spinner widgets for item views in Qt-only builds.
-8. Make Qt-only builds single instance apps, as per KDE build.
-9. Add commandline file loading support to Qt-only builds.
+ 1. Add ability to play MPD HTTP output strem via phonon. Thanks to Marcel
+    Bosling for the idea and initial patch.
+ 2. Implement Ctrl+MouseWheel zoom for Qt-only info view.
+ 3. Initial attempt at a Windows port. (This is my 1st EVER windows build, so
+    don't expect much!). See README.
+ 4. Add Track Organizer dialog to Qt-only build.
+ 5. Disable 'Edit Tags' and 'Organize Files' actions if MPD dir is not readable.
+ 6. No need to check if playqueue song exists in MPD dir whe performing a
+    'locate in library'. Its possible that the configured MPD dir does not
+    exist - but 'locate in library' should still work.
+ 7. Implement a basic spinner widgets for item views in Qt-only builds.
+ 8. Make Qt-only builds single instance apps, as per KDE build.
+ 9. Add commandline file loading support to Qt-only builds.
+10. Remove ThreadWeaver usage, and add ReplayGain calculation support to
+    Qt-only builds.
 
 0.7.1
 -----

@@ -28,6 +28,7 @@
 #include "scanner.h"
 #include "song.h"
 #include "tags.h"
+#include "config.h"
 
 class QTreeWidget;
 class QLabel;
@@ -55,17 +56,20 @@ private:
     void slotButtonClicked(int button);
     void startScanning();
     void stopScanning();
+    void clearScanners();
     void startReadingTags();
     void stopReadingTags();
     void saveTags();
     void updateView();
+    #ifdef ENABLE_DEVICES_SUPPORT
     Device * getDevice(const QString &udi, QWidget *p);
+    #endif
 
 private Q_SLOTS:
-    void scannerProgress(Scanner *s, int p);
-    void scannerDone(ThreadWeaver::Job *j);
+    void scannerProgress(int p);
+    void scannerDone();
     void songTags(int index, Tags::ReplayGain tags);
-    void tagReaderDone(ThreadWeaver::Job *j);
+    void tagReaderDone();
 
 private:
     enum State {

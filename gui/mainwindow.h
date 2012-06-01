@@ -324,6 +324,7 @@ private Q_SLOTS:
     void collapseAll();
 
 private:
+    void readSettings();
     int calcMinHeight();
     void addToPlayQueue(bool replace);
     void editTags(const QList<Song> &songs, bool isPlayQueue);

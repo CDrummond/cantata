@@ -61,6 +61,7 @@ macro(cantata_check_for_sse)
 endmacro(cantata_check_for_sse)
 
 SET( CANTATA_SRCS
+    application.cpp
     main.cpp
     gui/mainwindow.cpp
     gui/preferencesdialog.cpp
@@ -425,8 +426,9 @@ IF( ENABLE_KDE_SUPPORT )
     add_subdirectory(po)
 ELSE( ENABLE_KDE_SUPPORT )
     SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/dirrequester.cpp widgets/lineedit.cpp network/networkproxyfactory.cpp network/proxysettings.cpp widgets/kmessagewidget.cpp
-                                      widgets/dialog.cpp widgets/messagebox.cpp )
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} widgets/dirrequester.h widgets/lineedit.h network/proxysettings.h widgets/kmessagewidget.h widgets/urllabel.h widgets/dialog.h )
+            widgets/dialog.cpp widgets/messagebox.cpp )
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} application.h widgets/dirrequester.h widgets/lineedit.h network/proxysettings.h widgets/kmessagewidget.h widgets/urllabel.h
+            widgets/dialog.h )
     SET( CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui )
     SET( CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc )
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )
@@ -453,6 +455,10 @@ ELSE( ENABLE_KDE_SUPPORT )
     install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
     ADD_DEFINITIONS( -DQT_NO_STL -DQT_NO_CAST_TO_ASCII -Wall -Wextra )
     SET( XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications" )
+
+    add_subdirectory(qtsingleapplication)
+    TARGET_LINK_LIBRARIES(cantata qtsingleapplication)
+    include_directories(${CMAKE_BINARY_DIR}/qtsingleapplication)
 ENDIF( ENABLE_KDE_SUPPORT )
 
 ADD_SUBDIRECTORY( icons )
@@ -503,8 +509,6 @@ message("")
 IF( ENABLE_KDE_SUPPORT )
     message("INFO: Building with KDE support")
     message("      Enabled features:")
-    message("        - Track organizer")
-    message("        - Open files via command line")
     message("        - UMS device sync")
     if (MTP_FOUND)
         message("        - MTP device sync")
@@ -534,7 +538,7 @@ IF( ENABLE_KDE_SUPPORT )
     endif( NOT MTP_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
 ELSE( ENABLE_KDE_SUPPORT )
     if (NOT WIN32)
-        message("INFO: Building WITHOUT KDE support - Device sync, ReplayGain calculation, and CommandLine support DISABLED")
+        message("INFO: Building WITHOUT KDE support - Device sync and ReplayGain calculation support DISABLED")
     endif (NOT WIN32)
 ENDIF( ENABLE_KDE_SUPPORT )
 message("")

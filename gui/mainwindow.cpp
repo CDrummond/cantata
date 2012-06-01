@@ -777,6 +777,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
 
+    editPlayQueueTagsAction->setEnabled(Settings::self()->canReadMpdDir());
     expandInterfaceAction->setCheckable(true);
     randomPlayQueueAction->setCheckable(true);
     repeatPlayQueueAction->setCheckable(true);
@@ -836,7 +837,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 //     burnAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+    copyToDeviceAction->setEnabled(Settings::self()->canReadMpdDir());
     deleteSongsAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
@@ -1362,15 +1363,16 @@ void MainWindow::updateSettings()
     connectToMpd();
     Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
     HttpServer::self()->setPort(Settings::self()->enableHttp() ? Settings::self()->httpPort() : 0);
-    organiseFilesAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+    editPlayQueueTagsAction->setEnabled(Settings::self()->canReadMpdDir());
+    organiseFilesAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setEnabled(organiseFilesAction->isEnabled());
-    deleteSongsAction->setEnabled(organiseFilesAction->isEnabled());
+    copyToDeviceAction->setEnabled(editPlayQueueTagsAction->isEnabled());
+    deleteSongsAction->setEnabled(editPlayQueueTagsAction->isEnabled());
 //     burnAction->setEnabled(copyToDeviceAction->isEnabled());
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction->setEnabled(QDir(Settings::self()->mpdDir()).isReadable());
+    replaygainAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     #endif
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     Settings::self()->save();
@@ -1414,9 +1416,6 @@ void MainWindow::updateSettings()
     playlistsPage->setView(Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
-    if (folderPage->isVisible()) {
-        folderPage->controlActions();
-    }
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif
@@ -1454,6 +1453,26 @@ void MainWindow::updateSettings()
                 lyricsPage->setImage(img.img);
             }
         }
+    }
+
+    switch (tabWidget->current_index()) {
+    #ifdef ENABLE_DEVICES_SUPPORT
+    case PAGE_DEVICES:   devicesPage->controlActions();    break;
+    #endif
+    case PAGE_LIBRARY:   libraryPage->controlActions();    break;
+    case PAGE_ALBUMS:    albumsPage->controlActions();     break;
+    case PAGE_FOLDERS:   folderPage->controlActions();     break;
+    case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
+    #ifndef Q_WS_WIN
+    case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
+    #endif
+    case PAGE_STREAMS:   streamsPage->controlActions();    break;
+    case PAGE_LYRICS:                                      break;
+    #ifdef ENABLE_WEBKIT
+    case PAGE_INFO:                                        break;
+    #endif
+    case PAGE_SERVER_INFO:                                 break;
+    default:                                               break;
     }
 }
 

@@ -71,6 +71,7 @@ public:
     bool smallPlaybackButtons();
     bool smallControlButtons();
     const QString & mpdDir();
+    bool canReadMpdDir() const { return mpdDirReadable; }
     bool storeCoversInMpdDir();
     bool storeLyricsInMpdDir();
     int libraryView();
@@ -178,6 +179,7 @@ private Q_SLOTS:
     void actualSave();
 
 private:
+    bool mpdDirReadable;
     QString mpdDirSetting;
     QTimer *timer;
     int ver;

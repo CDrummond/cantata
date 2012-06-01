@@ -130,7 +130,8 @@ static MpdDefaults mpdDefaults;
 #endif
 
 Settings::Settings()
-    : timer(0)
+    : mpdDirReadable(false)
+    , timer(0)
     , ver(-1)
     #ifdef ENABLE_KDE_SUPPORT
     , cfg(KGlobal::config(), "General")
@@ -262,6 +263,7 @@ const QString & Settings::mpdDir()
 {
     if (mpdDirSetting.isEmpty()) {
         mpdDirSetting=MPDParseUtils::fixPath(GET_STRING("mpdDir", mpdDefaults.dir));
+        mpdDirReadable=QDir(mpdDirSetting).isReadable();
     }
     return mpdDirSetting;
 }
@@ -589,6 +591,7 @@ void Settings::saveSmallControlButtons(bool v)
 void Settings::saveMpdDir(const QString &v)
 {
     mpdDirSetting=MPDParseUtils::fixPath(v);
+    mpdDirReadable=QDir(mpdDirSetting).isReadable();
     SET_VALUE("mpdDir", mpdDirSetting);
 }
 

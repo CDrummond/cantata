@@ -17,6 +17,8 @@
     Qt-only builds.
 11. Fix size of playback buttons in qt-only build. Force icons to have a
     28x28 setting.
+12. Add support for listing playlist files in folder view. Thanks to Aleksandr
+    Beliaev for the patch.
 
 0.7.1
 -----

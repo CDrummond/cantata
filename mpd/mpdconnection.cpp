@@ -34,6 +34,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QThread>
 #include <QtCore/QStringList>
+#include <QtCore/QFileInfo>
 #include "debugtimer.h"
 
 // #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
@@ -397,7 +398,14 @@ void MPDConnection::add(const QStringList &files, bool replace)
 
     QByteArray send = "command_list_begin\n";
     for (int i = 0; i < files.size(); i++) {
-        send += "add ";
+        QString ext = QFileInfo(files.at(i)).suffix();
+        if (!QString::compare(ext, "asx", Qt::CaseInsensitive) || !QString::compare(ext, "cue", Qt::CaseInsensitive) ||
+            !QString::compare(ext, "m3u", Qt::CaseInsensitive) || !QString::compare(ext, "pls", Qt::CaseInsensitive) ||
+            !QString::compare(ext, "xspf", Qt::CaseInsensitive)) {
+            send+="load ";
+        } else {
+            send += "add ";
+        }
         send += encodeName(files.at(i));
         send += "\n";
     }

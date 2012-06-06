@@ -420,12 +420,11 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
         if (line.startsWith("file: ")) {
             line.remove(0, 6);
             QStringList parts = line.split("/");
-
-            if (currentDir->type() == DirViewItem::Type_Root) {
-                static_cast<DirViewItemRoot *>(currentDir)->insertFile(parts.at(parts.size() - 1));
-            } else {
-                static_cast<DirViewItemDir *>(currentDir)->insertFile(parts.at(parts.size() - 1));
-            }
+            static_cast<DirViewItemDir *>(currentDir)->insertFile(parts.at(parts.size() - 1));
+        } else if (line.startsWith("playlist: ")) {
+            line.remove(0, 10);
+            QStringList parts = line.split("/");
+            static_cast<DirViewItemDir *>(currentDir)->insertFile(parts.at(parts.size() - 1));
         } else if (line.startsWith("directory: ")) {
             line.remove(0, 11);
             QStringList parts = line.split("/");
@@ -443,12 +442,7 @@ DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
                 currentDir = currentDir->parent();
             }
 
-            if (currentDir->type() == DirViewItem::Type_Root) {
-                currentDir = static_cast<DirViewItemRoot *>(currentDir)->createDirectory(parts.at(parts.size() - 1));
-            } else {
-                currentDir = static_cast<DirViewItemDir *>(currentDir)->createDirectory(parts.at(parts.size() - 1));
-            }
-
+            currentDir = static_cast<DirViewItemDir *>(currentDir)->createDirectory(parts.at(parts.size() - 1));
             currentDirList = parts;
         }
     }

@@ -71,9 +71,10 @@ Spinner::Spinner()
     , timer(0)
     , value(0)
 {
+    static const int constSize=24;
     setVisible(false);
-    setMinimumSize(32, 32);
-    setMaximumSize(32, 32);
+    setMinimumSize(constSize, constSize);
+    setMaximumSize(constSize, constSize);
 }
 
 void Spinner::start()
@@ -810,7 +811,7 @@ void ItemView::hideSpinner()
 {
     if (spinner) {
         spinnerActive=false;
-        //spinner->stop();
+        spinner->stop();
     }
 }
 

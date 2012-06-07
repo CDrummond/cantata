@@ -92,6 +92,9 @@ bool Song::operator<(const Song &o) const
     if (!sortDateBeforeAlbum && year!=o.year) {
         return year<o.year;
     }
+    if (disc!=o.disc) {
+        return disc<o.disc;
+    }
     if (track!=o.track) {
         return track<o.track;
     }

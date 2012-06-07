@@ -192,11 +192,12 @@ QString DevicesPage::activeFsDeviceUdi() const
 
 QList<Song> DevicesPage::selectedSongs() const
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return QList<Song>();
     }
+    qSort(selected);
 
     // Ensure all songs are from UMS/Remote devices...
     QString udi;

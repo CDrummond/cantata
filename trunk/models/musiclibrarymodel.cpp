@@ -656,7 +656,6 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
             break;
         }
     }
-    qSort(songs);
     return songs;
 }
 

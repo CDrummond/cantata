@@ -121,11 +121,12 @@ void LibraryPage::clear()
 
 QStringList LibraryPage::selectedFiles() const
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return QStringList();
     }
+    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
@@ -137,11 +138,12 @@ QStringList LibraryPage::selectedFiles() const
 
 QList<Song> LibraryPage::selectedSongs() const
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return QList<Song>();
     }
+    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {

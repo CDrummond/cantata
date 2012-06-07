@@ -19,6 +19,8 @@
     28x28 setting.
 12. Add support for listing playlist files in folder view. Thanks to Aleksandr
     Beliaev for the patch.
+13. When adding items to the playqueue, sort the selected items based upon
+    their QModelIndex.
 
 0.7.1
 -----

@@ -345,7 +345,6 @@ QList<Song> AlbumsModel::songs(const QModelIndexList &indexes) const
             songs << *static_cast<SongItem*>(item);
         }
     }
-    qSort(songs);
     return songs;
 }
 

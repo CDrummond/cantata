@@ -116,11 +116,12 @@ void AlbumsPage::setItemSize()
 
 QStringList AlbumsPage::selectedFiles() const
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return QStringList();
     }
+    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
@@ -132,11 +133,12 @@ QStringList AlbumsPage::selectedFiles() const
 
 QList<Song> AlbumsPage::selectedSongs() const
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return QList<Song>();
     }
+    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {

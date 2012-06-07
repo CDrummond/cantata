@@ -564,7 +564,6 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
     QMap<MusicLibraryItem *, QList<Song> >::Iterator end(devSongs.end());
 
     for (; it!=end; ++it) {
-        qSort(it.value());
         songs.append(it.value());
     }
 

@@ -316,7 +316,7 @@ void MPDConnection::disconnectFromMPD()
 void MPDConnection::setDetails(const MPDConnectionDetails &det)
 {
     bool changedDir=det.dir!=details.dir;
-    if (details!=det) {
+    if (details!=det || State_Connected!=state) {
         DBUG << "setDetails" << det.hostname << det.port << (det.password.isEmpty() ? false : true);
         bool wasConnected=State_Connected==state;
         disconnectFromMPD();

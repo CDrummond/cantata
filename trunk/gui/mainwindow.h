@@ -334,6 +334,7 @@ private Q_SLOTS:
     void outputsUpdated(const QList<Output> &outputs);
 
 private:
+    void updateConnectionsMenu();
     void readSettings();
     int calcMinHeight();
     void addToPlayQueue(bool replace);

@@ -223,6 +223,8 @@ Q_SIGNALS:
     void setSeekId(quint32, quint32);
     void startPlayingSongId(quint32);
     void setVolume(int);
+    void outputs();
+    void enableOutput(int id, bool);
 
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
@@ -245,6 +247,7 @@ private Q_SLOTS:
     void showVolumeControl();
     void showPreferencesDialog();
     void updateSettings();
+    void toggleOutput();
     void changeConnection();
     void connectToMpd();
     void connectToMpd(const MPDConnectionDetails &details);
@@ -328,6 +331,7 @@ private Q_SLOTS:
     void expandAll();
     void collapseAll();
     void checkMpdDir();
+    void outputsUpdated(const QList<Output> &outputs);
 
 private:
     void readSettings();
@@ -358,6 +362,7 @@ private:
     Action *prefAction;
     Action *connectAction;
     Action *connectionsAction;
+    Action *outputsAction;
     QActionGroup *connectionsGroup;
     Action *prevTrackAction;
     Action *nextTrackAction;

@@ -385,6 +385,9 @@ MainWindow::MainWindow(QWidget *parent)
     connectionsAction = actionCollection()->addAction("connections");
     connectionsAction->setText(i18n("Connection"));
 
+    outputsAction = actionCollection()->addAction("outputs");
+    outputsAction->setText(i18n("Outputs"));
+
     refreshAction = actionCollection()->addAction("refresh");
     refreshAction->setText(i18n("Refresh Database"));
 
@@ -549,6 +552,7 @@ MainWindow::MainWindow(QWidget *parent)
     refreshAction = new QAction(tr("Refresh"), this);
     connectAction = new QAction(tr("Connect"), this);
     connectionsAction = new QAction(tr("Connections"), this);
+    outputsAction = new QAction(tr("Outputs"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
     playPauseTrackAction = new QAction(tr("Play/Pause"), this);
@@ -690,8 +694,11 @@ MainWindow::MainWindow(QWidget *parent)
     refreshAction->setIcon(Icon("view-refresh"));
     connectAction->setIcon(Icon("network-connect"));
     connectionsAction->setIcon(Icon("network-server"));
+    outputsAction->setIcon(Icon("speaker"));
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
+    outputsAction->setMenu(new QMenu(this));
+    outputsAction->setVisible(false);
     #ifdef ENABLE_KDE_SUPPORT
     libraryTabAction->setIcon(Icon("cantata-view-media-library"));
     #else
@@ -887,9 +894,10 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
+    mainMenu->addAction(connectionsAction);
+    mainMenu->addAction(outputsAction);
     QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(Icon("configure"));
-    mainMenu->addAction(connectionsAction);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
     mainMenu->addSeparator();
@@ -912,6 +920,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
+    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
+    connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
+    connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
     connect(this, SIGNAL(removeSongs(const QList<qint32> &)), MPDConnection::self(), SLOT(removeSongs(const QList<qint32> &)));
     connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
     connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(startPlayingSong()));
@@ -1275,6 +1286,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             emit getStatus();
             emit getStats();
             emit playListInfo();
+            emit outputs();
             if (CS_Init!=connectedState) {
                 loaded=0;
                 currentTabChanged(tabWidget->current_index());
@@ -1290,6 +1302,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         lyricsPage->text->clear();
         serverInfoPage->clear();
         connectedState=CS_Disconnected;
+        outputsAction->setVisible(false);
     }
 }
 
@@ -1355,6 +1368,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
     }
 
     showInformation(i18n("Connecting to %1").arg(details.description()));
+    outputsAction->setVisible(false);
     emit setDetails(details);
 }
 
@@ -1431,6 +1445,46 @@ void MainWindow::checkMpdDir()
     #endif
     case PAGE_SERVER_INFO:                                 break;
     default:                                               break;
+    }
+}
+
+void MainWindow::outputsUpdated(const QList<Output> &outputs)
+{
+    if (outputs.count()<2) {
+        outputsAction->setVisible(false);
+    } else {
+        outputsAction->setVisible(true);
+        QSet<QString> mpd;
+        QSet<QString> menuItems;
+        QMenu *menu=outputsAction->menu();
+        foreach (const Output &o, outputs) {
+            mpd.insert(o.name);
+        }
+
+        foreach (QAction *act, menu->actions()) {
+            menuItems.insert(act->data().toString());
+        }
+
+        if (menuItems!=mpd) {
+            menu->clear();
+            QList<Output> out=outputs;
+            qSort(out);
+            foreach (const Output &o, out) {
+                QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
+                act->setData(o.id);
+                act->setCheckable(true);
+                act->setChecked(o.enabled);
+            }
+        } else {
+            foreach (const Output &o, outputs) {
+                foreach (QAction *act, menu->actions()) {
+                    if (Utils::strippedText(act->text())==o.name) {
+                        act->setChecked(o.enabled);
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -1565,6 +1619,15 @@ void MainWindow::updateSettings()
                 lyricsPage->setImage(img.img);
             }
         }
+    }
+}
+
+void MainWindow::toggleOutput()
+{
+    QAction *act=qobject_cast<QAction *>(sender());
+
+    if (act) {
+        emit enableOutput(act->data().toInt(), act->isChecked());
     }
 }
 

@@ -77,7 +77,7 @@ void ServerSettings::save()
 void ServerSettings::mpdConnectionStateChanged(bool c)
 {
     enableWidgets(!c || MPDConnection::self()->getDetails()!=getDetails());
-    connectButton->setEnabled(false);
+    connectButton->setEnabled(true);
 }
 
 void ServerSettings::showDetails(int index)

@@ -137,7 +137,7 @@ static MpdDefaults mpdDefaults;
 #define GET_BYTE_ARRAY(KEY)      (cfg.value(KEY).toByteArray())
 #define GET_SIZE(KEY)            (cfg.contains(KEY) ? cfg.value(KEY).toSize() : QSize())
 #define SET_VALUE(KEY, V)        (cfg.setValue(KEY, V))
-#define HAS_GROUP(GRP)           (cfg.contains(GRP))
+#define HAS_GROUP(GRP)           (-1!=cfg.childGroups().indexOf(GRP))
 #define REMOVE_GROUP(GRP)        (cfg.remove(GRP))
 #define REMOVE_ENTRY(KEY)        (cfg.remove(KEY))
 #endif
@@ -230,7 +230,6 @@ QList<MPDConnectionDetails> Settings::allConnections()
     #else
     QStringList groups=cfg.childGroups();
     #endif
-
     QList<MPDConnectionDetails> connections;
     foreach (const QString &grp, groups) {
         if (HAS_GROUP(grp) && grp.startsWith("Connection")) {

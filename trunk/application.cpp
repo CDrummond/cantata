@@ -30,6 +30,7 @@
 #include <QtGui/QIcon>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QUrl>
 #endif
 #include "utils.h"
 #include "config.h"

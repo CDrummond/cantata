@@ -1094,6 +1094,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
     readSettings();
+    updateConnectionsMenu();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     playlistsPage->refresh();
     #ifndef Q_WS_WIN
@@ -1354,7 +1355,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
 {
     messageWidget->hide();
 
-    if (details!=MPDConnection::self()->getDetails()) {
+    if (!MPDConnection::self()->isConnected() || details!=MPDConnection::self()->getDetails()) {
         libraryPage->clear();
         albumsPage->clear();
         folderPage->clear();
@@ -1365,11 +1366,10 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         #ifndef Q_WS_WIN
         Dynamic::self()->stop();
         #endif
+        showInformation(i18n("Connecting to %1").arg(details.description()));
+        outputsAction->setVisible(false);
+        emit setDetails(details);
     }
-
-    showInformation(i18n("Connecting to %1").arg(details.description()));
-    outputsAction->setVisible(false);
-    emit setDetails(details);
 }
 
 void MainWindow::connectToMpd()
@@ -1411,6 +1411,7 @@ void MainWindow::showPreferencesDialog()
         connect(&pref, SIGNAL(connectTo(const MPDConnectionDetails &)), this, SLOT(connectToMpd(const MPDConnectionDetails &)));
 
         pref.exec();
+        updateConnectionsMenu();
         showing=false;
     }
 }
@@ -1488,6 +1489,39 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
     }
 }
 
+void MainWindow::updateConnectionsMenu()
+{
+    QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
+    if (connections.count()<2) {
+        connectionsAction->setVisible(false);
+    } else {
+        connectionsAction->setVisible(true);
+        QSet<QString> cfg;
+        QSet<QString> menuItems;
+        QMenu *menu=connectionsAction->menu();
+        foreach (const MPDConnectionDetails &d, connections) {
+            cfg.insert(d.name);
+        }
+
+        foreach (QAction *act, menu->actions()) {
+            menuItems.insert(act->data().toString());
+        }
+
+        if (menuItems!=cfg) {
+            menu->clear();
+            qSort(connections);
+            QString current=Settings::self()->currentConnection();
+            foreach (const MPDConnectionDetails &d, connections) {
+                QAction *act=menu->addAction(d.name.isEmpty() ? i18n("Default") : d.name, this, SLOT(changeConnection()));
+                act->setData(d.name);
+                act->setCheckable(true);
+                act->setChecked(d.name==current);
+                act->setActionGroup(connectionsGroup);
+            }
+        }
+    }
+}
+
 void MainWindow::readSettings()
 {
     checkMpdDir();
@@ -1522,36 +1556,6 @@ void MainWindow::readSettings()
     toggleMpris();
     #endif
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
-
-    QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
-    if (connections.count()<2) {
-        connectionsAction->setVisible(false);
-    } else {
-        connectionsAction->setVisible(true);
-        QSet<QString> cfg;
-        QSet<QString> menuItems;
-        QMenu *menu=connectionsAction->menu();
-        foreach (const MPDConnectionDetails &d, connections) {
-            cfg.insert(d.name);
-        }
-
-        foreach (QAction *act, menu->actions()) {
-            menuItems.insert(act->data().toString());
-        }
-
-        if (menuItems!=cfg) {
-            menu->clear();
-            qSort(connections);
-            QString current=Settings::self()->currentConnection();
-            foreach (const MPDConnectionDetails &d, connections) {
-                QAction *act=menu->addAction(d.name.isEmpty() ? i18n("Default") : d.name, this, SLOT(changeConnection()));
-                act->setData(d.name);
-                act->setCheckable(true);
-                act->setChecked(d.name==current);
-                act->setActionGroup(connectionsGroup);
-            }
-        }
-    }
 }
 
 void MainWindow::updateSettings()

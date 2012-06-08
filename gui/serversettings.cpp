@@ -55,6 +55,7 @@ void ServerSettings::load()
     QString currentCon=Settings::self()->currentConnection();
     MPDConnectionDetails current=MPDConnection::self()->getDetails();
 
+    qSort(all);
     combo->clear();
     int idx=0;
     int cur=0;
@@ -76,6 +77,7 @@ void ServerSettings::save()
 void ServerSettings::mpdConnectionStateChanged(bool c)
 {
     enableWidgets(!c || MPDConnection::self()->getDetails()!=getDetails());
+    connectButton->setEnabled(false);
 }
 
 void ServerSettings::showDetails(int index)
@@ -87,13 +89,14 @@ void ServerSettings::showDetails(int index)
 
 void ServerSettings::toggleConnection()
 {
-    bool con=hostLabel->isEnabled();
+    bool con=removeButton->isEnabled();
     enableWidgets(!con);
     if (con) {
         emit connectTo(getDetails());
     } else {
         emit disconnectFromMpd();
     }
+    connectButton->setEnabled(false);
 }
 
 void ServerSettings::saveAs()
@@ -129,7 +132,9 @@ void ServerSettings::saveAs()
         }
 
         MPDConnectionDetails details=getDetails();
-        details.name=name;
+        details.name=name==combo->itemText(0) && combo->itemData(0).toString().isEmpty() ? QString() : name;
+        bool needToReconnect=MPDConnection::self()->isConnected() && MPDConnection::self()->getDetails()==Settings::self()->connectionDetails(details.name);
+
         Settings::self()->saveConnectionDetails(details);
         if (found) {
             if (idx!=currentIndex) {
@@ -137,6 +142,12 @@ void ServerSettings::saveAs()
             }
         } else {
             combo->addItem(details.name, details.name);
+            combo->setCurrentIndex(combo->count()-1);
+        }
+
+        if (needToReconnect) {
+            emit disconnectFromMpd();
+            emit connectTo(details);
         }
         break;
     }
@@ -147,25 +158,28 @@ void ServerSettings::remove()
     int index=combo->currentIndex();
     QString name=combo->itemData(index).toString();
     if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete %1?").arg(name))) {
+        bool isLast=index==(combo->count()-1);
         Settings::self()->removeConnectionDetails(combo->itemText(index));
         combo->removeItem(index);
+        combo->setCurrentIndex(isLast ? index-1 : index);
+        showDetails(combo->currentIndex());
     }
 }
 
 void ServerSettings::enableWidgets(bool e)
 {
-    host->setEnabled(e);
-    port->setEnabled(e);
-    password->setEnabled(e);
-    dir->setEnabled(e);
-    hostLabel->setEnabled(e);
-    portLabel->setEnabled(e);
-    passwordLabel->setEnabled(e);
-    dirLabel->setEnabled(e);
+//     host->setEnabled(e);
+//     port->setEnabled(e);
+//     password->setEnabled(e);
+//     dir->setEnabled(e);
+//     hostLabel->setEnabled(e);
+//     portLabel->setEnabled(e);
+//     passwordLabel->setEnabled(e);
+//     dirLabel->setEnabled(e);
     connectButton->setText(e ? i18n("Connect") : i18n("Disconnect"));
     connectButton->setIcon(QIcon::fromTheme(e ? "network-connect" : "network-disconnect"));
     removeButton->setEnabled(e);
-    saveButton->setEnabled(e);
+//     saveButton->setEnabled(e);
 }
 
 void ServerSettings::setDetails(const MPDConnectionDetails &details)

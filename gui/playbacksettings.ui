@@ -6,155 +6,57 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>356</width>
-    <height>256</height>
+    <width>284</width>
+    <height>172</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QFormLayout" name="formLayout">
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="2">
-    <layout class="QFormLayout" name="formLayout_2">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::ExpandingFieldsGrow</enum>
-     </property>
-     <item row="0" column="0">
-      <widget class="BuddyLabel" name="crossfadingLabel">
-       <property name="text">
-        <string>Crossfading:</string>
-       </property>
-       <property name="buddy">
-        <cstring>crossfading</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSpinBox" name="crossfading">
-       <property name="suffix">
-        <string> seconds</string>
-       </property>
-       <property name="maximum">
-        <number>20</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="BuddyLabel" name="replayGainLabel">
-       <property name="text">
-        <string>Replay gain:</string>
-       </property>
-       <property name="buddy">
-        <cstring>replayGain</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="replayGain"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="BuddyLabel" name="label_6b">
-       <property name="text">
-        <string>Fadeout on stop:</string>
-       </property>
-       <property name="buddy">
-        <cstring>stopFadeDuration</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QSpinBox" name="stopFadeDuration"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="BuddyLabel" name="label_6c">
-       <property name="text">
-        <string>Stop playback on exit:</string>
-       </property>
-       <property name="buddy">
-        <cstring>stopOnExit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QCheckBox" name="stopOnExit"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="BuddyLabel" name="label">
-       <property name="text">
-        <string>Stop dynamizer on exit:</string>
-       </property>
-       <property name="buddy">
-        <cstring>stopDynamizerOnExit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QCheckBox" name="stopDynamizerOnExit">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="BuddyLabel" name="streamUrlLabel">
-       <property name="text">
-        <string>Output HTTP stream:</string>
-       </property>
-       <property name="buddy">
-        <cstring>streamUrl</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="streamUrl"/>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QLabel" name="streamUrlInfoLabel">
+   <item row="0" column="0">
+    <widget class="BuddyLabel" name="label_6b">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Output HTTP stream is only of use if you have MPD configured to output to a HTTP stream, and you wish Cantata to be able to play that stream.&lt;/i&gt;</string>
+      <string>Fadeout on stop:</string>
      </property>
-     <property name="wordWrap">
-      <bool>true</bool>
+     <property name="buddy">
+      <cstring>stopFadeDuration</cstring>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QGroupBox" name="outputFrame">
-     <property name="title">
-      <string>Output</string>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="stopFadeDuration"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="BuddyLabel" name="label_6c">
+     <property name="text">
+      <string>Stop playback on exit:</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QListWidget" name="view"/>
-      </item>
-     </layout>
+     <property name="buddy">
+      <cstring>stopOnExit</cstring>
+     </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="BuddyLabel" name="errorIcon">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+   <item row="1" column="1">
+    <widget class="QCheckBox" name="stopOnExit"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="BuddyLabel" name="label">
+     <property name="text">
+      <string>Stop dynamizer on exit:</string>
      </property>
+     <property name="buddy">
+      <cstring>stopDynamizerOnExit</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QCheckBox" name="stopDynamizerOnExit">
      <property name="text">
       <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="errorLabel">
-     <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;Not Connected.&lt;/b&gt;&lt;br/&gt;Some of the entries above cannot be modified, as Cantata is not connected to MPD.&lt;/i&gt;</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -168,12 +70,9 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>crossfading</tabstop>
-  <tabstop>replayGain</tabstop>
   <tabstop>stopFadeDuration</tabstop>
   <tabstop>stopOnExit</tabstop>
   <tabstop>stopDynamizerOnExit</tabstop>
-  <tabstop>view</tabstop>
  </tabstops>
  <resources/>
  <connections/>

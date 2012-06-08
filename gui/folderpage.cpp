@@ -143,7 +143,7 @@ void FolderPage::controlActions()
     mw->addToPlayQueueAction->setEnabled(enable);
     mw->replacePlayQueueAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
-    mw->organiseFilesAction->setEnabled(enable && Settings::self()->canReadMpdDir());
+    mw->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
     mw->editTagsAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     mw->replaygainAction->setEnabled(mw->organiseFilesAction->isEnabled());
@@ -155,7 +155,7 @@ void FolderPage::controlActions()
 
     #ifdef ENABLE_KDE_SUPPORT
     browseAction->setEnabled(false);
-    if (1==selected.count() && QDir(Settings::self()->mpdDir()).isReadable()) {
+    if (1==selected.count() && MPDConnection::self()->getDetails().dirReadable) {
         DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
         browseAction->setEnabled(DirViewItem::Type_Dir==item->type());
     }
@@ -185,7 +185,7 @@ void FolderPage::openFileManager()
 
     DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
     if (DirViewItem::Type_Dir==item->type()) {
-        KRun::runUrl(KUrl(Settings::self()->mpdDir()+item->fullName()), "inode/directory", this);
+        KRun::runUrl(KUrl(MPDConnection::self()->getDetails().dir+item->fullName()), "inode/directory", this);
     }
 }
 #endif

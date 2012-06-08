@@ -24,6 +24,12 @@
 #include "serversettings.h"
 #include "settings.h"
 #include "localize.h"
+#include "inputdialog.h"
+#include "messagebox.h"
+#include <QtCore/QDir>
+#include <QtGui/QComboBox>
+#include <QtGui/QPushButton>
+#include <QtGui/QIcon>
 
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
@@ -34,20 +40,150 @@ ServerSettings::ServerSettings(QWidget *p)
                                   i18n("<i> This folder will also be used to locate music files "
                                        "for transferring to (and from) devices.</i>"));
     #endif
+    connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(mpdConnectionStateChanged(bool)));
+    connect(combo, SIGNAL(activated(int)), SLOT(showDetails(int)));
+    connect(saveButton, SIGNAL(clicked(bool)), SLOT(saveAs()));
+    connect(removeButton, SIGNAL(clicked(bool)), SLOT(remove()));
+    connect(connectButton, SIGNAL(clicked(bool)), SLOT(toggleConnection()));
+    saveButton->setIcon(QIcon::fromTheme("document-save-as"));
+    removeButton->setIcon(QIcon::fromTheme("edit-delete"));
 };
 
 void ServerSettings::load()
 {
-    hostLineEdit->setText(Settings::self()->connectionHost());
-    portSpinBox->setValue(Settings::self()->connectionPort());
-    passwordLineEdit->setText(Settings::self()->connectionPasswd());
-    mpdDir->setText(Settings::self()->mpdDir());
+    QList<MPDConnectionDetails> all=Settings::self()->allConnections();
+    QString currentCon=Settings::self()->currentConnection();
+    MPDConnectionDetails current=MPDConnection::self()->getDetails();
+
+    combo->clear();
+    int idx=0;
+    int cur=0;
+    foreach (const MPDConnectionDetails &d, all) {
+        combo->addItem(d.name.isEmpty() ? i18n("Default") : d.name, d.name);
+        if (d.name==currentCon) {
+            cur=idx;
+        }
+        idx++;
+    }
+    showDetails(cur);
 }
 
 void ServerSettings::save()
 {
-    Settings::self()->saveConnectionHost(hostLineEdit->text());
-    Settings::self()->saveConnectionPort(portSpinBox->value());
-    Settings::self()->saveConnectionPasswd(passwordLineEdit->text());
-    Settings::self()->saveMpdDir(mpdDir->text());
+    Settings::self()->saveConnectionDetails(getDetails());
+}
+
+void ServerSettings::mpdConnectionStateChanged(bool c)
+{
+    enableWidgets(!c || MPDConnection::self()->getDetails()!=getDetails());
+}
+
+void ServerSettings::showDetails(int index)
+{
+    MPDConnectionDetails d=Settings::self()->connectionDetails(combo->itemData(index).toString());
+    setDetails(d);
+    enableWidgets(!MPDConnection::self()->isConnected() || MPDConnection::self()->getDetails()!=d);
+}
+
+void ServerSettings::toggleConnection()
+{
+    bool con=hostLabel->isEnabled();
+    enableWidgets(!con);
+    if (con) {
+        emit connectTo(getDetails());
+    } else {
+        emit disconnectFromMpd();
+    }
+}
+
+void ServerSettings::saveAs()
+{
+    bool ok=false;
+    int currentIndex=combo->currentIndex();
+    QString name=combo->itemText(currentIndex);
+
+    for (;;) {
+        name=InputDialog::getText(i18n("Save As"), i18n("Enter name for settings:"), name, &ok, this).trimmed();
+        if (!ok || name.isEmpty()) {
+            return;
+        }
+
+        bool found=false;
+        int idx=0;
+        for (idx=0; idx<combo->count() && !found; ++idx) {
+            if (combo->itemText(idx)==name || combo->itemData(idx).toString()==name) {
+                found=true;
+                break;
+            }
+        }
+
+        if (found && idx!=currentIndex) {
+            switch (MessageBox::warningYesNoCancel(this, i18n("A setting named %1 already exists!\nOverwrite?").arg(name))) {
+            case MessageBox::No:
+                continue;
+            case MessageBox::Cancel:
+                return;
+            case MessageBox::Yes:
+                break;
+            }
+        }
+
+        MPDConnectionDetails details=getDetails();
+        details.name=name;
+        Settings::self()->saveConnectionDetails(details);
+        if (found) {
+            if (idx!=currentIndex) {
+                combo->setCurrentIndex(idx);
+            }
+        } else {
+            combo->addItem(details.name, details.name);
+        }
+        break;
+    }
+}
+
+void ServerSettings::remove()
+{
+    int index=combo->currentIndex();
+    QString name=combo->itemData(index).toString();
+    if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete %1?").arg(name))) {
+        Settings::self()->removeConnectionDetails(combo->itemText(index));
+        combo->removeItem(index);
+    }
+}
+
+void ServerSettings::enableWidgets(bool e)
+{
+    host->setEnabled(e);
+    port->setEnabled(e);
+    password->setEnabled(e);
+    dir->setEnabled(e);
+    hostLabel->setEnabled(e);
+    portLabel->setEnabled(e);
+    passwordLabel->setEnabled(e);
+    dirLabel->setEnabled(e);
+    connectButton->setText(e ? i18n("Connect") : i18n("Disconnect"));
+    connectButton->setIcon(QIcon::fromTheme(e ? "network-connect" : "network-disconnect"));
+    removeButton->setEnabled(e);
+    saveButton->setEnabled(e);
+}
+
+void ServerSettings::setDetails(const MPDConnectionDetails &details)
+{
+    host->setText(details.hostname);
+    port->setValue(details.port);
+    password->setText(details.password);
+    dir->setText(details.dir);
+}
+
+MPDConnectionDetails ServerSettings::getDetails() const
+{
+    MPDConnectionDetails details;
+    details.name=combo->itemData(combo->currentIndex()).toString();
+    details.hostname=host->text();
+    details.port=port->value();
+    details.password=password->text();
+    details.dir=dir->text();
+    details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
+    return details;
 }

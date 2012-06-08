@@ -257,7 +257,7 @@ void LibraryPage::controlActions()
     mw->addToPlayQueueAction->setEnabled(enable);
     mw->replacePlayQueueAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
-    mw->organiseFilesAction->setEnabled(enable && Settings::self()->canReadMpdDir());
+    mw->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
     mw->editTagsAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     mw->replaygainAction->setEnabled(mw->organiseFilesAction->isEnabled());

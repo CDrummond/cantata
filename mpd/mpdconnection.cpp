@@ -167,6 +167,29 @@ QString MPDConnection::Response::getError()
     return data;
 }
 
+MPDConnectionDetails::MPDConnectionDetails()
+    : dirReadable(false)
+{
+}
+
+QString MPDConnectionDetails::description() const
+{
+    QString n=name.isEmpty() ? i18n("Default") : name;
+    #ifdef ENABLE_KDE_SUPPORT
+    if (hostname.startsWith('/')) {
+        return i18nc("name (host)", "%1 (%2)").arg(n).arg(hostname);
+    } else {
+        return i18nc("name (host:port)", "%1 (%2:%3)").arg(n).arg(hostname).arg(port);
+    }
+    #else
+    if (hostname.startsWith('/')) {
+        return QObject::tr("%1 (%2)").arg(n).arg(hostname);
+    } else {
+        return QObject::tr("%1 (%2:%3)").arg(n).arg(hostname).arg(port);
+    }
+    #endif
+}
+
 MPDConnection::MPDConnection()
     : ver(0)
     , sock(this)
@@ -184,6 +207,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<QAbstractSocket::SocketState >("QAbstractSocket::SocketState");
     qRegisterMetaType<MPDStats>("MPDStats");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
+    qRegisterMetaType<MPDConnectionDetails>("MPDConnectionDetails");
 }
 
 MPDConnection::~MPDConnection()
@@ -199,12 +223,12 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
 {
     if (QAbstractSocket::ConnectedState!=socket.state()) {
         DBUG << (void *)(&socket) << "Connecting" << (enableIdle ? "(idle)" : "(std)");
-        if (hostname.isEmpty() || port == 0) {
+        if (details.isEmpty()) {
             DBUG << "no hostname and/or port supplied.";
             return Failed;
         }
 
-        socket.connectToHost(hostname, port);
+        socket.connectToHost(details.hostname, details.port);
         if (socket.waitForConnected(5000)) {
             DBUG << (void *)(&socket) << "established";
             QByteArray recvdata = readFromSocket(socket);
@@ -226,9 +250,9 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
 
             recvdata.clear();
 
-            if (!password.isEmpty()) {
+            if (!details.password.isEmpty()) {
                 DBUG << (void *)(&socket) << "setting password...";
-                socket.write("password "+password.toUtf8()+"\n");
+                socket.write("password "+details.password.toUtf8()+"\n");
                 socket.waitForBytesWritten(5000);
                 if (!readReply(socket).ok) {
                     DBUG << (void *)(&socket) << "password rejected";
@@ -286,17 +310,17 @@ void MPDConnection::disconnectFromMPD()
     sock.close();
     idleSocket.close();
     state=State_Disconnected;
+    ver=0;
 }
 
-void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pass)
+void MPDConnection::setDetails(const MPDConnectionDetails &det)
 {
-    if (hostname!=host || (!sock.isLocal() && port!=p) || password!=pass || State_Connected!=state) {
-        DBUG << "setDetails" << host << p << (pass.isEmpty() ? false : true);
+    bool changedDir=det.dir!=details.dir;
+    if (details!=det) {
+        DBUG << "setDetails" << det.hostname << det.port << (det.password.isEmpty() ? false : true);
         bool wasConnected=State_Connected==state;
         disconnectFromMPD();
-        hostname=host;
-        port=p;
-        password=pass;
+        details=det;
         DBUG << "call connectToMPD";
         switch (connectToMPD()) {
         case Success:
@@ -307,37 +331,24 @@ void MPDConnection::setDetails(const QString &host, quint16 p, const QString &pa
             break;
         case Failed:
             emit stateChanged(false);
-            #ifdef ENABLE_KDE_SUPPORT
-            if (host.startsWith('/')) {
-                emit error(i18n("Connection to %1 failed", host), true);
-            } else {
-                emit error(i18nc("Connection to host:port", "Connection to %1:%2 failed", host, QString::number(MPDConnection::self()->getPort())), true);
-            }
-            #else
-            if (host.startsWith('/')) {
-                emit error(tr("Connection to %1 failed").arg(host), true);
-            } else {
-                emit error(tr("Connection to %1:%2 failed").arg(host).arg(QString::number(MPDConnection::self()->getPort())), true);
-            }
-            #endif
+            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
             break;
         case IncorrectPassword:
             emit stateChanged(false);
-            #ifdef ENABLE_KDE_SUPPORT
-            if (host.startsWith('/')) {
-                emit error(i18n("Connection to %1 failed - incorrect password", host), true);
-            } else {
-                emit error(i18nc("Connection to host:port", "Connection to %1:%2 failed - incorrect password", host, QString::number(MPDConnection::self()->getPort())), true);
-            }
-            #else
-            if (host.startsWith('/')) {
-                emit error(tr("Connection to %1 failed - incorrect password").arg(host), true);
-            } else {
-                emit error(tr("Connection to %1:%2 failed - incorrect password").arg(host).arg(QString::number(MPDConnection::self()->getPort())), true);
-            }
-            #endif
+            emit error(i18n("Connection to %1 failed - incorrect password").arg(details.description()), true);
             break;
         }
+    }
+    if (changedDir) {
+        emit dirChanged();
+    }
+}
+
+void MPDConnection::disconnectMpd()
+{
+    if (State_Connected==state) {
+        disconnectFromMPD();
+        emit stateChanged(false);
     }
 }
 
@@ -370,9 +381,9 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         }
         if (emitErrors) {
             if ((command.startsWith("add ") || command.startsWith("command_list_begin\nadd ")) && -1!=command.indexOf("\"file:///")) {
-                if (isLocal() && response.data=="Permission denied") {
+                if (details.isLocal() && response.data=="Permission denied") {
                     emit error(i18n("Failed to load. Please check user \"mpd\" has read permission."));
-                } else if (!isLocal() && response.data=="Access denied") {
+                } else if (!details.isLocal() && response.data=="Access denied") {
                     emit error(i18n("Failed to load. MPD can only play local files if connected via a local socket."));
                 } else {
                     emit error(response.getError());
@@ -992,11 +1003,7 @@ void MPDConnection::renamePlaylist(const QString oldName, const QString newName)
     if (sendCommand("rename "+encodeName(oldName)+' '+encodeName(newName), false).ok) {
         emit playlistRenamed(oldName, newName);
     } else {
-        #ifdef ENABLE_KDE_SUPPORT
         emit error(i18n("Failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName));
-        #else
-        emit error(tr("Failed to rename <b>%1</b> to <b>%2</b>").arg(oldName).arg(newName));
-        #endif
     }
 }
 
@@ -1008,11 +1015,7 @@ void MPDConnection::removePlaylist(const QString &name)
 void MPDConnection::savePlaylist(const QString &name)
 {
     if (!sendCommand("save "+encodeName(name), false).ok) {
-        #ifdef ENABLE_KDE_SUPPORT
         emit error(i18n("Failed to save <b>%1</b>").arg(name));
-        #else
-        emit error(tr("Failed to save <b>%1</b>").arg(name));
-        #endif
     }
 }
 

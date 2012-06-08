@@ -125,6 +125,29 @@ private:
     QLocalSocket *local;
 };
 
+struct MPDConnectionDetails {
+    MPDConnectionDetails();
+    QString description() const;
+    bool isLocal() const { return hostname.startsWith('/'); }
+    bool isEmpty() const { return hostname.isEmpty() || (!isLocal() && 0==port); }
+    bool operator==(const MPDConnectionDetails &o) const {
+        return hostname==o.hostname && isLocal()==o.isLocal() && (!isLocal() || port==o.port) && password==o.password;
+    }
+    bool operator!=(const MPDConnectionDetails &o) const {
+        return !(*this==o);
+    }
+    bool operator<(const MPDConnectionDetails &o) const {
+        return name.localeAwareCompare(o.name)<0;
+    }
+    QString name;
+    QString hostname;
+    quint16 port;
+    QString password;
+    QString dir;
+    bool dirReadable;
+};
+
+
 class MPDConnection : public QObject
 {
     Q_OBJECT
@@ -142,13 +165,12 @@ public:
     MPDConnection();
     ~MPDConnection();
 
-    bool isLocal() const { return hostname.startsWith('/'); }
-    const QString & getHost() const { return hostname; }
-    quint16 getPort() const { return port; }
+    const MPDConnectionDetails & getDetails() const { return details; }
     bool isConnected() const { return State_Connected==state; }
 
 public Q_SLOTS:
-    void setDetails(const QString &host, quint16 port, const QString &pass);
+    void setDetails(const MPDConnectionDetails &det);
+    void disconnectMpd();
     // Current Playlist
     void add(const QStringList &files, bool replace);
     void addid(const QStringList &files, quint32 pos, quint32 size, bool replace);
@@ -237,6 +259,7 @@ Q_SIGNALS:
     void updatedFileList();
     void error(const QString &err, bool showActions=false);
     void urlHandlers(const QStringList &handlers);
+    void dirChanged();
 
 private Q_SLOTS:
     void idleDataReady();
@@ -260,9 +283,7 @@ private:
 
 private:
     long ver;
-    QString hostname;
-    quint16 port;
-    QString password;
+    MPDConnectionDetails details;
     // Use 2 sockets, 1 for commands and 1 to receive MPD idle events.
     // Cant use 1, as we could write a command just as an idle event is ready to read
     MpdSocket sock;

@@ -389,9 +389,9 @@ bool Dynamic::controlApp(bool isStart)
 
     if (isStart) {
         QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-        QString p=Settings::self()->connectionPasswd();
-        env.insert("MPD_HOST", p.isEmpty() ? Settings::self()->connectionHost() : (p+'@'+Settings::self()->connectionHost()));
-        env.insert("MPD_PORT", QString::number(Settings::self()->connectionPort()));
+        MPDConnectionDetails details=MPDConnection::self()->getDetails();
+        env.insert("MPD_HOST", details.password.isEmpty() ? details.hostname : (details.password+'@'+details.hostname));
+        env.insert("MPD_PORT", QString::number(details.port));
         process.setProcessEnvironment(env);
     }
     process.start(cmd, QStringList() << QLatin1String(isStart ? "start" : "stop"), QIODevice::WriteOnly);

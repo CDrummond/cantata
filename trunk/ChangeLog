@@ -24,6 +24,8 @@
 14. Add support for multiple MPD servers. Only 1 is ever active. If there
     are 2 or more servers defined, the settings menu will contain a sub menu
     allow quick access to each server.
+15. If an MPD connection has more than 1 output, show an 'Outputs' sub menu
+    in the settings menu.
 
 0.7.1
 -----

@@ -39,8 +39,7 @@ ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     connect(MPDConnection::self(), SIGNAL(replayGain(const QString &)), this, SLOT(replayGainSetting(const QString &)));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(updateOutpus(const QList<Output> &)));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(mpdConnectionStateChanged(bool)));
-    connect(this, SIGNAL(enable(int)), MPDConnection::self(), SLOT(enableOutput(int)));
-    connect(this, SIGNAL(disable(int)), MPDConnection::self(), SLOT(disableOutput(int)));
+    connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
     connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
     connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
@@ -71,12 +70,7 @@ void ServerPlaybackSettings::save()
     emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
     for (int i=0; i<view->count(); ++i) {
         QListWidgetItem *item=view->item(i);
-
-        if (Qt::Checked==item->checkState()) {
-            emit enable(item->data(Qt::UserRole).toInt());
-        } else {
-            emit disable(item->data(Qt::UserRole).toInt());
-        }
+        emit enableOutput(item->data(Qt::UserRole).toInt(), Qt::Checked==item->checkState());
     }
     #ifdef PHONON_FOUND
     Settings::self()->saveStreamUrl(streamUrl->text().trimmed());

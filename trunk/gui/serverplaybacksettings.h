@@ -45,8 +45,7 @@ Q_SIGNALS:
     void setReplayGain(const QString &);
     void setCrossFade(int secs);
     void outputs();
-    void enable(int id);
-    void disable(int id);
+    void enableOutput(int id, bool);
 
 private Q_SLOTS:
     void replayGainSetting(const QString &rg);

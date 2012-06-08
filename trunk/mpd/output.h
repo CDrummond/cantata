@@ -36,12 +36,15 @@ struct Output
 
     Output(const Output &o) { *this=o; }
 
-    Output & operator=(const Output &o)
-    {
+    Output & operator=(const Output &o) {
         id=o.id;
         enabled=o.enabled;
         name=o.name;
         return *this;
+    }
+
+    bool operator<(const Output &o) const {
+        return name.localeAwareCompare(o.name)<0;
     }
 
     virtual ~Output() { }

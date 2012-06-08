@@ -33,6 +33,7 @@ class Wallet;
 #include <QtCore/QSettings>
 #endif
 #include "config.h"
+#include "mpdconnection.h"
 
 #define CANTATA_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
 
@@ -55,9 +56,9 @@ public:
     Settings();
     ~Settings();
 
-    QString connectionHost();
-    QString connectionPasswd();
-    int connectionPort();
+    QString currentConnection();
+    MPDConnectionDetails connectionDetails(const QString &name=Settings::self()->currentConnection());
+    QList<MPDConnectionDetails> allConnections();
     bool showPlaylist();
     QByteArray playQueueHeaderState();
     QByteArray splitterState();
@@ -70,8 +71,6 @@ public:
     bool stopDynamizerOnExit();
     bool smallPlaybackButtons();
     bool smallControlButtons();
-    const QString & mpdDir();
-    bool canReadMpdDir() const { return mpdDirReadable; }
     bool storeCoversInMpdDir();
     bool storeLyricsInMpdDir();
     int libraryView();
@@ -114,9 +113,9 @@ public:
     QString streamUrl();
     #endif
 
-    void saveConnectionHost(const QString &v);
-    void saveConnectionPasswd(const QString &v);
-    void saveConnectionPort(int v);
+    void removeConnectionDetails(const QString &v);
+    void saveConnectionDetails(const MPDConnectionDetails &v);
+    void saveCurrentConnection(const QString &v);
     void saveShowPlaylist(bool v);
     void saveStopOnExit(bool v);
     void saveStopDynamizerOnExit(bool v);
@@ -129,7 +128,6 @@ public:
     void saveMainWindowCollapsedSize(const QSize &v);
     void saveUseSystemTray(bool v);
     void saveShowPopups(bool v);
-    void saveMpdDir(const QString &v);
     void saveStoreCoversInMpdDir(bool v);
     void saveStoreLyricsInMpdDir(bool v);
     void saveLibraryView(int v);
@@ -179,14 +177,11 @@ private Q_SLOTS:
     void actualSave();
 
 private:
-    bool mpdDirReadable;
-    QString mpdDirSetting;
     QTimer *timer;
     int ver;
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg;
     KWallet::Wallet *wallet;
-    QString passwd;
     #else
     QSettings cfg;
     #endif

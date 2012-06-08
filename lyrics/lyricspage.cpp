@@ -307,9 +307,9 @@ void LyricsPage::update(const Song &song, bool force)
             currentProvider=-1;
         }
 
-        if (!Settings::self()->mpdDir().isEmpty() && !song.file.isEmpty() && !song.isStream()) {
+        if (!MPDConnection::self()->getDetails().dir.isEmpty() && !song.file.isEmpty() && !song.isStream()) {
             // Check for MPD file...
-            QString mpdLyrics=changeExt(Settings::self()->mpdDir()+song.file, constExtension);
+            QString mpdLyrics=changeExt(MPDConnection::self()->getDetails().dir+song.file, constExtension);
 
 //             if (force && QFile::exists(mpdLyrics)) {
 //                 QFile::remove(mpdLyrics);
@@ -359,7 +359,7 @@ void LyricsPage::resultReady(int id, const QString &lyrics)
         text->setText(text->toPlainText());
         lyricsFile=QString();
         if (! ( Settings::self()->storeLyricsInMpdDir() &&
-                saveFile(changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension))) ) {
+                saveFile(changeExt(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension))) ) {
             saveFile(cacheFile(currentSong.artist, currentSong.title, true));
         }
         setMode(Mode_Display);
@@ -382,8 +382,8 @@ bool LyricsPage::saveFile(const QString &fileName)
 
 QString LyricsPage::mpdFileName() const
 {
-    return currentSong.file.isEmpty() || Settings::self()->mpdDir().isEmpty() || currentSong.isStream()
-            ? QString() : changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension);
+    return currentSong.file.isEmpty() || MPDConnection::self()->getDetails().dir.isEmpty() || currentSong.isStream()
+            ? QString() : changeExt(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension);
 }
 
 QString LyricsPage::cacheFileName() const
@@ -426,7 +426,7 @@ void LyricsPage::getLyrics()
             currentProvider=-1;
             // Set lyrics file anyway - so that editing is enabled!
             lyricsFile=Settings::self()->storeLyricsInMpdDir()
-                        ? changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension)
+                        ? changeExt(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)
                         : cacheFile(currentSong.artist, currentSong.title);
             setMode(Mode_Display);
             return;
@@ -444,7 +444,7 @@ void LyricsPage::setMode(Mode m)
     saveAction->setEnabled(Mode_Edit==m);
     cancelAction->setEnabled(Mode_Edit==m);
     editAction->setEnabled(editable);
-    delAction->setEnabled(editable && !Settings::self()->mpdDir().isEmpty() && QFile::exists(changeExt(Settings::self()->mpdDir()+currentSong.file, constExtension)));
+    delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(changeExt(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)));
     text->setReadOnly(Mode_Edit!=m);
     songLabel->setVisible(Mode_Edit==m);
     #ifdef ENABLE_KDE_SUPPORT

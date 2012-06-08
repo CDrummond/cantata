@@ -22,108 +22,29 @@
  */
 
 #include "playbacksettings.h"
-#include "mpdconnection.h"
 #include "settings.h"
 #include "localize.h"
-#include <QtGui/QListWidget>
-#include "config.h"
-
-static const int constIconSize=48;
 
 PlaybackSettings::PlaybackSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    replayGain->addItem(i18n("None"), QVariant("off"));
-    replayGain->addItem(i18n("Track"), QVariant("track"));
-    replayGain->addItem(i18n("Album"), QVariant("album"));
     stopFadeDuration->setSpecialValueText(i18n("Do not fadeout"));
     stopFadeDuration->setSuffix(i18n(" ms"));
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
-    connect(MPDConnection::self(), SIGNAL(replayGain(const QString &)), this, SLOT(replayGainSetting(const QString &)));
-    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(updateOutpus(const QList<Output> &)));
-    connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), this, SLOT(mpdConnectionStateChanged(bool)));
-    connect(this, SIGNAL(enable(int)), MPDConnection::self(), SLOT(enableOutput(int)));
-    connect(this, SIGNAL(disable(int)), MPDConnection::self(), SLOT(disableOutput(int)));
-    connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
-    connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
-    connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
-    connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
-    #ifndef PHONON_FOUND
-    streamUrl->setVisible(false);
-    streamUrlLabel->setVisible(false);
-    streamUrlInfoLabel->setVisible(false);
-    #endif
-    mpdConnectionStateChanged(MPDConnection::self()->isConnected());
-    errorIcon->setMinimumSize(constIconSize, constIconSize);
-    errorIcon->setMaximumSize(constIconSize, constIconSize);
-    errorIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(constIconSize, constIconSize));
 };
 
 void PlaybackSettings::load()
 {
-    crossfading->setValue(MPDStatus::self()->crossFade());
-    emit getReplayGain();
-    emit outputs();
     stopOnExit->setChecked(Settings::self()->stopOnExit());
     stopDynamizerOnExit->setChecked(Settings::self()->stopDynamizerOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
-    #ifdef PHONON_FOUND
-    streamUrl->setText(Settings::self()->streamUrl());
-    #endif
 }
 
 void PlaybackSettings::save()
 {
-    emit setCrossFade(crossfading->value());
-    emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
     Settings::self()->saveStopDynamizerOnExit(stopDynamizerOnExit->isChecked());
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
-    for (int i=0; i<view->count(); ++i) {
-        QListWidgetItem *item=view->item(i);
-
-        if (Qt::Checked==item->checkState()) {
-            emit enable(item->data(Qt::UserRole).toInt());
-        } else {
-            emit disable(item->data(Qt::UserRole).toInt());
-        }
-    }
-    #ifdef PHONON_FOUND
-    Settings::self()->saveStreamUrl(streamUrl->text().trimmed());
-    #endif
-}
-
-void PlaybackSettings::replayGainSetting(const QString &rg)
-{
-    replayGain->setCurrentIndex(0);
-
-    for(int i=0; i<replayGain->count(); ++i) {
-        if (replayGain->itemData(i).toString()==rg){
-            replayGain->setCurrentIndex(i);
-            break;
-        }
-    }
-}
-
-void PlaybackSettings::updateOutpus(const QList<Output> &outputs)
-{
-    view->clear();
-    foreach(const Output &output, outputs) {
-        QListWidgetItem *item=new QListWidgetItem(output.name, view);
-        item->setCheckState(output.enabled ? Qt::Checked : Qt::Unchecked);
-        item->setData(Qt::UserRole, output.id);
-    }
-}
-
-void PlaybackSettings::mpdConnectionStateChanged(bool c)
-{
-    errorIcon->setVisible(!c);
-    errorLabel->setVisible(!c);
-    outputFrame->setEnabled(c);
-    crossfading->setEnabled(c);
-    replayGain->setEnabled(c);
-    crossfadingLabel->setEnabled(c);
-    replayGainLabel->setEnabled(c);
 }

@@ -26,12 +26,14 @@
 #include "settings.h"
 #include "interfacesettings.h"
 #include "externalsettings.h"
-#include "playbacksettings.h"
 #include "serversettings.h"
+#include "serverplaybacksettings.h"
+#include "playbacksettings.h"
 #include "httpserversettings.h"
 #include "lyricsettings.h"
 #include "lyricspage.h"
 #include "localize.h"
+#include "mpdconnection.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KPageWidget>
 #include <KDE/KIcon>
@@ -80,12 +82,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     #endif
 
     server = new ServerSettings(widget);
+    serverplayback = new ServerPlaybackSettings(widget);
     playback = new PlaybackSettings(widget);
     interface = new InterfaceSettings(widget);
     ext = new ExternalSettings(widget);
     http = new HttpServerSettings(widget);
     lyrics = new LyricSettings(widget);
     server->load();
+    serverplayback->load();
     playback->load();
     interface->load();
     ext->load();
@@ -93,14 +97,15 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
     lyrics->Load(lprov);
     #ifdef ENABLE_KDE_SUPPORT
-    KPageWidgetItem *page=widget->addPage(server, i18n("Server"));
-    page->setHeader(i18n("MPD Backend Settings"));
+    KPageWidgetItem *page=widget->addPage(server, i18n("Connection"));
+    page->setHeader(i18n("Connection Settings"));
     page->setIcon(KIcon("server-database"));
+    page=widget->addPage(serverplayback, i18n("Output"));
+    page->setHeader(i18n("Output Settings"));
+    page->setIcon(KIcon("speaker"));
     page=widget->addPage(playback, i18n("Playback"));
     page->setHeader(i18n("Playback Settings"));
     page->setIcon(KIcon("media-playback-start"));
-    page->setHeader(i18n("Control Active Outputs"));
-    page->setIcon(KIcon("speaker"));
     page=widget->addPage(interface, i18n("Interface"));
     page->setHeader(i18n("Interface Settings"));
     page->setIcon(KIcon("view-choose"));
@@ -114,8 +119,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page->setHeader(i18n("Lyrics Settings"));
     page->setIcon(KIcon("view-media-lyrics"));
     #else
-    widget->AddTab(new ConfigPage(this, tr("MPD Backend Settings"), QIcon::fromTheme("server-database"), server),
-                   QIcon::fromTheme("server-database"), tr("Server"));
+    widget->AddTab(new ConfigPage(this, tr("Connection Settings"), QIcon::fromTheme("server-database"), server),
+                   QIcon::fromTheme("server-database"), tr("Connection"));
+    widget->AddTab(new ConfigPage(this, tr("Output Settings"), QIcon::fromTheme("speaker"), serverplayback),
+                   QIcon::fromTheme("speaker"), tr("Output"));
     widget->AddTab(new ConfigPage(this, tr("Playback Settings"), QIcon::fromTheme("media-playback-start"), playback),
                    QIcon::fromTheme("media-playback-start"), tr("Playback"));
     widget->AddTab(new ConfigPage(this, tr("Interface Settings"), QIcon::fromTheme("view-choose"), interface),
@@ -134,13 +141,16 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     #endif
     setCaption(i18n("Configure"));
     setMainWidget(widget);
-    resize(600, 450);
+    resize(600, 500);
+    connect(server, SIGNAL(connectTo(const MPDConnectionDetails &)), SIGNAL(connectTo(const MPDConnectionDetails &)));
+    connect(server, SIGNAL(disconnectFromMpd()), MPDConnection::self(), SLOT(disconnectMpd()));
 }
 
 void PreferencesDialog::writeSettings()
 {
     // *Must* save server settings first, so that MPD settings go to the correct instance!
     server->save();
+    serverplayback->save();
     playback->save();
     interface->save();
     ext->save();

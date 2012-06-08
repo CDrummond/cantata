@@ -47,7 +47,7 @@ Settings * Settings::self()
     return instance;
     #else
     static Settings *instance=0;;
-    if(!instance) {
+    if (!instance) {
         instance=new Settings;
     }
     return instance;
@@ -112,13 +112,23 @@ struct MpdDefaults
 static MpdDefaults mpdDefaults;
 
 #ifdef ENABLE_KDE_SUPPORT
-#define GET_STRING(KEY, DEF)     (cfg.readEntry(KEY, QString(DEF)))
-#define GET_STRINGLIST(KEY, DEF) (cfg.readEntry(KEY, DEF))
-#define GET_BOOL(KEY, DEF)       (cfg.readEntry(KEY, DEF))
-#define GET_INT(KEY, DEF)        (cfg.readEntry(KEY, DEF))
-#define GET_BYTE_ARRAY(KEY)      (cfg.readEntry(KEY, QByteArray()))
-#define GET_SIZE(KEY)            (cfg.readEntry(KEY, QSize()))
-#define SET_VALUE(KEY, V)        (cfg.writeEntry(KEY, V))
+#define CFG_GET_STRING(CFG, KEY, DEF)     (CFG.readEntry(KEY, QString(DEF)))
+#define CFG_GET_STRINGLIST(CFG, KEY, DEF) (CFG.readEntry(KEY, DEF))
+#define CFG_GET_BOOL(CFG, KEY, DEF)       (CFG.readEntry(KEY, DEF))
+#define CFG_GET_INT(CFG, KEY, DEF)        (CFG.readEntry(KEY, DEF))
+#define CFG_GET_BYTE_ARRAY(CFG, KEY)      (CFG.readEntry(KEY, QByteArray()))
+#define CFG_GET_SIZE(CFG, KEY)            (CFG.readEntry(KEY, QSize()))
+#define CFG_SET_VALUE(CFG, KEY, V)        (CFG.writeEntry(KEY, V))
+#define HAS_GROUP(GRP)                    (KGlobal::config()->hasGroup(GRP))
+#define REMOVE_GROUP(KEY)                 (cfg.deleteGroup(KEY))
+#define REMOVE_ENTRY(KEY)                 (cfg.deleteEntry(KEY))
+#define GET_STRING(KEY, DEF)              CFG_GET_STRING(cfg, KEY, DEF)
+#define GET_STRINGLIST(KEY, DEF)          CFG_GET_STRINGLIST(cfg, KEY, DEF)
+#define GET_BOOL(KEY, DEF)                CFG_GET_BOOL(cfg, KEY, DEF)
+#define GET_INT(KEY, DEF)                 CFG_GET_INT(cfg, KEY, DEF)
+#define GET_BYTE_ARRAY(KEY)               CFG_GET_BYTE_ARRAY(cfg, KEY)
+#define GET_SIZE(KEY)                     CFG_GET_SIZE(cfg, KEY)
+#define SET_VALUE(KEY, V)                 CFG_SET_VALUE(cfg, KEY, V)
 #else
 #define GET_STRING(KEY, DEF)     (cfg.contains(KEY) ? cfg.value(KEY).toString() : QString(DEF))
 #define GET_STRINGLIST(KEY, DEF) (cfg.contains(KEY) ? cfg.value(KEY).toStringList() : DEF)
@@ -127,11 +137,18 @@ static MpdDefaults mpdDefaults;
 #define GET_BYTE_ARRAY(KEY)      (cfg.value(KEY).toByteArray())
 #define GET_SIZE(KEY)            (cfg.contains(KEY) ? cfg.value(KEY).toSize() : QSize())
 #define SET_VALUE(KEY, V)        (cfg.setValue(KEY, V))
+#define HAS_GROUP(GRP)           (cfg.contains(GRP))
+#define REMOVE_GROUP(KEY)        (cfg.remove(KEY))
+#define REMOVE_ENTRY(KEY)        (cfg.remove(KEY))
 #endif
 
+static QString connGroupName(const QString &n=QString())
+{
+    return n.isEmpty() ? "Connection" : ("Connection-"+n);
+}
+
 Settings::Settings()
-    : mpdDirReadable(false)
-    , timer(0)
+    : timer(0)
     , ver(-1)
     #ifdef ENABLE_KDE_SUPPORT
     , cfg(KGlobal::config(), "General")
@@ -139,7 +156,9 @@ Settings::Settings()
     #endif
 {
     // Only need to read system defaults if we have not previously been configured...
-    if (GET_STRING("connectionHost", QString()).isEmpty()) {
+    if (version()<CANTATA_MAKE_VERSION(0, 8, 0)
+            ? GET_STRING("connectionHost", QString()).isEmpty()
+            : !HAS_GROUP(connGroupName())) {
         mpdDefaults.read();
     }
 }
@@ -151,21 +170,91 @@ Settings::~Settings()
     #endif
 }
 
-QString Settings::connectionHost()
+QString Settings::currentConnection()
 {
-    return GET_STRING("connectionHost", mpdDefaults.host);
+    return GET_STRING("currentConnection", QString());
+}
+
+MPDConnectionDetails Settings::connectionDetails(const QString &name)
+{
+    MPDConnectionDetails details;
+    if (version()<CANTATA_MAKE_VERSION(0, 8, 0) || (name.isEmpty() && !HAS_GROUP(connGroupName(name)))) {
+        details.hostname=GET_STRING("connectionHost", name.isEmpty() ? mpdDefaults.host : QString());
+        #ifdef ENABLE_KDE_SUPPORT
+        if (GET_BOOL("connectionPasswd", false)) {
+            if (openWallet()) {
+                wallet->readPassword("mpd", details.password);
+            }
+        } else if (name.isEmpty()) {
+           details.password=mpdDefaults.passwd;
+        }
+        #else
+        details.password=GET_STRING("connectionPasswd", name.isEmpty() ? mpdDefaults.passwd : QString());
+        #endif
+        details.port=GET_INT("connectionPort", name.isEmpty() ? mpdDefaults.port : 6600);
+        details.dir=MPDParseUtils::fixPath(GET_STRING("mpdDir", mpdDefaults.dir));
+    } else {
+        QString n=connGroupName(name);
+        details.name=name;
+        if (HAS_GROUP(n)) {
+            #ifdef ENABLE_KDE_SUPPORT
+            KConfigGroup grp(KGlobal::config(), n);
+            details.hostname=CFG_GET_STRING(grp, "host", name.isEmpty() ? mpdDefaults.host : QString());
+            details.port=CFG_GET_INT(grp, "port", name.isEmpty() ? mpdDefaults.port : 6600);
+            details.dir=MPDParseUtils::fixPath(CFG_GET_STRING(grp, "dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
+            if (CFG_GET_BOOL(grp, "passwd", false)) {
+                if (openWallet()) {
+                    wallet->readPassword(name.isEmpty() ? "mpd" : name, details.password);
+                }
+            } else if (name.isEmpty()) {
+                details.password=mpdDefaults.passwd;
+            }
+            #else
+            cfg.beginGroup(name);
+            details.hostname=GET_STRING("host", name.isEmpty() ? mpdDefaults.host : QString());
+            details.port=GET_INT("port", name.isEmpty() ? mpdDefaults.port : 6600);
+            details.dir=MPDParseUtils::fixPath(GET_STRING("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
+            details.password=GET_STRING("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
+            cfg.endGroup();
+            #endif
+        }
+    }
+    details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
+    return details;
+}
+
+QList<MPDConnectionDetails> Settings::allConnections()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    QStringList groups=KGlobal::config()->groupList();
+    #else
+    QStringList groups=cfg.childGroups();
+    #endif
+
+    QList<MPDConnectionDetails> connections;
+    foreach (const QString &grp, groups) {
+        if (grp.startsWith("Connection")) {
+            connections.append(connectionDetails(grp=="Connection" ? QString() : grp.mid(11)));
+        }
+    }
+
+    if (connections.isEmpty()) {
+        // If we are empty, add at lease the default connection...
+        connections.append(connectionDetails());
+    }
+    return connections;
 }
 
 #ifdef ENABLE_KDE_SUPPORT
 bool Settings::openWallet()
 {
-    if(wallet) {
+    if (wallet) {
         return true;
     }
 
     wallet=KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(), QApplication::activeWindow() ? QApplication::activeWindow()->winId() : 0);
-    if(wallet) {
-        if(!wallet->hasFolder(PACKAGE_NAME)) {
+    if (wallet) {
+        if (!wallet->hasFolder(PACKAGE_NAME)) {
             wallet->createFolder(PACKAGE_NAME);
         }
         wallet->setFolder(PACKAGE_NAME);
@@ -175,29 +264,6 @@ bool Settings::openWallet()
     return false;
 }
 #endif
-
-QString Settings::connectionPasswd()
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    if(passwd.isEmpty()) {
-        if (GET_BOOL("connectionPasswd", false)) {
-            if (openWallet()) {
-                wallet->readPassword("mpd", passwd);
-            }
-        } else {
-            passwd=mpdDefaults.passwd;
-        }
-    }
-    return passwd;
-    #else
-    return GET_STRING("connectionPasswd", "");
-    #endif
-}
-
-int Settings::connectionPort()
-{
-    return GET_INT("connectionPort", mpdDefaults.port);
-}
 
 bool Settings::showPlaylist()
 {
@@ -257,15 +323,6 @@ bool Settings::smallPlaybackButtons()
 bool Settings::smallControlButtons()
 {
     return GET_BOOL("smallControlButtons", false);
-}
-
-const QString & Settings::mpdDir()
-{
-    if (mpdDirSetting.isEmpty()) {
-        mpdDirSetting=MPDParseUtils::fixPath(GET_STRING("mpdDir", mpdDefaults.dir));
-        mpdDirReadable=QDir(mpdDirSetting).isReadable();
-    }
-    return mpdDirSetting;
 }
 
 bool Settings::storeCoversInMpdDir()
@@ -497,35 +554,49 @@ QString Settings::streamUrl()
 }
 #endif
 
-void Settings::saveConnectionHost(const QString &v)
+void Settings::removeConnectionDetails(const QString &v)
 {
-    SET_VALUE("connectionHost", v);
+    REMOVE_GROUP(connGroupName(v));
 }
 
-void Settings::saveConnectionPasswd(const QString &v)
+void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    if(v!=passwd) {
-        passwd=v;
-        SET_VALUE("connectionPasswd", !passwd.isEmpty());
+    if (v.name.isEmpty()) {
+        REMOVE_ENTRY("connectionHost");
+        REMOVE_ENTRY("connectionPasswd");
+        REMOVE_ENTRY("connectionPort");
+        REMOVE_ENTRY("mpdDir");
+    }
 
-        if(passwd.isEmpty()) {
-            if(wallet) {
-                wallet->removeEntry("mpd");
-            }
-        }
-        else if(openWallet()) {
-            wallet->writePassword("mpd", passwd);
+    QString n=connGroupName(v.name);
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup grp(KGlobal::config(), n);
+    CFG_SET_VALUE(grp, "host", v.hostname);
+    CFG_SET_VALUE(grp, "port", (int)v.port);
+    CFG_SET_VALUE(grp, "dir", v.dir);
+    CFG_SET_VALUE(grp, "passwd", !v.password.isEmpty());
+    QString walletEntry=v.name.isEmpty() ? "mpd" : v.name;
+    if (v.password.isEmpty()) {
+        if (wallet) {
+            wallet->removeEntry(walletEntry);
         }
     }
+    else if (openWallet()) {
+        wallet->writePassword(walletEntry, v.password);
+    }
     #else
-    SET_VALUE("connectionPasswd", v);
+    cfg.beginGroup(n);
+    SET_VALUE("host", v.hostname);
+    SET_VALUE("port", (int)v.port);
+    SET_VALUE("dir", v.dir);
+    SET_VALUE("passwd", v.password);
+    cfg.endGroup();
     #endif
 }
 
-void Settings::saveConnectionPort(int v)
+void Settings::saveCurrentConnection(const QString &v)
 {
-    SET_VALUE("connectionPort", v);
+    SET_VALUE("currentConnection", v);
 }
 
 void Settings::saveShowPlaylist(bool v)
@@ -586,13 +657,6 @@ void Settings::saveSmallPlaybackButtons(bool v)
 void Settings::saveSmallControlButtons(bool v)
 {
     SET_VALUE("smallControlButtons", v);
-}
-
-void Settings::saveMpdDir(const QString &v)
-{
-    mpdDirSetting=MPDParseUtils::fixPath(v);
-    mpdDirReadable=QDir(mpdDirSetting).isReadable();
-    SET_VALUE("mpdDir", mpdDirSetting);
 }
 
 void Settings::saveStoreCoversInMpdDir(bool v)
@@ -726,7 +790,7 @@ void Settings::saveStopFadeDuration(int v)
 {
     if (v<=MinFade) {
         v=0;
-    } else if(v>MaxFade) {
+    } else if (v>MaxFade) {
         v=MaxFade;
     }
     SET_VALUE("stopFadeDuration", v);

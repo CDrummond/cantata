@@ -141,7 +141,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
     origSongs=songs;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
-        base=Settings::self()->mpdDir();
+        base=MPDConnection::self()->getDetails().dir;
     } else {
         Device *dev=getDevice(udi, parentWidget());
 
@@ -154,7 +154,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
     }
     #else
     Q_UNUSED(udi)
-    base=Settings::self()->mpdDir();
+    base=MPDConnection::self()->getDetails().dir;
     #endif
     state=State_Idle;
     enableButton(User1, songs.count());

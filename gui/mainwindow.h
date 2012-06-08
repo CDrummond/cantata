@@ -46,6 +46,7 @@
 #include "playqueuemodel.h"
 #include "playqueueproxymodel.h"
 #include "mpdstatus.h"
+#include "mpdconnection.h"
 #include "song.h"
 #include "config.h"
 #ifdef PHONON_FOUND
@@ -85,6 +86,7 @@ class Mpris;
 #endif
 class QTimer;
 class QPropertyAnimation;
+class QActionGroup;
 
 class DeleteKeyEventHandler : public QObject
 {
@@ -208,7 +210,7 @@ private:
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void setDetails(const QString &host, quint16 port, const QString &pass);
+    void setDetails(const MPDConnectionDetails &det);
     void removeSongs(const QList<qint32> &);
     void pause(bool p);
     void play();
@@ -224,6 +226,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
+    void showInformation(const QString &message);
     void showPage(const QString &page, bool focusSearch);
     #ifndef Q_WS_WIN
     void dynamicStatus(const QString &message);
@@ -242,7 +245,9 @@ private Q_SLOTS:
     void showVolumeControl();
     void showPreferencesDialog();
     void updateSettings();
+    void changeConnection();
     void connectToMpd();
+    void connectToMpd(const MPDConnectionDetails &details);
     void refresh();
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
@@ -322,6 +327,7 @@ private Q_SLOTS:
     void focusSearch();
     void expandAll();
     void collapseAll();
+    void checkMpdDir();
 
 private:
     void readSettings();
@@ -351,6 +357,8 @@ private:
     VolumeControl *volumeControl;
     Action *prefAction;
     Action *connectAction;
+    Action *connectionsAction;
+    QActionGroup *connectionsGroup;
     Action *prevTrackAction;
     Action *nextTrackAction;
     Action *playPauseTrackAction;

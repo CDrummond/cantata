@@ -30,12 +30,14 @@ class ProxySettings;
 #endif
 
 class ServerSettings;
+class ServerPlaybackSettings;
 class PlaybackSettings;
 class InterfaceSettings;
 class LyricSettings;
 class LyricsPage;
 class ExternalSettings;
 class HttpServerSettings;
+class MPDConnectionDetails;
 
 class PreferencesDialog : public Dialog
 {
@@ -52,9 +54,11 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void settingsSaved();
+    void connectTo(const MPDConnectionDetails &details);
 
 private:
     ServerSettings *server;
+    ServerPlaybackSettings *serverplayback;
     PlaybackSettings *playback;
     InterfaceSettings *interface;
     ExternalSettings *ext;

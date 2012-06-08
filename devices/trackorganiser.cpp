@@ -215,7 +215,7 @@ void TrackOrganiser::renameFile()
         musicFolder=dev->path();
     } else
     #endif
-        musicFolder=Settings::self()->mpdDir();
+        musicFolder=MPDConnection::self()->getDetails().dir;
 
     if (modified!=s.file) {
         QString source=musicFolder+s.file;

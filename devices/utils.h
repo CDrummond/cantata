@@ -38,6 +38,7 @@ namespace Utils
         return (fabs(d1 - d2) < precision);
     }
 
+    extern QString strippedText(QString s);
     extern QString dirSyntax(const QString &d);
     extern QString getDir(const QString &file);
     extern QString changeExtension(const QString &file, const QString &extension);

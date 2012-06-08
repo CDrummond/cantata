@@ -53,6 +53,9 @@ private:
     void setDetails(const MPDConnectionDetails &details);
     MPDConnectionDetails getDetails() const;
     void enableWidgets(bool e);
+
+private:
+    bool isCurrentConnection;
 };
 
 #endif

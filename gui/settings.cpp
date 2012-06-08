@@ -120,7 +120,7 @@ static MpdDefaults mpdDefaults;
 #define CFG_GET_SIZE(CFG, KEY)            (CFG.readEntry(KEY, QSize()))
 #define CFG_SET_VALUE(CFG, KEY, V)        (CFG.writeEntry(KEY, V))
 #define HAS_GROUP(GRP)                    (KGlobal::config()->hasGroup(GRP))
-#define REMOVE_GROUP(KEY)                 (cfg.deleteGroup(KEY))
+#define REMOVE_GROUP(GRP)                 (KGlobal::config()->deleteGroup(GRP))
 #define REMOVE_ENTRY(KEY)                 (cfg.deleteEntry(KEY))
 #define GET_STRING(KEY, DEF)              CFG_GET_STRING(cfg, KEY, DEF)
 #define GET_STRINGLIST(KEY, DEF)          CFG_GET_STRINGLIST(cfg, KEY, DEF)
@@ -138,7 +138,7 @@ static MpdDefaults mpdDefaults;
 #define GET_SIZE(KEY)            (cfg.contains(KEY) ? cfg.value(KEY).toSize() : QSize())
 #define SET_VALUE(KEY, V)        (cfg.setValue(KEY, V))
 #define HAS_GROUP(GRP)           (cfg.contains(GRP))
-#define REMOVE_GROUP(KEY)        (cfg.remove(KEY))
+#define REMOVE_GROUP(GRP)        (cfg.remove(GRP))
 #define REMOVE_ENTRY(KEY)        (cfg.remove(KEY))
 #endif
 
@@ -233,7 +233,7 @@ QList<MPDConnectionDetails> Settings::allConnections()
 
     QList<MPDConnectionDetails> connections;
     foreach (const QString &grp, groups) {
-        if (grp.startsWith("Connection")) {
+        if (HAS_GROUP(grp) && grp.startsWith("Connection")) {
             connections.append(connectionDetails(grp=="Connection" ? QString() : grp.mid(11)));
         }
     }
@@ -557,6 +557,9 @@ QString Settings::streamUrl()
 void Settings::removeConnectionDetails(const QString &v)
 {
     REMOVE_GROUP(connGroupName(v));
+    #ifdef ENABLE_KDE_SUPPORT
+    KGlobal::config()->sync();
+    #endif
 }
 
 void Settings::saveConnectionDetails(const MPDConnectionDetails &v)

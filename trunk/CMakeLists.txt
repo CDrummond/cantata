@@ -239,7 +239,6 @@ if (NOT WIN32)
         dynamic/dynamicrulesdialog.h
     )
     SET( CANTATA_UIS ${CANTATA_UIS}
-        widgets/itemview.ui
         dynamic/dynamicpage.ui
         dynamic/dynamicrule.ui
         dynamic/dynamicrules.ui

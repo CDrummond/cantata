@@ -21,21 +21,37 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef PLAYBACKSETTINGS_H
-#define PLAYBACKSETTINGS_H
+#ifndef SERVERPLAYBACKSETTINGS_H
+#define SERVERPLAYBACKSETTINGS_H
 
-#include "ui_playbacksettings.h"
+#include "ui_serverplaybacksettings.h"
 #include "output.h"
 #include <QtCore/QList>
 
-class PlaybackSettings : public QWidget, private Ui::PlaybackSettings
+class ServerPlaybackSettings : public QWidget, private Ui::ServerPlaybackSettings
 {
+    Q_OBJECT
+
 public:
-    PlaybackSettings(QWidget *p);
-    virtual ~PlaybackSettings() { }
+    ServerPlaybackSettings(QWidget *p);
+    virtual ~ServerPlaybackSettings() { }
 
     void load();
     void save();
+
+Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
+    void getReplayGain();
+    void setReplayGain(const QString &);
+    void setCrossFade(int secs);
+    void outputs();
+    void enable(int id);
+    void disable(int id);
+
+private Q_SLOTS:
+    void replayGainSetting(const QString &rg);
+    void updateOutpus(const QList<Output> &outputs);
+    void mpdConnectionStateChanged(bool c);
 };
 
 #endif

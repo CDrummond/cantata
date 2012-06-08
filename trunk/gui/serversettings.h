@@ -25,15 +25,34 @@
 #define SERVERSETTINGS_H
 
 #include "ui_serversettings.h"
+#include "mpdconnection.h"
 
 class ServerSettings : public QWidget, private Ui::ServerSettings
 {
+    Q_OBJECT
+
 public:
     ServerSettings(QWidget *p);
     virtual ~ServerSettings() { }
 
     void load();
     void save();
+
+Q_SIGNALS:
+    void connectTo(const MPDConnectionDetails &details);
+    void disconnectFromMpd();
+
+private Q_SLOTS:
+    void showDetails(int index);
+    void mpdConnectionStateChanged(bool c);
+    void toggleConnection();
+    void saveAs();
+    void remove();
+
+private:
+    void setDetails(const MPDConnectionDetails &details);
+    MPDConnectionDetails getDetails() const;
+    void enableWidgets(bool e);
 };
 
 #endif

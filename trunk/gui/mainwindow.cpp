@@ -382,6 +382,9 @@ MainWindow::MainWindow(QWidget *parent)
     connectAction = actionCollection()->addAction("connect");
     connectAction->setText(i18n("Connect"));
 
+    connectionsAction = actionCollection()->addAction("connections");
+    connectionsAction->setText(i18n("Connection"));
+
     refreshAction = actionCollection()->addAction("refresh");
     refreshAction->setText(i18n("Refresh Database"));
 
@@ -545,6 +548,7 @@ MainWindow::MainWindow(QWidget *parent)
     smallControlButtonsAction = new QAction(tr("Small Control Buttons"), this);
     refreshAction = new QAction(tr("Refresh"), this);
     connectAction = new QAction(tr("Connect"), this);
+    connectionsAction = new QAction(tr("Connections"), this);
     prevTrackAction = new QAction(tr("Previous Track"), this);
     nextTrackAction = new QAction(tr("Next Track"), this);
     playPauseTrackAction = new QAction(tr("Play/Pause"), this);
@@ -685,6 +689,9 @@ MainWindow::MainWindow(QWidget *parent)
     expandInterfaceAction->setIcon(Icon("view-media-playlist"));
     refreshAction->setIcon(Icon("view-refresh"));
     connectAction->setIcon(Icon("network-connect"));
+    connectionsAction->setIcon(Icon("network-server"));
+    connectionsAction->setMenu(new QMenu(this));
+    connectionsGroup=new QActionGroup(connectionsAction->menu());
     #ifdef ENABLE_KDE_SUPPORT
     libraryTabAction->setIcon(Icon("cantata-view-media-library"));
     #else
@@ -882,6 +889,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(expandInterfaceAction);
     QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(Icon("configure"));
+    mainMenu->addAction(connectionsAction);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
     mainMenu->addSeparator();
@@ -915,7 +923,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(currentSong()), MPDConnection::self(), SLOT(currentSong()));
     connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
     connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
-    connect(this, SIGNAL(setDetails(const QString &, quint16, const QString &)), MPDConnection::self(), SLOT(setDetails(const QString &, quint16, const QString &)));
+    connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
     connect(&playQueueModel, SIGNAL(statsUpdated(int, int, int, quint32)), this, SLOT(updatePlayQueueStats(int, int, int, quint32)));
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
@@ -948,6 +956,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(storedPlayListUpdated()), MPDConnection::self(), SLOT(listPlaylists()));
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
+    connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
     #ifndef Q_WS_WIN
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
@@ -1142,7 +1151,7 @@ void MainWindow::load(const QList<QUrl> &urls)
     QStringList useable;
     bool haveHttp=HttpServer::self()->isAlive();
     bool alwaysUseHttp=haveHttp && Settings::self()->alwaysUseHttp();
-    bool mpdLocal=MPDConnection::self()->isLocal();
+    bool mpdLocal=MPDConnection::self()->getDetails().isLocal();
     bool allowLocal=haveHttp || mpdLocal;
 
     foreach (QUrl u, urls) {
@@ -1244,6 +1253,13 @@ void MainWindow::showError(const QString &message, bool showActions)
     }
 }
 
+void MainWindow::showInformation(const QString &message)
+{
+    messageWidget->setInformation(message);
+    messageWidget->removeAction(prefAction);
+    messageWidget->removeAction(connectAction);
+}
+
 void MainWindow::messageWidgetVisibility(bool v)
 {
     if (v && !splitter->isVisible()) {
@@ -1273,7 +1289,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         playQueueModel.clear();
         lyricsPage->text->clear();
         serverInfoPage->clear();
-        QString host=MPDConnection::self()->getHost();
         connectedState=CS_Disconnected;
     }
 }
@@ -1322,10 +1337,30 @@ void MainWindow::playQueueItemsSelected(bool s)
     }
 }
 
-void MainWindow::connectToMpd()
+void MainWindow::connectToMpd(const MPDConnectionDetails &details)
 {
     messageWidget->hide();
-    emit setDetails(Settings::self()->connectionHost(), Settings::self()->connectionPort(), Settings::self()->connectionPasswd());
+
+    if (details!=MPDConnection::self()->getDetails()) {
+        libraryPage->clear();
+        albumsPage->clear();
+        folderPage->clear();
+        playlistsPage->clear();
+        playQueueModel.clear();
+        lyricsPage->text->clear();
+        serverInfoPage->clear();
+        #ifndef Q_WS_WIN
+        Dynamic::self()->stop();
+        #endif
+    }
+
+    showInformation(i18n("Connecting to %1").arg(details.description()));
+    emit setDetails(details);
+}
+
+void MainWindow::connectToMpd()
+{
+    connectToMpd(Settings::self()->connectionDetails());
 }
 
 void MainWindow::refresh()
@@ -1335,62 +1370,49 @@ void MainWindow::refresh()
     emit getStats();
 }
 
+#define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
+
 void MainWindow::showPreferencesDialog()
 {
     static bool showing=false;
 
     if (!showing) {
+        if (0!=TagEditor::instanceCount()) {
+            DIALOG_ERROR;
+        }
+        #ifdef ENABLE_DEVICES_SUPPORT
+        if (0!=ActionDialog::instanceCount() || 0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
+            DIALOG_ERROR;
+        }
+        #endif
+        #ifdef ENABLE_REPLAYGAIN_SUPPORT
+        if (0!=RgDialog::instanceCount()) {
+            DIALOG_ERROR;
+        }
+        #endif
+
         showing=true;
         PreferencesDialog pref(this, lyricsPage);
         connect(&pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
+        connect(&pref, SIGNAL(connectTo(const MPDConnectionDetails &)), this, SLOT(connectToMpd(const MPDConnectionDetails &)));
 
         pref.exec();
         showing=false;
     }
 }
 
-void MainWindow::readSettings()
+void MainWindow::checkMpdDir()
 {
-    // Force MPD dir setting to be read, and then checked if it is readable...
-    Settings::self()->mpdDir();
-    Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
-    HttpServer::self()->setPort(Settings::self()->enableHttp() ? Settings::self()->httpPort() : 0);
-    editPlayQueueTagsAction->setEnabled(Settings::self()->canReadMpdDir());
+    editPlayQueueTagsAction->setEnabled(MPDConnection::self()->getDetails().dirReadable);
     organiseFilesAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     deleteSongsAction->setEnabled(editPlayQueueTagsAction->isEnabled());
 //     burnAction->setEnabled(copyToDeviceAction->isEnabled());
-    deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     #endif
-    lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
-    MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
-    MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
-    albumsPage->setView(Settings::self()->albumsView());
-    AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
-
-    #ifdef PHONON_FOUND
-    streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
-    if (phononStream && streamButton->isVisible()) {
-        phononStream->setCurrentSource(Settings::self()->streamUrl());
-    }
-    #endif
-    libraryPage->setView(0==Settings::self()->libraryView());
-    playlistsPage->setView(Settings::self()->playlistsView());
-    streamsPage->setView(0==Settings::self()->streamsView());
-    folderPage->setView(0==Settings::self()->folderView());
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesPage->setView(0==Settings::self()->devicesView());
-    #endif
-    setupTrayIcon();
-    #ifndef Q_WS_WIN
-    toggleDockManager();
-    toggleMpris();
-    #endif
-    autoScrollPlayQueue=Settings::self()->playQueueScroll();
     switch (tabWidget->current_index()) {
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES:   devicesPage->controlActions();    break;
@@ -1410,10 +1432,72 @@ void MainWindow::readSettings()
     case PAGE_SERVER_INFO:                                 break;
     default:                                               break;
     }
+}
+
+void MainWindow::readSettings()
+{
+    checkMpdDir();
+    Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
+    HttpServer::self()->setPort(Settings::self()->enableHttp() ? Settings::self()->httpPort() : 0);
+    #ifdef ENABLE_DEVICES_SUPPORT
+    deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
+    #endif
+    lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
+    MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
+    MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
+    albumsPage->setView(Settings::self()->albumsView());
+    AlbumsModel::self()->setAlbumSort(Settings::self()->albumSort());
+
     #ifdef PHONON_FOUND
     streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
     streamPlayAction->setChecked(Settings::self()->playStream());
+    if (phononStream && streamButton->isVisible()) {
+        phononStream->setCurrentSource(Settings::self()->streamUrl());
+    }
     #endif
+    libraryPage->setView(0==Settings::self()->libraryView());
+    playlistsPage->setView(Settings::self()->playlistsView());
+    streamsPage->setView(0==Settings::self()->streamsView());
+    folderPage->setView(0==Settings::self()->folderView());
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesPage->setView(0==Settings::self()->devicesView());
+    #endif
+    setupTrayIcon();
+    #ifndef Q_WS_WIN
+    toggleDockManager();
+    toggleMpris();
+    #endif
+    autoScrollPlayQueue=Settings::self()->playQueueScroll();
+
+    QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
+    if (connections.count()<2) {
+        connectionsAction->setVisible(false);
+    } else {
+        connectionsAction->setVisible(true);
+        QSet<QString> cfg;
+        QSet<QString> menuItems;
+        QMenu *menu=connectionsAction->menu();
+        foreach (const MPDConnectionDetails &d, connections) {
+            cfg.insert(d.name);
+        }
+
+        foreach (QAction *act, menu->actions()) {
+            menuItems.insert(act->data().toString());
+        }
+
+        if (menuItems!=cfg) {
+            menu->clear();
+            qSort(connections);
+            QString current=Settings::self()->currentConnection();
+            foreach (const MPDConnectionDetails &d, connections) {
+                QAction *act=menu->addAction(d.name.isEmpty() ? i18n("Default") : d.name, this, SLOT(changeConnection()));
+                act->setData(d.name);
+                act->setCheckable(true);
+                act->setChecked(d.name==current);
+                act->setActionGroup(connectionsGroup);
+            }
+        }
+    }
 }
 
 void MainWindow::updateSettings()
@@ -1480,6 +1564,41 @@ void MainWindow::updateSettings()
             if (!img.img.isNull()) {
                 lyricsPage->setImage(img.img);
             }
+        }
+    }
+}
+
+void MainWindow::changeConnection()
+{
+    bool allowChange=true;
+    if (0!=TagEditor::instanceCount()) {
+        allowChange=false;
+    }
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (0!=ActionDialog::instanceCount() || 0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
+        allowChange=false;
+    }
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    if (0!=RgDialog::instanceCount()) {
+        allowChange=false;
+    }
+    #endif
+
+    if (allowChange) {
+        QAction *act=qobject_cast<QAction *>(sender());
+
+        if (act) {
+            Settings::self()->saveCurrentConnection(act->data().toString());
+            connectToMpd();
+        }
+    } else {
+        QString current=Settings::self()->currentConnection();
+        foreach (QAction *act, connectionsAction->menu()->actions()) {
+            if (act->data().toString()==current) {
+                act->setChecked(true);
+            }
+            break;
         }
     }
 }
@@ -2681,8 +2800,6 @@ void MainWindow::editPlayQueueTags()
 {
     editTags(playQueue->selectedSongs(), true);
 }
-
-#define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
 
 void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
 {

@@ -81,7 +81,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     original=songs;
     #ifdef ENABLE_DEVICES_SUPPORT
     if (deviceUdi.isEmpty()) {
-        baseDir=Settings::self()->mpdDir();
+        baseDir=MPDConnection::self()->getDetails().dir;
     } else {
         Device *dev=getDevice(udi, parentWidget());
 
@@ -93,7 +93,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         baseDir=dev->path();
     }
     #else
-    baseDir=Settings::self()->mpdDir();
+    baseDir=MPDConnection::self()->getDetails().dir;
     #endif
     qSort(original);
 

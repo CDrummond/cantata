@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>349</width>
-    <height>239</height>
+    <width>406</width>
+    <height>332</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,77 +18,123 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+    <widget class="QComboBox" name="combo"/>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Details</string>
      </property>
-     <item row="0" column="0">
-      <widget class="BuddyLabel" name="label">
-       <property name="text">
-        <string>Host (or local socket):</string>
-       </property>
-       <property name="buddy">
-        <cstring>hostLineEdit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="LineEdit" name="hostLineEdit"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="BuddyLabel" name="label_2">
-       <property name="text">
-        <string>Port:</string>
-       </property>
-       <property name="buddy">
-        <cstring>portSpinBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSpinBox" name="portSpinBox">
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>66000</number>
-       </property>
-       <property name="value">
-        <number>6600</number>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="BuddyLabel" name="label_3b">
-       <property name="text">
-        <string>Password:</string>
-       </property>
-       <property name="buddy">
-        <cstring>passwordLineEdit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="LineEdit" name="passwordLineEdit">
-       <property name="echoMode">
-        <enum>QLineEdit::Password</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="BuddyLabel" name="label_3">
-       <property name="text">
-        <string>Music folder:</string>
-       </property>
-       <property name="buddy">
-        <cstring>mpdDir</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="DirRequester" name="mpdDir"/>
-     </item>
-    </layout>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0" colspan="4">
+       <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="BuddyLabel" name="hostLabel">
+          <property name="text">
+           <string>Host (or local socket):</string>
+          </property>
+          <property name="buddy">
+           <cstring>host</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="LineEdit" name="host"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="BuddyLabel" name="portLabel">
+          <property name="text">
+           <string>Port:</string>
+          </property>
+          <property name="buddy">
+           <cstring>port</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="port">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>66000</number>
+          </property>
+          <property name="value">
+           <number>6600</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="BuddyLabel" name="passwordLabel">
+          <property name="text">
+           <string>Password:</string>
+          </property>
+          <property name="buddy">
+           <cstring>password</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="LineEdit" name="password">
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="BuddyLabel" name="dirLabel">
+          <property name="text">
+           <string>Music folder:</string>
+          </property>
+          <property name="buddy">
+           <cstring>dir</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="DirRequester" name="dir"/>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="connectButton">
+        <property name="text">
+         <string>Connect</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>165</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="saveButton">
+        <property name="text">
+         <string>Save As</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QPushButton" name="removeButton">
+        <property name="text">
+         <string>Remove</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -159,6 +205,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>lineedit.h</header>
@@ -168,11 +219,6 @@
    <extends>QLineEdit</extends>
    <header>dirrequester.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>BuddyLabel</class>
-   <extends>QLabel</extends>
-   <header>buddylabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

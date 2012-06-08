@@ -353,10 +353,10 @@ QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
     QMimeData *mimeData = new QMimeData();
     QStringList files=filenames(indexes);
     PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, files);
-    if (!Settings::self()->mpdDir().isEmpty()) {
+    if (!MPDConnection::self()->getDetails().dir.isEmpty()) {
         QStringList paths;
         foreach (const QString &f, files) {
-            paths << Settings::self()->mpdDir()+f;
+            paths << MPDConnection::self()->getDetails().dir+f;
         }
         PlayQueueModel::encode(*mimeData, PlayQueueModel::constUriMimeType, paths);
     }

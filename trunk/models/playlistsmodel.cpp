@@ -32,6 +32,7 @@
 #include "itemview.h"
 #include "groupedview.h"
 #include "localize.h"
+#include "utils.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(PlaylistsModel, instance)
@@ -681,30 +682,12 @@ void PlaylistsModel::movedInPlaylist(const QString &name, const QList<quint32> &
     emit updated(parent);
 }
 
-static QString qt_strippedText(QString s)
-{
-    s.remove(QString::fromLatin1("..."));
-    int i = 0;
-    while (i < s.size()) {
-        ++i;
-        if (s.at(i - 1) != QLatin1Char('&')) {
-            continue;
-        }
-
-        if (i < s.size() && s.at(i) == QLatin1Char('&')) {
-            ++i;
-        }
-        s.remove(i - 1, 1);
-    }
-    return s.trimmed();
-}
-
 void PlaylistsModel::emitAddToExisting()
 {
     QAction *act=qobject_cast<QAction *>(sender());
 
     if (act) {
-        emit addToExisting(qt_strippedText(act->text()));
+        emit addToExisting(Utils::strippedText(act->text()));
     }
 }
 

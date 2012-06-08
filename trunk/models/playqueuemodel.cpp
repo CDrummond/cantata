@@ -405,7 +405,7 @@ QStringList PlayQueueModel::mimeTypes() const
     QStringList types;
     types << constMoveMimeType;
     types << constFileNameMimeType;
-    if (MPDConnection::self()->isLocal() || HttpServer::self()->isAlive()) {
+    if (MPDConnection::self()->getDetails().isLocal() || HttpServer::self()->isAlive()) {
         types << constUriMimeType;
     }
     return types;
@@ -483,12 +483,12 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         //Act on moves from the music library and dir view
         addItems(reverseList(decode(*data, constFileNameMimeType)), row, false);
         return true;
-    } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->isLocal()*/) {
+    } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->getDetails().isLocal()*/) {
         QStringList orig=reverseList(decode(*data, constUriMimeType));
         QStringList useable;
         bool haveHttp=HttpServer::self()->isAlive();
         bool alwaysUseHttp=haveHttp && Settings::self()->alwaysUseHttp();
-        bool mpdLocal=MPDConnection::self()->isLocal();
+        bool mpdLocal=MPDConnection::self()->getDetails().isLocal();
         bool allowLocal=haveHttp || mpdLocal;
 
         foreach (QString u, orig) {

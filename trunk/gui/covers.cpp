@@ -25,6 +25,7 @@
 #include "song.h"
 #include "utils.h"
 #include "mpdparseutils.h"
+#include "mpdconnection.h"
 #include "maiaXmlRpcClient.h"
 #include "networkaccessmanager.h"
 #include "network.h"
@@ -74,7 +75,8 @@ void initCoverNames()
 
 static bool canSaveTo(const QString &dir)
 {
-    return !dir.isEmpty() && !Settings::self()->mpdDir().isEmpty() && QDir(Settings::self()->mpdDir()).exists() && dir.startsWith(Settings::self()->mpdDir());
+    QString mpdDir=MPDConnection::self()->getDetails().dir;
+    return !dir.isEmpty() && !mpdDir.isEmpty() && QDir(mpdDir).exists() && dir.startsWith(mpdDir);
 }
 
 static const QString typeFromRaw(const QByteArray &raw)
@@ -96,7 +98,7 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
 
         QFile f(filePrefix+mimeType);
         if (f.open(QIODevice::WriteOnly) && raw.size()==f.write(raw)) {
-            if (!Settings::self()->mpdDir().isEmpty() && filePrefix.startsWith(Settings::self()->mpdDir())) {
+            if (!MPDConnection::self()->getDetails().dir.isEmpty() && filePrefix.startsWith(MPDConnection::self()->getDetails().dir)) {
                 Utils::setFilePerms(filePrefix+mimeType);
             }
             return filePrefix+mimeType;
@@ -109,7 +111,7 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
         }
 
         if (img.save(filePrefix+extension)) {
-            if (!Settings::self()->mpdDir().isEmpty() && filePrefix.startsWith(Settings::self()->mpdDir())) {
+            if (!MPDConnection::self()->getDetails().dir.isEmpty() && filePrefix.startsWith(MPDConnection::self()->getDetails().dir)) {
                 Utils::setFilePerms(filePrefix+mimeType);
             }
             return filePrefix+extension;
@@ -432,9 +434,9 @@ Covers::Image Covers::getImage(const Song &song)
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
     if (!songFile.isEmpty() &&
-        (haveAbsPath || !Settings::self()->mpdDir().isEmpty())) {
-        dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : Settings::self()->mpdDir())+songFile
-                                       : MPDParseUtils::getDir((haveAbsPath ? QString() : Settings::self()->mpdDir())+songFile);
+        (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty())) {
+        dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
+                                       : MPDParseUtils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
         initCoverNames();
         foreach (const QString &fileName, coverFileNames) {
             if (QFile::exists(dirName+fileName)) {
@@ -563,9 +565,9 @@ void Covers::download(const Song &song)
     bool haveAbsPath=song.file.startsWith('/');
     QString dirName;
 
-    if (haveAbsPath || !Settings::self()->mpdDir().isEmpty()) {
-        dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file
-                                        : MPDParseUtils::getDir((haveAbsPath ? QString() : Settings::self()->mpdDir())+song.file);
+    if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
+        dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
+                                        : MPDParseUtils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
     }
 
     Job job(song, dirName);

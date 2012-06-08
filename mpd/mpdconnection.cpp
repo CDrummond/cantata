@@ -904,14 +904,9 @@ void MPDConnection::outputs()
     }
 }
 
-void MPDConnection::enableOutput(int id)
+void MPDConnection::enableOutput(int id, bool enable)
 {
-    sendCommand("enableoutput "+QByteArray::number(id));
-}
-
-void MPDConnection::disableOutput(int id)
-{
-    sendCommand("disableoutput "+QByteArray::number(id));
+    sendCommand((enable ? "enableoutput " : "disableoutput ")+QByteArray::number(id));
 }
 
 /*

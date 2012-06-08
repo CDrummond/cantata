@@ -204,8 +204,7 @@ public Q_SLOTS:
 
     // Output
     void outputs();
-    void enableOutput(int id);
-    void disableOutput(int id);
+    void enableOutput(int id, bool enable);
 
     // Miscellaneous
     void getStats();

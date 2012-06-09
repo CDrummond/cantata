@@ -159,7 +159,7 @@ void ServerSettings::remove()
     QString name=combo->itemData(index).toString();
     if (combo->count()>1 && MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Delete %1?").arg(name))) {
         bool isLast=index==(combo->count()-1);
-        Settings::self()->removeConnectionDetails(combo->itemText(index));
+        Settings::self()->removeConnectionDetails(combo->itemData(index).toString());
         combo->removeItem(index);
         combo->setCurrentIndex(isLast ? index-1 : index);
         showDetails(combo->currentIndex());

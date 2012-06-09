@@ -1368,6 +1368,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         #endif
         showInformation(i18n("Connecting to %1").arg(details.description()));
         outputsAction->setVisible(false);
+        connectedState=CS_Disconnected;
         emit setDetails(details);
     }
 }

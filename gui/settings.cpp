@@ -175,6 +175,7 @@ QString Settings::currentConnection()
     return GET_STRING("currentConnection", QString());
 }
 
+#include <QtCore/QDebug>
 MPDConnectionDetails Settings::connectionDetails(const QString &name)
 {
     MPDConnectionDetails details;
@@ -210,7 +211,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
                 details.password=mpdDefaults.passwd;
             }
             #else
-            cfg.beginGroup(name);
+            cfg.beginGroup(n);
             details.hostname=GET_STRING("host", name.isEmpty() ? mpdDefaults.host : QString());
             details.port=GET_INT("port", name.isEmpty() ? mpdDefaults.port : 6600);
             details.dir=MPDParseUtils::fixPath(GET_STRING("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));

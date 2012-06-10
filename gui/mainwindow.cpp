@@ -364,8 +364,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     #ifndef ENABLE_KDE_SUPPORT
     setWindowIcon(QIcon(":/icons/cantata.svg"));
-    setWindowTitle("Cantata");
-
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
     #endif
 
@@ -1557,6 +1555,7 @@ void MainWindow::readSettings()
     toggleMpris();
     #endif
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
+    updateWindowTitle();
 }
 
 void MainWindow::updateSettings()
@@ -1901,6 +1900,45 @@ bool MainWindow::currentIsStream() const
     return playQueueModel.rowCount() && -1!=current.id && current.isStream();
 }
 
+void MainWindow::updateWindowTitle()
+{
+    MPDStatus * const status = MPDStatus::self();
+    bool stopped=MPDState_Stopped==status->state() || MPDState_Inactive==status->state();
+    bool multipleConnections=connectionsAction->isVisible();
+    QString connection=MPDConnection::self()->getDetails().name;
+
+    if (multipleConnections && connection.isEmpty()) {
+        connection=i18n("Default");
+    }
+    if (stopped) {
+        setWindowTitle(multipleConnections ? i18n("Cantata (%1)").arg(connection) : "Cantata");
+    } else if (current.artist.isEmpty()) {
+        if (trackLabel->text().isEmpty()) {
+            setWindowTitle(multipleConnections ? i18n("Cantata (%1)").arg(connection) : "Cantata");
+        } else {
+            #ifdef ENABLE_KDE_SUPPORT
+            setWindowTitle(multipleConnections
+                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->text(), connection)
+                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->text()));
+            #else
+            setWindowTitle(multipleConnections
+                            ? tr("%1 :: Cantata (%2)").arg(trackLabel->text()).arg(connection)
+                            : tr("%1 :: Cantata").arg(trackLabel->text()));
+            #endif
+        }
+    } else {
+        #ifdef ENABLE_KDE_SUPPORT
+        setWindowTitle(multipleConnections
+                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)", trackLabel->text(), current.artist,connection)
+                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->text(), current.artist));
+        #else
+        setWindowTitle(multipleConnections
+                        ? tr("%1 - %2 :: Cantata (%3)").arg(trackLabel->text()).arg(current.artist).arg(connection)
+                        : tr("%1 - %2 :: Cantata").arg(trackLabel->text()).arg(current.artist));
+        #endif
+    }
+}
+
 void MainWindow::updateCurrentSong(const Song &song)
 {
     if (fadeStop && StopState_None!=stopState) {
@@ -1950,23 +1988,7 @@ void MainWindow::updateCurrentSong(const Song &song)
                           !usingProxy && autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
     scrollPlayQueue();
 
-    if (current.artist.isEmpty()) {
-        if (trackLabel->text().isEmpty()) {
-            setWindowTitle("Cantata");
-        } else {
-            #ifdef ENABLE_KDE_SUPPORT
-            setWindowTitle(i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->text()));
-            #else
-            setWindowTitle(tr("%1 :: Cantata").arg(trackLabel->text()));
-            #endif
-        }
-    } else {
-        #ifdef ENABLE_KDE_SUPPORT
-        setWindowTitle(i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->text(), current.artist));
-        #else
-        setWindowTitle(tr("%1 - %2 :: Cantata").arg(trackLabel->text()).arg(current.artist));
-        #endif
-    }
+    updateWindowTitle();
     if (PAGE_LYRICS==tabWidget->current_index()) {
         lyricsPage->update(song);
     } else {
@@ -2165,8 +2187,8 @@ void MainWindow::updateStatus()
             current=Song();
             coverWidget->update(current);
         }
-        setWindowTitle("Cantata");
         current.id=0;
+        updateWindowTitle();
 
         if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT

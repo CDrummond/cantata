@@ -2128,8 +2128,7 @@ void MainWindow::updateStatus()
     consumePlayQueueAction->setChecked(status->consume());
 
     QString timeElapsedFormattedString;
-
-    if (!currentIsStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal())) {
+    if (status->timeElapsed()<172800 && (!currentIsStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal()))) {
         if (status->state() == MPDState_Stopped || status->state() == MPDState_Inactive) {
             timeElapsedFormattedString = "0:00 / 0:00";
         } else {
@@ -2139,7 +2138,6 @@ void MainWindow::updateStatus()
             songTime = status->timeTotal();
         }
     }
-
     songTimeElapsedLabel->setText(timeElapsedFormattedString);
 
     playQueueModel.setState(status->state());
@@ -2359,13 +2357,14 @@ void MainWindow::updatePlayQueueStats(int artists, int albums, int songs, quint3
 
 void MainWindow::updatePosition()
 {
-    QString timeElapsedFormattedString;
-
-    if (positionSlider->value() != positionSlider->maximum()) {
-        timeElapsedFormattedString += Song::formattedTime(positionSlider->value());
-        timeElapsedFormattedString += " / ";
-        timeElapsedFormattedString += Song::formattedTime(songTime);
-        songTimeElapsedLabel->setText(timeElapsedFormattedString);
+    if (positionSlider->value()<172800) {
+        QString timeElapsedFormattedString;
+        if (positionSlider->value() != positionSlider->maximum()) {
+            timeElapsedFormattedString += Song::formattedTime(positionSlider->value());
+            timeElapsedFormattedString += " / ";
+            timeElapsedFormattedString += Song::formattedTime(songTime);
+            songTimeElapsedLabel->setText(timeElapsedFormattedString);
+        }
     }
 }
 

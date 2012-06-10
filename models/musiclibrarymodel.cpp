@@ -61,7 +61,7 @@ MusicLibraryModel * MusicLibraryModel::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static MusicLibraryModel *instance=0;;
+    static MusicLibraryModel *instance=0;
     if(!instance) {
         instance=new MusicLibraryModel;
     }

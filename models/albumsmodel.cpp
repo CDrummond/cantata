@@ -56,7 +56,7 @@ AlbumsModel * AlbumsModel::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static AlbumsModel *instance=0;;
+    static AlbumsModel *instance=0;
     if(!instance) {
         instance=new AlbumsModel;
     }

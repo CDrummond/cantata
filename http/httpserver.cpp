@@ -37,7 +37,7 @@ HttpServer * HttpServer::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static HttpServer *instance=0;;
+    static HttpServer *instance=0;
     if(!instance) {
         instance=new HttpServer;
     }

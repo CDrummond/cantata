@@ -151,7 +151,7 @@ void Song::setKey()
 
 bool Song::isUnknown() const
 {
-    QString unknown=i18n("Unknown");;
+    QString unknown=i18n("Unknown");
 
     return (artist.isEmpty() || artist==unknown) && (album.isEmpty() || album==unknown) && (title.isEmpty() || title==unknown);
 }

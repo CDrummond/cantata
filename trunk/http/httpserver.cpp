@@ -25,6 +25,7 @@
 #include "httpsocket.h"
 #include "utils.h"
 #include "tags.h"
+#include "settings.h"
 #include <QtCore/QUrl>
 #include <QtCore/QThread>
 #ifdef ENABLE_KDE_SUPPORT
@@ -93,12 +94,12 @@ bool HttpServer::isAlive() const
 
 QString HttpServer::address() const
 {
-    return QLatin1String("http://127.0.0.1:")+QString::number(socket->port());
+    return QLatin1String("http://127.0.0.1:")+QString::number(socket ? socket->port() : Settings::self()->httpPort());
 }
 
 bool HttpServer::isOurs(const QString &url) const
 {
-    return url.startsWith(address()+"/");
+    return isAlive() ? url.startsWith(address()+"/") : false;
 }
 
 QByteArray HttpServer::encodeUrl(const Song &s) const

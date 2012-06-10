@@ -57,7 +57,7 @@ struct MPDStatusValues {
         , channels(0)
         , updatingDb(0) {
     }
-    quint8 volume;
+    qint8 volume;
     bool consume;
     bool repeat;
     bool single;
@@ -85,7 +85,7 @@ class MPDStatus : public QObject
 public:
     static MPDStatus * self();
 
-    quint8 volume() const {
+    qint8 volume() const {
         return values.volume;
     }
     bool consume() const {

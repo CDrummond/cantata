@@ -762,7 +762,9 @@ void MPDConnection::setSeekId(quint32 songId, quint32 time)
 
 void MPDConnection::setVolume(int vol)
 {
-    sendCommand("setvol "+QByteArray::number(vol));
+    if (vol>=0) {
+        sendCommand("setvol "+QByteArray::number(vol));
+    }
 }
 
 void MPDConnection::stopPlaying()

@@ -1148,7 +1148,7 @@ MainWindow::~MainWindow()
         Dynamic::self()->stop();
     }
     #endif
-    if (Settings::self()->stopOnExit() || (fadeStop && StopState_Stopping==stopState)) {
+    if (Settings::self()->stopOnExit() || (fadeWhenStop() && StopState_Stopping==stopState)) {
         emit stop();
         Utils::sleep();
     }
@@ -1723,7 +1723,7 @@ void MainWindow::positionSliderReleased()
 
 void MainWindow::stopTrack()
 {
-    if (!fadeStop || MPDState_Paused==MPDStatus::self()->state() || 0==volume) {
+    if (!fadeWhenStop() || MPDState_Paused==MPDStatus::self()->state() || 0==volume) {
         emit stop();
     }
     stopTrackAction->setEnabled(false);
@@ -1734,7 +1734,7 @@ void MainWindow::stopTrack()
 
 void MainWindow::startVolumeFade(/*bool stop*/)
 {
-    if (!fadeStop) {
+    if (!fadeWhenStop()) {
         return;
     }
 
@@ -1781,7 +1781,7 @@ void MainWindow::playPauseTrack()
     MPDStatus * const status = MPDStatus::self();
 
     if (MPDState_Playing==status->state()) {
-        /*if (fadeStop) {
+        /*if (fadeWhenStop()) {
             startVolumeFade(false);
         } else*/ {
             emit pause(true);
@@ -1941,7 +1941,7 @@ void MainWindow::updateWindowTitle()
 
 void MainWindow::updateCurrentSong(const Song &song)
 {
-    if (fadeStop && StopState_None!=stopState) {
+    if (fadeWhenStop() && StopState_None!=stopState) {
         if (StopState_Stopping==stopState) {
             emit stop();
         } /*else if (StopState_Pausing==stopState) {
@@ -2107,11 +2107,20 @@ void MainWindow::updateStatus()
 
     if (!stopState) {
         volume=status->volume();
-        volumeButton->setToolTip(i18n("Volume %1%").arg(volume));
-        volumeControl->setToolTip(i18n("Volume %1%").arg(volume));
-        volumeControl->setValue(volume);
 
-        if (0==volume) {
+        if (volume<0) {
+            volumeButton->setEnabled(false);
+            volumeButton->setToolTip(i18n("Volume Disabled"));
+            volumeControl->setToolTip(i18n("Volume Disabled"));
+            volumeControl->setValue(0);
+        } else {
+            volumeButton->setEnabled(true);
+            volumeButton->setToolTip(i18n("Volume %1%").arg(volume));
+            volumeControl->setToolTip(i18n("Volume %1%").arg(volume));
+            volumeControl->setValue(volume);
+        }
+
+        if (volume<=0) {
             volumeButton->setIcon(Icon("audio-volume-muted"));
         } else if (volume<=33) {
             volumeButton->setIcon(Icon("audio-volume-low"));
@@ -2774,6 +2783,11 @@ void MainWindow::focusTabSearch()
         devicesPage->focusSearch();
     }
     #endif
+}
+
+bool MainWindow::fadeWhenStop() const
+{
+    return fadeStop && volumeButton->isEnabled();
 }
 
 void MainWindow::expandAll()

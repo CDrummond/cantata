@@ -583,87 +583,82 @@ void MPDConnection::playListChanges()
 
     QByteArray data = "plchangesposid ";
     data += QByteArray::number(lastUpdatePlayQueueVersion);
+    Response status=sendCommand("status"); // We need an updated status so as to detect deletes at end of list...
     Response response=sendCommand(data);
-    if (response.ok) {
-        // We need an updated status so as to detect deletes at end of list...
-        Response status=sendCommand("status");
-        if (status.ok) {
-            MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
-            lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=sv.playlist;
-            emit statusUpdated(sv);
-            QList<MPDParseUtils::IdPos> changes=MPDParseUtils::parseChanges(response.data);
-            if (!changes.isEmpty()) {
-                bool first=true;
-//                 quint32 firstPos=0;
-                QList<Song> songs;
-                QList<qint32> ids;
-                QSet<qint32> prevIds=playQueueIds.toSet();
-                QSet<qint32> strmIds;
+    if (response.ok && status.ok) {
+        MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
+        lastUpdatePlayQueueVersion=lastStatusPlayQueueVersion=sv.playlist;
+        emit statusUpdated(sv);
+        QList<MPDParseUtils::IdPos> changes=MPDParseUtils::parseChanges(response.data);
+        if (!changes.isEmpty()) {
+            bool first=true;
+            quint32 firstPos=0;
+            QList<Song> songs;
+            QList<qint32> ids;
+            QSet<qint32> prevIds=playQueueIds.toSet();
+            QSet<qint32> strmIds;
 
-                foreach (const MPDParseUtils::IdPos &idp, changes) {
-                    if (first) {
-                        first=false;
-//                         firstPos=idp.pos;
-                        if (idp.pos!=0) {
-                            for (quint32 i=0; i<idp.pos; ++i) {
-                                Song s;
-                                s.id=playQueueIds.at(i);
-                                songs.append(s);
-                                ids.append(s.id);
-                                if (streamIds.contains(s.id)) {
-                                    strmIds.insert(s.id);
-                                }
+            foreach (const MPDParseUtils::IdPos &idp, changes) {
+                if (first) {
+                    first=false;
+                    firstPos=idp.pos;
+                    if (idp.pos!=0) {
+                        for (quint32 i=0; i<idp.pos; ++i) {
+                            Song s;
+                            s.id=playQueueIds.at(i);
+                            songs.append(s);
+                            ids.append(s.id);
+                            if (streamIds.contains(s.id)) {
+                                strmIds.insert(s.id);
                             }
                         }
                     }
-
-                    if (prevIds.contains(idp.id) && !streamIds.contains(idp.id)) {
-                        Song s;
-                        s.id=idp.id;
-//                         s.pos=idp.pos;
-                        songs.append(s);
-                    } else {
-                        // New song!
-                        data = "playlistinfo ";
-                        data += QByteArray::number(idp.pos);
-                        response=sendCommand(data);
-                        if (!response.ok) {
-                            playListInfo();
-                            return;
-                        }
-                        Song s=MPDParseUtils::parseSong(response.data);
-                        s.setKey();
-                        s.id=idp.id;
-//                         s.pos=idp.pos;
-                        songs.append(s);
-                        if (s.isStream() && !s.isCantataStream()) {
-                            strmIds.insert(s.id);
-                        }
-                    }
-                    ids.append(idp.id);
                 }
 
-                #if 0 // Remove, as causes oddities when dynamizer is running - I think becase plchangesposid/status are two separate calls.
-                // Dont think this section is ever called, but leave here to be safe!!!
-                // For some reason if we have 10 songs in our playlist and we move pos 2 to pos 1, MPD sends all ids from pos 1 onwards
-                if (firstPos+changes.size()<sv.playlistLength && (sv.playlistLength<=(unsigned int)playQueueIds.length())) {
-                    for (quint32 i=firstPos+changes.size(); i<sv.playlistLength; ++i) {
-                        Song s;
-                        s.id=playQueueIds.at(i);
-                        songs.append(s);
-                        ids.append(s.id);
-                        if (s.isStream() && !s.isCantataStream()) {
-                            strmIds.insert(s.id);
-                        }
+                if (prevIds.contains(idp.id) && !streamIds.contains(idp.id)) {
+                    Song s;
+                    s.id=idp.id;
+//                     s.pos=idp.pos;
+                    songs.append(s);
+                } else {
+                    // New song!
+                    data = "playlistinfo ";
+                    data += QByteArray::number(idp.pos);
+                    response=sendCommand(data);
+                    if (!response.ok) {
+                        playListInfo();
+                        return;
+                    }
+                    Song s=MPDParseUtils::parseSong(response.data);
+                    s.setKey();
+                    s.id=idp.id;
+//                     s.pos=idp.pos;
+                    songs.append(s);
+                    if (s.isStream() && !s.isCantataStream()) {
+                        strmIds.insert(s.id);
                     }
                 }
-                #endif
-
-                playQueueIds=ids;
-                streamIds=strmIds;
-                emit playlistUpdated(songs);
-                return;
+                ids.append(idp.id);
             }
+
+            // Dont think this section is ever called, but leave here to be safe!!!
+            // For some reason if we have 10 songs in our playlist and we move pos 2 to pos 1, MPD sends all ids from pos 1 onwards
+            if (firstPos+changes.size()<sv.playlistLength && (sv.playlistLength<=(unsigned int)playQueueIds.length())) {
+                for (quint32 i=firstPos+changes.size(); i<sv.playlistLength; ++i) {
+                    Song s;
+                    s.id=playQueueIds.at(i);
+                    songs.append(s);
+                    ids.append(s.id);
+                    if (s.isStream() && !s.isCantataStream()) {
+                        strmIds.insert(s.id);
+                    }
+                }
+            }
+
+            playQueueIds=ids;
+            streamIds=strmIds;
+            emit playlistUpdated(songs);
+            return;
         }
     }
 

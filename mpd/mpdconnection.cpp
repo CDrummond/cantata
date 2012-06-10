@@ -402,6 +402,13 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 /*
  * Playlist commands
  */
+static bool isPlaylist(const QString &file)
+{
+    return file.endsWith("asx", Qt::CaseInsensitive) || file.endsWith("cue", Qt::CaseInsensitive) ||
+           file.endsWith("m3u", Qt::CaseInsensitive) || file.endsWith("pls", Qt::CaseInsensitive) ||
+           file.endsWith("xspf", Qt::CaseInsensitive);
+}
+
 void MPDConnection::add(const QStringList &files, bool replace)
 {
     if (replace) {
@@ -411,10 +418,7 @@ void MPDConnection::add(const QStringList &files, bool replace)
 
     QByteArray send = "command_list_begin\n";
     for (int i = 0; i < files.size(); i++) {
-        QString ext = QFileInfo(files.at(i)).suffix();
-        if (!QString::compare(ext, "asx", Qt::CaseInsensitive) || !QString::compare(ext, "cue", Qt::CaseInsensitive) ||
-            !QString::compare(ext, "m3u", Qt::CaseInsensitive) || !QString::compare(ext, "pls", Qt::CaseInsensitive) ||
-            !QString::compare(ext, "xspf", Qt::CaseInsensitive)) {
+        if (isPlaylist(files.at(i))) {
             send+="load ";
         } else {
             send += "add ";
@@ -452,15 +456,23 @@ void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size, b
 
     QByteArray send = "command_list_begin\n";
     int cur_size = size;
+    bool havePlaylist=false;
     for (int i = 0; i < files.size(); i++) {
-        send += "add ";
+        if (isPlaylist(files.at(i))) {
+            send+="load ";
+            havePlaylist=true;
+        } else {
+            send += "add ";
+        }
         send += encodeName(files.at(i));
         send += "\n";
-        send += "move ";
-        send += QByteArray::number(cur_size);
-        send += " ";
-        send += QByteArray::number(pos);
-        send += "\n";
+        if (!havePlaylist) {
+            send += "move ";
+            send += QByteArray::number(cur_size);
+            send += " ";
+            send += QByteArray::number(pos);
+            send += "\n";
+        }
         cur_size++;
     }
 

@@ -340,6 +340,7 @@ private:
     void addToPlayQueue(bool replace);
     void editTags(const QList<Song> &songs, bool isPlayQueue);
     bool currentIsStream() const;
+    void updateWindowTitle();
     void startVolumeFade(/*bool stop*/);
     void stopVolumeFade();
 //     void callK3b(const QString &type);

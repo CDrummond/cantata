@@ -33,6 +33,7 @@
 #include "utils.h"
 #include "messagebox.h"
 #include "localize.h"
+#include "tags.h"
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -290,6 +291,7 @@ void LyricsPage::update(const Song &song, bool force)
 
     if (force || songChanged) {
         setMode(Mode_Blank);
+        controls->setVisible(true);
         currentRequest++;
         currentSong=song;
 
@@ -308,8 +310,24 @@ void LyricsPage::update(const Song &song, bool force)
         }
 
         if (!MPDConnection::self()->getDetails().dir.isEmpty() && !song.file.isEmpty() && !song.isStream()) {
+            QString songFile=song.file;
+
+            if (song.isCantataStream()) {
+                QUrl u(songFile);
+                songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
+            }
+
+            QString tagLyrics=Tags::readLyrics(MPDConnection::self()->getDetails().dir+songFile);
+
+            if (!tagLyrics.isEmpty()) {
+                text->setText(tagLyrics);
+                setMode(Mode_Display);
+                controls->setVisible(false);
+                return;
+            }
+
             // Check for MPD file...
-            QString mpdLyrics=changeExt(MPDConnection::self()->getDetails().dir+song.file, constExtension);
+            QString mpdLyrics=changeExt(MPDConnection::self()->getDetails().dir+songFile, constExtension);
 
 //             if (force && QFile::exists(mpdLyrics)) {
 //                 QFile::remove(mpdLyrics);

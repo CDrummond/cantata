@@ -71,6 +71,7 @@
 #include <taglib/textidentificationframe.h>
 #include <taglib/relativevolumeframe.h>
 #include <taglib/attachedpictureframe.h>
+#include <taglib/unsynchronizedlyricsframe.h>
 #ifdef TAGLIB_EXTRAS_FOUND
 #include <taglib-extras/audiblefiletyperesolver.h>
 #include <taglib-extras/realmediafiletyperesolver.h>
@@ -255,7 +256,7 @@ static void setRva2Tag(TagLib::ID3v2::Tag* tag, const std::string &tagName, doub
 }
 // -- taken from rgtag.cpp from libebur128 -- END
 
-static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, QImage *img)
+static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, QImage *img, QString *lyrics)
 {
     if (song) {
         const TagLib::ID3v2::FrameList &albumArtist = tag->frameListMap()["TPE2"];
@@ -303,19 +304,40 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, Q
         if (!frames.isEmpty()) {
             TagLib::ID3v2::FrameList::ConstIterator it = frames.begin();
             TagLib::ID3v2::FrameList::ConstIterator end = frames.end();
+            bool found = false;
 
-            for (; it != end; ++it) {
+            for (; it != end && !found; ++it) {
                 TagLib::ID3v2::AttachedPictureFrame *pic=dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(*it);
                 if (pic && TagLib::ID3v2::AttachedPictureFrame::FrontCover==pic->type()) {
                     img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
                     if (!img->isNull()) {
-                        return;
+                        found=true;
                     }
                 }
             }
-            // Just use first image!
-            TagLib::ID3v2::AttachedPictureFrame *pic=static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
-            img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
+
+            if (!found) {
+                // Just use first image!
+                TagLib::ID3v2::AttachedPictureFrame *pic=static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
+                img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
+            }
+        }
+    }
+
+    if (lyrics) {
+        const TagLib::ID3v2::FrameList &frames = tag->frameList("USLT");
+
+        if (!frames.isEmpty()) {
+            TagLib::ID3v2::FrameList::ConstIterator it = frames.begin();
+            TagLib::ID3v2::FrameList::ConstIterator end = frames.end();
+            bool found = false;
+            for (; it != end && !found; ++it) {
+                TagLib::ID3v2::UnsynchronizedLyricsFrame *l=dynamic_cast<TagLib::ID3v2::UnsynchronizedLyricsFrame*>(*it);
+                if (l /*&& !l->language().isEmpty() && 0==strcmp(l->language().data(), lyricsLang)*/) {
+                    *lyrics=tString2QString(l->toString());
+                    found=true;
+                }
+            }
         }
     }
 }
@@ -692,7 +714,7 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
 }
 #endif
 
-static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, QImage *img=0)
+static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, QImage *img, QString *lyrics)
 {
     TagLib::Tag *tag=fileref.tag();
     if (song) {
@@ -706,7 +728,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
 
     if (TagLib::MPEG::File *file = dynamic_cast< TagLib::MPEG::File * >(fileref.file())) {
         if (file->ID3v2Tag()) {
-            readID3v2Tags(file->ID3v2Tag(), song, rg, img);
+            readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics);
         } else if (file->APETag()) {
             readAPETags(file->APETag(), song, rg);
 //         } else if (file->ID3v1Tag()) {
@@ -733,7 +755,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
             }
             #endif
         } else if (file->ID3v2Tag()) {
-            readID3v2Tags(file->ID3v2Tag(), song, rg, img);
+            readID3v2Tags(file->ID3v2Tag(), song, rg, img, lyrics);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
@@ -752,11 +774,11 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
         }
     } else if (TagLib::RIFF::AIFF::File *file = dynamic_cast< TagLib::RIFF::AIFF::File * >(fileref.file())) {
         if (file->tag()) {
-            readID3v2Tags(file->tag(), song, rg, img);
+            readID3v2Tags(file->tag(), song, rg, img, lyrics);
         }
     } else if (TagLib::RIFF::WAV::File *file = dynamic_cast< TagLib::RIFF::WAV::File * >(fileref.file())) {
         if (file->tag()) {
-            readID3v2Tags(file->tag(), song, rg, img);
+            readID3v2Tags(file->tag(), song, rg, img, lyrics);
         }
     #ifdef TAGLIB_ASF_FOUND
     } else if (TagLib::ASF::File *file = dynamic_cast< TagLib::ASF::File * >(fileref.file())) {
@@ -767,7 +789,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, 
     #endif
     } else if (TagLib::TrueAudio::File *file = dynamic_cast< TagLib::TrueAudio::File * >(fileref.file())) {
         if (file->ID3v2Tag(false)) {
-            readID3v2Tags(file->ID3v2Tag(false), song, rg, img);
+            readID3v2Tags(file->ID3v2Tag(false), song, rg, img, lyrics);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
@@ -901,7 +923,7 @@ Song read(const QString &fileName)
         return song;
     }
 
-    readTags(fileref, &song, 0);
+    readTags(fileref, &song, 0, 0, 0);
     song.file=fileName;
     song.time=fileref.audioProperties() ? fileref.audioProperties()->length() : 0;
     return song;
@@ -919,8 +941,24 @@ QImage readImage(const QString &fileName)
         return img;
     }
 
-    readTags(fileref, 0, 0, &img);
+    readTags(fileref, 0, 0, &img, 0);
     return img;
+}
+
+QString readLyrics(const QString &fileName)
+{
+    QMutexLocker locker(&mutex);
+    ensureFileTypeResolvers();
+
+    QString lyrics;
+    TagLib::FileRef fileref = getFileRef(fileName);
+
+    if (fileref.isNull()) {
+        return lyrics;
+    }
+
+    readTags(fileref, 0, 0, 0, &lyrics);
+    return lyrics;
 }
 
 Update updateArtistAndTitle(const QString &fileName, const Song &song)
@@ -983,7 +1021,7 @@ ReplayGain readReplaygain(const QString &fileName)
     }
 
     ReplayGain rg;
-    readTags(fileref, 0, &rg);
+    readTags(fileref, 0, &rg, 0, 0);
     return rg;
 }
 

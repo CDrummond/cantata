@@ -30,6 +30,7 @@
 #include "networkaccessmanager.h"
 #include "network.h"
 #include "settings.h"
+#include "tags.h"
 #include <QtCore/QFile>
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QThread>
@@ -423,6 +424,7 @@ void Covers::clearDummyCache(const Song &song)
     }
 }
 
+#include <QtCore/QDebug>
 Covers::Image Covers::getImage(const Song &song)
 {
     QString dirName;
@@ -454,6 +456,12 @@ Covers::Image Covers::getImage(const Song &song)
             if (!img.isNull()) {
                 return Image(img, dirName+fileName);
             }
+        }
+
+        QImage img(Tags::readImage(haveAbsPath ? song.file : (MPDConnection::self()->getDetails().dir+songFile)));
+        if (!img.isNull()) {
+            qWarning() << "USING TAG IMAGE" << song.file;
+            return Image(img, QString());
         }
     }
 

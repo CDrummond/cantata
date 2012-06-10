@@ -70,6 +70,7 @@
 #include <taglib/xiphcomment.h>
 #include <taglib/textidentificationframe.h>
 #include <taglib/relativevolumeframe.h>
+#include <taglib/attachedpictureframe.h>
 #ifdef TAGLIB_EXTRAS_FOUND
 #include <taglib-extras/audiblefiletyperesolver.h>
 #include <taglib-extras/realmediafiletyperesolver.h>
@@ -254,7 +255,7 @@ static void setRva2Tag(TagLib::ID3v2::Tag* tag, const std::string &tagName, doub
 }
 // -- taken from rgtag.cpp from libebur128 -- END
 
-static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg)
+static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg, QImage *img)
 {
     if (song) {
         const TagLib::ID3v2::FrameList &albumArtist = tag->frameListMap()["TPE2"];
@@ -293,6 +294,28 @@ static void readID3v2Tags(TagLib::ID3v2::Tag *tag, Song *song, ReplayGain *rg)
                     found|=8;
                 }
             }
+        }
+    }
+
+    if (img) {
+        const TagLib::ID3v2::FrameList &frames = tag->frameList("APIC");
+
+        if (!frames.isEmpty()) {
+            TagLib::ID3v2::FrameList::ConstIterator it = frames.begin();
+            TagLib::ID3v2::FrameList::ConstIterator end = frames.end();
+
+            for (; it != end; ++it) {
+                TagLib::ID3v2::AttachedPictureFrame *pic=dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(*it);
+                if (pic && TagLib::ID3v2::AttachedPictureFrame::FrontCover==pic->type()) {
+                    img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
+                    if (!img->isNull()) {
+                        return;
+                    }
+                }
+            }
+            // Just use first image!
+            TagLib::ID3v2::AttachedPictureFrame *pic=static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
+            img->loadFromData((const uchar *) pic->picture().data(), pic->picture().size());
         }
     }
 }
@@ -442,7 +465,7 @@ static TagLib::String readVorbisTag(TagLib::Ogg::XiphComment *tag, const char *f
     return TagLib::String();
 }
 
-static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg)
+static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, ReplayGain *rg, QImage *img)
 {
     if (song) {
         TagLib::String str=readVorbisTag(tag, "ALBUMARTIST");
@@ -462,7 +485,31 @@ static void readVorbisCommentTags(TagLib::Ogg::XiphComment *tag, Song *song, Rep
         rg->albumGain=parseRgString(readVorbisTag(tag, "REPLAYGAIN_ALBUM_GAIN"));
         rg->albumPeak=parseRgString(readVorbisTag(tag, "REPLAYGAIN_ALBUM_PEAK"));
     }
+
+    if (img) {
+        TagLib::Ogg::FieldListMap map = tag->fieldListMap();
+        // Ogg lacks a definitive standard for embedding cover art, but it seems
+        // b64 encoding a field called COVERART is the general convention
+        if (map.contains("COVERART")) {
+            QByteArray data=map["COVERART"].toString().toCString();
+            img->loadFromData(QByteArray::fromBase64(data));
+            if (img->isNull()) {
+                img->loadFromData(data); // not base64??
+            }
+        }
+    }
 }
+
+#if (TAGLIB_MAJOR_VERSION > 1) || (TAGLIB_MAJOR_VERSION == 1 && TAGLIB_MINOR_VERSION >= 7)
+static void readFlacPicture(const TagLib::List<TagLib::FLAC::Picture*> &pics, QImage *img)
+{
+    if (!pics.isEmpty() && 1==pics.size()) {
+        TagLib::FLAC::Picture *picture = *(pics.begin());
+        QByteArray data(picture->data().data(), picture->data().size());
+        img->loadFromData(data);
+    }
+}
+#endif
 
 static bool updateVorbisCommentTag(TagLib::Ogg::XiphComment *tag, const char *tagName, const QString &value)
 {
@@ -509,7 +556,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
 }
 
 #ifdef TAGLIB_MP4_FOUND
-static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg)
+static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg, QImage *img)
 {
     TagLib::MP4::ItemListMap &map = tag->itemListMap();
 
@@ -533,6 +580,16 @@ static void readMP4Tags(TagLib::MP4::Tag *tag, Song *song, ReplayGain *rg)
         }
         if (map.contains("----:com.apple.iTunes:replaygain_album_peak")) {
             rg->albumPeak=parseRgString(map["----:com.apple.iTunes:replaygain_album_peak"].toStringList().front());
+        }
+    }
+    if (img) {
+        if (map.contains("covr")) {
+            TagLib::MP4::Item coverItem = map["covr"];
+            TagLib::MP4::CoverArtList coverArtList = coverItem.toCoverArtList();
+            if (!coverArtList.isEmpty()) {
+                TagLib::MP4::CoverArt coverArt = coverArtList.front();
+                img->loadFromData((const uchar *) coverArt.data().data(), coverArt.data().size());
+            }
         }
     }
 }
@@ -635,7 +692,7 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
 }
 #endif
 
-static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg)
+static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg, QImage *img=0)
 {
     TagLib::Tag *tag=fileref.tag();
     if (song) {
@@ -649,7 +706,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg)
 
     if (TagLib::MPEG::File *file = dynamic_cast< TagLib::MPEG::File * >(fileref.file())) {
         if (file->ID3v2Tag()) {
-            readID3v2Tags(file->ID3v2Tag(), song, rg);
+            readID3v2Tags(file->ID3v2Tag(), song, rg, img);
         } else if (file->APETag()) {
             readAPETags(file->APETag(), song, rg);
 //         } else if (file->ID3v1Tag()) {
@@ -657,21 +714,26 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg)
         }
     } else if (TagLib::Ogg::Vorbis::File *file = dynamic_cast< TagLib::Ogg::Vorbis::File * >(fileref.file()))  {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg);
+            readVorbisCommentTags(file->tag(), song, rg, img);
         }
     } else if (TagLib::Ogg::FLAC::File *file = dynamic_cast< TagLib::Ogg::FLAC::File * >(fileref.file())) {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg);
+            readVorbisCommentTags(file->tag(), song, rg, img);
         }
     } else if (TagLib::Ogg::Speex::File *file = dynamic_cast< TagLib::Ogg::Speex::File * >(fileref.file())) {
         if (file->tag()) {
-            readVorbisCommentTags(file->tag(), song, rg);
+            readVorbisCommentTags(file->tag(), song, rg, img);
         }
     } else if (TagLib::FLAC::File *file = dynamic_cast< TagLib::FLAC::File * >(fileref.file())) {
         if (file->xiphComment()) {
-            readVorbisCommentTags(file->xiphComment(), song, rg);
+            readVorbisCommentTags(file->xiphComment(), song, rg, img);
+            #if (TAGLIB_MAJOR_VERSION > 1) || (TAGLIB_MAJOR_VERSION == 1 && TAGLIB_MINOR_VERSION >= 7)
+            if (img && img->isNull()) {
+                readFlacPicture(file->pictureList(), img);
+            }
+            #endif
         } else if (file->ID3v2Tag()) {
-            readID3v2Tags(file->ID3v2Tag(), song, rg);
+            readID3v2Tags(file->ID3v2Tag(), song, rg, img);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
@@ -679,7 +741,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg)
     } else if (TagLib::MP4::File *file = dynamic_cast< TagLib::MP4::File * >(fileref.file())) {
         TagLib::MP4::Tag *tag = dynamic_cast< TagLib::MP4::Tag * >(file->tag());
         if (tag) {
-            readMP4Tags(tag, song, rg);
+            readMP4Tags(tag, song, rg, img);
         }
     #endif
     } else if (TagLib::MPC::File *file = dynamic_cast< TagLib::MPC::File * >(fileref.file())) {
@@ -690,11 +752,11 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg)
         }
     } else if (TagLib::RIFF::AIFF::File *file = dynamic_cast< TagLib::RIFF::AIFF::File * >(fileref.file())) {
         if (file->tag()) {
-            readID3v2Tags(file->tag(), song, rg);
+            readID3v2Tags(file->tag(), song, rg, img);
         }
     } else if (TagLib::RIFF::WAV::File *file = dynamic_cast< TagLib::RIFF::WAV::File * >(fileref.file())) {
         if (file->tag()) {
-            readID3v2Tags(file->tag(), song, rg);
+            readID3v2Tags(file->tag(), song, rg, img);
         }
     #ifdef TAGLIB_ASF_FOUND
     } else if (TagLib::ASF::File *file = dynamic_cast< TagLib::ASF::File * >(fileref.file())) {
@@ -705,7 +767,7 @@ static void readTags(const TagLib::FileRef fileref, Song *song, ReplayGain *rg)
     #endif
     } else if (TagLib::TrueAudio::File *file = dynamic_cast< TagLib::TrueAudio::File * >(fileref.file())) {
         if (file->ID3v2Tag(false)) {
-            readID3v2Tags(file->ID3v2Tag(false), song, rg);
+            readID3v2Tags(file->ID3v2Tag(false), song, rg, img);
 //         } else if (file->ID3v1Tag()) {
 //             readID3v1Tags(fileref, song, rg);
         }
@@ -843,6 +905,22 @@ Song read(const QString &fileName)
     song.file=fileName;
     song.time=fileref.audioProperties() ? fileref.audioProperties()->length() : 0;
     return song;
+}
+
+QImage readImage(const QString &fileName)
+{
+    QMutexLocker locker(&mutex);
+    ensureFileTypeResolvers();
+
+    QImage img;
+    TagLib::FileRef fileref = getFileRef(fileName);
+
+    if (fileref.isNull()) {
+        return img;
+    }
+
+    readTags(fileref, 0, 0, &img);
+    return img;
 }
 
 Update updateArtistAndTitle(const QString &fileName, const Song &song)

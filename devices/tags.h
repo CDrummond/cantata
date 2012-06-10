@@ -55,6 +55,7 @@ namespace Tags
 
     extern Song read(const QString &fileName);
     extern QImage readImage(const QString &fileName);
+    extern QString readLyrics(const QString &fileName);
     extern Update updateArtistAndTitle(const QString &fileName, const Song &song);
     extern Update update(const QString &fileName, const Song &from, const Song &to);
     extern ReplayGain readReplaygain(const QString &fileName);

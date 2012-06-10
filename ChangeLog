@@ -29,6 +29,7 @@
 16. Disable volume control if MPD returns a volume of -1 - as it does when the
     mixer is disabled.
 17. Read images from mp3 (ID3v2), mp4, flac, and ogg files.
+18. Read lyrics from mp3 (ID3v2) files.
 
 0.7.1
 -----

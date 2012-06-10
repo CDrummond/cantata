@@ -140,7 +140,7 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
         tokens = lines.at(i).split(':');
 
         if (tokens.at(0) == "volume") {
-            v.volume=tokens.at(1).toUInt();
+            v.volume=tokens.at(1).toInt();
         } else if (tokens.at(0) == "consume") {
             v.consume=tokens.at(1).trimmed() == "1";
         } else if (tokens.at(0) == "repeat") {

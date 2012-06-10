@@ -46,7 +46,7 @@ DirViewModel * DirViewModel::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static DirViewModel *instance=0;;
+    static DirViewModel *instance=0;
     if(!instance) {
         instance=new DirViewModel;
     }

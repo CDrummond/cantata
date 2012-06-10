@@ -48,7 +48,7 @@ PlaylistsModel * PlaylistsModel::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static PlaylistsModel *instance=0;;
+    static PlaylistsModel *instance=0;
     if(!instance) {
         instance=new PlaylistsModel;
     }

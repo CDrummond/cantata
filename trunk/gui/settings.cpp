@@ -46,7 +46,7 @@ Settings * Settings::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static Settings *instance=0;;
+    static Settings *instance=0;
     if (!instance) {
         instance=new Settings;
     }

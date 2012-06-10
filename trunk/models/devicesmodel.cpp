@@ -56,7 +56,7 @@ DevicesModel * DevicesModel::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static DevicesModel *instance=0;;
+    static DevicesModel *instance=0;
     if(!instance) {
         instance=new DevicesModel;
     }

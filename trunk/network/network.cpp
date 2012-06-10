@@ -59,7 +59,7 @@ Network * Network::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static Network *instance=0;;
+    static Network *instance=0;
     if(!instance) {
         instance=new Network;
     }

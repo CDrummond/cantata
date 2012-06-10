@@ -95,7 +95,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     QAction *sepA=new QAction(this);
     sepA->setSeparator(true);
     view->addAction(sepA);
-    view->addAction(forgetDeviceAction);;
+    view->addAction(forgetDeviceAction);
     #endif
     QAction *sep=new QAction(this);
     sep->setSeparator(true);

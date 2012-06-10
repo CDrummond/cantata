@@ -48,7 +48,7 @@ JobController * JobController::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static JobController *instance=0;;
+    static JobController *instance=0;
     if(!instance) {
         instance=new JobController;
     }

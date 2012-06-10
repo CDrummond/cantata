@@ -49,7 +49,7 @@ MPDConnection * MPDConnection::self()
     #ifdef ENABLE_KDE_SUPPORT
     return conn;
     #else
-    static MPDConnection *conn=0;;
+    static MPDConnection *conn=0;
     if (!conn) {
         conn=new MPDConnection;
     }

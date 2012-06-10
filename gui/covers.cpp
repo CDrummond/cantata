@@ -209,7 +209,7 @@ Covers * Covers::self()
     #ifdef ENABLE_KDE_SUPPORT
     return instance;
     #else
-    static Covers *instance=0;;
+    static Covers *instance=0;
     if(!instance) {
         instance=new Covers;
     }

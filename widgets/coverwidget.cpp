@@ -95,7 +95,7 @@ void CoverWidget::update(const Song &s)
             coverFileName=QString();
             update(stdPixmap(current.isStream()));
             emit coverImage(QImage());
-            emit coverFile(QString());;
+            emit coverFile(QString());
         }
     }
 }

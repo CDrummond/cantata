@@ -6,57 +6,66 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>214</width>
-    <height>147</height>
+    <width>235</width>
+    <height>192</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="7">
+   <item>
     <widget class="TextBrowser" name="text">
      <property name="openLinks">
       <bool>false</bool>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="7">
+   <item>
     <widget class="SqueezedTextLabel" name="songLabel"/>
    </item>
-   <item row="2" column="0">
-    <widget class="QToolButton" name="refreshBtn"/>
-   </item>
-   <item row="2" column="1">
-    <widget class="QToolButton" name="searchBtn"/>
-   </item>
-   <item row="2" column="2">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>16</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="3">
-    <widget class="QToolButton" name="editBtn"/>
-   </item>
-   <item row="2" column="4">
-    <widget class="QToolButton" name="saveBtn"/>
-   </item>
-   <item row="2" column="5">
-    <widget class="QToolButton" name="cancelBtn"/>
-   </item>
-   <item row="2" column="6">
-    <widget class="QToolButton" name="delBtn"/>
+   <item>
+    <widget class="QWidget" name="controls" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="refreshBtn"/>
+      </item>
+      <item>
+       <widget class="QToolButton" name="searchBtn"/>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>52</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QToolButton" name="editBtn"/>
+      </item>
+      <item>
+       <widget class="QToolButton" name="saveBtn"/>
+      </item>
+      <item>
+       <widget class="QToolButton" name="cancelBtn"/>
+      </item>
+      <item>
+       <widget class="QToolButton" name="delBtn"/>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

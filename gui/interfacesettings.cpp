@@ -59,7 +59,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    addViewTypes(libraryView);
+    addViewTypes(libraryView, true);
     addViewTypes(albumsView, true);
     addViewTypes(folderView);
     addViewTypes(playlistsView, false, true);
@@ -69,6 +69,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif
     groupMultiple->addItem(i18n("Grouped by \'Album Artist\'"));
     groupMultiple->addItem(i18n("Grouped under \'Various Artists\'"));
+    connect(libraryView, SIGNAL(currentIndexChanged(int)), SLOT(libraryViewChanged()));
+    connect(libraryCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(libraryCoverSizeChanged()));
     connect(albumsView, SIGNAL(currentIndexChanged(int)), SLOT(albumsViewChanged()));
     connect(albumsCoverSize, SIGNAL(currentIndexChanged(int)), SLOT(albumsCoverSizeChanged()));
     connect(playlistsView, SIGNAL(currentIndexChanged(int)), SLOT(playListsStyleChanged()));
@@ -83,6 +85,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
 
 void InterfaceSettings::load()
 {
+    libraryArtistImage->setChecked(Settings::self()->libraryArtistImage());
     selectEntry(libraryView, Settings::self()->libraryView());
     libraryCoverSize->setCurrentIndex(Settings::self()->libraryCoverSize());
     libraryYear->setChecked(Settings::self()->libraryYear());
@@ -114,6 +117,7 @@ void InterfaceSettings::load()
 
 void InterfaceSettings::save()
 {
+    Settings::self()->saveLibraryArtistImage(libraryArtistImage->isChecked());
     Settings::self()->saveLibraryView(getViewType(libraryView));
     Settings::self()->saveLibraryCoverSize(libraryCoverSize->currentIndex());
     Settings::self()->saveLibraryYear(libraryYear->isChecked());
@@ -137,6 +141,31 @@ void InterfaceSettings::save()
     Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
     Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
     Settings::self()->saveLyricsBgnd(lyricsBgnd->isChecked());
+}
+
+void InterfaceSettings::libraryViewChanged()
+{
+    int vt=getViewType(libraryView);
+    if (ItemView::Mode_IconTop==vt && 0==libraryCoverSize->currentIndex()) {
+        libraryCoverSize->setCurrentIndex(2);
+    }
+
+    bool isIcon=ItemView::Mode_IconTop==vt;
+    libraryArtistImage->setEnabled(!isIcon);
+    libraryArtistImageLabel->setEnabled(libraryArtistImage->isEnabled());
+    if (isIcon) {
+        libraryArtistImage->setChecked(true);
+    }
+}
+
+void InterfaceSettings::libraryCoverSizeChanged()
+{
+    if (ItemView::Mode_IconTop==getViewType(libraryView) && 0==libraryCoverSize->currentIndex()) {
+        libraryView->setCurrentIndex(1);
+    }
+    if (0==libraryCoverSize->currentIndex()) {
+        libraryArtistImage->setChecked(false);
+    }
 }
 
 void InterfaceSettings::albumsViewChanged()

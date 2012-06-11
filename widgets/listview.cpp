@@ -37,6 +37,7 @@ ListView::ListView(QWidget *parent)
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setAlternatingRowColors(true);
     setUniformItemSizes(true);
+    setAttribute(Qt::WA_MouseTracking);
 }
 
 ListView::~ListView()

@@ -30,6 +30,9 @@ void TextBrowser::paintEvent(QPaintEvent *e)
         QPainter p(viewport());
         p.setOpacity(0.15);
         p.fillRect(rect(), QBrush(image));
+    } else if (!viewport()->autoFillBackground()) {
+        QPainter p(viewport());
+        p.fillRect(rect(), viewport()->palette().base());
     }
 
     QTextBrowser::paintEvent(e);

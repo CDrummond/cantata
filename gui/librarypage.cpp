@@ -98,6 +98,26 @@ LibraryPage::~LibraryPage()
 {
 }
 
+void LibraryPage::setView(int v)
+{
+    view->setMode((ItemView::Mode)v);
+    setItemSize();
+}
+
+void LibraryPage::setItemSize()
+{
+    if (ItemView::Mode_IconTop!=view->viewMode()) {
+        MusicLibraryItemAlbum::setItemSize(QSize(0, 0));
+    } else {
+        QFontMetrics fm(font());
+
+        int size=MusicLibraryItemAlbum::iconSize(true);
+        QSize grid(size+8, size+(fm.height()*2.5));
+        view->setGridSize(grid);
+        MusicLibraryItemAlbum::setItemSize(grid-QSize(4, 4));
+    }
+}
+
 void LibraryPage::refresh()
 {
     view->setLevel(0);

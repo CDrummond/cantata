@@ -37,22 +37,33 @@
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
 static bool useDate=false;
+static QSize iconItemSize;
 
-int MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverSize sz)
+int MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverSize sz, bool iconMode)
 {
     switch (sz) {
     default:
     case MusicLibraryItemAlbum::CoverNone:       return 0;
-    case MusicLibraryItemAlbum::CoverSmall:      return 22;
-    case MusicLibraryItemAlbum::CoverMedium:     return 32;
-    case MusicLibraryItemAlbum::CoverLarge:      return 48;
-    case MusicLibraryItemAlbum::CoverExtraLarge: return 64;
+    case MusicLibraryItemAlbum::CoverSmall:      return iconMode ? 76  : 22;
+    case MusicLibraryItemAlbum::CoverMedium:     return iconMode ? 100 : 32;
+    case MusicLibraryItemAlbum::CoverLarge:      return iconMode ? 128 : 48;
+    case MusicLibraryItemAlbum::CoverExtraLarge: return iconMode ? 160 : 64;
     }
 }
 
-int MusicLibraryItemAlbum::iconSize()
+int MusicLibraryItemAlbum::iconSize(bool iconMode)
 {
-    return MusicLibraryItemAlbum::iconSize(coverSize);
+    return MusicLibraryItemAlbum::iconSize(coverSize, iconMode);
+}
+
+void MusicLibraryItemAlbum::setItemSize(const QSize &sz)
+{
+    iconItemSize=sz;
+}
+
+QSize MusicLibraryItemAlbum::itemSize()
+{
+    return iconItemSize;
 }
 
 MusicLibraryItemAlbum::CoverSize MusicLibraryItemAlbum::currentCoverSize()
@@ -98,7 +109,8 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
 bool MusicLibraryItemAlbum::setCover(const QImage &img) const
 {
     if (m_coverIsDefault && !img.isNull()) {
-        m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        int size=iconSize(!iconItemSize.isNull());
+        m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(size, size), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         m_coverIsDefault=false;
         return true;
     }
@@ -113,7 +125,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
     }
 
     if (!m_cover) {
-        int iSize=iconSize();
+        int iSize=iconSize(!iconItemSize.isNull());
 
         if (!theDefaultIcon) {
             int cSize=iSize;

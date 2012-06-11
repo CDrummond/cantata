@@ -60,6 +60,7 @@ private Q_SLOTS:
 Q_SIGNALS:
     void getNext();
     void cover(const Song &song, const QImage &img, const QString &file);
+    void artistImage(const QString &artist, const QImage &img);
     void download(const Song &song);
 
 private:
@@ -74,10 +75,11 @@ class Covers : public QObject
 public:
     struct Job
     {
-        Job(const Song &s, const QString &d)
-            : song(s), dir(d) { }
+        Job(const Song &s, const QString &d, bool a=false)
+            : song(s), dir(d), isArtist(a) { }
         Song song;
         QString dir;
+        bool isArtist;
     };
 
     struct Image
@@ -116,6 +118,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void cover(const Song &song, const QImage &img, const QString &file);
+    void artistImage(const QString &artist, const QImage &img);
     void coverRetrieved(const Song &song);
 
 private Q_SLOTS:

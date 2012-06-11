@@ -38,6 +38,8 @@ public:
     void save();
 
 private Q_SLOTS:
+    void libraryViewChanged();
+    void libraryCoverSizeChanged();
     void albumsViewChanged();
     void albumsCoverSizeChanged();
     void playListsStyleChanged();

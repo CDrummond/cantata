@@ -360,6 +360,11 @@ int Settings::streamsView()
     return GET_INT("streamsView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
 }
 
+bool Settings::libraryArtistImage()
+{
+    return GET_BOOL("libraryArtistImage", false);
+}
+
 int Settings::libraryCoverSize()
 {
     return GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
@@ -695,6 +700,11 @@ void Settings::savePlaylistsView(int v)
 void Settings::saveStreamsView(int v)
 {
     SET_VALUE("streamsView", v);
+}
+
+void Settings::saveLibraryArtistImage(bool v)
+{
+    SET_VALUE("libraryArtistImage", v);
 }
 
 void Settings::saveLibraryCoverSize(int v)

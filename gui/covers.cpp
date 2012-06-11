@@ -424,12 +424,12 @@ void Covers::clearDummyCache(const Song &song)
     }
 }
 
-#include <QtCore/QDebug>
 Covers::Image Covers::getImage(const Song &song)
 {
     QString dirName;
     QString songFile=song.file;
     bool haveAbsPath=song.file.startsWith('/');
+    bool isArtistImage=song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty();
 
     if (song.isCantataStream()) {
         QUrl u(songFile);
@@ -439,54 +439,84 @@ Covers::Image Covers::getImage(const Song &song)
         (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty())) {
         dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
                                        : MPDParseUtils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
-        initCoverNames();
-        foreach (const QString &fileName, coverFileNames) {
-            if (QFile::exists(dirName+fileName)) {
+        if (isArtistImage) {
+            QStringList names=QStringList() << song.albumartist+".jpg" << song.albumartist+".png" << "artist.jpg" << "artist.png";
+            for (int level=0; level<2; ++level) {
+                foreach (const QString &fileName, names) {
+                    if (QFile::exists(dirName+fileName)) {
+                        QImage img(dirName+fileName);
+
+                        if (!img.isNull()) {
+                            return Image(img, dirName+fileName);
+                        }
+                    }
+                }
+                QDir d(dirName);
+                d.cdUp();
+                dirName=d.absolutePath();
+            }
+        } else {
+            initCoverNames();
+            foreach (const QString &fileName, coverFileNames) {
+                if (QFile::exists(dirName+fileName)) {
+                    QImage img(dirName+fileName);
+
+                    if (!img.isNull()) {
+                        return Image(img, dirName+fileName);
+                    }
+                }
+            }
+            QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
+            foreach (const QString &fileName, files) {
                 QImage img(dirName+fileName);
 
                 if (!img.isNull()) {
                     return Image(img, dirName+fileName);
                 }
             }
-        }
-        QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
-        foreach (const QString &fileName, files) {
-            QImage img(dirName+fileName);
 
+            QImage img(Tags::readImage(haveAbsPath ? song.file : (MPDConnection::self()->getDetails().dir+songFile)));
             if (!img.isNull()) {
-                return Image(img, dirName+fileName);
+                return Image(img, QString());
             }
-        }
-
-        QImage img(Tags::readImage(haveAbsPath ? song.file : (MPDConnection::self()->getDetails().dir+songFile)));
-        if (!img.isNull()) {
-            qWarning() << "USING TAG IMAGE" << song.file;
-            return Image(img, QString());
         }
     }
 
     QString artist=encodeName(song.albumArtist());
-    QString album=encodeName(song.album);
-    // Check if cover is already cached
-    QString dir(Network::cacheDir(constCoverDir+artist, false));
-    foreach (const QString &ext, constExtensions) {
-        if (QFile::exists(dir+album+ext)) {
-            QImage img(dir+album+ext);
-            if (!img.isNull()) {
-                return Image(img, dir+album+ext);
+
+    if (isArtistImage) {
+        QString dir(Network::cacheDir(constCoverDir, false));
+        foreach (const QString &ext, constExtensions) {
+            if (QFile::exists(dir+artist+ext)) {
+                QImage img(dir+artist+ext);
+                if (!img.isNull()) {
+                    return Image(img, dir+artist+ext);
+                }
             }
         }
-    }
+    } else {
+        QString album=encodeName(song.album);
+        // Check if cover is already cached
+        QString dir(Network::cacheDir(constCoverDir+artist, false));
+        foreach (const QString &ext, constExtensions) {
+            if (QFile::exists(dir+album+ext)) {
+                QImage img(dir+album+ext);
+                if (!img.isNull()) {
+                    return Image(img, dir+album+ext);
+                }
+            }
+        }
 
-    Job job(song, dirName);
+        Job job(song, dirName);
 
-    #ifndef Q_WS_WIN
-    // See if amarok, or clementine, has it...
-    AppCover app=otherAppCover(job);
-    if (!app.img.isNull()) {
-        return Image(app.img, app.filename);
+        #ifndef Q_WS_WIN
+        // See if amarok, or clementine, has it...
+        AppCover app=otherAppCover(job);
+        if (!app.img.isNull()) {
+            return Image(app.img, app.filename);
+        }
+        #endif
     }
-    #endif
 
     return Image(QImage(), QString());
 }
@@ -508,6 +538,7 @@ void Covers::requestCover(const Song &song, bool urgent)
         queueThread=new QThread(this);
         queue->moveToThread(queueThread);
         connect(queue, SIGNAL(cover(const Song &, const QImage &, const QString &)), this, SIGNAL(cover(const Song &, const QImage &, const QString &)));
+        connect(queue, SIGNAL(artistImage(const QString &, const QImage &)), this, SIGNAL(artistImage(const QString &, const QImage &)));
         connect(queue, SIGNAL(download(const Song &)), this, SLOT(download(const Song &)));
         queueThread->start();
     }
@@ -554,6 +585,8 @@ void CoverQueue::getNextCover()
     Covers::Image img=Covers::self()->getImage(song);
     if (img.img.isNull()) {
         emit download(song);
+    } else if (song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty()) {
+        emit artistImage(song.albumartist, img.img);
     } else {
         emit cover(song, img.img, img.fileName);
     }
@@ -571,14 +604,15 @@ void Covers::download(const Song &song)
     }
 
     bool haveAbsPath=song.file.startsWith('/');
+    bool isArtistImage=song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty();
     QString dirName;
 
-    if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
+    if (!isArtistImage && (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty())) {
         dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
                                         : MPDParseUtils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
     }
 
-    Job job(song, dirName);
+    Job job(song, dirName, isArtistImage);
 
     // Query lastfm...
     if (!rpc) {
@@ -593,9 +627,11 @@ void Covers::download(const Song &song)
     QMap<QString, QVariant> args;
 
     args["artist"] = song.albumArtist();
-    args["album"] = song.album;
+    if (!isArtistImage) {
+        args["album"] = song.album;
+    }
     args["api_key"] = constApiKey;
-    QNetworkReply *reply=rpc->call("album.getInfo", QVariantList() << args,
+    QNetworkReply *reply=rpc->call(isArtistImage ? "artist.getInfo" : "album.getInfo", QVariantList() << args,
                                    this, SLOT(albumInfo(QVariant &, QNetworkReply *)),
                                    this, SLOT(albumFailure(int, const QString &, QNetworkReply *)));
     jobs.insert(reply, job);
@@ -627,6 +663,8 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
             QUrl u;
             u.setEncodedUrl(url.toLatin1());
             jobs.insert(manager->get(QNetworkRequest(u)), job);
+        } else if (job.isArtist) {
+            emit artistImage(job.song.albumartist, QImage());
         } else {
             emit cover(job.song, QImage(), QString());
         }
@@ -641,12 +679,16 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
 
     if (it!=end) {
         Job job=it.value();
-        #ifdef Q_WS_WIN
-        emit cover(job.song, QImage(), QString());
-        #else
-        AppCover app=otherAppCover(job);
-        emit cover(job.song, app.img, app.filename);
-        #endif
+        if (job.isArtist) {
+            emit artistImage(job.song.albumartist, QImage());
+        } else {
+            #ifdef Q_WS_WIN
+            emit cover(job.song, QImage(), QString());
+            #else
+            AppCover app=otherAppCover(job);
+            emit cover(job.song, app.img, app.filename);
+            #endif
+        }
         jobs.erase(it);
     }
 
@@ -677,7 +719,9 @@ void Covers::jobFinished(QNetworkReply *reply)
 
         jobs.remove(it.key());
 
-        if (img.isNull()) {
+        if (job.isArtist) {
+            emit artistImage(job.song.albumartist, img);
+        } else if (img.isNull()) {
             #ifdef Q_WS_WIN
             emit cover(job.song, QImage(), QString());
             #else
@@ -698,22 +742,32 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     QString extension=mimeType.isEmpty() ? constExtensions.at(0) : mimeType;
     QString savedName;
 
-    // Try to save as cover.jpg in album dir...
-    if (saveInMpdDir && canSaveTo(job.dir)) {
-        savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
-        if (!savedName.isEmpty()) {
-            clearDummyCache(job.song);
-            return savedName;
+    if (job.isArtist) {
+        QString dir = Network::cacheDir(constCoverDir);
+        if (!dir.isEmpty()) {
+            savedName=save(mimeType, extension, dir+encodeName(job.song.albumartist), img, raw);
+            if (!savedName.isEmpty()) {
+                return savedName;
+            }
         }
-    }
+    } else {
+        // Try to save as cover.jpg in album dir...
+        if (saveInMpdDir && canSaveTo(job.dir)) {
+            savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
+            if (!savedName.isEmpty()) {
+                clearDummyCache(job.song);
+                return savedName;
+            }
+        }
 
-    // Could not save with album, save in cache dir...
-    QString dir = Network::cacheDir(constCoverDir+encodeName(job.song.albumArtist()));
-    if (!dir.isEmpty()) {
-        savedName=save(mimeType, extension, dir+encodeName(job.song.album), img, raw);
-        if (!savedName.isEmpty()) {
-            clearDummyCache(job.song);
-            return savedName;
+        // Could not save with album, save in cache dir...
+        QString dir = Network::cacheDir(constCoverDir+encodeName(job.song.albumArtist()));
+        if (!dir.isEmpty()) {
+            savedName=save(mimeType, extension, dir+encodeName(job.song.album), img, raw);
+            if (!savedName.isEmpty()) {
+                clearDummyCache(job.song);
+                return savedName;
+            }
         }
     }
 

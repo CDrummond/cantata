@@ -50,8 +50,10 @@ public:
 
     static CoverSize currentCoverSize();
     static void setCoverSize(CoverSize size);
-    static int iconSize(MusicLibraryItemAlbum::CoverSize sz);
-    static int iconSize();
+    static int iconSize(MusicLibraryItemAlbum::CoverSize sz, bool iconMode=false);
+    static int iconSize(bool iconMode=false);
+    static void setItemSize(const QSize &sz);
+    static QSize itemSize();
     static void setShowDate(bool sd);
     static bool showDate();
 

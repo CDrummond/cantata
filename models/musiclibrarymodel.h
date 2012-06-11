@@ -71,12 +71,15 @@ public:
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
 
     #ifndef ENABLE_KDE_SUPPORT
-    const QIcon & vaIcon() const;
+    static const QIcon & vaIcon();
     #endif
     bool update(const QSet<Song> &songs);
+    bool useArtistImages() const { return artistImages; }
+    void setUseArtistImages(bool a) { artistImages=a; }
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
+    void setArtistImage(const QString &artist, const QImage &img);
     void setCover(const Song &song, const QImage &img, const QString &file);
 
 Q_SIGNALS:
@@ -87,6 +90,7 @@ private:
     void toXML(const MusicLibraryItemRoot *root, const QDateTime &date);
 
 private:
+    bool artistImages;
     MusicLibraryItemRoot *rootItem;
     QDateTime databaseTime;
 };

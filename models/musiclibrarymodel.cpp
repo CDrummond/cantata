@@ -82,8 +82,11 @@ static const QString cacheFileName()
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent)
     : QAbstractItemModel(parent)
+    , artistImages(false)
     , rootItem(new MusicLibraryItemRoot)
 {
+    connect(Covers::self(), SIGNAL(artistImage(const QString &, const QImage &)),
+            this, SLOT(setArtistImage(const QString &, const QImage &)));
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
             this, SLOT(setCover(const Song &, const QImage &, const QString &)));
 }
@@ -164,13 +167,17 @@ int MusicLibraryModel::columnCount(const QModelIndex &parent) const
 }
 
 #ifndef ENABLE_KDE_SUPPORT
-const QIcon & MusicLibraryModel::vaIcon() const
+const QIcon & MusicLibraryModel::vaIcon()
 {
     static QIcon icon;
 
     if (icon.isNull()) {
         icon.addFile(":va16.png");
         icon.addFile(":va22.png");
+        icon.addFile(":va32.png");
+        icon.addFile(":va48.png");
+        icon.addFile(":va64.png");
+        icon.addFile(":va128.png");
     }
     return icon;
 }
@@ -189,11 +196,15 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            #ifdef ENABLE_KDE_SUPPORT
-            return artist->isVarious() ? QIcon::fromTheme("cantata-view-media-artist-various") : QIcon::fromTheme("view-media-artist");
-            #else
-            return artist->isVarious() ? vaIcon() : QIcon::fromTheme("view-media-artist");
-            #endif
+            if (artistImages) {
+                return artist->cover();
+            } else {
+                #ifdef ENABLE_KDE_SUPPORT
+                return QIcon::fromTheme(artist->isVarious() ? "cantata-view-media-artist-various" : "view-media-artist");
+                #else
+                return artist->isVarious() ? vaIcon() : QIcon::fromTheme("view-media-artist");
+                #endif
+            }
         }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
@@ -251,7 +262,9 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         default: return QVariant();
         }
     case ItemView::Role_ImageSize:
-        if (MusicLibraryItem::Type_Album==item->itemType()) {
+        if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...
+            return MusicLibraryItemAlbum::iconSize(true);
+        } else if (MusicLibraryItem::Type_Album==item->itemType() || (artistImages && MusicLibraryItem::Type_Artist==item->itemType())) {
             return MusicLibraryItemAlbum::iconSize();
         }
         break;
@@ -280,6 +293,14 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             QVariant v;
             v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
             return v;
+        } else if (MusicLibraryItem::Type_Artist==item->itemType() && artistImages) {
+            QVariant v;
+            v.setValue<QPixmap>(static_cast<MusicLibraryItemArtist *>(item)->cover());
+            return v;
+        }
+    case Qt::SizeHintRole:
+        if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) {
+            return MusicLibraryItemAlbum::itemSize();
         }
     default:
         return QVariant();
@@ -526,25 +547,34 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
     return updatedSongs;
 }
 
-void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file)
+void MusicLibraryModel::setArtistImage(const QString &artist, const QImage &img)
 {
-    Q_UNUSED(file)
-    if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
         return;
     }
 
-    if (img.isNull()) {
+    Song song;
+    song.artist=song.albumartist=artist;
+    MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
+    if (artistItem && static_cast<const MusicLibraryItemArtist *>(artistItem)->setCover(img)) {
+        QModelIndex idx=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
+        emit dataChanged(idx, idx);
+    }
+}
+
+void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file)
+{
+    Q_UNUSED(file)
+    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
         return;
     }
 
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-        if (albumItem) {
-            if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
-                QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
-                emit dataChanged(idx, idx);
-            }
+        if (albumItem && static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
+            QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
+            emit dataChanged(idx, idx);
         }
     }
 

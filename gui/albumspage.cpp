@@ -77,6 +77,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
 
     connect(this, SIGNAL(add(const QStringList &, bool)), MPDConnection::self(), SLOT(add(const QStringList &, bool)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
+    connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));

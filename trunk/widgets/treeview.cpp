@@ -37,6 +37,7 @@ TreeView::TreeView(QWidget *parent)
     setAlternatingRowColors(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
+    setAttribute(Qt::WA_MouseTracking);
 }
 
 TreeView::~TreeView()

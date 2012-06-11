@@ -33,6 +33,7 @@
 19. Fix genre filtering in albums view - filter was not updated when genre was
     changed.
 20. Fix background painting in lyrics view for non-oxygen styles.
+21. Enable mouse-tracking for all list/tree views.
 
 0.7.1
 -----

@@ -78,6 +78,7 @@ public:
     int folderView();
     int playlistsView();
     int streamsView();
+    bool libraryArtistImage();
     int libraryCoverSize();
     int albumsCoverSize();
     int albumSort();
@@ -135,6 +136,7 @@ public:
     void saveFolderView(int v);
     void savePlaylistsView(int v);
     void saveStreamsView(int v);
+    void saveLibraryArtistImage(bool v);
     void saveLibraryCoverSize(int v);
     void saveAlbumsCoverSize(int v);
     void saveAlbumSort(int v);

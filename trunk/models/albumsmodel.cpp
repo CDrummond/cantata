@@ -71,17 +71,7 @@ static bool useLibraryCoverSizes=false;
 
 int AlbumsModel::iconSize()
 {
-    if (useLibraryCoverSizes) {
-        return MusicLibraryItemAlbum::iconSize(coverSize);
-    }
-    switch (coverSize) {
-    default:
-    case MusicLibraryItemAlbum::CoverNone:       return 0;
-    case MusicLibraryItemAlbum::CoverSmall:      return 76;
-    case MusicLibraryItemAlbum::CoverMedium:     return 100;
-    case MusicLibraryItemAlbum::CoverLarge:      return 128;
-    case MusicLibraryItemAlbum::CoverExtraLarge: return 160;
-    }
+    return MusicLibraryItemAlbum::iconSize(coverSize, !useLibraryCoverSizes);
 }
 
 static int stdIconSize()

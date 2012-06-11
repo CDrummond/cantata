@@ -34,6 +34,8 @@
     changed.
 20. Fix background painting in lyrics view for non-oxygen styles.
 21. Enable mouse-tracking for all list/tree views.
+22. Allow Icon/List for library view.
+23. Add option to show artist images in library view.
 
 0.7.1
 -----

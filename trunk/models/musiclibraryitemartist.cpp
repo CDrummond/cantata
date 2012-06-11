@@ -28,9 +28,14 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
+#include "musiclibrarymodel.h"
 #include "song.h"
 #include "mpdparseutils.h"
 #include "localize.h"
+#include "covers.h"
+#include <QtGui/QIcon>
+
+static QPixmap *theDefaultIcon=0;
 
 static QString songAlbum(const Song &s)
 {
@@ -42,6 +47,8 @@ static QString songAlbum(const Song &s)
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
+    , m_coverIsDefault(false)
+    , m_cover(0)
     , m_various(false)
 {
     if (m_itemData.startsWith(QLatin1String("The "))) {
@@ -49,6 +56,63 @@ MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibrary
     } else if (Song::isVariousArtists(m_itemData)) {
         m_various=true;
     }
+}
+
+bool MusicLibraryItemArtist::setCover(const QImage &img) const
+{
+    if (m_coverIsDefault && !img.isNull()) {
+        int size=MusicLibraryItemAlbum::iconSize(!MusicLibraryItemAlbum::itemSize().isNull());
+        QImage scaled=img.scaled(QSize(size, size), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+        m_cover = new QPixmap(QPixmap::fromImage(scaled.width()>size || scaled.height()>size ? scaled.copy((scaled.width()-size)/2, (scaled.height()-size)/2, size, size) : scaled));
+        m_coverIsDefault=false;
+        return true;
+    }
+
+    return false;
+}
+
+const QPixmap & MusicLibraryItemArtist::cover()
+{
+    if (m_coverIsDefault) {
+        return *theDefaultIcon;
+    }
+
+    if (!m_cover) {
+        int iSize=MusicLibraryItemAlbum::iconSize(!MusicLibraryItemAlbum::itemSize().isNull());
+        int cSize=iSize;
+        if (0==cSize) {
+            cSize=22;
+        }
+
+        if (m_various) {
+            #ifdef ENABLE_KDE_SUPPORT
+            QIcon icon(QIcon::fromTheme("cantata-view-media-artist-various"));
+            #else
+            QIcon icon(MusicLibraryModel::vaIcon());
+            #endif
+            m_cover = new QPixmap(icon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            m_coverIsDefault=false;
+        } else {
+            if (!theDefaultIcon) {
+                theDefaultIcon = new QPixmap(QIcon::fromTheme("view-media-artist").pixmap(cSize, cSize)
+                                            .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            }
+            m_coverIsDefault = true;
+            Song song;
+            song.albumartist=m_itemData;
+
+            MusicLibraryItemAlbum *firstAlbum=static_cast<MusicLibraryItemAlbum *>(childItem(0));
+            MusicLibraryItemSong *firstSong=firstAlbum ? static_cast<MusicLibraryItemSong *>(firstAlbum->childItem(0)) : 0;
+
+            if (firstSong) {
+                song.file=firstSong->file();
+            }
+            Covers::self()->requestCover(song, true);
+            return *theDefaultIcon;
+        }
+    }
+
+    return *m_cover;
 }
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)

@@ -59,7 +59,13 @@ public:
         return Type_Artist;
     }
 
+    bool setCover(const QImage &img) const;
+    const QPixmap & cover();
+    bool hasRealCover() const { return !m_coverIsDefault; }
+
 private:
+    mutable bool m_coverIsDefault;
+    mutable QPixmap *m_cover;
     bool m_various;
     QString m_nonTheArtist;
     QHash<Song::AlbumKey, int> m_indexes;

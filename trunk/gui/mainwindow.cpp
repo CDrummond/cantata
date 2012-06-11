@@ -1542,7 +1542,8 @@ void MainWindow::readSettings()
         phononStream->setCurrentSource(Settings::self()->streamUrl());
     }
     #endif
-    libraryPage->setView(0==Settings::self()->libraryView());
+    libraryPage->setView(Settings::self()->libraryView());
+    MusicLibraryModel::self()->setUseArtistImages(Settings::self()->libraryArtistImage());
     playlistsPage->setView(Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
     folderPage->setView(0==Settings::self()->folderView());
@@ -1567,16 +1568,20 @@ void MainWindow::updateSettings()
     }
 
     connectToMpd();
-    readSettings();
     Settings::self()->save();
     bool useLibSizeForAl=Settings::self()->albumsView()!=ItemView::Mode_IconTop;
-    bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize();
+    bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize() ||
+                       (libraryPage->viewMode()==ItemView::Mode_IconTop || Settings::self()->libraryView()!=ItemView::Mode_IconTop) ||
+                       (libraryPage->viewMode()!=ItemView::Mode_IconTop && Settings::self()->libraryView()==ItemView::Mode_IconTop) ||
+                       Settings::self()->libraryArtistImage()!=MusicLibraryModel::self()->useArtistImages();
     bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumsCoverSize() ||
                       albumsPage->viewMode()!=Settings::self()->albumsView() ||
                       useLibSizeForAl!=AlbumsModel::useLibrarySizes();
     bool diffLibYear=MusicLibraryItemAlbum::showDate()!=Settings::self()->libraryYear();
     bool diffGrouping=MPDParseUtils::groupSingle()!=Settings::self()->groupSingle() ||
                       MPDParseUtils::groupMultiple()!=Settings::self()->groupMultiple();
+
+    readSettings();
 
     if (diffLibCovers) {
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
@@ -2906,10 +2911,7 @@ void MainWindow::editPlayQueueTags()
 
 void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
 {
-    if (songs.isEmpty()) {
-        return;
-    }
-    if (0!=TagEditor::instanceCount()) {
+    if (songs.isEmpty() || 0!=TagEditor::instanceCount()) {
         return;
     }
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -3029,7 +3031,7 @@ void MainWindow::deleteSongs()
 
 void MainWindow::copyToDevice(const QString &from, const QString &to, const QList<Song> &songs)
 {
-    if (0!=ActionDialog::instanceCount()) {
+    if (songs.isEmpty() || 0!=ActionDialog::instanceCount()) {
         return;
     }
     if (0!=TagEditor::instanceCount()) {
@@ -3052,7 +3054,7 @@ void MainWindow::copyToDevice(const QString &from, const QString &to, const QLis
 
 void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
 {
-    if (0!=ActionDialog::instanceCount()) {
+    if (songs.isEmpty() || 0!=ActionDialog::instanceCount()) {
         return;
     }
     if (0!=TagEditor::instanceCount()) {

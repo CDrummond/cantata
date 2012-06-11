@@ -62,6 +62,9 @@ public:
             if (!drawImage) {
                 image=QImage();
             }
+            if (e) {
+                viewport()->setAutoFillBackground(false);
+            }
             viewport()->update();
         }
     }

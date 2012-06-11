@@ -30,6 +30,8 @@
     mixer is disabled.
 17. Read images from mp3 (ID3v2), mp4, flac, and ogg files.
 18. Read lyrics from mp3 (ID3v2) files.
+19. Fix genre filtering in albums view - filter was not updated when genre was
+    changed.
 
 0.7.1
 -----

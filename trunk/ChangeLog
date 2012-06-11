@@ -32,6 +32,7 @@
 18. Read lyrics from mp3 (ID3v2) files.
 19. Fix genre filtering in albums view - filter was not updated when genre was
     changed.
+20. Fix background painting in lyrics view for non-oxygen styles.
 
 0.7.1
 -----

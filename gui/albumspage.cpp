@@ -91,8 +91,8 @@ AlbumsPage::~AlbumsPage()
 
 void AlbumsPage::setView(int v)
 {
+    setItemSize(v);
     view->setMode((ItemView::Mode)v);
-    setItemSize();
 }
 
 void AlbumsPage::clear()
@@ -101,9 +101,9 @@ void AlbumsPage::clear()
     view->update();
 }
 
-void AlbumsPage::setItemSize()
+void AlbumsPage::setItemSize(int v)
 {
-    if (ItemView::Mode_IconTop!=view->viewMode()) {
+    if (ItemView::Mode_IconTop!=v) {
         AlbumsModel::setItemSize(QSize(0, 0));
     } else {
         QFontMetrics fm(font());

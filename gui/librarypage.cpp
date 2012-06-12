@@ -100,13 +100,13 @@ LibraryPage::~LibraryPage()
 
 void LibraryPage::setView(int v)
 {
+    setItemSize(v);
     view->setMode((ItemView::Mode)v);
-    setItemSize();
 }
 
-void LibraryPage::setItemSize()
+void LibraryPage::setItemSize(int v)
 {
-    if (ItemView::Mode_IconTop!=view->viewMode()) {
+    if (ItemView::Mode_IconTop!=v) {
         MusicLibraryItemAlbum::setItemSize(QSize(0, 0));
     } else {
         QFontMetrics fm(font());

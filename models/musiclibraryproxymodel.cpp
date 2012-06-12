@@ -126,6 +126,9 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
                 return compare<0;
             }
         }
+        if (leftItem->song().type != rightItem->song().type) {
+            return leftItem->song().type < rightItem->song().type;
+        }
         if (leftItem->disc() != rightItem->disc()) {
             return leftItem->disc() < rightItem->disc();
         }

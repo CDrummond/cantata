@@ -38,8 +38,8 @@ public:
 
     void refresh();
     void clear();
-    QStringList selectedFiles() const;
-    QList<Song> selectedSongs() const;
+    QStringList selectedFiles(bool allowPlaylists=false) const;
+    QList<Song> selectedSongs(bool allowPlaylists=false) const;
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false);
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi);

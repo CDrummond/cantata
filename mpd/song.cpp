@@ -95,6 +95,9 @@ bool Song::operator<(const Song &o) const
     if (disc!=o.disc) {
         return disc<o.disc;
     }
+    if (type!=o.type) {
+        return type<o.type;
+    }
     if (track!=o.track) {
         return track<o.track;
     }

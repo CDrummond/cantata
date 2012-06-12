@@ -111,8 +111,8 @@ public:
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    QStringList filenames(const QModelIndexList &indexes) const;
-    QList<Song> songs(const QModelIndexList &indexes) const;
+    QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
+    QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void clear();
     bool isEnabled() const { return enabled; }

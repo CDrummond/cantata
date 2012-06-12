@@ -60,16 +60,16 @@ QString Utils::strippedText(QString s)
 
 QString Utils::dirSyntax(const QString &d)
 {
-    if(!d.isEmpty())
-    {
+    if (!d.isEmpty()) {
         QString ds(d);
 
         ds.replace("//", "/");
 
         int slashPos(ds.lastIndexOf('/'));
 
-        if(slashPos!=(((int)ds.length())-1))
+        if (slashPos!=(((int)ds.length())-1)) {
             ds.append('/');
+        }
 
         return ds;
     }
@@ -82,10 +82,23 @@ QString Utils::getDir(const QString &file)
     QString d(file);
     int slashPos(d.lastIndexOf('/'));
 
-    if(slashPos!=-1)
+    if (-1!=slashPos) {
         d.remove(slashPos+1, d.length());
+    }
 
     return dirSyntax(d);
+}
+
+QString Utils::getFile(const QString &file)
+{
+    QString d(file);
+    int slashPos=d.lastIndexOf('/');
+
+    if (-1!=slashPos) {
+        d.remove(0, slashPos+1);
+    }
+
+    return d;
 }
 
 QString Utils::changeExtension(const QString &file, const QString &extension)

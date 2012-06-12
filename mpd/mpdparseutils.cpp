@@ -43,6 +43,7 @@
 #include "output.h"
 #include "covers.h"
 #include "httpserver.h"
+#include "utils.h"
 #include "debugtimer.h"
 
 QString MPDParseUtils::fixPath(const QString &f)
@@ -227,10 +228,15 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
             song.genre = value;
         }  else if (element == QLatin1String("Name")) {
             song.name = value;
+        } else if (element == QLatin1String("playlist")) {
+            song.file = value;
+            song.file.replace("\"", "\\\"");
+            song.title=Utils::getFile(song.file);
+            song.type=Song::Playlist;
         }
     }
 
-    if (song.genre.isEmpty()) {
+    if (Song::Playlist!=song.type && song.genre.isEmpty()) {
         song.genre = i18n("Unknown");
     }
 
@@ -366,14 +372,22 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
     int amountOfLines = lines.size();
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
+    MusicLibraryItemSong *songItem = 0;
 
     for (int i = 0; i < amountOfLines; i++) {
         currentItem += lines.at(i);
         currentItem += "\n";
-        if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:")) {
+        if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:") || lines.at(i + 1).startsWith("playlist:")) {
             Song currentSong = parseSong(currentItem);
             currentItem.clear();
 
+            if (Song::Playlist==currentSong.type) {
+                if (songItem && Utils::getDir(songItem->file())==Utils::getDir(currentSong.file)) {
+                    songItem = new MusicLibraryItemSong(currentSong, albumItem);
+                    albumItem->append(songItem);
+                }
+                continue;
+            }
             if (currentSong.isEmpty()) {
                 continue;
             }
@@ -386,7 +400,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
                 albumItem = artistItem->album(currentSong);
             }
 
-            MusicLibraryItemSong *songItem = new MusicLibraryItemSong(currentSong, albumItem);
+            songItem = new MusicLibraryItemSong(currentSong, albumItem);
             albumItem->append(songItem);
             albumItem->addGenre(currentSong.genre);
             artistItem->addGenre(currentSong.genre);

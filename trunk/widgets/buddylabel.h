@@ -26,6 +26,7 @@
 
 #include <QtGui/QLabel>
 #include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
 
 class BuddyLabel : public QLabel
 {
@@ -45,6 +46,11 @@ protected:
             QCheckBox *cb=qobject_cast<QCheckBox*>(buddy());
             if (cb) {
                 cb->setChecked(!cb->isChecked());
+            } else {
+                QComboBox *combo=qobject_cast<QComboBox*>(buddy());
+                if (combo) {
+                    combo->showPopup();
+                }
             }
         }
     }

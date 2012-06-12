@@ -40,6 +40,7 @@
     dialog (Qt-only build).
 25. Show playlists in library and album views (requires MPD 0.17)
 26. Update ultimate_providers.xml to match Clementine 1.0.1
+27. When clicking on a label associated with a combobox, show the combo popup.
 
 0.7.1
 -----

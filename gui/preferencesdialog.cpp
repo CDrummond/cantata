@@ -76,9 +76,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     #ifdef ENABLE_KDE_SUPPORT
     KPageWidget *widget = new KPageWidget(this);
     #else
-    FancyTabWidget *widget = new FancyTabWidget(this);
-    widget->setAllowContextMenu(false);
-    widget->setDrawBorder(true);
+    FancyTabWidget *widget = new FancyTabWidget(this, false, true);
     #endif
 
     server = new ServerSettings(widget);

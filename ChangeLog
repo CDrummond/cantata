@@ -36,6 +36,8 @@
 21. Enable mouse-tracking for all list/tree views.
 22. Allow Icon/List for library view.
 23. Add option to show artist images in library view.
+24. Dont allow selection to overlap tab-widget border lines in preferences
+    dialog (Qt-only build).
 
 0.7.1
 -----

@@ -39,6 +39,7 @@
 24. Dont allow selection to overlap tab-widget border-lines in preferences
     dialog (Qt-only build).
 25. Show playlists in library and album views (requires MPD 0.17)
+26. Update ultimate_providers.xml to match Clementine 1.0.1
 
 0.7.1
 -----

@@ -31,6 +31,9 @@
 - Dynamic
   - Port helper to c++?
 
+Lyrics
+  - Add support for reading via tags in mp4, flac, and ogg files.
+
 - PlayQueue
   - Add copy to device to context menu?
     - Will need to be careful that songs are not from device

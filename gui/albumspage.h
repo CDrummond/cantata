@@ -50,7 +50,7 @@ public:
     void focusSearch() { view->focusSearch(); }
 
 private:
-    void setItemSize();
+    void setItemSize(int v);
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

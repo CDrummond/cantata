@@ -278,8 +278,9 @@ void FancyTab::setFader(float value)
     tabbar->update();
 }
 
-FancyTabBar::FancyTabBar(QWidget *parent, bool text, int iSize)
+FancyTabBar::FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize)
     : QWidget(parent)
+    , m_hasBorder(hasBorder)
     , m_showText(text)
     , m_iconSize(iSize)
 {
@@ -440,6 +441,9 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     QRect rect = tabRect(tabIndex);
     bool selected = (tabIndex == m_currentIndex);
 
+    if (m_hasBorder) {
+        rect.adjust(2, 0, -2, 0);
+    }
     QStyleOptionViewItemV4 styleOpt;
     styleOpt.initFrom(this);
     styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
@@ -527,7 +531,7 @@ void FancyTabBar::setCurrentIndex(int index) {
 // FancyTabWidget
 //////
 
-FancyTabWidget::FancyTabWidget(QWidget* parent)
+FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext, bool drawBorder)
   : QWidget(parent),
     mode_(Mode_None),
     tab_bar_(NULL),
@@ -538,8 +542,8 @@ FancyTabWidget::FancyTabWidget(QWidget* parent)
 //     use_background_(false),
     menu_(NULL),
     proxy_style_(new FancyTabProxyStyle),
-    allowContext_(true),
-    drawBorder_(false)
+    allowContext_(allowContext),
+    drawBorder_(drawBorder)
 {
   side_layout_->setSpacing(0);
   side_layout_->setMargin(0);
@@ -718,7 +722,7 @@ void FancyTabWidget::SetMode(Mode mode) {
     case Mode_IconOnlySmallSidebar:
     case Mode_IconOnlyLargeSidebar:
     case Mode_LargeSidebar: {
-      FancyTabBar* bar = new FancyTabBar(this, Mode_LargeSidebar==mode, Mode_IconOnlySmallSidebar==mode ? 16 : 32);
+      FancyTabBar* bar = new FancyTabBar(this, drawBorder_, Mode_LargeSidebar==mode, Mode_IconOnlySmallSidebar==mode ? 16 : 32);
       side_layout_->insertWidget(0, bar);
       tab_bar_ = bar;
 

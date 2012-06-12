@@ -103,7 +103,7 @@ class FancyTabBar : public QWidget
     Q_OBJECT
 
 public:
-    FancyTabBar(QWidget *parent, bool text, int iSize );
+    FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize );
     ~FancyTabBar();
 
     void paintEvent(QPaintEvent *event);
@@ -148,6 +148,7 @@ private:
     QList<FancyTab*> m_tabs;
     QTimer m_triggerTimer;
     QSize tabSizeHint() const;
+    bool m_hasBorder;
     bool m_showText;
     int m_iconSize;
 };
@@ -156,7 +157,7 @@ class FancyTabWidget : public QWidget {
   Q_OBJECT
 
 public:
-  FancyTabWidget(QWidget* parent = 0);
+  FancyTabWidget(QWidget *parent, bool allowContext=true, bool drawBorder=false);
 
   // Values are persisted - only add to the end
   enum Mode {
@@ -208,8 +209,6 @@ public:
   int count() const;
   int visibleCount() const;
   Mode mode() const { return mode_; }
-  void setAllowContextMenu(bool a) { allowContext_=a; }
-  void setDrawBorder(bool b) { drawBorder_=b; }
 
 public slots:
   void SetCurrentIndex(int index);

@@ -276,15 +276,19 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
 
         switch (role) {
         case Qt::DecorationRole:
-            return QIcon::fromTheme("audio-x-generic");
+            return QIcon::fromTheme(Song::Playlist==si->type ? "view-media-playlist" : "audio-x-generic");
         case Qt::ToolTipRole: {
             quint32 year=si->parent->songs.count() ? si->parent->songs.at(0)->year : 0;
             return si->parent->artist+QLatin1String("<br/>")+
                    si->parent->album+(year>0 ? (QLatin1String(" (")+QString::number(year)+QChar(')')) : QString())+QLatin1String("<br/>")+
                    data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
-                   Song::formattedTime(si->time)+QLatin1String("<br/><small><i>")+si->file+QLatin1String("</i></small>");
+                   (Song::Playlist==si->type ? QString() : Song::formattedTime(si->time)+QLatin1String("<br/>"))+
+                   QLatin1String("<small><i>")+si->file+QLatin1String("</i></small>");
         }
         case Qt::DisplayRole:
+            if (Song::Playlist==si->type) {
+                return si->title;
+            }
             if (Song::SingleTracks==si->parent->type) {
                 return si->artistSong();
             }
@@ -309,9 +313,9 @@ Qt::ItemFlags AlbumsModel::flags(const QModelIndex &index) const
     }
 }
 
-QStringList AlbumsModel::filenames(const QModelIndexList &indexes) const
+QStringList AlbumsModel::filenames(const QModelIndexList &indexes, bool allowPlaylists) const
 {
-    QList<Song> songList=songs(indexes);
+    QList<Song> songList=songs(indexes, allowPlaylists);
     QStringList fnames;
     foreach (const Song &s, songList) {
         fnames.append(s.file);
@@ -319,7 +323,7 @@ QStringList AlbumsModel::filenames(const QModelIndexList &indexes) const
     return fnames;
 }
 
-QList<Song> AlbumsModel::songs(const QModelIndexList &indexes) const
+QList<Song> AlbumsModel::songs(const QModelIndexList &indexes, bool allowPlaylists) const
 {
     QList<Song> songs;
     foreach(QModelIndex index, indexes) {
@@ -327,11 +331,11 @@ QList<Song> AlbumsModel::songs(const QModelIndexList &indexes) const
 
         if (item->isAlbum()) {
             foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
-                if (!songs.contains(*s)) {
+                if ((/*allowPlaylists || */Song::Playlist!=s->type) && !songs.contains(*s)) {
                     songs << *s;
                 }
             }
-        } else if (!songs.contains(*static_cast<SongItem*>(item))) {
+        } else if ((allowPlaylists || Song::Playlist!=static_cast<SongItem*>(item)->type) && !songs.contains(*static_cast<SongItem*>(item))) {
             songs << *static_cast<SongItem*>(item);
         }
     }
@@ -341,7 +345,7 @@ QList<Song> AlbumsModel::songs(const QModelIndexList &indexes) const
 QMimeData * AlbumsModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    QStringList files=filenames(indexes);
+    QStringList files=filenames(indexes, true);
     PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, files);
     if (!MPDConnection::self()->getDetails().dir.isEmpty()) {
         QStringList paths;

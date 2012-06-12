@@ -38,6 +38,7 @@
 23. Add option to show artist images in library view.
 24. Dont allow selection to overlap tab-widget border lines in preferences
     dialog (Qt-only build).
+25. Show playlists in library and album views (requires MPD 0.17)
 
 0.7.1
 -----

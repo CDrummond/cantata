@@ -99,6 +99,9 @@ bool AlbumsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
                 return compare<0;
             }
         }
+         if (leftItem->type != rightItem->type) {
+            return leftItem->type < rightItem->type;
+        }
         if (leftItem->disc != rightItem->disc) {
             return leftItem->disc < rightItem->disc;
         }

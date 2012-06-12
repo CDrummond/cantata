@@ -39,6 +39,7 @@
 #include "mpdconnection.h"
 #include "network.h"
 #include "localize.h"
+#include "utils.h"
 #include <QtGui/QCommonStyle>
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
@@ -212,12 +213,15 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }
-        case MusicLibraryItem::Type_Song:   return QIcon::fromTheme("audio-x-generic");
+        case MusicLibraryItem::Type_Song: return QIcon::fromTheme(Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? "view-media-playlist" : "audio-x-generic");
         default: return QVariant();
         }
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
+            if (Song::Playlist==song->song().type) {
+                return song->song().title;
+            }
             if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
                 return song->song().artistSong();
             } else {
@@ -256,8 +260,10 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                 );
         case MusicLibraryItem::Type_Song: {
             return item->parentItem()->parentItem()->data()+QLatin1String("<br/>")+item->parentItem()->data()+QLatin1String("<br/>")+
-                   data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+
-                   QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
+                   data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+
+                   (Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type
+                        ? QString() : Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+QLatin1String("<br/>"))+
+                   QLatin1String("<small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
         }
         default: return QVariant();
         }
@@ -641,9 +647,9 @@ Qt::ItemFlags MusicLibraryModel::flags(const QModelIndex &index) const
     }
 }
 
-QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes) const
+QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes, bool allowPlaylists) const
 {
-    QList<Song> songList=songs(indexes);
+    QList<Song> songList=songs(indexes, allowPlaylists);
     QStringList fnames;
     foreach (const Song &s, songList) {
         fnames.append(s.file);
@@ -651,7 +657,17 @@ QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes) const
     return fnames;
 }
 
-QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
+static inline void addSong(const MusicLibraryItem *song, QList<Song> &songs, bool allowPlaylists)
+{
+    if (MusicLibraryItem::Type_Song==song->itemType() &&
+        (allowPlaylists || Song::Playlist!=static_cast<const MusicLibraryItemSong*>(song)->song().type) &&
+        !songs.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
+        static_cast<const MusicLibraryItemSong*>(song)->song().updateSize(MPDConnection::self()->getDetails().dir);
+        songs << static_cast<const MusicLibraryItemSong*>(song)->song();
+    }
+}
+
+QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowPlaylists) const
 {
     QList<Song> songs;
 
@@ -662,26 +678,17 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes) const
         case MusicLibraryItem::Type_Artist:
             foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                 foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                    if (MusicLibraryItem::Type_Song==song->itemType() && !songs.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                        static_cast<const MusicLibraryItemSong*>(song)->song().updateSize(MPDConnection::self()->getDetails().dir);
-                        songs << static_cast<const MusicLibraryItemSong*>(song)->song();
-                    }
+                    addSong(song, songs, false);
                 }
             }
             break;
         case MusicLibraryItem::Type_Album:
             foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                if (MusicLibraryItem::Type_Song==song->itemType() && !songs.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                    static_cast<const MusicLibraryItemSong*>(song)->song().updateSize(MPDConnection::self()->getDetails().dir);
-                    songs << static_cast<const MusicLibraryItemSong*>(song)->song();
-                }
+                addSong(song, songs, false);
             }
             break;
         case MusicLibraryItem::Type_Song:
-            if (!songs.contains(static_cast<const MusicLibraryItemSong*>(item)->song())) {
-                static_cast<const MusicLibraryItemSong*>(item)->song().updateSize(MPDConnection::self()->getDetails().dir);
-                songs << static_cast<const MusicLibraryItemSong*>(item)->song();
-            }
+            addSong(item, songs, allowPlaylists);
             break;
         default:
             break;
@@ -720,7 +727,7 @@ QList<Song> MusicLibraryModel::songs(const QStringList &filenames) const
 QMimeData *MusicLibraryModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    QStringList files=filenames(indexes);
+    QStringList files=filenames(indexes, true);
     PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, files);
     if (!MPDConnection::self()->getDetails().dir.isEmpty()) {
         QStringList paths;

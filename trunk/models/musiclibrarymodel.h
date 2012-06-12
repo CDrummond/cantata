@@ -53,8 +53,8 @@ public:
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    QStringList filenames(const QModelIndexList &indexes) const;
-    QList<Song> songs(const QModelIndexList &indexes) const;
+    QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists=false) const;
+    QList<Song> songs(const QModelIndexList &indexes, bool allowPlaylists=false) const;
     QList<Song> songs(const QStringList &filenames) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     const MusicLibraryItemRoot * root() const { return rootItem; }

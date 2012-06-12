@@ -139,7 +139,7 @@ void LibraryPage::clear()
     view->setLevel(0);
 }
 
-QStringList LibraryPage::selectedFiles() const
+QStringList LibraryPage::selectedFiles(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();
 
@@ -153,10 +153,10 @@ QStringList LibraryPage::selectedFiles() const
         mapped.append(proxy.mapToSource(idx));
     }
 
-    return MusicLibraryModel::self()->filenames(mapped);
+    return MusicLibraryModel::self()->filenames(mapped, allowPlaylists);
 }
 
-QList<Song> LibraryPage::selectedSongs() const
+QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
 {
     QModelIndexList selected = view->selectedIndexes();
 
@@ -170,12 +170,12 @@ QList<Song> LibraryPage::selectedSongs() const
         mapped.append(proxy.mapToSource(idx));
     }
 
-    return MusicLibraryModel::self()->songs(mapped);
+    return MusicLibraryModel::self()->songs(mapped, allowPlaylists);
 }
 
 void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace)
 {
-    QStringList files=selectedFiles();
+    QStringList files=selectedFiles(true);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

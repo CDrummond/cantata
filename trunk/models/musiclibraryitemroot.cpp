@@ -287,9 +287,13 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             foreach (const MusicLibraryItem *t, album->childItems()) {
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
                 writer.writeEmptyElement("Track");
-                writer.writeAttribute("name", track->song().title);
+                if (!track->song().title.isEmpty()) {
+                    writer.writeAttribute("name", track->song().title);
+                }
                 writer.writeAttribute("file", track->file());
-                writer.writeAttribute("time", QString::number(track->time()));
+                if (0!=track->time()) {
+                    writer.writeAttribute("time", QString::number(track->time()));
+                }
                 //Only write track number if it is set
                 if (track->track() != 0) {
                     writer.writeAttribute("track", QString::number(track->track()));
@@ -297,10 +301,10 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 if (track->disc() != 0) {
                     writer.writeAttribute("disc", QString::number(track->disc()));
                 }
-                if (track->song().artist!=artist->data()) {
+                if (!track->song().artist.isEmpty() && track->song().artist!=artist->data()) {
                     writer.writeAttribute("artist", track->song().artist);
                 }
-                if (track->song().albumartist!=artist->data()) {
+                if (!track->song().albumartist.isEmpty() && track->song().albumartist!=artist->data()) {
                     writer.writeAttribute("albumartist", track->song().albumartist);
                 }
 //                 writer.writeAttribute("id", QString::number(track->song().id));
@@ -311,6 +315,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                     writer.writeAttribute("album", track->song().album);
                 } else if (album->isMultipleArtists()) {
                     writer.writeAttribute("artist", track->song().artist);
+                }
+                if (Song::Playlist==track->song().type) {
+                    writer.writeAttribute("playlist", "true");
                 }
             }
             writer.writeEndElement();
@@ -389,54 +396,61 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
             else if (QLatin1String("Track")==element) {
                 song.title=attributes.value("name").toString();
                 song.file=attributes.value("file").toString();
-                if (!baseFolder.isEmpty() && song.file.startsWith(baseFolder)) {
-                    song.file=song.file.mid(baseFolder.length());
-                }
-                song.genre=attributes.value("genre").toString();
-                if (attributes.hasAttribute("artist")) {
-                    song.artist=attributes.value("artist").toString();
+                if (QLatin1String("true")==attributes.value("playlist").toString()) {
+                    song.type=Song::Playlist;
+                    songItem = new MusicLibraryItemSong(song, albumItem);
+                    albumItem->append(songItem);
+                    song.type=Song::Standard;
                 } else {
-                    song.artist=artistItem->data();
-                }
-                if (attributes.hasAttribute("albumartist")) {
-                    song.albumartist=attributes.value("albumartist").toString();
-                } else {
-                    song.albumartist=artistItem->data();
-                }
-
-                // Fix cache error - where MusicLibraryItemSong::data() was saved as name instead of song.name!!!!
-                if (!song.albumartist.isEmpty() && !song.artist.isEmpty() && song.albumartist!=song.artist &&
-                    song.title.startsWith(song.artist+QLatin1String(" - "))) {
-                    song.title=song.title.mid(song.artist.length()+3);
-                }
-
-                QString str=attributes.value("track").toString();
-                song.track=str.isEmpty() ? 0 : str.toUInt();
-                str=attributes.value("disc").toString();
-                song.disc=str.isEmpty() ? 0 : str.toUInt();
-                str=attributes.value("time").toString();
-                song.time=str.isEmpty() ? 0 : str.toUInt();
-//                 str=attributes.value("id").toString();
-//                 song.id=str.isEmpty() ? 0 : str.toUInt();
-
-                if (albumItem->isSingleTracks()) {
-                    str=attributes.value("album").toString();
-                    if (!str.isEmpty()) {
-                        song.album=str;
+                    if (!baseFolder.isEmpty() && song.file.startsWith(baseFolder)) {
+                        song.file=song.file.mid(baseFolder.length());
                     }
-                } else if (albumItem->isMultipleArtists()) {
-                    str=attributes.value("artist").toString();
-                    if (!str.isEmpty()) {
-                        song.artist=str;
+                    song.genre=attributes.value("genre").toString();
+                    if (attributes.hasAttribute("artist")) {
+                        song.artist=attributes.value("artist").toString();
+                    } else {
+                        song.artist=artistItem->data();
                     }
-                }
+                    if (attributes.hasAttribute("albumartist")) {
+                        song.albumartist=attributes.value("albumartist").toString();
+                    } else {
+                        song.albumartist=artistItem->data();
+                    }
 
-                song.fillEmptyFields();
-                songItem = new MusicLibraryItemSong(song, albumItem);
-                albumItem->append(songItem);
-                albumItem->addGenre(song.genre);
-                artistItem->addGenre(song.genre);
-                addGenre(song.genre);
+                    // Fix cache error - where MusicLibraryItemSong::data() was saved as name instead of song.name!!!!
+                    if (!song.albumartist.isEmpty() && !song.artist.isEmpty() && song.albumartist!=song.artist &&
+                        song.title.startsWith(song.artist+QLatin1String(" - "))) {
+                        song.title=song.title.mid(song.artist.length()+3);
+                    }
+
+                    QString str=attributes.value("track").toString();
+                    song.track=str.isEmpty() ? 0 : str.toUInt();
+                    str=attributes.value("disc").toString();
+                    song.disc=str.isEmpty() ? 0 : str.toUInt();
+                    str=attributes.value("time").toString();
+                    song.time=str.isEmpty() ? 0 : str.toUInt();
+    //                 str=attributes.value("id").toString();
+    //                 song.id=str.isEmpty() ? 0 : str.toUInt();
+
+                    if (albumItem->isSingleTracks()) {
+                        str=attributes.value("album").toString();
+                        if (!str.isEmpty()) {
+                            song.album=str;
+                        }
+                    } else if (albumItem->isMultipleArtists()) {
+                        str=attributes.value("artist").toString();
+                        if (!str.isEmpty()) {
+                            song.artist=str;
+                        }
+                    }
+
+                    song.fillEmptyFields();
+                    songItem = new MusicLibraryItemSong(song, albumItem);
+                    albumItem->append(songItem);
+                    albumItem->addGenre(song.genre);
+                    artistItem->addGenre(song.genre);
+                    addGenre(song.genre);
+                }
             }
         }
     }

@@ -30,7 +30,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtCore/QDir>
 #include <QtCore/qglobal.h>
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <QtGui/QDesktopServices>
 #endif
 #ifdef ENABLE_KDE_SUPPORT
@@ -40,7 +40,7 @@ K_GLOBAL_STATIC(Network, instance)
 
 QString Network::cacheDir(const QString &sub, bool create)
 {
-    #ifdef Q_WS_WIN
+    #ifdef Q_OS_WIN
     QString dir = QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+"/";
     #else
     QString env = qgetenv("XDG_CACHE_HOME");

@@ -30,7 +30,7 @@ ExternalSettings::ExternalSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    #ifdef Q_WS_WIN
+    #ifdef Q_OS_WIN
     mprisLabel->setVisible(false);
     mpris->setVisible(false);
     dockManagerLabel->setVisible(false);
@@ -42,7 +42,7 @@ void ExternalSettings::load()
 {
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
     systemTrayPopup->setChecked(Settings::self()->showPopups());
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     mpris->setChecked(Settings::self()->mpris());
     dockManager->setChecked(Settings::self()->dockManager());
     #endif
@@ -52,7 +52,7 @@ void ExternalSettings::save()
 {
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     Settings::self()->saveMpris(mpris->isChecked());
     Settings::self()->saveDockManager(dockManager->isChecked());
     #endif

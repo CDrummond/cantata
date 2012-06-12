@@ -33,7 +33,7 @@
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 #include <QtGui/QIcon>
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <QtGui/QDesktopServices>
 #endif
 #include "localize.h"
@@ -53,7 +53,7 @@ static bool iconIsValid(const QString &icon)
 
 static QString configDir()
 {
-    #ifdef Q_WS_WIN
+    #ifdef Q_OS_WIN
     QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/";
     #else
     QString env = qgetenv("XDG_CONFIG_HOME");

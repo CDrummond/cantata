@@ -94,7 +94,7 @@
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 #include "timeslider.h"
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include "mpris.h"
 #include "dockmanager.h"
 #include "dynamicpage.h"
@@ -330,7 +330,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_WEBKIT
     , infoNeedsUpdating(false)
     #endif
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     , dock(0)
     , mpris(0)
     #endif
@@ -346,7 +346,7 @@ MainWindow::MainWindow(QWidget *parent)
     , phononStream(0)
     #endif
 {
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     new CantataAdaptor(this);
     QDBusConnection::sessionBus().registerObject("/cantata", this);
     #endif
@@ -508,7 +508,7 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsTabAction = actionCollection()->addAction("showplayliststab");
     playlistsTabAction->setText(i18n("Playlists"));
 
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     dynamicTabAction = actionCollection()->addAction("showdynamictab");
     dynamicTabAction->setText(i18n("Dynamic"));
     #endif
@@ -596,7 +596,7 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
     playlistsTabAction = new QAction(tr("Playlists"), this);
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     dynamicTabAction = new QAction(tr("Dynamic"), this);
     #endif
     lyricsTabAction = new QAction(tr("Lyrics"), this);
@@ -611,7 +611,7 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
     foldersTabAction->setShortcut(Qt::AltModifier+(pageKey++));
     playlistsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     dynamicTabAction->setShortcut(Qt::AltModifier+(pageKey++));
     #endif
     streamsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
@@ -707,7 +707,7 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
     foldersTabAction->setIcon(Icon("inode-directory"));
     playlistsTabAction->setIcon(Icon("view-media-playlist"));
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     dynamicTabAction->setIcon(Icon("media-playlist-shuffle"));
     #endif
     lyricsTabAction->setIcon(Icon("view-media-lyrics"));
@@ -753,7 +753,7 @@ MainWindow::MainWindow(QWidget *parent)
     albumsPage = new AlbumsPage(this);
     folderPage = new FolderPage(this);
     playlistsPage = new PlaylistsPage(this);
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     dynamicPage = new DynamicPage(this);
     #endif
     streamsPage = new StreamsPage(this);
@@ -787,7 +787,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(albumsPage, albumsTabAction->icon(), albumsTabAction->text(), !hiddenPages.contains(albumsPage->metaObject()->className()));
     tabWidget->AddTab(folderPage, foldersTabAction->icon(), foldersTabAction->text(), !hiddenPages.contains(folderPage->metaObject()->className()));
     tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text(), !hiddenPages.contains(playlistsPage->metaObject()->className()));
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     tabWidget->AddTab(dynamicPage, dynamicTabAction->icon(), dynamicTabAction->text(), !hiddenPages.contains(dynamicPage->metaObject()->className()));
     #endif
     tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text(), !hiddenPages.contains(streamsPage->metaObject()->className()));
@@ -966,7 +966,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(stateChanged(bool)), SLOT(mpdConnectionStateChanged(bool)));
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     #endif
@@ -1017,7 +1017,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
     connect(playlistsTabAction, SIGNAL(activated()), this, SLOT(showPlaylistsTab()));
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     connect(dynamicTabAction, SIGNAL(activated()), this, SLOT(showDynamicTab()));
     #endif
     connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
@@ -1095,7 +1095,7 @@ MainWindow::MainWindow(QWidget *parent)
     updateConnectionsMenu();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     playlistsPage->refresh();
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     toggleMpris();
     if (Settings::self()->dockManager()) {
         QTimer::singleShot(250, this, SLOT(toggleDockManager()));
@@ -1105,7 +1105,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     if (dock) {
         dock->setIcon(QString());
     }
@@ -1143,7 +1143,7 @@ MainWindow::~MainWindow()
     #endif
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     if (Settings::self()->stopDynamizerOnExit() || Settings::self()->stopOnExit()) {
         Dynamic::self()->stop();
     }
@@ -1246,7 +1246,7 @@ void MainWindow::songLoaded()
 
 void MainWindow::showError(const QString &message, bool showActions)
 {
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     if (QLatin1String("NO_SONGS")==message) {
         messageWidget->setError(i18n("Failed to locate any songs matching the dynamic playlist rules."));
     } else
@@ -1361,7 +1361,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         playQueueModel.clear();
         lyricsPage->text->clear();
         serverInfoPage->clear();
-        #ifndef Q_WS_WIN
+        #ifndef Q_OS_WIN
         Dynamic::self()->stop();
         #endif
         showInformation(i18n("Connecting to %1").arg(details.description()));
@@ -1435,7 +1435,7 @@ void MainWindow::checkMpdDir()
     case PAGE_ALBUMS:    albumsPage->controlActions();     break;
     case PAGE_FOLDERS:   folderPage->controlActions();     break;
     case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
     #endif
     case PAGE_STREAMS:   streamsPage->controlActions();    break;
@@ -1551,7 +1551,7 @@ void MainWindow::readSettings()
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif
     setupTrayIcon();
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     toggleDockManager();
     toggleMpris();
     #endif
@@ -2630,7 +2630,7 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_PLAYLISTS:
         playlistsPage->controlActions();
         break;
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     case PAGE_DYNAMIC:
         dynamicPage->controlActions();
         break;
@@ -2716,7 +2716,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     } else if (QLatin1String("playlists")==p) {
         showTab(MainWindow::PAGE_PLAYLISTS);
     }
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     else if (QLatin1String("dynamic")==p) {
         showTab(MainWindow::PAGE_DYNAMIC);
     }
@@ -2740,7 +2740,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     }
 }
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 void MainWindow::dynamicStatus(const QString &message)
 {
     Dynamic::self()->helperMessage(message);
@@ -2775,7 +2775,7 @@ void MainWindow::focusTabSearch()
     } else if (playlistsPage->isVisible()) {
         playlistsPage->focusSearch();
     }
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     else if (dynamicPage->isVisible()) {
         dynamicPage->focusSearch();
     }
@@ -2811,7 +2811,7 @@ void MainWindow::collapseAll()
     }
 }
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 void MainWindow::toggleMpris()
 {
     bool on=Settings::self()->mpris();

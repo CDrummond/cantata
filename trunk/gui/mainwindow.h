@@ -68,7 +68,7 @@ class LibraryPage;
 class AlbumsPage;
 class FolderPage;
 class PlaylistsPage;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 class DynamicPage;
 #endif
 class LyricsPage;
@@ -80,7 +80,7 @@ class DevicesPage;
 #endif
 class QThread;
 class QAbstractItemView;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 class DockManager;
 class Mpris;
 #endif
@@ -172,7 +172,7 @@ public:
         PAGE_ALBUMS,
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
-        #ifndef Q_WS_WIN
+        #ifndef Q_OS_WIN
         PAGE_DYNAMIC,
         #endif
         PAGE_STREAMS,
@@ -230,7 +230,7 @@ public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
     void showInformation(const QString &message);
     void showPage(const QString &page, bool focusSearch);
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     void dynamicStatus(const QString &message);
     #endif
 
@@ -297,7 +297,7 @@ private Q_SLOTS:
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     void showDynamicTab() { showTab(PAGE_DYNAMIC); }
     #endif
     void showStreamsTab() { showTab(PAGE_STREAMS); }
@@ -309,7 +309,7 @@ private Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
     void showDevicesTab() { showTab(PAGE_DEVICES); }
     #endif
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     void toggleMpris();
     void toggleDockManager();
     #endif
@@ -396,7 +396,7 @@ private:
     Action *albumsTabAction;
     Action *foldersTabAction;
     Action *playlistsTabAction;
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     Action *dynamicTabAction;
     #endif
     Action *lyricsTabAction;
@@ -448,7 +448,7 @@ private:
     AlbumsPage *albumsPage;
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     DynamicPage *dynamicPage;
     #endif
     LyricsPage *lyricsPage;
@@ -461,7 +461,7 @@ private:
     #endif
     ServerInfoPage *serverInfoPage;
     QThread *mpdThread;
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     DockManager *dock;
     Mpris *mpris;
     #endif
@@ -499,7 +499,7 @@ private:
     friend class AlbumsPage;
     friend class FolderPage;
     friend class PlaylistsPage;
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     friend class DynamicPage;
     #endif
     friend class StreamsPage;

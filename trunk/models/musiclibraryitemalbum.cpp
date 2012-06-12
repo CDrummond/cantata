@@ -78,6 +78,7 @@ void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
             delete theDefaultIcon;
             theDefaultIcon=0;
         }
+        MusicLibraryItemArtist::clearDefaultCover();
         coverSize=size;
     }
 }
@@ -120,7 +121,7 @@ bool MusicLibraryItemAlbum::setCover(const QImage &img) const
 
 const QPixmap & MusicLibraryItemAlbum::cover()
 {
-    if (m_coverIsDefault) {
+    if (m_coverIsDefault && theDefaultIcon) {
         return *theDefaultIcon;
     }
 

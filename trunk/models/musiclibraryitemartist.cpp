@@ -37,6 +37,14 @@
 
 static QPixmap *theDefaultIcon=0;
 
+void MusicLibraryItemArtist::clearDefaultCover()
+{
+    if (theDefaultIcon) {
+        delete theDefaultIcon;
+        theDefaultIcon=0;
+    }
+}
+
 static QString songAlbum(const Song &s)
 {
     if (Song::Standard==s.type) {
@@ -73,7 +81,7 @@ bool MusicLibraryItemArtist::setCover(const QImage &img) const
 
 const QPixmap & MusicLibraryItemArtist::cover()
 {
-    if (m_coverIsDefault) {
+    if (m_coverIsDefault && theDefaultIcon) {
         return *theDefaultIcon;
     }
 

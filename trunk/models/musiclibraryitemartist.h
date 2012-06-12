@@ -59,6 +59,7 @@ public:
         return Type_Artist;
     }
 
+    static void clearDefaultCover();
     bool setCover(const QImage &img) const;
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }

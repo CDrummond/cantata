@@ -45,7 +45,7 @@ namespace Utils
     extern QString changeExtension(const QString &file, const QString &extension);
     extern void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
     extern void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     extern gid_t getAudioGroupId(); // Return 0 if user is not in audio group, otherwise returns audio group ID
     #endif
     extern void setFilePerms(const QString &file);

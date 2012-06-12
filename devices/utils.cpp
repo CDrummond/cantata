@@ -35,7 +35,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include <grp.h>
 #include <pwd.h>
 #endif
@@ -193,7 +193,7 @@ void Utils::cleanDir(const QString &dir, const QString &base, const QString &cov
     }
 }
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 gid_t Utils::getAudioGroupId()
 {
     static bool init=false;
@@ -256,7 +256,7 @@ void Utils::setFilePerms(const QString &file)
  */
 bool Utils::createDir(const QString &dir, const QString &base)
 {
-    #ifdef Q_WS_WIN
+    #ifdef Q_OS_WIN
     Q_UNUSED(base);
     #else
     //
@@ -269,7 +269,7 @@ bool Utils::createDir(const QString &dir, const QString &base)
     #else
     bool status(QDir(dir).mkpath(dir));
     #endif
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
     if (status && 0!=gid && dir.startsWith(base)) {
         QStringList parts=dir.mid(base.length()).split('/');
         QString d(base);

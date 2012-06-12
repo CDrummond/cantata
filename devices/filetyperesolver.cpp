@@ -141,7 +141,7 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
         result = new TagLib::ASF::File(fileName, readProperties, propertiesStyle);
     }
 
-// #ifndef Q_WS_WIN
+// #ifndef Q_OS_WIN
 //      if( !result )
 //          qDebug() << "kmimetype filetype guessing failed for" << fileName;
 // #endif

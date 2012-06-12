@@ -7,10 +7,10 @@
     don't expect much!). See README.
  4. Add Track Organizer dialog to Qt-only build.
  5. Disable 'Edit Tags' and 'Organize Files' actions if MPD dir is not readable.
- 6. No need to check if playqueue song exists in MPD dir whe performing a
+ 6. No need to check if playqueue song exists in MPD dir when performing a
     'locate in library'. Its possible that the configured MPD dir does not
     exist - but 'locate in library' should still work.
- 7. Implement a basic spinner widgets for item views in Qt-only builds.
+ 7. Implement a basic spinner widget for item views in Qt-only builds.
  8. Make Qt-only builds single instance apps, as per KDE build.
  9. Add commandline file loading support to Qt-only builds.
 10. Remove ThreadWeaver usage, and add ReplayGain calculation support to
@@ -23,7 +23,7 @@
     their QModelIndex.
 14. Add support for multiple MPD servers. Only 1 is ever active. If there
     are 2 or more servers defined, the settings menu will contain a sub menu
-    allow quick access to each server.
+    to allow quick access to each server.
 15. If an MPD connection has more than 1 output, show an 'Outputs' sub menu
     in the settings menu.
 16. Disable volume control if MPD returns a volume of -1 - as it does when the
@@ -36,13 +36,13 @@
 21. Enable mouse-tracking for all list/tree views.
 22. Allow Icon/List for library view.
 23. Add option to show artist images in library view.
-24. Dont allow selection to overlap tab-widget border lines in preferences
+24. Dont allow selection to overlap tab-widget border-lines in preferences
     dialog (Qt-only build).
 25. Show playlists in library and album views (requires MPD 0.17)
 
 0.7.1
 -----
-1. When saving track name to cache, save the actual name, no the displayed
+1. When saving track name to cache, save the actual name, not the displayed
    name.
 2. Attempt to fix errors in cache where the displayed name was saved.
 3. Fix tag-editor's 'Various Artists' workaround when all tracks is selected.
@@ -54,9 +54,9 @@
 7. Have cantata-dynamic helper script send a dbus message when it starts and
    stops - so that cantata main window can show the current status if the helper
    is started externally.
-8. When 'Return'/'Enter' is pressed when play queue has focus, start playing
-   from the first selected song.
-9. Fix Qt-only install failure (cannot find RUNTIME)
+8. If 'Return'/'Enter' is pressed when play queue has focus, start playing from
+   the first selected song.
+9. Fix Qt-only install failure (cannot find RUNTIME).
 
 0.7.0
 -----

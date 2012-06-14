@@ -330,9 +330,14 @@ QList<Song> AlbumsModel::songs(const QModelIndexList &indexes, bool allowPlaylis
         Item *item=static_cast<Item *>(index.internalPointer());
 
         if (item->isAlbum()) {
-            foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
-                if ((/*allowPlaylists || */Song::Playlist!=s->type) && !songs.contains(*s)) {
-                    songs << *s;
+            const SongItem *cue=allowPlaylists ? static_cast<AlbumItem*>(item)->getCueFile() : 0;
+            if (cue) {
+                songs << *cue;
+            } else {
+                foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
+                    if ((/*allowPlaylists || */Song::Playlist!=s->type) && !songs.contains(*s)) {
+                        songs << *s;
+                    }
                 }
             }
         } else if ((allowPlaylists || Song::Playlist!=static_cast<SongItem*>(item)->type) && !songs.contains(*static_cast<SongItem*>(item))) {
@@ -593,4 +598,21 @@ void AlbumsModel::AlbumItem::getCover(bool urgent)
         s.file=firstSong->file;
         Covers::self()->requestCover(s, urgent);
     }
+}
+
+const AlbumsModel::SongItem *AlbumsModel::AlbumItem::getCueFile() const
+{
+    if (2==songs.count()) {
+        const SongItem *a=songs.at(0);
+        const SongItem *b=songs.at(1);
+
+        if ( ( (Song::Playlist==a->type && Song::Playlist!=b->type) ||
+               (Song::Playlist!=a->type && Song::Playlist==b->type) ) &&
+             ( (Song::Playlist==a->type && a->file.endsWith(".cue", Qt::CaseInsensitive)) ||
+               (Song::Playlist==b->type && b->file.endsWith(".cue", Qt::CaseInsensitive)) ) ) {
+            return Song::Playlist==a->type ? a : b;
+        }
+    }
+
+    return 0;
 }

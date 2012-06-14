@@ -677,16 +677,27 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowP
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist:
             foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
+                const MusicLibraryItemSong *cue=allowPlaylists ? static_cast<const MusicLibraryItemAlbum *>(album)->getCueFile() : 0;
+                if (cue) {
+                    addSong(cue, songs, true);
+                } else {
+                    foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
+                        addSong(song, songs, false);
+                    }
+                }
+            }
+            break;
+        case MusicLibraryItem::Type_Album: {
+            const MusicLibraryItemSong *cue=allowPlaylists ? static_cast<const MusicLibraryItemAlbum *>(item)->getCueFile() : 0;
+            if (cue) {
+                addSong(cue, songs, true);
+            } else {
+                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                     addSong(song, songs, false);
                 }
             }
             break;
-        case MusicLibraryItem::Type_Album:
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                addSong(song, songs, false);
-            }
-            break;
+        }
         case MusicLibraryItem::Type_Song:
             addSong(item, songs, allowPlaylists);
             break;

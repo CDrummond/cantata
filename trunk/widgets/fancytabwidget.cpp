@@ -420,12 +420,14 @@ void FancyTabBar::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void FancyTabBar::addTab(const QIcon& icon, const QString& label) {
+void FancyTabBar::addTab(const QIcon& icon, const QString& label, const QString &tt) {
   FancyTab *tab = new FancyTab(this);
   tab->icon = icon;
   tab->text = label;
   m_tabs.append(tab);
-  if (!m_showText) {
+  if (!tt.isEmpty()) {
+      tab->setToolTip(tt);
+  } else if (!m_showText) {
       tab->setToolTip(label);
   }
   qobject_cast<QVBoxLayout*>(layout())->insertWidget(layout()->count()-1, tab);
@@ -570,9 +572,9 @@ FancyTabWidget::FancyTabWidget(QWidget* parent, bool allowContext, bool drawBord
   setLayout(main_layout);
 }
 
-void FancyTabWidget::AddTab(QWidget* tab, const QIcon& icon, const QString& label, bool enabled) {
+void FancyTabWidget::AddTab(QWidget* tab, const QIcon& icon, const QString& label, const QString &tt, bool enabled) {
   stack_->addWidget(tab);
-  items_ << Item(icon, label, enabled);
+  items_ << Item(icon, label, tt, enabled);
   setMinimumWidth(128);
 }
 
@@ -743,7 +745,7 @@ void FancyTabWidget::SetMode(Mode mode) {
         if ((*it).type_ == Item::Type_Spacer)
           bar->addSpacer((*it).spacer_size_);
         else
-          bar->addTab((*it).tab_icon_, (*it).tab_label_);
+          bar->addTab((*it).tab_icon_, (*it).tab_label_, (*it).tab_tooltip_);
         (*it).index_=index++;
       }
 
@@ -945,8 +947,7 @@ void FancyTabWidget::SetMode()
     }
 }
 
-void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons,
-                                bool fancy) {
+void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy) {
   QTabBar* bar = new QTabBar(this);
   bar->setShape(shape);
   bar->setDocumentMode(true);
@@ -989,7 +990,11 @@ void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons,
     else if (text)
       tab_id = bar->addTab(label);
 
-    bar->setTabToolTip(tab_id, (*it).tab_label_);
+    if (!(*it).tab_tooltip_.isEmpty()) {
+      bar->setTabToolTip(tab_id, (*it).tab_tooltip_);
+    } else if (!text) {
+      bar->setTabToolTip(tab_id, (*it).tab_label_);
+    }
     (*it).index_=index++;
   }
 

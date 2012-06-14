@@ -1,6 +1,6 @@
 0.8.0
 -----
- 1. Add ability to play MPD HTTP output strem via phonon. Thanks to Marcel
+ 1. Add ability to play MPD HTTP output stream via phonon. Thanks to Marcel
     Bosling for the idea and initial patch.
  2. Implement Ctrl+MouseWheel zoom for Qt-only info view.
  3. Initial attempt at a Windows port. (This is my 1st EVER windows build, so
@@ -41,6 +41,9 @@
 25. Show playlists in library and album views (requires MPD 0.17)
 26. Update ultimate_providers.xml to match Clementine 1.0.1
 27. When clicking on a label associated with a combobox, show the combo popup.
+28. Fix spacing issues of compact interface with some styles. If th estyle
+    (such as the Qt Gtk style) returns -1 for its spacing, assume a spacing of
+    4 pixels instead.
 
 0.7.1
 -----

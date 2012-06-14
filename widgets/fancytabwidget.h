@@ -114,7 +114,7 @@ public:
     QSize sizeHint() const;
     QSize minimumSizeHint() const;
 
-    void addTab(const QIcon &icon, const QString &label);
+    void addTab(const QIcon &icon, const QString &label, const QString &tt);
     void addSpacer(int size = 40);
     void removeTab(int index) {
         FancyTab *tab = m_tabs.takeAt(index);
@@ -179,8 +179,8 @@ public:
   };
 
   struct Item {
-    Item(const QIcon& icon, const QString& label, bool enabled)
-      : type_(Type_Tab), tab_label_(label), tab_icon_(icon), spacer_size_(0), enabled_(enabled), index_(-1) {}
+    Item(const QIcon& icon, const QString& label, const QString &tt, bool enabled)
+      : type_(Type_Tab), tab_label_(label), tab_tooltip_(tt), tab_icon_(icon), spacer_size_(0), enabled_(enabled), index_(-1) {}
     Item(int size) : type_(Type_Spacer), spacer_size_(size), enabled_(true), index_(-1) {}
 
     enum Type {
@@ -190,13 +190,14 @@ public:
 
     Type type_;
     QString tab_label_;
+    QString tab_tooltip_;
     QIcon tab_icon_;
     int spacer_size_;
     bool enabled_;
     int index_;
   };
 
-  void AddTab(QWidget *tab, const QIcon &icon, const QString &label, bool enabled=true);
+  void AddTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
   void AddSpacer(int size = 40);
   void SetBackgroundPixmap(const QPixmap& pixmap);
 

@@ -310,6 +310,20 @@ bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
+static int nextKey(int &key) {
+    int k=key;
+
+    if (Qt::Key_0==key) {
+        key=Qt::Key_A;
+    } else {
+        ++key;
+        if (Qt::Key_Colon==key) {
+            key=Qt::Key_0;
+        }
+    }
+    return k;
+}
+
 MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     : KXmlGuiWindow(parent)
@@ -607,22 +621,22 @@ MainWindow::MainWindow(QWidget *parent)
     serverInfoTabAction = new QAction(tr("Server Info"), this);
     #endif // ENABLE_KDE_SUPPORT
     int pageKey=Qt::Key_1;
-    libraryTabAction->setShortcut(Qt::AltModifier+(pageKey++));
-    albumsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
-    foldersTabAction->setShortcut(Qt::AltModifier+(pageKey++));
-    playlistsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    libraryTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    albumsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    foldersTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    playlistsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #ifndef Q_OS_WIN
-    dynamicTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    dynamicTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif
-    streamsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
-    lyricsTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    streamsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    lyricsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
 
     #ifdef ENABLE_WEBKIT
-    infoTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    infoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_WEBKIT
-    serverInfoTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    serverInfoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setShortcut(Qt::AltModifier+(pageKey++));
+    devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
 
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
@@ -783,21 +797,24 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
-    tabWidget->AddTab(libraryPage, libraryTabAction->icon(), libraryTabAction->text(), !hiddenPages.contains(libraryPage->metaObject()->className()));
-    tabWidget->AddTab(albumsPage, albumsTabAction->icon(), albumsTabAction->text(), !hiddenPages.contains(albumsPage->metaObject()->className()));
-    tabWidget->AddTab(folderPage, foldersTabAction->icon(), foldersTabAction->text(), !hiddenPages.contains(folderPage->metaObject()->className()));
-    tabWidget->AddTab(playlistsPage, playlistsTabAction->icon(), playlistsTabAction->text(), !hiddenPages.contains(playlistsPage->metaObject()->className()));
+
+    #define TAB_ACTION(A) A->icon(), A->text(), A->text()+"<br/><small><i>"+A->shortcut().toString()+"</i></small>"
+
+    tabWidget->AddTab(libraryPage, TAB_ACTION(libraryTabAction), !hiddenPages.contains(libraryPage->metaObject()->className()));
+    tabWidget->AddTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
+    tabWidget->AddTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
+    tabWidget->AddTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     #ifndef Q_OS_WIN
-    tabWidget->AddTab(dynamicPage, dynamicTabAction->icon(), dynamicTabAction->text(), !hiddenPages.contains(dynamicPage->metaObject()->className()));
+    tabWidget->AddTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
     #endif
-    tabWidget->AddTab(streamsPage, streamsTabAction->icon(), streamsTabAction->text(), !hiddenPages.contains(streamsPage->metaObject()->className()));
-    tabWidget->AddTab(lyricsPage, lyricsTabAction->icon(), lyricsTabAction->text(), !hiddenPages.contains(lyricsPage->metaObject()->className()));
+    tabWidget->AddTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
+    tabWidget->AddTab(lyricsPage, TAB_ACTION(lyricsTabAction), !hiddenPages.contains(lyricsPage->metaObject()->className()));
     #ifdef ENABLE_WEBKIT
-    tabWidget->AddTab(infoPage, infoTabAction->icon(), infoTabAction->text(), !hiddenPages.contains(infoPage->metaObject()->className()));
+    tabWidget->AddTab(infoPage, TAB_ACTION(infoTabAction), !hiddenPages.contains(infoPage->metaObject()->className()));
     #endif
-    tabWidget->AddTab(serverInfoPage, serverInfoTabAction->icon(), serverInfoTabAction->text(), !hiddenPages.contains(serverInfoPage->metaObject()->className()));
+    tabWidget->AddTab(serverInfoPage, TAB_ACTION(serverInfoTabAction), !hiddenPages.contains(serverInfoPage->metaObject()->className()));
     #ifdef ENABLE_DEVICES_SUPPORT
-    tabWidget->AddTab(devicesPage, devicesTabAction->icon(), devicesTabAction->text(), !hiddenPages.contains(devicesPage->metaObject()->className()));
+    tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     copyToDeviceAction->setVisible(DevicesModel::self()->isEnabled());
     #endif
@@ -1475,7 +1492,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
                 act->setData(o.id);
                 act->setCheckable(true);
                 act->setChecked(o.enabled);
-                act->setShortcut(Qt::MetaModifier+(i++));
+                act->setShortcut(Qt::MetaModifier+nextKey(i));
             }
         } else {
             foreach (const Output &o, outputs) {
@@ -1519,7 +1536,7 @@ void MainWindow::updateConnectionsMenu()
                 act->setCheckable(true);
                 act->setChecked(d.name==current);
                 act->setActionGroup(connectionsGroup);
-                act->setShortcut(Qt::ControlModifier+(i++));
+                act->setShortcut(Qt::ControlModifier+nextKey(i));
             }
         }
     }

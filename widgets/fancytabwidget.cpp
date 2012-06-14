@@ -55,6 +55,11 @@
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QSignalMapper>
 
+static inline bool isGtkStyle()
+{
+    return QApplication::style()->inherits("QGtkStyle");
+}
+
 using namespace Core;
 using namespace Internal;
 
@@ -148,7 +153,7 @@ void FancyTabProxyStyle::drawControl(
     styleOpt.showDecorationSelected=true;
     bool drawBgnd=true;
 
-    if (!selected) {
+    if (!selected && drawBgnd) {
         const QString fader_key = "tab_" + text + "_fader";
         const QString animation_key = "tab_" + text + "_animation";
 
@@ -181,7 +186,7 @@ void FancyTabProxyStyle::drawControl(
             }
         }
 
-        if (fader<1) {
+        if (fader<1 || (50!=fader && isGtkStyle())) {
             drawBgnd=false;
         } else {
             QColor col(styleOpt.palette.highlight().color());
@@ -346,14 +351,15 @@ void FancyTabBar::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
     QPainter p(this);
+    bool gtkStyle=isGtkStyle();
 
     for (int i = 0; i < count(); ++i)
         if (i != currentIndex())
-            paintTab(&p, i);
+            paintTab(&p, i, gtkStyle);
 
     // paint active tab last, since it overlaps the neighbors
     if (currentIndex() != -1)
-        paintTab(&p, currentIndex());
+        paintTab(&p, currentIndex(), gtkStyle);
 }
 
 void FancyTab::enterEvent(QEvent*)
@@ -430,7 +436,7 @@ void FancyTabBar::addSpacer(int size) {
       new QSpacerItem(0, size, QSizePolicy::Fixed, QSizePolicy::Maximum));
 }
 
-void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
+void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
 {
     if (!validIndex(tabIndex)) {
         qWarning("invalid index");
@@ -452,12 +458,12 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex) const
     styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
     styleOpt.showDecorationSelected=true;
     bool drawBgnd=true;
-    if (!selected) {
-        int fader=int(m_tabs[tabIndex]->fader());
 
-        if (fader<1) {
+    if (!selected && drawBgnd) {
+        int fader=int(m_tabs[tabIndex]->fader());
+        if (fader<1 || (gtkStyle && 50!=fader)) {
             drawBgnd=false;
-        } else {
+        } else  {
             QColor col(styleOpt.palette.highlight().color());
             col.setAlpha(fader);
             styleOpt.palette.setColor(styleOpt.palette.currentColorGroup(), QPalette::Highlight, col);

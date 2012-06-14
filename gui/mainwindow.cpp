@@ -1469,11 +1469,13 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
             menu->clear();
             QList<Output> out=outputs;
             qSort(out);
+            int i=Qt::Key_1;
             foreach (const Output &o, out) {
                 QAction *act=menu->addAction(o.name, this, SLOT(toggleOutput()));
                 act->setData(o.id);
                 act->setCheckable(true);
                 act->setChecked(o.enabled);
+                act->setShortcut(Qt::MetaModifier+(i++));
             }
         } else {
             foreach (const Output &o, outputs) {
@@ -1510,12 +1512,14 @@ void MainWindow::updateConnectionsMenu()
             menu->clear();
             qSort(connections);
             QString current=Settings::self()->currentConnection();
+            int i=Qt::Key_1;
             foreach (const MPDConnectionDetails &d, connections) {
                 QAction *act=menu->addAction(d.name.isEmpty() ? i18n("Default") : d.name, this, SLOT(changeConnection()));
                 act->setData(d.name);
                 act->setCheckable(true);
                 act->setChecked(d.name==current);
                 act->setActionGroup(connectionsGroup);
+                act->setShortcut(Qt::ControlModifier+(i++));
             }
         }
     }

@@ -2436,9 +2436,12 @@ void MainWindow::togglePlayQueue()
         lastMax=isMaximized();
         expandedSize=size();
         int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
+        if (spacing<0) {
+            spacing=4;
+        }
         // For some reason height is always larger than it needs to be - so fix this to cover height +4
-        compactHeight=qMax(qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height())+
-                           songTimeElapsedLabel->height()+positionSlider->height()+(spacing*3),
+        compactHeight=qMax(qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+
+                           songTimeElapsedLabel->height()+positionSlider->height()+(spacing*2),
                            coverWidget->height()+spacing);
     } else {
         collapsedSize=size();

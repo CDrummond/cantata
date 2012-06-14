@@ -243,3 +243,20 @@ bool MusicLibraryItemAlbum::detectIfIsMultipleArtists()
     }
     return Song::MultipleArtists==m_type;
 }
+
+const MusicLibraryItemSong * MusicLibraryItemAlbum::getCueFile() const
+{
+    if (Song::Standard==m_type && 2==m_childItems.count()) {
+        const MusicLibraryItemSong *a=static_cast<const MusicLibraryItemSong *>(m_childItems.at(0));
+        const MusicLibraryItemSong *b=static_cast<const MusicLibraryItemSong *>(m_childItems.at(1));
+
+        if ( ( (Song::Playlist==a->song().type && Song::Playlist!=b->song().type) ||
+               (Song::Playlist!=a->song().type && Song::Playlist==b->song().type) ) &&
+             ( (Song::Playlist==a->song().type && a->song().file.endsWith(".cue", Qt::CaseInsensitive)) ||
+               (Song::Playlist==b->song().type && b->song().file.endsWith(".cue", Qt::CaseInsensitive)) ) ) {
+            return Song::Playlist==a->song().type ? a : b;
+        }
+    }
+
+    return 0;
+}

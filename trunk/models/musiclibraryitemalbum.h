@@ -82,6 +82,8 @@ public:
         return Type_Album;
     }
 
+    const MusicLibraryItemSong * getCueFile() const;
+
 private:
     quint32 m_year;
     quint32 m_totalTime;

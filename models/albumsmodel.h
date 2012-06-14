@@ -86,6 +86,7 @@ public:
         quint32 totalTime();
         void getCover(bool urgent);
         bool isSingleTracks() const { return Song::SingleTracks==type; }
+        const SongItem *getCueFile() const;
         QString artist;
         QString album;
         QString name;

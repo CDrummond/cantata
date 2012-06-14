@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>437</width>
-    <height>194</height>
+    <width>438</width>
+    <height>292</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,90 +29,131 @@
       <attribute name="title">
        <string>Library</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout">
-       <item row="0" column="0">
-        <widget class="BuddyLabel" name="label">
-         <property name="text">
-          <string>Style:</string>
-         </property>
-         <property name="buddy">
-          <cstring>libraryView</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="libraryView"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="BuddyLabel" name="label_5b">
-         <property name="text">
-          <string>Covers:</string>
-         </property>
-         <property name="buddy">
-          <cstring>libraryCoverSize</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="libraryCoverSize">
-         <item>
-          <property name="text">
-           <string>None</string>
-          </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QFormLayout" name="formLayout">
+         <item row="0" column="0">
+          <widget class="BuddyLabel" name="label">
+           <property name="text">
+            <string>Style:</string>
+           </property>
+           <property name="buddy">
+            <cstring>libraryView</cstring>
+           </property>
+          </widget>
          </item>
-         <item>
-          <property name="text">
-           <string>Small</string>
-          </property>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="libraryView"/>
          </item>
-         <item>
-          <property name="text">
-           <string>Medium</string>
-          </property>
+         <item row="1" column="0">
+          <widget class="BuddyLabel" name="label_5b">
+           <property name="text">
+            <string>Covers:</string>
+           </property>
+           <property name="buddy">
+            <cstring>libraryCoverSize</cstring>
+           </property>
+          </widget>
          </item>
-         <item>
-          <property name="text">
-           <string>Large</string>
-          </property>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="libraryCoverSize">
+           <item>
+            <property name="text">
+             <string>None</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Small</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Medium</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Large</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Extra Large</string>
+            </property>
+           </item>
+          </widget>
          </item>
-         <item>
-          <property name="text">
-           <string>Extra Large</string>
-          </property>
+         <item row="2" column="0">
+          <widget class="BuddyLabel" name="libraryArtistImageLabel">
+           <property name="text">
+            <string>Show artist images:</string>
+           </property>
+           <property name="buddy">
+            <cstring>libraryArtistImage</cstring>
+           </property>
+          </widget>
          </item>
-        </widget>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="libraryArtistImage">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="BuddyLabel" name="label_6">
+           <property name="text">
+            <string>Show album year:</string>
+           </property>
+           <property name="buddy">
+            <cstring>libraryYear</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QCheckBox" name="libraryYear">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
-       <item row="2" column="0">
-        <widget class="BuddyLabel" name="libraryArtistImageLabel">
-         <property name="text">
-          <string>Show artist images:</string>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="buddy">
-          <cstring>libraryArtistImage</cstring>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
          </property>
-        </widget>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
        </item>
-       <item row="2" column="1">
-        <widget class="QCheckBox" name="libraryArtistImage">
-         <property name="text">
-          <string/>
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="BuddyLabel" name="label_6">
          <property name="text">
-          <string>Show album year:</string>
+          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When looking for artist images, Cantata will look for either artist.jpg, artist.png, &lt;Artist&gt;.jpg, or &lt;Artist&gt;.png,
+within the folder of the current track, or within its parent folder. If no image is found, Cantata will attempt to download one.&lt;br/&gt;
+When the image is displayed, it will be cropped (either top/bottom, or left/right) to provide a square image.&lt;/i&gt;</string>
          </property>
-         <property name="buddy">
-          <cstring>libraryYear</cstring>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QCheckBox" name="libraryYear">
-         <property name="text">
-          <string/>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

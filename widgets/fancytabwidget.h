@@ -107,7 +107,7 @@ public:
     ~FancyTabBar();
 
     void paintEvent(QPaintEvent *event);
-    void paintTab(QPainter *painter, int tabIndex) const;
+    void paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const;
     void mousePressEvent(QMouseEvent *);
     bool validIndex(int index) const { return index >= 0 && index < m_tabs.count(); }
 

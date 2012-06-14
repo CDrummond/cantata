@@ -44,6 +44,8 @@
 28. Fix spacing issues of compact interface with some styles. If th estyle
     (such as the Qt Gtk style) returns -1 for its spacing, assume a spacing of
     4 pixels instead.
+29. Workaround tab-widget issues with Gtk style. Only draw highlight for
+    selected item, and item curretly under mouse - no fade in/out.
 
 0.7.1
 -----

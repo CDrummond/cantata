@@ -224,6 +224,9 @@ public:
             }
         }
 
+        if (song.priority>0) {
+            track=track+QLatin1String(" [")+QString::number(song.priority)+QChar(']');
+        }
         painter->save();
         painter->setFont(f);
         QColor col(option.palette.color(option.state&QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));

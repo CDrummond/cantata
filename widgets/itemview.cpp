@@ -681,6 +681,9 @@ void ItemView::setDragDropMode(QAbstractItemView::DragDropMode v)
 void ItemView::setGridSize(const QSize &sz)
 {
     iconGridSize=sz;
+    if (Mode_IconTop==mode && 0==currentLevel) {
+        listView->setGridSize(listGridSize);
+    }
 }
 
 void ItemView::update()

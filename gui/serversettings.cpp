@@ -66,6 +66,7 @@ void ServerSettings::load()
         }
         idx++;
     }
+    combo->setCurrentIndex(cur);
     showDetails(cur);
 }
 

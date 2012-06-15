@@ -41,12 +41,12 @@ public:
     bool isEnabled() const { return enabled; }
     void refresh();
     void save();
-    void addSelectionToPlaylist(bool replace);
+    void addSelectionToPlaylist(bool replace, quint8 priorty=0);
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
     void focusSearch() { view->focusSearch(); }
 
 Q_SIGNALS:
-    void add(const QStringList &streams, bool replace);
+    void add(const QStringList &streams, bool replace, quint8 priorty);
 
 public Q_SLOTS:
     void removeItems();
@@ -62,7 +62,7 @@ private Q_SLOTS:
     void updateGenres(const QSet<QString> &g);
 
 private:
-    void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace);
+    void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
     QStringList getCategories();
     QStringList getGenres();
 

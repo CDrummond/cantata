@@ -77,6 +77,7 @@ void PlayQueueTreeView::initHeader()
         hdr->setResizeMode(PlayQueueModel::COL_TRACK, QHeaderView::Fixed);
         hdr->setResizeMode(PlayQueueModel::COL_LENGTH, QHeaderView::ResizeToContents);
         hdr->setResizeMode(PlayQueueModel::COL_DISC, QHeaderView::ResizeToContents);
+        hdr->setResizeMode(PlayQueueModel::COL_PRIO, QHeaderView::ResizeToContents);
         hdr->setResizeMode(PlayQueueModel::COL_YEAR, QHeaderView::Fixed);
         hdr->setStretchLastSection(false);
         connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
@@ -91,13 +92,14 @@ void PlayQueueTreeView::initHeader()
 
     QList<int> hideAble;
     hideAble << PlayQueueModel::COL_TRACK << PlayQueueModel::COL_ALBUM << PlayQueueModel::COL_LENGTH
-             << PlayQueueModel::COL_DISC << PlayQueueModel::COL_YEAR << PlayQueueModel::COL_GENRE;
+             << PlayQueueModel::COL_DISC << PlayQueueModel::COL_YEAR << PlayQueueModel::COL_GENRE << PlayQueueModel::COL_PRIO;
 
     //Restore
     if (state.isEmpty()) {
         hdr->setSectionHidden(PlayQueueModel::COL_YEAR, true);
         hdr->setSectionHidden(PlayQueueModel::COL_DISC, true);
         hdr->setSectionHidden(PlayQueueModel::COL_GENRE, true);
+        hdr->setSectionHidden(PlayQueueModel::COL_PRIO, true);
     } else {
         hdr->restoreState(state);
 

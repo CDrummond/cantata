@@ -54,6 +54,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->setTopText(i18n("Albums"));
     view->addAction(p->addToPlayQueueAction);
     view->addAction(p->replacePlayQueueAction);
+    view->addAction(p->addWithPriorityAction);
     view->addAction(p->addToStoredPlaylistAction);
 //     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -75,7 +76,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->setModel(&proxy);
     view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
 
-    connect(this, SIGNAL(add(const QStringList &, bool)), MPDConnection::self(), SLOT(add(const QStringList &, bool)));
+    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -149,13 +150,13 @@ QList<Song> AlbumsPage::selectedSongs(bool allowPlaylists) const
     return AlbumsModel::self()->songs(mapped, allowPlaylists);
 }
 
-void AlbumsPage::addSelectionToPlaylist(const QString &name, bool replace)
+void AlbumsPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
     QStringList files=selectedFiles(true);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, replace);
+            emit add(files, replace, priorty);
         } else {
             emit addSongsToPlaylist(name, files);
         }
@@ -209,6 +210,7 @@ void AlbumsPage::controlActions()
     bool enable=selected.count()>0;
 
     mw->addToPlayQueueAction->setEnabled(enable);
+    mw->addWithPriorityAction->setEnabled(enable);
     mw->replacePlayQueueAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
     mw->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);

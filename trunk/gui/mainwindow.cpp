@@ -71,6 +71,7 @@
 #include "config.h"
 #include "utils.h"
 #include "musiclibrarymodel.h"
+#include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "librarypage.h"
 #include "albumspage.h"
@@ -1653,8 +1654,9 @@ void MainWindow::updateSettings()
     connectToMpd();
     Settings::self()->save();
     bool useLibSizeForAl=Settings::self()->albumsView()!=ItemView::Mode_IconTop;
-    bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize() ||
-                       (libraryPage->viewMode()==ItemView::Mode_IconTop || Settings::self()->libraryView()!=ItemView::Mode_IconTop) ||
+    bool diffLibCovers=((int)MusicLibraryItemAlbum::currentCoverSize())!=Settings::self()->libraryCoverSize();
+    bool diffLibArtistImages=diffLibCovers ||
+                       (libraryPage->viewMode()==ItemView::Mode_IconTop && Settings::self()->libraryView()!=ItemView::Mode_IconTop) ||
                        (libraryPage->viewMode()!=ItemView::Mode_IconTop && Settings::self()->libraryView()==ItemView::Mode_IconTop) ||
                        Settings::self()->libraryArtistImage()!=MusicLibraryModel::self()->useArtistImages();
     bool diffAlCovers=((int)AlbumsModel::currentCoverSize())!=Settings::self()->albumsCoverSize() ||
@@ -1666,6 +1668,10 @@ void MainWindow::updateSettings()
 
     readSettings();
 
+    if (diffLibArtistImages) {
+        MusicLibraryItemArtist::clearDefaultCover();
+        libraryPage->setView(libraryPage->viewMode());
+    }
     if (diffLibCovers) {
         MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     }
@@ -1678,10 +1684,15 @@ void MainWindow::updateSettings()
 
     AlbumsModel::setUseLibrarySizes(useLibSizeForAl);
     if (diffAlCovers || diffGrouping) {
+        albumsPage->setView(albumsPage->viewMode());
         albumsPage->clear();
     }
-    if (diffLibCovers || diffAlCovers || diffLibYear || diffGrouping) {
+
+    if (diffGrouping) {
         refresh();
+    } else if (diffLibCovers || diffLibYear || diffLibArtistImages || diffAlCovers) {
+        libraryPage->clear();
+        libraryPage->refresh();
     }
 
     bool wasAutoExpand=playQueue->isAutoExpand();

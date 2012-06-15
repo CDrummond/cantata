@@ -1400,9 +1400,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
         if (event->spontaneous()) {
             event->ignore();
         }
-    }
-    else {
-        qApp->quit();
+    } else {
+        close();
     }
 }
 

@@ -225,6 +225,7 @@ Q_SIGNALS:
     void setVolume(int);
     void outputs();
     void enableOutput(int id, bool);
+    void setPriority(const QList<quint32> &ids, quint8 priority);
 
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
@@ -277,6 +278,7 @@ private Q_SLOTS:
     void removeFromPlayQueue();
     void replacePlayQueue();
     void addToPlayQueue();
+    void addWithPriorty();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
     void removeItems();
@@ -337,7 +339,7 @@ private:
     void updateConnectionsMenu();
     void readSettings();
     int calcMinHeight();
-    void addToPlayQueue(bool replace);
+    void addToPlayQueue(bool replace, quint8 priority=0);
     void editTags(const QList<Song> &songs, bool isPlayQueue);
     bool currentIsStream() const;
     void updateWindowTitle();
@@ -386,6 +388,13 @@ private:
     Action *repeatPlayQueueAction;
     Action *singlePlayQueueAction;
     Action *consumePlayQueueAction;
+    Action *addWithPriorityAction;
+    Action *addPrioHighestAction;  // 255
+    Action *addPrioHighAction;     // 200
+    Action *addPrioMediumAction;   // 125
+    Action *addPrioLowAction;      // 50
+    Action *addPrioCustomAction;
+    Action *setPriorityAction;
     #ifdef PHONON_FOUND
     Action *streamPlayAction;
     #endif

@@ -90,6 +90,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->setTopText(i18n("Streams"));
 //     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlayQueueAction);
+    view->addAction(p->addWithPriorityAction);
     view->addAction(editAction);
     view->addAction(exportAction);
     view->addAction(p->removeAction);
@@ -129,12 +130,12 @@ void StreamsPage::save()
     model.save(true);
 }
 
-void StreamsPage::addSelectionToPlaylist(bool replace)
+void StreamsPage::addSelectionToPlaylist(bool replace, quint8 priorty)
 {
-    addItemsToPlayQueue(view->selectedIndexes(), replace);
+    addItemsToPlayQueue(view->selectedIndexes(), replace, priorty);
 }
 
-void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace)
+void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty)
 {
     if (0==indexes.size()) {
         return;
@@ -148,7 +149,7 @@ void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool repla
     QStringList files=model.filenames(mapped);
 
     if (!files.isEmpty()) {
-        emit add(files, replace);
+        emit add(files, replace, priorty);
         view->clearSelection();
     }
 }
@@ -386,6 +387,7 @@ void StreamsPage::controlActions()
     mw->removeAction->setEnabled(selected.count());
     exportAction->setEnabled(model.rowCount());
     mw->replacePlayQueueAction->setEnabled(selected.count());
+    mw->addWithPriorityAction->setEnabled(selected.count());
 }
 
 void StreamsPage::searchItems()

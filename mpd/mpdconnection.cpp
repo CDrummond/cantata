@@ -36,6 +36,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QFileInfo>
 #include "debugtimer.h"
+#include "settings.h"
 
 // #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
 #define DBUG qDebug()
@@ -409,7 +410,7 @@ static bool isPlaylist(const QString &file)
            file.endsWith("xspf", Qt::CaseInsensitive);
 }
 
-void MPDConnection::add(const QStringList &files, bool replace)
+void MPDConnection::add(const QStringList &files, bool replace, quint8 priority)
 {
     if (replace) {
         clear();
@@ -418,16 +419,23 @@ void MPDConnection::add(const QStringList &files, bool replace)
 
     QByteArray send = "command_list_begin\n";
     bool addedFile=false;
+    bool havePlaylist=false;
+    bool usePrio=priority>0 && canUsePriority();
+    quint32 pos=playQueueIds.count();
     for (int i = 0; i < files.size(); i++) {
         if (isPlaylist(files.at(i))) {
             send+="load ";
+            havePlaylist=true;
         } else {
             addedFile=true;
             send += "add ";
         }
-        send += encodeName(files.at(i));
-        send += "\n";
+        send += encodeName(files.at(i))+"\n";
+        if (usePrio && !havePlaylist) {
+            send += "prio "+QByteArray::number(priority)+" "+QByteArray::number(pos+i)+" "+QByteArray::number(pos+i)+"\n";
+        }
     }
+
     send += "command_list_end";
 
     if (sendCommand(send).ok) {
@@ -449,7 +457,7 @@ void MPDConnection::add(const QStringList &files, bool replace)
  * @param pos Position to add the files
  * @param size The size of the current playlist
  */
-void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size, bool replace)
+void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size, bool replace, quint8 priority)
 {
     if (replace) {
         clear();
@@ -457,8 +465,9 @@ void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size, b
     }
 
     QByteArray send = "command_list_begin\n";
-    int cur_size = size;
+    int curSize = size;
     bool havePlaylist=false;
+    bool usePrio=priority>0 && canUsePriority();
     for (int i = 0; i < files.size(); i++) {
         if (isPlaylist(files.at(i))) {
             send+="load ";
@@ -469,13 +478,12 @@ void MPDConnection::addid(const QStringList &files, quint32 pos, quint32 size, b
         send += encodeName(files.at(i));
         send += "\n";
         if (!havePlaylist) {
-            send += "move ";
-            send += QByteArray::number(cur_size);
-            send += " ";
-            send += QByteArray::number(pos);
-            send += "\n";
+            send += "move "+QByteArray::number(curSize)+" "+QByteArray::number(pos)+"\n";
+            if (usePrio) {
+                send += "prio "+QByteArray::number(priority)+" "+QByteArray::number(pos)+" "+QByteArray::number(pos)+"\n";
+            }
         }
-        cur_size++;
+        curSize++;
     }
 
     send += "command_list_end";
@@ -1090,6 +1098,22 @@ void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32>
         emit removedFromPlaylist(name, removed);
     }
 //     playlistInfo(name);
+}
+
+void MPDConnection::setPriority(const QList<quint32> &ids, quint8 priority)
+{
+    if (canUsePriority()) {
+        QByteArray send = "command_list_begin\n";
+
+        foreach (quint32 id, ids) {
+            send += "prioid "+QByteArray::number(priority)+" "+QByteArray::number(id)+"\n";
+        }
+
+        send += "command_list_end";
+        if (sendCommand(send).ok) {
+            emit prioritySet(ids, priority);
+        }
+    }
 }
 
 void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)

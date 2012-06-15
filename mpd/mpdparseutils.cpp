@@ -233,6 +233,8 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
             song.file.replace("\"", "\\\"");
             song.title=Utils::getFile(song.file);
             song.type=Song::Playlist;
+        }  else if (element == QLatin1String("Prio")) {
+            song.priority = value.toUInt();
         }
     }
 

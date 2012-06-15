@@ -486,6 +486,27 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlayQueueAction->setText(i18n("Consume"));
     consumePlayQueueAction->setWhatsThis(i18n("When consume is activated, a song is removed from the play queue after it has been played."));
 
+    addWithPriorityAction = actionCollection()->addAction("addwithprio");
+    addWithPriorityAction->setText(i18n("Add With Priorty"));
+
+    setPriorityAction = actionCollection()->addAction("setprio");
+    setPriorityAction->setText(i18n("Set Priorty"));
+
+    addPrioHighestAction = actionCollection()->addAction("highestprio");
+    addPrioHighestAction->setText(i18n("Highest Priorty (255)"));
+
+    addPrioHighAction = actionCollection()->addAction("highprio");
+    addPrioHighAction->setText(i18n("High Priorty (200)"));
+
+    addPrioMediumAction = actionCollection()->addAction("mediumprio");
+    addPrioMediumAction->setText(i18n("Medium Priorty (125)"));
+
+    addPrioLowAction = actionCollection()->addAction("lowprio");
+    addPrioLowAction->setText(i18n("Low Priorty (50)"));
+
+    addPrioCustomAction = actionCollection()->addAction("customprio");
+    addPrioCustomAction->setText(i18n("Custom Priorty..."));
+
     #ifdef PHONON_FOUND
     streamPlayAction = actionCollection()->addAction("streamplay");
     streamPlayAction->setText(i18n("Play Stream"));
@@ -593,6 +614,13 @@ MainWindow::MainWindow(QWidget *parent)
     singlePlayQueueAction->setWhatsThis(tr("When single is activated, playback is stopped after current song, or song is repeated if the 'repeat' mode is enabled."));
     consumePlayQueueAction = new QAction(tr("Consume"), this);
     consumePlayQueueAction->setWhatsThis(tr("When consume is activated, a song is removed from the play queue after it has been played."));
+    addWithPriorityAction = new QAction(tr("Add With Priorty"), this);
+    setPriorityAction = new QAction(tr("Set Priorty"), this);
+    addPrioHighestAction = new QAction(tr("Highest Priorty (255)"), this);
+    addPrioHighAction = new QAction(tr("High Priorty (200)"), this);
+    addPrioMediumAction = new QAction(tr("Medium Priorty (125)"), this);
+    addPrioLowAction = new QAction(tr("Low Priorty (50)"), this);
+    addPrioCustomAction = new QAction(tr("Custom Priorty..."), this);
     #ifdef PHONON_FOUND
     streamPlayAction= new QAction(tr("Play Stream"), this);
     streamPlayAction->setWhatsThis(tr("When 'Play Stream' is activated, the enabled stream is played locally."));
@@ -933,6 +961,29 @@ MainWindow::MainWindow(QWidget *parent)
     coverWidget->installEventFilter(new CoverEventHandler(this));
     dynamicLabel->setVisible(false);
 
+    addWithPriorityAction->setIcon(QIcon::fromTheme("farorites"));
+    setPriorityAction->setIcon(QIcon::fromTheme("farorites"));
+    addWithPriorityAction->setVisible(false);
+    setPriorityAction->setVisible(false);
+    addPrioHighestAction->setData(255);
+    addPrioHighAction->setData(200);
+    addPrioMediumAction->setData(125);
+    addPrioLowAction->setData(50);
+    addPrioCustomAction->setData(-1);
+    QMenu *prioMenu=new QMenu(this);
+    prioMenu->addAction(addPrioHighestAction);
+    prioMenu->addAction(addPrioHighAction);
+    prioMenu->addAction(addPrioMediumAction);
+    prioMenu->addAction(addPrioLowAction);
+    prioMenu->addAction(addPrioCustomAction);
+    addWithPriorityAction->setMenu(prioMenu);
+    setPriorityAction->setMenu(prioMenu);
+    connect(addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
+    connect(addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
+    connect(addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
+    connect(addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
+    connect(addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
+
     connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
@@ -950,6 +1001,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
     connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
     connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
+    connect(this, SIGNAL(setPriority(const QList<quint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<quint32> &, quint8)));
     connect(&playQueueModel, SIGNAL(statsUpdated(int, int, int, quint32)), this, SLOT(updatePlayQueueStats(int, int, int, quint32)));
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
@@ -959,6 +1011,10 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(savePlayQueueAction);
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(shufflePlayQueueAction);
+    Action *sep2=new Action(this);
+    sep2->setSeparator(true);
+    playQueue->addAction(sep2);
+    playQueue->addAction(setPriorityAction);
     Action *sep=new Action(this);
     sep->setSeparator(true);
     playQueue->addAction(sep);
@@ -968,7 +1024,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlayQueueAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
-    connect(streamsPage, SIGNAL(add(const QStringList &, bool)), &playQueueModel, SLOT(addItems(const QStringList &, bool)));
+    connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
@@ -1066,7 +1122,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
-    connect(playlistsPage, SIGNAL(add(const QStringList &, bool)), &playQueueModel, SLOT(addItems(const QStringList &, bool)));
+    connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
 
     QByteArray state=Settings::self()->splitterState();
@@ -1193,7 +1249,7 @@ void MainWindow::load(const QList<QUrl> &urls)
         }
     }
     if (useable.count()) {
-        playQueueModel.addItems(useable, playQueueModel.rowCount(), false);
+        playQueueModel.addItems(useable, playQueueModel.rowCount(), false, 0);
     }
 }
 
@@ -1308,6 +1364,8 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
                 currentTabChanged(tabWidget->current_index());
             }
             connectedState=CS_Connected;
+            addWithPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
+            setPriorityAction->setVisible(addWithPriorityAction->isVisible());
         }
     } else {
         libraryPage->clear();
@@ -2310,19 +2368,62 @@ void MainWindow::addToPlayQueue()
     addToPlayQueue(false);
 }
 
-void MainWindow::addToPlayQueue(bool replace)
+void MainWindow::addToPlayQueue(bool replace, quint8 priority)
 {
     searchPlayQueueLineEdit->clear();
     if (libraryPage->isVisible()) {
-        libraryPage->addSelectionToPlaylist(QString(), replace);
+        libraryPage->addSelectionToPlaylist(QString(), replace, priority);
     } else if (albumsPage->isVisible()) {
-        albumsPage->addSelectionToPlaylist(QString(), replace);
+        albumsPage->addSelectionToPlaylist(QString(), replace, priority);
     } else if (folderPage->isVisible()) {
-        folderPage->addSelectionToPlaylist(QString(), replace);
+        folderPage->addSelectionToPlaylist(QString(), replace, priority);
     } else if (playlistsPage->isVisible()) {
-        playlistsPage->addSelectionToPlaylist(replace);
+        playlistsPage->addSelectionToPlaylist(replace, priority);
     } else if (streamsPage->isVisible()) {
-        streamsPage->addSelectionToPlaylist(replace);
+        streamsPage->addSelectionToPlaylist(replace, priority);
+    }
+}
+
+void MainWindow::addWithPriorty()
+{
+    if (!MPDConnection::self()->canUsePriority() || !addWithPriorityAction->isVisible()) {
+        return;
+    }
+
+    QAction *act=qobject_cast<QAction *>(sender());
+
+    if (!act) {
+        return;
+    }
+
+    int prio=act->data().toInt();
+    QModelIndexList pqItems;
+
+    if (playQueue->hasFocus()) {
+        pqItems=playQueue->selectedIndexes();
+        if (pqItems.isEmpty()) {
+            return;
+        }
+    }
+
+    if (-1==prio) {
+        bool ok=false;
+        prio=InputDialog::getInteger(i18n("Priorty"), i18n("Enter priority (0..255):"), 150, 0, 255, 5, 10, &ok, this);
+        if (!ok) {
+            return;
+        }
+    }
+
+    if (prio>=0 && prio<=255) {
+        if (playQueue->hasFocus()) {
+            QList<quint32> ids;
+            foreach (const QModelIndex &idx, pqItems) {
+                ids.append(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row()));
+            }
+            emit setPriority(ids, prio);
+        } else {
+            addToPlayQueue(false, prio);
+        }
     }
 }
 

@@ -67,7 +67,8 @@ struct Song
     QString genre;
     QString name;
 //     quint32 pos;
-    quint16 disc;
+    quint8 disc;
+    mutable quint8 priority;
     quint16 time;
     qint16 track;
     quint16 year : 14;

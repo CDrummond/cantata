@@ -35,6 +35,7 @@ void HttpServerSettings::load()
     enableHttp->setChecked(Settings::self()->enableHttp());
     alwaysUseHttp->setChecked(Settings::self()->alwaysUseHttp());
     httpPort->setValue(Settings::self()->httpPort());
+    httpAddress->setText(Settings::self()->httpAddress());
 }
 
 void HttpServerSettings::save()
@@ -42,4 +43,5 @@ void HttpServerSettings::save()
     Settings::self()->saveEnableHttp(enableHttp->isChecked());
     Settings::self()->saveAlwaysUseHttp(alwaysUseHttp->isChecked());
     Settings::self()->saveHttpPort(httpPort->value());
+    Settings::self()->saveHttpAddress(httpAddress->text());
 }

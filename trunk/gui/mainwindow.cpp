@@ -1546,7 +1546,11 @@ void MainWindow::readSettings()
 {
     checkMpdDir();
     Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
-    HttpServer::self()->setPort(Settings::self()->enableHttp() ? Settings::self()->httpPort() : 0);
+    if (Settings::self()->enableHttp()) {
+        HttpServer::self()->setDetails(Settings::self()->httpAddress(), Settings::self()->httpPort());
+    } else {
+        HttpServer::self()->setDetails(QString(), 0);
+    }
     #ifdef ENABLE_DEVICES_SUPPORT
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif

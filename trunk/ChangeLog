@@ -47,6 +47,7 @@
 29. Workaround tab-widget issues with Gtk style. Only draw highlight for
     selected item, and item curretly under mouse - no fade in/out.
 30. Fix/workaround issues with fetching lyrics from letras.mus.br
+31. Add option to specify HTTP server listen address/interface.
 
 0.7.1
 -----

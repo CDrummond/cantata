@@ -1397,11 +1397,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (trayItem) {
         lastPos=pos();
         hide();
+        if (event->spontaneous()) {
+            event->ignore();
+        }
     }
-    else
+    else {
         qApp->quit();
-
-    event->ignore();
+    }
 }
 
 void MainWindow::showVolumeControl()

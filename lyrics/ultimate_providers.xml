@@ -34,13 +34,23 @@
     </exclude>
     <invalidIndicator value="Page not Found"/>
   </provider>
-  <provider name="letras.mus.br" title="" charset="iso-8859-1" url="http://letras.terra.com.br/winamp.php?musica={title}&amp;artista={artist}">
+  <provider name="letras.mus.br" title="" charset="utf-8" url="http://letras.terra.com.br/winamp.php?musica={title}&amp;artista={artist}">
     <urlFormat replace="_@,;&amp;\/&quot;" with="_"/>
     <urlFormat replace=" " with="+"/>
     <extract>
       <item begin="&lt;/div&gt;" end="&lt;/div&gt;"/>
     </extract>
+    <exclude>
+      <item begin="&lt;!--" end="--&gt;"/>
+      <!--
+      <item begin="&lt;ul&gt;&lt;li id=&quot;ico_plugin&quot; class=&quot;inativo border-top&quot; &gt;" end="&lt;/ul&gt;"/>
+      <item begin="&lt;div id=&quot;tudo&quot; class=&quot;aberto&quot;&gt;" end="&lt;/div&gt;"/>
+      <item begin="&lt;h3 id=&quot;logo&quot;&gt;" end="&lt;/h3&gt;"/>
+      <item begin="&lt;form target=&quot;_blank&quot; action=&quot;http://letras.terra.com.br/&quot; method=&quot;get&quot; id=&quot;busca&quot;&gt;" end="&lt;/form&gt;"/>
+      -->
+    </exclude>
     <invalidIndicator value="Verifique se o nome do seu arquivo e sua"/>
+    <invalidIndicator value="Resultados prováveis "/>
   </provider>
   <provider name="loudson.gs" title="" charset="utf-8" url="http://www.loudson.gs/{a}/{artist}/{album}/{title}">
     <urlFormat replace=" _@,;&amp;\/&quot;" with="-"/>

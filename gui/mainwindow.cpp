@@ -962,8 +962,8 @@ MainWindow::MainWindow(QWidget *parent)
     coverWidget->installEventFilter(new CoverEventHandler(this));
     dynamicLabel->setVisible(false);
 
-    addWithPriorityAction->setIcon(QIcon::fromTheme("farorites"));
-    setPriorityAction->setIcon(QIcon::fromTheme("farorites"));
+    addWithPriorityAction->setIcon(QIcon::fromTheme("favorites"));
+    setPriorityAction->setIcon(QIcon::fromTheme("favorites"));
     addWithPriorityAction->setVisible(false);
     setPriorityAction->setVisible(false);
     addPrioHighestAction->setData(255);

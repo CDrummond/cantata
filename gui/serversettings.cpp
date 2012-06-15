@@ -134,7 +134,8 @@ void ServerSettings::saveAs()
 
         MPDConnectionDetails details=getDetails();
         details.name=name==combo->itemText(0) && combo->itemData(0).toString().isEmpty() ? QString() : name;
-        bool needToReconnect=MPDConnection::self()->isConnected() && MPDConnection::self()->getDetails()==Settings::self()->connectionDetails(details.name);
+        MPDConnectionDetails saved=Settings::self()->connectionDetails(details.name);
+        bool needToReconnect=MPDConnection::self()->isConnected() && MPDConnection::self()->getDetails()==saved && details!=saved;
 
         Settings::self()->saveConnectionDetails(details);
         if (found) {

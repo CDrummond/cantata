@@ -28,7 +28,6 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
-#include <QtCore/QDebug>
 
 // static int level(const QString &s)
 // {
@@ -83,7 +82,6 @@ HttpSocket::HttpSocket(const QString &addr, quint16 p)
         }
     }
     listen(a.isNull() ? QHostAddress::LocalHost : a, p);
-    qWarning() << address();
 }
 
 void HttpSocket::terminate()

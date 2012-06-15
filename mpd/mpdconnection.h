@@ -147,6 +147,7 @@ struct MPDConnectionDetails {
     bool dirReadable;
 };
 
+#define MPD_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
 
 class MPDConnection : public QObject
 {
@@ -167,13 +168,14 @@ public:
 
     const MPDConnectionDetails & getDetails() const { return details; }
     bool isConnected() const { return State_Connected==state; }
+    bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0); }
 
 public Q_SLOTS:
     void setDetails(const MPDConnectionDetails &det);
     void disconnectMpd();
     // Current Playlist
-    void add(const QStringList &files, bool replace);
-    void addid(const QStringList &files, quint32 pos, quint32 size, bool replace);
+    void add(const QStringList &files, bool replace, quint8 priority);
+    void addid(const QStringList &files, quint32 pos, quint32 size, bool replace, quint8 priority);
     void currentSong();
     void playListChanges();
     void playListInfo();
@@ -231,6 +233,8 @@ public Q_SLOTS:
     void removeFromPlaylist(const QString &name, const QList<quint32> &positions);
     void moveInPlaylist(const QString &name, const QList<quint32> &items, quint32 row, quint32 size);
 
+    void setPriority(const QList<quint32> &ids, quint8 priority);
+
 Q_SIGNALS:
     void stateChanged(bool connected);
     void passwordError();
@@ -259,6 +263,7 @@ Q_SIGNALS:
     void error(const QString &err, bool showActions=false);
     void urlHandlers(const QStringList &handlers);
     void dirChanged();
+    void prioritySet(const QList<quint32> &ids, quint8 priority);
 
 private Q_SLOTS:
     void idleDataReady();

@@ -102,6 +102,7 @@ QString PlayQueueModel::headerText(int col)
     case COL_DISC:   return i18n("Disc");
     case COL_YEAR:   return i18n("Year");
     case COL_GENRE:  return i18n("Genre");
+    case COL_PRIO:   return i18n("Priority");
     default:         return QString();
     }
 }
@@ -115,11 +116,13 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
-    connect(fetcher, SIGNAL(result(const QStringList &, int, bool)), SLOT(addFiles(const QStringList &, int, bool)));
-    connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, bool)),
-            MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32, bool)));
+    connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SLOT(addFiles(const QStringList &, int, bool, quint8)));
+    connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, bool, quint8)),
+            MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32, bool, quint8)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
+    connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<quint32> &, quint8)),
+            this, SLOT(prioritySet(const QList<quint32> &, quint8)));
 }
 
 PlayQueueModel::~PlayQueueModel()
@@ -155,6 +158,7 @@ QVariant PlayQueueModel::headerData(int section, Qt::Orientation orientation, in
             case COL_LENGTH:
             case COL_DISC:
             case COL_YEAR:
+            case COL_PRIO:
                 return int(Qt::AlignVCenter|Qt::AlignRight);
             }
         }
@@ -323,6 +327,8 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return song.year;
         case COL_GENRE:
             return song.genre;
+        case COL_PRIO:
+            return song.priority;
         default:
             break;
         }
@@ -336,7 +342,9 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return s.albumArtist()+QLatin1String("<br/>")+
                    s.album+(s.year>0 ? (QLatin1String(" (")+QString::number(s.year)+QChar(')')) : QString())+QLatin1String("<br/>")+
                    s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()))+QLatin1String("<br/>")+
-                   Song::formattedTime(s.time)+QLatin1String("<br/><small><i>")+s.file+QLatin1String("</i></small>");
+                   Song::formattedTime(s.time)+QLatin1String("<br/>")+
+                   (s.priority>0 ? i18n("<b>(Priority: %1)</b>").arg(s.priority)+QLatin1String("<br/>") : QString())+
+                   QLatin1String("<small><i>")+s.file+QLatin1String("</i></small>");
         }
     }
     case Qt::TextAlignmentRole:
@@ -352,6 +360,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         case COL_LENGTH:
         case COL_DISC:
         case COL_YEAR:
+        case COL_PRIO:
             return int(Qt::AlignVCenter|Qt::AlignRight);
         }
     case Qt::DecorationRole:
@@ -481,7 +490,7 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         return true;
     } else if (data->hasFormat(constFileNameMimeType)) {
         //Act on moves from the music library and dir view
-        addItems(reverseList(decode(*data, constFileNameMimeType)), row, false);
+        addItems(reverseList(decode(*data, constFileNameMimeType)), row, false, 0);
         return true;
     } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->getDetails().isLocal()*/) {
         QStringList orig=reverseList(decode(*data, constUriMimeType));
@@ -506,14 +515,14 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
             }
         }
         if (useable.count()) {
-            addItems(useable, row, false);
+            addItems(useable, row, false, 0);
             return true;
         }
     }
     return false;
 }
 
-void PlayQueueModel::addItems(const QStringList &items, int row, bool replace)
+void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, quint8 priority)
 {
     bool haveHttp=false;
 
@@ -527,23 +536,42 @@ void PlayQueueModel::addItems(const QStringList &items, int row, bool replace)
     }
 
     if (haveHttp) {
-        fetcher->get(items, row, replace);
+        fetcher->get(items, row, replace, priority);
     } else {
-        addFiles(items, row, replace);
+        addFiles(items, row, replace, priority);
     }
 }
 
-void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replace)
+void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replace, quint8 priority)
 {
     //Check for empty playlist
     if (replace || (songs.size() == 1 && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty())) {
-        emit filesAdded(filenames, 0, 0, replace);
+        emit filesAdded(filenames, 0, 0, replace, priority);
     } else {
         if (row < 0) {
-            emit filesAdded(filenames, songs.size(), songs.size(), false);
+            emit filesAdded(filenames, songs.size(), songs.size(), false, priority);
         } else {
-            emit filesAdded(filenames, row, songs.size(), false);
+            emit filesAdded(filenames, row, songs.size(), false, priority);
         }
+    }
+}
+
+void PlayQueueModel::prioritySet(const QList<quint32> &ids, quint8 priority)
+{
+    QSet<quint32> i=ids.toSet();
+    int row=0;
+
+    foreach (const Song &s, songs) {
+        if (i.contains(s.id)) {
+            s.priority=priority;
+            i.remove(s.id);
+            QModelIndex idx(index(row, 0));
+            emit dataChanged(idx, idx);
+            if (i.isEmpty()) {
+                return;
+            }
+        }
+        ++row;
     }
 }
 

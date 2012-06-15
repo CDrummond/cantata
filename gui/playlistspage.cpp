@@ -63,6 +63,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     view->setTopText(i18n("Playlists"));
     view->addAction(p->addToPlayQueueAction);
     view->addAction(p->replacePlayQueueAction);
+    view->addAction(p->addWithPriorityAction);
     view->addAction(renamePlaylistAction);
     view->addAction(p->removeAction);
 //     view->addAction(p->burnAction);
@@ -93,6 +94,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(p->addToPlayQueueAction);
+    menu->addAction(p->addWithPriorityAction);
     menu->addAction(p->removeAction);
     menu->addAction(renamePlaylistAction);
     menuButton->setMenu(menu);
@@ -145,9 +147,9 @@ QStringList PlaylistsPage::selectedFiles() const
     return PlaylistsModel::self()->filenames(mapped, true);
 }
 
-void PlaylistsPage::addSelectionToPlaylist(bool replace)
+void PlaylistsPage::addSelectionToPlaylist(bool replace, quint8 priorty)
 {
-    addItemsToPlayQueue(view->selectedIndexes(), replace);
+    addItemsToPlayQueue(view->selectedIndexes(), replace, priorty);
 }
 
 void PlaylistsPage::setView(int mode)
@@ -258,7 +260,7 @@ void PlaylistsPage::itemDoubleClicked(const QModelIndex &index)
     }
 }
 
-void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace)
+void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty)
 {
     if (0==indexes.size()) {
         return;
@@ -266,7 +268,7 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool rep
 
     // If we only have 1 item selected, see if it is a playlist. If so, we might be able to
     // just ask MPD to load it...
-    if (1==indexes.count()) {
+    if (1==indexes.count() && 0==priorty) {
         QModelIndex idx=proxy.mapToSource(*(indexes.begin()));
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
 
@@ -294,7 +296,7 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool rep
     QStringList files=PlaylistsModel::self()->filenames(mapped);
 
     if (!files.isEmpty()) {
-        emit add(files, replace);
+        emit add(files, replace, priorty);
         view->clearSelection();
     }
 }
@@ -316,6 +318,7 @@ void PlaylistsPage::controlActions()
     mw->removeAction->setEnabled(selected.count()>0);
     mw->replacePlayQueueAction->setEnabled(selected.count()>0);
     mw->addToPlayQueueAction->setEnabled(selected.count()>0);
+    mw->addWithPriorityAction->setEnabled(selected.count()>0);
 }
 
 void PlaylistsPage::searchItems()

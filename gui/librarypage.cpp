@@ -57,6 +57,7 @@ LibraryPage::LibraryPage(MainWindow *p)
 
     view->addAction(p->addToPlayQueueAction);
     view->addAction(p->replacePlayQueueAction);
+    view->addAction(p->addWithPriorityAction);
     view->addAction(p->addToStoredPlaylistAction);
 //     view->addAction(p->burnAction);
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -74,7 +75,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->addAction(p->deleteSongsAction);
     #endif
 
-    connect(this, SIGNAL(add(const QStringList &, bool)), MPDConnection::self(), SLOT(add(const QStringList &, bool)));
+    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
@@ -173,13 +174,13 @@ QList<Song> LibraryPage::selectedSongs(bool allowPlaylists) const
     return MusicLibraryModel::self()->songs(mapped, allowPlaylists);
 }
 
-void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace)
+void LibraryPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
     QStringList files=selectedFiles(true);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {
-            emit add(files, replace);
+            emit add(files, replace, priorty);
         } else {
             emit addSongsToPlaylist(name, files);
         }
@@ -275,6 +276,7 @@ void LibraryPage::controlActions()
     bool enable=selected.count()>0;
 
     mw->addToPlayQueueAction->setEnabled(enable);
+    mw->addWithPriorityAction->setEnabled(enable);
     mw->replacePlayQueueAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
     mw->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);

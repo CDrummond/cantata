@@ -48,6 +48,9 @@
     selected item, and item curretly under mouse - no fade in/out.
 30. Fix/workaround issues with fetching lyrics from letras.mus.br
 31. Add option to specify HTTP server listen address/interface.
+32. Support MPD queue functionality. Add an 'Add With Priority' to menu of
+    library, etc, views. Add a 'Set Priority' to play queue. Requires MPD
+    0.17.0 or newer.
 
 0.7.1
 -----

@@ -39,6 +39,7 @@ Song::Song()
     : id(-1)
 //       , pos(0)
       , disc(0)
+      , priority(0)
       , time(0)
       , track(0)
       , year(0)
@@ -60,6 +61,7 @@ Song & Song::operator=(const Song &s)
     track = s.track;
 //     pos = s.pos;
     disc = s.disc;
+    priority = s.priority;
     year = s.year;
     genre = s.genre;
     name = s.name;

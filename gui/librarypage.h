@@ -40,7 +40,7 @@ public:
     void clear();
     QStringList selectedFiles(bool allowPlaylists=false) const;
     QList<Song> selectedSongs(bool allowPlaylists=false) const;
-    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false);
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi);
     void deleteSongs();
@@ -55,7 +55,7 @@ private:
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
-    void add(const QStringList &files, bool replace);
+    void add(const QStringList &files, bool replace, quint8 priorty);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
     void listAllInfo(const QDateTime &);
 

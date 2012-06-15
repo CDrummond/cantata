@@ -46,6 +46,7 @@
     4 pixels instead.
 29. Workaround tab-widget issues with Gtk style. Only draw highlight for
     selected item, and item curretly under mouse - no fade in/out.
+30. Fix/workaround issues with fetching lyrics from letras.mus.br
 
 0.7.1
 -----

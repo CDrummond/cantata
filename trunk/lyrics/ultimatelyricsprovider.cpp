@@ -163,6 +163,7 @@ void UltimateLyricsProvider::LyricsFetched() {
   emit Finished(id);
 #endif
 
+  lyrics=lyrics.trimmed();
   emit InfoReady(id, lyrics);
 }
 

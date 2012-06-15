@@ -512,6 +512,11 @@ int Settings::httpPort()
     return GET_INT("httpPort", 9001);
 }
 
+QString Settings::httpAddress()
+{
+    return GET_STRING("httpAddress", QString());
+}
+
 bool Settings::enableHttp()
 {
     return GET_BOOL("enableHttp", false);
@@ -812,6 +817,11 @@ void Settings::saveStopFadeDuration(int v)
 void Settings::saveHttpPort(int v)
 {
     SET_VALUE("httpPort", v);
+}
+
+void Settings::saveHttpAddress(const QString &v)
+{
+    SET_VALUE("httpAddress", v);
 }
 
 void Settings::saveEnableHttp(bool v)

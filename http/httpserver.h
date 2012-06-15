@@ -46,7 +46,7 @@ public:
 
     void stop();
     bool isAlive() const;
-    bool setPort(quint16 port);
+    bool setDetails(const QString &addr, quint16 port);
     QString address() const;
     bool isOurs(const QString &url) const;
     QByteArray encodeUrl(const Song &s) const;

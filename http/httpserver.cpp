@@ -60,9 +60,9 @@ void HttpServer::stop()
     }
 }
 
-bool HttpServer::setPort(quint16 port)
+bool HttpServer::setDetails(const QString &addr, quint16 port)
 {
-    if (socket && port==socket->port()) {
+    if (socket && port==socket->serverPort() && addr==socket->configuredAddress()) {
         return true;
     }
 
@@ -78,7 +78,7 @@ bool HttpServer::setPort(quint16 port)
 
     if (0!=port) {
         thread=new QThread(0);
-        socket=new HttpSocket(port);
+        socket=new HttpSocket(addr, port);
         socket->moveToThread(thread);
         thread->start();
         return socket->isListening();
@@ -94,7 +94,8 @@ bool HttpServer::isAlive() const
 
 QString HttpServer::address() const
 {
-    return QLatin1String("http://127.0.0.1:")+QString::number(socket ? socket->port() : Settings::self()->httpPort());
+    return socket ? QLatin1String("http://")+socket->address()+QChar(':')+QString::number(socket->serverPort())
+                  : QLatin1String("http://127.0.0.1:")+QString::number(Settings::self()->httpPort());
 }
 
 bool HttpServer::isOurs(const QString &url) const
@@ -109,8 +110,8 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
     }
     QUrl url;
     url.setScheme("http");
-    url.setHost("127.0.0.1");
-    url.setPort(socket->port());
+    url.setHost(socket->address());
+    url.setPort(socket->serverPort());
     url.setPath(s.file);
     if (!s.album.isEmpty()) {
         url.addQueryItem("album", s.album);

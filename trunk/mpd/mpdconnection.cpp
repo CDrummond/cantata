@@ -317,8 +317,7 @@ void MPDConnection::disconnectFromMPD()
 void MPDConnection::setDetails(const MPDConnectionDetails &det)
 {
     bool changedDir=det.dir!=details.dir;
-    bool diffDetails=det.hostname!=details.hostname || det.password!=details.password || det.isLocal()!=details.isLocal() ||
-                     (!det.isLocal() && det.port!=details.port);
+    bool diffDetails=det!=details;
     if (diffDetails || State_Connected!=state) {
         DBUG << "setDetails" << det.hostname << det.port << (det.password.isEmpty() ? false : true);
         bool wasConnected=State_Connected==state;
@@ -343,6 +342,8 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
         }
     }
     if (changedDir) {
+        details.dir=det.dir;
+        details.dirReadable=det.dirReadable;
         emit dirChanged();
     }
 }

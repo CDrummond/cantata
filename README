@@ -11,8 +11,8 @@ Dependencies
 Cantata requires/uses the following libraries:
 
 1. Qt4
-2. KDElibs4 - if Cantata is not built with KDE4 support, then tag editing and
-   device support will not be available.
+2. KDElibs4 - if Cantata is not built with KDE4 support, then device suppoer
+   will not be available.
 3. QtWebKit - required for the artist/album information page. If QtWebKit is
    not found, the page will not be built.
 4. TagLib - required to for the tag edit dialog, and for UMS device support.
@@ -32,7 +32,7 @@ with the following syntax:
 
     Station( "NAME", "URL")
 
-Each station must be on its own line, and must be all in one line.
+Each station *must* be on its own line, and must be all in *one* line.
 
 'script.spec' is used to ascertain the Amarok plugin name, for this the
 script will look for the line starting with "Name="
@@ -71,7 +71,7 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
         rm "$HOME/cache/cantata/dynamic/rules"
     fi
     ln -s "$HOME/config/cantata/dynamic/MyPlaylist.rules" "$HOME/cache/cantata/dynamic/rules"
-    # Restart dyamic script
+    # Restart dynamic script
     MPD_HOST=pass@hostname MPD_PORT=1234 /usr/lib/kde4/libexec/cantata-dynamic start
 
 

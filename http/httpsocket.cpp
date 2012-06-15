@@ -23,17 +23,67 @@
 
 #include "httpsocket.h"
 #include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QNetworkInterface>
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
+#include <QtCore/QDebug>
 
-HttpSocket::HttpSocket(quint16 p)
+// static int level(const QString &s)
+// {
+//     return QLatin1String("Link-local")==s
+//             ? 1
+//             : QLatin1String("Site-local")==s
+//                 ? 2
+//                 : QLatin1String("Global")==s
+//                     ? 3
+//                     : 0;
+// }
+
+HttpSocket::HttpSocket(const QString &addr, quint16 p)
     : QTcpServer(0)
-    , portNumber(p)
+    , cfgAddr(addr)
     , terminated(false)
 {
-    listen(QHostAddress::LocalHost, portNumber);
+    QHostAddress a;
+    if (!addr.isEmpty()) {
+        a=QHostAddress(addr);
+
+        if (a.isNull()) {
+            QString ifaceName=addr;
+//             bool ipV4=true;
+//
+//             if (ifaceName.endsWith("::6")) {
+//                 ifaceName=ifaceName.left(ifaceName.length()-3);
+//                 ipV4=false;
+//             }
+
+            QNetworkInterface iface=QNetworkInterface::interfaceFromName(ifaceName);
+            if (iface.isValid()) {
+                QList<QNetworkAddressEntry> addresses=iface.addressEntries();
+//                 int ip6Scope=-1;
+                foreach (const QNetworkAddressEntry &addr, addresses) {
+                    QHostAddress ha=addr.ip();
+                    if (QAbstractSocket::IPv4Protocol==ha.protocol()) {
+//                     if ((ipV4 && QAbstractSocket::IPv4Protocol==ha.protocol()) || (!ipV4 && QAbstractSocket::IPv6Protocol==ha.protocol())) {
+//                         if (ipV4) {
+                            a=ha;
+                            break;
+//                         } else {
+//                             int scope=level(a.scopeId());
+//                             if (scope>ip6Scope) {
+//                                 ip6Scope=scope;
+//                                 a=ha;
+//                             }
+//                         }
+                    }
+                }
+            }
+        }
+    }
+    listen(a.isNull() ? QHostAddress::LocalHost : a, p);
+    qWarning() << address();
 }
 
 void HttpSocket::terminate()

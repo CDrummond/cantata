@@ -102,6 +102,7 @@ public:
     int version();
     int stopFadeDuration();
     int httpPort();
+    QString httpAddress();
     bool enableHttp();
     bool alwaysUseHttp();
     bool playQueueGrouped();
@@ -159,6 +160,7 @@ public:
     #endif
     void saveStopFadeDuration(int v);
     void saveHttpPort(int v);
+    void saveHttpAddress(const QString &v);
     void saveEnableHttp(bool v);
     void saveAlwaysUseHttp(bool v);
     void savePlayQueueGrouped(bool v);

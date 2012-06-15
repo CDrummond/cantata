@@ -31,15 +31,20 @@ class HttpSocket : public QTcpServer
     Q_OBJECT
 
 public:
-     HttpSocket(quint16 p);
+     HttpSocket(const QString &addr, quint16 p);
 
      virtual ~HttpSocket() {
      }
 
      void terminate();
      void incomingConnection(int socket);
-     quint16 port() const {
-         return portNumber;
+
+     QString address() const {
+         return serverAddress().toString();
+     }
+
+     QString configuredAddress() {
+         return cfgAddr;
      }
 
 private Q_SLOTS:
@@ -47,7 +52,7 @@ private Q_SLOTS:
      void discardClient();
 
 private:
-    quint16 portNumber;
+    QString cfgAddr;
     bool terminated;
 };
 

@@ -51,10 +51,12 @@ int main(int argc, char *argv[])
     aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"));
     aboutData.setOrganizationDomain("kde.org");
     KCmdLineArgs::init(argc, argv, &aboutData);
+    #ifdef TAGLIB_FOUND
     KCmdLineOptions options;
     options.add("+[URL]", ki18n("URL to open"));
     KCmdLineArgs::addCmdLineOptions(options);
     KUniqueApplication::addCmdLineOptions();
+    #endif
     if (!KUniqueApplication::start())
         exit(0);
 
@@ -73,7 +75,9 @@ int main(int argc, char *argv[])
     }
     MainWindow mw;
     app.setActivationWindow(&mw);
+    #ifdef TAGLIB_FOUND
     app.loadFiles();
+    #endif
     #endif
 
     return app.exec();

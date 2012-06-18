@@ -72,7 +72,6 @@ SET( CANTATA_SRCS
     gui/playbacksettings.cpp
     gui/serverplaybacksettings.cpp
     gui/serversettings.cpp
-    gui/httpserversettings.cpp
     gui/streamspage.cpp
     gui/streamdialog.cpp
     gui/streamcategorydialog.cpp
@@ -82,7 +81,6 @@ SET( CANTATA_SRCS
     gui/infopage.cpp
     gui/serverinfopage.cpp
     gui/playlistspage.cpp
-    gui/tageditor.cpp
     models/musiclibraryitemroot.cpp
     models/musiclibraryitemartist.cpp
     models/musiclibraryitemalbum.cpp
@@ -130,13 +128,7 @@ SET( CANTATA_SRCS
     libmaia/maiaObject.cpp
     libmaia/maiaFault.cpp
     libmaia/maiaXmlRpcClient.cpp
-    devices/deviceoptions.cpp
-    devices/trackorganiser.cpp
     devices/utils.cpp
-    http/httpserver.cpp
-    http/httpsocket.cpp
-    devices/filenameschemedialog.cpp
-    devices/tags.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -157,7 +149,6 @@ SET( CANTATA_MOC_HDRS
     gui/preferencesdialog.h
     gui/interfacesettings.h
     gui/externalsettings.h
-    gui/tageditor.h
     models/musiclibrarymodel.h
     models/musiclibraryproxymodel.h
     models/playlistsmodel.h
@@ -192,9 +183,6 @@ SET( CANTATA_MOC_HDRS
     libmaia/maiaObject.h
     libmaia/maiaFault.h
     libmaia/maiaXmlRpcClient.h
-    http/httpsocket.h
-    devices/filenameschemedialog.h
-    devices/trackorganiser.h
 )
 
 SET( CANTATA_UIS
@@ -210,14 +198,40 @@ SET( CANTATA_UIS
     gui/playbacksettings.ui
     gui/serverplaybacksettings.ui
     gui/serversettings.ui
-    gui/httpserversettings.ui
-    gui/tageditor.ui
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
     widgets/itemview.ui
-    devices/filenameschemedialog.ui
-    devices/trackorganiser.ui
 )
+
+set(TAGLIB_MIN_VERSION "1.6")
+find_package(Taglib)
+
+if (TAGLIB_FOUND)
+    SET( CANTATA_SRCS ${CANTATA_SRCS}
+        gui/httpserversettings.cpp
+        gui/tageditor.cpp
+        devices/deviceoptions.cpp
+        devices/trackorganiser.cpp
+        http/httpserver.cpp
+        http/httpsocket.cpp
+        devices/filenameschemedialog.cpp
+        devices/tags.cpp
+    )
+
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
+        gui/tageditor.h
+        http/httpsocket.h
+        devices/filenameschemedialog.h
+        devices/trackorganiser.h
+    )
+
+    SET( CANTATA_UIS ${CANTATA_UIS}
+        gui/httpserversettings.ui
+        gui/tageditor.ui
+        devices/filenameschemedialog.ui
+        devices/trackorganiser.ui
+    )
+endif (TAGLIB_FOUND)
 
 if (NOT WIN32)
     SET( CANTATA_SRCS ${CANTATA_SRCS}
@@ -267,11 +281,11 @@ FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )
 FIND_PACKAGE( Phonon )
 
 if(NOT WIN32)
-qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
-qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.root.xml dbus/mpris.h Mpris)
-qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.kde.cantata.xml gui/mainwindow.h MainWindow)
-qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockItem.xml )
-qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockManager.xml)
+    qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
+    qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.root.xml dbus/mpris.h Mpris)
+    qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.kde.cantata.xml gui/mainwindow.h MainWindow)
+    qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockItem.xml )
+    qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockManager.xml)
 endif(NOT WIN32)
 
 IF( NOT DEFINED WANT_KDE_SUPPORT )
@@ -290,89 +304,92 @@ IF( NOT DEFINED ENABLE_WEBKIT )
     SET( ENABLE_WEBKIT TRUE )
 ENDIF( NOT DEFINED ENABLE_WEBKIT )
 
-set(TAGLIB_MIN_VERSION "1.6")
-find_package(Taglib REQUIRED)
+if (TAGLIB_FOUND)
+    set(ENABLE_TAGEDITOR_SUPPORT 1)
+    set(ENABLE_TRACKORGANIZER_SUPPORT 1)
+    include(CheckCXXSourceCompiles)
+    set(CMAKE_REQUIRED_INCLUDES "${TAGLIB_INCLUDES}")
+    set(CMAKE_REQUIRED_LIBRARIES "${TAGLIB_LIBRARIES}")
 
-include(CheckCXXSourceCompiles)
-set(CMAKE_REQUIRED_INCLUDES "${TAGLIB_INCLUDES}")
-set(CMAKE_REQUIRED_LIBRARIES "${TAGLIB_LIBRARIES}")
+    check_cxx_source_compiles("#include <asftag.h>
+                            int main() { TagLib::ASF::Tag tag; return 0;}" TAGLIB_ASF_FOUND)
+    if( NOT TAGLIB_ASF_FOUND )
+    #    message(FATAL_ERROR "TagLib does not have ASF support compiled in.")
+        message("TagLib does not have ASF support compiled in.")
+    endif( NOT TAGLIB_ASF_FOUND )
 
-check_cxx_source_compiles("#include <asftag.h>
-                          int main() { TagLib::ASF::Tag tag; return 0;}" TAGLIB_ASF_FOUND)
-if( NOT TAGLIB_ASF_FOUND )
-#    message(FATAL_ERROR "TagLib does not have ASF support compiled in.")
-    message("TagLib does not have ASF support compiled in.")
-endif( NOT TAGLIB_ASF_FOUND )
+    check_cxx_source_compiles("#include <mp4tag.h>
+                            int main() { TagLib::MP4::Tag tag(0, 0); return 0;}" TAGLIB_MP4_FOUND)
+    if( NOT TAGLIB_MP4_FOUND )
+    #    message(FATAL_ERROR "TagLib does not have MP4 support compiled in.")
+        message("TagLib does not have MP4 support compiled in.")
+    endif( NOT TAGLIB_MP4_FOUND )
 
-check_cxx_source_compiles("#include <mp4tag.h>
-                          int main() { TagLib::MP4::Tag tag(0, 0); return 0;}" TAGLIB_MP4_FOUND)
-if( NOT TAGLIB_MP4_FOUND )
-#    message(FATAL_ERROR "TagLib does not have MP4 support compiled in.")
-    message("TagLib does not have MP4 support compiled in.")
-endif( NOT TAGLIB_MP4_FOUND )
+    set(CMAKE_REQUIRED_INCLUDES)
+    set(CMAKE_REQUIRED_LIBRARIES)
 
-set(CMAKE_REQUIRED_INCLUDES)
-set(CMAKE_REQUIRED_LIBRARIES)
+    set(TAGLIB-EXTRAS_MIN_VERSION "1.0")
+    find_package(Taglib-Extras)
+    set(TAGLIB_EXTRAS_FOUND ${TAGLIB-EXTRAS_FOUND}) # we need a c-compatible name for the include file
 
-set(TAGLIB-EXTRAS_MIN_VERSION "1.0")
-find_package(Taglib-Extras)
-set(TAGLIB_EXTRAS_FOUND ${TAGLIB-EXTRAS_FOUND}) # we need a c-compatible name for the include file
+    include(CheckTagLibFileName)
+    check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
 
-include(CheckTagLibFileName)
-check_taglib_filename(COMPLEX_TAGLIB_FILENAME)
+    add_definitions(${TAGLIB_CFLAGS})
+    if (TAGLIB-EXTRAS_FOUND)
+        include_directories(${TAGLIB-EXTRAS_INCLUDES})
+        add_definitions(${TAGLIB-EXTRAS_CFLAGS})
+    endif (TAGLIB-EXTRAS_FOUND)
 
-include_directories(${TAGLIB_INCLUDES})
-add_definitions(${TAGLIB_CFLAGS})
-if (TAGLIB-EXTRAS_FOUND)
-    include_directories(${TAGLIB-EXTRAS_INCLUDES})
-    add_definitions(${TAGLIB-EXTRAS_CFLAGS})
-endif (TAGLIB-EXTRAS_FOUND)
 
-find_package(FFMPEG)
-find_package(MPG123)
-if(FFMPEG_FOUND AND MPG123_FOUND)
-    cantata_check_for_sse()
-    set (ENABLE_REPLAYGAIN_SUPPORT 1)
-    find_package(SPEEXDSP)
-    set(USE_SPEEX_RESAMPLER ${SPEEXDSP_FOUND})
-    SET(CANTATA_SRCS ${CANTATA_SRCS} replaygain/ffmpeginput.cpp replaygain/mpg123input.cpp)
-    include_directories(${CMAKE_SOURCE_DIR}/replaygain )
-    SET(CANTATA_SRCS ${CANTATA_SRCS} replaygain/ebur128.c replaygain/scanner.cpp replaygain/rgdialog.cpp replaygain/tagreader.cpp replaygain/jobcontroller.cpp )
-    SET(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} replaygain/scanner.h replaygain/rgdialog.h replaygain/tagreader.h replaygain/jobcontroller.h )
-endif(FFMPEG_FOUND AND MPG123_FOUND)
+    find_package(FFMPEG)
+    find_package(MPG123)
+    if(FFMPEG_FOUND AND MPG123_FOUND)
+        cantata_check_for_sse()
+        set (ENABLE_REPLAYGAIN_SUPPORT 1)
+        find_package(SPEEXDSP)
+        set(USE_SPEEX_RESAMPLER ${SPEEXDSP_FOUND})
+        SET(CANTATA_SRCS ${CANTATA_SRCS} replaygain/ffmpeginput.cpp replaygain/mpg123input.cpp)
+        include_directories(${CMAKE_SOURCE_DIR}/replaygain )
+        SET(CANTATA_SRCS ${CANTATA_SRCS} replaygain/ebur128.c replaygain/scanner.cpp replaygain/rgdialog.cpp replaygain/tagreader.cpp replaygain/jobcontroller.cpp )
+        SET(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} replaygain/scanner.h replaygain/rgdialog.h replaygain/tagreader.h replaygain/jobcontroller.h )
+    endif(FFMPEG_FOUND AND MPG123_FOUND)
+endif (TAGLIB_FOUND)
 
 IF( ENABLE_KDE_SUPPORT )
-    set (ENABLE_TAG_EDITOR_SUPPORT 1)
-    set (ENABLE_DEVICES_SUPPORT 1)
-    find_package(Mtp)
+    if (TAGLIB_FOUND)
+        set (ENABLE_TAG_EDITOR_SUPPORT 1)
+        set (ENABLE_DEVICES_SUPPORT 1)
+        find_package(Mtp)
 
-    SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp
-            devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
-            models/devicesmodel.cpp devices/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
-            devices/devicepropertiesdialog.cpp devices/encoders.cpp
-            devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp)
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h
-            devices/device.h devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
-            devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
-            devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h devices/synccollectionwidget.h)
-    SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui
-            devices/synccollectionwidget.ui)
+        SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp
+                devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
+                models/devicesmodel.cpp devices/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
+                devices/devicepropertiesdialog.cpp devices/encoders.cpp
+                devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp)
+        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h
+                devices/device.h devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
+                devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
+                devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h devices/synccollectionwidget.h)
+        SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui
+                devices/synccollectionwidget.ui)
 
-    if (ENABLE_REMOTE_DEVICES)
-        SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp
-            devices/remotedevicepropertieswidget.cpp)
-        SET(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/remotefsdevice.h devices/remotedevicepropertiesdialog.h
-            devices/remotedevicepropertieswidget.h)
-        SET(CANTATA_UIS ${CANTATA_UIS} devices/remotedevicepropertieswidget.ui)
-        if (ENABLE_KIO_REMOTE_DEVICES)
-            SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotekiodevice.cpp)
-            SET(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/remotekiodevice.h)
-        endif (ENABLE_KIO_REMOTE_DEVICES)
-    endif (ENABLE_REMOTE_DEVICES)
-    if (MTP_FOUND)
-        SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mtpdevice.cpp )
-        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h )
-    endif (MTP_FOUND)
+        if (ENABLE_REMOTE_DEVICES)
+            SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotefsdevice.cpp devices/remotedevicepropertiesdialog.cpp
+                devices/remotedevicepropertieswidget.cpp)
+            SET(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/remotefsdevice.h devices/remotedevicepropertiesdialog.h
+                devices/remotedevicepropertieswidget.h)
+            SET(CANTATA_UIS ${CANTATA_UIS} devices/remotedevicepropertieswidget.ui)
+            if (ENABLE_KIO_REMOTE_DEVICES)
+                SET(CANTATA_SRCS ${CANTATA_SRCS} devices/remotekiodevice.cpp)
+                SET(CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/remotekiodevice.h)
+            endif (ENABLE_KIO_REMOTE_DEVICES)
+        endif (ENABLE_REMOTE_DEVICES)
+        if (MTP_FOUND)
+            SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mtpdevice.cpp )
+            SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h )
+        endif (MTP_FOUND)
+    endif (TAGLIB_FOUND)
 
     macro_ensure_version("4.7.0" ${KDE_VERSION} KDE_VERSION_47)
 
@@ -463,27 +480,32 @@ ENDIF( ENABLE_KDE_SUPPORT )
 
 ADD_SUBDIRECTORY( icons )
 
-TARGET_LINK_LIBRARIES(cantata ${TAGLIB_LIBRARIES} ${QT_QTWEBKIT_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTDBUS_LIBRARY})
-include_directories( ${QT_INCLUDES} ${TAGLIB_INCLUDES})
+
+TARGET_LINK_LIBRARIES(cantata ${QT_QTWEBKIT_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTDBUS_LIBRARY})
+include_directories( ${QT_INCLUDES})
+
+if (TAGLIB_FOUND)
+    TARGET_LINK_LIBRARIES(cantata ${TAGLIB_LIBRARIES})
+    include_directories(${TAGLIB_INCLUDES})
+    if (TAGLIB-EXTRAS_FOUND)
+        TARGET_LINK_LIBRARIES(cantata ${TAGLIB-EXTRAS_LIBRARIES})
+        include_directories( ${TAGLIB-EXTRAS_INCLUDES})
+    endif (TAGLIB-EXTRAS_FOUND)
+
+    if(FFMPEG_FOUND AND MPG123_FOUND)
+        TARGET_LINK_LIBRARIES(cantata ${FFMPEG_LIBRARIES} ${MPG123_LIBRARIES})
+        include_directories(${FFMPEG_INCLUDE_DIRS} ${MPG123_INCLUDE_DIRS})
+        if(SPEEXDSP_FOUND)
+            TARGET_LINK_LIBRARIES(cantata ${SPEEXDSP_LIBRARIES})
+            include_directories( ${SPEEXDSP_INCLUDE_DIRS})
+        endif(SPEEXDSP_FOUND)
+    endif(FFMPEG_FOUND AND MPG123_FOUND)
+endif (TAGLIB_FOUND)
 
 if (PHONON_FOUND)
     TARGET_LINK_LIBRARIES(cantata ${PHONON_LIBS})
     include_directories( ${PHONON_INCLUDES})
 endif (PHONON_FOUND)
-
-if (TAGLIB-EXTRAS_FOUND)
-    TARGET_LINK_LIBRARIES(cantata ${TAGLIB-EXTRAS_LIBRARIES})
-    include_directories( ${TAGLIB-EXTRAS_INCLUDES})
-endif (TAGLIB-EXTRAS_FOUND)
-
-if(FFMPEG_FOUND AND MPG123_FOUND)
-    TARGET_LINK_LIBRARIES(cantata ${FFMPEG_LIBRARIES} ${MPG123_LIBRARIES})
-    include_directories(${FFMPEG_INCLUDE_DIRS} ${MPG123_INCLUDE_DIRS})
-    if(SPEEXDSP_FOUND)
-        TARGET_LINK_LIBRARIES(cantata ${SPEEXDSP_LIBRARIES})
-        include_directories( ${SPEEXDSP_INCLUDE_DIRS})
-    endif(SPEEXDSP_FOUND)
-endif(FFMPEG_FOUND AND MPG123_FOUND)
 
 if (ENABLE_WEBKIT)
     SET( CANTATA_SRCS ${CANTATA_SRCS} gui/infopage.cpp )
@@ -508,41 +530,55 @@ configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 message("")
 IF( ENABLE_KDE_SUPPORT )
     message("INFO: Building with KDE support")
-    message("      Enabled features:")
-    message("        - UMS device sync")
-    if (MTP_FOUND)
-        message("        - MTP device sync")
-    endif (MTP_FOUND)
-    if (ENABLE_REMOTE_DEVICES)
-        message("        - Remote device sync (EXPERIMENTAL)")
-        if (ENABLE_KIO_REMOTE_DEVICES)
-            message("        - Remote KIO device sync (EXPERIMENTAL AND **SLOW**)")
-            message("        - NOTE: This is feature is **NOT** complete")
-            message("        - (cover images, folder creation, and folder removal need completing)")
-        endif (ENABLE_KIO_REMOTE_DEVICES)
-    endif (ENABLE_REMOTE_DEVICES)
-    if(FFMPEG_FOUND AND MPG123_FOUND)
-        message("        - ReplayGain calculation")
-    endif(FFMPEG_FOUND AND MPG123_FOUND)
-    if( NOT MTP_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
-        message("      Disabled features:")
-        if (NOT MTP_FOUND)
-            message("        - MTP device sync (libmtp required)")
-        endif (NOT MTP_FOUND)
-        #if (NOT ENABLE_REMOTE_DEVICES)
-        #    message("        - Remote device sync (EXPERIMENTAL)")
-        #endif (NOT ENABLE_REMOTE_DEVICES)
-        if(NOT FFMPEG_FOUND OR NOT MPG123_FOUND)
-            message("        - ReplayGain calculation (ffmpeg AND mpg123 required)")
-        endif(NOT FFMPEG_FOUND OR NOT MPG123_FOUND)
-    endif( NOT MTP_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
+    if (TAGLIB_FOUND)
+        message("      Enabled features:")
+        message("        - UMS device sync")
+        if (MTP_FOUND)
+            message("        - MTP device sync")
+        endif (MTP_FOUND)
+        if (ENABLE_REMOTE_DEVICES)
+            message("        - Remote device sync (EXPERIMENTAL)")
+            if (ENABLE_KIO_REMOTE_DEVICES)
+                message("        - Remote KIO device sync (EXPERIMENTAL AND **SLOW**)")
+                message("        - NOTE: This is feature is **NOT** complete")
+                message("        - (cover images, folder creation, and folder removal need completing)")
+            endif (ENABLE_KIO_REMOTE_DEVICES)
+        endif (ENABLE_REMOTE_DEVICES)
+        if(FFMPEG_FOUND AND MPG123_FOUND)
+            message("        - ReplayGain calculation")
+        endif(FFMPEG_FOUND AND MPG123_FOUND)
+        if( NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
+            message("      Disabled features:")
+            if (NOT TAGLIB_FOUND)
+                message("        - Tag Editor (taglib required)")
+                message("        - Track Organizer (taglib required)")
+                message("        - Commandline support (taglib required)")
+                message("        - HTTP server support (taglib required)")
+            endif (NOT TAGLIB_FOUND)
+            if (NOT MTP_FOUND)
+                message("        - MTP device sync (taglib and libmtp required)")
+            endif (NOT MTP_FOUND)
+            #if (NOT ENABLE_REMOTE_DEVICES)
+            #    message("        - Remote device sync (EXPERIMENTAL)")
+            #endif (NOT ENABLE_REMOTE_DEVICES)
+            if(NOT FFMPEG_FOUND OR NOT MPG123_FOUND)
+                message("        - ReplayGain calculation (taglib, ffmpeg, and mpg123 required)")
+            endif(NOT FFMPEG_FOUND OR NOT MPG123_FOUND)
+        endif( NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
+    endif (TAGLIB_FOUND)
 ELSE( ENABLE_KDE_SUPPORT )
     if (NOT WIN32)
         message("INFO: Building WITHOUT KDE support - Device sync support DISABLED")
-        if( NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
+        if( NOT TAGLIB_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
             message("      Disabled features:")
-            message("        - ReplayGain calculation (ffmpeg AND mpg123 required)")
-        endif( NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
+            if (NOT TAGLIB_FOUND)
+                message("        - Tag Editor (taglib required)")
+                message("        - Track Organizer (taglib required)")
+                message("        - Commandline support (taglib required)")
+                message("        - HTTP server support (taglib required)")
+            endif (NOT TAGLIB_FOUND)
+            message("        - ReplayGain calculation (taglib, ffmpeg, and mpg123 required)")
+        endif( NOT TAGLIB_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
     endif (NOT WIN32)
     message("")
     message("*************************************************************")

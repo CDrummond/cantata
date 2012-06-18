@@ -40,7 +40,9 @@
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "streamfetcher.h"
+#ifdef TAGLIB_FOUND
 #include "httpserver.h"
+#endif
 #include "settings.h"
 #include "debugtimer.h"
 
@@ -53,10 +55,12 @@ static QStringList reverseList(const QStringList &orig)
     return rev;
 }
 
+#ifdef TAGLIB_FOUND
 static QString unencodeUrl(QString u)
 {
     return u.replace("%20", " ").replace("%5C", "\\");
 }
+#endif
 
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
@@ -414,9 +418,11 @@ QStringList PlayQueueModel::mimeTypes() const
     QStringList types;
     types << constMoveMimeType;
     types << constFileNameMimeType;
+    #ifdef TAGLIB_FOUND
     if (MPDConnection::self()->getDetails().isLocal() || HttpServer::self()->isAlive()) {
         types << constUriMimeType;
     }
+    #endif
     return types;
 }
 
@@ -492,7 +498,9 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         //Act on moves from the music library and dir view
         addItems(reverseList(decode(*data, constFileNameMimeType)), row, false, 0);
         return true;
-    } else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->getDetails().isLocal()*/) {
+    }
+    #ifdef TAGLIB_FOUND
+    else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->getDetails().isLocal()*/) {
         QStringList orig=reverseList(decode(*data, constUriMimeType));
         QStringList useable;
         bool haveHttp=HttpServer::self()->isAlive();
@@ -519,6 +527,7 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
             return true;
         }
     }
+    #endif
     return false;
 }
 

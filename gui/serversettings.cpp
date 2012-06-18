@@ -47,6 +47,11 @@ ServerSettings::ServerSettings(QWidget *p)
     connect(connectButton, SIGNAL(clicked(bool)), SLOT(toggleConnection()));
     saveButton->setIcon(QIcon::fromTheme("document-save-as"));
     removeButton->setIcon(QIcon::fromTheme("edit-delete"));
+
+    #ifdef Q_OS_WIN
+    hostLabel->setText(i18n("Host:"));
+    socketNoteLabel->setVisible(false);
+    #endif
 };
 
 void ServerSettings::load()

@@ -462,11 +462,17 @@ void RgDialog::scannerDone()
                     diff=true;
                 }
                 if (diff) {
+                    item->setFont(COL_ARTIST, f);
+                    item->setFont(COL_TITLE, f);
                     needToSave.insert(s->index());
                 } else {
                     needToSave.remove(s->index());
                 }
             } else {
+                item->setFont(COL_ARTIST, f);
+                item->setFont(COL_TITLE, f);
+                item->setFont(COL_TRACKGAIN, f);
+                item->setFont(COL_TRACKPEAK, f);
                 needToSave.insert(s->index());
             }
         } else {
@@ -500,14 +506,27 @@ void RgDialog::scannerDone()
 
                         if (origTags.contains(idx)) {
                             Tags::ReplayGain t=origTags[idx];
+                            bool diff=false;
                             if (!Utils::equal(t.albumGain, Scanner::reference((*a).data.loudness), 0.01)) {
                                 item->setFont(COL_ALBUMGAIN, f);
                                 needToSave.insert(idx);
+                                diff=true;
                             }
                             if (!Utils::equal(t.albumPeak, (*a).data.peak, 0.000001)) {
                                 item->setFont(COL_ALBUMPEAK, f);
                                 needToSave.insert(idx);
+                                diff=true;
                             }
+
+                            if (diff) {
+                                item->setFont(COL_ARTIST, f);
+                                item->setFont(COL_ALBUM, f);
+                            }
+                        } else {
+                            item->setFont(COL_ARTIST, f);
+                            item->setFont(COL_ALBUM, f);
+                            item->setFont(COL_ALBUMGAIN, f);
+                            item->setFont(COL_ALBUMPEAK, f);
                         }
                     }
                 }

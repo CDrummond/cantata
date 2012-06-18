@@ -24,6 +24,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "config.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KUniqueApplication>
 class MainWindow;
@@ -52,14 +53,21 @@ public:
     virtual ~Application();
 
     bool start();
+    #ifdef TAGLIB_FOUND
     void loadFiles();
+    #endif
 
 private:
     void setupIconTheme();
+    #ifdef TAGLIB_FOUND
     void load(const QStringList &files);
+    #endif
 
+#ifdef TAGLIB_FOUND
 private Q_SLOTS:
     void message(const QString &m);
+#endif
+
 };
 #endif
 

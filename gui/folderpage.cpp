@@ -61,6 +61,7 @@ FolderPage::FolderPage(MainWindow *p)
     view->addAction(p->addWithPriorityAction);
     view->addAction(p->addToStoredPlaylistAction);
 //     view->addAction(p->burnAction);
+    #ifdef TAGLIB_FOUND
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
     #endif
@@ -68,6 +69,7 @@ FolderPage::FolderPage(MainWindow *p)
     view->addAction(p->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     view->addAction(p->replaygainAction);
+    #endif // TAGLIB_FOUND
     #endif
     #ifdef ENABLE_KDE_SUPPORT
     view->addAction(browseAction);
@@ -145,6 +147,7 @@ void FolderPage::controlActions()
     mw->addWithPriorityAction->setEnabled(enable);
     mw->replacePlayQueueAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
+    #ifdef TAGLIB_FOUND
     mw->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
     mw->editTagsAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -154,6 +157,7 @@ void FolderPage::controlActions()
     mw->deleteSongsAction->setEnabled(mw->organiseFilesAction->isEnabled());
     mw->copyToDeviceAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #endif
+    #endif // TAGLIB_FOUND
 
     #ifdef ENABLE_KDE_SUPPORT
     browseAction->setEnabled(false);

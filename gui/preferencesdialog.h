@@ -24,6 +24,7 @@
 #ifndef PREFERENCES_DIALOG_H
 #define PREFERENCES_DIALOG_H
 
+#include "config.h"
 #include "dialog.h"
 #ifndef ENABLE_KDE_SUPPORT
 class ProxySettings;
@@ -36,7 +37,9 @@ class InterfaceSettings;
 class LyricSettings;
 class LyricsPage;
 class ExternalSettings;
+#ifdef TAGLIB_FOUND
 class HttpServerSettings;
+#endif
 class MPDConnectionDetails;
 
 class PreferencesDialog : public Dialog
@@ -63,10 +66,12 @@ private:
     InterfaceSettings *interface;
     ExternalSettings *ext;
     LyricSettings *lyrics;
+    #ifdef TAGLIB_FOUND
     HttpServerSettings *http;
-#ifndef ENABLE_KDE_SUPPORT
+    #endif
+    #ifndef ENABLE_KDE_SUPPORT
     ProxySettings *proxy;
-#endif
+    #endif
 };
 
 #endif

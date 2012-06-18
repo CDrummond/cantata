@@ -30,7 +30,9 @@
 #include "networkaccessmanager.h"
 #include "network.h"
 #include "settings.h"
+#ifdef TAGLIB_FOUND
 #include "tags.h"
+#endif
 #include <QtCore/QFile>
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QThread>
@@ -475,10 +477,12 @@ Covers::Image Covers::getImage(const Song &song)
                 }
             }
 
+            #ifdef TAGLIB_FOUND
             QImage img(Tags::readImage(haveAbsPath ? song.file : (MPDConnection::self()->getDetails().dir+songFile)));
             if (!img.isNull()) {
                 return Image(img, QString());
             }
+            #endif
         }
     }
 

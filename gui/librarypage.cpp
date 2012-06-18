@@ -60,6 +60,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->addAction(p->addWithPriorityAction);
     view->addAction(p->addToStoredPlaylistAction);
 //     view->addAction(p->burnAction);
+    #ifdef TAGLIB_FOUND
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);
     #endif
@@ -74,6 +75,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->addAction(sep);
     view->addAction(p->deleteSongsAction);
     #endif
+    #endif // TAGLIB_FOUND
 
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
@@ -279,6 +281,7 @@ void LibraryPage::controlActions()
     mw->addWithPriorityAction->setEnabled(enable);
     mw->replacePlayQueueAction->setEnabled(enable);
     mw->addToStoredPlaylistAction->setEnabled(enable);
+    #ifdef TAGLIB_FOUND
     mw->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
     mw->editTagsAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -288,6 +291,7 @@ void LibraryPage::controlActions()
     mw->deleteSongsAction->setEnabled(mw->organiseFilesAction->isEnabled());
     mw->copyToDeviceAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #endif
+    #endif // TAGLIB_FOUND
 }
 
 void LibraryPage::updateGenres(const QSet<QString> &g)

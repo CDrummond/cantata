@@ -44,7 +44,7 @@
     <widget class="QCheckBox" name="stopOnExit"/>
    </item>
    <item row="2" column="0">
-    <widget class="BuddyLabel" name="label">
+    <widget class="BuddyLabel" name="stopDynamizerOnExitLabel">
      <property name="text">
       <string>Stop dynamizer on exit:</string>
      </property>

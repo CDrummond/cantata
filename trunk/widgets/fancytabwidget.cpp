@@ -34,7 +34,6 @@
 **************************************************************************/
 
 #include "fancytabwidget.h"
-#include "settings.h"
 #include "localize.h"
 // #include "stylehelper.h"
 
@@ -578,6 +577,32 @@ void FancyTabWidget::AddTab(QWidget* tab, const QIcon& icon, const QString& labe
   setMinimumWidth(128);
 }
 
+void FancyTabWidget::InsertTab(QWidget* tab, const QIcon& icon, const QString& label, const QString &tt, bool enabled) {
+  stack_->insertWidget(0, tab);
+  items_.prepend(Item(icon, label, tt, enabled));
+  setMinimumWidth(128);
+  Mode m=mode_;
+  mode_=Mode_None;
+  SetMode(m);
+}
+
+void FancyTabWidget::RemoveTab(QWidget *tab)
+{
+  int idx=stack_->indexOf(tab);
+  if (idx>-1 && idx<items_.count()) {
+    stack_->removeWidget(tab);
+    items_.takeAt(idx);
+    Mode m=mode_;
+    mode_=Mode_None;
+    SetMode(m);
+  }
+}
+
+int FancyTabWidget::IndexOf(QWidget *tab)
+{
+  return stack_->indexOf(tab);
+}
+
 void FancyTabWidget::AddSpacer(int size) {
   items_ << Item(size);
 }
@@ -854,10 +879,8 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     QMenu *modeMenu=new QMenu(this);
     QAction *modeAct;
     QAction *iconOnlyAct;
-    QAction *autoHideAct;
     iconOnlyAct=new QAction(i18n("Icons Only"), this);
     modeAct=new QAction(i18n("Style"), this);
-    autoHideAct=new QAction(i18n("Auto Hide"), this);
     AddMenuItem(group, i18n("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
     AddMenuItem(group, i18n("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
     AddMenuItem(group, i18n("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);
@@ -874,11 +897,9 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     modeAct->setMenu(modeMenu);
     modeAct->setData(-1);
     menu_->addAction(modeAct);
-    autoHideAct->setCheckable(true);
-    autoHideAct->setChecked(Settings::self()->splitterAutoHide());
-    autoHideAct->setData(-1);
-    connect(autoHideAct, SIGNAL(triggered()), this, SLOT(SetAutoHide()));
-    menu_->addAction(autoHideAct);
+    foreach (QAction *a, otherActions) {
+      menu_->addAction(a);
+    }
   }
 
   foreach (QAction *act, menu_->actions()) {
@@ -900,14 +921,6 @@ void FancyTabWidget::AddMenuItem(QActionGroup* group, const QString& text, Mode 
   if (mode == mode_ || iconMode==mode_) {
     action->setChecked(true);
   }
-}
-
-void FancyTabWidget::SetAutoHide()
-{
-    QAction *act=qobject_cast<QAction *>(sender());
-    if (act) {
-        emit AutoHideChanged(act->isChecked());
-    }
 }
 
 void FancyTabWidget::SetMode()

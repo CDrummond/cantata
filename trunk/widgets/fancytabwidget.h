@@ -198,6 +198,9 @@ public:
   };
 
   void AddTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
+  void InsertTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
+  void RemoveTab(QWidget *tab);
+  int IndexOf(QWidget *tab);
   void AddSpacer(int size = 40);
   void SetBackgroundPixmap(const QPixmap& pixmap);
 
@@ -211,18 +214,19 @@ public:
   int visibleCount() const;
   Mode mode() const { return mode_; }
 
+  void addMenuAction(QAction *a) { removeMenuAction(a); otherActions.append(a); }
+  void removeMenuAction(QAction *a) { otherActions.removeAll(a); }
+
 public slots:
   void SetCurrentIndex(int index);
   void SetMode(Mode mode);
   void SetMode(int mode) { SetMode(Mode(mode)); }
   void ToggleTab(int tab, bool show);
-  void SetAutoHide();
 
 signals:
   void CurrentChanged(int index);
   void ModeChanged(FancyTabWidget::Mode mode);
   void TabToggled(int index);
-  void AutoHideChanged(bool ah);
 
 protected:
   void paintEvent(QPaintEvent *event);
@@ -257,6 +261,8 @@ private:
   QScopedPointer<FancyTabProxyStyle> proxy_style_;
   bool allowContext_;
   bool drawBorder_;
+
+  QList<QAction *> otherActions;
 };
 
 } // namespace Internal

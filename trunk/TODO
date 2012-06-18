@@ -39,7 +39,6 @@ Lyrics
     - Will need to be careful that songs are not from device
     - Also, check that songs are not streams!
   - Tabbed mode, to show other play lists?
-  - Option to place in sidebar?
 
 - General
   - Ratings (use KRatingWidget?)

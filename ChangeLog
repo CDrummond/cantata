@@ -54,6 +54,8 @@
 33. Only ignore closeEvent if this is a 'spontaneous' event and we have a tray
     icon.
 34. Drastically reduce replay-gain calculation memory usage.
+35. Make more columns italic in replaygain dailog to make entries that will be
+    modified.
 
 0.7.1
 -----

@@ -310,10 +310,12 @@ bool Settings::stopOnExit()
     return GET_BOOL("stopOnExit", false);
 }
 
+#ifndef Q_OS_WIN
 bool Settings::stopDynamizerOnExit()
 {
     return GET_BOOL("stopDynamizerOnExit", false);
 }
+#endif
 
 bool Settings::smallPlaybackButtons()
 {
@@ -659,10 +661,12 @@ void Settings::saveStopOnExit(bool v)
     SET_VALUE("stopOnExit", v);
 }
 
+#ifndef Q_OS_WIN
 void Settings::saveStopDynamizerOnExit(bool v)
 {
     SET_VALUE("stopDynamizerOnExit", v);
 }
+#endif
 
 void Settings::saveSmallPlaybackButtons(bool v)
 {

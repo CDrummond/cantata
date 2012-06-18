@@ -33,18 +33,26 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     stopFadeDuration->setSuffix(i18n(" ms"));
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
+    #ifdef Q_OS_WIN
+    stopDynamizerOnExit->setVisible(false);
+    stopDynamizerOnExitLabel->setVisible(false);
+    #endif
 };
 
 void PlaybackSettings::load()
 {
     stopOnExit->setChecked(Settings::self()->stopOnExit());
-    stopDynamizerOnExit->setChecked(Settings::self()->stopDynamizerOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
+    #ifndef Q_OS_WIN
+    stopDynamizerOnExit->setChecked(Settings::self()->stopDynamizerOnExit());
+    #endif
 }
 
 void PlaybackSettings::save()
 {
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
-    Settings::self()->saveStopDynamizerOnExit(stopDynamizerOnExit->isChecked());
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
+    #ifndef Q_OS_WIN
+    Settings::self()->saveStopDynamizerOnExit(stopDynamizerOnExit->isChecked());
+    #endif
 }

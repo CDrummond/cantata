@@ -56,33 +56,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QComboBox" name="libraryCoverSize">
-           <item>
-            <property name="text">
-             <string>None</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Small</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Medium</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Large</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Extra Large</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="libraryCoverSize"/>
          </item>
          <item row="2" column="0">
           <widget class="BuddyLabel" name="libraryArtistImageLabel">
@@ -188,33 +162,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QComboBox" name="albumsCoverSize">
-         <item>
-          <property name="text">
-           <string>None</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Small</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Medium</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Large</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Extra Large</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="albumsCoverSize"/>
        </item>
        <item row="2" column="0">
         <widget class="BuddyLabel" name="label_5x">

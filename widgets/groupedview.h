@@ -54,6 +54,8 @@ public:
         Role_DropAdjust
     };
 
+    static void setup();
+
     GroupedView(QWidget *parent=0);
     virtual ~GroupedView();
 

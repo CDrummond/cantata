@@ -336,6 +336,7 @@ private Q_SLOTS:
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     void replayGain();
     #endif
+    void goBack();
     void focusSearch();
     void expandAll();
     void collapseAll();
@@ -421,6 +422,7 @@ private:
     Action *lyricsTabAction;
     Action *streamsTabAction;
     Action *removeAction;
+    Action *backAction;
 //     Action *burnAction;
 //     Action *createDataCdAction;
 //     Action *createAudioCdAction;

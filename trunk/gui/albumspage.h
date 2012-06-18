@@ -48,6 +48,7 @@ public:
     void setView(int v);
     ItemView::Mode viewMode() const { return view->viewMode(); }
     void focusSearch() { view->focusSearch(); }
+    void goBack() { view->backActivated(); }
 
 private:
     void setItemSize(int v);

@@ -44,6 +44,7 @@ public:
     void addSelectionToPlaylist(bool replace, quint8 priorty=0);
     void setView(int mode);
     void focusSearch() { view->focusSearch(); }
+    void goBack() { view->backActivated(); }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)

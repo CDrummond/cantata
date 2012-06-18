@@ -73,8 +73,9 @@ Scanner::Data Scanner::global(const QList<Scanner *> &scanners)
     }
 }
 
-Scanner::Scanner()
-    : state(0)
+Scanner::Scanner(int i)
+    : idx(i)
+    , state(0)
     , input(0)
 {
     #ifdef MPG123_FOUND
@@ -88,6 +89,10 @@ Scanner::Scanner()
 Scanner::~Scanner()
 {
     delete input;
+    if (state) {
+        ebur128_destroy(&state);
+        state=0;
+    }
 }
 
 void Scanner::setFile(const QString &fileName)
@@ -120,7 +125,7 @@ void Scanner::run()
     #endif
 
     if (!input) {
-        setFinished(false);
+        setFinishedStatus(false);
         return;
     }
 //     #ifdef EBUR128_USE_SPEEX_RESAMPLER
@@ -146,19 +151,19 @@ void Scanner::run()
     input->allocateBuffer();
     while ((numFramesRead = input->readFrames())) {
         if (abortRequested) {
-            setFinished(false);
+            setFinishedStatus(false);
             return;
         }
         totalRead+=numFramesRead;
         emit progress((int)((totalRead*100.0/input->totalFrames())+0.5));
         if (ebur128_add_frames_float(state, input->buffer(), numFramesRead)) {
-            setFinished(false);
+            setFinishedStatus(false);
             return;
         }
     }
 
     if (abortRequested) {
-        setFinished(false);
+        setFinishedStatus(false);
         return;
     }
 
@@ -188,5 +193,12 @@ void Scanner::run()
         }
     }
     #endif
-    setFinished(true);
+    setFinishedStatus(true);
+}
+
+void Scanner::setFinishedStatus(bool f)
+{
+    delete input;
+    input=0;
+    setFinished(f);
 }

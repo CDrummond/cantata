@@ -61,6 +61,7 @@
     preview based upon font size.
 38. Add an extra cover-size setting (Automatic) which will adjust the covers in
     library and albums view based upon font size.
+39. Add option to place playqueue in sidebar.
 
 0.7.1
 -----

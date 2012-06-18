@@ -107,6 +107,7 @@
 #endif
 #include "messagewidget.h"
 #include "groupedview.h"
+#include "actionitemdelegate.h"
 #include "debugtimer.h"
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -1188,6 +1189,7 @@ MainWindow::MainWindow(QWidget *parent)
         QTimer::singleShot(250, this, SLOT(toggleDockManager()));
     }
     #endif
+    initSizes();
 }
 
 MainWindow::~MainWindow()
@@ -1241,6 +1243,30 @@ MainWindow::~MainWindow()
     }
     Utils::stopThread(mpdThread);
     Covers::self()->stop();
+}
+
+void MainWindow::initSizes()
+{
+    GroupedView::setup();
+    ActionItemDelegate::setup();
+    MusicLibraryItemAlbum::setup();
+
+    // Calculate size for cover widget...
+    int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
+    if (spacing<0) {
+        spacing=4;
+    }
+    int cwSize=qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+
+               songTimeElapsedLabel->height()+positionSlider->height()+(spacing*2);
+
+    cwSize=(((int)(cwSize/4))*4)+(cwSize%4 ? 4 : 0);
+    if (cwSize<72) {
+        cwSize=72;
+    } else if (cwSize>200) {
+        cwSize=200;
+    }
+    coverWidget->setMinimumSize(cwSize, cwSize);
+    coverWidget->setMaximumSize(cwSize, cwSize);
 }
 
 #ifdef TAGLIB_FOUND

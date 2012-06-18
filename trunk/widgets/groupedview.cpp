@@ -37,9 +37,35 @@
 #include <QtGui/QAction>
 #include <QtGui/QDropEvent>
 
-static const int constCoverSize=32;
-static const int constIconSize=16;
-static const int constBorder=1;
+static int constCoverSize=32;
+static int constIconSize=16;
+static int constBorder=1;
+
+void GroupedView::setup()
+{
+    int height=QApplication::fontMetrics().height();
+
+    if (height>17) {
+        constCoverSize=((int)((height*2)/4))*4;
+        constIconSize=((int)(height/4))*4;
+        if (constIconSize<20) {
+            constIconSize=16;
+        } else if (constIconSize<28) {
+            constIconSize=22;
+        } else if (constIconSize<40) {
+            constIconSize=32;
+        } else if (constIconSize<56) {
+            constIconSize=48;
+        } else {
+            constIconSize=64;
+        }
+        constBorder=constCoverSize>48 ? 2 : 1;
+    } else {
+        constCoverSize=32;
+        constIconSize=16;
+        constBorder=1;
+    }
+}
 
 enum Type {
     AlbumHeader,
@@ -78,7 +104,7 @@ public:
         int textHeight = QApplication::fontMetrics().height();
 
         if (isCollection || AlbumHeader==type) {
-            return QSize(64, qMax(constCoverSize, (qMax(constIconSize, textHeight)*2))+(3*constBorder));
+            return QSize(64, qMax(constCoverSize, (qMax(constIconSize, textHeight)*2)+constBorder)+(2*constBorder));
         }
         return QSize(64, qMax(constIconSize, textHeight)+(2*constBorder));
     }
@@ -308,22 +334,25 @@ public:
         }
 
         if (state) {
-            int size=9;
+            int size=constIconSize-7;
+            int hSize=size/2;
             QRect ir(r.x()-(size+6), r.y()+(((r.height()-size)/2.0)+0.5), size, size);
             switch (state) {
             case GroupedView::State_Stopped:
                 painter->fillRect(ir, Qt::white);
                 painter->fillRect(ir.adjusted(1, 1, -1, -1), Qt::black);
                 break;
-            case GroupedView::State_Paused:
+            case GroupedView::State_Paused: {
+                int blockSize=hSize-1;
                 painter->fillRect(ir, Qt::white);
-                painter->fillRect(ir.x()+1, ir.y()+1, 3, size-2, Qt::black);
-                painter->fillRect(ir.x()+size-4, ir.y()+1, 3, size-2, Qt::black);
+                painter->fillRect(ir.x()+1, ir.y()+1, blockSize, size-2, Qt::black);
+                painter->fillRect(ir.x()+size-blockSize-1, ir.y()+1, blockSize, size-2, Qt::black);
                 break;
+            }
             case GroupedView::State_Playing: {
                 ir.adjust(2, 0, -2, 0);
-                QPoint p1[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-4), ir.y()+4), QPoint(ir.x(), ir.y()+(ir.height()-1)), QPoint(ir.x()-2, ir.y()+(ir.height()-1)) };
-                QPoint p2[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-4), ir.y()+4), QPoint(ir.x(), ir.y()+ir.height()), QPoint(ir.x()-2, ir.y()+ir.height()) };
+                QPoint p1[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+(ir.height()-1)), QPoint(ir.x()-2, ir.y()+(ir.height()-1)) };
+                QPoint p2[5]={ QPoint(ir.x()-2, ir.y()-1), QPoint(ir.x(), ir.y()-1), QPoint(ir.x()+(size-hSize), ir.y()+hSize), QPoint(ir.x(), ir.y()+ir.height()), QPoint(ir.x()-2, ir.y()+ir.height()) };
                 painter->save();
                 painter->setBrush(Qt::white);
                 painter->setPen(Qt::white);

@@ -31,6 +31,8 @@ class QAction;
 class ActionItemDelegate : public QStyledItemDelegate
 {
 public:
+    static void setup();
+
     ActionItemDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
         : QStyledItemDelegate(p)
         , act1(a1)
@@ -42,9 +44,9 @@ public:
     virtual ~ActionItemDelegate() {
     }
 
-    static const int constBorder;
-    static const int constActionBorder;
-    static const int constActionIconSize;
+    static int constBorder;
+    static int constActionBorder;
+    static int constActionIconSize;
 
     static QRect calcActionRect(bool rtl, bool iconMode, const QRect &rect);
     static void adjustActionRect(bool rtl, bool iconMode, QRect &rect);

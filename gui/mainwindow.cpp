@@ -538,6 +538,9 @@ MainWindow::MainWindow(QWidget *parent)
     editPlayQueueTagsAction->setText(i18n("Edit Song Tags"));
     #endif
 
+    showPlayQueueAction = actionCollection()->addAction("showplayqueue");
+    showPlayQueueAction->setText(i18n("Play Queue"));
+
     libraryTabAction = actionCollection()->addAction("showlibrarytab");
     libraryTabAction->setText(i18n("Library"));
 
@@ -643,6 +646,7 @@ MainWindow::MainWindow(QWidget *parent)
     searchAction = new QAction(tr("Search"), this);
     expandAllAction = new QAction(tr("Expand All"), this);
     collapseAllAction = new QAction(tr("Collapse All"), this);
+    showPlayQueueAction = new QAction(tr("Play Queue"), this);
     libraryTabAction = new QAction(tr("Library"), this);
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
@@ -658,6 +662,7 @@ MainWindow::MainWindow(QWidget *parent)
     serverInfoTabAction = new QAction(tr("Server Info"), this);
     #endif // ENABLE_KDE_SUPPORT
     int pageKey=Qt::Key_1;
+    showPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Q);
     libraryTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     albumsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     foldersTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
@@ -752,6 +757,7 @@ MainWindow::MainWindow(QWidget *parent)
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
+    showPlayQueueAction->setIcon(QIcon::fromTheme("media-playback-start"));
     #ifdef ENABLE_KDE_SUPPORT
     libraryTabAction->setIcon(Icon("cantata-view-media-library"));
     #else
@@ -839,6 +845,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     #define TAB_ACTION(A) A->icon(), A->text(), A->text()+"<br/><small><i>"+A->shortcut().toString()+"</i></small>"
 
+    playQueuePage=new QWidget(this);
+    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, playQueuePage);
+    layout->setContentsMargins(0, 0, 0, 0);
+    bool playQueueInSidebar=!hiddenPages.contains(playQueuePage->metaObject()->className());
+    if (playQueueInSidebar && Settings::self()->version()<CANTATA_MAKE_VERSION(0, 8, 0)) {
+        playQueueInSidebar=false;
+    }
+    tabWidget->AddTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
     tabWidget->AddTab(libraryPage, TAB_ACTION(libraryTabAction), !hiddenPages.contains(libraryPage->metaObject()->className()));
     tabWidget->AddTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
     tabWidget->AddTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
@@ -1102,6 +1116,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(organiseFilesAction, SIGNAL(triggered()), SLOT(organiseFiles()));
     #endif
     connect(locateTrackAction, SIGNAL(activated()), this, SLOT(locateTrack()));
+    connect(showPlayQueueAction, SIGNAL(activated()), this, SLOT(showPlayQueue()));
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
@@ -1140,17 +1155,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
 
-    QByteArray state=Settings::self()->splitterState();
+    if (!playQueueInSidebar) {
+        QByteArray state=Settings::self()->splitterState();
 
-    if (state.isEmpty()) {
-        QList<int> sizes;
-        sizes << 250 << 500;
-        splitter->setSizes(sizes);
-        resize(800, 600);
-    } else {
-        splitter->restoreState(Settings::self()->splitterState());
+        if (state.isEmpty()) {
+            QList<int> sizes;
+            sizes << 250 << 500;
+            splitter->setSizes(sizes);
+            resize(800, 600);
+        } else {
+            splitter->restoreState(Settings::self()->splitterState());
+        }
     }
-    toggleSplitterAutoHide(Settings::self()->splitterAutoHide());
 
     playQueueItemsSelected(false);
     playQueue->setFocus();
@@ -1173,12 +1189,19 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
+    autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
+    autoHideSplitterAction->setCheckable(true);
+    autoHideSplitterAction->setChecked(Settings::self()->splitterAutoHide());
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
-    connect(tabWidget, SIGNAL(AutoHideChanged(bool)), this, SLOT(toggleSplitterAutoHide(bool)));
+    connect(autoHideSplitterAction, SIGNAL(toggled(bool)), this, SLOT(toggleSplitterAutoHide()));
     connect(tabWidget, SIGNAL(ModeChanged(FancyTabWidget::Mode)), this, SLOT(sidebarModeChanged()));
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
+    if (playQueueInSidebar) {
+        tabToggled(PAGE_PLAYQUEUE);
+    }
+    toggleSplitterAutoHide();
     readSettings();
     updateConnectionsMenu();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
@@ -1208,12 +1231,14 @@ MainWindow::~MainWindow()
     Settings::self()->savePlayStream(streamPlayAction->isChecked());
     #endif
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
-    Settings::self()->saveSplitterState(splitter->saveState());
+    if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+        Settings::self()->saveSplitterState(splitter->saveState());
+    }
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     Settings::self()->saveSmallPlaybackButtons(smallPlaybackButtonsAction->isChecked());
     Settings::self()->saveSmallControlButtons(smallControlButtonsAction->isChecked());
-    Settings::self()->saveSplitterAutoHide(splitter->isAutoHideEnabled());
+    Settings::self()->saveSplitterAutoHide(autoHideSplitterAction->isChecked());
     playQueue->saveHeader();
     QStringList hiddenPages;
     for (int i=0; i<tabWidget->count(); ++i) {
@@ -2858,6 +2883,21 @@ void MainWindow::currentTabChanged(int index)
 void MainWindow::tabToggled(int index)
 {
     switch (index) {
+    case PAGE_PLAYQUEUE:
+        if (tabWidget->isEnabled(index)) {
+            playQueueWidget->setParent(playQueuePage);
+            playQueuePage->layout()->addWidget(playQueueWidget);
+            playQueueWidget->setVisible(true);
+            tabWidget->removeMenuAction(autoHideSplitterAction);
+            toggleSplitterAutoHide();
+        } else {
+            playQueuePage->layout()->removeWidget(playQueueWidget);
+            playQueueWidget->setParent(splitter);
+            playQueueWidget->setVisible(true);
+            tabWidget->addMenuAction(autoHideSplitterAction);
+            toggleSplitterAutoHide();
+        }
+        break;
     case PAGE_LIBRARY:
         locateTrackAction->setVisible(tabWidget->isEnabled(index));
         break;
@@ -2882,8 +2922,9 @@ void MainWindow::tabToggled(int index)
     sidebarModeChanged();
 }
 
-void MainWindow::toggleSplitterAutoHide(bool ah)
+void MainWindow::toggleSplitterAutoHide()
 {
+    bool ah=autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE);
     splitter->setAutoHideEnabled(ah);
     splitter->setAutohidable(0, ah);
 }

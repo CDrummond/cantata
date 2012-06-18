@@ -168,6 +168,7 @@ public:
 
     enum Page
     {
+        PAGE_PLAYQUEUE,
         PAGE_LIBRARY,
         PAGE_ALBUMS,
         PAGE_FOLDERS,
@@ -298,6 +299,7 @@ private Q_SLOTS:
     void sidebarModeChanged();
     void currentTabChanged(int index);
     void tabToggled(int index);
+    void showPlayQueue() { showTab(PAGE_PLAYQUEUE); }
     void showLibraryTab() { showTab(PAGE_LIBRARY); }
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
@@ -309,7 +311,7 @@ private Q_SLOTS:
     void showLyricsTab() { showTab(PAGE_LYRICS); }
     void showInfoTab() { showTab(PAGE_INFO); }
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
-    void toggleSplitterAutoHide(bool ah);
+    void toggleSplitterAutoHide();
     void locateTrack();
     #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
     void showDevicesTab() { showTab(PAGE_DEVICES); }
@@ -408,6 +410,7 @@ private:
     Action *expandInterfaceAction;
     Action *quitAction;
     Action *locateTrackAction;
+    Action *showPlayQueueAction;
     Action *libraryTabAction;
     Action *albumsTabAction;
     Action *foldersTabAction;
@@ -444,6 +447,7 @@ private:
     Action *collapseAllAction;
     Action *smallPlaybackButtonsAction;
     Action *smallControlButtonsAction;
+    QAction *autoHideSplitterAction;
     #ifdef ENABLE_KDE_SUPPORT
     KStatusNotifierItem *trayItem;
     KMenu *trayItemMenu;
@@ -462,6 +466,7 @@ private:
     #ifdef ENABLE_WEBKIT
     bool infoNeedsUpdating;
     #endif
+    QWidget *playQueuePage;
     LibraryPage *libraryPage;
     AlbumsPage *albumsPage;
     FolderPage *folderPage;

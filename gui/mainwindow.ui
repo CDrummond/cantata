@@ -182,7 +182,7 @@
        </size>
       </property>
      </widget>
-     <widget class="QWidget" name="groupBox_3">
+     <widget class="QWidget" name="playQueueWidget">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>2</horstretch>

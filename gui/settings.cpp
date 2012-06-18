@@ -507,6 +507,7 @@ int Settings::stopFadeDuration()
     return v;
 }
 
+#ifdef TAGLIB_FOUND
 int Settings::httpPort()
 {
     return GET_INT("httpPort", 9001);
@@ -526,6 +527,7 @@ bool Settings::alwaysUseHttp()
 {
     return GET_BOOL("alwaysUseHttp", false);
 }
+#endif
 
 bool Settings::playQueueGrouped()
 {
@@ -814,6 +816,7 @@ void Settings::saveStopFadeDuration(int v)
     SET_VALUE("stopFadeDuration", v);
 }
 
+#ifdef TAGLIB_FOUND
 void Settings::saveHttpPort(int v)
 {
     SET_VALUE("httpPort", v);
@@ -833,6 +836,7 @@ void Settings::saveAlwaysUseHttp(bool v)
 {
     SET_VALUE("alwaysUseHttp", v);
 }
+#endif
 
 void Settings::savePlayQueueGrouped(bool v)
 {

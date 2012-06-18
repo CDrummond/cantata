@@ -101,10 +101,12 @@ public:
     #endif
     int version();
     int stopFadeDuration();
+    #ifdef TAGLIB_FOUND
     int httpPort();
     QString httpAddress();
     bool enableHttp();
     bool alwaysUseHttp();
+    #endif
     bool playQueueGrouped();
     bool playQueueAutoExpand();
     bool playQueueStartClosed();
@@ -159,10 +161,12 @@ public:
     void saveDevicesView(int v);
     #endif
     void saveStopFadeDuration(int v);
+    #ifdef TAGLIB_FOUND
     void saveHttpPort(int v);
     void saveHttpAddress(const QString &v);
     void saveEnableHttp(bool v);
     void saveAlwaysUseHttp(bool v);
+    #endif
     void savePlayQueueGrouped(bool v);
     void savePlayQueueAutoExpand(bool v);
     void savePlayQueueStartClosed(bool v);

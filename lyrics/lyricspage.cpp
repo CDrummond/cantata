@@ -33,7 +33,9 @@
 #include "utils.h"
 #include "messagebox.h"
 #include "localize.h"
+#ifdef TAGLIB_FOUND
 #include "tags.h"
+#endif
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -317,6 +319,7 @@ void LyricsPage::update(const Song &song, bool force)
                 songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
             }
 
+            #ifdef TAGLIB_FOUND
             QString tagLyrics=Tags::readLyrics(MPDConnection::self()->getDetails().dir+songFile);
 
             if (!tagLyrics.isEmpty()) {
@@ -325,6 +328,7 @@ void LyricsPage::update(const Song &song, bool force)
                 controls->setVisible(false);
                 return;
             }
+            #endif
 
             // Check for MPD file...
             QString mpdLyrics=changeExt(MPDConnection::self()->getDetails().dir+songFile, constExtension);

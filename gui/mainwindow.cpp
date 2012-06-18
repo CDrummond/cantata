@@ -80,17 +80,20 @@
 #include "lyricspage.h"
 #include "infopage.h"
 #include "serverinfopage.h"
-#include "trackorganiser.h"
-#ifdef ENABLE_DEVICES_SUPPORT
+#if defined ENABLE_DEVICES_SUPPORT && defined TAGLIB_FOUND
 #include "devicespage.h"
 #include "devicesmodel.h"
 #include "actiondialog.h"
 #include "syncdialog.h"
 #endif
+#ifdef TAGLIB_FOUND
+#include "httpserver.h"
+#include "trackorganiser.h"
+#include "tageditor.h"
 #ifdef ENABLE_REPLAYGAIN_SUPPORT
 #include "rgdialog.h"
 #endif
-#include "tageditor.h"
+#endif
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -103,7 +106,6 @@
 #include "cantataadaptor.h"
 #endif
 #include "messagewidget.h"
-#include "httpserver.h"
 #include "groupedview.h"
 #include "debugtimer.h"
 
@@ -440,7 +442,6 @@ MainWindow::MainWindow(QWidget *parent)
     copyToDeviceAction->setIcon(Icon("multimedia-player"));
     deleteSongsAction = actionCollection()->addAction("deletesongs");
     #endif
-    organiseFilesAction = actionCollection()->addAction("organizefiles");
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction = actionCollection()->addAction("replaygain");
     #endif
@@ -526,11 +527,15 @@ MainWindow::MainWindow(QWidget *parent)
 //     createDataCdAction = actionCollection()->addAction("createdatacd");
 //     createDataCdAction->setText(i18n("Create Data CD/DVD"));
 
+    #ifdef TAGLIB_FOUND
+    organiseFilesAction = actionCollection()->addAction("organizefiles");
+
     editTagsAction = actionCollection()->addAction("edittags");
     editTagsAction->setText(i18n("Edit Tags"));
 
     editPlayQueueTagsAction = actionCollection()->addAction("editpqtags");
     editPlayQueueTagsAction->setText(i18n("Edit Song Tags"));
+    #endif
 
     libraryTabAction = actionCollection()->addAction("showlibrarytab");
     libraryTabAction->setText(i18n("Library"));
@@ -595,7 +600,6 @@ MainWindow::MainWindow(QWidget *parent)
     decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
     addToPlayQueueAction = new QAction(tr("Add To Play Queue"), this);
     addToStoredPlaylistAction = new QAction(tr("Add To Playlist"), this);
-    organiseFilesAction = new QAction(this);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction = new QAction(this);
     #endif
@@ -630,8 +634,11 @@ MainWindow::MainWindow(QWidget *parent)
 //     burnAction = new QAction(tr("Burn To CD/DVD"), this);
 //     createAudioCdAction = new QAction(tr("Create Audio CD"), this);
 //     createDataCdAction = new QAction(tr("Create Data CD"), this);
+    #ifdef TAGLIB_FOUND
+    organiseFilesAction = new QAction(this);
     editTagsAction = new QAction(tr("Edit Tags"), this);
     editPlayQueueTagsAction = new QAction(tr("Edit Song Tags"), this);
+    #endif
     searchAction = new QAction(tr("Search"), this);
     expandAllAction = new QAction(tr("Expand All"), this);
     collapseAllAction = new QAction(tr("Collapse All"), this);
@@ -712,8 +719,12 @@ MainWindow::MainWindow(QWidget *parent)
 //     burnAction->setIcon(Icon("tools-media-optical-burn"));
 //     createDataCdAction->setIcon(Icon("media-optical"));
 //     createAudioCdAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
+    #ifdef TAGLIB_FOUND
     editTagsAction->setIcon(Icon("document-edit"));
     editPlayQueueTagsAction->setIcon(Icon("document-edit"));
+    organiseFilesAction->setIcon(Icon("inode-directory"));
+    organiseFilesAction->setText(i18n("Organize Files"));
+    #endif
 //     QMenu *cdMenu=new QMenu(this);
 //     cdMenu->addAction(createAudioCdAction);
 //     cdMenu->addAction(createDataCdAction);
@@ -771,8 +782,6 @@ MainWindow::MainWindow(QWidget *parent)
     deleteSongsAction->setIcon(Icon("edit-delete"));
     deleteSongsAction->setText(i18n("Delete Songs"));
     #endif
-    organiseFilesAction->setIcon(Icon("inode-directory"));
-    organiseFilesAction->setText(i18n("Organize Files"));
     searchAction->setIcon(Icon("edit-find"));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction->setIcon(Icon("audio-x-generic"));
@@ -1020,7 +1029,9 @@ MainWindow::MainWindow(QWidget *parent)
     sep->setSeparator(true);
     playQueue->addAction(sep);
     playQueue->addAction(locateTrackAction);
+    #ifdef TAGLIB_FOUND
     playQueue->addAction(editPlayQueueTagsAction);
+    #endif
     //playQueue->addAction(copyTrackInfoAction);
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlayQueueAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
@@ -1084,8 +1095,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
 //     connect(createDataCdAction, SIGNAL(activated()), this, SLOT(createDataCd()));
 //     connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
+    #ifdef TAGLIB_FOUND
     connect(editTagsAction, SIGNAL(activated()), this, SLOT(editTags()));
     connect(editPlayQueueTagsAction, SIGNAL(activated()), this, SLOT(editPlayQueueTags()));
+    connect(organiseFilesAction, SIGNAL(triggered()), SLOT(organiseFiles()));
+    #endif
     connect(locateTrackAction, SIGNAL(activated()), this, SLOT(locateTrack()));
     connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
     connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
@@ -1117,7 +1131,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
-    connect(organiseFilesAction, SIGNAL(triggered()), SLOT(organiseFiles()));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     connect(replaygainAction, SIGNAL(triggered()), SLOT(replayGain()));
     #endif
@@ -1230,6 +1243,7 @@ MainWindow::~MainWindow()
     Covers::self()->stop();
 }
 
+#ifdef TAGLIB_FOUND
 void MainWindow::load(const QList<QUrl> &urls)
 {
     QStringList useable;
@@ -1253,6 +1267,7 @@ void MainWindow::load(const QList<QUrl> &urls)
         playQueueModel.addItems(useable, playQueueModel.rowCount(), false, 0);
     }
 }
+#endif
 
 const QDateTime & MainWindow::getDbUpdate() const
 {
@@ -1467,11 +1482,13 @@ void MainWindow::showPreferencesDialog()
     static bool showing=false;
 
     if (!showing) {
-        if (0!=TagEditor::instanceCount()) {
+        #ifdef TAGLIB_FOUND
+        if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
             DIALOG_ERROR;
         }
+        #endif
         #ifdef ENABLE_DEVICES_SUPPORT
-        if (0!=ActionDialog::instanceCount() || 0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
+        if (0!=ActionDialog::instanceCount()  || 0!=SyncDialog::instanceCount()) {
             DIALOG_ERROR;
         }
         #endif
@@ -1494,8 +1511,10 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::checkMpdDir()
 {
+    #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction->setEnabled(MPDConnection::self()->getDetails().dirReadable);
     organiseFilesAction->setEnabled(editPlayQueueTagsAction->isEnabled());
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     deleteSongsAction->setEnabled(editPlayQueueTagsAction->isEnabled());
@@ -1505,7 +1524,7 @@ void MainWindow::checkMpdDir()
     replaygainAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     #endif
     switch (tabWidget->current_index()) {
-    #ifdef ENABLE_DEVICES_SUPPORT
+    #if defined ENABLE_DEVICES_SUPPORT && defined TAGLIB_FOUND
     case PAGE_DEVICES:   devicesPage->controlActions();    break;
     #endif
     case PAGE_LIBRARY:   libraryPage->controlActions();    break;
@@ -1605,12 +1624,14 @@ void MainWindow::updateConnectionsMenu()
 void MainWindow::readSettings()
 {
     checkMpdDir();
+    #ifdef TAGLIB_FOUND
     Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
     if (Settings::self()->enableHttp()) {
         HttpServer::self()->setDetails(Settings::self()->httpAddress(), Settings::self()->httpPort());
     } else {
         HttpServer::self()->setDetails(QString(), 0);
     }
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
@@ -1738,11 +1759,13 @@ void MainWindow::toggleOutput()
 void MainWindow::changeConnection()
 {
     bool allowChange=true;
-    if (0!=TagEditor::instanceCount()) {
+    #ifdef TAGLIB_FOUND
+    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
         allowChange=false;
     }
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=ActionDialog::instanceCount() || 0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
+    if (0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
         allowChange=false;
     }
     #endif
@@ -2051,6 +2074,7 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     current=song;
 
+    #ifdef TAGLIB_FOUND
     if (current.isCantataStream()) {
         Song mod=HttpServer::self()->decodeUrl(current.file);
         if (!mod.title.isEmpty()) {
@@ -2059,6 +2083,7 @@ void MainWindow::updateCurrentSong(const Song &song)
 //             current.file="XXX";
         }
     }
+    #endif
 
     positionSlider->setEnabled(-1!=current.id && !currentIsStream());
     coverWidget->update(current);
@@ -2871,7 +2896,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     } else if (QLatin1String("serverinfo")==p) {
         showTab(MainWindow::PAGE_SERVER_INFO);
     }
-    #ifdef ENABLE_KDE_SUPPORT
+    #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
     else if (QLatin1String("devices")==p) {
         showTab(MainWindow::PAGE_DEVICES);
     }
@@ -3027,6 +3052,7 @@ void MainWindow::toggleDockManager()
 //     }
 // }
 
+#ifdef TAGLIB_FOUND
 void MainWindow::editTags()
 {
     QList<Song> songs;
@@ -3052,11 +3078,15 @@ void MainWindow::editPlayQueueTags()
 
 void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
 {
-    if (songs.isEmpty() || 0!=TagEditor::instanceCount()) {
+    if (songs.isEmpty()) {
         return;
     }
+
+    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
+        DIALOG_ERROR;
+    }
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=ActionDialog::instanceCount() || 0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
+    if (0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #endif
@@ -3141,6 +3171,7 @@ void MainWindow::organiseFiles()
         dlg->show(songs, udi);
     }
 }
+#endif
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void MainWindow::addToDevice(const QString &udi)
@@ -3175,11 +3206,13 @@ void MainWindow::copyToDevice(const QString &from, const QString &to, const QLis
     if (songs.isEmpty() || 0!=ActionDialog::instanceCount()) {
         return;
     }
-    if (0!=TagEditor::instanceCount()) {
+    #ifdef TAGLIB_FOUND
+    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
         DIALOG_ERROR;
     }
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
+    if (0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #endif
@@ -3198,11 +3231,13 @@ void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
     if (songs.isEmpty() || 0!=ActionDialog::instanceCount()) {
         return;
     }
-    if (0!=TagEditor::instanceCount()) {
+    #ifdef TAGLIB_FOUND
+    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
         DIALOG_ERROR;
     }
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=TrackOrganiser::instanceCount() || 0!=SyncDialog::instanceCount()) {
+    if (0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #endif
@@ -3223,9 +3258,11 @@ void MainWindow::replayGain()
     if (0!=RgDialog::instanceCount()) {
         return;
     }
+    #ifdef TAGLIB_FOUND
     if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
         DIALOG_ERROR;
     }
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     if (0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;

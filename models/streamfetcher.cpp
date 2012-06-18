@@ -24,7 +24,9 @@
 #include "streamfetcher.h"
 #include "networkaccessmanager.h"
 #include "mpdconnection.h"
+#ifdef TAGLIB_FOUND
 #include "httpserver.h"
+#endif
 #include <QtCore/QRegExp>
 #include <QtCore/QUrl>
 #include <QtXml/QDomDocument>
@@ -185,7 +187,11 @@ void StreamFetcher::doNext()
         current=todo.takeFirst();
         QUrl u(current);
 
-        if (QLatin1String("http")==u.scheme() && !HttpServer::self()->isOurs(current)) {
+        if (QLatin1String("http")==u.scheme()
+            #ifdef TAGLIB_FOUND
+            && !HttpServer::self()->isOurs(current)
+            #endif
+            ) {
             data.clear();
             job=manager->get(u);
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));

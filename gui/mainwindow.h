@@ -75,7 +75,7 @@ class LyricsPage;
 class StreamsPage;
 class InfoPage;
 class ServerInfoPage;
-#ifdef ENABLE_KDE_SUPPORT
+#if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
 class DevicesPage;
 #endif
 class QThread;
@@ -179,7 +179,7 @@ public:
         PAGE_LYRICS,
         PAGE_INFO,
         PAGE_SERVER_INFO
-        #ifdef ENABLE_KDE_SUPPORT
+        #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
         , PAGE_DEVICES
         #endif
     };
@@ -198,7 +198,9 @@ public:
         return volume;
     }
 
+    #ifdef TAGLIB_FOUND
     void load(const QList<QUrl> &urls);
+    #endif
     const QDateTime & getDbUpdate() const;
 
 protected:
@@ -308,7 +310,7 @@ private Q_SLOTS:
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
     void toggleSplitterAutoHide(bool ah);
     void locateTrack();
-    #ifdef ENABLE_KDE_SUPPORT
+    #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
     void showDevicesTab() { showTab(PAGE_DEVICES); }
     #endif
     #ifndef Q_OS_WIN
@@ -317,9 +319,11 @@ private Q_SLOTS:
     #endif
 //     void createDataCd();
 //     void createAudioCd();
+    #ifdef TAGLIB_FOUND
     void editTags();
     void editPlayQueueTags();
     void organiseFiles();
+    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     void addToDevice(const QString &udi);
     void deleteSongs();
@@ -340,7 +344,9 @@ private:
     void readSettings();
     int calcMinHeight();
     void addToPlayQueue(bool replace, quint8 priority=0);
+    #ifdef TAGLIB_FOUND
     void editTags(const QList<Song> &songs, bool isPlayQueue);
+    #endif
     bool currentIsStream() const;
     void updateWindowTitle();
     void startVolumeFade(/*bool stop*/);
@@ -414,8 +420,11 @@ private:
 //     Action *burnAction;
 //     Action *createDataCdAction;
 //     Action *createAudioCdAction;
+    #ifdef TAGLIB_FOUND
     Action *editTagsAction;
     Action *editPlayQueueTagsAction;
+    Action *organiseFilesAction;
+    #endif
     #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
     #endif
@@ -425,7 +434,6 @@ private:
     Action *copyToDeviceAction;
     Action *deleteSongsAction;
     #endif
-    Action *organiseFilesAction;
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     Action *replaygainAction;
     #endif

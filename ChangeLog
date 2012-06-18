@@ -56,6 +56,7 @@
 34. Drastically reduce replay-gain calculation memory usage.
 35. Make more columns italic in replaygain dailog to make entries that will be
     modified.
+36. Make TagLib optional.
 
 0.7.1
 -----

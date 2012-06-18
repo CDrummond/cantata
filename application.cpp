@@ -72,6 +72,7 @@ int Application::newInstance() {
         w=new MainWindow();
     }
 
+    #ifdef TAGLIB_FOUND
     KCmdLineArgs *args(KCmdLineArgs::parsedArgs());
     QList<QUrl> urls;
     for (int i = 0; i < args->count(); ++i) {
@@ -80,6 +81,7 @@ int Application::newInstance() {
     if (!urls.isEmpty()) {
         w->load(urls);
     }
+    #endif
     KStartupInfo::appStarted(startupId());
     return 0;
 }
@@ -87,7 +89,9 @@ int Application::newInstance() {
 Application::Application(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
 {
+    #ifdef TAGLIB_FOUND
     connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
+    #endif
 }
 
 Application::~Application()
@@ -97,11 +101,13 @@ Application::~Application()
 bool Application::start()
 {
     if (isRunning()) {
+        #ifdef TAGLIB_FOUND
         QStringList args(arguments());
         if (args.count()>1) {
             args.takeAt(0);
             sendMessage(args.join("\n"));
         }
+        #endif
         return false;
     }
 
@@ -109,6 +115,7 @@ bool Application::start()
     return true;
 }
 
+#ifdef TAGLIB_FOUND
 void Application::loadFiles()
 {
     QStringList args(arguments());
@@ -117,6 +124,7 @@ void Application::loadFiles()
         load(args);
     }
 }
+#endif
 
 void Application::setupIconTheme()
 {
@@ -145,6 +153,7 @@ void Application::setupIconTheme()
     }
 }
 
+#ifdef TAGLIB_FOUND
 void Application::message(const QString &msg)
 {
     load(msg.split("\n"));
@@ -164,5 +173,6 @@ void Application::load(const QStringList &files)
         qobject_cast<MainWindow *>(activationWindow())->load(urls);
     }
 }
+#endif
 
 #endif

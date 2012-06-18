@@ -29,7 +29,9 @@
 #include "serversettings.h"
 #include "serverplaybacksettings.h"
 #include "playbacksettings.h"
+#ifdef TAGLIB_FOUND
 #include "httpserversettings.h"
+#endif
 #include "lyricsettings.h"
 #include "lyricspage.h"
 #include "localize.h"
@@ -84,14 +86,18 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     playback = new PlaybackSettings(widget);
     interface = new InterfaceSettings(widget);
     ext = new ExternalSettings(widget);
+    #ifdef TAGLIB_FOUND
     http = new HttpServerSettings(widget);
+    #endif
     lyrics = new LyricSettings(widget);
     server->load();
     serverplayback->load();
     playback->load();
     interface->load();
     ext->load();
+    #ifdef TAGLIB_FOUND
     http->load();
+    #endif
     const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
     lyrics->Load(lprov);
     #ifdef ENABLE_KDE_SUPPORT
@@ -110,8 +116,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page=widget->addPage(ext, i18n("External"));
     page->setHeader(i18n("External Settings"));
     page->setIcon(KIcon("video-display"));
+    #ifdef TAGLIB_FOUND
     page=widget->addPage(http, i18n("HTTP Server"));
     page->setHeader(i18n("HTTP Server Settings"));
+    #endif
     page->setIcon(KIcon("network-server"));
     page=widget->addPage(lyrics, i18n("Lyrics"));
     page->setHeader(i18n("Lyrics Settings"));
@@ -127,8 +135,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
                    QIcon::fromTheme("view-choose"), tr("Interface"));
     widget->AddTab(new ConfigPage(this, tr("External Settings"), QIcon::fromTheme("video-display"), ext),
                    QIcon::fromTheme("video-display"), tr("External"));
+    #ifdef TAGLIB_FOUND
     widget->AddTab(new ConfigPage(this, tr("HTTP Server Settings"), QIcon::fromTheme("network-server"), http),
                    QIcon::fromTheme("network-server"), tr("HTTP Server"));
+    #endif
     widget->AddTab(new ConfigPage(this, tr("Lyrics Settings"), QIcon::fromTheme("view-media-lyrics"), lyrics),
                    QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
     proxy = new ProxySettings(this);
@@ -152,7 +162,9 @@ void PreferencesDialog::writeSettings()
     playback->save();
     interface->save();
     ext->save();
+    #ifdef TAGLIB_FOUND
     http->save();
+    #endif
     #ifndef ENABLE_KDE_SUPPORT
     proxy->save();
     #endif

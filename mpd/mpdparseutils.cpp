@@ -42,7 +42,9 @@
 #include "song.h"
 #include "output.h"
 #include "covers.h"
+#ifdef TAGLIB_FOUND
 #include "httpserver.h"
+#endif
 #include "utils.h"
 #include "debugtimer.h"
 
@@ -263,6 +265,7 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
         if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:")) {
             Song song=parseSong(line);
 
+            #ifdef TAGLIB_FOUND
             if (song.isCantataStream()) {
                 Song mod=HttpServer::self()->decodeUrl(song.file);
                 if (!mod.title.isEmpty()) {
@@ -270,6 +273,7 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
                     song=mod;
                 }
             }
+            #endif
 
             song.setKey();
             songs.append(song);

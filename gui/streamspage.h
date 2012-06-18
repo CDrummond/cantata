@@ -44,6 +44,7 @@ public:
     void addSelectionToPlaylist(bool replace, quint8 priorty=0);
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
     void focusSearch() { view->focusSearch(); }
+    void goBack() { view->backActivated(); }
 
 Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);

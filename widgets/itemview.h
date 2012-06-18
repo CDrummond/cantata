@@ -151,6 +151,7 @@ public Q_SLOTS:
     void collectionRemoved(quint32 key);
     void updateRows();
     void updateRows(const QModelIndex &idx);
+    void backActivated();
 
 Q_SIGNALS:
     void searchItems();
@@ -158,7 +159,6 @@ Q_SIGNALS:
     void doubleClicked(const QModelIndex &);
 
 private Q_SLOTS:
-    void backActivated();
     void itemClicked(const QModelIndex &index);
     void itemActivated(const QModelIndex &index);
     void delaySearchItems();

@@ -447,6 +447,9 @@ MainWindow::MainWindow(QWidget *parent)
     replaygainAction = actionCollection()->addAction("replaygain");
     #endif
 
+    backAction = actionCollection()->addAction("back");
+    backAction->setText(i18n("Back"));
+
     removeAction = actionCollection()->addAction("removeitems");
     removeAction->setText(i18n("Remove"));
 
@@ -458,7 +461,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     copyTrackInfoAction = actionCollection()->addAction("copytrackinfo");
     copyTrackInfoAction->setText(i18n("Copy Track Info"));
-    copyTrackInfoAction->setShortcut(QKeySequence::Copy);
 
     cropPlayQueueAction = actionCollection()->addAction("cropplaylist");
     cropPlayQueueAction->setText(i18n("Crop"));
@@ -607,11 +609,11 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction = new QAction(this);
     #endif
+    backAction = new QAction(tr("Back"), this);
     removeAction = new QAction(tr("Remove"), this);
     replacePlayQueueAction = new QAction(tr("Replace Play Queue"), this);
     removeFromPlayQueueAction = new QAction(tr("Remove From Play Queue"), this);
     copyTrackInfoAction = new QAction(tr("Copy Track Info"), this);
-    copyTrackInfoAction->setShortcut(QKeySequence::Copy);
     cropPlayQueueAction = new QAction(tr("Crop"), this);
     shufflePlayQueueAction = new QAction(tr("Shuffle"), this);
     savePlayQueueAction = new QAction(tr("Save As"), this);
@@ -661,6 +663,10 @@ MainWindow::MainWindow(QWidget *parent)
     #endif // ENABLE_WEBKIT
     serverInfoTabAction = new QAction(tr("Server Info"), this);
     #endif // ENABLE_KDE_SUPPORT
+
+    copyTrackInfoAction->setShortcut(QKeySequence::Copy);
+    backAction->setShortcut(QKeySequence::Back);
+
     int pageKey=Qt::Key_1;
     showPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Q);
     libraryTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
@@ -718,6 +724,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef PHONON_FOUND
     streamPlayAction->setIcon(Icon(DEFAULT_STREAM_ICON));
     #endif
+    backAction->setIcon(Icon("go-previous"));
     removeAction->setIcon(Icon("list-remove"));
     addToPlayQueueAction->setIcon(Icon("list-add"));
     replacePlayQueueAction->setIcon(Icon("media-playback-start"));
@@ -1093,6 +1100,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef PHONON_FOUND
     connect(streamPlayAction, SIGNAL(triggered(bool)), this, SLOT(toggleStream(bool)));
     #endif
+    connect(backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
     connect(searchPlayQueueLineEdit, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
     connect(searchPlayQueueLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchPlayQueue()));
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
@@ -2983,6 +2991,21 @@ void MainWindow::dynamicStatus(const QString &message)
 void MainWindow::showTab(int page)
 {
     tabWidget->SetCurrentIndex(page);
+}
+
+void MainWindow::goBack()
+{
+    switch (tabWidget->current_index()) {
+    #if defined ENABLE_DEVICES_SUPPORT && defined TAGLIB_FOUND
+    case PAGE_DEVICES:   devicesPage->goBack();    break;
+    #endif
+    case PAGE_LIBRARY:   libraryPage->goBack();    break;
+    case PAGE_ALBUMS:    albumsPage->goBack();     break;
+    case PAGE_FOLDERS:   folderPage->goBack();     break;
+    case PAGE_PLAYLISTS: playlistsPage->goBack();  break;
+    case PAGE_STREAMS:   streamsPage->goBack();    break;
+    default:                                              break;
+    }
 }
 
 void MainWindow::focusSearch()

@@ -827,7 +827,7 @@ void ItemView::collectionRemoved(quint32 key)
 
 void ItemView::backActivated()
 {
-    if (Mode_Tree==mode || Mode_GroupedTree==mode) {
+    if (Mode_Tree==mode || Mode_GroupedTree==mode || 0==currentLevel) {
         return;
     }
     setLevel(currentLevel-1);

@@ -48,6 +48,7 @@ public:
     QList<Song> selectedSongs() const;
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
     void focusSearch() { view->focusSearch(); }
+    void goBack() { view->backActivated(); }
 
 public Q_SLOTS:
     void updateGenres(const QSet<QString> &g);

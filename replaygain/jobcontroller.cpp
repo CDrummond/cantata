@@ -62,6 +62,13 @@ void JobController::add(Job *job)
     startJobs();
 }
 
+void JobController::finishedWith(Job *job)
+{
+    active.removeAll(job);
+    jobs.removeAll(job);
+    job->stop();
+}
+
 void JobController::startJobs()
 {
     while (active.count()<constMaxActive && !jobs.isEmpty()) {

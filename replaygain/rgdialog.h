@@ -56,6 +56,7 @@ private:
     void slotButtonClicked(int button);
     void startScanning();
     void stopScanning();
+    void createScanner(int index);
     void clearScanners();
     void startReadingTags();
     void stopReadingTags();
@@ -78,15 +79,17 @@ private:
         State_ScanningFiles
     };
 
-    struct JobStatus {
-        JobStatus(int i) : index(i), progress(0), finished(false) { }
-        int index;
-        int progress;
-        bool finished;
-    };
-
     struct Album {
         QList<int> tracks;
+        QSet<int> scannedTracks;
+        Scanner::Data data;
+    };
+
+    struct Track {
+        Track() : progress(0), finished(false), success(false) { }
+        unsigned char progress;
+        bool finished : 1;
+        bool success : 1;
         Scanner::Data data;
     };
 
@@ -96,9 +99,13 @@ private:
     State state;
     QString base;
     QList<Song> origSongs;
-    QMap<Scanner *, JobStatus> jobs;
+
     QMap<int, Scanner *> scanners;
+    QList<int> toScan;
+
     QMap<QString, Album> albums;
+    QMap<int, Track> tracks;
+
     QMap<int, Tags::ReplayGain> origTags;
     QSet<int> needToSave;
     TagReader *tagReader;

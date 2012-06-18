@@ -60,6 +60,7 @@ public:
     }
 
     void add(Job *job);
+    void finishedWith(Job *job);
     void startJobs();
     void cancel();
 

@@ -53,6 +53,7 @@
     0.17.0 or newer.
 33. Only ignore closeEvent if this is a 'spontaneous' event and we have a tray
     icon.
+34. Drastically reduce replay-gain calculation memory usage.
 
 0.7.1
 -----

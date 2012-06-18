@@ -28,7 +28,6 @@
 #include "treeview.h"
 #include "settings.h"
 #include "mpdstatus.h"
-#include "httpserver.h"
 #include "localize.h"
 #include <QtGui/QHeaderView>
 #include <QtGui/QMenu>

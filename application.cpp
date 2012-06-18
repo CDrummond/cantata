@@ -87,9 +87,13 @@ int Application::newInstance() {
 }
 #else // ENABLE_KDE_SUPPORT
 Application::Application(int &argc, char **argv)
+    #ifdef CANTATA_ANDROID
+    : QApplication(argc, argv)
+    #else
     : QtSingleApplication(argc, argv)
+    #endif
 {
-    #ifdef TAGLIB_FOUND
+    #if defined TAGLIB_FOUND && !defined CANTATA_ANDROID
     connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
     #endif
 }
@@ -100,6 +104,7 @@ Application::~Application()
 
 bool Application::start()
 {
+    #if !defined CANTATA_ANDROID
     if (isRunning()) {
         #ifdef TAGLIB_FOUND
         QStringList args(arguments());
@@ -110,12 +115,13 @@ bool Application::start()
         #endif
         return false;
     }
+    #endif
 
     setupIconTheme();
     return true;
 }
 
-#ifdef TAGLIB_FOUND
+#if defined TAGLIB_FOUND && !defined CANTATA_ANDROID
 void Application::loadFiles()
 {
     QStringList args(arguments());
@@ -153,7 +159,7 @@ void Application::setupIconTheme()
     }
 }
 
-#ifdef TAGLIB_FOUND
+#if defined TAGLIB_FOUND && !defined CANTATA_ANDROID
 void Application::message(const QString &msg)
 {
     load(msg.split("\n"));

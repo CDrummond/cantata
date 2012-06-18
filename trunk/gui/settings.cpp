@@ -339,27 +339,47 @@ bool Settings::storeLyricsInMpdDir()
 
 int Settings::libraryView()
 {
+    #ifdef CANTATA_ANDROID
+    return ItemView::Mode_List;
+    #else
     return GET_INT("libraryView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
+    #endif
 }
 
 int Settings::albumsView()
 {
+    #ifdef CANTATA_ANDROID
+    return ItemView::Mode_IconTop;
+    #else
     return GET_INT("albumsView", (int)ItemView::Mode_IconTop);
+    #endif
 }
 
 int Settings::folderView()
 {
+    #ifdef CANTATA_ANDROID
+    return ItemView::Mode_List;
+    #else
     return GET_INT("folderView", (int)ItemView::Mode_Tree);
+    #endif
 }
 
 int Settings::playlistsView()
 {
+    #ifdef CANTATA_ANDROID
+    return ItemView::Mode_List;
+    #else
     return GET_INT("playlistsView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
+    #endif
 }
 
 int Settings::streamsView()
 {
+    #ifdef CANTATA_ANDROID
+    return ItemView::Mode_List;
+    #else
     return GET_INT("streamsView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
+    #endif
 }
 
 bool Settings::libraryArtistImage()
@@ -369,12 +389,20 @@ bool Settings::libraryArtistImage()
 
 int Settings::libraryCoverSize()
 {
+    #ifdef CANTATA_ANDROID
+    return MusicLibraryItemAlbum::CoverAuto;
+    #else
     return GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+    #endif
 }
 
 int Settings::albumsCoverSize()
 {
+    #ifdef CANTATA_ANDROID
+    return MusicLibraryItemAlbum::CoverAuto;
+    #else
     return GET_INT("albumsCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+    #endif
 }
 
 int Settings::albumSort()

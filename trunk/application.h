@@ -42,6 +42,17 @@ public:
 private:
     MainWindow *w;
 };
+#elif defined CANTATA_ANDROID
+#include <QtGui/QApplication>
+class Application : public QApplication
+{
+public:
+    Application(int &argc, char **argv);
+    virtual ~Application();
+    bool start();
+private:
+    void setupIconTheme();
+};
 #else
 #include "qtsingleapplication/qtsingleapplication.h"
 class Application : public QtSingleApplication
@@ -53,17 +64,17 @@ public:
     virtual ~Application();
 
     bool start();
-    #ifdef TAGLIB_FOUND
+    #if defined TAGLIB_FOUND
     void loadFiles();
     #endif
 
 private:
     void setupIconTheme();
-    #ifdef TAGLIB_FOUND
+    #if defined TAGLIB_FOUND
     void load(const QStringList &files);
     #endif
 
-#ifdef TAGLIB_FOUND
+#if defined TAGLIB_FOUND
 private Q_SLOTS:
     void message(const QString &m);
 #endif

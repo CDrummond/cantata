@@ -68,7 +68,7 @@ class LibraryPage;
 class AlbumsPage;
 class FolderPage;
 class PlaylistsPage;
-#ifndef Q_OS_WIN
+#if !defined Q_OS_WIN && !defined CANTATA_ANDROID
 class DynamicPage;
 #endif
 class LyricsPage;
@@ -80,7 +80,7 @@ class DevicesPage;
 #endif
 class QThread;
 class QAbstractItemView;
-#ifndef Q_OS_WIN
+#if !defined Q_OS_WIN && !defined CANTATA_ANDROID
 class DockManager;
 class Mpris;
 #endif
@@ -141,6 +141,7 @@ private:
     QSlider *slider;
 };
 
+#ifndef CANTATA_ANDROID
 class CoverEventHandler : public QObject
 {
     Q_OBJECT
@@ -155,6 +156,7 @@ private:
     MainWindow * const window;
     bool pressed;
 };
+#endif
 
 #ifdef ENABLE_KDE_SUPPORT
 class MainWindow : public KXmlGuiWindow, private Ui::MainWindow
@@ -173,12 +175,14 @@ public:
         PAGE_ALBUMS,
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
-        #ifndef Q_OS_WIN
+        #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
         PAGE_DYNAMIC,
         #endif
         PAGE_STREAMS,
         PAGE_LYRICS,
+        #ifdef ENABLE_WEBKIT
         PAGE_INFO,
+        #endif
         PAGE_SERVER_INFO
         #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
         , PAGE_DEVICES
@@ -206,11 +210,15 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+    #ifndef CANTATA_ANDROID
     void closeEvent(QCloseEvent *event);
+    #endif
 
 private:
     void initSizes();
+    #ifndef CANTATA_ANDROID
     void setupTrayIcon();
+    #endif
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -235,7 +243,7 @@ public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
     void showInformation(const QString &message);
     void showPage(const QString &page, bool focusSearch);
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     void dynamicStatus(const QString &message);
     #endif
 
@@ -289,13 +297,15 @@ private Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
     void trayItemScrollRequested(int delta, Qt::Orientation orientation);
     void notificationClosed();
-    #else
+    #elif !defined CANTATA_ANDROID
     void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
     void cropPlayQueue();
     void updatePlayQueueStats(int artists, int albums, int songs, quint32 time);
     void copyTrackInfo();
+    #ifndef CANTATA_ANDROID
     void togglePlayQueue();
+    #endif
     void sidebarModeChanged();
     void currentTabChanged(int index);
     void tabToggled(int index);
@@ -304,19 +314,23 @@ private Q_SLOTS:
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     void showDynamicTab() { showTab(PAGE_DYNAMIC); }
     #endif
     void showStreamsTab() { showTab(PAGE_STREAMS); }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
+    #ifdef ENABLE_WEBKIT
     void showInfoTab() { showTab(PAGE_INFO); }
+    #endif
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
+    #ifndef CANTATA_ANDROID
     void toggleSplitterAutoHide();
+    #endif
     void locateTrack();
     #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
     void showDevicesTab() { showTab(PAGE_DEVICES); }
     #endif
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     void toggleMpris();
     void toggleDockManager();
     #endif
@@ -408,7 +422,9 @@ private:
     #ifdef PHONON_FOUND
     Action *streamPlayAction;
     #endif
+    #ifndef CANTATA_ANDROID
     Action *expandInterfaceAction;
+    #endif
     Action *quitAction;
     Action *locateTrackAction;
     Action *showPlayQueueAction;
@@ -416,7 +432,7 @@ private:
     Action *albumsTabAction;
     Action *foldersTabAction;
     Action *playlistsTabAction;
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     Action *dynamicTabAction;
     #endif
     Action *lyricsTabAction;
@@ -447,14 +463,16 @@ private:
     Action *searchAction;
     Action *expandAllAction;
     Action *collapseAllAction;
+    #ifndef CANTATA_ANDROID
     Action *smallPlaybackButtonsAction;
     Action *smallControlButtonsAction;
     QAction *autoHideSplitterAction;
+    #endif
     #ifdef ENABLE_KDE_SUPPORT
     KStatusNotifierItem *trayItem;
     KMenu *trayItemMenu;
     KNotification *notification;
-    #else
+    #elif !defined CANTATA_ANDROID
     QSystemTrayIcon *trayItem;
     QMenu *trayItemMenu;
     #endif
@@ -473,7 +491,7 @@ private:
     AlbumsPage *albumsPage;
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     DynamicPage *dynamicPage;
     #endif
     LyricsPage *lyricsPage;
@@ -486,7 +504,7 @@ private:
     #endif
     ServerInfoPage *serverInfoPage;
     QThread *mpdThread;
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     DockManager *dock;
     Mpris *mpris;
     #endif
@@ -519,12 +537,14 @@ private:
     #endif
 
     friend class VolumeSliderEventHandler;
+    #ifndef CANTATA_ANDROID
     friend class CoverEventHandler;
+    #endif
     friend class LibraryPage;
     friend class AlbumsPage;
     friend class FolderPage;
     friend class PlaylistsPage;
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     friend class DynamicPage;
     #endif
     friend class StreamsPage;

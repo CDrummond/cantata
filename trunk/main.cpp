@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
         exit(0);
 
     Application app;
-    #else
+    #else // ENABLE_KDE_SUPPORT
     QCoreApplication::setApplicationName(PACKAGE_NAME);
     #ifdef Q_OS_WIN
     QCoreApplication::setOrganizationName("mpd");
@@ -74,11 +74,13 @@ int main(int argc, char *argv[])
         return 0;
     }
     MainWindow mw;
+    #if !defined CANTATA_ANDROID
     app.setActivationWindow(&mw);
     #ifdef TAGLIB_FOUND
     app.loadFiles();
-    #endif
-    #endif
+    #endif // TAGLIB_FOUND
+    #endif // CANTATA_ANDROID
+    #endif // ENABLE_KDE_SUPPORT
 
     return app.exec();
 }

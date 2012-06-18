@@ -31,7 +31,7 @@
     <widget class="QSpinBox" name="stopFadeDuration"/>
    </item>
    <item row="1" column="0">
-    <widget class="BuddyLabel" name="label_6c">
+    <widget class="BuddyLabel" name="stopOnExitLabel">
      <property name="text">
       <string>Stop playback on exit:</string>
      </property>

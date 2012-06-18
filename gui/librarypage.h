@@ -49,6 +49,7 @@ public:
     ItemView::Mode viewMode() const { return view->viewMode(); }
     void showSongs(const QList<Song> &songs);
     void focusSearch() { view->focusSearch(); }
+    void goBack() { view->backActivated(); }
 
 private:
     void setItemSize(int v);

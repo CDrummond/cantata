@@ -33,21 +33,56 @@
 #include "config.h"
 #include <QtGui/QIcon>
 #include <QtGui/QPixmap>
+#include <QtGui/QApplication>
+#include <QtGui/QFontMetrics>
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
 static bool useDate=false;
 static QSize iconItemSize;
 
+static inline int adjust(int v, int step)
+{
+    return (((int)(v/step))*step)+(v%step ? step : 0);
+}
+
+static int autoListSize=32;
+static int autoIconSize=128;
+
+static int setSize(int size, bool iconMode)
+{
+    for (int i=MusicLibraryItemAlbum::CoverSmall; i<=MusicLibraryItemAlbum::CoverAuto; ++i) {
+        int icnSize=MusicLibraryItemAlbum::iconSize((MusicLibraryItemAlbum::CoverSize)i, iconMode);
+        if (size<=icnSize) {
+            size=icnSize;
+            break;
+        }
+    }
+
+    if (autoIconSize>MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverExtraLarge, iconMode)) {
+        size=adjust(size, 4);
+    }
+    return size;
+}
+
+void MusicLibraryItemAlbum::setup()
+{
+    int height=QApplication::fontMetrics().height();
+
+    autoListSize=setSize(height*2, false);
+    autoIconSize=setSize(height*6, true);
+}
+
 int MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverSize sz, bool iconMode)
 {
     switch (sz) {
     default:
-    case MusicLibraryItemAlbum::CoverNone:       return 0;
-    case MusicLibraryItemAlbum::CoverSmall:      return iconMode ? 76  : 22;
-    case MusicLibraryItemAlbum::CoverMedium:     return iconMode ? 100 : 32;
-    case MusicLibraryItemAlbum::CoverLarge:      return iconMode ? 128 : 48;
-    case MusicLibraryItemAlbum::CoverExtraLarge: return iconMode ? 160 : 64;
+    case CoverNone:       return 0;
+    case CoverSmall:      return iconMode ? 76  : 22;
+    case CoverMedium:     return iconMode ? 100 : 32;
+    case CoverLarge:      return iconMode ? 128 : 48;
+    case CoverExtraLarge: return iconMode ? 160 : 64;
+    case CoverAuto:       return iconMode ? autoIconSize : autoListSize;
     }
 }
 

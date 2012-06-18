@@ -208,6 +208,7 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private:
+    void initSizes();
     void setupTrayIcon();
 
 Q_SIGNALS:

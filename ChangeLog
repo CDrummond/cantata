@@ -57,6 +57,10 @@
 35. Make more columns italic in replaygain dailog to make entries that will be
     modified.
 36. Make TagLib optional.
+37. Adjust size of covers in grouped view, icons in views, and main cover
+    preview based upon font size.
+38. Add an extra cover-size setting (Automatic) which will adjust the covers in
+    library and albums view based upon font size.
 
 0.7.1
 -----

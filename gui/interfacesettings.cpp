@@ -25,8 +25,19 @@
 #include "settings.h"
 #include "itemview.h"
 #include "localize.h"
+#include "musiclibraryitemalbum.h"
 #include <QtGui/QComboBox>
 #include <QtGui/QCheckBox>
+
+static void addImageSizes(QComboBox *box)
+{
+    box->addItem(i18n("None"), MusicLibraryItemAlbum::CoverNone);
+    box->addItem(i18n("Small"), MusicLibraryItemAlbum::CoverSmall);
+    box->addItem(i18n("Medium"), MusicLibraryItemAlbum::CoverMedium);
+    box->addItem(i18n("Large"), MusicLibraryItemAlbum::CoverLarge);
+    box->addItem(i18n("Extra Large"), MusicLibraryItemAlbum::CoverExtraLarge);
+    box->addItem(i18n("Automatic"), MusicLibraryItemAlbum::CoverAuto);
+}
 
 static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=false)
 {
@@ -59,6 +70,8 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
+    addImageSizes(libraryCoverSize);
+    addImageSizes(albumsCoverSize);
     addViewTypes(libraryView, true);
     addViewTypes(albumsView, true);
     addViewTypes(folderView);

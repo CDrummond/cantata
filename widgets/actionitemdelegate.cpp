@@ -28,9 +28,35 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QIcon>
 
-const int ActionItemDelegate::constBorder = 1;
-const int ActionItemDelegate::constActionBorder = 4;
-const int ActionItemDelegate::constActionIconSize=16;
+int ActionItemDelegate::constBorder = 1;
+int ActionItemDelegate::constActionBorder = 4;
+int ActionItemDelegate::constActionIconSize=16;
+
+void ActionItemDelegate::setup()
+{
+    int height=QApplication::fontMetrics().height();
+
+    if (height>17) {
+        constActionIconSize=((int)(height/4))*4;
+        if (constActionIconSize<20) {
+            constActionIconSize=16;
+        } else if (constActionIconSize<28) {
+            constActionIconSize=22;
+        } else if (constActionIconSize<40) {
+            constActionIconSize=32;
+        } else if (constActionIconSize<56) {
+            constActionIconSize=48;
+        } else {
+            constActionIconSize=64;
+        }
+        constBorder=constActionIconSize>22 ? 2 : 1;
+        constActionBorder=constActionIconSize>32 ? 6 : 4;
+    } else {
+        constActionBorder=4;
+        constActionIconSize=16;
+        constBorder=1;
+    }
+}
 
 QRect ActionItemDelegate::calcActionRect(bool rtl, bool iconMode, const QRect &rect)
 {

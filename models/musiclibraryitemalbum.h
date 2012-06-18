@@ -45,9 +45,11 @@ public:
         CoverSmall      = 1,
         CoverMedium     = 2,
         CoverLarge      = 3,
-        CoverExtraLarge = 4
+        CoverExtraLarge = 4,
+        CoverAuto       = 5
     };
 
+    static void setup();
     static CoverSize currentCoverSize();
     static void setCoverSize(CoverSize size);
     static int iconSize(MusicLibraryItemAlbum::CoverSize sz, bool iconMode=false);

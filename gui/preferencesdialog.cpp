@@ -24,8 +24,10 @@
 #include "preferencesdialog.h"
 #include "mainwindow.h"
 #include "settings.h"
+#ifndef CANTATA_ANDROID
 #include "interfacesettings.h"
 #include "externalsettings.h"
+#endif
 #include "serversettings.h"
 #include "serverplaybacksettings.h"
 #include "playbacksettings.h"
@@ -41,7 +43,9 @@
 #include <KDE/KIcon>
 #else
 #include "fancytabwidget.h"
+#ifndef CANTATA_ANDROID
 #include "proxysettings.h"
+#endif
 #endif
 
 #ifndef ENABLE_KDE_SUPPORT
@@ -84,19 +88,23 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     server = new ServerSettings(widget);
     serverplayback = new ServerPlaybackSettings(widget);
     playback = new PlaybackSettings(widget);
+    #ifndef CANTATA_ANDROID
     interface = new InterfaceSettings(widget);
     ext = new ExternalSettings(widget);
     #ifdef TAGLIB_FOUND
     http = new HttpServerSettings(widget);
     #endif
+    #endif
     lyrics = new LyricSettings(widget);
     server->load();
     serverplayback->load();
     playback->load();
+    #ifndef CANTATA_ANDROID
     interface->load();
     ext->load();
     #ifdef TAGLIB_FOUND
     http->load();
+    #endif
     #endif
     const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
     lyrics->Load(lprov);
@@ -110,6 +118,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page=widget->addPage(playback, i18n("Playback"));
     page->setHeader(i18n("Playback Settings"));
     page->setIcon(KIcon("media-playback-start"));
+    #ifndef CANTATA_ANDROID
     page=widget->addPage(interface, i18n("Interface"));
     page->setHeader(i18n("Interface Settings"));
     page->setIcon(KIcon("view-choose"));
@@ -121,6 +130,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page->setHeader(i18n("HTTP Server Settings"));
     #endif
     page->setIcon(KIcon("network-server"));
+    #endif
     page=widget->addPage(lyrics, i18n("Lyrics"));
     page->setHeader(i18n("Lyrics Settings"));
     page->setIcon(KIcon("view-media-lyrics"));
@@ -131,6 +141,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
                    QIcon::fromTheme("speaker"), tr("Output"));
     widget->AddTab(new ConfigPage(this, tr("Playback Settings"), QIcon::fromTheme("media-playback-start"), playback),
                    QIcon::fromTheme("media-playback-start"), tr("Playback"));
+    #ifndef CANTATA_ANDROID
     widget->AddTab(new ConfigPage(this, tr("Interface Settings"), QIcon::fromTheme("view-choose"), interface),
                    QIcon::fromTheme("view-choose"), tr("Interface"));
     widget->AddTab(new ConfigPage(this, tr("External Settings"), QIcon::fromTheme("video-display"), ext),
@@ -139,12 +150,15 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     widget->AddTab(new ConfigPage(this, tr("HTTP Server Settings"), QIcon::fromTheme("network-server"), http),
                    QIcon::fromTheme("network-server"), tr("HTTP Server"));
     #endif
+    #endif
     widget->AddTab(new ConfigPage(this, tr("Lyrics Settings"), QIcon::fromTheme("view-media-lyrics"), lyrics),
                    QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
+    #ifndef CANTATA_ANDROID
     proxy = new ProxySettings(this);
     proxy->load();
     widget->AddTab(new ConfigPage(this, tr("Proxy Settings"), QIcon::fromTheme("preferences-system-network"), proxy),
                    QIcon::fromTheme("preferences-system-network"), tr("Proxy"));
+    #endif
     widget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     #endif
     setCaption(i18n("Configure"));
@@ -160,6 +174,7 @@ void PreferencesDialog::writeSettings()
     server->save();
     serverplayback->save();
     playback->save();
+    #ifndef CANTATA_ANDROID
     interface->save();
     ext->save();
     #ifdef TAGLIB_FOUND
@@ -167,6 +182,7 @@ void PreferencesDialog::writeSettings()
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     proxy->save();
+    #endif
     #endif
     Settings::self()->saveLyricProviders(lyrics->EnabledProviders());
     Settings::self()->save();

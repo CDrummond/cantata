@@ -203,8 +203,12 @@ SET( CANTATA_UIS
     widgets/itemview.ui
 )
 
-set(TAGLIB_MIN_VERSION "1.6")
-find_package(Taglib)
+IF (ANDROID)
+    SET(CANTATA_SRCS ${CANTATA_SRCS} androidmain.cpp)
+ELSE (ANDROID)
+    set(TAGLIB_MIN_VERSION "1.6")
+    find_package(Taglib)
+ENDIF (ANDROID)
 
 if (TAGLIB_FOUND)
     SET( CANTATA_SRCS ${CANTATA_SRCS}
@@ -276,17 +280,24 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
                      ${CMAKE_BINARY_DIR}
 )
 
+IF (ANDROID)
+    INCLUDE_DIRECTORIES(${ANDROID_NDK_TOOLCHAIN_ROOT}/sysroot/usr/include)
+ENDIF (ANDROID)
+
 # this command finds Qt4 libraries and sets all required variables
 FIND_PACKAGE( Qt4 REQUIRED QtCore QtGui QtXml QtNetwork )
-FIND_PACKAGE( Phonon )
 
-if(NOT WIN32)
+IF (NOT ANDROID)
+    FIND_PACKAGE( Phonon )
+ENDIF (NOT ANDROID)
+
+if(NOT WIN32 AND NOT ANDROID)
     qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
     qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.root.xml dbus/mpris.h Mpris)
     qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.kde.cantata.xml gui/mainwindow.h MainWindow)
     qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockItem.xml )
     qt4_add_dbus_interfaces(CANTATA_SRCS dbus/net.launchpad.DockManager.xml)
-endif(NOT WIN32)
+endif(NOT WIN32 AND NOT ANDROID)
 
 IF( NOT DEFINED WANT_KDE_SUPPORT )
     SET( WANT_KDE_SUPPORT ON )
@@ -453,33 +464,36 @@ ELSE( ENABLE_KDE_SUPPORT )
     INCLUDE( ${QT_USE_FILE} )
     QT4_WRAP_CPP( CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS} )
 
-    if (WIN32)
-        IF( MINGW )
-            # resource compilation for MinGW
-            ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o
-                                COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/icons/cantataico.rc
-                                    -o ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o )
-            SET(CANTATA_SRCS ${CANTATA_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
-        ELSE( MINGW )
-            SET(CANTATA_SRCS ${CANTATA_SRCS} icons/cantataico.rc)
-        ENDIF( MINGW )
-        ADD_EXECUTABLE( cantata WIN32 ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
-    else (WIN32)
-        ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
-        install( PROGRAMS dynamic/cantata-dynamic DESTINATION bin)
-    endif (WIN32)
+    IF (ANDROID)
+        ADD_LIBRARY(cantata SHARED ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
+    ELSE (ANDROID)
+        if (WIN32)
+            IF( MINGW )
+                # resource compilation for MinGW
+                ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o
+                                    COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/icons/cantataico.rc
+                                        -o ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o )
+                SET(CANTATA_SRCS ${CANTATA_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o)
+            ELSE( MINGW )
+                SET(CANTATA_SRCS ${CANTATA_SRCS} icons/cantataico.rc)
+            ENDIF( MINGW )
+            ADD_EXECUTABLE( cantata WIN32 ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
+        else (WIN32)
+            ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
+            install( PROGRAMS dynamic/cantata-dynamic DESTINATION bin)
+        endif (WIN32)
 
-    install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
-    ADD_DEFINITIONS( -DQT_NO_STL -DQT_NO_CAST_TO_ASCII -Wall -Wextra )
-    SET( XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications" )
+        install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )
+        ADD_DEFINITIONS( -DQT_NO_STL -DQT_NO_CAST_TO_ASCII -Wall -Wextra )
+        SET( XDG_APPS_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/applications" )
 
-    add_subdirectory(qtsingleapplication)
-    TARGET_LINK_LIBRARIES(cantata qtsingleapplication)
-    include_directories(${CMAKE_BINARY_DIR}/qtsingleapplication)
+        add_subdirectory(qtsingleapplication)
+        TARGET_LINK_LIBRARIES(cantata qtsingleapplication)
+        include_directories(${CMAKE_BINARY_DIR}/qtsingleapplication)
+    ENDIF (ANDROID)
 ENDIF( ENABLE_KDE_SUPPORT )
 
 ADD_SUBDIRECTORY( icons )
-
 
 TARGET_LINK_LIBRARIES(cantata ${QT_QTWEBKIT_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTDBUS_LIBRARY})
 include_directories( ${QT_INCLUDES})
@@ -521,9 +535,9 @@ endif (ENABLE_WEBKIT)
 # enable warnings
 ADD_DEFINITIONS( -DQT_NO_DEBUG_OUTPUT )
 
-IF( UNIX AND NOT APPLE )
+IF( UNIX AND NOT APPLE AND NOT ANDROID)
     install(FILES cantata.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
-ENDIF( UNIX AND NOT APPLE )
+ENDIF( UNIX AND NOT APPLE AND NOT ANDROID)
 
 configure_file(config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 
@@ -567,7 +581,7 @@ IF( ENABLE_KDE_SUPPORT )
         endif( NOT TAGLIB_FOUND OR NOT MTP_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
     endif (TAGLIB_FOUND)
 ELSE( ENABLE_KDE_SUPPORT )
-    if (NOT WIN32)
+    if (NOT WIN32 AND NOT ANDROID)
         message("INFO: Building WITHOUT KDE support - Device sync support DISABLED")
         if( NOT TAGLIB_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
             message("      Disabled features:")
@@ -579,7 +593,7 @@ ELSE( ENABLE_KDE_SUPPORT )
             endif (NOT TAGLIB_FOUND)
             message("        - ReplayGain calculation (taglib, ffmpeg, and mpg123 required)")
         endif( NOT TAGLIB_FOUND OR NOT FFMPEG_FOUND OR NOT MPG123_FOUND )
-    endif (NOT WIN32)
+    endif (NOT WIN32 AND NOT ANDROID)
     message("")
     message("*************************************************************")
     message("*************************************************************")

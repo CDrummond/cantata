@@ -35,7 +35,11 @@ ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    #ifdef ENABLE_DEVICES_SUPPORT
+    #ifdef CANTATA_ANDROID
+    dir->setVisible(false);
+    dirLabel->setVisible(false);
+    musicFolderNoteLabel->setVisible(false);
+    #elif defined ENABLE_DEVICES_SUPPORT
     musicFolderNoteLabel->setText(musicFolderNoteLabel->text()+
                                   i18n("<i> This folder will also be used to locate music files "
                                        "for transferring to (and from) devices.</i>"));
@@ -48,7 +52,7 @@ ServerSettings::ServerSettings(QWidget *p)
     saveButton->setIcon(QIcon::fromTheme("document-save-as"));
     removeButton->setIcon(QIcon::fromTheme("edit-delete"));
 
-    #ifdef Q_OS_WIN
+    #if defined Q_OS_WIN || defined CANTATA_ANDROID
     hostLabel->setText(i18n("Host:"));
     socketNoteLabel->setVisible(false);
     #endif

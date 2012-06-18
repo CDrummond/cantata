@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     Application app;
     #else
     QCoreApplication::setApplicationName(PACKAGE_NAME);
-    #ifdef Q_WS_WIN
+    #ifdef Q_OS_WIN
     QCoreApplication::setOrganizationName("mpd");
     #else
     QCoreApplication::setOrganizationName(PACKAGE_NAME);

@@ -51,17 +51,19 @@ public:
     static double clamp(double v);
     static double reference(double v);
 
-    Scanner();
+    Scanner(int i);
     ~Scanner();
 
     void setFile(const QString &fileName);
-
     const Data & results() const { return data; }
+    int index() const { return idx; }
 
 private:
     void run();
+    void setFinishedStatus(bool f);
 
 private:
+    int idx;
     ebur128_state *state;
     Data data;
     QString file;

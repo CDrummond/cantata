@@ -65,6 +65,11 @@ enum Columns
 
 static int iCount=0;
 
+static inline QString createAlbumName(const Song &s)
+{
+    return s.albumArtist()+QLatin1String(" - ")+s.album;
+}
+
 int RgDialog::instanceCount()
 {
     return iCount;
@@ -139,6 +144,7 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
     }
 
     origSongs=songs;
+    qSort(origSongs);
     #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
         base=MPDConnection::self()->getDetails().dir;
@@ -157,12 +163,11 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
     base=MPDConnection::self()->getDetails().dir;
     #endif
     state=State_Idle;
-    enableButton(User1, songs.count());
+    enableButton(User1, origSongs.count());
     view->clear();
     int i=0;
-    foreach (const Song &s, songs) {
-        QString a=s.albumArtist()+QLatin1String(" - ")+s.album;
-        albums[a].tracks.append(i++);
+    foreach (const Song &s, origSongs) {
+        albums[createAlbumName(s)].tracks.append(i++);
         new QTreeWidgetItem(view, QStringList() << s.albumArtist() << s.album << s.title);
     }
     Dialog::show();
@@ -231,18 +236,15 @@ void RgDialog::startScanning()
     progress->setVisible(true);
     statusLabel->setText(i18n("Scanning files..."));
     statusLabel->setVisible(true);
-    jobs.clear();
     clearScanners();
     int count=0;
     for (int i=0; i<origSongs.count(); ++i) {
         if (all || !origTags.contains(i)) {
-            Scanner *s=new Scanner();
-            s->setFile(base+origSongs.at(i).file);
-            connect(s, SIGNAL(progress(int)), this, SLOT(scannerProgress(int)));
-            connect(s, SIGNAL(done()), this, SLOT(scannerDone()));
-            jobs.insert(s, JobStatus(i));
-            scanners.insert(i, s);
-            JobController::self()->add(s);
+            if (scanners.count()<100) {
+                createScanner(i);
+            } else {
+                toScan.append(i);
+            }
             count++;
         }
     }
@@ -257,13 +259,22 @@ void RgDialog::stopScanning()
     statusLabel->setVisible(false);
 
     JobController::self()->cancel();
-    jobs.clear();
     clearScanners();
     #ifdef ENABLE_DEVICES_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
     setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
     #endif
+}
+
+void RgDialog::createScanner(int index)
+{
+    Scanner *s=new Scanner(index);
+    s->setFile(base+origSongs.at(index).file);
+    connect(s, SIGNAL(progress(int)), this, SLOT(scannerProgress(int)));
+    connect(s, SIGNAL(done()), this, SLOT(scannerDone()));
+    scanners.insert(index, s);
+    JobController::self()->add(s);
 }
 
 void RgDialog::clearScanners()
@@ -275,6 +286,14 @@ void RgDialog::clearScanners()
         it.value()->stop();
     }
     scanners.clear();
+    toScan.clear();
+    tracks.clear();
+    QMap<QString, Album>::iterator a(albums.begin());
+    QMap<QString, Album>::iterator ae(albums.end());
+
+    for (; a!=ae; ++a) {
+        (*a).scannedTracks.clear();
+    }
 }
 
 void RgDialog::startReadingTags()
@@ -326,12 +345,12 @@ void RgDialog::saveTags()
     for (; a!=ae; ++a) {
         foreach (int idx, (*a).tracks) {
             if (needToSave.contains(idx)) {
-                Scanner *s=scanners[idx];
-                if (s && s->success() && Tags::Update_Failed==Tags::updateReplaygain(base+origSongs.at(idx).file,
-                                                                                     Tags::ReplayGain(Scanner::reference(s->results().loudness),
-                                                                                                      Scanner::reference((*a).data.loudness),
-                                                                                                      s->results().peakValue(),
-                                                                                                      (*a).data.peakValue()))) {
+                const Track &track=tracks[idx];
+                if (track.success && Tags::Update_Failed==Tags::updateReplaygain(base+origSongs.at(idx).file,
+                                                                                 Tags::ReplayGain(Scanner::reference(track.data.loudness),
+                                                                                                  Scanner::reference((*a).data.loudness),
+                                                                                                  track.data.peakValue(),
+                                                                                                  (*a).data.peakValue()))) {
                     failed.append(origSongs.at(idx).file);
                 }
             }
@@ -353,8 +372,8 @@ void RgDialog::updateView()
 {
     bool allFinished=true;
     quint64 totalProgress=0;
-    QMap<Scanner *, JobStatus>::iterator it=jobs.begin();
-    QMap<Scanner *, JobStatus>::iterator end=jobs.end();
+    QMap<int, Track>::iterator it=tracks.begin();
+    QMap<int, Track>::iterator end=tracks.end();
 
     for (; it!=end; ++it) {
         if (!(*it).finished) {
@@ -373,44 +392,7 @@ void RgDialog::updateView()
         setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
         #endif
 
-        QMap<QString, Album>::iterator a(albums.begin());
-        QMap<QString, Album>::iterator ae(albums.end());
-        QFont f(font());
-        f.setItalic(true);
-
-        for (; a!=ae; ++a) {
-            QList<Scanner *> as;
-            foreach (int idx, (*a).tracks) {
-                Scanner *s=scanners[idx];
-                if (s && s->success()) {
-                    as.append(s);
-                }
-            }
-
-            if (as.count()) {
-                (*a).data=Scanner::global(as);
-                foreach (int idx, (*a).tracks) {
-                    QTreeWidgetItem *item=view->topLevelItem(idx);
-                    item->setText(COL_ALBUMGAIN, i18n("%1 dB").arg(formatNumber(Scanner::reference((*a).data.loudness), 2)));
-                    item->setText(COL_ALBUMPEAK, formatNumber((*a).data.peak, 6));
-
-                    if (origTags.contains(idx)) {
-                        Tags::ReplayGain t=origTags[idx];
-                        if (!Utils::equal(t.albumGain, Scanner::reference((*a).data.loudness), 0.01)) {
-                            item->setFont(COL_ALBUMGAIN, f);
-                            needToSave.insert(idx);
-                        }
-                        if (!Utils::equal(t.albumPeak, (*a).data.peak, 0.000001)) {
-                            item->setFont(COL_ALBUMPEAK, f);
-                            needToSave.insert(idx);
-                        }
-                    }
-                }
-            }
-
-            enableButton(Ok, needToSave.count());
-        }
-
+        enableButton(Ok, needToSave.count());
     } else {
         progress->setValue(totalProgress);
     }
@@ -446,13 +428,8 @@ void RgDialog::scannerProgress(int p)
         return;
     }
 
-    QMap<Scanner *, JobStatus>::iterator it=jobs.find(s);
-    if (it!=jobs.end()) {
-        if (p!=(*it).progress) {
-            (*it).progress=p;
-            updateView();
-        }
-    }
+    tracks[s->index()].progress=p;
+    updateView();
 }
 
 void RgDialog::scannerDone()
@@ -461,45 +438,95 @@ void RgDialog::scannerDone()
     if (!s) {
         return;
     }
-
-    QMap<Scanner *, JobStatus>::iterator it=jobs.find(s);
-    if (it!=jobs.end()) {
-        if (!(*it).finished) {
-            (*it).finished=true;
-            QTreeWidgetItem *item=view->topLevelItem((*it).index);
-            if (s->success()) {
-                (*it).progress=100;
-                item->setText(COL_TRACKGAIN, i18n("%1 dB").arg(formatNumber(Scanner::reference(s->results().loudness), 2)));
-                item->setText(COL_TRACKPEAK, formatNumber(s->results().peakValue(), 6));
-
-                if (origTags.contains((*it).index)) {
-                    Tags::ReplayGain t=origTags[(*it).index];
-                    bool diff=false;
-                    QFont f(font());
-                    f.setItalic(true);
-                    if (!Utils::equal(t.trackGain, Scanner::reference(s->results().loudness), 0.01)) {
-                        item->setFont(COL_TRACKGAIN, f);
-                        diff=true;
-                    }
-                    if (!Utils::equal(t.trackPeak, s->results().peakValue(), 0.000001)) {
-                        item->setFont(COL_TRACKPEAK, f);
-                        diff=true;
-                    }
-                    if (diff) {
-                        needToSave.insert((*it).index);
-                    } else {
-                        needToSave.remove((*it).index);
-                    }
+    Track &track=tracks[s->index()];
+    if (!track.finished) {
+        track.finished=true;
+        track.success=s->success();
+        QTreeWidgetItem *item=view->topLevelItem(s->index());
+        if (s->success()) {
+            track.progress=100;
+            track.data=s->results();
+            item->setText(COL_TRACKGAIN, i18n("%1 dB").arg(formatNumber(Scanner::reference(track.data.loudness), 2)));
+            item->setText(COL_TRACKPEAK, formatNumber(track.data.peakValue(), 6));
+            QFont f(font());
+            f.setItalic(true);
+            if (origTags.contains(s->index())) {
+                Tags::ReplayGain t=origTags[s->index()];
+                bool diff=false;
+                if (!Utils::equal(t.trackGain, Scanner::reference(track.data.loudness), 0.01)) {
+                    item->setFont(COL_TRACKGAIN, f);
+                    diff=true;
+                }
+                if (!Utils::equal(t.trackPeak, track.data.peakValue(), 0.000001)) {
+                    item->setFont(COL_TRACKPEAK, f);
+                    diff=true;
+                }
+                if (diff) {
+                    needToSave.insert(s->index());
                 } else {
-                    needToSave.insert((*it).index);
+                    needToSave.remove(s->index());
                 }
             } else {
-                item->setText(COL_TRACKGAIN, i18n("Failed"));
-                item->setText(COL_TRACKPEAK, i18n("Failed"));
-                needToSave.remove((*it).index);
+                needToSave.insert(s->index());
             }
-            updateView();
+        } else {
+            item->setText(COL_TRACKGAIN, i18n("Failed"));
+            item->setText(COL_TRACKPEAK, i18n("Failed"));
+            needToSave.remove(s->index());
         }
+
+        QMap<QString, Album>::iterator a(albums.find(createAlbumName(origSongs.at(s->index()))));
+        QMap<QString, Album>::iterator ae(albums.end());
+
+        if (a!=ae) {
+            (*a).scannedTracks.insert(s->index());
+            if ((*a).scannedTracks.count()==(*a).tracks.count()) {
+                QList<Scanner *> as;
+                foreach (int idx, (*a).tracks) {
+                    Scanner *s=scanners[idx];
+                    if (s && s->success()) {
+                        as.append(s);
+                    }
+                }
+
+                if (as.count()) {
+                    QFont f(font());
+                    f.setItalic(true);
+                    (*a).data=Scanner::global(as);
+                    foreach (int idx, (*a).tracks) {
+                        QTreeWidgetItem *item=view->topLevelItem(idx);
+                        item->setText(COL_ALBUMGAIN, i18n("%1 dB").arg(formatNumber(Scanner::reference((*a).data.loudness), 2)));
+                        item->setText(COL_ALBUMPEAK, formatNumber((*a).data.peak, 6));
+
+                        if (origTags.contains(idx)) {
+                            Tags::ReplayGain t=origTags[idx];
+                            if (!Utils::equal(t.albumGain, Scanner::reference((*a).data.loudness), 0.01)) {
+                                item->setFont(COL_ALBUMGAIN, f);
+                                needToSave.insert(idx);
+                            }
+                            if (!Utils::equal(t.albumPeak, (*a).data.peak, 0.000001)) {
+                                item->setFont(COL_ALBUMPEAK, f);
+                                needToSave.insert(idx);
+                            }
+                        }
+                    }
+                }
+
+                foreach (int idx, (*a).tracks) {
+                    Scanner *s=scanners[idx];
+                    if (s) {
+                        scanners.remove(idx);
+                        JobController::self()->finishedWith(s);
+                    }
+                }
+            }
+        }
+        updateView();
+    }
+
+    if (!toScan.isEmpty()) {
+        int index=toScan.takeAt(0);
+        createScanner(index);
     }
 }
 

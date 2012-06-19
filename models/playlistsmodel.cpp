@@ -42,6 +42,7 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 #include "mpdconnection.h"
 #include "playqueuemodel.h"
 #include "debugtimer.h"
+#include "icon.h"
 
 PlaylistsModel * PlaylistsModel::self()
 {
@@ -198,7 +199,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                         : tr("%1\n1 Track (%2)").arg(pl->name).arg(Song::formattedTime(pl->totalTime())));
                     #endif
         case Qt::DecorationRole:
-            return QIcon::fromTheme("view-media-playlist");
+            return Icon("view-media-playlist");
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
@@ -281,7 +282,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return text;
         }
         case Qt::DecorationRole:
-            return QIcon::fromTheme(s->title.isEmpty() ? DEFAULT_STREAM_ICON : "audio-x-generic");
+            return Icon(s->title.isEmpty() ? DEFAULT_STREAM_ICON : "audio-x-generic");
         case ItemView::Role_MainText:
             return s->title.isEmpty() ? s->file : s->title;
         case ItemView::Role_SubText:
@@ -708,9 +709,9 @@ void PlaylistsModel::updateItemMenu()
 
     itemMenu->clear();
     #ifdef ENABLE_KDE_SUPPORT
-    itemMenu->addAction(QIcon::fromTheme("document-new"), i18n("New Playlist..."), this, SIGNAL(addToNew()));
+    itemMenu->addAction(Icon("document-new"), i18n("New Playlist..."), this, SIGNAL(addToNew()));
     #else
-    itemMenu->addAction(QIcon::fromTheme("document-new"), tr("New Playlist..."), this, SIGNAL(addToNew()));
+    itemMenu->addAction(Icon("document-new"), tr("New Playlist..."), this, SIGNAL(addToNew()));
     #endif
 
     QStringList names;

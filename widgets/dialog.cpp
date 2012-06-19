@@ -22,9 +22,9 @@
  */
 
 #include "dialog.h"
+#include "icon.h"
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QPushButton>
-#include <QtGui/QIcon>
 #include <QtGui/QBoxLayout>
 
 static QDialogButtonBox::StandardButton mapType(int btn) {
@@ -110,7 +110,7 @@ void Dialog::setButtonGuiItem(ButtonCode button, const KGuiItem &item)
     if (b) {
         b->setText(item.text);
         if (!item.icon.isEmpty()) {
-            b->setIcon(QIcon::fromTheme(item.icon));
+            b->setIcon(Icon(item.icon));
         }
     }
 }

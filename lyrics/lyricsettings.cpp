@@ -26,7 +26,7 @@
 #include "ultimatelyricsprovider.h"
 #include "ui_lyricsettings.h"
 #include "localize.h"
-#include <QtGui/QIcon>
+#include "icon.h"
 
 LyricSettings::LyricSettings(QWidget *parent)
   : QWidget(parent),
@@ -40,8 +40,8 @@ LyricSettings::LyricSettings(QWidget *parent)
           SLOT(CurrentItemChanged(QListWidgetItem*)));
 //   connect(ui_->providers, SIGNAL(itemChanged(QListWidgetItem*)),
 //           SLOT(ItemChanged(QListWidgetItem*)));
-    ui_->up->setIcon(QIcon::fromTheme("arrow-up"));
-    ui_->down->setIcon(QIcon::fromTheme("arrow-down"));
+    ui_->up->setIcon(Icon("arrow-up"));
+    ui_->down->setIcon(Icon("arrow-down"));
 }
 
 LyricSettings::~LyricSettings() {

@@ -76,7 +76,9 @@ SOURCES += \
     ../network/networkproxyfactory.cpp \
     ../widgets/kmessagewidget.cpp \
     ../widgets/dialog.cpp \
-    ../widgets/messagebox.cpp
+    ../widgets/messagebox.cpp \
+    ../widgets/icon.cpp \
+    ../widgets/togglebutton.cpp
 
 HEADERS+= \
     ../gui/mainwindow.h \
@@ -164,7 +166,8 @@ INCLUDEPATH += \
     ../network
 
 RESOURCES += \
-    ../cantata_qt.qrc
+    ../cantata.qrc \
+    cantata_android.qrc
 
 DEFINES += \
     QT_NO_DEBUG_OUTPUT

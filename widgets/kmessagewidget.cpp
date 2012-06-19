@@ -29,7 +29,7 @@
 #include <kstandardaction.h>
 #endif
 
-#include <QtGui/QIcon>
+#include "icon.h"
 #include <QtCore/QEvent>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
@@ -95,7 +95,7 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
     KAction* closeAction = KStandardAction::close(q, SLOT(animatedHide()), q);
     #else
     QAction* closeAction = new QAction(q);
-    closeAction->setIcon(QIcon::fromTheme("dialog-close"));
+    closeAction->setIcon(Icon("dialog-close"));
     QObject::connect(closeAction, SIGNAL(triggered()), q, SLOT(animatedHide()));
     #endif
 
@@ -288,31 +288,31 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
     QColor text;
     switch (type) {
 //     case PositiveMessageType:
-//         icon = QIcon::fromTheme("dialog-ok");
+//         icon = Icon("dialog-ok");
 //         bgRole = KColorScheme::PositiveBackground;
 //         fgRole = KColorScheme::PositiveText;
 //         break;
     case Information:
-        d->iconLabel->setPixmap(QIcon::fromTheme("dialog-information").pixmap(22, 22));
+        d->iconLabel->setPixmap(Icon("dialog-information").pixmap(22, 22));
         border=Qt::blue;
         bgnd=QColor(0xa5, 0xc1, 0xe4);
         text=Qt::black;
         break;
 //     case WarningMessageType:
-//         icon = QIcon::fromTheme("dialog-warning");
+//         icon = Icon("dialog-warning");
 //         bgRole = KColorScheme::NeutralBackground;
 //         fgRole = KColorScheme::NeutralText;
 //         break;
     default:
     case Error:
-        d->iconLabel->setPixmap(QIcon::fromTheme("dialog-error").pixmap(22, 22));
+        d->iconLabel->setPixmap(Icon("dialog-error").pixmap(22, 22));
         border=Qt::red;
         bgnd=QColor(0xeb, 0xbb, 0xbb);
         text=Qt::black;
         break;
     }
 
-//     const int size = QIcon::fromThemeLoader::global()->currentSize(QIcon::fromThemeLoader::MainToolbar);
+//     const int size = IconLoader::global()->currentSize(IconLoader::MainToolbar);
 
 //     KColorScheme scheme(QPalette::Active, colorSet);
 //     QBrush bg = scheme.background(bgRole);

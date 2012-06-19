@@ -26,7 +26,6 @@
 
 #include <QtGui/QPalette>
 #include <QtGui/QFont>
-#include <QtGui/QIcon>
 #include <QtCore/QModelIndex>
 #include <QtCore/QMimeData>
 #include <QtCore/QTextStream>
@@ -45,6 +44,7 @@
 #endif
 #include "settings.h"
 #include "debugtimer.h"
+#include "icon.h"
 
 static QStringList reverseList(const QStringList &orig)
 {
@@ -371,9 +371,9 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
         if (COL_STATUS==index.column() && songs.at(index.row()).id == currentSongId) {
             switch (mpdState) {
             case MPDState_Inactive:
-            case MPDState_Stopped: return QIcon::fromTheme("media-playback-stop");
-            case MPDState_Playing: return QIcon::fromTheme("media-playback-start");
-            case MPDState_Paused:  return QIcon::fromTheme("media-playback-pause");
+            case MPDState_Stopped: return Icon("media-playback-stop");
+            case MPDState_Playing: return Icon("media-playback-start");
+            case MPDState_Paused:  return Icon("media-playback-pause");
             }
         }
         break;

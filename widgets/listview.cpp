@@ -23,9 +23,9 @@
 
 #include "listview.h"
 #include "config.h"
+#include "icon.h"
 #include <QtCore/QMimeData>
 #include <QtGui/QDrag>
-#include <QtGui/QIcon>
 #include <QtGui/QMouseEvent>
 
 ListView::ListView(QWidget *parent)
@@ -79,7 +79,7 @@ void ListView::startDrag(Qt::DropActions supportedActions)
         QDrag *drag = new QDrag(this);
         drag->setMimeData(data);
         if (indexes.count()>1) {
-            drag->setPixmap(QIcon::fromTheme(DEFAULT_ALBUM_ICON).pixmap(64, 64));
+            drag->setPixmap(Icon(DEFAULT_ALBUM_ICON).pixmap(64, 64));
         } else {
             drag->setPixmap(QPixmap::fromImage(model()->data(indexes.first(), Qt::DecorationRole).value<QImage>()
                             .scaled(QSize(64, 64), Qt::KeepAspectRatio, Qt::SmoothTransformation)));

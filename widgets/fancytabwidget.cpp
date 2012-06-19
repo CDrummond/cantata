@@ -35,6 +35,7 @@
 
 #include "fancytabwidget.h"
 #include "localize.h"
+#include "icon.h"
 // #include "stylehelper.h"
 
 // #include <QtGui/QColorDialog>
@@ -64,6 +65,29 @@ using namespace Internal;
 
 const int FancyTabBar::m_rounding = 22;
 const int FancyTabBar::m_textPadding = 4;
+
+static int largeIconSize=32;
+static int smallIconSize=16;
+
+void FancyTabWidget::setup()
+{
+    int height=QApplication::fontMetrics().height();
+
+    if (height>22) {
+        largeIconSize=Icon::stdSize(height*2.5);
+        smallIconSize=16;
+        if (largeIconSize>32) {
+            if (largeIconSize<56) {
+                smallIconSize=22;
+            } else {
+                smallIconSize=32;
+            }
+        }
+    } else {
+        largeIconSize=32;
+        smallIconSize=16;
+    }
+}
 
 #if 0
 static QPainterPath createPath(const QRect &rect, double radius)
@@ -755,7 +779,7 @@ void FancyTabWidget::SetMode(Mode mode) {
     case Mode_IconOnlySmallSidebar:
     case Mode_IconOnlyLargeSidebar:
     case Mode_LargeSidebar: {
-      FancyTabBar* bar = new FancyTabBar(this, drawBorder_, Mode_LargeSidebar==mode, Mode_IconOnlySmallSidebar==mode ? 16 : 32);
+      FancyTabBar* bar = new FancyTabBar(this, drawBorder_, Mode_LargeSidebar==mode, Mode_IconOnlySmallSidebar==mode ? smallIconSize : largeIconSize);
       side_layout_->insertWidget(0, bar);
       tab_bar_ = bar;
 

@@ -28,10 +28,9 @@
 #include <KDE/KMessageBox>
 #else
 #include <QtGui/QIcon>
-#include <QtCore/QFile>
-#include <QtCore/QDir>
 #include <QtCore/QUrl>
 #endif
+#include "icon.h"
 #include "utils.h"
 #include "config.h"
 #include "mainwindow.h"
@@ -102,9 +101,24 @@ Application::~Application()
 {
 }
 
+#ifdef CANTATA_ANDROID
+static void setPal(QPalette &pal, QPalette::ColorGroup cg, const QStringList &parts)
+{
+    for(int i=0; i<parts.length(); ++i) {
+        pal.setColor(cg, (QPalette::ColorRole)i, QColor(parts.at(i)));
+    }
+}
+#endif
+
 bool Application::start()
 {
-    #if !defined CANTATA_ANDROID
+    #ifdef CANTATA_ANDROID
+    QPalette pal;
+    setPal(pal, QPalette::Active, QString("#ffffff, #000000, #dbdbdb, #b2b2b2, #949494, #6c6c6c, #ffffff, #ffffff, #ffffff, #222222, #000000, #b2b2b2, #00316e, #ffffff, #80b5ff, #c080ff, #0c0c0c, #000000, #000000, #ffffff").split(", ", QString::SkipEmptyParts));
+    setPal(pal, QPalette::Disabled, QString("#ffffff, #000000, #dbdbdb, #b2b2b2, #949494, #6c6c6c, #ffffff, #ffffff, #ffffff, #222222, #000000, #b2b2b2, #001b3d, #ffffff, #80b5ff, #c080ff, #0c0c0c, #000000, #000000, #ffffff").split(", ", QString::SkipEmptyParts));
+    setPal(pal, QPalette::Inactive, QString("#ffffff, #000000, #dbdbdb, #b2b2b2, #949494, #6c6c6c, #ffffff, #ffffff, #ffffff, #222222, #000000, #b2b2b2, #00316e, #ffffff, #80b5ff, #c080ff, #0c0c0c, #000000, #000000, #ffffff").split(", ", QString::SkipEmptyParts));
+    setPalette(pal);
+    #else
     if (isRunning()) {
         #ifdef TAGLIB_FOUND
         QStringList args(arguments());
@@ -115,13 +129,13 @@ bool Application::start()
         #endif
         return false;
     }
-    #endif
 
-    setupIconTheme();
+    Icon::setupIconTheme();
+    #endif
     return true;
 }
 
-#if defined TAGLIB_FOUND && !defined CANTATA_ANDROID
+#if defined TAGLIB_FOUND
 void Application::loadFiles()
 {
     QStringList args(arguments());
@@ -130,36 +144,7 @@ void Application::loadFiles()
         load(args);
     }
 }
-#endif
 
-void Application::setupIconTheme()
-{
-    // Check that we have certain icons in the selected icon theme. If not, and oxygen is installed, then
-    // set icon theme to oxygen.
-    QString theme=QIcon::themeName();
-    if (QLatin1String("oxygen")!=theme) {
-        QStringList check=QStringList() << "actions/edit-clear-list" << "actions/view-media-playlist"
-                                        << "actions/view-media-lyrics" << "actions/configure"
-                                        << "actions/view-choose" << "actions/view-media-artist"
-                                        << "places/server-database" << "devices/media-optical-audio";
-
-        foreach (const QString &icn, check) {
-            if (!QIcon::hasThemeIcon(icn)) {
-                QStringList paths=QIcon::themeSearchPaths();
-
-                foreach (const QString &p, paths) {
-                    if (QDir(p+QLatin1String("/oxygen")).exists()) {
-                        QIcon::setThemeName(QLatin1String("oxygen"));
-                        return;
-                    }
-                }
-                return;
-            }
-        }
-    }
-}
-
-#if defined TAGLIB_FOUND && !defined CANTATA_ANDROID
 void Application::message(const QString &msg)
 {
     load(msg.split("\n"));
@@ -179,6 +164,6 @@ void Application::load(const QStringList &files)
         qobject_cast<MainWindow *>(activationWindow())->load(urls);
     }
 }
-#endif
+#endif // TAGLIB_FOUND
 
 #endif

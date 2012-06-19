@@ -25,6 +25,7 @@
 #include "mpdconnection.h"
 #include "localize.h"
 #include "settings.h"
+#include "icon.h"
 #include <QtGui/QListWidget>
 
 static const int constIconSize=48;
@@ -110,7 +111,7 @@ void ServerPlaybackSettings::mpdConnectionStateChanged(bool c)
     streamUrl->setEnabled(c);
     streamUrlLabel->setEnabled(c);
     #endif
-    messageIcon->setPixmap(QIcon::fromTheme(c ? "dialog-information" : "dialog-warning").pixmap(constIconSize, constIconSize));
+    messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(constIconSize, constIconSize));
     if (c) {
         messageLabel->setText(i18n("<i><b>Connected to %1</b><br/>The entries below apply to the currently connected MPD instance.</i>")
                               .arg(MPDConnection::self()->getDetails().description()));

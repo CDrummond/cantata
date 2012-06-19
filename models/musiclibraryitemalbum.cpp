@@ -31,7 +31,7 @@
 #include "song.h"
 #include "covers.h"
 #include "config.h"
-#include <QtGui/QIcon>
+#include "icon.h"
 #include <QtGui/QPixmap>
 #include <QtGui/QApplication>
 #include <QtGui/QFontMetrics>
@@ -168,7 +168,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             if (0==cSize) {
                 cSize=22;
             }
-            theDefaultIcon = new QPixmap(QIcon::fromTheme(DEFAULT_ALBUM_ICON).pixmap(cSize, cSize)
+            theDefaultIcon = new QPixmap(Icon(DEFAULT_ALBUM_ICON).pixmap(cSize, cSize)
                                         .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         m_coverIsDefault = true;

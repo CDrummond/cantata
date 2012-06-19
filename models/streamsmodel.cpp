@@ -32,8 +32,8 @@
 #include <QtCore/qglobal.h>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
-#include <QtGui/QIcon>
-#ifdef Q_OS_WIN
+#include "config.h"
+#if defined Q_OS_WIN || defined CANTATA_ANDROID
 #include <QtGui/QDesktopServices>
 #endif
 #include "localize.h"
@@ -42,6 +42,7 @@
 #include "playqueuemodel.h"
 #include "mpdconnection.h"
 #include "config.h"
+#include "icon.h"
 
 const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
 const QLatin1String StreamsModel::constDefaultStreamIcon(DEFAULT_STREAM_ICON);
@@ -53,7 +54,7 @@ static bool iconIsValid(const QString &icon)
 
 static QString configDir()
 {
-    #ifdef Q_OS_WIN
+    #if defined Q_OS_WIN || defined CANTATA_ANDROID
     QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/";
     #else
     QString env = qgetenv("XDG_CONFIG_HOME");
@@ -166,8 +167,8 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                         ? tr("%1\n%2 Streams").arg(cat->name).arg(cat->streams.count())
                         : tr("%1\n1 Stream").arg(cat->name));
                     #endif
-        case Qt::DecorationRole: return cat->icon.isEmpty() ? QIcon::fromTheme(constDefaultCategoryIcon)
-                                                            : cat->icon.startsWith('/') ? QIcon(cat->icon) : QIcon::fromTheme(cat->icon);
+        case Qt::DecorationRole: return cat->icon.isEmpty() ? Icon(constDefaultCategoryIcon)
+                                                            : cat->icon.startsWith('/') ? QIcon(cat->icon) : Icon(cat->icon);
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Stream", "%1 Streams", cat->streams.count());
@@ -184,8 +185,8 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:    return stream->name;
         case ItemView::Role_SubText:
         case Qt::ToolTipRole:    return stream->url;
-        case Qt::DecorationRole: return stream->icon.isEmpty() ? QIcon::fromTheme(constDefaultStreamIcon)
-                                                               : stream->icon.startsWith('/') ? QIcon(stream->icon) : QIcon::fromTheme(stream->icon);
+        case Qt::DecorationRole: return stream->icon.isEmpty() ? Icon(constDefaultStreamIcon)
+                                                               : stream->icon.startsWith('/') ? QIcon(stream->icon) : Icon(stream->icon);
         default: break;
         }
     }

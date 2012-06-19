@@ -25,7 +25,6 @@
 #include <QtCore/QDataStream>
 #include <QtCore/QMimeData>
 #include <QtCore/QStringList>
-#include <QtGui/QIcon>
 #include <QtGui/QPainter>
 #include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
@@ -44,6 +43,7 @@
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "debugtimer.h"
+#include "icon.h"
 
 static int sortAlbums=AlbumsModel::Sort_AlbumArtist;
 
@@ -212,7 +212,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             int iSize=iconSize();
 
             if (Qt::DecorationRole==role && 0==iSize) {
-                return QIcon::fromTheme(DEFAULT_ALBUM_ICON);
+                return Icon(DEFAULT_ALBUM_ICON);
             }
 
             if (!theDefaultIcon) {
@@ -221,7 +221,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 if (0==cSize) {
                     cSize=stdSize=22;
                 }
-                theDefaultIcon = new QPixmap(QIcon::fromTheme(DEFAULT_ALBUM_ICON).pixmap(stdSize, stdSize)
+                theDefaultIcon = new QPixmap(Icon(DEFAULT_ALBUM_ICON).pixmap(stdSize, stdSize)
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
             if (!al->coverRequested && iSize && Song::SingleTracks!=al->type) {
@@ -276,7 +276,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
 
         switch (role) {
         case Qt::DecorationRole:
-            return QIcon::fromTheme(Song::Playlist==si->type ? "view-media-playlist" : "audio-x-generic");
+            return Icon(Song::Playlist==si->type ? "view-media-playlist" : "audio-x-generic");
         case Qt::ToolTipRole: {
             quint32 year=si->parent->songs.count() ? si->parent->songs.at(0)->year : 0;
             return si->parent->artist+QLatin1String("<br/>")+

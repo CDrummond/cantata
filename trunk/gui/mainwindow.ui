@@ -96,7 +96,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QToolButton" name="streamButton">
+      <widget class="ToggleButton" name="streamButton">
        <property name="iconSize">
         <size>
          <width>20</width>
@@ -229,7 +229,7 @@
         </spacer>
        </item>
        <item row="2" column="3">
-        <widget class="QToolButton" name="repeatPushButton">
+        <widget class="ToggleButton" name="repeatPushButton">
          <property name="checkable">
           <bool>true</bool>
          </property>
@@ -239,7 +239,7 @@
         </widget>
        </item>
        <item row="2" column="4">
-        <widget class="QToolButton" name="singlePushButton">
+        <widget class="ToggleButton" name="singlePushButton">
          <property name="checkable">
           <bool>true</bool>
          </property>
@@ -249,7 +249,7 @@
         </widget>
        </item>
        <item row="2" column="5">
-        <widget class="QToolButton" name="randomPushButton">
+        <widget class="ToggleButton" name="randomPushButton">
          <property name="checkable">
           <bool>true</bool>
          </property>
@@ -278,7 +278,7 @@
         <widget class="QToolButton" name="removeAllFromPlayQueuePushButton"/>
        </item>
        <item row="2" column="6">
-        <widget class="QToolButton" name="consumePushButton"/>
+        <widget class="ToggleButton" name="consumePushButton"/>
        </item>
       </layout>
      </widget>
@@ -287,6 +287,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>ToggleButton</class>
+   <extends>QToolButton</extends>
+   <header>togglebutton.h</header>
+  </customwidget>
   <customwidget>
    <class>SqueezedTextLabel</class>
    <extends>QLabel</extends>

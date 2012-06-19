@@ -23,32 +23,21 @@
 
 #include "actionitemdelegate.h"
 #include "itemview.h"
+#include "icon.h"
 #include <QtGui/QPainter>
 #include <QtGui/QAction>
 #include <QtGui/QPixmap>
-#include <QtGui/QIcon>
 
 int ActionItemDelegate::constBorder = 1;
 int ActionItemDelegate::constActionBorder = 4;
-int ActionItemDelegate::constActionIconSize=16;
+int ActionItemDelegate::constActionIconSize = 16;
 
 void ActionItemDelegate::setup()
 {
     int height=QApplication::fontMetrics().height();
 
     if (height>17) {
-        constActionIconSize=((int)(height/4))*4;
-        if (constActionIconSize<20) {
-            constActionIconSize=16;
-        } else if (constActionIconSize<28) {
-            constActionIconSize=22;
-        } else if (constActionIconSize<40) {
-            constActionIconSize=32;
-        } else if (constActionIconSize<56) {
-            constActionIconSize=48;
-        } else {
-            constActionIconSize=64;
-        }
+        constActionIconSize=Icon::stdSize(((int)(height/4))*4);
         constBorder=constActionIconSize>22 ? 2 : 1;
         constActionBorder=constActionIconSize>32 ? 6 : 4;
     } else {
@@ -177,7 +166,7 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
             if (act1 || act2) {
                 adjustActionRect(rtl, iconMode, actionRect);
             }
-            QPixmap pix=QIcon::fromTheme(iconName).pixmap(QSize(constActionIconSize, constActionIconSize));
+            QPixmap pix=Icon(iconName).pixmap(QSize(constActionIconSize, constActionIconSize));
             if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
                 drawBgnd(painter, actionRect);
                 painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,

@@ -28,7 +28,7 @@
 #include "proxymodel.h"
 #include "actionitemdelegate.h"
 #include "localize.h"
-#include <QtGui/QIcon>
+#include "icon.h"
 #include <QtGui/QToolButton>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionViewItem>
@@ -46,6 +46,22 @@
 #else
 #define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
 #endif
+
+static int listDecorationSize=22;
+static int treeDecorationSize=16;
+
+void ItemView::setup()
+{
+    int height=QApplication::fontMetrics().height();
+
+    if (height>22) {
+        listDecorationSize=Icon::stdSize(height*1.4);
+        treeDecorationSize=Icon::stdSize(height);
+    } else {
+        listDecorationSize=22;
+        treeDecorationSize=16;
+    }
+}
 
 EscapeKeyEventHandler::EscapeKeyEventHandler(QAbstractItemView *v, QAction *a)
     : QObject(v)
@@ -147,8 +163,9 @@ static inline double subTextAlpha(bool selected)
 class ListDelegate : public ActionItemDelegate
 {
 public:
-    ListDelegate(QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
+    ListDelegate(ListView *v, QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
         : ActionItemDelegate(p, a1, a2, t, actionLevel)
+        , view(v)
     {
     }
 
@@ -165,7 +182,7 @@ public:
             imageSize=constImageSize;
         }
 
-        if (imageSize>50) { // Icon Mode!
+        if (view && QListView::IconMode==view->viewMode()) {
             int textHeight = QApplication::fontMetrics().height()*2;
             return QSize(imageSize + (constBorder * 2), textHeight+imageSize + (constBorder*2));
         } else {
@@ -208,9 +225,9 @@ public:
             image = index.data(Qt::DecorationRole);
         }
 
-        QPixmap pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : image.value<QIcon>().pixmap(imageSize, imageSize);
+        QPixmap pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
         bool oneLine = childText.isEmpty();
-        bool iconMode = imageSize>50;
+        bool iconMode = view && QListView::IconMode==view->viewMode();
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
 
         painter->save();
@@ -308,13 +325,16 @@ public:
 
         painter->restore();
     }
+
+private:
+    ListView *view;
 };
 
 class TreeDelegate : public ListDelegate
 {
 public:
     TreeDelegate(QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
-        : ListDelegate(p, a1, a2, t, actionLevel)
+        : ListDelegate(0, p, a1, a2, t, actionLevel)
     {
     }
 
@@ -354,7 +374,7 @@ public:
 
             QRect r(option.rect);
             r.adjust(4, 0, -4, 0);
-            QPixmap pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constActionIconSize, constActionIconSize);
+            QPixmap pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
             if (!pix.isNull()) {
                 int adjust=qMax(pix.width(), pix.height());
                 if (rtl) {
@@ -419,7 +439,7 @@ ItemView::ItemView(QWidget *p)
 {
     setupUi(this);
     backAction = new QAction(i18n("Back"), this);
-    backAction->setIcon(QIcon::fromTheme("go-previous"));
+    backAction->setIcon(Icon("go-previous"));
     backButton->setDefaultAction(backAction);
     backButton->setAutoRaise(true);
     treeView->setPageDefaults();
@@ -456,7 +476,7 @@ void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
     act2=a2;
     toggle=t;
     actLevel=actionLevel;
-    listView->setItemDelegate(new ListDelegate(listView, a1, a2, toggle, actionLevel));
+    listView->setItemDelegate(new ListDelegate(listView, listView, a1, a2, toggle, actionLevel));
     treeView->setItemDelegate(new TreeDelegate(treeView, a1, a2, toggle, actionLevel));
     if (groupedView) {
         groupedView->init(0, 0, 0, 0); // No actions in grouped view :-(

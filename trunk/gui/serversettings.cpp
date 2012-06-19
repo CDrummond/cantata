@@ -26,10 +26,10 @@
 #include "localize.h"
 #include "inputdialog.h"
 #include "messagebox.h"
+#include "icon.h"
 #include <QtCore/QDir>
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
-#include <QtGui/QIcon>
 
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
@@ -49,8 +49,8 @@ ServerSettings::ServerSettings(QWidget *p)
     connect(saveButton, SIGNAL(clicked(bool)), SLOT(saveAs()));
     connect(removeButton, SIGNAL(clicked(bool)), SLOT(remove()));
     connect(connectButton, SIGNAL(clicked(bool)), SLOT(toggleConnection()));
-    saveButton->setIcon(QIcon::fromTheme("document-save-as"));
-    removeButton->setIcon(QIcon::fromTheme("edit-delete"));
+    saveButton->setIcon(Icon("document-save-as"));
+    removeButton->setIcon(Icon("edit-delete"));
 
     #if defined Q_OS_WIN || defined CANTATA_ANDROID
     hostLabel->setText(i18n("Host:"));
@@ -188,7 +188,7 @@ void ServerSettings::enableWidgets(bool e)
 //     passwordLabel->setEnabled(e);
 //     dirLabel->setEnabled(e);
     connectButton->setText(e ? i18n("Connect") : i18n("Disconnect"));
-    connectButton->setIcon(QIcon::fromTheme(e ? "network-connect" : "network-disconnect"));
+    connectButton->setIcon(Icon(e ? "network-connect" : "network-disconnect"));
     removeButton->setEnabled(e);
 //     saveButton->setEnabled(e);
 }

@@ -70,7 +70,7 @@ public:
     void removeCache();
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
 
-    #ifndef ENABLE_KDE_SUPPORT
+    #if !defined ENABLE_KDE_SUPPORT && !defined CANTATA_ANDROID
     static const QIcon & vaIcon();
     #endif
     bool update(const QSet<Song> &songs);

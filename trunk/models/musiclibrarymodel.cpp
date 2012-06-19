@@ -40,6 +40,7 @@
 #include "network.h"
 #include "localize.h"
 #include "utils.h"
+#include "icon.h"
 #include <QtGui/QCommonStyle>
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
@@ -167,7 +168,7 @@ int MusicLibraryModel::columnCount(const QModelIndex &parent) const
     }
 }
 
-#ifndef ENABLE_KDE_SUPPORT
+#if !defined ENABLE_KDE_SUPPORT && !defined CANTATA_ANDROID
 const QIcon & MusicLibraryModel::vaIcon()
 {
     static QIcon icon;
@@ -200,20 +201,20 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             if (artistImages) {
                 return artist->cover();
             } else {
-                #ifdef ENABLE_KDE_SUPPORT
-                return QIcon::fromTheme(artist->isVarious() ? "cantata-view-media-artist-various" : "view-media-artist");
+                #if defined ENABLE_KDE_SUPPORT || defined CANTATA_ANDROID
+                return Icon(artist->isVarious() ? "cantata-view-media-artist-various" : "view-media-artist");
                 #else
-                return artist->isVarious() ? vaIcon() : QIcon::fromTheme("view-media-artist");
+                return artist->isVarious() ? vaIcon() : Icon("view-media-artist");
                 #endif
             }
         }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return QIcon::fromTheme(DEFAULT_ALBUM_ICON);
+                return Icon(DEFAULT_ALBUM_ICON);
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }
-        case MusicLibraryItem::Type_Song: return QIcon::fromTheme(Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? "view-media-playlist" : "audio-x-generic");
+        case MusicLibraryItem::Type_Song: return Icon(Song::Playlist==static_cast<MusicLibraryItemSong *>(item)->song().type ? "view-media-playlist" : "audio-x-generic");
         default: return QVariant();
         }
     case Qt::DisplayRole:

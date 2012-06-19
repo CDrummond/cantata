@@ -36,6 +36,7 @@
 #ifdef TAGLIB_FOUND
 #include "tags.h"
 #endif
+#include "icon.h"
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -44,7 +45,6 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
-#include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
@@ -90,14 +90,14 @@ LyricsPage::LyricsPage(MainWindow *p)
 {
     setupUi(this);
 
-    providers=UltimateLyricsReader().Parse(QString(":lyrics/ultimate_providers.xml"));
+    providers=UltimateLyricsReader().Parse(QString(":lyrics.xml"));
     foreach (UltimateLyricsProvider* provider, providers) {
         connect(provider, SIGNAL(InfoReady(int, const QString &)), SLOT(resultReady(int, const QString &)));
     }
 
     // Parse the ultimate lyrics xml file in the background
 //     QFuture<ProviderList> future = QtConcurrent::run(reader.data(), &UltimateLyricsReader::Parse,
-//                                                      QString(":lyrics/ultimate_providers.xml"));
+//                                                      QString(":lyrics.xml"));
 //     QFutureWatcher<ProviderList> *watcher = new QFutureWatcher<ProviderList>(this);
 //     watcher->setFuture(future);
 //     connect(watcher, SIGNAL(finished()), SLOT(ultimateLyricsParsed()));
@@ -122,12 +122,12 @@ LyricsPage::LyricsPage(MainWindow *p)
     cancelAction = new QAction(tr("Refresh"), this);
     delAction = new QAction(tr("Refresh"), this);
     #endif
-    refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
-    searchAction->setIcon(QIcon::fromTheme("edit-find"));
-    editAction->setIcon(QIcon::fromTheme("document-edit"));
-    saveAction->setIcon(QIcon::fromTheme("document-save"));
-    cancelAction->setIcon(QIcon::fromTheme("dialog-cancel"));
-    delAction->setIcon(QIcon::fromTheme("edit-delete"));
+    refreshAction->setIcon(Icon("view-refresh"));
+    searchAction->setIcon(Icon("edit-find"));
+    editAction->setIcon(Icon("document-edit"));
+    saveAction->setIcon(Icon("document-save"));
+    cancelAction->setIcon(Icon("dialog-cancel"));
+    delAction->setIcon(Icon("edit-delete"));
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
     connect(searchAction, SIGNAL(triggered()), SLOT(search()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));

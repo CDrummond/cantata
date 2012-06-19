@@ -31,15 +31,15 @@
 ****************************************************************************/
 
 #include "lineedit.h"
+#include "icon.h"
 #include <QtGui/QToolButton>
 #include <QtGui/QStyle>
-#include <QtGui/QIcon>
 
 LineEdit::LineEdit(QWidget *parent)
     : QLineEdit(parent)
 {
     clearButton = new QToolButton(this);
-    QPixmap pixmap(QIcon::fromTheme(Qt::RightToLeft==layoutDirection() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl").pixmap(16, 16));
+    QPixmap pixmap(Icon(Qt::RightToLeft==layoutDirection() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl").pixmap(16, 16));
     clearButton->setIcon(QIcon(pixmap));
     clearButton->setIconSize(pixmap.size());
     clearButton->setCursor(Qt::ArrowCursor);

@@ -66,19 +66,13 @@ public:
     bool start();
     #if defined TAGLIB_FOUND
     void loadFiles();
-    #endif
 
 private:
-    void setupIconTheme();
-    #if defined TAGLIB_FOUND
     void load(const QStringList &files);
-    #endif
 
-#if defined TAGLIB_FOUND
 private Q_SLOTS:
     void message(const QString &m);
-#endif
-
+    #endif // TAGLIB_FOUND
 };
 #endif
 

@@ -22,8 +22,8 @@
  */
 
 #include "messagebox.h"
+#include "icon.h"
 #include <QtGui/QAbstractButton>
-#include <QtGui/QIcon>
 
 MessageBox::ButtonCode map(QMessageBox::StandardButton c)
 {
@@ -54,14 +54,14 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
             QAbstractButton *btn=box.button(QMessageBox::Yes);
             btn->setText(yesText.text);
             if (!yesText.icon.isEmpty()) {
-                btn->setIcon(QIcon::fromTheme(yesText.icon));
+                btn->setIcon(Icon(yesText.icon));
             }
         }
         if (!noText.text.isEmpty()) {
             QAbstractButton *btn=box.button(QMessageBox::No);
             btn->setText(noText.text);
             if (!noText.icon.isEmpty()) {
-                btn->setIcon(QIcon::fromTheme(noText.icon));
+                btn->setIcon(Icon(noText.icon));
             }
         }
         return -1==box.exec() ? Cancel : map(box.standardButton(box.clickedButton()));

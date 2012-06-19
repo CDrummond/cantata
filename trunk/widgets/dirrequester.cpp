@@ -22,9 +22,9 @@
  */
 
 #include "dirrequester.h"
+#include "icon.h"
 #include <QtGui/QFileDialog>
 #include <QtGui/QHBoxLayout>
-#include <QtGui/QIcon>
 
 DirRequester::DirRequester(QWidget *parent)
     : QWidget(parent)
@@ -36,7 +36,7 @@ DirRequester::DirRequester(QWidget *parent)
     layout->addWidget(edit);
     layout->addWidget(button);
     button->setAutoRaise(true);
-    button->setIcon(QIcon::fromTheme("document-open"));
+    button->setIcon(Icon("document-open"));
     connect(button, SIGNAL(clicked(bool)), SLOT(chooseDir()));
 }
 

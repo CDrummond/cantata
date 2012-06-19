@@ -85,6 +85,7 @@ class ItemView : public QWidget, public Ui::ItemView
 {
     Q_OBJECT
 public:
+
     enum Mode
     {
         Mode_Tree,
@@ -106,6 +107,8 @@ public:
         Role_ToggleIconName,
         Role_Search
     };
+
+    static void setup();
 
     ItemView(QWidget *p);
     virtual ~ItemView();

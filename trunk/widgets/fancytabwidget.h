@@ -157,6 +157,9 @@ class FancyTabWidget : public QWidget {
   Q_OBJECT
 
 public:
+
+  static void setup();
+
   FancyTabWidget(QWidget *parent, bool allowContext=true, bool drawBorder=false);
 
   // Values are persisted - only add to the end

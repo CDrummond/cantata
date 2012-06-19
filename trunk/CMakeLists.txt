@@ -5,6 +5,7 @@ cmake_minimum_required( VERSION 2.6 )
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake )
 
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
+# SET(CPACK_SOURCE_IGNORE_FILES ${CPACK_SOURCE_IGNORE_FILES} "/.svn/" "/android/")
 set(CPACK_GENERATOR "DEB;RPM;TGZ")
 set(DEBIAN_PACKAGE_DESCRIPTION "Qt4/KDE4 Client for MPD")
 set(DEBIAN_PACKAGE_SECTION "kde4")
@@ -117,6 +118,7 @@ SET( CANTATA_SRCS
     widgets/actionitemdelegate.cpp
     widgets/textbrowser.cpp
     widgets/coverwidget.cpp
+    widgets/icon.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp

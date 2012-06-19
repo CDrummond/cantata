@@ -175,18 +175,12 @@ public:
         PAGE_ALBUMS,
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
-        #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
         PAGE_DYNAMIC,
-        #endif
         PAGE_STREAMS,
         PAGE_LYRICS,
-        #ifdef ENABLE_WEBKIT
         PAGE_INFO,
-        #endif
-        PAGE_SERVER_INFO
-        #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
-        , PAGE_DEVICES
-        #endif
+        PAGE_SERVER_INFO,
+        PAGE_DEVICES
     };
 
     Q_PROPERTY(int volume READ mpdVolume WRITE setMpdVolume)
@@ -314,22 +308,16 @@ private Q_SLOTS:
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     void showDynamicTab() { showTab(PAGE_DYNAMIC); }
-    #endif
     void showStreamsTab() { showTab(PAGE_STREAMS); }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
-    #ifdef ENABLE_WEBKIT
     void showInfoTab() { showTab(PAGE_INFO); }
-    #endif
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
+    void showDevicesTab() { showTab(PAGE_DEVICES); }
     #ifndef CANTATA_ANDROID
     void toggleSplitterAutoHide();
     #endif
     void locateTrack();
-    #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
-    void showDevicesTab() { showTab(PAGE_DEVICES); }
-    #endif
     #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     void toggleMpris();
     void toggleDockManager();

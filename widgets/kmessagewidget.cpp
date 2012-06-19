@@ -363,6 +363,10 @@ void KMessageWidget::resizeEvent(QResizeEvent* event)
 
 void KMessageWidget::paintEvent(QPaintEvent* event)
 {
+    if (d->content->width()!=parentWidget()->width()) {
+        d->content->resize(QSize(parentWidget()->width(), d->content->height()));
+    }
+
     QFrame::paintEvent(event);
     if (d->timeLine->state() == QTimeLine::Running) {
         QPainter painter(this);

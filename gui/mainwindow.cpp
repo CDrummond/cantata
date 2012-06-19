@@ -108,30 +108,8 @@
 #include "messagewidget.h"
 #include "groupedview.h"
 #include "actionitemdelegate.h"
+#include "icon.h"
 #include "debugtimer.h"
-
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIcon>
-#define Icon(X) KIcon(X)
-#define getMediaIcon(X) KIcon(X)
-#else
-#include <QtGui/QIcon>
-#define Icon(X) QIcon::fromTheme(X)
-static QIcon getMediaIcon(const char *name)
-{
-    static QList<QIcon::Mode> modes=QList<QIcon::Mode>() << QIcon::Normal << QIcon::Disabled << QIcon::Active << QIcon::Selected;
-    QIcon icn;
-    QIcon icon=QIcon::fromTheme(name);
-
-    foreach (QIcon::Mode mode, modes) {
-        icn.addPixmap(icon.pixmap(QSize(64, 64), mode).scaled(QSize(28, 28), Qt::KeepAspectRatio, Qt::SmoothTransformation), mode);
-        icn.addPixmap(icon.pixmap(QSize(22, 22), mode), mode);
-    }
-
-    return icn;
-}
-
-#endif
 
 static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
 {
@@ -157,14 +135,23 @@ static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
 static QIcon createSingleIcon()
 {
     QIcon icon;
-    QColor col=QColor(Qt::black);
-    icon.addPixmap(createSingleIconPixmap(16, col, 100.0));
-    icon.addPixmap(createSingleIconPixmap(22, col, 100.0));
-    icon.addPixmap(createSingleIconPixmap(16, col, 50.0), QIcon::Disabled);
-    icon.addPixmap(createSingleIconPixmap(22, col, 50.0), QIcon::Disabled);
-    col=QColor(48, 48, 48);
-    icon.addPixmap(createSingleIconPixmap(16, col, 100.0), QIcon::Active);
-    icon.addPixmap(createSingleIconPixmap(22, col, 100.0), QIcon::Active);
+    QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
+    if (stdColor==Qt::white) {
+        stdColor=QColor(200, 200, 200);
+    }
+    QColor highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
+    QList<int> sizes=QList<int>() << 16 << 22
+                                 #ifdef CANTATA_ANDROID
+                                  << 32 << 48 << 64
+                                 #endif
+                                  ;
+
+    foreach (int s, sizes) {
+        icon.addPixmap(createSingleIconPixmap(s, stdColor, 100.0));
+        icon.addPixmap(createSingleIconPixmap(s, stdColor, 50.0), QIcon::Disabled);
+        icon.addPixmap(createSingleIconPixmap(s, highlightColor, 100.0), QIcon::Active);
+    }
+
     return icon;
 }
 
@@ -256,8 +243,12 @@ VolumeControl::VolumeControl(QWidget *parent)
     layout->setMargin(0);
     layout->addWidget(w);
     connect(slider, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
-    slider->setMinimumHeight(192);
-    slider->setMaximumHeight(192);
+    int size=Icon::stdSize(QApplication::fontMetrics().height());
+
+    slider->setMinimumHeight(size*12);
+    slider->setMaximumHeight(size*12);
+    slider->setMinimumWidth(size*1.5);
+    slider->setMaximumWidth(size*1.5);
     slider->setOrientation(Qt::Vertical);
     slider->setMinimum(0);
     slider->setMaximum(100);
@@ -336,6 +327,26 @@ static int nextKey(int &key) {
 #define SET_SHORTCUT(ACT, S) ACT->setShortcut(S); addAction(ACT); ACT->setShortcutContext(Qt::ApplicationShortcut)
 #endif
 
+void MainWindow::initButton(QToolButton *btn)
+{
+    #ifdef CANTATA_ANDROID
+    static int size=-1;
+
+    if (-1==size) {
+        size=QApplication::fontMetrics().height();
+        if (size>18) {
+            size=Icon::stdSize(size*1.25);
+        } else {
+            size=16;
+        }
+    }
+    btn->setIconSize(QSize(size, size));
+    #else
+    btn->setIconSize(QSize(16, 16));
+    #endif
+    btn->setAutoRaise(true);
+}
+
 MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     : KXmlGuiWindow(parent)
@@ -391,7 +402,7 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
     #ifndef ENABLE_KDE_SUPPORT
-    setWindowIcon(QIcon(":/icons/cantata.svg"));
+    setWindowIcon(QIcon(":/cantata.svg"));
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
     #endif
 
@@ -717,11 +728,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     positionSlider->setStyle(new ProxyStyle());
 
-    playbackPlay = getMediaIcon("media-playback-start");
-    playbackPause = getMediaIcon("media-playback-pause");
+    playbackPlay = MediaIcon("media-playback-start");
+    playbackPause = MediaIcon("media-playback-pause");
     randomPlayQueueAction->setIcon(Icon("media-playlist-shuffle"));
     locateTrackAction->setIcon(Icon("edit-find"));
-    #ifdef ENABLE_KDE_SUPPORT
+    #if defined ENABLE_KDE_SUPPORT || defined CANTATA_ANDROID
     consumePlayQueueAction->setIcon(Icon("cantata-view-media-consume"));
     repeatPlayQueueAction->setIcon(Icon("cantata-view-media-repeat"));
 //     randomPlayQueueAction->setIcon(Icon("cantata-view-media-shuffle"));
@@ -766,10 +777,10 @@ MainWindow::MainWindow(QWidget *parent)
 //     }
 //     #endif
 
-    prevTrackAction->setIcon(getMediaIcon("media-skip-backward"));
-    nextTrackAction->setIcon(getMediaIcon("media-skip-forward"));
+    prevTrackAction->setIcon(MediaIcon("media-skip-backward"));
+    nextTrackAction->setIcon(MediaIcon("media-skip-forward"));
     playPauseTrackAction->setIcon(playbackPlay);
-    stopTrackAction->setIcon(getMediaIcon("media-playback-stop"));
+    stopTrackAction->setIcon(MediaIcon("media-playback-stop"));
     removeFromPlayQueueAction->setIcon(Icon("list-remove"));
     clearPlayQueueAction->setIcon(Icon("edit-clear-list"));
     savePlayQueueAction->setIcon(Icon("document-save-as"));
@@ -784,8 +795,8 @@ MainWindow::MainWindow(QWidget *parent)
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
-    showPlayQueueAction->setIcon(QIcon::fromTheme("media-playback-start"));
-    #ifdef ENABLE_KDE_SUPPORT
+    showPlayQueueAction->setIcon(Icon("media-playback-start"));
+    #if defined ENABLE_KDE_SUPPORT || defined CANTATA_ANDROID
     libraryTabAction->setIcon(Icon("cantata-view-media-library"));
     #else
     QIcon libraryIcon(":lib16.png");
@@ -801,7 +812,7 @@ MainWindow::MainWindow(QWidget *parent)
     lyricsTabAction->setIcon(Icon("view-media-lyrics"));
     streamsTabAction->setIcon(Icon(DEFAULT_STREAM_ICON));
     #ifdef ENABLE_WEBKIT
-    #ifdef ENABLE_KDE_SUPPORT
+    #if defined ENABLE_KDE_SUPPORT || defined CANTATA_ANDROID
     infoTabAction->setIcon(Icon("cantata-view-wikipedia"));
     #else // ENABLE_KDE_SUPPORT
     QIcon wikiIcon(":wiki16.png");
@@ -867,6 +878,8 @@ MainWindow::MainWindow(QWidget *parent)
     #else
     streamButton->setVisible(false);
     #endif
+
+    initSizes();
 
     QStringList hiddenPages=Settings::self()->hiddenPages();
 
@@ -957,10 +970,8 @@ MainWindow::MainWindow(QWidget *parent)
         #endif
     }
 
-    #ifndef CANTATA_ANDROID
     setPlaybackButtonsSize(Settings::self()->smallPlaybackButtons());
     setControlButtonsSize(Settings::self()->smallControlButtons());
-    #endif
 
     trackLabel->setText(QString());
     artistLabel->setText(QString());
@@ -1033,8 +1044,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     dynamicLabel->setVisible(false);
 
-    addWithPriorityAction->setIcon(QIcon::fromTheme("favorites"));
-    setPriorityAction->setIcon(QIcon::fromTheme("favorites"));
+    addWithPriorityAction->setIcon(Icon("favorites"));
+    setPriorityAction->setIcon(Icon("favorites"));
     addWithPriorityAction->setVisible(false);
     setPriorityAction->setVisible(false);
     addPrioHighestAction->setData(255);
@@ -1268,7 +1279,6 @@ MainWindow::MainWindow(QWidget *parent)
         QTimer::singleShot(250, this, SLOT(toggleDockManager()));
     }
     #endif
-    initSizes();
 }
 
 MainWindow::~MainWindow()
@@ -1333,6 +1343,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::initSizes()
 {
+    ItemView::setup();
+    FancyTabWidget::setup();
     GroupedView::setup();
     ActionItemDelegate::setup();
     MusicLibraryItemAlbum::setup();
@@ -1398,38 +1410,57 @@ void MainWindow::controlButtonsMenu()
 
 void MainWindow::setPlaybackButtonsSize(bool small)
 {
+    #ifdef CANTATA_ANDROID
+    int size=Icon::stdSize(QApplication::fontMetrics().height()*1.5);
+    #endif
+
     QList<QToolButton *> playbackBtns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     foreach (QToolButton *b, playbackBtns) {
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-//         #ifdef ENABLE_KDE_SUPPORT
-        b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
-        b->setMinimumSize(small ? QSize(26, 26) : QSize(32, 32));
-        b->setMaximumSize(small ? QSize(26, 26) : QSize(32, 32));
-//         #else
-//         b->setIconSize(small ? QSize(24, 24) : QSize(28, 28));
-//         b->setMinimumSize(small ? QSize(26, 26) : QSize(36, 36));
-//         b->setMaximumSize(small ? QSize(26, 26) : QSize(36, 36));
-//         #endif
+        #ifdef CANTATA_ANDROID
+        if (size>22) {
+            b->setMinimumSize(QSize(size+2, size+2));
+            b->setMaximumSize(QSize(size+2, size+2));
+            b->setIconSize(QSize(size, size));
+        } else
+        #endif
+        {
+            b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
+            b->setMinimumSize(small ? QSize(26, 26) : QSize(32, 32));
+            b->setMaximumSize(small ? QSize(26, 26) : QSize(32, 32));
+        }
     }
 }
 
 void MainWindow::setControlButtonsSize(bool small)
 {
+    #ifdef CANTATA_ANDROID
+    int size=Icon::stdSize(QApplication::fontMetrics().height()*1.5);
+    #endif
     QList<QToolButton *> controlBtns;
     controlBtns << volumeButton << menuButton;
     #ifdef PHONON_FOUND
     controlBtns << streamButton;
     #endif
     foreach (QToolButton *b, controlBtns) {
-        b->setMinimumSize(small ? QSize(22, 22) : QSize(26, 26));
-        b->setMaximumSize(small ? QSize(22, 22) : QSize(26, 26));
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        #ifdef ENABLE_KDE_SUPPORT
-        b->setIconSize(small ? QSize(16, 16) : QSize(22, 22));
-        #else
-        b->setIconSize(small ? QSize(18, 18) : QSize(22, 22));
+        #ifdef CANTATA_ANDROID
+        if (size>22) {
+            b->setMinimumSize(QSize(size+2, size+2));
+            b->setMaximumSize(QSize(size+2, size+2));
+            b->setIconSize(QSize(size, size));
+        } else
         #endif
+        {
+            b->setMinimumSize(small ? QSize(22, 22) : QSize(26, 26));
+            b->setMaximumSize(small ? QSize(22, 22) : QSize(26, 26));
+            #ifdef ENABLE_KDE_SUPPORT
+            b->setIconSize(small ? QSize(16, 16) : QSize(22, 22));
+            #else
+            b->setIconSize(small ? QSize(18, 18) : QSize(22, 22));
+            #endif
+        }
     }
 }
 
@@ -1523,7 +1554,22 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
-#ifndef CANTATA_ANDROID
+#ifdef CANTATA_ANDROID
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    if (event->size().width()>event->size().height()) {
+        if (tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+            tabWidget->ToggleTab(PAGE_PLAYQUEUE, false);
+            if (PAGE_PLAYQUEUE==tabWidget->current_index()) {
+                showTab(PAGE_LIBRARY);
+            }
+        }
+    } else if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+        tabWidget->ToggleTab(PAGE_PLAYQUEUE, true);
+        showTab(PAGE_PLAYQUEUE);
+    }
+}
+#else
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if (trayItem) {

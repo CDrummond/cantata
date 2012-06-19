@@ -27,7 +27,7 @@
 #include "messagebox.h"
 #include "inputdialog.h"
 #include "localize.h"
-#include <QtGui/QIcon>
+#include "icon.h"
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
@@ -49,7 +49,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     #else
     renamePlaylistAction = new QAction(tr("Rename"), this);
     #endif
-    renamePlaylistAction->setIcon(QIcon::fromTheme("edit-rename"));
+    renamePlaylistAction->setIcon(Icon("edit-rename"));
 
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
@@ -98,7 +98,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     menu->addAction(p->removeAction);
     menu->addAction(renamePlaylistAction);
     menuButton->setMenu(menu);
-    menuButton->setIcon(QIcon::fromTheme("system-run"));
+    menuButton->setIcon(Icon("system-run"));
     updateGenres(QSet<QString>());
 }
 

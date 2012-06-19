@@ -33,7 +33,7 @@
 #include "mpdparseutils.h"
 #include "localize.h"
 #include "covers.h"
-#include <QtGui/QIcon>
+#include "icon.h"
 
 static QPixmap *theDefaultIcon=0;
 
@@ -93,8 +93,8 @@ const QPixmap & MusicLibraryItemArtist::cover()
         }
 
         if (m_various) {
-            #ifdef ENABLE_KDE_SUPPORT
-            QIcon icon(QIcon::fromTheme("cantata-view-media-artist-various"));
+            #if defined ENABLE_KDE_SUPPORT || defined CANTATA_ANDROID
+            QIcon icon=Icon("cantata-view-media-artist-various");
             #else
             QIcon icon(MusicLibraryModel::vaIcon());
             #endif
@@ -102,7 +102,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
             m_coverIsDefault=false;
         } else {
             if (!theDefaultIcon) {
-                theDefaultIcon = new QPixmap(QIcon::fromTheme("view-media-artist").pixmap(cSize, cSize)
+                theDefaultIcon = new QPixmap(Icon("view-media-artist").pixmap(cSize, cSize)
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
             m_coverIsDefault = true;

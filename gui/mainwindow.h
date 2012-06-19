@@ -37,7 +37,6 @@
 #include <QtGui/QMenu>
 #include <QtGui/QProxyStyle>
 #include <QtGui/QPixmap>
-#include <QtGui/QResizeEvent>
 #include <QtGui/QMoveEvent>
 #include <QtGui/QToolButton>
 #include <QtCore/QStringList>
@@ -185,10 +184,7 @@ public:
 
     Q_PROPERTY(int volume READ mpdVolume WRITE setMpdVolume)
 
-    static void initButton(QToolButton *btn) {
-        btn->setAutoRaise(true);
-        btn->setIconSize(QSize(16, 16));
-    }
+    static void initButton(QToolButton *btn);
 
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -204,7 +200,9 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
-    #ifndef CANTATA_ANDROID
+    #ifdef CANTATA_ANDROID
+    void resizeEvent(QResizeEvent *event);
+    #else
     void closeEvent(QCloseEvent *event);
     #endif
 

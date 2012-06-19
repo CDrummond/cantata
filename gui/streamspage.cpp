@@ -27,7 +27,7 @@
 #include "mpdconnection.h"
 #include "messagebox.h"
 #include "localize.h"
-#include <QtGui/QIcon>
+#include "icon.h"
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
@@ -60,10 +60,10 @@ StreamsPage::StreamsPage(MainWindow *p)
     addAction = new QAction(tr("Add Stream"), this);
     editAction = new QAction(tr("Edit"), this);
     #endif
-    importAction->setIcon(QIcon::fromTheme("document-import"));
-    exportAction->setIcon(QIcon::fromTheme("document-export"));
-    addAction->setIcon(QIcon::fromTheme("list-add"));
-    editAction->setIcon(QIcon::fromTheme("document-edit"));
+    importAction->setIcon(Icon("document-import"));
+    exportAction->setIcon(Icon("document-export"));
+    addAction->setIcon(Icon("list-add"));
+    editAction->setIcon(Icon("document-edit"));
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -84,7 +84,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     menu->addAction(importAction);
     menu->addAction(exportAction);
     menuButton->setMenu(menu);
-    menuButton->setIcon(QIcon::fromTheme("system-run"));
+    menuButton->setIcon(Icon("system-run"));
     MainWindow::initButton(replacePlayQueue);
 
     view->setTopText(i18n("Streams"));

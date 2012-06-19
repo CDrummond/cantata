@@ -29,6 +29,7 @@
 #include "itemview.h"
 #include "config.h"
 #include "localize.h"
+#include "icon.h"
 #include <QtGui/QStyledItemDelegate>
 #include <QtGui/QApplication>
 #include <QtGui/QFontMetrics>
@@ -289,7 +290,7 @@ public:
                 pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize);
             } else {
                 QPixmap *cover=Covers::self()->get(song, constCoverSize);
-                pix=cover ? *cover : QIcon::fromTheme(stream ? DEFAULT_STREAM_ICON : DEFAULT_ALBUM_ICON).pixmap(constCoverSize, constCoverSize);
+                pix=cover ? *cover : Icon(stream ? DEFAULT_STREAM_ICON : DEFAULT_ALBUM_ICON).pixmap(constCoverSize, constCoverSize);
             }
 
             if (rtl) {

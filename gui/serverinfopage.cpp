@@ -27,6 +27,7 @@
 #include "mainwindow.h"
 #include "mpdparseutils.h"
 #include "localize.h"
+#include "icon.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 #include <KDE/KGlobal>
@@ -46,7 +47,7 @@ ServerInfoPage::ServerInfoPage(MainWindow *p)
     #else
     updateAction = new QAction(tr("Update MPD Information"), this);
     #endif
-    updateAction->setIcon(QIcon::fromTheme("view-refresh"));
+    updateAction->setIcon(Icon("view-refresh"));
     updateInfo->setDefaultAction(updateAction);
     connect(updateAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(getStats()));
     connect(MPDConnection::self(), SIGNAL(statsUpdated(const MPDStats &)), SLOT(statsUpdated(const MPDStats &)));

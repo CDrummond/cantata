@@ -24,6 +24,7 @@
 #include "preferencesdialog.h"
 #include "mainwindow.h"
 #include "settings.h"
+#include "icon.h"
 #ifndef CANTATA_ANDROID
 #include "interfacesettings.h"
 #include "externalsettings.h"
@@ -54,11 +55,23 @@ class ConfigPage : public QWidget
 public:
     ConfigPage(QWidget *p, const QString &title, const QIcon &icon, QWidget *cfg) : QWidget(p)
     {
+        static int size=-1;
+
+        if (-1==size) {
+            size=QApplication::fontMetrics().height();
+            if (size>20) {
+                size=Icon::stdSize(size*1.25);
+            } else {
+                size=22;
+            }
+        }
+
         QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
         QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
         titleLayout->addWidget(new QLabel("<b>"+title+"</b>", this));
         QLabel *icn=new QLabel(this);
-        icn->setPixmap(icon.pixmap(22, 22));
+
+        icn->setPixmap(icon.pixmap(size, size));
         titleLayout->addItem(new QSpacerItem(16, 16, QSizePolicy::Expanding, QSizePolicy::Minimum));
         titleLayout->addWidget(icn);
         layout->addLayout(titleLayout);
@@ -135,29 +148,29 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page->setHeader(i18n("Lyrics Settings"));
     page->setIcon(KIcon("view-media-lyrics"));
     #else
-    widget->AddTab(new ConfigPage(this, tr("Connection Settings"), QIcon::fromTheme("server-database"), server),
-                   QIcon::fromTheme("server-database"), tr("Connection"));
-    widget->AddTab(new ConfigPage(this, tr("Output Settings"), QIcon::fromTheme("speaker"), serverplayback),
-                   QIcon::fromTheme("speaker"), tr("Output"));
-    widget->AddTab(new ConfigPage(this, tr("Playback Settings"), QIcon::fromTheme("media-playback-start"), playback),
-                   QIcon::fromTheme("media-playback-start"), tr("Playback"));
+    widget->AddTab(new ConfigPage(this, tr("Connection Settings"), Icon("server-database"), server),
+                   Icon("server-database"), tr("Connection"));
+    widget->AddTab(new ConfigPage(this, tr("Output Settings"), Icon("speaker"), serverplayback),
+                   Icon("speaker"), tr("Output"));
+    widget->AddTab(new ConfigPage(this, tr("Playback Settings"), Icon("media-playback-start"), playback),
+                   Icon("media-playback-start"), tr("Playback"));
     #ifndef CANTATA_ANDROID
-    widget->AddTab(new ConfigPage(this, tr("Interface Settings"), QIcon::fromTheme("view-choose"), interface),
-                   QIcon::fromTheme("view-choose"), tr("Interface"));
-    widget->AddTab(new ConfigPage(this, tr("External Settings"), QIcon::fromTheme("video-display"), ext),
-                   QIcon::fromTheme("video-display"), tr("External"));
+    widget->AddTab(new ConfigPage(this, tr("Interface Settings"), Icon("view-choose"), interface),
+                   Icon("view-choose"), tr("Interface"));
+    widget->AddTab(new ConfigPage(this, tr("External Settings"), Icon("video-display"), ext),
+                   Icon("video-display"), tr("External"));
     #ifdef TAGLIB_FOUND
-    widget->AddTab(new ConfigPage(this, tr("HTTP Server Settings"), QIcon::fromTheme("network-server"), http),
-                   QIcon::fromTheme("network-server"), tr("HTTP Server"));
+    widget->AddTab(new ConfigPage(this, tr("HTTP Server Settings"), Icon("network-server"), http),
+                   Icon("network-server"), tr("HTTP Server"));
     #endif
     #endif
-    widget->AddTab(new ConfigPage(this, tr("Lyrics Settings"), QIcon::fromTheme("view-media-lyrics"), lyrics),
-                   QIcon::fromTheme("view-media-lyrics"), tr("Lyrics"));
+    widget->AddTab(new ConfigPage(this, tr("Lyrics Settings"), Icon("view-media-lyrics"), lyrics),
+                   Icon("view-media-lyrics"), tr("Lyrics"));
     #ifndef CANTATA_ANDROID
     proxy = new ProxySettings(this);
     proxy->load();
-    widget->AddTab(new ConfigPage(this, tr("Proxy Settings"), QIcon::fromTheme("preferences-system-network"), proxy),
-                   QIcon::fromTheme("preferences-system-network"), tr("Proxy"));
+    widget->AddTab(new ConfigPage(this, tr("Proxy Settings"), Icon("preferences-system-network"), proxy),
+                   Icon("preferences-system-network"), tr("Proxy"));
     #endif
     widget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     #endif

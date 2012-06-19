@@ -36,6 +36,7 @@
 #include "settings.h"
 #include "mpdconnection.h"
 #include "debugtimer.h"
+#include "icon.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(DirViewModel, instance)
@@ -160,9 +161,9 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case Qt::DecorationRole: {
         if (item->type() == DirViewItem::Type_Dir) {
-            return QIcon::fromTheme("inode-directory");
+            return Icon("inode-directory");
         } else if (item->type() == DirViewItem::Type_File) {
-            return QIcon::fromTheme("audio-x-generic");
+            return Icon("audio-x-generic");
         }
         break;
     }

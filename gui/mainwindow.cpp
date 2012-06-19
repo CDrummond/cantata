@@ -330,6 +330,12 @@ static int nextKey(int &key) {
     return k;
 }
 
+#ifdef ENABLE_KDE_SUPPORT
+#define SET_SHORTCUT(ACT, S) ACT->setShortcut(S)
+#else
+#define SET_SHORTCUT(ACT, S) ACT->setShortcut(S); addAction(ACT); ACT->setShortcutContext(Qt::ApplicationShortcut)
+#endif
+
 MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     : KXmlGuiWindow(parent)
@@ -676,32 +682,32 @@ MainWindow::MainWindow(QWidget *parent)
     serverInfoTabAction = new QAction(tr("Server Info"), this);
     #endif // ENABLE_KDE_SUPPORT
 
-    copyTrackInfoAction->setShortcut(QKeySequence::Copy);
-    backAction->setShortcut(QKeySequence::Back);
+    SET_SHORTCUT(copyTrackInfoAction, QKeySequence::Copy);
+    SET_SHORTCUT(backAction, QKeySequence::Back);
 
     int pageKey=Qt::Key_1;
-    showPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Q);
-    libraryTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    albumsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    foldersTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    playlistsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(showPlayQueueAction, Qt::AltModifier+Qt::Key_Q);
+    SET_SHORTCUT(libraryTabAction, Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(albumsTabAction, Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(foldersTabAction, Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(playlistsTabAction, Qt::AltModifier+nextKey(pageKey));
     #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
-    dynamicTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(dynamicTabAction, Qt::AltModifier+nextKey(pageKey));
     #endif
-    streamsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    lyricsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(streamsTabAction, Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(lyricsTabAction, Qt::AltModifier+nextKey(pageKey));
 
     #ifdef ENABLE_WEBKIT
-    infoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(infoTabAction, Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_WEBKIT
-    serverInfoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(serverInfoTabAction, Qt::AltModifier+nextKey(pageKey));
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    SET_SHORTCUT(devicesTabAction, Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
 
-    searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
-    expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
-    collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
+    SET_SHORTCUT(searchAction, Qt::ControlModifier+Qt::Key_F);
+    SET_SHORTCUT(expandAllAction, Qt::ControlModifier+Qt::Key_Plus);
+    SET_SHORTCUT(collapseAllAction, Qt::ControlModifier+Qt::Key_Minus);
     // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
 
@@ -1683,7 +1689,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
                 act->setData(o.id);
                 act->setCheckable(true);
                 act->setChecked(o.enabled);
-                act->setShortcut(Qt::MetaModifier+nextKey(i));
+                SET_SHORTCUT(act, Qt::MetaModifier+nextKey(i));
             }
         } else {
             foreach (const Output &o, outputs) {
@@ -1727,7 +1733,7 @@ void MainWindow::updateConnectionsMenu()
                 act->setCheckable(true);
                 act->setChecked(d.name==current);
                 act->setActionGroup(connectionsGroup);
-                act->setShortcut(Qt::ControlModifier+nextKey(i));
+                SET_SHORTCUT(act, Qt::ControlModifier+nextKey(i));
             }
         }
     }

@@ -29,6 +29,7 @@
 #include "actionitemdelegate.h"
 #include "localize.h"
 #include "icon.h"
+#include "config.h"
 #include <QtGui/QToolButton>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionViewItem>
@@ -43,6 +44,8 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #define SINGLE_CLICK KGlobalSettings::singleClick()
+#elif defined CANTATA_ANDROID
+#define SINGLE_CLICK false
 #else
 #define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
 #endif
@@ -920,8 +923,12 @@ void ItemView::itemClicked(const QModelIndex &index)
         QAction *act=getAction(index);
         if (act) {
             act->trigger();
+            return;
         }
     }
+    #ifdef CANTATA_ANDROID
+    itemActivated(index);
+    #endif
 }
 
 void ItemView::itemActivated(const QModelIndex &index)

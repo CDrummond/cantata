@@ -65,6 +65,8 @@
 40. Add keyboard short-cut for 'back' icon in listviews.
 41. Fix issue (in Qt-builds) where messge widget sometimes (mainly at start-up)
     is not not as wide as the main window.
+42. Provide sub-text for all items in folderview, fixes corruption of list
+    mode.
 
 0.7.1
 -----

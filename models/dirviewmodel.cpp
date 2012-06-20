@@ -190,7 +190,16 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
             #endif
             break;
         case DirViewItem::Type_File:
-        default: return QVariant();
+            if (item->data().endsWith(".asx", Qt::CaseInsensitive) || item->data().endsWith(".m3u", Qt::CaseInsensitive) ||
+                       item->data().endsWith(".pls", Qt::CaseInsensitive) || item->data().endsWith(".xspf", Qt::CaseInsensitive) ) {
+                return i18n("Playlist");
+            } else if (item->data().endsWith(".cue", Qt::CaseInsensitive)) {
+                return i18n("Cue Sheet");
+            } else {
+                return i18n("Audio File");
+            }
+        default:
+            return QVariant();
         }
     default:
         break;

@@ -146,8 +146,12 @@ LyricsPage::LyricsPage(MainWindow *p)
     saveBtn->setDefaultAction(saveAction);
     cancelBtn->setDefaultAction(cancelAction);
     delBtn->setDefaultAction(delAction);
-    text->setZoom(Settings::self()->lyricsZoom());
+    #ifdef CANTATA_ANDROID
+    setBgndImageEnabled(false);
+    #else
     setBgndImageEnabled(Settings::self()->lyricsBgnd());
+    text->setZoom(Settings::self()->lyricsZoom());
+    #endif
     setMode(Mode_Blank);
 }
 

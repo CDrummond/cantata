@@ -155,6 +155,9 @@ Settings::Settings()
     , wallet(0)
     #endif
 {
+    #ifdef CANTATA_ANDROID
+    cfg.setPath(QSettings::NativeFormat, QSettings::UserScope, getConfigDir()+"settings.conf");
+    #endif
     // Only need to read system defaults if we have not previously been configured...
     if (version()<CANTATA_MAKE_VERSION(0, 8, 0)
             ? GET_STRING("connectionHost", QString()).isEmpty()
@@ -932,3 +935,28 @@ void Settings::actualSave()
 {
     save(true);
 }
+
+#ifdef CANTATA_ANDROID
+QString Settings::getConfigDir()
+{
+    QString cfgDir;
+
+    if (cfgDir.isEmpty()) {
+        if (QDir("/mnt/sdcard/cantata").exists()) {
+            cfgDir="/mnt/sdcard/cantata/";
+        } else {
+            if (QDir("/mnt/external1").exists()) { // Xoom's SDCard is here...
+                cfgDir="/mnt/external1/cantata/";
+            } else {
+                cfgDir="/mnt/sdcard/cantata/";
+            }
+        }
+
+        if (!QDir(cfgDir).exists()) {
+            QDir(cfgDir).mkpath(cfgDir);
+        }
+    }
+
+    return cfgDir;
+}
+#endif

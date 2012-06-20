@@ -185,6 +185,10 @@ public:
     bool openWallet();
     #endif
 
+    #ifdef CANTATA_ANDROID
+    QString getConfigDir();
+    #endif
+
 private Q_SLOTS:
     void actualSave();
 

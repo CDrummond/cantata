@@ -26,6 +26,7 @@
 #include "network.h"
 #include "networkaccessmanager.h"
 #include "mpdparseutils.h"
+#include "settings.h"
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QtCore/QDir>
@@ -40,8 +41,10 @@ K_GLOBAL_STATIC(Network, instance)
 
 QString Network::cacheDir(const QString &sub, bool create)
 {
-    #if defined Q_OS_WIN || defined CANTATA_ANDROID
+    #if defined Q_OS_WIN
     QString dir = QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+"/";
+    #elif defined CANTATA_ANDROID
+    QString dir = Settings::self()->getConfigDir()+"/cache/";
     #else
     QString env = qgetenv("XDG_CACHE_HOME");
     QString dir = (env.isEmpty() ? QDir::homePath() + "/.cache" : env) + QLatin1String("/"PACKAGE_NAME"/");

@@ -306,11 +306,11 @@ void FancyTab::setFader(float value)
     tabbar->update();
 }
 
-FancyTabBar::FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, bool onBottom)
+FancyTabBar::FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, Pos pos)
     : QWidget(parent)
     , m_hasBorder(hasBorder)
     , m_showText(text)
-    , m_onBottom(onBottom)
+    , m_pos(pos)
     , m_iconSize(iSize)
 {
 //    setStyle(new QWindowsStyle);
@@ -321,7 +321,7 @@ FancyTabBar::FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, 
 
     QBoxLayout* layout=0;
 
-    if (m_onBottom) {
+    if (Side!=m_pos) {
         setMinimumHeight(tabSizeHint().height());
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         layout=new QHBoxLayout;
@@ -409,7 +409,7 @@ void FancyTab::leaveEvent(QEvent*)
 QSize FancyTabBar::sizeHint() const
 {
     QSize sh = tabSizeHint();
-    return m_onBottom
+    return Side!=m_pos
             ? QSize(sh.width() * m_tabs.count(), sh.height())
             : QSize(sh.width(), sh.height() * m_tabs.count());
 }
@@ -417,7 +417,7 @@ QSize FancyTabBar::sizeHint() const
 QSize FancyTabBar::minimumSizeHint() const
 {
     QSize sh = tabSizeHint();
-    return m_onBottom
+    return Side!=m_pos
             ? QSize(sh.width() * m_tabs.count(), sh.height())
             : QSize(sh.width(), sh.height() * m_tabs.count());
 }
@@ -468,7 +468,7 @@ void FancyTabBar::addTab(const QIcon& icon, const QString& label, const QString 
   } else if (!m_showText) {
       tab->setToolTip(label);
   }
-  qobject_cast<QBoxLayout*>(layout())->insertWidget(layout()->count()-(m_onBottom ? 0 : 1), tab);
+  qobject_cast<QBoxLayout*>(layout())->insertWidget(layout()->count()-(Side==m_pos ? 1 : 0), tab);
 }
 
 void FancyTabBar::addSpacer(int size) {
@@ -487,10 +487,10 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
     QRect rect = tabRect(tabIndex);
     bool selected = (tabIndex == m_currentIndex);
 
-    if (m_onBottom) {
-        rect.adjust(0, 2, 0, 0);
-    } else if (m_hasBorder) {
-        rect.adjust(2, 0, -2, 0);
+    switch (m_pos) {
+    case Side: rect.adjust(2, 0, -2, 0);
+    case Top:  rect.adjust(0, 0, 0, -1); break;
+    case Bot:  rect.adjust(0, 2, 0, 0); break;
     }
     QStyleOptionViewItemV4 styleOpt;
     styleOpt.initFrom(this);
@@ -685,8 +685,9 @@ static void drawFadedLine(QPainter *p, const QRect &r, const QColor &col)
 
 void FancyTabWidget::paintEvent(QPaintEvent*e) {
     QWidget::paintEvent(e);
+    bool onTop=Mode_TopBar==mode_ || Mode_IconOnlyTopBar==mode_;
     bool onBottom=Mode_BottomBar==mode_ || Mode_IconOnlyBottomBar==mode_;
-    if (!drawBorder_ && !onBottom) {
+    if (!drawBorder_ && !onBottom && !onTop) {
         return;
     }
 
@@ -695,6 +696,9 @@ void FancyTabWidget::paintEvent(QPaintEvent*e) {
     if (onBottom) {
         QRect r(rect().x(), side_widget_->rect().y()+(side_widget_->height()-tab_bar_->height()),
                 width(), 1);
+        drawFadedLine(&painter, r, palette().foreground().color());
+    } else if (onTop) {
+        QRect r(rect().x(), tab_bar_->height(), width(), 1);
         drawFadedLine(&painter, r, palette().foreground().color());
     } else {
         QRect rect = side_widget_->rect().adjusted(0, 0, 1, 0);
@@ -772,16 +776,24 @@ void FancyTabWidget::SetMode(Mode mode) {
 //       qDebug() << "Unknown fancy tab mode" << mode;
       // fallthrough
 
+    case Mode_TopBar:
+    case Mode_IconOnlyTopBar:
     case Mode_BottomBar:
     case Mode_IconOnlyBottomBar:
     case Mode_IconOnlySmallSidebar:
     case Mode_IconOnlyLargeSidebar:
     case Mode_LargeSidebar: {
-      FancyTabBar* bar = new FancyTabBar(this, drawBorder_, Mode_LargeSidebar==mode || Mode_BottomBar==mode,
+      FancyTabBar* bar = new FancyTabBar(this, drawBorder_, Mode_LargeSidebar==mode || Mode_BottomBar==mode || Mode_TopBar==mode,
                                          Mode_IconOnlySmallSidebar==mode ? smallIconSize : largeIconSize,
-                                         Mode_BottomBar==mode || Mode_IconOnlyBottomBar==mode);
+                                         Mode_BottomBar==mode || Mode_IconOnlyBottomBar==mode
+                                            ? FancyTabBar::Bot
+                                            : Mode_TopBar==mode || Mode_IconOnlyTopBar==mode
+                                                ? FancyTabBar::Top
+                                                : FancyTabBar::Side);
       if (Mode_BottomBar==mode || Mode_IconOnlyBottomBar==mode) {
         top_layout_->insertWidget(1, bar);
+      } else if (Mode_TopBar==mode || Mode_IconOnlyTopBar==mode) {
+          top_layout_->insertWidget(0, bar);
       } else {
         side_layout_->insertWidget(0, bar);
       }
@@ -880,6 +892,10 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
       if (e->pos().y()<=(side_widget_->pos().y()+(side_widget_->height()-tab_bar_->height()))) {
         return;
       }
+  } else if (Mode_TopBar==mode_ || Mode_IconOnlyTopBar==mode_) {
+      if (e->pos().y()>(side_widget_->pos().y()+tab_bar_->height())) {
+        return;
+      }
   } else if (Mode_IconOnlyTopTabs!=mode_ && Mode_TopTabs!=mode_ && Mode_IconOnlyBotTabs!=mode_ && Mode_BotTabs!=mode_){
       if (Qt::RightToLeft==QApplication::layoutDirection()) {
           if (e->pos().x()<=side_widget_->pos().x()) {
@@ -915,6 +931,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     modeAct=new QAction(i18n("Style"), this);
     AddMenuItem(group, i18n("Large Sidebar"), Mode_LargeSidebar, Mode_IconOnlyLargeSidebar);
     AddMenuItem(group, i18n("Small Sidebar"), Mode_SmallSidebar, Mode_IconOnlySmallSidebar);
+    AddMenuItem(group, i18n("Top Bar"), Mode_TopBar, Mode_IconOnlyTopBar);
     AddMenuItem(group, i18n("Bottom Bar"), Mode_BottomBar, Mode_IconOnlyBottomBar);
     AddMenuItem(group, i18n("Tabs On Side"), Mode_SideTabs, Mode_IconOnlySideTabs);
     AddMenuItem(group, i18n("Tabs On Top"), Mode_TopTabs, Mode_IconOnlyTopTabs);
@@ -923,7 +940,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
     iconOnlyAct->setCheckable(true);
     iconOnlyAct->setChecked(Mode_IconOnlyLargeSidebar==mode_ || Mode_IconOnlySmallSidebar==mode_ ||
                             Mode_IconOnlySideTabs==mode_ || Mode_IconOnlyTopTabs==mode_ ||
-                            Mode_IconOnlyBotTabs==mode_);
+                            Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyTopBar==mode_);
     iconOnlyAct->setData(0);
     connect(iconOnlyAct, SIGNAL(triggered()), this, SLOT(SetMode()));
     modeMenu->addAction(iconOnlyAct);
@@ -975,9 +992,10 @@ void FancyTabWidget::SetMode()
             case Mode_IconOnlyLargeSidebar: SetMode(Mode_LargeSidebar); break;
             case Mode_IconOnlySmallSidebar: SetMode(Mode_SmallSidebar); break;
             case Mode_IconOnlySideTabs:     SetMode(Mode_SideTabs); break;
-
             case Mode_BottomBar:            SetMode(Mode_IconOnlyBottomBar); break;
             case Mode_IconOnlyBottomBar:    SetMode(Mode_BottomBar); break;
+            case Mode_TopBar:               SetMode(Mode_IconOnlyTopBar); break;
+            case Mode_IconOnlyTopBar:       SetMode(Mode_TopBar); break;
             default: break;
             }
         } else {
@@ -991,6 +1009,7 @@ void FancyTabWidget::SetMode()
             case Mode_TopTabs:      SetMode(iconOnly ? Mode_IconOnlyTopTabs : Mode_TopTabs); break;
             case Mode_BotTabs:      SetMode(iconOnly ? Mode_IconOnlyBotTabs : Mode_BotTabs); break;
             case Mode_BottomBar:    SetMode(iconOnly ? Mode_IconOnlyBottomBar : Mode_BottomBar); break;
+            case Mode_TopBar:       SetMode(iconOnly ? Mode_IconOnlyTopBar : Mode_TopBar); break;
             default: break;
             }
         }

@@ -67,6 +67,7 @@
     is not not as wide as the main window.
 42. Provide sub-text for all items in folderview, fixes corruption of list
     mode.
+43. Add option to have sidebar on the bottom.
 
 0.7.1
 -----

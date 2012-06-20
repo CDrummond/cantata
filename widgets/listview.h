@@ -25,6 +25,7 @@
 #define LISTVIEW_H
 
 #include <QtGui/QListView>
+#include "config.h"
 
 class ListView : public QListView
 {
@@ -48,6 +49,11 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     bool itemsSelected(bool);
+
+private:
+    #ifdef CANTATA_ANDROID
+    bool viewportEvent(QEvent *event);
+    #endif
 };
 
 #endif

@@ -38,6 +38,10 @@ ListView::ListView(QWidget *parent)
     setAlternatingRowColors(true);
     setUniformItemSizes(true);
     setAttribute(Qt::WA_MouseTracking);
+    #ifdef CANTATA_ANDROID
+    viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    #endif
 }
 
 ListView::~ListView()
@@ -123,3 +127,30 @@ void ListView::correctSelection()
     setCurrentIndex(currentIndex());
     selectionModel()->select(s, QItemSelectionModel::SelectCurrent);
 }
+
+#ifdef CANTATA_ANDROID
+#include <QtGui/QScrollBar>
+bool ListView::viewportEvent(QEvent *event) {
+    if (QEvent::TouchUpdate==event->type()) {
+        QTouchEvent *te=(QTouchEvent *)event;
+
+        if (1==te->touchPoints().count()) {
+            QTouchEvent::TouchPoint point=te->touchPoints().at(0);
+
+            if (point.pos().y()>-1 && point.pos().y()<height()) {
+                double diff=point.lastPos().y()-point.pos().y();
+
+                if (diff>0.00001 || diff<-0.00001) {
+                    QScrollBar *sb=verticalScrollBar();
+
+                    if (sb) {
+                        sb->setValue(sb->value()+diff);
+                    }
+                }
+            }
+        }
+        return true;
+     }
+     return QListView::viewportEvent(event);
+}
+#endif

@@ -1559,6 +1559,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     setLayout(event->size().width()>event->size().height());
+    if (messageWidget->isVisible()) {
+        messageWidget->adjustSize();
+    }
 }
 
 void MainWindow::setLayout(bool landscape)

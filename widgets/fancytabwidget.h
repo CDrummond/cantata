@@ -103,7 +103,7 @@ class FancyTabBar : public QWidget
     Q_OBJECT
 
 public:
-    FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize );
+    FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, bool onBottom);
     ~FancyTabBar();
 
     void paintEvent(QPaintEvent *event);
@@ -148,8 +148,9 @@ private:
     QList<FancyTab*> m_tabs;
     QTimer m_triggerTimer;
     QSize tabSizeHint() const;
-    bool m_hasBorder;
-    bool m_showText;
+    bool m_hasBorder : 1;
+    bool m_showText : 1;
+    bool m_onBottom : 1;
     int m_iconSize;
 };
 
@@ -178,7 +179,10 @@ public:
     Mode_IconOnlyBotTabs = 7,
     Mode_IconOnlyLargeSidebar = 8,
     Mode_IconOnlySmallSidebar = 9,
-    Mode_IconOnlySideTabs = 10
+    Mode_IconOnlySideTabs = 10,
+
+    Mode_BottomBar = 11,
+    Mode_IconOnlyBottomBar = 12
   };
 
   struct Item {

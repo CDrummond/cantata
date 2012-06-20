@@ -24,6 +24,7 @@
 #include "actionitemdelegate.h"
 #include "itemview.h"
 #include "icon.h"
+#include "config.h"
 #include <QtGui/QPainter>
 #include <QtGui/QAction>
 #include <QtGui/QPixmap>
@@ -39,9 +40,17 @@ void ActionItemDelegate::setup()
     if (height>17) {
         constActionIconSize=Icon::stdSize(((int)(height/4))*4);
         constBorder=constActionIconSize>22 ? 2 : 1;
+        #ifdef CANTATA_ANDROID
+        constActionBorder=constActionIconSize>32 ? 18 : 12;
+        #else
         constActionBorder=constActionIconSize>32 ? 6 : 4;
+        #endif
     } else {
+        #ifdef CANTATA_ANDROID
+        constActionBorder=12;
+        #else
         constActionBorder=4;
+        #endif
         constActionIconSize=16;
         constBorder=1;
     }

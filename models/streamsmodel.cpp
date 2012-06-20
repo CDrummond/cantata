@@ -33,6 +33,7 @@
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 #include "config.h"
+#include "settings.h"
 #if defined Q_OS_WIN || defined CANTATA_ANDROID
 #include <QtGui/QDesktopServices>
 #endif
@@ -54,8 +55,10 @@ static bool iconIsValid(const QString &icon)
 
 static QString configDir()
 {
-    #if defined Q_OS_WIN || defined CANTATA_ANDROID
+    #if defined Q_OS_WIN
     QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/";
+    #elif defined CANTATA_ANDROID
+    QString dir = Settings::self()->getConfigDir();
     #else
     QString env = qgetenv("XDG_CONFIG_HOME");
     QString dir = (env.isEmpty() ? QDir::homePath() + "/.config/" : env) + QLatin1String("/"PACKAGE_NAME"/");

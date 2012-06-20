@@ -103,7 +103,11 @@ class FancyTabBar : public QWidget
     Q_OBJECT
 
 public:
-    FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, bool onBottom);
+    enum Pos {
+        Side, Top, Bot
+    };
+
+    FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, Pos pos);
     ~FancyTabBar();
 
     void paintEvent(QPaintEvent *event);
@@ -139,8 +143,6 @@ signals:
 public slots:
     void emitCurrentIndex();
 
-public:
-
 private:
     static const int m_rounding;
     static const int m_textPadding;
@@ -150,7 +152,7 @@ private:
     QSize tabSizeHint() const;
     bool m_hasBorder : 1;
     bool m_showText : 1;
-    bool m_onBottom : 1;
+    Pos m_pos : 2;
     int m_iconSize;
 };
 
@@ -182,7 +184,10 @@ public:
     Mode_IconOnlySideTabs = 10,
 
     Mode_BottomBar = 11,
-    Mode_IconOnlyBottomBar = 12
+    Mode_IconOnlyBottomBar = 12,
+
+    Mode_TopBar = 13,
+    Mode_IconOnlyTopBar = 14
   };
 
   struct Item {

@@ -13,7 +13,6 @@ SOURCES += \
     ../gui/settings.cpp \
     ../gui/covers.cpp \
     ../gui/interfacesettings.cpp \
-    ../gui/externalsettings.cpp \
     ../gui/playbacksettings.cpp \
     ../gui/serverplaybacksettings.cpp \
     ../gui/serversettings.cpp \
@@ -97,7 +96,6 @@ HEADERS+= \
     ../gui/serversettings.h \
     ../gui/preferencesdialog.h \
     ../gui/interfacesettings.h \
-    ../gui/externalsettings.h \
     ../models/musiclibrarymodel.h \
     ../models/musiclibraryproxymodel.h \
     ../models/playlistsmodel.h \
@@ -147,7 +145,6 @@ FORMS+= \
     ../gui/streamspage.ui \
     ../gui/serverinfopage.ui \
     ../gui/interfacesettings.ui \
-    ../gui/externalsettings.ui \
     ../gui/playbacksettings.ui \
     ../gui/serverplaybacksettings.ui \
     ../gui/serversettings.ui \

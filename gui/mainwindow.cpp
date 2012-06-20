@@ -614,7 +614,7 @@ MainWindow::MainWindow(QWidget *parent)
     collapseAllAction->setText(i18n("Collapse All"));
     #else
     quitAction = new QAction(tr("&Quit"), this);
-    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     quitAction->setIcon(Icon("application-exit"));
     quitAction->setShortcut(QKeySequence::Quit);
     #ifndef CANTATA_ANDROID
@@ -1155,61 +1155,61 @@ MainWindow::MainWindow(QWidget *parent)
     connect(searchPlayQueueLineEdit, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
     connect(searchPlayQueueLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchPlayQueue()));
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
-    connect(removeAction, SIGNAL(activated()), this, SLOT(removeItems()));
-    connect(addToPlayQueueAction, SIGNAL(activated()), this, SLOT(addToPlayQueue()));
-    connect(replacePlayQueueAction, SIGNAL(activated()), this, SLOT(replacePlayQueue()));
-    connect(removeFromPlayQueueAction, SIGNAL(activated()), this, SLOT(removeFromPlayQueue()));
-    connect(clearPlayQueueAction, SIGNAL(activated()), searchPlayQueueLineEdit, SLOT(clear()));
-    connect(clearPlayQueueAction, SIGNAL(activated()), MPDConnection::self(), SLOT(clear()));
-    connect(copyTrackInfoAction, SIGNAL(activated()), this, SLOT(copyTrackInfo()));
-    connect(cropPlayQueueAction, SIGNAL(activated()), this, SLOT(cropPlayQueue()));
-    connect(shufflePlayQueueAction, SIGNAL(activated()), MPDConnection::self(), SLOT(shuffle()));
+    connect(removeAction, SIGNAL(triggered(bool)), this, SLOT(removeItems()));
+    connect(addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
+    connect(replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
+    connect(removeFromPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
+    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), searchPlayQueueLineEdit, SLOT(clear()));
+    connect(clearPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(clear()));
+    connect(copyTrackInfoAction, SIGNAL(triggered(bool)), this, SLOT(copyTrackInfo()));
+    connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
+    connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
     #ifndef CANTATA_ANDROID
-    connect(expandInterfaceAction, SIGNAL(activated()), this, SLOT(togglePlayQueue()));
+    connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(togglePlayQueue()));
     #endif
     connect(positionSlider, SIGNAL(valueChanged(int)), this, SLOT(updatePosition()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
-//     connect(createDataCdAction, SIGNAL(activated()), this, SLOT(createDataCd()));
-//     connect(createAudioCdAction, SIGNAL(activated()), this, SLOT(createAudioCd()));
+//     connect(createDataCdAction, SIGNAL(triggered(bool)), this, SLOT(createDataCd()));
+//     connect(createAudioCdAction, SIGNAL(triggered(bool)), this, SLOT(createAudioCd()));
     #ifdef TAGLIB_FOUND
-    connect(editTagsAction, SIGNAL(activated()), this, SLOT(editTags()));
-    connect(editPlayQueueTagsAction, SIGNAL(activated()), this, SLOT(editPlayQueueTags()));
-    connect(organiseFilesAction, SIGNAL(triggered()), SLOT(organiseFiles()));
+    connect(editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
+    connect(editPlayQueueTagsAction, SIGNAL(triggered(bool)), this, SLOT(editPlayQueueTags()));
+    connect(organiseFilesAction, SIGNAL(triggered(bool)), SLOT(organiseFiles()));
     #endif
-    connect(locateTrackAction, SIGNAL(activated()), this, SLOT(locateTrack()));
-    connect(showPlayQueueAction, SIGNAL(activated()), this, SLOT(showPlayQueue()));
-    connect(libraryTabAction, SIGNAL(activated()), this, SLOT(showLibraryTab()));
-    connect(albumsTabAction, SIGNAL(activated()), this, SLOT(showAlbumsTab()));
-    connect(foldersTabAction, SIGNAL(activated()), this, SLOT(showFoldersTab()));
-    connect(playlistsTabAction, SIGNAL(activated()), this, SLOT(showPlaylistsTab()));
+    connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
+    connect(showPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(showPlayQueue()));
+    connect(libraryTabAction, SIGNAL(triggered(bool)), this, SLOT(showLibraryTab()));
+    connect(albumsTabAction, SIGNAL(triggered(bool)), this, SLOT(showAlbumsTab()));
+    connect(foldersTabAction, SIGNAL(triggered(bool)), this, SLOT(showFoldersTab()));
+    connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
     #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
-    connect(dynamicTabAction, SIGNAL(activated()), this, SLOT(showDynamicTab()));
+    connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
     #endif
-    connect(lyricsTabAction, SIGNAL(activated()), this, SLOT(showLyricsTab()));
-    connect(streamsTabAction, SIGNAL(activated()), this, SLOT(showStreamsTab()));
+    connect(lyricsTabAction, SIGNAL(triggered(bool)), this, SLOT(showLyricsTab()));
+    connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
     #ifdef ENABLE_WEBKIT
-    connect(infoTabAction, SIGNAL(activated()), this, SLOT(showInfoTab()));
+    connect(infoTabAction, SIGNAL(triggered(bool)), this, SLOT(showInfoTab()));
     #endif
-    connect(serverInfoTabAction, SIGNAL(activated()), this, SLOT(showServerInfoTab()));
-    connect(searchAction, SIGNAL(activated()), this, SLOT(focusSearch()));
-    connect(expandAllAction, SIGNAL(activated()), this, SLOT(expandAll()));
-    connect(collapseAllAction, SIGNAL(activated()), this, SLOT(collapseAll()));
+    connect(serverInfoTabAction, SIGNAL(triggered(bool)), this, SLOT(showServerInfoTab()));
+    connect(searchAction, SIGNAL(triggered(bool)), this, SLOT(focusSearch()));
+    connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
+    connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
     #ifdef ENABLE_DEVICES_SUPPORT
-    connect(devicesTabAction, SIGNAL(activated()), this, SLOT(showDevicesTab()));
+    connect(devicesTabAction, SIGNAL(triggered(bool)), this, SLOT(showDevicesTab()));
     connect(DevicesModel::self(), SIGNAL(addToDevice(const QString &)), this, SLOT(addToDevice(const QString &)));
     connect(DevicesModel::self(), SIGNAL(error(const QString &)), this, SLOT(showError(const QString &)));
     connect(libraryPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(deleteSongsAction, SIGNAL(triggered()), SLOT(deleteSongs()));
+    connect(deleteSongsAction, SIGNAL(triggered(bool)), SLOT(deleteSongs()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    connect(replaygainAction, SIGNAL(triggered()), SLOT(replayGain()));
+    connect(replaygainAction, SIGNAL(triggered(bool)), SLOT(replayGain()));
     #endif
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));

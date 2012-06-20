@@ -915,9 +915,13 @@ MainWindow::MainWindow(QWidget *parent)
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
 
+    #ifdef CANTATA_ANDROID
+    tabWidget->SetMode(FancyTabWidget::Mode_IconOnlyLargeSidebar);
+    tabWidget->ToggleTab(PAGE_PLAYQUEUE, false);
+    showTab(PAGE_LIBRARY);
+    setLayout(width()>height());
+    #else
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
-
-    #ifndef CANTATA_ANDROID
     expandInterfaceAction->setCheckable(true);
     #endif
     randomPlayQueueAction->setCheckable(true);
@@ -990,9 +994,9 @@ MainWindow::MainWindow(QWidget *parent)
     MusicLibraryItemAlbum::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->libraryCoverSize());
     MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
-    tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
 
     #ifndef CANTATA_ANDROID
+    tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
     setupTrayIcon();
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
@@ -1291,14 +1295,12 @@ MainWindow::~MainWindow()
     #ifndef CANTATA_ANDROID
     Settings::self()->saveMainWindowSize(splitter->isVisible() ? size() : expandedSize);
     Settings::self()->saveMainWindowCollapsedSize(splitter->isVisible() ? collapsedSize : size());
-    #endif
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->unmountRemote();
     #endif
     #ifdef PHONON_FOUND
     Settings::self()->savePlayStream(streamPlayAction->isChecked());
     #endif
-    #ifndef CANTATA_ANDROID
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
         Settings::self()->saveSplitterState(splitter->saveState());
@@ -1308,8 +1310,6 @@ MainWindow::~MainWindow()
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     Settings::self()->saveSmallPlaybackButtons(smallPlaybackButtonsAction->isChecked());
     Settings::self()->saveSmallControlButtons(smallControlButtonsAction->isChecked());
-    #endif
-
     playQueue->saveHeader();
     QStringList hiddenPages;
     for (int i=0; i<tabWidget->count(); ++i) {
@@ -1321,6 +1321,7 @@ MainWindow::~MainWindow()
         }
     }
     Settings::self()->saveHiddenPages(hiddenPages);
+    #endif // CANTATA_ANDROID
     streamsPage->save();
     lyricsPage->saveSettings();
     #ifdef ENABLE_WEBKIT
@@ -1557,18 +1558,26 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 #ifdef CANTATA_ANDROID
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    if (event->size().width()>event->size().height()) {
+    setLayout(event->size().width()>event->size().height());
+}
+
+void MainWindow::setLayout(bool landscape)
+{
+    if (landscape) {
         if (tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
             tabWidget->ToggleTab(PAGE_PLAYQUEUE, false);
+            tabWidget->SetMode(FancyTabWidget::Mode_IconOnlyLargeSidebar);
             if (PAGE_PLAYQUEUE==tabWidget->current_index()) {
                 showTab(PAGE_LIBRARY);
             }
         }
     } else if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+        tabWidget->SetMode(FancyTabWidget::Mode_IconOnlyBottomBar);
         tabWidget->ToggleTab(PAGE_PLAYQUEUE, true);
         showTab(PAGE_PLAYQUEUE);
     }
 }
+
 #else
 void MainWindow::closeEvent(QCloseEvent *event)
 {

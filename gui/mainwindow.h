@@ -202,6 +202,7 @@ protected:
     void keyPressEvent(QKeyEvent *event);
     #ifdef CANTATA_ANDROID
     void resizeEvent(QResizeEvent *event);
+    void setLayout(bool landscape);
     #else
     void closeEvent(QCloseEvent *event);
     #endif

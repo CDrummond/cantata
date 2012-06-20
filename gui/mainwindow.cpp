@@ -1220,20 +1220,25 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
 
-    #ifndef CANTATA_ANDROID
     if (!playQueueInSidebar) {
         QByteArray state=Settings::self()->splitterState();
 
         if (state.isEmpty()) {
+
             QList<int> sizes;
+            #ifdef CANTATA_ANDROID
+            sizes << 250 << 300;
+            #else
             sizes << 250 << 500;
+            #endif
             splitter->setSizes(sizes);
+            #ifndef CANTATA_ANDROID
             resize(800, 600);
+            #endif
         } else {
             splitter->restoreState(Settings::self()->splitterState());
         }
     }
-    #endif
 
     playQueueItemsSelected(false);
     playQueue->setFocus();
@@ -1302,9 +1307,6 @@ MainWindow::~MainWindow()
     Settings::self()->savePlayStream(streamPlayAction->isChecked());
     #endif
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
-    if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
-        Settings::self()->saveSplitterState(splitter->saveState());
-    }
     Settings::self()->saveSplitterAutoHide(autoHideSplitterAction->isChecked());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
@@ -1322,6 +1324,9 @@ MainWindow::~MainWindow()
     }
     Settings::self()->saveHiddenPages(hiddenPages);
     #endif // CANTATA_ANDROID
+    if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+        Settings::self()->saveSplitterState(splitter->saveState());
+    }
     streamsPage->save();
     lyricsPage->saveSettings();
     #ifdef ENABLE_WEBKIT

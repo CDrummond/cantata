@@ -134,12 +134,12 @@ LyricsPage::LyricsPage(MainWindow *p)
     connect(saveAction, SIGNAL(triggered()), SLOT(save()));
     connect(cancelAction, SIGNAL(triggered()), SLOT(cancel()));
     connect(delAction, SIGNAL(triggered()), SLOT(del()));
-    MainWindow::initButton(refreshBtn);
-    MainWindow::initButton(searchBtn);
-    MainWindow::initButton(editBtn);
-    MainWindow::initButton(saveBtn);
-    MainWindow::initButton(cancelBtn);
-    MainWindow::initButton(delBtn);
+    Icon::init(refreshBtn);
+    Icon::init(searchBtn);
+    Icon::init(editBtn);
+    Icon::init(saveBtn);
+    Icon::init(cancelBtn);
+    Icon::init(delBtn);
     refreshBtn->setDefaultAction(refreshAction);
     searchBtn->setDefaultAction(searchAction);
     editBtn->setDefaultAction(editAction);

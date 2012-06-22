@@ -80,7 +80,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
     connect(toggleDeviceAction, SIGNAL(triggered()), this, SLOT(toggleDevice()));
     #endif
-    MainWindow::initButton(copyToLibraryButton);
+    Icon::init(copyToLibraryButton);
     copyToLibraryButton->setEnabled(false);
     syncAction->setEnabled(false);
     view->addAction(copyAction);
@@ -109,7 +109,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(configureAction, SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshDevice()));
-    MainWindow::initButton(menuButton);
+    Icon::init(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(configureAction);

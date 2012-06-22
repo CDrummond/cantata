@@ -25,31 +25,34 @@
 #define ICON_H
 
 #ifdef ENABLE_KDE_SUPPORT
+
 #include <KDE/KIcon>
 #define Icon(X) KIcon(X)
 #define MediaIcon(X) KIcon(X)
-namespace Icon
-{
-    extern int stdSize(int s);
-}
+
 #elif defined CANTATA_ANDROID
+
 #include <QtGui/QIcon>
 #define Icon(X) QIcon(QLatin1String(":/")+(X))
 #define MediaIcon(X) Icon(X)
-namespace Icon
-{
-    extern int stdSize(int s);
-}
+
 #else
+
 #include <QtGui/QIcon>
 #define Icon(X) QIcon::fromTheme(X)
 #define MediaIcon(X) Icon::getMediaIcon(X)
+#endif
+
+class QToolButton;
+
 namespace Icon
 {
+    extern int stdSize(int s);
+    extern void init(QToolButton *btn, bool setFlat=true);
+    #if !defined ENABLE_KDE_SUPPORT && !defined CANTATA_ANDROID
     extern QIcon getMediaIcon(const char *name);
     extern void setupIconTheme();
-    extern int stdSize(int s);
+    #endif
 }
-#endif
 
 #endif

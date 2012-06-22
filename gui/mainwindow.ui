@@ -40,7 +40,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="controlLayout">
      <property name="spacing">
       <number>0</number>
      </property>

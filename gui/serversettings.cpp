@@ -49,8 +49,10 @@ ServerSettings::ServerSettings(QWidget *p)
     connect(saveButton, SIGNAL(clicked(bool)), SLOT(saveAs()));
     connect(removeButton, SIGNAL(clicked(bool)), SLOT(remove()));
     connect(connectButton, SIGNAL(clicked(bool)), SLOT(toggleConnection()));
+    #ifndef CANTATA_ANDROID
     saveButton->setIcon(Icon("document-save-as"));
     removeButton->setIcon(Icon("edit-delete"));
+    #endif
 
     #if defined Q_OS_WIN || defined CANTATA_ANDROID
     hostLabel->setText(i18n("Host:"));
@@ -188,7 +190,9 @@ void ServerSettings::enableWidgets(bool e)
 //     passwordLabel->setEnabled(e);
 //     dirLabel->setEnabled(e);
     connectButton->setText(e ? i18n("Connect") : i18n("Disconnect"));
+    #ifndef CANTATA_ANDROID
     connectButton->setIcon(Icon(e ? "network-connect" : "network-disconnect"));
+    #endif
     removeButton->setEnabled(e);
 //     saveButton->setEnabled(e);
 }

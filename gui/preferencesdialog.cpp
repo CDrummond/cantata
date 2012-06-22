@@ -69,11 +69,15 @@ public:
         QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
         QBoxLayout *titleLayout=new QBoxLayout(QBoxLayout::LeftToRight, 0);
         titleLayout->addWidget(new QLabel("<b>"+title+"</b>", this));
-        QLabel *icn=new QLabel(this);
-
-        icn->setPixmap(icon.pixmap(size, size));
         titleLayout->addItem(new QSpacerItem(16, 16, QSizePolicy::Expanding, QSizePolicy::Minimum));
+
+        #ifdef CANTATA_ANDROID
+        Q_UNUSED(icon)
+        #else
+        QLabel *icn=new QLabel(this);
+        icn->setPixmap(icon.pixmap(size, size))
         titleLayout->addWidget(icn);
+        #endif
         layout->addLayout(titleLayout);
         layout->addItem(new QSpacerItem(8, 8, QSizePolicy::Fixed, QSizePolicy::Fixed));
         layout->addWidget(cfg);
@@ -90,7 +94,11 @@ public:
 PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     : Dialog(parent)
 {
+    #ifndef CANTATA_ANDROID
     setButtons(Ok|Apply|Cancel);
+    #else
+    setButtons(Ok|Cancel);
+    #endif
 
     #ifdef ENABLE_KDE_SUPPORT
     KPageWidget *widget = new KPageWidget(this);
@@ -172,11 +180,17 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     widget->AddTab(new ConfigPage(this, tr("Proxy Settings"), Icon("preferences-system-network"), proxy),
                    Icon("preferences-system-network"), tr("Proxy"));
     #endif
+    #ifdef CANTATA_ANDROID
+    widget->SetMode(FancyTabWidget::Mode_IconOnlyTopBar);
+    #else
     widget->SetMode(FancyTabWidget::Mode_LargeSidebar);
+    #endif
     #endif
     setCaption(i18n("Configure"));
     setMainWidget(widget);
+    #ifndef CANTATA_ANDROID
     resize(600, 500);
+    #endif
     connect(server, SIGNAL(connectTo(const MPDConnectionDetails &)), SIGNAL(connectTo(const MPDConnectionDetails &)));
     connect(server, SIGNAL(disconnectFromMpd()), MPDConnection::self(), SLOT(disconnectMpd()));
 }

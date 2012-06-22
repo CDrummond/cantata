@@ -292,7 +292,7 @@ private Q_SLOTS:
     void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
     #endif
     void cropPlayQueue();
-    void updatePlayQueueStats(int artists, int albums, int songs, quint32 time);
+    void updatePlayQueueStats(int songs, quint32 time);
     void copyTrackInfo();
     #ifndef CANTATA_ANDROID
     void togglePlayQueue();

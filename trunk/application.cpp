@@ -140,16 +140,14 @@ bool Application::start()
     QFile cssFile("://style.css");
     if (cssFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
         int height=fontMetrics().height();
-        int quartHeight=height/4;
-        int halfHeight=height/2;
         QTextStream in(&cssFile);
         QString css;
         while (!in.atEnd()) {
             css+=in.readLine();
         }
         setStyleSheet(css
-                        .replace("QUARTER_HEIGHT", QString::number(quartHeight))
-                        .replace("HALF_HEIGHT", QString::number(halfHeight))
+                        .replace("QUARTER_HEIGHT", QString::number(height/4))
+                        .replace("HALF_HEIGHT", QString::number(height/2))
                         .replace("HIGHLIGHT_LIGHTER", pal.color(QPalette::Active, QPalette::Highlight).light(50).name())
                         .replace("HIGHLIGHT_DARKER", pal.color(QPalette::Active, QPalette::Highlight).dark(50).name())
                         .replace("HIGHLIGHT", pal.color(QPalette::Active, QPalette::Highlight).name()));

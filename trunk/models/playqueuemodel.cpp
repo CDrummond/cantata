@@ -663,8 +663,6 @@ void PlayQueueModel::update(const QList<Song> &songList)
         ids=newIds;
         endResetModel();
     } else {
-        QSet<QString> artists;
-        QSet<QString> albums;
         quint32 time = 0;
 
         QSet<qint32> removed=ids-newIds;
@@ -704,30 +702,24 @@ void PlayQueueModel::update(const QList<Song> &songList)
                 }
             }
 
-            artists.insert(s.artist);
-            albums.insert(s.album);
             time += s.time;
         }
 
         ids=newIds;
-        emit statsUpdated(artists.size(), albums.size(), songs.size(), time);
+        emit statsUpdated(songs.size(), time);
     }
 }
 
 void PlayQueueModel::stats()
 {
-    QSet<QString> artists;
-    QSet<QString> albums;
     quint32 time = 0;
 
     //Loop over all songs
     foreach(const Song &song, songs) {
-        artists.insert(song.artist);
-        albums.insert(song.album);
         time += song.time;
     }
 
-    emit statsUpdated(artists.size(), albums.size(), songs.size(), time);
+    emit statsUpdated(songs.size(), time);
 }
 
 QSet<qint32>  PlayQueueModel::getSongIdSet()

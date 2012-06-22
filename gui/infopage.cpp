@@ -45,6 +45,7 @@
 #include "network.h"
 #include "mainwindow.h"
 #include "settings.h"
+#include "icon.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 #define WEBVIEW_BASE KWebView

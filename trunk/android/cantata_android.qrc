@@ -1,5 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+<file>theme</file>
+<file>style.css</file>
 <file alias="cantata.svg">../icons/cantata.svg</file>
 <file alias="cantata-view-media-artist-various">icons/hisc-action-cantata-view-media-artist-various.svg</file>
 <file alias="cantata-view-media-library">icons/hisc-action-cantata-view-media-library.svg</file>

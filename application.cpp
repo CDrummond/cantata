@@ -102,6 +102,9 @@ Application::~Application()
 }
 
 #ifdef CANTATA_ANDROID
+#include <QtCore/QTextStream>
+#include <QtCore/QFile>
+
 static void setPal(QPalette &pal, QPalette::ColorGroup cg, const QStringList &parts)
 {
     for(int i=0; i<parts.length(); ++i) {
@@ -113,9 +116,44 @@ static void setPal(QPalette &pal, QPalette::ColorGroup cg, const QStringList &pa
 bool Application::start()
 {
     #ifdef CANTATA_ANDROID
-    //QFont f(font());
-    //f.setPointSizeF((f.pixelSize()/2.0));
-    //setFont(f);
+    QPalette pal=palette();
+
+    QFile f("://theme");
+    if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        QTextStream in(&f);
+        while (!in.atEnd()) {
+            QString line=in.readLine();
+            if (line.startsWith("font=")) {
+                QFont fnt(font());
+                fnt.setPointSize(line.mid(5).toInt());
+                setFont(fnt);
+            } else if (line.startsWith("active=")) {
+                setPal(pal, QPalette::Active, line.mid(7).split(", ", QString::SkipEmptyParts));
+                setPal(pal, QPalette::Inactive, line.mid(7).split(", ", QString::SkipEmptyParts));
+            } else if (line.startsWith("disabled=")) {
+                setPal(pal, QPalette::Disabled, line.mid(9).split(", ", QString::SkipEmptyParts));
+            }
+        }
+    }
+    setPalette(pal);
+
+    QFile cssFile("://style.css");
+    if (cssFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        int height=fontMetrics().height();
+        int quartHeight=height/4;
+        int halfHeight=height/2;
+        QTextStream in(&cssFile);
+        QString css;
+        while (!in.atEnd()) {
+            css+=in.readLine();
+        }
+        setStyleSheet(css
+                        .replace("QUARTER_HEIGHT", QString::number(quartHeight))
+                        .replace("HALF_HEIGHT", QString::number(halfHeight))
+                        .replace("HIGHLIGHT_LIGHTER", pal.color(QPalette::Active, QPalette::Highlight).light(50).name())
+                        .replace("HIGHLIGHT_DARKER", pal.color(QPalette::Active, QPalette::Highlight).dark(50).name())
+                        .replace("HIGHLIGHT", pal.color(QPalette::Active, QPalette::Highlight).name()));
+    }
     #else
     if (isRunning()) {
         #ifdef TAGLIB_FOUND

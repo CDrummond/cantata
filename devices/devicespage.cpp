@@ -29,6 +29,7 @@
 #include "settings.h"
 #include "messagebox.h"
 #include "localize.h"
+#include "icon.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT

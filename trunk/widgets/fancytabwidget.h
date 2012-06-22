@@ -136,6 +136,7 @@ public:
     QRect tabRect(int index) const;
     bool showText() const { return m_showText; }
     int iconSize() const { return m_iconSize; }
+    QSize tabSizeHint() const;
 
 signals:
     void currentChanged(int);
@@ -149,7 +150,6 @@ private:
     int m_currentIndex;
     QList<FancyTab*> m_tabs;
     QTimer m_triggerTimer;
-    QSize tabSizeHint() const;
     bool m_hasBorder : 1;
     bool m_showText : 1;
     Pos m_pos : 2;
@@ -228,6 +228,8 @@ public:
 
   void addMenuAction(QAction *a) { removeMenuAction(a); otherActions.append(a); }
   void removeMenuAction(QAction *a) { otherActions.removeAll(a); }
+
+  QSize tabSize() const;
 
 public slots:
   void SetCurrentIndex(int index);

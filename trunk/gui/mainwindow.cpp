@@ -327,26 +327,6 @@ static int nextKey(int &key) {
 #define SET_SHORTCUT(ACT, S) ACT->setShortcut(S); addAction(ACT); ACT->setShortcutContext(Qt::ApplicationShortcut)
 #endif
 
-void MainWindow::initButton(QToolButton *btn)
-{
-    #ifdef CANTATA_ANDROID
-    static int size=-1;
-
-    if (-1==size) {
-        size=QApplication::fontMetrics().height();
-        if (size>18) {
-            size=Icon::stdSize(size*1.25);
-        } else {
-            size=16;
-        }
-    }
-    btn->setIconSize(QSize(size, size));
-    #else
-    btn->setIconSize(QSize(16, 16));
-    #endif
-    btn->setAutoRaise(true);
-}
-
 MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     : KXmlGuiWindow(parent)
@@ -941,7 +921,7 @@ MainWindow::MainWindow(QWidget *parent)
     btns << repeatPushButton << singlePushButton << randomPushButton << savePlayQueuePushButton << removeAllFromPlayQueuePushButton << consumePushButton;
 
     foreach (QToolButton *b, btns) {
-        initButton(b);
+        Icon::init(b);
     }
 
     #ifndef CANTATA_ANDROID
@@ -1220,25 +1200,23 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
 
+    #ifdef CANTATA_ANDROID
+    tabWidget->setMinimumWidth(tabWidget->tabSize().width()+playPauseTrackButton->width()+qApp->fontMetrics().width(QLatin1String("Various Artists 123456789")));
+    controlLayout->setSpacing(playPauseTrackButton->width()*0.1);
+    #else
     if (!playQueueInSidebar) {
         QByteArray state=Settings::self()->splitterState();
 
         if (state.isEmpty()) {
 
-            QList<int> sizes;
-            #ifdef CANTATA_ANDROID
-            sizes << 250 << 300;
-            #else
-            sizes << 250 << 500;
-            #endif
+            QList<int> sizes=QList<int>() << 250 << 500;
             splitter->setSizes(sizes);
-            #ifndef CANTATA_ANDROID
             resize(800, 600);
-            #endif
         } else {
             splitter->restoreState(Settings::self()->splitterState());
         }
     }
+    #endif
 
     playQueueItemsSelected(false);
     playQueue->setFocus();
@@ -1306,6 +1284,9 @@ MainWindow::~MainWindow()
     #ifdef PHONON_FOUND
     Settings::self()->savePlayStream(streamPlayAction->isChecked());
     #endif
+    if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+        Settings::self()->saveSplitterState(splitter->saveState());
+    }
     Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     Settings::self()->saveSplitterAutoHide(autoHideSplitterAction->isChecked());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
@@ -1324,9 +1305,6 @@ MainWindow::~MainWindow()
     }
     Settings::self()->saveHiddenPages(hiddenPages);
     #endif // CANTATA_ANDROID
-    if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
-        Settings::self()->saveSplitterState(splitter->saveState());
-    }
     streamsPage->save();
     lyricsPage->saveSettings();
     #ifdef ENABLE_WEBKIT
@@ -1573,16 +1551,21 @@ void MainWindow::setLayout(bool landscape)
 {
     if (landscape) {
         if (tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+            coverWidget->setVisible(true);
             tabWidget->ToggleTab(PAGE_PLAYQUEUE, false);
             tabWidget->SetMode(FancyTabWidget::Mode_IconOnlyLargeSidebar);
             if (PAGE_PLAYQUEUE==tabWidget->current_index()) {
                 showTab(PAGE_LIBRARY);
             }
+            tabWidget->adjustSize();
+            playQueueWidget->adjustSize();
         }
     } else if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+        coverWidget->setVisible(false);
         tabWidget->SetMode(FancyTabWidget::Mode_IconOnlyBottomBar);
         tabWidget->ToggleTab(PAGE_PLAYQUEUE, true);
         showTab(PAGE_PLAYQUEUE);
+        tabWidget->adjustSize();
     }
 }
 

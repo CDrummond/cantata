@@ -735,6 +735,14 @@ int FancyTabWidget::visibleCount() const {
     return c;
 }
 
+QSize FancyTabWidget::tabSize() const
+{
+    if (FancyTabBar *bar = qobject_cast<FancyTabBar*>(tab_bar_)) {
+        return bar->tabSizeHint();
+    }
+    return QSize();
+}
+
 void FancyTabWidget::SetCurrentIndex(int idx) {
   if (!isEnabled(idx)) {
     return;

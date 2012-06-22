@@ -56,8 +56,8 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
 
-    MainWindow::initButton(replacePlayQueue);
-    MainWindow::initButton(libraryUpdate);
+    Icon::init(replacePlayQueue);
+    Icon::init(libraryUpdate);
 
     view->allowGroupedView();
     view->setTopText(i18n("Playlists"));
@@ -90,7 +90,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(renamePlaylistAction, SIGNAL(triggered(bool)), this, SLOT(renamePlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
-    MainWindow::initButton(menuButton);
+    Icon::init(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(p->addToPlayQueueAction);

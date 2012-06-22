@@ -65,11 +65,11 @@ DynamicPage::DynamicPage(MainWindow *p)
     startAction->setIcon(QIcon::fromTheme("media-playback-start"));
     stopAction->setIcon(QIcon::fromTheme("process-stop"));
 
-    MainWindow::initButton(addBtn);
-    MainWindow::initButton(editBtn);
-    MainWindow::initButton(removeBtn);
-    MainWindow::initButton(startBtn);
-    MainWindow::initButton(stopBtn);
+    Icon::init(addBtn);
+    Icon::init(editBtn);
+    Icon::init(removeBtn);
+    Icon::init(startBtn);
+    Icon::init(stopBtn);
     addBtn->setDefaultAction(addAction);
     editBtn->setDefaultAction(editAction);
     removeBtn->setDefaultAction(removeAction);

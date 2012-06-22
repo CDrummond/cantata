@@ -25,7 +25,6 @@
 <file alias="document-save-as">icons/oxygen/document-save-as.svg</file>
 <file alias="document-save">icons/oxygen/document-save.svg</file>
 <file alias="edit-clear-list">icons/oxygen/edit-clear-list.svg</file>
-<file alias="edit-clear-locationbar-ltr">icons/oxygen/edit-clear-locationbar-ltr.svg</file>
 <file alias="edit-delete">icons/oxygen/edit-delete.svg</file>
 <file alias="edit-find">icons/oxygen/edit-find.svg</file>
 <file alias="edit-rename">icons/oxygen/edit-rename.svg</file>

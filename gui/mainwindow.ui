@@ -62,26 +62,11 @@
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="SqueezedTextLabel" name="trackLabel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>128</width>
-         <height>0</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <weight>75</weight>
          <bold>true</bold>
         </font>
-       </property>
-       <property name="text">
-        <string>SqueezedTextLabel</string>
        </property>
       </widget>
      </item>

@@ -32,6 +32,7 @@
 
 #include "lineedit.h"
 #include "icon.h"
+#include "config.h"
 #include <QtGui/QToolButton>
 #include <QtGui/QStyle>
 
@@ -40,7 +41,11 @@ LineEdit::LineEdit(QWidget *parent)
 {
     clearButton = new QToolButton(this);
     int iconSize=Icon::stdSize(fontMetrics().height());
+    #ifdef CANTATA_ANDROID
+    QPixmap pixmap(Icon("edit-delete").pixmap(iconSize, iconSize));
+    #else
     QPixmap pixmap(Icon(Qt::RightToLeft==layoutDirection() ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl").pixmap(iconSize, iconSize));
+    #endif
     clearButton->setIcon(QIcon(pixmap));
     clearButton->setIconSize(pixmap.size());
     clearButton->setCursor(Qt::ArrowCursor);

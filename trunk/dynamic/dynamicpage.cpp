@@ -26,6 +26,7 @@
 #include "dynamicrulesdialog.h"
 #include "mainwindow.h"
 #include "localize.h"
+#include "icon.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT

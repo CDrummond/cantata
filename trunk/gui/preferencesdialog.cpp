@@ -75,7 +75,7 @@ public:
         Q_UNUSED(icon)
         #else
         QLabel *icn=new QLabel(this);
-        icn->setPixmap(icon.pixmap(size, size))
+        icn->setPixmap(icon.pixmap(size, size));
         titleLayout->addWidget(icn);
         #endif
         layout->addLayout(titleLayout);

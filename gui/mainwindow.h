@@ -184,8 +184,6 @@ public:
 
     Q_PROPERTY(int volume READ mpdVolume WRITE setMpdVolume)
 
-    static void initButton(QToolButton *btn);
-
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 

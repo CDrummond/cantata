@@ -54,7 +54,7 @@ ServerInfoPage::ServerInfoPage(MainWindow *p)
     connect(MPDConnection::self(), SIGNAL(version(long)), SLOT(mpdVersion(long)));
     connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
 
-    MainWindow::initButton(updateInfo);
+    Icon::init(updateInfo);
     clear();
 }
 

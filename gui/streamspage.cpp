@@ -75,7 +75,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(&model, SIGNAL(updateGenres(const QSet<QString> &)), SLOT(updateGenres(const QSet<QString> &)));
-    MainWindow::initButton(menuButton);
+    Icon::init(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(addAction);
@@ -85,7 +85,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     menu->addAction(exportAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(Icon("system-run"));
-    MainWindow::initButton(replacePlayQueue);
+    Icon::init(replacePlayQueue);
 
     view->setTopText(i18n("Streams"));
 //     view->addAction(p->addToPlaylistAction);

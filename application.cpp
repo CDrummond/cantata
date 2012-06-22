@@ -113,12 +113,6 @@ static void setPal(QPalette &pal, QPalette::ColorGroup cg, const QStringList &pa
 bool Application::start()
 {
     #ifdef CANTATA_ANDROID
-    QPalette pal;
-    setPal(pal, QPalette::Active, QString("#ffffff, #000000, #dbdbdb, #b2b2b2, #949494, #6c6c6c, #ffffff, #ffffff, #ffffff, #222222, #000000, #b2b2b2, #00316e, #ffffff, #80b5ff, #c080ff, #0c0c0c, #000000, #000000, #ffffff").split(", ", QString::SkipEmptyParts));
-    setPal(pal, QPalette::Disabled, QString("#ffffff, #000000, #dbdbdb, #b2b2b2, #949494, #6c6c6c, #ffffff, #ffffff, #ffffff, #222222, #000000, #b2b2b2, #001b3d, #ffffff, #80b5ff, #c080ff, #0c0c0c, #000000, #000000, #ffffff").split(", ", QString::SkipEmptyParts));
-    setPal(pal, QPalette::Inactive, QString("#ffffff, #000000, #dbdbdb, #b2b2b2, #949494, #6c6c6c, #ffffff, #ffffff, #ffffff, #222222, #000000, #b2b2b2, #00316e, #ffffff, #80b5ff, #c080ff, #0c0c0c, #000000, #000000, #ffffff").split(", ", QString::SkipEmptyParts));
-    setPalette(pal);
-
     //QFont f(font());
     //f.setPointSizeF((f.pixelSize()/2.0));
     //setFont(f);

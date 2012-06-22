@@ -29,6 +29,7 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "settings.h"
+#include "icon.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
@@ -47,9 +48,9 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
 
-    MainWindow::initButton(addToPlayQueue);
-    MainWindow::initButton(replacePlayQueue);
-    MainWindow::initButton(libraryUpdate);
+    Icon::init(addToPlayQueue);
+    Icon::init(replacePlayQueue);
+    Icon::init(libraryUpdate);
 
     view->setTopText(i18n("Albums"));
     view->addAction(p->addToPlayQueueAction);

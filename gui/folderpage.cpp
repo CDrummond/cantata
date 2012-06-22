@@ -25,6 +25,7 @@
 #include "mpdconnection.h"
 #include "musiclibrarymodel.h"
 #include "settings.h"
+#include "icon.h"
 #include "localize.h"
 #include "messagebox.h"
 #include <QtGui/QIcon>
@@ -51,9 +52,9 @@ FolderPage::FolderPage(MainWindow *p)
     browseAction->setText(i18n("Open File Manager"));
     browseAction->setIcon(QIcon::fromTheme("system-file-manager"));
     #endif
-    MainWindow::initButton(addToPlayQueue);
-    MainWindow::initButton(replacePlayQueue);
-    MainWindow::initButton(libraryUpdate);
+    Icon::init(addToPlayQueue);
+    Icon::init(replacePlayQueue);
+    Icon::init(libraryUpdate);
 
     view->setTopText(i18n("Folders"));
     view->addAction(p->addToPlayQueueAction);

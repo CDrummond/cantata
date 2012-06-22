@@ -111,11 +111,11 @@ InfoPage::InfoPage(QWidget *parent)
     layout->setContentsMargins(0, 0, 0, 0);
 
     view->page()->action(QWebPage::Reload)->setShortcut(QKeySequence());
-    MainWindow::initButton(refreshBtn);
+    Icon::init(refreshBtn);
     refreshBtn->setDefaultAction(view->page()->action(QWebPage::Reload));
-    MainWindow::initButton(backBtn);
+    Icon::init(backBtn);
     backBtn->setDefaultAction(view->page()->action(QWebPage::Back));
-    MainWindow::initButton(forwardBtn);
+    Icon::init(forwardBtn);
     forwardBtn->setDefaultAction(view->page()->action(QWebPage::Forward));
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(changeView()));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)), SLOT(downloadRequested(const QNetworkRequest &)));

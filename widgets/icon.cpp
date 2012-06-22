@@ -22,6 +22,9 @@
  */
 
 #include "icon.h"
+#include <QtGui/QToolButton>
+#include <QtGui/QApplication>
+
 int Icon::stdSize(int v)
 {
     if (v<20) {
@@ -38,6 +41,25 @@ int Icon::stdSize(int v)
         return 128;
     }
 }
+
+void Icon::init(QToolButton *btn, bool setFlat)
+{
+    static int size=-1;
+
+    if (-1==size) {
+        size=QApplication::fontMetrics().height();
+        if (size>18) {
+            size=stdSize(size*1.25);
+        } else {
+            size=16;
+        }
+    }
+    btn->setIconSize(QSize(size, size));
+    if (setFlat) {
+        btn->setAutoRaise(true);
+    }
+}
+
 #if !defined ENABLE_KDE_SUPPORT && !defined CANTATA_ANDROID
 #include <QtCore/QDir>
 

@@ -444,7 +444,7 @@ ItemView::ItemView(QWidget *p)
     backAction = new QAction(i18n("Back"), this);
     backAction->setIcon(Icon("go-previous"));
     backButton->setDefaultAction(backAction);
-    backButton->setAutoRaise(true);
+    Icon::init(backButton);
     treeView->setPageDefaults();
     iconGridSize=listGridSize=listView->gridSize();
     listView->installEventFilter(new EscapeKeyEventHandler(listView, backAction));

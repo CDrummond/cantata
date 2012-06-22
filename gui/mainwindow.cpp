@@ -168,14 +168,16 @@ public:
     ProxyStyle()
         : QProxyStyle()
     {
+        #ifndef CANTATA_ANDROID
         setBaseStyle(qApp->style());
+        #endif
     }
 
     int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
     {
-        if(stylehint==QStyle::SH_Slider_AbsoluteSetButtons){
-            return Qt::LeftButton|QProxyStyle::styleHint(stylehint, opt, widget ,returnData);
-        }else{
+        if (QStyle::SH_Slider_AbsoluteSetButtons==stylehint) {
+            return Qt::LeftButton|QProxyStyle::styleHint(stylehint, opt, widget, returnData);
+        } else {
             return QProxyStyle::styleHint(stylehint, opt, widget, returnData);
         }
     }
@@ -253,6 +255,7 @@ VolumeControl::VolumeControl(QWidget *parent)
     slider->setMinimum(0);
     slider->setMaximum(100);
     slider->setPageStep(5);
+
     adjustSize();
 }
 

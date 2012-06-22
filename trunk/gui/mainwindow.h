@@ -174,12 +174,18 @@ public:
         PAGE_ALBUMS,
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
+        #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
         PAGE_DYNAMIC,
+        #endif
         PAGE_STREAMS,
         PAGE_LYRICS,
+        #ifdef ENABLE_WEBKIT
         PAGE_INFO,
-        PAGE_SERVER_INFO,
-        PAGE_DEVICES
+        #endif
+        PAGE_SERVER_INFO
+        #ifdef ENABLE_KDE_SUPPORT
+        , PAGE_DEVICES
+        #endif
     };
 
     Q_PROPERTY(int volume READ mpdVolume WRITE setMpdVolume)
@@ -305,12 +311,18 @@ private Q_SLOTS:
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
+    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     void showDynamicTab() { showTab(PAGE_DYNAMIC); }
+    #endif
     void showStreamsTab() { showTab(PAGE_STREAMS); }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
+    #ifdef ENABLE_WEBKIT
     void showInfoTab() { showTab(PAGE_INFO); }
+    #endif
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
+    #ifdef ENABLE_KDE_SUPPORT
     void showDevicesTab() { showTab(PAGE_DEVICES); }
+    #endif
     #ifndef CANTATA_ANDROID
     void toggleSplitterAutoHide();
     #endif

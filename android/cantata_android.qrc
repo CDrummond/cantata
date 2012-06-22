@@ -47,7 +47,8 @@
 <file alias="network-connect">icons/oxygen/network-connect.svg</file>
 <file alias="network-server">icons/oxygen/network-server.svg</file>
 <file alias="server-database">icons/oxygen/server-database.svg</file>
-<file alias="speaker">icons/oxygen/speaker.svg</file>
+<!-- <file alias="speaker">icons/oxygen/speaker.svg</file> -->
+<file alias="speaker">icons/oxygen/audio-volume-high.svg</file>
 <file alias="system-run">icons/oxygen/system-run.svg</file>
 <file alias="view-media-artist">icons/oxygen/view-media-artist.svg</file>
 <file alias="view-media-lyrics">icons/oxygen/view-media-lyrics.svg</file>

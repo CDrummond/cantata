@@ -1069,7 +1069,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
     connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
     connect(this, SIGNAL(setPriority(const QList<quint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<quint32> &, quint8)));
-    connect(&playQueueModel, SIGNAL(statsUpdated(int, int, int, quint32)), this, SLOT(updatePlayQueueStats(int, int, int, quint32)));
+    connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
 
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueModel);
@@ -2680,7 +2680,7 @@ void MainWindow::removeItems()
     }
 }
 
-void MainWindow::updatePlayQueueStats(int artists, int albums, int songs, quint32 time)
+void MainWindow::updatePlayQueueStats(int songs, quint32 time)
 {
     if (0==time) {
         playQueueStatsLabel->setText(QString());
@@ -2689,12 +2689,8 @@ void MainWindow::updatePlayQueueStats(int artists, int albums, int songs, quint3
 
     QString status;
     #ifdef ENABLE_KDE_SUPPORT
-    status+=i18np("1 Artist, ", "%1 Artists, ", artists);
-    status+=i18np("1 Album, ", "%1 Albums, ", albums);
     status+=i18np("1 Track", "%1 Tracks", songs);
     #else
-    status += QString::number(artists)+QString(1==artists ? tr(" Artist,") : tr(" Artists, "));
-    status += QString::number(albums)+QString(1==albums ? tr(" Album,") : tr(" Albums, "));
     status += QString::number(songs)+QString(1==songs ? tr(" Track") : tr(" Tracks"));
     #endif
     status += " (";

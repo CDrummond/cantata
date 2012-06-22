@@ -68,6 +68,8 @@
 42. Provide sub-text for all items in folderview, fixes corruption of list
     mode.
 43. Add option to have sidebar on the sides, top, or bottom.
+44. Only show number of tracks, and duration, in playqueue status - consistent
+    with other players.
 
 0.7.1
 -----

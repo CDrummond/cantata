@@ -156,7 +156,7 @@ Settings::Settings()
     #endif
 {
     #ifdef CANTATA_ANDROID
-    cfg.setPath(QSettings::NativeFormat, QSettings::UserScope, getConfigDir()+"settings.conf");
+    cfg.setPath(QSettings::NativeFormat, QSettings::UserScope, getConfigDir());
     #endif
     // Only need to read system defaults if we have not previously been configured...
     if (version()<CANTATA_MAKE_VERSION(0, 8, 0)

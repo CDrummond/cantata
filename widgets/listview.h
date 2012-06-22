@@ -25,7 +25,7 @@
 #define LISTVIEW_H
 
 #include <QtGui/QListView>
-#include "config.h"
+#include "touchscroll.h"
 
 class ListView : public QListView
 {
@@ -46,14 +46,14 @@ public:
 
 private Q_SLOTS:
     void correctSelection();
+    void showTouchContextMenu();
 
 Q_SIGNALS:
     bool itemsSelected(bool);
+    void goBack();
 
 private:
-    #ifdef CANTATA_ANDROID
-    bool viewportEvent(QEvent *event);
-    #endif
+    TOUCH_MEMBERS
 };
 
 #endif

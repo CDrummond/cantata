@@ -26,6 +26,7 @@
 
 #include <QtGui/QTreeView>
 #include <QtGui/QPixmap>
+#include "touchscroll.h"
 
 class TreeView : public QTreeView
 {
@@ -52,12 +53,16 @@ public:
 
 private Q_SLOTS:
     void correctSelection();
+    void showTouchContextMenu();
 
 Q_SIGNALS:
     bool itemsSelected(bool);
+    void goBack();
 
 private:
     QPixmap pixmap;
+
+    TOUCH_MEMBERS
 };
 
 #endif

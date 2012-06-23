@@ -1204,7 +1204,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
 
     #ifdef CANTATA_ANDROID
-    tabWidget->setMinimumWidth(tabWidget->tabSize().width()+playPauseTrackButton->width()+qApp->fontMetrics().width(QLatin1String("Various Artists 123456789")));
+    tabWidget->setMinimumWidth((width()*0.4)-tabWidget->tabSize().width());
     controlLayout->setSpacing(playPauseTrackButton->width()*0.1);
     #else
     if (!playQueueInSidebar) {
@@ -1398,7 +1398,7 @@ void MainWindow::controlButtonsMenu()
 void MainWindow::setPlaybackButtonsSize(bool small)
 {
     #ifdef CANTATA_ANDROID
-    int size=Icon::stdSize(QApplication::fontMetrics().height()*1.5);
+    int size=Icon::stdSize(QApplication::fontMetrics().height()*2);
     #endif
 
     QList<QToolButton *> playbackBtns;
@@ -1423,7 +1423,7 @@ void MainWindow::setPlaybackButtonsSize(bool small)
 void MainWindow::setControlButtonsSize(bool small)
 {
     #ifdef CANTATA_ANDROID
-    int size=Icon::stdSize(QApplication::fontMetrics().height()*1.5);
+    int size=Icon::stdSize(QApplication::fontMetrics().height()*2);
     #endif
     QList<QToolButton *> controlBtns;
     controlBtns << volumeButton << menuButton;

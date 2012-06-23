@@ -93,7 +93,7 @@
                     if (1==te->touchPoints().count()) { \
                         QPointF pos=te->touchPoints().at(0).pos(); \
                         QPointF touchStart=te->touchPoints().at(0).startPos(); \
-                        if (pos.x()<touchStart.x() && fabs(pos.x()-touchStart.x())>(touchSize*6) && fabs(pos.y()-touchStart.y())<(touchSize*3)) { \
+                        if (pos.x()>touchStart.x() && fabs(pos.x()-touchStart.x())>(width()/2) && fabs(pos.y()-touchStart.y())<(touchSize*5)) { \
                             touchType=TouchScroll; \
                             emit goBack(); \
                         } \
@@ -113,13 +113,13 @@
                             if (diff>1 || diff<-1) { \
                                 int elapsed=touchTime.elapsed(); \
                                 if (elapsed<2) { \
-                                    diff*=4.5; \
+                                    diff*=25; \
                                 } else if (elapsed<5) { \
-                                    diff*=3.25; \
+                                    diff*=12.5; \
                                 } else if (elapsed<10) { \
-                                    diff*=2.25; \
+                                    diff*=6; \
                                 } else if (elapsed<15) { \
-                                    diff*=1.5; \
+                                    diff*=2; \
                                 } \
                                 touchLastUsed=point.pos().y(); \
                                 int val=sb->value()+diff; \

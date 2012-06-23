@@ -499,6 +499,9 @@ void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
+    #ifdef CANTATA_ANDROID
+    connect(listView, SIGNAL(goBack()),  this, SLOT(backActivated()));
+    #endif
     mode=Mode_List;
     setMode(Mode_Tree);
 }

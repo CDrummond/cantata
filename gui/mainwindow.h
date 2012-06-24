@@ -311,18 +311,25 @@ private Q_SLOTS:
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
-    void showDynamicTab() { showTab(PAGE_DYNAMIC); }
-    #endif
+    void showDynamicTab() {
+        #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+        showTab(PAGE_DYNAMIC);
+        #endif
+    }
     void showStreamsTab() { showTab(PAGE_STREAMS); }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
-    #ifdef ENABLE_WEBKIT
-    void showInfoTab() { showTab(PAGE_INFO); }
-    #endif
+
+    void showInfoTab() {
+        #ifdef ENABLE_WEBKIT
+        showTab(PAGE_INFO);
+        #endif
+    }
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
-    #ifdef ENABLE_KDE_SUPPORT
-    void showDevicesTab() { showTab(PAGE_DEVICES); }
-    #endif
+    void showDevicesTab() {
+        #ifdef ENABLE_KDE_SUPPORT
+        showTab(PAGE_DEVICES);
+        #endif
+    }
     #ifndef CANTATA_ANDROID
     void toggleSplitterAutoHide();
     #endif

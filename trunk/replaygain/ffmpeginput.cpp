@@ -219,19 +219,39 @@ bool FfmpegInput::setChannelMap(int *st) const
         while (mapIndex < (unsigned) handle->codecContext->channels) {
             if (handle->codecContext->channel_layout & (1 << bitCounter)) {
                 switch (1 << bitCounter) {
+                #if LIBAVFORMAT_VERSION_MAJOR >= 54
+                case AV_CH_FRONT_LEFT:
+                #else
                 case CH_FRONT_LEFT:
+                #endif
                     st[mapIndex] = EBUR128_LEFT;
                     break;
+                #if LIBAVFORMAT_VERSION_MAJOR >= 54
+                case AV_CH_FRONT_RIGHT:
+                #else
                 case CH_FRONT_RIGHT:
+                #endif
                     st[mapIndex] = EBUR128_RIGHT;
                     break;
+                #if LIBAVFORMAT_VERSION_MAJOR >= 54
+                case AV_CH_FRONT_CENTER:
+                #else
                 case CH_FRONT_CENTER:
+                #endif
                     st[mapIndex] = EBUR128_CENTER;
                     break;
+                #if LIBAVFORMAT_VERSION_MAJOR >= 54
+                case AV_CH_BACK_LEFT:
+                #else
                 case CH_BACK_LEFT:
+                #endif
                     st[mapIndex] = EBUR128_LEFT_SURROUND;
                     break;
+                #if LIBAVFORMAT_VERSION_MAJOR >= 54
+                case AV_CH_BACK_RIGHT:
+                #else
                 case CH_BACK_RIGHT:
+                #endif
                     st[mapIndex] = EBUR128_RIGHT_SURROUND;
                     break;
                 default:

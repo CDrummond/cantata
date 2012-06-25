@@ -131,8 +131,9 @@ FfmpegInput::FfmpegInput(const QString &fileName)
         handle->codecContext = handle->formatContext->streams[handle->audioStream]->codec;
 
         // request float output if supported
-        #if LIBAVCODEC_VERSION_MAJOR >= 54 || \
-            (LIBAVCODEC_VERSION_MAJOR == 53 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 4, 0))
+        #if LIBAVCODEC_VERSION_MAJOR >= 54
+        handle->codecContext->request_sample_fmt = AV_SAMPLE_FMT_FLT;
+        #elif(LIBAVCODEC_VERSION_MAJOR == 53 && LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 4, 0))
         handle->codecContext->request_sample_fmt = SAMPLE_FMT_FLT;
         #endif
         // Find the decoder for the video stream, and open codec...
@@ -352,10 +353,19 @@ size_t FfmpegInput::readOnePacket()
                 }
                 size_t numberRead, i;
                 switch (handle->codecContext->sample_fmt) {
+                #if LIBAVCODEC_VERSION_MAJOR >= 54
+                case AV_SAMPLE_FMT_U8:
+                #else
                 case SAMPLE_FMT_U8:
+                #endif
     //                 fprintf(stderr, "8 bit audio not supported by libebur128!\n");
                     return 0;
-                case SAMPLE_FMT_S16: {
+                #if LIBAVCODEC_VERSION_MAJOR >= 54
+                case AV_SAMPLE_FMT_S16:
+                #else
+                case SAMPLE_FMT_S16:
+                #endif
+                {
                     int16_t *dataShort = (int16_t*) handle->audioBuffer;
                     numberRead = (size_t) dataSize / sizeof(int16_t) / (size_t) handle->codecContext->channels;
                     for (i = 0; i < (size_t) dataSize / sizeof(int16_t); ++i) {
@@ -363,7 +373,12 @@ size_t FfmpegInput::readOnePacket()
                     }
                     break;
                 }
-                case SAMPLE_FMT_S32: {
+                #if LIBAVCODEC_VERSION_MAJOR >= 54
+                case AV_SAMPLE_FMT_S32:
+                #else
+                case SAMPLE_FMT_S32:
+                #endif
+                {
                     int32_t *dataInt = (int32_t*) handle->audioBuffer;
                     numberRead = (size_t) dataSize / sizeof(int32_t) / (size_t) handle->codecContext->channels;
                     for (i = 0; i < (size_t) dataSize / sizeof(int32_t); ++i) {
@@ -371,7 +386,12 @@ size_t FfmpegInput::readOnePacket()
                     }
                     break;
                 }
-                case SAMPLE_FMT_FLT: {
+                #if LIBAVCODEC_VERSION_MAJOR >= 54
+                case AV_SAMPLE_FMT_FLT:
+                #else
+                case SAMPLE_FMT_FLT:
+                #endif
+                {
                     float *dataFloat = (float*) handle->audioBuffer;
                     numberRead = (size_t) dataSize / sizeof(float) / (size_t) handle->codecContext->channels;
                     for (i = 0; i < (size_t) dataSize / sizeof(float); ++i) {
@@ -379,7 +399,12 @@ size_t FfmpegInput::readOnePacket()
                     }
                     break;
                 }
-                case SAMPLE_FMT_DBL: {
+                #if LIBAVCODEC_VERSION_MAJOR >= 54
+                case AV_SAMPLE_FMT_DBL:
+                #else
+                case SAMPLE_FMT_DBL:
+                #endif
+                {
                     double *dataDouble = (double*) handle->audioBuffer;
                     numberRead = (size_t) dataSize / sizeof(double) / (size_t) handle->codecContext->channels;
                     for (i = 0; i < (size_t) dataSize / sizeof(double); ++i) {
@@ -387,8 +412,13 @@ size_t FfmpegInput::readOnePacket()
                     }
                     break;
                 }
+                #if LIBAVCODEC_VERSION_MAJOR >= 54
+                case AV_SAMPLE_FMT_NONE:
+                case AV_SAMPLE_FMT_NB:
+                #else
                 case SAMPLE_FMT_NONE:
                 case SAMPLE_FMT_NB:
+                #endif
                 default:
     //                 fprintf(stderr, "Unknown sample format!\n");
                     return 0;

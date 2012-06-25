@@ -70,6 +70,7 @@
 43. Add option to have sidebar on the sides, top, or bottom.
 44. Only show number of tracks, and duration, in playqueue status - consistent
     with other players.
+45. Fix compile with avcodec v54
 
 0.7.1
 -----

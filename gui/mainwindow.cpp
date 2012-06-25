@@ -1246,6 +1246,7 @@ MainWindow::MainWindow(QWidget *parent)
     autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
     autoHideSplitterAction->setCheckable(true);
     autoHideSplitterAction->setChecked(Settings::self()->splitterAutoHide());
+    tabWidget->addMenuAction(autoHideSplitterAction);
     connect(autoHideSplitterAction, SIGNAL(toggled(bool)), this, SLOT(toggleSplitterAutoHide()));
     #endif
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
@@ -3016,7 +3017,7 @@ void MainWindow::tabToggled(int index)
             playQueuePage->layout()->addWidget(playQueueWidget);
             playQueueWidget->setVisible(true);
             #ifndef CANTATA_ANDROID
-            tabWidget->removeMenuAction(autoHideSplitterAction);
+            autoHideSplitterAction->setVisible(false);
             toggleSplitterAutoHide();
             #endif
         } else {
@@ -3024,7 +3025,7 @@ void MainWindow::tabToggled(int index)
             playQueueWidget->setParent(splitter);
             playQueueWidget->setVisible(true);
             #ifndef CANTATA_ANDROID
-            tabWidget->addMenuAction(autoHideSplitterAction);
+            autoHideSplitterAction->setVisible(true);
             toggleSplitterAutoHide();
             #endif
         }

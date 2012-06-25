@@ -1582,7 +1582,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     } else {
-        close();
+        quitAction->trigger();
+        // Ignore this event, as we have called the quit action...
+        event->ignore();
     }
 }
 #endif

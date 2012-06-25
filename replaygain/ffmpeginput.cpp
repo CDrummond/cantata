@@ -21,6 +21,9 @@ extern "C" {
 #endif
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#if LIBAVFORMAT_VERSION_MAJOR >= 54
+#include <libavutil/audioconvert.h>
+#endif
 #ifdef __cplusplus
 }
 #endif

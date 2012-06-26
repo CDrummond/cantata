@@ -752,6 +752,7 @@ void FancyTabWidget::SetCurrentIndex(int idx) {
     bar->setCurrentIndex(index);
   } else if (QTabBar* bar = qobject_cast<QTabBar*>(tab_bar_)) {
     bar->setCurrentIndex(index);
+    ShowWidget(index);
   } else {
     stack_->setCurrentIndex(idx); // ?? IS this *ever* called???
   }

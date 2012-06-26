@@ -75,41 +75,57 @@ Song & Song::operator=(const Song &s)
 
 bool Song::operator==(const Song &o) const
 {
-    return file == o.file;
+    return 0==compareTo(o);
 }
 
 bool Song::operator<(const Song &o) const
+{
+    return compareTo(o)<0;
+}
+
+int Song::compareTo(const Song &o) const
 {
     bool sortDateBeforeAlbum=MusicLibraryItemAlbum::showDate();
     int compare=albumArtist().localeAwareCompare(o.albumArtist());
 
     if (0!=compare) {
-        return compare<0;
+        return compare;
     }
     if (sortDateBeforeAlbum && year!=o.year) {
-        return year<o.year;
+        return year<o.year ? -1 : 1;
     }
     compare=album.localeAwareCompare(o.album);
     if (0!=compare) {
-        return compare<0;
+        return compare;
     }
     if (!sortDateBeforeAlbum && year!=o.year) {
-        return year<o.year;
+        return year<o.year ? -1 : 1;
     }
     if (disc!=o.disc) {
-        return disc<o.disc;
+        return disc<o.disc ? -1 : 1;
     }
     if (type!=o.type) {
-        return type<o.type;
+        return type<o.type ? -1 : 1;
     }
     if (track!=o.track) {
-        return track<o.track;
+        return track<o.track ? -1 : 1;
     }
-    compare=file.compare(o.file);
+    if (time!=o.time) {
+        return time<o.time ? -1 : 1;
+    }
+    compare=title.localeAwareCompare(o.title);
     if (0!=compare) {
-        return compare<0;
+        return compare;
     }
-    return time<o.time;
+    compare=name.compare(o.name);
+    if (0!=compare) {
+        return compare;
+    }
+    compare=genre.compare(o.genre);
+    if (0!=compare) {
+        return compare;
+    }
+    return file.compare(o.file);
 }
 
 bool Song::isEmpty() const

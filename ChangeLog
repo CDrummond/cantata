@@ -76,6 +76,8 @@
     workaround applied - revert this before requesting data.
 48. When reading mpd.conf file, if bind_to_address is set to "any", then use
     default of "locahost".
+49. Fix noticing of tag chages when MPD database is updated. When comparing
+    songs need to check all fields - not just filename!
 
 0.7.1
 -----

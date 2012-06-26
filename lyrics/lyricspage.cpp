@@ -287,10 +287,15 @@ void LyricsPage::del()
     }
 }
 
-void LyricsPage::update(const Song &song, bool force)
+void LyricsPage::update(const Song &s, bool force)
 {
     if (Mode_Edit==mode && !force) {
         return;
+    }
+
+    Song song(s);
+    if (song.isVariousArtists()) {
+        song.revertVariousArtists();
     }
 
     bool songChanged = song.artist!=currentSong.artist || song.title!=currentSong.title;

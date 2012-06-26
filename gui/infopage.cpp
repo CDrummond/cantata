@@ -205,6 +205,9 @@ void InfoPage::update(const Song &s)
 {
     iHaveAskedForArtist=false;
     song=s;
+    if (song.isVariousArtists()) {
+        song.revertVariousArtists();
+    }
     fetchInfo();
 }
 

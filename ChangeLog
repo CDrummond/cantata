@@ -72,6 +72,8 @@
     with other players.
 45. Fix compile with avcodec v54
 46. If KWallet is disabled, store password in config file.
+47. When fetching lyrics or info for a song which has had the 'various artists'
+    workaround applied - revert this before requesting data.
 
 0.7.1
 -----

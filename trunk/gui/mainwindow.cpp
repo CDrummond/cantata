@@ -868,7 +868,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     #define TAB_ACTION(A) A->icon(), A->text(), A->text()+"<br/><small><i>"+A->shortcut().toString()+"</i></small>"
 
-    playQueuePage=new QWidget(this);
+    playQueuePage=new PlayQueuePage(this);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, playQueuePage);
     layout->setContentsMargins(0, 0, 0, 0);
     bool playQueueInSidebar=!hiddenPages.contains(playQueuePage->metaObject()->className());

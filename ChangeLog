@@ -71,6 +71,7 @@
 44. Only show number of tracks, and duration, in playqueue status - consistent
     with other players.
 45. Fix compile with avcodec v54
+46. If KWallet is disabled, store password in config file.
 
 0.7.1
 -----

@@ -178,7 +178,6 @@ QString Settings::currentConnection()
     return GET_STRING("currentConnection", QString());
 }
 
-#include <QtCore/QDebug>
 MPDConnectionDetails Settings::connectionDetails(const QString &name)
 {
     MPDConnectionDetails details;
@@ -206,12 +205,16 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             details.hostname=CFG_GET_STRING(grp, "host", name.isEmpty() ? mpdDefaults.host : QString());
             details.port=CFG_GET_INT(grp, "port", name.isEmpty() ? mpdDefaults.port : 6600);
             details.dir=MPDParseUtils::fixPath(CFG_GET_STRING(grp, "dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
-            if (CFG_GET_BOOL(grp, "passwd", false)) {
-                if (openWallet()) {
-                    wallet->readPassword(name.isEmpty() ? "mpd" : name, details.password);
+            if (KWallet::Wallet::isEnabled()) {
+                if (CFG_GET_BOOL(grp, "passwd", false)) {
+                    if (openWallet()) {
+                        wallet->readPassword(name.isEmpty() ? "mpd" : name, details.password);
+                    }
+                } else if (name.isEmpty()) {
+                    details.password=mpdDefaults.passwd;
                 }
-            } else if (name.isEmpty()) {
-                details.password=mpdDefaults.passwd;
+            } else {
+                details.password=CFG_GET_STRING(grp, "pass", name.isEmpty() ? mpdDefaults.passwd : QString());
             }
             #else
             cfg.beginGroup(n);
@@ -622,15 +625,19 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     CFG_SET_VALUE(grp, "host", v.hostname);
     CFG_SET_VALUE(grp, "port", (int)v.port);
     CFG_SET_VALUE(grp, "dir", v.dir);
-    CFG_SET_VALUE(grp, "passwd", !v.password.isEmpty());
-    QString walletEntry=v.name.isEmpty() ? "mpd" : v.name;
-    if (v.password.isEmpty()) {
-        if (wallet) {
-            wallet->removeEntry(walletEntry);
+    if (KWallet::Wallet::isEnabled()) {
+        CFG_SET_VALUE(grp, "passwd", !v.password.isEmpty());
+        QString walletEntry=v.name.isEmpty() ? "mpd" : v.name;
+        if (v.password.isEmpty()) {
+            if (wallet) {
+                wallet->removeEntry(walletEntry);
+            }
         }
-    }
-    else if (openWallet()) {
-        wallet->writePassword(walletEntry, v.password);
+        else if (openWallet()) {
+            wallet->writePassword(walletEntry, v.password);
+        }
+    } else {
+        CFG_SET_VALUE(grp, "pass", v.password);
     }
     #else
     cfg.beginGroup(n);

@@ -83,6 +83,7 @@ struct Song
     Song & operator=(const Song &o);
     bool operator==(const Song &o) const;
     bool operator<(const Song &o) const;
+    int compareTo(const Song &o) const;
     virtual ~Song() { }
     bool isEmpty() const;
     void fillEmptyFields();
@@ -111,7 +112,7 @@ Q_DECLARE_METATYPE(Song)
 
 inline uint qHash(const Song &key)
 {
-    return qHash(key.file);
+    return qHash(key.albumArtist()+key.album+key.title+key.file);
 }
 
 inline uint qHash(const Song::AlbumKey &key)

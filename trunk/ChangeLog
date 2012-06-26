@@ -74,6 +74,8 @@
 46. If KWallet is disabled, store password in config file.
 47. When fetching lyrics or info for a song which has had the 'various artists'
     workaround applied - revert this before requesting data.
+48. When reading mpd.conf file, if bind_to_address is set to "any", then use
+    default of "locahost".
 
 0.7.1
 -----

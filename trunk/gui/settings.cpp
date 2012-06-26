@@ -82,7 +82,7 @@ struct MpdDefaults
                     }
                 } else if (line.startsWith(QLatin1String("bind_to_address"))) {
                     QString val=getVal(line);
-                    if (!val.isEmpty()) {
+                    if (!val.isEmpty() && val!=QLatin1String("any")) {
                         host=val;
                     }
                 } else if (line.startsWith(QLatin1String("port"))) {

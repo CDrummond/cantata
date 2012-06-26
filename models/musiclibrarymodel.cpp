@@ -545,11 +545,11 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
     QSet<Song> added=updateSongs-currentSongs;
 
     bool updatedSongs=added.count()||removed.count();
-    foreach (const Song &s, added) {
-        addSongToList(s);
-    }
     foreach (const Song &s, removed) {
         removeSongFromList(s);
+    }
+    foreach (const Song &s, added) {
+        addSongToList(s);
     }
     return updatedSongs;
 }

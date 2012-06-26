@@ -107,11 +107,11 @@ void Device::applyUpdate()
         QSet<Song> removed=currentSongs-updateSongs;
         QSet<Song> added=updateSongs-currentSongs;
 
-        foreach (const Song &s, added) {
-            addSongToList(s);
-        }
         foreach (const Song &s, removed) {
             removeSongFromList(s);
+        }
+        foreach (const Song &s, added) {
+            addSongToList(s);
         }
         delete update;
     } else*/ {

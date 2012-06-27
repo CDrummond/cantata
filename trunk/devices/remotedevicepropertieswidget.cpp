@@ -36,9 +36,6 @@
 enum Type {
     Type_SshFs,
     Type_File
-    #ifdef ENABLE_KIO_REMOTE_DEVICES
-    , Type_Kio
-    #endif
 };
 
 RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
@@ -52,9 +49,6 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     }
     type->addItem(i18n("Secure Shell (sshfs)"), (int)Type_SshFs);
     type->addItem(i18n("Locally Mounted Folder"), (int)Type_File);
-    #ifdef ENABLE_KIO_REMOTE_DEVICES
-    type->addItem(i18n("Other Protocol"), (int)Type_Kio);
-    #endif
     sshFolderButton->setIcon(QIcon::fromTheme("document-open"));
     fileFolder->setMode(KFile::Directory|KFile::ExistingOnly|KFile::LocalOnly);
     kioUrl->setMode(KFile::Directory|KFile::ExistingOnly);
@@ -62,11 +56,7 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
 
 void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool create, bool isConnected)
 {
-    #ifdef ENABLE_KIO_REMOTE_DEVICES
-    int t=d.url.isLocalFile() ? Type_File : (d.isEmpty() || RemoteFsDevice::constSshfsProtocol==d.url.protocol() ? Type_SshFs : Type_Kio);
-    #else
     int t=d.url.isLocalFile() ? Type_File : Type_SshFs;
-    #endif
     setEnabled(d.url.isLocalFile() || !isConnected);
     infoLabel->setVisible(create);
     orig=d;
@@ -87,10 +77,6 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     case Type_File:
         fileFolder->setText(d.url.path());
         break;
-    #ifdef ENABLE_KIO_REMOTE_DEVICES
-    case Type_Kio:
-        kioUrl->setUrl(d.url);
-    #endif
     }
 
     name->setEnabled(d.url.isLocalFile() || !isConnected);
@@ -171,11 +157,6 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
         det.url=KUrl(QLatin1String("file://")+(f.startsWith("/") ? f : (f.isEmpty() ? QString("/") : f)));
         break;
     }
-    #ifdef ENABLE_KIO_REMOTE_DEVICES
-    case Type_Kio:
-        det.url=KUrl(kioUrl->url());
-        break;
-    #endif
     }
     return det;
 }

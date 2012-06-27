@@ -43,9 +43,6 @@
 #include <KDE/KIcon>
 #include <KDE/KGlobal>
 #endif
-#ifdef ENABLE_KIO_REMOTE_DEVICES
-#include "remotekiodevice.h"
-#endif
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(DevicesModel, instance)
@@ -92,11 +89,6 @@ void DevicesModel::loadRemote()
             if (Device::RemoteFs==dev->devType()) {
                 connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
             }
-            #ifdef ENABLE_KIO_REMOTE_DEVICES
-            else if (Device::RemoteKio==dev->devType()) {
-                connect(static_cast<RemoteKioDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
-            }
-            #endif
         }
         endInsertRows();
         updateItemMenu();
@@ -601,11 +593,6 @@ void DevicesModel::addRemoteDevice(const QString &coverFileName, const DeviceOpt
         if (Device::RemoteFs==dev->devType()) {
             connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
         }
-        #ifdef ENABLE_KIO_REMOTE_DEVICES
-        else if (Device::RemoteKio==dev->devType()) {
-            connect(static_cast<RemoteKioDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
-        }
-        #endif
         updateItemMenu();
     }
 }
@@ -614,7 +601,7 @@ void DevicesModel::removeRemoteDevice(const QString &udi)
 {
     Device *dev=device(udi);
 
-    if (dev && (Device::RemoteFs==dev->devType() || Device::RemoteKio==dev->devType())) {
+    if (dev && Device::RemoteFs==dev->devType()) {
         int idx=indexes[udi];
         beginRemoveRows(QModelIndex(), idx, idx);
         // Remove device from list, but do NOT delete - it may be scanning!!!!

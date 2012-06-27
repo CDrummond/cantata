@@ -186,8 +186,8 @@ public:
         }
 
         if (view && QListView::IconMode==view->viewMode()) {
-            int textHeight = QApplication::fontMetrics().height()*2;
-            return QSize(imageSize + (constBorder * 2), textHeight+imageSize + (constBorder*2));
+            // Use same calculation as in LibraryPage/AlbumsPage...
+            return QSize(imageSize+8, imageSize+(QApplication::fontMetrics().height()*2.5));
         } else {
             bool oneLine = index.data(ItemView::Role_SubText).toString().isEmpty();
             bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();

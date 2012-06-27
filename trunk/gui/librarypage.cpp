@@ -23,6 +23,7 @@
 
 #include "librarypage.h"
 #include "mpdconnection.h"
+#include "mpdstats.h"
 #include "covers.h"
 #include "musiclibrarymodel.h"
 #include "musiclibraryitemalbum.h"
@@ -87,7 +88,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
     connect(MPDConnection::self(), SIGNAL(databaseUpdated()), this, SLOT(databaseUpdated()));
     connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
-    connect(this, SIGNAL(listAllInfo(const QDateTime &)), MPDConnection::self(), SLOT(listAllInfo(const QDateTime &)));
+    connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -126,9 +127,9 @@ void LibraryPage::refresh()
 {
     view->setLevel(0);
 
-    if (!MusicLibraryModel::self()->fromXML(mw->getDbUpdate())) {
+    if (!MusicLibraryModel::self()->fromXML()) {
         view->showSpinner();
-        emit listAllInfo(mw->getDbUpdate());
+        emit loadLibrary();
     }
 }
 

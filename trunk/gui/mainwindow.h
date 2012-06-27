@@ -40,7 +40,6 @@
 #include <QtGui/QMoveEvent>
 #include <QtGui/QToolButton>
 #include <QtCore/QStringList>
-#include <QtCore/QDateTime>
 #include "ui_mainwindow.h"
 #include "playqueuemodel.h"
 #include "playqueueproxymodel.h"
@@ -86,6 +85,7 @@ class Mpris;
 class QTimer;
 class QPropertyAnimation;
 class QActionGroup;
+class QDateTime;
 
 // Dummy class so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget
@@ -211,7 +211,6 @@ public:
     #ifdef TAGLIB_FOUND
     void load(const QList<QUrl> &urls);
     #endif
-    const QDateTime & getDbUpdate() const;
 
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -394,7 +393,6 @@ private:
     MPDState lastState;
     quint32 songTime;
     qint32 lastSongId;
-    QDateTime lastDbUpdate;
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;

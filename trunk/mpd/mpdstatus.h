@@ -85,6 +85,7 @@ class MPDStatus : public QObject
 public:
     static MPDStatus * self();
 
+    // NOTE: There are no read/write locks aroud these values as they are read/written only fro the GUI thread...
     qint8 volume() const {
         return values.volume;
     }

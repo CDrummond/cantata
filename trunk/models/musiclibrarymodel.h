@@ -59,7 +59,7 @@ public:
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     const MusicLibraryItemRoot * root() const { return rootItem; }
     bool isFromSingleTracks(const Song &s) const { return rootItem->isFromSingleTracks(s); }
-    bool fromXML(const QDateTime db_update);
+    bool fromXML();
     void clear();
     QModelIndex findSongIndex(const Song &s) const;
     const MusicLibraryItem * findSong(const Song &s) const;
@@ -76,6 +76,8 @@ public:
     bool update(const QSet<Song> &songs);
     bool useArtistImages() const { return artistImages; }
     void setUseArtistImages(bool a) { artistImages=a; }
+
+    const QDateTime & lastUpdate() { return databaseTime; }
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);

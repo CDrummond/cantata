@@ -101,10 +101,10 @@ QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
     return playlists;
 }
 
-MPDStats MPDParseUtils::parseStats(const QByteArray &data)
+MPDStatsValues MPDParseUtils::parseStats(const QByteArray &data)
 {
     TF_DEBUG
-    MPDStats v;
+    MPDStatsValues v;
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
     int amountOfLines = lines.size();

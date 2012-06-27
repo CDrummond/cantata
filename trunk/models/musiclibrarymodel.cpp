@@ -486,8 +486,8 @@ void MusicLibraryModel::removeCache()
     QString cacheFile(cacheFileName());
     if (QFile::exists(cacheFile)) {
         QFile::remove(cacheFile);
-        databaseTime = QDateTime();
     }
+    databaseTime = QDateTime();
 }
 
 void MusicLibraryModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
@@ -624,10 +624,10 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
  * TODO: check for hostname
  * TODO: check for database version
  */
-bool MusicLibraryModel::fromXML(const QDateTime dbUpdate)
+bool MusicLibraryModel::fromXML()
 {
     MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-    quint32 date=root->fromXML(cacheFileName(), dbUpdate);
+    quint32 date=root->fromXML(cacheFileName(), MPDStats::self()->dbUpdate());
     if (!date) {
         delete root;
         return false;

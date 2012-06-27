@@ -40,18 +40,14 @@ public:
     ~ServerInfoPage();
 
     void clear();
-    const QDateTime & getDbUpdate() const {
-        return dbUpdate;
-    }
 
 private Q_SLOTS:
-    void statsUpdated(const MPDStats &stats);
+    void statsUpdated();
     void mpdVersion(long v);
     void urlHandlers(const QStringList &handlers);
 
 private:
     Action *updateAction;
-    QDateTime dbUpdate;
 };
 
 #endif

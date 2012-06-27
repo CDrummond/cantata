@@ -23,9 +23,6 @@
 
 #include "remotefsdevice.h"
 #include "config.h"
-#ifdef ENABLE_KIO_REMOTE_DEVICES
-#include "remotekiodevice.h"
-#endif
 #include "mpdparseutils.h"
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
@@ -110,11 +107,6 @@ QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
         } else if (d.url.isLocalFile() || constSshfsProtocol==d.url.protocol()) {
             devices.append(new RemoteFsDevice(m, d));
         }
-        #ifdef ENABLE_KIO_REMOTE_DEVICES
-        else {
-            devices.append(new RemoteKioDevice(m, d));
-        }
-        #endif
     }
     if (devices.count()!=names.count()) {
         KGlobal::config()->sync();
@@ -138,27 +130,18 @@ Device * RemoteFsDevice::create(DevicesModel *m, const QString &cover, const Dev
     if (d.url.isLocalFile() || constSshfsProtocol==d.url.protocol()) {
         return new RemoteFsDevice(m, cover, options, d);
     }
-    #ifdef ENABLE_KIO_REMOTE_DEVICES
-    return new RemoteKioDevice(m, cover, options, d);
-    #else
     return 0;
-    #endif
 }
 
 void RemoteFsDevice::remove(Device *dev)
 {
-    if (!dev || !(RemoteFs==dev->devType() || RemoteKio==dev->devType())) {
+    if (!dev || RemoteFs!=dev->devType()) {
         return;
     }
     KConfigGroup grp(KGlobal::config(), "General");
     QStringList names=grp.readEntry(constCfgKey, QStringList());
     RemoteFsDevice *rfs=qobject_cast<RemoteFsDevice *>(dev);
-    #ifdef ENABLE_KIO_REMOTE_DEVICES
-    RemoteKioDevice *rkio=rfs ? 0 : qobject_cast<RemoteKioDevice *>(dev);
-    QString name=rfs ? rfs->details.name : (rkio ? rkio->details.name : QString());
-    #else
     QString name=rfs ? rfs->details.name : QString();
-    #endif
     if (names.contains(name)) {
         names.removeAll(name);
         KGlobal::config()->deleteGroup(dev->udi());
@@ -171,11 +154,6 @@ void RemoteFsDevice::remove(Device *dev)
             rfs->unmount();
         }
     }
-    #ifdef ENABLE_KIO_REMOTE_DEVICES
-    else if (rkio) {
-        rkio->stopScanner(false);
-    }
-    #endif
     dev->deleteLater();
 }
 

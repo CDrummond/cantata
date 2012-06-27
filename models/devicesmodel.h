@@ -28,7 +28,6 @@
 #include "config.h"
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotefsdevice.h"
-#include "remotekiodevice.h"
 #endif
 
 class QMimeData;

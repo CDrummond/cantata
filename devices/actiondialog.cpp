@@ -120,7 +120,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
 
     bool enoughSpace=spaceAvailable>spaceRequired;
     #ifdef ENABLE_REMOTE_DEVICES
-    if (!enoughSpace && sourceUdi.isEmpty() && 0==spaceAvailable && usedCapacity<0.0 && (Device::RemoteFs==dev->devType() || Device::RemoteKio==dev->devType())) {
+    if (!enoughSpace && sourceUdi.isEmpty() && 0==spaceAvailable && usedCapacity<0.0 && Device::RemoteFs==dev->devType()) {
         enoughSpace=true;
     }
     #endif
@@ -170,9 +170,7 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
             return;
         }
 
-        if (Device::RemoteKio!=dev->devType()) {
-            baseDir=dev->path();
-        }
+        baseDir=dev->path();
     }
 
     setPage(PAGE_PROGRESS);

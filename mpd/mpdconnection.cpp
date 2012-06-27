@@ -206,7 +206,7 @@ MPDConnection::MPDConnection()
     qRegisterMetaType<QList<quint32> >("QList<quint32>");
     qRegisterMetaType<QList<qint32> >("QList<qint32>");
     qRegisterMetaType<QAbstractSocket::SocketState >("QAbstractSocket::SocketState");
-    qRegisterMetaType<MPDStats>("MPDStats");
+    qRegisterMetaType<MPDStatsValues>("MPDStatsValues");
     qRegisterMetaType<MPDStatusValues>("MPDStatusValues");
     qRegisterMetaType<MPDConnectionDetails>("MPDConnectionDetails");
 }
@@ -326,6 +326,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
         DBUG << "call connectToMPD";
         switch (connectToMPD()) {
         case Success:
+            getStats();
             getUrlHandlers();
             if (!wasConnected || diffDetails) {
                 emit stateChanged(true);
@@ -794,7 +795,9 @@ void MPDConnection::getStats()
 {
     Response response=sendCommand("stats");
     if (response.ok) {
-        emit statsUpdated(MPDParseUtils::parseStats(response.data));
+        MPDStatsValues stats=MPDParseUtils::parseStats(response.data);
+        dbUpdate=stats.dbUpdate;
+        emit statsUpdated(stats);
     }
 }
 
@@ -946,10 +949,8 @@ void MPDConnection::update()
 /**
  * Get all files in the playlist with detailed info (artist, album,
  * title, time etc).
- *
- * @param db_update The last update time of the library
  */
-void MPDConnection::listAllInfo(const QDateTime &dbUpdate)
+void MPDConnection::loadLibrary()
 {
     TF_DEBUG
     emit updatingLibrary();
@@ -964,7 +965,7 @@ void MPDConnection::listAllInfo(const QDateTime &dbUpdate)
 * Get all the files and dir in the mpdmusic dir.
 *
 */
-void MPDConnection::listAll()
+void MPDConnection::loadFolders()
 {
     TF_DEBUG
     emit updatingFileList();

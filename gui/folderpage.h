@@ -55,7 +55,7 @@ Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void add(const QStringList &files, bool replace, quint8 priorty);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
-    void listAll();
+    void loadFolders();
 
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void deleteSongs(const QString &from, const QList<Song> &songs);

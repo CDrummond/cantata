@@ -50,7 +50,7 @@ ServerInfoPage::ServerInfoPage(MainWindow *p)
     updateAction->setIcon(Icon("view-refresh"));
     updateInfo->setDefaultAction(updateAction);
     connect(updateAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(getStats()));
-    connect(MPDConnection::self(), SIGNAL(statsUpdated(const MPDStats &)), SLOT(statsUpdated(const MPDStats &)));
+    connect(MPDStats::self(), SIGNAL(updated()), SLOT(statsUpdated()));
     connect(MPDConnection::self(), SIGNAL(version(long)), SLOT(mpdVersion(long)));
     connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
 
@@ -75,19 +75,18 @@ void ServerInfoPage::clear()
     urlhandlers->setText(QString());
 }
 
-void ServerInfoPage::statsUpdated(const MPDStats &stats)
+void ServerInfoPage::statsUpdated()
 {
-    dbUpdate=stats.dbUpdate;
-    uptime->setText(MPDParseUtils::formatDuration(stats.uptime));
-    timePlaying->setText(MPDParseUtils::formatDuration(stats.playtime));
-    totalDuration->setText(MPDParseUtils::formatDuration(stats.dbPlaytime));
-    artists->setText(QString::number(stats.artists));
-    album->setText(QString::number(stats.albums));
-    songs->setText(QString::number(stats.songs));
+    uptime->setText(MPDParseUtils::formatDuration(MPDStats::self()->uptime()));
+    timePlaying->setText(MPDParseUtils::formatDuration(MPDStats::self()->playtime()));
+    totalDuration->setText(MPDParseUtils::formatDuration(MPDStats::self()->dbPlaytime()));
+    artists->setText(QString::number(MPDStats::self()->artists()));
+    album->setText(QString::number(MPDStats::self()->albums()));
+    songs->setText(QString::number(MPDStats::self()->songs()));
 //     #ifdef ENABLE_KDE_SUPPORT
-//     lastUpdate->setText(KGlobal::locale()->formatDateTime(stats.dbUpdate));
+//     lastUpdate->setText(KGlobal::locale()->formatDateTime(MPDStats::self()->dbUpdate));
 //     #else
-    lastUpdate->setText(stats.dbUpdate.toString(Qt::SystemLocaleShortDate));
+    lastUpdate->setText(MPDStats::self()->dbUpdate().toString(Qt::SystemLocaleShortDate));
 //     #endif
 }
 

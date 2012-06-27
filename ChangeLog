@@ -41,7 +41,7 @@
 25. Show playlists in library and album views (requires MPD 0.17)
 26. Update ultimate_providers.xml to match Clementine 1.0.1
 27. When clicking on a label associated with a combobox, show the combo popup.
-28. Fix spacing issues of compact interface with some styles. If th estyle
+28. Fix spacing issues of compact interface with some styles. If the style
     (such as the Qt Gtk style) returns -1 for its spacing, assume a spacing of
     4 pixels instead.
 29. Workaround tab-widget issues with Gtk style. Only draw highlight for
@@ -76,7 +76,7 @@
     workaround applied - revert this before requesting data.
 48. When reading mpd.conf file, if bind_to_address is set to "any", then use
     default of "locahost".
-49. Fix noticing of tag chages when MPD database is updated. When comparing
+49. Fix noticing of tag changes when MPD database is updated. When comparing
     songs need to check all fields - not just filename!
 
 0.7.1

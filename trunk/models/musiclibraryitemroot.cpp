@@ -276,9 +276,13 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
         writer.writeAttribute("name", artist->data());
         foreach (const MusicLibraryItem *al, artist->childItems()) {
             const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
+            QString albumGenre=!album->childItems().isEmpty() ? static_cast<const MusicLibraryItemSong *>(album->childItems().at(0))->song().genre : QString();
             writer.writeStartElement("Album");
             writer.writeAttribute("name", album->data());
             writer.writeAttribute("year", QString::number(album->year()));
+            if (!albumGenre.isEmpty()) {
+                writer.writeAttribute("genre", albumGenre);
+            }
             if (album->isSingleTracks()) {
                 writer.writeAttribute("singleTracks", "true");
             } else if (album->isMultipleArtists()) {
@@ -308,7 +312,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                     writer.writeAttribute("albumartist", track->song().albumartist);
                 }
 //                 writer.writeAttribute("id", QString::number(track->song().id));
-                if (!track->song().genre.isEmpty()) {
+                if (!track->song().genre.isEmpty() && track->song().genre!=albumGenre) {
                     writer.writeAttribute("genre", track->song().genre);
                 }
                 if (album->isSingleTracks()) {
@@ -379,6 +383,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
             else if (QLatin1String("Album")==element) {
                 song.album=attributes.value("name").toString();
                 song.year=attributes.value("year").toString().toUInt();
+                song.genre=attributes.value("genre").toString();
                 if (!song.file.isEmpty()) {
                     song.file.append("dummy.mp3");
                 }
@@ -405,7 +410,9 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     if (!baseFolder.isEmpty() && song.file.startsWith(baseFolder)) {
                         song.file=song.file.mid(baseFolder.length());
                     }
-                    song.genre=attributes.value("genre").toString();
+                    if (attributes.hasAttribute("genre")) {
+                        song.genre=attributes.value("genre").toString();
+                    }
                     if (attributes.hasAttribute("artist")) {
                         song.artist=attributes.value("artist").toString();
                     } else {

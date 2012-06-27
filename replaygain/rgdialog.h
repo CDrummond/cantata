@@ -102,6 +102,7 @@ private:
 
     QMap<int, Scanner *> scanners;
     QList<int> toScan;
+    int totalToScan;
 
     QMap<QString, Album> albums;
     QMap<int, Track> tracks;

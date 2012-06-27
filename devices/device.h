@@ -61,8 +61,7 @@ public:
     enum DevType {
         Ums,
         Mtp,
-        RemoteFs,
-        RemoteKio
+        RemoteFs
     };
 
     Device(DevicesModel *m, Solid::Device &dev)

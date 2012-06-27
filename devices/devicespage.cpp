@@ -272,7 +272,7 @@ void DevicesPage::controlActions()
                 onlyFs=false;
             }
             #ifdef ENABLE_REMOTE_DEVICES
-            if (Device::RemoteFs==dev->devType() || Device::RemoteKio==dev->devType()) {
+            if (Device::RemoteFs==dev->devType()) {
                 remoteDev=true;
             }
             #endif

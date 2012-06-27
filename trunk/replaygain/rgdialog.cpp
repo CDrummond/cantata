@@ -237,7 +237,7 @@ void RgDialog::startScanning()
     statusLabel->setText(i18n("Scanning files..."));
     statusLabel->setVisible(true);
     clearScanners();
-    int count=0;
+    totalToScan=0;
     for (int i=0; i<origSongs.count(); ++i) {
         if (all || !origTags.contains(i)) {
             if (scanners.count()<100) {
@@ -245,10 +245,10 @@ void RgDialog::startScanning()
             } else {
                 toScan.append(i);
             }
-            count++;
+            totalToScan++;
         }
     }
-    progress->setRange(0, 100*count);
+    progress->setRange(0, 100*totalToScan);
 }
 
 void RgDialog::stopScanning()
@@ -370,19 +370,19 @@ void RgDialog::saveTags()
 
 void RgDialog::updateView()
 {
-    bool allFinished=true;
+    int finished=0;
     quint64 totalProgress=0;
     QMap<int, Track>::iterator it=tracks.begin();
     QMap<int, Track>::iterator end=tracks.end();
 
     for (; it!=end; ++it) {
-        if (!(*it).finished) {
-            allFinished=false;
+        if ((*it).finished) {
+            finished++;;
         }
         totalProgress+=(*it).finished ? 100 : (*it).progress;
     }
 
-    if (allFinished) {
+    if (finished==totalToScan) {
         progress->setVisible(false);
         statusLabel->setVisible(false);
         state=State_Idle;

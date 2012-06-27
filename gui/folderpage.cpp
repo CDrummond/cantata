@@ -85,7 +85,7 @@ FolderPage::FolderPage(MainWindow *p)
     proxy.setSourceModel(DirViewModel::self());
     view->setModel(&proxy);
     view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
-    connect(this, SIGNAL(listAll()), MPDConnection::self(), SLOT(listAll()));
+    connect(this, SIGNAL(loadFolders()), MPDConnection::self(), SLOT(loadFolders()));
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -121,7 +121,7 @@ void FolderPage::refresh()
 {
     if (DirViewModel::self()->isEnabled()) {
         view->showSpinner();
-        emit listAll();
+        emit loadFolders();
     }
 }
 

@@ -30,6 +30,7 @@
 #include <QtCore/QProcess>
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QThread>
+#include <QtCore/QDateTime>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
@@ -1048,6 +1049,11 @@ MainWindow::MainWindow(QWidget *parent)
     prioMenu->addAction(addPrioCustomAction);
     addWithPriorityAction->setMenu(prioMenu);
     setPriorityAction->setMenu(prioMenu);
+
+    // Ensure these objects are created in the GUI thread...
+    MPDStatus::self();
+    MPDStats::self();
+
     connect(addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
     connect(addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
     connect(addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
@@ -1103,7 +1109,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
-    connect(MPDConnection::self(), SIGNAL(statsUpdated(const MPDStats &)), this, SLOT(updateStats()));
+    connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlayQueue(const QList<Song> &)));
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
@@ -1381,11 +1387,6 @@ void MainWindow::load(const QList<QUrl> &urls)
 }
 #endif
 
-const QDateTime & MainWindow::getDbUpdate() const
-{
-    return serverInfoPage->getDbUpdate();
-}
-
 void MainWindow::playbackButtonsMenu()
 {
     playbackBtnsMenu->exec(QCursor::pos());
@@ -1507,7 +1508,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         messageWidget->hide();
         if (CS_Connected!=connectedState) {
             emit getStatus();
-            emit getStats();
             emit playListInfo();
             emit outputs();
             if (CS_Init!=connectedState) {
@@ -1641,7 +1641,6 @@ void MainWindow::connectToMpd()
 void MainWindow::refresh()
 {
     MusicLibraryModel::self()->removeCache();
-    lastDbUpdate=QDateTime();
     emit getStats();
 }
 
@@ -2375,9 +2374,9 @@ void MainWindow::updateStats()
      * Check if remote db is more recent than local one
      * Also update the dirview
      */
-    if (!lastDbUpdate.isValid() || serverInfoPage->getDbUpdate() > lastDbUpdate) {
+    if (!MusicLibraryModel::self()->lastUpdate().isValid() || MPDStats::self()->dbUpdate() > MusicLibraryModel::self()->lastUpdate()) {
         loaded|=TAB_LIBRARY|TAB_FOLDERS;
-        if (!lastDbUpdate.isValid()) {
+        if (!MusicLibraryModel::self()->lastUpdate().isValid()) {
             libraryPage->clear();
             //albumsPage->clear();
             folderPage->clear();
@@ -2387,8 +2386,6 @@ void MainWindow::updateStats()
         folderPage->refresh();
         playlistsPage->refresh();
     }
-
-    lastDbUpdate = serverInfoPage->getDbUpdate();
 }
 
 void MainWindow::updateStatus()

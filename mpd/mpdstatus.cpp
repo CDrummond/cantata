@@ -35,7 +35,7 @@ MPDStatus * MPDStatus::self()
 
 MPDStatus::MPDStatus()
 {
-    connect(MPDConnection::self(), SIGNAL(statusUpdated(const MPDStatusValues &)), this, SLOT(update(const MPDStatusValues &)));
+    connect(MPDConnection::self(), SIGNAL(statusUpdated(const MPDStatusValues &)), this, SLOT(update(const MPDStatusValues &)), Qt::QueuedConnection);
 }
 
 void MPDStatus::update(const MPDStatusValues &v)

@@ -214,8 +214,8 @@ public Q_SLOTS:
     void getUrlHandlers();
 
     // Database
-    void listAllInfo(const QDateTime &dbUpdate);
-    void listAll();
+    void loadLibrary();
+    void loadFolders();
 
     // Admin
     void update();
@@ -240,7 +240,7 @@ Q_SIGNALS:
     void passwordError();
     void currentSongUpdated(const Song &song);
     void playlistUpdated(const QList<Song> &songs);
-    void statsUpdated(const MPDStats &stats);
+    void statsUpdated(const MPDStatsValues &stats);
     void statusUpdated(const MPDStatusValues &status);
     void storedPlayListUpdated();
     void outputsUpdated(const QList<Output> &outputs);
@@ -288,6 +288,7 @@ private:
 private:
     long ver;
     MPDConnectionDetails details;
+    QDateTime dbUpdate;
     // Use 2 sockets, 1 for commands and 1 to receive MPD idle events.
     // Cant use 1, as we could write a command just as an idle event is ready to read
     MpdSocket sock;

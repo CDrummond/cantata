@@ -78,6 +78,7 @@
     default of "locahost".
 49. Fix noticing of tag changes when MPD database is updated. When comparing
     songs need to check all fields - not just filename!
+50. Fix usage of tekstowo.pl and vagalume.com.br in lyrics settings.
 
 0.7.1
 -----

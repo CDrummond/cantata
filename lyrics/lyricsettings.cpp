@@ -61,6 +61,7 @@ void LyricSettings::Load(const QList<UltimateLyricsProvider*> &providers) {
     name.replace("(POLISH)", i18n("(Polish Translations)"));
     name.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
     item->setText(name);
+    item->setData(Qt::UserRole, provider->name());
     item->setCheckState(provider->is_enabled() ? Qt::Checked : Qt::Unchecked);
 //     item->setForeground(provider->is_enabled() ? palette().color(QPalette::Active, QPalette::Text)
 //                                                : palette().color(QPalette::Disabled, QPalette::Text));
@@ -72,7 +73,7 @@ QStringList LyricSettings::EnabledProviders() {
   for (int i=0 ; i<ui_->providers->count() ; ++i) {
     const QListWidgetItem* item = ui_->providers->item(i);
     if (item->checkState() == Qt::Checked)
-      providers << item->text();
+      providers << item->data(Qt::UserRole).toString();
   }
   return providers;
 }

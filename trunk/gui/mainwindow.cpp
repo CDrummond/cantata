@@ -500,28 +500,28 @@ MainWindow::MainWindow(QWidget *parent)
     consumePlayQueueAction->setWhatsThis(i18n("When consume is activated, a song is removed from the play queue after it has been played."));
 
     addWithPriorityAction = actionCollection()->addAction("addwithprio");
-    addWithPriorityAction->setText(i18n("Add With Priorty"));
+    addWithPriorityAction->setText(i18n("Add With Priority"));
 
     setPriorityAction = actionCollection()->addAction("setprio");
-    setPriorityAction->setText(i18n("Set Priorty"));
+    setPriorityAction->setText(i18n("Set Priority"));
 
     addPrioHighestAction = actionCollection()->addAction("highestprio");
-    addPrioHighestAction->setText(i18n("Highest Priorty (255)"));
+    addPrioHighestAction->setText(i18n("Highest Priority (255)"));
 
     addPrioHighAction = actionCollection()->addAction("highprio");
-    addPrioHighAction->setText(i18n("High Priorty (200)"));
+    addPrioHighAction->setText(i18n("High Priority (200)"));
 
     addPrioMediumAction = actionCollection()->addAction("mediumprio");
-    addPrioMediumAction->setText(i18n("Medium Priorty (125)"));
+    addPrioMediumAction->setText(i18n("Medium Priority (125)"));
 
     addPrioLowAction = actionCollection()->addAction("lowprio");
-    addPrioLowAction->setText(i18n("Low Priorty (50)"));
+    addPrioLowAction->setText(i18n("Low Priority (50)"));
 
     addPrioDefaultAction = actionCollection()->addAction("defaultprio");
-    addPrioDefaultAction->setText(i18n("Default Priorty (0)"));
+    addPrioDefaultAction->setText(i18n("Default Priority (0)"));
 
     addPrioCustomAction = actionCollection()->addAction("customprio");
-    addPrioCustomAction->setText(i18n("Custom Priorty..."));
+    addPrioCustomAction->setText(i18n("Custom Priority..."));
 
     #ifdef PHONON_FOUND
     streamPlayAction = actionCollection()->addAction("streamplay");
@@ -640,14 +640,14 @@ MainWindow::MainWindow(QWidget *parent)
     singlePlayQueueAction->setWhatsThis(tr("When single is activated, playback is stopped after current song, or song is repeated if the 'repeat' mode is enabled."));
     consumePlayQueueAction = new QAction(tr("Consume"), this);
     consumePlayQueueAction->setWhatsThis(tr("When consume is activated, a song is removed from the play queue after it has been played."));
-    addWithPriorityAction = new QAction(tr("Add With Priorty"), this);
-    setPriorityAction = new QAction(tr("Set Priorty"), this);
-    addPrioHighestAction = new QAction(tr("Highest Priorty (255)"), this);
-    addPrioHighAction = new QAction(tr("High Priorty (200)"), this);
-    addPrioMediumAction = new QAction(tr("Medium Priorty (125)"), this);
-    addPrioLowAction = new QAction(tr("Low Priorty (50)"), this);
-    addPrioDefaultAction = new QAction(tr("Default Priorty (0)"), this);
-    addPrioCustomAction = new QAction(tr("Custom Priorty..."), this);
+    addWithPriorityAction = new QAction(tr("Add With Priority"), this);
+    setPriorityAction = new QAction(tr("Set Priority"), this);
+    addPrioHighestAction = new QAction(tr("Highest Priority (255)"), this);
+    addPrioHighAction = new QAction(tr("High Priority (200)"), this);
+    addPrioMediumAction = new QAction(tr("Medium Priority (125)"), this);
+    addPrioLowAction = new QAction(tr("Low Priority (50)"), this);
+    addPrioDefaultAction = new QAction(tr("Default Priority (0)"), this);
+    addPrioCustomAction = new QAction(tr("Custom Priority..."), this);
     #ifdef PHONON_FOUND
     streamPlayAction= new QAction(tr("Play Stream"), this);
     streamPlayAction->setWhatsThis(tr("When 'Play Stream' is activated, the enabled stream is played locally."));
@@ -1059,12 +1059,12 @@ MainWindow::MainWindow(QWidget *parent)
     MPDStatus::self();
     MPDStats::self();
 
-    connect(addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
-    connect(addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
-    connect(addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
-    connect(addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
-    connect(addPrioDefaultAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
-    connect(addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
+    connect(addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioDefaultAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
 
     connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
@@ -2587,7 +2587,7 @@ void MainWindow::addToPlayQueue(bool replace, quint8 priority)
     }
 }
 
-void MainWindow::addWithPriorty()
+void MainWindow::addWithPriority()
 {
     if (!MPDConnection::self()->canUsePriority() || !addWithPriorityAction->isVisible()) {
         return;
@@ -2612,7 +2612,7 @@ void MainWindow::addWithPriorty()
 
     if (-1==prio) {
         bool ok=false;
-        prio=InputDialog::getInteger(i18n("Priorty"), i18n("Enter priority (0..255):"), 150, 0, 255, 5, 10, &ok, this);
+        prio=InputDialog::getInteger(i18n("Priority"), i18n("Enter priority (0..255):"), 150, 0, 255, 5, 10, &ok, this);
         if (!ok) {
             return;
         }

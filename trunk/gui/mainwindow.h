@@ -295,7 +295,7 @@ private Q_SLOTS:
     void removeFromPlayQueue();
     void replacePlayQueue();
     void addToPlayQueue();
-    void addWithPriorty();
+    void addWithPriority();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
     void removeItems();

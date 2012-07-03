@@ -29,6 +29,8 @@ TimeSlider::TimeSlider(QWidget *p)
     , timer(0)
     , lastVal(0)
 {
+    connect(this, SIGNAL(sliderPressed()), this, SLOT(pressed()));
+    connect(this, SIGNAL(sliderReleased()), this, SLOT(released()));
 }
 
 void TimeSlider::startTimer()
@@ -61,4 +63,18 @@ void TimeSlider::updatePos()
 {
     int elapsed=(startTime.elapsed()/1000.0)+0.5;
     QSlider::setValue(lastVal+elapsed);
+}
+
+void TimeSlider::pressed()
+{
+    if (timer) {
+        timer->stop();
+    }
+}
+
+void TimeSlider::released()
+{
+    if (timer) {
+        timer->start();
+    }
 }

@@ -41,12 +41,13 @@ public:
 
 private Q_SLOTS:
     void updatePos();
+    void pressed();
+    void released();
 
 private:
     QTimer *timer;
     QTime startTime;
     int lastVal;
 };
-
 
 #endif

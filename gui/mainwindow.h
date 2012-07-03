@@ -278,8 +278,6 @@ private Q_SLOTS:
     #ifdef PHONON_FOUND
     void toggleStream(bool s);
     #endif
-    void positionSliderPressed();
-    void positionSliderReleased();
     void stopTrack();
     void playPauseTrack();
     void increaseVolume();
@@ -396,7 +394,6 @@ private:
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
-    bool draggingPositionSlider;
     QIcon playbackPause;
     QIcon playbackPlay;
     VolumeSliderEventHandler *volumeSliderEventHandler;

@@ -342,7 +342,6 @@ MainWindow::MainWindow(QWidget *parent)
     , songTime(0)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
-    , draggingPositionSlider(false)
     #ifndef CANTATA_ANDROID
     , trayItem(0)
     #endif
@@ -1134,9 +1133,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(decreaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(decreaseVolume()));
     connect(increaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
     connect(decreaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(decreaseVolume()));
-    connect(positionSlider, SIGNAL(sliderPressed()), this, SLOT(positionSliderPressed()));
     connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
-    connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(positionSliderReleased()));
     connect(randomPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(repeatPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
     connect(singlePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setSingle(bool)));
@@ -2005,16 +2002,6 @@ void MainWindow::toggleStream(bool s)
 }
 #endif
 
-void MainWindow::positionSliderPressed()
-{
-    draggingPositionSlider = true;
-}
-
-void MainWindow::positionSliderReleased()
-{
-    draggingPositionSlider = false;
-}
-
 void MainWindow::stopTrack()
 {
     if (!fadeWhenStop() || MPDState_Paused==MPDStatus::self()->state() || 0==volume) {
@@ -2392,13 +2379,11 @@ void MainWindow::updateStatus()
 {
     MPDStatus * const status = MPDStatus::self();
 
-    if (!draggingPositionSlider) {
-        if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
-            positionSlider->setValue(0);
-        } else {
-            positionSlider->setRange(0, status->timeTotal());
-            positionSlider->setValue(status->timeElapsed());
-        }
+    if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
+        positionSlider->setValue(0);
+    } else {
+        positionSlider->setRange(0, status->timeTotal());
+        positionSlider->setValue(status->timeElapsed());
     }
 
     if (!stopState) {

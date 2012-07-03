@@ -3003,20 +3003,22 @@ void MainWindow::tabToggled(int index)
     switch (index) {
     case PAGE_PLAYQUEUE:
         if (tabWidget->isEnabled(index)) {
+            #ifndef CANTATA_ANDROID
+            autoHideSplitterAction->setVisible(false);
+            splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
+            #endif
             playQueueWidget->setParent(playQueuePage);
             playQueuePage->layout()->addWidget(playQueueWidget);
             playQueueWidget->setVisible(true);
-            #ifndef CANTATA_ANDROID
-            autoHideSplitterAction->setVisible(false);
-            toggleSplitterAutoHide();
-            #endif
+
         } else {
+
             playQueuePage->layout()->removeWidget(playQueueWidget);
             playQueueWidget->setParent(splitter);
             playQueueWidget->setVisible(true);
             #ifndef CANTATA_ANDROID
             autoHideSplitterAction->setVisible(true);
-            toggleSplitterAutoHide();
+            splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
             #endif
         }
         break;

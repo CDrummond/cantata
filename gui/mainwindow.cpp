@@ -517,6 +517,9 @@ MainWindow::MainWindow(QWidget *parent)
     addPrioLowAction = actionCollection()->addAction("lowprio");
     addPrioLowAction->setText(i18n("Low Priorty (50)"));
 
+    addPrioDefaultAction = actionCollection()->addAction("defaultprio");
+    addPrioDefaultAction->setText(i18n("Default Priorty (0)"));
+
     addPrioCustomAction = actionCollection()->addAction("customprio");
     addPrioCustomAction->setText(i18n("Custom Priorty..."));
 
@@ -643,6 +646,7 @@ MainWindow::MainWindow(QWidget *parent)
     addPrioHighAction = new QAction(tr("High Priorty (200)"), this);
     addPrioMediumAction = new QAction(tr("Medium Priorty (125)"), this);
     addPrioLowAction = new QAction(tr("Low Priorty (50)"), this);
+    addPrioDefaultAction = new QAction(tr("Default Priorty (0)"), this);
     addPrioCustomAction = new QAction(tr("Custom Priorty..."), this);
     #ifdef PHONON_FOUND
     streamPlayAction= new QAction(tr("Play Stream"), this);
@@ -1039,12 +1043,14 @@ MainWindow::MainWindow(QWidget *parent)
     addPrioHighAction->setData(200);
     addPrioMediumAction->setData(125);
     addPrioLowAction->setData(50);
+    addPrioDefaultAction->setData(0);
     addPrioCustomAction->setData(-1);
     QMenu *prioMenu=new QMenu(this);
     prioMenu->addAction(addPrioHighestAction);
     prioMenu->addAction(addPrioHighAction);
     prioMenu->addAction(addPrioMediumAction);
     prioMenu->addAction(addPrioLowAction);
+    prioMenu->addAction(addPrioDefaultAction);
     prioMenu->addAction(addPrioCustomAction);
     addWithPriorityAction->setMenu(prioMenu);
     setPriorityAction->setMenu(prioMenu);
@@ -1057,6 +1063,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
     connect(addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
     connect(addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
+    connect(addPrioDefaultAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
     connect(addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriorty()));
 
     connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));

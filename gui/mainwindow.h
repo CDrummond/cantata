@@ -427,6 +427,7 @@ private:
     Action *addPrioHighAction;     // 200
     Action *addPrioMediumAction;   // 125
     Action *addPrioLowAction;      // 50
+    Action *addPrioDefaultAction;  // 0
     Action *addPrioCustomAction;
     Action *setPriorityAction;
     #ifdef PHONON_FOUND

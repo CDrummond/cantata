@@ -7,17 +7,17 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-27 21:49+0100\n"
-"PO-Revision-Date: 2012-05-07 16:48+0200\n"
+"PO-Revision-Date: 2012-06-28 08:44+0200\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
-"Language: \n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "X-Language: cs_CZ\n"
 "X-Source-Language: C\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.4\n"
 
 #: application.cpp:67
 msgid ""
@@ -1081,7 +1081,7 @@ msgstr "Hodně velký"
 
 #: gui/interfacesettings.cpp:39
 msgid "Automatic"
-msgstr ""
+msgstr "Automaticky"
 
 #: gui/interfacesettings.cpp:44
 msgid "Tree"
@@ -1130,9 +1130,8 @@ msgid "Connect"
 msgstr "Spojit"
 
 #: gui/mainwindow.cpp:412
-#, fuzzy
 msgid "Outputs"
-msgstr "Výstup"
+msgstr "Výstupy"
 
 #: gui/mainwindow.cpp:415
 msgid "Refresh Database"
@@ -1254,40 +1253,39 @@ msgstr ""
 
 #: gui/mainwindow.cpp:504
 msgid "Add With Priorty"
-msgstr ""
+msgstr "Přidat s předností"
 
 #: gui/mainwindow.cpp:507
 msgid "Set Priorty"
-msgstr ""
+msgstr "Nastavit přednost"
 
 #: gui/mainwindow.cpp:510
 msgid "Highest Priorty (255)"
-msgstr ""
+msgstr "Nejvyšší přednost (255)"
 
 #: gui/mainwindow.cpp:513
 msgid "High Priorty (200)"
-msgstr ""
+msgstr "Vysoká přednost (200)"
 
 #: gui/mainwindow.cpp:516
 msgid "Medium Priorty (125)"
-msgstr ""
+msgstr "Střední přednost (125)"
 
 #: gui/mainwindow.cpp:519
 msgid "Low Priorty (50)"
-msgstr ""
+msgstr "Nízká přednost (50)"
 
 #: gui/mainwindow.cpp:522
 msgid "Custom Priorty..."
-msgstr ""
+msgstr "Vlastní přednost..."
 
 #: gui/mainwindow.cpp:526
-#, fuzzy
 msgid "Play Stream"
-msgstr "Jeden proud"
+msgstr "Přehrát proud"
 
 #: gui/mainwindow.cpp:527
 msgid "When 'Play Stream' is activated, the enabled stream is played locally."
-msgstr ""
+msgstr "Když je zapnuto Přehrát proud, je povolený proud přehráván místně."
 
 #: gui/mainwindow.cpp:531
 msgid "Locate In Library"
@@ -1360,25 +1358,22 @@ msgstr ""
 "skladeb."
 
 #: gui/mainwindow.cpp:1629
-#, fuzzy
 msgid "Connecting to %1"
-msgstr "Nepodařilo se připojit k %1"
+msgstr "Připojuje se k %1"
 
 #: gui/mainwindow.cpp:1782 gui/mainwindow.cpp:2205 gui/serversettings.cpp:74
 #: mpd/mpdconnection.cpp:178
 msgid "Default"
-msgstr ""
+msgstr "Výchozí"
 
 #: gui/mainwindow.cpp:2208 gui/mainwindow.cpp:2211
-#, fuzzy
 msgid "Cantata (%1)"
-msgstr "Cantata"
+msgstr "Cantata (%1)"
 
 #: gui/mainwindow.cpp:2215
-#, fuzzy
 msgctxt "track :: Cantata (connection)"
 msgid "%1 :: Cantata (%2)"
-msgstr "%1 :: Cantata"
+msgstr "%1 :: Cantata (%2)"
 
 #: gui/mainwindow.cpp:2216
 msgctxt "track :: Cantata"
@@ -1386,10 +1381,9 @@ msgid "%1 :: Cantata"
 msgstr "%1 :: Cantata"
 
 #: gui/mainwindow.cpp:2226
-#, fuzzy
 msgctxt "track - artist :: Cantata (connection)"
 msgid "%1 - %2 :: Cantata (%3)"
-msgstr "%1 - %2 :: Cantata"
+msgstr "%1 - %2 :: Cantata (%3)"
 
 #: gui/mainwindow.cpp:2227
 msgctxt "track - artist :: Cantata"
@@ -1422,7 +1416,7 @@ msgstr "Cantata"
 
 #: gui/mainwindow.cpp:2409 gui/mainwindow.cpp:2410
 msgid "Volume Disabled"
-msgstr ""
+msgstr "Hlasitost vypnuta"
 
 #: gui/mainwindow.cpp:2414 gui/mainwindow.cpp:2415
 msgid "Volume %1%"
@@ -1430,11 +1424,11 @@ msgstr "Hlasitost %1%"
 
 #: gui/mainwindow.cpp:2622
 msgid "Priorty"
-msgstr ""
+msgstr "Přednost"
 
 #: gui/mainwindow.cpp:2622
 msgid "Enter priority (0..255):"
-msgstr ""
+msgstr "Zadejte přednost (0..255):"
 
 #: gui/mainwindow.cpp:2644 gui/playlistspage.cpp:210
 msgid "Playlist Name"
@@ -1486,9 +1480,8 @@ msgid "Enter new name for playlist:"
 msgstr "Zadejte nový název pro seznam skladeb:"
 
 #: gui/preferencesdialog.cpp:134
-#, fuzzy
 msgid "Connection Settings"
-msgstr "Spojení"
+msgstr "Nastavení spojení"
 
 #. i18n: file: gui/serverplaybacksettings.ui:109
 #. i18n: ectx: property (title), widget (QGroupBox, outputFrame)
@@ -1497,9 +1490,8 @@ msgid "Output"
 msgstr "Výstup"
 
 #: gui/preferencesdialog.cpp:137
-#, fuzzy
 msgid "Output Settings"
-msgstr "Vnější nastavení"
+msgstr "Nastavení výstupu"
 
 #: gui/preferencesdialog.cpp:139
 msgid "Playback"
@@ -1550,23 +1542,21 @@ msgid "Track"
 msgstr "Skladba"
 
 #: gui/serverplaybacksettings.cpp:116
-#, fuzzy
 msgid ""
 "<i><b>Connected to %1</b><br/>The entries below apply to the currently "
 "connected MPD instance.</i>"
 msgstr ""
-"<i><b>Nepřipojeno.</b><br/>Některé ze záznamů výše nelze změnit, protože "
-"Cantata není připojena k MPD.</i>"
+"<i><b>Připojeno k %1.</b><br/>Záznamy níže použít na nyní připojenou instanci "
+"MPD.</i>"
 
 #. i18n: file: gui/serverplaybacksettings.ui:36
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
 #: gui/serverplaybacksettings.cpp:119 po/rc.cpp:459 rc.cpp:459
-#, fuzzy
 msgid ""
 "<i><b>Not Connected.</b><br/>The entries below cannot be modified, as "
 "Cantata is not connected to MPD.</i>"
 msgstr ""
-"<i><b>Nepřipojeno.</b><br/>Některé ze záznamů výše nelze změnit, protože "
+"<i><b>Nepřipojeno.</b><br/>Záznamy níže nelze změnit, protože "
 "Cantata není připojena k MPD.</i>"
 
 #: gui/serversettings.cpp:44
@@ -1584,28 +1574,24 @@ msgid "Host:"
 msgstr "Server:"
 
 #: gui/serversettings.cpp:121
-#, fuzzy
 msgid "Enter name for settings:"
-msgstr "Zadejte název pro seznam skladeb:"
+msgstr "Zadejte název pro nastavení:"
 
 #: gui/serversettings.cpp:136
-#, fuzzy
 msgid ""
 "A setting named %1 already exists!\n"
 "Overwrite?"
 msgstr ""
-"Seznam pravidel pojmenovaný '%1' již existuje!\n"
+"Nastavení pojmenované %1 již existuje!\n"
 "Přepsat?"
 
 #: gui/serversettings.cpp:173
-#, fuzzy
 msgid "Delete %1?"
-msgstr "Smazat písně"
+msgstr "Smazat %1?"
 
 #: gui/serversettings.cpp:192
-#, fuzzy
 msgid "Disconnect"
-msgstr "Odpojuje se..."
+msgstr "Odpojit"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
@@ -2147,17 +2133,16 @@ msgstr[1] "%1 položky"
 msgstr[2] "%1 položek"
 
 #: models/dirviewmodel.cpp:195
-#, fuzzy
 msgid "Playlist"
-msgstr "Seznamy"
+msgstr "Seznam skladeb"
 
 #: models/dirviewmodel.cpp:197
 msgid "Cue Sheet"
-msgstr ""
+msgstr "List CUE"
 
 #: models/dirviewmodel.cpp:199
 msgid "Audio File"
-msgstr ""
+msgstr "Zvukový soubor"
 
 #: models/musiclibrarymodel.cpp:244
 msgid "%1<br/>1 Album"
@@ -2198,11 +2183,11 @@ msgstr "Rok"
 
 #: models/playqueuemodel.cpp:110
 msgid "Priority"
-msgstr ""
+msgstr "Přednost"
 
 #: models/playqueuemodel.cpp:351
 msgid "<b>(Priority: %1)</b>"
-msgstr ""
+msgstr "<b>(Přednost: %1)</b>"
 
 #: models/streamsmodel.cpp:167
 msgid ""
@@ -2229,15 +2214,14 @@ msgstr[1] "%1 proudy"
 msgstr[2] "%1 proudů"
 
 #: mpd/mpdconnection.cpp:181
-#, fuzzy
 msgctxt "name (host)"
 msgid "%1 (%2)"
-msgstr "Jedna skladba (%2)"
+msgstr "%1 (%2)"
 
 #: mpd/mpdconnection.cpp:183
 msgctxt "name (host:port)"
 msgid "%1 (%2:%3)"
-msgstr ""
+msgstr "%1 (%2:%3)"
 
 #: mpd/mpdconnection.cpp:337
 msgid "Connection to %1 failed"
@@ -2854,12 +2838,11 @@ msgstr "Vždy použít server:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:252 rc.cpp:252
 msgid "Address/interface:"
-msgstr ""
+msgstr "Adresa/Rozhraní:"
 
 #. i18n: file: gui/httpserversettings.ui:108
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:255 rc.cpp:255
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> MPD usually only plays songs that are stored within its "
 "folders. If you have connected via a local socket, then MPD can also play "
@@ -2874,7 +2857,7 @@ msgid ""
 "interface (e.g. eth0), that you wish to listen for connections on. Leave "
 "blank to use the local loopback address (127.0.0.1).</i></i>"
 msgstr ""
-"<i><b>Poznámka:</b> MPD obvykle přehraje jen písně, které jsou uloženy v "
+"<i><b>POZNÁMKA:</b> MPD obvykle přehraje jen písně, které jsou uloženy v "
 "jeho složkách. Pokud jste se připojil přes místní zásuvku, pak může MPD "
 "přehrát i soubory umístěné na vašem souborovém systému. Pokud používáte "
 "zásuvku, která není místní, (např. zadal jste název hostitele nebo adresu IP "
@@ -2882,7 +2865,11 @@ msgstr ""
 "obsahuje velice malý server HTTP, který se dá použít pro podávání souborů "
 "MPD. Toto však bude pracovat, jen když Cantata poběží. Pokud povolíte \"Vždy "
 "použít server\", pak Cantata vždy bude předávat adresy serveru (URL) MPD "
-"kvůli souborům, i když byste se připojil přes místní zásuvku.</i>"
+"kvůli souborům, i když byste se připojil přes místní zásuvku.<br/><br/>\n"
+"<b>POZNÁMKA:</b>\"Adresa/Rozhraní\" může obsahovat buď adresu IP, anebo "
+"rozhraní (např. eth0), jež si přejete poslouchat pro spojení. Ponechte "
+"prázdné "
+"pro užití adresy místní zpětné smyčky (127.0.0.1).</i></i>"
 
 #. i18n: file: gui/interfacesettings.ui:38
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
@@ -2921,7 +2908,7 @@ msgstr "Obaly:"
 #. i18n: ectx: property (text), widget (BuddyLabel, libraryArtistImageLabel)
 #: po/rc.cpp:271 rc.cpp:271
 msgid "Show artist images:"
-msgstr ""
+msgstr "Ukázat obrázky umělců:"
 
 #. i18n: file: gui/interfacesettings.ui:81
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
@@ -2940,6 +2927,12 @@ msgid ""
 "When the image is displayed, it will be cropped (either top/bottom, or left/"
 "right) to provide a square image.</i>"
 msgstr ""
+"<i><b>POZNÁMKA:</b> Při hledání obrázků umělců bude Cantata hledat "
+"buď artist.jpg, artist.png, <Artist>.jpg, nebo <Artist>.png\n"
+"ve složce s nynější skladbou, nebo v její rodičovské složce. Pokud není "
+"nalezen žádný obrázek, Cantata se pokusí o stažení jednoho.<br/>\n"
+"Když je obrázek zobrazen, bude ořezán (buď nahoře/dole, nebo vlevo/"
+"vpravo), aby měl podobu čtverce.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:170
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
@@ -3173,7 +3166,7 @@ msgstr "Vyrovnání hlasitosti:"
 #. i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
 #: po/rc.cpp:471 rc.cpp:471
 msgid "Output HTTP stream:"
-msgstr ""
+msgstr "Výstup do HTTP proudu:"
 
 #. i18n: file: gui/serverplaybacksettings.ui:99
 #. i18n: ectx: property (text), widget (QLabel, streamUrlInfoLabel)
@@ -3183,12 +3176,16 @@ msgid ""
 "to output to a HTTP stream, and you wish Cantata to be able to play that "
 "stream.</i>"
 msgstr ""
+"<i><b>POZNÁMKA:</b> Výstup do HTTP proudu se používá jen tehdy, když máte "
+"nastaveno MPD "
+"na výstup do proudu HTTP, a přejete si, aby Cantata mohla tento proud "
+"přehrávat.</i>"
 
 #. i18n: file: gui/serversettings.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:483 rc.cpp:483
 msgid "Details"
-msgstr ""
+msgstr "Podrobnosti"
 
 #. i18n: file: gui/serversettings.ui:37
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
@@ -3349,14 +3346,13 @@ msgid "Track Peak"
 msgstr "Vrchol skladby"
 
 #: replaygain/rgdialog.cpp:123
-#, fuzzy
 msgid "Save"
-msgstr "Uložit jako"
+msgstr "Uložit"
 
 #: replaygain/rgdialog.cpp:124 replaygain/rgdialog.cpp:266
 #: replaygain/rgdialog.cpp:392
 msgid "Close"
-msgstr ""
+msgstr "Zavřít"
 
 #: replaygain/rgdialog.cpp:126
 msgid "Scan"
@@ -3388,9 +3384,8 @@ msgid "Untagged Tracks"
 msgstr "Skladby bez značek"
 
 #: replaygain/rgdialog.cpp:231 replaygain/rgdialog.cpp:307
-#, fuzzy
 msgid "Cancel"
-msgstr "Tanec"
+msgstr "Zrušit"
 
 #: replaygain/rgdialog.cpp:237
 msgid "Scanning files..."
@@ -3437,11 +3432,11 @@ msgstr "Malý postranní panel"
 
 #: widgets/fancytabwidget.cpp:943
 msgid "Top Bar"
-msgstr ""
+msgstr "Panel nahoře"
 
 #: widgets/fancytabwidget.cpp:944
 msgid "Bottom Bar"
-msgstr ""
+msgstr "Panel dole"
 
 #: widgets/fancytabwidget.cpp:945
 msgid "Tabs On Side"

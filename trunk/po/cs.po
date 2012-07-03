@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-27 21:49+0100\n"
+"POT-Creation-Date: 2012-07-03 19:44+0100\n"
 "PO-Revision-Date: 2012-06-28 08:44+0200\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Copy Songs"
 msgstr "Kopírovat písně"
 
-#: devices/actiondialog.cpp:191 gui/mainwindow.cpp:812
+#: devices/actiondialog.cpp:191 gui/mainwindow.cpp:815
 msgid "Delete Songs"
 msgstr "Smazat písně"
 
@@ -333,7 +333,7 @@ msgstr "Přepnout zařízení"
 msgid "Add Device"
 msgstr "Přidat zařízení"
 
-#: devices/devicespage.cpp:139 gui/mainwindow.cpp:588
+#: devices/devicespage.cpp:139 gui/mainwindow.cpp:590
 msgid "Devices"
 msgstr "Zařízení"
 
@@ -372,7 +372,7 @@ msgstr ""
 msgid "Are you sure you wish to forget the selected device?"
 msgstr "Opravdu chcete zapomenout vybrané zařízení?"
 
-#: devices/devicespage.cpp:461 gui/mainwindow.cpp:1647
+#: devices/devicespage.cpp:461 gui/mainwindow.cpp:1651
 msgid "Action is not currently possible, due to other open dialogs."
 msgstr "Krok nyní není možný kvůli jiným otevřeným dialogům."
 
@@ -759,7 +759,7 @@ msgstr "Obnovují se skladby..."
 msgid "Not Connected"
 msgstr "Nepřipojeno"
 
-#: devices/remotedevicepropertiesdialog.cpp:45 gui/mainwindow.cpp:409
+#: devices/remotedevicepropertiesdialog.cpp:45 gui/mainwindow.cpp:408
 #: gui/preferencesdialog.cpp:133
 msgid "Connection"
 msgstr "Spojení"
@@ -836,7 +836,7 @@ msgstr "Neznámá velikost"
 msgid "Songs Only In Library:"
 msgstr "Písně pouze v knihovně:"
 
-#: devices/syncdialog.cpp:101 gui/mainwindow.cpp:449
+#: devices/syncdialog.cpp:101 gui/mainwindow.cpp:448
 msgid "Copy To Device"
 msgstr "Kopírovat na zařízení"
 
@@ -852,7 +852,7 @@ msgstr "Seřídit"
 msgid "Device and library are in sync."
 msgstr "Zařízení a knihovna jsou vzájemně seřízeny."
 
-#: devices/trackorganiser.cpp:53 gui/mainwindow.cpp:752
+#: devices/trackorganiser.cpp:53 gui/mainwindow.cpp:755
 msgid "Organize Files"
 msgstr "Uspořádat soubory"
 
@@ -932,7 +932,7 @@ msgstr "Spustit dynamický režim"
 msgid "Stop Dynamic Mode"
 msgstr "Zastavit dynamický režim"
 
-#: dynamic/dynamicpage.cpp:97 gui/mainwindow.cpp:569
+#: dynamic/dynamicpage.cpp:97 gui/mainwindow.cpp:571
 msgid "Dynamic"
 msgstr "Dynamický"
 
@@ -1035,7 +1035,7 @@ msgstr "Již existuje"
 
 #. i18n: file: gui/interfacesettings.ui:138
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
-#: gui/albumspage.cpp:55 gui/mainwindow.cpp:559 po/rc.cpp:282 rc.cpp:282
+#: gui/albumspage.cpp:55 gui/mainwindow.cpp:561 po/rc.cpp:282 rc.cpp:282
 msgid "Albums"
 msgstr "Alba"
 
@@ -1043,7 +1043,7 @@ msgstr "Alba"
 msgid "Open File Manager"
 msgstr "Otevřít správce souborů"
 
-#: gui/folderpage.cpp:59 gui/mainwindow.cpp:562
+#: gui/folderpage.cpp:59 gui/mainwindow.cpp:564
 msgid "Folders"
 msgstr "Složky"
 
@@ -1111,65 +1111,65 @@ msgstr "Seskupeno podle Různí umělci"
 
 #. i18n: file: gui/interfacesettings.ui:30
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
-#: gui/librarypage.cpp:96 gui/mainwindow.cpp:556 po/rc.cpp:262 rc.cpp:262
+#: gui/librarypage.cpp:96 gui/mainwindow.cpp:558 po/rc.cpp:262 rc.cpp:262
 msgid "Library"
 msgstr "Knihovna"
 
-#: gui/mainwindow.cpp:399
+#: gui/mainwindow.cpp:398
 msgid "Small Playback Buttons"
 msgstr "Malá tlačítka pro přehrávání"
 
-#: gui/mainwindow.cpp:402
+#: gui/mainwindow.cpp:401
 msgid "Small Control Buttons"
 msgstr "Malá tlačítka pro ovládání"
 
 #. i18n: file: gui/serversettings.ui:105
 #. i18n: ectx: property (text), widget (QPushButton, connectButton)
-#: gui/mainwindow.cpp:406 gui/serversettings.cpp:192 po/rc.cpp:498 rc.cpp:498
+#: gui/mainwindow.cpp:405 gui/serversettings.cpp:192 po/rc.cpp:498 rc.cpp:498
 msgid "Connect"
 msgstr "Spojit"
 
-#: gui/mainwindow.cpp:412
+#: gui/mainwindow.cpp:411
 msgid "Outputs"
 msgstr "Výstupy"
 
-#: gui/mainwindow.cpp:415
+#: gui/mainwindow.cpp:414
 msgid "Refresh Database"
 msgstr "Obnovit databázi"
 
-#: gui/mainwindow.cpp:418
+#: gui/mainwindow.cpp:417
 msgid "Previous Track"
 msgstr "Předchozí skladba"
 
-#: gui/mainwindow.cpp:422
+#: gui/mainwindow.cpp:421
 msgid "Next Track"
 msgstr "Další skladba"
 
-#: gui/mainwindow.cpp:426
+#: gui/mainwindow.cpp:425
 msgid "Play/Pause"
 msgstr "Přehrát/Pozastavit"
 
-#: gui/mainwindow.cpp:430
+#: gui/mainwindow.cpp:429
 msgid "Stop"
 msgstr "Zastavit"
 
-#: gui/mainwindow.cpp:434
+#: gui/mainwindow.cpp:433
 msgid "Increase Volume"
 msgstr "Zvýšit hlasitost"
 
-#: gui/mainwindow.cpp:438
+#: gui/mainwindow.cpp:437
 msgid "Decrease Volume"
 msgstr "Snížit hlasitost"
 
-#: gui/mainwindow.cpp:442
+#: gui/mainwindow.cpp:441
 msgid "Add To Play Queue"
 msgstr "Přidat do řady přehrávaných skladeb"
 
-#: gui/mainwindow.cpp:445
+#: gui/mainwindow.cpp:444
 msgid "Add To Playlist"
 msgstr "Přidat do seznamu skladeb"
 
-#: gui/mainwindow.cpp:458 widgets/itemview.cpp:444
+#: gui/mainwindow.cpp:457 widgets/itemview.cpp:444
 msgid "Back"
 msgstr "Zpět"
 
@@ -1181,57 +1181,57 @@ msgstr "Zpět"
 #. i18n: ectx: property (text), widget (QPushButton, removeBtn)
 #. i18n: file: gui/serversettings.ui:132
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: gui/mainwindow.cpp:461 po/rc.cpp:171 po/rc.cpp:504 rc.cpp:171 rc.cpp:504
+#: gui/mainwindow.cpp:460 po/rc.cpp:171 po/rc.cpp:504 rc.cpp:171 rc.cpp:504
 msgid "Remove"
 msgstr "Odstranit"
 
-#: gui/mainwindow.cpp:464
+#: gui/mainwindow.cpp:463
 msgid "Replace Play Queue"
 msgstr "Nahradit řadu přehrávaných skladeb"
 
-#: gui/mainwindow.cpp:467
+#: gui/mainwindow.cpp:466
 msgid "Remove From Play Queue"
 msgstr "Odstranit z řady skladeb k přehrání"
 
-#: gui/mainwindow.cpp:470
+#: gui/mainwindow.cpp:469
 msgid "Copy Track Info"
 msgstr "Kopírovat informace o skladbě"
 
-#: gui/mainwindow.cpp:473
+#: gui/mainwindow.cpp:472
 msgid "Crop"
 msgstr "Oříznout"
 
-#: gui/mainwindow.cpp:476
+#: gui/mainwindow.cpp:475
 msgid "Shuffle"
 msgstr "Zamíchat"
 
 #. i18n: file: gui/serversettings.ui:125
 #. i18n: ectx: property (text), widget (QPushButton, saveButton)
-#: gui/mainwindow.cpp:479 gui/serversettings.cpp:121 po/rc.cpp:501 rc.cpp:501
+#: gui/mainwindow.cpp:478 gui/serversettings.cpp:121 po/rc.cpp:501 rc.cpp:501
 msgid "Save As"
 msgstr "Uložit jako"
 
-#: gui/mainwindow.cpp:482
+#: gui/mainwindow.cpp:481
 msgid "Clear"
 msgstr "Vyprázdnit"
 
-#: gui/mainwindow.cpp:486
+#: gui/mainwindow.cpp:485
 msgid "Expanded Interface"
 msgstr "Rozšířené rozhraní"
 
-#: gui/mainwindow.cpp:490
+#: gui/mainwindow.cpp:489
 msgid "Random"
 msgstr "Náhodné"
 
-#: gui/mainwindow.cpp:493
+#: gui/mainwindow.cpp:492
 msgid "Repeat"
 msgstr "Opakování"
 
-#: gui/mainwindow.cpp:496
+#: gui/mainwindow.cpp:495
 msgid "Single"
 msgstr "Jednotlivé"
 
-#: gui/mainwindow.cpp:497
+#: gui/mainwindow.cpp:496
 msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
@@ -1239,11 +1239,11 @@ msgstr ""
 "Když jsou zapnuty jednotlivé skladby, je přehrávání zastaveno po nynější "
 "písni, nebo je píseň opakována, pokud je povolen režim opakování."
 
-#: gui/mainwindow.cpp:500
+#: gui/mainwindow.cpp:499
 msgid "Consume"
 msgstr "Sníst"
 
-#: gui/mainwindow.cpp:501
+#: gui/mainwindow.cpp:500
 msgid ""
 "When consume is activated, a song is removed from the play queue after it "
 "has been played."
@@ -1251,151 +1251,163 @@ msgstr ""
 "Když je zapnuto snězení, píseň je odstraněna z řady skladeb k přehrání, poté "
 "co byla přehrána"
 
-#: gui/mainwindow.cpp:504
-msgid "Add With Priorty"
+#: gui/mainwindow.cpp:503
+#, fuzzy
+msgid "Add With Priority"
 msgstr "Přidat s předností"
 
-#: gui/mainwindow.cpp:507
-msgid "Set Priorty"
+#: gui/mainwindow.cpp:506
+#, fuzzy
+msgid "Set Priority"
 msgstr "Nastavit přednost"
 
-#: gui/mainwindow.cpp:510
-msgid "Highest Priorty (255)"
+#: gui/mainwindow.cpp:509
+#, fuzzy
+msgid "Highest Priority (255)"
 msgstr "Nejvyšší přednost (255)"
 
-#: gui/mainwindow.cpp:513
-msgid "High Priorty (200)"
+#: gui/mainwindow.cpp:512
+#, fuzzy
+msgid "High Priority (200)"
 msgstr "Vysoká přednost (200)"
 
-#: gui/mainwindow.cpp:516
-msgid "Medium Priorty (125)"
+#: gui/mainwindow.cpp:515
+#, fuzzy
+msgid "Medium Priority (125)"
 msgstr "Střední přednost (125)"
 
-#: gui/mainwindow.cpp:519
-msgid "Low Priorty (50)"
+#: gui/mainwindow.cpp:518
+#, fuzzy
+msgid "Low Priority (50)"
 msgstr "Nízká přednost (50)"
 
-#: gui/mainwindow.cpp:522
-msgid "Custom Priorty..."
+#: gui/mainwindow.cpp:521
+#, fuzzy
+msgid "Default Priority (0)"
+msgstr "Nízká přednost (50)"
+
+#: gui/mainwindow.cpp:524
+#, fuzzy
+msgid "Custom Priority..."
 msgstr "Vlastní přednost..."
 
-#: gui/mainwindow.cpp:526
+#: gui/mainwindow.cpp:528
 msgid "Play Stream"
 msgstr "Přehrát proud"
 
-#: gui/mainwindow.cpp:527
+#: gui/mainwindow.cpp:529
 msgid "When 'Play Stream' is activated, the enabled stream is played locally."
 msgstr "Když je zapnuto Přehrát proud, je povolený proud přehráván místně."
 
-#: gui/mainwindow.cpp:531
+#: gui/mainwindow.cpp:533
 msgid "Locate In Library"
 msgstr "Najít v knihovně"
 
-#: gui/mainwindow.cpp:546
+#: gui/mainwindow.cpp:548
 msgid "Edit Tags"
 msgstr "Upravit značky"
 
-#: gui/mainwindow.cpp:549
+#: gui/mainwindow.cpp:551
 msgid "Edit Song Tags"
 msgstr "Upravit značky písně"
 
 #. i18n: file: gui/interfacesettings.ui:303
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
-#: gui/mainwindow.cpp:553 po/rc.cpp:327 rc.cpp:327
+#: gui/mainwindow.cpp:555 po/rc.cpp:327 rc.cpp:327
 msgid "Play Queue"
 msgstr "Přehrát pořadí"
 
 #. i18n: file: gui/interfacesettings.ui:200
 #. i18n: ectx: attribute (title), widget (QWidget, tab_6)
-#: gui/mainwindow.cpp:565 gui/playlistspage.cpp:63 po/rc.cpp:303 rc.cpp:303
+#: gui/mainwindow.cpp:567 gui/playlistspage.cpp:63 po/rc.cpp:303 rc.cpp:303
 msgid "Playlists"
 msgstr "Seznamy"
 
-#: gui/mainwindow.cpp:573 gui/preferencesdialog.cpp:155
+#: gui/mainwindow.cpp:575 gui/preferencesdialog.cpp:155
 msgid "Lyrics"
 msgstr "Slova písně"
 
-#: gui/mainwindow.cpp:576 gui/streamspage.cpp:90 widgets/groupedview.cpp:217
+#: gui/mainwindow.cpp:578 gui/streamspage.cpp:90 widgets/groupedview.cpp:217
 msgid "Streams"
 msgstr "Proudy"
 
-#: gui/mainwindow.cpp:580
+#: gui/mainwindow.cpp:582
 msgid "Info"
 msgstr "Informace"
 
-#: gui/mainwindow.cpp:584
+#: gui/mainwindow.cpp:586
 msgid "Server Info"
 msgstr "Informace o serveru"
 
-#: gui/mainwindow.cpp:592
+#: gui/mainwindow.cpp:594
 msgid "Search"
 msgstr "Hledat"
 
-#: gui/mainwindow.cpp:595
+#: gui/mainwindow.cpp:597
 msgid "Expand All"
 msgstr "Rozbalit vše"
 
-#: gui/mainwindow.cpp:598
+#: gui/mainwindow.cpp:600
 msgid "Collapse All"
 msgstr "Složit vše"
 
-#: gui/mainwindow.cpp:817 replaygain/rgdialog.cpp:85
+#: gui/mainwindow.cpp:820 replaygain/rgdialog.cpp:85
 msgid "ReplayGain"
 msgstr "Vyrovnání hlasitosti"
 
-#: gui/mainwindow.cpp:919
+#: gui/mainwindow.cpp:922
 msgid "Search Play Queue..."
 msgstr "Prohledat řadu přehrávaných skladeb..."
 
-#: gui/mainwindow.cpp:1252
+#: gui/mainwindow.cpp:1256
 msgid "Auto Hide"
 msgstr "Automatické skrývání"
 
-#: gui/mainwindow.cpp:1472
+#: gui/mainwindow.cpp:1476
 msgid "Failed to locate any songs matching the dynamic playlist rules."
 msgstr ""
 "Nepodařilo se najít žádné písně odpovídající pravidlům dynamického seznamu "
 "skladeb."
 
-#: gui/mainwindow.cpp:1629
+#: gui/mainwindow.cpp:1633
 msgid "Connecting to %1"
 msgstr "Připojuje se k %1"
 
-#: gui/mainwindow.cpp:1782 gui/mainwindow.cpp:2205 gui/serversettings.cpp:74
+#: gui/mainwindow.cpp:1786 gui/mainwindow.cpp:2199 gui/serversettings.cpp:74
 #: mpd/mpdconnection.cpp:178
 msgid "Default"
 msgstr "Výchozí"
 
-#: gui/mainwindow.cpp:2208 gui/mainwindow.cpp:2211
+#: gui/mainwindow.cpp:2202 gui/mainwindow.cpp:2205
 msgid "Cantata (%1)"
 msgstr "Cantata (%1)"
 
-#: gui/mainwindow.cpp:2215
+#: gui/mainwindow.cpp:2209
 msgctxt "track :: Cantata (connection)"
 msgid "%1 :: Cantata (%2)"
 msgstr "%1 :: Cantata (%2)"
 
-#: gui/mainwindow.cpp:2216
+#: gui/mainwindow.cpp:2210
 msgctxt "track :: Cantata"
 msgid "%1 :: Cantata"
 msgstr "%1 :: Cantata"
 
-#: gui/mainwindow.cpp:2226
+#: gui/mainwindow.cpp:2220
 msgctxt "track - artist :: Cantata (connection)"
 msgid "%1 - %2 :: Cantata (%3)"
 msgstr "%1 - %2 :: Cantata (%3)"
 
-#: gui/mainwindow.cpp:2227
+#: gui/mainwindow.cpp:2221
 msgctxt "track - artist :: Cantata"
 msgid "%1 - %2 :: Cantata"
 msgstr "%1 - %2 :: Cantata"
 
-#: gui/mainwindow.cpp:2276 widgets/groupedview.cpp:233
+#: gui/mainwindow.cpp:2270 widgets/groupedview.cpp:233
 msgctxt "artist - album"
 msgid "%1 - %2"
 msgstr "%1 - %2"
 
-#: gui/mainwindow.cpp:2307
+#: gui/mainwindow.cpp:2301
 msgid ""
 "<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
 "align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
@@ -1409,46 +1421,46 @@ msgstr ""
 "td><td>%4</td></tr><tr><td align=\"right\"><b>Délka:</b></td><td>%5</td></"
 "tr></table>"
 
-#: gui/mainwindow.cpp:2333 gui/mainwindow.cpp:2353 gui/mainwindow.cpp:2501
-#: gui/mainwindow.cpp:2871 gui/mainwindow.cpp:2873 main.cpp:39
+#: gui/mainwindow.cpp:2327 gui/mainwindow.cpp:2347 gui/mainwindow.cpp:2493
+#: gui/mainwindow.cpp:2864 gui/mainwindow.cpp:2866 main.cpp:39
 msgid "Cantata"
 msgstr "Cantata"
 
-#: gui/mainwindow.cpp:2409 gui/mainwindow.cpp:2410
+#: gui/mainwindow.cpp:2401 gui/mainwindow.cpp:2402
 msgid "Volume Disabled"
 msgstr "Hlasitost vypnuta"
 
-#: gui/mainwindow.cpp:2414 gui/mainwindow.cpp:2415
+#: gui/mainwindow.cpp:2406 gui/mainwindow.cpp:2407
 msgid "Volume %1%"
 msgstr "Hlasitost %1%"
 
-#: gui/mainwindow.cpp:2622
-msgid "Priorty"
+#: gui/mainwindow.cpp:2615 models/playqueuemodel.cpp:110
+msgid "Priority"
 msgstr "Přednost"
 
-#: gui/mainwindow.cpp:2622
+#: gui/mainwindow.cpp:2615
 msgid "Enter priority (0..255):"
 msgstr "Zadejte přednost (0..255):"
 
-#: gui/mainwindow.cpp:2644 gui/playlistspage.cpp:210
+#: gui/mainwindow.cpp:2637 gui/playlistspage.cpp:210
 msgid "Playlist Name"
 msgstr "Název seznamu skladeb"
 
-#: gui/mainwindow.cpp:2644 gui/playlistspage.cpp:210
+#: gui/mainwindow.cpp:2637 gui/playlistspage.cpp:210
 msgid "Enter a name for the playlist:"
 msgstr "Zadejte název pro seznam skladeb:"
 
-#: gui/mainwindow.cpp:2647
+#: gui/mainwindow.cpp:2640
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
 msgstr ""
 "Seznam skladeb pojmenovaný <b>%1</b> již existuje!<br/>Přidat do tohoto "
 "seznamu skladeb?"
 
-#: gui/mainwindow.cpp:2648
+#: gui/mainwindow.cpp:2641
 msgid "Existing Playlist"
 msgstr "Existující seznam skladeb"
 
-#: gui/mainwindow.cpp:2695 widgets/groupedview.cpp:328
+#: gui/mainwindow.cpp:2688 widgets/groupedview.cpp:328
 msgid "1 Track"
 msgid_plural "%1 Tracks"
 msgstr[0] "Jedna skladba"
@@ -1546,8 +1558,8 @@ msgid ""
 "<i><b>Connected to %1</b><br/>The entries below apply to the currently "
 "connected MPD instance.</i>"
 msgstr ""
-"<i><b>Připojeno k %1.</b><br/>Záznamy níže použít na nyní připojenou instanci "
-"MPD.</i>"
+"<i><b>Připojeno k %1.</b><br/>Záznamy níže použít na nyní připojenou "
+"instanci MPD.</i>"
 
 #. i18n: file: gui/serverplaybacksettings.ui:36
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
@@ -1556,8 +1568,8 @@ msgid ""
 "<i><b>Not Connected.</b><br/>The entries below cannot be modified, as "
 "Cantata is not connected to MPD.</i>"
 msgstr ""
-"<i><b>Nepřipojeno.</b><br/>Záznamy níže nelze změnit, protože "
-"Cantata není připojena k MPD.</i>"
+"<i><b>Nepřipojeno.</b><br/>Záznamy níže nelze změnit, protože Cantata není "
+"připojena k MPD.</i>"
 
 #: gui/serversettings.cpp:44
 msgid ""
@@ -2180,10 +2192,6 @@ msgstr "Disk"
 #: models/playqueuemodel.cpp:108 po/rc.cpp:99 rc.cpp:99
 msgid "Year"
 msgstr "Rok"
-
-#: models/playqueuemodel.cpp:110
-msgid "Priority"
-msgstr "Přednost"
 
 #: models/playqueuemodel.cpp:351
 msgid "<b>(Priority: %1)</b>"
@@ -2868,8 +2876,7 @@ msgstr ""
 "kvůli souborům, i když byste se připojil přes místní zásuvku.<br/><br/>\n"
 "<b>POZNÁMKA:</b>\"Adresa/Rozhraní\" může obsahovat buď adresu IP, anebo "
 "rozhraní (např. eth0), jež si přejete poslouchat pro spojení. Ponechte "
-"prázdné "
-"pro užití adresy místní zpětné smyčky (127.0.0.1).</i></i>"
+"prázdné pro užití adresy místní zpětné smyčky (127.0.0.1).</i></i>"
 
 #. i18n: file: gui/interfacesettings.ui:38
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
@@ -2927,12 +2934,12 @@ msgid ""
 "When the image is displayed, it will be cropped (either top/bottom, or left/"
 "right) to provide a square image.</i>"
 msgstr ""
-"<i><b>POZNÁMKA:</b> Při hledání obrázků umělců bude Cantata hledat "
-"buď artist.jpg, artist.png, <Artist>.jpg, nebo <Artist>.png\n"
+"<i><b>POZNÁMKA:</b> Při hledání obrázků umělců bude Cantata hledat buď "
+"artist.jpg, artist.png, <Artist>.jpg, nebo <Artist>.png\n"
 "ve složce s nynější skladbou, nebo v její rodičovské složce. Pokud není "
 "nalezen žádný obrázek, Cantata se pokusí o stažení jednoho.<br/>\n"
-"Když je obrázek zobrazen, bude ořezán (buď nahoře/dole, nebo vlevo/"
-"vpravo), aby měl podobu čtverce.</i>"
+"Když je obrázek zobrazen, bude ořezán (buď nahoře/dole, nebo vlevo/vpravo), "
+"aby měl podobu čtverce.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:170
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
@@ -3177,9 +3184,8 @@ msgid ""
 "stream.</i>"
 msgstr ""
 "<i><b>POZNÁMKA:</b> Výstup do HTTP proudu se používá jen tehdy, když máte "
-"nastaveno MPD "
-"na výstup do proudu HTTP, a přejete si, aby Cantata mohla tento proud "
-"přehrávat.</i>"
+"nastaveno MPD na výstup do proudu HTTP, a přejete si, aby Cantata mohla "
+"tento proud přehrávat.</i>"
 
 #. i18n: file: gui/serversettings.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -3454,6 +3460,9 @@ msgstr "Karty dole"
 #: widgets/itemview.cpp:959
 msgid "Search %1..."
 msgstr "Hledání %1..."
+
+#~ msgid "Priorty"
+#~ msgstr "Přednost"
 
 #~ msgid "Other Protocol"
 #~ msgstr "Jiný protokol"

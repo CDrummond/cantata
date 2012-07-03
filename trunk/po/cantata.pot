@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-27 21:49+0100\n"
+"POT-Creation-Date: 2012-07-03 19:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Copy Songs"
 msgstr ""
 
-#: devices/actiondialog.cpp:191 gui/mainwindow.cpp:812
+#: devices/actiondialog.cpp:191 gui/mainwindow.cpp:815
 msgid "Delete Songs"
 msgstr ""
 
@@ -285,7 +285,7 @@ msgstr ""
 msgid "Add Device"
 msgstr ""
 
-#: devices/devicespage.cpp:139 gui/mainwindow.cpp:588
+#: devices/devicespage.cpp:139 gui/mainwindow.cpp:590
 msgid "Devices"
 msgstr ""
 
@@ -319,7 +319,7 @@ msgstr ""
 msgid "Are you sure you wish to forget the selected device?"
 msgstr ""
 
-#: devices/devicespage.cpp:461 gui/mainwindow.cpp:1647
+#: devices/devicespage.cpp:461 gui/mainwindow.cpp:1651
 msgid "Action is not currently possible, due to other open dialogs."
 msgstr ""
 
@@ -609,7 +609,7 @@ msgstr ""
 msgid "Not Connected"
 msgstr ""
 
-#: devices/remotedevicepropertiesdialog.cpp:45 gui/mainwindow.cpp:409
+#: devices/remotedevicepropertiesdialog.cpp:45 gui/mainwindow.cpp:408
 #: gui/preferencesdialog.cpp:133
 msgid "Connection"
 msgstr ""
@@ -683,7 +683,7 @@ msgstr ""
 msgid "Songs Only In Library:"
 msgstr ""
 
-#: devices/syncdialog.cpp:101 gui/mainwindow.cpp:449
+#: devices/syncdialog.cpp:101 gui/mainwindow.cpp:448
 msgid "Copy To Device"
 msgstr ""
 
@@ -699,7 +699,7 @@ msgstr ""
 msgid "Device and library are in sync."
 msgstr ""
 
-#: devices/trackorganiser.cpp:53 gui/mainwindow.cpp:752
+#: devices/trackorganiser.cpp:53 gui/mainwindow.cpp:755
 msgid "Organize Files"
 msgstr ""
 
@@ -778,7 +778,7 @@ msgstr ""
 msgid "Stop Dynamic Mode"
 msgstr ""
 
-#: dynamic/dynamicpage.cpp:97 gui/mainwindow.cpp:569
+#: dynamic/dynamicpage.cpp:97 gui/mainwindow.cpp:571
 msgid "Dynamic"
 msgstr ""
 
@@ -866,7 +866,7 @@ msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:138
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
-#: gui/albumspage.cpp:55 gui/mainwindow.cpp:559 po/rc.cpp:282 rc.cpp:282
+#: gui/albumspage.cpp:55 gui/mainwindow.cpp:561 po/rc.cpp:282 rc.cpp:282
 msgid "Albums"
 msgstr ""
 
@@ -874,7 +874,7 @@ msgstr ""
 msgid "Open File Manager"
 msgstr ""
 
-#: gui/folderpage.cpp:59 gui/mainwindow.cpp:562
+#: gui/folderpage.cpp:59 gui/mainwindow.cpp:564
 msgid "Folders"
 msgstr ""
 
@@ -942,65 +942,65 @@ msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:30
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
-#: gui/librarypage.cpp:96 gui/mainwindow.cpp:556 po/rc.cpp:262 rc.cpp:262
+#: gui/librarypage.cpp:96 gui/mainwindow.cpp:558 po/rc.cpp:262 rc.cpp:262
 msgid "Library"
 msgstr ""
 
-#: gui/mainwindow.cpp:399
+#: gui/mainwindow.cpp:398
 msgid "Small Playback Buttons"
 msgstr ""
 
-#: gui/mainwindow.cpp:402
+#: gui/mainwindow.cpp:401
 msgid "Small Control Buttons"
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:105
 #. i18n: ectx: property (text), widget (QPushButton, connectButton)
-#: gui/mainwindow.cpp:406 gui/serversettings.cpp:192 po/rc.cpp:498 rc.cpp:498
+#: gui/mainwindow.cpp:405 gui/serversettings.cpp:192 po/rc.cpp:498 rc.cpp:498
 msgid "Connect"
 msgstr ""
 
-#: gui/mainwindow.cpp:412
+#: gui/mainwindow.cpp:411
 msgid "Outputs"
 msgstr ""
 
-#: gui/mainwindow.cpp:415
+#: gui/mainwindow.cpp:414
 msgid "Refresh Database"
 msgstr ""
 
-#: gui/mainwindow.cpp:418
+#: gui/mainwindow.cpp:417
 msgid "Previous Track"
 msgstr ""
 
-#: gui/mainwindow.cpp:422
+#: gui/mainwindow.cpp:421
 msgid "Next Track"
 msgstr ""
 
-#: gui/mainwindow.cpp:426
+#: gui/mainwindow.cpp:425
 msgid "Play/Pause"
 msgstr ""
 
-#: gui/mainwindow.cpp:430
+#: gui/mainwindow.cpp:429
 msgid "Stop"
 msgstr ""
 
-#: gui/mainwindow.cpp:434
+#: gui/mainwindow.cpp:433
 msgid "Increase Volume"
 msgstr ""
 
-#: gui/mainwindow.cpp:438
+#: gui/mainwindow.cpp:437
 msgid "Decrease Volume"
 msgstr ""
 
-#: gui/mainwindow.cpp:442
+#: gui/mainwindow.cpp:441
 msgid "Add To Play Queue"
 msgstr ""
 
-#: gui/mainwindow.cpp:445
+#: gui/mainwindow.cpp:444
 msgid "Add To Playlist"
 msgstr ""
 
-#: gui/mainwindow.cpp:458 widgets/itemview.cpp:444
+#: gui/mainwindow.cpp:457 widgets/itemview.cpp:444
 msgid "Back"
 msgstr ""
 
@@ -1012,215 +1012,219 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, removeBtn)
 #. i18n: file: gui/serversettings.ui:132
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: gui/mainwindow.cpp:461 po/rc.cpp:171 po/rc.cpp:504 rc.cpp:171 rc.cpp:504
+#: gui/mainwindow.cpp:460 po/rc.cpp:171 po/rc.cpp:504 rc.cpp:171 rc.cpp:504
 msgid "Remove"
 msgstr ""
 
-#: gui/mainwindow.cpp:464
+#: gui/mainwindow.cpp:463
 msgid "Replace Play Queue"
 msgstr ""
 
-#: gui/mainwindow.cpp:467
+#: gui/mainwindow.cpp:466
 msgid "Remove From Play Queue"
 msgstr ""
 
-#: gui/mainwindow.cpp:470
+#: gui/mainwindow.cpp:469
 msgid "Copy Track Info"
 msgstr ""
 
-#: gui/mainwindow.cpp:473
+#: gui/mainwindow.cpp:472
 msgid "Crop"
 msgstr ""
 
-#: gui/mainwindow.cpp:476
+#: gui/mainwindow.cpp:475
 msgid "Shuffle"
 msgstr ""
 
 #. i18n: file: gui/serversettings.ui:125
 #. i18n: ectx: property (text), widget (QPushButton, saveButton)
-#: gui/mainwindow.cpp:479 gui/serversettings.cpp:121 po/rc.cpp:501 rc.cpp:501
+#: gui/mainwindow.cpp:478 gui/serversettings.cpp:121 po/rc.cpp:501 rc.cpp:501
 msgid "Save As"
 msgstr ""
 
-#: gui/mainwindow.cpp:482
+#: gui/mainwindow.cpp:481
 msgid "Clear"
 msgstr ""
 
-#: gui/mainwindow.cpp:486
+#: gui/mainwindow.cpp:485
 msgid "Expanded Interface"
 msgstr ""
 
-#: gui/mainwindow.cpp:490
+#: gui/mainwindow.cpp:489
 msgid "Random"
 msgstr ""
 
-#: gui/mainwindow.cpp:493
+#: gui/mainwindow.cpp:492
 msgid "Repeat"
 msgstr ""
 
-#: gui/mainwindow.cpp:496
+#: gui/mainwindow.cpp:495
 msgid "Single"
 msgstr ""
 
-#: gui/mainwindow.cpp:497
+#: gui/mainwindow.cpp:496
 msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
 msgstr ""
 
-#: gui/mainwindow.cpp:500
+#: gui/mainwindow.cpp:499
 msgid "Consume"
 msgstr ""
 
-#: gui/mainwindow.cpp:501
+#: gui/mainwindow.cpp:500
 msgid ""
 "When consume is activated, a song is removed from the play queue after it "
 "has been played."
 msgstr ""
 
-#: gui/mainwindow.cpp:504
-msgid "Add With Priorty"
+#: gui/mainwindow.cpp:503
+msgid "Add With Priority"
 msgstr ""
 
-#: gui/mainwindow.cpp:507
-msgid "Set Priorty"
+#: gui/mainwindow.cpp:506
+msgid "Set Priority"
 msgstr ""
 
-#: gui/mainwindow.cpp:510
-msgid "Highest Priorty (255)"
+#: gui/mainwindow.cpp:509
+msgid "Highest Priority (255)"
 msgstr ""
 
-#: gui/mainwindow.cpp:513
-msgid "High Priorty (200)"
+#: gui/mainwindow.cpp:512
+msgid "High Priority (200)"
 msgstr ""
 
-#: gui/mainwindow.cpp:516
-msgid "Medium Priorty (125)"
+#: gui/mainwindow.cpp:515
+msgid "Medium Priority (125)"
 msgstr ""
 
-#: gui/mainwindow.cpp:519
-msgid "Low Priorty (50)"
+#: gui/mainwindow.cpp:518
+msgid "Low Priority (50)"
 msgstr ""
 
-#: gui/mainwindow.cpp:522
-msgid "Custom Priorty..."
+#: gui/mainwindow.cpp:521
+msgid "Default Priority (0)"
 msgstr ""
 
-#: gui/mainwindow.cpp:526
+#: gui/mainwindow.cpp:524
+msgid "Custom Priority..."
+msgstr ""
+
+#: gui/mainwindow.cpp:528
 msgid "Play Stream"
 msgstr ""
 
-#: gui/mainwindow.cpp:527
+#: gui/mainwindow.cpp:529
 msgid "When 'Play Stream' is activated, the enabled stream is played locally."
 msgstr ""
 
-#: gui/mainwindow.cpp:531
+#: gui/mainwindow.cpp:533
 msgid "Locate In Library"
 msgstr ""
 
-#: gui/mainwindow.cpp:546
+#: gui/mainwindow.cpp:548
 msgid "Edit Tags"
 msgstr ""
 
-#: gui/mainwindow.cpp:549
+#: gui/mainwindow.cpp:551
 msgid "Edit Song Tags"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:303
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
-#: gui/mainwindow.cpp:553 po/rc.cpp:327 rc.cpp:327
+#: gui/mainwindow.cpp:555 po/rc.cpp:327 rc.cpp:327
 msgid "Play Queue"
 msgstr ""
 
 #. i18n: file: gui/interfacesettings.ui:200
 #. i18n: ectx: attribute (title), widget (QWidget, tab_6)
-#: gui/mainwindow.cpp:565 gui/playlistspage.cpp:63 po/rc.cpp:303 rc.cpp:303
+#: gui/mainwindow.cpp:567 gui/playlistspage.cpp:63 po/rc.cpp:303 rc.cpp:303
 msgid "Playlists"
 msgstr ""
 
-#: gui/mainwindow.cpp:573 gui/preferencesdialog.cpp:155
+#: gui/mainwindow.cpp:575 gui/preferencesdialog.cpp:155
 msgid "Lyrics"
 msgstr ""
 
-#: gui/mainwindow.cpp:576 gui/streamspage.cpp:90 widgets/groupedview.cpp:217
+#: gui/mainwindow.cpp:578 gui/streamspage.cpp:90 widgets/groupedview.cpp:217
 msgid "Streams"
 msgstr ""
 
-#: gui/mainwindow.cpp:580
+#: gui/mainwindow.cpp:582
 msgid "Info"
 msgstr ""
 
-#: gui/mainwindow.cpp:584
+#: gui/mainwindow.cpp:586
 msgid "Server Info"
 msgstr ""
 
-#: gui/mainwindow.cpp:592
+#: gui/mainwindow.cpp:594
 msgid "Search"
 msgstr ""
 
-#: gui/mainwindow.cpp:595
+#: gui/mainwindow.cpp:597
 msgid "Expand All"
 msgstr ""
 
-#: gui/mainwindow.cpp:598
+#: gui/mainwindow.cpp:600
 msgid "Collapse All"
 msgstr ""
 
-#: gui/mainwindow.cpp:817 replaygain/rgdialog.cpp:85
+#: gui/mainwindow.cpp:820 replaygain/rgdialog.cpp:85
 msgid "ReplayGain"
 msgstr ""
 
-#: gui/mainwindow.cpp:919
+#: gui/mainwindow.cpp:922
 msgid "Search Play Queue..."
 msgstr ""
 
-#: gui/mainwindow.cpp:1252
+#: gui/mainwindow.cpp:1256
 msgid "Auto Hide"
 msgstr ""
 
-#: gui/mainwindow.cpp:1472
+#: gui/mainwindow.cpp:1476
 msgid "Failed to locate any songs matching the dynamic playlist rules."
 msgstr ""
 
-#: gui/mainwindow.cpp:1629
+#: gui/mainwindow.cpp:1633
 msgid "Connecting to %1"
 msgstr ""
 
-#: gui/mainwindow.cpp:1782 gui/mainwindow.cpp:2205 gui/serversettings.cpp:74
+#: gui/mainwindow.cpp:1786 gui/mainwindow.cpp:2199 gui/serversettings.cpp:74
 #: mpd/mpdconnection.cpp:178
 msgid "Default"
 msgstr ""
 
-#: gui/mainwindow.cpp:2208 gui/mainwindow.cpp:2211
+#: gui/mainwindow.cpp:2202 gui/mainwindow.cpp:2205
 msgid "Cantata (%1)"
 msgstr ""
 
-#: gui/mainwindow.cpp:2215
+#: gui/mainwindow.cpp:2209
 msgctxt "track :: Cantata (connection)"
 msgid "%1 :: Cantata (%2)"
 msgstr ""
 
-#: gui/mainwindow.cpp:2216
+#: gui/mainwindow.cpp:2210
 msgctxt "track :: Cantata"
 msgid "%1 :: Cantata"
 msgstr ""
 
-#: gui/mainwindow.cpp:2226
+#: gui/mainwindow.cpp:2220
 msgctxt "track - artist :: Cantata (connection)"
 msgid "%1 - %2 :: Cantata (%3)"
 msgstr ""
 
-#: gui/mainwindow.cpp:2227
+#: gui/mainwindow.cpp:2221
 msgctxt "track - artist :: Cantata"
 msgid "%1 - %2 :: Cantata"
 msgstr ""
 
-#: gui/mainwindow.cpp:2276 widgets/groupedview.cpp:233
+#: gui/mainwindow.cpp:2270 widgets/groupedview.cpp:233
 msgctxt "artist - album"
 msgid "%1 - %2"
 msgstr ""
 
-#: gui/mainwindow.cpp:2307
+#: gui/mainwindow.cpp:2301
 msgid ""
 "<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
 "align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
@@ -1229,44 +1233,44 @@ msgid ""
 "tr></table>"
 msgstr ""
 
-#: gui/mainwindow.cpp:2333 gui/mainwindow.cpp:2353 gui/mainwindow.cpp:2501
-#: gui/mainwindow.cpp:2871 gui/mainwindow.cpp:2873 main.cpp:39
+#: gui/mainwindow.cpp:2327 gui/mainwindow.cpp:2347 gui/mainwindow.cpp:2493
+#: gui/mainwindow.cpp:2864 gui/mainwindow.cpp:2866 main.cpp:39
 msgid "Cantata"
 msgstr ""
 
-#: gui/mainwindow.cpp:2409 gui/mainwindow.cpp:2410
+#: gui/mainwindow.cpp:2401 gui/mainwindow.cpp:2402
 msgid "Volume Disabled"
 msgstr ""
 
-#: gui/mainwindow.cpp:2414 gui/mainwindow.cpp:2415
+#: gui/mainwindow.cpp:2406 gui/mainwindow.cpp:2407
 msgid "Volume %1%"
 msgstr ""
 
-#: gui/mainwindow.cpp:2622
-msgid "Priorty"
+#: gui/mainwindow.cpp:2615 models/playqueuemodel.cpp:110
+msgid "Priority"
 msgstr ""
 
-#: gui/mainwindow.cpp:2622
+#: gui/mainwindow.cpp:2615
 msgid "Enter priority (0..255):"
 msgstr ""
 
-#: gui/mainwindow.cpp:2644 gui/playlistspage.cpp:210
+#: gui/mainwindow.cpp:2637 gui/playlistspage.cpp:210
 msgid "Playlist Name"
 msgstr ""
 
-#: gui/mainwindow.cpp:2644 gui/playlistspage.cpp:210
+#: gui/mainwindow.cpp:2637 gui/playlistspage.cpp:210
 msgid "Enter a name for the playlist:"
 msgstr ""
 
-#: gui/mainwindow.cpp:2647
+#: gui/mainwindow.cpp:2640
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
 msgstr ""
 
-#: gui/mainwindow.cpp:2648
+#: gui/mainwindow.cpp:2641
 msgid "Existing Playlist"
 msgstr ""
 
-#: gui/mainwindow.cpp:2695 widgets/groupedview.cpp:328
+#: gui/mainwindow.cpp:2688 widgets/groupedview.cpp:328
 msgid "1 Track"
 msgid_plural "%1 Tracks"
 msgstr[0] ""
@@ -1913,10 +1917,6 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QPushButton, year)
 #: models/playqueuemodel.cpp:108 po/rc.cpp:99 rc.cpp:99
 msgid "Year"
-msgstr ""
-
-#: models/playqueuemodel.cpp:110
-msgid "Priority"
 msgstr ""
 
 #: models/playqueuemodel.cpp:351

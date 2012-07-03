@@ -2608,9 +2608,10 @@ void MainWindow::addWithPriorty()
     }
 
     int prio=act->data().toInt();
+    bool isPlayQueue=playQueue->hasFocus();
     QModelIndexList pqItems;
 
-    if (playQueue->hasFocus()) {
+    if (isPlayQueue) {
         pqItems=playQueue->selectedIndexes();
         if (pqItems.isEmpty()) {
             return;
@@ -2626,7 +2627,7 @@ void MainWindow::addWithPriorty()
     }
 
     if (prio>=0 && prio<=255) {
-        if (playQueue->hasFocus()) {
+        if (isPlayQueue) {
             QList<quint32> ids;
             foreach (const QModelIndex &idx, pqItems) {
                 ids.append(playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row()));

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 19:44+0100\n"
-"PO-Revision-Date: 2012-06-28 16:22+0200\n"
+"POT-Creation-Date: 2012-07-06 21:40+0100\n"
+"PO-Revision-Date: 2012-07-04 00:35+0200\n"
 "Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: es\n"
@@ -1264,42 +1264,34 @@ msgstr ""
 "reproducción tras su reproducción"
 
 #: gui/mainwindow.cpp:503
-#, fuzzy
 msgid "Add With Priority"
 msgstr "Añadir con prioridad"
 
 #: gui/mainwindow.cpp:506
-#, fuzzy
 msgid "Set Priority"
 msgstr "Definir prioridad"
 
 #: gui/mainwindow.cpp:509
-#, fuzzy
 msgid "Highest Priority (255)"
 msgstr "Prioridad máxima (255)"
 
 #: gui/mainwindow.cpp:512
-#, fuzzy
 msgid "High Priority (200)"
 msgstr "Prioridad alta (200)"
 
 #: gui/mainwindow.cpp:515
-#, fuzzy
 msgid "Medium Priority (125)"
 msgstr "Prioridad media (125)"
 
 #: gui/mainwindow.cpp:518
-#, fuzzy
 msgid "Low Priority (50)"
 msgstr "Prioridad baja (50)"
 
 #: gui/mainwindow.cpp:521
-#, fuzzy
 msgid "Default Priority (0)"
-msgstr "Prioridad baja (50)"
+msgstr ""
 
 #: gui/mainwindow.cpp:524
-#, fuzzy
 msgid "Custom Priority..."
 msgstr "Prioridad personalizada..."
 

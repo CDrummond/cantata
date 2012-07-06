@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 19:44+0100\n"
+"POT-Creation-Date: 2012-07-06 21:40+0100\n"
 "PO-Revision-Date: 2012-05-07 19:27+0100\n"
 "Last-Translator: Lutz Lüttke <lumpilou@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1290,9 +1290,8 @@ msgid "Custom Priority..."
 msgstr ""
 
 #: gui/mainwindow.cpp:528
-#, fuzzy
 msgid "Play Stream"
-msgstr "1 Stream"
+msgstr ""
 
 #: gui/mainwindow.cpp:529
 msgid "When 'Play Stream' is activated, the enabled stream is played locally."

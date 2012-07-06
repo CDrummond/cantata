@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-03 19:44+0100\n"
-"PO-Revision-Date: 2012-05-07 18:04+0200\n"
+"POT-Creation-Date: 2012-07-06 21:40+0100\n"
+"PO-Revision-Date: 2012-07-04 09:45+0200\n"
 "Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
@@ -1092,7 +1092,7 @@ msgstr "Bardzo duże"
 
 #: gui/interfacesettings.cpp:39
 msgid "Automatic"
-msgstr ""
+msgstr "Automatycznie"
 
 #: gui/interfacesettings.cpp:44
 msgid "Tree"
@@ -1141,9 +1141,8 @@ msgid "Connect"
 msgstr "Połącz"
 
 #: gui/mainwindow.cpp:411
-#, fuzzy
 msgid "Outputs"
-msgstr "Wyjście"
+msgstr "Wyjścia"
 
 #: gui/mainwindow.cpp:414
 msgid "Refresh Database"
@@ -1211,7 +1210,7 @@ msgstr "Skopiuj informację o utworze"
 
 #: gui/mainwindow.cpp:472
 msgid "Crop"
-msgstr "Przytnij"
+msgstr "Usuń wszystkie poza"
 
 #: gui/mainwindow.cpp:475
 msgid "Shuffle"
@@ -1266,44 +1265,45 @@ msgstr ""
 
 #: gui/mainwindow.cpp:503
 msgid "Add With Priority"
-msgstr ""
+msgstr "Dodaj z priorytetem"
 
 #: gui/mainwindow.cpp:506
 msgid "Set Priority"
-msgstr ""
+msgstr "Ustaw priorytet"
 
 #: gui/mainwindow.cpp:509
 msgid "Highest Priority (255)"
-msgstr ""
+msgstr "Najwyższy priorytet (255)"
 
 #: gui/mainwindow.cpp:512
 msgid "High Priority (200)"
-msgstr ""
+msgstr "Wysoki priorytet (200)"
 
 #: gui/mainwindow.cpp:515
 msgid "Medium Priority (125)"
-msgstr ""
+msgstr "Średni priorytet (125)"
 
 #: gui/mainwindow.cpp:518
 msgid "Low Priority (50)"
-msgstr ""
+msgstr "Niski priorytet (50)"
 
 #: gui/mainwindow.cpp:521
 msgid "Default Priority (0)"
-msgstr ""
+msgstr "Domyślny priorytet (0)"
 
 #: gui/mainwindow.cpp:524
 msgid "Custom Priority..."
-msgstr ""
+msgstr "Inny priorytet..."
 
 #: gui/mainwindow.cpp:528
-#, fuzzy
 msgid "Play Stream"
-msgstr "1 Strumień"
+msgstr "Odtwarzaj strumień"
 
 #: gui/mainwindow.cpp:529
 msgid "When 'Play Stream' is activated, the enabled stream is played locally."
 msgstr ""
+"Kiedy aktywowane jest 'Odtwarzaj strumień', to wybrany strumień odtwarzany "
+"jest lokalnie."
 
 #: gui/mainwindow.cpp:533
 msgid "Locate In Library"
@@ -1376,25 +1376,22 @@ msgstr ""
 "playlisty."
 
 #: gui/mainwindow.cpp:1633
-#, fuzzy
 msgid "Connecting to %1"
-msgstr "Łączenie się z %1 nie powiodło się"
+msgstr "Łączenie z %1"
 
 #: gui/mainwindow.cpp:1786 gui/mainwindow.cpp:2199 gui/serversettings.cpp:74
 #: mpd/mpdconnection.cpp:178
 msgid "Default"
-msgstr ""
+msgstr "Domyślne"
 
 #: gui/mainwindow.cpp:2202 gui/mainwindow.cpp:2205
-#, fuzzy
 msgid "Cantata (%1)"
-msgstr "Cantata"
+msgstr "Cantata (%1)"
 
 #: gui/mainwindow.cpp:2209
-#, fuzzy
 msgctxt "track :: Cantata (connection)"
 msgid "%1 :: Cantata (%2)"
-msgstr "%1 :: Cantata"
+msgstr "%1 :: Cantata (%2)"
 
 #: gui/mainwindow.cpp:2210
 msgctxt "track :: Cantata"
@@ -1402,10 +1399,9 @@ msgid "%1 :: Cantata"
 msgstr "%1 :: Cantata"
 
 #: gui/mainwindow.cpp:2220
-#, fuzzy
 msgctxt "track - artist :: Cantata (connection)"
 msgid "%1 - %2 :: Cantata (%3)"
-msgstr "%1 - %2 :: Cantata"
+msgstr "%1 - %2 :: Cantata (%3)"
 
 #: gui/mainwindow.cpp:2221
 msgctxt "track - artist :: Cantata"
@@ -1438,7 +1434,7 @@ msgstr "Cantata"
 
 #: gui/mainwindow.cpp:2401 gui/mainwindow.cpp:2402
 msgid "Volume Disabled"
-msgstr ""
+msgstr "Głośność wyłączona"
 
 #: gui/mainwindow.cpp:2406 gui/mainwindow.cpp:2407
 msgid "Volume %1%"
@@ -1446,11 +1442,11 @@ msgstr "Głośność %1%"
 
 #: gui/mainwindow.cpp:2615 models/playqueuemodel.cpp:110
 msgid "Priority"
-msgstr ""
+msgstr "Priorytet"
 
 #: gui/mainwindow.cpp:2615
 msgid "Enter priority (0..255):"
-msgstr ""
+msgstr "Wpisz priorytet (0..255):"
 
 #: gui/mainwindow.cpp:2637 gui/playlistspage.cpp:210
 msgid "Playlist Name"
@@ -1500,9 +1496,8 @@ msgid "Enter new name for playlist:"
 msgstr "Proszę wpisać nową nazwę dla playlisty:"
 
 #: gui/preferencesdialog.cpp:134
-#, fuzzy
 msgid "Connection Settings"
-msgstr "Połączenie"
+msgstr "Ustawienia połączenia"
 
 #. i18n: file: gui/serverplaybacksettings.ui:109
 #. i18n: ectx: property (title), widget (QGroupBox, outputFrame)
@@ -1511,9 +1506,8 @@ msgid "Output"
 msgstr "Wyjście"
 
 #: gui/preferencesdialog.cpp:137
-#, fuzzy
 msgid "Output Settings"
-msgstr "Ustawienia zewnętrzne"
+msgstr "Ustawienia wyjścia"
 
 #: gui/preferencesdialog.cpp:139
 msgid "Playback"
@@ -1564,24 +1558,22 @@ msgid "Track"
 msgstr "Utwór"
 
 #: gui/serverplaybacksettings.cpp:116
-#, fuzzy
 msgid ""
 "<i><b>Connected to %1</b><br/>The entries below apply to the currently "
 "connected MPD instance.</i>"
 msgstr ""
-"<i><b>Brak połączenia.</b><br/>Niektóre z powyższych pól nie mogą być "
-"zmodyfikowane, ponieważ Cantata nie jest połączona z MPD.</i>"
+"<i><b>Połączono z %1</b><br/>Poniższe ustawienia dotyczą aktualnie "
+"połączonego serwera MPD.</i>"
 
 #. i18n: file: gui/serverplaybacksettings.ui:36
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
 #: gui/serverplaybacksettings.cpp:119 po/rc.cpp:459 rc.cpp:459
-#, fuzzy
 msgid ""
 "<i><b>Not Connected.</b><br/>The entries below cannot be modified, as "
 "Cantata is not connected to MPD.</i>"
 msgstr ""
-"<i><b>Brak połączenia.</b><br/>Niektóre z powyższych pól nie mogą być "
-"zmodyfikowane, ponieważ Cantata nie jest połączona z MPD.</i>"
+"<i><b>Brak połączenia.</b><br/>Poniższe ustawienia nie mogą być "
+"modyfikowane, ponieważ Cantata nie jest połączona z serwerem MPD.</i>"
 
 #: gui/serversettings.cpp:44
 msgid ""
@@ -1598,28 +1590,24 @@ msgid "Host:"
 msgstr "Host:"
 
 #: gui/serversettings.cpp:121
-#, fuzzy
 msgid "Enter name for settings:"
-msgstr "Proszę wpisać nazwę dla playlisty:"
+msgstr "Proszę wpisać nazwę dla ustawień:"
 
 #: gui/serversettings.cpp:136
-#, fuzzy
 msgid ""
 "A setting named %1 already exists!\n"
 "Overwrite?"
 msgstr ""
-"Zestaw reguł o nazwie '%1' już istnieje!\n"
+"Ustawienia o nazwie %1 już istnieją!\n"
 "Nadpisać?"
 
 #: gui/serversettings.cpp:173
-#, fuzzy
 msgid "Delete %1?"
-msgstr "Usuń utwory"
+msgstr "Usunąć %1?"
 
 #: gui/serversettings.cpp:192
-#, fuzzy
 msgid "Disconnect"
-msgstr "Rozłączanie..."
+msgstr "Rozłącz"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
@@ -2168,17 +2156,16 @@ msgstr[1] "%1 Elementy"
 msgstr[2] "%1 Elementów"
 
 #: models/dirviewmodel.cpp:195
-#, fuzzy
 msgid "Playlist"
-msgstr "Playlisty"
+msgstr "Playlista"
 
 #: models/dirviewmodel.cpp:197
 msgid "Cue Sheet"
-msgstr ""
+msgstr "Plik .cue"
 
 #: models/dirviewmodel.cpp:199
 msgid "Audio File"
-msgstr ""
+msgstr "Plik audio"
 
 #: models/musiclibrarymodel.cpp:244
 msgid "%1<br/>1 Album"
@@ -2219,7 +2206,7 @@ msgstr "Rok"
 
 #: models/playqueuemodel.cpp:351
 msgid "<b>(Priority: %1)</b>"
-msgstr ""
+msgstr "<b>(Priorytet: %1)</b>"
 
 #: models/streamsmodel.cpp:167
 msgid ""
@@ -2246,15 +2233,14 @@ msgstr[1] "%1 Strumienie"
 msgstr[2] "%1 Strumieni"
 
 #: mpd/mpdconnection.cpp:181
-#, fuzzy
 msgctxt "name (host)"
 msgid "%1 (%2)"
-msgstr "1 Utwór (%2)"
+msgstr "%1 (%2)"
 
 #: mpd/mpdconnection.cpp:183
 msgctxt "name (host:port)"
 msgid "%1 (%2:%3)"
-msgstr ""
+msgstr "%1 (%2:%3)"
 
 #: mpd/mpdconnection.cpp:337
 msgid "Connection to %1 failed"
@@ -2724,7 +2710,7 @@ msgid ""
 "attached.</i>"
 msgstr ""
 "<i><b>UWAGA:</b>To okno dialogowe służy jedynie do dodawania zdalnych "
-"urządzeń(np. za pomocą sshfs), albo do dostępu do lokalnie zamontowanych "
+"urządzeń (np. za pomocą sshfs), albo do dostępu do lokalnie zamontowanych "
 "katalogów. Dla normalnych odtwarzaczy muzycznych podłączanych przy użyciu "
 "USB, Cantata automatycznie wyświetli urządzenie, gdy zostanie ono podłączone."
 "</i>"
@@ -2874,12 +2860,11 @@ msgstr "Zawsze używaj serwera:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:252 rc.cpp:252
 msgid "Address/interface:"
-msgstr ""
+msgstr "Adres/interfejs:"
 
 #. i18n: file: gui/httpserversettings.ui:108
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: po/rc.cpp:255 rc.cpp:255
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> MPD usually only plays songs that are stored within its "
 "folders. If you have connected via a local socket, then MPD can also play "
@@ -2898,11 +2883,16 @@ msgstr ""
 "katalogach. W wypadku połączenia poprzez lokalne gniazdo, MPD może również "
 "odtwarzać utwory z lokalnego systemu plików. Gdy nie jest używane lokalne "
 "gniazdo (np. wpisano nazwę hosta lub adres IP w polu \"Host\" w oknie "
-"ustawień \"Serwer\"), to Cantata może użyć wbudowanego małego serwera HTTP, "
-"który może wysyłać pliki do MPD. Ta opcja działa niestety tylko, gdy program "
-"Cantata jest uruchomiony. Gdy wybrana jest opcja \"Zawsze używaj serwera\", "
-"to Cantata zawsze będzie wysyłała adresy URL ze swojego serwera, nawet gdy "
-"używane jest połączenie poprzez lokalne gniazdo.</i>"
+"ustawień \"Serwer\"), to Cantata może użyć wbudowanego minimalistycznego "
+"serwera HTTP, który może wysyłać pliki do MPD. Ta opcja działa niestety "
+"tylko wtedy, gdy program Cantata jest uruchomiony. Gdy wybrana jest opcja "
+"\"Zawsze używaj serwera\", to Cantata zawsze będzie wysyłała adresy URL ze "
+"swojego serwera, nawet gdy używane jest połączenie poprzez lokalne gniazdo."
+"<br/><br/>\n"
+"<b>UWAGA:</b>\"Adres/interfejs\" może zawierać zarówno adres IP, jak i "
+"interfejs (np. eth0), na którym program na nasłuchiwać w celu połączenia. W "
+"celu użycia lokalnego adresu loopback (127.0.0.1) pole to można zostawić "
+"puste.</i></i>"
 
 #. i18n: file: gui/interfacesettings.ui:38
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
@@ -2941,7 +2931,7 @@ msgstr "Okładki:"
 #. i18n: ectx: property (text), widget (BuddyLabel, libraryArtistImageLabel)
 #: po/rc.cpp:271 rc.cpp:271
 msgid "Show artist images:"
-msgstr ""
+msgstr "Pokaż obrazy artystów:"
 
 #. i18n: file: gui/interfacesettings.ui:81
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
@@ -2960,6 +2950,14 @@ msgid ""
 "When the image is displayed, it will be cropped (either top/bottom, or left/"
 "right) to provide a square image.</i>"
 msgstr ""
+"<i><b>UWAGA:</b> W trakcie poszukiwania obrazów artystów, Cantata będzie "
+"próbowała znaleźć pliki o nazwie artist.jpg, artist.png, <Artist>.jpg, lub "
+"<Artist>.png,\n"
+"wewnątrz katalogu z obecnym utworem, albo w katalogu nadrzędnym. Jeśli żaden "
+"obraz nie zostanie znaleziony, to Cantata spróbuje pobrać obraz z sieci.<br/"
+">\n"
+"Wyświetlany obraz jest przycięty (albo z góry i z dołu, albo z lewej i z "
+"prawej) tak, aby uzyskać kwadratowy kształt.</i>"
 
 #. i18n: file: gui/interfacesettings.ui:170
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
@@ -3193,7 +3191,7 @@ msgstr "Replay gain:"
 #. i18n: ectx: property (text), widget (BuddyLabel, streamUrlLabel)
 #: po/rc.cpp:471 rc.cpp:471
 msgid "Output HTTP stream:"
-msgstr ""
+msgstr "Wyjściowy strumień HTTP:"
 
 #. i18n: file: gui/serverplaybacksettings.ui:99
 #. i18n: ectx: property (text), widget (QLabel, streamUrlInfoLabel)
@@ -3203,12 +3201,15 @@ msgid ""
 "to output to a HTTP stream, and you wish Cantata to be able to play that "
 "stream.</i>"
 msgstr ""
+"<i><b>UWAGA:</b> Opcja 'Wyjściowy strumień HTTP' używana jest wyłącznie "
+"wtedy, gdy MPD został skonfigurowany tak, aby jego wyjściem był strumień "
+"HTTP oraz Cantata ma mieć możliwość odtwarzania tego strumienia.</i>"
 
 #. i18n: file: gui/serversettings.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:483 rc.cpp:483
 msgid "Details"
-msgstr ""
+msgstr "Szczegóły"
 
 #. i18n: file: gui/serversettings.ui:37
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
@@ -3369,14 +3370,13 @@ msgid "Track Peak"
 msgstr "Peak utworu"
 
 #: replaygain/rgdialog.cpp:123
-#, fuzzy
 msgid "Save"
-msgstr "Zapisz jako"
+msgstr "Zapisz"
 
 #: replaygain/rgdialog.cpp:124 replaygain/rgdialog.cpp:266
 #: replaygain/rgdialog.cpp:392
 msgid "Close"
-msgstr ""
+msgstr "Zamknij"
 
 #: replaygain/rgdialog.cpp:126
 msgid "Scan"
@@ -3407,9 +3407,8 @@ msgid "Untagged Tracks"
 msgstr "Utwory bez tagów"
 
 #: replaygain/rgdialog.cpp:231 replaygain/rgdialog.cpp:307
-#, fuzzy
 msgid "Cancel"
-msgstr "Dance"
+msgstr "Anuluj"
 
 #: replaygain/rgdialog.cpp:237
 msgid "Scanning files..."
@@ -3456,11 +3455,11 @@ msgstr "Mały panel boczny"
 
 #: widgets/fancytabwidget.cpp:943
 msgid "Top Bar"
-msgstr ""
+msgstr "Górny pasek"
 
 #: widgets/fancytabwidget.cpp:944
 msgid "Bottom Bar"
-msgstr ""
+msgstr "Dolny pasek"
 
 #: widgets/fancytabwidget.cpp:945
 msgid "Tabs On Side"

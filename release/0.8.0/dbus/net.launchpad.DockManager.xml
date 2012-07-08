@@ -1,0 +1,33 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="net.launchpad.DockManager">
+    <signal name="ItemAdded">
+      <arg name="path" type="o" direction="out"/>
+    </signal>
+    <signal name="ItemRemoved">
+      <arg name="path" type="o" direction="out"/>
+    </signal>
+    <method name="GetCapabilities">
+      <arg type="as" direction="out"/>
+    </method>
+    <method name="GetItemByXid">
+      <arg type="o" direction="out"/>
+      <arg name="xid" type="x" direction="in"/>
+    </method>
+    <method name="GetItems">
+      <arg type="ao" direction="out"/>
+    </method>
+    <method name="GetItemsByDesktopFile">
+      <arg type="ao" direction="out"/>
+      <arg name="desktopFile" type="s" direction="in"/>
+    </method>
+    <method name="GetItemsByName">
+      <arg type="ao" direction="out"/>
+      <arg name="name" type="s" direction="in"/>
+    </method>
+    <method name="GetItemsByPid">
+      <arg type="ao" direction="out"/>
+      <arg name="pid" type="i" direction="in"/>
+    </method>
+  </interface>
+</node>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="352"
+   id="svg883"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="consume.svg"
+   sodipodi:version="0.32"
+   version="1.0"
+   width="352"
+   x="0.0000000"
+   y="0.0000000"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <metadata
+     id="metadata3">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>packman</dc:title>
+        <dc:description>the classic arcade game pacman</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li />
+            <rdf:li>game</rdf:li>
+            <rdf:li>entertainment</rdf:li>
+            <rdf:li>computer</rdf:li>
+            <rdf:li>recreation</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://www.openclipart.org">
+            <dc:title>HASH(0x89cc900)</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Andreas Nilsson</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>HASH(0x89cc900)</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date />
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://web.resource.org/cc/PublicDomain" />
+        <dc:language>en</dc:language>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://web.resource.org/cc/PublicDomain">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     bordercolor="#666666"
+     borderopacity="1.0"
+     id="base"
+     inkscape:cx="254.02536"
+     inkscape:cy="200.45199"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:window-height="719"
+     inkscape:window-width="768"
+     inkscape:window-x="197"
+     inkscape:window-y="304"
+     inkscape:zoom="1.2279853"
+     pagecolor="#ffffff"
+     showgrid="false"
+     inkscape:current-layer="svg883"
+     height="744.09px"
+     inkscape:window-maximized="0" />
+  <defs
+     id="defs885">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective12" />
+  </defs>
+  <path
+     inkscape:connector-curvature="0"
+     style="font-size:12px;fill:#cbcb00;fill-rule:evenodd;stroke:#000000;stroke-width:8.75"
+     id="path608"
+     d="m 187.43941,7.753063 c 60.88312,0 114.09788,32.46144 143.6875,80.906253 l -148.59375,85.812324 122.3125,122.3125 c -30.34872,29.54436 -71.73854,47.8125 -117.40625,47.8125 -92.972984,0 -168.406224,-75.46451 -168.406254,-168.4375 0,-92.972807 75.43327,-168.406077 168.406254,-168.406077 z" />
+</svg>

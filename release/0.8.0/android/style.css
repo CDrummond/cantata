@@ -1,0 +1,9 @@
+QMenu, QComboBox QAbstractItemView { border-width: 1px; border-color: white; border-style: solid; border-radius: 1; }
+QSlider::groove:horizontal { height: QUARTER_HEIGHTpx; background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #222222, stop:1 #444444); margin: 2px 0; }
+QSlider::groove:vertical { width: QUARTER_HEIGHTpx; background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #222222, stop:1 #444444); margin: 2px 0; }
+QSlider::handle:horizontal { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 HIGHLIGHT_DARKER, stop:1 HIGHLIGHT_LIGHTER); width: HALF_HEIGHTpx; margin: -HALF_HEIGHTpx 0; }
+QSlider::handle:vertical { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 HIGHLIGHT_DARKER, stop:1 HIGHLIGHT_LIGHTER); height: HALF_HEIGHTpx; margin: 0 -HALF_HEIGHTpx; }
+QSlider::sub-page:horizontal { width: QUARTER_HEIGHTpx; background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 HIGHLIGHT_LIGHTER, stop:1 HIGHLIGHT_DARKER); margin: 2px 0; }
+QSlider::add-page:vertical { height: QUARTER_HEIGHTpx; background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 HIGHLIGHT_LIGHTER, stop:1 HIGHLIGHT_DARKER); margin: 2px 0; }
+QPushButton:pressed { background-color: HIGHLIGHT; }
+QDialog { border-width: 2px; border-color: HIGHLIGHT_DARKER; border-style: solid; }

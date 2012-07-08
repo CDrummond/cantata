@@ -1,0 +1,51 @@
+- Albums
+  - Coverflow view?
+
+- Streams
+  - Handle more than 1st entry?? Not sure
+  - Icecast?
+
+- Devices
+  - libMTP album artist usage.
+    - libMTP does not provide an album artist tag.
+    - song.cpp has a check to see if this.albumartist=other.album artist, so
+      that when library is frefreshed the file is in the correct place.
+    - mtpdevice.cpp will remove albumartist from 'Song' entries copied to it,
+      so that these are placed in the correct part of the model.
+    - If libMTP is 'fixed' then the above can be removed.
+  - Make Various 'Artists' fix applicable to all compilation albums?
+    - Not sure how this could be done with MTP :-(
+    - MTP has no access to other tags, so when converting back, how would I
+      know this is a compilation?
+  - Allow to drag songs from albums/library to devices, and vice versa.
+  - Detect AudioCDs
+    - call audex/kaudiocoverter/soundKonverter/k3b?
+    - or list via audiocd:// ???
+  - KIO device support
+    - Need *drastic* speed up in inital song scan
+    - Copying of covers to/from needs implementing/checking
+    - Removing of album, then artist, folders needs to be implemented.
+    - Pass top level window to kio functions, so that they can cache credentials
+    - Create dirs on device when copying songs
+
+- Dynamic
+  - Port helper to c++?
+
+Lyrics
+  - Add support for reading via tags in mp4, flac, and ogg files.
+
+- PlayQueue
+  - Add copy to device to context menu?
+    - Will need to be careful that songs are not from device
+    - Also, check that songs are not streams!
+  - Tabbed mode, to show other play lists?
+
+- General
+  - Ratings (use KRatingWidget?)
+    - Not sure, would need support in cantata-dynamic
+  - mpdscribble management?
+  - Combine 'Page' classes
+  - Better menu icon?
+  - Add with priority
+    - high, medium, low, normal
+    - need to check MPD verison support

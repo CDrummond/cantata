@@ -1,0 +1,5 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file alias="lyrics.xml">lyrics/ultimate_providers.xml</file>
+</qresource>
+</RCC>

@@ -67,6 +67,7 @@ private:
     #ifdef ENABLE_DEVICES_SUPPORT
     Device * getDevice(const QString &udi, QWidget *p);
     #endif
+    void closeEvent(QCloseEvent *event);
 
 private Q_SLOTS:
     void applyVa();
@@ -93,6 +94,7 @@ private:
     bool haveAlbumArtists;
     bool haveAlbums;
     bool haveGenres;
+    bool saving;
 };
 
 #endif

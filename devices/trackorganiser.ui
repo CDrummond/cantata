@@ -10,6 +10,11 @@
     <height>337</height>
    </rect>
   </property>
+  <layout class="QVBoxLayout" name="verticalLayoutx">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="margin">
     <number>0</number>
@@ -156,6 +161,11 @@
       </property>
      </column>
     </widget>
+   </item>
+  </layout>
+  </item>
+  <item>
+   <widget class="QProgressBar" name="progress"/>
    </item>
   </layout>
  </widget>

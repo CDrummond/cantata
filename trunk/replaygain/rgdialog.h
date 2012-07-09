@@ -65,6 +65,7 @@ private:
     #ifdef ENABLE_DEVICES_SUPPORT
     Device * getDevice(const QString &udi, QWidget *p);
     #endif
+    void closeEvent(QCloseEvent *event);
 
 private Q_SLOTS:
     void scannerProgress(int p);
@@ -76,7 +77,8 @@ private:
     enum State {
         State_Idle,
         State_ScanningTags,
-        State_ScanningFiles
+        State_ScanningFiles,
+        State_Saving
     };
 
     struct Album {

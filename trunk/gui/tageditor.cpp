@@ -37,6 +37,9 @@
 #include "device.h"
 #endif
 #include <QtGui/QMenu>
+#include <QtGui/QCloseEvent>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QEventLoop>
 #include <QtCore/QDir>
 
 static bool equalTags(const Song &a, const Song &b, bool compareCommon)
@@ -76,6 +79,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , haveAlbumArtists(false)
     , haveAlbums(false)
     , haveGenres(false)
+    , saving(false)
 {
     iCount++;
     original=songs;
@@ -106,6 +110,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     }
     setButtons(buttons);
     setCaption(i18n("Tags"));
+    progress->setVisible(false);
     if (songs.count()>1) {
         #ifdef ENABLE_KDE_SUPPORT
         setButtonGuiItem(User2, KStandardGuiItem::back(KStandardGuiItem::UseRTL));
@@ -622,7 +627,25 @@ void TagEditor::applyUpdates()
     }
     #endif
 
+    int toSave=editedIndexes.count();
+
+    saving=true;
+    enableButton(Ok, false);
+    enableButton(Cancel, false);
+    enableButton(Reset, false);
+    enableButton(User1, false);
+    enableButton(User2, false);
+    enableButton(User3, false);
+    progress->setVisible(true);
+    progress->setRange(0, toSave);
+
+    int count=0;
     foreach (int idx, editedIndexes) {
+        progress->setValue(progress->value()+1);
+        if (0==count++%10) {
+            QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+        }
+
         if (skipFirst && 0==idx) {
             continue;
         }
@@ -653,6 +676,7 @@ void TagEditor::applyUpdates()
             break;
         }
     }
+    saving=false;
 
     if (failed.count()) {
         #ifdef ENABLE_KDE_SUPPORT
@@ -736,3 +760,12 @@ Device * TagEditor::getDevice(const QString &udi, QWidget *p)
     return dev;
 }
 #endif
+
+void TagEditor::closeEvent(QCloseEvent *event)
+{
+    if (saving) {
+        event->ignore();
+    } else {
+        Dialog::closeEvent(event);
+    }
+}

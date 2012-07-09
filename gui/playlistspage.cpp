@@ -231,7 +231,7 @@ void PlaylistsPage::renamePlaylist()
         QString name = PlaylistsModel::self()->data(sourceIndex, Qt::DisplayRole).toString();
         QString newName = InputDialog::getText(i18n("Rename Playlist"), i18n("Enter new name for playlist:"), name, 0, this);
 
-        if (!newName.isEmpty()) {
+        if (!newName.isEmpty() && name!=newName) {
             if (PlaylistsModel::self()->exists(newName)) {
                 if (MessageBox::No==MessageBox::warningYesNo(this, i18n("A playlist named <b>%1</b> already exists!<br/>Overwrite?").arg(newName), i18n("Overwrite Playlist?"))) {
                     return;

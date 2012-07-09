@@ -876,7 +876,7 @@ MainWindow::MainWindow(QWidget *parent)
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, playQueuePage);
     layout->setContentsMargins(0, 0, 0, 0);
     bool playQueueInSidebar=!hiddenPages.contains(playQueuePage->metaObject()->className());
-    if (playQueueInSidebar && Settings::self()->version()<CANTATA_MAKE_VERSION(0, 8, 0)) {
+    if (playQueueInSidebar && (Settings::self()->firstRun() || Settings::self()->version()<CANTATA_MAKE_VERSION(0, 8, 0))) {
         playQueueInSidebar=false;
     }
     tabWidget->AddTab(playQueuePage, TAB_ACTION(showPlayQueueAction), playQueueInSidebar);
@@ -901,6 +901,12 @@ MainWindow::MainWindow(QWidget *parent)
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
+
+    if (playQueueInSidebar) {
+        tabToggled(PAGE_PLAYQUEUE);
+    } else {
+        tabWidget->SetCurrentIndex(PAGE_LIBRARY);
+    }
 
     #ifdef CANTATA_ANDROID
     tabWidget->SetMode(FancyTabWidget::Mode_IconOnlyLargeSidebar);
@@ -1264,9 +1270,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(ModeChanged(FancyTabWidget::Mode)), this, SLOT(sidebarModeChanged()));
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
-    if (playQueueInSidebar) {
-        tabToggled(PAGE_PLAYQUEUE);
-    }
     #ifndef CANTATA_ANDROID
     toggleSplitterAutoHide();
     #endif

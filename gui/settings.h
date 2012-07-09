@@ -189,10 +189,13 @@ public:
     QString getConfigDir();
     #endif
 
+    bool firstRun() const { return isFirstRun; }
+
 private Q_SLOTS:
     void actualSave();
 
 private:
+    bool isFirstRun;
     QTimer *timer;
     int ver;
     #ifdef ENABLE_KDE_SUPPORT

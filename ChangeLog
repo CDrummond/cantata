@@ -4,6 +4,8 @@
    place the play queue in the sidebar.
 2. Dont attempt to rename a playlist to its current name - otherwise it is
    deleted!
+3. When applying updates in tag editor, track organizer, or replay gain dialog
+   show a progress bar to indicate activity.
 
 0.8.0
 -----

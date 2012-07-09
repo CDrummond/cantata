@@ -58,6 +58,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     configFilename->setIcon(QIcon::fromTheme("configure"));
     setButtonGuiItem(Ok, KGuiItem(i18n("Rename"), "edit-rename"));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
+    progress->setVisible(false);
 }
 
 TrackOrganiser::~TrackOrganiser()
@@ -176,6 +177,8 @@ void TrackOrganiser::updateView()
 void TrackOrganiser::startRename()
 {
     optionsBox->setEnabled(false);
+    progress->setVisible(true);
+    progress->setRange(0, origSongs.count());
     enableButtonOk(false);
     index=0;
     paused=autoSkip=false;
@@ -199,6 +202,8 @@ void TrackOrganiser::renameFile()
     if (paused) {
         return;
     }
+
+    progress->setValue(progress->value()+1);
 
     QTreeWidgetItem *item=files->topLevelItem(index);
     files->scrollToItem(item);

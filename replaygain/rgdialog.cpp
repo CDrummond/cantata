@@ -36,6 +36,9 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QHeaderView>
+#include <QtGui/QCloseEvent>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QEventLoop>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif
@@ -176,6 +179,10 @@ void RgDialog::show(const QList<Song> &songs, const QString &udi)
 
 void RgDialog::slotButtonClicked(int button)
 {
+    if (State_Saving==state) {
+        return;
+    }
+
     switch (button) {
     case Ok:
         if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Update ReplayGain tags in files?"))) {
@@ -194,6 +201,7 @@ void RgDialog::slotButtonClicked(int button)
                 stopScanning();
                 // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
                 Dialog::slotButtonClicked(button);
+                state=State_Idle;
             }
             break;
         case State_ScanningTags:
@@ -201,6 +209,7 @@ void RgDialog::slotButtonClicked(int button)
                 stopReadingTags();
                 // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
                 Dialog::slotButtonClicked(button);
+                state=State_Idle;
             }
             break;
         default:
@@ -338,11 +347,30 @@ void RgDialog::stopReadingTags()
 
 void RgDialog::saveTags()
 {
+    state=State_Saving;
+    enableButton(Ok, false);
+    enableButton(Close, false);
+    enableButton(Cancel, false);
+    enableButton(User1, false);
+
     QStringList failed;
     QMap<QString, Album>::iterator a(albums.begin());
     QMap<QString, Album>::iterator ae(albums.end());
+    int toSave=0;
 
     for (; a!=ae; ++a) {
+        foreach (int idx, (*a).tracks) {
+            if (needToSave.contains(idx)) {
+                ++toSave;
+            }
+        }
+    }
+
+    progress->setVisible(true);
+    progress->setRange(0, toSave);
+
+    int count=0;
+    for (a=albums.begin(); a!=ae; ++a) {
         foreach (int idx, (*a).tracks) {
             if (needToSave.contains(idx)) {
                 const Track &track=tracks[idx];
@@ -352,6 +380,10 @@ void RgDialog::saveTags()
                                                                                                   track.data.peakValue(),
                                                                                                   (*a).data.peakValue()))) {
                     failed.append(origSongs.at(idx).file);
+                }
+                progress->setValue(progress->value()+1);
+                if (0==count++%10) {
+                    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
                 }
             }
         }
@@ -582,4 +614,16 @@ void RgDialog::tagReaderDone()
     enableButton(User1, true);
     progress->setVisible(false);
     statusLabel->setVisible(false);
+}
+
+void RgDialog::closeEvent(QCloseEvent *event)
+{
+    if (State_Idle!=state) {
+        slotButtonClicked(Cancel);
+        if (State_Idle!=state) {
+            event->ignore();
+        }
+    } else {
+        Dialog::closeEvent(event);
+    }
 }

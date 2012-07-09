@@ -129,6 +129,7 @@ static MpdDefaults mpdDefaults;
 #define GET_BYTE_ARRAY(KEY)               CFG_GET_BYTE_ARRAY(cfg, KEY)
 #define GET_SIZE(KEY)                     CFG_GET_SIZE(cfg, KEY)
 #define SET_VALUE(KEY, V)                 CFG_SET_VALUE(cfg, KEY, V)
+#define HAS_ENTRY(KEY)                    (cfg.hasKey(KEY))
 #else
 #define GET_STRING(KEY, DEF)     (cfg.contains(KEY) ? cfg.value(KEY).toString() : QString(DEF))
 #define GET_STRINGLIST(KEY, DEF) (cfg.contains(KEY) ? cfg.value(KEY).toStringList() : DEF)
@@ -140,6 +141,7 @@ static MpdDefaults mpdDefaults;
 #define HAS_GROUP(GRP)           (-1!=cfg.childGroups().indexOf(GRP))
 #define REMOVE_GROUP(GRP)        (cfg.remove(GRP))
 #define REMOVE_ENTRY(KEY)        (cfg.remove(KEY))
+#define HAS_ENTRY(KEY)           (cfg.contains(KEY))
 #endif
 
 static QString connGroupName(const QString &n=QString())
@@ -148,7 +150,8 @@ static QString connGroupName(const QString &n=QString())
 }
 
 Settings::Settings()
-    : timer(0)
+    : isFirstRun(false)
+    , timer(0)
     , ver(-1)
     #ifdef ENABLE_KDE_SUPPORT
     , cfg(KGlobal::config(), "General")
@@ -521,11 +524,12 @@ int Settings::devicesView()
 int Settings::version()
 {
     if (-1==ver) {
+        isFirstRun=!HAS_ENTRY("version");
         QStringList parts=GET_STRING("version", QLatin1String(PACKAGE_VERSION)).split('.');
         if (3==parts.size()) {
             ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
         } else {
-            ver=CANTATA_MAKE_VERSION(0, 5, 0);
+            ver=CANTATA_MAKE_VERSION(0, 8, 0);
             SET_VALUE("version", PACKAGE_VERSION);
         }
     }

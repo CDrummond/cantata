@@ -1,3 +1,8 @@
+0.8.1
+-----
+1. Detect when this is the first time a user has run Cantata. If so, don't
+   place the play queue in the sidebar.
+
 0.8.0
 -----
  1. Add ability to play MPD HTTP output stream via phonon. Thanks to Marcel

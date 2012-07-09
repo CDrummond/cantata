@@ -21,12 +21,6 @@
   - Detect AudioCDs
     - call audex/kaudiocoverter/soundKonverter/k3b?
     - or list via audiocd:// ???
-  - KIO device support
-    - Need *drastic* speed up in inital song scan
-    - Copying of covers to/from needs implementing/checking
-    - Removing of album, then artist, folders needs to be implemented.
-    - Pass top level window to kio functions, so that they can cache credentials
-    - Create dirs on device when copying songs
 
 - Dynamic
   - Port helper to c++?
@@ -38,7 +32,6 @@ Lyrics
   - Add copy to device to context menu?
     - Will need to be careful that songs are not from device
     - Also, check that songs are not streams!
-  - Tabbed mode, to show other play lists?
 
 - General
   - Ratings (use KRatingWidget?)
@@ -46,6 +39,3 @@ Lyrics
   - mpdscribble management?
   - Combine 'Page' classes
   - Better menu icon?
-  - Add with priority
-    - high, medium, low, normal
-    - need to check MPD verison support

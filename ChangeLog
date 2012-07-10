@@ -6,6 +6,7 @@
    deleted!
 3. When applying updates in tag editor, track organizer, or replay gain dialog
    show a progress bar to indicate activity.
+4. Display version number in Qt-only about dialog.
 
 0.8.0
 -----

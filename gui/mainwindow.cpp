@@ -1819,10 +1819,8 @@ void MainWindow::readSettings()
 
     #ifdef PHONON_FOUND
     streamButton->setVisible(!Settings::self()->streamUrl().isEmpty());
-    streamPlayAction->setChecked(Settings::self()->playStream());
-    if (phononStream && streamButton->isVisible()) {
-        phononStream->setCurrentSource(Settings::self()->streamUrl());
-    }
+    streamPlayAction->setChecked(streamButton->isVisible() && Settings::self()->playStream());
+    toggleStream(streamPlayAction->isChecked());
     #endif
     libraryPage->setView(Settings::self()->libraryView());
     MusicLibraryModel::self()->setUseArtistImages(Settings::self()->libraryArtistImage());

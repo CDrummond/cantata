@@ -374,7 +374,6 @@ void Covers::clearDummyCache(const Song &song, const QImage &img)
 
 Covers::Image Covers::getImage(const Song &song)
 {
-    return Image(QImage(), QString());
     QString dirName;
     QString songFile=song.file;
     bool haveAbsPath=song.file.startsWith('/');

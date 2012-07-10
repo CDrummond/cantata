@@ -7,6 +7,8 @@
 3. When applying updates in tag editor, track organizer, or replay gain dialog
    show a progress bar to indicate activity.
 4. Display version number in Qt-only about dialog.
+5. When expanding interface, set max size to INT_MAX. Otherwise, on windows at
+   least, the maximise button can get disabled.
 
 0.8.0
 -----

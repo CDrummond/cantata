@@ -9,6 +9,8 @@
 4. Display version number in Qt-only about dialog.
 5. When expanding interface, set max size to INT_MAX. Otherwise, on windows at
    least, the maximise button can get disabled.
+6. If 'Music folder' in settings dialog is a http folder (path starts with
+   http://), then attempt to download cover-art from the http server.
 
 0.8.0
 -----

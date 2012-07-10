@@ -50,6 +50,10 @@
 
 QString MPDParseUtils::fixPath(const QString &f)
 {
+    if (f.startsWith(QLatin1String("http://"))) {
+        return f;
+    }
+
     QString d(f);
     if (!d.isEmpty()) {
         d.replace(QLatin1String("//"), QChar('/'));

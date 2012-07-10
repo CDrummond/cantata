@@ -73,13 +73,20 @@ class Covers : public QObject
     Q_OBJECT
 
 public:
+    enum JobType {
+        JobHttpJpg,
+        JobHttpPng,
+        JobLastFm
+    };
+
     struct Job
     {
         Job(const Song &s, const QString &d, bool a=false)
-            : song(s), dir(d), isArtist(a) { }
+            : song(s), dir(d), isArtist(a), type(JobLastFm) { }
         Song song;
         QString dir;
         bool isArtist;
+        JobType type;
     };
 
     struct Image
@@ -117,6 +124,10 @@ Q_SIGNALS:
     void artistImage(const QString &artist, const QImage &img);
     void coverRetrieved(const Song &song);
 
+private:
+    void downloadViaHttp(Job &job, bool jpg);
+    void downloadViaLastFm(Job &job);
+
 private Q_SLOTS:
     void albumInfo(QVariant &value, QNetworkReply *reply);
     void albumFailure(int, const QString &, QNetworkReply *reply);
@@ -125,7 +136,7 @@ private Q_SLOTS:
 private:
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<QNetworkReply *, Job>::Iterator findJob(const Song &song);
-    void clearDummyCache(const Song &song);
+    void clearDummyCache(const Song &song, const QImage &img);
 
 private:
     MaiaXmlRpcClient *rpc;

@@ -2774,7 +2774,7 @@ void MainWindow::togglePlayQueue()
     } else {
         collapsedSize=size();
         setMinimumHeight(calcMinHeight());
-        setMaximumHeight(65535);
+        setMaximumHeight(INT_MAX);
     }
     int prevWidth=size().width();
     splitter->setVisible(showing);

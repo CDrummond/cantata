@@ -15,6 +15,7 @@
    has that setting! Fixes an issue with pulseaudio setups - where MPD
    disconnects from pulse audio, tells cantata that volume is -1, and cantata
    attempts to set volume to 0.
+8. When fading on stop, reset original volume immediately before sending stop.
 
 0.8.0
 -----

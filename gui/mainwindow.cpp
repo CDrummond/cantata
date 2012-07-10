@@ -2051,14 +2051,14 @@ void MainWindow::stopVolumeFade()
 void MainWindow::setMpdVolume(int v)
 {
     if (-1==v) {
+        volume=origVolume;
+        emit setVolume(origVolume);
         if (StopState_Stopping==stopState) {
             emit stop();
         } /*else if (StopState_Pausing==stopState) {
             emit pause(true);
         }*/
         stopState=StopState_None;
-        volume=origVolume;
-        emit setVolume(origVolume);
     } else if (lastVolume!=v) {
         emit setVolume(v);
         lastVolume=v;

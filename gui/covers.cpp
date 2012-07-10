@@ -80,7 +80,7 @@ void initCoverNames()
 static bool canSaveTo(const QString &dir)
 {
     QString mpdDir=MPDConnection::self()->getDetails().dir;
-    return !dir.isEmpty() && !mpdDir.isEmpty() && QDir(mpdDir).exists() && dir.startsWith(mpdDir);
+    return !dir.isEmpty() && !mpdDir.isEmpty() && !mpdDir.startsWith(QLatin1String("http://")) && QDir(mpdDir).exists() && dir.startsWith(mpdDir);
 }
 
 static const QString typeFromRaw(const QByteArray &raw)
@@ -294,7 +294,7 @@ QStringList Covers::standardNames()
 Covers::Covers()
     : rpc(0)
     , manager(0)
-    , cache(150000)
+    , cache(300000)
     , queue(0)
     , queueThread(0)
 {
@@ -347,7 +347,7 @@ QPixmap * Covers::get(const Song &song, int size)
 
 // If we have downloaded a cover, we can remove the dummy entry - so that the next time get() is called,
 // it can read the saved file!
-void Covers::clearDummyCache(const Song &song)
+void Covers::clearDummyCache(const Song &song, const QImage &img)
 {
     bool hadDummy=false;
     foreach (int s, cacheSizes) {
@@ -356,6 +356,13 @@ void Covers::clearDummyCache(const Song &song)
 
         if (pix && pix->width()<2) {
             cache.remove(key);
+
+            QStringList parts=img.isNull() ? QStringList() : key.split(':');
+            if (parts.size()>3) {
+                int size=parts.at(3).toInt();
+                pix=new QPixmap(QPixmap::fromImage(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+                cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
+            }
             hadDummy=true;
         }
     }
@@ -367,6 +374,7 @@ void Covers::clearDummyCache(const Song &song)
 
 Covers::Image Covers::getImage(const Song &song)
 {
+    return Image(QImage(), QString());
     QString dirName;
     QString songFile=song.file;
     bool haveAbsPath=song.file.startsWith('/');
@@ -377,7 +385,7 @@ Covers::Image Covers::getImage(const Song &song)
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
     if (!songFile.isEmpty() &&
-        (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty())) {
+        (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
         dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
                                        : MPDParseUtils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
         if (isArtistImage) {
@@ -555,28 +563,48 @@ void Covers::download(const Song &song)
                                         : MPDParseUtils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
     }
 
-    Job job(song, dirName, isArtistImage);
-
-    // Query lastfm...
-    if (!rpc) {
-        rpc = new MaiaXmlRpcClient(QUrl("http://ws.audioscrobbler.com/2.0/"));
-    }
-
     if (!manager) {
         manager=new NetworkAccessManager(this);
         connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(jobFinished(QNetworkReply *)));
     }
 
-    QMap<QString, QVariant> args;
+    Job job(song, dirName, isArtistImage);
 
-    args["artist"] = song.albumArtist();
+    if (!isArtistImage && !MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
+        downloadViaHttp(job, true);
+    } else {
+        downloadViaLastFm(job);
+    }
+}
+
+void Covers::downloadViaHttp(Job &job, bool jpg)
+{
+    QUrl u;
+    u.setEncodedUrl(QString(MPDConnection::self()->getDetails().dir+Utils::getDir(job.song.file.replace(" ", "%20"))+(jpg ? "cover.jpg" : "cover.png")).toLatin1());
+    jobs.insert(manager->get(QNetworkRequest(u)), job);
+    job.type=jpg ? JobHttpJpg : JobHttpPng;
+    jobs.insert(manager->get(QNetworkRequest(u)), job);
+}
+
+void Covers::downloadViaLastFm(Job &job)
+{
+    // Query lastfm...
+    if (!rpc) {
+        rpc = new MaiaXmlRpcClient(QUrl("http://ws.audioscrobbler.com/2.0/"));
+    }
+
+    QMap<QString, QVariant> args;
+    bool isArtistImage=job.song.album.isEmpty() && job.song.artist.isEmpty() && !job.song.albumartist.isEmpty();
+
+    args["artist"] = job.song.albumArtist();
     if (!isArtistImage) {
-        args["album"] = song.album;
+        args["album"] = job.song.album;
     }
     args["api_key"] = constApiKey;
     QNetworkReply *reply=rpc->call(isArtistImage ? "artist.getInfo" : "album.getInfo", QVariantList() << args,
                                    this, SLOT(albumInfo(QVariant &, QNetworkReply *)),
                                    this, SLOT(albumFailure(int, const QString &, QNetworkReply *)));
+    job.type=JobLastFm;
     jobs.insert(reply, job);
 }
 
@@ -653,26 +681,35 @@ void Covers::jobFinished(QNetworkReply *reply)
             img = QImage();
         }
 
-        if (!img.isNull()) {
-            if (img.size().width()>constMaxSize.width() || img.size().height()>constMaxSize.height()) {
-                img=img.scaled(constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            }
-            fileName=saveImg(job, img, data);
-        }
-
         jobs.remove(it.key());
 
-        if (job.isArtist) {
-            emit artistImage(job.song.albumartist, img);
-        } else if (img.isNull()) {
-            #if defined Q_OS_WIN || defined CANTATA_ANDROID
-            emit cover(job.song, QImage(), QString());
-            #else
-            AppCover app=otherAppCover(job);
-            emit cover(job.song, app.img, app.filename);
-            #endif
+        if (img.isNull() && JobLastFm!=job.type) {
+            if (JobHttpJpg==job.type) {
+                downloadViaHttp(job, false);
+            } else {
+                downloadViaLastFm(job);
+            }
         } else {
-            emit cover(job.song, img, fileName);
+            if (!img.isNull()) {
+                if (img.size().width()>constMaxSize.width() || img.size().height()>constMaxSize.height()) {
+                    img=img.scaled(constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                }
+                fileName=saveImg(job, img, data);
+                clearDummyCache(job.song, img);
+            }
+
+            if (job.isArtist) {
+                emit artistImage(job.song.albumartist, img);
+            } else if (img.isNull()) {
+                #if defined Q_OS_WIN || defined CANTATA_ANDROID
+                emit cover(job.song, QImage(), QString());
+                #else
+                AppCover app=otherAppCover(job);
+                emit cover(job.song, app.img, app.filename);
+                #endif
+            } else {
+                emit cover(job.song, img, fileName);
+            }
         }
     }
 
@@ -698,7 +735,6 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
         if (saveInMpdDir && canSaveTo(job.dir)) {
             savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
             if (!savedName.isEmpty()) {
-                clearDummyCache(job.song);
                 return savedName;
             }
         }
@@ -708,7 +744,6 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+encodeName(job.song.album), img, raw);
             if (!savedName.isEmpty()) {
-                clearDummyCache(job.song);
                 return savedName;
             }
         }

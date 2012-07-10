@@ -11,6 +11,10 @@
    least, the maximise button can get disabled.
 6. If 'Music folder' in settings dialog is a http folder (path starts with
    http://), then attempt to download cover-art from the http server.
+7. Dont update MPD volume just after we receive a status update - as MPD already
+   has that setting! Fixes an issue with pulseaudio setups - where MPD
+   disconnects from pulse audio, tells cantata that volume is -1, and cantata
+   attempts to set volume to 0.
 
 0.8.0
 -----

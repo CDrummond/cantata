@@ -2397,6 +2397,7 @@ void MainWindow::updateStatus()
     if (!stopState) {
         volume=status->volume();
 
+        volumeControl->blockSignals(true);
         if (volume<0) {
             volumeButton->setEnabled(false);
             volumeButton->setToolTip(i18n("Volume Disabled"));
@@ -2408,6 +2409,7 @@ void MainWindow::updateStatus()
             volumeControl->setToolTip(i18n("Volume %1%").arg(volume));
             volumeControl->setValue(volume);
         }
+        volumeControl->blockSignals(false);
 
         if (volume<=0) {
             volumeButton->setIcon(Icon("audio-volume-muted"));

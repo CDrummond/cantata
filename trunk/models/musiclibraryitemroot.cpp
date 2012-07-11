@@ -290,6 +290,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             }
             foreach (const MusicLibraryItem *t, album->childItems()) {
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
+                bool wroteArtist=false;
                 writer.writeEmptyElement("Track");
                 if (!track->song().title.isEmpty()) {
                     writer.writeAttribute("name", track->song().title);
@@ -307,6 +308,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 }
                 if (!track->song().artist.isEmpty() && track->song().artist!=artist->data()) {
                     writer.writeAttribute("artist", track->song().artist);
+                    wroteArtist=true;
                 }
                 if (!track->song().albumartist.isEmpty() && track->song().albumartist!=artist->data()) {
                     writer.writeAttribute("albumartist", track->song().albumartist);
@@ -317,7 +319,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 }
                 if (album->isSingleTracks()) {
                     writer.writeAttribute("album", track->song().album);
-                } else if (album->isMultipleArtists()) {
+                } else if (!wroteArtist && album->isMultipleArtists() && !track->song().artist.isEmpty() && track->song().artist!=artist->data()) {
                     writer.writeAttribute("artist", track->song().artist);
                 }
                 if (Song::Playlist==track->song().type) {
@@ -373,14 +375,11 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t()) || gs!=MPDParseUtils::groupSingle() || gm!=MPDParseUtils::groupMultiple()) {
                     return 0;
                 }
-            }
-
-            if (QLatin1String("Artist")==element) {
+            } else if (QLatin1String("Artist")==element) {
                 song.type=Song::Standard;
                 song.artist=song.albumartist=attributes.value("name").toString();
                 artistItem = createArtist(song);
-            }
-            else if (QLatin1String("Album")==element) {
+            } else if (QLatin1String("Album")==element) {
                 song.album=attributes.value("name").toString();
                 song.year=attributes.value("year").toString().toUInt();
                 song.genre=attributes.value("genre").toString();
@@ -397,8 +396,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 } else {
                     song.type=Song::Standard;
                 }
-            }
-            else if (QLatin1String("Track")==element) {
+            } else if (QLatin1String("Track")==element) {
                 song.title=attributes.value("name").toString();
                 song.file=attributes.value("file").toString();
                 if (QLatin1String("true")==attributes.value("playlist").toString()) {

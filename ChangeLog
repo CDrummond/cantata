@@ -16,6 +16,8 @@
    disconnects from pulse audio, tells cantata that volume is -1, and cantata
    attempts to set volume to 0.
 8. When fading on stop, reset original volume immediately before sending stop.
+9. Fix saving of library to XML cache when multiple artist albums are grouped
+   under 'Various Artists' (only save artist attribute once!!)
 
 0.8.0
 -----

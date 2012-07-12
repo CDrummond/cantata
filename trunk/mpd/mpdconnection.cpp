@@ -1044,31 +1044,23 @@ void MPDConnection::addToPlaylist(const QString &name, const QStringList &songs,
     }
 
     QByteArray encodedName=encodeName(name);
-    QStringList added;
-
+    QByteArray send = "command_list_begin\n";
     foreach (const QString &s, songs) {
-        QByteArray data = "playlistadd ";
-        data += encodedName;
-        data += " ";
-        data += encodeName(s);
-        if (sendCommand(data).ok) {
-            added << s;
-        } else {
-            break;
-        }
+        send += "playlistadd "+encodedName+" "+encodeName(s)+"\n";
     }
+    send += "command_list_end";
 
-    if (!added.isEmpty()) {
+    if (sendCommand(send).ok) {
         if (size>0) {
             QList<quint32> items;
-            for(int i=0; i<added.count(); ++i) {
+            for(int i=0; i<songs.count(); ++i) {
                 items.append(size+i);
             }
-            doMoveInPlaylist(name, items, pos, size+added.count());
+            doMoveInPlaylist(name, items, pos, size+songs.count());
         }
+    } else {
+        playlistInfo(name);
     }
-
-//     playlistInfo(name);
 }
 
 void MPDConnection::removeFromPlaylist(const QString &name, const QList<quint32> &positions)

@@ -1,23 +1,24 @@
 0.8.1
 -----
-1. Detect when this is the first time a user has run Cantata. If so, don't
-   place the play queue in the sidebar.
-2. Dont attempt to rename a playlist to its current name - otherwise it is
-   deleted!
-3. When applying updates in tag editor, track organizer, or replay gain dialog
-   show a progress bar to indicate activity.
-4. Display version number in Qt-only about dialog.
-5. When expanding interface, set max size to INT_MAX. Otherwise, on windows at
-   least, the maximise button can get disabled.
-6. If 'Music folder' in settings dialog is a http folder (path starts with
-   http://), then attempt to download cover-art from the http server.
-7. Dont update MPD volume just after we receive a status update - as MPD already
-   has that setting! Fixes an issue with pulseaudio setups - where MPD
-   disconnects from pulse audio, tells cantata that volume is -1, and cantata
-   attempts to set volume to 0.
-8. When fading on stop, reset original volume immediately before sending stop.
-9. Fix saving of library to XML cache when multiple artist albums are grouped
-   under 'Various Artists' (only save artist attribute once!!)
+ 1. Detect when this is the first time a user has run Cantata. If so, don't
+    place the play queue in the sidebar.
+ 2. Dont attempt to rename a playlist to its current name - otherwise it is
+    deleted!
+ 3. When applying updates in tag editor, track organizer, or replay gain dialog
+    show a progress bar to indicate activity.
+ 4. Display version number in Qt-only about dialog.
+ 5. When expanding interface, set max size to INT_MAX. Otherwise, on windows at
+    least, the maximise button can get disabled.
+ 6. If 'Music folder' in settings dialog is a http folder (path starts with
+    http://), then attempt to download cover-art from the http server.
+ 7. Dont update MPD volume just after we receive a status update - as MPD already
+    has that setting! Fixes an issue with pulseaudio setups - where MPD
+    disconnects from pulse audio, tells cantata that volume is -1, and cantata
+    attempts to set volume to 0.
+ 8. When fading on stop, reset original volume immediately before sending stop.
+ 9. Fix saving of library to XML cache when multiple artist albums are grouped
+    under 'Various Artists' (only save artist attribute once!!)
+10. Use command list when adding songs to playlist.
 
 0.8.0
 -----

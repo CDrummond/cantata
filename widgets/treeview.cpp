@@ -22,9 +22,13 @@
  */
 
 #include "treeview.h"
+#include "itemview.h"
+#include "icon.h"
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QPainter>
+#include <QtGui/QDrag>
+#include <QtCore/QMimeData>
 #include <QtCore/QMap>
 
 TreeView::TreeView(QWidget *parent)
@@ -70,6 +74,38 @@ bool TreeView::haveSelectedItems() const
 bool TreeView::haveUnSelectedItems() const
 {
     return selectedIndexes().count()!=model()->rowCount();
+}
+
+void TreeView::startDrag(Qt::DropActions supportedActions)
+{
+    QModelIndexList indexes = selectedIndexes();
+    qSort(indexes);
+    if (indexes.count() > 0) {
+        QMimeData *data = model()->mimeData(indexes);
+        if (!data) {
+            return;
+        }
+        QRect rect;
+        QDrag *drag = new QDrag(this);
+        drag->setMimeData(data);
+        QPixmap pix;
+
+        if (1==indexes.count()) {
+            QVariant var=model()->data(indexes.first(), ItemView::Role_Image);
+            QImage img=var.value<QImage>();
+            if (img.isNull()) {
+                pix=var.value<QPixmap>();
+            } else {
+                pix=QPixmap::fromImage(img);
+            }
+        }
+        if (pix.isNull()) {
+            drag->setPixmap(Icon(DEFAULT_ALBUM_ICON).pixmap(32, 32));
+        } else {
+            drag->setPixmap(pix.width()<32 ? pix : pix.scaled(QSize(32, 32), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        }
+        drag->start(supportedActions);
+    }
 }
 
 void TreeView::mouseReleaseEvent(QMouseEvent *event)

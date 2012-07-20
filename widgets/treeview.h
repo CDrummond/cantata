@@ -41,6 +41,7 @@ public:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     bool haveSelectedItems() const;
     bool haveUnSelectedItems() const;
+    void startDrag(Qt::DropActions supportedActions);
     void mouseReleaseEvent(QMouseEvent *event);
     QModelIndexList selectedIndexes() const;
     void expandAll();

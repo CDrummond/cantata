@@ -22,6 +22,7 @@
  */
 
 #include "listview.h"
+#include "itemview.h"
 #include "config.h"
 #include "icon.h"
 #include <QtCore/QMimeData>
@@ -66,24 +67,36 @@ bool ListView::haveUnSelectedItems() const
 
 void ListView::startDrag(Qt::DropActions supportedActions)
 {
-    if (QListView::IconMode!=viewMode()) {
-        QListView::startDrag(supportedActions);
-        return;
-    }
+//     if (QListView::IconMode!=viewMode()) {
+//         QListView::startDrag(supportedActions);
+//         return;
+//     }
 
     QModelIndexList indexes = selectedIndexes();
+    qSort(indexes);
     if (indexes.count() > 0) {
         QMimeData *data = model()->mimeData(indexes);
-        if (!data)
+        if (!data) {
             return;
+        }
         QRect rect;
         QDrag *drag = new QDrag(this);
         drag->setMimeData(data);
-        if (indexes.count()>1) {
+        QPixmap pix;
+
+        if (1==indexes.count()) {
+            QVariant var=model()->data(indexes.first(), ItemView::Role_Image);
+            QImage img=var.value<QImage>();
+            if (img.isNull()) {
+                pix=var.value<QPixmap>();
+            } else {
+                pix=QPixmap::fromImage(img);
+            }
+        }
+        if (pix.isNull()) {
             drag->setPixmap(Icon(DEFAULT_ALBUM_ICON).pixmap(64, 64));
         } else {
-            drag->setPixmap(QPixmap::fromImage(model()->data(indexes.first(), Qt::DecorationRole).value<QImage>()
-                            .scaled(QSize(64, 64), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            drag->setPixmap(pix.width()<64 ? pix : pix.scaled(QSize(64, 64), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         drag->start(supportedActions);
     }

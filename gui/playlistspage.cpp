@@ -287,9 +287,11 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool rep
             }
         }
     }
+    QModelIndexList sorted=indexes;
+    qSort(sorted);
 
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, indexes) {
+    foreach (const QModelIndex &idx, sorted) {
         mapped.prepend(proxy.mapToSource(idx));
     }
 

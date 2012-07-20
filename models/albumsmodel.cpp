@@ -330,16 +330,21 @@ QList<Song> AlbumsModel::songs(const QModelIndexList &indexes, bool allowPlaylis
         Item *item=static_cast<Item *>(index.internalPointer());
 
         if (item->isAlbum()) {
+            QList<Song> albumSongs;
             const SongItem *cue=allowPlaylists ? static_cast<AlbumItem*>(item)->getCueFile() : 0;
             if (cue) {
-                songs << *cue;
+                if (!songs.contains(*cue)) {
+                    albumSongs << *cue;
+                }
             } else {
                 foreach (const SongItem *s, static_cast<AlbumItem*>(item)->songs) {
                     if ((/*allowPlaylists || */Song::Playlist!=s->type) && !songs.contains(*s)) {
-                        songs << *s;
+                        albumSongs << *s;
                     }
                 }
             }
+            qSort(albumSongs);
+            songs << albumSongs;
         } else if ((allowPlaylists || Song::Playlist!=static_cast<SongItem*>(item)->type) && !songs.contains(*static_cast<SongItem*>(item))) {
             songs << *static_cast<SongItem*>(item);
         }

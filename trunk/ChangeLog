@@ -1,3 +1,9 @@
+0.8.2
+-----
+1. Fix track order when adding newly added album to playqueue.
+2. When dragging one artist, or album, in treeview to play queue, show cover
+   image (if possible).
+
 0.8.1
 -----
  1. Detect when this is the first time a user has run Cantata. If so, don't

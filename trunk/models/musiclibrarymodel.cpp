@@ -658,13 +658,13 @@ QStringList MusicLibraryModel::filenames(const QModelIndexList &indexes, bool al
     return fnames;
 }
 
-static inline void addSong(const MusicLibraryItem *song, QList<Song> &songs, bool allowPlaylists)
+static inline void addSong(const MusicLibraryItem *song, QList<Song> &insertInto, QList<Song> &checkAgainst, bool allowPlaylists)
 {
     if (MusicLibraryItem::Type_Song==song->itemType() &&
         (allowPlaylists || Song::Playlist!=static_cast<const MusicLibraryItemSong*>(song)->song().type) &&
-        !songs.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
+        !checkAgainst.contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
         static_cast<const MusicLibraryItemSong*>(song)->song().updateSize(MPDConnection::self()->getDetails().dir);
-        songs << static_cast<const MusicLibraryItemSong*>(song)->song();
+        insertInto << static_cast<const MusicLibraryItemSong*>(song)->song();
     }
 }
 
@@ -676,36 +676,44 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowP
         const MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
         switch (item->itemType()) {
-        case MusicLibraryItem::Type_Artist:
+        case MusicLibraryItem::Type_Artist: {
+            QList<Song> artistSongs;
             foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
                 const MusicLibraryItemSong *cue=allowPlaylists ? static_cast<const MusicLibraryItemAlbum *>(album)->getCueFile() : 0;
                 if (cue) {
-                    addSong(cue, songs, true);
+                    addSong(cue, artistSongs, songs, true);
                 } else {
                     foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                        addSong(song, songs, false);
+                        addSong(song, artistSongs, songs, false);
                     }
                 }
             }
+            qSort(artistSongs);
+            songs << artistSongs;
             break;
+        }
         case MusicLibraryItem::Type_Album: {
+            QList<Song> albumSongs;
             const MusicLibraryItemSong *cue=allowPlaylists ? static_cast<const MusicLibraryItemAlbum *>(item)->getCueFile() : 0;
             if (cue) {
-                addSong(cue, songs, true);
+                addSong(cue, albumSongs, songs, true);
             } else {
                 foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                    addSong(song, songs, false);
+                    addSong(song, albumSongs, songs, false);
                 }
             }
+            qSort(albumSongs);
+            songs << albumSongs;
             break;
         }
         case MusicLibraryItem::Type_Song:
-            addSong(item, songs, allowPlaylists);
+            addSong(item, songs, songs, allowPlaylists);
             break;
         default:
             break;
         }
     }
+
     return songs;
 }
 

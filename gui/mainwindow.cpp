@@ -902,6 +902,14 @@ MainWindow::MainWindow(QWidget *parent)
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
 
+    #ifndef CANTATA_ANDROID
+    autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
+    autoHideSplitterAction->setCheckable(true);
+    autoHideSplitterAction->setChecked(Settings::self()->splitterAutoHide());
+    tabWidget->addMenuAction(autoHideSplitterAction);
+    connect(autoHideSplitterAction, SIGNAL(toggled(bool)), this, SLOT(toggleSplitterAutoHide()));
+    #endif
+
     if (playQueueInSidebar) {
         tabToggled(PAGE_PLAYQUEUE);
     } else {
@@ -1258,13 +1266,6 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
-    #ifndef CANTATA_ANDROID
-    autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
-    autoHideSplitterAction->setCheckable(true);
-    autoHideSplitterAction->setChecked(Settings::self()->splitterAutoHide());
-    tabWidget->addMenuAction(autoHideSplitterAction);
-    connect(autoHideSplitterAction, SIGNAL(toggled(bool)), this, SLOT(toggleSplitterAutoHide()));
-    #endif
     connect(tabWidget, SIGNAL(CurrentChanged(int)), this, SLOT(currentTabChanged(int)));
     connect(tabWidget, SIGNAL(TabToggled(int)), this, SLOT(tabToggled(int)));
     connect(tabWidget, SIGNAL(ModeChanged(FancyTabWidget::Mode)), this, SLOT(sidebarModeChanged()));

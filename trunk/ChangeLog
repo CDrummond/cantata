@@ -3,6 +3,7 @@
 1. Fix track order when adding newly added album to playqueue.
 2. When dragging one artist, or album, in treeview to play queue, show cover
    image (if possible).
+3. Fix crash when toggling playqueue in sidebar at application start-up.
 
 0.8.1
 -----

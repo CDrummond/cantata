@@ -63,6 +63,9 @@ public:
     Application(int &argc, char **argv);
     virtual ~Application();
 
+    #ifdef Q_OS_WIN
+    bool winEventFilter(MSG *msg, long *result);
+    #endif
     bool start();
     #if defined TAGLIB_FOUND
     void loadFiles();
@@ -73,6 +76,9 @@ private:
 private Q_SLOTS:
     void message(const QString &m);
     #endif // TAGLIB_FOUND
+
+Q_SIGNALS:
+    void reconnect();
 };
 #endif
 

@@ -171,6 +171,7 @@ public:
     bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0); }
 
 public Q_SLOTS:
+    void reconnect();
     void setDetails(const MPDConnectionDetails &det);
     void disconnectMpd();
     // Current Playlist

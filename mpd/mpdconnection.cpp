@@ -314,6 +314,14 @@ void MPDConnection::disconnectFromMPD()
     ver=0;
 }
 
+void MPDConnection::reconnect()
+{
+    if (isConnected()) {
+        disconnectFromMPD();
+        setDetails(details);
+    }
+}
+
 void MPDConnection::setDetails(const MPDConnectionDetails &det)
 {
     bool changedDir=det.dir!=details.dir;

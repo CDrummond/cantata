@@ -579,7 +579,7 @@ void Covers::download(const Song &song)
 void Covers::downloadViaHttp(Job &job, bool jpg)
 {
     QUrl u;
-    u.setEncodedUrl(QString(MPDConnection::self()->getDetails().dir+Utils::getDir(job.song.file.replace(" ", "%20"))+(jpg ? "cover.jpg" : "cover.png")).toLatin1());
+    u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+QByteArray(jpg ? "cover.jpg" : "cover.png"));
     jobs.insert(manager->get(QNetworkRequest(u)), job);
     job.type=jpg ? JobHttpJpg : JobHttpPng;
     jobs.insert(manager->get(QNetworkRequest(u)), job);

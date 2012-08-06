@@ -1,3 +1,9 @@
+0.8.3
+-----
+1. Add CMake options to disable 'automagic' dependencies - required for gentoo
+   USE flags (http://www.gentoo.org/proj/en/qa/automagic.xml). Because of this
+   WANT_KDE_SUPPORT option has been renamed to ENABLE_KDE
+
 0.8.2
 -----
 1. Fix track order when adding newly added album to playqueue.

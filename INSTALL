@@ -22,7 +22,7 @@ The following options may be passed to CMake:
         Compile with WebKit, used for info page.
         Default: on
 
-    -DWANT_KDE_SUPPORT=NO
+    -DENABLE_KDE=NO
         Disable KDE support - not recommended.
         Default: on
 
@@ -31,6 +31,6 @@ Qt-Only
 =======
 1. mkdir build
 2. cd build
-3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DWANT_KDE_SUPPORT=NO
+3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_KDE=NO
 4. make
 5. sudo make install

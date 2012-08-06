@@ -258,8 +258,8 @@ private Q_SLOTS:
     void setMpdVolume(int );
     void playbackButtonsMenu();
     void controlButtonsMenu();
-    void setPlaybackButtonsSize(bool small);
-    void setControlButtonsSize(bool small);
+    void setPlaybackButtonsSize(bool smallButtons);
+    void setControlButtonsSize(bool smallButtons);
     void songLoaded();
     void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);

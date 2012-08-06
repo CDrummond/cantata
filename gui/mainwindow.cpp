@@ -1405,7 +1405,7 @@ void MainWindow::controlButtonsMenu()
     controlBtnsMenu->exec(QCursor::pos());
 }
 
-void MainWindow::setPlaybackButtonsSize(bool small)
+void MainWindow::setPlaybackButtonsSize(bool smallButtons)
 {
     #ifdef CANTATA_ANDROID
     int size=Icon::stdSize(QApplication::fontMetrics().height()*2);
@@ -1423,14 +1423,14 @@ void MainWindow::setPlaybackButtonsSize(bool small)
         } else
         #endif
         {
-            b->setIconSize(small ? QSize(22, 22) : QSize(28, 28));
-            b->setMinimumSize(small ? QSize(26, 26) : QSize(32, 32));
-            b->setMaximumSize(small ? QSize(26, 26) : QSize(32, 32));
+            b->setIconSize(smallButtons ? QSize(22, 22) : QSize(28, 28));
+            b->setMinimumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
+            b->setMaximumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
         }
     }
 }
 
-void MainWindow::setControlButtonsSize(bool small)
+void MainWindow::setControlButtonsSize(bool smallButtons)
 {
     #ifdef CANTATA_ANDROID
     int size=Icon::stdSize(QApplication::fontMetrics().height()*2);
@@ -1450,12 +1450,12 @@ void MainWindow::setControlButtonsSize(bool small)
         } else
         #endif
         {
-            b->setMinimumSize(small ? QSize(22, 22) : QSize(26, 26));
-            b->setMaximumSize(small ? QSize(22, 22) : QSize(26, 26));
+            b->setMinimumSize(smallButtons ? QSize(22, 22) : QSize(26, 26));
+            b->setMaximumSize(smallButtons ? QSize(22, 22) : QSize(26, 26));
             #ifdef ENABLE_KDE_SUPPORT
-            b->setIconSize(small ? QSize(16, 16) : QSize(22, 22));
+            b->setIconSize(smallButtons ? QSize(16, 16) : QSize(22, 22));
             #else
-            b->setIconSize(small ? QSize(18, 18) : QSize(22, 22));
+            b->setIconSize(smallButtons ? QSize(18, 18) : QSize(22, 22));
             #endif
         }
     }

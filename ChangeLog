@@ -5,6 +5,8 @@
    WANT_KDE_SUPPORT option has been renamed to ENABLE_KDE
 2. When requesting covers from a HTTP server, use QUrl::toPercentEncoding.
 3. Fix multiple downlod attempts when getting covers from HTTP.
+4. With KDE builds (4.7 or later), and Windows Qt builds, reconnect to MPD when
+   system is resumed.
 
 0.8.2
 -----

@@ -26,14 +26,19 @@
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
 #include <KDE/KMessageBox>
+#include <KDE/Solid/PowerManagement>
 #else
 #include <QtGui/QIcon>
 #include <QtCore/QUrl>
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 #endif
 #include "icon.h"
 #include "utils.h"
 #include "config.h"
 #include "mainwindow.h"
+#include "mpdconnection.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 #ifdef Q_WS_X11
@@ -48,6 +53,9 @@ Application::Application()
     : KUniqueApplication()
     , w(0)
 {
+    #if KDE_IS_VERSION(4, 7, 0)
+    connect(Solid::PowerManagement::notifier(), SIGNAL(resumingFromSuspend()), MPDConnection::self(), SLOT(reconnect()));
+    #endif
 }
 
 Application::~Application() {
@@ -99,11 +107,25 @@ Application::Application(int &argc, char **argv)
     #if defined TAGLIB_FOUND && !defined CANTATA_ANDROID
     connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
     #endif
+
+    #ifdef Q_OS_WIN
+    connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
+    #endif
 }
 
 Application::~Application()
 {
 }
+
+#ifdef Q_OS_WIN
+bool Application::winEventFilter(MSG *msg, long *result)
+{
+    if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {
+        emit reconnect();
+    }
+    return QCoreApplication::winEventFilter(msg, result);
+}
+#endif
 
 #ifdef CANTATA_ANDROID
 #include <QtCore/QTextStream>
@@ -115,7 +137,7 @@ static void setPal(QPalette &pal, QPalette::ColorGroup cg, const QStringList &pa
         pal.setColor(cg, (QPalette::ColorRole)i, QColor(parts.at(i)));
     }
 }
-#endif
+#endif // CANTATA_ANDROID
 
 bool Application::start()
 {

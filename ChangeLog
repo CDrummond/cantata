@@ -4,6 +4,7 @@
    USE flags (http://www.gentoo.org/proj/en/qa/automagic.xml). Because of this
    WANT_KDE_SUPPORT option has been renamed to ENABLE_KDE
 2. When requesting covers from a HTTP server, use QUrl::toPercentEncoding.
+3. Fix multiple downlod attempts when getting covers from HTTP.
 
 0.8.2
 -----

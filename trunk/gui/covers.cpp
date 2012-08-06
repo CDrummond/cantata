@@ -580,7 +580,6 @@ void Covers::downloadViaHttp(Job &job, bool jpg)
 {
     QUrl u;
     u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+QByteArray(jpg ? "cover.jpg" : "cover.png"));
-    jobs.insert(manager->get(QNetworkRequest(u)), job);
     job.type=jpg ? JobHttpJpg : JobHttpPng;
     jobs.insert(manager->get(QNetworkRequest(u)), job);
 }
@@ -681,7 +680,6 @@ void Covers::jobFinished(QNetworkReply *reply)
         }
 
         jobs.remove(it.key());
-
         if (img.isNull() && JobLastFm!=job.type) {
             if (JobHttpJpg==job.type) {
                 downloadViaHttp(job, false);

@@ -21,7 +21,10 @@
  * Boston, MA 02110-1301, USA.
  */
 
+static const int constReconnectDelay=1500;
+
 #include "application.h"
+#include <QtCore/QTimer>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
@@ -54,7 +57,8 @@ Application::Application()
     , w(0)
 {
     #if KDE_IS_VERSION(4, 7, 0)
-    connect(Solid::PowerManagement::notifier(), SIGNAL(resumingFromSuspend()), MPDConnection::self(), SLOT(reconnect()));
+    connect(Solid::PowerManagement::notifier(), SIGNAL(resumingFromSuspend()), this, SLOT(resumed()));
+    connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
     #endif
 }
 
@@ -96,6 +100,17 @@ int Application::newInstance() {
     KStartupInfo::appStarted(startupId());
     return 0;
 }
+
+void Application::resumed()
+{
+    QTimer::singleShot(1500, this, SLOT(doReconnect()));
+}
+
+void Application::doReconnect()
+{
+    emit reconnect();
+}
+
 #else // ENABLE_KDE_SUPPORT
 Application::Application(int &argc, char **argv)
     #ifdef CANTATA_ANDROID
@@ -121,11 +136,16 @@ Application::~Application()
 bool Application::winEventFilter(MSG *msg, long *result)
 {
     if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {
-        emit reconnect();
+        QTimer::singleShot(1500, this, SLOT(doReconnect()));
     }
     return QCoreApplication::winEventFilter(msg, result);
 }
 #endif
+
+void Application::doReconnect()
+{
+    emit reconnect();
+}
 
 #ifdef CANTATA_ANDROID
 #include <QtCore/QTextStream>

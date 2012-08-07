@@ -385,7 +385,13 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
     #ifndef ENABLE_KDE_SUPPORT
-    setWindowIcon(QIcon(":/cantata.svg"));
+    appIcon=QIcon(":cantata.svg");
+    appIcon.addFile(":cantata16.png");
+    appIcon.addFile(":cantata22.png");
+    appIcon.addFile(":cantata32.png");
+    appIcon.addFile(":cantata48.png");
+    appIcon.addFile(":cantata64.png");
+    setWindowIcon(appIcon);
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
     #endif
 
@@ -1038,7 +1044,7 @@ MainWindow::MainWindow(QWidget *parent)
 //     QMenu *menu=new QMenu(tr("Help"), this);
 //     QAction *menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
     menuAct=mainMenu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
-    menuAct->setIcon(windowIcon());
+    menuAct->setIcon(appIcon);
 //     mainMenu->addMenu(menu);
     #endif
     mainMenu->addSeparator();
@@ -2496,7 +2502,7 @@ void MainWindow::updateStatus()
             trayItem->setIconByName("cantata");
             trayItem->setToolTip("cantata", i18n("Cantata"), "<i>Playback stopped</i>");
             #else
-            trayItem->setIcon(windowIcon());
+            trayItem->setIcon(appIcon);
             #endif
         }
         #endif
@@ -2893,7 +2899,7 @@ void MainWindow::setupTrayIcon()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(quitAction);
     trayItem->setContextMenu(trayItemMenu);
-    trayItem->setIcon(windowIcon());
+    trayItem->setIcon(appIcon);
     trayItem->setToolTip(tr("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));

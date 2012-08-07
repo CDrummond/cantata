@@ -396,6 +396,9 @@ private:
     bool autoScrollPlayQueue;
     QIcon playbackPause;
     QIcon playbackPlay;
+    #ifndef ENABLE_KDE_SUPPORT
+    QIcon appIcon;
+    #endif
     VolumeSliderEventHandler *volumeSliderEventHandler;
     VolumeControl *volumeControl;
     Action *prefAction;

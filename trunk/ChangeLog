@@ -9,6 +9,8 @@
    system is resumed. (A reconnect attempt is made every half second for a max
    of 15 seconds)
 5. To help with windows build, embed pre-rendered versions of main icon.
+6. When restoring window from notification area, also raise and activate the
+   window.
 
 0.8.2
 -----

@@ -111,6 +111,9 @@
 #include "actionitemdelegate.h"
 #include "icon.h"
 #include "debugtimer.h"
+#ifdef Q_OS_WIN
+static void raiseWindow(QWidget *w);
+#endif
 
 static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
 {
@@ -2930,7 +2933,12 @@ void MainWindow::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
     switch (reason) {
     case QSystemTrayIcon::Trigger:
         if (isHidden()) {
+            #ifdef Q_OS_WIN
+            raiseWindow(this);
+            #endif
+            raise();
             showNormal();
+            activateWindow();
             if (!lastPos.isNull()) {
                 move(lastPos);
             }
@@ -3519,5 +3527,15 @@ void MainWindow::replayGain()
         RgDialog *dlg=new RgDialog(this);
         dlg->show(songs, udi);
     }
+}
+#endif
+
+#ifdef Q_OS_WIN
+// This is down here, because windows.h includes ALL windows stuff - and we get conflics with MessageBox :-(
+#include <windows.h>
+static void raiseWindow(QWidget *w)
+{
+    ::SetWindowPos(w->effectiveWinId(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+    ::SetWindowPos(w->effectiveWinId(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 }
 #endif

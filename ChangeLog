@@ -6,7 +6,8 @@
 2. When requesting covers from a HTTP server, use QUrl::toPercentEncoding.
 3. Fix multiple downlod attempts when getting covers from HTTP.
 4. With KDE builds (4.7 or later), and Windows Qt builds, reconnect to MPD when
-   system is resumed.
+   system is resumed. (A reconnect attempt is made every half second for a max
+   of 15 seconds)
 5. To help with windows build, embed pre-rendered versions of main icon.
 
 0.8.2

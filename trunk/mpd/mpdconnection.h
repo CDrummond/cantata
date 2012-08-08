@@ -35,6 +35,7 @@
 #include "song.h"
 #include "output.h"
 #include "playlist.h"
+#include <time.h>
 
 class MusicLibraryItemArtist;
 class DirViewItemRoot;
@@ -308,6 +309,7 @@ private:
         State_Disconnected
     };
     State state;
+    time_t reconnectStart;
 };
 
 #endif

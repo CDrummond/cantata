@@ -34,7 +34,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QThread>
 #include <QtCore/QStringList>
-#include <QtCore/QFileInfo>
+#include <QtCore/QTimer>
 #include "debugtimer.h"
 #include "settings.h"
 
@@ -196,6 +196,7 @@ MPDConnection::MPDConnection()
     , sock(this)
     , idleSocket(this)
     , state(State_Blank)
+    , reconnectStart(0)
 {
     qRegisterMetaType<Song>("Song");
     qRegisterMetaType<Output>("Output");
@@ -316,9 +317,38 @@ void MPDConnection::disconnectFromMPD()
 
 void MPDConnection::reconnect()
 {
-    if (isConnected()) {
+    time_t now=time(NULL);
+    if (0==reconnectStart && isConnected()) {
         disconnectFromMPD();
-        setDetails(details);
+    }
+
+    if (isConnected()) { // Perhaps the user pressed a button which caused the reconnect???
+        return;
+    }
+
+    switch (connectToMPD()) {
+    case Success:
+        getStats();
+        getUrlHandlers();
+        reconnectStart=0;
+        break;
+    case Failed:
+        if (abs(now-reconnectStart)<15) {
+            QTimer::singleShot(500, this, SLOT(reconnect()));
+            if (0==reconnectStart) {
+                reconnectStart=now;
+            }
+        } else {
+            emit stateChanged(false);
+            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+            reconnectStart=0;
+        }
+        break;
+    case IncorrectPassword:
+        emit stateChanged(false);
+        emit error(i18n("Connection to %1 failed - incorrect password").arg(details.description()), true);
+        reconnectStart=0;
+        break;
     }
 }
 

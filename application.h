@@ -30,8 +30,6 @@
 class MainWindow;
 class Application : public KUniqueApplication
 {
-    Q_OBJECT
-
 public:
     #ifdef Q_WS_X11
     Application(Display *display, Qt::HANDLE visual, Qt::HANDLE colormap);
@@ -40,13 +38,6 @@ public:
     ~Application();
 
     int newInstance();
-
-public Q_SLOTS:
-    void resumed();
-    void doReconnect();
-
-Q_SIGNALS:
-    void reconnect();
 
 private:
     MainWindow *w;
@@ -84,8 +75,7 @@ private:
 
 private Q_SLOTS:
     void message(const QString &m);
-    #endif // TAGLIB_FOUND;
-    void doReconnect();
+    #endif // TAGLIB_FOUND
 
 Q_SIGNALS:
     void reconnect();

@@ -206,7 +206,9 @@ public:
         if (!index.isValid()) {
             return;
         }
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+        QStyleOptionViewItemV4 opt(option);
+        opt.showDecorationSelected=true;
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, 0L);
 
         QString capacityText=index.data(ItemView::Role_CapacityText).toString();
         bool showCapacity = !capacityText.isEmpty();
@@ -371,7 +373,7 @@ public:
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
 
         if (1==text.count()) {
-             QStyledItemDelegate::paint(painter, option, index);
+            QStyledItemDelegate::paint(painter, option, index);
         } else {
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
 

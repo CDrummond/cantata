@@ -11,6 +11,7 @@
 5. To help with windows build, embed pre-rendered versions of main icon.
 6. When restoring window from notification area, also raise and activate the
    window.
+7. Fix issue with certain styles not drawing selection background in icon view.
 
 0.8.2
 -----

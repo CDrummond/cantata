@@ -420,7 +420,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 
     if (0!=reconnectStart && !isConnected()) { // We are in the process of resuming from suspend, so ignore user commands!!
         return Response(false);
-    } else if (QAbstractSocket::ConnectedState!=sock.state()) {
+    } else if (!isConnected() || QAbstractSocket::ConnectedState!=sock.state()) {
         sock.close();
         if (Success!=connectToMPD(sock)) {
             // Failed to connect, so close *both* sockets!
@@ -430,9 +430,15 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         }
     }
 
-    sock.write(command+"\n");
-    sock.waitForBytesWritten(5000);
-    Response response=readReply(sock);
+    Response response;
+    if (-1==sock.write(command+"\n")) {
+        // If we fail to write, dont wait for bytes to be written!!
+        response=Response(false);
+        sock.close();
+    } else {
+        sock.waitForBytesWritten(5000);
+        response=readReply(sock);
+    }
 
     if (!response.ok) {
         DBUG << command << "failed";

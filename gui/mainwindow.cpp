@@ -1530,7 +1530,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
     if (connected) {
         messageWidget->hide();
         if (CS_Connected!=connectedState) {
-            emit getStatus();
             emit playListInfo();
             emit outputs();
             if (CS_Init!=connectedState) {
@@ -1551,6 +1550,8 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         serverInfoPage->clear();
         connectedState=CS_Disconnected;
         outputsAction->setVisible(false);
+        MPDStatus dummyStatus;
+        updateStatus(&dummyStatus);
     }
 }
 
@@ -2401,8 +2402,11 @@ void MainWindow::updateStats()
 
 void MainWindow::updateStatus()
 {
-    MPDStatus * const status = MPDStatus::self();
+    updateStatus(MPDStatus::self());
+}
 
+void MainWindow::updateStatus(MPDStatus * const status)
+{
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
         positionSlider->setValue(0);
     } else {

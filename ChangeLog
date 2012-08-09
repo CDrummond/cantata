@@ -1,20 +1,22 @@
 0.8.3
 -----
-1. Add CMake options to disable 'automagic' dependencies - required for gentoo
-   USE flags (http://www.gentoo.org/proj/en/qa/automagic.xml). Because of this
-   WANT_KDE_SUPPORT option has been renamed to ENABLE_KDE
-2. When requesting covers from a HTTP server, use QUrl::toPercentEncoding.
-3. Fix multiple downlod attempts when getting covers from HTTP.
-4. With KDE builds (4.7 or later), and Windows Qt builds, reconnect to MPD when
-   system is resumed. (A reconnect attempt is made every half second for a max
-   of 15 seconds)
-5. To help with windows build, embed pre-rendered versions of main icon.
-6. When restoring window from notification area, also raise and activate the
-   window.
-7. Fix issue with certain styles not drawing selection background in icon view.
-8. If we show an error, or info, message whilst using compact interface - then
-   adjust size to take message widget into account.
-9. If we loose MPD connection, then show error widget.
+ 1. Add CMake options to disable 'automagic' dependencies - required for gentoo
+    USE flags (http://www.gentoo.org/proj/en/qa/automagic.xml). Because of this
+    WANT_KDE_SUPPORT option has been renamed to ENABLE_KDE
+ 2. When requesting covers from a HTTP server, use QUrl::toPercentEncoding.
+ 3. Fix multiple downlod attempts when getting covers from HTTP.
+ 4. With KDE builds (4.7 or later), and Windows Qt builds, reconnect to MPD when
+    system is resumed. (A reconnect attempt is made every half second for a max
+    of 15 seconds)
+ 5. To help with windows build, embed pre-rendered versions of main icon.
+ 6. When restoring window from notification area, also raise and activate the
+    window.
+ 7. Fix issue with certain styles not drawing selection background in icon view.
+ 8. If we show an error, or info, message whilst using compact interface - then
+    adjust size to take message widget into account.
+ 9. If we loose MPD connection, then show error widget.
+10. Reset status when connection lost.
+11. Dont attempt to send commands if not connected.
 
 0.8.2
 -----

@@ -14,6 +14,7 @@
 7. Fix issue with certain styles not drawing selection background in icon view.
 8. If we show an error, or info, message whilst using compact interface - then
    adjust size to take message widget into account.
+9. If we loose MPD connection, then show error widget.
 
 0.8.2
 -----

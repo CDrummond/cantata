@@ -12,6 +12,8 @@
 6. When restoring window from notification area, also raise and activate the
    window.
 7. Fix issue with certain styles not drawing selection background in icon view.
+8. If we show an error, or info, message whilst using compact interface - then
+   adjust size to take message widget into account.
 
 0.8.2
 -----

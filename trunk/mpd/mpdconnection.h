@@ -40,6 +40,7 @@
 class MusicLibraryItemArtist;
 class DirViewItemRoot;
 class MusicLibraryItemRoot;
+class QTimer;
 
 class MpdSocket : public QObject
 {
@@ -263,6 +264,7 @@ Q_SIGNALS:
     void updatingFileList();
     void updatedFileList();
     void error(const QString &err, bool showActions=false);
+    void info(const QString &msg);
     void urlHandlers(const QStringList &handlers);
     void dirChanged();
     void prioritySet(const QList<quint32> &ids, quint8 priority);
@@ -309,6 +311,7 @@ private:
         State_Disconnected
     };
     State state;
+    QTimer *reconnectTimer;
     time_t reconnectStart;
 };
 

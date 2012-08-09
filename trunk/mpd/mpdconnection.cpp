@@ -196,6 +196,7 @@ MPDConnection::MPDConnection()
     , sock(this)
     , idleSocket(this)
     , state(State_Blank)
+    , reconnectTimer(0)
     , reconnectStart(0)
 {
     qRegisterMetaType<Song>("Song");
@@ -315,29 +316,49 @@ void MPDConnection::disconnectFromMPD()
     ver=0;
 }
 
+// This function is mainly intended to be called after the computer (laptop) has been 'resumed'
 void MPDConnection::reconnect()
 {
-    time_t now=time(NULL);
-    if (0==reconnectStart && isConnected()) {
-        disconnectFromMPD();
+    if (reconnectTimer && reconnectTimer->isActive()) {
+        return;
+    }
+    if (0==reconnectStart) {
+        if (isConnected()) {
+            disconnectFromMPD();
+        } else {
+            return;
+        }
     }
 
     if (isConnected()) { // Perhaps the user pressed a button which caused the reconnect???
+        reconnectStart=0;
         return;
     }
 
+    time_t now=time(NULL);
+
     switch (connectToMPD()) {
     case Success:
+        getStatus();
         getStats();
         getUrlHandlers();
         reconnectStart=0;
+        emit stateChanged(true);
         break;
     case Failed:
-        if (abs(now-reconnectStart)<15) {
-            QTimer::singleShot(500, this, SLOT(reconnect()));
+        if (0==reconnectStart || abs(now-reconnectStart)<15) {
             if (0==reconnectStart) {
                 reconnectStart=now;
             }
+            if (!reconnectTimer) {
+                reconnectTimer=new QTimer(this);
+                reconnectTimer->setSingleShot(true);
+                connect(reconnectTimer, SIGNAL(timeout()), this, SLOT(reconnect()), Qt::QueuedConnection);
+            }
+            if (abs(now-reconnectStart)>1) {
+                emit info(i18n("Connecting to %1").arg(details.description()));
+            }
+            reconnectTimer->start(500);
         } else {
             emit stateChanged(false);
             emit error(i18n("Connection to %1 failed").arg(details.description()), true);
@@ -358,17 +379,15 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
     bool diffDetails=det!=details;
     if (diffDetails || State_Connected!=state) {
         DBUG << "setDetails" << det.hostname << det.port << (det.password.isEmpty() ? false : true);
-        bool wasConnected=State_Connected==state;
         disconnectFromMPD();
         details=det;
         DBUG << "call connectToMPD";
         switch (connectToMPD()) {
         case Success:
+            getStatus();
             getStats();
             getUrlHandlers();
-            if (!wasConnected || diffDetails) {
-                emit stateChanged(true);
-            }
+            emit stateChanged(true);
             break;
         case Failed:
             emit stateChanged(false);
@@ -399,7 +418,9 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 {
     DBUG << (void *)(&sock) << "sendCommand:" << command << emitErrors << retry;
 
-    if (QAbstractSocket::ConnectedState!=sock.state()) {
+    if (0!=reconnectStart && !isConnected()) { // We are in the process of resuming from suspend, so ignore user commands!!
+        return Response(false);
+    } else if (QAbstractSocket::ConnectedState!=sock.state()) {
         sock.close();
         if (Success!=connectToMPD(sock)) {
             // Failed to connect, so close *both* sockets!

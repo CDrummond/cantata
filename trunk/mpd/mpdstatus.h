@@ -83,6 +83,9 @@ class MPDStatus : public QObject
     Q_OBJECT
 
 public:
+    MPDStatus();
+    ~MPDStatus() {}
+
     static MPDStatus * self();
 
     // NOTE: There are no read/write locks aroud these values as they are read/written only fro the GUI thread...
@@ -151,8 +154,6 @@ Q_SIGNALS:
     void updated();
 
 private:
-    MPDStatus();
-    ~MPDStatus() {}
     MPDStatus(const MPDStatus&);
     MPDStatus& operator=(const MPDStatus& other);
 

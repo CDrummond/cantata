@@ -418,14 +418,19 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 {
     DBUG << (void *)(&sock) << "sendCommand:" << command << emitErrors << retry;
 
-    if (0!=reconnectStart && !isConnected()) { // We are in the process of resuming from suspend, so ignore user commands!!
+    if (!isConnected()) {
+        // TODO: 0.9 better error message!!!
+        emit error(i18n("Connection to %1 failed").arg(details.description()), true);
         return Response(false);
-    } else if (!isConnected() || QAbstractSocket::ConnectedState!=sock.state()) {
+    }
+
+    if (QAbstractSocket::ConnectedState!=sock.state()) {
         sock.close();
         if (Success!=connectToMPD(sock)) {
             // Failed to connect, so close *both* sockets!
             disconnectFromMPD();
             emit stateChanged(false);
+            // TODO: 0.9 better error message!!!
             emit error(i18n("Connection to %1 failed").arg(details.description()), true);
             return Response(false);
         }
@@ -919,6 +924,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);
+            // TODO: 0.9 better error message!!!
             emit error(i18n("Connection to %1 failed").arg(details.description()), true);
         }
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
@@ -946,6 +952,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);
+            // TODO: 0.9 better error message!!!
             emit error(i18n("Connection to %1 failed").arg(details.description()), true);
         }
         return;

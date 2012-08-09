@@ -64,12 +64,13 @@ public:
             local->close();
         }
     }
-    void write(const QByteArray &data) {
+    int write(const QByteArray &data) {
         if (tcp) {
-            tcp->write(data);
+            return tcp->write(data);
         } else if(local) {
-            local->write(data);
+            return local->write(data);
         }
+        return 0;
     }
     void waitForBytesWritten(int msecs = 30000) {
         if (tcp) {

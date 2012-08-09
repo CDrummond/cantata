@@ -1511,11 +1511,16 @@ void MainWindow::showInformation(const QString &message)
 
 void MainWindow::messageWidgetVisibility(bool v)
 {
-    #ifdef CANTATA_ANDROID
     Q_UNUSED(v)
-    #else
-    if (v && !splitter->isVisible()) {
-        expandInterfaceAction->trigger();
+
+    #ifndef CANTATA_ANDROID
+    if (!splitter->isVisible()) {
+        int prevWidth=width();
+        int compactHeight=calcCompactHeight();
+        setFixedHeight(compactHeight);
+        QApplication::processEvents();
+        resize(prevWidth, compactHeight);
+        setFixedHeight(compactHeight);
     }
     #endif
 }
@@ -2755,13 +2760,23 @@ int MainWindow::calcMinHeight()
     return 256;
 }
 
+int MainWindow::calcCompactHeight()
+{
+    int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
+    if (spacing<0) {
+        spacing=4;
+    }
+    // For some reason height is always larger than it needs to be - so fix this to cover height +4
+    return qMax(qMax(playPauseTrackButton->height(),
+                         trackLabel->height()+artistLabel->height()+spacing)+
+                         songTimeElapsedLabel->height()+positionSlider->height()+(spacing*2),
+                    coverWidget->height()+spacing)+
+           (messageWidget->isVisible() ? (messageWidget->sizeHint().height()+spacing) : 0);
+}
+
 #ifndef CANTATA_ANDROID
 void MainWindow::togglePlayQueue()
 {
-    if (!expandInterfaceAction->isChecked() && messageWidget->isVisible()) {
-        expandInterfaceAction->trigger();
-        return;
-    }
     if (splitter->isVisible()==expandInterfaceAction->isChecked()) {
         setMinimumHeight(calcMinHeight());
         return;
@@ -2776,18 +2791,10 @@ void MainWindow::togglePlayQueue()
         setMinimumHeight(0);
         lastMax=isMaximized();
         expandedSize=size();
-        int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);
-        if (spacing<0) {
-            spacing=4;
-        }
-        // For some reason height is always larger than it needs to be - so fix this to cover height +4
-        compactHeight=qMax(qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+
-                           songTimeElapsedLabel->height()+positionSlider->height()+(spacing*2),
-                           coverWidget->height()+spacing);
+        compactHeight=calcCompactHeight();
     } else {
         collapsedSize=size();
-        setMinimumHeight(calcMinHeight());
-        setMaximumHeight(INT_MAX);
+        setFixedHeight(calcMinHeight());
     }
     int prevWidth=size().width();
     splitter->setVisible(showing);
@@ -2803,18 +2810,13 @@ void MainWindow::togglePlayQueue()
         if (adjustWidth || adjustHeight) {
             resize(adjustWidth ? expandedSize.width() : size().width(), adjustHeight ? expandedSize.height() : size().height());
         }
-        if (messageWidget->isVisible()) {
-            messageWidget->adjustSize();
-            QApplication::processEvents();
-        }
         if (lastMax) {
             showMaximized();
         }
     } else {
         // Widths also sometimes expands, so make sure this is no larger than it was before...
         resize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
-        setMinimumHeight(size().height());
-        setMaximumHeight(size().height());
+        setFixedHeight(size().height());
     }
 
     if (!p.isNull()) {

@@ -1518,9 +1518,7 @@ void MainWindow::messageWidgetVisibility(bool v)
         int prevWidth=width();
         int compactHeight=calcCompactHeight();
         setFixedHeight(compactHeight);
-        QApplication::processEvents();
         resize(prevWidth, compactHeight);
-        setFixedHeight(compactHeight);
     }
     #endif
 }
@@ -2798,7 +2796,8 @@ void MainWindow::togglePlayQueue()
         compactHeight=calcCompactHeight();
     } else {
         collapsedSize=size();
-        setFixedHeight(calcMinHeight());
+        setMinimumHeight(calcMinHeight());
+        setMaximumHeight(INT_MAX);
     }
     int prevWidth=size().width();
     splitter->setVisible(showing);

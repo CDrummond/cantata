@@ -243,8 +243,7 @@ static void setRva2Tag(TagLib::ID3v2::Tag* tag, const std::string &tagName, doub
         frame->setIdentification(tagName);
         tag->addFrame(frame);
     }
-    frame->setChannelType(TagLib::ID3v2::RelativeVolumeFrame::MasterVolume);
-    frame->setVolumeAdjustment(float(gain));
+    frame->setVolumeAdjustment(float(gain), TagLib::ID3v2::RelativeVolumeFrame::MasterVolume);
 
     TagLib::ID3v2::RelativeVolumeFrame::PeakVolume peakVolume;
     peakVolume.bitsRepresentingPeak = 16;

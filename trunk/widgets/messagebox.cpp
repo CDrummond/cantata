@@ -67,3 +67,10 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
         return -1==box.exec() ? Cancel : map(box.standardButton(box.clickedButton()));
     }
 }
+
+void MessageBox::errorList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
+{
+    QMessageBox box(QMessageBox::Critical, title.isEmpty() ? QObject::tr("Error") : title, message, QMessageBox::Ok, parent);
+    box.setDetailedText(strlist.join("\n"));
+    box.exec();
+}

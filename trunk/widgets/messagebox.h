@@ -52,7 +52,7 @@ namespace MessageBox {
     inline void error(QWidget *parent, const QString &message, const QString &title=QString()) {
         QMessageBox::warning(parent, title.isEmpty() ? QObject::tr("Error") : title, message);
     }
-
+    void errorList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
 };
 #endif
 

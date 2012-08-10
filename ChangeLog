@@ -17,6 +17,8 @@
  9. If we loose MPD connection, then show error widget.
 10. Reset status when connection lost.
 11. Dont attempt to send commands if not connected.
+12. In Qt-builds, if we failt to update files (tag editor, replaygain) then
+    show the list of failures in the 'detailed text' section.
 
 0.8.2
 -----

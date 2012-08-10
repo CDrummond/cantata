@@ -391,11 +391,12 @@ void RgDialog::saveTags()
 
     if (failed.count()) {
         #ifdef ENABLE_KDE_SUPPORT
-        KMessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
+        MessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
         #else
-        QMessageBox::warning(this, tr("Warning"), 1==failed.count()
-                                                    ? tr("Failed to update the tags of %1").arg(failed.at(0))
-                                                    : tr("Failed to update the tags of %2 tracks").arg(failed.count()));
+        MessageBox::errorList(this, 1==failed.count()
+                                        ? tr("Failed to update the tags of 1 track")
+                                        : tr("Failed to update the tags of %2 tracks").arg(failed.count()),
+                              failed);
         #endif
     }
 }

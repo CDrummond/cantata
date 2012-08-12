@@ -22,6 +22,7 @@
 13. In Qt (Linux) build, also register org.kde.cantata service - so that
     messages from dynamic helper can be recieved.
 14. Update verison of KMessageWidget
+15. Update Polish translation.
 
 0.8.2
 -----

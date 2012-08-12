@@ -21,6 +21,7 @@
     show the list of failures in the 'detailed text' section.
 13. In Qt (Linux) build, also register org.kde.cantata service - so that
     messages from dynamic helper can be recieved.
+14. Update verison of KMessageWidget
 
 0.8.2
 -----

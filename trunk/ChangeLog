@@ -19,6 +19,8 @@
 11. Dont attempt to send commands if not connected.
 12. In Qt-builds, if we failt to update files (tag editor, replaygain) then
     show the list of failures in the 'detailed text' section.
+13. In Qt (Linux) build, also register org.kde.cantata service - so that
+    messages from dynamic helper can be recieved.
 
 0.8.2
 -----

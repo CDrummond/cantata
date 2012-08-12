@@ -373,6 +373,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     new CantataAdaptor(this);
+    #ifndef ENABLE_KDE_SUPPORT
+    // We need to register for this interface, so that dynamic helper can send messages...
+    if (!QDBusConnection::sessionBus().registerService("org.kde.cantata")) {
+        // Couldn't register service, so probalby KDE version is running!!!
+        ::exit(0);
+        return;
+    }
+    #endif
     QDBusConnection::sessionBus().registerObject("/cantata", this);
     #endif
     setMinimumHeight(256);

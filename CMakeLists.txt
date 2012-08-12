@@ -26,7 +26,7 @@ OPTION(ENABLE_PHONON "Enable Phonon library (required to playback MPD HTTP strea
 OPTION(ENABLE_KDE "Enable KDE libraries (required for device support, and to use KDE dialogs)" ON)
 OPTION(ENABLE_MTP "Enable MTP library (required to support MTP devices)" ON)
 OPTION(ENABLE_WEBKIT "Enable WebKit library (required for artist/album information)" ON)
-OPTION(ENABLE_FFMPEG "Enable ffmpeg libraries (required for replaygain calculation)" ON)
+OPTION(ENABLE_FFMPEG "Enable ffmpeg/libav libraries (required for replaygain calculation)" ON)
 OPTION(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculation)" ON)
 OPTION(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain calculation)" ON)
 

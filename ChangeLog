@@ -23,6 +23,7 @@
     messages from dynamic helper can be recieved.
 14. Update verison of KMessageWidget
 15. Update Polish translation.
+16. Use 'avcodec' if 'ffmpeg' is not found.
 
 0.8.2
 -----

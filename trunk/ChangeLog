@@ -24,6 +24,8 @@
 14. Update verison of KMessageWidget
 15. Update Polish translation.
 16. Use 'avcodec' if 'ffmpeg' is not found.
+17. Show current song details in tooltip of notification icon for Qt builds as
+    per KDE builds.
 
 0.8.2
 -----

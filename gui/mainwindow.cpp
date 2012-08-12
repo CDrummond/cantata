@@ -2358,17 +2358,20 @@ void MainWindow::updateCurrentSong(const Song &song)
             #else
             // The pure Qt implementation needs both, the tray icon
             // and the setting checked.
-            if (Settings::self()->showPopups() && trayItem) {
-                const QString text=tr("Album: %1\n"
-                                      "Track: %2\n"
-                                      "Length: %3").arg(current.album).arg(current.track).arg(Song::formattedTime(current.time));
+            if (trayItem) {
+                const QString text=tr("%1\n%2\n%3").arg(trackLabel->text()).arg(artistLabel->text()).arg(Song::formattedTime(current.time));
 
-                trayItem->showMessage(tr("%1 - %2").arg(current.artist).arg(current.title), text, QSystemTrayIcon::Information, 5000);
+                if (Settings::self()->showPopups()) {
+                    trayItem->showMessage(tr("Cantata"), text, QSystemTrayIcon::Information, 5000);
+                }
+                trayItem->setToolTip(tr("Cantata")+"\n\n"+text);
             }
             #endif
         } else if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT
             trayItem->setToolTip("cantata", i18n("Cantata"), QString());
+            #else
+            trayItem->setToolTip(tr("Cantata"));
             #endif
         }
     }
@@ -2522,6 +2525,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             trayItem->setToolTip("cantata", i18n("Cantata"), "<i>Playback stopped</i>");
             #else
             trayItem->setIcon(appIcon);
+            trayItem->setToolTip(tr("Cantata"));
             #endif
         }
         #endif

@@ -129,6 +129,8 @@ public:
 
     QSize minimumSizeHint() const;
 
+    int heightForWidth(int width) const;
+
 public Q_SLOTS:
     void setText(const QString &text);
 

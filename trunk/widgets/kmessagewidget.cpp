@@ -122,20 +122,23 @@ void KMessageWidgetPrivate::createLayout()
         buttons.append(button);
     }
 
-    // Only set autoRaise on if there are no buttons, otherwise the close
-    // button looks weird
+    // AutoRaise reduces visual clutter, but we don't want to turn it on if
+    // there are other buttons, otherwise the close button will look different
+    // from the others.
     closeButton->setAutoRaise(buttons.isEmpty());
 
     if (wordWrap) {
         QGridLayout* layout = new QGridLayout(content);
-        layout->addWidget(iconLabel, 0, 0);
+        // Set alignment to make sure icon does not move down if text wraps
+        layout->addWidget(iconLabel, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
         layout->addWidget(textLabel, 0, 1);
 
         QHBoxLayout* buttonLayout = new QHBoxLayout;
         buttonLayout->addStretch();
         Q_FOREACH(QToolButton* button, buttons) {
-            // For some reason, calling show() is necessary here, but not in
-            // wordwrap mode
+            // For some reason, calling show() is necessary if wordwrap is true,
+            // otherwise the buttons do not show up. It is not needed if
+            // wordwrap is false.
             button->show();
             buttonLayout->addWidget(button);
         }
@@ -230,107 +233,95 @@ KMessageWidget::MessageType KMessageWidget::messageType() const
     return d->messageType;
 }
 
+#ifdef ENABLE_KDE_SUPPORT
+static void getColorsFromColorScheme(KColorScheme::BackgroundRole bgRole, QColor* bg, QColor* fg)
+{
+    KColorScheme scheme(QPalette::Active, KColorScheme::Window);
+    *bg = scheme.background(bgRole).color();
+    *fg = scheme.foreground().color();
+}
+#endif
+
 void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    d->messageType = type;
-    KIcon icon;
-    KColorScheme::BackgroundRole bgRole;
-    KColorScheme::ForegroundRole fgRole;
-    KColorScheme::ColorSet colorSet = KColorScheme::Window;
-    switch (type) {
-    case Positive:
-        icon = KIcon("dialog-ok");
-        bgRole = KColorScheme::PositiveBackground;
-        fgRole = KColorScheme::PositiveText;
-        break;
-    case Information:
-        icon = KIcon("dialog-information");
-        bgRole = KColorScheme::NormalBackground;
-        fgRole = KColorScheme::NormalText;
-        colorSet = KColorScheme::Tooltip;
-        break;
-    case Warning:
-        icon = KIcon("dialog-warning");
-        bgRole = KColorScheme::NeutralBackground;
-        fgRole = KColorScheme::NeutralText;
-        break;
-    case Error:
-        icon = KIcon("dialog-error");
-        bgRole = KColorScheme::NegativeBackground;
-        fgRole = KColorScheme::NegativeText;
-        break;
-    }
-    const int size = KIconLoader::global()->currentSize(KIconLoader::MainToolbar);
-    d->iconLabel->setPixmap(icon.pixmap(size));
-
-    KColorScheme scheme(QPalette::Active, colorSet);
-    QBrush bg = scheme.background(bgRole);
-    QBrush border = scheme.foreground(fgRole);
-    QBrush fg = scheme.foreground();
-    d->content->setStyleSheet(
-        QString(".QFrame {"
-            "background-color: %1;"
-            "border-radius: 5px;"
-            "border: 1px solid %2;"
-            "}"
-            ".QLabel { color: %3; }"
-            )
-        .arg(bg.color().name())
-        .arg(border.color().name())
-        .arg(fg.color().name())
-        );
-    #else
     d->messageType = type;
     QIcon icon;
-    QColor bgnd;
-    QColor border;
-    QColor text;
+    QColor bg0, bg1, bg2, border, fg;
     switch (type) {
-//     case PositiveMessageType:
-//         icon = Icon("dialog-ok");
-//         bgRole = KColorScheme::PositiveBackground;
-//         fgRole = KColorScheme::PositiveText;
-//         break;
-    case Information:
-        d->iconLabel->setPixmap(Icon("dialog-information").pixmap(22, 22));
-        border=Qt::blue;
-        bgnd=QColor(0xa5, 0xc1, 0xe4);
-        text=Qt::black;
+    case Positive:
+        icon = QIcon::fromTheme("dialog-ok");
+        #ifdef ENABLE_KDE_SUPPORT
+        getColorsFromColorScheme(KColorScheme::PositiveBackground, &bg1, &fg);
+        #else
+        bg1=QColor(0xAB, 0xC7, 0xED);
+        fg=Qt::black;
+        border = Qt::blue;
+        #endif
         break;
-//     case WarningMessageType:
-//         icon = Icon("dialog-warning");
-//         bgRole = KColorScheme::NeutralBackground;
-//         fgRole = KColorScheme::NeutralText;
-//         break;
-    default:
+    case Information:
+        icon = QIcon::fromTheme("dialog-information");
+        // There is no "information" background role in KColorScheme, use the
+        // colors of highlighted items instead
+        bg1 = palette().highlight().color();
+        fg = palette().highlightedText().color();
+        #ifdef ENABLE_KDE_SUPPORT
+        border = bg1.darker(150);
+        #endif
+        break;
+    case Warning:
+        icon = QIcon::fromTheme("dialog-warning");
+        #ifdef ENABLE_KDE_SUPPORT
+        getColorsFromColorScheme(KColorScheme::NeutralBackground, &bg1, &fg);
+        #else
+        bg1=QColor(0xED, 0xC6, 0x62);
+        fg=Qt::black;
+        border = Qt::red;
+        #endif
+        break;
     case Error:
-        d->iconLabel->setPixmap(Icon("dialog-error").pixmap(22, 22));
-        border=Qt::red;
-        bgnd=QColor(0xeb, 0xbb, 0xbb);
-        text=Qt::black;
+        icon = QIcon::fromTheme("dialog-error");
+        #ifdef ENABLE_KDE_SUPPORT
+        getColorsFromColorScheme(KColorScheme::NegativeBackground, &bg1, &fg);
+        #else
+        bg1=QColor(0xeb, 0xbb, 0xbb);
+        fg=Qt::black;
+        border = Qt::red;
+        #endif
         break;
     }
 
-//     const int size = IconLoader::global()->currentSize(IconLoader::MainToolbar);
+    // Colors
+    bg0 = bg1.lighter(110);
+    bg2 = bg1.darker(110);
+    #ifdef ENABLE_KDE_SUPPORT
+    border = KColorScheme::shade(bg1, KColorScheme::DarkShade);
+    #endif
 
-//     KColorScheme scheme(QPalette::Active, colorSet);
-//     QBrush bg = scheme.background(bgRole);
-//     QBrush border = scheme.foreground(fgRole);
-//     QBrush fg = scheme.foreground();
     d->content->setStyleSheet(
         QString(".QFrame {"
-            "background-color: %1;"
+            "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+            "    stop: 0 %1,"
+            "    stop: 0.1 %2,"
+            "    stop: 1.0 %3);"
             "border-radius: 5px;"
-            "border: 1px solid %2;"
+            "border: 1px solid %4;"
             "}"
-            ".QLabel { color: %3; }"
+            ".QLabel { color: %5; }"
             )
-        .arg(bgnd.name())
+        .arg(bg0.name())
+        .arg(bg1.name())
+        .arg(bg2.name())
         .arg(border.name())
-        .arg(text.name())
+        .arg(fg.name())
         );
+
+    // Icon
+    #ifdef ENABLE_KDE_SUPPORT
+    const int size = KIconLoader::global()->currentSize(KIconLoader::MainToolbar);
+    #else
+    const int size = 22;
     #endif
+    d->iconLabel->setPixmap(icon.pixmap(size));
 }
 
 QSize KMessageWidget::sizeHint() const
@@ -357,16 +348,22 @@ void KMessageWidget::resizeEvent(QResizeEvent* event)
 {
     QFrame::resizeEvent(event);
     if (d->timeLine->state() == QTimeLine::NotRunning) {
-        d->content->resize(size());
+        int contentHeight = d->content->heightForWidth(width());
+        if (contentHeight == -1) {
+            contentHeight = d->content->sizeHint().height();
+        }
+        d->content->resize(width(), contentHeight);
     }
+}
+
+int KMessageWidget::heightForWidth(int width) const
+{
+    ensurePolished();
+    return d->content->heightForWidth(width);
 }
 
 void KMessageWidget::paintEvent(QPaintEvent* event)
 {
-    if (d->content->width()!=parentWidget()->width()) {
-        d->content->resize(QSize(parentWidget()->width(), d->content->height()));
-    }
-
     QFrame::paintEvent(event);
     if (d->timeLine->state() == QTimeLine::Running) {
         QPainter painter(this);
@@ -377,12 +374,9 @@ void KMessageWidget::paintEvent(QPaintEvent* event)
 
 void KMessageWidget::showEvent(QShowEvent* event)
 {
+    // Keep this method here to avoid breaking binary compatibility:
+    // QFrame::showEvent() used to be reimplemented.
     QFrame::showEvent(event);
-    if (!event->spontaneous()) {
-        int wantedHeight = d->content->sizeHint().height();
-        d->content->setGeometry(0, 0, width(), wantedHeight);
-        setFixedHeight(wantedHeight);
-    }
 }
 
 bool KMessageWidget::wordWrap() const

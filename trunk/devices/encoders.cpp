@@ -34,6 +34,7 @@ namespace Encoders
 
 static QList<Encoder> installedEncoders;
 static QString ffmpeg;
+static bool usingAvconv=false;
 
 static void init()
 {
@@ -42,7 +43,10 @@ static void init()
         initialised=true;
 
         ffmpeg=KStandardDirs::findExe("ffmpeg");
-
+        if (ffmpeg.isEmpty()) {
+            ffmpeg=KStandardDirs::findExe("avconv");
+            usingAvconv=true;
+        }
         if (ffmpeg.isEmpty()) {
             return;
         }
@@ -294,7 +298,7 @@ bool Encoder::isDifferent(const QString &file)
 QStringList Encoder::params(int value, const QString &in, const QString &out)
 {
     QStringList p;
-    p << ffmpeg << QLatin1String("-i") << in << QLatin1String("-threads") << QLatin1String("0") << QLatin1String("-acodec") << codec;
+    p << ffmpeg << QLatin1String("-i") << in << QLatin1String("-threads") << QLatin1String("0") << QLatin1String(usingAvconv ? "-c:a" : "-acodec") << codec;
     if (!ffmpegParam.isEmpty() && values.size()>1) {
         bool increase=values.at(0).value<values.at(1).value;
         int v=values.at(defaultValueIndex).value;

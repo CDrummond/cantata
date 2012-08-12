@@ -2,13 +2,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Piotr Wicijowski <piwsko@gmail.com>, 2011, 2012.
+# Mirosław Zalewski <miroslaw-zalewski@o2.pl>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-07-03 19:44+0100\n"
-"PO-Revision-Date: 2012-07-04 09:45+0200\n"
-"Last-Translator: Piotr Wicijowski <piwsko@gmail.com>\n"
+"PO-Revision-Date: 2012-08-06 16:42+0200\n"
+"Last-Translator: Mirosław Zalewski <miroslaw-zalewski@o2.pl>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -57,17 +58,17 @@ msgid ""
 "The songs will need to be transcoded to a smaller filesize in order to be "
 "successfully copied."
 msgstr ""
-"Nie ma wystarczająco miejsca w urządzeniu docelowym.\n"
+"Nie ma wystarczająco miejsca na urządzeniu docelowym.\n"
 "Zaznaczone utwory zajmują %1, jednak pozostało jedynie %2 miejsca.\n"
-"Utwory będą musiały zostać transkodowane do mniejszego rozmiaru pliku aby "
-"mogły zostać skopiowane z powodzeniem."
+"Aby utwory mogły zostać skopiowane, będą musiały zostać skonwertowane do "
+"plików o mniejszych rozmiarach."
 
 #: devices/actiondialog.cpp:150
 msgid ""
 "There is insufficient space left on the destination.\n"
 "The selected songs consume %1, but there is only %2 left."
 msgstr ""
-"Nie ma wystarczająco miejsca w lokalizacji docelowej.\n"
+"W lokalizacji docelowej nie ma wystarczająco dużo miejsca.\n"
 "Zaznaczone utwory zajmują %1, jednak pozostało jedynie %2 miejsca."
 
 #: devices/actiondialog.cpp:191
@@ -124,7 +125,7 @@ msgstr "Czyszczenie nieużywanych folderów"
 
 #: devices/actiondialog.cpp:396
 msgid "The destination filename already exists!<hr/>%1"
-msgstr "Docelowa nazwa pliku już istnieje!<hr/>%1"
+msgstr "Istnieje plik o nazwie docelowej!<hr/>%1"
 
 #: devices/actiondialog.cpp:399
 msgid "Song already exists!<hr/>%1"
@@ -164,7 +165,7 @@ msgstr "Wybrany kodek nie jest dostępny.<hr/>%1"
 
 #: devices/actiondialog.cpp:421
 msgid "Transcoding failed.<br/><br/<hr/>%1"
-msgstr "Transkodowanie nie powiodło się.<br/><br/<hr/>%1"
+msgstr "Konwertowanie nie powiodło się.<br/><br/<hr/>%1"
 
 #: devices/actiondialog.cpp:424
 msgid ""
@@ -172,7 +173,7 @@ msgid ""
 "devices.)<hr/>%1"
 msgstr ""
 "Stworzenie pliku tymczasowego nie powiodło się.<br/>(Wymagane przy "
-"transkodowaniu do urządzeń MTP.)<hr/>%1"
+"konwertowaniu do urządzeń MTP.)<hr/>%1"
 
 #: devices/actiondialog.cpp:449
 msgid "Local Music Library Properties"
@@ -269,8 +270,8 @@ msgid ""
 "from the 'Title' tag.</p>"
 msgstr ""
 "<p>W trakcie kopiowania utworów do urządzenia, gdy tag 'ArtystaAlbumu' jest "
-"ustawiony na 'Various Artists', to Cantata ustawi tag 'Artysta' we "
-"wszystkich utworach na 'Various Artists' natomiast tag 'Tytuł' na "
+"ustawiony na 'Various Artists', Cantata ustawi tag 'Artysta' we "
+"wszystkich utworach na 'Various Artists', zaś tag 'Tytuł' na "
 "'ArtystaUtworu - TytułUtworu'.<hr/> W trakcie kopiowania z urządzenia, "
 "Cantata sprawdzi, czy oba tagi 'ArtystaAlbumu' oraz 'Artysta' są ustawione "
 "na 'Various Artists'. Jeśli tak, to program podejmie próbę przywrócenia "
@@ -293,17 +294,17 @@ msgstr ""
 "używane będą informacje z pamięci podręcznej.)<hr/><b>UWAGA:</b> Jeśli "
 "używana jest również inna aplikacja w celu zarządzania biblioteką muzyki na "
 "urządzeniu, to pamięć podręczna będzie nieaktualna. W celu jej ponownego "
-"utworzenia, należy użyć akcji 'odśwież', znajdującej się na liście urządzeń. "
+"utworzenia, należy użyć ikony 'odśwież', znajdującej się na liście urządzeń. "
 "Spowoduje to usunięcie pamięci podręcznej oraz ponowne przeskanowanie "
 "zawartości urządzenia.</p>"
 
 #: devices/devicepropertieswidget.cpp:134
 msgid "Do not transcode"
-msgstr "Nie transkoduj"
+msgstr "Nie konwertuj"
 
 #: devices/devicepropertieswidget.cpp:148
 msgid "Transcode to \"%1\""
-msgstr "Transkoduj do \"%1\""
+msgstr "Konwertuj do \"%1\""
 
 #: devices/devicespage.cpp:61
 msgid "Configure Device"
@@ -366,7 +367,7 @@ msgid ""
 "This cannot be undone."
 msgstr ""
 "Czy jesteś pewien, że chcesz usunąć zaznaczone utwory?\n"
-"Ta operacja nie może być cofnięta."
+"Ta operacja nie może zostać cofnięta."
 
 #: devices/devicespage.cpp:440
 msgid "Are you sure you wish to forget the selected device?"
@@ -404,6 +405,8 @@ msgstr ""
 "podobnych rozmiarach pliku. Jest to dobry wybór dla iPodów oraz niektórych "
 "innych przenośnych odtwarzaczy muzycznych. Nie-otwarta implementacja."
 
+# Nie jestem pewien, czy "przesadzone" nie jest zbyt kolokwialne.
+# Było "nadmiarowe".
 #: devices/encoders.cpp:62
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
@@ -423,18 +426,20 @@ msgid ""
 msgstr ""
 "Bitrate jest miarą ilości danych używanych do reprezentacji sekundy ścieżki "
 "muzycznej.<br>Kodek <b>AAC</b> używany przez program Cantata obsługuje <a "
-"href=http://pl.wikipedia.org/wiki/VBR>zmienny bitrate (VBR)</a> - "
-"ustawienie, które oznacza, że wartość bitrate waha się w trakcie utworu w "
-"zależności od stopnia skomplikowania zawartości pliku. Bardziej "
-"skomplikowane przedziały czasu kodowane są przy użyciu większej ilości "
-"danych niż przedziały mniej skomplikowane; takie podejście daje ogólnie "
-"lepszą jakość i mniejsze pliki niż użycie stałego bitrate'u w całym utworze."
+"href=http://pl.wikipedia.org/wiki/VBR>zmienny bitrate (VBR)</a> - wartość "
+"bitrate "
+"waha się w trakcie utworu w zależności od stopnia skomplikowania "
+"zawartości pliku. Bardziej skomplikowane fragmenty kodowane są przy użyciu "
+"większej ilości "
+"danych niż fragmenty mniej skomplikowane; takie podejście daje ogólnie "
+"lepszą jakość i mniejsze pliki, niż gdyby użyć stałego bitrate'u w całym "
+"utworze."
 "<br>Z tego powodu, wyświetlana wartość bitrate jest tylko oszacowaniem <a "
 "href=http://www.ffmpeg.org/faq.html#SEC21>średniego bitrate'u</a> wynikowego "
 "utworu.<br><b>150kb/s</b> jest dobrym wyborem dla użytku w odtwarzaczach "
 "przenośnych.<br/>Wartości poniżej <b>120kb/s</b> mogą nie być "
 "satysfakcjonujące dla muzyki, a wszystko powyżej <b>200kb/s</b> jest "
-"prawdopodobnie nadmiarowe."
+"prawdopodobnie przesadzone."
 
 #: devices/encoders.cpp:79 devices/encoders.cpp:170
 msgid "Expected average bitrate for variable bitrate encoding"
@@ -466,8 +471,8 @@ msgid ""
 msgstr ""
 "<a href=http://en.wikipedia.org/wiki/Apple_Lossless>Apple Lossless</a> "
 "(ALAC) jest kodekiem audio do bezstratnej kompresji muzyki cyfrowej."
-"<br>Polecane jedynie dla odtwarzaczy muzycznych firmy Apple oraz odtwarzaczy "
-"nie obsługujących format FLAC."
+"<br>Polecany jedynie dla odtwarzaczy muzycznych firmy Apple oraz odtwarzaczy "
+"nie obsługujących formatu FLAC."
 
 #: devices/encoders.cpp:112
 msgid "FLAC"
@@ -486,7 +491,7 @@ msgstr ""
 "<a href=http://en.wikipedia.org/wiki/Free_Lossless_Audio_Codec>Free Lossless "
 "Audio Codec</a> (FLAC) jest bezstratnym kodekiem audio wydanym na licencji "
 "open-source nie wymagającym licencji patentowych.<br>Kodek ten jest polecany "
-"do przechowywania muzyki bez poświęcania jakości dźwięku."
+"do przechowywania muzyki bez straty jakości dźwięku."
 
 #: devices/encoders.cpp:119
 msgid ""
@@ -506,11 +511,12 @@ msgstr ""
 "kompresji</a> jest liczbą całkowitą z przedziału od 0 do 8 reprezentującą "
 "kompromis pomiędzy rozmiarem pliku a prędkością kompresji przy użyciu "
 "formatu <b>FLAC</b>.<br/> Ustawienie poziomu kompresji na <b>0</b> daje "
-"najkrótsze czasy kompresji jednak generowane pliki są stosunkowo największe."
+"najkrótsze czasy kompresji jednak generowane pliki są stosunkowo duże."
 "<br/>Z drugiej strony, poziom kompresji równy <b>8</b> powoduje, że "
 "kompresja jest dosyć powolna, jednak generowane pliki są najmniejsze.<br/"
-">Należy pamiętać, że z powodu bezstratności formatu FLAC, jakość dźwięku "
-"wyjściowego jest identyczna z oryginałem niezależnie od ustawienia poziomu "
+">Należy pamiętać, że format FLAC jest z definicji bezstratny, więc jakość "
+"dźwięku "
+"wyjściowego jest identyczna z oryginałem niezależnie od ustawionego poziomu "
 "kompresji.<br/>Ponadto, poziomy powyżej <b>5</b> dramatycznie podnoszą czas "
 "kompresji dając jedynie niewiele mniejsze pliki wyjściowe i są niezalecane."
 
@@ -539,9 +545,11 @@ msgstr ""
 "<a href=http://pl.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) jest "
 "opatentowanym cyfrowym kodekiem audio używającym stratnej kompresji danych."
 "<br>Pomimo swoich słabych stron, jest bardzo popularnym formatem do "
-"przechowywania muzyki oraz jest szeroko wspierany w większości przenośnych "
-"odtwarzaczy muzycznych."
+"przechowywania muzyki oraz jest obsługiwany przez zdecydowaną większość "
+"przenośnych odtwarzaczy muzycznych."
 
+# nadmiarowe → przesadzone
+# patrz też komentarz do devices/encoders.cpp:62
 #: devices/encoders.cpp:154
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
@@ -559,17 +567,19 @@ msgid ""
 msgstr ""
 "Bitrate jest miarą ilości danych używanych do reprezentacji sekundy ścieżki "
 "muzycznej.<br>Kodek <b>MP3</b> używany przez program Cantata obsługuje <a "
-"href=http://pl.wikipedia.org/wiki/VBR>zmienny bitrate (VBR)</a> - "
-"ustawienie, które oznacza, że wartość bitrate waha się w trakcie utworu w "
-"zależności od stopnia skomplikowania zawartości pliku. Bardziej "
-"skomplikowane przedziały czasu kodowane są przy użyciu większej ilości "
-"danych niż przedziały mniej skomplikowane; takie podejście daje ogólnie "
-"lepszą jakość i mniejsze pliki niż użycie stałego bitrate'u w całym utworze."
+"href=http://pl.wikipedia.org/wiki/VBR>zmienny bitrate (VBR)</a> wartość "
+"bitrate "
+"waha się w trakcie utworu w zależności od stopnia skomplikowania "
+"zawartości pliku. Bardziej skomplikowane fragmenty kodowane są przy użyciu "
+"większej ilości "
+"danych niż fragmenty mniej skomplikowane; takie podejście daje ogólnie "
+"lepszą jakość i mniejsze pliki, niż gdyby użyć stałego bitrate'u w całym "
+"utworze."
 "<br>Z tego powodu, wyświetlana wartość bitrate jest tylko oszacowaniem "
 "średniego bitrate'u wynikowego utworu.<br><b>160kb/s</b> jest dobrym wyborem "
 "dla użytku w odtwarzaczach przenośnych.<br/>Wartości poniżej <b>120kb/s</b> "
 "mogą nie być satysfakcjonujące dla muzyki, a wszystko powyżej <b>205kb/s</b> "
-"jest prawdopodobnie nadmiarowe."
+"jest prawdopodobnie przesadzone."
 
 #: devices/encoders.cpp:185
 msgid "Ogg Vorbis"
@@ -591,6 +601,8 @@ msgstr ""
 "lub lepszych jakościach. Ogg Vorbis jest ogólnie doskonałym wyborem, "
 "szczególnie dla przenośnych odtwarzaczy obsługujących ten format."
 
+# nadmiarowe → przesadzone
+# patrz też komentarz do devices/encoders.cpp:62
 #: devices/encoders.cpp:193
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
@@ -611,13 +623,15 @@ msgid ""
 msgstr ""
 "Bitrate jest miarą ilości danych używanych do reprezentacji sekundy ścieżki "
 "muzycznej.<br>Kodek <b>Vorbis</b> używany przez program Cantata obsługuje <a "
-"href=http://pl.wikipedia.org/wiki/VBR>zmienny bitrate (VBR)</a> - "
-"ustawienie, które oznacza, że wartość bitrate waha się w trakcie utworu w "
-"zależności od stopnia skomplikowania zawartości pliku. Bardziej "
-"skomplikowane przedziały czasu kodowane są przy użyciu większej ilości "
-"danych niż przedziały mniej skomplikowane; takie podejście daje ogólnie "
-"lepszą jakość i mniejsze pliki niż użycie stałego bitrate'u w całym utworze."
-"<br>Enkoder Vorbis używa wskaźnika jakości ze skali o zakresie -1 do 10 w "
+"href=http://pl.wikipedia.org/wiki/VBR>zmienny bitrate (VBR)</a>- wartość "
+"bitrate "
+"waha się w trakcie utworu w zależności od stopnia skomplikowania "
+"zawartości pliku. Bardziej skomplikowane fragmenty kodowane są przy użyciu "
+"większej ilości "
+"danych niż fragmenty mniej skomplikowane; takie podejście daje ogólnie "
+"lepszą jakość i mniejsze pliki, niż gdyby użyć stałego bitrate'u w całym "
+"utworze."
+"<br>Enkoder Vorbis używa wskaźnika jakości ze skali o zakresie od -1 do 10 w "
 "celu oceny oczekiwanej jakości. Przedstawiona wartość bitrate jest tylko "
 "zgrubnym oszacowaniem (dostarczonym przez twórców kodeka Vorbis) średniej "
 "wartości bitrate'u wynikowego pliku przy zadanej jakości. W związku z tym, "
@@ -625,7 +639,7 @@ msgstr ""
 "mniejszej wartości bitrate.<br><b>5</b> jest dobrym wyborem dla użytku w "
 "odtwarzaczach przenośnych.<br/>Wartości poniżej <b>3</b> mogą nie być "
 "satysfakcjonujące dla muzyki, a wszystko powyżej <b>8</b> jest "
-"prawdopodobnie nadmiarowe."
+"prawdopodobnie przesadzone."
 
 #: devices/encoders.cpp:212
 msgid "Quality rating"
@@ -646,10 +660,12 @@ msgid ""
 "not support Ogg Vorbis."
 msgstr ""
 "<a href=http://pl.wikipedia.org/wiki/Windows_Media_Audio>Windows Media "
-"Audio</a> (WMA) jest stworzonym przez firmę Microsoft własnościowym kodekiem "
+"Audio</a> (WMA) jest stworzonym przez firmę Microsoft zamkniętym kodekiem "
 "audio służącym do stratnej kompresji dźwięku.<br>Zalecany jedynie dla "
 "odtwarzaczy muzycznych nie obsługujących formatu Ogg Vorbis."
 
+# nadmiarowe → przesadzone
+# patrz też komentarz do devices/encoders.cpp:62
 #: devices/encoders.cpp:236
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
@@ -664,7 +680,7 @@ msgid ""
 "probably overkill."
 msgstr ""
 "Bitrate jest miarą ilości danych używanych do reprezentacji sekundy ścieżki "
-"muzycznej.<br>W związku z ograniczeniami własnościowego formatu <b>WMA</b> "
+"muzycznej.<br>W związku z ograniczeniami zamkniętego formatu <b>WMA</b> "
 "oraz z trudnościami związanymi z analizą działania zamkniętego enkodera, "
 "używany przez program Cantata enkoder WMA używa opcji <a http://pl.wikipedia."
 "org/wiki/Sta%C5%82a_przep%C5%82ywno%C5%9B%C4%87>stały bitrate (CBR)</a>."
@@ -672,7 +688,7 @@ msgstr ""
 "oszacowaniem bitrate'u pliku wynikowego.<br><b>136kb/s</b> jest dobrym "
 "wyborem dla użytku w odtwarzaczach przenośnych.<br/>Wartości poniżej "
 "<b>112kb/s</b> mogą nie być satysfakcjonujące dla muzyki, a wszystko powyżej "
-"<b>182kb/s</b> jest prawdopodobnie nadmiarowe."
+"<b>182kb/s</b> jest prawdopodobnie przesadzone."
 
 #: devices/encoders.cpp:249
 msgid "Bitrate"
@@ -721,8 +737,8 @@ msgid ""
 "albums.</td></tr><tr><td>%7</td><td>The year of the album's release.</td></"
 "tr><tr><td>%8</td><td>The genre of the album.</td></tr></table></p>"
 msgstr ""
-"<p>Następujące zmienne zostaną zastąpione odpowiednimi wartościami "
-"odpowiadającymi każdemu utworowi.</p><p><table border="
+"<p>Następujące zmienne zostaną zastąpione wartościami "
+"odpowiadającymi właściwościom każdego utworu.</p><p><table border="
 "\"1\"><tr><th><em>Zmienna</em></th><th><em>Opis</em></th></tr><tr><td>%1</"
 "td><td>Artysta albumu. Dla większości albumów będzie to taka sama wartość "
 "jak <i>Artysta utworu.</i> W przypadku kompilacji będzie to często "
@@ -801,7 +817,7 @@ msgid ""
 "Password prompting does not work when cantata is started from the "
 "commandline."
 msgstr ""
-"Pytanie o hasło nie działa, jeśli cantata uruchomiana została z wiersza "
+"Pytanie o hasło nie działa, jeśli Cantata uruchomiana została z wiersza "
 "poleceń."
 
 #: devices/remotefsdevice.cpp:233
@@ -812,7 +828,7 @@ msgstr ""
 
 #: devices/remotefsdevice.cpp:239
 msgid "Mount point (\"%1\") is not empty!"
-msgstr "Punkt montowanie (\"%1\") nie jest pusty!"
+msgstr "Punkt montowania (\"%1\") nie jest pusty!"
 
 #: devices/remotefsdevice.cpp:247
 msgid "\"sshfs\" is not installed!"
@@ -884,7 +900,7 @@ msgstr "Tworzenie katalogu docelowego nie powiodło się!<br/>%1"
 
 #: devices/trackorganiser.cpp:272
 msgid "Failed to rename %1 to %2"
-msgstr "Nie powiodło się zmienianie nazwy z %1 do %2"
+msgstr "Nie powiodła się zmiana nazwy z %1 na %2"
 
 #: devices/trackorganiser.cpp:373 gui/tageditor.cpp:727
 #: replaygain/rgdialog.cpp:411
@@ -996,7 +1012,7 @@ msgstr "Nie zawiera"
 
 #: dynamic/dynamicrulesdialog.cpp:117
 msgid " (Exact)"
-msgstr "(Dokładnie)"
+msgstr " (Dokładnie)"
 
 #: dynamic/dynamicrulesdialog.cpp:134
 msgid "Dynamic Rules"
@@ -1017,12 +1033,13 @@ msgid ""
 "the set of usable songs has been created, Cantata will randomly select songs "
 "to keep the play queue filled with 10 entries.</p>"
 msgstr ""
-"<p>Cantata przeszuka bibliotekę używając wszystkich wyświetlonych reguł. "
+"<p>Cantata przeszuka bibliotekę używając wszystkich przypisanych reguł. "
 "Lista reguł <i>Zawiera</i> zostanie użyta do zbudowania zbioru utworów, "
 "które mogą zostać użyte. Lista reguł <i>Nie zawiera</i> zostanie użyta do "
 "zbudowania zbioru utworów, które nie będą użyte. Jeśli nie ma reguł typu "
 "<i>Zawiera</i> to Cantata zakłada, że wszystkie utwory (oprócz pasujących do "
-"reguł <i>Nie zawiera</i>) mogą zostać użyte. <br/>Np. aby Cantata szukała "
+"reguł <i>Nie zawiera</i>) mogą zostać użyte. <br/>Dla przykładu, aby Cantata "
+"szukała "
 "'Rockowych utworów w wykonaniu Wibble ALBO utworów w wykonaniu Various "
 "Artists', wymagane będą następujące reguły: <ul><li>Zawiera "
 "ArtystaAlbumu=Wibble Gatunek=Rock</li><li>Zawiera ArtystaAlbumu=Various "
@@ -1050,9 +1067,10 @@ msgstr "Już istnieje"
 msgid "Albums"
 msgstr "Albumy"
 
+# w pliku doplphin.desktop jest "menedżer", więc zmieniam dla spójności
 #: gui/folderpage.cpp:52
 msgid "Open File Manager"
-msgstr "Otwórz menadżer plików"
+msgstr "Otwórz menedżer plików"
 
 #: gui/folderpage.cpp:59 gui/mainwindow.cpp:564
 msgid "Folders"
@@ -1253,7 +1271,7 @@ msgstr ""
 
 #: gui/mainwindow.cpp:499
 msgid "Consume"
-msgstr "Konsumuj"
+msgstr "Tryb konsumowania"
 
 #: gui/mainwindow.cpp:500
 msgid ""
@@ -1591,7 +1609,7 @@ msgstr "Host:"
 
 #: gui/serversettings.cpp:121
 msgid "Enter name for settings:"
-msgstr "Proszę wpisać nazwę dla ustawień:"
+msgstr "Nowa nazwa dla ustawień:"
 
 #: gui/serversettings.cpp:136
 msgid ""
@@ -1681,7 +1699,7 @@ msgstr ""
 
 #: gui/streamspage.cpp:253
 msgid "Failed to create <b>%1</b>!"
-msgstr "Utworzenie <b>%1</b> nie powiodło się!"
+msgstr "Nie powiodło się utworzenie <b>%1</b>!"
 
 #: gui/streamspage.cpp:268
 msgid "Stream already exists!<br/><b>%1</b>"
@@ -1691,6 +1709,10 @@ msgstr "Strumień już istnieje!<br/><b>%1</b>"
 msgid "A stream named <b>%1</b> already exists!"
 msgstr "Strumień o nazwie <b>%1</b> już istnieje!"
 
+# czy tutaj również nie powinna być liczba mnoga?
+# 1 zaznaczony strumień
+# 2-4 zaznaczone strumienie
+# 5+ zaznaczonych strumieni (jak teraz)
 #: gui/streamspage.cpp:290
 msgid "Are you sure you wish to remove the %1 selected streams?"
 msgstr "Czy jesteś pewien, że chcesz usunąć %1 zaznaczonych strumieni?"
@@ -1747,7 +1769,7 @@ msgstr "Cofnij obejście dla 'Various Artists'"
 
 #: gui/tageditor.cpp:132
 msgid "Capitalize"
-msgstr "Kapitaliki"
+msgstr "Duża pierwsza litera"
 
 #: gui/tageditor.cpp:133 gui/tageditor.cpp:433
 msgid "Adjust Track Numbers"
@@ -1775,8 +1797,8 @@ msgid ""
 "<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
 "'Title' to \"TrackArtist - TrackTitle\"</i>"
 msgstr ""
-"<i>Spowoduje to ustawienie tagów 'ArtysaAlbumu' oraz 'Artysta' na wartość "
-"\"Various Artists\", oraz tagu 'Tytuł' na \"ArtystaUtworu - TytułUtworu\"</i>"
+"<i>Spowoduje to ustawienie tagów 'ArtystaAlbumu' oraz 'Artysta' na wartość "
+"\"Various Artists\", zaś tagu 'Tytuł' na \"ArtystaUtworu - TytułUtworu\"</i>"
 
 #: gui/tageditor.cpp:353
 msgid "Revert \"Various Artists\" workaround on <b>all</b> tracks?"
@@ -1798,9 +1820,9 @@ msgstr ""
 "<i>W przypadku, gdy tag 'ArtystaAlbumu' jest taki sam jak 'Artysta' oraz tag "
 "'Tytuł' jest formatu \"ArtystaUtworu - TytułUtworu\", to tag 'Artysta' "
 "zostanie pobrany z tagu 'Tytuł' a sam 'Tytuł' zostanie przywrócony do "
-"wartości \"TytułUtworu\". np. <br/><br/>jeśli 'Tytuł' to \"Wibble - Wobble"
-"\", wtedy 'Artysta' zostanie ustawiony na \"Wibble\" natomiast 'Title' "
-"będzie miał wartość \"Wobble\"</i>"
+"wartości \"TytułUtworu\". Dla przykładu: <br/><br/> "
+"Jeśli 'Tytuł' to \"Wibble - Wobble\", wtedy 'Artysta' zostanie ustawiony "
+"na \"Wibble\" natomiast 'Title' będzie miał wartość \"Wobble\"</i>"
 
 #: gui/tageditor.cpp:401
 msgid ""
@@ -1851,9 +1873,8 @@ msgstr ""
 "wyszukiwania. Na przykład, obecny utwór może być coverem - jeśli tak, to "
 "wyszukiwanie tekstu według oryginalnego artysty może pomóc.\n"
 "\n"
-"Jeśli to wyszukiwanie się powiedzie, to znalezione teksty zostaną "
-"przyporządkowane oryginalnemu utworowi i artyście, tak jak jest to "
-"wyświetlane w Cantacie."
+"Jeśli to wyszukiwanie się powiedzie, to znaleziony tekst zostanie "
+"przyporządkowany w Cantacie oryginalnemu utworowi i artyście."
 
 #. i18n: file: dynamic/dynamicrule.ui:67
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
@@ -2586,13 +2607,13 @@ msgstr "Bezpieczne dla VFAT:"
 #. i18n: ectx: property (title), widget (QGroupBox, transcoderFrame)
 #: po/rc.cpp:63 rc.cpp:63
 msgid "Transcoding"
-msgstr "Transkodowanie"
+msgstr "Konwertowanie"
 
 #. i18n: file: devices/devicepropertieswidget.ui:224
 #. i18n: ectx: property (text), widget (BuddyLabel, transcoderWhenDifferentLabel)
 #: po/rc.cpp:66 rc.cpp:66
 msgid "Only transcode if source file is of a different format:"
-msgstr "Transkoduj tylko gdy plik wejściowy jest w innym formacie:"
+msgstr "Konwertuj tylko gdy plik wejściowy jest w innym formacie:"
 
 #. i18n: file: devices/filenameschemedialog.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_album_example)
@@ -2710,9 +2731,10 @@ msgid ""
 "attached.</i>"
 msgstr ""
 "<i><b>UWAGA:</b>To okno dialogowe służy jedynie do dodawania zdalnych "
-"urządzeń (np. za pomocą sshfs), albo do dostępu do lokalnie zamontowanych "
-"katalogów. Dla normalnych odtwarzaczy muzycznych podłączanych przy użyciu "
-"USB, Cantata automatycznie wyświetli urządzenie, gdy zostanie ono podłączone."
+"urządzeń (np. za pomocą sshfs) oraz do uzyskiwania dostępu do lokalnie "
+"zamontowanych "
+"katalogów. Normalne odtwarzacze muzyczne, podłączane przy użyciu "
+"USB, Cantata wyświetli automatycznie gdy zostaną podłączone."
 "</i>"
 
 #. i18n: file: devices/trackorganiser.ui:150
@@ -2803,13 +2825,13 @@ msgstr "Dokładne dopasowanie:"
 #. i18n: ectx: property (text), item, widget (QComboBox, typeCombo)
 #: po/rc.cpp:210 rc.cpp:210
 msgid "Include songs the match the following:"
-msgstr "Zawieraj utwory pasujące do następujących:"
+msgstr "Zawieraj utwory posiadające w tagach:"
 
 #. i18n: file: dynamic/dynamicrule.ui:166
 #. i18n: ectx: property (text), item, widget (QComboBox, typeCombo)
 #: po/rc.cpp:213 rc.cpp:213
 msgid "Exclude songs the match the following:"
-msgstr "Nie zawieraj utworów pasujących do:"
+msgstr "Nie zawieraj utworów posiadających w tagach:"
 
 #. i18n: file: dynamic/dynamicrule.ui:192
 #. i18n: ectx: property (text), widget (BuddyLabel, label_7)
@@ -2838,11 +2860,13 @@ msgstr "Pokazuj wyskakujące okienka przy zmianie utworu:"
 msgid "Enable basic MPRISv2 interface:"
 msgstr "Uruchom podstawowy interfejs MPRISv2:"
 
+# wg mnie o wiele lepiej oddaje to sens funkcji
+# (ale nie oryginalne brzmnienie)
 #. i18n: file: gui/externalsettings.ui:80
 #. i18n: ectx: property (text), widget (BuddyLabel, dockManagerLabel)
 #: po/rc.cpp:237 rc.cpp:237
 msgid "Use current cover as dock icon:"
-msgstr "Używaj obecnej okładki jako ikony doku:"
+msgstr "Używaj obecnej okładki jako ikony w tacce:"
 
 #. i18n: file: gui/httpserversettings.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
@@ -3203,9 +3227,8 @@ msgid ""
 "stream.</i>"
 msgstr ""
 "<i><b>UWAGA:</b> Opcja 'Wyjściowy strumień HTTP' używana jest wyłącznie "
-"wtedy, gdy MPD "
-"został skonfigurowany tak, aby jego wyjściem był strumień HTTP oraz "
-"Cantata ma mieć możliwość odtwarzania tego strumienia.</i>"
+"wtedy, gdy wyjściem MPD jest strumień HTTP, a Cantata ma mieć możliwość "
+"jego odtwarzania.</i>"
 
 #. i18n: file: gui/serversettings.ui:26
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -3239,6 +3262,7 @@ msgstr ""
 "podkatalogów), to Cantata będzie zapisywała wszystkie pobrane okładki do "
 "odpowiednich katalogów.</i>"
 
+# Polskie zasady pisowni wymagają, aby kropkę stawiać za nawiasem
 #. i18n: file: gui/serversettings.ui:184
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
 #: po/rc.cpp:510 rc.cpp:510
@@ -3247,7 +3271,7 @@ msgid ""
 "socket needs to be set. (Port number is not required.)</i>"
 msgstr ""
 "<i><b>UWAGA:</b> Przy używaniu gniazda lokalnego konieczne jest ustawienie "
-"pełnej absolutnej ścieżki do gniazda. (Numer portu nie jest wymagany.)</i>"
+"pełnej absolutnej ścieżki do gniazda. (Numer portu nie jest wymagany).</i>"
 
 #. i18n: file: gui/tageditor.ui:17
 #. i18n: ectx: property (text), widget (StateLabel, trackNameLabel)

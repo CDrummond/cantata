@@ -3134,6 +3134,10 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     if (focusSearch) {
         focusTabSearch();
     }
+    if (!expandInterfaceAction->isChecked()) {
+        expandInterfaceAction->setChecked(true);
+        togglePlayQueue();
+    }
 }
 
 #if !defined Q_OS_WIN && !defined CANTATA_ANDROID

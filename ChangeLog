@@ -26,6 +26,7 @@
 16. Use 'avcodec' if 'ffmpeg' is not found.
 17. Show current song details in tooltip of notification icon for Qt builds as
     per KDE builds.
+18. If 'showPage' is called (via DBUS interface), ensure interface is expanded.
 
 0.8.2
 -----

@@ -41,10 +41,12 @@ struct DeviceOptions {
     static const QLatin1String constGenre;
     static const QLatin1String constYear;
 
+    static bool isConfigured(const QString &group, bool isMpd=false);
+
     DeviceOptions();
 
-    void load(const QString &group);
-    void save(const QString &group);
+    void load(const QString &group, bool isMpd=false);
+    void save(const QString &group, bool isMpd=false);
 
     bool operator==(const DeviceOptions &o) const {
         return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&

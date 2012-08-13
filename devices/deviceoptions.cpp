@@ -203,16 +203,30 @@ DeviceOptions::DeviceOptions()
 {
 }
 
-void DeviceOptions::load(const QString &group)
+static const QLatin1String constMpdGroup("mpd");
+
+bool DeviceOptions::isConfigured(const QString &group, bool isMpd)
 {
     #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup grp(KGlobal::config(), group);
+    KConfigGroup grp(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);
+    return grp.hasKey("scheme");
+    #else
+    QSettings cfg;
+    QString sep=group.isEmpty() ? QString() : ((-1==cfg.childGroups().indexOf(group) ? alt : group)+"/");
+    return cfg.contains(sep+"scheme");
+    #endif
+}
+
+void DeviceOptions::load(const QString &group, bool isMpd)
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup grp(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);
     scheme=grp.readEntry("scheme", scheme);
     vfatSafe=grp.readEntry("vfatSafe", vfatSafe);
     asciiOnly=grp.readEntry("asciiOnly", asciiOnly);
     ignoreThe=grp.readEntry("ignoreThe", ignoreThe);
     replaceSpaces=grp.readEntry("replaceSpaces", replaceSpaces);
-    if (QLatin1String("mpd")!=group) {
+    if (!isMpd) {
         fixVariousArtists=grp.readEntry("fixVariousArtists", fixVariousArtists);
         transcoderCodec=grp.readEntry("transcoderCodec", transcoderCodec);
         transcoderValue=grp.readEntry("transcoderValue", transcoderValue);
@@ -223,7 +237,7 @@ void DeviceOptions::load(const QString &group)
     #define GET_BOOL(KEY, DEF)       (cfg.contains(KEY) ? cfg.value(KEY).toBool() : DEF)
 
     QSettings cfg;
-    QString sep=group.isEmpty() ? QString() : (group+"/");
+    QString sep=group.isEmpty() ? QString() : ((-1==cfg.childGroups().indexOf(group) ? alt : group)+"/");
     scheme=GET_STRING(sep+"scheme", scheme);
     vfatSafe=GET_BOOL(sep+"vfatSafe", vfatSafe);
     asciiOnly=GET_BOOL(sep+"asciiOnly", asciiOnly);
@@ -232,7 +246,7 @@ void DeviceOptions::load(const QString &group)
     #endif
 }
 
-void DeviceOptions::save(const QString &group)
+void DeviceOptions::save(const QString &group, bool isMpd)
 {
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup grp(KGlobal::config(), group);
@@ -241,13 +255,17 @@ void DeviceOptions::save(const QString &group)
     grp.writeEntry("asciiOnly", asciiOnly);
     grp.writeEntry("ignoreThe", ignoreThe);
     grp.writeEntry("replaceSpaces", replaceSpaces);
-    if (QLatin1String("mpd")!=group) {
+    if (!isMpd) {
         grp.writeEntry("fixVariousArtists", fixVariousArtists);
         grp.writeEntry("transcoderCodec", transcoderCodec);
         grp.writeEntry("transcoderValue", transcoderValue);
         grp.writeEntry("transcoderWhenDifferent", transcoderWhenDifferent);
     }
     grp.sync();
+
+    if (isMpd && KGlobal::config()->hasGroup(constMpdGroup)) {
+        KGlobal::config()->deleteGroup(constMpdGroup);
+    }
     #else
     QSettings cfg;
     QString sep=group.isEmpty() ? QString() : (group+"/");
@@ -256,6 +274,10 @@ void DeviceOptions::save(const QString &group)
     cfg.setValue(sep+"asciiOnly", asciiOnly);
     cfg.setValue(sep+"ignoreThe", ignoreThe);
     cfg.setValue(sep+"replaceSpaces", replaceSpaces);
+
+    if (isMpd && -1!=cfg.childGroups().indexOf(constMpdGroup)) {
+        cfg.remove(constMpdGroup);
+    }
     #endif
 }
 

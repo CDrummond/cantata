@@ -60,6 +60,7 @@ private Q_SLOTS:
     void configureSource();
     void configureDest();
     void saveProperties(const QString &path, const QString &coverFile, const DeviceOptions &opts);
+    void saveProperties();
     void actionStatus(int status);
     void doNext();
     void removeSongResult(KJob *job);
@@ -90,6 +91,7 @@ private:
     bool paused;
     bool performingAction;
     bool haveVariousArtists;
+    bool mpdConfigured;
     Device *currentDev;
     QString destFile;
     DeviceOptions namingOptions;

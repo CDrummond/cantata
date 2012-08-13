@@ -73,7 +73,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
     origSongs=songs;
     #ifdef ENABLE_KDE_SUPPORT
     if (udi.isEmpty()) {
-        opts.load("mpd");
+        opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
     } else {
         deviceUdi=udi;
         Device *dev=getDevice(parentWidget());
@@ -86,7 +86,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
         opts=dev->options();
     }
     #else
-    opts.load("mpd");
+    opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
     #endif
     qSort(origSongs);
 
@@ -192,7 +192,7 @@ void TrackOrganiser::startRename()
         dev->setOptions(opts);
     } else
     #endif
-        opts.save("mpd");
+        opts.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
 
     QTimer::singleShot(100, this, SLOT(renameFile()));
 }

@@ -144,11 +144,6 @@ static MpdDefaults mpdDefaults;
 #define HAS_ENTRY(KEY)           (cfg.contains(KEY))
 #endif
 
-static QString connGroupName(const QString &n=QString())
-{
-    return n.isEmpty() ? "Connection" : ("Connection-"+n);
-}
-
 Settings::Settings()
     : isFirstRun(false)
     , timer(0)
@@ -164,7 +159,7 @@ Settings::Settings()
     // Only need to read system defaults if we have not previously been configured...
     if (version()<CANTATA_MAKE_VERSION(0, 8, 0)
             ? GET_STRING("connectionHost", QString()).isEmpty()
-            : !HAS_GROUP(connGroupName())) {
+            : !HAS_GROUP(MPDConnectionDetails::configGroupName())) {
         mpdDefaults.read();
     }
 }
@@ -184,7 +179,7 @@ QString Settings::currentConnection()
 MPDConnectionDetails Settings::connectionDetails(const QString &name)
 {
     MPDConnectionDetails details;
-    if (version()<CANTATA_MAKE_VERSION(0, 8, 0) || (name.isEmpty() && !HAS_GROUP(connGroupName(name)))) {
+    if (version()<CANTATA_MAKE_VERSION(0, 8, 0) || (name.isEmpty() && !HAS_GROUP(MPDConnectionDetails::configGroupName(name)))) {
         details.hostname=GET_STRING("connectionHost", name.isEmpty() ? mpdDefaults.host : QString());
         #ifdef ENABLE_KDE_SUPPORT
         if (GET_BOOL("connectionPasswd", false)) {
@@ -200,7 +195,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.port=GET_INT("connectionPort", name.isEmpty() ? mpdDefaults.port : 6600);
         details.dir=MPDParseUtils::fixPath(GET_STRING("mpdDir", mpdDefaults.dir));
     } else {
-        QString n=connGroupName(name);
+        QString n=MPDConnectionDetails::configGroupName(name);
         details.name=name;
         if (HAS_GROUP(n)) {
             #ifdef ENABLE_KDE_SUPPORT
@@ -608,7 +603,7 @@ QString Settings::streamUrl()
 
 void Settings::removeConnectionDetails(const QString &v)
 {
-    REMOVE_GROUP(connGroupName(v));
+    REMOVE_GROUP(MPDConnectionDetails::configGroupName(v));
     #ifdef ENABLE_KDE_SUPPORT
     KGlobal::config()->sync();
     #endif
@@ -623,7 +618,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
         REMOVE_ENTRY("mpdDir");
     }
 
-    QString n=connGroupName(v.name);
+    QString n=MPDConnectionDetails::configGroupName(v.name);
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup grp(KGlobal::config(), n);
     CFG_SET_VALUE(grp, "host", v.hostname);

@@ -1021,16 +1021,17 @@ MainWindow::MainWindow(QWidget *parent)
     if (!expandedSize.isEmpty()) {
         resize(expandedSize);
     }
-    togglePlayQueue();
     if (expandInterfaceAction->isChecked()) {
         if (!expandedSize.isEmpty()) {
             resize(expandedSize);
         }
     } else {
-         if (!collapsedSize.isEmpty()) {
+        if (!collapsedSize.isEmpty()) {
             resize(collapsedSize);
         }
     }
+    togglePlayQueue();
+
     #endif
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
@@ -1312,8 +1313,8 @@ MainWindow::~MainWindow()
     }
     #endif
     #ifndef CANTATA_ANDROID
-    Settings::self()->saveMainWindowSize(splitter->isVisible() ? size() : expandedSize);
-    Settings::self()->saveMainWindowCollapsedSize(splitter->isVisible() ? collapsedSize : size());
+    Settings::self()->saveMainWindowSize(expandedSize);
+    Settings::self()->saveMainWindowCollapsedSize(collapsedSize);
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->unmountRemote();
     #endif
@@ -1522,7 +1523,7 @@ void MainWindow::messageWidgetVisibility(bool v)
     Q_UNUSED(v)
 
     #ifndef CANTATA_ANDROID
-    if (!splitter->isVisible()) {
+    if (!expandInterfaceAction->isChecked()) {
         int prevWidth=width();
         int compactHeight=calcCompactHeight();
         setFixedHeight(compactHeight);
@@ -2785,16 +2786,12 @@ int MainWindow::calcCompactHeight()
                          trackLabel->height()+artistLabel->height()+spacing)+
                          songTimeElapsedLabel->height()+positionSlider->height()+(spacing*2),
                     coverWidget->height()+spacing)+
-           (messageWidget->isVisible() ? (messageWidget->sizeHint().height()+spacing) : 0);
+           (messageWidget->isActive() ? (messageWidget->sizeHint().height()+spacing) : 0);
 }
 
 #ifndef CANTATA_ANDROID
 void MainWindow::togglePlayQueue()
 {
-    if (splitter->isVisible()==expandInterfaceAction->isChecked()) {
-        setMinimumHeight(calcMinHeight());
-        return;
-    }
     static bool lastMax=false;
 
     bool showing=expandInterfaceAction->isChecked();
@@ -2843,7 +2840,7 @@ void MainWindow::togglePlayQueue()
 void MainWindow::sidebarModeChanged()
 {
     #ifndef CANTATA_ANDROID
-    if (splitter->isVisible()) {
+    if (expandInterfaceAction->isChecked()) {
         setMinimumHeight(calcMinHeight());
     }
     #endif

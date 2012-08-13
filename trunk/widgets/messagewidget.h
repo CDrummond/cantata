@@ -45,8 +45,13 @@ public:
     void setInformation(const QString &msg);
     void setVisible(bool v);
 
+    bool isActive() const { return active; }
+
 Q_SIGNALS:
     void visible(bool);
+
+private:
+    bool active;
 };
 
 #endif

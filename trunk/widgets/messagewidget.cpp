@@ -25,6 +25,7 @@
 
 MessageWidget::MessageWidget(QWidget *parent)
     : KMessageWidget(parent)
+    , active(false)
 {
 }
 
@@ -36,18 +37,29 @@ void MessageWidget::setError(const QString &msg)
 {
     setText(msg);
     setMessageType(Error);
-    animatedShow();
+    if (!parentWidget()->isVisible()) {
+        show();
+        setVisible(true);
+    } else {
+        animatedShow();
+    }
 }
 
 void MessageWidget::setInformation(const QString &msg)
 {
     setText(msg);
     setMessageType(Information);
-    animatedShow();
+    if (!parentWidget()->isVisible()) {
+        show();
+        setVisible(true);
+    } else {
+        animatedShow();
+    }
 }
 
 void MessageWidget::setVisible(bool v)
 {
+    active=v;
     KMessageWidget::setVisible(v);
     emit visible(v);
 }

@@ -142,6 +142,10 @@ struct MPDConnectionDetails {
     bool operator<(const MPDConnectionDetails &o) const {
         return name.localeAwareCompare(o.name)<0;
     }
+    static QString configGroupName(const QString &n=QString()) {
+        return n.isEmpty() ? "Connection" : ("Connection-"+n);
+    }
+
     QString name;
     QString hostname;
     quint16 port;

@@ -27,6 +27,7 @@
 17. Show current song details in tooltip of notification icon for Qt builds as
     per KDE builds.
 18. If 'showPage' is called (via DBUS interface), ensure interface is expanded.
+19. Save MPD filename scheme settings with MPD server settings.
 
 0.8.2
 -----

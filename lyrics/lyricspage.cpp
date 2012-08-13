@@ -37,6 +37,7 @@
 #include "tags.h"
 #endif
 #include "icon.h"
+#include "utils.h"
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -51,20 +52,6 @@
 #include <KDE/KXMLGUIClient>
 #include <KDE/KActionCollection>
 #endif
-
-static QString changeExt(const QString &f, const QString &newExt)
-{
-    QString newStr(f);
-    int     dotPos(newStr.lastIndexOf('.'));
-
-    if (-1==dotPos) {
-        newStr+=newExt;
-    } else {
-        newStr.remove(dotPos, newStr.length());
-        newStr+=newExt;
-    }
-    return newStr;
-}
 
 static const QLatin1String constLyricsDir("lyrics/");
 const QLatin1String LyricsPage::constExtension(".lyrics");
@@ -340,7 +327,7 @@ void LyricsPage::update(const Song &s, bool force)
             #endif
 
             // Check for MPD file...
-            QString mpdLyrics=changeExt(MPDConnection::self()->getDetails().dir+songFile, constExtension);
+            QString mpdLyrics=Utils::changeExtension(MPDConnection::self()->getDetails().dir+songFile, constExtension);
 
 //             if (force && QFile::exists(mpdLyrics)) {
 //                 QFile::remove(mpdLyrics);
@@ -390,7 +377,7 @@ void LyricsPage::resultReady(int id, const QString &lyrics)
         text->setText(text->toPlainText());
         lyricsFile=QString();
         if (! ( Settings::self()->storeLyricsInMpdDir() &&
-                saveFile(changeExt(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension))) ) {
+                saveFile(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension))) ) {
             saveFile(cacheFile(currentSong.artist, currentSong.title, true));
         }
         setMode(Mode_Display);
@@ -414,7 +401,7 @@ bool LyricsPage::saveFile(const QString &fileName)
 QString LyricsPage::mpdFileName() const
 {
     return currentSong.file.isEmpty() || MPDConnection::self()->getDetails().dir.isEmpty() || currentSong.isStream()
-            ? QString() : changeExt(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension);
+            ? QString() : Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension);
 }
 
 QString LyricsPage::cacheFileName() const
@@ -457,7 +444,7 @@ void LyricsPage::getLyrics()
             currentProvider=-1;
             // Set lyrics file anyway - so that editing is enabled!
             lyricsFile=Settings::self()->storeLyricsInMpdDir()
-                        ? changeExt(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)
+                        ? Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)
                         : cacheFile(currentSong.artist, currentSong.title);
             setMode(Mode_Display);
             return;
@@ -475,7 +462,7 @@ void LyricsPage::setMode(Mode m)
     saveAction->setEnabled(Mode_Edit==m);
     cancelAction->setEnabled(Mode_Edit==m);
     editAction->setEnabled(editable);
-    delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(changeExt(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)));
+    delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)));
     text->setReadOnly(Mode_Edit!=m);
     songLabel->setVisible(Mode_Edit==m);
     #ifdef ENABLE_KDE_SUPPORT

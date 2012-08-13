@@ -59,6 +59,7 @@ enum Pages
 
 ActionDialog::ActionDialog(QWidget *parent)
     : Dialog(parent)
+    , mpdConfigured(false)
     , currentDev(0)
 {
     iCount++;
@@ -125,10 +126,11 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     }
     #endif
     if (enoughSpace || (sourceUdi.isEmpty() && Encoders::getAvailable().count())) {
+        QString mpdCfgName=MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name);
         overwrite->setChecked(Settings::self()->overwriteSongs());
         sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
         destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
-        namingOptions.load("mpd");
+        namingOptions.load(mpdCfgName, true);
         setPage(PAGE_START);
         mode=Copy;
         capacity->setText(capacityString);
@@ -136,8 +138,9 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         capacity->setDrawTextMode(KCapacityBar::DrawTextInline);
 
         bool destIsDev=sourceUdi.isEmpty();
-        configureDestLabel->setVisible(destIsDev && !dev->isConfigured());
-        configureSourceLabel->setVisible(!destIsDev && !dev->isConfigured());
+        mpdConfigured=DeviceOptions::isConfigured(mpdCfgName, true);
+        configureDestLabel->setVisible((destIsDev && !dev->isConfigured()) || (!destIsDev && !mpdConfigured));
+        configureSourceLabel->setVisible((!destIsDev && !dev->isConfigured()) || (destIsDev && !mpdConfigured));
         show();
         if (!enoughSpace) {
             KMessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"
@@ -446,6 +449,9 @@ void ActionDialog::configure(const QString &udi)
         DevicePropertiesDialog *dlg=new DevicePropertiesDialog(this);
         connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const DeviceOptions &)),
                 SLOT(saveProperties(const QString &, const QString &, const DeviceOptions &)));
+        if (!mpdConfigured) {
+            connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
+        }
         dlg->setCaption(i18n("Local Music Library Properties"));
         dlg->show(MPDConnection::self()->getDetails().dir, QString(), namingOptions, DevicePropertiesWidget::Prop_Basic);
     } else {
@@ -461,7 +467,14 @@ void ActionDialog::saveProperties(const QString &path, const QString &coverFile,
     Q_UNUSED(path)
     Q_UNUSED(coverFile)
     namingOptions=opts;
-    namingOptions.save("mpd");
+    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
+    mpdConfigured=true;
+}
+
+void ActionDialog::saveProperties()
+{
+    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
+    mpdConfigured=true;
 }
 
 void ActionDialog::setPage(int page, const QString &msg)

@@ -41,6 +41,9 @@
 // #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
 #define DBUG qDebug()
 
+static const int constSocketCommsTimeout=2000;
+static const int constMaxReadAttempts=4;
+
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(MPDConnection, conn)
 #endif
@@ -68,10 +71,16 @@ static QByteArray readFromSocket(MpdSocket &socket)
     QByteArray data;
 
     while (QAbstractSocket::ConnectedState==socket.state()) {
-        while (socket.bytesAvailable() == 0 && QAbstractSocket::ConnectedState==socket.state()) {
-            DBUG << (void *)(&socket) << "Waiting for read data.";
-            if (socket.waitForReadyRead(5000)) {
+        int attempt=0;
+        while (0==socket.bytesAvailable() && QAbstractSocket::ConnectedState==socket.state()) {
+            DBUG << (void *)(&socket) << "Waiting for read data." << attempt;
+            if (socket.waitForReadyRead(constSocketCommsTimeout)) {
                 break;
+            }
+            if (++attempt>=constMaxReadAttempts) {
+                qWarning() << "ERROR: Timedout waiting for response";
+                socket.close();
+                return QByteArray();
             }
         }
 
@@ -232,9 +241,14 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
         }
 
         socket.connectToHost(details.hostname, details.port);
-        if (socket.waitForConnected(5000)) {
+        if (socket.waitForConnected(constSocketCommsTimeout)) {
             DBUG << (void *)(&socket) << "established";
             QByteArray recvdata = readFromSocket(socket);
+
+            if (recvdata.isEmpty()) {
+                DBUG << (void *)(&socket) << "Couldn't connect";
+                return Failed;
+            }
 
             if (recvdata.startsWith("OK MPD")) {
                 DBUG << (void *)(&socket) << "Received identification string";
@@ -256,7 +270,7 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
             if (!details.password.isEmpty()) {
                 DBUG << (void *)(&socket) << "setting password...";
                 socket.write("password "+details.password.toUtf8()+"\n");
-                socket.waitForBytesWritten(5000);
+                socket.waitForBytesWritten(constSocketCommsTimeout);
                 if (!readReply(socket).ok) {
                     DBUG << (void *)(&socket) << "password rejected";
                     socket.close();
@@ -442,7 +456,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         response=Response(false);
         sock.close();
     } else {
-        sock.waitForBytesWritten(5000);
+        sock.waitForBytesWritten(constSocketCommsTimeout);
         response=readReply(sock);
     }
 
@@ -461,11 +475,21 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
                     emit error(i18n("Failed to load. Please check user \"mpd\" has read permission."));
                 } else if (!details.isLocal() && response.data=="Access denied") {
                     emit error(i18n("Failed to load. MPD can only play local files if connected via a local socket."));
-                } else {
+                } else if (!response.getError().isEmpty()) {
                     emit error(response.getError());
+                } else {
+                    disconnectFromMPD();
+                    emit stateChanged(false);
+                    // TODO: 0.9 better error message!!!
+                    emit error(i18n("Connection to %1 failed").arg(details.description()), true);
                 }
-            } else {
+            } else if (!response.getError().isEmpty()) {
                 emit error(response.getError());
+            } else {
+                disconnectFromMPD();
+                emit stateChanged(false);
+                // TODO: 0.9 better error message!!!
+                emit error(i18n("Connection to %1 failed").arg(details.description()), true);
             }
         }
     }

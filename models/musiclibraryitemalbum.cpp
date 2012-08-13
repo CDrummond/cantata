@@ -32,6 +32,10 @@
 #include "covers.h"
 #include "config.h"
 #include "icon.h"
+#ifdef ENABLE_KDE_SUPPORT
+#include "device.h"
+#include "utils.h"
+#endif
 #include <QtGui/QPixmap>
 #include <QtGui/QApplication>
 #include <QtGui/QFontMetrics>
@@ -183,6 +187,14 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.album=m_itemData;
             song.year=m_year;
             song.file=firstSong->file();
+            #ifdef ENABLE_KDE_SUPPORT
+            if (!song.file.startsWith("/") && parent() && parent()->parent() && qobject_cast<Device *>(parent()->parent())) {
+                QString root=static_cast<Device *>(parent()->parent())->path();
+                if (!root.isEmpty()) {
+                    song.file=Utils::dirSyntax(root)+song.file;
+                }
+            }
+            #endif
             Covers::self()->requestCover(song, true);
         }
         return *theDefaultIcon;

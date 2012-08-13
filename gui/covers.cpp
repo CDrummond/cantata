@@ -424,9 +424,12 @@ Covers::Image Covers::getImage(const Song &song)
             }
 
             #ifdef TAGLIB_FOUND
-            QImage img(Tags::readImage(haveAbsPath ? song.file : (MPDConnection::self()->getDetails().dir+songFile)));
-            if (!img.isNull()) {
-                return Image(img, QString());
+            QString fileName=haveAbsPath ? song.file : (MPDConnection::self()->getDetails().dir+songFile);
+            if (QFile::exists(fileName)) {
+                QImage img(Tags::readImage(fileName));
+                if (!img.isNull()) {
+                    return Image(img, fileName);
+                }
             }
             #endif
         }

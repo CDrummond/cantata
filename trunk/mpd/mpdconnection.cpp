@@ -988,11 +988,9 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
      * See http://www.musicpd.org/doc/protocol/ch02.html
      */
     bool playListUpdated=false;
+    bool statusUpdated=false;
     foreach(const QByteArray &line, lines) {
         if (line == "changed: database") {
-            /*
-             * Temp solution
-             */
             getStats();
             playListInfo();
             playListUpdated=true;
@@ -1004,14 +1002,11 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             if (!playListUpdated) {
                 playListChanges();
             }
-        } else if (line == "changed: player") {
+        } else if (!statusUpdated && (line == "changed: player" || line == "changed: mixer" || line == "changed: options" )) {
             getStatus();
-        } else if (line == "changed: mixer") {
-            getStatus();
+            statusUpdated=true;
         } else if (line == "changed: output") {
             outputs();
-        } else if (line == "changed: options") {
-            getStatus();
         } else if (line == "OK" || line.startsWith("OK MPD ") || line.isEmpty()) {
             ;
         } else {

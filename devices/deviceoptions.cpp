@@ -212,7 +212,7 @@ bool DeviceOptions::isConfigured(const QString &group, bool isMpd)
     return grp.hasKey("scheme");
     #else
     QSettings cfg;
-    QString sep=group.isEmpty() ? QString() : ((-1==cfg.childGroups().indexOf(group) ? alt : group)+"/");
+    QString sep=group.isEmpty() ? QString() : ((-1==cfg.childGroups().indexOf(group) && isMpd ? constMpdGroup : group)+"/");
     return cfg.contains(sep+"scheme");
     #endif
 }
@@ -237,7 +237,7 @@ void DeviceOptions::load(const QString &group, bool isMpd)
     #define GET_BOOL(KEY, DEF)       (cfg.contains(KEY) ? cfg.value(KEY).toBool() : DEF)
 
     QSettings cfg;
-    QString sep=group.isEmpty() ? QString() : ((-1==cfg.childGroups().indexOf(group) ? alt : group)+"/");
+    QString sep=group.isEmpty() ? QString() : ((-1==cfg.childGroups().indexOf(group) && isMpd ? constMpdGroup : group)+"/");
     scheme=GET_STRING(sep+"scheme", scheme);
     vfatSafe=GET_BOOL(sep+"vfatSafe", vfatSafe);
     asciiOnly=GET_BOOL(sep+"asciiOnly", asciiOnly);

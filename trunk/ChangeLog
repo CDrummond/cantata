@@ -30,6 +30,7 @@
 19. Save MPD filename scheme settings with MPD server settings.
 20. Use QWIDGETSIZE_MAX and not INT_MAX to set maximum height of expanded
     interface.
+21. More consistent control of prev/next buttons.
 
 0.8.2
 -----

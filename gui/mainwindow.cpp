@@ -2806,7 +2806,7 @@ void MainWindow::togglePlayQueue()
     } else {
         collapsedSize=size();
         setMinimumHeight(calcMinHeight());
-        setMaximumHeight(INT_MAX);
+        setMaximumHeight(QWIDGETSIZE_MAX);
     }
     int prevWidth=size().width();
     splitter->setVisible(showing);

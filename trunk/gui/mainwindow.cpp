@@ -3197,7 +3197,8 @@ void MainWindow::focusSearch()
     if (searchPlayQueueLineEdit->hasFocus()) {
         return;
     }
-    if (playQueue->hasFocus()) {
+    if (playQueue->hasFocus() || repeatPushButton->hasFocus() || singlePushButton->hasFocus() || randomPushButton->hasFocus() ||
+        consumePushButton->hasFocus() || savePlayQueuePushButton->hasFocus() || removeAllFromPlayQueuePushButton->hasFocus()) {
         searchPlayQueueLineEdit->setFocus();
     } else if (libraryPage->isVisible()) {
         libraryPage->focusSearch();

@@ -385,7 +385,6 @@ private:
     void stopVolumeFade();
 //     void callK3b(const QString &type);
     void showTab(int page);
-    void focusTabSearch();
     bool fadeWhenStop() const;
 
 private:

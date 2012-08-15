@@ -3101,20 +3101,38 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     QString p=page.toLower();
     if (QLatin1String("library")==p) {
         showTab(MainWindow::PAGE_LIBRARY);
+        if (focusSearch) {
+            libraryPage->focusSearch();
+        }
     } else if (QLatin1String("albums")==p) {
         showTab(MainWindow::PAGE_ALBUMS);
+        if (focusSearch) {
+            albumsPage->focusSearch();
+        }
     } else if (QLatin1String("folders")==p) {
         showTab(MainWindow::PAGE_FOLDERS);
+        if (focusSearch) {
+            folderPage->focusSearch();
+        }
     } else if (QLatin1String("playlists")==p) {
         showTab(MainWindow::PAGE_PLAYLISTS);
+        if (focusSearch) {
+            playlistsPage->focusSearch();
+        }
     }
     #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
     else if (QLatin1String("dynamic")==p) {
         showTab(MainWindow::PAGE_DYNAMIC);
+        if (focusSearch) {
+            dynamicPage->focusSearch();
+        }
     }
     #endif
     else if (QLatin1String("streams")==p) {
         showTab(MainWindow::PAGE_STREAMS);
+        if (focusSearch) {
+            streamsPage->focusSearch();
+        }
     } else if (QLatin1String("lyrics")==p) {
         showTab(MainWindow::PAGE_LYRICS);
     }
@@ -3129,11 +3147,18 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
     else if (QLatin1String("devices")==p) {
         showTab(MainWindow::PAGE_DEVICES);
+        if (focusSearch) {
+            devicesPage->focusSearch();
+        }
     }
     #endif
-    if (focusSearch) {
-        focusTabSearch();
+    else if (tabWidget->isEnabled(PAGE_PLAYQUEUE) && QLatin1String("playqueue")==p) {
+        showTab(MainWindow::PAGE_PLAYQUEUE);
+        if (focusSearch) {
+            searchPlayQueueLineEdit->setFocus();
+        }
     }
+
     if (!expandInterfaceAction->isChecked()) {
         expandInterfaceAction->setChecked(true);
         togglePlayQueue();
@@ -3163,7 +3188,7 @@ void MainWindow::goBack()
     case PAGE_FOLDERS:   folderPage->goBack();     break;
     case PAGE_PLAYLISTS: playlistsPage->goBack();  break;
     case PAGE_STREAMS:   streamsPage->goBack();    break;
-    default:                                              break;
+    default:                                       break;
     }
 }
 
@@ -3174,14 +3199,7 @@ void MainWindow::focusSearch()
     }
     if (playQueue->hasFocus()) {
         searchPlayQueueLineEdit->setFocus();
-    } else {
-        focusTabSearch();
-    }
-}
-
-void MainWindow::focusTabSearch()
-{
-    if (libraryPage->isVisible()) {
+    } else if (libraryPage->isVisible()) {
         libraryPage->focusSearch();
     } else if (albumsPage->isVisible()) {
         albumsPage->focusSearch();
@@ -3203,6 +3221,9 @@ void MainWindow::focusTabSearch()
         devicesPage->focusSearch();
     }
     #endif
+    else if (tabWidget->isEnabled(PAGE_PLAYQUEUE) && playQueuePage->isVisible()) {
+        searchPlayQueueLineEdit->setFocus();
+    }
 }
 
 bool MainWindow::fadeWhenStop() const

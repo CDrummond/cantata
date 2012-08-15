@@ -31,6 +31,8 @@
 20. Use QWIDGETSIZE_MAX and not INT_MAX to set maximum height of expanded
     interface.
 21. More consistent control of prev/next buttons.
+22. Allow 'showPage' dbus command to also show playqueue (if this has been
+    placed in the sidebar)
 
 0.8.2
 -----

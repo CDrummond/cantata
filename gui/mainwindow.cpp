@@ -2483,8 +2483,8 @@ void MainWindow::updateStatus(MPDStatus * const status)
         //playPauseTrackButton->setChecked(false);
         if (StopState_Stopping!=stopState) {
             stopTrackAction->setEnabled(true);
-            nextTrackAction->setEnabled(true);
-            prevTrackAction->setEnabled(true);
+            nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
+            prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
         }
         positionSlider->startTimer();
 

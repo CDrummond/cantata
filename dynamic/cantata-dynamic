@@ -515,6 +515,7 @@ sub populatePlayQueue() {
 
             # Call stats, so that we can obtain the last time MPD was updated.
             # We use this to determine when we need to refresh the searched set of songs
+            $mpdDbUpdated=0;
             if (&sendCommand("stats")) {
                 my @lines = split('\n', $socketData);
                 foreach my $val (@lines) {

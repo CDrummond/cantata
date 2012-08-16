@@ -1655,7 +1655,9 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         lyricsPage->text->clear();
         serverInfoPage->clear();
         #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
-        Dynamic::self()->stop();
+        if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
+            Dynamic::self()->stop();
+        }
         #endif
         showInformation(i18n("Connecting to %1").arg(details.description()));
         outputsAction->setVisible(false);

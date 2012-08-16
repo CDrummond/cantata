@@ -714,6 +714,15 @@ void PlayQueueModel::update(const QList<Song> &songList)
             time += s.time;
         }
 
+        if (songs.count()>songList.count()) {
+            int toBeRemoved=songs.count()-songList.count();
+            beginRemoveRows(QModelIndex(), songList.count(), songs.count()-1);
+            for (int i=0; i<toBeRemoved; ++i) {
+                songs.takeLast();
+            }
+            endRemoveRows();
+        }
+
         ids=newIds;
         emit statsUpdated(songs.size(), time);
     }

@@ -209,7 +209,6 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
 
         if (element == QLatin1String("file")) {
             song.file = value;
-            song.file.replace("\"", "\\\"");
         } else if (element == QLatin1String("Time") ){
             song.time = value.toUInt();
         } else if (element == QLatin1String("Album")) {

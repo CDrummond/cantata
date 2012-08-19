@@ -33,6 +33,7 @@
 21. More consistent control of prev/next buttons.
 22. Allow 'showPage' dbus command to also show playqueue (if this has been
     placed in the sidebar)
+23. Fix handling of filename's with quotes.
 
 0.8.2
 -----

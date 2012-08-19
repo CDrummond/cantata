@@ -356,6 +356,8 @@ void MPDConnection::reconnect()
         getStatus();
         getStats();
         getUrlHandlers();
+        playListInfo();
+        outputs();
         reconnectStart=0;
         emit stateChanged(true);
         break;

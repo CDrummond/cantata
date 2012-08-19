@@ -43,7 +43,7 @@
    <item row="1" column="0">
     <widget class="BuddyLabel" name="label_5">
      <property name="text">
-      <string>Show popup up messages when changing tracks:</string>
+      <string>Show popup messages when changing tracks:</string>
      </property>
      <property name="buddy">
       <cstring>systemTrayPopup</cstring>

@@ -2687,7 +2687,7 @@ msgstr ""
 #. i18n: file: devices/trackorganiser.ui:150
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
 #: po/rc.cpp:150 rc.cpp:150
-msgid "Orignal Name"
+msgid "Original Name"
 msgstr "Orignal Name"
 
 #. i18n: file: devices/trackorganiser.ui:155
@@ -2797,7 +2797,7 @@ msgstr "Zeige Icon in der Systemleiste:"
 #. i18n: file: gui/externalsettings.ui:46
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:231 rc.cpp:231
-msgid "Show popup up messages when changing tracks:"
+msgid "Show popup messages when changing tracks:"
 msgstr "Zeige Hinweis beim Liedwechsel:"
 
 #. i18n: file: gui/externalsettings.ui:63

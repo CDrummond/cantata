@@ -47,7 +47,7 @@ public:
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    QStringList filenames(const QModelIndexList &indexes) const;
+    QStringList filenames(const QModelIndexList &indexes, bool allowPlaylists) const;
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     void clear();
     void addFileToList(const QString &file);
@@ -61,7 +61,7 @@ public Q_SLOTS:
 private:
     void addFileToList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
     void removeFileFromList(const QStringList &parts, const QModelIndex &parent, DirViewItemDir *dir);
-    void recurseDirItems(DirViewItem &parent, QStringList &filenames) const;
+    void getFiles(DirViewItem *item, QStringList &filenames, bool allowPlaylists) const;
 
 private:
     DirViewItemRoot *rootItem;

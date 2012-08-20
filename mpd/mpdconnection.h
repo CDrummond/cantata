@@ -177,6 +177,8 @@ public:
     bool isConnected() const { return State_Connected==state; }
     bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0); }
 
+    static bool isPlaylist(const QString &file);
+
 public Q_SLOTS:
     void reconnect();
     void setDetails(const MPDConnectionDetails &det);

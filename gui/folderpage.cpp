@@ -197,41 +197,31 @@ void FolderPage::openFileManager()
 }
 #endif
 
-QList<Song> FolderPage::selectedSongs() const
+QList<Song> FolderPage::selectedSongs(bool allowPlaylists) const
 {
-    const QModelIndexList selected = view->selectedIndexes();
-
-    if (0==selected.size()) {
-        return QList<Song>();
-    }
-
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, selected) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
-    return MusicLibraryModel::self()->songs(DirViewModel::self()->filenames(mapped));
+    return MusicLibraryModel::self()->songs(selectedFiles(allowPlaylists));
 }
 
-QStringList FolderPage::selectedFiles() const
+QStringList FolderPage::selectedFiles(bool allowPlaylists) const
 {
-    const QModelIndexList selected = view->selectedIndexes();
+    QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
         return QStringList();
     }
+    qSort(selected);
 
     QModelIndexList mapped;
     foreach (const QModelIndex &idx, selected) {
         mapped.append(proxy.mapToSource(idx));
     }
 
-    return DirViewModel::self()->filenames(mapped);
+    return DirViewModel::self()->filenames(mapped, allowPlaylists);
 }
 
 void FolderPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
 {
-    QStringList files=selectedFiles();
+    QStringList files=selectedFiles(true);
 
     if (!files.isEmpty()) {
         if (name.isEmpty()) {

@@ -235,7 +235,6 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
             song.name = value;
         } else if (element == QLatin1String("playlist")) {
             song.file = value;
-            song.file.replace("\"", "\\\"");
             song.title=Utils::getFile(song.file);
             song.type=Song::Playlist;
         }  else if (element == QLatin1String("Prio")) {

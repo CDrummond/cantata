@@ -314,13 +314,12 @@ Qt::ItemFlags DirViewModel::flags(const QModelIndex &index) const
     }
 }
 
-QStringList DirViewModel::filenames(const QModelIndexList &indexes) const
+QStringList DirViewModel::filenames(const QModelIndexList &indexes, bool allowPlaylists) const
 {
     QStringList fnames;
 
     foreach(QModelIndex index, indexes) {
-        DirViewItem *item = static_cast<DirViewItem *>(index.internalPointer());
-        recurseDirItems(*item, fnames);
+        getFiles(static_cast<DirViewItem *>(index.internalPointer()), fnames, allowPlaylists);
     }
     return fnames;
 }
@@ -328,7 +327,7 @@ QStringList DirViewModel::filenames(const QModelIndexList &indexes) const
 QMimeData *DirViewModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    QStringList files=filenames(indexes);
+    QStringList files=filenames(indexes, true);
     PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, files);
     if (!MPDConnection::self()->getDetails().dir.isEmpty()) {
         QStringList paths;
@@ -340,15 +339,39 @@ QMimeData *DirViewModel::mimeData(const QModelIndexList &indexes) const
     return mimeData;
 }
 
-void DirViewModel::recurseDirItems(DirViewItem &parent, QStringList &filenames) const
+static inline void addFile(DirViewItem *item, QStringList &insertInto, QStringList &checkAgainst, bool allowPlaylists)
 {
-    if (parent.childCount() == 0) {
-        if (!filenames.contains(parent.fullName())) {
-            filenames << parent.fullName();
+    QString path=item->fullName();
+    if ((allowPlaylists || !MPDConnection::isPlaylist(path)) && !checkAgainst.contains(path)) {
+        insertInto << path;
+    }
+}
+
+void DirViewModel::getFiles(DirViewItem *item, QStringList &filenames, bool allowPlaylists) const
+{
+    if (!item) {
+        return;
+    }
+
+    switch (item->type()) {
+        case DirViewItem::Type_File:
+            addFile(item, filenames, filenames, allowPlaylists);
+        break;
+        case DirViewItem::Type_Dir: {
+            QStringList dirFiles;
+            for (int c=0; c<item->childCount(); c++) {
+                DirViewItem *child=item->child(c);
+                if (DirViewItem::Type_Dir==child->type()) {
+                    getFiles(child, filenames, allowPlaylists);
+                } else if (DirViewItem::Type_File==child->type()) {
+                    addFile(child, dirFiles, filenames, allowPlaylists);
+                }
+            }
+
+            qSort(dirFiles);
+            filenames+=dirFiles;
         }
-    } else {
-        for (int i = 0; i < parent.childCount(); i++) {
-            recurseDirItems(*parent.child(i), filenames);
-        }
+        default:
+        break;
     }
 }

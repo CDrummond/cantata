@@ -719,8 +719,13 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowP
 
 QList<Song> MusicLibraryModel::songs(const QStringList &filenames) const
 {
-    QSet<QString> files=filenames.toSet();
     QList<Song> songs;
+
+    if (filenames.isEmpty()) {
+        return songs;
+    }
+
+    QSet<QString> files=filenames.toSet();
 
     foreach (const MusicLibraryItem *artist, static_cast<const MusicLibraryItemContainer *>(rootItem)->childItems()) {
         foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {

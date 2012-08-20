@@ -502,7 +502,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
 /*
  * Playlist commands
  */
-static bool isPlaylist(const QString &file)
+bool MPDConnection::isPlaylist(const QString &file)
 {
     return file.endsWith("asx", Qt::CaseInsensitive) || file.endsWith("cue", Qt::CaseInsensitive) ||
            file.endsWith("m3u", Qt::CaseInsensitive) || file.endsWith("pls", Qt::CaseInsensitive) ||

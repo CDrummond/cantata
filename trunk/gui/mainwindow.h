@@ -300,6 +300,7 @@ private Q_SLOTS:
     void addToExistingStoredPlaylist(const QString &name);
     void removeItems();
     #ifdef ENABLE_KDE_SUPPORT
+    void checkMpdAccessibility();
     void trayItemScrollRequested(int delta, Qt::Orientation orientation);
     void notificationClosed();
     #elif !defined CANTATA_ANDROID
@@ -525,6 +526,9 @@ private:
     #endif
     QTimer *playQueueSearchTimer;
     bool usingProxy;
+    #ifdef ENABLE_KDE_SUPPORT
+    QTimer *mpdAccessibilityTimer;
+    #endif
 
     enum ConnState {
         CS_Init,

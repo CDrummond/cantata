@@ -2312,8 +2312,9 @@ void MainWindow::updateCurrentSong(const Song &song)
     } else {
         QString album=current.album;
 
-        if (current.year>0) {
-            album+=QString(" (%1)").arg(current.year);
+        quint16 year=Song::albumYear(current);
+        if (year>0) {
+            album+=QString(" (%1)").arg(year);
         }
         #ifdef ENABLE_KDE_SUPPORT
         artistLabel->setText(i18nc("artist - album", "%1 - %2", current.artist, album));

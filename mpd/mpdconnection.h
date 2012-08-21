@@ -174,6 +174,7 @@ public:
     ~MPDConnection();
 
     const MPDConnectionDetails & getDetails() const { return details; }
+    void setDirReadable(bool r) { details.dirReadable=r; }
     bool isConnected() const { return State_Connected==state; }
     bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0); }
 

@@ -20,7 +20,7 @@
 12. In Qt-builds, if we failt to update files (tag editor, replaygain) then
     show the list of failures in the 'detailed text' section.
 13. In Qt (Linux) build, also register org.kde.cantata service - so that
-    messages from dynamic helper can be recieved.
+    messages from dynamic helper can be received.
 14. Update verison of KMessageWidget
 15. Update Polish translation.
 16. Use 'avcodec' if 'ffmpeg' is not found.
@@ -43,6 +43,8 @@
 27. Use "users" group and not "audio" when setting the group ID of covers,
     lyrics, and audio files.
 28. If we have no song tag details, show filename in playqueue.
+29. In KDE builds, check if MPD is readable each time we get a device added
+    or removed signal from Solid. (Requires KDE4.9 to function correctly)
 
 0.8.2
 -----
@@ -453,7 +455,7 @@
     changed. (Previously the whole model was replaced).
  3. When changing name of playlist, show the original name in the line-edit.
  4. Fix adding songs with spaces in their filenames to stored playlists
- 5. When we recieve an updated signal from MPD, refresh library view.
+ 5. When we receieve an updated signal from MPD, refresh library view.
  6. When disaplying songs of various artists albums, show as 'track number -
     artist - song'
  7. German translation - thanks to Lutz Lüttke

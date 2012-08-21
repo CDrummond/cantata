@@ -101,12 +101,14 @@ MediaDeviceCache::refreshCache()
 
         if( ssa )
         {
-            if( (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
-                (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) )
-            {
-                debug() << "Found Solid::DeviceInterface::StorageAccess that is not usb, skipping";
-                continue;
-            }
+            // Commented out - as we want a signal when any storage device is added/removed - so we can check for MPD dir accessibility.
+            // device.cpp contains the check to ensure the device is a USB bevice before adding it to the list...
+//             if( (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
+//                 (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) )
+//             {
+//                 debug() << "Found Solid::DeviceInterface::StorageAccess that is not usb, skipping";
+//                 continue;
+//             }
             if( !m_volumes.contains( device.udi() ) )
             {
                 connect( ssa, SIGNAL( accessibilityChanged(bool, const QString&) ),

@@ -58,6 +58,13 @@ Device * Device::create(DevicesModel *m, const QString &udi)
         #endif
     } else if (device.is<Solid::StorageAccess>()) {
 
+        const Solid::StorageAccess* ssa = device.as<Solid::StorageAccess>();
+
+        if( ssa && (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
+                   (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) ) {
+            return 0;
+        }
+
         //HACK: ignore apple stuff until we have common MediaDeviceFactory.
         if (!device.vendor().contains("apple", Qt::CaseInsensitive)) {
 //             Solid::StorageAccess *sa = device.as<Solid::StorageAccess>();

@@ -38,6 +38,7 @@
 #include <QtGui/QPainter>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
+#include "mediadevicecache.h"
 #include <KDE/KApplication>
 #include <KDE/KAction>
 #include <KDE/KActionCollection>
@@ -361,6 +362,9 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     , playQueueSearchTimer(0)
     , usingProxy(false)
+    #ifdef ENABLE_KDE_SUPPORT
+    , mpdAccessibilityTimer(0)
+    #endif
     , connectedState(CS_Init)
     , volumeFade(0)
     , origVolume(0)
@@ -1246,6 +1250,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
 
+    #ifdef ENABLE_KDE_SUPPORT
+    connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(checkMpdAccessibility()));
+    connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(checkMpdAccessibility()));
+    #endif
+
     #ifdef CANTATA_ANDROID
     tabWidget->setMinimumWidth((width()*0.4)-tabWidget->tabSize().width());
     controlLayout->setSpacing(playPauseTrackButton->width()*0.1);
@@ -1713,6 +1722,14 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::checkMpdDir()
 {
+    #ifdef ENABLE_KDE_SUPPORT
+    if (mpdAccessibilityTimer) {
+        mpdAccessibilityTimer->stop();
+    }
+    QString dir=MPDConnection::self()->getDetails().dir;
+    MPDConnection::self()->setDirReadable(dir.isEmpty() ? false : QDir(dir).isReadable());
+    #endif
+
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction->setEnabled(MPDConnection::self()->getDetails().dirReadable);
     organiseFilesAction->setEnabled(editPlayQueueTagsAction->isEnabled());
@@ -2716,6 +2733,17 @@ void MainWindow::removeItems()
         streamsPage->removeItems();
     }
 }
+
+#ifdef ENABLE_KDE_SUPPORT
+void MainWindow::checkMpdAccessibility()
+{
+    if (!mpdAccessibilityTimer) {
+        mpdAccessibilityTimer=new QTimer(this);
+        connect(mpdAccessibilityTimer, SIGNAL(timeout()), SLOT(checkMpdDir()));
+    }
+    mpdAccessibilityTimer->start(500);
+}
+#endif
 
 void MainWindow::updatePlayQueueStats(int songs, quint32 time)
 {

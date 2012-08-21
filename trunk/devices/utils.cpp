@@ -194,7 +194,7 @@ void Utils::cleanDir(const QString &dir, const QString &base, const QString &cov
 }
 
 #ifndef Q_OS_WIN
-gid_t Utils::getAudioGroupId()
+gid_t Utils::getGroupId()
 {
     static bool init=false;
     static gid_t gid=0;
@@ -211,7 +211,7 @@ gid_t Utils::getAudioGroupId()
         return gid;
     }
 
-    struct group *audioGroup=getgrnam("audio");
+    struct group *audioGroup=getgrnam("users");
 
     if (audioGroup) {
         for (int i=0; audioGroup->gr_mem[i]; ++i) {
@@ -226,14 +226,14 @@ gid_t Utils::getAudioGroupId()
 
 /*
  * Set file permissions.
- * If user is a memeber of "audio" group, then set file as owned by and writeable by "audio" group.
+ * If user is a memeber of "users" group, then set file as owned by and writeable by "users" group.
  */
 void Utils::setFilePerms(const QString &file)
 {
     //
     // Clear any umask before setting file perms
     mode_t oldMask(umask(0000));
-    gid_t gid=getAudioGroupId();
+    gid_t gid=getGroupId();
     QByteArray fn=QFile::encodeName(file);
     ::chmod(fn.constData(), 0==gid ? 0644 : 0664);
     if (0!=gid) {
@@ -262,7 +262,7 @@ bool Utils::createDir(const QString &dir, const QString &base)
     //
     // Clear any umask before dir is created
     mode_t oldMask(umask(0000));
-    gid_t gid=base.isEmpty() ? 0 : getAudioGroupId();
+    gid_t gid=base.isEmpty() ? 0 : getGroupId();
     #endif
     #ifdef ENABLE_KDE_SUPPORT
     bool status(KStandardDirs::makeDir(dir, 0==gid ? 0755 : 0775));

@@ -71,13 +71,13 @@ int Application::newInstance() {
             w->showNormal();
         }
     } else {
-        if (0==Utils::getAudioGroupId() && KMessageBox::Cancel==KMessageBox::warningContinueCancel(0,
-                i18n("You are not currently a member of the \"audio\" group. "
+        if (0==Utils::getGroupId() && KMessageBox::Cancel==KMessageBox::warningContinueCancel(0,
+                i18n("You are not currently a member of the \"users\" group. "
                         "Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you "
                         "(or your administrator) add yourself to this group.\n\n"
                         "Note, that if you do add yourself you will need to logout and back in for this to take effect.\n\n"
                         "Select \"Continue\" to start Cantata as is."),
-                i18n("Audio Group"), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "audioGroupWarning")) {
+                QString(), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "groupWarning")) {
             QApplication::exit(0);
         }
         w=new MainWindow();

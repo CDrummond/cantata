@@ -20,7 +20,7 @@ msgstr ""
 
 #: application.cpp:67
 msgid ""
-"You are not currently a member of the \"audio\" group. Cantata will function "
+"You are not currently a member of the \"users\" group. Cantata will function "
 "better (saving of album covers, lyrics, etc. with the correct permissions) "
 "if you (or your administrator) add yourself to this group.\n"
 "\n"
@@ -28,10 +28,6 @@ msgid ""
 "this to take effect.\n"
 "\n"
 "Select \"Continue\" to start Cantata as is."
-msgstr ""
-
-#: application.cpp:72
-msgid "Audio Group"
 msgstr ""
 
 #: devices/actiondialog.cpp:118 devices/mtpdevice.cpp:807

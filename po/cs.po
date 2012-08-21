@@ -21,7 +21,7 @@ msgstr ""
 
 #: application.cpp:67
 msgid ""
-"You are not currently a member of the \"audio\" group. Cantata will function "
+"You are not currently a member of the \"users\" group. Cantata will function "
 "better (saving of album covers, lyrics, etc. with the correct permissions) "
 "if you (or your administrator) add yourself to this group.\n"
 "\n"
@@ -30,7 +30,7 @@ msgid ""
 "\n"
 "Select \"Continue\" to start Cantata as is."
 msgstr ""
-"Nyní nejste členem skupiny zvuk (audio). Cantata bude pracovat lépe "
+"Nyní nejste členem skupiny zvuk (users). Cantata bude pracovat lépe "
 "(ukládání obalů alb, textů písní atd. se správnými oprávněními), pokud vy "
 "(nebo váš správce systému) přidáte sebe sama do této skupiny.\n"
 "\n"
@@ -38,10 +38,6 @@ msgstr ""
 "přihlásit, aby se tato změna projevila.\n"
 "\n"
 "Vyberte \"Pokračovat\" pro spuštění Cantaty, jak je."
-
-#: application.cpp:72
-msgid "Audio Group"
-msgstr "Skupina zvuk"
 
 #: devices/actiondialog.cpp:118 devices/mtpdevice.cpp:807
 #: devices/remotefsdevice.cpp:360 devices/umsdevice.cpp:90

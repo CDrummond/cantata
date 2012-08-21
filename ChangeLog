@@ -40,6 +40,8 @@
     where each track may have a different year.
 26. To be consistent, use the year of the lowest track number to be an album's
     year.
+27. Use "users" group and not "audio" when setting the group ID of covers,
+    lyrics, and audio files.
 
 0.8.2
 -----

@@ -42,6 +42,7 @@
     year.
 27. Use "users" group and not "audio" when setting the group ID of covers,
     lyrics, and audio files.
+28. If we have no song tag details, show filename in playqueue.
 
 0.8.2
 -----

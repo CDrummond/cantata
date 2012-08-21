@@ -200,9 +200,12 @@ public:
         QString track;
         QString duration=song.time>0 ? Song::formattedTime(song.time) : QString();
         bool stream=!isCollection && (song.isStream() && !song.isCantataStream());
-        QString trackTitle=!song.albumartist.isEmpty() && song.albumartist != song.artist
-                    ? song.title + " - " + song.artist
-                    : song.title;
+        bool isEmpty=song.title.isEmpty() & song.artist.isEmpty() && !song.file.isEmpty();
+        QString trackTitle=isEmpty
+                        ? song.file
+                        : !song.albumartist.isEmpty() && song.albumartist != song.artist
+                            ? song.title + " - " + song.artist
+                            : song.title;
         QFont f(QApplication::font());
         if (stream) {
             f.setItalic(true);
@@ -222,6 +225,9 @@ public:
                 } else {
                     track=trackTitle;
                 }
+            } else if (isEmpty) {
+                title=i18n("Unknown");
+                track=trackTitle;
             } else {
                 QString album=song.album;
                 quint16 year=Song::albumYear(song);
@@ -229,14 +235,12 @@ public:
                 if (year>0) {
                     album+=QString(" (%1)").arg(year);
                 }
-                if (title.isEmpty()) {
-                    #ifdef ENABLE_KDE_SUPPORT
-                    title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
-                    #else
-                    title=tr("%1 - %2").arg(song.albumArtist()).arg(album);
-                    #endif
-                    track=formatNumber(song.track)+QChar(' ')+trackTitle;
-                }
+                #ifdef ENABLE_KDE_SUPPORT
+                title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
+                #else
+                title=tr("%1 - %2").arg(song.albumArtist()).arg(album);
+                #endif
+                track=formatNumber(song.track)+QChar(' ')+trackTitle;
             }
         } else {
             if (stream) {

@@ -2279,13 +2279,18 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     positionSlider->setEnabled(-1!=current.id && !currentIsStream());
     coverWidget->update(current);
+    bool isEmpty=song.title.isEmpty() & song.artist.isEmpty() && !song.file.isEmpty();
 
-    if (current.name.isEmpty()) {
+    if (isEmpty) {
+        trackLabel->setText(current.file);
+    } else if (current.name.isEmpty()) {
         trackLabel->setText(current.title);
     } else {
         trackLabel->setText(QString("%1 (%2)").arg(current.title).arg(current.name));
     }
-    if (current.album.isEmpty()) {
+    if (isEmpty) {
+        artistLabel->setText(i18n("Unknown"));
+    } else if (current.album.isEmpty()) {
         artistLabel->setText(current.artist);
     } else {
         QString album=current.album;

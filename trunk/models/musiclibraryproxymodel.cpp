@@ -116,40 +116,11 @@ bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex
         return left.row()<0;
     }
     if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Song) {
-        const MusicLibraryItemSong *leftItem = static_cast<MusicLibraryItemSong *>(left.internalPointer());
-        const MusicLibraryItemSong *rightItem = static_cast<MusicLibraryItemSong *>(right.internalPointer());
-        bool isSingleTracks=static_cast<MusicLibraryItemAlbum *>(leftItem->parentItem())->isSingleTracks();
-
-        if (isSingleTracks) {
-            int compare=compareStrings(leftItem->song().artistSong(), rightItem->song().artistSong());
-            if (0!=compare) {
-                return compare<0;
-            }
-        }
-        if (leftItem->song().type != rightItem->song().type) {
-            return leftItem->song().type < rightItem->song().type;
-        }
-        if (leftItem->disc() != rightItem->disc()) {
-            return leftItem->disc() < rightItem->disc();
-        }
-        return leftItem->track() < rightItem->track();
+        return static_cast<MusicLibraryItemSong *>(left.internalPointer())->song()<static_cast<MusicLibraryItemSong *>(right.internalPointer())->song();
     } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Album) {
-        const MusicLibraryItemAlbum *leftItem = static_cast<MusicLibraryItemAlbum *>(left.internalPointer());
-        const MusicLibraryItemAlbum *rightItem = static_cast<MusicLibraryItemAlbum *>(right.internalPointer());
-
-        if (leftItem->isSingleTracks() != rightItem->isSingleTracks()) {
-            return leftItem->isSingleTracks() > rightItem->isSingleTracks();
-        }
-        if (MusicLibraryItemAlbum::showDate() && (leftItem->year() != rightItem->year())) {
-            return leftItem->year() < rightItem->year();
-        }
+        return MusicLibraryItemAlbum::lessThan(static_cast<MusicLibraryItem *>(left.internalPointer()), static_cast<MusicLibraryItem *>(right.internalPointer()));
     } else if (static_cast<MusicLibraryItem *>(left.internalPointer())->itemType() == MusicLibraryItem::Type_Artist) {
-        const MusicLibraryItemArtist *leftItem = static_cast<MusicLibraryItemArtist *>(left.internalPointer());
-        const MusicLibraryItemArtist *rightItem = static_cast<MusicLibraryItemArtist *>(right.internalPointer());
-        if (leftItem->isVarious() != rightItem->isVarious()) {
-            return leftItem->isVarious() > rightItem->isVarious();
-        }
-        return compareStrings(leftItem->baseArtist(), rightItem->baseArtist())<0;
+        return MusicLibraryItemArtist::lessThan(static_cast<MusicLibraryItem *>(left.internalPointer()), static_cast<MusicLibraryItem *>(right.internalPointer()));
     }
 
     return QSortFilterProxyModel::lessThan(left, right);

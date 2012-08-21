@@ -312,7 +312,7 @@ void Covers::stop()
 
 static inline QString cacheKey(const Song &song, int size)
 {
-    return song.albumArtist()+QChar(':')+song.album+QChar(':')+QString::number(song.year)+QChar(':')+QString::number(size);
+    return song.albumArtist()+QChar(':')+song.album+QChar(':')+QChar(':')+QString::number(size);
 }
 
 static QSet<int> cacheSizes;
@@ -758,7 +758,7 @@ QHash<QNetworkReply *, Covers::Job>::Iterator Covers::findJob(const Song &song)
     QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
 
     for (; it!=end; ++it) {
-        if ((*it).song.year==song.year && (*it).song.albumArtist()==song.albumArtist() && (*it).song.album==song.album) {
+        if ((*it).song.albumArtist()==song.albumArtist() && (*it).song.album==song.album) {
             return it;
         }
     }

@@ -224,9 +224,10 @@ public:
                 }
             } else {
                 QString album=song.album;
+                quint16 year=Song::albumYear(song);
 
-                if (song.year>0) {
-                    album+=QString(" (%1)").arg(song.year);
+                if (year>0) {
+                    album+=QString(" (%1)").arg(year);
                 }
                 if (title.isEmpty()) {
                     #ifdef ENABLE_KDE_SUPPORT
@@ -648,7 +649,7 @@ void GroupedView::coverRetrieved(const Song &s)
 
                 if (key!=lastKey && !isRowHidden(i, QModelIndex())) {
                     Song song=child.data(GroupedView::Role_Song).value<Song>();
-                    if (song.year==s.year && song.albumArtist()==s.albumArtist() && song.album==s.album) {
+                    if (song.albumArtist()==s.albumArtist() && song.album==s.album) {
                         dataChanged(child, child);
                     }
                 }
@@ -659,7 +660,7 @@ void GroupedView::coverRetrieved(const Song &s)
 
             if (key!=lastKey && !isRowHidden(i, QModelIndex())) {
                 Song song=index.data(GroupedView::Role_Song).value<Song>();
-                if (song.year==s.year && song.albumArtist()==s.albumArtist() && song.album==s.album) {
+                if (song.albumArtist()==s.albumArtist() && song.album==s.album) {
                     dataChanged(index, index);
                 }
             }

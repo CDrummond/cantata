@@ -59,13 +59,14 @@ public:
     static void setShowDate(bool sd);
     static bool showDate();
 
+    static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
+
     MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItemAlbum();
 
     bool setCover(const QImage &img) const;
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }
-    QStringList sortedTracks() const;
     quint32 year() const { return m_year; }
     quint32 totalTime();
     void addTracks(MusicLibraryItemAlbum *other);
@@ -87,7 +88,12 @@ public:
     const MusicLibraryItemSong * getCueFile() const;
 
 private:
+    void setYear(const MusicLibraryItemSong *song);
+
+private:
     quint32 m_year;
+    quint16 m_yearOfTrack;
+    quint16 m_yearOfDisc;
     quint32 m_totalTime;
     mutable bool m_coverIsDefault;
     mutable QPixmap *m_cover;

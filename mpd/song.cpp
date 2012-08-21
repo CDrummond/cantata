@@ -35,6 +35,22 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
+// When displaying albums, we use the 1st track's year as the year of the album.
+// The map below stores the mapping from artist+album to year.
+// This way the grouped view can find this quickly...
+static QMap<QString, quint16> albumYears;
+
+void Song::storeAlbumYear(const Song &s)
+{
+    albumYears.insert(s.albumKey(), s.year);
+}
+
+int Song::albumYear(const Song &s)
+{
+    QMap<QString, quint16>::ConstIterator it=albumYears.find(s.albumKey());
+    return it==albumYears.end() ? s.year : it.value();
+}
+
 const quint16 Song::constNullKey(0xFFFF);
 
 Song::Song()
@@ -85,21 +101,21 @@ bool Song::operator<(const Song &o) const
 
 int Song::compareTo(const Song &o) const
 {
-    bool sortDateBeforeAlbum=MusicLibraryItemAlbum::showDate();
+    if (SingleTracks==type) {
+        int compare=artistSong().localeAwareCompare(artistSong());
+        if (0!=compare) {
+            return compare<0;
+        }
+    }
+
     int compare=albumArtist().localeAwareCompare(o.albumArtist());
 
     if (0!=compare) {
         return compare;
     }
-    if (sortDateBeforeAlbum && year!=o.year) {
-        return year<o.year ? -1 : 1;
-    }
     compare=album.localeAwareCompare(o.album);
     if (0!=compare) {
         return compare;
-    }
-    if (!sortDateBeforeAlbum && year!=o.year) {
-        return year<o.year ? -1 : 1;
     }
     if (disc!=o.disc) {
         return disc<o.disc ? -1 : 1;
@@ -109,6 +125,9 @@ int Song::compareTo(const Song &o) const
     }
     if (track!=o.track) {
         return track<o.track ? -1 : 1;
+    }
+    if (year!=o.year) {
+        return year<o.year ? -1 : 1;
     }
     if (time!=o.time) {
         return time<o.time ? -1 : 1;
@@ -151,23 +170,24 @@ void Song::fillEmptyFields()
     }
 }
 
+#include <QtCore/QDebug>
 void Song::setKey()
 {
     static quint16 currentKey=0;
-    static QMap<AlbumKey, quint16> keys;
+    static QMap<QString, quint16> keys;
 
     if (isStream() && !isCantataStream()) {
         key=0;
         return;
     }
 
-    AlbumKey albumKey(year, albumArtist()+QChar(':')+album);
-    QMap<AlbumKey, quint16>::ConstIterator it=keys.find(albumKey);
+    QString songKey(albumKey());
+    QMap<QString, quint16>::ConstIterator it=keys.find(songKey);
     if (it!=keys.end()) {
         key=it.value();
     } else {
         currentKey++; // Key 0 is for streams, so we need to increment before setting...
-        keys.insert(albumKey, currentKey);
+        keys.insert(songKey, currentKey);
         key=currentKey;
     }
 }

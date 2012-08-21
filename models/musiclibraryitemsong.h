@@ -51,10 +51,10 @@ public:
     void setFile(const QString &f) {
         m_song.file=f;
     }
-    quint32 track() const {
+    quint16 track() const {
         return m_song.track;
     }
-    quint32 disc() const {
+    quint16 disc() const {
         return m_song.disc;
     }
     quint32 time() const {

@@ -211,8 +211,10 @@ void Device::addSongToList(const Song &s)
         albumItem = artistItem->createAlbum(s);
         model->endInsertRows();
     }
+    quint32 year=albumItem->year();
     foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-        if (songItem->data()==s.title) {
+        const MusicLibraryItemSong *song=static_cast<const MusicLibraryItemSong *>(songItem);
+        if (song->track()==s.track && song->disc()==s.disc && song->data()==s.title) {
             return;
         }
     }
@@ -221,6 +223,10 @@ void Device::addSongToList(const Song &s)
     MusicLibraryItemSong *songItem = new MusicLibraryItemSong(s, albumItem);
     albumItem->append(songItem);
     model->endInsertRows();
+    if (year!=albumItem->year()) {
+        QModelIndex idx=model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem);
+        emit model->dataChanged(idx, idx);
+    }
 }
 
 void Device::removeSongFromList(const Song &s)
@@ -266,8 +272,13 @@ void Device::removeSongFromList(const Song &s)
 
     // Just remove particular song
     model->beginRemoveRows(model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), songRow, songRow);
+    quint32 year=albumItem->year();
     albumItem->remove(songRow);
     model->endRemoveRows();
+    if (year!=albumItem->year()) {
+        QModelIndex idx=model->createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem);
+        emit model->dataChanged(idx, idx);
+    }
 }
 
 void Device::setStatusMessage(const QString &msg)

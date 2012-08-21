@@ -325,6 +325,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 if (Song::Playlist==track->song().type) {
                     writer.writeAttribute("playlist", "true");
                 }
+                if (track->song().year != album->year()) {
+                    writer.writeAttribute("year", QString::number(track->song().year));
+                }
             }
             writer.writeEndElement();
         }
@@ -434,6 +437,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     song.disc=str.isEmpty() ? 0 : str.toUInt();
                     str=attributes.value("time").toString();
                     song.time=str.isEmpty() ? 0 : str.toUInt();
+                    str=attributes.value("year").toString();
+                    if (!str.isEmpty()) {
+                        song.year=str.toUInt();
+                    }
     //                 str=attributes.value("id").toString();
     //                 song.id=str.isEmpty() ? 0 : str.toUInt();
 

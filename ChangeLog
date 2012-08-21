@@ -36,6 +36,10 @@
 23. Fix handling of filename's with quotes.
 24. Fix track order when adding newly added album, via folders page, to
     playqueue.
+25. Dont split albums based upon year - this messes up compilation albums,
+    where each track may have a different year.
+26. To be consistent, use the year of the lowest track number to be an album's
+    year.
 
 0.8.2
 -----

@@ -414,8 +414,10 @@ void MusicLibraryModel::addSongToList(const Song &s)
         albumItem = artistItem->createAlbum(s);
         endInsertRows();
     }
+    quint32 year=albumItem->year();
     foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-        if (songItem->data()==s.title) {
+        const MusicLibraryItemSong *song=static_cast<const MusicLibraryItemSong *>(songItem);
+        if (song->track()==s.track && song->disc()==s.disc && song->data()==s.title) {
             return;
         }
     }
@@ -425,6 +427,10 @@ void MusicLibraryModel::addSongToList(const Song &s)
     albumItem->append(songItem);
     rootItem->addGenre(s.genre);
     endInsertRows();
+    if (year!=albumItem->year()) {
+        QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
+        emit dataChanged(idx, idx);
+    }
 }
 
 void MusicLibraryModel::removeSongFromList(const Song &s)
@@ -471,8 +477,13 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
 
     // Just remove particular song
     beginRemoveRows(createIndex(artistItem->childItems().indexOf(albumItem), 0, albumItem), songRow, songRow);
+    quint32 year=albumItem->year();
     albumItem->remove(songRow);
     endRemoveRows();
+    if (year!=albumItem->year()) {
+        QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
+        emit dataChanged(idx, idx);
+    }
 }
 
 void MusicLibraryModel::updateSongFile(const Song &from, const Song &to)
@@ -677,19 +688,23 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowP
 
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist: {
-            QList<Song> artistSongs;
-            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
-                const MusicLibraryItemSong *cue=allowPlaylists ? static_cast<const MusicLibraryItemAlbum *>(album)->getCueFile() : 0;
+            // First, sort all albums as they would appear in UI...
+            QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
+            qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
+
+            foreach (MusicLibraryItem *i, artistAlbums) {
+                QList<Song> albumSongs;
+                const MusicLibraryItemSong *cue=allowPlaylists ? static_cast<const MusicLibraryItemAlbum *>(i)->getCueFile() : 0;
                 if (cue) {
-                    addSong(cue, artistSongs, songs, true);
+                    addSong(cue, albumSongs, songs, true);
                 } else {
-                    foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                        addSong(song, artistSongs, songs, false);
+                    foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(i)->childItems()) {
+                        addSong(song, albumSongs, songs, false);
                     }
                 }
+                qSort(albumSongs);
+                songs << albumSongs;
             }
-            qSort(artistSongs);
-            songs << artistSongs;
             break;
         }
         case MusicLibraryItem::Type_Album: {

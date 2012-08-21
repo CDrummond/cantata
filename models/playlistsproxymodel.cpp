@@ -76,11 +76,6 @@ bool PlaylistsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     return false;
 }
 
-bool PlaylistsProxyModel::compareNames(const QString &l, const QString &r)
-{
-    return compareStrings(l, r)<0;
-}
-
 bool PlaylistsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
     PlaylistsModel::Item *l=static_cast<PlaylistsModel::Item *>(left.internalPointer());

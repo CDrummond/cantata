@@ -132,9 +132,26 @@ bool MusicLibraryItemAlbum::showDate()
     return useDate;
 }
 
+bool MusicLibraryItemAlbum::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
+{
+    const MusicLibraryItemAlbum *aa=static_cast<const MusicLibraryItemAlbum *>(a);
+    const MusicLibraryItemAlbum *ab=static_cast<const MusicLibraryItemAlbum *>(b);
+
+    if (aa->isSingleTracks() != ab->isSingleTracks()) {
+        return aa->isSingleTracks() > ab->isSingleTracks();
+    }
+
+    if (!MusicLibraryItemAlbum::showDate() || aa->year()==ab->year()) {
+        return aa->data().localeAwareCompare(ab->data())<0;
+    }
+    return aa->year()<ab->year();
+}
+
 MusicLibraryItemAlbum::MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItemContainer *parent)
     : MusicLibraryItemContainer(data, parent)
     , m_year(year)
+    , m_yearOfTrack(0xFFFF)
+    , m_yearOfDisc(0xFFFF)
     , m_coverIsDefault(false)
     , m_cover(0)
     , m_type(Song::Standard)
@@ -203,19 +220,6 @@ const QPixmap & MusicLibraryItemAlbum::cover()
     return *m_cover;
 }
 
-QStringList MusicLibraryItemAlbum::sortedTracks() const
-{
-    QMap<int, QString> tracks;
-    quint32 trackWithoutNumberIndex=0xFFFF; // *Very* unlikely to have tracks numbered greater than 65535!!!
-
-    for (int i = 0; i < childCount(); i++) {
-        MusicLibraryItemSong *trackItem = static_cast<MusicLibraryItemSong*>(childItem(i));
-        tracks.insert(0==trackItem->track() || trackItem->track()>0xFFFF ? trackWithoutNumberIndex++ : trackItem->track(), trackItem->file());
-    }
-
-    return tracks.values();
-}
-
 quint32 MusicLibraryItemAlbum::totalTime()
 {
     if (0==m_totalTime) {
@@ -255,19 +259,29 @@ void MusicLibraryItemAlbum::setIsMultipleArtists()
 
 void MusicLibraryItemAlbum::append(MusicLibraryItem *i)
 {
+    MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
+    setYear(song);
     MusicLibraryItemContainer::append(i);
     if (Song::SingleTracks==m_type) {
-        static_cast<MusicLibraryItemSong*>(i)->song().type=Song::SingleTracks;
-        m_singleTrackFiles.insert(static_cast<MusicLibraryItemSong*>(i)->song().file);
+        song->song().type=Song::SingleTracks;
+        m_singleTrackFiles.insert(song->song().file);
     } else if (Song::MultipleArtists==m_type) {
-        static_cast<MusicLibraryItemSong*>(i)->song().type=Song::MultipleArtists;
+        song->song().type=Song::MultipleArtists;
     }
     m_totalTime=0;
 }
 
 void MusicLibraryItemAlbum::remove(int row)
 {
-    delete m_childItems.takeAt(row);
+    MusicLibraryItem *i=m_childItems.takeAt(row);
+    MusicLibraryItemSong *song=static_cast<MusicLibraryItemSong *>(i);
+    if (m_yearOfDisc==song->disc() && m_yearOfTrack==song->track()) {
+        m_yearOfDisc=m_yearOfTrack=0xFFFF;
+        foreach (MusicLibraryItem *itm, m_childItems) {
+            setYear(static_cast<MusicLibraryItemSong *>(itm));
+        }
+    }
+    delete i;
     m_totalTime=0;
 }
 
@@ -306,4 +320,15 @@ const MusicLibraryItemSong * MusicLibraryItemAlbum::getCueFile() const
     }
 
     return 0;
+}
+
+void MusicLibraryItemAlbum::setYear(const MusicLibraryItemSong *song)
+{
+    if (m_childItems.isEmpty() || (m_yearOfDisc>song->disc() || (m_yearOfDisc==song->disc() && m_yearOfTrack>song->track()))) {
+        m_year=song->song().year;
+        // Store which track/disc we obtained the year from!
+        m_yearOfTrack=song->track();
+        m_yearOfDisc=song->disc();
+        Song::storeAlbumYear(song->song());
+    }
 }

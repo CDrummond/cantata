@@ -25,9 +25,6 @@
 #define PROXYMODEL_H
 
 #include <QtGui/QSortFilterProxyModel>
-// #ifdef ENABLE_KDE_SUPPORT
-// #include <KDE/KStringHandler>
-// #endif
 #include <QtCore/QStringList>
 #include "song.h"
 
@@ -48,14 +45,6 @@ public:
     bool isChildOfRoot(const QModelIndex &idx) const;
     bool isEmpty() const {
         return filterGenre.isEmpty() && filterRegExp().isEmpty();
-    }
-
-    static int compareStrings(const QString &a, const QString &b) {
-//         #ifdef ENABLE_KDE_SUPPORT
-//         return KStringHandler::naturalCompare(a, b, Qt::CaseInsensitive) < 0;
-//         #else
-        return a.localeAwareCompare(b);
-//         #endif
     }
 
     bool enabled() const {

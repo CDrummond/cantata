@@ -107,7 +107,7 @@ void CoverWidget::init()
 
 void CoverWidget::coverRetreived(const Song &s, const QImage &img, const QString &file)
 {
-    if (s.year==current.year && s.albumArtist()==current.albumArtist() && s.album==current.album) {
+    if (s.albumArtist()==current.albumArtist() && s.album==current.album) {
         valid=!img.isNull();
         if (valid) {
             update(img);

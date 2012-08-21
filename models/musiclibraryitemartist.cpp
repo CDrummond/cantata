@@ -39,6 +39,17 @@
 #include "utils.h"
 #endif
 
+bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
+{
+    const MusicLibraryItemArtist *aa=static_cast<const MusicLibraryItemArtist *>(a);
+    const MusicLibraryItemArtist *ab=static_cast<const MusicLibraryItemArtist *>(b);
+
+    if (aa->isVarious() != ab->isVarious()) {
+        return aa->isVarious() > ab->isVarious();
+    }
+    return aa->baseArtist().localeAwareCompare(ab->baseArtist())<0;
+}
+
 static QPixmap *theDefaultIcon=0;
 
 void MusicLibraryItemArtist::clearDefaultCover()
@@ -47,14 +58,6 @@ void MusicLibraryItemArtist::clearDefaultCover()
         delete theDefaultIcon;
         theDefaultIcon=0;
     }
-}
-
-static QString songAlbum(const Song &s)
-{
-    if (Song::Standard==s.type) {
-        return s.album;
-    }
-    return i18n("Single Tracks");
 }
 
 MusicLibraryItemArtist::MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent)
@@ -137,7 +140,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create)
 {
-    QHash<Song::AlbumKey, int>::ConstIterator it=m_indexes.find(Song::AlbumKey(s.year, songAlbum(s)));
+    QHash<QString, int>::ConstIterator it=m_indexes.find(s.album);
 
     if (m_indexes.end()==it) {
         return create ? createAlbum(s) : 0;
@@ -147,9 +150,8 @@ MusicLibraryItemAlbum * MusicLibraryItemArtist::album(const Song &s, bool create
 
 MusicLibraryItemAlbum * MusicLibraryItemArtist::createAlbum(const Song &s)
 {
-    Song::AlbumKey key(s.year, songAlbum(s));
-    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(key.name, s.year, this);
-    m_indexes.insert(key, m_childItems.count());
+    MusicLibraryItemAlbum *item=new MusicLibraryItemAlbum(s.album, s.year, this);
+    m_indexes.insert(s.album, m_childItems.count());
     m_childItems.append(item);
     return item;
 }
@@ -185,7 +187,7 @@ bool MusicLibraryItemArtist::isFromSingleTracks(const Song &s) const
         return true;
     }
 
-    QHash<Song::AlbumKey, int>::ConstIterator it=m_indexes.find(Song::AlbumKey(0, i18n("Single Tracks")));
+    QHash<QString, int>::ConstIterator it=m_indexes.find(i18n("Single Tracks"));
 
     if (m_indexes.end()!=it) {
         return static_cast<MusicLibraryItemAlbum *>(m_childItems.at(*it))->isSingleTrackFile(s);
@@ -201,15 +203,15 @@ void MusicLibraryItemArtist::remove(MusicLibraryItemAlbum *album)
         return;
     }
 
-    QHash<Song::AlbumKey, int>::Iterator it=m_indexes.begin();
-    QHash<Song::AlbumKey, int>::Iterator end=m_indexes.end();
+    QHash<QString, int>::Iterator it=m_indexes.begin();
+    QHash<QString, int>::Iterator end=m_indexes.end();
 
     for (; it!=end; ++it) {
         if ((*it)>index) {
             (*it)--;
         }
     }
-    m_indexes.remove(Song::AlbumKey(album->year(), album->data()));
+    m_indexes.remove(album->data());
     delete m_childItems.takeAt(index);
 }
 
@@ -232,6 +234,6 @@ void MusicLibraryItemArtist::updateIndexes()
     QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
     QList<MusicLibraryItem *>::iterator end=m_childItems.end();
     for (int i=0; it!=end; ++it, ++i) {
-        m_indexes.insert(Song::AlbumKey(static_cast<MusicLibraryItemAlbum *>(*it)->year(), (*it)->data()), i);
+        m_indexes.insert((*it)->data(), i);
     }
 }

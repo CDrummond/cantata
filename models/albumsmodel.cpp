@@ -470,7 +470,7 @@ void AlbumsModel::setCover(const Song &song, const QImage &img, const QString &f
     QList<AlbumItem *>::Iterator end=items.end();
 
     for (int row=0; it!=end; ++it, ++row) {
-        if ((*it)->year==song.year && (*it)->artist==song.albumArtist() && (*it)->album==song.album) {
+        if ((*it)->artist==song.albumArtist() && (*it)->album==song.album) {
             (*it)->cover=new QPixmap(QPixmap::fromImage(img.scaled(QSize(iconSize(), iconSize()), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
             QModelIndex idx=index(row, 0, QModelIndex());
             emit dataChanged(idx, idx);
@@ -546,14 +546,14 @@ AlbumsModel::AlbumItem::~AlbumItem()
 bool AlbumsModel::AlbumItem::operator<(const AlbumItem &o) const
 {
     if (AlbumsModel::Sort_ArtistAlbumYear==sortAlbums) {
-        int compare=ProxyModel::compareStrings(artist, o.artist);
+        int compare=artist.localeAwareCompare(o.artist);
         if (0==compare) {
-            return year<o.year || (year==o.year && ProxyModel::compareStrings(album, o.album)<0);
+            return year<o.year || (year==o.year && album.localeAwareCompare(o.album)<0);
         } else {
             return compare<0;
         }
     } else {
-        return ProxyModel::compareStrings(name, o.name)<0;
+        return name.localeAwareCompare(o.name)<0;
     }
 }
 

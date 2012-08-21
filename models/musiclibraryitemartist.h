@@ -31,14 +31,16 @@
 #include <QtCore/QVariant>
 #include <QtCore/QHash>
 #include "musiclibraryitem.h"
-#include "song.h"
 
 class MusicLibraryItemRoot;
 class MusicLibraryItemAlbum;
+class Song;
 
 class MusicLibraryItemArtist : public MusicLibraryItemContainer
 {
 public:
+    static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
+
     MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent = 0);
     virtual ~MusicLibraryItemArtist() {
     }
@@ -69,7 +71,7 @@ private:
     mutable QPixmap *m_cover;
     bool m_various;
     QString m_nonTheArtist;
-    QHash<Song::AlbumKey, int> m_indexes;
+    QHash<QString, int> m_indexes;
 };
 
 #endif

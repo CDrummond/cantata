@@ -91,21 +91,7 @@ bool AlbumsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &righ
     } else if(!l->isAlbum() && !r->isAlbum()) {
         const AlbumsModel::SongItem * const leftItem = static_cast<AlbumsModel::SongItem *>(l);
         const AlbumsModel::SongItem * const rightItem = static_cast<AlbumsModel::SongItem *>(r);
-        bool singleTracks=leftItem->parent->isSingleTracks();
-
-        if (singleTracks) {
-            int compare=compareStrings(leftItem->artistSong(), rightItem->artistSong());
-            if (0!=compare) {
-                return compare<0;
-            }
-        }
-         if (leftItem->type != rightItem->type) {
-            return leftItem->type < rightItem->type;
-        }
-        if (leftItem->disc != rightItem->disc) {
-            return leftItem->disc < rightItem->disc;
-        }
-        return leftItem->track < rightItem->track;
+        return *leftItem < *rightItem;
     }
 
     return false;

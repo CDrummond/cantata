@@ -36,21 +36,6 @@ struct Song
 {
     static const quint16 constNullKey;
 
-    struct AlbumKey {
-        AlbumKey(quint16 y, const QString &n)
-            : year(y)
-            , name(n) {
-        }
-        bool operator==(const AlbumKey &o) const {
-            return year==o.year && name==o.name;
-        }
-        bool operator<(const AlbumKey &o) const {
-            return year<o.year || (year==o.year && name<o.name);
-        }
-        quint16 year;
-        QString name;
-    };
-
     enum Type {
         Standard        = 0,
         MultipleArtists = 1,
@@ -70,13 +55,16 @@ struct Song
     quint8 disc;
     mutable quint8 priority;
     quint16 time;
-    qint16 track;
+    quint16 track;
     quint16 year : 14;
     mutable Type type : 2;
     mutable qint32 size;
 
     // Only used in PlayQueue/PlayLists...
     quint16 key;
+
+    static void storeAlbumYear(const Song &s);
+    static int albumYear(const Song &s);
 
     Song();
     Song(const Song &o) { *this=o; }
@@ -106,6 +94,8 @@ struct Song
     bool capitalise();
     bool isStream() const { return /*file.isEmpty() || */file.contains("://"); }
     bool isCantataStream() const;
+
+    QString albumKey() const { return albumArtist()+QChar(':')+album; }
 };
 
 Q_DECLARE_METATYPE(Song)
@@ -113,11 +103,6 @@ Q_DECLARE_METATYPE(Song)
 inline uint qHash(const Song &key)
 {
     return qHash(key.albumArtist()+key.album+key.title+key.file);
-}
-
-inline uint qHash(const Song::AlbumKey &key)
-{
-    return qHash(key.year)+qHash(key.name);
 }
 
 #endif

@@ -45,7 +45,7 @@
 28. If we have no song tag details, show filename in playqueue.
 29. In KDE builds, check if MPD is readable each time we get a device added
     or removed signal from Solid if using KDE4.9. If we are using an older KDE,
-    then watch for changed to /proc/mounts
+    or using Qt-only (on Linux) then watch for changes to /proc/mounts
 
 0.8.2
 -----

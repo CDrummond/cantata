@@ -31,6 +31,8 @@
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QThread>
 #include <QtCore/QDateTime>
+#include <QtCore/QSocketNotifier>
+#include <QtCore/QFile>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
@@ -38,6 +40,9 @@
 #include <QtGui/QPainter>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
+#if KDE_IS_VERSION(4, 9, 0)
+#define USE_SOLID_FOR_MTAB_CHANGE_MONITOR
+#endif
 #include "mediadevicecache.h"
 #include <KDE/KApplication>
 #include <KDE/KAction>
@@ -1250,9 +1255,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
 
-    #ifdef ENABLE_KDE_SUPPORT
+    #if defined USE_SOLID_FOR_MTAB_CHANGE_MONITOR
     connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(checkMpdAccessibility()));
     connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(checkMpdAccessibility()));
+    #elif defined Q_OS_LINUX
+    QFile *mtab=new QFile("/proc/mounts", this);
+    if (mtab && mtab->open(QIODevice::ReadOnly)) {
+        QSocketNotifier *notifier = new QSocketNotifier(mtab->handle(), QSocketNotifier::Exception, mtab);
+        connect(notifier,  SIGNAL(activated(int)), this, SLOT(checkMpdAccessibility()) );
+    } else if (mtab) {
+        mtab->deleteLater();
+    }
     #endif
 
     #ifdef CANTATA_ANDROID

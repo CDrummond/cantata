@@ -228,7 +228,11 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
         } else if (element == QLatin1String("Disc")) {
             song.disc = value.split("/").at(0).toUInt();
         } else if (element == QLatin1String("Date")) {
-            song.year = value.toUInt();
+            if (value.length()>4) {
+                song.year = value.left(4).toUInt();
+            } else {
+                song.year = value.toUInt();
+            }
         } else if (element == QLatin1String("Genre")) {
             song.genre = value;
         }  else if (element == QLatin1String("Name")) {

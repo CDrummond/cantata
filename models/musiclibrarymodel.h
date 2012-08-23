@@ -64,6 +64,7 @@ public:
     QModelIndex findSongIndex(const Song &s) const;
     const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
+    bool updateSong(const Song &orig, const Song &edit);
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
     void updateSongFile(const Song &from, const Song &to);

@@ -27,10 +27,10 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include <QtCore/qglobal.h>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KXmlGuiWindow>
 #else
-#include <QtCore/qglobal.h>
 #include <QtGui/QMainWindow>
 #include <QtGui/QSystemTrayIcon>
 #endif
@@ -299,8 +299,8 @@ private Q_SLOTS:
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
     void removeItems();
-    #ifdef ENABLE_KDE_SUPPORT
     void checkMpdAccessibility();
+    #ifdef ENABLE_KDE_SUPPORT
     void trayItemScrollRequested(int delta, Qt::Orientation orientation);
     void notificationClosed();
     #elif !defined CANTATA_ANDROID
@@ -526,7 +526,7 @@ private:
     #endif
     QTimer *playQueueSearchTimer;
     bool usingProxy;
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifdef Q_OS_LINUX
     QTimer *mpdAccessibilityTimer;
     #endif
 

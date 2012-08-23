@@ -48,6 +48,9 @@ public:
     const QString & file() const {
         return m_song.file;
     }
+    void setSong(const Song &s) {
+        m_song=s;
+    }
     void setFile(const QString &f) {
         m_song.file=f;
     }

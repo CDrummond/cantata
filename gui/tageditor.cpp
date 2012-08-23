@@ -659,13 +659,17 @@ void TagEditor::applyUpdates()
         case Tags::Update_Modified:
             #ifdef ENABLE_DEVICES_SUPPORT
             if (!deviceUdi.isEmpty()) {
-                dev->removeSongFromList(orig);
-                dev->addSongToList(edit);
+                if (!dev->updateSong(orig, edit)) {
+                    dev->removeSongFromList(orig);
+                    dev->addSongToList(edit);
+                }
             } else
             #endif
             {
-                MusicLibraryModel::self()->removeSongFromList(orig);
-                MusicLibraryModel::self()->addSongToList(edit);
+                if (!MusicLibraryModel::self()->updateSong(orig, edit)) {
+                    MusicLibraryModel::self()->removeSongFromList(orig);
+                    MusicLibraryModel::self()->addSongToList(edit);
+                }
             }
             updated=true;
             break;
@@ -696,7 +700,7 @@ void TagEditor::applyUpdates()
         } else
         #endif
         {
-            MusicLibraryModel::self()->removeCache();
+//             MusicLibraryModel::self()->removeCache();
             emit update();
         }
     }

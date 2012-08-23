@@ -399,9 +399,34 @@ bool MusicLibraryModel::songExists(const Song &s) const
     return false;
 }
 
+bool MusicLibraryModel::updateSong(const Song &orig, const Song &edit)
+{
+    if (orig.albumArtist()==edit.albumArtist() && orig.album==edit.album) {
+        MusicLibraryItemArtist *artistItem = rootItem->artist(orig, false);
+        if (!artistItem) {
+            return false;
+        }
+        MusicLibraryItemAlbum *albumItem = artistItem->album(orig, false);
+        if (!albumItem) {
+            return false;
+        }
+        int songRow=0;
+        foreach (MusicLibraryItem *song, albumItem->childItems()) {
+            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
+                static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
+                QModelIndex idx=index(songRow, 0, index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex())));
+                emit dataChanged(idx, idx);
+                return true;
+            }
+            songRow++;
+        }
+    }
+    return false;
+}
+
 void MusicLibraryModel::addSongToList(const Song &s)
 {
-    databaseTime=QDateTime();
+//     databaseTime=QDateTime();
     MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
     if (!artistItem) {
         beginInsertRows(QModelIndex(), rootItem->childCount(), rootItem->childCount());
@@ -456,7 +481,7 @@ void MusicLibraryModel::removeSongFromList(const Song &s)
         return;
     }
 
-    databaseTime=QDateTime();
+//     databaseTime=QDateTime();
     if (1==artistItem->childCount() && 1==albumItem->childCount()) {
         // 1 album with 1 song - so remove whole artist
         int row=rootItem->childItems().indexOf(artistItem);

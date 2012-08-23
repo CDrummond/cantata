@@ -48,6 +48,9 @@
     or using Qt-only (on Linux) then watch for changes to /proc/mounts
 30. If the date string recieved from MPD is longer than 4 characters, just use
     the first 4 - as we are only interested in the year.
+31. If not changing artist/albumartist/album of a track in tag editor, then
+    just update track if possible - as opposed to removing and adding to list
+    (which causes a complete refresh of list)
 
 0.8.2
 -----

@@ -161,6 +161,7 @@ public Q_SLOTS:
     void songCount(int c);
 
 public:
+    bool updateSong(const Song &orig, const Song &edit);
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
 

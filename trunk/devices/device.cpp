@@ -204,6 +204,31 @@ bool Device::songExists(const Song &s) const
     return false;
 }
 
+bool Device::updateSong(const Song &orig, const Song &edit)
+{
+    if (orig.albumArtist()==edit.albumArtist() && orig.album==edit.album) {
+        MusicLibraryItemArtist *artistItem = artist(orig, false);
+        if (!artistItem) {
+            return false;
+        }
+        MusicLibraryItemAlbum *albumItem = artistItem->album(orig, false);
+        if (!albumItem) {
+            return false;
+        }
+        int songRow=0;
+        foreach (MusicLibraryItem *song, albumItem->childItems()) {
+            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
+                static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
+                QModelIndex idx=model->createIndex(songRow, 0, albumItem);
+                emit model->dataChanged(idx, idx);
+                return true;
+            }
+            songRow++;
+        }
+    }
+    return false;
+}
+
 void Device::addSongToList(const Song &s)
 {
     MusicLibraryItemArtist *artistItem = artist(s, false);

@@ -368,7 +368,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     , playQueueSearchTimer(0)
     , usingProxy(false)
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifdef Q_OS_LINUX
     , mpdAccessibilityTimer(0)
     #endif
     , connectedState(CS_Init)
@@ -1256,10 +1256,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
 
+    #ifdef Q_OS_LINUX
     #if defined USE_SOLID_FOR_MTAB_CHANGE_MONITOR
     connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(checkMpdAccessibility()));
     connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(checkMpdAccessibility()));
-    #elif defined Q_OS_LINUX
+    #else
     QFile *mtab=new QFile("/proc/mounts", this);
     if (mtab && mtab->open(QIODevice::ReadOnly)) {
         QSocketNotifier *notifier = new QSocketNotifier(mtab->handle(), QSocketNotifier::Exception, mtab);
@@ -1267,7 +1268,8 @@ MainWindow::MainWindow(QWidget *parent)
     } else if (mtab) {
         mtab->deleteLater();
     }
-    #endif
+    #endif // USE_SOLID_FOR_MTAB_CHANGE_MONITOR
+    #endif // Q_OS_LINUX
 
     #ifdef CANTATA_ANDROID
     tabWidget->setMinimumWidth((width()*0.4)-tabWidget->tabSize().width());
@@ -1736,7 +1738,7 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::checkMpdDir()
 {
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifdef Q_OS_LINUX
     if (mpdAccessibilityTimer) {
         mpdAccessibilityTimer->stop();
     }
@@ -2749,16 +2751,16 @@ void MainWindow::removeItems()
     }
 }
 
-#ifdef ENABLE_KDE_SUPPORT
 void MainWindow::checkMpdAccessibility()
 {
+    #ifdef Q_OS_LINUX
     if (!mpdAccessibilityTimer) {
         mpdAccessibilityTimer=new QTimer(this);
         connect(mpdAccessibilityTimer, SIGNAL(timeout()), SLOT(checkMpdDir()));
     }
     mpdAccessibilityTimer->start(500);
+    #endif
 }
-#endif
 
 void MainWindow::updatePlayQueueStats(int songs, quint32 time)
 {

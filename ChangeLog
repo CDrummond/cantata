@@ -46,6 +46,8 @@
 29. In KDE builds, check if MPD is readable each time we get a device added
     or removed signal from Solid if using KDE4.9. If we are using an older KDE,
     or using Qt-only (on Linux) then watch for changes to /proc/mounts
+30. If the date string recieved from MPD is longer than 4 characters, just use
+    the first 4 - as we are only interested in the year.
 
 0.8.2
 -----

@@ -64,8 +64,8 @@ public:
         RemoteFs
     };
 
-    Device(DevicesModel *m, Solid::Device &dev)
-        : MusicLibraryItemRoot(dev.vendor()+QChar(' ')+dev.product())
+    Device(DevicesModel *m, Solid::Device &dev, bool albumArtistSupport=true)
+        : MusicLibraryItemRoot(dev.vendor()+QChar(' ')+dev.product(), albumArtistSupport)
         , model(m)
         , configured(false)
         , solidDev(dev)

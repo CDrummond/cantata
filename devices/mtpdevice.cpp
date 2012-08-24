@@ -194,8 +194,7 @@ void MtpConnection::updateLibrary()
         }
         s.album=track->album;
         s.artist=track->artist;
-        // TODO: ALBUMARTIST: Read from 'track' when libMTP supports album artist!
-        s.albumartist=s.artist;
+        s.albumartist=s.artist; // TODO: ALBUMARTIST: Read from 'track' when libMTP supports album artist!
         s.year=QString::fromUtf8(track->date).mid(0, 4).toUInt();
         s.title=track->title;
         s.genre=track->genre;
@@ -204,7 +203,7 @@ void MtpConnection::updateLibrary()
         s.fillEmptyFields();
         trackMap.insert(track->item_id, track);
 
-        if (!artistItem || s.albumArtist()!=artistItem->data()) {
+        if (!artistItem || (dev->supportsAlbumArtistTag() ? s.albumArtist()!=artistItem->data() : s.album!=artistItem->data())) {
             artistItem = library->artist(s);
         }
         if (!albumItem || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
@@ -423,7 +422,6 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
         }
         meta->title=createString(song.title);
         meta->artist=createString(song.artist);
-
         meta->composer=createString(QString());
         meta->genre=createString(song.genre);
         meta->album=createString(song.album);
@@ -500,7 +498,7 @@ QString cfgKey(Solid::Device &dev, const QString &serial)
 }
 
 MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
-    : Device(m, dev)
+    : Device(m, dev, false)
     , pmp(dev.as<Solid::PortableMediaPlayer>())
     , tempFile(0)
     , mtpUpdating(false)

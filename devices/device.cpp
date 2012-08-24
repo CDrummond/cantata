@@ -206,7 +206,7 @@ bool Device::songExists(const Song &s) const
 
 bool Device::updateSong(const Song &orig, const Song &edit)
 {
-    if (orig.albumArtist()==edit.albumArtist() && orig.album==edit.album) {
+    if ((supportsAlbumArtist ? orig.albumArtist()==edit.albumArtist() : orig.artist==edit.artist) && orig.album==edit.album) {
         MusicLibraryItemArtist *artistItem = artist(orig, false);
         if (!artistItem) {
             return false;

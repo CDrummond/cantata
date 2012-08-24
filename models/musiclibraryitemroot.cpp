@@ -35,14 +35,6 @@
 #include <QtXml/QXmlStreamWriter>
 #include <QtCore/QFile>
 
-static QString songArtist(const Song &s)
-{
-    if (Song::Standard==s.type) {
-        return s.albumArtist();
-    }
-    return i18n("Various Artists");
-}
-
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create)
 {
     QString aa=songArtist(s);
@@ -65,6 +57,10 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s)
 
 void MusicLibraryItemRoot::groupSingleTracks()
 {
+    if (!supportsAlbumArtist) {
+        return;
+    }
+
     QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
     MusicLibraryItemArtist *various=0;
     bool created=false;
@@ -104,6 +100,10 @@ void MusicLibraryItemRoot::groupSingleTracks()
 
 void MusicLibraryItemRoot::groupMultipleArtists()
 {
+    if (!supportsAlbumArtist) {
+        return;
+    }
+
     QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
     MusicLibraryItemArtist *various=0;
     bool created=false;
@@ -156,7 +156,7 @@ void MusicLibraryItemRoot::groupMultipleArtists()
 
 bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
 {
-    if (!s.file.isEmpty()) {
+    if (supportsAlbumArtist && !s.file.isEmpty()) {
         QHash<QString, int>::ConstIterator it=m_indexes.find(i18n("Various Artists"));
 
         if (m_indexes.end()!=it) {
@@ -480,7 +480,7 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
             continue;
         }
 
-        if (!artistItem || s.albumArtist()!=artistItem->data()) {
+        if (!artistItem || (supportsAlbumArtist ? s.albumArtist()!=artistItem->data() : s.album!=artistItem->data())) {
             artistItem = artist(s);
         }
         if (!albumItem || albumItem->parentItem()!=artistItem || s.album!=albumItem->data()) {
@@ -493,4 +493,16 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
         artistItem->addGenre(s.genre);
         addGenre(s.genre);
     }
+}
+
+QString MusicLibraryItemRoot::songArtist(const Song &s)
+{
+    if (!supportsAlbumArtist) {
+        return s.artist;
+    }
+
+    if (Song::Standard==s.type) {
+        return s.albumArtist();
+    }
+    return i18n("Various Artists");
 }

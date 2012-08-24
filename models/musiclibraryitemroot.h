@@ -43,8 +43,9 @@ class MusicLibraryItemArtist;
 class MusicLibraryItemRoot : public MusicLibraryItemContainer
 {
 public:
-    MusicLibraryItemRoot(const QString &name=QString())
-        : MusicLibraryItemContainer(name, 0) {
+    MusicLibraryItemRoot(const QString &name=QString(), bool albumArtistSupport=true)
+        : MusicLibraryItemContainer(name, 0)
+        , supportsAlbumArtist(albumArtistSupport) {
     }
     virtual ~MusicLibraryItemRoot() {
     }
@@ -75,6 +76,16 @@ public:
         return Type_Root;
     }
     void add(const QSet<Song> &songs);
+
+    bool supportsAlbumArtistTag() {
+        return supportsAlbumArtist;
+    }
+
+private:
+    QString songArtist(const Song &s);
+
+protected:
+    bool supportsAlbumArtist; // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
 
 private:
     QHash<QString, int> m_indexes;

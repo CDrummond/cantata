@@ -131,11 +131,11 @@ private:
 private Q_SLOTS:
     void albumInfo(QVariant &value, QNetworkReply *reply);
     void albumFailure(int, const QString &, QNetworkReply *reply);
-    void jobFinished(QNetworkReply *reply);
+    void jobFinished();
 
 private:
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
-    QHash<QNetworkReply *, Job>::Iterator findJob(const Song &song);
+    QHash<QNetworkReply *, Job>::Iterator findJob(const Job &job);
     void clearDummyCache(const Song &song, const QImage &img);
 
 private:

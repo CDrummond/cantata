@@ -83,10 +83,10 @@ QString Utils::getDir(const QString &file)
     int slashPos(d.lastIndexOf('/'));
 
     if (-1!=slashPos) {
-        d.remove(slashPos+1, d.length());
+        return dirSyntax(d.remove(slashPos+1, d.length()));
     }
 
-    return dirSyntax(d);
+    return "/";
 }
 
 QString Utils::getFile(const QString &file)

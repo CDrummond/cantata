@@ -174,7 +174,6 @@ void StreamFetcher::get(const QStringList &items, int insertRow, bool replace, q
     current=QString();
     if (!manager) {
         manager=new NetworkAccessManager(this);
-        connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(jobFinished(QNetworkReply *)));
     }
 
     doNext();
@@ -195,6 +194,7 @@ void StreamFetcher::doNext()
             data.clear();
             job=manager->get(u);
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+            connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
             return;
         } else {
             done.append(current);
@@ -215,7 +215,9 @@ void StreamFetcher::cancel()
     current=QString();
     if (job) {
         disconnect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+        disconnect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
         job->abort();
+        job->deleteLater();
     }
     job=0;
 }
@@ -233,8 +235,18 @@ void StreamFetcher::dataReady()
     if (data.count()>constMaxData) {
         QNetworkReply *thisJob=job;
         disconnect(thisJob, SIGNAL(readyRead()), this, SLOT(dataReady()));
+        disconnect(thisJob, SIGNAL(finished()), this, SLOT(jobFinished()));
         jobFinished(thisJob);
         thisJob->abort();
+        thisJob->deleteLater();
+    }
+}
+
+void StreamFetcher::jobFinished()
+{
+    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    if (reply) {
+        jobFinished(reply);
     }
 }
 
@@ -250,6 +262,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                 data.clear();
                 job=manager->get(current);
                 connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+                connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
             } else {
                 QString u=parse(data, handlers);
 
@@ -261,6 +274,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                     data.clear();
                     job=manager->get(u);
                     connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
+                    connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                 } else {
                     done.append(u);
                 }
@@ -271,4 +285,5 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
 
         doNext();
     }
+    reply->deleteLater();
 }

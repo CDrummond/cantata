@@ -250,6 +250,7 @@ void InfoPage::downloadingFinished()
     if (file.open(QFile::ReadWrite)) {
         file.write(reply->readAll());
     }
+    reply->deleteLater();
 }
 
 #ifdef ENABLE_KDE_SUPPORT

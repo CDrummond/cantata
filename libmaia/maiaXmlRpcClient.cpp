@@ -75,14 +75,13 @@ QNetworkReply* MaiaXmlRpcClient::call(QString method, QList<QVariant> args,
     if (!manager) {
         manager=new NetworkAccessManager(this);
 
-        connect(manager, SIGNAL(finished(QNetworkReply*)),
-                this, SLOT(replyFinished(QNetworkReply*)));
         connect(manager, SIGNAL(sslErrors(QNetworkReply *, const QList<QSslError> &)),
                 this, SIGNAL(sslErrors(QNetworkReply *, const QList<QSslError> &)));
     }
 	QNetworkReply* reply = manager->post( request,
 		call->prepareCall(method, args).toUtf8() );
-
+    connect(reply, SIGNAL(finished()),
+                this, SLOT(replyFinished()));
 	callmap[reply] = call;
 	return reply;
 }
@@ -95,10 +94,17 @@ QSslConfiguration MaiaXmlRpcClient::sslConfiguration () const {
 	return request.sslConfiguration();
 }
 
-void MaiaXmlRpcClient::replyFinished(QNetworkReply* reply) {
+void MaiaXmlRpcClient::replyFinished() {
+    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    if (!reply) {
+        return;
+    }
+
 	QString response;
-	if(!callmap.contains(reply))
+	if(!callmap.contains(reply)) {
+        reply->deleteLater();
 		return;
+    }
 	if(reply->error() != QNetworkReply::NoError) {
 		MaiaFault fault(-32300, reply->errorString());
 		response = fault.toString();

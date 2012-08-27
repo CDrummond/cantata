@@ -54,6 +54,9 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void dataReady();
+    void jobFinished();
+
+private:
     void jobFinished(QNetworkReply *reply);
 
 private:

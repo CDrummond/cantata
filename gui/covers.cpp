@@ -77,6 +77,13 @@ void initCoverNames()
     }
 }
 
+static inline bool isRequestingArtistImage(const Song &song)
+{
+    // If we are requesting artist image, then Song should ONLY have albumartist and file set
+    // ...so check that some other fields are empty/default.
+    return song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty() && 0==song.size && 0==song.track;
+}
+
 static bool canSaveTo(const QString &dir)
 {
     QString mpdDir=MPDConnection::self()->getDetails().dir;
@@ -377,7 +384,7 @@ Covers::Image Covers::getImage(const Song &song)
     QString dirName;
     QString songFile=song.file;
     bool haveAbsPath=song.file.startsWith('/');
-    bool isArtistImage=song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty();
+    bool isArtistImage=isRequestingArtistImage(song);
 
     if (song.isCantataStream()) {
         QUrl u(songFile);
@@ -552,12 +559,12 @@ void Covers::setSaveInMpdDir(bool s)
 
 void Covers::download(const Song &song)
 {
-    if (jobs.end()!=findJob(song)) {
+    bool isArtistImage=isRequestingArtistImage(song);
+
+    if (jobs.end()!=findJob(Job(song, QString(), isArtistImage))) {
         return;
     }
-
     bool haveAbsPath=song.file.startsWith('/');
-    bool isArtistImage=song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty();
     QString dirName;
 
     if (!isArtistImage && (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty())) {
@@ -567,7 +574,6 @@ void Covers::download(const Song &song)
 
     if (!manager) {
         manager=new NetworkAccessManager(this);
-        connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(jobFinished(QNetworkReply *)));
     }
 
     Job job(song, dirName, isArtistImage);
@@ -584,7 +590,9 @@ void Covers::downloadViaHttp(Job &job, bool jpg)
     QUrl u;
     u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+QByteArray(jpg ? "cover.jpg" : "cover.png"));
     job.type=jpg ? JobHttpJpg : JobHttpPng;
-    jobs.insert(manager->get(QNetworkRequest(u)), job);
+    QNetworkReply *j=manager->get(QNetworkRequest(u));
+    connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
+    jobs.insert(j, job);
 }
 
 void Covers::downloadViaLastFm(Job &job)
@@ -595,14 +603,13 @@ void Covers::downloadViaLastFm(Job &job)
     }
 
     QMap<QString, QVariant> args;
-    bool isArtistImage=job.song.album.isEmpty() && job.song.artist.isEmpty() && !job.song.albumartist.isEmpty();
 
     args["artist"] = job.song.albumArtist();
-    if (!isArtistImage) {
+    if (!job.isArtist) {
         args["album"] = job.song.album;
     }
     args["api_key"] = constApiKey;
-    QNetworkReply *reply=rpc->call(isArtistImage ? "artist.getInfo" : "album.getInfo", QVariantList() << args,
+    QNetworkReply *reply=rpc->call(job.isArtist ? "artist.getInfo" : "album.getInfo", QVariantList() << args,
                                    this, SLOT(albumInfo(QVariant &, QNetworkReply *)),
                                    this, SLOT(albumFailure(int, const QString &, QNetworkReply *)));
     job.type=JobLastFm;
@@ -634,7 +641,9 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
         if (!url.isEmpty()) {
             QUrl u;
             u.setEncodedUrl(url.toLatin1());
-            jobs.insert(manager->get(QNetworkRequest(u)), job);
+            QNetworkReply *j=manager->get(QNetworkRequest(u));
+            connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
+            jobs.insert(j, job);
         } else if (job.isArtist) {
             emit artistImage(job.song.albumartist, QImage());
         } else {
@@ -667,14 +676,20 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
     reply->deleteLater();
 }
 
-void Covers::jobFinished(QNetworkReply *reply)
+void Covers::jobFinished()
 {
+    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    if (!reply) {
+        return;
+    }
+
     QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
     QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
 
     if (it!=end) {
         QByteArray data=QNetworkReply::NoError==reply->error() ? reply->readAll() : QByteArray();
-        QImage img = data.isEmpty() ? QImage() : QImage::fromData(data);
+        QString url=reply->url().toString();
+        QImage img = data.isEmpty() ? QImage() : QImage::fromData(data, url.endsWith(".jpg") ? "JPG" : (url.endsWith(".png") ? "PNG" : 0));
         QString fileName;
         Job job=it.value();
 
@@ -752,13 +767,13 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     return QString();
 }
 
-QHash<QNetworkReply *, Covers::Job>::Iterator Covers::findJob(const Song &song)
+QHash<QNetworkReply *, Covers::Job>::Iterator Covers::findJob(const Job &job)
 {
     QHash<QNetworkReply *, Job>::Iterator it(jobs.begin());
     QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
 
     for (; it!=end; ++it) {
-        if ((*it).song.albumArtist()==song.albumArtist() && (*it).song.album==song.album) {
+        if ((*it).isArtist==job.isArtist && (*it).song.albumArtist()==job.song.albumArtist() && (*it).song.album==job.song.album) {
             return it;
         }
     }

@@ -94,11 +94,11 @@ void MtpConnection::connectToDevice()
 {
     device=0;
     musicFolderId=0;
-    LIBMTP_raw_device_t *rawDevices;
-    int numDev;
+    LIBMTP_raw_device_t *rawDevices=0;
+    int numDev=-1;
 
     emit statusMessage(i18n("Connecting to device..."));
-    if (LIBMTP_ERROR_NONE!=LIBMTP_Detect_Raw_Devices(&rawDevices, &numDev) || 0==numDev) {
+    if (LIBMTP_ERROR_NONE!=LIBMTP_Detect_Raw_Devices(&rawDevices, &numDev) || numDev<=0) {
         emit statusMessage(i18n("No devices found"));
         return;
     }

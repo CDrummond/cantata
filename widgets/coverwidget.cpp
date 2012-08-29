@@ -27,20 +27,30 @@
 #include "localize.h"
 #include "icon.h"
 #include <QtGui/QPixmap>
+#include <QtCore/QBuffer>
 #include <QtCore/QEvent>
+#include <QtCore/QFile>
 #include <QtCore/QTimer>
 #include <QtCore/QVariant>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KTemporaryFile>
-#else
-#include <QtCore/QTemporaryFile>
-#endif
+
+static QString encode(const QImage &img)
+{
+    QByteArray bytes;
+    QBuffer buffer(&bytes);
+    buffer.open(QIODevice::WriteOnly);
+    QImage copy(img);
+
+    if (copy.size().width()>Covers::constMaxSize.width() || copy.size().height()>Covers::constMaxSize.height()) {
+        copy=copy.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+    copy.save(&buffer, "PNG");
+    return QString("<img src=\"data:image/png;base64,%1\">").arg(QString(buffer.data().toBase64()));
+}
 
 CoverWidget::CoverWidget(QWidget *parent)
     : QLabel(parent)
     , empty(true)
     , valid(false)
-    , tempFile(0)
 {
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
     update(noCover);
@@ -50,7 +60,6 @@ CoverWidget::CoverWidget(QWidget *parent)
 
 CoverWidget::~CoverWidget()
 {
-    delete tempFile;
 }
 
 const QPixmap & CoverWidget::stdPixmap(bool stream)
@@ -132,25 +141,10 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
                       "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
                       "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.artist).arg(current.album).arg(current.year);
         toolTip+="</table>";
-        if (!coverFileName.isEmpty() && !image.isNull()) {
-            if (image.size().width()>Covers::constMaxSize.width() || image.size().height()>Covers::constMaxSize.height()) {
-                if (!tempFile) {
-                    #ifdef ENABLE_KDE_SUPPORT
-                    tempFile=new KTemporaryFile();
-                    tempFile->setSuffix(".jpg");
-                    #else
-                    tempFile=new QTemporaryFile("/tmp/XXXXXX.jpg");
-                    #endif
-                    tempFile->setAutoRemove(true);
-                    tempFile->open();
-                }
-                QString tempCover=tempFile->property("orig").toString();
-                if (tempCover!=coverFileName) {
-                    QImage scaled=image.scaled(Covers::constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-                    scaled.save(tempFile->fileName());
-                    tempFile->setProperty("orig", coverFileName);
-                }
-                toolTip+=QString("<br/><img src=\"%1\"/>").arg(tempFile->fileName());
+        if (!image.isNull()) {
+            if (image.size().width()>Covers::constMaxSize.width() || image.size().height()>Covers::constMaxSize.height() ||
+                coverFileName.isEmpty() || !QFile::exists(coverFileName)) {
+                toolTip+=QString("<br/>%1").arg(encode(image));
             } else {
                 toolTip+=QString("<br/><img src=\"%1\"/>").arg(coverFileName);
             }

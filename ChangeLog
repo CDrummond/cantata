@@ -51,6 +51,9 @@
 31. If not changing artist/albumartist/album of a track in tag editor, then
     just update track if possible - as opposed to removing and adding to list
     (which causes a complete refresh of list)
+32. When displaying cover tooltip, if image is too big or image file is not
+    found (as is the case for embedded covers), then save the image into a
+    base64 array as a PNG - and have Qt use this in the 'img' tag.
 
 0.8.2
 -----

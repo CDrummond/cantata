@@ -29,11 +29,6 @@
 #include "song.h"
 
 class QPixmap;
-#ifdef ENABLE_KDE_SUPPORT
-class KTemporaryFile;
-#else
-class QTemporaryFile;
-#endif
 
 class CoverWidget : public QLabel
 {
@@ -83,11 +78,6 @@ private:
     QString coverFileName;
     QPixmap noStreamCover;
     QPixmap noCover;
-    #ifdef ENABLE_KDE_SUPPORT
-    KTemporaryFile *tempFile;
-    #else
-    QTemporaryFile *tempFile;
-    #endif
 };
 
 #endif

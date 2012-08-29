@@ -435,7 +435,7 @@ Covers::Image Covers::getImage(const Song &song)
             if (QFile::exists(fileName)) {
                 QImage img(Tags::readImage(fileName));
                 if (!img.isNull()) {
-                    return Image(img, fileName);
+                    return Image(img, QString());
                 }
             }
             #endif

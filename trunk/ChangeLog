@@ -58,6 +58,7 @@
     cover images cannot be loaded!
 34. Package missing edit-clear-locationbar-rtl.png icons so that clear button
     appears in windows line-edits.
+35. Use correct palette (Active/Inactive) when drawing item text.
 
 0.8.2
 -----

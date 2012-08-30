@@ -43,10 +43,6 @@ LyricSettings::LyricSettings(QWidget *parent)
 //           SLOT(ItemChanged(QListWidgetItem*)));
     ui_->up->setIcon(Icon("arrow-up"));
     ui_->down->setIcon(Icon("arrow-down"));
-    #ifdef CANTATA_ANDROID
-    ui_->up->setText(QString());
-    ui_->down->setText(QString());
-    #endif
 }
 
 LyricSettings::~LyricSettings() {

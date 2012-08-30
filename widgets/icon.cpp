@@ -60,7 +60,7 @@ void Icon::init(QToolButton *btn, bool setFlat)
     }
 }
 
-#if !defined ENABLE_KDE_SUPPORT && !defined CANTATA_ANDROID
+#if !defined ENABLE_KDE_SUPPORT
 #include <QtCore/QDir>
 
 QIcon Icon::getMediaIcon(const char *name)

@@ -24,6 +24,7 @@
 #include "treeview.h"
 #include "itemview.h"
 #include "icon.h"
+#include "config.h"
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QPainter>
@@ -42,7 +43,6 @@ TreeView::TreeView(QWidget *parent)
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setAttribute(Qt::WA_MouseTracking);
-    TOUCH_SETUP
 }
 
 TreeView::~TreeView()
@@ -178,5 +178,3 @@ void TreeView::paintEvent(QPaintEvent *e)
     QTreeView::paintEvent(e);
 }
 
-TOUCH_CONTEXT_MENU(TreeView)
-TOUCH_EVENT_HANDLER(TreeView)

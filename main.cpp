@@ -73,16 +73,11 @@ int main(int argc, char *argv[])
     if (!app.start()) {
         return 0;
     }
-    #ifdef CANTATA_ANDROID
-    app.addLibraryPath("/data/data/org.kde.necessitas.ministro/files/qt/plugins");
-    #endif
     MainWindow mw;
-    #if !defined CANTATA_ANDROID
     app.setActivationWindow(&mw);
     #ifdef TAGLIB_FOUND
     app.loadFiles();
     #endif // TAGLIB_FOUND
-    #endif // CANTATA_ANDROID
     #endif // ENABLE_KDE_SUPPORT
 
     return app.exec();

@@ -250,14 +250,22 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     initCoverNames();
 
     // First, check if dir already has a cover file!
-    foreach (const QString &coverFile, coverFileNames) {
+    initCoverNames();
+    QStringList names=coverFileNames;
+    foreach (const QString &ext, constExtensions) {
+        names+=song.album+ext;
+    }
+    foreach (const QString &ext, constExtensions) {
+        names+=song.albumArtist()+QLatin1String(" - ")+song.album+ext;
+    }
+    foreach (const QString &coverFile, names) {
         if (fExists(destDir, coverFile)) {
             return;
         }
     }
 
     // No cover found, try to copy from source folder
-    foreach (const QString &coverFile, coverFileNames) {
+    foreach (const QString &coverFile, names) {
         if (fExists(sourceDir, coverFile)) {
             QString destName(name);
             if (destName.isEmpty()) { // copying into mpd dir, so we want cover.jpg/png...
@@ -412,7 +420,17 @@ Covers::Image Covers::getImage(const Song &song)
             }
         } else {
             initCoverNames();
-            foreach (const QString &fileName, coverFileNames) {
+            QStringList names=coverFileNames;
+            foreach (const QString &ext, constExtensions) {
+                names+=Utils::changeExtension(Utils::getFile(song.file), ext);
+            }
+            foreach (const QString &ext, constExtensions) {
+                names+=song.albumArtist()+QLatin1String(" - ")+song.album+ext;
+            }
+            foreach (const QString &ext, constExtensions) {
+                names+=song.album+ext;
+            }
+            foreach (const QString &fileName, names) {
                 if (QFile::exists(dirName+fileName)) {
                     QImage img(dirName+fileName);
 

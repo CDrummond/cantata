@@ -62,6 +62,9 @@
 36. Force single-click activation in views. To enable double-click mode (which
     depends upon the style), edit cantatarc (KDE) or cantata.conf (Qt only) and
     set 'forceSingleClick=false' in the '[General]' section.
+37. When looking for album covers, also check for "${file}.jpg/png",
+    "${albumArtist} - ${album}.jpg/png" and "${album}.jpg/png" within current
+    songs folder. (These are checked AFTER cover.jpg/png, etc.)
 
 0.8.2
 -----

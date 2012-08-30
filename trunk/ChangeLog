@@ -65,6 +65,8 @@
 37. When looking for album covers, also check for "${file}.jpg/png",
     "${albumArtist} - ${album}.jpg/png" and "${album}.jpg/png" within current
     songs folder. (These are checked AFTER cover.jpg/png, etc.)
+38. Improve FancyTabWidget appearance for Gtk+ style - when hovering, draw
+    selection into a QImage and set painter's opacity before drawing image.
 
 0.8.2
 -----

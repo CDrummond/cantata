@@ -106,7 +106,7 @@
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 #include "timeslider.h"
-#if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+#if !defined Q_OS_WIN
 #include "mpris.h"
 #include "dockmanager.h"
 #include "dynamicpage.h"
@@ -151,11 +151,7 @@ static QIcon createSingleIcon()
         stdColor=QColor(200, 200, 200);
     }
     QColor highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
-    QList<int> sizes=QList<int>() << 16 << 22
-                                 #ifdef CANTATA_ANDROID
-                                  << 32 << 48 << 64
-                                 #endif
-                                  ;
+    QList<int> sizes=QList<int>() << 16 << 22;
 
     foreach (int s, sizes) {
         icon.addPixmap(createSingleIconPixmap(s, stdColor, 100.0));
@@ -179,9 +175,7 @@ public:
     ProxyStyle()
         : QProxyStyle()
     {
-        #ifndef CANTATA_ANDROID
         setBaseStyle(qApp->style());
-        #endif
     }
 
     int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
@@ -294,7 +288,6 @@ void VolumeControl::setValue(int v)
     slider->setValue(v);
 }
 
-#ifndef CANTATA_ANDROID
 CoverEventHandler::CoverEventHandler(MainWindow *w)
     : QObject(w), window(w)
 {
@@ -319,7 +312,6 @@ bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
     }
     return QObject::eventFilter(obj, event);
 }
-#endif
 
 static int nextKey(int &key) {
     int k=key;
@@ -352,9 +344,7 @@ MainWindow::MainWindow(QWidget *parent)
     , songTime(0)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
-    #ifndef CANTATA_ANDROID
     , trayItem(0)
-    #endif
     #ifdef ENABLE_KDE_SUPPORT
     , notification(0)
     #endif
@@ -362,7 +352,7 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_WEBKIT
     , infoNeedsUpdating(false)
     #endif
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     , dock(0)
     , mpris(0)
     #endif
@@ -381,7 +371,7 @@ MainWindow::MainWindow(QWidget *parent)
     , phononStream(0)
     #endif
 {
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     new CantataAdaptor(this);
     #ifndef ENABLE_KDE_SUPPORT
     // We need to register for this interface, so that dynamic helper can send messages...
@@ -420,13 +410,11 @@ MainWindow::MainWindow(QWidget *parent)
     prefAction=KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
     quitAction=KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
-    #ifndef CANTATA_ANDROID
     smallPlaybackButtonsAction = actionCollection()->addAction("smallplaybackbuttons");
     smallPlaybackButtonsAction->setText(i18n("Small Playback Buttons"));
 
     smallControlButtonsAction = actionCollection()->addAction("smallcontrolbuttons");
     smallControlButtonsAction->setText(i18n("Small Control Buttons"));
-    #endif
 
     connectAction = actionCollection()->addAction("connect");
     connectAction->setText(i18n("Connect"));
@@ -507,10 +495,8 @@ MainWindow::MainWindow(QWidget *parent)
     clearPlayQueueAction = actionCollection()->addAction("clearplaylist");
     clearPlayQueueAction->setText(i18n("Clear"));
 
-    #ifndef CANTATA_ANDROID
     expandInterfaceAction = actionCollection()->addAction("expandinterface");
     expandInterfaceAction->setText(i18n("Expanded Interface"));
-    #endif
 
     randomPlayQueueAction = actionCollection()->addAction("randomplaylist");
     randomPlayQueueAction->setText(i18n("Random"));
@@ -593,7 +579,7 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsTabAction = actionCollection()->addAction("showplayliststab");
     playlistsTabAction->setText(i18n("Playlists"));
 
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     dynamicTabAction = actionCollection()->addAction("showdynamictab");
     dynamicTabAction->setText(i18n("Dynamic"));
     #endif
@@ -630,10 +616,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     quitAction->setIcon(Icon("application-exit"));
     quitAction->setShortcut(QKeySequence::Quit);
-    #ifndef CANTATA_ANDROID
     smallPlaybackButtonsAction = new QAction(tr("Small Playback Buttons"), this);
     smallControlButtonsAction = new QAction(tr("Small Control Buttons"), this);
-    #endif
     refreshAction = new QAction(tr("Refresh"), this);
     connectAction = new QAction(tr("Connect"), this);
     connectionsAction = new QAction(tr("Connections"), this);
@@ -658,9 +642,7 @@ MainWindow::MainWindow(QWidget *parent)
     shufflePlayQueueAction = new QAction(tr("Shuffle"), this);
     savePlayQueueAction = new QAction(tr("Save As"), this);
     clearPlayQueueAction = new QAction(tr("Clear"), this);
-    #ifndef CANTATA_ANDROID
     expandInterfaceAction = new QAction(tr("Expanded Interface"), this);
-    #endif
     randomPlayQueueAction = new QAction(tr("Random"), this);
     repeatPlayQueueAction = new QAction(tr("Repeat"), this);
     singlePlayQueueAction = new QAction(tr("Single"), this);
@@ -696,7 +678,7 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction = new QAction(tr("Albums"), this);
     foldersTabAction = new QAction(tr("Folders"), this);
     playlistsTabAction = new QAction(tr("Playlists"), this);
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     dynamicTabAction = new QAction(tr("Dynamic"), this);
     #endif
     lyricsTabAction = new QAction(tr("Lyrics"), this);
@@ -716,7 +698,7 @@ MainWindow::MainWindow(QWidget *parent)
     SET_SHORTCUT(albumsTabAction, Qt::AltModifier+nextKey(pageKey));
     SET_SHORTCUT(foldersTabAction, Qt::AltModifier+nextKey(pageKey));
     SET_SHORTCUT(playlistsTabAction, Qt::AltModifier+nextKey(pageKey));
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     SET_SHORTCUT(dynamicTabAction, Qt::AltModifier+nextKey(pageKey));
     #endif
     SET_SHORTCUT(streamsTabAction, Qt::AltModifier+nextKey(pageKey));
@@ -746,7 +728,7 @@ MainWindow::MainWindow(QWidget *parent)
     playbackPause = MediaIcon("media-playback-pause");
     randomPlayQueueAction->setIcon(Icon("media-playlist-shuffle"));
     locateTrackAction->setIcon(Icon("edit-find"));
-    #if defined ENABLE_KDE_SUPPORT || defined CANTATA_ANDROID
+    #if defined ENABLE_KDE_SUPPORT
     consumePlayQueueAction->setIcon(Icon("cantata-view-media-consume"));
     repeatPlayQueueAction->setIcon(Icon("cantata-view-media-repeat"));
 //     randomPlayQueueAction->setIcon(Icon("cantata-view-media-shuffle"));
@@ -798,9 +780,7 @@ MainWindow::MainWindow(QWidget *parent)
     removeFromPlayQueueAction->setIcon(Icon("list-remove"));
     clearPlayQueueAction->setIcon(Icon("edit-clear-list"));
     savePlayQueueAction->setIcon(Icon("document-save-as"));
-    #ifndef CANTATA_ANDROID
     expandInterfaceAction->setIcon(Icon("view-media-playlist"));
-    #endif
     refreshAction->setIcon(Icon("view-refresh"));
     connectAction->setIcon(Icon("network-connect"));
     connectionsAction->setIcon(Icon("network-server"));
@@ -810,7 +790,7 @@ MainWindow::MainWindow(QWidget *parent)
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
     showPlayQueueAction->setIcon(Icon("media-playback-start"));
-    #if defined ENABLE_KDE_SUPPORT || defined CANTATA_ANDROID
+    #if defined ENABLE_KDE_SUPPORT
     libraryTabAction->setIcon(Icon("cantata-view-media-library"));
     #else
     QIcon libraryIcon(":lib16.png");
@@ -820,13 +800,13 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
     foldersTabAction->setIcon(Icon("inode-directory"));
     playlistsTabAction->setIcon(Icon("view-media-playlist"));
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     dynamicTabAction->setIcon(Icon("media-playlist-shuffle"));
     #endif
     lyricsTabAction->setIcon(Icon("view-media-lyrics"));
     streamsTabAction->setIcon(Icon(DEFAULT_STREAM_ICON));
     #ifdef ENABLE_WEBKIT
-    #if defined ENABLE_KDE_SUPPORT || defined CANTATA_ANDROID
+    #if defined ENABLE_KDE_SUPPORT
     infoTabAction->setIcon(Icon("cantata-view-wikipedia"));
     #else // ENABLE_KDE_SUPPORT
     QIcon wikiIcon(":wiki16.png");
@@ -864,7 +844,7 @@ MainWindow::MainWindow(QWidget *parent)
     albumsPage = new AlbumsPage(this);
     folderPage = new FolderPage(this);
     playlistsPage = new PlaylistsPage(this);
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     dynamicPage = new DynamicPage(this);
     #endif
     streamsPage = new StreamsPage(this);
@@ -911,7 +891,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
     tabWidget->AddTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
     tabWidget->AddTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     tabWidget->AddTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
     #endif
     tabWidget->AddTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
@@ -929,13 +909,11 @@ MainWindow::MainWindow(QWidget *parent)
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
 
-    #ifndef CANTATA_ANDROID
     autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
     autoHideSplitterAction->setCheckable(true);
     autoHideSplitterAction->setChecked(Settings::self()->splitterAutoHide());
     tabWidget->addMenuAction(autoHideSplitterAction);
     connect(autoHideSplitterAction, SIGNAL(toggled(bool)), this, SLOT(toggleSplitterAutoHide()));
-    #endif
 
     if (playQueueInSidebar) {
         tabToggled(PAGE_PLAYQUEUE);
@@ -943,15 +921,8 @@ MainWindow::MainWindow(QWidget *parent)
         tabWidget->SetCurrentIndex(PAGE_LIBRARY);
     }
 
-    #ifdef CANTATA_ANDROID
-    tabWidget->SetMode(FancyTabWidget::Mode_IconOnlyLargeSidebar);
-    tabWidget->ToggleTab(PAGE_PLAYQUEUE, false);
-    showTab(PAGE_LIBRARY);
-    setLayout(width()>height());
-    #else
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     expandInterfaceAction->setCheckable(true);
-    #endif
     randomPlayQueueAction->setCheckable(true);
     repeatPlayQueueAction->setCheckable(true);
     singlePlayQueueAction->setCheckable(true);
@@ -972,34 +943,26 @@ MainWindow::MainWindow(QWidget *parent)
         Icon::init(b);
     }
 
-    #ifndef CANTATA_ANDROID
     smallControlButtonsAction->setCheckable(true);
     smallControlButtonsAction->setChecked(Settings::self()->smallControlButtons());
     controlBtnsMenu = new QMenu(this);
     controlBtnsMenu->addAction(smallControlButtonsAction);
     connect(smallControlButtonsAction, SIGNAL(triggered(bool)), SLOT(setControlButtonsSize(bool)));
-    #endif
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
-        #ifndef CANTATA_ANDROID
         b->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(b, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(controlButtonsMenu()));
-        #endif
     }
 
-    #ifndef CANTATA_ANDROID
     smallPlaybackButtonsAction->setCheckable(true);
     smallPlaybackButtonsAction->setChecked(Settings::self()->smallPlaybackButtons());
     playbackBtnsMenu = new QMenu(this);
     playbackBtnsMenu->addAction(smallPlaybackButtonsAction);
     connect(smallPlaybackButtonsAction, SIGNAL(triggered(bool)), SLOT(setPlaybackButtonsSize(bool)));
-    #endif
     foreach (QToolButton *b, playbackBtns) {
         b->setAutoRaise(true);
-        #ifndef CANTATA_ANDROID
         b->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(b, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(playbackButtonsMenu()));
-        #endif
     }
 
     setPlaybackButtonsSize(Settings::self()->smallPlaybackButtons());
@@ -1008,9 +971,7 @@ MainWindow::MainWindow(QWidget *parent)
     trackLabel->setText(QString());
     artistLabel->setText(QString());
 
-    #ifndef CANTATA_ANDROID
     expandInterfaceAction->setChecked(Settings::self()->showPlaylist());
-    #endif
     randomPlayQueueAction->setChecked(false);
     repeatPlayQueueAction->setChecked(false);
     singlePlayQueueAction->setChecked(false);
@@ -1023,7 +984,6 @@ MainWindow::MainWindow(QWidget *parent)
     MusicLibraryItemAlbum::setShowDate(Settings::self()->libraryYear());
     AlbumsModel::setCoverSize((MusicLibraryItemAlbum::CoverSize)Settings::self()->albumsCoverSize());
 
-    #ifndef CANTATA_ANDROID
     tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
     setupTrayIcon();
     expandedSize=Settings::self()->mainWindowSize();
@@ -1042,15 +1002,12 @@ MainWindow::MainWindow(QWidget *parent)
     }
     togglePlayQueue();
 
-    #endif
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
     menuBar()->setVisible(false);
     #endif
 
-    #ifndef CANTATA_ANDROID
     mainMenu->addAction(expandInterfaceAction);
-    #endif
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
     QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
@@ -1072,9 +1029,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
 
-    #ifndef CANTATA_ANDROID
     coverWidget->installEventFilter(new CoverEventHandler(this));
-    #endif
     dynamicLabel->setVisible(false);
 
     addWithPriorityAction->setIcon(Icon("favorites"));
@@ -1166,7 +1121,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
     #endif
@@ -1204,9 +1159,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(copyTrackInfoAction, SIGNAL(triggered(bool)), this, SLOT(copyTrackInfo()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
-    #ifndef CANTATA_ANDROID
     connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(togglePlayQueue()));
-    #endif
     connect(positionSlider, SIGNAL(valueChanged(int)), this, SLOT(updatePosition()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
 //     connect(createDataCdAction, SIGNAL(triggered(bool)), this, SLOT(createDataCd()));
@@ -1222,7 +1175,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(albumsTabAction, SIGNAL(triggered(bool)), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(triggered(bool)), this, SLOT(showFoldersTab()));
     connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
     #endif
     connect(lyricsTabAction, SIGNAL(triggered(bool)), this, SLOT(showLyricsTab()));
@@ -1271,10 +1224,6 @@ MainWindow::MainWindow(QWidget *parent)
     #endif // USE_SOLID_FOR_MTAB_CHANGE_MONITOR
     #endif // Q_OS_LINUX
 
-    #ifdef CANTATA_ANDROID
-    tabWidget->setMinimumWidth((width()*0.4)-tabWidget->tabSize().width());
-    controlLayout->setSpacing(playPauseTrackButton->width()*0.1);
-    #else
     if (!playQueueInSidebar) {
         QByteArray state=Settings::self()->splitterState();
 
@@ -1287,7 +1236,6 @@ MainWindow::MainWindow(QWidget *parent)
             splitter->restoreState(Settings::self()->splitterState());
         }
     }
-    #endif
 
     playQueueItemsSelected(false);
     playQueue->setFocus();
@@ -1315,14 +1263,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tabWidget, SIGNAL(ModeChanged(FancyTabWidget::Mode)), this, SLOT(sidebarModeChanged()));
     connect(messageWidget, SIGNAL(visible(bool)), this, SLOT(messageWidgetVisibility(bool)));
 
-    #ifndef CANTATA_ANDROID
     toggleSplitterAutoHide();
-    #endif
     readSettings();
     updateConnectionsMenu();
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     playlistsPage->refresh();
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     toggleMpris();
     if (Settings::self()->dockManager()) {
         QTimer::singleShot(250, this, SLOT(toggleDockManager()));
@@ -1332,12 +1278,11 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     if (dock) {
         dock->setIcon(QString());
     }
     #endif
-    #ifndef CANTATA_ANDROID
     Settings::self()->saveMainWindowSize(expandedSize);
     Settings::self()->saveMainWindowCollapsedSize(collapsedSize);
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
@@ -1366,7 +1311,6 @@ MainWindow::~MainWindow()
         }
     }
     Settings::self()->saveHiddenPages(hiddenPages);
-    #endif // CANTATA_ANDROID
     streamsPage->save();
     lyricsPage->saveSettings();
     #ifdef ENABLE_WEBKIT
@@ -1375,7 +1319,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveForceSingleClick(ItemView::getForceSingleClick());
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     if (Settings::self()->stopDynamizerOnExit() || Settings::self()->stopOnExit()) {
         Dynamic::self()->stop();
     }
@@ -1452,34 +1396,18 @@ void MainWindow::controlButtonsMenu()
 
 void MainWindow::setPlaybackButtonsSize(bool smallButtons)
 {
-    #ifdef CANTATA_ANDROID
-    int size=Icon::stdSize(QApplication::fontMetrics().height()*2);
-    #endif
-
     QList<QToolButton *> playbackBtns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     foreach (QToolButton *b, playbackBtns) {
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        #ifdef CANTATA_ANDROID
-        if (size>22) {
-            b->setMinimumSize(QSize(size+2, size+2));
-            b->setMaximumSize(QSize(size+2, size+2));
-            b->setIconSize(QSize(size, size));
-        } else
-        #endif
-        {
-            b->setIconSize(smallButtons ? QSize(22, 22) : QSize(28, 28));
-            b->setMinimumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
-            b->setMaximumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
-        }
+        b->setIconSize(smallButtons ? QSize(22, 22) : QSize(28, 28));
+        b->setMinimumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
+        b->setMaximumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
     }
 }
 
 void MainWindow::setControlButtonsSize(bool smallButtons)
 {
-    #ifdef CANTATA_ANDROID
-    int size=Icon::stdSize(QApplication::fontMetrics().height()*2);
-    #endif
     QList<QToolButton *> controlBtns;
     controlBtns << volumeButton << menuButton;
     #ifdef PHONON_FOUND
@@ -1487,22 +1415,13 @@ void MainWindow::setControlButtonsSize(bool smallButtons)
     #endif
     foreach (QToolButton *b, controlBtns) {
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        #ifdef CANTATA_ANDROID
-        if (size>22) {
-            b->setMinimumSize(QSize(size+2, size+2));
-            b->setMaximumSize(QSize(size+2, size+2));
-            b->setIconSize(QSize(size, size));
-        } else
+        b->setMinimumSize(smallButtons ? QSize(22, 22) : QSize(26, 26));
+        b->setMaximumSize(smallButtons ? QSize(22, 22) : QSize(26, 26));
+        #ifdef ENABLE_KDE_SUPPORT
+        b->setIconSize(smallButtons ? QSize(16, 16) : QSize(22, 22));
+        #else
+        b->setIconSize(smallButtons ? QSize(18, 18) : QSize(22, 22));
         #endif
-        {
-            b->setMinimumSize(smallButtons ? QSize(22, 22) : QSize(26, 26));
-            b->setMaximumSize(smallButtons ? QSize(22, 22) : QSize(26, 26));
-            #ifdef ENABLE_KDE_SUPPORT
-            b->setIconSize(smallButtons ? QSize(16, 16) : QSize(22, 22));
-            #else
-            b->setIconSize(smallButtons ? QSize(18, 18) : QSize(22, 22));
-            #endif
-        }
     }
 }
 
@@ -1520,7 +1439,7 @@ void MainWindow::songLoaded()
 
 void MainWindow::showError(const QString &message, bool showActions)
 {
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     if (QLatin1String("NO_SONGS")==message) {
         messageWidget->setError(i18n("Failed to locate any songs matching the dynamic playlist rules."));
     } else
@@ -1548,14 +1467,12 @@ void MainWindow::messageWidgetVisibility(bool v)
 {
     Q_UNUSED(v)
 
-    #ifndef CANTATA_ANDROID
     if (!expandInterfaceAction->isChecked()) {
         int prevWidth=width();
         int compactHeight=calcCompactHeight();
         setFixedHeight(compactHeight);
         resize(prevWidth, compactHeight);
     }
-    #endif
 }
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
@@ -1599,38 +1516,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
-#ifdef CANTATA_ANDROID
-void MainWindow::resizeEvent(QResizeEvent *event)
-{
-    setLayout(event->size().width()>event->size().height());
-    if (messageWidget->isVisible()) {
-        messageWidget->adjustSize();
-    }
-}
-
-void MainWindow::setLayout(bool landscape)
-{
-    if (landscape) {
-        if (tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
-            coverWidget->setVisible(true);
-            tabWidget->ToggleTab(PAGE_PLAYQUEUE, false);
-            tabWidget->SetMode(FancyTabWidget::Mode_IconOnlyLargeSidebar);
-            if (PAGE_PLAYQUEUE==tabWidget->current_index()) {
-                showTab(PAGE_LIBRARY);
-            }
-            tabWidget->adjustSize();
-            playQueueWidget->adjustSize();
-        }
-    } else if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
-        coverWidget->setVisible(false);
-        tabWidget->SetMode(FancyTabWidget::Mode_IconOnlyBottomBar);
-        tabWidget->ToggleTab(PAGE_PLAYQUEUE, true);
-        showTab(PAGE_PLAYQUEUE);
-        tabWidget->adjustSize();
-    }
-}
-
-#else
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if (trayItem) {
@@ -1645,7 +1530,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         event->ignore();
     }
 }
-#endif
 
 void MainWindow::showVolumeControl()
 {
@@ -1680,7 +1564,7 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         playQueueModel.clear();
         lyricsPage->text->clear();
         serverInfoPage->clear();
-        #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+        #if !defined Q_OS_WIN
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
             Dynamic::self()->stop();
         }
@@ -1767,7 +1651,7 @@ void MainWindow::checkMpdDir()
     case PAGE_ALBUMS:    albumsPage->controlActions();     break;
     case PAGE_FOLDERS:   folderPage->controlActions();     break;
     case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
     #endif
     case PAGE_STREAMS:   streamsPage->controlActions();    break;
@@ -1890,12 +1774,10 @@ void MainWindow::readSettings()
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif
-    #ifndef CANTATA_ANDROID
     setupTrayIcon();
     #if !defined Q_OS_WIN
     toggleDockManager();
     toggleMpris();
-    #endif
     #endif
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     updateWindowTitle();
@@ -2361,7 +2243,6 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
     #endif
 
-    #ifndef CANTATA_ANDROID
     if (Settings::self()->showPopups() || trayItem) {
         if (!current.title.isEmpty() && !current.artist.isEmpty() && !current.album.isEmpty()) {
             #ifdef ENABLE_KDE_SUPPORT
@@ -2419,7 +2300,6 @@ void MainWindow::updateCurrentSong(const Song &song)
             #endif
         }
     }
-    #endif
 }
 
 void MainWindow::scrollPlayQueue()
@@ -2531,7 +2411,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
         }
         positionSlider->startTimer();
 
-        #ifndef CANTATA_ANDROID
         if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT
             trayItem->setIconByName("media-playback-start");
@@ -2539,7 +2418,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
             trayItem->setIcon(playbackPlay);
             #endif
         }
-        #endif
         break;
     case MPDState_Inactive:
     case MPDState_Stopped:
@@ -2562,7 +2440,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
         current.id=0;
         updateWindowTitle();
 
-        #ifndef CANTATA_ANDROID
         if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT
             trayItem->setIconByName("cantata");
@@ -2572,7 +2449,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
             trayItem->setToolTip(tr("Cantata"));
             #endif
         }
-        #endif
         positionSlider->stopTimer();
         break;
     case MPDState_Paused:
@@ -2586,7 +2462,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
         stopTrackAction->setEnabled(0!=playQueueModel.rowCount());
         nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
         prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
-        #ifndef CANTATA_ANDROID
         if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT
             trayItem->setIconByName("media-playback-pause");
@@ -2594,7 +2469,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
             trayItem->setIcon(playbackPause);
             #endif
         }
-        #endif
         positionSlider->stopTimer();
         break;
     default:
@@ -2843,7 +2717,6 @@ int MainWindow::calcCompactHeight()
            (messageWidget->isActive() ? (messageWidget->sizeHint().height()+spacing) : 0);
 }
 
-#ifndef CANTATA_ANDROID
 void MainWindow::togglePlayQueue()
 {
     static bool lastMax=false;
@@ -2889,15 +2762,12 @@ void MainWindow::togglePlayQueue()
         move(p);
     }
 }
-#endif
 
 void MainWindow::sidebarModeChanged()
 {
-    #ifndef CANTATA_ANDROID
     if (expandInterfaceAction->isChecked()) {
         setMinimumHeight(calcMinHeight());
     }
-    #endif
 }
 
 /*
@@ -2923,7 +2793,6 @@ void MainWindow::cropPlayQueue()
     emit removeSongs(toBeRemoved);
 }
 
-#ifndef CANTATA_ANDROID
 // Tray Icon //
 void MainWindow::setupTrayIcon()
 {
@@ -3019,7 +2888,6 @@ void MainWindow::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
     }
 }
 #endif
-#endif // CANTATA_ANDROID
 
 void MainWindow::currentTabChanged(int index)
 {
@@ -3052,7 +2920,7 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_PLAYLISTS:
         playlistsPage->controlActions();
         break;
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     case PAGE_DYNAMIC:
         dynamicPage->controlActions();
         break;
@@ -3090,10 +2958,8 @@ void MainWindow::tabToggled(int index)
     switch (index) {
     case PAGE_PLAYQUEUE:
         if (tabWidget->isEnabled(index)) {
-            #ifndef CANTATA_ANDROID
             autoHideSplitterAction->setVisible(false);
             splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
-            #endif
             playQueueWidget->setParent(playQueuePage);
             playQueuePage->layout()->addWidget(playQueueWidget);
             playQueueWidget->setVisible(true);
@@ -3103,10 +2969,8 @@ void MainWindow::tabToggled(int index)
             playQueuePage->layout()->removeWidget(playQueueWidget);
             playQueueWidget->setParent(splitter);
             playQueueWidget->setVisible(true);
-            #ifndef CANTATA_ANDROID
             autoHideSplitterAction->setVisible(true);
             splitter->setAutohidable(0, autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE));
-            #endif
         }
         break;
     case PAGE_LIBRARY:
@@ -3133,14 +2997,12 @@ void MainWindow::tabToggled(int index)
     sidebarModeChanged();
 }
 
-#ifndef CANTATA_ANDROID
 void MainWindow::toggleSplitterAutoHide()
 {
     bool ah=autoHideSplitterAction->isChecked() && !tabWidget->isEnabled(PAGE_PLAYQUEUE);
     splitter->setAutoHideEnabled(ah);
     splitter->setAutohidable(0, ah);
 }
-#endif
 
 void MainWindow::locateTrack()
 {
@@ -3174,7 +3036,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
             playlistsPage->focusSearch();
         }
     }
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     else if (QLatin1String("dynamic")==p) {
         showTab(MainWindow::PAGE_DYNAMIC);
         if (focusSearch) {
@@ -3219,7 +3081,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     }
 }
 
-#if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+#if !defined Q_OS_WIN
 void MainWindow::dynamicStatus(const QString &message)
 {
     Dynamic::self()->helperMessage(message);
@@ -3263,7 +3125,7 @@ void MainWindow::focusSearch()
     } else if (playlistsPage->isVisible()) {
         playlistsPage->focusSearch();
     }
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     else if (dynamicPage->isVisible()) {
         dynamicPage->focusSearch();
     }
@@ -3302,7 +3164,7 @@ void MainWindow::collapseAll()
     }
 }
 
-#if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+#if !defined Q_OS_WIN
 void MainWindow::toggleMpris()
 {
     bool on=Settings::self()->mpris();

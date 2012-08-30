@@ -35,11 +35,7 @@ ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    #ifdef CANTATA_ANDROID
-    dir->setVisible(false);
-    dirLabel->setVisible(false);
-    musicFolderNoteLabel->setVisible(false);
-    #elif defined ENABLE_DEVICES_SUPPORT
+    #if defined ENABLE_DEVICES_SUPPORT
     musicFolderNoteLabel->setText(musicFolderNoteLabel->text()+
                                   i18n("<i> This folder will also be used to locate music files "
                                        "for transferring to (and from) devices.</i>"));
@@ -49,12 +45,10 @@ ServerSettings::ServerSettings(QWidget *p)
     connect(saveButton, SIGNAL(clicked(bool)), SLOT(saveAs()));
     connect(removeButton, SIGNAL(clicked(bool)), SLOT(remove()));
     connect(connectButton, SIGNAL(clicked(bool)), SLOT(toggleConnection()));
-    #ifndef CANTATA_ANDROID
     saveButton->setIcon(Icon("document-save-as"));
     removeButton->setIcon(Icon("edit-delete"));
-    #endif
 
-    #if defined Q_OS_WIN || defined CANTATA_ANDROID
+    #if defined Q_OS_WIN
     hostLabel->setText(i18n("Host:"));
     socketNoteLabel->setVisible(false);
     #endif
@@ -190,9 +184,7 @@ void ServerSettings::enableWidgets(bool e)
 //     passwordLabel->setEnabled(e);
 //     dirLabel->setEnabled(e);
     connectButton->setText(e ? i18n("Connect") : i18n("Disconnect"));
-    #ifndef CANTATA_ANDROID
     connectButton->setIcon(Icon(e ? "network-connect" : "network-disconnect"));
-    #endif
     removeButton->setEnabled(e);
 //     saveButton->setEnabled(e);
 }

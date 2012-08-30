@@ -138,7 +138,7 @@ static QString encodeName(QString name)
     return name;
 }
 
-#if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+#if !defined Q_OS_WIN
 static QString xdgConfig()
 {
     QString env = QString::fromLocal8Bit(qgetenv("XDG_CONFIG_HOME"));
@@ -487,7 +487,7 @@ Covers::Image Covers::getImage(const Song &song)
 
         Job job(song, dirName);
 
-        #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+        #if !defined Q_OS_WIN
         // See if amarok, or clementine, has it...
         AppCover app=otherAppCover(job);
         if (!app.img.isNull()) {
@@ -681,7 +681,7 @@ void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
         if (job.isArtist) {
             emit artistImage(job.song.albumartist, QImage());
         } else {
-            #if defined Q_OS_WIN || defined CANTATA_ANDROID
+            #if defined Q_OS_WIN
             emit cover(job.song, QImage(), QString());
             #else
             AppCover app=otherAppCover(job);
@@ -734,7 +734,7 @@ void Covers::jobFinished()
             if (job.isArtist) {
                 emit artistImage(job.song.albumartist, img);
             } else if (img.isNull()) {
-                #if defined Q_OS_WIN || defined CANTATA_ANDROID
+                #if defined Q_OS_WIN
                 emit cover(job.song, QImage(), QString());
                 #else
                 AppCover app=otherAppCover(job);

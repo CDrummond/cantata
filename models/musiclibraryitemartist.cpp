@@ -100,7 +100,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
         }
 
         if (m_various) {
-            #if defined ENABLE_KDE_SUPPORT || defined CANTATA_ANDROID
+            #if defined ENABLE_KDE_SUPPORT
             QIcon icon=Icon("cantata-view-media-artist-various");
             #else
             QIcon icon(MusicLibraryModel::vaIcon());

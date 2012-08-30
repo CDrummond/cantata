@@ -98,13 +98,9 @@ int Application::newInstance() {
 }
 #else // ENABLE_KDE_SUPPORT
 Application::Application(int &argc, char **argv)
-    #ifdef CANTATA_ANDROID
-    : QApplication(argc, argv)
-    #else
     : QtSingleApplication(argc, argv)
-    #endif
 {
-    #if defined TAGLIB_FOUND && !defined CANTATA_ANDROID
+    #if defined TAGLIB_FOUND
     connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
     #endif
 
@@ -127,58 +123,8 @@ bool Application::winEventFilter(MSG *msg, long *result)
 }
 #endif
 
-#ifdef CANTATA_ANDROID
-#include <QtCore/QTextStream>
-#include <QtCore/QFile>
-
-static void setPal(QPalette &pal, QPalette::ColorGroup cg, const QStringList &parts)
-{
-    for(int i=0; i<parts.length(); ++i) {
-        pal.setColor(cg, (QPalette::ColorRole)i, QColor(parts.at(i)));
-    }
-}
-#endif // CANTATA_ANDROID
-
 bool Application::start()
 {
-    #ifdef CANTATA_ANDROID
-    QPalette pal=palette();
-
-    QFile f("://theme");
-    if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
-        QTextStream in(&f);
-        while (!in.atEnd()) {
-            QString line=in.readLine();
-            if (line.startsWith("font=")) {
-                QFont fnt(font());
-                fnt.setPointSize(line.mid(5).toInt());
-                setFont(fnt);
-            } else if (line.startsWith("active=")) {
-                setPal(pal, QPalette::Active, line.mid(7).split(", ", QString::SkipEmptyParts));
-                setPal(pal, QPalette::Inactive, line.mid(7).split(", ", QString::SkipEmptyParts));
-            } else if (line.startsWith("disabled=")) {
-                setPal(pal, QPalette::Disabled, line.mid(9).split(", ", QString::SkipEmptyParts));
-            }
-        }
-    }
-    setPalette(pal);
-
-    QFile cssFile("://style.css");
-    if (cssFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
-        int height=fontMetrics().height();
-        QTextStream in(&cssFile);
-        QString css;
-        while (!in.atEnd()) {
-            css+=in.readLine();
-        }
-        setStyleSheet(css
-                        .replace("QUARTER_HEIGHT", QString::number(height/4))
-                        .replace("HALF_HEIGHT", QString::number(height/2))
-                        .replace("HIGHLIGHT_LIGHTER", pal.color(QPalette::Active, QPalette::Highlight).light(50).name())
-                        .replace("HIGHLIGHT_DARKER", pal.color(QPalette::Active, QPalette::Highlight).dark(50).name())
-                        .replace("HIGHLIGHT", pal.color(QPalette::Active, QPalette::Highlight).name()));
-    }
-    #else
     if (isRunning()) {
         #ifdef TAGLIB_FOUND
         QStringList args(arguments());
@@ -191,7 +137,6 @@ bool Application::start()
     }
 
     Icon::setupIconTheme();
-    #endif
     return true;
 }
 

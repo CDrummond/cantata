@@ -39,7 +39,6 @@ ListView::ListView(QWidget *parent)
     setAlternatingRowColors(true);
     setUniformItemSizes(true);
     setAttribute(Qt::WA_MouseTracking);
-    TOUCH_SETUP
 }
 
 ListView::~ListView()
@@ -137,9 +136,4 @@ void ListView::correctSelection()
     setCurrentIndex(currentIndex());
     selectionModel()->select(s, QItemSelectionModel::SelectCurrent);
 }
-
-TOUCH_CONTEXT_MENU(ListView)
-TOUCH_EVENT_HANDLER(ListView)
-
-#define CLASS ListView
 

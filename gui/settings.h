@@ -187,10 +187,6 @@ public:
     bool openWallet();
     #endif
 
-    #ifdef CANTATA_ANDROID
-    QString getConfigDir();
-    #endif
-
     bool firstRun() const { return isFirstRun; }
 
 private Q_SLOTS:

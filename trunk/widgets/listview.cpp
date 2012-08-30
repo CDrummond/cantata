@@ -104,7 +104,7 @@ void ListView::startDrag(Qt::DropActions supportedActions)
 
 void ListView::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (Qt::NoModifier==event->modifiers()) {
+    if (Qt::NoModifier==event->modifiers() && Qt::LeftButton==event->button()) {
         QListView::mouseReleaseEvent(event);
     }
 }

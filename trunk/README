@@ -22,6 +22,25 @@ Cantata requires/uses the following libraries:
 8. MPG123 - used for ReplayGain detection (optional).
 
 
+Single/Double Click Activation
+==============================
+
+As of 0.8.3 Cantata forces single-click activation of items in the left hand
+pages (e.g. Library view). To revert to having this controlled via the style,
+you need to edit the Cantata config file. For a KDE build this will usually be
+~/.kde/share/config/cantatarc, for a Qt-only build on Linux this will usually
+be ~/.config/cantata/cantata.conf. For a windows build, you will need to use
+regedit and navigate to HKEY_CURRENT_USER/Software/cantata/cantata. The config
+item to be changed is forceSingleClick in the General section. e.g.
+
+    [General]
+    albumFirst=false
+    ...
+    forceSingleClick=true
+    groupMultiple=true
+    ...
+
+
 Amarok Radio Streams
 ====================
 

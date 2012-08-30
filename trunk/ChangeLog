@@ -14,10 +14,10 @@
  7. Fix issue with certain styles not drawing selection background in icon view.
  8. If we show an error, or info, message whilst using compact interface - then
     adjust size to take message widget into account.
- 9. If we loose MPD connection, then show error widget.
+ 9. If we lose MPD connection, then show error widget.
 10. Reset status when connection lost.
 11. Dont attempt to send commands if not connected.
-12. In Qt-builds, if we failt to update files (tag editor, replaygain) then
+12. In Qt-builds, if we fail to update files (tag editor, replaygain) then
     show the list of failures in the 'detailed text' section.
 13. In Qt (Linux) build, also register org.kde.cantata service - so that
     messages from dynamic helper can be received.
@@ -59,6 +59,9 @@
 34. Package missing edit-clear-locationbar-rtl.png icons so that clear button
     appears in windows line-edits.
 35. Use correct palette (Active/Inactive) when drawing item text.
+36. Force single-click activation in views. To enable double-click mode (which
+    depends upon the style), edit cantatarc (KDE) or cantata.conf (Qt only) and
+    set 'forceSingleClick=false' in the '[General]' section.
 
 0.8.2
 -----

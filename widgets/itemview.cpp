@@ -274,7 +274,8 @@ public:
 
         QRect textRect;
         bool selected=option.state&QStyle::State_Selected;
-        QColor color(option.palette.color(selected ? QPalette::HighlightedText : QPalette::Text));
+        bool active=option.state&QStyle::State_Active;
+        QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
         QTextOption textOpt(iconMode ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
 
         if (oneLine) {
@@ -396,7 +397,8 @@ public:
                 QFontMetrics textMetrics(textFont);
                 int textHeight=textMetrics.height();
                 bool selected=option.state&QStyle::State_Selected;
-                QColor color(option.palette.color(selected ? QPalette::HighlightedText : QPalette::Text));
+                bool active=option.state&QStyle::State_Active;
+                QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
                 QTextOption textOpt(Qt::AlignVCenter);
                 QRect textRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
                 QString str=textMetrics.elidedText(text.at(0), Qt::ElideRight, textRect.width(), QPalette::WindowText);

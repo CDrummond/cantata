@@ -1,10 +1,10 @@
-0.8.3
+﻿0.8.3
 -----
  1. Add CMake options to disable 'automagic' dependencies - required for gentoo
     USE flags (http://www.gentoo.org/proj/en/qa/automagic.xml). Because of this
     WANT_KDE_SUPPORT option has been renamed to ENABLE_KDE
  2. When requesting covers from a HTTP server, use QUrl::toPercentEncoding.
- 3. Fix multiple downlod attempts when getting covers from HTTP.
+ 3. Fix multiple download attempts when getting covers from HTTP.
  4. With KDE builds (4.7 or later), and Windows Qt builds, reconnect to MPD when
     system is resumed. (A reconnect attempt is made every half second for a max
     of 15 seconds)
@@ -16,12 +16,12 @@
     adjust size to take message widget into account.
  9. If we lose MPD connection, then show error widget.
 10. Reset status when connection lost.
-11. Dont attempt to send commands if not connected.
+11. Don't attempt to send commands if not connected.
 12. In Qt-builds, if we fail to update files (tag editor, replaygain) then
     show the list of failures in the 'detailed text' section.
 13. In Qt (Linux) build, also register org.kde.cantata service - so that
     messages from dynamic helper can be received.
-14. Update verison of KMessageWidget
+14. Update version of KMessageWidget
 15. Update Polish translation.
 16. Use 'avcodec' if 'ffmpeg' is not found.
 17. Show current song details in tooltip of notification icon for Qt builds as
@@ -36,7 +36,7 @@
 23. Fix handling of filename's with quotes.
 24. Fix track order when adding newly added album, via folders page, to
     playqueue.
-25. Dont split albums based upon year - this messes up compilation albums,
+25. Don't split albums based upon year - this messes up compilation albums,
     where each track may have a different year.
 26. To be consistent, use the year of the lowest track number to be an album's
     year.
@@ -46,7 +46,7 @@
 29. In KDE builds, check if MPD is readable each time we get a device added
     or removed signal from Solid if using KDE4.9. If we are using an older KDE,
     or using Qt-only (on Linux) then watch for changes to /proc/mounts
-30. If the date string recieved from MPD is longer than 4 characters, just use
+30. If the date string received from MPD is longer than 4 characters, just use
     the first 4 - as we are only interested in the year.
 31. If not changing artist/albumartist/album of a track in tag editor, then
     just update track if possible - as opposed to removing and adding to list
@@ -77,7 +77,7 @@
 -----
  1. Detect when this is the first time a user has run Cantata. If so, don't
     place the play queue in the sidebar.
- 2. Dont attempt to rename a playlist to its current name - otherwise it is
+ 2. Don't attempt to rename a playlist to its current name - otherwise it is
     deleted!
  3. When applying updates in tag editor, track organizer, or replay gain dialog
     show a progress bar to indicate activity.
@@ -86,8 +86,8 @@
     least, the maximise button can get disabled.
  6. If 'Music folder' in settings dialog is a http folder (path starts with
     http://), then attempt to download cover-art from the http server.
- 7. Dont update MPD volume just after we receive a status update - as MPD already
-    has that setting! Fixes an issue with pulseaudio setups - where MPD
+ 7. Don't update MPD volume just after we receive a status update - as MPD
+    already has that setting! Fixes an issue with pulseaudio setups - where MPD
     disconnects from pulse audio, tells cantata that volume is -1, and cantata
     attempts to set volume to 0.
  8. When fading on stop, reset original volume immediately before sending stop.
@@ -133,7 +133,7 @@
 21. Enable mouse-tracking for all list/tree views.
 22. Allow Icon/List for library view.
 23. Add option to show artist images in library view.
-24. Dont allow selection to overlap tab-widget border-lines in preferences
+24. Don't allow selection to overlap tab-widget border-lines in preferences
     dialog (Qt-only build).
 25. Show playlists in library and album views (requires MPD 0.17)
 26. Update ultimate_providers.xml to match Clementine 1.0.1
@@ -142,7 +142,7 @@
     (such as the Qt Gtk style) returns -1 for its spacing, assume a spacing of
     4 pixels instead.
 29. Workaround tab-widget issues with Gtk style. Only draw highlight for
-    selected item, and item curretly under mouse - no fade in/out.
+    selected item, and item currently under mouse - no fade in/out.
 30. Fix/workaround issues with fetching lyrics from letras.mus.br
 31. Add option to specify HTTP server listen address/interface.
 32. Support MPD queue functionality. Add an 'Add With Priority' to menu of
@@ -151,7 +151,7 @@
 33. Only ignore closeEvent if this is a 'spontaneous' event and we have a tray
     icon.
 34. Drastically reduce replay-gain calculation memory usage.
-35. Make more columns italic in replaygain dailog to make entries that will be
+35. Make more columns italic in replaygain dialog to make entries that will be
     modified.
 36. Make TagLib optional.
 37. Adjust size of covers in grouped view, icons in views, and main cover
@@ -160,7 +160,7 @@
     library and albums view based upon font size.
 39. Add option to place playqueue in sidebar.
 40. Add keyboard short-cut for 'back' icon in listviews.
-41. Fix issue (in Qt-builds) where messge widget sometimes (mainly at start-up)
+41. Fix issue (in Qt-builds) where message widget sometimes (mainly at start-up)
     is not not as wide as the main window.
 42. Provide sub-text for all items in folderview, fixes corruption of list
     mode.
@@ -262,7 +262,7 @@
 32. Remove 'Single Tracks' cover creation. This is not used in grouped view,
     etc.
 33. Limit downloaded covers to a max of 600x600 pixels.
-34. Dont update 'current song' details when playqueue is updated - the current
+34. Don't update 'current song' details when playqueue is updated - the current
     song is updated by other means. As we now use 'plchangesposid' to speed
     updates, we dont always have the full song info when playqueue is updated.
     This fixes a bug where the cover widget sometimes gets reset to empty.
@@ -380,7 +380,7 @@
  7. Open local files passed on commandline - if using local socket, or http
     server. (KDE only)
  8. When MPD connection is lost, indicate via message widget.
- 9. Dont show base dir when editing tags of tracks on a UMS device.
+ 9. Don't show base dir when editing tags of tracks on a UMS device.
 10. In tag editor dialog, if a field in the 'All tracks' section has multiple
     values - set the placeholder text to '(Various)'
 11. Add a cmake option CANTATA_TRANSLATIONS, used to specify which translations
@@ -446,7 +446,7 @@
 20. Optionally fade-out track when stopping.
 21. Add genre filtering to playlists and streams pages.
 22. When pressing play after pressing stop, start playing at current song -
-    don't start at begining of play queue.
+    don't start at beginning of play queue.
 23. Better repeat and consume icons.
 24. Fix search placeholder text when navigating back in list style devices.
 25. Query MPD for list of supported protocols - and only allow supported URLs.
@@ -475,7 +475,7 @@
     changed. (Previously the whole model was replaced).
  3. When changing name of playlist, show the original name in the line-edit.
  4. Fix adding songs with spaces in their filenames to stored playlists
- 5. When we receieve an updated signal from MPD, refresh library view.
+ 5. When we receive an updated signal from MPD, refresh library view.
  6. When disaplying songs of various artists albums, show as 'track number -
     artist - song'
  7. German translation - thanks to Lutz Lüttke
@@ -521,7 +521,7 @@
     opacity.
 14. Disable position slider when playing a stream.
 15. Basic elided-text class for Qt-only build.
-16. Dont build libMaia as a library, just compile into cantata.
+16. Don’t build libMaia as a library, just compile into cantata.
 17. Expand/collapse interface via clicking on album cover.
 18. Spanish translation - thanks to Omar Campagne.
 

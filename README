@@ -22,6 +22,79 @@ Cantata requires/uses the following libraries:
 8. MPG123 - used for ReplayGain detection (optional).
 
 
+Covers
+======
+
+When displaying covers, Cantata will load album covers in the following order:
+
+...if MPD folder exists, and is readable, then cantata will look for the following
+   within the folder containing the song:
+
+ 1. cover.jpg
+ 2. cover.png
+ 3. AlbumArt.jpg
+ 4. AlbumArt.png
+ 5. folder.jpg
+ 6. folder.png
+ 7. ${file}.jpg
+ 8. ${file}.png
+ 9. ${albumArtist} - ${album}.jpg
+10. ${albumArtist} - ${album}.png
+11. ${album}.jpg
+12. ${album}.jpg
+13. ANY other jpg, or png
+14. Image embedded within current songs tags.
+
+...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
+
+15. ${albumArtist}/${album}.jpg
+16. ${albumArtist}/${album}.png
+
+...if compiled for Linux
+
+17. Matching Amarok cover
+18. Matching Clementine cover
+
+...if the MPD folder was specified as a http URL
+
+19. ${url}/${dirFromFile}/cover.jpg
+20. ${url}/${dirFromFile}/cover.png
+
+...lastly
+
+21. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
+    download the image specified with the "extralarge" size.
+
+Downloaded images will be saved as cover.jpg/png within the song folder if
+possible. If not, then they will be saved in Cantata's cache folder.
+
+
+For artist images:
+
+...if MPD folder exists, and is readable, then cantata will look for the following
+   within the folder containing the song:
+
+1. ${albumArtist}.jpg
+2. ${albumArtist}.png
+3. album.jpg
+4. album.png
+
+... the above will be repeated for each parent folder (until we reach the MPD
+    root folder)
+
+...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
+
+5. ${albumArtist}.jpg
+6. ${albumArtist}.png
+
+...lastly
+
+7. Query last.fm using ${albumArtist}. Cantata will attempt to download the
+   image specified with the "extralarge" size.
+
+Downloaded artist images are saved to Cantata's cache folder.
+
+
 Single/Double Click Activation
 ==============================
 

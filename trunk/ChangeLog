@@ -54,6 +54,8 @@
 32. When displaying cover tooltip, if image is too big or image file is not
     found (as is the case for embedded covers), then save the image into a
     base64 array as a PNG - and have Qt use this in the 'img' tag.
+33. Package Qt's jpeg image plugin with windows zip file - otherwise jpeg
+    cover images cannot be loaded!
 
 0.8.2
 -----

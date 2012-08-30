@@ -110,6 +110,9 @@ public:
 
     static void setup();
 
+    static void setForceSingleClick(bool v);
+    static bool getForceSingleClick();
+
     ItemView(QWidget *p);
     virtual ~ItemView();
 
@@ -165,6 +168,9 @@ private Q_SLOTS:
     void itemClicked(const QModelIndex &index);
     void itemActivated(const QModelIndex &index);
     void delaySearchItems();
+
+private:
+    void activateItem(const QModelIndex &index);
 
 private:
     QAction * getAction(const QModelIndex &index);

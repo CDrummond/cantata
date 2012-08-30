@@ -1372,6 +1372,7 @@ MainWindow::~MainWindow()
     #ifdef ENABLE_WEBKIT
     infoPage->save();
     #endif
+    Settings::self()->saveForceSingleClick(ItemView::getForceSingleClick());
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
     #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
@@ -1898,6 +1899,7 @@ void MainWindow::readSettings()
     #endif
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     updateWindowTitle();
+    ItemView::setForceSingleClick(Settings::self()->forceSingleClick());
 }
 
 void MainWindow::updateSettings()

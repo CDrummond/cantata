@@ -42,6 +42,8 @@
 #include <KDE/KPixmapSequenceOverlayPainter>
 #endif
 
+static bool forceSingleClick=true;
+
 #ifdef ENABLE_KDE_SUPPORT
 #define SINGLE_CLICK KGlobalSettings::singleClick()
 #elif defined CANTATA_ANDROID
@@ -429,6 +431,16 @@ public:
         }
     }
 };
+
+void ItemView::setForceSingleClick(bool v)
+{
+    forceSingleClick=v;
+}
+
+bool ItemView::getForceSingleClick()
+{
+    return forceSingleClick;
+}
 
 ItemView::ItemView(QWidget *p)
     : QWidget(p)
@@ -934,11 +946,22 @@ void ItemView::itemClicked(const QModelIndex &index)
         }
     }
     #ifdef CANTATA_ANDROID
-    itemActivated(index);
+    activateItem(index);
+    #else
+    if (forceSingleClick) {
+        activateItem(index);
+    }
     #endif
 }
 
 void ItemView::itemActivated(const QModelIndex &index)
+{
+    if (!forceSingleClick) {
+        activateItem(index);
+    }
+}
+
+void ItemView::activateItem(const QModelIndex &index)
 {
     if ((act1 || act2 || toggle) && ActionItemDelegate::hasActions(index, actLevel) && getAction(index)) {
         return;

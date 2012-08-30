@@ -110,7 +110,7 @@ void TreeView::startDrag(Qt::DropActions supportedActions)
 
 void TreeView::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (Qt::NoModifier==event->modifiers()) {
+    if (Qt::NoModifier==event->modifiers() && Qt::LeftButton==event->button()) {
         QTreeView::mouseReleaseEvent(event);
     }
 }

@@ -601,6 +601,11 @@ QString Settings::streamUrl()
 }
 #endif
 
+bool Settings::forceSingleClick()
+{
+    return GET_BOOL("forceSingleClick", true);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     REMOVE_GROUP(MPDConnectionDetails::configGroupName(v));
@@ -915,6 +920,11 @@ void Settings::saveStreamUrl(const QString &v)
     SET_VALUE("streamUrl", v);
 }
 #endif
+
+void Settings::saveForceSingleClick(bool v)
+{
+    SET_VALUE("forceSingleClick", v);
+}
 
 void Settings::save(bool force)
 {

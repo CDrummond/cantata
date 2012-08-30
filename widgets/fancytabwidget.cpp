@@ -54,10 +54,33 @@
 #include <QtCore/QAnimationGroup>
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QSignalMapper>
+#include <QtCore/QCache>
 
 static inline bool isGtkStyle()
 {
     return QApplication::style()->inherits("QGtkStyle");
+}
+
+static void drawGtkSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double fader)
+{
+    static QCache<QString, QImage> cache(30000);
+
+    QString key=QString::number(opt.rect.width())+QChar(':')+QString::number(opt.rect.height())+QChar(':');
+    QImage *img=cache.object(key);
+
+    if (!img) {
+        img=new QImage(opt.rect.width(), opt.rect.height(), QImage::Format_RGB32);
+        QStyleOptionViewItemV4 styleOpt(opt);
+        QPainter p(img);
+        styleOpt.rect=QRect(0, 0, styleOpt.rect.width(), styleOpt.rect.height());
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, &p, 0);
+        p.end();
+        cache.insert(key, img, img->width()*img->height());
+    }
+    double opacityB4=painter->opacity();
+    painter->setOpacity(fader/150.0);
+    painter->drawImage(opt.rect, *img);
+    painter->setOpacity(opacityB4);
 }
 
 using namespace Core;
@@ -175,13 +198,14 @@ void FancyTabProxyStyle::drawControl(
     styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
     styleOpt.showDecorationSelected=true;
     bool drawBgnd=true;
+    int fader = 1;
 
     if (!selected && drawBgnd) {
         const QString fader_key = "tab_" + text + "_fader";
         const QString animation_key = "tab_" + text + "_animation";
 
         const QString tab_hover = widget->property("tab_hover").toString();
-        int fader = widget->property(fader_key.toUtf8().constData()).toInt();
+        fader=widget->property(fader_key.toUtf8().constData()).toInt();
         QPropertyAnimation* animation = widget->property(animation_key.toUtf8().constData()).value<QPropertyAnimation*>();
 
         if (!animation) {
@@ -209,7 +233,7 @@ void FancyTabProxyStyle::drawControl(
             }
         }
 
-        if (fader<1 || (50!=fader && isGtkStyle())) {
+        if (fader<1) {
             drawBgnd=false;
         } else {
             QColor col(styleOpt.palette.highlight().color());
@@ -219,7 +243,11 @@ void FancyTabProxyStyle::drawControl(
     }
 
     if (drawBgnd) {
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
+        if (!selected && isGtkStyle()) {
+            drawGtkSelection(styleOpt, p, fader*1.0);
+        } else {
+            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
+        }
     }
 //     drawRoundedRect(p, draw_rect, 3, col);
 
@@ -503,7 +531,7 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
 
     if (!selected && drawBgnd) {
         int fader=int(m_tabs[tabIndex]->fader());
-        if (fader<1 || (gtkStyle && 50!=fader)) {
+        if (fader<1) {
             drawBgnd=false;
         } else  {
             QColor col(styleOpt.palette.highlight().color());
@@ -512,7 +540,11 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
         }
     }
     if (drawBgnd) {
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
+        if (!selected && gtkStyle) {
+            drawGtkSelection(styleOpt, painter, m_tabs[tabIndex]->fader());
+        } else {
+            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
+        }
     }
 //    drawRoundedRect(painter, rect, 3, col);
 

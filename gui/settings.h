@@ -118,6 +118,7 @@ public:
     bool playStream();
     QString streamUrl();
     #endif
+    bool forceSingleClick();
 
     void removeConnectionDetails(const QString &v);
     void saveConnectionDetails(const MPDConnectionDetails &v);
@@ -180,6 +181,7 @@ public:
     void savePlayStream(bool v);
     void saveStreamUrl(const QString &v);
     #endif
+    void saveForceSingleClick(bool v);
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();

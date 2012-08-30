@@ -28,12 +28,6 @@
 #include "config.h"
 #include <QtGui/QSplitter>
 
-#ifdef CANTATA_ANDROID
-
-#define AutohidingSplitter QSplitter
-
-#else
-
 #include <QtCore/QList>
 #include <QtCore/QQueue>
 #include <QtCore/QVariantAnimation>
@@ -123,7 +117,5 @@ private:
     QSet<QWidget *> popupsBlockingAutohiding;
     friend class AutohidingSplitterHandle;
 };
-
-#endif
 
 #endif

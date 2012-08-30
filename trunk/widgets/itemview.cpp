@@ -46,8 +46,6 @@ static bool forceSingleClick=true;
 
 #ifdef ENABLE_KDE_SUPPORT
 #define SINGLE_CLICK KGlobalSettings::singleClick()
-#elif defined CANTATA_ANDROID
-#define SINGLE_CLICK false
 #else
 #define SINGLE_CLICK style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, this)
 #endif
@@ -515,9 +513,6 @@ void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
     connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
-    #ifdef CANTATA_ANDROID
-    connect(listView, SIGNAL(goBack()),  this, SLOT(backActivated()));
-    #endif
     mode=Mode_List;
     setMode(Mode_Tree);
 }
@@ -945,13 +940,10 @@ void ItemView::itemClicked(const QModelIndex &index)
             return;
         }
     }
-    #ifdef CANTATA_ANDROID
-    activateItem(index);
-    #else
+
     if (forceSingleClick) {
         activateItem(index);
     }
-    #endif
 }
 
 void ItemView::itemActivated(const QModelIndex &index)

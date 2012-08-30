@@ -404,19 +404,11 @@ Qt::DropActions PlayQueueModel::supportedDropActions() const
 
 Qt::ItemFlags PlayQueueModel::flags(const QModelIndex &index) const
 {
-    #ifdef CANTATA_ANDROID
-    if (index.isValid()) {
-        return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-    } else {
-        return QAbstractItemModel::flags(index);
-    }
-    #else
     if (index.isValid()) {
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
     } else {
         return Qt::ItemIsDropEnabled;
     }
-    #endif
 }
 
 /**

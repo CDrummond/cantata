@@ -33,17 +33,8 @@ typedef QToolButton ToggleButton;
 #else // ENABLE_KDE_SUPPORT
 
 #include <QtGui/QToolButton>
-#ifdef CANTATA_ANDROID
-class ToggleButton : public QToolButton
-{
-public:
-    ToggleButton(QWidget *parent);
-    virtual ~ToggleButton();
-    void paintEvent(QPaintEvent *e);
-};
-#else // CANTATA_ANDROID
+
 typedef QToolButton ToggleButton;
-#endif // CANTATA_ANDROID
 
 #endif // ENABLE_KDE_SUPPORT
 

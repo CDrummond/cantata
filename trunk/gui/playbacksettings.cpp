@@ -33,11 +33,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     stopFadeDuration->setSuffix(i18n(" ms"));
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
-    #ifdef CANTATA_ANDROID
-    stopOnExit->setVisible(false);
-    stopOnExitLabel->setVisible(false);
-    #endif
-    #if defined Q_OS_WIN || defined CANTATA_ANDROID
+    #if defined Q_OS_WIN
     stopDynamizerOnExit->setVisible(false);
     stopDynamizerOnExitLabel->setVisible(false);
     #endif
@@ -46,10 +42,8 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
 void PlaybackSettings::load()
 {
     stopOnExit->setChecked(Settings::self()->stopOnExit());
-    #ifndef CANTATA_ANDROID
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
-    #endif
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     stopDynamizerOnExit->setChecked(Settings::self()->stopDynamizerOnExit());
     #endif
 }
@@ -57,10 +51,8 @@ void PlaybackSettings::load()
 void PlaybackSettings::save()
 {
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
-    #ifndef CANTATA_ANDROID
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
-    #endif
-    #if !defined Q_OS_WIN && !defined CANTATA_ANDROID
+    #if !defined Q_OS_WIN
     Settings::self()->saveStopDynamizerOnExit(stopDynamizerOnExit->isChecked());
     #endif
 }

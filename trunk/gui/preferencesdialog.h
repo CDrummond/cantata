@@ -63,19 +63,15 @@ private:
     ServerSettings *server;
     ServerPlaybackSettings *serverplayback;
     PlaybackSettings *playback;
-    #ifndef CANTATA_ANDROID
     InterfaceSettings *interface;
     ExternalSettings *ext;
-    #endif
     LyricSettings *lyrics;
-    #ifndef CANTATA_ANDROID
     #ifdef TAGLIB_FOUND
     HttpServerSettings *http;
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     ProxySettings *proxy;
     #endif
-    #endif // CANTATA_ANDROID
 };
 
 #endif

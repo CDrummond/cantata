@@ -24,6 +24,49 @@
 #include "icon.h"
 #include <QtGui/QToolButton>
 #include <QtGui/QApplication>
+#include <QtGui/QPixmap>
+#include <QtGui/QFont>
+#include <QtGui/QPainter>
+
+static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
+{
+    QPixmap pix(size, size);
+    pix.fill(Qt::transparent);
+    QPainter p(&pix);
+    QFont font(QLatin1String("sans"));
+    font.setBold(false);
+    font.setItalic(false);
+    font.setPixelSize(size*0.9);
+    p.setFont(font);
+    p.setPen(col);
+    p.setOpacity(opacity);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.drawText(QRect(0, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+    p.drawText(QRect(1, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+    p.drawText(QRect(-1, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+    p.setRenderHint(QPainter::Antialiasing, false);
+    p.end();
+    return pix;
+}
+
+QIcon Icon::createSingleIcon()
+{
+    QIcon icon;
+    QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
+    if (stdColor==Qt::white) {
+        stdColor=QColor(200, 200, 200);
+    }
+    QColor highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
+    QList<int> sizes=QList<int>() << 16 << 22;
+
+    foreach (int s, sizes) {
+        icon.addPixmap(createSingleIconPixmap(s, stdColor, 100.0));
+        icon.addPixmap(createSingleIconPixmap(s, stdColor, 50.0), QIcon::Disabled);
+        icon.addPixmap(createSingleIconPixmap(s, highlightColor, 100.0), QIcon::Active);
+    }
+
+    return icon;
+}
 
 int Icon::stdSize(int v)
 {
@@ -102,5 +145,14 @@ void Icon::setupIconTheme()
             }
         }
     }
+}
+
+QIcon Icon::create(const QStringList &sizes)
+{
+    QIcon icon(sizes.at(0));
+    for (int i=1; i<sizes.size(); ++i) {
+        icon.addFile(sizes.at(i));
+    }
+    return icon;
 }
 #endif

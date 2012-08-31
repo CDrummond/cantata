@@ -130,6 +130,7 @@ SET( CANTATA_SRCS
     widgets/textbrowser.cpp
     widgets/coverwidget.cpp
     widgets/icon.cpp
+    widgets/volumecontrol.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -187,6 +188,7 @@ SET( CANTATA_MOC_HDRS
     widgets/groupedview.h
     widgets/messagewidget.h
     widgets/coverwidget.h
+    widgets/volumecontrol.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h

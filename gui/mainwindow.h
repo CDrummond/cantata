@@ -86,6 +86,7 @@ class QTimer;
 class QPropertyAnimation;
 class QActionGroup;
 class QDateTime;
+class VolumeControl;
 
 // Dummy class so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget
@@ -125,30 +126,6 @@ protected:
 
 private:
     MainWindow * const window;
-};
-
-class VolumeControl : public QMenu
-{
-    Q_OBJECT
-
-public:
-    VolumeControl(QWidget *parent);
-    virtual ~VolumeControl();
-
-    void installSliderEventFilter(QObject *filter);
-
-public Q_SLOTS:
-    void increaseVolume();
-    void decreaseVolume();
-    void setValue(int v);
-
-    QSlider * sliderWidget() { return slider; }
-
-Q_SIGNALS:
-    void valueChanged(int v);
-
-private:
-    QSlider *slider;
 };
 
 class CoverEventHandler : public QObject
@@ -334,8 +311,6 @@ private Q_SLOTS:
     void toggleMpris();
     void toggleDockManager();
     #endif
-//     void createDataCd();
-//     void createAudioCd();
     #ifdef TAGLIB_FOUND
     void editTags();
     void editPlayQueueTags();
@@ -371,9 +346,9 @@ private:
     void updateWindowTitle();
     void startVolumeFade(/*bool stop*/);
     void stopVolumeFade();
-//     void callK3b(const QString &type);
     void showTab(int page);
     bool fadeWhenStop() const;
+    Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
 
 private:
     int loaded;
@@ -440,9 +415,6 @@ private:
     Action *streamsTabAction;
     Action *removeAction;
     Action *backAction;
-//     Action *burnAction;
-//     Action *createDataCdAction;
-//     Action *createAudioCdAction;
     #ifdef TAGLIB_FOUND
     Action *editTagsAction;
     Action *editPlayQueueTagsAction;

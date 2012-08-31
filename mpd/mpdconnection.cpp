@@ -35,7 +35,6 @@
 #include <QtCore/QThread>
 #include <QtCore/QStringList>
 #include <QtCore/QTimer>
-#include "debugtimer.h"
 #include "settings.h"
 
 // #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()
@@ -1048,7 +1047,6 @@ void MPDConnection::update()
  */
 void MPDConnection::loadLibrary()
 {
-    TF_DEBUG
     emit updatingLibrary();
     Response response=sendCommand("listallinfo");
     if (response.ok) {
@@ -1063,7 +1061,6 @@ void MPDConnection::loadLibrary()
 */
 void MPDConnection::loadFolders()
 {
-    TF_DEBUG
     emit updatingFileList();
     Response response=sendCommand("listall");
     if (response.ok) {
@@ -1084,7 +1081,6 @@ void MPDConnection::loadFolders()
 
 void MPDConnection::listPlaylists()
 {
-    TF_DEBUG
     Response response=sendCommand("listplaylists");
     if (response.ok) {
         emit playlistsRetrieved(MPDParseUtils::parsePlaylists(response.data));
@@ -1093,7 +1089,6 @@ void MPDConnection::listPlaylists()
 
 void MPDConnection::playlistInfo(const QString &name)
 {
-    TF_DEBUG
     Response response=sendCommand("listplaylistinfo "+encodeName(name));
     if (response.ok) {
         emit playlistInfoRetrieved(name, MPDParseUtils::parseSongs(response.data));

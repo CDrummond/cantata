@@ -15,7 +15,6 @@
 #cmakedefine TAGLIB_MP4_FOUND 1
 #cmakedefine MTP_FOUND 1
 #cmakedefine PHONON_FOUND 1
-#cmakedefine CANTATA_DBUG_TIMER
 #cmakedefine FFMPEG_FOUND 1
 #cmakedefine MPG123_FOUND 1
 #cmakedefine USE_SPEEX_RESAMPLER 1

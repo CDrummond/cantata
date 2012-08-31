@@ -35,7 +35,6 @@
 #include "itemview.h"
 #include "settings.h"
 #include "mpdconnection.h"
-#include "debugtimer.h"
 #include "icon.h"
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -214,7 +213,6 @@ void DirViewModel::clear()
 
 void DirViewModel::updateDirView(DirViewItemRoot *newroot)
 {
-    TF_DEBUG
     bool incremental=enabled && rootItem->childCount() && newroot->childCount();
 
     if (incremental) {

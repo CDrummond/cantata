@@ -21,34 +21,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ICON_H
-#define ICON_H
+#ifndef VOLUMECONTROL_H
+#define VOLUMECONTROL_H
 
-#ifdef ENABLE_KDE_SUPPORT
+#include <QtGui/QMenu>
 
-#include <KDE/KIcon>
-#define Icon(X) KIcon(X)
-#define MediaIcon(X) KIcon(X)
+class QSlider;
 
-#else
-
-#include <QtGui/QIcon>
-#define Icon(X) QIcon::fromTheme(X)
-#define MediaIcon(X) Icon::getMediaIcon(X)
-#endif
-
-class QToolButton;
-
-namespace Icon
+class VolumeControl : public QMenu
 {
-    extern QIcon createSingleIcon();
-    extern int stdSize(int s);
-    extern void init(QToolButton *btn, bool setFlat=true);
-    #if !defined ENABLE_KDE_SUPPORT
-    extern QIcon getMediaIcon(const char *name);
-    extern void setupIconTheme();
-    extern QIcon create(const QStringList &sizes);
-    #endif
-}
+    Q_OBJECT
+
+public:
+    VolumeControl(QWidget *parent);
+    virtual ~VolumeControl();
+
+    void installSliderEventFilter(QObject *filter);
+
+public Q_SLOTS:
+    void increaseVolume();
+    void decreaseVolume();
+    void setValue(int v);
+
+    QSlider * sliderWidget() { return slider; }
+
+Q_SIGNALS:
+    void valueChanged(int v);
+
+private:
+    QSlider *slider;
+};
 
 #endif

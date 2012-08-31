@@ -42,7 +42,6 @@
 #include "covers.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
-#include "debugtimer.h"
 #include "icon.h"
 
 static int sortAlbums=AlbumsModel::Sort_AlbumArtist;
@@ -373,7 +372,6 @@ void AlbumsModel::update(const MusicLibraryItemRoot *root)
         return;
     }
 
-    TF_DEBUG
     bool resettingModel=items.isEmpty() || 0==root->childCount();
     if (resettingModel) {
         beginResetModel();

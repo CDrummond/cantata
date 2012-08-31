@@ -46,7 +46,6 @@
 #include "httpserver.h"
 #endif
 #include "utils.h"
-#include "debugtimer.h"
 
 QString MPDParseUtils::fixPath(const QString &f)
 {
@@ -76,7 +75,6 @@ QString MPDParseUtils::getDir(const QString &f)
 
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 {
-    TF_DEBUG
     QList<Playlist> playlists;
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
@@ -104,7 +102,6 @@ QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 
 MPDStatsValues MPDParseUtils::parseStats(const QByteArray &data)
 {
-    TF_DEBUG
     MPDStatsValues v;
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
@@ -134,7 +131,6 @@ MPDStatsValues MPDParseUtils::parseStats(const QByteArray &data)
 
 MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
 {
-    TF_DEBUG
     MPDStatusValues v;
     QList<QByteArray> lines = data.split('\n');
     QList<QByteArray> tokens;
@@ -252,7 +248,6 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
 
 QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
 {
-    TF_DEBUG
     QList<Song> songs;
     QByteArray line;
     QList<QByteArray> lines = data.split('\n');
@@ -289,7 +284,6 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
 
 QList<MPDParseUtils::IdPos> MPDParseUtils::parseChanges(const QByteArray &data)
 {
-    TF_DEBUG
     QList<IdPos> changes;
     QList<QByteArray> lines = data.split('\n');
     int amountOfLines = lines.size();
@@ -329,7 +323,6 @@ QList<MPDParseUtils::IdPos> MPDParseUtils::parseChanges(const QByteArray &data)
 
 QStringList MPDParseUtils::parseUrlHandlers(const QByteArray &data)
 {
-    TF_DEBUG
     QStringList urls;
     QByteArray song;
     QList<QByteArray> lines = data.split('\n');
@@ -374,7 +367,6 @@ void MPDParseUtils::setGroupMultiple(bool g)
 
 MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
 {
-    TF_DEBUG
     MusicLibraryItemRoot * const rootItem = new MusicLibraryItemRoot;
     QByteArray currentItem;
     QList<QByteArray> lines = data.split('\n');
@@ -429,7 +421,6 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
 
 DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
 {
-    TF_DEBUG
     QList<QByteArray> lines = data.split('\n');
 
     DirViewItemRoot * rootItem = new DirViewItemRoot;

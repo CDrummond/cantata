@@ -43,7 +43,6 @@
 #include "httpserver.h"
 #endif
 #include "settings.h"
-#include "debugtimer.h"
 #include "icon.h"
 #include "config.h"
 
@@ -652,7 +651,6 @@ void PlayQueueModel::setGrouped(bool g)
 // Update playqueue with contents returned from MPD.
 void PlayQueueModel::update(const QList<Song> &songList)
 {
-    TF_DEBUG
     QSet<qint32> newIds;
     foreach (const Song &s, songList) {
         newIds.insert(s.id);

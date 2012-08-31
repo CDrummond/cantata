@@ -439,14 +439,6 @@ Covers::Image Covers::getImage(const Song &song)
                     }
                 }
             }
-            QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
-            foreach (const QString &fileName, files) {
-                QImage img(dirName+fileName);
-
-                if (!img.isNull()) {
-                    return Image(img, dirName+fileName);
-                }
-            }
 
             #ifdef TAGLIB_FOUND
             QString fileName=haveAbsPath ? song.file : (MPDConnection::self()->getDetails().dir+songFile);
@@ -457,6 +449,15 @@ Covers::Image Covers::getImage(const Song &song)
                 }
             }
             #endif
+
+            QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
+            foreach (const QString &fileName, files) {
+                QImage img(dirName+fileName);
+
+                if (!img.isNull()) {
+                    return Image(img, dirName+fileName);
+                }
+            }
         }
     }
 

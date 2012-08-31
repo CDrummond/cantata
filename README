@@ -42,8 +42,8 @@ When displaying covers, Cantata will load album covers in the following order:
 10. ${albumArtist} - ${album}.png
 11. ${album}.jpg
 12. ${album}.jpg
-13. ANY other jpg, or png
-14. Image embedded within current songs tags.
+13. Image embedded within current songs tags.
+14. ANY other jpg, or png
 
 ...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
 

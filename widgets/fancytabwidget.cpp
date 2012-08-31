@@ -56,6 +56,11 @@
 #include <QtCore/QSignalMapper>
 #include <QtCore/QCache>
 
+static inline Qt::TextElideMode elideMode()
+{
+    return Qt::LeftToRight==QApplication::layoutDirection() ? Qt::ElideRight : Qt::ElideLeft;
+}
+
 static inline bool isGtkStyle()
 {
     return QApplication::style()->inherits("QGtkStyle");
@@ -266,7 +271,7 @@ void FancyTabProxyStyle::drawControl(
 
   QString txt=text;
   txt.replace("&", "");
-  txt=p->fontMetrics().elidedText(txt, Qt::ElideMiddle, text_rect.width());
+  txt=p->fontMetrics().elidedText(txt, elideMode(), text_rect.width());
 
   p->drawText(text_rect.translated(0, -1), textFlags, txt);
 
@@ -382,9 +387,9 @@ QSize FancyTab::sizeHint() const {
     const int spacing = 8;
     if (static_cast<FancyTabBar *>(parent())->showText()) {
         QFontMetrics fm(font());
-        int textWidth = fm.width(text);
-        int width = qMax(32, qMin(96, textWidth)) + spacing + 2;
-        QSize ret(width, iconSize + spacing + fm.height());
+        int textWidth = fm.width(text)*1.1;
+        int width = qMax(iconSize, qMin(3*iconSize, textWidth)) + spacing + 2;
+        QSize ret(width, iconSize + iconSize + fm.height());
         return ret;
     } else {
         return QSize(iconSize + spacing, iconSize + spacing);
@@ -403,7 +408,7 @@ QSize FancyTabBar::tabSizeHint() const
         foreach (FancyTab *tab, m_tabs) {
             maxTw=qMax(maxTw, tab->sizeHint().width());
         }
-        return QSize(qMax(32 + spacing + 2, maxTw), m_iconSize + spacing + fm.height());
+        return QSize(qMax(m_iconSize + spacing + 2, maxTw), m_iconSize + spacing + fm.height());
     } else {
         return QSize(m_iconSize + spacing, m_iconSize + spacing);
     }
@@ -550,7 +555,7 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
 
 
     if (m_showText) {
-        QString tabText(painter->fontMetrics().elidedText(this->tabText(tabIndex), Qt::ElideMiddle, width()));
+        QString tabText(painter->fontMetrics().elidedText(this->tabText(tabIndex), elideMode(), width()));
         QRect tabTextRect(tabRect(tabIndex));
         QRect tabIconRect(tabTextRect);
         tabIconRect.adjust(+4, +4, -4, -4);
@@ -1064,7 +1069,7 @@ void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons, boo
   bar->setUsesScrollButtons(true);
 
   if (shape == QTabBar::RoundedWest) {
-    bar->setIconSize(QSize(16, 16));
+    bar->setIconSize(QSize(smallIconSize, smallIconSize));
   }
 
   if (fancy) {
@@ -1089,7 +1094,7 @@ void FancyTabWidget::MakeTabBar(QTabBar::Shape shape, bool text, bool icons, boo
 
     QString label = (*it).tab_label_;
     if (shape == QTabBar::RoundedWest) {
-      label = QFontMetrics(font()).elidedText(label, Qt::ElideMiddle, 100);
+      label = QFontMetrics(font()).elidedText(label, elideMode(), 120);
     }
 
     int tab_id = -1;

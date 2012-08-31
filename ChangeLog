@@ -67,6 +67,7 @@
     songs folder. (These are checked AFTER cover.jpg/png, etc.)
 38. Improve FancyTabWidget appearance for Gtk+ style - when hovering, draw
     selection into a QImage and set painter's opacity before drawing image.
+39. Elide to right (or left for RTL) strings in sidebar.
 
 0.8.2
 -----

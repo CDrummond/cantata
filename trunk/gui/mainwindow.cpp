@@ -27,17 +27,11 @@
 #include <QtCore/QSet>
 #include <QtCore/QString>
 #include <QtCore/QTimer>
-#include <QtCore/QProcess>
-#include <QtCore/QPropertyAnimation>
 #include <QtCore/QThread>
-#include <QtCore/QDateTime>
 #include <QtCore/QSocketNotifier>
 #include <QtCore/QFile>
-#include <QtGui/QResizeEvent>
-#include <QtGui/QMoveEvent>
 #include <QtGui/QClipboard>
 #include <QtGui/QProxyStyle>
-#include <QtGui/QPainter>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kdeversion.h>
@@ -50,10 +44,6 @@
 #include <KDE/KActionCollection>
 #include <KDE/KNotification>
 #include <KDE/KStandardAction>
-#include <KDE/KStandardDirs>
-#include <KDE/KAboutApplicationDialog>
-#include <KDE/KLineEdit>
-#include <KDE/KXMLGUIFactory>
 #include <KDE/KMenuBar>
 #include <KDE/KMenu>
 #include <KDE/KStatusNotifierItem>
@@ -117,50 +107,10 @@
 #include "groupedview.h"
 #include "actionitemdelegate.h"
 #include "icon.h"
-#include "debugtimer.h"
+#include "volumecontrol.h"
 #ifdef Q_OS_WIN
 static void raiseWindow(QWidget *w);
 #endif
-
-static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
-{
-    QPixmap pix(size, size);
-    pix.fill(Qt::transparent);
-    QPainter p(&pix);
-    QFont font(QLatin1String("sans"));
-    font.setBold(false);
-    font.setItalic(false);
-    font.setPixelSize(size*0.9);
-    p.setFont(font);
-    p.setPen(col);
-    p.setOpacity(opacity);
-    p.setRenderHint(QPainter::Antialiasing, true);
-    p.drawText(QRect(0, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
-    p.drawText(QRect(1, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
-    p.drawText(QRect(-1, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
-    p.setRenderHint(QPainter::Antialiasing, false);
-    p.end();
-    return pix;
-}
-
-static QIcon createSingleIcon()
-{
-    QIcon icon;
-    QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
-    if (stdColor==Qt::white) {
-        stdColor=QColor(200, 200, 200);
-    }
-    QColor highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
-    QList<int> sizes=QList<int>() << 16 << 22;
-
-    foreach (int s, sizes) {
-        icon.addPixmap(createSingleIconPixmap(s, stdColor, 100.0));
-        icon.addPixmap(createSingleIconPixmap(s, stdColor, 50.0), QIcon::Disabled);
-        icon.addPixmap(createSingleIconPixmap(s, highlightColor, 100.0), QIcon::Active);
-    }
-
-    return icon;
-}
 
 enum Tabs
 {
@@ -226,66 +176,6 @@ bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
     }
 
     return QObject::eventFilter(obj, event);
-}
-
-VolumeControl::VolumeControl(QWidget *parent)
-    : QMenu(parent)
-{
-    QFrame *w = new QFrame(this);
-    slider = new QSlider(w);
-
-    QLabel *increase = new QLabel(QLatin1String("+"), w);
-    QLabel *decrease = new QLabel(QLatin1String("-"), w);
-    increase->setAlignment(Qt::AlignHCenter);
-    decrease->setAlignment(Qt::AlignHCenter);
-
-    QVBoxLayout *l = new QVBoxLayout(w);
-    l->setMargin(3);
-    l->setSpacing(0);
-    l->addWidget(increase);
-    l->addWidget(slider);
-    l->addWidget(decrease);
-
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(0);
-    layout->addWidget(w);
-    connect(slider, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
-    int size=Icon::stdSize(QApplication::fontMetrics().height());
-
-    slider->setMinimumHeight(size*12);
-    slider->setMaximumHeight(size*12);
-    slider->setMinimumWidth(size*1.5);
-    slider->setMaximumWidth(size*1.5);
-    slider->setOrientation(Qt::Vertical);
-    slider->setMinimum(0);
-    slider->setMaximum(100);
-    slider->setPageStep(5);
-
-    adjustSize();
-}
-
-VolumeControl::~VolumeControl()
-{
-}
-
-void VolumeControl::installSliderEventFilter(QObject *filter)
-{
-    slider->installEventFilter(filter);
-}
-
-void VolumeControl::increaseVolume()
-{
-    slider->triggerAction(QAbstractSlider::SliderPageStepAdd);
-}
-
-void VolumeControl::decreaseVolume()
-{
-    slider->triggerAction(QAbstractSlider::SliderPageStepSub);
-}
-
-void VolumeControl::setValue(int v)
-{
-    slider->setValue(v);
 }
 
 CoverEventHandler::CoverEventHandler(MainWindow *w)
@@ -371,7 +261,7 @@ MainWindow::MainWindow(QWidget *parent)
     , phononStream(0)
     #endif
 {
-    #if !defined Q_OS_WIN
+    #ifndef Q_OS_WIN
     new CantataAdaptor(this);
     #ifndef ENABLE_KDE_SUPPORT
     // We need to register for this interface, so that dynamic helper can send messages...
@@ -395,302 +285,105 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
-    #ifndef ENABLE_KDE_SUPPORT
-    appIcon=QIcon(":cantata.svg");
-    appIcon.addFile(":cantata16.png");
-    appIcon.addFile(":cantata22.png");
-    appIcon.addFile(":cantata32.png");
-    appIcon.addFile(":cantata48.png");
-    appIcon.addFile(":cantata64.png");
-    setWindowIcon(appIcon);
-    QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
-    #endif
-
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
     quitAction=KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
-
-    smallPlaybackButtonsAction = actionCollection()->addAction("smallplaybackbuttons");
-    smallPlaybackButtonsAction->setText(i18n("Small Playback Buttons"));
-
-    smallControlButtonsAction = actionCollection()->addAction("smallcontrolbuttons");
-    smallControlButtonsAction->setText(i18n("Small Control Buttons"));
-
-    connectAction = actionCollection()->addAction("connect");
-    connectAction->setText(i18n("Connect"));
-
-    connectionsAction = actionCollection()->addAction("connections");
-    connectionsAction->setText(i18n("Connection"));
-
-    outputsAction = actionCollection()->addAction("outputs");
-    outputsAction->setText(i18n("Outputs"));
-
-    refreshAction = actionCollection()->addAction("refresh");
-    refreshAction->setText(i18n("Refresh Database"));
-
-    prevTrackAction = actionCollection()->addAction("prevtrack");
-    prevTrackAction->setText(i18n("Previous Track"));
-    prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
-
-    nextTrackAction = actionCollection()->addAction("nexttrack");
-    nextTrackAction->setText(i18n("Next Track"));
-    nextTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));
-
-    playPauseTrackAction = actionCollection()->addAction("playpausetrack");
-    playPauseTrackAction->setText(i18n("Play/Pause"));
-    playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_C));
-
-    stopTrackAction = actionCollection()->addAction("stoptrack");
-    stopTrackAction->setText(i18n("Stop"));
-    stopTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
-
-    increaseVolumeAction = actionCollection()->addAction("increasevolume");
-    increaseVolumeAction->setText(i18n("Increase Volume"));
-    increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Up));
-
-    decreaseVolumeAction = actionCollection()->addAction("decreasevolume");
-    decreaseVolumeAction->setText(i18n("Decrease Volume"));
-    decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
-
-    addToPlayQueueAction = actionCollection()->addAction("addtoplaylist");
-    addToPlayQueueAction->setText(i18n("Add To Play Queue"));
-
-    addToStoredPlaylistAction = actionCollection()->addAction("addtostoredplaylist");
-    addToStoredPlaylistAction->setText(i18n("Add To Playlist"));
-
-    #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction = actionCollection()->addAction("copytodevice");
-    copyToDeviceAction->setText(i18n("Copy To Device"));
-    copyToDeviceAction->setIcon(Icon("multimedia-player"));
-    deleteSongsAction = actionCollection()->addAction("deletesongs");
-    #endif
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction = actionCollection()->addAction("replaygain");
-    #endif
-
-    backAction = actionCollection()->addAction("back");
-    backAction->setText(i18n("Back"));
-
-    removeAction = actionCollection()->addAction("removeitems");
-    removeAction->setText(i18n("Remove"));
-
-    replacePlayQueueAction = actionCollection()->addAction("replaceplaylist");
-    replacePlayQueueAction->setText(i18n("Replace Play Queue"));
-
-    removeFromPlayQueueAction = actionCollection()->addAction("removefromplaylist");
-    removeFromPlayQueueAction->setText(i18n("Remove From Play Queue"));
-
-    copyTrackInfoAction = actionCollection()->addAction("copytrackinfo");
-    copyTrackInfoAction->setText(i18n("Copy Track Info"));
-
-    cropPlayQueueAction = actionCollection()->addAction("cropplaylist");
-    cropPlayQueueAction->setText(i18n("Crop"));
-
-    shufflePlayQueueAction = actionCollection()->addAction("shuffleplaylist");
-    shufflePlayQueueAction->setText(i18n("Shuffle"));
-
-    savePlayQueueAction = actionCollection()->addAction("saveplaylist");
-    savePlayQueueAction->setText(i18n("Save As"));
-
-    clearPlayQueueAction = actionCollection()->addAction("clearplaylist");
-    clearPlayQueueAction->setText(i18n("Clear"));
-
-    expandInterfaceAction = actionCollection()->addAction("expandinterface");
-    expandInterfaceAction->setText(i18n("Expanded Interface"));
-
-    randomPlayQueueAction = actionCollection()->addAction("randomplaylist");
-    randomPlayQueueAction->setText(i18n("Random"));
-
-    repeatPlayQueueAction = actionCollection()->addAction("repeatplaylist");
-    repeatPlayQueueAction->setText(i18n("Repeat"));
-
-    singlePlayQueueAction = actionCollection()->addAction("singleplaylist");
-    singlePlayQueueAction->setText(i18n("Single"));
-    singlePlayQueueAction->setWhatsThis(i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
-
-    consumePlayQueueAction = actionCollection()->addAction("consumeplaylist");
-    consumePlayQueueAction->setText(i18n("Consume"));
-    consumePlayQueueAction->setWhatsThis(i18n("When consume is activated, a song is removed from the play queue after it has been played."));
-
-    addWithPriorityAction = actionCollection()->addAction("addwithprio");
-    addWithPriorityAction->setText(i18n("Add With Priority"));
-
-    setPriorityAction = actionCollection()->addAction("setprio");
-    setPriorityAction->setText(i18n("Set Priority"));
-
-    addPrioHighestAction = actionCollection()->addAction("highestprio");
-    addPrioHighestAction->setText(i18n("Highest Priority (255)"));
-
-    addPrioHighAction = actionCollection()->addAction("highprio");
-    addPrioHighAction->setText(i18n("High Priority (200)"));
-
-    addPrioMediumAction = actionCollection()->addAction("mediumprio");
-    addPrioMediumAction->setText(i18n("Medium Priority (125)"));
-
-    addPrioLowAction = actionCollection()->addAction("lowprio");
-    addPrioLowAction->setText(i18n("Low Priority (50)"));
-
-    addPrioDefaultAction = actionCollection()->addAction("defaultprio");
-    addPrioDefaultAction->setText(i18n("Default Priority (0)"));
-
-    addPrioCustomAction = actionCollection()->addAction("customprio");
-    addPrioCustomAction->setText(i18n("Custom Priority..."));
-
-    #ifdef PHONON_FOUND
-    streamPlayAction = actionCollection()->addAction("streamplay");
-    streamPlayAction->setText(i18n("Play Stream"));
-    streamPlayAction->setWhatsThis(i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
-    #endif
-
-    locateTrackAction = actionCollection()->addAction("locatetrack");
-    locateTrackAction->setText(i18n("Locate In Library"));
-
-//     burnAction = actionCollection()->addAction("burn");
-//     burnAction->setText(i18n("Burn To CD/DVD"));
-//
-//     createAudioCdAction = actionCollection()->addAction("createaudiocd");
-//     createAudioCdAction->setText(i18n("Create Audio CD"));
-//
-//     createDataCdAction = actionCollection()->addAction("createdatacd");
-//     createDataCdAction->setText(i18n("Create Data CD/DVD"));
-
-    #ifdef TAGLIB_FOUND
-    organiseFilesAction = actionCollection()->addAction("organizefiles");
-
-    editTagsAction = actionCollection()->addAction("edittags");
-    editTagsAction->setText(i18n("Edit Tags"));
-
-    editPlayQueueTagsAction = actionCollection()->addAction("editpqtags");
-    editPlayQueueTagsAction->setText(i18n("Edit Song Tags"));
-    #endif
-
-    showPlayQueueAction = actionCollection()->addAction("showplayqueue");
-    showPlayQueueAction->setText(i18n("Play Queue"));
-
-    libraryTabAction = actionCollection()->addAction("showlibrarytab");
-    libraryTabAction->setText(i18n("Library"));
-
-    albumsTabAction = actionCollection()->addAction("showalbumstab");
-    albumsTabAction->setText(i18n("Albums"));
-
-    foldersTabAction = actionCollection()->addAction("showfolderstab");
-    foldersTabAction->setText(i18n("Folders"));
-
-    playlistsTabAction = actionCollection()->addAction("showplayliststab");
-    playlistsTabAction->setText(i18n("Playlists"));
-
-    #if !defined Q_OS_WIN
-    dynamicTabAction = actionCollection()->addAction("showdynamictab");
-    dynamicTabAction->setText(i18n("Dynamic"));
-    #endif
-
-    lyricsTabAction = actionCollection()->addAction("showlyricstab");
-    lyricsTabAction->setText(i18n("Lyrics"));
-
-    streamsTabAction = actionCollection()->addAction("showstreamstab");
-    streamsTabAction->setText(i18n("Streams"));
-
-    #ifdef ENABLE_WEBKIT
-    infoTabAction = actionCollection()->addAction("showinfotab");
-    infoTabAction->setText(i18n("Info"));
-    #endif // ENABLE_WEBKIT
-
-    serverInfoTabAction = actionCollection()->addAction("showserverinfotab");
-    serverInfoTabAction->setText(i18n("Server Info"));
-
-    #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction = actionCollection()->addAction("showdevicestab");
-    devicesTabAction->setText(i18n("Devices"));
-    #endif // ENABLE_DEVICES_SUPPORT
-
-    searchAction = actionCollection()->addAction("search");
-    searchAction->setText(i18n("Search"));
-
-    expandAllAction = actionCollection()->addAction("expandall");
-    expandAllAction->setText(i18n("Expand All"));
-
-    collapseAllAction = actionCollection()->addAction("collapseall");
-    collapseAllAction->setText(i18n("Collapse All"));
     #else
+    appIcon=Icon::create(QStringList() << ":cantata.svg" << ":cantata16.png" << ":cantata22.png" << ":cantata32.png" << ":cantata48.png" << ":cantata64.png");
+    setWindowIcon(appIcon);
+    QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
+
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     quitAction->setIcon(Icon("application-exit"));
     quitAction->setShortcut(QKeySequence::Quit);
-    smallPlaybackButtonsAction = new QAction(tr("Small Playback Buttons"), this);
-    smallControlButtonsAction = new QAction(tr("Small Control Buttons"), this);
-    refreshAction = new QAction(tr("Refresh"), this);
-    connectAction = new QAction(tr("Connect"), this);
-    connectionsAction = new QAction(tr("Connections"), this);
-    outputsAction = new QAction(tr("Outputs"), this);
-    prevTrackAction = new QAction(tr("Previous Track"), this);
-    nextTrackAction = new QAction(tr("Next Track"), this);
-    playPauseTrackAction = new QAction(tr("Play/Pause"), this);
-    stopTrackAction = new QAction(tr("Stop"), this);
-    increaseVolumeAction = new QAction(tr("Increase Volume"), this);
-    decreaseVolumeAction = new QAction(tr("Decrease Volume"), this);
-    addToPlayQueueAction = new QAction(tr("Add To Play Queue"), this);
-    addToStoredPlaylistAction = new QAction(tr("Add To Playlist"), this);
+    #endif
+
+    smallPlaybackButtonsAction = createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
+    smallControlButtonsAction = createAction("smallcontrolbuttons", i18n("Small Control Buttons"));
+    connectAction = createAction("connect",i18n("Connect"), "network-connect");
+    connectionsAction = createAction("connections", i18n("Connection"), "network-server");
+    outputsAction = createAction("outputs", i18n("Outputs"), "speaker");
+    refreshAction = createAction("refresh", i18n("Refresh Database"), "view-refresh");
+    prevTrackAction = createAction("prevtrack", i18n("Previous Track"), "media-skip-backward");
+    nextTrackAction = createAction("nexttrack", i18n("Next Track"), "media-skip-forward");
+    playPauseTrackAction = createAction("playpausetrack", i18n("Play/Pause"));
+    stopTrackAction = createAction("stoptrack", i18n("Stop"), "media-playback-stop");
+    increaseVolumeAction = createAction("increasevolume", i18n("Increase Volume"));
+    decreaseVolumeAction = createAction("decreasevolume", i18n("Decrease Volume"));
+    addToPlayQueueAction = createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
+    addToStoredPlaylistAction = createAction("addtostoredplaylist", i18n("Add To Playlist"));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction = new QAction(this);
+    replaygainAction = createAction("replaygain", i18n("ReplayGain"), "audio-x-generic");
     #endif
-    backAction = new QAction(tr("Back"), this);
-    removeAction = new QAction(tr("Remove"), this);
-    replacePlayQueueAction = new QAction(tr("Replace Play Queue"), this);
-    removeFromPlayQueueAction = new QAction(tr("Remove From Play Queue"), this);
-    copyTrackInfoAction = new QAction(tr("Copy Track Info"), this);
-    cropPlayQueueAction = new QAction(tr("Crop"), this);
-    shufflePlayQueueAction = new QAction(tr("Shuffle"), this);
-    savePlayQueueAction = new QAction(tr("Save As"), this);
-    clearPlayQueueAction = new QAction(tr("Clear"), this);
-    expandInterfaceAction = new QAction(tr("Expanded Interface"), this);
-    randomPlayQueueAction = new QAction(tr("Random"), this);
-    repeatPlayQueueAction = new QAction(tr("Repeat"), this);
-    singlePlayQueueAction = new QAction(tr("Single"), this);
-    singlePlayQueueAction->setWhatsThis(tr("When single is activated, playback is stopped after current song, or song is repeated if the 'repeat' mode is enabled."));
-    consumePlayQueueAction = new QAction(tr("Consume"), this);
-    consumePlayQueueAction->setWhatsThis(tr("When consume is activated, a song is removed from the play queue after it has been played."));
-    addWithPriorityAction = new QAction(tr("Add With Priority"), this);
-    setPriorityAction = new QAction(tr("Set Priority"), this);
-    addPrioHighestAction = new QAction(tr("Highest Priority (255)"), this);
-    addPrioHighAction = new QAction(tr("High Priority (200)"), this);
-    addPrioMediumAction = new QAction(tr("Medium Priority (125)"), this);
-    addPrioLowAction = new QAction(tr("Low Priority (50)"), this);
-    addPrioDefaultAction = new QAction(tr("Default Priority (0)"), this);
-    addPrioCustomAction = new QAction(tr("Custom Priority..."), this);
+    backAction = createAction("back", i18n("Back"), "go-previous");
+    removeAction = createAction("removeitems", i18n("Remove"), "list-remove");
+    replacePlayQueueAction = createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
+    removeFromPlayQueueAction = createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
+    copyTrackInfoAction = createAction("copytrackinfo", i18n("Copy Track Info"));
+    cropPlayQueueAction = createAction("cropplaylist", i18n("Crop"));
+    shufflePlayQueueAction = createAction("shuffleplaylist", i18n("Shuffle"));
+    savePlayQueueAction = createAction("saveplaylist", i18n("Save As"), "document-save-as");
+    clearPlayQueueAction = createAction("clearplaylist", i18n("Clear"), "edit-clear-list");
+    expandInterfaceAction = createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
+    randomPlayQueueAction = createAction("randomplaylist", i18n("Random"), "media-playlist-shuffle");
+    repeatPlayQueueAction = createAction("repeatplaylist", i18n("Repeat"));
+    singlePlayQueueAction = createAction("singleplaylist", i18n("Single"), 0, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
+    consumePlayQueueAction = createAction("consumeplaylist", i18n("Consume"), 0, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
+    addWithPriorityAction = createAction("addwithprio", i18n("Add With Priority"));
+    setPriorityAction = createAction("setprio", i18n("Set Priority"));
+    addPrioHighestAction = createAction("highestprio", i18n("Highest Priority (255)"));
+    addPrioHighAction = createAction("highprio", i18n("High Priority (200)"));
+    addPrioMediumAction = createAction("mediumprio", i18n("Medium Priority (125)"));
+    addPrioLowAction = createAction("lowprio", i18n("Low Priority (50)"));
+    addPrioDefaultAction = createAction("defaultprio", i18n("Default Priority (0)"));
+    addPrioCustomAction = createAction("customprio", i18n("Custom Priority..."));
     #ifdef PHONON_FOUND
-    streamPlayAction= new QAction(tr("Play Stream"), this);
-    streamPlayAction->setWhatsThis(tr("When 'Play Stream' is activated, the enabled stream is played locally."));
+    streamPlayAction = createAction("streamplay", i18n("Play Stream"), DEFAULT_STREAM_ICON, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
     #endif
-    locateTrackAction = new QAction(tr("Locate In Library"), this);
-//     burnAction = new QAction(tr("Burn To CD/DVD"), this);
-//     createAudioCdAction = new QAction(tr("Create Audio CD"), this);
-//     createDataCdAction = new QAction(tr("Create Data CD"), this);
+    locateTrackAction = createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
-    organiseFilesAction = new QAction(this);
-    editTagsAction = new QAction(tr("Edit Tags"), this);
-    editPlayQueueTagsAction = new QAction(tr("Edit Song Tags"), this);
+    organiseFilesAction = createAction("organizefiles", i18n("Organize Files"), "inode-directory");
+    editTagsAction = createAction("edittags", i18n("Edit Tags"), "document-edit");
+    editPlayQueueTagsAction = createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
     #endif
-    searchAction = new QAction(tr("Search"), this);
-    expandAllAction = new QAction(tr("Expand All"), this);
-    collapseAllAction = new QAction(tr("Collapse All"), this);
-    showPlayQueueAction = new QAction(tr("Play Queue"), this);
-    libraryTabAction = new QAction(tr("Library"), this);
-    albumsTabAction = new QAction(tr("Albums"), this);
-    foldersTabAction = new QAction(tr("Folders"), this);
-    playlistsTabAction = new QAction(tr("Playlists"), this);
+    showPlayQueueAction = createAction("showplayqueue", i18n("Play Queue"), "media-playback-start");
+    libraryTabAction = createAction("showlibrarytab", i18n("Library"));
+    albumsTabAction = createAction("showalbumstab", i18n("Albums"), DEFAULT_ALBUM_ICON);
+    foldersTabAction = createAction("showfolderstab", i18n("Folders"), "inode-directory");
+    playlistsTabAction = createAction("showplayliststab", i18n("Playlists"), "view-media-playlist");
     #if !defined Q_OS_WIN
-    dynamicTabAction = new QAction(tr("Dynamic"), this);
+    dynamicTabAction = createAction("showdynamictab", i18n("Dynamic"), "media-playlist-shuffle");
     #endif
-    lyricsTabAction = new QAction(tr("Lyrics"), this);
-    streamsTabAction = new QAction(tr("Streams"), this);
+    lyricsTabAction = createAction("showlyricstab", i18n("Lyrics"), "view-media-lyrics");
+    streamsTabAction = createAction("showstreamstab", i18n("Streams"), DEFAULT_STREAM_ICON);
     #ifdef ENABLE_WEBKIT
-    infoTabAction = new QAction(tr("Info"), this);
-    #endif // ENABLE_WEBKIT
-    serverInfoTabAction = new QAction(tr("Server Info"), this);
-    #endif // ENABLE_KDE_SUPPORT
+    infoTabAction = createAction("showinfotab", i18n("Info"));
+    #endif
+    serverInfoTabAction = createAction("showserverinfotab", i18n("Server Info"), "server-database");
+    #ifdef ENABLE_DEVICES_SUPPORT
+    devicesTabAction = createAction("showdevicestab", i18n("Devices"), "multimedia-player");
+    copyToDeviceAction = createAction("copytodevice", i18n("Copy To Device"), "multimedia-player");
+    deleteSongsAction = createAction("deletesongs", i18n("Delete Songs"), "edit-delete");
+    #endif
+    searchAction = createAction("search", i18n("Search"), "edit-find");
+    expandAllAction = createAction("expandall", i18n("Expand All"));
+    collapseAllAction = createAction("collapseall", i18n("Collapse All"));
+
+    #if defined ENABLE_KDE_SUPPORT
+    prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
+    nextTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));
+    playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_C));
+    stopTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
+    increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Up));
+    decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
+    #endif
 
     SET_SHORTCUT(copyTrackInfoAction, QKeySequence::Copy);
     SET_SHORTCUT(backAction, QKeySequence::Back);
+    SET_SHORTCUT(searchAction, Qt::ControlModifier+Qt::Key_F);
+    SET_SHORTCUT(expandAllAction, Qt::ControlModifier+Qt::Key_Plus);
+    SET_SHORTCUT(collapseAllAction, Qt::ControlModifier+Qt::Key_Minus);
 
     int pageKey=Qt::Key_1;
     SET_SHORTCUT(showPlayQueueAction, Qt::AltModifier+Qt::Key_Q);
@@ -703,7 +396,6 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     SET_SHORTCUT(streamsTabAction, Qt::AltModifier+nextKey(pageKey));
     SET_SHORTCUT(lyricsTabAction, Qt::AltModifier+nextKey(pageKey));
-
     #ifdef ENABLE_WEBKIT
     SET_SHORTCUT(infoTabAction, Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_WEBKIT
@@ -712,12 +404,7 @@ MainWindow::MainWindow(QWidget *parent)
     SET_SHORTCUT(devicesTabAction, Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
 
-    SET_SHORTCUT(searchAction, Qt::ControlModifier+Qt::Key_F);
-    SET_SHORTCUT(expandAllAction, Qt::ControlModifier+Qt::Key_Plus);
-    SET_SHORTCUT(collapseAllAction, Qt::ControlModifier+Qt::Key_Minus);
-    // Setup event handler for volume adjustment
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
-
     volumeControl = new VolumeControl(volumeButton);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
     volumeButton->installEventFilter(volumeSliderEventHandler);
@@ -726,114 +413,42 @@ MainWindow::MainWindow(QWidget *parent)
 
     playbackPlay = MediaIcon("media-playback-start");
     playbackPause = MediaIcon("media-playback-pause");
-    randomPlayQueueAction->setIcon(Icon("media-playlist-shuffle"));
-    locateTrackAction->setIcon(Icon("edit-find"));
     #if defined ENABLE_KDE_SUPPORT
     consumePlayQueueAction->setIcon(Icon("cantata-view-media-consume"));
     repeatPlayQueueAction->setIcon(Icon("cantata-view-media-repeat"));
-//     randomPlayQueueAction->setIcon(Icon("cantata-view-media-shuffle"));
-//     shufflePlayQueueAction->setIcon(Icon("cantata-view-media-shuffle"));
     #else
-    QIcon consumeIcon(":consume16.png");
-    consumeIcon.addFile(":consume22.png");
-    QIcon repeatIcon(":repeat16.png");
-    repeatIcon.addFile(":repeat22.png");
-//     QIcon shuffleIcon(":shuffle16.png");
-//     repeatIcon.addFile(":shuffle22.png");
-    consumePlayQueueAction->setIcon(consumeIcon);
-    repeatPlayQueueAction->setIcon(repeatIcon);
-//     randomPlayQueueAction->setIcon(shuffleIcon);
-//     shufflePlayQueueAction->setIcon(shuffleIcon);
+    consumePlayQueueAction->setIcon(Icon::create(QStringList() << ":consume16.png" << ":consume22.png"));
+    repeatPlayQueueAction->setIcon(Icon::create(QStringList() << ":repeat16.png" << ":repeat22.png"));
     #endif
-    singlePlayQueueAction->setIcon(createSingleIcon());
-    #ifdef PHONON_FOUND
-    streamPlayAction->setIcon(Icon(DEFAULT_STREAM_ICON));
-    #endif
-    backAction->setIcon(Icon("go-previous"));
-    removeAction->setIcon(Icon("list-remove"));
-    addToPlayQueueAction->setIcon(Icon("list-add"));
-    replacePlayQueueAction->setIcon(Icon("media-playback-start"));
-
-//     burnAction->setIcon(Icon("tools-media-optical-burn"));
-//     createDataCdAction->setIcon(Icon("media-optical"));
-//     createAudioCdAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
-    #ifdef TAGLIB_FOUND
-    editTagsAction->setIcon(Icon("document-edit"));
-    editPlayQueueTagsAction->setIcon(Icon("document-edit"));
-    organiseFilesAction->setIcon(Icon("inode-directory"));
-    organiseFilesAction->setText(i18n("Organize Files"));
-    #endif
-//     QMenu *cdMenu=new QMenu(this);
-//     cdMenu->addAction(createAudioCdAction);
-//     cdMenu->addAction(createDataCdAction);
-//     burnAction->setMenu(cdMenu);
-//     #ifdef ENABLE_KDE_SUPPORT
-//     if (KStandardDirs::findExe("k3b").isEmpty()) {
-//         burnAction->setVisible(false);
-//     }
-//     #endif
-
-    prevTrackAction->setIcon(MediaIcon("media-skip-backward"));
-    nextTrackAction->setIcon(MediaIcon("media-skip-forward"));
+    singlePlayQueueAction->setIcon(Icon::createSingleIcon());
     playPauseTrackAction->setIcon(playbackPlay);
-    stopTrackAction->setIcon(MediaIcon("media-playback-stop"));
-    removeFromPlayQueueAction->setIcon(Icon("list-remove"));
-    clearPlayQueueAction->setIcon(Icon("edit-clear-list"));
-    savePlayQueueAction->setIcon(Icon("document-save-as"));
-    expandInterfaceAction->setIcon(Icon("view-media-playlist"));
-    refreshAction->setIcon(Icon("view-refresh"));
-    connectAction->setIcon(Icon("network-connect"));
-    connectionsAction->setIcon(Icon("network-server"));
-    outputsAction->setIcon(Icon("speaker"));
+
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
-    showPlayQueueAction->setIcon(Icon("media-playback-start"));
     #if defined ENABLE_KDE_SUPPORT
     libraryTabAction->setIcon(Icon("cantata-view-media-library"));
     #else
-    QIcon libraryIcon(":lib16.png");
-    libraryIcon.addFile(":lib32.png");
-    libraryTabAction->setIcon(libraryIcon);
+    libraryTabAction->setIcon(Icon::create(QStringList() << ":lib16.png" << ":lib32.png"));
     #endif
-    albumsTabAction->setIcon(Icon(DEFAULT_ALBUM_ICON));
-    foldersTabAction->setIcon(Icon("inode-directory"));
-    playlistsTabAction->setIcon(Icon("view-media-playlist"));
-    #if !defined Q_OS_WIN
-    dynamicTabAction->setIcon(Icon("media-playlist-shuffle"));
-    #endif
-    lyricsTabAction->setIcon(Icon("view-media-lyrics"));
-    streamsTabAction->setIcon(Icon(DEFAULT_STREAM_ICON));
     #ifdef ENABLE_WEBKIT
     #if defined ENABLE_KDE_SUPPORT
     infoTabAction->setIcon(Icon("cantata-view-wikipedia"));
     #else // ENABLE_KDE_SUPPORT
-    QIcon wikiIcon(":wiki16.png");
-    wikiIcon.addFile(":wiki32.png");
-    infoTabAction->setIcon(wikiIcon);
+    infoTabAction->setIcon(Icon::create(QStringList() << ":wiki16.png" << ":wiki32.png"));
     #endif // ENABLE_KDE_SUPPORT
     #endif
-    serverInfoTabAction->setIcon(Icon("server-database"));
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction->setIcon(Icon("multimedia-player"));
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
-    deleteSongsAction->setIcon(Icon("edit-delete"));
-    deleteSongsAction->setText(i18n("Delete Songs"));
-    #endif
-    searchAction->setIcon(Icon("edit-find"));
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction->setIcon(Icon("audio-x-generic"));
-    replaygainAction->setText(i18n("ReplayGain"));
     #endif
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
 
     menuButton->setIcon(Icon("configure"));
-    volumeButton->setIcon(Icon("audio-volume-high"));
-
     menuButton->setMenu(mainMenu);
     menuButton->setPopupMode(QToolButton::InstantPopup);
+    volumeButton->setIcon(Icon("audio-volume-high"));
 
     playPauseTrackButton->setDefaultAction(playPauseTrackAction);
     stopTrackButton->setDefaultAction(stopTrackAction);
@@ -857,9 +472,8 @@ MainWindow::MainWindow(QWidget *parent)
     devicesPage = new DevicesPage(this);
     #endif
 
-    connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), albumsPage, SLOT(updateGenres(const QSet<QString> &)));
-
     setVisible(true);
+    initSizes();
 
     savePlayQueuePushButton->setDefaultAction(savePlayQueueAction);
     removeAllFromPlayQueuePushButton->setDefaultAction(clearPlayQueueAction);
@@ -873,12 +487,9 @@ MainWindow::MainWindow(QWidget *parent)
     streamButton->setVisible(false);
     #endif
 
-    initSizes();
-
-    QStringList hiddenPages=Settings::self()->hiddenPages();
-
     #define TAB_ACTION(A) A->icon(), A->text(), A->text()+"<br/><small><i>"+A->shortcut().toString()+"</i></small>"
 
+    QStringList hiddenPages=Settings::self()->hiddenPages();
     playQueuePage=new PlayQueuePage(this);
     QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, playQueuePage);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -1017,14 +628,10 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addSeparator();
     mainMenu->addMenu(helpMenu());
     #else
-
     prefAction=menuAct;
     mainMenu->addSeparator();
-//     QMenu *menu=new QMenu(tr("Help"), this);
-//     QAction *menuAct=menu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
     menuAct=mainMenu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
     menuAct->setIcon(appIcon);
-//     mainMenu->addMenu(menu);
     #endif
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
@@ -1056,33 +663,6 @@ MainWindow::MainWindow(QWidget *parent)
     MPDStatus::self();
     MPDStats::self();
 
-    connect(addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioDefaultAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-
-    connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
-    connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
-    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
-    connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
-    connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
-    connect(this, SIGNAL(removeSongs(const QList<qint32> &)), MPDConnection::self(), SLOT(removeSongs(const QList<qint32> &)));
-    connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
-    connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(startPlayingSong()));
-    connect(this, SIGNAL(stop()), MPDConnection::self(), SLOT(stopPlaying()));
-    connect(this, SIGNAL(getStatus()), MPDConnection::self(), SLOT(getStatus()));
-    connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
-    connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
-    connect(this, SIGNAL(playListInfo()), MPDConnection::self(), SLOT(playListInfo()));
-    connect(this, SIGNAL(currentSong()), MPDConnection::self(), SLOT(currentSong()));
-    connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
-    connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
-    connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
-    connect(this, SIGNAL(setPriority(const QList<quint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<quint32> &, quint8)));
-    connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
-
     playQueueProxyModel.setSourceModel(&playQueueModel);
     playQueue->setModel(&playQueueModel);
     playQueue->addAction(removeFromPlayQueueAction);
@@ -1104,14 +684,41 @@ MainWindow::MainWindow(QWidget *parent)
     //playQueue->addAction(copyTrackInfoAction);
     playQueue->tree()->installEventFilter(new DeleteKeyEventHandler(playQueue->tree(), removeFromPlayQueueAction));
     playQueue->list()->installEventFilter(new DeleteKeyEventHandler(playQueue->list(), removeFromPlayQueueAction));
-    connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
-    connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
+
     playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setGrouped(Settings::self()->playQueueGrouped());
     playQueue->setAutoExpand(Settings::self()->playQueueAutoExpand());
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
+    connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), albumsPage, SLOT(updateGenres(const QSet<QString> &)));
+    connect(addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioDefaultAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
+    connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
+    connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
+    connect(this, SIGNAL(enableOutput(int, bool)), MPDConnection::self(), SLOT(enableOutput(int, bool)));
+    connect(this, SIGNAL(outputs()), MPDConnection::self(), SLOT(outputs()));
+    connect(this, SIGNAL(removeSongs(const QList<qint32> &)), MPDConnection::self(), SLOT(removeSongs(const QList<qint32> &)));
+    connect(this, SIGNAL(pause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
+    connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(startPlayingSong()));
+    connect(this, SIGNAL(stop()), MPDConnection::self(), SLOT(stopPlaying()));
+    connect(this, SIGNAL(getStatus()), MPDConnection::self(), SLOT(getStatus()));
+    connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
+    connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
+    connect(this, SIGNAL(playListInfo()), MPDConnection::self(), SLOT(playListInfo()));
+    connect(this, SIGNAL(currentSong()), MPDConnection::self(), SLOT(currentSong()));
+    connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
+    connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
+    connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
+    connect(this, SIGNAL(setPriority(const QList<quint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<quint32> &, quint8)));
+    connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
+    connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
+    connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlayQueue(const QList<Song> &)));
@@ -1162,8 +769,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(togglePlayQueue()));
     connect(positionSlider, SIGNAL(valueChanged(int)), this, SLOT(updatePosition()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
-//     connect(createDataCdAction, SIGNAL(triggered(bool)), this, SLOT(createDataCd()));
-//     connect(createAudioCdAction, SIGNAL(triggered(bool)), this, SLOT(createAudioCd()));
     #ifdef TAGLIB_FOUND
     connect(editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
     connect(editPlayQueueTagsAction, SIGNAL(triggered(bool)), this, SLOT(editPlayQueueTags()));
@@ -1208,7 +813,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
-
     #ifdef Q_OS_LINUX
     #if defined USE_SOLID_FOR_MTAB_CHANGE_MONITOR
     connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(checkMpdAccessibility()));
@@ -1228,7 +832,6 @@ MainWindow::MainWindow(QWidget *parent)
         QByteArray state=Settings::self()->splitterState();
 
         if (state.isEmpty()) {
-
             QList<int> sizes=QList<int>() << 250 << 500;
             splitter->setSizes(sizes);
             resize(800, 600);
@@ -1250,7 +853,6 @@ MainWindow::MainWindow(QWidget *parent)
     DevicesModel::self()->loadRemote();
     #endif
     QString page=Settings::self()->page();
-
     for (int i=0; i<tabWidget->count(); ++i) {
         if (tabWidget->widget(i)->metaObject()->className()==page) {
             tabWidget->SetCurrentIndex(i);
@@ -1439,12 +1041,9 @@ void MainWindow::songLoaded()
 
 void MainWindow::showError(const QString &message, bool showActions)
 {
-    #if !defined Q_OS_WIN
     if (QLatin1String("NO_SONGS")==message) {
         messageWidget->setError(i18n("Failed to locate any songs matching the dynamic playlist rules."));
-    } else
-    #endif
-    {
+    } else {
         messageWidget->setError(message);
     }
     if (showActions) {
@@ -1533,10 +1132,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::showVolumeControl()
 {
-//     qWarning() << volumeControl->pos().x() << volumeControl->pos().y()
-//     << volumeButton->pos().x() << volumeButton->pos().y()
-//     << volumeButton->mapToGlobal(volumeButton->pos()).x() << volumeButton->mapToGlobal(volumeButton->pos()).y();
-//     volumeControl->move();
     volumeControl->popup(volumeButton->mapToGlobal(QPoint((volumeButton->width()-volumeControl->width())/2, volumeButton->height())));
 }
 
@@ -1638,7 +1233,6 @@ void MainWindow::checkMpdDir()
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     deleteSongsAction->setEnabled(editPlayQueueTagsAction->isEnabled());
-//     burnAction->setEnabled(copyToDeviceAction->isEnabled());
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction->setEnabled(editPlayQueueTagsAction->isEnabled());
@@ -2112,7 +1706,6 @@ void MainWindow::realSearchPlayQueue()
 
 void MainWindow::updatePlayQueue(const QList<Song> &songs)
 {
-    TF_DEBUG
     playPauseTrackAction->setEnabled(!songs.isEmpty());
     nextTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
     prevTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
@@ -2211,7 +1804,6 @@ void MainWindow::updateCurrentSong(const Song &song)
         artistLabel->setText(current.artist);
     } else {
         QString album=current.album;
-
         quint16 year=Song::albumYear(current);
         if (year>0) {
             album+=QString(" (%1)").arg(year);
@@ -2281,8 +1873,7 @@ void MainWindow::updateCurrentSong(const Song &song)
                 }
             }
             #else
-            // The pure Qt implementation needs both, the tray icon
-            // and the setting checked.
+            // The pure Qt implementation needs both, the tray icon and the setting checked.
             if (trayItem) {
                 const QString text=tr("%1\n%2\n%3").arg(trackLabel->text()).arg(artistLabel->text()).arg(Song::formattedTime(current.time));
 
@@ -2315,10 +1906,7 @@ void MainWindow::scrollPlayQueue()
 
 void MainWindow::updateStats()
 {
-    /*
-     * Check if remote db is more recent than local one
-     * Also update the dirview
-     */
+    // Check if remote db is more recent than local one
     if (!MusicLibraryModel::self()->lastUpdate().isValid() || MPDStats::self()->dbUpdate() > MusicLibraryModel::self()->lastUpdate()) {
         loaded|=TAB_LIBRARY|TAB_FOLDERS;
         if (!MusicLibraryModel::self()->lastUpdate().isValid()) {
@@ -2385,9 +1973,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
         if (status->state() == MPDState_Stopped || status->state() == MPDState_Inactive) {
             timeElapsedFormattedString = "0:00 / 0:00";
         } else {
-            timeElapsedFormattedString += Song::formattedTime(status->timeElapsed());
-            timeElapsedFormattedString += " / ";
-            timeElapsedFormattedString += Song::formattedTime(status->timeTotal());
+            timeElapsedFormattedString = Song::formattedTime(status->timeElapsed())+" / "+Song::formattedTime(status->timeTotal());
             songTime = status->timeTotal();
         }
     }
@@ -2647,26 +2233,18 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
 
     QString status;
     #ifdef ENABLE_KDE_SUPPORT
-    status+=i18np("1 Track", "%1 Tracks", songs);
+    status = i18np("1 Track", "%1 Tracks", songs);
     #else
-    status += QString::number(songs)+QString(1==songs ? tr(" Track") : tr(" Tracks"));
+    status = QString::number(songs)+QString(1==songs ? tr(" Track") : tr(" Tracks"));
     #endif
-    status += " (";
-    status += MPDParseUtils::formatDuration(time);
-    status += ")";
+    status += " ("+MPDParseUtils::formatDuration(time)+")";
     playQueueStatsLabel->setText(status);
 }
 
 void MainWindow::updatePosition()
 {
-    if (positionSlider->value()<172800) {
-        QString timeElapsedFormattedString;
-        if (positionSlider->value() != positionSlider->maximum()) {
-            timeElapsedFormattedString += Song::formattedTime(positionSlider->value());
-            timeElapsedFormattedString += " / ";
-            timeElapsedFormattedString += Song::formattedTime(songTime);
-            songTimeElapsedLabel->setText(timeElapsedFormattedString);
-        }
+    if (positionSlider->value()<172800 && positionSlider->value() != positionSlider->maximum()) {
+        songTimeElapsedLabel->setText(Song::formattedTime(positionSlider->value())+" / "+Song::formattedTime(songTime));
     }
 }
 
@@ -2770,20 +2348,16 @@ void MainWindow::sidebarModeChanged()
     }
 }
 
-/*
- * Crop playqueue
- * Do this by taking the set off all song id's and subtracting from that
- * the set of selected song id's. Feed that list to emit removeSongs
- */
+// Do this by taking the set off all song id's and subtracting from that the set of selected song id's. Feed that list to emit removeSongs
 void MainWindow::cropPlayQueue()
 {
-    QSet<qint32> songs = playQueueModel.getSongIdSet();
-    QSet<qint32> selected;
     const QModelIndexList items = playQueue->selectedIndexes();
-
     if (items.isEmpty()) {
         return;
     }
+
+    QSet<qint32> songs = playQueueModel.getSongIdSet();
+    QSet<qint32> selected;
 
     foreach (const QModelIndex &idx, items) {
         selected << playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
@@ -2963,9 +2537,7 @@ void MainWindow::tabToggled(int index)
             playQueueWidget->setParent(playQueuePage);
             playQueuePage->layout()->addWidget(playQueueWidget);
             playQueueWidget->setVisible(true);
-
         } else {
-
             playQueuePage->layout()->removeWidget(playQueueWidget);
             playQueueWidget->setParent(splitter);
             playQueueWidget->setVisible(true);
@@ -3194,50 +2766,6 @@ void MainWindow::toggleDockManager()
     }
 }
 #endif
-
-// void MainWindow::createDataCd()
-// {
-//     callK3b("data");
-// }
-//
-// void MainWindow::createAudioCd()
-// {
-//     callK3b("audiocd");
-// }
-//
-// void MainWindow::callK3b(const QString &type)
-// {
-//     QStringList files;
-//     if (libraryPage->isVisible()) {
-//         files=libraryPage->selectedFiles();
-//     } else if (albumsPage->isVisible()) {
-//         files=albumsPage->selectedFiles();
-//     } else if (folderPage->isVisible()) {
-//         files=folderPage->selectedFiles();
-//     } else if (playlistsPage->isVisible()) {
-//         files=playlistsPage->selectedFiles();
-//     }
-// #ifdef ENABLE_DEVICES_SUPPORT
-//     else if (devicesPage->isVisible()) {
-//         QList<Song> songs=devicesPage->selectedSongs();
-//         foreach (const Song &s, songs) {
-//             files.append(s.file);
-//         }
-//     }
-// #endif
-//
-//     if (!files.isEmpty()) {
-//         QStringList args;
-//         args << QLatin1String("--")+type;
-//         foreach (const QString &f, files) {
-//             args << Settings::self()->mpdDir()+f;
-//         }
-//
-//         QProcess *proc=new QProcess(this);
-//         connect(proc, SIGNAL(finished(int, QProcess::ExitStatus)), proc, SLOT(deleteLater()));
-//         proc->start(QLatin1String("k3b"), args);
-//     }
-// }
 
 #ifdef TAGLIB_FOUND
 void MainWindow::editTags()
@@ -3486,6 +3014,28 @@ void MainWindow::replayGain()
     }
 }
 #endif
+
+Action * MainWindow::createAction(const QString &name, const QString &text, const char *icon, const QString &whatsThis)
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    Action *act = actionCollection()->addAction(name);
+    act->setText(text);
+    if (0!=icon) {
+        act->setIcon(Icon(icon));
+    }
+    #else
+    Q_UNUSED(name)
+    Action *act = new Action(name, this);
+    act->setText(text);
+    if (0!=icon) {
+        act->setIcon('m'==icon[0] && 'e'==icon[1] && 'd'==icon[2] && 'i'==icon[3] && 'a'==icon[4] && '-'==icon[5] ? MediaIcon(icon) : Icon(icon));
+    }
+    #endif
+    if (!whatsThis.isEmpty()) {
+        act->setWhatsThis(whatsThis);
+    }
+    return act;
+}
 
 #ifdef Q_OS_WIN
 // This is down here, because windows.h includes ALL windows stuff - and we get conflics with MessageBox :-(

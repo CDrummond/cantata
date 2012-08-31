@@ -27,8 +27,8 @@ Covers
 
 When displaying covers, Cantata will load album covers in the following order:
 
-...if MPD folder exists, and is readable, then cantata will look for the following
-   within the folder containing the song:
+...if MPD folder exists, is not specified as a http URL, and is readable, then
+   cantata will look for the following within the folder containing the song:
 
  1. cover.jpg
  2. cover.png
@@ -71,8 +71,8 @@ possible. If not, then they will be saved in Cantata's cache folder.
 
 For artist images:
 
-...if MPD folder exists, and is readable, then cantata will look for the following
-   within the folder containing the song:
+...if MPD folder exists, is not specified as a http URL, and is readable, then
+   cantata will look for the following within the folder containing the song:
 
 1. ${albumArtist}.jpg
 2. ${albumArtist}.png

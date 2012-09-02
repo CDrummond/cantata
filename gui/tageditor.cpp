@@ -118,8 +118,8 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         setButtonGuiItem(User1, KStandardGuiItem::forward(KStandardGuiItem::UseRTL));
         setButtonText(User1, i18n("Next"));
         #else
-        setButtonGuiItem(User2, KGuiItem(tr("Previous"), "go-previous"));
-        setButtonGuiItem(User1, KGuiItem(tr("Next"), "go-next"));
+        setButtonGuiItem(User2, KGuiItem(i18n("Previous"), "go-previous"));
+        setButtonGuiItem(User1, KGuiItem(i18n("Next"), "go-next"));
         #endif
         enableButton(User1, false);
         enableButton(User2, false);
@@ -128,8 +128,8 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     setButtonGuiItem(Ok, KStandardGuiItem::save());
     setButtonGuiItem(User3, KGuiItem(i18n("Tools"), "tools-wizard"));
     #else
-    setButtonGuiItem(Ok, KGuiItem(tr("Save"), "document-save"));
-    setButtonGuiItem(User3, KGuiItem(tr("Tools"), "tools-wizard"));
+    setButtonGuiItem(Ok, KGuiItem(i18n("Save"), "document-save"));
+    setButtonGuiItem(User3, KGuiItem(i18n("Tools"), "tools-wizard"));
     #endif
     QMenu *toolsMenu=new QMenu(this);
     toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
@@ -687,8 +687,8 @@ void TagEditor::applyUpdates()
         MessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
         #else
         MessageBox::errorList(this, 1==failed.count()
-                                        ? tr("Failed to update the tags of 1 track")
-                                        : tr("Failed to update the tags of %2 tracks").arg(failed.count()),
+                                        ? i18n("Failed to update the tags of 1 track")
+                                        : i18n("Failed to update the tags of %2 tracks").arg(failed.count()),
                               failed);
         #endif
     }

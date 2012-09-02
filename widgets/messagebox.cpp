@@ -40,13 +40,13 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
 {
     if (yesText.text.isEmpty() && noText.text.isEmpty()) {
         return map(isWarning
-                ? QMessageBox::warning(parent, title.isEmpty() ? QObject::tr("Warning") : title, message,
+                ? QMessageBox::warning(parent, title.isEmpty() ? i18n("Warning") : title, message,
                                        QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton))
-                : QMessageBox::question(parent, title.isEmpty() ? QObject::tr("Question") : title, message,
+                : QMessageBox::question(parent, title.isEmpty() ? i18n("Question") : title, message,
                                         QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton))
                );
     } else {
-        QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? QObject::tr("Warning") : QObject::tr("Question")) : title,
+        QMessageBox box(isWarning ? QMessageBox::Warning : QMessageBox::Question, title.isEmpty() ? (isWarning ? i18n("Warning") : i18n("Question")) : title,
                         message, QMessageBox::Yes|QMessageBox::No|(showCancel ? QMessageBox::Cancel : QMessageBox::NoButton), parent);
 
         box.setDefaultButton(QMessageBox::Yes);
@@ -70,7 +70,7 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
 
 void MessageBox::errorList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
 {
-    QMessageBox box(QMessageBox::Critical, title.isEmpty() ? QObject::tr("Error") : title, message, QMessageBox::Ok, parent);
+    QMessageBox box(QMessageBox::Critical, title.isEmpty() ? i18n("Error") : title, message, QMessageBox::Ok, parent);
     box.setDetailedText(strlist.join("\n"));
     box.exec();
 }

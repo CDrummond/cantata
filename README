@@ -22,6 +22,17 @@ Cantata requires/uses the following libraries:
 8. MPG123 - used for ReplayGain detection (optional).
 
 
+Translations
+============
+
+Cantata is mainly a KDE-based application, but it can be compiled as Qt only.
+Because of its KDE base, the translation files are based upon KDE's i18n
+framework - these are located with the 'po' folder.
+
+Translations for the Qt-only builds are created from the KDE translations using
+'lconvert'.
+
+
 Covers
 ======
 

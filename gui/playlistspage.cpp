@@ -31,8 +31,6 @@
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KActionCollection>
-#include <KDE/KGlobalSettings>
 #else
 #include <QtGui/QAction>
 #include <QtGui/QStyle>
@@ -43,14 +41,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     , mw(p)
 {
     setupUi(this);
-    #ifdef ENABLE_KDE_SUPPORT
-    renamePlaylistAction = p->actionCollection()->addAction("renameplaylist");
-    renamePlaylistAction->setText(i18n("Rename"));
-    #else
-    renamePlaylistAction = new QAction(tr("Rename"), this);
-    #endif
-    renamePlaylistAction->setIcon(Icon("edit-rename"));
-
+    renamePlaylistAction = p->createAction("renameplaylist", i18n("Rename"), "edit-rename");
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));

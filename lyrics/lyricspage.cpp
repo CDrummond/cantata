@@ -28,7 +28,6 @@
 #include "ultimatelyricsreader.h"
 #include "network.h"
 #include "settings.h"
-#include "mainwindow.h"
 #include "squeezedtextlabel.h"
 #include "utils.h"
 #include "messagebox.h"
@@ -49,8 +48,8 @@
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KXMLGUIClient>
-#include <KDE/KActionCollection>
+#else
+#include <QtGui/QAction>
 #endif
 
 static const QLatin1String constLyricsDir("lyrics/");
@@ -88,33 +87,13 @@ LyricsPage::LyricsPage(MainWindow *p)
 //     QFutureWatcher<ProviderList> *watcher = new QFutureWatcher<ProviderList>(this);
 //     watcher->setFuture(future);
 //     connect(watcher, SIGNAL(finished()), SLOT(ultimateLyricsParsed()));
-    #ifdef ENABLE_KDE_SUPPORT
-    refreshAction = p->actionCollection()->addAction("refreshlyrics");
-    refreshAction->setText(i18n("Refresh"));
-    searchAction = p->actionCollection()->addAction("searchlyrics");
-    searchAction->setText(i18n("Search For Lyrics"));
-    editAction = p->actionCollection()->addAction("editlyrics");
-    editAction->setText(i18n("Edit Lyrics"));
-    saveAction = p->actionCollection()->addAction("savelyrics");
-    saveAction->setText(i18n("Save Lyrics"));
-    cancelAction = p->actionCollection()->addAction("canceleditlyrics");
-    cancelAction->setText(i18n("Cancel Editing Lyrics"));
-    delAction = p->actionCollection()->addAction("dellyrics");
-    delAction->setText(i18n("Delete Lyrics File"));
-    #else
-    refreshAction = new QAction(tr("Refresh"), this);
-    searchAction = new QAction(tr("Search For Lyrics"), this);
-    editAction = new QAction(tr("Refresh"), this);
-    saveAction = new QAction(tr("Refresh"), this);
-    cancelAction = new QAction(tr("Refresh"), this);
-    delAction = new QAction(tr("Refresh"), this);
-    #endif
-    refreshAction->setIcon(Icon("view-refresh"));
-    searchAction->setIcon(Icon("edit-find"));
-    editAction->setIcon(Icon("document-edit"));
-    saveAction->setIcon(Icon("document-save"));
-    cancelAction->setIcon(Icon("dialog-cancel"));
-    delAction->setIcon(Icon("edit-delete"));
+    refreshAction = p->createAction("refreshlyrics", i18n("Refresh"), "view-refresh");
+    searchAction = p->createAction("searchlyrics", i18n("Search For Lyrics"), "edit-find");
+    editAction = p->createAction("editlyrics", i18n("Edit Lyrics"), "document-edit");
+    saveAction = p->createAction("savelyrics", i18n("Save Lyrics"), "document-save");
+    cancelAction = p->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), "dialog-cancel");
+    delAction = p->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
+
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
     connect(searchAction, SIGNAL(triggered()), SLOT(search()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
@@ -422,21 +401,13 @@ void LyricsPage::getLyrics()
         if (currentProvider<providers.count()) {
             UltimateLyricsProvider *prov=providers.at(currentProvider++);
             if (prov && prov->is_enabled()) {
-                #ifdef ENABLE_KDE_SUPPORT
-                text->setText(i18nc("<title> by <artist>\nFetching lyrics via <url>", "%1 by %2\nFetching lyrics via %3",
-                                    currentSong.title, currentSong.artist, prov->name()));
-                #else
-                text->setText(tr("%1 by %2\nFetching lyrics via %3").arg(currentSong.title).arg(currentSong.artist).arg(prov->name()));
-                #endif
+                text->setText(i18nc("<title> by <artist>\nFetching lyrics via <url>", "%1 by %2\nFetching lyrics via %3")
+                                    .arg(currentSong.title).arg(currentSong.artist, prov->name()));
                 prov->FetchInfo(currentRequest, currentSong);
                 return;
             }
         } else {
-            #ifdef ENABLE_KDE_SUPPORT
-            text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics", currentSong.title, currentSong.artist));
-            #else
-            text->setText(tr("%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
-            #endif
+            text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
             currentProvider=-1;
             // Set lyrics file anyway - so that editing is enabled!
             lyricsFile=Settings::self()->storeLyricsInMpdDir()
@@ -461,11 +432,7 @@ void LyricsPage::setMode(Mode m)
     delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)));
     text->setReadOnly(Mode_Edit!=m);
     songLabel->setVisible(Mode_Edit==m);
-    #ifdef ENABLE_KDE_SUPPORT
-    songLabel->setText(Mode_Edit==m ? i18nc("title, by artist", "%1, by %2", currentSong.title, currentSong.artist) : QString());
-    #else
-    songLabel->setText(Mode_Edit==m ? tr("%1, by %2").arg(currentSong.title).arg(currentSong.artist) : QString());
-    #endif
+    songLabel->setText(Mode_Edit==m ? i18nc("title, by artist", "%1, by %2").arg(currentSong.title).arg(currentSong.artist) : QString());
 }
 
 bool LyricsPage::setLyricsFromFile(const QString &filePath) const

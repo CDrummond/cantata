@@ -193,9 +193,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     #ifdef ENABLE_KDE_SUPPORT
                     i18np("%1\n1 Track (%3)", "%1\n%2 Tracks (%3)", pl->name, pl->songs.count(), Song::formattedTime(pl->totalTime()));
                     #else
-                    (pl->songs.count()>1
-                        ? tr("%1\n%2 Tracks (%3)").arg(pl->name).arg(pl->songs.count()).arg(Song::formattedTime(pl->totalTime()))
-                        : tr("%1\n1 Track (%2)").arg(pl->name).arg(Song::formattedTime(pl->totalTime())));
+                    QObject::tr("%1\n%n Tracks (%2)", "", pl->songs.count()).arg(pl->name).arg(Song::formattedTime(pl->totalTime()));
                     #endif
         case Qt::DecorationRole:
             return Icon("view-media-playlist");
@@ -203,9 +201,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
             #else
-            return (pl->songs.count()>1
-                ? tr("%1 Tracks (%2)").arg(pl->songs.count()).arg(Song::formattedTime(pl->totalTime()))
-                : tr("1 Track (%1)").arg(Song::formattedTime(pl->totalTime())));
+            return QObject::tr("%n Tracks (%1)", "", pl->songs.count()).arg(Song::formattedTime(pl->totalTime()));
             #endif
         default: break;
         }
@@ -705,11 +701,7 @@ void PlaylistsModel::updateItemMenu()
     }
 
     itemMenu->clear();
-    #ifdef ENABLE_KDE_SUPPORT
     itemMenu->addAction(Icon("document-new"), i18n("New Playlist..."), this, SIGNAL(addToNew()));
-    #else
-    itemMenu->addAction(Icon("document-new"), tr("New Playlist..."), this, SIGNAL(addToNew()));
-    #endif
 
     QStringList names;
     foreach (const PlaylistItem *p, items) {

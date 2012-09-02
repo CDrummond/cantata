@@ -394,8 +394,8 @@ void RgDialog::saveTags()
         MessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
         #else
         MessageBox::errorList(this, 1==failed.count()
-                                        ? tr("Failed to update the tags of 1 track")
-                                        : tr("Failed to update the tags of %2 tracks").arg(failed.count()),
+                                        ? i18n("Failed to update the tags of 1 track")
+                                        : i18n("Failed to update the tags of %2 tracks").arg(failed.count()),
                               failed);
         #endif
     }

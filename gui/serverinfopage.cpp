@@ -30,24 +30,15 @@
 #include "icon.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KGlobal>
-#include <KDE/KActionCollection>
 #else
 #include <QtGui/QAction>
 #endif
-
 
 ServerInfoPage::ServerInfoPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
-    #ifdef ENABLE_KDE_SUPPORT
-    updateAction = p->actionCollection()->addAction("updatempdinfo");
-    updateAction->setText(i18n("Update MPD Information"));
-    #else
-    updateAction = new QAction(tr("Update MPD Information"), this);
-    #endif
-    updateAction->setIcon(Icon("view-refresh"));
+    updateAction = p->createAction("updatempdinfo", i18n("Update MPD Information"), "view-refresh");
     updateInfo->setDefaultAction(updateAction);
     connect(updateAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(getStats()));
     connect(MPDStats::self(), SIGNAL(updated()), SLOT(statsUpdated()));

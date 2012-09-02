@@ -187,6 +187,8 @@ public:
     void load(const QList<QUrl> &urls);
     #endif
 
+    Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
+
 protected:
     void keyPressEvent(QKeyEvent *event);
     void closeEvent(QCloseEvent *event);
@@ -348,7 +350,6 @@ private:
     void stopVolumeFade();
     void showTab(int page);
     bool fadeWhenStop() const;
-    Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
 
 private:
     int loaded;

@@ -30,6 +30,8 @@ typedef KMessageBox MessageBox;
 #else
 #include <QtGui/QMessageBox>
 #include "dialog.h"
+#include "localize.h"
+
 namespace MessageBox {
     enum ButtonCode {
         Yes=QMessageBox::Yes,
@@ -50,7 +52,7 @@ namespace MessageBox {
         return questionYesNoCancel(parent, message, title, yesText, noText, false, true);
     }
     inline void error(QWidget *parent, const QString &message, const QString &title=QString()) {
-        QMessageBox::warning(parent, title.isEmpty() ? QObject::tr("Error") : title, message);
+        QMessageBox::warning(parent, title.isEmpty() ? i18n("Error") : title, message);
     }
     void errorList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
 };

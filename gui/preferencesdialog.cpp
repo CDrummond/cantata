@@ -138,26 +138,26 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page->setHeader(i18n("Lyrics Settings"));
     page->setIcon(KIcon("view-media-lyrics"));
     #else
-    widget->AddTab(new ConfigPage(this, tr("Connection Settings"), Icon("server-database"), server),
-                   Icon("server-database"), tr("Connection"));
-    widget->AddTab(new ConfigPage(this, tr("Output Settings"), Icon("speaker"), serverplayback),
-                   Icon("speaker"), tr("Output"));
-    widget->AddTab(new ConfigPage(this, tr("Playback Settings"), Icon("media-playback-start"), playback),
-                   Icon("media-playback-start"), tr("Playback"));
-    widget->AddTab(new ConfigPage(this, tr("Interface Settings"), Icon("view-choose"), interface),
-                   Icon("view-choose"), tr("Interface"));
-    widget->AddTab(new ConfigPage(this, tr("External Settings"), Icon("video-display"), ext),
-                   Icon("video-display"), tr("External"));
+    widget->AddTab(new ConfigPage(this, i18n("Connection Settings"), Icon("server-database"), server),
+                   Icon("server-database"), i18n("Connection"));
+    widget->AddTab(new ConfigPage(this, i18n("Output Settings"), Icon("speaker"), serverplayback),
+                   Icon("speaker"), i18n("Output"));
+    widget->AddTab(new ConfigPage(this, i18n("Playback Settings"), Icon("media-playback-start"), playback),
+                   Icon("media-playback-start"), i18n("Playback"));
+    widget->AddTab(new ConfigPage(this, i18n("Interface Settings"), Icon("view-choose"), interface),
+                   Icon("view-choose"), i18n("Interface"));
+    widget->AddTab(new ConfigPage(this, i18n("External Settings"), Icon("video-display"), ext),
+                   Icon("video-display"), i18n("External"));
     #ifdef TAGLIB_FOUND
-    widget->AddTab(new ConfigPage(this, tr("HTTP Server Settings"), Icon("network-server"), http),
-                   Icon("network-server"), tr("HTTP Server"));
+    widget->AddTab(new ConfigPage(this, i18n("HTTP Server Settings"), Icon("network-server"), http),
+                   Icon("network-server"), i18n("HTTP Server"));
     #endif
-    widget->AddTab(new ConfigPage(this, tr("Lyrics Settings"), Icon("view-media-lyrics"), lyrics),
-                   Icon("view-media-lyrics"), tr("Lyrics"));
+    widget->AddTab(new ConfigPage(this, i18n("Lyrics Settings"), Icon("view-media-lyrics"), lyrics),
+                   Icon("view-media-lyrics"), i18n("Lyrics"));
     proxy = new ProxySettings(this);
     proxy->load();
-    widget->AddTab(new ConfigPage(this, tr("Proxy Settings"), Icon("preferences-system-network"), proxy),
-                   Icon("preferences-system-network"), tr("Proxy"));
+    widget->AddTab(new ConfigPage(this, i18nc("Qt-only", "Proxy Settings"), Icon("preferences-system-network"), proxy),
+                   Icon("preferences-system-network"), i18nc("Qt-only", "Proxy"));
     widget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     #endif
     setCaption(i18n("Configure"));

@@ -6,6 +6,7 @@
 #define PACKAGE_STRING  PACKAGE_NAME" "PACKAGE_VERSION
 #define DEFAULT_ALBUM_ICON "media-optical"
 #define DEFAULT_STREAM_ICON "applications-internet"
+#define INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
 
 #cmakedefine ENABLE_DEVICES_SUPPORT 1
 #cmakedefine COMPLEX_TAGLIB_FILENAME 1

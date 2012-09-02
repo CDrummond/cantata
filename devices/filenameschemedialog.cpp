@@ -47,19 +47,11 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     connect(genre, SIGNAL(clicked()), this, SLOT(insertGenre()));
     connect(year, SIGNAL(clicked()), this, SLOT(insertYear()));
 
-    #ifdef ENABLE_KDE_SUPPORT
     exampleSong.albumartist=i18nc("Example album artist", "Various Artists");
     exampleSong.artist=i18nc("Example artist", "Wibble");
     exampleSong.album=i18nc("Example album", "Now 5001");
     exampleSong.title=i18nc("Example song name", "Wobble");
     exampleSong.genre=i18nc("Example genre", "Dance");
-    #else
-    exampleSong.albumartist=tr("Various Artists");
-    exampleSong.artist=tr("Wibble");
-    exampleSong.album=tr("Now 5001");
-    exampleSong.title=tr("Wobble");
-    exampleSong.genre=tr("Dance");
-    #endif
     exampleSong.track=1;
     exampleSong.disc=2;
     exampleSong.year=2001;

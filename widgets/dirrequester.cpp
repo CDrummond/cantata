@@ -23,6 +23,7 @@
 
 #include "dirrequester.h"
 #include "icon.h"
+#include "localize.h"
 #include <QtGui/QFileDialog>
 #include <QtGui/QHBoxLayout>
 
@@ -42,7 +43,7 @@ DirRequester::DirRequester(QWidget *parent)
 
 void DirRequester::chooseDir()
 {
-    QString dir=QFileDialog::getExistingDirectory(this, tr("Select Folder"));
+    QString dir=QFileDialog::getExistingDirectory(this, i18n("Select Folder"));
     if (!dir.isEmpty()) {
         edit->setText(dir);
     }

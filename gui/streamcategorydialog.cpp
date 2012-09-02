@@ -50,7 +50,7 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
     #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Name:"), wid));
     #else
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(tr("Name:"), wid));
+    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Name:"), wid));
     #endif
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
     #ifdef ENABLE_KDE_SUPPORT

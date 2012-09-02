@@ -178,7 +178,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         return i18np("1 Rule", "%1 Rules", entryList.at(index.row()).rules.count());
         #else
         int count=entryList.at(index.row()).rules.count();
-        return count!=1 ? tr("%1 Rules").arg(count) : tr("1 Rule");
+        return count!=1 ? QObject::tr("%n Rule(s)", "", count);
         #endif
     }
     case ItemView::Role_ToggleIconName:

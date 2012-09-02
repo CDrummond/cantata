@@ -33,7 +33,6 @@
 #include <QtCore/QDir>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KActionCollection>
 #include <KDE/KRun>
 #else
 #include <QtGui/QAction>
@@ -48,9 +47,7 @@ FolderPage::FolderPage(MainWindow *p)
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
     #ifdef ENABLE_KDE_SUPPORT
-    browseAction = p->actionCollection()->addAction("openfilemanager");
-    browseAction->setText(i18n("Open File Manager"));
-    browseAction->setIcon(QIcon::fromTheme("system-file-manager"));
+    browseAction = p->createAction("openfilemanager", i18n("Open File Manager"), "system-file-manager");
     #endif
     Icon::init(addToPlayQueue);
     Icon::init(replacePlayQueue);

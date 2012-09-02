@@ -29,8 +29,8 @@
 #include "song.h"
 #include "ui_lyricspage.h"
 #include "textbrowser.h"
+#include "mainwindow.h"
 
-class MainWindow;
 class UltimateLyricsProvider;
 // class UltimateLyricsReader;
 class UltimateLyricsProvider;
@@ -101,12 +101,12 @@ private:
     int currentProvider;
     int currentRequest;
     Song currentSong;
-    QAction *refreshAction;
-    QAction *searchAction;
-    QAction *editAction;
-    QAction *saveAction;
-    QAction *cancelAction;
-    QAction *delAction;
+    Action *refreshAction;
+    Action *searchAction;
+    Action *editAction;
+    Action *saveAction;
+    Action *cancelAction;
+    Action *delAction;
     Mode mode;
     QString lyricsFile;
     QString preEdit;

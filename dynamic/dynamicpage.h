@@ -54,12 +54,12 @@ private Q_SLOTS:
 
 private:
     DynamicProxyModel proxy;
-    QAction *addAction;
-    QAction *editAction;
-    QAction *removeAction;
-    QAction *startAction;
-    QAction *stopAction;
-    QAction *toggleAction;
+    Action *addAction;
+    Action *editAction;
+    Action *removeAction;
+    Action *startAction;
+    Action *stopAction;
+    Action *toggleAction;
 };
 
 #endif

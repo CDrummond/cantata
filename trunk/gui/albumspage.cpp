@@ -34,7 +34,6 @@
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KActionCollection>
 #else
 #include <QtGui/QAction>
 #endif

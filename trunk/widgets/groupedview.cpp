@@ -235,11 +235,7 @@ public:
                 if (year>0) {
                     album+=QString(" (%1)").arg(year);
                 }
-                #ifdef ENABLE_KDE_SUPPORT
-                title=i18nc("artist - album", "%1 - %2", song.albumArtist(), album);
-                #else
-                title=tr("%1 - %2").arg(song.albumArtist()).arg(album);
-                #endif
+                title=i18nc("artist - album", "%1 - %2").arg(song.albumArtist()).arg(album);
                 track=formatNumber(song.track)+QChar(' ')+trackTitle;
             }
         } else {
@@ -332,7 +328,8 @@ public:
                 #ifdef ENABLE_KDE_SUPPORT
                 track=i18np("1 Track", "%1 Tracks", index.data(GroupedView::Role_SongCount).toUInt());
                 #else
-                track=tr("%1 Track(s)").arg(index.data(GroupedView::Role_SongCount).toUInt());
+                int numTracks=index.data(GroupedView::Role_SongCount).toUInt();
+                track=numTracks!=1 ? i18n("%1 Tracks").arg(numTracks) : i18n("1 Track");
                 #endif
             }
         } else if (!rtl) {

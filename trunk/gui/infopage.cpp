@@ -228,7 +228,7 @@ void InfoPage::downloadRequested(const QNetworkRequest &request)
     #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getSaveFileName(KUrl(), QString(), this);
     #else
-    QString fileName=QFileDialog::getSaveFileName(this, tr("Save File"), defaultFileName);
+    QString fileName=QFileDialog::getSaveFileName(this, i18n("Save File"), defaultFileName);
     #endif
     if (fileName.isEmpty()) {
         return;

@@ -97,11 +97,7 @@ QString PlayQueueModel::headerText(int col)
     case COL_TITLE:  return i18n("Title");
     case COL_ARTIST: return i18n("Artist");
     case COL_ALBUM:  return i18n("Album");
-    #ifdef ENABLE_KDE_SUPPORT
     case COL_TRACK:  return i18nc("Track Number (#)", "#");
-    #else
-    case COL_TRACK:  return QObject::tr("#");
-    #endif
     case COL_LENGTH: return i18n("Length");
     case COL_DISC:   return i18n("Disc");
     case COL_YEAR:   return i18n("Year");

@@ -293,7 +293,7 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowIcon(appIcon);
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
 
-    quitAction = new QAction(tr("&Quit"), this);
+    quitAction = new QAction(i18n("&Quit"), this);
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     quitAction->setIcon(Icon("application-exit"));
     quitAction->setShortcut(QKeySequence::Quit);
@@ -621,7 +621,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(expandInterfaceAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
-    QAction *menuAct=mainMenu->addAction(tr("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+    QAction *menuAct=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
     menuAct->setIcon(Icon("configure"));
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
@@ -630,7 +630,7 @@ MainWindow::MainWindow(QWidget *parent)
     #else
     prefAction=menuAct;
     mainMenu->addSeparator();
-    menuAct=mainMenu->addAction(tr("About Cantata..."), this, SLOT(showAboutDialog()));
+    menuAct=mainMenu->addAction(i18nc("Qt-only", "About Cantata..."), this, SLOT(showAboutDialog()));
     menuAct->setIcon(appIcon);
     #endif
     mainMenu->addSeparator();
@@ -1509,8 +1509,8 @@ void MainWindow::changeConnection()
 #ifndef ENABLE_KDE_SUPPORT
 void MainWindow::showAboutDialog()
 {
-    QMessageBox::about(this, tr("About Cantata"),
-                       tr("<b>Cantata %1</b><br/><br/>Simple GUI front-end for MPD.<br/><br/>(c) Craig Drummond 2011-2012.<br/>Released under the GPLv2<br/><br/><i><small>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>").arg(PACKAGE_VERSION));
+    QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
+                       i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>Simple GUI front-end for MPD.<br/><br/>(c) Craig Drummond 2011-2012.<br/>Released under the GPLv2<br/><br/><i><small>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>").arg(PACKAGE_VERSION));
 }
 #endif
 
@@ -1741,26 +1741,15 @@ void MainWindow::updateWindowTitle()
         if (trackLabel->text().isEmpty()) {
             setWindowTitle(multipleConnections ? i18n("Cantata (%1)").arg(connection) : "Cantata");
         } else {
-            #ifdef ENABLE_KDE_SUPPORT
             setWindowTitle(multipleConnections
-                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)", trackLabel->text(), connection)
-                            : i18nc("track :: Cantata", "%1 :: Cantata", trackLabel->text()));
-            #else
-            setWindowTitle(multipleConnections
-                            ? tr("%1 :: Cantata (%2)").arg(trackLabel->text()).arg(connection)
-                            : tr("%1 :: Cantata").arg(trackLabel->text()));
-            #endif
+                            ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)").arg(trackLabel->text()).arg(connection)
+                            : i18nc("track :: Cantata", "%1 :: Cantata").arg(trackLabel->text()));
         }
     } else {
-        #ifdef ENABLE_KDE_SUPPORT
         setWindowTitle(multipleConnections
-                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)", trackLabel->text(), current.artist,connection)
-                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata", trackLabel->text(), current.artist));
-        #else
-        setWindowTitle(multipleConnections
-                        ? tr("%1 - %2 :: Cantata (%3)").arg(trackLabel->text()).arg(current.artist).arg(connection)
-                        : tr("%1 - %2 :: Cantata").arg(trackLabel->text()).arg(current.artist));
-        #endif
+                        ? i18nc("track - artist :: Cantata (connection)", "%1 - %2 :: Cantata (%3)")
+                                .arg(trackLabel->text()).arg(current.artist).arg(connection)
+                        : i18nc("track - artist :: Cantata", "%1 - %2 :: Cantata").arg(trackLabel->text()).arg(current.artist));
     }
 }
 
@@ -1808,11 +1797,7 @@ void MainWindow::updateCurrentSong(const Song &song)
         if (year>0) {
             album+=QString(" (%1)").arg(year);
         }
-        #ifdef ENABLE_KDE_SUPPORT
-        artistLabel->setText(i18nc("artist - album", "%1 - %2", current.artist, album));
-        #else
-        artistLabel->setText(tr("%1 - %2").arg(current.artist).arg(album));
-        #endif
+        artistLabel->setText(i18nc("artist - album", "%1 - %2").arg(current.artist).arg(album));
     }
 
     playQueueModel.updateCurrentSong(current.id);
@@ -1875,19 +1860,19 @@ void MainWindow::updateCurrentSong(const Song &song)
             #else
             // The pure Qt implementation needs both, the tray icon and the setting checked.
             if (trayItem) {
-                const QString text=tr("%1\n%2\n%3").arg(trackLabel->text()).arg(artistLabel->text()).arg(Song::formattedTime(current.time));
+                const QString text=i18n("%1\n%2\n%3").arg(trackLabel->text()).arg(artistLabel->text()).arg(Song::formattedTime(current.time));
 
                 if (Settings::self()->showPopups()) {
-                    trayItem->showMessage(tr("Cantata"), text, QSystemTrayIcon::Information, 5000);
+                    trayItem->showMessage(i18n("Cantata"), text, QSystemTrayIcon::Information, 5000);
                 }
-                trayItem->setToolTip(tr("Cantata")+"\n\n"+text);
+                trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
             }
             #endif
         } else if (trayItem) {
             #ifdef ENABLE_KDE_SUPPORT
             trayItem->setToolTip("cantata", i18n("Cantata"), QString());
             #else
-            trayItem->setToolTip(tr("Cantata"));
+            trayItem->setToolTip(i18n("Cantata"));
             #endif
         }
     }
@@ -2032,7 +2017,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             trayItem->setToolTip("cantata", i18n("Cantata"), "<i>Playback stopped</i>");
             #else
             trayItem->setIcon(appIcon);
-            trayItem->setToolTip(tr("Cantata"));
+            trayItem->setToolTip(i18n("Cantata"));
             #endif
         }
         positionSlider->stopTimer();
@@ -2235,7 +2220,7 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
     #ifdef ENABLE_KDE_SUPPORT
     status = i18np("1 Track", "%1 Tracks", songs);
     #else
-    status = QString::number(songs)+QString(1==songs ? tr(" Track") : tr(" Tracks"));
+    status = 1==songs ? QObject::tr("%n Track(s)", "", songs);
     #endif
     status += " ("+MPDParseUtils::formatDuration(time)+")";
     playQueueStatsLabel->setText(status);
@@ -2415,7 +2400,7 @@ void MainWindow::setupTrayIcon()
     trayItemMenu->addAction(quitAction);
     trayItem->setContextMenu(trayItemMenu);
     trayItem->setIcon(appIcon);
-    trayItem->setToolTip(tr("Cantata"));
+    trayItem->setToolTip(i18n("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));
     #endif

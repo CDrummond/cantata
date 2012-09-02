@@ -27,10 +27,57 @@
 #include <KDE/KAboutData>
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
+#else
+#include <QtCore/QTranslator>
+#include <QtCore/QTextCodec>
+#include <QtCore/QLibraryInfo>
+#include <QtCore/QDir>
 #endif
 #include "utils.h"
 #include "config.h"
 #include "mainwindow.h"
+
+#ifndef ENABLE_KDE_SUPPORT
+// Taken from Clementine!
+//
+// We convert from .po files to .qm files, which loses context information.
+// This translator tries loading strings with an empty context if it can't
+// find any others.
+
+class PoTranslator : public QTranslator
+{
+public:
+    QString translate(const char *context, const char *sourceText, const char *disambiguation = 0) const
+    {
+        QString ret = QTranslator::translate(context, sourceText, disambiguation);
+        return !ret.isEmpty() ? ret : QTranslator::translate(NULL, sourceText, disambiguation);
+    }
+};
+
+static void loadTranslation(const QString &prefix, const QString &path, const QString &overrideLanguage = QString())
+{
+    #if QT_VERSION < 0x040700
+    // QTranslator::load will try to open and read "cantata" if it exists,
+    // without checking if it's a file first.
+    // This was fixed in Qt 4.7
+    QFileInfo maybeCantataDirectory(path + "/cantata");
+    if (maybeCantataDirectory.exists() && !maybeCantataDirectory.isFile()) {
+        return;
+    }
+    #endif
+
+    QString language = overrideLanguage.isEmpty() ? QLocale::system().name() : overrideLanguage;
+    QTranslator *t = new PoTranslator;
+
+    if (t->load(prefix+"_"+language, path)) {
+        QCoreApplication::installTranslator(t);
+    } else {
+        delete t;
+    }
+
+    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
+}
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -73,6 +120,20 @@ int main(int argc, char *argv[])
     if (!app.start()) {
         return 0;
     }
+
+    // Translations
+    QString langEnv=qgetenv("CANTATA_LANG");
+    loadTranslation("qt", QLibraryInfo::location(QLibraryInfo::TranslationsPath), langEnv);
+    #ifdef Q_OS_WIN
+    loadTranslation("qt", app.applicationDirPath()+QLatin1String("/translations"), langEnv);
+    loadTranslation("qt", QDir::currentPath()+QLatin1String("/translations"), langEnv);
+    #endif
+    loadTranslation("cantata", app.applicationDirPath()+QLatin1String("/translations"), langEnv);
+    loadTranslation("cantata", QDir::currentPath()+QLatin1String("/translations"), langEnv);
+    #ifndef Q_OS_WIN
+    loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", langEnv);
+    #endif
+
     MainWindow mw;
     app.setActivationWindow(&mw);
     #ifdef TAGLIB_FOUND

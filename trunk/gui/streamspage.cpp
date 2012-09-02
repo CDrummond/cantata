@@ -31,7 +31,6 @@
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KActionCollection>
 #include <KDE/KFileDialog>
 #else
 #include <QtGui/QAction>
@@ -45,25 +44,11 @@ StreamsPage::StreamsPage(MainWindow *p)
     , mw(p)
 {
     setupUi(this);
-    #ifdef ENABLE_KDE_SUPPORT
-    importAction = p->actionCollection()->addAction("importstreams");
-    importAction->setText(i18n("Import Streams"));
-    exportAction = p->actionCollection()->addAction("exportstreams");
-    exportAction->setText(i18n("Export Streams"));
-    addAction = p->actionCollection()->addAction("addstream");
-    addAction->setText(i18n("Add Stream"));
-    editAction = p->actionCollection()->addAction("editstream");
-    editAction->setText(i18n("Edit"));
-    #else
-    importAction = new QAction(tr("Import Streams"), this);
-    exportAction = new QAction(tr("Export Streams"), this);
-    addAction = new QAction(tr("Add Stream"), this);
-    editAction = new QAction(tr("Edit"), this);
-    #endif
-    importAction->setIcon(Icon("document-import"));
-    exportAction->setIcon(Icon("document-export"));
-    addAction->setIcon(Icon("list-add"));
-    editAction->setIcon(Icon("document-edit"));
+    importAction = p->createAction("importstreams", i18n("Import Streams"), "document-import");
+    exportAction = p->createAction("exportstreams", i18n("Export Streams"), "document-export");
+    addAction = p->createAction("addstream", i18n("Add Stream"), "list-add");
+    editAction = p->createAction("editstream", i18n("Edit"), "document-edit");
+
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -201,7 +186,7 @@ void StreamsPage::importXml()
     #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getOpenFileName(KUrl(), i18n("*.cantata|Cantata Streams"), this, i18n("Import Streams"));
     #else
-    QString fileName=QFileDialog::getOpenFileName(this, tr("Import Streams"), QDir::homePath(), tr("Cantata Streams (*.cantata)"));
+    QString fileName=QFileDialog::getOpenFileName(this, i18n("Import Streams"), QDir::homePath(), i18n("Cantata Streams (*.cantata)"));
     #endif
 
     if (fileName.isEmpty()) {
@@ -242,7 +227,7 @@ void StreamsPage::exportXml()
     #ifdef ENABLE_KDE_SUPPORT
     QString fileName=KFileDialog::getSaveFileName(name, i18n("*.cantata|Cantata Streams"), this, i18n("Export Streams"));
     #else
-    QString fileName=QFileDialog::getSaveFileName(this, tr("Export Streams"), name, tr("Cantata Streams (*.cantata)"));
+    QString fileName=QFileDialog::getSaveFileName(this, i18n("Export Streams"), name, i18n("Cantata Streams (*.cantata)"));
     #endif
 
     if (fileName.isEmpty()) {

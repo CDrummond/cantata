@@ -170,11 +170,7 @@ bool Device::songExists(const Song &s) const
 
     if (!s.isVariousArtists()) {
         Song mod(s);
-        #ifdef ENABLE_KDE_SUPPORT
         mod.albumartist=i18n("Various Artists");
-        #else
-        mod.albumartist=tr("Various Artists");
-        #endif
         if (MPDParseUtils::groupMultiple()) {
             song=findSong(mod);
             if (song) {
@@ -185,12 +181,7 @@ bool Device::songExists(const Song &s) const
             }
         }
         if (MPDParseUtils::groupSingle()) {
-            #ifdef ENABLE_KDE_SUPPORT
             mod.album=i18n("Single Tracks");
-            #else
-            mod.album=QObject::tr("Single Tracks");
-            #endif
-
             song=findSong(mod);
             if (song) {
                 Song sng=static_cast<const MusicLibraryItemSong *>(song)->song();

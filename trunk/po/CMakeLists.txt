@@ -1,43 +1,55 @@
-find_program(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
+if (CANTATA_CS_TRANSLATION)
+    LIST(APPEND CANTATA_LANGUAGES "cs")
+endif (CANTATA_CS_TRANSLATION)
 
-if(NOT GETTEXT_MSGFMT_EXECUTABLE)
-    message("------\n"
-            "NOTE: msgfmt not found. Translations will *not* be installed\n"
-            "------\n")
-else(NOT GETTEXT_MSGFMT_EXECUTABLE)
-    set(catalogname cantata)
-    add_custom_target(translations ALL)
+if (CANTATA_DE_TRANSLATION)
+    LIST(APPEND CANTATA_LANGUAGES "de")
+endif (CANTATA_DE_TRANSLATION)
 
-    if (CANTATA_CS_TRANSLATION)
-        LIST(APPEND PO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/cs.po")
-    endif (CANTATA_CS_TRANSLATION)
+if (CANTATA_ES_TRANSLATION)
+    LIST(APPEND CANTATA_LANGUAGES "es")
+endif (CANTATA_ES_TRANSLATION)
 
-    if (CANTATA_DE_TRANSLATION)
-        LIST(APPEND PO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/de.po")
-    endif (CANTATA_DE_TRANSLATION)
+if (CANTATA_PL_TRANSLATION)
+    LIST(APPEND CANTATA_LANGUAGES "pl")
+endif (CANTATA_PL_TRANSLATION)
 
-    if (CANTATA_ES_TRANSLATION)
-        LIST(APPEND PO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/es.po")
-    endif (CANTATA_ES_TRANSLATION)
+IF( ENABLE_KDE_SUPPORT )
+    find_program(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
 
-    if (CANTATA_PL_TRANSLATION)
-        LIST(APPEND PO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pl.po")
-    endif (CANTATA_PL_TRANSLATION)
-
-    # file(GLOB PO_FILES *.po)
-
-    foreach(_poFile ${PO_FILES})
-        get_filename_component(_poFileName ${_poFile} NAME)
-        string(REGEX REPLACE "^${catalogname}_?" "" _langCode ${_poFileName} )
-        string(REGEX REPLACE "\\.po$" "" _langCode ${_langCode} )
-        if(_langCode)
-            get_filename_component(_lang ${_poFile} NAME_WE)
+    if(NOT GETTEXT_MSGFMT_EXECUTABLE)
+        message("------\n"
+                "NOTE: msgfmt not found. Translations will *not* be installed\n"
+                "------\n")
+    else(NOT GETTEXT_MSGFMT_EXECUTABLE)
+        set(catalogname cantata)
+        add_custom_target(translations ALL)
+        foreach(_lang ${CANTATA_LANGUAGES})
             set(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_lang}.gmo)
             add_custom_command(TARGET translations
-                    COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
-                    DEPENDS ${_poFile})
+                    COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${CMAKE_CURRENT_SOURCE_DIR}/${_lang}.po
+                    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${_lang}.po)
             install(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${_langCode}/LC_MESSAGES/ RENAME ${catalogname}.mo)
-        endif( _langCode )
-    endforeach(_poFile ${PO_FILES})
-endif(NOT GETTEXT_MSGFMT_EXECUTABLE)
+        endforeach(_lang ${CANTATA_LANGUAGES})
+    endif(NOT GETTEXT_MSGFMT_EXECUTABLE)
+else (ENABLE_KDE_SUPPORT)
+    find_program(LCONVERT_EXECUTABLE lconvert)
+
+    if(NOT LCONVERT_EXECUTABLE)
+        message("------\n"
+                "NOTE: lconvert not found. Translations will *not* be installed\n"
+                "------\n")
+    else(NOT LCONVERT_EXECUTABLE)
+        set(catalogname cantata)
+        add_custom_target(translations ALL)
+        foreach(_lang ${CANTATA_LANGUAGES})
+            set(_poFile ${CMAKE_CURRENT_SOURCE_DIR}/${_lang}.po)
+            set(_qmFile ${CMAKE_CURRENT_BINARY_DIR}/cantata_${_lang}.qm)
+            add_custom_command(TARGET translations
+                COMMAND ${LCONVERT_EXECUTABLE} ARGS ${_poFile} -o ${_qmFile} -of qm
+                DEPENDS ${_poFile})
+            install(FILES ${_qmFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/translations/)
+        endforeach(_lang ${CANTATA_LANGUAGES})
+    endif(NOT LCONVERT_EXECUTABLE)
+endif (ENABLE_KDE_SUPPORT)
 

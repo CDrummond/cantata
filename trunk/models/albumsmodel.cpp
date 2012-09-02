@@ -238,20 +238,15 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                     year>0
                         ? i18np("%1\n%2 (%3)\n1 Track (%5)", "%1\n%2 (%3)\n%4 Tracks (%5)", al->artist, al->album,
                                 QString::number(year), al->songs.count(), Song::formattedTime(al->totalTime()))
-                        : i18np("%1\n%2\n1 Track (%4)", "%1\n%2\n Tracks (%4)", al->artist, al->album,
+                        : i18np("%1\n%2\n1 Track (%4)", "%1\n%2\n%3 Tracks (%4)", al->artist, al->album,
                                 al->songs.count(), Song::formattedTime(al->totalTime()));
                     #else
-                    (al->songs.count()>1
-                        ? year>0
-                            ? tr("%1\n%2 (%3)\n%4 Tracks (%5)").arg(al->artist).arg(al->album).arg(QString::number(year))
-                                 .arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
-                            : tr("%1\n%2\n%3 Tracks (%4)").arg(al->artist).arg(al->album)
-                                 .arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
-                        : year>0
-                            ? tr("%1\n%2 (%3)\n1 Track (%4)").arg(al->artist).arg(al->album).arg(QString::number(year))
-                                .arg(Song::formattedTime(al->totalTime()))
-                            : tr("%1\n%2\n1 Track (%3)").arg(al->artist).arg(al->album)
-                                .arg(Song::formattedTime(al->totalTime())));
+                    year>0
+                        ? QObject::tr("%1\n%2 (%3)\n%n Track(s) (%4)", "", al->songs.count())
+                                      .arg(al->artist).arg(al->album).arg(QString::number(year))
+                                      .arg(Song::formattedTime(al->totalTime()))
+                        : QObject::tr("%1\n%2\n%n Track(s) (%3)", "", al->songs.count())
+                                      .arg(al->artist).arg(al->album).arg(Song::formattedTime(al->totalTime());
                     #endif
         }
         case ItemView::Role_Search:

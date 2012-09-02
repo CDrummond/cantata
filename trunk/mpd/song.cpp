@@ -259,11 +259,7 @@ QString Song::entryName() const
         return file;
     }
 
-    #ifdef ENABLE_KDE_SUPPORT
-    return i18nc("Song\nArtist\nAlbum", "%1\n%2\n%3", title, artist, album);
-    #else
-    return QObject::tr("%1\n%2\n%3").arg(title).arg(artist).arg(album);
-    #endif
+    return i18nc("Song\nArtist\nAlbum", "%1\n%2\n%3").arg(title).arg(artist).arg(album);
 }
 
 QString Song::artistSong() const

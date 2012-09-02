@@ -24,15 +24,12 @@
 #include "dynamicpage.h"
 #include "dynamic.h"
 #include "dynamicrulesdialog.h"
-#include "mainwindow.h"
 #include "localize.h"
 #include "icon.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
-#include <KDE/KActionCollection>
-#include <KDE/KGlobalSettings>
 #else
 #include <QtGui/QAction>
 #endif
@@ -41,30 +38,12 @@ DynamicPage::DynamicPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
-    #ifdef ENABLE_KDE_SUPPORT
-    addAction = p->actionCollection()->addAction("adddynamic");
-    addAction->setText(i18n("Add Dynamic Rules"));
-    editAction = p->actionCollection()->addAction("editdynamic");
-    editAction->setText(i18n("Edit Dynamic Rules"));
-    removeAction = p->actionCollection()->addAction("removedynamic");
-    removeAction->setText(i18n("Remove Dynamic Rules"));
-    startAction = p->actionCollection()->addAction("startdynamic");
-    startAction->setText(i18n("Start Dynamic Mode"));
-    stopAction = p->actionCollection()->addAction("stopdynamic");
-    stopAction->setText(i18n("Stop Dynamic Mode"));
-    #else
-    addAction = new QAction(tr("Add Dynamic Rules"), this);
-    editAction = new QAction(tr("Edit Dynamic Rules"), this);
-    removeAction = new QAction(tr("Remove Dynamic Rules"), this);
-    startAction = new QAction(tr("Start Dynamic Mode"), this);
-    stopAction = new QAction(tr("Stop Dynamic Mode"), this);
-    #endif
-    toggleAction = new QAction(this);
-    addAction->setIcon(QIcon::fromTheme("list-add"));
-    editAction->setIcon(QIcon::fromTheme("document-edit"));
-    removeAction->setIcon(QIcon::fromTheme("list-remove"));
-    startAction->setIcon(QIcon::fromTheme("media-playback-start"));
-    stopAction->setIcon(QIcon::fromTheme("process-stop"));
+    addAction = p->createAction("adddynamic", i18n("Add Dynamic Rules"), "list-add");
+    editAction = p->createAction("editdynamic", i18n("Edit Dynamic Rules"), "document-edit");
+    removeAction = p->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
+    startAction = p->createAction("startdynamic", i18n("Start Dynamic Mode"), "media-playback-start");
+    stopAction = p->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
+    toggleAction = new Action(this);
 
     Icon::init(addBtn);
     Icon::init(editBtn);

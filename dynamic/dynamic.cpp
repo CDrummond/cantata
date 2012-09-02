@@ -177,8 +177,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         #ifdef ENABLE_KDE_SUPPORT
         return i18np("1 Rule", "%1 Rules", entryList.at(index.row()).rules.count());
         #else
-        int count=entryList.at(index.row()).rules.count();
-        return count!=1 ? QObject::tr("%n Rule(s)", "", count);
+        return QObject::tr("%n Rule(s)", "", entryList.at(index.row()).rules.count());
         #endif
     }
     case ItemView::Role_ToggleIconName:

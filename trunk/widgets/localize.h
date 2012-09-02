@@ -30,7 +30,6 @@
 #include <QtCore/QObject>
 #define i18n QObject::tr
 #define i18nc(A, B) QObject::tr(B)
-#define i18np(A, B) QObject::tr(B)
 #endif
 
 #endif

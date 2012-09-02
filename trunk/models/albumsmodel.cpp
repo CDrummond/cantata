@@ -246,7 +246,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                                       .arg(al->artist).arg(al->album).arg(QString::number(year))
                                       .arg(Song::formattedTime(al->totalTime()))
                         : QObject::tr("%1\n%2\n%n Track(s) (%3)", "", al->songs.count())
-                                      .arg(al->artist).arg(al->album).arg(Song::formattedTime(al->totalTime());
+                                      .arg(al->artist).arg(al->album).arg(Song::formattedTime(al->totalTime()));
                     #endif
         }
         case ItemView::Role_Search:

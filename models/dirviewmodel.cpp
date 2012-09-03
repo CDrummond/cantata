@@ -175,7 +175,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
                 #ifdef ENABLE_KDE_SUPPORT
                 i18np("1 Entry", "%1 Entries", item->childCount());
                 #else
-                QObject::tr("Entries: %1").arg(item->childCount());
+                QTP_ENTRIES_STR(item->childCount());
                 #endif
     case ItemView::Role_SubText:
         switch (item->type()) {
@@ -183,7 +183,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Entry", "%1 Entries", item->childCount());
             #else
-            return QObject::tr("Entries: %1").arg(item->childCount());
+            return QTP_ENTRIES_STR(item->childCount());
             #endif
             break;
         case DirViewItem::Type_File:

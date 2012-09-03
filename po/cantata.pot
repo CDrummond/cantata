@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-03 17:30+0100\n"
+"POT-Creation-Date: 2012-09-03 17:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -194,13 +194,13 @@ msgstr ""
 
 #: devices/device.cpp:173 models/musiclibraryitemroot.cpp:71
 #: models/musiclibraryitemroot.cpp:110 models/musiclibraryitemroot.cpp:164
-#: models/musiclibraryitemroot.cpp:511 models/musiclibrarymodel.cpp:371
+#: models/musiclibraryitemroot.cpp:511 models/musiclibrarymodel.cpp:370
 #: mpd/song.cpp:285
 msgid "Various Artists"
 msgstr ""
 
 #: devices/device.cpp:184 models/musiclibraryitemartist.cpp:177
-#: models/musiclibraryitemartist.cpp:190 models/musiclibrarymodel.cpp:382
+#: models/musiclibraryitemartist.cpp:190 models/musiclibrarymodel.cpp:381
 msgid "Single Tracks"
 msgstr ""
 
@@ -1302,7 +1302,7 @@ msgstr ""
 
 #: gui/mainwindow.cpp:2220 models/albumsmodel.cpp:238
 #: models/devicesmodel.cpp:230 models/devicesmodel.cpp:273
-#: models/musiclibrarymodel.cpp:252 models/musiclibrarymodel.cpp:287
+#: models/musiclibrarymodel.cpp:252 models/musiclibrarymodel.cpp:286
 #: models/playlistsmodel.cpp:194 models/playlistsmodel.cpp:202
 msgid "1 Track (%2)"
 msgid_plural "%1 Tracks (%2)"
@@ -1838,7 +1838,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: models/devicesmodel.cpp:221 models/devicesmodel.cpp:264
-#: models/musiclibrarymodel.cpp:243 models/musiclibrarymodel.cpp:278
+#: models/musiclibrarymodel.cpp:243 models/musiclibrarymodel.cpp:277
 msgid "1 Album"
 msgid_plural "%1 Albums"
 msgstr[0] ""
@@ -3118,53 +3118,121 @@ msgid "Error"
 msgstr ""
  
 
-#: ../dynamic/dynamic.cpp:180
-#, qt-format
-msgctxt "QObject|"
-msgid "Rules: %1"
-msgstr ""
-
-#: ../gui/mainwindow.cpp:2222 ../models/albumsmodel.cpp:240
-#: ../models/devicesmodel.cpp:232 ../models/devicesmodel.cpp:275
-#: ../models/musiclibrarymodel.cpp:254 ../models/musiclibrarymodel.cpp:289
-#: ../models/playlistsmodel.cpp:196 ../models/playlistsmodel.cpp:204
-#, qt-format
-msgctxt "QObject|"
-msgid "Tracks: %1 (%2)"
-msgstr ""
-
 #: ../gui/tageditor.cpp:689 ../replaygain/rgdialog.cpp:396
 msgctxt "QObject|"
 msgid "Failed to update the tags of some tracks."
 msgstr ""
 
-#: ../models/devicesmodel.cpp:214 ../models/devicesmodel.cpp:258
-#, qt-format
+#: ../qtplural.h:5
 msgctxt "QObject|"
-msgid "Artists: %1"
+msgid "0 Tracks"
 msgstr ""
 
-#: ../models/devicesmodel.cpp:223 ../models/devicesmodel.cpp:266
-#: ../models/musiclibrarymodel.cpp:245 ../models/musiclibrarymodel.cpp:280
-#, qt-format
+#: ../qtplural.h:6
 msgctxt "QObject|"
-msgid "Albums: %1"
+msgid "1 Track"
 msgstr ""
 
-#: ../models/dirviewmodel.cpp:178 ../models/dirviewmodel.cpp:186
+#: ../qtplural.h:7
 #, qt-format
 msgctxt "QObject|"
-msgid "Entries: %1"
+msgid "%1 Tracks"
 msgstr ""
 
-#: ../models/streamsmodel.cpp:167 ../models/streamsmodel.cpp:175
+#: ../qtplural.h:10
 #, qt-format
 msgctxt "QObject|"
-msgid "Streams: %1"
+msgid "0 Tracks (%1)"
 msgstr ""
 
-#: ../widgets/groupedview.cpp:331
+#: ../qtplural.h:11
 #, qt-format
 msgctxt "QObject|"
-msgid "Tracks: %1"
+msgid "1 Track (%1)"
+msgstr ""
+
+#: ../qtplural.h:12
+#, qt-format
+msgctxt "QObject|"
+msgid "%1 Tracks (%2)"
+msgstr ""
+
+#: ../qtplural.h:15
+msgctxt "QObject|"
+msgid "0 Albums"
+msgstr ""
+
+#: ../qtplural.h:16
+msgctxt "QObject|"
+msgid "1 Album"
+msgstr ""
+
+#: ../qtplural.h:17
+#, qt-format
+msgctxt "QObject|"
+msgid "%1 Albums"
+msgstr ""
+
+#: ../qtplural.h:20
+msgctxt "QObject|"
+msgid "0 Artists"
+msgstr ""
+
+#: ../qtplural.h:21
+msgctxt "QObject|"
+msgid "1 Artist"
+msgstr ""
+
+#: ../qtplural.h:22
+#, qt-format
+msgctxt "QObject|"
+msgid "%1 Artists"
+msgstr ""
+
+#: ../qtplural.h:25
+msgctxt "QObject|"
+msgid "0 Streams"
+msgstr ""
+
+#: ../qtplural.h:26
+msgctxt "QObject|"
+msgid "1 Stream"
+msgstr ""
+
+#: ../qtplural.h:27
+#, qt-format
+msgctxt "QObject|"
+msgid "%1 Streams"
+msgstr ""
+
+#: ../qtplural.h:30
+msgctxt "QObject|"
+msgid "0 Entries"
+msgstr ""
+
+#: ../qtplural.h:31
+msgctxt "QObject|"
+msgid "1 Entry"
+msgstr ""
+
+#: ../qtplural.h:32
+#, qt-format
+msgctxt "QObject|"
+msgid "%1 Entries"
+msgstr ""
+
+#: ../qtplural.h:35
+msgctxt "QObject|"
+msgid "0 Rules"
+msgstr ""
+
+#: ../qtplural.h:36
+msgctxt "QObject|"
+msgid "1 Rule"
+msgstr ""
+
+#: ../qtplural.h:37
+#, qt-format
+msgctxt "QObject|"
+msgid "%1 Rules"
 msgstr ""

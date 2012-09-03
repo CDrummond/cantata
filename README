@@ -30,7 +30,16 @@ Because of its KDE base, the translation files are based upon KDE's i18n
 framework - these are located with the 'po' folder.
 
 Translations for the Qt-only builds are created from the KDE translations using
-'lconvert'.
+'lconvert'. To work-around issues with plural translations, each string that
+can have a plural, has 3 entries in the .pot/po file - e.g. for 'Albums' we
+have:
+
+   0 Albums
+   1 Album
+   %1 Albums
+
+The first form is when there are no albums, the second for only 1 album, and
+the third for any other count. This should (hopefully) cover all cases.
 
 
 Covers

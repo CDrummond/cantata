@@ -87,8 +87,8 @@ For artist images:
 
 1. ${albumArtist}.jpg
 2. ${albumArtist}.png
-3. album.jpg
-4. album.png
+3. artist.jpg
+4. artist.png
 
 ... the above will be repeated for each parent folder (until we reach the MPD
     root folder)

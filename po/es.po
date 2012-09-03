@@ -1068,9 +1068,8 @@ msgid "<h3><i>Loading...</i></h3>"
 msgstr "<h3><i>Cargando...</i></h3>"
 
 #: gui/infopage.cpp:231
-#, fuzzy
 msgid "Save File"
-msgstr "Guardar como"
+msgstr ""
 
 #: gui/interfacesettings.cpp:34 gui/serverplaybacksettings.cpp:37
 msgid "None"
@@ -1379,10 +1378,9 @@ msgid "Configure Cantata..."
 msgstr "Configurar Cantata..."
 
 #: gui/mainwindow.cpp:633
-#, fuzzy
 msgctxt "Qt-only"
 msgid "About Cantata..."
-msgstr "Configurar Cantata..."
+msgstr ""
 
 #: gui/mainwindow.cpp:1045
 msgid "Failed to locate any songs matching the dynamic playlist rules."
@@ -1400,10 +1398,9 @@ msgid "Default"
 msgstr "Predefinido"
 
 #: gui/mainwindow.cpp:1512
-#, fuzzy
 msgctxt "Qt-only"
 msgid "About Cantata"
-msgstr "Cantata"
+msgstr ""
 
 #: gui/mainwindow.cpp:1513
 msgctxt "Qt-only"
@@ -1581,16 +1578,14 @@ msgid "Lyrics Settings"
 msgstr "Configuración de letras"
 
 #: gui/preferencesdialog.cpp:159
-#, fuzzy
 msgctxt "Qt-only"
 msgid "Proxy Settings"
-msgstr "Opciones de reproducción"
+msgstr ""
 
 #: gui/preferencesdialog.cpp:160
-#, fuzzy
 msgctxt "Qt-only"
 msgid "Proxy"
-msgstr "Proxy HTTP"
+msgstr ""
 
 #: gui/preferencesdialog.cpp:163
 msgid "Configure"
@@ -3339,9 +3334,8 @@ msgstr ""
 "b></td><td>%3</td></tr>"
 
 #: widgets/dirrequester.cpp:46
-#, fuzzy
 msgid "Select Folder"
-msgstr "Seleccione el directorio de música"
+msgstr ""
 
 #: widgets/fancytabwidget.cpp:976
 msgid "Icons Only"

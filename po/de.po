@@ -1061,9 +1061,8 @@ msgid "<h3><i>Loading...</i></h3>"
 msgstr "<h3><i>Lade...</i></h3>"
 
 #: gui/infopage.cpp:231
-#, fuzzy
 msgid "Save File"
-msgstr "Speichern unter"
+msgstr ""
 
 #: gui/interfacesettings.cpp:34 gui/serverplaybacksettings.cpp:37
 msgid "None"
@@ -1140,9 +1139,8 @@ msgid "Connect"
 msgstr "Verbinde"
 
 #: gui/mainwindow.cpp:306
-#, fuzzy
 msgid "Outputs"
-msgstr "Ausgabe"
+msgstr ""
 
 #: gui/mainwindow.cpp:307
 msgid "Refresh Database"
@@ -1372,10 +1370,9 @@ msgid "Configure Cantata..."
 msgstr "Cantata einrichten..."
 
 #: gui/mainwindow.cpp:633
-#, fuzzy
 msgctxt "Qt-only"
 msgid "About Cantata..."
-msgstr "Cantata einrichten..."
+msgstr ""
 
 #: gui/mainwindow.cpp:1045
 msgid "Failed to locate any songs matching the dynamic playlist rules."
@@ -1384,9 +1381,8 @@ msgstr ""
 "zutreffen."
 
 #: gui/mainwindow.cpp:1167 mpd/mpdconnection.cpp:316
-#, fuzzy
 msgid "Connecting to %1"
-msgstr "Verbindung zu %1 fehlgeschlagen"
+msgstr ""
 
 #: gui/mainwindow.cpp:1327 gui/mainwindow.cpp:1736 gui/serversettings.cpp:68
 #: mpd/mpdconnection.cpp:136
@@ -1394,10 +1390,9 @@ msgid "Default"
 msgstr ""
 
 #: gui/mainwindow.cpp:1512
-#, fuzzy
 msgctxt "Qt-only"
 msgid "About Cantata"
-msgstr "Cantata"
+msgstr ""
 
 #: gui/mainwindow.cpp:1513
 msgctxt "Qt-only"
@@ -1408,15 +1403,13 @@ msgid ""
 msgstr ""
 
 #: gui/mainwindow.cpp:1739 gui/mainwindow.cpp:1742
-#, fuzzy
 msgid "Cantata (%1)"
-msgstr "Cantata"
+msgstr "Cantata (%1)"
 
 #: gui/mainwindow.cpp:1745
-#, fuzzy
 msgctxt "track :: Cantata (connection)"
 msgid "%1 :: Cantata (%2)"
-msgstr "%1 :: Cantata"
+msgstr "%1 :: Cantata (%2)"
 
 #: gui/mainwindow.cpp:1746
 msgctxt "track :: Cantata"
@@ -1424,10 +1417,9 @@ msgid "%1 :: Cantata"
 msgstr "%1 :: Cantata"
 
 #: gui/mainwindow.cpp:1750
-#, fuzzy
 msgctxt "track - artist :: Cantata (connection)"
 msgid "%1 - %2 :: Cantata (%3)"
-msgstr "%1 - %2 :: Cantata"
+msgstr "%1 - %2 :: Cantata (%3)"
 
 #: gui/mainwindow.cpp:1752
 msgctxt "track - artist :: Cantata"
@@ -1526,9 +1518,8 @@ msgid "Enter new name for playlist:"
 msgstr "Bitte neuen Namen für die Wiedergabeliste angeben:"
 
 #: gui/preferencesdialog.cpp:118 gui/preferencesdialog.cpp:141
-#, fuzzy
 msgid "Connection Settings"
-msgstr "Verbindung"
+msgstr ""
 
 #. i18n: file: gui/serverplaybacksettings.ui:109
 #. i18n: ectx: property (title), widget (QGroupBox, outputFrame)
@@ -1538,9 +1529,8 @@ msgid "Output"
 msgstr "Ausgabe"
 
 #: gui/preferencesdialog.cpp:121 gui/preferencesdialog.cpp:143
-#, fuzzy
 msgid "Output Settings"
-msgstr "Einstellungen der externen Funktionen"
+msgstr ""
 
 #: gui/preferencesdialog.cpp:123 gui/preferencesdialog.cpp:146
 msgid "Playback"
@@ -1579,16 +1569,14 @@ msgid "Lyrics Settings"
 msgstr "Einstellungen zu Songtexten"
 
 #: gui/preferencesdialog.cpp:159
-#, fuzzy
 msgctxt "Qt-only"
 msgid "Proxy Settings"
-msgstr "Wiedergabeeinstellungen"
+msgstr ""
 
 #: gui/preferencesdialog.cpp:160
-#, fuzzy
 msgctxt "Qt-only"
 msgid "Proxy"
-msgstr "Proxy HTTP"
+msgstr ""
 
 #: gui/preferencesdialog.cpp:163
 msgid "Configure"
@@ -1603,13 +1591,10 @@ msgid "Track"
 msgstr "Stück"
 
 #: gui/serverplaybacksettings.cpp:116
-#, fuzzy
 msgid ""
 "<i><b>Connected to %1</b><br/>The entries below apply to the currently "
 "connected MPD instance.</i>"
 msgstr ""
-"<i><b>Nicht verbunden.</b><br/>Einige Einträge können nicht bearbeitet "
-"werden so lange Cantata nicht mit MPD verbunden wird.</i>"
 
 #. i18n: file: gui/serverplaybacksettings.ui:36
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
@@ -1637,28 +1622,23 @@ msgid "Host:"
 msgstr "Host:"
 
 #: gui/serversettings.cpp:115
-#, fuzzy
 msgid "Enter name for settings:"
-msgstr "Bitte einen Namen für die Wiedergabeliste angeben"
+msgstr ""
 
 #: gui/serversettings.cpp:130
-#, fuzzy
 msgid ""
 "A setting named %1 already exists!\n"
 "Overwrite?"
 msgstr ""
-"Eine Regelliste mit Namen '%1' existiert bereits!\n"
-"überschreiben?"
+""
 
 #: gui/serversettings.cpp:167
-#, fuzzy
 msgid "Delete %1?"
-msgstr "Lösche Stücke"
+msgstr ""
 
 #: gui/serversettings.cpp:186
-#, fuzzy
 msgid "Disconnect"
-msgstr "Verbindung beenden..."
+msgstr ""
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
@@ -1792,9 +1772,8 @@ msgid "Tools"
 msgstr "Werkzeuge"
 
 #: gui/tageditor.cpp:131 replaygain/rgdialog.cpp:126
-#, fuzzy
 msgid "Save"
-msgstr "Speichern unter"
+msgstr ""
 
 #: gui/tageditor.cpp:135
 msgid "Apply \"Various Artists\" Workaround"
@@ -2102,9 +2081,8 @@ msgstr[0] "1 Eintrag"
 msgstr[1] "%1 Einträge"
 
 #: models/dirviewmodel.cpp:192
-#, fuzzy
 msgid "Playlist"
-msgstr "Wiedergabelisten"
+msgstr ""
 
 #: models/dirviewmodel.cpp:194
 msgid "Cue Sheet"
@@ -2148,15 +2126,14 @@ msgstr[0] "1 Stream"
 msgstr[1] "%1 Streams"
 
 #: mpd/mpdconnection.cpp:138
-#, fuzzy
 msgctxt "name (host)"
 msgid "%1 (%2)"
-msgstr "1 Stück (%2)"
+msgstr "%1 (%2)"
 
 #: mpd/mpdconnection.cpp:140
 msgctxt "name (host:port)"
 msgid "%1 (%2:%3)"
-msgstr ""
+msgstr "%1 (%2:%3)"
 
 #: mpd/mpdconnection.cpp:321 mpd/mpdconnection.cpp:351
 #: mpd/mpdconnection.cpp:380 mpd/mpdconnection.cpp:391
@@ -3303,9 +3280,8 @@ msgid "Untagged Tracks"
 msgstr "nicht get"
 
 #: replaygain/rgdialog.cpp:240 replaygain/rgdialog.cpp:316
-#, fuzzy
 msgid "Cancel"
-msgstr "Dance"
+msgstr ""
 
 #: replaygain/rgdialog.cpp:246
 msgid "Scanning files..."
@@ -3335,9 +3311,8 @@ msgstr ""
 "</b></td><td>%3</td></tr>"
 
 #: widgets/dirrequester.cpp:46
-#, fuzzy
 msgid "Select Folder"
-msgstr "Wähle Musikverzeichnis:"
+msgstr ""
 
 #: widgets/fancytabwidget.cpp:976
 msgid "Icons Only"

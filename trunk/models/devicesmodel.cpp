@@ -316,7 +316,7 @@ void DevicesModel::clear()
     endResetModel();
     updateItemMenu();
 //     emit updated(rootItem);
-    emit updateGenres(QSet<QString>());
+//     emit updateGenres(QSet<QString>());
 }
 
 void DevicesModel::setEnabled(bool e)

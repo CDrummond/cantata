@@ -235,7 +235,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                 ? al->name
                 : (year>0 ? QString("%1\n%2 (%3)\n").arg(al->artist).arg(al->album).arg(QString::number(year)) : QString("%1\n%2\n").arg(al->artist).arg(al->album))+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("1 Track (%2)", "%1 Tracks (%2)").arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()));
+                    i18np("1 Track (%2)", "%1 Tracks (%2)", al->songs.count(), Song::formattedTime(al->totalTime()));
                     #else
                     QObject::tr("Tracks: %1 (%2)").arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()));
                     #endif

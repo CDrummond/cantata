@@ -2216,14 +2216,11 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
         return;
     }
 
-    QString status;
     #ifdef ENABLE_KDE_SUPPORT
-    status = i18np("1 Track", "%1 Tracks", songs);
+    playQueueStatsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, MPDParseUtils::formatDuration(time)));
     #else
-    status = QObject::tr("Tracks: %1").arg(songs);
+    playQueueStatsLabel->setText(QObject::tr("Tracks: %1 (%2)").arg(songs).arg(MPDParseUtils::formatDuration(time)));
     #endif
-    status += " ("+MPDParseUtils::formatDuration(time)+")";
-    playQueueStatsLabel->setText(status);
 }
 
 void MainWindow::updatePosition()

@@ -328,8 +328,7 @@ public:
                 #ifdef ENABLE_KDE_SUPPORT
                 track=i18np("1 Track", "%1 Tracks", index.data(GroupedView::Role_SongCount).toUInt());
                 #else
-                int numTracks=index.data(GroupedView::Role_SongCount).toUInt();
-                track=numTracks!=1 ? i18n("%1 Tracks").arg(numTracks) : i18n("1 Track");
+                track=QObject::tr("Tracks: %1").arg(index.data(GroupedView::Role_SongCount).toUInt());
                 #endif
             }
         } else if (!rtl) {

@@ -393,7 +393,7 @@ void RgDialog::saveTags()
         #ifdef ENABLE_KDE_SUPPORT
         MessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
         #else
-        MessageBox::errorList(this, QObject::tr("Failed to update the tags of some tracks"), failed);
+        MessageBox::errorList(this, QObject::tr("Failed to update the tags of some tracks."), failed);
         #endif
     }
 }

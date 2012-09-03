@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-03 12:00+0100\n"
+"POT-Creation-Date: 2012-09-03 17:02+0100\n"
 "PO-Revision-Date: 2012-05-07 19:27+0100\n"
 "Last-Translator: Lutz Lüttke <lumpilou@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -227,8 +227,8 @@ msgstr ""
 "%3</td></tr></table>"
 
 #: devices/device.cpp:173 models/musiclibraryitemroot.cpp:71
-#: models/musiclibraryitemroot.cpp:116 models/musiclibraryitemroot.cpp:160
-#: models/musiclibraryitemroot.cpp:507 models/musiclibrarymodel.cpp:371
+#: models/musiclibraryitemroot.cpp:110 models/musiclibraryitemroot.cpp:164
+#: models/musiclibraryitemroot.cpp:511 models/musiclibrarymodel.cpp:371
 #: mpd/song.cpp:285
 msgid "Various Artists"
 msgstr "Verschiedene Künstler:"
@@ -1460,17 +1460,6 @@ msgstr ""
 msgid "Cantata"
 msgstr "Cantata"
 
-#: gui/mainwindow.cpp:1863
-#, fuzzy
-msgid ""
-"%1\n"
-"%2\n"
-"%3"
-msgstr ""
-"%1\n"
-"%2\n"
-"%3"
-
 #: gui/mainwindow.cpp:1929 gui/mainwindow.cpp:1930
 msgid "Volume Disabled"
 msgstr ""
@@ -1506,7 +1495,6 @@ msgid "Existing Playlist"
 msgstr "Wiedergabeliste existiert bereits"
 
 #: gui/mainwindow.cpp:2221 widgets/groupedview.cpp:329
-#: widgets/groupedview.cpp:332
 msgid "1 Track"
 msgid_plural "%1 Tracks"
 msgstr[0] "1 Stück"
@@ -2081,42 +2069,14 @@ msgstr "Armin Walland"
 msgid "URL to open"
 msgstr "URL zum öffnen"
 
-#: models/albumsmodel.cpp:239
-msgid ""
-"%1\n"
-"%2 (%3)\n"
-"1 Track (%5)"
-msgid_plural ""
-"%1\n"
-"%2 (%3)\n"
-"%4 Tracks (%5)"
-msgstr[0] ""
-"%1\n"
-"%2 (%3)\n"
-"1 Stück (%5)"
-msgstr[1] ""
-"%1\n"
-"%2 (%3)\n"
-"%4 Stücke (%5)"
-
-#: models/albumsmodel.cpp:241
-#, fuzzy
-msgid ""
-"%1\n"
-"%2\n"
-"1 Track (%4)"
-msgid_plural ""
-"%1\n"
-"%2\n"
-"%3 Tracks (%4)"
-msgstr[0] ""
-"%1\n"
-"%2\n"
-"1 Stück (%4)"
-msgstr[1] ""
-"%1\n"
-"%2\n"
-"%3 Stücke (%4)"
+#: models/albumsmodel.cpp:238 models/devicesmodel.cpp:230
+#: models/devicesmodel.cpp:273 models/musiclibrarymodel.cpp:252
+#: models/musiclibrarymodel.cpp:287 models/playlistsmodel.cpp:194
+#: models/playlistsmodel.cpp:202
+msgid "1 Track (%2)"
+msgid_plural "%1 Tracks (%2)"
+msgstr[0] "1 Stück (%2)"
+msgstr[1] "%1 Stücke (%2)"
 
 #: models/devicesmodel.cpp:212 models/devicesmodel.cpp:256
 msgid "1 Artist"
@@ -2125,19 +2085,11 @@ msgstr[0] "1 Künstler"
 msgstr[1] "%1 Künstler"
 
 #: models/devicesmodel.cpp:221 models/devicesmodel.cpp:264
-#: models/musiclibrarymodel.cpp:278
+#: models/musiclibrarymodel.cpp:243 models/musiclibrarymodel.cpp:278
 msgid "1 Album"
 msgid_plural "%1 Albums"
 msgstr[0] "1 Album"
 msgstr[1] "%1 Alben"
-
-#: models/devicesmodel.cpp:230 models/devicesmodel.cpp:273
-#: models/musiclibrarymodel.cpp:287 models/playlistsmodel.cpp:194
-#: models/playlistsmodel.cpp:202
-msgid "1 Track (%2)"
-msgid_plural "%1 Tracks (%2)"
-msgstr[0] "1 Stück (%2)"
-msgstr[1] "%1 Stücke (%2)"
 
 #: models/devicesmodel.cpp:645
 msgid "No Devices Attached"
@@ -2161,18 +2113,6 @@ msgstr ""
 #: models/dirviewmodel.cpp:196
 msgid "Audio File"
 msgstr ""
-
-#: models/musiclibrarymodel.cpp:243
-msgid "%1<br/>1 Album"
-msgid_plural "%1<br/>%2 Albums"
-msgstr[0] "%1<br/>1 Album"
-msgstr[1] "%1<br/>%2 Alben"
-
-#: models/musiclibrarymodel.cpp:252
-msgid "%1<br/>1 Track (%3)"
-msgid_plural "%1<br/>%2 Tracks (%3)"
-msgstr[0] "%1<br/>1 Stück (%3)"
-msgstr[1] "%1<br/>%2 Stücke (%3)"
 
 #: models/playlistsmodel.cpp:704
 msgid "New Playlist..."
@@ -2254,16 +2194,6 @@ msgid "1 day %2"
 msgid_plural "%1 days %2"
 msgstr[0] "1 Tag %2"
 msgstr[1] "%1 Tage %2"
-
-#: mpd/mpdparseutils.cpp:510
-#, fuzzy
-msgid "1 day %1"
-msgstr "1 Tag %2"
-
-#: mpd/mpdparseutils.cpp:511
-#, fuzzy
-msgid "%1 days %2"
-msgstr "1 Tag %2"
 
 #: mpd/song.cpp:262
 msgctxt ""
@@ -3445,11 +3375,6 @@ msgstr "Karteireiter oben"
 msgid "Tabs On Bottom"
 msgstr "Karteireiter unten"
 
-#: widgets/groupedview.cpp:332
-#, fuzzy
-msgid "%1 Tracks"
-msgstr "1 Stück"
-
 #: widgets/itemview.cpp:642 widgets/itemview.cpp:681 widgets/itemview.cpp:683
 #: widgets/itemview.cpp:978
 msgid "Search %1..."
@@ -3473,34 +3398,24 @@ msgctxt "QObject|"
 msgid "Rules: %1"
 msgstr ""
 
-#: ../gui/mainwindow.cpp:2223
+#: ../gui/mainwindow.cpp:2223 ../widgets/groupedview.cpp:331
 #, qt-format
 msgctxt "QObject|"
 msgid "Tracks: %1"
 msgstr ""
 
-#: ../gui/tageditor.cpp:689
-#, qt-format
+#: ../gui/tageditor.cpp:689 ../replaygain/rgdialog.cpp:396
 msgctxt "QObject|"
 msgid "Failed to update the tags of some tracks."
 msgstr ""
 
-#: ../models/albumsmodel.cpp:245
+#: ../models/albumsmodel.cpp:240 ../models/devicesmodel.cpp:232
+#: ../models/devicesmodel.cpp:275 ../models/musiclibrarymodel.cpp:254
+#: ../models/musiclibrarymodel.cpp:289 ../models/playlistsmodel.cpp:196
+#: ../models/playlistsmodel.cpp:204
 #, qt-format
 msgctxt "QObject|"
-msgid ""
-"%1\n"
-"%2 (%3)\n"
-"Tracks: %4 (%5)"
-msgstr ""
-
-#: ../models/albumsmodel.cpp:247
-#, qt-format
-msgctxt "QObject|"
-msgid ""
-"%1\n"
-"%2\n"
-"Tracks: %3 (%4)"
+msgid "Tracks: %1 (%2)"
 msgstr ""
 
 #: ../models/devicesmodel.cpp:214 ../models/devicesmodel.cpp:258
@@ -3510,18 +3425,10 @@ msgid "Artists: %1"
 msgstr ""
 
 #: ../models/devicesmodel.cpp:223 ../models/devicesmodel.cpp:266
-#: ../models/musiclibrarymodel.cpp:280
+#: ../models/musiclibrarymodel.cpp:245 ../models/musiclibrarymodel.cpp:280
 #, qt-format
 msgctxt "QObject|"
 msgid "Albums: %1"
-msgstr ""
-
-#: ../models/devicesmodel.cpp:232 ../models/devicesmodel.cpp:275
-#: ../models/musiclibrarymodel.cpp:289 ../models/playlistsmodel.cpp:196
-#: ../models/playlistsmodel.cpp:204
-#, qt-format
-msgctxt "QObject|"
-msgid "Tracks: %1 (%2)"
 msgstr ""
 
 #: ../models/dirviewmodel.cpp:178 ../models/dirviewmodel.cpp:186
@@ -3530,29 +3437,78 @@ msgctxt "QObject|"
 msgid "Entries: %1"
 msgstr ""
 
-#: ../models/musiclibrarymodel.cpp:245
-#, qt-format
-msgctxt "QObject|"
-msgid "%1<br/>Albums: %2"
-msgstr ""
-
-#: ../models/musiclibrarymodel.cpp:254
-#, qt-format
-msgctxt "QObject|"
-msgid "%1<br/>Tracks: %2 (%3)"
-msgstr ""
-
 #: ../models/streamsmodel.cpp:167 ../models/streamsmodel.cpp:175
 #, qt-format
 msgctxt "QObject|"
 msgid "Streams: %1"
 msgstr ""
 
-#: ../replaygain/rgdialog.cpp:396
-#, qt-format
-msgctxt "QObject|"
-msgid "Failed to update the tags of some tracks"
-msgstr ""
+#, fuzzy
+#~ msgid ""
+#~ "%1\n"
+#~ "%2\n"
+#~ "%3"
+#~ msgstr ""
+#~ "%1\n"
+#~ "%2\n"
+#~ "%3"
+
+#~ msgid ""
+#~ "%1\n"
+#~ "%2 (%3)\n"
+#~ "1 Track (%5)"
+#~ msgid_plural ""
+#~ "%1\n"
+#~ "%2 (%3)\n"
+#~ "%4 Tracks (%5)"
+#~ msgstr[0] ""
+#~ "%1\n"
+#~ "%2 (%3)\n"
+#~ "1 Stück (%5)"
+#~ msgstr[1] ""
+#~ "%1\n"
+#~ "%2 (%3)\n"
+#~ "%4 Stücke (%5)"
+
+#, fuzzy
+#~ msgid ""
+#~ "%1\n"
+#~ "%2\n"
+#~ "1 Track (%4)"
+#~ msgid_plural ""
+#~ "%1\n"
+#~ "%2\n"
+#~ "%3 Tracks (%4)"
+#~ msgstr[0] ""
+#~ "%1\n"
+#~ "%2\n"
+#~ "1 Stück (%4)"
+#~ msgstr[1] ""
+#~ "%1\n"
+#~ "%2\n"
+#~ "%3 Stücke (%4)"
+
+#~ msgid "%1<br/>1 Album"
+#~ msgid_plural "%1<br/>%2 Albums"
+#~ msgstr[0] "%1<br/>1 Album"
+#~ msgstr[1] "%1<br/>%2 Alben"
+
+#~ msgid "%1<br/>1 Track (%3)"
+#~ msgid_plural "%1<br/>%2 Tracks (%3)"
+#~ msgstr[0] "%1<br/>1 Stück (%3)"
+#~ msgstr[1] "%1<br/>%2 Stücke (%3)"
+
+#, fuzzy
+#~ msgid "1 day %1"
+#~ msgstr "1 Tag %2"
+
+#, fuzzy
+#~ msgid "%1 days %2"
+#~ msgstr "1 Tag %2"
+
+#, fuzzy
+#~ msgid "%1 Tracks"
+#~ msgstr "1 Stück"
 
 #~ msgid ""
 #~ "%1\n"

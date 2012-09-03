@@ -51,7 +51,6 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     bool itemsSelected(bool);
-    void goBack();
 
 private:
     QMenu *menu;

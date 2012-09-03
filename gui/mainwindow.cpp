@@ -2219,7 +2219,7 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
     #ifdef ENABLE_KDE_SUPPORT
     playQueueStatsLabel->setText(i18np("1 Track (%2)", "%1 Tracks (%2)", songs, MPDParseUtils::formatDuration(time)));
     #else
-    playQueueStatsLabel->setText(QObject::tr("Tracks: %1 (%2)").arg(songs).arg(MPDParseUtils::formatDuration(time)));
+    playQueueStatsLabel->setText(QTP_TRACKS_DURATION_STR(songs, MPDParseUtils::formatDuration(time)));
     #endif
 }
 

@@ -164,7 +164,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                     #ifdef ENABLE_KDE_SUPPORT
                     i18np("1 Stream", "%1 Streams", cat->streams.count());
                     #else
-                    cat->name+"\n"+QObject::tr("Streams: %1").arg(cat->streams.count());
+                    cat->name+"\n"+QTP_STREAMS_STR(cat->streams.count());
                     #endif
         case Qt::DecorationRole: return cat->icon.isEmpty() ? Icon(constDefaultCategoryIcon)
                                                             : cat->icon.startsWith('/') ? QIcon(cat->icon) : Icon(cat->icon);
@@ -172,7 +172,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Stream", "%1 Streams", cat->streams.count());
             #else
-            return QObject::tr("Streams: %1").arg(cat->streams.count());
+            return QTP_STREAMS_STR(cat->streams.count());
             #endif
         default: break;
         }

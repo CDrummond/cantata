@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-03 17:56+0100\n"
+"POT-Creation-Date: 2012-09-03 21:31+0100\n"
 "PO-Revision-Date: 2012-08-06 16:42+0200\n"
 "Last-Translator: Mirosław Zalewski <miroslaw-zalewski@o2.pl>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -3418,109 +3418,46 @@ msgctxt "QObject|"
 msgid "Failed to update the tags of some tracks."
 msgstr ""
 
-#: ../qtplural.h:5
+#: ../qtplural.h:28
+#, qt-format
 msgctxt "QObject|"
-msgid "0 Tracks"
-msgstr ""
-
-#: ../qtplural.h:6
-msgctxt "QObject|"
-msgid "1 Track"
-msgstr ""
-
-#: ../qtplural.h:7
-msgctxt "QObject|"
-msgid "%1 Tracks"
-msgstr ""
-
-#: ../qtplural.h:10
-msgctxt "QObject|"
-msgid "0 Tracks (%1)"
-msgstr ""
-
-#: ../qtplural.h:11
-msgctxt "QObject|"
-msgid "1 Track (%1)"
-msgstr ""
-
-#: ../qtplural.h:12
-msgctxt "QObject|"
-msgid "%1 Tracks (%2)"
-msgstr ""
-
-#: ../qtplural.h:15
-msgctxt "QObject|"
-msgid "0 Albums"
-msgstr ""
-
-#: ../qtplural.h:16
-msgctxt "QObject|"
-msgid "1 Album"
-msgstr ""
-
-#: ../qtplural.h:17
-msgctxt "QObject|"
-msgid "%1 Albums"
-msgstr ""
-
-#: ../qtplural.h:20
-msgctxt "QObject|"
-msgid "0 Artists"
-msgstr ""
-
-#: ../qtplural.h:21
-msgctxt "QObject|"
-msgid "1 Artist"
-msgstr ""
-
-#: ../qtplural.h:22
-msgctxt "QObject|"
-msgid "%1 Artists"
-msgstr ""
-
-#: ../qtplural.h:25
-msgctxt "QObject|"
-msgid "0 Streams"
-msgstr ""
-
-#: ../qtplural.h:26
-msgctxt "QObject|"
-msgid "1 Stream"
-msgstr ""
-
-#: ../qtplural.h:27
-msgctxt "QObject|"
-msgid "%1 Streams"
-msgstr ""
-
-#: ../qtplural.h:30
-msgctxt "QObject|"
-msgid "0 Entries"
+msgid "Tracks: %1"
 msgstr ""
 
 #: ../qtplural.h:31
+#, qt-format
 msgctxt "QObject|"
-msgid "1 Entry"
+msgid "Tracks: %1 (%2)"
 msgstr ""
 
-#: ../qtplural.h:32
+#: ../qtplural.h:34
+#, qt-format
 msgctxt "QObject|"
-msgid "%1 Entries"
-msgstr ""
-
-#: ../qtplural.h:35
-msgctxt "QObject|"
-msgid "0 Rules"
-msgstr ""
-
-#: ../qtplural.h:36
-msgctxt "QObject|"
-msgid "1 Rule"
+msgid "Albums: %1"
 msgstr ""
 
 #: ../qtplural.h:37
+#, qt-format
 msgctxt "QObject|"
-msgid "%1 Rules"
+msgid "Artists: %1"
+msgstr ""
+
+#: ../qtplural.h:40
+#, qt-format
+msgctxt "QObject|"
+msgid "Streams: %1"
+msgstr ""
+
+#: ../qtplural.h:43
+#, qt-format
+msgctxt "QObject|"
+msgid "Entries: %1"
+msgstr ""
+
+#: ../qtplural.h:46
+#, qt-format
+msgctxt "QObject|"
+msgid "Rules: %1"
 msgstr ""
 
 #, fuzzy

@@ -506,6 +506,6 @@ QString MPDParseUtils::formatDuration(const quint32 totalseconds)
     #else
     return 0==days
             ? time.toString("h:mm:ss")
-            : QString("%1:%1").arg(days).arg(time.toString("hh:mm:ss"));
+            : QString("%1:%2").arg(days).arg(time.toString("hh:mm:ss"));
     #endif
 }

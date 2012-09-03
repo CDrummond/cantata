@@ -72,6 +72,7 @@
     translations. Plural forms not supported correctly, hence instead of
     "1 Track" / "2 Tracks" Qt will have "Tracks: 1" / "Tracks: 2" The existing
     translations will need to be updated to handle the Qt specific cases.
+41. Dont clear genre list when clearing music library model.
 
 0.8.2
 -----

@@ -69,9 +69,12 @@
     selection into a QImage and set painter's opacity before drawing image.
 39. Elide to right (or left for RTL) strings in sidebar.
 40. Implement support for translations in Qt-only builds. These use the KDE
-    translations. Plural forms not supported correctly, hence instead of
-    "1 Track" / "2 Tracks" Qt will have "Tracks: 1" / "Tracks: 2" The existing
-    translations will need to be updated to handle the Qt specific cases.
+    translations. Plural forms not supported correctly, so in the translation
+    files there a entries for each plural-able string. e.g. "0 Albums",
+    "1 Album", and "%1 Albums" this is for "no albums", "single albums",
+    "any other quantity" This should (hopefully) cover all cases.
+    Currently, the Qt translations are incomplete - becasuse they are based
+    upon the KDE translations, but with some additions.
 41. Dont clear genre list when clearing music library model.
 42. If we are grouping multiple-artists albums under 'Various Artists', then
     we also need to place 'Various Artists' albums there as well. This oddity

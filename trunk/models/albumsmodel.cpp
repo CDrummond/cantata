@@ -237,7 +237,7 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                     #ifdef ENABLE_KDE_SUPPORT
                     i18np("1 Track (%2)", "%1 Tracks (%2)", al->songs.count(), Song::formattedTime(al->totalTime()));
                     #else
-                    QObject::tr("Tracks: %1 (%2)").arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()));
+                    QTP_TRACKS_DURATION_STR(al->songs.count(), Song::formattedTime(al->totalTime()));
                     #endif
         }
         case ItemView::Role_Search:

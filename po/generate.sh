@@ -36,6 +36,7 @@ xgettext --from-code=UTF-8 -C -kde -ci18n -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki1
          --files-from=infiles.list -D ${BASEDIR} -D ${WDIR} -o ${PROJECT}_kde.pot || { echo "error while calling xgettext. aborting."; exit 1; }
 
 find .. -name '*.cpp' | xargs grep -l 'QObject::tr(' | sort > ${WDIR}/infiles.qt.list
+echo "../qtplural.h" >> ${WDIR}/infiles.qt.list
 lupdate @infiles.qt.list -ts ${PROJECT}.ts && lconvert -i ${PROJECT}.ts -o ${PROJECT}_qt.po && msguniq -o ${PROJECT}_qt.pot ${PROJECT}_qt.po && rm ${PROJECT}.ts ${PROJECT}_qt.po
 
 #Fix charset...

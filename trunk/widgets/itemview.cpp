@@ -458,6 +458,12 @@ ItemView::ItemView(QWidget *p)
     backAction = new QAction(i18n("Back"), this);
     backAction->setIcon(Icon("go-previous"));
     backButton->setDefaultAction(backAction);
+    backAction->setShortcut(Qt::Key_Escape);
+    listView->addAction(backAction);
+    listView->addDefaultAction(backAction);
+    QAction *sep=new QAction(this);
+    sep->setSeparator(true);
+    listView->addAction(sep);
     Icon::init(backButton);
     treeView->setPageDefaults();
     iconGridSize=listGridSize=listView->gridSize();

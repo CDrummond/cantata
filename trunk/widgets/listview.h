@@ -26,6 +26,7 @@
 
 #include <QtGui/QListView>
 
+class QMenu;
 class ListView : public QListView
 {
     Q_OBJECT
@@ -42,13 +43,18 @@ public:
     void mouseReleaseEvent(QMouseEvent *event);
     QModelIndexList selectedIndexes() const;
     virtual void setModel(QAbstractItemModel *m);
+    void addDefaultAction(QAction *act);
 
 private Q_SLOTS:
     void correctSelection();
+    void showCustomContextMenu(const QPoint &pos);
 
 Q_SIGNALS:
     bool itemsSelected(bool);
     void goBack();
+
+private:
+    QMenu *menu;
 };
 
 #endif

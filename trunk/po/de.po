@@ -1061,6 +1061,7 @@ msgid "<h3><i>Loading...</i></h3>"
 msgstr "<h3><i>Lade...</i></h3>"
 
 #: gui/infopage.cpp:231
+msgctxt "Qt-only"
 msgid "Save File"
 msgstr ""
 

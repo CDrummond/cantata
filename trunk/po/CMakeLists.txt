@@ -30,7 +30,7 @@ IF( ENABLE_KDE_SUPPORT )
                 add_custom_command(TARGET translations
                         COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${CMAKE_CURRENT_SOURCE_DIR}/${_lang}.po
                         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${_lang}.po)
-                install(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${_langCode}/LC_MESSAGES/ RENAME ${catalogname}.mo)
+                install(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${_lang}/LC_MESSAGES/ RENAME ${catalogname}.mo)
             endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${_lang}.po)
         endforeach(_lang ${CANTATA_LANGUAGES})
     endif(NOT GETTEXT_MSGFMT_EXECUTABLE)

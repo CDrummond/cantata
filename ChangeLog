@@ -76,6 +76,7 @@
 42. If we are grouping multiple-artists albums under 'Various Artists', then
     we also need to place 'Various Artists' albums there as well. This oddity
     can occur when i18n('Various Artists') != 'Various Artists'
+43. Add 'Back' action to context menu of list/icon views.
 
 0.8.2
 -----

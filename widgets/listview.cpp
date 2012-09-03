@@ -28,9 +28,11 @@
 #include <QtCore/QMimeData>
 #include <QtGui/QDrag>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QMenu>
 
 ListView::ListView(QWidget *parent)
         : QListView(parent)
+        , menu(0)
 {
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);
@@ -39,6 +41,7 @@ ListView::ListView(QWidget *parent)
     setAlternatingRowColors(true);
     setUniformItemSizes(true);
     setAttribute(Qt::WA_MouseTracking);
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(showCustomContextMenu(const QPoint &)));
 }
 
 ListView::~ListView()
@@ -50,7 +53,7 @@ void ListView::selectionChanged(const QItemSelection &selected, const QItemSelec
     QListView::selectionChanged(selected, deselected);
     bool haveSelection=selectedIndexes().count();
 
-    setContextMenuPolicy(haveSelection ? Qt::ActionsContextMenu : Qt::NoContextMenu);
+    setContextMenuPolicy(haveSelection ? Qt::ActionsContextMenu : (menu ? Qt::CustomContextMenu : Qt::NoContextMenu));
     emit itemsSelected(haveSelection);
 }
 
@@ -129,6 +132,14 @@ void ListView::setModel(QAbstractItemModel *m)
     }
 }
 
+void ListView::addDefaultAction(QAction *act)
+{
+    if (!menu) {
+        menu=new QMenu(this);
+    }
+    menu->addAction(act);
+}
+
 // Workaround for https://bugreports.qt-project.org/browse/QTBUG-18009
 void ListView::correctSelection()
 {
@@ -137,3 +148,9 @@ void ListView::correctSelection()
     selectionModel()->select(s, QItemSelectionModel::SelectCurrent);
 }
 
+void ListView::showCustomContextMenu(const QPoint &pos)
+{
+    if (menu) {
+        menu->popup(mapToGlobal(pos));
+    }
+}

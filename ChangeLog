@@ -73,6 +73,9 @@
     "1 Track" / "2 Tracks" Qt will have "Tracks: 1" / "Tracks: 2" The existing
     translations will need to be updated to handle the Qt specific cases.
 41. Dont clear genre list when clearing music library model.
+42. If we are grouping multiple-artists albums under 'Various Artists', then
+    we also need to place 'Various Artists' albums there as well. This oddity
+    can occur when i18n('Various Artists') != 'Various Artists'
 
 0.8.2
 -----

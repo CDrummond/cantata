@@ -107,16 +107,20 @@ void MusicLibraryItemRoot::groupMultipleArtists()
     QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
     MusicLibraryItemArtist *various=0;
     bool created=false;
+    QString va=i18n("Various Artists");
+    bool checkDiffVaString=va!=QLatin1String("Various Artists");
 
+    // When grouping multiple artists - if 'Various Artists' is spelt different in curernt language, then we also need to place
+    // items by 'Various Artists' into i18n('Various Artists')
     for (; it!=m_childItems.end(); ) {
-        if (various!=(*it) && !static_cast<MusicLibraryItemArtist *>(*it)->isVarious()) {
+        if (various!=(*it) && (!static_cast<MusicLibraryItemArtist *>(*it)->isVarious() ||
+                               (checkDiffVaString && static_cast<MusicLibraryItemArtist *>(*it)->isVarious() && va!=(*it)->data())) ) {
             QList<MusicLibraryItem *> mutipleAlbums=static_cast<MusicLibraryItemArtist *>(*it)->mutipleArtistAlbums();
             if (mutipleAlbums.count()) {
                 if (!various) {
-                    QString artist=i18n("Various Artists");
-                    QHash<QString, int>::ConstIterator it=m_indexes.find(artist);
+                    QHash<QString, int>::ConstIterator it=m_indexes.find(va);
                     if (m_indexes.end()==it) {
-                        various=new MusicLibraryItemArtist(artist, this);
+                        various=new MusicLibraryItemArtist(va, this);
                         created=true;
                     } else {
                         various=static_cast<MusicLibraryItemArtist *>(m_childItems.at(*it));

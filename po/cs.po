@@ -1056,9 +1056,8 @@ msgid "<h3><i>Loading...</i></h3>"
 msgstr "<h3><i>Nahrává se...</i></h3>"
 
 #: gui/infopage.cpp:231
-#, fuzzy
 msgid "Save File"
-msgstr "Uložit jako"
+msgstr ""
 
 #: gui/interfacesettings.cpp:34 gui/serverplaybacksettings.cpp:37
 msgid "None"
@@ -1366,10 +1365,9 @@ msgid "Configure Cantata..."
 msgstr "Nastavit Cantatu..."
 
 #: gui/mainwindow.cpp:633
-#, fuzzy
 msgctxt "Qt-only"
 msgid "About Cantata..."
-msgstr "Nastavit Cantatu..."
+msgstr ""
 
 #: gui/mainwindow.cpp:1045
 msgid "Failed to locate any songs matching the dynamic playlist rules."
@@ -1387,10 +1385,9 @@ msgid "Default"
 msgstr "Výchozí"
 
 #: gui/mainwindow.cpp:1512
-#, fuzzy
 msgctxt "Qt-only"
 msgid "About Cantata"
-msgstr "Cantata"
+msgstr ""
 
 #: gui/mainwindow.cpp:1513
 msgctxt "Qt-only"
@@ -1567,16 +1564,14 @@ msgid "Lyrics Settings"
 msgstr "Nastavení textu písně"
 
 #: gui/preferencesdialog.cpp:159
-#, fuzzy
 msgctxt "Qt-only"
 msgid "Proxy Settings"
-msgstr "Nastavení přehrávání"
+msgstr ""
 
 #: gui/preferencesdialog.cpp:160
-#, fuzzy
 msgctxt "Qt-only"
 msgid "Proxy"
-msgstr "Proxy HTTP"
+msgstr ""
 
 #: gui/preferencesdialog.cpp:163
 msgid "Configure"
@@ -3325,9 +3320,8 @@ msgstr ""
 "</b></td><td>%3</td></tr>"
 
 #: widgets/dirrequester.cpp:46
-#, fuzzy
 msgid "Select Folder"
-msgstr "Vybrat složku s hudbou"
+msgstr ""
 
 #: widgets/fancytabwidget.cpp:976
 msgid "Icons Only"

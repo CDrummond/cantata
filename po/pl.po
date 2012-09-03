@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-03 17:02+0100\n"
+"POT-Creation-Date: 2012-09-03 17:30+0100\n"
 "PO-Revision-Date: 2012-08-06 16:42+0200\n"
 "Last-Translator: Mirosław Zalewski <miroslaw-zalewski@o2.pl>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -1418,6 +1418,7 @@ msgid ""
 msgstr ""
 
 #: gui/mainwindow.cpp:1739 gui/mainwindow.cpp:1742
+#, fuzzy
 msgid "Cantata (%1)"
 msgstr "Cantata (%1)"
 
@@ -1462,8 +1463,8 @@ msgstr ""
 
 #: gui/mainwindow.cpp:1853 gui/mainwindow.cpp:1866 gui/mainwindow.cpp:1868
 #: gui/mainwindow.cpp:1873 gui/mainwindow.cpp:1875 gui/mainwindow.cpp:2017
-#: gui/mainwindow.cpp:2020 gui/mainwindow.cpp:2374 gui/mainwindow.cpp:2376
-#: gui/mainwindow.cpp:2403 main.cpp:86
+#: gui/mainwindow.cpp:2020 gui/mainwindow.cpp:2371 gui/mainwindow.cpp:2373
+#: gui/mainwindow.cpp:2400 main.cpp:86
 msgid "Cantata"
 msgstr "Cantata"
 
@@ -1499,12 +1500,15 @@ msgstr "Playlista o nazwie <b>%1</b> już istnieje!<br/>Dodać do tej playlisty?
 msgid "Existing Playlist"
 msgstr "Istniejąca playlista"
 
-#: gui/mainwindow.cpp:2221 widgets/groupedview.cpp:329
-msgid "1 Track"
-msgid_plural "%1 Tracks"
-msgstr[0] "1 Utwór"
-msgstr[1] "%1 Utwory"
-msgstr[2] "%1 Utworów"
+#: gui/mainwindow.cpp:2220 models/albumsmodel.cpp:238
+#: models/devicesmodel.cpp:230 models/devicesmodel.cpp:273
+#: models/musiclibrarymodel.cpp:252 models/musiclibrarymodel.cpp:287
+#: models/playlistsmodel.cpp:194 models/playlistsmodel.cpp:202
+msgid "1 Track (%2)"
+msgid_plural "%1 Tracks (%2)"
+msgstr[0] "1 Utwór (%2)"
+msgstr[1] "%1 Utwory (%2)"
+msgstr[2] "%1 Utworów (%2)"
 
 #: gui/playbacksettings.cpp:32
 msgid "Do not fadeout"
@@ -2066,16 +2070,6 @@ msgstr "Armin Walland"
 #: main.cpp:103
 msgid "URL to open"
 msgstr "URL do otwarcia"
-
-#: models/albumsmodel.cpp:238 models/devicesmodel.cpp:230
-#: models/devicesmodel.cpp:273 models/musiclibrarymodel.cpp:252
-#: models/musiclibrarymodel.cpp:287 models/playlistsmodel.cpp:194
-#: models/playlistsmodel.cpp:202
-msgid "1 Track (%2)"
-msgid_plural "%1 Tracks (%2)"
-msgstr[0] "1 Utwór (%2)"
-msgstr[1] "%1 Utwory (%2)"
-msgstr[2] "%1 Utworów (%2)"
 
 #: models/devicesmodel.cpp:212 models/devicesmodel.cpp:256
 msgid "1 Artist"
@@ -3395,6 +3389,13 @@ msgstr "Kary u góry"
 msgid "Tabs On Bottom"
 msgstr "Kary u dołu"
 
+#: widgets/groupedview.cpp:329
+msgid "1 Track"
+msgid_plural "%1 Tracks"
+msgstr[0] "1 Utwór"
+msgstr[1] "%1 Utwory"
+msgstr[2] "%1 Utworów"
+
 #: widgets/itemview.cpp:642 widgets/itemview.cpp:681 widgets/itemview.cpp:683
 #: widgets/itemview.cpp:978
 msgid "Search %1..."
@@ -3418,24 +3419,18 @@ msgctxt "QObject|"
 msgid "Rules: %1"
 msgstr ""
 
-#: ../gui/mainwindow.cpp:2223 ../widgets/groupedview.cpp:331
+#: ../gui/mainwindow.cpp:2222 ../models/albumsmodel.cpp:240
+#: ../models/devicesmodel.cpp:232 ../models/devicesmodel.cpp:275
+#: ../models/musiclibrarymodel.cpp:254 ../models/musiclibrarymodel.cpp:289
+#: ../models/playlistsmodel.cpp:196 ../models/playlistsmodel.cpp:204
 #, qt-format
 msgctxt "QObject|"
-msgid "Tracks: %1"
+msgid "Tracks: %1 (%2)"
 msgstr ""
 
 #: ../gui/tageditor.cpp:689 ../replaygain/rgdialog.cpp:396
 msgctxt "QObject|"
 msgid "Failed to update the tags of some tracks."
-msgstr ""
-
-#: ../models/albumsmodel.cpp:240 ../models/devicesmodel.cpp:232
-#: ../models/devicesmodel.cpp:275 ../models/musiclibrarymodel.cpp:254
-#: ../models/musiclibrarymodel.cpp:289 ../models/playlistsmodel.cpp:196
-#: ../models/playlistsmodel.cpp:204
-#, qt-format
-msgctxt "QObject|"
-msgid "Tracks: %1 (%2)"
 msgstr ""
 
 #: ../models/devicesmodel.cpp:214 ../models/devicesmodel.cpp:258
@@ -3461,6 +3456,12 @@ msgstr ""
 #, qt-format
 msgctxt "QObject|"
 msgid "Streams: %1"
+msgstr ""
+
+#: ../widgets/groupedview.cpp:331
+#, qt-format
+msgctxt "QObject|"
+msgid "Tracks: %1"
 msgstr ""
 
 #, fuzzy

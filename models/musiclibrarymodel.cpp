@@ -321,7 +321,7 @@ void MusicLibraryModel::clear()
 
 //     emit updated(rootItem);
     AlbumsModel::self()->update(rootItem);
-    emit updateGenres(QSet<QString>());
+    //emit updateGenres(QSet<QString>());
 }
 
 QModelIndex MusicLibraryModel::findSongIndex(const Song &s) const

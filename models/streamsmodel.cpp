@@ -160,11 +160,11 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:
             return 0==cat->streams.count()
                 ? cat->name
-                :
+                : cat->name+"\n"+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Stream", "%1\n%2 Streams", cat->name, cat->streams.count());
+                    i18np("1 Stream", "%1 Streams", cat->streams.count());
                     #else
-                    QObject::tr("%1\n%n Stream(s)", "", cat->streams.count()).arg(cat->name);
+                    cat->name+"\n"+QObject::tr("Streams: %1").arg(cat->streams.count());
                     #endif
         case Qt::DecorationRole: return cat->icon.isEmpty() ? Icon(constDefaultCategoryIcon)
                                                             : cat->icon.startsWith('/') ? QIcon(cat->icon) : Icon(cat->icon);
@@ -172,7 +172,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Stream", "%1 Streams", cat->streams.count());
             #else
-            return QObject::tr("%n Stream(s)", "", cat->streams.count());
+            return QObject::tr("Streams: %1").arg(cat->streams.count());
             #endif
         default: break;
         }

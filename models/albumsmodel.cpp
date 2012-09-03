@@ -242,11 +242,10 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
                                 al->songs.count(), Song::formattedTime(al->totalTime()));
                     #else
                     year>0
-                        ? QObject::tr("%1\n%2 (%3)\n%n Track(s) (%4)", "", al->songs.count())
-                                      .arg(al->artist).arg(al->album).arg(QString::number(year))
-                                      .arg(Song::formattedTime(al->totalTime()))
-                        : QObject::tr("%1\n%2\n%n Track(s) (%3)", "", al->songs.count())
-                                      .arg(al->artist).arg(al->album).arg(Song::formattedTime(al->totalTime()));
+                        ? QObject::tr("%1\n%2 (%3)\nTracks: %4 (%5)").arg(al->artist).arg(al->album)
+                                      .arg(QString::number(year)).arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
+                        : QObject::tr("%1\n%2\nTracks: %3 (%4)").arg(al->artist).arg(al->album)
+                                      .arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()));
                     #endif
         }
         case ItemView::Role_Search:

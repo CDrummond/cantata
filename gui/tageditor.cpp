@@ -686,10 +686,7 @@ void TagEditor::applyUpdates()
         #ifdef ENABLE_KDE_SUPPORT
         MessageBox::errorList(this, i18n("Failed to update the tags of the following tracks:"), failed);
         #else
-        MessageBox::errorList(this, 1==failed.count()
-                                        ? i18n("Failed to update the tags of 1 track")
-                                        : i18n("Failed to update the tags of %2 tracks").arg(failed.count()),
-                              failed);
+        MessageBox::errorList(this, QObject::tr("Failed to update the tags of some tracks."), failed);
         #endif
     }
 

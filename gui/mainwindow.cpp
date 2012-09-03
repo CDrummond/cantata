@@ -2220,7 +2220,7 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
     #ifdef ENABLE_KDE_SUPPORT
     status = i18np("1 Track", "%1 Tracks", songs);
     #else
-    status = QObject::tr("%n Track(s)", "", songs);
+    status = QObject::tr("Tracks: %1").arg(songs);
     #endif
     status += " ("+MPDParseUtils::formatDuration(time)+")";
     playQueueStatsLabel->setText(status);

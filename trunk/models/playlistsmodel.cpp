@@ -189,11 +189,11 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:
             return 0==pl->songs.count()
                 ? pl->name
-                :
+                : pl->name+"\n"+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Track (%3)", "%1\n%2 Tracks (%3)", pl->name, pl->songs.count(), Song::formattedTime(pl->totalTime()));
+                    i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
                     #else
-                    QObject::tr("%1\n%n Tracks (%2)", "", pl->songs.count()).arg(pl->name).arg(Song::formattedTime(pl->totalTime()));
+                    QObject::tr("Tracks: %1 (%2)").arg(pl->songs.count()).arg(Song::formattedTime(pl->totalTime()));
                     #endif
         case Qt::DecorationRole:
             return Icon("view-media-playlist");
@@ -201,7 +201,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
             #else
-            return QObject::tr("%n Tracks (%1)", "", pl->songs.count()).arg(Song::formattedTime(pl->totalTime()));
+            return QObject::tr("Tracks: %1 (%2)").arg(pl->songs.count()).arg(Song::formattedTime(pl->totalTime()));
             #endif
         default: break;
         }

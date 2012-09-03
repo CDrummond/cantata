@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-02 21:11+0100\n"
+"POT-Creation-Date: 2012-09-03 12:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,8 +78,8 @@ msgid "Are you sure you wish to cancel?"
 msgstr ""
 
 #: devices/actiondialog.cpp:285 devices/syncdialog.cpp:179
-#: devices/trackorganiser.cpp:373 gui/tageditor.cpp:751
-#: replaygain/rgdialog.cpp:439
+#: devices/trackorganiser.cpp:373 gui/tageditor.cpp:748
+#: replaygain/rgdialog.cpp:436
 msgid "Device has been removed!"
 msgstr ""
 
@@ -88,8 +88,8 @@ msgid "Device is not connected!"
 msgstr ""
 
 #: devices/actiondialog.cpp:289 devices/syncdialog.cpp:192
-#: devices/trackorganiser.cpp:383 gui/tageditor.cpp:761
-#: replaygain/rgdialog.cpp:449
+#: devices/trackorganiser.cpp:383 gui/tageditor.cpp:758
+#: replaygain/rgdialog.cpp:446
 msgid "Device is busy?"
 msgstr ""
 
@@ -601,7 +601,7 @@ msgid "Updating tracks..."
 msgstr ""
 
 #: devices/mtpdevice.cpp:802 devices/remotefsdevice.cpp:353
-#: devices/umsdevice.cpp:86 models/devicesmodel.cpp:254
+#: devices/umsdevice.cpp:86 models/devicesmodel.cpp:253
 msgid "Not Connected"
 msgstr ""
 
@@ -719,8 +719,8 @@ msgstr ""
 msgid "Failed to rename %1 to %2"
 msgstr ""
 
-#: devices/trackorganiser.cpp:378 gui/tageditor.cpp:756
-#: replaygain/rgdialog.cpp:444
+#: devices/trackorganiser.cpp:378 gui/tageditor.cpp:753
+#: replaygain/rgdialog.cpp:441
 msgid "Device is not connected."
 msgstr ""
 
@@ -738,19 +738,19 @@ msgid_plural "%1 Rules"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dynamic/dynamic.cpp:271
+#: dynamic/dynamic.cpp:270
 msgid "Failed to locate rules file - %1"
 msgstr ""
 
-#: dynamic/dynamic.cpp:279
+#: dynamic/dynamic.cpp:278
 msgid "Failed to remove previous rules file - %1"
 msgstr ""
 
-#: dynamic/dynamic.cpp:284
+#: dynamic/dynamic.cpp:283
 msgid "Failed to install rules file - %1 -> %2"
 msgstr ""
 
-#: dynamic/dynamic.cpp:381
+#: dynamic/dynamic.cpp:380
 msgid "Failed to locate the 'cantata-dynamic' help script."
 msgstr ""
 
@@ -1674,14 +1674,6 @@ msgstr ""
 msgid "Failed to update the tags of the following tracks:"
 msgstr ""
 
-#: gui/tageditor.cpp:690 replaygain/rgdialog.cpp:397
-msgid "Failed to update the tags of 1 track"
-msgstr ""
-
-#: gui/tageditor.cpp:691 replaygain/rgdialog.cpp:398
-msgid "Failed to update the tags of %2 tracks"
-msgstr ""
-
 #: lyrics/lyricsdialog.cpp:42
 msgid ""
 "If Cantata has failed to find lyrics, or has found the wrong ones, use this "
@@ -1867,70 +1859,32 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: models/devicesmodel.cpp:212
-msgid ""
-"%1\n"
-"1 Artist"
-msgid_plural ""
-"%1\n"
-"%2 Artists"
-msgstr[0] ""
-msgstr[1] ""
-
-#: models/devicesmodel.cpp:221
-msgid ""
-"%1\n"
-"1 Album"
-msgid_plural ""
-"%1\n"
-"%2 Albums"
-msgstr[0] ""
-msgstr[1] ""
-
-#: models/devicesmodel.cpp:230 models/playlistsmodel.cpp:194
-msgid ""
-"%1\n"
-"1 Track (%3)"
-msgid_plural ""
-"%1\n"
-"%2 Tracks (%3)"
-msgstr[0] ""
-msgstr[1] ""
-
-#: models/devicesmodel.cpp:257
+#: models/devicesmodel.cpp:212 models/devicesmodel.cpp:256
 msgid "1 Artist"
 msgid_plural "%1 Artists"
 msgstr[0] ""
 msgstr[1] ""
 
-#: models/devicesmodel.cpp:265 models/musiclibrarymodel.cpp:278
+#: models/devicesmodel.cpp:221 models/devicesmodel.cpp:264
+#: models/musiclibrarymodel.cpp:278
 msgid "1 Album"
 msgid_plural "%1 Albums"
 msgstr[0] ""
 msgstr[1] ""
 
-#: models/devicesmodel.cpp:274 models/musiclibrarymodel.cpp:287
+#: models/devicesmodel.cpp:230 models/devicesmodel.cpp:273
+#: models/musiclibrarymodel.cpp:287 models/playlistsmodel.cpp:194
 #: models/playlistsmodel.cpp:202
 msgid "1 Track (%2)"
 msgid_plural "%1 Tracks (%2)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: models/devicesmodel.cpp:646
+#: models/devicesmodel.cpp:645
 msgid "No Devices Attached"
 msgstr ""
 
-#: models/dirviewmodel.cpp:176
-msgid ""
-"%1\n"
-"1 Entry"
-msgid_plural ""
-"%1\n"
-"%2 Entries"
-msgstr[0] ""
-msgstr[1] ""
-
-#: models/dirviewmodel.cpp:184
+#: models/dirviewmodel.cpp:176 models/dirviewmodel.cpp:184
 msgid "1 Entry"
 msgid_plural "%1 Entries"
 msgstr[0] ""
@@ -1987,17 +1941,7 @@ msgstr ""
 msgid "<b>(Priority: %1)</b>"
 msgstr ""
 
-#: models/streamsmodel.cpp:165
-msgid ""
-"%1\n"
-"1 Stream"
-msgid_plural ""
-"%1\n"
-"%2 Streams"
-msgstr[0] ""
-msgstr[1] ""
-
-#: models/streamsmodel.cpp:173
+#: models/streamsmodel.cpp:165 models/streamsmodel.cpp:173
 msgid "1 Stream"
 msgid_plural "%1 Streams"
 msgstr[0] ""
@@ -3106,7 +3050,7 @@ msgid "Track Peak"
 msgstr ""
 
 #: replaygain/rgdialog.cpp:127 replaygain/rgdialog.cpp:275
-#: replaygain/rgdialog.cpp:425
+#: replaygain/rgdialog.cpp:422
 msgid "Close"
 msgstr ""
 
@@ -3150,12 +3094,12 @@ msgstr ""
 msgid "Reading existing tags..."
 msgstr ""
 
-#: replaygain/rgdialog.cpp:482 replaygain/rgdialog.cpp:537
-#: replaygain/rgdialog.cpp:596 replaygain/rgdialog.cpp:598
+#: replaygain/rgdialog.cpp:479 replaygain/rgdialog.cpp:534
+#: replaygain/rgdialog.cpp:593 replaygain/rgdialog.cpp:595
 msgid "%1 dB"
 msgstr ""
 
-#: replaygain/rgdialog.cpp:512 replaygain/rgdialog.cpp:513
+#: replaygain/rgdialog.cpp:509 replaygain/rgdialog.cpp:510
 msgid "Failed"
 msgstr ""
 
@@ -3225,4 +3169,90 @@ msgstr ""
 
 #: widgets/messagebox.cpp:73 widgets/messagebox.h:55
 msgid "Error"
+msgstr ""
+ 
+
+#: ../dynamic/dynamic.cpp:180
+#, qt-format
+msgctxt "QObject|"
+msgid "Rules: %1"
+msgstr ""
+
+#: ../gui/mainwindow.cpp:2223
+#, qt-format
+msgctxt "QObject|"
+msgid "Tracks: %1"
+msgstr ""
+
+#: ../gui/tageditor.cpp:689
+msgctxt "QObject|"
+msgid "Failed to update the tags of some tracks."
+msgstr ""
+
+#: ../models/albumsmodel.cpp:245
+#, qt-format
+msgctxt "QObject|"
+msgid ""
+"%1\n"
+"%2 (%3)\n"
+"Tracks: %4 (%5)"
+msgstr ""
+
+#: ../models/albumsmodel.cpp:247
+#, qt-format
+msgctxt "QObject|"
+msgid ""
+"%1\n"
+"%2\n"
+"Tracks: %3 (%4)"
+msgstr ""
+
+#: ../models/devicesmodel.cpp:214 ../models/devicesmodel.cpp:258
+#, qt-format
+msgctxt "QObject|"
+msgid "Artists: %1"
+msgstr ""
+
+#: ../models/devicesmodel.cpp:223 ../models/devicesmodel.cpp:266
+#: ../models/musiclibrarymodel.cpp:280
+#, qt-format
+msgctxt "QObject|"
+msgid "Albums: %1"
+msgstr ""
+
+#: ../models/devicesmodel.cpp:232 ../models/devicesmodel.cpp:275
+#: ../models/musiclibrarymodel.cpp:289 ../models/playlistsmodel.cpp:196
+#: ../models/playlistsmodel.cpp:204
+#, qt-format
+msgctxt "QObject|"
+msgid "Tracks: %1 (%2)"
+msgstr ""
+
+#: ../models/dirviewmodel.cpp:178 ../models/dirviewmodel.cpp:186
+#, qt-format
+msgctxt "QObject|"
+msgid "Entries: %1"
+msgstr ""
+
+#: ../models/musiclibrarymodel.cpp:245
+#, qt-format
+msgctxt "QObject|"
+msgid "%1<br/>Albums: %2"
+msgstr ""
+
+#: ../models/musiclibrarymodel.cpp:254
+#, qt-format
+msgctxt "QObject|"
+msgid "%1<br/>Tracks: %2 (%3)"
+msgstr ""
+
+#: ../models/streamsmodel.cpp:167 ../models/streamsmodel.cpp:175
+#, qt-format
+msgctxt "QObject|"
+msgid "Streams: %1"
+msgstr ""
+
+#: ../replaygain/rgdialog.cpp:396
+msgctxt "QObject|"
+msgid "Failed to update the tags of some tracks"
 msgstr ""

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-06 21:40+0100\n"
+"POT-Creation-Date: 2012-09-03 12:00+0100\n"
 "PO-Revision-Date: 2012-07-04 00:35+0200\n"
 "Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.7.1\n"
 
-#: application.cpp:67
+#: application.cpp:75
 msgid ""
 "You are not currently a member of the \"users\" group. Cantata will function "
 "better (saving of album covers, lyrics, etc. with the correct permissions) "
@@ -37,16 +37,16 @@ msgstr ""
 "\n"
 "Seleccione «Continuar» para iniciar Cantata con la configuración actual."
 
-#: devices/actiondialog.cpp:118 devices/mtpdevice.cpp:807
+#: devices/actiondialog.cpp:119 devices/mtpdevice.cpp:805
 #: devices/remotefsdevice.cpp:360 devices/umsdevice.cpp:90
 msgid "%1 free"
 msgstr "%1 libre"
 
-#: devices/actiondialog.cpp:129 devices/actiondialog.cpp:130
+#: devices/actiondialog.cpp:131 devices/actiondialog.cpp:132
 msgid "Local Music Library"
 msgstr "Biblioteca de música local"
 
-#: devices/actiondialog.cpp:143
+#: devices/actiondialog.cpp:146
 msgid ""
 "There is insufficient space left on the destination device.\n"
 "The selected songs consume %1, but there is only %2 left.\n"
@@ -58,7 +58,7 @@ msgstr ""
 "Las canciones se tendrán que transcodificar a un tamaño de fichero menor "
 "para la copia."
 
-#: devices/actiondialog.cpp:150
+#: devices/actiondialog.cpp:153
 msgid ""
 "There is insufficient space left on the destination.\n"
 "The selected songs consume %1, but there is only %2 left."
@@ -66,15 +66,15 @@ msgstr ""
 "No hay suficiente espacio en el destino.\n"
 "Las canciones seleccionadas ocupan %1, pero sólo hay %2 libre."
 
-#: devices/actiondialog.cpp:191
+#: devices/actiondialog.cpp:194
 msgid "Copy Songs"
 msgstr "Copiar canciones"
 
-#: devices/actiondialog.cpp:191 gui/mainwindow.cpp:815
+#: devices/actiondialog.cpp:194 gui/mainwindow.cpp:367
 msgid "Delete Songs"
 msgstr "Eliminar canciones "
 
-#: devices/actiondialog.cpp:212
+#: devices/actiondialog.cpp:215
 msgid ""
 "<p>You have not configured the destination device.<br/>Continue with the "
 "default settings?</p>"
@@ -82,7 +82,7 @@ msgstr ""
 "<p>El dispositivo de destino no está configurado.<br/>¿Desea continuar con "
 "las opciones predefinidas?</p>"
 
-#: devices/actiondialog.cpp:215
+#: devices/actiondialog.cpp:218
 msgid ""
 "<p>You have not configured the source device.<br/>Continue with the default "
 "settings?</p>"
@@ -90,47 +90,47 @@ msgstr ""
 "<p>El dispositivo de origen no está configurado.<br/>¿Desea continuar con "
 "las opciones predefinidas?</p>"
 
-#: devices/actiondialog.cpp:264
+#: devices/actiondialog.cpp:267
 msgid "Are you sure you wish to cancel?"
 msgstr "¿Está seguro de que desea cancelar la acción?"
 
-#: devices/actiondialog.cpp:282 devices/syncdialog.cpp:179
-#: devices/trackorganiser.cpp:368 gui/tageditor.cpp:722
-#: replaygain/rgdialog.cpp:406
+#: devices/actiondialog.cpp:285 devices/syncdialog.cpp:179
+#: devices/trackorganiser.cpp:373 gui/tageditor.cpp:748
+#: replaygain/rgdialog.cpp:436
 msgid "Device has been removed!"
 msgstr "El dispositivo se ha extraído."
 
-#: devices/actiondialog.cpp:284
+#: devices/actiondialog.cpp:287
 msgid "Device is not connected!"
 msgstr "El dispositivo no está conectado."
 
-#: devices/actiondialog.cpp:286 devices/syncdialog.cpp:192
-#: devices/trackorganiser.cpp:378 gui/tageditor.cpp:732
-#: replaygain/rgdialog.cpp:416
+#: devices/actiondialog.cpp:289 devices/syncdialog.cpp:192
+#: devices/trackorganiser.cpp:383 gui/tageditor.cpp:758
+#: replaygain/rgdialog.cpp:446
 msgid "Device is busy?"
 msgstr "¿Está el dispositivo en uso?"
 
-#: devices/actiondialog.cpp:288 devices/syncdialog.cpp:184
+#: devices/actiondialog.cpp:291 devices/syncdialog.cpp:184
 msgid "Device has been changed?"
 msgstr "¿Ha cambiado el dispositivo?"
 
-#: devices/actiondialog.cpp:354
+#: devices/actiondialog.cpp:357
 msgid "Clearing unused folders"
 msgstr "Eliminando directorios no utilizados"
 
-#: devices/actiondialog.cpp:396
+#: devices/actiondialog.cpp:399
 msgid "The destination filename already exists!<hr/>%1"
 msgstr "El nombre de fichero de destino ya existe.<hr/>%1"
 
-#: devices/actiondialog.cpp:399
+#: devices/actiondialog.cpp:402
 msgid "Song already exists!<hr/>%1"
 msgstr "La canción ya existe.<hr/>%1"
 
-#: devices/actiondialog.cpp:402
+#: devices/actiondialog.cpp:405
 msgid "Song does not exist!<hr/>%1"
 msgstr "La canción no existe.<hr/>%1"
 
-#: devices/actiondialog.cpp:405
+#: devices/actiondialog.cpp:408
 msgid ""
 "Failed to create destination folder!<br/>Please check you have sufficient "
 "permissions.<hr/>%1"
@@ -138,31 +138,31 @@ msgstr ""
 "No se ha podido crear el directorio de destino.<br/>Compruebe que tiene "
 "permisos necesarios.<hr/>%1"
 
-#: devices/actiondialog.cpp:408
+#: devices/actiondialog.cpp:411
 msgid "Source file no longer exists?<br/><br/<hr/>%1"
 msgstr "¿Ha desaparecido el fichero de origen?<br/><br/<hr/>%1"
 
-#: devices/actiondialog.cpp:411
+#: devices/actiondialog.cpp:414
 msgid "Failed to copy.<hr/>%1"
 msgstr "Fallo al copiar.<hr/>%1"
 
-#: devices/actiondialog.cpp:412
+#: devices/actiondialog.cpp:415
 msgid "Failed to delete.<hr/>%1"
 msgstr "Fallo al eliminar.<hr/>%1"
 
-#: devices/actiondialog.cpp:415
+#: devices/actiondialog.cpp:418
 msgid "Not connected to device.<hr/>%1"
 msgstr "El dispositivo no está conectado.<hr/>%1"
 
-#: devices/actiondialog.cpp:418
+#: devices/actiondialog.cpp:421
 msgid "Selected codec is not available.<hr/>%1"
 msgstr "El códec seleccionado no está disponible.<hr/>%1"
 
-#: devices/actiondialog.cpp:421
+#: devices/actiondialog.cpp:424
 msgid "Transcoding failed.<br/><br/<hr/>%1"
 msgstr "Fallo durante la transcodificación.<br/><br/<hr/>%1"
 
-#: devices/actiondialog.cpp:424
+#: devices/actiondialog.cpp:427
 msgid ""
 "Failed to create temporary file.<br/>(Required for transcoding to MTP "
 "devices.)<hr/>%1"
@@ -170,28 +170,28 @@ msgstr ""
 "Fallo al crear el fichero temporal.<br/>(Necesario para la transcodificación "
 "a dispositivos MTP.)<hr/>%1"
 
-#: devices/actiondialog.cpp:449
+#: devices/actiondialog.cpp:455
 msgid "Local Music Library Properties"
 msgstr "Propiedades de la biblioteca de música local"
 
-#: devices/actiondialog.cpp:482 devices/actiondialog.cpp:496
+#: devices/actiondialog.cpp:495 devices/actiondialog.cpp:509
 msgid "<b>Error</b><br/>"
 msgstr "<b>Error</b><br/>"
 
-#: devices/actiondialog.cpp:486 devices/trackorganiser.cpp:230
-#: devices/trackorganiser.cpp:252 devices/trackorganiser.cpp:273
+#: devices/actiondialog.cpp:499 devices/trackorganiser.cpp:235
+#: devices/trackorganiser.cpp:257 devices/trackorganiser.cpp:278
 msgid "Skip"
 msgstr "Omitir"
 
-#: devices/actiondialog.cpp:487
+#: devices/actiondialog.cpp:500
 msgid "Auto Skip"
 msgstr "Omitir automáticamente"
 
-#: devices/actiondialog.cpp:491
+#: devices/actiondialog.cpp:504
 msgid "Retry"
 msgstr "Reintentar"
 
-#: devices/actiondialog.cpp:507
+#: devices/actiondialog.cpp:520
 msgid ""
 "<table><tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align="
 "\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>"
@@ -203,7 +203,7 @@ msgstr ""
 "%3</td></tr><tr><td align=\"right\">Fichero de origen:</td><td>%4</td></"
 "tr><tr><td align=\"right\">Fichero de destino:</td><td>%5</td></tr></table>"
 
-#: devices/actiondialog.cpp:515
+#: devices/actiondialog.cpp:528
 msgid ""
 "<table><tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align="
 "\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>"
@@ -213,7 +213,7 @@ msgstr ""
 "\"right\">Álbum:</td><td>%2</td></tr><tr><td align=\"right\">Pista:</td><td>"
 "%3</td></tr><tr><td align=\"right\">Fichero:</td><td>%4</td></tr></table>"
 
-#: devices/actiondialog.cpp:522
+#: devices/actiondialog.cpp:535
 msgid ""
 "<table><tr><td align=\"right\">Artist:</td><td>%1</td></tr><tr><td align="
 "\"right\">Album:</td><td>%2</td></tr><tr><td align=\"right\">Track:</td><td>"
@@ -223,25 +223,25 @@ msgstr ""
 "\"right\">Álbum:</td><td>%2</td></tr><tr><td align=\"right\">Pista:</td><td>"
 "%3</td></tr></table>"
 
-#: devices/device.cpp:167 models/musiclibraryitemroot.cpp:43
-#: models/musiclibraryitemroot.cpp:75 models/musiclibraryitemroot.cpp:116
-#: models/musiclibraryitemroot.cpp:160 models/musiclibrarymodel.cpp:376
-#: mpd/song.cpp:269
+#: devices/device.cpp:173 models/musiclibraryitemroot.cpp:71
+#: models/musiclibraryitemroot.cpp:116 models/musiclibraryitemroot.cpp:160
+#: models/musiclibraryitemroot.cpp:507 models/musiclibrarymodel.cpp:371
+#: mpd/song.cpp:285
 msgid "Various Artists"
 msgstr "Varios artistas"
 
-#: devices/device.cpp:182 models/musiclibraryitemartist.cpp:53
-#: models/musiclibraryitemartist.cpp:163 models/musiclibraryitemartist.cpp:176
-#: models/musiclibrarymodel.cpp:387
+#: devices/device.cpp:184 models/musiclibraryitemartist.cpp:177
+#: models/musiclibraryitemartist.cpp:190 models/musiclibrarymodel.cpp:382
 msgid "Single Tracks"
 msgstr "Pistas únicas"
 
-#: devices/device.cpp:282
+#: devices/device.cpp:316
 msgid "Updating (%1)..."
 msgstr "Actualizando (%1)..."
 
-#: devices/deviceoptions.cpp:329 mpd/mpdparseutils.cpp:244 mpd/song.cpp:138
-#: mpd/song.cpp:177
+#: devices/deviceoptions.cpp:351 gui/mainwindow.cpp:1791
+#: models/playqueuemodel.cpp:311 mpd/mpdparseutils.cpp:243 mpd/song.cpp:157
+#: mpd/song.cpp:197 widgets/groupedview.cpp:229
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -327,7 +327,7 @@ msgstr "Cambiar dispositivo"
 msgid "Add Device"
 msgstr "Añadir dispositivo"
 
-#: devices/devicespage.cpp:139 gui/mainwindow.cpp:590
+#: devices/devicespage.cpp:139 gui/mainwindow.cpp:365
 msgid "Devices"
 msgstr "Dispositivos"
 
@@ -341,7 +341,7 @@ msgstr ""
 "analizan canciones nuevas <i>(rápido)</i></li><li>Completa - Se analizan "
 "todas las canciones <i>(lento)</i></li></ul></p>"
 
-#: devices/devicespage.cpp:374 lyrics/lyricspage.cpp:106
+#: devices/devicespage.cpp:374 lyrics/lyricspage.cpp:90
 msgid "Refresh"
 msgstr "Actualizar"
 
@@ -353,7 +353,7 @@ msgstr "Parcial"
 msgid "Full"
 msgstr "Completa"
 
-#: devices/devicespage.cpp:421 gui/albumspage.cpp:186 gui/folderpage.cpp:262
+#: devices/devicespage.cpp:421 gui/albumspage.cpp:185 gui/folderpage.cpp:249
 #: gui/librarypage.cpp:211
 msgid ""
 "Are you sure you wish to remove the selected songs?\n"
@@ -366,22 +366,22 @@ msgstr ""
 msgid "Are you sure you wish to forget the selected device?"
 msgstr "¿Desea eliminar el dispositivo seleccionado?"
 
-#: devices/devicespage.cpp:461 gui/mainwindow.cpp:1651
+#: devices/devicespage.cpp:461 gui/mainwindow.cpp:1185
 msgid "Action is not currently possible, due to other open dialogs."
 msgstr ""
 "La acción no es posible ahora debido a otras ventanas de diálogo abiertas."
 
 #: devices/devicespage.cpp:501 dynamic/dynamicruledialog.cpp:74
-#: gui/albumspage.cpp:241 gui/librarypage.cpp:308 gui/playlistspage.cpp:350
-#: gui/streamspage.cpp:175
+#: gui/albumspage.cpp:240 gui/librarypage.cpp:308 gui/playlistspage.cpp:343
+#: gui/streamspage.cpp:160
 msgid "All Genres"
 msgstr "Todos los géneros"
 
-#: devices/encoders.cpp:54
+#: devices/encoders.cpp:58
 msgid "AAC (Non-Free)"
 msgstr "AAC (Privativo)"
 
-#: devices/encoders.cpp:57
+#: devices/encoders.cpp:61
 msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
@@ -399,7 +399,7 @@ msgstr ""
 "iPod y otros reproductores de música portátiles. Es una implementación "
 "privativa."
 
-#: devices/encoders.cpp:62
+#: devices/encoders.cpp:66
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>The <b>AAC</b> encoder used by Cantata supports a <a "
@@ -432,26 +432,26 @@ msgstr ""
 "insatisfactorio para la música y algo superior a <b>200kb/s</b> es "
 "posiblemente demasiado."
 
-#: devices/encoders.cpp:79 devices/encoders.cpp:170
+#: devices/encoders.cpp:83 devices/encoders.cpp:174
 msgid "Expected average bitrate for variable bitrate encoding"
 msgstr ""
 "Tasa de bits media esperada para la codificación con tasa de bits variable"
 
-#: devices/encoders.cpp:91 devices/encoders.cpp:144 devices/encoders.cpp:181
-#: devices/encoders.cpp:225 devices/encoders.cpp:258
+#: devices/encoders.cpp:95 devices/encoders.cpp:148 devices/encoders.cpp:185
+#: devices/encoders.cpp:229 devices/encoders.cpp:262
 msgid "Smaller file"
 msgstr "Fichero más pequeño"
 
-#: devices/encoders.cpp:92 devices/encoders.cpp:182 devices/encoders.cpp:226
-#: devices/encoders.cpp:259
+#: devices/encoders.cpp:96 devices/encoders.cpp:186 devices/encoders.cpp:230
+#: devices/encoders.cpp:263
 msgid "Better sound quality"
 msgstr "Mayor calidad de audio"
 
-#: devices/encoders.cpp:95
+#: devices/encoders.cpp:99
 msgid "Apple Lossless"
 msgstr "Apple Lossless"
 
-#: devices/encoders.cpp:98
+#: devices/encoders.cpp:102
 msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
@@ -466,11 +466,11 @@ msgstr ""
 "de datos.<br>Solo se recomienda para reproductores de música Apple y "
 "reproductores no compatibles con FLAC."
 
-#: devices/encoders.cpp:112
+#: devices/encoders.cpp:116
 msgid "FLAC"
 msgstr "FLAC"
 
-#: devices/encoders.cpp:115
+#: devices/encoders.cpp:119
 msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
@@ -485,7 +485,7 @@ msgstr ""
 "compresión de audio digital sin pérdida de datos.<br>Si desea almacenar la "
 "música sin perder calidad de audio, FLAC es una elección excelente."
 
-#: devices/encoders.cpp:119
+#: devices/encoders.cpp:123
 msgid ""
 "The <a href=http://flac.sourceforge.net/documentation_tools_flac."
 "html>compression level</a> is an integer value between 0 and 8 that "
@@ -512,19 +512,19 @@ msgstr ""
 "sustancialmente el tiempo de compresión pero generan un fichero "
 "superficialmente menor, y no se recomiendan."
 
-#: devices/encoders.cpp:133
+#: devices/encoders.cpp:137
 msgid "Compression level"
 msgstr "Nivel de compresión"
 
-#: devices/encoders.cpp:143
+#: devices/encoders.cpp:147
 msgid "Faster compression"
 msgstr "Compresión más rápida"
 
-#: devices/encoders.cpp:147
+#: devices/encoders.cpp:151
 msgid "MP3"
 msgstr "MP3"
 
-#: devices/encoders.cpp:150
+#: devices/encoders.cpp:154
 msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
@@ -540,7 +540,7 @@ msgstr ""
 "el almacenamiento de audio, y generalmente compatible con todos los "
 "reproductores de música portátiles."
 
-#: devices/encoders.cpp:154
+#: devices/encoders.cpp:158
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>The <b>MP3</b> encoder used by Cantata supports a <a "
@@ -570,11 +570,11 @@ msgstr ""
 "inferior a <b>120kb/s</b> puede insatisfactorio para la música y algo "
 "superior a <b>205kb/s</b> es posiblemente demasiado."
 
-#: devices/encoders.cpp:185
+#: devices/encoders.cpp:189
 msgid "Ogg Vorbis"
 msgstr "Ogg Vorbis"
 
-#: devices/encoders.cpp:188
+#: devices/encoders.cpp:192
 msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
@@ -589,7 +589,7 @@ msgstr ""
 "con una calidad similar o superior. Ogg Vorbis es una excelente elección, en "
 "particular con reproductores de música portátiles compatibles."
 
-#: devices/encoders.cpp:193
+#: devices/encoders.cpp:197
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>The <b>Vorbis</b> encoder used by Cantata supports a "
@@ -625,15 +625,15 @@ msgstr ""
 "dispositivo portátil.<br/>Un valor menor a <b>3</b> puede ser "
 "insatisfactorio y un valor superior a <b>8</b> es posiblemente demasiado."
 
-#: devices/encoders.cpp:212
+#: devices/encoders.cpp:216
 msgid "Quality rating"
 msgstr "Clasificación de calidad"
 
-#: devices/encoders.cpp:229
+#: devices/encoders.cpp:233
 msgid "Windows Media Audio"
 msgstr "Windows Media Audio"
 
-#: devices/encoders.cpp:232
+#: devices/encoders.cpp:236
 msgctxt ""
 "Feel free to redirect the english Wikipedia link to a local version, if it "
 "exists."
@@ -648,7 +648,7 @@ msgstr ""
 "compresión de audio sin pérdida de datos.<br>Solo se recomienda para "
 "dispositivos de reproducción de audio no compatibles con Ogg Vorbis."
 
-#: devices/encoders.cpp:236
+#: devices/encoders.cpp:240
 msgid ""
 "The bitrate is a measure of the quantity of data used to represent a second "
 "of the audio track.<br>Due to the limitations of the proprietary <b>WMA</b> "
@@ -673,7 +673,7 @@ msgstr ""
 "valor inferior a <b>112kb/s</b> puede ser insatisfactorio, y un valor "
 "superior a <b>182kb/s</b> es posiblemente demasiado."
 
-#: devices/encoders.cpp:249
+#: devices/encoders.cpp:253
 msgid "Bitrate"
 msgstr "Tasa de bits"
 
@@ -681,32 +681,32 @@ msgstr "Tasa de bits"
 msgid "Filename Scheme"
 msgstr "Esquema de nombre de fichero"
 
-#: devices/filenameschemedialog.cpp:51
+#: devices/filenameschemedialog.cpp:50
 msgctxt "Example album artist"
 msgid "Various Artists"
 msgstr "Varios artistas"
 
-#: devices/filenameschemedialog.cpp:52
+#: devices/filenameschemedialog.cpp:51
 msgctxt "Example artist"
 msgid "Wibble"
 msgstr "Wibble"
 
-#: devices/filenameschemedialog.cpp:53
+#: devices/filenameschemedialog.cpp:52
 msgctxt "Example album"
 msgid "Now 5001"
 msgstr "Now 5001"
 
-#: devices/filenameschemedialog.cpp:54
+#: devices/filenameschemedialog.cpp:53
 msgctxt "Example song name"
 msgid "Wobble"
 msgstr "Wobble"
 
-#: devices/filenameschemedialog.cpp:55
+#: devices/filenameschemedialog.cpp:54
 msgctxt "Example genre"
 msgid "Dance"
 msgstr "Dance"
 
-#: devices/filenameschemedialog.cpp:101
+#: devices/filenameschemedialog.cpp:93
 msgid ""
 "<p>The following variables will be replaced with their corresponding meaning "
 "for each track name.</p><p><table border=\"1\"><tr><th><em>Variable</em></"
@@ -760,13 +760,13 @@ msgstr "Actualizando directorios..."
 msgid "Updating tracks..."
 msgstr "Actualizando pistas..."
 
-#: devices/mtpdevice.cpp:804 devices/remotefsdevice.cpp:353
-#: devices/umsdevice.cpp:86 models/devicesmodel.cpp:259
+#: devices/mtpdevice.cpp:802 devices/remotefsdevice.cpp:353
+#: devices/umsdevice.cpp:86 models/devicesmodel.cpp:253
 msgid "Not Connected"
 msgstr "Sin conexión"
 
-#: devices/remotedevicepropertiesdialog.cpp:45 gui/mainwindow.cpp:408
-#: gui/preferencesdialog.cpp:133
+#: devices/remotedevicepropertiesdialog.cpp:45 gui/mainwindow.cpp:305
+#: gui/preferencesdialog.cpp:117 gui/preferencesdialog.cpp:142
 msgid "Connection"
 msgstr "Conexión"
 
@@ -844,7 +844,7 @@ msgstr "Capacidad desconocida"
 msgid "Songs Only In Library:"
 msgstr "Canciones sólo en la biblioteca"
 
-#: devices/syncdialog.cpp:101 gui/mainwindow.cpp:448
+#: devices/syncdialog.cpp:101 gui/mainwindow.cpp:366
 msgid "Copy To Device"
 msgstr "Copiar a dispositivo"
 
@@ -860,32 +860,32 @@ msgstr "Sincronizar"
 msgid "Device and library are in sync."
 msgstr "El dispositivo y la biblioteca están sincronizados."
 
-#: devices/trackorganiser.cpp:53 gui/mainwindow.cpp:755
+#: devices/trackorganiser.cpp:53 gui/mainwindow.cpp:346
 msgid "Organize Files"
 msgstr "Organizar ficheros"
 
-#: devices/trackorganiser.cpp:59 gui/playlistspage.cpp:48
+#: devices/trackorganiser.cpp:59 gui/playlistspage.cpp:44
 msgid "Rename"
 msgstr "Renombrar"
 
-#: devices/trackorganiser.cpp:119
+#: devices/trackorganiser.cpp:120
 msgid "Cancel renaming of files?"
 msgstr "¿Desea cancelar la modificación del nombre de los ficheros?"
 
-#: devices/trackorganiser.cpp:229
+#: devices/trackorganiser.cpp:234
 msgid "Destination file already exists!<br/>%1"
 msgstr "El fichero de destino ya existe.<br/>%1"
 
-#: devices/trackorganiser.cpp:251
+#: devices/trackorganiser.cpp:256
 msgid "Failed to create destination folder!<br/>%1"
 msgstr "Fallo al crear el directorio de destino. <br/>%1"
 
-#: devices/trackorganiser.cpp:272
+#: devices/trackorganiser.cpp:277
 msgid "Failed to rename %1 to %2"
 msgstr "Fallo al renombrar %1 a %2"
 
-#: devices/trackorganiser.cpp:373 gui/tageditor.cpp:727
-#: replaygain/rgdialog.cpp:411
+#: devices/trackorganiser.cpp:378 gui/tageditor.cpp:753
+#: replaygain/rgdialog.cpp:441
 msgid "Device is not connected."
 msgstr "El dispositivo no está conectado."
 
@@ -903,43 +903,43 @@ msgid_plural "%1 Rules"
 msgstr[0] "1 norma"
 msgstr[1] "%1 normas"
 
-#: dynamic/dynamic.cpp:271
+#: dynamic/dynamic.cpp:270
 msgid "Failed to locate rules file - %1"
 msgstr "No se ha podido detectar el fichero de normas - %1"
 
-#: dynamic/dynamic.cpp:279
+#: dynamic/dynamic.cpp:278
 msgid "Failed to remove previous rules file - %1"
 msgstr "No se ha podido eliminar el fichero anterior de normas  - %1"
 
-#: dynamic/dynamic.cpp:284
+#: dynamic/dynamic.cpp:283
 msgid "Failed to install rules file - %1 -> %2"
 msgstr "No se ha podido instalar el fichero de normas - %1 -> %2"
 
-#: dynamic/dynamic.cpp:381
+#: dynamic/dynamic.cpp:380
 msgid "Failed to locate the 'cantata-dynamic' help script."
 msgstr "No se ha podido detectar el script de asistencia «cantata-dynamic»."
 
-#: dynamic/dynamicpage.cpp:46
+#: dynamic/dynamicpage.cpp:41
 msgid "Add Dynamic Rules"
 msgstr "Añadir normas dinámicas"
 
-#: dynamic/dynamicpage.cpp:48
+#: dynamic/dynamicpage.cpp:42
 msgid "Edit Dynamic Rules"
 msgstr "Editar normas dinámicas"
 
-#: dynamic/dynamicpage.cpp:50
+#: dynamic/dynamicpage.cpp:43
 msgid "Remove Dynamic Rules"
 msgstr "Eliminar normas dinámicas"
 
-#: dynamic/dynamicpage.cpp:52
+#: dynamic/dynamicpage.cpp:44
 msgid "Start Dynamic Mode"
 msgstr "Iniciar modo dinámico"
 
-#: dynamic/dynamicpage.cpp:54
+#: dynamic/dynamicpage.cpp:45
 msgid "Stop Dynamic Mode"
 msgstr "Detener modo dinámico"
 
-#: dynamic/dynamicpage.cpp:97 gui/mainwindow.cpp:571
+#: dynamic/dynamicpage.cpp:76 gui/mainwindow.cpp:356
 msgid "Dynamic"
 msgstr "Dinámico"
 
@@ -947,8 +947,8 @@ msgstr "Dinámico"
 msgid "Dynamic Rule"
 msgstr "Norma dinámica"
 
-#: dynamic/dynamicrulesdialog.cpp:65 models/playqueuemodel.cpp:99
-#: replaygain/rgdialog.cpp:97
+#: dynamic/dynamicrulesdialog.cpp:65 models/playqueuemodel.cpp:98
+#: replaygain/rgdialog.cpp:100
 msgid "Artist"
 msgstr "Artista"
 
@@ -957,12 +957,12 @@ msgid "AlbumArtist"
 msgstr "Artista del álbum"
 
 #: dynamic/dynamicrulesdialog.cpp:69 gui/serverplaybacksettings.cpp:39
-#: models/playqueuemodel.cpp:100 replaygain/rgdialog.cpp:98
+#: models/playqueuemodel.cpp:99 replaygain/rgdialog.cpp:101
 msgid "Album"
 msgstr "Álbum"
 
-#: dynamic/dynamicrulesdialog.cpp:71 models/playqueuemodel.cpp:98
-#: replaygain/rgdialog.cpp:99
+#: dynamic/dynamicrulesdialog.cpp:71 models/playqueuemodel.cpp:97
+#: replaygain/rgdialog.cpp:102
 msgid "Title"
 msgstr "Título"
 
@@ -974,7 +974,7 @@ msgstr "Título"
 #. i18n: ectx: property (text), widget (QPushButton, genre)
 #. i18n: file: dynamic/dynamicrule.ui:80
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#: dynamic/dynamicrulesdialog.cpp:73 models/playqueuemodel.cpp:109
+#: dynamic/dynamicrulesdialog.cpp:73 models/playqueuemodel.cpp:104
 #: po/rc.cpp:96 po/rc.cpp:192 rc.cpp:96 rc.cpp:192
 msgid "Genre"
 msgstr "Género"
@@ -1043,15 +1043,15 @@ msgstr "Ya existe"
 
 #. i18n: file: gui/interfacesettings.ui:138
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
-#: gui/albumspage.cpp:55 gui/mainwindow.cpp:561 po/rc.cpp:282 rc.cpp:282
+#: gui/albumspage.cpp:54 gui/mainwindow.cpp:352 po/rc.cpp:282 rc.cpp:282
 msgid "Albums"
 msgstr "Álbumes"
 
-#: gui/folderpage.cpp:52
+#: gui/folderpage.cpp:50
 msgid "Open File Manager"
 msgstr "Abrir explorador de ficheros"
 
-#: gui/folderpage.cpp:59 gui/mainwindow.cpp:564
+#: gui/folderpage.cpp:56 gui/mainwindow.cpp:353
 msgid "Folders"
 msgstr "Directorios"
 
@@ -1066,6 +1066,11 @@ msgstr "Información de álbum"
 #: gui/infopage.cpp:219
 msgid "<h3><i>Loading...</i></h3>"
 msgstr "<h3><i>Cargando...</i></h3>"
+
+#: gui/infopage.cpp:231
+#, fuzzy
+msgid "Save File"
+msgstr "Guardar como"
 
 #: gui/interfacesettings.cpp:34 gui/serverplaybacksettings.cpp:37
 msgid "None"
@@ -1119,65 +1124,73 @@ msgstr "Agrupado bajo \"Varios artistas\""
 
 #. i18n: file: gui/interfacesettings.ui:30
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
-#: gui/librarypage.cpp:96 gui/mainwindow.cpp:558 po/rc.cpp:262 rc.cpp:262
+#: gui/librarypage.cpp:96 gui/mainwindow.cpp:351 po/rc.cpp:262 rc.cpp:262
 msgid "Library"
 msgstr "Biblioteca"
 
-#: gui/mainwindow.cpp:398
+#: gui/mainwindow.cpp:296
+msgid "&Quit"
+msgstr ""
+
+#: gui/mainwindow.cpp:302
 msgid "Small Playback Buttons"
 msgstr "Botones de reproducción pequeños"
 
-#: gui/mainwindow.cpp:401
+#: gui/mainwindow.cpp:303
 msgid "Small Control Buttons"
 msgstr "Botones de control pequeños"
 
 #. i18n: file: gui/serversettings.ui:105
 #. i18n: ectx: property (text), widget (QPushButton, connectButton)
-#: gui/mainwindow.cpp:405 gui/serversettings.cpp:192 po/rc.cpp:498 rc.cpp:498
+#: gui/mainwindow.cpp:304 gui/serversettings.cpp:186 po/rc.cpp:498 rc.cpp:498
 msgid "Connect"
 msgstr "Conectar"
 
-#: gui/mainwindow.cpp:411
+#: gui/mainwindow.cpp:306
 msgid "Outputs"
 msgstr "Salidas"
 
-#: gui/mainwindow.cpp:414
+#: gui/mainwindow.cpp:307
 msgid "Refresh Database"
 msgstr "Actualizar base de datos"
 
-#: gui/mainwindow.cpp:417
+#: gui/mainwindow.cpp:308
 msgid "Previous Track"
 msgstr "Pista anterior"
 
-#: gui/mainwindow.cpp:421
+#: gui/mainwindow.cpp:309
 msgid "Next Track"
 msgstr "Pista siguiente"
 
-#: gui/mainwindow.cpp:425
+#: gui/mainwindow.cpp:310
 msgid "Play/Pause"
 msgstr "Reproducir/Pausa"
 
-#: gui/mainwindow.cpp:429
+#: gui/mainwindow.cpp:311
 msgid "Stop"
 msgstr "Detener"
 
-#: gui/mainwindow.cpp:433
+#: gui/mainwindow.cpp:312
 msgid "Increase Volume"
 msgstr "Subir volumen"
 
-#: gui/mainwindow.cpp:437
+#: gui/mainwindow.cpp:313
 msgid "Decrease Volume"
 msgstr "Bajar volumen"
 
-#: gui/mainwindow.cpp:441
+#: gui/mainwindow.cpp:314
 msgid "Add To Play Queue"
 msgstr "Añadir a lista de reproducción"
 
-#: gui/mainwindow.cpp:444
+#: gui/mainwindow.cpp:315
 msgid "Add To Playlist"
 msgstr "Añadir a lista de reproducción"
 
-#: gui/mainwindow.cpp:457 widgets/itemview.cpp:444
+#: gui/mainwindow.cpp:317 replaygain/rgdialog.cpp:88
+msgid "ReplayGain"
+msgstr "Ganancia de reproducción"
+
+#: gui/mainwindow.cpp:319 widgets/itemview.cpp:458
 msgid "Back"
 msgstr "Retroceder"
 
@@ -1189,57 +1202,57 @@ msgstr "Retroceder"
 #. i18n: ectx: property (text), widget (QPushButton, removeBtn)
 #. i18n: file: gui/serversettings.ui:132
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: gui/mainwindow.cpp:460 po/rc.cpp:171 po/rc.cpp:504 rc.cpp:171 rc.cpp:504
+#: gui/mainwindow.cpp:320 po/rc.cpp:171 po/rc.cpp:504 rc.cpp:171 rc.cpp:504
 msgid "Remove"
 msgstr "Eliminar"
 
-#: gui/mainwindow.cpp:463
+#: gui/mainwindow.cpp:321
 msgid "Replace Play Queue"
 msgstr "Reemplazar lista de reproducción"
 
-#: gui/mainwindow.cpp:466
+#: gui/mainwindow.cpp:322
 msgid "Remove From Play Queue"
 msgstr "Eliminar de la cola de reproducción"
 
-#: gui/mainwindow.cpp:469
+#: gui/mainwindow.cpp:323
 msgid "Copy Track Info"
 msgstr "Copiar información de pista"
 
-#: gui/mainwindow.cpp:472
+#: gui/mainwindow.cpp:324
 msgid "Crop"
 msgstr "Recortar"
 
-#: gui/mainwindow.cpp:475
+#: gui/mainwindow.cpp:325
 msgid "Shuffle"
 msgstr "Modificar orden"
 
 #. i18n: file: gui/serversettings.ui:125
 #. i18n: ectx: property (text), widget (QPushButton, saveButton)
-#: gui/mainwindow.cpp:478 gui/serversettings.cpp:121 po/rc.cpp:501 rc.cpp:501
+#: gui/mainwindow.cpp:326 gui/serversettings.cpp:115 po/rc.cpp:501 rc.cpp:501
 msgid "Save As"
 msgstr "Guardar como"
 
-#: gui/mainwindow.cpp:481
+#: gui/mainwindow.cpp:327
 msgid "Clear"
 msgstr "Vaciar"
 
-#: gui/mainwindow.cpp:485
+#: gui/mainwindow.cpp:328
 msgid "Expanded Interface"
 msgstr "Interfaz expandida"
 
-#: gui/mainwindow.cpp:489
+#: gui/mainwindow.cpp:329
 msgid "Random"
 msgstr "Aleatorio"
 
-#: gui/mainwindow.cpp:492
+#: gui/mainwindow.cpp:330
 msgid "Repeat"
 msgstr "Repetir"
 
-#: gui/mainwindow.cpp:495
+#: gui/mainwindow.cpp:331
 msgid "Single"
 msgstr "Pistas únicas"
 
-#: gui/mainwindow.cpp:496
+#: gui/mainwindow.cpp:331
 msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
@@ -1247,11 +1260,11 @@ msgstr ""
 "Cuando se activa \"Pistas únicas\", la reproducción se detiene tras la "
 "canción actual, o se repite si se activa el modo de repetición."
 
-#: gui/mainwindow.cpp:499
+#: gui/mainwindow.cpp:332
 msgid "Consume"
 msgstr "Eliminar tras reproducir"
 
-#: gui/mainwindow.cpp:500
+#: gui/mainwindow.cpp:332
 msgid ""
 "When consume is activated, a song is removed from the play queue after it "
 "has been played."
@@ -1259,156 +1272,177 @@ msgstr ""
 "Cuando se activa esta opción, se elimina la canción de la cola de "
 "reproducción tras su reproducción"
 
-#: gui/mainwindow.cpp:503
+#: gui/mainwindow.cpp:333
 msgid "Add With Priority"
 msgstr "Añadir con prioridad"
 
-#: gui/mainwindow.cpp:506
+#: gui/mainwindow.cpp:334
 msgid "Set Priority"
 msgstr "Definir prioridad"
 
-#: gui/mainwindow.cpp:509
+#: gui/mainwindow.cpp:335
 msgid "Highest Priority (255)"
 msgstr "Prioridad máxima (255)"
 
-#: gui/mainwindow.cpp:512
+#: gui/mainwindow.cpp:336
 msgid "High Priority (200)"
 msgstr "Prioridad alta (200)"
 
-#: gui/mainwindow.cpp:515
+#: gui/mainwindow.cpp:337
 msgid "Medium Priority (125)"
 msgstr "Prioridad media (125)"
 
-#: gui/mainwindow.cpp:518
+#: gui/mainwindow.cpp:338
 msgid "Low Priority (50)"
 msgstr "Prioridad baja (50)"
 
-#: gui/mainwindow.cpp:521
+#: gui/mainwindow.cpp:339
 msgid "Default Priority (0)"
 msgstr ""
 
-#: gui/mainwindow.cpp:524
+#: gui/mainwindow.cpp:340
 msgid "Custom Priority..."
 msgstr "Prioridad personalizada..."
 
-#: gui/mainwindow.cpp:528
+#: gui/mainwindow.cpp:342
 msgid "Play Stream"
 msgstr "Reproducir flujo"
 
-#: gui/mainwindow.cpp:529
+#: gui/mainwindow.cpp:342
 msgid "When 'Play Stream' is activated, the enabled stream is played locally."
 msgstr ""
 "Cuando se activa «Reproducir flujo», el flujo activo se reproduce localmente."
 
-#: gui/mainwindow.cpp:533
+#: gui/mainwindow.cpp:344
 msgid "Locate In Library"
 msgstr "Ubicar en biblioteca"
 
-#: gui/mainwindow.cpp:548
+#: gui/mainwindow.cpp:347
 msgid "Edit Tags"
 msgstr "Editar etiquetas"
 
-#: gui/mainwindow.cpp:551
+#: gui/mainwindow.cpp:348
 msgid "Edit Song Tags"
 msgstr "Editar etiquetas de canciones"
 
 #. i18n: file: gui/interfacesettings.ui:303
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
-#: gui/mainwindow.cpp:555 po/rc.cpp:327 rc.cpp:327
+#: gui/mainwindow.cpp:350 po/rc.cpp:327 rc.cpp:327
 msgid "Play Queue"
 msgstr "Reproducir lista de reproducción"
 
 #. i18n: file: gui/interfacesettings.ui:200
 #. i18n: ectx: attribute (title), widget (QWidget, tab_6)
-#: gui/mainwindow.cpp:567 gui/playlistspage.cpp:63 po/rc.cpp:303 rc.cpp:303
+#: gui/mainwindow.cpp:354 gui/playlistspage.cpp:54 po/rc.cpp:303 rc.cpp:303
 msgid "Playlists"
 msgstr "Listas de reproducción"
 
-#: gui/mainwindow.cpp:575 gui/preferencesdialog.cpp:155
+#: gui/mainwindow.cpp:358 gui/preferencesdialog.cpp:137
+#: gui/preferencesdialog.cpp:156
 msgid "Lyrics"
 msgstr "Letras"
 
-#: gui/mainwindow.cpp:578 gui/streamspage.cpp:90 widgets/groupedview.cpp:217
+#: gui/mainwindow.cpp:359 gui/streamspage.cpp:75 widgets/groupedview.cpp:220
 msgid "Streams"
 msgstr "Flujos"
 
-#: gui/mainwindow.cpp:582
+#: gui/mainwindow.cpp:361
 msgid "Info"
 msgstr "Información"
 
-#: gui/mainwindow.cpp:586
+#: gui/mainwindow.cpp:363
 msgid "Server Info"
 msgstr "Información de servidor"
 
-#: gui/mainwindow.cpp:594
+#: gui/mainwindow.cpp:369
 msgid "Search"
 msgstr "Buscar"
 
-#: gui/mainwindow.cpp:597
+#: gui/mainwindow.cpp:370
 msgid "Expand All"
 msgstr "Expandir todo"
 
-#: gui/mainwindow.cpp:600
+#: gui/mainwindow.cpp:371
 msgid "Collapse All"
 msgstr "Contraer todo"
 
-#: gui/mainwindow.cpp:820 replaygain/rgdialog.cpp:85
-msgid "ReplayGain"
-msgstr "Ganancia de reproducción"
-
-#: gui/mainwindow.cpp:922
-msgid "Search Play Queue..."
-msgstr "Buscar en lista de reproducción…"
-
-#: gui/mainwindow.cpp:1256
+#: gui/mainwindow.cpp:523
 msgid "Auto Hide"
 msgstr "Ocultar automáticamente"
 
-#: gui/mainwindow.cpp:1476
+#: gui/mainwindow.cpp:545
+msgid "Search Play Queue..."
+msgstr "Buscar en lista de reproducción…"
+
+#: gui/mainwindow.cpp:624
+msgid "Configure Cantata..."
+msgstr "Configurar Cantata..."
+
+#: gui/mainwindow.cpp:633
+#, fuzzy
+msgctxt "Qt-only"
+msgid "About Cantata..."
+msgstr "Configurar Cantata..."
+
+#: gui/mainwindow.cpp:1045
 msgid "Failed to locate any songs matching the dynamic playlist rules."
 msgstr ""
 "No se ha detectado ninguna canción que coincida con las normas de lista "
 "dinámica de reproducción."
 
-#: gui/mainwindow.cpp:1633
+#: gui/mainwindow.cpp:1167 mpd/mpdconnection.cpp:316
 msgid "Connecting to %1"
 msgstr "Conectando a %1"
 
-#: gui/mainwindow.cpp:1786 gui/mainwindow.cpp:2199 gui/serversettings.cpp:74
-#: mpd/mpdconnection.cpp:178
+#: gui/mainwindow.cpp:1327 gui/mainwindow.cpp:1736 gui/serversettings.cpp:68
+#: mpd/mpdconnection.cpp:136
 msgid "Default"
 msgstr "Predefinido"
 
-#: gui/mainwindow.cpp:2202 gui/mainwindow.cpp:2205
+#: gui/mainwindow.cpp:1512
+#, fuzzy
+msgctxt "Qt-only"
+msgid "About Cantata"
+msgstr "Cantata"
+
+#: gui/mainwindow.cpp:1513
+msgctxt "Qt-only"
+msgid ""
+"<b>Cantata %1</b><br/><br/>Simple GUI front-end for MPD.<br/><br/>(c) Craig "
+"Drummond 2011-2012.<br/>Released under the GPLv2<br/><br/><i><small>Based "
+"upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>"
+msgstr ""
+
+#: gui/mainwindow.cpp:1739 gui/mainwindow.cpp:1742
 msgid "Cantata (%1)"
 msgstr "Cantata (%1)"
 
-#: gui/mainwindow.cpp:2209
+#: gui/mainwindow.cpp:1745
 msgctxt "track :: Cantata (connection)"
 msgid "%1 :: Cantata (%2)"
 msgstr "%1 :: Cantata (%2)"
 
-#: gui/mainwindow.cpp:2210
+#: gui/mainwindow.cpp:1746
 msgctxt "track :: Cantata"
 msgid "%1 :: Cantata"
 msgstr "%1 :: Cantata"
 
-#: gui/mainwindow.cpp:2220
+#: gui/mainwindow.cpp:1750
 msgctxt "track - artist :: Cantata (connection)"
 msgid "%1 - %2 :: Cantata (%3)"
 msgstr "%1 - %2 :: Cantata (%3)"
 
-#: gui/mainwindow.cpp:2221
+#: gui/mainwindow.cpp:1752
 msgctxt "track - artist :: Cantata"
 msgid "%1 - %2 :: Cantata"
 msgstr "%1 - %2 :: Cantata"
 
-#: gui/mainwindow.cpp:2270 widgets/groupedview.cpp:233
+#: gui/mainwindow.cpp:1800 widgets/groupedview.cpp:238
 msgctxt "artist - album"
 msgid "%1 - %2"
 msgstr "%1 - %2"
 
-#: gui/mainwindow.cpp:2301
+#: gui/mainwindow.cpp:1827
 msgid ""
 "<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "
 "align=\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right"
@@ -1422,46 +1456,60 @@ msgstr ""
 "b></td><td>%4</td></tr><tr><td align=\"right\"><b>Duración:</b></td><td>%5</"
 "td></tr></table>"
 
-#: gui/mainwindow.cpp:2327 gui/mainwindow.cpp:2347 gui/mainwindow.cpp:2493
-#: gui/mainwindow.cpp:2864 gui/mainwindow.cpp:2866 main.cpp:39
+#: gui/mainwindow.cpp:1853 gui/mainwindow.cpp:1866 gui/mainwindow.cpp:1868
+#: gui/mainwindow.cpp:1873 gui/mainwindow.cpp:1875 gui/mainwindow.cpp:2017
+#: gui/mainwindow.cpp:2020 gui/mainwindow.cpp:2374 gui/mainwindow.cpp:2376
+#: gui/mainwindow.cpp:2403 main.cpp:86
 msgid "Cantata"
 msgstr "Cantata"
 
-#: gui/mainwindow.cpp:2401 gui/mainwindow.cpp:2402
+#: gui/mainwindow.cpp:1863
+#, fuzzy
+msgid ""
+"%1\n"
+"%2\n"
+"%3"
+msgstr ""
+"%1\n"
+"%2\n"
+"%3"
+
+#: gui/mainwindow.cpp:1929 gui/mainwindow.cpp:1930
 msgid "Volume Disabled"
 msgstr "Volumen desactivado"
 
-#: gui/mainwindow.cpp:2406 gui/mainwindow.cpp:2407
+#: gui/mainwindow.cpp:1934 gui/mainwindow.cpp:1935
 msgid "Volume %1%"
 msgstr "Volumen %1%"
 
-#: gui/mainwindow.cpp:2615 models/playqueuemodel.cpp:110
+#: gui/mainwindow.cpp:2137 models/playqueuemodel.cpp:105
 msgid "Priority"
 msgstr "Prioridad"
 
-#: gui/mainwindow.cpp:2615
+#: gui/mainwindow.cpp:2137
 msgid "Enter priority (0..255):"
 msgstr "Introduzca la prioridad (0...255):"
 
-#: gui/mainwindow.cpp:2637 gui/playlistspage.cpp:210
+#: gui/mainwindow.cpp:2159 gui/playlistspage.cpp:201
 msgid "Playlist Name"
 msgstr "Nombre de lista de reproducción"
 
-#: gui/mainwindow.cpp:2637 gui/playlistspage.cpp:210
+#: gui/mainwindow.cpp:2159 gui/playlistspage.cpp:201
 msgid "Enter a name for the playlist:"
 msgstr "Introduzca un nombre para la lista de reproducción:"
 
-#: gui/mainwindow.cpp:2640
+#: gui/mainwindow.cpp:2162
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
 msgstr ""
 "Se ha detectado una lista de reproducción llamada <b>%1</b>.<br/> ¿Añadir a "
 "esa lista de reproducción?"
 
-#: gui/mainwindow.cpp:2641
+#: gui/mainwindow.cpp:2163
 msgid "Existing Playlist"
 msgstr "Lista de reproducción existente"
 
-#: gui/mainwindow.cpp:2688 widgets/groupedview.cpp:328
+#: gui/mainwindow.cpp:2221 widgets/groupedview.cpp:329
+#: widgets/groupedview.cpp:332
 msgid "1 Track"
 msgid_plural "%1 Tracks"
 msgstr[0] "1 pista"
@@ -1475,79 +1523,92 @@ msgstr "Sin disminución progresiva de volumen"
 msgid " ms"
 msgstr " ms"
 
-#: gui/playlistspage.cpp:214 gui/playlistspage.cpp:236
+#: gui/playlistspage.cpp:205 gui/playlistspage.cpp:227
 msgid "A playlist named <b>%1</b> already exists!<br/>Overwrite?"
 msgstr ""
 "Se ha detectado una lista de reproducción llamada <b>%1</b><br/>. "
 "¿Sobrescribir?"
 
-#: gui/playlistspage.cpp:214 gui/playlistspage.cpp:236
+#: gui/playlistspage.cpp:205 gui/playlistspage.cpp:227
 msgid "Overwrite Playlist?"
 msgstr "¿Desea sobrescribir la lista de reproducción?"
 
-#: gui/playlistspage.cpp:232
+#: gui/playlistspage.cpp:223
 msgid "Rename Playlist"
 msgstr "Renombrar lista de reproducción"
 
-#: gui/playlistspage.cpp:232
+#: gui/playlistspage.cpp:223
 msgid "Enter new name for playlist:"
 msgstr "Introduzca un nombre nuevo para la lista de reproducción:"
 
-#: gui/preferencesdialog.cpp:134
+#: gui/preferencesdialog.cpp:118 gui/preferencesdialog.cpp:141
 msgid "Connection Settings"
 msgstr "Ajustes de conexión"
 
 #. i18n: file: gui/serverplaybacksettings.ui:109
 #. i18n: ectx: property (title), widget (QGroupBox, outputFrame)
-#: gui/preferencesdialog.cpp:136 po/rc.cpp:477 rc.cpp:477
+#: gui/preferencesdialog.cpp:120 gui/preferencesdialog.cpp:144 po/rc.cpp:477
+#: rc.cpp:477
 msgid "Output"
 msgstr "Salida"
 
-#: gui/preferencesdialog.cpp:137
+#: gui/preferencesdialog.cpp:121 gui/preferencesdialog.cpp:143
 msgid "Output Settings"
 msgstr "Ajustes de la salida"
 
-#: gui/preferencesdialog.cpp:139
+#: gui/preferencesdialog.cpp:123 gui/preferencesdialog.cpp:146
 msgid "Playback"
 msgstr "Reproducción"
 
-#: gui/preferencesdialog.cpp:140
+#: gui/preferencesdialog.cpp:124 gui/preferencesdialog.cpp:145
 msgid "Playback Settings"
 msgstr "Opciones de reproducción"
 
-#: gui/preferencesdialog.cpp:143
+#: gui/preferencesdialog.cpp:126 gui/preferencesdialog.cpp:148
 msgid "Interface"
 msgstr "Interfaz"
 
-#: gui/preferencesdialog.cpp:144
+#: gui/preferencesdialog.cpp:127 gui/preferencesdialog.cpp:147
 msgid "Interface Settings"
 msgstr "Configuración de la interfaz"
 
-#: gui/preferencesdialog.cpp:146
+#: gui/preferencesdialog.cpp:129 gui/preferencesdialog.cpp:150
 msgid "External"
 msgstr "Externo"
 
-#: gui/preferencesdialog.cpp:147
+#: gui/preferencesdialog.cpp:130 gui/preferencesdialog.cpp:149
 msgid "External Settings"
 msgstr "Opciones externas"
 
-#: gui/preferencesdialog.cpp:150
+#: gui/preferencesdialog.cpp:133 gui/preferencesdialog.cpp:153
 msgid "HTTP Server"
 msgstr "Servidor HTTP"
 
-#: gui/preferencesdialog.cpp:151
+#: gui/preferencesdialog.cpp:134 gui/preferencesdialog.cpp:152
 msgid "HTTP Server Settings"
 msgstr "Configuración del servidor HTTP"
 
-#: gui/preferencesdialog.cpp:156
+#: gui/preferencesdialog.cpp:138 gui/preferencesdialog.cpp:155
 msgid "Lyrics Settings"
 msgstr "Configuración de letras"
 
-#: gui/preferencesdialog.cpp:189
+#: gui/preferencesdialog.cpp:159
+#, fuzzy
+msgctxt "Qt-only"
+msgid "Proxy Settings"
+msgstr "Opciones de reproducción"
+
+#: gui/preferencesdialog.cpp:160
+#, fuzzy
+msgctxt "Qt-only"
+msgid "Proxy"
+msgstr "Proxy HTTP"
+
+#: gui/preferencesdialog.cpp:163
 msgid "Configure"
 msgstr "Configuración"
 
-#: gui/serverinfopage.cpp:46
+#: gui/serverinfopage.cpp:41
 msgid "Update MPD Information"
 msgstr "Actualizar información de MPD"
 
@@ -1573,7 +1634,7 @@ msgstr ""
 "<i><b>No conectado.</b><br/>Las entradas a continuación no se pueden "
 "modificar, ya que Cantata no está conectado a MPD.</i>"
 
-#: gui/serversettings.cpp:44
+#: gui/serversettings.cpp:40
 msgid ""
 "<i> This folder will also be used to locate music files for transferring to "
 "(and from) devices.</i>"
@@ -1583,15 +1644,15 @@ msgstr ""
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:66
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
-#: gui/serversettings.cpp:58 po/rc.cpp:111 rc.cpp:111
+#: gui/serversettings.cpp:52 po/rc.cpp:111 rc.cpp:111
 msgid "Host:"
 msgstr "Host:"
 
-#: gui/serversettings.cpp:121
+#: gui/serversettings.cpp:115
 msgid "Enter name for settings:"
 msgstr "Introduzca un nombre para la configuración:"
 
-#: gui/serversettings.cpp:136
+#: gui/serversettings.cpp:130
 msgid ""
 "A setting named %1 already exists!\n"
 "Overwrite?"
@@ -1599,18 +1660,18 @@ msgstr ""
 "Ya existe una configuración llamada «%1».\n"
 "¿Desea sobrescribir?"
 
-#: gui/serversettings.cpp:173
+#: gui/serversettings.cpp:167
 msgid "Delete %1?"
 msgstr "¿Desea eliminar %1? "
 
-#: gui/serversettings.cpp:192
+#: gui/serversettings.cpp:186
 msgid "Disconnect"
 msgstr "Desconectar"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, nameLabel)
-#: gui/streamcategorydialog.cpp:51 gui/streamdialog.cpp:59 po/rc.cpp:105
-#: rc.cpp:105
+#: gui/streamcategorydialog.cpp:51 gui/streamcategorydialog.cpp:53
+#: gui/streamdialog.cpp:59 po/rc.cpp:105 rc.cpp:105
 msgid "Name:"
 msgstr "Nombre:"
 
@@ -1634,13 +1695,13 @@ msgstr "Flujo:"
 msgid "Category:"
 msgstr "Categoría:"
 
-#. i18n: file: gui/tageditor.ui:108
+#. i18n: file: gui/tageditor.ui:113
 #. i18n: ectx: property (text), widget (StateLabel, genreLabel)
 #: gui/streamdialog.cpp:72 po/rc.cpp:537 rc.cpp:537
 msgid "Genre:"
 msgstr "Género:"
 
-#: gui/streamdialog.cpp:75 gui/streamspage.cpp:54
+#: gui/streamdialog.cpp:75 gui/streamspage.cpp:49
 msgid "Add Stream"
 msgstr "Añadir flujo"
 
@@ -1652,121 +1713,129 @@ msgstr "Editar flujo"
 msgid "<i>Invalid protocol</i>"
 msgstr "<i>Protocolo no válido</i>"
 
-#: gui/streamspage.cpp:50 gui/streamspage.cpp:202
+#: gui/streamspage.cpp:47 gui/streamspage.cpp:187 gui/streamspage.cpp:189
 msgid "Import Streams"
 msgstr "Importar flujos"
 
-#: gui/streamspage.cpp:52 gui/streamspage.cpp:243
+#: gui/streamspage.cpp:48 gui/streamspage.cpp:228 gui/streamspage.cpp:230
 msgid "Export Streams"
 msgstr "Exportar flujos"
 
 #. i18n: file: dynamic/dynamicrules.ui:40
 #. i18n: ectx: property (text), widget (QPushButton, editBtn)
-#: gui/streamspage.cpp:56 po/rc.cpp:168 rc.cpp:168
+#: gui/streamspage.cpp:50 po/rc.cpp:168 rc.cpp:168
 msgid "Edit"
 msgstr "Editar"
 
-#: gui/streamspage.cpp:202 gui/streamspage.cpp:243
+#: gui/streamspage.cpp:187 gui/streamspage.cpp:228
 msgid "*.cantata|Cantata Streams"
 msgstr "*.cantata|Flujos de Cantata"
 
-#: gui/streamspage.cpp:212
+#: gui/streamspage.cpp:189 gui/streamspage.cpp:230
+msgid "Cantata Streams (*.cantata)"
+msgstr ""
+
+#: gui/streamspage.cpp:197
 msgid ""
 "Failed to import <b>%1</b>!<br/>Please check this is of the correct type."
 msgstr "Fallo al importar <b>%1</b>.<br/>Compruebe que es del tipo correcto."
 
-#: gui/streamspage.cpp:253
+#: gui/streamspage.cpp:238
 msgid "Failed to create <b>%1</b>!"
 msgstr "Fallo al crear <b>%1</b>."
 
-#: gui/streamspage.cpp:268
+#: gui/streamspage.cpp:253
 msgid "Stream already exists!<br/><b>%1</b>"
 msgstr "El flujo ya existe.<br/><b>%1</b>"
 
-#: gui/streamspage.cpp:273
+#: gui/streamspage.cpp:258
 msgid "A stream named <b>%1</b> already exists!"
 msgstr "Ya existe un flujo llamado <b>%1</b>."
 
-#: gui/streamspage.cpp:290
+#: gui/streamspage.cpp:275
 msgid "Are you sure you wish to remove the %1 selected streams?"
 msgstr "¿Desea eliminar los %1 flujos seleccionados?"
 
-#: gui/streamspage.cpp:291
+#: gui/streamspage.cpp:276
 msgid "Are you sure you wish to remove <b>%1</b>?"
 msgstr "¿Desea eliminar <b>%1</b>?"
 
-#: gui/streamspage.cpp:292
+#: gui/streamspage.cpp:277
 msgid "Remove Streams?"
 msgstr "¿Eliminar flujos?"
 
-#: gui/streamspage.cpp:292
+#: gui/streamspage.cpp:277
 msgid "Remove Stream?"
 msgstr "¿Eliminar flujo?"
 
-#: gui/streamspage.cpp:374
+#: gui/streamspage.cpp:359
 msgid "Stream already exists!<br/><b>%1 (%2)</b>"
 msgstr "El flujo ya existe<br/><b>%1 (%2)</b>."
 
-#: gui/streamspage.cpp:376
+#: gui/streamspage.cpp:361
 msgid "A stream named <b>%1 (%2)</b> already exists!"
 msgstr "Ya existe un flujo llamado <b>%1 (%2)</b>."
 
 #. i18n: file: gui/interfacesettings.ui:381
 #. i18n: ectx: attribute (title), widget (QWidget, tab_4)
-#: gui/streamspage.cpp:413 po/rc.cpp:348 rc.cpp:348
+#: gui/streamspage.cpp:398 po/rc.cpp:348 rc.cpp:348
 msgid "General"
 msgstr "General"
 
-#: gui/tageditor.cpp:108
+#: gui/tageditor.cpp:112
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: gui/tageditor.cpp:112
+#: gui/tageditor.cpp:117 gui/tageditor.cpp:121
 msgid "Previous"
 msgstr "Pista anterior"
 
-#: gui/tageditor.cpp:114
+#: gui/tageditor.cpp:119 gui/tageditor.cpp:122
 msgid "Next"
 msgstr "Siguiente"
 
-#: gui/tageditor.cpp:124
+#: gui/tageditor.cpp:129 gui/tageditor.cpp:132
 msgid "Tools"
 msgstr "Herramientas"
 
-#: gui/tageditor.cpp:130
+#: gui/tageditor.cpp:131 replaygain/rgdialog.cpp:126
+msgid "Save"
+msgstr "Guardar"
+
+#: gui/tageditor.cpp:135
 msgid "Apply \"Various Artists\" Workaround"
 msgstr "Arreglo para «Varios Artistas»"
 
-#: gui/tageditor.cpp:131
+#: gui/tageditor.cpp:136
 msgid "Revert \"Various Artists\" Workaround"
 msgstr "Deshacer arreglo para «Varios Artistas»"
 
-#: gui/tageditor.cpp:132
+#: gui/tageditor.cpp:137
 msgid "Capitalize"
 msgstr "Aplicar mayúsculas"
 
-#: gui/tageditor.cpp:133 gui/tageditor.cpp:433
+#: gui/tageditor.cpp:138 gui/tageditor.cpp:438
 msgid "Adjust Track Numbers"
 msgstr "Ajustar números de pista"
 
-#: gui/tageditor.cpp:215 gui/tageditor.cpp:497
+#: gui/tageditor.cpp:220 gui/tageditor.cpp:502
 msgid "All tracks"
 msgstr "Todas las pistas"
 
-#: gui/tageditor.cpp:269
+#: gui/tageditor.cpp:274
 msgid "(Various)"
 msgstr "(Varios)"
 
-#: gui/tageditor.cpp:312
+#: gui/tageditor.cpp:317
 msgid "Apply \"Various Artists\" workaround to <b>all</b> tracks?"
 msgstr ""
 "¿Desea aplicar el arreglo para «Various Artists» a <b>todas</b> las pistas?"
 
-#: gui/tageditor.cpp:313
+#: gui/tageditor.cpp:318
 msgid "Apply \"Various Artists\" workaround?"
 msgstr "¿Desea aplicar el arreglo para «Various Artists»?"
 
-#: gui/tageditor.cpp:315
+#: gui/tageditor.cpp:320
 msgid ""
 "<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
 "'Title' to \"TrackArtist - TrackTitle\"</i>"
@@ -1774,16 +1843,16 @@ msgstr ""
 "<i>Esto define «Artista del álbum» y «Artista» con el valor de «Varios "
 "Artistas», y «Título» con el de «Artista de pista - Título de pista»</i>"
 
-#: gui/tageditor.cpp:353
+#: gui/tageditor.cpp:358
 msgid "Revert \"Various Artists\" workaround on <b>all</b> tracks?"
 msgstr ""
 "¿Desea deshacer el arreglo para «Varios Artistas» a <b>todas</b> las pistas?"
 
-#: gui/tageditor.cpp:354
+#: gui/tageditor.cpp:359
 msgid "Revert \"Various Artists\" workaround"
 msgstr "Deshacer arreglo para «Varios Artistas»"
 
-#: gui/tageditor.cpp:356
+#: gui/tageditor.cpp:361
 msgid ""
 "<i>Where the 'Album artist' is the same as 'Artist' and the 'Title' is of "
 "the format \"TrackArtist - TrackTitle\", 'Artist' will be taken from 'Title' "
@@ -1797,7 +1866,7 @@ msgstr ""
 "<br/><br/>si «Título» es «Wibble - Wobble», entonces «Artista» se define "
 "como «Wibble», y «Título» se define como «Wobble»</i>"
 
-#: gui/tageditor.cpp:401
+#: gui/tageditor.cpp:406
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and "
 "'Album' of <b>all</b> tracks?"
@@ -1805,30 +1874,30 @@ msgstr ""
 "¿Desea poner en mayúscula la primera letra de «Título», «Artista», «Artista "
 "del álbum», y «Álbum» para <b>todas</b> las pistas?"
 
-#: gui/tageditor.cpp:403
+#: gui/tageditor.cpp:408
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"
 msgstr ""
 "Poner en mayúscula la primera letra de «Título», «Artista», «Artista del "
 "álbum», y «Álbum»"
 
-#: gui/tageditor.cpp:433
+#: gui/tageditor.cpp:438
 msgid "Increment the value of each track number by:"
 msgstr "Incrementar el valor de cada número de pista en:"
 
-#: gui/tageditor.cpp:434
+#: gui/tageditor.cpp:439
 msgid "Increment track number by:"
 msgstr "Incrementar el número de pista en:"
 
-#: gui/tageditor.cpp:491
+#: gui/tageditor.cpp:496
 msgid "All tracks [modified]"
 msgstr "Todas las pistas [modificado]"
 
-#: gui/tageditor.cpp:493
+#: gui/tageditor.cpp:498
 msgid "%1 [modified]"
 msgstr "%1 [modificado]"
 
-#: gui/tageditor.cpp:659 replaygain/rgdialog.cpp:362
+#: gui/tageditor.cpp:687 replaygain/rgdialog.cpp:394
 msgid "Failed to update the tags of the following tracks:"
 msgstr "Fallo al actualizar las etiquetas de las siguientes pistas:"
 
@@ -1852,11 +1921,11 @@ msgstr ""
 
 #. i18n: file: dynamic/dynamicrule.ui:67
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
-#. i18n: file: gui/tageditor.ui:30
+#. i18n: file: gui/tageditor.ui:35
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
 #. i18n: file: dynamic/dynamicrule.ui:67
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
-#. i18n: file: gui/tageditor.ui:30
+#. i18n: file: gui/tageditor.ui:35
 #. i18n: ectx: property (text), widget (StateLabel, titleLabel)
 #: lyrics/lyricsdialog.cpp:64 po/rc.cpp:189 po/rc.cpp:519 rc.cpp:189
 #: rc.cpp:519
@@ -1865,71 +1934,71 @@ msgstr "Título:"
 
 #. i18n: file: dynamic/dynamicrule.ui:28
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
-#. i18n: file: gui/tageditor.ui:43
+#. i18n: file: gui/tageditor.ui:48
 #. i18n: ectx: property (text), widget (StateLabel, artistLabel)
 #. i18n: file: dynamic/dynamicrule.ui:28
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
-#. i18n: file: gui/tageditor.ui:43
+#. i18n: file: gui/tageditor.ui:48
 #. i18n: ectx: property (text), widget (StateLabel, artistLabel)
 #: lyrics/lyricsdialog.cpp:66 po/rc.cpp:180 po/rc.cpp:522 rc.cpp:180
 #: rc.cpp:522
 msgid "Artist:"
 msgstr "Artista:"
 
-#: lyrics/lyricsdialog.cpp:68 lyrics/lyricspage.cpp:108
+#: lyrics/lyricsdialog.cpp:68 lyrics/lyricspage.cpp:91
 msgid "Search For Lyrics"
 msgstr "Búsqueda de letras"
 
-#: lyrics/lyricsettings.cpp:61
+#: lyrics/lyricsettings.cpp:57
 msgid "(Polish Translations)"
 msgstr "(Traducción al polaco)"
 
-#: lyrics/lyricsettings.cpp:62
+#: lyrics/lyricsettings.cpp:58
 msgid "(Portuguese Translations)"
 msgstr "(Traducción al portugués)"
 
-#: lyrics/lyricspage.cpp:110
+#: lyrics/lyricspage.cpp:92
 msgid "Edit Lyrics"
 msgstr "Editar letras"
 
-#: lyrics/lyricspage.cpp:112
+#: lyrics/lyricspage.cpp:93
 msgid "Save Lyrics"
 msgstr "Guardar letras"
 
-#: lyrics/lyricspage.cpp:114
+#: lyrics/lyricspage.cpp:94
 msgid "Cancel Editing Lyrics"
 msgstr "Cancelar edición de letras"
 
-#: lyrics/lyricspage.cpp:116
+#: lyrics/lyricspage.cpp:95
 msgid "Delete Lyrics File"
 msgstr "Eliminar fichero de letras"
 
-#: lyrics/lyricspage.cpp:193 lyrics/lyricspage.cpp:210
-#: lyrics/lyricspage.cpp:266
+#: lyrics/lyricspage.cpp:155 lyrics/lyricspage.cpp:172
+#: lyrics/lyricspage.cpp:228
 msgid "Abort editing of lyrics?"
 msgstr "¿Desea interrumpir la edición de letras?"
 
-#: lyrics/lyricspage.cpp:195
+#: lyrics/lyricspage.cpp:157
 msgid "Delete saved copy of lyrics, and re-download?"
 msgstr "¿Desea eliminar y descargar otra vez la copia de las letras?"
 
-#: lyrics/lyricspage.cpp:219
+#: lyrics/lyricspage.cpp:181
 msgid "Current playing song has changed, still perform search?"
 msgstr "La canción en reproducción ha cambiado, ¿quiere realizar la búsqueda?"
 
-#: lyrics/lyricspage.cpp:243
+#: lyrics/lyricspage.cpp:205
 msgid "Save updated lyrics?"
 msgstr "¿Desea guardar las letras actualizadas?"
 
-#: lyrics/lyricspage.cpp:255
+#: lyrics/lyricspage.cpp:217
 msgid "Failed to save lyrics."
 msgstr "Fallo al guardar las letras"
 
-#: lyrics/lyricspage.cpp:276
+#: lyrics/lyricspage.cpp:238
 msgid "Delete lyrics file?"
 msgstr "¿Desea eliminar el fichero de letras?"
 
-#: lyrics/lyricspage.cpp:443
+#: lyrics/lyricspage.cpp:404
 msgctxt ""
 "<title> by <artist>\n"
 "Fetching lyrics via <url>"
@@ -1940,7 +2009,7 @@ msgstr ""
 "%1 por 2%\n"
 "Obteniendo letras mediante %3"
 
-#: lyrics/lyricspage.cpp:453
+#: lyrics/lyricspage.cpp:410
 msgctxt ""
 "<title> by <artist>\n"
 "Failed\n"
@@ -1951,60 +2020,60 @@ msgstr ""
 "%1 por %2\n"
 "Fallo al obtener letras"
 
-#: lyrics/lyricspage.cpp:482
+#: lyrics/lyricspage.cpp:435
 msgctxt "title, by artist"
 msgid "%1, by %2"
 msgstr "%1, por %2"
 
-#: main.cpp:40
+#: main.cpp:87
 msgid "A KDE client for MPD"
 msgstr "Un cliente de MPD para KDE"
 
-#: main.cpp:42
+#: main.cpp:89
 msgid "Copyright (C) 2011-2012 Craig Drummond"
 msgstr "Derechos de autor (C) 2011-2012 Craig Drummond"
 
-#: main.cpp:46
+#: main.cpp:93
 msgid "Craig Drummond"
 msgstr "Craig Drummond"
 
-#: main.cpp:46
+#: main.cpp:93
 msgid "Maintainer"
 msgstr "Desarrollador"
 
-#: main.cpp:47
+#: main.cpp:94
 msgid "Piotr Wicijowski"
 msgstr "Piotr Wicijowski"
 
-#: main.cpp:47
+#: main.cpp:94
 msgid "UI Improvements"
 msgstr "Mejora de la interfaz"
 
-#: main.cpp:48
+#: main.cpp:95
 msgid "Sander Knopper"
 msgstr "Sander Knopper"
 
-#: main.cpp:48 main.cpp:49 main.cpp:50 main.cpp:51
+#: main.cpp:95 main.cpp:96 main.cpp:97 main.cpp:98
 msgid "QtMPC author"
 msgstr "Autor de QtMPC"
 
-#: main.cpp:49
+#: main.cpp:96
 msgid "Roeland Douma"
 msgstr "Roeland Douma"
 
-#: main.cpp:50
+#: main.cpp:97
 msgid "Daniel Selinger"
 msgstr "Daniel Selinger"
 
-#: main.cpp:51
+#: main.cpp:98
 msgid "Armin Walland"
 msgstr "Armin Walland"
 
-#: main.cpp:56
+#: main.cpp:103
 msgid "URL to open"
 msgstr "URL a abrir"
 
-#: models/albumsmodel.cpp:240
+#: models/albumsmodel.cpp:239
 msgid ""
 "%1\n"
 "%2 (%3)\n"
@@ -2022,7 +2091,8 @@ msgstr[1] ""
 "%2 (%3)\n"
 "%4 pistas (%5)"
 
-#: models/albumsmodel.cpp:242
+#: models/albumsmodel.cpp:241
+#, fuzzy
 msgid ""
 "%1\n"
 "%2\n"
@@ -2030,7 +2100,7 @@ msgid ""
 msgid_plural ""
 "%1\n"
 "%2\n"
-" Tracks (%4)"
+"%3 Tracks (%4)"
 msgstr[0] ""
 "%1\n"
 "%2\n"
@@ -2040,186 +2110,121 @@ msgstr[1] ""
 "%2\n"
 "Pistas (%4)"
 
-#: models/devicesmodel.cpp:212
-msgid ""
-"%1\n"
-"1 Artist"
-msgid_plural ""
-"%1\n"
-"%2 Artists"
-msgstr[0] ""
-"%1\n"
-"1 artista"
-msgstr[1] ""
-"%1\n"
-"%2 artistas"
-
-#: models/devicesmodel.cpp:223
-msgid ""
-"%1\n"
-"1 Album"
-msgid_plural ""
-"%1\n"
-"%2 Albums"
-msgstr[0] ""
-"%1\n"
-"1 álbum"
-msgstr[1] ""
-"%1\n"
-"%2 álbumes"
-
-#: models/devicesmodel.cpp:234 models/playlistsmodel.cpp:195
-msgid ""
-"%1\n"
-"1 Track (%3)"
-msgid_plural ""
-"%1\n"
-"%2 Tracks (%3)"
-msgstr[0] ""
-"%1\n"
-"1 pista (%3)"
-msgstr[1] ""
-"%1\n"
-"%2 pistas (%3)"
-
-#: models/devicesmodel.cpp:262
+#: models/devicesmodel.cpp:212 models/devicesmodel.cpp:256
 msgid "1 Artist"
 msgid_plural "%1 Artists"
 msgstr[0] "1 artista"
 msgstr[1] "%1 artistas"
 
-#: models/devicesmodel.cpp:270 models/musiclibrarymodel.cpp:282
+#: models/devicesmodel.cpp:221 models/devicesmodel.cpp:264
+#: models/musiclibrarymodel.cpp:278
 msgid "1 Album"
 msgid_plural "%1 Albums"
 msgstr[0] "1 álbum"
 msgstr[1] "%1 álbumes"
 
-#: models/devicesmodel.cpp:279 models/musiclibrarymodel.cpp:291
-#: models/playlistsmodel.cpp:205
+#: models/devicesmodel.cpp:230 models/devicesmodel.cpp:273
+#: models/musiclibrarymodel.cpp:287 models/playlistsmodel.cpp:194
+#: models/playlistsmodel.cpp:202
 msgid "1 Track (%2)"
 msgid_plural "%1 Tracks (%2)"
 msgstr[0] "1 pista (%2)"
 msgstr[1] "%1 pistas (%2)"
 
-#: models/devicesmodel.cpp:637
+#: models/devicesmodel.cpp:645
 msgid "No Devices Attached"
 msgstr "No hay dispositivos conectados"
 
-#: models/dirviewmodel.cpp:177
-msgid ""
-"%1\n"
-"1 Entry"
-msgid_plural ""
-"%1\n"
-"%2 Entries"
-msgstr[0] ""
-"%1\n"
-"1 entrada"
-msgstr[1] ""
-"%1\n"
-"%2 entradas"
-
-#: models/dirviewmodel.cpp:187
+#: models/dirviewmodel.cpp:176 models/dirviewmodel.cpp:184
 msgid "1 Entry"
 msgid_plural "%1 Entries"
 msgstr[0] "1 entrada"
 msgstr[1] "%1 entradas"
 
-#: models/dirviewmodel.cpp:195
+#: models/dirviewmodel.cpp:192
 msgid "Playlist"
 msgstr "Lista de reproducción"
 
-#: models/dirviewmodel.cpp:197
+#: models/dirviewmodel.cpp:194
 msgid "Cue Sheet"
 msgstr "Hoja cue"
 
-#: models/dirviewmodel.cpp:199
+#: models/dirviewmodel.cpp:196
 msgid "Audio File"
 msgstr "Fichero de audio"
 
-#: models/musiclibrarymodel.cpp:244
+#: models/musiclibrarymodel.cpp:243
 msgid "%1<br/>1 Album"
 msgid_plural "%1<br/>%2 Albums"
 msgstr[0] "%1<br/>1 álbum"
 msgstr[1] "%1<br/>%2 álbumes"
 
-#: models/musiclibrarymodel.cpp:255
+#: models/musiclibrarymodel.cpp:252
 msgid "%1<br/>1 Track (%3)"
 msgid_plural "%1<br/>%2 Tracks (%3)"
 msgstr[0] "%1<br/>1 pista (%3)"
 msgstr[1] "%1<br/>%2 pistas (%3)"
 
-#: models/playlistsmodel.cpp:712
+#: models/playlistsmodel.cpp:704
 msgid "New Playlist..."
 msgstr "Nueva lista de reproducción…"
 
-#: models/playqueuemodel.cpp:102
+#: models/playqueuemodel.cpp:100
 msgctxt "Track Number (#)"
 msgid "#"
 msgstr "Núm."
 
-#: models/playqueuemodel.cpp:106
+#: models/playqueuemodel.cpp:101
 msgid "Length"
 msgstr "Duración"
 
-#: models/playqueuemodel.cpp:107
+#: models/playqueuemodel.cpp:102
 msgid "Disc"
 msgstr "Disco"
 
 #. i18n: file: devices/filenameschemedialog.ui:180
 #. i18n: ectx: property (text), widget (QPushButton, year)
-#: models/playqueuemodel.cpp:108 po/rc.cpp:99 rc.cpp:99
+#: models/playqueuemodel.cpp:103 po/rc.cpp:99 rc.cpp:99
 msgid "Year"
 msgstr "Año"
 
-#: models/playqueuemodel.cpp:351
+#: models/playqueuemodel.cpp:346
 msgid "<b>(Priority: %1)</b>"
 msgstr "<b>(Prioridad: %1)</b>"
 
-#: models/streamsmodel.cpp:167
-msgid ""
-"%1\n"
-"1 Stream"
-msgid_plural ""
-"%1\n"
-"%2 Streams"
-msgstr[0] ""
-"%1\n"
-"1 flujo"
-msgstr[1] ""
-"%1\n"
-"%2 flujos"
-
-#: models/streamsmodel.cpp:177
+#: models/streamsmodel.cpp:165 models/streamsmodel.cpp:173
 msgid "1 Stream"
 msgid_plural "%1 Streams"
 msgstr[0] "1 flujo"
 msgstr[1] "%1 flujos"
 
-#: mpd/mpdconnection.cpp:181
+#: mpd/mpdconnection.cpp:138
 msgctxt "name (host)"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: mpd/mpdconnection.cpp:183
+#: mpd/mpdconnection.cpp:140
 msgctxt "name (host:port)"
 msgid "%1 (%2:%3)"
 msgstr "%1 (%2:%3)"
 
-#: mpd/mpdconnection.cpp:337
+#: mpd/mpdconnection.cpp:321 mpd/mpdconnection.cpp:351
+#: mpd/mpdconnection.cpp:380 mpd/mpdconnection.cpp:391
+#: mpd/mpdconnection.cpp:427 mpd/mpdconnection.cpp:435
+#: mpd/mpdconnection.cpp:895 mpd/mpdconnection.cpp:923
 msgid "Connection to %1 failed"
 msgstr "Fallo de conexión a %1"
 
-#: mpd/mpdconnection.cpp:341
+#: mpd/mpdconnection.cpp:327 mpd/mpdconnection.cpp:355
 msgid "Connection to %1 failed - incorrect password"
 msgstr "Fallo de conexión a %1 - contraseña incorrecta"
 
-#: mpd/mpdconnection.cpp:390
+#: mpd/mpdconnection.cpp:418
 msgid "Failed to load. Please check user \"mpd\" has read permission."
 msgstr ""
 "Fallo al cargar. Compruebe que el usuario «mpd» tiene permisos de lectura."
 
-#: mpd/mpdconnection.cpp:392
+#: mpd/mpdconnection.cpp:420
 msgid ""
 "Failed to load. MPD can only play local files if connected via a local "
 "socket."
@@ -2227,21 +2232,31 @@ msgstr ""
 "Fallo al cargar. MPD solo puede reproducir ficheros locales si se conecta a "
 "través de un fichero socket local."
 
-#: mpd/mpdconnection.cpp:1024
+#: mpd/mpdconnection.cpp:1057
 msgid "Failed to rename <b>%1</b> to <b>%2</b>"
 msgstr "Fallo al renombrar <b>%1</b> to <b>%2</b>"
 
-#: mpd/mpdconnection.cpp:1036
+#: mpd/mpdconnection.cpp:1069
 msgid "Failed to save <b>%1</b>"
 msgstr "Fallo al crear <b>%1</b>"
 
-#: mpd/mpdparseutils.cpp:511
+#: mpd/mpdparseutils.cpp:505
 msgid "1 day %2"
 msgid_plural "%1 days %2"
 msgstr[0] "1 día %2"
 msgstr[1] "%1 días %2"
 
-#: mpd/song.cpp:243
+#: mpd/mpdparseutils.cpp:510
+#, fuzzy
+msgid "1 day %1"
+msgstr "1 día %2"
+
+#: mpd/mpdparseutils.cpp:511
+#, fuzzy
+msgid "%1 days %2"
+msgstr "1 día %2"
+
+#: mpd/song.cpp:262
 msgctxt ""
 "Song\n"
 "Artist\n"
@@ -2474,11 +2489,11 @@ msgstr "Utilizar caché:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:96
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#. i18n: file: devices/trackorganiser.ui:20
+#. i18n: file: devices/trackorganiser.ui:25
 #. i18n: ectx: property (title), widget (QGroupBox, optionsBox)
 #. i18n: file: devices/devicepropertieswidget.ui:96
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
-#. i18n: file: devices/trackorganiser.ui:20
+#. i18n: file: devices/trackorganiser.ui:25
 #. i18n: ectx: property (title), widget (QGroupBox, optionsBox)
 #: po/rc.cpp:45 po/rc.cpp:132 rc.cpp:45 rc.cpp:132
 msgid "Filenames"
@@ -2486,11 +2501,11 @@ msgstr "Nombres de fichero"
 
 #. i18n: file: devices/devicepropertieswidget.ui:105
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
-#. i18n: file: devices/trackorganiser.ui:107
+#. i18n: file: devices/trackorganiser.ui:112
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #. i18n: file: devices/devicepropertieswidget.ui:105
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
-#. i18n: file: devices/trackorganiser.ui:107
+#. i18n: file: devices/trackorganiser.ui:112
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
 #: po/rc.cpp:48 po/rc.cpp:144 rc.cpp:48 rc.cpp:144
 msgid "Use only ASCII characters:"
@@ -2498,11 +2513,11 @@ msgstr "Utilizar sólo caracteres ASCII:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:122
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
-#. i18n: file: devices/trackorganiser.ui:90
+#. i18n: file: devices/trackorganiser.ui:95
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #. i18n: file: devices/devicepropertieswidget.ui:122
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
-#. i18n: file: devices/trackorganiser.ui:90
+#. i18n: file: devices/trackorganiser.ui:95
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:51 po/rc.cpp:141 rc.cpp:51 rc.cpp:141
 msgid "Replace spaces with underscores:"
@@ -2510,11 +2525,11 @@ msgstr "Sustituir espacios por guiones bajos:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:139
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#. i18n: file: devices/trackorganiser.ui:73
+#. i18n: file: devices/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #. i18n: file: devices/devicepropertieswidget.ui:139
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
-#. i18n: file: devices/trackorganiser.ui:73
+#. i18n: file: devices/trackorganiser.ui:78
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
 #: po/rc.cpp:54 po/rc.cpp:138 rc.cpp:54 rc.cpp:138
 msgid "Ignore 'The' in artist names:"
@@ -2522,11 +2537,11 @@ msgstr "Ignorar «The» en nombres de artista:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:156
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
-#. i18n: file: devices/trackorganiser.ui:56
+#. i18n: file: devices/trackorganiser.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #. i18n: file: devices/devicepropertieswidget.ui:156
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
-#. i18n: file: devices/trackorganiser.ui:56
+#. i18n: file: devices/trackorganiser.ui:61
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:57 po/rc.cpp:135 rc.cpp:57 rc.cpp:135
 msgid "Filename scheme:"
@@ -2534,11 +2549,11 @@ msgstr "Esquema de nombre de fichero:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:200
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#. i18n: file: devices/trackorganiser.ui:124
+#. i18n: file: devices/trackorganiser.ui:129
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #. i18n: file: devices/devicepropertieswidget.ui:200
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
-#. i18n: file: devices/trackorganiser.ui:124
+#. i18n: file: devices/trackorganiser.ui:129
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:60 po/rc.cpp:147 rc.cpp:60 rc.cpp:147
 msgid "VFAT safe:"
@@ -2678,13 +2693,13 @@ msgstr ""
 "localmente. Para reproductores normales, con conexión USB, Cantata muestra "
 "automáticamente el dispositivo cuando está conectado.</i>"
 
-#. i18n: file: devices/trackorganiser.ui:150
+#. i18n: file: devices/trackorganiser.ui:155
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
 #: po/rc.cpp:150 rc.cpp:150
 msgid "Original Name"
 msgstr "Nombre original"
 
-#. i18n: file: devices/trackorganiser.ui:155
+#. i18n: file: devices/trackorganiser.ui:160
 #. i18n: ectx: property (text), widget (QTreeWidget, files)
 #: po/rc.cpp:153 rc.cpp:153
 msgid "New Name"
@@ -2716,11 +2731,11 @@ msgstr "Artista del álbum:"
 
 #. i18n: file: dynamic/dynamicrule.ui:54
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
-#. i18n: file: gui/tageditor.ui:69
+#. i18n: file: gui/tageditor.ui:74
 #. i18n: ectx: property (text), widget (StateLabel, albumLabel)
 #. i18n: file: dynamic/dynamicrule.ui:54
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
-#. i18n: file: gui/tageditor.ui:69
+#. i18n: file: gui/tageditor.ui:74
 #. i18n: ectx: property (text), widget (StateLabel, albumLabel)
 #: po/rc.cpp:186 po/rc.cpp:528 rc.cpp:186 rc.cpp:528
 msgid "Album:"
@@ -2728,11 +2743,11 @@ msgstr "Álbum:"
 
 #. i18n: file: dynamic/dynamicrule.ui:100
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
-#. i18n: file: gui/tageditor.ui:121
+#. i18n: file: gui/tageditor.ui:126
 #. i18n: ectx: property (text), widget (StateLabel, yearLabel)
 #. i18n: file: dynamic/dynamicrule.ui:100
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
-#. i18n: file: gui/tageditor.ui:121
+#. i18n: file: gui/tageditor.ui:126
 #. i18n: ectx: property (text), widget (StateLabel, yearLabel)
 #: po/rc.cpp:195 po/rc.cpp:540 rc.cpp:195 rc.cpp:540
 msgid "Year:"
@@ -3207,25 +3222,25 @@ msgstr ""
 "<i><b>NOTA:</b> Al utilizar un «socket» local, se debe especificar la ruta "
 "absoluta al mismo. (El número de puerto no es necesario.)</i>"
 
-#. i18n: file: gui/tageditor.ui:17
+#. i18n: file: gui/tageditor.ui:22
 #. i18n: ectx: property (text), widget (StateLabel, trackNameLabel)
 #: po/rc.cpp:516 rc.cpp:516
 msgid "Track:"
 msgstr "Pista:"
 
-#. i18n: file: gui/tageditor.ui:56
+#. i18n: file: gui/tageditor.ui:61
 #. i18n: ectx: property (text), widget (StateLabel, albumArtistLabel)
 #: po/rc.cpp:525 rc.cpp:525
 msgid "Album artist:"
 msgstr "Artista del álbum:"
 
-#. i18n: file: gui/tageditor.ui:82
+#. i18n: file: gui/tageditor.ui:87
 #. i18n: ectx: property (text), widget (StateLabel, trackLabel)
 #: po/rc.cpp:531 rc.cpp:531
 msgid "Track number:"
 msgstr "Número de pista:"
 
-#. i18n: file: gui/tageditor.ui:95
+#. i18n: file: gui/tageditor.ui:100
 #. i18n: ectx: property (text), widget (StateLabel, discLabel)
 #: po/rc.cpp:534 rc.cpp:534
 msgid "Disc number:"
@@ -3313,81 +3328,77 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "ocampagne@gmail.com"
 
-#: replaygain/rgdialog.cpp:100
+#: replaygain/rgdialog.cpp:103
 msgid "Album Gain"
 msgstr "Ganancia de reproducción del álbum"
 
-#: replaygain/rgdialog.cpp:101
+#: replaygain/rgdialog.cpp:104
 msgid "Track Gain"
 msgstr "Ganancia de reproducción de pista"
 
-#: replaygain/rgdialog.cpp:102
+#: replaygain/rgdialog.cpp:105
 msgid "Album Peak"
 msgstr "Punto más alto del álbum"
 
-#: replaygain/rgdialog.cpp:103
+#: replaygain/rgdialog.cpp:106
 msgid "Track Peak"
 msgstr "Punto más alto del pista"
 
-#: replaygain/rgdialog.cpp:123
-msgid "Save"
-msgstr "Guardar"
-
-#: replaygain/rgdialog.cpp:124 replaygain/rgdialog.cpp:266
-#: replaygain/rgdialog.cpp:392
+#: replaygain/rgdialog.cpp:127 replaygain/rgdialog.cpp:275
+#: replaygain/rgdialog.cpp:422
 msgid "Close"
 msgstr "Cerrar"
 
-#: replaygain/rgdialog.cpp:126
+#: replaygain/rgdialog.cpp:129
 msgid "Scan"
 msgstr "Analizar"
 
-#: replaygain/rgdialog.cpp:181
+#: replaygain/rgdialog.cpp:188
 msgid "Update ReplayGain tags in files?"
 msgstr "¿Desea actualizar las etiquetas ReplayGain en los ficheros?"
 
-#: replaygain/rgdialog.cpp:193
+#: replaygain/rgdialog.cpp:200
 msgid "Cancel scanning of files?"
 msgstr "¿Desea cancelar el análisis de ficheros?"
 
-#: replaygain/rgdialog.cpp:200
+#: replaygain/rgdialog.cpp:208
 msgid "Cancel reading of existing tags?"
 msgstr "¿Desea cancelar el análisis de las etiquetas existentes?"
 
-#: replaygain/rgdialog.cpp:223
+#: replaygain/rgdialog.cpp:232
 msgid "Do you wish to scan all files, or only files without existing tags?"
 msgstr "¿Desea analizar todos los ficheros, o solo aquellos sin etiquetas?"
 
-#: replaygain/rgdialog.cpp:224
+#: replaygain/rgdialog.cpp:233
 msgid "All Tracks"
 msgstr "Todas las pistas"
 
-#: replaygain/rgdialog.cpp:224
+#: replaygain/rgdialog.cpp:233
 msgid "Untagged Tracks"
 msgstr "Pistas sin etiquetar"
 
-#: replaygain/rgdialog.cpp:231 replaygain/rgdialog.cpp:307
+#: replaygain/rgdialog.cpp:240 replaygain/rgdialog.cpp:316
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: replaygain/rgdialog.cpp:237
+#: replaygain/rgdialog.cpp:246
 msgid "Scanning files..."
 msgstr "Analizando ficheros..."
 
-#: replaygain/rgdialog.cpp:314
+#: replaygain/rgdialog.cpp:323
 msgid "Reading existing tags..."
 msgstr "Leyendo etiquetas existentes..."
 
-#: replaygain/rgdialog.cpp:449 replaygain/rgdialog.cpp:504
-#: replaygain/rgdialog.cpp:563 replaygain/rgdialog.cpp:565
+#: replaygain/rgdialog.cpp:479 replaygain/rgdialog.cpp:534
+#: replaygain/rgdialog.cpp:593 replaygain/rgdialog.cpp:595
 msgid "%1 dB"
 msgstr "%1 dB"
 
-#: replaygain/rgdialog.cpp:479 replaygain/rgdialog.cpp:480
+#: replaygain/rgdialog.cpp:509 replaygain/rgdialog.cpp:510
 msgid "Failed"
 msgstr "Fallo"
 
-#: widgets/coverwidget.cpp:131
+#: widgets/coverwidget.cpp:140
 msgid ""
 "<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td align="
 "\"right\"><b>Album:</b></td><td>%2</td></tr><tr><td align=\"right\"><b>Year:"
@@ -3397,55 +3408,226 @@ msgstr ""
 "\"right\"><b>Álbum:</b></td><td>%2</td></tr><tr><td align=\"right\"><b>Año:</"
 "b></td><td>%3</td></tr>"
 
-#: widgets/fancytabwidget.cpp:939
+#: widgets/dirrequester.cpp:46
+#, fuzzy
+msgid "Select Folder"
+msgstr "Seleccione el directorio de música"
+
+#: widgets/fancytabwidget.cpp:976
 msgid "Icons Only"
 msgstr "Solo iconos"
 
-#: widgets/fancytabwidget.cpp:940
+#: widgets/fancytabwidget.cpp:977
 msgid "Style"
 msgstr "Estilo"
 
-#: widgets/fancytabwidget.cpp:941
+#: widgets/fancytabwidget.cpp:978
 msgid "Large Sidebar"
 msgstr "Barra lateral grande"
 
-#: widgets/fancytabwidget.cpp:942
+#: widgets/fancytabwidget.cpp:979
 msgid "Small Sidebar"
 msgstr "Barra lateral pequeña"
 
-#: widgets/fancytabwidget.cpp:943
+#: widgets/fancytabwidget.cpp:980
 msgid "Top Bar"
 msgstr "Barra superior"
 
-#: widgets/fancytabwidget.cpp:944
+#: widgets/fancytabwidget.cpp:981
 msgid "Bottom Bar"
 msgstr "Barra inferior"
 
-#: widgets/fancytabwidget.cpp:945
+#: widgets/fancytabwidget.cpp:982
 msgid "Tabs On Side"
 msgstr "Pestañas en el lado"
 
-#: widgets/fancytabwidget.cpp:946
+#: widgets/fancytabwidget.cpp:983
 msgid "Tabs On Top"
 msgstr "Pestañas en la parte superior"
 
-#: widgets/fancytabwidget.cpp:947
+#: widgets/fancytabwidget.cpp:984
 msgid "Tabs On Bottom"
 msgstr "Pestañas en la parte inferior"
 
-#: widgets/itemview.cpp:631 widgets/itemview.cpp:670 widgets/itemview.cpp:672
-#: widgets/itemview.cpp:959
+#: widgets/groupedview.cpp:332
+#, fuzzy
+msgid "%1 Tracks"
+msgstr "1 pista"
+
+#: widgets/itemview.cpp:642 widgets/itemview.cpp:681 widgets/itemview.cpp:683
+#: widgets/itemview.cpp:978
 msgid "Search %1..."
 msgstr "Buscar %1..."
+
+#: widgets/messagebox.cpp:43 widgets/messagebox.cpp:49
+msgid "Warning"
+msgstr ""
+
+#: widgets/messagebox.cpp:45 widgets/messagebox.cpp:49
+msgid "Question"
+msgstr ""
+
+#: widgets/messagebox.cpp:73 widgets/messagebox.h:55
+msgid "Error"
+msgstr ""
+
+#: ../dynamic/dynamic.cpp:180
+#, qt-format
+msgctxt "QObject|"
+msgid "Rules: %1"
+msgstr ""
+
+#: ../gui/mainwindow.cpp:2223
+#, qt-format
+msgctxt "QObject|"
+msgid "Tracks: %1"
+msgstr ""
+
+#: ../gui/tageditor.cpp:689
+#, qt-format
+msgctxt "QObject|"
+msgid "Failed to update the tags of some tracks."
+msgstr ""
+
+#: ../models/albumsmodel.cpp:245
+#, qt-format
+msgctxt "QObject|"
+msgid ""
+"%1\n"
+"%2 (%3)\n"
+"Tracks: %4 (%5)"
+msgstr ""
+
+#: ../models/albumsmodel.cpp:247
+#, qt-format
+msgctxt "QObject|"
+msgid ""
+"%1\n"
+"%2\n"
+"Tracks: %3 (%4)"
+msgstr ""
+
+#: ../models/devicesmodel.cpp:214 ../models/devicesmodel.cpp:258
+#, qt-format
+msgctxt "QObject|"
+msgid "Artists: %1"
+msgstr ""
+
+#: ../models/devicesmodel.cpp:223 ../models/devicesmodel.cpp:266
+#: ../models/musiclibrarymodel.cpp:280
+#, qt-format
+msgctxt "QObject|"
+msgid "Albums: %1"
+msgstr ""
+
+#: ../models/devicesmodel.cpp:232 ../models/devicesmodel.cpp:275
+#: ../models/musiclibrarymodel.cpp:289 ../models/playlistsmodel.cpp:196
+#: ../models/playlistsmodel.cpp:204
+#, qt-format
+msgctxt "QObject|"
+msgid "Tracks: %1 (%2)"
+msgstr ""
+
+#: ../models/dirviewmodel.cpp:178 ../models/dirviewmodel.cpp:186
+#, qt-format
+msgctxt "QObject|"
+msgid "Entries: %1"
+msgstr ""
+
+#: ../models/musiclibrarymodel.cpp:245
+#, qt-format
+msgctxt "QObject|"
+msgid "%1<br/>Albums: %2"
+msgstr ""
+
+#: ../models/musiclibrarymodel.cpp:254
+#, qt-format
+msgctxt "QObject|"
+msgid "%1<br/>Tracks: %2 (%3)"
+msgstr ""
+
+#: ../models/streamsmodel.cpp:167 ../models/streamsmodel.cpp:175
+#, qt-format
+msgctxt "QObject|"
+msgid "Streams: %1"
+msgstr ""
+
+#: ../replaygain/rgdialog.cpp:396
+#, qt-format
+msgctxt "QObject|"
+msgid "Failed to update the tags of some tracks"
+msgstr ""
+
+#~ msgid ""
+#~ "%1\n"
+#~ "1 Artist"
+#~ msgid_plural ""
+#~ "%1\n"
+#~ "%2 Artists"
+#~ msgstr[0] ""
+#~ "%1\n"
+#~ "1 artista"
+#~ msgstr[1] ""
+#~ "%1\n"
+#~ "%2 artistas"
+
+#~ msgid ""
+#~ "%1\n"
+#~ "1 Album"
+#~ msgid_plural ""
+#~ "%1\n"
+#~ "%2 Albums"
+#~ msgstr[0] ""
+#~ "%1\n"
+#~ "1 álbum"
+#~ msgstr[1] ""
+#~ "%1\n"
+#~ "%2 álbumes"
+
+#~ msgid ""
+#~ "%1\n"
+#~ "1 Track (%3)"
+#~ msgid_plural ""
+#~ "%1\n"
+#~ "%2 Tracks (%3)"
+#~ msgstr[0] ""
+#~ "%1\n"
+#~ "1 pista (%3)"
+#~ msgstr[1] ""
+#~ "%1\n"
+#~ "%2 pistas (%3)"
+
+#~ msgid ""
+#~ "%1\n"
+#~ "1 Entry"
+#~ msgid_plural ""
+#~ "%1\n"
+#~ "%2 Entries"
+#~ msgstr[0] ""
+#~ "%1\n"
+#~ "1 entrada"
+#~ msgstr[1] ""
+#~ "%1\n"
+#~ "%2 entradas"
+
+#~ msgid ""
+#~ "%1\n"
+#~ "1 Stream"
+#~ msgid_plural ""
+#~ "%1\n"
+#~ "%2 Streams"
+#~ msgstr[0] ""
+#~ "%1\n"
+#~ "1 flujo"
+#~ msgstr[1] ""
+#~ "%1\n"
+#~ "%2 flujos"
 
 #~ msgid "Priorty"
 #~ msgstr "Prioridad"
 
 #~ msgid "Other Protocol"
 #~ msgstr "Otro protocolo"
-
-#~ msgid "Configure Cantata..."
-#~ msgstr "Configurar Cantata..."
 
 #~ msgid "1 Artist, "
 #~ msgid_plural "%1 Artists, "

@@ -233,19 +233,11 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
             quint32 year=al->songs.count() ? al->songs.at(0)->year : 0;
             return 0==al->songs.count()
                 ? al->name
-                :
+                : (year>0 ? QString("%1\n%2 (%3)\n").arg(al->artist).arg(al->album).arg(QString::number(year)) : QString("%1\n%2\n").arg(al->artist).arg(al->album))+
                     #ifdef ENABLE_KDE_SUPPORT
-                    year>0
-                        ? i18np("%1\n%2 (%3)\n1 Track (%5)", "%1\n%2 (%3)\n%4 Tracks (%5)", al->artist, al->album,
-                                QString::number(year), al->songs.count(), Song::formattedTime(al->totalTime()))
-                        : i18np("%1\n%2\n1 Track (%4)", "%1\n%2\n%3 Tracks (%4)", al->artist, al->album,
-                                al->songs.count(), Song::formattedTime(al->totalTime()));
+                    i18np("1 Track (%2)", "%1 Tracks (%2)").arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()));
                     #else
-                    year>0
-                        ? QObject::tr("%1\n%2 (%3)\nTracks: %4 (%5)").arg(al->artist).arg(al->album)
-                                      .arg(QString::number(year)).arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()))
-                        : QObject::tr("%1\n%2\nTracks: %3 (%4)").arg(al->artist).arg(al->album)
-                                      .arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()));
+                    QObject::tr("Tracks: %1 (%2)").arg(al->songs.count()).arg(Song::formattedTime(al->totalTime()));
                     #endif
         }
         case ItemView::Role_Search:

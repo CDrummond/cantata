@@ -1860,7 +1860,7 @@ void MainWindow::updateCurrentSong(const Song &song)
             #else
             // The pure Qt implementation needs both, the tray icon and the setting checked.
             if (trayItem) {
-                const QString text=i18n("%1\n%2\n%3").arg(trackLabel->text()).arg(artistLabel->text()).arg(Song::formattedTime(current.time));
+                const QString text=QString("%1\n%2\n%3").arg(trackLabel->text()).arg(artistLabel->text()).arg(Song::formattedTime(current.time));
 
                 if (Settings::self()->showPopups()) {
                     trayItem->showMessage(i18n("Cantata"), text, QSystemTrayIcon::Information, 5000);

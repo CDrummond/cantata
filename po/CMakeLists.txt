@@ -34,22 +34,28 @@ IF( ENABLE_KDE_SUPPORT )
     endif(NOT GETTEXT_MSGFMT_EXECUTABLE)
 else (ENABLE_KDE_SUPPORT)
     find_program(LCONVERT_EXECUTABLE lconvert)
+    find_program(LRELEASE_EXECUTABLE lrelease)
 
-    if(NOT LCONVERT_EXECUTABLE)
+    if(NOT LCONVERT_EXECUTABLE OR NOT LRELEASE_EXECUTABLE)
         message("------\n"
-                "NOTE: lconvert not found. Translations will *not* be installed\n"
+                "NOTE: lconvert and/or lrelease not found. Translations will *not* be installed\n"
                 "------\n")
-    else(NOT LCONVERT_EXECUTABLE)
+    else(NOT LCONVERT_EXECUTABLE OR NOT LRELEASE_EXECUTABLE)
         set(catalogname cantata)
         add_custom_target(translations ALL)
         foreach(_lang ${CANTATA_LANGUAGES})
-            set(_poFile ${CMAKE_CURRENT_SOURCE_DIR}/${_lang}.po)
+            set(_poFile ${_lang}.po)
+            set(_tsFile ${CMAKE_CURRENT_BINARY_DIR}/cantata_${_lang}.ts)
             set(_qmFile ${CMAKE_CURRENT_BINARY_DIR}/cantata_${_lang}.qm)
             add_custom_command(TARGET translations
-                COMMAND ${LCONVERT_EXECUTABLE} ARGS ${_poFile} -o ${_qmFile} -of qm
-                DEPENDS ${_poFile})
+                COMMAND ${LCONVERT_EXECUTABLE} ARGS ${_poFile} -o ${_tsFile} -of ts
+                DEPENDS ${_poFile}
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+            add_custom_command(TARGET translations
+                COMMAND ${LRELEASE_EXECUTABLE} ARGS ${_tsFile} -qm ${_qmFile}
+                DEPENDS ${_tsFile})
             install(FILES ${_qmFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/translations/)
         endforeach(_lang ${CANTATA_LANGUAGES})
-    endif(NOT LCONVERT_EXECUTABLE)
+    endif(NOT LCONVERT_EXECUTABLE OR NOT LRELEASE_EXECUTABLE)
 endif (ENABLE_KDE_SUPPORT)
 

@@ -207,30 +207,29 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         case MusicLibraryItem::Type_Root:
             return 0==item->childCount()
                 ? item->data()
-                :
+                : item->data()+"\n"+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Artist", "%1\n%2 Artists", item->data(), item->childCount());
+                    i18np("1 Artist", "%1 Artists", item->childCount());
                     #else
-                    QObject::tr("%1\n%n Artist(s)", "", item->childCount()).arg(item->data());
+                    QObject::tr("Artists: %1").arg(item->childCount());
                     #endif
         case MusicLibraryItem::Type_Artist:
             return 0==item->childCount()
                 ? item->data()
-                :
+                : item->data()+"\n"+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Album", "%1\n%2 Albums", item->data(), item->childCount());
+                    i18np("1 Album", "%1 Albums", item->childCount());
                     #else
-                    QObject::tr("%1\n%n Album(s)", "", item->childCount()).arg(item->data());
+                    QObject::tr("Albums: %1").arg(item->childCount());
                     #endif
         case MusicLibraryItem::Type_Album:
             return 0==item->childCount()
                 ? item->data()
-                :
+                : item->data()+"\n"+
                     #ifdef ENABLE_KDE_SUPPORT
-                    i18np("%1\n1 Track (%3)", "%1\n%2 Tracks (%3)", item->data(), item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
+                    i18np("1 Track (%2)", "%1 Tracks (%2)",item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
                     #else
-                    QObject::tr("%1\n%n Tracks (%2)", "", item->childCount())
-                               .arg(item->data()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
+                    QObject::tr("Tracks: %1 (%2)").arg(item->childCount()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
                     #endif
         case MusicLibraryItem::Type_Song:
             return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+
@@ -256,7 +255,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Artist", "%1 Artists", item->childCount());
             #else
-            return QObject::tr("%n Artist(s)", "", item->childCount());
+            return QObject::tr("Artists: %1").arg(item->childCount());
             #endif
             break;
         }
@@ -264,7 +263,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Album", "%1 Albums", item->childCount());
             #else
-            return QObject::tr("%n Album(s)", "", item->childCount());
+            return QObject::tr("Albums: %1").arg(item->childCount());
             #endif
             break;
         case MusicLibraryItem::Type_Song:
@@ -273,7 +272,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
             #else
-            return QObject::tr("%n Track(s) (%1)", "", item->childCount()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
+            return QObject::tr("Tracks: %1 (%2)").arg(item->childCount()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
             #endif
         default: return QVariant();
         }

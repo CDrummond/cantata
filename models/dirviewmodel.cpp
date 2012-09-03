@@ -171,11 +171,11 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         return 0==item->childCount()
             ? item->data()
-            :
+            : item->data()+"\n"+
                 #ifdef ENABLE_KDE_SUPPORT
-                i18np("%1\n1 Entry", "%1\n%2 Entries", item->data(), item->childCount());
+                i18np("1 Entry", "%1 Entries", item->childCount());
                 #else
-                QObject::tr("%1\n%n Entrie(s)", "", item->childCount()).arg(item->data());
+                QObject::tr("Entries: %1").arg(item->childCount());
                 #endif
     case ItemView::Role_SubText:
         switch (item->type()) {
@@ -183,7 +183,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Entry", "%1 Entries", item->childCount());
             #else
-            return QObject::tr("%n Entrie(s)", "", item->childCount());
+            return QObject::tr("Entries: %1").arg(item->childCount());
             #endif
             break;
         case DirViewItem::Type_File:

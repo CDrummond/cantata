@@ -28,21 +28,22 @@ cd ${BASEDIR}
 # see above on sorting
 find . -name '*.cpp' -o -name '*.h' -o -name '*.c' | sort > ${WDIR}/infiles.list
 echo "rc.cpp" >> ${WDIR}/infiles.list
-#find . -name '*.cpp' -o -name | xargs grep -l 'QObject::tr(' | sort > ${WDIR}/infiles.qt.list
 
 cd ${WDIR}
 xgettext --from-code=UTF-8 -C -kde -ci18n -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki18ncp:1c,2,3 -ktr2i18n:1 \
          -kI18N_NOOP:1 -kI18N_NOOP2:1c,2 -kaliasLocale -kki18n:1 -kki18nc:1c,2 -kki18np:1,2 -kki18ncp:1c,2,3 \
          --msgid-bugs-address="${BUGADDR}" \
          --files-from=infiles.list -D ${BASEDIR} -D ${WDIR} -o ${PROJECT}_kde.pot || { echo "error while calling xgettext. aborting."; exit 1; }
-#xgettext --omit-header --from-code=UTF-8 --qt --keyword=tr:1,1t --keyword=tr:1,2c,2t --keyword=tr:1,1,2c,3t \
-#         --files-from=infiles.qt.list -D ${BASEDIR} -D ${WDIR} -o ${PROJECT}_qt.pot || { echo "error while calling xgettext. aborting."; exit 1; }
+
+find .. -name '*.cpp' | xargs grep -l 'QObject::tr(' | sort > ${WDIR}/infiles.qt.list
+lupdate @infiles.qt.list -ts ${PROJECT}.ts && lconvert -i ${PROJECT}.ts -o ${PROJECT}_qt.po && msguniq -o ${PROJECT}_qt.pot ${PROJECT}_qt.po && rm ${PROJECT}.ts ${PROJECT}_qt.po
 
 #Fix charset...
 cat ${PROJECT}_kde.pot | sed s^charset=CHARSET^charset=UTF-8^g > ${PROJECT}_kde.pot-new
-mv ${PROJECT}_kde.pot-new ${PROJECT}.pot
-#cat ${PROJECT}_qt.pot | sed s^charset=CHARSET^charset=UTF-8^g > ${PROJECT}_qt.pot-new
-#cat ${PROJECT}_kde.pot-new ${PROJECT}_qt.pot-new > ${PROJECT}.pot
+tail -n +7 ${PROJECT}_qt.pot | sed s^charset=CHARSET^charset=UTF-8^g > ${PROJECT}_qt.pot-new
+cat ${PROJECT}_kde.pot-new > ${PROJECT}.pot
+echo " " >> ${PROJECT}.pot
+cat ${PROJECT}_qt.pot-new >> ${PROJECT}.pot
 
 echo "Done extracting messages"
 
@@ -60,6 +61,6 @@ cd ${WDIR}
 rm rcfiles.list
 rm infiles.list
 rm infiles.qt.list
-rm ${PROJECT}_kde.pot ${PROJECT}_qt.pot
+rm ${PROJECT}_kde.pot ${PROJECT}_qt.pot ${PROJECT}_kde.pot-new ${PROJECT}_qt.pot-new
 rm rc.cpp
 echo "Done"

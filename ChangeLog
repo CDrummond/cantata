@@ -68,6 +68,10 @@
 38. Improve FancyTabWidget appearance for Gtk+ style - when hovering, draw
     selection into a QImage and set painter's opacity before drawing image.
 39. Elide to right (or left for RTL) strings in sidebar.
+40. Implement support for translations in Qt-only builds. These use the KDE
+    translations. Plural forms not supported correctly, hence instead of
+    "1 Track" / "2 Tracks" Qt will have "Tracks: 1" / "Tracks: 2" The existing
+    translations will need to be updated to handle the Qt specific cases.
 
 0.8.2
 -----

@@ -242,7 +242,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                     #ifdef ENABLE_KDE_SUPPORT
                     i18np("%1<br/>1 Album", "%1<br/>%2 Albums", item->data(), item->childCount());
                     #else
-                    QObject::tr("%1<br/>%n Album(s)", "", item->childCount()).arg(item->data());
+                    QObject::tr("%1<br/>Albums: %2").arg(item->data()).arg(item->childCount());
                     #endif
         case MusicLibraryItem::Type_Album:
             return item->parentItem()->data()+QLatin1String("<br/>")+(0==item->childCount()
@@ -251,8 +251,8 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
                     #ifdef ENABLE_KDE_SUPPORT
                     i18np("%1<br/>1 Track (%3)", "%1<br/>%2 Tracks (%3)", item->data(), item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()))
                     #else
-                    QObject::tr("%1<br/>%n Track(s) (%2)", "", item->childCount())
-                               .arg(item->data()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()))
+                    QObject::tr("%1<br/>Tracks: %2 (%3)")
+                               .arg(item->data()).arg(item->childCount()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()))
                     #endif
                 );
         case MusicLibraryItem::Type_Song: {
@@ -277,7 +277,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Album", "%1 Albums", item->childCount());
             #else
-            return QObject::tr("%n Album(s)", "", item->childCount());
+            return QObject::tr("Albums: %1").arg(item->childCount());
             #endif
             break;
         case MusicLibraryItem::Type_Song:
@@ -286,7 +286,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
             #else
-            return QObject::tr("%n Tracks (%1)", "", item->childCount()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
+            return QObject::tr("Tracks: %1 (%2)").arg(item->childCount()).arg(Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
             #endif
         default: return QVariant();
         }

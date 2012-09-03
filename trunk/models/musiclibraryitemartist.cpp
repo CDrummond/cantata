@@ -217,6 +217,10 @@ void MusicLibraryItemArtist::remove(MusicLibraryItemAlbum *album)
 
 QList<MusicLibraryItem *> MusicLibraryItemArtist::mutipleArtistAlbums()
 {
+    if (isVarious()) {
+        return m_childItems;
+    }
+
     QList<MusicLibraryItem *> ma;
     QList<MusicLibraryItem *>::iterator it=m_childItems.begin();
     QList<MusicLibraryItem *>::iterator end=m_childItems.end();

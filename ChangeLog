@@ -1,4 +1,8 @@
-﻿0.8.3
+﻿0.8.3.1
+-------
+1. Fix Qt-only compile.
+
+0.8.3
 -----
  1. Add CMake options to disable 'automagic' dependencies - required for gentoo
     USE flags (http://www.gentoo.org/proj/en/qa/automagic.xml). Because of this

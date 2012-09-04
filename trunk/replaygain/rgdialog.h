@@ -33,7 +33,9 @@
 class QTreeWidget;
 class QLabel;
 class QProgressBar;
+#ifdef ENABLE_DEVICES_SUPPORT
 class Device;
+#endif
 class TagReader;
 
 class RgDialog : public Dialog

@@ -22,7 +22,9 @@
  */
 
 #include "rgdialog.h"
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "device.h"
+#endif
 #include "devicesmodel.h"
 #include "settings.h"
 #include "tags.h"

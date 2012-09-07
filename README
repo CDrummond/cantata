@@ -30,16 +30,8 @@ Because of its KDE base, the translation files are based upon KDE's i18n
 framework - these are located with the 'po' folder.
 
 Translations for the Qt-only builds are created from the KDE translations using
-'lconvert'. To work-around issues with plural translations, each string that
-can have a plural, has 3 entries in the .pot/po file - e.g. for 'Albums' we
-have:
-
-   0 Albums
-   1 Album
-   %1 Albums
-
-The first form is when there are no albums, the second for only 1 album, and
-the third for any other count. This should (hopefully) cover all cases.
+'lconvert'. To work-around issues with plural translations, Qt builds will use
+(e.g.) 'Albums: %1' as opposed to '1 Album' / '3 Albums'
 
 
 Covers
@@ -164,8 +156,8 @@ The list of dynamic playlists may be obtained by looking in
 
 To 'load' a dynamic play list, all you need to do is symlink the desired one in
 ~/.config/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can start
-the helper by calling '/usr/lib/kde4/libexec/cantata-dynamic start'  (or first
-call '/usr/lib/kde4/libexec/cantata-dynamic stop' to stop any current play list).
+the helper by calling '/usr/bin/cantata-dynamic start'  (or first call
+'/usr/bin/cantata-dynamic stop' to stop any current play list).
 
 To pass connection details, cantata-dynamic reads the same environment variables
 as mpc - namely MPD_HOST and MPD_PORT
@@ -175,16 +167,174 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
 'hostname:1234' with password 'pass'
 
     # Stop current dynamic playlist
-    /usr/lib/kde4/libexec/cantata-dynamic stop
+    /usr/bin/cantata-dynamic stop
     # Clear the playqueue (this requires mpc)
     MPD_HOST=pass@hostname MPD_PORT=1234 mpc clear
     # 'Load' new playlist
-    if [ -f "$HOME/cache/cantata/dynamic/rules" ] ; then
-        rm "$HOME/cache/cantata/dynamic/rules"
+    if [ -f "$HOME/.cache/cantata/dynamic/rules" ] ; then
+        rm "$HOME/.cache/cantata/dynamic/rules"
     fi
-    ln -s "$HOME/config/cantata/dynamic/MyPlaylist.rules" "$HOME/cache/cantata/dynamic/rules"
+    ln -s "$HOME/.config/cantata/dynamic/MyPlaylist.rules" "$HOME/.cache/cantata/dynamic/rules"
     # Restart dynamic script
-    MPD_HOST=pass@hostname MPD_PORT=1234 /usr/lib/kde4/libexec/cantata-dynamic start
+    MPD_HOST=pass@hostname MPD_PORT=1234 /usr/bin/cantata-dynamic start
+
+
+Dynamic Helper - Server Mode
+============================
+
+In addition to the above, the helper script may be installed on the system
+containg MPD, and run in 'server' mode. When run in this mode, it is intended
+that the script be run system-wide and started when the system (or MPD) is
+started. e.g. The script should be started as:
+
+    <install dir>/cantata-dynamic server <location of config file>
+
+    e.g.:  /usr/bin/cantata-dynamic server /etc/cantata-dynamic.conf
+
+When run as described above, the script will automatically daemonize itself.
+
+Cantata's 'Connection' settings page contains entries to configure the host and
+port of where the dynamic script is running. If Cantata is configured in this
+manner, then it will attempt to talk to the helper via its HTTP API, and will
+not start/stop a per-user instance of the script. If the config is left blank,
+then cantata will assume the script is to be run in local mode.
+
+
+Configuration
+-------------
+
+The server mode has a simple ini-style configuration file, that has the
+following paramters (shown here with the defaulr values):
+
+    pidFile=/var/run/cantata-dynamic/pid
+    filesDir=/var/lib/mpd/dynamic
+    activeFile=/var/run/cantata-dynamic/rules
+    mpdHost=localhost
+    mpdPort=6600
+    mpdPassword=
+    httpPort=6601
+    httpControlPage=0
+    useFirstImage=1
+    mpdDir=/var/lib/mpd/music
+
+'filesDir' This controls where the dyamic rules are stored. The user the script
+is run as should have read/write permissions to this folder.
+
+'activeFile' When a set of rule is made 'active', all cantata does is create a
+symbolic link from the rules file to the file specified in 'activeFile'
+
+'mpdHost', 'mpdPort', and 'mpdPassword' are the connection details of the MPD
+server.
+
+'httpPort' is the port to be opened by the script to allow it to be controlled.
+
+'httpControlPage' If set to '1' then if you point a browser to
+'http://<host>:<httpPort>' then the script will return a simple web-page
+containing a list of the dyamic rules (which if clicked will become 'active'),
+and a butotn to stop dynamic mode. Set to '0' to disable this page.
+
+'useFirstImage' and 'mpdDir' As the dyanmic script contains a HTTP server, it
+can also be used to server cover images to Cantata. If 'useFirstImage' is set
+to '1', and Cantata requests 'cover.jpg' but neither 'cover.jpg' nor
+'cover.png' exist, then the script will return the first '.jpg' file found in
+the supplied folder. 'mpdDir' is used to specify the root MPD music folder to
+append to any supplied URLs. e.g.
+
+    http://127.0.0.1:6601/Artist/Album/cover.jpg will be looked for as
+    /var/lib/mpd/music/Artist/Album/cover.jpg
+
+
+Installation
+-------------
+
+Within the dynamic/init are example configuration and init files. Copy one of
+the example init scripts (or create a new one) to /etc/init.d/cantata.dynamic -
+and create the appropriate links in /etc/rc?.d
+
+Copy dynamic/init/cantata-dynamic.conf to /etc, and edit as appropriate.
+
+
+API
+---
+
+This is a brief (and probably incomplete) explanation of the HTTP API.
+Currently it is only used by Cantata.
+
+GetStatus
+    Mode:   HTTP GET
+    URL:    http://host:port/status
+    Params: statusTime=${clientStatusTime}
+    Return: String containing
+            STATE:<current status>
+            RULES:<name of currently active rule>
+            TIME:<epoch time since started, or last rule modification>
+
+    <current status> may be:
+        IDLE       - dynamic mode is not running
+        NO_SONGS   - no songs matched current rules
+        HAVE_SONGS - dynamic mode running, and songs found
+        STARTING   - dynamic mode is starting
+
+    The client should store the TIME value, and use it to determine whether
+    any rules have been changed since it last retrieved the list.
+
+ListPlaylists:
+    Mode:   HTTP GET
+    URL:    http://host:port/list
+    Params: statusTime=${clientStatusTime}
+    Return: String containd list of current rules. if 'withDetails' is set to
+            '1' then the contents of the rules are also returned.
+
+    Example return:
+        FILENAME: Wibble.rules
+        Rule
+        Artist: Wibble
+        FILENAME: Heavy Metal.rules
+        Rule
+        Genre: Heavy Metal
+
+GetPlaylist:
+    Mode:   HTTP GET
+    URL:    http://host:port/${playlist}
+    Params: statusTime=${clientStatusTime}
+    Return: Returns the contents of the specified 'playlist'. Or, a string
+            starting with 'ERROR:' in the case of failure.
+
+DeletePlaylist:
+    Mode:   HTTP DELETE
+    URL:    http://host:port/${playlist}
+    Return:
+
+SavePlaylist:
+    Mode:   HTTP POST
+    URL:    http://host:port/save
+    Params: name=${playlist}  [Required]
+    BODY:   Playlist content
+    Return:
+
+SetActive:
+    Mode:   HTTP POST
+    URL:    http://host:port/setActive
+    Params: name=${playlist}  [Required]
+            start={1/0}       If set to '1' dynamic mode is also started.
+
+ControlDynamizer:
+    Mode:   HTTP POST
+    URL:    http://host:port/control
+    Params: state={start/stop} [Required]
+
+GetCover:
+    Mode: HTTP GETT
+    URL:  http://host:port/${path}/cover.jpg
+          http://host:port/${path}/cover.png
+
+
+In order to detect whether the set of stored rules has changed, a client should
+supp,y the 'statusTime' parameter with the value set to the last 'TIME' value
+returned by a 'status' call. (If the client has no current value, use '1') The
+script will then return the current statusTime, as well as the string
+UPDATE_REQUIRED if the client should update its list of playlists (by calling
+the 'ListPlaylists' API)
 
 
 Credits

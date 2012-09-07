@@ -39,11 +39,11 @@ public:
     void focusSearch() { view->focusSearch(); }
 
 public Q_SLOTS:
-    void itemDoubleClicked(const QModelIndex &);
     void searchItems();
     void controlActions();
 
 private Q_SLOTS:
+    void dynamicUrlChanged(const QString &url);
     void add();
     void edit();
     void remove();
@@ -54,6 +54,7 @@ private Q_SLOTS:
 
 private:
     DynamicProxyModel proxy;
+    Action *refreshAction;
     Action *addAction;
     Action *editAction;
     Action *removeAction;

@@ -28,8 +28,11 @@
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 
 class QTimer;
+class NetworkAccessManager;
+class QNetworkReply;
 
 class Dynamic : public QAbstractItemModel
 {
@@ -58,6 +61,7 @@ public:
 
     Dynamic();
 
+    bool isRemote() { return !dynamicUrl.isEmpty(); }
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex&) const { return 1; }
@@ -72,10 +76,10 @@ public:
         return entryList.end()!=find(e);
     }
     bool save(const Entry &e);
-    bool del(const QString &name);
-    bool start(const QString &name);
-    bool stop();
-    bool toggle(const QString &name);
+    void del(const QString &name);
+    void start(const QString &name);
+    void stop();
+    void toggle(const QString &name);
     bool isRunning();
     QString current() const {
         return currentEntry;
@@ -95,18 +99,45 @@ Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void clear();
 
+    // These are as the result of asynchronous HTTP calls
+    void saved(bool s);
+
+public Q_SLOTS:
+    void refreshList();
+
 private Q_SLOTS:
     void checkHelper();
+    void checkRemoteHelper();
+    void jobFinished();
+    void dynamicUrlChanged(const QString &url);
 
 private:
     int getPid() const;
     bool controlApp(bool isStart);
     QList<Entry>::Iterator find(const QString &e);
+    NetworkAccessManager * network();
+    void sendCommand(const QString &cmd, const QStringList &args=QStringList());
+    void loadLocal();
+    void loadRemote();
+    void parseRemote(const QString &response);
+    void parseStatus(const QString &response);
+    void checkResponse(const QString &response);
+    void updateEntry(const Entry &e);
 
 private:
     QTimer *timer;
     QList<Entry> entryList;
     QString currentEntry;
+
+    // For remote dynamic servers...
+    int statusTime;
+    QString lastState;
+    QString dynamicUrl;
+    QNetworkReply *currentJob;
+    NetworkAccessManager *manager;
+    QString currentCommand;
+    QStringList currentArgs;
+    Entry currentSave;
 };
 
 #endif

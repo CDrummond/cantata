@@ -66,9 +66,7 @@ class LibraryPage;
 class AlbumsPage;
 class FolderPage;
 class PlaylistsPage;
-#if !defined Q_OS_WIN
 class DynamicPage;
-#endif
 class LyricsPage;
 class StreamsPage;
 class InfoPage;
@@ -160,9 +158,7 @@ public:
         PAGE_ALBUMS,
         PAGE_FOLDERS,
         PAGE_PLAYLISTS,
-        #if !defined Q_OS_WIN
         PAGE_DYNAMIC,
-        #endif
         PAGE_STREAMS,
         PAGE_LYRICS,
         #ifdef ENABLE_WEBKIT
@@ -220,9 +216,7 @@ public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
     void showInformation(const QString &message);
     void showPage(const QString &page, bool focusSearch);
-    #if !defined Q_OS_WIN
     void dynamicStatus(const QString &message);
-    #endif
 
 private Q_SLOTS:
     void setMpdVolume(int );
@@ -289,9 +283,7 @@ private Q_SLOTS:
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
     void showDynamicTab() {
-        #if !defined Q_OS_WIN
         showTab(PAGE_DYNAMIC);
-        #endif
     }
     void showStreamsTab() { showTab(PAGE_STREAMS); }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
@@ -409,9 +401,7 @@ private:
     Action *albumsTabAction;
     Action *foldersTabAction;
     Action *playlistsTabAction;
-    #if !defined Q_OS_WIN
     Action *dynamicTabAction;
-    #endif
     Action *lyricsTabAction;
     Action *streamsTabAction;
     Action *removeAction;
@@ -463,9 +453,7 @@ private:
     AlbumsPage *albumsPage;
     FolderPage *folderPage;
     PlaylistsPage *playlistsPage;
-    #if !defined Q_OS_WIN
     DynamicPage *dynamicPage;
-    #endif
     LyricsPage *lyricsPage;
     StreamsPage *streamsPage;
     #ifdef ENABLE_WEBKIT
@@ -517,9 +505,7 @@ private:
     friend class AlbumsPage;
     friend class FolderPage;
     friend class PlaylistsPage;
-    #if !defined Q_OS_WIN
     friend class DynamicPage;
-    #endif
     friend class StreamsPage;
     friend class LyricsPage;
     friend class InfoPage;

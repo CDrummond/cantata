@@ -162,7 +162,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     #endif
     setCaption(i18n("Configure"));
     setMainWidget(widget);
-    resize(600, 500);
     connect(server, SIGNAL(connectTo(const MPDConnectionDetails &)), SIGNAL(connectTo(const MPDConnectionDetails &)));
     connect(server, SIGNAL(disconnectFromMpd()), MPDConnection::self(), SLOT(disconnectMpd()));
 }

@@ -38,6 +38,7 @@ DynamicPage::DynamicPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
+    refreshAction = p->createAction("refreshdynamic", i18n("Refresh Dynamic Rules"), "view-refresh");
     addAction = p->createAction("adddynamic", i18n("Add Dynamic Rules"), "list-add");
     editAction = p->createAction("editdynamic", i18n("Edit Dynamic Rules"), "document-edit");
     removeAction = p->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
@@ -45,11 +46,13 @@ DynamicPage::DynamicPage(MainWindow *p)
     stopAction = p->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
     toggleAction = new Action(this);
 
+    Icon::init(refreshBtn);
     Icon::init(addBtn);
     Icon::init(editBtn);
     Icon::init(removeBtn);
     Icon::init(startBtn);
     Icon::init(stopBtn);
+    refreshBtn->setDefaultAction(refreshAction);
     addBtn->setDefaultAction(addAction);
     editBtn->setDefaultAction(editAction);
     removeBtn->setDefaultAction(removeAction);
@@ -61,8 +64,10 @@ DynamicPage::DynamicPage(MainWindow *p)
     view->addAction(startAction);
 
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
-    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
+    connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(toggle()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
+    connect(MPDConnection::self(), SIGNAL(dynamicUrl(const QString &)), this, SLOT(dynamicUrlChanged(const QString &)));
+    connect(refreshAction, SIGNAL(triggered()), Dynamic::self(), SLOT(refreshList()));
     connect(addAction, SIGNAL(triggered()), SLOT(add()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
     connect(removeAction, SIGNAL(triggered()), SLOT(remove()));
@@ -70,7 +75,15 @@ DynamicPage::DynamicPage(MainWindow *p)
     connect(stopAction, SIGNAL(triggered()), SLOT(stop()));
     connect(toggleAction, SIGNAL(triggered()), SLOT(toggle()));
     connect(Dynamic::self(), SIGNAL(running(bool)), SLOT(running(bool)));
+    connect(Dynamic::self(), SIGNAL(modelReset()), SLOT(controlActions()));
 
+    #ifdef Q_OS_WIN
+    infoMsg->setVisible(true);
+    setEnabled(false);
+    #else
+    infoMsg->setVisible(false);
+    refreshBtn->setVisible(false);
+    #endif
     stopAction->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());
     view->setTopText(i18n("Dynamic"));
@@ -86,18 +99,6 @@ DynamicPage::~DynamicPage()
 {
 }
 
-void DynamicPage::itemDoubleClicked(const QModelIndex &)
-{
-//     const QModelIndexList selected = view->selectedIndexes();
-//     if (1!=selected.size()) {
-//         return; //doubleclick should only have one selected item
-//     }
-//     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-//     if (MusicLibraryItem::Type_Song==item->itemType()) {
-//         addSelectionToPlaylist();
-//     }
-}
-
 void DynamicPage::searchItems()
 {
     QString text=view->searchText().trimmed();
@@ -109,11 +110,21 @@ void DynamicPage::searchItems()
 
 void DynamicPage::controlActions()
 {
-    QModelIndexList selected=view->selectedIndexes();
+    QModelIndexList selected=qobject_cast<Dynamic *>(sender()) ? QModelIndexList() : view->selectedIndexes();
 
     editAction->setEnabled(1==selected.count());
     startAction->setEnabled(1==selected.count());
     removeAction->setEnabled(selected.count());
+}
+
+void DynamicPage::dynamicUrlChanged(const QString &url)
+{
+    #ifdef Q_OS_WIN
+    infoMsg->setVisible(url.isEmpty());
+    setEnabled(!url.isEmpty());
+    #else
+    refreshBtn->setVisible(!url.isEmpty());
+    #endif
 }
 
 void DynamicPage::add()

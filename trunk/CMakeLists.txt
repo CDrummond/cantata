@@ -11,8 +11,8 @@ set(DEBIAN_PACKAGE_DESCRIPTION "Qt4/KDE4 Client for MPD")
 set(DEBIAN_PACKAGE_SECTION "kde4")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "8")
-set(CPACK_PACKAGE_VERSION_PATCH "3.1")
+set(CPACK_PACKAGE_VERSION_MINOR "9")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_PACKAGE_CONTACT "Craig Drummond <craig.p.drummond@gmail.com>")
 set(CANTATA_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
 set(CANTATA_VERSION_FULL "${CANTATA_VERSION}.${CPACK_PACKAGE_VERSION_PATCH}")
@@ -116,6 +116,11 @@ SET( CANTATA_SRCS
     mpd/mpdstats.cpp
     mpd/mpdstatus.cpp
     mpd/song.cpp
+    dynamic/dynamic.cpp
+    dynamic/dynamicpage.cpp
+    dynamic/dynamicproxymodel.cpp
+    dynamic/dynamicruledialog.cpp
+    dynamic/dynamicrulesdialog.cpp
     widgets/treeview.cpp
     widgets/fancytabwidget.cpp
     widgets/listview.cpp
@@ -177,6 +182,10 @@ SET( CANTATA_MOC_HDRS
     mpd/mpdconnection.h
     mpd/mpdstats.h
     mpd/mpdstatus.h
+    dynamic/dynamic.h
+    dynamic/dynamicpage.h
+    dynamic/dynamicruledialog.h
+    dynamic/dynamicrulesdialog.h
     widgets/fancytabwidget.h
     widgets/treeview.h
     widgets/listview.h
@@ -214,6 +223,9 @@ SET( CANTATA_UIS
     gui/playbacksettings.ui
     gui/serverplaybacksettings.ui
     gui/serversettings.ui
+    dynamic/dynamicpage.ui
+    dynamic/dynamicrule.ui
+    dynamic/dynamicrules.ui
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
     widgets/itemview.ui
@@ -252,29 +264,8 @@ if (TAGLIB_FOUND)
 endif (TAGLIB_FOUND)
 
 if (NOT WIN32)
-    SET( CANTATA_SRCS ${CANTATA_SRCS}
-        dbus/mpris.cpp
-        dbus/dockmanager.cpp
-        dynamic/dynamic.cpp
-        dynamic/dynamicpage.cpp
-        dynamic/dynamicproxymodel.cpp
-        dynamic/dynamicruledialog.cpp
-        dynamic/dynamicrulesdialog.cpp
-    )
-
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
-        dbus/mpris.h
-        dbus/dockmanager.h
-        dynamic/dynamic.h
-        dynamic/dynamicpage.h
-        dynamic/dynamicruledialog.h
-        dynamic/dynamicrulesdialog.h
-    )
-    SET( CANTATA_UIS ${CANTATA_UIS}
-        dynamic/dynamicpage.ui
-        dynamic/dynamicrule.ui
-        dynamic/dynamicrules.ui
-)
+    SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/dockmanager.cpp)
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/dockmanager.h)
 endif(NOT WIN32)
 
 SET( CANTATA_RCS cantata.qrc )
@@ -432,7 +423,7 @@ IF( ENABLE_KDE_SUPPORT )
         TARGET_LINK_LIBRARIES(cantata ${KDE4_KFILE_LIBS})
     endif (ENABLE_REMOTE_DEVICES)
     install( TARGETS cantata ${INSTALL_TARGETS_DEFAULT_ARGS} )
-    install( PROGRAMS dynamic/cantata-dynamic DESTINATION ${LIBEXEC_INSTALL_DIR})
+    install( PROGRAMS dynamic/cantata-dynamic DESTINATION bin)
     install( FILES cantataui.rc DESTINATION ${DATA_INSTALL_DIR}/cantata )
     install( FILES cantata.notifyrc DESTINATION ${DATA_INSTALL_DIR}/cantata )
 ELSE( ENABLE_KDE_SUPPORT )

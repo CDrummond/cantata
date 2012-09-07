@@ -68,9 +68,7 @@ public:
     bool useSystemTray();
     bool showPopups();
     bool stopOnExit();
-    #ifndef Q_OS_WIN
     bool stopDynamizerOnExit();
-    #endif
     bool smallPlaybackButtons();
     bool smallControlButtons();
     bool storeCoversInMpdDir();
@@ -125,9 +123,7 @@ public:
     void saveCurrentConnection(const QString &v);
     void saveShowPlaylist(bool v);
     void saveStopOnExit(bool v);
-    #ifndef Q_OS_WIN
     void saveStopDynamizerOnExit(bool v);
-    #endif
     void saveSmallPlaybackButtons(bool v);
     void saveSmallControlButtons(bool v);
     void savePlayQueueHeaderState(const QByteArray &v);

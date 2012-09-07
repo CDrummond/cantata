@@ -144,7 +144,9 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     connect(rulesList, SIGNAL(itemsSelected(bool)), SLOT(controlButtons()));
     connect(nameText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(aboutLabel, SIGNAL(leftClickedUrl()), this, SLOT(showAbout()));
+    connect(Dynamic::self(), SIGNAL(saved(bool)), SLOT(saved(bool)));
 
+    messageWidget->setVisible(false);
     model=new QStandardItemModel(this);
     proxy=new RulesSort(this);
     proxy->setSourceModel(model);
@@ -271,8 +273,22 @@ void DynamicRulesDialog::showAbout()
 
 }
 
+void DynamicRulesDialog::saved(bool s)
+{
+    if (s) {
+        accept();
+    } else {
+        messageWidget->setError(i18n("Failed to save %1").arg(nameText->text().trimmed()));
+        controls->setEnabled(true);
+    }
+}
+
 bool DynamicRulesDialog::save()
 {
+    if (!controls->isEnabled()) {
+        return false;
+    }
+
     QString name=nameText->text().trimmed();
 
     if (name.isEmpty()) {
@@ -300,10 +316,21 @@ bool DynamicRulesDialog::save()
             entry.rules.append(rule);
         }
     }
+
+
     bool saved=Dynamic::self()->save(entry);
 
-    if (saved && !origName.isEmpty() && entry.name!=origName) {
-        Dynamic::self()->del(origName);
+    if (Dynamic::self()->isRemote()) {
+        if (saved) {
+            messageWidget->setInformation(i18n("Saving %1").arg(name));
+            controls->setEnabled(false);
+            enableButton(Ok, false);
+        }
+        return false;
+    } else {
+        if (saved && !origName.isEmpty() && entry.name!=origName) {
+            Dynamic::self()->del(origName);
+        }
+        return saved;
     }
-    return saved;
 }

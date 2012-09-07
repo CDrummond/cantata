@@ -47,6 +47,7 @@ private:
     bool save();
 
 private Q_SLOTS:
+    void saved(bool s);
     void enableOkButton();
     void controlButtons();
     void add();

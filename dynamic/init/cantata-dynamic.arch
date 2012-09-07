@@ -3,7 +3,7 @@
 . /etc/rc.conf
 . /etc/rc.d/functions
 
-[[ -d /run/cantata-dynamic ]] || install -d -g cantata-dynamic -o cantata-dynamic /run/cantata-dynamic
+[[ -d /run/cantata-dynamic ]] || install -d -g mpd -o mpd /run/cantata-dynamic
 
 case "$1" in
         start)

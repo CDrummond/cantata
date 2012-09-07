@@ -151,6 +151,8 @@ struct MPDConnectionDetails {
     quint16 port;
     QString password;
     QString dir;
+    QString dynamicHost;
+    quint16 dynamicPort;
     bool dirReadable;
 };
 
@@ -276,6 +278,8 @@ Q_SIGNALS:
     void urlHandlers(const QStringList &handlers);
     void dirChanged();
     void prioritySet(const QList<quint32> &ids, quint8 priority);
+
+    void dynamicUrl(const QString &url);
 
 private Q_SLOTS:
     void idleDataReady();

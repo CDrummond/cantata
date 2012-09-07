@@ -99,10 +99,10 @@
 #if !defined Q_OS_WIN
 #include "mpris.h"
 #include "dockmanager.h"
-#include "dynamicpage.h"
-#include "dynamic.h"
 #include "cantataadaptor.h"
 #endif
+#include "dynamicpage.h"
+#include "dynamic.h"
 #include "messagewidget.h"
 #include "groupedview.h"
 #include "actionitemdelegate.h"
@@ -352,9 +352,7 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction = createAction("showalbumstab", i18n("Albums"), DEFAULT_ALBUM_ICON);
     foldersTabAction = createAction("showfolderstab", i18n("Folders"), "inode-directory");
     playlistsTabAction = createAction("showplayliststab", i18n("Playlists"), "view-media-playlist");
-    #if !defined Q_OS_WIN
     dynamicTabAction = createAction("showdynamictab", i18n("Dynamic"), "media-playlist-shuffle");
-    #endif
     lyricsTabAction = createAction("showlyricstab", i18n("Lyrics"), "view-media-lyrics");
     streamsTabAction = createAction("showstreamstab", i18n("Streams"), DEFAULT_STREAM_ICON);
     #ifdef ENABLE_WEBKIT
@@ -391,9 +389,7 @@ MainWindow::MainWindow(QWidget *parent)
     SET_SHORTCUT(albumsTabAction, Qt::AltModifier+nextKey(pageKey));
     SET_SHORTCUT(foldersTabAction, Qt::AltModifier+nextKey(pageKey));
     SET_SHORTCUT(playlistsTabAction, Qt::AltModifier+nextKey(pageKey));
-    #if !defined Q_OS_WIN
     SET_SHORTCUT(dynamicTabAction, Qt::AltModifier+nextKey(pageKey));
-    #endif
     SET_SHORTCUT(streamsTabAction, Qt::AltModifier+nextKey(pageKey));
     SET_SHORTCUT(lyricsTabAction, Qt::AltModifier+nextKey(pageKey));
     #ifdef ENABLE_WEBKIT
@@ -459,9 +455,7 @@ MainWindow::MainWindow(QWidget *parent)
     albumsPage = new AlbumsPage(this);
     folderPage = new FolderPage(this);
     playlistsPage = new PlaylistsPage(this);
-    #if !defined Q_OS_WIN
     dynamicPage = new DynamicPage(this);
-    #endif
     streamsPage = new StreamsPage(this);
     lyricsPage = new LyricsPage(this);
     #ifdef ENABLE_WEBKIT
@@ -502,9 +496,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(albumsPage, TAB_ACTION(albumsTabAction), !hiddenPages.contains(albumsPage->metaObject()->className()));
     tabWidget->AddTab(folderPage, TAB_ACTION(foldersTabAction), !hiddenPages.contains(folderPage->metaObject()->className()));
     tabWidget->AddTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
-    #if !defined Q_OS_WIN
     tabWidget->AddTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
-    #endif
     tabWidget->AddTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
     tabWidget->AddTab(lyricsPage, TAB_ACTION(lyricsTabAction), !hiddenPages.contains(lyricsPage->metaObject()->className()));
     #ifdef ENABLE_WEBKIT
@@ -728,10 +720,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(error(const QString &, bool)), SLOT(showError(const QString &, bool)));
     connect(MPDConnection::self(), SIGNAL(info(const QString &)), SLOT(showInformation(const QString &)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
-    #if !defined Q_OS_WIN
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
-    #endif
     connect(refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
     connect(refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
@@ -780,9 +770,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(albumsTabAction, SIGNAL(triggered(bool)), this, SLOT(showAlbumsTab()));
     connect(foldersTabAction, SIGNAL(triggered(bool)), this, SLOT(showFoldersTab()));
     connect(playlistsTabAction, SIGNAL(triggered(bool)), this, SLOT(showPlaylistsTab()));
-    #if !defined Q_OS_WIN
     connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
-    #endif
     connect(lyricsTabAction, SIGNAL(triggered(bool)), this, SLOT(showLyricsTab()));
     connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
     #ifdef ENABLE_WEBKIT
@@ -921,11 +909,9 @@ MainWindow::~MainWindow()
     Settings::self()->saveForceSingleClick(ItemView::getForceSingleClick());
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
-    #if !defined Q_OS_WIN
     if (Settings::self()->stopDynamizerOnExit() || Settings::self()->stopOnExit()) {
         Dynamic::self()->stop();
     }
-    #endif
     if (Settings::self()->stopOnExit() || (fadeWhenStop() && StopState_Stopping==stopState)) {
         emit stop();
         Utils::sleep();
@@ -1088,6 +1074,8 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             connectedState=CS_Connected;
             addWithPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
             setPriorityAction->setVisible(addWithPriorityAction->isVisible());
+        } else {
+            updateWindowTitle();
         }
     } else {
         libraryPage->clear();
@@ -1159,11 +1147,9 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         playQueueModel.clear();
         lyricsPage->text->clear();
         serverInfoPage->clear();
-        #if !defined Q_OS_WIN
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
             Dynamic::self()->stop();
         }
-        #endif
         showInformation(i18n("Connecting to %1").arg(details.description()));
         outputsAction->setVisible(false);
         connectedState=CS_Disconnected;
@@ -1245,9 +1231,7 @@ void MainWindow::checkMpdDir()
     case PAGE_ALBUMS:    albumsPage->controlActions();     break;
     case PAGE_FOLDERS:   folderPage->controlActions();     break;
     case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
-    #if !defined Q_OS_WIN
     case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
-    #endif
     case PAGE_STREAMS:   streamsPage->controlActions();    break;
     case PAGE_LYRICS:                                      break;
     #ifdef ENABLE_WEBKIT
@@ -2476,11 +2460,9 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_PLAYLISTS:
         playlistsPage->controlActions();
         break;
-    #if !defined Q_OS_WIN
     case PAGE_DYNAMIC:
         dynamicPage->controlActions();
         break;
-    #endif
     case PAGE_STREAMS:
         if (!(loaded&TAB_STREAMS)) {
             loaded|=TAB_STREAMS;
@@ -2590,14 +2572,12 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
             playlistsPage->focusSearch();
         }
     }
-    #if !defined Q_OS_WIN
     else if (QLatin1String("dynamic")==p) {
         showTab(MainWindow::PAGE_DYNAMIC);
         if (focusSearch) {
             dynamicPage->focusSearch();
         }
     }
-    #endif
     else if (QLatin1String("streams")==p) {
         showTab(MainWindow::PAGE_STREAMS);
         if (focusSearch) {
@@ -2635,12 +2615,10 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
     }
 }
 
-#if !defined Q_OS_WIN
 void MainWindow::dynamicStatus(const QString &message)
 {
     Dynamic::self()->helperMessage(message);
 }
-#endif
 
 void MainWindow::showTab(int page)
 {
@@ -2679,11 +2657,9 @@ void MainWindow::focusSearch()
     } else if (playlistsPage->isVisible()) {
         playlistsPage->focusSearch();
     }
-    #if !defined Q_OS_WIN
     else if (dynamicPage->isVisible()) {
         dynamicPage->focusSearch();
     }
-    #endif
     else if (streamsPage->isVisible()) {
         streamsPage->focusSearch();
     }

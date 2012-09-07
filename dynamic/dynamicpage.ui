@@ -17,10 +17,23 @@
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="6">
+   <item row="0" column="0" colspan="7">
+    <widget class="QLabel" name="infoMsg">
+     <property name="text">
+      <string>No dynamizer host defined in server settings. Dynamic functionality disabled.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="7">
     <widget class="ItemView" name="view"/>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
+    <widget class="QToolButton" name="refreshBtn"/>
+   </item>
+   <item row="2" column="1">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -33,19 +46,19 @@
      </property>
     </spacer>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="2">
     <widget class="QToolButton" name="addBtn"/>
    </item>
-   <item row="1" column="2">
+   <item row="2" column="3">
     <widget class="QToolButton" name="editBtn"/>
    </item>
-   <item row="1" column="3">
+   <item row="2" column="4">
     <widget class="QToolButton" name="removeBtn"/>
    </item>
-   <item row="1" column="4">
+   <item row="2" column="5">
     <widget class="QToolButton" name="startBtn"/>
    </item>
-   <item row="1" column="5">
+   <item row="2" column="6">
     <widget class="QToolButton" name="stopBtn"/>
    </item>
   </layout>

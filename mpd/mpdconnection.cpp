@@ -333,11 +333,14 @@ void MPDConnection::reconnect()
 void MPDConnection::setDetails(const MPDConnectionDetails &det)
 {
     bool changedDir=det.dir!=details.dir;
+    bool diffName=det.name!=details.name;
     bool diffDetails=det!=details;
+    bool diffDynamicUrl=det.dynamicHost!=details.dynamicHost || det.dynamicPort!=details.dynamicPort;
+
+    details=det;
     if (diffDetails || State_Connected!=state) {
-        DBUG << "setDetails" << det.hostname << det.port << (det.password.isEmpty() ? false : true);
+        DBUG << "setDetails" << details.hostname << details.port << (details.password.isEmpty() ? false : true);
         disconnectFromMPD();
-        details=det;
         DBUG << "call connectToMPD";
         switch (connectToMPD()) {
         case Success:
@@ -355,10 +358,17 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
             emit error(i18n("Connection to %1 failed - incorrect password").arg(details.description()), true);
             break;
         }
+    } else if (diffName) {
+         emit stateChanged(true);
+    }
+    if (diffDynamicUrl) {
+        if (details.dynamicHost.isEmpty()) {
+            dynamicUrl(QString());
+        } else {
+            emit dynamicUrl("http://"+details.dynamicHost+":"+QString::number(details.dynamicPort));
+        }
     }
     if (changedDir) {
-        details.dir=det.dir;
-        details.dirReadable=det.dirReadable;
         emit dirChanged();
     }
 }

@@ -75,7 +75,8 @@ DynamicPage::DynamicPage(MainWindow *p)
     connect(stopAction, SIGNAL(triggered()), SLOT(stop()));
     connect(toggleAction, SIGNAL(triggered()), SLOT(toggle()));
     connect(Dynamic::self(), SIGNAL(running(bool)), SLOT(running(bool)));
-    connect(Dynamic::self(), SIGNAL(modelReset()), SLOT(controlActions()));
+    connect(Dynamic::self(), SIGNAL(loadingList()), view, SLOT(showSpinner()));
+    connect(Dynamic::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
     #ifdef Q_OS_WIN
     infoMsg->setVisible(true);

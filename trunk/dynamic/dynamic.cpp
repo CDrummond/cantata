@@ -137,6 +137,8 @@ QModelIndex Dynamic::index(int row, int column, const QModelIndex &parent) const
     return createIndex(row, column);
 }
 
+#define IS_ACTIVE(E) !currentEntry.isEmpty() && (E)==currentEntry && (!isRemote() || QLatin1String("IDLE")!=lastState)
+
 QVariant Dynamic::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.parent().isValid() || index.row()>=entryList.count()) {
@@ -148,7 +150,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         return entryList.at(index.row()).name;
     case Qt::DecorationRole:
-        return !currentEntry.isEmpty() && entryList.at(index.row()).name==currentEntry ? QIcon::fromTheme("media-playback-start") : QIcon::fromTheme("media-playlist-shuffle");
+        return IS_ACTIVE(entryList.at(index.row()).name) ? QIcon::fromTheme("media-playback-start") : QIcon::fromTheme("media-playlist-shuffle");
     case ItemView::Role_SubText: {
         #ifdef ENABLE_KDE_SUPPORT
         return i18np("1 Rule", "%1 Rules", entryList.at(index.row()).rules.count());
@@ -157,7 +159,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         #endif
     }
     case ItemView::Role_ToggleIconName:
-        return !currentEntry.isEmpty() && entryList.at(index.row()).name==currentEntry ? "process-stop" : "media-playback-start";
+        return IS_ACTIVE(entryList.at(index.row()).name) ? "process-stop" : "media-playback-start";
     default:
         return QVariant();
     }
@@ -640,12 +642,30 @@ NetworkAccessManager * Dynamic::network()
 void Dynamic::sendCommand(const QString &cmd, const QStringList &args)
 {
     if (currentCommand==constStatusCmd) {
+        if (cmd==constStatusCmd) {
+            return;
+        }
         currentCommand.clear();
         currentArgs.clear();
+        if (currentJob) {
+            disconnect(currentJob, SIGNAL(finished()), this, SLOT(jobFinished()));
+        }
     }
     if (!currentCommand.isEmpty() || !currentArgs.isEmpty()) {
         if (cmd!=constStatusCmd) {
-            emit error(i18n("Awating response for previous command."));
+            QString cmdStr=i18n("Uknown");
+            if (constListCmd==cmd) {
+                cmdStr=i18n("Loading list of rules");
+            } else if (constSaveCmd==cmd) {
+                cmdStr=i18n("Saving rule");
+            } else if (constDeleteCmd==cmd) {
+                cmdStr=i18n("Deleting rule");
+            } else if (constSetActiveCmd==cmd) {
+                cmdStr=i18n("Setting active rule");
+            } else if (constControlCmd==cmd) {
+                cmdStr=i18n("Stopping dynamizer");
+            }
+            emit error(i18n("Awaiting response for previous command. (%1)").arg(cmdStr));
         }
         return;
     }
@@ -675,6 +695,9 @@ void Dynamic::sendCommand(const QString &cmd, const QStringList &args)
         } else {
             currentJob=network()->get(QNetworkRequest(url));
         }
+    }
+    if (constListCmd==cmd) {
+        emit loadingList();
     }
     connect(currentJob, SIGNAL(finished()), this, SLOT(jobFinished()));
 }
@@ -730,7 +753,7 @@ void Dynamic::checkHelper()
 void Dynamic::checkRemoteHelper()
 {
     if (isRemote()) {
-        sendCommand("status");
+        sendCommand(constStatusCmd);
     }
 }
 
@@ -741,6 +764,7 @@ void Dynamic::jobFinished()
         return;
     }
 
+    currentJob=0;
     reply->deleteLater();
 
     int httpResponse=reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -761,6 +785,7 @@ void Dynamic::jobFinished()
         } else {
             emit error(i18n("Failed to retrieve list of dynamic rules. (%1)").arg(response));
         }
+        emit loadedList();
     } else if (isStatus) {
         if (cmdOk) {
             parseStatus(response);
@@ -809,7 +834,7 @@ void Dynamic::jobFinished()
     currentArgs.clear();
 
     if (cmdOk && !isStatus) {
-        sendCommand("status");
+        sendCommand(constStatusCmd);
     }
 }
 

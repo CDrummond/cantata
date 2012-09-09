@@ -61,7 +61,7 @@ public:
 
     Dynamic();
 
-    bool isRemote() { return !dynamicUrl.isEmpty(); }
+    bool isRemote() const { return !dynamicUrl.isEmpty(); }
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex&) const { return 1; }
@@ -101,6 +101,8 @@ Q_SIGNALS:
 
     // These are as the result of asynchronous HTTP calls
     void saved(bool s);
+    void loadingList();
+    void loadedList();
 
 public Q_SLOTS:
     void refreshList();

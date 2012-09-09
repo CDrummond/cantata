@@ -1099,6 +1099,13 @@ sub httpServer() {
                 $response = join('', &listRules($queryItems{withDetails}));
             } elsif($mpdDir ne "" && ($request{URL}=~m/.jpg$/ || $request{URL}=~m/.png$/)) {
                 $response = &getCoverFile($request{URL});
+                if (! ($response =~ m/^ERROR/)) {
+                    if ($request{URL}=~m/.jpg$/) {
+                        $responseType="image/jpeg";
+                    } else {
+                        $responseType="image/png";
+                    }
+                }
             } elsif ($request{URL} eq '/' && 1==$httpControlPage) {
                 $responseType="text/html";
                 $response = &buildControlPage();

@@ -1411,6 +1411,7 @@ void MainWindow::updateSettings()
         refresh();
     } else if (diffLibCovers || diffLibYear || diffLibArtistImages || diffAlCovers) {
         libraryPage->clear();
+        albumsPage->goTop();
         libraryPage->refresh();
     }
 
@@ -1884,6 +1885,7 @@ void MainWindow::updateStats()
             folderPage->clear();
             playlistsPage->clear();
         }
+        albumsPage->goTop();
         libraryPage->refresh();
         folderPage->refresh();
         playlistsPage->refresh();
@@ -2441,6 +2443,7 @@ void MainWindow::currentTabChanged(int index)
     case PAGE_ALBUMS: // Albums shares refresh with library...
         if (!(loaded&TAB_LIBRARY)) {
             loaded|=TAB_LIBRARY;
+            albumsPage->goTop();
             libraryPage->refresh();
         }
         if (PAGE_LIBRARY==index) {

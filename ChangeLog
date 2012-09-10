@@ -8,6 +8,7 @@
 4. When sorting tracks, sort on duration after sorting on name, title, and
    genre. This way of tracks do not have a takc number, disc, year, etc, then
    we will sort on the name/title before duraiton.
+5. When refreshing DB, make sure Albums view is at top level.
 
 0.8.3.1
 -------

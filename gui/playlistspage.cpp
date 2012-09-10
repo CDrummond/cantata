@@ -114,6 +114,7 @@ void PlaylistsPage::updateRows()
 
 void PlaylistsPage::refresh()
 {
+    view->setLevel(0);
     PlaylistsModel::self()->getPlaylists();
 }
 

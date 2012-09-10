@@ -89,7 +89,6 @@ SET( CANTATA_SRCS
     gui/librarypage.cpp
     gui/albumspage.cpp
     gui/folderpage.cpp
-    gui/infopage.cpp
     gui/serverinfopage.cpp
     gui/playlistspage.cpp
     models/musiclibraryitemroot.cpp
@@ -159,7 +158,6 @@ SET( CANTATA_MOC_HDRS
     gui/albumspage.h
     gui/playlistspage.h
     gui/streamspage.h
-    gui/infopage.h
     gui/serverinfopage.h
     gui/streamdialog.h
     gui/streamcategorydialog.h
@@ -465,7 +463,7 @@ ENDIF( ENABLE_KDE_SUPPORT )
 
 ADD_SUBDIRECTORY( icons )
 
-TARGET_LINK_LIBRARIES(cantata ${QT_QTWEBKIT_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTDBUS_LIBRARY})
+TARGET_LINK_LIBRARIES(cantata ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTDBUS_LIBRARY})
 include_directories( ${QT_INCLUDES})
 
 if (TAGLIB_FOUND)

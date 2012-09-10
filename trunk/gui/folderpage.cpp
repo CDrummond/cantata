@@ -117,6 +117,7 @@ void FolderPage::setEnabled(bool e)
 void FolderPage::refresh()
 {
     if (DirViewModel::self()->isEnabled()) {
+        view->setLevel(0);
         view->showSpinner();
         emit loadFolders();
     }

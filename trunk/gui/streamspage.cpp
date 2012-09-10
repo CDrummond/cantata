@@ -105,6 +105,7 @@ void StreamsPage::setEnabled(bool e)
 void StreamsPage::refresh()
 {
     if (enabled) {
+        view->setLevel(0);
         model.reload();
         exportAction->setEnabled(model.rowCount()>0);
     }

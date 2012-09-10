@@ -5,6 +5,9 @@
 2. Allow use of 'dynamic' playlists in windows builds, but only for server mode
    cantata-dynamic.
 3. Add a gui setting to control the enforcement of single-click.
+4. When sorting tracks, sort on duration after sorting on name, title, and
+   genre. This way of tracks do not have a takc number, disc, year, etc, then
+   we will sort on the name/title before duraiton.
 
 0.8.3.1
 -------

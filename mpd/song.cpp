@@ -129,9 +129,6 @@ int Song::compareTo(const Song &o) const
     if (year!=o.year) {
         return year<o.year ? -1 : 1;
     }
-    if (time!=o.time) {
-        return time<o.time ? -1 : 1;
-    }
     compare=title.localeAwareCompare(o.title);
     if (0!=compare) {
         return compare;
@@ -143,6 +140,9 @@ int Song::compareTo(const Song &o) const
     compare=genre.compare(o.genre);
     if (0!=compare) {
         return compare;
+    }
+    if (time!=o.time) {
+        return time<o.time ? -1 : 1;
     }
     return file.compare(o.file);
 }

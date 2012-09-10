@@ -126,6 +126,7 @@ void InterfaceSettings::load()
     playListsStyleChanged();
     playQueueGroupedChanged();
     lyricsBgnd->setChecked(Settings::self()->lyricsBgnd());
+    forceSingleClick->setChecked(Settings::self()->forceSingleClick());
 }
 
 void InterfaceSettings::save()
@@ -154,6 +155,7 @@ void InterfaceSettings::save()
     Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
     Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
     Settings::self()->saveLyricsBgnd(lyricsBgnd->isChecked());
+    Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
 }
 
 void InterfaceSettings::libraryViewChanged()

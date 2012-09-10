@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>438</width>
+    <width>435</width>
     <height>292</height>
    </rect>
   </property>
@@ -380,84 +380,137 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
       <attribute name="title">
        <string>General</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_4">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::ExpandingFieldsGrow</enum>
-       </property>
-       <item row="0" column="0">
-        <widget class="BuddyLabel" name="label_7">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QFormLayout" name="formLayout_4">
+         <item row="0" column="0">
+          <widget class="BuddyLabel" name="label_7">
+           <property name="text">
+            <string>Group single track albums:</string>
+           </property>
+           <property name="buddy">
+            <cstring>groupSingle</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="groupSingle">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="BuddyLabel" name="groupMultipleLabel">
+           <property name="text">
+            <string>Multiple artist albums:</string>
+           </property>
+           <property name="buddy">
+            <cstring>groupMultiple</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="groupMultiple"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="BuddyLabel" name="showDeleteActionLabel">
+           <property name="text">
+            <string>Show delete action in context menus:</string>
+           </property>
+           <property name="buddy">
+            <cstring>showDeleteAction</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="showDeleteAction">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="BuddyLabel" name="storeCoversInMpdDirLabel">
+           <property name="text">
+            <string>Save downloaded covers in music folder:</string>
+           </property>
+           <property name="buddy">
+            <cstring>storeCoversInMpdDir</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QCheckBox" name="storeCoversInMpdDir"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="BuddyLabel" name="label_4">
+           <property name="text">
+            <string>Save downloaded lyrics in music folder:</string>
+           </property>
+           <property name="buddy">
+            <cstring>storeLyricsInMpdDir</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QCheckBox" name="storeLyricsInMpdDir">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="BuddyLabel" name="forceSingleClick_label">
+           <property name="text">
+            <string>Enforce single-click activation of items:</string>
+           </property>
+           <property name="buddy">
+            <cstring>forceSingleClick</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QCheckBox" name="forceSingleClick">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
-          <string>Group single track albums:</string>
+          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Changing the &quot;Enforce single-click activation of items&quot; setting will require a re-start of Cantata.&lt;/i&gt;</string>
          </property>
-         <property name="buddy">
-          <cstring>groupSingle</cstring>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QCheckBox" name="groupSingle">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="BuddyLabel" name="groupMultipleLabel">
-         <property name="text">
-          <string>Multiple artist albums:</string>
-         </property>
-         <property name="buddy">
-          <cstring>groupMultiple</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="groupMultiple"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="BuddyLabel" name="showDeleteActionLabel">
-         <property name="text">
-          <string>Show delete action in context menus:</string>
-         </property>
-         <property name="buddy">
-          <cstring>showDeleteAction</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QCheckBox" name="showDeleteAction">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="BuddyLabel" name="storeCoversInMpdDirLabel">
-         <property name="text">
-          <string>Save downloaded covers in music folder:</string>
-         </property>
-         <property name="buddy">
-          <cstring>storeCoversInMpdDir</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QCheckBox" name="storeCoversInMpdDir"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="BuddyLabel" name="label_4">
-         <property name="text">
-          <string>Save downloaded lyrics in music folder:</string>
-         </property>
-         <property name="buddy">
-          <cstring>storeLyricsInMpdDir</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QCheckBox" name="storeLyricsInMpdDir">
-         <property name="text">
-          <string/>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -498,6 +551,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
   <tabstop>showDeleteAction</tabstop>
   <tabstop>storeCoversInMpdDir</tabstop>
   <tabstop>storeLyricsInMpdDir</tabstop>
+  <tabstop>forceSingleClick</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -51,6 +51,7 @@ public:
 
     static const QString constRuleKey;
     static const QString constArtistKey;
+    static const QString constSimilarArtistsKey;
     static const QString constAlbumArtistKey;
     static const QString constAlbumKey;
     static const QString constTitleKey;

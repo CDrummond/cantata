@@ -384,6 +384,8 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
 
             if (Song::Playlist==currentSong.type) {
                 if (songItem && Utils::getDir(songItem->file())==Utils::getDir(currentSong.file)) {
+                    currentSong.albumartist=currentSong.artist=artistItem->data();
+                    currentSong.album=albumItem->data();
                     songItem = new MusicLibraryItemSong(currentSong, albumItem);
                     albumItem->append(songItem);
                 }

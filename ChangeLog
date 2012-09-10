@@ -9,6 +9,7 @@
    genre. This way of tracks do not have a takc number, disc, year, etc, then
    we will sort on the name/title before duraiton.
 5. When refreshing DB, make sure Albums view is at top level.
+6. Set Artist, AlbumArtist, and Album of cue files to that of assigned album.
 
 0.8.3.1
 -------

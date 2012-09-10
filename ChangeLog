@@ -4,6 +4,7 @@
    list rules, update rules, and start/stop the dynamic mode.
 2. Allow use of 'dynamic' playlists in windows builds, but only for server mode
    cantata-dynamic.
+3. Add a gui setting to control the enforcement of single-click.
 
 0.8.3.1
 -------

@@ -161,7 +161,7 @@ $lastArtistSearch="";
 
 # Query LastFM for artists similar to supplied artist
 sub querySimilarArtists() {
-    my $artist=shift;
+    my $artist=uri_escape(shift);
     if ($artist ne $lastArtistSearch) {
         @artistSearchResults=();
 #         my $text = get 'http://ws.audioscrobbler.com/1.0/artist/'.$artist.'/similar.txt';
@@ -174,8 +174,8 @@ sub querySimilarArtists() {
                 @parts = split(/,/, $line);
                 if (3==scalar(@parts)) {
                     my $artist=$parts[2];
-                    $artist =~ s/&amp;/&/;
-                    $artist =~ s/\n//;
+                    $artist =~ s/&amp;/&/g;
+                    $artist =~ s/\n//g;
                     $artistSearchResults[$artistNum]=$artist;
                     $artistNum++;
                 }
@@ -363,7 +363,7 @@ sub readRules() {
                             }
                         } elsif ($key eq "Artist" || $key eq "Album" || $key eq "AlbumArtist" || $key eq "Title" || $key eq "Genre") {
                             $currentRule="${currentRule} ${key} \"${val}\"";
-                        } elsif ($key eq "SimilarArtist") {
+                        } elsif ($key eq "SimilarArtists") {
                             &querySimilarArtists($val); # Perform a last.fm query to find similar artists
                             @similarArtists=@artistSearchResults; # Save results of query
                             $similarArtists[scalar(@similarArtists)]=$val; # Add ourselves!!!
@@ -646,7 +646,10 @@ sub populatePlayQueue() {
                     while ($playQueueLength < $PLAY_QUEUE_DESIRED_LENGTH) {
                         my $pos=int(rand($numMpdSongs));
                         if ($failues > 100 || &canAdd(${mpdSongs[$pos]}, $numMpdSongs)) {
-                            if (&sendCommand("add \"${mpdSongs[$pos]}\"") ne '') {
+                            my $file=${mpdSongs[$pos]};
+                            $file =~ s/\\/\\\\/g;
+                            $file =~ s/\"/\\\"/g;
+                            if (&sendCommand("add \"${file}\"") ne '') {
                                 &storeSong(${mpdSongs[$pos]});
                                 $playQueueLength++;
                                 $failues=0;
@@ -853,7 +856,7 @@ sub determineActiveRules() {
     local $fileName="";
     if (-f $activeFile && -l $activeFile) {
         $fileName=basename abs_path($activeFile);
-        $fileName =~ s/.rules//;
+        $fileName =~ s/.rules//g;
     }
     return $fileName;
 }
@@ -884,7 +887,7 @@ sub saveRulesToFile() {
 
 sub deleteRules() {
     my $name=uri_unescape(shift);
-    $name =~ s/\///;
+    $name =~ s/\///g;
     my $active=&determineActiveRules();
     my $rulesName=$name;
     $rulesName="${filesDir}/${rulesName}.rules";
@@ -936,8 +939,6 @@ sub setActiveRules() {
         system("ln -s \"${rulesName}\" \"${activeFile}\"");
         if (0!=$?) {
             return "ERROR: Failed to create 'rules' symlink";
-        } else {
-            print "ACTIVE SET TO ${name}\n";
         }
         return "OK";
     } else {
@@ -1048,7 +1049,7 @@ sub httpServer() {
     my $server = new IO::Socket::INET(Proto => 'tcp', LocalPort => $httpPort, Listen => SOMAXCONN, Reuse => 1);
     $server or die "ERROR: Unable to create HTTP socket (${httpPort}): $!";
 
-    print "Staring HTTP server on ${httpPort}\n";
+    print "Starting HTTP server on ${httpPort}\n";
     while (my $client = $server->accept()) {
         $client->autoflush(1);
         my $prevStatusTime=$currentStatusTime;

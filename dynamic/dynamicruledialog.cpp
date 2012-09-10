@@ -40,6 +40,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     setCaption(i18n("Dynamic Rule"));
 
     connect(artistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
+    connect(similarArtistsText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumArtistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(titleText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
@@ -57,6 +58,9 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     strings.sort();
     artistText->clear();
     artistText->insertItems(0, strings);
+
+    similarArtistsText->clear();
+    similarArtistsText->insertItems(0, strings);
 
     strings=albumArtists.toList();
     strings.sort();
@@ -85,6 +89,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
 {
     typeCombo->setCurrentIndex(QLatin1String("true")==rule[Dynamic::constExcludeKey] ? 1 : 0);
     artistText->setText(rule[Dynamic::constArtistKey]);
+    similarArtistsText->setText(rule[Dynamic::constSimilarArtistsKey]);
     albumArtistText->setText(rule[Dynamic::constAlbumArtistKey]);
     albumText->setText(rule[Dynamic::constAlbumKey]);
     titleText->setText(rule[Dynamic::constTitleKey]);
@@ -130,6 +135,9 @@ Dynamic::Rule DynamicRuleDialog::rule() const
     if (!artist().isEmpty()) {
         r.insert(Dynamic::constArtistKey, artist());
     }
+    if (!similarArtists().isEmpty()) {
+        r.insert(Dynamic::constSimilarArtistsKey, similarArtists());
+    }
     if (!albumArtist().isEmpty()) {
         r.insert(Dynamic::constAlbumArtistKey, albumArtist());
     }
@@ -171,6 +179,7 @@ void DynamicRuleDialog::enableOkButton()
     bool haveFrom=dateFrom>=constMinDate && dateFrom<=constMaxDate;
     bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
     bool enable=(!haveFrom || !haveTo || haveTo>=haveFrom) &&
-                (haveFrom || haveTo || !artist().isEmpty() || !albumArtist().isEmpty() || !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
+                (haveFrom || haveTo || !artist().isEmpty() || !similarArtists().isEmpty() || !albumArtist().isEmpty() ||
+                 !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
     enableButton(Ok, enable);
 }

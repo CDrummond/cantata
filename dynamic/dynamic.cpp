@@ -87,6 +87,7 @@ Dynamic * Dynamic::self()
 
 const QString Dynamic::constRuleKey=QLatin1String("Rule");
 const QString Dynamic::constArtistKey=QLatin1String("Artist");
+const QString Dynamic::constSimilarArtistsKey=QLatin1String("SimilarArtists");
 const QString Dynamic::constAlbumArtistKey=QLatin1String("AlbumArtist");
 const QString Dynamic::constAlbumKey=QLatin1String("Album");
 const QString Dynamic::constTitleKey=QLatin1String("Title");
@@ -456,7 +457,7 @@ void Dynamic::loadLocal()
         foreach (const QString &rf, rulesFiles) {
             QFile f(dirName+rf);
             if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
-                QStringList keys=QStringList() << constArtistKey << constAlbumArtistKey << constDateKey << constExactKey
+                QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey << constExactKey
                                                << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
 
                 Entry e;
@@ -507,7 +508,7 @@ void Dynamic::parseRemote(const QString &response)
     beginResetModel();
     entryList.clear();
     currentEntry=QString();
-    QStringList keys=QStringList() << constArtistKey << constAlbumArtistKey << constDateKey << constExactKey
+    QStringList keys=QStringList() << constArtistKey << constSimilarArtistsKey << constAlbumArtistKey << constDateKey << constExactKey
                                    << constAlbumKey << constTitleKey << constGenreKey << constExcludeKey;
     QStringList list=response.split("\n");
     Entry e;

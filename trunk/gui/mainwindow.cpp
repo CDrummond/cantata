@@ -35,7 +35,7 @@
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kdeversion.h>
-#if KDE_IS_VERSION(4, 9, 0)
+#if KDE_IS_VERSION(4, 9, 0) && defined TAGLIB_FOUND
 #define USE_SOLID_FOR_MTAB_CHANGE_MONITOR
 #endif
 #include "mediadevicecache.h"

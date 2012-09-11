@@ -505,7 +505,7 @@ QString MusicLibraryItemRoot::songArtist(const Song &s)
         return s.artist;
     }
 
-    if (Song::Standard==s.type) {
+    if (Song::Standard==s.type || (Song::Playlist==s.type && !s.albumArtist().isEmpty())) {
         return s.albumArtist();
     }
     return i18n("Various Artists");

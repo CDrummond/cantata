@@ -46,6 +46,7 @@
 #include <QtGui/QSplitter>
 #include <QtGui/QStackedLayout>
 #include <QtGui/QStyleOptionTabV3>
+#include <QtGui/QStyleOptionViewItemV4>
 #include <QtGui/QToolButton>
 #include <QtGui/QToolTip>
 #include <QtGui/QVBoxLayout>
@@ -61,30 +62,46 @@ static inline Qt::TextElideMode elideMode()
     return Qt::LeftToRight==QApplication::layoutDirection() ? Qt::ElideRight : Qt::ElideLeft;
 }
 
-static inline bool isGtkStyle()
+bool FancyTabWidget::isGtkStyle()
 {
     return QApplication::style()->inherits("QGtkStyle");
 }
 
-static void drawGtkSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double fader)
+void FancyTabWidget::drawGtkSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity)
 {
-    static QCache<QString, QImage> cache(30000);
+    static const int constMaxDimension=32;
+    static QCache<QString, QPixmap> cache(30000);
 
-    QString key=QString::number(opt.rect.width())+QChar(':')+QString::number(opt.rect.height())+QChar(':');
-    QImage *img=cache.object(key);
+    int width=qMin(constMaxDimension, opt.rect.width());
+    QString key=QString::number(width)+QChar(':')+QString::number(opt.rect.height());
+    QPixmap *pix=cache.object(key);
 
-    if (!img) {
-        img=new QImage(opt.rect.width(), opt.rect.height(), QImage::Format_RGB32);
+    if (!pix) {
+        pix=new QPixmap(opt.rect.width(), opt.rect.height());
         QStyleOptionViewItemV4 styleOpt(opt);
-        QPainter p(img);
-        styleOpt.rect=QRect(0, 0, styleOpt.rect.width(), styleOpt.rect.height());
+        pix->fill(Qt::transparent);
+        QPainter p(pix);
+        styleOpt.state=opt.state;
+        styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
+        styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled|QStyle::State_Active;
+        styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+        styleOpt.rect=QRect(0, 0, opt.rect.width(), opt.rect.height());
         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, &p, 0);
         p.end();
-        cache.insert(key, img, img->width()*img->height());
+        cache.insert(key, pix, pix->width()*pix->height());
     }
     double opacityB4=painter->opacity();
-    painter->setOpacity(fader/150.0);
-    painter->drawImage(opt.rect, *img);
+    painter->setOpacity(opacity);
+    if (opt.rect.width()>pix->width()) {
+        int half=qMin(opt.rect.width()>>1, pix->width()>>1);
+        painter->drawPixmap(opt.rect.x(), opt.rect.y(), pix->copy(0, 0, half, pix->height()));
+        if ((half*2)!=opt.rect.width()) {
+            painter->drawTiledPixmap(opt.rect.x()+half, opt.rect.y(), (opt.rect.width()-(2*half)), opt.rect.height(), pix->copy(half-1, 0, 1, pix->height()));
+        }
+        painter->drawPixmap((opt.rect.x()+opt.rect.width()-1)-half, opt.rect.y(), pix->copy(half-1, 0, half, pix->height()));
+    } else {
+        painter->drawPixmap(opt.rect, *pix);
+    }
     painter->setOpacity(opacityB4);
 }
 
@@ -248,8 +265,8 @@ void FancyTabProxyStyle::drawControl(
     }
 
     if (drawBgnd) {
-        if (!selected && isGtkStyle()) {
-            drawGtkSelection(styleOpt, p, fader*1.0);
+        if (!selected && FancyTabWidget::isGtkStyle()) {
+            FancyTabWidget::drawGtkSelection(styleOpt, p, (fader*1.0)/150.0);
         } else {
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
         }
@@ -418,7 +435,7 @@ void FancyTabBar::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
     QPainter p(this);
-    bool gtkStyle=isGtkStyle();
+    bool gtkStyle=FancyTabWidget::isGtkStyle();
 
     for (int i = 0; i < count(); ++i)
         if (i != currentIndex())
@@ -546,7 +563,7 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
     }
     if (drawBgnd) {
         if (!selected && gtkStyle) {
-            drawGtkSelection(styleOpt, painter, m_tabs[tabIndex]->fader());
+            FancyTabWidget::drawGtkSelection(styleOpt, painter, m_tabs[tabIndex]->fader()/150.0);
         } else {
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
         }

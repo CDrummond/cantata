@@ -30,6 +30,7 @@
 #include "localize.h"
 #include "icon.h"
 #include "config.h"
+#include "fancytabwidget.h"
 #include <QtGui/QToolButton>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionViewItem>
@@ -80,6 +81,28 @@ bool EscapeKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
             act->trigger();
         }
         return true;
+    }
+    return QObject::eventFilter(obj, event);
+}
+
+MouseEventHandler::MouseEventHandler(QAbstractItemView *v)
+    : QObject(v)
+    , view(v)
+{
+}
+
+// HACK time. For some reason, IconView is not always re-drawn when mouse leaves the view.
+// We sometimes get an item that is left in the mouse-over state. So, work-around this by
+// keeping track of when mouse is over listview.
+static QWidget *mouseWidget=0;
+bool MouseEventHandler::eventFilter(QObject *obj, QEvent *event)
+{
+    if (QEvent::Enter==event->type()) {
+        mouseWidget=view;
+        view->viewport()->update();
+    } else if (QEvent::Leave==event->type()) {
+        mouseWidget=0;
+        view->viewport()->update();
     }
     return QObject::eventFilter(obj, event);
 }
@@ -206,9 +229,27 @@ public:
         if (!index.isValid()) {
             return;
         }
+        bool mouseOver=option.state&QStyle::State_MouseOver;
+        bool gtk=mouseOver && FancyTabWidget::isGtkStyle();
+        bool selected=option.state&QStyle::State_Selected;
+        bool active=option.state&QStyle::State_Active;
+        bool drawBgnd=true;
         QStyleOptionViewItemV4 opt(option);
         opt.showDecorationSelected=true;
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, 0L);
+
+        if (view!=mouseWidget) {
+            if (mouseOver && !selected) {
+                drawBgnd=false;
+            }
+            mouseOver=false;
+        }
+        if (drawBgnd) {
+            if (mouseOver && gtk) {
+                FancyTabWidget::drawGtkSelection(opt, painter, selected ? 0.75 : 0.25);
+            } else {
+                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, 0L);
+            }
+        }
 
         QString capacityText=index.data(ItemView::Role_CapacityText).toString();
         bool showCapacity = !capacityText.isEmpty();
@@ -268,13 +309,11 @@ public:
             }
         }
 
-        if (!(option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
+        if (!mouseOver && hasActions(index, actLevel)) {
             drawIcons(painter, iconMode ? r2 : r, false, rtl, iconMode, index);
         }
 
         QRect textRect;
-        bool selected=option.state&QStyle::State_Selected;
-        bool active=option.state&QStyle::State_Active;
         QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
         QTextOption textOpt(iconMode ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
 
@@ -325,7 +364,7 @@ public:
             QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, 0L);
         }
 
-        if ((option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
+        if (drawBgnd && mouseOver && hasActions(index, actLevel)) {
             drawIcons(painter, iconMode ? r2 : r, true, rtl, iconMode, index);
         }
 
@@ -371,16 +410,28 @@ public:
         }
 
         QStringList text=index.data(Qt::DisplayRole).toString().split("\n");
+        bool gtk=FancyTabWidget::isGtkStyle();
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
 
-        if (1==text.count()) {
+        if (!gtk && 1==text.count()) {
             QStyledItemDelegate::paint(painter, option, index);
         } else {
-            QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
-
+            bool selected=option.state&QStyle::State_Selected;
+            bool active=option.state&QStyle::State_Active;
+            if ((option.state&QStyle::State_MouseOver) && gtk) {
+                FancyTabWidget::drawGtkSelection(option, painter, selected ? 0.75 : 0.25);
+            } else {
+                QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
+            }
             QRect r(option.rect);
             r.adjust(4, 0, -4, 0);
             QPixmap pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
+            if (gtk && pix.isNull()) {
+                QVariant image = index.data(ItemView::Role_Image);
+                if (!image.isNull()) {
+                    pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
+                }
+            }
             if (!pix.isNull()) {
                 int adjust=qMax(pix.width(), pix.height());
                 if (rtl) {
@@ -396,8 +447,6 @@ public:
                 QFont textFont(QApplication::font());
                 QFontMetrics textMetrics(textFont);
                 int textHeight=textMetrics.height();
-                bool selected=option.state&QStyle::State_Selected;
-                bool active=option.state&QStyle::State_Active;
                 QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
                 QTextOption textOpt(Qt::AlignVCenter);
                 QRect textRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
@@ -468,6 +517,7 @@ ItemView::ItemView(QWidget *p)
     treeView->setPageDefaults();
     iconGridSize=listGridSize=listView->gridSize();
     listView->installEventFilter(new EscapeKeyEventHandler(listView, backAction));
+    listView->installEventFilter(new MouseEventHandler(listView));
 }
 
 ItemView::~ItemView()

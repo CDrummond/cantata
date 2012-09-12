@@ -51,6 +51,20 @@ private:
     QAction *act;
 };
 
+class MouseEventHandler : public QObject
+{
+    Q_OBJECT
+
+public:
+    MouseEventHandler(QAbstractItemView *v);
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
+private:
+    QAbstractItemView *view;
+};
+
 #ifndef ENABLE_KDE_SUPPORT
 class Spinner : public QWidget
 {

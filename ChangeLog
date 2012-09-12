@@ -11,6 +11,10 @@
    we will sort on the name/title before duraiton.
 6. When refreshing DB, make sure Albums view is at top level.
 7. Set Artist, AlbumArtist, and Album of cue files to that of assigned album.
+8. Improve item-view mouse over for Gtk+ style - when hovering, draw selection
+   into a QPixmap and set painter's opacity before drawing image.
+9. Workaround issue of sometimes having an item (in icon view) staying in
+   mouse-over state, even though mouse has left view.
 
 0.8.3.1
 -------
@@ -84,7 +88,7 @@
     "${albumArtist} - ${album}.jpg/png" and "${album}.jpg/png" within current
     songs folder. (These are checked AFTER cover.jpg/png, etc.)
 38. Improve FancyTabWidget appearance for Gtk+ style - when hovering, draw
-    selection into a QImage and set painter's opacity before drawing image.
+    selection into a QPixmap and set painter's opacity before drawing image.
 39. Elide to right (or left for RTL) strings in sidebar.
 40. Implement support for translations in Qt-only builds. These use the KDE
     translations. Plural forms not supported correctly, hence instead of

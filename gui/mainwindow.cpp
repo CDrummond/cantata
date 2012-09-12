@@ -591,15 +591,12 @@ MainWindow::MainWindow(QWidget *parent)
     setupTrayIcon();
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
-    if (!expandedSize.isEmpty()) {
-        resize(expandedSize);
-    }
     if (expandInterfaceAction->isChecked()) {
-        if (!expandedSize.isEmpty()) {
+        if (!expandedSize.isEmpty() && expandedSize.width()>0) {
             resize(expandedSize);
         }
     } else {
-        if (!collapsedSize.isEmpty()) {
+        if (!collapsedSize.isEmpty() && collapsedSize.width()>0) {
             resize(collapsedSize);
         }
     }
@@ -873,8 +870,8 @@ MainWindow::~MainWindow()
         dock->setIcon(QString());
     }
     #endif
-    Settings::self()->saveMainWindowSize(expandedSize);
-    Settings::self()->saveMainWindowCollapsedSize(collapsedSize);
+    Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
+    Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->unmountRemote();
     #endif
@@ -2300,7 +2297,8 @@ void MainWindow::togglePlayQueue()
         }
     } else {
         // Widths also sometimes expands, so make sure this is no larger than it was before...
-        resize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
+	collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
+        resize(collapsedSize);
         setFixedHeight(size().height());
     }
 

@@ -25,24 +25,32 @@
 #define QT_PLURAL_H
 
 #define QTP_TRACKS_STR(C) \
-     QObject::tr("Tracks: %1").arg((C))
+    (1==(C) ? QObject::tr("1 Track", "Singular") : \
+     QObject::tr("%1 Tracks", "Plural (N!=1)").arg((C)))
 
 #define QTP_TRACKS_DURATION_STR(C, D) \
-     QObject::tr("Tracks: %1 (%2)").arg((C)).arg((D))
+    (1==(C) ? QObject::tr("1 Track (%1)", "Singular").arg(D) : \
+     QObject::tr("%1 Tracks (%2)", "Plural (N!=1)").arg((C)).arg(D))
 
 #define QTP_ALBUMS_STR(C) \
-     QObject::tr("Albums: %1").arg((C))
+    (1==(C) ? QObject::tr("1 Album", "Singular") : \
+     QObject::tr("%1 Albums", "Plural (N!=1)").arg((C)))
 
 #define QTP_ARTISTS_STR(C) \
-     QObject::tr("Artists: %1").arg((C))
+    (1==(C) ? QObject::tr("1 Artist", "Singular") : \
+     QObject::tr("%1 Artists", "Plural (N!=1)").arg((C)))
 
 #define QTP_STREAMS_STR(C) \
-     QObject::tr("Streams: %1").arg((C))
+    (1==(C) ? QObject::tr("1 Stream", "Singular") : \
+     QObject::tr("%1 Streams", "Plural (N!=1)").arg((C)))
 
 #define QTP_ENTRIES_STR(C) \
-     QObject::tr("Entries: %1").arg((C))
+    (1==(C) ? QObject::tr("1 Entry", "Singular") : \
+     QObject::tr("%1 Entries", "Plural (N!=1)").arg((C)))
 
 #define QTP_RULES_STR(C) \
-     QObject::tr("Rules: %1").arg((C))
+    (1==(C) ? QObject::tr("1 Rule, "Singular"") : \
+     QObject::tr("%1 Rules", "Plural (N!=1)").arg((C)))
+
 
 #endif

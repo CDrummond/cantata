@@ -1,20 +1,25 @@
 ﻿0.9.0
 -----
-1. Add a 'server' mode to cantata-dynamic. This contains a basic HTTP API to
-   list rules, update rules, and start/stop the dynamic mode.
-2. Allow use of 'dynamic' playlists in windows builds, but only for server mode
-   cantata-dynamic.
-3. Add support for 'Similar Artists' in dynamic mode.
-4. Add a gui setting to control the enforcement of single-click.
-5. When sorting tracks, sort on duration after sorting on name, title, and
-   genre. This way of tracks do not have a takc number, disc, year, etc, then
-   we will sort on the name/title before duraiton.
-6. When refreshing DB, make sure Albums view is at top level.
-7. Set Artist, AlbumArtist, and Album of cue files to that of assigned album.
-8. Improve item-view mouse over for Gtk+ style - when hovering, draw selection
-   into a QPixmap and set painter's opacity before drawing image.
-9. Workaround issue of sometimes having an item (in icon view) staying in
-   mouse-over state, even though mouse has left view.
+ 1. Add a 'server' mode to cantata-dynamic. This contains a basic HTTP API to
+    list rules, update rules, and start/stop the dynamic mode.
+ 2. Allow use of 'dynamic' playlists in windows builds, but only for server mode
+    cantata-dynamic.
+ 3. Add support for 'Similar Artists' in dynamic mode.
+ 4. Add a gui setting to control the enforcement of single-click.
+ 5. When sorting tracks, sort on duration after sorting on name, title, and
+     genre. This way of tracks do not have a takc number, disc, year, etc, then
+    we will sort on the name/title before duraiton.
+ 6. When refreshing DB, make sure Albums view is at top level.
+ 7. Set Artist, AlbumArtist, and Album of cue files to that of assigned album.
+ 8. Improve item-view mouse over for Gtk+ style - when hovering, draw selection
+    into a QPixmap and set painter's opacity before drawing image.
+ 9. Workaround issue of sometimes having an item (in icon view) staying in
+    mouse-over state, even though mouse has left view.
+10. For Qt translations, provide two strigs for plural translation. One for
+    singular (e.g. "1 Track") and one for plural (e.g. "%1 Tracks"). For
+    languages that have more than 1 plural form, it is suggested that BOTH
+    strings are translatated to the format "Items: %1" - e.g. "1 Track" becomes
+    "Tracks: 1", and "%1 Tracks" becomes "Tracks: %1"
 
 0.8.3.1
 -------

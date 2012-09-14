@@ -30,8 +30,33 @@ Because of its KDE base, the translation files are based upon KDE's i18n
 framework - these are located with the 'po' folder.
 
 Translations for the Qt-only builds are created from the KDE translations using
-'lconvert'. To work-around issues with plural translations, Qt builds will use
-(e.g.) 'Albums: %1' as opposed to '1 Album' / '3 Albums'
+'lconvert'. To work-around issues with plural translations, Qt builds will have
+contain extra strings to handle plural forms.
+
+e.g.
+
+    KDE will have:
+        msgid "1 Track"
+        msgid_plural "%1 Tracks"
+        msgstr[0] ""
+        msgstr[1] ""
+
+    Qt will have:
+        msgid "1 Track"
+        msgstr ""
+        msgid "%1 Tracks"
+        msgstr ""
+
+In the code, cantata will use "%1 Tracks" for any count other than 1. If the
+language you are translating into has more plural forms (i.e. the above two
+strings are not sufficient), then please translate both into the form
+"Tracks: N" - e.g.
+
+    Qt will now have:
+        msgid "1 Track"
+        msgstr "Tracks: 1"
+        msgid "%1 Tracks"
+        msgstr "Tracks: %1"
 
 
 Covers

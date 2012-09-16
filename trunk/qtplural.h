@@ -49,8 +49,9 @@
      QObject::tr("%1 Entries", "Plural (N!=1)").arg((C)))
 
 #define QTP_RULES_STR(C) \
-    (1==(C) ? QObject::tr("1 Rule, "Singular"") : \
+    (1==(C) ? QObject::tr("1 Rule", "Singular") : \
      QObject::tr("%1 Rules", "Plural (N!=1)").arg((C)))
 
 
 #endif
+

@@ -2,55 +2,76 @@
  * Cantata
  *
  * Copyright (c) 2011-2012 Craig Drummond <craig.p.drummond@gmail.com>
+ *
+ * ----
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  */
-/****************************************************************************************
- * Copyright (c) 2010 Téo Mrnjavac <teo@kde.org>                                        *
- *                                                                                      *
- * This program is free software; you can redistribute it and/or modify it under        *
- * the terms of the GNU General Public License as published by the Free Software        *
- * Foundation; either version 2 of the License, or (at your option) any later           *
- * version.                                                                             *
- *                                                                                      *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY      *
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A      *
- * PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
- *                                                                                      *
- * You should have received a copy of the GNU General Public License along with         *
- * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
- ****************************************************************************************/
 
 #include "transcodingjob.h"
 
-TranscodingJob::TranscodingJob(const QStringList &params, QObject *parent)
-    : KJob(parent)
+TranscodingJob::TranscodingJob(const QStringList &params)
+    : parameters(params)
+    , process(0)
     , duration(-1)
 {
-    QStringList p(params);
-    QString cmd=p.takeFirst();
+}
 
-    process = new KProcess(this);
-    process->setOutputChannelMode(KProcess::MergedChannels);
-    process->setProgram(cmd);
-    *process << p;
-
-    connect(process, SIGNAL(readyRead()), this, SLOT(processOutput()));
-    connect(process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(finished(int, QProcess::ExitStatus)));
+TranscodingJob::~TranscodingJob()
+{
+    delete process;
 }
 
 void TranscodingJob::start()
 {
-    process->start();
+    process = new QProcess;
+    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(processOutput()));
+    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(processOutput()));
+    connect(process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(finished(int, QProcess::ExitStatus)));
+    QString cmd=parameters.takeFirst();
+    process->start(cmd, parameters);
+}
+
+void TranscodingJob::stop()
+{
+    if (process) {
+        process->close();
+        process->deleteLater();
+        process=0;
+        emit result(StatusCancelled);
+    }
 }
 
 void TranscodingJob::finished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    Q_UNUSED(exitCode);
     Q_UNUSED(exitStatus);
-    emitResult();
+    if (!process) {
+        return;
+    }
+    if (stopRequested) {
+        emit result(StatusCancelled);
+        return;
+    }
+    emit result(0==exitCode ? StatusOk : StatusFailed);
 }
 
 void TranscodingJob::processOutput()
 {
+    if (stopRequested) {
+        return;
+    }
     QString output = process->readAllStandardOutput().data();
     if(output.simplified().isEmpty()) {
         return;
@@ -58,14 +79,13 @@ void TranscodingJob::processOutput()
 
     if (-1==duration) {
         duration = computeDuration(output);
-        if(duration >= 0) {
-            setTotalAmount(KJob::Bytes, duration);
-        }
     }
 
-    qint64 progress = computeProgress(output);
-    if(progress > -1) {
-        setProcessedAmount(KJob::Bytes, progress);
+    if (duration>0) {
+        qint64 prog = computeProgress(output);
+        if (prog>-1) {
+            setPercent(prog/duration);
+        }
     }
 }
 

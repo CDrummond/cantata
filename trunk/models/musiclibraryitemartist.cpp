@@ -34,7 +34,7 @@
 #include "localize.h"
 #include "covers.h"
 #include "icon.h"
-#if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "device.h"
 #include "utils.h"
 #endif
@@ -121,7 +121,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
 
             if (firstSong) {
                 song.file=firstSong->file();
-                #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
+                #ifdef ENABLE_DEVICES_SUPPORT
                 if (!song.file.startsWith("/") && parent() && qobject_cast<Device *>(parent())) {
                     QString root=static_cast<Device *>(parent())->path();
                     if (!root.isEmpty()) {

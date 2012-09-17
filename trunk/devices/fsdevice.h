@@ -27,7 +27,7 @@
 #include "device.h"
 #include "song.h"
 #include "utils.h"
-#include <solid/storageaccess.h>
+#include "freespaceinfo.h"
 #include <QtCore/QThread>
 #include <QtCore/QStringList>
 
@@ -97,16 +97,17 @@ protected:
 protected Q_SLOTS:
     void cacheRead();
     void libraryUpdated();
-    void percent(KJob *job, unsigned long percent);
-    void addSongResult(KJob *job);
-    void copySongToResult(KJob *job);
-    void removeSongResult(KJob *job);
+    void percent(int percent);
+    void addSongResult(int status);
+    void copySongToResult(int status);
+    void removeSongResult(int status);
 
 protected:
     bool scanned;
     MusicScanner *scanner;
     QString audioFolder;
     QString coverFileName;
+    FreeSpaceInfo spaceInfo;
 };
 
 #endif

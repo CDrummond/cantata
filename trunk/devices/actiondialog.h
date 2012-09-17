@@ -29,8 +29,6 @@
 #include "device.h"
 #include "ui_actiondialog.h"
 
-class KJob;
-
 class ActionDialog : public Dialog, Ui::ActionDialog
 {
     Q_OBJECT
@@ -63,7 +61,7 @@ private Q_SLOTS:
     void saveProperties();
     void actionStatus(int status);
     void doNext();
-    void removeSongResult(KJob *job);
+    void removeSongResult(int status);
     void copyPercent(unsigned long percent);
 
 private:

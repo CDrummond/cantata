@@ -26,7 +26,6 @@
 
 #include "fsdevice.h"
 #include <sys/types.h>
-#include <KDE/KUrl>
 
 class QProcess;
 class RemoteFsDevice : public FsDevice
@@ -49,10 +48,10 @@ public:
             return name.isEmpty() || url.isEmpty();
         }
         bool isLocalFile() const {
-            return url.isLocalFile();
+            return !url.startsWith(constSshfsProtocol);
         }
         QString name;
-        KUrl url;
+        QString url;
     };
 
     static const QLatin1String constSshfsProtocol;
@@ -70,7 +69,7 @@ public:
     void toggle();
     void mount();
     void unmount();
-    bool supportsDisconnect() const { return !details.url.isLocalFile(); }
+    bool supportsDisconnect() const { return !details.isLocalFile(); }
     bool isConnected() const;
     double usedCapacity();
     QString capacityString();
@@ -80,7 +79,7 @@ public:
     DevType devType() const { return RemoteFs; }
     QString udi() const { return createUdi(details.name); }
     QString icon() const {
-        return QLatin1String(details.url.isLocalFile() ? "inode-directory" : "network-server");
+        return QLatin1String(details.isLocalFile() ? "inode-directory" : "network-server");
     }
     bool canPlaySongs() const;
 

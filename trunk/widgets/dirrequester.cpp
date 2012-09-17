@@ -39,6 +39,7 @@ DirRequester::DirRequester(QWidget *parent)
     button->setAutoRaise(true);
     button->setIcon(Icon("document-open"));
     connect(button, SIGNAL(clicked(bool)), SLOT(chooseDir()));
+    connect(edit, SIGNAL(textChanged(const QString &)), SIGNAL(textChanged(const QString &)));
 }
 
 void DirRequester::chooseDir()

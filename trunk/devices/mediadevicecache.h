@@ -27,55 +27,45 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
-// #include <QtCore/QTimer>
-
-namespace Solid {
-    class Device;
-}
 
 class MediaDeviceCache : public QObject
 {
     Q_OBJECT
 
-    public:
+public:
 
-        enum DeviceType { SolidPMPType, SolidVolumeType, ManualType, SolidAudioCdType, SolidGenericType, InvalidType };
+    enum DeviceType { PMPType, VolumeType, ManualType, AudioCdType, GenericType, InvalidType };
 
-        static MediaDeviceCache* self() { return s_instance ? s_instance : new MediaDeviceCache(); }
+    static MediaDeviceCache* self() { return s_instance ? s_instance : new MediaDeviceCache(); }
 
-        /**
-        * Creates a new MediaDeviceCache.
-        *
-        */
-        MediaDeviceCache();
-        ~MediaDeviceCache();
+    /**
+    * Creates a new MediaDeviceCache.
+    *
+    */
+    MediaDeviceCache();
+    ~MediaDeviceCache();
 
-        void refreshCache();
-        const QStringList getAll() const { return m_type.keys(); }
-        MediaDeviceCache::DeviceType deviceType( const QString &udi ) const;
-        const QString deviceName( const QString &udi ) const;
-        const QString device( const QString & udi ) const;
-        bool isGenericEnabled( const QString &udi ) const;
-        const QString volumeMountPoint( const QString &udi ) const;
+    void refreshCache();
+    const QStringList getAll() const { return m_type.keys(); }
+    MediaDeviceCache::DeviceType deviceType( const QString &udi ) const;
+    const QString deviceName( const QString &udi ) const;
 
-    Q_SIGNALS:
-        void deviceAdded( const QString &udi );
-        void deviceRemoved( const QString &udi );
-        void accessibilityChanged( bool accessible, const QString &udi );
+Q_SIGNALS:
+    void deviceAdded( const QString &udi );
+    void deviceRemoved( const QString &udi );
+    void accessibilityChanged( bool accessible, const QString &udi );
 
-    public Q_SLOTS:
-        void slotAddSolidDevice( const QString &udi );
-        void slotRemoveSolidDevice( const QString &udi );
-        void slotAccessibilityChanged( bool accessible, const QString &udi );
-//         void slotTimeout();
+public Q_SLOTS:
+    void slotAddDevice( const QString &udi );
+    void slotRemoveDevice( const QString &udi );
+    void slotAccessibilityChanged( bool accessible, const QString &udi );
 
-    private:
-        QMap<QString, MediaDeviceCache::DeviceType> m_type;
-        QMap<QString, QString> m_name;
-        QMap<QString, bool> m_accessibility;
-        QStringList m_volumes;
-        static MediaDeviceCache* s_instance;
-//         QTimer m_timer;
+private:
+    QMap<QString, MediaDeviceCache::DeviceType> m_type;
+    QMap<QString, QString> m_name;
+    QMap<QString, bool> m_accessibility;
+    QStringList m_volumes;
+    static MediaDeviceCache* s_instance;
 };
 
 #endif /* AMAROK_MEDIADEVICECACHE_H */

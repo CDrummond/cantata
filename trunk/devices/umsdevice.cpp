@@ -32,10 +32,11 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 #include <QtCore/QTimer>
+#ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KUrl>
-#include <KDE/KDiskFreeSpaceInfo>
 #include <KDE/KGlobal>
 #include <KDE/KLocale>
+#endif
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");
@@ -59,6 +60,7 @@ UmsDevice::UmsDevice(DevicesModel *m, Solid::Device &dev)
     : FsDevice(m, dev)
     , access(dev.as<Solid::StorageAccess>())
 {
+    spaceInfo.setPath(access->filePath());
     setup();
 }
 
@@ -76,8 +78,7 @@ double UmsDevice::usedCapacity()
         return -1.0;
     }
 
-    KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(access->filePath());
-    return inf.size()>0 ? (inf.used()*1.0)/(inf.size()*1.0) : -1.0;
+    return spaceInfo.size()>0 ? (spaceInfo.used()*1.0)/(spaceInfo.size()*1.0) : -1.0;
 }
 
 QString UmsDevice::capacityString()
@@ -86,8 +87,7 @@ QString UmsDevice::capacityString()
         return i18n("Not Connected");
     }
 
-    KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(access->filePath());
-    return i18n("%1 free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
+    return i18n("%1 free").arg(Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
 }
 
 qint64 UmsDevice::freeSpace()
@@ -96,8 +96,7 @@ qint64 UmsDevice::freeSpace()
         return 0;
     }
 
-    KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(access->filePath());
-    return inf.size()-inf.used();
+    return spaceInfo.size()-spaceInfo.used();
 }
 
 void UmsDevice::setup()
@@ -119,10 +118,14 @@ void UmsDevice::setup()
         while (!in.atEnd()) {
             QString line = in.readLine();
             if (line.startsWith(constMusicFolderKey+"=")) {
+                #ifdef ENABLE_KDE_SUPPORT
                 KUrl url = KUrl(path);
                 url.addPath(line.section('=', 1, 1));
                 url.cleanPath();
                 audioFolderSetting=audioFolder=url.toLocalFile();
+                #else
+                audioFolderSetting=Utils::cleanPath(path+'/'+line.section('=', 1, 1));
+                #endif
                 if (!QDir(audioFolder).exists()) {
                     audioFolder = path;
                 }

@@ -25,6 +25,7 @@
 #include "config.h"
 #include "mpdparseutils.h"
 #include "covers.h"
+#include "localize.h"
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtCore/QSet>
@@ -303,4 +304,217 @@ void Utils::stopThread(QThread *thread)
         sleep();
     }
 }
+
+#ifndef ENABLE_KDE_SUPPORT
+// Copied from KDE... START
+#include <QtCore/QLocale>
+
+QString Utils::formatByteSize(double size)
+{
+    static QLocale locale;
+    
+    int unit = 0;
+    double multiplier = 1024.0;
+
+    while (qAbs(size) >= multiplier && unit < 3) {
+        size /= multiplier;
+        unit++;
+    }
+
+    switch(unit) {
+    case 0: return i18n("%1 B").arg(size);
+    case 1: return i18n("%1 KiB").arg(locale.toString(size, 'f', 1));
+    case 2: return i18n("%1 MiB").arg(locale.toString(size, 'f', 1));
+    default:
+    case 3: return i18n("%1 GiB").arg(locale.toString(size, 'f', 1));
+    }
+}
+
+#if defined Q_OS_WIN
+#define KPATH_SEPARATOR ';'
+// #define KDIR_SEPARATOR '\\' /* faster than QDir::separator() */
+#else
+#define KPATH_SEPARATOR ':'
+// #define KDIR_SEPARATOR '/' /* faster than QDir::separator() */
+#endif
+
+static inline QString equalizePath(QString &str)
+{
+    #ifdef Q_WS_WIN
+    // filter pathes through QFileInfo to have always
+    // the same case for drive letters
+    QFileInfo f(str);
+    if (f.isAbsolute())
+        return f.absoluteFilePath();
+    else
+    #endif
+        return str;
+}
+
+static void tokenize(QStringList &tokens, const QString &str, const QString &delim)
+{
+    const int len = str.length();
+    QString token;
+
+    for(int index = 0; index < len; index++) {
+        if (delim.contains(str[index])) {
+            tokens.append(equalizePath(token));
+            token.clear();
+        } else {
+            token += str[index];
+        }
+    }
+    if (!token.isEmpty()) {
+        tokens.append(equalizePath(token));
+    }
+}
+
+#ifdef Q_OS_WIN
+static QStringList executableExtensions()
+{
+    QStringList ret = QString::fromLocal8Bit(qgetenv("PATHEXT")).split(QLatin1Char(';'));
+    if (!ret.contains(QLatin1String(".exe"), Qt::CaseInsensitive)) {
+        // If %PATHEXT% does not contain .exe, it is either empty, malformed, or distorted in ways that we cannot support, anyway.
+        ret.clear();
+        ret << QLatin1String(".exe")
+            << QLatin1String(".com")
+            << QLatin1String(".bat")
+            << QLatin1String(".cmd");
+    }
+    return ret;
+}
+#endif
+
+static QStringList systemPaths(const QString &pstr)
+{
+    QStringList tokens;
+    QString p = pstr;
+
+    if( p.isEmpty() ) {
+        p = QString::fromLocal8Bit( qgetenv( "PATH" ) );
+    }
+
+    QString delimiters(QLatin1Char(KPATH_SEPARATOR));
+    delimiters += QLatin1Char('\b');
+    tokenize( tokens, p, delimiters );
+
+    QStringList exePaths;
+
+    // split path using : or \b as delimiters
+    for( int i = 0; i < tokens.count(); i++ ) {
+        exePaths << /*KShell::tildeExpand(*/ tokens[ i ] /*)*/; // TODO
+    }
+
+    return exePaths;
+}
+
+#ifdef Q_WS_MAC
+static QString getBundle(const QString &path)
+{
+    //kDebug(180) << "getBundle(" << path << ", " << ignore << ") called";
+    QFileInfo info;
+    QString bundle = path;
+    bundle += QLatin1String(".app/Contents/MacOS/") + bundle.section(QLatin1Char('/'), -1);
+    info.setFile( bundle );
+    FILE *file;
+    if (file = fopen(info.absoluteFilePath().toUtf8().constData(), "r")) {
+        fclose(file);
+        struct stat _stat;
+        if ((stat(info.absoluteFilePath().toUtf8().constData(), &_stat)) < 0) {
+            return QString();
+        }
+        if ( _stat.st_mode & S_IXUSR ) {
+            if ( ((_stat.st_mode & S_IFMT) == S_IFREG) || ((_stat.st_mode & S_IFMT) == S_IFLNK) ) {
+                //kDebug(180) << "getBundle(): returning " << bundle;
+                return bundle;
+            }
+        }
+    }
+    return QString();
+}
+#endif
+
+static QString checkExecutable( const QString& path )
+{
+    #ifdef Q_WS_MAC
+    QString bundle = getBundle( path );
+    if ( !bundle.isEmpty() ) {
+        //kDebug(180) << "findExe(): returning " << bundle;
+        return bundle;
+    }
+    #endif
+    QFileInfo info( path );
+    QFileInfo orig = info;
+    #if defined(Q_OS_DARWIN) || defined(Q_OS_MAC)
+    FILE *file;
+    if (file = fopen(orig.absoluteFilePath().toUtf8().constData(), "r")) {
+        fclose(file);
+        struct stat _stat;
+        if ((stat(orig.absoluteFilePath().toUtf8().constData(), &_stat)) < 0) {
+            return QString();
+        }
+        if ( _stat.st_mode & S_IXUSR ) {
+            if ( ((_stat.st_mode & S_IFMT) == S_IFREG) || ((_stat.st_mode & S_IFMT) == S_IFLNK) ) {
+                orig.makeAbsolute();
+                return orig.filePath();
+            }
+        }
+    }
+    return QString();
+    #else
+    if( info.exists() && info.isSymLink() )
+        info = QFileInfo( info.canonicalFilePath() );
+    if( info.exists() && info.isExecutable() && info.isFile() ) {
+        // return absolute path, but without symlinks resolved in order to prevent
+        // problems with executables that work differently depending on name they are
+        // run as (for example gunzip)
+        orig.makeAbsolute();
+        return orig.filePath();
+    }
+    //kDebug(180) << "checkExecutable(): failed, returning empty string";
+    return QString();
+    #endif
+}
+
+QString Utils::findExe(const QString &appname, const QString &pstr)
+{
+    #ifdef Q_OS_WIN
+    QStringList executable_extensions = executableExtensions();
+    if (!executable_extensions.contains(appname.section(QLatin1Char('.'), -1, -1, QString::SectionIncludeLeadingSep), Qt::CaseInsensitive)) {
+        QString found_exe;
+        foreach (const QString& extension, executable_extensions) {
+            found_exe = findExe(appname + extension, pstr);
+            if (!found_exe.isEmpty()) {
+                return found_exe;
+            }
+        }
+        return QString();
+    }
+    #endif
+
+    const QStringList exePaths = systemPaths( pstr );
+    for (QStringList::ConstIterator it = exePaths.begin(); it != exePaths.end(); ++it) {
+        QString p = (*it) + QLatin1Char('/');
+        p += appname;
+
+        QString result = checkExecutable(p);
+        if (!result.isEmpty()) {
+            return result;
+        }
+    }
+
+    return QString();
+}
+// Copied from KDE... END
+
+QString Utils::cleanPath(const QString &p)
+{
+    QString path(p);
+    while(path.contains("//")) {
+        path.replace("//", "/");
+    }
+    return dirSyntax(path);
+}
+
+#endif
 

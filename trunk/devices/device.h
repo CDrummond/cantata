@@ -29,7 +29,11 @@
 #include "encoders.h"
 #include "deviceoptions.h"
 #include <QtCore/QObject>
+#ifdef ENABLE_KDE_SUPPORT
 #include <solid/device.h>
+#else
+#include "solid-lite/device.h"
+#endif
 
 class QWidget;
 class DevicesModel;

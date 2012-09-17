@@ -45,7 +45,7 @@
 #include <KDE/KLocale>
 #endif
 
-#ifdef ENABLE_DEVICES_SUPPORT
+#ifdef ENABLE_KDE_SUPPORT
 static QString formatNumber(double number, int precision)
 {
     return KGlobal::locale()->formatNumber(number, precision);
@@ -121,7 +121,7 @@ RgDialog::RgDialog(QWidget *parent)
     layout->addWidget(statusLabel);
     layout->addWidget(progress);
     setMainWidget(mainWidet);
-    #ifdef ENABLE_DEVICES_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Ok, KStandardGuiItem::save());
     setButtonGuiItem(Cancel, KStandardGuiItem::close());
     #else
@@ -236,7 +236,7 @@ void RgDialog::startScanning()
     if (!all && origTags.count()==origSongs.count()) {
         return;
     }
-    #ifdef ENABLE_DEVICES_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
     setButtonGuiItem(Cancel, KGuiItem(i18n("Cancel"), "dialog-cancel"));
@@ -271,7 +271,7 @@ void RgDialog::stopScanning()
 
     JobController::self()->cancel();
     clearScanners();
-    #ifdef ENABLE_DEVICES_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
     setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
@@ -312,7 +312,7 @@ void RgDialog::startReadingTags()
     if (tagReader) {
         return;
     }
-    #ifdef ENABLE_DEVICES_SUPPORT
+    #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
     setButtonGuiItem(Cancel, KGuiItem(i18n("Cancel"), "dialog-cancel"));
@@ -418,7 +418,7 @@ void RgDialog::updateView()
         progress->setVisible(false);
         statusLabel->setVisible(false);
         state=State_Idle;
-        #ifdef ENABLE_DEVICES_SUPPORT
+        #ifdef ENABLE_KDE_SUPPORT
         setButtonGuiItem(Cancel, KStandardGuiItem::close());
         #else
         setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
@@ -435,17 +435,17 @@ Device * RgDialog::getDevice(const QString &udi, QWidget *p)
 {
     Device *dev=DevicesModel::self()->device(udi);
     if (!dev) {
-        KMessageBox::error(p ? p : this, i18n("Device has been removed!"));
+        MessageBox::error(p ? p : this, i18n("Device has been removed!"));
         reject();
         return 0;
     }
     if (!dev->isConnected()) {
-        KMessageBox::error(p ? p : this, i18n("Device is not connected."));
+        MessageBox::error(p ? p : this, i18n("Device is not connected."));
         reject();
         return 0;
     }
     if (!dev->isIdle()) {
-        KMessageBox::error(p ? p : this, i18n("Device is busy?"));
+        MessageBox::error(p ? p : this, i18n("Device is busy?"));
         reject();
         return 0;
     }

@@ -27,9 +27,9 @@
 #include "devicesmodel.h"
 #include "localize.h"
 #include "messagebox.h"
+#include "icon.h"
 #include <QtGui/QTabWidget>
 #include <QtGui/QIcon>
-#include <KDE/KGlobal>
 
 RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     : Dialog(parent)
@@ -43,7 +43,7 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     remoteProp=new RemoteDevicePropertiesWidget(tab);
     devProp=new DevicePropertiesWidget(tab);
     tab->addTab(remoteProp, QIcon::fromTheme("network-server"), i18n("Connection"));
-    tab->addTab(devProp, KIcon("cantata-view-media-library"), i18n("Music Library"));
+    tab->addTab(devProp, Icon("cantata-view-media-library"), i18n("Music Library"));
     setMainWidget(tab);
 }
 
@@ -73,7 +73,7 @@ void RemoteDevicePropertiesDialog::slotButtonClicked(int button)
     case Ok: {
         RemoteFsDevice::Details d=remoteProp->details();
         if (d.name!=remoteProp->origDetails().name && DevicesModel::self()->device(RemoteFsDevice::createUdi(d.name))) {
-            MessageBox::error(this, i18n("A remote device named \"%1\" already exists!\nPlease choose a different name", d.name));
+            MessageBox::error(this, i18n("A remote device named \"%1\" already exists!\nPlease choose a different name").arg(d.name));
         } else {
             emit updatedSettings(devProp->cover(), devProp->settings(), remoteProp->details());
             accept();

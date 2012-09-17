@@ -35,12 +35,10 @@
 #include "mpdconnection.h"
 #include "encoders.h"
 #include "localize.h"
-#include <KDE/KGlobal>
-#include <KDE/KMessageBox>
-#include <KDE/KIO/FileCopyJob>
-#include <KDE/KIO/Job>
-#include <KDE/KDiskFreeSpaceInfo>
-#include <kcapacitybar.h>
+#include "messagebox.h"
+#include "filejob.h"
+#include "freespaceinfo.h"
+#include <QtCore/QFile>
 
 static int iCount=0;
 
@@ -113,10 +111,10 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         capacityString=dev->capacityString();
         usedCapacity=dev->usedCapacity();
     } else {
-        KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(MPDConnection::self()->getDetails().dir);
+        FreeSpaceInfo inf=FreeSpaceInfo(MPDConnection::self()->getDetails().dir);
         spaceAvailable=inf.size()-inf.used();
         usedCapacity=(inf.used()*1.0)/(inf.size()*1.0);
-        capacityString=i18n("%1 free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
+        capacityString=i18n("%1 free").arg(Utils::formatByteSize(inf.size()-inf.used()));
     }
 
     bool enoughSpace=spaceAvailable>spaceRequired;
@@ -133,9 +131,8 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         namingOptions.load(mpdCfgName, true);
         setPage(PAGE_START);
         mode=Copy;
-        capacity->setText(capacityString);
-        capacity->setValue((usedCapacity*100)+0.5);
-        capacity->setDrawTextMode(KCapacityBar::DrawTextInline);
+
+        capacity->update(capacityString, (usedCapacity*100)+0.5);
 
         bool destIsDev=sourceUdi.isEmpty();
         mpdConfigured=DeviceOptions::isConfigured(mpdCfgName, true);
@@ -143,17 +140,17 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         configureSourceLabel->setVisible((!destIsDev && !dev->isConfigured()) || (destIsDev && !mpdConfigured));
         show();
         if (!enoughSpace) {
-            KMessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"
-                                                "The selected songs consume %1, but there is only %2 left.\n"
-                                                "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.",
-                                                KGlobal::locale()->formatByteSize(spaceRequired),
-                                                KGlobal::locale()->formatByteSize(spaceAvailable)));
+            MessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"
+                                               "The selected songs consume %1, but there is only %2 left.\n"
+                                               "The songs will need to be transcoded to a smaller filesize in order to be successfully copied.")
+                                               .arg(Utils::formatByteSize(spaceRequired))
+                                               .arg(Utils::formatByteSize(spaceAvailable)));
         }
     } else {
-        KMessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
-                                                "The selected songs consume %1, but there is only %2 left.",
-                                                KGlobal::locale()->formatByteSize(spaceRequired),
-                                                KGlobal::locale()->formatByteSize(spaceAvailable)));
+        MessageBox::error(parentWidget(), i18n("There is insufficient space left on the destination.\n"
+                                               "The selected songs consume %1, but there is only %2 left.")
+                                               .arg(Utils::formatByteSize(spaceRequired))
+                                               .arg(Utils::formatByteSize(spaceAvailable)));
         deleteLater();
     }
 }
@@ -212,11 +209,11 @@ void ActionDialog::slotButtonClicked(int button)
         case Ok:
             if (haveVariousArtists &&
                 ((configureDestLabel->isVisible() &&
-                  KMessageBox::No==KMessageBox::warningYesNo(this, i18n("<p>You have not configured the destination device.<br/>"
-                                                                       "Continue with the default settings?</p>"))) ||
+                  MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>You have not configured the destination device.<br/>"
+                                                                      "Continue with the default settings?</p>"))) ||
                  (configureSourceLabel->isVisible() &&
-                  KMessageBox::No==KMessageBox::warningYesNo(this, i18n("<p>You have not configured the source device.<br/>"
-                                                                       "Continue with the default settings?</p>"))))) {
+                  MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>You have not configured the source device.<br/>"
+                                                                      "Continue with the default settings?</p>"))))) {
                 return;
             }
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
@@ -264,7 +261,7 @@ void ActionDialog::slotButtonClicked(int button)
         break;
     case PAGE_PROGRESS:
         paused=true;
-        if (KMessageBox::Yes==KMessageBox::questionYesNo(this, i18n("Are you sure you wish to cancel?"))) {
+        if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Are you sure you wish to cancel?"))) {
             refreshLibrary();
             reject();
             // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
@@ -298,7 +295,7 @@ Device * ActionDialog::getDevice(const QString &udi)
     if (isVisible()) {
         setPage(PAGE_ERROR, error);
     } else {
-        KMessageBox::error(parentWidget(), error);
+        MessageBox::error(parentWidget(), error);
     }
 
     return 0;
@@ -396,35 +393,35 @@ void ActionDialog::actionStatus(int status)
         }
         break;
     case Device::FileExists:
-        setPage(PAGE_SKIP, i18n("The destination filename already exists!<hr/>%1", formatSong(currentSong, true)));
+        setPage(PAGE_SKIP, i18n("The destination filename already exists!<hr/>%1").arg(formatSong(currentSong, true)));
         break;
     case Device::SongExists:
-        setPage(PAGE_SKIP, i18n("Song already exists!<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Song already exists!<hr/>%1").arg(formatSong(currentSong)));
         break;
     case Device::SongDoesNotExist:
-        setPage(PAGE_SKIP, i18n("Song does not exist!<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Song does not exist!<hr/>%1").arg(formatSong(currentSong)));
         break;
     case Device::DirCreationFaild:
-        setPage(PAGE_SKIP, i18n("Failed to create destination folder!<br/>Please check you have sufficient permissions.<hr/>%1", formatSong(currentSong, true)));
+        setPage(PAGE_SKIP, i18n("Failed to create destination folder!<br/>Please check you have sufficient permissions.<hr/>%1").arg(formatSong(currentSong, true)));
         break;
     case Device::SourceFileDoesNotExist:
-        setPage(PAGE_SKIP, i18n("Source file no longer exists?<br/><br/<hr/>%1", formatSong(currentSong, true)));
+        setPage(PAGE_SKIP, i18n("Source file no longer exists?<br/><br/<hr/>%1").arg(formatSong(currentSong, true)));
         break;
     case Device::Failed:
-        setPage(PAGE_SKIP, Copy==mode ? i18n("Failed to copy.<hr/>%1", formatSong(currentSong))
-                                      : i18n("Failed to delete.<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, Copy==mode ? i18n("Failed to copy.<hr/>%1").arg(formatSong(currentSong))
+                                      : i18n("Failed to delete.<hr/>%1").arg(formatSong(currentSong)));
         break;
     case Device::NotConnected:
-        setPage(PAGE_ERROR, i18n("Not connected to device.<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Not connected to device.<hr/>%1").arg(formatSong(currentSong)));
         break;
     case Device::CodecNotAvailable:
-        setPage(PAGE_ERROR, i18n("Selected codec is not available.<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Selected codec is not available.<hr/>%1").arg(formatSong(currentSong)));
         break;
     case Device::TranscodeFailed:
-        setPage(PAGE_SKIP, i18n("Transcoding failed.<br/><br/<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_SKIP, i18n("Transcoding failed.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
         break;
     case Device::FailedToCreateTempFile:
-        setPage(PAGE_ERROR, i18n("Failed to create temporary file.<br/>(Required for transcoding to MTP devices.)<hr/>%1", formatSong(currentSong)));
+        setPage(PAGE_ERROR, i18n("Failed to create temporary file.<br/>(Required for transcoding to MTP devices.)<hr/>%1").arg(formatSong(currentSong)));
         break;
     default:
         break;
@@ -523,21 +520,21 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles)
                        "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
                        "<tr><td align=\"right\">Source file:</td><td>%4</td></tr>"
                        "<tr><td align=\"right\">Destination file:</td><td>%5</td></tr>"
-                       "</table>", s.albumArtist(), s.album,
-                       s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)), s.file, destFile)
+                       "</table>").arg(s.albumArtist()).arg(s.album)
+                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))).arg(s.file).arg(destFile)
                 : i18n("<table>"
                        "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
                        "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
                        "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
                        "<tr><td align=\"right\">File:</td><td>%4</td></tr>"
-                       "</table>", s.albumArtist(), s.album,
-                       s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)), s.file)
+                       "</table>").arg(s.albumArtist()).arg(s.album)
+                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))).arg(s.file)
             : i18n("<table>"
                    "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
                    "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
                    "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
-                   "</table>", s.albumArtist(), s.album,
-                   s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)));
+                   "</table>").arg(s.albumArtist()).arg(s.album)
+                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)));
 }
 
 void ActionDialog::refreshLibrary()
@@ -566,13 +563,13 @@ void ActionDialog::removeSong(const Song &s)
         return;
     }
 
-    KIO::SimpleJob *job=KIO::file_delete(KUrl(s.file), KIO::HideProgressInfo);
-    connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *)));
+    DeleteJob *job=new DeleteJob(s.file);
+    connect(job, SIGNAL(result(int)), SLOT(removeSongResult(int)));
 }
 
-void ActionDialog::removeSongResult(KJob *job)
+void ActionDialog::removeSongResult(int status)
 {
-    if (job->error()) {
+    if (FileJob::StatusOk!=status) {
         actionStatus(Device::Failed);
     } else {
         MusicLibraryModel::self()->removeSongFromList(currentSong);
@@ -595,4 +592,3 @@ void ActionDialog::incProgress()
         progressBar->setValue(progressBar->value()+1);
     }
 }
-

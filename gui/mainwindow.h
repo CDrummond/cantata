@@ -71,7 +71,7 @@ class LyricsPage;
 class StreamsPage;
 class InfoPage;
 class ServerInfoPage;
-#if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
+#ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
 #endif
 class QThread;
@@ -165,7 +165,7 @@ public:
         PAGE_INFO,
         #endif
         PAGE_SERVER_INFO
-        #ifdef ENABLE_KDE_SUPPORT
+        #ifdef ENABLE_DEVICES_SUPPORT
         , PAGE_DEVICES
         #endif
     };

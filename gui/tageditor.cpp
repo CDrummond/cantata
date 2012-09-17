@@ -745,17 +745,17 @@ Device * TagEditor::getDevice(const QString &udi, QWidget *p)
 {
     Device *dev=DevicesModel::self()->device(udi);
     if (!dev) {
-        KMessageBox::error(p ? p : this, i18n("Device has been removed!"));
+        MessageBox::error(p ? p : this, i18n("Device has been removed!"));
         reject();
         return 0;
     }
     if (!dev->isConnected()) {
-        KMessageBox::error(p ? p : this, i18n("Device is not connected."));
+        MessageBox::error(p ? p : this, i18n("Device is not connected."));
         reject();
         return 0;
     }
     if (!dev->isIdle()) {
-        KMessageBox::error(p ? p : this, i18n("Device is busy?"));
+        MessageBox::error(p ? p : this, i18n("Device is busy?"));
         reject();
         return 0;
     }

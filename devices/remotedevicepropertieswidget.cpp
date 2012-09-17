@@ -25,11 +25,12 @@
 #include "filenameschemedialog.h"
 #include "covers.h"
 #include "localize.h"
-#include <KDE/KGlobal>
-#include <KDE/KMessageBox>
+#ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KDirSelectDialog>
+#endif
 #include <QtGui/QTabWidget>
 #include <QtGui/QIcon>
+#include <QtCore/QUrl>
 #include "lineedit.h"
 #include "config.h"
 
@@ -49,15 +50,19 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     }
     type->addItem(i18n("Secure Shell (sshfs)"), (int)Type_SshFs);
     type->addItem(i18n("Locally Mounted Folder"), (int)Type_File);
+    #ifdef ENABLE_KDE_SUPPORT
     sshFolderButton->setIcon(QIcon::fromTheme("document-open"));
     fileFolder->setMode(KFile::Directory|KFile::ExistingOnly|KFile::LocalOnly);
     kioUrl->setMode(KFile::Directory|KFile::ExistingOnly);
+    #else
+    sshFolderButton->setVisible(false);
+    #endif
 }
 
 void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool create, bool isConnected)
 {
-    int t=d.url.isLocalFile() ? Type_File : Type_SshFs;
-    setEnabled(d.url.isLocalFile() || !isConnected);
+    int t=d.isLocalFile() ? Type_File : Type_SshFs;
+    setEnabled(d.isLocalFile() || !isConnected);
     infoLabel->setVisible(create);
     orig=d;
     name->setText(d.name);
@@ -66,20 +71,26 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     sshHost->setText(QString());
     sshUser->setText(QString());
     fileFolder->setText(QString());
+    #ifdef ENABLE_KDE_SUPPORT
     kioUrl->setUrl(KUrl());
+    #else
+    kioUrl->setText(QString());
+    #endif
     switch (t) {
-    case Type_SshFs:
-        sshFolder->setText(d.url.path());
-        sshPort->setValue(d.url.port());
-        sshHost->setText(d.url.host());
-        sshUser->setText(d.url.user());
+    case Type_SshFs: {
+        QUrl url(d.url);
+        sshFolder->setText(url.path());
+        sshPort->setValue(url.port());
+        sshHost->setText(url.host());
+        sshUser->setText(url.userName());
         break;
+    }
     case Type_File:
-        fileFolder->setText(d.url.path());
+        fileFolder->setText(d.url);
         break;
     }
 
-    name->setEnabled(d.url.isLocalFile() || !isConnected);
+    name->setEnabled(d.isLocalFile() || !isConnected);
 
     connect(type, SIGNAL(currentIndexChanged(int)), this, SLOT(setType()));
     for (int i=1; i<type->count(); ++i) {
@@ -111,6 +122,7 @@ void RemoteDevicePropertiesWidget::setType()
     }
 }
 
+#ifdef ENABLE_KDE_SUPPORT
 void RemoteDevicePropertiesWidget::browseSftpFolder()
 {
     RemoteFsDevice::Details det=details();
@@ -125,13 +137,16 @@ void RemoteDevicePropertiesWidget::browseSftpFolder()
         sshFolder->setText(url.path());
     }
 }
+#endif
 
 void RemoteDevicePropertiesWidget::checkSaveable()
 {
     RemoteFsDevice::Details det=details();
     modified=det!=orig;
     saveable=!det.isEmpty();
-    sshFolderButton->setEnabled(!det.url.host().isEmpty() && det.url.port()>0);
+    #ifdef ENABLE_KDE_SUPPORT
+    sshFolderButton->setEnabled(!det.url.isEmpty());
+    #endif
     emit updated();
 }
 
@@ -147,14 +162,14 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
         QString u=sshUser->text().trimmed();
         QString f=sshFolder->text().trimmed();
         int p=sshPort->value();
-        det.url=KUrl(RemoteFsDevice::constSshfsProtocol+QLatin1String("://")+ (u.isEmpty() ? QString() : (u+QChar('@')))
+        det.url=QString(RemoteFsDevice::constSshfsProtocol+QLatin1String("://")+ (u.isEmpty() ? QString() : (u+QChar('@')))
                                                              + h + (p<=0 ? QString() : QString(QChar(':')+QString::number(p)))
                                                              + (f.startsWith("/") ? f : (f.isEmpty() ? QString("/") : f)));
         break;
     }
     case Type_File: {
         QString f=fileFolder->text().trimmed();
-        det.url=KUrl(QLatin1String("file://")+(f.startsWith("/") ? f : (f.isEmpty() ? QString("/") : f)));
+        det.url=QString(f.startsWith("/") ? f : (f.isEmpty() ? QString("/") : f));
         break;
     }
     }

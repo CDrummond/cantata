@@ -33,9 +33,8 @@
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
-#include <KDE/KActionCollection>
 #include <KDE/KGlobalSettings>
+#include <KDE/KAction>
 #else
 #include <QtGui/QAction>
 #endif
@@ -57,27 +56,15 @@ DevicesPage::DevicesPage(MainWindow *p)
 {
     setupUi(this);
 
-    configureAction = p->actionCollection()->addAction("configuredevice");
-    configureAction->setText(i18n("Configure Device"));
-    configureAction->setIcon(QIcon::fromTheme("configure"));
-    refreshAction = p->actionCollection()->addAction("refreshdevice");
-    refreshAction->setText(i18n("Refresh Device"));
-    refreshAction->setIcon(QIcon::fromTheme("view-refresh"));
-    copyAction = p->actionCollection()->addAction("copytolibrary");
-    copyAction->setText(i18n("Copy To Library"));
-    copyAction->setIcon(QIcon::fromTheme("document-import"));
+    configureAction = p->createAction("configuredevice", i18n("Configure Device"), "configure");
+    refreshAction = p->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
+    copyAction = p->createAction("copytolibrary", i18n("Copy To Library"), "document-import");
     copyToLibraryButton->setDefaultAction(copyAction);
-    syncAction = p->actionCollection()->addAction("syncdevice");
-    syncAction->setText(i18n("Sync"));
-    syncAction->setIcon(QIcon::fromTheme("folder-sync"));
+    syncAction = p->createAction("syncdevice", i18n("Sync"), "folder-sync");
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
-    forgetDeviceAction=p->actionCollection()->addAction("forgetdevice");
-    forgetDeviceAction->setText(i18n("Forget Device"));
-    forgetDeviceAction->setIcon(QIcon::fromTheme("list-remove"));
-    toggleDeviceAction=p->actionCollection()->addAction("toggledevice");
-    toggleDeviceAction->setText(i18n("Toggle Device"));
-    toggleDeviceAction->setIcon(QIcon::fromTheme("network-connect"));
+    forgetDeviceAction=p->createAction("forgetdevice", i18n("Forget Device"), "list-remove");
+    toggleDeviceAction=p->createAction("toggledevice", i18n("Toggle Device"), "network-connect");
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
     connect(toggleDeviceAction, SIGNAL(triggered()), this, SLOT(toggleDevice()));
     #endif
@@ -117,9 +104,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     menu->addAction(refreshAction);
     menu->addSeparator();
     #ifdef ENABLE_REMOTE_DEVICES
-    KAction *addRemote=p->actionCollection()->addAction("adddevice");
-    addRemote->setText(i18n("Add Device"));
-    addRemote->setIcon(QIcon::fromTheme("network-server"));
+    Action *addRemote=p->createAction("adddevice", i18n("Add Device"), "network-server");
     connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
     menu->addAction(addRemote);
     menu->addAction(forgetDeviceAction);
@@ -368,13 +353,13 @@ void DevicesPage::refreshDevice()
         bool full=true;
         if (dev->childCount() && Device::Mtp!=dev->devType()) {
             QString udi=dev->udi();
-            switch (KMessageBox::questionYesNoCancel(this, i18n("<p>Which type of refresh do you wish to perform?<ul>"
-                                                                "<li>Partial - Only new songs are scanned <i>(quick)</i></li>"
-                                                                "<li>Full - All songs are rescanned <i>(slow)</i></li></ul></p>"),
-                                                     i18n("Refresh"), KGuiItem(i18n("Partial")), KGuiItem(i18n("Full")))) {
-                case KMessageBox::Yes:
+            switch (MessageBox::questionYesNoCancel(this, i18n("<p>Which type of refresh do you wish to perform?<ul>"
+                                                               "<li>Partial - Only new songs are scanned <i>(quick)</i></li>"
+                                                               "<li>Full - All songs are rescanned <i>(slow)</i></li></ul></p>"),
+                                                    i18n("Refresh"), KGuiItem(i18n("Partial")), KGuiItem(i18n("Full")))) {
+                case MessageBox::Yes:
                     full=false;
-                case KMessageBox::No:
+                case MessageBox::No:
                     break;
                 default:
                     return;

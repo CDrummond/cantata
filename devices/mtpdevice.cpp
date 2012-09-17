@@ -37,14 +37,15 @@
 #include "utils.h"
 #include "mpdparseutils.h"
 #include "localize.h"
+#include "filejob.h"
+#include "settings.h"
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtCore/QDir>
-#include <KDE/KGlobal>
-#include <KDE/KConfig>
-#include <KDE/KUrl>
+#include <QtCore/QTemporaryFile>
+#ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMimeType>
-#include <KDE/KTemporaryFile>
+#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -353,6 +354,7 @@ static char * createString(const QString &str)
 
 static LIBMTP_filetype_t mtpFileType(const Song &s)
 {
+    #ifdef ENABLE_KDE_SUPPORT
     KMimeType::Ptr mime=KMimeType::findByPath(s.file);
 
     if (mime->is("audio/mpeg")) {
@@ -376,6 +378,29 @@ static LIBMTP_filetype_t mtpFileType(const Song &s)
     if (mime->is("audio/x-wav")) {
         return LIBMTP_FILETYPE_WAV;
     }
+    #else
+    if (s.file.endsWith(".mp3", Qt::CaseInsensitive)) {
+        return LIBMTP_FILETYPE_MP3;
+    }
+    if (s.file.endsWith(".ogg", Qt::CaseInsensitive)) {
+        return LIBMTP_FILETYPE_OGG;
+    }
+    if (s.file.endsWith(".wma", Qt::CaseInsensitive)) {
+        return LIBMTP_FILETYPE_WMA;
+    }
+    if (s.file.endsWith(".m4a", Qt::CaseInsensitive)) {
+        return LIBMTP_FILETYPE_M4A; // LIBMTP_FILETYPE_MP4
+    }
+    if (s.file.endsWith(".aac", Qt::CaseInsensitive)) {
+        return LIBMTP_FILETYPE_AAC;
+    }
+    if (s.file.endsWith(".flac", Qt::CaseInsensitive)) {
+        return LIBMTP_FILETYPE_FLAC;
+    }
+    if (s.file.endsWith(".wav", Qt::CaseInsensitive)) {
+        return LIBMTP_FILETYPE_WAV;
+    }
+    #endif
     return LIBMTP_FILETYPE_UNDEF_AUDIO;
 }
 
@@ -398,14 +423,15 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
         }
         meta->item_id=0;
         QString fileName=song.file;
-        KTemporaryFile *temp=0;
+        QTemporaryFile *temp=0;
 
         if (fixVa) {
             // Need to 'workaround' broken various artists handling, so write to a temporary file first...
-            temp=new KTemporaryFile();
             int index=song.file.lastIndexOf('.');
             if (index>0) {
-                temp->setSuffix(song.file.mid(index));
+                temp=new QTemporaryFile("cantata_XXXX"+song.file.mid(index));
+            } else {
+                temp=new QTemporaryFile("cantata_XXXX");
             }
             temp->setAutoRemove(false);
             if (temp->open()) {
@@ -536,7 +562,10 @@ void MtpDevice::deviceDetails(const QString &s)
         serial=s;
         QString configKey=cfgKey(solidDev, serial);
         opts.load(configKey);
-        configured=KGlobal::config()->hasGroup(configKey);
+        #ifndef ENABLE_KDE_SUPPORT
+        QSettings cfg;
+        #endif
+        configured=HAS_GROUP(configKey);
     }
 }
 
@@ -608,8 +637,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
 
         if (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) {
             deleteTemp();
-            tempFile=new KTemporaryFile();
-            tempFile->setSuffix("."+encoder.extension);
+            tempFile=new QTemporaryFile("cantata_XXXX"+encoder.extension);
             tempFile->setAutoRemove(false);
 
             if (!tempFile->open()) {
@@ -624,8 +652,8 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
             }
             transcoding=true;
             TranscodingJob *job=new TranscodingJob(encoder.params(opts.transcoderValue, s.file, destFile));
-            connect(job, SIGNAL(result(KJob *)), SLOT(transcodeSongResult(KJob *)));
-            connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(transcodePercent(KJob *, unsigned long)));
+            connect(job, SIGNAL(result(int)), SLOT(transcodeSongResult(int)));
+            connect(job, SIGNAL(percent(int)), SLOT(transcodePercent(int)));
             job->start();
             currentSong.file=destFile;
             return;
@@ -665,8 +693,8 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
 
     currentBaseDir=baseDir;
     currentMusicPath=musicPath;
-    KUrl dest(currentBaseDir+currentMusicPath);
-    QDir dir(dest.directory());
+    QString dest(currentBaseDir+currentMusicPath);
+    QDir dir(Utils::getDir(dest));
     if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
@@ -721,26 +749,28 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
     }
 }
 
-void MtpDevice::transcodeSongResult(KJob *job)
+void MtpDevice::transcodeSongResult(int status)
 {
     if (jobAbortRequested) {
         deleteTemp();
         return;
     }
-    if (job->error()) {
+    if (FileJob::StatusOk!=status) {
         emit actionStatus(TranscodeFailed);
     } else {
         emit putSong(currentSong, needToFixVa);
     }
 }
 
-void MtpDevice::transcodePercent(KJob *job, unsigned long percent)
+void MtpDevice::transcodePercent(int percent)
 {
     if (jobAbortRequested) {
-        job->kill(KJob::EmitResult); // emit result so that temp file can be removed!
+        FileJob *job=qobject_cast<FileJob *>(sender());
+        if (job) {
+            job->stop();
+        }
         return;
     }
-    Q_UNUSED(job)
     emit progress(percent/2);
 }
 
@@ -802,7 +832,7 @@ QString MtpDevice::capacityString()
         return i18n("Not Connected");
     }
 
-    return i18n("%1 free", KGlobal::locale()->formatByteSize(connection->capacity()-connection->usedSpace()), 1);
+    return i18n("%1 free").arg(Utils::formatByteSize(connection->capacity()-connection->usedSpace()));
 }
 
 qint64 MtpDevice::freeSpace()

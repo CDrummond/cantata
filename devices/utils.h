@@ -27,6 +27,12 @@
 #include <math.h>
 #include <sys/types.h>
 #include <QtCore/qglobal.h>
+#include <QtCore/QString>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KGlobal>
+#include <KDE/KLocale>
+#include <KDE/KStandardDirs>
+#endif
 
 class QString;
 class QThread;
@@ -53,6 +59,15 @@ namespace Utils
     extern void msleep(int msecs);
     inline void sleep() { msleep(100); }
     extern void stopThread(QThread *thread);
+
+    #ifdef ENABLE_KDE_SUPPORT
+    inline QString findExe(const QString &appname, const QString &pathstr=QString()) { return KStandardDirs::findExe(appname, pathstr); }
+    inline QString formatByteSize(double size) { return KGlobal::locale()->formatByteSize(size, 1); }
+    #else
+    extern QString findExe(const QString &appname, const QString &pathstr=QString());
+    extern QString formatByteSize(double size);
+    extern QString cleanPath(const QString &p);
+    #endif
 };
 
 #endif

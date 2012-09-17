@@ -78,7 +78,8 @@
 #include "lyricspage.h"
 #include "infopage.h"
 #include "serverinfopage.h"
-#if defined ENABLE_DEVICES_SUPPORT && defined TAGLIB_FOUND
+#if defined ENABLE_DEVICES_SUPPORT
+#include "filejob.h"
 #include "devicespage.h"
 #include "devicesmodel.h"
 #include "actiondialog.h"
@@ -915,6 +916,9 @@ MainWindow::~MainWindow()
     }
     Utils::stopThread(mpdThread);
     Covers::self()->stop();
+    #if defined ENABLE_DEVICES_SUPPORT
+    FileScheduler::self()->stop();
+    #endif
 }
 
 void MainWindow::initSizes()

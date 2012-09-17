@@ -25,8 +25,6 @@
 #include "filenameschemedialog.h"
 #include "covers.h"
 #include "localize.h"
-#include <KDE/KGlobal>
-#include <KDE/KMessageBox>
 #include <QtGui/QValidator>
 #include <QtGui/QTabWidget>
 
@@ -145,7 +143,7 @@ void DevicePropertiesWidget::update(const QString &path, const QString &coverNam
             transcoderFrame->setVisible(false);
         } else {
             foreach (const Encoders::Encoder &e, encs) {
-                transcoderName->addItem(i18n("Transcode to \"%1\"", e.name), e.codec);
+                transcoderName->addItem(i18n("Transcode to \"%1\"").arg(e.name), e.codec);
             }
 
             if (opts.transcoderCodec.isEmpty()) {

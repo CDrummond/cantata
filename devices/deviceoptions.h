@@ -25,7 +25,8 @@
 #define DEVICE_OPTIONS_H
 
 #include <QtCore/QString>
-#ifdef ENABLE_KDE_SUPPORT
+#include "config.h"
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "encoders.h"
 #endif
 
@@ -51,7 +52,7 @@ struct DeviceOptions {
     bool operator==(const DeviceOptions &o) const {
         return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&
                 replaceSpaces==o.replaceSpaces && scheme==o.scheme
-                #ifdef ENABLE_KDE_SUPPORT
+                #ifdef ENABLE_DEVICES_SUPPORT
                 && fixVariousArtists==o.fixVariousArtists && useCache==o.useCache &&
                 transcoderCodec==o.transcoderCodec && autoScan==o.autoScan &&
                 (transcoderCodec.isEmpty() || (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent))
@@ -70,7 +71,7 @@ struct DeviceOptions {
     bool asciiOnly;
     bool ignoreThe;
     bool replaceSpaces;
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_DEVICES_SUPPORT
     bool fixVariousArtists;
     QString transcoderCodec;
     int transcoderValue;

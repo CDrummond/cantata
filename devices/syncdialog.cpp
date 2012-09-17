@@ -157,7 +157,7 @@ bool SyncDialog::updateSongs(bool showMessage)
 
     if (0==inDev.count() && 0==inLib.count()) {
         if (showMessage) {
-            KMessageBox::information(isVisible() ? this : parentWidget(), i18n("Device and library are in sync."));
+            MessageBox::information(isVisible() ? this : parentWidget(), i18n("Device and library are in sync."));
         }
         deleteLater();
         hide();

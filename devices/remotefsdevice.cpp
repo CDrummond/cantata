@@ -30,15 +30,15 @@
 #include "network.h"
 #include "httpserver.h"
 #include "localize.h"
+#include "settings.h"
 #include <QtCore/QTimer>
 #include <QtCore/QProcess>
-#include <KDE/KUrl>
-#include <KDE/KDiskFreeSpaceInfo>
-#include <KDE/KGlobal>
-#include <KDE/KConfigGroup>
-#include <KDE/KStandardDirs>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#ifdef ENABLE_KDE_SUPPORT
 #include <kmountpoint.h>
 #include <kde_file.h>
+#endif
 #include <stdio.h>
 #include <unistd.h>
 
@@ -46,50 +46,65 @@ const QLatin1String RemoteFsDevice::constSshfsProtocol("cantata-sshfs");
 
 static QString mountPoint(const RemoteFsDevice::Details &details, bool create)
 {
-    if (details.url.isLocalFile()) {
-        return details.url.path();
+    if (details.isLocalFile()) {
+        return details.url;
     }
     return Network::cacheDir(QLatin1String("mount/")+details.name, create);
 }
 
 void RemoteFsDevice::Details::load(const QString &group)
 {
-    KConfigGroup grp(KGlobal::config(), group);
-    name=grp.readEntry("name", name);
-    url=grp.readEntry("url", url);
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup cfg(KGlobal::config(), group);
+    #else
+    QSettings cfg;
+    cfg.beginGroup(group);
+    #endif
+    name=GET_STRING("name", name);
+    url=GET_STRING("url", url);
+    #ifdef ENABLE_KDE_SUPPORT
     if (url.isEmpty()) {
         // Old, pre 0.7.0 remote device...
-        QString folder=grp.readEntry("folder", QString());
+        QString folder=GET_STRING("folder", QString());
         if (!folder.isEmpty()) {
-            if (1==grp.readEntry("protocol", 0)) {
-                QString host=grp.readEntry("host", QString());
-                QString user=grp.readEntry("user", QString());
-                int port=grp.readEntry("port", 0);
+            if (1==GET_INT("protocol", 0)) {
+                QString host=GET_STRING("host", QString());
+                QString user=GET_STRING("user", QString());
+                int port=GET_INT("port", 0);
 
-                url=KUrl(RemoteFsDevice::constSshfsProtocol+QLatin1String("://")+ (user.isEmpty() ? QString() : (user+QChar('@')))
+                url=RemoteFsDevice::constSshfsProtocol+QLatin1String("://")+ (user.isEmpty() ? QString() : (user+QChar('@')))
                                 + host + (port<=0 ? QString() : QString(QChar(':')+QString::number(port)))
-                                + (folder.startsWith("/") ? folder : (folder.isEmpty() ? QString("/") : folder)));
+                                + (folder.startsWith("/") ? folder : (folder.isEmpty() ? QString("/") : folder));
             } else {
-                url=KUrl(QLatin1String("file://")+(folder.startsWith("/") ? folder : (folder.isEmpty() ? QString("/") : folder)));
+                url=(folder.startsWith("/") ? folder : (folder.isEmpty() ? QString("/") : folder));
             }
         }
-        grp.deleteEntry("protocol");
-        grp.deleteEntry("folder");
-        grp.deleteEntry("host");
-        grp.deleteEntry("user");
-        grp.deleteEntry("port");
-        grp.writeEntry("url", url);
+        // These are in case of old (KDE-only) entries...
+        REMOVE_ENTRY("protocol");
+        REMOVE_ENTRY("folder");
+        REMOVE_ENTRY("host");
+        REMOVE_ENTRY("user");
+        REMOVE_ENTRY("port");
+        SET_VALUE("url", url);
     }
+    if (url.startsWith("file://")) {
+        url=url.mid(7);
+    }
+    #endif
 }
 
 void RemoteFsDevice::Details::save(const QString &group) const
 {
-    KConfigGroup grp(KGlobal::config(), group);
-    grp.writeEntry("name", name);
-    grp.writeEntry("url", url);
-    grp.sync();
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup cfg(KGlobal::config(), group);
+    #else
+    QSettings cfg;
+    cfg.beginGroup(group);
+    #endif
+    SET_VALUE("name", name);
+    SET_VALUE("url", url);
+    CFG_SYNC;
 }
-
 
 static const QLatin1String constCfgPrefix("RemoteDevice-");
 static const QLatin1String constCfgKey("remoteDevices");
@@ -97,19 +112,24 @@ static const QLatin1String constCfgKey("remoteDevices");
 QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
 {
     QList<Device *> devices;
-    KConfigGroup grp(KGlobal::config(), "General");
-    QStringList names=grp.readEntry(constCfgKey, QStringList());
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup cfg(KGlobal::config(), "General");
+    #else
+    QSettings cfg;
+    cfg.beginGroup("General");
+    #endif
+    QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
     foreach (const QString &n, names) {
         Details d;
         d.load(constCfgPrefix+n);
         if (d.isEmpty() || d.name!=n) {
-            KGlobal::config()->deleteGroup(constCfgPrefix+n);
-        } else if (d.url.isLocalFile() || constSshfsProtocol==d.url.protocol()) {
+            REMOVE_GROUP(constCfgPrefix+n);
+        } else if (d.isLocalFile() || d.url.startsWith(constSshfsProtocol)) {
             devices.append(new RemoteFsDevice(m, d));
         }
     }
     if (devices.count()!=names.count()) {
-        KGlobal::config()->sync();
+        CFG_SYNC;
     }
     return devices;
 }
@@ -119,15 +139,20 @@ Device * RemoteFsDevice::create(DevicesModel *m, const QString &cover, const Dev
     if (d.isEmpty()) {
         return false;
     }
-    KConfigGroup grp(KGlobal::config(), "General");
-    QStringList names=grp.readEntry(constCfgKey, QStringList());
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup cfg(KGlobal::config(), "General");
+    #else
+    QSettings cfg;
+    cfg.beginGroup("General");
+    #endif
+    QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
     if (names.contains(d.name)) {
         return false;
     }
     names.append(d.name);
-    grp.writeEntry(constCfgKey, names);
+    SET_VALUE(constCfgKey, names);
     d.save(constCfgPrefix+d.name);
-    if (d.url.isLocalFile() || constSshfsProtocol==d.url.protocol()) {
+    if (d.isLocalFile() || d.url.startsWith(constSshfsProtocol)) {
         return new RemoteFsDevice(m, cover, options, d);
     }
     return 0;
@@ -138,15 +163,20 @@ void RemoteFsDevice::remove(Device *dev)
     if (!dev || RemoteFs!=dev->devType()) {
         return;
     }
-    KConfigGroup grp(KGlobal::config(), "General");
-    QStringList names=grp.readEntry(constCfgKey, QStringList());
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup cfg(KGlobal::config(), "General");
+    #else
+    QSettings cfg;
+    cfg.beginGroup("General");
+    #endif
+    QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
     RemoteFsDevice *rfs=qobject_cast<RemoteFsDevice *>(dev);
     QString name=rfs ? rfs->details.name : QString();
     if (names.contains(name)) {
         names.removeAll(name);
-        KGlobal::config()->deleteGroup(dev->udi());
-        grp.writeEntry(constCfgKey, names);
-        KGlobal::config()->sync();
+        REMOVE_GROUP(dev->udi());
+        SET_VALUE(constCfgKey, names);
+        CFG_SYNC;
     }
     if (rfs) {
         rfs->stopScanner(false);
@@ -164,17 +194,22 @@ QString RemoteFsDevice::createUdi(const QString &n)
 
 void RemoteFsDevice::renamed(const QString &oldName, const QString &newName)
 {
-    KConfigGroup grp(KGlobal::config(), "General");
-    QStringList names=grp.readEntry(constCfgKey, QStringList());
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup cfg(KGlobal::config(), "General");
+    #else
+    QSettings cfg;
+    cfg.beginGroup("General");
+    #endif
+    QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
     if (names.contains(oldName)) {
         names.removeAll(oldName);
-        KGlobal::config()->deleteGroup(createUdi(oldName));
+        REMOVE_GROUP(createUdi(oldName));
     }
     if (!names.contains(newName)) {
         names.append(newName);
     }
-    grp.writeEntry(constCfgKey, names);
-    KGlobal::config()->sync();
+    SET_VALUE(constCfgKey, names);
+    CFG_SYNC;
 }
 
 RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d)
@@ -185,7 +220,7 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const Devi
 {
     coverFileName=cover;
     opts=options;
-    details.url.setPath(MPDParseUtils::fixPath(details.url.path()));
+    details.url=MPDParseUtils::fixPath(details.url);
     load();
     mount();
 }
@@ -196,7 +231,7 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
     , details(d)
     , proc(0)
 {
-    details.url.setPath(MPDParseUtils::fixPath(details.url.path()));
+    details.url=MPDParseUtils::fixPath(details.url);
     setup();
 }
 
@@ -229,18 +264,36 @@ void RemoteFsDevice::mount()
             emit error(i18n("Password prompting does not work when cantata is started from the commandline."));
             return;
         }
-        if (KStandardDirs::findExe("ksshaskpass").isEmpty()) {
-            emit error(i18n("\"ksshaskpass\" is not installed! This is required for entering passwords"));
+        QStringList askPassList;
+        const char *env=qgetenv("KDE_FULL_SESSION");
+        QString dm=env && 0==strcmp(env, "true") ? QLatin1String("KDE") : QString(qgetenv("XDG_CURRENT_DESKTOP"));
+        if (dm.isEmpty() || QLatin1String("KDE")==dm) {
+            askPassList << QLatin1String("ksshaskpass") << QLatin1String("ssh-askpass") << QLatin1String("ssh-askpass-gnome");
+        } else {
+            askPassList << QLatin1String("ssh-askpass-gnome") << QLatin1String("ssh-askpass") << QLatin1String("ksshaskpass");
+        }
+
+        QString askPass;
+        foreach (const QString &ap, askPassList) {
+            askPass=Utils::findExe(ap);
+            if (!askPass.isEmpty()) {
+                break;
+            }
+        }
+
+        if (askPass.isEmpty()) {
+            emit error(i18n("No suitable ssh-askpass applicaiton installed! This is required for entering passwords."));
             return;
         }
-        cmd=KStandardDirs::findExe("sshfs");
+        cmd=Utils::findExe("sshfs");
         if (!cmd.isEmpty()) {
             if (!QDir(mountPoint(details, true)).entryList(QDir::NoDot|QDir::NoDotDot|QDir::AllEntries|QDir::Hidden).isEmpty()) {
-                emit error(i18n("Mount point (\"%1\") is not empty!", mountPoint(details, true)));
+                emit error(i18n("Mount point (\"%1\") is not empty!").arg(mountPoint(details, true)));
                 return;
             }
-            args << details.url.user()+QChar('@')+details.url.host()+QChar(':')+details.url.path() << QLatin1String("-p")
-                    << QString::number(details.url.port()) << mountPoint(details, true)
+            QUrl url(details.url);
+            args << url.userName()+QChar('@')+url.host()+QChar(':')+url.path() << QLatin1String("-p")
+                    << QString::number(url.port()) << mountPoint(details, true)
                     << QLatin1String("-o") << QLatin1String("ServerAliveInterval=15");
                     //<< QLatin1String("-o") << QLatin1String("Ciphers=arcfour");
         } else {
@@ -272,7 +325,7 @@ void RemoteFsDevice::unmount()
     if (!details.isLocalFile()) {
         QString mp=mountPoint(details, false);
         if (!mp.isEmpty()) {
-            cmd=KStandardDirs::findExe("fusermount");
+            cmd=Utils::findExe("fusermount");
             if (!cmd.isEmpty()) {
                 args << QLatin1String("-u") << QLatin1String("-z") << mp;
             } else {
@@ -297,8 +350,8 @@ void RemoteFsDevice::procFinished(int exitCode)
     proc=0;
 
     if (0!=exitCode) {
-        emit error(wasMount ? i18n("Failed to connect to \"%1\"", details.name)
-                            : i18n("Failed to disconnect from \"%1\"", details.name));
+        emit error(wasMount ? i18n("Failed to connect to \"%1\"").arg(details.name)
+                            : i18n("Failed to disconnect from \"%1\"").arg(details.name));
         setStatusMessage(QString());
     } else if (wasMount) {
         setStatusMessage(i18n("Updating tracks..."));
@@ -313,7 +366,7 @@ void RemoteFsDevice::procFinished(int exitCode)
 bool RemoteFsDevice::isConnected() const
 {
     if (details.isLocalFile()) {
-        return QDir(details.url.path()).exists();
+        return QDir(details.url).exists();
     }
 
     QString mp=mountPoint(details, false);
@@ -328,12 +381,24 @@ bool RemoteFsDevice::isConnected() const
     if (mp.endsWith('/')) {
         mp=mp.left(mp.length()-1);
     }
+    #ifdef ENABLE_KDE_SUPPORT
     KMountPoint::List list=KMountPoint::currentMountPoints();
     foreach (KMountPoint::Ptr p, list) {
         if (p->mountPoint()==mp) {
             return true;
         }
     }
+    #else
+    QFile mtab("/proc/mounts");
+    if (mtab.open(QIODevice::ReadOnly)) {
+        while (!mtab.atEnd()) {
+            QStringList parts = QString(mtab.readLine()).split(' ');
+            if (parts.size()>=2 && parts.at(1)==mp) {
+                return true;
+            }
+        }
+    }
+    #endif
     return false;
 }
 
@@ -343,8 +408,8 @@ double RemoteFsDevice::usedCapacity()
         return -1.0;
     }
 
-    KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(mountPoint(details, false));
-    return inf.size()>0 ? (inf.used()*1.0)/(inf.size()*1.0) : -1.0;
+    spaceInfo.setPath(mountPoint(details, false));
+    return spaceInfo.size()>0 ? (spaceInfo.used()*1.0)/(spaceInfo.size()*1.0) : -1.0;
 }
 
 QString RemoteFsDevice::capacityString()
@@ -356,8 +421,9 @@ QString RemoteFsDevice::capacityString()
     if (!details.isLocalFile()) {
         return i18n("Capacity Unknown");
     }
-    KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(mountPoint(details, false));
-    return i18n("%1 free", KGlobal::locale()->formatByteSize(inf.size()-inf.used()), 1);
+
+    spaceInfo.setPath(mountPoint(details, false));
+    return i18n("%1 free").arg(Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
 }
 
 qint64 RemoteFsDevice::freeSpace()
@@ -366,8 +432,8 @@ qint64 RemoteFsDevice::freeSpace()
         return 0;
     }
 
-    KDiskFreeSpaceInfo inf=KDiskFreeSpaceInfo::freeSpaceInfo(mountPoint(details, false));
-    return inf.size()-inf.used();
+    spaceInfo.setPath(mountPoint(details, false));
+    return spaceInfo.size()-spaceInfo.used();
 }
 
 void RemoteFsDevice::load()
@@ -385,11 +451,24 @@ void RemoteFsDevice::setup()
     QString key=udi();
     opts.load(key);
     details.load(key);
-    details.url.setPath(MPDParseUtils::fixPath(details.url.path()));
-    KConfigGroup grp(KGlobal::config(), key);
-    opts.useCache=grp.readEntry("useCache", true);
-    coverFileName=grp.readEntry("coverFileName", "cover.jpg");
-    configured=KGlobal::config()->hasGroup(key);
+    details.url=MPDParseUtils::fixPath(details.url);
+    #ifndef ENABLE_KDE_SUPPORT
+    QSettings cfg;
+    #endif
+    if (HAS_GROUP(key)) {
+        #ifdef ENABLE_KDE_SUPPORT
+        KConfigGroup cfg(KGlobal::config(), key);
+        #else
+        cfg.beginGroup(key);
+        #endif
+        opts.useCache=GET_BOOL("useCache", true);
+        coverFileName=GET_STRING("coverFileName", "cover.jpg");
+        configured=true;
+    } else {
+        opts.useCache=true;
+        coverFileName=QLatin1String("cover.jpg");
+        configured=false;
+    }
     load();
 }
 
@@ -446,7 +525,7 @@ void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Devic
 
     configured=true;
     Details oldDetails=details;
-    newDetails.url.setPath(MPDParseUtils::fixPath(newDetails.url.path()));
+    newDetails.url=MPDParseUtils::fixPath(newDetails.url);
 
     if (opts.useCache!=newOpts.useCache || newDetails.url!=oldDetails.url) { // Cache/url settings changed
         if (opts.useCache && newDetails.url==oldDetails.url) {
@@ -468,9 +547,14 @@ void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Devic
     QString key=udi();
     details.save(key);
     opts.save(key);
-    KConfigGroup grp(KGlobal::config(), key);
-    grp.writeEntry("useCache", opts.useCache);
-    grp.writeEntry("coverFileName", coverFileName);
+    #ifdef ENABLE_KDE_SUPPORT
+    KConfigGroup cfg(KGlobal::config(), key);
+    #else
+    QSettings cfg;
+    cfg.beginGroup(key);
+    #endif
+    SET_VALUE("useCache", opts.useCache);
+    SET_VALUE("coverFileName", coverFileName);
 
     if (newName) {
         QString oldMount=mountPoint(oldDetails, false);

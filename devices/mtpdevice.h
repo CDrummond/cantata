@@ -26,14 +26,17 @@
 
 #include "device.h"
 #include "song.h"
+#ifdef ENABLE_KDE_SUPPORT
 #include <solid/portablemediaplayer.h>
+#else
+#include "solid-lite/portablemediaplayer.h"
+#endif
 #include <libmtp.h>
 
 class MusicLibraryItemRoot;
 class QThread;
 class MtpDevice;
-class KJob;
-class KTemporaryFile;
+class QTemporaryFile;
 
 class MtpConnection : public QObject
 {
@@ -134,8 +137,8 @@ private Q_SLOTS:
     void libraryUpdated();
     void rescan(bool full=true);
     void putSongStatus(bool ok, int id, const QString &file, bool fixedVa);
-    void transcodeSongResult(KJob *job);
-    void transcodePercent(KJob *job, unsigned long percent);
+    void transcodeSongResult(int status);
+    void transcodePercent(int percent);
     void emitProgress(unsigned long);
     void getSongStatus(bool ok);
     void delSongStatus(bool ok);
@@ -149,7 +152,7 @@ private:
     Solid::PortableMediaPlayer *pmp;
     QThread *thread;
     MtpConnection *connection;
-    KTemporaryFile *tempFile;
+    QTemporaryFile *tempFile;
     Song currentSong;
     bool mtpUpdating;
     QString serial;

@@ -20,6 +20,8 @@
     languages that have more than 1 plural form, it is suggested that BOTH
     strings are translatated to the format "Items: %1" - e.g. "1 Track" becomes
     "Tracks: 1", and "%1 Tracks" becomes "Tracks: %1"
+11. Device sync support for Qt-only  builds. To support this, a cut-down version
+    of Solid is included.
 
 0.8.3.1
 -------

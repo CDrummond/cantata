@@ -25,9 +25,8 @@
 #include "treeview.h"
 #include "musiclibrarymodel.h"
 #include "musiclibraryproxymodel.h"
-#include <KDE/KAction>
-#include <KDE/KLocale>
-#include <KDE/KIcon>
+#include "icon.h"
+#include <QtGui/QAction>
 
 SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action)
     : QWidget(parent)
@@ -45,7 +44,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     connect(tree, SIGNAL(itemsSelected(bool)), button, SLOT(setEnabled(bool)));
     connect(button, SIGNAL(clicked()), SLOT(copySongs()));
 
-    KAction *act=new KAction(action, this);
+    QAction *act=new QAction(action, this);
     connect(act, SIGNAL(triggered(bool)), SLOT(copySongs()));
     tree->addAction(act);
     tree->setAlternatingRowColors(false); // Otherwise background gets corrrupted.
@@ -57,7 +56,7 @@ SyncCollectionWidget::~SyncCollectionWidget()
 
 void SyncCollectionWidget::setIcon(const QString &iconName)
 {
-    tree->setPixmap(KIcon(iconName).pixmap(128, 128));
+    tree->setPixmap(QIcon::fromTheme(iconName).pixmap(128, 128));
 }
 
 void SyncCollectionWidget::update(const QSet<Song> &songs)

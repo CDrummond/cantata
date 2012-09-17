@@ -50,6 +50,9 @@ public:
     void setText(const QString &t) { edit->setText(t); }
     void setButtonVisible(bool v) { button->setVisible(v); }
 
+Q_SIGNALS:
+    void textChanged(const QString &);
+
 private Q_SLOTS:
     void chooseDir();
 

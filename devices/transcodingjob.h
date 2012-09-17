@@ -22,17 +22,19 @@
 #ifndef TRANSCODING_JOB_H
 #define TRANSCODING_JOB_H
 
+#include "filejob.h"
 #include <QtCore/QStringList>
-#include <KDE/KJob>
-#include <KDE/KProcess>
+#include <QtCore/QProcess>
 
-class TranscodingJob : public KJob
+class TranscodingJob : public FileJob
 {
     Q_OBJECT
 public:
-    explicit TranscodingJob(const QStringList &params, QObject *parent = 0);
+    explicit TranscodingJob(const QStringList &params);
+    ~TranscodingJob();
 
     void start();
+    void stop();
 
 private Q_SLOTS:
     void processOutput();
@@ -43,7 +45,8 @@ private:
     inline qint64 computeProgress(const QString &output);
 
 private:
-    KProcess *process;
+    QStringList parameters;
+    QProcess *process;
     qint64 duration; //in csec
 };
 

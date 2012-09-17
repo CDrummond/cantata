@@ -33,8 +33,6 @@
 #include "remotefsdevice.h"
 #endif
 
-class KAction;
-
 class DevicesPage : public QWidget, public Ui::DevicesPage
 {
     Q_OBJECT
@@ -73,14 +71,14 @@ Q_SIGNALS:
 private:
     MainWindow *mw;
     MusicLibraryProxyModel proxy;
-    KAction *configureAction;
-    KAction *refreshAction;
-    KAction *copyAction;
+    Action *configureAction;
+    Action *refreshAction;
+    Action *copyAction;
     #ifdef ENABLE_REMOTE_DEVICES
-    KAction *forgetDeviceAction;
-    KAction *toggleDeviceAction;
+    Action *forgetDeviceAction;
+    Action *toggleDeviceAction;
     #endif
-    KAction *syncAction;
+    Action *syncAction;
     QSet<QString> genres;
 };
 

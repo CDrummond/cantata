@@ -42,11 +42,6 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 #include <QtCore/QTimer>
-#include <KDE/KUrl>
-#include <KDE/KDiskFreeSpaceInfo>
-#include <KDE/KGlobal>
-#include <KDE/KIO/FileCopyJob>
-#include <KDE/KIO/Job>
 
 static const QLatin1String constCantataCacheFile("/.cache.xml");
 
@@ -231,8 +226,7 @@ void FsDevice::addSong(const Song &s, bool overwrite)
         return;
     }
 
-    KUrl dest(destFile);
-    QDir dir(dest.directory());
+    QDir dir(Utils::getDir(destFile));
     if(!dir.exists() && !Utils::createDir(dir.absolutePath(), QString())) {
         emit actionStatus(DirCreationFaild);
     }
@@ -240,15 +234,14 @@ void FsDevice::addSong(const Song &s, bool overwrite)
     currentSong=s;
     if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
         transcoding=false;
-        KIO::FileCopyJob *job=KIO::file_copy(KUrl(s.file), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
-        connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
-        connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
+        CopyJob *job=new CopyJob(s.file, destFile);
+        connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
+        connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     } else {
         transcoding=true;
         TranscodingJob *job=new TranscodingJob(encoder.params(opts.transcoderValue, s.file, destFile));
-        connect(job, SIGNAL(result(KJob *)), SLOT(addSongResult(KJob *)));
-        connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
-        job->start();
+        connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
+        connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     }
 }
 
@@ -288,17 +281,17 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
 
     currentBaseDir=baseDir;
     currentMusicPath=musicPath;
-    KUrl dest(currentBaseDir+currentMusicPath);
-    QDir dir(dest.directory());
+    QString dest(currentBaseDir+currentMusicPath);
+    QDir dir(Utils::getDir(dest));
     if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
     }
 
     currentSong=s;
-    KIO::FileCopyJob *job=KIO::file_copy(KUrl(source), dest, -1, KIO::HideProgressInfo|(overwrite ? KIO::Overwrite : KIO::DefaultFlags));
-    connect(job, SIGNAL(result(KJob *)), SLOT(copySongToResult(KJob *)));
-    connect(job, SIGNAL(percent(KJob *, unsigned long)), SLOT(percent(KJob *, unsigned long)));
+    CopyJob *job=new CopyJob(source, dest);
+    connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
+    connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
 }
 
 void FsDevice::removeSong(const Song &s)
@@ -317,8 +310,8 @@ void FsDevice::removeSong(const Song &s)
     }
 
     currentSong=s;
-    KIO::SimpleJob *job=KIO::file_delete(KUrl(audioFolder+s.file), KIO::HideProgressInfo);
-    connect(job, SIGNAL(result(KJob *)), SLOT(removeSongResult(KJob *)));
+    DeleteJob *job=new DeleteJob(audioFolder+s.file);
+    connect(job, SIGNAL(result(int)), SLOT(removeSongResult(int)));
 }
 
 void FsDevice::cleanDirs(const QSet<QString> &dirs)
@@ -328,28 +321,33 @@ void FsDevice::cleanDirs(const QSet<QString> &dirs)
     }
 }
 
-void FsDevice::percent(KJob *job, unsigned long percent)
+void FsDevice::percent(int percent)
 {
     if (jobAbortRequested && 100!=percent) {
-        job->kill(KJob::EmitResult);
+        FileJob *job=qobject_cast<FileJob *>(sender());
+        if (job) {
+            job->stop();
+        }
         return;
     }
     emit progress(percent);
 }
 
-void FsDevice::addSongResult(KJob *job)
+void FsDevice::addSongResult(int status)
 {
+    spaceInfo.setDirty();
     QString destFileName=opts.createFilename(currentSong);
     if (transcoding) {
         destFileName=encoder.changeExtension(destFileName);
     }
     if (jobAbortRequested) {
-        if (0!=job->percent() && 100!=job->percent() && QFile::exists(audioFolder+destFileName)) {
+        FileJob *job=qobject_cast<FileJob *>(sender());
+        if (job && job->wasStarted() && QFile::exists(audioFolder+destFileName)) {
             QFile::remove(audioFolder+destFileName);
         }
         return;
     }
-    if (job->error()) {
+    if (FileJob::StatusOk!=status) {
         emit actionStatus(transcoding ? TranscodeFailed : Failed);
     } else {
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
@@ -367,15 +365,17 @@ void FsDevice::addSongResult(KJob *job)
     }
 }
 
-void FsDevice::copySongToResult(KJob *job)
+void FsDevice::copySongToResult(int status)
 {
+    spaceInfo.setDirty();
     if (jobAbortRequested) {
-        if (0!=job->percent() && 100!=job->percent() && QFile::exists(currentBaseDir+currentMusicPath)) {
+        FileJob *job=qobject_cast<FileJob *>(sender());
+        if (job && job->wasStarted() && QFile::exists(currentBaseDir+currentMusicPath)) {
             QFile::remove(currentBaseDir+currentMusicPath);
         }
         return;
     }
-    if (job->error()) {
+    if (FileJob::StatusOk!=status) {
         emit actionStatus(Failed);
     } else {
         QString sourceDir=MPDParseUtils::getDir(currentSong.file);
@@ -391,12 +391,13 @@ void FsDevice::copySongToResult(KJob *job)
     }
 }
 
-void FsDevice::removeSongResult(KJob *job)
+void FsDevice::removeSongResult(int status)
 {
+    spaceInfo.setDirty();
     if (jobAbortRequested) {
         return;
     }
-    if (job->error()) {
+    if (FileJob::StatusOk!=status) {
         emit actionStatus(Failed);
     } else {
         removeSongFromList(currentSong);

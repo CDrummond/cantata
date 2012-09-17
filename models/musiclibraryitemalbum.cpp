@@ -32,7 +32,7 @@
 #include "covers.h"
 #include "config.h"
 #include "icon.h"
-#if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "device.h"
 #include "utils.h"
 #endif
@@ -204,7 +204,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.album=m_itemData;
             song.year=m_year;
             song.file=firstSong->file();
-            #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
+            #ifdef ENABLE_DEVICES_SUPPORT
             if (!song.file.startsWith("/") && parent() && parent()->parent() && qobject_cast<Device *>(parent()->parent())) {
                 QString root=static_cast<Device *>(parent()->parent())->path();
                 if (!root.isEmpty()) {

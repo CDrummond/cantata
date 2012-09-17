@@ -35,9 +35,15 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "localize.h"
+#ifdef ENABLE_KDE_SUPPORT
 #include <solid/portablemediaplayer.h>
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
+#else
+#include "solid-lite/portablemediaplayer.h"
+#include "solid-lite/storageaccess.h"
+#include "solid-lite/storagedrive.h"
+#endif
 #include <QtCore/QDir>
 #include <unistd.h>
 
@@ -313,5 +319,5 @@ void Device::setStatusMessage(const QString &msg)
 
 void Device::songCount(int c)
 {
-    setStatusMessage(i18n("Updating (%1)...", c));
+    setStatusMessage(i18n("Updating (%1)...").arg(c));
 }

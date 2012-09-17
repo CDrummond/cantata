@@ -111,39 +111,6 @@ struct MpdDefaults
 
 static MpdDefaults mpdDefaults;
 
-#ifdef ENABLE_KDE_SUPPORT
-#define CFG_GET_STRING(CFG, KEY, DEF)     (CFG.readEntry(KEY, QString(DEF)))
-#define CFG_GET_STRINGLIST(CFG, KEY, DEF) (CFG.readEntry(KEY, DEF))
-#define CFG_GET_BOOL(CFG, KEY, DEF)       (CFG.readEntry(KEY, DEF))
-#define CFG_GET_INT(CFG, KEY, DEF)        (CFG.readEntry(KEY, DEF))
-#define CFG_GET_BYTE_ARRAY(CFG, KEY)      (CFG.readEntry(KEY, QByteArray()))
-#define CFG_GET_SIZE(CFG, KEY)            (CFG.readEntry(KEY, QSize()))
-#define CFG_SET_VALUE(CFG, KEY, V)        (CFG.writeEntry(KEY, V))
-#define HAS_GROUP(GRP)                    (KGlobal::config()->hasGroup(GRP))
-#define REMOVE_GROUP(GRP)                 (KGlobal::config()->deleteGroup(GRP))
-#define REMOVE_ENTRY(KEY)                 (cfg.deleteEntry(KEY))
-#define GET_STRING(KEY, DEF)              CFG_GET_STRING(cfg, KEY, DEF)
-#define GET_STRINGLIST(KEY, DEF)          CFG_GET_STRINGLIST(cfg, KEY, DEF)
-#define GET_BOOL(KEY, DEF)                CFG_GET_BOOL(cfg, KEY, DEF)
-#define GET_INT(KEY, DEF)                 CFG_GET_INT(cfg, KEY, DEF)
-#define GET_BYTE_ARRAY(KEY)               CFG_GET_BYTE_ARRAY(cfg, KEY)
-#define GET_SIZE(KEY)                     CFG_GET_SIZE(cfg, KEY)
-#define SET_VALUE(KEY, V)                 CFG_SET_VALUE(cfg, KEY, V)
-#define HAS_ENTRY(KEY)                    (cfg.hasKey(KEY))
-#else
-#define GET_STRING(KEY, DEF)     (cfg.contains(KEY) ? cfg.value(KEY).toString() : QString(DEF))
-#define GET_STRINGLIST(KEY, DEF) (cfg.contains(KEY) ? cfg.value(KEY).toStringList() : DEF)
-#define GET_BOOL(KEY, DEF)       (cfg.contains(KEY) ? cfg.value(KEY).toBool() : DEF)
-#define GET_INT(KEY, DEF)        (cfg.contains(KEY) ? cfg.value(KEY).toInt() : DEF)
-#define GET_BYTE_ARRAY(KEY)      (cfg.value(KEY).toByteArray())
-#define GET_SIZE(KEY)            (cfg.contains(KEY) ? cfg.value(KEY).toSize() : QSize())
-#define SET_VALUE(KEY, V)        (cfg.setValue(KEY, V))
-#define HAS_GROUP(GRP)           (-1!=cfg.childGroups().indexOf(GRP))
-#define REMOVE_GROUP(GRP)        (cfg.remove(GRP))
-#define REMOVE_ENTRY(KEY)        (cfg.remove(KEY))
-#define HAS_ENTRY(KEY)           (cfg.contains(KEY))
-#endif
-
 Settings::Settings()
     : isFirstRun(false)
     , timer(0)
@@ -904,11 +871,7 @@ void Settings::save(bool force)
 {
     if (force) {
         SET_VALUE("version", PACKAGE_VERSION);
-        #ifdef ENABLE_KDE_SUPPORT
-        KGlobal::config()->sync();
-        #else
-        cfg.sync();
-        #endif
+        CFG_SYNC;
         if (timer) {
             timer->stop();
         }

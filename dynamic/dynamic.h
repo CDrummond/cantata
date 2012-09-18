@@ -24,6 +24,7 @@
 #ifndef DYNAMIC_H
 #define DYNAMIC_H
 
+#include <QtGui/QIcon>
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QList>
 #include <QtCore/QMap>
@@ -93,6 +94,8 @@ public:
         checkHelper();
     }
 
+    void setIcon(const QIcon &icn) { icon=icn; }
+    
 Q_SIGNALS:
     void running(bool status);
     void error(const QString &str);
@@ -128,6 +131,7 @@ private:
     void updateEntry(const Entry &e);
 
 private:
+    QIcon icon;
     QTimer *timer;
     QList<Entry> entryList;
     QString currentEntry;

@@ -196,7 +196,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     QTP_TRACKS_DURATION_STR(pl->songs.count(), Song::formattedTime(pl->totalTime()));
                     #endif
         case Qt::DecorationRole:
-            return Icon("view-media-playlist");
+            return icon;
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));

@@ -326,6 +326,11 @@ MainWindow::MainWindow(QWidget *parent)
     shufflePlayQueueAction = createAction("shuffleplaylist", i18n("Shuffle"));
     savePlayQueueAction = createAction("saveplaylist", i18n("Save As"), "document-save-as");
     clearPlayQueueAction = createAction("clearplaylist", i18n("Clear"), "edit-clear-list");
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    if (clearPlayQueueAction->icon().isNull()) {
+        clearPlayQueueAction->setIcon(Icon("edit-delete"));
+    }
+    #endif
     expandInterfaceAction = createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
     randomPlayQueueAction = createAction("randomplaylist", i18n("Random"), "media-playlist-shuffle");
     repeatPlayQueueAction = createAction("repeatplaylist", i18n("Repeat"));
@@ -353,13 +358,30 @@ MainWindow::MainWindow(QWidget *parent)
     albumsTabAction = createAction("showalbumstab", i18n("Albums"), DEFAULT_ALBUM_ICON);
     foldersTabAction = createAction("showfolderstab", i18n("Folders"), "inode-directory");
     playlistsTabAction = createAction("showplayliststab", i18n("Playlists"), "view-media-playlist");
+
     dynamicTabAction = createAction("showdynamictab", i18n("Dynamic"), "media-playlist-shuffle");
     lyricsTabAction = createAction("showlyricstab", i18n("Lyrics"), "view-media-lyrics");
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    if (playlistsTabAction->icon().isNull()) {
+        playlistsTabAction->setIcon(Icon("audio-x-mp3-playlist"));
+        if (playlistsTabAction->icon().isNull()) {
+            playlistsTabAction->setIcon(Icon("audio-x-generic"));
+        }
+    }
+    if (dynamicTabAction->icon().isNull()) {
+        dynamicTabAction->setIcon(Icon("text-x-generic"));
+    }
+    if (lyricsTabAction->icon().isNull()) {
+        lyricsTabAction->setIcon(Icon("text-x-generic"));
+    }
+    #endif
+    PlaylistsModel::self()->setIcon(playlistsTabAction->icon());
+    Dynamic::self()->setIcon(dynamicTabAction->icon());
     streamsTabAction = createAction("showstreamstab", i18n("Streams"), DEFAULT_STREAM_ICON);
     #ifdef ENABLE_WEBKIT
     infoTabAction = createAction("showinfotab", i18n("Info"));
     #endif
-    serverInfoTabAction = createAction("showserverinfotab", i18n("Server Info"), "server-database");
+    serverInfoTabAction = createAction("showserverinfotab", i18n("Server Info"), "network-server");
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction = createAction("showdevicestab", i18n("Devices"), "multimedia-player");
     copyToDeviceAction = createAction("copytodevice", i18n("Copy To Device"), "multimedia-player");
@@ -442,7 +464,7 @@ MainWindow::MainWindow(QWidget *parent)
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
 
-    menuButton->setIcon(Icon("configure"));
+    menuButton->setIcon(Icon::configureIcon);
     menuButton->setMenu(mainMenu);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     volumeButton->setIcon(Icon("audio-volume-high"));

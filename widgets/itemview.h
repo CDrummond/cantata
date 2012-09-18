@@ -118,7 +118,7 @@ public:
         Role_Image,
         Role_Capacity,
         Role_CapacityText,
-        Role_ToggleIconName,
+        Role_ToggleIcon,
         Role_Search
     };
 

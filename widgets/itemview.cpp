@@ -944,7 +944,7 @@ QAction * ItemView::getAction(const QModelIndex &index)
     QRect rect(view()->visualRect(index));
     rect.moveTo(view()->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
     bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
-    bool haveToggle = toggle && !index.data(ItemView::Role_ToggleIconName).toString().isEmpty();
+    bool haveToggle = toggle && !index.data(ItemView::Role_ToggleIcon).value<QIcon>().isNull();
     if (Mode_Tree!=mode || showCapacity) {
         if (iconMode) {
             rect.adjust(ActionItemDelegate::constBorder, ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder);

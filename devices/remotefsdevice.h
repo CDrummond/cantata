@@ -26,6 +26,7 @@
 
 #include "fsdevice.h"
 #include <sys/types.h>
+#include <QtCore/QUrl>
 
 class QProcess;
 class RemoteFsDevice : public FsDevice
@@ -35,23 +36,31 @@ class RemoteFsDevice : public FsDevice
 public:
     struct Details
     {
-        void load(const QString &group);
-        void save(const QString &group) const;
+        Details()
+            : port(0) {
+        }
+        void load(const QString &group=QString());
+        void save() const;
 
         bool operator==(const Details &o) const {
-            return name==o.name && url==o.url;
+            return protocol==o.protocol && port==o.port && name==o.name && host==o.host && user==o.user && path==o.path;
         }
         bool operator!=(const Details &o) const {
             return !(*this==o);
         }
         bool isEmpty() const {
-            return name.isEmpty() || url.isEmpty();
+            return name.isEmpty() || path.isEmpty() || (!isLocalFile() && (host.isEmpty() || user.isEmpty() || 0==port));
         }
         bool isLocalFile() const {
-            return !url.startsWith(constSshfsProtocol);
+            return protocol.isEmpty();
         }
+
         QString name;
-        QString url;
+        QString protocol;
+        QString host;
+        QString user;
+        QString path;
+        int port;
     };
 
     static const QLatin1String constSshfsProtocol;

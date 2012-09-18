@@ -25,6 +25,7 @@
 #include "config.h"
 #include "mpdparseutils.h"
 #include "mpdconnection.h"
+#include "icon.h"
 #include "itemview.h"
 #include "network.h"
 #include "networkaccessmanager.h"
@@ -151,7 +152,7 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         return entryList.at(index.row()).name;
     case Qt::DecorationRole:
-        return IS_ACTIVE(entryList.at(index.row()).name) ? QIcon::fromTheme("media-playback-start") : QIcon::fromTheme("media-playlist-shuffle");
+        return IS_ACTIVE(entryList.at(index.row()).name) ? QIcon::fromTheme("media-playback-start") : icon;
     case ItemView::Role_SubText: {
         #ifdef ENABLE_KDE_SUPPORT
         return i18np("1 Rule", "%1 Rules", entryList.at(index.row()).rules.count());
@@ -159,8 +160,8 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         return QTP_RULES_STR(entryList.at(index.row()).rules.count());
         #endif
     }
-    case ItemView::Role_ToggleIconName:
-        return IS_ACTIVE(entryList.at(index.row()).name) ? "process-stop" : "media-playback-start";
+    case ItemView::Role_ToggleIcon:
+        return Icon(IS_ACTIVE(entryList.at(index.row()).name) ? "process-stop" : "media-playback-start");
     default:
         return QVariant();
     }

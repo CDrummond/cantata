@@ -22,6 +22,8 @@
     "Tracks: 1", and "%1 Tracks" becomes "Tracks: %1"
 11. Device sync support for Qt-only  builds. To support this, a cut-down version
     of Solid is included.
+12. Don't enforce oxygen icons for Qt-only (Linux) builds. Cehck for missing
+    icons, and use alternatives.
 
 0.8.3.1
 -------

@@ -80,6 +80,7 @@ int Application::newInstance() {
                 QString(), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "groupWarning")) {
             QApplication::exit(0);
         }
+        Icon::setupIconTheme();
         w=new MainWindow();
     }
 

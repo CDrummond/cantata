@@ -27,6 +27,7 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QFont>
 #include <QtGui/QPainter>
+#include <QtCore/QDir>
 
 static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
 {
@@ -103,9 +104,58 @@ void Icon::init(QToolButton *btn, bool setFlat)
     }
 }
 
-#if !defined ENABLE_KDE_SUPPORT
-#include <QtCore/QDir>
+QIcon Icon::configureIcon;
+QIcon Icon::connectIcon;
+QIcon Icon::disconnectIcon;
 
+void Icon::setupIconTheme()
+{
+    #ifdef Q_OS_WIN
+    // Check that we have certain icons in the selected icon theme. If not, and oxygen is installed, then
+    // set icon theme to oxygen.
+    QString theme=QIcon::themeName();
+    if (QLatin1String("oxygen")!=theme) {
+        QStringList check=QStringList() << "actions/edit-clear-list" << "actions/view-media-playlist"
+                                        << "actions/view-media-lyrics" << "actions/configure"
+                                        << "actions/view-choose" << "actions/view-media-artist";
+        bool found=false;
+
+        foreach (const QString &icn, check) {
+            if (!QIcon::hasThemeIcon(icn)) {
+                QStringList paths=QIcon::themeSearchPaths();
+
+                foreach (const QString &p, paths) {
+                    if (QDir(p+QLatin1String("/oxygen")).exists()) {
+                        QIcon::setThemeName(QLatin1String("oxygen"));
+                        found=true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+        }
+    }
+    #endif
+
+    configureIcon=Icon("configure");
+    connectIcon=Icon("network-connect");
+    disconnectIcon=Icon("network-disconnect");
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    if (configureIcon.isNull()) {
+        configureIcon=Icon("gtk-preferences");
+    }
+    if (connectIcon.isNull()) {
+        connectIcon=Icon("gtk-connect");
+    }
+    if (disconnectIcon.isNull()) {
+        disconnectIcon=Icon("gtk-disconnect");
+    }
+    #endif
+}
+
+#if !defined ENABLE_KDE_SUPPORT
 QIcon Icon::getMediaIcon(const char *name)
 {
     static QList<QIcon::Mode> modes=QList<QIcon::Mode>() << QIcon::Normal << QIcon::Disabled << QIcon::Active << QIcon::Selected;
@@ -118,33 +168,6 @@ QIcon Icon::getMediaIcon(const char *name)
     }
 
     return icn;
-}
-
-void Icon::setupIconTheme()
-{
-    // Check that we have certain icons in the selected icon theme. If not, and oxygen is installed, then
-    // set icon theme to oxygen.
-    QString theme=QIcon::themeName();
-    if (QLatin1String("oxygen")!=theme) {
-        QStringList check=QStringList() << "actions/edit-clear-list" << "actions/view-media-playlist"
-                                        << "actions/view-media-lyrics" << "actions/configure"
-                                        << "actions/view-choose" << "actions/view-media-artist"
-                                        << "places/server-database" << "devices/media-optical-audio";
-
-        foreach (const QString &icn, check) {
-            if (!QIcon::hasThemeIcon(icn)) {
-                QStringList paths=QIcon::themeSearchPaths();
-
-                foreach (const QString &p, paths) {
-                    if (QDir(p+QLatin1String("/oxygen")).exists()) {
-                        QIcon::setThemeName(QLatin1String("oxygen"));
-                        return;
-                    }
-                }
-                return;
-            }
-        }
-    }
 }
 
 QIcon Icon::create(const QStringList &sizes)

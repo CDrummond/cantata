@@ -44,11 +44,15 @@ namespace Icon
     extern QIcon createSingleIcon();
     extern int stdSize(int s);
     extern void init(QToolButton *btn, bool setFlat=true);
+    extern void setupIconTheme();
     #if !defined ENABLE_KDE_SUPPORT
     extern QIcon getMediaIcon(const char *name);
-    extern void setupIconTheme();
     extern QIcon create(const QStringList &sizes);
     #endif
+
+    extern QIcon configureIcon;
+    extern QIcon connectIcon;
+    extern QIcon disconnectIcon;
 }
 
 #endif

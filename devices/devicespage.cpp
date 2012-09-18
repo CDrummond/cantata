@@ -56,7 +56,8 @@ DevicesPage::DevicesPage(MainWindow *p)
 {
     setupUi(this);
 
-    configureAction = p->createAction("configuredevice", i18n("Configure Device"), "configure");
+    configureAction = p->createAction("configuredevice", i18n("Configure Device"), 0);
+    configureAction->setIcon(Icon::configureIcon);
     refreshAction = p->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
     copyAction = p->createAction("copytolibrary", i18n("Copy To Library"), "document-import");
     copyToLibraryButton->setDefaultAction(copyAction);

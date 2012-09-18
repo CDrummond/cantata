@@ -162,12 +162,12 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
     }
 
     if (toggle) {
-        QString iconName=index.data(ItemView::Role_ToggleIconName).toString();
-        if (!iconName.isEmpty()) {
+        QIcon icon=index.data(ItemView::Role_ToggleIcon).value<QIcon>();
+        if (!icon.isNull()) {
             if (act1 || act2) {
                 adjustActionRect(rtl, iconMode, actionRect);
             }
-            QPixmap pix=Icon(iconName).pixmap(QSize(constActionIconSize, constActionIconSize));
+            QPixmap pix=icon.pixmap(QSize(constActionIconSize, constActionIconSize));
             if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
                 drawBgnd(painter, actionRect);
                 painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,

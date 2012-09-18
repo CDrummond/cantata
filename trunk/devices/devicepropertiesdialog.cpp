@@ -24,7 +24,6 @@
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "localize.h"
-#include <KDE/KGlobal>
 
 DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     : Dialog(parent)

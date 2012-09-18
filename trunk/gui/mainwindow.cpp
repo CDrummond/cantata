@@ -332,7 +332,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     #endif
     expandInterfaceAction = createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
-    randomPlayQueueAction = createAction("randomplaylist", i18n("Random"), "media-playlist-shuffle");
+    randomPlayQueueAction = createAction("randomplaylist", i18n("Random"));
     repeatPlayQueueAction = createAction("repeatplaylist", i18n("Repeat"));
     singlePlayQueueAction = createAction("singleplaylist", i18n("Single"), 0, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
     consumePlayQueueAction = createAction("consumeplaylist", i18n("Consume"), 0, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
@@ -435,9 +435,11 @@ MainWindow::MainWindow(QWidget *parent)
     #if defined ENABLE_KDE_SUPPORT
     consumePlayQueueAction->setIcon(Icon("cantata-view-media-consume"));
     repeatPlayQueueAction->setIcon(Icon("cantata-view-media-repeat"));
+    randomPlayQueueAction->setIcon(Icon("cantata-view-media-shuffle"));
     #else
     consumePlayQueueAction->setIcon(Icon::create(QStringList() << ":consume16.png" << ":consume22.png"));
     repeatPlayQueueAction->setIcon(Icon::create(QStringList() << ":repeat16.png" << ":repeat22.png"));
+    randomPlayQueueAction->setIcon(Icon::create(QStringList() << ":shuffle16.png" << ":shuffle22.png"));
     #endif
     singlePlayQueueAction->setIcon(Icon::createSingleIcon());
     playPauseTrackAction->setIcon(playbackPlay);

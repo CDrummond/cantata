@@ -60,7 +60,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QCheckBox" name="fixVariousArtists"/>
+      <widget class="OnOffButton" name="fixVariousArtists"/>
      </item>
      <item row="3" column="0">
       <widget class="BuddyLabel" name="autoScanLabel">
@@ -73,7 +73,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QCheckBox" name="autoScan"/>
+      <widget class="OnOffButton" name="autoScan"/>
      </item>
      <item row="4" column="0">
       <widget class="BuddyLabel" name="useCacheLabel">
@@ -86,7 +86,7 @@
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QCheckBox" name="useCache"/>
+      <widget class="OnOffButton" name="useCache"/>
      </item>
     </layout>
    </item>
@@ -110,7 +110,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QCheckBox" name="asciiOnly">
+       <widget class="OnOffButton" name="asciiOnly">
         <property name="text">
          <string/>
         </property>
@@ -127,7 +127,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QCheckBox" name="replaceSpaces">
+       <widget class="OnOffButton" name="replaceSpaces">
         <property name="text">
          <string/>
         </property>
@@ -144,7 +144,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QCheckBox" name="ignoreThe">
+       <widget class="OnOffButton" name="ignoreThe">
         <property name="text">
          <string/>
         </property>
@@ -188,7 +188,7 @@
        </layout>
       </item>
       <item row="0" column="1">
-       <widget class="QCheckBox" name="vfatSafe">
+       <widget class="OnOffButton" name="vfatSafe">
         <property name="text">
          <string/>
         </property>
@@ -229,7 +229,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QCheckBox" name="transcoderWhenDifferent"/>
+         <widget class="OnOffButton" name="transcoderWhenDifferent"/>
         </item>
        </layout>
       </item>
@@ -255,6 +255,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>

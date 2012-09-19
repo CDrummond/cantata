@@ -23,7 +23,7 @@
 
 #include "externalsettings.h"
 #include "settings.h"
-#include <QtGui/QCheckBox>
+#include "onoffbutton.h"
 #include <QtCore/qglobal.h>
 
 ExternalSettings::ExternalSettings(QWidget *p)

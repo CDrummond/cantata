@@ -69,7 +69,7 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QCheckBox" name="libraryArtistImage">
+          <widget class="OnOffButton" name="libraryArtistImage">
            <property name="text">
             <string/>
            </property>
@@ -86,7 +86,7 @@
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QCheckBox" name="libraryYear">
+          <widget class="OnOffButton" name="libraryYear">
            <property name="text">
             <string/>
            </property>
@@ -224,7 +224,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QCheckBox" name="playListsStartClosed">
+        <widget class="OnOffButton" name="playListsStartClosed">
          <property name="text">
           <string/>
          </property>
@@ -290,7 +290,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QCheckBox" name="lyricsBgnd">
+        <widget class="OnOffButton" name="lyricsBgnd">
          <property name="text">
           <string/>
          </property>
@@ -314,7 +314,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QCheckBox" name="playQueueScroll"/>
+        <widget class="OnOffButton" name="playQueueScroll"/>
        </item>
        <item row="1" column="0">
         <widget class="BuddyLabel" name="playQueueGroupedLabel">
@@ -351,7 +351,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QCheckBox" name="playQueueAutoExpand">
+        <widget class="OnOffButton" name="playQueueAutoExpand">
          <property name="text">
           <string/>
          </property>
@@ -368,7 +368,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QCheckBox" name="playQueueStartClosed">
+        <widget class="OnOffButton" name="playQueueStartClosed">
          <property name="text">
           <string/>
          </property>
@@ -394,7 +394,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QCheckBox" name="groupSingle">
+          <widget class="OnOffButton" name="groupSingle">
            <property name="text">
             <string/>
            </property>
@@ -424,7 +424,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QCheckBox" name="showDeleteAction">
+          <widget class="OnOffButton" name="showDeleteAction">
            <property name="text">
             <string/>
            </property>
@@ -441,7 +441,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QCheckBox" name="storeCoversInMpdDir"/>
+          <widget class="OnOffButton" name="storeCoversInMpdDir"/>
          </item>
          <item row="4" column="0">
           <widget class="BuddyLabel" name="label_4">
@@ -454,7 +454,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QCheckBox" name="storeLyricsInMpdDir">
+          <widget class="OnOffButton" name="storeLyricsInMpdDir">
            <property name="text">
             <string/>
            </property>
@@ -471,7 +471,7 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
           </widget>
          </item>
          <item row="5" column="1">
-          <widget class="QCheckBox" name="forceSingleClick">
+          <widget class="OnOffButton" name="forceSingleClick">
            <property name="text">
             <string/>
            </property>
@@ -521,6 +521,11 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
   <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>

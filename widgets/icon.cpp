@@ -79,7 +79,10 @@ static QIcon createIcon(bool isSingle)
     QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
     if (stdColor==Qt::white) {
         stdColor=QColor(200, 200, 200);
-    }
+    } else if (stdColor.red()<128 && stdColor.green()<128 && stdColor.blue()<128 &&
+               stdColor.red()==stdColor.green() && stdColor.green()==stdColor.blue()) {
+        stdColor=Qt::black;
+    } 
     QColor highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
     QList<int> sizes=QList<int>() << 16 << 22;
 

@@ -102,32 +102,31 @@ bool ActionItemDelegate::hasActions(const QModelIndex &index, int actLevel)
     return true;
 }
 
-// static QPainterPath buildPath(const QRectF &r, double radius)
-// {
-//     QPainterPath path;
-//     double diameter(radius*2);
-//
-//     path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
-//     path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
-//     path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
-//     path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
-//     path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
-//     return path;
-// }
+static QPainterPath buildPath(const QRectF &r, double radius)
+{
+    QPainterPath path;
+    double diameter(radius*2);
+
+    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
+    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
+    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
+    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
+    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
+    return path;
+}
 
 static void drawBgnd(QPainter *painter, const QRect &rx)
 {
     QRectF r(rx.x()-0.5, rx.y()-0.5, rx.width()+1, rx.height()+1);
-    QPainterPath p;//(buildPath(r, r.width()/2.0));
+    QPainterPath p(buildPath(r, 3.0));
     QColor c(Qt::white);
 
-    p.addEllipse(r);
     painter->setRenderHint(QPainter::Antialiasing, true);
     c.setAlphaF(0.75);
     painter->fillPath(p, c);
-//     c.setAlphaF(0.95);
-//     painter->setPen(c);
-//     painter->drawPath(p);
+    c.setAlphaF(0.95);
+    painter->setPen(c);
+    painter->drawPath(p);
     painter->setRenderHint(QPainter::Antialiasing, false);
 }
 

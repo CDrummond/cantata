@@ -70,14 +70,9 @@ public:
     void updateSongFile(const Song &from, const Song &to);
     void removeCache();
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
-
-    #if !defined ENABLE_KDE_SUPPORT
-    static const QIcon & vaIcon();
-    #endif
     bool update(const QSet<Song> &songs);
     bool useArtistImages() const { return artistImages; }
     void setUseArtistImages(bool a) { artistImages=a; }
-
     const QDateTime & lastUpdate() { return databaseTime; }
 
 public Q_SLOTS:

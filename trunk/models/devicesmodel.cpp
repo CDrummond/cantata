@@ -36,6 +36,7 @@
 #include "umsdevice.h"
 #include "httpserver.h"
 #include "localize.h"
+#include "icon.h"
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>

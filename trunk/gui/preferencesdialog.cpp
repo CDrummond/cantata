@@ -119,7 +119,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page->setIcon(KIcon("network-server"));
     page=widget->addPage(serverplayback, i18n("Output"));
     page->setHeader(i18n("Output Settings"));
-    page->setIcon(KIcon("speaker"));
+    page->setIcon(Icon::speakerIcon);
     page=widget->addPage(playback, i18n("Playback"));
     page->setHeader(i18n("Playback Settings"));
     page->setIcon(KIcon("media-playback-start"));
@@ -136,14 +136,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     page->setIcon(KIcon("network-wired"));
     page=widget->addPage(lyrics, i18n("Lyrics"));
     page->setHeader(i18n("Lyrics Settings"));
-    page->setIcon(KIcon("view-media-lyrics"));
+    page->setIcon(Icon::lyricsIcon);
     #else
     QIcon icon=Icon("network-server");
     widget->AddTab(new ConfigPage(this, i18n("Connection Settings"), icon, server), icon, i18n("Connection"));
-    icon=Icon("speaker");
-    if (icon.isNull()) {
-        icon=Icon("audio-speakers");
-    }
+    icon=Icon::speakerIcon;
     widget->AddTab(new ConfigPage(this, i18n("Output Settings"), icon, serverplayback), icon, i18n("Output"));
     icon=Icon("media-playback-start");
     widget->AddTab(new ConfigPage(this, i18n("Playback Settings"),icon, playback), icon, i18n("Playback"));
@@ -158,10 +155,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     icon=Icon("network-wired");
     widget->AddTab(new ConfigPage(this, i18n("HTTP Server Settings"), icon, http), icon, i18n("HTTP Server"));
     #endif
-    icon=Icon("view-media-lyrics");
-    if (icon.isNull()) {
-        icon=Icon("text-x-generic");
-    }
+    icon=Icon::lyricsIcon;
     widget->AddTab(new ConfigPage(this, i18n("Lyrics Settings"), icon, lyrics), icon, i18n("Lyrics"));
     proxy = new ProxySettings(this);
     proxy->load();

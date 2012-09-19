@@ -26,6 +26,7 @@
     icons, and use alternatives.
 13. Use a random icon that matches the repeat icon better.
 14. Draw the consume icon in code, so that it matches random and repeat better.
+15. Add a ON/OFF style checkbox for linux builds when NOT run under KDE.
 
 0.8.3.1
 -------

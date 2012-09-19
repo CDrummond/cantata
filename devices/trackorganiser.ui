@@ -66,7 +66,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QCheckBox" name="ignoreThe">
+       <widget class="OnOffButton" name="ignoreThe">
         <property name="text">
          <string/>
         </property>
@@ -83,7 +83,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QCheckBox" name="replaceSpaces">
+       <widget class="OnOffButton" name="replaceSpaces">
         <property name="text">
          <string/>
         </property>
@@ -100,7 +100,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QCheckBox" name="asciiOnly">
+       <widget class="OnOffButton" name="asciiOnly">
         <property name="text">
          <string/>
         </property>
@@ -117,7 +117,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QCheckBox" name="vfatSafe">
+       <widget class="OnOffButton" name="vfatSafe">
         <property name="text">
          <string/>
         </property>
@@ -170,6 +170,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>

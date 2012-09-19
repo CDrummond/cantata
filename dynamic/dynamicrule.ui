@@ -152,7 +152,7 @@
       </widget>
      </item>
      <item row="8" column="1">
-      <widget class="QCheckBox" name="exactCheck"/>
+      <widget class="OnOffButton" name="exactCheck"/>
      </item>
      <item row="0" column="0">
       <widget class="BuddyLabel" name="label_9">
@@ -214,6 +214,11 @@
   <zorder>typeCombo</zorder>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>

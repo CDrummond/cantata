@@ -135,6 +135,7 @@ SET( CANTATA_SRCS
     widgets/coverwidget.cpp
     widgets/icon.cpp
     widgets/volumecontrol.cpp
+    widgets/onoffbutton.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp

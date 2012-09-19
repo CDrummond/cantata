@@ -93,8 +93,6 @@ public:
         Q_UNUSED(message)
         checkHelper();
     }
-
-    void setIcon(const QIcon &icn) { icon=icn; }
     
 Q_SIGNALS:
     void running(bool status);
@@ -131,7 +129,6 @@ private:
     void updateEntry(const Entry &e);
 
 private:
-    QIcon icon;
     QTimer *timer;
     QList<Entry> entryList;
     QString currentEntry;

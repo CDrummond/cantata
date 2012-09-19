@@ -28,6 +28,7 @@
 #include <QtGui/QFont>
 #include <QtGui/QPainter>
 #include <QtCore/QDir>
+#include <math.h>
 
 static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
 {
@@ -50,7 +51,29 @@ static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
     return pix;
 }
 
-QIcon Icon::createSingleIcon()
+static QPixmap createConsumeIconPixmap(int size, QColor &col, double opacity)
+{
+    QPixmap pix(size, size);
+    pix.fill(Qt::transparent);
+    QPainter p(&pix);
+    p.setPen(QPen(col, 1.5));
+    p.setOpacity(opacity);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    QRectF rect(2.5, 2.5, size-4, size-4);
+    double distanceX=fabs(cos(35.0))*(rect.width()/2);
+    double distanceY=fabs(sin(35.0))*(rect.height()/2);
+    double midX=rect.x()+(rect.width()/2);
+    double midY=rect.y()+(rect.height()/2);
+    p.drawArc(rect, 40*16, 280*16);
+    p.drawLine(midX, midY, midX+distanceX, midY-distanceY);
+    p.drawLine(midX, midY, midX+distanceX, midY+distanceY);
+    p.drawPoint(midX, rect.y()+rect.height()/4);
+    p.setRenderHint(QPainter::Antialiasing, false);
+    p.end();
+    return pix;
+}
+
+static QIcon createIcon(bool isSingle)
 {
     QIcon icon;
     QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
@@ -61,12 +84,22 @@ QIcon Icon::createSingleIcon()
     QList<int> sizes=QList<int>() << 16 << 22;
 
     foreach (int s, sizes) {
-        icon.addPixmap(createSingleIconPixmap(s, stdColor, 100.0));
-        icon.addPixmap(createSingleIconPixmap(s, stdColor, 50.0), QIcon::Disabled);
-        icon.addPixmap(createSingleIconPixmap(s, highlightColor, 100.0), QIcon::Active);
+        icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 100.0) : createConsumeIconPixmap(s, stdColor, 100.0));
+        icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 50.0) : createConsumeIconPixmap(s, stdColor, 50.0), QIcon::Disabled);
+        icon.addPixmap(isSingle ? createSingleIconPixmap(s, highlightColor, 100.0) : createConsumeIconPixmap(s, highlightColor, 100.0), QIcon::Active);
     }
 
     return icon;
+}
+
+QIcon Icon::createSingleIcon()
+{
+    return createIcon(true);
+}
+
+QIcon Icon::createConsumeIcon()
+{
+    return createIcon(false);
 }
 
 int Icon::stdSize(int v)
@@ -104,9 +137,15 @@ void Icon::init(QToolButton *btn, bool setFlat)
     }
 }
 
-QIcon Icon::configureIcon;
-QIcon Icon::connectIcon;
-QIcon Icon::disconnectIcon;
+Icn Icon::configureIcon;
+Icn Icon::connectIcon;
+Icn Icon::disconnectIcon;
+Icn Icon::speakerIcon;
+Icn Icon::lyricsIcon;
+Icn Icon::dynamicIcon;
+Icn Icon::playlistIcon;
+Icn Icon::variousArtistsIcon;
+Icn Icon::artistIcon;
 
 void Icon::setupIconTheme()
 {
@@ -142,15 +181,50 @@ void Icon::setupIconTheme()
     configureIcon=Icon("configure");
     connectIcon=Icon("network-connect");
     disconnectIcon=Icon("network-disconnect");
+    speakerIcon=Icon("speaker");
+    lyricsIcon=Icon("view-media-lyrics");
+    dynamicIcon=Icon("media-playlist-shuffle");
+    playlistIcon=Icon("view-media-playlist");
+    variousArtistsIcon=Icon("cantata-view-media-artist-various");
+    artistIcon=Icon("view-media-artist");
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
     if (configureIcon.isNull()) {
         configureIcon=Icon("gtk-preferences");
     }
     if (connectIcon.isNull()) {
-        connectIcon=Icon("gtk-connect");
+        connectIcon=Icon("connect_creating");
     }
     if (disconnectIcon.isNull()) {
-        disconnectIcon=Icon("gtk-disconnect");
+        disconnectIcon=Icon("media-eject");
+    }
+    if (speakerIcon.isNull()) {
+        speakerIcon=Icon("audio-speakers");
+    }
+    if (lyricsIcon.isNull()) {
+        lyricsIcon=Icon("text-x-generic");
+    }
+    if (dynamicIcon.isNull()) {
+        dynamicIcon=Icon("text-x-generic");
+    }
+    if (playlistIcon.isNull()) {
+        playlistIcon=Icon("audio-x-mp3-playlist");
+        if (playlistIcon.isNull()) {
+            playlistIcon=Icon("audio-x-generic");
+        }
+    }
+    if (variousArtistsIcon.isNull()) {
+        variousArtistsIcon.addFile(":va16.png");
+        variousArtistsIcon.addFile(":va22.png");
+        variousArtistsIcon.addFile(":va32.png");
+        variousArtistsIcon.addFile(":va48.png");
+        variousArtistsIcon.addFile(":va64.png");
+        variousArtistsIcon.addFile(":va128.png");
+    }
+    if (artistIcon.isNull()) {
+        artistIcon.addFile(":artist16.png");
+        artistIcon.addFile(":artist22.png");
+        artistIcon.addFile(":artist32.png");
+        artistIcon.addFile(":artist48.png");
     }
     #endif
 }

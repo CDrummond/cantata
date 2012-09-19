@@ -24,6 +24,8 @@
     of Solid is included.
 12. Don't enforce oxygen icons for Qt-only (Linux) builds. Cehck for missing
     icons, and use alternatives.
+13. Use a random icon that matches the repeat icon better.
+14. Draw the consume icon in code, so that it matches random and repeat better.
 
 0.8.3.1
 -------

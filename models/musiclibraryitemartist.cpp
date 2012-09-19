@@ -100,12 +100,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
         }
 
         if (m_various) {
-            #if defined ENABLE_KDE_SUPPORT
-            QIcon icon=Icon("cantata-view-media-artist-various");
-            #else
-            QIcon icon(MusicLibraryModel::vaIcon());
-            #endif
-            m_cover = new QPixmap(icon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            m_cover = new QPixmap(Icon::variousArtistsIcon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             m_coverIsDefault=false;
         } else {
             if (!theDefaultIcon) {

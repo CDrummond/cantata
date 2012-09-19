@@ -302,9 +302,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     smallPlaybackButtonsAction = createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
     smallControlButtonsAction = createAction("smallcontrolbuttons", i18n("Small Control Buttons"));
-    connectAction = createAction("connect",i18n("Connect"), "network-connect");
+    connectAction = createAction("connect",i18n("Connect"));
+    connectAction->setIcon(Icon::connectIcon);
     connectionsAction = createAction("connections", i18n("Connection"), "network-server");
-    outputsAction = createAction("outputs", i18n("Outputs"), "speaker");
+    outputsAction = createAction("outputs", i18n("Outputs"));
+    outputsAction->setIcon(Icon::speakerIcon);
     refreshAction = createAction("refresh", i18n("Refresh Database"), "view-refresh");
     prevTrackAction = createAction("prevtrack", i18n("Previous Track"), "media-skip-backward");
     nextTrackAction = createAction("nexttrack", i18n("Next Track"), "media-skip-forward");
@@ -357,26 +359,12 @@ MainWindow::MainWindow(QWidget *parent)
     libraryTabAction = createAction("showlibrarytab", i18n("Library"));
     albumsTabAction = createAction("showalbumstab", i18n("Albums"), DEFAULT_ALBUM_ICON);
     foldersTabAction = createAction("showfolderstab", i18n("Folders"), "inode-directory");
-    playlistsTabAction = createAction("showplayliststab", i18n("Playlists"), "view-media-playlist");
-
-    dynamicTabAction = createAction("showdynamictab", i18n("Dynamic"), "media-playlist-shuffle");
-    lyricsTabAction = createAction("showlyricstab", i18n("Lyrics"), "view-media-lyrics");
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
-    if (playlistsTabAction->icon().isNull()) {
-        playlistsTabAction->setIcon(Icon("audio-x-mp3-playlist"));
-        if (playlistsTabAction->icon().isNull()) {
-            playlistsTabAction->setIcon(Icon("audio-x-generic"));
-        }
-    }
-    if (dynamicTabAction->icon().isNull()) {
-        dynamicTabAction->setIcon(Icon("text-x-generic"));
-    }
-    if (lyricsTabAction->icon().isNull()) {
-        lyricsTabAction->setIcon(Icon("text-x-generic"));
-    }
-    #endif
-    PlaylistsModel::self()->setIcon(playlistsTabAction->icon());
-    Dynamic::self()->setIcon(dynamicTabAction->icon());
+    playlistsTabAction = createAction("showplayliststab", i18n("Playlists"));
+    playlistsTabAction->setIcon(Icon::playlistIcon);
+    dynamicTabAction = createAction("showdynamictab", i18n("Dynamic"));
+    dynamicTabAction->setIcon(Icon::dynamicIcon);
+    lyricsTabAction = createAction("showlyricstab", i18n("Lyrics"));
+    lyricsTabAction->setIcon(Icon::lyricsIcon);
     streamsTabAction = createAction("showstreamstab", i18n("Streams"), DEFAULT_STREAM_ICON);
     #ifdef ENABLE_WEBKIT
     infoTabAction = createAction("showinfotab", i18n("Info"));
@@ -433,14 +421,13 @@ MainWindow::MainWindow(QWidget *parent)
     playbackPlay = MediaIcon("media-playback-start");
     playbackPause = MediaIcon("media-playback-pause");
     #if defined ENABLE_KDE_SUPPORT
-    consumePlayQueueAction->setIcon(Icon("cantata-view-media-consume"));
     repeatPlayQueueAction->setIcon(Icon("cantata-view-media-repeat"));
     randomPlayQueueAction->setIcon(Icon("cantata-view-media-shuffle"));
     #else
-    consumePlayQueueAction->setIcon(Icon::create(QStringList() << ":consume16.png" << ":consume22.png"));
     repeatPlayQueueAction->setIcon(Icon::create(QStringList() << ":repeat16.png" << ":repeat22.png"));
     randomPlayQueueAction->setIcon(Icon::create(QStringList() << ":shuffle16.png" << ":shuffle22.png"));
     #endif
+    consumePlayQueueAction->setIcon(Icon::createConsumeIcon());
     singlePlayQueueAction->setIcon(Icon::createSingleIcon());
     playPauseTrackAction->setIcon(playbackPlay);
 
@@ -636,7 +623,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
     QAction *menuAct=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-    menuAct->setIcon(Icon("configure"));
+    menuAct->setIcon(Icon::configureIcon);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
     mainMenu->addSeparator();

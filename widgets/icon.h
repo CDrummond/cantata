@@ -29,12 +29,13 @@
 #include <KDE/KIcon>
 #define Icon(X) KIcon(X)
 #define MediaIcon(X) KIcon(X)
-
+#define Icn KIcon
 #else
 
 #include <QtGui/QIcon>
 #define Icon(X) QIcon::fromTheme(X)
 #define MediaIcon(X) Icon::getMediaIcon(X)
+#define Icn QIcon
 #endif
 
 class QToolButton;
@@ -42,6 +43,7 @@ class QToolButton;
 namespace Icon
 {
     extern QIcon createSingleIcon();
+    extern QIcon createConsumeIcon();
     extern int stdSize(int s);
     extern void init(QToolButton *btn, bool setFlat=true);
     extern void setupIconTheme();
@@ -50,9 +52,15 @@ namespace Icon
     extern QIcon create(const QStringList &sizes);
     #endif
 
-    extern QIcon configureIcon;
-    extern QIcon connectIcon;
-    extern QIcon disconnectIcon;
+    extern Icn configureIcon;
+    extern Icn connectIcon;
+    extern Icn disconnectIcon;
+    extern Icn speakerIcon;
+    extern Icn lyricsIcon;
+    extern Icn dynamicIcon;
+    extern Icn playlistIcon;
+    extern Icn variousArtistsIcon;
+    extern Icn artistIcon;
 }
 
 #endif

@@ -99,7 +99,6 @@ public:
     QMenu * menu() { return itemMenu; }
 
     static QString strippedText(QString s);
-    void setIcon(const QIcon &icn) { icon=icn; }
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
@@ -131,7 +130,6 @@ private:
     quint32 allocateKey();
 
 private:
-    QIcon icon;
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;
     QMenu *itemMenu;

@@ -135,7 +135,6 @@ SET( CANTATA_SRCS
     widgets/coverwidget.cpp
     widgets/icon.cpp
     widgets/volumecontrol.cpp
-    widgets/onoffbutton.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -269,7 +268,7 @@ if (ENABLE_WEBKIT)
 endif (ENABLE_WEBKIT)
 
 if (NOT WIN32)
-    SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/dockmanager.cpp)
+    SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/dockmanager.cpp widgets/onoffbutton.cpp)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/dockmanager.h)
 endif(NOT WIN32)
 

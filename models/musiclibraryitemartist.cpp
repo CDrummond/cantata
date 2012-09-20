@@ -104,7 +104,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
             m_coverIsDefault=false;
         } else {
             if (!theDefaultIcon) {
-                theDefaultIcon = new QPixmap(Icon("view-media-artist").pixmap(cSize, cSize)
+                theDefaultIcon = new QPixmap(Icon::artistIcon.pixmap(cSize, cSize)
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
             m_coverIsDefault = true;

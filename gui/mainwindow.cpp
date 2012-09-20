@@ -347,7 +347,8 @@ MainWindow::MainWindow(QWidget *parent)
     addPrioDefaultAction = createAction("defaultprio", i18n("Default Priority (0)"));
     addPrioCustomAction = createAction("customprio", i18n("Custom Priority..."));
     #ifdef PHONON_FOUND
-    streamPlayAction = createAction("streamplay", i18n("Play Stream"), DEFAULT_STREAM_ICON, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
+    streamPlayAction = createAction("streamplay", i18n("Play Stream"), 0, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
+    streamPlayAction->setIcon(Icon::streamIcon);
     #endif
     locateTrackAction = createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
@@ -357,7 +358,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     showPlayQueueAction = createAction("showplayqueue", i18n("Play Queue"), "media-playback-start");
     libraryTabAction = createAction("showlibrarytab", i18n("Library"));
-    albumsTabAction = createAction("showalbumstab", i18n("Albums"), DEFAULT_ALBUM_ICON);
+    albumsTabAction = createAction("showalbumstab", i18n("Albums"));
+    albumsTabAction->setIcon(Icon::albumIcon);
     foldersTabAction = createAction("showfolderstab", i18n("Folders"), "inode-directory");
     playlistsTabAction = createAction("showplayliststab", i18n("Playlists"));
     playlistsTabAction->setIcon(Icon::playlistIcon);
@@ -365,7 +367,8 @@ MainWindow::MainWindow(QWidget *parent)
     dynamicTabAction->setIcon(Icon::dynamicIcon);
     lyricsTabAction = createAction("showlyricstab", i18n("Lyrics"));
     lyricsTabAction->setIcon(Icon::lyricsIcon);
-    streamsTabAction = createAction("showstreamstab", i18n("Streams"), DEFAULT_STREAM_ICON);
+    streamsTabAction = createAction("showstreamstab", i18n("Streams"), 0);
+    streamsTabAction->setIcon(Icon::streamIcon);
     #ifdef ENABLE_WEBKIT
     infoTabAction = createAction("showinfotab", i18n("Info"));
     #endif
@@ -420,32 +423,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     playbackPlay = MediaIcon("media-playback-start");
     playbackPause = MediaIcon("media-playback-pause");
-    #if defined ENABLE_KDE_SUPPORT
-    repeatPlayQueueAction->setIcon(Icon("cantata-view-media-repeat"));
-    randomPlayQueueAction->setIcon(Icon("cantata-view-media-shuffle"));
-    #else
-    repeatPlayQueueAction->setIcon(Icon::create(QStringList() << ":repeat16.png" << ":repeat22.png"));
-    randomPlayQueueAction->setIcon(Icon::create(QStringList() << ":shuffle16.png" << ":shuffle22.png"));
-    #endif
-    consumePlayQueueAction->setIcon(Icon::createConsumeIcon());
-    singlePlayQueueAction->setIcon(Icon::createSingleIcon());
+    repeatPlayQueueAction->setIcon(Icon::repeatIcon);
+    randomPlayQueueAction->setIcon(Icon::shuffleIcon);
+    consumePlayQueueAction->setIcon(Icon::consumeIcon);
+    singlePlayQueueAction->setIcon(Icon::singleIcon);
     playPauseTrackAction->setIcon(playbackPlay);
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
-    #if defined ENABLE_KDE_SUPPORT
-    libraryTabAction->setIcon(Icon("cantata-view-media-library"));
-    #else
-    libraryTabAction->setIcon(Icon::create(QStringList() << ":lib16.png" << ":lib32.png"));
-    #endif
+    libraryTabAction->setIcon(Icon::libraryIcon);
     #ifdef ENABLE_WEBKIT
-    #if defined ENABLE_KDE_SUPPORT
-    infoTabAction->setIcon(Icon("cantata-view-wikipedia"));
-    #else // ENABLE_KDE_SUPPORT
-    infoTabAction->setIcon(Icon::create(QStringList() << ":wiki16.png" << ":wiki32.png"));
-    #endif // ENABLE_KDE_SUPPORT
+    infoTabAction->setIcon(Icon::wikiIcon);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());

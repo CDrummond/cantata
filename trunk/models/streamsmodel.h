@@ -38,7 +38,6 @@ class StreamsModel : public QAbstractItemModel
 public:
 
     static const QLatin1String constDefaultCategoryIcon;
-    static const QLatin1String constDefaultStreamIcon;
 
     struct Item
     {

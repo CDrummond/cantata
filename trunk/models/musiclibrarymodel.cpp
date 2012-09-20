@@ -188,7 +188,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icon(DEFAULT_ALBUM_ICON);
+                return Icon::albumIcon;
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }

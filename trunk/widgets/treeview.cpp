@@ -100,7 +100,7 @@ void TreeView::startDrag(Qt::DropActions supportedActions)
             }
         }
         if (pix.isNull()) {
-            drag->setPixmap(Icon(DEFAULT_ALBUM_ICON).pixmap(32, 32));
+            drag->setPixmap(Icon::albumIcon.pixmap(32, 32));
         } else {
             drag->setPixmap(pix.width()<32 ? pix : pix.scaled(QSize(32, 32), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }

@@ -46,7 +46,6 @@
 #include "icon.h"
 
 const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
-const QLatin1String StreamsModel::constDefaultStreamIcon(DEFAULT_STREAM_ICON);
 
 static bool iconIsValid(const QString &icon)
 {
@@ -182,7 +181,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:    return stream->name;
         case ItemView::Role_SubText:
         case Qt::ToolTipRole:    return stream->url;
-        case Qt::DecorationRole: return stream->icon.isEmpty() ? Icon(constDefaultStreamIcon)
+        case Qt::DecorationRole: return stream->icon.isEmpty() ? Icon::streamIcon
                                                                : stream->icon.startsWith('/') ? QIcon(stream->icon) : Icon(stream->icon);
         default: break;
         }
@@ -313,7 +312,7 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
                     QDomElement stream = doc.createElement("stream");
                     stream.setAttribute("name", s->name);
                     stream.setAttribute("url", s->url.toString());
-                    if (!s->icon.isEmpty() && s->icon!=constDefaultStreamIcon) {
+                    if (!s->icon.isEmpty() && s->icon!=Icon::streamIcon.name()) {
                         stream.setAttribute("icon", s->icon);
                     }
                     if (!s->genre.isEmpty()) {
@@ -339,7 +338,7 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &g
     }
 
     beginInsertRows(createIndex(items.indexOf(c), 0, c), c->streams.count(), c->streams.count());
-    StreamItem *stream=new StreamItem(name, genre, icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon, QUrl(url), c);
+    StreamItem *stream=new StreamItem(name, genre, icon.isEmpty() || icon==Icon::streamIcon.name() ? QString() : icon, QUrl(url), c);
     c->itemMap.insert(url, stream);
     c->streams.append(stream);
     endInsertRows();
@@ -358,7 +357,7 @@ void StreamsModel::editCategory(const QModelIndex &index, const QString &name, c
 
     if (item->isCategory() && (item->name!=name || item->icon!=icon)) {
         item->name=name;
-        item->icon=icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon;
+        item->icon=icon.isEmpty() || icon==Icon::streamIcon.name() ? QString() : icon;
         emit dataChanged(index, index);
         modified=true;
         save();
@@ -378,7 +377,7 @@ void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, c
     }
 
     if (!newCat.isEmpty() && oldCat!=newCat) {
-        if(add(newCat, name, genre, icon.isEmpty() || icon==constDefaultStreamIcon ? QString() : icon, url)) {
+        if(add(newCat, name, genre, icon.isEmpty() || icon==Icon::streamIcon.name() ? QString() : icon, url)) {
             updateGenres();
             remove(index);
         }

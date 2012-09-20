@@ -189,7 +189,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             if (0==cSize) {
                 cSize=22;
             }
-            theDefaultIcon = new QPixmap(Icon(DEFAULT_ALBUM_ICON).pixmap(cSize, cSize)
+            theDefaultIcon = new QPixmap(Icon::albumIcon.pixmap(cSize, cSize)
                                         .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         m_coverIsDefault = true;

@@ -19,7 +19,9 @@
 <file alias="artist16.png">icons/view-media-artist16.png</file>
 <file alias="artist22.png">icons/view-media-artist22.png</file>
 <file alias="artist32.png">icons/view-media-artist32.png</file>
-<file alias="artist48.png">icons/view-media-artist48.png</file>
+<file alias="artist48.png">icons/view-media-artist64.png</file>
+<file alias="artist64.png">icons/view-media-artist128.png</file>
+<file alias="artist128.png">icons/view-media-artist48.png</file>
 <file alias="lib16.png">icons/hi16-action-cantata-view-media-library.png</file>
 <file alias="lib32.png">icons/hi32-action-cantata-view-media-library.png</file>
 <file alias="wiki16.png">icons/hi16-action-cantata-view-wikipedia.png</file>

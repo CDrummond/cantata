@@ -73,9 +73,9 @@ static QPixmap createConsumeIconPixmap(int size, QColor &col, double opacity)
     return pix;
 }
 
-static QIcon createIcon(bool isSingle)
+static Icn createIcon(bool isSingle)
 {
-    QIcon icon;
+    Icn icon;
     QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
     if (stdColor==Qt::white) {
         stdColor=QColor(200, 200, 200);
@@ -93,16 +93,6 @@ static QIcon createIcon(bool isSingle)
     }
 
     return icon;
-}
-
-QIcon Icon::createSingleIcon()
-{
-    return createIcon(true);
-}
-
-QIcon Icon::createConsumeIcon()
-{
-    return createIcon(false);
 }
 
 int Icon::stdSize(int v)
@@ -140,6 +130,14 @@ void Icon::init(QToolButton *btn, bool setFlat)
     }
 }
 
+Icn Icon::singleIcon;
+Icn Icon::consumeIcon;
+Icn Icon::repeatIcon;
+Icn Icon::shuffleIcon;
+Icn Icon::libraryIcon;
+Icn Icon::wikiIcon;
+Icn Icon::albumIcon;
+Icn Icon::streamIcon;
 Icn Icon::configureIcon;
 Icn Icon::connectIcon;
 Icn Icon::disconnectIcon;
@@ -181,6 +179,14 @@ void Icon::setupIconTheme()
     }
     #endif
 
+    singleIcon=createIcon(true);
+    consumeIcon=createIcon(false);
+    repeatIcon=Icon("cantata-view-media-repeat");
+    shuffleIcon=Icon("cantata-view-media-shuffle");
+    libraryIcon=Icon("cantata-view-media-library");
+    wikiIcon=Icon("cantata-view-wikipedia");
+    albumIcon=Icon("media-optical");
+    streamIcon=Icon("applications-internet");
     configureIcon=Icon("configure");
     connectIcon=Icon("network-connect");
     disconnectIcon=Icon("network-disconnect");
@@ -191,6 +197,21 @@ void Icon::setupIconTheme()
     variousArtistsIcon=Icon("cantata-view-media-artist-various");
     artistIcon=Icon("view-media-artist");
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    if (repeatIcon.isNull()) {
+        repeatIcon=Icon::create(QStringList() << ":repeat16.png" << ":repeat22.png");
+    }
+    if (shuffleIcon.isNull()) {
+        shuffleIcon=Icon::create(QStringList() << ":shuffle16.png" << ":shuffle22.png");
+    }
+    if (libraryIcon.isNull()) {
+        libraryIcon=Icon::create(QStringList() << ":lib16.png" << ":lib32.png");
+    }
+    if (wikiIcon.isNull()) {
+        wikiIcon=Icon::create(QStringList() << ":wiki16.png" << ":wiki32.png");
+    }
+    if (albumIcon.isNull()) {
+        albumIcon=Icon("media-optical-audio");
+    }
     if (configureIcon.isNull()) {
         configureIcon=Icon("gtk-preferences");
     }
@@ -231,6 +252,8 @@ void Icon::setupIconTheme()
         artistIcon.addFile(":artist22.png");
         artistIcon.addFile(":artist32.png");
         artistIcon.addFile(":artist48.png");
+        artistIcon.addFile(":artist64.png");
+        artistIcon.addFile(":artist128.png");
     }
     #endif
 }
@@ -259,3 +282,4 @@ QIcon Icon::create(const QStringList &sizes)
     return icon;
 }
 #endif
+

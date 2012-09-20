@@ -67,7 +67,7 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
     QPixmap &pix=stream ? noStreamCover : noCover;
 
     if (pix.isNull()) {
-        pix = Icon(stream ? DEFAULT_STREAM_ICON : DEFAULT_ALBUM_ICON).pixmap(128, 128).scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        pix = (stream ? Icon::streamIcon : Icon::albumIcon).pixmap(128, 128).scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
     return pix;
 }

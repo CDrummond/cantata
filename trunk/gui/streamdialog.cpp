@@ -29,6 +29,7 @@
 #include "settings.h"
 #include "streamsmodel.h"
 #include "localize.h"
+#include "icon.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIconDialog>
 #include <QtGui/QPushButton>
@@ -133,7 +134,7 @@ void StreamDialog::changed()
 #ifdef ENABLE_KDE_SUPPORT
 void StreamDialog::setIcon(const QString &icn)
 {
-    iconButton->setIcon(icn.isEmpty() ? QIcon::fromTheme(StreamsModel::constDefaultStreamIcon)
+    iconButton->setIcon(icn.isEmpty() ? Icon::streamIcon
                                       : icn.startsWith('/')
                                             ? QIcon(icn)
                                             : QIcon::fromTheme(icn));

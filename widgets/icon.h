@@ -42,8 +42,6 @@ class QToolButton;
 
 namespace Icon
 {
-    extern QIcon createSingleIcon();
-    extern QIcon createConsumeIcon();
     extern int stdSize(int s);
     extern void init(QToolButton *btn, bool setFlat=true);
     extern void setupIconTheme();
@@ -52,6 +50,14 @@ namespace Icon
     extern QIcon create(const QStringList &sizes);
     #endif
 
+    extern Icn singleIcon;
+    extern Icn consumeIcon;
+    extern Icn repeatIcon;
+    extern Icn shuffleIcon;
+    extern Icn libraryIcon;
+    extern Icn wikiIcon;
+    extern Icn albumIcon;
+    extern Icn streamIcon;
     extern Icn configureIcon;
     extern Icn connectIcon;
     extern Icn disconnectIcon;

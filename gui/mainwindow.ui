@@ -61,7 +61,7 @@
    <item row="0" column="2">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="SqueezedTextLabel" name="trackLabel">
+      <widget class="PaddedSqueezedTextLabel" name="trackLabel">
        <property name="font">
         <font>
          <weight>75</weight>
@@ -71,7 +71,7 @@
       </widget>
      </item>
      <item>
-      <widget class="SqueezedTextLabel" name="artistLabel"/>
+      <widget class="PaddedSqueezedTextLabel" name="artistLabel"/>
      </item>
     </layout>
    </item>
@@ -276,6 +276,11 @@
    <class>ToggleButton</class>
    <extends>QToolButton</extends>
    <header>togglebutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PaddedSqueezedTextLabel</class>
+   <extends>QLabel</extends>
+   <header>squeezedtextlabel.h</header>
   </customwidget>
   <customwidget>
    <class>SqueezedTextLabel</class>

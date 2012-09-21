@@ -56,7 +56,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QSpinBox" name="crossfading">
+      <widget class="SpinBox" name="crossfading">
        <property name="suffix">
         <string> seconds</string>
        </property>
@@ -122,6 +122,11 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>spinbox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

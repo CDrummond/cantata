@@ -77,7 +77,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="proxyPort">
+         <widget class="SpinBox" name="proxyPort">
           <property name="maximum">
            <number>65535</number>
           </property>
@@ -166,6 +166,11 @@
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>spinbox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

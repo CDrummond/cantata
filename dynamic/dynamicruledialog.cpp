@@ -79,6 +79,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     genreCombo->insertItems(0, strings);
     dateFromSpin->setRange(constMinDate-1, constMaxDate);
     dateToSpin->setRange(constMinDate-1, constMaxDate);
+    artistText->setFocus();
 }
 
 DynamicRuleDialog::~DynamicRuleDialog()

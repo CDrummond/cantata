@@ -268,8 +268,8 @@ if (ENABLE_WEBKIT)
 endif (ENABLE_WEBKIT)
 
 if (NOT WIN32)
-    SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/dockmanager.cpp widgets/onoffbutton.cpp)
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/dockmanager.h)
+    SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/dockmanager.cpp widgets/onoffbutton.cpp widgets/spinbox.cpp)
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/dockmanager.h widgets/spinbox.h)
 endif(NOT WIN32)
 
 SET( CANTATA_RCS cantata.qrc )

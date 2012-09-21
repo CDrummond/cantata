@@ -25,6 +25,7 @@
 
 #include "onoffbutton.h"
 #include "localize.h"
+#include "fancytabwidget.h"
 #include <QtGui/QFontMetrics>
 #include <QtGui/QPainter>
 #include <QtGui/QPainterPath>
@@ -34,11 +35,18 @@ static QString onText;
 static QString offText;
 static QSize fixedSize;
 static const int constBorderSize=4;
-static bool useCheckBox=!qgetenv("KDE_FULL_SESSION").isEmpty();
+static bool useCheckBox=true;
 
 OnOffButton::OnOffButton(QWidget *p)
     : QCheckBox(p)
 {
+    if (fixedSize.isEmpty()) {
+        if (qgetenv("KDE_FULL_SESSION").isEmpty() && FancyTabWidget::isGtkStyle()) {
+            useCheckBox=false;
+        } else {
+            fixedSize=QSize(1, 1);
+        }
+    }
     if (!useCheckBox) {
         QFont f(font());
         f.setPointSize(f.pointSize()*0.9);
@@ -134,4 +142,3 @@ void OnOffButton::paintEvent(QPaintEvent *e)
 }
 
 #endif
-

@@ -26,7 +26,10 @@
     icons, and use alternatives.
 13. Use a random icon that matches the repeat icon better.
 14. Draw the consume icon in code, so that it matches random and repeat better.
-15. Add a ON/OFF style checkbox for linux builds when NOT run under KDE.
+15. Add a ON/OFF style checkbox for linux builds when NOT run under KDE, and
+    using QGtkStyle.
+16. Add a custom spinbox to closer match Gtk3's large button spinbox style.
+    Only for linux builds NOT run under KDE, and using QGtkStyle.
 
 0.8.3.1
 -------

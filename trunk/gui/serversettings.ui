@@ -55,7 +55,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSpinBox" name="port">
+         <widget class="SpinBox" name="port">
           <property name="minimum">
            <number>1</number>
           </property>
@@ -122,7 +122,7 @@
          </widget>
         </item>
         <item row="5" column="1">
-         <widget class="QSpinBox" name="dynamicPort">
+         <widget class="SpinBox" name="dynamicPort">
           <property name="minimum">
            <number>1</number>
           </property>
@@ -269,6 +269,11 @@
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>spinbox.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>

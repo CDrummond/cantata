@@ -643,17 +643,24 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
     if (it!=end) {
         QString xmldoc = value.toString();
         xmldoc.replace("\\\"", "\"");
-
         QXmlStreamReader doc(xmldoc);
         QString url;
         Job job=it.value();
         jobs.erase(it);
+        bool inSection=false;
+        bool isArtistImage=job.isArtist;
 
         while (!doc.atEnd() && url.isEmpty()) {
             doc.readNext();
-            if (url.isEmpty() && doc.isStartElement() &&
-                QLatin1String("image")==doc.name() && QLatin1String("extralarge")==doc.attributes().value("size").toString()) {
-                url = doc.readElementText();
+
+            if (doc.isStartElement()) {
+                if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
+                    inSection=true;
+                } else if (inSection && QLatin1String("image")==doc.name() && QLatin1String("extralarge")==doc.attributes().value("size").toString()) {
+                    url = doc.readElementText();
+                }
+            } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
+                inSection=false;
             }
         }
 

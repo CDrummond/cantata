@@ -58,7 +58,7 @@ OnOffButton::OnOffButton(QWidget *p)
             int onWidth=fm.width(onText);
             int offWidth=fm.width(offText);
             int fontHeight=fm.height();
-            fixedSize=QSize((qMax(onWidth, offWidth)+(constBorderSize*2))*2, fontHeight+(2*constBorderSize));
+            fixedSize=QSize((qMax(onWidth, offWidth)+(constBorderSize*4))*2, fontHeight+(2*constBorderSize));
         }
         setCheckable(true);
         setFixedSize(fixedSize);
@@ -112,20 +112,23 @@ void OnOffButton::paintEvent(QPaintEvent *e)
     grad.setColorAt(0, bgndCol.lighter(110));
     grad.setColorAt(1, bgndCol.lighter(120));
     p.fillPath(border, grad);
-    QColor col(bgndCol.darker(105));
-    col.setAlphaF(0.2);
+    QColor col(bgndCol.darker(110));
     p.setPen(col);
-    p.drawPath(inner);
-    p.setPen(pal.mid().color());
     p.drawPath(border);
     //p.setPen(pal.light().color());
     //p.drawText((isOn ? onRect : offRect).adjusted(1, 1, 1, 1), isOn ? onText : offText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
     QColor textcol(isOn && isActive ? pal.highlightedText().color() : pal.text().color());
-    if (isActive && !isOn && textcol.red()<64 && textcol.green()<64 && textcol.blue()<64) {
+    if (!isOn && textcol.red()<64 && textcol.green()<64 && textcol.blue()<64) {
         col=Qt::white;
         col.setAlphaF(0.4);
-	p.setPen(col);
-    	p.drawText(offRect.adjusted(1, 1, 1, 1), offText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+	    p.setPen(col);
+    	p.drawText(offRect.adjusted(0, 1, 0, 1), offText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+    } else if (isOn && (isActive ? (textcol.red()>196 && textcol.green()>196 && textcol.blue()>196)
+                                 : (textcol.red()<64 && textcol.green()<64 && textcol.blue()<64))) {
+        col=isActive ? bgndCol.darker(110) : Qt::white;
+        col.setAlphaF(isActive ? 0.9 : 0.4);
+	    p.setPen(col);
+    	p.drawText(isActive ? onRect.adjusted(0, -1, 0, -1) : onRect.adjusted(0, 1, 0, 1), onText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
     }
     p.setPen(textcol);
     p.drawText(isOn ? onRect : offRect, isOn ? onText : offText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));

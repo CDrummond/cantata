@@ -93,4 +93,18 @@ private:
 };
 #endif
 
+class PaddedSqueezedTextLabel : public SqueezedTextLabel
+{
+public:
+    PaddedSqueezedTextLabel(QWidget *p)
+        : SqueezedTextLabel(p) {
+    }
+
+protected:
+    QSize sizeHint() const {
+        QSize sh(SqueezedTextLabel::sizeHint());;
+        return QSize(sh.width(), qMax((int)((fontMetrics().height()*1.1)+0.5), sh.height()));
+    }
+};
+
 #endif // SQUEEZEDTEXTLABEL_H

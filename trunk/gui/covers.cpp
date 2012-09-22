@@ -658,7 +658,9 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
                     inSection=true;
                 } else if (inSection && QLatin1String("image")==doc.name() && QLatin1String("extralarge")==doc.attributes().value("size").toString()) {
                     url = doc.readElementText();
-                }
+                } else if (QLatin1String("similar")==doc.name()) {
+                    break;	
+		}
             } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
                 inSection=false;
             }

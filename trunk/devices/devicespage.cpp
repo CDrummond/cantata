@@ -411,25 +411,29 @@ void DevicesPage::deleteSongs()
     }
 }
 
-#ifdef ENABLE_REMOTE_DEVICES
 void DevicesPage::addRemoteDevice()
 {
+    #ifdef ENABLE_REMOTE_DEVICES
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(this);
     dlg->show("cover.jpg", DeviceOptions(), RemoteFsDevice::Details(), DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder, true);
     connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &, RemoteFsDevice::Details)),
             DevicesModel::self(), SLOT(addRemoteDevice(const QString &, const DeviceOptions &, RemoteFsDevice::Details)));
+    #endif
 }
 
 void DevicesPage::forgetRemoteDevice()
 {
+    #ifdef ENABLE_REMOTE_DEVICES
     QString udi=activeFsDeviceUdi();
     if (!udi.isEmpty() && MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to forget the selected device?"))) {
         DevicesModel::self()->removeRemoteDevice(udi);
     }
+    #endif
 }
 
 void DevicesPage::toggleDevice()
 {
+    #ifdef ENABLE_REMOTE_DEVICES
     const QModelIndexList selected = view->selectedIndexes();
 
     if (1!=selected.size()) {
@@ -441,8 +445,8 @@ void DevicesPage::toggleDevice()
     if (MusicLibraryItem::Type_Root==item->itemType() && Device::RemoteFs==static_cast<Device *>(item)->devType()) {
         static_cast<RemoteFsDevice *>(item)->toggle();
     }
+    #endif
 }
-#endif
 
 #define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
 

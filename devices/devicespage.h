@@ -57,11 +57,9 @@ public Q_SLOTS:
     void configureDevice();
     void refreshDevice();
     void deleteSongs();
-    #ifdef ENABLE_REMOTE_DEVICES
     void addRemoteDevice();
     void forgetRemoteDevice();
     void toggleDevice();
-    #endif
     void sync();
 
 Q_SIGNALS:
@@ -83,3 +81,4 @@ private:
 };
 
 #endif
+

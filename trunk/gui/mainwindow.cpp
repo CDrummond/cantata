@@ -1113,10 +1113,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         if (event->spontaneous()) {
             event->ignore();
         }
-    } else {
-        quitAction->trigger();
-        // Ignore this event, as we have called the quit action...
-        event->ignore();
     }
 }
 

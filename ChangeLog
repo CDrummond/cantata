@@ -33,6 +33,7 @@
 17. Add 'Show Window' action to Linux Qt-only build - so that we have a way of
     restoring the Cantata window from the Unity menubar.
 18. Use freedesktop.org notifications for Qt-only Linux builds.
+19. Show menubar when run under Unity.
 
 0.8.3.1
 -------
@@ -748,8 +749,8 @@ new:
 * Use last.fm for album covers instead of amazon
 * last.fm scrobbling support
   - Follow last.fm guide lines
-	- scrobbling is own thread so the rest of the program had nothing to do with
-		it.
+    - scrobbling is own thread so the rest of the program had nothing to do with
+        it.
 * synchttp for synchornous http support
 * show album release date
 

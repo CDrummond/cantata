@@ -101,6 +101,9 @@
 #include "mpris.h"
 #include "dockmanager.h"
 #include "cantataadaptor.h"
+#ifndef ENABLE_KDE_SUPPORT
+#include "notify.h"
+#endif
 #endif
 #include "dynamicpage.h"
 #include "dynamic.h"
@@ -246,6 +249,9 @@ MainWindow::MainWindow(QWidget *parent)
     #if !defined Q_OS_WIN
     , dock(0)
     , mpris(0)
+    #if !defined ENABLE_KDE_SUPPORT
+    , notify(0)
+    #endif
     #endif
     , playQueueSearchTimer(0)
     , usingProxy(false)
@@ -1809,16 +1815,10 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     if (Settings::self()->showPopups() || trayItem) {
         if (!current.title.isEmpty() && !current.artist.isEmpty() && !current.album.isEmpty()) {
+            QString text=i18nc("Song by Artist on Album (track duration)", "%1 by %2 on %3 (%4)")
+                              .arg(current.title).arg(current.artist).arg(current.album).arg(Song::formattedTime(current.time));
             #ifdef ENABLE_KDE_SUPPORT
             QPixmap *coverPixmap = 0;
-            const QString text(i18n("<table>"
-                                    "<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
-                                    "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
-                                    "<tr><td align=\"right\"><b>Song:</b></td><td>%3</td></tr>"
-                                    "<tr><td align=\"right\"><b>Track:</b></td><td>%4</td></tr>"
-                                    "<tr><td align=\"right\"><b>Length:</b></td><td>%5</td></tr>"
-                                    "</table>").arg(current.artist).arg(current.album).arg(current.title)
-                                               .arg(current.track).arg(Song::formattedTime(current.time)));
             if (coverWidget->isValid()) {
                 coverPixmap = const_cast<QPixmap*>(coverWidget->pixmap());
             }
@@ -1829,6 +1829,7 @@ void MainWindow::updateCurrentSong(const Song &song)
                 }
                 notification = new KNotification("CurrentTrackChanged", this);
                 connect(notification, SIGNAL(closed()), this, SLOT(notificationClosed()));
+                notification->setTitle(i18n("Now playing"));
                 notification->setText(text);
                 if (coverPixmap) {
                     notification->setPixmap(*coverPixmap);
@@ -1844,15 +1845,23 @@ void MainWindow::updateCurrentSong(const Song &song)
                     trayItem->setToolTipIconByPixmap(*coverPixmap);
                 }
             }
-            #else
+            #elif defined Q_OS_WIN
             // The pure Qt implementation needs both, the tray icon and the setting checked.
             if (trayItem) {
-                const QString text=QString("%1\n%2\n%3").arg(trackLabel->text()).arg(artistLabel->text()).arg(Song::formattedTime(current.time));
-
                 if (Settings::self()->showPopups()) {
                     trayItem->showMessage(i18n("Cantata"), text, QSystemTrayIcon::Information, 5000);
                 }
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
+            }
+            #else
+            if (trayItem) {
+                trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
+            }
+            if (Settings::self()->showPopups()) {
+                if (!notify) {
+                    notify=new Notify(this);
+                }
+                notify->show(i18n("Now playing"), text, coverWidget->image());
             }
             #endif
         } else if (trayItem) {

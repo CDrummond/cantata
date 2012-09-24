@@ -32,6 +32,7 @@
     Only for linux builds NOT run under KDE, and using QGtkStyle.
 17. Add 'Show Window' action to Linux Qt-only build - so that we have a way of
     restoring the Cantata window from the Unity menubar.
+18. Use freedesktop.org notifications for Qt-only Linux builds.
 
 0.8.3.1
 -------

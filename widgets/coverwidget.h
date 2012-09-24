@@ -55,6 +55,8 @@ public:
         return coverFileName;
     }
 
+    const QImage &image() const;
+
 Q_SIGNALS:
     void coverImage(const QImage &img);
     void coverFile(const QString &name);
@@ -65,7 +67,7 @@ private Q_SLOTS:
 
 private:
     const QPixmap & stdPixmap(bool stream);
-    void update(const QImage &img);
+    void update(const QImage &i);
     void update(const QPixmap &pix);
     bool eventFilter(QObject *object, QEvent *event);
 
@@ -74,7 +76,7 @@ private:
     bool valid;
     Song current;
     QString tipText;
-    QImage image;
+    mutable QImage img;
     QString coverFileName;
     QPixmap noStreamCover;
     QPixmap noCover;

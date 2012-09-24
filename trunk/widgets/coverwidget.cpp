@@ -72,17 +72,17 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
     return pix;
 }
 
-void CoverWidget::update(const QImage &img)
+void CoverWidget::update(const QImage &i)
 {
-    setPixmap(QPixmap::fromImage(img).scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    image=img;
+    setPixmap(QPixmap::fromImage(i).scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    img=i;
     empty=false;
 }
 
 void CoverWidget::update(const QPixmap &pix)
 {
     setPixmap(pix);
-    image=QImage();
+    img=QImage();
     empty=true;
 }
 
@@ -141,10 +141,10 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
                       "<tr><td align=\"right\"><b>Album:</b></td><td>%2</td></tr>"
                       "<tr><td align=\"right\"><b>Year:</b></td><td>%3</td></tr>").arg(current.artist).arg(current.album).arg(current.year);
         toolTip+="</table>";
-        if (!image.isNull()) {
-            if (image.size().width()>Covers::constMaxSize.width() || image.size().height()>Covers::constMaxSize.height() ||
+        if (!img.isNull()) {
+            if (img.size().width()>Covers::constMaxSize.width() || img.size().height()>Covers::constMaxSize.height() ||
                 coverFileName.isEmpty() || !QFile::exists(coverFileName)) {
-                toolTip+=QString("<br/>%1").arg(encode(image));
+                toolTip+=QString("<br/>%1").arg(encode(img));
             } else {
                 toolTip+=QString("<br/><img src=\"%1\"/>").arg(coverFileName);
             }
@@ -153,3 +153,15 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
     }
     return QObject::eventFilter(object, event);
 }
+
+const QImage & CoverWidget::image() const
+{
+    if (img.isNull()) {
+        const QPixmap *pix = pixmap();
+        if (pix && !pix->isNull()) {
+            img=pix->toImage();
+        }
+    }
+    return img;
+}
+

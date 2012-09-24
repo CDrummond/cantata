@@ -79,7 +79,10 @@ class QAbstractItemView;
 #if !defined Q_OS_WIN
 class DockManager;
 class Mpris;
-#endif
+#if !defined ENABLE_KDE_SUPPORT
+class Notify;
+#endif // !defined ENABLE_KDE_SUPPORT
+#endif // !defined Q_OS_WIN
 class QTimer;
 class QPropertyAnimation;
 class QActionGroup;
@@ -471,6 +474,9 @@ private:
     #if !defined Q_OS_WIN
     DockManager *dock;
     Mpris *mpris;
+    #if !defined ENABLE_KDE_SUPPORT
+    Notify *notify;
+    #endif
     #endif
     QTimer *playQueueSearchTimer;
     bool usingProxy;

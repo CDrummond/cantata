@@ -298,7 +298,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     quitAction->setIcon(Icon("application-exit"));
     quitAction->setShortcut(QKeySequence::Quit);
-    #endif
+    #if !defined Q_OS_WIN
+    restoreAction = new QAction(i18n("&Show Window"), this);
+    connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
+    #endif // !Q_OS_WIN
+    #endif // ENABLE_KDE_SUPPORT
 
     smallPlaybackButtonsAction = createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
     smallControlButtonsAction = createAction("smallcontrolbuttons", i18n("Small Control Buttons"));
@@ -2378,6 +2382,10 @@ void MainWindow::setupTrayIcon()
     trayItemMenu->addAction(playPauseTrackAction);
     trayItemMenu->addAction(stopTrackAction);
     trayItemMenu->addAction(nextTrackAction);
+    #if !defined Q_OS_WIN
+    trayItemMenu->addSeparator();
+    trayItemMenu->addAction(restoreAction);
+    #endif
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(quitAction);
     trayItem->setContextMenu(trayItemMenu);
@@ -2412,15 +2420,7 @@ void MainWindow::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
     switch (reason) {
     case QSystemTrayIcon::Trigger:
         if (isHidden()) {
-            #ifdef Q_OS_WIN
-            raiseWindow(this);
-            #endif
-            raise();
-            showNormal();
-            activateWindow();
-            if (!lastPos.isNull()) {
-                move(lastPos);
-            }
+            restoreWindow();
         } else {
             hide();
         }
@@ -2429,6 +2429,20 @@ void MainWindow::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
     }
 }
 #endif
+
+void MainWindow::restoreWindow()
+{
+    bool wasHidden=isHidden();
+    #ifdef Q_OS_WIN
+    raiseWindow(this);
+    #endif
+    raise();
+    showNormal();
+    activateWindow();
+    if (wasHidden && !lastPos.isNull()) {
+        move(lastPos);
+    }
+}
 
 void MainWindow::currentTabChanged(int index)
 {

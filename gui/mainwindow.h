@@ -217,6 +217,7 @@ public Q_SLOTS:
     void showInformation(const QString &message);
     void showPage(const QString &page, bool focusSearch);
     void dynamicStatus(const QString &message);
+    void restoreWindow();
 
 private Q_SLOTS:
     void setMpdVolume(int );
@@ -395,6 +396,9 @@ private:
     #endif
     Action *expandInterfaceAction;
     Action *quitAction;
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    Action *restoreAction;
+    #endif
     Action *locateTrackAction;
     Action *showPlayQueueAction;
     Action *libraryTabAction;

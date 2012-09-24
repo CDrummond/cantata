@@ -1123,6 +1123,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
         if (event->spontaneous()) {
             event->ignore();
         }
+    } else {
+        #ifdef ENABLE_KDE_SUPPORT
+        KXmlGuiWindow::closeEvent(event);
+        #else
+        QMainWindow::closeEvent(event);
+        #endif
     }
 }
 
@@ -2311,7 +2317,7 @@ void MainWindow::togglePlayQueue()
         }
     } else {
         // Widths also sometimes expands, so make sure this is no larger than it was before...
-	collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
+    collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
         resize(collapsedSize);
         setFixedHeight(size().height());
     }

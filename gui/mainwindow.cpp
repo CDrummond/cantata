@@ -614,50 +614,28 @@ MainWindow::MainWindow(QWidget *parent)
     }
     togglePlayQueue();
 
-    #if !defined Q_OS_WIN
-    bool showMenuBar=qgetenv("XDG_CURRENT_DESKTOP")=="Unity";
-    #endif
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
-    if (!showMenuBar) {
-        menuBar()->setVisible(false);
-    }
+    menuBar()->setVisible(false);
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
+    QAction *menuAct=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+    menuAct->setIcon(Icon::configureIcon);
     #ifdef ENABLE_KDE_SUPPORT
-    mainMenu->addAction(prefAction);
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
     mainMenu->addSeparator();
     mainMenu->addMenu(helpMenu());
     #else
-    prefAction=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-    prefAction->setIcon(Icon::configureIcon);
+    prefAction=menuAct;
     mainMenu->addSeparator();
-    Action *aboutAction=mainMenu->addAction(i18nc("Qt-only", "About Cantata..."), this, SLOT(showAboutDialog()));
-    aboutAction->setIcon(appIcon);
+    menuAct=mainMenu->addAction(i18nc("Qt-only", "About Cantata..."), this, SLOT(showAboutDialog()));
+    menuAct->setIcon(appIcon);
     #endif
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
-
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
-    if (showMenuBar) {
-        QMenu *menu=new QMenu(i18n("&File"), this);
-        menu->addAction(quitAction);
-        menuBar()->addMenu(menu);
-        menu=new QMenu(i18n("&Settings"), this);
-        menu->addAction(expandInterfaceAction);
-        menu->addAction(connectionsAction);
-        menu->addAction(outputsAction);
-        menu->addAction(prefAction);
-        menuBar()->addMenu(menu);
-        menu=new QMenu(i18n("&Help"), this);
-        menu->addAction(aboutAction);
-        menuBar()->addMenu(menu);
-    }
-    #endif
 
     coverWidget->installEventFilter(new CoverEventHandler(this));
     dynamicLabel->setVisible(false);
@@ -1145,12 +1123,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         if (event->spontaneous()) {
             event->ignore();
         }
-    } else {
-        #ifdef ENABLE_KDE_SUPPORT
-        KXmlGuiWindow::closeEvent(event);
-        #else
-        QMainWindow::closeEvent(event);
-        #endif
     }
 }
 
@@ -1821,9 +1793,10 @@ void MainWindow::updateCurrentSong(const Song &song)
         artistLabel->setText(i18nc("artist - album", "%1 - %2").arg(current.artist).arg(album));
     }
 
+    bool isPlaying=MPDState_Playing==MPDStatus::self()->state();
     playQueueModel.updateCurrentSong(current.id);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(current.id),
-                          !usingProxy && autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
+                          !usingProxy && autoScrollPlayQueue && isPlaying);
     scrollPlayQueue();
 
     updateWindowTitle();
@@ -1851,7 +1824,7 @@ void MainWindow::updateCurrentSong(const Song &song)
                 coverPixmap = const_cast<QPixmap*>(coverWidget->pixmap());
             }
 
-            if (Settings::self()->showPopups()) {
+            if (Settings::self()->showPopups() && isPlaying) {
                 if (notification) {
                     notification->close();
                 }
@@ -1876,7 +1849,7 @@ void MainWindow::updateCurrentSong(const Song &song)
             #elif defined Q_OS_WIN
             // The pure Qt implementation needs both, the tray icon and the setting checked.
             if (trayItem) {
-                if (Settings::self()->showPopups()) {
+                if (Settings::self()->showPopups() && isPlaying) {
                     trayItem->showMessage(i18n("Cantata"), text, QSystemTrayIcon::Information, 5000);
                 }
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
@@ -1885,7 +1858,7 @@ void MainWindow::updateCurrentSong(const Song &song)
             if (trayItem) {
                 trayItem->setToolTip(i18n("Cantata")+"\n\n"+text);
             }
-            if (Settings::self()->showPopups()) {
+            if (Settings::self()->showPopups() && isPlaying) {
                 if (!notify) {
                     notify=new Notify(this);
                 }
@@ -2339,7 +2312,7 @@ void MainWindow::togglePlayQueue()
         }
     } else {
         // Widths also sometimes expands, so make sure this is no larger than it was before...
-    collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
+	collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
         resize(collapsedSize);
         setFixedHeight(size().height());
     }

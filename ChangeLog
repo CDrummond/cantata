@@ -34,6 +34,7 @@
     restoring the Cantata window from the Unity menubar.
 18. Use freedesktop.org notifications for Qt-only Linux builds.
 19. Show menubar when run under Unity.
+20. Improve MPRISv2 interface - signal when proprties change.
 
 0.8.3.1
 -------

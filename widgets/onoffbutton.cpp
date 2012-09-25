@@ -109,8 +109,8 @@ void OnOffButton::paintEvent(QPaintEvent *e)
     QPainterPath sliderInner=buildPath((isOn ? offRect : onRect).adjusted(1, 1, -1, -1), 2.0);
     QLinearGradient grad(borderRect.topLeft(), borderRect.bottomLeft());
     QColor bgndCol=isOn && isActive ? pal.highlight().color() : pal.mid().color();
-    grad.setColorAt(0, bgndCol.lighter(110));
-    grad.setColorAt(1, bgndCol.lighter(120));
+    grad.setColorAt(0, bgndCol.lighter(isActive ? 105 : 110));
+    grad.setColorAt(1, bgndCol.lighter(isActive ? 115 : 120));
     p.fillPath(border, grad);
     QColor col(bgndCol.darker(110));
     p.setPen(col);
@@ -134,7 +134,7 @@ void OnOffButton::paintEvent(QPaintEvent *e)
     p.drawText(isOn ? onRect : offRect, isOn ? onText : offText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
 
     grad.setColorAt(0, pal.mid().color().lighter(150));
-    grad.setColorAt(1, pal.mid().color().darker(90));
+    grad.setColorAt(1, pal.mid().color().darker(82));
     p.fillPath(slider, grad);
     col=QColor(pal.mid().color().lighter(170));
     col.setAlphaF(0.2);

@@ -296,8 +296,6 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
 
 void FsDevice::removeSong(const Song &s)
 {
-    emit actionStatus(NotConnected);
-    return;
     jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);

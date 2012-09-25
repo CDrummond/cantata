@@ -187,7 +187,9 @@ public:
     #endif
 
     Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
-
+    int currentTrackPosition() const;
+    QString coverFile() const;
+    
 protected:
     void keyPressEvent(QKeyEvent *event);
     void closeEvent(QCloseEvent *event);

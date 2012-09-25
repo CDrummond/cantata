@@ -2440,20 +2440,6 @@ void MainWindow::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
 }
 #endif
 
-void MainWindow::restoreWindow()
-{
-    bool wasHidden=isHidden();
-    #ifdef Q_OS_WIN
-    raiseWindow(this);
-    #endif
-    raise();
-    showNormal();
-    activateWindow();
-    if (wasHidden && !lastPos.isNull()) {
-        move(lastPos);
-    }
-}
-
 void MainWindow::currentTabChanged(int index)
 {
     switch(index) {
@@ -2727,9 +2713,11 @@ void MainWindow::toggleMpris()
     if (on) {
         if (!mpris) {
             mpris=new Mpris(this);
+            connect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));
         }
     } else {
         if (mpris) {
+            disconnect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));
             mpris->deleteLater();
             mpris=0;
         }
@@ -3019,6 +3007,57 @@ Action * MainWindow::createAction(const QString &name, const QString &text, cons
         act->setWhatsThis(whatsThis);
     }
     return act;
+}
+
+int MainWindow::currentTrackPosition() const
+{
+    return positionSlider->value();
+}
+
+QString MainWindow::coverFile() const
+{
+    return coverWidget->fileName();
+}
+
+#ifndef Q_OS_WIN
+#include <QtGui/QX11Info>
+#include <X11/Xlib.h>
+#endif
+
+void MainWindow::restoreWindow()
+{
+    bool wasHidden=isHidden();
+    #ifdef Q_OS_WIN
+    raiseWindow(this);
+    #endif
+    raise();
+    showNormal();
+    activateWindow();
+    #ifndef Q_OS_WIN
+    // This section seems to be required for compiz...
+    // ...without this, when 'qdbus org.kde.cantata /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Raise' is used
+    // the Unity launcher item is highlighted, but the window is not shown!
+    static const Atom constNetActive=XInternAtom(QX11Info::display(), "_NET_ACTIVE_WINDOW", False);
+    QX11Info info;
+    XEvent xev;
+    xev.xclient.type = ClientMessage;
+    xev.xclient.serial = 0;
+    xev.xclient.send_event = True;
+    xev.xclient.message_type = constNetActive;
+    xev.xclient.display = QX11Info::display();
+    xev.xclient.window = effectiveWinId();
+    xev.xclient.format = 32;
+    xev.xclient.data.l[0] = 2;
+    xev.xclient.data.l[1] = 0;
+    xev.xclient.data.l[2] = 0;
+    xev.xclient.data.l[3] = 0;
+    xev.xclient.data.l[4] = 0;
+    XSendEvent(QX11Info::display(), QX11Info::appRootWindow(info.screen()), False,
+               SubstructureRedirectMask | SubstructureNotifyMask, &xev);
+    #endif
+    if (wasHidden && !lastPos.isNull()) {
+        move(lastPos);
+    }
 }
 
 #ifdef Q_OS_WIN

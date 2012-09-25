@@ -303,6 +303,7 @@ endif (ENABLE_PHONON)
 if(NOT WIN32)
     qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.Player.xml dbus/mpris.h Mpris)
     qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.mpris.MediaPlayer2.root.xml dbus/mpris.h Mpris)
+
     qt4_add_dbus_adaptor(CANTATA_SRCS dbus/org.kde.cantata.xml gui/mainwindow.h MainWindow)
     if (NOT ENABLE_KDE_SUPPORT)
         qt4_add_dbus_interfaces(CANTATA_SRCS dbus/org.freedesktop.Notifications.xml)

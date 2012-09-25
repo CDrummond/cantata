@@ -45,19 +45,24 @@ class Mpris : public QObject
     Q_PROPERTY( double MinimumRate READ MinimumRate )
     Q_PROPERTY( double MaximumRate READ MaximumRate )
     Q_PROPERTY( bool CanControl READ CanControl )
+    Q_PROPERTY( bool CanPlay READ CanPlay )
+    Q_PROPERTY( bool CanPause READ CanPause )
+    Q_PROPERTY( bool CanGoNext READ CanGoNext )
+    Q_PROPERTY( bool CanGoPrevious READ CanGoPrevious )
     Q_PROPERTY( QString PlaybackStatus READ PlaybackStatus )
-    Q_PROPERTY( QString LoopStatus READ LoopStatus WRITE SetLoopStatus)
-    Q_PROPERTY( QVariantMap Metadata READ metadata )
+    Q_PROPERTY( QString LoopStatus READ LoopStatus WRITE SetLoopStatus )
+    Q_PROPERTY( bool Shuffle READ Shuffle WRITE SetShuffle )
+    Q_PROPERTY( QVariantMap Metadata READ Metadata )
+    Q_PROPERTY( double Volume READ Volume WRITE SetVolume )
 
     // org.mpris.MediaPlayer2
-    Q_PROPERTY( bool CanQuit READ canQuit )
-    Q_PROPERTY( bool CanRaise READ canRaise )
-    Q_PROPERTY( QString DesktopEntry READ desktopEntry )
-    Q_PROPERTY( bool HasTrackList READ hasTrackList )
-    Q_PROPERTY( QString Identity READ identity )
-    Q_PROPERTY( QStringList SupportedMimeTypes READ supportedMimeTypes )
-    Q_PROPERTY( QStringList SupportedUriSchemes READ supportedUriSchemes )
-
+    Q_PROPERTY( bool CanQuit READ CanQuit )
+    Q_PROPERTY( bool CanRaise READ CanRaise )
+    Q_PROPERTY( QString DesktopEntry READ DesktopEntry )
+    Q_PROPERTY( bool HasTrackList READ HasTrackList )
+    Q_PROPERTY( QString Identity READ Identity )
+    Q_PROPERTY( QStringList SupportedMimeTypes READ SupportedMimeTypes )
+    Q_PROPERTY( QStringList SupportedUriSchemes READ SupportedUriSchemes )
 
 public:
     Mpris(MainWindow *p);
@@ -139,25 +144,17 @@ public:
         emit setRepeat(QLatin1String("None")!=s);
     }
 
-    QVariantMap metadata() const {
-        QVariantMap metadataMap;
-
-        if (!currentSong.title.isEmpty() && !currentSong.artist.isEmpty() && !currentSong.album.isEmpty()) {
-            metadataMap.insert("mpris:trackid", currentSong.id);
-            metadataMap.insert("mpris:length", currentSong.time / 1000 / 1000);
-            metadataMap.insert("xesam:album", currentSong.album);
-            metadataMap.insert("xesam:artist", currentSong.artist);
-            metadataMap.insert("xesam:title", currentSong.title);
-        }
-
-        return metadataMap;
-    }
+    QVariantMap Metadata() const;
 
     int Rate() const {
         return 1.0;
     }
 
     void SetRate(double) {
+    }
+
+    bool Shuffle() {
+        return MPDStatus::self()->random();
     }
 
     void SetShuffle(bool s) {
@@ -172,9 +169,7 @@ public:
         emit setVolume(v*100);
     }
 
-    qlonglong Position() const {
-        return MPDStatus::self()->timeElapsed();
-    }
+    qlonglong Position() const;
 
     double MinimumRate() const {
         return 1.0;
@@ -188,28 +183,40 @@ public:
         return true;
     }
 
+    bool CanPlay() const {
+        return MPDState_Playing!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>0;
+    }
+
+    bool CanPause() const {
+        return MPDState_Playing==MPDStatus::self()->state();
+    }
+
+    bool CanGoNext() const {
+        return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1;
+    }
+
+    bool CanGoPrevious() const {
+        return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1;
+    }
+
     // org.mpris.MediaPlayer2
-    bool canQuit() const {
+    bool CanQuit() const {
         return true;
     }
 
-    bool canRaise() const {
-        #ifdef ENABLE_KDE_SUPPORT
+    bool CanRaise() const {
         return true;
-        #else
-        return false;
-        #endif
     }
 
-    bool hasTrackList() const {
+    bool HasTrackList() const {
         return false;
     }
 
-    QString identity() const {
+    QString Identity() const {
         return QLatin1String("Cantata");
     }
 
-    QString desktopEntry() const {
+    QString DesktopEntry() const {
         #ifdef ENABLE_KDE_SUPPORT
         // Desktop file is installed in $prefix/share/applications/kde4/
         // rather than in $prefix/share/applications. The standard way to
@@ -221,11 +228,11 @@ public:
         #endif
     }
 
-    QStringList supportedUriSchemes() const {
+    QStringList SupportedUriSchemes() const {
         return QStringList();
     }
 
-    QStringList supportedMimeTypes() const {
+    QStringList SupportedMimeTypes() const {
         return QStringList();
     }
 
@@ -249,11 +256,21 @@ Q_SIGNALS:
     void setVolume(int vol);
     void stopPlaying();
 
-private slots:
+public Q_SLOTS:
+    void updateCurrentCover(const QString &fileName);
+
+private Q_SLOTS:
+    void updateStatus();
     void updateCurrentSong(const Song &song);
 
 private:
+    void signalUpdate(const QString &property, const QVariant &value);
+    void signalUpdate(const QVariantMap &map);
+
+private:
     MainWindow *mw;
+    MPDStatusValues status;
+    QString currentCover;
     Song currentSong;
 };
 

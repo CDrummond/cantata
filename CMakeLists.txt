@@ -462,6 +462,7 @@ ELSE( ENABLE_KDE_SUPPORT )
     else (WIN32)
         ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS})
         install( PROGRAMS dynamic/cantata-dynamic DESTINATION bin)
+        TARGET_LINK_LIBRARIES(cantata X11)
     endif (WIN32)
 
     install( TARGETS cantata RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib )

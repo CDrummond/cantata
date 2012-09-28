@@ -614,28 +614,50 @@ MainWindow::MainWindow(QWidget *parent)
     }
     togglePlayQueue();
 
+    #if !defined Q_OS_WIN
+    bool showMenuBar=qgetenv("XDG_CURRENT_DESKTOP")=="Unity";
+    #endif
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
-    menuBar()->setVisible(false);
+    if (!showMenuBar) {
+        menuBar()->setVisible(false);
+    }
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
-    QAction *menuAct=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-    menuAct->setIcon(Icon::configureIcon);
     #ifdef ENABLE_KDE_SUPPORT
+    mainMenu->addAction(prefAction);
     mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
     mainMenu->addSeparator();
     mainMenu->addMenu(helpMenu());
     #else
-    prefAction=menuAct;
+    prefAction=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+    prefAction->setIcon(Icon::configureIcon);
     mainMenu->addSeparator();
-    menuAct=mainMenu->addAction(i18nc("Qt-only", "About Cantata..."), this, SLOT(showAboutDialog()));
-    menuAct->setIcon(appIcon);
+    Action *aboutAction=mainMenu->addAction(i18nc("Qt-only", "About Cantata..."), this, SLOT(showAboutDialog()));
+    aboutAction->setIcon(appIcon);
     #endif
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
+
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    if (showMenuBar) {
+        QMenu *menu=new QMenu(i18n("&File"), this);
+        menu->addAction(quitAction);
+        menuBar()->addMenu(menu);
+        menu=new QMenu(i18n("&Settings"), this);
+        menu->addAction(expandInterfaceAction);
+        menu->addAction(connectionsAction);
+        menu->addAction(outputsAction);
+        menu->addAction(prefAction);
+        menuBar()->addMenu(menu);
+        menu=new QMenu(i18n("&Help"), this);
+        menu->addAction(aboutAction);
+        menuBar()->addMenu(menu);
+    }
+    #endif
 
     coverWidget->installEventFilter(new CoverEventHandler(this));
     dynamicLabel->setVisible(false);
@@ -1123,6 +1145,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
         if (event->spontaneous()) {
             event->ignore();
         }
+    } else {
+        #ifdef ENABLE_KDE_SUPPORT
+        KXmlGuiWindow::closeEvent(event);
+        #else
+        QMainWindow::closeEvent(event);
+        #endif
     }
 }
 

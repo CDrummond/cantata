@@ -229,6 +229,7 @@ void FsDevice::addSong(const Song &s, bool overwrite)
     QDir dir(Utils::getDir(destFile));
     if(!dir.exists() && !Utils::createDir(dir.absolutePath(), QString())) {
         emit actionStatus(DirCreationFaild);
+        return;
     }
 
     currentSong=s;

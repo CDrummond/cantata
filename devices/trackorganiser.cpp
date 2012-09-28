@@ -32,6 +32,7 @@
 #include "lyricspage.h"
 #include "localize.h"
 #include "messagebox.h"
+#include "icon.h"
 #include <QtCore/QTimer>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
@@ -55,7 +56,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);
     setMainWidget(mainWidet);
-    configFilename->setIcon(QIcon::fromTheme("configure"));
+    configFilename->setIcon(Icon::configureIcon);
     setButtonGuiItem(Ok, KGuiItem(i18n("Rename"), "edit-rename"));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     progress->setVisible(false);

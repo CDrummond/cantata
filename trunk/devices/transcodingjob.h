@@ -48,6 +48,7 @@ private:
     QStringList parameters;
     QProcess *process;
     qint64 duration; //in csec
+    QString data;
 };
 
 

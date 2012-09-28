@@ -27,7 +27,8 @@
 #include "ui_trackorganiser.h"
 #include "dialog.h"
 #include "song.h"
-#ifdef ENABLE_KDE_SUPPORT
+#include "config.h"
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "device.h"
 #else
 #include "deviceoptions.h"
@@ -59,7 +60,7 @@ private Q_SLOTS:
 private:
     void slotButtonClicked(int button);
     void readOptions();
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_DEVICES_SUPPORT
     Device * getDevice(QWidget *p=0);
     #endif
     void finish(bool ok);

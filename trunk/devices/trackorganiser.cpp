@@ -71,7 +71,7 @@ void TrackOrganiser::show(const QList<Song> &songs, const QString &udi)
     Q_UNUSED(udi)
 
     origSongs=songs;
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (udi.isEmpty()) {
         opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
     } else {
@@ -183,7 +183,7 @@ void TrackOrganiser::startRename()
     index=0;
     paused=autoSkip=false;
     readOptions();
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (!deviceUdi.isEmpty()) {
         Device *dev=getDevice();
         if (!dev) {
@@ -211,7 +211,7 @@ void TrackOrganiser::renameFile()
     QString modified=opts.createFilename(s);
     QString musicFolder;
 
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifdef ENABLE_DEVICES_SUPPORT
     if (!deviceUdi.isEmpty()) {
         Device *dev=getDevice();
         if (!dev) {
@@ -302,7 +302,7 @@ void TrackOrganiser::renameFile()
         if (!skip) {
             QDir sDir(Utils::getDir(source));
             QDir dDir(Utils::getDir(dest));
-            #ifdef ENABLE_KDE_SUPPORT
+            #ifdef ENABLE_DEVICES_SUPPORT
             Device *dev=deviceUdi.isEmpty() ? 0 : getDevice();
             if (sDir.absolutePath()!=dDir.absolutePath()) {
                 Utils::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile() : QString());
@@ -325,7 +325,7 @@ void TrackOrganiser::renameFile()
                 DirViewModel::self()->removeFileFromList(s.file);
                 DirViewModel::self()->addFileToList(to.file);
             }
-            #ifdef ENABLE_KDE_SUPPORT
+            #ifdef ENABLE_DEVICES_SUPPORT
             else {
                 if (!dev) {
                     return;
@@ -349,7 +349,7 @@ void TrackOrganiser::finish(bool ok)
         if (deviceUdi.isEmpty()) {
             emit update();
         }
-        #ifdef ENABLE_KDE_SUPPORT
+        #ifdef ENABLE_DEVICES_SUPPORT
         else {
             Device *dev=getDevice();
             if (dev) {
@@ -365,7 +365,7 @@ void TrackOrganiser::finish(bool ok)
     }
 }
 
-#ifdef ENABLE_KDE_SUPPORT
+#ifdef ENABLE_DEVICES_SUPPORT
 Device * TrackOrganiser::getDevice(QWidget *p)
 {
     Device *dev=DevicesModel::self()->device(deviceUdi);
@@ -387,3 +387,4 @@ Device * TrackOrganiser::getDevice(QWidget *p)
     return dev;
 }
 #endif
+

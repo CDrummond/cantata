@@ -37,7 +37,8 @@ TranscodingJob::~TranscodingJob()
 void TranscodingJob::start()
 {
     process = new QProcess;
-    connect(process, SIGNAL(readyReadStandardError()), this, SLOT(processOutput()));
+    process->setReadChannelMode(QProcess::MergedChannels);
+    process->setReadChannel(QProcess::StandardOutput);
     connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(processOutput()));
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(finished(int, QProcess::ExitStatus)));
     QString cmd=parameters.takeFirst();
@@ -76,7 +77,10 @@ void TranscodingJob::processOutput()
     if(output.simplified().isEmpty()) {
         return;
     }
-
+    
+    if (!data.isEmpty()) {
+        output=data+output;
+    }
     if (-1==duration) {
         duration = computeDuration(output);
     }
@@ -84,7 +88,19 @@ void TranscodingJob::processOutput()
     if (duration>0) {
         qint64 prog = computeProgress(output);
         if (prog>-1) {
-            setPercent(prog/duration);
+            setPercent((prog*100)/duration);
+        }
+    }
+    
+    if (!output.endsWith('\n') && !output.endsWith('\r')) {
+        int last=output.lastIndexOf('\n');
+        if (-1==last) {
+            last=output.lastIndexOf('\r');
+        }
+        if (last>-1) {
+            data=output.mid(last+1);
+        } else {
+            data=output;
         }
     }
 }

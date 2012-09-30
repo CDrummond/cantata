@@ -35,6 +35,8 @@
 18. Use freedesktop.org notifications for Qt-only Linux builds.
 19. Show menubar when run under Unity.
 20. Improve MPRISv2 interface - signal when proprties change.
+21. Play/Pause track when middle click on tray icon for Qt-only builds (KDE
+    builds already have this). Thanks to spartanj for the patch.
 
 0.8.3.1
 -------

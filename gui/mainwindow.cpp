@@ -2462,6 +2462,10 @@ void MainWindow::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
         } else {
             hide();
         }
+        break;
+    case QSystemTrayIcon::MiddleClick:
+        playPauseTrack();
+        break;
     default:
         break;
     }

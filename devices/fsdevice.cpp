@@ -103,15 +103,14 @@ void MusicScanner::scanFolder(const QString &f, int level)
             } else if(info.isReadable()) {
                 Song song;
                 QString fname=info.absoluteFilePath().mid(folder.length());
-                song.file=fname;
                 QSet<Song>::iterator it=existing.find(song);
                 if (existing.end()==it) {
                     song=Tags::read(info.absoluteFilePath());
                 } else {
                     song=*it;
-                    song.file=fname;
                     existing.erase(it);
                 }
+                song.file=fname;
 
                 if (song.isEmpty()) {
                     continue;

@@ -167,14 +167,3 @@ void TreeView::correctSelection()
     selectionModel()->select(s, QItemSelectionModel::SelectCurrent);
 }
 
-void TreeView::paintEvent(QPaintEvent *e)
-{
-    if (!pixmap.isNull()) {
-        QPainter p(viewport());
-        p.setOpacity(0.15);
-        p.drawPixmap((width() - pixmap.width())/2, (height() - pixmap.height())/2, pixmap);
-    }
-
-    QTreeView::paintEvent(e);
-}
-

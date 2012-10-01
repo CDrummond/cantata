@@ -39,7 +39,6 @@ public:
     SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action);
     virtual ~SyncCollectionWidget();
 
-    void setIcon(const QString &iconName);
     void update(const QSet<Song> &songs);
     int numArtists();
 

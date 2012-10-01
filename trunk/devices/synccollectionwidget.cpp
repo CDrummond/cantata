@@ -47,16 +47,10 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     QAction *act=new QAction(action, this);
     connect(act, SIGNAL(triggered(bool)), SLOT(copySongs()));
     tree->addAction(act);
-    tree->setAlternatingRowColors(false); // Otherwise background gets corrrupted.
 }
 
 SyncCollectionWidget::~SyncCollectionWidget()
 {
-}
-
-void SyncCollectionWidget::setIcon(const QString &iconName)
-{
-    tree->setPixmap(QIcon::fromTheme(iconName).pixmap(128, 128));
 }
 
 void SyncCollectionWidget::update(const QSet<Song> &songs)

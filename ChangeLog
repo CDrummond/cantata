@@ -37,6 +37,9 @@
 20. Improve MPRISv2 interface - signal when proprties change.
 21. Play/Pause track when middle click on tray icon for Qt-only builds (KDE
     builds already have this). Thanks to spartanj for the patch.
+22. Remove faded icons from background of sync dialog views (as these did not
+    render correctly with all styles), and enforce alternate row colours - as
+    per other views.
 
 0.8.3.1
 -------

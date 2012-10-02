@@ -89,6 +89,7 @@ public:
 
 private:
     void setYear(const MusicLibraryItemSong *song);
+    bool largeImages() const;
 
 private:
     quint32 m_year;

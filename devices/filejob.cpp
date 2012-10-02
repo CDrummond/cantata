@@ -134,7 +134,7 @@ void CopyJob::run()
             writePos+=bytesWritten;
         } while (writePos<bytesRead);
 
-        setPercent((readPos+bytesRead)/totalBytes);
+        setPercent(((readPos+bytesRead)*100.0)/totalBytes);
         if (src.atEnd()) {
             break;
         }

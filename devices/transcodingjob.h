@@ -33,9 +33,10 @@ public:
     explicit TranscodingJob(const QStringList &params);
     ~TranscodingJob();
 
-    void start();
     void stop();
 
+private:
+    void run();
 private Q_SLOTS:
     void processOutput();
     void finished( int exitCode, QProcess::ExitStatus exitStatus );

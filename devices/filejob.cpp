@@ -58,7 +58,6 @@ void FileScheduler::addJob(FileJob *job)
         thread->start();
     }
     job->moveToThread(thread);
-    QTimer::singleShot(0, job, SLOT(start()));
 }
 
 void FileScheduler::stop()
@@ -67,6 +66,11 @@ void FileScheduler::stop()
         Utils::stopThread(thread);
         thread=0;
     }
+}
+
+void FileJob::start()
+{
+    QTimer::singleShot(0, this, SLOT(run()));
 }
 
 void FileJob::setPercent(int pc)
@@ -79,7 +83,7 @@ void FileJob::setPercent(int pc)
 
 static const int constChunkSize=32*1024;
 
-void CopyJob::start()
+void CopyJob::run()
 {
     QFile src(srcFile);
 
@@ -132,14 +136,14 @@ void CopyJob::start()
 
         setPercent((readPos+bytesRead)/totalBytes);
         if (src.atEnd()) {
-            break;        
+            break;
         }
     } while ((readPos+bytesRead)<totalBytes);
 
     emit result(StatusOk);
 }
 
-void DeleteJob::start()
+void DeleteJob::run()
 {
     emit result(QFile::remove(fileName) ? StatusOk : StatusFailed);
     emit percent(100);

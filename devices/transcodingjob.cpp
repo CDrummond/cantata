@@ -34,7 +34,7 @@ TranscodingJob::~TranscodingJob()
     delete process;
 }
 
-void TranscodingJob::start()
+void TranscodingJob::run()
 {
     process = new QProcess;
     process->setReadChannelMode(QProcess::MergedChannels);
@@ -77,7 +77,7 @@ void TranscodingJob::processOutput()
     if(output.simplified().isEmpty()) {
         return;
     }
-    
+
     if (!data.isEmpty()) {
         output=data+output;
     }
@@ -91,7 +91,7 @@ void TranscodingJob::processOutput()
             setPercent((prog*100)/duration);
         }
     }
-    
+
     if (!output.endsWith('\n') && !output.endsWith('\r')) {
         int last=output.lastIndexOf('\n');
         if (-1==last) {

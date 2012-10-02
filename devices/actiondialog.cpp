@@ -566,6 +566,7 @@ void ActionDialog::removeSong(const Song &s)
 
     DeleteJob *job=new DeleteJob(s.file);
     connect(job, SIGNAL(result(int)), SLOT(removeSongResult(int)));
+    job->start();
 }
 
 void ActionDialog::removeSongResult(int status)

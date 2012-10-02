@@ -42,6 +42,7 @@
     per other views.
 23. Fix image/icon size, and spacing issues, in sync dialog when the library
     view is set to use icon/list style.
+24. Add 'Add to playlist' action to playqueue context menu.
 
 0.8.3.1
 -------

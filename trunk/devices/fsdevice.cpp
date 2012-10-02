@@ -237,11 +237,13 @@ void FsDevice::addSong(const Song &s, bool overwrite)
         CopyJob *job=new CopyJob(s.file, destFile);
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
         connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
+        job->start();
     } else {
         transcoding=true;
         TranscodingJob *job=new TranscodingJob(encoder.params(opts.transcoderValue, s.file, destFile));
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
         connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
+        job->start();
     }
 }
 
@@ -292,6 +294,7 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
     CopyJob *job=new CopyJob(source, dest);
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
+    job->start();
 }
 
 void FsDevice::removeSong(const Song &s)
@@ -310,6 +313,7 @@ void FsDevice::removeSong(const Song &s)
     currentSong=s;
     DeleteJob *job=new DeleteJob(audioFolder+s.file);
     connect(job, SIGNAL(result(int)), SLOT(removeSongResult(int)));
+    job->start();
 }
 
 void FsDevice::cleanDirs(const QSet<QString> &dirs)

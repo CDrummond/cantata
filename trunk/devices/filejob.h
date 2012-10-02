@@ -69,9 +69,10 @@ Q_SIGNALS:
 
 public:
     virtual void stop() { stopRequested=true; }
+    virtual void start();
 
 protected Q_SLOTS:
-    virtual void start()=0;
+    virtual void run()=0;
 
 protected:
     bool stopRequested;
@@ -86,7 +87,7 @@ public:
         , destFile(dest) {
     }
 private:
-    void start();
+    void run();
 private:
     QString srcFile;
     QString destFile;
@@ -99,7 +100,7 @@ public:
         : fileName(file) {
     }
 private:
-    void start();
+    void run();
 private:
     QString fileName;
 };

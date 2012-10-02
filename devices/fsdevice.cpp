@@ -380,7 +380,7 @@ void FsDevice::copySongToResult(int status)
     if (FileJob::StatusOk!=status) {
         emit actionStatus(Failed);
     } else {
-        QString sourceDir=MPDParseUtils::getDir(currentSong.file);
+        QString sourceDir=MPDParseUtils::getDir(audioFolder+currentSong.file);
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
         Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), QString());
         if (needToFixVa) {

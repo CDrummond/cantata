@@ -31,10 +31,10 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QSet>
 #include "musiclibraryitemroot.h"
+#include "musiclibraryitemalbum.h"
 #include "song.h"
 
 class QMimeData;
-class MusicLibraryItemAlbum;
 class MusicLibraryItemArtist;
 
 class MusicLibraryModel : public QAbstractItemModel
@@ -74,6 +74,8 @@ public:
     bool useArtistImages() const { return artistImages; }
     void setUseArtistImages(bool a) { artistImages=a; }
     const QDateTime & lastUpdate() { return databaseTime; }
+    bool useLargeImages() const { return rootItem->useLargeImages(); }
+    void setLargeImages(bool a) { rootItem->setLargeImages(a); }
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);

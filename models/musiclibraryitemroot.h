@@ -45,7 +45,8 @@ class MusicLibraryItemRoot : public MusicLibraryItemContainer
 public:
     MusicLibraryItemRoot(const QString &name=QString(), bool albumArtistSupport=true)
         : MusicLibraryItemContainer(name, 0)
-        , supportsAlbumArtist(albumArtistSupport) {
+        , supportsAlbumArtist(albumArtistSupport)
+        , largeImages(false) {
     }
     virtual ~MusicLibraryItemRoot() {
     }
@@ -81,6 +82,13 @@ public:
         return supportsAlbumArtist;
     }
 
+    bool useLargeImages() const {
+        return largeImages;
+    }
+    void setLargeImages(bool a) {
+        largeImages=a;
+    }
+
 private:
     QString songArtist(const Song &s);
 
@@ -88,6 +96,7 @@ protected:
     bool supportsAlbumArtist; // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
 
 private:
+    bool largeImages;
     QHash<QString, int> m_indexes;
 };
 

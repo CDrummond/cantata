@@ -40,6 +40,8 @@
 22. Remove faded icons from background of sync dialog views (as these did not
     render correctly with all styles), and enforce alternate row colours - as
     per other views.
+23. Fix image/icon size, and spacing issues, in sync dialog when the library
+    view is set to use icon/list style.
 
 0.8.3.1
 -------

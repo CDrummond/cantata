@@ -107,6 +107,7 @@ void LibraryPage::setView(int v)
 {
     setItemSize(v);
     view->setMode((ItemView::Mode)v);
+    MusicLibraryModel::self()->setLargeImages(ItemView::Mode_IconTop==v);
 }
 
 void LibraryPage::setItemSize(int v)

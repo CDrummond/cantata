@@ -178,7 +178,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         }
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            return artist->isVarious() ? QIcon::fromTheme("cantata-view-media-artist-various") : QIcon::fromTheme("view-media-artist");
+            return artist->isVarious() ? Icon::variousArtistsIcon : Icon::artistIcon;
         }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {

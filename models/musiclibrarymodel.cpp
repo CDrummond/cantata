@@ -244,7 +244,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         }
     case ItemView::Role_ImageSize:
         if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...
-            return MusicLibraryItemAlbum::iconSize(true);
+            return MusicLibraryItemAlbum::iconSize(rootItem->useLargeImages());
         } else if (MusicLibraryItem::Type_Album==item->itemType() || (artistImages && MusicLibraryItem::Type_Artist==item->itemType())) {
             return MusicLibraryItemAlbum::iconSize();
         }
@@ -279,7 +279,10 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             return v;
         }
     case Qt::SizeHintRole:
-        if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) {
+        if (!artistImages && MusicLibraryItem::Type_Artist==item->itemType()) {
+            return QVariant();
+        }
+        if (rootItem->useLargeImages() && MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) {
             return MusicLibraryItemAlbum::itemSize();
         }
     default:
@@ -294,6 +297,7 @@ void MusicLibraryModel::clear()
     beginResetModel();
     databaseTime = QDateTime();
     rootItem = new MusicLibraryItemRoot;
+    rootItem->setLargeImages(oldRoot->useLargeImages());
     delete oldRoot;
     endResetModel();
 
@@ -529,6 +533,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         beginResetModel();
         databaseTime = dbUpdate;
         rootItem = newroot;
+        rootItem->setLargeImages(oldRoot->useLargeImages());
         delete oldRoot;
         endResetModel();
         updatedSongs=true;

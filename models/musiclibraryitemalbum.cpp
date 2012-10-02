@@ -42,6 +42,7 @@
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
+static QPixmap *theDefaultLargeIcon=0;
 static bool useDate=false;
 static QSize iconItemSize;
 
@@ -117,6 +118,10 @@ void MusicLibraryItemAlbum::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
             delete theDefaultIcon;
             theDefaultIcon=0;
         }
+        if (theDefaultLargeIcon) {
+            delete theDefaultLargeIcon;
+            theDefaultLargeIcon=0;
+        }
         MusicLibraryItemArtist::clearDefaultCover();
         coverSize=size;
     }
@@ -166,7 +171,7 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
 bool MusicLibraryItemAlbum::setCover(const QImage &img) const
 {
     if (m_coverIsDefault && !img.isNull()) {
-        int size=iconSize(!iconItemSize.isNull());
+        int size=iconSize(largeImages());
         m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(size, size), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         m_coverIsDefault=false;
         return true;
@@ -177,20 +182,32 @@ bool MusicLibraryItemAlbum::setCover(const QImage &img) const
 
 const QPixmap & MusicLibraryItemAlbum::cover()
 {
-    if (m_coverIsDefault && theDefaultIcon) {
-        return *theDefaultIcon;
+    if (m_coverIsDefault) {
+        if (largeImages()) {
+            if (theDefaultLargeIcon) {
+                return *theDefaultLargeIcon;
+            }
+        } else if (theDefaultIcon) {
+            return *theDefaultIcon;
+        }
     }
 
     if (!m_cover) {
-        int iSize=iconSize(!iconItemSize.isNull());
+        bool useLarge=largeImages();
+        int iSize=iconSize(useLarge);
 
-        if (!theDefaultIcon) {
+        if ((useLarge && !theDefaultLargeIcon) || (!useLarge && !theDefaultIcon)) {
             int cSize=iSize;
             if (0==cSize) {
                 cSize=22;
             }
-            theDefaultIcon = new QPixmap(Icon::albumIcon.pixmap(cSize, cSize)
-                                        .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            if (useLarge) {
+                theDefaultLargeIcon = new QPixmap(Icon::albumIcon.pixmap(cSize, cSize)
+                                                 .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            } else {
+                theDefaultIcon = new QPixmap(Icon::albumIcon.pixmap(cSize, cSize)
+                                            .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            }
         }
         m_coverIsDefault = true;
         if (Song::SingleTracks!=m_type && parentItem() && iSize && childCount()) {
@@ -214,7 +231,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             #endif
             Covers::self()->requestCover(song, true);
         }
-        return *theDefaultIcon;
+        return useLarge ? *theDefaultLargeIcon : *theDefaultIcon;
     }
 
     return *m_cover;
@@ -333,3 +350,8 @@ void MusicLibraryItemAlbum::setYear(const MusicLibraryItemSong *song)
     }
 }
 
+bool MusicLibraryItemAlbum::largeImages() const
+{
+    return m_parentItem && m_parentItem->parentItem() && Type_Root==m_parentItem->parentItem()->itemType() &&
+           static_cast<MusicLibraryItemRoot *>(m_parentItem->parentItem())->useLargeImages();
+}

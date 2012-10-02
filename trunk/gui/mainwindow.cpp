@@ -326,6 +326,7 @@ MainWindow::MainWindow(QWidget *parent)
     decreaseVolumeAction = createAction("decreasevolume", i18n("Decrease Volume"));
     addToPlayQueueAction = createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
     addToStoredPlaylistAction = createAction("addtostoredplaylist", i18n("Add To Playlist"));
+    addPlayQueueToStoredPlaylistAction = createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction = createAction("replaygain", i18n("ReplayGain"), "audio-x-generic");
     #endif
@@ -452,6 +453,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
+    addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
+    addPlayQueueToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
 
     menuButton->setIcon(Icon::configureIcon);
     menuButton->setMenu(mainMenu);
@@ -701,6 +704,7 @@ MainWindow::MainWindow(QWidget *parent)
     sep->setSeparator(true);
     playQueue->addAction(sep);
     playQueue->addAction(locateTrackAction);
+    playQueue->addAction(addPlayQueueToStoredPlaylistAction);
     #ifdef TAGLIB_FOUND
     playQueue->addAction(editPlayQueueTagsAction);
     #endif
@@ -739,6 +743,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(startPlayingSongId(quint32)), MPDConnection::self(), SLOT(startPlayingSongId(quint32)));
     connect(this, SIGNAL(setDetails(const MPDConnectionDetails &)), MPDConnection::self(), SLOT(setDetails(const MPDConnectionDetails &)));
     connect(this, SIGNAL(setPriority(const QList<quint32> &, quint8 )), MPDConnection::self(), SLOT(setPriority(const QList<quint32> &, quint8)));
+    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
     connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
@@ -2181,6 +2186,7 @@ void MainWindow::addWithPriority()
 
 void MainWindow::addToNewStoredPlaylist()
 {
+    bool pq=playQueue->hasFocus();
     for(;;) {
         QString name = InputDialog::getText(i18n("Playlist Name"), i18n("Enter a name for the playlist:"), QString(), 0, this);
 
@@ -2198,7 +2204,7 @@ void MainWindow::addToNewStoredPlaylist()
         }
 
         if (!name.isEmpty()) {
-            addToExistingStoredPlaylist(name);
+            addToExistingStoredPlaylist(name, pq);
         }
         break;
     }
@@ -2206,7 +2212,28 @@ void MainWindow::addToNewStoredPlaylist()
 
 void MainWindow::addToExistingStoredPlaylist(const QString &name)
 {
-    if (libraryPage->isVisible()) {
+    addToExistingStoredPlaylist(name, playQueue->hasFocus());
+}
+
+void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
+{
+    if (pq) {
+        const QModelIndexList items = playQueue->selectedIndexes();
+        if (!items.isEmpty()) {
+            QStringList files;
+
+            foreach (const QModelIndex &idx, items) {
+                Song s = playQueueModel.getSongByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
+                if (!s.file.isEmpty()) {
+                    files.append(s.file);
+                }
+            }
+
+            if (!files.isEmpty()) {
+                emit addSongsToPlaylist(name, files);
+            }
+        }
+    } else if (libraryPage->isVisible()) {
         libraryPage->addSelectionToPlaylist(name);
     } else if (albumsPage->isVisible()) {
         albumsPage->addSelectionToPlaylist(name);

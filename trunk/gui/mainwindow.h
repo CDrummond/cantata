@@ -189,7 +189,7 @@ public:
     Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
     int currentTrackPosition() const;
     QString coverFile() const;
-    
+
 protected:
     void keyPressEvent(QKeyEvent *event);
     void closeEvent(QCloseEvent *event);
@@ -216,6 +216,7 @@ Q_SIGNALS:
     void outputs();
     void enableOutput(int id, bool);
     void setPriority(const QList<quint32> &ids, quint8 priority);
+    void addSongsToPlaylist(const QString &name, const QStringList &files);
 
 public Q_SLOTS:
     void showError(const QString &message, bool showActions=false);
@@ -268,6 +269,7 @@ private Q_SLOTS:
     void addWithPriority();
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
+    void addToExistingStoredPlaylist(const QString &name, bool pq);
     void removeItems();
     void checkMpdAccessibility();
     #ifdef ENABLE_KDE_SUPPORT
@@ -379,6 +381,7 @@ private:
     Action *replacePlayQueueAction;
     Action *removeFromPlayQueueAction;
     Action *addToStoredPlaylistAction;
+    Action *addPlayQueueToStoredPlaylistAction;
     Action *clearPlayQueueAction;
     Action *copyTrackInfoAction;
     Action *cropPlayQueueAction;

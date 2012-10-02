@@ -222,8 +222,8 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.year=m_year;
             song.file=firstSong->file();
             #ifdef ENABLE_DEVICES_SUPPORT
-            if (!song.file.startsWith("/") && parent() && parent()->parent() && qobject_cast<Device *>(parent()->parent())) {
-                QString root=static_cast<Device *>(parent()->parent())->path();
+            if (!song.file.startsWith("/") && parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem())) {
+                QString root=static_cast<Device *>(parentItem()->parentItem())->path();
                 if (!root.isEmpty()) {
                     song.file=Utils::dirSyntax(root)+song.file;
                 }

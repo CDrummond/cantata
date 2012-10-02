@@ -241,10 +241,15 @@ void DevicesPage::controlActions()
     #ifdef ENABLE_REMOTE_DEVICES
     bool remoteDev=false;
     #endif
+    bool deviceSelected=false;
     QString udi;
 
     foreach (const QModelIndex &idx, selected) {
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
+
+        if (item && MusicLibraryItem::Type_Root==item->itemType()) {
+            deviceSelected=true;
+        }
 
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parentItem()) {
@@ -277,7 +282,7 @@ void DevicesPage::controlActions()
     configureAction->setEnabled(!enable && 1==selected.count());
     refreshAction->setEnabled(!enable && 1==selected.count());
     copyAction->setEnabled(enable);
-    syncAction->setEnabled(connected && 1==selected.count() && singleUdi);
+    syncAction->setEnabled(deviceSelected && connected && 1==selected.count() && singleUdi);
     mw->deleteSongsAction->setEnabled(enable);
     mw->editTagsAction->setEnabled(enable && onlyFs && singleUdi);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT

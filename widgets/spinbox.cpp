@@ -32,8 +32,8 @@
 
 static bool init=false;
 static bool useQtSpinBox=true;
-static Icn incIcon;
-static Icn decIcon;
+static Icon incIcon;
+static Icon decIcon;
 
 static void intButton(QToolButton *btn, bool inc)
 {

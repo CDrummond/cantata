@@ -24,6 +24,8 @@
 #ifndef PAGEWIDGET_H
 #define PAGEWIDGET_H
 
+#include "icon.h"
+
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KPageWidget>
 typedef KPageWidgetItem PageWidgetItem;
@@ -36,7 +38,7 @@ public:
     }
     virtual ~PageWidget() {
     }
-    PageWidgetItem * addPage(QWidget *widget, const QString &name, const KIcon &icon, const QString &header) {
+    PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header) {
         PageWidgetItem *item=KPageWidget::addPage(widget, name);
         item->setIcon(icon);
         item->setHeader(header);
@@ -51,7 +53,7 @@ public:
 class PageWidgetItem : public QWidget
 {
 public:
-    PageWidgetItem(QWidget *p, const QString &header, const QIcon &icon, QWidget *cfg);
+    PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg);
     virtual ~PageWidgetItem() {
     }
 };
@@ -62,7 +64,7 @@ public:
     PageWidget(QWidget *p);
     virtual ~PageWidget() {
     }
-    PageWidgetItem * addPage(QWidget *widget, const QString &name, const QIcon &icon, const QString &header);
+    PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
     void allPagesAdded();
 };
 

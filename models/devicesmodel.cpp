@@ -36,7 +36,7 @@
 #include "umsdevice.h"
 #include "httpserver.h"
 #include "localize.h"
-#include "icon.h"
+#include "icons.h"
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>
@@ -178,11 +178,11 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         }
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            return artist->isVarious() ? Icon::variousArtistsIcon : Icon::artistIcon;
+            return artist->isVarious() ? Icons::variousArtistsIcon : Icons::artistIcon;
         }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icon::albumIcon;
+                return Icons::albumIcon;
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }
@@ -298,7 +298,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         #ifdef ENABLE_REMOTE_DEVICES
         if (MusicLibraryItem::Type_Root==item->itemType() && Device::RemoteFs==static_cast<Device *>(item)->devType() &&
             static_cast<Device *>(item)->supportsDisconnect()) {
-            return static_cast<Device *>(item)->isConnected() ? Icon::connectIcon : Icon::disconnectIcon;
+            return static_cast<Device *>(item)->isConnected() ? Icons::connectIcon : Icons::disconnectIcon;
         }
         #endif
         return QVariant();

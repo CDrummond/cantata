@@ -25,7 +25,7 @@
 #include "covers.h"
 #include "config.h"
 #include "localize.h"
-#include "icon.h"
+#include "icons.h"
 #include <QtGui/QPixmap>
 #include <QtCore/QBuffer>
 #include <QtCore/QEvent>
@@ -67,7 +67,7 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
     QPixmap &pix=stream ? noStreamCover : noCover;
 
     if (pix.isNull()) {
-        pix = (stream ? Icon::streamIcon : Icon::albumIcon).pixmap(128, 128).scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        pix = (stream ? Icons::streamIcon : Icons::albumIcon).pixmap(128, 128).scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
     return pix;
 }

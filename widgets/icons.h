@@ -21,50 +21,34 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef ICON_H
-#define ICON_H
+#ifndef ICONS_H
+#define ICONS_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIcon>
-#else
-#include <QtGui/QIcon>
-#endif
+#include "icon.h"
 
-class QToolButton;
-
-class Icon : public
-    #ifdef ENABLE_KDE_SUPPORT
-    KIcon
-    #else
-    QIcon
-    #endif
+namespace Icons
 {
-public:
-    #ifdef ENABLE_KDE_SUPPORT
-    explicit Icon(const QString &icon)
-        : KIcon(icon) {
-    }
-    #else
-    explicit Icon(const QString &icon)
-        : QIcon(QIcon::fromTheme(icon)) {
-    }
-    #endif
-    Icon() {
-    }
-
-    static int stdSize(int s);
-    static void init(QToolButton *btn, bool setFlat=true);
-    #ifdef ENABLE_KDE_SUPPORT
-    static Icon getMediaIcon(const QString &name) {
-        return Icon(name);
-    }
-    #else
-    static Icon getMediaIcon(const QString &name);
-    #endif
-
+    extern void init();
     #ifndef ENABLE_KDE_SUPPORT
-    static Icon create(const QStringList &sizes);
+    extern Icon appIcon;
     #endif
-};
+    extern Icon singleIcon;
+    extern Icon consumeIcon;
+    extern Icon repeatIcon;
+    extern Icon shuffleIcon;
+    extern Icon libraryIcon;
+    extern Icon wikiIcon;
+    extern Icon albumIcon;
+    extern Icon streamIcon;
+    extern Icon configureIcon;
+    extern Icon connectIcon;
+    extern Icon disconnectIcon;
+    extern Icon speakerIcon;
+    extern Icon lyricsIcon;
+    extern Icon dynamicIcon;
+    extern Icon playlistIcon;
+    extern Icon variousArtistsIcon;
+    extern Icon artistIcon;
+}
 
 #endif

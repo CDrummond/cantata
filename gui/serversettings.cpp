@@ -26,7 +26,7 @@
 #include "localize.h"
 #include "inputdialog.h"
 #include "messagebox.h"
-#include "icon.h"
+#include "icons.h"
 #include <QtCore/QDir>
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
@@ -198,7 +198,7 @@ void ServerSettings::enableWidgets(bool e)
 //     passwordLabel->setEnabled(e);
 //     dirLabel->setEnabled(e);
     connectButton->setText(e ? i18n("Connect") : i18n("Disconnect"));
-    connectButton->setIcon(e ? Icon::connectIcon : Icon::disconnectIcon);
+    connectButton->setIcon(e ? Icons::connectIcon : Icons::disconnectIcon);
     removeButton->setEnabled(e);
 //     saveButton->setEnabled(e);
 }

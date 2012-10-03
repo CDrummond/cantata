@@ -40,7 +40,7 @@
 #include "network.h"
 #include "localize.h"
 #include "utils.h"
-#include "icon.h"
+#include "icons.h"
 #include <QtGui/QCommonStyle>
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
@@ -183,12 +183,12 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             if (artistImages) {
                 return artist->cover();
             } else {
-                return artist->isVarious() ? Icon::variousArtistsIcon : Icon::artistIcon;
+                return artist->isVarious() ? Icons::variousArtistsIcon : Icons::artistIcon;
             }
         }
         case MusicLibraryItem::Type_Album:
             if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
-                return Icon::albumIcon;
+                return Icons::albumIcon;
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }

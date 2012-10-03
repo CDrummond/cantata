@@ -438,7 +438,7 @@ IF( ENABLE_KDE_SUPPORT )
     install( FILES cantata.notifyrc DESTINATION ${DATA_INSTALL_DIR}/cantata )
 ELSE( ENABLE_KDE_SUPPORT )
     SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/dirrequester.cpp widgets/lineedit.cpp network/networkproxyfactory.cpp network/proxysettings.cpp widgets/kmessagewidget.cpp
-            widgets/dialog.cpp widgets/messagebox.cpp )
+            widgets/dialog.cpp widgets/messagebox.cpp widgets/pagewidget.cpp )
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} application.h widgets/dirrequester.h widgets/lineedit.h network/proxysettings.h widgets/kmessagewidget.h widgets/urllabel.h
             widgets/dialog.h )
     SET( CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui )

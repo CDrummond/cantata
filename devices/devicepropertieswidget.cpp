@@ -25,7 +25,7 @@
 #include "filenameschemedialog.h"
 #include "covers.h"
 #include "localize.h"
-#include "icon.h"
+#include "icons.h"
 #include <QtGui/QValidator>
 #include <QtGui/QTabWidget>
 
@@ -84,7 +84,7 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     , saveable(false)
 {
     setupUi(this);
-    configFilename->setIcon(Icon::configureIcon);
+    configFilename->setIcon(Icons::configureIcon);
     albumCovers->insertItems(0, QStringList() << noCoverText << Covers::standardNames());
     fixVariousArtists->setToolTip(i18n("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
                                        "then Cantata will set the 'Artist' tag of all tracks to 'Various Artists' and the "

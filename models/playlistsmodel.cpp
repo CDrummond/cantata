@@ -41,7 +41,7 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 #include "mpdstats.h"
 #include "mpdconnection.h"
 #include "playqueuemodel.h"
-#include "icon.h"
+#include "icons.h"
 
 PlaylistsModel * PlaylistsModel::self()
 {
@@ -196,7 +196,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
                     QTP_TRACKS_DURATION_STR(pl->songs.count(), Song::formattedTime(pl->totalTime()));
                     #endif
         case Qt::DecorationRole:
-            return Icon::playlistIcon;
+            return Icons::playlistIcon;
         case ItemView::Role_SubText:
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Track (%2)", "%1 Tracks (%2)", pl->songs.count(), Song::formattedTime(pl->totalTime()));
@@ -277,7 +277,7 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return text;
         }
         case Qt::DecorationRole:
-            return s->title.isEmpty() ? Icon::streamIcon : Icon("audio-x-generic");
+            return s->title.isEmpty() ? Icons::streamIcon : Icon("audio-x-generic");
         case ItemView::Role_MainText:
             return s->title.isEmpty() ? s->file : s->title;
         case ItemView::Role_SubText:

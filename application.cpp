@@ -31,10 +31,12 @@
 #include <QtGui/QIcon>
 #include <QtCore/QUrl>
 #ifdef Q_OS_WIN
+#include <QtCore/QDir>
 #include <windows.h>
 #endif
 #endif
 #include "icon.h"
+#include "icons.h"
 #include "utils.h"
 #include "config.h"
 #include "mainwindow.h"
@@ -80,7 +82,7 @@ int Application::newInstance() {
                 QString(), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "groupWarning")) {
             QApplication::exit(0);
         }
-        Icon::setupIconTheme();
+        Icons::init();
         w=new MainWindow();
     }
 
@@ -115,6 +117,36 @@ Application::~Application()
 }
 
 #ifdef Q_OS_WIN
+static void setupIconTheme()
+{
+    // Check that we have certain icons in the selected icon theme. If not, and oxygen is installed, then
+    // set icon theme to oxygen.
+    QString theme=QIcon::themeName();
+    if (QLatin1String("oxygen")!=theme) {
+        QStringList check=QStringList() << "actions/edit-clear-list" << "actions/view-media-playlist"
+                                        << "actions/view-media-lyrics" << "actions/configure"
+                                        << "actions/view-choose" << "actions/view-media-artist";
+        bool found=false;
+
+        foreach (const QString &icn, check) {
+            if (!QIcon::hasThemeIcon(icn)) {
+                QStringList paths=QIcon::themeSearchPaths();
+
+                foreach (const QString &p, paths) {
+                    if (QDir(p+QLatin1String("/oxygen")).exists()) {
+                        QIcon::setThemeName(QLatin1String("oxygen"));
+                        found=true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+        }
+    }
+}
+
 bool Application::winEventFilter(MSG *msg, long *result)
 {
     if (msg && WM_POWERBROADCAST==msg->message && PBT_APMRESUMEAUTOMATIC==msg->wParam) {
@@ -137,7 +169,10 @@ bool Application::start()
         return false;
     }
 
-    Icon::setupIconTheme();
+    #ifdef Q_OS_WIN
+    setupIconTheme();
+    #endif
+    Icons::init();
     return true;
 }
 

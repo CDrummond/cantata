@@ -31,7 +31,7 @@
 #include "song.h"
 #include "covers.h"
 #include "config.h"
-#include "icon.h"
+#include "icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "device.h"
 #include "utils.h"
@@ -202,10 +202,10 @@ const QPixmap & MusicLibraryItemAlbum::cover()
                 cSize=22;
             }
             if (useLarge) {
-                theDefaultLargeIcon = new QPixmap(Icon::albumIcon.pixmap(cSize, cSize)
+                theDefaultLargeIcon = new QPixmap(Icons::albumIcon.pixmap(cSize, cSize)
                                                  .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             } else {
-                theDefaultIcon = new QPixmap(Icon::albumIcon.pixmap(cSize, cSize)
+                theDefaultIcon = new QPixmap(Icons::albumIcon.pixmap(cSize, cSize)
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
         }

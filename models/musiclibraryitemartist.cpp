@@ -33,7 +33,7 @@
 #include "mpdparseutils.h"
 #include "localize.h"
 #include "covers.h"
-#include "icon.h"
+#include "icons.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "device.h"
 #include "utils.h"
@@ -100,11 +100,11 @@ const QPixmap & MusicLibraryItemArtist::cover()
         }
 
         if (m_various) {
-            m_cover = new QPixmap(Icon::variousArtistsIcon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            m_cover = new QPixmap(Icons::variousArtistsIcon.pixmap(cSize, cSize).scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             m_coverIsDefault=false;
         } else {
             if (!theDefaultIcon) {
-                theDefaultIcon = new QPixmap(Icon::artistIcon.pixmap(cSize, cSize)
+                theDefaultIcon = new QPixmap(Icons::artistIcon.pixmap(cSize, cSize)
                                             .scaled(QSize(cSize, cSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             }
             m_coverIsDefault = true;

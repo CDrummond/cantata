@@ -23,7 +23,7 @@
 
 #include "treeview.h"
 #include "itemview.h"
-#include "icon.h"
+#include "icons.h"
 #include "config.h"
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPaintEvent>
@@ -100,7 +100,7 @@ void TreeView::startDrag(Qt::DropActions supportedActions)
             }
         }
         if (pix.isNull()) {
-            drag->setPixmap(Icon::albumIcon.pixmap(32, 32));
+            drag->setPixmap(Icons::albumIcon.pixmap(32, 32));
         } else {
             drag->setPixmap(pix.width()<32 ? pix : pix.scaled(QSize(32, 32), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }

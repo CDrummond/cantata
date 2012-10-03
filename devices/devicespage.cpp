@@ -29,7 +29,7 @@
 #include "settings.h"
 #include "messagebox.h"
 #include "localize.h"
-#include "icon.h"
+#include "icons.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
@@ -57,7 +57,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     setupUi(this);
 
     configureAction = p->createAction("configuredevice", i18n("Configure Device"), 0);
-    configureAction->setIcon(Icon::configureIcon);
+    configureAction->setIcon(Icons::configureIcon);
     refreshAction = p->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
     copyAction = p->createAction("copytolibrary", i18n("Copy To Library"), "document-import");
     copyToLibraryButton->setDefaultAction(copyAction);

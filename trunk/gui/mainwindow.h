@@ -52,15 +52,13 @@
 #endif
 
 #ifdef ENABLE_KDE_SUPPORT
-class KAction;
 class KStatusNotifierItem;
 class KMenu;
 class KNotification;
-#define Action KAction
-#else
-#define Action QAction
 #endif
 
+class Action;
+class ActionCollection;
 class MainWindow;
 class LibraryPage;
 class AlbumsPage;
@@ -186,7 +184,6 @@ public:
     void load(const QList<QUrl> &urls);
     #endif
 
-    Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
     int currentTrackPosition() const;
     QString coverFile() const;
 
@@ -226,6 +223,10 @@ public Q_SLOTS:
     void restoreWindow();
 
 private Q_SLOTS:
+    #ifdef ENABLE_KDE_SUPPORT
+    void configureShortcuts();
+    void saveShortcuts();
+    #endif
     void setMpdVolume(int );
     void playbackButtonsMenu();
     void controlButtonsMenu();
@@ -364,6 +365,9 @@ private:
     VolumeSliderEventHandler *volumeSliderEventHandler;
     VolumeControl *volumeControl;
     Action *prefAction;
+    #ifdef ENABLE_KDE_SUPPORT
+    Action *shortcutsAction;
+    #endif
     Action *connectAction;
     Action *connectionsAction;
     Action *outputsAction;

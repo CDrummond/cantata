@@ -26,24 +26,22 @@
 #include "dynamicrulesdialog.h"
 #include "localize.h"
 #include "icon.h"
+#include "mainwindow.h"
+#include "action.h"
+#include "actioncollection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
-#else
-#include <QtGui/QAction>
-#endif
 
 DynamicPage::DynamicPage(MainWindow *p)
     : QWidget(p)
 {
     setupUi(this);
-    refreshAction = p->createAction("refreshdynamic", i18n("Refresh Dynamic Rules"), "view-refresh");
-    addAction = p->createAction("adddynamic", i18n("Add Dynamic Rules"), "list-add");
-    editAction = p->createAction("editdynamic", i18n("Edit Dynamic Rules"), "document-edit");
-    removeAction = p->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
-    startAction = p->createAction("startdynamic", i18n("Start Dynamic Mode"), "media-playback-start");
-    stopAction = p->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
+    refreshAction = ActionCollection::get()->createAction("refreshdynamic", i18n("Refresh Dynamic Rules"), "view-refresh");
+    addAction = ActionCollection::get()->createAction("adddynamic", i18n("Add Dynamic Rules"), "list-add");
+    editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), "document-edit");
+    removeAction = ActionCollection::get()->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
+    startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Mode"), "media-playback-start");
+    stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
     toggleAction = new Action(this);
 
     Icon::init(refreshBtn);

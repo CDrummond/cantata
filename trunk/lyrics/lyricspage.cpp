@@ -37,6 +37,8 @@
 #endif
 #include "icon.h"
 #include "utils.h"
+#include "action.h"
+#include "actioncollection.h"
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QSettings>
@@ -46,11 +48,6 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtGui/QToolButton>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
-#else
-#include <QtGui/QAction>
-#endif
 
 static const QLatin1String constLyricsDir("lyrics/");
 const QLatin1String LyricsPage::constExtension(".lyrics");
@@ -68,7 +65,7 @@ bool CompareLyricProviders(const UltimateLyricsProvider* a, const UltimateLyrics
     return a->relevance() < b->relevance();
 }
 
-LyricsPage::LyricsPage(MainWindow *p)
+LyricsPage::LyricsPage(QWidget *p)
     : QWidget(p)
 //     , reader(new UltimateLyricsReader(this))
     , currentRequest(0)
@@ -87,12 +84,12 @@ LyricsPage::LyricsPage(MainWindow *p)
 //     QFutureWatcher<ProviderList> *watcher = new QFutureWatcher<ProviderList>(this);
 //     watcher->setFuture(future);
 //     connect(watcher, SIGNAL(finished()), SLOT(ultimateLyricsParsed()));
-    refreshAction = p->createAction("refreshlyrics", i18n("Refresh"), "view-refresh");
-    searchAction = p->createAction("searchlyrics", i18n("Search For Lyrics"), "edit-find");
-    editAction = p->createAction("editlyrics", i18n("Edit Lyrics"), "document-edit");
-    saveAction = p->createAction("savelyrics", i18n("Save Lyrics"), "document-save");
-    cancelAction = p->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), "dialog-cancel");
-    delAction = p->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
+    refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh"), "view-refresh");
+    searchAction = ActionCollection::get()->createAction("searchlyrics", i18n("Search For Lyrics"), "edit-find");
+    editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), "document-edit");
+    saveAction = ActionCollection::get()->createAction("savelyrics", i18n("Save Lyrics"), "document-save");
+    cancelAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), "dialog-cancel");
+    delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
 
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));
     connect(searchAction, SIGNAL(triggered()), SLOT(search()));

@@ -28,11 +28,11 @@
 #include "inputdialog.h"
 #include "localize.h"
 #include "icon.h"
+#include "mainwindow.h"
+#include "action.h"
+#include "actioncollection.h"
 #include <QtGui/QToolButton>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
-#else
-#include <QtGui/QAction>
+#ifndef ENABLE_KDE_SUPPORT
 #include <QtGui/QStyle>
 #endif
 
@@ -41,7 +41,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     , mw(p)
 {
     setupUi(this);
-    renamePlaylistAction = p->createAction("renameplaylist", i18n("Rename"), "edit-rename");
+    renamePlaylistAction = ActionCollection::get()->createAction("renameplaylist", i18n("Rename"), "edit-rename");
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));

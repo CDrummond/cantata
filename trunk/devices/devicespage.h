@@ -25,13 +25,15 @@
 #define DEVICESPAGE_H
 
 #include "ui_devicespage.h"
-#include "mainwindow.h"
 #include "musiclibraryproxymodel.h"
 #include "device.h"
 #include "config.h"
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotefsdevice.h"
 #endif
+
+class MainWindow;
+class Action;
 
 class DevicesPage : public QWidget, public Ui::DevicesPage
 {
@@ -81,4 +83,3 @@ private:
 };
 
 #endif
-

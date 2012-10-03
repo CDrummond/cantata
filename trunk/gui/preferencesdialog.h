@@ -28,6 +28,7 @@
 #include "dialog.h"
 #ifndef ENABLE_KDE_SUPPORT
 class ProxySettings;
+class ShortcutsSettingsPage;
 #endif
 
 class ServerSettings;
@@ -71,6 +72,7 @@ private:
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     ProxySettings *proxy;
+    ShortcutsSettingsPage *shortcuts;
     #endif
 };
 

@@ -28,17 +28,14 @@
 #include "mpdparseutils.h"
 #include "localize.h"
 #include "icon.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
-#else
-#include <QtGui/QAction>
-#endif
+#include "action.h"
+#include "actioncollection.h"
 
-ServerInfoPage::ServerInfoPage(MainWindow *p)
+ServerInfoPage::ServerInfoPage(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
-    updateAction = p->createAction("updatempdinfo", i18n("Update MPD Information"), "view-refresh");
+    updateAction = ActionCollection::get()->createAction("updatempdinfo", i18n("Update MPD Information"), "view-refresh");
     updateInfo->setDefaultAction(updateAction);
     connect(updateAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(getStats()));
     connect(MPDStats::self(), SIGNAL(updated()), SLOT(statsUpdated()));

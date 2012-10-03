@@ -30,7 +30,7 @@
 #include "localize.h"
 #include "icon.h"
 #include "config.h"
-#include "fancytabwidget.h"
+#include "gtkstyle.h"
 #include <QtGui/QToolButton>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionViewItem>
@@ -230,7 +230,7 @@ public:
             return;
         }
         bool mouseOver=option.state&QStyle::State_MouseOver;
-        bool gtk=mouseOver && FancyTabWidget::isGtkStyle();
+        bool gtk=mouseOver && GtkStyle::isActive();
         bool selected=option.state&QStyle::State_Selected;
         bool active=option.state&QStyle::State_Active;
         bool drawBgnd=true;
@@ -245,7 +245,7 @@ public:
         }
         if (drawBgnd) {
             if (mouseOver && gtk) {
-                FancyTabWidget::drawGtkSelection(opt, painter, selected ? 0.75 : 0.25);
+                GtkStyle::drawSelection(opt, painter, selected ? 0.75 : 0.25);
             } else {
                 QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, 0L);
             }
@@ -410,7 +410,7 @@ public:
         }
 
         QStringList text=index.data(Qt::DisplayRole).toString().split("\n");
-        bool gtk=FancyTabWidget::isGtkStyle();
+        bool gtk=GtkStyle::isActive();
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
 
         if (!gtk && 1==text.count()) {
@@ -419,7 +419,7 @@ public:
             bool selected=option.state&QStyle::State_Selected;
             bool active=option.state&QStyle::State_Active;
             if ((option.state&QStyle::State_MouseOver) && gtk) {
-                FancyTabWidget::drawGtkSelection(option, painter, selected ? 0.75 : 0.25);
+                GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
             } else {
                 QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
             }

@@ -25,7 +25,7 @@
 
 #include "onoffbutton.h"
 #include "localize.h"
-#include "fancytabwidget.h"
+#include "gtkstyle.h"
 #include <QtGui/QFontMetrics>
 #include <QtGui/QPainter>
 #include <QtGui/QPainterPath>
@@ -35,19 +35,11 @@ static QString onText;
 static QString offText;
 static QSize fixedSize;
 static const int constBorderSize=4;
-static bool useCheckBox=true;
 
 OnOffButton::OnOffButton(QWidget *p)
     : QCheckBox(p)
 {
-    if (fixedSize.isEmpty()) {
-        if (qgetenv("KDE_FULL_SESSION").isEmpty() && FancyTabWidget::isGtkStyle()) {
-            useCheckBox=false;
-        } else {
-            fixedSize=QSize(1, 1);
-        }
-    }
-    if (!useCheckBox) {
+    if (GtkStyle::mimicWidgets()) {
         QFont f(font());
         f.setPointSize(f.pointSize()*0.9);
         setFont(f);
@@ -67,12 +59,12 @@ OnOffButton::OnOffButton(QWidget *p)
 
 QSize OnOffButton::sizeHint() const
 {
-    return useCheckBox ? QCheckBox::sizeHint() : fixedSize;
+    return GtkStyle::mimicWidgets() ? fixedSize : QCheckBox::sizeHint();
 }
 
 bool OnOffButton::hitButton(const QPoint &pos) const
 {
-    return useCheckBox ? QCheckBox::hitButton(pos) : true;
+    return GtkStyle::mimicWidgets() ? true : QCheckBox::hitButton(pos);
 }
 
 static QPainterPath buildPath(const QRectF &r, double radius)
@@ -90,7 +82,7 @@ static QPainterPath buildPath(const QRectF &r, double radius)
 
 void OnOffButton::paintEvent(QPaintEvent *e)
 {
-    if (useCheckBox) {
+    if (!GtkStyle::mimicWidgets()) {
         QCheckBox::paintEvent(e);
         return;
     }

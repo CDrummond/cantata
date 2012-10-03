@@ -53,7 +53,6 @@ class QSignalMapper;
 class QStackedLayout;
 class QStatusBar;
 class QVBoxLayout;
-class QStyleOptionViewItemV4;
 
 namespace Core {
 namespace Internal {
@@ -161,10 +160,6 @@ class FancyTabWidget : public QWidget {
   Q_OBJECT
 
 public:
-
-  static bool isGtkStyle();
-  static void drawGtkSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
-
   static void setup();
 
   FancyTabWidget(QWidget *parent, bool allowContext=true, bool drawBorder=false);

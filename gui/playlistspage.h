@@ -25,8 +25,10 @@
 #define PLAYLISTSPAGE_H
 
 #include "ui_playlistspage.h"
-#include "mainwindow.h"
 #include "playlistsproxymodel.h"
+
+class MainWindow;
+class Action;
 
 class PlaylistsPage : public QWidget, public Ui::PlaylistsPage
 {

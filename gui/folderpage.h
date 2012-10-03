@@ -25,9 +25,12 @@
 #define FOLDERPAGE_H
 
 #include "ui_folderpage.h"
-#include "mainwindow.h"
 #include "dirviewmodel.h"
 #include "dirviewproxymodel.h"
+#include "config.h"
+
+class MainWindow;
+class Action;
 
 class FolderPage : public QWidget, public Ui::FolderPage
 {

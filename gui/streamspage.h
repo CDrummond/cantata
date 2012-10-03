@@ -25,9 +25,11 @@
 #define STREAMSPAGE_H
 
 #include "ui_streamspage.h"
-#include "mainwindow.h"
 #include "streamsmodel.h"
 #include "streamsproxymodel.h"
+
+class MainWindow;
+class Action;
 
 class StreamsPage : public QWidget, public Ui::StreamsPage
 {

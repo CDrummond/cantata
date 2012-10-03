@@ -44,6 +44,8 @@
     view is set to use icon/list style.
 24. Add 'Add to playlist' action to playqueue context menu.
 25. Fix retrieval of covers from file-system based devices.
+26. Support for modifiable keyboard shortcuts in Qt-only builds. (Code stolen
+    from Quassel!)
 
 0.8.3.1
 -------

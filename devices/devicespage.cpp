@@ -30,13 +30,13 @@
 #include "messagebox.h"
 #include "localize.h"
 #include "icons.h"
+#include "mainwindow.h"
+#include "action.h"
+#include "actioncollection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
-#include <KDE/KAction>
-#else
-#include <QtGui/QAction>
 #endif
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotedevicepropertiesdialog.h"
@@ -56,16 +56,16 @@ DevicesPage::DevicesPage(MainWindow *p)
 {
     setupUi(this);
 
-    configureAction = p->createAction("configuredevice", i18n("Configure Device"), 0);
+    configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), 0);
     configureAction->setIcon(Icons::configureIcon);
-    refreshAction = p->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
-    copyAction = p->createAction("copytolibrary", i18n("Copy To Library"), "document-import");
+    refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
+    copyAction = ActionCollection::get()->createAction("copytolibrary", i18n("Copy To Library"), "document-import");
     copyToLibraryButton->setDefaultAction(copyAction);
-    syncAction = p->createAction("syncdevice", i18n("Sync"), "folder-sync");
+    syncAction = ActionCollection::get()->createAction("syncdevice", i18n("Sync"), "folder-sync");
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
-    forgetDeviceAction=p->createAction("forgetdevice", i18n("Forget Device"), "list-remove");
-    toggleDeviceAction=p->createAction("toggledevice", i18n("Toggle Device"), "network-connect");
+    forgetDeviceAction=ActionCollection::get()->createAction("forgetdevice", i18n("Forget Device"), "list-remove");
+    toggleDeviceAction=ActionCollection::get()->createAction("toggledevice", i18n("Toggle Device"), "network-connect");
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
     connect(toggleDeviceAction, SIGNAL(triggered()), this, SLOT(toggleDevice()));
     #endif
@@ -105,7 +105,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     menu->addAction(refreshAction);
     menu->addSeparator();
     #ifdef ENABLE_REMOTE_DEVICES
-    Action *addRemote=p->createAction("adddevice", i18n("Add Device"), "network-server");
+    Action *addRemote=ActionCollection::get()->createAction("adddevice", i18n("Add Device"), "network-server");
     connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
     menu->addAction(addRemote);
     menu->addAction(forgetDeviceAction);

@@ -47,6 +47,7 @@
 #include <KDE/KMenuBar>
 #include <KDE/KMenu>
 #include <KDE/KStatusNotifierItem>
+#include <KDE/KShortcutsDialog>
 #else
 #include <QtGui/QMenuBar>
 #include "networkproxyfactory.h"
@@ -112,6 +113,8 @@
 #include "actionitemdelegate.h"
 #include "icons.h"
 #include "volumecontrol.h"
+#include "action.h"
+#include "actioncollection.h"
 #ifdef Q_OS_WIN
 static void raiseWindow(QWidget *w);
 #endif
@@ -221,12 +224,6 @@ static int nextKey(int &key) {
     return k;
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-#define SET_SHORTCUT(ACT, S) ACT->setShortcut(S)
-#else
-#define SET_SHORTCUT(ACT, S) ACT->setShortcut(S); addAction(ACT); ACT->setShortcutContext(Qt::ApplicationShortcut)
-#endif
-
 MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     : KXmlGuiWindow(parent)
@@ -268,6 +265,8 @@ MainWindow::MainWindow(QWidget *parent)
     , phononStream(0)
     #endif
 {
+    ActionCollection::setMainWidget(this);
+
     #ifndef Q_OS_WIN
     new CantataAdaptor(this);
     #ifndef ENABLE_KDE_SUPPORT
@@ -293,104 +292,103 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
     #ifdef ENABLE_KDE_SUPPORT
-    prefAction=KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
-    quitAction=KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
+    prefAction=(Action *)KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get());
+    quitAction=(Action *)KStandardAction::quit(kapp, SLOT(quit()), ActionCollection::get());
     #else
     setWindowIcon(Icons::appIcon);
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
 
-    quitAction = new QAction(i18n("&Quit"), this);
+    quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), "application-exit");
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
-    quitAction->setIcon(Icon("application-exit"));
     quitAction->setShortcut(QKeySequence::Quit);
     #if !defined Q_OS_WIN
-    restoreAction = new QAction(i18n("&Show Window"), this);
+    restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
     connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
     #endif // !Q_OS_WIN
     #endif // ENABLE_KDE_SUPPORT
 
-    smallPlaybackButtonsAction = createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
-    smallControlButtonsAction = createAction("smallcontrolbuttons", i18n("Small Control Buttons"));
-    connectAction = createAction("connect",i18n("Connect"));
+    smallPlaybackButtonsAction = ActionCollection::get()->createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
+    smallControlButtonsAction = ActionCollection::get()->createAction("smallcontrolbuttons", i18n("Small Control Buttons"));
+    connectAction = ActionCollection::get()->createAction("connect",i18n("Connect"));
     connectAction->setIcon(Icons::connectIcon);
-    connectionsAction = createAction("connections", i18n("Connection"), "network-server");
-    outputsAction = createAction("outputs", i18n("Outputs"));
+    connectionsAction = ActionCollection::get()->createAction("connections", i18n("Connection"), "network-server");
+    outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"));
     outputsAction->setIcon(Icons::speakerIcon);
-    refreshAction = createAction("refresh", i18n("Refresh Database"), "view-refresh");
-    prevTrackAction = createAction("prevtrack", i18n("Previous Track"), "media-skip-backward");
-    nextTrackAction = createAction("nexttrack", i18n("Next Track"), "media-skip-forward");
-    playPauseTrackAction = createAction("playpausetrack", i18n("Play/Pause"));
-    stopTrackAction = createAction("stoptrack", i18n("Stop"), "media-playback-stop");
-    increaseVolumeAction = createAction("increasevolume", i18n("Increase Volume"));
-    decreaseVolumeAction = createAction("decreasevolume", i18n("Decrease Volume"));
-    addToPlayQueueAction = createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
-    addToStoredPlaylistAction = createAction("addtostoredplaylist", i18n("Add To Playlist"));
-    addPlayQueueToStoredPlaylistAction = createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"));
+    refreshAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
+    prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), "media-skip-backward");
+    nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), "media-skip-forward");
+    playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"));
+    stopTrackAction = ActionCollection::get()->createAction("stoptrack", i18n("Stop"), "media-playback-stop");
+    increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
+    decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
+    addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
+    addToStoredPlaylistAction = ActionCollection::get()->createAction("addtostoredplaylist", i18n("Add To Playlist"));
+    addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"));
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction = createAction("replaygain", i18n("ReplayGain"), "audio-x-generic");
+    replaygainAction = ActionCollection::get()->createAction("replaygain", i18n("ReplayGain"), "audio-x-generic");
     #endif
-    backAction = createAction("back", i18n("Back"), "go-previous");
-    removeAction = createAction("removeitems", i18n("Remove"), "list-remove");
-    replacePlayQueueAction = createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
-    removeFromPlayQueueAction = createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
-    copyTrackInfoAction = createAction("copytrackinfo", i18n("Copy Track Info"));
-    cropPlayQueueAction = createAction("cropplaylist", i18n("Crop"));
-    shufflePlayQueueAction = createAction("shuffleplaylist", i18n("Shuffle"));
-    savePlayQueueAction = createAction("saveplaylist", i18n("Save As"), "document-save-as");
-    clearPlayQueueAction = createAction("clearplaylist", i18n("Clear"), "edit-clear-list");
+    backAction = ActionCollection::get()->createAction("back", i18n("Back"), "go-previous");
+    removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");
+    replacePlayQueueAction = ActionCollection::get()->createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
+    removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
+    copyTrackInfoAction = ActionCollection::get()->createAction("copytrackinfo", i18n("Copy Track Info"));
+    cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
+    shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle"));
+    savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), "document-save-as");
+    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), "edit-clear-list");
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
     if (clearPlayQueueAction->icon().isNull()) {
         clearPlayQueueAction->setIcon(Icon("edit-delete"));
     }
     #endif
-    expandInterfaceAction = createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
-    randomPlayQueueAction = createAction("randomplaylist", i18n("Random"));
-    repeatPlayQueueAction = createAction("repeatplaylist", i18n("Repeat"));
-    singlePlayQueueAction = createAction("singleplaylist", i18n("Single"), 0, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
-    consumePlayQueueAction = createAction("consumeplaylist", i18n("Consume"), 0, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
-    addWithPriorityAction = createAction("addwithprio", i18n("Add With Priority"));
-    setPriorityAction = createAction("setprio", i18n("Set Priority"));
-    addPrioHighestAction = createAction("highestprio", i18n("Highest Priority (255)"));
-    addPrioHighAction = createAction("highprio", i18n("High Priority (200)"));
-    addPrioMediumAction = createAction("mediumprio", i18n("Medium Priority (125)"));
-    addPrioLowAction = createAction("lowprio", i18n("Low Priority (50)"));
-    addPrioDefaultAction = createAction("defaultprio", i18n("Default Priority (0)"));
-    addPrioCustomAction = createAction("customprio", i18n("Custom Priority..."));
+    expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
+    randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"));
+    repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"));
+    singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), 0, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
+    consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), 0, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
+    addWithPriorityAction = ActionCollection::get()->createAction("addwithprio", i18n("Add With Priority"));
+    setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"));
+    addPrioHighestAction = ActionCollection::get()->createAction("highestprio", i18n("Highest Priority (255)"));
+    addPrioHighAction = ActionCollection::get()->createAction("highprio", i18n("High Priority (200)"));
+    addPrioMediumAction = ActionCollection::get()->createAction("mediumprio", i18n("Medium Priority (125)"));
+    addPrioLowAction = ActionCollection::get()->createAction("lowprio", i18n("Low Priority (50)"));
+    addPrioDefaultAction = ActionCollection::get()->createAction("defaultprio", i18n("Default Priority (0)"));
+    addPrioCustomAction = ActionCollection::get()->createAction("customprio", i18n("Custom Priority..."));
     #ifdef PHONON_FOUND
-    streamPlayAction = createAction("streamplay", i18n("Play Stream"), 0, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
+    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), 0, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
     streamPlayAction->setIcon(Icons::streamIcon);
     #endif
-    locateTrackAction = createAction("locatetrack", i18n("Locate In Library"), "edit-find");
+    locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
-    organiseFilesAction = createAction("organizefiles", i18n("Organize Files"), "inode-directory");
-    editTagsAction = createAction("edittags", i18n("Edit Tags"), "document-edit");
-    editPlayQueueTagsAction = createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
+    organiseFilesAction = ActionCollection::get()->createAction("organizefiles", i18n("Organize Files"), "inode-directory");
+    editTagsAction = ActionCollection::get()->createAction("edittags", i18n("Edit Tags"), "document-edit");
+    editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
     #endif
-    showPlayQueueAction = createAction("showplayqueue", i18n("Play Queue"), "media-playback-start");
-    libraryTabAction = createAction("showlibrarytab", i18n("Library"));
-    albumsTabAction = createAction("showalbumstab", i18n("Albums"));
+    showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), "media-playback-start");
+    libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Library"));
+    albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"));
     albumsTabAction->setIcon(Icons::albumIcon);
-    foldersTabAction = createAction("showfolderstab", i18n("Folders"), "inode-directory");
-    playlistsTabAction = createAction("showplayliststab", i18n("Playlists"));
+    foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), "inode-directory");
+    playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"));
     playlistsTabAction->setIcon(Icons::playlistIcon);
-    dynamicTabAction = createAction("showdynamictab", i18n("Dynamic"));
+    dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"));
     dynamicTabAction->setIcon(Icons::dynamicIcon);
-    lyricsTabAction = createAction("showlyricstab", i18n("Lyrics"));
+    lyricsTabAction = ActionCollection::get()->createAction("showlyricstab", i18n("Lyrics"));
     lyricsTabAction->setIcon(Icons::lyricsIcon);
-    streamsTabAction = createAction("showstreamstab", i18n("Streams"), 0);
+    streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), 0);
     streamsTabAction->setIcon(Icons::streamIcon);
     #ifdef ENABLE_WEBKIT
-    infoTabAction = createAction("showinfotab", i18n("Info"));
+    infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"));
     #endif
-    serverInfoTabAction = createAction("showserverinfotab", i18n("Server Info"), "network-server");
+    serverInfoTabAction = ActionCollection::get()->createAction("showserverinfotab", i18n("Server Info"), "network-server");
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesTabAction = createAction("showdevicestab", i18n("Devices"), "multimedia-player");
-    copyToDeviceAction = createAction("copytodevice", i18n("Copy To Device"), "multimedia-player");
-    deleteSongsAction = createAction("deletesongs", i18n("Delete Songs"), "edit-delete");
+    devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), "multimedia-player");
+    copyToDeviceAction = ActionCollection::get()->createAction("copytodevice", i18n("Copy To Device"), "multimedia-player");
+    deleteSongsAction = ActionCollection::get()->createAction("deletesongs", i18n("Delete Songs"), "edit-delete");
     #endif
-    searchAction = createAction("search", i18n("Search"), "edit-find");
-    expandAllAction = createAction("expandall", i18n("Expand All"));
-    collapseAllAction = createAction("collapseall", i18n("Collapse All"));
+    searchAction = ActionCollection::get()->createAction("search", i18n("Search"), "edit-find");
+    expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
+    collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
 
     #if defined ENABLE_KDE_SUPPORT
     prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
@@ -401,27 +399,27 @@ MainWindow::MainWindow(QWidget *parent)
     decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
     #endif
 
-    SET_SHORTCUT(copyTrackInfoAction, QKeySequence::Copy);
-    SET_SHORTCUT(backAction, QKeySequence::Back);
-    SET_SHORTCUT(searchAction, Qt::ControlModifier+Qt::Key_F);
-    SET_SHORTCUT(expandAllAction, Qt::ControlModifier+Qt::Key_Plus);
-    SET_SHORTCUT(collapseAllAction, Qt::ControlModifier+Qt::Key_Minus);
+    copyTrackInfoAction->setShortcut(QKeySequence::Copy);
+    backAction->setShortcut(QKeySequence::Back);
+    searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
+    expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
+    collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
 
     int pageKey=Qt::Key_1;
-    SET_SHORTCUT(showPlayQueueAction, Qt::AltModifier+Qt::Key_Q);
-    SET_SHORTCUT(libraryTabAction, Qt::AltModifier+nextKey(pageKey));
-    SET_SHORTCUT(albumsTabAction, Qt::AltModifier+nextKey(pageKey));
-    SET_SHORTCUT(foldersTabAction, Qt::AltModifier+nextKey(pageKey));
-    SET_SHORTCUT(playlistsTabAction, Qt::AltModifier+nextKey(pageKey));
-    SET_SHORTCUT(dynamicTabAction, Qt::AltModifier+nextKey(pageKey));
-    SET_SHORTCUT(streamsTabAction, Qt::AltModifier+nextKey(pageKey));
-    SET_SHORTCUT(lyricsTabAction, Qt::AltModifier+nextKey(pageKey));
+    showPlayQueueAction->setShortcut(Qt::AltModifier+Qt::Key_Q);
+    libraryTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    albumsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    foldersTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    playlistsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    dynamicTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    streamsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    lyricsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #ifdef ENABLE_WEBKIT
-    SET_SHORTCUT(infoTabAction, Qt::AltModifier+nextKey(pageKey));
+    infoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_WEBKIT
-    SET_SHORTCUT(serverInfoTabAction, Qt::AltModifier+nextKey(pageKey));
+    serverInfoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #ifdef ENABLE_DEVICES_SUPPORT
-    SET_SHORTCUT(devicesTabAction, Qt::AltModifier+nextKey(pageKey));
+    devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
 
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
@@ -631,15 +629,20 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(outputsAction);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(prefAction);
-    mainMenu->addAction(actionCollection()->action(KStandardAction::name(KStandardAction::KeyBindings)));
+    shortcutsAction=(Action *)KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get());
+    mainMenu->addAction(shortcutsAction);
     mainMenu->addSeparator();
     mainMenu->addMenu(helpMenu());
     #else
-    prefAction=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
+    prefAction=ActionCollection::get()->createAction("configure", i18n("Configure Cantata..."));
+    connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
     prefAction->setIcon(Icons::configureIcon);
+    mainMenu->addAction(prefAction);
     mainMenu->addSeparator();
-    Action *aboutAction=mainMenu->addAction(i18nc("Qt-only", "About Cantata..."), this, SLOT(showAboutDialog()));
+    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."));
+    connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
     aboutAction->setIcon(Icons::appIcon);
+    mainMenu->addAction(aboutAction);
     #endif
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
@@ -899,6 +902,7 @@ MainWindow::MainWindow(QWidget *parent)
         QTimer::singleShot(250, this, SLOT(toggleDockManager()));
     }
     #endif
+    ActionCollection::get()->readSettings();
 }
 
 MainWindow::~MainWindow()
@@ -1210,6 +1214,22 @@ void MainWindow::refresh()
 
 #define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
 
+#ifdef ENABLE_KDE_SUPPORT
+void MainWindow::configureShortcuts()
+{
+    KShortcutsDialog dlg(KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsDisallowed, this);
+    dlg.addCollection(ActionCollection::get());
+    connect(&dlg, SIGNAL(okClicked()), this, SLOT(saveShortcuts()));
+    dlg.exec();
+}
+
+void MainWindow::saveShortcuts()
+{
+    ActionCollection::get()->writeSettings();
+}
+
+#endif
+
 void MainWindow::showPreferencesDialog()
 {
     static bool showing=false;
@@ -1309,7 +1329,7 @@ void MainWindow::outputsUpdated(const QList<Output> &outputs)
                 act->setData(o.id);
                 act->setCheckable(true);
                 act->setChecked(o.enabled);
-                SET_SHORTCUT(act, Qt::MetaModifier+nextKey(i));
+                act->setShortcut(Qt::MetaModifier+nextKey(i));
             }
         } else {
             foreach (const Output &o, outputs) {
@@ -1353,7 +1373,7 @@ void MainWindow::updateConnectionsMenu()
                 act->setCheckable(true);
                 act->setChecked(d.name==current);
                 act->setActionGroup(connectionsGroup);
-                SET_SHORTCUT(act, Qt::ControlModifier+nextKey(i));
+                act->setShortcut(Qt::ControlModifier+nextKey(i));
             }
         }
     }
@@ -2366,7 +2386,7 @@ void MainWindow::togglePlayQueue()
         }
     } else {
         // Widths also sometimes expands, so make sure this is no larger than it was before...
-	collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
+    collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
         resize(collapsedSize);
         setFixedHeight(size().height());
     }
@@ -3044,28 +3064,6 @@ void MainWindow::replayGain()
     }
 }
 #endif
-
-Action * MainWindow::createAction(const QString &name, const QString &text, const char *icon, const QString &whatsThis)
-{
-    #ifdef ENABLE_KDE_SUPPORT
-    Action *act = actionCollection()->addAction(name);
-    act->setText(text);
-    if (0!=icon) {
-        act->setIcon(Icon(icon));
-    }
-    #else
-    Q_UNUSED(name)
-    Action *act = new Action(name, this);
-    act->setText(text);
-    if (0!=icon) {
-        act->setIcon('m'==icon[0] && 'e'==icon[1] && 'd'==icon[2] && 'i'==icon[3] && 'a'==icon[4] && '-'==icon[5] ? Icon::getMediaIcon(icon) : Icon(icon));
-    }
-    #endif
-    if (!whatsThis.isEmpty()) {
-        act->setWhatsThis(whatsThis);
-    }
-    return act;
-}
 
 int MainWindow::currentTrackPosition() const
 {

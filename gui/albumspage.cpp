@@ -30,13 +30,10 @@
 #include "messagebox.h"
 #include "settings.h"
 #include "icon.h"
+#include "mainwindow.h"
+#include "action.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
-#else
-#include <QtGui/QAction>
-#endif
 
 AlbumsPage::AlbumsPage(MainWindow *p)
     : QWidget(p)

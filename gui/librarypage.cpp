@@ -33,15 +33,13 @@
 #include "messagebox.h"
 #include "settings.h"
 #include "icon.h"
+#include "mainwindow.h"
+#include "action.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
 #include <KDE/KLocale>
-#include <KDE/KActionCollection>
 #include <KDE/KGlobalSettings>
-#else
-#include <QtGui/QAction>
 #endif
 
 LibraryPage::LibraryPage(MainWindow *p)

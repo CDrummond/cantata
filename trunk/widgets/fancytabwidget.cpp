@@ -36,6 +36,7 @@
 #include "fancytabwidget.h"
 #include "localize.h"
 #include "icon.h"
+#include "gtkstyle.h"
 // #include "stylehelper.h"
 
 // #include <QtGui/QColorDialog>
@@ -55,58 +56,10 @@
 #include <QtCore/QAnimationGroup>
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QSignalMapper>
-#include <QtCore/QCache>
 
 static inline Qt::TextElideMode elideMode()
 {
     return Qt::LeftToRight==QApplication::layoutDirection() ? Qt::ElideRight : Qt::ElideLeft;
-}
-
-bool FancyTabWidget::isGtkStyle()
-{
-    return QApplication::style()->inherits("QGtkStyle");
-}
-
-void FancyTabWidget::drawGtkSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity)
-{
-    static const int constMaxDimension=32;
-    static QCache<QString, QPixmap> cache(30000);
-
-    if (opt.rect.width()<2 || opt.rect.height()<2) {
-        return;
-    }
-
-    int width=qMin(constMaxDimension, opt.rect.width());
-    QString key=QString::number(width)+QChar(':')+QString::number(opt.rect.height());
-    QPixmap *pix=cache.object(key);
-
-    if (!pix) {
-        pix=new QPixmap(width, opt.rect.height());
-        QStyleOptionViewItemV4 styleOpt(opt);
-        pix->fill(Qt::transparent);
-        QPainter p(pix);
-        styleOpt.state=opt.state;
-        styleOpt.state&=~(QStyle::State_Selected|QStyle::State_MouseOver);
-        styleOpt.state|=QStyle::State_Selected|QStyle::State_Enabled|QStyle::State_Active;
-        styleOpt.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
-        styleOpt.rect=QRect(0, 0, opt.rect.width(), opt.rect.height());
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, &p, 0);
-        p.end();
-        cache.insert(key, pix, pix->width()*pix->height());
-    }
-    double opacityB4=painter->opacity();
-    painter->setOpacity(opacity);
-    if (opt.rect.width()>pix->width()) {
-        int half=qMin(opt.rect.width()>>1, pix->width()>>1);
-        painter->drawPixmap(opt.rect.x(), opt.rect.y(), pix->copy(0, 0, half, pix->height()));
-        if ((half*2)!=opt.rect.width()) {
-            painter->drawTiledPixmap(opt.rect.x()+half, opt.rect.y(), (opt.rect.width()-((2*half))), opt.rect.height(), pix->copy(half-1, 0, 1, pix->height()));
-        }
-        painter->drawPixmap((opt.rect.x()+opt.rect.width())-half, opt.rect.y(), pix->copy(half, 0, half, pix->height()));
-    } else {
-        painter->drawPixmap(opt.rect, *pix);
-    }
-    painter->setOpacity(opacityB4);
 }
 
 using namespace Core;
@@ -269,8 +222,8 @@ void FancyTabProxyStyle::drawControl(
     }
 
     if (drawBgnd) {
-        if (!selected && FancyTabWidget::isGtkStyle()) {
-            FancyTabWidget::drawGtkSelection(styleOpt, p, (fader*1.0)/150.0);
+        if (!selected && GtkStyle::isActive()) {
+            GtkStyle::drawSelection(styleOpt, p, (fader*1.0)/150.0);
         } else {
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, p, 0);
         }
@@ -439,7 +392,7 @@ void FancyTabBar::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
     QPainter p(this);
-    bool gtkStyle=FancyTabWidget::isGtkStyle();
+    bool gtkStyle=GtkStyle::isActive();
 
     for (int i = 0; i < count(); ++i)
         if (i != currentIndex())
@@ -567,7 +520,7 @@ void FancyTabBar::paintTab(QPainter *painter, int tabIndex, bool gtkStyle) const
     }
     if (drawBgnd) {
         if (!selected && gtkStyle) {
-            FancyTabWidget::drawGtkSelection(styleOpt, painter, m_tabs[tabIndex]->fader()/150.0);
+            GtkStyle::drawSelection(styleOpt, painter, m_tabs[tabIndex]->fader()/150.0);
         } else {
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &styleOpt, painter, 0);
         }

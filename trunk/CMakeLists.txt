@@ -136,6 +136,7 @@ SET( CANTATA_SRCS
     widgets/icon.cpp
     widgets/volumecontrol.cpp
     widgets/icons.cpp
+    widgets/gtkstyle.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp

@@ -110,7 +110,7 @@
 #include "messagewidget.h"
 #include "groupedview.h"
 #include "actionitemdelegate.h"
-#include "icon.h"
+#include "icons.h"
 #include "volumecontrol.h"
 #ifdef Q_OS_WIN
 static void raiseWindow(QWidget *w);
@@ -296,8 +296,7 @@ MainWindow::MainWindow(QWidget *parent)
     prefAction=KStandardAction::preferences(this, SLOT(showPreferencesDialog()), actionCollection());
     quitAction=KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
     #else
-    appIcon=Icon::create(QStringList() << ":cantata.svg" << ":cantata16.png" << ":cantata22.png" << ":cantata32.png" << ":cantata48.png" << ":cantata64.png");
-    setWindowIcon(appIcon);
+    setWindowIcon(Icons::appIcon);
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
 
     quitAction = new QAction(i18n("&Quit"), this);
@@ -313,10 +312,10 @@ MainWindow::MainWindow(QWidget *parent)
     smallPlaybackButtonsAction = createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
     smallControlButtonsAction = createAction("smallcontrolbuttons", i18n("Small Control Buttons"));
     connectAction = createAction("connect",i18n("Connect"));
-    connectAction->setIcon(Icon::connectIcon);
+    connectAction->setIcon(Icons::connectIcon);
     connectionsAction = createAction("connections", i18n("Connection"), "network-server");
     outputsAction = createAction("outputs", i18n("Outputs"));
-    outputsAction->setIcon(Icon::speakerIcon);
+    outputsAction->setIcon(Icons::speakerIcon);
     refreshAction = createAction("refresh", i18n("Refresh Database"), "view-refresh");
     prevTrackAction = createAction("prevtrack", i18n("Previous Track"), "media-skip-backward");
     nextTrackAction = createAction("nexttrack", i18n("Next Track"), "media-skip-forward");
@@ -359,7 +358,7 @@ MainWindow::MainWindow(QWidget *parent)
     addPrioCustomAction = createAction("customprio", i18n("Custom Priority..."));
     #ifdef PHONON_FOUND
     streamPlayAction = createAction("streamplay", i18n("Play Stream"), 0, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
-    streamPlayAction->setIcon(Icon::streamIcon);
+    streamPlayAction->setIcon(Icons::streamIcon);
     #endif
     locateTrackAction = createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
@@ -370,16 +369,16 @@ MainWindow::MainWindow(QWidget *parent)
     showPlayQueueAction = createAction("showplayqueue", i18n("Play Queue"), "media-playback-start");
     libraryTabAction = createAction("showlibrarytab", i18n("Library"));
     albumsTabAction = createAction("showalbumstab", i18n("Albums"));
-    albumsTabAction->setIcon(Icon::albumIcon);
+    albumsTabAction->setIcon(Icons::albumIcon);
     foldersTabAction = createAction("showfolderstab", i18n("Folders"), "inode-directory");
     playlistsTabAction = createAction("showplayliststab", i18n("Playlists"));
-    playlistsTabAction->setIcon(Icon::playlistIcon);
+    playlistsTabAction->setIcon(Icons::playlistIcon);
     dynamicTabAction = createAction("showdynamictab", i18n("Dynamic"));
-    dynamicTabAction->setIcon(Icon::dynamicIcon);
+    dynamicTabAction->setIcon(Icons::dynamicIcon);
     lyricsTabAction = createAction("showlyricstab", i18n("Lyrics"));
-    lyricsTabAction->setIcon(Icon::lyricsIcon);
+    lyricsTabAction->setIcon(Icons::lyricsIcon);
     streamsTabAction = createAction("showstreamstab", i18n("Streams"), 0);
-    streamsTabAction->setIcon(Icon::streamIcon);
+    streamsTabAction->setIcon(Icons::streamIcon);
     #ifdef ENABLE_WEBKIT
     infoTabAction = createAction("showinfotab", i18n("Info"));
     #endif
@@ -432,21 +431,21 @@ MainWindow::MainWindow(QWidget *parent)
 
     positionSlider->setStyle(new ProxyStyle());
 
-    playbackPlay = MediaIcon("media-playback-start");
-    playbackPause = MediaIcon("media-playback-pause");
-    repeatPlayQueueAction->setIcon(Icon::repeatIcon);
-    randomPlayQueueAction->setIcon(Icon::shuffleIcon);
-    consumePlayQueueAction->setIcon(Icon::consumeIcon);
-    singlePlayQueueAction->setIcon(Icon::singleIcon);
+    playbackPlay = Icon::getMediaIcon("media-playback-start");
+    playbackPause = Icon::getMediaIcon("media-playback-pause");
+    repeatPlayQueueAction->setIcon(Icons::repeatIcon);
+    randomPlayQueueAction->setIcon(Icons::shuffleIcon);
+    consumePlayQueueAction->setIcon(Icons::consumeIcon);
+    singlePlayQueueAction->setIcon(Icons::singleIcon);
     playPauseTrackAction->setIcon(playbackPlay);
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
-    libraryTabAction->setIcon(Icon::libraryIcon);
+    libraryTabAction->setIcon(Icons::libraryIcon);
     #ifdef ENABLE_WEBKIT
-    infoTabAction->setIcon(Icon::wikiIcon);
+    infoTabAction->setIcon(Icons::wikiIcon);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
@@ -456,7 +455,7 @@ MainWindow::MainWindow(QWidget *parent)
     addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addPlayQueueToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
 
-    menuButton->setIcon(Icon::configureIcon);
+    menuButton->setIcon(Icons::configureIcon);
     menuButton->setMenu(mainMenu);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     volumeButton->setIcon(Icon("audio-volume-high"));
@@ -637,10 +636,10 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addMenu(helpMenu());
     #else
     prefAction=mainMenu->addAction(i18n("Configure Cantata..."), this, SLOT(showPreferencesDialog()));
-    prefAction->setIcon(Icon::configureIcon);
+    prefAction->setIcon(Icons::configureIcon);
     mainMenu->addSeparator();
     Action *aboutAction=mainMenu->addAction(i18nc("Qt-only", "About Cantata..."), this, SLOT(showAboutDialog()));
-    aboutAction->setIcon(appIcon);
+    aboutAction->setIcon(Icons::appIcon);
     #endif
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
@@ -2047,7 +2046,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             trayItem->setIconByName("cantata");
             trayItem->setToolTip("cantata", i18n("Cantata"), "<i>Playback stopped</i>");
             #else
-            trayItem->setIcon(appIcon);
+            trayItem->setIcon(Icons::appIcon);
             trayItem->setToolTip(i18n("Cantata"));
             #endif
         }
@@ -2454,7 +2453,7 @@ void MainWindow::setupTrayIcon()
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(quitAction);
     trayItem->setContextMenu(trayItemMenu);
-    trayItem->setIcon(appIcon);
+    trayItem->setIcon(Icons::appIcon);
     trayItem->setToolTip(i18n("Cantata"));
     trayItem->show();
     connect(trayItem, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayItemClicked(QSystemTrayIcon::ActivationReason)));
@@ -3059,7 +3058,7 @@ Action * MainWindow::createAction(const QString &name, const QString &text, cons
     Action *act = new Action(name, this);
     act->setText(text);
     if (0!=icon) {
-        act->setIcon('m'==icon[0] && 'e'==icon[1] && 'd'==icon[2] && 'i'==icon[3] && 'a'==icon[4] && '-'==icon[5] ? MediaIcon(icon) : Icon(icon));
+        act->setIcon('m'==icon[0] && 'e'==icon[1] && 'd'==icon[2] && 'i'==icon[3] && 'a'==icon[4] && '-'==icon[5] ? Icon::getMediaIcon(icon) : Icon(icon));
     }
     #endif
     if (!whatsThis.isEmpty()) {

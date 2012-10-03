@@ -28,7 +28,7 @@
 #include <QtGui/QSizePolicy>
 #include <QtGui/QApplication>
 
-PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const QIcon &icon, QWidget *cfg)
+PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg)
     : QWidget(p) {
     static int size=-1;
 
@@ -65,7 +65,7 @@ PageWidget::PageWidget(QWidget *p)
 {
 }
 
-PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const QIcon &icon, const QString &header)
+PageWidgetItem * PageWidget::addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header)
 {
     PageWidgetItem *item=new PageWidgetItem(parentWidget(), header, icon, widget);
     AddTab(item, icon, name);

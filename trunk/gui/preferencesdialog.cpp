@@ -24,7 +24,7 @@
 #include "preferencesdialog.h"
 #include "mainwindow.h"
 #include "settings.h"
-#include "icon.h"
+#include "icons.h"
 #include "interfacesettings.h"
 #include "externalsettings.h"
 #include "serversettings.h"
@@ -68,14 +68,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
     lyrics->Load(lprov);
     widget->addPage(server, i18n("Connection"), Icon("network-server"), i18n("Connection Settings"));
-    widget->addPage(serverplayback, i18n("Output"), Icon::speakerIcon, i18n("Output Settings"));
+    widget->addPage(serverplayback, i18n("Output"), Icons::speakerIcon, i18n("Output Settings"));
     widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     widget->addPage(ext, i18n("External"), Icon("video-display"), i18n("External Settings"));
     #ifdef TAGLIB_FOUND
     widget->addPage(http, i18n("HTTP Server"), Icon("network-wired"), i18n("HTTP Server Settings"));
     #endif
-    widget->addPage(lyrics, i18n("Lyrics"), Icon::lyricsIcon, i18n("Lyrics Settings"));
+    widget->addPage(lyrics, i18n("Lyrics"), Icons::lyricsIcon, i18n("Lyrics Settings"));
 
     #ifndef ENABLE_KDE_SUPPORT
     proxy = new ProxySettings(widget);

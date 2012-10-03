@@ -38,7 +38,7 @@
 #include "messagebox.h"
 #include "filejob.h"
 #include "freespaceinfo.h"
-#include "icon.h"
+#include "icons.h"
 #include <QtCore/QFile>
 
 static int iCount=0;
@@ -69,8 +69,8 @@ ActionDialog::ActionDialog(QWidget *parent)
     setMainWidget(mainWidet);
     errorIcon->setPixmap(QIcon::fromTheme("dialog-error").pixmap(64, 64));
     skipIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(64, 64));
-    configureSourceButton->setIcon(Icon::configureIcon);
-    configureDestButton->setIcon(Icon::configureIcon);
+    configureSourceButton->setIcon(Icons::configureIcon);
+    configureDestButton->setIcon(Icons::configureIcon);
     connect(configureSourceButton, SIGNAL(clicked()), SLOT(configureSource()));
     connect(configureDestButton, SIGNAL(clicked()), SLOT(configureDest()));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));

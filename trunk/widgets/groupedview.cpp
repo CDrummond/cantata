@@ -29,7 +29,7 @@
 #include "itemview.h"
 #include "config.h"
 #include "localize.h"
-#include "icon.h"
+#include "icons.h"
 #include "fancytabwidget.h"
 #include <QtGui/QStyledItemDelegate>
 #include <QtGui/QApplication>
@@ -306,7 +306,7 @@ public:
                 pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize);
             } else {
                 QPixmap *cover=Covers::self()->get(song, constCoverSize);
-                pix=cover ? *cover : (stream ? Icon::streamIcon : Icon::albumIcon).pixmap(constCoverSize, constCoverSize);
+                pix=cover ? *cover : (stream ? Icons::streamIcon : Icons::albumIcon).pixmap(constCoverSize, constCoverSize);
             }
 
             if (rtl) {

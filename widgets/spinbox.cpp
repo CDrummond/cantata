@@ -23,15 +23,13 @@
 
 #include "spinbox.h"
 #include "icon.h"
-#include "fancytabwidget.h"
+#include "gtkstyle.h"
 #include <QtGui/QToolButton>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QApplication>
 #include <QtGui/QWheelEvent>
 
-static bool init=false;
-static bool useQtSpinBox=true;
 static Icon incIcon;
 static Icon decIcon;
 
@@ -53,19 +51,11 @@ static void intButton(QToolButton *btn, bool inc)
 SpinBox::SpinBox(QWidget *p)
     : QWidget(p)
 {
-    if (!init) {
-        init=true;
-        if (qgetenv("KDE_FULL_SESSION").isEmpty() && FancyTabWidget::isGtkStyle()) {
-            useQtSpinBox=false;
-        }
-    }
     QHBoxLayout *layout=new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     spin=new EmptySpinBox(this);
-    if (useQtSpinBox) {
-        layout->addWidget(spin);
-    } else {
+    if (GtkStyle::mimicWidgets()) {
         spin->setButtonSymbols(QAbstractSpinBox::NoButtons);
         decButton=new QToolButton(this);
         incButton=new QToolButton(this);
@@ -80,6 +70,8 @@ SpinBox::SpinBox(QWidget *p)
         intButton(incButton, true);
         decButton->installEventFilter(this);
         incButton->installEventFilter(this);
+    } else {
+        layout->addWidget(spin);
     }
 }
 
@@ -90,11 +82,10 @@ SpinBox::~SpinBox()
 void SpinBox::setValue(int v)
 {
     spin->setValue(v);
-    if (useQtSpinBox) {
-        return;
+    if (GtkStyle::mimicWidgets()) {
+        decButton->setEnabled(spin->value()>spin->minimum());
+        incButton->setEnabled(spin->value()<spin->maximum());
     }
-    decButton->setEnabled(spin->value()>spin->minimum());
-    incButton->setEnabled(spin->value()<spin->maximum());
 }
 
 void SpinBox::incPressed()
@@ -113,7 +104,7 @@ void SpinBox::decPressed()
 
 bool SpinBox::eventFilter(QObject *obj, QEvent *event)
 {
-    if (!useQtSpinBox && (obj==incButton || obj==decButton) && QEvent::Wheel==event->type()) {
+    if (GtkStyle::mimicWidgets() && (obj==incButton || obj==decButton) && QEvent::Wheel==event->type()) {
         QWheelEvent *we=(QWheelEvent *)event;
         if (we->delta()<0) {
             decPressed();

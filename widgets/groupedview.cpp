@@ -30,7 +30,7 @@
 #include "config.h"
 #include "localize.h"
 #include "icons.h"
-#include "fancytabwidget.h"
+#include "gtkstyle.h"
 #include <QtGui/QStyledItemDelegate>
 #include <QtGui/QApplication>
 #include <QtGui/QFontMetrics>
@@ -179,11 +179,11 @@ public:
         quint32 collection=index.data(GroupedView::Role_CollectionId).toUInt();
         bool selected=option.state&QStyle::State_Selected;
         bool mouseOver=option.state&QStyle::State_MouseOver;
-        bool gtk=mouseOver && FancyTabWidget::isGtkStyle();
+        bool gtk=mouseOver && GtkStyle::isActive();
 
         if (!isCollection && AlbumHeader==type) {
             if (mouseOver && gtk) {
-                FancyTabWidget::drawGtkSelection(option, painter, (selected ? 0.75 : 0.25)*0.75);
+                GtkStyle::drawSelection(option, painter, (selected ? 0.75 : 0.25)*0.75);
             } else {
                 painter->save();
                 painter->setOpacity(0.75);
@@ -193,7 +193,7 @@ public:
             painter->save();
             painter->setClipRect(option.rect.adjusted(0, option.rect.height()/2, 0, 0), Qt::IntersectClip);
             if (mouseOver && gtk) {
-                FancyTabWidget::drawGtkSelection(option, painter, selected ? 0.75 : 0.25);
+                GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
             } else {
                 QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
             }
@@ -206,7 +206,7 @@ public:
             }
         } else {
             if (mouseOver && gtk) {
-                FancyTabWidget::drawGtkSelection(option, painter, selected ? 0.75 : 0.25);
+                GtkStyle::drawSelection(option, painter, selected ? 0.75 : 0.25);
             } else {
                 QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0L);
             }

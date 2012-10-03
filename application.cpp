@@ -62,7 +62,6 @@ Application::Application()
 
 Application::~Application() {
     if (w) {
-        delete w;
         w=0;
     }
 }

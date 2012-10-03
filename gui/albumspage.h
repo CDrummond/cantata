@@ -25,9 +25,11 @@
 #define ALBUMSPAGE_H
 
 #include "ui_albumspage.h"
-#include "mainwindow.h"
 #include "albumsproxymodel.h"
+#include "config.h"
 
+class MainWindow;
+class Action;
 class MusicLibraryItemRoot;
 
 class AlbumsPage : public QWidget, public Ui::AlbumsPage

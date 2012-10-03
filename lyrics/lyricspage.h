@@ -29,12 +29,12 @@
 #include "song.h"
 #include "ui_lyricspage.h"
 #include "textbrowser.h"
-#include "mainwindow.h"
 
 class UltimateLyricsProvider;
 // class UltimateLyricsReader;
 class UltimateLyricsProvider;
 class QImage;
+class Action;
 
 class LyricsPage : public QWidget, public Ui::LyricsPage
 {
@@ -49,7 +49,7 @@ class LyricsPage : public QWidget, public Ui::LyricsPage
 public:
     static const QLatin1String constExtension;
 
-    LyricsPage(MainWindow *p);
+    LyricsPage(QWidget *p);
     ~LyricsPage();
 
     void saveSettings();

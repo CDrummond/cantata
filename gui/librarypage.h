@@ -25,8 +25,11 @@
 #define LIBRARYPAGE_H
 
 #include "ui_librarypage.h"
-#include "mainwindow.h"
 #include "musiclibraryproxymodel.h"
+#include "config.h"
+
+class MainWindow;
+class Action;
 
 class LibraryPage : public QWidget, public Ui::LibraryPage
 {

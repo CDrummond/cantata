@@ -27,8 +27,9 @@
 #include <QtGui/QWidget>
 #include <QtCore/QDateTime>
 #include "ui_serverinfopage.h"
-#include "mainwindow.h"
 
+class Action;
+class Action;
 class MPDStats;
 
 class ServerInfoPage : public QWidget, public Ui::ServerInfoPage
@@ -36,7 +37,7 @@ class ServerInfoPage : public QWidget, public Ui::ServerInfoPage
   Q_OBJECT
 
 public:
-    ServerInfoPage(MainWindow *p);
+    ServerInfoPage(QWidget *p);
     ~ServerInfoPage();
 
     void clear();

@@ -25,8 +25,10 @@
 #define DYNAMICPAGE_H
 
 #include "ui_dynamicpage.h"
-#include "mainwindow.h"
 #include "dynamicproxymodel.h"
+
+class MainWindow;
+class Action;
 
 class DynamicPage : public QWidget, public Ui::DynamicPage
 {

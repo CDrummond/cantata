@@ -149,6 +149,8 @@ SET( CANTATA_SRCS
     libmaia/maiaFault.cpp
     libmaia/maiaXmlRpcClient.cpp
     devices/utils.cpp
+    support/action.cpp
+    support/actioncollection.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -208,6 +210,8 @@ SET( CANTATA_MOC_HDRS
     libmaia/maiaObject.h
     libmaia/maiaFault.h
     libmaia/maiaXmlRpcClient.h
+    support/action.h
+    support/actioncollection.h
 )
 
 SET( CANTATA_UIS
@@ -291,6 +295,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
                      ${CMAKE_SOURCE_DIR}/http
                      ${CMAKE_SOURCE_DIR}/devices
                      ${CMAKE_SOURCE_DIR}/dynamic
+                     ${CMAKE_SOURCE_DIR}/support
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
 )
@@ -440,10 +445,10 @@ IF( ENABLE_KDE_SUPPORT )
     install( FILES cantata.notifyrc DESTINATION ${DATA_INSTALL_DIR}/cantata )
 ELSE( ENABLE_KDE_SUPPORT )
     SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/dirrequester.cpp widgets/lineedit.cpp network/networkproxyfactory.cpp network/proxysettings.cpp widgets/kmessagewidget.cpp
-            widgets/dialog.cpp widgets/messagebox.cpp widgets/pagewidget.cpp )
+            widgets/dialog.cpp widgets/messagebox.cpp widgets/pagewidget.cpp support/shortcutsmodel.cpp support/shortcutssettingspage.cpp support/keysequencewidget.cpp )
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} application.h widgets/dirrequester.h widgets/lineedit.h network/proxysettings.h widgets/kmessagewidget.h widgets/urllabel.h
-            widgets/dialog.h )
-    SET( CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui )
+            widgets/dialog.h support/shortcutsmodel.h support/shortcutssettingspage.h support/keysequencewidget.h )
+    SET( CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui support/shortcutssettingspage.ui )
     SET( CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc )
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )
     QT4_WRAP_UI( CANTATA_UI_HDRS ${CANTATA_UIS} )

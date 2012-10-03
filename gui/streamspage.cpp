@@ -28,12 +28,13 @@
 #include "messagebox.h"
 #include "localize.h"
 #include "icon.h"
+#include "mainwindow.h"
+#include "action.h"
+#include "actioncollection.h"
 #include <QtGui/QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
 #include <KDE/KFileDialog>
 #else
-#include <QtGui/QAction>
 #include <QtGui/QFileDialog>
 #include <QtCore/QDir>
 #endif
@@ -44,10 +45,10 @@ StreamsPage::StreamsPage(MainWindow *p)
     , mw(p)
 {
     setupUi(this);
-    importAction = p->createAction("importstreams", i18n("Import Streams"), "document-import");
-    exportAction = p->createAction("exportstreams", i18n("Export Streams"), "document-export");
-    addAction = p->createAction("addstream", i18n("Add Stream"), "list-add");
-    editAction = p->createAction("editstream", i18n("Edit"), "document-edit");
+    importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams"), "document-import");
+    exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Streams"), "document-export");
+    addAction = ActionCollection::get()->createAction("addstream", i18n("Add Stream"), "list-add");
+    editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), "document-edit");
 
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));

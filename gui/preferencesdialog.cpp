@@ -40,6 +40,8 @@
 #include "pagewidget.h"
 #ifndef ENABLE_KDE_SUPPORT
 #include "proxysettings.h"
+#include "shortcutssettingspage.h"
+#include "actioncollection.h"
 #endif
 
 PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
@@ -81,6 +83,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     proxy = new ProxySettings(widget);
     proxy->load();
     widget->addPage(proxy, i18nc("Qt-only", "Proxy"), Icon("preferences-system-network"), i18nc("Qt-only", "Proxy Settings"));
+    QHash<QString, ActionCollection *> map;
+    map.insert("Cantata", ActionCollection::get());
+    shortcuts = new ShortcutsSettingsPage(map, widget);
+    widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icon("keyboard"), i18nc("Qt-only", "Keyboard Shortcut Settings"));
     #endif
     widget->allPagesAdded();
     setCaption(i18n("Configure"));
@@ -102,6 +108,7 @@ void PreferencesDialog::writeSettings()
     #endif
     #ifndef ENABLE_KDE_SUPPORT
     proxy->save();
+    shortcuts->save();
     #endif
     Settings::self()->saveLyricProviders(lyrics->EnabledProviders());
     Settings::self()->save();

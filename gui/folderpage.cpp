@@ -28,14 +28,14 @@
 #include "icon.h"
 #include "localize.h"
 #include "messagebox.h"
+#include "mainwindow.h"
+#include "action.h"
+#include "actioncollection.h"
 #include <QtGui/QIcon>
 #include <QtGui/QToolButton>
 #include <QtCore/QDir>
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KAction>
 #include <KDE/KRun>
-#else
-#include <QtGui/QAction>
 #endif
 
 FolderPage::FolderPage(MainWindow *p)
@@ -47,7 +47,7 @@ FolderPage::FolderPage(MainWindow *p)
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
     #ifdef ENABLE_KDE_SUPPORT
-    browseAction = p->createAction("openfilemanager", i18n("Open File Manager"), "system-file-manager");
+    browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open File Manager"), "system-file-manager");
     #endif
     Icon::init(addToPlayQueue);
     Icon::init(replacePlayQueue);

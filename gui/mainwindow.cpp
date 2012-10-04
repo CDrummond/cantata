@@ -614,14 +614,9 @@ MainWindow::MainWindow(QWidget *parent)
     }
     togglePlayQueue();
 
-    #if !defined Q_OS_WIN
-    bool showMenuBar=qgetenv("XDG_CURRENT_DESKTOP")=="Unity";
-    #endif
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
-    if (!showMenuBar) {
-        menuBar()->setVisible(false);
-    }
+    menuBar()->setVisible(false);
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
@@ -648,7 +643,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(quitAction);
 
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
-    if (showMenuBar) {
+    if (qgetenv("XDG_CURRENT_DESKTOP")=="Unity") {
         QMenu *menu=new QMenu(i18n("&File"), this);
         menu->addAction(quitAction);
         menuBar()->addMenu(menu);

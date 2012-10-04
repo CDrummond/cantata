@@ -33,7 +33,7 @@
 17. Add 'Show Window' action to Linux Qt-only build - so that we have a way of
     restoring the Cantata window from the Unity menubar.
 18. Use freedesktop.org notifications for Qt-only Linux builds.
-19. Show menubar when run under Unity.
+19. Show menubar when run under Unity (Qt-only build).
 20. Improve MPRISv2 interface - signal when proprties change.
 21. Play/Pause track when middle click on tray icon for Qt-only builds (KDE
     builds already have this). Thanks to spartanj for the patch.

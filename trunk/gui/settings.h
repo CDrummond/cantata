@@ -37,8 +37,6 @@ class Wallet;
 #include "config.h"
 #include "mpdconnection.h"
 
-#define CANTATA_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
-
 #ifdef ENABLE_KDE_SUPPORT
 #define CFG_GET_STRING(CFG, KEY, DEF)     (CFG.readEntry(KEY, QString(DEF)))
 #define CFG_GET_STRINGLIST(CFG, KEY, DEF) (CFG.readEntry(KEY, DEF))
@@ -227,6 +225,7 @@ private Q_SLOTS:
 
 private:
     bool isFirstRun;
+    bool modified;
     QTimer *timer;
     int ver;
     #ifdef ENABLE_KDE_SUPPORT

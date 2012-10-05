@@ -7,7 +7,7 @@
  3. Add support for 'Similar Artists' in dynamic mode.
  4. Add a gui setting to control the enforcement of single-click.
  5. When sorting tracks, sort on duration after sorting on name, title, and
-     genre. This way of tracks do not have a takc number, disc, year, etc, then
+    genre. This way if tracks do not have a tack number, disc, year, etc, then
     we will sort on the name/title before duraiton.
  6. When refreshing DB, make sure Albums view is at top level.
  7. Set Artist, AlbumArtist, and Album of cue files to that of assigned album.
@@ -46,6 +46,8 @@
 25. Fix retrieval of covers from file-system based devices.
 26. Support for modifiable keyboard shortcuts in Qt-only builds. (Code stolen
     from Quassel!)
+27. In windows build, when close button is pressed always terminate the app,
+    even when we have a system tray icon. (Matchs VLC behaviour)
 
 0.8.3.1
 -------

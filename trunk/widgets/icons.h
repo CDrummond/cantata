@@ -31,6 +31,7 @@ namespace Icons
     extern void init();
     #ifndef ENABLE_KDE_SUPPORT
     extern Icon appIcon;
+    extern Icon shortcutsIcon;
     #endif
     extern Icon singleIcon;
     extern Icon consumeIcon;

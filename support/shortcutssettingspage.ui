@@ -14,6 +14,9 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -24,7 +27,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="searchEdit"/>
+      <widget class="LineEdit" name="searchEdit"/>
      </item>
     </layout>
    </item>
@@ -115,7 +118,7 @@
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>lineedit.h</header>
-   <container>1</container>
+   <container>0</container>
   </customwidget>
  </customwidgets>
  <tabstops>

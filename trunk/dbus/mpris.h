@@ -236,7 +236,7 @@ public:
         return QStringList();
     }
 
-public slots:
+public Q_SLOTS:
     void Raise();
 
     void Quit() {

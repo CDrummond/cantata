@@ -97,6 +97,7 @@ static Icon createIcon(bool isSingle)
 
 #ifndef ENABLE_KDE_SUPPORT
 Icon Icons::appIcon;
+Icon Icons::shortcutsIcon;
 #endif
 Icon Icons::singleIcon;
 Icon Icons::consumeIcon;
@@ -135,8 +136,9 @@ void Icons::init()
     playlistIcon=Icon("view-media-playlist");
     variousArtistsIcon=Icon("cantata-view-media-artist-various");
     artistIcon=Icon("view-media-artist");
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    #ifndef ENABLE_KDE_SUPPORT
     appIcon=Icon::create(QStringList() << ":cantata.svg" << ":cantata16.png" << ":cantata22.png" << ":cantata32.png" << ":cantata48.png" << ":cantata64.png");
+    shortcutsIcon=Icon("preferences-desktop-keyboard");
 
     if (repeatIcon.isNull()) {
         repeatIcon=Icon::create(QStringList() << ":repeat16.png" << ":repeat22.png");
@@ -149,6 +151,11 @@ void Icons::init()
     }
     if (wikiIcon.isNull()) {
         wikiIcon=Icon::create(QStringList() << ":wiki16.png" << ":wiki32.png");
+    }
+
+    #ifndef Q_OS_WIN
+    if (shortcutsIcon.isNull()) {
+        shortcutsIcon=Icon("keyboard");
     }
     if (albumIcon.isNull()) {
         albumIcon=Icon("media-optical-audio");
@@ -196,6 +203,7 @@ void Icons::init()
         artistIcon.addFile(":artist64.png");
         artistIcon.addFile(":artist128.png");
     }
-    #endif
+    #endif // Q_OS_WIN
+    #endif // ENABLE_KDE_SUPPORT
 }
 

@@ -86,7 +86,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     QHash<QString, ActionCollection *> map;
     map.insert("Cantata", ActionCollection::get());
     shortcuts = new ShortcutsSettingsPage(map, widget);
-    widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icon("keyboard"), i18nc("Qt-only", "Keyboard Shortcut Settings"));
+    widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
     #endif
     widget->allPagesAdded();
     setCaption(i18n("Configure"));

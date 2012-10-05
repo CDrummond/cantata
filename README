@@ -366,8 +366,10 @@ Credits
 =======
 
 Cantata contains code/icons from:
-    Amarok         - amarok.kde.org
-    Clementine     - www.clementine-player.org
+    Amarok         - amarok.kde.org (Media device detection)
+    Clementine     - www.clementine-player.org (Lyrics searches)
+    Quassel        - quassel-irc.org (Qt-only keyobard short-cut config support)
+    Solid          - solid.kde.org (Device detection for Qt-only builds)
     libmaia        - https://github.com/wiedi/libmaia
     libebur128     - https://github.com/jiixyj/libebur128
     wikipedia icon - Social Media Mini by Paul Robert Lloyd License: Commons licence: Attribution-Share Alike 2.0 UK: England & Wales

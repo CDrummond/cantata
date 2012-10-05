@@ -438,6 +438,11 @@ bool Settings::dockManager()
     return GET_BOOL("dockManager", false);
 }
 
+bool Settings::gnomeMediaKeys()
+{
+    return GET_BOOL("gnomeMediaKeys", false);
+}
+
 #ifdef ENABLE_DEVICES_SUPPORT
 bool Settings::overwriteSongs()
 {
@@ -848,6 +853,14 @@ void Settings::saveDockManager(bool v)
 {
     if (v!=dockManager()) {
         SET_VALUE_MOD("dockManager", v);
+    }
+}
+
+
+void Settings::saveGnomeMediaKeys(bool v)
+{
+    if (v!=gnomeMediaKeys()) {
+        SET_VALUE_MOD("gnomeMediaKeys", v);
     }
 }
 

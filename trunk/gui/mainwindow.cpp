@@ -79,7 +79,7 @@
 #include "lyricspage.h"
 #include "infopage.h"
 #include "serverinfopage.h"
-#if defined ENABLE_DEVICES_SUPPORT
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "filejob.h"
 #include "devicespage.h"
 #include "devicesmodel.h"
@@ -98,10 +98,11 @@
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 #include "timeslider.h"
-#if !defined Q_OS_WIN
+#ifndef Q_OS_WIN
 #include "mpris.h"
 #include "dockmanager.h"
 #include "cantataadaptor.h"
+#include "gnomemediakeys.h"
 #ifndef ENABLE_KDE_SUPPORT
 #include "notify.h"
 #endif
@@ -246,6 +247,7 @@ MainWindow::MainWindow(QWidget *parent)
     #if !defined Q_OS_WIN
     , dock(0)
     , mpris(0)
+    , gnomeMediaKeys(0)
     #if !defined ENABLE_KDE_SUPPORT
     , notify(0)
     #endif
@@ -1417,6 +1419,14 @@ void MainWindow::readSettings()
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     updateWindowTitle();
     ItemView::setForceSingleClick(Settings::self()->forceSingleClick());
+    #ifndef Q_OS_WIN
+    if (!gnomeMediaKeys && Settings::self()->gnomeMediaKeys()) {
+        gnomeMediaKeys=new GnomeMediaKeys(this);
+    }
+    if (gnomeMediaKeys) {
+        gnomeMediaKeys->setEnabled(Settings::self()->gnomeMediaKeys());
+    }
+    #endif
 }
 
 void MainWindow::updateSettings()
@@ -1665,6 +1675,16 @@ void MainWindow::playPauseTrack()
             emit play();
         }
     }
+}
+
+void MainWindow::nextTrack()
+{
+    nextTrackAction->trigger();
+}
+
+void MainWindow::prevTrack()
+{
+    prevTrackAction->trigger();
 }
 
 void MainWindow::setPosition()

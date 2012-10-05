@@ -74,10 +74,11 @@ class DevicesPage;
 #endif
 class QThread;
 class QAbstractItemView;
-#if !defined Q_OS_WIN
+#ifndef Q_OS_WIN
 class DockManager;
 class Mpris;
-#if !defined ENABLE_KDE_SUPPORT
+class GnomeMediaKeys;
+#ifndef ENABLE_KDE_SUPPORT
 class Notify;
 #endif // !defined ENABLE_KDE_SUPPORT
 #endif // !defined Q_OS_WIN
@@ -224,7 +225,7 @@ public Q_SLOTS:
     void dynamicStatus(const QString &message);
     void restoreWindow();
 
-private Q_SLOTS:
+public Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
     void configureShortcuts();
     void saveShortcuts();
@@ -254,6 +255,8 @@ private Q_SLOTS:
     #endif
     void stopTrack();
     void playPauseTrack();
+    void nextTrack();
+    void prevTrack();
     void increaseVolume();
     void decreaseVolume();
     void setPosition();
@@ -479,10 +482,11 @@ private:
     #endif
     ServerInfoPage *serverInfoPage;
     QThread *mpdThread;
-    #if !defined Q_OS_WIN
+    #ifndef Q_OS_WIN
     DockManager *dock;
     Mpris *mpris;
-    #if !defined ENABLE_KDE_SUPPORT
+    GnomeMediaKeys *gnomeMediaKeys;
+    #ifndef ENABLE_KDE_SUPPORT
     Notify *notify;
     #endif
     #endif

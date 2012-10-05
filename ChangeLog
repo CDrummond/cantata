@@ -48,6 +48,7 @@
     from Quassel!)
 27. In windows build, when close button is pressed always terminate the app,
     even when we have a system tray icon. (Matchs VLC behaviour)
+28. Only save settings when modified.
 
 0.8.3.1
 -------

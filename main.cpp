@@ -61,7 +61,7 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
     // without checking if it's a file first.
     // This was fixed in Qt 4.7
     QFileInfo maybeCantataDirectory(path + "/cantata");
-    if (maybeCantataDirectory.exists() && !maybeCantataDirectory.isFile()) {
+    if (maybeCantataDirectory.exists() && !maybeCantataDirectory.isFile()) {CK
         return;
     }
     #endif
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 {
     #ifdef ENABLE_KDE_SUPPORT
     KAboutData aboutData(PACKAGE_NAME, 0,
-                         ki18n("Cantata"), PACKAGE_VERSION,
+                         ki18n("Cantata"), PACKAGE_VERSION_STRING,
                          ki18n("A KDE client for MPD"),
                          KAboutData::License_GPL_V2,
                          ki18n("Copyright (C) 2011-2012 Craig Drummond"),

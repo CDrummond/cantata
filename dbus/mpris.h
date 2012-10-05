@@ -31,9 +31,9 @@
 
 #include "song.h"
 #include "mpdstatus.h"
+#include "mainwindow.h"
 
 class QDBusObjectPath;
-class MainWindow;
 
 class Mpris : public QObject
 {
@@ -72,49 +72,32 @@ public:
 
     // org.mpris.MediaPlayer2.Player
     void Next() {
-        if (MPDStatus::self()->playlistLength()>1) {
-            emit goToNext();
-        }
+        mw->nextTrack();
     }
 
     void Previous() {
-        if (MPDStatus::self()->playlistLength()>1) {
-            emit goToPrevious();
-        }
+        mw->prevTrack();
     }
 
     void Pause() {
         if (MPDState_Playing==MPDStatus::self()->state()) {
-            emit setPause(true);
+            mw->playPauseTrack();
         }
     }
 
     void PlayPause() {
-        MPDStatus * const status = MPDStatus::self();
-
-        if (status->playlistLength()) {
-            if (MPDState_Playing==status->state()) {
-                emit setPause(true);
-            } else if (MPDState_Paused==status->state()) {
-                emit setPause(false);
-            } else {
-                emit startPlayingSong();
-            }
-        }
+        mw->playPauseTrack();
     }
 
     void Stop() {
-        MPDStatus * const status = MPDStatus::self();
-        if (MPDState_Playing==status->state() || MPDState_Paused==status->state()) {
-            emit stopPlaying();
-        }
+        mw->stopTrack();
     }
 
     void Play() {
         MPDStatus * const status = MPDStatus::self();
 
         if (status->playlistLength() && MPDState_Playing!=status->state()) {
-            emit startPlayingSong();
+           mw->playPauseTrack();
         }
     }
 
@@ -245,16 +228,11 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     // org.mpris.MediaPlayer2.Player
-    void goToNext();
-    void setPause(bool toggle);
-    void startPlayingSong(quint32 song = 0);
-    void goToPrevious();
     void setRandom(bool toggle);
     void setRepeat(bool toggle);
     void setSeek(quint32 song, quint32 time);
     void setSeekId(quint32 songId, quint32 time);
     void setVolume(int vol);
-    void stopPlaying();
 
 public Q_SLOTS:
     void updateCurrentCover(const QString &fileName);

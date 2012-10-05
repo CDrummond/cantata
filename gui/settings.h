@@ -129,6 +129,7 @@ public:
     QStringList hiddenPages();
     bool mpris();
     bool dockManager();
+    bool gnomeMediaKeys();
     #ifdef ENABLE_DEVICES_SUPPORT
     bool overwriteSongs();
     bool showDeleteAction();
@@ -191,6 +192,7 @@ public:
     void saveHiddenPages(const QStringList &p);
     void saveMpris(bool v);
     void saveDockManager(bool v);
+    void saveGnomeMediaKeys(bool v);
     #ifdef ENABLE_DEVICES_SUPPORT
     void saveOverwriteSongs(bool v);
     void saveShowDeleteAction(bool v);

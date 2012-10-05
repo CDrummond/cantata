@@ -35,6 +35,8 @@ ExternalSettings::ExternalSettings(QWidget *p)
     mpris->setVisible(false);
     dockManagerLabel->setVisible(false);
     dockManager->setVisible(false);
+    gnomeMediaKeys->setVisible(false);
+    gnomeMediaKeysLabel->setVisible(false);
     #endif
 };
 
@@ -45,6 +47,7 @@ void ExternalSettings::load()
     #ifndef Q_OS_WIN
     mpris->setChecked(Settings::self()->mpris());
     dockManager->setChecked(Settings::self()->dockManager());
+    gnomeMediaKeys->setChecked(Settings::self()->gnomeMediaKeys());
     #endif
 }
 
@@ -55,5 +58,6 @@ void ExternalSettings::save()
     #ifndef Q_OS_WIN
     Settings::self()->saveMpris(mpris->isChecked());
     Settings::self()->saveDockManager(dockManager->isChecked());
+    Settings::self()->saveGnomeMediaKeys(gnomeMediaKeys->isChecked());
     #endif
 }

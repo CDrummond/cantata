@@ -25,7 +25,6 @@
 #include "mpdconnection.h"
 #include "playeradaptor.h"
 #include "rootadaptor.h"
-#include "mainwindow.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KWindowSystem>
 #endif
@@ -45,16 +44,11 @@ Mpris::Mpris(MainWindow *p)
     new MediaPlayer2Adaptor(this);
 
     QDBusConnection::sessionBus().registerObject("/org/mpris/MediaPlayer2", this, QDBusConnection::ExportAdaptors);
-    connect(this, SIGNAL(goToNext()), MPDConnection::self(), SLOT(goToNext()));
-    connect(this, SIGNAL(setPause(bool)), MPDConnection::self(), SLOT(setPause(bool)));
-    connect(this, SIGNAL(startPlayingSong(quint32)), MPDConnection::self(), SLOT(startPlayingSong(quint32)));
-    connect(this, SIGNAL(goToPrevious()), MPDConnection::self(), SLOT(goToPrevious()));
     connect(this, SIGNAL(setRandom(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(this, SIGNAL(setRepeat(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
     connect(this, SIGNAL(setSeek(quint32, quint32)), MPDConnection::self(), SLOT(setSeek(quint32, quint32)));
     connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
-    connect(this, SIGNAL(stopPlaying()), MPDConnection::self(), SLOT(stopPlaying()));
 
     connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));

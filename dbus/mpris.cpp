@@ -120,10 +120,10 @@ QVariantMap Mpris::Metadata() const {
         metadataMap.insert("xesam:artist", currentSong.artist);
         metadataMap.insert("xesam:title", currentSong.title);
         if (currentSong.track>0) {
-            metadataMap.insert("'xesam:trackNumber", currentSong.track);
+            metadataMap.insert("xesam:trackNumber", currentSong.track);
         }
         if (currentSong.disc>0) {
-            metadataMap.insert("'xesam:discNumber", currentSong.disc);
+            metadataMap.insert("xesam:discNumber", currentSong.disc);
         }
 
         if (MPDConnection::self()->getDetails().dirReadable) {

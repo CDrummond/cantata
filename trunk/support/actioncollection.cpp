@@ -50,6 +50,11 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
     Action *act = (Action *)addAction(name);
     act->setText(text);
     if (0!=icon) {
+        #ifndef ENABLE_KDE_SUPPORT
+        if ('m'==icon[0] && 'e'==icon[1] && 'd'==icon[2] && 'i'==icon[3] && 'a'==icon[4] && '-'==icon[5]) {
+            act->setIcon(Icon::getMediaIcon(icon));
+        } else
+        #endif
         act->setIcon(Icon(icon));
     }
     if (!whatsThis.isEmpty()) {

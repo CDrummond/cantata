@@ -113,6 +113,7 @@ static MpdDefaults mpdDefaults;
 
 Settings::Settings()
     : isFirstRun(false)
+    , modified(false)
     , timer(0)
     , ver(-1)
     #ifdef ENABLE_KDE_SUPPORT
@@ -451,7 +452,6 @@ bool Settings::showDeleteAction()
 int Settings::devicesView()
 {
     return GET_INT("devicesView", (int)ItemView::Mode_Tree);
-
 }
 #endif
 
@@ -459,7 +459,7 @@ int Settings::version()
 {
     if (-1==ver) {
         isFirstRun=!HAS_ENTRY("version");
-        QStringList parts=GET_STRING("version", QLatin1String(PACKAGE_VERSION)).split('.');
+        QStringList parts=GET_STRING("version", QLatin1String(PACKAGE_VERSION_STRING)).split('.');
         if (3==parts.size()) {
             ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
         } else {
@@ -594,202 +594,283 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     SET_VALUE("dynamicPort", (int)v.dynamicPort);
     cfg.endGroup();
     #endif
+    modified=true;
 }
+
+#define SET_VALUE_MOD(KEY, VAL) modified=true; SET_VALUE(KEY, VAL)
 
 void Settings::saveCurrentConnection(const QString &v)
 {
-    SET_VALUE("currentConnection", v);
+    if (v!=currentConnection()) {
+        SET_VALUE_MOD("currentConnection", v);
+    }
 }
 
 void Settings::saveShowPlaylist(bool v)
 {
-    SET_VALUE("showPlaylist", v);
+    if (v!=showPlaylist()) {
+        SET_VALUE_MOD("showPlaylist", v);
+    }
 }
 
 void Settings::savePlayQueueHeaderState(const QByteArray &v)
 {
-    SET_VALUE("playQueueHeaderState", v);
+    if (v!=playQueueHeaderState()) {
+        SET_VALUE_MOD("playQueueHeaderState", v);
+    }
 }
 
 void Settings::saveSplitterState(const QByteArray &v)
 {
-    SET_VALUE("splitterState", v);
+    if (v!=splitterState()) {
+        SET_VALUE_MOD("splitterState", v);
+    }
 }
 
 void Settings::saveSplitterAutoHide(bool v)
 {
-    SET_VALUE("splitterAutoHide", v);
+    if (v!=splitterAutoHide()) {
+        SET_VALUE_MOD("splitterAutoHide", v);
+    }
 }
 
 void Settings::saveMainWindowSize(const QSize &v)
 {
-    SET_VALUE("mainWindowSize", v);
+    if (v!=mainWindowSize()) {
+        SET_VALUE_MOD("mainWindowSize", v);
+    }
 }
 
 void Settings::saveMainWindowCollapsedSize(const QSize &v)
 {
-    SET_VALUE("mainWindowCollapsedSize", v);
+    if (v!=mainWindowCollapsedSize()) {
+        SET_VALUE_MOD("mainWindowCollapsedSize", v);
+    }
 }
 
 void Settings::saveUseSystemTray(bool v)
 {
-    SET_VALUE("useSystemTray", v);
+    if (v!=useSystemTray()) {
+        SET_VALUE_MOD("useSystemTray", v);
+    }
 }
 
 void Settings::saveShowPopups(bool v)
 {
-    SET_VALUE("showPopups", v);
+    if (v!=showPopups()) {
+        SET_VALUE_MOD("showPopups", v);
+    }
 }
 
 void Settings::saveStopOnExit(bool v)
 {
-    SET_VALUE("stopOnExit", v);
+    if (v!=stopOnExit()) {
+        SET_VALUE_MOD("stopOnExit", v);
+    }
 }
 
 void Settings::saveStopDynamizerOnExit(bool v)
 {
-    SET_VALUE("stopDynamizerOnExit", v);
+    if (v!=stopDynamizerOnExit()) {
+        SET_VALUE_MOD("stopDynamizerOnExit", v);
+    }
 }
 
 void Settings::saveSmallPlaybackButtons(bool v)
 {
-    SET_VALUE("smallPlaybackButtons", v);
+    if (v!=smallPlaybackButtons()) {
+        SET_VALUE_MOD("smallPlaybackButtons", v);
+    }
 }
 
 void Settings::saveSmallControlButtons(bool v)
 {
-    SET_VALUE("smallControlButtons", v);
+    if (v!=smallControlButtons()) {
+        SET_VALUE_MOD("smallControlButtons", v);
+    }
 }
 
 void Settings::saveStoreCoversInMpdDir(bool v)
 {
-    SET_VALUE("storeCoversInMpdDir", v);
+    if (v!=smallControlButtons()) {
+        SET_VALUE_MOD("smallControlButtons", v);
+    }
 }
 
 void Settings::saveStoreLyricsInMpdDir(bool v)
 {
-    SET_VALUE("storeLyricsInMpdDir", v);
+    if (v!=storeLyricsInMpdDir()) {
+        SET_VALUE_MOD("storeLyricsInMpdDir", v);
+    }
 }
 
 void Settings::saveLibraryView(int v)
 {
-    SET_VALUE("libraryView", v);
+    if (v!=libraryView()) {
+        SET_VALUE_MOD("libraryView", v);
+    }
 }
 
 void Settings::saveAlbumsView(int v)
 {
-    SET_VALUE("albumsView", v);
+    if (v!=albumsView()) {
+        SET_VALUE_MOD("albumsView", v);
+    }
 }
 
 void Settings::saveFolderView(int v)
 {
-    SET_VALUE("folderView", v);
+    if (v!=folderView()) {
+        SET_VALUE_MOD("folderView", v);
+    }
 }
 
 void Settings::savePlaylistsView(int v)
 {
-    SET_VALUE("playlistsView", v);
+    if (v!=playlistsView()) {
+        SET_VALUE_MOD("playlistsView", v);
+    }
 }
 
 void Settings::saveStreamsView(int v)
 {
-    SET_VALUE("streamsView", v);
+    if (v!=streamsView()) {
+        SET_VALUE_MOD("streamsView", v);
+    }
 }
 
 void Settings::saveLibraryArtistImage(bool v)
 {
-    SET_VALUE("libraryArtistImage", v);
+    if (v!=libraryArtistImage()) {
+        SET_VALUE_MOD("libraryArtistImage", v);
+    }
 }
 
 void Settings::saveLibraryCoverSize(int v)
 {
-    SET_VALUE("libraryCoverSize", v);
+    if (v!=libraryCoverSize()) {
+        SET_VALUE_MOD("libraryCoverSize", v);
+    }
 }
 
 void Settings::saveAlbumsCoverSize(int v)
 {
-    SET_VALUE("albumsCoverSize", v);
+    if (v!=albumsCoverSize()) {
+        SET_VALUE_MOD("albumsCoverSize", v);
+    }
 }
 
 void Settings::saveAlbumSort(int v)
 {
-    SET_VALUE("albumSort", v);
+    if (v!=albumSort()) {
+        SET_VALUE_MOD("albumSort", v);
+    }
 }
 
 void Settings::saveSidebar(int v)
 {
-    SET_VALUE("sidebar", v);
+    if (v!=sidebar()) {
+        SET_VALUE_MOD("sidebar", v);
+    }
 }
 
 void Settings::saveLibraryYear(bool v)
 {
-    SET_VALUE("libraryYear", v);
+    if (v!=libraryYear()) {
+        SET_VALUE_MOD("libraryYear", v);
+    }
 }
 
 void Settings::saveGroupSingle(bool v)
 {
-    SET_VALUE("groupSingle", v);
+    if (v!=groupSingle()) {
+        SET_VALUE_MOD("groupSingle", v);
+    }
 }
 
 void Settings::saveGroupMultiple(bool v)
 {
-    SET_VALUE("groupMultiple", v);
+    if (v!=groupMultiple()) {
+        SET_VALUE_MOD("groupMultiple", v);
+    }
 }
 
 void Settings::saveLyricProviders(const QStringList &p)
 {
-    SET_VALUE("lyricProviders", p);
+    if (p!=lyricProviders()) {
+        SET_VALUE_MOD("lyricProviders", p);
+    }
 }
 
 void Settings::saveLyricsZoom(int v)
 {
-    SET_VALUE("lyricsZoom", v);
+    if (v!=lyricsZoom()) {
+        SET_VALUE_MOD("lyricsZoom", v);
+    }
 }
 
 void Settings::saveLyricsBgnd(bool v)
 {
-    SET_VALUE("lyricsBgnd", v);
+    if (v!=lyricsBgnd()) {
+        SET_VALUE_MOD("lyricsBgnd", v);
+    }
 }
 
 void Settings::saveInfoZoom(int v)
 {
-    SET_VALUE("infoZoom", v);
+    if (v!=infoZoom()) {
+        SET_VALUE_MOD("infoZoom", v);
+    }
 }
 
 void Settings::savePage(const QString &v)
 {
-    SET_VALUE("page", v);
+    if (v!=page()) {
+        SET_VALUE_MOD("page", v);
+    }
 }
 
 void Settings::saveHiddenPages(const QStringList &p)
 {
-    SET_VALUE("hiddenPages", p);
+    if (p!=hiddenPages()) {
+        SET_VALUE_MOD("hiddenPages", p);
+    }
 }
 
 void Settings::saveMpris(bool v)
 {
-    SET_VALUE("mpris", v);
+    if (v!=mpris()) {
+        SET_VALUE_MOD("mpris", v);
+    }
 }
 
 void Settings::saveDockManager(bool v)
 {
-    SET_VALUE("dockManager", v);
+    if (v!=dockManager()) {
+        SET_VALUE_MOD("dockManager", v);
+    }
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void Settings::saveOverwriteSongs(bool v)
 {
-    SET_VALUE("overwriteSongs", v);
+    if (v!=overwriteSongs()) {
+        SET_VALUE_MOD("overwriteSongs", v);
+    }
 }
 
 void Settings::saveShowDeleteAction(bool v)
 {
-    SET_VALUE("showDeleteAction", v);
+    if (v!=showDeleteAction()) {
+        SET_VALUE_MOD("showDeleteAction", v);
+    }
 }
 
 void Settings::saveDevicesView(int v)
 {
-    SET_VALUE("devicesView", v);
+    if (v!=devicesView()) {
+        SET_VALUE_MOD("devicesView", v);
+    }
 }
 #endif
 
@@ -800,78 +881,109 @@ void Settings::saveStopFadeDuration(int v)
     } else if (v>MaxFade) {
         v=MaxFade;
     }
-    SET_VALUE("stopFadeDuration", v);
+    if (v!=stopFadeDuration()) {
+        SET_VALUE_MOD("stopFadeDuration", v);
+    }
 }
 
 #ifdef TAGLIB_FOUND
 void Settings::saveHttpPort(int v)
 {
-    SET_VALUE("httpPort", v);
+    if (v!=httpPort()) {
+        SET_VALUE_MOD("httpPort", v);
+    }
 }
 
 void Settings::saveHttpAddress(const QString &v)
 {
-    SET_VALUE("httpAddress", v);
+    if (v!=httpAddress()) {
+        SET_VALUE_MOD("httpAddress", v);
+    }
 }
 
 void Settings::saveEnableHttp(bool v)
 {
-    SET_VALUE("enableHttp", v);
+    if (v!=enableHttp()) {
+        SET_VALUE_MOD("enableHttp", v);
+    }
 }
 
 void Settings::saveAlwaysUseHttp(bool v)
 {
-    SET_VALUE("alwaysUseHttp", v);
+    if (v!=alwaysUseHttp()) {
+        SET_VALUE_MOD("alwaysUseHttp", v);
+    }
 }
 #endif
 
 void Settings::savePlayQueueGrouped(bool v)
 {
-    SET_VALUE("playQueueGrouped", v);
+    if (v!=playQueueGrouped()) {
+        SET_VALUE_MOD("playQueueGrouped", v);
+    }
 }
 
 void Settings::savePlayQueueAutoExpand(bool v)
 {
-    SET_VALUE("playQueueAutoExpand", v);
+    if (v!=playQueueAutoExpand()) {
+        SET_VALUE_MOD("playQueueAutoExpand", v);
+    }
 }
 
 void Settings::savePlayQueueStartClosed(bool v)
 {
-    SET_VALUE("playQueueStartClosed", v);
+    if (v!=playQueueStartClosed()) {
+        SET_VALUE_MOD("playQueueStartClosed", v);
+    }
 }
 
 void Settings::savePlayQueueScroll(bool v)
 {
-    SET_VALUE("playQueueScroll", v);
+    if (v!=playQueueScroll()) {
+        SET_VALUE_MOD("playQueueScroll", v);
+    }
 }
 
 void Settings::savePlayListsStartClosed(bool v)
 {
-    SET_VALUE("playListsStartClosed", v);
+    if (v!=playListsStartClosed()) {
+        SET_VALUE_MOD("playListsStartClosed", v);
+    }
 }
 
 #ifdef PHONON_FOUND
 void Settings::savePlayStream(bool v)
 {
-    SET_VALUE("playStream", v);
+    if (v!=playStream()) {
+        SET_VALUE_MOD("playStream", v);
+    }
 }
 
 void Settings::saveStreamUrl(const QString &v)
 {
-    SET_VALUE("streamUrl", v);
+    if (v!=streamUrl()) {
+        SET_VALUE_MOD("streamUrl", v);
+    }
 }
 #endif
 
 void Settings::saveForceSingleClick(bool v)
 {
-    SET_VALUE("forceSingleClick", v);
+    if (v!=forceSingleClick()) {
+        SET_VALUE_MOD("forceSingleClick", v);
+    }
 }
 
 void Settings::save(bool force)
 {
     if (force) {
-        SET_VALUE("version", PACKAGE_VERSION);
-        CFG_SYNC;
+        if (version()!=PACKAGE_VERSION) {
+            SET_VALUE_MOD("version", PACKAGE_VERSION_STRING);
+        }
+        if (modified) {
+            modified=false;
+            CFG_SYNC;
+        }
         if (timer) {
             timer->stop();
         }

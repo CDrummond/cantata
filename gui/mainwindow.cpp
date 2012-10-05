@@ -1552,7 +1552,7 @@ void MainWindow::changeConnection()
 void MainWindow::showAboutDialog()
 {
     QMessageBox::about(this, i18nc("Qt-only", "About Cantata"),
-                       i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>Simple GUI front-end for MPD.<br/><br/>(c) Craig Drummond 2011-2012.<br/>Released under the GPLv2<br/><br/><i><small>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>").arg(PACKAGE_VERSION));
+                       i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>Simple GUI front-end for MPD.<br/><br/>(c) Craig Drummond 2011-2012.<br/>Released under the GPLv2<br/><br/><i><small>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>").arg(PACKAGE_VERSION_STRING));
 }
 #endif
 

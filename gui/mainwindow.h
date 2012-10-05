@@ -189,7 +189,9 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+    #ifndef Q_OS_WIN
     void closeEvent(QCloseEvent *event);
+    #endif
 
 private:
     void initSizes();

@@ -1140,6 +1140,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
+#ifndef Q_OS_WIN
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if (trayItem) {
@@ -1156,6 +1157,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         #endif
     }
 }
+#endif
 
 void MainWindow::showVolumeControl()
 {

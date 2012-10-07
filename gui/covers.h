@@ -74,6 +74,7 @@ class Covers : public QObject
 
 public:
     enum JobType {
+        JobHttpCustom,
         JobHttpJpg,
         JobHttpPng,
         JobLastFm
@@ -125,7 +126,7 @@ Q_SIGNALS:
     void coverRetrieved(const Song &song);
 
 private:
-    void downloadViaHttp(Job &job, bool jpg);
+    void downloadViaHttp(Job &job, JobType type);
     void downloadViaLastFm(Job &job);
 
 private Q_SLOTS:

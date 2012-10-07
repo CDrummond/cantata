@@ -154,6 +154,7 @@ struct MPDConnectionDetails {
     QString dynamicHost;
     quint16 dynamicPort;
     bool dirReadable;
+    QString coverName;
 };
 
 #define MPD_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))

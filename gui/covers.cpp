@@ -100,9 +100,10 @@ static const QString typeFromRaw(const QByteArray &raw)
     return QString();
 }
 
+#include <QtCore/QDebug>
 static QString save(const QString &mimeType, const QString &extension, const QString &filePrefix, const QImage &img, const QByteArray &raw)
 {
-    if (!mimeType.isEmpty()) {
+    if (!mimeType.isEmpty() && extension==mimeType) {
         if (QFile::exists(filePrefix+mimeType)) {
             return filePrefix+mimeType;
         }
@@ -202,9 +203,19 @@ static AppCover otherAppCover(const Covers::Job &job)
             QByteArray raw=f.readAll();
             if (!raw.isEmpty()) {
                 QString mimeType=typeFromRaw(raw);
-                QString saveName=save(mimeType, mimeType.isEmpty() ? constExtensions.at(0) : mimeType, job.dir+constFileName, app.img, raw);
-                if (!saveName.isEmpty()) {
-                    app.filename=saveName;
+                QString savedName;
+                QString mpdCover=MPDConnection::self()->getDetails().coverName;
+                if (mpdCover.isEmpty()) {
+                    savedName=save(mimeType, mimeType.isEmpty() ? constExtensions.at(0) : mimeType, job.dir+constFileName, app.img, raw);
+                } else {
+                    int dotPos=mpdCover.lastIndexOf('.');
+                    if (dotPos>2) {
+                        savedName=save(mimeType, mpdCover.mid(dotPos), job.dir+mpdCover.left(dotPos), app.img, raw);
+                    }
+                }
+
+                if (!savedName.isEmpty()) {
+                    app.filename=savedName;
                 }
             }
         }
@@ -420,7 +431,12 @@ Covers::Image Covers::getImage(const Song &song)
             }
         } else {
             initCoverNames();
-            QStringList names=coverFileNames;
+            QStringList names;
+            QString mpdCover=MPDConnection::self()->getDetails().coverName;
+            if (!mpdCover.isEmpty()) {
+                names << mpdCover;
+            }
+            names << coverFileNames;
             foreach (const QString &ext, constExtensions) {
                 names+=Utils::changeExtension(Utils::getFile(song.file), ext);
             }
@@ -598,17 +614,35 @@ void Covers::download(const Song &song)
     Job job(song, dirName, isArtistImage);
 
     if (!isArtistImage && !MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
-        downloadViaHttp(job, true);
+        downloadViaHttp(job, JobHttpCustom);
     } else {
         downloadViaLastFm(job);
     }
 }
 
-void Covers::downloadViaHttp(Job &job, bool jpg)
+void Covers::downloadViaHttp(Job &job, JobType type)
 {
     QUrl u;
-    u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+QByteArray(jpg ? "cover.jpg" : "cover.png"));
-    job.type=jpg ? JobHttpJpg : JobHttpPng;
+    switch (type) {
+    case JobHttpCustom: {
+        QString mpdCover=MPDConnection::self()->getDetails().coverName;
+        if (!mpdCover.isEmpty() && QLatin1String("cover.jpg")!=mpdCover) {
+            u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file)+mpdCover, "/"));
+            break;
+        } else {
+            type=JobHttpJpg;
+        }
+    }
+    case JobHttpJpg:
+        u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+QByteArray("cover.jpg"));
+        break;
+    case JobHttpPng:
+    default:
+        u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+QByteArray("cover.png"));
+        break;
+    }
+
+    job.type=type;
     QNetworkReply *j=manager->get(QNetworkRequest(u));
     connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
     jobs.insert(j, job);
@@ -659,8 +693,8 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
                 } else if (inSection && QLatin1String("image")==doc.name() && QLatin1String("extralarge")==doc.attributes().value("size").toString()) {
                     url = doc.readElementText();
                 } else if (QLatin1String("similar")==doc.name()) {
-                    break;	
-		}
+                    break;
+                }
             } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
                 inSection=false;
             }
@@ -727,10 +761,10 @@ void Covers::jobFinished()
 
         jobs.remove(it.key());
         if (img.isNull() && JobLastFm!=job.type) {
-            if (JobHttpJpg==job.type) {
-                downloadViaHttp(job, false);
-            } else {
-                downloadViaLastFm(job);
+            switch (job.type) {
+            case JobHttpCustom: downloadViaHttp(job, JobHttpJpg); break;
+            case JobHttpJpg:    downloadViaHttp(job, JobHttpPng); break;
+            default:            downloadViaLastFm(job);
             }
         } else {
             if (!img.isNull()) {
@@ -776,7 +810,15 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     } else {
         // Try to save as cover.jpg in album dir...
         if (saveInMpdDir && canSaveTo(job.dir)) {
-            savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
+            QString mpdCover=MPDConnection::self()->getDetails().coverName;
+            if (mpdCover.isEmpty()) {
+                savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
+            } else {
+                int dotPos=mpdCover.lastIndexOf('.');
+                if (dotPos>2) {
+                    savedName=save(mimeType, mpdCover.mid(dotPos), job.dir+mpdCover.left(dotPos), img, raw);
+                }
+            }
             if (!savedName.isEmpty()) {
                 return savedName;
             }

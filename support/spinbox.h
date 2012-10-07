@@ -57,10 +57,6 @@ private:
     bool allowEmpty;
 };
 
-#if defined Q_OS_WIN || QT_VERSION < 0x040602
-typedef EmptySpinBox SpinBox;
-#else
-
 class QToolButton;
 
 class SpinBox : public QWidget
@@ -99,7 +95,5 @@ private:
     QToolButton *incButton;
     QToolButton *decButton;
 };
-
-#endif // Q_OS_WIN
 
 #endif

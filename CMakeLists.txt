@@ -121,7 +121,6 @@ SET( CANTATA_SRCS
     dynamic/dynamicruledialog.cpp
     dynamic/dynamicrulesdialog.cpp
     widgets/treeview.cpp
-    widgets/fancytabwidget.cpp
     widgets/listview.cpp
     widgets/itemview.cpp
     widgets/autohidingsplitter.cpp
@@ -129,14 +128,11 @@ SET( CANTATA_SRCS
     widgets/actionlabel.cpp
     widgets/playqueueview.cpp
     widgets/groupedview.cpp
-    widgets/messagewidget.cpp
     widgets/actionitemdelegate.cpp
     widgets/textbrowser.cpp
     widgets/coverwidget.cpp
-    widgets/icon.cpp
     widgets/volumecontrol.cpp
     widgets/icons.cpp
-    widgets/gtkstyle.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -149,8 +145,6 @@ SET( CANTATA_SRCS
     libmaia/maiaFault.cpp
     libmaia/maiaXmlRpcClient.cpp
     devices/utils.cpp
-    support/action.cpp
-    support/actioncollection.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -188,7 +182,6 @@ SET( CANTATA_MOC_HDRS
     dynamic/dynamicpage.h
     dynamic/dynamicruledialog.h
     dynamic/dynamicrulesdialog.h
-    widgets/fancytabwidget.h
     widgets/treeview.h
     widgets/listview.h
     widgets/itemview.h
@@ -197,7 +190,6 @@ SET( CANTATA_MOC_HDRS
     widgets/actionlabel.h
     widgets/playqueueview.h
     widgets/groupedview.h
-    widgets/messagewidget.h
     widgets/coverwidget.h
     widgets/volumecontrol.h
     lyrics/lyricspage.h
@@ -210,8 +202,6 @@ SET( CANTATA_MOC_HDRS
     libmaia/maiaObject.h
     libmaia/maiaFault.h
     libmaia/maiaXmlRpcClient.h
-    support/action.h
-    support/actioncollection.h
 )
 
 SET( CANTATA_UIS
@@ -274,8 +264,8 @@ if (ENABLE_WEBKIT)
 endif (ENABLE_WEBKIT)
 
 if (NOT WIN32)
-    SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/dockmanager.cpp dbus/gnomemediakeys.cpp widgets/onoffbutton.cpp widgets/spinbox.cpp)
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/dockmanager.h dbus/gnomemediakeys.h widgets/spinbox.h)
+    SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/dockmanager.cpp dbus/gnomemediakeys.cpp )
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/dockmanager.h dbus/gnomemediakeys.h )
     if (NOT ENABLE_KDE_SUPPORT)
         SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/notify.cpp)
         SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/notify.h)
@@ -421,15 +411,9 @@ if (TAGLIB_FOUND)
 endif (TAGLIB_FOUND)
 
 add_subdirectory(po)
+add_subdirectory(support)
 
 IF( ENABLE_KDE_SUPPORT )
-    macro_ensure_version("4.7.0" ${KDE_VERSION} KDE_VERSION_47)
-
-    if (NOT KDE_VERSION_47)
-        SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/kmessagewidget.cpp )
-        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} widgets/kmessagewidget.h )
-    endif (NOT KDE_VERSION_47)
-
     include_directories( ${KDE4_INCLUDES})
     add_definitions( ${KDE4_DEFINITIONS} )
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )
@@ -444,11 +428,9 @@ IF( ENABLE_KDE_SUPPORT )
     install( FILES cantataui.rc DESTINATION ${DATA_INSTALL_DIR}/cantata )
     install( FILES cantata.notifyrc DESTINATION ${DATA_INSTALL_DIR}/cantata )
 ELSE( ENABLE_KDE_SUPPORT )
-    SET( CANTATA_SRCS ${CANTATA_SRCS} widgets/dirrequester.cpp widgets/lineedit.cpp network/networkproxyfactory.cpp network/proxysettings.cpp widgets/kmessagewidget.cpp
-            widgets/dialog.cpp widgets/messagebox.cpp widgets/pagewidget.cpp support/shortcutsmodel.cpp support/shortcutssettingspage.cpp support/keysequencewidget.cpp )
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} application.h widgets/dirrequester.h widgets/lineedit.h network/proxysettings.h widgets/kmessagewidget.h widgets/urllabel.h
-            widgets/dialog.h support/shortcutsmodel.h support/shortcutssettingspage.h support/keysequencewidget.h )
-    SET( CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui support/shortcutssettingspage.ui )
+    SET( CANTATA_SRCS ${CANTATA_SRCS} network/networkproxyfactory.cpp network/proxysettings.cpp )
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} application.h network/proxysettings.h )
+    SET( CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui )
     SET( CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc )
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )
     QT4_WRAP_UI( CANTATA_UI_HDRS ${CANTATA_UIS} )
@@ -488,7 +470,7 @@ endif (MTP_FOUND AND NOT WIN32)
 
 ADD_SUBDIRECTORY( icons )
 
-TARGET_LINK_LIBRARIES(cantata ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTDBUS_LIBRARY})
+TARGET_LINK_LIBRARIES(cantata support ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${QT_QTDBUS_LIBRARY})
 include_directories( ${QT_INCLUDES})
 
 if (TAGLIB_FOUND)

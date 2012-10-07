@@ -30,6 +30,35 @@
 #include <QtCore/QDir>
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
+#include <QtGui/QValidator>
+
+class CoverNameValidator : public QValidator
+{
+    public:
+
+    CoverNameValidator(QObject *parent) : QValidator(parent) { }
+
+    State validate(QString &input, int &) const
+    {
+        int dotCount(0);
+
+        for (int i=0; i<input.length(); ++i) {
+            if (QChar('.')==input[i]) {
+                if (++dotCount>1) {
+                    return Invalid;
+                }
+            }
+            else if (!input[i].isLetterOrNumber() || input[i].isSpace()) {
+                return Invalid;
+            }
+        }
+        if (input.endsWith('.')) {
+            return Intermediate;
+        }
+
+        return Acceptable;
+    }
+};
 
 ServerSettings::ServerSettings(QWidget *p)
     : QWidget(p)
@@ -66,7 +95,11 @@ ServerSettings::ServerSettings(QWidget *p)
                                      "starting/stopping of this service. If these are not set, then Cantata will "
                                      "use a per-user instance of the dynamzier to facilitate dynamic playlists.</i>"));
     #endif
-};
+
+    coverName->setToolTip(i18n("Filename to save downloaded covers as.\nIf left blank 'cover.jpg'/'cover.png will be used."));
+    coverNameLabel->setToolTip(coverName->toolTip());
+    coverName->setValidator(new CoverNameValidator(this));
+}
 
 void ServerSettings::load()
 {
@@ -211,6 +244,7 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
     dir->setText(details.dir);
     dynamicHost->setText(details.dynamicHost);
     dynamicPort->setValue(details.dynamicPort);
+    coverName->setText(details.coverName);
 }
 
 MPDConnectionDetails ServerSettings::getDetails() const
@@ -224,5 +258,6 @@ MPDConnectionDetails ServerSettings::getDetails() const
     details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
     details.dynamicHost=dynamicHost->text().trimmed();
     details.dynamicPort=dynamicPort->value();
+    details.coverName=coverName->text().trimmed();
     return details;
 }

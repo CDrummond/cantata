@@ -182,6 +182,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             }
             details.dynamicHost=CFG_GET_STRING(grp, "dynamicHost", QString());
             details.dynamicPort=CFG_GET_INT(grp, "dynamicPort", 6601);
+            details.coverName=CFG_GET_STRING(grp, "coverName", QString());
             #else
             cfg.beginGroup(n);
             details.hostname=GET_STRING("host", name.isEmpty() ? mpdDefaults.host : QString());
@@ -190,6 +191,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             details.password=GET_STRING("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
             details.dynamicHost=GET_STRING("dynamicHost", QString());
             details.dynamicPort=GET_INT("dynamicPort", 6601);
+            details.coverName=GET_STRING("coverName", QString());
             cfg.endGroup();
             #endif
         }
@@ -575,6 +577,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     CFG_SET_VALUE(grp, "dir", v.dir);
     CFG_SET_VALUE(grp, "dynamicHost", v.dynamicHost);
     CFG_SET_VALUE(grp, "dynamicPort", (int)v.dynamicPort);
+    CFG_SET_VALUE(grp, "coverName", v.coverName);
     if (KWallet::Wallet::isEnabled()) {
         CFG_SET_VALUE(grp, "passwd", !v.password.isEmpty());
         QString walletEntry=v.name.isEmpty() ? "mpd" : v.name;
@@ -597,6 +600,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     SET_VALUE("passwd", v.password);
     SET_VALUE("dynamicHost", v.dynamicHost);
     SET_VALUE("dynamicPort", (int)v.dynamicPort);
+    SET_VALUE("coverName", v.coverName);
     cfg.endGroup();
     #endif
     modified=true;

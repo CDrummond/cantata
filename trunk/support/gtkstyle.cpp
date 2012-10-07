@@ -28,17 +28,19 @@
 #include <QtCore/QCache>
 #include <QtCore/qglobal.h>
 
-static bool init=false;
 static bool usingGtkStyle=false;
 static bool useFullGtkStyle=false;
 
 static inline void setup()
 {
+    #if !defined Q_OS_WIN
+    static bool init=false;
     if (!init) {
         init=true;
         usingGtkStyle=QApplication::style()->inherits("QGtkStyle");
         useFullGtkStyle=usingGtkStyle && qgetenv("KDE_FULL_SESSION").isEmpty();
     }
+    #endif
 }
 
 bool GtkStyle::isActive()

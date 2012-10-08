@@ -81,7 +81,10 @@ void Mpris::updateStatus()
         status.state=MPDStatus::self()->state();
         map.insert("PlaybackStatus", PlaybackStatus());
     }
-    signalUpdate(map);
+    if (!map.isEmpty()) {
+        map.insert("Metadata", Metadata());
+        signalUpdate(map);
+    }
 }
 
 void Mpris::updateCurrentCover(const QString &fileName)
@@ -94,9 +97,6 @@ void Mpris::updateCurrentCover(const QString &fileName)
 
 void Mpris::updateCurrentSong(const Song &song)
 {
-    if (song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album) {
-        currentCover = QString();
-    }
     if (song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album || song.track!=currentSong.track ||
         song.disc!=currentSong.disc) {
         currentSong = song;
@@ -128,6 +128,7 @@ QVariantMap Mpris::Metadata() const {
         }
         if (!currentCover.isEmpty()) {
              metadataMap.insert("xesam:artUrl", currentCover);
+             metadataMap.insert("mpris:artUrl", "file://"+currentCover);
         }
     }
 
@@ -159,7 +160,10 @@ void Mpris::signalUpdate(const QVariantMap &map)
     QDBusMessage signal = QDBusMessage::createSignal("/org/mpris/MediaPlayer2",
                                                      "org.freedesktop.DBus.Properties",
                                                      "PropertiesChanged");
-    signal << "org.mpris.MediaPlayer2.Player";
-    signal << map;
+    QVariantList args = QVariantList()
+                          << "org.mpris.MediaPlayer2.Player"
+                          << map
+                          << QStringList();
+    signal.setArguments(args);
     QDBusConnection::sessionBus().send(signal);
 }

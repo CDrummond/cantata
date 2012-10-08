@@ -163,8 +163,9 @@ bool Application::start()
         if (args.count()>1) {
             args.takeAt(0);
             sendMessage(args.join("\n"));
-        }
+        } else
         #endif
+            sendMessage(QString());
         return false;
     }
 
@@ -175,6 +176,17 @@ bool Application::start()
     return true;
 }
 
+void Application::message(const QString &msg)
+{
+    if (!msg.isEmpty()) {
+        load(msg.split("\n"));
+    }
+    MainWindow *mw=qobject_cast<MainWindow *>(activationWindow());
+    if (mw) {
+        mw->restoreWindow();
+    }
+}
+
 #if defined TAGLIB_FOUND
 void Application::loadFiles()
 {
@@ -183,11 +195,6 @@ void Application::loadFiles()
         args.takeAt(0);
         load(args);
     }
-}
-
-void Application::message(const QString &msg)
-{
-    load(msg.split("\n"));
 }
 
 void Application::load(const QStringList &files)
@@ -201,7 +208,10 @@ void Application::load(const QStringList &files)
         urls.append(QUrl(f));
     }
     if (!urls.isEmpty()) {
-        qobject_cast<MainWindow *>(activationWindow())->load(urls);
+        MainWindow *mw=qobject_cast<MainWindow *>(activationWindow());
+        if (mw) {
+            mw->load(urls);
+        }
     }
 }
 #endif // TAGLIB_FOUND

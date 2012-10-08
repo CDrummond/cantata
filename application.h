@@ -69,13 +69,15 @@ public:
     bool start();
     #if defined TAGLIB_FOUND
     void loadFiles();
+    #endif // TAGLIB_FOUND
 
 private:
+    #if defined TAGLIB_FOUND
     void load(const QStringList &files);
+    #endif
 
 private Q_SLOTS:
     void message(const QString &m);
-    #endif // TAGLIB_FOUND
 
 Q_SIGNALS:
     void reconnect();

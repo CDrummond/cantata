@@ -28,6 +28,7 @@
 #include "albumsmodel.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
+#include "utils.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
@@ -158,7 +159,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
         details.password=GET_STRING("connectionPasswd", name.isEmpty() ? mpdDefaults.passwd : QString());
         #endif
         details.port=GET_INT("connectionPort", name.isEmpty() ? mpdDefaults.port : 6600);
-        details.dir=MPDParseUtils::fixPath(GET_STRING("mpdDir", mpdDefaults.dir));
+        details.dir=Utils::fixPath(GET_STRING("mpdDir", mpdDefaults.dir));
         details.dynamicPort=6601;
     } else {
         QString n=MPDConnectionDetails::configGroupName(name);
@@ -168,7 +169,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             KConfigGroup grp(KGlobal::config(), n);
             details.hostname=CFG_GET_STRING(grp, "host", name.isEmpty() ? mpdDefaults.host : QString());
             details.port=CFG_GET_INT(grp, "port", name.isEmpty() ? mpdDefaults.port : 6600);
-            details.dir=MPDParseUtils::fixPath(CFG_GET_STRING(grp, "dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
+            details.dir=Utils::fixPath(CFG_GET_STRING(grp, "dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
             if (KWallet::Wallet::isEnabled()) {
                 if (CFG_GET_BOOL(grp, "passwd", false)) {
                     if (openWallet()) {
@@ -187,7 +188,7 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             cfg.beginGroup(n);
             details.hostname=GET_STRING("host", name.isEmpty() ? mpdDefaults.host : QString());
             details.port=GET_INT("port", name.isEmpty() ? mpdDefaults.port : 6600);
-            details.dir=MPDParseUtils::fixPath(GET_STRING("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
+            details.dir=Utils::fixPath(GET_STRING("dir", name.isEmpty() ? mpdDefaults.dir : "/var/lib/mpd/music"));
             details.password=GET_STRING("passwd", name.isEmpty() ? mpdDefaults.passwd : QString());
             details.dynamicHost=GET_STRING("dynamicHost", QString());
             details.dynamicPort=GET_INT("dynamicPort", 6601);

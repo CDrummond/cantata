@@ -47,32 +47,6 @@
 #endif
 #include "utils.h"
 
-QString MPDParseUtils::fixPath(const QString &f)
-{
-    QString d(f);
-
-    if (!d.isEmpty() && !d.startsWith(QLatin1String("http://"))) {
-        d.replace(QLatin1String("//"), QChar('/'));
-    }
-    if (!d.isEmpty() && !d.endsWith('/')) {
-        d+='/';
-    }
-    return d;
-}
-
-QString MPDParseUtils::getDir(const QString &f)
-{
-    QString d(f);
-
-    int slashPos(d.lastIndexOf('/'));
-
-    if(slashPos!=-1) {
-        d.remove(slashPos+1, d.length());
-    }
-
-    return fixPath(d);
-}
-
 QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 {
     QList<Playlist> playlists;

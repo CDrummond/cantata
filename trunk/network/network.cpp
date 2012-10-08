@@ -25,7 +25,7 @@
 #include "config.h"
 #include "network.h"
 #include "networkaccessmanager.h"
-#include "mpdparseutils.h"
+#include "utils.h"
 #include "settings.h"
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
@@ -50,7 +50,7 @@ QString Network::cacheDir(const QString &sub, bool create)
     if(!sub.isEmpty()) {
         dir+=sub;
     }
-    dir=MPDParseUtils::fixPath(dir);
+    dir=Utils::fixPath(dir);
     QDir d(dir);
     return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
 }

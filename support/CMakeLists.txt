@@ -5,6 +5,7 @@ SET( SUPPORT_SRCS
     messagewidget.cpp
     icon.cpp
     gtkstyle.cpp
+    utils.cpp
 )
 
 SET( SUPPORT_MOC_HDRS

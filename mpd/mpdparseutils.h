@@ -48,8 +48,6 @@ public:
         qint32 id;
         quint32 pos;
     };
-    static QString fixPath(const QString &f);
-    static QString getDir(const QString &f);
     static QList<Playlist> parsePlaylists(const QByteArray &data);
     static MPDStatsValues parseStats(const QByteArray &data);
     static MPDStatusValues parseStatus(const QByteArray &data);

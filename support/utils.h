@@ -45,17 +45,15 @@ namespace Utils
     }
 
     extern QString strippedText(QString s);
-    extern QString dirSyntax(const QString &d);
+    extern QString fixPath(const QString &d);
     extern QString getDir(const QString &file);
     extern QString getFile(const QString &file);
     extern QString changeExtension(const QString &file, const QString &extension);
-    extern void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
-    extern void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
     #ifndef Q_OS_WIN
-    extern gid_t getGroupId(); // Return 0 if user is not in audio group, otherwise returns audio group ID
+    extern gid_t getGroupId(const char *groupName="users"); // Return 0 if user is not in group, otherwise returns group ID
     #endif
-    extern void setFilePerms(const QString &file);
-    extern bool createDir(const QString &dir, const QString &base);
+    extern void setFilePerms(const QString &file, const char *groupName="users");
+    extern bool createDir(const QString &dir, const QString &base, const char *groupName="users");
     extern void msleep(int msecs);
     inline void sleep() { msleep(100); }
     extern void stopThread(QThread *thread);

@@ -25,12 +25,14 @@
 #include "device.h"
 #include "devicesmodel.h"
 #include "umsdevice.h"
+#include "covers.h"
 #ifdef MTP_FOUND
 #include "mtpdevice.h"
 #endif
 #include "tags.h"
 #include "song.h"
 #include "mpdparseutils.h"
+#include "utils.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
@@ -107,6 +109,80 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
     }
     song=orig;
     return false;
+}
+
+void Device::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)
+{
+    QDir d(from);
+    if (d.exists()) {
+        QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
+        QList<QString> extraFiles;
+        QSet<QString> others=Covers::standardNames().toSet();
+        others << coverFile << "albumart.pamp";
+
+        foreach (const QFileInfo &info, entries) {
+            if (info.isDir()) {
+                return;
+            }
+            if (!others.contains(info.fileName())) {
+                return;
+            }
+            extraFiles.append(info.fileName());
+        }
+
+        foreach (const QString &cf, extraFiles) {
+            if (!QFile::rename(from+'/'+cf, to+'/'+cf)) {
+                return;
+            }
+        }
+        cleanDir(from, base, coverFile);
+    }
+}
+
+void Device::cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level)
+{
+    QDir d(dir);
+    if (d.exists()) {
+        QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
+        QList<QString> extraFiles;
+        QSet<QString> others=Covers::standardNames().toSet();
+        others << coverFile << "albumart.pamp";
+
+        foreach (const QFileInfo &info, entries) {
+            if (info.isDir()) {
+                return;
+            }
+            if (!others.contains(info.fileName())) {
+                return;
+            }
+            extraFiles.append(info.absoluteFilePath());
+        }
+
+        foreach (const QString &cf, extraFiles) {
+            if (!QFile::remove(cf)) {
+                return;
+            }
+        }
+
+        if (Utils::fixPath(dir)==Utils::fixPath(base)) {
+            return;
+        }
+        QString dirName=d.dirName();
+        if (dirName.isEmpty()) {
+            return;
+        }
+        d.cdUp();
+        if (!d.rmdir(dirName)) {
+            return;
+        }
+        if (level>=3) {
+            return;
+        }
+        QString upDir=d.absolutePath();
+        if (Utils::fixPath(upDir)!=Utils::fixPath(base)) {
+            cleanDir(upDir, base, coverFile, level+1);
+        }
+    }
 }
 
 void Device::applyUpdate()

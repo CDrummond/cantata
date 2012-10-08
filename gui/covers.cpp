@@ -24,7 +24,6 @@
 #include "covers.h"
 #include "song.h"
 #include "utils.h"
-#include "mpdparseutils.h"
 #include "mpdconnection.h"
 #include "maiaXmlRpcClient.h"
 #include "networkaccessmanager.h"
@@ -407,7 +406,7 @@ Covers::Image Covers::getImage(const Song &song)
     if (!songFile.isEmpty() &&
         (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
         dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
-                                       : MPDParseUtils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
+                                       : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
         if (isArtistImage) {
             QStringList names=QStringList() << song.albumartist+".jpg" << song.albumartist+".png" << "artist.jpg" << "artist.png";
             for (int level=0; level<2; ++level) {
@@ -601,7 +600,7 @@ void Covers::download(const Song &song)
 
     if (!isArtistImage && (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty())) {
         dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
-                                        : MPDParseUtils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
+                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
     }
 
     if (!manager) {

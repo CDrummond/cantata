@@ -26,7 +26,6 @@
 #include "lyricsdialog.h"
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyricsreader.h"
-#include "network.h"
 #include "settings.h"
 #include "squeezedtextlabel.h"
 #include "utils.h"

@@ -298,7 +298,7 @@ MainWindow::MainWindow(QWidget *parent)
     quitAction=(Action *)KStandardAction::quit(kapp, SLOT(quit()), ActionCollection::get());
     #else
     setWindowIcon(Icons::appIcon);
-    QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::Instance());
+    QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::self());
 
     quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), "application-exit");
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));

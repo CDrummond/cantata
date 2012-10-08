@@ -286,6 +286,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/libmaia
                      ${CMAKE_SOURCE_DIR}/devices
                      ${CMAKE_SOURCE_DIR}/dynamic
                      ${CMAKE_SOURCE_DIR}/support
+                     ${CMAKE_BINARY_DIR}/support
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
 )

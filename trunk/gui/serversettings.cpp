@@ -40,20 +40,10 @@ class CoverNameValidator : public QValidator
 
     State validate(QString &input, int &) const
     {
-        int dotCount(0);
-
         for (int i=0; i<input.length(); ++i) {
-            if (QChar('.')==input[i]) {
-                if (++dotCount>1) {
-                    return Invalid;
-                }
-            }
-            else if (!input[i].isLetterOrNumber() || input[i].isSpace()) {
+            if (!input[i].isLetterOrNumber() || input[i].isSpace()) {
                 return Invalid;
             }
-        }
-        if (input.endsWith('.')) {
-            return Intermediate;
         }
 
         return Acceptable;
@@ -96,7 +86,7 @@ ServerSettings::ServerSettings(QWidget *p)
                                      "use a per-user instance of the dynamzier to facilitate dynamic playlists.</i>"));
     #endif
 
-    coverName->setToolTip(i18n("Filename to save downloaded covers as.\nIf left blank 'cover.jpg'/'cover.png will be used."));
+    coverName->setToolTip(i18n("Filename (without extension) to save downloaded covers as.\nIf left blank 'cover' will be used."));
     coverNameLabel->setToolTip(coverName->toolTip());
     coverName->setValidator(new CoverNameValidator(this));
 }

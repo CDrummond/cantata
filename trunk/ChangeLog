@@ -50,7 +50,7 @@
     even when we have a system tray icon. (Matchs VLC behaviour)
 28. Only save settings when modified.
 29. Add option to support GNOME media keys.
-30. Add setting to control name of downloaded cover files.
+30. Add setting to control name (without extension) of downloaded cover files.
 
 0.8.3.1
 -------

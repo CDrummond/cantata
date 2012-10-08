@@ -67,39 +67,41 @@ When displaying covers, Cantata will load album covers in the following order:
 ...if MPD folder exists, is not specified as a http URL, and is readable, then
    cantata will look for the following within the folder containing the song:
 
- 1. cover.jpg
- 2. cover.png
- 3. AlbumArt.jpg
- 4. AlbumArt.png
- 5. folder.jpg
- 6. folder.png
- 7. ${file}.jpg
- 8. ${file}.png
- 9. ${albumArtist} - ${album}.jpg
-10. ${albumArtist} - ${album}.png
-11. ${album}.jpg
-12. ${album}.jpg
-13. Image embedded within current songs tags.
-14. ANY other jpg, or png
+ 1. ${configuredName}.jpg - if set
+ 2. ${configuredName}.png - if set
+ 3. cover.jpg
+ 4. cover.png
+ 5. AlbumArt.jpg
+ 6. AlbumArt.png
+ 7. folder.jpg
+ 8. folder.png
+ 9. ${file}.jpg
+10. ${file}.png
+11. ${albumArtist} - ${album}.jpg
+12. ${albumArtist} - ${album}.png
+13. ${album}.jpg
+14. ${album}.jpg
+15. Image embedded within current songs tags.
+16. ANY other jpg, or png
 
 ...then Cantata will check its cache folder (~/.cache/cantata/covers), for :
 
-15. ${albumArtist}/${album}.jpg
-16. ${albumArtist}/${album}.png
+17. ${albumArtist}/${album}.jpg
+18. ${albumArtist}/${album}.png
 
 ...if compiled for Linux
 
-17. Matching Amarok cover
-18. Matching Clementine cover
+19. Matching Amarok cover
+20. Matching Clementine cover
 
 ...if the MPD folder was specified as a http URL
 
-19. ${url}/${dirFromFile}/cover.jpg
-20. ${url}/${dirFromFile}/cover.png
+21. ${url}/${dirFromFile}/cover.jpg - or ${url}/${dirFromFile}/${configuredName}.jpg (if set)
+22. ${url}/${dirFromFile}/cover.png - or ${url}/${dirFromFile}/${configuredName}.png (if set)
 
 ...lastly
 
-21. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
+23. Query last.fm using ${albumArtist} and ${album}. Cantata will attempt to
     download the image specified with the "extralarge" size.
 
 Downloaded images will be saved as cover.jpg/png within the song folder if

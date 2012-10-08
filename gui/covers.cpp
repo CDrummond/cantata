@@ -204,16 +204,11 @@ static AppCover otherAppCover(const Covers::Job &job)
             if (!raw.isEmpty()) {
                 QString mimeType=typeFromRaw(raw);
                 QString savedName;
-                QString mpdCover=MPDConnection::self()->getDetails().coverName;
-                if (mpdCover.isEmpty()) {
-                    savedName=save(mimeType, mimeType.isEmpty() ? constExtensions.at(0) : mimeType, job.dir+constFileName, app.img, raw);
-                } else {
-                    int dotPos=mpdCover.lastIndexOf('.');
-                    if (dotPos>2) {
-                        savedName=save(mimeType, mpdCover.mid(dotPos), job.dir+mpdCover.left(dotPos), app.img, raw);
-                    }
+                QString coverName=MPDConnection::self()->getDetails().coverName;
+                if (coverName.isEmpty()) {
+                    coverName=constFileName;
                 }
-
+                savedName=save(mimeType, mimeType.isEmpty() ? constExtensions.at(0) : mimeType, job.dir+coverName, app.img, raw);
                 if (!savedName.isEmpty()) {
                     app.filename=savedName;
                 }
@@ -434,7 +429,9 @@ Covers::Image Covers::getImage(const Song &song)
             QStringList names;
             QString mpdCover=MPDConnection::self()->getDetails().coverName;
             if (!mpdCover.isEmpty()) {
-                names << mpdCover;
+                foreach (const QString &ext, constExtensions) {
+                    names << mpdCover+ext;
+                }
             }
             names << coverFileNames;
             foreach (const QString &ext, constExtensions) {
@@ -614,7 +611,7 @@ void Covers::download(const Song &song)
     Job job(song, dirName, isArtistImage);
 
     if (!isArtistImage && !MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
-        downloadViaHttp(job, JobHttpCustom);
+        downloadViaHttp(job, JobHttpJpg);
     } else {
         downloadViaLastFm(job);
     }
@@ -623,24 +620,12 @@ void Covers::download(const Song &song)
 void Covers::downloadViaHttp(Job &job, JobType type)
 {
     QUrl u;
-    switch (type) {
-    case JobHttpCustom: {
-        QString mpdCover=MPDConnection::self()->getDetails().coverName;
-        if (!mpdCover.isEmpty() && QLatin1String("cover.jpg")!=mpdCover) {
-            u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file)+mpdCover, "/"));
-            break;
-        } else {
-            type=JobHttpJpg;
-        }
+    QString coverName=MPDConnection::self()->getDetails().coverName;
+    if (coverName.isEmpty()) {
+        coverName=constFileName;
     }
-    case JobHttpJpg:
-        u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+QByteArray("cover.jpg"));
-        break;
-    case JobHttpPng:
-    default:
-        u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+QByteArray("cover.png"));
-        break;
-    }
+    coverName+=constExtensions.at(JobHttpJpg==type ? 0 : 1);
+    u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+coverName.toLatin1());
 
     job.type=type;
     QNetworkReply *j=manager->get(QNetworkRequest(u));
@@ -761,10 +746,10 @@ void Covers::jobFinished()
 
         jobs.remove(it.key());
         if (img.isNull() && JobLastFm!=job.type) {
-            switch (job.type) {
-            case JobHttpCustom: downloadViaHttp(job, JobHttpJpg); break;
-            case JobHttpJpg:    downloadViaHttp(job, JobHttpPng); break;
-            default:            downloadViaLastFm(job);
+            if (JobHttpJpg==job.type) {
+                downloadViaHttp(job, JobHttpPng);
+            } else {
+                downloadViaLastFm(job);
             }
         } else {
             if (!img.isNull()) {
@@ -810,15 +795,11 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     } else {
         // Try to save as cover.jpg in album dir...
         if (saveInMpdDir && canSaveTo(job.dir)) {
-            QString mpdCover=MPDConnection::self()->getDetails().coverName;
-            if (mpdCover.isEmpty()) {
-                savedName=save(mimeType, extension, job.dir+constFileName, img, raw);
-            } else {
-                int dotPos=mpdCover.lastIndexOf('.');
-                if (dotPos>2) {
-                    savedName=save(mimeType, mpdCover.mid(dotPos), job.dir+mpdCover.left(dotPos), img, raw);
-                }
+            QString coverName=MPDConnection::self()->getDetails().coverName;
+            if (coverName.isEmpty()) {
+                coverName=constFileName;
             }
+            savedName=save(mimeType, extension, job.dir+coverName, img, raw);
             if (!savedName.isEmpty()) {
                 return savedName;
             }

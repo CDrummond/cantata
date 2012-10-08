@@ -56,7 +56,7 @@ static QString cacheFile(QString artist, QString title, bool createDir=false)
 {
     title.replace("/", "_");
     artist.replace("/", "_");
-    return QDir::toNativeSeparators(Network::cacheDir(constLyricsDir+artist+'/', createDir))+title+LyricsPage::constExtension;
+    return QDir::toNativeSeparators(Utils::cacheDir(constLyricsDir+artist+'/', createDir))+title+LyricsPage::constExtension;
 }
 
 typedef QList<UltimateLyricsProvider *> ProviderList;

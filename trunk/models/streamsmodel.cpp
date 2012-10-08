@@ -44,6 +44,7 @@
 #include "mpdconnection.h"
 #include "config.h"
 #include "icons.h"
+#include "utils.h"
 
 const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
 
@@ -52,21 +53,9 @@ static bool iconIsValid(const QString &icon)
     return icon.startsWith('/') ? QFile::exists(icon) : QIcon::hasThemeIcon(icon);
 }
 
-static QString configDir()
-{
-    #if defined Q_OS_WIN
-    QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/";
-    #else
-    QString env = qgetenv("XDG_CONFIG_HOME");
-    QString dir = (env.isEmpty() ? QDir::homePath() + "/.config/" : env) + QLatin1String("/"PACKAGE_NAME"/");
-    #endif
-    QDir d(dir);
-    return d.exists() || d.mkpath(dir) ? QDir::toNativeSeparators(dir) : QString();
-}
-
 static QString getInternalFile()
 {
-    return configDir()+"streams.xml";
+    return Utils::configDir()+"streams.xml";
 }
 
 StreamsModel::StreamsModel()

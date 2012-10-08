@@ -31,29 +31,10 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtCore/QDir>
 #include <QtCore/qglobal.h>
-#if defined Q_OS_WIN
-#include <QtGui/QDesktopServices>
-#endif
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 K_GLOBAL_STATIC(Network, instance)
 #endif
-
-QString Network::cacheDir(const QString &sub, bool create)
-{
-    #if defined Q_OS_WIN
-    QString dir = QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+"/";
-    #else
-    QString env = qgetenv("XDG_CACHE_HOME");
-    QString dir = (env.isEmpty() ? QDir::homePath() + "/.cache" : env) + QLatin1String("/"PACKAGE_NAME"/");
-    #endif
-    if(!sub.isEmpty()) {
-        dir+=sub;
-    }
-    dir=Utils::fixPath(dir);
-    QDir d(dir);
-    return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
-}
 
 Network * Network::self()
 {

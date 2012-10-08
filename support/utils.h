@@ -66,6 +66,9 @@ namespace Utils
     extern QString formatByteSize(double size);
     extern QString cleanPath(const QString &p);
     #endif
+
+    extern QString configDir(const QString &sub=QString(), bool create=false);
+    extern QString cacheDir(const QString &sub=QString(), bool create=true);
 };
 
 #endif

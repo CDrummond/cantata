@@ -27,7 +27,6 @@
 #include "mpdconnection.h"
 #include "maiaXmlRpcClient.h"
 #include "networkaccessmanager.h"
-#include "network.h"
 #include "settings.h"
 #include "config.h"
 #ifdef TAGLIB_FOUND
@@ -295,7 +294,7 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     // None in source folder. Do we have a cached cover?
     QString artist=encodeName(song.albumArtist());
     QString album=encodeName(song.album);
-    QString dir(Network::cacheDir(constCoverDir+artist, false));
+    QString dir(Utils::cacheDir(constCoverDir+artist, false));
     foreach (const QString &ext, constExtensions) {
         if (QFile::exists(dir+album+ext)) {
             fCopy(dir, album+ext, destDir, constFileName+ext);
@@ -476,7 +475,7 @@ Covers::Image Covers::getImage(const Song &song)
     QString artist=encodeName(song.albumArtist());
 
     if (isArtistImage) {
-        QString dir(Network::cacheDir(constCoverDir, false));
+        QString dir(Utils::cacheDir(constCoverDir, false));
         foreach (const QString &ext, constExtensions) {
             if (QFile::exists(dir+artist+ext)) {
                 QImage img(dir+artist+ext);
@@ -488,7 +487,7 @@ Covers::Image Covers::getImage(const Song &song)
     } else {
         QString album=encodeName(song.album);
         // Check if cover is already cached
-        QString dir(Network::cacheDir(constCoverDir+artist, false));
+        QString dir(Utils::cacheDir(constCoverDir+artist, false));
         foreach (const QString &ext, constExtensions) {
             if (QFile::exists(dir+album+ext)) {
                 QImage img(dir+album+ext);
@@ -784,7 +783,7 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     QString savedName;
 
     if (job.isArtist) {
-        QString dir = Network::cacheDir(constCoverDir);
+        QString dir = Utils::cacheDir(constCoverDir);
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+encodeName(job.song.albumartist), img, raw);
             if (!savedName.isEmpty()) {
@@ -805,7 +804,7 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
         }
 
         // Could not save with album, save in cache dir...
-        QString dir = Network::cacheDir(constCoverDir+encodeName(job.song.albumArtist()));
+        QString dir = Utils::cacheDir(constCoverDir+encodeName(job.song.albumArtist()));
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+encodeName(job.song.album), img, raw);
             if (!savedName.isEmpty()) {

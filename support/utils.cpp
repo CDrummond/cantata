@@ -30,12 +30,16 @@
 #include <QtCore/QDir>
 #include <QtCore/QSet>
 #include <QtCore/QThread>
+#include <QtCore/QCoreApplication>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #endif
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef Q_OS_WIN
+#include <QtGui/QDesktopServices>
+#endif
 #ifndef Q_OS_WIN
 #include <grp.h>
 #include <pwd.h>
@@ -441,3 +445,30 @@ QString Utils::cleanPath(const QString &p)
 
 #endif
 
+QString Utils::configDir(const QString &sub, bool create)
+{
+    #if defined Q_OS_WIN
+    QString dir = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+"/";
+    #else
+    QString env = qgetenv("XDG_CONFIG_HOME");
+    QString dir = (env.isEmpty() ? QDir::homePath() + "/.config/" : env) + "/"+QCoreApplication::applicationName()+"/";
+    #endif
+    QDir d(dir);
+    return d.exists() || d.mkpath(dir) ? QDir::toNativeSeparators(dir) : QString();
+}
+
+QString Utils::cacheDir(const QString &sub, bool create)
+{
+    #if defined Q_OS_WIN
+    QString dir = QDesktopServices::storageLocation(QDesktopServices::CacheLocation)+"/";
+    #else
+    QString env = qgetenv("XDG_CACHE_HOME");
+    QString dir = (env.isEmpty() ? QDir::homePath() + "/.cache/" : env)+ "/"+QCoreApplication::applicationName()+"/";
+    #endif
+    if(!sub.isEmpty()) {
+        dir+=sub;
+    }
+    dir=Utils::fixPath(dir);
+    QDir d(dir);
+    return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
+}

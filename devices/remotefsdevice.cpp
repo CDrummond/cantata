@@ -27,7 +27,7 @@
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
-#include "network.h"
+#include "utils.h"
 #include "httpserver.h"
 #include "localize.h"
 #include "settings.h"
@@ -51,7 +51,7 @@ static QString mountPoint(const RemoteFsDevice::Details &details, bool create)
     if (details.isLocalFile()) {
         return details.path;
     }
-    return Network::cacheDir(QLatin1String("mount/")+details.name, create);
+    return Utils::cacheDir(QLatin1String("mount/")+details.name, create);
 }
 
 void RemoteFsDevice::Details::load(const QString &group)
@@ -499,7 +499,7 @@ void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Devic
     configured=true;
     Details oldDetails=details;
     newDetails.path=MPDParseUtils::fixPath(newDetails.path);
-    bool diffUrl=oldDetails.port!=newDetails.port || oldDetails.protocol!=newDetails.protocol || 
+    bool diffUrl=oldDetails.port!=newDetails.port || oldDetails.protocol!=newDetails.protocol ||
                  oldDetails.host!=newDetails.host || oldDetails.user!=newDetails.user || oldDetails.path!=newDetails.path;
 
     if (opts.useCache!=newOpts.useCache || diffUrl) { // Cache/url settings changed

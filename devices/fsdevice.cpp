@@ -32,6 +32,7 @@
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "covers.h"
+#include "utils.h"
 #include "mpdparseutils.h"
 #include "encoders.h"
 #include "transcodingjob.h"
@@ -319,7 +320,7 @@ void FsDevice::removeSong(const Song &s)
 void FsDevice::cleanDirs(const QSet<QString> &dirs)
 {
     foreach (const QString &dir, dirs) {
-        Utils::cleanDir(dir, audioFolder, coverFileName);
+        Device::cleanDir(dir, audioFolder, coverFileName);
     }
 }
 
@@ -352,11 +353,11 @@ void FsDevice::addSongResult(int status)
     if (FileJob::StatusOk!=status) {
         emit actionStatus(transcoding ? TranscodeFailed : Failed);
     } else {
-        QString sourceDir=MPDParseUtils::getDir(currentSong.file);
+        QString sourceDir=Utils::getDir(currentSong.file);
 
         currentSong.file=destFileName;
         if (Device::constNoCover!=coverFileName) {
-            Covers::copyCover(currentSong, sourceDir, MPDParseUtils::getDir(audioFolder+destFileName), coverFileName);
+            Covers::copyCover(currentSong, sourceDir, Utils::getDir(audioFolder+destFileName), coverFileName);
         }
 
         if (needToFixVa) {
@@ -380,9 +381,9 @@ void FsDevice::copySongToResult(int status)
     if (FileJob::StatusOk!=status) {
         emit actionStatus(Failed);
     } else {
-        QString sourceDir=MPDParseUtils::getDir(audioFolder+currentSong.file);
+        QString sourceDir=Utils::getDir(audioFolder+currentSong.file);
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
-        Covers::copyCover(currentSong, sourceDir, currentBaseDir+MPDParseUtils::getDir(currentMusicPath), QString());
+        Covers::copyCover(currentSong, sourceDir, currentBaseDir+Utils::getDir(currentMusicPath), QString());
         if (needToFixVa) {
             Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
         }

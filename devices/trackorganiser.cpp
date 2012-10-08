@@ -306,11 +306,11 @@ void TrackOrganiser::renameFile()
             #ifdef ENABLE_DEVICES_SUPPORT
             Device *dev=deviceUdi.isEmpty() ? 0 : getDevice();
             if (sDir.absolutePath()!=dDir.absolutePath()) {
-                Utils::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile() : QString());
+                Device::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, dev ? dev->coverFile() : QString());
             }
             #else
             if (sDir.absolutePath()!=dDir.absolutePath()) {
-                Utils::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, QString());
+                Device::moveDir(sDir.absolutePath(), dDir.absolutePath(), musicFolder, QString());
             }
             #endif
             item->setText(0, modified);

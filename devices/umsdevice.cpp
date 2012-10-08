@@ -22,7 +22,7 @@
  */
 
 #include "umsdevice.h"
-#include "mpdparseutils.h"
+#include "utils.h"
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
@@ -105,7 +105,7 @@ void UmsDevice::setup()
         return;
     }
 
-    QString path=MPDParseUtils::fixPath(access->filePath());
+    QString path=Utils::fixPath(access->filePath());
     audioFolder = path;
 
     QFile file(path+constSettingsFile);
@@ -247,7 +247,7 @@ void UmsDevice::saveOptions()
         return;
     }
 
-    QString path=MPDParseUtils::fixPath(access->filePath());
+    QString path=Utils::fixPath(access->filePath());
     QFile file(path+constSettingsFile);
     QString fixedPath(audioFolder);
 
@@ -295,7 +295,7 @@ void UmsDevice::saveOptions()
 
 void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const DeviceOptions &newOpts)
 {
-    QString nPath=MPDParseUtils::fixPath(newPath);
+    QString nPath=Utils::fixPath(newPath);
     if (configured && opts==newOpts && nPath==audioFolder && newCoverFileName==coverFileName) {
         return;
     }
@@ -316,7 +316,7 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
         return;
     }
 
-    QString path=MPDParseUtils::fixPath(access->filePath());
+    QString path=Utils::fixPath(access->filePath());
     QFile extra(path+constCantataSettingsFile);
 
     audioFolder=nPath;

@@ -225,7 +225,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             if (!song.file.startsWith("/") && parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem())) {
                 QString root=static_cast<Device *>(parentItem()->parentItem())->path();
                 if (!root.isEmpty()) {
-                    song.file=Utils::dirSyntax(root)+song.file;
+                    song.file=Utils::fixPath(root)+song.file;
                 }
             }
             #endif

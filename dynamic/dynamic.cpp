@@ -23,7 +23,7 @@
 
 #include "dynamic.h"
 #include "config.h"
-#include "mpdparseutils.h"
+#include "utils.h"
 #include "mpdconnection.h"
 #include "icons.h"
 #include "itemview.h"
@@ -68,7 +68,7 @@ static QString configDir(const QString &sub, bool create=false)
     if(!sub.isEmpty()) {
         dir+=sub;
     }
-    dir=MPDParseUtils::fixPath(dir);
+    dir=Utils::fixPath(dir);
     QDir d(dir);
     return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
 }

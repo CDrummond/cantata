@@ -59,35 +59,30 @@ QString Utils::strippedText(QString s)
     return s.trimmed();
 }
 
-QString Utils::dirSyntax(const QString &d)
+QString Utils::fixPath(const QString &dir)
 {
-    if (!d.isEmpty()) {
-        QString ds(d);
+    QString d(dir);
 
-        ds.replace("//", "/");
-
-        int slashPos(ds.lastIndexOf('/'));
-
-        if (slashPos!=(((int)ds.length())-1)) {
-            ds.append('/');
-        }
-
-        return ds;
+    if (!d.isEmpty() && !d.startsWith(QLatin1String("http://"))) {
+        d.replace(QLatin1String("//"), QChar('/'));
     }
-
+    if (!d.isEmpty() && !d.endsWith('/')) {
+        d+='/';
+    }
     return d;
 }
 
 QString Utils::getDir(const QString &file)
 {
     QString d(file);
+
     int slashPos(d.lastIndexOf('/'));
 
-    if (-1!=slashPos) {
-        return dirSyntax(d.remove(slashPos+1, d.length()));
+    if(slashPos!=-1) {
+        d.remove(slashPos+1, d.length());
     }
 
-    return "/";
+    return fixPath(d);
 }
 
 QString Utils::getFile(const QString &file)
@@ -120,82 +115,8 @@ QString Utils::changeExtension(const QString &file, const QString &extension)
     return f+(extension.startsWith('.') ? extension : (QChar('.')+extension));
 }
 
-void Utils::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)
-{
-    QDir d(from);
-    if (d.exists()) {
-        QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
-        QList<QString> extraFiles;
-        QSet<QString> others=Covers::standardNames().toSet();
-        others << coverFile << "albumart.pamp";
-
-        foreach (const QFileInfo &info, entries) {
-            if (info.isDir()) {
-                return;
-            }
-            if (!others.contains(info.fileName())) {
-                return;
-            }
-            extraFiles.append(info.fileName());
-        }
-
-        foreach (const QString &cf, extraFiles) {
-            if (!QFile::rename(from+'/'+cf, to+'/'+cf)) {
-                return;
-            }
-        }
-        cleanDir(from, base, coverFile);
-    }
-}
-
-void Utils::cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level)
-{
-    QDir d(dir);
-    if (d.exists()) {
-        QFileInfoList entries=d.entryInfoList(QDir::Files|QDir::NoSymLinks|QDir::Dirs|QDir::NoDotAndDotDot);
-        QList<QString> extraFiles;
-        QSet<QString> others=Covers::standardNames().toSet();
-        others << coverFile << "albumart.pamp";
-
-        foreach (const QFileInfo &info, entries) {
-            if (info.isDir()) {
-                return;
-            }
-            if (!others.contains(info.fileName())) {
-                return;
-            }
-            extraFiles.append(info.absoluteFilePath());
-        }
-
-        foreach (const QString &cf, extraFiles) {
-            if (!QFile::remove(cf)) {
-                return;
-            }
-        }
-
-        if (MPDParseUtils::fixPath(dir)==MPDParseUtils::fixPath(base)) {
-            return;
-        }
-        QString dirName=d.dirName();
-        if (dirName.isEmpty()) {
-            return;
-        }
-        d.cdUp();
-        if (!d.rmdir(dirName)) {
-            return;
-        }
-        if (level>=3) {
-            return;
-        }
-        QString upDir=d.absolutePath();
-        if (MPDParseUtils::fixPath(upDir)!=MPDParseUtils::fixPath(base)) {
-            cleanDir(upDir, base, coverFile, level+1);
-        }
-    }
-}
-
 #ifndef Q_OS_WIN
-gid_t Utils::getGroupId()
+gid_t Utils::getGroupId(const char *groupName)
 {
     static bool init=false;
     static gid_t gid=0;
@@ -212,7 +133,7 @@ gid_t Utils::getGroupId()
         return gid;
     }
 
-    struct group *audioGroup=getgrnam("users");
+    struct group *audioGroup=getgrnam(groupName);
 
     if (audioGroup) {
         for (int i=0; audioGroup->gr_mem[i]; ++i) {
@@ -229,12 +150,12 @@ gid_t Utils::getGroupId()
  * Set file permissions.
  * If user is a memeber of "users" group, then set file as owned by and writeable by "users" group.
  */
-void Utils::setFilePerms(const QString &file)
+void Utils::setFilePerms(const QString &file, const char *groupName)
 {
     //
     // Clear any umask before setting file perms
     mode_t oldMask(umask(0000));
-    gid_t gid=getGroupId();
+    gid_t gid=getGroupId(groupName);
     QByteArray fn=QFile::encodeName(file);
     ::chmod(fn.constData(), 0==gid ? 0644 : 0664);
     if (0!=gid) {
@@ -245,9 +166,10 @@ void Utils::setFilePerms(const QString &file)
     ::umask(oldMask);
 }
 #else
-void Utils::setFilePerms(const QString &file)
+void Utils::setFilePerms(const QString &file, const char *groupName)
 {
     Q_UNUSED(file);
+    Q_UNUSED(groupName);
 }
 #endif
 
@@ -255,15 +177,16 @@ void Utils::setFilePerms(const QString &file)
  * Create directory, and set its permissions.
  * If user is a memeber of "audio" group, then set dir as owned by and writeable by "audio" group.
  */
-bool Utils::createDir(const QString &dir, const QString &base)
+bool Utils::createDir(const QString &dir, const QString &base, const char *groupName)
 {
     #ifdef Q_OS_WIN
     Q_UNUSED(base);
+    Q_UNUSED(groupName);
     #else
     //
     // Clear any umask before dir is created
     mode_t oldMask(umask(0000));
-    gid_t gid=base.isEmpty() ? 0 : getGroupId();
+    gid_t gid=base.isEmpty() ? 0 : getGroupId(groupName);
     #endif
     #ifdef ENABLE_KDE_SUPPORT
     bool status(KStandardDirs::makeDir(dir, 0==gid ? 0755 : 0775));
@@ -312,7 +235,7 @@ void Utils::stopThread(QThread *thread)
 QString Utils::formatByteSize(double size)
 {
     static QLocale locale;
-    
+
     int unit = 0;
     double multiplier = 1024.0;
 
@@ -513,7 +436,7 @@ QString Utils::cleanPath(const QString &p)
     while(path.contains("//")) {
         path.replace("//", "/");
     }
-    return dirSyntax(path);
+    return fixPath(path);
 }
 
 #endif

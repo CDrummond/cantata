@@ -176,7 +176,7 @@ void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 
     setPage(PAGE_PROGRESS);
     foreach (const Song &s, songsToAction) {
-        dirsToClean.insert(baseDir+MPDParseUtils::getDir(s.file));
+        dirsToClean.insert(baseDir+Utils::getDir(s.file));
     }
     show();
     doNext();
@@ -357,7 +357,7 @@ void ActionDialog::doNext()
                 dev->cleanDirs(dirsToClean);
             } else {
                 foreach (const QString &d, dirsToClean) {
-                    Utils::cleanDir(d, MPDConnection::self()->getDetails().dir, QString());
+                    Device::cleanDir(d, MPDConnection::self()->getDetails().dir, QString());
                 }
             }
         }

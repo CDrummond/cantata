@@ -38,7 +38,7 @@ ProxySettings::~ProxySettings()
 void ProxySettings::load()
 {
     QSettings s;
-    s.beginGroup(NetworkProxyFactory::kSettingsGroup);
+    s.beginGroup(NetworkProxyFactory::constSettingsGroup);
 
     int mode=s.value("mode", NetworkProxyFactory::Mode_System).toInt();
     proxySystem->setChecked(NetworkProxyFactory::Mode_System==mode);
@@ -56,7 +56,7 @@ void ProxySettings::load()
 void ProxySettings::save()
 {
     QSettings s;
-    s.beginGroup(NetworkProxyFactory::kSettingsGroup);
+    s.beginGroup(NetworkProxyFactory::constSettingsGroup);
 
     s.setValue("mode", proxySystem->isChecked()
                             ? NetworkProxyFactory::Mode_System
@@ -70,5 +70,5 @@ void ProxySettings::save()
     s.setValue("username", proxyUsername->text());
     s.setValue("password", proxyPassword->text());
     s.endGroup();
-    NetworkProxyFactory::Instance()->ReloadSettings();
+    NetworkProxyFactory::self()->reloadSettings();
 }

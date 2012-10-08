@@ -42,7 +42,6 @@
 #endif
 #include "localize.h"
 #include "infopage.h"
-#include "network.h"
 #include "mainwindow.h"
 #include "settings.h"
 #include "icon.h"
@@ -142,18 +141,8 @@ void InfoPage::askGoogle(const QString &query)
     if (query.isEmpty()) {
         return;
     }
-
-    QUrl question("http://www.google.com/search?as_q=" + query + "&ft=i&num=1&as_sitesearch=wikipedia.org");
-    QString lang = QLocale::languageToString(QLocale::system().language());
-    Network::self()->get(question, this, "googleAnswer", lang);
+    get("http://www.google.com/search?as_q=" + query + "&ft=i&num=1&as_sitesearch=wikipedia.org");
 }
-
-// void InfoPage::fetchWiki(QString query)
-// {
-//     QUrl wikiArtist("http://en.wikipedia.org/wiki/" + query.replace(' ', '_'));
-// //     QUrl wikiArtist("http://en.wikipedia.org/wiki/" + query.replace(' ', '_'));
-//     Network::self()->get(wikiArtist, this, "setArtistWiki");
-// }
 
 void InfoPage::changeView()
 {
@@ -264,3 +253,37 @@ void InfoPage::updateFonts()
 }
 #endif
 
+void InfoPage::handleReply()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    if (!reply) {
+        return;
+    }
+
+    QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
+    if (redirect.isValid()) {
+        get(redirect.toUrl());
+        reply->deleteLater();
+        return;
+    }
+
+    reply->open(QIODevice::ReadOnly | QIODevice::Text);
+    QString answer = QString::fromUtf8(reply->readAll());
+    reply->close();
+    googleAnswer(answer);
+    reply->deleteLater();
+}
+
+void InfoPage::get(const QUrl &url)
+{
+    QNetworkRequest request(url);
+    QString lang(QLocale::languageToString(QLocale::system().language()));
+    // lie to prevent google etc. from believing we'd be some automated tool, abusing their ... errr ;-P
+    request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/6.0");
+    if (!lang.isEmpty()) {
+        request.setRawHeader("Accept-Language", lang.toAscii());
+    }
+
+    QNetworkReply *reply = view->page()->networkAccessManager()->get(request);
+    connect(reply, SIGNAL(finished()), this, SLOT(handleReply()));
+}

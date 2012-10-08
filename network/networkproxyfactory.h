@@ -28,40 +28,38 @@
 #include <QtNetwork/QNetworkProxyFactory>
 #include <QtCore/QUrl>
 
-class NetworkProxyFactory : public QNetworkProxyFactory {
+class NetworkProxyFactory : public QNetworkProxyFactory
+{
 public:
-  // These values are persisted
-  enum Mode {
-    Mode_System = 0,
-    Mode_Direct = 1,
-    Mode_Manual = 2,
-  };
+      // These values are persisted
+      enum Mode {
+        Mode_System = 0,
+        Mode_Direct = 1,
+        Mode_Manual = 2,
+    };
 
-  static NetworkProxyFactory* Instance();
-  static const char* kSettingsGroup;
+    static NetworkProxyFactory * self();
+    static const char * constSettingsGroup;
 
-  // These methods are thread-safe
-  void ReloadSettings();
-  QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery& query);
+    // These methods are thread-safe
+    void reloadSettings();
+    QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery& query);
 
 private:
-  NetworkProxyFactory();
+    NetworkProxyFactory();
 
-  static NetworkProxyFactory* sInstance;
-
-  QMutex mutex_;
-
-  Mode mode_;
-  QNetworkProxy::ProxyType type_;
-  QString hostname_;
-  int port_;
-  bool use_authentication_;
-  QString username_;
-  QString password_;
-
-#ifdef Q_OS_LINUX
-  QUrl env_url_;
-#endif
+private:
+    QMutex mutex;
+    Mode mode;
+    QNetworkProxy::ProxyType type;
+    QString hostname;
+    int port;
+    bool useAuthentication;
+    QString username;
+    QString password;
+    #ifdef Q_OS_LINUX
+    QUrl envUrl;
+    #endif
 };
 
 #endif // NETWORKPROXYFACTORY_H

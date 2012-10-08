@@ -27,14 +27,13 @@
 #include <QtCore/QStringList>
 #include <stdlib.h>
 
-NetworkProxyFactory* NetworkProxyFactory::sInstance = NULL;
-const char* NetworkProxyFactory::kSettingsGroup = "Proxy";
+const char* NetworkProxyFactory::constSettingsGroup = "Proxy";
 
 NetworkProxyFactory::NetworkProxyFactory()
-    : mode_(Mode_System)
-    , type_(QNetworkProxy::HttpProxy)
-    , port_(8080)
-    , use_authentication_(false)
+    : mode(Mode_System)
+    , type(QNetworkProxy::HttpProxy)
+    , port(8080)
+    , useAuthentication(false)
 {
     #ifdef Q_OS_LINUX
     // Linux uses environment variables to pass proxy configuration information,
@@ -46,66 +45,63 @@ NetworkProxyFactory::NetworkProxyFactory()
     urls << QString::fromLocal8Bit(getenv("ALL_PROXY"));
     urls << QString::fromLocal8Bit(getenv("all_proxy"));
 
-    foreach (const QString& url_str, urls) {
-        if (url_str.isEmpty()) {
+    foreach (const QString& urlStr, urls) {
+        if (urlStr.isEmpty()) {
             continue;
         }
 
-        env_url_ = QUrl(url_str);
+        envUrl = QUrl(urlStr);
         break;
     }
     #endif
 
-    ReloadSettings();
+    reloadSettings();
 }
 
-NetworkProxyFactory* NetworkProxyFactory::Instance()
+NetworkProxyFactory * NetworkProxyFactory::self()
 {
-    if (!sInstance) {
-        sInstance = new NetworkProxyFactory;
+    static NetworkProxyFactory *instance=0;
+    if (!instance) {
+        instance = new NetworkProxyFactory;
     }
 
-    return sInstance;
+    return instance;
 }
 
-void NetworkProxyFactory::ReloadSettings()
+void NetworkProxyFactory::reloadSettings()
 {
-    QMutexLocker l(&mutex_);
+    QMutexLocker l(&mutex);
 
     QSettings s;
-    s.beginGroup(kSettingsGroup);
+    s.beginGroup(constSettingsGroup);
 
-    mode_ = Mode(s.value("mode", Mode_System).toInt());
-    type_ = QNetworkProxy::ProxyType(s.value("type", QNetworkProxy::HttpProxy).toInt());
-    hostname_ = s.value("hostname").toString();
-    port_ = s.value("port", 8080).toInt();
-    use_authentication_ = s.value("use_authentication", false).toBool();
-    username_ = s.value("username").toString();
-    password_ = s.value("password").toString();
+    mode = Mode(s.value("mode", Mode_System).toInt());
+    type = QNetworkProxy::ProxyType(s.value("type", QNetworkProxy::HttpProxy).toInt());
+    hostname = s.value("hostname").toString();
+    port = s.value("port", 8080).toInt();
+    useAuthentication = s.value("use_authentication", false).toBool();
+    username = s.value("username").toString();
+    password = s.value("password").toString();
 }
 
 QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& query)
 {
-    QMutexLocker l(&mutex_);
+    QMutexLocker l(&mutex);
     QNetworkProxy ret;
 
-    switch (mode_) {
+    switch (mode) {
     case Mode_System:
         #ifdef Q_OS_LINUX
         Q_UNUSED(query);
 
-        if (env_url_.isEmpty()) {
+        if (envUrl.isEmpty()) {
             ret.setType(QNetworkProxy::NoProxy);
         } else {
-            ret.setHostName(env_url_.host());
-            ret.setPort(env_url_.port());
-            ret.setUser(env_url_.userName());
-            ret.setPassword(env_url_.password());
-            if (env_url_.scheme().startsWith("http")) {
-                ret.setType(QNetworkProxy::HttpProxy);
-            } else {
-                ret.setType(QNetworkProxy::Socks5Proxy);
-            }
+            ret.setHostName(envUrl.host());
+            ret.setPort(envUrl.port());
+            ret.setUser(envUrl.userName());
+            ret.setPassword(envUrl.password());
+            ret.setType(envUrl.scheme().startsWith("http") ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy);
         }
         break;
         #else
@@ -115,12 +111,12 @@ QList<QNetworkProxy> NetworkProxyFactory::queryProxy(const QNetworkProxyQuery& q
         ret.setType(QNetworkProxy::NoProxy);
         break;
     case Mode_Manual:
-        ret.setType(type_);
-        ret.setHostName(hostname_);
-        ret.setPort(port_);
-        if (use_authentication_) {
-            ret.setUser(username_);
-            ret.setPassword(password_);
+        ret.setType(type);
+        ret.setHostName(hostname);
+        ret.setPort(port);
+        if (useAuthentication) {
+            ret.setUser(username);
+            ret.setPassword(password);
         }
         break;
     }

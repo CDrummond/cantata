@@ -140,7 +140,6 @@ SET( CANTATA_SRCS
     lyrics/songinfoprovider.cpp
     lyrics/lyricsdialog.cpp
     network/networkaccessmanager.cpp
-    network/network.cpp
     libmaia/maiaObject.cpp
     libmaia/maiaFault.cpp
     libmaia/maiaXmlRpcClient.cpp
@@ -197,7 +196,6 @@ SET( CANTATA_MOC_HDRS
     lyrics/songinfoprovider.h
     lyrics/lyricsdialog.h
     network/networkaccessmanager.h
-    network/network.h
     libmaia/maiaObject.h
     libmaia/maiaFault.h
     libmaia/maiaXmlRpcClient.h

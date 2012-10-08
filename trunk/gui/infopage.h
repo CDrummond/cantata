@@ -30,6 +30,7 @@
 class QComboBox;
 class WebView;
 class QNetworkRequest;
+class QUrl;
 
 class InfoPage : public QWidget
 {
@@ -55,6 +56,10 @@ private Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
     void updateFonts();
     #endif
+    void handleReply();
+
+private:
+    void get(const QUrl &url);
 
 private:
     WebView *view;

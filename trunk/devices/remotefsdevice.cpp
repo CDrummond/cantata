@@ -23,7 +23,6 @@
 
 #include "remotefsdevice.h"
 #include "config.h"
-#include "mpdparseutils.h"
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
@@ -193,7 +192,7 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const Devi
 {
     coverFileName=cover;
     opts=options;
-    details.path=MPDParseUtils::fixPath(details.path);
+    details.path=Utils::fixPath(details.path);
     load();
     mount();
 }
@@ -204,7 +203,7 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
     , details(d)
     , proc(0)
 {
-    details.path=MPDParseUtils::fixPath(details.path);
+    details.path=Utils::fixPath(details.path);
     setup();
 }
 
@@ -424,7 +423,7 @@ void RemoteFsDevice::setup()
     QString key=udi();
     opts.load(key);
     details.load(details.name);
-    details.path=MPDParseUtils::fixPath(details.path);
+    details.path=Utils::fixPath(details.path);
     #ifndef ENABLE_KDE_SUPPORT
     QSettings cfg;
     #endif
@@ -498,7 +497,7 @@ void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Devic
 
     configured=true;
     Details oldDetails=details;
-    newDetails.path=MPDParseUtils::fixPath(newDetails.path);
+    newDetails.path=Utils::fixPath(newDetails.path);
     bool diffUrl=oldDetails.port!=newDetails.port || oldDetails.protocol!=newDetails.protocol ||
                  oldDetails.host!=newDetails.host || oldDetails.user!=newDetails.user || oldDetails.path!=newDetails.path;
 

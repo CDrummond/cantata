@@ -1667,7 +1667,7 @@ void MainWindow::playPauseTrack()
     } else if (MPDState_Paused==status->state()) {
         stopVolumeFade();
         emit pause(false);
-    } else {
+    } else if (playQueueModel.rowCount()>0) {
         stopVolumeFade();
         if (-1!=playQueueModel.currentSong() && -1!=playQueueModel.currentSongRow()) {
             emit startPlayingSongId(playQueueModel.currentSong());

@@ -37,7 +37,6 @@
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "mpdconnection.h"
-#include "network.h"
 #include "localize.h"
 #include "utils.h"
 #include "icons.h"
@@ -78,7 +77,7 @@ static const QString cacheFileName()
 
     QString fileName=MPDConnection::self()->getDetails().hostname+constLibraryExt;
     fileName.replace('/', '_');
-    return Network::cacheDir(constLibraryCache)+fileName;
+    return Utils::cacheDir(constLibraryCache)+fileName;
 }
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent)

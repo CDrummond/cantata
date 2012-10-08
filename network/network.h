@@ -37,7 +37,6 @@ class Network : public QObject
     Q_OBJECT
 
 public:
-    static QString cacheDir(const QString &sub=QString(), bool create=true);
     static Network * self();
     Network();
     void get(const QUrl &url, QObject *receiver, const char *slot, const QString &lang=QString());

@@ -27,7 +27,6 @@
 #include "mpdconnection.h"
 #include "icons.h"
 #include "itemview.h"
-#include "network.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "localize.h"
@@ -60,18 +59,6 @@ static const QString constStatusTimeResp=QLatin1String("TIME:");
 static const QString constStatusStateResp=QLatin1String("STATE:");
 static const QString constStatusRuleResp=QLatin1String("RULES:");
 static const QString constUpdateRequiredResp=QLatin1String("UPDATE_REQUIRED");
-
-static QString configDir(const QString &sub, bool create=false)
-{
-    QString env = qgetenv("XDG_CONFIG_HOME");
-    QString dir = (env.isEmpty() ? QDir::homePath() + QLatin1String("/.config") : env) + QLatin1String("/"PACKAGE_NAME"/");
-    if(!sub.isEmpty()) {
-        dir+=sub;
-    }
-    dir=Utils::fixPath(dir);
-    QDir d(dir);
-    return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
-}
 
 Dynamic * Dynamic::self()
 {
@@ -223,7 +210,7 @@ bool Dynamic::save(const Entry &e)
         return true;
     }
 
-    QFile f(configDir(constDir, true)+e.name+constExtension);
+    QFile f(Utils::configDir(constDir, true)+e.name+constExtension);
     if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
         QTextStream(&f) << string;
         updateEntry(e);
@@ -257,7 +244,7 @@ void Dynamic::del(const QString &name)
     if (it==entryList.end()) {
         return;
     }
-    QString fName(configDir(constDir, false)+name+constExtension);
+    QString fName(Utils::configDir(constDir, false)+name+constExtension);
     bool isCurrent=currentEntry==name;
 
     if (!QFile::exists(fName) || QFile::remove(fName)) {
@@ -278,14 +265,14 @@ void Dynamic::start(const QString &name)
         return;
     }
 
-    QString fName(configDir(constDir, false)+name+constExtension);
+    QString fName(Utils::configDir(constDir, false)+name+constExtension);
 
     if (!QFile::exists(fName)) {
         emit error(i18n("Failed to locate rules file - %1").arg(fName));
         return;
     }
 
-    QString rules(Network::cacheDir(constDir, true)+constActiveRules);
+    QString rules(Utils::cacheDir(constDir, true)+constActiveRules);
 
     QFile::remove(rules);
     if (QFile::exists(rules)) {
@@ -386,7 +373,7 @@ bool Dynamic::isRunning()
 
 int Dynamic::getPid() const
 {
-    QFile pidFile(Network::cacheDir(constDir, false)+constLockFile);
+    QFile pidFile(Utils::cacheDir(constDir, false)+constLockFile);
 
     if (pidFile.open(QIODevice::ReadOnly|QIODevice::Text)) {
         QTextStream str(&pidFile);
@@ -451,7 +438,7 @@ void Dynamic::loadLocal()
     currentEntry=QString();
 
     // Load all current enttries...
-    QString dirName=configDir(constDir);
+    QString dirName=Utils::configDir(constDir);
     QDir d(dirName);
     if (d.exists()) {
         QStringList rulesFiles=d.entryList(QStringList() << QChar('*')+constExtension);
@@ -736,7 +723,7 @@ void Dynamic::checkHelper()
             }
         } else { // No timer => app startup!
             // Attempt to read current name...
-            QFileInfo inf(Network::cacheDir(constDir, false)+constActiveRules);
+            QFileInfo inf(Utils::cacheDir(constDir, false)+constActiveRules);
 
             if (inf.exists() && inf.isSymLink()) {
                 QString link=inf.readLink();

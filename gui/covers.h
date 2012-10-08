@@ -74,7 +74,6 @@ class Covers : public QObject
 
 public:
     enum JobType {
-        JobHttpCustom,
         JobHttpJpg,
         JobHttpPng,
         JobLastFm

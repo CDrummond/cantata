@@ -98,7 +98,10 @@ Q_SIGNALS:
 protected:
     void load();
     void setup();
-    void setAudioFolder();
+    void setAudioFolder() const;
+
+private:
+    void clear() const;
 
 protected Q_SLOTS:
     void saveProperties();
@@ -110,6 +113,8 @@ protected:
     Details details;
     QProcess *proc;
 //     QString audioFolderSetting;
+
+    friend class DevicesModel;
 };
 
 #endif

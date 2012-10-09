@@ -450,11 +450,18 @@ void RemoteFsDevice::setup()
     load();
 }
 
-void RemoteFsDevice::setAudioFolder()
+void RemoteFsDevice::setAudioFolder() const
 {
-    audioFolder=mountPoint(details, true);
-    if (!audioFolder.endsWith('/')) {
-        audioFolder+='/';
+    audioFolder=Utils::fixPath(mountPoint(details, true));
+}
+
+void RemoteFsDevice::clear() const
+{
+    if (childCount()) {
+        RemoteFsDevice *that=(RemoteFsDevice *)this;
+        that->update=new MusicLibraryItemRoot();
+        that->applyUpdate();
+        that->scanned=false;
     }
 }
 

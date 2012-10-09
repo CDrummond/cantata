@@ -40,6 +40,10 @@
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>
+#ifdef ENABLE_REMOTE_DEVICES
+#include <QtCore/QFile>
+#include <QtCore/QSocketNotifier>
+#endif
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
 #include <KDE/KGlobal>
@@ -69,6 +73,15 @@ DevicesModel::DevicesModel(QObject *parent)
 {
     connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
     updateItemMenu();
+    #ifdef ENABLE_REMOTE_DEVICES
+    QFile *mtab=new QFile("/proc/mounts", this);
+    if (mtab && mtab->open(QIODevice::ReadOnly)) {
+        QSocketNotifier *notifier = new QSocketNotifier(mtab->handle(), QSocketNotifier::Exception, mtab);
+        connect(notifier,  SIGNAL(activated(int)), this, SLOT(checkRemoteDevices()) );
+    } else if (mtab) {
+        mtab->deleteLater();
+    }
+    #endif
 }
 
 DevicesModel::~DevicesModel()
@@ -630,6 +643,19 @@ void DevicesModel::changeDeviceUdi(const QString &from, const QString &to)
         indexes.remove(from);
         indexes.insert(to, idx);
         updateItemMenu();
+    }
+}
+
+void DevicesModel::checkRemoteDevices()
+{
+    foreach (Device *dev, devices) {
+        if (Device::RemoteFs==dev->devType()) {
+            if (0==dev->childCount()) {
+                ((RemoteFsDevice *)dev)->load();
+            } else if (!dev->isConnected()) {
+                ((RemoteFsDevice *)dev)->clear();
+            }
+        }
     }
 }
 #endif

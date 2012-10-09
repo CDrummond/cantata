@@ -83,11 +83,10 @@ public:
     void removeSong(const Song &s);
     void cleanDirs(const QSet<QString> &dirs);
     QString cacheFileName() const;
+    virtual void setAudioFolder() const { }
     void saveCache();
     void removeCache();
-    bool isStdFs() const {
-        return true;
-    }
+    bool isStdFs() const { return true; }
 
 protected:
     bool readCache();
@@ -105,7 +104,7 @@ protected Q_SLOTS:
 protected:
     bool scanned;
     MusicScanner *scanner;
-    QString audioFolder;
+    mutable QString audioFolder;
     QString coverFileName;
     FreeSpaceInfo spaceInfo;
 };

@@ -466,6 +466,9 @@ static inline QString toString(bool b)
 
 QString FsDevice::cacheFileName() const
 {
+    if (audioFolder.isEmpty()) {
+        setAudioFolder();
+    }
     return audioFolder+constCantataCacheFile;
 }
 

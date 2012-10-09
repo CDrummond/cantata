@@ -2468,6 +2468,9 @@ void MainWindow::setupTrayIcon()
     trayItemMenu->addAction(stopTrackAction);
     trayItemMenu->addAction(nextTrackAction);
     trayItem->setContextMenu(trayItemMenu);
+    if (qgetenv("XDG_CURRENT_DESKTOP")=="Unity") {
+        trayItem->setStatus(KStatusNotifierItem::Active);
+    }
     connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
     connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), this, SLOT(playPauseTrack()));
     #else

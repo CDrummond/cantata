@@ -397,3 +397,12 @@ void Device::songCount(int c)
 {
     setStatusMessage(i18n("Updating (%1)...").arg(c));
 }
+
+void Device::clear() const
+{
+    if (childCount()) {
+        Device *that=(Device *)this;
+        that->update=new MusicLibraryItemRoot();
+        that->applyUpdate();
+    }
+}

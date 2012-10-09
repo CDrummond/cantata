@@ -51,6 +51,8 @@
 28. Only save settings when modified.
 29. Add option to support GNOME media keys.
 30. Add setting to control name (without extension) of downloaded cover files.
+31. For KDE builds, if run under Unity set KStatusNotifierItem status to
+    Active - otherwise no item appears.
 
 0.8.3.1
 -------

@@ -74,6 +74,7 @@ public Q_SLOTS:
     void addRemoteDevice(const QString &coverFileName, const DeviceOptions &opts, RemoteFsDevice::Details details);
     void removeRemoteDevice(const QString &udi);
     void changeDeviceUdi(const QString &from, const QString &to);
+    void checkRemoteDevices();
     #endif
 
 private:

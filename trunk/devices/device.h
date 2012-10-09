@@ -161,6 +161,7 @@ public:
     virtual bool isStdFs() const {
         return false;
     }
+    void clear() const;
 
 public Q_SLOTS:
     void setStatusMessage(const QString &message);

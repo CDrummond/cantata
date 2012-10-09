@@ -338,11 +338,16 @@ void RemoteFsDevice::procFinished(int exitCode)
 bool RemoteFsDevice::isConnected() const
 {
     if (details.isLocalFile()) {
-        return QDir(details.path).exists();
+       if (QDir(details.path).exists()) {
+           return true;
+       }
+       clear();
+       return false;
     }
 
     QString mp=mountPoint(details, false);
     if (mp.isEmpty()) {
+        clear();
         return false;
     }
 
@@ -371,6 +376,7 @@ bool RemoteFsDevice::isConnected() const
         }
     }
     #endif
+    clear();
     return false;
 }
 

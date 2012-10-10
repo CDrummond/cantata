@@ -600,9 +600,9 @@ void DevicesModel::emitAddToDevice()
     }
 }
 
-#ifdef ENABLE_REMOTE_DEVICES
 void DevicesModel::addRemoteDevice(const QString &coverFileName, const DeviceOptions &opts, RemoteFsDevice::Details details)
 {
+    #ifdef ENABLE_REMOTE_DEVICES
     Device *dev=RemoteFsDevice::create(this, coverFileName, opts, details);
 
     if (dev) {
@@ -617,10 +617,16 @@ void DevicesModel::addRemoteDevice(const QString &coverFileName, const DeviceOpt
         }
         updateItemMenu();
     }
+    #else
+    Q_UNUSED(coverFileName)
+    Q_UNUSED(opts)
+    Q_UNUSED(details)
+    #endif
 }
 
 void DevicesModel::removeRemoteDevice(const QString &udi)
 {
+    #ifdef ENABLE_REMOTE_DEVICES
     Device *dev=device(udi);
 
     if (dev && Device::RemoteFs==dev->devType()) {
@@ -634,20 +640,29 @@ void DevicesModel::removeRemoteDevice(const QString &udi)
         // Remove will stop device, and delete it
         RemoteFsDevice::remove(dev);
     }
+    #else
+    Q_UNUSED(udi)
+    #endif
 }
 
 void DevicesModel::changeDeviceUdi(const QString &from, const QString &to)
 {
+    #ifdef ENABLE_REMOTE_DEVICES
     if (indexes.contains(from)) {
         int idx=indexes[from];
         indexes.remove(from);
         indexes.insert(to, idx);
         updateItemMenu();
     }
+    #else
+    Q_UNUSED(from)
+    Q_UNUSED(to)
+    #endif
 }
 
 void DevicesModel::checkRemoteDevices()
 {
+    #ifdef ENABLE_REMOTE_DEVICES
     foreach (Device *dev, devices) {
         if (Device::RemoteFs==dev->devType()) {
             if (0==dev->childCount()) {
@@ -657,8 +672,8 @@ void DevicesModel::checkRemoteDevices()
             }
         }
     }
+    #endif
 }
-#endif
 
 void DevicesModel::updateItemMenu()
 {

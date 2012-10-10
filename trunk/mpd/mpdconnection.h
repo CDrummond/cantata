@@ -151,8 +151,7 @@ struct MPDConnectionDetails {
     quint16 port;
     QString password;
     QString dir;
-    QString dynamicHost;
-    quint16 dynamicPort;
+    quint16 dynamizerPort;
     bool dirReadable;
     QString coverName;
 };

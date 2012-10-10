@@ -63,6 +63,19 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
     return act;
 }
 
+Action * ActionCollection::createAction(const QString &name, const QString &text, const Icon &icon, const QString &whatsThis)
+{
+    Action *act = (Action *)addAction(name);
+    act->setText(text);
+    if (!icon.isNull()) {
+        act->setIcon(icon);
+    }
+    if (!whatsThis.isEmpty()) {
+        act->setWhatsThis(whatsThis);
+    }
+    return act;
+}
+
 #ifndef ENABLE_KDE_SUPPORT
 
 #include <QtCore/QSettings>

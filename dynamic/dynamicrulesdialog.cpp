@@ -26,6 +26,7 @@
 #include "dynamic.h"
 #include "messagebox.h"
 #include "localize.h"
+#include "icons.h"
 #include <QtGui/QIcon>
 #include <QtGui/QStandardItem>
 #include <QtGui/QStandardItemModel>
@@ -140,7 +141,7 @@ DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
     connect(removeBtn, SIGNAL(clicked()), SLOT(remove()));
 
     addBtn->setIcon(QIcon::fromTheme("list-add"));
-    editBtn->setIcon(QIcon::fromTheme("document-edit"));
+    editBtn->setIcon(Icons::editIcon);
     removeBtn->setIcon(QIcon::fromTheme("list-remove"));
 
     connect(rulesList, SIGNAL(itemsSelected(bool)), SLOT(controlButtons()));

@@ -25,7 +25,7 @@
 #include "dynamic.h"
 #include "dynamicrulesdialog.h"
 #include "localize.h"
-#include "icon.h"
+#include "icons.h"
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
@@ -38,7 +38,7 @@ DynamicPage::DynamicPage(MainWindow *p)
     setupUi(this);
     refreshAction = ActionCollection::get()->createAction("refreshdynamic", i18n("Refresh Dynamic Rules"), "view-refresh");
     addAction = ActionCollection::get()->createAction("adddynamic", i18n("Add Dynamic Rules"), "list-add");
-    editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), "document-edit");
+    editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), Icons::editIcon);
     removeAction = ActionCollection::get()->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
     startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Mode"), "media-playback-start");
     stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");

@@ -24,6 +24,7 @@
 #define ACTIONCOLLECTION_H_
 
 class Action;
+class Icon;
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KActionCollection>
@@ -37,6 +38,7 @@ class ActionCollection : public KActionCollection {
     static void setMainWidget(QWidget *w);
     static ActionCollection * get();
     Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
+    Action * createAction(const QString &name, const QString &text, const Icon &icon, const QString &whatsThis=QString());
 };
 
 #else
@@ -59,6 +61,7 @@ class ActionCollection : public QObject {
     static void setMainWidget(QWidget *w);
     static ActionCollection * get();
     Action * createAction(const QString &name, const QString &text, const char *icon=0, const QString &whatsThis=QString());
+    Action * createAction(const QString &name, const QString &text, const Icon &icon, const QString &whatsThis=QString());
 
     /// Clears the entire action collection, deleting all actions.
     void clear();

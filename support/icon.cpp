@@ -75,11 +75,15 @@ Icon Icon::getMediaIcon(const QString &name)
     return icn;
 }
 
-Icon Icon::create(const QStringList &sizes)
+Icon Icon::create(const QList<File> &files)
 {
-    Icon icon(sizes.at(0));
-    for (int i=1; i<sizes.size(); ++i) {
-        icon.addFile(sizes.at(i));
+    Icon icon;
+    foreach (const File &f, files) {
+        if (0!=f.size) {
+            icon.addFile(f.name, QSize(f.size, f.size));
+        } else {
+            icon.addFile(f.name);
+        }
     }
     return icon;
 }

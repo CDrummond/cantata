@@ -63,7 +63,13 @@ public:
     #endif
 
     #ifndef ENABLE_KDE_SUPPORT
-    static Icon create(const QStringList &sizes);
+    struct File
+    {
+        File(const QString &n, int s=0) : name(n), size(s) { }
+        QString name;
+        int size;
+    };
+    static Icon create(const QList<File> &files);
     #endif
 };
 

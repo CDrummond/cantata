@@ -137,20 +137,21 @@ void Icons::init()
     variousArtistsIcon=Icon("cantata-view-media-artist-various");
     artistIcon=Icon("view-media-artist");
     #ifndef ENABLE_KDE_SUPPORT
-    appIcon=Icon::create(QStringList() << ":cantata.svg" << ":cantata16.png" << ":cantata22.png" << ":cantata32.png" << ":cantata48.png" << ":cantata64.png");
+    appIcon=Icon::create(QList<Icon::File>() << Icon::File(":cantata.svg") << Icon::File(":cantata16.png", 16) << Icon::File(":cantata22.png", 22)
+                                             << Icon::File(":cantata32.png", 32) << Icon::File(":cantata48.png", 48) << Icon::File(":cantata64.png", 64));
     shortcutsIcon=Icon("preferences-desktop-keyboard");
 
     if (repeatIcon.isNull()) {
-        repeatIcon=Icon::create(QStringList() << ":repeat16.png" << ":repeat22.png");
+        repeatIcon=Icon::create(QList<Icon::File>() << Icon::File(":repeat16.png", 16) << Icon::File(":repeat22.png", 22));
     }
     if (shuffleIcon.isNull()) {
-        shuffleIcon=Icon::create(QStringList() << ":shuffle16.png" << ":shuffle22.png");
+        shuffleIcon=Icon::create(QList<Icon::File>() << Icon::File(":shuffle16.png", 16) << Icon::File(":shuffle22.png", 22));
     }
     if (libraryIcon.isNull()) {
-        libraryIcon=Icon::create(QStringList() << ":lib16.png" << ":lib32.png");
+        libraryIcon=Icon::create(QList<Icon::File>() << Icon::File(":lib16.png", 16) << Icon::File(":lib32.png", 22));
     }
     if (wikiIcon.isNull()) {
-        wikiIcon=Icon::create(QStringList() << ":wiki16.png" << ":wiki32.png");
+        wikiIcon=Icon::create(QList<Icon::File>() << Icon::File(":wiki16.png", 16) << Icon::File(":wiki32.png", 22));
     }
 
     #ifndef Q_OS_WIN

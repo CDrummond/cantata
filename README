@@ -8,29 +8,36 @@ both the code itself, and the GUI are now *very* different to QtMPC.
 Dependencies
 ============
 
-Cantata requires/uses the following libraries:
+Cantata requires the following Qt4 libraries:
 
-1. Qt4
-2. KDElibs4 - if Cantata is not built with KDE4 support, then device support
-   will not be available.
-3. QtWebKit - required for the artist/album information page. If QtWebKit is
-   not found, the page will not be built.
-4. TagLib - required to for the tag edit dialog, and for UMS device support.
-5. LibMTP - required to support MTP devices.
-6. FFMPEG (libavcodec) - used for ReplayGain detection.
-7. SpeexDSP - used by ReplayGain detection code.
-8. MPG123 - used for ReplayGain detection (optional).
+1. QtCore
+2. QtGui
+3. QtNetwork
+4. QtDBus (required ony for Linux builds)
+
+Cantata many also use the following optional libraries:
+
+1. KDElibs4
+2. QtWebKit - uses for the artist/album information page. If QtWebKit is not
+   found, the page will not be built.
+3. TagLib - used for the tag edit dialog, replaygain, track organizerm, and
+   for UMS device support.
+4. LibMTP - used to support MTP devices.
+5. FFMPEG (libavcodec) - used by ReplayGain detection code.
+6. SpeexDSP - used by ReplayGain detection code.
+7. MPG123 - used by ReplayGain detection code.
 
 
 Translations
 ============
 
-Cantata is mainly a KDE-based application, but it can be compiled as Qt only.
-Because of its KDE base, the translation files are based upon KDE's i18n
-framework - these are located with the 'po' folder.
+Cantata started out as a KDE4 application, but as of v0.9.0 all both the KDE
+and Qt-only builds have the same functionality. Because of its KDE base, the
+translation files are based upon KDE's i18n framework - these are located
+within the 'po' folder.
 
-Translations for the Qt-only builds are created from the KDE translations using
-'lconvert'. To work-around issues with plural translations, Qt builds will have
+Translations for Qt-only builds are created from the KDE translations using
+'lconvert'. To work-around issues with plural translations, Qt builds will
 contain extra strings to handle plural forms.
 
 e.g.
@@ -134,25 +141,6 @@ For artist images:
 Downloaded artist images are saved to Cantata's cache folder.
 
 
-Single/Double Click Activation
-==============================
-
-As of 0.8.3 Cantata forces single-click activation of items in the left hand
-pages (e.g. Library view). To revert to having this controlled via the style,
-you need to edit the Cantata config file. For a KDE build this will usually be
-~/.kde/share/config/cantatarc, for a Qt-only build on Linux this will usually
-be ~/.config/cantata/cantata.conf. For a windows build, you will need to use
-regedit and navigate to HKEY_CURRENT_USER/Software/cantata/cantata. The config
-item to be changed is forceSingleClick in the General section. e.g.
-
-    [General]
-    albumFirst=false
-    ...
-    forceSingleClick=true
-    groupMultiple=true
-    ...
-
-
 Amarok Radio Streams
 ====================
 
@@ -169,8 +157,8 @@ Each station *must* be on its own line, and must be all in *one* line.
 script will look for the line starting with "Name="
 
 
-Dynamic Helper Script
-=====================
+Dynamic Helper Script - Local Mode
+==================================
 
 When a dynamic playlist is loaded in Cantata, the cantata-dynamic helper script
 is executed in the background to do the actual song selection. In this way the
@@ -231,7 +219,7 @@ Configuration
 -------------
 
 The server mode has a simple ini-style configuration file, that has the
-following paramters (shown here with the defaulr values):
+following paramters (shown here with the default values):
 
     pidFile=/var/run/cantata-dynamic/pid
     filesDir=/var/lib/mpd/dynamic
@@ -258,10 +246,10 @@ server.
 'httpControlPage' If set to '1' then if you point a browser to
 'http://<host>:<httpPort>' then the script will return a simple web-page
 containing a list of the dyamic rules (which if clicked will become 'active'),
-and a butotn to stop dynamic mode. Set to '0' to disable this page.
+and a button to stop dynamic mode. Set to '0' to disable this page.
 
 'useFirstImage' and 'mpdDir' As the dyanmic script contains a HTTP server, it
-can also be used to server cover images to Cantata. If 'useFirstImage' is set
+can also be used to serve cover images to Cantata. If 'useFirstImage' is set
 to '1', and Cantata requests 'cover.jpg' but neither 'cover.jpg' nor
 'cover.png' exist, then the script will return the first '.jpg' file found in
 the supplied folder. 'mpdDir' is used to specify the root MPD music folder to
@@ -357,7 +345,7 @@ GetCover:
 
 
 In order to detect whether the set of stored rules has changed, a client should
-supp,y the 'statusTime' parameter with the value set to the last 'TIME' value
+supply the 'statusTime' parameter with the value set to the last 'TIME' value
 returned by a 'status' call. (If the client has no current value, use '1') The
 script will then return the current statusTime, as well as the string
 UPDATE_REQUIRED if the client should update its list of playlists (by calling

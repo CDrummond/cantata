@@ -156,6 +156,15 @@ void RemoteFsDevice::remove(Device *dev)
         if (rfs->isConnected()) {
             rfs->unmount();
         }
+        if (constSshfsProtocol==rfs->details.protocol) {
+            QString mp=mountPoint(rfs->details, false);
+            if (!mp.isEmpty()) {
+                QDir d(mp);
+                if (d.exists()) {
+                    d.rmdir(mp);
+                }
+            }
+        }
     }
     dev->deleteLater();
 }

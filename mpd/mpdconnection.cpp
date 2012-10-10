@@ -386,8 +386,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
     DBUG << (void *)(&sock) << "sendCommand:" << command << emitErrors << retry;
 
     if (!isConnected()) {
-        // TODO: 0.9 better error message!!!
-        emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+        emit error(i18n("Failed to send command to %1 - not connected").arg(details.description()), true);
         return Response(false);
     }
 
@@ -397,8 +396,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
             // Failed to connect, so close *both* sockets!
             disconnectFromMPD();
             emit stateChanged(false);
-            // TODO: 0.9 better error message!!!
-            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+            emit error(i18n("Failed to reconnect to %1").arg(details.description()), true);
             return Response(false);
         }
     }
@@ -433,16 +431,14 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
                 } else {
                     disconnectFromMPD();
                     emit stateChanged(false);
-                    // TODO: 0.9 better error message!!!
-                    emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+                    emit error(i18n("Failed to send command. Disconnected from %1").arg(details.description()), true);
                 }
             } else if (!response.getError().isEmpty()) {
                 emit error(response.getError());
             } else {
                 disconnectFromMPD();
                 emit stateChanged(false);
-                // TODO: 0.9 better error message!!!
-                emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+                emit error(i18n("Failed to send command. Disconnected from %1").arg(details.description()), true);
             }
         }
     }
@@ -901,8 +897,7 @@ void MPDConnection::onSocketStateChanged(QAbstractSocket::SocketState socketStat
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);
-            // TODO: 0.9 better error message!!!
-            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+            emit error(i18n("Failed to reconnect to %1").arg(details.description()), true);
         }
         if (QAbstractSocket::ConnectedState==idleSocket.state()) {
             connect(&idleSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
@@ -929,8 +924,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
             // Failed to connect idle socket - so close *both*
             disconnectFromMPD();
             emit stateChanged(false);
-            // TODO: 0.9 better error message!!!
-            emit error(i18n("Connection to %1 failed").arg(details.description()), true);
+            emit error(i18n("Failed to reconnect to %1").arg(details.description()), true);
         }
         return;
     }

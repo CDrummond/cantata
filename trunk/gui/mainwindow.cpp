@@ -311,11 +311,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     smallPlaybackButtonsAction = ActionCollection::get()->createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
     smallControlButtonsAction = ActionCollection::get()->createAction("smallcontrolbuttons", i18n("Small Control Buttons"));
-    connectAction = ActionCollection::get()->createAction("connect",i18n("Connect"));
-    connectAction->setIcon(Icons::connectIcon);
+    connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::connectIcon);
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Connection"), "network-server");
-    outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"));
-    outputsAction->setIcon(Icons::speakerIcon);
+    outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::speakerIcon);
     refreshAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), "media-skip-backward");
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), "media-skip-forward");
@@ -324,8 +322,8 @@ MainWindow::MainWindow(QWidget *parent)
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
     addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
-    addToStoredPlaylistAction = ActionCollection::get()->createAction("addtostoredplaylist", i18n("Add To Playlist"));
-    addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"));
+    addToStoredPlaylistAction = ActionCollection::get()->createAction("addtostoredplaylist", i18n("Add To Playlist"), Icons::playlistIcon);
+    addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::playlistIcon);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     replaygainAction = ActionCollection::get()->createAction("replaygain", i18n("ReplayGain"), "audio-x-generic");
     #endif
@@ -337,19 +335,14 @@ MainWindow::MainWindow(QWidget *parent)
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle"));
     savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), "document-save-as");
-    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), "edit-clear-list");
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
-    if (clearPlayQueueAction->icon().isNull()) {
-        clearPlayQueueAction->setIcon(Icon("edit-delete"));
-    }
-    #endif
+    clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::clearListIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
-    randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"));
-    repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"));
-    singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), 0, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
-    consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), 0, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
-    addWithPriorityAction = ActionCollection::get()->createAction("addwithprio", i18n("Add With Priority"));
-    setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"));
+    randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::shuffleIcon);
+    repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::repeatIcon);
+    singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
+    consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
+    addWithPriorityAction = ActionCollection::get()->createAction("addwithprio", i18n("Add With Priority"), Icon("favorites"));
+    setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
     addPrioHighestAction = ActionCollection::get()->createAction("highestprio", i18n("Highest Priority (255)"));
     addPrioHighAction = ActionCollection::get()->createAction("highprio", i18n("High Priority (200)"));
     addPrioMediumAction = ActionCollection::get()->createAction("mediumprio", i18n("Medium Priority (125)"));
@@ -357,8 +350,7 @@ MainWindow::MainWindow(QWidget *parent)
     addPrioDefaultAction = ActionCollection::get()->createAction("defaultprio", i18n("Default Priority (0)"));
     addPrioCustomAction = ActionCollection::get()->createAction("customprio", i18n("Custom Priority..."));
     #ifdef PHONON_FOUND
-    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), 0, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
-    streamPlayAction->setIcon(Icons::streamIcon);
+    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), Icons::streamIcon, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
     #endif
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
@@ -367,20 +359,15 @@ MainWindow::MainWindow(QWidget *parent)
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
     #endif
     showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), "media-playback-start");
-    libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Library"));
-    albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"));
-    albumsTabAction->setIcon(Icons::albumIcon);
+    libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Library"), Icons::libraryIcon);
+    albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::albumIcon);
     foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), "inode-directory");
-    playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"));
-    playlistsTabAction->setIcon(Icons::playlistIcon);
-    dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"));
-    dynamicTabAction->setIcon(Icons::dynamicIcon);
-    lyricsTabAction = ActionCollection::get()->createAction("showlyricstab", i18n("Lyrics"));
-    lyricsTabAction->setIcon(Icons::lyricsIcon);
-    streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), 0);
-    streamsTabAction->setIcon(Icons::streamIcon);
+    playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::playlistIcon);
+    dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::dynamicIcon);
+    lyricsTabAction = ActionCollection::get()->createAction("showlyricstab", i18n("Lyrics"), Icons::lyricsIcon);
+    streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::streamIcon);
     #ifdef ENABLE_WEBKIT
-    infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"));
+    infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"), Icons::wikiIcon);
     #endif
     serverInfoTabAction = ActionCollection::get()->createAction("showserverinfotab", i18n("Server Info"), "network-server");
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -433,27 +420,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     playbackPlay = Icon::getMediaIcon("media-playback-start");
     playbackPause = Icon::getMediaIcon("media-playback-pause");
-    repeatPlayQueueAction->setIcon(Icons::repeatIcon);
-    randomPlayQueueAction->setIcon(Icons::shuffleIcon);
-    consumePlayQueueAction->setIcon(Icons::consumeIcon);
-    singlePlayQueueAction->setIcon(Icons::singleIcon);
     playPauseTrackAction->setIcon(playbackPlay);
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
-    libraryTabAction->setIcon(Icons::libraryIcon);
-    #ifdef ENABLE_WEBKIT
-    infoTabAction->setIcon(Icons::wikiIcon);
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     copyToDeviceAction->setMenu(DevicesModel::self()->menu());
     #endif
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
-    addToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
     addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
-    addPlayQueueToStoredPlaylistAction->setIcon(playlistsTabAction->icon());
 
     menuButton->setIcon(Icons::configureIcon);
     menuButton->setMenu(mainMenu);
@@ -631,14 +608,12 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addSeparator();
     mainMenu->addMenu(helpMenu());
     #else
-    prefAction=ActionCollection::get()->createAction("configure", i18n("Configure Cantata..."));
+    prefAction=ActionCollection::get()->createAction("configure", i18n("Configure Cantata..."), Icons::configureIcon);
     connect(prefAction, SIGNAL(triggered(bool)),this, SLOT(showPreferencesDialog()));
-    prefAction->setIcon(Icons::configureIcon);
     mainMenu->addAction(prefAction);
     mainMenu->addSeparator();
-    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."));
+    Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), Icons::appIcon);
     connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
-    aboutAction->setIcon(Icons::appIcon);
     mainMenu->addAction(aboutAction);
     #endif
     mainMenu->addSeparator();
@@ -664,8 +639,6 @@ MainWindow::MainWindow(QWidget *parent)
     coverWidget->installEventFilter(new CoverEventHandler(this));
     dynamicLabel->setVisible(false);
 
-    addWithPriorityAction->setIcon(Icon("favorites"));
-    setPriorityAction->setIcon(Icon("favorites"));
     addWithPriorityAction->setVisible(false);
     setPriorityAction->setVisible(false);
     addPrioHighestAction->setData(255);

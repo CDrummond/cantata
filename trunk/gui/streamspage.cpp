@@ -27,7 +27,7 @@
 #include "mpdconnection.h"
 #include "messagebox.h"
 #include "localize.h"
-#include "icon.h"
+#include "icons.h"
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
@@ -48,7 +48,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams"), "document-import");
     exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Streams"), "document-export");
     addAction = ActionCollection::get()->createAction("addstream", i18n("Add Stream"), "list-add");
-    editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), "document-edit");
+    editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::editIcon);
 
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));

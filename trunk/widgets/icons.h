@@ -50,6 +50,8 @@ namespace Icons
     extern Icon playlistIcon;
     extern Icon variousArtistsIcon;
     extern Icon artistIcon;
+    extern Icon editIcon;
+    extern Icon clearListIcon;
 }
 
 #endif

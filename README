@@ -229,8 +229,6 @@ following paramters (shown here with the default values):
     mpdPassword=
     httpPort=6601
     httpControlPage=0
-    useFirstImage=1
-    mpdDir=/var/lib/mpd/music
 
 'filesDir' This controls where the dyamic rules are stored. The user the script
 is run as should have read/write permissions to this folder.
@@ -247,16 +245,6 @@ server.
 'http://<host>:<httpPort>' then the script will return a simple web-page
 containing a list of the dyamic rules (which if clicked will become 'active'),
 and a button to stop dynamic mode. Set to '0' to disable this page.
-
-'useFirstImage' and 'mpdDir' As the dyanmic script contains a HTTP server, it
-can also be used to serve cover images to Cantata. If 'useFirstImage' is set
-to '1', and Cantata requests 'cover.jpg' but neither 'cover.jpg' nor
-'cover.png' exist, then the script will return the first '.jpg' file found in
-the supplied folder. 'mpdDir' is used to specify the root MPD music folder to
-append to any supplied URLs. e.g.
-
-    http://127.0.0.1:6601/Artist/Album/cover.jpg will be looked for as
-    /var/lib/mpd/music/Artist/Album/cover.jpg
 
 
 Installation
@@ -337,11 +325,6 @@ ControlDynamizer:
     Mode:   HTTP POST
     URL:    http://host:port/control
     Params: state={start/stop} [Required]
-
-GetCover:
-    Mode: HTTP GETT
-    URL:  http://host:port/${path}/cover.jpg
-          http://host:port/${path}/cover.png
 
 
 In order to detect whether the set of stored rules has changed, a client should

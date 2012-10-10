@@ -41,14 +41,17 @@ class MessageWidget : public KMessageWidget
 public:
     MessageWidget(QWidget *parent);
     virtual ~MessageWidget();
-    void setError(const QString &msg);
-    void setInformation(const QString &msg);
+    void setError(const QString &msg) { setMessage(msg, true); }
+    void setInformation(const QString &msg) { setMessage(msg, false); }
     void setVisible(bool v);
 
     bool isActive() const { return active; }
 
 Q_SIGNALS:
     void visible(bool);
+
+private:
+    void setMessage(const QString &msg, bool isError);
 
 private:
     bool active;

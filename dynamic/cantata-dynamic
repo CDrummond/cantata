@@ -766,9 +766,7 @@ sub stop() {
 # #####################################
 $filesDir="/var/lib/mpd/dynamic";
 $httpPort=6601;
-$mpdDir="/var/lib/mpd/music";
 $httpControlPage=0;
-$useFirstImage=1;
 $pidFile="/var/run/cantata-dynamic/pid";
 
 # Attempt to load a config file that will specify MPD connection settings and dynamic folder location
@@ -800,14 +798,10 @@ sub loadConfig() {
                         $mpdPort=$val;
                     } elsif ($key=~ m/^(mpdPassword)/) {
                         $mpdPasswd=$val;
-                    } elsif ($key=~ m/^(mpdDir)/) {
-                        $mpdDir=$val;
                     } elsif ($key=~ m/^(httpPort)/) {
                         $httpPort=$val;
                     } elsif ($key=~ m/^(httpControlPage)/) {
                         $httpControlPage=$val;
-                    } elsif ($key=~ m/^(useFirstImage)/) {
-                        $useFirstImage=$val;
                     } elsif ($key=~ m/^(pidFile)/) {
                         $pidFile=$val;
                     }
@@ -946,54 +940,6 @@ sub setActiveRules() {
     }
 }
 
-#
-# Attempt to get a cover file.
-#
-# If we are asked for 'cover.jpg' and neither this nor 'cover.png' exists, then return the first .jpg file in folder
-# Likewise for 'cover.png'
-#
-sub getCoverFile() {
-    my $fileName=uri_unescape(shift);
-    $fileName="${mpdDir}/${fileName}";
-    open(my $fileHandle, $fileName);
-    if (tell($fileHandle) != -1) {
-        binmode($fileHandle);
-        return <$fileHandle>;
-    }
-
-    if (1==$useFirstImage) {
-        my $basename = basename($fileName);
-        my $dirname = dirname($fileName);
-        $dirname =~ s/\/\//\//;
-        my $lookFor = "";
-
-        if ($basename eq 'cover.jpg' && !(-e "${dirname}/cover.png")) {
-            # Requested cover.jpg, and cover.png does not exist - so we know any call to get 'cover.pmg' will fail...
-            # So, return first .jpg file (if any...)
-            $lookFor=".jpg";
-        } elsif ($basename eq 'cover.png' && !(-e "${dirname}/cover.jpg")) {
-            # Similar to the above but for .png...
-            $lookFor=".png";
-        }
-
-        if ($lookFor ne "") {
-            opendir(my $dirHandle, $dirname);
-            my @files = readdir($dirHandle);
-            closedir($dirHandle);
-            foreach my $file (@files) {
-                if ($file=~m/$lookFor$/) {
-                    open(my $fileHandle, "${dirname}/${file}");
-                    if (tell($fileHandle) != -1) {
-                        binmode($fileHandle);
-                        return <$fileHandle>;
-                    }
-                }
-            }
-        }
-    }
-    return "ERROR: Invalid filename";
-}
-
 sub buildControlPage() {
     my $body="<html><head><title>Dynamic Playlists</title></head><body><h2>Dynamic Playlists</h2>"
              . "<p><i>Click on a playlist name to load</i></p>";
@@ -1098,15 +1044,6 @@ sub httpServer() {
                 $response="STATE:${currentStatus}\nRULES:${activeRules}\nTIME:${currentStatusTime}\n";
             } elsif ($request{URL} eq '/list') {
                 $response = join('', &listRules($queryItems{withDetails}));
-            } elsif($mpdDir ne "" && ($request{URL}=~m/.jpg$/ || $request{URL}=~m/.png$/)) {
-                $response = &getCoverFile($request{URL});
-                if (! ($response =~ m/^ERROR/)) {
-                    if ($request{URL}=~m/.jpg$/) {
-                        $responseType="image/jpeg";
-                    } else {
-                        $responseType="image/png";
-                    }
-                }
             } elsif ($request{URL} eq '/' && 1==$httpControlPage) {
                 $responseType="text/html";
                 $response = &buildControlPage();

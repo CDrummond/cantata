@@ -67,22 +67,23 @@ ServerSettings::ServerSettings(QWidget *p)
     saveButton->setIcon(Icon("document-save-as"));
     removeButton->setIcon(Icon("edit-delete"));
 
+    dynamizerPort->setSpecialValueText(i18n("Not Used"));
     #if defined Q_OS_WIN
     hostLabel->setText(i18n("Host:"));
     socketNoteLabel->setVisible(false);
     dynamizerNoteLabel->setText(i18nc("Qt-only, windows",
-                                      "<i><b>NOTE:</b> 'Dynamizer host' and 'Dynamizer port' are only relevant if "
+                                      "<i><b>NOTE:</b> 'Dynamizer port' is only relevant if "
                                       "you wish to make use of 'dynamic playlists'. In order to function, the <code>"
                                       "cantata-dynamic</code> application <b>must</b> already have been installed, "
                                       "and started, on the relevant host - Cantata itself cannot control the "
                                       "starting/stopping of this service.</i>"));
     #else
-    dynamizerNoteLabel->setText(i18n("<i><b>NOTE:</b> 'Dynamizer host' and 'Dynamizer port' are only relevant if "
-                                     "you wish to use a system-wide, or non-local, instance of the Cantata dynamizer. "
+    dynamizerNoteLabel->setText(i18n("<i><b>NOTE:</b> 'Dynamizer port' is only relevant if you wish to use a "
+                                     "system-wide, or non-local, instance of the Cantata dynamizer. "
                                      "For this to function, the <code>"
                                      "cantata-dynamic</code> application <b>must</b> already have been installed, "
                                      "and started, on the relevant host - Cantata itself cannot control the "
-                                     "starting/stopping of this service. If these are not set, then Cantata will "
+                                     "starting/stopping of this service. If this is not set, then Cantata will "
                                      "use a per-user instance of the dynamzier to facilitate dynamic playlists.</i>"));
     #endif
 
@@ -232,8 +233,7 @@ void ServerSettings::setDetails(const MPDConnectionDetails &details)
     port->setValue(details.port);
     password->setText(details.password);
     dir->setText(details.dir);
-    dynamicHost->setText(details.dynamicHost);
-    dynamicPort->setValue(details.dynamicPort);
+    dynamizerPort->setValue(details.dynamizerPort);
     coverName->setText(details.coverName);
 }
 
@@ -246,8 +246,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
     details.password=password->text();
     details.dir=dir->text();
     details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
-    details.dynamicHost=dynamicHost->text().trimmed();
-    details.dynamicPort=dynamicPort->value();
+    details.dynamizerPort=dynamizerPort->value();
     details.coverName=coverName->text().trimmed();
     return details;
 }

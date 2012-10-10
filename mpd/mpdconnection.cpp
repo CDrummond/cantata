@@ -335,7 +335,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
     bool changedDir=det.dir!=details.dir;
     bool diffName=det.name!=details.name;
     bool diffDetails=det!=details;
-    bool diffDynamicUrl=det.dynamicHost!=details.dynamicHost || det.dynamicPort!=details.dynamicPort;
+    bool diffDynamicPort=det.dynamizerPort!=details.dynamizerPort;
 
     details=det;
     if (diffDetails || State_Connected!=state) {
@@ -361,11 +361,11 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
     } else if (diffName) {
          emit stateChanged(true);
     }
-    if (diffDynamicUrl) {
-        if (details.dynamicHost.isEmpty()) {
+    if (diffDynamicPort) {
+        if (details.dynamizerPort<=0) {
             dynamicUrl(QString());
         } else {
-            emit dynamicUrl("http://"+details.dynamicHost+":"+QString::number(details.dynamicPort));
+            emit dynamicUrl("http://"+(details.isLocal() ? "127.0.0.1" : details.hostname)+":"+QString::number(details.dynamizerPort));
         }
     }
     if (changedDir) {

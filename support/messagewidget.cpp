@@ -33,22 +33,19 @@ MessageWidget::~MessageWidget()
 {
 }
 
-void MessageWidget::setError(const QString &msg)
+void MessageWidget::setMessage(const QString &msg, bool isError)
 {
-    setText(msg);
-    setMessageType(Error);
-    if (!parentWidget()->isVisible()) {
-        show();
-        setVisible(true);
-    } else {
-        animatedShow();
+    QString text=msg;
+    if (text.length()>154) {
+        text=text.left(150)+QLatin1String("...");
     }
-}
-
-void MessageWidget::setInformation(const QString &msg)
-{
-    setText(msg);
-    setMessageType(Information);
+    if (msg.length()>500) {
+        setToolTip(msg.left(500)+QLatin1String("..."));
+    } else {
+        setToolTip(msg);
+    }
+    setText(text);
+    setMessageType(isError ? Error : Information);
     if (!parentWidget()->isVisible()) {
         show();
         setVisible(true);

@@ -1106,10 +1106,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
-#ifndef Q_OS_WIN
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (trayItem) {
+    if (trayItem && Settings::self()->minimiseOnClose()) {
         lastPos=pos();
         hide();
         if (event->spontaneous()) {
@@ -1123,7 +1122,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         #endif
     }
 }
-#endif
 
 void MainWindow::showVolumeControl()
 {

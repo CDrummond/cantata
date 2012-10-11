@@ -101,6 +101,7 @@ public:
     QSize mainWindowSize();
     QSize mainWindowCollapsedSize();
     bool useSystemTray();
+    bool minimiseOnClose();
     bool showPopups();
     bool stopOnExit();
     bool stopDynamizerOnExit();
@@ -166,6 +167,7 @@ public:
     void saveMainWindowSize(const QSize &v);
     void saveMainWindowCollapsedSize(const QSize &v);
     void saveUseSystemTray(bool v);
+    void saveMinimiseOnClose(bool v);
     void saveShowPopups(bool v);
     void saveStoreCoversInMpdDir(bool v);
     void saveStoreLyricsInMpdDir(bool v);

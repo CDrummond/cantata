@@ -100,7 +100,6 @@
 #include "timeslider.h"
 #ifndef Q_OS_WIN
 #include "mpris.h"
-#include "dockmanager.h"
 #include "cantataadaptor.h"
 #include "gnomemediakeys.h"
 #ifndef ENABLE_KDE_SUPPORT
@@ -245,7 +244,6 @@ MainWindow::MainWindow(QWidget *parent)
     , infoNeedsUpdating(false)
     #endif
     #if !defined Q_OS_WIN
-    , dock(0)
     , mpris(0)
     , gnomeMediaKeys(0)
     #if !defined ENABLE_KDE_SUPPORT
@@ -867,21 +865,14 @@ MainWindow::MainWindow(QWidget *parent)
     fadeStop=Settings::self()->stopFadeDuration()>Settings::MinFade;
     playlistsPage->refresh();
     #if !defined Q_OS_WIN
-    toggleMpris();
-    if (Settings::self()->dockManager()) {
-        QTimer::singleShot(250, this, SLOT(toggleDockManager()));
-    }
+    mpris=new Mpris(this);
+    connect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));
     #endif
     ActionCollection::get()->readSettings();
 }
 
 MainWindow::~MainWindow()
 {
-    #if !defined Q_OS_WIN
-    if (dock) {
-        dock->setIcon(QString());
-    }
-    #endif
     Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
     Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
@@ -1385,10 +1376,6 @@ void MainWindow::readSettings()
     devicesPage->setView(0==Settings::self()->devicesView());
     #endif
     setupTrayIcon();
-    #if !defined Q_OS_WIN
-    toggleDockManager();
-    toggleMpris();
-    #endif
     autoScrollPlayQueue=Settings::self()->playQueueScroll();
     updateWindowTitle();
     ItemView::setForceSingleClick(Settings::self()->forceSingleClick());
@@ -2776,39 +2763,6 @@ void MainWindow::collapseAll()
         static_cast<QTreeView *>(f)->collapseAll();
     }
 }
-
-#if !defined Q_OS_WIN
-void MainWindow::toggleMpris()
-{
-    bool on=Settings::self()->mpris();
-    if (on) {
-        if (!mpris) {
-            mpris=new Mpris(this);
-            connect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));
-        }
-    } else {
-        if (mpris) {
-            disconnect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));
-            mpris->deleteLater();
-            mpris=0;
-        }
-    }
-}
-
-void MainWindow::toggleDockManager()
-{
-    if (!dock) {
-        dock=new DockManager(this);
-        connect(coverWidget, SIGNAL(coverFile(const QString &)), dock, SLOT(setIcon(const QString &)));
-    }
-
-    bool wasEnabled=dock->enabled();
-    dock->setEnabled(Settings::self()->dockManager());
-    if (dock->enabled() && !wasEnabled && !coverWidget->fileName().isEmpty()) {
-        dock->setIcon(coverWidget->fileName());
-    }
-}
-#endif
 
 #ifdef TAGLIB_FOUND
 void MainWindow::editTags()

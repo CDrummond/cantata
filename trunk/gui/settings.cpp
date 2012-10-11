@@ -275,6 +275,11 @@ bool Settings::useSystemTray()
     return GET_BOOL("useSystemTray", false);
 }
 
+bool Settings::minimiseOnClose()
+{
+    return GET_BOOL("minimiseOnClose", true);
+}
+
 bool Settings::showPopups()
 {
     return GET_BOOL("showPopups", false);
@@ -648,6 +653,13 @@ void Settings::saveUseSystemTray(bool v)
 {
     if (v!=useSystemTray()) {
         SET_VALUE_MOD("useSystemTray", v);
+    }
+}
+
+void Settings::saveMinimiseOnClose(bool v)
+{
+    if (v!=minimiseOnClose()) {
+        SET_VALUE_MOD("minimiseOnClose", v);
     }
 }
 

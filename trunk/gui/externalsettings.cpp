@@ -34,12 +34,17 @@ ExternalSettings::ExternalSettings(QWidget *p)
     gnomeMediaKeys->setVisible(false);
     gnomeMediaKeysLabel->setVisible(false);
     #endif
+    connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
+    connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnCloseLabel, SLOT(setEnabled(bool)));
 };
 
 void ExternalSettings::load()
 {
     systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
     systemTrayPopup->setChecked(Settings::self()->showPopups());
+    minimiseOnClose->setChecked(Settings::self()->minimiseOnClose());
+    minimiseOnClose->setEnabled(systemTrayCheckBox->isChecked());
+    minimiseOnCloseLabel->setEnabled(systemTrayCheckBox->isChecked());
     #ifndef Q_OS_WIN
     gnomeMediaKeys->setChecked(Settings::self()->gnomeMediaKeys());
     #endif
@@ -49,6 +54,7 @@ void ExternalSettings::save()
 {
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
     Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
+    Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
     #ifndef Q_OS_WIN
     Settings::self()->saveGnomeMediaKeys(gnomeMediaKeys->isChecked());
     #endif

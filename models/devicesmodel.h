@@ -26,9 +26,7 @@
 #include <QtCore/QAbstractItemModel>
 #include "song.h"
 #include "config.h"
-#ifdef ENABLE_REMOTE_DEVICES
 #include "remotefsdevice.h"
-#endif
 
 class QMimeData;
 class Device;

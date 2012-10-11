@@ -429,16 +429,6 @@ QStringList Settings::hiddenPages()
     return GET_STRINGLIST("hiddenPages", def);
 }
 
-bool Settings::mpris()
-{
-    return GET_BOOL("mpris", true);
-}
-
-bool Settings::dockManager()
-{
-    return GET_BOOL("dockManager", false);
-}
-
 bool Settings::gnomeMediaKeys()
 {
     return GET_BOOL("gnomeMediaKeys", false);
@@ -842,21 +832,6 @@ void Settings::saveHiddenPages(const QStringList &p)
         SET_VALUE_MOD("hiddenPages", p);
     }
 }
-
-void Settings::saveMpris(bool v)
-{
-    if (v!=mpris()) {
-        SET_VALUE_MOD("mpris", v);
-    }
-}
-
-void Settings::saveDockManager(bool v)
-{
-    if (v!=dockManager()) {
-        SET_VALUE_MOD("dockManager", v);
-    }
-}
-
 
 void Settings::saveGnomeMediaKeys(bool v)
 {

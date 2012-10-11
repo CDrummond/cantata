@@ -127,8 +127,6 @@ public:
     int infoZoom();
     QString page();
     QStringList hiddenPages();
-    bool mpris();
-    bool dockManager();
     bool gnomeMediaKeys();
     #ifdef ENABLE_DEVICES_SUPPORT
     bool overwriteSongs();
@@ -190,8 +188,6 @@ public:
     void saveInfoZoom(int v);
     void savePage(const QString &v);
     void saveHiddenPages(const QStringList &p);
-    void saveMpris(bool v);
-    void saveDockManager(bool v);
     void saveGnomeMediaKeys(bool v);
     #ifdef ENABLE_DEVICES_SUPPORT
     void saveOverwriteSongs(bool v);

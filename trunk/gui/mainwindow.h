@@ -75,7 +75,6 @@ class DevicesPage;
 class QThread;
 class QAbstractItemView;
 #ifndef Q_OS_WIN
-class DockManager;
 class Mpris;
 class GnomeMediaKeys;
 #ifndef ENABLE_KDE_SUPPORT
@@ -315,10 +314,6 @@ public Q_SLOTS:
     }
     void toggleSplitterAutoHide();
     void locateTrack();
-    #if !defined Q_OS_WIN
-    void toggleMpris();
-    void toggleDockManager();
-    #endif
     #ifdef TAGLIB_FOUND
     void editTags();
     void editPlayQueueTags();
@@ -483,13 +478,12 @@ private:
     ServerInfoPage *serverInfoPage;
     QThread *mpdThread;
     #ifndef Q_OS_WIN
-    DockManager *dock;
     Mpris *mpris;
     GnomeMediaKeys *gnomeMediaKeys;
     #ifndef ENABLE_KDE_SUPPORT
     Notify *notify;
     #endif
-    #endif
+    #endif // Q_OS_WIN
     QTimer *playQueueSearchTimer;
     bool usingProxy;
     #ifdef Q_OS_LINUX

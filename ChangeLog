@@ -46,8 +46,8 @@
 25. Fix retrieval of covers from file-system based devices.
 26. Support for modifiable keyboard shortcuts in Qt-only builds. (Code stolen
     from Quassel!)
-27. In windows build, when close button is pressed always terminate the app,
-    even when we have a system tray icon. (Matchs VLC behaviour)
+27. Add option to control whether Cantata should minimise to the notification
+    area when closed (default), or terminate.
 28. Only save settings when modified.
 29. Add option to support GNOME media keys.
 30. Add setting to control name (without extension) of downloaded cover files.

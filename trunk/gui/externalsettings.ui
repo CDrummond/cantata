@@ -43,7 +43,7 @@
    <item row="1" column="0">
     <widget class="BuddyLabel" name="minimiseOnCloseLabel">
      <property name="text">
-      <string>Minimise to notification area when closed:</string>
+      <string>Minimize to notification area when closed:</string>
      </property>
      <property name="buddy">
       <cstring>minimiseOnClose</cstring>

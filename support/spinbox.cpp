@@ -63,6 +63,7 @@ SpinBox::SpinBox(QWidget *p)
         layout->addWidget(decButton);
         layout->addWidget(incButton);
         layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+        connect(spin, SIGNAL(valueChanged(int)), SLOT(checkValue()));
         connect(spin, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
         connect(decButton, SIGNAL(pressed()), SLOT(decPressed()));
         connect(incButton, SIGNAL(pressed()), SLOT(incPressed()));
@@ -83,21 +84,24 @@ void SpinBox::setValue(int v)
 {
     spin->setValue(v);
     if (GtkStyle::mimicWidgets()) {
-        decButton->setEnabled(spin->value()>spin->minimum());
-        incButton->setEnabled(spin->value()<spin->maximum());
+        checkValue();
     }
 }
 
 void SpinBox::incPressed()
 {
     spin->setValue(spin->value()+spin->singleStep());
-    decButton->setEnabled(spin->value()>spin->minimum());
-    incButton->setEnabled(spin->value()<spin->maximum());
+    checkValue();
 }
 
 void SpinBox::decPressed()
 {
     spin->setValue(spin->value()-spin->singleStep());
+    checkValue();
+}
+
+void SpinBox::checkValue()
+{
     decButton->setEnabled(spin->value()>spin->minimum());
     incButton->setEnabled(spin->value()<spin->maximum());
 }

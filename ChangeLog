@@ -58,6 +58,10 @@
 33. Remove setting of dockmanager item to current cover. This is better handled
     by an extrna dockmanager helper script, as per amarok, etc.
 34. Remove option to enable/disable MPRIS interface, and always have enabled.
+35. Disable Phonon stream playback support by default. Currently not all
+    Phonon backends seem to work reliably, and there can be delays between
+    pressing a button (e.g. start) and the action occuring (due to buffering?).
+    To re-enable pass -DDENABLE_PHONON=ON to cmake.
 
 0.8.3.1
 -------

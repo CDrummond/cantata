@@ -14,23 +14,27 @@ The following options may be passed to CMake:
         (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
         Default: all
 
-    -DENABLE_REMOTE_DEVICES=1
+    -DENABLE_REMOTE_DEVICES=ON
         Compile support for sshfs, and local folder, device support.
-        Default: off
+        Default: OFF
 
-    -DENABLE_WEBKIT=1
+    -DENABLE_WEBKIT=OFF
         Compile with WebKit, used for info page.
-        Default: on
+        Default: ON
 
-    -DENABLE_KDE=NO
-        Disable KDE support - not recommended.
-        Default: on
+    -DENABLE_KDE=OFF
+        Disable KDE support
+        Default: ON
+
+    -DENABLE_PHONON=ON
+        Enable support for playnig back MPD HTTP streams via Phonon.
+        Default: OFF
 
 
 Qt-Only
 =======
 1. mkdir build
 2. cd build
-3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_KDE=NO
+3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_KDE=OFF
 4. make
 5. sudo make install

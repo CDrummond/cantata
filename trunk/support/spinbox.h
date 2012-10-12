@@ -86,6 +86,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void incPressed();
     void decPressed();
+    void checkValue();
 
 private:
     bool eventFilter(QObject *obj, QEvent *event);

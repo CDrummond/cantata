@@ -51,16 +51,15 @@ QList<Playlist> MPDParseUtils::parsePlaylists(const QByteArray &data)
 {
     QList<Playlist> playlists;
     QList<QByteArray> lines = data.split('\n');
-    QList<QByteArray> tokens;
 
     int amountOfLines = lines.size();
 
     for (int i = 0; i < amountOfLines; i++) {
-        tokens = lines.at(i).split(':');
+        QList<QByteArray> tokens = lines.at(i).split(':');
 
         if (tokens.at(0) == "playlist") {
             Playlist playlist;
-            playlist.name = tokens.at(1).simplified();
+            playlist.name = QString::fromUtf8(tokens.at(1)).simplified();
             i++;
             tokens = lines.at(i).split(':');
 
@@ -398,7 +397,6 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
 DirViewItemRoot * MPDParseUtils::parseDirViewItems(const QByteArray &data)
 {
     QList<QByteArray> lines = data.split('\n');
-
     DirViewItemRoot * rootItem = new DirViewItemRoot;
     DirViewItem * currentDir = rootItem;
     QStringList currentDirList;

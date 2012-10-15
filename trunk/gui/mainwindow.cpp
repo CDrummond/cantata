@@ -2212,10 +2212,11 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name)
 void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
 {
     if (pq) {
-        const QModelIndexList items = playQueue->selectedIndexes();
+        QModelIndexList items = playQueue->selectedIndexes();
         if (!items.isEmpty()) {
             QStringList files;
 
+            qSort(items);
             foreach (const QModelIndex &idx, items) {
                 Song s = playQueueModel.getSongByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
                 if (!s.file.isEmpty()) {

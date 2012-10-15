@@ -21,7 +21,7 @@
     <widget class="ItemView" name="view"/>
    </item>
    <item row="1" column="0">
-    <widget class="QComboBox" name="genreCombo"/>
+    <widget class="GenreCombo" name="genreCombo"/>
    </item>
    <item row="1" column="1">
     <widget class="QToolButton" name="menuButton"/>
@@ -41,6 +41,11 @@
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GenreCombo</class>
+   <extends>QComboBox</extends>
+   <header>genrecombo.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

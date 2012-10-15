@@ -85,7 +85,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
     connect(MPDConnection::self(), SIGNAL(databaseUpdated()), this, SLOT(databaseUpdated()));
-    connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
+    connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -94,7 +94,6 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->setTopText(i18n("Library"));
     view->setModel(&proxy);
     view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
-    updateGenres(QSet<QString>());
 }
 
 LibraryPage::~LibraryPage()
@@ -293,37 +292,4 @@ void LibraryPage::controlActions()
     mw->copyToDeviceAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #endif
     #endif // TAGLIB_FOUND
-}
-
-void LibraryPage::updateGenres(const QSet<QString> &g)
-{
-    if (genreCombo->count() && g==genres) {
-        return;
-    }
-
-    genres=g;
-    QStringList entries=g.toList();
-    qSort(entries);
-    entries.prepend(i18n("All Genres"));
-
-    QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
-
-    genreCombo->clear();
-    genreCombo->addItems(entries);
-    if (0==genres.count()) {
-        genreCombo->setCurrentIndex(0);
-    } else {
-        if (!currentFilter.isEmpty()) {
-            bool found=false;
-            for (int i=1; i<genreCombo->count() && !found; ++i) {
-                if (genreCombo->itemText(i) == currentFilter) {
-                    genreCombo->setCurrentIndex(i);
-                    found=true;
-                }
-            }
-            if (!found) {
-                genreCombo->setCurrentIndex(0);
-            }
-        }
-    }
 }

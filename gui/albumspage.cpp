@@ -24,6 +24,7 @@
 #include "albumspage.h"
 #include "mpdconnection.h"
 #include "covers.h"
+#include "musiclibrarymodel.h"
 #include "musiclibraryitemsong.h"
 #include "albumsmodel.h"
 #include "localize.h"
@@ -75,6 +76,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     view->setModel(&proxy);
     view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
 
+    connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
@@ -82,7 +84,6 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
-    updateGenres(QSet<QString>());
 }
 
 AlbumsPage::~AlbumsPage()
@@ -223,37 +224,4 @@ void AlbumsPage::controlActions()
     mw->copyToDeviceAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #endif
     #endif // TAGLIB_FOUND
-}
-
-void AlbumsPage::updateGenres(const QSet<QString> &g)
-{
-    if (genreCombo->count() && g==genres) {
-        return;
-    }
-
-    genres=g;
-    QStringList entries=g.toList();
-    qSort(entries);
-    entries.prepend(i18n("All Genres"));
-
-    QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
-
-    genreCombo->clear();
-    genreCombo->addItems(entries);
-    if (0==genres.count()) {
-        genreCombo->setCurrentIndex(0);
-    } else {
-        if (!currentFilter.isEmpty()) {
-            bool found=false;
-            for (int i=1; i<genreCombo->count() && !found; ++i) {
-                if (genreCombo->itemText(i) == currentFilter) {
-                    genreCombo->setCurrentIndex(i);
-                    found=true;
-                }
-            }
-            if (!found) {
-                genreCombo->setCurrentIndex(0);
-            }
-        }
-    }
 }

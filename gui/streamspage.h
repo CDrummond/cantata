@@ -62,7 +62,6 @@ private Q_SLOTS:
     void edit();
     void searchItems();
     void itemDoubleClicked(const QModelIndex &index);
-    void updateGenres(const QSet<QString> &g);
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
@@ -77,7 +76,6 @@ private:
     Action *editAction;
     StreamsModel model;
     StreamsProxyModel proxy;
-    QSet<QString> genres;
     MainWindow *mw;
 };
 

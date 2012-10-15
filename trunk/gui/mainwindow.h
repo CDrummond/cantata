@@ -32,7 +32,6 @@
 #include <KDE/KXmlGuiWindow>
 #else
 #include <QtGui/QMainWindow>
-#include <QtGui/QSystemTrayIcon>
 #endif
 #include <QtGui/QMenu>
 #include <QtGui/QProxyStyle>
@@ -49,12 +48,6 @@
 #include "config.h"
 #ifdef PHONON_FOUND
 #include <phonon/mediaobject.h>
-#endif
-
-#ifdef ENABLE_KDE_SUPPORT
-class KStatusNotifierItem;
-class KMenu;
-class KNotification;
 #endif
 
 class Action;
@@ -77,15 +70,13 @@ class QAbstractItemView;
 #ifndef Q_OS_WIN
 class Mpris;
 class GnomeMediaKeys;
-#ifndef ENABLE_KDE_SUPPORT
-class Notify;
-#endif // !defined ENABLE_KDE_SUPPORT
 #endif // !defined Q_OS_WIN
 class QTimer;
 class QPropertyAnimation;
 class QActionGroup;
 class QDateTime;
 class VolumeControl;
+class TrayItem;
 
 // Dummy class so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget
@@ -275,12 +266,6 @@ public Q_SLOTS:
     void addToExistingStoredPlaylist(const QString &name, bool pq);
     void removeItems();
     void checkMpdAccessibility();
-    #ifdef ENABLE_KDE_SUPPORT
-    void trayItemScrollRequested(int delta, Qt::Orientation orientation);
-    void notificationClosed();
-    #else
-    void trayItemClicked(QSystemTrayIcon::ActivationReason reason);
-    #endif
     void cropPlayQueue();
     void updatePlayQueueStats(int songs, quint32 time);
     void copyTrackInfo();
@@ -441,14 +426,7 @@ private:
     Action *smallPlaybackButtonsAction;
     Action *smallControlButtonsAction;
     QAction *autoHideSplitterAction;
-    #ifdef ENABLE_KDE_SUPPORT
-    KStatusNotifierItem *trayItem;
-    KMenu *trayItemMenu;
-    KNotification *notification;
-    #else
-    QSystemTrayIcon *trayItem;
-    QMenu *trayItemMenu;
-    #endif
+    TrayItem *trayItem;
     QMenu *playbackBtnsMenu;
     QMenu *controlBtnsMenu;
     QPoint lastPos;
@@ -478,9 +456,6 @@ private:
     #ifndef Q_OS_WIN
     Mpris *mpris;
     GnomeMediaKeys *gnomeMediaKeys;
-    #ifndef ENABLE_KDE_SUPPORT
-    Notify *notify;
-    #endif
     #endif // Q_OS_WIN
     QTimer *playQueueSearchTimer;
     bool usingProxy;
@@ -515,6 +490,7 @@ private:
 
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
+    friend class TrayItem;
     friend class LibraryPage;
     friend class AlbumsPage;
     friend class FolderPage;

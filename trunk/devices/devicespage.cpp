@@ -119,7 +119,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     //menu->addAction(sep);
     //menu->addAction(p->deleteSongsAction);
     menuButton->setMenu(menu);
-    menuButton->setIcon(QIcon::fromTheme("system-run"));
+    menuButton->setIcon(Icons::menuIcon);
     proxy.setSourceModel(DevicesModel::self());
     view->setTopText(i18n("Devices"));
     view->setModel(&proxy);

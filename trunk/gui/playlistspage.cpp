@@ -27,7 +27,7 @@
 #include "messagebox.h"
 #include "inputdialog.h"
 #include "localize.h"
-#include "icon.h"
+#include "icons.h"
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
@@ -89,7 +89,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     menu->addAction(p->removeAction);
     menu->addAction(renamePlaylistAction);
     menuButton->setMenu(menu);
-    menuButton->setIcon(Icon("system-run"));
+    menuButton->setIcon(Icons::menuIcon);
     updateGenres(QSet<QString>());
 }
 

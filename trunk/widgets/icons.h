@@ -52,6 +52,7 @@ namespace Icons
     extern Icon artistIcon;
     extern Icon editIcon;
     extern Icon clearListIcon;
+    extern Icon menuIcon;
 }
 
 #endif

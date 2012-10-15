@@ -118,6 +118,7 @@ Icon Icons::variousArtistsIcon;
 Icon Icons::artistIcon;
 Icon Icons::editIcon;
 Icon Icons::clearListIcon;
+Icon Icons::menuIcon;
 
 void Icons::init()
 {
@@ -140,6 +141,7 @@ void Icons::init()
     artistIcon=Icon("view-media-artist");
     editIcon=Icon("document-edit");
     clearListIcon=Icon("edit-clear-list");
+    menuIcon=Icon("system-run");
     #ifndef ENABLE_KDE_SUPPORT
     appIcon=Icon::create(QList<Icon::File>() << Icon::File(":cantata.svg") << Icon::File(":cantata16.png", 16) << Icon::File(":cantata22.png", 22)
                                              << Icon::File(":cantata32.png", 32) << Icon::File(":cantata48.png", 48) << Icon::File(":cantata64.png", 64));
@@ -217,4 +219,3 @@ void Icons::init()
     #endif // Q_OS_WIN
     #endif // ENABLE_KDE_SUPPORT
 }
-

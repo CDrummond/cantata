@@ -70,7 +70,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     menu->addAction(importAction);
     menu->addAction(exportAction);
     menuButton->setMenu(menu);
-    menuButton->setIcon(Icon("system-run"));
+    menuButton->setIcon(Icons::menuIcon);
     Icon::init(replacePlayQueue);
 
     view->setTopText(i18n("Streams"));

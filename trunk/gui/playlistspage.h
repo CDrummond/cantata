@@ -42,7 +42,7 @@ public:
     void updateRows();
     void refresh();
     void clear();
-    QStringList selectedFiles() const;
+    //QStringList selectedFiles() const;
     void addSelectionToPlaylist(bool replace, quint8 priorty=0);
     void setView(int mode);
     void focusSearch() { view->focusSearch(); }

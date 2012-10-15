@@ -123,21 +123,22 @@ void PlaylistsPage::clear()
     PlaylistsModel::self()->clear();
 }
 
-QStringList PlaylistsPage::selectedFiles() const
-{
-    const QModelIndexList &indexes=view->selectedIndexes();
-
-    if (0==indexes.size()) {
-        return QStringList();
-    }
-
-    QModelIndexList mapped;
-    foreach (const QModelIndex &idx, indexes) {
-        mapped.append(proxy.mapToSource(idx));
-    }
-
-    return PlaylistsModel::self()->filenames(mapped, true);
-}
+//QStringList PlaylistsPage::selectedFiles() const
+//{
+//    QModelIndexList indexes=view->selectedIndexes();
+//
+//    if (0==indexes.size()) {
+//        return QStringList();
+//    }
+//    qSort(indexes);
+//
+//    QModelIndexList mapped;
+//    foreach (const QModelIndex &idx, indexes) {
+//        mapped.append(proxy.mapToSource(idx));
+//    }
+//
+//    return PlaylistsModel::self()->filenames(mapped, true);
+//}
 
 void PlaylistsPage::addSelectionToPlaylist(bool replace, quint8 priorty)
 {

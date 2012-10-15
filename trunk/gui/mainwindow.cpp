@@ -688,7 +688,6 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
-    connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), albumsPage, SLOT(updateGenres(const QSet<QString> &)));
     connect(addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
     connect(addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
     connect(addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));

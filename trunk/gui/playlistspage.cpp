@@ -45,7 +45,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
+    connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
 
     Icon::init(replacePlayQueue);
     Icon::init(libraryUpdate);
@@ -90,7 +90,6 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     menu->addAction(renamePlaylistAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(Icons::menuIcon);
-    updateGenres(QSet<QString>());
 }
 
 PlaylistsPage::~PlaylistsPage()
@@ -331,37 +330,4 @@ void PlaylistsPage::searchItems()
 void PlaylistsPage::updated(const QModelIndex &index)
 {
     view->updateRows(proxy.mapFromSource(index));
-}
-
-void PlaylistsPage::updateGenres(const QSet<QString> &g)
-{
-    if (genreCombo->count() && g==genres) {
-        return;
-    }
-
-    genres=g;
-    QStringList entries=g.toList();
-    qSort(entries);
-    entries.prepend(i18n("All Genres"));
-
-    QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
-
-    genreCombo->clear();
-    genreCombo->addItems(entries);
-    if (0==genres.count()) {
-        genreCombo->setCurrentIndex(0);
-    } else {
-        if (!currentFilter.isEmpty()) {
-            bool found=false;
-            for (int i=1; i<genreCombo->count() && !found; ++i) {
-                if (genreCombo->itemText(i) == currentFilter) {
-                    genreCombo->setCurrentIndex(i);
-                    found=true;
-                }
-            }
-            if (!found) {
-                genreCombo->setCurrentIndex(0);
-            }
-        }
-    }
 }

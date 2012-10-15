@@ -60,7 +60,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(importAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(&model, SIGNAL(updateGenres(const QSet<QString> &)), SLOT(updateGenres(const QSet<QString> &)));
+    connect(&model, SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     Icon::init(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
@@ -84,7 +84,6 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->setModel(&proxy);
     view->setDeleteAction(p->removeAction);
     view->init(p->replacePlayQueueAction, 0);
-    updateGenres(QSet<QString>());
 }
 
 StreamsPage::~StreamsPage()
@@ -147,39 +146,6 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
         QModelIndexList indexes;
         indexes.append(index);
         addItemsToPlayQueue(indexes, false);
-    }
-}
-
-void StreamsPage::updateGenres(const QSet<QString> &g)
-{
-    if (genreCombo->count() && g==genres) {
-        return;
-    }
-
-    genres=g;
-    QStringList entries=g.toList();
-    qSort(entries);
-    entries.prepend(i18n("All Genres"));
-
-    QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
-
-    genreCombo->clear();
-    genreCombo->addItems(entries);
-    if (0==genres.count()) {
-        genreCombo->setCurrentIndex(0);
-    } else {
-        if (!currentFilter.isEmpty()) {
-            bool found=false;
-            for (int i=1; i<genreCombo->count() && !found; ++i) {
-                if (genreCombo->itemText(i) == currentFilter) {
-                    genreCombo->setCurrentIndex(i);
-                    found=true;
-                }
-            }
-            if (!found) {
-                genreCombo->setCurrentIndex(0);
-            }
-        }
     }
 }
 
@@ -406,7 +372,7 @@ QStringList StreamsPage::getCategories()
 
 QStringList StreamsPage::getGenres()
 {
-    QStringList g=genres.toList();
+    QStringList g=genreCombo->entries().toList();
     qSort(g);
     return g;
 }

@@ -141,7 +141,7 @@ void Icons::init()
     artistIcon=Icon("view-media-artist");
     editIcon=Icon("document-edit");
     clearListIcon=Icon("edit-clear-list");
-    menuIcon=Icon("system-run");
+    menuIcon=Icon("cantata-menubutton");
     #ifndef ENABLE_KDE_SUPPORT
     appIcon=Icon::create(QList<Icon::File>() << Icon::File(":cantata.svg") << Icon::File(":cantata16.png", 16) << Icon::File(":cantata22.png", 22)
                                              << Icon::File(":cantata32.png", 32) << Icon::File(":cantata48.png", 48) << Icon::File(":cantata64.png", 64));
@@ -215,6 +215,12 @@ void Icons::init()
     }
     if (clearListIcon.isNull()) {
         clearListIcon=Icon("edit-delete");
+    }
+    if (menuIcon.isNull()) {
+        menuIcon.addFile(":menu16.png");
+        menuIcon.addFile(":menu22.png");
+        menuIcon.addFile(":menu32.png");
+        menuIcon.addFile(":menu48.png");
     }
     #endif // Q_OS_WIN
     #endif // ENABLE_KDE_SUPPORT

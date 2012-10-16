@@ -35,6 +35,10 @@ MessageWidget::~MessageWidget()
 
 void MessageWidget::setMessage(const QString &msg, bool isError)
 {
+    if (msg.isEmpty() && isVisible()) {
+        setVisible(false);
+        return;
+    }
     QString text=msg;
     if (text.length()>154) {
         text=text.left(150)+QLatin1String("...");

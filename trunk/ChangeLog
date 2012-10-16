@@ -64,6 +64,7 @@
     To re-enable pass -DDENABLE_PHONON=ON to cmake.
 36. Handle UTF-8 playlist names.
 37. Sort selected playqueue indexes before adding to stored playlist.
+38. Update 'Add To Playlist' menu when rename a playlist.
 
 0.8.3.1
 -------

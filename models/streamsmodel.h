@@ -92,7 +92,7 @@ public:
     bool entryExists(const QString &cat, const QString &name, const QUrl &url=QUrl()) { return entryExists(getCategory(cat), name, url); }
     Qt::ItemFlags flags(const QModelIndex &index) const;
     bool validProtocol(const QString &file) const;
-    QStringList filenames(const QModelIndexList &indexes) const;
+    QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void mark(const QList<int> &rows, bool f);
     void updateGenres();

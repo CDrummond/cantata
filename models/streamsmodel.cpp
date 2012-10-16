@@ -533,7 +533,15 @@ bool StreamsModel::validProtocol(const QString &file) const
     return scheme.isEmpty() || handlers.contains(scheme);
 }
 
-QStringList StreamsModel::filenames(const QModelIndexList &indexes) const
+static QString prefixName(const QString &n, bool addPrefix)
+{
+    if (!addPrefix || !n.startsWith("http:")) {
+        return n;
+    }
+    return QLatin1String("cantata-")+n;
+}
+
+QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPrefix) const
 {
     QStringList fnames;
     QSet<Item *> selectedCategories;
@@ -545,13 +553,13 @@ QStringList StreamsModel::filenames(const QModelIndexList &indexes) const
             foreach (const StreamItem *s, static_cast<CategoryItem*>(item)->streams) {
                 QString f=s->url.toString();
                 if (!fnames.contains(f) && validProtocol(f)) {
-                    fnames << f;
+                    fnames << prefixName(f, addPrefix);
                 }
             }
         } else if (!selectedCategories.contains(static_cast<StreamItem*>(item)->parent)) {
             QString f=static_cast<StreamItem*>(item)->url.toString();
             if (!fnames.contains(f) && validProtocol(f)) {
-                fnames << f;
+                fnames << prefixName(f, addPrefix);
             }
         }
     }
@@ -562,7 +570,7 @@ QStringList StreamsModel::filenames(const QModelIndexList &indexes) const
 QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
-    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes));
+    PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes, true));
     return mimeData;
 }
 

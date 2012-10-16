@@ -166,6 +166,7 @@ void StreamFetcher::get(const QStringList &items, int insertRow, bool replace, q
         return;
     }
 
+    cancel();
     todo=items;
     done.clear();
     row=insertRow;
@@ -186,12 +187,9 @@ void StreamFetcher::doNext()
         current=todo.takeFirst();
         QUrl u(current);
 
-        if (QLatin1String("http")==u.scheme()
-            #ifdef TAGLIB_FOUND
-            && !HttpServer::self()->isOurs(current)
-            #endif
-            ) {
+        if (QLatin1String("cantata-http")==u.scheme()) {
             data.clear();
+            u.setScheme("http");
             job=manager->get(u);
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
             connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));

@@ -7,8 +7,8 @@
  3. Add support for 'Similar Artists' in dynamic mode.
  4. Add a gui setting to control the enforcement of single-click.
  5. When sorting tracks, sort on duration after sorting on name, title, and
-    genre. This way if tracks do not have a tack number, disc, year, etc, then
-    we will sort on the name/title before duraiton.
+    genre. This way if tracks do not have a track number, disc, year, etc, then
+    we will sort on the name/title before duration.
  6. When refreshing DB, make sure Albums view is at top level.
  7. Set Artist, AlbumArtist, and Album of cue files to that of assigned album.
  8. Improve item-view mouse over for Gtk+ style - when hovering, draw selection
@@ -42,7 +42,7 @@
     per other views.
 23. Fix image/icon size, and spacing issues, in sync dialog when the library
     view is set to use icon/list style.
-24. Add 'Add to playlist' action to playqueue context menu.
+24. Add 'Add To Playlist' action to playqueue context menu.
 25. Fix retrieval of covers from file-system based devices.
 26. Support for modifiable keyboard shortcuts in Qt-only builds. (Code stolen
     from Quassel!)
@@ -56,7 +56,7 @@
 32. Truncate error messages to 150 characters. Set message (up to 500
     characters) as tooltip of message widget.
 33. Remove setting of dockmanager item to current cover. This is better handled
-    by an extrna dockmanager helper script, as per amarok, etc.
+    by an external dockmanager helper script, as per amarok, etc.
 34. Remove option to enable/disable MPRIS interface, and always have enabled.
 35. Disable Phonon stream playback support by default. Currently not all
     Phonon backends seem to work reliably, and there can be delays between

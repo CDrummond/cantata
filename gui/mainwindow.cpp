@@ -28,16 +28,11 @@
 #include <QtCore/QString>
 #include <QtCore/QTimer>
 #include <QtCore/QThread>
-#include <QtCore/QSocketNotifier>
-#include <QtCore/QFile>
 #include <QtGui/QClipboard>
 #include <QtGui/QProxyStyle>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kdeversion.h>
-#if KDE_IS_VERSION(4, 9, 0) && defined TAGLIB_FOUND
-#define USE_SOLID_FOR_MTAB_CHANGE_MONITOR
-#endif
 #include "mediadevicecache.h"
 #include <KDE/KApplication>
 #include <KDE/KAction>
@@ -101,6 +96,7 @@
 #include "mpris.h"
 #include "cantataadaptor.h"
 #include "gnomemediakeys.h"
+#include "mountpoints.h"
 #endif
 #include "dynamicpage.h"
 #include "dynamic.h"
@@ -796,18 +792,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
     #ifdef Q_OS_LINUX
-    #if defined USE_SOLID_FOR_MTAB_CHANGE_MONITOR
-    connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(checkMpdAccessibility()));
-    connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(checkMpdAccessibility()));
-    #else
-    QFile *mtab=new QFile("/proc/mounts", this);
-    if (mtab && mtab->open(QIODevice::ReadOnly)) {
-        QSocketNotifier *notifier = new QSocketNotifier(mtab->handle(), QSocketNotifier::Exception, mtab);
-        connect(notifier,  SIGNAL(activated(int)), this, SLOT(checkMpdAccessibility()) );
-    } else if (mtab) {
-        mtab->deleteLater();
-    }
-    #endif // USE_SOLID_FOR_MTAB_CHANGE_MONITOR
+    connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
     #endif // Q_OS_LINUX
 
     if (!playQueueInSidebar) {

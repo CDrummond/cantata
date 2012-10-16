@@ -26,5 +26,9 @@
 <file alias="lib32.png">icons/hi32-action-cantata-view-media-library.png</file>
 <file alias="wiki16.png">icons/hi16-action-cantata-view-wikipedia.png</file>
 <file alias="wiki32.png">icons/hi32-action-cantata-view-wikipedia.png</file>
+<file alias="menu16.png">icons/hi16-action-cantata-menubutton.png</file>
+<file alias="menu22.png">icons/hi22-action-cantata-menubutton.png</file>
+<file alias="menu32.png">icons/hi32-action-cantata-menubutton.png</file>
+<file alias="menu48.png">icons/hi48-action-cantata-menubutton.png</file>
 </qresource>
 </RCC>

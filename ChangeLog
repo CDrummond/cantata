@@ -65,6 +65,9 @@
 36. Handle UTF-8 playlist names.
 37. Sort selected playqueue indexes before adding to stored playlist.
 38. Update 'Add To Playlist' menu when rename a playlist.
+39. Only need to download/parse streams (to check if they are a playlist) when
+    added from the streams page. (Streams in an MPD playlist will not be
+    playlists themselves, as MPD does not support this.)
 
 0.8.3.1
 -------

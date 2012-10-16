@@ -127,8 +127,11 @@ void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool repla
         return;
     }
 
+    QModelIndexList sorted=indexes;
+    qSort(sorted);
+
     QModelIndexList mapped;
-    foreach (const QModelIndex &idx, indexes) {
+    foreach (const QModelIndex &idx, sorted) {
         mapped.append(proxy.mapToSource(idx));
     }
 

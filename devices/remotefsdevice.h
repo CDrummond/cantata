@@ -25,7 +25,6 @@
 #define REMOTEFSDEVICE_H
 
 #include "fsdevice.h"
-#include <sys/types.h>
 #include <QtCore/QUrl>
 
 class QProcess;
@@ -109,7 +108,8 @@ protected Q_SLOTS:
     void procFinished(int exitCode);
 
 protected:
-    mutable time_t lastCheck;
+    mutable int mountToken;
+    mutable bool currentMountStatus;
     Details details;
     QProcess *proc;
 //     QString audioFolderSetting;

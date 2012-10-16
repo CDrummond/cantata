@@ -18,12 +18,6 @@
     - MTP has no access to other tags, so when converting back, how would I
       know this is a compilation?
   - Allow to drag songs from albums/library to devices, and vice versa.
-  - Detect AudioCDs
-    - call audex/kaudiocoverter/soundKonverter/k3b?
-    - or list via audiocd:// ???
-
-- Dynamic
-  - Port helper to c++?
 
 Lyrics
   - Add support for reading via tags in mp4, flac, and ogg files.
@@ -38,4 +32,3 @@ Lyrics
     - Not sure, would need support in cantata-dynamic
   - mpdscribble management?
   - Combine 'Page' classes
-  - Better menu icon?

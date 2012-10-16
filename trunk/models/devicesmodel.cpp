@@ -41,8 +41,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>
 #ifdef ENABLE_REMOTE_DEVICES
-#include <QtCore/QFile>
-#include <QtCore/QSocketNotifier>
+#include "mountpoints.h"
 #endif
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
@@ -74,13 +73,7 @@ DevicesModel::DevicesModel(QObject *parent)
     connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
     updateItemMenu();
     #ifdef ENABLE_REMOTE_DEVICES
-    QFile *mtab=new QFile("/proc/mounts", this);
-    if (mtab && mtab->open(QIODevice::ReadOnly)) {
-        QSocketNotifier *notifier = new QSocketNotifier(mtab->handle(), QSocketNotifier::Exception, mtab);
-        connect(notifier,  SIGNAL(activated(int)), this, SLOT(checkRemoteDevices()) );
-    } else if (mtab) {
-        mtab->deleteLater();
-    }
+    connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkRemoteDevices()));
     #endif
 }
 

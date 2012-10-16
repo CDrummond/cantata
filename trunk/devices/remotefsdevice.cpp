@@ -30,6 +30,7 @@
 #include "httpserver.h"
 #include "localize.h"
 #include "settings.h"
+#include "mountpoints.h"
 #include <QtCore/QTimer>
 #include <QtCore/QProcess>
 #include <QtCore/QDir>
@@ -40,7 +41,7 @@
 #endif
 #include <stdio.h>
 #include <unistd.h>
-#include <QtCore/QDebug>
+
 const QLatin1String RemoteFsDevice::constSshfsProtocol("sshfs");
 static const QLatin1String constCfgPrefix("RemoteFsDevice-");
 static const QLatin1String constCfgKey("remoteFsDevices");
@@ -195,7 +196,8 @@ void RemoteFsDevice::renamed(const QString &oldName, const QString &newName)
 
 RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d)
     : FsDevice(m, d.name)
-    , lastCheck(0)
+    , mountToken(0)
+    , currentMountStatus(false)
     , details(d)
     , proc(0)
 {
@@ -208,7 +210,8 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const Devi
 
 RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
     : FsDevice(m, d.name)
-    , lastCheck(0)
+    , mountToken(0)
+    , currentMountStatus(false)
     , details(d)
     , proc(0)
 {
@@ -354,6 +357,9 @@ bool RemoteFsDevice::isConnected() const
        return false;
     }
 
+    if (mountToken==MountPoints::self()->currentToken()) {
+        return currentMountStatus;
+    }
     QString mp=mountPoint(details, false);
     if (mp.isEmpty()) {
         clear();
@@ -367,24 +373,11 @@ bool RemoteFsDevice::isConnected() const
     if (mp.endsWith('/')) {
         mp=mp.left(mp.length()-1);
     }
-    #ifdef ENABLE_KDE_SUPPORT
-    KMountPoint::List list=KMountPoint::currentMountPoints();
-    foreach (KMountPoint::Ptr p, list) {
-        if (p->mountPoint()==mp) {
-            return true;
-        }
+    mountToken=MountPoints::self()->currentToken();
+    currentMountStatus=MountPoints::self()->isMounted(mp);
+    if (currentMountStatus) {
+        return true;
     }
-    #else
-    QFile mtab("/proc/mounts");
-    if (mtab.open(QIODevice::ReadOnly)) {
-        while (!mtab.atEnd()) {
-            QStringList parts = QString(mtab.readLine()).split(' ');
-            if (parts.size()>=2 && parts.at(1)==mp) {
-                return true;
-            }
-        }
-    }
-    #endif
     clear();
     return false;
 }

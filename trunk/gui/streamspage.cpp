@@ -135,7 +135,7 @@ void StreamsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool repla
         mapped.append(proxy.mapToSource(idx));
     }
 
-    QStringList files=model.filenames(mapped);
+    QStringList files=model.filenames(mapped, true);
 
     if (!files.isEmpty()) {
         emit add(files, replace, priorty);

@@ -530,11 +530,12 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
 void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, quint8 priority)
 {
     bool haveHttp=false;
+    QStringList parsed;
 
     foreach (const QString &f, items) {
         QUrl u(f);
 
-        if (u.scheme()=="http") {
+        if (u.scheme()=="cantata-http") {
             haveHttp=true;
             break;
         }

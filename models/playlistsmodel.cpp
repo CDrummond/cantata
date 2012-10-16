@@ -691,6 +691,7 @@ void PlaylistsModel::playlistRenamed(const QString &from, const QString &to)
 
     if (pl) {
         pl->name=to;
+        updateItemMenu();
     }
 }
 

@@ -304,7 +304,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         #ifdef ENABLE_REMOTE_DEVICES
         if (MusicLibraryItem::Type_Root==item->itemType() && Device::RemoteFs==static_cast<Device *>(item)->devType() &&
             static_cast<Device *>(item)->supportsDisconnect()) {
-            return static_cast<Device *>(item)->isConnected() ? Icons::connectIcon : Icons::disconnectIcon;
+            return static_cast<Device *>(item)->isConnected() ? Icons::disconnectIcon : Icons::connectIcon;
         }
         #endif
         return QVariant();

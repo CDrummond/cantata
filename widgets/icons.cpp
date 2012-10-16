@@ -56,7 +56,7 @@ static QPixmap createConsumeIconPixmap(int size, QColor &col, double opacity)
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
     QPainter p(&pix);
-    p.setPen(QPen(col, 1.5));
+    p.setPen(QPen(col, size/10.0));
     p.setOpacity(opacity);
     p.setRenderHint(QPainter::Antialiasing, true);
     QRectF rect(2.5, 2.5, size-4, size-4);

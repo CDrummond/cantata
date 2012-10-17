@@ -266,18 +266,8 @@ void PlaylistsPage::addItemsToPlayQueue(const QModelIndexList &indexes, bool rep
         PlaylistsModel::Item *item=static_cast<PlaylistsModel::Item *>(idx.internalPointer());
 
         if (item->isPlaylist()) {
-            bool loadable=true;
-            foreach (const PlaylistsModel::SongItem *s, static_cast<PlaylistsModel::PlaylistItem*>(item)->songs) {
-                if (s->file.startsWith("http:/")) {
-                    loadable=false; // Can't just load playlist, might need to parse HTTP...
-                    break;
-                }
-            }
-
-            if (loadable) {
-                emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name, replace);
-                return;
-            }
+            emit loadPlaylist(static_cast<PlaylistsModel::PlaylistItem*>(item)->name, replace);
+            return;
         }
     }
     QModelIndexList sorted=indexes;

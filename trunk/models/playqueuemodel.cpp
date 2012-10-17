@@ -110,6 +110,7 @@ QString PlayQueueModel::headerText(int col)
 PlayQueueModel::PlayQueueModel(QObject *parent)
     : QAbstractItemModel(parent)
     , currentSongId(-1)
+    , currentSongRowNum(-1)
     , mpdState(MPDState_Inactive)
     , grouped(false)
     , dropAdjust(0)
@@ -614,12 +615,12 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
     currentSongId = id;
 
     if (-1!=oldIndex) {
-        int row=getRowById(oldIndex);
+        int row=-1==currentSongRowNum ? getRowById(oldIndex) : currentSongRowNum;
         emit dataChanged(index(row, 0), index(row, columnCount(QModelIndex())-1));
     }
 
-    int row=getRowById(currentSongId);
-    emit dataChanged(index(row, 0), index(row, columnCount(QModelIndex())-1));
+    currentSongRowNum=getRowById(currentSongId);
+    emit dataChanged(index(currentSongRowNum, 0), index(currentSongRowNum, columnCount(QModelIndex())-1));
 }
 
 void PlayQueueModel::clear()
@@ -629,12 +630,23 @@ void PlayQueueModel::clear()
     endResetModel();
 }
 
+qint32 PlayQueueModel::currentSongRow() const
+{
+    if (-1==currentSongRowNum) {
+        currentSongRowNum=getRowById(currentSongId);
+    }
+    return currentSongRowNum;
+}
+
 void PlayQueueModel::setState(MPDState st)
 {
     if (st!=mpdState) {
         mpdState=st;
         if (-1!=currentSongId) {
-            emit dataChanged(index(getRowById(currentSongId), 0), index(getRowById(currentSongId), 2));
+            if (-1==currentSongRowNum) {
+                currentSongRowNum=getRowById(currentSongId);
+            }
+            emit dataChanged(index(currentSongRowNum, 0), index(currentSongRowNum, 2));
         }
     }
 }

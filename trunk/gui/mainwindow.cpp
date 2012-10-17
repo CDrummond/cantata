@@ -1710,6 +1710,12 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
         updateCurrentSong(songs.at(0));
     } else*/ if (0==songs.count()) {
         updateCurrentSong(Song());
+    } else if (current.isStream()) {
+        // Check to see if it has been updated...
+        Song pqSong=playQueueModel.getSongByRow(playQueueModel.currentSongRow());
+        if (pqSong.artist!=current.artist || pqSong.album!=current.album || pqSong.name!=current.name || pqSong.title!=current.title || pqSong.year!=current.year) {
+            updateCurrentSong(pqSong);
+        }
     }
 }
 
@@ -1771,17 +1777,16 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     positionSlider->setEnabled(-1!=current.id && !currentIsStream());
     coverWidget->update(current);
-    bool isEmpty=song.title.isEmpty() & song.artist.isEmpty() && !song.file.isEmpty();
 
-    if (isEmpty) {
+    if (song.title.isEmpty() && song.artist.isEmpty() && !song.file.isEmpty()) {
         trackLabel->setText(current.file);
     } else if (current.name.isEmpty()) {
         trackLabel->setText(current.title);
     } else {
         trackLabel->setText(QString("%1 (%2)").arg(current.title).arg(current.name));
     }
-    if (isEmpty) {
-        artistLabel->setText(i18n("Unknown"));
+    if (current.album.isEmpty() && current.artist.isEmpty()) {
+        artistLabel->setText(trackLabel->text().isEmpty() ? QString() : i18n("Unknown"));
     } else if (current.album.isEmpty()) {
         artistLabel->setText(current.artist);
     } else {

@@ -89,7 +89,7 @@ public:
     QSet<qint32> getSongIdSet();
     void clear();
     qint32 currentSong() const { return currentSongId; }
-    qint32 currentSongRow() const { return getRowById(currentSongId); }
+    qint32 currentSongRow() const;
     void setState(MPDState st);
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
@@ -111,6 +111,7 @@ private:
     QList<Song> songs;
     QSet<qint32> ids;
     qint32 currentSongId;
+    mutable qint32 currentSongRowNum;
     StreamFetcher *fetcher;
     MPDState mpdState;
     bool grouped;

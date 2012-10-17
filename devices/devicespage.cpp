@@ -120,6 +120,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     //menu->addAction(p->deleteSongsAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(Icons::menuIcon);
+    menuButton->setToolTip(i18n("Other Actions"));
     proxy.setSourceModel(DevicesModel::self());
     view->setTopText(i18n("Devices"));
     view->setModel(&proxy);

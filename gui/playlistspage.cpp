@@ -90,6 +90,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     menu->addAction(renamePlaylistAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(Icons::menuIcon);
+    menuButton->setToolTip(i18n("Other Actions"));
 }
 
 PlaylistsPage::~PlaylistsPage()

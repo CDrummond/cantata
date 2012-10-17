@@ -71,6 +71,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     menu->addAction(exportAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(Icons::menuIcon);
+    menuButton->setToolTip(i18n("Other Actions"));
     Icon::init(replacePlayQueue);
 
     view->setTopText(i18n("Streams"));

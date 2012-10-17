@@ -24,9 +24,6 @@
 #include "streamfetcher.h"
 #include "networkaccessmanager.h"
 #include "mpdconnection.h"
-#ifdef TAGLIB_FOUND
-#include "httpserver.h"
-#endif
 #include <QtCore/QRegExp>
 #include <QtCore/QUrl>
 #include <QtXml/QDomDocument>
@@ -200,6 +197,7 @@ void StreamFetcher::doNext()
     }
 
     if (todo.isEmpty() && !done.isEmpty()) {
+        job=0;
         emit result(done, row, replacePlayQueue, prio);
     }
 }
@@ -252,20 +250,21 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
 {
     // We only handle 1 job at a time!
     if (reply==job) {
+        bool redirected=false;
         if (!reply->error()) {
             QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
             if (redirect.isValid() && ++redirects<constMaxRedirects) {
-                reply->deleteLater();
                 current=redirect.toString();
                 data.clear();
                 job=manager->get(current);
                 connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
                 connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+                redirected=true;
             } else {
                 QString u=parse(data, handlers);
 
                 if (u.isEmpty() || u==current) {
-                    done.append(current);
+                    done.append(current.startsWith("cantata-http:") ? current.mid(8) : current);
                 } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
                     // Redirect...
                     current=u;
@@ -273,15 +272,18 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                     job=manager->get(u);
                     connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
                     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
+                    redirected=true;
                 } else {
                     done.append(u);
                 }
             }
         } else {
-            done.append(current);
+            done.append(current.startsWith("cantata-http:") ? current.mid(8) : current);
         }
 
-        doNext();
+        if (!redirected) {
+            doNext();
+        }
     }
     reply->deleteLater();
 }

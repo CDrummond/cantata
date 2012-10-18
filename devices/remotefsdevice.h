@@ -100,6 +100,7 @@ protected:
     void setAudioFolder() const;
 
 private:
+    bool isOldSshfs();
     void clear() const;
 
 protected Q_SLOTS:

@@ -367,6 +367,7 @@ bool RemoteFsDevice::isConnected() const
     }
 
     if (opts.useCache && !audioFolder.isEmpty() && QFile::exists(cacheFileName())) {
+        currentMountStatus=true;
         return true;
     }
 
@@ -382,13 +383,21 @@ bool RemoteFsDevice::isConnected() const
     return false;
 }
 
+bool RemoteFsDevice::isOldSshfs()
+{
+    return constSshfsProtocol==details.protocol && 0==spaceInfo.used() && 1073741824000==spaceInfo.size();
+}
+
 double RemoteFsDevice::usedCapacity()
 {
-    if (!isConnected() || !details.isLocalFile()) {
+    if (!isConnected()) {
         return -1.0;
     }
 
     spaceInfo.setPath(mountPoint(details, false));
+    if (isOldSshfs()) {
+        return -1.0;
+    }
     return spaceInfo.size()>0 ? (spaceInfo.used()*1.0)/(spaceInfo.size()*1.0) : -1.0;
 }
 
@@ -398,21 +407,23 @@ QString RemoteFsDevice::capacityString()
         return i18n("Not Connected");
     }
 
-    if (!details.isLocalFile()) {
+    spaceInfo.setPath(mountPoint(details, false));
+    if (isOldSshfs()) {
         return i18n("Capacity Unknown");
     }
-
-    spaceInfo.setPath(mountPoint(details, false));
     return i18n("%1 free").arg(Utils::formatByteSize(spaceInfo.size()-spaceInfo.used()));
 }
 
 qint64 RemoteFsDevice::freeSpace()
 {
-    if (!isConnected() || !details.isLocalFile()) {
+    if (!isConnected()) { // || !details.isLocalFile()) {
         return 0;
     }
 
     spaceInfo.setPath(mountPoint(details, false));
+    if (isOldSshfs()) {
+        return 0;
+    }
     return spaceInfo.size()-spaceInfo.used();
 }
 

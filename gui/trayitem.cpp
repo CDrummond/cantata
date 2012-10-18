@@ -23,6 +23,7 @@
 
 #include "trayitem.h"
 #ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KMenu>
 #include <KDE/KNotification>
 #include <QtGui/QPixmap>
 #else
@@ -66,12 +67,12 @@ void TrayItem::setup()
     trayItem->setIconByName("cantata");
     trayItem->setToolTip("cantata", i18n("Cantata"), QString());
 
-    trayItemMenu = new KMenu(this);
+    trayItemMenu = new KMenu(0);
     trayItemMenu->addAction(mw->prevTrackAction);
     trayItemMenu->addAction(mw->playPauseTrackAction);
     trayItemMenu->addAction(mw->stopTrackAction);
     trayItemMenu->addAction(mw->nextTrackAction);
-    trayItem->setContextMenu(mw->trayItemMenu);
+    trayItem->setContextMenu(trayItemMenu);
     if (qgetenv("XDG_CURRENT_DESKTOP")=="Unity") {
         trayItem->setStatus(KStatusNotifierItem::Active);
     }
@@ -158,7 +159,7 @@ void TrayItem::songChanged(const Song &song, bool isPlaying)
                 if (notification) {
                     notification->close();
                 }
-                notification = new KNotification("CurrentTrackChanged", this);
+                notification = new KNotification("CurrentTrackChanged", mw);
                 connect(notification, SIGNAL(closed()), this, SLOT(notificationClosed()));
                 notification->setTitle(i18n("Now playing"));
                 notification->setText(text);

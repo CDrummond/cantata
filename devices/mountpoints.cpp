@@ -26,7 +26,8 @@
 #include <QtCore/QFile>
 #include <QtCore/QStringList>
 #ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(Covers, instance)
+#include <KDE/KGlobal>
+K_GLOBAL_STATIC(MountPoints, instance)
 #endif
 
 MountPoints * MountPoints::self()
@@ -66,7 +67,7 @@ void MountPoints::updateMountPoints()
         foreach (const QString &l, lines) {
             QStringList parts = l.split(' ');
             if (parts.size()>=2) {
-                entries.insert(parts.at(1));
+                entries.insert(QString(parts.at(1)).replace("\\040", " "));
             }
         }
     }

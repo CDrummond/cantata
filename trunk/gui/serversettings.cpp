@@ -115,12 +115,20 @@ void ServerSettings::load()
 
 void ServerSettings::save()
 {
-    Settings::self()->saveConnectionDetails(getDetails());
+    MPDConnectionDetails details=getDetails();
+    Settings::self()->saveConnectionDetails(details);
+    if (1==combo->count()) {
+        Settings::self()->saveCurrentConnection(details.name);
+    }
 }
 
 void ServerSettings::mpdConnectionStateChanged(bool c)
 {
-    enableWidgets(!c || MPDConnection::self()->getDetails()!=getDetails());
+    MPDConnectionDetails mpdDetails=MPDConnection::self()->getDetails();
+    enableWidgets(!c || mpdDetails!=getDetails());
+    if (c) {
+        Settings::self()->saveCurrentConnection(mpdDetails.name);
+    }
     connectButton->setEnabled(true);
 }
 

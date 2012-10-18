@@ -164,6 +164,10 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
     } else {
         QString n=MPDConnectionDetails::configGroupName(name);
         details.name=name;
+        if (!HAS_GROUP(n)) {
+            details.name=QString();
+            n=MPDConnectionDetails::configGroupName(details.name);
+        }
         if (HAS_GROUP(n)) {
             #ifdef ENABLE_KDE_SUPPORT
             KConfigGroup grp(KGlobal::config(), n);
@@ -193,6 +197,13 @@ MPDConnectionDetails Settings::connectionDetails(const QString &name)
             details.coverName=GET_STRING("coverName", QString());
             cfg.endGroup();
             #endif
+        } else {
+            details.hostname=mpdDefaults.host;
+            details.port=mpdDefaults.port;
+            details.dir=mpdDefaults.dir;
+            details.password=mpdDefaults.passwd;
+            details.dynamizerPort=0;
+            details.coverName=QString();
         }
     }
     details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
@@ -548,6 +559,9 @@ bool Settings::forceSingleClick()
 
 void Settings::removeConnectionDetails(const QString &v)
 {
+    if (v==currentConnection()) {
+        saveCurrentConnection(QString());
+    }
     REMOVE_GROUP(MPDConnectionDetails::configGroupName(v));
     #ifdef ENABLE_KDE_SUPPORT
     KGlobal::config()->sync();

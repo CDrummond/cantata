@@ -312,7 +312,7 @@ sub readRules() {
     $rulesTimestamp=$fileTime;
 
     for(my $i=0; $i<10; $i++) {
-        open(my $fileHandle, $activeFile);
+        open(my $fileHandle, "<:encoding(utf8)", $activeFile);
         if (tell($fileHandle) != -1) {
             my @lines = <$fileHandle>; # Read into an array...
             my $ruleMatch="find";

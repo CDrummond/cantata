@@ -68,6 +68,7 @@
 39. Only need to download/parse streams (to check if they are a playlist) when
     added from the streams page. (Streams in an MPD playlist will not be
     playlists themselves, as MPD does not support this.)
+40. Allow building of replaygain support with either ffmpeg or mpg123, or both.
 
 0.8.3.1
 -------

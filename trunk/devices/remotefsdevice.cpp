@@ -113,7 +113,7 @@ QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
 Device * RemoteFsDevice::create(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d)
 {
     if (d.isEmpty()) {
-        return false;
+        return 0;
     }
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg(KGlobal::config(), "General");
@@ -122,7 +122,7 @@ Device * RemoteFsDevice::create(DevicesModel *m, const QString &cover, const Dev
     #endif
     QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
     if (names.contains(d.name)) {
-        return false;
+        return 0;
     }
     names.append(d.name);
     SET_VALUE(constCfgKey, names);

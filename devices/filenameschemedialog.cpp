@@ -24,7 +24,7 @@
 #include "filenameschemedialog.h"
 #include "song.h"
 #include "localize.h"
-#include <QtGui/QWhatsThis>
+#include "messagebox.h"
 
 FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     : Dialog(parent)
@@ -89,7 +89,7 @@ void FilenameSchemeDialog::slotButtonClicked(int button)
 
 void FilenameSchemeDialog::showHelp()
 {
-  QWhatsThis::showText(help->mapToGlobal(help->geometry().topLeft()),
+    MessageBox::information(this,
                           i18n("<p>The following variables will be replaced with their corresponding meaning for each track name.</p>"
                                "<p><table border=\"1\">"
                                "<tr><th><em>Variable</em></th><th><em>Description</em></th></tr>"
@@ -105,7 +105,7 @@ void FilenameSchemeDialog::showHelp()
                                "</table></p>").arg(DeviceOptions::constAlbumArtist).arg(DeviceOptions::constAlbumTitle)
                                .arg(DeviceOptions::constTrackArtist).arg(DeviceOptions::constTrackTitle)
                                .arg(DeviceOptions::constTrackNumber).arg(DeviceOptions::constCdNumber).arg(DeviceOptions::constYear)
-                               .arg(DeviceOptions::constGenre), help);
+                               .arg(DeviceOptions::constGenre));
 }
 
 void FilenameSchemeDialog::enableOkButton()

@@ -90,6 +90,7 @@ private Q_SLOTS:
 
 private:
     bool eventFilter(QObject *obj, QEvent *event);
+    void paintEvent(QPaintEvent *e);
 
 private:
     EmptySpinBox *spin;

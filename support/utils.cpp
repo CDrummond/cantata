@@ -453,6 +453,10 @@ QString Utils::configDir(const QString &sub, bool create)
     QString env = qgetenv("XDG_CONFIG_HOME");
     QString dir = (env.isEmpty() ? QDir::homePath() + "/.config/" : env) + "/"+QCoreApplication::applicationName()+"/";
     #endif
+    if(!sub.isEmpty()) {
+        dir+=sub;
+    }
+    dir=Utils::fixPath(dir);
     QDir d(dir);
     return d.exists() || d.mkpath(dir) ? QDir::toNativeSeparators(dir) : QString();
 }

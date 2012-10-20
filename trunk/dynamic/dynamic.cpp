@@ -212,7 +212,9 @@ bool Dynamic::save(const Entry &e)
 
     QFile f(Utils::configDir(constDir, true)+e.name+constExtension);
     if (f.open(QIODevice::WriteOnly|QIODevice::Text)) {
-        QTextStream(&f) << string;
+        QTextStream out(&f);
+        out.setCodec("UTF-8");
+        out << string;
         updateEntry(e);
         return true;
     }
@@ -451,8 +453,11 @@ void Dynamic::loadLocal()
                 Entry e;
                 e.name=rf.left(rf.length()-constExtension.length());
                 Rule r;
-                while (!f.atEnd()) {
-                    QString str=f.readLine().trimmed();
+                QTextStream in(&f);
+                in.setCodec("UTF-8");
+                QStringList lines = in.readAll().split('\n', QString::SkipEmptyParts);
+                foreach (const QString &line, lines) {
+                    QString str=line.trimmed();
 
                     if (str.isEmpty() || str.startsWith('#')) {
                         continue;

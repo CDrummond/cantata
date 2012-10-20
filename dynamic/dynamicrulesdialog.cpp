@@ -31,7 +31,6 @@
 #include <QtGui/QStandardItem>
 #include <QtGui/QStandardItemModel>
 #include <QtGui/QSortFilterProxyModel>
-#include <QtGui/QWhatsThis>
 
 class RulesSort : public QSortFilterProxyModel
 {
@@ -261,14 +260,14 @@ void DynamicRulesDialog::remove()
 
 void DynamicRulesDialog::showAbout()
 {
-    QWhatsThis::showText(aboutLabel->mapToGlobal(aboutLabel->geometry().topLeft()),
+    MessageBox::information(this,
                          i18n("<p>Cantata will query your library using all of the rules listed. "
                               "The list of <i>Include</i> rules will be used to build a set of songs that can be used. "
                               "The list of <i>Exclude</i> rules will be used to build a set of songs that cannot be used. "
-                              "If there are no <i>Include</i> rules, Cantata will assume that all songs (bar those from <i>Exlude</i>) can be used. <br/>"
+                              "If there are no <i>Include</i> rules, Cantata will assume that all songs (bar those from <i>Exclude</i>) can be used. <br/>"
                               "e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following: "
                               "<ul><li>Include AlbumArtist=Wibble Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> "
-                              "to have Cantata look for 'Songs by Wibble but not from album Abc', you would need the following: "
+                              "To have Cantata look for 'Songs by Wibble but not from album Abc', you would need the following: "
                               "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude Album=Avc</li></ul>"
                               "After the set of usable songs has been created, Cantata will randomly select songs to "
                               "keep the play queue filled with 10 entries.</p>")

@@ -29,17 +29,61 @@
 #include <QtGui/QSpacerItem>
 #include <QtGui/QApplication>
 #include <QtGui/QWheelEvent>
+#include <QtGui/QApplication>
+#include <QtGui/QPixmap>
+#include <QtGui/QFont>
+#include <QtGui/QPainter>
+#include <QtGui/QPalette>
+#include <QtGui/QStyle>
+#include <QtGui/QStyleOption>
 
 static Icon incIcon;
 static Icon decIcon;
 
+static QPixmap createPixmap(int size, QColor &col, double opacity, bool isPlus)
+{
+    int lineWidth=size<32 ? 2 : 4;
+    QPixmap pix(size, size);
+    pix.fill(Qt::transparent);
+    QPainter p(&pix);
+    p.setRenderHint(QPainter::Antialiasing, false);
+
+    p.setPen(QPen(col, lineWidth));
+    p.setOpacity(opacity);
+
+    int offset=lineWidth*2;
+    int pos=(size/2);
+    p.drawLine(offset, pos, size-offset, pos);
+    if (isPlus) {
+        p.drawLine(pos, offset, pos, size-offset);
+    }
+    p.end();
+    return pix;
+}
+
+static Icon createIcon(bool isPlus)
+{
+    Icon icon;
+    QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText));
+    QColor highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
+    QList<int> sizes=QList<int>() << 16 << 22;
+
+    foreach (int s, sizes) {
+        icon.addPixmap(createPixmap(s, stdColor, 1.0, isPlus));
+        icon.addPixmap(createPixmap(s, stdColor, 0.5, isPlus), QIcon::Disabled);
+        icon.addPixmap(createPixmap(s, highlightColor, 1.0, isPlus), QIcon::Active);
+    }
+
+    return icon;
+}
+
 static void intButton(QToolButton *btn, bool inc)
 {
     if (incIcon.isNull()) {
-        incIcon=Icon("list-add");
+        incIcon=createIcon(true); // Icon("list-add");
     }
     if (decIcon.isNull()) {
-        decIcon=Icon("list-remove");
+        decIcon=createIcon(false); // Icon("list-remove");
     }
     btn->setAutoRaise(true);
     btn->setIcon(inc ? incIcon : decIcon);
@@ -104,6 +148,22 @@ void SpinBox::checkValue()
 {
     decButton->setEnabled(spin->value()>spin->minimum());
     incButton->setEnabled(spin->value()<spin->maximum());
+}
+
+void SpinBox::paintEvent(QPaintEvent *e)
+{
+    if (GtkStyle::mimicWidgets()) {
+        QStyleOption opt;
+        opt.init(this);
+        opt.rect=spin->geometry().united(incButton->geometry()).united(decButton->geometry());
+        opt.state=(isEnabled() ? QStyle::State_Enabled : QStyle::State_None)|QStyle::State_Sunken;
+        //opt.palette.setColor(QPalette::Base, palette().color(QPalette::Window));
+        QPainter painter(this);
+        painter.setOpacity(0.35);
+        QApplication::style()->drawPrimitive(QStyle::PE_FrameLineEdit, &opt, &painter, 0L);
+    } else {
+        QWidget::paintEvent(e);
+    }
 }
 
 bool SpinBox::eventFilter(QObject *obj, QEvent *event)

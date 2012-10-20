@@ -76,7 +76,7 @@ static QPixmap createConsumeIconPixmap(int size, QColor &col, double opacity)
 static Icon createIcon(bool isSingle)
 {
     Icon icon;
-    QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::WindowText));
+    QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText));
     if (stdColor==Qt::white) {
         stdColor=QColor(200, 200, 200);
     } else if (stdColor.red()<128 && stdColor.green()<128 && stdColor.blue()<128 &&
@@ -87,9 +87,9 @@ static Icon createIcon(bool isSingle)
     QList<int> sizes=QList<int>() << 16 << 22;
 
     foreach (int s, sizes) {
-        icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 100.0) : createConsumeIconPixmap(s, stdColor, 100.0));
-        icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 50.0) : createConsumeIconPixmap(s, stdColor, 50.0), QIcon::Disabled);
-        icon.addPixmap(isSingle ? createSingleIconPixmap(s, highlightColor, 100.0) : createConsumeIconPixmap(s, highlightColor, 100.0), QIcon::Active);
+        icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 1.0) : createConsumeIconPixmap(s, stdColor, 1.0));
+        icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 0.5) : createConsumeIconPixmap(s, stdColor, 0.5), QIcon::Disabled);
+        icon.addPixmap(isSingle ? createSingleIconPixmap(s, highlightColor, 1.0) : createConsumeIconPixmap(s, highlightColor, 1.0), QIcon::Active);
     }
 
     return icon;

@@ -58,8 +58,10 @@ ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
 void ServerPlaybackSettings::load()
 {
     crossfading->setValue(MPDStatus::self()->crossFade());
-    emit getReplayGain();
-    emit outputs();
+    if (MPDConnection::self()->isConnected()) {
+        emit getReplayGain();
+        emit outputs();
+    }
     #ifdef PHONON_FOUND
     streamUrl->setText(Settings::self()->streamUrl());
     #endif
@@ -67,11 +69,13 @@ void ServerPlaybackSettings::load()
 
 void ServerPlaybackSettings::save()
 {
-    emit setCrossFade(crossfading->value());
-    emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
-    for (int i=0; i<view->count(); ++i) {
-        QListWidgetItem *item=view->item(i);
-        emit enableOutput(item->data(Qt::UserRole).toInt(), Qt::Checked==item->checkState());
+    if (MPDConnection::self()->isConnected()) {
+        emit setCrossFade(crossfading->value());
+        emit setReplayGain(replayGain->itemData(replayGain->currentIndex()).toString());
+        for (int i=0; i<view->count(); ++i) {
+            QListWidgetItem *item=view->item(i);
+            emit enableOutput(item->data(Qt::UserRole).toInt(), Qt::Checked==item->checkState());
+        }
     }
     #ifdef PHONON_FOUND
     Settings::self()->saveStreamUrl(streamUrl->text().trimmed());

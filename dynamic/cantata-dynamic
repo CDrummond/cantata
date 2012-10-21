@@ -33,6 +33,7 @@ use IO::Socket;
 use threads;
 use threads::shared;
 use URI::Escape;
+use Encode;
 
 my $isServerMode : shared =0;
 my $dynamicIsActive : shared =1;
@@ -122,10 +123,14 @@ sub sendCommand() {
     my $status = 0;
     my $sock=&connectToMpd();
     my $sockData;
+    $cmd="${cmd}\n";
     if ($sock && $sock->connected()) {
-        $sock->send("${cmd}\n");
+        print $sock encode('utf-8' => $cmd);
         $sockData=&readReply($sock);
-        eval { close $sock; };undef $sock;
+        eval { close $sock; }; undef $sock;
+    }
+    if ($sockData ne '') {
+        return decode_utf8($sockData);
     }
     return $sockData;
 }

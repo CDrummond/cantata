@@ -71,6 +71,7 @@
 40. Allow building of replaygain support with either ffmpeg or mpg123, or both.
 41. Display extra information texts in messageboxs and not whats-this popups,
     as QGtkStyle seems to have issues with the palette in these.
+42. Fix dynamic playlists with UTF-8 strings.
 
 0.8.3.1
 -------

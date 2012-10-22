@@ -44,6 +44,8 @@ class MusicLibraryModel : public QAbstractItemModel
 public:
     static MusicLibraryModel * self();
 
+    static void cleanCache();
+
     MusicLibraryModel(QObject *parent = 0);
     ~MusicLibraryModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;

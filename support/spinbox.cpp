@@ -115,6 +115,9 @@ SpinBox::SpinBox(QWidget *p)
         intButton(incButton, true);
         decButton->installEventFilter(this);
         incButton->installEventFilter(this);
+        QPalette pal(palette());
+        pal.setColor(QPalette::Base, palette().color(QPalette::Window));
+        setPalette(pal);
     } else {
         layout->addWidget(spin);
     }
@@ -153,14 +156,13 @@ void SpinBox::checkValue()
 void SpinBox::paintEvent(QPaintEvent *e)
 {
     if (GtkStyle::mimicWidgets()) {
-        QStyleOption opt;
+        QStyleOptionFrame opt;
         opt.init(this);
         opt.rect=spin->geometry().united(incButton->geometry()).united(decButton->geometry());
         opt.state=(isEnabled() ? QStyle::State_Enabled : QStyle::State_None)|QStyle::State_Sunken;
-        //opt.palette.setColor(QPalette::Base, palette().color(QPalette::Window));
+        opt.lineWidth=1;
         QPainter painter(this);
-        painter.setOpacity(0.35);
-        QApplication::style()->drawPrimitive(QStyle::PE_FrameLineEdit, &opt, &painter, 0L);
+        QApplication::style()->drawPrimitive(QStyle::PE_PanelLineEdit, &opt, &painter, this);
     } else {
         QWidget::paintEvent(e);
     }

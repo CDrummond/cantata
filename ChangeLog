@@ -72,6 +72,8 @@
 41. Display extra information texts in messageboxs and not whats-this popups,
     as QGtkStyle seems to have issues with the palette in these.
 42. Fix dynamic playlists with UTF-8 strings.
+43. Each time the preferences dialog is closed, remove any library cache files
+    that are not referenced by any stored connections.
 
 0.8.3.1
 -------

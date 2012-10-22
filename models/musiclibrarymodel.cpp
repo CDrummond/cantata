@@ -74,10 +74,28 @@ static const QLatin1String constLibraryExt(".xml");
 
 static const QString cacheFileName()
 {
-
     QString fileName=MPDConnection::self()->getDetails().hostname+constLibraryExt;
     fileName.replace('/', '_');
     return Utils::cacheDir(constLibraryCache)+fileName;
+}
+
+void MusicLibraryModel::cleanCache()
+{
+    QSet<QString> existing;
+    QList<MPDConnectionDetails> connections=Settings::self()->allConnections();
+    foreach (const MPDConnectionDetails &conn, connections) {
+        QString fileName=conn.hostname;
+        fileName.replace('/', '_');
+        existing.insert(fileName+constLibraryExt);
+    }
+
+    QDir dir(Utils::cacheDir(constLibraryCache));
+    QFileInfoList files=dir.entryInfoList(QStringList() << "*"+constLibraryExt, QDir::Files);
+    foreach (const QFileInfo &file, files) {
+        if (!existing.contains(file.fileName())) {
+            QFile::remove(file.absoluteFilePath());
+        }
+    }
 }
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent)

@@ -27,6 +27,7 @@
 #include "inputdialog.h"
 #include "messagebox.h"
 #include "icons.h"
+#include "musiclibrarymodel.h"
 #include <QtCore/QDir>
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
@@ -117,6 +118,7 @@ void ServerSettings::save()
 {
     MPDConnectionDetails details=getDetails();
     Settings::self()->saveConnectionDetails(details);
+    MusicLibraryModel::cleanCache();
     if (1==combo->count()) {
         Settings::self()->saveCurrentConnection(details.name);
     }
@@ -189,6 +191,7 @@ void ServerSettings::saveAs()
         bool needToReconnect=MPDConnection::self()->isConnected() && MPDConnection::self()->getDetails()==saved && details!=saved;
 
         Settings::self()->saveConnectionDetails(details);
+        MusicLibraryModel::cleanCache();
         if (found) {
             if (idx!=currentIndex) {
                 combo->setCurrentIndex(idx);

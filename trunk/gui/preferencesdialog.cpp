@@ -43,7 +43,6 @@
 #include "shortcutssettingspage.h"
 #include "actioncollection.h"
 #endif
-#include "musiclibrarymodel.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     : Dialog(parent)
@@ -120,12 +119,10 @@ void PreferencesDialog::slotButtonClicked(int button)
 {
     switch (button) {
     case Ok:
-        MusicLibraryModel::cleanCache();
     case Apply:
         writeSettings();
         break;
     case Cancel:
-        MusicLibraryModel::cleanCache();
         reject();
         break;
     default:

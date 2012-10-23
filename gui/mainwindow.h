@@ -388,7 +388,7 @@ private:
     #endif
     Action *expandInterfaceAction;
     Action *quitAction;
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    #if !defined Q_OS_WIN
     Action *restoreAction;
     #endif
     Action *locateTrackAction;

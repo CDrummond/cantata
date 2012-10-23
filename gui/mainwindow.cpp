@@ -287,11 +287,11 @@ MainWindow::MainWindow(QWidget *parent)
     quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), "application-exit");
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
+    #endif // ENABLE_KDE_SUPPORT
     #if !defined Q_OS_WIN
     restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
     connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
     #endif // !Q_OS_WIN
-    #endif // ENABLE_KDE_SUPPORT
 
     smallPlaybackButtonsAction = ActionCollection::get()->createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
     smallControlButtonsAction = ActionCollection::get()->createAction("smallcontrolbuttons", i18n("Small Control Buttons"));

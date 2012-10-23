@@ -75,6 +75,8 @@ void TrayItem::setup()
     trayItem->setContextMenu(trayItemMenu);
     if (qgetenv("XDG_CURRENT_DESKTOP")=="Unity") {
         trayItem->setStatus(KStatusNotifierItem::Active);
+        trayItemMenu->addSeparator();
+        trayItemMenu->addAction(mw->restoreAction);
     }
     connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
     connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), mw, SLOT(playPauseTrack()));
@@ -92,8 +94,10 @@ void TrayItem::setup()
     trayItemMenu->addAction(mw->stopTrackAction);
     trayItemMenu->addAction(mw->nextTrackAction);
     #if !defined Q_OS_WIN
-    trayItemMenu->addSeparator();
-    trayItemMenu->addAction(mw->restoreAction);
+    if (qgetenv("XDG_CURRENT_DESKTOP")=="Unity") {
+        trayItemMenu->addSeparator();
+        trayItemMenu->addAction(mw->restoreAction);
+    }
     #endif
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->quitAction);

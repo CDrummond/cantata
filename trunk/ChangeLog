@@ -30,7 +30,7 @@
     using QGtkStyle.
 16. Add a custom spinbox to closer match Gtk3's large button spinbox style.
     Only for linux builds NOT run under KDE, and using QGtkStyle.
-17. Add 'Show Window' action to Linux Qt-only build - so that we have a way of
+17. Add 'Show Window' action to Linux builds - so that we have a way of
     restoring the Cantata window from the Unity menubar.
 18. Use freedesktop.org notifications for Qt-only Linux builds.
 19. Show menubar when run under Unity (Qt-only build).

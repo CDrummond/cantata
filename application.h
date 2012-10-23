@@ -30,6 +30,8 @@
 class MainWindow;
 class Application : public KUniqueApplication
 {
+    Q_OBJECT
+
 public:
     #ifdef Q_WS_X11
     Application(Display *display, Qt::HANDLE visual, Qt::HANDLE colormap);
@@ -39,19 +41,11 @@ public:
 
     int newInstance();
 
+private Q_SLOTS:
+    void mwDestroyed(QObject *obj);
+
 private:
     MainWindow *w;
-};
-#elif defined CANTATA_ANDROID
-#include <QtGui/QApplication>
-class Application : public QApplication
-{
-public:
-    Application(int &argc, char **argv);
-    virtual ~Application();
-    bool start();
-private:
-    void setupIconTheme();
 };
 #else
 #include "qtsingleapplication/qtsingleapplication.h"

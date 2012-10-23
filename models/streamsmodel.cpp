@@ -53,9 +53,9 @@ static bool iconIsValid(const QString &icon)
     return icon.startsWith('/') ? QFile::exists(icon) : QIcon::hasThemeIcon(icon);
 }
 
-static QString getInternalFile()
+static QString getInternalFile(bool createDir=false)
 {
-    return Utils::configDir()+"streams.xml";
+    return Utils::configDir(QString(), createDir)+"streams.xml";
 }
 
 StreamsModel::StreamsModel()
@@ -577,7 +577,7 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
 void StreamsModel::persist()
 {
     if (modified) {
-        save(getInternalFile());
+        save(getInternalFile(true));
         modified=false;
     }
 }

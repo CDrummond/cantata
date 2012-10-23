@@ -73,6 +73,8 @@
     as QGtkStyle seems to have issues with the palette in these.
 42. Fix dynamic playlists with UTF-8 strings.
 43. Remove unreferenced library cache's each time connection details are saved.
+44. When KDE version is closed via quit action, ensure main window destructor
+    is called - so that settings are saved.
 
 0.8.3.1
 -------

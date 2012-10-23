@@ -566,6 +566,7 @@ void Settings::removeConnectionDetails(const QString &v)
     #ifdef ENABLE_KDE_SUPPORT
     KGlobal::config()->sync();
     #endif
+    modified=true;
 }
 
 void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
@@ -994,6 +995,7 @@ void Settings::save(bool force)
     if (force) {
         if (version()!=PACKAGE_VERSION) {
             SET_VALUE_MOD("version", PACKAGE_VERSION_STRING);
+            ver=PACKAGE_VERSION;
         }
         if (modified) {
             modified=false;

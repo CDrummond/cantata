@@ -62,6 +62,8 @@ Application::Application()
 
 Application::~Application() {
     if (w) {
+        disconnect(w, SIGNAL(destroyed(QObject *)), this, SLOT(mwDestroyed(QObject *)));
+        delete w;
         w=0;
     }
 }
@@ -83,6 +85,7 @@ int Application::newInstance() {
         }
         Icons::init();
         w=new MainWindow();
+        connect(w, SIGNAL(destroyed(QObject *)), this, SLOT(mwDestroyed(QObject *)));
     }
 
     #ifdef TAGLIB_FOUND
@@ -98,6 +101,14 @@ int Application::newInstance() {
     KStartupInfo::appStarted(startupId());
     return 0;
 }
+
+void Application::mwDestroyed(QObject *obj)
+{
+    if (obj==w) {
+        w=0;
+    }
+}
+
 #else // ENABLE_KDE_SUPPORT
 Application::Application(int &argc, char **argv)
     : QtSingleApplication(argc, argv)

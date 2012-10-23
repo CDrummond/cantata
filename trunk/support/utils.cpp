@@ -458,7 +458,7 @@ QString Utils::configDir(const QString &sub, bool create)
     }
     dir=Utils::fixPath(dir);
     QDir d(dir);
-    return d.exists() || d.mkpath(dir) ? QDir::toNativeSeparators(dir) : QString();
+    return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
 }
 
 QString Utils::cacheDir(const QString &sub, bool create)

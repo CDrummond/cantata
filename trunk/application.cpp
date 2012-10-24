@@ -189,9 +189,11 @@ bool Application::start()
 
 void Application::message(const QString &msg)
 {
+    #if defined TAGLIB_FOUND
     if (!msg.isEmpty()) {
         load(msg.split("\n"));
     }
+    #endif
     MainWindow *mw=qobject_cast<MainWindow *>(activationWindow());
     if (mw) {
         mw->restoreWindow();

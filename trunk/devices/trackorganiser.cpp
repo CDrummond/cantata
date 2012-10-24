@@ -23,7 +23,10 @@
 
 #include "trackorganiser.h"
 #include "filenameschemedialog.h"
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
+#endif
+#include "device.h"
 #include "musiclibrarymodel.h"
 #include "dirviewmodel.h"
 #include "settings.h"

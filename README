@@ -355,11 +355,19 @@ Windows
 To compile for windows:
 
 1. Install Qt, MinGW, cmake, TagLib. TagLib will probably need compiling.
-2. Call cmake:
-     cmake ../cantata -G "MinGW Makefiles" -DTAGLIB_INCLUDES="C:\taglib\include" -DTAGLIB_LIBRARIES="C:\tagglib\bin\libtag.dll"
+2. Call cmake (e.g.):
+     cmake ../src -G "MinGW Makefiles" -DTAGLIB_INCLUDES=z:\taglibtaglib\include -DTAGLIB_LIBRARIES=z:\taglib\lib\libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1
 3. make! :-)
 
-This build is as per Qt-only, but does not have support for dbus, dockmanager,
-or dynamic playlists.
+This build is as per Qt-only, but does not have support for dbus, local dynamic
+playlists, device support, or replaygain calculation.
 
 To run you will also need Oxygen icons.
+
+
+TagLib
+------
+
+Windows version of taglib was build from TagLib 1.8, using the following cmake command:
+    cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PRFIX=z:\taglib
+

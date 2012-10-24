@@ -23,16 +23,19 @@
 
 #include "config.h"
 #include "device.h"
+#include "covers.h"
+#include "utils.h"
+#include <QtCore/QDir>
+
+#ifndef Q_OS_WIN
 #include "devicesmodel.h"
 #include "umsdevice.h"
-#include "covers.h"
 #ifdef MTP_FOUND
 #include "mtpdevice.h"
-#endif
+#endif // MTP_FOUND
 #include "tags.h"
 #include "song.h"
 #include "mpdparseutils.h"
-#include "utils.h"
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
@@ -41,75 +44,12 @@
 #include <solid/portablemediaplayer.h>
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
-#else
+#else // ENABLE_KDE_SUPPORT
 #include "solid-lite/portablemediaplayer.h"
 #include "solid-lite/storageaccess.h"
 #include "solid-lite/storagedrive.h"
-#endif
-#include <QtCore/QDir>
-#include <unistd.h>
-
-const QLatin1String Device::constNoCover("-");
-
-Device * Device::create(DevicesModel *m, const QString &udi)
-{
-    Solid::Device device=Solid::Device(udi);
-
-    if (device.is<Solid::PortableMediaPlayer>())
-    {
-        #ifdef MTP_FOUND
-        Solid::PortableMediaPlayer *pmp = device.as<Solid::PortableMediaPlayer>();
-
-        if (pmp->supportedProtocols().contains(QLatin1String("mtp"))) {
-            return new MtpDevice(m, device);
-        }
-        #endif
-    } else if (device.is<Solid::StorageAccess>()) {
-
-        const Solid::StorageAccess* ssa = device.as<Solid::StorageAccess>();
-
-        if( ssa && (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
-                   (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) ) {
-            return 0;
-        }
-
-        //HACK: ignore apple stuff until we have common MediaDeviceFactory.
-        if (!device.vendor().contains("apple", Qt::CaseInsensitive)) {
-//             Solid::StorageAccess *sa = device.as<Solid::StorageAccess>();
-//             if (QLatin1String("usb")==sa->bus) {
-                return new UmsDevice(m, device);
-//             }
-        }
-    }
-    return 0;
-}
-
-bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
-{
-    Song orig=song;
-    if (!file.isEmpty() && song.albumartist.isEmpty()) {
-        song=Tags::read(file);
-    }
-
-    if (song.artist.isEmpty() || song.albumartist.isEmpty() || !Song::isVariousArtists(song.albumartist)) {
-        song=orig;
-        return false;
-    }
-
-    bool needsUpdating=false;
-
-    if (!applyFix) { // Then real artist is embedded in track title...
-        needsUpdating=song.revertVariousArtists();
-    } else if (applyFix) { // We must be copying to device, and need to place song artist into title...
-        needsUpdating=song.fixVariousArtists();
-    }
-
-    if (needsUpdating && (file.isEmpty() || Tags::Update_Modified==Tags::updateArtistAndTitle(file, song))) {
-        return true;
-    }
-    song=orig;
-    return false;
-}
+#endif // ENABLE_KDE_SUPPORT
+#endif // Q_OS_WIN
 
 void Device::moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile)
 {
@@ -183,6 +123,72 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
             cleanDir(upDir, base, coverFile, level+1);
         }
     }
+}
+
+#ifndef Q_OS_WIN
+
+#include <unistd.h>
+
+const QLatin1String Device::constNoCover("-");
+
+Device * Device::create(DevicesModel *m, const QString &udi)
+{
+    Solid::Device device=Solid::Device(udi);
+
+    if (device.is<Solid::PortableMediaPlayer>())
+    {
+        #ifdef MTP_FOUND
+        Solid::PortableMediaPlayer *pmp = device.as<Solid::PortableMediaPlayer>();
+
+        if (pmp->supportedProtocols().contains(QLatin1String("mtp"))) {
+            return new MtpDevice(m, device);
+        }
+        #endif
+    } else if (device.is<Solid::StorageAccess>()) {
+
+        const Solid::StorageAccess* ssa = device.as<Solid::StorageAccess>();
+
+        if( ssa && (!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
+                   (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus()) ) {
+            return 0;
+        }
+
+        //HACK: ignore apple stuff until we have common MediaDeviceFactory.
+        if (!device.vendor().contains("apple", Qt::CaseInsensitive)) {
+//             Solid::StorageAccess *sa = device.as<Solid::StorageAccess>();
+//             if (QLatin1String("usb")==sa->bus) {
+                return new UmsDevice(m, device);
+//             }
+        }
+    }
+    return 0;
+}
+
+bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
+{
+    Song orig=song;
+    if (!file.isEmpty() && song.albumartist.isEmpty()) {
+        song=Tags::read(file);
+    }
+
+    if (song.artist.isEmpty() || song.albumartist.isEmpty() || !Song::isVariousArtists(song.albumartist)) {
+        song=orig;
+        return false;
+    }
+
+    bool needsUpdating=false;
+
+    if (!applyFix) { // Then real artist is embedded in track title...
+        needsUpdating=song.revertVariousArtists();
+    } else if (applyFix) { // We must be copying to device, and need to place song artist into title...
+        needsUpdating=song.fixVariousArtists();
+    }
+
+    if (needsUpdating && (file.isEmpty() || Tags::Update_Modified==Tags::updateArtistAndTitle(file, song))) {
+        return true;
+    }
+    song=orig;
+    return false;
 }
 
 void Device::applyUpdate()
@@ -397,3 +403,5 @@ void Device::songCount(int c)
 {
     setStatusMessage(i18n("Updating (%1)...").arg(c));
 }
+
+#endif // Q_OS_WIN

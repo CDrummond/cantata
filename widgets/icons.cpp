@@ -46,7 +46,6 @@ static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
     p.drawText(QRect(0, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
     p.drawText(QRect(1, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
     p.drawText(QRect(-1, 1, size, size), QLatin1String("1"), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
-    p.setRenderHint(QPainter::Antialiasing, false);
     p.end();
     return pix;
 }
@@ -68,7 +67,6 @@ static QPixmap createConsumeIconPixmap(int size, QColor &col, double opacity)
     p.drawLine(midX, midY, midX+distanceX, midY-distanceY);
     p.drawLine(midX, midY, midX+distanceX, midY+distanceY);
     p.drawPoint(midX, rect.y()+rect.height()/4);
-    p.setRenderHint(QPainter::Antialiasing, false);
     p.end();
     return pix;
 }
@@ -194,6 +192,13 @@ void Icons::init()
             playlistIcon=Icon("audio-x-generic");
         }
     }
+    if (editIcon.isNull()) {
+        editIcon=Icon("gtk-edit");
+    }
+    if (clearListIcon.isNull()) {
+        clearListIcon=Icon("edit-delete");
+    }
+    #endif // Q_OS_WIN
     if (variousArtistsIcon.isNull()) {
         variousArtistsIcon.addFile(":va16.png");
         variousArtistsIcon.addFile(":va22.png");
@@ -210,18 +215,11 @@ void Icons::init()
         artistIcon.addFile(":artist64.png");
         artistIcon.addFile(":artist128.png");
     }
-    if (editIcon.isNull()) {
-        editIcon=Icon("gtk-edit");
-    }
-    if (clearListIcon.isNull()) {
-        clearListIcon=Icon("edit-delete");
-    }
     if (menuIcon.isNull()) {
         menuIcon.addFile(":menu16.png");
         menuIcon.addFile(":menu22.png");
         menuIcon.addFile(":menu32.png");
         menuIcon.addFile(":menu48.png");
     }
-    #endif // Q_OS_WIN
     #endif // ENABLE_KDE_SUPPORT
 }

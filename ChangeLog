@@ -75,6 +75,8 @@
 43. Remove unreferenced library cache's each time connection details are saved.
 44. When KDE version is closed via quit action, ensure main window destructor
     is called - so that settings are saved.
+45. Compile windows build against taglib 1.8 - enables tag editing and track
+    reorganisation.
 
 0.8.3.1
 -------

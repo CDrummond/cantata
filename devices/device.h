@@ -24,6 +24,14 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
+#ifdef Q_OS_WIN
+namespace Device
+{
+    extern void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
+    extern void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
+}
+#else
+
 #include "musiclibraryitemroot.h"
 #include "song.h"
 #include "encoders.h"
@@ -194,5 +202,7 @@ protected:
     bool transcoding;
     Encoders::Encoder encoder;
 };
+
+#endif // Q_OS_WIN
 
 #endif

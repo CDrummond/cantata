@@ -266,7 +266,7 @@ void RemoteFsDevice::mount()
         }
 
         if (askPass.isEmpty()) {
-            emit error(i18n("No suitable ssh-askpass applicaiton installed! This is required for entering passwords."));
+            emit error(i18n("No suitable ssh-askpass application installed! This is required for entering passwords."));
             return;
         }
         cmd=Utils::findExe("sshfs");

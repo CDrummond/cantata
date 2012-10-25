@@ -77,6 +77,7 @@
     is called - so that settings are saved.
 45. Compile windows build against taglib 1.8 - enables tag editing and track
     reorganisation.
+46. Korean translation - thanks to Min Ho Park.
 
 0.8.3.1
 -------

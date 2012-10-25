@@ -3349,84 +3349,83 @@ msgstr ""
  
 
 #: ../gui/tageditor.cpp:692 ../replaygain/rgdialog.cpp:398
-msgctxt "QObject|"
 msgid "Failed to update the tags of some tracks."
 msgstr ""
 
 #: ../qtplural.h:28
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Track"
 msgstr ""
 
 #: ../qtplural.h:29
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Tracks"
 msgstr ""
 
 #: ../qtplural.h:32
 #, qt-format
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Track (%1)"
 msgstr ""
 
 #: ../qtplural.h:33
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Tracks (%2)"
 msgstr ""
 
 #: ../qtplural.h:36
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Album"
 msgstr ""
 
 #: ../qtplural.h:37
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Albums"
 msgstr ""
 
 #: ../qtplural.h:40
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Artist"
 msgstr ""
 
 #: ../qtplural.h:41
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Artists"
 msgstr ""
 
 #: ../qtplural.h:44
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Stream"
 msgstr ""
 
 #: ../qtplural.h:45
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Streams"
 msgstr ""
 
 #: ../qtplural.h:48
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Entry"
 msgstr ""
 
 #: ../qtplural.h:49
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Entries"
 msgstr ""
 
 #: ../qtplural.h:52
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Rule"
 msgstr ""
 
 #: ../qtplural.h:53
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Rules"
 msgstr ""

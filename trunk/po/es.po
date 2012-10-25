@@ -809,7 +809,7 @@ msgstr ""
 #: devices/remotefsdevice.cpp:269
 #, fuzzy
 msgid ""
-"No suitable ssh-askpass applicaiton installed! This is required for entering "
+"No suitable ssh-askpass application installed! This is required for entering "
 "passwords."
 msgstr ""
 "\"ksshaskpass\" no está instalado. Se requiere para introducir contraseñas"
@@ -2782,7 +2782,7 @@ msgstr "Nombre nuevo"
 #. i18n: ectx: property (text), widget (QLabel, infoMsg)
 #: po/rc.cpp:156 rc.cpp:156
 msgid ""
-"No dynamizer host defined in server settings. Dynamic functionality disabled."
+"No dynamizer port defined in server settings. Dynamic functionality disabled."
 msgstr ""
 
 #. i18n: file: dynamic/dynamicrules.ui:33

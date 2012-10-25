@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-22 20:12+0100\n"
-"PO-Revision-Date: 2012-07-04 08:11+0200\n"
+"PO-Revision-Date: 2012-10-22 23:35+0200\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "X-Language: cs_CZ\n"
 "X-Source-Language: C\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: application.cpp:76
 msgid ""
@@ -330,9 +330,8 @@ msgid "Add Device"
 msgstr "Přidat zařízení"
 
 #: devices/devicespage.cpp:123 gui/playlistspage.cpp:93 gui/streamspage.cpp:74
-#, fuzzy
 msgid "Other Actions"
-msgstr "Jiné pohledy"
+msgstr "Jiné činnosti"
 
 #: devices/devicespage.cpp:125 gui/mainwindow.cpp:358
 msgid "Devices"
@@ -796,11 +795,12 @@ msgstr ""
 "Výzva k zadání hesla nepracuje, když je Cantata spuštěna z příkazového řádku."
 
 #: devices/remotefsdevice.cpp:269
-#, fuzzy
 msgid ""
-"No suitable ssh-askpass applicaiton installed! This is required for entering "
+"No suitable ssh-askpass application installed! This is required for entering "
 "passwords."
-msgstr "\"ksshaskpass\" není nainstalován! Toto je vyžadováno pro zadání hesel"
+msgstr ""
+"Žádný vhodný program ssh-askpass není nainstalován! Toto je vyžadováno pro "
+"zadávání hesel"
 
 #: devices/remotefsdevice.cpp:275
 msgid "Mount point (\"%1\") is not empty!"
@@ -911,67 +911,60 @@ msgid "Failed to install rules file - %1 -> %2"
 msgstr "Nepodařilo se nainstalovat soubor s pravidly - %1 -> %2"
 
 #: dynamic/dynamic.cpp:396
-#, fuzzy
 msgid "Failed to locate the 'cantata-dynamic' helper script."
-msgstr "Nepodařilo se najít pomocný soubor 'cantata-dynamic'."
+msgstr "Nepodařilo se najít pomocný skript 'cantata-dynamic'."
 
 #: dynamic/dynamic.cpp:650
-#, fuzzy
 msgid "Uknown"
 msgstr "Neznámý"
 
 #: dynamic/dynamic.cpp:652
 msgid "Loading list of rules"
-msgstr ""
+msgstr "Nahrává se seznam pravidel"
 
 #: dynamic/dynamic.cpp:654
 msgid "Saving rule"
-msgstr ""
+msgstr "Ukládá se pravidlo"
 
 #: dynamic/dynamic.cpp:656
 msgid "Deleting rule"
-msgstr ""
+msgstr "Maže se pravidlo"
 
 #: dynamic/dynamic.cpp:658
 msgid "Setting active rule"
-msgstr ""
+msgstr "Nastavuje se činné pravidlo"
 
 #: dynamic/dynamic.cpp:660
-#, fuzzy
 msgid "Stopping dynamizer"
-msgstr "Zastavit dynamizátor při ukončení:"
+msgstr "Zastavuje se dynamizátor"
 
 #: dynamic/dynamic.cpp:662
 msgid "Awaiting response for previous command. (%1)"
-msgstr ""
+msgstr "Očekává se odpověď na předchozí příkaz. (%1)"
 
 #: dynamic/dynamic.cpp:773
 msgid "Dynamizer is not active"
-msgstr ""
+msgstr "Dynamizátor není činný"
 
 #: dynamic/dynamic.cpp:780
 msgid "Failed to retrieve list of dynamic rules. (%1)"
-msgstr ""
+msgstr "Nepodařilo se získat seznam dynamických pravidel. (%1)"
 
 #: dynamic/dynamic.cpp:808
-#, fuzzy
 msgid "Failed to delete rules file. (%1)"
-msgstr "Nepodařilo se najít soubor s pravidly - %1"
+msgstr "Nepodařilo se smazat soubor s pravidly. (%1)"
 
 #: dynamic/dynamic.cpp:814
-#, fuzzy
 msgid "Failed to control dynamizer state. (%1)"
-msgstr "Nepodařilo se připojit k \"%1\""
+msgstr "Nepodařilo se zkontrolovat stav dynamizátoru. (%1)"
 
 #: dynamic/dynamic.cpp:822
-#, fuzzy
 msgid "Failed to set the current dynamic rules. (%1)"
-msgstr "Nepodařilo se najít pomocný soubor 'cantata-dynamic'."
+msgstr "Nepodařilo se nastavit nynější dynamická pravidla. (%1)"
 
 #: dynamic/dynamicpage.cpp:39
-#, fuzzy
 msgid "Refresh Dynamic Rules"
-msgstr "Odstranit dynamická pravidla"
+msgstr "Obnovit dynamická pravidla"
 
 #: dynamic/dynamicpage.cpp:40
 msgid "Add Dynamic Rules"
@@ -1007,9 +1000,8 @@ msgid "Artist"
 msgstr "Umělec"
 
 #: dynamic/dynamicrulesdialog.cpp:67
-#, fuzzy
 msgid "SimilarArtists"
-msgstr "Umělci:"
+msgstr "Podobní umělci"
 
 #: dynamic/dynamicrulesdialog.cpp:69
 msgid "AlbumArtist"
@@ -1059,7 +1051,6 @@ msgid "Dynamic Rules"
 msgstr "Dynamická pravidla"
 
 #: dynamic/dynamicrulesdialog.cpp:264
-#, fuzzy
 msgid ""
 "<p>Cantata will query your library using all of the rules listed. The list "
 "of <i>Include</i> rules will be used to build a set of songs that can be "
@@ -1079,7 +1070,7 @@ msgstr ""
 "písní, které se mohou použít. Seznam pravidel <i>Vyloučit</i> se použije na "
 "sestavení souboru písní, které se použít nemohou. Pokud nejsou žádná "
 "pravidla <i>Zahrnout</i>, Cantata bude předpokládat, že se mohou použít "
-"všechny pravidla (nepřipouštět ta z <i>Vyloučit</i>). <br/>např. aby Cantata "
+"všechny písně (nepřipouštět ta z <i>Vyloučit</i>). <br/>např. aby Cantata "
 "hledala 'Rock songs od Wibble NEBO písně od Různí umělci, budete potřebovat "
 "následující: <ul><li>Zahrnout Umělec alba=Wibble Žánr=Rock</li><li>Zahrnout "
 "Umělec alba=Různí umělci</li></ul>. Aby Cantata hledala 'Písně od Wibble, "
@@ -1089,9 +1080,8 @@ msgstr ""
 "přehrávaných skladeb naplněnou 10 záznamy.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:283
-#, fuzzy
 msgid "Failed to save %1"
-msgstr "Nepodařilo se uložit <b>%1</b>!"
+msgstr "Nepodařilo se uložit %1"
 
 #: dynamic/dynamicrulesdialog.cpp:301
 msgid ""
@@ -1107,7 +1097,7 @@ msgstr "Již existuje"
 
 #: dynamic/dynamicrulesdialog.cpp:327
 msgid "Saving %1"
-msgstr ""
+msgstr "Ukládá se %1"
 
 #. i18n: file: gui/interfacesettings.ui:138
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
@@ -1138,7 +1128,7 @@ msgstr "<h3><i>Nahrává se...</i></h3>"
 #: gui/infopage.cpp:220
 msgctxt "Qt-only"
 msgid "Save File"
-msgstr ""
+msgstr "Uložit soubor"
 
 #. i18n: file: support/shortcutssettingspage.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
@@ -1201,11 +1191,11 @@ msgstr "Knihovna"
 
 #: gui/mainwindow.cpp:287
 msgid "Quit"
-msgstr ""
+msgstr "Ukončit"
 
 #: gui/mainwindow.cpp:291
 msgid "Show Window"
-msgstr ""
+msgstr "Ukázat okno"
 
 #: gui/mainwindow.cpp:296
 msgid "Small Playback Buttons"
@@ -1262,9 +1252,8 @@ msgid "Add To Playlist"
 msgstr "Přidat do seznamu skladeb"
 
 #: gui/mainwindow.cpp:310
-#, fuzzy
 msgid "Add To Stored Playlist"
-msgstr "Přidat do seznamu skladeb"
+msgstr "Přidat do uloženého seznamu skladeb"
 
 #: gui/mainwindow.cpp:312 replaygain/rgdialog.cpp:90
 msgid "ReplayGain"
@@ -1459,20 +1448,19 @@ msgstr "Nastavit Cantatu..."
 #: gui/mainwindow.cpp:598
 msgctxt "Qt-only"
 msgid "About Cantata..."
-msgstr ""
+msgstr "O programu Cantata"
 
 #: gui/mainwindow.cpp:607
 msgid "&File"
-msgstr ""
+msgstr "&Soubor"
 
 #: gui/mainwindow.cpp:610
-#, fuzzy
 msgid "&Settings"
-msgstr "Nastavení výstupu"
+msgstr "&Nastavení"
 
 #: gui/mainwindow.cpp:616
 msgid "&Help"
-msgstr ""
+msgstr "Nápo&věda"
 
 #: gui/mainwindow.cpp:1007
 msgid "Failed to locate any songs matching the dynamic playlist rules."
@@ -1492,7 +1480,7 @@ msgstr "Výchozí"
 #: gui/mainwindow.cpp:1495
 msgctxt "Qt-only"
 msgid "About Cantata"
-msgstr ""
+msgstr "O programu Cantata"
 
 #: gui/mainwindow.cpp:1496
 msgctxt "Qt-only"
@@ -1501,9 +1489,12 @@ msgid ""
 "Drummond 2011-2012.<br/>Released under the GPLv2<br/><br/><i><small>Based "
 "upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>"
 msgstr ""
+"<b>Cantata %1</b><br/><br/>Jednoduché grafické uživatelské rozhraní pro MPD.<"
+"br/><br/>(c) Craig "
+"Drummond 2011-2012.<br/>vydáno pod GPLv2<br/><br/><i><small>Založeno "
+"na QtMPC - (C) 2007-2010 Autoři QtMPC</small></i>"
 
 #: gui/mainwindow.cpp:1738 gui/mainwindow.cpp:1741
-#, fuzzy
 msgid "Cantata (%1)"
 msgstr "Cantata (%1)"
 
@@ -1660,23 +1651,22 @@ msgstr "Nastavení textu písně"
 #: gui/preferencesdialog.cpp:85
 msgctxt "Qt-only"
 msgid "Proxy"
-msgstr ""
+msgstr "Proxy"
 
 #: gui/preferencesdialog.cpp:85
 msgctxt "Qt-only"
 msgid "Proxy Settings"
-msgstr ""
+msgstr "Nastavení proxy"
 
 #: gui/preferencesdialog.cpp:89
 msgctxt "Qt-only"
 msgid "Shortcuts"
-msgstr ""
+msgstr "Zkratky"
 
 #: gui/preferencesdialog.cpp:89
-#, fuzzy
 msgctxt "Qt-only"
 msgid "Keyboard Shortcut Settings"
-msgstr "Nastavení přehrávání"
+msgstr "Nastavení klávesových zkratek"
 
 #: gui/preferencesdialog.cpp:92
 msgid "Configure"
@@ -1717,9 +1707,8 @@ msgstr ""
 "(a ze) zařízení.</i>"
 
 #: gui/serversettings.cpp:71
-#, fuzzy
 msgid "Not Used"
-msgstr "Neprohledáno"
+msgstr "Nepoužíváno"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:66
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
@@ -1736,6 +1725,12 @@ msgid ""
 "relevant host - Cantata itself cannot control the starting/stopping of this "
 "service.</i>"
 msgstr ""
+"<i><b>POZNÁMKA:</b> Přípojka dynamizátoru je podstatná, jen když chcete "
+"používat "
+"dynamické seznamy skladeb,. Aby to pracovalo, <b>musí</b> již být na "
+"příslušném "
+"hostiteli nainstalován a spuštěn program <code>cantata-dynamic</code>. "
+"Sama Cantata nemůže ovládat spuštění/zastavení této služby.</i>"
 
 #: gui/serversettings.cpp:82
 msgid ""
@@ -1747,12 +1742,25 @@ msgid ""
 "then Cantata will use a per-user instance of the dynamzier to facilitate "
 "dynamic playlists.</i>"
 msgstr ""
+"<i><b>POZNÁMKA:</b> Přípojka dynamizátoru je podstatná, jen když chcete "
+"použít "
+"systémovou, nebo nikoli místní instanci dynamizátoru Cantaty. Aby to "
+"pracovalo, "
+"<b>musí</b> již být na příslušném hostiteli nainstalován program <code>"
+"cantata-dynamic</code>. "
+"Sama Cantata nemůže ovládat spuštění/zastavení této služby. Pokud toto "
+"nastaveno není, "
+"potom Cantata, aby usnadnila dynamické seznamy skladeb,  použije instanci "
+"dynamzátoru "
+"na uživatele.</i>"
 
 #: gui/serversettings.cpp:91
 msgid ""
 "Filename (without extension) to save downloaded covers as.\n"
 "If left blank 'cover' will be used."
 msgstr ""
+"Souborový název (bez přípony), pod nímž se mají uložit stažené obaly.\n"
+"Jestliže bude ponecháno prázdné, použije se \"cover\"."
 
 #: gui/serversettings.cpp:163
 msgid "Enter name for settings:"
@@ -1839,7 +1847,7 @@ msgstr "*.streams|Proudy Cantata"
 
 #: gui/streamspage.cpp:161 gui/streamspage.cpp:202
 msgid "Cantata Streams (*.cantata)"
-msgstr ""
+msgstr "Proudy Cantata (*.cantata)"
 
 #: gui/streamspage.cpp:169
 msgid ""
@@ -2007,12 +2015,11 @@ msgstr "Nepodařilo se zaktualizovat značky následujících skladeb:"
 #: gui/trayitem.cpp:150
 msgctxt "Song by Artist on Album (track duration)"
 msgid "%1 by %2 on %3 (%4)"
-msgstr ""
+msgstr "%1 od %2 na %3 (%4)"
 
 #: gui/trayitem.cpp:164 gui/trayitem.cpp:196
-#, fuzzy
 msgid "Now playing"
-msgstr "Čas přehrávání:"
+msgstr "Nyní se hraje"
 
 #: lyrics/lyricsdialog.cpp:42
 msgid ""
@@ -2278,13 +2285,12 @@ msgstr "Nepodařilo se připojit k %1 - nesprávné heslo"
 
 #: mpd/mpdconnection.cpp:389
 msgid "Failed to send command to %1 - not connected"
-msgstr ""
+msgstr "Nepodařilo se poslat příkaz %1 - nepřipojeno"
 
 #: mpd/mpdconnection.cpp:399 mpd/mpdconnection.cpp:900
 #: mpd/mpdconnection.cpp:927
-#, fuzzy
 msgid "Failed to reconnect to %1"
-msgstr "Nepodařilo se připojit k \"%1\""
+msgstr "Nepodařilo se znovu připojit k %1"
 
 #: mpd/mpdconnection.cpp:426
 msgid "Failed to load. Please check user \"mpd\" has read permission."
@@ -2299,9 +2305,8 @@ msgstr ""
 "přes místní zásuvku."
 
 #: mpd/mpdconnection.cpp:434 mpd/mpdconnection.cpp:441
-#, fuzzy
 msgid "Failed to send command. Disconnected from %1"
-msgstr "Nepodařilo se odpojit od \"%1\""
+msgstr "Nepodařilo se poslat příkaz. Odpojeno od %1"
 
 #: mpd/mpdconnection.cpp:1061
 msgid "Failed to rename <b>%1</b> to <b>%2</b>"
@@ -2767,8 +2772,10 @@ msgstr "Nový název"
 #. i18n: ectx: property (text), widget (QLabel, infoMsg)
 #: po/rc.cpp:156 rc.cpp:156
 msgid ""
-"No dynamizer host defined in server settings. Dynamic functionality disabled."
+"No dynamizer port defined in server settings. Dynamic functionality disabled."
 msgstr ""
+"V nastaveních serveru není stanoven žádný přípojka dynamizátora. Dynamická "
+"funkcionalita zakázána."
 
 #. i18n: file: dynamic/dynamicrules.ui:33
 #. i18n: ectx: property (placeholderText), widget (LineEdit, nameText)
@@ -2809,9 +2816,8 @@ msgstr "Album:"
 #. i18n: file: dynamic/dynamicrule.ui:100
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:195 rc.cpp:195
-#, fuzzy
 msgid "From Year:"
-msgstr "Rok:"
+msgstr "Od roku:"
 
 #. i18n: file: dynamic/dynamicrule.ui:116
 #. i18n: ectx: property (specialValueText), widget (SpinBox, dateFromSpin)
@@ -2828,9 +2834,8 @@ msgstr "Jakýkoli"
 #. i18n: file: dynamic/dynamicrule.ui:123
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6x)
 #: po/rc.cpp:201 rc.cpp:201
-#, fuzzy
 msgid "To Year:"
-msgstr "Rok:"
+msgstr "Do roku:"
 
 #. i18n: file: dynamic/dynamicrule.ui:146
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
@@ -2854,7 +2859,7 @@ msgstr "Vyloučit písně odpovídající následujícímu:"
 #. i18n: ectx: property (text), widget (BuddyLabel, similarArtistsText_label)
 #: po/rc.cpp:219 rc.cpp:219
 msgid "Artists similar to:"
-msgstr ""
+msgstr "Umělci podobní:"
 
 #. i18n: file: dynamic/dynamicrule.ui:204
 #. i18n: ectx: property (text), widget (BuddyLabel, label_7)
@@ -2874,9 +2879,8 @@ msgstr "Ukázat ikonu v oznamovací oblasti:"
 #. i18n: file: gui/externalsettings.ui:46
 #. i18n: ectx: property (text), widget (BuddyLabel, minimiseOnCloseLabel)
 #: po/rc.cpp:234 rc.cpp:234
-#, fuzzy
 msgid "Minimize to notification area when closed:"
-msgstr "Ukázat ikonu v oznamovací oblasti:"
+msgstr "Při zavření zmenšit do oznamovací oblasti:"
 
 #. i18n: file: gui/externalsettings.ui:66
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
@@ -2888,7 +2892,7 @@ msgstr "Ukázat vyskakovací zprávy při změnách skladeb:"
 #. i18n: ectx: property (text), widget (QLabel, gnomeMediaKeysLabel)
 #: po/rc.cpp:240 rc.cpp:240
 msgid "Support media keys under GNOME/Unity:"
-msgstr ""
+msgstr "Podporovat multimediální klávesy pod GNOME/Unity:"
 
 #. i18n: file: gui/httpserversettings.ui:22
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
@@ -3119,7 +3123,7 @@ msgstr "Uložit stažená slova písně ve složce s hudbou:"
 #. i18n: ectx: property (text), widget (BuddyLabel, forceSingleClick_label)
 #: po/rc.cpp:369 rc.cpp:369
 msgid "Enforce single-click activation of items:"
-msgstr ""
+msgstr "Vynutit zapnutí jedním klepnutím u položek:"
 
 #. i18n: file: gui/interfacesettings.ui:507
 #. i18n: ectx: property (text), widget (QLabel, label_9)
@@ -3128,6 +3132,9 @@ msgid ""
 "<i><b>NOTE:</b> Changing the \"Enforce single-click activation of items\" "
 "setting will require a re-start of Cantata.</i>"
 msgstr ""
+"<i><b>POZNÁMKA:</b> Změna nastavení Vynutit zapnutí jedním klepnutím u "
+"položek "
+"vyžaduje opětovné spuštění Cantaty.</i>"
 
 #. i18n: file: gui/mainwindow.ui:124
 #. i18n: ectx: property (text), widget (SqueezedTextLabel, songTimeElapsedLabel)
@@ -3282,21 +3289,18 @@ msgstr "Heslo:"
 #. i18n: file: gui/serversettings.ui:103
 #. i18n: ectx: property (text), widget (BuddyLabel, dynamizerPortLabel)
 #: po/rc.cpp:507 rc.cpp:507
-#, fuzzy
 msgid "Dynamizer port:"
-msgstr "Zastavit dynamizátor při ukončení:"
+msgstr "Přípojka dynamizátoru:"
 
 #. i18n: file: gui/serversettings.ui:126
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
 #: po/rc.cpp:510 rc.cpp:510
-#, fuzzy
 msgid "Cover filename:"
-msgstr "Obaly v pohledu s alby:"
+msgstr "Název souboru obalu:"
 
 #. i18n: file: gui/serversettings.ui:194
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
 #: po/rc.cpp:522 rc.cpp:522
-#, fuzzy
 msgid ""
 "<i><b>NOTE:</b> The 'Music folder' setting is used to lookup cover-art "
 "(either the value specified above, or <code>cover.jpg / cover.png</code> if "
@@ -3305,9 +3309,10 @@ msgid ""
 "album folder.</i>"
 msgstr ""
 "<i><b>Poznámka:</b> Nastavení Složka s hudbou se používá pro hledání obrázků "
-"obalů (<code>cover.jpg</code>). Pokud k této složce máte i oprávnění k "
-"zápisu (a do jejích podsložek), potom Cantata uloží všechny stažené obaly do "
-"příslušné složky alba.</i>"
+"obalů (buď hodnota stanovená výše, nebo <code>cover.jpg / cover.png</code>). "
+"Pokud k této složce máte i oprávnění k zápisu (a do jejích podsložek), potom "
+"Cantata "
+"uloží všechny stažené obaly do příslušné složky alba.</i>"
 
 #. i18n: file: gui/serversettings.ui:220
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
@@ -3424,28 +3429,26 @@ msgstr "Heslo"
 #. i18n: file: support/shortcutssettingspage.ui:25
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:606 rc.cpp:606
-#, fuzzy
 msgid "Search:"
-msgstr "Hledat"
+msgstr "Hledání:"
 
 #. i18n: file: support/shortcutssettingspage.ui:65
 #. i18n: ectx: property (title), widget (QGroupBox, actionBox)
 #: po/rc.cpp:609 rc.cpp:609
 msgid "Shortcut for Selected Action"
-msgstr ""
+msgstr "Zkratka pro vybranou činnost"
 
 #. i18n: file: support/shortcutssettingspage.ui:71
 #. i18n: ectx: property (text), widget (QRadioButton, useDefault)
 #: po/rc.cpp:612 rc.cpp:612
-#, fuzzy
 msgid "Default:"
-msgstr "Výchozí"
+msgstr "Výchozí:"
 
 #. i18n: file: support/shortcutssettingspage.ui:85
 #. i18n: ectx: property (text), widget (QRadioButton, useCustom)
 #: po/rc.cpp:618 rc.cpp:618
 msgid "Custom:"
-msgstr ""
+msgstr "Vlastní:"
 
 #: po/rc.cpp:622 rc.cpp:622
 msgctxt "NAME OF TRANSLATORS"
@@ -3530,7 +3533,7 @@ msgstr "Nepodařilo se"
 
 #: support/dirrequester.cpp:47
 msgid "Select Folder"
-msgstr ""
+msgstr "Vybrat složku"
 
 #: support/fancytabwidget.cpp:950
 msgid "Icons Only"
@@ -3570,44 +3573,43 @@ msgstr "Karty dole"
 
 #: support/messagebox.cpp:43 support/messagebox.cpp:49
 msgid "Warning"
-msgstr ""
+msgstr "Varování"
 
 #: support/messagebox.cpp:45 support/messagebox.cpp:49
 msgid "Question"
-msgstr ""
+msgstr "Otázka"
 
 #: support/messagebox.cpp:73 support/messagebox.h:55
 msgid "Error"
-msgstr ""
+msgstr "Chyba"
 
 #: support/messagebox.h:58
-#, fuzzy
 msgid "Information"
-msgstr "Informace o albu"
+msgstr "Informace"
 
 #: support/onoffbutton.cpp:47
 msgid "ON"
-msgstr ""
+msgstr "Zapnuto"
 
 #: support/onoffbutton.cpp:48
 msgid "OFF"
-msgstr ""
+msgstr "Vypnuto"
 
 #: support/utils.cpp:252
 msgid "%1 B"
-msgstr ""
+msgstr "%1 B"
 
 #: support/utils.cpp:253
 msgid "%1 KiB"
-msgstr ""
+msgstr "%1 KiB"
 
 #: support/utils.cpp:254
 msgid "%1 MiB"
-msgstr ""
+msgstr "%1 MiB"
 
 #: support/utils.cpp:256
 msgid "%1 GiB"
-msgstr ""
+msgstr "%1 GiB"
 
 #: widgets/coverwidget.cpp:140
 msgid ""
@@ -3634,91 +3636,85 @@ msgstr "Hledání %1..."
 #: ../gui/tageditor.cpp:692 ../replaygain/rgdialog.cpp:398
 msgctxt "QObject|"
 msgid "Failed to update the tags of some tracks."
-msgstr ""
+msgstr "Nepodařilo se zaktualizovat značky některých skladeb."
 
 #: ../qtplural.h:28
-#, fuzzy
 msgctxt "QObject|Singular"
 msgid "1 Track"
-msgstr "Jedna skladba"
+msgstr "Skladby: 1"
 
 #: ../qtplural.h:29
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "QObject|Plural (N!=1)"
 msgid "%1 Tracks"
-msgstr "Jedna skladba"
+msgstr "Skladby: 1%"
 
 #: ../qtplural.h:32
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "QObject|Singular"
 msgid "1 Track (%1)"
-msgstr "Jedna skladba (%2)"
+msgstr "Skladby: 1 (%1)"
 
 #: ../qtplural.h:33
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "QObject|Plural (N!=1)"
 msgid "%1 Tracks (%2)"
-msgstr "Jedna skladba (%2)"
+msgstr "Skladby: 1% (%2)"
 
 #: ../qtplural.h:36
-#, fuzzy
 msgctxt "QObject|Singular"
 msgid "1 Album"
-msgstr "Jedno album"
+msgstr "Alba: 1"
 
 #: ../qtplural.h:37
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "QObject|Plural (N!=1)"
 msgid "%1 Albums"
-msgstr "Jedno album"
+msgstr "Alba: 1%"
 
 #: ../qtplural.h:40
-#, fuzzy
 msgctxt "QObject|Singular"
 msgid "1 Artist"
-msgstr "Jeden umělec"
+msgstr "Umělci: 1"
 
 #: ../qtplural.h:41
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "QObject|Plural (N!=1)"
 msgid "%1 Artists"
-msgstr "Jeden umělec"
+msgstr "Umělci: 1%"
 
 #: ../qtplural.h:44
-#, fuzzy
 msgctxt "QObject|Singular"
 msgid "1 Stream"
-msgstr "Jeden proud"
+msgstr "Proudy: 1"
 
 #: ../qtplural.h:45
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "QObject|Plural (N!=1)"
 msgid "%1 Streams"
-msgstr "Jeden proud"
+msgstr "Proudy: 1%"
 
 #: ../qtplural.h:48
-#, fuzzy
 msgctxt "QObject|Singular"
 msgid "1 Entry"
-msgstr "Jedna položka"
+msgstr "Položky: 1"
 
 #: ../qtplural.h:49
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "QObject|Plural (N!=1)"
 msgid "%1 Entries"
-msgstr "Jedna položka"
+msgstr "Položky: 1%"
 
 #: ../qtplural.h:52
-#, fuzzy
 msgctxt "QObject|Singular"
 msgid "1 Rule"
-msgstr "1 pravidlo"
+msgstr "Pravidla: 1"
 
 #: ../qtplural.h:53
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "QObject|Plural (N!=1)"
 msgid "%1 Rules"
-msgstr "1 pravidlo"
+msgstr "Pravidla: 1%"
 
 #~ msgid ""
 #~ "<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "

@@ -3634,85 +3634,84 @@ msgid "Search %1..."
 msgstr "Hledání %1..."
 
 #: ../gui/tageditor.cpp:692 ../replaygain/rgdialog.cpp:398
-msgctxt "QObject|"
 msgid "Failed to update the tags of some tracks."
 msgstr "Nepodařilo se zaktualizovat značky některých skladeb."
 
 #: ../qtplural.h:28
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Track"
 msgstr "Skladby: 1"
 
 #: ../qtplural.h:29
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Tracks"
 msgstr "Skladby: 1%"
 
 #: ../qtplural.h:32
 #, qt-format
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Track (%1)"
 msgstr "Skladby: 1 (%1)"
 
 #: ../qtplural.h:33
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Tracks (%2)"
 msgstr "Skladby: 1% (%2)"
 
 #: ../qtplural.h:36
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Album"
 msgstr "Alba: 1"
 
 #: ../qtplural.h:37
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Albums"
 msgstr "Alba: 1%"
 
 #: ../qtplural.h:40
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Artist"
 msgstr "Umělci: 1"
 
 #: ../qtplural.h:41
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Artists"
 msgstr "Umělci: 1%"
 
 #: ../qtplural.h:44
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Stream"
 msgstr "Proudy: 1"
 
 #: ../qtplural.h:45
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Streams"
 msgstr "Proudy: 1%"
 
 #: ../qtplural.h:48
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Entry"
 msgstr "Položky: 1"
 
 #: ../qtplural.h:49
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Entries"
 msgstr "Položky: 1%"
 
 #: ../qtplural.h:52
-msgctxt "QObject|Singular"
+msgctxt "Singular"
 msgid "1 Rule"
 msgstr "Pravidla: 1"
 
 #: ../qtplural.h:53
 #, qt-format
-msgctxt "QObject|Plural (N!=1)"
+msgctxt "Plural (N!=1)"
 msgid "%1 Rules"
 msgstr "Pravidla: 1%"
 

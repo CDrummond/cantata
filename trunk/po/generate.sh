@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for app in extractrc xgettext msgmerge ; do
+for app in extractrc xgettext msgmerge lupdate lconvert msguniq sed grep ; do
     which $app > /dev/null 2>&1
     if [ $? -ne 0 ] ; then
         echo "ERROR: Could not find $app"
@@ -37,9 +37,13 @@ xgettext --from-code=UTF-8 -C -kde -ci18n -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki1
 
 find .. -name '*.cpp' | xargs grep -l 'QObject::tr(' |  grep -v "solid-lite" | sort > ${WDIR}/infiles.qt.list
 echo "../qtplural.h" >> ${WDIR}/infiles.qt.list
-lupdate @infiles.qt.list -ts ${PROJECT}.ts && lconvert -i ${PROJECT}.ts -o ${PROJECT}_qt.po && msguniq -o ${PROJECT}_qt.pot ${PROJECT}_qt.po && rm ${PROJECT}.ts ${PROJECT}_qt.po
 
-#Fix charset...
+# If we just call lconvert this adds a msgctxt of "QObject|<any other context>" This seems to mess things up.
+# So, pipe the output of lconvert into sed to change "QObject|<any other context>" to "<any other context>", and then into
+# grep -Ev to remove any blank contexts...
+lupdate @infiles.qt.list -ts ${PROJECT}.ts && lconvert -i ${PROJECT}.ts -of po | sed s^QObject\|^^g | grep -Ev 'msgctxt ""' > ${PROJECT}_qt.po && msguniq -o ${PROJECT}_qt.pot ${PROJECT}_qt.po && rm ${PROJECT}.ts ${PROJECT}_qt.po
+
+Fix charset...
 cat ${PROJECT}_kde.pot | sed s^charset=CHARSET^charset=UTF-8^g > ${PROJECT}_kde.pot-new
 tail -n +7 ${PROJECT}_qt.pot | sed s^charset=CHARSET^charset=UTF-8^g > ${PROJECT}_qt.pot-new
 cat ${PROJECT}_kde.pot-new > ${PROJECT}.pot

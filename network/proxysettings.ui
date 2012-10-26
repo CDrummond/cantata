@@ -109,7 +109,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Username</string>
+            <string>Username:</string>
            </property>
           </widget>
          </item>
@@ -126,7 +126,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Password</string>
+            <string>Password:</string>
            </property>
           </widget>
          </item>

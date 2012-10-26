@@ -3409,14 +3409,14 @@ msgstr "Benutze Authentifizierung"
 #. i18n: file: network/proxysettings.ui:112
 #. i18n: ectx: property (text), widget (QLabel, label_16)
 #: po/rc.cpp:597 rc.cpp:597
-msgid "Username"
-msgstr "Benutzername"
+msgid "Username:"
+msgstr "Benutzername:"
 
 #. i18n: file: network/proxysettings.ui:129
 #. i18n: ectx: property (text), widget (QLabel, label_17)
 #: po/rc.cpp:600 rc.cpp:600
-msgid "Password"
-msgstr "Kennwort"
+msgid "Password:"
+msgstr "Kennwort:"
 
 #. i18n: file: support/shortcutssettingspage.ui:25
 #. i18n: ectx: property (text), widget (QLabel, label_2)

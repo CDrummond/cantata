@@ -17,6 +17,9 @@
    <property name="margin">
     <number>0</number>
    </property>
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::ExpandingFieldsGrow</enum>
+   </property>
    <item row="0" column="0">
     <widget class="BuddyLabel" name="label_6b">
      <property name="text">

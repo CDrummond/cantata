@@ -25,6 +25,7 @@
 #define SPINBOX_H
 
 #include <QtGui/QSpinBox>
+#include <QtGui/QFontMetrics>
 
 class EmptySpinBox : public QSpinBox
 {
@@ -39,6 +40,10 @@ public:
         setKeyboardTracking(true);
         setMaximum(3000);
         allowEmpty=true;
+    }
+
+    QSize sizeHint() const {
+        return QSpinBox::sizeHint()+QSize(fontMetrics().height()/2, 0);
     }
 
 protected:

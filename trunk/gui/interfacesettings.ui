@@ -32,6 +32,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <layout class="QFormLayout" name="formLayout">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
          <item row="0" column="0">
           <widget class="BuddyLabel" name="label">
            <property name="text">
@@ -138,6 +141,9 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
        <string>Albums</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_2">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
        <item row="0" column="0">
         <widget class="BuddyLabel" name="label_3a">
          <property name="text">
@@ -200,6 +206,9 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
        <string>Playlists</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_6">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
        <item row="0" column="0">
         <widget class="BuddyLabel" name="label_3">
          <property name="text">
@@ -303,6 +312,9 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
        <string>Play Queue</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_5">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
        <item row="0" column="0">
         <widget class="BuddyLabel" name="playQueueScrollLabel">
          <property name="text">
@@ -383,6 +395,9 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <layout class="QFormLayout" name="formLayout_4">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
          <item row="0" column="0">
           <widget class="BuddyLabel" name="label_7">
            <property name="text">

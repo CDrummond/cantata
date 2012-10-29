@@ -740,7 +740,7 @@ msgstr "곡 업데이트 중..."
 #: devices/mtpdevice.cpp:832 devices/remotefsdevice.cpp:407
 #: devices/umsdevice.cpp:87 models/devicesmodel.cpp:260
 msgid "Not Connected"
-msgstr "연결 안됨"
+msgstr "연결 안 됨"
 
 #: devices/remotedevicepropertiesdialog.cpp:45 gui/mainwindow.cpp:299
 #: gui/preferencesdialog.cpp:72
@@ -808,11 +808,11 @@ msgstr "연결해제 중..."
 
 #: devices/remotefsdevice.cpp:337
 msgid "Failed to connect to \"%1\""
-msgstr "\"%1\"에 연결 안됨"
+msgstr "\"%1\"에 연결 안 됨"
 
 #: devices/remotefsdevice.cpp:338
 msgid "Failed to disconnect from \"%1\""
-msgstr "\"%1\"에 연결 해제 안됨"
+msgstr "\"%1\"에 연결 해제 안 됨"
 
 #: devices/remotefsdevice.cpp:412
 msgid "Capacity Unknown"
@@ -869,7 +869,7 @@ msgstr "장치가 연결되지 않았음."
 
 #: devices/umsdevice.cpp:213
 msgid "Not Scanned"
-msgstr "검색 안됨"
+msgstr "검색 안 됨"
 
 #: devices/valueslider.cpp:104
 msgid " (recommended)"
@@ -895,7 +895,7 @@ msgstr "규정 파일을 설치할 수 없음 - %1 -> %2"
 
 #: dynamic/dynamic.cpp:396
 msgid "Failed to locate the 'cantata-dynamic' helper script."
-msgstr "'칸타타-활동' 도움 스크립트를 찾을 수 없음"
+msgstr "'칸타타-동적' 도움 스크립트를 찾을 수 없음"
 
 #: dynamic/dynamic.cpp:650
 msgid "Uknown"
@@ -919,7 +919,7 @@ msgstr "활성화 규정 설정"
 
 #: dynamic/dynamic.cpp:660
 msgid "Stopping dynamizer"
-msgstr "활동자 중지"
+msgstr "활동 중지"
 
 #: dynamic/dynamic.cpp:662
 msgid "Awaiting response for previous command. (%1)"
@@ -927,55 +927,55 @@ msgstr "이전 명령어 응답 대기 중. (%1)"
 
 #: dynamic/dynamic.cpp:773
 msgid "Dynamizer is not active"
-msgstr "활동자 안됨"
+msgstr "활동 활성화 안 됨"
 
 #: dynamic/dynamic.cpp:780
 msgid "Failed to retrieve list of dynamic rules. (%1)"
-msgstr "활동 규정 리스트 읽기 안됨. (%1)"
+msgstr "동적 규정 리스트 읽기 안 됨. (%1)"
 
 #: dynamic/dynamic.cpp:808
 msgid "Failed to delete rules file. (%1)"
-msgstr "규정 파일 삭제 안됨. (%1)"
+msgstr "규정 파일 삭제 안 됨. (%1)"
 
 #: dynamic/dynamic.cpp:814
 msgid "Failed to control dynamizer state. (%1)"
-msgstr "활동자 활성화 상태 관리 안됨. (%1)"
+msgstr "활동 활성화 상태 관리 안 됨. (%1)"
 
 #: dynamic/dynamic.cpp:822
 msgid "Failed to set the current dynamic rules. (%1)"
-msgstr "현재 활동 규정 설정 안됨. (%1)"
+msgstr "현재 동적 규정 설정 안 됨. (%1)"
 
 #: dynamic/dynamicpage.cpp:39
 msgid "Refresh Dynamic Rules"
-msgstr "활동 규정 새로 읽기"
+msgstr "동적 규정 새로 읽기"
 
 #: dynamic/dynamicpage.cpp:40
 msgid "Add Dynamic Rules"
-msgstr "활동 규정 추가"
+msgstr "동적 규정 추가"
 
 #: dynamic/dynamicpage.cpp:41
 msgid "Edit Dynamic Rules"
-msgstr "활동 규정 수정"
+msgstr "동적 규정 수정"
 
 #: dynamic/dynamicpage.cpp:42
 msgid "Remove Dynamic Rules"
-msgstr "활동 규정 삭제"
+msgstr "동적 규정 삭제"
 
 #: dynamic/dynamicpage.cpp:43
 msgid "Start Dynamic Mode"
-msgstr "활동 모드 시작"
+msgstr "동적 방식 시작"
 
 #: dynamic/dynamicpage.cpp:44
 msgid "Stop Dynamic Mode"
-msgstr "활동 모드 중지"
+msgstr "동적 방식 중지"
 
 #: dynamic/dynamicpage.cpp:88 gui/mainwindow.cpp:350
 msgid "Dynamic"
-msgstr "활동"
+msgstr "동적"
 
 #: dynamic/dynamicruledialog.cpp:40
 msgid "Dynamic Rule"
-msgstr "활동 규정"
+msgstr "동적 규정"
 
 #: dynamic/dynamicrulesdialog.cpp:65 models/playqueuemodel.cpp:98
 #: replaygain/rgdialog.cpp:102
@@ -1031,7 +1031,7 @@ msgstr " (정확)"
 
 #: dynamic/dynamicrulesdialog.cpp:136
 msgid "Dynamic Rules"
-msgstr "활동 규정"
+msgstr "동적 규정"
 
 #: dynamic/dynamicrulesdialog.cpp:264
 msgid ""
@@ -1062,7 +1062,7 @@ msgstr ""
 
 #: dynamic/dynamicrulesdialog.cpp:283
 msgid "Failed to save %1"
-msgstr "%1 저장 안됨"
+msgstr "%1 저장 안 됨"
 
 #: dynamic/dynamicrulesdialog.cpp:301
 msgid ""
@@ -1444,7 +1444,7 @@ msgstr "도움말(&H)"
 
 #: gui/mainwindow.cpp:1007
 msgid "Failed to locate any songs matching the dynamic playlist rules."
-msgstr "활동 재생목록 규정에 맞는 음악을 찾지 못했습니다."
+msgstr "동적 재생목록 규정에 맞는 음악을 찾지 못했습니다."
 
 #: gui/mainwindow.cpp:1131 mpd/mpdconnection.cpp:316
 msgid "Connecting to %1"
@@ -1668,7 +1668,7 @@ msgid ""
 "<i><b>Not Connected.</b><br/>The entries below cannot be modified, as "
 "Cantata is not connected to MPD.</i>"
 msgstr ""
-"<i><b>연결 안됨.</b><br/>칸타타가 MPD에 연결되지 않았으므로 "
+"<i><b>연결 안 됨.</b><br/>칸타타가 MPD에 연결되지 않았으므로 "
 "아래 목록은 수정되지 않습니다.</i>"
 
 #: gui/serversettings.cpp:60
@@ -1697,8 +1697,8 @@ msgid ""
 "relevant host - Cantata itself cannot control the starting/stopping of this "
 "service.</i>"
 msgstr ""
-"<i><b>참고:</b> '활동자 포트'는 '활동 재생목록'을 사용할 때만 유용합니다. "
-"동작하기 위해서는 <code>칸타타-활동</code> "
+"<i><b>참고:</b> '활동 포트'는 '동적 재생목록'을 사용할 때만 유용합니다. "
+"동작하기 위해서는 <code>칸타타-동적</code> "
 "응용프로그램이 <b>반드시</b> 설치되고 호스트에서 실행되어야 합니다. "
 "칸타타 자체로는 이 서비스를 시작하거나 정지할 수 없습니다.</i>"
 
@@ -1712,12 +1712,12 @@ msgid ""
 "then Cantata will use a per-user instance of the dynamzier to facilitate "
 "dynamic playlists.</i>"
 msgstr ""
-"<i><b>참고:</b> '활동자 포트'는 시스템 전반 또는 로컬에서가 아닌 "
-"칸타타 활동자를 사용하고자 할 때에만 유용합니다."
-"동작하기 위해서는 <code>칸타타-활동</code> "
+"<i><b>참고:</b> '활동 포트'는 시스템 전반 또는 로컬에서가 아닌 "
+"칸타타 활동을 사용하고자 할 때에만 유용합니다."
+"동작하기 위해서는 <code>칸타타-동적</code> "
 "응용프로그램이 <b>반드시</b> 설치되고 호스트에서 실행되어야 합니다. "
 "칸타타 자체로는 이 서비스를 시작하거나 정지할 수 없습니다. "
-"만약 설정되어있지 않으면, 칸타타는 사용자 기반의 활동 재생목록을 운용합니다.</i>"
+"만약 설정되어있지 않으면, 칸타타는 사용자 기반의 동적 재생목록을 운용합니다.</i>"
 
 #: gui/serversettings.cpp:91
 msgid ""
@@ -2173,7 +2173,7 @@ msgstr[1] "%1 음반"
 
 #: models/devicesmodel.cpp:680
 msgid "No Devices Attached"
-msgstr "장치가 연결 안됨"
+msgstr "장치가 연결 안 됨"
 
 #: models/dirviewmodel.cpp:176 models/dirviewmodel.cpp:184
 msgid "1 Entry"
@@ -2238,43 +2238,43 @@ msgstr "%1 (%2:%3)"
 
 #: mpd/mpdconnection.cpp:321 mpd/mpdconnection.cpp:354
 msgid "Connection to %1 failed"
-msgstr "%1에 연결 안됨"
+msgstr "%1에 연결 안 됨"
 
 #: mpd/mpdconnection.cpp:327 mpd/mpdconnection.cpp:358
 msgid "Connection to %1 failed - incorrect password"
-msgstr "%1에 연결 안됨 - 틀린 암호"
+msgstr "%1에 연결 안 됨 - 틀린 암호"
 
 #: mpd/mpdconnection.cpp:389
 msgid "Failed to send command to %1 - not connected"
-msgstr "%1에 명령어 전달 안됨 - 연결 안됨"
+msgstr "%1에 명령어 전달 안 됨 - 연결 안 됨"
 
 #: mpd/mpdconnection.cpp:399 mpd/mpdconnection.cpp:900
 #: mpd/mpdconnection.cpp:927
 msgid "Failed to reconnect to %1"
-msgstr "%1에 재연결 안됨"
+msgstr "%1에 재연결 안 됨"
 
 #: mpd/mpdconnection.cpp:426
 msgid "Failed to load. Please check user \"mpd\" has read permission."
-msgstr "연결 안됨. \"mpd\" 사용자가 읽기 권한이 있는지 확인해야 합니다."
+msgstr "연결 안 됨. \"mpd\" 사용자가 읽기 권한이 있는지 확인해야 합니다."
 
 #: mpd/mpdconnection.cpp:428
 msgid ""
 "Failed to load. MPD can only play local files if connected via a local "
 "socket."
 msgstr ""
-"불러오기 안됨. MPD는 로컬에 연결된 파일만 불러올 수 있습니다."
+"불러오기 안 됨. MPD는 로컬에 연결된 파일만 불러올 수 있습니다."
 
 #: mpd/mpdconnection.cpp:434 mpd/mpdconnection.cpp:441
 msgid "Failed to send command. Disconnected from %1"
-msgstr "명령어 전달 안됨. %1 연결 해제"
+msgstr "명령어 전달 안 됨. %1 연결 해제"
 
 #: mpd/mpdconnection.cpp:1061
 msgid "Failed to rename <b>%1</b> to <b>%2</b>"
-msgstr "<b>%1</b>에서 <b>%2</b>로 이름 바꾸기 안됨"
+msgstr "<b>%1</b>에서 <b>%2</b>로 이름 바꾸기 안 됨"
 
 #: mpd/mpdconnection.cpp:1073
 msgid "Failed to save <b>%1</b>"
-msgstr "<b>%1</b> 저장 안됨"
+msgstr "<b>%1</b> 저장 안 됨"
 
 #: mpd/mpdparseutils.cpp:479
 msgid "1 day %2"
@@ -2732,13 +2732,13 @@ msgstr "새 이름"
 msgid ""
 "No dynamizer port defined in server settings. Dynamic functionality disabled."
 msgstr ""
-"서버 설정에 활동자 포트가 없습니다. 활동 기능 사용 안됨"
+"서버 설정에 활동 포트가 없습니다. 동적 기능 사용 안 됨"
 
 #. i18n: file: dynamic/dynamicrules.ui:33
 #. i18n: ectx: property (placeholderText), widget (LineEdit, nameText)
 #: po/rc.cpp:162 rc.cpp:162
 msgid "Name of Dynamic Rules"
-msgstr "새로운 활동 규정"
+msgstr "새로운 동적 규정"
 
 #. i18n: file: dynamic/dynamicrules.ui:49
 #. i18n: ectx: property (text), widget (QPushButton, addBtn)
@@ -3096,7 +3096,7 @@ msgstr "(00:00)"
 #. i18n: ectx: property (text), widget (QLabel, dynamicLabel)
 #: po/rc.cpp:384 rc.cpp:384
 msgid "[Dynamic]"
-msgstr "[활동]"
+msgstr "[동적]"
 
 #. i18n: file: gui/playbacksettings.ui:23
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6b)
@@ -3114,7 +3114,7 @@ msgstr "빠져나가면 재생 정지:"
 #. i18n: ectx: property (text), widget (BuddyLabel, stopDynamizerOnExitLabel)
 #: po/rc.cpp:396 rc.cpp:396
 msgid "Stop dynamizer on exit:"
-msgstr "빠져나가면 활동자 정지:"
+msgstr "빠져나가면 활동 정지:"
 
 #. i18n: file: gui/serverinfopage.ui:38
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -3239,7 +3239,7 @@ msgstr "비밀번호:"
 #. i18n: ectx: property (text), widget (BuddyLabel, dynamizerPortLabel)
 #: po/rc.cpp:507 rc.cpp:507
 msgid "Dynamizer port:"
-msgstr "활동자 포트"
+msgstr "활동 포트"
 
 #. i18n: file: gui/serversettings.ui:126
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
@@ -3581,7 +3581,7 @@ msgstr "%1 찾기..."
 
 #: ../gui/tageditor.cpp:692 ../replaygain/rgdialog.cpp:398
 msgid "Failed to update the tags of some tracks."
-msgstr "곡에 대한 태그 업데이트 안됨."
+msgstr "곡에 대한 태그 업데이트 안 됨."
 
 #: ../qtplural.h:28
 msgctxt "Singular"

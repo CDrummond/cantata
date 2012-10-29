@@ -61,7 +61,7 @@
 35. Disable Phonon stream playback support by default. Currently not all
     Phonon backends seem to work reliably, and there can be delays between
     pressing a button (e.g. start) and the action occuring (due to buffering?).
-    To re-enable pass -DDENABLE_PHONON=ON to cmake.
+    To re-enable pass -DENABLE_PHONON=ON to cmake.
 36. Handle UTF-8 playlist names.
 37. Sort selected playqueue indexes before adding to stored playlist.
 38. Update 'Add To Playlist' menu when rename a playlist.
@@ -78,6 +78,7 @@
 45. Compile windows build against taglib 1.8 - enables tag editing and track
     reorganisation.
 46. Korean translation - thanks to Min Ho Park.
+47. Fix detection of audio codecs for ffmpeg 1.0.
 
 0.8.3.1
 -------
@@ -269,7 +270,7 @@
 47. When fetching lyrics or info for a song which has had the 'various artists'
     workaround applied - revert this before requesting data.
 48. When reading mpd.conf file, if bind_to_address is set to "any", then use
-    default of "locahost".
+    default of "localhost".
 49. Fix noticing of tag changes when MPD database is updated. When comparing
     songs need to check all fields - not just filename!
 50. Fix usage of tekstowo.pl and vagalume.com.br in lyrics settings.
@@ -284,8 +285,8 @@
 4. Set minimum font size for info page.
 5. Only automatically start playing songs if we are replacing the playqueue, or
    the song is the first song added via the commandline.
-6. Fix transcoding with new ffmpeg - thanks to Martin Blumenstingl
-   for the patch.
+6. Fix transcoding with new ffmpeg - thanks to Martin Blumenstingl for the
+   patch.
 7. Have cantata-dynamic helper script send a dbus message when it starts and
    stops - so that cantata main window can show the current status if the helper
    is started externally.

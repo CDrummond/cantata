@@ -27,6 +27,7 @@
 #include "localize.h"
 #include <QtCore/QRegExp>
 #include <QtCore/QProcess>
+#include <QtCore/QDebug>
 
 namespace Encoders
 {
@@ -276,9 +277,23 @@ static void init()
         if (output.simplified().isEmpty()) {
             return;
         }
-        foreach (const Encoder &encoder, initial) {
-            if (output.contains(QRegExp(QLatin1String(".EA... ")+encoder.codec))) {
-                installedEncoders.append(encoder);
+
+        QStringList lines=output.split('\n', QString::SkipEmptyParts);
+        foreach (const QString &line, lines) {
+            int pos=line.indexOf(QRegExp(QLatin1String("[\\. D]EA")));
+            if (0==pos || 1==pos) {
+                QList<Encoder>::Iterator it(initial.begin());
+                QList<Encoder>::Iterator end(initial.end());
+                for (; it!=end; ++it) {
+                    if (line.contains((*it).codec)) {
+                        installedEncoders.append((*it));
+                        initial.erase(it);
+                        break;
+                    }
+                }
+                if (initial.isEmpty()) {
+                    break;
+                }
             }
         }
     }

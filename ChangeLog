@@ -79,6 +79,7 @@
     reorganisation.
 46. Korean translation - thanks to Min Ho Park.
 47. Fix detection of audio codecs for ffmpeg 1.0.
+48. Remove libmaia usage.
 
 0.8.3.1
 -------

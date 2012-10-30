@@ -25,7 +25,6 @@
 #include "song.h"
 #include "utils.h"
 #include "mpdconnection.h"
-#include "maiaXmlRpcClient.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "config.h"
@@ -33,10 +32,12 @@
 #include "tags.h"
 #endif
 #include <QtCore/QFile>
+#include <QtCore/QDir>
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QThread>
 #include <QtCore/QMutex>
 #include <QtCore/QUrl>
+#include <QtCore/QTextStream>
 #include <QtCore/qglobal.h>
 #include <QtNetwork/QNetworkReply>
 #include <QtGui/QIcon>
@@ -44,6 +45,9 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QPainter>
 #include <QtGui/QFont>
+#include <QtXml/QXmlStreamReader>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
@@ -98,7 +102,6 @@ static const QString typeFromRaw(const QByteArray &raw)
     return QString();
 }
 
-#include <QtCore/QDebug>
 static QString save(const QString &mimeType, const QString &extension, const QString &filePrefix, const QImage &img, const QByteArray &raw)
 {
     if (!mimeType.isEmpty() && extension==mimeType) {
@@ -248,7 +251,6 @@ static void fCopy(const QString &sDir, const QString &sFile, const QString &dDir
     QFile::copy(sDir+sFile, dDir+dFile);
 }
 
-
 void Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name)
 {
     initCoverNames();
@@ -311,8 +313,7 @@ QStringList Covers::standardNames()
 }
 
 Covers::Covers()
-    : rpc(0)
-    , manager(0)
+    : manager(0)
     , cache(300000)
     , queue(0)
     , queueThread(0)
@@ -631,55 +632,117 @@ void Covers::downloadViaHttp(Job &job, JobType type)
     jobs.insert(j, job);
 }
 
+static QDomElement addArg(QDomDocument &doc, const QString &key, const QString &val)
+{
+    QDomElement member = doc.createElement("member");
+    QDomElement name = doc.createElement("name");
+    QDomElement value = doc.createElement("value");
+    QDomElement str = doc.createElement("string");
+
+    member.appendChild(name);
+    name.appendChild(doc.createTextNode(key));
+    member.appendChild(value);
+    value.appendChild(str);
+    str.appendChild(doc.createTextNode(val));
+
+    return member;
+}
+
 void Covers::downloadViaLastFm(Job &job)
 {
     // Query lastfm...
-    if (!rpc) {
-        rpc = new MaiaXmlRpcClient(QUrl("http://ws.audioscrobbler.com/2.0/"));
-    }
+    QDomDocument doc;
+    doc.appendChild(doc.createProcessingInstruction("xml", QString("version=\"1.0\" encoding=\"UTF-8\"")));
+    QDomElement methodCall = doc.createElement("methodCall");
+    QDomElement methodName = doc.createElement("methodName");
+    QDomElement params = doc.createElement("params");
+    QDomElement param = doc.createElement("param");
+    QDomElement value = doc.createElement("value");
+    QDomElement str = doc.createElement("struct");
 
-    QMap<QString, QVariant> args;
+    doc.appendChild(methodCall);
+    methodCall.appendChild(methodName);
+    methodName.appendChild(doc.createTextNode(job.isArtist ? "artist.getInfo" : "album.getInfo"));
+    methodCall.appendChild(params);
+    params.appendChild(param);
+    param.appendChild(value);
+    value.appendChild(str);
 
-    args["artist"] = job.song.albumArtist();
+    str.appendChild(addArg(doc, "api_key", constApiKey));
+    str.appendChild(addArg(doc, "artist", job.song.albumArtist()));
     if (!job.isArtist) {
-        args["album"] = job.song.album;
+        str.appendChild(addArg(doc, "album", job.song.album));
     }
-    args["api_key"] = constApiKey;
-    QNetworkReply *reply=rpc->call(job.isArtist ? "artist.getInfo" : "album.getInfo", QVariantList() << args,
-                                   this, SLOT(albumInfo(QVariant &, QNetworkReply *)),
-                                   this, SLOT(albumFailure(int, const QString &, QNetworkReply *)));
+
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://ws.audioscrobbler.com/2.0/"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "text/xml");
+    QNetworkReply *j = manager->post(request, doc.toString().toUtf8());
+    connect(j, SIGNAL(finished()), this, SLOT(lastFmCallFinished()));
     job.type=JobLastFm;
-    jobs.insert(reply, job);
+    jobs.insert(j, job);
 }
 
-void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
+void Covers::lastFmCallFinished()
 {
+    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    if (!reply) {
+        return;
+    }
+
     QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
     QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
 
     if (it!=end) {
-        QString xmldoc = value.toString();
-        xmldoc.replace("\\\"", "\"");
-        QXmlStreamReader doc(xmldoc);
-        QString url;
         Job job=it.value();
         jobs.erase(it);
-        bool inSection=false;
-        bool isArtistImage=job.isArtist;
+        QString url;
 
-        while (!doc.atEnd() && url.isEmpty()) {
-            doc.readNext();
+        if(QNetworkReply::NoError==reply->error()) {
+            QString resp;
+            QXmlStreamReader doc(QString::fromUtf8(reply->readAll()));
+            int level=0;
 
-            if (doc.isStartElement()) {
-                if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
-                    inSection=true;
-                } else if (inSection && QLatin1String("image")==doc.name() && QLatin1String("extralarge")==doc.attributes().value("size").toString()) {
-                    url = doc.readElementText();
-                } else if (QLatin1String("similar")==doc.name()) {
+            while (!doc.atEnd() && url.isEmpty()) {
+                doc.readNext();
+
+                if (doc.isStartElement()) {
+                    ++level;
+                    if ( (1==level && QLatin1String("methodResponse")!=doc.name()) ||
+                         (2==level && QLatin1String("params")!=doc.name()) ||
+                         (3==level && QLatin1String("param")!=doc.name()) ||
+                         (4==level && QLatin1String("value")!=doc.name()) ||
+                         (5==level && QLatin1String("string")!=doc.name()) ) {
+                        break;
+                    } else if (5==level) {
+                        resp = doc.readElementText();
+                        break;
+                    }
+                } else if (doc.isEndElement()) {
                     break;
                 }
-            } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
-                inSection=false;
+            }
+
+            if (!resp.isEmpty()) {
+                bool inSection=false;
+                bool isArtistImage=job.isArtist;
+                QXmlStreamReader doc(resp.replace("\\\"", "\""));
+
+                while (!doc.atEnd() && url.isEmpty()) {
+                    doc.readNext();
+
+                    if (doc.isStartElement()) {
+                        if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
+                            inSection=true;
+                        } else if (inSection && QLatin1String("image")==doc.name() && QLatin1String("extralarge")==doc.attributes().value("size").toString()) {
+                            url = doc.readElementText();
+                        } else if (QLatin1String("similar")==doc.name()) {
+                            break;
+                        }
+                    } else if (doc.isEndElement() && inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
+                        inSection=false;
+                    }
+                }
             }
         }
 
@@ -689,35 +752,19 @@ void Covers::albumInfo(QVariant &value, QNetworkReply *reply)
             QNetworkReply *j=manager->get(QNetworkRequest(u));
             connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
             jobs.insert(j, job);
-        } else if (job.isArtist) {
-            emit artistImage(job.song.albumartist, QImage());
         } else {
-            emit cover(job.song, QImage(), QString());
+            if (job.isArtist) {
+                emit artistImage(job.song.albumartist, QImage());
+            } else {
+                #if defined Q_OS_WIN
+                emit cover(job.song, QImage(), QString());
+                #else
+                AppCover app=otherAppCover(job);
+                emit cover(job.song, app.img, app.filename);
+                #endif
+            }
         }
     }
-    reply->deleteLater();
-}
-
-void Covers::albumFailure(int, const QString &, QNetworkReply *reply)
-{
-    QHash<QNetworkReply *, Job>::Iterator it(jobs.find(reply));
-    QHash<QNetworkReply *, Job>::Iterator end(jobs.end());
-
-    if (it!=end) {
-        Job job=it.value();
-        if (job.isArtist) {
-            emit artistImage(job.song.albumartist, QImage());
-        } else {
-            #if defined Q_OS_WIN
-            emit cover(job.song, QImage(), QString());
-            #else
-            AppCover app=otherAppCover(job);
-            emit cover(job.song, app.img, app.filename);
-            #endif
-        }
-        jobs.erase(it);
-    }
-
     reply->deleteLater();
 }
 

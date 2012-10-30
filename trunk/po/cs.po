@@ -3637,7 +3637,7 @@ msgstr "Skladby: 1"
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Tracks"
-msgstr "Skladby: 1%"
+msgstr "Skladby: %1"
 
 #: ../qtplural.h:32
 #, qt-format
@@ -3649,7 +3649,7 @@ msgstr "Skladby: 1 (%1)"
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Tracks (%2)"
-msgstr "Skladby: 1% (%2)"
+msgstr "Skladby: %1 (%2)"
 
 #: ../qtplural.h:36
 msgctxt "Singular"
@@ -3660,7 +3660,7 @@ msgstr "Alba: 1"
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Albums"
-msgstr "Alba: 1%"
+msgstr "Alba: %1"
 
 #: ../qtplural.h:40
 msgctxt "Singular"
@@ -3671,7 +3671,7 @@ msgstr "Umělci: 1"
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Artists"
-msgstr "Umělci: 1%"
+msgstr "Umělci: %1"
 
 #: ../qtplural.h:44
 msgctxt "Singular"
@@ -3682,7 +3682,7 @@ msgstr "Proudy: 1"
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Streams"
-msgstr "Proudy: 1%"
+msgstr "Proudy: %1"
 
 #: ../qtplural.h:48
 msgctxt "Singular"
@@ -3693,7 +3693,7 @@ msgstr "Položky: 1"
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Entries"
-msgstr "Položky: 1%"
+msgstr "Položky: %1"
 
 #: ../qtplural.h:52
 msgctxt "Singular"
@@ -3704,7 +3704,7 @@ msgstr "Pravidla: 1"
 #, qt-format
 msgctxt "Plural (N!=1)"
 msgid "%1 Rules"
-msgstr "Pravidla: 1%"
+msgstr "Pravidla: %1"
 
 #~ msgid ""
 #~ "<table><tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr><tr><td "

@@ -171,10 +171,6 @@ public:
         return volume;
     }
 
-    #ifdef TAGLIB_FOUND
-    void load(const QList<QUrl> &urls);
-    #endif
-
     int currentTrackPosition() const;
     QString coverFile() const;
 
@@ -212,8 +208,7 @@ public Q_SLOTS:
     void showPage(const QString &page, bool focusSearch);
     void dynamicStatus(const QString &message);
     void restoreWindow();
-
-public Q_SLOTS:
+    void load(const QStringList &urls);
     #ifdef ENABLE_KDE_SUPPORT
     void configureShortcuts();
     void saveShortcuts();

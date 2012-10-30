@@ -229,7 +229,7 @@ Application::Application(int &argc, char **argv)
 
 bool Application::start()
 {
-    if(QDBusConnection::sessionBus().registerService("org.kde.cantata")) {
+    if (QDBusConnection::sessionBus().registerService("org.kde.cantata")) {
         Icons::init();
         return true;
     }

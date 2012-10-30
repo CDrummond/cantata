@@ -91,7 +91,7 @@ int Application::newInstance() {
     KCmdLineArgs *args(KCmdLineArgs::parsedArgs());
     QStringList urls;
     for (int i = 0; i < args->count(); ++i) {
-        urls.append(args->url(i));
+        urls.append(args->arg(i));
     }
     if (!urls.isEmpty()) {
         w->load(urls);
@@ -108,7 +108,7 @@ void Application::mwDestroyed(QObject *obj)
     }
 }
 
-#elif Q_OS_WIN
+#elif defined Q_OS_WIN
 Application::Application(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
 {

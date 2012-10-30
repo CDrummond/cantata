@@ -29,7 +29,6 @@
 #include <KDE/Solid/PowerManagement>
 #else
 #include <QtGui/QIcon>
-#include <QtCore/QUrl>
 #ifdef Q_OS_WIN
 #include <QtCore/QDir>
 #include <windows.h>
@@ -90,9 +89,9 @@ int Application::newInstance() {
 
     #ifdef TAGLIB_FOUND
     KCmdLineArgs *args(KCmdLineArgs::parsedArgs());
-    QList<QUrl> urls;
+    QStringList urls;
     for (int i = 0; i < args->count(); ++i) {
-        urls.append(QUrl(args->url(i)));
+        urls.append(args->url(i));
     }
     if (!urls.isEmpty()) {
         w->load(urls);
@@ -109,7 +108,7 @@ void Application::mwDestroyed(QObject *obj)
     }
 }
 
-#else // ENABLE_KDE_SUPPORT
+#elif Q_OS_WIN
 Application::Application(int &argc, char **argv)
     : QtSingleApplication(argc, argv)
 {
@@ -117,16 +116,9 @@ Application::Application(int &argc, char **argv)
     connect(this, SIGNAL(messageReceived(const QString &)), SLOT(message(const QString &)));
     #endif
 
-    #ifdef Q_OS_WIN
     connect(this, SIGNAL(reconnect()), MPDConnection::self(), SLOT(reconnect()));
-    #endif
 }
 
-Application::~Application()
-{
-}
-
-#ifdef Q_OS_WIN
 static void setupIconTheme()
 {
     // Check that we have certain icons in the selected icon theme. If not, and oxygen is installed, then
@@ -164,7 +156,6 @@ bool Application::winEventFilter(MSG *msg, long *result)
     }
     return QCoreApplication::winEventFilter(msg, result);
 }
-#endif
 
 bool Application::start()
 {
@@ -180,9 +171,7 @@ bool Application::start()
         return false;
     }
 
-    #ifdef Q_OS_WIN
     setupIconTheme();
-    #endif
     Icons::init();
     return true;
 }
@@ -216,9 +205,9 @@ void Application::load(const QStringList &files)
         return;
     }
 
-    QList<QUrl> urls;
+    QStringList urls;
     foreach (const QString &f, files) {
-        urls.append(QUrl(f));
+        urls.append(f);
     }
     if (!urls.isEmpty()) {
         MainWindow *mw=qobject_cast<MainWindow *>(activationWindow());
@@ -228,5 +217,39 @@ void Application::load(const QStringList &files)
     }
 }
 #endif // TAGLIB_FOUND
+
+#else // Q_OS_WIN
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusMessage>
+
+Application::Application(int &argc, char **argv)
+    : QApplication(argc, argv)
+{
+}
+
+bool Application::start()
+{
+    if(QDBusConnection::sessionBus().registerService("org.kde.cantata")) {
+        Icons::init();
+        return true;
+    }
+    loadFiles();
+    return false;
+}
+
+void Application::loadFiles()
+{
+    #ifdef TAGLIB_FOUND
+    QStringList args(arguments());
+    if (args.count()>1) {
+        args.takeAt(0);
+        QDBusMessage m = QDBusMessage::createMethodCall("org.kde.cantata", "/cantata", "", "load");
+        QList<QVariant> a;
+        a.append(args);
+        m.setArguments(a);
+        QDBusConnection::sessionBus().send(m);
+    }
+    #endif
+}
 
 #endif

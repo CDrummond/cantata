@@ -14,5 +14,8 @@
     <method name="dynamicStatus">
         <arg type="s" name="error" direction="in"/>
     </method>
+    <method name="load">
+      <arg name="urls" type="as" direction="in"/>
+    </method>
   </interface>
 </node>

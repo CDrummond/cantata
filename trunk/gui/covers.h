@@ -129,8 +129,7 @@ private:
     void downloadViaLastFm(Job &job);
 
 private Q_SLOTS:
-    void albumInfo(QVariant &value, QNetworkReply *reply);
-    void albumFailure(int, const QString &, QNetworkReply *reply);
+    void lastFmCallFinished();
     void jobFinished();
 
 private:

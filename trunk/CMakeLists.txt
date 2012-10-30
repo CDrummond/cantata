@@ -142,9 +142,6 @@ SET( CANTATA_SRCS
     lyrics/songinfoprovider.cpp
     lyrics/lyricsdialog.cpp
     network/networkaccessmanager.cpp
-    libmaia/maiaObject.cpp
-    libmaia/maiaFault.cpp
-    libmaia/maiaXmlRpcClient.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -200,9 +197,6 @@ SET( CANTATA_MOC_HDRS
     lyrics/songinfoprovider.h
     lyrics/lyricsdialog.h
     network/networkaccessmanager.h
-    libmaia/maiaObject.h
-    libmaia/maiaFault.h
-    libmaia/maiaXmlRpcClient.h
 )
 
 SET( CANTATA_UIS
@@ -275,8 +269,7 @@ endif(NOT WIN32)
 
 SET( CANTATA_RCS cantata.qrc )
 
-include_directories( ${CMAKE_SOURCE_DIR}/libmaia
-                     ${CMAKE_SOURCE_DIR}/gui
+include_directories( ${CMAKE_SOURCE_DIR}/gui
                      ${CMAKE_SOURCE_DIR}/mpd
                      ${CMAKE_SOURCE_DIR}/models
                      ${CMAKE_SOURCE_DIR}/widgets

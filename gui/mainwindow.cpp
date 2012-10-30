@@ -255,14 +255,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     #ifndef Q_OS_WIN
     new CantataAdaptor(this);
-    #ifndef ENABLE_KDE_SUPPORT
-    // We need to register for this interface, so that dynamic helper can send messages...
-    if (!QDBusConnection::sessionBus().registerService("org.kde.cantata")) {
-        // Couldn't register service, so probalby KDE version is running!!!
-        ::exit(0);
-        return;
-    }
-    #endif
     QDBusConnection::sessionBus().registerObject("/cantata", this);
     #endif
     setMinimumHeight(256);
@@ -922,16 +914,17 @@ void MainWindow::initSizes()
     coverWidget->setMaximumSize(cwSize, cwSize);
 }
 
-#ifdef TAGLIB_FOUND
-void MainWindow::load(const QList<QUrl> &urls)
+void MainWindow::load(const QStringList &urls)
 {
+    #ifdef TAGLIB_FOUND
     QStringList useable;
     bool haveHttp=HttpServer::self()->isAlive();
     bool alwaysUseHttp=haveHttp && Settings::self()->alwaysUseHttp();
     bool mpdLocal=MPDConnection::self()->getDetails().isLocal();
     bool allowLocal=haveHttp || mpdLocal;
 
-    foreach (QUrl u, urls) {
+    foreach (const QString &path, urls) {
+        QUrl u(path);
         if (QLatin1String("http")==u.scheme()) {
             useable.append(u.toString());
         } else if (allowLocal && (u.scheme().isEmpty() || QLatin1String("file")==u.scheme())) {
@@ -945,8 +938,10 @@ void MainWindow::load(const QList<QUrl> &urls)
     if (useable.count()) {
         playQueueModel.addItems(useable, playQueueModel.rowCount(), false, 0);
     }
+    #else
+    Q_UNUSED(urls)
+    #endif
 }
-#endif
 
 void MainWindow::playbackButtonsMenu()
 {

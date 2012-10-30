@@ -47,7 +47,7 @@ private Q_SLOTS:
 private:
     MainWindow *w;
 };
-#else
+#elif defined Q_OS_WIN
 #include "qtsingleapplication/qtsingleapplication.h"
 class Application : public QtSingleApplication
 {
@@ -55,11 +55,9 @@ class Application : public QtSingleApplication
 
 public:
     Application(int &argc, char **argv);
-    virtual ~Application();
+    virtual ~Application() { }
 
-    #ifdef Q_OS_WIN
     bool winEventFilter(MSG *msg, long *result);
-    #endif
     bool start();
     #if defined TAGLIB_FOUND
     void loadFiles();
@@ -75,6 +73,18 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void reconnect();
+};
+#else
+#include <QtGui/QApplication>
+class Application : public QApplication
+{
+public:
+    Application(int &argc, char **argv);
+    virtual ~Application() { }
+
+    bool start();
+    void loadFiles();
+    void setActivationWindow(QWidget *) { }
 };
 #endif
 

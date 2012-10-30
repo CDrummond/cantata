@@ -25,6 +25,7 @@
 #define APPLICATION_H
 
 #include "config.h"
+#include <QtCore/qglobal.h>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KUniqueApplication>
 class MainWindow;

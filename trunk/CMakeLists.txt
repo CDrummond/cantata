@@ -429,7 +429,7 @@ IF( ENABLE_KDE_SUPPORT )
     install( FILES cantata.notifyrc DESTINATION ${DATA_INSTALL_DIR}/cantata )
 ELSE( ENABLE_KDE_SUPPORT )
     SET( CANTATA_SRCS ${CANTATA_SRCS} network/networkproxyfactory.cpp network/proxysettings.cpp )
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} application.h network/proxysettings.h )
+    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} network/proxysettings.h )
     SET( CANTATA_UIS ${CANTATA_UIS} network/proxysettings.ui )
     SET( CANTATA_RCS ${CANTATA_RCS} cantata_qt.qrc )
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )
@@ -438,6 +438,7 @@ ELSE( ENABLE_KDE_SUPPORT )
     QT4_WRAP_CPP( CANTATA_MOC_SRCS ${CANTATA_MOC_HDRS} )
 
     if (WIN32)
+        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} application.h )
         IF( MINGW )
             # resource compilation for MinGW
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o

@@ -255,8 +255,10 @@ void MediaDeviceCache::slotRemoveDevice(const QString &udi)
     debug() << "udi is: " << udi;
     Solid::Device device(udi);
     if (m_volumes.contains(udi)) {
-        disconnect(device.as<Solid::StorageAccess>(), SIGNAL(accessibilityChanged(bool, const QString&)),
-                    this, SLOT(slotAccessibilityChanged(bool, const QString&)));
+        if (device.as<Solid::StorageAccess>()) {
+            disconnect(device.as<Solid::StorageAccess>(), SIGNAL(accessibilityChanged(bool, const QString&)),
+                       this, SLOT(slotAccessibilityChanged(bool, const QString&)));
+        }
         m_volumes.removeAll(udi);
 //         emit deviceRemoved(udi);
     }

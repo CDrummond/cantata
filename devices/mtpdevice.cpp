@@ -558,7 +558,7 @@ MtpDevice::~MtpDevice()
 
 void MtpDevice::deviceDetails(const QString &s)
 {
-    if (s!=serial || serial.isEmpty()) {
+    if ((s!=serial || serial.isEmpty()) && solidDev.isValid()) {
         serial=s;
         QString configKey=cfgKey(solidDev, serial);
         opts.load(configKey);
@@ -592,7 +592,7 @@ void MtpDevice::configure(QWidget *parent)
 void MtpDevice::rescan(bool full)
 {
     Q_UNUSED(full)
-    if (mtpUpdating) {
+    if (mtpUpdating || !solidDev.isValid()) {
         return;
     }
     mtpUpdating=true;
@@ -851,7 +851,7 @@ void MtpDevice::libraryUpdated()
     }
     update=connection->takeLibrary();
     setStatusMessage(QString());
-    emit updating(solidDev.udi(), false);
+    emit updating(udi(), false);
     mtpUpdating=false;
 }
 
@@ -866,13 +866,17 @@ void MtpDevice::saveProperties(const QString &, const QString &, const DeviceOpt
 
 void MtpDevice::saveProperties()
 {
-    configured=true;
-    opts.save(cfgKey(solidDev, serial));
+    if (solidDev.isValid()) {
+        configured=true;
+        opts.save(cfgKey(solidDev, serial));
+    }
 }
 
 void MtpDevice::saveOptions()
 {
-    opts.save(cfgKey(solidDev, serial));
+    if (solidDev.isValid()) {
+        opts.save(cfgKey(solidDev, serial));
+    }
 }
 
 void MtpDevice::deleteTemp()

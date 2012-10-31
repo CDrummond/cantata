@@ -125,7 +125,7 @@ public:
     }
 
     virtual QString udi() const {
-        return solidDev.udi();
+        return solidDev.isValid() ? solidDev.udi() : QString("<INVALID>");
     }
     void applyUpdate();
     bool haveUpdate() const {

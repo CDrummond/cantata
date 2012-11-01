@@ -43,6 +43,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 #include <QtCore/QTimer>
+#include <time.h>
 
 static const QLatin1String constCantataCacheFile("/.cache.xml");
 
@@ -62,6 +63,8 @@ MusicScanner::~MusicScanner()
 void MusicScanner::run()
 {
     count=0;
+    lastUpdate=0;
+    step=25;
     library = new MusicLibraryItemRoot;
     scanFolder(folder, 0);
     if (MPDParseUtils::groupSingle()) {
@@ -117,7 +120,16 @@ void MusicScanner::scanFolder(const QString &f, int level)
                     continue;
                 }
                 count++;
-                if (0!=count && 0==count%25) {
+                if (0!=count && 0==count%step) {
+                    if (step>5) {
+                        int t=time(NULL);
+                        if (0!=lastUpdate) {
+                            if ((t-lastUpdate)>3) {
+                                step-=5;
+                            }
+                        }
+                        lastUpdate=t;
+                    }
                     emit songCount(count);
                 }
 

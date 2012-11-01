@@ -159,6 +159,7 @@ FsDevice::~FsDevice() {
 
 void FsDevice::rescan(bool full)
 {
+    spaceInfo.setDirty();
     // If this is the first scan (scanned=false) and we are set to use cache, attempt to load that before scanning
     if (isIdle() && (scanned || !opts.useCache || !readCache())) {
         scanned=true;

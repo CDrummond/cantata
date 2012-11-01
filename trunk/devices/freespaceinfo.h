@@ -35,6 +35,7 @@ public:
     void setDirty() { isDirty=true; }
     quint64 size();
     quint64 used();
+    const QString & path() const { return location; }
 
 private:
     void update();

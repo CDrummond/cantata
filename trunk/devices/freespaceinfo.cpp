@@ -22,6 +22,7 @@
  */
 
 #include "freespaceinfo.h"
+#include "utils.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KDiskFreeSpaceInfo>
 #elif defined(Q_OS_UNIX)
@@ -41,7 +42,7 @@ FreeSpaceInfo::FreeSpaceInfo(const QString &path)
 void FreeSpaceInfo::setPath(const QString &path)
 {
     if (location!=path) {
-        location=path;
+        location=Utils::fixPath(path);
         isDirty=true;
     }
 }
@@ -84,4 +85,3 @@ void FreeSpaceInfo::update()
     #endif
     isDirty=false;
 }
-

@@ -105,7 +105,7 @@ void UmsDevice::setup()
         return;
     }
 
-    QString path=Utils::fixPath(access->filePath());
+    QString path=spaceInfo.path();
     audioFolder = path;
 
     QFile file(path+constSettingsFile);
@@ -247,7 +247,7 @@ void UmsDevice::saveOptions()
         return;
     }
 
-    QString path=Utils::fixPath(access->filePath());
+    QString path=spaceInfo.path();
     QFile file(path+constSettingsFile);
     QString fixedPath(audioFolder);
 
@@ -316,7 +316,7 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
         return;
     }
 
-    QString path=Utils::fixPath(access->filePath());
+    QString path=spaceInfo.path();
     QFile extra(path+constCantataSettingsFile);
 
     audioFolder=nPath;

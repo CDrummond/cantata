@@ -191,6 +191,7 @@ void DevicePropertiesWidget::update(const QString &path, const QString &coverNam
     connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     connect(autoScan, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    connect(replaceSpaces, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     modified=false;
     checkSaveable();
 }
@@ -250,6 +251,7 @@ DeviceOptions DevicePropertiesWidget::settings()
     opts.replaceSpaces=replaceSpaces->isChecked();
     opts.fixVariousArtists=fixVariousArtists->isChecked();
     opts.useCache=useCache->isChecked();
+    opts.autoScan=autoScan->isChecked();
     opts.transcoderCodec=QString();
     opts.transcoderValue=0;
     opts.transcoderWhenDifferent=false;

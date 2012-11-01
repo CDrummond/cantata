@@ -371,9 +371,6 @@ bool RemoteFsDevice::isConnected() const
         return true;
     }
 
-    if (mp.endsWith('/')) {
-        mp=mp.left(mp.length()-1);
-    }
     mountToken=MountPoints::self()->currentToken();
     currentMountStatus=MountPoints::self()->isMounted(mp);
     if (currentMountStatus) {

@@ -82,5 +82,5 @@ void MountPoints::updateMountPoints()
 
 bool MountPoints::isMounted(const QString &mp) const
 {
-    return current.contains(mp);
+    return current.contains(mp.endsWith('/') ? mp.left(mp.length()-1) : mp);
 }

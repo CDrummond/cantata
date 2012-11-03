@@ -39,6 +39,8 @@ public:
     UmsDevice(DevicesModel *m, Solid::Device &dev);
     virtual ~UmsDevice();
 
+    void connectionStateChanged();
+    void toggle();
     bool isConnected() const;
     double usedCapacity();
     QString capacityString();
@@ -46,9 +48,8 @@ public:
     DevType devType() const { return Ums; }
     void saveOptions();
     void configure(QWidget *parent);
-    virtual bool canPlaySongs() const {
-        return true;
-    }
+    virtual bool canPlaySongs() const { return true; }
+    bool supportsDisconnect() const { return true; }
 
 private:
     void setup();

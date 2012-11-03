@@ -81,6 +81,7 @@
 47. Fix detection of audio codecs for ffmpeg 1.0.
 48. Remove libmaia usage.
 49. For Linux Qt builds, use dbus to determine single app status.
+50. Add connect/disconnect functionality for UMS devices.
 
 0.8.3.1
 -------

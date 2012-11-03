@@ -115,14 +115,17 @@ void MediaDeviceCache::refreshCache()
                     this, SLOT(slotAccessibilityChanged(bool, const QString&)));
                 m_volumes.append(device.udi());
             }
-            if (ssa->isAccessible()) {
-                m_type[device.udi()] = MediaDeviceCache::VolumeType;
-                m_name[device.udi()] = ssa->filePath();
-                m_accessibility[ device.udi() ] = true;
-            } else {
-                m_accessibility[ device.udi() ] = false;
-                debug() << "Solid device is not accessible, will wait until it is to consider it added.";
-            }
+            m_type[device.udi()] = MediaDeviceCache::VolumeType;
+            m_name[device.udi()] = ssa->filePath();
+            m_accessibility[ device.udi() ] = ssa->isAccessible();
+//            if (ssa->isAccessible()) {
+//                m_type[device.udi()] = MediaDeviceCache::VolumeType;
+//                m_name[device.udi()] = ssa->filePath();
+//                m_accessibility[ device.udi() ] = true;
+//            } else {
+//                m_accessibility[ device.udi() ] = false;
+//                debug() << "Solid device is not accessible, will wait until it is to consider it added.";
+//            }
         }
     }
 //     deviceList = Solid::Device::listFromType(Solid::DeviceInterface::StorageDrive);
@@ -200,13 +203,16 @@ void MediaDeviceCache::slotAddDevice(const QString &udi)
                 this, SLOT(slotAccessibilityChanged(bool, const QString&)));
             m_volumes.append(device.udi());
         }
-        if (ssa->isAccessible()) {
-            m_type[udi] = MediaDeviceCache::VolumeType;
-            m_name[udi] = ssa->filePath();
-        } else {
-            debug() << "storage volume is not accessible right now, not adding.";
-            return;
-        }
+        m_type[device.udi()] = MediaDeviceCache::VolumeType;
+        m_name[device.udi()] = ssa->filePath();
+        m_accessibility[ device.udi() ] = ssa->isAccessible();
+//        if (ssa->isAccessible()) {
+//            m_type[udi] = MediaDeviceCache::VolumeType;
+//            m_name[udi] = ssa->filePath();
+//        } else {
+//            debug() << "storage volume is not accessible right now, not adding.";
+//            return;
+//        }
     } else if (device.is<Solid::StorageDrive>()) {
         debug() << "device is a Storage drive, still need a volume";
         m_type[udi] = MediaDeviceCache::GenericType;
@@ -279,14 +285,14 @@ void MediaDeviceCache::slotAccessibilityChanged(bool accessible, const QString &
         if (ssa) {
             m_name[udi] = ssa->filePath();
         }
-        emit deviceAdded(udi);
-        return;
+//        emit deviceAdded(udi);
+//        return;
     } else {
         if (m_type.contains(udi))  {
             m_type.remove(udi);
             m_name.remove(udi);
-            emit deviceRemoved(udi);
-            return;
+//            emit deviceRemoved(udi);
+//            return;
         }
         debug() << "Got accessibility changed to false but was not there in the first place...";
     }

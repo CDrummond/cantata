@@ -301,12 +301,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
     case ItemView::Role_ToggleIcon:
-        #ifdef ENABLE_REMOTE_DEVICES
-        if (MusicLibraryItem::Type_Root==item->itemType() && Device::RemoteFs==static_cast<Device *>(item)->devType() &&
-            static_cast<Device *>(item)->supportsDisconnect()) {
+        if (MusicLibraryItem::Type_Root==item->itemType() && static_cast<Device *>(item)->supportsDisconnect()) {
             return static_cast<Device *>(item)->isConnected() ? Icons::disconnectIcon : Icons::connectIcon;
         }
-        #endif
         return QVariant();
     default:
         return QVariant();
@@ -336,6 +333,8 @@ void DevicesModel::setEnabled(bool e)
 
     if (enabled) {
         connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
+        connect(MediaDeviceCache::self(), SIGNAL(accessibilityChanged(bool, const QString &)),
+                this, SLOT(accessibilityChanged(bool, const QString &)));
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         MediaDeviceCache::self()->refreshCache();
@@ -348,6 +347,8 @@ void DevicesModel::setEnabled(bool e)
         }
     } else {
         disconnect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
+        disconnect(MediaDeviceCache::self(), SIGNAL(accessibilityChanged(bool, const QString &)),
+                   this, SLOT(accessibilityChanged(bool, const QString &)));
         disconnect(Covers::self(), SIGNAL(cover(cconst Song &, const QImage &, const QString &)),
                    this, SLOT(setCover(const Song &, const QImage &, const QString &)));
     }
@@ -439,6 +440,17 @@ void DevicesModel::deviceRemoved(const QString &udi)
         indexes.remove(udi);
         endRemoveRows();
         updateItemMenu();
+    }
+}
+
+void DevicesModel::accessibilityChanged(bool accessible, const QString &udi)
+{
+    Q_UNUSED(accessible)
+    if (indexes.contains(udi)) {
+        Device *dev=Device::create(this, udi);
+        if (dev) {
+            dev->connectionStateChanged();
+        }
     }
 }
 

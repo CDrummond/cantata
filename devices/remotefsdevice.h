@@ -101,7 +101,6 @@ protected:
 
 private:
     bool isOldSshfs();
-    void clear() const;
 
 protected Q_SLOTS:
     void saveProperties();

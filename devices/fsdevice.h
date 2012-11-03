@@ -94,6 +94,7 @@ protected:
     bool readCache();
     void startScanner(bool fullScan=true);
     void stopScanner(bool showStatus=true);
+    void clear() const;
 
 protected Q_SLOTS:
     void cacheRead();

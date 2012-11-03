@@ -438,7 +438,6 @@ void DevicesPage::forgetRemoteDevice()
 
 void DevicesPage::toggleDevice()
 {
-    #ifdef ENABLE_REMOTE_DEVICES
     const QModelIndexList selected = view->selectedIndexes();
 
     if (1!=selected.size()) {
@@ -447,10 +446,9 @@ void DevicesPage::toggleDevice()
 
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
-    if (MusicLibraryItem::Type_Root==item->itemType() && Device::RemoteFs==static_cast<Device *>(item)->devType()) {
-        static_cast<RemoteFsDevice *>(item)->toggle();
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
+        static_cast<Device *>(item)->toggle();
     }
-    #endif
 }
 
 #define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return

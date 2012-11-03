@@ -66,6 +66,7 @@ public Q_SLOTS:
     void setCover(const Song &song, const QImage &img, const QString &file);
     void deviceAdded(const QString &udi);
     void deviceRemoved(const QString &udi);
+    void accessibilityChanged(bool accessible, const QString &udi);
     void deviceUpdating(const QString &udi, bool state);
     void emitAddToDevice();
     void addRemoteDevice(const QString &coverFileName, const DeviceOptions &opts, RemoteFsDevice::Details details);

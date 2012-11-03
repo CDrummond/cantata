@@ -64,7 +64,32 @@ UmsDevice::UmsDevice(DevicesModel *m, Solid::Device &dev)
     setup();
 }
 
-UmsDevice::~UmsDevice() {
+UmsDevice::~UmsDevice()
+{
+}
+
+void UmsDevice::connectionStateChanged()
+{
+    if (isConnected()) {
+        if ((opts.autoScan || scanned) && (!opts.useCache || !readCache())){ // Only scan if we are set to auto scan, or we have already scanned before...
+            rescan();
+        } else if (!scanned && (!opts.useCache || !readCache())) { // Attempt to read cache, even if autoScan set to false
+            setStatusMessage(i18n("Not Scanned"));
+        }
+    } else {
+        clear();
+    }
+}
+
+void UmsDevice::toggle()
+{
+    if (solidDev.isValid() && access && access->isValid()) {
+        if (access->isAccessible()) {
+            access->teardown();
+        } else {
+            access->setup();
+        }
+    }
 }
 
 bool UmsDevice::isConnected() const

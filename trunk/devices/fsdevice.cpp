@@ -458,6 +458,16 @@ void FsDevice::stopScanner(bool showStatus)
     }
 }
 
+void FsDevice::clear() const
+{
+    if (childCount()) {
+        FsDevice *that=(FsDevice *)this;
+        that->update=new MusicLibraryItemRoot();
+        that->applyUpdate();
+        that->scanned=false;
+    }
+}
+
 void FsDevice::libraryUpdated()
 {
     if (scanner) {

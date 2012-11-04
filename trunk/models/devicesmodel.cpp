@@ -447,9 +447,12 @@ void DevicesModel::accessibilityChanged(bool accessible, const QString &udi)
 {
     Q_UNUSED(accessible)
     if (indexes.contains(udi)) {
-        Device *dev=Device::create(this, udi);
-        if (dev) {
-            dev->connectionStateChanged();
+        int idx=indexes[udi];
+        if (idx>-1) {
+            Device *dev=devices.at(idx);
+            if (dev) {
+                dev->connectionStateChanged();
+            }
         }
     }
 }

@@ -71,6 +71,8 @@ UmsDevice::~UmsDevice()
 void UmsDevice::connectionStateChanged()
 {
     if (isConnected()) {
+        spaceInfo.setPath(access->filePath());
+        setup();
         if ((opts.autoScan || scanned) && (!opts.useCache || !readCache())){ // Only scan if we are set to auto scan, or we have already scanned before...
             rescan();
         } else if (!scanned && (!opts.useCache || !readCache())) { // Attempt to read cache, even if autoScan set to false

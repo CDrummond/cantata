@@ -362,7 +362,7 @@ void DevicesPage::refreshDevice()
             switch (MessageBox::questionYesNoCancel(this, i18n("<p>Which type of refresh do you wish to perform?<ul>"
                                                                "<li>Partial - Only new songs are scanned <i>(quick)</i></li>"
                                                                "<li>Full - All songs are rescanned <i>(slow)</i></li></ul></p>"),
-                                                    i18n("Refresh"), KGuiItem(i18n("Partial")), KGuiItem(i18n("Full")))) {
+                                                    i18n("Refresh"), GuiItem(i18n("Partial")), GuiItem(i18n("Full")))) {
                 case MessageBox::Yes:
                     full=false;
                 case MessageBox::No:

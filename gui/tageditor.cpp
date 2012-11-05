@@ -121,18 +121,18 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         setButtonGuiItem(User1, KStandardGuiItem::forward(KStandardGuiItem::UseRTL));
         setButtonText(User1, i18n("Next"));
         #else
-        setButtonGuiItem(User2, KGuiItem(i18n("Previous"), "go-previous"));
-        setButtonGuiItem(User1, KGuiItem(i18n("Next"), "go-next"));
+        setButtonGuiItem(User2, GuiItem(i18n("Previous"), "go-previous"));
+        setButtonGuiItem(User1, GuiItem(i18n("Next"), "go-next"));
         #endif
         enableButton(User1, false);
         enableButton(User2, false);
     }
     #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Ok, KStandardGuiItem::save());
-    setButtonGuiItem(User3, KGuiItem(i18n("Tools"), "tools-wizard"));
+    setButtonGuiItem(User3, GuiItem(i18n("Tools"), "tools-wizard"));
     #else
-    setButtonGuiItem(Ok, KGuiItem(i18n("Save"), "document-save"));
-    setButtonGuiItem(User3, KGuiItem(i18n("Tools"), "tools-wizard"));
+    setButtonGuiItem(Ok, GuiItem(i18n("Save"), "document-save"));
+    setButtonGuiItem(User3, GuiItem(i18n("Tools"), "tools-wizard"));
     #endif
     QMenu *toolsMenu=new QMenu(this);
     toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));

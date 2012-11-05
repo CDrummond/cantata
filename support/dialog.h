@@ -27,12 +27,13 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KDialog>
 typedef KDialog Dialog;
+typedef KGuiItem GuiItem;
 #else
 #include <QtGui/QDialog>
 #include <QtCore/QMap>
 
-struct KGuiItem {
-    KGuiItem(const QString &t=QString(), const QString &i=QString())
+struct GuiItem {
+    GuiItem(const QString &t=QString(), const QString &i=QString())
         : text(t), icon(i) {
     }
     QString text;
@@ -86,7 +87,7 @@ public:
     }
     void setButtons(ButtonCodes buttons);
     void setButtonText(ButtonCode button, const QString &text);
-    void setButtonGuiItem(ButtonCode button, const KGuiItem &item);
+    void setButtonGuiItem(ButtonCode button, const GuiItem &item);
     void setButtonMenu(ButtonCode button, QMenu *menu, ButtonPopupMode popupmode=InstantPopup);
     void enableButton(ButtonCode button, bool enable);
     void enableButtonOk(bool enable) {

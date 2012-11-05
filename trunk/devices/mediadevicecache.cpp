@@ -30,7 +30,6 @@
 #include <solid/deviceinterface.h>
 #include <solid/devicenotifier.h>
 #include <solid/genericinterface.h>
-#include <solid/opticaldisc.h>
 #include <solid/portablemediaplayer.h>
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
@@ -43,7 +42,6 @@
 #include "solid-lite/deviceinterface.h"
 #include "solid-lite/devicenotifier.h"
 #include "solid-lite/genericinterface.h"
-#include "solid-lite/opticaldisc.h"
 #include "solid-lite/portablemediaplayer.h"
 #include "solid-lite/storageaccess.h"
 #include "solid-lite/storagedrive.h"
@@ -190,13 +188,8 @@ void MediaDeviceCache::slotAddDevice(const QString &udi)
     debug() << "Found new Solid device with udi = " << device.udi();
     debug() << "Device name is = " << device.product() << " and was made by " << device.vendor();
     Solid::StorageAccess *ssa = device.as<Solid::StorageAccess>();
-    Solid::OpticalDisc * opt = device.as<Solid::OpticalDisc>();
 
-    if (opt && opt->availableContent() & Solid::OpticalDisc::Audio) {
-        debug() << "device is an Audio CD";
-        m_type[udi] = MediaDeviceCache::AudioCdType;
-        m_name[udi] = device.vendor() + " - " + device.product();
-    } else if (ssa) {
+    if (ssa) {
         debug() << "volume is generic storage";
         if (!m_volumes.contains(device.udi())) {
             connect(ssa, SIGNAL(accessibilityChanged(bool, const QString&)),

@@ -19,9 +19,7 @@ set(solidlite_LIB_SRCS
    genericinterface.cpp
    block.cpp
    storagedrive.cpp
-   opticaldrive.cpp
    storagevolume.cpp
-   opticaldisc.cpp
    storageaccess.cpp
    portablemediaplayer.cpp
    predicate.cpp
@@ -31,12 +29,10 @@ set(solidlite_LIB_SRCS
    xdgbasedirs.cpp
 
    ifaces/block.cpp
-   ifaces/opticaldrive.cpp
    ifaces/device.cpp
    ifaces/deviceinterface.cpp
    ifaces/devicemanager.cpp
    ifaces/genericinterface.cpp
-   ifaces/opticaldisc.cpp
    ifaces/portablemediaplayer.cpp
    ifaces/storagedrive.cpp
    ifaces/storagevolume.cpp
@@ -52,8 +48,6 @@ set(solidlite_LIB_MOC_HDRS
     devicenotifier.h
     device_p.h
     genericinterface.h
-    opticaldisc.h
-    opticaldrive.h
     portablemediaplayer.h
     storageaccess.h
     storagedrive.h
@@ -119,13 +113,11 @@ set(solidlite_LIB_MOC_HDRS
    message(STATUS "Building Solid HAL backend." )
    set(solidlite_LIB_SRCS ${solidlite_LIB_SRCS}
    backends/hal/halblock.cpp
-   backends/hal/halcdrom.cpp
    backends/hal/haldeviceinterface.cpp
    backends/hal/halfstabhandling.cpp
    backends/hal/halgenericinterface.cpp
    backends/hal/haldevice.cpp
    backends/hal/halmanager.cpp
-   backends/hal/halopticaldisc.cpp
    backends/hal/halportablemediaplayer.cpp
    backends/hal/halstorageaccess.cpp
    backends/hal/halstorage.cpp
@@ -133,12 +125,10 @@ set(solidlite_LIB_MOC_HDRS
    )
    set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
    backends/hal/halblock.h
-   backends/hal/halcdrom.h
    backends/hal/haldevice.h
    backends/hal/haldeviceinterface.h
    backends/hal/halgenericinterface.h
    backends/hal/halmanager.h
-   backends/hal/halopticaldisc.h
    backends/hal/halportablemediaplayer.h
    backends/hal/halstorageaccess.h
    backends/hal/halstorage.h
@@ -154,8 +144,6 @@ set(solidlite_LIB_MOC_HDRS
       backends/udisks/udisksblock.cpp
       backends/udisks/udisksstoragevolume.cpp
       backends/udisks/udisksdeviceinterface.cpp
-      backends/udisks/udisksopticaldisc.cpp
-      backends/udisks/udisksopticaldrive.cpp
       backends/udisks/udisksstoragedrive.cpp
       backends/udisks/udisksstorageaccess.cpp
       backends/udisks/udisksgenericinterface.cpp
@@ -166,8 +154,6 @@ set(solidlite_LIB_MOC_HDRS
       backends/udisks/udisksdeviceinterface.h
       backends/udisks/udisksgenericinterface.h
       backends/udisks/udisksmanager.h
-      backends/udisks/udisksopticaldisc.h
-      backends/udisks/udisksopticaldrive.h
       backends/udisks/udisksstorageaccess.h
       backends/udisks/udisksstoragedrive.h
       backends/udisks/udisksstoragevolume.h
@@ -209,12 +195,10 @@ if(WIN32)
 
        set(solidlite_LIB_SRCS ${solidlite_LIB_SRCS}
        backends/wmi/wmiblock.cpp
-       backends/wmi/wmicdrom.cpp
        backends/wmi/wmideviceinterface.cpp
        backends/wmi/wmigenericinterface.cpp
        backends/wmi/wmidevice.cpp
        backends/wmi/wmimanager.cpp
-       backends/wmi/wmiopticaldisc.cpp
        backends/wmi/wmiportablemediaplayer.cpp
        backends/wmi/wmiquery.cpp
        backends/wmi/wmistorageaccess.cpp
@@ -224,12 +208,10 @@ if(WIN32)
        )
        set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
        backends/wmi/wmiblock.h
-       backends/wmi/wmicdrom.h
        backends/wmi/wmidevice.h
        backends/wmi/wmideviceinterface.h
        backends/wmi/wmigenericinterface.h
        backends/wmi/wmimanager.h
-       backends/wmi/wmiopticaldisc.h
        backends/wmi/wmiportablemediaplayer.h
        backends/wmi/wmistorageaccess.h
        backends/wmi/wmistorage.h

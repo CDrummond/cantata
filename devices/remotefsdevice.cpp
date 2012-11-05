@@ -195,7 +195,7 @@ void RemoteFsDevice::renamed(const QString &oldName, const QString &newName)
 }
 
 RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d)
-    : FsDevice(m, d.name)
+    : FsDevice(m, d.name, createUdi(d.name))
     , mountToken(0)
     , currentMountStatus(false)
     , details(d)
@@ -209,7 +209,7 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const Devi
 }
 
 RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
-    : FsDevice(m, d.name)
+    : FsDevice(m, d.name, createUdi(d.name))
     , mountToken(0)
     , currentMountStatus(false)
     , details(d)
@@ -550,7 +550,8 @@ void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Devic
         }
         setData(details.name);
         renamed(oldDetails.name, details.name);
-        emit udiChanged(createUdi(oldDetails.name), createUdi(details.name));
+        deviceId=createUdi(details.name);
+        emit udiChanged();
         m_itemData=details.name;
         setStatusMessage(QString());
     }

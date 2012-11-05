@@ -33,7 +33,6 @@
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kdeversion.h>
-#include "mediadevicecache.h"
 #include <KDE/KApplication>
 #include <KDE/KAction>
 #include <KDE/KActionCollection>
@@ -808,9 +807,6 @@ MainWindow::MainWindow(QWidget *parent)
     mpdThread->start();
     connectToMpd();
 
-    #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
-    DevicesModel::self()->loadRemote();
-    #endif
     QString page=Settings::self()->page();
     for (int i=0; i<tabWidget->count(); ++i) {
         if (tabWidget->widget(i)->metaObject()->className()==page) {

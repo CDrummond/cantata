@@ -52,6 +52,10 @@ MusicScanner::MusicScanner(const QString &f)
     , folder(f)
     , library(0)
     , stopRequested(false)
+    , count(0)
+    , lastUpdate(0)
+    , updateCount(0)
+    , step(0)
 {
 }
 
@@ -455,7 +459,7 @@ void FsDevice::stopScanner(bool showStatus)
 void FsDevice::clear() const
 {
     if (childCount()) {
-        FsDevice *that=(FsDevice *)this;
+        FsDevice *that=const_cast<FsDevice *>(this);
         that->update=new MusicLibraryItemRoot();
         that->applyUpdate();
         that->scanned=false;

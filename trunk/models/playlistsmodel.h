@@ -49,7 +49,7 @@ public:
     struct PlaylistItem;
     struct SongItem : public Item, public Song
     {
-        SongItem() { }
+        SongItem() : parent(0) { }
         SongItem(const Song &s, PlaylistItem *p=0) : Song(s), parent(p) { }
         bool isPlaylist() { return false; }
         PlaylistItem *parent;

@@ -609,9 +609,7 @@ Song PlayQueueModel::getSongByRow(const qint32 row) const
 
 void PlayQueueModel::updateCurrentSong(quint32 id)
 {
-    qint32 oldIndex = -1;
-
-    oldIndex = currentSongId;
+    qint32 oldIndex = currentSongId;
     currentSongId = id;
 
     if (-1!=oldIndex) {

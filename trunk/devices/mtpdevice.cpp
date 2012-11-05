@@ -259,7 +259,7 @@ uint32_t MtpConnection::getFolderId(const char *name, LIBMTP_folder_t *f)
 
 void MtpConnection::updateFolders()
 {
-    folderMap.empty();
+    folderMap.clear();
     if (folders) {
         LIBMTP_destroy_folder_t(folders);
         folders=0;
@@ -500,12 +500,12 @@ void MtpConnection::delSong(const Song &song)
 
 void MtpConnection::destroyData()
 {
-    folderMap.empty();
+    folderMap.clear();
     if (folders) {
         LIBMTP_destroy_folder_t(folders);
         folders=0;
     }
-    trackMap.empty();
+    trackMap.clear();
     if (tracks) {
         LIBMTP_destroy_track_t(tracks);
         tracks=0;

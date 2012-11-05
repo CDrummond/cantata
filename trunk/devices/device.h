@@ -83,14 +83,16 @@ public:
         , model(m)
         , configured(false)
         , solidDev(dev)
+        , deviceId(dev.udi())
         , update(0)
         , needToFixVa(false)
         , jobAbortRequested(false) {
     }
-    Device(DevicesModel *m, const QString &name)
+    Device(DevicesModel *m, const QString &name, const QString &id)
         : MusicLibraryItemRoot(name)
         , model(m)
         , configured(false)
+        , deviceId(id)
         , update(0)
         , needToFixVa(false)
         , jobAbortRequested(false) {
@@ -126,8 +128,8 @@ public:
     virtual void removeCache() {
     }
 
-    virtual QString udi() const {
-        return solidDev.isValid() ? solidDev.udi() : QString("<INVALID>");
+    const QString & udi() const {
+        return deviceId;
     }
     void applyUpdate();
     bool haveUpdate() const {
@@ -194,6 +196,7 @@ protected:
     DeviceOptions opts;
     bool configured;
     Solid::Device solidDev;
+    QString deviceId;
     MusicLibraryItemRoot *update;
     Song currentSong;
     QString currentBaseDir;

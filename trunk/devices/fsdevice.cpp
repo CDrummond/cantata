@@ -152,8 +152,8 @@ FsDevice::FsDevice(DevicesModel *m, Solid::Device &dev)
 {
 }
 
-FsDevice::FsDevice(DevicesModel *m, const QString &name)
-    : Device(m, name)
+FsDevice::FsDevice(DevicesModel *m, const QString &name, const QString &id)
+    : Device(m, name, id)
     , scanned(false)
     , scanner(0)
 {

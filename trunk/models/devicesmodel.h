@@ -24,6 +24,7 @@
 #define DEVICES_MODEL_H
 
 #include <QtCore/QAbstractItemModel>
+#include <QtCore/QSet>
 #include "song.h"
 #include "config.h"
 #include "remotefsdevice.h"
@@ -41,10 +42,6 @@ public:
 
     DevicesModel(QObject *parent = 0);
     ~DevicesModel();
-    #ifdef ENABLE_REMOTE_DEVICES
-    void loadRemote();
-    void unmountRemote();
-    #endif
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -61,6 +58,9 @@ public:
     void setEnabled(bool e);
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     QMimeData * mimeData(const QModelIndexList &indexes) const;
+    #ifdef ENABLE_REMOTE_DEVICES
+    void unmountRemote();
+    #endif
 
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img, const QString &file);
@@ -71,23 +71,29 @@ public Q_SLOTS:
     void emitAddToDevice();
     void addRemoteDevice(const QString &coverFileName, const DeviceOptions &opts, RemoteFsDevice::Details details);
     void removeRemoteDevice(const QString &udi);
-    void changeDeviceUdi(const QString &from, const QString &to);
-    void checkRemoteDevices();
+    void remoteDeviceUdiChanged();
+    void mountsChanged();
 
 private:
     void updateItemMenu();
+    void addLocalDevice(const QString &udi);
+    void loadLocal();
+    #ifdef ENABLE_REMOTE_DEVICES
+    void loadRemote();
+    #endif
+    int indexOf(const QString &udi);
 
 Q_SIGNALS:
-//     void updated(const MusicLibraryItemRoot *root);
     void updateGenres(const QSet<QString> &genres);
     void addToDevice(const QString &udi);
     void error(const QString &text);
 
 private:
     QList<Device *> devices;
-    QHash<QString, int> indexes;
+    QSet<QString> volumes;
     QMenu *itemMenu;
     bool enabled;
+    bool inhibitMenuUpdate;
 
     friend class Device;
 };

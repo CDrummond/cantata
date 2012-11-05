@@ -388,12 +388,12 @@ if (TAGLIB_FOUND)
             SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h )
         endif (MTP_FOUND)
 
-        SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mediadevicecache.cpp devices/devicespage.cpp devices/filejob.cpp
+        SET( CANTATA_SRCS ${CANTATA_SRCS} devices/devicespage.cpp devices/filejob.cpp
                 devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
                 models/devicesmodel.cpp devices/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
                 devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp)
-        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mediadevicecache.h devices/devicespage.h devices/filejob.h
+        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/devicespage.h devices/filejob.h
                 devices/device.h devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
                 devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
                 devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h devices/synccollectionwidget.h)

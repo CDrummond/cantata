@@ -74,7 +74,7 @@ class FsDevice : public Device
 
 public:
     FsDevice(DevicesModel *m, Solid::Device &dev);
-    FsDevice(DevicesModel *m, const QString &name);
+    FsDevice(DevicesModel *m, const QString &name, const QString &id);
     virtual ~FsDevice();
 
     void rescan(bool full=true);

@@ -85,14 +85,13 @@ public:
     void saveOptions();
     void configure(QWidget *parent);
     DevType devType() const { return RemoteFs; }
-    QString udi() const { return createUdi(details.name); }
     QString icon() const {
         return QLatin1String(details.isLocalFile() ? "inode-directory" : "network-server");
     }
     bool canPlaySongs() const;
 
 Q_SIGNALS:
-    void udiChanged(const QString &from, const QString &to);
+    void udiChanged();
 
 protected:
     void load();

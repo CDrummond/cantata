@@ -32,25 +32,37 @@
 #include "covers.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
-#include "mediadevicecache.h"
 #include "umsdevice.h"
 #include "httpserver.h"
 #include "localize.h"
 #include "icons.h"
+#include "mountpoints.h"
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>
-#ifdef ENABLE_REMOTE_DEVICES
-#include "mountpoints.h"
-#endif
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
 #include <KDE/KGlobal>
+#include <solid/device.h>
+#include <solid/deviceinterface.h>
+#include <solid/devicenotifier.h>
+#include <solid/portablemediaplayer.h>
+#include <solid/storageaccess.h>
+#include <solid/storagedrive.h>
+#include <solid/storagevolume.h>
+K_GLOBAL_STATIC(DevicesModel, instance)
+#else
+#include "solid-lite/device.h"
+#include "solid-lite/deviceinterface.h"
+#include "solid-lite/devicenotifier.h"
+#include "solid-lite/portablemediaplayer.h"
+#include "solid-lite/storageaccess.h"
+#include "solid-lite/storagedrive.h"
+#include "solid-lite/storagevolume.h"
 #endif
 
-#ifdef ENABLE_KDE_SUPPORT
-K_GLOBAL_STATIC(DevicesModel, instance)
-#endif
+#include <QtCore/QDebug>
+#define DBUG qDebug()
 
 DevicesModel * DevicesModel::self()
 {
@@ -69,48 +81,15 @@ DevicesModel::DevicesModel(QObject *parent)
     : QAbstractItemModel(parent)
     , itemMenu(0)
     , enabled(false)
+    , inhibitMenuUpdate(false)
 {
-    connect(MediaDeviceCache::self(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
     updateItemMenu();
-    #ifdef ENABLE_REMOTE_DEVICES
-    connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkRemoteDevices()));
-    #endif
 }
 
 DevicesModel::~DevicesModel()
 {
     qDeleteAll(devices);
 }
-
-#ifdef ENABLE_REMOTE_DEVICES
-void DevicesModel::loadRemote()
-{
-    QList<Device *> rem=RemoteFsDevice::loadAll(this);
-    if (rem.count()) {
-        beginInsertRows(QModelIndex(), devices.count(), devices.count()+(rem.count()-1));
-        foreach (Device *dev, rem) {
-            indexes.insert(dev->udi(), devices.count());
-            devices.append(dev);
-            connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
-            connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
-            if (Device::RemoteFs==dev->devType()) {
-                connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
-            }
-        }
-        endInsertRows();
-        updateItemMenu();
-    }
-}
-
-void DevicesModel::unmountRemote()
-{
-    foreach (Device *dev, devices) {
-        if (Device::RemoteFs==dev->devType()) {
-            static_cast<RemoteFsDevice *>(dev)->unmount();
-        }
-    }
-}
-#endif
 
 QModelIndex DevicesModel::index(int row, int column, const QModelIndex &parent) const
 {
@@ -313,14 +292,28 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
 
 void DevicesModel::clear()
 {
-    beginResetModel();
-    qDeleteAll(devices);
+    inhibitMenuUpdate=true;
+    QSet<QString> remoteUdis;
+    QSet<QString> udis;
+    foreach (Device *dev, devices) {
+        if (Device::RemoteFs==dev->devType()) {
+            remoteUdis.insert(dev->udi());
+        } else {
+            udis.insert(dev->udi());
+        }
+    }
+
+    foreach (const QString &u, udis) {
+        deviceRemoved(u);
+    }
+    foreach (const QString &u, remoteUdis) {
+        removeRemoteDevice(u);
+    }
+
     devices.clear();
-    indexes.clear();
-    endResetModel();
+    volumes.clear();
+    inhibitMenuUpdate=false;
     updateItemMenu();
-//     emit updated(rootItem);
-//     emit updateGenres(QSet<QString>());
 }
 
 void DevicesModel::setEnabled(bool e)
@@ -331,35 +324,33 @@ void DevicesModel::setEnabled(bool e)
 
     enabled=e;
 
+    inhibitMenuUpdate=true;
     if (enabled) {
-        connect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
-        connect(MediaDeviceCache::self(), SIGNAL(accessibilityChanged(bool, const QString &)),
-                this, SLOT(accessibilityChanged(bool, const QString &)));
+        connect(Solid::DeviceNotifier::instance(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
+        connect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
-        MediaDeviceCache::self()->refreshCache();
-        QStringList deviceUdiList=MediaDeviceCache::self()->getAll();
-        foreach (const QString &udi, deviceUdiList) {
-            deviceAdded(udi);
-        }
-        if (devices.isEmpty()) {
-            updateItemMenu();
-        }
+        loadLocal();
+        connect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
+        #ifdef ENABLE_REMOTE_DEVICES
+        loadRemote();
+        #endif
     } else {
-        disconnect(MediaDeviceCache::self(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
-        disconnect(MediaDeviceCache::self(), SIGNAL(accessibilityChanged(bool, const QString &)),
-                   this, SLOT(accessibilityChanged(bool, const QString &)));
-        disconnect(Covers::self(), SIGNAL(cover(cconst Song &, const QImage &, const QString &)),
+        disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
+        disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
+        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                    this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+        disconnect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
+        clear();
     }
+    inhibitMenuUpdate=false;
+    updateItemMenu();
 }
 
 Device * DevicesModel::device(const QString &udi)
 {
-    if (indexes.contains(udi)) {
-        return devices.at(indexes[udi]);
-    }
-    return 0;
+    int idx=indexOf(udi);
+    return idx<0 ? 0 : devices.at(idx);
 }
 
 void DevicesModel::setCover(const Song &song, const QImage &img, const QString &file)
@@ -387,80 +378,12 @@ void DevicesModel::setCover(const Song &song, const QImage &img, const QString &
         }
         i++;
     }
-
-//     foreach (const MusicLibraryItem *device, devices) {
-//         bool found=false;
-//         int j=0;
-//         foreach (const MusicLibraryItem *artistItem, device->childItems()) {
-//             if (artistItem->data()==artist) {
-//                 int k=0;
-//                 foreach (const MusicLibraryItem *albumItem, artistItem->childItems()) {
-//                     if (albumItem->data()==album) {
-//                         if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
-//                             QModelIndex idx=index(k, 0, index(j, 0, index(i, 0, QModelIndex())));
-//                             emit dataChanged(idx, idx);
-//                         }
-//                         found=true;
-//                         break;
-//                     }
-//                     k++;
-//                 }
-//                 if (found) {
-//                     break;
-//                 }
-//             }
-//             j++;
-//         }
-//         i++;
-//     }
-}
-
-void DevicesModel::deviceAdded(const QString &udi)
-{
-    if (!indexes.contains(udi)) {
-        Device *dev=Device::create(this, udi);
-        if (dev) {
-            beginInsertRows(QModelIndex(), devices.count(), devices.count());
-            indexes.insert(udi, devices.count());
-            devices.append(dev);
-            endInsertRows();
-            connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
-            connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
-            updateItemMenu();
-        }
-    }
-}
-
-void DevicesModel::deviceRemoved(const QString &udi)
-{
-    if (indexes.contains(udi)) {
-        int idx=indexes[udi];
-        beginRemoveRows(QModelIndex(), idx, idx);
-        delete devices.takeAt(idx);
-        indexes.remove(udi);
-        endRemoveRows();
-        updateItemMenu();
-    }
-}
-
-void DevicesModel::accessibilityChanged(bool accessible, const QString &udi)
-{
-    Q_UNUSED(accessible)
-    if (indexes.contains(udi)) {
-        int idx=indexes[udi];
-        if (idx>-1) {
-            Device *dev=devices.at(idx);
-            if (dev) {
-                dev->connectionStateChanged();
-            }
-        }
-    }
 }
 
 void DevicesModel::deviceUpdating(const QString &udi, bool state)
 {
-    if (indexes.contains(udi)) {
-        int idx=indexes[udi];
+    int idx=indexOf(udi);
+    if (idx>=0) {
         Device *dev=devices.at(idx);
 
         if (state) {
@@ -608,6 +531,86 @@ void DevicesModel::emitAddToDevice()
     }
 }
 
+void DevicesModel::deviceAdded(const QString &udi)
+{
+    if (indexOf(udi)>=0) {
+        return;
+    }
+
+    Solid::Device device(udi);
+    DBUG << "Solid device added udi:" << device.udi() << "product:" << device.product() << "vendor:" << device.vendor();
+    Solid::StorageAccess *ssa = device.as<Solid::StorageAccess>();
+
+    if (ssa) {
+        if ((!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
+            (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus())) {
+            DBUG << "Found Solid::StorageAccess that is not usb, skipping";
+            return;
+        }
+        DBUG << "volume is generic storage";
+        if (!volumes.contains(device.udi())) {
+            connect(ssa, SIGNAL(accessibilityChanged(bool, const QString&)), this, SLOT(accessibilityChanged(bool, const QString&)));
+            volumes.insert(device.udi());
+        }
+    } else if (device.is<Solid::StorageDrive>()) {
+        DBUG << "device is a Storage drive, still need a volume";
+    } else if (device.is<Solid::PortableMediaPlayer>()) {
+        DBUG << "device is a PMP";
+    } else {
+        DBUG << "device not handled";
+        return;
+    }
+    addLocalDevice(device.udi());
+}
+
+void DevicesModel::addLocalDevice(const QString &udi)
+{
+    Device *dev=Device::create(this, udi);
+    if (dev) {
+        beginInsertRows(QModelIndex(), devices.count(), devices.count());
+        devices.append(dev);
+        endInsertRows();
+        connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
+        connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
+        updateItemMenu();
+    }
+}
+
+void DevicesModel::deviceRemoved(const QString &udi)
+{
+    int idx=indexOf(udi);
+    DBUG << "Solid device removed udi = " << udi << idx;
+    if (idx>=0) {
+        if (volumes.contains(udi)) {
+            Solid::Device device(udi);
+            Solid::StorageAccess *ssa = device.as<Solid::StorageAccess>();
+            if (ssa) {
+                disconnect(ssa, SIGNAL(accessibilityChanged(bool, const QString&)), this, SLOT(accessibilityChanged(bool, const QString&)));
+            }
+            volumes.remove(udi);
+        }
+
+        beginRemoveRows(QModelIndex(), idx, idx);
+        devices.takeAt(idx)->deleteLater();
+        endRemoveRows();
+        updateItemMenu();
+    }
+}
+
+void DevicesModel::accessibilityChanged(bool accessible, const QString &udi)
+{
+    Q_UNUSED(accessible)
+    int idx=indexOf(udi);
+    DBUG << "Solid device accesibility changed udi = " << udi << idx << accessible;
+    if (idx>=0) {
+        Device *dev=devices.at(idx);
+        if (dev) {
+            dev->connectionStateChanged();
+            QModelIndex modelIndex=createIndex(idx, 0, dev);
+            emit dataChanged(modelIndex, modelIndex);
+        }
+    }
+}
 void DevicesModel::addRemoteDevice(const QString &coverFileName, const DeviceOptions &opts, RemoteFsDevice::Details details)
 {
     #ifdef ENABLE_REMOTE_DEVICES
@@ -615,13 +618,12 @@ void DevicesModel::addRemoteDevice(const QString &coverFileName, const DeviceOpt
 
     if (dev) {
         beginInsertRows(QModelIndex(), devices.count(), devices.count());
-        indexes.insert(dev->udi(), devices.count());
         devices.append(dev);
         endInsertRows();
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
         if (Device::RemoteFs==dev->devType()) {
-            connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged(const QString &, const QString &)), SLOT(changeDeviceUdi(const QString &, const QString &)));
+            connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged()), SLOT(remoteDeviceUdiChanged()));
         }
         updateItemMenu();
     }
@@ -635,14 +637,17 @@ void DevicesModel::addRemoteDevice(const QString &coverFileName, const DeviceOpt
 void DevicesModel::removeRemoteDevice(const QString &udi)
 {
     #ifdef ENABLE_REMOTE_DEVICES
-    Device *dev=device(udi);
+    int idx=indexOf(udi);
+    if (idx<0) {
+        return;
+    }
+
+    Device *dev=devices.at(idx);
 
     if (dev && Device::RemoteFs==dev->devType()) {
-        int idx=indexes[udi];
         beginRemoveRows(QModelIndex(), idx, idx);
         // Remove device from list, but do NOT delete - it may be scanning!!!!
         devices.takeAt(idx);
-        indexes.remove(udi);
         endRemoveRows();
         updateItemMenu();
         // Remove will stop device, and delete it
@@ -653,22 +658,14 @@ void DevicesModel::removeRemoteDevice(const QString &udi)
     #endif
 }
 
-void DevicesModel::changeDeviceUdi(const QString &from, const QString &to)
+void DevicesModel::remoteDeviceUdiChanged()
 {
     #ifdef ENABLE_REMOTE_DEVICES
-    if (indexes.contains(from)) {
-        int idx=indexes[from];
-        indexes.remove(from);
-        indexes.insert(to, idx);
-        updateItemMenu();
-    }
-    #else
-    Q_UNUSED(from)
-    Q_UNUSED(to)
+    updateItemMenu();
     #endif
 }
 
-void DevicesModel::checkRemoteDevices()
+void DevicesModel::mountsChanged()
 {
     #ifdef ENABLE_REMOTE_DEVICES
     foreach (Device *dev, devices) {
@@ -681,10 +678,97 @@ void DevicesModel::checkRemoteDevices()
         }
     }
     #endif
+    // For some reason if a device without a partition (e.g. /dev/sdc) is mounted whilst cantata is running, then we receive no deviceAdded signal
+    // So, as a work-around, each time a device is mounted - check for all local devices. :-)
+    // BUG:127
+    loadLocal();
+}
+
+void DevicesModel::loadLocal()
+{
+    QList<Solid::Device> deviceList = Solid::Device::listFromType(Solid::DeviceInterface::PortableMediaPlayer);
+    foreach (const Solid::Device &device, deviceList) {
+        if (indexOf(device.udi())>=0) {
+            continue;
+        }
+        if (device.as<Solid::StorageDrive>()) {
+            DBUG << "Solid PMP that is also a StorageDrive, skipping, udi:" << device.udi() << "product:" << device.product() << "vendor:" << device.vendor();
+            continue;
+        }
+        DBUG << "Solid::PortableMediaPlayer with udi:" << device.udi() << "product:" << device.product() << "vendor:" << device.vendor();
+        addLocalDevice(device.udi());
+    }
+    deviceList = Solid::Device::listFromType(Solid::DeviceInterface::StorageAccess);
+    foreach (const Solid::Device &device, deviceList)
+    {
+        if (indexOf(device.udi())>=0) {
+            continue;
+        }
+        DBUG << "Solid::StorageAccess with udi:" << device.udi() << "product:" << device.product() << "vendor:" << device.vendor();
+        const Solid::StorageAccess *ssa = device.as<Solid::StorageAccess>();
+
+        if (ssa) {
+            if ((!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
+                (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus())) {
+                DBUG << "Solid::StorageAccess that is not usb, skipping";
+                continue;
+            }
+            if (!volumes.contains(device.udi())) {
+                connect(ssa, SIGNAL(accessibilityChanged(bool, const QString&)), this, SLOT(accessibilityChanged(bool, const QString&)));
+                volumes.insert(device.udi());
+            }
+            addLocalDevice(device.udi());
+        }
+    }
+}
+
+#ifdef ENABLE_REMOTE_DEVICES
+void DevicesModel::loadRemote()
+{
+    QList<Device *> rem=RemoteFsDevice::loadAll(this);
+    if (rem.count()) {
+        beginInsertRows(QModelIndex(), devices.count(), devices.count()+(rem.count()-1));
+        foreach (Device *dev, rem) {
+            devices.append(dev);
+            connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
+            connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
+            if (Device::RemoteFs==dev->devType()) {
+                connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged()), SLOT(remoteDeviceUdiChanged()));
+            }
+        }
+        endInsertRows();
+        updateItemMenu();
+    }
+}
+
+void DevicesModel::unmountRemote()
+{
+    foreach (Device *dev, devices) {
+        if (Device::RemoteFs==dev->devType()) {
+            static_cast<RemoteFsDevice *>(dev)->unmount();
+        }
+    }
+}
+#endif
+
+int DevicesModel::indexOf(const QString &udi)
+{
+    int i=0;
+    foreach (Device *dev, devices) {
+        if (dev->udi()==udi) {
+            return i;
+        }
+        i++;
+    }
+    return -1;
 }
 
 void DevicesModel::updateItemMenu()
 {
+    if (inhibitMenuUpdate) {
+        return;
+    }
+
     if (!itemMenu) {
         itemMenu = new QMenu(0);
     }

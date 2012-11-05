@@ -64,6 +64,7 @@ private:
     bool stopRequested;
     int count;
     int lastUpdate;
+    int updateCount;
     int step;
 };
 

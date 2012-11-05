@@ -260,12 +260,6 @@ public:
         QRect r(option.rect);
         QRect r2(r);
         QString childText = index.data(ItemView::Role_SubText).toString();
-        int imageSize = showCapacity ? constDevImageSize : index.data(ItemView::Role_ImageSize).toInt();
-
-        if (imageSize<=0) {
-            imageSize=constImageSize;
-        }
-
         QVariant image = index.data(ItemView::Role_Image);
         if (image.isNull()) {
             image = index.data(Qt::DecorationRole);

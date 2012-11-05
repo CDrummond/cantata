@@ -83,6 +83,7 @@ int RgDialog::instanceCount()
 RgDialog::RgDialog(QWidget *parent)
     : Dialog(parent)
     , state(State_Idle)
+    , totalToScan(0)
     , tagReader(0)
 {
     iCount++;

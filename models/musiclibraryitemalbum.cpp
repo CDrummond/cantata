@@ -48,7 +48,7 @@ static QSize iconItemSize;
 
 static inline int adjust(int v, int step)
 {
-    return (((int)(v/step))*step)+(v%step ? step : 0);
+    return (((int)(v/step))*step)+((v%step) ? step : 0);
 }
 
 static int autoListSize=32;

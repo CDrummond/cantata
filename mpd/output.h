@@ -32,7 +32,7 @@
 struct Output
 {
     Output(quint8 i, bool en, QString n) : id(i), enabled(en), name(n) { }
-    Output() { }
+    Output() : id(-1), enabled(false) { }
 
     Output(const Output &o) { *this=o; }
 

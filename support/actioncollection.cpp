@@ -47,7 +47,7 @@ ActionCollection * ActionCollection::get()
 
 Action * ActionCollection::createAction(const QString &name, const QString &text, const char *icon, const QString &whatsThis)
 {
-    Action *act = (Action *)addAction(name);
+    Action *act = static_cast<Action *>(addAction(name));
     act->setText(text);
     if (0!=icon) {
         #ifndef ENABLE_KDE_SUPPORT
@@ -65,7 +65,7 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
 
 Action * ActionCollection::createAction(const QString &name, const QString &text, const Icon &icon, const QString &whatsThis)
 {
-    Action *act = (Action *)addAction(name);
+    Action *act = static_cast<Action *>(addAction(name));
     act->setText(text);
     if (!icon.isNull()) {
         act->setIcon(icon);

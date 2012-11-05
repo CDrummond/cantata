@@ -129,7 +129,7 @@ void Icons::init()
     albumIcon=Icon("media-optical");
     streamIcon=Icon("applications-internet");
     configureIcon=Icon("configure");
-    connectIcon=Icon("network-connect");
+    connectIcon=Icon("dialog-ok");
     disconnectIcon=Icon("network-disconnect");
     speakerIcon=Icon("speaker");
     lyricsIcon=Icon("view-media-lyrics");
@@ -169,7 +169,7 @@ void Icons::init()
         configureIcon=Icon("gtk-preferences");
     }
     if (connectIcon.isNull()) {
-        connectIcon=Icon("connect_creating");
+        connectIcon=Icon("gtk-stock-ok");
     }
     if (disconnectIcon.isNull()) {
         disconnectIcon=Icon("media-eject");

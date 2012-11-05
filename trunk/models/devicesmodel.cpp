@@ -331,8 +331,8 @@ void DevicesModel::setEnabled(bool e)
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         loadLocal();
-        connect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
         #ifdef ENABLE_REMOTE_DEVICES
+        connect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
         loadRemote();
         #endif
     } else {
@@ -340,7 +340,9 @@ void DevicesModel::setEnabled(bool e)
         disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
         disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                    this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+        #ifdef ENABLE_REMOTE_DEVICES
         disconnect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
+        #endif
         clear();
     }
     inhibitMenuUpdate=false;
@@ -678,10 +680,10 @@ void DevicesModel::mountsChanged()
         }
     }
     #endif
-    // For some reason if a device without a partition (e.g. /dev/sdc) is mounted whilst cantata is running, then we receive no deviceAdded signal
-    // So, as a work-around, each time a device is mounted - check for all local devices. :-)
-    // BUG:127
-    loadLocal();
+
+    // This was here to fix BUG:127, but seems to not be required. If it is required, then connect/disconnect of this
+    // slot needs to be outside of the #ifdef ENABLE_REMOTE_DEVICES section in setEnabled()
+    // loadLocal();
 }
 
 void DevicesModel::loadLocal()

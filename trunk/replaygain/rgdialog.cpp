@@ -126,10 +126,10 @@ RgDialog::RgDialog(QWidget *parent)
     setButtonGuiItem(Ok, KStandardGuiItem::save());
     setButtonGuiItem(Cancel, KStandardGuiItem::close());
     #else
-    setButtonGuiItem(Ok, KGuiItem(i18n("Save"), "document-save"));
-    setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
+    setButtonGuiItem(Ok, GuiItem(i18n("Save"), "document-save"));
+    setButtonGuiItem(Cancel, GuiItem(i18n("Close"), "dialog-close"));
     #endif
-    setButtonGuiItem(User1, KGuiItem(i18n("Scan"), "edit-find"));
+    setButtonGuiItem(User1, GuiItem(i18n("Scan"), "edit-find"));
     enableButton(Ok, false);
     enableButton(User1, false);
     resize(800, 400);
@@ -233,14 +233,14 @@ void RgDialog::startScanning()
 {
     bool all=origTags.isEmpty() ||
              MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Do you wish to scan all files, or only files without existing tags?"), QString(),
-                                                        KGuiItem(i18n("All Tracks")), KGuiItem(i18n("Untagged Tracks")));
+                                                        GuiItem(i18n("All Tracks")), GuiItem(i18n("Untagged Tracks")));
     if (!all && origTags.count()==origSongs.count()) {
         return;
     }
     #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
-    setButtonGuiItem(Cancel, KGuiItem(i18n("Cancel"), "dialog-cancel"));
+    setButtonGuiItem(Cancel, GuiItem(i18n("Cancel"), "dialog-cancel"));
     #endif
     state=State_ScanningFiles;
     enableButton(Ok, false);
@@ -275,7 +275,7 @@ void RgDialog::stopScanning()
     #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
-    setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
+    setButtonGuiItem(Cancel, GuiItem(i18n("Close"), "dialog-close"));
     #endif
 }
 
@@ -316,7 +316,7 @@ void RgDialog::startReadingTags()
     #ifdef ENABLE_KDE_SUPPORT
     setButtonGuiItem(Cancel, KStandardGuiItem::cancel());
     #else
-    setButtonGuiItem(Cancel, KGuiItem(i18n("Cancel"), "dialog-cancel"));
+    setButtonGuiItem(Cancel, GuiItem(i18n("Cancel"), "dialog-cancel"));
     #endif
     state=State_ScanningTags;
     enableButton(Ok, false);
@@ -422,7 +422,7 @@ void RgDialog::updateView()
         #ifdef ENABLE_KDE_SUPPORT
         setButtonGuiItem(Cancel, KStandardGuiItem::close());
         #else
-        setButtonGuiItem(Cancel, KGuiItem(i18n("Close"), "dialog-close"));
+        setButtonGuiItem(Cancel, GuiItem(i18n("Close"), "dialog-close"));
         #endif
 
         enableButton(Ok, needToSave.count());

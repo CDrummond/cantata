@@ -104,7 +104,7 @@ void Dialog::setButtonText(ButtonCode button, const QString &text)
     }
 }
 
-void Dialog::setButtonGuiItem(ButtonCode button, const KGuiItem &item)
+void Dialog::setButtonGuiItem(ButtonCode button, const GuiItem &item)
 {
     QAbstractButton *b=getButton(button);
     if (b) {

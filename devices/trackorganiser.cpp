@@ -60,7 +60,7 @@ TrackOrganiser::TrackOrganiser(QWidget *parent)
     setupUi(mainWidet);
     setMainWidget(mainWidet);
     configFilename->setIcon(Icons::configureIcon);
-    setButtonGuiItem(Ok, KGuiItem(i18n("Rename"), "edit-rename"));
+    setButtonGuiItem(Ok, GuiItem(i18n("Rename"), "edit-rename"));
     connect(this, SIGNAL(update()), MPDConnection::self(), SLOT(update()));
     progress->setVisible(false);
 }
@@ -236,7 +236,7 @@ void TrackOrganiser::renameFile()
                 skip=true;
             } else {
                 switch(MessageBox::questionYesNoCancel(this, i18n("Destination file already exists!<br/>%1").arg(dest),
-                                                       QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
+                                                       QString(), GuiItem(i18n("Skip")), GuiItem("Auto Skip"))) {
                 case MessageBox::Yes:
                     skip=true;
                     break;
@@ -258,7 +258,7 @@ void TrackOrganiser::renameFile()
                     skip=true;
                 } else {
                     switch(MessageBox::questionYesNoCancel(this, i18n("Failed to create destination folder!<br/>%1").arg(dir.absolutePath()),
-                                                           QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
+                                                           QString(), GuiItem(i18n("Skip")), GuiItem("Auto Skip"))) {
                     case MessageBox::Yes:
                         skip=true;
                         break;
@@ -279,7 +279,7 @@ void TrackOrganiser::renameFile()
                 skip=true;
             } else {
                 switch(MessageBox::questionYesNoCancel(this, i18n("Failed to rename %1 to %2").arg(source).arg(dest),
-                                                       QString(), KGuiItem(i18n("Skip")), KGuiItem("Auto Skip"))) {
+                                                       QString(), GuiItem(i18n("Skip")), GuiItem("Auto Skip"))) {
                 case MessageBox::Yes:
                     skip=true;
                     break;

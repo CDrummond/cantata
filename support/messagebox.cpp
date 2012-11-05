@@ -36,7 +36,7 @@ MessageBox::ButtonCode map(QMessageBox::StandardButton c)
 }
 
 MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QString &message, const QString &title,
-                               const KGuiItem &yesText, const KGuiItem &noText, bool showCancel, bool isWarning)
+                               const GuiItem &yesText, const GuiItem &noText, bool showCancel, bool isWarning)
 {
     if (yesText.text.isEmpty() && noText.text.isEmpty()) {
         return map(isWarning

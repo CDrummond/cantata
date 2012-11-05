@@ -86,7 +86,8 @@ public:
         , deviceId(dev.udi())
         , update(0)
         , needToFixVa(false)
-        , jobAbortRequested(false) {
+        , jobAbortRequested(false)
+        , transcoding(false) {
     }
     Device(DevicesModel *m, const QString &name, const QString &id)
         : MusicLibraryItemRoot(name)
@@ -95,7 +96,8 @@ public:
         , deviceId(id)
         , update(0)
         , needToFixVa(false)
-        , jobAbortRequested(false) {
+        , jobAbortRequested(false)
+        , transcoding(false) {
     }
     virtual ~Device() {
     }

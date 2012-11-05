@@ -33,7 +33,6 @@
 #include "config.h"
 
 class NetworkAccessManager;
-class MaiaXmlRpcClient;
 class QString;
 class QThread;
 class QNetworkReply;
@@ -138,7 +137,6 @@ private:
     void clearDummyCache(const Song &song, const QImage &img);
 
 private:
-    MaiaXmlRpcClient *rpc;
     NetworkAccessManager *manager;
     QHash<QNetworkReply *, Job> jobs;
     QCache<QString, QPixmap> cache;

@@ -177,7 +177,9 @@ bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
 }
 
 CoverEventHandler::CoverEventHandler(MainWindow *w)
-    : QObject(w), window(w)
+    : QObject(w)
+    , window(w)
+    , pressed(false)
 {
 }
 
@@ -269,8 +271,8 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
     #ifdef ENABLE_KDE_SUPPORT
-    prefAction=(Action *)KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get());
-    quitAction=(Action *)KStandardAction::quit(kapp, SLOT(quit()), ActionCollection::get());
+    prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
+    quitAction=static_cast<Action *>(KStandardAction::quit(kapp, SLOT(quit()), ActionCollection::get()));
     #else
     setWindowIcon(Icons::appIcon);
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::self());
@@ -577,7 +579,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(outputsAction);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(prefAction);
-    shortcutsAction=(Action *)KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get());
+    shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
     mainMenu->addAction(shortcutsAction);
     mainMenu->addSeparator();
     mainMenu->addMenu(helpMenu());
@@ -900,7 +902,7 @@ void MainWindow::initSizes()
     int cwSize=qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+
                songTimeElapsedLabel->height()+positionSlider->height()+(spacing*2);
 
-    cwSize=(((int)(cwSize/4))*4)+(cwSize%4 ? 4 : 0);
+    cwSize=(((int)(cwSize/4))*4)+((cwSize%4) ? 4 : 0);
     if (cwSize<72) {
         cwSize=72;
     } else if (cwSize>200) {

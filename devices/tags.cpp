@@ -123,7 +123,8 @@ struct RgTags : public ReplayGain
         , null(false) {
     }
     RgTags()
-        : null(true) {
+        : albumMode(false)
+        , null(true) {
     }
     bool albumMode;
     bool null;

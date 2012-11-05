@@ -91,7 +91,7 @@ QModelIndex ShortcutsModel::index(int row, int column, const QModelIndex &parent
 
 int ShortcutsModel::columnCount(const QModelIndex &parent) const {
   return 2;
-  if(!parent.isValid())
+  /*if(!parent.isValid())
     return 2;
 
   Item *item = static_cast<Item *>(parent.internalPointer());
@@ -100,7 +100,7 @@ int ShortcutsModel::columnCount(const QModelIndex &parent) const {
   if(!item->parentItem)
     return 2;
 
-  return 2;
+  return 2;*/
 }
 
 int ShortcutsModel::rowCount(const QModelIndex &parent) const {
@@ -191,6 +191,7 @@ bool ShortcutsModel::setData(const QModelIndex &index, const QVariant &value, in
 
   Item *item = static_cast<Item *>(index.internalPointer());
   Q_ASSERT(item);
+  Q_ASSERT(item->action);
 
   QKeySequence newSeq = value.value<QKeySequence>();
   QKeySequence oldSeq = item->shortcut;

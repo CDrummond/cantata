@@ -62,7 +62,7 @@ MusicScanner::~MusicScanner()
 
 void MusicScanner::run()
 {
-    count=0;
+    count=updateCount=0;
     lastUpdate=0;
     step=25;
     library = new MusicLibraryItemRoot;
@@ -120,16 +120,10 @@ void MusicScanner::scanFolder(const QString &f, int level)
                     continue;
                 }
                 count++;
-                if (0!=count && 0==count%step) {
-                    if (step>5) {
-                        int t=time(NULL);
-                        if (0!=lastUpdate) {
-                            if ((t-lastUpdate)>3) {
-                                step-=5;
-                            }
-                        }
-                        lastUpdate=t;
-                    }
+                int t=time(NULL);
+                if ((t-lastUpdate)>=2 || (count-updateCount)>=5) {
+                    lastUpdate=t;
+                    updateCount=count;
                     emit songCount(count);
                 }
 

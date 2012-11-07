@@ -31,7 +31,6 @@
 #include "dirviewmodel.h"
 #include "devicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
-#include "covers.h"
 #include "utils.h"
 #include "mpdparseutils.h"
 #include "encoders.h"
@@ -246,7 +245,7 @@ void FsDevice::addSong(const Song &s, bool overwrite)
     currentSong=s;
     if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
         transcoding=false;
-        CopyJob *job=new CopyJob(s.file, destFile);
+        CopyJob *job=new CopyJob(s.file, destFile, coverFileName, currentSong);
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
         connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
         job->start();
@@ -303,7 +302,7 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
     }
 
     currentSong=s;
-    CopyJob *job=new CopyJob(source, dest);
+    CopyJob *job=new CopyJob(source, dest, QString(), currentSong);
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     job->start();
@@ -365,13 +364,7 @@ void FsDevice::addSongResult(int status)
     if (FileJob::StatusOk!=status) {
         emit actionStatus(transcoding ? TranscodeFailed : Failed);
     } else {
-        QString sourceDir=Utils::getDir(currentSong.file);
-
         currentSong.file=destFileName;
-        if (Device::constNoCover!=coverFileName) {
-            Covers::copyCover(currentSong, sourceDir, Utils::getDir(audioFolder+destFileName), coverFileName);
-        }
-
         if (needToFixVa) {
             Device::fixVariousArtists(audioFolder+destFileName, currentSong, true);
         }
@@ -393,9 +386,7 @@ void FsDevice::copySongToResult(int status)
     if (FileJob::StatusOk!=status) {
         emit actionStatus(Failed);
     } else {
-        QString sourceDir=Utils::getDir(audioFolder+currentSong.file);
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
-        Covers::copyCover(currentSong, sourceDir, currentBaseDir+Utils::getDir(currentMusicPath), QString());
         if (needToFixVa) {
             Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
         }

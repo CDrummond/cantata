@@ -25,6 +25,7 @@
 #include "utils.h"
 #include "device.h"
 #include "lyricspage.h"
+#include "covers.h"
 #include <QtCore/QFile>
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
@@ -100,10 +101,12 @@ void CopyJob::run()
         return;
     }
 
+    bool copyCover = Device::constNoCover!=coverFileName;
     char buffer[constChunkSize];
     qint64 totalBytes = src.size();
     qint64 readPos = 0;
     qint64 bytesRead = 0;
+    qint64 adjustTotal = copyCover ? 16384 : 0;
 
     do {
         if (stopRequested) {
@@ -136,12 +139,17 @@ void CopyJob::run()
             writePos+=bytesWritten;
         } while (writePos<bytesRead);
 
-        setPercent(((readPos+bytesRead)*100.0)/totalBytes);
+        setPercent(((readPos+bytesRead)*100.0)/(totalBytes+adjustTotal));
         if (src.atEnd()) {
             break;
         }
     } while ((readPos+bytesRead)<totalBytes);
 
+    if (copyCover) {
+        song.file=destFile;
+        Covers::copyCover(song, Utils::getDir(srcFile), Utils::getDir(destFile), coverFileName);
+    }
+    setPercent(100);
     emit result(StatusOk);
 }
 

@@ -253,14 +253,24 @@ static void fCopy(const QString &sDir, const QString &sFile, const QString &dDir
 
 void Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name)
 {
-    initCoverNames();
-
     // First, check if dir already has a cover file!
     initCoverNames();
     QStringList names=coverFileNames;
     foreach (const QString &ext, constExtensions) {
         names+=song.album+ext;
     }
+
+    QString mpdCover=MPDConnection::self()->getDetails().coverName;
+    if (mpdCover.isEmpty()) {
+        mpdCover=constFileName;
+    }
+
+    foreach (const QString &ext, constExtensions) {
+        if (!names.contains(mpdCover+ext)) {
+            names.prepend(mpdCover+ext);
+        }
+    }
+
     foreach (const QString &ext, constExtensions) {
         names+=song.albumArtist()+QLatin1String(" - ")+song.album+ext;
     }
@@ -277,7 +287,7 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
             if (destName.isEmpty()) { // copying into mpd dir, so we want cover.jpg/png...
                 if (coverFileNames.at(0)!=coverFile) { // source is not 'cover.xxx'
                     QString ext(coverFile.endsWith(constExtensions.at(0)) ? constExtensions.at(0) : constExtensions.at(1));
-                    destName=constFileName+ext;
+                    destName=mpdCover+ext;
                 } else {
                     destName=coverFile;
                 }
@@ -293,15 +303,23 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
         }
     }
 
-    // None in source folder. Do we have a cached cover?
-    QString artist=encodeName(song.albumArtist());
-    QString album=encodeName(song.album);
-    QString dir(Utils::cacheDir(constCoverDir+artist, false));
-    foreach (const QString &ext, constExtensions) {
-        if (QFile::exists(dir+album+ext)) {
-            fCopy(dir, album+ext, destDir, constFileName+ext);
-            Utils::setFilePerms(destDir+constFileName+ext);
-            return;
+    QString destName(name);
+    if (!destName.isEmpty()) {
+        // Copying ONTO a device
+        // None in source folder. Do we have a cached cover?
+        QString artist=encodeName(song.albumArtist());
+        QString album=encodeName(song.album);
+        QString dir(Utils::cacheDir(constCoverDir+artist, false));
+        foreach (const QString &ext, constExtensions) {
+            if (QFile::exists(dir+album+ext)) {
+                if (destName.right(4)!=ext) {
+                    QImage(dir+album+ext).save(destDir+destName);
+                } else {
+                    fCopy(dir, album+ext, destDir, destName);
+                }
+                Utils::setFilePerms(destDir+destName);
+                return;
+            }
         }
     }
 }

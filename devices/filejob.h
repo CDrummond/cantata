@@ -26,6 +26,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QSet>
+#include "song.h"
 
 class QThread;
 class FileJob;
@@ -83,15 +84,19 @@ protected:
 class CopyJob : public FileJob
 {
 public:
-    CopyJob(const QString &src, const QString &dest)
+    CopyJob(const QString &src, const QString &dest, const QString &cf, const Song &s)
         : srcFile(src)
-        , destFile(dest) {
+        , destFile(dest)
+        , coverFileName(cf)
+        , song(s) {
     }
 private:
     void run();
 private:
     QString srcFile;
     QString destFile;
+    QString coverFileName;
+    Song song;
 };
 
 class DeleteJob : public FileJob

@@ -37,9 +37,10 @@ public:
 
 private:
     void run();
+
 private Q_SLOTS:
     void processOutput();
-    void finished( int exitCode, QProcess::ExitStatus exitStatus );
+    void finished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
     inline qint64 computeDuration(const QString &output);

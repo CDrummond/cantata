@@ -23,6 +23,8 @@
 
 #include "filejob.h"
 #include "utils.h"
+#include "device.h"
+#include "lyricspage.h"
 #include <QtCore/QFile>
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
@@ -145,7 +147,30 @@ void CopyJob::run()
 
 void DeleteJob::run()
 {
-    emit result(QFile::remove(fileName) ? StatusOk : StatusFailed);
+    int status=QFile::remove(fileName) ? StatusOk : StatusFailed;
+    if (remLyrics && StatusOk==status) {
+        QString lyrics=Utils::changeExtension(fileName, LyricsPage::constExtension);
+        if (lyrics!=fileName) {
+            QFile::remove(lyrics);
+        }
+    }
+    emit result(status);
     emit percent(100);
 }
 
+void CleanJob::run()
+{
+    int total=dirs.count();
+    int current=0;
+    foreach (const QString &d, dirs) {
+        if (stopRequested) {
+            emit result(StatusCancelled);
+            return;
+        }
+        Device::cleanDir(d, base, coverFile);
+        emit percent((++current*100)/total);
+    }
+
+    emit percent(100);
+    emit result(StatusOk);
+}

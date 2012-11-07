@@ -498,6 +498,12 @@ void MtpConnection::delSong(const Song &song)
     emit delSongStatus(deleted);
 }
 
+void MtpConnection::cleanDirs(const QSet<QString> &dirs)
+{
+    Q_UNUSED(dirs)
+    emit cleanDirsStatus(true);
+}
+
 void MtpConnection::destroyData()
 {
     folderMap.clear();
@@ -542,6 +548,8 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(getSongStatus(bool)), this, SLOT(getSongStatus(bool)));
     connect(this, SIGNAL(delSong(const Song &)), connection, SLOT(delSong(const Song &)));
     connect(connection, SIGNAL(delSongStatus(bool)), this, SLOT(delSongStatus(bool)));
+    connect(this, SIGNAL(cleanMusicDirs(const QSet<QString> &)), connection, SLOT(cleanDirs(const QSet<QString> &)));
+    connect(connection, SIGNAL(cleanDirsStatus(bool)), this, SLOT(cleanDirsStatus(bool)));
     connect(connection, SIGNAL(statusMessage(const QString &)), this, SLOT(setStatusMessage(const QString &)));
     connect(connection, SIGNAL(deviceDetails(const QString &)), this, SLOT(deviceDetails(const QString &)));
     connect(connection, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
@@ -723,7 +731,12 @@ void MtpDevice::removeSong(const Song &s)
 
 void MtpDevice::cleanDirs(const QSet<QString> &dirs)
 {
-    Q_UNUSED(dirs)
+    jobAbortRequested=false;
+    if (!isConnected()) {
+        emit actionStatus(NotConnected);
+        return;
+    }
+    emit cleanMusicDirs(dirs);
 }
 
 void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa)
@@ -815,6 +828,11 @@ void MtpDevice::delSongStatus(bool ok)
         removeSongFromList(currentSong);
         emit actionStatus(Ok);
     }
+}
+
+void MtpDevice::cleanDirsStatus(bool ok)
+{
+    emit actionStatus(ok ? Ok : Failed);
 }
 
 double MtpDevice::usedCapacity()

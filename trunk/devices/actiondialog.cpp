@@ -193,7 +193,7 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     qSort(songsToAction);
     progressLabel->setText(QString());
     progressBar->setValue(0);
-    progressBar->setRange(0, Copy==mode ? (songsToAction.count()*100) : (songsToAction.count()+1));
+    progressBar->setRange(0, (Copy==mode ? songsToAction.count() : (songsToAction.count()+1))*100);
     autoSkip=false;
     performingAction=false;
     paused=false;
@@ -313,7 +313,7 @@ void ActionDialog::doNext()
             if (dev) {
                 if (!currentDev) {
                     connect(dev, SIGNAL(actionStatus(int)), this, SLOT(actionStatus(int)));
-                    connect(dev, SIGNAL(progress(unsigned long)), this, SLOT(copyPercent(unsigned long)));
+                    connect(dev, SIGNAL(progress(int)), this, SLOT(jobPercent(int)));
                     currentDev=dev;
                 }
                 performingAction=true;
@@ -356,14 +356,10 @@ void ActionDialog::doNext()
             if (dev) {
                 dev->cleanDirs(dirsToClean);
             } else {
-                foreach (const QString &d, dirsToClean) {
-                    Device::cleanDir(d, MPDConnection::self()->getDetails().dir, QString());
-                }
+                cleanDirs();
             }
         }
         dirsToClean.clear();
-        incProgress();
-        doNext();
     } else {
         refreshLibrary();
         emit completed();
@@ -564,7 +560,7 @@ void ActionDialog::removeSong(const Song &s)
         return;
     }
 
-    DeleteJob *job=new DeleteJob(s.file);
+    DeleteJob *job=new DeleteJob(s.file, true);
     connect(job, SIGNAL(result(int)), SLOT(removeSongResult(int)));
     job->start();
 }
@@ -580,7 +576,20 @@ void ActionDialog::removeSongResult(int status)
     }
 }
 
-void ActionDialog::copyPercent(unsigned long percent)
+void ActionDialog::cleanDirs()
+{
+    CleanJob *job=new CleanJob(dirsToClean, MPDConnection::self()->getDetails().dir, QString());
+    connect(job, SIGNAL(result(int)), SLOT(cleanDirsResult(int)));
+    connect(job, SIGNAL(percent(int)), SLOT(jobPercent(int)));
+    job->start();
+}
+
+void ActionDialog::cleanDirsResult(int status)
+{
+    actionStatus(FileJob::StatusOk==status ? Device::Ok : Device::Failed);
+}
+
+void ActionDialog::jobPercent(int percent)
 {
     progressBar->setValue((100*count)+percent);
 }
@@ -591,6 +600,7 @@ void ActionDialog::incProgress()
         count++;
         progressBar->setValue(100*count);
     } else {
-        progressBar->setValue(progressBar->value()+1);
+        int val=progressBar->value()+100;
+        progressBar->setValue(val<=progressBar->maximum() ? val : progressBar->maximum());
     }
 }

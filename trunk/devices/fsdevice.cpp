@@ -330,21 +330,22 @@ void FsDevice::removeSong(const Song &s)
 
 void FsDevice::cleanDirs(const QSet<QString> &dirs)
 {
-    foreach (const QString &dir, dirs) {
-        Device::cleanDir(dir, audioFolder, coverFileName);
-    }
+    CleanJob *job=new CleanJob(dirs, audioFolder, coverFileName);
+    connect(job, SIGNAL(result(int)), SLOT(cleanDirsResult(int)));
+    connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
+    job->start();
 }
 
-void FsDevice::percent(int percent)
+void FsDevice::percent(int pc)
 {
-    if (jobAbortRequested && 100!=percent) {
+    if (jobAbortRequested && 100!=pc) {
         FileJob *job=qobject_cast<FileJob *>(sender());
         if (job) {
             job->stop();
         }
         return;
     }
-    emit progress(percent);
+    emit progress(pc);
 }
 
 void FsDevice::addSongResult(int status)
@@ -417,6 +418,15 @@ void FsDevice::removeSongResult(int status)
         removeSongFromList(currentSong);
         emit actionStatus(Ok);
     }
+}
+
+void FsDevice::cleanDirsResult(int status)
+{
+    spaceInfo.setDirty();
+    if (jobAbortRequested) {
+        return;
+    }
+    emit actionStatus(FileJob::StatusOk==status ? Ok : Failed);
 }
 
 void FsDevice::cacheRead()

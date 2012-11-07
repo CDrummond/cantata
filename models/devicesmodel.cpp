@@ -780,6 +780,11 @@ int DevicesModel::indexOf(const QString &udi)
     return -1;
 }
 
+static bool lessThan(const QString &left, const QString &right)
+{
+    return left.localeAwareCompare(right)<0;
+}
+
 void DevicesModel::updateItemMenu()
 {
     if (inhibitMenuUpdate) {
@@ -795,17 +800,18 @@ void DevicesModel::updateItemMenu()
     if (devices.isEmpty()) {
         itemMenu->addAction(i18n("No Devices Attached"))->setEnabled(false);
     } else {
-        QMultiMap<QString, const Device *> items;
+        QMap<QString, const Device *> items;
 
         foreach (const Device *d, devices) {
             items.insert(d->data(), d);
         }
 
-        QMultiMap<QString, const Device *>::ConstIterator it(items.begin());
-        QMultiMap<QString, const Device *>::ConstIterator end(items.end());
+        QStringList keys=items.keys();
+        qSort(keys.begin(), keys.end(), lessThan);
 
-        for (; it!=end; ++it) {
-            itemMenu->addAction(QIcon::fromTheme(it.value()->icon()), it.key(), this, SLOT(emitAddToDevice()))->setData(it.value()->udi());
+        foreach (const QString &k, keys) {
+            const Device *d=items[k];
+            itemMenu->addAction(QIcon::fromTheme(d->icon()), k, this, SLOT(emitAddToDevice()))->setData(d->udi());
         }
     }
 }

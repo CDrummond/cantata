@@ -100,10 +100,11 @@ protected:
 protected Q_SLOTS:
     void cacheRead();
     void libraryUpdated();
-    void percent(int percent);
+    void percent(int pc);
     void addSongResult(int status);
     void copySongToResult(int status);
     void removeSongResult(int status);
+    void cleanDirsResult(int status);
 
 protected:
     bool scanned;

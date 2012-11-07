@@ -59,12 +59,14 @@ public Q_SLOTS:
     void putSong(const Song &song, bool fixVa);
     void getSong(const Song &song, const QString &dest);
     void delSong(const Song &song);
+    void cleanDirs(const QSet<QString> &dirs);
 
 Q_SIGNALS:
     void statusMessage(const QString &message);
     void putSongStatus(bool, int, const QString &, bool);
     void getSongStatus(bool);
     void delSongStatus(bool);
+    void cleanDirsStatus(bool ok);
     void libraryUpdated();
     void progress(unsigned long);
     void deviceDetails(const QString &serialNumber);
@@ -131,6 +133,7 @@ Q_SIGNALS:
     void putSong(const Song &song, bool fixVa);
     void getSong(const Song &song, const QString &dest);
     void delSong(const Song &song);
+    void cleanMusicDirs(const QSet<QString> &dirs);
 
 private Q_SLOTS:
     void deviceDetails(const QString &s);
@@ -142,6 +145,7 @@ private Q_SLOTS:
     void emitProgress(unsigned long);
     void getSongStatus(bool ok);
     void delSongStatus(bool ok);
+    void cleanDirsStatus(bool ok);
     void saveProperties(const QString &newPath, const QString &newCoverFileName, const DeviceOptions &opts);
     void saveProperties();
 

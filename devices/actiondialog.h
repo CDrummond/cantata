@@ -62,7 +62,8 @@ private Q_SLOTS:
     void actionStatus(int status);
     void doNext();
     void removeSongResult(int status);
-    void copyPercent(unsigned long percent);
+    void cleanDirsResult(int status);
+    void jobPercent(int percent);
 
 private:
     Device * getDevice(const QString &udi);
@@ -73,6 +74,7 @@ private:
     QString formatSong(const Song &s, bool showFiles=false);
     void refreshLibrary();
     void removeSong(const Song &s);
+    void cleanDirs();
     void incProgress();
 
 private:

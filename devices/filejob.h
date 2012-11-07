@@ -25,6 +25,7 @@
 #define FILE_JOB_H
 
 #include <QtCore/QObject>
+#include <QtCore/QSet>
 
 class QThread;
 class FileJob;
@@ -96,13 +97,31 @@ private:
 class DeleteJob : public FileJob
 {
 public:
-    DeleteJob(const QString &file)
-        : fileName(file) {
+    DeleteJob(const QString &file, bool rl=false)
+        : fileName(file)
+        , remLyrics(rl) {
     }
 private:
     void run();
 private:
     QString fileName;
+    bool remLyrics;
+};
+
+class CleanJob : public FileJob
+{
+public:
+    CleanJob(const QSet<QString> &d, const QString &b, const QString &cf)
+        : dirs(d)
+        , base(b)
+        , coverFile(cf) {
+    }
+private:
+    void run();
+private:
+    QSet<QString> dirs;
+    QString base;
+    QString coverFile;
 };
 
 #endif

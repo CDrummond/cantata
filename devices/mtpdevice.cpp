@@ -52,7 +52,7 @@
 
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
-    ((MtpConnection *)data)->emitProgress((unsigned long)(((processed*1.0)/(total*1.0)*100.0)+0.5));
+    ((MtpConnection *)data)->emitProgress((int)(((processed*1.0)/(total*1.0)*100.0)+0.5));
     return ((MtpConnection *)data)->abortRequested() ? -1 : 0;
 }
 
@@ -86,7 +86,7 @@ bool MtpConnection::abortRequested() const
     return dev->abortRequested();
 }
 
-void MtpConnection::emitProgress(unsigned long percent)
+void MtpConnection::emitProgress(int percent)
 {
     emit progress(percent);
 }
@@ -541,7 +541,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     thread->start();
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
-    connect(connection, SIGNAL(progress(unsigned long)), this, SLOT(emitProgress(unsigned long)));
+    connect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));
     connect(this, SIGNAL(putSong(const Song &, bool)), connection, SLOT(putSong(const Song &, bool)));
     connect(connection, SIGNAL(putSongStatus(bool, int, const QString &, bool)), this, SLOT(putSongStatus(bool, int, const QString &, bool)));
     connect(this, SIGNAL(getSong(const Song &, const QString &)), connection, SLOT(getSong(const Song &, const QString &)));
@@ -787,7 +787,7 @@ void MtpDevice::transcodePercent(int percent)
     emit progress(percent/2);
 }
 
-void MtpDevice::emitProgress(unsigned long percent)
+void MtpDevice::emitProgress(int percent)
 {
     if (jobAbortRequested) {
         return;

@@ -49,7 +49,7 @@ public:
     MusicLibraryItemRoot * takeLibrary();
     uint64_t capacity() const { return size; }
     uint64_t usedSpace() const { return used; }
-    void emitProgress(unsigned long percent);
+    void emitProgress(int percent);
     bool abortRequested() const;
 
 public Q_SLOTS:
@@ -142,7 +142,7 @@ private Q_SLOTS:
     void putSongStatus(bool ok, int id, const QString &file, bool fixedVa);
     void transcodeSongResult(int status);
     void transcodePercent(int percent);
-    void emitProgress(unsigned long);
+    void emitProgress(int);
     void getSongStatus(bool ok);
     void delSongStatus(bool ok);
     void cleanDirsStatus(bool ok);

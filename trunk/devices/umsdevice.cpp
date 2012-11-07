@@ -31,12 +31,6 @@
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
-#include <QtCore/QTimer>
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KUrl>
-#include <KDE/KGlobal>
-#include <KDE/KLocale>
-#endif
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");
@@ -145,14 +139,7 @@ void UmsDevice::setup()
         while (!in.atEnd()) {
             QString line = in.readLine();
             if (line.startsWith(constMusicFolderKey+"=")) {
-                #ifdef ENABLE_KDE_SUPPORT
-                KUrl url = KUrl(path);
-                url.addPath(line.section('=', 1, 1));
-                url.cleanPath();
-                audioFolderSetting=audioFolder=url.toLocalFile();
-                #else
-                audioFolderSetting=Utils::cleanPath(path+'/'+line.section('=', 1, 1));
-                #endif
+                audioFolderSetting=audioFolder=Utils::cleanPath(path+'/'+line.section('=', 1, 1));
                 if (!QDir(audioFolder).exists()) {
                     audioFolder = path;
                 }

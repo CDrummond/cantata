@@ -52,7 +52,6 @@ MusicScanner::MusicScanner(const QString &f)
     , stopRequested(false)
     , count(0)
     , lastUpdate(0)
-    , updateCount(0)
     , step(0)
 {
     folder=Utils::fixPath(QDir(f).absolutePath());
@@ -65,7 +64,7 @@ MusicScanner::~MusicScanner()
 
 void MusicScanner::run()
 {
-    count=updateCount=0;
+    count=0;
     lastUpdate=0;
     step=25;
     library = new MusicLibraryItemRoot;
@@ -124,9 +123,8 @@ void MusicScanner::scanFolder(const QString &f, int level)
                 }
                 count++;
                 int t=time(NULL);
-                if ((t-lastUpdate)>=2 || (count-updateCount)>=5) {
+                if ((t-lastUpdate)>=2 || 0==(count%5)) {
                     lastUpdate=t;
-                    updateCount=count;
                     emit songCount(count);
                 }
 

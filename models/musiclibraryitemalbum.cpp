@@ -216,6 +216,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             if (Song::MultipleArtists==m_type) { // Then Cantata has placed this album under 'Various Artists' but the actual album as a different AlbumArtist tag
                 song.artist=firstSong->song().albumArtist();
             } else {
+                song.artist=firstSong->song().artist;
                 song.albumartist=parentItem()->data();
             }
             song.album=m_itemData;

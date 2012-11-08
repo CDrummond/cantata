@@ -84,6 +84,8 @@
 50. Add connect/disconnect functionality for UMS devices.
 51. Fix crash when calling QFileDialog in Qt-only builds when Oxygen or QtCurve
     themes are used.
+52. Fix display of album covers for MTP devices. (Covers are NOT loaded from
+    device!)
 
 0.8.3.1
 -------

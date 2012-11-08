@@ -139,7 +139,7 @@ void SyncDialog::copy(const QList<Song> &songs)
     dlg->copy(fromDev ? dev->udi() : QString(), fromDev ? QString() : dev->udi(), songs);
 }
 
-bool SyncDialog::updateSongs(bool showMessage)
+bool SyncDialog::updateSongs(bool firstRun)
 {
     Device *dev=getDevice();
 
@@ -156,12 +156,15 @@ bool SyncDialog::updateSongs(bool showMessage)
     getDiffs(devSongs, libSongs, inDev, inLib);
 
     if (0==inDev.count() && 0==inLib.count()) {
-        if (showMessage) {
+        if (firstRun) {
             MessageBox::information(isVisible() ? this : parentWidget(), i18n("Device and library are in sync."));
         }
         deleteLater();
         hide();
         return false;
+    }
+    if (firstRun) {
+        devWidget->setSupportsAlbumArtistTag(dev->supportsAlbumArtistTag());
     }
     devWidget->update(inDev);
     libWidget->update(inLib);

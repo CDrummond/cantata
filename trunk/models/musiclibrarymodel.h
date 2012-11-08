@@ -78,6 +78,7 @@ public:
     const QDateTime & lastUpdate() { return databaseTime; }
     bool useLargeImages() const { return rootItem->useLargeImages(); }
     void setLargeImages(bool a) { rootItem->setLargeImages(a); }
+    void setSupportsAlbumArtistTag(bool s) { rootItem->setSupportsAlbumArtistTag(s); }
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);

@@ -26,9 +26,9 @@
 
 #include "ui_synccollectionwidget.h"
 #include "song.h"
+#include "musiclibrarymodel.h"
 #include <QtCore/QSet>
 
-class MusicLibraryModel;
 class MusicLibraryProxyModel;
 
 class SyncCollectionWidget : public QWidget, Ui::SyncCollectionWidget
@@ -39,8 +39,9 @@ public:
     SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action);
     virtual ~SyncCollectionWidget();
 
-    void update(const QSet<Song> &songs);
-    int numArtists();
+    void update(const QSet<Song> &songs) { model->update(songs); }
+    void setSupportsAlbumArtistTag(bool s) { model->setSupportsAlbumArtistTag(s); }
+    int numArtists() { return model->rowCount(); }
 
 Q_SIGNALS:
     void copy(const QList<Song> &songs);

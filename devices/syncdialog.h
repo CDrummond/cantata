@@ -44,7 +44,7 @@ public:
 
 private Q_SLOTS:
     void copy(const QList<Song> &songs);
-    bool updateSongs(bool showMessage=false);
+    bool updateSongs(bool firstRun=false);
 
 private:
     Device * getDevice();

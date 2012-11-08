@@ -23,7 +23,6 @@
 
 #include "synccollectionwidget.h"
 #include "treeview.h"
-#include "musiclibrarymodel.h"
 #include "musiclibraryproxymodel.h"
 #include "icon.h"
 #include <QtGui/QAction>
@@ -51,16 +50,6 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
 
 SyncCollectionWidget::~SyncCollectionWidget()
 {
-}
-
-void SyncCollectionWidget::update(const QSet<Song> &songs)
-{
-    model->update(songs);
-}
-
-int SyncCollectionWidget::numArtists()
-{
-    return model->rowCount();
 }
 
 void SyncCollectionWidget::copySongs()

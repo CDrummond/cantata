@@ -36,7 +36,7 @@ class SyncCollectionWidget : public QWidget, Ui::SyncCollectionWidget
     Q_OBJECT
 
 public:
-    SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action);
+    SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action, bool showCovers=true);
     virtual ~SyncCollectionWidget();
 
     void update(const QSet<Song> &songs) { model->update(songs); }

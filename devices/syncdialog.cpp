@@ -98,8 +98,8 @@ SyncDialog::SyncDialog(QWidget *parent)
     iCount++;
 
     QSplitter *splitter=new QSplitter(this);
-    libWidget=new SyncCollectionWidget(splitter, i18n("Songs Only In Library:"), i18n("Copy To Device"));
-    devWidget=new SyncCollectionWidget(splitter, i18n("Songs Only On Device:"), i18n("Copy To Library"));
+    libWidget=new SyncCollectionWidget(splitter, i18n("Songs Only In Library:"), i18n("Copy To Device"), false);
+    devWidget=new SyncCollectionWidget(splitter, i18n("Songs Only On Device:"), i18n("Copy To Library"), false);
     setMainWidget(splitter);
     setButtons(Close);
     setAttribute(Qt::WA_DeleteOnClose);

@@ -27,7 +27,7 @@
 #include "icon.h"
 #include <QtGui/QAction>
 
-SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action)
+SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action, bool showCovers)
     : QWidget(parent)
 {
     setupUi(this);
@@ -37,6 +37,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
 
     model=new MusicLibraryModel(this);
     proxy=new MusicLibraryProxyModel(this);
+    model->setUseAlbumImages(showCovers);
     proxy->setSourceModel(model);
     tree->setModel(proxy);
     tree->setPageDefaults();

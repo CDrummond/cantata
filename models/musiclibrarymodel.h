@@ -46,7 +46,7 @@ public:
 
     static void cleanCache();
 
-    MusicLibraryModel(QObject *parent = 0);
+    MusicLibraryModel(QObject *parent=0);
     ~MusicLibraryModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;
@@ -73,8 +73,10 @@ public:
     void removeCache();
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     bool update(const QSet<Song> &songs);
-    bool useArtistImages() const { return artistImages; }
-    void setUseArtistImages(bool a) { artistImages=a; }
+    bool useAlbumImages() const { return rootItem->useAlbumImages(); }
+    void setUseAlbumImages(bool a) { rootItem->setUseAlbumImages(a); }
+    bool useArtistImages() const { return rootItem->useArtistImages(); }
+    void setUseArtistImages(bool a) { rootItem->setUseArtistImages(a); }
     const QDateTime & lastUpdate() { return databaseTime; }
     bool useLargeImages() const { return rootItem->useLargeImages(); }
     void setLargeImages(bool a) { rootItem->setLargeImages(a); }
@@ -93,7 +95,6 @@ private:
     void toXML(const MusicLibraryItemRoot *root, const QDateTime &date);
 
 private:
-    bool artistImages;
     MusicLibraryItemRoot *rootItem;
     QDateTime databaseTime;
 };

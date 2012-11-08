@@ -223,12 +223,12 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.year=m_year;
             song.file=firstSong->file();
             #ifdef ENABLE_DEVICES_SUPPORT
-            if (!song.file.startsWith("/") && parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem())) {
-                QString root=static_cast<Device *>(parentItem()->parentItem())->path();
-                if (!root.isEmpty()) {
-                    song.file=Utils::fixPath(root)+song.file;
-                }
-            }
+            if (parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem())) {
+                // This item is in the devices model, so get cover from device...
+                static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
+            } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
+                // Not showing album images in this model, so dont request any!
+            } else
             #endif
             Covers::self()->requestCover(song, true);
         }

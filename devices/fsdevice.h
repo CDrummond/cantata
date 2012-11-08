@@ -85,6 +85,7 @@ public:
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
     void removeSong(const Song &s);
     void cleanDirs(const QSet<QString> &dirs);
+    void requestCover(const Song &s);
     QString cacheFileName() const;
     virtual void setAudioFolder() const { }
     void saveCache();

@@ -29,7 +29,6 @@
 #include "devicesmodel.h"
 #include "playqueuemodel.h"
 #include "settings.h"
-#include "covers.h"
 #include "itemview.h"
 #include "mpdparseutils.h"
 #include "umsdevice.h"
@@ -328,8 +327,8 @@ void DevicesModel::setEnabled(bool e)
     if (enabled) {
         connect(Solid::DeviceNotifier::instance(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
         connect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
-        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+//        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+//                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         loadLocal();
         connect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
         #ifdef ENABLE_REMOTE_DEVICES
@@ -338,8 +337,8 @@ void DevicesModel::setEnabled(bool e)
     } else {
         disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
         disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
-        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-                   this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+//        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+//                   this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         disconnect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
         clear();
     }
@@ -353,9 +352,8 @@ Device * DevicesModel::device(const QString &udi)
     return idx<0 ? 0 : devices.at(idx);
 }
 
-void DevicesModel::setCover(const Song &song, const QImage &img, const QString &file)
+void DevicesModel::setCover(const Song &song, const QImage &img)
 {
-    Q_UNUSED(file)
     if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
         return;
     }
@@ -572,6 +570,7 @@ void DevicesModel::addLocalDevice(const QString &udi)
         endInsertRows();
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
+        connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
         updateItemMenu();
     }
 }
@@ -622,6 +621,7 @@ void DevicesModel::addRemoteDevice(const QString &coverFileName, const DeviceOpt
         endInsertRows();
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
+        connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
         if (Device::RemoteFs==dev->devType()) {
             connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged()), SLOT(remoteDeviceUdiChanged()));
         }

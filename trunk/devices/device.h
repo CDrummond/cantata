@@ -44,6 +44,7 @@ namespace Device
 #endif
 
 class QWidget;
+class QImage;
 class DevicesModel;
 
 class Device : public MusicLibraryItemRoot
@@ -121,6 +122,7 @@ public:
     virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)=0;
     virtual void removeSong(const Song &s)=0;
     virtual void cleanDirs(const QSet<QString> &dirs)=0;
+    virtual void requestCover(const Song &) { }
     virtual double usedCapacity()=0;
     virtual QString capacityString()=0;
     virtual qint64 freeSpace()=0;
@@ -192,6 +194,7 @@ Q_SIGNALS:
     void actionStatus(int);
     void progress(int pc);
     void error(const QString &);
+    void cover(const Song &song, const QImage &img);
 
 protected:
     DevicesModel *model;

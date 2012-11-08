@@ -335,6 +335,30 @@ void FsDevice::cleanDirs(const QSet<QString> &dirs)
     job->start();
 }
 
+void FsDevice::requestCover(const Song &s)
+{
+    QString songFile=audioFolder+s.file;
+    QString dirName=Utils::getDir(songFile);
+
+    if (QFile::exists(dirName+coverFileName)) {
+        QImage img(dirName+coverFileName);
+        if (!img.isNull()) {
+            emit cover(s, img);
+            return;
+        }
+    }
+
+    QStringList files=QDir(dirName).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable);
+    foreach (const QString &fileName, files) {
+        QImage img(dirName+fileName);
+
+        if (!img.isNull()) {
+            emit cover(s, img);
+            return;
+        }
+    }
+}
+
 void FsDevice::percent(int pc)
 {
     if (jobAbortRequested && 100!=pc) {

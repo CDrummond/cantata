@@ -42,6 +42,15 @@ class MtpConnection : public QObject
 {
     Q_OBJECT
 public:
+    struct Folder {
+        Folder(const QString &p, LIBMTP_folder_t *e)
+            : path(p)
+            , entry(e) {
+        }
+        QString path;
+        LIBMTP_folder_t *entry;
+    };
+
     MtpConnection(MtpDevice *p);
     virtual ~MtpConnection();
 
@@ -50,6 +59,7 @@ public:
     uint64_t capacity() const { return size; }
     uint64_t usedSpace() const { return used; }
     void emitProgress(int percent);
+    void trackListProgress(uint64_t count);
     bool abortRequested() const;
 
 public Q_SLOTS:
@@ -60,6 +70,7 @@ public Q_SLOTS:
     void getSong(const Song &song, const QString &dest);
     void delSong(const Song &song);
     void cleanDirs(const QSet<QString> &dirs);
+    void getCover(const Song &song);
 
 Q_SIGNALS:
     void statusMessage(const QString &message);
@@ -71,38 +82,41 @@ Q_SIGNALS:
     void progress(int);
     void deviceDetails(const QString &serialNumber);
     void songCount(int);
+    void cover(const Song &s, const QImage &img);
 
 private:
     void updateFolders();
+    void updateAlbums();
     void updateCapacity();
     uint32_t createFolder(const char *name, uint32_t parentId);
     uint32_t getFolder(const QString &path);
+    Folder * getFolderEntry(const QString &path);
     uint32_t checkFolderStructure(const QStringList &dirs);
     void parseFolder(LIBMTP_folder_t *folder);
     uint32_t getMusicFolderId();
+    uint32_t getAlbumsFolderId();
     uint32_t getFolderId(const char *name, LIBMTP_folder_t *f);
+    LIBMTP_album_t * getAlbum(const Song &song);
+    QImage getCover(LIBMTP_album_t *album);
     void destroyData();
 
 private:
-    struct Folder {
-        Folder(const QString &p, LIBMTP_folder_t *e)
-            : path(p)
-            , entry(e) {
-        }
-        QString path;
-        LIBMTP_folder_t *entry;
-    };
     LIBMTP_mtpdevice_t *device;
     LIBMTP_folder_t *folders;
+    LIBMTP_album_t *albums;
     LIBMTP_track_t *tracks;
     QMap<int, Folder> folderMap;
     QMap<int, LIBMTP_track_t *> trackMap;
+    QSet<uint16_t> supportedTypes;
+    QSet<LIBMTP_album_t *> albumsWithCovers;
     MusicLibraryItemRoot *library;
     uint64_t size;
     uint64_t used;
     uint32_t musicFolderId;
+    uint32_t albumsFolderId;
     QString musicPath;
     MtpDevice *dev;
+    int lastUpdate;
 };
 
 class MtpDevice : public Device
@@ -121,6 +135,7 @@ public:
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
     void removeSong(const Song &s);
     void cleanDirs(const QSet<QString> &dirs);
+    void requestCover(const Song &song);
     double usedCapacity();
     QString capacityString();
     qint64 freeSpace();
@@ -134,6 +149,8 @@ Q_SIGNALS:
     void getSong(const Song &song, const QString &dest);
     void delSong(const Song &song);
     void cleanMusicDirs(const QSet<QString> &dirs);
+    void getCover(const Song &s);
+    void cover(const Song &s, const QImage &img);
 
 private Q_SLOTS:
     void deviceDetails(const QString &s);
@@ -150,6 +167,7 @@ private Q_SLOTS:
     void saveProperties();
 
 private:
+    int getSongId(const Song &s);
     void deleteTemp();
 
 private:

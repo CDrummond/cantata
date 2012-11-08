@@ -68,7 +68,7 @@ Q_SIGNALS:
     void delSongStatus(bool);
     void cleanDirsStatus(bool ok);
     void libraryUpdated();
-    void progress(unsigned long);
+    void progress(int);
     void deviceDetails(const QString &serialNumber);
     void songCount(int);
 

@@ -85,6 +85,9 @@
 51. Fix crash when calling QFileDialog in Qt-only builds when Oxygen or QtCurve
     themes are used.
 52. In devices view, only show covers that come from device.
+53. Remove cover art and folders when deleting tracks from MTP devices.
+54. Copy cover to/from MTP devices.
+55. Show track listnig progress when loading MTP devices.
 
 0.8.3.1
 -------

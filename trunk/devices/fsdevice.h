@@ -64,7 +64,6 @@ private:
     bool stopRequested;
     int count;
     int lastUpdate;
-    int step;
 };
 
 class FsDevice : public Device

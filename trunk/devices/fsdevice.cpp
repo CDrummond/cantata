@@ -52,7 +52,6 @@ MusicScanner::MusicScanner(const QString &f)
     , stopRequested(false)
     , count(0)
     , lastUpdate(0)
-    , step(0)
 {
     folder=Utils::fixPath(QDir(f).absolutePath());
 }
@@ -66,7 +65,6 @@ void MusicScanner::run()
 {
     count=0;
     lastUpdate=0;
-    step=25;
     library = new MusicLibraryItemRoot;
     scanFolder(folder, 0);
     if (MPDParseUtils::groupSingle()) {

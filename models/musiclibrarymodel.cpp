@@ -100,7 +100,6 @@ void MusicLibraryModel::cleanCache()
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent)
     : QAbstractItemModel(parent)
-    , artistImages(false)
     , rootItem(new MusicLibraryItemRoot)
 {
     connect(Covers::self(), SIGNAL(artistImage(const QString &, const QImage &)),
@@ -197,14 +196,14 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Artist: {
             MusicLibraryItemArtist *artist = static_cast<MusicLibraryItemArtist *>(item);
-            if (artistImages) {
+            if (rootItem->useArtistImages()) {
                 return artist->cover();
             } else {
                 return artist->isVarious() ? Icons::variousArtistsIcon : Icons::artistIcon;
             }
         }
         case MusicLibraryItem::Type_Album:
-            if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+            if (!rootItem->useAlbumImages() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
                 return Icons::albumIcon;
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
@@ -262,7 +261,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
     case ItemView::Role_ImageSize:
         if (MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) { // icon/list style view...
             return MusicLibraryItemAlbum::iconSize(rootItem->useLargeImages());
-        } else if (MusicLibraryItem::Type_Album==item->itemType() || (artistImages && MusicLibraryItem::Type_Artist==item->itemType())) {
+        } else if (MusicLibraryItem::Type_Album==item->itemType() || (rootItem->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType())) {
             return MusicLibraryItemAlbum::iconSize();
         }
         break;
@@ -290,13 +289,13 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             QVariant v;
             v.setValue<QPixmap>(static_cast<MusicLibraryItemAlbum *>(item)->cover());
             return v;
-        } else if (MusicLibraryItem::Type_Artist==item->itemType() && artistImages) {
+        } else if (MusicLibraryItem::Type_Artist==item->itemType() && rootItem->useArtistImages()) {
             QVariant v;
             v.setValue<QPixmap>(static_cast<MusicLibraryItemArtist *>(item)->cover());
             return v;
         }
     case Qt::SizeHintRole:
-        if (!artistImages && MusicLibraryItem::Type_Artist==item->itemType()) {
+        if (!rootItem->useArtistImages() && MusicLibraryItem::Type_Artist==item->itemType()) {
             return QVariant();
         }
         if (rootItem->useLargeImages() && MusicLibraryItem::Type_Song!=item->itemType() && !MusicLibraryItemAlbum::itemSize().isNull()) {
@@ -532,6 +531,8 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         return;
     }
 
+    newroot->setUseAlbumImages(rootItem->useAlbumImages());
+    newroot->setUseArtistImages(rootItem->useArtistImages());
     bool updatedSongs=false;
     bool needToSave=dbUpdate>databaseTime;
     bool incremental=rootItem->childCount() && newroot->childCount();
@@ -586,7 +587,7 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
 
 void MusicLibraryModel::setArtistImage(const QString &artist, const QImage &img)
 {
-    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+    if (!rootItem->useArtistImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
         return;
     }
 
@@ -602,7 +603,7 @@ void MusicLibraryModel::setArtistImage(const QString &artist, const QImage &img)
 void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
     Q_UNUSED(file)
-    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+    if (!rootItem->useAlbumImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
         return;
     }
 

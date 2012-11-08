@@ -46,19 +46,15 @@ public:
     MusicLibraryItemRoot(const QString &name=QString(), bool albumArtistSupport=true)
         : MusicLibraryItemContainer(name, 0)
         , supportsAlbumArtist(albumArtistSupport)
+        , albumImages(true)
+        , artistImages(false)
         , largeImages(false) {
     }
     virtual ~MusicLibraryItemRoot() {
     }
 
-    virtual QString icon() const {
-        return QString();
-    }
-
-    virtual bool isDevice() const {
-        return false;
-    }
-
+    virtual QString icon() const { return QString(); }
+    virtual bool isDevice() const { return false; }
     MusicLibraryItemArtist * artist(const Song &s, bool create=true);
     MusicLibraryItemArtist * createArtist(const Song &s);
     void groupSingleTracks();
@@ -73,23 +69,16 @@ public:
     void toXML(QXmlStreamWriter &writer, const QDateTime &date=QDateTime()) const;
     quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime(), const QString &baseFolder=QString());
     quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime(), const QString &baseFolder=QString());
-    Type itemType() const {
-        return Type_Root;
-    }
+    Type itemType() const { return Type_Root; }
     void add(const QSet<Song> &songs);
-
-    bool supportsAlbumArtistTag() {
-        return supportsAlbumArtist;
-    }
-    void setSupportsAlbumArtistTag(bool s) {
-        supportsAlbumArtist=s;
-    }
-    bool useLargeImages() const {
-        return largeImages;
-    }
-    void setLargeImages(bool a) {
-        largeImages=a;
-    }
+    bool supportsAlbumArtistTag() { return supportsAlbumArtist; }
+    void setSupportsAlbumArtistTag(bool s) { supportsAlbumArtist=s; }
+    bool useAlbumImages() const { return albumImages; }
+    void setUseAlbumImages(bool a) { albumImages=a; }
+    bool useArtistImages() const { return artistImages; }
+    void setUseArtistImages(bool a) { artistImages=a; }
+    bool useLargeImages() const { return largeImages; }
+    void setLargeImages(bool a) { largeImages=a; }
 
 private:
     QString songArtist(const Song &s);
@@ -98,6 +87,8 @@ protected:
     bool supportsAlbumArtist; // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
 
 private:
+    bool albumImages;
+    bool artistImages;
     bool largeImages;
     QHash<QString, int> m_indexes;
 };

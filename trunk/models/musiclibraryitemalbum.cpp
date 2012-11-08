@@ -225,6 +225,7 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             #ifdef ENABLE_DEVICES_SUPPORT
             if (parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem())) {
                 // This item is in the devices model, so get cover from device...
+                song.id=firstSong->song().id;
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
             } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
                 // Not showing album images in this model, so dont request any!

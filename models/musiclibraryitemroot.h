@@ -81,7 +81,9 @@ public:
     bool supportsAlbumArtistTag() {
         return supportsAlbumArtist;
     }
-
+    void setSupportsAlbumArtistTag(bool s) {
+        supportsAlbumArtist=s;
+    }
     bool useLargeImages() const {
         return largeImages;
     }

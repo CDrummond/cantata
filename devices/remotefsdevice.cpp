@@ -226,6 +226,9 @@ RemoteFsDevice::~RemoteFsDevice() {
 void RemoteFsDevice::toggle()
 {
     if (isConnected()) {
+        if (scanner) {
+            scanner->stop();
+        }
         unmount();
     } else {
         mount();

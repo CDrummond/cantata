@@ -70,6 +70,7 @@ QString Utils::fixPath(const QString &dir)
     if (!d.isEmpty() && !d.startsWith(QLatin1String("http://"))) {
         d.replace(QLatin1String("//"), QChar('/'));
     }
+    d.replace(QLatin1String("/./"), QChar('/'));
     if (!d.isEmpty() && !d.endsWith('/')) {
         d+='/';
     }

@@ -48,7 +48,6 @@ static const QLatin1String constCantataCacheFile("/.cache.xml");
 
 MusicScanner::MusicScanner(const QString &f)
     : QThread(0)
-    , folder(f)
     , library(0)
     , stopRequested(false)
     , count(0)
@@ -56,6 +55,7 @@ MusicScanner::MusicScanner(const QString &f)
     , updateCount(0)
     , step(0)
 {
+    folder=Utils::fixPath(QDir(f).absolutePath());
 }
 
 MusicScanner::~MusicScanner()

@@ -435,6 +435,8 @@ QString Utils::findExe(const QString &appname, const QString &pstr)
 }
 // Copied from KDE... END
 
+#endif
+
 QString Utils::cleanPath(const QString &p)
 {
     QString path(p);
@@ -443,8 +445,6 @@ QString Utils::cleanPath(const QString &p)
     }
     return fixPath(path);
 }
-
-#endif
 
 QString Utils::configDir(const QString &sub, bool create)
 {

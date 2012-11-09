@@ -94,7 +94,7 @@ private:
     uint32_t checkFolderStructure(const QStringList &dirs);
     void parseFolder(LIBMTP_folder_t *folder);
     uint32_t getMusicFolderId();
-    uint32_t getAlbumsFolderId();
+    //uint32_t getAlbumsFolderId();
     uint32_t getFolderId(const char *name, LIBMTP_folder_t *f);
     LIBMTP_album_t * getAlbum(const Song &song);
     QImage getCover(LIBMTP_album_t *album);
@@ -107,13 +107,13 @@ private:
     LIBMTP_track_t *tracks;
     QMap<int, Folder> folderMap;
     QMap<int, LIBMTP_track_t *> trackMap;
-    QSet<uint16_t> supportedTypes;
+    //QSet<uint16_t> supportedTypes;
     QSet<LIBMTP_album_t *> albumsWithCovers;
     MusicLibraryItemRoot *library;
     uint64_t size;
     uint64_t used;
     uint32_t musicFolderId;
-    uint32_t albumsFolderId;
+    //uint32_t albumsFolderId;
     QString musicPath;
     MtpDevice *dev;
     int lastUpdate;

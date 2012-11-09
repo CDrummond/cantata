@@ -49,6 +49,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <QtCore/QDebug>
 
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
@@ -63,6 +64,17 @@ static int trackListMonitor(uint64_t const processed, uint64_t const total, void
     return ((MtpConnection *)data)->abortRequested() ? -1 : 0;
 }
 
+//static void logAlbum(LIBMTP_album_t *alb)
+//{
+//    QList<uint32_t> tracks;
+
+//    for (uint32_t i=0; i<alb->no_tracks; ++i) {
+//        tracks.append(alb->tracks[i]);
+//    }
+
+//    qWarning() << "Album" << QString::fromUtf8(alb->name) << alb->album_id << alb->no_tracks << "TRACKS:" << tracks;
+//}
+
 MtpConnection::MtpConnection(MtpDevice *p)
     : device(0)
     , folders(0)
@@ -70,7 +82,7 @@ MtpConnection::MtpConnection(MtpDevice *p)
     , tracks(0)
     , library(0)
     , musicFolderId(0)
-    , albumsFolderId(0)
+    //, albumsFolderId(0)
     , dev(p)
     , lastUpdate(0)
 {
@@ -114,16 +126,14 @@ void MtpConnection::connectToDevice()
 {
     device=0;
     musicFolderId=0;
-    albumsFolderId=0;
+    //albumsFolderId=0;
     LIBMTP_raw_device_t *rawDevices=0;
     int numDev=-1;
-
     emit statusMessage(i18n("Connecting to device..."));
     if (LIBMTP_ERROR_NONE!=LIBMTP_Detect_Raw_Devices(&rawDevices, &numDev) || numDev<=0) {
         emit statusMessage(i18n("No devices found"));
         return;
     }
-
     LIBMTP_mtpdevice_t *dev=0;
     for (int i = 0; i < numDev; i++) {
         if ((dev = LIBMTP_Open_Raw_Device(&rawDevices[i]))) {
@@ -140,7 +150,6 @@ void MtpConnection::connectToDevice()
         emit statusMessage(i18n("No devices found"));
         return;
     }
-
     char *ser=LIBMTP_Get_Serialnumber(device);
     if (ser) {
         emit deviceDetails(QString::fromUtf8(ser));
@@ -150,10 +159,11 @@ void MtpConnection::connectToDevice()
     }
 
     musicFolderId=device->default_music_folder;
+    #if 0
     albumsFolderId=device->default_album_folder;
     supportedTypes.clear();
 
-    uint16_t* list = NULL;
+    uint16_t *list = 0;
     uint16_t length = 0;
 
     if (0==LIBMTP_Get_Supported_Filetypes(device, &list, &length) && list && length) {
@@ -162,6 +172,7 @@ void MtpConnection::connectToDevice()
         }
         free(list);
     }
+    #endif
 
     emit statusMessage(i18n("Connected to device"));
 }
@@ -264,13 +275,13 @@ uint32_t MtpConnection::getMusicFolderId()
                             : 0;
 }
 
-uint32_t MtpConnection::getAlbumsFolderId()
-{
-    return albumsFolderId ? albumsFolderId
-                          : folders
-                            ? getFolderId("Albums", folders)
-                            : 0;
-}
+//uint32_t MtpConnection::getAlbumsFolderId()
+//{
+//    return albumsFolderId ? albumsFolderId
+//                          : folders
+//                            ? getFolderId("Albums", folders)
+//                            : 0;
+//}
 
 uint32_t MtpConnection::getFolderId(const char *name, LIBMTP_folder_t *f)
 {
@@ -324,6 +335,7 @@ void MtpConnection::updateAlbums()
     albums=LIBMTP_Get_Album_List(device);
     LIBMTP_album_t *alb=albums;
     while (alb) {
+//        logAlbum(alb);
         if (covers.contains(alb->album_id)) {
             albumsWithCovers.insert(alb);
             covers.remove(alb->album_id);
@@ -553,20 +565,35 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
             delete temp;
         }
 
+        // TODO: adding of covers does not seem to work 100% reliably, and slows the copy process down.
+        // If we're not adding covers, not much point in creating albums...
+        #if 0
         if (added) {
             // Add song to album...
+            qWarning() << "Get album" << song.id;
             LIBMTP_album_t *album=getAlbum(song);
+            if (!album) {
+                qWarning() << "TRACK ADDED, ALBUM NOT FOUND, SO GET ALBUM LIST";
+                updateAlbums();
+                qWarning() << "UPDATED ALBUMS";
+                song.id=meta->item_id;
+                album=getAlbum(song);
+            }
             if (album) {
+                qWarning() << "Album exists" << album->no_tracks << album->album_id;
                 uint32_t *tracks = (uint32_t *)malloc((album->no_tracks+1)*sizeof(uint32_t));
                 if (tracks) {
                     album->no_tracks++;
                     if (album->tracks) {
-                        memcpy(tracks, album->tracks, album->no_tracks*sizeof (uint32_t));
+                        memcpy(tracks, album->tracks, (album->no_tracks-1)*sizeof(uint32_t));
                         free(album->tracks);
                     }
-                    tracks[album->no_tracks -1]=meta->item_id;
+                    tracks[album->no_tracks-1]=meta->item_id;
                     album->tracks = tracks;
+                    qWarning() << "Update album";
                     LIBMTP_Update_Album(device, album);
+                    logAlbum(album);
+                    qWarning() << "Album updated";
                 }
             } else {
                 album=LIBMTP_new_album_t();
@@ -581,16 +608,24 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
                 album->composer=0;
                 album->genre=createString(song.genre);
                 album->next=0;
+                qWarning() << "Create new album";
+                logAlbum(album);
                 if (0==LIBMTP_Create_New_Album(device, album)) {
+                    qWarning() << "Album created" << album->album_id;
                     LIBMTP_album_t *al=albums;
-                    while (al) {
-                        if (!al->next) {
-                            al->next=album;
-                            break;
+                    if (!albums) {
+                        albums=album;
+                    } else {
+                        while (al) {
+                            if (!al->next) {
+                                al->next=album;
+                                break;
+                            }
+                            al=al->next;
                         }
-                        al=al->next;
                     }
                 } else {
+                    qWarning() << "Failed to create album";
                     LIBMTP_destroy_album_t(album);
                     album=0;
                 }
@@ -612,17 +647,33 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
                                 image.fileName=temp->fileName();
                             }
                         }
-                        QFile f(image.fileName);
-                        if (f.open(QIODevice::ReadOnly)) {
-                            QByteArray data=f.readAll();
-                            LIBMTP_filesampledata_t *albumart=LIBMTP_new_filesampledata_t();
-                            albumart->data = (char *)data.constData();
-                            albumart->size = data.length();
-                            albumart->filetype = image.fileName.endsWith(".png ") ? LIBMTP_FILETYPE_PNG : LIBMTP_FILETYPE_JPEG;
-                            if (0==LIBMTP_Send_Representative_Sample(device, album->album_id, albumart)) {
-                                albumsWithCovers.insert(album);
+                        struct stat statbuff;
+
+                        if (-1!=stat(QFile::encodeName(image.fileName).constData(), &statbuff)) {
+                            uint64_t filesize = (uint64_t) statbuff.st_size;
+                            if (filesize>0) {
+                                char *imagedata = (char *)malloc(filesize);
+                                if (imagedata) {
+                                    FILE *fd = fopen(QFile::encodeName(image.fileName).constData(), "r");
+                                    if (fd) {
+                                        fread(imagedata, filesize, 1, fd);
+                                        fclose(fd);
+
+                                        LIBMTP_filesampledata_t *albumart=LIBMTP_new_filesampledata_t();
+                                        albumart->data = imagedata;
+                                        albumart->size = filesize;
+                                        albumart->filetype = image.fileName.endsWith(".png") ? LIBMTP_FILETYPE_PNG : LIBMTP_FILETYPE_JPEG;
+                                        qWarning() << "Send cover";
+                                        int rv=0;
+                                        if (0==(rv=LIBMTP_Send_Representative_Sample(device, album->album_id, albumart))) {
+                                            albumsWithCovers.insert(album);
+                                        }
+                                        albumart->data=0;
+                                        LIBMTP_destroy_filesampledata_t(albumart);
+                                    }
+                                    free(imagedata);
+                                }
                             }
-                            LIBMTP_destroy_filesampledata_t(albumart);
                         }
                         if (temp) {
                             delete temp;
@@ -631,6 +682,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
                 }
             }
         }
+        #endif
     }
     if (added) {
         trackMap.insert(meta->item_id, meta);
@@ -693,24 +745,27 @@ void MtpConnection::delSong(const Song &song)
         trackMap.remove(song.id);
         // Remove track from album. Remove album (and cover) if no tracks.
         LIBMTP_album_t *album=getAlbum(song);
-        if (album && album->tracks) {
-            if (1==album->no_tracks && album->tracks[0]==(uint32_t)song.id) {
-                LIBMTP_filesampledata_t *albumart = LIBMTP_new_filesampledata_t();
-                albumart->data = NULL;
-                albumart->size = 0;
-                albumart->filetype = LIBMTP_FILETYPE_UNKNOWN;
-                LIBMTP_Send_Representative_Sample(device, album->album_id, albumart);
-                LIBMTP_destroy_filesampledata_t(albumart);
+        if (album) {
+            if (0==album->no_tracks || (1==album->no_tracks && album->tracks[0]==(uint32_t)song.id)) {
+                if (!getCover(album).isNull()) {
+                    LIBMTP_filesampledata_t *albumart = LIBMTP_new_filesampledata_t();
+                    albumart->data = NULL;
+                    albumart->size = 0;
+                    albumart->filetype = LIBMTP_FILETYPE_UNKNOWN;
+                    LIBMTP_Send_Representative_Sample(device, album->album_id, albumart);
+                    LIBMTP_destroy_filesampledata_t(albumart);
+                }
                 albumsWithCovers.remove(album);
+                LIBMTP_Delete_Object(device, album->album_id);
                 updateAlbums();
-            } else if (1!=album->no_tracks) {
+            } else if (album->no_tracks>1) {
                 // Remove track from album...
                 uint32_t *tracks = (uint32_t *)malloc((album->no_tracks-1)*sizeof(uint32_t));
                 if (tracks) {
                     bool found=false;
                     for (uint32_t i=0, j=0; i<album->no_tracks && j<(album->no_tracks-1); ++i) {
                         if (album->tracks[i]!=(uint32_t)song.id) {
-                            tracks[j++]=song.id;
+                            tracks[j++]=album->tracks[i];
                         } else {
                             found=true;
                         }
@@ -720,6 +775,7 @@ void MtpConnection::delSong(const Song &song)
                         free(album->tracks);
                         album->tracks = tracks;
                         LIBMTP_Update_Album(device, album);
+//                        logAlbum(album);
                     } else {
                         free(tracks);
                     }
@@ -784,19 +840,29 @@ void MtpConnection::getCover(const Song &song)
 LIBMTP_album_t * MtpConnection::getAlbum(const Song &song)
 {
     LIBMTP_album_t *al=albums;
+    LIBMTP_album_t *possible=0;
 
     while (al) {
         if (QString::fromUtf8(al->name)==song.album) {
-            for (uint32_t i=0; i<al->no_tracks; ++i) {
-                if (al->tracks[i]==(unsigned int)song.id) {
-                    return al;
+            // For some reason, MTP sometimes leaves blank albums behind.
+            // So, when looking for an album if we find one with the same name, but no tracks - then save this as a possibility...
+            if (0==al->no_tracks) {
+                QString aa(QString::fromUtf8(al->artist));
+                if (aa.isEmpty() || aa==song.albumArtist()) {
+                    possible=al;
+                }
+            } else {
+                for (uint32_t i=0; i<al->no_tracks; ++i) {
+                    if (al->tracks[i]==(uint32_t)song.id) {
+                        return al;
+                    }
                 }
             }
         }
         al=al->next;
     }
 
-    return 0;
+    return possible;
 }
 
 void MtpConnection::destroyData()
@@ -843,6 +909,12 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     , tempFile(0)
     , mtpUpdating(false)
 {
+    static bool registeredTypes=false;
+    if (!registeredTypes) {
+        qRegisterMetaType<QSet<QString> >("QSet<QString>");
+        registeredTypes=true;
+    }
+
     thread=new QThread(this);
     connection=new MtpConnection(this);
     connection->moveToThread(thread);
@@ -912,6 +984,10 @@ void MtpDevice::rescan(bool full)
     Q_UNUSED(full)
     if (mtpUpdating || !solidDev.isValid()) {
         return;
+    }
+    if (childCount()) {
+        update=new MusicLibraryItemRoot();
+        applyUpdate();
     }
     mtpUpdating=true;
     emit updating(solidDev.udi(), true);
@@ -1090,7 +1166,7 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
         currentSong.file=file;
         if (needToFixVa && fixedVa) {
             Device::fixVariousArtists(QString(), currentSong, true);
-        } else if (!opts.fixVariousArtists) { // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
+        } else if (!opts.fixVariousArtists) { // TODO: ALBUMARTIST: Remove when libMTP supports album artist!
             currentSong.albumartist=currentSong.artist;
         }
         addSongToList(currentSong);

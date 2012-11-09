@@ -178,6 +178,8 @@ private:
     Song currentSong;
     bool mtpUpdating;
     QString serial;
+    unsigned int busNum;
+    unsigned int devNum;
     friend class MtpConnection;
 };
 

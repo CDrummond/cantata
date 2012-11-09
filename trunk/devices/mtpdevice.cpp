@@ -45,11 +45,15 @@
 #include <QtCore/QTemporaryFile>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMimeType>
+#include <solid/genericinterface.h>
+#else
+#include "solid-lite/genericinterface.h"
 #endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <QtCore/QDebug>
+
 
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
@@ -134,16 +138,22 @@ void MtpConnection::connectToDevice()
         emit statusMessage(i18n("No devices found"));
         return;
     }
-    LIBMTP_mtpdevice_t *dev=0;
+
+    LIBMTP_mtpdevice_t *mptDev=0;
     for (int i = 0; i < numDev; i++) {
-        if ((dev = LIBMTP_Open_Raw_Device(&rawDevices[i]))) {
+        if (0!=dev->busNum && 0!=dev->devNum) {
+            if (rawDevices[i].bus_location==dev->busNum && rawDevices[i].devnum==dev->devNum) {
+                mptDev = LIBMTP_Open_Raw_Device(&rawDevices[i]);
+                break;
+            }
+        } else if ((mptDev = LIBMTP_Open_Raw_Device(&rawDevices[i]))) {
             break;
         }
     }
 
     size=0;
     used=0;
-    device=dev;
+    device=mptDev;
     updateCapacity();
     free(rawDevices);
     if (!device) {
@@ -908,11 +918,20 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     , pmp(dev.as<Solid::PortableMediaPlayer>())
     , tempFile(0)
     , mtpUpdating(false)
+    , busNum(0)
+    , devNum(0)
 {
     static bool registeredTypes=false;
     if (!registeredTypes) {
         qRegisterMetaType<QSet<QString> >("QSet<QString>");
         registeredTypes=true;
+    }
+
+    Solid::GenericInterface *iface = dev.as<Solid::GenericInterface>();
+    if (iface) {
+        QMap<QString, QVariant> properties = iface->allProperties();
+        busNum = properties.value(QLatin1String("BUSNUM")).toInt();
+        devNum = properties.value(QLatin1String("DEVNUM")).toInt();
     }
 
     thread=new QThread(this);

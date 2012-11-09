@@ -242,6 +242,7 @@ void DevicesPage::controlActions()
     bool remoteDev=false;
     #endif
     bool deviceSelected=false;
+    bool busyDevice=false;
     QString udi;
 
     foreach (const QModelIndex &idx, selected) {
@@ -262,6 +263,9 @@ void DevicesPage::controlActions()
             if (!dev->isStdFs()) {
                 onlyFs=false;
             }
+            if (!dev->isIdle()) {
+                busyDevice=true;
+            }
             #ifdef ENABLE_REMOTE_DEVICES
             if (Device::RemoteFs==dev->devType()) {
                 remoteDev=true;
@@ -279,17 +283,20 @@ void DevicesPage::controlActions()
         }
     }
 
+    if (busyDevice) {
+        enable=false;
+    }
     configureAction->setEnabled(!enable && 1==selected.count());
     refreshAction->setEnabled(!enable && 1==selected.count());
-    copyAction->setEnabled(enable);
-    syncAction->setEnabled(deviceSelected && connected && 1==selected.count() && singleUdi);
-    mw->deleteSongsAction->setEnabled(enable);
-    mw->editTagsAction->setEnabled(enable && onlyFs && singleUdi);
+    copyAction->setEnabled(enable && !deviceSelected);
+    syncAction->setEnabled(enable && deviceSelected && connected && 1==selected.count() && singleUdi);
+    mw->deleteSongsAction->setEnabled(enable && !deviceSelected);
+    mw->editTagsAction->setEnabled(enable && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    mw->replaygainAction->setEnabled(enable && onlyFs && singleUdi);
+    mw->replaygainAction->setEnabled(enable && onlyFs && singleUdi && !deviceSelected);
     #endif
     //mw->burnAction->setEnabled(enable && onlyFs);
-    mw->organiseFilesAction->setEnabled(enable && onlyFs && singleUdi);
+    mw->organiseFilesAction->setEnabled(enable && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction->setEnabled(singleUdi && remoteDev);
     #endif

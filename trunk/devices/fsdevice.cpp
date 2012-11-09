@@ -168,6 +168,9 @@ void FsDevice::rescan(bool full)
     // If this is the first scan (scanned=false) and we are set to use cache, attempt to load that before scanning
     if (isIdle() && (scanned || !opts.useCache || !readCache())) {
         scanned=true;
+        if (full) {
+            clear();
+        }
         removeCache();
         startScanner(full);
     }

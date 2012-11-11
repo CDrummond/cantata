@@ -221,6 +221,8 @@ void Application::load(const QStringList &files)
 #else // Q_OS_WIN
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusMessage>
+#include <QtCore/QDir>
+#include <QtCore/QDebug>
 
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
@@ -230,11 +232,29 @@ Application::Application(int &argc, char **argv)
 bool Application::start()
 {
     if (QDBusConnection::sessionBus().registerService("org.kde.cantata")) {
+        setupIconTheme();
         Icons::init();
         return true;
     }
     loadFiles();
     return false;
+}
+
+void Application::setupIconTheme()
+{
+    // BUG:130 Some non-DE environments (IceWM, etc) seem to set theme to HiColor, and this has missing
+    // icons. So cehck for a themed icon,if the current theme does not have this - then see if oxygen
+    // or gnome icon themes are installed, and set theme to one of those.
+    if (!QIcon::hasThemeIcon("document-save-as")) {
+        QStringList themes=QStringList() << QLatin1String("oxygen") << QLatin1String("gnome");
+        foreach (const QString &theme, themes) {
+            QString dir(QLatin1String("/usr/share/icons/")+theme);
+            if (QDir(dir).exists()) {
+                QIcon::setThemeName(theme);
+                return;
+            }
+        }
+    }
 }
 
 void Application::loadFiles()

@@ -90,6 +90,9 @@
 54. Copy covers from MTP devices. (Copying to the device is not currently
     supported.)
 55. Show track listing progress when loading MTP devices.
+56. For Qt-only Linux builds, check if current icon theme has the
+    "document-save-as" icon. If not, then if the user has ether oxugen or gnome
+    icon theme installed - set the icon theme name to this.
 
 0.8.3.1
 -------

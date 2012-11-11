@@ -86,6 +86,7 @@ public:
     bool start();
     void loadFiles();
     void setActivationWindow(QWidget *) { }
+    void setupIconTheme();
 };
 #endif
 

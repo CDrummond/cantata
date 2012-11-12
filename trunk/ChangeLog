@@ -93,6 +93,14 @@
 56. For Qt-only Linux builds, check if current icon theme has the
     "document-save-as" icon. If not, then if the user has ether oxugen or gnome
     icon theme installed - set the icon theme name to this.
+57. For Qt-only builds, allow to configure the icon theme name via Cantata's
+    config file (~/.config/cantata/cantata.conf on Linux). Edit file and add
+    (e.g.) the following in the "[General]" section:
+
+        iconTheme=oxygen
+
+    ...there is no GUI for this, as its only a work-around for some window
+    managers.
 
 0.8.3.1
 -------

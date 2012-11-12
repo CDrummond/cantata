@@ -314,6 +314,8 @@ void MusicLibraryModel::clear()
     databaseTime = QDateTime();
     rootItem = new MusicLibraryItemRoot;
     rootItem->setLargeImages(oldRoot->useLargeImages());
+    rootItem->setUseAlbumImages(oldRoot->useAlbumImages());
+    rootItem->setUseArtistImages(oldRoot->useAlbumImages());
     delete oldRoot;
     endResetModel();
 
@@ -552,6 +554,8 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         databaseTime = dbUpdate;
         rootItem = newroot;
         rootItem->setLargeImages(oldRoot->useLargeImages());
+        rootItem->setUseAlbumImages(oldRoot->useAlbumImages());
+        rootItem->setUseArtistImages(oldRoot->useAlbumImages());
         delete oldRoot;
         endResetModel();
         updatedSongs=true;

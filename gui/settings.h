@@ -216,6 +216,8 @@ public:
     void save(bool force=false);
     #ifdef ENABLE_KDE_SUPPORT
     bool openWallet();
+    #else
+    QString iconTheme();
     #endif
 
     bool firstRun() const { return isFirstRun; }

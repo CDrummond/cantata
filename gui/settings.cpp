@@ -249,6 +249,12 @@ bool Settings::openWallet()
 
     return false;
 }
+#else
+QString Settings::iconTheme()
+{
+    return GET_STRING("iconTheme", QString());
+}
+
 #endif
 
 bool Settings::showPlaylist()

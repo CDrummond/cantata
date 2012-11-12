@@ -28,6 +28,7 @@
 #include <KDE/KMessageBox>
 #include <KDE/Solid/PowerManagement>
 #else
+#include "settings.h"
 #include <QtGui/QIcon>
 #ifdef Q_OS_WIN
 #include <QtCore/QDir>
@@ -121,29 +122,19 @@ Application::Application(int &argc, char **argv)
 
 static void setupIconTheme()
 {
-    // Check that we have certain icons in the selected icon theme. If not, and oxygen is installed, then
-    // set icon theme to oxygen.
+    QString cfgTheme=Settings::self()->iconTheme();
+    if (!cfgTheme.isEmpty()) {
+        QIcon::setThemeName(cfgTheme);
+    }
+
     QString theme=QIcon::themeName();
-    if (QLatin1String("oxygen")!=theme) {
-        QStringList check=QStringList() << "actions/edit-clear-list" << "actions/view-media-playlist"
-                                        << "actions/view-media-lyrics" << "actions/configure"
-                                        << "actions/view-choose" << "actions/view-media-artist";
-        bool found=false;
+    if (QLatin1String("oxygen")!=theme && !QIcon::hasThemeIcon("document-save-as")) {
+        QStringList paths=QIcon::themeSearchPaths();
 
-        foreach (const QString &icn, check) {
-            if (!QIcon::hasThemeIcon(icn)) {
-                QStringList paths=QIcon::themeSearchPaths();
-
-                foreach (const QString &p, paths) {
-                    if (QDir(p+QLatin1String("/oxygen")).exists()) {
-                        QIcon::setThemeName(QLatin1String("oxygen"));
-                        found=true;
-                        break;
-                    }
-                }
-                if (found) {
-                    break;
-                }
+        foreach (const QString &p, paths) {
+            if (QDir(p+QLatin1String("/oxygen")).exists()) {
+                QIcon::setThemeName(QLatin1String("oxygen"));
+                return;
             }
         }
     }
@@ -222,7 +213,6 @@ void Application::load(const QStringList &files)
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusMessage>
 #include <QtCore/QDir>
-#include <QtCore/QDebug>
 
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
@@ -242,6 +232,11 @@ bool Application::start()
 
 void Application::setupIconTheme()
 {
+    QString cfgTheme=Settings::self()->iconTheme();
+    if (!cfgTheme.isEmpty()) {
+        QIcon::setThemeName(cfgTheme);
+    }
+
     // BUG:130 Some non-DE environments (IceWM, etc) seem to set theme to HiColor, and this has missing
     // icons. So cehck for a themed icon,if the current theme does not have this - then see if oxygen
     // or gnome icon themes are installed, and set theme to one of those.

@@ -29,6 +29,7 @@
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "mpdparseutils.h"
+#include "mpdconnection.h"
 #include "song.h"
 #include "localize.h"
 #include <QtXml/QXmlStreamReader>
@@ -496,6 +497,46 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
         albumItem->addGenre(s.genre);
         artistItem->addGenre(s.genre);
         addGenre(s.genre);
+    }
+}
+
+void MusicLibraryItemRoot::toggleGrouping()
+{
+    // Grouping has changed, so we need to recreate whole structure from list of songs.
+    QSet<Song> songs=allSongs();
+    qDeleteAll(m_childItems);
+    m_childItems.clear();
+    m_genres.clear();
+    m_indexes.clear();
+    MusicLibraryItemArtist *artistItem = 0;
+    MusicLibraryItemAlbum *albumItem = 0;
+    MusicLibraryItemSong *songItem = 0;
+
+    foreach (Song currentSong, songs) {
+        if (Song::Standard!=currentSong.type && Song::Playlist!=currentSong.type) {
+            currentSong.type=MPDConnection::isPlaylist(currentSong.file) ? Song::Playlist : Song::Standard;
+        }
+
+        if (!artistItem || currentSong.albumArtist()!=artistItem->data()) {
+            artistItem = artist(currentSong);
+        }
+        if (!albumItem || currentSong.year!=albumItem->year() || albumItem->parentItem()!=artistItem || currentSong.album!=albumItem->data()) {
+            albumItem = artistItem->album(currentSong);
+        }
+
+        songItem = new MusicLibraryItemSong(currentSong, albumItem);
+        albumItem->append(songItem);
+        albumItem->addGenre(currentSong.genre);
+        artistItem->addGenre(currentSong.genre);
+        addGenre(currentSong.genre);
+    }
+
+    // Library rebuilt, now apply any grouping...
+    if (MPDParseUtils::groupSingle()) {
+        groupSingleTracks();
+    }
+    if (MPDParseUtils::groupMultiple()) {
+        groupMultipleArtists();
     }
 }
 

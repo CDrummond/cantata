@@ -61,6 +61,7 @@ public:
     #ifdef ENABLE_REMOTE_DEVICES
     void unmountRemote();
     #endif
+    void toggleGrouping();
 
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img);

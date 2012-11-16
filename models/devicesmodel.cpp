@@ -768,6 +768,15 @@ void DevicesModel::unmountRemote()
 }
 #endif
 
+void DevicesModel::toggleGrouping()
+{
+    beginResetModel();
+    foreach (Device *dev, devices) {
+        dev->toggleGrouping();
+    }
+    endResetModel();
+}
+
 int DevicesModel::indexOf(const QString &udi)
 {
     int i=0;

@@ -589,6 +589,13 @@ bool MusicLibraryModel::update(const QSet<Song> &songs)
     return updatedSongs;
 }
 
+void MusicLibraryModel::toggleGrouping()
+{
+    beginResetModel();
+    rootItem->toggleGrouping();
+    endResetModel();
+}
+
 void MusicLibraryModel::setArtistImage(const QString &artist, const QImage &img)
 {
     if (!rootItem->useArtistImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {

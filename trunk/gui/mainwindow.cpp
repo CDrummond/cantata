@@ -1399,8 +1399,13 @@ void MainWindow::updateSettings()
     }
 
     if (diffGrouping) {
-        refresh();
-    } else if (diffLibCovers || diffLibYear || diffLibArtistImages || diffAlCovers) {
+        MusicLibraryModel::self()->toggleGrouping();
+        #ifdef ENABLE_DEVICES_SUPPORT
+        DevicesModel::self()->toggleGrouping();
+        #endif
+    }
+
+    if (diffLibCovers || diffLibYear || diffLibArtistImages || diffAlCovers) {
         libraryPage->clear();
         albumsPage->goTop();
         libraryPage->refresh();

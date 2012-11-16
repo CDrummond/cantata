@@ -81,6 +81,7 @@ public:
     bool useLargeImages() const { return rootItem->useLargeImages(); }
     void setLargeImages(bool a) { rootItem->setLargeImages(a); }
     void setSupportsAlbumArtistTag(bool s) { rootItem->setSupportsAlbumArtistTag(s); }
+    void toggleGrouping();
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);

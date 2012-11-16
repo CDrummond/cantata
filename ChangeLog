@@ -101,6 +101,9 @@
 
     ...there is no GUI for this, as its only a work-around for some window
     managers.
+58. If group single tracks, or multiple artists, settings are changed, then
+    rebuild library and device models frmo existing set of songs - as opposed
+    to re-reading all songs from mpd/device.
 
 0.8.3.1
 -------

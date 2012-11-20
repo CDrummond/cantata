@@ -16,7 +16,7 @@ Cantata requires the following Qt4 libraries:
 4. QtXml
 5. QtDBus (Only for Linux builds)
 
-Cantata many also use the following optional libraries:
+Cantata may also use the following optional libraries:
 
 1. KDElibs4
 2. QtWebKit - used for the artist/album information page. If QtWebKit is not
@@ -52,6 +52,7 @@ e.g.
     Qt will have:
         msgid "1 Track"
         msgstr ""
+
         msgid "%1 Tracks"
         msgstr ""
 
@@ -63,6 +64,7 @@ strings are not sufficient), then please translate both into the form
     Qt will now have:
         msgid "1 Track"
         msgstr "Tracks: 1"
+
         msgid "%1 Tracks"
         msgstr "Tracks: %1"
 
@@ -155,7 +157,7 @@ with the following syntax:
 
     Station( "NAME", "URL")
 
-Each station *must* be on its own line, and must be all in *one* line.
+Each station *must* be on its own line, and must be all on *one* line.
 
 'script.spec' is used to ascertain the Amarok plugin name, for this the
 script will look for the line starting with "Name="
@@ -173,10 +175,10 @@ never written with this in mind).
 The list of dynamic playlists may be obtained by looking in
 ~/.config/cantata/dynamic
 
-To 'load' a dynamic play list, all you need to do is symlink the desired one in
+To 'load' a dynamic playlist, all you need to do is symlink the desired one in
 ~/.config/cantata/dynamic to ~/.cache/cantata/dynamic/rules. Then you can start
 the helper by calling '/usr/bin/cantata-dynamic start'  (or first call
-'/usr/bin/cantata-dynamic stop' to stop any current play list).
+'/usr/bin/cantata-dynamic stop' to stop any current playlist).
 
 To pass connection details, cantata-dynamic reads the same environment variables
 as mpc - namely MPD_HOST and MPD_PORT
@@ -202,7 +204,7 @@ Dynamic Helper - Server Mode
 ============================
 
 In addition to the above, the helper script may be installed on the system
-containg MPD, and run in 'server' mode. When run in this mode, it is intended
+containing MPD, and run in 'server' mode. When run in this mode, it is intended
 that the script be run system-wide and started when the system (or MPD) is
 started. e.g. The script should be started as:
 
@@ -223,7 +225,7 @@ Configuration
 -------------
 
 The server mode has a simple ini-style configuration file, that has the
-following paramters (shown here with the default values):
+following parameters (shown here with the default values):
 
     pidFile=/var/run/cantata-dynamic/pid
     filesDir=/var/lib/mpd/dynamic
@@ -241,7 +243,8 @@ configured here. This is then used to detect if the script is running, etc.
 is run as should have read/write permissions to this folder.
 
 'activeFile' When a set of rule is made 'active', all cantata does is create a
-symbolic link from the rules file to the file specified in 'activeFile'
+symbolic link from the rules file to the file specified in 'activeFile'. Again,
+the user the script is run as should have read/write permissions to this file.
 
 'mpdHost', 'mpdPort', and 'mpdPassword' are the connection details of the MPD
 server.

@@ -201,7 +201,7 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const Devi
     , details(d)
     , proc(0)
 {
-    coverFileName=cover;
+    coverOpts.name=cover;
     opts=options;
     details.path=Utils::fixPath(details.path);
     load();
@@ -453,11 +453,14 @@ void RemoteFsDevice::setup()
         cfg.beginGroup(key);
         #endif
         opts.useCache=GET_BOOL("useCache", true);
-        coverFileName=GET_STRING("coverFileName", "cover.jpg");
+        coverOpts.name=GET_STRING("coverFileName", "cover.jpg");
+        coverOpts.maxSize=GET_INT("coverMaxSize", 0);
+        coverOpts.checkSize();
         configured=true;
     } else {
         opts.useCache=true;
-        coverFileName=QLatin1String("cover.jpg");
+        coverOpts.name=QLatin1String("cover.jpg");
+        coverOpts.maxSize=0;
         configured=false;
     }
     load();
@@ -480,7 +483,7 @@ void RemoteFsDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(coverFileName, opts, details,
+    dlg->show(coverOpts.name, opts, details,
               DevicePropertiesWidget::Prop_All-(DevicePropertiesWidget::Prop_Folder+DevicePropertiesWidget::Prop_AutoScan),
               false, isConnected());
 }
@@ -502,12 +505,12 @@ void RemoteFsDevice::saveOptions()
 
 void RemoteFsDevice::saveProperties()
 {
-    saveProperties(coverFileName, opts, details);
+    saveProperties(coverOpts.name, opts, details);
 }
 
 void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const DeviceOptions &newOpts, Details newDetails)
 {
-    if (configured && opts==newOpts && newCoverFileName==coverFileName && details==newDetails) {
+    if (configured && opts==newOpts && newCoverFileName==coverOpts.name && details==newDetails) {
         return;
     }
 
@@ -533,7 +536,7 @@ void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Devic
 
     opts=newOpts;
     details=newDetails;
-    coverFileName=newCoverFileName;
+    coverOpts.name=newCoverFileName;
     QString key=udi();
     details.save();
     opts.save(key);
@@ -544,7 +547,8 @@ void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Devic
     cfg.beginGroup(key);
     #endif
     SET_VALUE("useCache", opts.useCache);
-    SET_VALUE("coverFileName", coverFileName);
+    SET_VALUE("coverFileName", coverOpts.name);
+    SET_VALUE("coverMaxSize", coverOpts.maxSize);
 
     if (newName) {
         QString oldMount=mountPoint(oldDetails, false);

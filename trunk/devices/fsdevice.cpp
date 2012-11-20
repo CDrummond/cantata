@@ -37,6 +37,7 @@
 #include "transcodingjob.h"
 #include "actiondialog.h"
 #include "localize.h"
+#include "covers.h"
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
@@ -244,7 +245,7 @@ void FsDevice::addSong(const Song &s, bool overwrite)
     currentSong=s;
     if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
         transcoding=false;
-        CopyJob *job=new CopyJob(s.file, destFile, coverFileName, currentSong);
+        CopyJob *job=new CopyJob(s.file, destFile, coverOpts, currentSong);
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
         connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
         job->start();
@@ -301,7 +302,7 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
     }
 
     currentSong=s;
-    CopyJob *job=new CopyJob(source, dest, QString(), currentSong);
+    CopyJob *job=new CopyJob(source, dest, CoverOptions(), currentSong);
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     job->start();
@@ -328,7 +329,7 @@ void FsDevice::removeSong(const Song &s)
 
 void FsDevice::cleanDirs(const QSet<QString> &dirs)
 {
-    CleanJob *job=new CleanJob(dirs, audioFolder, coverFileName);
+    CleanJob *job=new CleanJob(dirs, audioFolder, coverOpts.name);
     connect(job, SIGNAL(result(int)), SLOT(cleanDirsResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     job->start();
@@ -339,8 +340,8 @@ void FsDevice::requestCover(const Song &s)
     QString songFile=audioFolder+s.file;
     QString dirName=Utils::getDir(songFile);
 
-    if (QFile::exists(dirName+coverFileName)) {
-        QImage img(dirName+coverFileName);
+    if (QFile::exists(dirName+coverOpts.name)) {
+        QImage img(dirName+coverOpts.name);
         if (!img.isNull()) {
             emit cover(s, img);
             return;
@@ -387,6 +388,10 @@ void FsDevice::addSongResult(int status)
     if (FileJob::StatusOk!=status) {
         emit actionStatus(transcoding ? TranscodeFailed : Failed);
     } else {
+        if (transcoding && Device::constNoCover!=coverOpts.name) {
+            // This copy should really be in transcoding thread - but it should be quick enough in the GUI thread anyway...
+            Covers::copyCover(currentSong, Utils::getDir(currentSong.file), Utils::getDir(destFileName), coverOpts.name, coverOpts.maxSize);
+        }
         currentSong.file=destFileName;
         if (needToFixVa) {
             Device::fixVariousArtists(audioFolder+destFileName, currentSong, true);

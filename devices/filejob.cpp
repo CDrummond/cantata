@@ -101,7 +101,7 @@ void CopyJob::run()
         return;
     }
 
-    bool copyCover = Device::constNoCover!=coverFileName;
+    bool copyCover = Device::constNoCover!=coverOpts.name;
     char buffer[constChunkSize];
     qint64 totalBytes = src.size();
     qint64 readPos = 0;
@@ -147,7 +147,7 @@ void CopyJob::run()
 
     if (copyCover) {
         song.file=destFile;
-        Covers::copyCover(song, Utils::getDir(srcFile), Utils::getDir(destFile), coverFileName);
+        Covers::copyCover(song, Utils::getDir(srcFile), Utils::getDir(destFile), coverOpts.name, coverOpts.maxSize);
     }
     setPercent(100);
     emit result(StatusOk);

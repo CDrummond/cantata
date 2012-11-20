@@ -44,6 +44,7 @@ static const QLatin1String constReplaceSpacesKey("replace_spaces");
 static const QLatin1String constCantataSettingsFile("/.cantata");
 static const QLatin1String constCantataCacheFile("/.cache.xml");
 static const QLatin1String constCoverFileNameKey("cover_filename"); // Cantata extension!
+static const QLatin1String constCoverMaxSizeKey("cover_maxsize"); // Cantata extension!
 static const QLatin1String constVariousArtistsFixKey("fix_various_artists"); // Cantata extension!
 static const QLatin1String constTranscoderKey("transcoder"); // Cantata extension!
 static const QLatin1String constUseCacheKey("use_cache"); // Cantata extension!
@@ -165,7 +166,7 @@ void UmsDevice::setup()
 //             } else if (line.startsWith(constUseAutomaticallyKey+"="))  {
 //                 useAutomatically = QLatin1String("true")==line.section('=', 1, 1);
 //             } else if (line.startsWith(constCoverFileNameKey+"=")) {
-//                 coverFileName=line.section('=', 1, 1);
+//                 coverOpts.name=line.section('=', 1, 1);
 //                 configured=true;
 //             } else if(line.startsWith(constVariousArtistsFixKey+"=")) {
 //                 opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
@@ -184,7 +185,10 @@ void UmsDevice::setup()
         while (!in.atEnd()) {
             QString line = in.readLine();
             if (line.startsWith(constCoverFileNameKey+"=")) {
-                coverFileName=line.section('=', 1, 1);
+                coverOpts.name=line.section('=', 1, 1);
+            } if (line.startsWith(constCoverMaxSizeKey+"=")) {
+                coverOpts.maxSize=line.section('=', 1, 1).toUInt();
+                coverOpts.checkSize();
             } else if(line.startsWith(constVariousArtistsFixKey+"=")) {
                 opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
             } else if (line.startsWith(constTranscoderKey+"="))  {
@@ -202,8 +206,8 @@ void UmsDevice::setup()
         }
     }
 
-    if (coverFileName.isEmpty()) {
-        coverFileName=constDefCoverFileName;
+    if (coverOpts.name.isEmpty()) {
+        coverOpts.name=constDefCoverFileName;
     }
 
     // No setting, see if any standard dirs exist in path...
@@ -243,14 +247,14 @@ void UmsDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(audioFolder, coverFileName, opts,
+    dlg->show(audioFolder, coverOpts.name, opts,
               qobject_cast<ActionDialog *>(parent) ? (DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder)
                                                    : DevicePropertiesWidget::Prop_All);
 }
 
 void UmsDevice::saveProperties()
 {
-    saveProperties(audioFolder, coverFileName, opts);
+    saveProperties(audioFolder, coverOpts.name, opts);
 }
 
 static inline QString toString(bool b)
@@ -303,8 +307,8 @@ void UmsDevice::saveOptions()
         foreach (const QString &u, unusedParams) {
             out << u << '\n';
         }
-//         if (coverFileName!=constDefCoverFileName) {
-//             out << constCoverFileNameKey << '=' << coverFileName << '\n';
+//         if (coverOpts.name!=constDefCoverFileName) {
+//             out << constCoverFileNameKey << '=' << coverOpts.name << '\n';
 //         }
 //         out << constVariousArtistsFixKey << '=' << toString(opts.fixVariousArtists) << '\n';
     }
@@ -313,7 +317,7 @@ void UmsDevice::saveOptions()
 void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const DeviceOptions &newOpts)
 {
     QString nPath=Utils::fixPath(newPath);
-    if (configured && opts==newOpts && nPath==audioFolder && newCoverFileName==coverFileName) {
+    if (configured && opts==newOpts && nPath==audioFolder && newCoverFileName==coverOpts.name) {
         return;
     }
 
@@ -327,7 +331,7 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
             removeCache();
         }
     }
-    coverFileName=newCoverFileName;
+    coverOpts.name=newCoverFileName;
     QString oldPath=audioFolder;
     if (!isConnected()) {
         return;
@@ -341,8 +345,11 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
 
     if (extra.open(QIODevice::WriteOnly|QIODevice::Text)) {
         QTextStream out(&extra);
-        if (coverFileName!=constDefCoverFileName) {
-            out << constCoverFileNameKey << '=' << coverFileName << '\n';
+        if (coverOpts.name!=constDefCoverFileName) {
+            out << constCoverFileNameKey << '=' << coverOpts.name << '\n';
+        }
+        if (0!=coverOpts.maxSize) {
+            out << constCoverMaxSizeKey << '=' << coverOpts.maxSize << '\n';
         }
         if (opts.fixVariousArtists) {
             out << constVariousArtistsFixKey << '=' << toString(opts.fixVariousArtists) << '\n';

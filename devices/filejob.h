@@ -27,6 +27,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QSet>
 #include "song.h"
+#include "fsdevice.h"
 
 class QThread;
 class FileJob;
@@ -84,10 +85,10 @@ protected:
 class CopyJob : public FileJob
 {
 public:
-    CopyJob(const QString &src, const QString &dest, const QString &cf, const Song &s)
+    CopyJob(const QString &src, const QString &dest, const FsDevice::CoverOptions &c, const Song &s)
         : srcFile(src)
         , destFile(dest)
-        , coverFileName(cf)
+        , coverOpts(c)
         , song(s) {
     }
 private:
@@ -95,7 +96,7 @@ private:
 private:
     QString srcFile;
     QString destFile;
-    QString coverFileName;
+    FsDevice::CoverOptions coverOpts;
     Song song;
 };
 

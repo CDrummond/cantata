@@ -251,8 +251,9 @@ static void fCopy(const QString &sDir, const QString &sFile, const QString &dDir
     QFile::copy(sDir+sFile, dDir+dFile);
 }
 
-void Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name)
+void Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name, unsigned short maxSize)
 {
+    Q_UNUSED(maxSize) // TODO!!!
     // First, check if dir already has a cover file!
     initCoverNames();
     QStringList names=coverFileNames;

@@ -251,9 +251,22 @@ static void fCopy(const QString &sDir, const QString &sFile, const QString &dDir
     QFile::copy(sDir+sFile, dDir+dFile);
 }
 
+static void copyImage(const QString &sourceDir, const QString &destDir, const QString &coverFile, const QString &destName, unsigned short maxSize)
+{
+    QImage img(sourceDir+coverFile);
+    if (maxSize>0 && (img.width()>maxSize || img.height()>maxSize)) { // Need to scale image...
+        img=img.scaled(QSize(maxSize, maxSize), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        img.save(destDir+destName);
+    } else if (destName.right(4)!=coverFile.right(4)) { // Diff extensions, so need to convert image type...
+        img.save(destDir+destName);
+    } else { // no scaling, and same image type, so we can just copy...
+        fCopy(sourceDir, coverFile, destDir, destName);
+    }
+    Utils::setFilePerms(destDir+destName);
+}
+
 void Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name, unsigned short maxSize)
 {
-    Q_UNUSED(maxSize) // TODO!!!
     // First, check if dir already has a cover file!
     initCoverNames();
     QStringList names=coverFileNames;
@@ -293,13 +306,7 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
                     destName=coverFile;
                 }
             }
-            // Diff extensions, so need to convert image type...
-            if (destName.right(4)!=coverFile.right(4)) {
-                QImage(sourceDir+coverFile).save(destDir+destName);
-            } else {
-                fCopy(sourceDir, coverFile, destDir, destName);
-            }
-            Utils::setFilePerms(destDir+destName);
+            copyImage(sourceDir, destDir, coverFile, destName, maxSize);
             return;
         }
     }
@@ -313,12 +320,7 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
         QString dir(Utils::cacheDir(constCoverDir+artist, false));
         foreach (const QString &ext, constExtensions) {
             if (QFile::exists(dir+album+ext)) {
-                if (destName.right(4)!=ext) {
-                    QImage(dir+album+ext).save(destDir+destName);
-                } else {
-                    fCopy(dir, album+ext, destDir, destName);
-                }
-                Utils::setFilePerms(destDir+destName);
+                copyImage(dir, destDir, album+ext, destName, maxSize);
                 return;
             }
         }

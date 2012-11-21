@@ -104,6 +104,8 @@
 58. If group single tracks, or multiple artists, settings are changed, then
     rebuild library and device models from existing set of songs - as opposed
     to re-reading all songs from mpd/device.
+59. If window is minimized to system tray when Cantata is terminated, then
+    restore to this state when restarted.
 
 0.8.3.1
 -------

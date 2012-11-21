@@ -563,6 +563,11 @@ bool Settings::forceSingleClick()
     return GET_BOOL("forceSingleClick", true);
 }
 
+bool Settings::startHidden()
+{
+    return GET_BOOL("startHidden", false);
+}
+
 void Settings::removeConnectionDetails(const QString &v)
 {
     if (v==currentConnection()) {
@@ -993,6 +998,13 @@ void Settings::saveForceSingleClick(bool v)
 {
     if (v!=forceSingleClick()) {
         SET_VALUE_MOD("forceSingleClick", v);
+    }
+}
+
+void Settings::saveStartHidden(bool v)
+{
+    if (v!=startHidden()) {
+        SET_VALUE_MOD("startHidden", v);
     }
 }
 

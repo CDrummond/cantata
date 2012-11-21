@@ -434,8 +434,18 @@ MainWindow::MainWindow(QWidget *parent)
     devicesPage = new DevicesPage(this);
     #endif
 
+    // We need to have the window visible inorder for initSizes() to function.
+    // So, if we are supposed to be starting hidden, then set the 'dont show on screen' flag before 'showing'
+    // Set visible, calcualte sizes, hide, and reset 'dont show on screen'...
+    if (Settings::self()->startHidden()) {
+        setAttribute(Qt::WA_DontShowOnScreen, true);
+    }
     setVisible(true);
     initSizes();
+    if (Settings::self()->startHidden()) {
+        setVisible(false);
+        setAttribute(Qt::WA_DontShowOnScreen, false);
+    }
 
     savePlayQueuePushButton->setDefaultAction(savePlayQueueAction);
     removeAllFromPlayQueuePushButton->setDefaultAction(clearPlayQueueAction);
@@ -870,6 +880,7 @@ MainWindow::~MainWindow()
     infoPage->save();
     #endif
     Settings::self()->saveForceSingleClick(ItemView::getForceSingleClick());
+    Settings::self()->saveStartHidden(trayItem->isActive() && isHidden());
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopDynamizerOnExit() || Settings::self()->stopOnExit()) {

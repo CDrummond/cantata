@@ -315,7 +315,7 @@ void MusicLibraryModel::clear()
     rootItem = new MusicLibraryItemRoot;
     rootItem->setLargeImages(oldRoot->useLargeImages());
     rootItem->setUseAlbumImages(oldRoot->useAlbumImages());
-    rootItem->setUseArtistImages(oldRoot->useAlbumImages());
+    rootItem->setUseArtistImages(oldRoot->useArtistImages());
     delete oldRoot;
     endResetModel();
 
@@ -555,7 +555,7 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         rootItem = newroot;
         rootItem->setLargeImages(oldRoot->useLargeImages());
         rootItem->setUseAlbumImages(oldRoot->useAlbumImages());
-        rootItem->setUseArtistImages(oldRoot->useAlbumImages());
+        rootItem->setUseArtistImages(oldRoot->useArtistImages());
         delete oldRoot;
         endResetModel();
         updatedSongs=true;

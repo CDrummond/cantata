@@ -880,7 +880,7 @@ MainWindow::~MainWindow()
     infoPage->save();
     #endif
     Settings::self()->saveForceSingleClick(ItemView::getForceSingleClick());
-    Settings::self()->saveStartHidden(trayItem->isActive() && isHidden());
+    Settings::self()->saveStartHidden(trayItem->isActive() && isHidden() && Settings::self()->minimiseOnClose());
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
     if (Settings::self()->stopDynamizerOnExit() || Settings::self()->stopOnExit()) {

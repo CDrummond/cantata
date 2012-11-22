@@ -922,7 +922,7 @@ msgstr "활동 활성화 상태 관리 안 됨. (%1)"
 
 #: dynamic/dynamic.cpp:822
 msgid "Failed to set the current dynamic rules. (%1)"
-msgstr "현재 동적 규정 설정 안 됨. (%1)"
+msgstr "지금의 동적 규정 설정 안 됨. (%1)"
 
 #: dynamic/dynamicpage.cpp:39
 msgid "Refresh Dynamic Rules"
@@ -1284,7 +1284,7 @@ msgid ""
 "When 'Single' is activated, playback is stopped after current song, or song "
 "is repeated if 'Repeat' is enabled."
 msgstr ""
-"'단일'이 선택되면, 현재 곡 다음에 연주를 멈춥니다. '반복'이 선택되면, 곡은 반"
+"'단일'이 선택되면, 지금 곡 다음에 연주를 멈춥니다. '반복'이 선택되면, 곡은 반"
 "복됩니다."
 
 #: gui/mainwindow.cpp:319
@@ -1635,7 +1635,7 @@ msgid ""
 "<i><b>Connected to %1</b><br/>The entries below apply to the currently "
 "connected MPD instance.</i>"
 msgstr ""
-"<i><b>%1에 연결</b><br/>아래 목록들은 현재 연결된 MPD에 적용됩니다.</i>"
+"<i><b>%1에 연결</b><br/>아래 목록들은 지금 연결된 MPD에 적용됩니다.</i>"
 
 #. i18n: file: gui/serverplaybacksettings.ui:36
 #. i18n: ectx: property (text), widget (QLabel, messageLabel)
@@ -1958,7 +1958,7 @@ msgstr "%3에서 %2의 %1 (%4)"
 
 #: gui/trayitem.cpp:168 gui/trayitem.cpp:200
 msgid "Now playing"
-msgstr "현재 연주 중"
+msgstr "지금 연주 중"
 
 #: lyrics/lyricsdialog.cpp:42
 msgid ""
@@ -2042,7 +2042,7 @@ msgstr "저장된 가사를 삭제하고 새로 받을까요?"
 
 #: lyrics/lyricspage.cpp:177
 msgid "Current playing song has changed, still perform search?"
-msgstr "현재 연주되는 곡이 바뀌었는데도 여전히 찾을까요?"
+msgstr "지금 연주되는 곡이 바뀌었는데도 여전히 찾을까요?"
 
 #: lyrics/lyricspage.cpp:201
 msgid "Save updated lyrics?"
@@ -2922,7 +2922,7 @@ msgid ""
 "When the image is displayed, it will be cropped (either top/bottom, or left/"
 "right) to provide a square image.</i>"
 msgstr ""
-"<i><b>참고:</b> 연주자 이미지를 찾을 때, 현재 곡이 있는 폴더나 상위 폴더의 "
+"<i><b>참고:</b> 연주자 이미지를 찾을 때, 지금 곡이 있는 폴더나 상위 폴더의 "
 "artist.jpg, artist.png, [연주자].jpg 또는 [연주자].png를 찾습니다.\n"
 "만약 이미지를 찾지 못하면 다운로드를 시도합니다.<br/>\n"
 "정사각형의 이미지를 보이기 위해서 상하 또는 좌우가 잘릴 수 있습니다.</i>"
@@ -2997,7 +2997,7 @@ msgstr "표지를 가사 배경으로 사용:"
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueScrollLabel)
 #: po/rc.cpp:333 rc.cpp:333
 msgid "Scroll to current track:"
-msgstr "현재 곡으로 이동:"
+msgstr "지금 곡으로 이동:"
 
 #. i18n: file: gui/interfacesettings.ui:345
 #. i18n: ectx: property (text), item, widget (QComboBox, playQueueGrouped)
@@ -3009,7 +3009,7 @@ msgstr "목록으로 나열"
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueAutoExpandLabel)
 #: po/rc.cpp:345 rc.cpp:345
 msgid "Automatically expand current album:"
-msgstr "현재 음반 자동으로 펼침:"
+msgstr "지금 음반 자동으로 펼침:"
 
 #. i18n: file: gui/interfacesettings.ui:404
 #. i18n: ectx: property (text), widget (BuddyLabel, label_7)

@@ -111,8 +111,14 @@ QVariantMap Mpris::Metadata() const {
         metadataMap.insert("mpris:trackid", currentSong.id);
         metadataMap.insert("mpris:length", currentSong.time / 1000 / 1000);
         metadataMap.insert("xesam:album", currentSong.album);
-        metadataMap.insert("xesam:artist", currentSong.artist);
+        if (!currentSong.albumartist.isEmpty() && currentSong.albumartist!=currentSong.artist) {
+            metadataMap.insert("xesam:albumArtist", QStringList() << currentSong.albumartist);
+        }
+        metadataMap.insert("xesam:artist", QStringList() << currentSong.artist);
         metadataMap.insert("xesam:title", currentSong.title);
+        if (!currentSong.genre.isEmpty()) {
+            metadataMap.insert("xesam:genre", QStringList() << currentSong.genre);
+        }
         if (currentSong.track>0) {
             metadataMap.insert("xesam:trackNumber", currentSong.track);
         }
@@ -120,14 +126,17 @@ QVariantMap Mpris::Metadata() const {
             metadataMap.insert("xesam:discNumber", currentSong.disc);
         }
 
-        if (MPDConnection::self()->getDetails().dirReadable) {
-            QString mpdDir=MPDConnection::self()->getDetails().dir;
-            if (!mpdDir.isEmpty()) {
-                metadataMap.insert("xesam:url", mpdDir+currentSong.file);
+        if (!currentSong.file.isEmpty()) {
+            if (currentSong.isStream()) {
+                metadataMap.insert("xesam:url", currentSong.file);
+            } else if (MPDConnection::self()->getDetails().dirReadable) {
+                QString mpdDir=MPDConnection::self()->getDetails().dir;
+                if (!mpdDir.isEmpty()) {
+                    metadataMap.insert("xesam:url", "file://"+mpdDir+currentSong.file);
+                }
             }
         }
         if (!currentCover.isEmpty()) {
-             metadataMap.insert("xesam:artUrl", currentCover);
              metadataMap.insert("mpris:artUrl", "file://"+currentCover);
         }
     }

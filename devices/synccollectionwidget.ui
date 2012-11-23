@@ -17,10 +17,10 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0" colspan="2">
+      <item row="1" column="0" colspan="2">
        <widget class="TreeView" name="tree"/>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -33,8 +33,11 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QPushButton" name="button"/>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="LineEdit" name="search"/>
       </item>
      </layout>
     </widget>
@@ -42,6 +45,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
   <customwidget>
    <class>TreeView</class>
    <extends>QTreeView</extends>

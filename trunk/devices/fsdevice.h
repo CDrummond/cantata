@@ -83,7 +83,7 @@ public:
         }
 
         QString name;
-        unsigned short maxSize;
+        unsigned int maxSize;
     };
 
     FsDevice(DevicesModel *m, Solid::Device &dev);

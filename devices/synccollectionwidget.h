@@ -29,6 +29,7 @@
 #include "musiclibrarymodel.h"
 #include <QtCore/QSet>
 
+class QTimer;
 class MusicLibraryProxyModel;
 
 class SyncCollectionWidget : public QWidget, Ui::SyncCollectionWidget
@@ -48,10 +49,15 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void copySongs();
+    void delaySearchItems();
+    void searchItems();
+    void expandAll();
+    void collapseAll();
 
 private:
     MusicLibraryModel *model;
     MusicLibraryProxyModel *proxy;
+    QTimer *searchTimer;
 };
 
 #endif

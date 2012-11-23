@@ -194,6 +194,14 @@ void KMessageWidgetPrivate::slotTimeLineFinished()
     }
 }
 
+int KMessageWidgetPrivate::bestContentHeight() const
+{
+    int height = content->heightForWidth(q->width());
+    if (height == -1) {
+        height = content->sizeHint().height();
+    }
+    return height;
+}
 
 //---------------------------------------------------------------------
 // KMessageWidget
@@ -351,12 +359,13 @@ bool KMessageWidget::event(QEvent* event)
 void KMessageWidget::resizeEvent(QResizeEvent* event)
 {
     QFrame::resizeEvent(event);
+    int contentHeight = d->bestContentHeight();
+
     if (d->timeLine->state() == QTimeLine::NotRunning) {
-        int contentHeight = d->content->heightForWidth(width());
-        if (contentHeight == -1) {
-            contentHeight = d->content->sizeHint().height();
-        }
         d->content->resize(width(), contentHeight);
+    } else if (event->size().width() != event->oldSize().width()) {
+        d->content->resize(width(), contentHeight);
+        d->updateSnapShot();
     }
 }
 
@@ -432,7 +441,7 @@ void KMessageWidget::animatedShow()
 
     QFrame::show();
     setFixedHeight(0);
-    int wantedHeight = d->content->sizeHint().height();
+    int wantedHeight = d->bestContentHeight();
     d->content->setGeometry(0, -wantedHeight, width(), wantedHeight);
 
     d->updateSnapShot();

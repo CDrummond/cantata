@@ -194,6 +194,7 @@ public:
     void updateLayout();
     void slotTimeLineChanged(qreal);
     void slotTimeLineFinished();
+    int bestContentHeight() const;
 };
 
 #endif /* KMESSAGEWIDGET_H */

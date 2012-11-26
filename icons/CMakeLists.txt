@@ -1,5 +1,5 @@
 IF( ENABLE_KDE_SUPPORT )
-    kde4_install_icons( ${ICON_INSTALL_DIR} )
+    kde4_install_icons( ${DATA_INSTALL_DIR}/cantata/icons )
 else ( ENABLE_KDE_SUPPORT )
     if( UNIX AND NOT APPLE )
         macro (UPDATE_ICONCACHE)

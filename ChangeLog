@@ -107,6 +107,7 @@
 59. If window is minimized to system tray when Cantata is terminated, then
     restore to this state when restarted.
 60. Add search line-edits, and expand/collapse all, to sync dialog.
+61. Add a 1 pixel border around large cover in top-left corner.
 
 0.8.3.1
 -------

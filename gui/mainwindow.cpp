@@ -919,6 +919,8 @@ void MainWindow::initSizes()
     } else if (cwSize>200) {
         cwSize=200;
     }
+    cwSize+=2; // Sometimes get an extra 1 pix top border when resize window, so add an extra 2 pix to ensure this does not happen.
+
     coverWidget->setMinimumSize(cwSize, cwSize);
     coverWidget->setMaximumSize(cwSize, cwSize);
 }

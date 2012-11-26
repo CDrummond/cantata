@@ -110,6 +110,7 @@
 61. Add a 1 pixel border around large cover in top-left corner.
 62. Install Cantata-specific KDE icons into
     /usr/share/kde4/apps/cantata/icons/hicolor/
+63. When refresh button is pressed send an update and stats request to MPD.
 
 0.8.3.1
 -------

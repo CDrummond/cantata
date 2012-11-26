@@ -692,7 +692,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(play()), MPDConnection::self(), SLOT(startPlayingSong()));
     connect(this, SIGNAL(stop()), MPDConnection::self(), SLOT(stopPlaying()));
     connect(this, SIGNAL(getStatus()), MPDConnection::self(), SLOT(getStatus()));
-    connect(this, SIGNAL(getStats()), MPDConnection::self(), SLOT(getStats()));
+    connect(this, SIGNAL(getStats(bool)), MPDConnection::self(), SLOT(getStats(bool)));
+    connect(this, SIGNAL(updateMpd()), MPDConnection::self(), SLOT(update()));
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
     connect(this, SIGNAL(playListInfo()), MPDConnection::self(), SLOT(playListInfo()));
     connect(this, SIGNAL(currentSong()), MPDConnection::self(), SLOT(currentSong()));
@@ -1149,7 +1150,7 @@ void MainWindow::connectToMpd()
 void MainWindow::refresh()
 {
     MusicLibraryModel::self()->removeCache();
-    emit getStats();
+    emit getStats(true); // QApplication::keyboardModifiers()&Qt::ShiftModifier);
 }
 
 #define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return

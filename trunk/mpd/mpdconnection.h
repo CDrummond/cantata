@@ -222,7 +222,7 @@ public Q_SLOTS:
     void enableOutput(int id, bool enable);
 
     // Miscellaneous
-    void getStats();
+    void getStats(bool andUpdate=false);
     void getStatus();
     void getUrlHandlers();
 

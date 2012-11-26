@@ -190,7 +190,8 @@ Q_SIGNALS:
     void play();
     void stop();
     void getStatus();
-    void getStats();
+    void getStats(bool andUpdate);
+    void updateMpd();
     void clear();
     void playListInfo();
     void currentSong();

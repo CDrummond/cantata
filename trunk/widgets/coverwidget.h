@@ -33,7 +33,10 @@ class QPixmap;
 class CoverWidget : public QLabel
 {
     Q_OBJECT
+
 public:
+    static const int constBorder;
+
     CoverWidget(QWidget *p);
     virtual ~CoverWidget();
 
@@ -70,6 +73,7 @@ private:
     void update(const QImage &i);
     void update(const QPixmap &pix);
     bool eventFilter(QObject *object, QEvent *event);
+//     void paintEvent(QPaintEvent *e);
 
 private:
     bool empty;
@@ -77,6 +81,7 @@ private:
     Song current;
     QString tipText;
     mutable QImage img;
+//     mutable QPixmap bgnd;
     QString coverFileName;
     QPixmap noStreamCover;
     QPixmap noCover;

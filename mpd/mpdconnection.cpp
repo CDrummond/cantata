@@ -295,7 +295,7 @@ void MPDConnection::reconnect()
     switch (connectToMPD()) {
     case Success:
         getStatus();
-        getStats();
+        getStats(false);
         getUrlHandlers();
         playListInfo();
         outputs();
@@ -345,7 +345,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
         switch (connectToMPD()) {
         case Success:
             getStatus();
-            getStats();
+            getStats(false);
             getUrlHandlers();
             emit stateChanged(true);
             break;
@@ -835,9 +835,9 @@ void MPDConnection::stopPlaying()
     sendCommand("stop");
 }
 
-void MPDConnection::getStats()
+void MPDConnection::getStats(bool andUpdate)
 {
-    Response response=sendCommand("stats");
+    Response response=sendCommand(andUpdate ? "command_list_begin\nupdate\nstats\ncommand_list_end" : "stats");
     if (response.ok) {
         MPDStatsValues stats=MPDParseUtils::parseStats(response.data);
         dbUpdate=stats.dbUpdate;
@@ -938,7 +938,7 @@ void MPDConnection::parseIdleReturn(const QByteArray &data)
     bool statusUpdated=false;
     foreach(const QByteArray &line, lines) {
         if (line == "changed: database") {
-            getStats();
+            getStats(false);
             playListInfo();
             playListUpdated=true;
         } else if (line == "changed: update") {

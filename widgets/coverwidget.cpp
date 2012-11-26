@@ -27,6 +27,7 @@
 #include "localize.h"
 #include "icons.h"
 #include <QtGui/QPixmap>
+#include <QtGui/QPainter>
 #include <QtCore/QBuffer>
 #include <QtCore/QEvent>
 #include <QtCore/QFile>
@@ -47,15 +48,17 @@ static QString encode(const QImage &img)
     return QString("<img src=\"data:image/png;base64,%1\">").arg(QString(buffer.data().toBase64()));
 }
 
+const int CoverWidget::constBorder=1;
+
 CoverWidget::CoverWidget(QWidget *parent)
     : QLabel(parent)
     , empty(true)
     , valid(false)
 {
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
-    update(noCover);
     installEventFilter(this);
     QTimer::singleShot(0, this, SLOT(init())); // Need to do this after constructed, so that size is set....
+    setStyleSheet(QString("border: %1px solid transparent;").arg(constBorder));
 }
 
 CoverWidget::~CoverWidget()
@@ -67,21 +70,24 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
     QPixmap &pix=stream ? noStreamCover : noCover;
 
     if (pix.isNull()) {
-        pix = (stream ? Icons::streamIcon : Icons::albumIcon).pixmap(128, 128).scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QSize s=size()-QSize(constBorder*2, constBorder*2);
+        int iconSize=s.width()<=128 ? 128 : 256;
+        pix = (stream ? Icons::streamIcon : Icons::albumIcon).pixmap(iconSize, iconSize).scaled(s, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     }
     return pix;
 }
 
 void CoverWidget::update(const QImage &i)
 {
-    setPixmap(QPixmap::fromImage(i).scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    setPixmap(QPixmap::fromImage(i).scaled(size()-QSize(constBorder*2, constBorder*2), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     img=i;
     empty=false;
 }
 
-void CoverWidget::update(const QPixmap &pix)
+void CoverWidget::update(const QPixmap &p)
 {
-    setPixmap(pix);
+    QSize pixSize=size()-QSize(constBorder*2, constBorder*2);
+    setPixmap(p.size()==pixSize ? p : p.scaled(pixSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     img=QImage();
     empty=true;
 }
@@ -165,3 +171,26 @@ const QImage & CoverWidget::image() const
     return img;
 }
 
+// This commented out section draws a rounded cover - but all other covers are square, so not
+// sure if I want this or not...
+// static QPainterPath buildPath(const QRectF &r, double radius)
+// {
+//     QPainterPath path;
+//     double diameter(radius*2);
+//
+//     path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
+//     path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
+//     path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
+//     path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
+//     path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
+//     return path;
+// }
+
+// void CoverWidget::paintEvent(QPaintEvent *e)
+// {
+//     QLabel::paintEvent(e);
+//     QPainter painter(this);
+//     painter.setRenderHint(QPainter::Antialiasing);
+//     painter.setBrushOrigin(QPoint(constBorder, constBorder));
+//     painter.fillPath(buildPath(QRectF(0.5, 0.5, bgnd.width()-1, bgnd.height()-1), width()>128 ? 5.0 : 4.0), bgnd);
+// }

@@ -155,6 +155,7 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
                 toolTip+=QString("<br/><img src=\"%1\"/>").arg(coverFileName);
             }
         }
+        setStyleSheet(QLatin1String("QToolTip {background-color:#111111; color: #DDDDDD}"));
         setToolTip(toolTip);
     }
     return QObject::eventFilter(object, event);

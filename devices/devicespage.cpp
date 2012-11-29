@@ -234,7 +234,7 @@ void DevicesPage::searchItems()
 void DevicesPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
-    bool enable=false;
+    bool haveTracks=false;
     bool onlyFs=true;
     bool singleUdi=true;
     bool connected=false;
@@ -276,27 +276,24 @@ void DevicesPage::controlActions()
             } else if (udi!=dev->udi()) {
                 singleUdi=false;
             }
-            if (!enable) {
-                enable=dev->childCount()>0;
+            if (!haveTracks) {
+                haveTracks=dev->childCount()>0;
             }
             connected=dev->isConnected();
         }
     }
 
-    if (busyDevice) {
-        enable=false;
-    }
-    configureAction->setEnabled(!enable && 1==selected.count());
-    refreshAction->setEnabled(!enable && 1==selected.count());
-    copyAction->setEnabled(enable && !deviceSelected);
-    syncAction->setEnabled(enable && deviceSelected && connected && 1==selected.count() && singleUdi);
-    mw->deleteSongsAction->setEnabled(enable && !deviceSelected);
-    mw->editTagsAction->setEnabled(enable && onlyFs && singleUdi && !deviceSelected);
+    configureAction->setEnabled(!busyDevice && 1==selected.count());
+    refreshAction->setEnabled(!busyDevice && 1==selected.count());
+    copyAction->setEnabled(!busyDevice && haveTracks && !deviceSelected);
+    syncAction->setEnabled(!busyDevice && deviceSelected && connected && 1==selected.count() && singleUdi);
+    mw->deleteSongsAction->setEnabled(!busyDevice && haveTracks && !deviceSelected);
+    mw->editTagsAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    mw->replaygainAction->setEnabled(enable && onlyFs && singleUdi && !deviceSelected);
+    mw->replaygainAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #endif
     //mw->burnAction->setEnabled(enable && onlyFs);
-    mw->organiseFilesAction->setEnabled(enable && onlyFs && singleUdi && !deviceSelected);
+    mw->organiseFilesAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction->setEnabled(singleUdi && remoteDev);
     #endif

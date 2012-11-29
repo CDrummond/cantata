@@ -49,6 +49,7 @@ public:
     QString text() const { return edit->text(); }
     void setText(const QString &t) { edit->setText(t); }
     void setButtonVisible(bool v) { button->setVisible(v); }
+    void setFocus() { edit->setFocus(); }
 
 Q_SIGNALS:
     void textChanged(const QString &);

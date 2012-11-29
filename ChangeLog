@@ -108,10 +108,8 @@
     restore to this state when restarted.
 60. Add search line-edits, and expand/collapse all, to sync dialog.
 61. Add a 1 pixel border around large cover in top-left corner.
-62. Install Cantata-specific KDE icons into
-    /usr/share/kde4/apps/cantata/icons/hicolor/
-63. When refresh button is pressed send an update and stats request to MPD.
-64. Hard-code black background and gray text for cover widget tooltip.
+62. When refresh button is pressed send an update and stats request to MPD.
+63. Hard-code black background and gray text for cover widget tooltip.
 
 0.8.3.1
 -------

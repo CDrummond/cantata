@@ -27,6 +27,10 @@
 #include <QtGui/QLabel>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include "spinbox.h"
+#ifndef ENABLE_KDE_SUPPORT
+#include "dirrequester.h"
+#endif
 
 class BuddyLabel : public QLabel
 {
@@ -41,16 +45,30 @@ public:
 protected:
     void mouseReleaseEvent(QMouseEvent *) {
         if (buddy() && buddy()->isEnabled()) {
+            #ifndef ENABLE_KDE_SUPPORT
+            DirRequester *d=qobject_cast<DirRequester*>(buddy());
+            if (d) {
+                d->setFocus();
+                return;
+            }
+            #endif
+            SpinBox *sb=qobject_cast<SpinBox*>(buddy());
+            if (sb) {
+                sb->setFocus();
+                return;
+            }
+
             buddy()->setFocus();
 
             QCheckBox *cb=qobject_cast<QCheckBox*>(buddy());
             if (cb) {
                 cb->setChecked(!cb->isChecked());
-            } else {
-                QComboBox *combo=qobject_cast<QComboBox*>(buddy());
-                if (combo) {
-                    combo->showPopup();
-                }
+                return;
+            }
+            QComboBox *combo=qobject_cast<QComboBox*>(buddy());
+            if (combo) {
+                combo->showPopup();
+                return;
             }
         }
     }

@@ -44,7 +44,7 @@ DirRequester::DirRequester(QWidget *parent)
 
 void DirRequester::chooseDir()
 {
-    QString dir=QFileDialog::getExistingDirectory(this, i18n("Select Folder"));
+    QString dir=QFileDialog::getExistingDirectory(this, i18n("Select Folder"), edit->text());
     if (!dir.isEmpty()) {
         edit->setText(dir);
     }

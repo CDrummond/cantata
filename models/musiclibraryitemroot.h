@@ -80,6 +80,7 @@ public:
     bool useLargeImages() const { return largeImages; }
     void setLargeImages(bool a) { largeImages=a; }
     void toggleGrouping();
+    void clearItems();
 
 private:
     QString songArtist(const Song &s);

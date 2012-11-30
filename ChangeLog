@@ -111,6 +111,7 @@
 62. When refresh button is pressed send an update and stats request to MPD.
 63. Hard-code black background and gray text for cover widget tooltip.
 64. Ignore quit action if we have open dialogs.
+65. Fix crash when copying items to devices after a rescan has been performed.
 
 0.8.3.1
 -------

@@ -272,13 +272,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
-    quitAction=static_cast<Action *>(KStandardAction::quit(kapp, SLOT(quit()), ActionCollection::get()));
+    quitAction=static_cast<Action *>(KStandardAction::quit(this, SLOT(quit()), ActionCollection::get()));
     #else
     setWindowIcon(Icons::appIcon);
     QNetworkProxyFactory::setApplicationProxyFactory(NetworkProxyFactory::self());
 
     quitAction = ActionCollection::get()->createAction("quit", i18n("Quit"), "application-exit");
-    connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
+    connect(quitAction, SIGNAL(triggered(bool)), this, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
     #endif // ENABLE_KDE_SUPPORT
     #if !defined Q_OS_WIN
@@ -1171,11 +1171,11 @@ void MainWindow::saveShortcuts()
 
 #endif
 
+static bool showingPrefDlg=false;
+
 void MainWindow::showPreferencesDialog()
 {
-    static bool showing=false;
-
-    if (!showing) {
+    if (!showingPrefDlg) {
         #ifdef TAGLIB_FOUND
         if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
             DIALOG_ERROR;
@@ -1192,15 +1192,43 @@ void MainWindow::showPreferencesDialog()
         }
         #endif
 
-        showing=true;
+        showingPrefDlg=true;
         PreferencesDialog pref(this, lyricsPage);
         connect(&pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
         connect(&pref, SIGNAL(connectTo(const MPDConnectionDetails &)), this, SLOT(connectToMpd(const MPDConnectionDetails &)));
 
         pref.exec();
         updateConnectionsMenu();
-        showing=false;
+        showingPrefDlg=false;
     }
+}
+
+
+void MainWindow::quit()
+{
+    if (showingPrefDlg) {
+        return;
+    }
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    if (0!=RgDialog::instanceCount()) {
+        return;
+    }
+    #endif
+    #ifdef TAGLIB_FOUND
+    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
+        return;
+    }
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
+        return;
+    }
+    #endif
+    #ifdef ENABLE_KDE_SUPPORT
+    kapp->quit();
+    #else
+    qApp->quit();
+    #endif
 }
 
 void MainWindow::checkMpdDir()

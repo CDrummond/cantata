@@ -22,11 +22,13 @@
  */
 
 #include <QtGui/QGridLayout>
+#include <QtGui/QBoxLayout>
 #include <QtGui/QComboBox>
 #include <QtGui/QToolButton>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QMenu>
 #include <QtGui/QAction>
+#include <QtGui/QFrame>
 #include <QtCore/QDir>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
@@ -96,14 +98,20 @@ InfoPage::InfoPage(QWidget *parent)
     , iHaveAskedForArtist(false)
 {
     QGridLayout *layout=new QGridLayout(this);
-    view=new WebView(this);
+    QFrame *frame=new QFrame(this);
+    QBoxLayout *frameLayout=new QBoxLayout(QBoxLayout::TopToBottom, frame);
+    view=new WebView(frame);
+    frame->setFrameShape(QFrame::StyledPanel);
+    frame->setFrameShadow(QFrame::Sunken);
+    frameLayout->setMargin(0);
+    frameLayout->addWidget(view);
     QToolButton *refreshBtn=new QToolButton(this);
     QToolButton *backBtn=new QToolButton(this);
     QToolButton *forwardBtn=new QToolButton(this);
     combo=new QComboBox(this);
     combo->insertItem(0, i18n("Artist Information"));
     combo->insertItem(1, i18n("Album Information"));
-    layout->addWidget(view, 0, 0, 1, 4);
+    layout->addWidget(frame, 0, 0, 1, 4);
     layout->addWidget(refreshBtn, 1, 0, 1, 1);
     layout->addWidget(backBtn, 1, 1, 1, 1);
     layout->addWidget(forwardBtn, 1, 2, 1, 1);

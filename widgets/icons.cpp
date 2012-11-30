@@ -141,23 +141,29 @@ void Icons::init()
     clearListIcon=Icon("edit-clear-list");
     menuIcon=Icon("cantata-menubutton");
     #ifndef ENABLE_KDE_SUPPORT
-    appIcon=Icon::create(QList<Icon::File>() << Icon::File(":cantata.svg") << Icon::File(":cantata16.png", 16) << Icon::File(":cantata22.png", 22)
-                                             << Icon::File(":cantata32.png", 32) << Icon::File(":cantata48.png", 48) << Icon::File(":cantata64.png", 64));
+    appIcon=Icon::create("cantata", QList<int>() << 16 << 22 << 32 << 48 << 64);
     shortcutsIcon=Icon("preferences-desktop-keyboard");
-
     if (repeatIcon.isNull()) {
-        repeatIcon=Icon::create(QList<Icon::File>() << Icon::File(":repeat16.png", 16) << Icon::File(":repeat22.png", 22));
+        repeatIcon=Icon::create("repeat", QList<int>() << 16 << 22 << 32 << 48);
     }
     if (shuffleIcon.isNull()) {
-        shuffleIcon=Icon::create(QList<Icon::File>() << Icon::File(":shuffle16.png", 16) << Icon::File(":shuffle22.png", 22));
+        shuffleIcon=Icon::create("shuffle", QList<int>() << 16 << 22 << 32 << 48);
     }
     if (libraryIcon.isNull()) {
-        libraryIcon=Icon::create(QList<Icon::File>() << Icon::File(":lib16.png", 16) << Icon::File(":lib32.png", 22));
+        libraryIcon=Icon::create("lib", QList<int>() << 16 << 22 << 32 << 48);
     }
     if (wikiIcon.isNull()) {
-        wikiIcon=Icon::create(QList<Icon::File>() << Icon::File(":wiki16.png", 16) << Icon::File(":wiki32.png", 22));
+        wikiIcon=Icon::create("wiki", QList<int>() << 16 << 22 << 32 << 48);
     }
-
+    if (variousArtistsIcon.isNull()) {
+        variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
+    }
+    if (artistIcon.isNull()) {
+        artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
+    }
+    if (menuIcon.isNull()) {
+        menuIcon=Icon::create("menu", QList<int>() << 16 << 22 << 32 << 48);
+    }
     #ifndef Q_OS_WIN
     if (shortcutsIcon.isNull()) {
         shortcutsIcon=Icon("keyboard");
@@ -199,27 +205,5 @@ void Icons::init()
         clearListIcon=Icon("edit-delete");
     }
     #endif // Q_OS_WIN
-    if (variousArtistsIcon.isNull()) {
-        variousArtistsIcon.addFile(":va16.png");
-        variousArtistsIcon.addFile(":va22.png");
-        variousArtistsIcon.addFile(":va32.png");
-        variousArtistsIcon.addFile(":va48.png");
-        variousArtistsIcon.addFile(":va64.png");
-        variousArtistsIcon.addFile(":va128.png");
-    }
-    if (artistIcon.isNull()) {
-        artistIcon.addFile(":artist16.png");
-        artistIcon.addFile(":artist22.png");
-        artistIcon.addFile(":artist32.png");
-        artistIcon.addFile(":artist48.png");
-        artistIcon.addFile(":artist64.png");
-        artistIcon.addFile(":artist128.png");
-    }
-    if (menuIcon.isNull()) {
-        menuIcon.addFile(":menu16.png");
-        menuIcon.addFile(":menu22.png");
-        menuIcon.addFile(":menu32.png");
-        menuIcon.addFile(":menu48.png");
-    }
     #endif // ENABLE_KDE_SUPPORT
 }

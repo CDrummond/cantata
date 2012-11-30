@@ -225,6 +225,7 @@ public Q_SLOTS:
     void playQueueItemsSelected(bool s);
     void showVolumeControl();
     void showPreferencesDialog();
+    void quit();
     void updateSettings();
     void toggleOutput();
     void changeConnection();

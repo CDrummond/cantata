@@ -213,8 +213,7 @@ void Device::applyUpdate()
         int oldCount=childCount();
         if (oldCount>0) {
             model->beginRemoveRows(model->createIndex(model->devices.indexOf(this), 0, this), 0, oldCount-1);
-            m_childItems.clear();
-            qDeleteAll(m_childItems);
+            clearItems();
             model->endRemoveRows();
         }
         int newCount=newRows();
@@ -244,7 +243,6 @@ const MusicLibraryItem * Device::findSong(const Song &s) const
             }
         }
     }
-
     return 0;
 }
 

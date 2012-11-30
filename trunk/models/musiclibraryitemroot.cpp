@@ -504,10 +504,7 @@ void MusicLibraryItemRoot::toggleGrouping()
 {
     // Grouping has changed, so we need to recreate whole structure from list of songs.
     QSet<Song> songs=allSongs();
-    qDeleteAll(m_childItems);
-    m_childItems.clear();
-    m_genres.clear();
-    m_indexes.clear();
+    clearItems();
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;
@@ -538,6 +535,14 @@ void MusicLibraryItemRoot::toggleGrouping()
     if (MPDParseUtils::groupMultiple()) {
         groupMultipleArtists();
     }
+}
+
+void MusicLibraryItemRoot::clearItems()
+{
+    m_childItems.clear();
+    m_indexes.clear();
+    m_genres.clear();
+    qDeleteAll(m_childItems);
 }
 
 QString MusicLibraryItemRoot::songArtist(const Song &s)

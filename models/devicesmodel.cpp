@@ -362,19 +362,23 @@ void DevicesModel::setCover(const Song &song, const QImage &img)
         return;
     }
 
-    int i=0;
-    foreach (MusicLibraryItem *device, devices) {
-        MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemRoot *>(device)->artist(song, false);
-        if (artistItem) {
-            MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-            if (albumItem) {
-                if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
-                    QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(static_cast<MusicLibraryItemContainer *>(device)->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
-                    emit dataChanged(idx, idx);
-                }
+    Device *dev=qobject_cast<Device *>(sender());
+    if (!dev) {
+        return;
+    }
+    int i=devices.indexOf(dev);
+    if (i<0) {
+        return;
+    }
+    MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemRoot *>(dev)->artist(song, false);
+    if (artistItem) {
+        MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+        if (albumItem) {
+            if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
+                QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(static_cast<MusicLibraryItemContainer *>(dev)->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
+                emit dataChanged(idx, idx);
             }
         }
-        i++;
     }
 }
 
@@ -749,6 +753,7 @@ void DevicesModel::loadRemote()
             devices.append(dev);
             connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
             connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
+            connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
             if (Device::RemoteFs==dev->devType()) {
                 connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged()), SLOT(remoteDeviceUdiChanged()));
             }

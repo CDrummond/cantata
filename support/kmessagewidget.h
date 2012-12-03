@@ -22,21 +22,21 @@
 
 #include <QtGui/QFrame>
 
-class KMessageWidgetPrivate;
+class KMsgWidgetPrivate;
 
 /**
  * @short A widget to provide feedback or propose opportunistic interactions.
  *
- * KMessageWidget can be used to provide inline positive or negative
+ * KMsgWidget can be used to provide inline positive or negative
  * feedback, or to implement opportunistic interactions.
  *
- * As a feedback widget, KMessageWidget provides a less intrusive alternative
+ * As a feedback widget, KMsgWidget provides a less intrusive alternative
  * to "OK Only" message boxes. If you do not need the modalness of KMessageBox,
- * consider using KMessageWidget instead.
+ * consider using KMsgWidget instead.
  *
  * <b>Negative feedback</b>
  *
- * The KMessageWidget can be used as a secondary indicator of failure: the
+ * The KMsgWidget can be used as a secondary indicator of failure: the
  * first indicator is usually the fact the action the user expected to happen
  * did not happen.
  *
@@ -44,21 +44,21 @@ class KMessageWidgetPrivate;
  *
  * @li Expected feedback: form closes
  * @li First indicator of failure: form stays there
- * @li Second indicator of failure: a KMessageWidget appears on top of the
+ * @li Second indicator of failure: a KMsgWidget appears on top of the
  * form, explaining the error condition
  *
- * When used to provide negative feedback, KMessageWidget should be placed
+ * When used to provide negative feedback, KMsgWidget should be placed
  * close to its context. In the case of a form, it should appear on top of the
  * form entries.
  *
- * KMessageWidget should get inserted in the existing layout. Space should not
+ * KMsgWidget should get inserted in the existing layout. Space should not
  * be reserved for it, otherwise it becomes "dead space", ignored by the user.
- * KMessageWidget should also not appear as an overlay to prevent blocking
+ * KMsgWidget should also not appear as an overlay to prevent blocking
  * access to elements the user needs to interact with to fix the failure.
  *
  * <b>Positive feedback</b>
  *
- * KMessageWidget can be used for positive feedback but it shouldn't be
+ * KMsgWidget can be used for positive feedback but it shouldn't be
  * overused. It is often enough to provide feedback by simply showing the
  * results of an action.
  *
@@ -87,7 +87,7 @@ class KMessageWidgetPrivate;
  * @author Aurélien Gâteau <agateau@kde.org>
  * @since 4.7
  */
-class KMessageWidget : public QFrame
+class KMsgWidget : public QFrame
 {
     Q_OBJECT
     Q_ENUMS(MessageType)
@@ -105,13 +105,13 @@ public:
     };
 
     /**
-     * Constructs a KMessageWidget with the specified parent.
+     * Constructs a KMsgWidget with the specified parent.
      */
-    explicit KMessageWidget(QWidget *parent = 0);
+    explicit KMsgWidget(QWidget *parent = 0);
 
-    explicit KMessageWidget(const QString &text, QWidget *parent = 0);
+    explicit KMsgWidget(const QString &text, QWidget *parent = 0);
 
-    ~KMessageWidget();
+    ~KMsgWidget();
 
     QString text() const;
 
@@ -138,7 +138,7 @@ public Q_SLOTS:
 
     void setCloseButtonVisible(bool visible);
 
-    void setMessageType(KMessageWidget::MessageType type);
+    void setMessageType(KMsgWidget::MessageType type);
 
     /**
      * Show the widget using an animation, unless
@@ -162,8 +162,8 @@ protected:
     void showEvent(QShowEvent *event);
 
 private:
-    KMessageWidgetPrivate *const d;
-    friend class KMessageWidgetPrivate;
+    KMsgWidgetPrivate *const d;
+    friend class KMsgWidgetPrivate;
 
     Q_PRIVATE_SLOT(d, void slotTimeLineChanged(qreal))
     Q_PRIVATE_SLOT(d, void slotTimeLineFinished())
@@ -172,19 +172,19 @@ private:
 class QTimeLine;
 class QLabel;
 class QToolButton;
-class KMessageWidgetPrivate
+class KMsgWidgetPrivate
 {
 public:
-    void init(KMessageWidget*);
+    void init(KMsgWidget*);
 
-    KMessageWidget* q;
+    KMsgWidget* q;
     QFrame* content;
     QLabel* iconLabel;
     QLabel* textLabel;
     QToolButton* closeButton;
     QTimeLine* timeLine;
 
-    KMessageWidget::MessageType messageType;
+    KMsgWidget::MessageType messageType;
     bool wordWrap;
     QList<QToolButton*> buttons;
     QPixmap contentSnapShot;

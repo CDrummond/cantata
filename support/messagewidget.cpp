@@ -24,7 +24,7 @@
 #include "messagewidget.h"
 
 MessageWidget::MessageWidget(QWidget *parent)
-    : KMessageWidget(parent)
+    : KMsgWidget(parent)
     , active(false)
 {
 }
@@ -61,6 +61,6 @@ void MessageWidget::setMessage(const QString &msg, bool isError)
 void MessageWidget::setVisible(bool v)
 {
     active=v;
-    KMessageWidget::setVisible(v);
+    KMsgWidget::setVisible(v);
     emit visible(v);
 }

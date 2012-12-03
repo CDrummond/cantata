@@ -200,14 +200,20 @@ void MusicLibraryItemRoot::remove(MusicLibraryItemArtist *artist)
     delete m_childItems.takeAt(index);
 }
 
-QSet<Song> MusicLibraryItemRoot::allSongs() const
+QSet<Song> MusicLibraryItemRoot::allSongs(bool revertVa) const
 {
     QSet<Song> songs;
 
     foreach (const MusicLibraryItem *artist, m_childItems) {
         foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {
             foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                songs.insert(static_cast<const MusicLibraryItemSong *>(song)->song());
+                if (revertVa) {
+                    Song s=static_cast<const MusicLibraryItemSong *>(song)->song();
+                    s.revertVariousArtists();
+                    songs.insert(s);
+                } else {
+                    songs.insert(static_cast<const MusicLibraryItemSong *>(song)->song());
+                }
             }
         }
     }

@@ -112,6 +112,8 @@
 63. Hard-code black background and gray text for cover widget tooltip.
 64. Ignore quit action if we have open dialogs.
 65. Fix crash when copying items to devices after a rescan has been performed.
+66. Use UPower (Linux/Qt) to detect when being resumed, and if so reconnect to
+    MPD.
 
 0.8.3.1
 -------

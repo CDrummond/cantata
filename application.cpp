@@ -213,6 +213,7 @@ void Application::load(const QStringList &files)
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusMessage>
 #include <QtCore/QDir>
+#include "upowerinterface.h"
 
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
@@ -222,6 +223,7 @@ Application::Application(int &argc, char **argv)
 bool Application::start()
 {
     if (QDBusConnection::sessionBus().registerService("org.kde.cantata")) {
+        connectPowerSignal();
         setupIconTheme();
         Icons::init();
         return true;
@@ -265,6 +267,17 @@ void Application::loadFiles()
         QDBusConnection::sessionBus().send(m);
     }
     #endif
+}
+
+void Application::connectPowerSignal()
+{
+    if (!QDBusConnection::systemBus().interface()->isServiceRegistered(OrgFreedesktopUPowerInterface::staticInterfaceName())) {
+        QDBusConnection::systemBus().interface()->startService(OrgFreedesktopUPowerInterface::staticInterfaceName());
+    }
+
+    OrgFreedesktopUPowerInterface *upower=new OrgFreedesktopUPowerInterface(OrgFreedesktopUPowerInterface::staticInterfaceName(),
+                                                                            "/org/freedesktop/UPower", QDBusConnection::systemBus(), this);
+    connect(upower, SIGNAL(Resuming()), MPDConnection::self(), SLOT(reconnect()));
 }
 
 #endif

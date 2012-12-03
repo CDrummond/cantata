@@ -149,7 +149,7 @@ bool SyncDialog::updateSongs(bool firstRun)
         return false;
     }
 
-    QSet<Song> devSongs=dev->allSongs();
+    QSet<Song> devSongs=dev->allSongs(dev->options().fixVariousArtists);
     QSet<Song> libSongs=MusicLibraryModel::self()->root()->allSongs();
     QSet<Song> inDev;
     QSet<Song> inLib;

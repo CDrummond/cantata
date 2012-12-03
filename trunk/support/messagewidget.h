@@ -28,6 +28,7 @@
 #include <kdeversion.h>
 #if KDE_IS_VERSION(4, 7, 0)
 #include <KDE/KMessageWidget>
+typedef KMessageWidget KMsgWidget;
 #else // KDE_IS_VERSION(4, 7, 0)
 #include "kmessagewidget.h"
 #endif // KDE_IS_VERSION(4, 7, 0)
@@ -35,7 +36,7 @@
 #include "kmessagewidget.h"
 #endif // ENABLE_KDE_SUPPORT
 
-class MessageWidget : public KMessageWidget
+class MessageWidget : public KMsgWidget
 {
     Q_OBJECT
 public:

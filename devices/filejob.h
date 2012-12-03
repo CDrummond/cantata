@@ -29,6 +29,7 @@
 #include "song.h"
 #include "fsdevice.h"
 
+class QTemporaryFile;
 class QThread;
 class FileJob;
 
@@ -56,11 +57,7 @@ public:
         StatusCancelled
     };
 
-    FileJob()
-        : stopRequested(false)
-        , progressPercent(0) {
-        FileScheduler::self()->addJob(this);
-    }
+    FileJob();
     virtual ~FileJob() { }
 
     void setPercent(int pc);
@@ -85,19 +82,33 @@ protected:
 class CopyJob : public FileJob
 {
 public:
-    CopyJob(const QString &src, const QString &dest, const FsDevice::CoverOptions &c, const Song &s)
+    enum Options
+    {
+        OptsNone         = 0x00,
+        OptsApplyVaFix   = 0x01,
+        OptsUnApplyVaFix = 0x02,
+        OptsFixLocal     = 0x04  // Apply any fixes to a local temp file before sending...
+    };
+
+    CopyJob(const QString &src, const QString &dest, const FsDevice::CoverOptions &c, int co, Song &s)
         : srcFile(src)
         , destFile(dest)
         , coverOpts(c)
-        , song(s) {
+        , copyOpts(co)
+        , song(s)
+        , temp(0) {
     }
+    virtual ~CopyJob();
+
 private:
     void run();
 private:
     QString srcFile;
     QString destFile;
     FsDevice::CoverOptions coverOpts;
+    int copyOpts;
     Song song;
+    QTemporaryFile *temp;
 };
 
 class DeleteJob : public FileJob

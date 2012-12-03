@@ -309,7 +309,7 @@ bool Encoder::isDifferent(const QString &file)
     return file!=changeExtension(file);
 }
 
-QStringList Encoder::params(int value, const QString &in, const QString &out)
+QStringList Encoder::params(int value, const QString &in, const QString &out) const
 {
     QStringList p;
     p << ffmpeg << QLatin1String("-i") << in << QLatin1String("-threads") << QLatin1String("0") << QLatin1String(usingAvconv ? "-c:a" : "-acodec") << codec;

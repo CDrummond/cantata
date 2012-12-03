@@ -116,6 +116,10 @@
     MPD.
 67. In sync dialog, when detecting items unique to library/device, revert
     various artist work-around for each track if it is enabled on the device.
+68. Fix memleak when copying items to/from devices.
+69. When creating temp files, ensure these are in /tmp!
+70. If applying various artist workaround for a remote device, apply the
+    workaround to a local temp file, and send this.
 
 0.8.3.1
 -------

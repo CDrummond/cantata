@@ -45,6 +45,7 @@ namespace Device
 
 class QWidget;
 class QImage;
+class QTemporaryFile;
 class DevicesModel;
 
 class Device : public MusicLibraryItemRoot
@@ -54,6 +55,7 @@ class Device : public MusicLibraryItemRoot
 public:
     static Device * create(DevicesModel *m, const QString &udi);
     static bool fixVariousArtists(const QString &file, Song &song, bool applyFix);
+    static QTemporaryFile * copySongToTemp(Song &song);
     static void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
     static void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
 

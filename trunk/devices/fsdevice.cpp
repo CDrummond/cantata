@@ -245,13 +245,17 @@ void FsDevice::addSong(const Song &s, bool overwrite)
     currentSong=s;
     if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
         transcoding=false;
-        CopyJob *job=new CopyJob(s.file, destFile, coverOpts, currentSong);
+        CopyJob *job=new CopyJob(s.file, destFile, coverOpts, (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|
+                                                              (Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone),
+                                 currentSong);
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
         connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
         job->start();
     } else {
         transcoding=true;
-        TranscodingJob *job=new TranscodingJob(encoder.params(opts.transcoderValue, s.file, destFile));
+        TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile, coverOpts,
+                                               (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|
+                                               (Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone));
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
         connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
         job->start();
@@ -302,7 +306,7 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
     }
 
     currentSong=s;
-    CopyJob *job=new CopyJob(source, dest, CoverOptions(), currentSong);
+    CopyJob *job=new CopyJob(source, dest, CoverOptions(), needToFixVa ? CopyJob::OptsUnApplyVaFix : CopyJob::OptsNone, currentSong);
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     job->start();
@@ -388,13 +392,9 @@ void FsDevice::addSongResult(int status)
     if (FileJob::StatusOk!=status) {
         emit actionStatus(transcoding ? TranscodeFailed : Failed);
     } else {
-        if (transcoding && Device::constNoCover!=coverOpts.name) {
-            // This copy should really be in transcoding thread - but it should be quick enough in the GUI thread anyway...
-            Covers::copyCover(currentSong, Utils::getDir(currentSong.file), Utils::getDir(destFileName), coverOpts.name, coverOpts.maxSize);
-        }
         currentSong.file=destFileName;
         if (needToFixVa) {
-            Device::fixVariousArtists(audioFolder+destFileName, currentSong, true);
+            currentSong.fixVariousArtists();
         }
         addSongToList(currentSong);
         emit actionStatus(Ok);
@@ -416,7 +416,7 @@ void FsDevice::copySongToResult(int status)
     } else {
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
         if (needToFixVa) {
-            Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
+            currentSong.revertVariousArtists();
         }
         Utils::setFilePerms(currentBaseDir+currentSong.file);
         MusicLibraryModel::self()->addSongToList(currentSong);

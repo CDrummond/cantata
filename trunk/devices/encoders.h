@@ -61,7 +61,7 @@ namespace Encoders
         }
         QString changeExtension(const QString &file);
         bool isDifferent(const QString &file);
-        QStringList params(int value, const QString &in, const QString &out);
+        QStringList params(int value, const QString &in, const QString &out) const;
         QString name;
         QString description;
         QString tooltip;

@@ -59,7 +59,7 @@ private Q_SLOTS:
     void configureDest();
     void saveProperties(const QString &path, const QString &coverFile, const DeviceOptions &opts);
     void saveProperties();
-    void actionStatus(int status);
+    void actionStatus(int status, bool copiedCover=false);
     void doNext();
     void removeSongResult(int status);
     void cleanDirsResult(int status);
@@ -84,6 +84,7 @@ private:
     QList<Song> songsToAction;
     QList<Song> actionedSongs;
     QSet<QString> dirsToClean;
+    QSet<QString> copiedCovers;
     unsigned long count;
     Song origCurrentSong;
     Song currentSong;

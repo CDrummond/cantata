@@ -265,7 +265,7 @@ static void copyImage(const QString &sourceDir, const QString &destDir, const QS
     Utils::setFilePerms(destDir+destName);
 }
 
-void Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name, unsigned short maxSize)
+bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name, unsigned short maxSize)
 {
     // First, check if dir already has a cover file!
     initCoverNames();
@@ -290,7 +290,7 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
     }
     foreach (const QString &coverFile, names) {
         if (fExists(destDir, coverFile)) {
-            return;
+            return true;
         }
     }
 
@@ -307,7 +307,7 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
                 }
             }
             copyImage(sourceDir, destDir, coverFile, destName, maxSize);
-            return;
+            return true;
         }
     }
 
@@ -321,10 +321,12 @@ void Covers::copyCover(const Song &song, const QString &sourceDir, const QString
         foreach (const QString &ext, constExtensions) {
             if (QFile::exists(dir+album+ext)) {
                 copyImage(dir, destDir, album+ext, destName, maxSize);
-                return;
+                return true;
             }
         }
     }
+
+    return false;
 }
 
 QStringList Covers::standardNames()

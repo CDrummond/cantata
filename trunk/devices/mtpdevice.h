@@ -67,7 +67,7 @@ public Q_SLOTS:
     void disconnectFromDevice(bool showStatus=true);
     void updateLibrary();
     void putSong(const Song &song, bool fixVa);
-    void getSong(const Song &song, const QString &dest, bool fixVa);
+    void getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover);
     void delSong(const Song &song);
     void cleanDirs(const QSet<QString> &dirs);
     void getCover(const Song &song);
@@ -75,7 +75,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void statusMessage(const QString &message);
     void putSongStatus(bool, int, const QString &, bool);
-    void getSongStatus(bool);
+    void getSongStatus(bool ok, bool copiedCover);
     void delSongStatus(bool);
     void cleanDirsStatus(bool ok);
     void libraryUpdated();
@@ -131,8 +131,8 @@ public:
     bool isRefreshing() const { return mtpUpdating; }
     void configure(QWidget *parent);
     QString path() const { return QString(); } // audioFolder; }
-    void addSong(const Song &s, bool overwrite);
-    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
+    void addSong(const Song &s, bool overwrite, bool copyCover);
+    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover);
     void removeSong(const Song &s);
     void cleanDirs(const QSet<QString> &dirs);
     void requestCover(const Song &song);
@@ -146,7 +146,7 @@ Q_SIGNALS:
     // These are for talking to connection thread...
     void updateLibrary();
     void putSong(const Song &song, bool fixVa);
-    void getSong(const Song &song, const QString &dest, bool fixVa);
+    void getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover);
     void delSong(const Song &song);
     void cleanMusicDirs(const QSet<QString> &dirs);
     void getCover(const Song &s);
@@ -160,7 +160,7 @@ private Q_SLOTS:
     void transcodeSongResult(int status);
     void transcodePercent(int percent);
     void emitProgress(int);
-    void getSongStatus(bool ok);
+    void getSongStatus(bool ok, bool copiedCover);
     void delSongStatus(bool ok);
     void cleanDirsStatus(bool ok);
     void saveProperties(const QString &newPath, const QString &newCoverFileName, const DeviceOptions &opts);

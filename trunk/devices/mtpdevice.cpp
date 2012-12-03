@@ -692,20 +692,24 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
     emit putSongStatus(added, meta ? meta->item_id : 0, meta ? meta->filename : 0, fixedVa);
 }
 
-static void saveFile(const QString &name, char *data, uint64_t size)
+static bool saveFile(const QString &name, char *data, uint64_t size)
 {
     QFile f(name);
 
     if (f.open(QIODevice::WriteOnly)) {
         f.write(data, size);
         f.close();
+        Utils::setFilePerms(name);
+        return true;
     }
+    return false;
 }
 
-void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa)
+void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover)
 {
     bool copiedSong=device && 0==LIBMTP_Get_File_To_File(device, song.id, dest.toUtf8(), &progressMonitor, this);
-    if (copiedSong && !abortRequested()) {
+    bool copiedCover=false;
+    if (copiedSong && !abortRequested() && copyCover) {
         QString destDir=Utils::getDir(dest);
 
         if (QDir(destDir).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable).isEmpty()) {
@@ -721,11 +725,14 @@ void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa)
                             mpdCover="cover";
                         }
                         if (LIBMTP_FILETYPE_JPEG==albumart->filetype) {
-                            saveFile(QString(destDir+mpdCover+".jpg"), albumart->data, albumart->size);
+                            copiedCover=saveFile(QString(destDir+mpdCover+".jpg"), albumart->data, albumart->size);
                         } else if (LIBMTP_FILETYPE_PNG==albumart->filetype) {
-                            saveFile(QString(destDir+mpdCover+".png"), albumart->data, albumart->size);
+                            copiedCover=saveFile(QString(destDir+mpdCover+".png"), albumart->data, albumart->size);
                         } else {
-                            img.save(QString(destDir+mpdCover+".png"));
+                            copiedCover=img.save(QString(destDir+mpdCover+".png"));
+                            if (copiedCover) {
+                                Utils::setFilePerms(destDir+mpdCover);
+                            }
                         }
                     }
                 }
@@ -737,7 +744,7 @@ void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa)
         Song s(song);
         Device::fixVariousArtists(dest, s, false);
     }
-    emit getSongStatus(copiedSong);
+    emit getSongStatus(copiedSong, copiedCover);
 }
 
 void MtpConnection::delSong(const Song &song)
@@ -1024,8 +1031,9 @@ int MtpDevice::getSongId(const Song &s)
     return 0;
 }
 
-void MtpDevice::addSong(const Song &s, bool overwrite)
+void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
 {
+    Q_UNUSED(copyCover)
     jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
@@ -1088,7 +1096,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
     emit putSong(currentSong, needToFixVa);
 }
 
-void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
+void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)
 {
     jobAbortRequested=false;
     transcoding=false;
@@ -1126,7 +1134,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     }
 
     currentSong=s;
-    emit getSong(s, currentBaseDir+currentMusicPath, needToFixVa);
+    emit getSong(s, currentBaseDir+currentMusicPath, needToFixVa, copyCover);
 }
 
 void MtpDevice::removeSong(const Song &s)
@@ -1188,6 +1196,7 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
 
 void MtpDevice::transcodeSongResult(int status)
 {
+    FileJob::finished(sender());
     if (jobAbortRequested) {
         deleteTemp();
         return;
@@ -1219,7 +1228,7 @@ void MtpDevice::emitProgress(int percent)
     emit progress(transcoding ? (50+(percent/2)) : percent);
 }
 
-void MtpDevice::getSongStatus(bool ok)
+void MtpDevice::getSongStatus(bool ok, bool copiedCover)
 {
     if (jobAbortRequested) {
         return;
@@ -1234,7 +1243,7 @@ void MtpDevice::getSongStatus(bool ok)
         Utils::setFilePerms(currentBaseDir+currentSong.file);
         MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(currentSong.file);
-        emit actionStatus(Ok);
+        emit actionStatus(Ok, copiedCover);
     }
 }
 

@@ -73,7 +73,7 @@ class FsDevice : public Device
 public:
     struct CoverOptions
     {
-        CoverOptions() : maxSize(0) { }
+        CoverOptions(const QString &n=QString()) : name(n), maxSize(0) { }
         void checkSize() {
             if (0==maxSize || maxSize>=400) {
                 maxSize=0;
@@ -94,8 +94,8 @@ public:
     bool isRefreshing() const { return 0!=scanner; }
     QString path() const { return audioFolder; }
     QString coverFile() const { return coverOpts.name; }
-    void addSong(const Song &s, bool overwrite);
-    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite);
+    void addSong(const Song &s, bool overwrite, bool copyCover);
+    void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover);
     void removeSong(const Song &s);
     void cleanDirs(const QSet<QString> &dirs);
     void requestCover(const Song &s);

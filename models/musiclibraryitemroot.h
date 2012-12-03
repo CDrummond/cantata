@@ -62,7 +62,7 @@ public:
     bool isFromSingleTracks(const Song &s) const;
     void refreshIndexes();
     void remove(MusicLibraryItemArtist *artist);
-    QSet<Song> allSongs() const;
+    QSet<Song> allSongs(bool revertVa=false) const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     void updateSongFile(const Song &from, const Song &to);
     void toXML(const QString &filename, const QDateTime &date=QDateTime()) const;

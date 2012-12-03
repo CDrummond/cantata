@@ -114,6 +114,8 @@
 65. Fix crash when copying items to devices after a rescan has been performed.
 66. Use UPower (Linux/Qt) to detect when being resumed, and if so reconnect to
     MPD.
+67. In sync dialog, when detecting items unique to library/device, revert
+    various artist work-around for each track if it is enabled on the device.
 
 0.8.3.1
 -------

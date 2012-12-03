@@ -312,7 +312,7 @@ void ActionDialog::doNext()
 
             if (dev) {
                 if (!currentDev) {
-                    connect(dev, SIGNAL(actionStatus(int)), this, SLOT(actionStatus(int)));
+                    connect(dev, SIGNAL(actionStatus(int, bool)), this, SLOT(actionStatus(int, bool)));
                     connect(dev, SIGNAL(progress(int)), this, SLOT(jobPercent(int)));
                     currentDev=dev;
                 }
@@ -320,7 +320,7 @@ void ActionDialog::doNext()
                 if (copyToDev) {
                     destFile=dev->path()+dev->options().createFilename(currentSong);
                     currentSong.file=MPDConnection::self()->getDetails().dir+currentSong.file;
-                    dev->addSong(currentSong, overwrite->isChecked());
+                    dev->addSong(currentSong, overwrite->isChecked(), !copiedCovers.contains(Utils::getDir(destFile)));
                 } else {
                     Song copy=currentSong;
                     if (dev->options().fixVariousArtists && currentSong.isVariousArtists()) {
@@ -328,7 +328,7 @@ void ActionDialog::doNext()
                     }
                     QString fileName=namingOptions.createFilename(copy);
                     destFile=MPDConnection::self()->getDetails().dir+fileName;
-                    dev->copySongTo(currentSong, MPDConnection::self()->getDetails().dir, fileName, overwrite->isChecked());
+                    dev->copySongTo(currentSong, MPDConnection::self()->getDetails().dir, fileName, overwrite->isChecked(), !copiedCovers.contains(Utils::getDir(destFile)));
                 }
             }
         } else {
@@ -367,7 +367,7 @@ void ActionDialog::doNext()
     }
 }
 
-void ActionDialog::actionStatus(int status)
+void ActionDialog::actionStatus(int status, bool copiedCover)
 {
     int origStatus=status;
     if (Device::Ok!=status && Device::NotConnected!=status && autoSkip) {
@@ -378,6 +378,9 @@ void ActionDialog::actionStatus(int status)
         performingAction=false;
         if (Device::Ok==origStatus) {
             actionedSongs.append(currentSong);
+            if (copiedCover) {
+                copiedCovers.insert(Utils::getDir(destFile));
+            }
         }
 //         if (1==actionedSongs.count() && ( (Copy==mode && !sourceUdi.isEmpty()) ||
 //                                           (Remove==mode && sourceUdi.isEmpty()) ) ) {

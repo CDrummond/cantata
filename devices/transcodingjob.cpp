@@ -21,28 +21,60 @@
  */
 
 #include "transcodingjob.h"
+#include "device.h"
+#include "covers.h"
+#include <QtCore/QTemporaryFile>
 
-TranscodingJob::TranscodingJob(const QStringList &params)
-    : parameters(params)
+TranscodingJob::TranscodingJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const FsDevice::CoverOptions &c, int opts, const Song &s)
+    : encoder(enc)
+    , value(val)
+    , srcFile(src)
+    , destFile(dest)
+    , coverOpts(c)
+    , copyOpts(opts)
+    , song(s)
     , process(0)
     , duration(-1)
+    , temp(0)
 {
 }
 
 TranscodingJob::~TranscodingJob()
 {
+    if (temp) {
+        temp->remove();
+        delete temp;
+    }
     delete process;
 }
 
 void TranscodingJob::run()
 {
-    process = new QProcess;
-    process->setReadChannelMode(QProcess::MergedChannels);
-    process->setReadChannel(QProcess::StandardOutput);
-    connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(processOutput()));
-    connect(process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(finished(int, QProcess::ExitStatus)));
-    QString cmd=parameters.takeFirst();
-    process->start(cmd, parameters);
+    QString src(srcFile);
+    // First, if we are going to update tags (e.g. to fix various artists), then check if we want to do that locally, before
+    // copying to device. For UMS devices, we just modify on device, but for remote (e.g. sshfs) then it'd be better to do locally :-)
+    if (copyOpts&CopyJob::OptsFixLocal && (copyOpts&CopyJob::OptsApplyVaFix || copyOpts&CopyJob::OptsUnApplyVaFix)) {
+        song.file=srcFile;
+        temp=Device::copySongToTemp(song);
+        if (!temp || !Device::fixVariousArtists(temp->fileName(), song, copyOpts&CopyJob::OptsApplyVaFix)) {
+            emit result(StatusFailed);
+            return;
+        }
+        src=temp->fileName();
+    }
+
+    if (stopRequested) {
+        emit result(StatusCancelled);
+    } else {
+        QStringList parameters=encoder.params(value, src, destFile);
+        process = new QProcess;
+        process->setReadChannelMode(QProcess::MergedChannels);
+        process->setReadChannel(QProcess::StandardOutput);
+        connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(processOutput()));
+        connect(process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(finished(int, QProcess::ExitStatus)));
+        QString cmd=parameters.takeFirst();
+        process->start(cmd, parameters);
+    }
 }
 
 void TranscodingJob::stop()
@@ -65,12 +97,20 @@ void TranscodingJob::finished(int exitCode, QProcess::ExitStatus exitStatus)
         emit result(StatusCancelled);
         return;
     }
+    if (!stopRequested && 0==exitCode && !(copyOpts&CopyJob::OptsFixLocal) && (copyOpts&CopyJob::OptsApplyVaFix || copyOpts&CopyJob::OptsUnApplyVaFix)) {
+        Device::fixVariousArtists(destFile, song, copyOpts&CopyJob::OptsApplyVaFix);
+    }
+    if (!stopRequested && 0==exitCode && Device::constNoCover!=coverOpts.name) {
+        song.file=destFile;
+        Covers::copyCover(song, Utils::getDir(srcFile), Utils::getDir(destFile), coverOpts.name, coverOpts.maxSize);
+    }
     emit result(0==exitCode ? StatusOk : StatusFailed);
 }
 
 void TranscodingJob::processOutput()
 {
     if (stopRequested) {
+        emit result(StatusCancelled);
         return;
     }
     QString output = process->readAllStandardOutput().data();

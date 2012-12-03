@@ -67,7 +67,7 @@ public Q_SLOTS:
     void disconnectFromDevice(bool showStatus=true);
     void updateLibrary();
     void putSong(const Song &song, bool fixVa);
-    void getSong(const Song &song, const QString &dest);
+    void getSong(const Song &song, const QString &dest, bool fixVa);
     void delSong(const Song &song);
     void cleanDirs(const QSet<QString> &dirs);
     void getCover(const Song &song);
@@ -146,7 +146,7 @@ Q_SIGNALS:
     // These are for talking to connection thread...
     void updateLibrary();
     void putSong(const Song &song, bool fixVa);
-    void getSong(const Song &song, const QString &dest);
+    void getSong(const Song &song, const QString &dest, bool fixVa);
     void delSong(const Song &song);
     void cleanMusicDirs(const QSet<QString> &dirs);
     void getCover(const Song &s);

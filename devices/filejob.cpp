@@ -29,6 +29,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
+#include <QtCore/QTemporaryFile>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
@@ -71,6 +72,14 @@ void FileScheduler::stop()
     }
 }
 
+FileJob::FileJob()
+    : stopRequested(false)
+    , progressPercent(0)
+{
+    FileScheduler::self()->addJob(this);
+    connect(this, SIGNAL(result(int)), SLOT(deleteLater()));
+}
+
 void FileJob::start()
 {
     QTimer::singleShot(0, this, SLOT(run()));
@@ -84,10 +93,36 @@ void FileJob::setPercent(int pc)
     }
 }
 
+CopyJob::~CopyJob()
+{
+    if (temp) {
+        temp->remove();
+        delete temp;
+    }
+}
+
 static const int constChunkSize=32*1024;
 
 void CopyJob::run()
 {
+    QString origSrcFile(srcFile);
+    // First, if we are going to update tags (e.g. to fix various artists), then check if we want to do that locally, before
+    // copying to device. For UMS devices, we just modify on device, but for remote (e.g. sshfs) then it'd be better to do locally :-)
+    if (copyOpts&OptsFixLocal && (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix)) {
+        song.file=srcFile;
+        temp=Device::copySongToTemp(song);
+        if (!temp || !Device::fixVariousArtists(temp->fileName(), song, copyOpts&OptsApplyVaFix)) {
+            emit result(StatusFailed);
+            return;
+        }
+        srcFile=temp->fileName();
+    }
+
+    if (stopRequested) {
+        emit result(StatusCancelled);
+        return;
+    }
+
     QFile src(srcFile);
 
     if (!src.open(QIODevice::ReadOnly)) {
@@ -145,9 +180,12 @@ void CopyJob::run()
         }
     } while ((readPos+bytesRead)<totalBytes);
 
-    if (copyCover) {
+    if (!stopRequested && !(copyOpts&OptsFixLocal) && (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix)) {
+        Device::fixVariousArtists(destFile, song, copyOpts&OptsApplyVaFix);
+    }
+    if (!stopRequested && copyCover) {
         song.file=destFile;
-        Covers::copyCover(song, Utils::getDir(srcFile), Utils::getDir(destFile), coverOpts.name, coverOpts.maxSize);
+        Covers::copyCover(song, Utils::getDir(origSrcFile), Utils::getDir(destFile), coverOpts.name, coverOpts.maxSize);
     }
     setPercent(100);
     emit result(StatusOk);

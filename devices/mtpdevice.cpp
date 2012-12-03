@@ -530,21 +530,10 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
 
         if (fixVa) {
             // Need to 'workaround' broken various artists handling, so write to a temporary file first...
-            int index=song.file.lastIndexOf('.');
-            if (index>0) {
-                temp=new QTemporaryFile("cantata_XXXX"+song.file.mid(index));
-            } else {
-                temp=new QTemporaryFile("cantata_XXXX");
-            }
-            temp->setAutoRemove(false);
-            if (temp->open()) {
-                fileName=temp->fileName();
-                temp->close();
-                if (QFile::exists(fileName)) {
-                    QFile::remove(fileName); // Copy will *not* overwrite file!
-                }
-                if (QFile::copy(song.file, fileName) && Device::fixVariousArtists(fileName, song, true)) {
-                    song.file=fileName;
+            temp=Device::copySongToTemp(song);
+            if (temp) {
+                song.file=temp->fileName();
+                if (Device::fixVariousArtists(temp->fileName(), song, true)) {
                     fixedVa=true;
                 }
             }
@@ -649,7 +638,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
                         QTemporaryFile *temp=0;
                         // Cantata covers are either JPG or PNG. Assume device supports JPG...
                         if (image.fileName.isEmpty() || (image.fileName.endsWith(".png ") && !supportedTypes.contains(LIBMTP_FILETYPE_PNG))) {
-                            temp=new QTemporaryFile("cantata_XXXX.jpg");
+                            temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX.jpg");
                             temp->setAutoRemove(true);
                             if (!image.img.save(temp, "JPG")) {
                                 image.fileName=QString();
@@ -713,10 +702,10 @@ static void saveFile(const QString &name, char *data, uint64_t size)
     }
 }
 
-void MtpConnection::getSong(const Song &song, const QString &dest)
+void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa)
 {
     bool copiedSong=device && 0==LIBMTP_Get_File_To_File(device, song.id, dest.toUtf8(), &progressMonitor, this);
-    if (copiedSong) {
+    if (copiedSong && !abortRequested()) {
         QString destDir=Utils::getDir(dest);
 
         if (QDir(destDir).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable).isEmpty()) {
@@ -743,6 +732,10 @@ void MtpConnection::getSong(const Song &song, const QString &dest)
                 LIBMTP_destroy_filesampledata_t(albumart);
             }
         }
+    }
+    if (copiedSong && fixVa && !abortRequested()) {
+        Song s(song);
+        Device::fixVariousArtists(dest, s, false);
     }
     emit getSongStatus(copiedSong);
 }
@@ -1069,7 +1062,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
 
         if (!opts.transcoderWhenDifferent || encoder.isDifferent(s.file)) {
             deleteTemp();
-            tempFile=new QTemporaryFile("cantata_XXXX"+encoder.extension);
+            tempFile=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX"+encoder.extension);
             tempFile->setAutoRemove(false);
 
             if (!tempFile->open()) {
@@ -1083,7 +1076,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite)
                 QFile::remove(destFile);
             }
             transcoding=true;
-            TranscodingJob *job=new TranscodingJob(encoder.params(opts.transcoderValue, s.file, destFile));
+            TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile);
             connect(job, SIGNAL(result(int)), SLOT(transcodeSongResult(int)));
             connect(job, SIGNAL(percent(int)), SLOT(transcodePercent(int)));
             job->start();
@@ -1133,7 +1126,7 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
     }
 
     currentSong=s;
-    emit getSong(s, currentBaseDir+currentMusicPath);
+    emit getSong(s, currentBaseDir+currentMusicPath, needToFixVa);
 }
 
 void MtpDevice::removeSong(const Song &s)
@@ -1184,7 +1177,7 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
         currentSong.id=id;
         currentSong.file=file;
         if (needToFixVa && fixedVa) {
-            Device::fixVariousArtists(QString(), currentSong, true);
+            currentSong.fixVariousArtists();
         } else if (!opts.fixVariousArtists) { // TODO: ALBUMARTIST: Remove when libMTP supports album artist!
             currentSong.albumartist=currentSong.artist;
         }
@@ -1236,7 +1229,7 @@ void MtpDevice::getSongStatus(bool ok)
     } else {
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
         if (needToFixVa) {
-            Device::fixVariousArtists(currentBaseDir+currentSong.file, currentSong, false);
+            currentSong.revertVariousArtists();
         }
         Utils::setFilePerms(currentBaseDir+currentSong.file);
         MusicLibraryModel::self()->addSongToList(currentSong);

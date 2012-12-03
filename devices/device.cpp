@@ -26,7 +26,7 @@
 #include "covers.h"
 #include "utils.h"
 #include <QtCore/QDir>
-
+#include <QtCore/QTemporaryFile>
 #ifndef Q_OS_WIN
 #include "devicesmodel.h"
 #include "umsdevice.h"
@@ -189,6 +189,31 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
     }
     song=orig;
     return false;
+}
+
+QTemporaryFile * Device::copySongToTemp(Song &song)
+{
+    QTemporaryFile *temp=new QTemporaryFile();
+
+    int index=song.file.lastIndexOf('.');
+    if (index>0) {
+        temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX"+song.file.mid(index));
+    } else {
+        temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX");
+    }
+
+    temp->setAutoRemove(false);
+    if (temp->open()) {
+        temp->close();
+        if (QFile::exists(temp->fileName())) {
+            QFile::remove(temp->fileName()); // Copy will *not* overwrite file!
+        }
+        if (!QFile::copy(song.file, temp->fileName())) {
+            temp->remove();
+            temp=0;
+        }
+    }
+    return temp;
 }
 
 void Device::applyUpdate()

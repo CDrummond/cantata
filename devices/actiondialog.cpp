@@ -570,6 +570,7 @@ void ActionDialog::removeSong(const Song &s)
 
 void ActionDialog::removeSongResult(int status)
 {
+    FileJob::finished(sender());
     if (FileJob::StatusOk!=status) {
         actionStatus(Device::Failed);
     } else {
@@ -589,6 +590,7 @@ void ActionDialog::cleanDirs()
 
 void ActionDialog::cleanDirsResult(int status)
 {
+    FileJob::finished(sender());
     actionStatus(FileJob::StatusOk==status ? Device::Ok : Device::Failed);
 }
 

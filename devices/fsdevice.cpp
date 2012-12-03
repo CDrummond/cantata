@@ -193,7 +193,7 @@ bool FsDevice::readCache()
     return false;
 }
 
-void FsDevice::addSong(const Song &s, bool overwrite)
+void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
 {
     jobAbortRequested=false;
     if (!isConnected()) {
@@ -241,19 +241,18 @@ void FsDevice::addSong(const Song &s, bool overwrite)
         emit actionStatus(DirCreationFaild);
         return;
     }
-
     currentSong=s;
     if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
         transcoding=false;
-        CopyJob *job=new CopyJob(s.file, destFile, coverOpts, (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|
-                                                              (Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone),
+        CopyJob *job=new CopyJob(s.file, destFile, copyCover ? coverOpts : CoverOptions(Device::constNoCover),
+                                 (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|(Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone),
                                  currentSong);
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
         connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
         job->start();
     } else {
         transcoding=true;
-        TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile, coverOpts,
+        TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile, copyCover ? coverOpts : CoverOptions(Device::constNoCover),
                                                (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|
                                                (Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone));
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
@@ -262,7 +261,7 @@ void FsDevice::addSong(const Song &s, bool overwrite)
     }
 }
 
-void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)
+void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)
 {
     jobAbortRequested=false;
     if (!isConnected()) {
@@ -306,7 +305,8 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
     }
 
     currentSong=s;
-    CopyJob *job=new CopyJob(source, dest, CoverOptions(), needToFixVa ? CopyJob::OptsUnApplyVaFix : CopyJob::OptsNone, currentSong);
+    CopyJob *job=new CopyJob(source, dest, copyCover ? CoverOptions() : CoverOptions(Device::constNoCover),
+                             needToFixVa ? CopyJob::OptsUnApplyVaFix : CopyJob::OptsNone, currentSong);
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     job->start();
@@ -377,13 +377,14 @@ void FsDevice::percent(int pc)
 
 void FsDevice::addSongResult(int status)
 {
+    CopyJob *job=qobject_cast<CopyJob *>(sender());
+    FileJob::finished(job);
     spaceInfo.setDirty();
     QString destFileName=opts.createFilename(currentSong);
     if (transcoding) {
         destFileName=encoder.changeExtension(destFileName);
     }
     if (jobAbortRequested) {
-        FileJob *job=qobject_cast<FileJob *>(sender());
         if (job && job->wasStarted() && QFile::exists(audioFolder+destFileName)) {
             QFile::remove(audioFolder+destFileName);
         }
@@ -397,15 +398,16 @@ void FsDevice::addSongResult(int status)
             currentSong.fixVariousArtists();
         }
         addSongToList(currentSong);
-        emit actionStatus(Ok);
+        emit actionStatus(Ok, job && job->coverCopied());
     }
 }
 
 void FsDevice::copySongToResult(int status)
 {
+    CopyJob *job=qobject_cast<CopyJob *>(sender());
+    FileJob::finished(job);
     spaceInfo.setDirty();
     if (jobAbortRequested) {
-        FileJob *job=qobject_cast<FileJob *>(sender());
         if (job && job->wasStarted() && QFile::exists(currentBaseDir+currentMusicPath)) {
             QFile::remove(currentBaseDir+currentMusicPath);
         }
@@ -421,12 +423,13 @@ void FsDevice::copySongToResult(int status)
         Utils::setFilePerms(currentBaseDir+currentSong.file);
         MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(currentSong.file);
-        emit actionStatus(Ok);
+        emit actionStatus(Ok, job && job->coverCopied());
     }
 }
 
 void FsDevice::removeSongResult(int status)
 {
+    FileJob::finished(sender());
     spaceInfo.setDirty();
     if (jobAbortRequested) {
         return;
@@ -441,6 +444,7 @@ void FsDevice::removeSongResult(int status)
 
 void FsDevice::cleanDirsResult(int status)
 {
+    FileJob::finished(sender());
     spaceInfo.setDirty();
     if (jobAbortRequested) {
         return;

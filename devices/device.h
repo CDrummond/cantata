@@ -120,8 +120,8 @@ public:
     bool isIdle() const { return isConnected() && !isRefreshing(); }
     virtual void configure(QWidget *) { }
     virtual QString path() const =0;
-    virtual void addSong(const Song &s, bool overwrite)=0;
-    virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite)=0;
+    virtual void addSong(const Song &s, bool overwrite, bool copyCover)=0;
+    virtual void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)=0;
     virtual void removeSong(const Song &s)=0;
     virtual void cleanDirs(const QSet<QString> &dirs)=0;
     virtual void requestCover(const Song &) { }
@@ -193,7 +193,7 @@ Q_SIGNALS:
     void connected(const QString &udi);
     void disconnected(const QString &udi);
     void updating(const QString &udi, bool s);
-    void actionStatus(int);
+    void actionStatus(int status, bool copiedCover=false);
     void progress(int pc);
     void error(const QString &);
     void cover(const Song &song, const QImage &img);

@@ -24,15 +24,14 @@
 
 #include "filejob.h"
 #include "encoders.h"
-#include <QtCore/QStringList>
 #include <QtCore/QProcess>
 
-class TranscodingJob : public FileJob
+class TranscodingJob : public CopyJob
 {
     Q_OBJECT
 public:
     explicit TranscodingJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest,
-                            const FsDevice::CoverOptions &c=FsDevice::CoverOptions(), int opts=0, const Song &s=Song());
+                            const FsDevice::CoverOptions &c=FsDevice::CoverOptions(), int co=0, const Song &s=Song());
     virtual ~TranscodingJob();
 
     void stop();
@@ -51,15 +50,9 @@ private:
 private:
     const Encoders::Encoder &encoder;
     int value;
-    QString srcFile;
-    QString destFile;
-    FsDevice::CoverOptions coverOpts;
-    int copyOpts;
-    Song song;
     QProcess *process;
     qint64 duration; //in csec
     QString data;
-    QTemporaryFile *temp;
 };
 
 

@@ -77,7 +77,9 @@ FileJob::FileJob()
     , progressPercent(0)
 {
     FileScheduler::self()->addJob(this);
-    connect(this, SIGNAL(result(int)), SLOT(deleteLater()));
+    // Cant call deleteLater here, as in the device's xxResult() slots "sender()" returns
+    // null. Therefore, xxResult() slots need to call finished()
+    //connect(this, SIGNAL(result(int)), SLOT(deleteLater()));
 }
 
 void FileJob::start()
@@ -103,9 +105,8 @@ CopyJob::~CopyJob()
 
 static const int constChunkSize=32*1024;
 
-void CopyJob::run()
+QString CopyJob::updateTagsLocal()
 {
-    QString origSrcFile(srcFile);
     // First, if we are going to update tags (e.g. to fix various artists), then check if we want to do that locally, before
     // copying to device. For UMS devices, we just modify on device, but for remote (e.g. sshfs) then it'd be better to do locally :-)
     if (copyOpts&OptsFixLocal && (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix)) {
@@ -113,9 +114,34 @@ void CopyJob::run()
         temp=Device::copySongToTemp(song);
         if (!temp || !Device::fixVariousArtists(temp->fileName(), song, copyOpts&OptsApplyVaFix)) {
             emit result(StatusFailed);
-            return;
+            return QString();
         }
-        srcFile=temp->fileName();
+        return temp->fileName();
+    }
+    return srcFile;
+}
+
+void CopyJob::updateTagsDest()
+{
+    if (!stopRequested && !(copyOpts&OptsFixLocal) && (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix)) {
+        Device::fixVariousArtists(destFile, song, copyOpts&OptsApplyVaFix);
+    }
+}
+
+void CopyJob::copyCover(const QString &origSrcFile)
+{
+    if (!stopRequested && Device::constNoCover!=coverOpts.name) {
+        song.file=destFile;
+        copiedCover=Covers::copyCover(song, Utils::getDir(origSrcFile), Utils::getDir(destFile), coverOpts.name, coverOpts.maxSize);
+    }
+}
+
+void CopyJob::run()
+{
+    QString origSrcFile(srcFile);
+    srcFile=updateTagsLocal();
+    if (srcFile.isEmpty()) {
+        return;
     }
 
     if (stopRequested) {
@@ -136,12 +162,11 @@ void CopyJob::run()
         return;
     }
 
-    bool copyCover = Device::constNoCover!=coverOpts.name;
     char buffer[constChunkSize];
     qint64 totalBytes = src.size();
     qint64 readPos = 0;
     qint64 bytesRead = 0;
-    qint64 adjustTotal = copyCover ? 16384 : 0;
+    qint64 adjustTotal = Device::constNoCover!=coverOpts.name ? 16384 : 0;
 
     do {
         if (stopRequested) {
@@ -180,13 +205,8 @@ void CopyJob::run()
         }
     } while ((readPos+bytesRead)<totalBytes);
 
-    if (!stopRequested && !(copyOpts&OptsFixLocal) && (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix)) {
-        Device::fixVariousArtists(destFile, song, copyOpts&OptsApplyVaFix);
-    }
-    if (!stopRequested && copyCover) {
-        song.file=destFile;
-        Covers::copyCover(song, Utils::getDir(origSrcFile), Utils::getDir(destFile), coverOpts.name, coverOpts.maxSize);
-    }
+    updateTagsDest();
+    copyCover(origSrcFile);
     setPercent(100);
     emit result(StatusOk);
 }

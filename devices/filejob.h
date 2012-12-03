@@ -57,6 +57,12 @@ public:
         StatusCancelled
     };
 
+    static void finished(QObject *obj) {
+        if (obj) {
+            obj->deleteLater();
+        }
+    }
+
     FileJob();
     virtual ~FileJob() { }
 
@@ -81,6 +87,8 @@ protected:
 
 class CopyJob : public FileJob
 {
+    Q_OBJECT
+
 public:
     enum Options
     {
@@ -90,25 +98,35 @@ public:
         OptsFixLocal     = 0x04  // Apply any fixes to a local temp file before sending...
     };
 
-    CopyJob(const QString &src, const QString &dest, const FsDevice::CoverOptions &c, int co, Song &s)
+    CopyJob(const QString &src, const QString &dest, const FsDevice::CoverOptions &c, int co, const Song &s)
         : srcFile(src)
         , destFile(dest)
         , coverOpts(c)
         , copyOpts(co)
         , song(s)
-        , temp(0) {
+        , temp(0)
+        , copiedCover(false) {
     }
     virtual ~CopyJob();
 
+    bool coverCopied() const { return copiedCover; }
+
+protected:
+    QString updateTagsLocal();
+    void updateTagsDest();
+    void copyCover(const QString &origSrcFile);
+
 private:
-    void run();
-private:
+    virtual void run();
+
+protected:
     QString srcFile;
     QString destFile;
     FsDevice::CoverOptions coverOpts;
     int copyOpts;
     Song song;
     QTemporaryFile *temp;
+    bool copiedCover;
 };
 
 class DeleteJob : public FileJob

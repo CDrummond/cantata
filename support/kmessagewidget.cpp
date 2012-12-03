@@ -42,22 +42,22 @@
 #include <QtGui/QAction>
 
 //---------------------------------------------------------------------
-// KMessageWidgetPrivate
+// KMsgWidgetPrivate
 //---------------------------------------------------------------------
 #if 0
-class KMessageWidgetPrivate
+class KMsgWidgetPrivate
 {
 public:
-    void init(KMessageWidget*);
+    void init(KMsgWidget*);
 
-    KMessageWidget* q;
+    KMsgWidget* q;
     QFrame* content;
     QLabel* iconLabel;
     QLabel* textLabel;
     QToolButton* closeButton;
     QTimeLine* timeLine;
 
-    KMessageWidget::MessageType messageType;
+    KMsgWidget::MessageType messageType;
     bool wordWrap;
     QList<QToolButton*> buttons;
     QPixmap contentSnapShot;
@@ -70,7 +70,7 @@ public:
 };
 #endif
 
-void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
+void KMsgWidgetPrivate::init(KMsgWidget *q_ptr)
 {
     q = q_ptr;
 
@@ -104,10 +104,10 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
     closeButton->setAutoRaise(true);
     closeButton->setDefaultAction(closeAction);
 
-    q->setMessageType(KMessageWidget::Information);
+    q->setMessageType(KMsgWidget::Information);
 }
 
-void KMessageWidgetPrivate::createLayout()
+void KMsgWidgetPrivate::createLayout()
 {
     delete content->layout();
 
@@ -163,27 +163,27 @@ void KMessageWidgetPrivate::createLayout()
     q->updateGeometry();
 }
 
-void KMessageWidgetPrivate::updateLayout()
+void KMsgWidgetPrivate::updateLayout()
 {
     if (content->layout()) {
         createLayout();
     }
 }
 
-void KMessageWidgetPrivate::updateSnapShot()
+void KMsgWidgetPrivate::updateSnapShot()
 {
     contentSnapShot = QPixmap(content->size());
     contentSnapShot.fill(Qt::transparent);
     content->render(&contentSnapShot, QPoint(), QRegion(), QWidget::DrawChildren);
 }
 
-void KMessageWidgetPrivate::slotTimeLineChanged(qreal value)
+void KMsgWidgetPrivate::slotTimeLineChanged(qreal value)
 {
     q->setFixedHeight(qMin(value * 2, qreal(1.0)) * content->height());
     q->update();
 }
 
-void KMessageWidgetPrivate::slotTimeLineFinished()
+void KMsgWidgetPrivate::slotTimeLineFinished()
 {
     if (timeLine->direction() == QTimeLine::Forward) {
         // Show
@@ -194,7 +194,7 @@ void KMessageWidgetPrivate::slotTimeLineFinished()
     }
 }
 
-int KMessageWidgetPrivate::bestContentHeight() const
+int KMsgWidgetPrivate::bestContentHeight() const
 {
     int height = content->heightForWidth(q->width());
     if (height == -1) {
@@ -204,40 +204,40 @@ int KMessageWidgetPrivate::bestContentHeight() const
 }
 
 //---------------------------------------------------------------------
-// KMessageWidget
+// KMsgWidget
 //---------------------------------------------------------------------
-KMessageWidget::KMessageWidget(QWidget* parent)
+KMsgWidget::KMsgWidget(QWidget* parent)
     : QFrame(parent)
-    , d(new KMessageWidgetPrivate)
+    , d(new KMsgWidgetPrivate)
 {
     d->init(this);
 }
 
-KMessageWidget::KMessageWidget(const QString& text, QWidget* parent)
+KMsgWidget::KMsgWidget(const QString& text, QWidget* parent)
     : QFrame(parent)
-    , d(new KMessageWidgetPrivate)
+    , d(new KMsgWidgetPrivate)
 {
     d->init(this);
     setText(text);
 }
 
-KMessageWidget::~KMessageWidget()
+KMsgWidget::~KMsgWidget()
 {
     delete d;
 }
 
-QString KMessageWidget::text() const
+QString KMsgWidget::text() const
 {
     return d->textLabel->text();
 }
 
-void KMessageWidget::setText(const QString& text)
+void KMsgWidget::setText(const QString& text)
 {
     d->textLabel->setText(text);
     updateGeometry();
 }
 
-KMessageWidget::MessageType KMessageWidget::messageType() const
+KMsgWidget::MessageType KMsgWidget::messageType() const
 {
     return d->messageType;
 }
@@ -251,7 +251,7 @@ static void getColorsFromColorScheme(KColorScheme::BackgroundRole bgRole, QColor
 }
 #endif
 
-void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
+void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
 {
     d->messageType = type;
     QIcon icon;
@@ -336,19 +336,19 @@ void KMessageWidget::setMessageType(KMessageWidget::MessageType type)
     d->iconLabel->setPixmap(icon.pixmap(size));
 }
 
-QSize KMessageWidget::sizeHint() const
+QSize KMsgWidget::sizeHint() const
 {
     ensurePolished();
     return d->content->sizeHint();
 }
 
-QSize KMessageWidget::minimumSizeHint() const
+QSize KMsgWidget::minimumSizeHint() const
 {
     ensurePolished();
     return d->content->minimumSizeHint();
 }
 
-bool KMessageWidget::event(QEvent* event)
+bool KMsgWidget::event(QEvent* event)
 {
     if (event->type() == QEvent::Polish && !d->content->layout()) {
         d->createLayout();
@@ -356,9 +356,10 @@ bool KMessageWidget::event(QEvent* event)
     return QFrame::event(event);
 }
 
-void KMessageWidget::resizeEvent(QResizeEvent* event)
+void KMsgWidget::resizeEvent(QResizeEvent* event)
 {
     QFrame::resizeEvent(event);
+    if (!isVisible()) return;
     int contentHeight = d->bestContentHeight();
 
     if (d->timeLine->state() == QTimeLine::NotRunning) {
@@ -369,13 +370,13 @@ void KMessageWidget::resizeEvent(QResizeEvent* event)
     }
 }
 
-int KMessageWidget::heightForWidth(int width) const
+int KMsgWidget::heightForWidth(int width) const
 {
     ensurePolished();
     return d->content->heightForWidth(width);
 }
 
-void KMessageWidget::paintEvent(QPaintEvent* event)
+void KMsgWidget::paintEvent(QPaintEvent* event)
 {
     QFrame::paintEvent(event);
     if (d->timeLine->state() == QTimeLine::Running) {
@@ -385,48 +386,48 @@ void KMessageWidget::paintEvent(QPaintEvent* event)
     }
 }
 
-void KMessageWidget::showEvent(QShowEvent* event)
+void KMsgWidget::showEvent(QShowEvent* event)
 {
     // Keep this method here to avoid breaking binary compatibility:
     // QFrame::showEvent() used to be reimplemented.
     QFrame::showEvent(event);
 }
 
-bool KMessageWidget::wordWrap() const
+bool KMsgWidget::wordWrap() const
 {
     return d->wordWrap;
 }
 
-void KMessageWidget::setWordWrap(bool wordWrap)
+void KMsgWidget::setWordWrap(bool wordWrap)
 {
     d->wordWrap = wordWrap;
     d->textLabel->setWordWrap(wordWrap);
     d->updateLayout();
 }
 
-bool KMessageWidget::isCloseButtonVisible() const
+bool KMsgWidget::isCloseButtonVisible() const
 {
     return d->closeButton->isVisible();
 }
 
-void KMessageWidget::setCloseButtonVisible(bool show)
+void KMsgWidget::setCloseButtonVisible(bool show)
 {
     d->closeButton->setVisible(show);
 }
 
-void KMessageWidget::addAction(QAction* action)
+void KMsgWidget::addAction(QAction* action)
 {
     QFrame::addAction(action);
     d->updateLayout();
 }
 
-void KMessageWidget::removeAction(QAction* action)
+void KMsgWidget::removeAction(QAction* action)
 {
     QFrame::removeAction(action);
     d->updateLayout();
 }
 
-void KMessageWidget::animatedShow()
+void KMsgWidget::animatedShow()
 {
     #ifdef ENABLE_KDE_SUPPORT
     if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {
@@ -452,7 +453,7 @@ void KMessageWidget::animatedShow()
     }
 }
 
-void KMessageWidget::animatedHide()
+void KMsgWidget::animatedHide()
 {
     #ifdef ENABLE_KDE_SUPPORT
     if (!(KGlobalSettings::graphicEffectsLevel() & KGlobalSettings::SimpleAnimationEffects)) {

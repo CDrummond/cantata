@@ -12,7 +12,7 @@ set(DEBIAN_PACKAGE_SECTION "kde4")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "9")
-set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_VERSION_PATCH "50")
 set(CPACK_PACKAGE_CONTACT "Craig Drummond <craig.p.drummond@gmail.com>")
 set(CANTATA_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
 set(CANTATA_VERSION_FULL "${CANTATA_VERSION}.${CPACK_PACKAGE_VERSION_PATCH}")
@@ -188,6 +188,7 @@ SET( CANTATA_MOC_HDRS
     widgets/actionlabel.h
     widgets/playqueueview.h
     widgets/groupedview.h
+    widgets/actionitemdelegate.h
     widgets/coverwidget.h
     widgets/volumecontrol.h
     widgets/genrecombo.h

@@ -25,9 +25,13 @@
 #include "itemview.h"
 #include "icon.h"
 #include "config.h"
+#include "groupedview.h"
 #include <QtGui/QPainter>
 #include <QtGui/QAction>
 #include <QtGui/QPixmap>
+#include <QtGui/QListView>
+#include <QtGui/QHelpEvent>
+#include <QtGui/QToolTip>
 
 int ActionItemDelegate::constBorder = 1;
 int ActionItemDelegate::constActionBorder = 4;
@@ -179,3 +183,73 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
     }
 }
 
+bool ActionItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+    if (QEvent::ToolTip==e->type() && (act1 || act2 || toggle)) {
+        QAction *act=getAction(view, index);
+        if (act) {
+            QToolTip::showText(e->globalPos(), act->toolTip(), view);
+            return true;
+        }
+    }
+    return QStyledItemDelegate::helpEvent(e, view, option, index);
+}
+
+QAction * ActionItemDelegate::getAction(QAbstractItemView *view, const QModelIndex &index)
+{
+    if (!hasActions(index, actLevel)) {
+        return 0;
+    }
+
+    bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
+    QListView *lv=qobject_cast<QListView *>(view);
+    GroupedView *gv=lv ? 0 : qobject_cast<GroupedView *>(view);
+    bool iconMode=lv && QListView::ListMode!=lv->viewMode() && index.child(0, 0).isValid();
+    QRect rect = view->visualRect(index);
+    rect.moveTo(view->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
+    bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
+    bool haveToggle = toggle && !index.data(ItemView::Role_ToggleIcon).value<QIcon>().isNull();
+    if (gv || lv || showCapacity) {
+        if (iconMode) {
+            rect.adjust(ActionItemDelegate::constBorder, ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder);
+        } else {
+            rect.adjust(ActionItemDelegate::constBorder+3, 0, -(ActionItemDelegate::constBorder+3), 0);
+        }
+    }
+
+    if (showCapacity) {
+        int textHeight=QFontMetrics(QApplication::font()).height();
+        rect.adjust(0, 0, 0, -(textHeight+8));
+    }
+
+    QRect actionRect=ActionItemDelegate::calcActionRect(rtl, iconMode, rect);
+    QRect actionRect2(actionRect);
+    ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect2);
+
+    actionRect=iconMode ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
+    if (act1 && actionRect.contains(QCursor::pos())) {
+        return act1;
+    }
+
+    if (act1) {
+        ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
+    }
+
+    actionRect=iconMode ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
+    if (act2 && actionRect.contains(QCursor::pos())) {
+        return act2;
+    }
+
+    if (haveToggle) {
+        if (act1 || act2) {
+            ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
+        }
+
+        actionRect=iconMode ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
+        if (toggle && actionRect.contains(QCursor::pos())) {
+            return toggle;
+        }
+    }
+
+    return 0;
+}

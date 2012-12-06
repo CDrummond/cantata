@@ -67,27 +67,10 @@ void ItemView::setup()
     }
 }
 
-EscapeKeyEventHandler::EscapeKeyEventHandler(QAbstractItemView *v, QAction *a)
+ListViewEventHandler::ListViewEventHandler(QAbstractItemView *v, QAction *a)
     : QObject(v)
     , view(v)
     , act(a)
-{
-}
-
-bool EscapeKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
-{
-    if (view->hasFocus() && QEvent::KeyRelease==event->type() && static_cast<QKeyEvent *>(event)->key()==Qt::Key_Escape) {
-        if (act->isEnabled()) {
-            act->trigger();
-        }
-        return true;
-    }
-    return QObject::eventFilter(obj, event);
-}
-
-MouseEventHandler::MouseEventHandler(QAbstractItemView *v)
-    : QObject(v)
-    , view(v)
 {
 }
 
@@ -95,8 +78,15 @@ MouseEventHandler::MouseEventHandler(QAbstractItemView *v)
 // We sometimes get an item that is left in the mouse-over state. So, work-around this by
 // keeping track of when mouse is over listview.
 static QWidget *mouseWidget=0;
-bool MouseEventHandler::eventFilter(QObject *obj, QEvent *event)
+
+bool ListViewEventHandler::eventFilter(QObject *obj, QEvent *event)
 {
+    if (view->hasFocus() && QEvent::KeyRelease==event->type() && static_cast<QKeyEvent *>(event)->key()==Qt::Key_Escape) {
+        if (act->isEnabled()) {
+            act->trigger();
+        }
+        return true;
+    }
     if (QEvent::Enter==event->type()) {
         mouseWidget=view;
         view->viewport()->update();
@@ -510,8 +500,7 @@ ItemView::ItemView(QWidget *p)
     Icon::init(backButton);
     treeView->setPageDefaults();
     iconGridSize=listGridSize=listView->gridSize();
-    listView->installEventFilter(new EscapeKeyEventHandler(listView, backAction));
-    listView->installEventFilter(new MouseEventHandler(listView));
+    listView->installEventFilter(new ListViewEventHandler(listView, backAction));
 }
 
 ItemView::~ItemView()

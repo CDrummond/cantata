@@ -52,11 +52,13 @@ protected:
                 return;
             }
             #endif
+            #ifndef Q_WS_WIN
             SpinBox *sb=qobject_cast<SpinBox*>(buddy());
             if (sb) {
                 sb->setFocus();
                 return;
             }
+            #endif
 
             buddy()->setFocus();
 

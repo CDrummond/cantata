@@ -188,6 +188,13 @@ bool ActionItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, const
     if (QEvent::ToolTip==e->type() && (act1 || act2 || toggle)) {
         QAction *act=getAction(view, index);
         if (act) {
+            if (act==toggle) {
+                QString tt=index.data(ItemView::Role_ToggleToolTip).toString();
+                if (!tt.isEmpty()) {
+                    QToolTip::showText(e->globalPos(), tt, view);
+                    return true;
+                }
+            }
             QToolTip::showText(e->globalPos(), act->toolTip(), view);
             return true;
         }
@@ -195,7 +202,7 @@ bool ActionItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, const
     return QStyledItemDelegate::helpEvent(e, view, option, index);
 }
 
-QAction * ActionItemDelegate::getAction(QAbstractItemView *view, const QModelIndex &index)
+QAction * ActionItemDelegate::getAction(QAbstractItemView *view, const QModelIndex &index) const
 {
     if (!hasActions(index, actLevel)) {
         return 0;

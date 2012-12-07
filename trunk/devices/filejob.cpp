@@ -130,9 +130,9 @@ void CopyJob::updateTagsDest()
 
 void CopyJob::copyCover(const QString &origSrcFile)
 {
-    if (!stopRequested && Device::constNoCover!=coverOpts.name) {
+    if (!stopRequested && Device::constNoCover!=deviceOpts.coverName) {
         song.file=destFile;
-        copiedCover=Covers::copyCover(song, Utils::getDir(origSrcFile), Utils::getDir(destFile), coverOpts.name, coverOpts.maxSize);
+        copiedCover=Covers::copyCover(song, Utils::getDir(origSrcFile), Utils::getDir(destFile), deviceOpts.coverName, deviceOpts.coverMaxSize);
     }
 }
 
@@ -166,7 +166,7 @@ void CopyJob::run()
     qint64 totalBytes = src.size();
     qint64 readPos = 0;
     qint64 bytesRead = 0;
-    qint64 adjustTotal = Device::constNoCover!=coverOpts.name ? 16384 : 0;
+    qint64 adjustTotal = Device::constNoCover!=deviceOpts.coverName ? 16384 : 0;
 
     do {
         if (stopRequested) {

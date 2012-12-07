@@ -27,7 +27,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QSet>
 #include "song.h"
-#include "fsdevice.h"
+#include "deviceoptions.h"
 
 class QTemporaryFile;
 class QThread;
@@ -98,10 +98,10 @@ public:
         OptsFixLocal     = 0x04  // Apply any fixes to a local temp file before sending...
     };
 
-    CopyJob(const QString &src, const QString &dest, const FsDevice::CoverOptions &c, int co, const Song &s)
+    CopyJob(const QString &src, const QString &dest, const DeviceOptions &d, int co, const Song &s)
         : srcFile(src)
         , destFile(dest)
-        , coverOpts(c)
+        , deviceOpts(d)
         , copyOpts(co)
         , song(s)
         , temp(0)
@@ -122,7 +122,7 @@ private:
 protected:
     QString srcFile;
     QString destFile;
-    FsDevice::CoverOptions coverOpts;
+    DeviceOptions deviceOpts;
     int copyOpts;
     Song song;
     QTemporaryFile *temp;

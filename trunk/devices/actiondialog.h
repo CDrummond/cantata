@@ -57,7 +57,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void configureSource();
     void configureDest();
-    void saveProperties(const QString &path, const QString &coverFile, const DeviceOptions &opts);
+    void saveProperties(const QString &path, const DeviceOptions &opts);
     void saveProperties();
     void actionStatus(int status, bool copiedCover=false);
     void doNext();

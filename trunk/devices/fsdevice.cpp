@@ -244,7 +244,7 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
     currentSong=s;
     if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
         transcoding=false;
-        CopyJob *job=new CopyJob(s.file, destFile, copyCover ? coverOpts : CoverOptions(Device::constNoCover),
+        CopyJob *job=new CopyJob(s.file, destFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
                                  (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|(Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone),
                                  currentSong);
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
@@ -252,7 +252,7 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         job->start();
     } else {
         transcoding=true;
-        TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile, copyCover ? coverOpts : CoverOptions(Device::constNoCover),
+        TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
                                                (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|
                                                (Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone));
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
@@ -305,7 +305,7 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
     }
 
     currentSong=s;
-    CopyJob *job=new CopyJob(source, dest, copyCover ? CoverOptions() : CoverOptions(Device::constNoCover),
+    CopyJob *job=new CopyJob(source, dest, copyCover ? opts : DeviceOptions(Device::constNoCover),
                              needToFixVa ? CopyJob::OptsUnApplyVaFix : CopyJob::OptsNone, currentSong);
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
@@ -333,7 +333,7 @@ void FsDevice::removeSong(const Song &s)
 
 void FsDevice::cleanDirs(const QSet<QString> &dirs)
 {
-    CleanJob *job=new CleanJob(dirs, audioFolder, coverOpts.name);
+    CleanJob *job=new CleanJob(dirs, audioFolder, opts.coverName);
     connect(job, SIGNAL(result(int)), SLOT(cleanDirsResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     job->start();
@@ -344,8 +344,8 @@ void FsDevice::requestCover(const Song &s)
     QString songFile=audioFolder+s.file;
     QString dirName=Utils::getDir(songFile);
 
-    if (QFile::exists(dirName+coverOpts.name)) {
-        QImage img(dirName+coverOpts.name);
+    if (QFile::exists(dirName+opts.coverName)) {
+        QImage img(dirName+opts.coverName);
         if (!img.isNull()) {
             emit cover(s, img);
             return;

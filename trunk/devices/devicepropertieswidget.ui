@@ -50,6 +50,23 @@
       </widget>
      </item>
      <item row="2" column="0">
+      <widget class="BuddyLabel" name="coverMaxSizeLabel">
+       <property name="text">
+        <string>Maximum cover size:</string>
+       </property>
+       <property name="buddy">
+        <cstring>coverMaxSize</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="coverMaxSize">
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
       <widget class="BuddyLabel" name="fixVariousArtistsLabel">
        <property name="text">
         <string>'Various Artists' workaround:</string>
@@ -59,10 +76,10 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="3" column="1">
       <widget class="OnOffButton" name="fixVariousArtists"/>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <widget class="BuddyLabel" name="autoScanLabel">
        <property name="text">
         <string>Automatically scan music when attached:</string>
@@ -72,10 +89,10 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="1">
       <widget class="OnOffButton" name="autoScan"/>
      </item>
-     <item row="4" column="0">
+     <item row="5" column="0">
       <widget class="BuddyLabel" name="useCacheLabel">
        <property name="text">
         <string>Use cache:</string>
@@ -85,7 +102,7 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="5" column="1">
       <widget class="OnOffButton" name="useCache"/>
      </item>
     </layout>
@@ -285,6 +302,7 @@
  <tabstops>
   <tabstop>musicFolder</tabstop>
   <tabstop>albumCovers</tabstop>
+  <tabstop>coverMaxSize</tabstop>
   <tabstop>fixVariousArtists</tabstop>
   <tabstop>autoScan</tabstop>
   <tabstop>useCache</tabstop>

@@ -614,10 +614,10 @@ void DevicesModel::accessibilityChanged(bool accessible, const QString &udi)
         }
     }
 }
-void DevicesModel::addRemoteDevice(const QString &coverFileName, const DeviceOptions &opts, RemoteFsDevice::Details details)
+void DevicesModel::addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::Details details)
 {
     #ifdef ENABLE_REMOTE_DEVICES
-    Device *dev=RemoteFsDevice::create(this, coverFileName, opts, details);
+    Device *dev=RemoteFsDevice::create(this, opts, details);
 
     if (dev) {
         beginInsertRows(QModelIndex(), devices.count(), devices.count());

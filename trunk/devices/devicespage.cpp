@@ -424,9 +424,9 @@ void DevicesPage::addRemoteDevice()
 {
     #ifdef ENABLE_REMOTE_DEVICES
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(this);
-    dlg->show("cover.jpg", DeviceOptions(), RemoteFsDevice::Details(), DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder, true);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &, RemoteFsDevice::Details)),
-            DevicesModel::self(), SLOT(addRemoteDevice(const QString &, const DeviceOptions &, RemoteFsDevice::Details)));
+    dlg->show(DeviceOptions(QLatin1String("cover.jpg")), RemoteFsDevice::Details(), DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder, true);
+    connect(dlg, SIGNAL(updatedSettings(const DeviceOptions &, RemoteFsDevice::Details)),
+            DevicesModel::self(), SLOT(addRemoteDevice(const DeviceOptions &, RemoteFsDevice::Details)));
     #endif
 }
 

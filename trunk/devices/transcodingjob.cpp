@@ -24,8 +24,8 @@
 #include "device.h"
 #include <QtCore/QStringList>
 
-TranscodingJob::TranscodingJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const FsDevice::CoverOptions &c, int co, const Song &s)
-    : CopyJob(src, dest, c, co, s)
+TranscodingJob::TranscodingJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const DeviceOptions &d, int co, const Song &s)
+    : CopyJob(src, dest, d, co, s)
     , encoder(enc)
     , value(val)
     , process(0)

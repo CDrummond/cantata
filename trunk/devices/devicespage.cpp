@@ -145,13 +145,20 @@ void DevicesPage::clear()
 
 QString DevicesPage::activeFsDeviceUdi() const
 {
+    Device *dev=activeFsDevice();
+    return dev ? dev->udi() : QString();
+}
+
+Device * DevicesPage::activeFsDevice() const
+{
     const QModelIndexList selected = view->selectedIndexes();
 
     if (0==selected.size()) {
-        return QString();
+        return 0;
     }
 
     QString udi;
+    Device *activeDev=0;
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
@@ -165,16 +172,16 @@ QString DevicesPage::activeFsDeviceUdi() const
         if (item && MusicLibraryItem::Type_Root==item->itemType()) {
             Device *dev=static_cast<Device *>(item);
             if (Device::Ums!=dev->devType() && Device::RemoteFs!=dev->devType()) {
-                return QString();
+                return 0;
             }
-            if (!udi.isEmpty()) {
-                return QString();
+            if (activeDev) {
+                return 0;
             }
-            udi=dev->udi();
+            activeDev=dev;
         }
     }
 
-    return udi;
+    return activeDev;
 }
 
 QList<Song> DevicesPage::selectedSongs() const
@@ -433,8 +440,13 @@ void DevicesPage::addRemoteDevice()
 void DevicesPage::forgetRemoteDevice()
 {
     #ifdef ENABLE_REMOTE_DEVICES
-    QString udi=activeFsDeviceUdi();
-    if (!udi.isEmpty() && MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to forget the selected device?"))) {
+    Device *dev=activeFsDevice();
+    if (!dev) {
+        return;
+    }
+    QString udi=dev->udi();
+    QString devName=dev->data();
+    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to forget '%1'?").arg(devName))) {
         DevicesModel::self()->removeRemoteDevice(udi);
     }
     #endif
@@ -451,6 +463,10 @@ void DevicesPage::toggleDevice()
     MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
+        if (static_cast<Device *>(item)->isConnected() &&
+            MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to disconnect '%1'?").arg(static_cast<Device *>(item)->data()))) {
+            return;
+        }
         static_cast<Device *>(item)->toggle();
     }
 }

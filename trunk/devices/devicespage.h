@@ -64,6 +64,9 @@ public Q_SLOTS:
     void toggleDevice();
     void sync();
 
+private:
+    Device * activeFsDevice() const;
+
 Q_SIGNALS:
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void deleteSongs(const QString &from, const QList<Song> &songs);

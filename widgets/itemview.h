@@ -171,8 +171,6 @@ private Q_SLOTS:
 
 private:
     void activateItem(const QModelIndex &index);
-
-private:
     QAction * getAction(const QModelIndex &index);
 
 private:

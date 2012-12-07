@@ -59,7 +59,7 @@ public:
 public Q_SLOTS:
     bool helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index);
 
-private:
+public:
     QAction * getAction(QAbstractItemView *view, const QModelIndex &index);
 
 public:

@@ -283,6 +283,11 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             return static_cast<Device *>(item)->isConnected() ? Icons::disconnectIcon : Icons::connectIcon;
         }
         return QVariant();
+    case ItemView::Role_ToggleToolTip:
+        if (MusicLibraryItem::Type_Root==item->itemType() && static_cast<Device *>(item)->supportsDisconnect()) {
+            return static_cast<Device *>(item)->isConnected() ? i18n("Disconnect Device") : i18n("Connect Device");
+        }
+        return QVariant();
     default:
         return QVariant();
     }

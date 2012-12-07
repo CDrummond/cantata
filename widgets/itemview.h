@@ -105,6 +105,7 @@ public:
         Role_Capacity,
         Role_CapacityText,
         Role_ToggleIcon,
+        Role_ToggleToolTip,
         Role_Search
     };
 

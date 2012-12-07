@@ -60,7 +60,7 @@ public Q_SLOTS:
     bool helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index);
 
 public:
-    QAction * getAction(QAbstractItemView *view, const QModelIndex &index);
+    QAction * getAction(QAbstractItemView *view, const QModelIndex &index) const;
 
 public:
     QAction *act1;

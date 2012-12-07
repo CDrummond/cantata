@@ -619,273 +619,197 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
     modified=true;
 }
 
-#define SET_VALUE_MOD(KEY, VAL) modified=true; SET_VALUE(KEY, VAL)
+#define SET_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; SET_VALUE(#KEY, v); }
 
 void Settings::saveCurrentConnection(const QString &v)
 {
-    if (v!=currentConnection()) {
-        SET_VALUE_MOD("currentConnection", v);
-    }
+    SET_VALUE_MOD(currentConnection)
 }
 
 void Settings::saveShowPlaylist(bool v)
 {
-    if (v!=showPlaylist()) {
-        SET_VALUE_MOD("showPlaylist", v);
-    }
+    SET_VALUE_MOD(showPlaylist)
 }
 
 void Settings::savePlayQueueHeaderState(const QByteArray &v)
 {
-    if (v!=playQueueHeaderState()) {
-        SET_VALUE_MOD("playQueueHeaderState", v);
-    }
+    SET_VALUE_MOD(playQueueHeaderState)
 }
 
 void Settings::saveSplitterState(const QByteArray &v)
 {
-    if (v!=splitterState()) {
-        SET_VALUE_MOD("splitterState", v);
-    }
+    SET_VALUE_MOD(splitterState)
 }
 
 void Settings::saveSplitterAutoHide(bool v)
 {
-    if (v!=splitterAutoHide()) {
-        SET_VALUE_MOD("splitterAutoHide", v);
-    }
+    SET_VALUE_MOD(splitterAutoHide)
 }
 
 void Settings::saveMainWindowSize(const QSize &v)
 {
-    if (v!=mainWindowSize()) {
-        SET_VALUE_MOD("mainWindowSize", v);
-    }
+    SET_VALUE_MOD(mainWindowSize)
 }
 
 void Settings::saveMainWindowCollapsedSize(const QSize &v)
 {
-    if (v!=mainWindowCollapsedSize()) {
-        SET_VALUE_MOD("mainWindowCollapsedSize", v);
-    }
+    SET_VALUE_MOD(mainWindowCollapsedSize)
 }
 
 void Settings::saveUseSystemTray(bool v)
 {
-    if (v!=useSystemTray()) {
-        SET_VALUE_MOD("useSystemTray", v);
-    }
+    SET_VALUE_MOD(useSystemTray)
 }
 
 void Settings::saveMinimiseOnClose(bool v)
 {
-    if (v!=minimiseOnClose()) {
-        SET_VALUE_MOD("minimiseOnClose", v);
-    }
+    SET_VALUE_MOD(minimiseOnClose)
 }
 
 void Settings::saveShowPopups(bool v)
 {
-    if (v!=showPopups()) {
-        SET_VALUE_MOD("showPopups", v);
-    }
+    SET_VALUE_MOD(showPopups)
 }
 
 void Settings::saveStopOnExit(bool v)
 {
-    if (v!=stopOnExit()) {
-        SET_VALUE_MOD("stopOnExit", v);
-    }
+    SET_VALUE_MOD(stopOnExit)
 }
 
 void Settings::saveStopDynamizerOnExit(bool v)
 {
-    if (v!=stopDynamizerOnExit()) {
-        SET_VALUE_MOD("stopDynamizerOnExit", v);
-    }
+    SET_VALUE_MOD(stopDynamizerOnExit)
 }
 
 void Settings::saveSmallPlaybackButtons(bool v)
 {
-    if (v!=smallPlaybackButtons()) {
-        SET_VALUE_MOD("smallPlaybackButtons", v);
-    }
+    SET_VALUE_MOD(smallPlaybackButtons)
 }
 
 void Settings::saveStoreCoversInMpdDir(bool v)
 {
-    if (v!=storeCoversInMpdDir()) {
-        SET_VALUE_MOD("storeCoversInMpdDir", v);
-    }
+    SET_VALUE_MOD(storeCoversInMpdDir)
 }
 
 void Settings::saveStoreLyricsInMpdDir(bool v)
 {
-    if (v!=storeLyricsInMpdDir()) {
-        SET_VALUE_MOD("storeLyricsInMpdDir", v);
-    }
+    SET_VALUE_MOD(storeLyricsInMpdDir)
 }
 
 void Settings::saveLibraryView(int v)
 {
-    if (v!=libraryView()) {
-        SET_VALUE_MOD("libraryView", v);
-    }
+    SET_VALUE_MOD(libraryView)
 }
 
 void Settings::saveAlbumsView(int v)
 {
-    if (v!=albumsView()) {
-        SET_VALUE_MOD("albumsView", v);
-    }
+    SET_VALUE_MOD(albumsView)
 }
 
 void Settings::saveFolderView(int v)
 {
-    if (v!=folderView()) {
-        SET_VALUE_MOD("folderView", v);
-    }
+    SET_VALUE_MOD(folderView)
 }
 
 void Settings::savePlaylistsView(int v)
 {
-    if (v!=playlistsView()) {
-        SET_VALUE_MOD("playlistsView", v);
-    }
+    SET_VALUE_MOD(playlistsView)
 }
 
 void Settings::saveStreamsView(int v)
 {
-    if (v!=streamsView()) {
-        SET_VALUE_MOD("streamsView", v);
-    }
+    SET_VALUE_MOD(streamsView)
 }
 
 void Settings::saveLibraryArtistImage(bool v)
 {
-    if (v!=libraryArtistImage()) {
-        SET_VALUE_MOD("libraryArtistImage", v);
-    }
+    SET_VALUE_MOD(libraryArtistImage)
 }
 
 void Settings::saveLibraryCoverSize(int v)
 {
-    if (v!=libraryCoverSize()) {
-        SET_VALUE_MOD("libraryCoverSize", v);
-    }
+    SET_VALUE_MOD(libraryCoverSize)
 }
 
 void Settings::saveAlbumsCoverSize(int v)
 {
-    if (v!=albumsCoverSize()) {
-        SET_VALUE_MOD("albumsCoverSize", v);
-    }
+    SET_VALUE_MOD(albumsCoverSize)
 }
 
 void Settings::saveAlbumSort(int v)
 {
-    if (v!=albumSort()) {
-        SET_VALUE_MOD("albumSort", v);
-    }
+    SET_VALUE_MOD(albumSort)
 }
 
 void Settings::saveSidebar(int v)
 {
-    if (v!=sidebar()) {
-        SET_VALUE_MOD("sidebar", v);
-    }
+    SET_VALUE_MOD(sidebar)
 }
 
 void Settings::saveLibraryYear(bool v)
 {
-    if (v!=libraryYear()) {
-        SET_VALUE_MOD("libraryYear", v);
-    }
+    SET_VALUE_MOD(libraryYear)
 }
 
 void Settings::saveGroupSingle(bool v)
 {
-    if (v!=groupSingle()) {
-        SET_VALUE_MOD("groupSingle", v);
-    }
+    SET_VALUE_MOD(groupSingle)
 }
 
 void Settings::saveGroupMultiple(bool v)
 {
-    if (v!=groupMultiple()) {
-        SET_VALUE_MOD("groupMultiple", v);
-    }
+    SET_VALUE_MOD(groupMultiple)
 }
 
-void Settings::saveLyricProviders(const QStringList &p)
+void Settings::saveLyricProviders(const QStringList &v)
 {
-    if (p!=lyricProviders()) {
-        SET_VALUE_MOD("lyricProviders", p);
-    }
+    SET_VALUE_MOD(lyricProviders)
 }
 
 void Settings::saveLyricsZoom(int v)
 {
-    if (v!=lyricsZoom()) {
-        SET_VALUE_MOD("lyricsZoom", v);
-    }
+    SET_VALUE_MOD(lyricsZoom)
 }
 
 void Settings::saveLyricsBgnd(bool v)
 {
-    if (v!=lyricsBgnd()) {
-        SET_VALUE_MOD("lyricsBgnd", v);
-    }
+    SET_VALUE_MOD(lyricsBgnd)
 }
 
 void Settings::saveInfoZoom(int v)
 {
-    if (v!=infoZoom()) {
-        SET_VALUE_MOD("infoZoom", v);
-    }
+    SET_VALUE_MOD(infoZoom)
 }
 
 void Settings::savePage(const QString &v)
 {
-    if (v!=page()) {
-        SET_VALUE_MOD("page", v);
-    }
+    SET_VALUE_MOD(page)
 }
 
-void Settings::saveHiddenPages(const QStringList &p)
+void Settings::saveHiddenPages(const QStringList &v)
 {
-    if (p!=hiddenPages()) {
-        SET_VALUE_MOD("hiddenPages", p);
-    }
+    SET_VALUE_MOD(hiddenPages)
 }
 
 void Settings::saveGnomeMediaKeys(bool v)
 {
-    if (v!=gnomeMediaKeys()) {
-        SET_VALUE_MOD("gnomeMediaKeys", v);
-    }
+    SET_VALUE_MOD(gnomeMediaKeys)
 }
 
 #ifdef ENABLE_DEVICES_SUPPORT
 void Settings::saveOverwriteSongs(bool v)
 {
-    if (v!=overwriteSongs()) {
-        SET_VALUE_MOD("overwriteSongs", v);
-    }
+    SET_VALUE_MOD(overwriteSongs)
 }
 
 void Settings::saveShowDeleteAction(bool v)
 {
-    if (v!=showDeleteAction()) {
-        SET_VALUE_MOD("showDeleteAction", v);
-    }
+    SET_VALUE_MOD(showDeleteAction)
 }
 
 void Settings::saveDevicesView(int v)
 {
-    if (v!=devicesView()) {
-        SET_VALUE_MOD("devicesView", v);
-    }
+    SET_VALUE_MOD(devicesView)
 }
 #endif
 
@@ -896,112 +820,85 @@ void Settings::saveStopFadeDuration(int v)
     } else if (v>MaxFade) {
         v=MaxFade;
     }
-    if (v!=stopFadeDuration()) {
-        SET_VALUE_MOD("stopFadeDuration", v);
-    }
+    SET_VALUE_MOD(stopFadeDuration)
 }
 
 #ifdef TAGLIB_FOUND
 void Settings::saveHttpPort(int v)
 {
-    if (v!=httpPort()) {
-        SET_VALUE_MOD("httpPort", v);
-    }
+    SET_VALUE_MOD(httpPort)
 }
 
 void Settings::saveHttpAddress(const QString &v)
 {
-    if (v!=httpAddress()) {
-        SET_VALUE_MOD("httpAddress", v);
-    }
+    SET_VALUE_MOD(httpAddress)
 }
 
 void Settings::saveEnableHttp(bool v)
 {
-    if (v!=enableHttp()) {
-        SET_VALUE_MOD("enableHttp", v);
-    }
+    SET_VALUE_MOD(enableHttp)
 }
 
 void Settings::saveAlwaysUseHttp(bool v)
 {
-    if (v!=alwaysUseHttp()) {
-        SET_VALUE_MOD("alwaysUseHttp", v);
-    }
+    SET_VALUE_MOD(alwaysUseHttp)
 }
 #endif
 
 void Settings::savePlayQueueGrouped(bool v)
 {
-    if (v!=playQueueGrouped()) {
-        SET_VALUE_MOD("playQueueGrouped", v);
-    }
+    SET_VALUE_MOD(playQueueGrouped)
 }
 
 void Settings::savePlayQueueAutoExpand(bool v)
 {
-    if (v!=playQueueAutoExpand()) {
-        SET_VALUE_MOD("playQueueAutoExpand", v);
-    }
+    SET_VALUE_MOD(playQueueAutoExpand)
 }
 
 void Settings::savePlayQueueStartClosed(bool v)
 {
-    if (v!=playQueueStartClosed()) {
-        SET_VALUE_MOD("playQueueStartClosed", v);
-    }
+    SET_VALUE_MOD(playQueueStartClosed)
 }
 
 void Settings::savePlayQueueScroll(bool v)
 {
-    if (v!=playQueueScroll()) {
-        SET_VALUE_MOD("playQueueScroll", v);
-    }
+    SET_VALUE_MOD(playQueueScroll)
 }
 
 void Settings::savePlayListsStartClosed(bool v)
 {
-    if (v!=playListsStartClosed()) {
-        SET_VALUE_MOD("playListsStartClosed", v);
-    }
+    SET_VALUE_MOD(playListsStartClosed)
 }
 
 #ifdef PHONON_FOUND
 void Settings::savePlayStream(bool v)
 {
-    if (v!=playStream()) {
-        SET_VALUE_MOD("playStream", v);
-    }
+    SET_VALUE_MOD(playStream)
 }
 
 void Settings::saveStreamUrl(const QString &v)
 {
-    if (v!=streamUrl()) {
-        SET_VALUE_MOD("streamUrl", v);
-    }
+    SET_VALUE_MOD(streamUrl)
 }
 #endif
 
 void Settings::saveForceSingleClick(bool v)
 {
-    if (v!=forceSingleClick()) {
-        SET_VALUE_MOD("forceSingleClick", v);
-    }
+    SET_VALUE_MOD(forceSingleClick)
 }
 
 void Settings::saveStartHidden(bool v)
 {
-    if (v!=startHidden()) {
-        SET_VALUE_MOD("startHidden", v);
-    }
+    SET_VALUE_MOD(startHidden);
 }
 
 void Settings::save(bool force)
 {
     if (force) {
         if (version()!=PACKAGE_VERSION) {
-            SET_VALUE_MOD("version", PACKAGE_VERSION_STRING);
-            ver=PACKAGE_VERSION;
+            modified=true;
+            SET_VALUE("version", PACKAGE_VERSION_STRING);
+            ver=PACKAGE_VERSION;           
         }
         if (modified) {
             modified=false;

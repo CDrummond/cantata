@@ -726,8 +726,8 @@ void Settings::saveSmallControlButtons(bool v)
 
 void Settings::saveStoreCoversInMpdDir(bool v)
 {
-    if (v!=smallControlButtons()) {
-        SET_VALUE_MOD("smallControlButtons", v);
+    if (v!=storeCoversInMpdDir()) {
+        SET_VALUE_MOD("storeCoversInMpdDir", v);
     }
 }
 

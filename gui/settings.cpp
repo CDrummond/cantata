@@ -317,11 +317,6 @@ bool Settings::smallPlaybackButtons()
     return GET_BOOL("smallPlaybackButtons", false);
 }
 
-bool Settings::smallControlButtons()
-{
-    return GET_BOOL("smallControlButtons", false);
-}
-
 bool Settings::storeCoversInMpdDir()
 {
     return GET_BOOL("storeCoversInMpdDir", true);
@@ -714,13 +709,6 @@ void Settings::saveSmallPlaybackButtons(bool v)
 {
     if (v!=smallPlaybackButtons()) {
         SET_VALUE_MOD("smallPlaybackButtons", v);
-    }
-}
-
-void Settings::saveSmallControlButtons(bool v)
-{
-    if (v!=smallControlButtons()) {
-        SET_VALUE_MOD("smallControlButtons", v);
     }
 }
 

@@ -4,6 +4,7 @@
 2. Add 'Set Album Artist from Artist' action to tag editor.
 3. Add option to specify max cover size when transfering to device.
 4. Remove 'Small Control Buttons' option.
+5. Prompt before disconnecting a device.
 
 0.9.1
 -----

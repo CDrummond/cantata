@@ -72,6 +72,7 @@ private:
 private Q_SLOTS:
     void applyVa();
     void revertVa();
+    void setAlbumArtistFromArtist();
     void capitalise();
     void checkChanged();
     void adjustTrackNumbers();

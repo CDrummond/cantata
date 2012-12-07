@@ -106,7 +106,6 @@ public:
     bool stopOnExit();
     bool stopDynamizerOnExit();
     bool smallPlaybackButtons();
-    bool smallControlButtons();
     bool storeCoversInMpdDir();
     bool storeLyricsInMpdDir();
     int libraryView();
@@ -161,7 +160,6 @@ public:
     void saveStopOnExit(bool v);
     void saveStopDynamizerOnExit(bool v);
     void saveSmallPlaybackButtons(bool v);
-    void saveSmallControlButtons(bool v);
     void savePlayQueueHeaderState(const QByteArray &v);
     void saveSplitterState(const QByteArray &v);
     void saveSplitterAutoHide(bool v);

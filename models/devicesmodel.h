@@ -70,7 +70,7 @@ public Q_SLOTS:
     void accessibilityChanged(bool accessible, const QString &udi);
     void deviceUpdating(const QString &udi, bool state);
     void emitAddToDevice();
-    void addRemoteDevice(const QString &coverFileName, const DeviceOptions &opts, RemoteFsDevice::Details details);
+    void addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::Details details);
     void removeRemoteDevice(const QString &udi);
     void remoteDeviceUdiChanged();
     void mountsChanged();

@@ -36,9 +36,9 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     setMainWidget(devProp);
 }
 
-void DevicePropertiesDialog::show(const QString &path, const QString &coverName, const DeviceOptions &opts, int props)
+void DevicePropertiesDialog::show(const QString &path, const DeviceOptions &opts, int props)
 {
-    devProp->update(path, coverName, opts, props);
+    devProp->update(path, opts, props);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
     Dialog::show();
     enableButtonOk(false);
@@ -53,7 +53,7 @@ void DevicePropertiesDialog::slotButtonClicked(int button)
 {
     switch (button) {
     case Ok:
-        emit updatedSettings(devProp->music(), devProp->cover(), devProp->settings());
+        emit updatedSettings(devProp->music(), devProp->settings());
         break;
     case Cancel:
         emit cancelled();

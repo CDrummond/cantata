@@ -44,7 +44,11 @@ struct DeviceOptions {
 
     static bool isConfigured(const QString &group, bool isMpd=false);
 
+    #ifdef ENABLE_DEVICES_SUPPORT
+    DeviceOptions(const QString &cvrName=QString());
+    #else
     DeviceOptions();
+    #endif
 
     void load(const QString &group, bool isMpd=false);
     void save(const QString &group, bool isMpd=false);
@@ -53,6 +57,7 @@ struct DeviceOptions {
         return vfatSafe==o.vfatSafe && asciiOnly==o.asciiOnly && ignoreThe==o.ignoreThe &&
                 replaceSpaces==o.replaceSpaces && scheme==o.scheme
                 #ifdef ENABLE_DEVICES_SUPPORT
+                && coverMaxSize==o.coverMaxSize && coverName==o.coverName
                 && fixVariousArtists==o.fixVariousArtists && useCache==o.useCache &&
                 transcoderCodec==o.transcoderCodec && autoScan==o.autoScan &&
                 (transcoderCodec.isEmpty() || (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent))
@@ -65,7 +70,15 @@ struct DeviceOptions {
     QString clean(const QString &str) const;
     Song clean(const Song &s) const;
     QString createFilename(const Song &s) const;
-
+    #ifdef ENABLE_DEVICES_SUPPORT
+    void checkCoverSize() {
+        if (0==coverMaxSize || coverMaxSize>400) {
+            coverMaxSize=0;
+        } else {
+            coverMaxSize=((unsigned int)(coverMaxSize/100))*100;
+        }
+    }
+    #endif
     QString scheme;
     bool vfatSafe;
     bool asciiOnly;
@@ -78,6 +91,8 @@ struct DeviceOptions {
     bool transcoderWhenDifferent;
     bool useCache;
     bool autoScan;
+    QString coverName;
+    unsigned int coverMaxSize;
     #endif
 };
 

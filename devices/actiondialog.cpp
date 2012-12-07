@@ -444,13 +444,12 @@ void ActionDialog::configure(const QString &udi)
 {
     if (udi.isEmpty()) {
         DevicePropertiesDialog *dlg=new DevicePropertiesDialog(this);
-        connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const DeviceOptions &)),
-                SLOT(saveProperties(const QString &, const QString &, const DeviceOptions &)));
+        connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &)), SLOT(saveProperties(const QString &, const DeviceOptions &)));
         if (!mpdConfigured) {
             connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
         }
         dlg->setCaption(i18n("Local Music Library Properties"));
-        dlg->show(MPDConnection::self()->getDetails().dir, QString(), namingOptions, DevicePropertiesWidget::Prop_Basic);
+        dlg->show(MPDConnection::self()->getDetails().dir, namingOptions, DevicePropertiesWidget::Prop_Basic);
     } else {
         Device *dev=DevicesModel::self()->device(udi);
         if (dev) {
@@ -459,10 +458,9 @@ void ActionDialog::configure(const QString &udi)
     }
 }
 
-void ActionDialog::saveProperties(const QString &path, const QString &coverFile, const DeviceOptions &opts)
+void ActionDialog::saveProperties(const QString &path, const DeviceOptions &opts)
 {
     Q_UNUSED(path)
-    Q_UNUSED(coverFile)
     namingOptions=opts;
     namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
     mpdConfigured=true;

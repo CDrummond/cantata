@@ -177,7 +177,11 @@ const QLatin1String DeviceOptions::constCdNumber("%discnumber%");
 const QLatin1String DeviceOptions::constGenre("%genre%");
 const QLatin1String DeviceOptions::constYear("%year%");
 
+#ifdef ENABLE_DEVICES_SUPPORT
+DeviceOptions::DeviceOptions(const QString &cvrName)
+#else
 DeviceOptions::DeviceOptions()
+#endif
     : scheme(constAlbumArtist+QChar('/')+
              constAlbumTitle+QChar('/')+
              constTrackNumber+QChar(' ')+
@@ -192,6 +196,8 @@ DeviceOptions::DeviceOptions()
     , transcoderWhenDifferent(false)
     , useCache(false)
     , autoScan(false)
+    , coverName(cvrName)
+    , coverMaxSize(0)
     #endif
 {
 }
@@ -225,10 +231,14 @@ void DeviceOptions::load(const QString &group, bool isMpd)
     replaceSpaces=GET_BOOL("replaceSpaces", replaceSpaces);
     #ifdef ENABLE_DEVICES_SUPPORT
     if (!isMpd) {
+        useCache=GET_BOOL("useCache", useCache);
         fixVariousArtists=GET_BOOL("fixVariousArtists", fixVariousArtists);
         transcoderCodec=GET_STRING("transcoderCodec", transcoderCodec);
         transcoderValue=GET_INT("transcoderValue", transcoderValue);
         transcoderWhenDifferent=GET_BOOL("transcoderWhenDifferent", transcoderWhenDifferent);
+        coverName=GET_STRING("coverFileName", coverName);
+        coverMaxSize=GET_INT("coverMaxSize", coverMaxSize);
+        checkCoverSize();
     }
     #endif
 }
@@ -249,10 +259,13 @@ void DeviceOptions::save(const QString &group, bool isMpd)
     SET_VALUE("replaceSpaces", replaceSpaces);
     #ifdef ENABLE_DEVICES_SUPPORT
     if (!isMpd) {
+        SET_VALUE("useCache", useCache);
         SET_VALUE("fixVariousArtists", fixVariousArtists);
         SET_VALUE("transcoderCodec", transcoderCodec);
         SET_VALUE("transcoderValue", transcoderValue);
         SET_VALUE("transcoderWhenDifferent", transcoderWhenDifferent);
+        SET_VALUE("coverFileName", coverName);
+        SET_VALUE("coverMaxSize", coverMaxSize);
     }
     #endif
     CFG_SYNC;

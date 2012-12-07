@@ -1,4 +1,8 @@
-﻿0.9.0
+﻿0.9.1
+-----
+1. Fix saving of 'Store covers in MPD dir' setting.
+
+0.9.0
 -----
  1. Add a 'server' mode to cantata-dynamic. This contains a basic HTTP API to
     list rules, update rules, and start/stop the dynamic mode.

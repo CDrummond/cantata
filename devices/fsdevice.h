@@ -71,21 +71,6 @@ class FsDevice : public Device
     Q_OBJECT
 
 public:
-    struct CoverOptions
-    {
-        CoverOptions(const QString &n=QString()) : name(n), maxSize(0) { }
-        void checkSize() {
-            if (0==maxSize || maxSize>=400) {
-                maxSize=0;
-            } else {
-                maxSize=((int)(maxSize/100))*100;
-            }
-        }
-
-        QString name;
-        unsigned int maxSize;
-    };
-
     FsDevice(DevicesModel *m, Solid::Device &dev);
     FsDevice(DevicesModel *m, const QString &name, const QString &id);
     virtual ~FsDevice();
@@ -93,7 +78,7 @@ public:
     void rescan(bool full=true);
     bool isRefreshing() const { return 0!=scanner; }
     QString path() const { return audioFolder; }
-    QString coverFile() const { return coverOpts.name; }
+    QString coverFile() const { return opts.coverName; }
     void addSong(const Song &s, bool overwrite, bool copyCover);
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover);
     void removeSong(const Song &s);
@@ -124,7 +109,6 @@ protected:
     bool scanned;
     MusicScanner *scanner;
     mutable QString audioFolder;
-    CoverOptions coverOpts;
     FreeSpaceInfo spaceInfo;
 };
 

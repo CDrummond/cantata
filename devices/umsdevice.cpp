@@ -185,10 +185,10 @@ void UmsDevice::setup()
         while (!in.atEnd()) {
             QString line = in.readLine();
             if (line.startsWith(constCoverFileNameKey+"=")) {
-                coverOpts.name=line.section('=', 1, 1);
+                opts.coverName=line.section('=', 1, 1);
             } if (line.startsWith(constCoverMaxSizeKey+"=")) {
-                coverOpts.maxSize=line.section('=', 1, 1).toUInt();
-                coverOpts.checkSize();
+                opts.coverMaxSize=line.section('=', 1, 1).toUInt();
+                opts.checkCoverSize();
             } else if(line.startsWith(constVariousArtistsFixKey+"=")) {
                 opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
             } else if (line.startsWith(constTranscoderKey+"="))  {
@@ -206,8 +206,8 @@ void UmsDevice::setup()
         }
     }
 
-    if (coverOpts.name.isEmpty()) {
-        coverOpts.name=constDefCoverFileName;
+    if (opts.coverName.isEmpty()) {
+        opts.coverName=constDefCoverFileName;
     }
 
     // No setting, see if any standard dirs exist in path...
@@ -242,19 +242,18 @@ void UmsDevice::configure(QWidget *parent)
     }
 
     DevicePropertiesDialog *dlg=new DevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const DeviceOptions &)),
-            SLOT(saveProperties(const QString &, const QString &, const DeviceOptions &)));
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &)), SLOT(saveProperties(const QString &, const DeviceOptions &)));
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(audioFolder, coverOpts.name, opts,
+    dlg->show(audioFolder, opts,
               qobject_cast<ActionDialog *>(parent) ? (DevicePropertiesWidget::Prop_All-DevicePropertiesWidget::Prop_Folder)
                                                    : DevicePropertiesWidget::Prop_All);
 }
 
 void UmsDevice::saveProperties()
 {
-    saveProperties(audioFolder, coverOpts.name, opts);
+    saveProperties(audioFolder, opts);
 }
 
 static inline QString toString(bool b)
@@ -314,10 +313,10 @@ void UmsDevice::saveOptions()
     }
 }
 
-void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFileName, const DeviceOptions &newOpts)
+void UmsDevice::saveProperties(const QString &newPath, const DeviceOptions &newOpts)
 {
     QString nPath=Utils::fixPath(newPath);
-    if (configured && opts==newOpts && nPath==audioFolder && newCoverFileName==coverOpts.name) {
+    if (configured && opts==newOpts && nPath==audioFolder) {
         return;
     }
 
@@ -331,7 +330,6 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
             removeCache();
         }
     }
-    coverOpts.name=newCoverFileName;
     QString oldPath=audioFolder;
     if (!isConnected()) {
         return;
@@ -345,11 +343,11 @@ void UmsDevice::saveProperties(const QString &newPath, const QString &newCoverFi
 
     if (extra.open(QIODevice::WriteOnly|QIODevice::Text)) {
         QTextStream out(&extra);
-        if (coverOpts.name!=constDefCoverFileName) {
-            out << constCoverFileNameKey << '=' << coverOpts.name << '\n';
+        if (opts.coverName!=constDefCoverFileName) {
+            out << constCoverFileNameKey << '=' << opts.coverName << '\n';
         }
-        if (0!=coverOpts.maxSize) {
-            out << constCoverMaxSizeKey << '=' << coverOpts.maxSize << '\n';
+        if (0!=opts.coverMaxSize) {
+            out << constCoverMaxSizeKey << '=' << opts.coverMaxSize << '\n';
         }
         if (opts.fixVariousArtists) {
             out << constVariousArtistsFixKey << '=' << toString(opts.fixVariousArtists) << '\n';

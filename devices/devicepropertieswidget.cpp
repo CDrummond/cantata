@@ -86,6 +86,7 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     setupUi(this);
     configFilename->setIcon(Icons::configureIcon);
     albumCovers->insertItems(0, QStringList() << noCoverText << Covers::standardNames());
+    coverMaxSize->insertItems(0, QStringList() << i18n("No maximum size") << i18n("400 pixels") << i18n("300 pixels") << i18n("200 pixels") << i18n("100 pixels"));
     fixVariousArtists->setToolTip(i18n("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
                                        "then Cantata will set the 'Artist' tag of all tracks to 'Various Artists' and the "
                                        "track 'Title' tag to 'TrackArtist - TrackTitle'.<hr/> When copying from a device, Cantata "
@@ -107,7 +108,7 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     }
 }
 
-void DevicePropertiesWidget::update(const QString &path, const QString &coverName, const DeviceOptions &opts, int props)
+void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &opts, int props)
 {
     filenameScheme->setText(opts.scheme);
     vfatSafe->setChecked(opts.vfatSafe);
@@ -119,6 +120,8 @@ void DevicePropertiesWidget::update(const QString &path, const QString &coverNam
     musicFolderLabel->setVisible(props&Prop_Folder);
     albumCovers->setVisible(props&Prop_Covers);
     albumCoversLabel->setVisible(props&Prop_Covers);
+    coverMaxSize->setVisible(props&Prop_Covers);
+    coverMaxSizeLabel->setVisible(props&Prop_Covers);
     fixVariousArtists->setVisible(props&Prop_Va);
     fixVariousArtistsLabel->setVisible(props&Prop_Va);
     fixVariousArtists->setChecked(opts.fixVariousArtists);
@@ -164,18 +167,29 @@ void DevicePropertiesWidget::update(const QString &path, const QString &coverNam
             }
         }
     }
+
+    origOpts=opts;
     albumCovers->setCurrentIndex(0);
-    origCoverName=coverName;
-    if (origCoverName==Device::constNoCover) {
-        origCoverName=noCoverText;
+    if (origOpts.coverName==Device::constNoCover) {
+        origOpts.coverName=noCoverText;
     }
-    for (int i=0; i<albumCovers->count(); ++i) {
-        if (albumCovers->itemText(i)==origCoverName) {
+    for (int i=1; i<albumCovers->count(); ++i) {
+        if (albumCovers->itemText(i)==origOpts.coverName) {
             albumCovers->setCurrentIndex(i);
             break;
         }
     }
-    origOpts=opts;
+
+    if (0!=origOpts.coverMaxSize) {
+        int coverMax=origOpts.coverMaxSize/100;
+        if (coverMax<0 || coverMax>=coverMaxSize->count()) {
+            coverMax=0;
+        }
+        coverMaxSize->setCurrentIndex(0==coverMax ? 0 : (coverMaxSize->count()-coverMax));
+    } else {
+        coverMaxSize->setCurrentIndex(0);
+    }
+
     origMusicFolder=path;
     albumCovers->setValidator(new CoverNameValidator(this));
 
@@ -185,7 +199,8 @@ void DevicePropertiesWidget::update(const QString &path, const QString &coverNam
     connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(albumCoversChanged()));
+    connect(coverMaxSize, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
     connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
     connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
@@ -193,7 +208,7 @@ void DevicePropertiesWidget::update(const QString &path, const QString &coverNam
     connect(autoScan, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     connect(replaceSpaces, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     modified=false;
-    checkSaveable();
+    albumCoversChanged();
 }
 
 void DevicePropertiesWidget::transcoderChanged()
@@ -219,12 +234,20 @@ void DevicePropertiesWidget::transcoderChanged()
     checkSaveable();
 }
 
+void DevicePropertiesWidget::albumCoversChanged()
+{
+    bool enableSize=albumCovers->currentText()!=noCoverText;
+    coverMaxSize->setEnabled(enableSize);
+    coverMaxSizeLabel->setEnabled(enableSize);
+    checkSaveable();
+}
+
 void DevicePropertiesWidget::checkSaveable()
 {
     DeviceOptions opts=settings();
     bool checkFolder=musicFolder->isVisible();
 
-    modified=opts!=origOpts || albumCovers->currentText()!=origCoverName;
+    modified=opts!=origOpts;
     if (!modified && checkFolder) {
         modified=musicFolder->text().trimmed()!=origMusicFolder;
     }
@@ -255,6 +278,8 @@ DeviceOptions DevicePropertiesWidget::settings()
     opts.transcoderCodec=QString();
     opts.transcoderValue=0;
     opts.transcoderWhenDifferent=false;
+    opts.coverName=albumCovers->currentText();
+    opts.coverMaxSize=0==coverMaxSize->currentIndex() ? 0 : ((coverMaxSize->count()-coverMaxSize->currentIndex())*100);
     if (transcoderFrame->isVisible()) {
         opts.transcoderCodec=transcoderName->itemData(transcoderName->currentIndex()).toString();
 

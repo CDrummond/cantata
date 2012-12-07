@@ -31,7 +31,7 @@ class TranscodingJob : public CopyJob
     Q_OBJECT
 public:
     explicit TranscodingJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest,
-                            const FsDevice::CoverOptions &c=FsDevice::CoverOptions(), int co=0, const Song &s=Song());
+                            const DeviceOptions &d=DeviceOptions(), int co=0, const Song &s=Song());
     virtual ~TranscodingJob();
 
     void stop();

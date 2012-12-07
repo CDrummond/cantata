@@ -56,7 +56,7 @@ private:
 
 private Q_SLOTS:
     void saveProperties();
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const DeviceOptions &opts);
+    void saveProperties(const QString &newPath, const DeviceOptions &opts);
 
 private:
     Solid::StorageAccess *access;

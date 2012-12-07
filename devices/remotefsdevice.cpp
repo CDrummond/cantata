@@ -110,7 +110,7 @@ QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
     return devices;
 }
 
-Device * RemoteFsDevice::create(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d)
+Device * RemoteFsDevice::create(DevicesModel *m, const DeviceOptions &options, const Details &d)
 {
     if (d.isEmpty()) {
         return 0;
@@ -128,7 +128,7 @@ Device * RemoteFsDevice::create(DevicesModel *m, const QString &cover, const Dev
     SET_VALUE(constCfgKey, names);
     d.save();
     if (d.isLocalFile() || constSshfsProtocol==d.protocol) {
-        return new RemoteFsDevice(m, cover, options, d);
+        return new RemoteFsDevice(m, options, d);
     }
     return 0;
 }
@@ -194,14 +194,13 @@ void RemoteFsDevice::renamed(const QString &oldName, const QString &newName)
     CFG_SYNC;
 }
 
-RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const QString &cover, const DeviceOptions &options, const Details &d)
+RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const DeviceOptions &options, const Details &d)
     : FsDevice(m, d.name, createUdi(d.name))
     , mountToken(0)
     , currentMountStatus(false)
     , details(d)
     , proc(0)
 {
-    coverOpts.name=cover;
     opts=options;
     details.path=Utils::fixPath(details.path);
     load();
@@ -447,20 +446,12 @@ void RemoteFsDevice::setup()
     QSettings cfg;
     #endif
     if (HAS_GROUP(key)) {
-        #ifdef ENABLE_KDE_SUPPORT
-        KConfigGroup cfg(KGlobal::config(), key);
-        #else
-        cfg.beginGroup(key);
-        #endif
-        opts.useCache=GET_BOOL("useCache", true);
-        coverOpts.name=GET_STRING("coverFileName", "cover.jpg");
-        coverOpts.maxSize=GET_INT("coverMaxSize", 0);
-        coverOpts.checkSize();
+        opts.checkCoverSize();
         configured=true;
     } else {
         opts.useCache=true;
-        coverOpts.name=QLatin1String("cover.jpg");
-        coverOpts.maxSize=0;
+        opts.coverName=QLatin1String("cover.jpg");
+        opts.coverMaxSize=0;
         configured=false;
     }
     load();
@@ -478,12 +469,12 @@ void RemoteFsDevice::configure(QWidget *parent)
     }
 
     RemoteDevicePropertiesDialog *dlg=new RemoteDevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &, RemoteFsDevice::Details)),
-            SLOT(saveProperties(const QString &, const DeviceOptions &, RemoteFsDevice::Details)));
+    connect(dlg, SIGNAL(updatedSettings(const DeviceOptions &, const RemoteFsDevice::Details &)),
+            SLOT(saveProperties(const DeviceOptions &, const RemoteFsDevice::Details &)));
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(coverOpts.name, opts, details,
+    dlg->show(opts, details,
               DevicePropertiesWidget::Prop_All-(DevicePropertiesWidget::Prop_Folder+DevicePropertiesWidget::Prop_AutoScan),
               false, isConnected());
 }
@@ -505,16 +496,17 @@ void RemoteFsDevice::saveOptions()
 
 void RemoteFsDevice::saveProperties()
 {
-    saveProperties(coverOpts.name, opts, details);
+    saveProperties(opts, details);
 }
 
-void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const DeviceOptions &newOpts, Details newDetails)
+void RemoteFsDevice::saveProperties(const DeviceOptions &newOpts, const Details &nd)
 {
-    if (configured && opts==newOpts && newCoverFileName==coverOpts.name && details==newDetails) {
+    if (configured && opts==newOpts && details==nd) {
         return;
     }
 
     configured=true;
+    Details newDetails=nd;
     Details oldDetails=details;
     newDetails.path=Utils::fixPath(newDetails.path);
     bool diffUrl=oldDetails.port!=newDetails.port || oldDetails.protocol!=newDetails.protocol ||
@@ -536,19 +528,9 @@ void RemoteFsDevice::saveProperties(const QString &newCoverFileName, const Devic
 
     opts=newOpts;
     details=newDetails;
-    coverOpts.name=newCoverFileName;
     QString key=udi();
     details.save();
     opts.save(key);
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), key);
-    #else
-    QSettings cfg;
-    cfg.beginGroup(key);
-    #endif
-    SET_VALUE("useCache", opts.useCache);
-    SET_VALUE("coverFileName", coverOpts.name);
-    SET_VALUE("coverMaxSize", coverOpts.maxSize);
 
     if (newName) {
         QString oldMount=mountPoint(oldDetails, false);

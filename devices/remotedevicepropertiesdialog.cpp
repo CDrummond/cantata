@@ -47,13 +47,13 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     setMainWidget(tab);
 }
 
-void RemoteDevicePropertiesDialog::show(const QString &coverName, const DeviceOptions &opts, const RemoteFsDevice::Details &det, int props, bool create, bool isConnected)
+void RemoteDevicePropertiesDialog::show(const DeviceOptions &opts, const RemoteFsDevice::Details &det, int props, bool create, bool isConnected)
 {
     isCreate=create;
     if (isCreate) {
         setCaption(i18n("Add Device"));
     }
-    devProp->update(QString(), coverName, opts, props);
+    devProp->update(QString(), opts, props);
     remoteProp->update(det, create, isConnected);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
     connect(remoteProp, SIGNAL(updated()), SLOT(enableOkButton()));
@@ -75,7 +75,7 @@ void RemoteDevicePropertiesDialog::slotButtonClicked(int button)
         if (d.name!=remoteProp->origDetails().name && DevicesModel::self()->device(RemoteFsDevice::createUdi(d.name))) {
             MessageBox::error(this, i18n("A remote device named \"%1\" already exists!\nPlease choose a different name").arg(d.name));
         } else {
-            emit updatedSettings(devProp->cover(), devProp->settings(), remoteProp->details());
+            emit updatedSettings(devProp->settings(), remoteProp->details());
             accept();
         }
         break;

@@ -37,10 +37,10 @@ class RemoteDevicePropertiesDialog : public Dialog
 
 public:
     RemoteDevicePropertiesDialog(QWidget *parent);
-    void show(const QString &coverName, const DeviceOptions &opts, const RemoteFsDevice::Details &det, int props, bool creating=false, bool isConnected=false);
+    void show(const DeviceOptions &opts, const RemoteFsDevice::Details &det, int props, bool creating=false, bool isConnected=false);
 
 Q_SIGNALS:
-    void updatedSettings(const QString &coverName, const DeviceOptions &opts, const RemoteFsDevice::Details &det);
+    void updatedSettings(const DeviceOptions &opts, const RemoteFsDevice::Details &det);
     void cancelled();
 
 private Q_SLOTS:

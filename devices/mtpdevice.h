@@ -24,7 +24,7 @@
 #ifndef MTPDEVICE_H
 #define MTPDEVICE_H
 
-#include "device.h"
+#include "fsdevice.h"
 #include "song.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/portablemediaplayer.h>
@@ -163,7 +163,7 @@ private Q_SLOTS:
     void getSongStatus(bool ok, bool copiedCover);
     void delSongStatus(bool ok);
     void cleanDirsStatus(bool ok);
-    void saveProperties(const QString &newPath, const QString &newCoverFileName, const DeviceOptions &opts);
+    void saveProperties(const QString &newPath, const DeviceOptions &opts);
     void saveProperties();
 
 private:

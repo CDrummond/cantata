@@ -47,7 +47,7 @@ public:
     };
     DevicePropertiesWidget(QWidget *parent);
     virtual ~DevicePropertiesWidget() { }
-    void update(const QString &path, const QString &coverName, const DeviceOptions &opts, int props);
+    void update(const QString &path, const DeviceOptions &opts, int props);
     DeviceOptions settings();
     bool isModified() const { return modified; }
     bool isSaveable() const { return saveable; }
@@ -61,12 +61,12 @@ private Q_SLOTS:
     void configureFilenameScheme();
     void checkSaveable();
     void transcoderChanged();
+    void albumCoversChanged();
 
 private:
     FilenameSchemeDialog *schemeDlg;
     DeviceOptions origOpts;
     QString origMusicFolder;
-    QString origCoverName;
     QString noCoverText;
     bool modified;
     bool saveable;

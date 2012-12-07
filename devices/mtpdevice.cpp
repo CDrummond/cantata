@@ -990,12 +990,11 @@ void MtpDevice::configure(QWidget *parent)
     }
 
     DevicePropertiesDialog *dlg=new DevicePropertiesDialog(parent);
-    connect(dlg, SIGNAL(updatedSettings(const QString &, const QString &, const DeviceOptions &)),
-            SLOT(saveProperties(const QString &, const QString &, const DeviceOptions &)));
+    connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &)), SLOT(saveProperties(const QString &, const DeviceOptions &)));
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(QString(), QString(), opts, DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
+    dlg->show(QString(), opts, DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
 }
 
 void MtpDevice::rescan(bool full)
@@ -1303,7 +1302,7 @@ void MtpDevice::libraryUpdated()
     mtpUpdating=false;
 }
 
-void MtpDevice::saveProperties(const QString &, const QString &, const DeviceOptions &newOpts)
+void MtpDevice::saveProperties(const QString &, const DeviceOptions &newOpts)
 {
     if (configured && opts==newOpts) {
         return;

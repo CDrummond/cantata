@@ -36,10 +36,10 @@ class DevicePropertiesDialog : public Dialog
 
 public:
     DevicePropertiesDialog(QWidget *parent);
-    void show(const QString &path, const QString &coverName, const DeviceOptions &opts, int props);
+    void show(const QString &path, const DeviceOptions &opts, int props);
 
 Q_SIGNALS:
-    void updatedSettings(const QString &path, const QString &coverName, const DeviceOptions &opts);
+    void updatedSettings(const QString &path,  const DeviceOptions &opts);
     void cancelled();
 
 private Q_SLOTS:

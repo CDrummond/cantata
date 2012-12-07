@@ -922,52 +922,9 @@ void ItemView::backActivated()
 
 QAction * ItemView::getAction(const QModelIndex &index)
 {
-    bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
-    bool iconMode=Mode_IconTop==mode && index.child(0, 0).isValid();
-    QRect rect(view()->visualRect(index));
-    rect.moveTo(view()->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
-    bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
-    bool haveToggle = toggle && !index.data(ItemView::Role_ToggleIcon).value<QIcon>().isNull();
-    if (Mode_Tree!=mode || showCapacity) {
-        if (iconMode) {
-            rect.adjust(ActionItemDelegate::constBorder, ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder);
-        } else {
-            rect.adjust(ActionItemDelegate::constBorder+3, 0, -(ActionItemDelegate::constBorder+3), 0);
-        }
-    }
-
-    if (showCapacity) {
-        int textHeight=QFontMetrics(QApplication::font()).height();
-        rect.adjust(0, 0, 0, -(textHeight+8));
-    }
-
-    QRect actionRect=ActionItemDelegate::calcActionRect(rtl, iconMode, rect);
-    QRect actionRect2(actionRect);
-    ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect2);
-
-    if (act1 && actionRect.contains(QCursor::pos())) {
-        return act1;
-    }
-
-    if (act1) {
-        ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
-    }
-
-    if (act2 && actionRect.contains(QCursor::pos())) {
-        return act2;
-    }
-
-    if (haveToggle) {
-        if (act1 || act2) {
-            ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
-        }
-
-        if (toggle && actionRect.contains(QCursor::pos())) {
-            return toggle;
-        }
-    }
-
-    return 0;
+    QAbstractItemDelegate *abs=view()->itemDelegate();
+    ActionItemDelegate *d=abs ? qobject_cast<ActionItemDelegate *>(abs) : 0;
+    return d ? d->getAction(view(), index) : 0;
 }
 
 void ItemView::itemClicked(const QModelIndex &index)

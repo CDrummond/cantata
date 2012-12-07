@@ -137,6 +137,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     QMenu *toolsMenu=new QMenu(this);
     toolsMenu->addAction(i18n("Apply \"Various Artists\" Workaround"), this, SLOT(applyVa()));
     toolsMenu->addAction(i18n("Revert \"Various Artists\" Workaround"), this, SLOT(revertVa()));
+    toolsMenu->addAction(i18n("Set 'Album Artist' from 'Artist'"), this, SLOT(setAlbumArtistFromArtist()));
     toolsMenu->addAction(i18n("Capitalize"), this, SLOT(capitalise()));
     toolsMenu->addAction(i18n("Adjust Track Numbers"), this, SLOT(adjustTrackNumbers()));
     setButtonMenu(User3, toolsMenu, InstantPopup);
@@ -395,6 +396,36 @@ void TagEditor::revertVa()
     } else {
         Song s=edited.at(currentSongIndex);
         if (s.revertVariousArtists()) {
+            edited.replace(currentSongIndex, s);
+            updateEditedStatus(currentSongIndex);
+            setSong(s);
+        }
+    }
+}
+
+void TagEditor::setAlbumArtistFromArtist()
+{
+    bool isAll=0==currentSongIndex && original.count()>1;
+
+    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Set 'Album Artist' from 'Artist' for <b>all</b> tracks?")
+                                                              : i18n("Set 'Album Artist' from 'Artist'?"))) {
+        return;
+    }
+
+    if (isAll) {
+        for (int i=0; i<edited.count(); ++i) {
+            Song s=edited.at(i);
+            if (s.setAlbumArtist()) {
+                edited.replace(i, s);
+                updateEditedStatus(i);
+                if (i==currentSongIndex) {
+                    setSong(s);
+                }
+            }
+        }
+    } else {
+        Song s=edited.at(currentSongIndex);
+        if (s.setAlbumArtist()) {
             edited.replace(currentSongIndex, s);
             updateEditedStatus(currentSongIndex);
             setSong(s);

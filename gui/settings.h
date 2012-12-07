@@ -183,12 +183,12 @@ public:
     void saveLibraryYear(bool v);
     void saveGroupSingle(bool v);
     void saveGroupMultiple(bool v);
-    void saveLyricProviders(const QStringList &p);
+    void saveLyricProviders(const QStringList &v);
     void saveLyricsZoom(int v);
     void saveLyricsBgnd(bool v);
     void saveInfoZoom(int v);
     void savePage(const QString &v);
-    void saveHiddenPages(const QStringList &p);
+    void saveHiddenPages(const QStringList &v);
     void saveGnomeMediaKeys(bool v);
     #ifdef ENABLE_DEVICES_SUPPORT
     void saveOverwriteSongs(bool v);

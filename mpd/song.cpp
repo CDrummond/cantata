@@ -310,6 +310,15 @@ bool Song::revertVariousArtists()
     return false;
 }
 
+bool Song::setAlbumArtist()
+{
+    if (!artist.isEmpty() && artist!=albumartist) {
+        albumartist=artist;
+        return true;
+    }
+    return false;
+}
+
 QString Song::capitalize(const QString &s)
 {
     if (s.isEmpty()) {

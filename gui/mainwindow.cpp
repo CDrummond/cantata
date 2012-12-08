@@ -810,9 +810,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setFocus();
     playQueue->initHeader();
 
-    mpdThread=new QThread(this);
-    MPDConnection::self()->moveToThread(mpdThread);
-    mpdThread->start();
+    MPDConnection::self()->start();
     connectToMpd();
 
     QString page=Settings::self()->page();
@@ -885,7 +883,7 @@ MainWindow::~MainWindow()
         emit stop();
         Utils::sleep();
     }
-    Utils::stopThread(mpdThread);
+    MPDConnection::self()->stop();
     Covers::self()->stop();
     #if defined ENABLE_DEVICES_SUPPORT
     FileScheduler::self()->stop();

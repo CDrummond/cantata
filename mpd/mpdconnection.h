@@ -41,6 +41,7 @@ class MusicLibraryItemArtist;
 class DirViewItemRoot;
 class MusicLibraryItemRoot;
 class QTimer;
+class QThread;
 
 class MpdSocket : public QObject
 {
@@ -175,6 +176,8 @@ public:
     MPDConnection();
     ~MPDConnection();
 
+    void start();
+    void stop();
     const MPDConnectionDetails & getDetails() const { return details; }
     void setDirReadable(bool r) { details.dirReadable=r; }
     bool isConnected() const { return State_Connected==state; }
@@ -302,6 +305,7 @@ private:
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
 
 private:
+    QThread *thread;
     long ver;
     MPDConnectionDetails details;
     QDateTime dbUpdate;

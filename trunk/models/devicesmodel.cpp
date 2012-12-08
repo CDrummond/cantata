@@ -637,7 +637,6 @@ void DevicesModel::addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::De
         updateItemMenu();
     }
     #else
-    Q_UNUSED(coverFileName)
     Q_UNUSED(opts)
     Q_UNUSED(details)
     #endif

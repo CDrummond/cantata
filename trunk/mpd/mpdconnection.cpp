@@ -27,6 +27,7 @@
 #include "mpdconnection.h"
 #include "mpdparseutils.h"
 #include "localize.h"
+#include "utils.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #endif
@@ -142,7 +143,8 @@ QString MPDConnectionDetails::description() const
 }
 
 MPDConnection::MPDConnection()
-    : ver(0)
+    : thread(0)
+    , ver(0)
     , sock(this)
     , idleSocket(this)
     , state(State_Blank)
@@ -170,6 +172,24 @@ MPDConnection::~MPDConnection()
     disconnect(&idleSocket, SIGNAL(readyRead()), this, SLOT(idleDataReady()));
     sock.disconnectFromHost();
     idleSocket.disconnectFromHost();
+}
+
+void MPDConnection::start()
+{
+    if (!thread) {
+        thread=new QThread();
+        moveToThread(thread);
+        thread->start();
+    }
+}
+
+void MPDConnection::stop()
+{
+    if (thread) {
+        Utils::stopThread(thread);
+        thread->deleteLater();
+        thread=0;
+    }
 }
 
 MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, bool enableIdle)

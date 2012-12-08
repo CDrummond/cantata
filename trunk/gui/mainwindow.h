@@ -65,7 +65,6 @@ class ServerInfoPage;
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
 #endif
-class QThread;
 class QAbstractItemView;
 #ifndef Q_OS_WIN
 class Mpris;
@@ -445,7 +444,6 @@ private:
     DevicesPage *devicesPage;
     #endif
     ServerInfoPage *serverInfoPage;
-    QThread *mpdThread;
     #ifndef Q_OS_WIN
     Mpris *mpris;
     GnomeMediaKeys *gnomeMediaKeys;

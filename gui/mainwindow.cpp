@@ -2846,6 +2846,12 @@ QString MainWindow::coverFile() const
 #include <X11/Xlib.h>
 #endif
 
+void MainWindow::hideWindow()
+{
+    lastPos=pos();
+    hide();
+}
+
 void MainWindow::restoreWindow()
 {
     bool wasHidden=isHidden();

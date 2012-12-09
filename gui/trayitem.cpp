@@ -110,7 +110,7 @@ void TrayItem::clicked()
     if (mw->isHidden()) {
         mw->restoreWindow();
     } else {
-        mw->hide();
+        mw->hideWindow();
     }
 }
 
@@ -139,7 +139,7 @@ void TrayItem::trayItemClicked(QSystemTrayIcon::ActivationReason reason)
         if (mw->isHidden()) {
             mw->restoreWindow();
         } else {
-            mw->hide();
+            mw->hideWindow();
         }
         break;
     case QSystemTrayIcon::MiddleClick:

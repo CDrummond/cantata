@@ -207,6 +207,7 @@ public Q_SLOTS:
     void showInformation(const QString &message);
     void showPage(const QString &page, bool focusSearch);
     void dynamicStatus(const QString &message);
+    void hideWindow();
     void restoreWindow();
     void load(const QStringList &urls);
     #ifdef ENABLE_KDE_SUPPORT

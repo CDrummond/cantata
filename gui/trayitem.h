@@ -76,6 +76,7 @@ public:
 
 private Q_SLOTS:
     #ifdef ENABLE_KDE_SUPPORT
+    void clicked();
     void trayItemScrollRequested(int delta, Qt::Orientation orientation);
     void notificationClosed();
     #else

@@ -73,13 +73,12 @@ void TrayItem::setup()
     trayItemMenu->addAction(mw->stopTrackAction);
     trayItemMenu->addAction(mw->nextTrackAction);
     trayItem->setContextMenu(trayItemMenu);
-    if (qgetenv("XDG_CURRENT_DESKTOP")=="Unity") {
-        trayItem->setStatus(KStatusNotifierItem::Active);
-        trayItemMenu->addSeparator();
-        trayItemMenu->addAction(mw->restoreAction);
-    }
+    trayItem->setStatus(KStatusNotifierItem::Active);
+    trayItemMenu->addSeparator();
+    trayItemMenu->addAction(mw->restoreAction);
     connect(trayItem, SIGNAL(scrollRequested(int, Qt::Orientation)), this, SLOT(trayItemScrollRequested(int, Qt::Orientation)));
     connect(trayItem, SIGNAL(secondaryActivateRequested(const QPoint &)), mw, SLOT(playPauseTrack()));
+    connect(trayItem, SIGNAL(activateRequested(bool, const QPoint &)), this, SLOT(clicked()));
     #else
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         trayItem = NULL;
@@ -93,12 +92,8 @@ void TrayItem::setup()
     trayItemMenu->addAction(mw->playPauseTrackAction);
     trayItemMenu->addAction(mw->stopTrackAction);
     trayItemMenu->addAction(mw->nextTrackAction);
-    #if !defined Q_OS_WIN
-    if (qgetenv("XDG_CURRENT_DESKTOP")=="Unity") {
-        trayItemMenu->addSeparator();
-        trayItemMenu->addAction(mw->restoreAction);
-    }
-    #endif
+    trayItemMenu->addSeparator();
+    trayItemMenu->addAction(mw->restoreAction);
     trayItemMenu->addSeparator();
     trayItemMenu->addAction(mw->quitAction);
     trayItem->setContextMenu(trayItemMenu);
@@ -110,6 +105,15 @@ void TrayItem::setup()
 }
 
 #ifdef ENABLE_KDE_SUPPORT
+void TrayItem::clicked()
+{
+    if (mw->isHidden()) {
+        mw->restoreWindow();
+    } else {
+        mw->hide();
+    }
+}
+
 void TrayItem::trayItemScrollRequested(int delta, Qt::Orientation orientation)
 {
     if (Qt::Vertical==orientation) {

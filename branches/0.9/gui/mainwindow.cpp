@@ -287,6 +287,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif // !Q_OS_WIN
 
     smallPlaybackButtonsAction = ActionCollection::get()->createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
+    smallControlButtonsAction = ActionCollection::get()->createAction("smallcontrolbuttons", i18n("Small Control Buttons"));
     connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::connectIcon);
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Connection"), "network-server");
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::speakerIcon);
@@ -522,12 +523,16 @@ MainWindow::MainWindow(QWidget *parent)
     foreach (QToolButton *b, btns) {
         Icon::init(b);
     }
+
+    smallControlButtonsAction->setCheckable(true);
+    smallControlButtonsAction->setChecked(Settings::self()->smallControlButtons());
+    controlBtnsMenu = new QMenu(this);
+    controlBtnsMenu->addAction(smallControlButtonsAction);
+    connect(smallControlButtonsAction, SIGNAL(triggered(bool)), SLOT(setControlButtonsSize(bool)));
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
-        b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        b->setMinimumSize(QSize(26, 26));
-        b->setMaximumSize(QSize(26, 26));
-        b->setIconSize(QSize(22, 22));
+        b->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(b, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(controlButtonsMenu()));
     }
 
     smallPlaybackButtonsAction->setCheckable(true);
@@ -538,11 +543,11 @@ MainWindow::MainWindow(QWidget *parent)
     foreach (QToolButton *b, playbackBtns) {
         b->setAutoRaise(true);
         b->setContextMenuPolicy(Qt::CustomContextMenu);
-        b->setToolButtonStyle(Qt::ToolButtonIconOnly);
         connect(b, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(playbackButtonsMenu()));
     }
 
     setPlaybackButtonsSize(Settings::self()->smallPlaybackButtons());
+    setControlButtonsSize(Settings::self()->smallControlButtons());
 
     trackLabel->setText(QString());
     artistLabel->setText(QString());
@@ -810,7 +815,9 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setFocus();
     playQueue->initHeader();
 
-    MPDConnection::self()->start();
+    mpdThread=new QThread(this);
+    MPDConnection::self()->moveToThread(mpdThread);
+    mpdThread->start();
     connectToMpd();
 
     QString page=Settings::self()->page();
@@ -856,6 +863,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
     Settings::self()->saveSmallPlaybackButtons(smallPlaybackButtonsAction->isChecked());
+    Settings::self()->saveSmallControlButtons(smallControlButtonsAction->isChecked());
     playQueue->saveHeader();
     QStringList hiddenPages;
     for (int i=0; i<tabWidget->count(); ++i) {
@@ -883,7 +891,7 @@ MainWindow::~MainWindow()
         emit stop();
         Utils::sleep();
     }
-    MPDConnection::self()->stop();
+    Utils::stopThread(mpdThread);
     Covers::self()->stop();
     #if defined ENABLE_DEVICES_SUPPORT
     FileScheduler::self()->stop();
@@ -952,14 +960,39 @@ void MainWindow::playbackButtonsMenu()
     playbackBtnsMenu->exec(QCursor::pos());
 }
 
+void MainWindow::controlButtonsMenu()
+{
+    controlBtnsMenu->exec(QCursor::pos());
+}
+
 void MainWindow::setPlaybackButtonsSize(bool smallButtons)
 {
     QList<QToolButton *> playbackBtns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     foreach (QToolButton *b, playbackBtns) {
+        b->setToolButtonStyle(Qt::ToolButtonIconOnly);
         b->setIconSize(smallButtons ? QSize(22, 22) : QSize(28, 28));
         b->setMinimumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
         b->setMaximumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
+    }
+}
+
+void MainWindow::setControlButtonsSize(bool smallButtons)
+{
+    QList<QToolButton *> controlBtns;
+    controlBtns << volumeButton << menuButton;
+    #ifdef PHONON_FOUND
+    controlBtns << streamButton;
+    #endif
+    foreach (QToolButton *b, controlBtns) {
+        b->setToolButtonStyle(Qt::ToolButtonIconOnly);
+        b->setMinimumSize(smallButtons ? QSize(22, 22) : QSize(26, 26));
+        b->setMaximumSize(smallButtons ? QSize(22, 22) : QSize(26, 26));
+        #ifdef ENABLE_KDE_SUPPORT
+        b->setIconSize(smallButtons ? QSize(16, 16) : QSize(22, 22));
+        #else
+        b->setIconSize(smallButtons ? QSize(18, 18) : QSize(22, 22));
+        #endif
     }
 }
 

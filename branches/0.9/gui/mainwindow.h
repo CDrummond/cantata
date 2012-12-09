@@ -65,7 +65,6 @@ class ServerInfoPage;
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
 #endif
-class QThread;
 class QAbstractItemView;
 #ifndef Q_OS_WIN
 class Mpris;
@@ -208,6 +207,7 @@ public Q_SLOTS:
     void showInformation(const QString &message);
     void showPage(const QString &page, bool focusSearch);
     void dynamicStatus(const QString &message);
+    void hideWindow();
     void restoreWindow();
     void load(const QStringList &urls);
     #ifdef ENABLE_KDE_SUPPORT
@@ -216,9 +216,7 @@ public Q_SLOTS:
     #endif
     void setMpdVolume(int );
     void playbackButtonsMenu();
-    void controlButtonsMenu();
     void setPlaybackButtonsSize(bool smallButtons);
-    void setControlButtonsSize(bool smallButtons);
     void songLoaded();
     void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
@@ -421,11 +419,9 @@ private:
     Action *expandAllAction;
     Action *collapseAllAction;
     Action *smallPlaybackButtonsAction;
-    Action *smallControlButtonsAction;
     QAction *autoHideSplitterAction;
     TrayItem *trayItem;
     QMenu *playbackBtnsMenu;
-    QMenu *controlBtnsMenu;
     QPoint lastPos;
     QSize expandedSize;
     QSize collapsedSize;
@@ -449,7 +445,6 @@ private:
     DevicesPage *devicesPage;
     #endif
     ServerInfoPage *serverInfoPage;
-    QThread *mpdThread;
     #ifndef Q_OS_WIN
     Mpris *mpris;
     GnomeMediaKeys *gnomeMediaKeys;

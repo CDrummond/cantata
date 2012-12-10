@@ -25,6 +25,7 @@
 #include "device.h"
 #include "covers.h"
 #include "utils.h"
+#include <QtCore/QBuffer>
 #include <QtCore/QDir>
 #include <QtCore/QTemporaryFile>
 #ifndef Q_OS_WIN
@@ -130,6 +131,7 @@ void Device::cleanDir(const QString &dir, const QString &base, const QString &co
 #include <unistd.h>
 
 const QLatin1String Device::constNoCover("-");
+const QLatin1String Device::constEmbedCover("+");
 
 Device * Device::create(DevicesModel *m, const QString &udi)
 {
@@ -189,6 +191,38 @@ bool Device::fixVariousArtists(const QString &file, Song &song, bool applyFix)
     }
     song=orig;
     return false;
+}
+
+static QByteArray save(const QImage &img) {
+    QByteArray ba;
+    QBuffer buffer(&ba);
+    buffer.open(QIODevice::WriteOnly);
+    img.save(&buffer, "JPG");
+    buffer.close();
+    return ba;
+}
+
+void Device::embedCover(const QString &file, Song &song, unsigned int coverMaxSize)
+{
+    if (Tags::readImage(file).isNull()) {
+        Covers::Image coverImage=Covers::self()->getImage(song);
+        if (!coverImage.img.isNull()) {
+            QByteArray imgData;
+            if (coverImage.img.width()>(int)coverMaxSize || coverImage.img.height()>(int)coverMaxSize) {
+                imgData=save(coverImage.img.scaled(QSize(coverMaxSize, coverMaxSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            } else if (!coverImage.fileName.endsWith(".jpg", Qt::CaseInsensitive) || !QFile::exists(coverImage.fileName)) {
+                imgData=save(coverImage.img);
+            } else {
+                QFile f(coverImage.fileName);
+                if (f.open(QIODevice::ReadOnly)) {
+                    imgData=f.readAll();
+                } else {
+                    imgData=save(coverImage.img);
+                }
+            }
+            Tags::embedImage(file, imgData);
+       }
+    }
 }
 
 QTemporaryFile * Device::copySongToTemp(Song &song)

@@ -109,12 +109,19 @@ QString CopyJob::updateTagsLocal()
 {
     // First, if we are going to update tags (e.g. to fix various artists), then check if we want to do that locally, before
     // copying to device. For UMS devices, we just modify on device, but for remote (e.g. sshfs) then it'd be better to do locally :-)
-    if (copyOpts&OptsFixLocal && (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix)) {
+    if (copyOpts&OptsFixLocal && (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix || Device::constEmbedCover==deviceOpts.coverName)) {
         song.file=srcFile;
         temp=Device::copySongToTemp(song);
-        if (!temp || !Device::fixVariousArtists(temp->fileName(), song, copyOpts&OptsApplyVaFix)) {
+        if (!temp) {
             emit result(StatusFailed);
             return QString();
+        }
+        if ((copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix) && !Device::fixVariousArtists(temp->fileName(), song, copyOpts&OptsApplyVaFix)) {
+            emit result(StatusFailed);
+            return QString();
+        }
+        if (Device::constEmbedCover==deviceOpts.coverName) {
+            Device::embedCover(temp->fileName(), song, deviceOpts.coverMaxSize);
         }
         return temp->fileName();
     }
@@ -123,14 +130,19 @@ QString CopyJob::updateTagsLocal()
 
 void CopyJob::updateTagsDest()
 {
-    if (!stopRequested && !(copyOpts&OptsFixLocal) && (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix)) {
-        Device::fixVariousArtists(destFile, song, copyOpts&OptsApplyVaFix);
+    if (!stopRequested && !(copyOpts&OptsFixLocal) && (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix || Device::constEmbedCover==deviceOpts.coverName)) {
+        if (copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix) {
+            Device::fixVariousArtists(destFile, song, copyOpts&OptsApplyVaFix);
+        }
+        if (!stopRequested && Device::constEmbedCover==deviceOpts.coverName) {
+            Device::embedCover(destFile, song, deviceOpts.coverMaxSize);
+        }
     }
 }
 
 void CopyJob::copyCover(const QString &origSrcFile)
 {
-    if (!stopRequested && Device::constNoCover!=deviceOpts.coverName) {
+    if (!stopRequested && Device::constNoCover!=deviceOpts.coverName && Device::constEmbedCover!=deviceOpts.coverName) {
         song.file=destFile;
         copiedCover=Covers::copyCover(song, Utils::getDir(origSrcFile), Utils::getDir(destFile), deviceOpts.coverName, deviceOpts.coverMaxSize);
     }

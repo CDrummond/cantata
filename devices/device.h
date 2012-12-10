@@ -55,11 +55,13 @@ class Device : public MusicLibraryItemRoot
 public:
     static Device * create(DevicesModel *m, const QString &udi);
     static bool fixVariousArtists(const QString &file, Song &song, bool applyFix);
+    static void embedCover(const QString &file, Song &song, unsigned int coverMaxSize);
     static QTemporaryFile * copySongToTemp(Song &song);
     static void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
     static void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
 
     static const QLatin1String constNoCover;
+    static const QLatin1String constEmbedCover;
 
     enum Status {
         Ok,

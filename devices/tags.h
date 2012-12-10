@@ -60,6 +60,7 @@ namespace Tags
     extern Update update(const QString &fileName, const Song &from, const Song &to);
     extern ReplayGain readReplaygain(const QString &fileName);
     extern Update updateReplaygain(const QString &fileName, const ReplayGain &rg);
+    extern Update embedImage(const QString &fileName, const QByteArray &cover);
 };
 
 #endif

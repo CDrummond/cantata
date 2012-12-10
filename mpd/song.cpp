@@ -152,6 +152,33 @@ bool Song::isEmpty() const
     return (artist.isEmpty() && album.isEmpty() && title.isEmpty()) || file.isEmpty();
 }
 
+void Song::guessTags()
+{
+    if (isEmpty() && !isStream()) {
+        QStringList parts = file.split("/");
+        if (3==parts.length()) {
+            title=parts.at(2);
+            album=parts.at(1);
+            artist=parts.at(0);
+        } else if (!parts.isEmpty()) {
+            title=parts.at(parts.length()-1);
+        }
+
+        if (!title.isEmpty()) {
+            int dot=title.lastIndexOf('.');
+            if (dot==title.length()-4) {
+                title=title.left(dot);
+            }
+            int space=title.indexOf(' ');
+            if ( (1==space && title[space-1].isDigit()) ||
+                 (2==space && title[space-2].isDigit() && title[space-1].isDigit()) ) {
+                track=title.left(space).toInt();
+                title=title.mid(space+1);
+            }
+        }
+    }
+}
+
 void Song::fillEmptyFields()
 {
     QString unknown=i18n("Unknown");
@@ -170,7 +197,6 @@ void Song::fillEmptyFields()
     }
 }
 
-#include <QtCore/QDebug>
 void Song::setKey()
 {
     static quint16 currentKey=0;

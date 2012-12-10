@@ -1782,10 +1782,14 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
     #endif
 
+    if (current.isEmpty()) {
+        current.guessTags();
+        current.fillEmptyFields();
+    }
     positionSlider->setEnabled(-1!=current.id && !currentIsStream());
     coverWidget->update(current);
 
-    if (song.title.isEmpty() && song.artist.isEmpty() && !song.file.isEmpty()) {
+    if (current.title.isEmpty() && current.artist.isEmpty() && !current.file.isEmpty()) {
         trackLabel->setText(current.file);
     } else if (current.name.isEmpty()) {
         trackLabel->setText(current.title);

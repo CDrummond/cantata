@@ -26,7 +26,6 @@
 #include "settings.h"
 #include "icons.h"
 #include "interfacesettings.h"
-#include "externalsettings.h"
 #include "serversettings.h"
 #include "serverplaybacksettings.h"
 #include "playbacksettings.h"
@@ -54,7 +53,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     serverplayback = new ServerPlaybackSettings(widget);
     playback = new PlaybackSettings(widget);
     interface = new InterfaceSettings(widget);
-    ext = new ExternalSettings(widget);
     #ifdef TAGLIB_FOUND
     http = new HttpServerSettings(widget);
     #endif
@@ -63,7 +61,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     serverplayback->load();
     playback->load();
     interface->load();
-    ext->load();
     #ifdef TAGLIB_FOUND
     http->load();
     #endif
@@ -73,7 +70,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     widget->addPage(serverplayback, i18n("Output"), Icons::speakerIcon, i18n("Output Settings"));
     widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
-    widget->addPage(ext, i18n("External"), Icon("video-display"), i18n("External Settings"));
     #ifdef TAGLIB_FOUND
     widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
     #endif
@@ -102,7 +98,6 @@ void PreferencesDialog::writeSettings()
     serverplayback->save();
     playback->save();
     interface->save();
-    ext->save();
     #ifdef TAGLIB_FOUND
     http->save();
     #endif

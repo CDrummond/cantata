@@ -763,7 +763,7 @@ QList<Song> MusicLibraryModel::songs(const QModelIndexList &indexes, bool allowP
     return songs;
 }
 
-QList<Song> MusicLibraryModel::songs(const QStringList &filenames) const
+QList<Song> MusicLibraryModel::songs(const QStringList &filenames, bool insertNotFound) const
 {
     QList<Song> songs;
 
@@ -786,6 +786,13 @@ QList<Song> MusicLibraryModel::songs(const QStringList &filenames) const
         }
     }
 
+    if (insertNotFound && files.size()) {
+        foreach (const QString &file, files) {
+            Song s;
+            s.file=file;
+            songs.append(s);
+        }
+    }
     return songs;
 }
 

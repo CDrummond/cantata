@@ -26,8 +26,9 @@
 #include "itemview.h"
 #include "localize.h"
 #include "musiclibraryitemalbum.h"
-#include <QtGui/QComboBox>
 #include "onoffbutton.h"
+#include <QtGui/QComboBox>
+#include <QtCore/qglobal.h>
 
 static void addImageSizes(QComboBox *box)
 {
@@ -94,6 +95,12 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     showDeleteAction->setVisible(false);
     showDeleteActionLabel->setVisible(false);
     #endif
+    #ifdef Q_OS_WIN
+    gnomeMediaKeys->setVisible(false);
+    gnomeMediaKeysLabel->setVisible(false);
+    #endif
+    connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
+    connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnCloseLabel, SLOT(setEnabled(bool)));
 };
 
 void InterfaceSettings::load()
@@ -127,6 +134,14 @@ void InterfaceSettings::load()
     playQueueGroupedChanged();
     lyricsBgnd->setChecked(Settings::self()->lyricsBgnd());
     forceSingleClick->setChecked(Settings::self()->forceSingleClick());
+    systemTrayCheckBox->setChecked(Settings::self()->useSystemTray());
+    systemTrayPopup->setChecked(Settings::self()->showPopups());
+    minimiseOnClose->setChecked(Settings::self()->minimiseOnClose());
+    minimiseOnClose->setEnabled(systemTrayCheckBox->isChecked());
+    minimiseOnCloseLabel->setEnabled(systemTrayCheckBox->isChecked());
+    #ifndef Q_OS_WIN
+    gnomeMediaKeys->setChecked(Settings::self()->gnomeMediaKeys());
+    #endif
 }
 
 void InterfaceSettings::save()
@@ -156,6 +171,12 @@ void InterfaceSettings::save()
     Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
     Settings::self()->saveLyricsBgnd(lyricsBgnd->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
+    Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());
+    Settings::self()->saveShowPopups(systemTrayPopup->isChecked());
+    Settings::self()->saveMinimiseOnClose(minimiseOnClose->isChecked());
+    #ifndef Q_OS_WIN
+    Settings::self()->saveGnomeMediaKeys(gnomeMediaKeys->isChecked());
+    #endif
 }
 
 void InterfaceSettings::libraryViewChanged()

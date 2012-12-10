@@ -13,6 +13,7 @@
    filename without path.
 7. Allow editing of tags, and replaygain calculation, of files from folder view
    which do not contain tags.
+8. Merge 'External Settings' into 'Interface Settingst'
 
 0.9.1
 -----

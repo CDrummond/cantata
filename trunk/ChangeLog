@@ -11,6 +11,8 @@
        "%artist%/%album%/%track% %title"
    Otherwise, if we cannot extract all of these, just set the title to the
    filename without path.
+7. Allow editing of tags, and replaygain calculation, of files from folder view
+   which do not contain tags.
 
 0.9.1
 -----

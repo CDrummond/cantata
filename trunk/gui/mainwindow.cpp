@@ -2592,7 +2592,7 @@ void MainWindow::editTags()
     } else if (albumsPage->isVisible()) {
         songs=albumsPage->selectedSongs();
     } else if (folderPage->isVisible()) {
-        songs=folderPage->selectedSongs();
+        songs=folderPage->selectedSongs(FolderPage::ES_FillEmpty);
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     else if (devicesPage->isVisible()) {
@@ -2679,7 +2679,7 @@ void MainWindow::organiseFiles()
     } else if (albumsPage->isVisible()) {
         songs=albumsPage->selectedSongs();
     } else if (folderPage->isVisible()) {
-        songs=folderPage->selectedSongs();
+        songs=folderPage->selectedSongs(FolderPage::ES_None);
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     else if (devicesPage->isVisible()) {
@@ -2806,7 +2806,7 @@ void MainWindow::replayGain()
     } else if (albumsPage->isVisible()) {
         songs=albumsPage->selectedSongs();
     } else if (folderPage->isVisible()) {
-        songs=folderPage->selectedSongs();
+        songs=folderPage->selectedSongs(FolderPage::ES_GuessTags);
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     else if (devicesPage->isVisible()) {

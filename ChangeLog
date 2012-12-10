@@ -1,21 +1,24 @@
 ﻿X.X.X
 -----
-1. Give tooltips to view actions.
-2. Add 'Set Album Artist from Artist' action to tag editor.
-3. Add option to specify max cover size when transfering to device.
-4. Remove 'Small Control Buttons' option.
-5. Prompt before disconnecting a device.
-6. For playqueue items, if we only have a filename, and no artist, etc, then
-   attempt to ascertain artist, album, title, and track number from the
-   filename. These will be extracted if the filename has the following pattern:
-       "%artist%/%album%/%track% %title%"
-   Otherwise, if we cannot extract all of these, just set the title to the
-   filename without path.
-7. Allow editing of tags, and replaygain calculation, of files from folder view
-   which do not contain tags.
-8. Merge 'External Settings' into 'Interface Settingst'
-9. Add option to embed covers when copying songs to devices. (ID3v2, mp4,
-   vorbis comment tag types only) 
+ 1. Give tooltips to view actions.
+ 2. Add 'Set Album Artist from Artist' action to tag editor.
+ 3. Add option to specify max cover size when transfering to device.
+ 4. Remove 'Small Control Buttons' option.
+ 5. Prompt before disconnecting a device.
+ 6. For playqueue items, if we only have a filename, and no artist, etc, then
+    attempt to ascertain artist, album, title, and track number from the
+    filename. These will be extracted if the filename has the following pattern:
+        "%artist%/%album%/%track% %title%"
+    Otherwise, if we cannot extract all of these, just set the title to the
+    filename without path.
+ 7. Allow editing of tags, and replaygain calculation, of files from folder view
+    which do not contain tags.
+ 8. Merge 'External Settings' into 'Interface Settingst'
+ 9. Add option to embed covers when copying songs to devices. (ID3v2, mp4,
+    vorbis comment tag types only) 
+10. Add a simple system debus helper to allow user mounts of samba shares. This
+    is intended to allow Cantata to connect to an Android device via NASDroid.
+    Requires cantata be built with remote device support.
 
 0.9.1
 -----

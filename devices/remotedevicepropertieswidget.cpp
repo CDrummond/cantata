@@ -36,6 +36,9 @@
 enum Type {
     Type_SshFs,
     Type_File
+    #ifdef ENABLE_MOUNTER
+    , Type_Samba
+    #endif
 };
 
 RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
@@ -49,6 +52,10 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     }
     type->addItem(i18n("Secure Shell (sshfs)"), (int)Type_SshFs);
     type->addItem(i18n("Locally Mounted Folder"), (int)Type_File);
+    #ifdef ENABLE_MOUNTER
+    type->addItem(i18n("Samba Shares"), (int)Type_Samba);
+    smbFolderButton->setVisible(false);
+    #endif
     #ifdef ENABLE_KDE_SUPPORT
     sshFolderButton->setIcon(QIcon::fromTheme("document-open"));
     fileFolder->setMode(KFile::Directory|KFile::ExistingOnly|KFile::LocalOnly);
@@ -59,12 +66,20 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
 
 void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool create, bool isConnected)
 {
+    #ifdef ENABLE_MOUNTER
+    int t=d.isLocalFile() ? Type_File : (d.url.scheme()==RemoteFsDevice::constSshfsProtocol ? Type_SshFs : Type_Samba);
+    #else
     int t=d.isLocalFile() ? Type_File : Type_SshFs;
+    #endif
     setEnabled(d.isLocalFile() || !isConnected);
     infoLabel->setVisible(create);
     orig=d;
     name->setText(d.name);
     sshPort->setValue(22);
+    #ifdef ENABLE_MOUNTER
+    smbPort->setValue(445);
+    #endif
+
     sshFolder->setText(QString());
     sshHost->setText(QString());
     sshUser->setText(QString());
@@ -72,15 +87,30 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
 
     switch (t) {
     case Type_SshFs: {
-        sshFolder->setText(d.path);
-        sshPort->setValue(d.port);
-        sshHost->setText(d.host);
-        sshUser->setText(d.user);
+        sshFolder->setText(d.url.path());
+        sshPort->setValue(d.url.port());
+        sshHost->setText(d.url.host());
+        sshUser->setText(d.url.userName());
         break;
     }
     case Type_File:
-        fileFolder->setText(d.path);
+        fileFolder->setText(d.url.path());
         break;
+    #ifdef ENABLE_MOUNTER
+    case Type_Samba: {
+        smbFolder->setText(d.url.path());
+        smbPort->setValue(d.url.port());
+        smbHost->setText(d.url.host());
+        smbUser->setText(d.url.userName());
+        smbPassword->setText(d.url.password());
+        if (d.url.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
+            smbDomain->setText(d.url.queryItemValue(RemoteFsDevice::constDomainQuery));
+        } else {
+            smbDomain->setText(QString());
+        }
+        break;
+    }
+    #endif
     }
 
     name->setEnabled(d.isLocalFile() || !isConnected);
@@ -153,21 +183,35 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
     det.name=name->text().trimmed();
     switch (t) {
     case Type_SshFs: {
-        det.host=sshHost->text().trimmed();
-        det.user=sshUser->text().trimmed();
-        det.path=sshFolder->text().trimmed();
-        det.port=sshPort->value();
-        det.protocol=RemoteFsDevice::constSshfsProtocol;
+        det.url.setHost(sshHost->text().trimmed());
+        det.url.setUserName(sshUser->text().trimmed());
+        det.url.setPath(sshFolder->text().trimmed());
+        det.url.setPort(sshPort->value());
+        det.url.setScheme(RemoteFsDevice::constSshfsProtocol);
         break;
     }
     case Type_File: {
-        det.path=fileFolder->text().trimmed();
-        if (det.path.isEmpty()) {
-            det.path="/";
+        QString path=fileFolder->text().trimmed();
+        if (path.isEmpty()) {
+            path="/";
         }
+        det.url.setPath(path);
+        det.url.setScheme(RemoteFsDevice::constFileProtocol);
         break;
     }
+    #ifdef ENABLE_MOUNTER
+    case Type_Samba:
+        det.url.setHost(smbHost->text().trimmed());
+        det.url.setUserName(smbUser->text().trimmed());
+        det.url.setPath(smbFolder->text().trimmed());
+        det.url.setPort(smbPort->value());
+        det.url.setScheme(RemoteFsDevice::constSambaProtocol);
+        det.url.setPassword(smbPassword->text().trimmed());
+        if (!smbDomain->text().trimmed().isEmpty()) {
+            det.url.addQueryItem(RemoteFsDevice::constDomainQuery, smbDomain->text().trimmed());
+        }
+        break;
+    #endif
     }
     return det;
 }
-

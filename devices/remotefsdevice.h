@@ -25,8 +25,10 @@
 #define REMOTEFSDEVICE_H
 
 #include "fsdevice.h"
+#include "config.h"
 #include <QtCore/QUrl>
 
+class ComGooglecodeCantataMounterInterface;
 class QProcess;
 class RemoteFsDevice : public FsDevice
 {
@@ -42,27 +44,29 @@ public:
         void save() const;
 
         bool operator==(const Details &o) const {
-            return protocol==o.protocol && port==o.port && name==o.name && host==o.host && user==o.user && path==o.path;
+            return url==o.url;
         }
         bool operator!=(const Details &o) const {
             return !(*this==o);
         }
         bool isEmpty() const {
-            return name.isEmpty() || path.isEmpty() || (!isLocalFile() && (host.isEmpty() || user.isEmpty() || 0==port));
+            return name.isEmpty() || url.isEmpty();
         }
         bool isLocalFile() const {
-            return protocol.isEmpty();
+            return url.scheme().isEmpty() || constFileProtocol==url.scheme();
         }
 
         QString name;
-        QString protocol;
-        QString host;
-        QString user;
-        QString path;
+        QUrl url;
         int port;
     };
 
     static const QLatin1String constSshfsProtocol;
+    static const QLatin1String constFileProtocol;
+    #ifdef ENABLE_MOUNTER
+    static const QLatin1String constDomainQuery;
+    static const QLatin1String constSambaProtocol;
+    #endif
 
     static QList<Device *> loadAll(DevicesModel *m);
     static Device * create(DevicesModel *m, const DeviceOptions &options, const Details &d);
@@ -100,11 +104,16 @@ protected:
 
 private:
     bool isOldSshfs();
+    #ifdef ENABLE_MOUNTER
+    ComGooglecodeCantataMounterInterface * mounter();
+    #endif
 
 protected Q_SLOTS:
     void saveProperties();
     void saveProperties(const DeviceOptions &newOpts, const RemoteFsDevice::Details &newDetails);
     void procFinished(int exitCode);
+    void mountStatus(const QString &mp, int st);
+    void umountStatus(const QString &mp, int st);
 
 protected:
     mutable int mountToken;
@@ -112,7 +121,9 @@ protected:
     Details details;
     QProcess *proc;
 //     QString audioFolderSetting;
-
+    #ifdef ENABLE_MOUNTER
+    ComGooglecodeCantataMounterInterface *mounterIface;
+    #endif
     friend class DevicesModel;
 };
 

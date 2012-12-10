@@ -195,9 +195,24 @@ void FolderPage::openFileManager()
 }
 #endif
 
-QList<Song> FolderPage::selectedSongs(bool allowPlaylists) const
+QList<Song> FolderPage::selectedSongs(EmptySongMod esMod, bool allowPlaylists) const
 {
-    return MusicLibraryModel::self()->songs(selectedFiles(allowPlaylists));
+    QList<Song> songs=MusicLibraryModel::self()->songs(selectedFiles(allowPlaylists), ES_None!=esMod);
+
+    if (ES_None!=esMod) {
+        QList<Song>::Iterator it(songs.begin());
+        QList<Song>::Iterator end(songs.end());
+        for (; it!=end; ++it) {
+            if ((*it).isEmpty()) {
+                if (ES_GuessTags==esMod) {
+                    (*it).guessTags();
+                }
+                (*it).fillEmptyFields();
+            }
+        }
+    }
+
+    return songs;
 }
 
 QStringList FolderPage::selectedFiles(bool allowPlaylists) const
@@ -234,7 +249,7 @@ void FolderPage::addSelectionToPlaylist(const QString &name, bool replace, quint
 #ifdef ENABLE_DEVICES_SUPPORT
 void FolderPage::addSelectionToDevice(const QString &udi)
 {
-    QList<Song> songs=selectedSongs();
+    QList<Song> songs=selectedSongs(ES_GuessTags);
 
     if (!songs.isEmpty()) {
         emit addToDevice(QString(), udi, songs);
@@ -244,7 +259,7 @@ void FolderPage::addSelectionToDevice(const QString &udi)
 
 void FolderPage::deleteSongs()
 {
-    QList<Song> songs=selectedSongs();
+    QList<Song> songs=selectedSongs(ES_GuessTags);
 
     if (!songs.isEmpty()) {
         if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected songs?\nThis cannot be undone."))) {

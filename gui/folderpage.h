@@ -36,6 +36,13 @@ class FolderPage : public QWidget, public Ui::FolderPage
 {
     Q_OBJECT
 public:
+
+    enum EmptySongMod {
+        ES_None,
+        ES_FillEmpty,
+        ES_GuessTags
+    };
+
     FolderPage(MainWindow *p);
     virtual ~FolderPage();
 
@@ -44,7 +51,7 @@ public:
     void refresh();
     void clear();
     QStringList selectedFiles(bool allowPlaylists=false) const;
-    QList<Song> selectedSongs(bool allowPlaylists=false) const;
+    QList<Song> selectedSongs(EmptySongMod esMod, bool allowPlaylists=false) const;
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     #ifdef ENABLE_DEVICES_SUPPORT
     void addSelectionToDevice(const QString &udi);

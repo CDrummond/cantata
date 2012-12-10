@@ -174,6 +174,10 @@ void Song::guessTags()
                  (2==space && title[space-2].isDigit() && title[space-1].isDigit()) ) {
                 track=title.left(space).toInt();
                 title=title.mid(space+1);
+
+                while (!title.isEmpty() && (title[0]==' ' || title[0]=='-')) {
+                    title=title.mid(1);
+                }
             }
         }
     }

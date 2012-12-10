@@ -37,7 +37,6 @@ class PlaybackSettings;
 class InterfaceSettings;
 class LyricSettings;
 class LyricsPage;
-class ExternalSettings;
 #ifdef TAGLIB_FOUND
 class HttpServerSettings;
 #endif
@@ -65,7 +64,6 @@ private:
     ServerPlaybackSettings *serverplayback;
     PlaybackSettings *playback;
     InterfaceSettings *interface;
-    ExternalSettings *ext;
     LyricSettings *lyrics;
     #ifdef TAGLIB_FOUND
     HttpServerSettings *http;

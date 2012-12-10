@@ -247,6 +247,8 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
             #endif
 
             song.setKey();
+            song.guessTags();
+            song.fillEmptyFields();
             songs.append(song);
             line.clear();
         }

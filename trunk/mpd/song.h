@@ -74,6 +74,7 @@ struct Song
     int compareTo(const Song &o) const;
     virtual ~Song() { }
     bool isEmpty() const;
+    void guessTags();
     void fillEmptyFields();
     void setKey();
     virtual void clear();
@@ -95,7 +96,6 @@ struct Song
     bool capitalise();
     bool isStream() const { return /*file.isEmpty() || */file.contains("://"); }
     bool isCantataStream() const;
-
     QString albumKey() const { return albumArtist()+QChar(':')+album; }
 };
 

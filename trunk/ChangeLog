@@ -5,6 +5,12 @@
 3. Add option to specify max cover size when transfering to device.
 4. Remove 'Small Control Buttons' option.
 5. Prompt before disconnecting a device.
+6. For playqueue items, if we only have a filename, and no artist, etc, then
+   attempt to ascertain artist, album, title, and track number from the
+   filename. These will be extracted if the filename has the following pattern:
+       "%artist%/%album%/%track% %title"
+   Otherwise, if we cannot extract all of these, just set the title to the
+   filename without path.
 
 0.9.1
 -----

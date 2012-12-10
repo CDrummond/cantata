@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>357</width>
-    <height>306</height>
+    <width>400</width>
+    <height>388</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -146,26 +146,117 @@
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="page_3">
+         <layout class="QFormLayout" name="formLayout_4">
+          <item row="0" column="0">
+           <widget class="BuddyLabel" name="hostLabel_2">
+            <property name="text">
+             <string>Host:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sshHost</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="LineEdit" name="smbHost"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="BuddyLabel" name="portLabel_2">
+            <property name="text">
+             <string>Port:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sshPort</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="SpinBox" name="smbPort">
+            <property name="maximum">
+             <number>65535</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="BuddyLabel" name="userLabel_2">
+            <property name="text">
+             <string>User:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sshUser</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="LineEdit" name="smbUser"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Domain:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="LineEdit" name="smbDomain"/>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Password:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="LineEdit" name="smbPassword"/>
+          </item>
+          <item row="5" column="0">
+           <widget class="BuddyLabel" name="folderLabel_2">
+            <property name="text">
+             <string>Folder:</string>
+            </property>
+            <property name="buddy">
+             <cstring>sshFolder</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <layout class="QHBoxLayout" name="folderLayout_2">
+            <item>
+             <widget class="LineEdit" name="smbFolder"/>
+            </item>
+            <item>
+             <widget class="QToolButton" name="smbFolderButton">
+              <property name="autoRaise">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="6" column="0" colspan="2">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::MinimumExpanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>2</width>
+              <height>8</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::MinimumExpanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>16</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <widget class="QLabel" name="infoLabel">

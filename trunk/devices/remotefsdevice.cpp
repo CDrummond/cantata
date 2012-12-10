@@ -31,6 +31,10 @@
 #include "localize.h"
 #include "settings.h"
 #include "mountpoints.h"
+#ifdef ENABLE_MOUNTER
+#include "mounterinterface.h"
+#include <QtDBus/QDBusConnection>
+#endif
 #include <QtCore/QTimer>
 #include <QtCore/QProcess>
 #include <QtCore/QDir>
@@ -43,13 +47,18 @@
 #include <unistd.h>
 
 const QLatin1String RemoteFsDevice::constSshfsProtocol("sshfs");
+const QLatin1String RemoteFsDevice::constFileProtocol("file");
+#ifdef ENABLE_MOUNTER
+const QLatin1String RemoteFsDevice::constDomainQuery("domain");
+const QLatin1String RemoteFsDevice::constSambaProtocol("smb");
+#endif
 static const QLatin1String constCfgPrefix("RemoteFsDevice-");
 static const QLatin1String constCfgKey("remoteFsDevices");
 
 static QString mountPoint(const RemoteFsDevice::Details &details, bool create)
 {
     if (details.isLocalFile()) {
-        return details.path;
+        return details.url.path();
     }
     return Utils::cacheDir(QLatin1String("mount/")+details.name, create);
 }
@@ -63,11 +72,19 @@ void RemoteFsDevice::Details::load(const QString &group)
     cfg.beginGroup(constCfgPrefix+group);
     #endif
     name=group;
-    protocol=GET_STRING("protocol", protocol);
-    host=GET_STRING("host", host);
-    user=GET_STRING("user", user);
-    path=GET_STRING("path", path);
-    port=GET_INT("port", port);
+    QString u=GET_STRING("url", QString());
+
+    if (u.isEmpty()) {
+        QString protocol=GET_STRING("protocol", QString());
+        QString host=GET_STRING("host", QString());
+        QString user=GET_STRING("user", QString());
+        QString path=GET_STRING("path", QString());
+        int port=GET_INT("port", 0);
+        u=(protocol.isEmpty() ? "file" : protocol+"://")+user+(!user.isEmpty() && !host.isEmpty() ? "@" : "")+host+(0==port ? "" : (":"+QString::number(port)))+path;
+    }
+    if (!u.isEmpty()) {
+        url=QUrl(u);
+    }
 }
 
 void RemoteFsDevice::Details::save() const
@@ -78,12 +95,26 @@ void RemoteFsDevice::Details::save() const
     QSettings cfg;
     cfg.beginGroup(constCfgPrefix+name);
     #endif
-    SET_VALUE("protocol", protocol);
-    SET_VALUE("host", host);
-    SET_VALUE("user", user);
-    SET_VALUE("path", path);
-    SET_VALUE("port", port);
+    SET_VALUE("url", url.toString());
     CFG_SYNC;
+}
+
+static inline bool isValid(const RemoteFsDevice::Details &d)
+{
+    return d.isLocalFile() || RemoteFsDevice::constSshfsProtocol==d.url.scheme()
+        #ifdef ENABLE_MOUNTER
+        || RemoteFsDevice::constSambaProtocol==d.url.scheme()
+        #endif
+        ;
+}
+
+static inline bool isMountable(const RemoteFsDevice::Details &d)
+{
+    return RemoteFsDevice::constSshfsProtocol==d.url.scheme()
+        #ifdef ENABLE_MOUNTER
+        || RemoteFsDevice::constSambaProtocol==d.url.scheme()
+        #endif
+        ;
 }
 
 QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
@@ -100,7 +131,7 @@ QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
         d.load(n);
         if (d.isEmpty()) {
             REMOVE_GROUP(constCfgPrefix+n);
-        } else if (d.isLocalFile() || constSshfsProtocol==d.protocol) {
+        } else if (isValid(d)) {
             devices.append(new RemoteFsDevice(m, d));
         }
     }
@@ -127,7 +158,7 @@ Device * RemoteFsDevice::create(DevicesModel *m, const DeviceOptions &options, c
     names.append(d.name);
     SET_VALUE(constCfgKey, names);
     d.save();
-    if (d.isLocalFile() || constSshfsProtocol==d.protocol) {
+    if (isValid(d)) {
         return new RemoteFsDevice(m, options, d);
     }
     return 0;
@@ -157,7 +188,7 @@ void RemoteFsDevice::remove(Device *dev)
         if (rfs->isConnected()) {
             rfs->unmount();
         }
-        if (constSshfsProtocol==rfs->details.protocol) {
+        if (isMountable(rfs->details)) {
             QString mp=mountPoint(rfs->details, false);
             if (!mp.isEmpty()) {
                 QDir d(mp);
@@ -200,9 +231,12 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const DeviceOptions &options, co
     , currentMountStatus(false)
     , details(d)
     , proc(0)
+    #ifdef ENABLE_MOUNTER
+    , mounterIface(0)
+    #endif
 {
     opts=options;
-    details.path=Utils::fixPath(details.path);
+//    details.path=Utils::fixPath(details.path);
     load();
     mount();
 }
@@ -213,8 +247,11 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
     , currentMountStatus(false)
     , details(d)
     , proc(0)
+    #ifdef ENABLE_MOUNTER
+    , mounterIface(0)
+    #endif
 {
-    details.path=Utils::fixPath(details.path);
+//    details.path=Utils::fixPath(details.path);
     setup();
 }
 
@@ -234,6 +271,19 @@ void RemoteFsDevice::toggle()
     }
 }
 
+#ifdef ENABLE_MOUNTER
+ComGooglecodeCantataMounterInterface * RemoteFsDevice::mounter()
+{
+    if (!mounterIface) {
+        mounterIface=new ComGooglecodeCantataMounterInterface(ComGooglecodeCantataMounterInterface::staticInterfaceName(),
+                                                              "/Mounter", QDBusConnection::systemBus(), this);
+        connect(mounterIface, SIGNAL(mountStatus(const QString &, int)), SLOT(mountStatus(const QString &, int)));
+        connect(mounterIface, SIGNAL(umountStatus(const QString &, int)), SLOT(umountStatus(const QString &, int)));
+    }
+    return mounterIface;
+}
+#endif
+
 void RemoteFsDevice::mount()
 {
     if (details.isLocalFile()) {
@@ -242,6 +292,13 @@ void RemoteFsDevice::mount()
     if (isConnected() || proc) {
         return;
     }
+
+    #ifdef ENABLE_MOUNTER
+    if (constSambaProtocol==details.url.scheme()) {
+        mounter()->mount(details.url.toString(), mountPoint(details, true), getuid(), getgid());
+        return;
+    }
+    #endif
 
     QString cmd;
     QStringList args;
@@ -278,7 +335,7 @@ void RemoteFsDevice::mount()
                 return;
             }
 
-            args << details.user+QChar('@')+details.host+QChar(':')+details.path<< QLatin1String("-p")
+            args << details.url.userName()+QChar('@')+details.url.host()+QChar(':')+details.url.path()<< QLatin1String("-p")
                  << QString::number(details.port) << mountPoint(details, true)
                  << QLatin1String("-o") << QLatin1String("ServerAliveInterval=15");
                  //<< QLatin1String("-o") << QLatin1String("Ciphers=arcfour");
@@ -305,6 +362,13 @@ void RemoteFsDevice::unmount()
     if (!isConnected() || proc) {
         return;
     }
+
+    #ifdef ENABLE_MOUNTER
+    if (constSambaProtocol==details.url.scheme()) {
+        mounter()->umount(mountPoint(details, false));
+        return;
+    }
+    #endif
 
     QString cmd;
     QStringList args;
@@ -349,10 +413,47 @@ void RemoteFsDevice::procFinished(int exitCode)
     }
 }
 
+void RemoteFsDevice::mountStatus(const QString &mp, int st)
+{
+    #ifdef ENABLE_MOUNTER
+    if (mp==mountPoint(details, false)) {
+        if (0!=st) {
+            emit error(i18n("Failed to connect to \"%1\"").arg(details.name));
+            setStatusMessage(QString());
+        } else {
+            setStatusMessage(i18n("Updating tracks..."));
+            load();
+        }
+    }
+    #else
+    Q_UNUSED(src)
+    Q_UNUSED(st)
+    #endif
+}
+
+void RemoteFsDevice::umountStatus(const QString &mp, int st)
+{
+    #ifdef ENABLE_MOUNTER
+    if (mp==mountPoint(details, false)) {
+        if (0!=st) {
+            emit error(i18n("Failed to disconnect from \"%1\"").arg(details.name));
+            setStatusMessage(QString());
+        } else {
+            setStatusMessage(QString());
+            update=new MusicLibraryItemRoot;
+            emit updating(udi(), false);
+        }
+    }
+    #else
+    Q_UNUSED(src)
+    Q_UNUSED(st)
+    #endif
+}
+
 bool RemoteFsDevice::isConnected() const
 {
     if (details.isLocalFile()) {
-       if (QDir(details.path).exists()) {
+       if (QDir(details.url.path()).exists()) {
            return true;
        }
        clear();
@@ -384,7 +485,7 @@ bool RemoteFsDevice::isConnected() const
 
 bool RemoteFsDevice::isOldSshfs()
 {
-    return constSshfsProtocol==details.protocol && 0==spaceInfo.used() && 1073741824000==spaceInfo.size();
+    return constSshfsProtocol==details.url.scheme() && 0==spaceInfo.used() && 1073741824000==spaceInfo.size();
 }
 
 double RemoteFsDevice::usedCapacity()
@@ -441,7 +542,7 @@ void RemoteFsDevice::setup()
     QString key=udi();
     opts.load(key);
     details.load(details.name);
-    details.path=Utils::fixPath(details.path);
+//    details.path=Utils::fixPath(details.path);
     #ifndef ENABLE_KDE_SUPPORT
     QSettings cfg;
     #endif
@@ -508,9 +609,8 @@ void RemoteFsDevice::saveProperties(const DeviceOptions &newOpts, const Details 
     configured=true;
     Details newDetails=nd;
     Details oldDetails=details;
-    newDetails.path=Utils::fixPath(newDetails.path);
-    bool diffUrl=oldDetails.port!=newDetails.port || oldDetails.protocol!=newDetails.protocol ||
-                 oldDetails.host!=newDetails.host || oldDetails.user!=newDetails.user || oldDetails.path!=newDetails.path;
+//    newDetails.path=Utils::fixPath(newDetails.path);
+    bool diffUrl=oldDetails.url!=newDetails.url;
 
     if (opts.useCache!=newOpts.useCache || diffUrl) { // Cache/url settings changed
         if (opts.useCache && !diffUrl) {

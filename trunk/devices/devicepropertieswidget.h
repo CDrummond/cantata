@@ -34,16 +34,17 @@ class DevicePropertiesWidget : public QWidget, Ui::DevicePropertiesWidget
 
 public:
     enum Properties {
-        Prop_Basic      = 0x00,
+        Prop_Basic       = 0x00,
 
-        Prop_Folder     = 0x01,
-        Prop_Covers     = 0x02,
-        Prop_Va         = 0x04,
-        Prop_Transcoder = 0x08,
-        Prop_Cache      = 0x10,
-        Prop_AutoScan   = 0x20,
+        Prop_Folder      = 0x01,
+        Prop_CoversAll   = 0x02,
+        Prop_CoversBasic = 0x04,
+        Prop_Va          = 0x08,
+        Prop_Transcoder  = 0x10,
+        Prop_Cache       = 0x20,
+        Prop_AutoScan    = 0x40,
 
-        Prop_All        = 0xFF
+        Prop_All         = 0xFF
     };
     DevicePropertiesWidget(QWidget *parent);
     virtual ~DevicePropertiesWidget() { }
@@ -68,6 +69,7 @@ private:
     DeviceOptions origOpts;
     QString origMusicFolder;
     QString noCoverText;
+    QString embedCoverText;
     bool modified;
     bool saveable;
 };

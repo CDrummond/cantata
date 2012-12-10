@@ -507,10 +507,11 @@ static LIBMTP_filetype_t mtpFileType(const Song &s)
     return LIBMTP_FILETYPE_UNDEF_AUDIO;
 }
 
-void MtpConnection::putSong(const Song &s, bool fixVa)
+void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts)
 {
     bool added=false;
     bool fixedVa=false;
+    bool embedCoverImage=Device::constEmbedCover==opts.coverName;
     LIBMTP_track_t *meta=0;
     if (device) {
         meta=LIBMTP_new_track_t();
@@ -528,14 +529,17 @@ void MtpConnection::putSong(const Song &s, bool fixVa)
         QString fileName=song.file;
         QTemporaryFile *temp=0;
 
-        if (fixVa) {
+        if (fixVa || embedCoverImage) {
             // Need to 'workaround' broken various artists handling, so write to a temporary file first...
             temp=Device::copySongToTemp(song);
             if (temp) {
-                song.file=temp->fileName();
-                if (Device::fixVariousArtists(temp->fileName(), song, true)) {
+                if (embedCoverImage) {
+                    Device::embedCover(song.file, song, opts.coverMaxSize);
+                }
+                if (fixVa && Device::fixVariousArtists(temp->fileName(), song, true)) {
                     fixedVa=true;
                 }
+                song.file=temp->fileName();
             }
         }
         meta->title=createString(song.title);
@@ -924,6 +928,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     static bool registeredTypes=false;
     if (!registeredTypes) {
         qRegisterMetaType<QSet<QString> >("QSet<QString>");
+        qRegisterMetaType<DeviceOptions >("DeviceOptions");
         registeredTypes=true;
     }
 
@@ -941,7 +946,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
     connect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));
-    connect(this, SIGNAL(putSong(const Song &, bool)), connection, SLOT(putSong(const Song &, bool)));
+    connect(this, SIGNAL(putSong(const Song &, bool, const DeviceOptions &)), connection, SLOT(putSong(const Song &, bool, const DeviceOptions &)));
     connect(connection, SIGNAL(putSongStatus(bool, int, const QString &, bool)), this, SLOT(putSongStatus(bool, int, const QString &, bool)));
     connect(this, SIGNAL(getSong(const Song &, const QString &)), connection, SLOT(getSong(const Song &, const QString &)));
     connect(connection, SIGNAL(getSongStatus(bool)), this, SLOT(getSongStatus(bool)));
@@ -994,7 +999,7 @@ void MtpDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(QString(), opts, DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
+    dlg->show(QString(), opts, DevicePropertiesWidget::Prop_CoversBasic|DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
 }
 
 void MtpDevice::rescan(bool full)
@@ -1092,7 +1097,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         }
     }
     transcoding=false;
-    emit putSong(currentSong, needToFixVa);
+    emit putSong(currentSong, needToFixVa, opts);
 }
 
 void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)
@@ -1203,7 +1208,7 @@ void MtpDevice::transcodeSongResult(int status)
     if (FileJob::StatusOk!=status) {
         emit actionStatus(TranscodeFailed);
     } else {
-        emit putSong(currentSong, needToFixVa);
+        emit putSong(currentSong, needToFixVa, DeviceOptions(Device::constNoCover));
     }
 }
 

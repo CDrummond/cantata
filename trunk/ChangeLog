@@ -14,6 +14,8 @@
 7. Allow editing of tags, and replaygain calculation, of files from folder view
    which do not contain tags.
 8. Merge 'External Settings' into 'Interface Settingst'
+9. Add option to embed covers when copying songs to devices. (ID3v2, mp4,
+   vorbis comment tag types only) 
 
 0.9.1
 -----

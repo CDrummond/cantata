@@ -80,12 +80,13 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     : QWidget(parent)
     , schemeDlg(0)
     , noCoverText(i18n("Don't copy covers"))
+    , embedCoverText(i18n("Embed cover within each file"))
     , modified(false)
     , saveable(false)
 {
     setupUi(this);
     configFilename->setIcon(Icons::configureIcon);
-    albumCovers->insertItems(0, QStringList() << noCoverText << Covers::standardNames());
+    albumCovers->insertItems(0, QStringList() << noCoverText << embedCoverText << Covers::standardNames());
     coverMaxSize->insertItems(0, QStringList() << i18n("No maximum size") << i18n("400 pixels") << i18n("300 pixels") << i18n("200 pixels") << i18n("100 pixels"));
     fixVariousArtists->setToolTip(i18n("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
                                        "then Cantata will set the 'Artist' tag of all tracks to 'Various Artists' and the "
@@ -110,6 +111,7 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
 
 void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &opts, int props)
 {
+    bool allowCovers=(props&Prop_CoversAll)||(props&Prop_CoversBasic);
     filenameScheme->setText(opts.scheme);
     vfatSafe->setChecked(opts.vfatSafe);
     asciiOnly->setChecked(opts.asciiOnly);
@@ -118,10 +120,11 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     musicFolder->setText(path);
     musicFolder->setVisible(props&Prop_Folder);
     musicFolderLabel->setVisible(props&Prop_Folder);
-    albumCovers->setVisible(props&Prop_Covers);
-    albumCoversLabel->setVisible(props&Prop_Covers);
-    coverMaxSize->setVisible(props&Prop_Covers);
-    coverMaxSizeLabel->setVisible(props&Prop_Covers);
+    albumCovers->setVisible(allowCovers);
+    albumCoversLabel->setVisible(allowCovers);
+    coverMaxSize->setVisible(allowCovers);
+    coverMaxSizeLabel->setVisible(allowCovers);
+    albumCovers->setEditable(props&Prop_CoversAll);
     fixVariousArtists->setVisible(props&Prop_Va);
     fixVariousArtistsLabel->setVisible(props&Prop_Va);
     fixVariousArtists->setChecked(opts.fixVariousArtists);
@@ -169,14 +172,20 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     }
 
     origOpts=opts;
-    albumCovers->setCurrentIndex(0);
     if (origOpts.coverName==Device::constNoCover) {
         origOpts.coverName=noCoverText;
+        albumCovers->setCurrentIndex(0);
     }
-    for (int i=1; i<albumCovers->count(); ++i) {
-        if (albumCovers->itemText(i)==origOpts.coverName) {
-            albumCovers->setCurrentIndex(i);
-            break;
+    if (origOpts.coverName==Device::constEmbedCover) {
+        origOpts.coverName=embedCoverText;
+        albumCovers->setCurrentIndex(1);
+    } else {
+        albumCovers->setCurrentIndex(0);
+        for (int i=1; i<albumCovers->count(); ++i) {
+            if (albumCovers->itemText(i)==origOpts.coverName) {
+                albumCovers->setCurrentIndex(i);
+                break;
+            }
         }
     }
 
@@ -251,7 +260,12 @@ void DevicePropertiesWidget::checkSaveable()
     if (!modified && checkFolder) {
         modified=musicFolder->text().trimmed()!=origMusicFolder;
     }
-    saveable=!opts.scheme.isEmpty() && (!checkFolder || !musicFolder->text().trimmed().isEmpty()) && !albumCovers->currentText().isEmpty();
+    saveable=!opts.scheme.isEmpty() && (!checkFolder || !musicFolder->text().trimmed().isEmpty()) && !opts.coverName.isEmpty();
+    if (saveable &&
+        ( (-1!=opts.coverName.indexOf(noCoverText) && opts.coverName!=noCoverText) ||
+          (-1!=opts.coverName.indexOf(embedCoverText) && opts.coverName!=embedCoverText) ) ) {
+        saveable=false;
+    }
     emit updated();
 }
 
@@ -278,7 +292,7 @@ DeviceOptions DevicePropertiesWidget::settings()
     opts.transcoderCodec=QString();
     opts.transcoderValue=0;
     opts.transcoderWhenDifferent=false;
-    opts.coverName=albumCovers->currentText();
+    opts.coverName=cover();
     opts.coverMaxSize=0==coverMaxSize->currentIndex() ? 0 : ((coverMaxSize->count()-coverMaxSize->currentIndex())*100);
     if (transcoderFrame->isVisible()) {
         opts.transcoderCodec=transcoderName->itemData(transcoderName->currentIndex()).toString();
@@ -297,5 +311,10 @@ DeviceOptions DevicePropertiesWidget::settings()
 
 QString DevicePropertiesWidget::cover() const
 {
-    return albumCovers->currentText()==noCoverText ? Device::constNoCover : albumCovers->currentText();
+    QString coverName=albumCovers->currentText().trimmed();
+    return coverName==noCoverText
+            ? Device::constNoCover
+            : coverName==embedCoverText
+                ? Device::constEmbedCover
+                : coverName;
 }

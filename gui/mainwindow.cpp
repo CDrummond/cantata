@@ -1782,7 +1782,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
     #endif
 
-    if (current.isEmpty()) {
+    if (current.isEmpty() && !current.file.isEmpty()) {
         current.guessTags();
         current.fillEmptyFields();
     }

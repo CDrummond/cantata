@@ -257,7 +257,6 @@ void InfoPage::updateFonts()
     view->settings()->setFontFamily(QWebSettings::SerifFont, KGlobalSettings::generalFont().family());
     view->settings()->setFontFamily(QWebSettings::SansSerifFont, KGlobalSettings::generalFont().family());
     view->settings()->setFontFamily(QWebSettings::FixedFont, KGlobalSettings::fixedFont().family());
-
 }
 #endif
 

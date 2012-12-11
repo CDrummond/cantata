@@ -3,10 +3,12 @@
   <interface name="com.googlecode.cantata.mounter">
     <signal name="mountStatus">
       <arg name="src" type="s" direction="out"/>
+      <arg name="pid" type="i" direction="out"/>
       <arg name="st" type="i" direction="out"/>
     </signal>
     <signal name="umountStatus">
       <arg name="src" type="s" direction="out"/>
+      <arg name="pid" type="i" direction="out"/>
       <arg name="st" type="i" direction="out"/>
     </signal>
     <method name="mount">
@@ -14,10 +16,12 @@
       <arg name="mountPoint" type="s" direction="in"/>
       <arg name="uid" type="i" direction="in"/>
       <arg name="gid" type="i" direction="in"/>
+      <arg name="pid" type="i" direction="in"/>
       <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
     </method>
     <method name="umount">
       <arg name="mountPoint" type="s" direction="in"/>
+      <arg name="pid" type="i" direction="in"/>
       <annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
     </method>
   </interface>

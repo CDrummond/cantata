@@ -3,6 +3,7 @@
 1. Fix saving of 'Store covers in MPD dir' setting.
 2. Show/hide main window when KDE tray item clicked.
 3. Add 'Show Window' to tray item menu.
+4. Dont allow to set focus onto clear button in line-edits.
 
 0.9.0
 -----

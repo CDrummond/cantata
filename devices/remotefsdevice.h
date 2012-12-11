@@ -90,7 +90,11 @@ public:
     void configure(QWidget *parent);
     DevType devType() const { return RemoteFs; }
     QString icon() const {
-        return QLatin1String(details.isLocalFile() ? "inode-directory" : "network-server");
+        #ifdef ENABLE_MOUNTER
+        return QLatin1String(details.isLocalFile() ? "inode-directory" : (constSshfsProtocol==details.url.scheme() ? "utilities-terminal" : "network-server"));
+        #else
+        return QLatin1String(details.isLocalFile() ? "inode-directory" : "utilities-terminal");
+        #endif
     }
     bool canPlaySongs() const;
 

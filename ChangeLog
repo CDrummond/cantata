@@ -13,12 +13,14 @@
     filename without path.
  7. Allow editing of tags, and replaygain calculation, of files from folder view
     which do not contain tags.
- 8. Merge 'External Settings' into 'Interface Settingst'
+ 8. Merge 'External Settings' into 'Interface Settings'
  9. Add option to embed covers when copying songs to devices. (ID3v2, mp4,
-    vorbis comment tag types only) 
+    and vorbis comment tag types only) 
 10. Add a simple system debus helper to allow user mounts of samba shares. This
-    is intended to allow Cantata to connect to an Android device via NASDroid.
-    Requires cantata be built with remote device support.
+    is intended to allow Cantata to connect to an Android device via Droid NAS.
+    Requires cantata be built with remote device support (both 
+    -DENABLE_REMOTE_DEVICES=ON and -DENABLE_MOUNTER=ON need to be passed to
+    cmake).
 
 0.9.1
 -----

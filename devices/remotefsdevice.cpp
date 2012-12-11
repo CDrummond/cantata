@@ -441,7 +441,7 @@ void RemoteFsDevice::mountStatus(const QString &mp, int pid, int st)
         }
     }
     #else
-    Q_UNUSED(src)
+    Q_UNUSED(mp)
     Q_UNUSED(pid)
     Q_UNUSED(st)
     #endif
@@ -462,7 +462,7 @@ void RemoteFsDevice::umountStatus(const QString &mp, int pid, int st)
         }
     }
     #else
-    Q_UNUSED(src)
+    Q_UNUSED(mp)
     Q_UNUSED(pid)
     Q_UNUSED(st)
     #endif

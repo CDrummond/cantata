@@ -25,9 +25,6 @@
 #include "filenameschemedialog.h"
 #include "covers.h"
 #include "localize.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KDirSelectDialog>
-#endif
 #include <QtGui/QTabWidget>
 #include <QtGui/QIcon>
 #include "lineedit.h"
@@ -54,13 +51,6 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     type->addItem(i18n("Locally Mounted Folder"), (int)Type_File);
     #ifdef ENABLE_MOUNTER
     type->addItem(i18n("Samba Shares"), (int)Type_Samba);
-    smbFolderButton->setVisible(false);
-    #endif
-    #ifdef ENABLE_KDE_SUPPORT
-    sshFolderButton->setIcon(QIcon::fromTheme("document-open"));
-    fileFolder->setMode(KFile::Directory|KFile::ExistingOnly|KFile::LocalOnly);
-    #else
-    sshFolderButton->setVisible(false);
     #endif
 }
 
@@ -127,9 +117,6 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     connect(sshHost, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(sshUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(sshFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    #ifdef ENABLE_KDE_SUPPORT
-    connect(sshFolderButton, SIGNAL(clicked()), this, SLOT(browseSftpFolder()));
-    #endif
     connect(sshPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     connect(fileFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     modified=false;
@@ -144,34 +131,11 @@ void RemoteDevicePropertiesWidget::setType()
     }
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-void RemoteDevicePropertiesWidget::browseSftpFolder()
-{
-    RemoteFsDevice::Details det=details();
-    KUrl start(det.protocol.isEmpty() ? det.path : ("sftp://"+(det.user.isEmpty() ? "" : (det.user+"@"))+
-                                                              (det.host.isEmpty() ? "" : det.host)+
-                                                              (0==det.port ? "" : (":"+QString::number(det.port)))+
-                                                              det.path));
-
-    KUrl url=KDirSelectDialog::selectDirectory(start, false, this, i18n("Select Music Folder"));
-
-    if (url.isValid() && QLatin1String("sftp")==url.protocol()) {
-        sshHost->setText(url.host());
-        sshUser->setText(url.user());
-        sshPort->setValue(url.port());
-        sshFolder->setText(url.path());
-    }
-}
-#endif
-
 void RemoteDevicePropertiesWidget::checkSaveable()
 {
     RemoteFsDevice::Details det=details();
     modified=det!=orig;
     saveable=!det.isEmpty();
-    #ifdef ENABLE_KDE_SUPPORT
-    sshFolderButton->setEnabled(!det.path.isEmpty() && !det.host.isEmpty() && 0!=det.port);
-    #endif
     emit updated();
 }
 

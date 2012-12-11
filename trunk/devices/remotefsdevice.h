@@ -112,8 +112,8 @@ protected Q_SLOTS:
     void saveProperties();
     void saveProperties(const DeviceOptions &newOpts, const RemoteFsDevice::Details &newDetails);
     void procFinished(int exitCode);
-    void mountStatus(const QString &mp, int st);
-    void umountStatus(const QString &mp, int st);
+    void mountStatus(const QString &mp, int pid, int st);
+    void umountStatus(const QString &mp, int pid, int st);
 
 protected:
     mutable int mountToken;
@@ -123,6 +123,7 @@ protected:
 //     QString audioFolderSetting;
     #ifdef ENABLE_MOUNTER
     ComGooglecodeCantataMounterInterface *mounterIface;
+    bool messageSent;
     #endif
     friend class DevicesModel;
 };

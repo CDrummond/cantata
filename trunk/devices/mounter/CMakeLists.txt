@@ -12,3 +12,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/com.googlecode.cantata.mounter.conf DE
 
 target_link_libraries(cantata-mounter ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY})
 include_directories( ${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR})
+
+install(FILES ${_qmFile} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/)
+
+install(PROGRAMS mount.cifs.wrapper DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/ )

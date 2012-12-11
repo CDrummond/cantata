@@ -249,6 +249,7 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
     , proc(0)
     #ifdef ENABLE_MOUNTER
     , mounterIface(0)
+    , messageSent(false)
     #endif
 {
 //    details.path=Utils::fixPath(details.path);
@@ -275,10 +276,13 @@ void RemoteFsDevice::toggle()
 ComGooglecodeCantataMounterInterface * RemoteFsDevice::mounter()
 {
     if (!mounterIface) {
+        if (!QDBusConnection::systemBus().interface()->isServiceRegistered(ComGooglecodeCantataMounterInterface::staticInterfaceName())) {
+            QDBusConnection::systemBus().interface()->startService(ComGooglecodeCantataMounterInterface::staticInterfaceName());
+        }
         mounterIface=new ComGooglecodeCantataMounterInterface(ComGooglecodeCantataMounterInterface::staticInterfaceName(),
                                                               "/Mounter", QDBusConnection::systemBus(), this);
-        connect(mounterIface, SIGNAL(mountStatus(const QString &, int)), SLOT(mountStatus(const QString &, int)));
-        connect(mounterIface, SIGNAL(umountStatus(const QString &, int)), SLOT(umountStatus(const QString &, int)));
+        connect(mounterIface, SIGNAL(mountStatus(const QString &, int, int)), SLOT(mountStatus(const QString &, int, int)));
+        connect(mounterIface, SIGNAL(umountStatus(const QString &, int, int)), SLOT(umountStatus(const QString &, int, int)));
     }
     return mounterIface;
 }
@@ -294,8 +298,13 @@ void RemoteFsDevice::mount()
     }
 
     #ifdef ENABLE_MOUNTER
+    if (messageSent) {
+        return;
+    }
     if (constSambaProtocol==details.url.scheme()) {
-        mounter()->mount(details.url.toString(), mountPoint(details, true), getuid(), getgid());
+        mounter()->mount(details.url.toString(), mountPoint(details, true), getuid(), getgid(), getpid());
+        setStatusMessage(i18n("Connecting..."));
+        messageSent=true;
         return;
     }
     #endif
@@ -364,8 +373,13 @@ void RemoteFsDevice::unmount()
     }
 
     #ifdef ENABLE_MOUNTER
+    if (messageSent) {
+        return;
+    }
     if (constSambaProtocol==details.url.scheme()) {
-        mounter()->umount(mountPoint(details, false));
+        mounter()->umount(mountPoint(details, false), getpid());
+        setStatusMessage(i18n("Disconnecting..."));
+        messageSent=true;
         return;
     }
     #endif
@@ -413,10 +427,11 @@ void RemoteFsDevice::procFinished(int exitCode)
     }
 }
 
-void RemoteFsDevice::mountStatus(const QString &mp, int st)
+void RemoteFsDevice::mountStatus(const QString &mp, int pid, int st)
 {
     #ifdef ENABLE_MOUNTER
-    if (mp==mountPoint(details, false)) {
+    if (pid==getpid() && mp==mountPoint(details, false)) {
+        messageSent=false;
         if (0!=st) {
             emit error(i18n("Failed to connect to \"%1\"").arg(details.name));
             setStatusMessage(QString());
@@ -427,14 +442,16 @@ void RemoteFsDevice::mountStatus(const QString &mp, int st)
     }
     #else
     Q_UNUSED(src)
+    Q_UNUSED(pid)
     Q_UNUSED(st)
     #endif
 }
 
-void RemoteFsDevice::umountStatus(const QString &mp, int st)
+void RemoteFsDevice::umountStatus(const QString &mp, int pid, int st)
 {
     #ifdef ENABLE_MOUNTER
-    if (mp==mountPoint(details, false)) {
+    if (pid==getpid() && mp==mountPoint(details, false)) {
+        messageSent=false;
         if (0!=st) {
             emit error(i18n("Failed to disconnect from \"%1\"").arg(details.name));
             setStatusMessage(QString());
@@ -446,6 +463,7 @@ void RemoteFsDevice::umountStatus(const QString &mp, int st)
     }
     #else
     Q_UNUSED(src)
+    Q_UNUSED(pid)
     Q_UNUSED(st)
     #endif
 }

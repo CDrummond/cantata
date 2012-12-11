@@ -48,6 +48,9 @@ Application::Application(Display *display, Qt::HANDLE visual, Qt::HANDLE colorma
     : KUniqueApplication(display, visual, colormap)
     , w(0)
 {
+    #if KDE_IS_VERSION(4, 7, 0)
+    connect(Solid::PowerManagement::notifier(), SIGNAL(resumingFromSuspend()), MPDConnection::self(), SLOT(reconnect()));
+    #endif
 }
 #endif
 

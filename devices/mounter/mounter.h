@@ -25,10 +25,13 @@
 #define MOUNTER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QStringList>
+#include <QtCore/QMap>
+#include <QtCore/QSet>
 #include <QtDBus>
 
 class QTimer;
+class QTemporaryFile;
+
 class Mounter : public QObject, protected QDBusContext
 {
     Q_OBJECT
@@ -39,22 +42,27 @@ public:
     ~Mounter() { }
 
 public Q_SLOTS:
-     Q_NOREPLY void mount(const QString &url, const QString &mountPoint, int uid, int gid);
-     Q_NOREPLY void umount(const QString &mountPoint);
+     Q_NOREPLY void mount(const QString &url, const QString &mountPoint, int uid, int gid, int pid);
+     Q_NOREPLY void umount(const QString &mountPoint, int pid);
 
 private:
     void startTimer();
+    void registerPid(int pid);
 
 private Q_SLOTS:
+    void mountResult(int st);
+    void umountResult(int st);
     void timeout();
 
 Q_SIGNALS:
-    void mountStatus(const QString &src, int st);
-    void umountStatus(const QString &src, int st);
+    void mountStatus(const QString &src, int pid, int st);
+    void umountStatus(const QString &src, int pid, int st);
 
-public:
+private:
     QTimer *timer;
-    bool ok;
+    int procCount;
+    QMap<QObject *, QTemporaryFile *> tempFiles;
+    QSet<int> pids;
 };
 
 #endif

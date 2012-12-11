@@ -31,18 +31,20 @@
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QTimer>
-//#include <QtCore/QDebug>
+#include <QtCore/QDebug>
+#include <sys/types.h>
+#include <signal.h>
 
 Mounter::Mounter(QObject *p)
     : QObject(p)
     , timer(0)
+    , procCount(0)
 {
-    ok=true;
+    new MounterAdaptor(this);
     QDBusConnection bus=QDBusConnection::systemBus();
     if (!bus.registerService("com.googlecode.cantata.mounter") || !bus.registerObject("/Mounter", this)) {
-        ok=false;
+        QTimer::singleShot(0, qApp, SLOT(quit()));
     }
-    new MounterAdaptor(this);
 }
 
 static inline bool mpOk(const QString &mp)
@@ -66,8 +68,13 @@ static QString fixPath(const QString &dir)
 
 // Control via:
 //     qdbus --system com.googlecode.cantata.mounter /Mounter com.googlecode.cantata.mounter.mount smb://workgroup\user:password@host:port/path?domain=domain mountPoint uid gid
-void Mounter::mount(const QString &url, const QString &mountPoint, int uid, int gid)
+void Mounter::mount(const QString &url, const QString &mountPoint, int uid, int gid, int pid)
 {
+    if (calledFromDBus()) {
+        registerPid(pid);
+    }
+
+    qWarning() << url << mountPoint << uid << gid;
     QUrl u(url);
     int st=-1;
 
@@ -106,40 +113,80 @@ void Mounter::mount(const QString &url, const QString &mountPoint, int uid, int 
 //                                                         << "-o" <<
 //                                                         (temp ? ("credentials="+temp->fileName()+",") : QString())+
 //                                                         "uid="+QString::number(uid)+",gid="+QString::number(gid)+
-//                                                         (445==port ? QString() : ",port="+QString::number(port))+
+//                                                         (445==port || port<1 ? QString() : ",port="+QString::number(port))+
 //                                                         (temp || user.isEmpty() ? QString() : (",username="+user))+
 //                                                         (temp || domain.isEmpty() ? QString() : (",domain="+domain))+
 //                                                         (temp ? QString() : ",password=");
-        startTimer();
-        st=QProcess::execute("mount.cifs", QStringList() << path << mountPoint
-                             << "-o" <<
-                             (temp ? ("credentials="+temp->fileName()+",") : QString())+
-                             "uid="+QString::number(uid)+",gid="+QString::number(gid)+
-                             (445==port ? QString() : ",port="+QString::number(port))+
-                             (temp || user.isEmpty() ? QString() : (",username="+user))+
-                             (temp || domain.isEmpty() ? QString() : (",domain="+domain))+
-                             (temp ? QString() : ",password="));
-        startTimer();
-
+        QProcess *proc=new QProcess(this);
+        connect(proc, SIGNAL(finished(int)), SLOT(mountResult(int)));
+        proc->setProperty("mp", mountPoint);
+        proc->setProperty("pid", pid);
+        proc->start(INSTALL_PREFIX"/share/cantata/mount.cifs.wrapper", QStringList() << path << mountPoint
+                    << "-o" <<
+                    (temp ? ("credentials="+temp->fileName()+",") : QString())+
+                    "uid="+QString::number(uid)+",gid="+QString::number(gid)+
+                    (445==port || port<1 ? QString() : ",port="+QString::number(port))+
+                    (temp || user.isEmpty() ? QString() : (",username="+user))+
+                    (temp || domain.isEmpty() ? QString() : (",domain="+domain))+
+                    (temp ? QString() : ",password="), QIODevice::WriteOnly);
         if (temp) {
-            delete temp;
+            tempFiles.insert(proc, temp);
         }
+        procCount++;
+        return;
     }
-
-    emit mountStatus(mountPoint, st);
+    emit mountStatus(mountPoint, pid, st);
 }
 
 // Control via:
 //     qdbus --system com.googlecode.cantata.mounter /Mounter com.googlecode.cantata.mounter.umount mountPoint
-void Mounter::umount(const QString &mountPoint)
+void Mounter::umount(const QString &mountPoint, int pid)
 {
-    int st=-1;
-    startTimer();
+    if (calledFromDBus()) {
+        registerPid(pid);
+    }
+
     if (mpOk(mountPoint)) {
-        st=QProcess::execute("umount", QStringList() << mountPoint);
+        QProcess *proc=new QProcess(this);
+        connect(proc, SIGNAL(finished(int)), SLOT(umountResult(int)));
+        proc->start("umount", QStringList() << mountPoint);
+        proc->setProperty("mp", mountPoint);
+        proc->setProperty("pid", pid);
+        procCount++;
+    } else {
+        emit umountStatus(mountPoint, pid, -1);
+    }
+}
+
+void Mounter::mountResult(int st)
+{
+    QProcess *proc=dynamic_cast<QProcess *>(sender());
+    qWarning() << "MOUNT RESULT" << st << (void *)proc;
+    if (proc) {
+        procCount--;
+        proc->close();
+        proc->deleteLater();
+        if (tempFiles.contains(proc)) {
+            tempFiles[proc]->close();
+            tempFiles[proc]->deleteLater();
+            tempFiles.remove(proc);
+        }
+        emit mountStatus(proc->property("mp").toString(), proc->property("pid").toInt(), st);
     }
     startTimer();
-    emit umountStatus(mountPoint, st);
+}
+
+
+void Mounter::umountResult(int st)
+{
+    QProcess *proc=dynamic_cast<QProcess *>(sender());
+    if (proc) {
+        procCount--;
+        proc->close();
+        proc->deleteLater();
+        emit umountStatus(proc->property("mp").toString(), proc->property("pid").toInt(), st);
+    }
+    startTimer();
 }
 
 void Mounter::startTimer()
@@ -148,10 +195,42 @@ void Mounter::startTimer()
         timer=new QTimer(this);
         connect(timer, SIGNAL(timeout()), SLOT(timeout()));
     }
-    timer->start(10000);
+    timer->start(30000);
+}
+
+void Mounter::registerPid(int pid)
+{
+    pids.insert(pid);
+    startTimer();
 }
 
 void Mounter::timeout()
 {
-    qApp->exit();
+    if (procCount!=0) {
+        startTimer();
+        return;
+    }
+
+    QSet<int> running;
+
+    foreach (int p, pids) {
+        if (0==kill(p, 0)) {
+            running.insert(p);
+        }
+    }
+
+    pids=running;
+
+    if (pids.isEmpty()) {
+        qApp->exit();
+        QMap<QObject *, QTemporaryFile *>::ConstIterator it(tempFiles.constBegin());
+        QMap<QObject *, QTemporaryFile *>::ConstIterator end(tempFiles.constEnd());
+        for (; it!=end; ++it) {
+            it.value()->close();
+            delete it.value();
+        }
+        tempFiles.clear();
+    } else {
+        startTimer();
+    }
 }

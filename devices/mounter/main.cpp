@@ -29,5 +29,5 @@ int main(int argc, char *argv[])
     QCoreApplication app(argc, argv);
     Mounter srv;
 
-    return srv.ok ? app.exec() : -1;
+    return app.exec();
 }

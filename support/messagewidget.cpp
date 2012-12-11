@@ -50,12 +50,12 @@ void MessageWidget::setMessage(const QString &msg, bool isError)
     }
     setText(text);
     setMessageType(isError ? Error : Information);
-    if (!parentWidget()->isVisible()) {
-        show();
+    //if (!parentWidget()->isVisible()) {
+    //    show();
         setVisible(true);
-    } else {
-        animatedShow();
-    }
+    //} else {
+    //    animatedShow();
+    //}
 }
 
 void MessageWidget::setVisible(bool v)

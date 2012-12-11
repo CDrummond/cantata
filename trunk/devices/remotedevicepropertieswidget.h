@@ -47,9 +47,6 @@ Q_SIGNALS:
 private Q_SLOTS:
     void checkSaveable();
     void setType();
-    #ifdef ENABLE_KDE_SUPPORT
-    void browseSftpFolder();
-    #endif
 
 private:
     RemoteFsDevice::Details orig;

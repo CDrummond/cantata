@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>388</height>
+    <width>403</width>
+    <height>369</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -57,10 +57,7 @@
         </property>
         <widget class="QWidget" name="page">
          <layout class="QFormLayout" name="formLayout_2">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::ExpandingFieldsGrow</enum>
-          </property>
-          <item row="1" column="0">
+          <item row="0" column="0">
            <widget class="BuddyLabel" name="hostLabel">
             <property name="text">
              <string>Host:</string>
@@ -70,10 +67,10 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="0" column="1">
            <widget class="LineEdit" name="sshHost"/>
           </item>
-          <item row="2" column="0">
+          <item row="1" column="0">
            <widget class="BuddyLabel" name="portLabel">
             <property name="text">
              <string>Port:</string>
@@ -83,14 +80,14 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="1" column="1">
            <widget class="SpinBox" name="sshPort">
             <property name="maximum">
              <number>65535</number>
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="2" column="0">
            <widget class="BuddyLabel" name="userLabel">
             <property name="text">
              <string>User:</string>
@@ -100,10 +97,10 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="2" column="1">
            <widget class="LineEdit" name="sshUser"/>
           </item>
-          <item row="4" column="0">
+          <item row="3" column="0">
            <widget class="BuddyLabel" name="folderLabel">
             <property name="text">
              <string>Folder:</string>
@@ -113,19 +110,8 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
-           <layout class="QHBoxLayout" name="folderLayout">
-            <item>
-             <widget class="LineEdit" name="sshFolder"/>
-            </item>
-            <item>
-             <widget class="QToolButton" name="sshFolderButton">
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <item row="3" column="1">
+           <widget class="LineEdit" name="sshFolder"/>
           </item>
          </layout>
         </widget>
@@ -222,34 +208,7 @@
            </widget>
           </item>
           <item row="5" column="1">
-           <layout class="QHBoxLayout" name="folderLayout_2">
-            <item>
-             <widget class="LineEdit" name="smbFolder"/>
-            </item>
-            <item>
-             <widget class="QToolButton" name="smbFolderButton">
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="6" column="0" colspan="2">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::MinimumExpanding</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>2</width>
-              <height>8</height>
-             </size>
-            </property>
-           </spacer>
+           <widget class="LineEdit" name="smbFolder"/>
           </item>
          </layout>
         </widget>

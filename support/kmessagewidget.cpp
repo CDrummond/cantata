@@ -275,6 +275,8 @@ void KMsgWidget::setMessageType(KMsgWidget::MessageType type)
         fg = palette().highlightedText().color();
         #ifdef ENABLE_KDE_SUPPORT
         border = bg1.darker(150);
+        #else
+        border = Qt::blue;
         #endif
         break;
     case Warning:

@@ -21,6 +21,8 @@
     Requires cantata be built with remote device support (both 
     -DENABLE_REMOTE_DEVICES=ON and -DENABLE_MOUNTER=ON need to be passed to
     cmake).
+11. Add first-run wizard to enable basic configuration before Cantata is
+    started for the first time.
 
 0.9.1
 -----

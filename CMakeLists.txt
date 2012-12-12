@@ -74,6 +74,7 @@ endmacro(cantata_check_for_sse)
 SET( CANTATA_SRCS
     application.cpp
     main.cpp
+    gui/initialsettingswizard.cpp
     gui/mainwindow.cpp
     gui/preferencesdialog.cpp
     gui/settings.cpp
@@ -144,6 +145,7 @@ SET( CANTATA_SRCS
 )
 
 SET( CANTATA_MOC_HDRS
+    gui/initialsettingswizard.h
     gui/mainwindow.h
     gui/settings.h
     gui/covers.h
@@ -199,6 +201,7 @@ SET( CANTATA_MOC_HDRS
 )
 
 SET( CANTATA_UIS
+    gui/initialsettingswizard.ui
     gui/mainwindow.ui
     gui/folderpage.ui
     gui/librarypage.ui

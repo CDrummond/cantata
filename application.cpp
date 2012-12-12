@@ -83,7 +83,7 @@ int Application::newInstance() {
             InitialSettingsWizard wz;
             if (QDialog::Rejected==wz.exec()) {
                 QApplication::exit(0);
-                return;
+                return 0;
             }  else {
                 Settings::self()->saveConnectionDetails(wz.getDetails());
                 Settings::self()->save(true);
@@ -97,7 +97,7 @@ int Application::newInstance() {
                         "Select \"Continue\" to start Cantata as is."),
                 QString(), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "groupWarning")) {
             QApplication::exit(0);
-            return;
+            return 0;
         }
         w=new MainWindow();
         connect(w, SIGNAL(destroyed(QObject *)), this, SLOT(mwDestroyed(QObject *)));

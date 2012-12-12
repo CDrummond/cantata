@@ -56,8 +56,9 @@ struct Song
     mutable quint8 priority;
     quint16 time;
     quint16 track;
-    quint16 year : 14;
+    quint16 year : 13;
     mutable Type type : 2;
+    mutable bool guessed : 1;
     mutable qint32 size;
 
     // Only used in PlayQueue/PlayLists...
@@ -75,6 +76,7 @@ struct Song
     virtual ~Song() { }
     bool isEmpty() const;
     void guessTags();
+    void revertGuessedTags();
     void fillEmptyFields();
     void setKey();
     virtual void clear();

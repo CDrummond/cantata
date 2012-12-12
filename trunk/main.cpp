@@ -35,6 +35,8 @@
 #endif
 #include "utils.h"
 #include "config.h"
+#include "settings.h"
+#include "initialsettingswizard.h"
 #include "mainwindow.h"
 
 #ifndef ENABLE_KDE_SUPPORT
@@ -134,6 +136,15 @@ int main(int argc, char *argv[])
     loadTranslation("cantata", INSTALL_PREFIX"/share/cantata/translations/", langEnv);
     #endif
 
+    if (Settings::self()->firstRun()) {
+        InitialSettingsWizard wz;
+        if (QDialog::Rejected==wz.exec()) {
+            return 0;
+        } else {
+            Settings::self()->saveConnectionDetails(wz.getDetails());
+            Settings::self()->save(true);
+        }
+    }
     MainWindow mw;
     app.setActivationWindow(&mw);
     #ifdef TAGLIB_FOUND

@@ -22,13 +22,14 @@
  */
 
 #include "application.h"
+#include "settings.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
 #include <KDE/KMessageBox>
 #include <KDE/Solid/PowerManagement>
+#include "initialsettingswizard.h"
 #else
-#include "settings.h"
 #include <QtGui/QIcon>
 #ifdef Q_OS_WIN
 #include <QtCore/QDir>
@@ -77,6 +78,17 @@ int Application::newInstance() {
             w->showNormal();
         }
     } else {
+        Icons::init();
+        if (Settings::self()->firstRun()) {
+            InitialSettingsWizard wz;
+            if (QDialog::Rejected==wz.exec()) {
+                QApplication::exit(0);
+                return;
+            }  else {
+                Settings::self()->saveConnectionDetails(wz.getDetails());
+                Settings::self()->save(true);
+            }
+        }
         if (0==Utils::getGroupId() && KMessageBox::Cancel==KMessageBox::warningContinueCancel(0,
                 i18n("You are not currently a member of the \"users\" group. "
                         "Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you "
@@ -85,8 +97,8 @@ int Application::newInstance() {
                         "Select \"Continue\" to start Cantata as is."),
                 QString(), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "groupWarning")) {
             QApplication::exit(0);
+            return;
         }
-        Icons::init();
         w=new MainWindow();
         connect(w, SIGNAL(destroyed(QObject *)), this, SLOT(mwDestroyed(QObject *)));
     }

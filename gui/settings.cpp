@@ -476,7 +476,7 @@ int Settings::version()
         if (3==parts.size()) {
             ver=CANTATA_MAKE_VERSION(parts.at(0).toInt(), parts.at(1).toInt(), parts.at(2).toInt());
         } else {
-            ver=CANTATA_MAKE_VERSION(0, 8, 0);
+            ver=CANTATA_MAKE_VERSION(0, 9, 0);
             SET_VALUE("version", PACKAGE_VERSION);
         }
     }
@@ -895,7 +895,7 @@ void Settings::saveStartHidden(bool v)
 void Settings::save(bool force)
 {
     if (force) {
-        if (version()!=PACKAGE_VERSION) {
+        if (version()!=PACKAGE_VERSION || isFirstRun) {
             modified=true;
             SET_VALUE("version", PACKAGE_VERSION_STRING);
             ver=PACKAGE_VERSION;           

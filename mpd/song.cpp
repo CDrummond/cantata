@@ -62,6 +62,7 @@ Song::Song()
       , track(0)
       , year(0)
       , type(Standard)
+      , guessed(false)
       , size(0)
       , key(constNullKey)
 {
@@ -86,6 +87,7 @@ Song & Song::operator=(const Song &s)
     size = s.size;
     key = s.key;
     type = s.type;
+    guessed = s.guessed;
     return *this;
 }
 
@@ -165,6 +167,7 @@ void Song::guessTags()
         }
 
         if (!title.isEmpty()) {
+            guessed=true;
             int dot=title.lastIndexOf('.');
             if (dot==title.length()-4) {
                 title=title.left(dot);
@@ -181,6 +184,11 @@ void Song::guessTags()
             }
         }
     }
+}
+
+void Song::revertGuessedTags()
+{
+    title=artist=album=i18n("Unknown");
 }
 
 void Song::fillEmptyFields()

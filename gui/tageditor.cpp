@@ -82,7 +82,16 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
     , saving(false)
 {
     iCount++;
-    original=songs;
+    foreach (const Song &s, songs) {
+        if (s.guessed) {
+            Song song(s);
+            song.revertGuessedTags();
+            original.append(song);
+        } else {
+            original.append(s);
+        }
+    }
+
     #ifdef ENABLE_DEVICES_SUPPORT
     if (deviceUdi.isEmpty()) {
         baseDir=MPDConnection::self()->getDetails().dir;
@@ -178,7 +187,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
         QSet<int> songYears;
         QSet<int> songDiscs;
 
-        foreach (const Song &s, songs) {
+        foreach (const Song &s, original) {
             if (!s.artist.isEmpty()) {
                 songArtists.insert(s.artist);
             }

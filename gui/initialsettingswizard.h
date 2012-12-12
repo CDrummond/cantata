@@ -21,8 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef LIBRARYPAGE_H
-#define LIBRARYPAGE_H
+#ifndef INITIALSETTINGSWIZARD_H
+#define INITIALSETTINGSWIZARD_H
 
 #include "ui_initialsettingswizard.h"
 #include "mpdconnection.h"

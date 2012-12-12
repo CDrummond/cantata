@@ -4,6 +4,8 @@
 2. Show/hide main window when KDE tray item clicked.
 3. Add 'Show Window' to tray item menu.
 4. Dont allow to set focus onto clear button in line-edits.
+5. Remove animation when showing messagewidget, seems to workaround a crash
+   when compiled with KDE and using Oxygen.
 
 0.9.0
 -----

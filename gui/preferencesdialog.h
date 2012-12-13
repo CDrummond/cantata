@@ -41,6 +41,7 @@ class LyricsPage;
 class HttpServerSettings;
 #endif
 class MPDConnectionDetails;
+class CacheSettings;
 
 class PreferencesDialog : public Dialog
 {
@@ -72,6 +73,7 @@ private:
     ProxySettings *proxy;
     ShortcutsSettingsPage *shortcuts;
     #endif
+    CacheSettings *cache;
 };
 
 #endif

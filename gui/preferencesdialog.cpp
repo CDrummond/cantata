@@ -34,6 +34,7 @@
 #endif
 #include "lyricsettings.h"
 #include "lyricspage.h"
+#include "cachesettings.h"
 #include "localize.h"
 #include "mpdconnection.h"
 #include "pagewidget.h"
@@ -57,6 +58,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     http = new HttpServerSettings(widget);
     #endif
     lyrics = new LyricSettings(widget);
+    cache = new CacheSettings(widget);
     server->load();
     serverplayback->load();
     playback->load();
@@ -84,6 +86,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     shortcuts = new ShortcutsSettingsPage(map, widget);
     widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
     #endif
+    widget->addPage(cache, i18n("Cache"), Icon("empty"), i18n("Cached Items"));
     widget->allPagesAdded();
     setCaption(i18n("Configure"));
     setMainWidget(widget);
@@ -130,4 +133,3 @@ void PreferencesDialog::slotButtonClicked(int button)
 
     Dialog::slotButtonClicked(button);
 }
-

@@ -47,6 +47,7 @@ class LyricsPage : public QWidget, public Ui::LyricsPage
     };
 
 public:
+    static const QLatin1String constLyricsDir;
     static const QLatin1String constExtension;
 
     LyricsPage(QWidget *p);

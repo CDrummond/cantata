@@ -42,6 +42,9 @@ class MusicLibraryModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
+    static const QLatin1String constLibraryCache;
+    static const QLatin1String constLibraryExt;
+
     static MusicLibraryModel * self();
 
     static void cleanCache();

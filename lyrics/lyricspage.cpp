@@ -48,14 +48,14 @@
 #include <QtCore/QFileInfo>
 #include <QtGui/QToolButton>
 
-static const QLatin1String constLyricsDir("lyrics/");
+const QLatin1String LyricsPage::constLyricsDir("lyrics/");
 const QLatin1String LyricsPage::constExtension(".lyrics");
 
 static QString cacheFile(QString artist, QString title, bool createDir=false)
 {
     title.replace("/", "_");
     artist.replace("/", "_");
-    return QDir::toNativeSeparators(Utils::cacheDir(constLyricsDir+artist+'/', createDir))+title+LyricsPage::constExtension;
+    return QDir::toNativeSeparators(Utils::cacheDir(LyricsPage::constLyricsDir+artist+'/', createDir))+title+LyricsPage::constExtension;
 }
 
 typedef QList<UltimateLyricsProvider *> ProviderList;

@@ -6,6 +6,7 @@
 4. Dont allow to set focus onto clear button in line-edits.
 5. Remove animation when showing messagewidget, seems to workaround a crash
    when compiled with KDE and using Oxygen.
+6. Fix activation of devices tab via keyboard shortcut.
 
 0.9.0
 -----

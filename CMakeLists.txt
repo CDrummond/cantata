@@ -92,6 +92,7 @@ SET( CANTATA_SRCS
     gui/serverinfopage.cpp
     gui/playlistspage.cpp
     gui/trayitem.cpp
+    gui/cachesettings.cpp
     models/musiclibraryitemroot.cpp
     models/musiclibraryitemartist.cpp
     models/musiclibraryitemalbum.cpp
@@ -161,6 +162,7 @@ SET( CANTATA_MOC_HDRS
     gui/serversettings.h
     gui/preferencesdialog.h
     gui/interfacesettings.h
+    gui/cachesettings.h
     gui/trayitem.h
     models/musiclibrarymodel.h
     models/musiclibraryproxymodel.h

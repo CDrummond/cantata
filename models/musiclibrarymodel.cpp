@@ -69,14 +69,14 @@ MusicLibraryModel * MusicLibraryModel::self()
     #endif
 }
 
-static const QLatin1String constLibraryCache("library/");
-static const QLatin1String constLibraryExt(".xml");
+const QLatin1String MusicLibraryModel::constLibraryCache("library/");
+const QLatin1String MusicLibraryModel::constLibraryExt(".xml");
 
 static const QString cacheFileName()
 {
-    QString fileName=MPDConnection::self()->getDetails().hostname+constLibraryExt;
+    QString fileName=MPDConnection::self()->getDetails().hostname+MusicLibraryModel::constLibraryExt;
     fileName.replace('/', '_');
-    return Utils::cacheDir(constLibraryCache)+fileName;
+    return Utils::cacheDir(MusicLibraryModel::constLibraryCache)+fileName;
 }
 
 void MusicLibraryModel::cleanCache()

@@ -24,6 +24,8 @@
 11. Add first-run wizard to enable basic configuration before Cantata is
     started for the first time.
 12. When collapse/expand, only adjust height and not width.
+13. Add a 'Cache' page to settngs dialog, allowing cahce usage to be displayed
+    and cache items delete.
 
 0.9.1
 -----

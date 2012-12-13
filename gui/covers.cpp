@@ -59,7 +59,7 @@ K_GLOBAL_STATIC(Covers, instance)
 #endif
 
 static const QLatin1String constApiKey("11172d35eb8cc2fd33250a9e45a2d486");
-static const QLatin1String constCoverDir("covers/");
+const QLatin1String Covers::constCoverDir("covers/");
 static const QLatin1String constFileName("cover");
 static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
 

@@ -155,7 +155,7 @@ MPDStatusValues MPDParseUtils::parseStatus(const QByteArray &data)
     return v;
 }
 
-Song MPDParseUtils::parseSong(const QByteArray &data)
+Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
 {
     Song song;
     QString tmpData = QString::fromUtf8(data.constData());
@@ -163,7 +163,6 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
     QStringList tokens;
     QString element;
     QString value;
-    QString albumartist;
 
     int amountOfLines = lines.size();
 
@@ -216,6 +215,11 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
         song.genre = i18n("Unknown");
     }
 
+    if (isPlayQueue) {
+        song.setKey();
+        song.guessTags();
+        song.fillEmptyFields();
+    }
     return song;
 }
 
@@ -234,7 +238,7 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
         }
         line += "\n";
         if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:")) {
-            Song song=parseSong(line);
+            Song song=parseSong(line, true);
 
             #ifdef TAGLIB_FOUND
             if (song.isCantataStream()) {
@@ -245,10 +249,6 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
                 }
             }
             #endif
-
-            song.setKey();
-            song.guessTags();
-            song.fillEmptyFields();
             songs.append(song);
             line.clear();
         }
@@ -354,7 +354,7 @@ MusicLibraryItemRoot * MPDParseUtils::parseLibraryItems(const QByteArray &data)
         currentItem += lines.at(i);
         currentItem += "\n";
         if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:") || lines.at(i + 1).startsWith("playlist:")) {
-            Song currentSong = parseSong(currentItem);
+            Song currentSong = parseSong(currentItem, false);
             currentItem.clear();
 
             if (Song::Playlist==currentSong.type) {

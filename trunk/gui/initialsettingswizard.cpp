@@ -24,6 +24,7 @@
 #include "initialsettingswizard.h"
 #include "messagebox.h"
 #include "settings.h"
+#include "utils.h"
 #include <QtCore/QDir>
 
 InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
@@ -43,6 +44,7 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     port->setValue(det.port);
     password->setText(det.password);
     dir->setText(det.dir);
+    groupWarningLabel->setVisible(0==Utils::getGroupId());
 }
 
 InitialSettingsWizard::~InitialSettingsWizard()

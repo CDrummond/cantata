@@ -638,7 +638,7 @@ void MPDConnection::currentSong()
 {
     Response response=sendCommand("currentsong");
     if (response.ok) {
-        emit currentSongUpdated(MPDParseUtils::parseSong(response.data));
+        emit currentSongUpdated(MPDParseUtils::parseSong(response.data, true));
     }
 }
 
@@ -705,8 +705,7 @@ void MPDConnection::playListChanges()
                         playListInfo();
                         return;
                     }
-                    Song s=MPDParseUtils::parseSong(response.data);
-                    s.setKey();
+                    Song s=MPDParseUtils::parseSong(response.data, true);
                     s.id=idp.id;
 //                     s.pos=idp.pos;
                     songs.append(s);

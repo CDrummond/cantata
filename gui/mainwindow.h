@@ -286,7 +286,7 @@ public Q_SLOTS:
     }
     void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
     void showDevicesTab() {
-        #ifdef ENABLE_KDE_SUPPORT
+        #ifdef ENABLE_DEVICES_SUPPORT
         showTab(PAGE_DEVICES);
         #endif
     }

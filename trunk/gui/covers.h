@@ -100,6 +100,7 @@ public:
     };
 
     static const QSize constMaxSize;
+    static const QLatin1String constCoverDir;
 
     static Covers * self();
     static bool isCoverFile(const QString &file);

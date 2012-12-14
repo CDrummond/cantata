@@ -386,9 +386,7 @@ private:
     #endif
     Action *expandInterfaceAction;
     Action *quitAction;
-    #if !defined Q_OS_WIN
     Action *restoreAction;
-    #endif
     Action *locateTrackAction;
     Action *showPlayQueueAction;
     Action *libraryTabAction;

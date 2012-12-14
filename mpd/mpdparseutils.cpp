@@ -216,9 +216,9 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     }
 
     if (isPlayQueue) {
-        song.setKey();
         song.guessTags();
         song.fillEmptyFields();
+        song.setKey();
     }
     return song;
 }

@@ -87,6 +87,7 @@
 #include "rgdialog.h"
 #endif
 #endif
+#include "coverdialog.h"
 #include "streamsmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -281,10 +282,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(quitAction, SIGNAL(triggered(bool)), this, SLOT(quit()));
     quitAction->setShortcut(QKeySequence::Quit);
     #endif // ENABLE_KDE_SUPPORT
-    #if !defined Q_OS_WIN
     restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
     connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
-    #endif // !Q_OS_WIN
 
     smallPlaybackButtonsAction = ActionCollection::get()->createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
     connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::connectIcon);
@@ -354,6 +353,7 @@ MainWindow::MainWindow(QWidget *parent)
     searchAction = ActionCollection::get()->createAction("search", i18n("Search"), "edit-find");
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
     collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
+    setCoverAction = ActionCollection::get()->createAction("setcover", i18n("Set Cover"));
 
     #if defined ENABLE_KDE_SUPPORT
     prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
@@ -778,6 +778,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(deleteSongsAction, SIGNAL(triggered(bool)), SLOT(deleteSongs()));
+    connect(setCoverAction, SIGNAL(triggered(bool)), SLOT(setCover()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
@@ -2657,10 +2658,9 @@ void MainWindow::organiseFiles()
         return;
     }
 
-    if (0!=TagEditor::instanceCount()) {
+    if (0!=TagEditor::instanceCount() || 0!=CoverDialog::instanceCount()) {
         DIALOG_ERROR;
     }
-
     #ifdef ENABLE_DEVICES_SUPPORT
     if (0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
         DIALOG_ERROR;
@@ -2761,6 +2761,9 @@ void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
     if (songs.isEmpty() || 0!=ActionDialog::instanceCount()) {
         return;
     }
+    if (0!=CoverDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
     #ifdef TAGLIB_FOUND
     if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
         DIALOG_ERROR;
@@ -2829,6 +2832,35 @@ void MainWindow::replayGain()
     }
 }
 #endif
+
+void MainWindow::setCover()
+{
+    if (0!=CoverDialog::instanceCount()) {
+        return;
+    }
+    #ifdef TAGLIB_FOUND
+    if (0!=TrackOrganiser::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    if (0!=ActionDialog::instanceCount()) {
+        DIALOG_ERROR;
+    }
+    #endif
+
+    QList<Song> songs;
+    if (libraryPage->isVisible()) {
+        songs=libraryPage->selectedSongs();
+    } else if (albumsPage->isVisible()) {
+        songs=albumsPage->selectedSongs();
+    }
+
+    if (!songs.isEmpty()) {
+        CoverDialog *dlg=new CoverDialog(this);
+        dlg->show(songs.at(0));
+    }
+}
 
 int MainWindow::currentTrackPosition() const
 {

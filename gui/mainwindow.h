@@ -306,6 +306,7 @@ public Q_SLOTS:
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     void replayGain();
     #endif
+    void setCover();
     void goBack();
     void focusSearch();
     void expandAll();
@@ -383,9 +384,7 @@ private:
     #endif
     Action *expandInterfaceAction;
     Action *quitAction;
-    #if !defined Q_OS_WIN
     Action *restoreAction;
-    #endif
     Action *locateTrackAction;
     Action *showPlayQueueAction;
     Action *libraryTabAction;
@@ -419,6 +418,7 @@ private:
     Action *expandAllAction;
     Action *collapseAllAction;
     Action *smallPlaybackButtonsAction;
+    Action *setCoverAction;
     QAction *autoHideSplitterAction;
     TrayItem *trayItem;
     QMenu *playbackBtnsMenu;

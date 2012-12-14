@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HttpServerSettings</class>
+ <widget class="QWidget" name="HttpServerSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>416</width>
+    <height>345</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="BuddyLabel" name="label">
+       <property name="text">
+        <string>Enable HTTP server:</string>
+       </property>
+       <property name="buddy">
+        <cstring>enableHttp</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="OnOffButton" name="enableHttp">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="BuddyLabel" name="label_2">
+       <property name="text">
+        <string>Always use server:</string>
+       </property>
+       <property name="buddy">
+        <cstring>alwaysUseHttp</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="OnOffButton" name="alwaysUseHttp">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="BuddyLabel" name="label_3">
+       <property name="text">
+        <string>Port:</string>
+       </property>
+       <property name="buddy">
+        <cstring>httpPort</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="SpinBox" name="httpPort">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>65535</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="BuddyLabel" name="label_5">
+       <property name="text">
+        <string>Address/interface:</string>
+       </property>
+       <property name="buddy">
+        <cstring>httpAddress</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="LineEdit" name="httpAddress"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; MPD usually only plays songs that are stored within its folders. If you have connected via a local socket, then MPD can also play files located on your filesystem. If you are using a non local socket (e.g. you have entered a hostname or IP address in the &quot;Host&quot; field of the &quot;Server&quot; settings page), then Cantata contains a minimal HTTP server that can be used to server files to MPD. This, however, will only work whilst Cantata is running.  If you enable &quot;Always use server&quot;, then Cantata will always pass server URLs to MPD for files, even when you have  connected via a local socket.&lt;br/&gt;&lt;br/&gt;
+&lt;b&gt;NOTE:&lt;/b&gt;&quot;Address/interface&quot; may contian either the IP address, or interface (e.g. eth0), that you wish to listen for connections on. Leave blank to use the local loopback address (127.0.0.1).&lt;/i&gt;&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>13</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>spinbox.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>enableHttp</tabstop>
+  <tabstop>alwaysUseHttp</tabstop>
+  <tabstop>httpAddress</tabstop>
+  <tabstop>httpPort</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>enableHttp</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>httpPort</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>120</x>
+     <y>7</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>148</x>
+     <y>61</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>enableHttp</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>alwaysUseHttp</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>126</x>
+     <y>19</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>128</x>
+     <y>44</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

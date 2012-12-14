@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PlaybackSettings</class>
+ <widget class="QWidget" name="PlaybackSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>284</width>
+    <height>172</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::ExpandingFieldsGrow</enum>
+   </property>
+   <item row="0" column="0">
+    <widget class="BuddyLabel" name="label_6b">
+     <property name="text">
+      <string>Fadeout on stop:</string>
+     </property>
+     <property name="buddy">
+      <cstring>stopFadeDuration</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="SpinBox" name="stopFadeDuration"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="BuddyLabel" name="stopOnExitLabel">
+     <property name="text">
+      <string>Stop playback on exit:</string>
+     </property>
+     <property name="buddy">
+      <cstring>stopOnExit</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="OnOffButton" name="stopOnExit"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="BuddyLabel" name="stopDynamizerOnExitLabel">
+     <property name="text">
+      <string>Stop dynamizer on exit:</string>
+     </property>
+     <property name="buddy">
+      <cstring>stopDynamizerOnExit</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="OnOffButton" name="stopDynamizerOnExit">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>spinbox.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>stopFadeDuration</tabstop>
+  <tabstop>stopOnExit</tabstop>
+  <tabstop>stopDynamizerOnExit</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

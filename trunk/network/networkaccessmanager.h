@@ -41,7 +41,9 @@ class NetworkAccessManager : public BASE_NETWORK_ACCESS_MANAGER
     Q_OBJECT
 
 public:
-    NetworkAccessManager(QObject *parent);
+    static NetworkAccessManager * self();
+
+    NetworkAccessManager(QObject *parent=0);
     virtual ~NetworkAccessManager() { }
 
     QNetworkReply * get(const QNetworkRequest &req, int timeout=0);

@@ -64,6 +64,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     view->addAction(p->replaygainAction);
     #endif
+    view->addAction(p->setCoverAction);
     #ifdef ENABLE_DEVICES_SUPPORT
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
@@ -224,4 +225,6 @@ void AlbumsPage::controlActions()
     mw->copyToDeviceAction->setEnabled(mw->organiseFilesAction->isEnabled());
     #endif
     #endif // TAGLIB_FOUND
+
+    mw->setCoverAction->setEnabled(1==selected.count() && static_cast<AlbumsModel::Item *>(proxy.mapToSource(selected.at(0)).internalPointer())->isAlbum());
 }

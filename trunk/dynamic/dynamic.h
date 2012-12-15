@@ -32,7 +32,6 @@
 #include <QtCore/QStringList>
 
 class QTimer;
-class NetworkAccessManager;
 class QNetworkReply;
 
 class Dynamic : public QAbstractItemModel
@@ -119,7 +118,6 @@ private:
     int getPid() const;
     bool controlApp(bool isStart);
     QList<Entry>::Iterator find(const QString &e);
-    NetworkAccessManager * network();
     void sendCommand(const QString &cmd, const QStringList &args=QStringList());
     void loadLocal();
     void loadRemote();
@@ -138,7 +136,6 @@ private:
     QString lastState;
     QString dynamicUrl;
     QNetworkReply *currentJob;
-    NetworkAccessManager *manager;
     QString currentCommand;
     QStringList currentArgs;
     Entry currentSave;

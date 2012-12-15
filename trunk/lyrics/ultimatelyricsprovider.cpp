@@ -34,8 +34,7 @@ const int UltimateLyricsProvider::kRedirectLimit = 5;
 
 
 UltimateLyricsProvider::UltimateLyricsProvider()
-  : network_(new NetworkAccessManager(this)),
-    relevance_(0),
+  : relevance_(0),
     redirect_count_(0)
 {
 }
@@ -76,7 +75,7 @@ void UltimateLyricsProvider::FetchInfo(int id, const Song& metadata) {
 
   // Fetch the URL, follow redirects
   redirect_count_ = 0;
-  QNetworkReply* reply = network_->get(QNetworkRequest(url));
+  QNetworkReply* reply = NetworkAccessManager::self()->get(QNetworkRequest(url));
   requests_[reply] = id;
   connect(reply, SIGNAL(finished()), SLOT(LyricsFetched()));
 }
@@ -112,7 +111,7 @@ void UltimateLyricsProvider::LyricsFetched() {
     }
 
     redirect_count_ ++;
-    QNetworkReply* reply = network_->get(QNetworkRequest(target));
+    QNetworkReply* reply = NetworkAccessManager::self()->get(QNetworkRequest(target));
     requests_[reply] = id;
     connect(reply, SIGNAL(finished()), SLOT(LyricsFetched()));
     return;

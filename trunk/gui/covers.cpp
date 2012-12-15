@@ -58,7 +58,7 @@
 K_GLOBAL_STATIC(Covers, instance)
 #endif
 
-static const QLatin1String constApiKey("11172d35eb8cc2fd33250a9e45a2d486");
+const QLatin1String Covers::constLastFmApiKey("11172d35eb8cc2fd33250a9e45a2d486");
 const QLatin1String Covers::constCoverDir("covers/");
 static const QLatin1String constFileName("cover");
 static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
@@ -336,8 +336,7 @@ QStringList Covers::standardNames()
 }
 
 Covers::Covers()
-    : manager(0)
-    , cache(300000)
+    : cache(300000)
     , queue(0)
     , queueThread(0)
 {
@@ -626,10 +625,6 @@ void Covers::download(const Song &song)
                                         : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
     }
 
-    if (!manager) {
-        manager=new NetworkAccessManager(this);
-    }
-
     Job job(song, dirName, isArtistImage);
 
     if (!isArtistImage && !MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
@@ -650,7 +645,7 @@ void Covers::downloadViaHttp(Job &job, JobType type)
     u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+coverName.toLatin1());
 
     job.type=type;
-    QNetworkReply *j=manager->get(QNetworkRequest(u));
+    QNetworkReply *j=NetworkAccessManager::self()->get(QNetworkRequest(u));
     connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
     jobs.insert(j, job);
 }
@@ -691,7 +686,7 @@ void Covers::downloadViaLastFm(Job &job)
     param.appendChild(value);
     value.appendChild(str);
 
-    str.appendChild(addArg(doc, "api_key", constApiKey));
+    str.appendChild(addArg(doc, "api_key", constLastFmApiKey));
     str.appendChild(addArg(doc, "artist", job.song.albumArtist()));
     if (!job.isArtist) {
         str.appendChild(addArg(doc, "album", job.song.album));
@@ -700,7 +695,7 @@ void Covers::downloadViaLastFm(Job &job)
     QNetworkRequest request;
     request.setUrl(QUrl("http://ws.audioscrobbler.com/2.0/"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "text/xml");
-    QNetworkReply *j = manager->post(request, doc.toString().toUtf8());
+    QNetworkReply *j = NetworkAccessManager::self()->post(request, doc.toString().toUtf8());
     connect(j, SIGNAL(finished()), this, SLOT(lastFmCallFinished()));
     job.type=JobLastFm;
     jobs.insert(j, job);
@@ -750,6 +745,7 @@ void Covers::lastFmCallFinished()
                 bool inSection=false;
                 bool isArtistImage=job.isArtist;
                 QXmlStreamReader doc(resp.replace("\\\"", "\""));
+                QString largeUrl;
 
                 while (!doc.atEnd() && url.isEmpty()) {
                     doc.readNext();
@@ -757,8 +753,14 @@ void Covers::lastFmCallFinished()
                     if (doc.isStartElement()) {
                         if (!inSection && QLatin1String(isArtistImage ? "artist" : "album")==doc.name()) {
                             inSection=true;
-                        } else if (inSection && QLatin1String("image")==doc.name() && QLatin1String("extralarge")==doc.attributes().value("size").toString()) {
-                            url = doc.readElementText();
+                        } else if (inSection && QLatin1String("image")==doc.name()) {
+                            QString size=doc.attributes().value("size").toString();
+
+                            if (QLatin1String("extralarge")==size) {
+                                url = doc.readElementText();
+                            } else if (QLatin1String("large")==size) {
+                                largeUrl = doc.readElementText();
+                            }
                         } else if (QLatin1String("similar")==doc.name()) {
                             break;
                         }
@@ -766,13 +768,16 @@ void Covers::lastFmCallFinished()
                         inSection=false;
                     }
                 }
+                if (url.isEmpty() && !largeUrl.isEmpty()) {
+                    url=largeUrl;
+                }
             }
         }
 
         if (!url.isEmpty()) {
             QUrl u;
             u.setEncodedUrl(url.toLatin1());
-            QNetworkReply *j=manager->get(QNetworkRequest(u));
+            QNetworkReply *j=NetworkAccessManager::self()->get(QNetworkRequest(u));
             connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
             jobs.insert(j, job);
         } else {

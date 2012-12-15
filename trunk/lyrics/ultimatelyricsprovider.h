@@ -31,9 +31,6 @@
 #include "songinfoprovider.h"
 
 class Song;
-
-class NetworkAccessManager;
-
 class QNetworkReply;
 
 class UltimateLyricsProvider : public SongInfoProvider {
@@ -82,7 +79,6 @@ private:
   void DoUrlReplace(const QString& tag, const QString& value, QString* url) const;
 
 private:
-  NetworkAccessManager* network_;
   QHash<QNetworkReply*, int> requests_;
 
   QString name_;

@@ -146,7 +146,6 @@ static QString parse(const QByteArray &data, const QStringList &handlers)
 
 StreamFetcher::StreamFetcher(QObject *p)
     : QObject(p)
-    , manager(0)
     , job(0)
 {
     handlers.append("http");
@@ -170,10 +169,6 @@ void StreamFetcher::get(const QStringList &items, int insertRow, bool replace, q
     replacePlayQueue=replace;
     prio=priority;
     current=QString();
-    if (!manager) {
-        manager=new NetworkAccessManager(this);
-    }
-
     doNext();
 }
 
@@ -187,7 +182,7 @@ void StreamFetcher::doNext()
         if (QLatin1String("cantata-http")==u.scheme()) {
             data.clear();
             u.setScheme("http");
-            job=manager->get(u);
+            job=NetworkAccessManager::self()->get(u);
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
             connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
             return;
@@ -256,7 +251,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
             if (redirect.isValid() && ++redirects<constMaxRedirects) {
                 current=redirect.toString();
                 data.clear();
-                job=manager->get(current);
+                job=NetworkAccessManager::self()->get(current);
                 connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
                 connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                 redirected=true;
@@ -269,7 +264,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                     // Redirect...
                     current=u;
                     data.clear();
-                    job=manager->get(u);
+                    job=NetworkAccessManager::self()->get(u);
                     connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
                     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                     redirected=true;

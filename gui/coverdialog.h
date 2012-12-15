@@ -21,54 +21,44 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef STREAMFETCHER_H
-#define STREAMFETCHER_H
+#ifndef COVER_DIALOG_H
+#define COVER_DIALOG_H
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QByteArray>
-#include <QtCore/QStringList>
+#include "config.h"
+#include "dialog.h"
+#include "song.h"
+#include <QtCore/QSet>
 
+class ListWidget;
 class QNetworkReply;
+class QUrl;
 
-class StreamFetcher : public QObject
+class CoverDialog : public Dialog
 {
     Q_OBJECT
 
 public:
-    StreamFetcher(QObject *p);
-    virtual ~StreamFetcher();
+    static int instanceCount();
 
-    void get(const QStringList &items, int insertRow, bool replace, quint8 priority);
+    CoverDialog(QWidget *parent);
+    virtual ~CoverDialog();
 
-private:
-    void doNext();
-
-public Q_SLOTS:
-    void cancel();
-    void urlHandlers(const QStringList &uh);
-
-Q_SIGNALS:
-    void result(const QStringList &items, int insertRow, bool replace, quint8 priority);
+    void show(const Song &song);
 
 private Q_SLOTS:
-    void dataReady();
-    void jobFinished();
+    void queryJobFinished();
+    void downloadJobFinished();
 
 private:
-    void jobFinished(QNetworkReply *reply);
+    void sendQuery(const QString &query);
+    QNetworkReply * downloadImage(const QString &url);
+    void cancelQuery();
+    void sendQueryRequest(const QUrl &url);
+    void parseLstFmQueryResponse(const QString &resp);
 
 private:
-    QNetworkReply *job;
-    QString current;
-    QStringList todo;
-    QStringList done;
-    int row;
-    bool replacePlayQueue;
-    quint8 prio;
-    int redirects;
-    QByteArray data;
-    QStringList handlers;
+    ListWidget *list;
+    QSet<QNetworkReply *> currentQuery;
 };
 
 #endif

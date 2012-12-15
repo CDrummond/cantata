@@ -32,7 +32,6 @@
 #include "song.h"
 #include "config.h"
 
-class NetworkAccessManager;
 class QString;
 class QThread;
 class QNetworkReply;
@@ -100,6 +99,7 @@ public:
     };
 
     static const QSize constMaxSize;
+    static const QLatin1String constLastFmApiKey;
     static const QLatin1String constCoverDir;
 
     static Covers * self();
@@ -138,7 +138,6 @@ private:
     void clearDummyCache(const Song &song, const QImage &img);
 
 private:
-    NetworkAccessManager *manager;
     QHash<QNetworkReply *, Job> jobs;
     QCache<QString, QPixmap> cache;
     CoverQueue *queue;

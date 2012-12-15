@@ -24,6 +24,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KGlobal>
+K_GLOBAL_STATIC(NetworkAccessManager, instance)
+#endif
+
+NetworkAccessManager * NetworkAccessManager::self()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return instance;
+    #else
+    static NetworkAccessManager *instance=0;
+    if(!instance) {
+        instance=new NetworkAccessManager;
+    }
+    return instance;
+    #endif
+}
+
 NetworkAccessManager::NetworkAccessManager(QObject *parent)
     : BASE_NETWORK_ACCESS_MANAGER(parent)
 {

@@ -88,7 +88,6 @@ Dynamic::Dynamic()
     : timer(0)
     , statusTime(1)
     , currentJob(0)
-    , manager(0)
 {
     loadLocal();
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
@@ -202,7 +201,7 @@ bool Dynamic::save(const Entry &e)
         url.addQueryItem("name", e.name);
         url.addQueryItem(constStatusTime, QString::number(statusTime));
 
-        currentJob=network()->post(QNetworkRequest(url), string.toUtf8());
+        currentJob=NetworkAccessManager::self()->post(QNetworkRequest(url), string.toUtf8());
         connect(currentJob, SIGNAL(finished()), this, SLOT(jobFinished()));
         currentCommand=constSaveCmd;
         currentArgs.clear();
@@ -625,14 +624,6 @@ void Dynamic::checkResponse(const QString &response)
     }
 }
 
-NetworkAccessManager * Dynamic::network()
-{
-    if (!manager) {
-        manager=new NetworkAccessManager(this);
-    }
-    return manager;
-}
-
 void Dynamic::sendCommand(const QString &cmd, const QStringList &args)
 {
     if (currentCommand==constStatusCmd) {
@@ -671,7 +662,7 @@ void Dynamic::sendCommand(const QString &cmd, const QStringList &args)
         if (!args.isEmpty()) {
             QUrl url(dynamicUrl+"/"+args.at(0));
             url.addQueryItem(constStatusTime, QString::number(statusTime));
-            currentJob=network()->deleteResource(QNetworkRequest(url));
+            currentJob=NetworkAccessManager::self()->deleteResource(QNetworkRequest(url));
         } else {
             currentCommand.clear();
             currentArgs.clear();
@@ -685,9 +676,9 @@ void Dynamic::sendCommand(const QString &cmd, const QStringList &args)
         }
         url.addQueryItem(constStatusTime, QString::number(statusTime));
         if (constSetActiveCmd==cmd || constControlCmd==cmd) {
-            currentJob=network()->post(QNetworkRequest(url), QByteArray());
+            currentJob=NetworkAccessManager::self()->post(QNetworkRequest(url), QByteArray());
         } else {
-            currentJob=network()->get(QNetworkRequest(url));
+            currentJob=NetworkAccessManager::self()->get(QNetworkRequest(url));
         }
     }
     if (constListCmd==cmd) {

@@ -26,6 +26,8 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KUrlRequester>
+#include <KDE/KLineEdit>
+#include <KDE/KPushButton>
 class DirRequester : public KUrlRequester
 {
 public:
@@ -34,6 +36,7 @@ public:
     }
 
     void setButtonVisible(bool v) { button()->setVisible(v); }
+    void setDirMode(bool m) { setMode((m ? KFile::Directory : KFile::File)|KFile::ExistingOnly|KFile::LocalOnly); }
 };
 
 #else
@@ -48,18 +51,27 @@ public:
 
     QString text() const { return edit->text(); }
     void setText(const QString &t) { edit->setText(t); }
-    void setButtonVisible(bool v) { button->setVisible(v); }
+    void setButtonVisible(bool v) { btn->setVisible(v); }
     void setFocus() { edit->setFocus(); }
+    void setDirMode(bool m) { dirMode=m; }
+    LineEdit * lineEdit() const { return edit; }
+    QToolButton * button() const { return btn; }
+    void setFilter(const QString &f) { filter=f; }
+
+public Q_SLOTS:
+    void setEnabled(bool e);
 
 Q_SIGNALS:
     void textChanged(const QString &);
 
 private Q_SLOTS:
-    void chooseDir();
+    void choose();
 
 private:
     LineEdit *edit;
-    QToolButton *button;
+    QToolButton *btn;
+    bool dirMode;
+    QString filter;
 };
 #endif
 

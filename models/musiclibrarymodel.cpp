@@ -106,6 +106,8 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent)
             this, SLOT(setArtistImage(const QString &, const QImage &)));
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
             this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+    connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
+            this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
 }
 
 MusicLibraryModel::~MusicLibraryModel()
@@ -613,6 +615,16 @@ void MusicLibraryModel::setArtistImage(const QString &artist, const QImage &img)
 
 void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file)
 {
+    setCover(song, img, file, false);
+}
+
+void MusicLibraryModel::updateCover(const Song &song, const QImage &img, const QString &file)
+{
+    setCover(song, img, file, true);
+}
+
+void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file, bool update)
+{
     Q_UNUSED(file)
     if (!rootItem->useAlbumImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
         return;
@@ -621,29 +633,11 @@ void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QStr
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-        if (albumItem && static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
+        if (albumItem && static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img, update)) {
             QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
             emit dataChanged(idx, idx);
         }
     }
-
-//     int i=0;
-//     foreach (const MusicLibraryItem *artistItem, rootItem->childItems()) {
-//         if (artistItem->data()==artist) {
-//             int j=0;
-//             foreach (const MusicLibraryItem *albumItem, artistItem->childItems()) {
-//                 if (albumItem->data()==album) {
-//                     if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
-//                         QModelIndex idx=index(j, 0, index(i, 0, QModelIndex()));
-//                         emit dataChanged(idx, idx);
-//                     }
-//                     return;
-//                 }
-//                 j++;
-//             }
-//         }
-//         i++;
-//     }
 }
 
 /**

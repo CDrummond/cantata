@@ -27,7 +27,8 @@
 13. Add a 'Cache' page to settngs dialog, allowing cahce usage to be displayed
     and cache items delete.
 14. Move group warning to last stage of intial settings wizard.
-15. Basic cover fetching dialog, allowing to change downloaded cover.
+15. Basic cover fetching dialog, allowing to change downloaded cover. Curerntly
+    Last.fm and Google are used to find images.
 
 0.9.1
 -----

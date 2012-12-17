@@ -64,7 +64,7 @@ public:
     MusicLibraryItemAlbum(const QString &data, quint32 year, MusicLibraryItemContainer *parent);
     virtual ~MusicLibraryItemAlbum();
 
-    bool setCover(const QImage &img) const;
+    bool setCover(const QImage &img, bool update=false) const;
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }
     quint32 year() const { return m_year; }

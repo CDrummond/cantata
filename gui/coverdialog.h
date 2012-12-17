@@ -27,38 +27,100 @@
 #include "config.h"
 #include "dialog.h"
 #include "song.h"
+#include "ui_coverdialog.h"
 #include <QtCore/QSet>
+#include <QtCore/QList>
 
-class ListWidget;
 class QNetworkReply;
 class QUrl;
+class QTemporaryFile;
+class QListWidgetItem;
+class QLabel;
+class QProgressBar;
+class CoverItem;
+class ExistingCover;
+class Spinner;
 
-class CoverDialog : public Dialog
+class CoverPreview : public Dialog
+{
+    Q_OBJECT
+
+public:
+    CoverPreview(QWidget *p);
+    virtual ~CoverPreview() { }
+    void showImage(const QImage &img, const QString &u, bool checkUrl=true);
+    void downloading(const QString &u);
+    bool aboutToShow(const QString &u) const { return u==url; }
+
+private Q_SLOTS:
+    void progress(qint64 rx, qint64 total);
+
+private:
+    QString url;
+    QLabel *loadingLabel;
+    QProgressBar *pbar;
+    QLabel *imageLabel;
+};
+
+class CoverDialog : public Dialog, public Ui::CoverDialog
 {
     Q_OBJECT
 
 public:
     static int instanceCount();
 
+    enum DownloadType {
+        DL_Query,
+        DL_Thumbnail,
+        DL_LargePreview,
+        DL_LargeSave
+    };
+
+    enum FileType {
+        FT_Jpg,
+        FT_Png,
+        FT_Other
+    };
+
     CoverDialog(QWidget *parent);
     virtual ~CoverDialog();
 
-    void show(const Song &song);
+    void show(const Song &s);
+    int imageSize() const { return iSize; }
 
 private Q_SLOTS:
     void queryJobFinished();
     void downloadJobFinished();
+    void showImage(QListWidgetItem *item);
+    void sendQuery();
+    void checkStatus();
 
 private:
-    void sendQuery(const QString &query);
-    QNetworkReply * downloadImage(const QString &url);
+    CoverPreview *previewDialog();
+    void insertItem(CoverItem *item);
+    QNetworkReply * downloadImage(const QString &url, DownloadType dlType);
     void cancelQuery();
+    void clearTempFiles();
     void sendQueryRequest(const QUrl &url);
     void parseLstFmQueryResponse(const QString &resp);
+    void parseGoogleQueryResponse(const QString &resp);
+//    void parseYahooQueryResponse(const QString &resp);
+//    void parseDiscogsQueryResponse(const QString &resp);
+    void slotButtonClicked(int button);
+    bool saveCover(const QString &src, const QImage &img);
 
 private:
-    ListWidget *list;
+    Song song;
+    ExistingCover *existing;
+    QString currentQueryString;
     QSet<QNetworkReply *> currentQuery;
+    QSet<QString> currentUrls;
+    QList<QTemporaryFile *> tempFiles;
+    CoverPreview *preview;
+    bool saving;
+    int iSize;
+    Spinner *spinner;
+    int page;
 };
 
 #endif

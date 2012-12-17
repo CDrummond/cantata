@@ -168,9 +168,9 @@ MusicLibraryItemAlbum::~MusicLibraryItemAlbum()
     delete m_cover;
 }
 
-bool MusicLibraryItemAlbum::setCover(const QImage &img) const
+bool MusicLibraryItemAlbum::setCover(const QImage &img, bool update) const
 {
-    if (m_coverIsDefault && !img.isNull()) {
+    if ((update || m_coverIsDefault) && !img.isNull()) {
         int size=iconSize(largeImages());
         m_cover = new QPixmap(QPixmap::fromImage(img).scaled(QSize(size, size), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         m_coverIsDefault=false;

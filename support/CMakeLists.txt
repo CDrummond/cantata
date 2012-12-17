@@ -6,6 +6,7 @@ SET( SUPPORT_SRCS
     icon.cpp
     gtkstyle.cpp
     utils.cpp
+    spinner.cpp
 )
 
 SET( SUPPORT_MOC_HDRS
@@ -32,7 +33,7 @@ else (ENABLE_KDE_SUPPORT)
         dialog.cpp messagebox.cpp pagewidget.cpp shortcutsmodel.cpp shortcutssettingspage.cpp
         keysequencewidget.cpp )
     SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} dirrequester.h lineedit.h kmessagewidget.h urllabel.h
-         dialog.h shortcutsmodel.h shortcutssettingspage.h keysequencewidget.h )
+         dialog.h shortcutsmodel.h shortcutssettingspage.h keysequencewidget.h spinner.h )
     SET( SUPPORT_UIS shortcutssettingspage.ui )
     QT4_WRAP_UI( SUPPORT_UI_HDRS ${SUPPORT_UIS} )
 endif  (ENABLE_KDE_SUPPORT)

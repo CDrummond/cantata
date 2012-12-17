@@ -60,7 +60,7 @@ K_GLOBAL_STATIC(Covers, instance)
 
 const QLatin1String Covers::constLastFmApiKey("11172d35eb8cc2fd33250a9e45a2d486");
 const QLatin1String Covers::constCoverDir("covers/");
-static const QLatin1String constFileName("cover");
+const QLatin1String Covers::constFileName("cover");
 static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
 
 static QStringList coverFileNames;
@@ -70,7 +70,7 @@ void initCoverNames()
 {
     if (coverFileNames.isEmpty()) {
         QStringList fileNames;
-        fileNames << constFileName << QLatin1String("AlbumArt") << QLatin1String("folder");
+        fileNames << Covers::constFileName << QLatin1String("AlbumArt") << QLatin1String("folder");
         foreach (const QString &fileName, fileNames) {
             foreach (const QString &ext, constExtensions) {
                 coverFileNames << fileName+ext;
@@ -134,7 +134,7 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
     return QString();
 }
 
-static QString encodeName(QString name)
+QString Covers::encodeName(QString name)
 {
     name.replace("/", "_");
     return name;
@@ -207,7 +207,7 @@ static AppCover otherAppCover(const Covers::Job &job)
                 QString savedName;
                 QString coverName=MPDConnection::self()->getDetails().coverName;
                 if (coverName.isEmpty()) {
-                    coverName=constFileName;
+                    coverName=Covers::constFileName;
                 }
                 savedName=save(mimeType, mimeType.isEmpty() ? constExtensions.at(0) : mimeType, job.dir+coverName, app.img, raw);
                 if (!savedName.isEmpty()) {
@@ -387,16 +387,21 @@ QPixmap * Covers::get(const Song &song, int size)
     return pix && pix->width()>1 ? pix : 0;
 }
 
-// If we have downloaded a cover, we can remove the dummy entry - so that the next time get() is called,
-// it can read the saved file!
-void Covers::clearDummyCache(const Song &song, const QImage &img)
+// dummyEntriesOnly: If we have downloaded a cover, we can remove the dummy entry - so that
+//                   the next time get() is called, it can read the saved file!
+void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly)
 {
     bool hadDummy=false;
+    bool hadEntries=false;
     foreach (int s, cacheSizes) {
         QString key=cacheKey(song, s);
         QPixmap *pix(cache.object(key));
 
-        if (pix && pix->width()<2) {
+        if (pix && (!dummyEntriesOnly || pix->width()<2)) {
+            if (!hadDummy) {
+                hadDummy=pix->width()<2;
+            }
+            hadEntries=true;
             cache.remove(key);
 
             QStringList parts=img.isNull() ? QStringList() : key.split(':');
@@ -405,11 +410,13 @@ void Covers::clearDummyCache(const Song &song, const QImage &img)
                 pix=new QPixmap(QPixmap::fromImage(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
                 cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
             }
-            hadDummy=true;
         }
     }
 
-    if (hadDummy) {
+    if (hadDummy && dummyEntriesOnly) {
+        emit coverRetrieved(song);
+    }
+    if (hadEntries && !dummyEntriesOnly) {
         emit coverRetrieved(song);
     }
 }
@@ -608,6 +615,12 @@ void CoverQueue::getNextCover()
 void Covers::setSaveInMpdDir(bool s)
 {
     saveInMpdDir=s;
+}
+
+void Covers::emitCoverUpdated(const Song &song, const QImage &img, const QString &file)
+{
+    clearCache(song, img, false);
+    emit coverUpdated(song, img, file);
 }
 
 void Covers::download(const Song &song)
@@ -830,7 +843,7 @@ void Covers::jobFinished()
                     img=img.scaled(constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                 }
                 fileName=saveImg(job, img, data);
-                clearDummyCache(job.song, img);
+                clearCache(job.song, img, true);
             }
 
             if (job.isArtist) {

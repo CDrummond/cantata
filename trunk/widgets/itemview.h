@@ -27,11 +27,8 @@
 #include "ui_itemview.h"
 #include <QtCore/QMap>
 
-#ifdef ENABLE_KDE_SUPPORT
-class KPixmapSequenceOverlayPainter;
-#endif
-
 class ProxyModel;
+class Spinner;
 class QAction;
 class QTimer;
 class GroupedView;
@@ -50,36 +47,6 @@ private:
     QAbstractItemView *view;
     QAction *act;
 };
-
-#ifndef ENABLE_KDE_SUPPORT
-class Spinner : public QWidget
-{
-    Q_OBJECT
-
-public:
-    Spinner();
-    virtual ~Spinner() {
-    }
-
-    void setWidget(QWidget *widget) {
-        setParent(widget);
-    }
-
-    void start();
-    void stop();
-    void paintEvent(QPaintEvent *event);
-
-private Q_SLOTS:
-    void timeout();
-
-private:
-    void setPosition();
-
-private:
-    QTimer *timer;
-    int value;
-};
-#endif
 
 class ItemView : public QWidget, public Ui::ItemView
 {
@@ -190,12 +157,7 @@ private:
     QSize iconGridSize;
     QSize listGridSize;
     GroupedView *groupedView;
-    bool spinnerActive;
-    #ifdef ENABLE_KDE_SUPPORT
-    KPixmapSequenceOverlayPainter *spinner;
-    #else
     Spinner *spinner;
-    #endif
 };
 
 #endif

@@ -217,6 +217,7 @@ SET( CANTATA_UIS
     gui/playbacksettings.ui
     gui/serverplaybacksettings.ui
     gui/serversettings.ui
+    gui/coverdialog.ui
     dynamic/dynamicpage.ui
     dynamic/dynamicrule.ui
     dynamic/dynamicrules.ui

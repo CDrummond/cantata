@@ -24,6 +24,7 @@
 #include "dirrequester.h"
 #include "icon.h"
 #include "localize.h"
+#include "utils.h"
 #include <QtGui/QFileDialog>
 #include <QtGui/QHBoxLayout>
 
@@ -33,19 +34,27 @@ DirRequester::DirRequester(QWidget *parent)
     QHBoxLayout *layout=new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     edit=new LineEdit(this);
-    button=new QToolButton(this);
+    btn=new QToolButton(this);
     layout->addWidget(edit);
-    layout->addWidget(button);
-    button->setAutoRaise(true);
-    button->setIcon(Icon("document-open"));
-    connect(button, SIGNAL(clicked(bool)), SLOT(chooseDir()));
+    layout->addWidget(btn);
+    btn->setAutoRaise(true);
+    btn->setIcon(Icon("document-open"));
+    connect(btn, SIGNAL(clicked(bool)), SLOT(choose()));
     connect(edit, SIGNAL(textChanged(const QString &)), SIGNAL(textChanged(const QString &)));
 }
 
-void DirRequester::chooseDir()
+void DirRequester::choose()
 {
-    QString dir=QFileDialog::getExistingDirectory(this, i18n("Select Folder"), edit->text());
-    if (!dir.isEmpty()) {
-        edit->setText(dir);
+    QString item=dirMode
+                    ? QFileDialog::getExistingDirectory(this, i18n("Select Folder"), edit->text())
+                    : QFileDialog::getOpenFileName(this, i18n("Select File"), Utils::getDir(edit->text()), filter);
+    if (!item.isEmpty()) {
+        edit->setText(item);
     }
+}
+
+void DirRequester::setEnabled(bool e)
+{
+    edit->setEnabled(e);
+    btn->setEnabled(e);
 }

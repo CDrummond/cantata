@@ -101,11 +101,13 @@ public:
     static const QSize constMaxSize;
     static const QLatin1String constLastFmApiKey;
     static const QLatin1String constCoverDir;
+    static const QLatin1String constFileName;
 
     static Covers * self();
     static bool isCoverFile(const QString &file);
     static bool copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name=QString(), unsigned short maxSize=0);
     static QStringList standardNames();
+    static QString encodeName(QString name);
 
     Covers();
     void stop();
@@ -115,12 +117,14 @@ public:
     Image get(const Song &song);
     void requestCover(const Song &song, bool urgent=false);
     void setSaveInMpdDir(bool s);
+    void emitCoverUpdated(const Song &song, const QImage &img, const QString &file);
 
 public Q_SLOTS:
     void download(const Song &song);
 
 Q_SIGNALS:
     void cover(const Song &song, const QImage &img, const QString &file);
+    void coverUpdated(const Song &song, const QImage &img, const QString &file);
     void artistImage(const QString &artist, const QImage &img);
     void coverRetrieved(const Song &song);
 
@@ -135,7 +139,7 @@ private Q_SLOTS:
 private:
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<QNetworkReply *, Job>::Iterator findJob(const Job &job);
-    void clearDummyCache(const Song &song, const QImage &img);
+    void clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
 
 private:
     QHash<QNetworkReply *, Job> jobs;

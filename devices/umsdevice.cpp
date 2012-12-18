@@ -34,22 +34,6 @@
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");
-// static const QLatin1String constPodcastFolderKey("podcast_folder");
-static const QLatin1String constMusicFilenameSchemeKey("music_filenamescheme");
-static const QLatin1String constVfatSafeKey("vfat_safe");
-static const QLatin1String constAsciiOnlyKey("ascii_only");
-static const QLatin1String constIgnoreTheKey("ignore_the");
-static const QLatin1String constReplaceSpacesKey("replace_spaces");
-// static const QLatin1String constUseAutomaticallyKey("use_automatically");
-static const QLatin1String constCantataSettingsFile("/.cantata");
-static const QLatin1String constCantataCacheFile("/.cache.xml");
-static const QLatin1String constCoverFileNameKey("cover_filename"); // Cantata extension!
-static const QLatin1String constCoverMaxSizeKey("cover_maxsize"); // Cantata extension!
-static const QLatin1String constVariousArtistsFixKey("fix_various_artists"); // Cantata extension!
-static const QLatin1String constTranscoderKey("transcoder"); // Cantata extension!
-static const QLatin1String constUseCacheKey("use_cache"); // Cantata extension!
-static const QLatin1String constDefCoverFileName("cover.jpg");
-static const QLatin1String constAutoScanKey("auto_scan"); // Cantata extension!
 
 UmsDevice::UmsDevice(DevicesModel *m, Solid::Device &dev)
     : FsDevice(m, dev)
@@ -137,8 +121,8 @@ void UmsDevice::setup()
     QString audioFolderSetting;
 
     opts=DeviceOptions();
-//     podcastFolder=QString();
     if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        configured=true;
         QTextStream in(&file);
         while (!in.atEnd()) {
             QString line = in.readLine();
@@ -147,8 +131,6 @@ void UmsDevice::setup()
                 if (!QDir(audioFolder).exists()) {
                     audioFolder = path;
                 }
-//             } else if (line.startsWith(constPodcastFolderKey+"=")) {
-//                 podcastFolder=line.section('=', 1, 1);
             } else if (line.startsWith(constMusicFilenameSchemeKey+"=")) {
                 QString scheme = line.section('=', 1, 1);
                 //protect against empty setting.
@@ -163,47 +145,15 @@ void UmsDevice::setup()
                 opts.ignoreThe = QLatin1String("true")==line.section('=', 1, 1);
             } else if (line.startsWith(constReplaceSpacesKey+"="))  {
                 opts.replaceSpaces = QLatin1String("true")==line.section('=', 1, 1);
-//             } else if (line.startsWith(constUseAutomaticallyKey+"="))  {
-//                 useAutomatically = QLatin1String("true")==line.section('=', 1, 1);
-//             } else if (line.startsWith(constCoverFileNameKey+"=")) {
-//                 coverOpts.name=line.section('=', 1, 1);
-//                 configured=true;
-//             } else if(line.startsWith(constVariousArtistsFixKey+"=")) {
-//                 opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
-//                 configured=true;
             } else {
                 unusedParams+=line;
             }
         }
     }
 
-    QFile extra(path+constCantataSettingsFile);
-
-    if (extra.open(QIODevice::ReadOnly|QIODevice::Text)) {
-        configured=true;
-        QTextStream in(&extra);
-        while (!in.atEnd()) {
-            QString line = in.readLine();
-            if (line.startsWith(constCoverFileNameKey+"=")) {
-                opts.coverName=line.section('=', 1, 1);
-            } if (line.startsWith(constCoverMaxSizeKey+"=")) {
-                opts.coverMaxSize=line.section('=', 1, 1).toUInt();
-                opts.checkCoverSize();
-            } else if(line.startsWith(constVariousArtistsFixKey+"=")) {
-                opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
-            } else if (line.startsWith(constTranscoderKey+"="))  {
-                QStringList parts=line.section('=', 1, 1).split(',');
-                if (3==parts.size()) {
-                    opts.transcoderCodec=parts.at(0);
-                    opts.transcoderValue=parts.at(1).toInt();
-                    opts.transcoderWhenDifferent=QLatin1String("true")==parts.at(2);
-                }
-            } else if(line.startsWith(constUseCacheKey+"=")) {
-                opts.useCache=QLatin1String("true")==line.section('=', 1, 1);
-            } else if(line.startsWith(constAutoScanKey+"=")) {
-                opts.autoScan=QLatin1String("true")==line.section('=', 1, 1);
-            }
-        }
+    bool haveOpts=FsDevice::readOpts(path+constCantataSettingsFile, opts, false);
+    if (!configured) {
+        configured=haveOpts;
     }
 
     if (opts.coverName.isEmpty()) {
@@ -281,9 +231,6 @@ void UmsDevice::saveOptions()
         if (!fixedPath.isEmpty()) {
             out << constMusicFolderKey << '=' << fixedPath << '\n';
         }
-//         if (!podcastFolder.isEmpty()) {
-//             out << constPodcastFolderKey << '=' << podcastFolder << '\n';
-//         }
         if (opts.scheme!=def.scheme) {
             out << constMusicFilenameSchemeKey << '=' << opts.scheme << '\n';
         }
@@ -299,17 +246,10 @@ void UmsDevice::saveOptions()
         if (opts.replaceSpaces!=def.replaceSpaces) {
             out << constReplaceSpacesKey << '=' << toString(opts.replaceSpaces) << '\n';
         }
-//         if (useAutomatically) {
-//             out << constUseAutomaticallyKey << '=' << toString(useAutomatically) << '\n';
-//         }
 
         foreach (const QString &u, unusedParams) {
             out << u << '\n';
         }
-//         if (coverOpts.name!=constDefCoverFileName) {
-//             out << constCoverFileNameKey << '=' << coverOpts.name << '\n';
-//         }
-//         out << constVariousArtistsFixKey << '=' << toString(opts.fixVariousArtists) << '\n';
     }
 }
 
@@ -335,33 +275,10 @@ void UmsDevice::saveProperties(const QString &newPath, const DeviceOptions &newO
         return;
     }
 
-    QString path=spaceInfo.path();
-    QFile extra(path+constCantataSettingsFile);
-
     audioFolder=nPath;
     saveOptions();
 
-    if (extra.open(QIODevice::WriteOnly|QIODevice::Text)) {
-        QTextStream out(&extra);
-        if (opts.coverName!=constDefCoverFileName) {
-            out << constCoverFileNameKey << '=' << opts.coverName << '\n';
-        }
-        if (0!=opts.coverMaxSize) {
-            out << constCoverMaxSizeKey << '=' << opts.coverMaxSize << '\n';
-        }
-        if (opts.fixVariousArtists) {
-            out << constVariousArtistsFixKey << '=' << toString(opts.fixVariousArtists) << '\n';
-        }
-        if (!opts.transcoderCodec.isEmpty()) {
-            out << constTranscoderKey << '=' << opts.transcoderCodec << ',' << opts.transcoderValue << ',' << toString(opts.transcoderWhenDifferent) << '\n';
-        }
-        if (opts.useCache) {
-            out << constUseCacheKey << '=' << toString(opts.useCache) << '\n';
-        }
-        if (opts.autoScan) {
-            out << constAutoScanKey << '=' << toString(opts.autoScan) << '\n';
-        }
-    }
+    FsDevice::writeOpts(spaceInfo.path()+constCantataSettingsFile, opts, false);
 
     if (oldPath!=audioFolder) {
         rescan();

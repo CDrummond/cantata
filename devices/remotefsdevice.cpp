@@ -85,6 +85,7 @@ void RemoteFsDevice::Details::load(const QString &group)
     if (!u.isEmpty()) {
         url=QUrl(u);
     }
+    configured=GET_BOOL("configured", configured);
 }
 
 void RemoteFsDevice::Details::save() const
@@ -96,6 +97,7 @@ void RemoteFsDevice::Details::save() const
     cfg.beginGroup(constCfgPrefix+name);
     #endif
     SET_VALUE("url", url.toString());
+    SET_VALUE("configured", configured);
     CFG_SYNC;
 }
 
@@ -549,6 +551,7 @@ void RemoteFsDevice::load()
 {
     if (isConnected()) {
         setAudioFolder();
+        readOpts(settingsFileName(), opts, true);
         if (!opts.useCache || !readCache()) {
             rescan();
         }
@@ -558,20 +561,14 @@ void RemoteFsDevice::load()
 void RemoteFsDevice::setup()
 {
     QString key=udi();
-    opts.load(key);
     details.load(details.name);
 //    details.path=Utils::fixPath(details.path);
     #ifndef ENABLE_KDE_SUPPORT
     QSettings cfg;
     #endif
-    if (HAS_GROUP(key)) {
-        opts.checkCoverSize();
-        configured=true;
-    } else {
-        opts.useCache=true;
-        opts.coverName=QLatin1String("cover.jpg");
-        opts.coverMaxSize=0;
-        configured=false;
+
+    if (isConnected()) {
+        readOpts(settingsFileName(), opts, true);
     }
     load();
 }
@@ -620,46 +617,53 @@ void RemoteFsDevice::saveProperties()
 
 void RemoteFsDevice::saveProperties(const DeviceOptions &newOpts, const Details &nd)
 {
-    if (configured && opts==newOpts && details==nd) {
+    bool connected=isConnected();
+    if (configured && (!connected || opts==newOpts) && (connected || details==nd)) {
         return;
     }
 
-    configured=true;
-    Details newDetails=nd;
-    Details oldDetails=details;
-//    newDetails.path=Utils::fixPath(newDetails.path);
-    bool diffUrl=oldDetails.url!=newDetails.url;
+    if (connected) {
+        if (!configured) {
+            details.configured=configured=true;
+            details.save();
+        }
+        if (opts.useCache!=newOpts.useCache) {
+            if (opts.useCache) {
+                saveCache();
+            } else if (opts.useCache && !newOpts.useCache) {
+                removeCache();
+            }
+        }
+        opts=newOpts;
+        writeOpts(settingsFileName(), opts, true);
+    } else {
+        Details newDetails=nd;
+        Details oldDetails=details;
+        bool newName=!oldDetails.name.isEmpty() && oldDetails.name!=newDetails.name;
 
-    if (opts.useCache!=newOpts.useCache || diffUrl) { // Cache/url settings changed
-        if (opts.useCache && !diffUrl) {
-            saveCache();
-        } else if (opts.useCache && !newOpts.useCache) {
-            removeCache();
+        details=newDetails;
+        details.configured=configured;
+        details.save();
+
+        if (newName) {
+            QString oldMount=mountPoint(oldDetails, false);
+            if (!oldMount.isEmpty() && QDir(oldMount).exists()) {
+                ::rmdir(QFile::encodeName(oldMount).constData());
+            }
+            setData(details.name);
+            renamed(oldDetails.name, details.name);
+            deviceId=createUdi(details.name);
+            emit udiChanged();
+            m_itemData=details.name;
+            setStatusMessage(QString());
         }
     }
+}
 
-    // Name/or URL changed - need to unmount...
-    bool newName=!oldDetails.name.isEmpty() && oldDetails.name!=newDetails.name;
-    if ((newName || diffUrl) && isConnected()) {
-        unmount();
+QString RemoteFsDevice::settingsFileName() const
+{
+    if (audioFolder.isEmpty()) {
+        setAudioFolder();
     }
-
-    opts=newOpts;
-    details=newDetails;
-    QString key=udi();
-    details.save();
-    opts.save(key);
-
-    if (newName) {
-        QString oldMount=mountPoint(oldDetails, false);
-        if (!oldMount.isEmpty() && QDir(oldMount).exists()) {
-            ::rmdir(QFile::encodeName(oldMount).constData());
-        }
-        setData(details.name);
-        renamed(oldDetails.name, details.name);
-        deviceId=createUdi(details.name);
-        emit udiChanged();
-        m_itemData=details.name;
-        setStatusMessage(QString());
-    }
+    return audioFolder+constCantataSettingsFile;
 }

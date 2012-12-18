@@ -31,11 +31,11 @@
 #include "config.h"
 
 enum Type {
+    #ifdef ENABLE_MOUNTER
+    Type_Samba,
+    #endif
     Type_SshFs,
     Type_File
-    #ifdef ENABLE_MOUNTER
-    , Type_Samba
-    #endif
 };
 
 RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
@@ -47,19 +47,19 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     if (qobject_cast<QTabWidget *>(parent)) {
         verticalLayout->setMargin(4);
     }
+    #ifdef ENABLE_MOUNTER
+    type->addItem(i18n("Samba Share"), (int)Type_Samba);
+    #endif
     type->addItem(i18n("Secure Shell (sshfs)"), (int)Type_SshFs);
     type->addItem(i18n("Locally Mounted Folder"), (int)Type_File);
-    #ifdef ENABLE_MOUNTER
-    type->addItem(i18n("Samba Shares"), (int)Type_Samba);
-    #endif
 }
 
 void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool create, bool isConnected)
 {
     #ifdef ENABLE_MOUNTER
-    int t=d.isLocalFile() ? Type_File : (d.url.scheme()==RemoteFsDevice::constSshfsProtocol ? Type_SshFs : Type_Samba);
+    int t=create ? Type_Samba : (d.isLocalFile() ? Type_File : (d.url.scheme()==RemoteFsDevice::constSshfsProtocol ? Type_SshFs : Type_Samba));
     #else
-    int t=d.isLocalFile() ? Type_File : Type_SshFs;
+    int t=create ? Type_SshFs : (d.isLocalFile() ? Type_File : Type_SshFs);
     #endif
     setEnabled(d.isLocalFile() || !isConnected);
     infoLabel->setVisible(create);
@@ -88,7 +88,7 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
         break;
     #ifdef ENABLE_MOUNTER
     case Type_Samba: {
-        smbFolder->setText(d.url.path());
+        smbShare->setText(d.url.path());
         smbPort->setValue(d.url.port());
         smbHost->setText(d.url.host());
         smbUser->setText(d.url.userName());
@@ -167,7 +167,7 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
     case Type_Samba:
         det.url.setHost(smbHost->text().trimmed());
         det.url.setUserName(smbUser->text().trimmed());
-        det.url.setPath(smbFolder->text().trimmed());
+        det.url.setPath(smbShare->text().trimmed());
         det.url.setPort(smbPort->value());
         det.url.setScheme(RemoteFsDevice::constSambaProtocol);
         det.url.setPassword(smbPassword->text().trimmed());

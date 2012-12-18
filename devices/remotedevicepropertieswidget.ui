@@ -55,7 +55,93 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="page">
+        <widget class="QWidget" name="smbPage">
+         <layout class="QFormLayout" name="formLayout_4">
+          <item row="0" column="0">
+           <widget class="BuddyLabel" name="hostLabel_2">
+            <property name="text">
+             <string>Host:</string>
+            </property>
+            <property name="buddy">
+             <cstring>smbHost</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="LineEdit" name="smbHost"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="BuddyLabel" name="portLabel_2">
+            <property name="text">
+             <string>Port:</string>
+            </property>
+            <property name="buddy">
+             <cstring>smbPort</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="SpinBox" name="smbPort">
+            <property name="maximum">
+             <number>65535</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="BuddyLabel" name="userLabel_2">
+            <property name="text">
+             <string>User:</string>
+            </property>
+            <property name="buddy">
+             <cstring>smbUser</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="LineEdit" name="smbUser"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Domain:</string>
+            </property>
+            <property name="buddy">
+             <cstring>smbDomain</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="LineEdit" name="smbDomain"/>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Password:</string>
+            </property>
+            <property name="buddy">
+             <cstring>smbPassword</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="LineEdit" name="smbPassword"/>
+          </item>
+          <item row="5" column="0">
+           <widget class="BuddyLabel" name="folderLabel_2">
+            <property name="text">
+             <string>Share:</string>
+            </property>
+            <property name="buddy">
+             <cstring>smbShare</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="LineEdit" name="smbShare"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="sshPage">
          <layout class="QFormLayout" name="formLayout_2">
           <item row="0" column="0">
            <widget class="BuddyLabel" name="hostLabel">
@@ -115,7 +201,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="page_2">
+        <widget class="QWidget" name="filePage">
          <layout class="QFormLayout" name="formLayout_3">
           <item row="0" column="0">
            <widget class="QLabel" name="label">
@@ -129,86 +215,6 @@
           </item>
           <item row="0" column="1">
            <widget class="DirRequester" name="fileFolder"/>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="page_3">
-         <layout class="QFormLayout" name="formLayout_4">
-          <item row="0" column="0">
-           <widget class="BuddyLabel" name="hostLabel_2">
-            <property name="text">
-             <string>Host:</string>
-            </property>
-            <property name="buddy">
-             <cstring>sshHost</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="LineEdit" name="smbHost"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="BuddyLabel" name="portLabel_2">
-            <property name="text">
-             <string>Port:</string>
-            </property>
-            <property name="buddy">
-             <cstring>sshPort</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="SpinBox" name="smbPort">
-            <property name="maximum">
-             <number>65535</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="BuddyLabel" name="userLabel_2">
-            <property name="text">
-             <string>User:</string>
-            </property>
-            <property name="buddy">
-             <cstring>sshUser</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="LineEdit" name="smbUser"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Domain:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="LineEdit" name="smbDomain"/>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Password:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="LineEdit" name="smbPassword"/>
-          </item>
-          <item row="5" column="0">
-           <widget class="BuddyLabel" name="folderLabel_2">
-            <property name="text">
-             <string>Folder:</string>
-            </property>
-            <property name="buddy">
-             <cstring>sshFolder</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="LineEdit" name="smbFolder"/>
           </item>
          </layout>
         </widget>

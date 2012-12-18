@@ -122,9 +122,8 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When looking for artist images, Cantata will look for either artist.jpg, artist.png, &lt;Artist&gt;.jpg, or &lt;Artist&gt;.png,
-within the folder of the current track, or within its parent folder. If no image is found, Cantata will attempt to download one.&lt;br/&gt;
-When the image is displayed, it will be cropped (either top/bottom, or left/right) to provide a square image.&lt;/i&gt;</string>
+          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When looking for artist images, Cantata will look for either artist.jpg, artist.png, &quot;Artist&quot;.jpg, or &quot;Artist&quot;.png,
+within the folder of the current track, or within its parent folder. If no image is found, Cantata will attempt to download one. When the image is displayed, it will be cropped (either top/bottom, or left/right) to provide a square image.&lt;/i&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -611,14 +610,14 @@ When the image is displayed, it will be cropped (either top/bottom, or left/righ
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OnOffButton</class>
-   <extends>QCheckBox</extends>
-   <header>onoffbutton.h</header>
-  </customwidget>
-  <customwidget>
    <class>BuddyLabel</class>
    <extends>QLabel</extends>
    <header>buddylabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

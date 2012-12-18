@@ -96,6 +96,9 @@ public:
     bool isButtonEnabled(ButtonCode button);
     void setMainWidget(QWidget *widget);
     virtual void slotButtonClicked(int button);
+    QWidget *mainWidget() {
+        return mw;
+    }
 
 private Q_SLOTS:
     void buttonPressed(QAbstractButton *button);

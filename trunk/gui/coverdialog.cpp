@@ -41,6 +41,8 @@
 #include <QtGui/QStyle>
 #include <QtGui/QApplication>
 #include <QtGui/QProgressBar>
+#include <QtGui/QScrollArea>
+#include <QtGui/QDesktopWidget>
 #include <QtCore/QFileInfo>
 #include <QtCore/QUrl>
 #include <QtCore/QTemporaryFile>
@@ -198,11 +200,19 @@ CoverPreview::CoverPreview(QWidget *p)
     QVBoxLayout *layout=new QVBoxLayout(mw);
     loadingLabel=new QLabel(i18n("Downloading..."), mw);
     pbar=new QProgressBar(mw);
-    imageLabel=new QLabel(mw);
+    imageLabel=new QLabel;
     pbar->setRange(0, 100);
+    imageLabel->setBackgroundRole(QPalette::Base);
+    imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    imageLabel->setScaledContents(true);
+    scrollArea = new QScrollArea(mw);
+    scrollArea->setBackgroundRole(QPalette::Dark);
+    scrollArea->setWidget(imageLabel);
+
     layout->addWidget(loadingLabel);
     layout->addWidget(pbar);
-    layout->addWidget(imageLabel);
+    layout->addWidget(scrollArea);
+    layout->setMargin(0);
     setMainWidget(mw);
 }
 
@@ -213,10 +223,23 @@ void CoverPreview::showImage(const QImage &img, const QString &u, bool checkUrl)
         loadingLabel->hide();
         pbar->hide();
         imageLabel->setPixmap(QPixmap::fromImage(img));
-        imageLabel->show();
+        imageLabel->adjustSize();
+        scrollArea->show();
         QApplication::processEvents();
         adjustSize();
-        resize(img.size());
+        QStyleOptionFrameV3 opt;
+        opt.init(scrollArea);
+        int fw=style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &opt, scrollArea);
+        if (fw<0) {
+            fw=2;
+        }
+        fw*=2;
+        QRect desktop = qApp->desktop()->screenGeometry(this);
+        int maxWidth=desktop.width()*0.75;
+        int maxHeight=desktop.height()*0.75;
+        int lrPad=width()-mainWidget()->width();
+        int tbPad=height()-mainWidget()->height();
+        resize(lrPad+qMax(100, qMin(maxWidth, img.width()+fw)), tbPad+qMax(100, qMin(maxHeight, img.height()+fw)));
         show();
     }
 }
@@ -226,7 +249,7 @@ void CoverPreview::downloading(const QString &u)
     url=u;
     if (!url.isEmpty()) {
         loadingLabel->show();
-        imageLabel->hide();
+        scrollArea->hide();
         pbar->show();
         pbar->setValue(0);
         int spacing=style()->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Qt::Vertical);

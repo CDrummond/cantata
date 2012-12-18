@@ -264,8 +264,10 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date)
     }
 
     //Write the header info
-    QXmlStreamWriter writer(&file);
+    QByteArray data;
+    QXmlStreamWriter writer(&data);
     toXML(writer, date);
+    file.write(qCompress(data));
     file.close();
 }
 
@@ -356,7 +358,9 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
         return 0;
     }
 
-    QXmlStreamReader reader(&file);
+    QByteArray data=file.readAll();
+    data=qUncompress(data);
+    QXmlStreamReader reader(data);
     quint32 rv=fromXML(reader, date, baseFolder);
     file.close();
     return rv;

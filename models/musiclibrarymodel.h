@@ -44,9 +44,11 @@ class MusicLibraryModel : public QAbstractItemModel
 public:
     static const QLatin1String constLibraryCache;
     static const QLatin1String constLibraryExt;
+    static const QLatin1String constLibraryCompressedExt;
 
     static MusicLibraryModel * self();
 
+    static void convertCache(const QString &compressedName);
     static void cleanCache();
 
     MusicLibraryModel(QObject *parent=0);

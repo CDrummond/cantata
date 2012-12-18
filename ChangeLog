@@ -30,6 +30,7 @@
 15. Basic cover fetching dialog, allowing to change downloaded cover. Curerntly
     Last.fm and Google are used to find images.
 16. Use cache by default for devices.
+17. Compress cache files.
 
 0.9.1
 -----

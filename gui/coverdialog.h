@@ -37,6 +37,7 @@ class QTemporaryFile;
 class QListWidgetItem;
 class QLabel;
 class QProgressBar;
+class QScrollArea;
 class CoverItem;
 class ExistingCover;
 class Spinner;
@@ -60,6 +61,7 @@ private:
     QLabel *loadingLabel;
     QProgressBar *pbar;
     QLabel *imageLabel;
+    QScrollArea *scrollArea;
 };
 
 class CoverDialog : public Dialog, public Ui::CoverDialog

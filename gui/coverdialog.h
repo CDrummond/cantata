@@ -38,6 +38,7 @@ class QListWidgetItem;
 class QLabel;
 class QProgressBar;
 class QScrollArea;
+class QWheelEvent;
 class CoverItem;
 class ExistingCover;
 class Spinner;
@@ -57,11 +58,18 @@ private Q_SLOTS:
     void progress(qint64 rx, qint64 total);
 
 private:
+    void scaleImage(int adjust);
+    void wheelEvent(QWheelEvent *event);
+
+private:
     QString url;
     QLabel *loadingLabel;
     QProgressBar *pbar;
     QLabel *imageLabel;
     QScrollArea *scrollArea;
+    double zoom;
+    int imgW;
+    int imgH;
 };
 
 class CoverDialog : public Dialog, public Ui::CoverDialog

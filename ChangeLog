@@ -29,6 +29,7 @@
 14. Move group warning to last stage of intial settings wizard.
 15. Basic cover fetching dialog, allowing to change downloaded cover. Curerntly
     Last.fm and Google are used to find images.
+16. Use cache by default for devices.
 
 0.9.1
 -----

@@ -25,7 +25,10 @@
 #include "messagebox.h"
 #include "settings.h"
 #include "utils.h"
+#include "icon.h"
 #include <QtCore/QDir>
+
+static const int constIconSize=48;
 
 InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     : QWizard(p)
@@ -44,7 +47,10 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     port->setValue(det.port);
     password->setText(det.password);
     dir->setText(det.dir);
-    groupWarningLabel->setVisible(0==Utils::getGroupId());
+    bool showGroupWarning=0==Utils::getGroupId();
+    groupWarningLabel->setVisible(showGroupWarning);
+    groupWarningIcon->setVisible(showGroupWarning);
+    groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(constIconSize, constIconSize));
 }
 
 InitialSettingsWizard::~InitialSettingsWizard()

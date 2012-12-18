@@ -221,9 +221,9 @@ CoverPreview::CoverPreview(QWidget *p)
     setMainWidget(mw);
 }
 
-void CoverPreview::showImage(const QImage &img, const QString &u, bool checkUrl)
+void CoverPreview::showImage(const QImage &img, const QString &u)
 {
-    if (!checkUrl || u==url) {
+    if (u==url) {
         zoom=1.0;
         url=u;
         loadingLabel->hide();
@@ -555,6 +555,7 @@ void CoverDialog::showImage(QListWidgetItem *item)
     CoverItem *cover=(CoverItem *)item;
 
     if (CoverItem::Type_Existing==cover->type()) {
+        previewDialog()->downloading(cover->url());
         previewDialog()->showImage(((ExistingCover *)cover)->image(), cover->url());
     } else {
         previewDialog()->downloading(cover->url());
@@ -705,7 +706,8 @@ QNetworkReply * CoverDialog::downloadImage(const QString &url, DownloadType dlTy
                 QImage img;
                 if (img.load(tmp->fileName())) {
                     if (DL_LargePreview==dlType) {
-                        previewDialog()->showImage(img, url, false);
+                        previewDialog()->downloading(url);
+                        previewDialog()->showImage(img, url);
                     } else if (DL_LargeSave==dlType) {
                         if (saveCover(tmp->fileName(), img)) {
                             accept();

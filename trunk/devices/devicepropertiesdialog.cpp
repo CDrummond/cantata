@@ -33,6 +33,7 @@ DevicePropertiesDialog::DevicePropertiesDialog(QWidget *parent)
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowModality(Qt::WindowModal);
     devProp=new DevicePropertiesWidget(this);
+    devProp->showRemoteConnectionNote(false);
     setMainWidget(devProp);
 }
 

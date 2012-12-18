@@ -27,6 +27,7 @@
 #include "dialog.h"
 #include "remotefsdevice.h"
 
+class QTabWidget;
 class FilenameSchemeDialog;
 class DevicePropertiesWidget;
 class RemoteDevicePropertiesWidget;
@@ -50,6 +51,7 @@ private:
     void slotButtonClicked(int button);
 
 private:
+    QTabWidget *tab;
     RemoteDevicePropertiesWidget *remoteProp;
     DevicePropertiesWidget *devProp;
     bool isCreate;

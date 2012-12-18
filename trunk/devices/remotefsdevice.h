@@ -59,6 +59,7 @@ public:
         QString name;
         QUrl url;
         int port;
+        bool configured;
     };
 
     static const QLatin1String constSshfsProtocol;
@@ -111,6 +112,7 @@ private:
     #ifdef ENABLE_MOUNTER
     ComGooglecodeCantataMounterInterface * mounter();
     #endif
+    QString settingsFileName() const;
 
 protected Q_SLOTS:
     void saveProperties();

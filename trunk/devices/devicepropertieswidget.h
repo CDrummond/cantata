@@ -54,6 +54,7 @@ public:
     bool isSaveable() const { return saveable; }
     QString music() const { return musicFolder->text().trimmed(); }
     QString cover() const;
+    void showRemoteConnectionNote(bool v) { remoteDeviceNote->setVisible(v); }
 
 Q_SIGNALS:
     void updated();

@@ -39,7 +39,7 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     setCaption(i18n("Device Properties"));
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowModality(Qt::WindowModal);
-    QTabWidget *tab=new QTabWidget(this);
+    tab=new QTabWidget(this);
     remoteProp=new RemoteDevicePropertiesWidget(tab);
     devProp=new DevicePropertiesWidget(tab);
     tab->addTab(remoteProp, QIcon::fromTheme("network-server"), i18n("Connection"));
@@ -53,6 +53,14 @@ void RemoteDevicePropertiesDialog::show(const DeviceOptions &opts, const RemoteF
     if (isCreate) {
         setCaption(i18n("Add Device"));
     }
+
+    if (create) {
+        devProp->setVisible(false);
+    } else {
+        tab->setCurrentIndex(isConnected ? 1 : 0);
+    }
+    devProp->setEnabled(!create && isConnected);
+    devProp->showRemoteConnectionNote(!isConnected);
     devProp->update(QString(), opts, props);
     remoteProp->update(det, create, isConnected);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
@@ -63,8 +71,9 @@ void RemoteDevicePropertiesDialog::show(const DeviceOptions &opts, const RemoteF
 
 void RemoteDevicePropertiesDialog::enableOkButton()
 {
-    enableButtonOk(remoteProp->isSaveable() && devProp->isSaveable() &&
-                   (isCreate || remoteProp->isModified() || devProp->isModified()));
+    bool useDevProp=devProp->isEnabled();
+    enableButtonOk(remoteProp->isSaveable() && (!useDevProp || devProp->isSaveable()) &&
+                   (isCreate || remoteProp->isModified() || !useDevProp || devProp->isModified()));
 }
 
 void RemoteDevicePropertiesDialog::slotButtonClicked(int button)

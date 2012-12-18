@@ -258,6 +258,14 @@ static QLatin1String constTopTag("CantataLibrary");
 
 void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date) const
 {
+    // If saving device cache, and we have NO items, then remove cache file...
+    if (0==childCount() && date==QDateTime()) {
+        if (QFile::exists(filename)) {
+            QFile::remove(filename);
+        }
+        return;
+    }
+
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly)) {
         return;

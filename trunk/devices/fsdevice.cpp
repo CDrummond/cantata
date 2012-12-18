@@ -45,7 +45,20 @@
 #include <QtCore/QTimer>
 #include <time.h>
 
-static const QLatin1String constCantataCacheFile("/.cache");
+const QLatin1String FsDevice::constCantataCacheFile("/.cache");
+const QLatin1String FsDevice::constCantataSettingsFile("/.cantata");
+const QLatin1String FsDevice::constMusicFilenameSchemeKey("music_filenamescheme");
+const QLatin1String FsDevice::constVfatSafeKey("vfat_safe");
+const QLatin1String FsDevice::constAsciiOnlyKey("ascii_only");
+const QLatin1String FsDevice::constIgnoreTheKey("ignore_the");
+const QLatin1String FsDevice::constReplaceSpacesKey("replace_spaces");
+const QLatin1String FsDevice::constCoverFileNameKey("cover_filename"); // Cantata extension!
+const QLatin1String FsDevice::constCoverMaxSizeKey("cover_maxsize"); // Cantata extension!
+const QLatin1String FsDevice::constVariousArtistsFixKey("fix_various_artists"); // Cantata extension!
+const QLatin1String FsDevice::constTranscoderKey("transcoder"); // Cantata extension!
+const QLatin1String FsDevice::constUseCacheKey("use_cache"); // Cantata extension!
+const QLatin1String FsDevice::constDefCoverFileName("cover.jpg");
+const QLatin1String FsDevice::constAutoScanKey("auto_scan"); // Cantata extension!
 
 MusicScanner::MusicScanner(const QString &f)
     : QThread(0)
@@ -141,6 +154,120 @@ void MusicScanner::scanFolder(const QString &f, int level)
                 artistItem->addGenre(song.genre);
                 library->addGenre(song.genre);
             }
+        }
+    }
+}
+
+bool FsDevice::readOpts(const QString &fileName, DeviceOptions &opts, bool readAll)
+{
+    QFile file(fileName);
+
+    opts=DeviceOptions(constDefCoverFileName);
+    if (file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            if (line.startsWith(constCoverFileNameKey+"=")) {
+                opts.coverName=line.section('=', 1, 1);
+            } if (line.startsWith(constCoverMaxSizeKey+"=")) {
+                opts.coverMaxSize=line.section('=', 1, 1).toUInt();
+                opts.checkCoverSize();
+            } else if(line.startsWith(constVariousArtistsFixKey+"=")) {
+                opts.fixVariousArtists=QLatin1String("true")==line.section('=', 1, 1);
+            } else if (line.startsWith(constTranscoderKey+"="))  {
+                QStringList parts=line.section('=', 1, 1).split(',');
+                if (3==parts.size()) {
+                    opts.transcoderCodec=parts.at(0);
+                    opts.transcoderValue=parts.at(1).toInt();
+                    opts.transcoderWhenDifferent=QLatin1String("true")==parts.at(2);
+                }
+            } else if (line.startsWith(constUseCacheKey+"=")) {
+                opts.useCache=QLatin1String("true")==line.section('=', 1, 1);
+            } else if (line.startsWith(constAutoScanKey+"=")) {
+                opts.autoScan=QLatin1String("true")==line.section('=', 1, 1);
+            } else if (readAll) {
+                // For UMS these are stored in .is_audio_player - for Amarok compatability!
+                if (line.startsWith(constMusicFilenameSchemeKey+"=")) {
+                    QString scheme = line.section('=', 1, 1);
+                    //protect against empty setting.
+                    if (!scheme.isEmpty() ) {
+                        opts.scheme = scheme;
+                    }
+                } else if (line.startsWith(constVfatSafeKey+"="))  {
+                    opts.vfatSafe = QLatin1String("true")==line.section('=', 1, 1);
+                } else if (line.startsWith(constAsciiOnlyKey+"=")) {
+                    opts.asciiOnly = QLatin1String("true")==line.section('=', 1, 1);
+                } else if (line.startsWith(constIgnoreTheKey+"=")) {
+                    opts.ignoreThe = QLatin1String("true")==line.section('=', 1, 1);
+                } else if (line.startsWith(constReplaceSpacesKey+"="))  {
+                    opts.replaceSpaces = QLatin1String("true")==line.section('=', 1, 1);
+                }
+            }
+        }
+
+        return true;
+    }
+    return false;
+}
+
+static inline QString toString(bool b)
+{
+    return b ? QLatin1String("true") : QLatin1String("false");
+}
+
+void FsDevice::writeOpts(const QString &fileName, const DeviceOptions &opts, bool writeAll)
+{
+    DeviceOptions def(constDefCoverFileName);
+    // If we are just using the defaults, then mayas wel lremove the file!
+    if ( (writeAll && opts==def) ||
+         (!writeAll && opts.coverName==constDefCoverFileName && 0==opts.coverMaxSize && opts.fixVariousArtists!=def.fixVariousArtists &&
+          opts.transcoderCodec.isEmpty() && opts.useCache==def.useCache && opts.autoScan!=def.autoScan)) {
+        if (QFile::exists(fileName)) {
+            QFile::remove(fileName);
+        }
+        return;
+    }
+
+    QFile file(fileName);
+    if (file.open(QIODevice::WriteOnly|QIODevice::Text)) {
+
+        QTextStream out(&file);
+        if (writeAll) {
+            if (opts.scheme!=def.scheme) {
+                out << constMusicFilenameSchemeKey << '=' << opts.scheme << '\n';
+            }
+            if (opts.scheme!=def.scheme) {
+                out << constVfatSafeKey << '=' << toString(opts.vfatSafe) << '\n';
+            }
+            if (opts.asciiOnly!=def.asciiOnly) {
+                out << constAsciiOnlyKey << '=' << toString(opts.asciiOnly) << '\n';
+            }
+            if (opts.ignoreThe!=def.ignoreThe) {
+                out << constIgnoreTheKey << '=' << toString(opts.ignoreThe) << '\n';
+            }
+            if (opts.replaceSpaces!=def.replaceSpaces) {
+                out << constReplaceSpacesKey << '=' << toString(opts.replaceSpaces) << '\n';
+            }
+        }
+
+        // NOTE: If any options are added/changed - take care of the "if ( (writeAll..." block above!!!
+        if (opts.coverName!=constDefCoverFileName) {
+            out << constCoverFileNameKey << '=' << opts.coverName << '\n';
+        }
+        if (0!=opts.coverMaxSize) {
+            out << constCoverMaxSizeKey << '=' << opts.coverMaxSize << '\n';
+        }
+        if (opts.fixVariousArtists!=def.fixVariousArtists) {
+            out << constVariousArtistsFixKey << '=' << toString(opts.fixVariousArtists) << '\n';
+        }
+        if (!opts.transcoderCodec.isEmpty()) {
+            out << constTranscoderKey << '=' << opts.transcoderCodec << ',' << opts.transcoderValue << ',' << toString(opts.transcoderWhenDifferent) << '\n';
+        }
+        if (opts.useCache!=def.useCache) {
+            out << constUseCacheKey << '=' << toString(opts.useCache) << '\n';
+        }
+        if (opts.autoScan!=def.autoScan) {
+            out << constAutoScanKey << '=' << toString(opts.autoScan) << '\n';
         }
     }
 }
@@ -512,11 +639,6 @@ void FsDevice::libraryUpdated()
         }
         stopScanner();
     }
-}
-
-static inline QString toString(bool b)
-{
-    return b ? QLatin1String("true") : QLatin1String("false");
 }
 
 QString FsDevice::cacheFileName() const

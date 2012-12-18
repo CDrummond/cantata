@@ -50,7 +50,7 @@ class CoverPreview : public Dialog
 public:
     CoverPreview(QWidget *p);
     virtual ~CoverPreview() { }
-    void showImage(const QImage &img, const QString &u, bool checkUrl=true);
+    void showImage(const QImage &img, const QString &u);
     void downloading(const QString &u);
     bool aboutToShow(const QString &u) const { return u==url; }
 

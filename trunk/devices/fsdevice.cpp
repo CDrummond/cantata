@@ -45,7 +45,7 @@
 #include <QtCore/QTimer>
 #include <time.h>
 
-static const QLatin1String constCantataCacheFile("/.cache.xml");
+static const QLatin1String constCantataCacheFile("/.cache");
 
 MusicScanner::MusicScanner(const QString &f)
     : QThread(0)
@@ -181,6 +181,7 @@ bool FsDevice::readCache()
 {
     if (opts.useCache) {
         MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
+        MusicLibraryModel::convertCache(cacheFileName());
         if (root->fromXML(cacheFileName(), QDateTime(), audioFolder)) {
             update=root;
             scanned=true;
@@ -523,7 +524,7 @@ QString FsDevice::cacheFileName() const
     if (audioFolder.isEmpty()) {
         setAudioFolder();
     }
-    return audioFolder+constCantataCacheFile;
+    return audioFolder+constCantataCacheFile+MusicLibraryModel::constLibraryCompressedExt;
 }
 
 void FsDevice::saveCache()
@@ -538,5 +539,11 @@ void FsDevice::removeCache()
     QString cacheFile(cacheFileName());
     if (QFile::exists(cacheFile)) {
         QFile::remove(cacheFile);
+    }
+
+    // Remove old (non-compressed) cache file as well...
+    QString oldCache(Utils::changeExtension(cacheFile, MusicLibraryModel::constLibraryExt));
+    if (oldCache!=cacheFile && QFile::exists(oldCache)) {
+        QFile::remove(oldCache);
     }
 }

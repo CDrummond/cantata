@@ -182,7 +182,8 @@ CacheSettings::CacheSettings(QWidget *parent)
     layout->addSpacing(spacing);
     layout->addWidget(new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", this));
     layout->addWidget(new CacheItem(i18n("Lyrics"), Utils::cacheDir(LyricsPage::constLyricsDir, false), QStringList() << "*"+LyricsPage::constExtension, this));
-    layout->addWidget(new CacheItem(i18n("Music Library List"), Utils::cacheDir(MusicLibraryModel::constLibraryCache, false), QStringList() << "*"+MusicLibraryModel::constLibraryExt, this));
+    layout->addWidget(new CacheItem(i18n("Music Library List"), Utils::cacheDir(MusicLibraryModel::constLibraryCache, false),
+                                    QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, this));
     layout->addSpacerItem(new QSpacerItem(0, 8, QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
 }
 

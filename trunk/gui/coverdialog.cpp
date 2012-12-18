@@ -43,6 +43,8 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QScrollArea>
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QWheelEvent>
+#include <QtGui/QScrollBar>
 #include <QtCore/QFileInfo>
 #include <QtCore/QUrl>
 #include <QtCore/QTemporaryFile>
@@ -193,6 +195,9 @@ private:
 
 CoverPreview::CoverPreview(QWidget *p)
     : Dialog(p)
+    , zoom(1.0)
+    , imgW(0),
+      imgH(0)
 {
     setButtons(Close);
     setWindowTitle(i18n("Image"));
@@ -219,6 +224,7 @@ CoverPreview::CoverPreview(QWidget *p)
 void CoverPreview::showImage(const QImage &img, const QString &u, bool checkUrl)
 {
     if (!checkUrl || u==url) {
+        zoom=1.0;
         url=u;
         loadingLabel->hide();
         pbar->hide();
@@ -239,7 +245,10 @@ void CoverPreview::showImage(const QImage &img, const QString &u, bool checkUrl)
         int maxHeight=desktop.height()*0.75;
         int lrPad=width()-mainWidget()->width();
         int tbPad=height()-mainWidget()->height();
-        resize(lrPad+qMax(100, qMin(maxWidth, img.width()+fw)), tbPad+qMax(100, qMin(maxHeight, img.height()+fw)));
+        imgW=img.width();
+        imgH=img.height();
+        resize(lrPad+qMax(100, qMin(maxWidth, imgW+fw)), tbPad+qMax(100, qMin(maxHeight, imgH+fw)));
+        setWindowTitle(i18nc("Image (width x height zoom%)", "Image (%1 x %2 %3%)").arg(imgW).arg(imgH).arg(zoom*100));
         show();
     }
 }
@@ -266,6 +275,32 @@ void CoverPreview::downloading(const QString &u)
 void CoverPreview::progress(qint64 rx, qint64 total)
 {
     pbar->setValue((int)(((rx*100.0)/(total*1.0))+0.5));
+}
+
+void CoverPreview::scaleImage(int adjust)
+{
+    double newZoom=zoom+(adjust*0.25);
+
+    if (newZoom<0.25 || newZoom>4.0 || (fabs(newZoom-zoom)<0.01)) {
+        return;
+    }
+    zoom=newZoom;
+    imageLabel->resize(zoom * imageLabel->pixmap()->size());
+    setWindowTitle(i18nc("Image (width x height zoom%)", "Image (%1 x %2 %3%)").arg(imgW).arg(imgH).arg(zoom*100));
+}
+
+void CoverPreview::wheelEvent(QWheelEvent *event)
+{
+    if (scrollArea->isVisible() && QApplication::keyboardModifiers() & Qt::ControlModifier) {
+        const int numDegrees = event->delta() / 8;
+        const int numSteps = numDegrees / 15;
+        if (0!=numSteps) {
+            scaleImage(numSteps);
+        }
+        event->accept();
+        return;
+    }
+    Dialog::wheelEvent(event);
 }
 
 CoverDialog::CoverDialog(QWidget *parent)

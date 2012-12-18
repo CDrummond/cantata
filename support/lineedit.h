@@ -69,18 +69,7 @@ public:
     LineEdit(QWidget *parent = 0);
     virtual ~LineEdit() { }
 
-    void setReadOnly(bool e) {
-        QLineEdit::setReadOnly(e);
-        if (e) {
-            QPalette p(palette());
-            p.setColor(QPalette::Active, QPalette::Base, p.color(QPalette::Active, QPalette::Window));
-            p.setColor(QPalette::Disabled, QPalette::Base, p.color(QPalette::Disabled, QPalette::Window));
-            p.setColor(QPalette::Inactive, QPalette::Base, p.color(QPalette::Inactive, QPalette::Window));
-            setPalette(p);
-        } else {
-            setPalette(qApp->palette());
-        }
-    }
+    void setReadOnly(bool e);
 
 protected:
     void resizeEvent(QResizeEvent *);

@@ -70,6 +70,7 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     smbPort->setValue(445);
     #endif
 
+    connectionNote->setVisible(isConnected);
     sshFolder->setText(QString());
     sshHost->setText(QString());
     sshUser->setText(QString());
@@ -78,7 +79,9 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     switch (t) {
     case Type_SshFs: {
         sshFolder->setText(d.url.path());
-        sshPort->setValue(d.url.port());
+        if (0!=d.url.port()) {
+            sshPort->setValue(d.url.port());
+        }
         sshHost->setText(d.url.host());
         sshUser->setText(d.url.userName());
         break;
@@ -89,7 +92,9 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     #ifdef ENABLE_MOUNTER
     case Type_Samba: {
         smbShare->setText(d.url.path());
-        smbPort->setValue(d.url.port());
+        if (0!=d.url.port()) {
+            smbPort->setValue(d.url.port());
+        }
         smbHost->setText(d.url.host());
         smbUser->setText(d.url.userName());
         smbPassword->setText(d.url.password());
@@ -129,6 +134,11 @@ void RemoteDevicePropertiesWidget::setType()
     if (Type_SshFs==type->itemData(type->currentIndex()).toInt() && 0==sshPort->value()) {
         sshPort->setValue(22);
     }
+    #ifdef ENABLE_MOUNTER
+    if (Type_Samba==type->itemData(type->currentIndex()).toInt() && 0==smbPort->value()) {
+        smbPort->setValue(445);
+    }
+    #endif
 }
 
 void RemoteDevicePropertiesWidget::checkSaveable()

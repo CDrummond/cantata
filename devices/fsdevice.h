@@ -71,6 +71,24 @@ class FsDevice : public Device
     Q_OBJECT
 
 public:
+    static const QLatin1String constCantataCacheFile;
+    static const QLatin1String constCantataSettingsFile;
+    static const QLatin1String constMusicFilenameSchemeKey;
+    static const QLatin1String constVfatSafeKey;
+    static const QLatin1String constAsciiOnlyKey;
+    static const QLatin1String constIgnoreTheKey;
+    static const QLatin1String constReplaceSpacesKey;
+    static const QLatin1String constCoverFileNameKey; // Cantata extension!
+    static const QLatin1String constCoverMaxSizeKey; // Cantata extension!
+    static const QLatin1String constVariousArtistsFixKey; // Cantata extension!
+    static const QLatin1String constTranscoderKey; // Cantata extension!
+    static const QLatin1String constUseCacheKey; // Cantata extension!
+    static const QLatin1String constDefCoverFileName;
+    static const QLatin1String constAutoScanKey; // Cantata extension!
+
+    static bool readOpts(const QString &fileName, DeviceOptions &opts, bool readAll);
+    static void writeOpts(const QString &fileName, const DeviceOptions &opts, bool writeAll);
+
     FsDevice(DevicesModel *m, Solid::Device &dev);
     FsDevice(DevicesModel *m, const QString &name, const QString &id);
     virtual ~FsDevice();

@@ -11,6 +11,16 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+  <item>
+   <widget class="QLabel" name="connectionNote">
+    <property name="text">
+     <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; These settings are only editable when the device is not connected.&lt;/i&gt;</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </item>
    <item>
     <layout class="QFormLayout" name="formLayout">
      <property name="fieldGrowthPolicy">

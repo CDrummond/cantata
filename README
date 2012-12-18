@@ -384,3 +384,49 @@ TagLib
 Windows version of taglib was build from TagLib 1.8, using the following cmake command:
     cmake .. -G "MinGW Makefiles" -DWITH_ASF=1 -DWITH_MP4=1 -DCMAKE_INSTALL_PRFIX=z:\taglib
 
+
+Cache Files
+===========
+
+Cantata stores the MPD library (and optionally a device's library) into an XML
+based cache file. In previous versions of Cantata (0.9 and before), these files
+were place XML text files. In later versions, they are compressed
+
+If you wish to look at the cache contents, then you need to be able to
+uncompress the files. Unfortunately, the zlib compression used in Qt does not
+write the gzip header - so you cannot use gzip. The folling code snippet
+can be used to uncompress, and recompress Cantata's cache files.
+
+-------------------------8<----------------------------
+#include <QtCore/QtCore>
+#include <stdio.h>
+int main(int argc, char **argv) {
+    QFile in, out;
+    if (in.open(stdin, QIODevice::ReadOnly) && out.open(stdout, QIODevice::WriteOnly)) {
+        QByteArray d(in.readAll());
+        out.write(0==d[0] && 2==d[1] ? qUncompress(d) : qCompress(d));
+    }
+    return 0;
+}
+-------------------------8<----------------------------
+
+Copy the above to (e.g.) cantatacache.cpp, and then compile using the following:
+
+g++ cantatacache.cpp -o cantatacache -lQtCore -I/usr/include/qt4
+
+(Note: the /usr/include/qt4 may be different on your distribution)
+
+Then, to uncompress a file:
+
+    cat <compressed file> | ./cantatacache > <uncompressed file>
+
+e.g.
+    cat ~/.cache/cantata/library/localhost.xmc | ./cantatacache lib.xml
+
+
+Compressing is exactly the same. The program will read the first 2 bytes of
+the incomming file to determine if it is compressed or not.
+
+e.g.
+    cat lib.xml | ./cantatacache > lib.xmc
+

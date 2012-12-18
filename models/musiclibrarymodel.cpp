@@ -71,12 +71,31 @@ MusicLibraryModel * MusicLibraryModel::self()
 
 const QLatin1String MusicLibraryModel::constLibraryCache("library/");
 const QLatin1String MusicLibraryModel::constLibraryExt(".xml");
+const QLatin1String MusicLibraryModel::constLibraryCompressedExt(".xmc");
 
 static const QString cacheFileName()
 {
-    QString fileName=MPDConnection::self()->getDetails().hostname+MusicLibraryModel::constLibraryExt;
+    QString fileName=MPDConnection::self()->getDetails().hostname+MusicLibraryModel::constLibraryCompressedExt;
     fileName.replace('/', '_');
     return Utils::cacheDir(MusicLibraryModel::constLibraryCache)+fileName;
+}
+
+void MusicLibraryModel::convertCache(const QString &compressedName)
+{
+    QString prev=Utils::changeExtension(compressedName, constLibraryExt);
+    if (QFile::exists(prev) && !QFile::exists(compressedName)) {
+        QFile old(prev);
+        if (old.open(QIODevice::ReadOnly)) {
+            QByteArray a=old.readAll();
+            old.close();
+            QFile newCache(compressedName);
+            if (newCache.open(QIODevice::WriteOnly)) {
+                newCache.write(qCompress(a));
+                newCache.close();
+                QFile::remove(prev);
+            }
+        }
+    }
 }
 
 void MusicLibraryModel::cleanCache()
@@ -515,11 +534,17 @@ void MusicLibraryModel::updateSongFile(const Song &from, const Song &to)
 
 void MusicLibraryModel::removeCache()
 {
-    //Check if dir exists
     QString cacheFile(cacheFileName());
     if (QFile::exists(cacheFile)) {
         QFile::remove(cacheFile);
     }
+
+    // Remove old (non-compressed) cache file as well...
+    QString oldCache(Utils::changeExtension(cacheFile, constLibraryExt));
+    if (oldCache!=cacheFile && QFile::exists(oldCache)) {
+        QFile::remove(oldCache);
+    }
+
     databaseTime = QDateTime();
 }
 
@@ -662,6 +687,7 @@ void MusicLibraryModel::toXML(const MusicLibraryItemRoot *root, const QDateTime 
  */
 bool MusicLibraryModel::fromXML()
 {
+    convertCache(cacheFileName());
     MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
     quint32 date=root->fromXML(cacheFileName(), MPDStats::self()->dbUpdate());
     if (!date) {

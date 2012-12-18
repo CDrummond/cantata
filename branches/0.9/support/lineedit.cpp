@@ -60,6 +60,20 @@ LineEdit::LineEdit(QWidget *parent)
                    qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
 }
 
+void LineEdit::setReadOnly(bool e)
+{
+    QLineEdit::setReadOnly(e);
+    if (e) {
+        QPalette p(palette());
+        p.setColor(QPalette::Active, QPalette::Base, p.color(QPalette::Active, QPalette::Window));
+        p.setColor(QPalette::Disabled, QPalette::Base, p.color(QPalette::Disabled, QPalette::Window));
+        p.setColor(QPalette::Inactive, QPalette::Base, p.color(QPalette::Inactive, QPalette::Window));
+        setPalette(p);
+    } else {
+        setPalette(qApp->palette());
+    }
+}
+
 void LineEdit::resizeEvent(QResizeEvent *)
 {
     QSize sz = clearButton->sizeHint();
@@ -75,6 +89,5 @@ void LineEdit::resizeEvent(QResizeEvent *)
 
 void LineEdit::updateCloseButton(const QString& text)
 {
-    clearButton->setVisible(!text.isEmpty());
+    clearButton->setVisible(!isReadOnly() && !text.isEmpty());
 }
-

@@ -1,4 +1,8 @@
-﻿0.9.1
+﻿0.9.2
+-----
+1. (Qt-Only) Dont show clear button for read-only line-edits.
+
+0.9.1
 -----
 1. Fix saving of 'Store covers in MPD dir' setting.
 2. Show/hide main window when KDE tray item clicked.

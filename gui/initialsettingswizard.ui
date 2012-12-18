@@ -303,8 +303,8 @@
    </layout>
   </widget>
   <widget class="QWizardPage" name="wizardPage">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
      <widget class="QLabel" name="label_6">
       <property name="font">
        <font>
@@ -317,7 +317,7 @@
       </property>
      </widget>
     </item>
-    <item>
+    <item row="1" column="1">
      <spacer name="verticalSpacer_9">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -333,7 +333,7 @@
       </property>
      </spacer>
     </item>
-    <item>
+    <item row="2" column="0" colspan="2">
      <widget class="QLabel" name="label_5">
       <property name="text">
        <string>Cantata is now connected to MPD! If you wish to further configure Cantata (to add extra MPD hosts, etc) then Canta's configuration dialog may be accessed from the menu triggered by the button in the top-right of Cantata's main window.</string>
@@ -343,7 +343,7 @@
       </property>
      </widget>
     </item>
-    <item>
+    <item row="3" column="1">
      <spacer name="verticalSpacer_6x">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -354,13 +354,22 @@
       <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
-        <height>4</height>
+        <height>32</height>
        </size>
       </property>
      </spacer>
     </item>
-    <item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="groupWarningIcon"/>
+    </item>
+    <item row="4" column="1">
      <widget class="QLabel" name="groupWarningLabel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
        <string>&lt;b&gt;Warning:&lt;/b&gt; You are not currently a member of the 'users' group. Cantata will function better (saving of album covers, lyrics, etc. with the correct permissions) if you (or your administrator) add yourself to this group. If you do add yourself you will need to logout and back in for this to take effect.</string>
       </property>
@@ -369,7 +378,7 @@
       </property>
      </widget>
     </item>
-    <item>
+    <item row="5" column="0" colspan="2">
      <spacer name="verticalSpacer_8">
       <property name="orientation">
        <enum>Qt::Vertical</enum>

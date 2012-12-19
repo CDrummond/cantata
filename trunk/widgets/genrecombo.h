@@ -36,7 +36,7 @@ public:
 
     const QSet<QString> & entries() const { return genres; }
 
-private Q_SLOTS:
+public Q_SLOTS:
     void update(const QSet<QString> &g);
 
 private:

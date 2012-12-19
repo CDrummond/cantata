@@ -131,6 +131,7 @@ Q_SIGNALS:
     void searchItems();
     void itemsSelected(bool);
     void doubleClicked(const QModelIndex &);
+    void rootIndexSet(const QModelIndex &);
 
 private Q_SLOTS:
     void itemClicked(const QModelIndex &index);
@@ -138,7 +139,7 @@ private Q_SLOTS:
     void delaySearchItems();
 
 private:
-    void activateItem(const QModelIndex &index);
+    void activateItem(const QModelIndex &index, bool emitRootSet=true);
     QAction * getAction(const QModelIndex &index);
 
 private:

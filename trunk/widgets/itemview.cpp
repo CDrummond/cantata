@@ -530,6 +530,7 @@ void ItemView::setMode(Mode m)
         setLevel(0);
         listView->setRootIndex(QModelIndex());
         itemModel->setRootIndex(QModelIndex());
+        emit rootIndexSet(QModelIndex());
         if (Mode_IconTop!=mode) {
             listView->setGridSize(listGridSize);
             listView->setViewMode(QListView::ListMode);
@@ -733,6 +734,7 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
         if (idx.parent().isValid()) {
             QList<QModelIndex> indexes;
             QModelIndex i=idx.parent();
+            QModelIndex p=idx;
             while (i.isValid()) {
                 indexes.prepend(i);
                 i=i.parent();
@@ -741,7 +743,10 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
             listView->setRootIndex(QModelIndex());
             itemModel->setRootIndex(QModelIndex());
             foreach (const QModelIndex &i, indexes) {
-                activateItem(i);
+                activateItem(i, false);
+            }
+            if (p.isValid()) {
+                emit rootIndexSet(p);
             }
             if (scrollTo) {
                 listView->scrollTo(idx, QAbstractItemView::PositionAtTop);
@@ -827,6 +832,7 @@ void ItemView::backActivated()
     setLevel(currentLevel-1);
     itemModel->setRootIndex(listView->rootIndex().parent());
     listView->setRootIndex(listView->rootIndex().parent());
+    emit rootIndexSet(listView->rootIndex().parent());
 
     if (qobject_cast<QSortFilterProxyModel *>(listView->model())) {
         QModelIndex idx=static_cast<QSortFilterProxyModel *>(listView->model())->mapFromSource(prevTopIndex);
@@ -867,7 +873,7 @@ void ItemView::itemActivated(const QModelIndex &index)
     }
 }
 
-void ItemView::activateItem(const QModelIndex &index)
+void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
 {
     if ((act1 || act2 || toggle) && ActionItemDelegate::hasActions(index, actLevel) && getAction(index)) {
         return;
@@ -892,6 +898,9 @@ void ItemView::activateItem(const QModelIndex &index)
         listSearch->setPlaceholderText(i18n("Search %1...").arg(text));
         listView->setRootIndex(index);
         itemModel->setRootIndex(index);
+        if (emitRootSet) {
+            emit rootIndexSet(index);
+        }
         listView->scrollToTop();
     }
 }

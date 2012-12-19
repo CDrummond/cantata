@@ -22,36 +22,31 @@
 
 #include "valueslider.h"
 #include "localize.h"
-#include <QtGui/QHBoxLayout>
+#include <QtGui/QGridLayout>
 
 ValueSlider::ValueSlider(QWidget *parent)
     : QWidget(parent)
 {
     defaultSetting=0;
-    QBoxLayout *mainLayout = new QVBoxLayout(this);
-    QBoxLayout *secondaryTopLayout = new QHBoxLayout(this);
-    QBoxLayout *secondaryBotLayout = new QHBoxLayout(this);
+    QGridLayout *layout = new QGridLayout(this);
     valueTypeLabel = new QLabel(this);
     valueTypeLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    mainLayout->addWidget(valueTypeLabel);
-    mainLayout->addLayout(secondaryTopLayout);
-    mainLayout->addLayout(secondaryBotLayout);
-    secondaryTopLayout->addSpacing(4);
+    layout->addWidget(valueTypeLabel, 0, 0, 1, 3);
     slider = new QSlider(this);
     slider->setOrientation(Qt::Horizontal);
     slider->setTickPosition(QSlider::TicksBelow);
     slider->setTickInterval(1);
     slider->setPageStep(2);
     slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    secondaryTopLayout->addWidget(slider, 3);
-    leftLabel = new QLabel( this);
-    secondaryBotLayout->addWidget(leftLabel, 1);
+    layout->addWidget(slider, 1, 0, 1, 3);
+    leftLabel = new QLabel(this);
+    layout->addWidget(leftLabel, 2, 0, 1, 1);
     midLabel = new QLabel(this);
     connect(slider, SIGNAL(valueChanged(int)),  this, SLOT(onSliderChanged(int)));
     rightLabel = new QLabel(this);
     rightLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    secondaryBotLayout->addWidget(rightLabel, 1);
-    mainLayout->addWidget(midLabel);
+    layout->addWidget(rightLabel, 2, 2, 1, 1);
+    layout->addWidget(midLabel, 3, 1, 1, 1);
     valueTypeLabel->setBuddy(slider);
     midLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 }
@@ -100,8 +95,9 @@ void ValueSlider::onSliderChanged(int value)
 {
     QString text=value<settings.count() ? settings.at(value).descr : QString();
 
-    if (value==defaultSetting)
+    if (value==defaultSetting) {
         text += i18n(" (recommended)");
+    }
 
     midLabel->setText(text);
     emit valueChanged(value);

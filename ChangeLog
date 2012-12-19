@@ -32,6 +32,8 @@
 16. Use cache by default for devices.
 17. Compress cache files.
 18. Save remote device library settings on remote device.
+19. When using list or icon view, only show genres that are relevant to the
+    current level.
 
 0.9.2
 -----

@@ -26,6 +26,7 @@
 #include "mpdstats.h"
 #include "covers.h"
 #include "musiclibrarymodel.h"
+#include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "mainwindow.h"
@@ -91,6 +92,7 @@ LibraryPage::LibraryPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
+    connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     proxy.setSourceModel(MusicLibraryModel::self());
     view->setTopText(i18n("Library"));
     view->setModel(&proxy);
@@ -271,6 +273,24 @@ void LibraryPage::searchItems()
     if (proxy.enabled() && !text.isEmpty()) {
         view->expandAll();
     }
+}
+
+void LibraryPage::updateGenres(const QModelIndex &idx)
+{
+    if (idx.isValid()) {
+        QModelIndex m=proxy.mapToSource(idx);
+        if (m.isValid()) {
+            MusicLibraryItem::Type itemType=static_cast<MusicLibraryItem *>(m.internalPointer())->itemType();
+            if (itemType==MusicLibraryItem::Type_Artist) {
+                genreCombo->update(static_cast<MusicLibraryItemArtist *>(m.internalPointer())->genres());
+                return;
+            } else if (itemType==MusicLibraryItem::Type_Album) {
+                genreCombo->update(static_cast<MusicLibraryItemAlbum *>(m.internalPointer())->genres());
+                return;
+            }
+        }
+    }
+    genreCombo->update(MusicLibraryModel::self()->genres());
 }
 
 void LibraryPage::controlActions()

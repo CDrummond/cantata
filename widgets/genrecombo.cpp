@@ -41,6 +41,19 @@ void GenreCombo::update(const QSet<QString> &g)
     qSort(entries);
     entries.prepend(i18n("All Genres"));
 
+    if (count()==entries.count()) {
+        bool noChange=true;
+        for (int i=0; i<count(); ++i) {
+            if (itemText(i)!=entries.at(i)) {
+                noChange=false;
+                break;
+            }
+        }
+        if (noChange) {
+            return;
+        }
+    }
+
     QString currentFilter = currentIndex() ? currentText() : QString();
 
     clear();

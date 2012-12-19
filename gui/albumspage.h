@@ -68,6 +68,7 @@ public Q_SLOTS:
     void itemActivated(const QModelIndex &);
     void controlActions();
     void searchItems();
+    void updateGenres(const QModelIndex &);
 
 private:
     AlbumsProxyModel proxy;

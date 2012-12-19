@@ -62,6 +62,7 @@ public:
         bool configured;
     };
 
+    static const QLatin1String constPromptPassword;
     static const QLatin1String constSshfsProtocol;
     static const QLatin1String constFileProtocol;
     #ifdef ENABLE_MOUNTER

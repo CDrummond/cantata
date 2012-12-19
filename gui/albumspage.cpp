@@ -83,6 +83,7 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
+    connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
 }
@@ -203,6 +204,18 @@ void AlbumsPage::searchItems()
     if (proxy.enabled() && !text.isEmpty()) {
         view->expandAll();
     }
+}
+
+void AlbumsPage::updateGenres(const QModelIndex &idx)
+{
+    if (idx.isValid()) {
+        QModelIndex m=proxy.mapToSource(idx);
+        if (m.isValid() && static_cast<AlbumsModel::Item *>(m.internalPointer())->isAlbum()) {
+            genreCombo->update(static_cast<AlbumsModel::AlbumItem *>(m.internalPointer())->genres);
+            return;
+        }
+    }
+    genreCombo->update(MusicLibraryModel::self()->genres());
 }
 
 void AlbumsPage::controlActions()

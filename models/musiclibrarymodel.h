@@ -87,6 +87,7 @@ public:
     void setLargeImages(bool a) { rootItem->setLargeImages(a); }
     void setSupportsAlbumArtistTag(bool s) { rootItem->setSupportsAlbumArtistTag(s); }
     void toggleGrouping();
+    const QSet<QString> & genres() const { return rootItem->genres(); }
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);

@@ -26,6 +26,7 @@
 #include "remotedevicepropertiesdialog.h"
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
+#include "inputdialog.h"
 #include "utils.h"
 #include "httpserver.h"
 #include "localize.h"
@@ -46,6 +47,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
+const QLatin1String RemoteFsDevice::constPromptPassword("-");
 const QLatin1String RemoteFsDevice::constSshfsProtocol("sshfs");
 const QLatin1String RemoteFsDevice::constFileProtocol("file");
 #ifdef ENABLE_MOUNTER
@@ -304,7 +306,16 @@ void RemoteFsDevice::mount()
         return;
     }
     if (constSambaProtocol==details.url.scheme()) {
-        mounter()->mount(details.url.toString(), mountPoint(details, true), getuid(), getgid(), getpid());
+        Details det=details;
+        if (constPromptPassword==det.url.password()) {
+            bool ok=false;
+            QString passwd=InputDialog::getPassword(QString(), &ok, QApplication::activeWindow());
+            if (!ok) {
+                return;
+            }
+            det.url.setPassword(passwd);
+        }
+        mounter()->mount(det.url.toString(), mountPoint(details, true), getuid(), getgid(), getpid());
         setStatusMessage(i18n("Connecting..."));
         messageSent=true;
         return;

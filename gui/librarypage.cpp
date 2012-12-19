@@ -60,7 +60,6 @@ LibraryPage::LibraryPage(MainWindow *p)
     view->addAction(p->replacePlayQueueAction);
     view->addAction(p->addWithPriorityAction);
     view->addAction(p->addToStoredPlaylistAction);
-//     view->addAction(p->burnAction);
     #ifdef TAGLIB_FOUND
     #ifdef ENABLE_DEVICES_SUPPORT
     view->addAction(p->copyToDeviceAction);

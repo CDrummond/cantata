@@ -57,7 +57,6 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     view->addAction(p->addWithPriorityAction);
     view->addAction(renamePlaylistAction);
     view->addAction(p->removeAction);
-//     view->addAction(p->burnAction);
     view->setUniformRowHeights(true);
     view->setAcceptDrops(true);
     view->setDragDropOverwriteMode(false);

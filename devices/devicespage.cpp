@@ -73,7 +73,6 @@ DevicesPage::DevicesPage(MainWindow *p)
     syncAction->setEnabled(false);
     view->addAction(copyAction);
     view->addAction(syncAction);
-//     view->addAction(p->burnAction);
     view->addAction(p->organiseFilesAction);
     view->addAction(p->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
@@ -110,14 +109,11 @@ DevicesPage::DevicesPage(MainWindow *p)
     menu->addAction(forgetDeviceAction);
     menu->addSeparator();
     #endif
-//     menu->addAction(copyAction);
     menu->addAction(p->organiseFilesAction);
     menu->addAction(p->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     menu->addAction(p->replaygainAction);
     #endif
-    //menu->addAction(sep);
-    //menu->addAction(p->deleteSongsAction);
     menuButton->setMenu(menu);
     menuButton->setIcon(Icons::menuIcon);
     menuButton->setToolTip(i18n("Other Actions"));

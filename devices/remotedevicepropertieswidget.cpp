@@ -124,6 +124,14 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     connect(sshFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(sshPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     connect(fileFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    #ifdef ENABLE_MOUNTER
+    connect(smbHost, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(smbUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(smbPassword, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(smbDomain, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(smbShare, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(smbPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
+    #endif
     modified=false;
     setType();
     checkSaveable();

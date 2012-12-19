@@ -823,8 +823,9 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
             }
             setLevel(0);
             listView->setRootIndex(QModelIndex());
+            itemModel->setRootIndex(QModelIndex());
             foreach (const QModelIndex &i, indexes) {
-                itemActivated(i);
+                activateItem(i);
             }
             if (scrollTo) {
                 listView->scrollTo(idx, QAbstractItemView::PositionAtTop);

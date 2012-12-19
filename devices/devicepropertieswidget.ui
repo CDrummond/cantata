@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="remoteDeviceNote">
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; These settings are only valid and editable when the device is connected.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; These settings are only valid, and editable, when the device is connected.&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

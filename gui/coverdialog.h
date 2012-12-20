@@ -42,6 +42,8 @@ class QWheelEvent;
 class CoverItem;
 class ExistingCover;
 class Spinner;
+class QAction;
+class QMenu;
 
 class CoverPreview : public Dialog
 {
@@ -103,13 +105,17 @@ private Q_SLOTS:
     void downloadJobFinished();
     void showImage(QListWidgetItem *item);
     void sendQuery();
+    void cancelQuery();
     void checkStatus();
+    void addLocalFile();
+    void menuRequested(const QPoint &pos);
+    void showImage();
+    void removeImages();
 
 private:
     CoverPreview *previewDialog();
     void insertItem(CoverItem *item);
     QNetworkReply * downloadImage(const QString &url, DownloadType dlType);
-    void cancelQuery();
     void clearTempFiles();
     void sendQueryRequest(const QUrl &url);
     void parseLstFmQueryResponse(const QString &resp);
@@ -127,13 +133,16 @@ private:
     QString currentQueryString;
     QSet<QNetworkReply *> currentQuery;
     QSet<QString> currentUrls;
-    QSet<QString> currentDroppedFiles;
+    QSet<QString> currentLocalCovers;
     QList<QTemporaryFile *> tempFiles;
     CoverPreview *preview;
     bool saving;
     int iSize;
     Spinner *spinner;
     int page;
+    QMenu *menu;
+    QAction *showAction;
+    QAction *removeAction;
 };
 
 #endif

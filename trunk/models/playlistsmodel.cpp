@@ -739,12 +739,15 @@ void PlaylistsModel::clearPlaylists()
 
 void PlaylistsModel::updateGenreList()
 {
-    QSet<QString> genres;
+    QSet<QString> newGenres;
     foreach (PlaylistItem *p, items) {
-        genres+=p->genres;
+        newGenres+=p->genres;
     }
 
-    emit updateGenres(genres);
+    if (newGenres!=plGenres) {
+        plGenres=newGenres;
+        emit updateGenres(plGenres);
+    }
 }
 
 quint32 PlaylistsModel::allocateKey()

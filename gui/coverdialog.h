@@ -118,6 +118,8 @@ private:
 //    void parseDiscogsQueryResponse(const QString &resp);
     void slotButtonClicked(int button);
     bool saveCover(const QString &src, const QImage &img);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 
 private:
     Song song;
@@ -125,6 +127,7 @@ private:
     QString currentQueryString;
     QSet<QNetworkReply *> currentQuery;
     QSet<QString> currentUrls;
+    QSet<QString> currentDroppedFiles;
     QList<QTemporaryFile *> tempFiles;
     CoverPreview *preview;
     bool saving;

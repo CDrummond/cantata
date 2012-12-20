@@ -66,6 +66,7 @@ class CoverItem : public QListWidgetItem
 public:
     enum Type {
         Type_Existing,
+        Type_Dropped,
         Type_LastFm,
         Type_Google
 //        Type_Yahoo,
@@ -117,19 +118,33 @@ public:
         setText(i18n("Last.fm"));
     }
 
-    quint32 key() const { return 0xFFFFFFFE; }
+    quint32 key() const { return 0xFFFFFFFD; }
     Type type()  const { return Type_LastFm; }
+};
+
+class DroppedImageCover : public CoverItem
+{
+public:
+    DroppedImageCover(const QString &u, const QImage &img, QListWidget *parent)
+        : CoverItem(u, parent) {
+        setImage(img);
+        setText(i18nc("name\nwidth x height (file size)", "%1\n%2 x %3 (%4)")
+                .arg(Utils::getFile(u)).arg(img.width()).arg(img.height()).arg(Utils::formatByteSize(QFileInfo(u).size())));
+    }
+
+    quint32 key() const { return 0xFFFFFFFE; }
+    Type type()  const { return Type_Dropped; }
 };
 
 class GoogleCover : public CoverItem
 {
 public:
-    GoogleCover(const QString &u, const QImage &img, int w, int h, const QString &size, QListWidget *parent)
+    GoogleCover(const QString &u, const QImage &img, int w, int h, int size, QListWidget *parent)
         : CoverItem(u, parent)
         , width(w)
         , height(h) {
         setImage(img);
-        setText(i18nc("Google\nwidth x height (file size)", "Google\n%1 x %2 (%3k)").arg(width).arg(height).arg(size));
+        setText(i18nc("Google\nwidth x height (file size)", "Google\n%1 x %2 (%3)").arg(width).arg(height).arg(Utils::formatByteSize(size*1024)));
     }
 
     quint32 key() const { return width*height; }
@@ -353,6 +368,7 @@ CoverDialog::CoverDialog(QWidget *parent)
     localChooser->setFilter(i18n("*.jpg; *.png"));
     localChooser->lineEdit()->setReadOnly(true);
     localChooser->setEnabled(false);
+    setAcceptDrops(true);
 }
 
 CoverDialog::~CoverDialog()
@@ -521,7 +537,7 @@ void CoverDialog::downloadJobFinished()
                 } else if (constGoogleHost==host) {
                     item=new GoogleCover(reply->property(constLargeProperty).toString(), img,
                                          reply->property(constWidthProperty).toInt(), reply->property(constHeightProperty).toInt(),
-                                         reply->property(constSizeProperty).toString(), list);
+                                         reply->property(constSizeProperty).toInt(), list);
                 }
 //                else if (constYahooHost==host) {
 //                    item=new YahooCover(reply->property(constLargeProperty).toString(), img, list);
@@ -827,7 +843,7 @@ void CoverDialog::parseGoogleQueryResponse(const QString &resp)
                     j->setProperty(constThumbProperty, thumbUrl);
                     j->setProperty(constWidthProperty, width);
                     j->setProperty(constHeightProperty, height);
-                    j->setProperty(constSizeProperty, url.queryItemValue("sz"));
+                    j->setProperty(constSizeProperty, url.queryItemValue("sz").toInt());
                 }
             }
         }
@@ -1026,5 +1042,33 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         }
         MessageBox::error(this, i18n("Failed to set cover!\nCould not copy file to '%1'!").arg(destName));
         return false;
+    }
+}
+
+void CoverDialog::dragEnterEvent(QDragEnterEvent *event)
+{
+    if(event->provides("text/uri-list")) {
+        event->acceptProposedAction();
+    }
+}
+
+void CoverDialog::dropEvent(QDropEvent *event)
+{
+    if(event->provides("text/uri-list") && Qt::CopyAction==event->dropAction()) {
+        event->acceptProposedAction();
+
+        QList<QUrl> urls(event->mimeData()->urls());
+        foreach (const QUrl &url, urls) {
+            if (url.scheme().isEmpty() || "file"==url.scheme()) {
+                QString path=url.path();
+                if (!currentDroppedFiles.contains(path) && (path.endsWith(".jpg", Qt::CaseInsensitive) || path.endsWith(".png", Qt::CaseInsensitive))) {
+                    QImage img(path);
+                    if (!img.isNull()) {
+                        currentDroppedFiles.insert(path);
+                        insertItem(new DroppedImageCover(path, img, list));
+                    }
+                }
+            }
+        }
     }
 }

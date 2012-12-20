@@ -3,6 +3,7 @@
 1. (Qt-Only) Dont show clear button for read-only line-edits.
 2. Fix 'Locate In Library' when library is not set to tree mode.
 3. Use grid layout for transcoder slider, removes Qt layout warning.
+4. Simplified Chinese translation - thanks to 薛景
 
 0.9.1
 -----

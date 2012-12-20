@@ -34,6 +34,8 @@
 18. Save remote device library settings on remote device.
 19. When using list or icon view, only show genres that are relevant to the
     current level.
+20. (Qt-Only) When displaying filesizes, use KiB (1024 bytes) for KDE and
+    Windows, and kB (1000 bytes) for others.
 
 0.9.2
 -----

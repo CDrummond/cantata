@@ -240,22 +240,42 @@ void Utils::stopThread(QThread *thread)
 
 QString Utils::formatByteSize(double size)
 {
+    static bool useSiUnites=false;
     static QLocale locale;
 
+    #ifndef Q_OS_WIN
+    static bool init=false;
+    if (!init) {
+        init=true;
+        const char *env=qgetenv("KDE_FULL_SESSION");
+        QString dm=env && 0==strcmp(env, "true") ? QLatin1String("KDE") : QString(qgetenv("XDG_CURRENT_DESKTOP"));
+        useSiUnites=!dm.isEmpty() && QLatin1String("KDE")!=dm;
+    }
+    #endif
     int unit = 0;
-    double multiplier = 1024.0;
+    double multiplier = useSiUnites ? 1000.0 : 1024.0;
 
     while (qAbs(size) >= multiplier && unit < 3) {
         size /= multiplier;
         unit++;
     }
 
-    switch(unit) {
-    case 0: return i18n("%1 B").arg(size);
-    case 1: return i18n("%1 KiB").arg(locale.toString(size, 'f', 1));
-    case 2: return i18n("%1 MiB").arg(locale.toString(size, 'f', 1));
-    default:
-    case 3: return i18n("%1 GiB").arg(locale.toString(size, 'f', 1));
+    if (useSiUnites) {
+        switch(unit) {
+        case 0: return i18n("%1 B").arg(size);
+        case 1: return i18n("%1 kB").arg(locale.toString(size, 'f', 1));
+        case 2: return i18n("%1 MB").arg(locale.toString(size, 'f', 1));
+        default:
+        case 3: return i18n("%1 GB").arg(locale.toString(size, 'f', 1));
+        }
+    } else {
+        switch(unit) {
+        case 0: return i18n("%1 B").arg(size);
+        case 1: return i18n("%1 KiB").arg(locale.toString(size, 'f', 1));
+        case 2: return i18n("%1 MiB").arg(locale.toString(size, 'f', 1));
+        default:
+        case 3: return i18n("%1 GiB").arg(locale.toString(size, 'f', 1));
+        }
     }
 }
 

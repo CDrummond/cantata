@@ -31,6 +31,7 @@
 #include "mpdconnection.h"
 #include "utils.h"
 #include "spinner.h"
+#include "icon.h"
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QListWidget>
@@ -45,6 +46,13 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QWheelEvent>
 #include <QtGui/QScrollBar>
+#include <QtGui/QMenu>
+#include <QtGui/QAction>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KFileDialog>
+#else
+#include <QtGui/QFileDialog>
+#endif
 #include <QtCore/QFileInfo>
 #include <QtCore/QUrl>
 #include <QtCore/QTemporaryFile>
@@ -66,7 +74,7 @@ class CoverItem : public QListWidgetItem
 public:
     enum Type {
         Type_Existing,
-        Type_Dropped,
+        Type_Local,
         Type_LastFm,
         Type_Google
 //        Type_Yahoo,
@@ -79,6 +87,7 @@ public:
         , list(parent) {
         setSizeHint(parent->gridSize());
         setTextAlignment(Qt::AlignHCenter | Qt::AlignTop);
+        setToolTip(u);
     }
     virtual quint32 key() const =0;
     virtual Type type() const =0;
@@ -122,18 +131,22 @@ public:
     Type type()  const { return Type_LastFm; }
 };
 
-class DroppedImageCover : public CoverItem
+class LocalCover : public CoverItem
 {
 public:
-    DroppedImageCover(const QString &u, const QImage &img, QListWidget *parent)
-        : CoverItem(u, parent) {
-        setImage(img);
+    LocalCover(const QString &u, const QImage &i, QListWidget *parent)
+        : CoverItem(u, parent)
+        , img(i) {
+        setImage(i);
         setText(i18nc("name\nwidth x height (file size)", "%1\n%2 x %3 (%4)")
                 .arg(Utils::getFile(u)).arg(img.width()).arg(img.height()).arg(Utils::formatByteSize(QFileInfo(u).size())));
     }
 
     quint32 key() const { return 0xFFFFFFFE; }
-    Type type()  const { return Type_Dropped; }
+    Type type()  const { return Type_Local; }
+    const QImage & image() const { return img; }
+private:
+    QImage img;
 };
 
 class GoogleCover : public CoverItem
@@ -325,6 +338,9 @@ CoverDialog::CoverDialog(QWidget *parent)
     , saving(false)
     , spinner(0)
     , page(0)
+    , menu(0)
+    , showAction(0)
+    , removeAction(0)
 {
     iCount++;
     QWidget *mainWidet = new QWidget(this);
@@ -336,7 +352,10 @@ CoverDialog::CoverDialog(QWidget *parent)
     connect(list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(showImage(QListWidgetItem*)));
     connect(list, SIGNAL(itemSelectionChanged()), SLOT(checkStatus()));
     connect(search, SIGNAL(clicked()), SLOT(sendQuery()));
-    connect(localRadio, SIGNAL(toggled(bool)), SLOT(checkStatus()));
+    connect(query, SIGNAL(returnPressed()), SLOT(sendQuery()));
+    connect(cancelButton, SIGNAL(clicked()), SLOT(cancelQuery()));
+    connect(addFileButton, SIGNAL(clicked()), SLOT(addLocalFile()));
+    connect(list, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(menuRequested(const QPoint&)));
 
     QFont f(list->font());
     QFontMetrics origFm(f);
@@ -363,11 +382,11 @@ CoverDialog::CoverDialog(QWidget *parent)
     list->setMinimumSize((list->gridSize().width()*4)+(spacing*5), list->gridSize().height()*3);
     list->setSortingEnabled(false);
 
-    downloadRadio->setChecked(true);
-    localChooser->setDirMode(false);
-    localChooser->setFilter(i18n("*.jpg; *.png"));
-    localChooser->lineEdit()->setReadOnly(true);
-    localChooser->setEnabled(false);
+    addFileButton->setIcon(Icon("document-open"));
+    cancelButton->setIcon(Icon("stop"));
+    cancelButton->setEnabled(false);
+    cancelButton->setAutoRaise(true);
+    addFileButton->setAutoRaise(true);
     setAcceptDrops(true);
 }
 
@@ -473,6 +492,10 @@ void CoverDialog::insertItem(CoverItem *item)
     }
     */
     list->addItem(item);
+    if (CoverItem::Type_Local==item->type()) {
+        list->scrollToItem(item);
+        list->setItemSelected(item, true);
+    }
 }
 
 void CoverDialog::downloadJobFinished()
@@ -559,6 +582,7 @@ void CoverDialog::downloadJobFinished()
     reply->deleteLater();
     if (spinner && currentQuery.isEmpty()) {
         spinner->stop();
+        cancelButton->setEnabled(false);
     }
 }
 
@@ -573,6 +597,9 @@ void CoverDialog::showImage(QListWidgetItem *item)
     if (CoverItem::Type_Existing==cover->type()) {
         previewDialog()->downloading(cover->url());
         previewDialog()->showImage(((ExistingCover *)cover)->image(), cover->url());
+    } else if (CoverItem::Type_Local==cover->type()) {
+        previewDialog()->downloading(cover->url());
+        previewDialog()->showImage(((LocalCover *)cover)->image(), cover->url());
     } else {
         previewDialog()->downloading(cover->url());
         QNetworkReply *j=downloadImage(cover->url(), DL_LargePreview);
@@ -614,13 +641,24 @@ void CoverDialog::sendQuery()
         spinner->setWidget(list->viewport());
     }
     spinner->start();
+    cancelButton->setEnabled(true);
 
     if (0==page) {
-        QListWidgetItem *e=existing ? list->takeItem(0) : 0;
-        list->clear();
-        if (e) {
-            list->addItem(e);
+        QList<CoverItem *> keep;
+
+        while (list->count()) {
+            CoverItem *item=(CoverItem *)list->takeItem(0);
+            if (CoverItem::Type_Existing==item->type() || CoverItem::Type_Local==item->type()) {
+                keep.append(item);
+            } else {
+                delete item;
+            }
         }
+
+        foreach (CoverItem *item, keep) {
+            list->addItem(item);
+        }
+
         cancelQuery();
         currentUrls.clear();
     }
@@ -671,12 +709,8 @@ void CoverDialog::sendQuery()
 
 void CoverDialog::checkStatus()
 {
-    if (downloadRadio->isChecked()) {
-        QList<QListWidgetItem*> items=list->selectedItems();
-        enableButtonOk(1==items.size() && CoverItem::Type_Existing!=((CoverItem *)items.at(0))->type());
-    } else {
-        enableButtonOk(!localChooser->text().isEmpty() && QFile::exists(localChooser->text()));
-    }
+    QList<QListWidgetItem*> items=list->selectedItems();
+    enableButtonOk(1==items.size() && CoverItem::Type_Existing!=((CoverItem *)items.at(0))->type());
 }
 
 void CoverDialog::cancelQuery()
@@ -689,6 +723,69 @@ void CoverDialog::cancelQuery()
         }
         job->close();
         job->deleteLater();
+    }
+}
+
+void CoverDialog::addLocalFile()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    QString fileName=KFileDialog::getOpenFileName(KUrl(), "image/jpeg image/png", this, i18n("Load Local Cover"));
+    #else
+    QString fileName=QFileDialog::getOpenFileName(this, i18n("Load Local Cover"), QDir::homePath(), i18n("Images (*.png *.jpg)"));
+    #endif
+
+    if (!fileName.isEmpty()) {
+        if (currentLocalCovers.contains(fileName)) {
+            MessageBox::error(this, i18n("File is already in list!"));
+        } else {
+            QImage img(fileName);
+            if (img.isNull()) {
+                MessageBox::error(this, i18n("Failed to read image!"));
+            } else {
+                currentLocalCovers.insert(fileName);
+                insertItem(new LocalCover(fileName, img, list));
+            }
+        }
+    }
+}
+
+void CoverDialog::menuRequested(const QPoint &pos)
+{
+    if (!menu) {
+        menu=new QMenu(list);
+        showAction=menu->addAction(Icon("zoom-original"), i18n("Display"));
+        removeAction=menu->addAction(Icon("list-remove"), i18n("Remove"));
+        connect(showAction, SIGNAL(triggered(bool)), SLOT(showImage()));
+        connect(removeAction, SIGNAL(triggered(bool)), SLOT(removeImages()));
+    }
+
+    QList<QListWidgetItem*> items=list->selectedItems();
+    showAction->setEnabled(1==items.count());
+    removeAction->setEnabled(!items.isEmpty());
+    if (removeAction->isEnabled()) {
+        foreach (QListWidgetItem *i, items) {
+            CoverItem *c=(CoverItem *)i;
+            if (CoverItem::Type_Existing==c->type()) {
+                removeAction->setEnabled(false);
+            }
+        }
+    }
+    menu->popup(list->mapToGlobal(pos));
+}
+
+void CoverDialog::showImage()
+{
+    QList<QListWidgetItem*> items=list->selectedItems();
+    if (1==items.count()) {
+        showImage(items.at(0));
+    }
+}
+
+void CoverDialog::removeImages()
+{
+    QList<QListWidgetItem*> items=list->selectedItems();
+    foreach (QListWidgetItem *i, items) {
+        delete i;
     }
 }
 
@@ -967,30 +1064,23 @@ void CoverDialog::parseGoogleQueryResponse(const QString &resp)
 void CoverDialog::slotButtonClicked(int button)
 {
     switch (button) {
-    case Ok:
-        if (downloadRadio->isChecked()) {
-            QList<QListWidgetItem*> items=list->selectedItems();
-            if (1==items.size()) {
-                CoverItem *cover=(CoverItem *)items.at(0);
-                if (CoverItem::Type_Existing!=cover->type()) {
-                    QNetworkReply *j=downloadImage(cover->url(), DL_LargeSave);
-                    if (j) {
-                        j->setProperty(constLargeProperty, cover->url());
-                    }
-                }
-            }
-        } else if (!localChooser->text().trimmed().isEmpty()) {
-            QString fileName=localChooser->text().trimmed();
-            QImage img;
-            if (img.load(fileName)) {
-                if (saveCover(fileName, img)) {
+    case Ok: {
+        QList<QListWidgetItem*> items=list->selectedItems();
+        if (1==items.size()) {
+            CoverItem *cover=(CoverItem *)items.at(0);
+            if (CoverItem::Type_Local==cover->type()) {
+                if (saveCover(cover->url(), ((LocalCover *)cover)->image())) {
                     accept();
                 }
-            } else {
-                MessageBox::error(this, i18n("Failed to set cover!\nCould no load '%1'!").arg(fileName));
+            } else if (CoverItem::Type_Existing!=cover->type()) {
+                QNetworkReply *j=downloadImage(cover->url(), DL_LargeSave);
+                if (j) {
+                    j->setProperty(constLargeProperty, cover->url());
+                }
             }
         }
         break;
+    }
     case Cancel:
         reject();
         // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
@@ -1061,11 +1151,11 @@ void CoverDialog::dropEvent(QDropEvent *event)
         foreach (const QUrl &url, urls) {
             if (url.scheme().isEmpty() || "file"==url.scheme()) {
                 QString path=url.path();
-                if (!currentDroppedFiles.contains(path) && (path.endsWith(".jpg", Qt::CaseInsensitive) || path.endsWith(".png", Qt::CaseInsensitive))) {
+                if (!currentLocalCovers.contains(path) && (path.endsWith(".jpg", Qt::CaseInsensitive) || path.endsWith(".png", Qt::CaseInsensitive))) {
                     QImage img(path);
                     if (!img.isNull()) {
-                        currentDroppedFiles.insert(path);
-                        insertItem(new DroppedImageCover(path, img, list));
+                        currentLocalCovers.insert(path);
+                        insertItem(new LocalCover(path, img, list));
                     }
                 }
             }

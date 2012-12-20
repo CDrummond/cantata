@@ -22,6 +22,8 @@
  */
 
 #include "devicespage.h"
+#include "musiclibraryitemroot.h"
+#include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
 #include "mainwindow.h"
@@ -88,11 +90,12 @@ DevicesPage::DevicesPage(MainWindow *p)
     sep->setSeparator(true);
     view->addAction(sep);
     view->addAction(p->deleteSongsAction);
-    connect(DevicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), this, SLOT(updateGenres(const QSet<QString> &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
+    connect(DevicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
+    connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(configureAction, SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshDevice()));
@@ -126,7 +129,6 @@ DevicesPage::DevicesPage(MainWindow *p)
     view->init(configureAction, refreshAction, 0);
     #endif
     view->setRootIsDecorated(false);
-    updateGenres(QSet<QString>());
 }
 
 DevicesPage::~DevicesPage()
@@ -498,35 +500,23 @@ void DevicesPage::sync()
     }
 }
 
-void DevicesPage::updateGenres(const QSet<QString> &g)
+void DevicesPage::updateGenres(const QModelIndex &idx)
 {
-    if (genreCombo->count() && g==genres) {
-        return;
-    }
-
-    genres=g;
-    QStringList entries=g.toList();
-    qSort(entries);
-    entries.prepend(i18n("All Genres"));
-
-    QString currentFilter = genreCombo->currentIndex() ? genreCombo->currentText() : QString();
-
-    genreCombo->clear();
-    genreCombo->addItems(entries);
-    if (0==genres.count()) {
-        genreCombo->setCurrentIndex(0);
-    } else {
-        if (!currentFilter.isEmpty()) {
-            bool found=false;
-            for (int i=1; i<genreCombo->count() && !found; ++i) {
-                if (genreCombo->itemText(i) == currentFilter) {
-                    genreCombo->setCurrentIndex(i);
-                    found=true;
-                }
-            }
-            if (!found) {
-                genreCombo->setCurrentIndex(0);
+    if (idx.isValid()) {
+        QModelIndex m=proxy.mapToSource(idx);
+        if (m.isValid()) {
+            MusicLibraryItem::Type itemType=static_cast<MusicLibraryItem *>(m.internalPointer())->itemType();
+            if (itemType==MusicLibraryItem::Type_Root) {
+                genreCombo->update(static_cast<MusicLibraryItemRoot *>(m.internalPointer())->genres());
+                return;
+            } else if (itemType==MusicLibraryItem::Type_Artist) {
+                genreCombo->update(static_cast<MusicLibraryItemArtist *>(m.internalPointer())->genres());
+                return;
+            } else if (itemType==MusicLibraryItem::Type_Album) {
+                genreCombo->update(static_cast<MusicLibraryItemAlbum *>(m.internalPointer())->genres());
+                return;
             }
         }
     }
+    genreCombo->update(DevicesModel::self()->genres());
 }

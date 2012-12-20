@@ -402,12 +402,20 @@ void DevicesModel::deviceUpdating(const QString &udi, bool state)
             }
             QModelIndex modelIndex=createIndex(idx, 0, dev);
             emit dataChanged(modelIndex, modelIndex);
-            QSet<QString> genres;
-            foreach (Device *dev, devices) {
-                genres+=dev->genres();
-            }
-            emit updateGenres(genres);
+            updateGenres();
         }
+    }
+}
+
+void DevicesModel::updateGenres()
+{
+    QSet<QString> newGenres;
+    foreach (Device *dev, devices) {
+        newGenres+=dev->genres();
+    }
+    if (newGenres!=devGenres) {
+        devGenres=newGenres;
+        emit updateGenres(devGenres);
     }
 }
 
@@ -602,6 +610,7 @@ void DevicesModel::deviceRemoved(const QString &udi)
         devices.takeAt(idx)->deleteLater();
         endRemoveRows();
         updateItemMenu();
+        updateGenres();
     }
 }
 
@@ -658,6 +667,7 @@ void DevicesModel::removeRemoteDevice(const QString &udi)
         devices.takeAt(idx);
         endRemoveRows();
         updateItemMenu();
+        updateGenres();
         // Remove will stop device, and delete it
         RemoteFsDevice::remove(dev);
     }
@@ -670,6 +680,22 @@ void DevicesModel::remoteDeviceUdiChanged()
 {
     #ifdef ENABLE_REMOTE_DEVICES
     updateItemMenu();
+    #endif
+}
+
+void DevicesModel::removeDeviceConnectionStateChanged(const QString &udi, bool state)
+{
+    #ifdef ENABLE_REMOTE_DEVICES
+    if (!state) {
+        int idx=indexOf(udi);
+        if (idx<0) {
+            return;
+        }
+        updateGenres();
+    }
+    #else
+    Q_UNUSED(udi)
+    Q_UNUSED(state)
     #endif
 }
 
@@ -760,6 +786,8 @@ void DevicesModel::loadRemote()
             connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
             if (Device::RemoteFs==dev->devType()) {
                 connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged()), SLOT(remoteDeviceUdiChanged()));
+                connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(connectionStateChanged(QString, bool)),
+                        SLOT(removeDeviceConnectionStateChanged(QString, bool)));
             }
         }
         endInsertRows();

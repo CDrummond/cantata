@@ -102,6 +102,7 @@ public:
 
 Q_SIGNALS:
     void udiChanged();
+    void connectionStateChanged(const QString &udi, bool connected);
 
 protected:
     void load();

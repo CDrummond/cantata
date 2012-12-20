@@ -28,6 +28,7 @@ GenreCombo::GenreCombo(QWidget *p)
      : QComboBox(p)
 {
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    update(QSet<QString>());
 }
 
 void GenreCombo::update(const QSet<QString> &g)

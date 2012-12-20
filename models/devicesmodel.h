@@ -62,6 +62,7 @@ public:
     void unmountRemote();
     #endif
     void toggleGrouping();
+    const QSet<QString> & genres() { return devGenres; }
 
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img);
@@ -73,6 +74,7 @@ public Q_SLOTS:
     void addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::Details details);
     void removeRemoteDevice(const QString &udi);
     void remoteDeviceUdiChanged();
+    void removeDeviceConnectionStateChanged(const QString &udi, bool state);
     void mountsChanged();
 
 private:
@@ -83,6 +85,7 @@ private:
     void loadRemote();
     #endif
     int indexOf(const QString &udi);
+    void updateGenres();
 
 Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
@@ -92,6 +95,7 @@ Q_SIGNALS:
 private:
     QList<Device *> devices;
     QSet<QString> volumes;
+    QSet<QString> devGenres;
     QMenu *itemMenu;
     bool enabled;
     bool inhibitMenuUpdate;

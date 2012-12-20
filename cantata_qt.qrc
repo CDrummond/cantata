@@ -6,14 +6,6 @@
 <file alias="cantata32.png">icons/cantata32.png</file>
 <file alias="cantata48.png">icons/cantata48.png</file>
 <file alias="cantata64.png">icons/cantata64.png</file>
-<file alias="repeat16.png">icons/hi16-action-cantata-view-media-repeat.png</file>
-<file alias="repeat22.png">icons/hi22-action-cantata-view-media-repeat.png</file>
-<file alias="repeat32.png">icons/hi32-action-cantata-view-media-repeat.png</file>
-<file alias="repeat48.png">icons/hi48-action-cantata-view-media-repeat.png</file>
-<file alias="shuffle16.png">icons/hi16-action-cantata-view-media-shuffle.png</file>
-<file alias="shuffle22.png">icons/hi22-action-cantata-view-media-shuffle.png</file>
-<file alias="shuffle32.png">icons/hi32-action-cantata-view-media-shuffle.png</file>
-<file alias="shuffle48.png">icons/hi48-action-cantata-view-media-shuffle.png</file>
 <file alias="va16.png">icons/hi16-action-cantata-view-media-artist-various.png</file>
 <file alias="va22.png">icons/hi22-action-cantata-view-media-artist-various.png</file>
 <file alias="va32.png">icons/hi32-action-cantata-view-media-artist-various.png</file>
@@ -32,9 +24,5 @@
 <file alias="wiki16.png">icons/hi16-action-cantata-view-wikipedia.png</file>
 <file alias="wiki32.png">icons/hi32-action-cantata-view-wikipedia.png</file>
 <file alias="wiki48.png">icons/hi48-action-cantata-view-wikipedia.png</file>
-<file alias="menu16.png">icons/hi16-action-cantata-menubutton.png</file>
-<file alias="menu22.png">icons/hi22-action-cantata-menubutton.png</file>
-<file alias="menu32.png">icons/hi32-action-cantata-menubutton.png</file>
-<file alias="menu48.png">icons/hi48-action-cantata-menubutton.png</file>
 </qresource>
 </RCC>

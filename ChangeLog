@@ -36,6 +36,8 @@
     current level.
 20. (Qt-Only) When displaying filesizes, use KiB (1024 bytes) for KDE and
     Windows, and kB (1000 bytes) for others.
+21. Recolour repeat and shuffle icons to use button text colour - this is so
+    that they always match consume and single icons.
 
 0.9.2
 -----

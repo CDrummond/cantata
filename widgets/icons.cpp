@@ -30,7 +30,9 @@
 #include <QtCore/QDir>
 #include <math.h>
 
-static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
+static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
+
+static QPixmap createSingleIconPixmap(int size, const QColor &col, double opacity)
 {
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
@@ -50,7 +52,7 @@ static QPixmap createSingleIconPixmap(int size, QColor &col, double opacity)
     return pix;
 }
 
-static QPixmap createConsumeIconPixmap(int size, QColor &col, double opacity)
+static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opacity)
 {
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
@@ -71,25 +73,91 @@ static QPixmap createConsumeIconPixmap(int size, QColor &col, double opacity)
     return pix;
 }
 
-static Icon createIcon(bool isSingle)
+static void calcIconColors(QColor &stdColor, QColor &highlightColor)
 {
-    Icon icon;
-    QColor stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText));
+    stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText));
     if (stdColor==Qt::white) {
         stdColor=QColor(200, 200, 200);
     } else if (stdColor.red()<128 && stdColor.green()<128 && stdColor.blue()<128 &&
                stdColor.red()==stdColor.green() && stdColor.green()==stdColor.blue()) {
         stdColor=Qt::black;
     }
-    QColor highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
-    QList<int> sizes=QList<int>() << 16 << 22;
+    highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
+}
 
-    foreach (int s, sizes) {
+static Icon createIcon(bool isSingle, const QColor &stdColor, const QColor &highlightColor)
+{
+    Icon icon;
+
+    foreach (int s, constStdSizes) {
         icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 1.0) : createConsumeIconPixmap(s, stdColor, 1.0));
         icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 0.5) : createConsumeIconPixmap(s, stdColor, 0.5), QIcon::Disabled);
         icon.addPixmap(isSingle ? createSingleIconPixmap(s, highlightColor, 1.0) : createConsumeIconPixmap(s, highlightColor, 1.0), QIcon::Active);
     }
 
+    return icon;
+}
+
+static unsigned char checkBounds(int num)
+{
+    return num < 0 ? 0 : (num > 255 ? 255 : num);
+}
+
+static void adjustPix(unsigned char *data, int numChannels, int w, int h, int stride, int r, int g, int b, double opacity)
+{
+    int width=w*numChannels,
+        offset=0;
+
+    for(int row=0; row<h; ++row) {
+        for(int column=0; column<width; column+=numChannels) {
+            unsigned char source=data[offset+column+1];
+
+            #if Q_BYTE_ORDER == Q_BIG_ENDIAN
+            /* ARGB */
+            data[offset+column]*=opacity;
+            data[offset+column+1] = checkBounds(r-source);
+            data[offset+column+2] = checkBounds(g-source);
+            data[offset+column+3] = checkBounds(b-source);
+            #else
+            /* BGRA */
+            data[offset+column] = checkBounds(b-source);
+            data[offset+column+1] = checkBounds(g-source);
+            data[offset+column+2] = checkBounds(r-source);
+            data[offset+column+3]*=opacity;
+            #endif
+        }
+        offset+=stride;
+    }
+}
+
+static QPixmap recolour(const QImage &img, const QColor &col, double opacity)
+{
+    QImage i=img;
+    if (i.depth()!=32) {
+        i=i.convertToFormat(QImage::Format_ARGB32);
+    }
+
+    adjustPix(i.bits(), 4, i.width(), i.height(), i.bytesPerLine(), col.red(), col.green(), col.blue(), opacity);
+    return QPixmap::fromImage(i);
+}
+
+static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, const QColor &highlightColor)
+{
+    if (QColor(Qt::black)==stdColor) {
+        // Text colour is black, so is icon, therefore no need to recolour!!!
+        return Icon::create(name, constStdSizes);
+    }
+
+    Icon icon;
+
+    foreach (int s, constStdSizes) {
+        QImage img(QChar(':')+name+QString::number(s));
+        if (!img.isNull()) {
+            icon.addPixmap(recolour(img, stdColor, 1.0));
+            icon.addPixmap(recolour(img, stdColor, 0.5), QIcon::Disabled);
+            icon.addPixmap(recolour(img, highlightColor, 1.0), QIcon::Active);
+        }
+    }
     return icon;
 }
 
@@ -120,10 +188,12 @@ Icon Icons::menuIcon;
 
 void Icons::init()
 {
-    singleIcon=createIcon(true);
-    consumeIcon=createIcon(false);
-    repeatIcon=Icon("cantata-view-media-repeat");
-    shuffleIcon=Icon("cantata-view-media-shuffle");
+    QColor stdColor;
+    QColor highlightColor;
+    calcIconColors(stdColor, highlightColor);
+
+    singleIcon=createIcon(true, stdColor, highlightColor);
+    consumeIcon=createIcon(false, stdColor, highlightColor);
     libraryIcon=Icon("cantata-view-media-library");
     wikiIcon=Icon("cantata-view-wikipedia");
     albumIcon=Icon("media-optical");
@@ -139,30 +209,23 @@ void Icons::init()
     artistIcon=Icon("view-media-artist");
     editIcon=Icon("document-edit");
     clearListIcon=Icon("edit-clear-list");
-    menuIcon=Icon("cantata-menubutton");
+    repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
+    shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
+    menuIcon=createRecolourableIcon("menu", stdColor, highlightColor);
     #ifndef ENABLE_KDE_SUPPORT
     appIcon=Icon::create("cantata", QList<int>() << 16 << 22 << 32 << 48 << 64);
     shortcutsIcon=Icon("preferences-desktop-keyboard");
-    if (repeatIcon.isNull()) {
-        repeatIcon=Icon::create("repeat", QList<int>() << 16 << 22 << 32 << 48);
-    }
-    if (shuffleIcon.isNull()) {
-        shuffleIcon=Icon::create("shuffle", QList<int>() << 16 << 22 << 32 << 48);
-    }
     if (libraryIcon.isNull()) {
-        libraryIcon=Icon::create("lib", QList<int>() << 16 << 22 << 32 << 48);
+        libraryIcon=Icon::create("lib", constStdSizes);
     }
     if (wikiIcon.isNull()) {
-        wikiIcon=Icon::create("wiki", QList<int>() << 16 << 22 << 32 << 48);
+        wikiIcon=Icon::create("wiki", constStdSizes);
     }
     if (variousArtistsIcon.isNull()) {
         variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
     }
     if (artistIcon.isNull()) {
         artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
-    }
-    if (menuIcon.isNull()) {
-        menuIcon=Icon::create("menu", QList<int>() << 16 << 22 << 32 << 48);
     }
     #ifndef Q_OS_WIN
     if (shortcutsIcon.isNull()) {

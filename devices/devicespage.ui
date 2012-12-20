@@ -21,7 +21,7 @@
     <widget class="ItemView" name="view"/>
    </item>
    <item row="1" column="0">
-    <widget class="QComboBox" name="genreCombo">
+    <widget class="GenreCombo" name="genreCombo">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -43,6 +43,11 @@
    <class>ItemView</class>
    <extends>QTreeView</extends>
    <header>itemview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GenreCombo</class>
+   <extends>QComboBox</extends>
+   <header>genrecombo.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

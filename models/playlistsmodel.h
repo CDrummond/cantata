@@ -95,9 +95,8 @@ public:
     void getPlaylists();
     void clear();
     bool exists(const QString &n) { return 0!=getPlaylist(n); }
-
     QMenu * menu() { return itemMenu; }
-
+    const QSet<QString> & genres() { return plGenres; }
     static QString strippedText(QString s);
 
 Q_SIGNALS:
@@ -132,6 +131,7 @@ private:
 private:
     QList<PlaylistItem *> items;
     QSet<quint32> usedKeys;
+    QSet<QString> plGenres;
     QMenu *itemMenu;
     quint32 dropAdjust;
 };

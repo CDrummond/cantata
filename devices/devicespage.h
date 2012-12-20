@@ -51,7 +51,6 @@ public:
     void goBack() { view->backActivated(); }
 
 public Q_SLOTS:
-    void updateGenres(const QSet<QString> &g);
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
     void controlActions();
@@ -63,6 +62,7 @@ public Q_SLOTS:
     void forgetRemoteDevice();
     void toggleDevice();
     void sync();
+    void updateGenres(const QModelIndex &);
 
 private:
     Device * activeFsDevice() const;

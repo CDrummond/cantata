@@ -70,6 +70,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
+    connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     //connect(this, SIGNAL(add(const QStringList &)), MPDConnection::self(), SLOT(add(const QStringList &)));
     connect(this, SIGNAL(loadPlaylist(const QString &, bool)), MPDConnection::self(), SLOT(loadPlaylist(const QString &, bool)));
     connect(this, SIGNAL(removePlaylist(const QString &)), MPDConnection::self(), SLOT(removePlaylist(const QString &)));
@@ -320,4 +321,16 @@ void PlaylistsPage::searchItems()
 void PlaylistsPage::updated(const QModelIndex &index)
 {
     view->updateRows(proxy.mapFromSource(index));
+}
+
+void PlaylistsPage::updateGenres(const QModelIndex &idx)
+{
+    if (idx.isValid()) {
+        QModelIndex m=proxy.mapToSource(idx);
+        if (m.isValid() && static_cast<PlaylistsModel::Item *>(m.internalPointer())->isPlaylist()) {
+            genreCombo->update(static_cast<PlaylistsModel::PlaylistItem *>(m.internalPointer())->genres);
+            return;
+        }
+    }
+    genreCombo->update(PlaylistsModel::self()->genres());
 }

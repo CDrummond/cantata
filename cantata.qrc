@@ -1,5 +1,17 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
 <file alias="lyrics.xml">lyrics/ultimate_providers.xml</file>
+<file alias="repeat16.png">icons/view-media-repeat16.png</file>
+<file alias="repeat22.png">icons/view-media-repeat22.png</file>
+<file alias="repeat32.png">icons/view-media-repeat32.png</file>
+<file alias="repeat48.png">icons/view-media-repeat48.png</file>
+<file alias="shuffle16.png">icons/view-media-shuffle16.png</file>
+<file alias="shuffle22.png">icons/view-media-shuffle22.png</file>
+<file alias="shuffle32.png">icons/view-media-shuffle32.png</file>
+<file alias="shuffle48.png">icons/view-media-shuffle48.png</file>
+<file alias="menu16.png">icons/menubutton16.png</file>
+<file alias="menu22.png">icons/menubutton22.png</file>
+<file alias="menu32.png">icons/menubutton32.png</file>
+<file alias="menu48.png">icons/menubutton48.png</file>
 </qresource>
 </RCC>

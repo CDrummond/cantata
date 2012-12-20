@@ -17,135 +17,40 @@
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="3">
-    <widget class="QRadioButton" name="downloadRadio">
-     <property name="text">
-      <string>Select cover from below:</string>
+   <item row="0" column="0">
+    <widget class="QLineEdit" name="query"/>
+   </item>
+   <item row="0" column="1">
+    <widget class="QToolButton" name="cancelButton">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancel current query&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="query"/>
-   </item>
-   <item row="1" column="2">
+   <item row="0" column="2">
     <widget class="QPushButton" name="search">
      <property name="text">
       <string>Search</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="1" colspan="2">
-    <widget class="QListWidget" name="list"/>
-   </item>
-   <item row="3" column="0" colspan="3">
-    <widget class="QRadioButton" name="localRadio">
-     <property name="text">
-      <string>Choose cover from a local file:</string>
+   <item row="0" column="3">
+    <widget class="QToolButton" name="addFileButton">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add a local file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="1" colspan="2">
-    <widget class="DirRequester" name="localChooser"/>
+   <item row="1" column="0" colspan="4">
+    <widget class="QListWidget" name="list"/>
    </item>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>downloadRadio</tabstop>
   <tabstop>query</tabstop>
   <tabstop>search</tabstop>
-  <tabstop>localRadio</tabstop>
-  <tabstop>localChooser</tabstop>
   <tabstop>list</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>downloadRadio</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>query</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>19</x>
-     <y>15</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>72</x>
-     <y>47</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>downloadRadio</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>search</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>313</x>
-     <y>22</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>348</x>
-     <y>54</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>downloadRadio</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>list</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>205</x>
-     <y>17</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>201</x>
-     <y>96</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>localRadio</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>localChooser</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>16</x>
-     <y>253</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>41</x>
-     <y>284</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
- <customwidgets>
-  <customwidget>
-   <class>DirRequester</class>
-   <extends>QLineEdit</extends>
-   <header>dirrequester.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
+ <connections/>
 </ui>

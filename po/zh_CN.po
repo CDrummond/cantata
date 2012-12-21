@@ -154,7 +154,7 @@ msgid ""
 "then Cantata will use a per-user instance of the dynamzier to facilitate "
 "dynamic playlists.</i>"
 msgstr ""
-"<i><b>注意:</b> '均衡器端口'仅在系统级别和非本地使用的时候可用 <code>cantata-均衡器</code> 程序 <b>必须</b> "
+"<i><b>注意:</b> '动态端口'仅在系统级别和非本地使用的时候可用 <code>cantata-动态</code> 程序 <b>必须</b> "
 "已经安装并且启动于远程主机 - Cantata无法自动启动和停止相关的服务。如果未作设定，Cantata将使用单用户模式来随机播放列表。</i>"
 
 msgid ""
@@ -457,7 +457,7 @@ msgid "Add Device"
 msgstr "添加设备"
 
 msgid "Add Dynamic Rules"
-msgstr "添加均衡器规则"
+msgstr "添加动态规则"
 
 msgid "Add Stream"
 msgstr "添加流媒体"
@@ -893,19 +893,19 @@ msgid "Don't copy covers"
 msgstr "不复制封面"
 
 msgid "Dynamic"
-msgstr "均衡器"
+msgstr "动态"
 
 msgid "Dynamic Rule"
-msgstr "均衡器规则"
+msgstr "动态规则"
 
 msgid "Dynamic Rules"
-msgstr "均衡器规则"
+msgstr "动态规则"
 
 msgid "Dynamizer is not active"
-msgstr "均衡器未启用"
+msgstr "动态未启用"
 
 msgid "Dynamizer port:"
-msgstr "均衡器端口"
+msgstr "动态端口"
 
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
@@ -918,7 +918,7 @@ msgid "Edit Category"
 msgstr "编辑类别"
 
 msgid "Edit Dynamic Rules"
-msgstr "编辑均衡器配置"
+msgstr "编辑动态配置"
 
 msgid "Edit Lyrics"
 msgstr "编辑歌词"
@@ -1024,7 +1024,7 @@ msgstr "\"%1\" 连接失败"
 
 #, qt-format
 msgid "Failed to control dynamizer state. (%1)"
-msgstr "设置均衡器 (%1) 失败"
+msgstr "设置动态 (%1) 失败"
 
 #, qt-format
 msgid "Failed to copy.<hr/>%1"
@@ -1080,14 +1080,14 @@ msgid "Failed to load. Please check user \"mpd\" has read permission."
 msgstr "无法加载. 请检查 \"mpd\" 是否有读取权限."
 
 msgid "Failed to locate any songs matching the dynamic playlist rules."
-msgstr "无法给歌曲匹配均衡器设置."
+msgstr "无法给歌曲匹配动态设置."
 
 #, qt-format
 msgid "Failed to locate rules file - %1"
 msgstr "无法加载配置 - %1"
 
 msgid "Failed to locate the 'cantata-dynamic' helper script."
-msgstr "'Cantata-均衡器'脚本无法加载"
+msgstr "'Cantata-动态'脚本无法加载"
 
 #, qt-format
 msgid "Failed to reconnect to %1"
@@ -1107,7 +1107,7 @@ msgstr "<b>%1</b> 重命名为 <b>%2</b> 失败"
 
 #, qt-format
 msgid "Failed to retrieve list of dynamic rules. (%1)"
-msgstr "获取均衡器列表失败. (%1)"
+msgstr "获取动态列表失败. (%1)"
 
 #, qt-format
 msgid "Failed to save %1"
@@ -1130,7 +1130,7 @@ msgstr "发送失败. %1 已断开"
 
 #, qt-format
 msgid "Failed to set the current dynamic rules. (%1)"
-msgstr "无法设置当前均衡器规则. (%1)"
+msgstr "无法设置当前动态规则. (%1)"
 
 msgid "Failed to update the tags of some tracks."
 msgstr "一些歌曲标签更新失败."
@@ -1439,7 +1439,7 @@ msgid "Your names"
 msgstr "姓名"
 
 msgid "Name of Dynamic Rules"
-msgstr "均衡器配置名称"
+msgstr "动态配置名称"
 
 msgid "Name:"
 msgstr "名称:"
@@ -1703,13 +1703,13 @@ msgid "Refresh Device"
 msgstr "刷新设备"
 
 msgid "Refresh Dynamic Rules"
-msgstr "刷新均衡器配置"
+msgstr "刷新动态配置"
 
 msgid "Remove"
 msgstr "删除"
 
 msgid "Remove Dynamic Rules"
-msgstr "删除均衡器配置"
+msgstr "删除动态配置"
 
 msgid "Remove From Play Queue"
 msgstr "从播放队列中删除"
@@ -1961,22 +1961,22 @@ msgid "Source file no longer exists?<br/><br/<hr/>%1"
 msgstr "源文件不存在?<br/><br/<hr/>%1"
 
 msgid "Start Dynamic Mode"
-msgstr "开始均衡器模式"
+msgstr "开始动态模式"
 
 msgid "Stop"
 msgstr "停止"
 
 msgid "Stop Dynamic Mode"
-msgstr "停止均衡器模式"
+msgstr "停止动态模式"
 
 msgid "Stop dynamizer on exit:"
-msgstr "退出时关闭均衡器:"
+msgstr "退出时关闭动态:"
 
 msgid "Stop playback on exit:"
 msgstr "退出时停止回放:"
 
 msgid "Stopping dynamizer"
-msgstr "正在停止均衡器"
+msgstr "正在停止动态"
 
 #, qt-format
 msgid "Stream already exists!<br/><b>%1 (%2)</b>"
@@ -2317,7 +2317,7 @@ msgstr ""
 ""
 
 msgid "[Dynamic]"
-msgstr "[均衡器]"
+msgstr "[动态]"
 
 #, qt-format
 msgctxt "artist - album"

@@ -433,12 +433,12 @@ void RemoteFsDevice::procFinished(int exitCode)
     } else if (wasMount) {
         setStatusMessage(i18n("Updating tracks..."));
         load();
-        emit connectionStateChanged(udi(), true);
+        emit connectionStateHasChanged(udi(), true);
     } else {
         setStatusMessage(QString());
         update=new MusicLibraryItemRoot;
         emit updating(udi(), false);
-        emit connectionStateChanged(udi(), false);
+        emit connectionStateHasChanged(udi(), false);
     }
 }
 
@@ -453,7 +453,7 @@ void RemoteFsDevice::mountStatus(const QString &mp, int pid, int st)
         } else {
             setStatusMessage(i18n("Updating tracks..."));
             load();
-            emit connectionStateChanged(udi(), true);
+            emit connectionStateHasChanged(udi(), true);
         }
     }
     #else
@@ -475,7 +475,7 @@ void RemoteFsDevice::umountStatus(const QString &mp, int pid, int st)
             setStatusMessage(QString());
             update=new MusicLibraryItemRoot;
             emit updating(udi(), false);
-            emit connectionStateChanged(udi(), false);
+            emit connectionStateHasChanged(udi(), false);
         }
     }
     #else

@@ -642,6 +642,8 @@ void DevicesModel::addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::De
         connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
         if (Device::RemoteFs==dev->devType()) {
             connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged()), SLOT(remoteDeviceUdiChanged()));
+            connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(connectionStateHasChanged(QString, bool)),
+                    SLOT(removeDeviceConnectionStateChanged(QString, bool)));
         }
         updateItemMenu();
     }
@@ -786,7 +788,7 @@ void DevicesModel::loadRemote()
             connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
             if (Device::RemoteFs==dev->devType()) {
                 connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(udiChanged()), SLOT(remoteDeviceUdiChanged()));
-                connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(connectionStateChanged(QString, bool)),
+                connect(static_cast<RemoteFsDevice *>(dev), SIGNAL(connectionStateHasChanged(QString, bool)),
                         SLOT(removeDeviceConnectionStateChanged(QString, bool)));
             }
         }

@@ -172,6 +172,10 @@ void KMsgWidgetPrivate::updateLayout()
 
 void KMsgWidgetPrivate::updateSnapShot()
 {
+    // Attention: updateSnapShot calls QWidget::render(), which causes the whole
+    // window layouts to be activated. Calling this method from resizeEvent()
+    // can lead to infinite recursion, see:
+    // https://bugs.kde.org/show_bug.cgi?id=311336
     contentSnapShot = QPixmap(content->size());
     contentSnapShot.fill(Qt::transparent);
     content->render(&contentSnapShot, QPoint(), QRegion(), QWidget::DrawChildren);
@@ -187,7 +191,9 @@ void KMsgWidgetPrivate::slotTimeLineFinished()
 {
     if (timeLine->direction() == QTimeLine::Forward) {
         // Show
-        content->move(0, 0);
+        // We set the whole geometry here, because it may be wrong if a
+        // KMessageWidget is shown right when the toplevel window is created.
+        content->setGeometry(0, 0, q->width(), bestContentHeight());
     } else {
         // Hide
         q->hide();
@@ -361,14 +367,9 @@ bool KMsgWidget::event(QEvent* event)
 void KMsgWidget::resizeEvent(QResizeEvent* event)
 {
     QFrame::resizeEvent(event);
-    if (!isVisible()) return;
-    int contentHeight = d->bestContentHeight();
 
     if (d->timeLine->state() == QTimeLine::NotRunning) {
-        d->content->resize(width(), contentHeight);
-    } else if (event->size().width() != event->oldSize().width()) {
-        d->content->resize(width(), contentHeight);
-        d->updateSnapShot();
+        d->content->resize(width(), d->bestContentHeight());
     }
 }
 

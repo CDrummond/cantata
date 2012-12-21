@@ -61,10 +61,7 @@ public:
     #else
     static Icon getMediaIcon(const QString &name);
     #endif
-
-    #ifndef ENABLE_KDE_SUPPORT
     static Icon create(const QString &name, const QList<int> &sizes);
-    #endif
 };
 
 #endif

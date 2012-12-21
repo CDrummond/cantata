@@ -74,6 +74,7 @@ Icon Icon::getMediaIcon(const QString &name)
 
     return icn;
 }
+#endif
 
 Icon Icon::create(const QString &name, const QList<int> &sizes)
 {
@@ -83,4 +84,3 @@ Icon Icon::create(const QString &name, const QList<int> &sizes)
     }
     return icon;
 }
-#endif

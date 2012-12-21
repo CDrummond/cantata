@@ -636,13 +636,6 @@ void CoverDialog::sendQuery()
         page=0;
     }
 
-    if (!spinner) {
-        spinner=new Spinner(this);
-        spinner->setWidget(list->viewport());
-    }
-    spinner->start();
-    cancelButton->setEnabled(true);
-
     if (0==page) {
         QList<CoverItem *> keep;
 
@@ -660,8 +653,15 @@ void CoverDialog::sendQuery()
         }
 
         cancelQuery();
-        currentUrls.clear();
     }
+
+
+    if (!spinner) {
+        spinner=new Spinner(this);
+        spinner->setWidget(list->viewport());
+    }
+    spinner->start();
+    cancelButton->setEnabled(true);
 
     currentQueryString=fixedQuery;
     QUrl lastFm;
@@ -724,6 +724,12 @@ void CoverDialog::cancelQuery()
         job->close();
         job->deleteLater();
     }
+    currentQuery.clear();
+
+    if (spinner) {
+        spinner->stop();
+    }
+    cancelButton->setEnabled(false);
 }
 
 void CoverDialog::addLocalFile()

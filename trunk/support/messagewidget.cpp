@@ -33,6 +33,13 @@ MessageWidget::~MessageWidget()
 {
 }
 
+#if defined ENABLE_KDE_SUPPORT
+#if KDE_IS_VERSION(4, 9, 4)
+// BUG:142
+#define NO_ANIMATED_SHOW
+#endif
+#endif
+
 void MessageWidget::setMessage(const QString &msg, bool isError)
 {
     if (msg.isEmpty() && isVisible()) {
@@ -50,12 +57,16 @@ void MessageWidget::setMessage(const QString &msg, bool isError)
     }
     setText(text);
     setMessageType(isError ? Error : Information);
-    //if (!parentWidget()->isVisible()) {
-    //    show();
+    #if defined NO_ANIMATED_SHOW
+    setVisible(true);
+    #else
+    if (!parentWidget()->isVisible()) {
+        show();
         setVisible(true);
-    //} else {
-    //    animatedShow();
-    //}
+    } else {
+        animatedShow();
+    }
+    #endif
 }
 
 void MessageWidget::setVisible(bool v)

@@ -69,6 +69,20 @@ strings are not sufficient), then please translate both into the form
         msgstr "Tracks: %1"
 
 
+Creating a new translation
+--------------------------
+To generate a new translation for Cantata, please just copy cantata.pot (in the
+po folder) to whetever letter code your language uses (e.g. es.po for Spanish).
+Then edit this new file to add the translations.
+
+Please DO NOT use any tools to manully generate the translations from Cantata's
+source code, as this will probably not work. This is due to Cantata using the
+KDE framework for translations, and then generating the Qt-only ones from this.
+
+In the po folder there is s script named generate.sh, this wha tis used to
+extract translateable strings, and update current translations.
+
+
 Covers
 ======
 

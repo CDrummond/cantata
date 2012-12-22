@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "대상 장치에 여유 공간이 부족합니다.\n"
 "선택된 곡에 필요한 공간은 %1이지만, 남은 공간은 %2입니다.\n"
-"선택된 곡이 복사되기 위해서는 보다 작은 파일 크기로 변환되어야 합니다."
+"선택된 곡을 복사하려면, 보다 작은 파일 크기로 변환해야 합니다."
 
 #: devices/actiondialog.cpp:151
 msgid ""
@@ -51,7 +51,7 @@ msgstr "곡 복사"
 
 #: devices/actiondialog.cpp:192 gui/mainwindow.cpp:351
 msgid "Delete Songs"
-msgstr "곡 삭제"
+msgstr "곡 지우기"
 
 #: devices/actiondialog.cpp:213
 msgid ""
@@ -63,7 +63,7 @@ msgstr "<p>대상 장치가 설정되지 않았습니다.<br/>기본 설정으�
 msgid ""
 "<p>You have not configured the source device.<br/>Continue with the default "
 "settings?</p>"
-msgstr "<p>대상 장치가 설정되지 않았습니다.<br/>기본 설정으로 계속할까요?</p>"
+msgstr "<p>원본 장치가 설정되지 않았습니다.<br/>기본 설정으로 계속할까요?</p>"
 
 #: devices/actiondialog.cpp:265
 msgid "Are you sure you wish to cancel?"
@@ -91,7 +91,7 @@ msgstr "장치가 바뀌었습니까?"
 
 #: devices/actiondialog.cpp:355
 msgid "Clearing unused folders"
-msgstr "사용되지 않는 폴더 없앰"
+msgstr "사용되지 않는 폴더 지움"
 
 #: devices/actiondialog.cpp:396
 msgid "The destination filename already exists!<hr/>%1"
@@ -121,7 +121,7 @@ msgstr "복사할 수 없습니다.<hr/>%1"
 
 #: devices/actiondialog.cpp:412
 msgid "Failed to delete.<hr/>%1"
-msgstr "삭제할 수 없습니다.<hr/>%1"
+msgstr "지울 수 없습니다.<hr/>%1"
 
 #: devices/actiondialog.cpp:415
 msgid "Not connected to device.<hr/>%1"
@@ -161,7 +161,7 @@ msgstr "자동 건너뜀"
 
 #: devices/actiondialog.cpp:499
 msgid "Retry"
-msgstr "재시도"
+msgstr "다시 시도"
 
 #: devices/actiondialog.cpp:515
 msgid ""
@@ -228,27 +228,27 @@ msgstr "표지 복사 안함"
 
 #: devices/devicepropertieswidget.cpp:83
 msgid "Embed cover within each file"
-msgstr ""
+msgstr "각 파일안에 커버 내장"
 
 #: devices/devicepropertieswidget.cpp:90
 msgid "No maximum size"
-msgstr ""
+msgstr "최대 크기 없음"
 
 #: devices/devicepropertieswidget.cpp:90
 msgid "400 pixels"
-msgstr ""
+msgstr "400 화소"
 
 #: devices/devicepropertieswidget.cpp:90
 msgid "300 pixels"
-msgstr ""
+msgstr "300 화소"
 
 #: devices/devicepropertieswidget.cpp:90
 msgid "200 pixels"
-msgstr ""
+msgstr "200 화소"
 
 #: devices/devicepropertieswidget.cpp:90
 msgid "100 pixels"
-msgstr ""
+msgstr "100 화소"
 
 #: devices/devicepropertieswidget.cpp:91
 msgid ""
@@ -262,9 +262,9 @@ msgid ""
 msgstr ""
 "<p>곡을 장치로 복사하고 '음반 연주자'가 '여러 연주자'일 때, 칸타타는 모든 곡"
 "의 '연주자' 태그를 '여러 연주자'로 설정하고 '제목' 태그를 '곡연주자 - 곡제"
-"목'으로 설정합니다.<hr/> 장치로부터 복사할 때, '음반 연주자'와 '연주자'가  모"
-"두 '여러 아티스트'로 설정되어 있으면 '제목' 태그로부터 실제 연주자를 추출하"
-"고 '제목 태그에서 '연주자명을 삭제합니다.</p>"
+"목'으로 설정합니다.<hr/> 장치로부터 복사할 때, '음반 연주자'와 '연주자'가 모"
+"두 '여러 연주자'로 설정되어 있으면 '제목' 태그로부터 실제 연주자를 추출하고 "
+"'제목' 태그에서 연주자명을 지웁니다.</p>"
 
 #: devices/devicepropertieswidget.cpp:99
 msgid ""
@@ -276,12 +276,12 @@ msgid ""
 "the 'refresh' icon in the device list. This will cause the cache file to be "
 "removed, and the contents of the device re-scanned.</p>"
 msgstr ""
-"<p>이 설정을 사용하면 장치의 음악 라이브러리에 캐쉬를 만듭니다. 모든 파일의 "
-"라이브러리를 읽는 대신에 캐쉬 파일을 이용하므로 라이브러리 검색을 빠르게 하"
+"<p>이 설정을 사용하면 장치의 음악 라이브러리에 캐시를 만듭니다. 모든 파일의 "
+"라이브러리를 읽는 대신에 캐시 파일을 이용하므로 라이브러리 검색을 빠르게 하"
 "는 데에 도움이 됩니다.<hr/><b>참고:</b> 만약 장치의 라이브러리를 업데이트하"
-"는 데에 다른 응용 프로그램을 사용하면, 이 캐쉬는 쓸모 없어질 수 있습니다. 이"
-"를 해결하려면, 장치 리스트의 새로 읽기 버튼을 눌러 캐쉬 파일을 삭제하고 장치"
-"를 새로 읽습니다.</p>"
+"는 데에 다른 응용 프로그램을 사용하면, 이 캐시는 쓸모 없어질 수 있습니다. 이"
+"를 해결하려면, 장치 리스트의 새로 읽기 단추를 눌러 캐시 파일을 지우고 장치를 "
+"새로 읽습니다.</p>"
 
 #: devices/devicepropertieswidget.cpp:139
 msgid "Do not transcode"
@@ -321,7 +321,7 @@ msgstr "장치 추가"
 
 #: devices/devicespage.cpp:122 gui/playlistspage.cpp:93 gui/streamspage.cpp:74
 msgid "Other Actions"
-msgstr "기타 기능"
+msgstr "다른 기능"
 
 #: devices/devicespage.cpp:124 gui/mainwindow.cpp:349
 msgid "Devices"
@@ -360,7 +360,7 @@ msgstr ""
 #: devices/devicespage.cpp:447
 #, fuzzy
 msgid "Are you sure you wish to forget '%1'?"
-msgstr "<b>%1</b>을 삭제할까요?"
+msgstr "<b>%1</b>을 지울까요?"
 
 #: devices/devicespage.cpp:465
 #, fuzzy
@@ -600,7 +600,7 @@ msgstr "품질 순위"
 
 #: devices/encoders.cpp:233
 msgid "Windows Media Audio"
-msgstr "Windows Media Audio"
+msgstr "윈도 미디어 오디오 (WMA)"
 
 #: devices/encoders.cpp:236
 msgctxt ""
@@ -688,9 +688,9 @@ msgid ""
 msgstr ""
 "<p>다음 변수는 의미에 따라 바뀌어서 각 트랙명이 됩니다.</p><p><table border="
 "\"1\"><tr><th><em>변수</em></th><th><em>설명</em></th></tr><tr><td>%1</"
-"td><td>음반 연주자.대부분의 음반은 <i>곡 연주자</i>와 동일함.컴필레이션의 경"
+"td><td>음반 연주자. 대부분의 음반은 <i>곡 연주자</i>와 동일함. 컴필레이션의 경"
 "우, 많은 경우 <i>여러 연주자</i>입니다. </td></tr><tr><td>%2</td><td>음반명."
-"</td></tr><tr><td>%3</td><td>각 음반의 아티스트.</td></tr><tr><td>%4</td><td>"
+"</td></tr><tr><td>%3</td><td>각 음반의 연주자.</td></tr><tr><td>%4</td><td>"
 "곡명.</td></tr><tr><td>%5</td><td>곡 번호.</td></tr><tr><td>%6</td><td> 여러 "
 "음반의 음반 번호. 대부분 컴필레이션은 몇 개의 앨범으로 구성됩니다. 음반.</"
 "td></tr><tr><td>%7</td><td>음반 발매연도.</td></tr><tr><td>%8</td><td>음반 장"
@@ -750,7 +750,7 @@ msgstr ""
 
 #: devices/remotedevicepropertieswidget.cpp:51
 msgid "Samba Share"
-msgstr ""
+msgstr "삼바 공유"
 
 #: devices/remotedevicepropertieswidget.cpp:53
 msgid "Secure Shell (sshfs)"
@@ -804,7 +804,7 @@ msgstr "\"%1\"에 연결 해제 안 됨"
 
 #: devices/remotefsdevice.cpp:547
 msgid "Capacity Unknown"
-msgstr "알 수 없는 용량"
+msgstr "용량을 알 수 없음"
 
 #. i18n: file: gui/coverdialog.ui:33
 #. i18n: ectx: property (text), widget (QPushButton, search)
@@ -882,7 +882,7 @@ msgstr "규정 파일을 찾을 수 없음 - %1"
 
 #: dynamic/dynamic.cpp:280
 msgid "Failed to remove previous rules file - %1"
-msgstr "이전 규정 파일을 삭제할 수 없음 - %1"
+msgstr "이전 규정 파일을 지울 수 없음 - %1"
 
 #: dynamic/dynamic.cpp:285
 msgid "Failed to install rules file - %1 -> %2"
@@ -906,7 +906,7 @@ msgstr "규정 저장"
 
 #: dynamic/dynamic.cpp:647
 msgid "Deleting rule"
-msgstr "규정 삭제"
+msgstr "규정 지움"
 
 #: dynamic/dynamic.cpp:649
 msgid "Setting active rule"
@@ -930,7 +930,7 @@ msgstr "동적 규정 리스트 읽기 안 됨. (%1)"
 
 #: dynamic/dynamic.cpp:799
 msgid "Failed to delete rules file. (%1)"
-msgstr "규정 파일 삭제 안 됨. (%1)"
+msgstr "규정 파일 지워지지 않음. (%1)"
 
 #: dynamic/dynamic.cpp:805
 msgid "Failed to control dynamizer state. (%1)"
@@ -954,7 +954,7 @@ msgstr "동적 규정 수정"
 
 #: dynamic/dynamicpage.cpp:42
 msgid "Remove Dynamic Rules"
-msgstr "동적 규정 삭제"
+msgstr "동적 규정 지움"
 
 #: dynamic/dynamicpage.cpp:43
 msgid "Start Dynamic Mode"
@@ -983,11 +983,11 @@ msgstr "연주자"
 
 #: dynamic/dynamicrulesdialog.cpp:67
 msgid "SimilarArtists"
-msgstr "비슷한연주자"
+msgstr "비슷한 연주자"
 
 #: dynamic/dynamicrulesdialog.cpp:69
 msgid "AlbumArtist"
-msgstr "음반연주자"
+msgstr "음반 연주자"
 
 #: dynamic/dynamicrulesdialog.cpp:71 gui/serverplaybacksettings.cpp:39
 #: models/playqueuemodel.cpp:99 replaygain/rgdialog.cpp:104
@@ -1051,11 +1051,11 @@ msgstr ""
 "된 규정 항목은 사용될 곡들을 선별하는 데에 사용됩니다. <i>제외</i>된 규정 항"
 "목은 사용되지 않을 곡들을 선별하는 데에 사용됩니다. <i>포함</i>된 규정이 없으"
 "면, 전체 곡들을 사용할 수 있다고 가정합니다. <br/> 예로 '유재하의 Ballad 및 "
-"여러 아티스트의 곡'을 선택하려면 다음과 같이 하면 됩니다: <ul><li>포함 음반연"
+"여러 연주자의 곡'을 선택하려면 다음과 같이 하면 됩니다: <ul><li>포함 음반연"
 "주자=유재하 장르=Ballad</li><li>포함 음반연주자=여러 연주자</li></ul> '유재하"
 "의 모든 곡중에 미련 음반을 제외'하려면: <ul><li>포함 음반연주자=유재하</"
 "li><li>제외 음반=미련</li></ul>사용할 곡들이 만들어지면 칸타타는 무작위로 곡"
-"들을 선택하여 연주대기열에 10개 항목을 유지합니다.</p>"
+"들을 선택하여 연주순서에 10개 항목을 유지합니다.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:283
 msgid "Failed to save %1"
@@ -1086,15 +1086,15 @@ msgstr "음반"
 #: gui/cachesettings.cpp:123
 #, fuzzy
 msgid "Delete All"
-msgstr "%1을 삭제할까요?"
+msgstr "모두 지우기"
 
 #: gui/cachesettings.cpp:133
 msgid "Number of items:"
-msgstr ""
+msgstr "항목 수:"
 
 #: gui/cachesettings.cpp:134
 msgid "Space used:"
-msgstr ""
+msgstr "사용 공간:"
 
 #: gui/cachesettings.cpp:136 gui/cachesettings.cpp:137
 #, fuzzy
@@ -1104,7 +1104,7 @@ msgstr "연결 중..."
 #: gui/cachesettings.cpp:155
 #, fuzzy
 msgid "Delete all cached items?"
-msgstr "가사를 삭제할까요?"
+msgstr "가사를 지울까요?"
 
 #: gui/cachesettings.cpp:177
 msgid ""
@@ -1114,11 +1114,15 @@ msgid ""
 "cannot access it, or you have configured Cantata to not save these items "
 "there). Below is a summary of Cantata's cache usage."
 msgstr ""
+"음악 라이브러리를 빨리 읽기 위해서, 칸타타는 MPD 목록의 로컬 복사본을 캐시에 저장"
+"합니다. 저장된 음반 표지나 가사를 캐시에 저장할 수도 있는데, 저장하였으나 MPD 폴더"
+"에 저장되지 않은 경우입니다 (이것은 접근할 수 없거나, MPD 폴더에 저장하지 않도록 "
+"설정한 경우입니다). 아래는 캐시를 사용한 내역입니다."
 
 #: gui/cachesettings.cpp:183
 #, fuzzy
 msgid "Covers"
-msgstr "표지:"
+msgstr "음반 표지"
 
 #: gui/cachesettings.cpp:184 gui/mainwindow.cpp:342
 #: gui/preferencesdialog.cpp:78
@@ -1132,7 +1136,7 @@ msgstr "음악 라이브러리"
 
 #: gui/coverdialog.cpp:127
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: gui/coverdialog.cpp:141
 #, fuzzy
@@ -1142,7 +1146,9 @@ msgctxt ""
 msgid ""
 "%1\n"
 "%2 x %3 (%4)"
-msgstr "%3에서 %2의 %1 (%4)"
+msgstr ""
+"%1\n"
+"%2 x %3 (%4)"
 
 #: gui/coverdialog.cpp:160
 msgctxt ""
@@ -1152,6 +1158,8 @@ msgid ""
 "Google\n"
 "%1 x %2 (%3)"
 msgstr ""
+"Google\n"
+"%1 x %2 (%3)"
 
 #: gui/coverdialog.cpp:213
 msgctxt ""
@@ -1161,26 +1169,30 @@ msgid ""
 "Current Cover\n"
 "%1 x %2"
 msgstr ""
+"지금의 표지\n"
+"%1 x %2"
 
 #: gui/coverdialog.cpp:231
 msgid "Image"
-msgstr ""
+msgstr "이미지"
 
 #: gui/coverdialog.cpp:234
 #, fuzzy
 msgid "Downloading..."
-msgstr "연결해제 중..."
+msgstr "연결 해제 중..."
 
 #: gui/coverdialog.cpp:279 gui/coverdialog.cpp:317
 msgctxt "Image (width x height zoom%)"
 msgid "Image (%1 x %2 %3%)"
-msgstr ""
+msgstr "이미지 (%1 x %2 %3%)"
 
 #: gui/coverdialog.cpp:406
 msgid ""
 "<p>A cover already exists for this album, and the file is not writeable.<p></"
 "p><i>%1</i></p>"
 msgstr ""
+"<p>이 음반의 표지가 이미 있는데, 쓰기가 되지 않습니다.<p></"
+"p><i>%1</i></p>"
 
 #: gui/coverdialog.cpp:410
 #, fuzzy
@@ -1193,31 +1205,33 @@ msgid ""
 "Failed to set cover!\n"
 "Could not daownload to temporary file!"
 msgstr ""
+"표지 설정에 실패함!\n"
+"임시 파일을 내려받을 수 없음!"
 
 #: gui/coverdialog.cpp:580
 msgid "Failed to download image!"
-msgstr ""
+msgstr "이미지를 내려받을 수 없음!"
 
 #: gui/coverdialog.cpp:738 gui/coverdialog.cpp:740
 msgid "Load Local Cover"
-msgstr ""
+msgstr "로컬 표지 읽음"
 
 #: gui/coverdialog.cpp:740
 msgid "Images (*.png *.jpg)"
-msgstr ""
+msgstr "이미지 (*.png *.jpg)"
 
 #: gui/coverdialog.cpp:745
 msgid "File is already in list!"
-msgstr ""
+msgstr "파일이 이미 목록에 존재함!"
 
 #: gui/coverdialog.cpp:749
 #, fuzzy
 msgid "Failed to read image!"
-msgstr "%1을 %2로 이름을 바꿀 수 없음"
+msgstr "이미지를 읽을 수 없음!"
 
 #: gui/coverdialog.cpp:762
 msgid "Display"
-msgstr ""
+msgstr "보이기"
 
 #. i18n: file: dynamic/dynamicrules.ui:63
 #. i18n: ectx: property (text), widget (QPushButton, removeBtn)
@@ -1230,20 +1244,24 @@ msgstr ""
 #: gui/coverdialog.cpp:763 gui/mainwindow.cpp:306 po/rc.cpp:204 po/rc.cpp:611
 #: rc.cpp:204 rc.cpp:611
 msgid "Remove"
-msgstr "삭제"
+msgstr "지우기"
 
 #: gui/coverdialog.cpp:1108
 msgid ""
 "Failed to set cover!\n"
 "Could not backup original!"
 msgstr ""
+"표지를 설정할 수 없음!\n"
+"원본을 백업할 수 없음!"
 
 #: gui/coverdialog.cpp:1139
 #, fuzzy
 msgid ""
 "Failed to set cover!\n"
 "Could not copy file to '%1'!"
-msgstr "이전 규정 파일을 삭제할 수 없음 - %1"
+msgstr ""
+"표지를 설정할 수 없음!\n"
+"'%1'에 복사할 수 없음!"
 
 #: gui/folderpage.cpp:50
 msgid "Open File Manager"
@@ -1331,7 +1349,7 @@ msgstr "'음반 연주자'로 묶음"
 
 #: gui/interfacesettings.cpp:85
 msgid "Grouped under 'Various Artists'"
-msgstr "'여러 아티스트'로 묶음"
+msgstr "'여러 연주자'로 묶음"
 
 #. i18n: file: gui/interfacesettings.ui:30
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
@@ -1341,15 +1359,15 @@ msgstr "라이브러리"
 
 #: gui/mainwindow.cpp:281
 msgid "Quit"
-msgstr "취소"
+msgstr "나가기"
 
 #: gui/mainwindow.cpp:285
 msgid "Show Window"
-msgstr "윈도 보이기"
+msgstr "창 보이기"
 
 #: gui/mainwindow.cpp:288
 msgid "Small Playback Buttons"
-msgstr "작은 연주 버튼"
+msgstr "작은 연주 단추"
 
 #. i18n: file: gui/initialsettingswizard.ui:232
 #. i18n: ectx: property (text), widget (QPushButton, connectButton)
@@ -1398,7 +1416,7 @@ msgstr "음량 내림"
 
 #: gui/mainwindow.cpp:299
 msgid "Add To Play Queue"
-msgstr "연주대기열에 추가"
+msgstr "연주순서에 추가"
 
 #: gui/mainwindow.cpp:300
 msgid "Add To Playlist"
@@ -1418,11 +1436,11 @@ msgstr "돌아가기"
 
 #: gui/mainwindow.cpp:307
 msgid "Replace Play Queue"
-msgstr "연주대기열 교체"
+msgstr "연주순서 교체"
 
 #: gui/mainwindow.cpp:308
 msgid "Remove From Play Queue"
-msgstr "연주대기열에서 제거"
+msgstr "연주순서에서 지움"
 
 #: gui/mainwindow.cpp:309
 msgid "Copy Track Info"
@@ -1444,11 +1462,11 @@ msgstr "다른 이름으로 저장"
 
 #: gui/mainwindow.cpp:313
 msgid "Clear"
-msgstr "정리"
+msgstr "지움"
 
 #: gui/mainwindow.cpp:314
 msgid "Expanded Interface"
-msgstr "확장 인터페이스"
+msgstr "넓게 보기"
 
 #: gui/mainwindow.cpp:315
 msgid "Random"
@@ -1478,7 +1496,7 @@ msgstr "소비"
 msgid ""
 "When consume is activated, a song is removed from the play queue after it "
 "has been played."
-msgstr "소비가 활성화되면, 곡은 연주 후에 연주대기열에서 없어집니다."
+msgstr "소비가 활성화되면, 곡은 연주 후에 연주순서에서 없어집니다."
 
 #: gui/mainwindow.cpp:319
 msgid "Add With Priority"
@@ -1536,7 +1554,7 @@ msgstr "곡 태그 수정"
 #. i18n: ectx: attribute (title), widget (QWidget, tab_5)
 #: gui/mainwindow.cpp:336 po/rc.cpp:407 rc.cpp:407
 msgid "Play Queue"
-msgstr "연주대기열"
+msgstr "연주순서"
 
 #. i18n: file: gui/interfacesettings.ui:205
 #. i18n: ectx: attribute (title), widget (QWidget, tab_6)
@@ -1567,7 +1585,7 @@ msgstr "전체 축소"
 #: gui/mainwindow.cpp:356
 #, fuzzy
 msgid "Set Cover"
-msgstr "표지:"
+msgstr "표지 설정"
 
 #: gui/mainwindow.cpp:492
 msgid "Auto Hide"
@@ -1575,7 +1593,7 @@ msgstr "자동 숨김"
 
 #: gui/mainwindow.cpp:514
 msgid "Search Play Queue..."
-msgstr "연주대기열 찾기..."
+msgstr "연주순서 찾기..."
 
 #: gui/mainwindow.cpp:592
 msgid "Configure Cantata..."
@@ -1623,7 +1641,7 @@ msgid ""
 "Drummond 2011-2012.<br/>Released under the GPLv2<br/><br/><i><small>Based "
 "upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>"
 msgstr ""
-"<b>칸타타 %1</b><br/><br/>단순한 그래픽인터페이스의 MPD 프론트엔드.<br/><br/>"
+"<b>칸타타 %1</b><br/><br/>단순한 그래픽 인터페이스의 MPD 프런트 엔드.<br/><br/>"
 "(c) Craig Drummond 2011-2012.<br/>GPLv2에 따라 배포<br/><br/><i><small>QtMPC "
 "기반 - (C) 2007-2010 QtMPC 개발자</small></i>"
 
@@ -1658,7 +1676,7 @@ msgstr "%1 - %2"
 
 #: gui/mainwindow.cpp:1881 gui/mainwindow.cpp:1882
 msgid "Volume Disabled"
-msgstr "음량사용 안 함"
+msgstr "음량 사용 안 함"
 
 #: gui/mainwindow.cpp:1886 gui/mainwindow.cpp:1887
 msgid "Volume %1%"
@@ -1681,19 +1699,19 @@ msgstr "우선순위 입력 (0..255)"
 
 #: gui/mainwindow.cpp:2105 gui/playlistspage.cpp:203
 msgid "Playlist Name"
-msgstr "연주목록명"
+msgstr "연주목록 이름"
 
 #: gui/mainwindow.cpp:2105 gui/playlistspage.cpp:203
 msgid "Enter a name for the playlist:"
-msgstr "연주목록명을 입력합니다:"
+msgstr "연주목록 이름을 입력합니다:"
 
 #: gui/mainwindow.cpp:2108
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
-msgstr "연주목록명 <b>%1</b>이 이미 존재합니다!<br/>연주목록에 추가할까요?"
+msgstr "연주목록 이름 <b>%1</b>이 이미 존재합니다!<br/>연주목록에 추가할까요?"
 
 #: gui/mainwindow.cpp:2109
 msgid "Existing Playlist"
-msgstr "존재하는 연주목록"
+msgstr "이미 있는 연주목록"
 
 #: gui/mainwindow.cpp:2188 models/albumsmodel.cpp:238
 #: models/devicesmodel.cpp:215 models/devicesmodel.cpp:258
@@ -1722,7 +1740,7 @@ msgstr "연주목록을 덮어쓸까요?"
 
 #: gui/playlistspage.cpp:225
 msgid "Rename Playlist"
-msgstr "연주목록명 바꾸기"
+msgstr "연주목록 이름 바꾸기"
 
 #: gui/playlistspage.cpp:225
 msgid "Enter new name for playlist:"
@@ -1792,11 +1810,11 @@ msgstr "키보드 단축키 설정"
 
 #: gui/preferencesdialog.cpp:89
 msgid "Cache"
-msgstr ""
+msgstr "캐시"
 
 #: gui/preferencesdialog.cpp:89
 msgid "Cached Items"
-msgstr ""
+msgstr "캐시 항목"
 
 #: gui/preferencesdialog.cpp:91
 msgid "Configure"
@@ -1890,19 +1908,19 @@ msgstr ""
 
 #: gui/serversettings.cpp:163
 msgid "Enter name for settings:"
-msgstr "설정명을 입력합니다:"
+msgstr "설정 이름을 입력합니다:"
 
 #: gui/serversettings.cpp:178
 msgid ""
 "A setting named %1 already exists!\n"
 "Overwrite?"
 msgstr ""
-"설정명 %1은 이미 존재합니다!\n"
+"설정 이름 %1은 이미 존재합니다!\n"
 "덮어쓸까요?"
 
 #: gui/serversettings.cpp:216
 msgid "Delete %1?"
-msgstr "%1을 삭제할까요?"
+msgstr "%1을 지울까요?"
 
 #: gui/serversettings.cpp:235
 msgid "Disconnect"
@@ -1986,35 +2004,35 @@ msgstr "<b>%1</b>을 생성할 수 없습니다!"
 
 #: gui/streamspage.cpp:225
 msgid "Stream already exists!<br/><b>%1</b>"
-msgstr "이미 존재하는 스트림! <br/><b>%1</b>"
+msgstr "이미 있는 스트림! <br/><b>%1</b>"
 
 #: gui/streamspage.cpp:230
 msgid "A stream named <b>%1</b> already exists!"
-msgstr "스트림 <b>%1</b>은 이미 존재합니다!"
+msgstr "스트림 <b>%1</b>은 이미 있습니다!"
 
 #: gui/streamspage.cpp:247
 msgid "Are you sure you wish to remove the %1 selected streams?"
-msgstr "선택된 스트림 %1을 삭제할까요?"
+msgstr "선택된 스트림 %1을 지울까요?"
 
 #: gui/streamspage.cpp:248
 msgid "Are you sure you wish to remove <b>%1</b>?"
-msgstr "<b>%1</b>을 삭제할까요?"
+msgstr "<b>%1</b>을 지울까요?"
 
 #: gui/streamspage.cpp:249
 msgid "Remove Streams?"
-msgstr "스트림들을 삭제할까요?"
+msgstr "스트림들을 지울까요?"
 
 #: gui/streamspage.cpp:249
 msgid "Remove Stream?"
-msgstr "스트림을 삭제할까요?"
+msgstr "스트림을 지울까요?"
 
 #: gui/streamspage.cpp:331
 msgid "Stream already exists!<br/><b>%1 (%2)</b>"
-msgstr "스트림은 이미 존재합니다!<br/><b>%1 (%2)</b>"
+msgstr "스트림은 이미 있습니다!<br/><b>%1 (%2)</b>"
 
 #: gui/streamspage.cpp:333
 msgid "A stream named <b>%1 (%2)</b> already exists!"
-msgstr "<b>%1 (%2)</b> 스트림은 이미 존재합니다!"
+msgstr "<b>%1 (%2)</b> 스트림은 이미 있습니다!"
 
 #. i18n: file: gui/interfacesettings.ui:466
 #. i18n: ectx: attribute (title), widget (QWidget, tab_4)
@@ -2052,7 +2070,7 @@ msgstr "\"여러 연주자\" 해결 되돌리기"
 
 #: gui/tageditor.cpp:149
 msgid "Set 'Album Artist' from 'Artist'"
-msgstr ""
+msgstr "'연주자'에서 '음반 연주자' 설정"
 
 #: gui/tageditor.cpp:150
 msgid "Capitalize"
@@ -2104,7 +2122,7 @@ msgid ""
 msgstr ""
 "<i>'음반 연주자'가 \"곡연주자 - 곡제목\" 형태의 '연주자'와 '제목'이 같다면, "
 "'연주자'는 '제목'으로부터 나오고 '제목' 자체는 제목으로 설정됩니다. 예로 <br/"
-"><br/>'제목'이 \"유재하 - 내 마음에 비친 내 모습\"이고 '아티스트'가 \"유재하"
+"><br/>'제목'이 \"유재하 - 내 마음에 비친 내 모습\"이고 '연주자'가 \"유재하"
 "\"로 설정되면, '제목'은 \"내 마음에 비친 내 모습\"이 됩니다.</i>"
 
 #: gui/tageditor.cpp:419
@@ -2114,7 +2132,7 @@ msgstr "\"여러 연주자\" 해결을 <b>전</b>곡에 적용할까요?"
 
 #: gui/tageditor.cpp:420
 msgid "Set 'Album Artist' from 'Artist'?"
-msgstr ""
+msgstr "'연주자'에서 '음반 연주자'를 설정할까요?"
 
 #: gui/tageditor.cpp:449
 msgid ""
@@ -2173,7 +2191,7 @@ msgstr ""
 "색을 입력하시기 바랍니다. 예로 지금 곡이 리메이크라면 원곡의 가사를 찾는 것"
 "이 도움이 될 수 있습니다.\n"
 "\n"
-"만약 이 검색이 새로운 가사를 찾는다면, 원곡명이나 아티스트와 여전히 연관이 있"
+"만약 이 검색이 새로운 가사를 찾는다면, 원곡명이나 연주자와 여전히 연관이 있"
 "을 수 있습니다."
 
 #. i18n: file: dynamic/dynamicrule.ui:67
@@ -2228,7 +2246,7 @@ msgstr "가사 수정 취소"
 
 #: lyrics/lyricspage.cpp:91
 msgid "Delete Lyrics File"
-msgstr "가사 파일 삭제"
+msgstr "가사 파일 지움"
 
 #: lyrics/lyricspage.cpp:151 lyrics/lyricspage.cpp:168
 #: lyrics/lyricspage.cpp:224
@@ -2237,7 +2255,7 @@ msgstr "가사 수정을 취소할까요?"
 
 #: lyrics/lyricspage.cpp:153
 msgid "Delete saved copy of lyrics, and re-download?"
-msgstr "저장된 가사를 삭제하고 새로 받을까요?"
+msgstr "저장된 가사를 지우고 새로 받을까요?"
 
 #: lyrics/lyricspage.cpp:177
 msgid "Current playing song has changed, still perform search?"
@@ -2253,7 +2271,7 @@ msgstr "가사 저장할 수 없음"
 
 #: lyrics/lyricspage.cpp:234
 msgid "Delete lyrics file?"
-msgstr "가사를 삭제할까요?"
+msgstr "가사를 지울까요?"
 
 #: lyrics/lyricspage.cpp:400
 msgctxt ""
@@ -2264,7 +2282,7 @@ msgid ""
 "Fetching lyrics via %3"
 msgstr ""
 "%2의 %1\n"
-"%3에서 가사 가져옴"
+"%3에서 가사를 가져옴"
 
 #: lyrics/lyricspage.cpp:406
 msgctxt ""
@@ -2275,7 +2293,7 @@ msgid ""
 "Failed to fetch lyrics"
 msgstr ""
 "%2의 %1\n"
-"가사 가져올 수 없음"
+"가사를 가져올 수 없음"
 
 #: lyrics/lyricspage.cpp:431
 msgctxt "title, by artist"
@@ -2669,6 +2687,7 @@ msgid ""
 "<i><b>NOTE:</b> These settings are only valid, and editable, when the device "
 "is connected.</i>"
 msgstr ""
+"<i><b>참고:</b> 이 설정은 장치가 연결되었을 때에만 유효하고 수정할 수 있습니다.</i>"
 
 #. i18n: file: devices/devicepropertieswidget.ui:35
 #. i18n: ectx: property (text), widget (BuddyLabel, musicFolderLabel)
@@ -2715,7 +2734,7 @@ msgstr "연결되면 자동으로 음악 검색:"
 #. i18n: ectx: property (text), widget (BuddyLabel, useCacheLabel)
 #: po/rc.cpp:48 rc.cpp:48
 msgid "Use cache:"
-msgstr "캐쉬 사용:"
+msgstr "캐시 사용:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:123
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
@@ -2856,6 +2875,7 @@ msgid ""
 "<i><b>NOTE:</b> These settings are only editable when the device is not "
 "connected.</i>"
 msgstr ""
+"<i><b>참고:</b> 이 설정은 장치가 연결되지 않았을 때에만 수정할 수 있습니다.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:32
 #. i18n: ectx: property (text), widget (BuddyLabel, typeLabel)
@@ -2916,7 +2936,7 @@ msgstr "사용자:"
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: po/rc.cpp:129 rc.cpp:129
 msgid "Domain:"
-msgstr ""
+msgstr "도메인:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:131
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -2943,7 +2963,7 @@ msgstr "비밀번호:"
 #. i18n: ectx: property (text), widget (BuddyLabel, folderLabel_2)
 #: po/rc.cpp:135 rc.cpp:135
 msgid "Share:"
-msgstr ""
+msgstr "공유:"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:159
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -2953,6 +2973,8 @@ msgid ""
 "<b>unencrypted</b> in Cantata's config file. To have Cantata prompt for the "
 "password before accessing the share, set the password to '-'</i>"
 msgstr ""
+"<i><b>참고:</b> 여기에 비밀번호를 입력하면, 설정 파일에 <b>비암호</b>되어 저장됩니다."
+"공유에 접근하기 전에 비밀번호를 입력하려면, 비밀번호를 '-'로 설정합니다.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:231
 #. i18n: ectx: property (text), widget (BuddyLabel, folderLabel)
@@ -2974,6 +2996,8 @@ msgid ""
 "application (ksshaskpass, ssh-askpass-gnome, etc.) will be required to enter "
 "the password..</i>"
 msgstr ""
+"<i><b>참고:</b> sshfs의 작동 원리에 따라, 적당한 ssh-askpass 응용프로그램"
+"(ksshaskpass, ssh-askpass-gnome, 등.)이 비밀번호 입력을 위해 필요합니다.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:299
 #. i18n: ectx: property (text), widget (QLabel, infoLabel)
@@ -3102,13 +3126,13 @@ msgstr "<i><b>참고</b> 찾고자 하는 태그값만 입력합니다. </i>"
 #. i18n: ectx: property (toolTip), widget (QToolButton, cancelButton)
 #: po/rc.cpp:264 rc.cpp:264
 msgid "<html><head/><body><p>Cancel current query</p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p>지금의 조회를 취소</p></body></html>"
 
 #. i18n: file: gui/coverdialog.ui:40
 #. i18n: ectx: property (toolTip), widget (QToolButton, addFileButton)
 #: po/rc.cpp:270 rc.cpp:270
 msgid "<html><head/><body><p>Add a local file</p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p>로컬 파일에 추가</p></body></html>"
 
 #. i18n: file: gui/httpserversettings.ui:25
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
@@ -3120,7 +3144,7 @@ msgstr "HTTP 서버 사용:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
 #: po/rc.cpp:279 rc.cpp:279
 msgid "Always use server:"
-msgstr "항상 서버 사용:"
+msgstr "서버 항상 사용:"
 
 #. i18n: file: gui/httpserversettings.ui:79
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5)
@@ -3160,7 +3184,7 @@ msgstr ""
 #. i18n: ectx: property (windowTitle), widget (QWizard, InitialSettingsWizard)
 #: po/rc.cpp:292 rc.cpp:292
 msgid "Wizard"
-msgstr ""
+msgstr "마법사"
 
 #. i18n: file: gui/initialsettingswizard.ui:27
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -3181,6 +3205,13 @@ msgid ""
 "underline; color:#0000ff;\">http://mpd.wikia.com</span></a></p><p><br/></p></"
 "body></html>"
 msgstr ""
+"<html><head/><body><p>칸타타는 Music Player Daemon (MPD)의 클라이언트 입니다."
+" 제대로 실행이 되기 위해서는 미리 MPD를 설치하고 설정해서 로컬이나 접근 가능한 "
+"장치에서 실행이 되어야만 합니다. </p><p>MPD에 대한 더 많은 정보는, 다음의 "
+"MPD 웹사이트를 참조 바랍니다. "
+"<a href=\"http://mpd.wikia.com\"><span style=\" text-decoration: "
+"underline; color:#0000ff;\">http://mpd.wikia.com</span></a></p><p><br/></p></"
+"body></html>"
 
 #. i18n: file: gui/initialsettingswizard.ui:83
 #. i18n: ectx: property (text), widget (QLabel, label_3)
@@ -3196,6 +3227,8 @@ msgid ""
 "The settings below are the basic settings required by Cantata. Please enter "
 "the relevant details, and use the \"Connect\" button to test the connection."
 msgstr ""
+"아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세 정보를 입려해 주시고,"
+"연결해 보려면 \"연결\" 단추를 누릅니다."
 
 #. i18n: file: gui/initialsettingswizard.ui:132
 #. i18n: ectx: property (text), widget (BuddyLabel, hostLabel)
@@ -3213,7 +3246,7 @@ msgstr "호스트 (또는 로컬 소켓):"
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: po/rc.cpp:319 rc.cpp:319
 msgid "Status:"
-msgstr ""
+msgstr "상태:"
 
 #. i18n: file: gui/initialsettingswizard.ui:257
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
@@ -3248,7 +3281,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: po/rc.cpp:331 rc.cpp:331
 msgid "Finished!"
-msgstr ""
+msgstr "완료!"
 
 #. i18n: file: gui/initialsettingswizard.ui:339
 #. i18n: ectx: property (text), widget (QLabel, label_5)
@@ -3259,6 +3292,8 @@ msgid ""
 "accessed from the menu triggered by the button in the top-right of Cantata's "
 "main window."
 msgstr ""
+"칸타타가 MPD에 연결되었습니다! MPD 서버를 더하는 등의 추가 설정을 하려면, "
+"주화면의 오른쪽 위에 있는 칸타타 설정을 선택하면 대화 상자가 나옵니다."
 
 #. i18n: file: gui/initialsettingswizard.ui:374
 #. i18n: ectx: property (text), widget (QLabel, groupWarningLabel)
@@ -3416,7 +3451,7 @@ msgstr "지금 곡으로 이동:"
 #. i18n: ectx: property (text), item, widget (QComboBox, playQueueGrouped)
 #: po/rc.cpp:416 rc.cpp:416
 msgid "Table"
-msgstr "목록으로 나열"
+msgstr "테이블"
 
 #. i18n: file: gui/interfacesettings.ui:357
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueAutoExpandLabel)
@@ -3470,7 +3505,7 @@ msgstr "여러 연주자 음반:"
 #. i18n: ectx: property (text), widget (BuddyLabel, showDeleteActionLabel)
 #: po/rc.cpp:452 rc.cpp:452
 msgid "Show delete action in context menus:"
-msgstr "메뉴에 삭제 보임:"
+msgstr "메뉴에 지우기 보임:"
 
 #. i18n: file: gui/interfacesettings.ui:524
 #. i18n: ectx: property (text), widget (BuddyLabel, storeCoversInMpdDirLabel)
@@ -3914,7 +3949,7 @@ msgstr "비밀번호:"
 
 #: support/inputdialog.h:54
 msgid "Please enter password:"
-msgstr ""
+msgstr "비밀번호를 입력합니다:"
 
 #: support/messagebox.cpp:43 support/messagebox.cpp:49
 msgid "Warning"
@@ -3934,11 +3969,11 @@ msgstr "정보"
 
 #: support/onoffbutton.cpp:47
 msgid "ON"
-msgstr "켬"
+msgstr "켜기"
 
 #: support/onoffbutton.cpp:48
 msgid "OFF"
-msgstr "끔"
+msgstr "끄기"
 
 #: support/utils.cpp:265 support/utils.cpp:273
 msgid "%1 B"
@@ -3946,7 +3981,7 @@ msgstr "%1 B"
 
 #: support/utils.cpp:266
 msgid "%1 kB"
-msgstr ""
+msgstr "%1 kB"
 
 #: support/utils.cpp:267
 #, fuzzy
@@ -4080,7 +4115,7 @@ msgstr "%1 규정"
 #~ msgstr "음악 폴더 선택"
 
 #~ msgid "Small Control Buttons"
-#~ msgstr "작은 컨트롤 버튼"
+#~ msgstr "작은 컨트롤 단추"
 
 #~ msgid "External Settings"
 #~ msgstr "외부 설정"

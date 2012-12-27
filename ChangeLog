@@ -39,7 +39,7 @@
 21. Recolour repeat and shuffle icons to use button text colour - this is so
     that they always match consume and single icons.
 22. Re-enable animation when showing messagewidget, for Qt-only builds and
-    KDE builds prior to KDE4.9.4
+    for non 4.9.4 KDE builds.
 
 0.9.2
 -----

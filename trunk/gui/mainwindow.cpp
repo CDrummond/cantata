@@ -441,10 +441,6 @@ MainWindow::MainWindow(QWidget *parent)
     }
     setVisible(true);
     initSizes();
-    if (Settings::self()->startHidden()) {
-        setVisible(false);
-        setAttribute(Qt::WA_DontShowOnScreen, false);
-    }
 
     savePlayQueuePushButton->setDefaultAction(savePlayQueueAction);
     removeAllFromPlayQueuePushButton->setDefaultAction(clearPlayQueueAction);
@@ -837,6 +833,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(coverWidget, SIGNAL(coverFile(const QString &)), mpris, SLOT(updateCurrentCover(const QString &)));
     #endif
     ActionCollection::get()->readSettings();
+
+    if (Settings::self()->startHidden()) {
+        setVisible(false);
+        setAttribute(Qt::WA_DontShowOnScreen, false);
+    }
 }
 
 MainWindow::~MainWindow()

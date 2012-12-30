@@ -4,6 +4,7 @@
 2. Fix 'Locate In Library' when library is not set to tree mode.
 3. Use grid layout for transcoder slider, removes Qt layout warning.
 4. Simplified Chinese translation - thanks to 薛景
+5. Fix restoring of splitter sizes when we start minimized to system tray.
 
 0.9.1
 -----

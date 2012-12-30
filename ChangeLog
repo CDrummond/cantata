@@ -40,6 +40,7 @@
     that they always match consume and single icons.
 22. Re-enable animation when showing messagewidget, for Qt-only builds and
     for non 4.9.4 KDE builds.
+23. Slightly speed up playqueue searches.
 
 0.9.2
 -----

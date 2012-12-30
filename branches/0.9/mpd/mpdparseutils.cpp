@@ -163,7 +163,6 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
     QStringList tokens;
     QString element;
     QString value;
-    QString albumartist;
 
     int amountOfLines = lines.size();
 
@@ -216,6 +215,15 @@ Song MPDParseUtils::parseSong(const QByteArray &data)
         song.genre = i18n("Unknown");
     }
 
+    #ifdef TAGLIB_FOUND
+    if (song.isCantataStream()) {
+        Song mod=HttpServer::self()->decodeUrl(song.file);
+        if (!mod.title.isEmpty()) {
+            mod.id=song.id;
+            song=mod;
+        }
+    }
+    #endif
     return song;
 }
 
@@ -235,16 +243,6 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
         line += "\n";
         if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:")) {
             Song song=parseSong(line);
-
-            #ifdef TAGLIB_FOUND
-            if (song.isCantataStream()) {
-                Song mod=HttpServer::self()->decodeUrl(song.file);
-                if (!mod.title.isEmpty()) {
-                    mod.id=song.id;
-                    song=mod;
-                }
-            }
-            #endif
 
             song.setKey();
             songs.append(song);

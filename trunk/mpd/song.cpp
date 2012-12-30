@@ -25,6 +25,7 @@
  */
 
 #include <cmath>
+#include "config.h"
 #include "song.h"
 #include "mpdparseutils.h"
 #include "musiclibraryitemalbum.h"

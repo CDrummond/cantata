@@ -25,6 +25,7 @@
  */
 
 #include <cmath>
+#include "config.h"
 #include "song.h"
 #include "mpdparseutils.h"
 #include "musiclibraryitemalbum.h"
@@ -170,7 +171,6 @@ void Song::fillEmptyFields()
     }
 }
 
-#include <QtCore/QDebug>
 void Song::setKey()
 {
     static quint16 currentKey=0;

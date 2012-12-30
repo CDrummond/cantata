@@ -66,6 +66,7 @@ public:
     bool isAutoExpand() const { return autoExpand; }
     void setStartClosed(bool sc);
     bool isStartClosed() const { return startClosed; }
+    void setMultiLevel(bool ml) { isMultiLevel=ml; }
     void updateRows(qint32 row, bool scroll, const QModelIndex &parent=QModelIndex());
     void updateCollectionRows();
     bool isCurrentAlbum(quint16 key) const { return key==currentAlbum; }
@@ -91,6 +92,7 @@ private:
     bool startClosed;
     bool autoExpand;
     bool filterActive;
+    bool isMultiLevel;
     quint16 currentAlbum;
     QMap<quint32, QSet<quint16> > controlledAlbums;
 };

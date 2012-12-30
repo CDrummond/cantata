@@ -44,22 +44,22 @@ bool ProxyModel::matchesFilter(const QStringList &strings) const
     uint ums = unmatchedStrings;
     int numStrings = filterStrings.count();
 
-    foreach (const QString &str, strings) {
-        QString candidate = str.simplified();
+    foreach (const QString &candidate /*str*/, strings) {
+//        QString candidate = str.simplified();
 
-        for (int i = 0; i < candidate.size(); ++i) {
-            if (candidate.at(i).decompositionTag() != QChar::NoDecomposition) {
-                candidate[i] = candidate[i].decomposition().at(0);
-            }
-        }
+//        for (int i = 0; i < candidate.size(); ++i) {
+//            if (candidate.at(i).decompositionTag() != QChar::NoDecomposition) {
+//                candidate[i] = candidate[i].decomposition().at(0);
+//            }
+//        }
 
         for (int i = 0; i < numStrings; ++i) {
             if (candidate.contains(filterStrings.at(i), Qt::CaseInsensitive)) {
                 ums &= ~(1<<i);
+                if (0==ums) {
+                    return true;
+                }
             }
-        }
-        if (0==ums) {
-            return true;
         }
     }
 
@@ -80,10 +80,11 @@ bool ProxyModel::update(const QString &text, const QString &genre)
             bool wasEmpty=isEmpty();
             filterEnabled=false;
             filterGenre=genre;
+            if (!wasEmpty) {
+                invalidate();
+            }
             if (!filterRegExp().isEmpty()) {
                 setFilterRegExp(QString());
-            } else if (!wasEmpty) {
-                invalidate();
             }
             return true;
         }

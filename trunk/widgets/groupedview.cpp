@@ -406,6 +406,7 @@ GroupedView::GroupedView(QWidget *parent)
     , startClosed(true)
     , autoExpand(true)
     , filterActive(false)
+    , isMultiLevel(false)
     , currentAlbum(Song::constNullKey)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -440,11 +441,13 @@ void GroupedView::setFilterActive(bool f)
         quint32 count=model()->rowCount();
         for (quint32 i=0; i<count; ++i) {
             setRowHidden(i, QModelIndex(), false);
-            QModelIndex idx=model()->index(i, 0);
-            if (model()->hasChildren(idx)) {
-                quint32 childCount=model()->rowCount(idx);
-                for (quint32 c=0; c<childCount; ++c) {
-                    setRowHidden(c, idx, false);
+            if (isMultiLevel) {
+                QModelIndex idx=model()->index(i, 0);
+                if (model()->hasChildren(idx)) {
+                    quint32 childCount=model()->rowCount(idx);
+                    for (quint32 c=0; c<childCount; ++c) {
+                        setRowHidden(c, idx, false);
+                    }
                 }
             }
         }
@@ -653,7 +656,7 @@ void GroupedView::coverRetrieved(const Song &s)
         if (!index.isValid()) {
             continue;
         }
-        if (model()->hasChildren(index)) {
+        if (isMultiLevel && model()->hasChildren(index)) {
             quint32 childCount=model()->rowCount(index);
             for (quint32 c=0; c<childCount; ++c) {
                 QModelIndex child=model()->index(i, 0, index);

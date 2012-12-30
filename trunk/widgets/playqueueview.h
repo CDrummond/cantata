@@ -70,6 +70,7 @@ public:
     }
     void saveHeader();
     void setGrouped(bool g);
+    bool isGrouped() const { return currentWidget()==(QWidget *)groupedView; }
     void setAutoExpand(bool ae);
     bool isAutoExpand() const;
     void setStartClosed(bool sc);

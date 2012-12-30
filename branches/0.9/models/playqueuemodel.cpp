@@ -56,9 +56,9 @@ static QStringList reverseList(const QStringList &orig)
 }
 
 #ifdef TAGLIB_FOUND
-static QString unencodeUrl(QString u)
+static inline QString unencodeUrl(QString u)
 {
-    return u.replace("%20", " ").replace("%5C", "\\");
+    return QUrl(u).path();
 }
 #endif
 

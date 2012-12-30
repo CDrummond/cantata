@@ -56,9 +56,9 @@ static QStringList reverseList(const QStringList &orig)
 }
 
 #ifdef TAGLIB_FOUND
-static QString unencodeUrl(QString u)
+static inline QString unencodeUrl(QString u)
 {
-    return u.replace("%20", " ").replace("%5C", "\\");
+    return QUrl(u).path();
 }
 #endif
 
@@ -508,8 +508,8 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         foreach (QString u, orig) {
             if (u.startsWith("http://")) {
                 useable.append(u);
-            } else if (allowLocal && (u.startsWith('/') || u.startsWith("file:///"))) {
-                if (u.startsWith("file://")) {
+            } else if (allowLocal && (u.startsWith('/') || u.startsWith("file:/"))) {
+                if (u.startsWith("file:/")) {
                     u=u.mid(7);
                 }
                 if (alwaysUseHttp || !mpdLocal) {

@@ -171,7 +171,6 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
         element = tokens.takeFirst();
         value = tokens.join(":");
         value = value.trimmed();
-
         if (element == QLatin1String("file")) {
             song.file = value;
         } else if (element == QLatin1String("Time") ){
@@ -215,6 +214,16 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
         song.genre = i18n("Unknown");
     }
 
+    #ifdef TAGLIB_FOUND
+    if (song.isCantataStream()) {
+        Song mod=HttpServer::self()->decodeUrl(song.file);
+        if (!mod.title.isEmpty()) {
+            mod.id=song.id;
+            song=mod;
+        }
+    }
+    #endif
+
     if (isPlayQueue) {
         song.guessTags();
         song.fillEmptyFields();
@@ -239,16 +248,6 @@ QList<Song> MPDParseUtils::parseSongs(const QByteArray &data)
         line += "\n";
         if (i == lines.size() - 1 || lines.at(i + 1).startsWith("file:")) {
             Song song=parseSong(line, true);
-
-            #ifdef TAGLIB_FOUND
-            if (song.isCantataStream()) {
-                Song mod=HttpServer::self()->decodeUrl(song.file);
-                if (!mod.title.isEmpty()) {
-                    mod.id=song.id;
-                    song=mod;
-                }
-            }
-            #endif
             songs.append(song);
             line.clear();
         }

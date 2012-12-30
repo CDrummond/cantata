@@ -132,7 +132,7 @@ PlayQueueModel::~PlayQueueModel()
 
 QModelIndex PlayQueueModel::index(int row, int column, const QModelIndex &parent) const
 {
-    return hasIndex(row, column, parent) ? createIndex(row, column, 0) : QModelIndex();
+    return hasIndex(row, column, parent) ? createIndex(row, column, (void *)&songs.at(row)) : QModelIndex();
 }
 
 QModelIndex PlayQueueModel::parent(const QModelIndex &idx) const

@@ -225,19 +225,21 @@ bool PlayQueueView::isStartClosed() const
 
 void PlayQueueView::setFilterActive(bool f)
 {
-    groupedView->setFilterActive(f);
+    if (isGrouped()) {
+        groupedView->setFilterActive(f);
+    }
 }
 
 void PlayQueueView::updateRows(qint32 row, bool scroll)
 {
-    if (currentWidget()==groupedView) {
+    if (isGrouped()) {
         groupedView->updateRows(row, scroll);
     }
 }
 
 void PlayQueueView::scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint)
 {
-    if (currentWidget()==groupedView && !groupedView->isFilterActive()) {
+    if (isGrouped() && !groupedView->isFilterActive()) {
         return;
     }
     if (MPDState_Playing==MPDStatus::self()->state()) {
@@ -248,7 +250,7 @@ void PlayQueueView::scrollTo(const QModelIndex &index, QAbstractItemView::Scroll
 
 void PlayQueueView::setModel(QAbstractItemModel *m)
 {
-    if (currentWidget()==groupedView) {
+    if (isGrouped()) {
         groupedView->setModel(m);
     } else {
         treeView->setModel(m);
@@ -273,7 +275,7 @@ bool PlayQueueView::hasFocus()
 
 QAbstractItemModel * PlayQueueView::model()
 {
-    return currentWidget()==groupedView ? groupedView->model() : treeView->model();
+    return isGrouped() ? groupedView->model() : treeView->model();
 }
 
 void PlayQueueView::setContextMenuPolicy(Qt::ContextMenuPolicy policy)
@@ -284,17 +286,17 @@ void PlayQueueView::setContextMenuPolicy(Qt::ContextMenuPolicy policy)
 
 bool PlayQueueView::haveUnSelectedItems()
 {
-    return currentWidget()==groupedView ? groupedView->haveUnSelectedItems() : treeView->haveUnSelectedItems();
+    return isGrouped() ? groupedView->haveUnSelectedItems() : treeView->haveUnSelectedItems();
 }
 
 QItemSelectionModel * PlayQueueView::selectionModel() const
 {
-    return currentWidget()==groupedView ? groupedView->selectionModel() : treeView->selectionModel();
+    return isGrouped() ? groupedView->selectionModel() : treeView->selectionModel();
 }
 
 void PlayQueueView::setCurrentIndex(const QModelIndex &index)
 {
-    if (currentWidget()==groupedView) {
+    if (isGrouped()) {
         groupedView->setCurrentIndex(index);
     } else {
         treeView->setCurrentIndex(index);
@@ -318,7 +320,7 @@ QAbstractItemView * PlayQueueView::list()
 
 bool PlayQueueView::hasFocus() const
 {
-    return currentWidget()==groupedView ? groupedView->hasFocus() : treeView->hasFocus();
+    return isGrouped() ? groupedView->hasFocus() : treeView->hasFocus();
 }
 
 QModelIndexList PlayQueueView::selectedIndexes() const

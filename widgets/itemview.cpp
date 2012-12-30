@@ -439,6 +439,7 @@ void ItemView::allowGroupedView()
     if (!groupedView) {
         groupedView=new GroupedView(stackedWidget);
         groupedView->setAutoExpand(false);
+        groupedView->setMultiLevel(true);
         treeLayout->addWidget(groupedView);
         connect(groupedView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
         if (SINGLE_CLICK) {

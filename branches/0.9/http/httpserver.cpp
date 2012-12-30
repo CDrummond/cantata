@@ -187,8 +187,13 @@ Song HttpServer::decodeUrl(const QString &url) const
         if (u.hasQueryItem("track")) {
             s.track=u.queryItemValue("track").toInt();
         }
-        s.file=url;
+        if (u.hasQueryItem("file")) {
+            s.file=u.queryItemValue("file");
+        } else {
+            s.file=u.path();
+        }
     }
 
     return s;
 }
+

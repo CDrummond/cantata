@@ -251,6 +251,8 @@ MainWindow::MainWindow(QWidget *parent)
     , phononStream(0)
     #endif
 {
+    QPoint p=pos();
+
     ActionCollection::setMainWidget(this);
     trayItem=new TrayItem(this);
 
@@ -841,6 +843,10 @@ MainWindow::MainWindow(QWidget *parent)
     if (Settings::self()->startHidden()) {
         setVisible(false);
         setAttribute(Qt::WA_DontShowOnScreen, false);
+    } else if (testAttribute(Qt::WA_TranslucentBackground)) {
+        // Work-around non-showing main window on start-up with transparent QtCurve windows.
+        // BUG: 146
+        move(p.isNull() ? QPoint(0, 0) : p);
     }
 }
 

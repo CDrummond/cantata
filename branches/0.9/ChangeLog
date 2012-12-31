@@ -6,6 +6,8 @@
 4. Simplified Chinese translation - thanks to 薛景
 5. Fix restoring of splitter sizes when we start minimized to system tray.
 6. Fix decoding of Cantata HTTP stream URLs.
+7. Work-around issue of non display of main window when using transparent
+   QtCurve theme.
 
 0.9.1
 -----

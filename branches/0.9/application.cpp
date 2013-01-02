@@ -69,6 +69,13 @@ Application::~Application() {
 }
 
 int Application::newInstance() {
+    static bool in=false;
+    if (in) {
+        return 0;
+    } else {
+        in=true;
+    }
+
     if (w) {
         if (!w->isVisible()) {
             w->showNormal();
@@ -99,6 +106,7 @@ int Application::newInstance() {
     }
     #endif
     KStartupInfo::appStarted(startupId());
+    in=false;
     return 0;
 }
 

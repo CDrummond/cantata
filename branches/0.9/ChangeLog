@@ -10,6 +10,8 @@
    QtCurve theme.
 8. Fix playing of FLAC files external to MPD database via Cantata's simple HTTP
    server.
+9. Prevent multiple KDE Cantata windows appearing if app is attempted to be
+   started repeatedly in quick succession.
 
 0.9.1
 -----

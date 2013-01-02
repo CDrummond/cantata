@@ -21,6 +21,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "config.h"
 #include "httpsocket.h"
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QNetworkInterface>
@@ -28,6 +29,67 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KMimeType>
+#else
+#include <QtCore/QFileInfo>
+#ifdef TAGLIB_FOUND
+#include <taglib/oggflacfile.h>
+#include <taglib/vorbisfile.h>
+#include <taglib/audioproperties.h>
+#endif
+#endif
+
+static QString detectMimeType(const QString &file)
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return KMimeType::findByPath(file)->name();
+    #else
+    QString suffix = QFileInfo(file).suffix();
+    if (suffix == QLatin1String("mp3")) {
+        return "audio/mpeg";
+    }
+    #ifdef TAGLIB_FOUND
+    if (suffix == QLatin1String("ogg")) {
+        #ifdef Q_OS_WIN32
+        const wchar_t *encodedName = reinterpret_cast< const wchar_t * >(file.utf16());
+        #elif defined COMPLEX_TAGLIB_FILENAME
+        const wchar_t *encodedName = reinterpret_cast< const wchar_t * >(file.utf16());
+        #else
+        QByteArray fileName = QFile::encodeName(file);
+        const char *encodedName = fileName.constData(); // valid as long as fileName exists
+        #endif
+
+        QString mime;
+        TagLib::File *result = new TagLib::Ogg::Vorbis::File(encodedName, false, TagLib::AudioProperties::Fast);
+        if (result->isValid()) {
+            mime="audio/x-vorbis+ogg";
+        }
+        delete result;
+        if (mime.isEmpty()) {
+            result = new TagLib::Ogg::FLAC::File(encodedName, false, TagLib::AudioProperties::Fast);
+            if (result->isValid()) {
+                mime="audio/x-flac+ogg";
+            }
+            delete result;
+        }
+        return mime;
+    }
+    #endif
+    else if (suffix == QLatin1String("flac")) {
+        return "audio/x-flac";
+    } else if (suffix == QLatin1String("wma")) {
+        return "audio/x-ms-wma";
+    }
+    else if (suffix == QLatin1String("m4a") || suffix == QLatin1String("m4b") || suffix == QLatin1String("m4p") || suffix == QLatin1String("mp4")) {
+         return "audio/mp4";
+    }
+    else if (suffix == QLatin1String("wav")) {
+        return "audio/x-wav";
+    }
+    #endif
+    return QString();
+}
 
 // static int level(const QString &s)
 // {
@@ -115,15 +177,47 @@ void HttpSocket::readClient()
                 QFile f(url.path());
 
                 if (f.open(QIODevice::ReadOnly)) {
+                    QString mimeType=detectMimeType(url.path());
+                    if (!mimeType.isEmpty()) {
+                        QTextStream os(socket);
+                        os.setAutoDetectUnicode(true);
+                        os << "HTTP/1.0 200 OK\r\nContent-Type: " << mimeType << "\r\n\r\n";
+                    }
+
                     ok=true;
-                    for(; !terminated;) {
-                        QByteArray buffer=f.read(4096);
-                        if (buffer.size()>0) {
-                            socket->write(buffer);
-                        } else {
+                    static const int constChunkSize=8192;
+                    char buffer[constChunkSize];
+                    qint64 totalBytes = f.size();
+                    qint64 readPos = 0;
+                    qint64 bytesRead = 0;
+
+                    do {
+                        if (terminated) {
                             break;
                         }
-                    }
+                        bytesRead = f.read(buffer, constChunkSize);
+                        readPos+=bytesRead;
+                        if (bytesRead<0 || terminated) {
+                            break;
+                        }
+
+                        qint64 writePos=0;
+                        do {
+                            qint64 bytesWritten = socket->write(&buffer[writePos], bytesRead - writePos);
+                            if (terminated) {
+                                break;
+                            }
+                            if (-1==bytesWritten) {
+                                ok=false;
+                                break;
+                            }
+                            writePos+=bytesWritten;
+                        } while (writePos<bytesRead);
+
+                        if (f.atEnd()) {
+                            break;
+                        }
+                    } while ((readPos+bytesRead)<totalBytes);
                 }
             }
 

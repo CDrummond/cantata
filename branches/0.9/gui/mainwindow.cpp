@@ -846,7 +846,7 @@ MainWindow::MainWindow(QWidget *parent)
     } else if (testAttribute(Qt::WA_TranslucentBackground)) {
         // Work-around non-showing main window on start-up with transparent QtCurve windows.
         // BUG: 146
-        move(p.isNull() ? QPoint(0, 0) : p);
+        move(p.isNull() ? QPoint(96, 96) : p);
     }
 }
 

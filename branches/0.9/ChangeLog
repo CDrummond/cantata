@@ -8,6 +8,8 @@
 6. Fix decoding of Cantata HTTP stream URLs.
 7. Work-around issue of non display of main window when using transparent
    QtCurve theme.
+8. Fix playing of FLAC files external to MPD database via Cantata's simple HTTP
+   server.
 
 0.9.1
 -----

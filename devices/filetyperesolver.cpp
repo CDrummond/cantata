@@ -114,8 +114,6 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
             delete result;
             result = new TagLib::Ogg::FLAC::File(fileName, readProperties, propertiesStyle);
         }
-    } else if (suffix == QLatin1String("wma")) {
-        result = new TagLib::ASF::File(fileName, readProperties, propertiesStyle);
     }
     #endif //
     else if (suffix == QLatin1String("m4a") || suffix == QLatin1String("m4b")

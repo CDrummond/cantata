@@ -35,6 +35,7 @@
 #include <QtCore/QFileInfo>
 #ifdef TAGLIB_FOUND
 #include <taglib/oggflacfile.h>
+#include <taglib/trueaudiofile.h>
 #include <taglib/vorbisfile.h>
 #include <taglib/audioproperties.h>
 #endif
@@ -73,19 +74,36 @@ static QString detectMimeType(const QString &file)
             }
             delete result;
         }
-        return mime;
+        if (mime.isEmpty()) {
+            result = new TagLib::TrueAudio::File(encodedName, false, TagLib::AudioProperties::Fast);
+            if (result->isValid()) {
+                mime="audio/x-speex+ogg";
+            }
+            delete result;
+        }
+        return "audio/ogg";
     }
     #endif
     else if (suffix == QLatin1String("flac")) {
         return "audio/x-flac";
     } else if (suffix == QLatin1String("wma")) {
         return "audio/x-ms-wma";
-    }
-    else if (suffix == QLatin1String("m4a") || suffix == QLatin1String("m4b") || suffix == QLatin1String("m4p") || suffix == QLatin1String("mp4")) {
-         return "audio/mp4";
-    }
-    else if (suffix == QLatin1String("wav")) {
+    } else if (suffix == QLatin1String("m4a") || suffix == QLatin1String("m4b") || suffix == QLatin1String("m4p") || suffix == QLatin1String("mp4")) {
+        return "audio/mp4";
+    } else if (suffix == QLatin1String("wav")) {
         return "audio/x-wav";
+    } else if (suffix == QLatin1String("wv") || suffix == QLatin1String("wvp")) {
+        return "audio/x-wavpack";
+    } else if (suffix == QLatin1String("ape")) {
+        return "audio/x-ape";
+    } else if (suffix == QLatin1String("spx")) {
+        return "audio/x-speex";
+    } else if (suffix == QLatin1String("tta")) {
+        return "audio/x-tta";
+    } else if (suffix == QLatin1String("aiff") || suffix == QLatin1String("aif") || suffix == QLatin1String("aifc")) {
+        return "audio/x-aiff";
+    } else if (suffix == QLatin1String("mpc") || suffix == QLatin1String("mpp") || suffix == QLatin1String("mp+")) {
+        return "audio/x-musepack";
     }
     #endif
     return QString();

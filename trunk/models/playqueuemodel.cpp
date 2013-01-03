@@ -55,13 +55,6 @@ static QStringList reverseList(const QStringList &orig)
     return rev;
 }
 
-#ifdef TAGLIB_FOUND
-static inline QString unencodeUrl(QString u)
-{
-    return QUrl(u).path();
-}
-#endif
-
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
@@ -506,16 +499,16 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         bool allowLocal=haveHttp || mpdLocal;
 
         foreach (QString u, orig) {
-            if (u.startsWith("http://")) {
+            if (u.startsWith(QLatin1String("http://"))) {
                 useable.append(u);
-            } else if (allowLocal && (u.startsWith('/') || u.startsWith("file:/"))) {
-                if (u.startsWith("file:/")) {
+            } else if (allowLocal && (u.startsWith('/') || u.startsWith(QLatin1String("file:/")))) {
+                if (u.startsWith(QLatin1String("file:/"))) {
                     u=u.mid(7);
                 }
                 if (alwaysUseHttp || !mpdLocal) {
-                    useable.append(HttpServer::self()->encodeUrl(unencodeUrl(u)));
+                    useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
                 } else {
-                    useable.append(QLatin1String("file://")+unencodeUrl(u));
+                    useable.append((u.startsWith(QLatin1String("file:/")) ? QString() : QLatin1String("file://"))+QUrl::fromPercentEncoding(u.toUtf8()));
                 }
             }
         }

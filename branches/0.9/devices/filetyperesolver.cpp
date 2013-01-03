@@ -33,6 +33,7 @@
 #include <taglib-extras/realmediafile.h>
 #endif
 #include <taglib/aifffile.h>
+#include <taglib/apefile.h>
 #include <taglib/asffile.h>
 #include <taglib/flacfile.h>
 #include <taglib/mp4file.h>
@@ -62,11 +63,9 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
     if (mimetype->is(QLatin1String("audio/mpeg")) || mimetype->is(QLatin1String("audio/x-mpegurl"))
             || mimetype->is(QLatin1String("audio/mpeg"))) {
         result = new TagLib::MPEG::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/mp4")) || mimetype->is(QLatin1String("video/mp4"))) {
+    } else if (mimetype->is(QLatin1String("audio/mp4")) || mimetype->is(QLatin1String("video/mp4"))) {
         result = new TagLib::MP4::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/x-ms-wma")) /*|| mimetype->is(QLatin1String("video/x-ms-asf"))
+    } else if (mimetype->is(QLatin1String("audio/x-ms-wma")) /*|| mimetype->is(QLatin1String("video/x-ms-asf"))
             || mimetype->is(QLatin1String("video/x-msvideo")) || mimetype->is(QLatin1String("video/x-ms-wmv"))*/) {
         result = new TagLib::ASF::File(fileName, readProperties, propertiesStyle);
     }
@@ -78,41 +77,43 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
     #endif
     else if (mimetype->is(QLatin1String("audio/x-vorbis+ogg"))) {
         result = new TagLib::Ogg::Vorbis::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/x-flac+ogg"))) {
+    } else if (mimetype->is(QLatin1String("audio/x-flac+ogg"))) {
         result = new TagLib::Ogg::FLAC::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/x-aiff"))) {
+    } else if (mimetype->is(QLatin1String("audio/x-aiff"))) {
         result = new TagLib::RIFF::AIFF::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/x-flac"))) {
+    } else if (mimetype->is(QLatin1String("audio/x-flac"))) {
         result = new TagLib::FLAC::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/x-musepack"))) {
+    } else if (mimetype->is(QLatin1String("audio/x-musepack"))) {
         result = new TagLib::MPC::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/x-wav"))) {
+    } else if (mimetype->is(QLatin1String("audio/x-wav"))) {
         result = new TagLib::RIFF::WAV::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/x-wavpack"))) {
+    } else if (mimetype->is(QLatin1String("audio/x-wavpack"))) {
         result = new TagLib::WavPack::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/x-tta"))) {
+    } else if (mimetype->is(QLatin1String("audio/x-tta"))) {
         result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (mimetype->is(QLatin1String("audio/x-speex")) || mimetype->is(QLatin1String("audio/x-speex+ogg"))) {
+    } else if (mimetype->is(QLatin1String("audio/x-speex")) || mimetype->is(QLatin1String("audio/x-speex+ogg"))) {
         result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
+    } else if (mimetype->is(QLatin1String("audio/x-speex")) || mimetype->is(QLatin1String("audio/x-speex+ogg"))) {
+        result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
+    } else if (mimetype->is(QLatin1String("audio/x-ape"))) {
+        result = new TagLib::APE::File(fileName, readProperties, propertiesStyle);
     }
 
     // -- check by extension
     #else // ENABLE_KDE_SUPPORT
     if (suffix == QLatin1String("mp3")) {
         result = new TagLib::MPEG::File(fileName, readProperties, propertiesStyle);
-    } else if (suffix == QLatin1String("ogg") || suffix == QLatin1String("flac")) {
+    } else if (suffix == QLatin1String("flac")) {
+        result = new TagLib::FLAC::File(fileName, readProperties, propertiesStyle);
+    } else if (suffix == QLatin1String("ogg")) {
         result = new TagLib::Ogg::Vorbis::File(fileName, readProperties, propertiesStyle);
         if (!result->isValid()) {
             delete result;
             result = new TagLib::Ogg::FLAC::File(fileName, readProperties, propertiesStyle);
+        }
+        if (!result->isValid()) {
+            delete result;
+            result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
         }
     }
     #endif //
@@ -120,12 +121,22 @@ TagLib::File *Meta::Tag::FileTypeResolver::createFile(TagLib::FileName fileName,
         || suffix == QLatin1String("m4p") || suffix == QLatin1String("mp4")
         /*|| suffix == QLatin1String("m4v") || suffix == QLatin1String("mp4v") */) {
         result = new TagLib::MP4::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (suffix == QLatin1String("wav")) {
+    } else if (suffix == QLatin1String("wav")) {
         result = new TagLib::RIFF::WAV::File(fileName, readProperties, propertiesStyle);
-    }
-    else if (suffix == QLatin1String("wma") /*|| suffix == QLatin1String("asf")*/) {
+    } else if (suffix == QLatin1String("wma") /*|| suffix == QLatin1String("asf")*/) {
         result = new TagLib::ASF::File(fileName, readProperties, propertiesStyle);
+    } else if (suffix == QLatin1String("wvp") || suffix == QLatin1String("wv")) {
+        result = new TagLib::WavPack::File(fileName, readProperties, propertiesStyle);
+    } else if (suffix == QLatin1String("ape")) {
+        result = new TagLib::APE::File(fileName, readProperties, propertiesStyle);
+    } else if (suffix == QLatin1String("spx")) {
+        result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
+    } else if (suffix == QLatin1String("tta")) {
+        result = new TagLib::TrueAudio::File(fileName, readProperties, propertiesStyle);
+    } else if (suffix == QLatin1String("aiff") || suffix == QLatin1String("aif") || suffix == QLatin1String("aifc")) {
+        result = new TagLib::RIFF::AIFF::File(fileName, readProperties, propertiesStyle);
+    } else if (suffix == QLatin1String("mpc") || suffix == QLatin1String("mpp") || suffix == QLatin1String("mp+")) {
+        result = new TagLib::MPC::File(fileName, readProperties, propertiesStyle);
     }
 
 // #ifndef Q_OS_WIN

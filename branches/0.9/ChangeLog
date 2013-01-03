@@ -1,17 +1,18 @@
 ﻿0.9.2
 -----
-1. (Qt-Only) Dont show clear button for read-only line-edits.
-2. Fix 'Locate In Library' when library is not set to tree mode.
-3. Use grid layout for transcoder slider, removes Qt layout warning.
-4. Simplified Chinese translation - thanks to 薛景
-5. Fix restoring of splitter sizes when we start minimized to system tray.
-6. Fix decoding of Cantata HTTP stream URLs.
-7. Work-around issue of non display of main window when using transparent
-   QtCurve theme.
-8. Fix playing of some non-MP3 files external to MPD database via Cantata's
-   simple HTTP server.
-9. Prevent multiple KDE Cantata windows appearing if app is attempted to be
-   started repeatedly in quick succession.
+ 1. (Qt-Only) Dont show clear button for read-only line-edits.
+ 2. Fix 'Locate In Library' when library is not set to tree mode.
+ 3. Use grid layout for transcoder slider, removes Qt layout warning.
+ 4. Simplified Chinese translation - thanks to 薛景
+ 5. Fix restoring of splitter sizes when we start minimized to system tray.
+ 6. Fix decoding of Cantata HTTP stream URLs.
+ 7. Work-around issue of non display of main window when using transparent
+    QtCurve theme.
+ 8. Fix playing of some non-MP3 files external to MPD database via Cantata's
+    simple HTTP server.
+ 9. Fix detection of some filetypes.
+10. Prevent multiple KDE Cantata windows appearing if app is attempted to be
+    started repeatedly in quick succession.
 
 0.9.1
 -----

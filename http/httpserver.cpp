@@ -147,7 +147,6 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
 QByteArray HttpServer::encodeUrl(const QString &file) const
 {
     Song s=Tags::read(file);
-    s.fillEmptyFields();
     s.file=file;
     return encodeUrl(s);
 }

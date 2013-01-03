@@ -178,6 +178,38 @@ void HttpSocket::incomingConnection(int socket)
     s->setSocketDescriptor(socket);
 }
 
+int getSep(const QByteArray &a, int pos)
+{
+    for (int i=pos+1; i<a.length(); ++i) {
+        if ('\n'==a[i] || '\r'==a[i] || ' '==a[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+QList<QByteArray> split(const QByteArray &a)
+{
+    QList<QByteArray> rv;
+    int lastPos=-1;
+    for (;;) {
+        int pos=getSep(a, lastPos);
+
+        if (pos==(lastPos+1)) {
+            lastPos++;
+        } else if (pos>-1) {
+            lastPos++;
+            rv.append(a.mid(lastPos, pos-lastPos));
+            lastPos=pos;
+        } else {
+            lastPos++;
+            rv.append(a.mid(lastPos));
+            break;
+        }
+    }
+    return rv;
+}
+
 void HttpSocket::readClient()
 {
     if (terminated) {
@@ -186,11 +218,11 @@ void HttpSocket::readClient()
 
     QTcpSocket *socket = (QTcpSocket*)sender();
     if (socket->canReadLine()) {
-        QString line=socket->readLine();
-        QStringList tokens = line.split(QRegExp("[ \r\n][ \r\n]*"));
-        if (QLatin1String("GET")==tokens[0]) {
-            QUrl url(tokens[1]);
+        QList<QByteArray> tokens = split(socket->readLine()); // QRegExp("[ \r\n][ \r\n]*"));
+        if (tokens.length()>=2 && "GET"==tokens[0]) {
+            QUrl url(QUrl::fromPercentEncoding(tokens[1]));
             bool ok=false;
+
             if (url.hasQueryItem("cantata")) {
                 QFile f(url.path());
 

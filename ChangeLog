@@ -54,8 +54,10 @@
     QtCurve theme.
  8. Fix playing of some non-MP3 files external to MPD database via Cantata's
     simple HTTP server.
- 9. Fix detection of some filetypes.
-10. Prevent multiple KDE Cantata windows appearing if app is attempted to be
+ 9. Fix playing of files containing square brackets, etc, that are external
+    to MPD database via Cantata's simple HTTP server.
+10. Fix detection of some filetypes.
+11. Prevent multiple KDE Cantata windows appearing if app is attempted to be
     started repeatedly in quick succession.
 
 0.9.1

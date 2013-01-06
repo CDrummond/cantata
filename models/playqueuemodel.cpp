@@ -501,14 +501,14 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         foreach (QString u, orig) {
             if (u.startsWith(QLatin1String("http://"))) {
                 useable.append(u);
-            } else if (allowLocal && (u.startsWith('/') || u.startsWith(QLatin1String("file:/")))) {
-                if (u.startsWith(QLatin1String("file:/"))) {
+            } else if (allowLocal && (u.startsWith('/') || u.startsWith(QLatin1String("file://")))) {
+                if (u.startsWith(QLatin1String("file://"))) {
                     u=u.mid(7);
                 }
                 if (alwaysUseHttp || !mpdLocal) {
                     useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
                 } else {
-                    useable.append((u.startsWith(QLatin1String("file:/")) ? QString() : QLatin1String("file://"))+QUrl::fromPercentEncoding(u.toUtf8()));
+                    useable.append(QLatin1String("file://")+QUrl::fromPercentEncoding(u.toUtf8()));
                 }
             }
         }

@@ -220,7 +220,7 @@ void HttpSocket::readClient()
     if (socket->canReadLine()) {
         QList<QByteArray> tokens = split(socket->readLine()); // QRegExp("[ \r\n][ \r\n]*"));
         if (tokens.length()>=2 && "GET"==tokens[0]) {
-            QUrl url(QUrl::fromPercentEncoding(tokens[1]));
+            QUrl url(QUrl::fromEncoded(tokens[1]));
             bool ok=false;
 
             if (url.hasQueryItem("cantata")) {

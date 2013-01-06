@@ -31,7 +31,7 @@
 #include <QtCore/QUrl>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMimeType>
-#else
+#endif
 #include <QtCore/QFileInfo>
 #ifdef TAGLIB_FOUND
 #include <taglib/oggflacfile.h>
@@ -39,16 +39,18 @@
 #include <taglib/vorbisfile.h>
 #include <taglib/audioproperties.h>
 #endif
-#endif
 
 static QString detectMimeType(const QString &file)
 {
     #ifdef ENABLE_KDE_SUPPORT
-    return KMimeType::findByPath(file)->name();
-    #else
-    QString suffix = QFileInfo(file).suffix();
+    QString km=KMimeType::findByPath(file)->name();
+    if (!km.isEmpty() && (km.startsWith("audio/") || km.startsWith("application/"))) {
+        return QLatin1String("audio/x-ape")==km ? QLatin1String("audio/x-monkeys-audio") : km;
+    }
+    #endif
+    QString suffix = QFileInfo(file).suffix().toLower();
     if (suffix == QLatin1String("mp3")) {
-        return "audio/mpeg";
+        return QLatin1String("audio/mpeg");
     }
     #ifdef TAGLIB_FOUND
     if (suffix == QLatin1String("ogg")) {
@@ -64,48 +66,52 @@ static QString detectMimeType(const QString &file)
         QString mime;
         TagLib::File *result = new TagLib::Ogg::Vorbis::File(encodedName, false, TagLib::AudioProperties::Fast);
         if (result->isValid()) {
-            mime="audio/x-vorbis+ogg";
+            mime=QLatin1String("audio/x-vorbis+ogg");
         }
         delete result;
         if (mime.isEmpty()) {
             result = new TagLib::Ogg::FLAC::File(encodedName, false, TagLib::AudioProperties::Fast);
             if (result->isValid()) {
-                mime="audio/x-flac+ogg";
+                mime=QLatin1String("audio/x-flac+ogg");
             }
             delete result;
         }
         if (mime.isEmpty()) {
             result = new TagLib::TrueAudio::File(encodedName, false, TagLib::AudioProperties::Fast);
             if (result->isValid()) {
-                mime="audio/x-speex+ogg";
+                mime=QLatin1String("audio/x-speex+ogg");
             }
             delete result;
         }
-        return "audio/ogg";
+        return QLatin1String("audio/ogg");
     }
     #endif
     else if (suffix == QLatin1String("flac")) {
-        return "audio/x-flac";
+        return QLatin1String("audio/x-flac");
     } else if (suffix == QLatin1String("wma")) {
-        return "audio/x-ms-wma";
+        return QLatin1String("audio/x-ms-wma");
     } else if (suffix == QLatin1String("m4a") || suffix == QLatin1String("m4b") || suffix == QLatin1String("m4p") || suffix == QLatin1String("mp4")) {
-        return "audio/mp4";
+        return QLatin1String("audio/mp4");
     } else if (suffix == QLatin1String("wav")) {
-        return "audio/x-wav";
+        return QLatin1String("audio/x-wav");
     } else if (suffix == QLatin1String("wv") || suffix == QLatin1String("wvp")) {
-        return "audio/x-wavpack";
+        return QLatin1String("audio/x-wavpack");
     } else if (suffix == QLatin1String("ape")) {
-        return "audio/x-ape";
+        return QLatin1String("audio/x-monkeys-audio"); // "audio/x-ape";
     } else if (suffix == QLatin1String("spx")) {
-        return "audio/x-speex";
+        return QLatin1String("audio/x-speex");
     } else if (suffix == QLatin1String("tta")) {
-        return "audio/x-tta";
+        return QLatin1String("audio/x-tta");
     } else if (suffix == QLatin1String("aiff") || suffix == QLatin1String("aif") || suffix == QLatin1String("aifc")) {
-        return "audio/x-aiff";
+        return QLatin1String("audio/x-aiff");
     } else if (suffix == QLatin1String("mpc") || suffix == QLatin1String("mpp") || suffix == QLatin1String("mp+")) {
-        return "audio/x-musepack";
+        return QLatin1String("audio/x-musepack");
+    } else if (suffix == QLatin1String("dff")) {
+        return QLatin1String("application/x-dff");
+    } else if (suffix == QLatin1String("dsf")) {
+        return QLatin1String("application/x-dsf");
     }
-    #endif
+
     return QString();
 }
 

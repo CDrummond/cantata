@@ -152,7 +152,7 @@ int Song::compareTo(const Song &o) const
 
 bool Song::isEmpty() const
 {
-    return (artist.isEmpty() && album.isEmpty() && title.isEmpty()) || file.isEmpty();
+    return (artist.isEmpty() && album.isEmpty() && title.isEmpty() && name.isEmpty()) || file.isEmpty();
 }
 
 void Song::guessTags()

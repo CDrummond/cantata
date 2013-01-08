@@ -17,6 +17,8 @@
     started repeatedly in quick succession.
 12. For streams, if we have a 'name' but no artist or album title, then just
     display the name (this is usually the Radio Station)
+13. For a song to be 'empty', artist, album, title, and name need to be empty.
+    This fixes detection of updates to the name field when playing streams.
 
 0.9.1
 -----

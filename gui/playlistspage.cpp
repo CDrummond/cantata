@@ -188,6 +188,11 @@ void PlaylistsPage::removeItems()
         return;
     }
 
+    if (remPlaylists.count() &&
+        MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove the selected playlists?\nThis cannot be undone."), i18n("Remove Playlists?"))) {
+            return;
+    }
+
     foreach (const QString &pl, remPlaylists) {
         emit removePlaylist(pl);
     }

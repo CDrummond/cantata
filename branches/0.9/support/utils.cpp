@@ -231,6 +231,7 @@ void Utils::stopThread(QThread *thread)
     for(int i=0; i<10 && thread->isRunning(); ++i) {
         sleep();
     }
+    thread->deleteLater();
 }
 
 #ifndef ENABLE_KDE_SUPPORT

@@ -15,6 +15,8 @@
 10. Fix detection of some filetypes.
 11. Prevent multiple KDE Cantata windows appearing if app is attempted to be
     started repeatedly in quick succession.
+12. For streams, if we have a 'name' but no artist or album title, then just
+    display the name (this is usually the Radio Station)
 
 0.9.1
 -----

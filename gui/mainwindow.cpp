@@ -1793,15 +1793,15 @@ void MainWindow::updateCurrentSong(const Song &song)
     positionSlider->setEnabled(-1!=current.id && !currentIsStream());
     coverWidget->update(current);
 
-    if (current.title.isEmpty() && current.artist.isEmpty() && !current.file.isEmpty()) {
-        trackLabel->setText(current.file);
+    if (current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())) {
+        trackLabel->setText(current.name.isEmpty() ? current.file : current.name);
     } else if (current.name.isEmpty()) {
         trackLabel->setText(current.title);
     } else {
         trackLabel->setText(QString("%1 (%2)").arg(current.title).arg(current.name));
     }
     if (current.album.isEmpty() && current.artist.isEmpty()) {
-        artistLabel->setText(trackLabel->text().isEmpty() ? QString() : i18n("Unknown"));
+        artistLabel->setText(trackLabel->text().isEmpty() || current.isStream() ? QString() : i18n("Unknown"));
     } else if (current.album.isEmpty()) {
         artistLabel->setText(current.artist);
     } else {

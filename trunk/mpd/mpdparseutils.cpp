@@ -163,7 +163,6 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     QStringList tokens;
     QString element;
     QString value;
-
     int amountOfLines = lines.size();
 
     for (int i = 0; i < amountOfLines; i++) {
@@ -225,8 +224,10 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     #endif
 
     if (isPlayQueue) {
-        song.guessTags();
-        song.fillEmptyFields();
+        if (!song.isStream()) {
+            song.guessTags();
+            song.fillEmptyFields();
+        }
         song.setKey();
     }
     return song;

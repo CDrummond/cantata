@@ -59,6 +59,19 @@ const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
 
+static bool checkExtension(const QString &file)
+{
+    static QSet<QString> constExtensions=QSet<QString>()
+            << QLatin1String("mp3") << QLatin1String("ogg") << QLatin1String("flac") << QLatin1String("wma") << QLatin1String("m4a")
+            << QLatin1String("m4b") << QLatin1String("mp4") << QLatin1String("m4p") << QLatin1String("wav") << QLatin1String("wv")
+            << QLatin1String("wvp") << QLatin1String("aiff") << QLatin1String("aif") << QLatin1String("aifc") << QLatin1String("ape")
+            << QLatin1String("spx") << QLatin1String("tta") << QLatin1String("mpc") << QLatin1String("mpp") << QLatin1String("mp+")
+            << QLatin1String("dff") << QLatin1String("dsf");
+
+    int pos=file.lastIndexOf('.');
+    return pos>1 ? constExtensions.contains(file.mid(pos+1).toLower()) : false;
+}
+
 void PlayQueueModel::encode(QMimeData &mimeData, const QString &mime, const QStringList &values)
 {
     QByteArray encodedData;
@@ -505,10 +518,12 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
                 if (u.startsWith(QLatin1String("file://"))) {
                     u=u.mid(7);
                 }
-                if (alwaysUseHttp || !mpdLocal) {
-                    useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
-                } else {
-                    useable.append(QLatin1String("file://")+QUrl::fromPercentEncoding(u.toUtf8()));
+                if (checkExtension(u)) {
+                    if (alwaysUseHttp || !mpdLocal) {
+                        useable.append(HttpServer::self()->encodeUrl(QUrl::fromPercentEncoding(u.toUtf8())));
+                    } else {
+                        useable.append(QLatin1String("file://")+QUrl::fromPercentEncoding(u.toUtf8()));
+                    }
                 }
             }
         }

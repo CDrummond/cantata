@@ -481,6 +481,10 @@ ELSE( ENABLE_KDE_SUPPORT )
     endif (WIN32)
 ENDIF( ENABLE_KDE_SUPPORT )
 
+add_subdirectory(qtiocompressor)
+TARGET_LINK_LIBRARIES(cantata qtiocompressor)
+include_directories(${CMAKE_BINARY_DIR}/qtiocompressor)
+
 if (MTP_FOUND AND NOT WIN32)
     TARGET_LINK_LIBRARIES(cantata ${MTP_LIBRARIES})
     include_directories( ${MTP_INCLUDE_DIR})

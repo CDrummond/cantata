@@ -664,7 +664,8 @@ void FsDevice::removeCache()
     }
 
     // Remove old (non-compressed) cache file as well...
-    QString oldCache(Utils::changeExtension(cacheFile, MusicLibraryModel::constLibraryExt));
+    QString oldCache=cacheFile;
+    oldCache.replace(MusicLibraryModel::constLibraryCompressedExt, MusicLibraryModel::constLibraryExt);
     if (oldCache!=cacheFile && QFile::exists(oldCache)) {
         QFile::remove(oldCache);
     }

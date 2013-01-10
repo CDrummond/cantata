@@ -32,6 +32,7 @@
 #include "mpdconnection.h"
 #include "song.h"
 #include "localize.h"
+#include "qtiocompressor/qtiocompressor.h"
 #include <QtXml/QXmlStreamReader>
 #include <QtXml/QXmlStreamWriter>
 #include <QtCore/QFile>
@@ -267,16 +268,16 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date)
     }
 
     QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly)) {
+    QtIOCompressor compressor(&file);
+    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+    if (!compressor.open(QIODevice::WriteOnly)) {
         return;
     }
 
     //Write the header info
-    QByteArray data;
-    QXmlStreamWriter writer(&data);
+    QXmlStreamWriter writer(&compressor);
     toXML(writer, date);
-    file.write(qCompress(data));
-    file.close();
+    compressor.close();
 }
 
 void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date) const
@@ -362,15 +363,15 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
 quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, const QString &baseFolder)
 {
     QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly)) {
+    QtIOCompressor compressor(&file);
+    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+    if (!compressor.open(QIODevice::ReadOnly)) {
         return 0;
     }
 
-    QByteArray data=file.readAll();
-    data=qUncompress(data);
-    QXmlStreamReader reader(data);
+    QXmlStreamReader reader(&compressor);
     quint32 rv=fromXML(reader, date, baseFolder);
-    file.close();
+    compressor.close();
     return rv;
 }
 

@@ -275,14 +275,12 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date)
     }
 
     QXmlStreamWriter writer(&compressor);
-    writer.setAutoFormattingIndent(1);
     toXML(writer, date);
     compressor.close();
 }
 
 void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date) const
 {
-    writer.setAutoFormatting(true);
     writer.writeStartDocument();
 
     //Start with the document

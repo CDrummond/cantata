@@ -40,6 +40,7 @@
 #include "localize.h"
 #include "utils.h"
 #include "icons.h"
+#include "qtiocompressor/qtiocompressor.h"
 #include <QtGui/QCommonStyle>
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
@@ -71,7 +72,7 @@ MusicLibraryModel * MusicLibraryModel::self()
 
 const QLatin1String MusicLibraryModel::constLibraryCache("library/");
 const QLatin1String MusicLibraryModel::constLibraryExt(".xml");
-const QLatin1String MusicLibraryModel::constLibraryCompressedExt(".xmc");
+const QLatin1String MusicLibraryModel::constLibraryCompressedExt(".xml.gz");
 
 static const QString cacheFileName()
 {
@@ -82,16 +83,21 @@ static const QString cacheFileName()
 
 void MusicLibraryModel::convertCache(const QString &compressedName)
 {
-    QString prev=Utils::changeExtension(compressedName, constLibraryExt);
+    QString prev=compressedName;
+    prev.replace(constLibraryCompressedExt, constLibraryExt);
+
     if (QFile::exists(prev) && !QFile::exists(compressedName)) {
         QFile old(prev);
         if (old.open(QIODevice::ReadOnly)) {
             QByteArray a=old.readAll();
             old.close();
+
             QFile newCache(compressedName);
-            if (newCache.open(QIODevice::WriteOnly)) {
-                newCache.write(qCompress(a));
-                newCache.close();
+            QtIOCompressor compressor(&newCache);
+            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+            if (compressor.open(QIODevice::WriteOnly)) {
+                compressor.write(qCompress(a));
+                compressor.close();
                 QFile::remove(prev);
             }
         }
@@ -540,7 +546,8 @@ void MusicLibraryModel::removeCache()
     }
 
     // Remove old (non-compressed) cache file as well...
-    QString oldCache(Utils::changeExtension(cacheFile, constLibraryExt));
+    QString oldCache=cacheFile;
+    oldCache.replace(constLibraryCompressedExt, constLibraryExt);
     if (oldCache!=cacheFile && QFile::exists(oldCache)) {
         QFile::remove(oldCache);
     }

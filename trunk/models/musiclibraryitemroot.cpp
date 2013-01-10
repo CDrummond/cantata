@@ -274,8 +274,8 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date)
         return;
     }
 
-    //Write the header info
     QXmlStreamWriter writer(&compressor);
+    writer.setAutoFormattingIndent(1);
     toXML(writer, date);
     compressor.close();
 }

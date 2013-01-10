@@ -444,6 +444,8 @@ MainWindow::MainWindow(QWidget *parent)
     setVisible(true);
     initSizes();
 
+    savePlayQueueAction->setEnabled(false);
+    clearPlayQueueAction->setEnabled(false);
     savePlayQueuePushButton->setDefaultAction(savePlayQueueAction);
     removeAllFromPlayQueuePushButton->setDefaultAction(clearPlayQueueAction);
     randomPushButton->setDefaultAction(randomPlayQueueAction);
@@ -1089,7 +1091,6 @@ void MainWindow::playQueueItemsSelected(bool s)
         playQueue->setContextMenuPolicy(Qt::ActionsContextMenu);
         removeFromPlayQueueAction->setEnabled(s);
         copyTrackInfoAction->setEnabled(s);
-        clearPlayQueueAction->setEnabled(true);
         cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems());
         shufflePlayQueueAction->setEnabled(true);
     }
@@ -1717,6 +1718,8 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     playPauseTrackAction->setEnabled(!songs.isEmpty());
     nextTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
     prevTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
+    savePlayQueueAction->setEnabled(!songs.isEmpty());
+    clearPlayQueueAction->setEnabled(!songs.isEmpty());
 
     playQueueModel.update(songs);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);

@@ -95,7 +95,7 @@ void CoverWidget::update(const QPixmap &p)
 
 void CoverWidget::update(const Song &s)
 {
-    if (s.albumArtist()!= current.albumArtist() || s.album != current.album) {
+    if (s.albumArtist()!=current.albumArtist() || s.album!=current.album || s.isStream()!=current.isStream()) {
         current=s;
         if (!s.albumArtist().isEmpty() && !s.album.isEmpty()) {
             Covers::Image img=Covers::self()->get(s);

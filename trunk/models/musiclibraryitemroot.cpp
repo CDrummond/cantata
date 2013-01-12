@@ -282,6 +282,7 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date)
 void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date) const
 {
     writer.writeStartDocument();
+    QString unknown=i18n("Unknown");
 
     //Start with the document
     writer.writeStartElement(constTopTag);
@@ -300,7 +301,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             writer.writeStartElement("Album");
             writer.writeAttribute("name", album->data());
             writer.writeAttribute("year", QString::number(album->year()));
-            if (!albumGenre.isEmpty()) {
+            if (!albumGenre.isEmpty() && albumGenre!=unknown) {
                 writer.writeAttribute("genre", albumGenre);
             }
             if (album->isSingleTracks()) {
@@ -334,7 +335,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                     writer.writeAttribute("albumartist", track->song().albumartist);
                 }
 //                 writer.writeAttribute("id", QString::number(track->song().id));
-                if (!track->song().genre.isEmpty() && track->song().genre!=albumGenre) {
+                if (!track->song().genre.isEmpty() && track->song().genre!=albumGenre && track->song().genre!=unknown) {
                     writer.writeAttribute("genre", track->song().genre);
                 }
                 if (album->isSingleTracks()) {
@@ -380,6 +381,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     MusicLibraryItemSong *songItem = 0;
     Song song;
     quint32 xmlDate=0;
+    QString unknown=i18n("Unknown");
 
     while (!reader.atEnd()) {
         reader.readNext();
@@ -435,6 +437,8 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     }
                     if (attributes.hasAttribute("genre")) {
                         song.genre=attributes.value("genre").toString();
+                    } else if (song.genre.isEmpty()) {
+                        song.genre=unknown;
                     }
                     if (attributes.hasAttribute("artist")) {
                         song.artist=attributes.value("artist").toString();

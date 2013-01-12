@@ -331,9 +331,30 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &g
     c->itemMap.insert(url, stream);
     c->streams.append(stream);
     endInsertRows();
-
+    updateGenres();
     modified=true;
     return true;
+}
+
+void StreamsModel::add(const QString &cat, const QList<StreamsModel::StreamItem> &streams)
+{
+    if (streams.isEmpty()) {
+        return;
+    }
+    StreamsModel::CategoryItem *ci=getCategory(cat, false, true);
+    if (ci) {
+        removeCategory(ci);
+    }
+    ci=getCategory(cat, true, true);
+    beginInsertRows(createIndex(items.indexOf(ci), 0, ci), 0, streams.count()-1);
+    foreach (const StreamsModel::StreamItem &s, streams) {
+        StreamItem *stream=new StreamItem(s.name, s.genre, s.icon.isEmpty() || s.icon==Icons::streamIcon.name() ? QString() : s.icon, s.url, ci);
+        ci->itemMap.insert(s.url.toString(), stream);
+        ci->streams.append(stream);
+    }
+    endInsertRows();
+    updateGenres();
+    modified=true;
 }
 
 void StreamsModel::editCategory(const QModelIndex &index, const QString &name, const QString &icon)

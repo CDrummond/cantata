@@ -30,8 +30,8 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/qglobal.h>
-#include <QtXml/QDomDocument>
-#include <QtXml/QDomElement>
+#include <QtXml/QXmlStreamReader>
+#include <QtXml/QXmlStreamWriter>
 #include "config.h"
 #include "settings.h"
 #if defined Q_OS_WIN
@@ -212,56 +212,57 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
         return false;
     }
 
-    QDomDocument doc;
+    QXmlStreamReader doc(&file);
     bool haveInserted=false;
-    doc.setContent(&file);
-    QDomElement root = doc.documentElement();
+    int level=0;
+    CategoryItem *cat=0;
 
-    if ("cantata" == root.tagName() && root.hasAttribute("version") && "1.0" == root.attribute("version")) {
-        QDomElement category = root.firstChildElement("category");
-        while (!category.isNull()) {
-            if (category.hasAttribute("name")) {
-                QString catName=category.attribute("name");
-                QString catIcon=category.attribute("icon");
-                CategoryItem *cat=getCategory(catName, true, !isInternal);
+    while (!doc.atEnd()) {
+        doc.readNext();
+
+        if (doc.isStartElement()) {
+            ++level;
+            if (2==level && QLatin1String("category")==doc.name()) {
+                QString catName=doc.attributes().value("name").toString();
+                QString catIcon=doc.attributes().value("icon").toString();
+                cat=getCategory(catName, true, !isInternal);
                 if (cat && cat->icon.isEmpty() && !catIcon.isEmpty() && iconIsValid(catIcon)) {
                     cat->icon=catIcon;
                 }
-                QDomElement stream = category.firstChildElement("stream");
-                while (!stream.isNull()) {
-                    if (stream.hasAttribute("name") && stream.hasAttribute("url")) {
-                        QString name=stream.attribute("name");
-                        QString icon=stream.attribute("icon");
-                        QString genre=stream.attribute("genre");
-                        QString origName=name;
-                        QUrl url=QUrl(stream.attribute("url"));
+            } else if (cat && 3==level && QLatin1String("stream")==doc.name()) {
+                QString name=doc.attributes().value("name").toString();
+                QString icon=doc.attributes().value("icon").toString();
+                QString genre=doc.attributes().value("genre").toString();
+                QString origName=name;
+                QUrl url=QUrl(doc.attributes().value("url").toString());
 
-                        if (!entryExists(cat, QString(), url)) {
-                            int i=1;
-                            for (; i<100 && entryExists(cat, name); ++i) {
-                                name=origName+QLatin1String("_")+QString::number(i);
-                            }
+                if (!name.isEmpty() && url.isValid() && !entryExists(cat, QString(), url)) {
+                    int i=1;
+                    for (; i<100 && entryExists(cat, name); ++i) {
+                        name=origName+QLatin1String("_")+QString::number(i);
+                    }
 
-                            if (i<100) {
-                                if (!haveInserted) {
-                                    haveInserted=true;
-                                }
-                                if (!isInternal) {
-                                    beginInsertRows(createIndex(items.indexOf(cat), 0, cat), cat->streams.count(), cat->streams.count());
-                                }
-                                StreamItem *stream=new StreamItem(name, genre, iconIsValid(icon) ? icon : QString(), url, cat);
-                                cat->itemMap.insert(url.toString(), stream);
-                                cat->streams.append(stream);
-                                if (!isInternal) {
-                                    endInsertRows();
-                                }
-                            }
+                    if (i<100) {
+                        if (!haveInserted) {
+                            haveInserted=true;
+                        }
+                        if (!isInternal) {
+                            beginInsertRows(createIndex(items.indexOf(cat), 0, cat), cat->streams.count(), cat->streams.count());
+                        }
+                        StreamItem *stream=new StreamItem(name, genre, iconIsValid(icon) ? icon : QString(), url, cat);
+                        cat->itemMap.insert(url.toString(), stream);
+                        cat->streams.append(stream);
+                        if (!isInternal) {
+                            endInsertRows();
                         }
                     }
-                    stream=stream.nextSiblingElement("stream");
                 }
             }
-            category=category.nextSiblingElement("category");
+        } else if (doc.isEndElement()) {
+            --level;
+            if (2==level && QLatin1String("category")==doc.name()) {
+                cat=0;
+            }
         }
     }
 
@@ -283,37 +284,37 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
         return false;
     }
 
-    QDomDocument doc;
-    QDomElement root = doc.createElement("cantata");
-
-    root.setAttribute("version", "1.0");
-    doc.appendChild(root);
+    QXmlStreamWriter doc(&file);
+    doc.writeStartDocument();
+    doc.writeStartElement("cantata");
+    doc.writeAttribute("version", "1.0");
+    doc.setAutoFormatting(false);
     foreach (CategoryItem *c, items) {
         if (selection.isEmpty() || selection.contains(c)) {
-            QDomElement cat = doc.createElement("category");
-            cat.setAttribute("name", c->name);
+            doc.writeStartElement("category");
+            doc.writeAttribute("name", c->name);
             if (!c->icon.isEmpty() && c->icon!=constDefaultCategoryIcon) {
-                cat.setAttribute("icon", c->icon);
+                doc.writeAttribute("icon", c->icon);
             }
-            root.appendChild(cat);
             foreach (StreamItem *s, c->streams) {
                 if (selection.isEmpty() || selection.contains(s)) {
-                    QDomElement stream = doc.createElement("stream");
-                    stream.setAttribute("name", s->name);
-                    stream.setAttribute("url", s->url.toString());
+                    doc.writeStartElement("stream");
+                    doc.writeAttribute("name", s->name);
+                    doc.writeAttribute("url", s->url.toString());
                     if (!s->icon.isEmpty() && s->icon!=Icons::streamIcon.name()) {
-                        stream.setAttribute("icon", s->icon);
+                        doc.writeAttribute("icon", s->icon);
                     }
                     if (!s->genre.isEmpty()) {
-                        stream.setAttribute("genre", s->genre);
+                        doc.writeAttribute("genre", s->genre);
                     }
-                    cat.appendChild(stream);
+                    doc.writeEndElement();
                 }
             }
+            doc.writeEndElement();
         }
     }
-
-    QTextStream(&file) << doc.toString();
+    doc.writeEndElement();
+    doc.writeEndDocument();
     return true;
 }
 

@@ -224,7 +224,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     #endif
 
     if (isPlayQueue) {
-        if (!song.isStream()) {
+        if (!song.isStream() && !song.file.isEmpty()) {
             song.guessTags();
             song.fillEmptyFields();
         }

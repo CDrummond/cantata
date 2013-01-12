@@ -216,6 +216,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
     bool haveInserted=false;
     int level=0;
     CategoryItem *cat=0;
+    QString unknown=i18n("Unknown");
 
     while (!doc.atEnd()) {
         doc.readNext();
@@ -249,7 +250,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                         if (!isInternal) {
                             beginInsertRows(createIndex(items.indexOf(cat), 0, cat), cat->streams.count(), cat->streams.count());
                         }
-                        StreamItem *stream=new StreamItem(name, genre, iconIsValid(icon) ? icon : QString(), url, cat);
+                        StreamItem *stream=new StreamItem(name, genre.isEmpty() ? unknown : genre, iconIsValid(icon) ? icon : QString(), url, cat);
                         cat->itemMap.insert(url.toString(), stream);
                         cat->streams.append(stream);
                         if (!isInternal) {
@@ -295,6 +296,8 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
         doc.setAutoFormattingIndent(1);
     }
 
+    QString unknown=i18n("Unknown");
+
     foreach (CategoryItem *c, items) {
         if (selection.isEmpty() || selection.contains(c)) {
             doc.writeStartElement("category");
@@ -310,7 +313,7 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
                     if (!s->icon.isEmpty() && s->icon!=Icons::streamIcon.name()) {
                         doc.writeAttribute("icon", s->icon);
                     }
-                    if (!s->genre.isEmpty()) {
+                    if (!s->genre.isEmpty() && s->genre!=unknown) {
                         doc.writeAttribute("genre", s->genre);
                     }
                     doc.writeEndElement();
@@ -343,7 +346,7 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &g
     return true;
 }
 
-void StreamsModel::add(const QString &cat, const QList<StreamsModel::StreamItem> &streams)
+void StreamsModel::add(const QString &cat, const QList<StreamsModel::StreamItem *> &streams)
 {
     if (streams.isEmpty()) {
         return;
@@ -354,10 +357,10 @@ void StreamsModel::add(const QString &cat, const QList<StreamsModel::StreamItem>
     }
     ci=getCategory(cat, true, true);
     beginInsertRows(createIndex(items.indexOf(ci), 0, ci), 0, streams.count()-1);
-    foreach (const StreamsModel::StreamItem &s, streams) {
-        StreamItem *stream=new StreamItem(s.name, s.genre, s.icon.isEmpty() || s.icon==Icons::streamIcon.name() ? QString() : s.icon, s.url, ci);
-        ci->itemMap.insert(s.url.toString(), stream);
-        ci->streams.append(stream);
+    foreach (StreamsModel::StreamItem *s, streams) {
+        s->parent=ci;
+        ci->itemMap.insert(s->url.toString(), s);
+        ci->streams.append(s);
     }
     endInsertRows();
     updateGenres();

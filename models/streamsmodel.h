@@ -41,7 +41,6 @@ public:
 
     struct Item
     {
-        Item() { }
         Item(const QString &n, const QString &i) : name(n), icon(i) { }
         virtual bool isCategory() = 0;
         virtual ~Item() { }
@@ -52,7 +51,6 @@ public:
     struct CategoryItem;
     struct StreamItem : public Item
     {
-        StreamItem() : parent(0) { }
         StreamItem(const QString &n, const QString &g, const QString &i, const QUrl &u, CategoryItem *p=0) : Item(n, i), genre(g), url(u), parent(p) { }
         bool isCategory() { return false; }
         QString genre;
@@ -85,7 +83,7 @@ public:
     bool save(const QString &filename, const QSet<StreamsModel::Item *> &selection=QSet<StreamsModel::Item *>());
     bool import(const QString &filename) { return load(filename, false); }
     bool add(const QString &cat, const QString &name, const QString &genre, const QString &icon, const QString &url);
-    void add(const QString &cat, const QList<StreamsModel::StreamItem> &streams);
+    void add(const QString &cat, const QList<StreamsModel::StreamItem *> &streams);
     void editCategory(const QModelIndex &index, const QString &name, const QString &icon);
     void editStream(const QModelIndex &index, const QString &oldCat, const QString &newCat, const QString &name, const QString &genre, const QString &icon, const QString &url);
     void remove(const QModelIndex &index);

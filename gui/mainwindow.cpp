@@ -2416,9 +2416,11 @@ void MainWindow::tabToggled(int index)
         break;
     case PAGE_FOLDERS:
         folderPage->setEnabled(!folderPage->isEnabled());
+        if (folderPage->isEnabled() && loaded&TAB_FOLDERS) loaded-=TAB_FOLDERS;
         break;
     case PAGE_STREAMS:
         streamsPage->setEnabled(!streamsPage->isEnabled());
+        if (streamsPage->isEnabled() && loaded&TAB_STREAMS) loaded-=TAB_STREAMS;
         break;
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES:

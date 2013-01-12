@@ -71,16 +71,44 @@ static QString fixGenre(const QString &g)
         QString genre=g;
         genre[0]=genre[0].toUpper();
         int pos=genre.indexOf('|');
-        return pos>0 ? genre.left(pos): genre;
+
+        if (pos>0) {
+            genre=genre.left(pos);
+        }
+
+        if (genre.length() < 2 ||
+            genre.contains("ÃÂ") || // Broken unicode.
+            genre.contains(QRegExp("^#x[0-9a-f][0-9a-f]"))) { // Broken XML entities.
+                return QString();
+        }
+
+        // Convert 80 -> 80s.
+        return genre.contains(QRegExp("^[0-9]0$")) ? genre + 's' : genre;
     }
     return g;
 }
 
-static QList<StreamsModel::StreamItem> parseIceCast(const QByteArray &data)
+static void trimGenres(QMultiHash<QString, StreamsModel::StreamItem *> &genres)
 {
-    QList<StreamsModel::StreamItem> streams;
-    StreamsModel::StreamItem item;
+    QSet<QString> genreSet = genres.keys().toSet();
+    foreach (const QString &genre, genreSet) {
+        if (genres.count(genre) < 3) {
+            const QList<StreamsModel::StreamItem *> &smallGnre = genres.values(genre);
+            foreach (StreamsModel::StreamItem* s, smallGnre) {
+                s->genre = QString();
+            }
+        }
+    }
+}
+
+static QList<StreamsModel::StreamItem *> parseIceCast(const QByteArray &data)
+{
+    QList<StreamsModel::StreamItem *> streams;
+    QString name;
+    QUrl url;
+    QString genre;
     QSet<QString> names;
+    QMultiHash<QString, StreamsModel::StreamItem *> genres;
     int level=0;
     QXmlStreamReader doc(QString::fromUtf8(data));
 
@@ -90,38 +118,44 @@ static QList<StreamsModel::StreamItem> parseIceCast(const QByteArray &data)
         if (doc.isStartElement()) {
             ++level;
             if (2==level && QLatin1String("entry")==doc.name()) {
-                item.name=QString();
-                item.url=QUrl();
-                item.genre=QString();
+                name=QString();
+                url=QUrl();
+                genre=QString();
             } else if (3==level) {
                 if (QLatin1String("server_name")==doc.name()) {
-                    item.name=doc.readElementText();
+                    name=doc.readElementText();
                     --level;
                 } else if (QLatin1String("genre")==doc.name()) {
-                    item.genre=fixGenre(doc.readElementText());
+                    genre=fixGenre(doc.readElementText());
                     --level;
                 } else if (QLatin1String("listen_url")==doc.name()) {
-                    item.url=QUrl(doc.readElementText());
+                    url=QUrl(doc.readElementText());
                     --level;
                 }
             }
         } else if (doc.isEndElement()) {
-            if (2==level && QLatin1String("entry")==doc.name() && !item.name.isEmpty() && item.url.isValid() && !names.contains(item.name)) {
+            if (2==level && QLatin1String("entry")==doc.name() && !name.isEmpty() && url.isValid() && !names.contains(name)) {
+                StreamsModel::StreamItem *item=new StreamsModel::StreamItem(name, genre, QString(), url);
                 streams.append(item);
-                names.insert(item.name);
+                genres.insert(item->genre, item);
+                names.insert(item->name);
             }
             --level;
         }
     }
+    trimGenres(genres);
     return streams;
 }
 
-static QList<StreamsModel::StreamItem> parseSomaFm(const QByteArray &data)
+static QList<StreamsModel::StreamItem *> parseSomaFm(const QByteArray &data)
 {
-    QList<StreamsModel::StreamItem> streams;
-    StreamsModel::StreamItem item;
+    QList<StreamsModel::StreamItem *> streams;
     QSet<QString> names;
     QString streamFormat;
+    QMultiHash<QString, StreamsModel::StreamItem *> genres;
+    QString name;
+    QUrl url;
+    QString genre;
     int level=0;
     QXmlStreamReader doc(QString::fromUtf8(data));
 
@@ -131,33 +165,37 @@ static QList<StreamsModel::StreamItem> parseSomaFm(const QByteArray &data)
         if (doc.isStartElement()) {
             ++level;
             if (2==level && QLatin1String("channel")==doc.name()) {
-                item.name=QString();
-                item.url=QUrl();
-                item.genre=QString();
+                name=QString();
+                url=QUrl();
+                genre=QString();
                 streamFormat=QString();
             } else if (3==level) {
                 if (QLatin1String("title")==doc.name()) {
-                    item.name=doc.readElementText();
+                    name=doc.readElementText();
                     --level;
                 } else if (QLatin1String("genre")==doc.name()) {
-                    item.genre=fixGenre(doc.readElementText());
+                    genre=fixGenre(doc.readElementText());
                     --level;
                 } else if (QLatin1String("fastpls")==doc.name()) {
                     if (streamFormat.isEmpty() || QLatin1String("mp3")!=streamFormat) {
                         streamFormat=doc.attributes().value("format").toString();
-                        item.url=QUrl(doc.readElementText());
+                        url=QUrl(doc.readElementText());
                         --level;
                     }
                 }
             }
         } else if (doc.isEndElement()) {
-            if (2==level && QLatin1String("channel")==doc.name() && !item.name.isEmpty() && item.url.isValid() && !names.contains(item.name)) {
+            if (2==level && QLatin1String("channel")==doc.name() && !name.isEmpty() && url.isValid() && !names.contains(name)) {
+                StreamsModel::StreamItem *item=new StreamsModel::StreamItem(name, genre, QString(), url);
                 streams.append(item);
-                names.insert(item.name);
+                genres.insert(item->genre, item);
+                names.insert(item->name);
             }
             --level;
         }
     }
+
+    trimGenres(genres);
     return streams;
 }
 
@@ -310,7 +348,7 @@ void StreamsPage::downloadFinished()
 
     if (type!=WS_Count) {
         if(QNetworkReply::NoError==reply->error()) {
-            QList<StreamsModel::StreamItem> streams;
+            QList<StreamsModel::StreamItem *> streams;
             switch (type) {
             case WS_IceCast:
                 streams=parseIceCast(reply->readAll());

@@ -46,7 +46,6 @@ private:
 
 public Q_SLOTS:
     void cancel();
-    void urlHandlers(const QStringList &uh);
 
 Q_SIGNALS:
     void result(const QStringList &items, int insertRow, bool replace, quint8 priority);
@@ -68,7 +67,6 @@ private:
     quint8 prio;
     int redirects;
     QByteArray data;
-    QStringList handlers;
 };
 
 #endif

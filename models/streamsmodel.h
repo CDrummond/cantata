@@ -98,10 +98,6 @@ public:
     void mark(const QList<int> &rows, bool f);
     void updateGenres();
 
-    const QSet<QString> & urlHandlers() const {
-        return handlers;
-    }
-
 Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
 
@@ -114,13 +110,11 @@ private:
 
 private Q_SLOTS:
     void persist();
-    void urlHandlers(const QStringList &h);
 
 private:
     QList<CategoryItem *> items;
     bool modified;
     QTimer *timer;
-    QSet<QString> handlers;
 };
 
 #endif

@@ -71,7 +71,6 @@
 #include "streamspage.h"
 #include "lyricspage.h"
 #include "infopage.h"
-#include "serverinfopage.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "filejob.h"
 #include "devicespage.h"
@@ -346,7 +345,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_WEBKIT
     infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"), Icons::wikiIcon);
     #endif
-    serverInfoTabAction = ActionCollection::get()->createAction("showserverinfotab", i18n("Server Info"), "network-server");
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), "multimedia-player");
     copyToDeviceAction = ActionCollection::get()->createAction("copytodevice", i18n("Copy To Device"), "multimedia-player");
@@ -384,7 +382,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_WEBKIT
     infoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_WEBKIT
-    serverInfoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
@@ -430,7 +427,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_WEBKIT
     infoPage = new InfoPage(this);
     #endif
-    serverInfoPage = new ServerInfoPage(this);
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
     #endif
@@ -479,7 +475,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_WEBKIT
     tabWidget->AddTab(infoPage, TAB_ACTION(infoTabAction), !hiddenPages.contains(infoPage->metaObject()->className()));
     #endif
-    tabWidget->AddTab(serverInfoPage, TAB_ACTION(serverInfoTabAction), !hiddenPages.contains(serverInfoPage->metaObject()->className()));
     #ifdef ENABLE_DEVICES_SUPPORT
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
@@ -582,11 +577,15 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(expandInterfaceAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
+    serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), "network-server");
+    connect(serverInfoAction, SIGNAL(triggered(bool)),this, SLOT(showServerInfo()));
+    serverInfoAction->setEnabled(false);
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(prefAction);
     shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));
     mainMenu->addAction(shortcutsAction);
     mainMenu->addSeparator();
+    mainMenu->addAction(serverInfoAction);
     mainMenu->addMenu(helpMenu());
     #else
     prefAction=ActionCollection::get()->createAction("configure", i18n("Configure Cantata..."), Icons::configureIcon);
@@ -595,6 +594,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addSeparator();
     Action *aboutAction=ActionCollection::get()->createAction("about", i18nc("Qt-only", "About Cantata..."), Icons::appIcon);
     connect(aboutAction, SIGNAL(triggered(bool)),this, SLOT(showAboutDialog()));
+    mainMenu->addAction(serverInfoAction);
     mainMenu->addAction(aboutAction);
     #endif
     mainMenu->addSeparator();
@@ -612,6 +612,7 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addAction(prefAction);
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Help"), this);
+        menu->addAction(serverInfoAction);
         menu->addAction(aboutAction);
         menuBar()->addMenu(menu);
     }
@@ -765,7 +766,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_WEBKIT
     connect(infoTabAction, SIGNAL(triggered(bool)), this, SLOT(showInfoTab()));
     #endif
-    connect(serverInfoTabAction, SIGNAL(triggered(bool)), this, SLOT(showServerInfoTab()));
     connect(searchAction, SIGNAL(triggered(bool)), this, SLOT(focusSearch()));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
@@ -1022,6 +1022,7 @@ void MainWindow::messageWidgetVisibility(bool v)
 
 void MainWindow::mpdConnectionStateChanged(bool connected)
 {
+    serverInfoAction->setEnabled(connected);
     if (connected) {
         messageWidget->hide();
         if (CS_Connected!=connectedState) {
@@ -1044,7 +1045,6 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
         playlistsPage->clear();
         playQueueModel.clear();
         lyricsPage->text->clear();
-        serverInfoPage->clear();
         connectedState=CS_Disconnected;
         outputsAction->setVisible(false);
         MPDStatus dummyStatus;
@@ -1107,7 +1107,6 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         playlistsPage->clear();
         playQueueModel.clear();
         lyricsPage->text->clear();
-        serverInfoPage->clear();
         if (!MPDConnection::self()->getDetails().isEmpty() && details!=MPDConnection::self()->getDetails()) {
             Dynamic::self()->stop();
         }
@@ -1242,7 +1241,6 @@ void MainWindow::checkMpdDir()
     #ifdef ENABLE_WEBKIT
     case PAGE_INFO:                                        break;
     #endif
-    case PAGE_SERVER_INFO:                                 break;
     default:                                               break;
     }
 }
@@ -1512,6 +1510,36 @@ void MainWindow::showAboutDialog()
                        i18nc("Qt-only", "<b>Cantata %1</b><br/><br/>Simple GUI front-end for MPD.<br/><br/>(c) Craig Drummond 2011-2012.<br/>Released under the GPLv2<br/><br/><i><small>Based upon QtMPC - (C) 2007-2010 The QtMPC Authors</small></i>").arg(PACKAGE_VERSION_STRING));
 }
 #endif
+
+void MainWindow::showServerInfo()
+{
+    QStringList handlers=MPDConnection::self()->urlHandlers().toList();
+    qSort(handlers);
+    long version=MPDConnection::self()->version();
+    MessageBox::information(this, i18n("<p><table>"
+                                       "<tr><td colspan=\"2\"><b>Server</b></td></tr>"
+                                       "<tr><td align=\"right\">Version:</td><td>%1.%2.%3</td></tr>"
+                                       "<tr><td align=\"right\">Uptime:</td><td>%4</td></tr>"
+                                       "<tr><td align=\"right\">Time playing:</td><td>%5</td></tr>"
+                                       "<tr/>"
+                                       "<tr><td colspan=\"2\"><b>Database</b></td></tr>"
+                                       "<tr><td align=\"right\">Artists:</td><td>%6</td></tr>"
+                                       "<tr><td align=\"right\">Albums:</td><td>%7</td></tr>"
+                                       "<tr><td align=\"right\">Songs:</td><td>%8</td></tr>"
+                                       "<tr><td align=\"right\">URL handlers:</td><td>%9</td></tr>"
+                                       "<tr><td align=\"right\">Total duration:</td><td>%10</td></tr>"
+                                       "<tr><td align=\"right\">Last update:</td><td>%11</td></tr></table></p>")
+                                       .arg((version>>16)&0xFF).arg((version>>8)&0xFF).arg(version&0xFF)
+                                       .arg(MPDParseUtils::formatDuration(MPDStats::self()->uptime()))
+                                       .arg(MPDParseUtils::formatDuration(MPDStats::self()->playtime()))
+                                       .arg(MPDStats::self()->artists())
+                                       .arg(MPDStats::self()->albums())
+                                       .arg(MPDStats::self()->songs())
+                                       .arg(handlers.join(", "))
+                                       .arg(MPDParseUtils::formatDuration(MPDStats::self()->dbPlaytime()))
+                                       .arg(MPDStats::self()->dbUpdate().toString(Qt::SystemLocaleShortDate)),
+                            i18n("Server Information"));
+}
 
 #ifdef PHONON_FOUND
 void MainWindow::toggleStream(bool s)
@@ -2383,8 +2411,6 @@ void MainWindow::currentTabChanged(int index)
         }
         break;
     #endif
-    case PAGE_SERVER_INFO:
-        break;
     default:
         break;
     }
@@ -2492,9 +2518,6 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         showTab(MainWindow::PAGE_INFO);
     }
     #endif
-    else if (QLatin1String("serverinfo")==p) {
-        showTab(MainWindow::PAGE_SERVER_INFO);
-    }
     #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
     else if (QLatin1String("devices")==p) {
         showTab(MainWindow::PAGE_DEVICES);

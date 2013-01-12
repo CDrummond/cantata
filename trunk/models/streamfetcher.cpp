@@ -139,6 +139,9 @@ static QString parse(const QByteArray &data, const QStringList &handlers)
         return parsePlaylist(data, QLatin1String("Ref"), handlers);
     } else if (data.length()>5 && !strncasecmp(data.constData(), "<?xml", 5)) {
         return parseXml(data, handlers);
+    } else if ( (-1==data.indexOf("<html") && -1!=data.indexOf("http:/")) || // flat list?
+                (-1!=data.indexOf("#EXTM3U")) ) { // m3u with comments?
+        return parseExt3Mu(data, handlers);
     }
 
     return QString();

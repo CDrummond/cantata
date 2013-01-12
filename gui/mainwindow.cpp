@@ -341,7 +341,7 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::playlistIcon);
     dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::dynamicIcon);
     lyricsTabAction = ActionCollection::get()->createAction("showlyricstab", i18n("Lyrics"), Icons::lyricsIcon);
-    streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::streamIcon);
+    streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::radioStreamIcon);
     #ifdef ENABLE_WEBKIT
     infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"), Icons::wikiIcon);
     #endif

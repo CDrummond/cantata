@@ -169,7 +169,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:    return stream->name;
         case ItemView::Role_SubText:
         case Qt::ToolTipRole:    return stream->url;
-        case Qt::DecorationRole: return stream->icon.isEmpty() ? Icons::streamIcon
+        case Qt::DecorationRole: return stream->icon.isEmpty() ? Icons::radioStreamIcon
                                                                : stream->icon.startsWith('/') ? QIcon(stream->icon) : Icon(stream->icon);
         default: break;
         }

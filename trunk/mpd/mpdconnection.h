@@ -30,6 +30,7 @@
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QLocalSocket>
 #include <QtCore/QDateTime>
+#include <QtCore/QStringList>
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "song.h"
@@ -182,7 +183,8 @@ public:
     void setDirReadable(bool r) { details.dirReadable=r; }
     bool isConnected() const { return State_Connected==state; }
     bool canUsePriority() const { return ver>=MPD_MAKE_VERSION(0, 17, 0); }
-
+    const QSet<QString> & urlHandlers() const { return handlers; }
+    long version() const { return ver; }
     static bool isPlaylist(const QString &file);
 
 public Q_SLOTS:
@@ -271,14 +273,12 @@ Q_SIGNALS:
     void playlistLoaded(const QString &playlist);
     void added(const QStringList &files);
     void replayGain(const QString &);
-    void version(long);
     void updatingLibrary();
     void updatedLibrary();
     void updatingFileList();
     void updatedFileList();
     void error(const QString &err, bool showActions=false);
     void info(const QString &msg);
-    void urlHandlers(const QStringList &handlers);
     void dirChanged();
     void prioritySet(const QList<quint32> &ids, quint8 priority);
 
@@ -307,6 +307,7 @@ private:
 private:
     QThread *thread;
     long ver;
+    QSet<QString> handlers;
     MPDConnectionDetails details;
     QDateTime dbUpdate;
     // Use 2 sockets, 1 for commands and 1 to receive MPD idle events.

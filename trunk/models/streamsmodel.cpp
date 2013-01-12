@@ -63,7 +63,6 @@ StreamsModel::StreamsModel()
     , modified(false)
     , timer(0)
 {
-    connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
 }
 
 StreamsModel::~StreamsModel()
@@ -561,7 +560,7 @@ Qt::ItemFlags StreamsModel::flags(const QModelIndex &index) const
 bool StreamsModel::validProtocol(const QString &file) const
 {
     QString scheme=QUrl(file).scheme();
-    return scheme.isEmpty() || handlers.contains(scheme);
+    return scheme.isEmpty() || MPDConnection::self()->urlHandlers().contains(scheme);
 }
 
 static QString prefixName(const QString &n, bool addPrefix)
@@ -611,11 +610,6 @@ void StreamsModel::persist()
         save(getInternalFile(true));
         modified=false;
     }
-}
-
-void StreamsModel::urlHandlers(const QStringList &h)
-{
-    handlers=h.toSet();
 }
 
 void StreamsModel::updateGenres()

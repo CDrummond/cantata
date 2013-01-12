@@ -236,7 +236,7 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
                 QString origName=name;
                 QUrl url=QUrl(doc.attributes().value("url").toString());
 
-                if (!name.isEmpty() && url.isValid() && !entryExists(cat, QString(), url)) {
+                if (!name.isEmpty() && url.isValid() && (isInternal || !entryExists(cat, QString(), url))) {
                     int i=1;
                     for (; i<100 && entryExists(cat, name); ++i) {
                         name=origName+QLatin1String("_")+QString::number(i);

@@ -272,10 +272,6 @@ void StreamsPage::setEnabled(bool e)
         return;
     }
     enabled=e;
-
-    if (enabled) {
-        refresh();
-    }
 }
 
 void StreamsPage::refresh()

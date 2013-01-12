@@ -222,7 +222,6 @@ MPDConnection::ConnectionReturn MPDConnection::connectToMPD(MpdSocket &socket, b
                 long v=((maj&0xFF)<<16)+((min&0xFF)<<8)+(patch&0xFF);
                 if (v!=ver) {
                     ver=v;
-                    emit version(ver);
                 }
             }
 
@@ -878,7 +877,7 @@ void MPDConnection::getUrlHandlers()
 {
     Response response=sendCommand("urlhandlers");
     if (response.ok) {
-        emit urlHandlers(MPDParseUtils::parseUrlHandlers(response.data));
+        handlers=MPDParseUtils::parseUrlHandlers(response.data).toSet();
     }
 }
 

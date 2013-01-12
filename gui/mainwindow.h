@@ -61,7 +61,6 @@ class DynamicPage;
 class LyricsPage;
 class StreamsPage;
 class InfoPage;
-class ServerInfoPage;
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
 #endif
@@ -151,11 +150,10 @@ public:
         PAGE_PLAYLISTS,
         PAGE_DYNAMIC,
         PAGE_STREAMS,
-        PAGE_LYRICS,
+        PAGE_LYRICS
         #ifdef ENABLE_WEBKIT
-        PAGE_INFO,
+        , PAGE_INFO
         #endif
-        PAGE_SERVER_INFO
         #ifdef ENABLE_DEVICES_SUPPORT
         , PAGE_DEVICES
         #endif
@@ -233,6 +231,7 @@ public Q_SLOTS:
     #ifndef ENABLE_KDE_SUPPORT
     void showAboutDialog();
     #endif
+    void showServerInfo();
     #ifdef PHONON_FOUND
     void toggleStream(bool s);
     #endif
@@ -284,7 +283,6 @@ public Q_SLOTS:
         showTab(PAGE_INFO);
         #endif
     }
-    void showServerInfoTab() { showTab(PAGE_SERVER_INFO); }
     void showDevicesTab() {
         #ifdef ENABLE_DEVICES_SUPPORT
         showTab(PAGE_DEVICES);
@@ -404,7 +402,6 @@ private:
     #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
     #endif
-    Action *serverInfoTabAction;
     #ifdef ENABLE_DEVICES_SUPPORT
     Action *devicesTabAction;
     Action *copyToDeviceAction;
@@ -419,6 +416,7 @@ private:
     Action *collapseAllAction;
     Action *smallPlaybackButtonsAction;
     Action *setCoverAction;
+    Action *serverInfoAction;
     QAction *autoHideSplitterAction;
     TrayItem *trayItem;
     QMenu *playbackBtnsMenu;
@@ -444,7 +442,6 @@ private:
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesPage *devicesPage;
     #endif
-    ServerInfoPage *serverInfoPage;
     #ifndef Q_OS_WIN
     Mpris *mpris;
     GnomeMediaKeys *gnomeMediaKeys;
@@ -491,7 +488,6 @@ private:
     friend class StreamsPage;
     friend class LyricsPage;
     friend class InfoPage;
-    friend class ServerInfoPage;
     #ifdef ENABLE_DEVICES_SUPPORT
     friend class DevicesPage;
     #endif

@@ -32,7 +32,7 @@
 static const int constMaxRedirects = 3;
 static const int constMaxData = 12 * 1024;
 
-static QString parsePlaylist(const QByteArray &data, const QString &key, const QStringList &handlers)
+static QString parsePlaylist(const QByteArray &data, const QString &key, const QSet<QString> &handlers)
 {
     QStringList lines=QString(data).split('\n', QString::SkipEmptyParts);
 
@@ -53,7 +53,7 @@ static QString parsePlaylist(const QByteArray &data, const QString &key, const Q
     return QString();
 }
 
-static QString parseExt3Mu(const QByteArray &data, const QStringList &handlers)
+static QString parseExt3Mu(const QByteArray &data, const QSet<QString> &handlers)
 {
     QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r)")), QString::SkipEmptyParts);
 
@@ -71,7 +71,7 @@ static QString parseExt3Mu(const QByteArray &data, const QStringList &handlers)
     return QString();
 }
 
-static QString parseAsx(const QByteArray &data, const QStringList &handlers)
+static QString parseAsx(const QByteArray &data, const QSet<QString> &handlers)
 {
     QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r|/>)")), QString::SkipEmptyParts);
 
@@ -96,7 +96,7 @@ static QString parseAsx(const QByteArray &data, const QStringList &handlers)
     return QString();
 }
 
-static QString parseXml(const QByteArray &data, const QStringList &handlers)
+static QString parseXml(const QByteArray &data, const QSet<QString> &handlers)
 {
     // XSPF / SPIFF
     QDomDocument doc;
@@ -127,8 +127,9 @@ static QString parseXml(const QByteArray &data, const QStringList &handlers)
     return QString();
 }
 
-static QString parse(const QByteArray &data, const QStringList &handlers)
+static QString parse(const QByteArray &data)
 {
+    QSet<QString> handlers=MPDConnection::self()->urlHandlers();
     if (data.length()>10 && !strncasecmp(data.constData(), "[playlist]", 10)) {
         return parsePlaylist(data, QLatin1String("File"), handlers);
     } else if (data.length()>7 && (!strncasecmp(data.constData(), "#EXTM3U", 7) || !strncasecmp(data.constData(), "http://", 7))) {
@@ -151,8 +152,6 @@ StreamFetcher::StreamFetcher(QObject *p)
     : QObject(p)
     , job(0)
 {
-    handlers.append("http");
-    connect(MPDConnection::self(), SIGNAL(urlHandlers(const QStringList &)), SLOT(urlHandlers(const QStringList &)));
 }
 
 StreamFetcher::~StreamFetcher()
@@ -216,12 +215,6 @@ void StreamFetcher::cancel()
     job=0;
 }
 
-void StreamFetcher::urlHandlers(const QStringList &uh)
-{
-    handlers=uh;
-    handlers.removeAll("file");
-}
-
 void StreamFetcher::dataReady()
 {
     data+=job->readAll();
@@ -259,7 +252,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                 connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                 redirected=true;
             } else {
-                QString u=parse(data, handlers);
+                QString u=parse(data);
 
                 if (u.isEmpty() || u==current) {
                     done.append(current.startsWith("cantata-http:") ? current.mid(8) : current);

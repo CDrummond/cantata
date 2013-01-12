@@ -30,10 +30,20 @@
 
 class MainWindow;
 class Action;
+class QAction;
+class QNetworkReply;
 
 class StreamsPage : public QWidget, public Ui::StreamsPage
 {
     Q_OBJECT
+
+public:
+    enum WebStream {
+        WS_IceCast,
+        WS_SomaFm,
+
+        WS_Count
+    };
 
 public:
     StreamsPage(MainWindow *p);
@@ -56,6 +66,9 @@ public Q_SLOTS:
     void controlActions();
 
 private Q_SLOTS:
+    void downloadFinished();
+    void importIceCast();
+    void importSomaFm();
     void importXml();
     void exportXml();
     void add();
@@ -67,6 +80,7 @@ private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
     QStringList getCategories();
     QStringList getGenres();
+    void importWebStreams(WebStream type);
 
 private:
     bool enabled;
@@ -74,6 +88,10 @@ private:
     Action *exportAction;
     Action *addAction;
     Action *editAction;
+    QAction *importFileAction;
+    QAction *importIceCastAction;
+    QAction *importSomaFmCastAction;
+    QNetworkReply *jobs[WS_Count];
     StreamsModel model;
     StreamsProxyModel proxy;
     MainWindow *mw;

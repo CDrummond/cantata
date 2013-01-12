@@ -288,7 +288,13 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
     doc.writeStartDocument();
     doc.writeStartElement("cantata");
     doc.writeAttribute("version", "1.0");
-    doc.setAutoFormatting(false);
+    if (filename==getInternalFile(false)) {
+        doc.setAutoFormatting(false);
+    } else {
+        doc.setAutoFormatting(true);
+        doc.setAutoFormattingIndent(1);
+    }
+
     foreach (CategoryItem *c, items) {
         if (selection.isEmpty() || selection.contains(c)) {
             doc.writeStartElement("category");

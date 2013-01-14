@@ -69,6 +69,7 @@
 #include "albumspage.h"
 #include "folderpage.h"
 #include "streamspage.h"
+#include "onlineservicespage.h"
 #include "lyricspage.h"
 #include "infopage.h"
 #ifdef ENABLE_DEVICES_SUPPORT
@@ -88,6 +89,7 @@
 #endif
 #include "coverdialog.h"
 #include "streamsmodel.h"
+#include "onlineservicesmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
 #include "timeslider.h"
@@ -342,6 +344,7 @@ MainWindow::MainWindow(QWidget *parent)
     dynamicTabAction = ActionCollection::get()->createAction("showdynamictab", i18n("Dynamic"), Icons::dynamicIcon);
     lyricsTabAction = ActionCollection::get()->createAction("showlyricstab", i18n("Lyrics"), Icons::lyricsIcon);
     streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::radioStreamIcon);
+    onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::streamIcon);
     #ifdef ENABLE_WEBKIT
     infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"), Icons::wikiIcon);
     #endif
@@ -378,6 +381,7 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     dynamicTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     streamsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
+    onlineTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     lyricsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #ifdef ENABLE_WEBKIT
     infoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
@@ -423,6 +427,7 @@ MainWindow::MainWindow(QWidget *parent)
     playlistsPage = new PlaylistsPage(this);
     dynamicPage = new DynamicPage(this);
     streamsPage = new StreamsPage(this);
+    onlinePage = new OnlineServicesPage(this);
     lyricsPage = new LyricsPage(this);
     #ifdef ENABLE_WEBKIT
     infoPage = new InfoPage(this);
@@ -471,6 +476,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(playlistsPage, TAB_ACTION(playlistsTabAction), !hiddenPages.contains(playlistsPage->metaObject()->className()));
     tabWidget->AddTab(dynamicPage, TAB_ACTION(dynamicTabAction), !hiddenPages.contains(dynamicPage->metaObject()->className()));
     tabWidget->AddTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
+    tabWidget->AddTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     tabWidget->AddTab(lyricsPage, TAB_ACTION(lyricsTabAction), !hiddenPages.contains(lyricsPage->metaObject()->className()));
     #ifdef ENABLE_WEBKIT
     tabWidget->AddTab(infoPage, TAB_ACTION(infoTabAction), !hiddenPages.contains(infoPage->metaObject()->className()));
@@ -480,9 +486,11 @@ MainWindow::MainWindow(QWidget *parent)
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     copyToDeviceAction->setVisible(DevicesModel::self()->isEnabled());
     #endif
+    OnlineServicesModel::self()->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));
+    onlinePage->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
 
     autoHideSplitterAction=new QAction(i18n("Auto Hide"), this);
     autoHideSplitterAction->setCheckable(true);
@@ -701,6 +709,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
     connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
+    connect(onlinePage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlayQueue(const QList<Song> &)));
@@ -763,6 +772,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(dynamicTabAction, SIGNAL(triggered(bool)), this, SLOT(showDynamicTab()));
     connect(lyricsTabAction, SIGNAL(triggered(bool)), this, SLOT(showLyricsTab()));
     connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
+    connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
     #ifdef ENABLE_WEBKIT
     connect(infoTabAction, SIGNAL(triggered(bool)), this, SLOT(showInfoTab()));
     #endif
@@ -1237,6 +1247,7 @@ void MainWindow::checkMpdDir()
     case PAGE_PLAYLISTS: playlistsPage->controlActions();  break;
     case PAGE_DYNAMIC:   dynamicPage->controlActions();    break;
     case PAGE_STREAMS:   streamsPage->controlActions();    break;
+    case PAGE_ONLINE:    onlinePage->controlActions();     break;
     case PAGE_LYRICS:                                      break;
     #ifdef ENABLE_WEBKIT
     case PAGE_INFO:                                        break;
@@ -1351,6 +1362,7 @@ void MainWindow::readSettings()
     MusicLibraryModel::self()->setUseArtistImages(Settings::self()->libraryArtistImage());
     playlistsPage->setView(Settings::self()->playlistsView());
     streamsPage->setView(0==Settings::self()->streamsView());
+    onlinePage->setView(0==Settings::self()->onlineView());
     folderPage->setView(0==Settings::self()->folderView());
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage->setView(0==Settings::self()->devicesView());
@@ -2089,6 +2101,8 @@ void MainWindow::addToPlayQueue(bool replace, quint8 priority)
         playlistsPage->addSelectionToPlaylist(replace, priority);
     } else if (streamsPage->isVisible()) {
         streamsPage->addSelectionToPlaylist(replace, priority);
+    } else if (onlinePage->isVisible()) {
+        onlinePage->addSelectionToPlaylist(QString(), replace, priority);
     }
 }
 
@@ -2397,6 +2411,9 @@ void MainWindow::currentTabChanged(int index)
         }
         streamsPage->controlActions();
         break;
+    case PAGE_ONLINE:
+        onlinePage->controlActions();
+        break;
     case PAGE_LYRICS:
         if (lyricsNeedUpdating) {
             lyricsPage->update(current);
@@ -2447,6 +2464,9 @@ void MainWindow::tabToggled(int index)
     case PAGE_STREAMS:
         streamsPage->setEnabled(!streamsPage->isEnabled());
         if (streamsPage->isEnabled() && loaded&TAB_STREAMS) loaded-=TAB_STREAMS;
+        break;
+    case PAGE_ONLINE:
+        OnlineServicesModel::self()->setEnabled(!OnlineServicesModel::self()->isEnabled());
         break;
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES:
@@ -2512,6 +2532,8 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         }
     } else if (QLatin1String("lyrics")==p) {
         showTab(MainWindow::PAGE_LYRICS);
+    } else if (QLatin1String("online")==p) {
+        showTab(MainWindow::PAGE_ONLINE);
     }
     #ifdef ENABLE_WEBKIT
     else if (QLatin1String("info")==p) {
@@ -2560,6 +2582,7 @@ void MainWindow::goBack()
     case PAGE_FOLDERS:   folderPage->goBack();     break;
     case PAGE_PLAYLISTS: playlistsPage->goBack();  break;
     case PAGE_STREAMS:   streamsPage->goBack();    break;
+    case PAGE_ONLINE: onlinePage->goBack();    break;
     default:                                       break;
     }
 }
@@ -2580,12 +2603,12 @@ void MainWindow::focusSearch()
         folderPage->focusSearch();
     } else if (playlistsPage->isVisible()) {
         playlistsPage->focusSearch();
-    }
-    else if (dynamicPage->isVisible()) {
+    } else if (dynamicPage->isVisible()) {
         dynamicPage->focusSearch();
-    }
-    else if (streamsPage->isVisible()) {
+    } else if (streamsPage->isVisible()) {
         streamsPage->focusSearch();
+    } else if (onlinePage->isVisible()) {
+        onlinePage->focusSearch();
     }
     #ifdef ENABLE_DEVICES_SUPPORT
     else if (devicesPage->isVisible()) {

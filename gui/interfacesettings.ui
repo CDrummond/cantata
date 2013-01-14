@@ -275,6 +275,19 @@ within the folder of the current track, or within its parent folder. If no image
         <widget class="QComboBox" name="streamsView"/>
        </item>
        <item row="2" column="0">
+        <widget class="BuddyLabel" name="label_xx">
+         <property name="text">
+          <string>Online view style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>onlineView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="onlineView"/>
+       </item>
+       <item row="3" column="0">
         <widget class="BuddyLabel" name="devicesViewLabel">
          <property name="text">
           <string>Devices view style:</string>
@@ -284,10 +297,10 @@ within the folder of the current track, or within its parent folder. If no image
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QComboBox" name="devicesView"/>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="BuddyLabel" name="label_5">
          <property name="text">
           <string>Use cover as lyrics background:</string>
@@ -297,7 +310,7 @@ within the folder of the current track, or within its parent folder. If no image
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="OnOffButton" name="lyricsBgnd">
          <property name="text">
           <string/>
@@ -633,6 +646,7 @@ within the folder of the current track, or within its parent folder. If no image
   <tabstop>playListsStartClosed</tabstop>
   <tabstop>folderView</tabstop>
   <tabstop>streamsView</tabstop>
+  <tabstop>onlineView</tabstop>
   <tabstop>devicesView</tabstop>
   <tabstop>lyricsBgnd</tabstop>
   <tabstop>playQueueScroll</tabstop>

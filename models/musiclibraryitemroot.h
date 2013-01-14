@@ -55,6 +55,7 @@ public:
 
     virtual QString icon() const { return QString(); }
     virtual bool isDevice() const { return false; }
+    virtual bool isService() const { return false; }
     MusicLibraryItemArtist * artist(const Song &s, bool create=true);
     MusicLibraryItemArtist * createArtist(const Song &s);
     void groupSingleTracks();

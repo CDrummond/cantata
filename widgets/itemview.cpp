@@ -262,9 +262,14 @@ public:
             QStyleOptionProgressBar opt;
             double capacity=index.data(ItemView::Role_Capacity).toDouble();
 
+            if (capacity<0.0) {
+                capacity=0.0;
+            } else if (capacity>1.0) {
+                capacity=1.0;
+            }
             opt.minimum=0;
             opt.maximum=1000;
-            opt.progress=capacity<0 ? 0 : (index.data(ItemView::Role_Capacity).toDouble()*1000);
+            opt.progress=capacity*1000;
             opt.textVisible=true;
             opt.text=capacityText;
             opt.rect=QRect(r2.x()+4, r2.bottom()-(textHeight+4), r2.width()-8, textHeight);

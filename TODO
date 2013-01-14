@@ -3,7 +3,6 @@
 
 - Streams
   - Handle more than 1st entry?? Not sure
-  - Icecast?
 
 - Devices
   - libMTP album artist usage.
@@ -19,7 +18,7 @@
       know this is a compilation?
   - Allow to drag songs from albums/library to devices, and vice versa.
 
-Lyrics
+- Lyrics
   - Add support for reading via tags in mp4, flac, and ogg files.
 
 - PlayQueue

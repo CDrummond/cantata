@@ -30,10 +30,7 @@ class Job : public QThread
 {
     Q_OBJECT
 public:
-    Job()
-        : abortRequested(false)
-        , finished(false) {
-    }
+    Job();
     virtual ~Job() {
     }
 

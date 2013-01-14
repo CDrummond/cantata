@@ -68,6 +68,7 @@ MusicScanner::MusicScanner(const QString &f)
     , lastUpdate(0)
 {
     folder=Utils::fixPath(QDir(f).absolutePath());
+    moveToThread(this);
 }
 
 MusicScanner::~MusicScanner()

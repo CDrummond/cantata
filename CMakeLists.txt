@@ -112,6 +112,7 @@ SET( CANTATA_SRCS
     models/albumsproxymodel.cpp
     models/streamfetcher.cpp
     models/proxymodel.cpp
+    models/onlineservicesmodel.cpp
     mpd/mpdconnection.cpp
     mpd/mpdparseutils.cpp
     mpd/mpdstats.cpp
@@ -143,6 +144,12 @@ SET( CANTATA_SRCS
     lyrics/songinfoprovider.cpp
     lyrics/lyricsdialog.cpp
     network/networkaccessmanager.cpp
+    online/onlineservicespage.cpp
+    online/onlineservice.cpp
+    online/jamendoservice.cpp
+    online/jamendosettingsdialog.cpp
+    online/magnatuneservice.cpp
+    online/magnatunesettingsdialog.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -175,6 +182,7 @@ SET( CANTATA_MOC_HDRS
     models/albumsmodel.h
     models/streamfetcher.h
     models/streamsmodel.h
+    models/onlineservicesmodel.h
     mpd/mpdconnection.h
     mpd/mpdstats.h
     mpd/mpdstatus.h
@@ -200,6 +208,11 @@ SET( CANTATA_MOC_HDRS
     lyrics/songinfoprovider.h
     lyrics/lyricsdialog.h
     network/networkaccessmanager.h
+    online/onlineservice.h
+    online/onlineservicespage.h
+    online/jamendoservice.h
+    online/magnatuneservice.h
+    online/magnatunesettingsdialog.h
 )
 
 SET( CANTATA_UIS
@@ -221,6 +234,7 @@ SET( CANTATA_UIS
     lyrics/lyricspage.ui
     lyrics/lyricsettings.ui
     widgets/itemview.ui
+    online/onlineservicespage.ui
 )
 
 if (ENABLE_TAGLIB)
@@ -284,6 +298,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/gui
                      ${CMAKE_SOURCE_DIR}/dynamic
                      ${CMAKE_SOURCE_DIR}/support
                      ${CMAKE_BINARY_DIR}/support
+                     ${CMAKE_SOURCE_DIR}/online
                      ${CMAKE_SOURCE_DIR}
                      ${CMAKE_BINARY_DIR}
 )

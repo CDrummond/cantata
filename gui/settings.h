@@ -113,6 +113,7 @@ public:
     int folderView();
     int playlistsView();
     int streamsView();
+    int onlineView();
     bool libraryArtistImage();
     int libraryCoverSize();
     int albumsCoverSize();
@@ -175,6 +176,7 @@ public:
     void saveFolderView(int v);
     void savePlaylistsView(int v);
     void saveStreamsView(int v);
+    void saveOnlineView(int v);
     void saveLibraryArtistImage(bool v);
     void saveLibraryCoverSize(int v);
     void saveAlbumsCoverSize(int v);

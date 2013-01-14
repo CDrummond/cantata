@@ -47,6 +47,7 @@
     aif, aifc, ape, spx, tta, mpc, mpp, mp+, dff, dsf)
 26. Add import of IceCast and SomaFM streams.
 27. Move server info into a dialog.
+28. Add support for Jamendo and Magnatune streams.
 
 0.9.2
 -----

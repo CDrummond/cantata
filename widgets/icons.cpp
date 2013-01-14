@@ -186,6 +186,8 @@ Icon Icons::artistIcon;
 Icon Icons::editIcon;
 Icon Icons::clearListIcon;
 Icon Icons::menuIcon;
+Icon Icons::jamendoIcon;
+Icon Icons::magnatuneIcon;
 
 void Icons::init()
 {
@@ -214,6 +216,8 @@ void Icons::init()
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
     menuIcon=createRecolourableIcon("menu", stdColor, highlightColor);
+    jamendoIcon=Icon("cantata-view-services-jamendo");
+    magnatuneIcon=Icon("cantata-view-services-jamendo");
     #ifndef ENABLE_KDE_SUPPORT
     appIcon=Icon::create("cantata", QList<int>() << 16 << 22 << 32 << 48 << 64);
     shortcutsIcon=Icon("preferences-desktop-keyboard");
@@ -231,6 +235,12 @@ void Icons::init()
     }
     if (artistIcon.isNull()) {
         artistIcon=Icon::create("artist", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);
+    }
+    if (jamendoIcon.isNull()) {
+        jamendoIcon=Icon::create("jamendo", constStdSizes);
+    }
+    if (magnatuneIcon.isNull()) {
+        magnatuneIcon=Icon::create("magnatune", constStdSizes);
     }
     #ifndef Q_OS_WIN
     if (shortcutsIcon.isNull()) {

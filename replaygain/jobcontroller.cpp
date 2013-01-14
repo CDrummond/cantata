@@ -30,6 +30,13 @@ K_GLOBAL_STATIC(JobController, instance)
 
 static const int constMaxActive=8;
 
+Job::Job()
+    : abortRequested(false)
+    , finished(false)
+{
+    moveToThread(this);
+}
+
 void Job::stop()
 {
     abortRequested=true;

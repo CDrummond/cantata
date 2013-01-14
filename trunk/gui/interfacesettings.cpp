@@ -78,6 +78,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     addViewTypes(folderView);
     addViewTypes(playlistsView, false, true);
     addViewTypes(streamsView);
+    addViewTypes(onlineView);
     #ifdef ENABLE_DEVICES_SUPPORT
     addViewTypes(devicesView);
     #endif
@@ -116,6 +117,7 @@ void InterfaceSettings::load()
     selectEntry(playlistsView, Settings::self()->playlistsView());
     playListsStartClosed->setChecked(Settings::self()->playListsStartClosed());
     selectEntry(streamsView, Settings::self()->streamsView());
+    selectEntry(onlineView, Settings::self()->onlineView());
     groupSingle->setChecked(Settings::self()->groupSingle());
     groupMultiple->setCurrentIndex(Settings::self()->groupMultiple() ? 1 : 0);
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -157,6 +159,7 @@ void InterfaceSettings::save()
     Settings::self()->savePlaylistsView(getViewType(playlistsView));
     Settings::self()->savePlayListsStartClosed(playListsStartClosed->isChecked());
     Settings::self()->saveStreamsView(getViewType(streamsView));
+    Settings::self()->saveOnlineView(getViewType(onlineView));
     Settings::self()->saveGroupSingle(groupSingle->isChecked());
     Settings::self()->saveGroupMultiple(1==groupMultiple->currentIndex());
     #ifdef ENABLE_DEVICES_SUPPORT

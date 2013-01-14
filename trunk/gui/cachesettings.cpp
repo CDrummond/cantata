@@ -32,7 +32,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
-#include <QtGui/QVBoxLayout>
+#include <QtGui/QGridLayout>
 #include <QtCore/QThread>
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
@@ -172,19 +172,25 @@ CacheSettings::CacheSettings(QWidget *parent)
         spacing=4;
     }
 
-    QVBoxLayout *layout=new QVBoxLayout(this);
+    QGridLayout *layout=new QGridLayout(this);
     layout->setMargin(0);
+    int row=0;
+    int col=0;
     QLabel *label=new QLabel(i18n("To speed up loading of the music library, Cantata caches a local copy of the MPD listing. Cantata might also have cached "
                                   "covers, or lyrics, if these have been downloaded and could not be saved into the MPD folder (because Cantata cannot access it, "
                                   "or you have configured Cantata to not save these items there). Below is a summary of Cantata's cache usage."), this);
     label->setWordWrap(true);
-    layout->addWidget(label);
-    layout->addSpacing(spacing);
-    layout->addWidget(new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", this));
-    layout->addWidget(new CacheItem(i18n("Lyrics"), Utils::cacheDir(LyricsPage::constLyricsDir, false), QStringList() << "*"+LyricsPage::constExtension, this));
+    layout->addWidget(label, row++, col, 1, 2);
+    layout->addItem(new QSpacerItem(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed), row++, 0);
+    layout->addWidget(new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", this), row++, col);
+    layout->addWidget(new CacheItem(i18n("Lyrics"), Utils::cacheDir(LyricsPage::constLyricsDir, false), QStringList() << "*"+LyricsPage::constExtension, this), row++, col);
     layout->addWidget(new CacheItem(i18n("Music Library List"), Utils::cacheDir(MusicLibraryModel::constLibraryCache, false),
-                                    QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, this));
-    layout->addSpacerItem(new QSpacerItem(0, 8, QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
+                                    QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, this), row++, col);
+    layout->addItem(new QSpacerItem(0, 8, QSizePolicy::Fixed, QSizePolicy::MinimumExpanding), row++, 0);
+    row=2;
+    col=1;
+    layout->addWidget(new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", this), row++, 1);
+    layout->addWidget(new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt<< "*.jpg" << "*.png", this), row++, 1);
 }
 
 CacheSettings::~CacheSettings() {

@@ -352,6 +352,11 @@ int Settings::streamsView()
     return GET_INT("streamsView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
 }
 
+int Settings::onlineView()
+{
+    return GET_INT("onlineView", ItemView::Mode_Tree);
+}
+
 bool Settings::libraryArtistImage()
 {
     return GET_BOOL("libraryArtistImage", false);
@@ -721,6 +726,11 @@ void Settings::saveStreamsView(int v)
     SET_VALUE_MOD(streamsView)
 }
 
+void Settings::saveOnlineView(int v)
+{
+    SET_VALUE_MOD(onlineView)
+}
+
 void Settings::saveLibraryArtistImage(bool v)
 {
     SET_VALUE_MOD(libraryArtistImage)
@@ -898,7 +908,7 @@ void Settings::save(bool force)
         if (version()!=PACKAGE_VERSION || isFirstRun) {
             modified=true;
             SET_VALUE("version", PACKAGE_VERSION_STRING);
-            ver=PACKAGE_VERSION;           
+            ver=PACKAGE_VERSION;
         }
         if (modified) {
             modified=false;

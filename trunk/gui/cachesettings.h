@@ -86,11 +86,6 @@ class CacheSettings : public QWidget
 public:
     CacheSettings(QWidget *parent);
     ~CacheSettings();
-
-private:
-    CacheItem *covers;
-    CacheItem *lyrics;
-    CacheItem *library;
 };
 
 #endif

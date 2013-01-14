@@ -60,6 +60,7 @@ class PlaylistsPage;
 class DynamicPage;
 class LyricsPage;
 class StreamsPage;
+class OnlineServicesPage;
 class InfoPage;
 #ifdef ENABLE_DEVICES_SUPPORT
 class DevicesPage;
@@ -150,6 +151,7 @@ public:
         PAGE_PLAYLISTS,
         PAGE_DYNAMIC,
         PAGE_STREAMS,
+        PAGE_ONLINE,
         PAGE_LYRICS
         #ifdef ENABLE_WEBKIT
         , PAGE_INFO
@@ -276,6 +278,7 @@ public Q_SLOTS:
         showTab(PAGE_DYNAMIC);
     }
     void showStreamsTab() { showTab(PAGE_STREAMS); }
+    void showOnlineTab() { showTab(PAGE_ONLINE); }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
 
     void showInfoTab() {
@@ -392,6 +395,7 @@ private:
     Action *dynamicTabAction;
     Action *lyricsTabAction;
     Action *streamsTabAction;
+    Action *onlineTabAction;
     Action *removeAction;
     Action *backAction;
     #ifdef TAGLIB_FOUND
@@ -436,6 +440,7 @@ private:
     DynamicPage *dynamicPage;
     LyricsPage *lyricsPage;
     StreamsPage *streamsPage;
+    OnlineServicesPage *onlinePage;
     #ifdef ENABLE_WEBKIT
     InfoPage *infoPage;
     #endif
@@ -486,6 +491,7 @@ private:
     friend class PlaylistsPage;
     friend class DynamicPage;
     friend class StreamsPage;
+    friend class OnlineServicesPage;
     friend class LyricsPage;
     friend class InfoPage;
     #ifdef ENABLE_DEVICES_SUPPORT

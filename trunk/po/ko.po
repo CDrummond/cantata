@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "대상 장치에 여유 공간이 부족합니다.\n"
 "선택된 곡에 필요한 공간은 %1이지만, 남은 공간은 %2입니다.\n"
-"선택된 곡을 복사하려면, 보다 작은 파일 크기로 변환해야 합니다."
+"선택된 곡을 복사하려면, 더 작은 파일 크기로 변환해야 합니다."
 
 #: devices/actiondialog.cpp:151
 msgid ""
@@ -91,25 +91,25 @@ msgstr "장치가 바뀌었습니까?"
 
 #: devices/actiondialog.cpp:355
 msgid "Clearing unused folders"
-msgstr "사용되지 않는 폴더 지움"
+msgstr "사용되지 않는 폴더 지우기"
 
 #: devices/actiondialog.cpp:396
 msgid "The destination filename already exists!<hr/>%1"
-msgstr "대상 파일명이 이미 존재합니다!<hr/>%1"
+msgstr "대상 파일 이름이 이미 있습니다!<hr/>%1"
 
 #: devices/actiondialog.cpp:399
 msgid "Song already exists!<hr/>%1"
-msgstr "곡이 이미 존재합니다!<hr/>%1"
+msgstr "곡이 이미 있습니다!<hr/>%1"
 
 #: devices/actiondialog.cpp:402
 msgid "Song does not exist!<hr/>%1"
-msgstr "곡이 존재하지 않습니다!<hr/>%1"
+msgstr "곡이 없습니다!<hr/>%1"
 
 #: devices/actiondialog.cpp:405
 msgid ""
 "Failed to create destination folder!<br/>Please check you have sufficient "
 "permissions.<hr/>%1"
-msgstr "대상 폴더를 만들수 없습니다!<br/>권한이 있는지 확인 바랍니다.<hr/>%1"
+msgstr "대상 폴더를 만들 수 없습니다!<br/>권한이 있는지 확인 바랍니다.<hr/>%1"
 
 #: devices/actiondialog.cpp:408
 msgid "Source file no longer exists?<br/><br/<hr/>%1"
@@ -140,7 +140,7 @@ msgid ""
 "Failed to create temporary file.<br/>(Required for transcoding to MTP "
 "devices.)<hr/>%1"
 msgstr ""
-"임시 파일을 생성할 수 없습니다.<br/>(MTP 장치를 변환하기 위해 필요)<hr/>%1"
+"임시 파일을 만들 수 없습니다.<br/>(MTP 장치를 변환하는 데 필요)<hr/>%1"
 
 #: devices/actiondialog.cpp:451
 msgid "Local Music Library Properties"
@@ -224,11 +224,11 @@ msgstr "장치 속성"
 
 #: devices/devicepropertieswidget.cpp:82
 msgid "Don't copy covers"
-msgstr "표지 복사 안함"
+msgstr "표지 복사 안 함"
 
 #: devices/devicepropertieswidget.cpp:83
 msgid "Embed cover within each file"
-msgstr "각 파일안에 커버 내장"
+msgstr "각 파일 안에 표지 내장"
 
 #: devices/devicepropertieswidget.cpp:90
 msgid "No maximum size"
@@ -261,10 +261,10 @@ msgid ""
 "from the 'Title' tag.</p>"
 msgstr ""
 "<p>곡을 장치로 복사하고 '음반 연주자'가 '여러 연주자'일 때, 칸타타는 모든 곡"
-"의 '연주자' 태그를 '여러 연주자'로 설정하고 '제목' 태그를 '곡연주자 - 곡제"
+"의 '연주자' 태그를 '여러 연주자'로 설정하고 '이름' 태그를 '곡 연주자 - 곡 제"
 "목'으로 설정합니다.<hr/> 장치로부터 복사할 때, '음반 연주자'와 '연주자'가 모"
 "두 '여러 연주자'로 설정되어 있으면 '제목' 태그로부터 실제 연주자를 추출하고 "
-"'제목' 태그에서 연주자명을 지웁니다.</p>"
+"'제목' 태그에서 연주자 이름을 지웁니다.</p>"
 
 #: devices/devicepropertieswidget.cpp:99
 msgid ""
@@ -285,7 +285,7 @@ msgstr ""
 
 #: devices/devicepropertieswidget.cpp:139
 msgid "Do not transcode"
-msgstr "변환 안함"
+msgstr "변환 안 함"
 
 #: devices/devicepropertieswidget.cpp:153
 msgid "Transcode to \"%1\""
@@ -360,12 +360,12 @@ msgstr ""
 #: devices/devicespage.cpp:447
 #, fuzzy
 msgid "Are you sure you wish to forget '%1'?"
-msgstr "<b>%1</b>을 지울까요?"
+msgstr "'%1'을 지우기를 원합니까?"
 
 #: devices/devicespage.cpp:465
 #, fuzzy
 msgid "Are you sure you wish to disconnect '%1'?"
-msgstr "취소하기를 원합니까?"
+msgstr "'%1'의 연결을 끊기를 원합니까?"
 
 #: devices/devicespage.cpp:472 gui/mainwindow.cpp:1124
 msgid "Action is not currently possible, due to other open dialogs."
@@ -388,7 +388,7 @@ msgid ""
 msgstr ""
 "<a href=http://ko.wikipedia.org/wiki/%EA%B3%A0%EA%B8%89_%EC%98%A4%EB%94%94%EC"
 "%98%A4_%EB%B6%80%ED%98%B8%ED%99%94>Advanced Audio Coding</a> (AAC)는 디지털 "
-"오디오를 위한 특허받은 손실 코덱입니다.<br>AAC는 일반적으로 비슷한 비트레이트"
+"오디오를 위한 특허 받은 손실 코덱입니다.<br>AAC는 일반적으로 비슷한 비트레이트"
 "에서 MP3보다 나은 음질을 들려줍니다. iPod나 다른 휴대용 음악 연주기에서는 좋"
 "은 선택입니다. 상용 기능."
 
@@ -416,14 +416,14 @@ msgstr ""
 "레이트가 가변적임을 의미합니다. 복잡한 데이터는 단순한 것보다 높은 비트레이트"
 "로 인코딩이 되며, 이 방식은 트랙에서 전반적으로 높은 품질과 작은 파일을 만듭"
 "니다. <br>이런 이유로 이 슬라이더에서 측정된 비트레이트는 인코딩된 트랙의 <a "
-"href=http://www.ffmpeg.org/faq.html#SEC21>평균 비트레이트</a> 예측치일 뿐입니"
+"href=http://www.ffmpeg.org/faq.html#SEC21>평균 비트레이트</a> 예측값일 뿐입니"
 "다. <br><b>150kb/s</b>는 휴대용 연주기의 음악 감상에 좋은 선택입니다. <br/"
 "><b>120kb/s 이하</b>는 음악이 만족스럽지 않을 수 있습니다. <b>200kb/s</b>는 "
 "너무 높을 수 있습니다."
 
 #: devices/encoders.cpp:83 devices/encoders.cpp:174
 msgid "Expected average bitrate for variable bitrate encoding"
-msgstr "가변 비트레이트 인코딩에서의 평균 기대값"
+msgstr "가변 비트레이트 인코딩에서의 평균 기댓값"
 
 #: devices/encoders.cpp:95 devices/encoders.cpp:148 devices/encoders.cpp:185
 #: devices/encoders.cpp:229 devices/encoders.cpp:262
@@ -433,7 +433,7 @@ msgstr "더 작은 파일"
 #: devices/encoders.cpp:96 devices/encoders.cpp:186 devices/encoders.cpp:230
 #: devices/encoders.cpp:263
 msgid "Better sound quality"
-msgstr "보다 좋은 음악 품질"
+msgstr "더 좋은 음악 품질"
 
 #: devices/encoders.cpp:99
 msgid "Apple Lossless"
@@ -489,7 +489,7 @@ msgstr ""
 "은 <b>FLAC</b>으로의 인코딩과정에서, 압축 속도와 파일 크기의 균형을 나타내는 "
 "0에서 8까지의 정수값입니다.<br/> 압축률을 <b>0</b>으로 하면 압축 시간은 가장 "
 "짧지만 상대적으로 큰 파일 크기가 커지며<br/>반면에, 압축률을 <b>8</b>로 하"
-"면, 압축은 오래 걸리지만 가장 작은 파일을 생성합니다.<br/>FLAC은 비손실 코덱"
+"면, 압축은 오래 걸리지만 가장 작은 파일을 만듭니다.<br/>FLAC은 무손실 코덱"
 "이므로 압축률에 상관없이 음악 출력 품질은 동일합니다.<br/>또한, <b>5</b>이상"
 "의 값은 압축 시간을 늘이지만 파일 크기는 약간만 작아지므로 추천하지 않습니다."
 
@@ -516,7 +516,7 @@ msgid ""
 "and is widely supported on portable music players."
 msgstr ""
 "<a href=http://ko.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) 는 손"
-"실 데이타 압축을 이용하여 특허받은 디지털 오디오 코덱입니다.<br>이러한 단점에"
+"실 데이터 압축을 이용하여 특허 받은 디지털 오디오 코덱입니다.<br>이러한 단점에"
 "도 불구하고, 소비자 오디오의 범용 저장 포맷으로 휴대용 음악 연주기에 널리 쓰"
 "입니다."
 
@@ -559,9 +559,9 @@ msgid ""
 "files than MP3 at equivalent or higher quality. Ogg Vorbis is an all-around "
 "excellent choice, especially for portable music players that support it."
 msgstr ""
-"<a href=http://ko.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a>는 손실 데이타 압축"
-"을 이용하여 특허받은 디지털 오디오 코덱입니다.<br>동일하거나 더 높은 품질에"
-"서 MP3보다 더 작은 파일을 생성합니다. Ogg Vorbis는 전반적으로, 특히 지원하는 "
+"<a href=http://ko.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a>는 손실 데이터 압축"
+"을 이용하여 특허 받은 디지털 오디오 코덱입니다.<br>동일하거나 더 높은 품질에"
+"서 MP3보다 더 작은 파일을 만듭니다. Ogg Vorbis는 전반적으로, 특히 지원하는 "
 "휴대용 음악 연주기에는 아주 좋은 선택입니다."
 
 #: devices/encoders.cpp:197
@@ -645,7 +645,7 @@ msgstr "비트레이트"
 
 #: devices/filenameschemedialog.cpp:33
 msgid "Filename Scheme"
-msgstr "파일명 체계"
+msgstr "파일 이름 구성"
 
 #: devices/filenameschemedialog.cpp:50
 msgctxt "Example album artist"
@@ -686,12 +686,12 @@ msgid ""
 "albums.</td></tr><tr><td>%7</td><td>The year of the album's release.</td></"
 "tr><tr><td>%8</td><td>The genre of the album.</td></tr></table></p>"
 msgstr ""
-"<p>다음 변수는 의미에 따라 바뀌어서 각 트랙명이 됩니다.</p><p><table border="
+"<p>다음 변수는 의미에 따라 바뀌어서 각 곡 이름이 됩니다.</p><p><table border="
 "\"1\"><tr><th><em>변수</em></th><th><em>설명</em></th></tr><tr><td>%1</"
 "td><td>음반 연주자. 대부분의 음반은 <i>곡 연주자</i>와 동일함. 컴필레이션의 경"
-"우, 많은 경우 <i>여러 연주자</i>입니다. </td></tr><tr><td>%2</td><td>음반명."
+"우, 많은 경우 <i>여러 연주자</i>입니다. </td></tr><tr><td>%2</td><td>음반 이름."
 "</td></tr><tr><td>%3</td><td>각 음반의 연주자.</td></tr><tr><td>%4</td><td>"
-"곡명.</td></tr><tr><td>%5</td><td>곡 번호.</td></tr><tr><td>%6</td><td> 여러 "
+"곡 이름.</td></tr><tr><td>%5</td><td>곡 번호.</td></tr><tr><td>%6</td><td> 여러 "
 "음반의 음반 번호. 대부분 컴필레이션은 몇 개의 앨범으로 구성됩니다. 음반.</"
 "td></tr><tr><td>%7</td><td>음반 발매연도.</td></tr><tr><td>%8</td><td>음반 장"
 "르.</td></tr></table></p>"
@@ -729,7 +729,7 @@ msgstr "곡 업데이트 중..."
 #: devices/umsdevice.cpp:96 gui/initialsettingswizard.cpp:43
 #: models/devicesmodel.cpp:238
 msgid "Not Connected"
-msgstr "연결 안 됨"
+msgstr "연결 안됨"
 
 #: devices/remotedevicepropertiesdialog.cpp:45 gui/mainwindow.cpp:290
 #: gui/preferencesdialog.cpp:71
@@ -745,7 +745,7 @@ msgid ""
 "A remote device named \"%1\" already exists!\n"
 "Please choose a different name"
 msgstr ""
-"원격 장치인 \"%1\"는 이미 존재함!\n"
+"원격 장치인 \"%1\"는 이미 있음!\n"
 "다른 이름을 선택해야 합니다"
 
 #: devices/remotedevicepropertieswidget.cpp:51
@@ -754,7 +754,7 @@ msgstr "삼바 공유"
 
 #: devices/remotedevicepropertieswidget.cpp:53
 msgid "Secure Shell (sshfs)"
-msgstr "보안 쉘 (sshfs)"
+msgstr "보안 셸 (sshfs)"
 
 #: devices/remotedevicepropertieswidget.cpp:54
 msgid "Locally Mounted Folder"
@@ -796,11 +796,11 @@ msgstr "\"fusermount\"가 설치되지 않았습니다!"
 
 #: devices/remotefsdevice.cpp:430 devices/remotefsdevice.cpp:451
 msgid "Failed to connect to \"%1\""
-msgstr "\"%1\"에 연결 안 됨"
+msgstr "\"%1\"에 연결 안됨"
 
 #: devices/remotefsdevice.cpp:431 devices/remotefsdevice.cpp:472
 msgid "Failed to disconnect from \"%1\""
-msgstr "\"%1\"에 연결 해제 안 됨"
+msgstr "\"%1\"에 연결 해제 안됨"
 
 #: devices/remotefsdevice.cpp:547
 msgid "Capacity Unknown"
@@ -847,7 +847,7 @@ msgstr "이름 바꾸기를 취소할까요?"
 
 #: devices/trackorganiser.cpp:238
 msgid "Destination file already exists!<br/>%1"
-msgstr "대상 파일이 이미 존재함!<br/>%1"
+msgstr "대상 파일이 이미 있음!<br/>%1"
 
 #: devices/trackorganiser.cpp:260
 msgid "Failed to create destination folder!<br/>%1"
@@ -864,7 +864,7 @@ msgstr "장치가 연결되지 않았음."
 
 #: devices/umsdevice.cpp:58 devices/umsdevice.cpp:184
 msgid "Not Scanned"
-msgstr "검색 안 됨"
+msgstr "검색 안됨"
 
 #: devices/valueslider.cpp:99
 msgid " (recommended)"
@@ -906,7 +906,7 @@ msgstr "규정 저장"
 
 #: dynamic/dynamic.cpp:647
 msgid "Deleting rule"
-msgstr "규정 지움"
+msgstr "규정 지우기"
 
 #: dynamic/dynamic.cpp:649
 msgid "Setting active rule"
@@ -922,11 +922,11 @@ msgstr "이전 명령어 응답 대기 중. (%1)"
 
 #: dynamic/dynamic.cpp:764
 msgid "Dynamizer is not active"
-msgstr "활동 활성화 안 됨"
+msgstr "활동 활성화 안됨"
 
 #: dynamic/dynamic.cpp:771
 msgid "Failed to retrieve list of dynamic rules. (%1)"
-msgstr "동적 규정 리스트 읽기 안 됨. (%1)"
+msgstr "동적 규정 리스트 읽기 안됨. (%1)"
 
 #: dynamic/dynamic.cpp:799
 msgid "Failed to delete rules file. (%1)"
@@ -934,11 +934,11 @@ msgstr "규정 파일 지워지지 않음. (%1)"
 
 #: dynamic/dynamic.cpp:805
 msgid "Failed to control dynamizer state. (%1)"
-msgstr "활동 활성화 상태 관리 안 됨. (%1)"
+msgstr "활동 활성화 상태 관리 안됨. (%1)"
 
 #: dynamic/dynamic.cpp:813
 msgid "Failed to set the current dynamic rules. (%1)"
-msgstr "지금의 동적 규정 설정 안 됨. (%1)"
+msgstr "지금의 동적 규정 설정 안됨. (%1)"
 
 #: dynamic/dynamicpage.cpp:39
 msgid "Refresh Dynamic Rules"
@@ -954,7 +954,7 @@ msgstr "동적 규정 수정"
 
 #: dynamic/dynamicpage.cpp:42
 msgid "Remove Dynamic Rules"
-msgstr "동적 규정 지움"
+msgstr "동적 규정 지우기"
 
 #: dynamic/dynamicpage.cpp:43
 msgid "Start Dynamic Mode"
@@ -1050,28 +1050,28 @@ msgstr ""
 "<p>칸타타는 등록된 모든 규정을 이용하여 라이브러리를 조회합니다. <i>포함</i>"
 "된 규정 항목은 사용될 곡들을 선별하는 데에 사용됩니다. <i>제외</i>된 규정 항"
 "목은 사용되지 않을 곡들을 선별하는 데에 사용됩니다. <i>포함</i>된 규정이 없으"
-"면, 전체 곡들을 사용할 수 있다고 가정합니다. <br/> 예로 '유재하의 Ballad 및 "
+"면, 전곡을 사용할 수 있다고 가정합니다. <br/> 예로 '유재하의 Ballad 및 "
 "여러 연주자의 곡'을 선택하려면 다음과 같이 하면 됩니다: <ul><li>포함 음반연"
 "주자=유재하 장르=Ballad</li><li>포함 음반연주자=여러 연주자</li></ul> '유재하"
-"의 모든 곡중에 미련 음반을 제외'하려면: <ul><li>포함 음반연주자=유재하</"
+"의 모든 곡 중에 미련 음반을 제외'하려면: <ul><li>포함 음반연주자=유재하</"
 "li><li>제외 음반=미련</li></ul>사용할 곡들이 만들어지면 칸타타는 무작위로 곡"
 "들을 선택하여 연주순서에 10개 항목을 유지합니다.</p>"
 
 #: dynamic/dynamicrulesdialog.cpp:283
 msgid "Failed to save %1"
-msgstr "%1 저장 안 됨"
+msgstr "%1 저장 안됨"
 
 #: dynamic/dynamicrulesdialog.cpp:301
 msgid ""
 "A set of rules named '%1' already exists!\n"
 "Overwrite?"
 msgstr ""
-"규정명인 '%1'는 이미 존재함!\n"
+"규정 이름인 '%1'는 이미 있음!\n"
 "덮어쓸까요?"
 
 #: dynamic/dynamicrulesdialog.cpp:302
 msgid "Already Exists"
-msgstr "이미 존재함"
+msgstr "이미 있음"
 
 #: dynamic/dynamicrulesdialog.cpp:327
 msgid "Saving %1"
@@ -1099,12 +1099,12 @@ msgstr "사용 공간:"
 #: gui/cachesettings.cpp:136 gui/cachesettings.cpp:137
 #, fuzzy
 msgid "Calculating..."
-msgstr "연결 중..."
+msgstr "계산 중..."
 
 #: gui/cachesettings.cpp:155
 #, fuzzy
 msgid "Delete all cached items?"
-msgstr "가사를 지울까요?"
+msgstr "모든 캐시 항목을 지울까요?"
 
 #: gui/cachesettings.cpp:177
 msgid ""
@@ -1132,7 +1132,7 @@ msgstr "가사"
 #: gui/cachesettings.cpp:185
 #, fuzzy
 msgid "Music Library List"
-msgstr "음악 라이브러리"
+msgstr "음악 라이브러리 목록"
 
 #: gui/coverdialog.cpp:127
 msgid "Last.fm"
@@ -1179,7 +1179,7 @@ msgstr "이미지"
 #: gui/coverdialog.cpp:234
 #, fuzzy
 msgid "Downloading..."
-msgstr "연결 해제 중..."
+msgstr "내려받는 중..."
 
 #: gui/coverdialog.cpp:279 gui/coverdialog.cpp:317
 msgctxt "Image (width x height zoom%)"
@@ -1222,7 +1222,7 @@ msgstr "이미지 (*.png *.jpg)"
 
 #: gui/coverdialog.cpp:745
 msgid "File is already in list!"
-msgstr "파일이 이미 목록에 존재함!"
+msgstr "파일이 이미 목록에 있음!"
 
 #: gui/coverdialog.cpp:749
 #, fuzzy
@@ -1291,12 +1291,12 @@ msgstr "파일 저장"
 #: gui/initialsettingswizard.cpp:79
 #, fuzzy
 msgid "Connection Established"
-msgstr "%1에 연결 안 됨"
+msgstr "연결됨"
 
 #: gui/initialsettingswizard.cpp:79
 #, fuzzy
 msgid "Connection Failed"
-msgstr "%1에 연결 안 됨"
+msgstr "연결 안됨"
 
 #. i18n: file: support/shortcutssettingspage.ui:78
 #. i18n: ectx: property (text), widget (QLabel, defaultShortcut)
@@ -1440,7 +1440,7 @@ msgstr "연주순서 교체"
 
 #: gui/mainwindow.cpp:308
 msgid "Remove From Play Queue"
-msgstr "연주순서에서 지움"
+msgstr "연주순서에서 지우기"
 
 #: gui/mainwindow.cpp:309
 msgid "Copy Track Info"
@@ -1462,7 +1462,7 @@ msgstr "다른 이름으로 저장"
 
 #: gui/mainwindow.cpp:313
 msgid "Clear"
-msgstr "지움"
+msgstr "지우기"
 
 #: gui/mainwindow.cpp:314
 msgid "Expanded Interface"
@@ -1676,7 +1676,7 @@ msgstr "%1 - %2"
 
 #: gui/mainwindow.cpp:1881 gui/mainwindow.cpp:1882
 msgid "Volume Disabled"
-msgstr "음량 사용 안 함"
+msgstr "음량사용 안 함"
 
 #: gui/mainwindow.cpp:1886 gui/mainwindow.cpp:1887
 msgid "Volume %1%"
@@ -1707,7 +1707,7 @@ msgstr "연주목록 이름을 입력합니다:"
 
 #: gui/mainwindow.cpp:2108
 msgid "A playlist named <b>%1</b> already exists!<br/>Add to that playlist?"
-msgstr "연주목록 이름 <b>%1</b>이 이미 존재합니다!<br/>연주목록에 추가할까요?"
+msgstr "연주목록 이름 <b>%1</b>이 이미 있습니다!<br/>연주목록에 추가할까요?"
 
 #: gui/mainwindow.cpp:2109
 msgid "Existing Playlist"
@@ -1724,7 +1724,7 @@ msgstr[1] "%1 곡 (%2)"
 
 #: gui/playbacksettings.cpp:32
 msgid "Do not fadeout"
-msgstr "페이드아웃 안함"
+msgstr "페이드아웃 안 함"
 
 #: gui/playbacksettings.cpp:33
 msgid " ms"
@@ -1732,7 +1732,7 @@ msgstr " ms"
 
 #: gui/playlistspage.cpp:207 gui/playlistspage.cpp:229
 msgid "A playlist named <b>%1</b> already exists!<br/>Overwrite?"
-msgstr "연주목록 이름 <b>%1</b>은 이미 존재합니다!<br/>덮어쓸까요?"
+msgstr "연주목록 이름 <b>%1</b>은 이미 있습니다!<br/>덮어쓸까요?"
 
 #: gui/playlistspage.cpp:207 gui/playlistspage.cpp:229
 msgid "Overwrite Playlist?"
@@ -1791,12 +1791,12 @@ msgstr "가사 설정"
 #: gui/preferencesdialog.cpp:83
 msgctxt "Qt-only"
 msgid "Proxy"
-msgstr "프록시"
+msgstr "프락시"
 
 #: gui/preferencesdialog.cpp:83
 msgctxt "Qt-only"
 msgid "Proxy Settings"
-msgstr "프록시 설정"
+msgstr "프락시 설정"
 
 #: gui/preferencesdialog.cpp:87
 msgctxt "Qt-only"
@@ -1842,7 +1842,7 @@ msgid ""
 "<i><b>Not Connected.</b><br/>The entries below cannot be modified, as "
 "Cantata is not connected to MPD.</i>"
 msgstr ""
-"<i><b>연결 안 됨.</b><br/>칸타타가 MPD에 연결되지 않았으므로 아래 목록은 수정"
+"<i><b>연결 안됨.</b><br/>칸타타가 MPD에 연결되지 않았으므로 아래 목록은 수정"
 "되지 않습니다.</i>"
 
 #: gui/serversettings.cpp:60
@@ -1893,7 +1893,7 @@ msgid ""
 "dynamic playlists.</i>"
 msgstr ""
 "<i><b>참고:</b> '활동 포트'는 시스템 전반 또는 로컬에서가 아닌 칸타타 활동을 "
-"사용하고자 할 때에만 유용합니다.동작하기 위해서는 <code>칸타타-동적</code> 응"
+"사용하고자 할 때에만 유용합니다. 동작하기 위해서는 <code>칸타타-동적</code> 응"
 "용프로그램이 <b>반드시</b> 설치되고 호스트에서 실행되어야 합니다. 칸타타 자체"
 "로는 이 서비스를 시작하거나 정지할 수 없습니다. 만약 설정되어있지 않으면, 칸"
 "타타는 사용자 기반의 동적 연주목록을 운용합니다.</i>"
@@ -1903,7 +1903,7 @@ msgid ""
 "Filename (without extension) to save downloaded covers as.\n"
 "If left blank 'cover' will be used."
 msgstr ""
-"다운로드된 표지를 저장하기 위해 확장자없는 파일명만 사용됩니다.\n"
+"내려받은 표지를 저장하기 위해 확장자 없는 파일 이름만 사용됩니다.\n"
 "비어있으면 'cover'가 사용됩니다."
 
 #: gui/serversettings.cpp:163
@@ -1915,7 +1915,7 @@ msgid ""
 "A setting named %1 already exists!\n"
 "Overwrite?"
 msgstr ""
-"설정 이름 %1은 이미 존재합니다!\n"
+"설정 이름 %1은 이미 있습니다!\n"
 "덮어쓸까요?"
 
 #: gui/serversettings.cpp:216
@@ -2000,7 +2000,7 @@ msgstr "<b>%1</b>을 불러올 수 없습니다!<br/>정확한지 확인 바랍�
 
 #: gui/streamspage.cpp:210
 msgid "Failed to create <b>%1</b>!"
-msgstr "<b>%1</b>을 생성할 수 없습니다!"
+msgstr "<b>%1</b>을 만들 수 없습니다!"
 
 #: gui/streamspage.cpp:225
 msgid "Stream already exists!<br/><b>%1</b>"
@@ -2078,11 +2078,11 @@ msgstr "대문자로"
 
 #: gui/tageditor.cpp:151 gui/tageditor.cpp:481
 msgid "Adjust Track Numbers"
-msgstr "곡번호 조정"
+msgstr "곡 번호 조정"
 
 #: gui/tageditor.cpp:233 gui/tageditor.cpp:545
 msgid "All tracks"
-msgstr "전체 곡"
+msgstr "전곡"
 
 #: gui/tageditor.cpp:287
 msgid "(Various)"
@@ -2101,8 +2101,8 @@ msgid ""
 "<i>This will set 'Album artist' and 'Artist' to \"Various Artists\", and set "
 "'Title' to \"TrackArtist - TrackTitle\"</i>"
 msgstr ""
-"<i>'음반 연주자'와 '연주자'를 \"여러 연주자\"로 설정하고, '제목'을 \"곡연주"
-"자 - 곡제목\"으로 바꿉니다.</i>"
+"<i>'음반 연주자'와 '연주자'를 \"여러 연주자\"로 설정하고, '제목'을 \"곡 연주"
+"자 - 곡 제목\"으로 바꿉니다.</i>"
 
 #: gui/tageditor.cpp:371
 msgid "Revert \"Various Artists\" workaround on <b>all</b> tracks?"
@@ -2120,7 +2120,7 @@ msgid ""
 "is \"Wibble - Wobble\", then 'Artist' will be set to \"Wibble\" and 'Title' "
 "will be set to \"Wobble\"</i>"
 msgstr ""
-"<i>'음반 연주자'가 \"곡연주자 - 곡제목\" 형태의 '연주자'와 '제목'이 같다면, "
+"<i>'음반 연주자'가 \"곡 연주자 - 곡 제목\" 형태의 '연주자'와 '제목'이 같다면, "
 "'연주자'는 '제목'으로부터 나오고 '제목' 자체는 제목으로 설정됩니다. 예로 <br/"
 "><br/>'제목'이 \"유재하 - 내 마음에 비친 내 모습\"이고 '연주자'가 \"유재하"
 "\"로 설정되면, '제목'은 \"내 마음에 비친 내 모습\"이 됩니다.</i>"
@@ -2128,7 +2128,7 @@ msgstr ""
 #: gui/tageditor.cpp:419
 #, fuzzy
 msgid "Set 'Album Artist' from 'Artist' for <b>all</b> tracks?"
-msgstr "\"여러 연주자\" 해결을 <b>전</b>곡에 적용할까요?"
+msgstr "'연주자'에서 '음반 연주자'를 설정하는 것을 <b>전</b>곡에 적용할까요?"
 
 #: gui/tageditor.cpp:420
 msgid "Set 'Album Artist' from 'Artist'?"
@@ -2146,19 +2146,19 @@ msgstr ""
 msgid ""
 "Capitalize the first letter of 'Title', 'Artist', 'Album artist', and 'Album'"
 msgstr ""
-"'제목', '연주자', '음반', '음반 연주자', '음반'의 첫글자를 대문자로 만듭니다."
+"'제목', '연주자', '음반 연주자', '음반'의 첫 글자를 대문자로 만듭니다."
 
 #: gui/tageditor.cpp:481
 msgid "Increment the value of each track number by:"
-msgstr "각 곡번호를 값대로 늘여갑니다:"
+msgstr "각 곡 번호를 값대로 늘여갑니다:"
 
 #: gui/tageditor.cpp:482
 msgid "Increment track number by:"
-msgstr "곡번호를 늘여갑니다:"
+msgstr "곡 번호를 늘여갑니다:"
 
 #: gui/tageditor.cpp:539
 msgid "All tracks [modified]"
-msgstr "전체 곡 [수정됨]"
+msgstr "전곡 [수정됨]"
 
 #: gui/tageditor.cpp:541
 msgid "%1 [modified]"
@@ -2191,7 +2191,7 @@ msgstr ""
 "색을 입력하시기 바랍니다. 예로 지금 곡이 리메이크라면 원곡의 가사를 찾는 것"
 "이 도움이 될 수 있습니다.\n"
 "\n"
-"만약 이 검색이 새로운 가사를 찾는다면, 원곡명이나 연주자와 여전히 연관이 있"
+"만약 이 검색이 새로운 가사를 찾는다면, 원곡 이름이나 연주자와 여전히 연관이 있"
 "을 수 있습니다."
 
 #. i18n: file: dynamic/dynamicrule.ui:67
@@ -2230,7 +2230,7 @@ msgstr "(폴란드어 변역)"
 
 #: lyrics/lyricsettings.cpp:58
 msgid "(Portuguese Translations)"
-msgstr "(포르투칼어 번역)"
+msgstr "(포르투갈어 번역)"
 
 #: lyrics/lyricspage.cpp:88
 msgid "Edit Lyrics"
@@ -2246,7 +2246,7 @@ msgstr "가사 수정 취소"
 
 #: lyrics/lyricspage.cpp:91
 msgid "Delete Lyrics File"
-msgstr "가사 파일 지움"
+msgstr "가사 파일 지우기"
 
 #: lyrics/lyricspage.cpp:151 lyrics/lyricspage.cpp:168
 #: lyrics/lyricspage.cpp:224
@@ -2364,16 +2364,16 @@ msgstr[1] "%1 음반"
 #: models/devicesmodel.cpp:288
 #, fuzzy
 msgid "Disconnect Device"
-msgstr "장치와 분리됨"
+msgstr "장치와 분리함"
 
 #: models/devicesmodel.cpp:288
 #, fuzzy
 msgid "Connect Device"
-msgstr "장치에 연결됨"
+msgstr "장치에 연결함"
 
 #: models/devicesmodel.cpp:847
 msgid "No Devices Attached"
-msgstr "장치가 연결 안 됨"
+msgstr "장치가 연결 안됨"
 
 #: models/dirviewmodel.cpp:176 models/dirviewmodel.cpp:184
 msgid "1 Entry"
@@ -2438,42 +2438,42 @@ msgstr "%1 (%2:%3)"
 
 #: mpd/mpdconnection.cpp:341 mpd/mpdconnection.cpp:374
 msgid "Connection to %1 failed"
-msgstr "%1에 연결 안 됨"
+msgstr "%1에 연결 안됨"
 
 #: mpd/mpdconnection.cpp:347 mpd/mpdconnection.cpp:378
 msgid "Connection to %1 failed - incorrect password"
-msgstr "%1에 연결 안 됨 - 틀린 암호"
+msgstr "%1에 연결 안됨 - 틀린 암호"
 
 #: mpd/mpdconnection.cpp:409
 msgid "Failed to send command to %1 - not connected"
-msgstr "%1에 명령어 전달 안 됨 - 연결 안 됨"
+msgstr "%1에 명령어 전달 안됨 - 연결 안됨"
 
 #: mpd/mpdconnection.cpp:419 mpd/mpdconnection.cpp:919
 #: mpd/mpdconnection.cpp:946
 msgid "Failed to reconnect to %1"
-msgstr "%1에 재연결 안 됨"
+msgstr "%1에 재연결 안됨"
 
 #: mpd/mpdconnection.cpp:446
 msgid "Failed to load. Please check user \"mpd\" has read permission."
-msgstr "연결 안 됨. \"mpd\" 사용자가 읽기 권한이 있는지 확인해야 합니다."
+msgstr "연결 안됨. \"mpd\" 사용자가 읽기 권한이 있는지 확인해야 합니다."
 
 #: mpd/mpdconnection.cpp:448
 msgid ""
 "Failed to load. MPD can only play local files if connected via a local "
 "socket."
-msgstr "불러오기 안 됨. MPD는 로컬에 연결된 파일만 불러올 수 있습니다."
+msgstr "불러오기 안됨. MPD는 로컬에 연결된 파일만 불러올 수 있습니다."
 
 #: mpd/mpdconnection.cpp:454 mpd/mpdconnection.cpp:461
 msgid "Failed to send command. Disconnected from %1"
-msgstr "명령어 전달 안 됨. %1 연결 해제"
+msgstr "명령어 전달 안됨. %1 연결 해제"
 
 #: mpd/mpdconnection.cpp:1080
 msgid "Failed to rename <b>%1</b> to <b>%2</b>"
-msgstr "<b>%1</b>에서 <b>%2</b>로 이름 바꾸기 안 됨"
+msgstr "<b>%1</b>에서 <b>%2</b>로 이름 바꾸기 안됨"
 
 #: mpd/mpdconnection.cpp:1092
 msgid "Failed to save <b>%1</b>"
-msgstr "<b>%1</b> 저장 안 됨"
+msgstr "<b>%1</b> 저장 안됨"
 
 #: mpd/mpdparseutils.cpp:481
 msgid "1 day %2"
@@ -2716,7 +2716,7 @@ msgstr "음반 표지 저장하기:"
 #: po/rc.cpp:39 rc.cpp:39
 #, fuzzy
 msgid "Maximum cover size:"
-msgstr "음반 표지 저장하기:"
+msgstr "최대 표지 크기:"
 
 #. i18n: file: devices/devicepropertieswidget.ui:82
 #. i18n: ectx: property (text), widget (BuddyLabel, fixVariousArtistsLabel)
@@ -2746,7 +2746,7 @@ msgstr "캐시 사용:"
 #. i18n: ectx: property (title), widget (QGroupBox, optionsBox)
 #: po/rc.cpp:51 po/rc.cpp:162 rc.cpp:51 rc.cpp:162
 msgid "Filenames"
-msgstr "파일명"
+msgstr "파일 이름"
 
 #. i18n: file: devices/devicepropertieswidget.ui:132
 #. i18n: ectx: property (text), widget (BuddyLabel, label_3)
@@ -2794,7 +2794,7 @@ msgstr "연주자 이름에 'The' 무시:"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6)
 #: po/rc.cpp:63 po/rc.cpp:165 rc.cpp:63 rc.cpp:165
 msgid "Filename scheme:"
-msgstr "파일명 체계"
+msgstr "파일 이름 구성"
 
 #. i18n: file: devices/devicepropertieswidget.ui:227
 #. i18n: ectx: property (text), widget (BuddyLabel, label_2)
@@ -2830,7 +2830,7 @@ msgstr "예:"
 #. i18n: ectx: property (text), widget (UrlLabel, help)
 #: po/rc.cpp:81 rc.cpp:81
 msgid "About filename schemes"
-msgstr "파일명 체계에 대하여"
+msgstr "파일 이름 구성에 대하여"
 
 #. i18n: file: devices/filenameschemedialog.ui:82
 #. i18n: ectx: property (text), widget (QPushButton, albumArtist)
@@ -2893,7 +2893,7 @@ msgstr "형태:"
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: po/rc.cpp:117 rc.cpp:117
 msgid "Options"
-msgstr "옵션:"
+msgstr "옵션"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:88
 #. i18n: ectx: property (text), widget (BuddyLabel, portLabel_2)
@@ -2973,8 +2973,8 @@ msgid ""
 "<b>unencrypted</b> in Cantata's config file. To have Cantata prompt for the "
 "password before accessing the share, set the password to '-'</i>"
 msgstr ""
-"<i><b>참고:</b> 여기에 비밀번호를 입력하면, 설정 파일에 <b>비암호</b>되어 저장됩니다."
-"공유에 접근하기 전에 비밀번호를 입력하려면, 비밀번호를 '-'로 설정합니다.</i>"
+"<i><b>참고:</b> 여기에 비밀번호를 입력하면, 설정 파일에 <b>비 암호화</b>되어 저장됩"
+"니다. 공유에 접근하기 전에 비밀번호를 입력하려면, 비밀번호를 '-'로 설정합니다.</i>"
 
 #. i18n: file: devices/remotedevicepropertieswidget.ui:231
 #. i18n: ectx: property (text), widget (BuddyLabel, folderLabel)
@@ -3029,7 +3029,7 @@ msgstr "새 이름"
 #: po/rc.cpp:189 rc.cpp:189
 msgid ""
 "No dynamizer port defined in server settings. Dynamic functionality disabled."
-msgstr "서버 설정에 활동 포트가 없습니다. 동적 기능 사용 안 됨"
+msgstr "서버 설정에 활동 포트가 없습니다. 동적 기능 사용 안됨"
 
 #. i18n: file: dynamic/dynamicrules.ui:33
 #. i18n: ectx: property (placeholderText), widget (LineEdit, nameText)
@@ -3171,7 +3171,7 @@ msgid ""
 msgstr ""
 "<i><b>참고:</b> MPD는 주로 음악 폴더에 저장된 음악만 연주합니다.로컬 소켓에 "
 "연결되면 파일시스템의 파일을 연주할 수 있습니다. 로컬 소켓을 사용하지 않는다"
-"면 (예로 \"서버\" 설정페이지의 \"호스트\" 입력란에 호스트명이나 IP주소를 입력"
+"면 (예로 \"서버\" 설정페이지의 \"호스트\" 입력란에 호스트 이름이나 IP주소를 입력"
 "했다면) 칸타타는 파일을 MPD로 서비스하는 최소한의 HTTP서버 역할을 합니다. 다"
 "만, 칸타타가 실행되는 한에서만 작동합니다. \"항상 서버 사용\"을 선택하면 칸타"
 "타는 로컬 소켓에 연결되었더라도 항상 서버 URL을 MPD 파일로 전달합니다.<br/"
@@ -3191,7 +3191,7 @@ msgstr "마법사"
 #: po/rc.cpp:295 rc.cpp:295
 #, fuzzy
 msgid "Welcome to Cantata"
-msgstr "칸타타에 대하여"
+msgstr "칸타타에 오신걸 환영합니다"
 
 #. i18n: file: gui/initialsettingswizard.ui:50
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -3218,7 +3218,7 @@ msgstr ""
 #: po/rc.cpp:301 rc.cpp:301
 #, fuzzy
 msgid "Connection details"
-msgstr "연결 설정"
+msgstr "연결 정보"
 
 #. i18n: file: gui/initialsettingswizard.ui:106
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -3227,7 +3227,7 @@ msgid ""
 "The settings below are the basic settings required by Cantata. Please enter "
 "the relevant details, and use the \"Connect\" button to test the connection."
 msgstr ""
-"아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세 정보를 입려해 주시고,"
+"아래 설정은 칸타타에서 기본적으로 필요한 정보입니다. 관련 상세 정보를 입력해 주시고,"
 "연결해 보려면 \"연결\" 단추를 누릅니다."
 
 #. i18n: file: gui/initialsettingswizard.ui:132
@@ -3257,9 +3257,8 @@ msgid ""
 "you also have write permissions to this folder (and it's sub-folders), then "
 "Cantata will save any downloaded covers into the respective album folder.</i>"
 msgstr ""
-"<i><b>참고:</b> '음악 폴더' 설정은 표지그림을 찾기 위해 사용됩니다 (위에서 설"
-"정된 값 또는 설정되지 않았다면 <code>cover.jpg/cover.png</code>). 이 폴더에 "
-"쓰기 권한이 있다면 다운로드된 표지를 각각의 음반 폴더에 저장합니다.</i>"
+"<i><b>참고:</b> '음악 폴더' 설정은 표지그림을 찾기 위해 사용됩니다. 만약 이 폴더와 "
+"하부 폴더에 쓰기 권한이 있다면 내려받은 표지를 각각의 음반 폴더에 저장합니다.</i>"
 
 #. i18n: file: gui/initialsettingswizard.ui:283
 #. i18n: ectx: property (text), widget (QLabel, socketNoteLabel)
@@ -3306,12 +3305,9 @@ msgid ""
 "you do add yourself you will need to logout and back in for this to take "
 "effect."
 msgstr ""
-"\"사용자\"그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라면 음반 표지 및 가"
-"사를 저장하는 등의 기능을 보다 잘 수행합니다.\n"
-"\n"
-"참고로 그룹 사용자에 추가하였다면 재 로그인을 해야합니다.\n"
-"\n"
-"\"계속\"을 선택하면 지금대로 진행합니다."
+"<b>경고:</b> 지금 '사용자' 그룹에 포함되어 있지 않습니다. 이 그룹의 사용자라면 "
+"음반 표지 및 가사를 저장하는 등의 기능을 더 잘 수행합니다. 만약 본인이나 관리자가 "
+"사용자를 이 그룹에 추가하였다면 재 로그인을 해야 합니다."
 
 #. i18n: file: gui/interfacesettings.ui:41
 #. i18n: ectx: property (text), widget (BuddyLabel, label)
@@ -3371,9 +3367,9 @@ msgid ""
 "a square image.</i>"
 msgstr ""
 "<i><b>참고:</b> 연주자 이미지를 찾을 때, 지금 곡이 있는 폴더나 상위 폴더의 "
-"artist.jpg, artist.png, [연주자].jpg 또는 [연주자].png를 찾습니다.\n"
-"만약 이미지를 찾지 못하면 다운로드를 시도합니다.<br/>\n"
-"정사각형의 이미지를 보이기 위해서 상하 또는 좌우가 잘릴 수 있습니다.</i>"
+"artist.jpg, artist.png, \"연주자\".jpg 또는 \"연주자\".png\n를 찾습니다."
+"만약 이미지를 찾지 못하면 내려받기를 시도합니다. 정사각형의 이미지를 보이기 위해서 "
+"상하 또는 좌우가 잘릴 수 있습니다.<i>"
 
 #. i18n: file: gui/interfacesettings.ui:175
 #. i18n: ectx: property (text), widget (BuddyLabel, label_5x)
@@ -3409,7 +3405,7 @@ msgstr "연주자/연도/음반"
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueStartClosedLabel)
 #: po/rc.cpp:389 po/rc.cpp:425 rc.cpp:389 rc.cpp:425
 msgid "Initially collapse albums:"
-msgstr "처음에 음반 펄치지 않음:"
+msgstr "처음에 음반 펼치지 않음:"
 
 #. i18n: file: gui/interfacesettings.ui:245
 #. i18n: ectx: attribute (title), widget (QWidget, tab_3)
@@ -3451,7 +3447,7 @@ msgstr "지금 곡으로 이동:"
 #. i18n: ectx: property (text), item, widget (QComboBox, playQueueGrouped)
 #: po/rc.cpp:416 rc.cpp:416
 msgid "Table"
-msgstr "테이블"
+msgstr "항목으로 따로"
 
 #. i18n: file: gui/interfacesettings.ui:357
 #. i18n: ectx: property (text), widget (BuddyLabel, playQueueAutoExpandLabel)
@@ -3511,13 +3507,13 @@ msgstr "메뉴에 지우기 보임:"
 #. i18n: ectx: property (text), widget (BuddyLabel, storeCoversInMpdDirLabel)
 #: po/rc.cpp:455 rc.cpp:455
 msgid "Save downloaded covers in music folder:"
-msgstr "음악 폴더에 다운로드된 표지 저장:"
+msgstr "음악 폴더에 내려받은 표지 저장:"
 
 #. i18n: file: gui/interfacesettings.ui:537
 #. i18n: ectx: property (text), widget (BuddyLabel, label_4)
 #: po/rc.cpp:458 rc.cpp:458
 msgid "Save downloaded lyrics in music folder:"
-msgstr "음악 폴더에 다운로드된 가사 저장:"
+msgstr "음악 폴더에 내려받은 가사 저장:"
 
 #. i18n: file: gui/interfacesettings.ui:554
 #. i18n: ectx: property (text), widget (BuddyLabel, forceSingleClick_label)
@@ -3550,7 +3546,7 @@ msgstr "[동적]"
 #. i18n: ectx: property (text), widget (BuddyLabel, label_6b)
 #: po/rc.cpp:482 rc.cpp:482
 msgid "Fadeout on stop:"
-msgstr "정지시 페이드아웃:"
+msgstr "정지할 때 페이드아웃:"
 
 #. i18n: file: gui/playbacksettings.ui:39
 #. i18n: ectx: property (text), widget (BuddyLabel, stopOnExitLabel)
@@ -3681,7 +3677,7 @@ msgstr "활동 포트"
 #. i18n: ectx: property (text), widget (BuddyLabel, coverNameLabel)
 #: po/rc.cpp:602 rc.cpp:602
 msgid "Cover filename:"
-msgstr "표지 파일명"
+msgstr "표지 파일 이름:"
 
 #. i18n: file: gui/serversettings.ui:194
 #. i18n: ectx: property (text), widget (QLabel, musicFolderNoteLabel)
@@ -3695,7 +3691,7 @@ msgid ""
 msgstr ""
 "<i><b>참고:</b> '음악 폴더' 설정은 표지그림을 찾기 위해 사용됩니다 (위에서 설"
 "정된 값 또는 설정되지 않았다면 <code>cover.jpg/cover.png</code>). 이 폴더에 "
-"쓰기 권한이 있다면 다운로드된 표지를 각각의 음반 폴더에 저장합니다.</i>"
+"쓰기 권한이 있다면 내려받은 표지를 각각의 음반 폴더에 저장합니다.</i>"
 
 #. i18n: file: gui/tageditor.ui:22
 #. i18n: ectx: property (text), widget (StateLabel, trackNameLabel)
@@ -3749,7 +3745,7 @@ msgstr "아래로 이동"
 #. i18n: ectx: property (text), widget (QRadioButton, proxySystem)
 #: po/rc.cpp:668 rc.cpp:668
 msgid "Use the system proxy settings"
-msgstr "시스템 프록시 설정 사용"
+msgstr "시스템 프락시 설정 사용"
 
 #. i18n: file: network/proxysettings.ui:33
 #. i18n: ectx: property (text), widget (QRadioButton, proxyDirect)
@@ -3761,19 +3757,19 @@ msgstr "직접 인터넷 연결"
 #. i18n: ectx: property (text), widget (QRadioButton, proxyManual)
 #: po/rc.cpp:674 rc.cpp:674
 msgid "Manual proxy configuration"
-msgstr "수동 프록시 설정"
+msgstr "수동 프락시 설정"
 
 #. i18n: file: network/proxysettings.ui:59
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
 #: po/rc.cpp:677 rc.cpp:677
 msgid "HTTP Proxy"
-msgstr "HTTP 프록시"
+msgstr "HTTP 프락시"
 
 #. i18n: file: network/proxysettings.ui:64
 #. i18n: ectx: property (text), item, widget (QComboBox, proxyType)
 #: po/rc.cpp:680 rc.cpp:680
 msgid "SOCKS Proxy"
-msgstr "SOCKS 프록시"
+msgstr "SOCKS 프락시"
 
 #. i18n: file: network/proxysettings.ui:75
 #. i18n: ectx: property (text), widget (QLabel, label_15)
@@ -3870,7 +3866,7 @@ msgstr "전체 파일, 또는 태그가 없는 파일만 검색할까요?"
 
 #: replaygain/rgdialog.cpp:236
 msgid "All Tracks"
-msgstr "전 곡"
+msgstr "전곡"
 
 #: replaygain/rgdialog.cpp:236
 msgid "Untagged Tracks"
@@ -3904,7 +3900,7 @@ msgstr "폴더 선택"
 #: support/dirrequester.cpp:50
 #, fuzzy
 msgid "Select File"
-msgstr "폴더 선택"
+msgstr "파일 선택"
 
 #: support/fancytabwidget.cpp:950
 msgid "Icons Only"
@@ -3916,11 +3912,11 @@ msgstr "형식"
 
 #: support/fancytabwidget.cpp:952
 msgid "Large Sidebar"
-msgstr "큰 옆막대"
+msgstr "큰 옆 막대"
 
 #: support/fancytabwidget.cpp:953
 msgid "Small Sidebar"
-msgstr "작은 옆막대"
+msgstr "작은 옆 막대"
 
 #: support/fancytabwidget.cpp:954
 msgid "Top Bar"
@@ -3945,11 +3941,11 @@ msgstr "아래 꼬리표"
 #: support/inputdialog.h:54
 #, fuzzy
 msgid "Password"
-msgstr "비밀번호:"
+msgstr "비밀번호"
 
 #: support/inputdialog.h:54
 msgid "Please enter password:"
-msgstr "비밀번호를 입력합니다:"
+msgstr "비밀번호 입력:"
 
 #: support/messagebox.cpp:43 support/messagebox.cpp:49
 msgid "Warning"
@@ -3986,12 +3982,12 @@ msgstr "%1 kB"
 #: support/utils.cpp:267
 #, fuzzy
 msgid "%1 MB"
-msgstr "%1 MiB"
+msgstr "%1 MB"
 
 #: support/utils.cpp:269
 #, fuzzy
 msgid "%1 GB"
-msgstr "%1 GiB"
+msgstr "%1 GB"
 
 #: support/utils.cpp:274
 msgid "%1 KiB"
@@ -4028,7 +4024,7 @@ msgstr "%1 찾기..."
 
 #: ../gui/tageditor.cpp:732 ../replaygain/rgdialog.cpp:399
 msgid "Failed to update the tags of some tracks."
-msgstr "곡에 대한 태그 업데이트 안 됨."
+msgstr "곡에 대한 태그 업데이트 안됨."
 
 #: ../qtplural.h:28
 msgctxt "Singular"

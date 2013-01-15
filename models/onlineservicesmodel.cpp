@@ -39,6 +39,10 @@
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KGlobal>
+K_GLOBAL_STATIC(OnlineServicesModel, instance)
+#endif
 
 OnlineServicesModel * OnlineServicesModel::self()
 {

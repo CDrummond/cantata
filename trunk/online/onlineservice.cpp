@@ -170,6 +170,7 @@ void OnlineService::reload(const bool fromCache)
         return;
     }
 
+    clear();
     QString cache=cacheFileName(this, true);
     if (!fromCache && QFile::exists(cache)) {
         QFile::remove(cache);
@@ -185,19 +186,24 @@ void OnlineService::reload(const bool fromCache)
 void OnlineService::toggle()
 {
     if (loaded) {
-        loaded=false;
-        int count=childCount();
-        if (count>0) {
-            model->beginRemoveRows(model->createIndex(model->services.indexOf(this), 0, this), 0, count-1);
-            clearItems();
-            model->endRemoveRows();
-        }
-        lProgress=0.0;
-        setStatusMessage(i18n("Not Loaded"));
-        model->updateGenres();
+        clear();
     } else {
         reload(true);
     }
+}
+
+void OnlineService::clear()
+{
+    loaded=false;
+    int count=childCount();
+    if (count>0) {
+        model->beginRemoveRows(model->createIndex(model->services.indexOf(this), 0, this), 0, count-1);
+        clearItems();
+        model->endRemoveRows();
+    }
+    lProgress=0.0;
+    setStatusMessage(i18n("Not Loaded"));
+    model->updateGenres();
 }
 
 void OnlineService::saveCache()

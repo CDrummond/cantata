@@ -85,8 +85,6 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Name:"), wid, nameEntry));
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
     #ifdef ENABLE_KDE_SUPPORT
-    iconButton=new QPushButton(this);
-    setIcon(QString());
     layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconButton));
     layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
     #endif

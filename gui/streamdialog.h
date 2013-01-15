@@ -28,6 +28,7 @@
 #include "dialog.h"
 #include "lineedit.h"
 #include "completioncombo.h"
+#include "onoffbutton.h"
 
 class QLabel;
 #ifdef ENABLE_KDE_SUPPORT
@@ -39,7 +40,7 @@ class StreamDialog : public Dialog
     Q_OBJECT
 
 public:
-    StreamDialog(const QStringList &categories, const QStringList &genres, const QSet<QString> &uh, QWidget *parent);
+    StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent, bool addToPlayQueue=false);
 
     void setEdit(const QString &cat, const QString &editName, const QString &editGenre, const QString &editIconName, const QString &editUrl);
 
@@ -48,6 +49,7 @@ public:
     QString category() const { return catCombo->currentText().trimmed(); }
     QString genre() const { return genreCombo->currentText().trimmed(); }
     QString icon() const { return iconName; }
+    bool save() const { return saveButton && saveButton->isChecked(); }
 
 private Q_SLOTS:
     void changed();
@@ -70,6 +72,7 @@ private:
     QString prevIconName;
     QPushButton *iconButton;
     #endif
+    OnOffButton *saveButton;
     LineEdit *nameEntry;
     LineEdit *urlEntry;
     CompletionCombo *catCombo;

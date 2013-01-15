@@ -89,6 +89,7 @@
 #endif
 #include "coverdialog.h"
 #include "streamsmodel.h"
+#include "streamdialog.h"
 #include "onlineservicesmodel.h"
 #include "playlistspage.h"
 #include "fancytabwidget.h"
@@ -313,6 +314,7 @@ MainWindow::MainWindow(QWidget *parent)
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle"));
     savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), "document-save-as");
+    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream"), Icons::radioStreamIcon);
     clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::clearListIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
     randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::shuffleIcon);
@@ -447,7 +449,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     savePlayQueueAction->setEnabled(false);
     clearPlayQueueAction->setEnabled(false);
+    addStreamToPlayQueueAction->setEnabled(false);
     savePlayQueuePushButton->setDefaultAction(savePlayQueueAction);
+    addStreamToPlayQueuePushButton->setDefaultAction(addStreamToPlayQueueAction);
     removeAllFromPlayQueuePushButton->setDefaultAction(clearPlayQueueAction);
     randomPushButton->setDefaultAction(randomPlayQueueAction);
     repeatPushButton->setDefaultAction(repeatPlayQueueAction);
@@ -520,7 +524,8 @@ MainWindow::MainWindow(QWidget *parent)
     QList<QToolButton *> btns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     controlBtns << volumeButton << menuButton << streamButton;
-    btns << repeatPushButton << singlePushButton << randomPushButton << savePlayQueuePushButton << removeAllFromPlayQueuePushButton << consumePushButton;
+    btns << repeatPushButton << singlePushButton << randomPushButton << savePlayQueuePushButton << addStreamToPlayQueuePushButton
+         << removeAllFromPlayQueuePushButton << consumePushButton;
 
     foreach (QToolButton *b, btns) {
         Icon::init(b);
@@ -655,6 +660,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setModel(&playQueueModel);
     playQueue->addAction(removeFromPlayQueueAction);
     playQueue->addAction(clearPlayQueueAction);
+    playQueue->addAction(addStreamToPlayQueueAction);
     playQueue->addAction(savePlayQueueAction);
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(shufflePlayQueueAction);
@@ -792,6 +798,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(folderPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
+    connect(addStreamToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addStreamToPlayQueue()));
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     connect(replaygainAction, SIGNAL(triggered(bool)), SLOT(replayGain()));
@@ -1032,6 +1039,7 @@ void MainWindow::messageWidgetVisibility(bool v)
 void MainWindow::mpdConnectionStateChanged(bool connected)
 {
     serverInfoAction->setEnabled(connected);
+    addStreamToPlayQueueAction->setEnabled(connected);
     if (connected) {
         messageWidget->hide();
         if (CS_Connected!=connectedState) {
@@ -2208,6 +2216,26 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
     }
 }
 
+void MainWindow::addStreamToPlayQueue()
+{
+    StreamDialog dlg(streamsPage->getCategories(), streamsPage->getGenres(), this, true);
+
+    if (QDialog::Accepted==dlg.exec()) {
+        QString url=dlg.url();
+
+        if (dlg.save()) {
+            QString name=dlg.name();
+            QString cat=dlg.category();
+            QString existing=streamsPage->getModel().name(cat, url);
+
+            if (existing.isEmpty()) {
+                streamsPage->getModel().add(cat, name, dlg.genre(), dlg.icon(), url);
+            }
+        }
+        playQueueModel.addItems(QStringList() << StreamsModel::prefixUrl(url), false, 0);
+    }
+}
+
 void MainWindow::removeItems()
 {
     if (playlistsPage->isVisible()) {
@@ -2592,7 +2620,8 @@ void MainWindow::focusSearch()
         return;
     }
     if (playQueue->hasFocus() || repeatPushButton->hasFocus() || singlePushButton->hasFocus() || randomPushButton->hasFocus() ||
-        consumePushButton->hasFocus() || savePlayQueuePushButton->hasFocus() || removeAllFromPlayQueuePushButton->hasFocus()) {
+        consumePushButton->hasFocus() || savePlayQueuePushButton->hasFocus() || addStreamToPlayQueuePushButton->hasFocus() ||
+        removeAllFromPlayQueuePushButton->hasFocus()) {
         searchPlayQueueLineEdit->setFocus();
     } else if (libraryPage->isVisible()) {
         libraryPage->focusSearch();

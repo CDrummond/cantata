@@ -107,6 +107,7 @@ public:
     bool isLoaded() const { return loaded; }
     void reload(bool fromCache=true);
     void toggle();
+    void clear();
     bool isLoading() const { return 0!=loader; }
     bool isIdle() const { return isLoaded() && !isLoading(); }
     void saveCache();

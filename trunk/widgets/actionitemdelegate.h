@@ -35,13 +35,7 @@ class ActionItemDelegate : public QStyledItemDelegate
 public:
     static void setup();
 
-    ActionItemDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
-        : QStyledItemDelegate(p)
-        , act1(a1)
-        , act2(a2)
-        , toggle(t)
-        , actLevel(actionLevel) {
-    }
+    ActionItemDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2);
 
     virtual ~ActionItemDelegate() {
     }
@@ -63,9 +57,9 @@ public:
     QAction * getAction(QAbstractItemView *view, const QModelIndex &index) const;
 
 public:
-    QAction *act1;
-    QAction *act2;
-    QAction *toggle;
+    QAction *act1[2];
+    QAction *act2[2];
+    QAction *toggle[2];
     int actLevel;
 };
 

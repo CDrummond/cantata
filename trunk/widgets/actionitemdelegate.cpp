@@ -134,6 +134,18 @@ static void drawBgnd(QPainter *painter, const QRect &rx)
     painter->setRenderHint(QPainter::Antialiasing, false);
 }
 
+ActionItemDelegate::ActionItemDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2)
+    : QStyledItemDelegate(p)
+    , actLevel(actionLevel)
+{
+    act1[0]=a1;
+    act1[1]=s1;
+    act2[0]=a2;
+    act2[1]=s2;
+    toggle[0]=t;
+    toggle[1]=0;
+}
+
 void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, bool iconMode, const QModelIndex &index) const
 {
     double opacity=painter->opacity();
@@ -142,9 +154,13 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
     }
 
     QRect actionRect=calcActionRect(rtl, iconMode, r);
+    bool isSub=(act1[1] || act2[1]) && index.parent().isValid();
+    QAction *a1=act1[isSub ? 1 : 0];
+    QAction *a2=act2[isSub ? 1 : 0];
+    QAction *t=toggle[isSub ? 1 : 0];
 
-    if (act1) {
-        QPixmap pix=act1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+    if (a1) {
+        QPixmap pix=a1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
         if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
             drawBgnd(painter, actionRect);
             painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
@@ -152,11 +168,11 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
         }
     }
 
-    if (act2) {
-        if (act1) {
+    if (a1) {
+        if (a1) {
             adjustActionRect(rtl, iconMode, actionRect);
         }
-        QPixmap pix=act2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+        QPixmap pix=a2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
         if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
             drawBgnd(painter, actionRect);
             painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
@@ -164,10 +180,10 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
         }
     }
 
-    if (toggle) {
+    if (t) {
         QIcon icon=index.data(ItemView::Role_ToggleIcon).value<QIcon>();
         if (!icon.isNull()) {
-            if (act1 || act2) {
+            if (a1 || a2) {
                 adjustActionRect(rtl, iconMode, actionRect);
             }
             QPixmap pix=icon.pixmap(QSize(constActionIconSize, constActionIconSize));
@@ -188,7 +204,7 @@ bool ActionItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, const
     if (QEvent::ToolTip==e->type() && (act1 || act2 || toggle)) {
         QAction *act=getAction(view, index);
         if (act) {
-            if (act==toggle) {
+            if (act==toggle[0]) {
                 QString tt=index.data(ItemView::Role_ToggleToolTip).toString();
                 if (!tt.isEmpty()) {
                     QToolTip::showText(e->globalPos(), tt, view);
@@ -204,10 +220,15 @@ bool ActionItemDelegate::helpEvent(QHelpEvent *e, QAbstractItemView *view, const
 
 QAction * ActionItemDelegate::getAction(QAbstractItemView *view, const QModelIndex &index) const
 {
-    if (!hasActions(index, actLevel)) {
+    bool isSub=(act1[1] || act2[1]) && index.parent().isValid();
+
+    if (!isSub && !hasActions(index, actLevel)) {
         return 0;
     }
 
+    QAction *a1=act1[isSub ? 1 : 0];
+    QAction *a2=act2[isSub ? 1 : 0];
+    QAction *t=toggle[isSub ? 1 : 0];
     bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
     QListView *lv=qobject_cast<QListView *>(view);
     GroupedView *gv=lv ? 0 : qobject_cast<GroupedView *>(view);
@@ -215,7 +236,6 @@ QAction * ActionItemDelegate::getAction(QAbstractItemView *view, const QModelInd
     QRect rect = view->visualRect(index);
     rect.moveTo(view->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
     bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
-    bool haveToggle = toggle && !index.data(ItemView::Role_ToggleIcon).value<QIcon>().isNull();
     if (gv || lv || showCapacity) {
         if (iconMode) {
             rect.adjust(ActionItemDelegate::constBorder, ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder);
@@ -234,27 +254,27 @@ QAction * ActionItemDelegate::getAction(QAbstractItemView *view, const QModelInd
     ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect2);
 
     actionRect=iconMode ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
-    if (act1 && actionRect.contains(QCursor::pos())) {
-        return act1;
+    if (a1 && actionRect.contains(QCursor::pos())) {
+        return a1;
     }
 
-    if (act1) {
+    if (a1) {
         ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
     }
 
     actionRect=iconMode ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
-    if (act2 && actionRect.contains(QCursor::pos())) {
-        return act2;
+    if (a2 && actionRect.contains(QCursor::pos())) {
+        return a2;
     }
 
-    if (haveToggle) {
-        if (act1 || act2) {
+    if (t) {
+        if (a1 || a2) {
             ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
         }
 
         actionRect=iconMode ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
-        if (toggle && actionRect.contains(QCursor::pos())) {
-            return toggle;
+        if (t && actionRect.contains(QCursor::pos())) {
+            return t;
         }
     }
 

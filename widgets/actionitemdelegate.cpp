@@ -168,7 +168,7 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
         }
     }
 
-    if (a1) {
+    if (a2) {
         if (a1) {
             adjustActionRect(rtl, iconMode, actionRect);
         }

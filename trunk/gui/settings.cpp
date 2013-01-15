@@ -354,7 +354,7 @@ int Settings::streamsView()
 
 int Settings::onlineView()
 {
-    return GET_INT("onlineView", ItemView::Mode_Tree);
+    return GET_INT("onlineView", (int)ItemView::Mode_Tree);
 }
 
 bool Settings::libraryArtistImage()

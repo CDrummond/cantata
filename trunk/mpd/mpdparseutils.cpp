@@ -27,6 +27,7 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
+#include <QtCore/QUrl>
 #include "localize.h"
 #include "dirviewitemroot.h"
 #include "dirviewitemdir.h"
@@ -224,9 +225,15 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     #endif
 
     if (isPlayQueue) {
-        if (!song.isStream() && !song.file.isEmpty()) {
-            song.guessTags();
-            song.fillEmptyFields();
+        if (!song.file.isEmpty()) {
+            if (song.isStream()) {
+                if (!song.isCantataStream()) {
+                    song.title=Utils::getFile(QUrl(song.file).path());
+                }
+            } else {
+                song.guessTags();
+                song.fillEmptyFields();
+            }
         }
         song.setKey();
     }

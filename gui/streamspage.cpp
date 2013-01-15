@@ -68,7 +68,7 @@ static QUrl webStreamUrl(StreamsPage::WebStream type)
 static QString fixGenre(const QString &g)
 {
     if (g.length()) {
-        QString genre=g;
+        QString genre=g.toLower();
         genre[0]=genre[0].toUpper();
         int pos=genre.indexOf('|');
 
@@ -76,12 +76,57 @@ static QString fixGenre(const QString &g)
             genre=genre.left(pos);
         }
 
-        if (genre.length() < 2 ||
+        genre=genre.trimmed();
+        if (genre.length() < 3 ||
+            QLatin1String("The")==genre || QLatin1String("All")==genre ||
+            QLatin1String("Various")==genre || QLatin1String("Unknown")==genre ||
+            QLatin1String("Misc")==genre || QLatin1String("Mix")==genre || QLatin1String("100%")==genre ||
             genre.contains("ÃÂ") || // Broken unicode.
             genre.contains(QRegExp("^#x[0-9a-f][0-9a-f]"))) { // Broken XML entities.
                 return QString();
         }
 
+        if (genre==QLatin1String("R b") || genre==QLatin1String("R b")|| genre==QLatin1String("Rnb")) {
+            return QLatin1String("R&B");
+        }
+        if (genre==QLatin1String("Classic") || genre==QLatin1String("Classical")) {
+            return QLatin1String("Classical");
+        }
+        if (genre==QLatin1String("Christian") || genre.startsWith(QLatin1String("Christian "))) {
+            return QLatin1String("Christian");
+        }
+        if (genre==QLatin1String("Rock") || genre.startsWith(QLatin1String("Rock "))) {
+            return QLatin1String("Rock");
+        }
+        if (genre==QLatin1String("Electronic") || genre==QLatin1String("Electronica") || genre==QLatin1String("Electric")) {
+            return QLatin1String("Electronic");
+        }
+        if (genre==QLatin1String("Easy") || genre==QLatin1String("Easy listening")) {
+            return QLatin1String("Easy listening");
+        }
+        if (genre==QLatin1String("Hit") || genre==QLatin1String("Hits") || genre==QLatin1String("Easy listening")) {
+            return QLatin1String("Hits");
+        }
+        if (genre==QLatin1String("Hip") || genre==QLatin1String("Hiphop") || genre==QLatin1String("Hip hop") || genre==QLatin1String("Hop hip")) {
+            return QLatin1String("Hip hop");
+        }
+        if (genre==QLatin1String("News") || genre==QLatin1String("News talk")) {
+            return QLatin1String("News");
+        }
+        if (genre==QLatin1String("Top40") || genre==QLatin1String("Top 40") || genre==QLatin1String("40top") || genre==QLatin1String("40 top")) {
+            return QLatin1String("Top 40");
+        }
+
+        // Convert XX's to XXs
+        if (genre.contains(QRegExp("^[0-9]0's$"))) {
+            genre=genre.remove('\'');
+        }
+        if (genre.length()>25 && (0==genre.indexOf(QRegExp("^[0-9]0s ")) || 0==genre.indexOf(QRegExp("^[0-9]0 ")))) {
+            int pos=genre.indexOf(' ');
+            if (pos>1) {
+                genre=genre.left(pos);
+            }
+        }
         // Convert 80 -> 80s.
         return genre.contains(QRegExp("^[0-9]0$")) ? genre + 's' : genre;
     }

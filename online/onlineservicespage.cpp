@@ -99,7 +99,7 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     proxy.setSourceModel(OnlineServicesModel::self());
     view->setTopText(i18n("Online Music"));
     view->setModel(&proxy);
-    view->init(configureAction, refreshAction, toggleAction, 0);
+    view->init(configureAction, refreshAction, toggleAction, 0, p->replacePlayQueueAction, p->addToPlayQueueAction);
     view->setRootIsDecorated(false);
 }
 

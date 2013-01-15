@@ -107,8 +107,9 @@ static inline double subTextAlpha(bool selected)
 class ListDelegate : public ActionItemDelegate
 {
 public:
-    ListDelegate(ListView *v, QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
-        : ActionItemDelegate(p, a1, a2, t, actionLevel)
+    ListDelegate(ListView *v, QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2)
+        : ActionItemDelegate(p, a1, a2, t, actionLevel, s1, s2)
+        , allLevelsHaveActions((0!=a1 && 0!=s1) || (0!=a2 && 0!=s2))
         , view(v)
     {
     }
@@ -221,7 +222,7 @@ public:
             }
         }
 
-        if (!mouseOver && hasActions(index, actLevel)) {
+        if (!mouseOver && (allLevelsHaveActions || hasActions(index, actLevel))) {
             drawIcons(painter, iconMode ? r2 : r, false, rtl, iconMode, index);
         }
 
@@ -281,22 +282,23 @@ public:
             QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, 0L);
         }
 
-        if (drawBgnd && mouseOver && hasActions(index, actLevel)) {
+        if (drawBgnd && mouseOver && (allLevelsHaveActions || hasActions(index, actLevel))) {
             drawIcons(painter, iconMode ? r2 : r, true, rtl, iconMode, index);
         }
 
         painter->restore();
     }
 
-private:
+protected:
+    bool allLevelsHaveActions;
     ListView *view;
 };
 
 class TreeDelegate : public ListDelegate
 {
 public:
-    TreeDelegate(QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
-        : ListDelegate(0, p, a1, a2, t, actionLevel)
+    TreeDelegate(QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2)
+        : ListDelegate(0, p, a1, a2, t, actionLevel, s1, s2)
     {
     }
 
@@ -390,7 +392,7 @@ public:
             }
         }
 
-        if ((option.state & QStyle::State_MouseOver) && hasActions(index, actLevel)) {
+        if ((option.state & QStyle::State_MouseOver) && (allLevelsHaveActions || hasActions(index, actLevel))) {
             drawIcons(painter, option.rect, true, rtl, false, index);
         }
     }
@@ -414,6 +416,8 @@ ItemView::ItemView(QWidget *p)
     , act1(0)
     , act2(0)
     , toggle(0)
+    , subAct1(0)
+    , subAct2(0)
     , currentLevel(0)
     , mode(Mode_Tree)
     , groupedView(0)
@@ -455,18 +459,20 @@ void ItemView::allowGroupedView()
     }
 }
 
-void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
+void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2)
 {
-    if (act1 || act2 || toggle) {
+    if (act1 || act2 || toggle || subAct1 || subAct2) {
         return;
     }
 
     act1=a1;
     act2=a2;
     toggle=t;
+    subAct1=s1;
+    subAct2=s2;
     actLevel=actionLevel;
-    listView->setItemDelegate(new ListDelegate(listView, listView, a1, a2, toggle, actionLevel));
-    treeView->setItemDelegate(new TreeDelegate(treeView, a1, a2, toggle, actionLevel));
+    listView->setItemDelegate(new ListDelegate(listView, listView, a1, a2, toggle, actionLevel, s1, s2));
+    treeView->setItemDelegate(new TreeDelegate(treeView, a1, a2, toggle, actionLevel, s1, s2));
     if (groupedView) {
         groupedView->init(0, 0, 0, 0); // No actions in grouped view :-(
     }
@@ -859,7 +865,7 @@ QAction * ItemView::getAction(const QModelIndex &index)
 
 void ItemView::itemClicked(const QModelIndex &index)
 {
-    if ((act1 || act2 || toggle) && ActionItemDelegate::hasActions(index, actLevel)) {
+    if ((act1 || act2 || toggle) && (subAct1 || subAct2 || ActionItemDelegate::hasActions(index, actLevel))) {
         QAction *act=getAction(index);
         if (act) {
             act->trigger();
@@ -881,7 +887,7 @@ void ItemView::itemActivated(const QModelIndex &index)
 
 void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
 {
-    if ((act1 || act2 || toggle) && ActionItemDelegate::hasActions(index, actLevel) && getAction(index)) {
+    if ((act1 || act2 || toggle) && (subAct1 || subAct2 || ActionItemDelegate::hasActions(index, actLevel)) && getAction(index)) {
         return;
     }
 

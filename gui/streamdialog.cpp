@@ -59,6 +59,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     urlEntry->setMinimumWidth(300);
     #ifdef ENABLE_KDE_SUPPORT
     iconButton=new QPushButton(this);
+    iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setIcon(QString());
     #endif
     int row=0;

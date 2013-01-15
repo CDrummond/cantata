@@ -92,7 +92,7 @@ class GroupedViewDelegate : public ActionItemDelegate
 {
 public:
     GroupedViewDelegate(GroupedView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
-        : ActionItemDelegate(p, a1, a2, t, actionLevel)
+        : ActionItemDelegate(p, a1, a2, t, actionLevel, 0, 0)
         , view(p)
     {
     }

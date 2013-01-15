@@ -60,7 +60,7 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     refreshAction = ActionCollection::get()->createAction("refreshonlineservice", i18n("Refresh Online Service"), "view-refresh");
     toggleAction = ActionCollection::get()->createAction("toggleonlineservice", i18n("Toggle Online Service"));
     addAction = ActionCollection::get()->createAction("addonlineservice", i18n("Add Online Service"), "view-add");
-    removeAction = ActionCollection::get()->createAction("removeonlineservice", i18n("Remove Online Service"), "view-add");
+    removeAction = ActionCollection::get()->createAction("removeonlineservice", i18n("Remove Online Service"), "list-remove");
     QMenu *addMenu=new QMenu(this);
     jamendoAction=addMenu->addAction(Icons::jamendoIcon, JamendoService::constName);
     magnatuneAction=addMenu->addAction(Icons::magnatuneIcon, MagnatuneService::constName);
@@ -301,6 +301,20 @@ void OnlineServicesPage::refreshService()
 
 void OnlineServicesPage::removeService()
 {
+    const QModelIndexList selected = view->selectedIndexes();
+
+    if (1!=selected.size()) {
+        return;
+    }
+
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove '%1'?").arg(item->data()))) {
+            return;
+        }
+        OnlineServicesModel::self()->removeService(item->data());
+    }
 }
 
 void OnlineServicesPage::toggleService()
@@ -315,7 +329,7 @@ void OnlineServicesPage::toggleService()
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         if (static_cast<OnlineService *>(item)->isLoaded() &&
-            MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to unload '%1'?").arg(static_cast<OnlineService *>(item)->data()))) {
+            MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to unload '%1'?").arg(item->data()))) {
             return;
         }
         static_cast<OnlineService *>(item)->toggle();

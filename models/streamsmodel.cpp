@@ -563,7 +563,7 @@ bool StreamsModel::validProtocol(const QString &file) const
     return scheme.isEmpty() || MPDConnection::self()->urlHandlers().contains(scheme);
 }
 
-static QString prefixName(const QString &n, bool addPrefix)
+QString StreamsModel::prefixUrl(const QString &n, bool addPrefix)
 {
     if (!addPrefix || !n.startsWith("http:")) {
         return n;
@@ -583,13 +583,13 @@ QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPref
             foreach (const StreamItem *s, static_cast<CategoryItem*>(item)->streams) {
                 QString f=s->url.toString();
                 if (!fnames.contains(f) && validProtocol(f)) {
-                    fnames << prefixName(f, addPrefix);
+                    fnames << prefixUrl(f, addPrefix);
                 }
             }
         } else if (!selectedCategories.contains(static_cast<StreamItem*>(item)->parent)) {
             QString f=static_cast<StreamItem*>(item)->url.toString();
             if (!fnames.contains(f) && validProtocol(f)) {
-                fnames << prefixName(f, addPrefix);
+                fnames << prefixUrl(f, addPrefix);
             }
         }
     }

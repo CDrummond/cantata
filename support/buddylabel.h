@@ -35,8 +35,18 @@
 class BuddyLabel : public QLabel
 {
 public:
-    BuddyLabel(QWidget *p)
+    BuddyLabel(const QString &text, QWidget *p, QWidget *b=0)
+        : QLabel(text, p) {
+        if (b) {
+            setBuddy(b);
+        }
+    }
+
+    BuddyLabel(QWidget *p, QWidget *b=0)
         : QLabel(p) {
+        if (b) {
+            setBuddy(b);
+        }
     }
 
     virtual ~BuddyLabel() {

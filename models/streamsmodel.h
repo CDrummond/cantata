@@ -69,6 +69,8 @@ public:
         QSet<QString> genres;
     };
 
+    static QString prefixUrl(const QString &n, bool addPrefix=true);
+
     StreamsModel();
     ~StreamsModel();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

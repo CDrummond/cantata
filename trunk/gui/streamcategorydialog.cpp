@@ -57,6 +57,7 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
     #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Icon:"), wid));
     iconButton=new QPushButton(this);
+    iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setIcon(QString());
     layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
     #endif

@@ -24,12 +24,12 @@
 #ifndef MESSAGEBOX_H
 #define MESSAGEBOX_H
 
+#include "dialog.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMessageBox>
 typedef KMessageBox MessageBox;
 #else
 #include <QtGui/QMessageBox>
-#include "dialog.h"
 #include "localize.h"
 
 namespace MessageBox {

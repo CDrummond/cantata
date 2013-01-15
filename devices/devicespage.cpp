@@ -102,9 +102,6 @@ DevicesPage::DevicesPage(MainWindow *p)
     Icon::init(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
-    menu->addAction(configureAction);
-    menu->addAction(refreshAction);
-    menu->addSeparator();
     #ifdef ENABLE_REMOTE_DEVICES
     Action *addRemote=ActionCollection::get()->createAction("adddevice", i18n("Add Device"), "network-server");
     connect(addRemote, SIGNAL(triggered()), this, SLOT(addRemoteDevice()));
@@ -112,6 +109,9 @@ DevicesPage::DevicesPage(MainWindow *p)
     menu->addAction(forgetDeviceAction);
     menu->addSeparator();
     #endif
+    menu->addAction(configureAction);
+    menu->addAction(refreshAction);
+    menu->addSeparator();
     menu->addAction(p->organiseFilesAction);
     menu->addAction(p->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT

@@ -260,6 +260,7 @@ public Q_SLOTS:
     void addToNewStoredPlaylist();
     void addToExistingStoredPlaylist(const QString &name);
     void addToExistingStoredPlaylist(const QString &name, bool pq);
+    void addStreamToPlayQueue();
     void removeItems();
     void checkMpdAccessibility();
     void cropPlayQueue();
@@ -368,6 +369,7 @@ private:
     Action *cropPlayQueueAction;
     Action *shufflePlayQueueAction;
     Action *savePlayQueueAction;
+    Action *addStreamToPlayQueueAction;
     Action *randomPlayQueueAction;
     Action *repeatPlayQueueAction;
     Action *singlePlayQueueAction;

@@ -178,10 +178,10 @@
        <property name="margin">
         <number>0</number>
        </property>
-       <item row="0" column="0" colspan="10">
+       <item row="0" column="0" colspan="11">
         <widget class="LineEdit" name="searchPlayQueueLineEdit"/>
        </item>
-       <item row="1" column="0" colspan="10">
+       <item row="1" column="0" colspan="11">
         <widget class="PlayQueueView" name="playQueue"/>
        </item>
        <item row="2" column="0">
@@ -264,9 +264,12 @@
         </spacer>
        </item>
        <item row="2" column="8">
-        <widget class="QToolButton" name="savePlayQueuePushButton"/>
+        <widget class="QToolButton" name="addStreamToPlayQueuePushButton"/>
        </item>
        <item row="2" column="9">
+        <widget class="QToolButton" name="savePlayQueuePushButton"/>
+       </item>
+       <item row="2" column="10">
         <widget class="QToolButton" name="removeAllFromPlayQueuePushButton"/>
        </item>
       </layout>

@@ -57,6 +57,9 @@ public:
     void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
+    QStringList getCategories();
+    QStringList getGenres();
+    StreamsModel & getModel() { return model; }
 
 Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);
@@ -78,8 +81,6 @@ private Q_SLOTS:
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
-    QStringList getCategories();
-    QStringList getGenres();
     void importWebStreams(WebStream type);
 
 private:

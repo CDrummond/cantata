@@ -699,13 +699,13 @@ void MPDConnection::playListChanges()
 
             // Dont think this section is ever called, but leave here to be safe!!!
             // For some reason if we have 10 songs in our playlist and we move pos 2 to pos 1, MPD sends all ids from pos 1 onwards
-            if (firstPos+changes.size()<sv.playlistLength && (sv.playlistLength<=(unsigned int)playQueueIds.length())) {
+            if (firstPos+changes.size()<=sv.playlistLength && (sv.playlistLength<=(unsigned int)playQueueIds.length())) {
                 for (quint32 i=firstPos+changes.size(); i<sv.playlistLength; ++i) {
                     Song s;
                     s.id=playQueueIds.at(i);
                     songs.append(s);
                     ids.append(s.id);
-                    if (s.isStream() && !s.isCantataStream()) {
+                    if (streamIds.contains(s.id)) {
                         strmIds.insert(s.id);
                     }
                 }

@@ -22,6 +22,7 @@
 14. Fix potential memory leak when stopping threads.
 15. Only enable play queue save-as and clear buttons if there are items in the
     play queue!
+16. Fix detection of streams in play queue when current song is updated.
 
 0.9.1
 -----

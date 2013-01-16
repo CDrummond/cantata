@@ -517,11 +517,39 @@ void StreamsPage::removeItems()
         return;
     }
 
+    bool haveStreams=false;
+    bool haveCategories=false;
+    foreach(const QModelIndex &index, selected) {
+        if (static_cast<StreamsModel::Item *>(proxy.mapToSource(index).internalPointer())->isCategory()) {
+            haveCategories=true;
+        } else {
+             haveStreams=true;
+        }
+
+        if (haveStreams && haveCategories) {
+            break;
+        }
+    }
+
     QModelIndex firstIndex=proxy.mapToSource(selected.first());
     QString firstName=model.data(firstIndex, Qt::DisplayRole).toString();
-    if (MessageBox::No==MessageBox::warningYesNo(this, selected.size()>1 ? i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size())
-                                                                         : i18n("Are you sure you wish to remove <b>%1</b>?").arg(firstName),
-                                                 selected.size()>1 ? i18n("Remove Streams?") : i18n("Remove Stream?"))) {
+    QString message;
+
+    if (selected.size()>1) {
+        if (haveStreams && haveCategories) {
+            message=i18n("Are you sure you wish to remove the selected categories &streams?");
+        } else if (haveStreams) {
+            message=i18n("Are you sure you wish to remove the %1 selected streams?").arg(selected.size());
+        } else {
+            message=i18n("Are you sure you wish to remove the %1 selected categories (and their streams)?").arg(selected.size());
+        }
+    } else if (haveStreams) {
+        message=i18n("Are you sure you wish to remove <b>%1</b>?").arg(firstName);
+    } else {
+        message=i18n("Are you sure you wish to remove the <b>%1</b> category (and its streams)?").arg(firstName);
+    }
+
+    if (MessageBox::No==MessageBox::warningYesNo(this, message, i18n("Remove?"))) {
         return;
     }
 

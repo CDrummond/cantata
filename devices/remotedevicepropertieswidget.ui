@@ -113,7 +113,7 @@
              <widget class="LineEdit" name="smbUser"/>
             </item>
             <item row="3" column="0">
-             <widget class="QLabel" name="label_2">
+             <widget class="BuddyLabel" name="label_2">
               <property name="text">
                <string>Domain:</string>
               </property>
@@ -126,7 +126,7 @@
              <widget class="LineEdit" name="smbDomain"/>
             </item>
             <item row="4" column="0">
-             <widget class="QLabel" name="label_3">
+             <widget class="BuddyLabel" name="label_3">
               <property name="text">
                <string>Password:</string>
               </property>
@@ -268,7 +268,7 @@
         <widget class="QWidget" name="filePage">
          <layout class="QFormLayout" name="formLayout_3">
           <item row="0" column="0">
-           <widget class="QLabel" name="label">
+           <widget class="BuddyLabel" name="label">
             <property name="text">
              <string>Folder:</string>
             </property>

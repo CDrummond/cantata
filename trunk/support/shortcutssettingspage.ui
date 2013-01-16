@@ -20,9 +20,12 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="BuddyLabel" name="label_2">
        <property name="text">
         <string>Search:</string>
+       </property>
+       <property name="buddy">
+        <cstring>searchEdit</cstring>
        </property>
       </widget>
      </item>
@@ -119,6 +122,11 @@
    <extends>QLineEdit</extends>
    <header>lineedit.h</header>
    <container>0</container>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

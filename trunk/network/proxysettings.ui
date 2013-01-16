@@ -104,12 +104,15 @@
         </property>
         <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_16">
+          <widget class="BuddyLabel" name="label_16">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
             <string>Username:</string>
+           </property>
+           <property name="buddy">
+            <cstring>proxyUsername</cstring>
            </property>
           </widget>
          </item>
@@ -121,12 +124,15 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_17">
+          <widget class="BuddyLabel" name="label_17">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
             <string>Password:</string>
+           </property>
+           <property name="buddy">
+            <cstring>proxyPassword</cstring>
            </property>
           </widget>
          </item>
@@ -171,6 +177,11 @@
    <class>SpinBox</class>
    <extends>QSpinBox</extends>
    <header>spinbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

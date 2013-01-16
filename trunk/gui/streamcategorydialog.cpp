@@ -22,7 +22,6 @@
  */
 
 #include <QtGui/QFormLayout>
-#include <QtGui/QLabel>
 #include <QtGui/QIcon>
 #include "streamcategorydialog.h"
 #include "mainwindow.h"
@@ -30,6 +29,7 @@
 #include "streamsmodel.h"
 #include "localize.h"
 #include "icons.h"
+#include "buddylabel.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIconDialog>
 #include <QtGui/QPushButton>
@@ -49,16 +49,16 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
     int row=0;
 
     #ifdef ENABLE_KDE_SUPPORT
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Name:"), wid));
+    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Name:"), wid, nameEntry));
     #else
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Name:"), wid));
+    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Name:"), wid, nameEntry));
     #endif
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
     #ifdef ENABLE_KDE_SUPPORT
-    layout->setWidget(row, QFormLayout::LabelRole, new QLabel(i18n("Icon:"), wid));
     iconButton=new QPushButton(this);
     iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     setIcon(QString());
+    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconButton));
     layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
     #endif
     setCaption(i18n("Add Category"));

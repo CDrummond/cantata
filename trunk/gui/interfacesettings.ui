@@ -463,9 +463,12 @@ within the folder of the current track, or within its parent folder. If no image
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="gnomeMediaKeysLabel">
+        <widget class="BuddyLabel" name="gnomeMediaKeysLabel">
          <property name="text">
           <string>Support media keys under GNOME/Unity:</string>
+         </property>
+         <property name="buddy">
+          <cstring>gnomeMediaKeys</cstring>
          </property>
         </widget>
        </item>

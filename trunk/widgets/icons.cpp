@@ -171,6 +171,7 @@ Icon Icons::repeatIcon;
 Icon Icons::shuffleIcon;
 Icon Icons::libraryIcon;
 Icon Icons::radioStreamIcon;
+Icon Icons::addRadioStreamIcon;
 Icon Icons::wikiIcon;
 Icon Icons::albumIcon;
 Icon Icons::streamIcon;
@@ -199,6 +200,7 @@ void Icons::init()
     consumeIcon=createIcon(false, stdColor, highlightColor);
     libraryIcon=Icon("cantata-view-media-library");
     radioStreamIcon=Icon("cantata-view-radiostream");
+    addRadioStreamIcon=Icon("cantata-radiostream-add");
     wikiIcon=Icon("cantata-view-wikipedia");
     albumIcon=Icon("media-optical");
     streamIcon=Icon("applications-internet");
@@ -226,6 +228,9 @@ void Icons::init()
     }
     if (radioStreamIcon.isNull()) {
         radioStreamIcon=Icon::create("radio", constStdSizes);
+    }
+    if (addRadioStreamIcon.isNull()) {
+        addRadioStreamIcon=Icon::create("addradio", constStdSizes);
     }
     if (wikiIcon.isNull()) {
         wikiIcon=Icon::create("wiki", constStdSizes);

@@ -225,7 +225,7 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     #endif
 
     if (isPlayQueue) {
-        if (!song.file.isEmpty()) {
+        if (song.title.isEmpty() && !song.file.isEmpty()) {
             if (song.isStream()) {
                 if (!song.isCantataStream()) {
                     song.title=Utils::getFile(QUrl(song.file).path());

@@ -314,7 +314,7 @@ MainWindow::MainWindow(QWidget *parent)
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle"));
     savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), "document-save-as");
-    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream"), Icons::radioStreamIcon);
+    addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream"), Icons::addRadioStreamIcon);
     clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::clearListIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
     randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::shuffleIcon);

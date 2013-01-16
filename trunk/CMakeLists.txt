@@ -393,7 +393,7 @@ if (TAGLIB_FOUND)
     endif(FFMPEG_FOUND OR MPG123_FOUND)
 
     if (WIN32)
-        SET( CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp)
+        SET( CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp devices/filetyperesolver.cpp)
     else (WIN32)
         set (ENABLE_DEVICES_SUPPORT 1)
         if (NOT ENABLE_KDE_SUPPORT)

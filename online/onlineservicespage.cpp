@@ -292,24 +292,13 @@ void OnlineServicesPage::refreshService()
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         OnlineService *srv=static_cast<OnlineService *>(item);
-        bool fromCache=true;
 
-        if (srv->isLoaded() && srv->childCount()>0) {
-            switch (MessageBox::questionYesNoCancel(this, i18n("<p>Which type of refresh do you wish to perform?<ul>"
-                                                               "<li>From Cache - The previously downloaded music list is reparsed <i>(quick)</i></li>"
-                                                               "<li>Re-Download - The music list is re-downloaded, and re-parsed <i>(slow)</i></li></ul></p>"),
-                                                    i18n("Refresh"), GuiItem(i18n("From Cache")), GuiItem(i18n("Re-Download")))) {
-                case MessageBox::Yes:
-                    break;
-                case MessageBox::No:
-                    fromCache=false;
-                    break;
-                default:
-                    return;
-            }
+        if (srv->isLoaded() && srv->childCount()>0 &&
+            MessageBox::No==MessageBox::questionYesNo(this, i18n("Re-download music listing for %1?").arg(srv->name()))) {
+            return;
         }
         if (srv) {
-            srv->reload(fromCache);
+            srv->reload(0==srv->childCount());
         }
     }
 }

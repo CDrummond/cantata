@@ -1,0 +1,34 @@
+- Albums
+  - Coverflow view?
+
+- Streams
+  - Handle more than 1st entry?? Not sure
+  - Icecast?
+
+- Devices
+  - libMTP album artist usage.
+    - libMTP does not provide an album artist tag.
+    - song.cpp has a check to see if this.albumartist=other.album artist, so
+      that when library is frefreshed the file is in the correct place.
+    - mtpdevice.cpp will remove albumartist from 'Song' entries copied to it,
+      so that these are placed in the correct part of the model.
+    - If libMTP is 'fixed' then the above can be removed.
+  - Make Various 'Artists' fix applicable to all compilation albums?
+    - Not sure how this could be done with MTP :-(
+    - MTP has no access to other tags, so when converting back, how would I
+      know this is a compilation?
+  - Allow to drag songs from albums/library to devices, and vice versa.
+
+Lyrics
+  - Add support for reading via tags in mp4, flac, and ogg files.
+
+- PlayQueue
+  - Add copy to device to context menu?
+    - Will need to be careful that songs are not from device
+    - Also, check that songs are not streams!
+
+- General
+  - Ratings (use KRatingWidget?)
+    - Not sure, would need support in cantata-dynamic
+  - mpdscribble management?
+  - Combine 'Page' classes

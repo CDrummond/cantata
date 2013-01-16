@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>InterfaceSettings</class>
+ <widget class="QWidget" name="InterfaceSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>435</width>
+    <height>292</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <property name="movable">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Library</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QFormLayout" name="formLayout">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="BuddyLabel" name="label">
+           <property name="text">
+            <string>Style:</string>
+           </property>
+           <property name="buddy">
+            <cstring>libraryView</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="libraryView"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="BuddyLabel" name="label_5b">
+           <property name="text">
+            <string>Covers:</string>
+           </property>
+           <property name="buddy">
+            <cstring>libraryCoverSize</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="libraryCoverSize"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="BuddyLabel" name="libraryArtistImageLabel">
+           <property name="text">
+            <string>Show artist images:</string>
+           </property>
+           <property name="buddy">
+            <cstring>libraryArtistImage</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="OnOffButton" name="libraryArtistImage">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="BuddyLabel" name="label_6">
+           <property name="text">
+            <string>Show album year:</string>
+           </property>
+           <property name="buddy">
+            <cstring>libraryYear</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="OnOffButton" name="libraryYear">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When looking for artist images, Cantata will look for either artist.jpg, artist.png, &lt;Artist&gt;.jpg, or &lt;Artist&gt;.png,
+within the folder of the current track, or within its parent folder. If no image is found, Cantata will attempt to download one.&lt;br/&gt;
+When the image is displayed, it will be cropped (either top/bottom, or left/right) to provide a square image.&lt;/i&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Albums</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_2">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="BuddyLabel" name="label_3a">
+         <property name="text">
+          <string>Style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>albumsView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="albumsView"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="BuddyLabel" name="label_5c">
+         <property name="text">
+          <string>Covers:</string>
+         </property>
+         <property name="buddy">
+          <cstring>albumsCoverSize</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="albumsCoverSize"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="BuddyLabel" name="label_5x">
+         <property name="text">
+          <string>Sort albums:</string>
+         </property>
+         <property name="buddy">
+          <cstring>albumsCoverSize</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="albumSort">
+         <item>
+          <property name="text">
+           <string>Album/Artist</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Artist/Album</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Artist/Year/Album</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_6">
+      <attribute name="title">
+       <string>Playlists</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_6">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="BuddyLabel" name="label_3">
+         <property name="text">
+          <string>Style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playlistsView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="playlistsView"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="BuddyLabel" name="playListsStartClosedLabel">
+         <property name="text">
+          <string>Initially collapse albums:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playListsStartClosed</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="OnOffButton" name="playListsStartClosed">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Other Views</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_3">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="BuddyLabel" name="label_2">
+         <property name="text">
+          <string>Folder view style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>folderView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="folderView"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="BuddyLabel" name="label_x">
+         <property name="text">
+          <string>Streams view style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>streamsView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="streamsView"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="BuddyLabel" name="devicesViewLabel">
+         <property name="text">
+          <string>Devices view style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>devicesView</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="devicesView"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="BuddyLabel" name="label_5">
+         <property name="text">
+          <string>Use cover as lyrics background:</string>
+         </property>
+         <property name="buddy">
+          <cstring>lyricsBgnd</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="OnOffButton" name="lyricsBgnd">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Play Queue</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_5">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="BuddyLabel" name="playQueueScrollLabel">
+         <property name="text">
+          <string>Scroll to current track:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playQueueScroll</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="OnOffButton" name="playQueueScroll"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="BuddyLabel" name="playQueueGroupedLabel">
+         <property name="text">
+          <string>Style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playQueueGrouped</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="playQueueGrouped">
+         <item>
+          <property name="text">
+           <string>Table</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Grouped Albums</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="BuddyLabel" name="playQueueAutoExpandLabel">
+         <property name="text">
+          <string>Automatically expand current album:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playQueueAutoExpand</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="OnOffButton" name="playQueueAutoExpand">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="BuddyLabel" name="playQueueStartClosedLabel">
+         <property name="text">
+          <string>Initially collapse albums:</string>
+         </property>
+         <property name="buddy">
+          <cstring>playQueueStartClosed</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="OnOffButton" name="playQueueStartClosed">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QFormLayout" name="formLayout_4">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="BuddyLabel" name="label_7">
+           <property name="text">
+            <string>Group single track albums:</string>
+           </property>
+           <property name="buddy">
+            <cstring>groupSingle</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="OnOffButton" name="groupSingle">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="BuddyLabel" name="groupMultipleLabel">
+           <property name="text">
+            <string>Multiple artist albums:</string>
+           </property>
+           <property name="buddy">
+            <cstring>groupMultiple</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="groupMultiple"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="BuddyLabel" name="showDeleteActionLabel">
+           <property name="text">
+            <string>Show delete action in context menus:</string>
+           </property>
+           <property name="buddy">
+            <cstring>showDeleteAction</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="OnOffButton" name="showDeleteAction">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="BuddyLabel" name="storeCoversInMpdDirLabel">
+           <property name="text">
+            <string>Save downloaded covers in music folder:</string>
+           </property>
+           <property name="buddy">
+            <cstring>storeCoversInMpdDir</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="OnOffButton" name="storeCoversInMpdDir"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="BuddyLabel" name="label_4">
+           <property name="text">
+            <string>Save downloaded lyrics in music folder:</string>
+           </property>
+           <property name="buddy">
+            <cstring>storeLyricsInMpdDir</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="OnOffButton" name="storeLyricsInMpdDir">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="BuddyLabel" name="forceSingleClick_label">
+           <property name="text">
+            <string>Enforce single-click activation of items:</string>
+           </property>
+           <property name="buddy">
+            <cstring>forceSingleClick</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="OnOffButton" name="forceSingleClick">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Changing the &quot;Enforce single-click activation of items&quot; setting will require a re-start of Cantata.&lt;/i&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QCheckBox</extends>
+   <header>onoffbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BuddyLabel</class>
+   <extends>QLabel</extends>
+   <header>buddylabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>libraryView</tabstop>
+  <tabstop>libraryCoverSize</tabstop>
+  <tabstop>libraryArtistImage</tabstop>
+  <tabstop>libraryYear</tabstop>
+  <tabstop>albumsView</tabstop>
+  <tabstop>albumsCoverSize</tabstop>
+  <tabstop>albumSort</tabstop>
+  <tabstop>playlistsView</tabstop>
+  <tabstop>playListsStartClosed</tabstop>
+  <tabstop>folderView</tabstop>
+  <tabstop>streamsView</tabstop>
+  <tabstop>devicesView</tabstop>
+  <tabstop>lyricsBgnd</tabstop>
+  <tabstop>playQueueScroll</tabstop>
+  <tabstop>playQueueGrouped</tabstop>
+  <tabstop>playQueueAutoExpand</tabstop>
+  <tabstop>playQueueStartClosed</tabstop>
+  <tabstop>groupSingle</tabstop>
+  <tabstop>groupMultiple</tabstop>
+  <tabstop>showDeleteAction</tabstop>
+  <tabstop>storeCoversInMpdDir</tabstop>
+  <tabstop>storeLyricsInMpdDir</tabstop>
+  <tabstop>forceSingleClick</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

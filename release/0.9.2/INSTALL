@@ -1,0 +1,45 @@
+With KDE Support
+================
+1. mkdir build
+2. cd build
+3. cmake .. -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix`
+4. make
+5. sudo make install
+
+
+Qt-Only
+=======
+1. mkdir build
+2. cd build
+3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_KDE=OFF
+4. make
+5. sudo make install
+
+
+CMake Options
+=============
+
+The following options may be passed to CMake:
+
+    -DCANTATA_TRANSLATIONS=<list of translations to install>
+        Builds and installs the selected translations. Supported values are
+        cs, de, en, es, pl, ko, and all. Entries should be separated with a
+        semicolon (";") e.g. -DCANTATA_TRANSLATIONS="es;pl"
+        Default: all
+
+    -DENABLE_REMOTE_DEVICES=ON
+        Compile support for sshfs, and local folder, devices.
+        Default: OFF
+
+    -DENABLE_WEBKIT=OFF
+        Compile with WebKit, used for info page.
+        Default: ON
+
+    -DENABLE_KDE=OFF
+        Link against KDE libraries, use KDE dialogs, etc.
+        Default: ON
+
+    -DENABLE_PHONON=ON
+        Enable support for playing back MPD HTTP streams via Phonon.
+        Default: OFF
+

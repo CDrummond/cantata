@@ -33,7 +33,7 @@ public:
     JamendoSettingsDialog(QWidget *parent);
 
     bool run(bool mp3);
-    int format() const { return 0==fmt->currentIndex(); }
+    int format() const { return fmt->currentIndex(); }
 
 private:
     QComboBox *fmt;

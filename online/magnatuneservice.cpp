@@ -131,6 +131,16 @@ Song MagnatuneService::fixPath(const Song &orig) const
     return orig;
 }
 
+static QString membershipStr(MagnatuneService::MemberShip f)
+{
+    return MagnatuneService::MB_None==f ? "none" : "streaming";
+}
+
+static MagnatuneService::MemberShip toMembership(const QString &f)
+{
+    return f=="streaming" ? MagnatuneService::MB_Streaming : MagnatuneService::MB_None;
+}
+
 void MagnatuneService::loadConfig()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -139,8 +149,7 @@ void MagnatuneService::loadConfig()
     QSettings cfg;
     cfg.beginGroup(constName);
     #endif
-    int m=GET_INT("membership", (int)membership);
-    membership=0==m ? MB_None : MB_Streaming;
+    membership=toMembership(GET_STRING("membership", membershipStr(membership)));
     username=GET_STRING("username", username);
     password=GET_STRING("username", password);
 }
@@ -153,7 +162,7 @@ void MagnatuneService::saveConfig()
     QSettings cfg;
     cfg.beginGroup(constName);
     #endif
-    SET_VALUE("membership", (int)membership);
+    SET_VALUE("membership",  membershipStr(membership));
     SET_VALUE("username", username);
     SET_VALUE("password", password);
     cfg.sync();

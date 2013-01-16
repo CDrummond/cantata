@@ -295,6 +295,19 @@ Song JamendoService::fixPath(const Song &orig) const
     return s;
 }
 
+static const QLatin1String constMp3Format("mp3");
+static const QLatin1String constOggFormat("ogg");
+
+static QString formatStr(JamendoService::Format f)
+{
+    return JamendoService::FMT_MP3==f ? "mp3" : "ogg";
+}
+
+static JamendoService::Format toFormat(const QString &f)
+{
+    return f=="ogg" ? JamendoService::FMT_Ogg : JamendoService::FMT_MP3;
+}
+
 void JamendoService::loadConfig()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -303,8 +316,7 @@ void JamendoService::loadConfig()
     QSettings cfg;
     cfg.beginGroup(constName);
     #endif
-    int f=GET_INT("format", (int)format);
-    format=0==f ? FMT_MP3 : FMT_Ogg;
+    format=toFormat(GET_STRING("format", formatStr(format)));
 }
 
 void JamendoService::saveConfig()
@@ -315,7 +327,7 @@ void JamendoService::saveConfig()
     QSettings cfg;
     cfg.beginGroup(constName);
     #endif
-    SET_VALUE("format", (int)format);
+    SET_VALUE("format", formatStr(format));
     cfg.sync();
 }
 

@@ -39,6 +39,7 @@ namespace Icons
     extern Icon shuffleIcon;
     extern Icon libraryIcon;
     extern Icon radioStreamIcon;
+    extern Icon addRadioStreamIcon;
     extern Icon wikiIcon;
     extern Icon albumIcon;
     extern Icon streamIcon;

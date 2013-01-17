@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2012 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2011-2013 Craig Drummond <craig.p.drummond@gmail.com>
  * This file (c) 2012 Piotr Wicijowski <piotr.wicijowski@gmail.com>
  *
  * ----

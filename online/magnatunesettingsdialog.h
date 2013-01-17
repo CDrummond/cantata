@@ -35,8 +35,9 @@ class MagnatuneSettingsDialog : public Dialog
 public:
     MagnatuneSettingsDialog(QWidget *parent);
 
-    bool run(bool m, const QString &u, const QString &p);
+    bool run(int m, int d, const QString &u, const QString &p);
     int membership() const { return member->currentIndex(); }
+    int download() const { return dl->currentIndex(); }
     QString username() const { return user->text().trimmed(); }
     QString password() const { return pass->text().trimmed(); }
 
@@ -45,6 +46,7 @@ private Q_SLOTS:
 
 private:
     QComboBox *member;
+    QComboBox *dl;
     LineEdit *user;
     LineEdit *pass;
 };

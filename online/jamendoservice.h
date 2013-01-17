@@ -64,6 +64,7 @@ public:
     void loadConfig();
     void saveConfig();
     void configure(QWidget *p);
+    bool canDownload() const { return true; }
 
 private:
     Format format;

@@ -28,13 +28,16 @@
 #include "song.h"
 #include "config.h"
 
+class Device;
 class OnlineService;
+class OnlineDevice;
 
 class OnlineServicesModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
+    static QString constUdiPrefix;
     static OnlineServicesModel * self();
 
     OnlineServicesModel(QObject *parent = 0);
@@ -57,6 +60,7 @@ public:
     void toggleGrouping();
     const QSet<QString> & genres() { return srvGenres; }
     void createService(const QString &name);
+    Device *device(const QString &udi);
 
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img);
@@ -78,6 +82,7 @@ private:
     QList<OnlineService *> services;
     QSet<QString> srvGenres;
     bool enabled;
+    OnlineDevice *dev;
 
     friend class OnlineService;
 };

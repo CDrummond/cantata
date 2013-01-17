@@ -70,7 +70,7 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     smbPort->setValue(445);
     #endif
 
-    connectionNote->setVisible(isConnected);
+    connectionNote->setVisible(!d.isLocalFile() && isConnected);
     sshFolder->setText(QString());
     sshHost->setText(QString());
     sshUser->setText(QString());

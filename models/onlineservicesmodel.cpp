@@ -26,8 +26,10 @@
 #include "musiclibraryitemsong.h"
 #include "musiclibraryitemroot.h"
 #include "musiclibrarymodel.h"
+#include "dirviewmodel.h"
 #include "onlineservicesmodel.h"
 #include "onlineservice.h"
+#include "onlinedevice.h"
 #include "jamendoservice.h"
 #include "magnatuneservice.h"
 #include "playqueuemodel.h"
@@ -36,13 +38,19 @@
 #include "localize.h"
 #include "icons.h"
 #include "settings.h"
+#include "filejob.h"
+#include "utils.h"
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>
+#include <QtCore/QFile>
+#include <QtCore/QDir>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(OnlineServicesModel, instance)
 #endif
+
+QString OnlineServicesModel::constUdiPrefix("online-service://");
 
 OnlineServicesModel * OnlineServicesModel::self()
 {
@@ -60,6 +68,7 @@ OnlineServicesModel * OnlineServicesModel::self()
 OnlineServicesModel::OnlineServicesModel(QObject *parent)
     : QAbstractItemModel(parent)
     , enabled(false)
+    , dev(0)
 {
 }
 
@@ -581,4 +590,13 @@ QMimeData * OnlineServicesModel::mimeData(const QModelIndexList &indexes) const
         PlayQueueModel::encode(*mimeData, PlayQueueModel::constUriMimeType, paths);
     }
     return mimeData;
+}
+
+Device * OnlineServicesModel::device(const QString &udi)
+{
+    if (!dev) {
+        dev=new OnlineDevice();
+    }
+    dev->setData(udi.mid(constUdiPrefix.length()));
+    return dev;
 }

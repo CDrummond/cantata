@@ -23,6 +23,7 @@
 
 #include "jamendosettingsdialog.h"
 #include "localize.h"
+#include "buddylabel.h"
 #include <QtGui/QFormLayout>
 
 JamendoSettingsDialog::JamendoSettingsDialog(QWidget *parent)
@@ -35,7 +36,8 @@ JamendoSettingsDialog::JamendoSettingsDialog(QWidget *parent)
     fmt=new QComboBox(mw);
     fmt->insertItem(0, i18n("MP3"));
     fmt->insertItem(1, i18n("Ogg"));
-    layout->addRow(i18n("Streaming format:"), fmt);
+    layout->setWidget(0, QFormLayout::LabelRole, new BuddyLabel(i18n("Streaming format:"), mw, fmt));
+    layout->setWidget(0, QFormLayout::FieldRole, fmt);
     setMainWidget(mw);
 }
 

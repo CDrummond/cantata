@@ -61,6 +61,7 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     toggleAction = ActionCollection::get()->createAction("toggleonlineservice", i18n("Toggle Online Service"));
     addAction = ActionCollection::get()->createAction("addonlineservice", i18n("Add Online Service"), "view-add");
     removeAction = ActionCollection::get()->createAction("removeonlineservice", i18n("Remove Online Service"), "list-remove");
+    downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
     QMenu *addMenu=new QMenu(this);
     jamendoAction=addMenu->addAction(Icons::jamendoIcon, JamendoService::constName);
     magnatuneAction=addMenu->addAction(Icons::magnatuneIcon, MagnatuneService::constName);
@@ -80,6 +81,7 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     connect(toggleAction, SIGNAL(triggered()), this, SLOT(toggleService()));
     connect(jamendoAction, SIGNAL(triggered()), this, SLOT(addJamendo()));
     connect(magnatuneAction, SIGNAL(triggered()), this, SLOT(addMagnatune()));
+    connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
 
     Icon::init(addToPlayQueue);
     Icon::init(replacePlayQueue);
@@ -91,6 +93,7 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     menu->addAction(sep);
     menu->addAction(configureAction);
     menu->addAction(refreshAction);
+    view->addAction(downloadAction);
     view->addAction(sep);
     view->addAction(removeAction);
     menuButton->setMenu(menu);
@@ -232,6 +235,8 @@ void OnlineServicesPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
     bool srvSelected=false;
+    bool canDownload=false;
+    QSet<QString> services;
 
     foreach (const QModelIndex &idx, selected) {
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
@@ -239,6 +244,20 @@ void OnlineServicesPage::controlActions()
         if (item) {
             if (MusicLibraryItem::Type_Root==item->itemType()) {
                 srvSelected=true;
+                services.insert(item->data());
+            } else {
+                while (item->parentItem()) {
+                    item=item->parentItem();
+                }
+                if (item && MusicLibraryItem::Type_Root==item->itemType()) {
+                    services.insert(item->data());
+                    if (static_cast<OnlineService *>(item)->canDownload()) {
+                        canDownload=true;
+                    }
+                }
+            }
+
+            if (srvSelected && canDownload && services.count()>1) {
                 break;
             }
         }
@@ -247,10 +266,11 @@ void OnlineServicesPage::controlActions()
     removeAction->setEnabled(srvSelected && 1==selected.count());
     configureAction->setEnabled(srvSelected && 1==selected.count());
     refreshAction->setEnabled(srvSelected && 1==selected.count());
-    mw->addToPlayQueueAction->setEnabled(!srvSelected && selected.count());
-    mw->addWithPriorityAction->setEnabled(!srvSelected && selected.count());
-    mw->replacePlayQueueAction->setEnabled(!srvSelected && selected.count());
-    mw->addToStoredPlaylistAction->setEnabled(!srvSelected && selected.count());
+    downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
+    mw->addToPlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
+    mw->addWithPriorityAction->setEnabled(!srvSelected && !selected.isEmpty());
+    mw->replacePlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
+    mw->addToStoredPlaylistAction->setEnabled(!srvSelected && !selected.isEmpty());
 }
 
 void OnlineServicesPage::configureService()
@@ -367,4 +387,22 @@ void OnlineServicesPage::addService(const QString &name)
     }
 
     OnlineServicesModel::self()->createService(name);
+}
+
+void OnlineServicesPage::download()
+{
+    QList<Song> songs=selectedSongs();
+
+    if (!songs.isEmpty()) {
+        QModelIndex idx = view->selectedIndexes().at(0);
+
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
+
+        while (item && item->parentItem()) {
+            item=item->parentItem();
+        }
+        if (item) {
+            emit addToDevice(OnlineServicesModel::constUdiPrefix+item->data(), QString(), songs);
+        }
+    }
 }

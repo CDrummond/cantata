@@ -102,6 +102,7 @@ public:
     virtual void saveConfig()=0;
     virtual void configure(QWidget *) { }
     virtual void requestCover(const Song &) { }
+    virtual bool canDownload() const { return false; }
     const QString name() const { return data(); }
     double loadProgress() { return lProgress; }
     bool isLoaded() const { return loaded; }

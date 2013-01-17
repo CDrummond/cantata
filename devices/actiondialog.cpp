@@ -39,6 +39,7 @@
 #include "filejob.h"
 #include "freespaceinfo.h"
 #include "icons.h"
+#include "onlineservicesmodel.h"
 #include <QtCore/QFile>
 
 static int iCount=0;
@@ -106,6 +107,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     qint64 spaceAvailable=0;
     double usedCapacity=0.0;
     QString capacityString;
+    bool isFromOnline=sourceUdi.startsWith(OnlineServicesModel::constUdiPrefix);
 
     if (sourceUdi.isEmpty()) { // If source UDI is empty, then we are copying from MPD->device, so need device free space.
         spaceAvailable=dev->freeSpace();
@@ -138,7 +140,8 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         bool destIsDev=sourceUdi.isEmpty();
         mpdConfigured=DeviceOptions::isConfigured(mpdCfgName, true);
         configureDestLabel->setVisible((destIsDev && !dev->isConfigured()) || (!destIsDev && !mpdConfigured));
-        configureSourceLabel->setVisible((!destIsDev && !dev->isConfigured()) || (destIsDev && !mpdConfigured));
+        configureSourceButton->setVisible(!isFromOnline);
+        configureSourceLabel->setVisible(!isFromOnline && ((!destIsDev && !dev->isConfigured()) || (destIsDev && !mpdConfigured)));
         show();
         if (!enoughSpace) {
             MessageBox::information(this, i18n("There is insufficient space left on the destination device.\n"
@@ -277,6 +280,9 @@ void ActionDialog::slotButtonClicked(int button)
 
 Device * ActionDialog::getDevice(const QString &udi)
 {
+    if (udi.startsWith(OnlineServicesModel::constUdiPrefix)) {
+        return OnlineServicesModel::self()->device(udi);
+    }
     Device *dev=DevicesModel::self()->device(udi);
     QString error;
     if (!dev) {

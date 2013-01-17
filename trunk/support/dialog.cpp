@@ -43,9 +43,10 @@ static QDialogButtonBox::StandardButton mapType(int btn) {
 
 void Dialog::setButtons(ButtonCodes buttons)
 {
-    if (buttonBox) {
+    if (buttonBox && buttons==buttonTypes) {
         return;
     }
+
     QFlags<QDialogButtonBox::StandardButton> btns;
     if (buttons&Help) {
         btns|=QDialogButtonBox::Help;
@@ -73,25 +74,32 @@ void Dialog::setButtons(ButtonCodes buttons)
     }
 
     buttonTypes=(int)btns;
-    buttonBox = new QDialogButtonBox(btns, Qt::Horizontal, this);
+    bool needToCreate=true;
+    if (buttonBox) {
+        needToCreate=false;
+        buttonBox->clear();
+        buttonBox->setStandardButtons(btns);
+    } else {
+        buttonBox = new QDialogButtonBox(btns, Qt::Horizontal, this);
+    }
 
     if (buttons&User3) {
-        QPushButton *button=new QPushButton(this);
+        QPushButton *button=new QPushButton(buttonBox);
         userButtons.insert(User3, button);
         buttonBox->addButton(button, QDialogButtonBox::ActionRole);
     }
     if (buttons&User2) {
-        QPushButton *button=new QPushButton(this);
+        QPushButton *button=new QPushButton(buttonBox);
         userButtons.insert(User2, button);
         buttonBox->addButton(button, QDialogButtonBox::ActionRole);
     }
     if (buttons&User1) {
-        QPushButton *button=new QPushButton(this);
+        QPushButton *button=new QPushButton(buttonBox);
         userButtons.insert(User1, button);
         buttonBox->addButton(button, QDialogButtonBox::ActionRole);
     }
 
-    if (mw && buttonBox) {
+    if (needToCreate && mw && buttonBox) {
         create();
     }
 }

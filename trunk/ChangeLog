@@ -51,6 +51,8 @@
 29. Add 'Add Stream' button to play queue - so that streams can be quickly
     added without needing to store in streams page.
 30. For streams, use filename part of path as track title.
+31. Fix setting of buttons in song copy dialog (Qt-only builds, KDE already
+    working).
 
 0.9.2
 -----

@@ -144,7 +144,7 @@ void OnlineMusicLoader::downloadProgress(qint64 bytesReceived, qint64 bytesTotal
     if (stopRequested) {
         return;
     }
-    int prog=(bytesReceived*100)/bytesTotal;
+    int prog=0==bytesTotal ? 0 : ((bytesReceived*100)/bytesTotal);
     if (prog!=lastProg) {
         lastProg=prog;
         emit status(i18n("Dowloading"), lastProg);

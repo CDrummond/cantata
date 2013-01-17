@@ -102,7 +102,7 @@ void OnlineDevice::downloadFinished()
 
 void OnlineDevice::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-    if (jobAbortRequested || 0==bytesTotal) {
+    if (jobAbortRequested || bytesTotal<=1) {
         return;
     }
     int prog=(bytesReceived*100)/bytesTotal;

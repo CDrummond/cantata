@@ -40,7 +40,7 @@ DynamicPage::DynamicPage(MainWindow *p)
     addAction = ActionCollection::get()->createAction("adddynamic", i18n("Add Dynamic Rules"), "list-add");
     editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), Icons::editIcon);
     removeAction = ActionCollection::get()->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
-    startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Mode"), "media-playback-start");
+    startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Playlist"), "media-playback-start");
     stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
     toggleAction = new Action(this);
 

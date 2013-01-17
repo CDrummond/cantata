@@ -434,7 +434,7 @@ MPDConnection::Response MPDConnection::sendCommand(const QByteArray &command, bo
         DBUG << command << "failed";
         if (response.data.isEmpty() && retry && QAbstractSocket::ConnectedState!=sock.state()) {
             // Try one more time...
-            // This scenario, where socket seems to be closed during/after 'write' seems to occor more often
+            // This scenario, where socket seems to be closed during/after 'write' seems to occiu more often
             // when dynamizer is running. However, simply reconnecting seems to resolve the issue.
             qWarning() << "Socket is not connected, so try reconnecting and re-send command";
             return sendCommand(command, emitErrors, false);
@@ -844,7 +844,7 @@ void MPDConnection::setSeekId(quint32 songId, quint32 time)
 void MPDConnection::setVolume(int vol)
 {
     if (vol>=0) {
-        sendCommand("setvol "+QByteArray::number(vol));
+        sendCommand("setvol "+QByteArray::number(vol), false);
     }
 }
 

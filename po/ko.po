@@ -2305,8 +2305,8 @@ msgid "A KDE client for MPD"
 msgstr "KDE용 MPD 클라이언트"
 
 #: main.cpp:91
-msgid "Copyright (C) 2011-2012 Craig Drummond"
-msgstr "Copyright (C) 2011-2012 Craig Drummond"
+msgid "Copyright (C) 2011-2013 Craig Drummond"
+msgstr "Copyright (C) 2011-2013 Craig Drummond"
 
 #: main.cpp:95
 msgid "Craig Drummond"

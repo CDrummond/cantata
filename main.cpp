@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2012 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2011-2013 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * ----
  *
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
                          ki18n("Cantata"), PACKAGE_VERSION_STRING,
                          ki18n("A KDE client for MPD"),
                          KAboutData::License_GPL_V2,
-                         ki18n("Copyright (C) 2011-2012 Craig Drummond"),
+                         ki18n("Copyright (C) 2011-2013 Craig Drummond"),
                          KLocalizedString(),
                          "http://cantata.googlecode.com", "craig.p.drummond@gmail.com");
 

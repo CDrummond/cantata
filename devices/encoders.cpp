@@ -1,7 +1,7 @@
 /*
  * Cantata
  *
- * Copyright (c) 2011-2012 Craig Drummond <craig.p.drummond@gmail.com>
+ * Copyright (c) 2011-2013 Craig Drummond <craig.p.drummond@gmail.com>
  *
  * Large portions of this file, mainly the textual descriptions, etc, are taken from
  * Amarok - hence the (c) notice below...

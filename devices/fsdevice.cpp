@@ -434,7 +434,8 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
     }
 
     currentSong=s;
-    CopyJob *job=new CopyJob(source, dest, copyCover ? opts : DeviceOptions(Device::constNoCover),
+    // Pass an empty filename as covername, so that Covers::copyCover knows this is TO MPD...
+    CopyJob *job=new CopyJob(source, dest, copyCover ? DeviceOptions(QString()) : DeviceOptions(Device::constNoCover),
                              needToFixVa ? CopyJob::OptsUnApplyVaFix : CopyJob::OptsNone, currentSong);
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));

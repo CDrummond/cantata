@@ -26,6 +26,7 @@
 #include "localize.h"
 #include "settings.h"
 #include <QtCore/QDir>
+#include <QtCore/QUrl>
 #include <unistd.h>
 
 static QString cleanPath(const QString &path)
@@ -347,9 +348,25 @@ QString DeviceOptions::createFilename(const Song &s) const
     path.replace(constCdNumber, copy.disc<1 ? QLatin1String("") : QString::number(copy.disc));
     path.replace(constGenre, copy.genre.isEmpty() ? i18n("Unknown") : copy.genre);
     path.replace(constYear, copy.year<1 ? QLatin1String("") : QString::number(copy.year));
-    int extPos=s.file.lastIndexOf('.');
-    if (-1!=extPos) {
-        path+=s.file.mid(extPos);
+
+    // For songs about to be downloaded from streams, we hide the filetype in genre...
+    if (s.file.startsWith("http:/")) {
+        if (s.genre==QLatin1String("mp3") || s.genre==QLatin1String("ogg") || s.genre==QLatin1String("flac") || s.genre==QLatin1String("wav")) {
+            path+='.'+s.genre;
+        } else if (s.genre==QLatin1String("vbr")) {
+            path+=QLatin1String(".mp3");
+        } else {
+            QString f=QUrl(s.file).path();
+            int extPos=f.lastIndexOf('.');
+            if (-1!=extPos) {
+                path+=f.mid(extPos);
+            }
+        }
+    } else {
+        int extPos=s.file.lastIndexOf('.');
+        if (-1!=extPos) {
+            path+=s.file.mid(extPos);
+        }
     }
     return path;
 }

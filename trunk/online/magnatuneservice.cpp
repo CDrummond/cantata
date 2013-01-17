@@ -28,6 +28,7 @@
 #include "musiclibraryitemsong.h"
 #include "song.h"
 #include "settings.h"
+#include "localize.h"
 #include <QtXml/QXmlStreamReader>
 
 MagnatuneMusicLoader::MagnatuneMusicLoader(const QUrl &src)
@@ -129,17 +130,53 @@ Song MagnatuneService::fixPath(const Song &orig) const
     path.insert(path.lastIndexOf('.'), "_nospeech");
     url.setPath(path);
     s.file=url.toString();
+// TODO: Magnatune downloads!
+//    if (MB_Download==membership) {
+//        s.genre=downloadTypeStr(download);
+//    }
     return s;
 }
 
-static QString membershipStr(MagnatuneService::MemberShip f)
+QString MagnatuneService::membershipStr(MemberShip f, bool trans)
 {
-    return MagnatuneService::MB_None==f ? "none" : "streaming";
+    switch (f) {
+    default:
+    case MB_None :      return trans ? i18n("None") : QLatin1String("none");
+    case MB_Streaming : return trans ? i18n("Streaming") : QLatin1String("streaming");
+//    case MB_Download :  return trans ? i18n("Download") : QLatin1String("download"); // TODO: Magnatune downloads!
+    }
 }
 
 static MagnatuneService::MemberShip toMembership(const QString &f)
 {
-    return f=="streaming" ? MagnatuneService::MB_Streaming : MagnatuneService::MB_None;
+    for (int i=0; i<=MagnatuneService::MB_Count; ++i) {
+        if (f==MagnatuneService::membershipStr((MagnatuneService::MemberShip)i)) {
+            return (MagnatuneService::MemberShip)i;
+        }
+    }
+    return MagnatuneService::MB_None;
+}
+
+QString MagnatuneService::downloadTypeStr(DownloadType f, bool trans)
+{
+    switch (f) {
+    default:
+    case DL_Mp3 :    return trans ? i18n("MP3 128k") : QLatin1String("mp3");
+    case DL_Mp3Vbr : return trans ? i18n("MP3 VBR") : QLatin1String("vbr");
+    case DL_Ogg :    return trans ? i18n("Ogg Vorbis") : QLatin1String("ogg");
+    case DL_Flac :   return trans ? i18n("FLAC"): QLatin1String("flac");
+    case DL_Wav :    return trans ? i18n("WAV") : QLatin1String("wav");
+    }
+}
+
+static MagnatuneService::DownloadType toDownloadType(const QString &f)
+{
+    for (int i=0; i<=MagnatuneService::DL_Count; ++i) {
+        if (f==MagnatuneService::downloadTypeStr((MagnatuneService::DownloadType)i)) {
+            return (MagnatuneService::DownloadType)i;
+        }
+    }
+    return MagnatuneService::DL_Mp3;
 }
 
 void MagnatuneService::loadConfig()
@@ -151,6 +188,7 @@ void MagnatuneService::loadConfig()
     cfg.beginGroup(constName);
     #endif
     membership=toMembership(GET_STRING("membership", membershipStr(membership)));
+    download=toDownloadType(GET_STRING("download", downloadTypeStr(download)));
     username=GET_STRING("username", username);
     password=GET_STRING("username", password);
 }
@@ -164,6 +202,7 @@ void MagnatuneService::saveConfig()
     cfg.beginGroup(constName);
     #endif
     SET_VALUE("membership",  membershipStr(membership));
+    SET_VALUE("download",  downloadTypeStr(download));
     SET_VALUE("username", username);
     SET_VALUE("password", password);
     cfg.sync();
@@ -173,14 +212,12 @@ void MagnatuneService::saveConfig()
 void MagnatuneService::configure(QWidget *p)
 {
     MagnatuneSettingsDialog dlg(p);
-    bool isMember=MB_None!=membership;
-    if (dlg.run(isMember, username, password)) {
-        bool dlgIsMember=0!=dlg.membership();
-        if (username!=dlg.username() || password!=dlg.password() || isMember!=dlgIsMember) {
-            username=dlg.username();
-            password=dlg.password();
-            membership=dlgIsMember ? MB_Streaming : MB_None;
-            saveConfig();
-        }
+    if (dlg.run(membership, download, username, password) &&
+        (username!=dlg.username() || password!=dlg.password() || membership!=dlg.membership()  || download!=dlg.download())) {
+        username=dlg.username();
+        password=dlg.password();
+        membership=(MemberShip)dlg.membership();
+        download=(DownloadType)dlg.download();
+        saveConfig();
     }
 }

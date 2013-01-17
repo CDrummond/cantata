@@ -46,9 +46,24 @@ public:
 
     enum MemberShip {
         MB_None,
-        MB_Streaming
-        //MB_Download
+        MB_Streaming,
+        // MB_Download, // TODO: Magnatune downloads!
+
+        MB_Count
     };
+
+    enum DownloadType {
+        DL_Mp3,
+        DL_Mp3Vbr,
+        DL_Ogg,
+        DL_Flac,
+        DL_Wav,
+
+        DL_Count
+    };
+
+    static QString membershipStr(MemberShip f, bool trans=false);
+    static QString downloadTypeStr(DownloadType f, bool trans=false);
 
     MagnatuneService(OnlineServicesModel *m)
         : OnlineService(m, constName)
@@ -61,9 +76,11 @@ public:
     void loadConfig();
     void saveConfig();
     void configure(QWidget *p);
+    // bool canDownload() const { return MB_Download==membership; } // TODO: Magnatune downloads!
 
 private:
     MemberShip membership;
+    DownloadType download;
     QString username;
     QString password;
 };

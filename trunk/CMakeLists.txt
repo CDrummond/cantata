@@ -150,6 +150,7 @@ SET( CANTATA_SRCS
     online/jamendosettingsdialog.cpp
     online/magnatuneservice.cpp
     online/magnatunesettingsdialog.cpp
+    online/onlinedevice.cpp
 )
 
 SET( CANTATA_MOC_HDRS
@@ -213,6 +214,7 @@ SET( CANTATA_MOC_HDRS
     online/jamendoservice.h
     online/magnatuneservice.h
     online/magnatunesettingsdialog.h
+    online/onlinedevice.h
 )
 
 SET( CANTATA_UIS

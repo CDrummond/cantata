@@ -60,11 +60,14 @@ public Q_SLOTS:
     void updateGenres(const QModelIndex &);
     void addJamendo();
     void addMagnatune();
+    void download();
 
 Q_SIGNALS:
     // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
     void add(const QStringList &files, bool replace, quint8 priorty);
     void addSongsToPlaylist(const QString &name, const QStringList &files);
+
+    void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
 
 private:
     void addService(const QString &name);
@@ -78,6 +81,7 @@ private:
     Action *toggleAction;
     Action *addAction;
     Action *removeAction;
+    Action *downloadAction;
     QAction *jamendoAction;
     QAction *magnatuneAction;
     QSet<QString> genres;

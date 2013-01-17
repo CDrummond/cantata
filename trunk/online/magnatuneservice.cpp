@@ -116,6 +116,7 @@ Song MagnatuneService::fixPath(const Song &orig) const
         return orig;
     }
 
+    Song s=orig;
     QUrl url;
     url.setEncodedUrl(orig.file.toLocal8Bit());
     url.setScheme("http");
@@ -127,8 +128,8 @@ Song MagnatuneService::fixPath(const Song &orig) const
     QString path = url.path();
     path.insert(path.lastIndexOf('.'), "_nospeech");
     url.setPath(path);
-
-    return orig;
+    s.file=url.toString();
+    return s;
 }
 
 static QString membershipStr(MagnatuneService::MemberShip f)

@@ -210,14 +210,14 @@ void OnlineServicesPage::addSelectionToPlaylist(const QString &name, bool replac
 
 void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
 {
-//     const QModelIndexList selected = view->selectedIndexes();
-//     if (1!=selected.size()) {
-//         return; //doubleclick should only have one selected item
-//     }
-//     MusicOnlineServicesItem *item = static_cast<MusicOnlineServicesItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
-//     if (MusicOnlineServicesItem::Type_Song==item->itemType()) {
-//         addSelectionToPlaylist();
-//     }
+     const QModelIndexList selected = view->selectedIndexes();
+     if (1!=selected.size()) {
+         return; //doubleclick should only have one selected item
+     }
+     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
+     if (MusicLibraryItem::Type_Song==item->itemType()) {
+         addSelectionToPlaylist();
+     }
 }
 
 void OnlineServicesPage::searchItems()
@@ -232,33 +232,21 @@ void OnlineServicesPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
     bool srvSelected=false;
-    bool busySrv=false;
-    QString name;
 
     foreach (const QModelIndex &idx, selected) {
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
 
-        if (item && MusicLibraryItem::Type_Root==item->itemType()) {
-            srvSelected=true;
-        }
-
-        if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
-            while(item->parentItem()) {
-                item=item->parentItem();
-            }
-        }
-
-        if (item && MusicLibraryItem::Type_Root==item->itemType()) {
-            OnlineService *srv=static_cast<OnlineService *>(item);
-            if (name.isEmpty()) {
-                name=srv->name();
+        if (item) {
+            if (MusicLibraryItem::Type_Root==item->itemType()) {
+                srvSelected=true;
+                break;
             }
         }
     }
 
-    removeAction->setEnabled(!busySrv && srvSelected && 1==selected.count());
-    configureAction->setEnabled(!busySrv && srvSelected && 1==selected.count());
-    refreshAction->setEnabled(!busySrv && srvSelected && 1==selected.count());
+    removeAction->setEnabled(srvSelected && 1==selected.count());
+    configureAction->setEnabled(srvSelected && 1==selected.count());
+    refreshAction->setEnabled(srvSelected && 1==selected.count());
     mw->addToPlayQueueAction->setEnabled(!srvSelected && selected.count());
     mw->addWithPriorityAction->setEnabled(!srvSelected && selected.count());
     mw->replacePlayQueueAction->setEnabled(!srvSelected && selected.count());

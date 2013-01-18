@@ -1140,8 +1140,6 @@ if ($ARGV[0] eq "start") {
     &start();
 } elsif ($ARGV[0] eq "stop") {
     &stop();
-} elsif ($ARGV[0] eq "status") {
-    &status();
 } elsif ($ARGV[0] eq "server") {
     &serverMode($ARGV[1]);
 } elsif ($ARGV[0] eq "stopserver") {
@@ -1151,5 +1149,5 @@ if ($ARGV[0] eq "start") {
 } else {
     print "Cantata MPD Dynamizer script\n";
     print "\n";
-    print "Usage: $0 start|stop|status|server|stopserver\n";
+    print "Usage: $0 start|stop|server|stopserver\n";
 }

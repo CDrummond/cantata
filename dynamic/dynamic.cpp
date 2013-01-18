@@ -93,7 +93,7 @@ Dynamic::Dynamic()
     connect(this, SIGNAL(clear()), MPDConnection::self(), SLOT(clear()));
     connect(MPDConnection::self(), SIGNAL(dynamicUrl(const QString &)), this, SLOT(dynamicUrlChanged(const QString &)));
     connect(MPDConnection::self(), SIGNAL(statusUpdated(const MPDStatusValues &)), this, SLOT(checkRemoteHelper()));
-    QTimer::singleShot(0, this, SLOT(checkHelper()));
+    QTimer::singleShot(500, this, SLOT(checkHelper()));
 }
 
 QVariant Dynamic::headerData(int, Qt::Orientation, int) const

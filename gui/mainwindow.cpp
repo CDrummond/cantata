@@ -903,7 +903,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveStartHidden(trayItem->isActive() && isHidden() && Settings::self()->minimiseOnClose());
     Settings::self()->save(true);
     disconnect(MPDConnection::self(), 0, 0, 0);
-    if (Settings::self()->stopDynamizerOnExit() || Settings::self()->stopOnExit()) {
+    if (Settings::self()->stopDynamizerOnExit()) {
         Dynamic::self()->stop();
     }
     if (Settings::self()->stopOnExit() || (fadeWhenStop() && StopState_Stopping==stopState)) {

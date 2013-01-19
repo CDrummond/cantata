@@ -230,10 +230,10 @@ void PlayQueueView::setFilterActive(bool f)
     }
 }
 
-void PlayQueueView::updateRows(qint32 row, bool scroll)
+void PlayQueueView::updateRows(qint32 row, quint16 curAlbum, bool scroll)
 {
     if (isGrouped()) {
-        groupedView->updateRows(row, scroll);
+        groupedView->updateRows(row, curAlbum, scroll);
     }
 }
 

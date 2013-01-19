@@ -76,7 +76,7 @@ public:
     void setStartClosed(bool sc);
     bool isStartClosed() const;
     void setFilterActive(bool f);
-    void updateRows(qint32 row, bool scroll);
+    void updateRows(qint32 row, quint16 curAlbum, bool scroll);
     void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint);
     void setModel(QAbstractItemModel *m);
     void addAction(QAction *a);

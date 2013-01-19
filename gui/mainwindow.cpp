@@ -1457,7 +1457,7 @@ void MainWindow::updateSettings()
         playQueueModel.setGrouped(Settings::self()->playQueueGrouped());
         playQueue->setGrouped(Settings::self()->playQueueGrouped());
         playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(),
-                              !usingProxy && autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
+                              current.key, !usingProxy && autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
     }
 
     wasStartClosed=playlistsPage->isStartClosed();
@@ -1733,7 +1733,7 @@ void MainWindow::realSearchPlayQueue()
             playQueue->setModel(&playQueueModel);
             usingProxy=false;
             playQueue->setFilterActive(false);
-            playQueue->updateRows(playQueueModel.currentSongRow(), autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
+            playQueue->updateRows(playQueueModel.currentSongRow(), current.key, autoScrollPlayQueue && MPDState_Playing==MPDStatus::self()->state());
             scrollPlayQueue();
         }
     } else if (filter!=playQueueProxyModel.filterRegExp().pattern()) {
@@ -1746,7 +1746,7 @@ void MainWindow::realSearchPlayQueue()
             }
             playQueue->setModel(&playQueueProxyModel);
             usingProxy=true;
-            playQueue->updateRows(playQueueModel.rowCount()+10, false);
+            playQueue->updateRows(playQueueModel.rowCount()+10, current.key, false);
             playQueue->setFilterActive(true);
         }
     }
@@ -1770,7 +1770,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     clearPlayQueueAction->setEnabled(!songs.isEmpty());
 
     playQueueModel.update(songs);
-    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), false);
+    playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.currentSongRow(), current.key, false);
 
     /*if (1==songs.count() && MPDState_Playing==MPDStatus::self()->state()) {
         updateCurrentSong(songs.at(0));
@@ -1867,7 +1867,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     bool isPlaying=MPDState_Playing==MPDStatus::self()->state();
     playQueueModel.updateCurrentSong(current.id);
     playQueue->updateRows(usingProxy ? playQueueModel.rowCount()+10 : playQueueModel.getRowById(current.id),
-                          !usingProxy && autoScrollPlayQueue && isPlaying);
+                          current.key, !usingProxy && autoScrollPlayQueue && isPlaying);
     scrollPlayQueue();
 
     updateWindowTitle();

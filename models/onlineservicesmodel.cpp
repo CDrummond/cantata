@@ -156,7 +156,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             } else {
                 return static_cast<MusicLibraryItemAlbum *>(item)->cover();
             }
-        case MusicLibraryItem::Type_Song:   return QIcon::fromTheme("anameo-x-generic");
+        case MusicLibraryItem::Type_Song:   return QIcon::fromTheme("audio-x-generic");
         default: return QVariant();
         }
     case Qt::DisplayRole:

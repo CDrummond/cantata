@@ -88,8 +88,8 @@ public:
         , lProgress(0.0)
         , loaded(false)
         , loader(0)    {
-        setUseArtistImages(false);
-        setUseAlbumImages(false);
+        setUseArtistImages(true);
+        setUseAlbumImages(true);
     }
     virtual ~OnlineService() {
     }
@@ -101,7 +101,6 @@ public:
     virtual void loadConfig()=0;
     virtual void saveConfig()=0;
     virtual void configure(QWidget *) { }
-    virtual void requestCover(const Song &) { }
     virtual bool canDownload() const { return false; }
     const QString name() const { return data(); }
     double loadProgress() { return lProgress; }
@@ -136,7 +135,6 @@ Q_SIGNALS:
     void updating(const QString &udi, bool s);
     void actionStatus(int status, bool copiedCover=false);
     void error(const QString &);
-    void cover(const Song &song, const QImage &img);
 
 protected:
     OnlineServicesModel *model;

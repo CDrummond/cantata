@@ -36,6 +36,7 @@
 #include "device.h"
 #include "utils.h"
 #endif
+#include "onlineservice.h"
 #include <QtGui/QPixmap>
 #include <QtGui/QApplication>
 #include <QtGui/QFontMetrics>
@@ -223,15 +224,23 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.year=m_year;
             song.file=firstSong->file();
             #ifdef ENABLE_DEVICES_SUPPORT
-            if (parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem())) {
+            if (parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem()) &&
+                static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
                 // This item is in the devices model, so get cover from device...
                 song.id=firstSong->song().id;
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
-            } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
-                // Not showing album images in this model, so dont request any!
             } else
             #endif
-            Covers::self()->requestCover(song, true);
+            if (parentItem() && parentItem()->parentItem() && qobject_cast<OnlineService *>(parentItem()->parentItem()) &&
+                static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
+                // ONLINE: Image URL is encoded in song.name...
+                song.name=m_imageUrl;
+                Covers::self()->requestCover(song, true);
+            } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
+                // Not showing album images in this model, so dont request any!
+            } else {
+                Covers::self()->requestCover(song, true);
+            }
         }
         return useLarge ? *theDefaultLargeIcon : *theDefaultIcon;
     }

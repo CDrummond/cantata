@@ -127,8 +127,8 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent)
     : QAbstractItemModel(parent)
     , rootItem(new MusicLibraryItemRoot)
 {
-    connect(Covers::self(), SIGNAL(artistImage(const QString &, const QImage &)),
-            this, SLOT(setArtistImage(const QString &, const QImage &)));
+    connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
+            this, SLOT(setArtistImage(const Song &, const QImage &)));
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
             this, SLOT(setCover(const Song &, const QImage &, const QString &)));
     connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
@@ -630,14 +630,13 @@ void MusicLibraryModel::toggleGrouping()
     endResetModel();
 }
 
-void MusicLibraryModel::setArtistImage(const QString &artist, const QImage &img)
+void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img)
 {
-    if (!rootItem->useArtistImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+    if (!rootItem->useArtistImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||
+        song.file.startsWith("http://") || song.name.startsWith("http://")) {
         return;
     }
 
-    Song song;
-    song.artist=song.albumartist=artist;
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
     if (artistItem && static_cast<const MusicLibraryItemArtist *>(artistItem)->setCover(img)) {
         QModelIndex idx=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
@@ -658,7 +657,8 @@ void MusicLibraryModel::updateCover(const Song &song, const QImage &img, const Q
 void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QString &file, bool update)
 {
     Q_UNUSED(file)
-    if (!rootItem->useAlbumImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+    if (!rootItem->useAlbumImages() || img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() ||
+        song.file.startsWith("http:/") || song.name.startsWith("http:/")) {
         return;
     }
 

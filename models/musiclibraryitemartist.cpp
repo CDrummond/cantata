@@ -38,6 +38,7 @@
 #include "device.h"
 #include "utils.h"
 #endif
+#include "onlineservice.h"
 
 bool MusicLibraryItemArtist::lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b)
 {
@@ -116,17 +117,25 @@ const QPixmap & MusicLibraryItemArtist::cover()
 
             if (firstSong) {
                 song.file=firstSong->file();
-                // NO ARTIST IMAGES FOR DEVICES!
-                //#ifdef ENABLE_DEVICES_SUPPORT
-                //if (!song.file.startsWith("/") && parent() && qobject_cast<Device *>(parent())) {
-                //    QString root=static_cast<Device *>(parent())->path();
-                //    if (!root.isEmpty()) {
-                //        song.file=Utils::fixPath(root)+song.file;
-                //    }
-                //}
-                //#endif
             }
-            Covers::self()->requestCover(song, true);
+            // NO ARTIST IMAGES FOR DEVICES!
+            //#ifdef ENABLE_DEVICES_SUPPORT
+            //if (parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem())) {
+            //    // This item is in the devices model, so get cover from device...
+            //    song.id=firstSong->song().id;
+            //    static_cast<Device *>(parentItem()->parentItem())->requestArtistImage(song);
+            //} else
+            //#endif
+            if (parentItem() && parentItem()->parentItem() && qobject_cast<OnlineService *>(parentItem()->parentItem()) &&
+                static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
+                // ONLINE: Image URL is encoded in song.name...
+                song.name=m_imageUrl;
+                Covers::self()->requestCover(song, true);
+            } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
+                // Not showing artist images in this model, so dont request any!
+            } else {
+                Covers::self()->requestCover(song, true);
+            }
             return *theDefaultIcon;
         }
     }

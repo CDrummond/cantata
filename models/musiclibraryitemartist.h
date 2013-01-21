@@ -42,29 +42,25 @@ public:
     static bool lessThan(const MusicLibraryItem *a, const MusicLibraryItem *b);
 
     MusicLibraryItemArtist(const QString &data, MusicLibraryItemContainer *parent = 0);
-    virtual ~MusicLibraryItemArtist() {
-    }
+    virtual ~MusicLibraryItemArtist() { }
 
     MusicLibraryItemAlbum * album(const Song &s, bool create=true);
     MusicLibraryItemAlbum * createAlbum(const Song &s);
     const QString & baseArtist() const;
-    bool isVarious() const {
-        return m_various;
-    }
+    bool isVarious() const { return m_various; }
     bool allSingleTrack() const;
     void addToSingleTracks(MusicLibraryItemArtist *other);
     bool isFromSingleTracks(const Song &s) const;
     void remove(MusicLibraryItemAlbum *album);
     QList<MusicLibraryItem *> mutipleArtistAlbums();
     void updateIndexes();
-    Type itemType() const {
-        return Type_Artist;
-    }
-
+    Type itemType() const { return Type_Artist; }
     static void clearDefaultCover();
     bool setCover(const QImage &img) const;
     const QPixmap & cover();
     bool hasRealCover() const { return !m_coverIsDefault; }
+    const QString & imageUrl() const { return m_imageUrl; }
+    void setImageUrl(const QString &u) { m_imageUrl=u; }
 
 private:
     mutable bool m_coverIsDefault;
@@ -72,6 +68,7 @@ private:
     bool m_various;
     QString m_nonTheArtist;
     QHash<QString, int> m_indexes;
+    QString m_imageUrl;
 };
 
 #endif

@@ -27,6 +27,7 @@
 #include "utils.h"
 #include "networkaccessmanager.h"
 #include "mpdparseutils.h"
+#include "covers.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include <QtCore/QFile>
 #include <QtXml/QXmlStreamReader>

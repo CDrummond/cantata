@@ -58,7 +58,7 @@ private Q_SLOTS:
 Q_SIGNALS:
     void getNext();
     void cover(const Song &song, const QImage &img, const QString &file);
-    void artistImage(const QString &artist, const QImage &img);
+    void artistImage(const Song &song, const QImage &img);
     void download(const Song &song);
 
 private:
@@ -74,7 +74,9 @@ public:
     enum JobType {
         JobHttpJpg,
         JobHttpPng,
-        JobLastFm
+        JobLastFm,
+
+        JobOnline
     };
 
     struct Job
@@ -125,10 +127,11 @@ public Q_SLOTS:
 Q_SIGNALS:
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
-    void artistImage(const QString &artist, const QImage &img);
+    void artistImage(const Song &song, const QImage &img);
     void coverRetrieved(const Song &song);
 
 private:
+    void donwloadOnlineImage(Job &job);
     void downloadViaHttp(Job &job, JobType type);
     void downloadViaLastFm(Job &job);
 

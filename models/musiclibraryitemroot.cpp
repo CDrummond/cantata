@@ -295,6 +295,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
         const MusicLibraryItemArtist *artist = static_cast<const MusicLibraryItemArtist *>(a);
         writer.writeStartElement("Artist");
         writer.writeAttribute("name", artist->data());
+        if (!artist->imageUrl().isEmpty()) {
+            writer.writeAttribute("img", artist->imageUrl());
+        }
         foreach (const MusicLibraryItem *al, artist->childItems()) {
             const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
             QString albumGenre=!album->childItems().isEmpty() ? static_cast<const MusicLibraryItemSong *>(album->childItems().at(0))->song().genre : QString();
@@ -308,6 +311,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 writer.writeAttribute("singleTracks", "true");
             } else if (album->isMultipleArtists()) {
                 writer.writeAttribute("multipleArtists", "true");
+            }
+            if (!album->imageUrl().isEmpty()) {
+                writer.writeAttribute("img", album->imageUrl());
             }
             foreach (const MusicLibraryItem *t, album->childItems()) {
                 const MusicLibraryItemSong *track = static_cast<const MusicLibraryItemSong *>(t);
@@ -406,6 +412,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                 song.type=Song::Standard;
                 song.artist=song.albumartist=attributes.value("name").toString();
                 artistItem = createArtist(song);
+                QString img = attributes.value("img").toString();
+                if (!img.isEmpty()) {
+                    artistItem->setImageUrl(img);
+                }
             } else if (QLatin1String("Album")==element) {
                 song.album=attributes.value("name").toString();
                 song.year=attributes.value("year").toString().toUInt();
@@ -414,6 +424,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     song.file.append("dummy.mp3");
                 }
                 albumItem = artistItem->createAlbum(song);
+                QString img = attributes.value("img").toString();
+                if (!img.isEmpty()) {
+                    albumItem->setImageUrl(img);
+                }
                 if (QLatin1String("true")==attributes.value("singleTracks").toString()) {
                     albumItem->setIsSingleTracks();
                     song.type=Song::SingleTracks;

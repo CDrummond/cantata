@@ -91,7 +91,7 @@ public:
 
 public Q_SLOTS:
     void updateMusicLibrary(MusicLibraryItemRoot * root, QDateTime dbUpdate = QDateTime(), bool fromFile = false);
-    void setArtistImage(const QString &artist, const QImage &img);
+    void setArtistImage(const Song &song, const QImage &img);
     void setCover(const Song &song, const QImage &img, const QString &file);
     void updateCover(const Song &song, const QImage &img, const QString &file);
 

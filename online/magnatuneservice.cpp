@@ -55,6 +55,8 @@ bool MagnatuneMusicLoader::parse(QXmlStreamReader &xml)
 void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
 {
     Song s;
+    QString artistImg;
+    QString albumImg;
 
     while (!xml.atEnd()) {
         if (wasStopped()) {
@@ -84,6 +86,10 @@ void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
 //            } else if (QLatin1String("albumsku")==name) {
             } else if (QLatin1String("url")==name) {
                 s.file=value;
+            }  else if (QLatin1String("artistphoto")==name) {
+                artistImg=value;
+            }  else if (QLatin1String("cover_small")==name) {
+                albumImg=value;
             }
         } else if (QXmlStreamReader::EndElement==xml.tokenType()) {
             break;
@@ -99,6 +105,12 @@ void MagnatuneMusicLoader::parseSong(QXmlStreamReader &xml)
         album->addGenre(s.genre);
         artist->addGenre(s.genre);
         library->addGenre(s.genre);
+        if (!artistImg.isEmpty() && artist->imageUrl().isEmpty()) {
+            artist->setImageUrl(artistImg);
+        }
+        if (!albumImg.isEmpty() && album->imageUrl().isEmpty()) {
+            album->setImageUrl(albumImg);
+        }
     }
 }
 

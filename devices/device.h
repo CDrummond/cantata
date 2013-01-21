@@ -93,6 +93,8 @@ public:
         , needToFixVa(false)
         , jobAbortRequested(false)
         , transcoding(false) {
+        setUseArtistImages(false);
+        setUseAlbumImages(true);
     }
     Device(DevicesModel *m, const QString &name, const QString &id)
         : MusicLibraryItemRoot(name)
@@ -103,6 +105,8 @@ public:
         , needToFixVa(false)
         , jobAbortRequested(false)
         , transcoding(false) {
+        setUseArtistImages(false);
+        setUseAlbumImages(true);
     }
     virtual ~Device() {
     }

@@ -1369,11 +1369,11 @@ void MainWindow::readSettings()
     libraryPage->setView(Settings::self()->libraryView());
     MusicLibraryModel::self()->setUseArtistImages(Settings::self()->libraryArtistImage());
     playlistsPage->setView(Settings::self()->playlistsView());
-    streamsPage->setView(0==Settings::self()->streamsView());
-    onlinePage->setView(0==Settings::self()->onlineView());
-    folderPage->setView(0==Settings::self()->folderView());
+    streamsPage->setView(Settings::self()->streamsView());
+    onlinePage->setView(Settings::self()->onlineView());
+    folderPage->setView(Settings::self()->folderView());
     #ifdef ENABLE_DEVICES_SUPPORT
-    devicesPage->setView(0==Settings::self()->devicesView());
+    devicesPage->setView(Settings::self()->devicesView());
     #endif
     trayItem->setup();
     autoScrollPlayQueue=Settings::self()->playQueueScroll();

@@ -390,6 +390,10 @@ bool PlaylistsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, 
     if (row<0) {
         row=parent.row();
     }
+
+    if (origRow<0 && dropAdjust) { // Unlike the playqueue, we 'copy' items, so need to adjust 1 more place...
+        dropAdjust++;
+    }
     row+=dropAdjust;
 
     Q_UNUSED(col)
@@ -659,19 +663,28 @@ void PlaylistsModel::removedFromPlaylist(const QString &name, const QList<quint3
 void PlaylistsModel::movedInPlaylist(const QString &name, const QList<quint32> &idx, quint32 pos)
 {
     PlaylistItem *pl=0;
-    if (!(pl=getPlaylist(name)) || items.count()>pl->songs.count()) {
+    if (!(pl=getPlaylist(name)) || idx.count()>pl->songs.count()) {
         emit listPlaylists();
         return;
+    }
+
+    foreach (quint32 i, idx) {
+        if (i>=(quint32)pl->songs.count()) {
+            emit listPlaylists();
+            return;
+        }
     }
 
     QList<quint32> indexes=idx;
     QModelIndex parent=createIndex(items.indexOf(pl), 0, pl);
     while (indexes.count()) {
         quint32 from=indexes.takeLast();
-        beginMoveRows(parent, from, from, parent, pos>from ? pos+1 : pos);
-        SongItem *si=pl->songs.takeAt(from);
-        pl->songs.insert(pos, si);
-        endMoveRows();
+        if (from!=pos) {
+            beginMoveRows(parent, from, from, parent, pos>from && pos<(quint32)pl->songs.count() ? pos+1 : pos);
+            SongItem *si=pl->songs.takeAt(from);
+            pl->songs.insert(pos, si);
+            endMoveRows();
+        }
     }
     emit updated(parent);
 }

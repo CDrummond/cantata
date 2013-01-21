@@ -63,7 +63,8 @@ public:
     Device *device(const QString &udi);
 
 public Q_SLOTS:
-    void setCover(const Song &song, const QImage &img);
+    void setArtistImage(const Song &song, const QImage &img);
+    void setCover(const Song &song, const QImage &img, const QString &fileName);
     void removeService(const QString &name);
     void stateChanged(const QString &name, bool state);
 

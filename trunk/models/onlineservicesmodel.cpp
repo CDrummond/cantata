@@ -40,6 +40,7 @@
 #include "settings.h"
 #include "filejob.h"
 #include "utils.h"
+#include "covers.h"
 #include <QtGui/QMenu>
 #include <QtCore/QStringList>
 #include <QtCore/QMimeData>
@@ -297,10 +298,21 @@ void OnlineServicesModel::setEnabled(bool e)
         return;
     }
 
+    bool wasEnabled=enabled;
     enabled=e;
     if (enabled) {
+        connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
+                this, SLOT(setArtistImage(const Song &, const QImage &)));
+        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         load();
     } else {
+        if (wasEnabled) {
+            disconnect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
+                      this, SLOT(setArtistImage(const Song &, const QImage &)));
+            disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                      this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+        }
         clear();
     }
 }
@@ -311,31 +323,43 @@ OnlineService * OnlineServicesModel::service(const QString &name)
     return idx<0 ? 0 : services.at(idx);
 }
 
-void OnlineServicesModel::setCover(const Song &song, const QImage &img)
+void OnlineServicesModel::setArtistImage(const Song &song, const QImage &img)
 {
-    if (MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize()) {
+    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !(song.file.startsWith("http:/") || song.name.startsWith("http:/"))) {
         return;
     }
 
-    if (img.isNull()) {
-        return;
-    }
-
-    OnlineService *srv=qobject_cast<OnlineService *>(sender());
-    if (!srv) {
-        return;
-    }
-    int i=services.indexOf(srv);
-    if (i<0) {
-        return;
-    }
-    MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemRoot *>(srv)->artist(song, false);
-    if (artistItem) {
-        MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-        if (albumItem) {
-            if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
-                QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(static_cast<MusicLibraryItemContainer *>(srv)->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
+    for (int i=0; i<services.count() ; ++i) {
+        OnlineService *srv=services.at(i);
+        if (srv->useArtistImages()) {
+            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
+            if (artistItem && static_cast<const MusicLibraryItemArtist *>(artistItem)->setCover(img)) {
+                QModelIndex idx=index(static_cast<MusicLibraryItemContainer *>(srv)->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex()));
                 emit dataChanged(idx, idx);
+            }
+        }
+    }
+}
+
+void OnlineServicesModel::setCover(const Song &song, const QImage &img, const QString &fileName)
+{
+    Q_UNUSED(fileName)
+    if (img.isNull() || MusicLibraryItemAlbum::CoverNone==MusicLibraryItemAlbum::currentCoverSize() || !(song.file.startsWith("http:/") || song.name.startsWith("http:/"))) {
+        return;
+    }
+
+    for (int i=0; i<services.count() ; ++i) {
+        OnlineService *srv=services.at(i);
+        if (srv->useArtistImages()) {
+            MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemRoot *>(srv)->artist(song, false);
+            if (artistItem) {
+                MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
+                if (albumItem) {
+                    if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
+                        QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(static_cast<MusicLibraryItemContainer *>(srv)->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
+                        emit dataChanged(idx, idx);
+                    }
+                }
             }
         }
     }
@@ -497,7 +521,6 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
             services.append(srv);
             endInsertRows();
             connect(srv, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
-            connect(srv, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
 
             CONFIG
             QStringList names=GET_STRINGLIST(constCfgKey, QStringList());

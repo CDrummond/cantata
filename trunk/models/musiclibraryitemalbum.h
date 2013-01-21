@@ -77,15 +77,12 @@ public:
     void remove(int row);
     bool detectIfIsMultipleArtists();
     bool isMultipleArtists() const { return Song::MultipleArtists==m_type; }
-    Song::Type songType() const {
-        return m_type;
-    }
+    Song::Type songType() const { return m_type; }
     void setIsMultipleArtists();
-    Type itemType() const {
-        return Type_Album;
-    }
-
+    Type itemType() const { return Type_Album; }
     const MusicLibraryItemSong * getCueFile() const;
+    const QString & imageUrl() const { return m_imageUrl; }
+    void setImageUrl(const QString &u) { m_imageUrl=u; }
 
 private:
     void setYear(const MusicLibraryItemSong *song);
@@ -100,6 +97,7 @@ private:
     mutable QPixmap *m_cover;
     Song::Type m_type;
     QSet<QString> m_singleTrackFiles;
+    QString m_imageUrl;
 };
 
 #endif

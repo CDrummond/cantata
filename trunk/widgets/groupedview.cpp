@@ -305,7 +305,7 @@ public:
             if (isCollection) {
                 pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize);
             } else {
-                QPixmap *cover=Covers::self()->get(song, constCoverSize);
+                QPixmap *cover=stream ? 0 : Covers::self()->get(song, constCoverSize);
                 pix=cover ? *cover : (stream ? Icons::streamIcon : Icons::albumIcon).pixmap(constCoverSize, constCoverSize);
             }
 

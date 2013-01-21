@@ -225,8 +225,9 @@ void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
 
 void OnlineServicesPage::searchItems()
 {
-    proxy.update(view->searchText().trimmed(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
-    if (proxy.enabled()) {
+    QString text=view->searchText().trimmed();
+    proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+    if (proxy.enabled() && !text.isEmpty()) {
         view->expandAll();
     }
 }

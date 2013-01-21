@@ -57,7 +57,7 @@ public:
     void addSelectionToDevice(const QString &udi);
     void deleteSongs();
     #endif
-    void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
+    void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
 

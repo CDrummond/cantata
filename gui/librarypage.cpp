@@ -239,13 +239,13 @@ void LibraryPage::showSongs(const QList<Song> &songs)
         if (idx.isValid()) {
             QModelIndex p=proxy.mapFromSource(idx);
             if (p.isValid()) {
-                if (ItemView::Mode_Tree==view->viewMode() || first) {
+                if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode() || first) {
                     view->showIndex(p, first);
                 }
                 if (first) {
                     first=false;
                 }
-                if (ItemView::Mode_Tree!=view->viewMode()) {
+                if (ItemView::Mode_SimpleTree!=view->viewMode() && ItemView::Mode_DetailedTree!=view->viewMode()) {
                     return;
                 }
             }

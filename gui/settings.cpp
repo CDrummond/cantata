@@ -329,32 +329,44 @@ bool Settings::storeLyricsInMpdDir()
 
 int Settings::libraryView()
 {
-    return GET_INT("libraryView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
+    int v=version();
+    QString def=ItemView::modeStr(v>=CANTATA_MAKE_VERSION(0, 5, 0)
+                                    ? (v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree)
+                                    : ItemView::Mode_List);
+    return ItemView::toMode(GET_STRING("libraryView", def));
 }
 
 int Settings::albumsView()
 {
-    return GET_INT("albumsView", (int)ItemView::Mode_IconTop);
+    return ItemView::toMode(GET_STRING("albumsView", ItemView::modeStr(ItemView::Mode_IconTop)));
 }
 
 int Settings::folderView()
 {
-    return GET_INT("folderView", (int)ItemView::Mode_Tree);
+    return ItemView::toMode(GET_STRING("folderView", ItemView::modeStr(ItemView::Mode_SimpleTree)));
 }
 
 int Settings::playlistsView()
 {
-    return GET_INT("playlistsView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
+    int v=version();
+    QString def=ItemView::modeStr(v>=CANTATA_MAKE_VERSION(0, 5, 0)
+                                    ? (v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_GroupedTree)
+                                    : ItemView::Mode_List);
+    return ItemView::toMode(GET_STRING("playlistsView", def));
 }
 
 int Settings::streamsView()
 {
-    return GET_INT("streamsView", (int)(version()>=CANTATA_MAKE_VERSION(0, 5, 0) ? ItemView::Mode_Tree : ItemView::Mode_List));
+    int v=version();
+    QString def=ItemView::modeStr(v>=CANTATA_MAKE_VERSION(0, 5, 0)
+                                    ? (v<CANTATA_MAKE_VERSION(0, 9, 50) ? ItemView::Mode_SimpleTree : ItemView::Mode_DetailedTree)
+                                    : ItemView::Mode_List);
+    return ItemView::toMode(GET_STRING("streamsView", def));
 }
 
 int Settings::onlineView()
 {
-    return GET_INT("onlineView", (int)ItemView::Mode_Tree);
+    return ItemView::toMode(GET_STRING("onlineView", ItemView::modeStr(ItemView::Mode_DetailedTree)));
 }
 
 bool Settings::libraryArtistImage()
@@ -469,7 +481,7 @@ bool Settings::showDeleteAction()
 
 int Settings::devicesView()
 {
-    return GET_INT("devicesView", (int)ItemView::Mode_Tree);
+    return GET_INT("devicesView", (int)ItemView::Mode_SimpleTree);
 }
 #endif
 
@@ -625,6 +637,7 @@ void Settings::saveConnectionDetails(const MPDConnectionDetails &v)
 }
 
 #define SET_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; SET_VALUE(#KEY, v); }
+#define SET_ITEMVIEW_MODE_VALUE_MOD(KEY) if (v!=KEY()) { modified=true; SET_VALUE(#KEY, ItemView::modeStr((ItemView::Mode)v)); }
 
 void Settings::saveCurrentConnection(const QString &v)
 {
@@ -703,32 +716,32 @@ void Settings::saveStoreLyricsInMpdDir(bool v)
 
 void Settings::saveLibraryView(int v)
 {
-    SET_VALUE_MOD(libraryView)
+    SET_ITEMVIEW_MODE_VALUE_MOD(libraryView)
 }
 
 void Settings::saveAlbumsView(int v)
 {
-    SET_VALUE_MOD(albumsView)
+    SET_ITEMVIEW_MODE_VALUE_MOD(albumsView)
 }
 
 void Settings::saveFolderView(int v)
 {
-    SET_VALUE_MOD(folderView)
+    SET_ITEMVIEW_MODE_VALUE_MOD(folderView)
 }
 
 void Settings::savePlaylistsView(int v)
 {
-    SET_VALUE_MOD(playlistsView)
+    SET_ITEMVIEW_MODE_VALUE_MOD(playlistsView)
 }
 
 void Settings::saveStreamsView(int v)
 {
-    SET_VALUE_MOD(streamsView)
+    SET_ITEMVIEW_MODE_VALUE_MOD(streamsView)
 }
 
 void Settings::saveOnlineView(int v)
 {
-    SET_VALUE_MOD(onlineView)
+    SET_ITEMVIEW_MODE_VALUE_MOD(onlineView)
 }
 
 void Settings::saveLibraryArtistImage(bool v)

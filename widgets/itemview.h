@@ -55,7 +55,8 @@ public:
 
     enum Mode
     {
-        Mode_Tree,
+        Mode_SimpleTree,
+        Mode_DetailedTree,
         Mode_List,
         Mode_IconTop,
         Mode_GroupedTree,
@@ -75,6 +76,9 @@ public:
         Role_ToggleToolTip,
         Role_Search
     };
+
+    static Mode toMode(const QString &str);
+    static QString modeStr(Mode m);
 
     static void setup();
 

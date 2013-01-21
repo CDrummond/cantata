@@ -230,8 +230,9 @@ void DevicesPage::itemDoubleClicked(const QModelIndex &)
 
 void DevicesPage::searchItems()
 {
-    proxy.update(view->searchText().trimmed(), genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
-    if (proxy.enabled()) {
+    QString text=view->searchText().trimmed();
+    proxy.update(text, genreCombo->currentIndex()<=0 ? QString() : genreCombo->currentText());
+    if (proxy.enabled() && !text.isEmpty()) {
         view->expandAll();
     }
 }

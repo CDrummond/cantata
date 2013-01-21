@@ -45,7 +45,7 @@ public:
     QStringList selectedFiles() const;
     QList<Song> selectedSongs() const;
     void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
-    void setView(bool tree) { view->setMode(tree ? ItemView::Mode_Tree : ItemView::Mode_List); }
+    void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
 

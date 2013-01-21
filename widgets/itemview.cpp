@@ -299,6 +299,7 @@ class TreeDelegate : public ListDelegate
 public:
     TreeDelegate(QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2)
         : ListDelegate(0, p, a1, a2, t, actionLevel, s1, s2)
+        , simpleStyle(true)
     {
     }
 
@@ -308,7 +309,7 @@ public:
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
-        if (!index.data(ItemView::Role_CapacityText).toString().isEmpty()) {
+        if (!simpleStyle || !index.data(ItemView::Role_CapacityText).toString().isEmpty()) {
             return ListDelegate::sizeHint(option, index);
         }
 
@@ -323,7 +324,7 @@ public:
             return;
         }
 
-        if(!index.data(ItemView::Role_CapacityText).toString().isEmpty()) {
+        if (!simpleStyle || !index.data(ItemView::Role_CapacityText).toString().isEmpty()) {
             ListDelegate::paint(painter, option, index);
             return;
         }
@@ -396,7 +397,42 @@ public:
             drawIcons(painter, option.rect, true, rtl, false, index);
         }
     }
+
+    void setSimple(bool s) { simpleStyle=s; }
+
+    bool simpleStyle;
 };
+
+ItemView::Mode ItemView::toMode(const QString &str)
+{
+    for (int i=0; i<Mode_Count; ++i) {
+        if (modeStr((Mode)i)==str) {
+            return (Mode)i;
+        }
+    }
+
+    // Older versions of Cantata saved mode as an integer!!!
+    int i=str.toInt();
+    switch (i) {
+        default:
+        case 0: return Mode_SimpleTree;
+        case 1: return Mode_List;
+        case 2: return Mode_IconTop;
+        case 3: return Mode_GroupedTree;
+    }
+}
+
+QString ItemView::modeStr(Mode m)
+{
+    switch (m) {
+    default:
+    case Mode_SimpleTree:   return QLatin1String("simpletree");
+    case Mode_DetailedTree: return QLatin1String("detailedtree");
+    case Mode_List:         return QLatin1String("list");
+    case Mode_IconTop:      return QLatin1String("icontop");
+    case Mode_GroupedTree:  return QLatin1String("grouped");
+    }
+}
 
 void ItemView::setForceSingleClick(bool v)
 {
@@ -419,7 +455,7 @@ ItemView::ItemView(QWidget *p)
     , subAct1(0)
     , subAct2(0)
     , currentLevel(0)
-    , mode(Mode_Tree)
+    , mode(Mode_SimpleTree)
     , groupedView(0)
     , spinner(0)
 {
@@ -492,7 +528,7 @@ void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel, QActi
     connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
     connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
     mode=Mode_List;
-    setMode(Mode_Tree);
+    setMode(Mode_SimpleTree);
 }
 
 void ItemView::addAction(QAction *act)
@@ -507,7 +543,7 @@ void ItemView::addAction(QAction *act)
 void ItemView::setMode(Mode m)
 {
     if (m<0 || m>Mode_GroupedTree || (Mode_GroupedTree==m && !groupedView)) {
-        m=Mode_Tree;
+        m=Mode_SimpleTree;
     }
 
     if (m==mode) {
@@ -517,7 +553,7 @@ void ItemView::setMode(Mode m)
     mode=m;
     treeSearch->setText(QString());
     listSearch->setText(QString());
-    if (Mode_Tree==mode) {
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
         treeView->setModel(itemModel);
         listView->setModel(0);
         if (groupedView) {
@@ -525,7 +561,9 @@ void ItemView::setMode(Mode m)
             groupedView->setModel(0);
         }
         treeView->setHidden(false);
+        ((TreeDelegate *)treeView->itemDelegate())->setSimple(Mode_SimpleTree==mode);
         itemModel->setRootIndex(QModelIndex());
+        treeView->reset();
     } else if (Mode_GroupedTree==mode) {
         treeView->setModel(0);
         listView->setModel(0);
@@ -558,7 +596,7 @@ void ItemView::setMode(Mode m)
         disconnect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), groupedView, SLOT(coverRetrieved(const Song &)));
     }
 
-    stackedWidget->setCurrentIndex(Mode_Tree==mode || Mode_GroupedTree==mode ? 0 : 1);
+    stackedWidget->setCurrentIndex(Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode ? 0 : 1);
     if (spinner) {
         spinner->setWidget(view()->viewport());
         if (spinner->isActive()) {
@@ -579,7 +617,7 @@ void ItemView::hideBackButton()
 
 QModelIndexList ItemView::selectedIndexes() const
 {
-    if (Mode_Tree==mode) {
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
         return treeView->selectedIndexes();
     } else if(Mode_GroupedTree==mode) {
         return groupedView->selectedIndexes();
@@ -628,7 +666,7 @@ void ItemView::setLevel(int l, bool haveChildren)
 
 QAbstractItemView * ItemView::view() const
 {
-    if (Mode_Tree==mode) {
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
         return treeView;
     } else if(Mode_GroupedTree==mode) {
         return groupedView;
@@ -645,12 +683,12 @@ void ItemView::setModel(ProxyModel *m)
 
 QString ItemView::searchText() const
 {
-    return Mode_Tree==mode || Mode_GroupedTree==mode ? treeSearch->text() : listSearch->text();
+    return Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode ? treeSearch->text() : listSearch->text();
 }
 
 void ItemView::clearSearchText()
 {
-    return Mode_Tree==mode || Mode_GroupedTree==mode ? treeSearch->setText(QString()) : listSearch->setText(QString());
+    return Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode ? treeSearch->setText(QString()) : listSearch->setText(QString());
 }
 
 void ItemView::setTopText(const QString &text)
@@ -704,7 +742,7 @@ void ItemView::setGridSize(const QSize &sz)
 
 void ItemView::update()
 {
-    if (Mode_Tree==mode) {
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
         treeView->update();
     } else if (Mode_GroupedTree==mode) {
         groupedView->update();
@@ -724,7 +762,7 @@ void ItemView::setDeleteAction(QAction *act)
 
 void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 {
-    if (Mode_Tree==mode) {
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
         QModelIndex i=idx;
         while (i.isValid()) {
             treeView->setExpanded(i, true);
@@ -771,7 +809,7 @@ void ItemView::showIndex(const QModelIndex &idx, bool scrollTo)
 
 void ItemView::focusSearch()
 {
-    if (Mode_Tree==mode || Mode_GroupedTree==mode) {
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode) {
         treeSearch->setFocus();
     } else {
         listSearch->setFocus();
@@ -806,7 +844,7 @@ void ItemView::updateRows(const QModelIndex &idx)
 
 void ItemView::expandAll()
 {
-    if (Mode_Tree==mode) {
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
         treeView->expandAll();
     } else if (Mode_GroupedTree==mode && groupedView) {
         groupedView->expandAll();
@@ -838,7 +876,7 @@ void ItemView::collectionRemoved(quint32 key)
 
 void ItemView::backActivated()
 {
-    if (Mode_Tree==mode || Mode_GroupedTree==mode || 0==currentLevel) {
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode || 0==currentLevel) {
         return;
     }
     setLevel(currentLevel-1);
@@ -891,7 +929,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
         return;
     }
 
-    if (Mode_Tree==mode) {
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
         treeView->setExpanded(index, !treeView->isExpanded(index));
     } else if (Mode_GroupedTree==mode) {
         if (!index.parent().isValid()) {
@@ -919,7 +957,7 @@ void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
 
 void ItemView::delaySearchItems()
 {
-    bool isTree=Mode_Tree==mode || Mode_GroupedTree==mode;
+    bool isTree=Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode;
     if ((isTree && treeSearch->text().isEmpty()) || (!isTree && listSearch->text().isEmpty())) {
         if (searchTimer) {
             searchTimer->stop();

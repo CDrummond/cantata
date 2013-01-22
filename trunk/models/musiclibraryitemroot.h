@@ -40,6 +40,13 @@ class QXmlStreamReader;
 class QXmlStreamWriter;
 class MusicLibraryItemArtist;
 
+class MusicLibraryProgressMonitor
+{
+public:
+    virtual void readProgress(double pc) =0;
+    virtual void writeProgress(double pc) =0;
+};
+
 class MusicLibraryItemRoot : public MusicLibraryItemContainer
 {
 public:
@@ -66,10 +73,10 @@ public:
     QSet<Song> allSongs(bool revertVa=false) const;
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     void updateSongFile(const Song &from, const Song &to);
-    void toXML(const QString &filename, const QDateTime &date=QDateTime()) const;
-    void toXML(QXmlStreamWriter &writer, const QDateTime &date=QDateTime()) const;
-    quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime(), const QString &baseFolder=QString());
-    quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime(), const QString &baseFolder=QString());
+    void toXML(const QString &filename, const QDateTime &date=QDateTime(), MusicLibraryProgressMonitor *prog=0) const;
+    void toXML(QXmlStreamWriter &writer, const QDateTime &date=QDateTime(), MusicLibraryProgressMonitor *prog=0) const;
+    quint32 fromXML(const QString &filename, const QDateTime &date=QDateTime(), const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0);
+    quint32 fromXML(QXmlStreamReader &reader, const QDateTime &date=QDateTime(), const QString &baseFolder=QString(), MusicLibraryProgressMonitor *prog=0);
     Type itemType() const { return Type_Root; }
     void add(const QSet<Song> &songs);
     bool supportsAlbumArtistTag() { return supportsAlbumArtist; }

@@ -37,7 +37,7 @@ class OnlineServicesModel;
 class QNetworkReply;
 class QXmlStreamReader;
 
-class OnlineMusicLoader : public QThread
+class OnlineMusicLoader : public QThread, public MusicLibraryProgressMonitor
 {
     Q_OBJECT
 
@@ -63,6 +63,9 @@ private Q_SLOTS:
 private:
     bool readFromCache();
     void fixLibrary();
+    void readProgress(double pc);
+    void writeProgress(double pc);
+    void progressReport(const QString &str, int pc);
 
 protected:
     QUrl source;
@@ -110,7 +113,6 @@ public:
     void clear();
     bool isLoading() const { return 0!=loader; }
     bool isIdle() const { return isLoaded() && !isLoading(); }
-    void saveCache();
     void removeCache();
     void applyUpdate();
     bool haveUpdate() const { return 0!=update; }

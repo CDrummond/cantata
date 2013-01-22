@@ -257,7 +257,7 @@ void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
 static quint32 constVersion=8;
 static QLatin1String constTopTag("CantataLibrary");
 
-void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date) const
+void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date, MusicLibraryProgressMonitor *prog) const
 {
     // If saving device cache, and we have NO items, then remove cache file...
     if (0==childCount() && date==QDateTime()) {
@@ -275,12 +275,14 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date)
     }
 
     QXmlStreamWriter writer(&compressor);
-    toXML(writer, date);
+    toXML(writer, date, prog);
     compressor.close();
 }
 
-void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date) const
+void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date, MusicLibraryProgressMonitor *prog) const
 {
+    quint64 total=0;
+    quint64 count=0;
     writer.writeStartDocument();
     QString unknown=i18n("Unknown");
 
@@ -290,6 +292,16 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     writer.writeAttribute("date", QString::number(date.toTime_t()));
     writer.writeAttribute("groupSingle", MPDParseUtils::groupSingle() ? "true" : "false");
     writer.writeAttribute("groupMultiple", MPDParseUtils::groupMultiple() ? "true" : "false");
+
+    foreach (const MusicLibraryItem *a, childItems()) {
+        foreach (const MusicLibraryItem *al, static_cast<const MusicLibraryItemArtist *>(a)->childItems()) {
+            total+=al->childCount();
+        }
+    }
+    writer.writeAttribute("numTracks", QString::number(total));
+    if (prog) {
+        prog->writeProgress(0.0);
+    }
     //Loop over all artist, albums and tracks.
     foreach (const MusicLibraryItem *a, childItems()) {
         const MusicLibraryItemArtist *artist = static_cast<const MusicLibraryItemArtist *>(a);
@@ -355,6 +367,10 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 if (track->song().year != album->year()) {
                     writer.writeAttribute("year", QString::number(track->song().year));
                 }
+                if (prog && total>0) {
+                    count++;
+                    prog->writeProgress((count*100.0)/(total*1.0));
+                }
             }
             writer.writeEndElement();
         }
@@ -365,7 +381,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     writer.writeEndDocument();
 }
 
-quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, const QString &baseFolder)
+quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
 {
     QFile file(filename);
     QtIOCompressor compressor(&file);
@@ -375,12 +391,12 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
     }
 
     QXmlStreamReader reader(&compressor);
-    quint32 rv=fromXML(reader, date, baseFolder);
+    quint32 rv=fromXML(reader, date, baseFolder, prog);
     compressor.close();
     return rv;
 }
 
-quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, const QString &baseFolder)
+quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
 {
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
@@ -388,6 +404,12 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     Song song;
     quint32 xmlDate=0;
     QString unknown=i18n("Unknown");
+    quint64 total=0;
+    quint64 count=0;
+
+    if (prog) {
+        prog->readProgress(0.0);
+    }
 
     while (!reader.atEnd()) {
         reader.readNext();
@@ -407,6 +429,9 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
 
                 if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t()) || gs!=MPDParseUtils::groupSingle() || gm!=MPDParseUtils::groupMultiple()) {
                     return 0;
+                }
+                if (prog) {
+                    total=attributes.value("numTracks").toString().toUInt();
                 }
             } else if (QLatin1String("Artist")==element) {
                 song.type=Song::Standard;
@@ -502,6 +527,11 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     albumItem->addGenre(song.genre);
                     artistItem->addGenre(song.genre);
                     addGenre(song.genre);
+
+                    if (prog && total>0) {
+                        count++;
+                        prog->readProgress((count*100.0)/(total*1.0));
+                    }
                 }
             }
         }

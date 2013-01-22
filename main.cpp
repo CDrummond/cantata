@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
                          KAboutData::License_GPL_V2,
                          ki18n("Copyright (C) 2011-2013 Craig Drummond"),
                          KLocalizedString(),
-                         "http://cantata.googlecode.com", "craig.p.drummond@gmail.com");
+                         "http://"CANTATA_URL, "craig.p.drummond@gmail.com");
 
     aboutData.addAuthor(ki18n("Craig Drummond"), ki18n("Maintainer"), "craig.p.drummond@gmail.com");
     aboutData.addAuthor(ki18n("Piotr Wicijowski"), ki18n("UI Improvements"), "piotr.wicijowski@gmail.com");
@@ -98,7 +98,6 @@ int main(int argc, char *argv[])
     aboutData.addAuthor(ki18n("Roeland Douma"), ki18n("QtMPC author"));
     aboutData.addAuthor(ki18n("Daniel Selinger"), ki18n("QtMPC author"));
     aboutData.addAuthor(ki18n("Armin Walland"), ki18n("QtMPC author"));
-    aboutData.setOrganizationDomain("kde.org");
     KCmdLineArgs::init(argc, argv, &aboutData);
     #ifdef TAGLIB_FOUND
     KCmdLineOptions options;

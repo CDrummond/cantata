@@ -30,9 +30,9 @@
 #include "completioncombo.h"
 
 class QLabel;
-#ifdef ENABLE_KDE_SUPPORT
-class QPushButton;
-#endif
+//#ifdef ENABLE_KDE_SUPPORT
+//class QPushButton;
+//#endif
 
 class StreamDialog : public Dialog
 {
@@ -53,14 +53,14 @@ public:
 private Q_SLOTS:
     void saveComboChanged();
     void changed();
-    #ifdef ENABLE_KDE_SUPPORT
-    void setIcon();
-    #endif
+//    #ifdef ENABLE_KDE_SUPPORT
+//    void setIcon();
+//    #endif
 
-#ifdef ENABLE_KDE_SUPPORT
-private:
-    void setIcon(const QString &icn);
-#endif
+//#ifdef ENABLE_KDE_SUPPORT
+//private:
+//    void setIcon(const QString &icn);
+//#endif
 
 private:
     QString prevName;
@@ -68,10 +68,10 @@ private:
     QString prevCat;
     QString prevGenre;
     QString iconName;
-    #ifdef ENABLE_KDE_SUPPORT
-    QString prevIconName;
-    QPushButton *iconButton;
-    #endif
+//    #ifdef ENABLE_KDE_SUPPORT
+//    QString prevIconName;
+//    QPushButton *iconButton;
+//    #endif
     QComboBox *saveCombo;
     LineEdit *nameEntry;
     LineEdit *urlEntry;

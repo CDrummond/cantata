@@ -82,10 +82,10 @@ MusicLibraryItemRoot * OnlineMusicLoader::takeLibrary()
 bool OnlineMusicLoader::readFromCache()
 {
     if (!cache.isEmpty() && QFile::exists(cache)) {
-        emit status(i18n("Reading cache"), -1);
-        if (library->fromXML(cache)) {
-            emit status(i18n("Read cache"), -100);
+        emit status(i18n("Reading cache"), 0);
+        if (library->fromXML(cache, QDateTime(), QString(), this)) {
             fixLibrary();
+            emit status(i18n("Updating display"), -100);
             emit loaded();
             return true;
         }
@@ -95,6 +95,7 @@ bool OnlineMusicLoader::readFromCache()
 
 void OnlineMusicLoader::fixLibrary()
 {
+    emit status(i18n("Grouping tracks"), -100);
     if (MPDParseUtils::groupSingle()) {
         library->groupSingleTracks();
     }
@@ -125,8 +126,8 @@ void OnlineMusicLoader::downloadFinished()
             reader.setDevice(&comp);
             if (parse(reader)) {
                 fixLibrary();
-                emit status(i18n("Saving cache"), -100);
-                library->toXML(cache);
+                emit status(i18n("Saving cache"), 0);
+                library->toXML(cache, QDateTime(), this);
                 emit loaded();
             } else {
                 emit error(i18n("Failed to parse"));
@@ -142,13 +143,27 @@ void OnlineMusicLoader::downloadFinished()
 
 void OnlineMusicLoader::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
+    progressReport(i18n("Dowloading"), 0==bytesTotal ? 0 : ((bytesReceived*100)/bytesTotal));
+}
+
+void OnlineMusicLoader::readProgress(double pc)
+{
+    progressReport(i18n("Reading cache"), (int)pc);
+}
+
+void OnlineMusicLoader::writeProgress(double pc)
+{
+    progressReport(i18n("Saving cache"), (int)pc);
+}
+
+void OnlineMusicLoader::progressReport(const QString &str, int prog)
+{
     if (stopRequested) {
         return;
     }
-    int prog=0==bytesTotal ? 0 : ((bytesReceived*100)/bytesTotal);
     if (prog!=lastProg) {
         lastProg=prog;
-        emit status(i18n("Dowloading"), lastProg);
+        emit status(str, lastProg);
     }
 }
 
@@ -205,11 +220,6 @@ void OnlineService::clear()
     lProgress=0.0;
     setStatusMessage(i18n("Not Loaded"));
     model->updateGenres();
-}
-
-void OnlineService::saveCache()
-{
-    toXML(cacheFileName(this, true));
 }
 
 void OnlineService::removeCache()

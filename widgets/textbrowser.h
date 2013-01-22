@@ -27,51 +27,18 @@
 #include <QtGui/QTextBrowser>
 #include <QtGui/QImage>
 #include <QtCore/QDebug>
+
 class TextBrowser : public QTextBrowser
 {
 public:
-    TextBrowser(QWidget *p)
-        : QTextBrowser(p)
-        , drawImage(false) {
-        orig=font().pointSize();
-    }
+    TextBrowser(QWidget *p) : QTextBrowser(p) , drawImage(false) { orig=font().pointSize(); }
+    virtual ~TextBrowser() {  }
 
-    virtual ~TextBrowser() {
-    }
-
-    void setZoom(int diff) {
-        if (diff) {
-            zoomIn(diff);
-        }
-    }
-
-    int zoom() const {
-        return font().pointSize()-orig;
-    }
-
-    void setImage(const QImage &img) {
-        if (drawImage && (!img.isNull() || (img.isNull()!=image.isNull()))) {
-            image=img;
-            viewport()->update();
-        }
-    }
-
-    void enableImage(bool e) {
-        if (e!=drawImage) {
-            drawImage=e;
-            if (!drawImage) {
-                image=QImage();
-            }
-            if (e) {
-                viewport()->setAutoFillBackground(false);
-            }
-            viewport()->update();
-        }
-    }
-
-    bool imageEnabled() {
-        return drawImage;
-    }
+    void setZoom(int diff) { if (diff) zoomIn(diff);  }
+    int zoom() const { return font().pointSize()-orig; }
+    void setImage(const QImage &img);
+    void enableImage(bool e);
+    bool imageEnabled() { return drawImage; }
 
     void paintEvent(QPaintEvent *e);
 

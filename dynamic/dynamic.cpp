@@ -31,7 +31,6 @@
 #include "settings.h"
 #include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KStandardDirs>
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(Dynamic, instance)
 #endif
@@ -388,17 +387,7 @@ int Dynamic::getPid() const
 
 bool Dynamic::controlApp(bool isStart)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    QString cmd=KStandardDirs::findExe("cantata-dynamic"); // , KStandardDirs::installPath("libexec"));
-
-    if (cmd.isEmpty()) {
-        emit error(i18n("Failed to locate the 'cantata-dynamic' helper script."));
-        return false;
-    }
-    #else
-    QString cmd=QLatin1String("cantata-dynamic");
-    #endif
-
+    QString cmd=QLatin1String(INSTALL_PREFIX"/share/cantata/cantata-dynamic");
     QProcess process;
 
     if (isStart) {

@@ -202,7 +202,7 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
 'hostname:1234' with password 'pass'
 
     # Stop current dynamic playlist
-    /usr/bin/cantata-dynamic stop
+    /usr/share/cantata/cantata-dynamic stop
     # Clear the playqueue (this requires mpc)
     MPD_HOST=pass@hostname MPD_PORT=1234 mpc clear
     # 'Load' new playlist
@@ -211,7 +211,7 @@ playlist, load the 'MyPlaylist' playlist, and start this on the mpd at
     fi
     ln -s "$HOME/.config/cantata/dynamic/MyPlaylist.rules" "$HOME/.cache/cantata/dynamic/rules"
     # Restart dynamic script
-    MPD_HOST=pass@hostname MPD_PORT=1234 /usr/bin/cantata-dynamic start
+    MPD_HOST=pass@hostname MPD_PORT=1234 /usr/share/cantata/cantata-dynamic start
 
 
 Dynamic Helper - Server Mode
@@ -222,9 +222,9 @@ containing MPD, and run in 'server' mode. When run in this mode, it is intended
 that the script be run system-wide and started when the system (or MPD) is
 started. e.g. The script should be started as:
 
-    <install dir>/cantata-dynamic server <location of config file>
+    <prefix>/share/cantata/cantata-dynamic server <location of config file>
 
-    e.g.:  /usr/bin/cantata-dynamic server /etc/cantata-dynamic.conf
+    e.g.:  /usr/share/cantata/cantata-dynamic server /etc/cantata-dynamic.conf
 
 When run as described above, the script will automatically daemonize itself.
 
@@ -277,6 +277,10 @@ Installation
 Within the dynamic/init folder are example configuration and init files. Copy
 one of the example init scripts (or create a new one) to
 /etc/init.d/cantata.dynamic - and create the appropriate links in /etc/rc?.d
+
+NOTE: These example script assume cantata has been installed to /usr, and that
+cantata-dynmaic is in /usr/share/cantata/. If this is not the case, then these
+will need to be edited.
 
 Copy dynamic/init/cantata-dynamic.conf to /etc, and edit as appropriate.
 

@@ -33,6 +33,12 @@ class ActionItemDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
+    enum ActionPos {
+        AP_HBottom,
+        AP_VTop,
+        AP_HMiddle
+    };
+
     static void setup();
 
     ActionItemDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2);
@@ -44,17 +50,19 @@ public:
     static int constActionBorder;
     static int constActionIconSize;
 
-    static QRect calcActionRect(bool rtl, bool iconMode, const QRect &rect);
-    static void adjustActionRect(bool rtl, bool iconMode, QRect &rect);
     static bool hasActions(const QModelIndex &index, int actLevel);
 
-    void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, bool iconMode, const QModelIndex &index) const;
+    void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, ActionPos actionPos, const QModelIndex &index) const;
 
 public Q_SLOTS:
     bool helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index);
 
 public:
     QAction * getAction(QAbstractItemView *view, const QModelIndex &index) const;
+
+private:
+    QRect calcActionRect(bool rtl, ActionPos actionPos, const QRect &rect) const;
+    static void adjustActionRect(bool rtl, ActionPos actionPos, QRect &rect);
 
 public:
     QAction *act1[2];

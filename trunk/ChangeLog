@@ -57,6 +57,8 @@
     exit is enabled.
 33. Add a new view style - 'Detailed Tree'. This uses the list-style appearance
     for treeviews - e.g. The album count appears under each artist, etc.
+34. Install cantata-dynamic to $prefix/share/cantata - as this is script is not
+    intended to be run by users.
 
 0.9.2
 -----

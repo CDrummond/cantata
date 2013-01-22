@@ -24,11 +24,11 @@
 11. Add first-run wizard to enable basic configuration before Cantata is
     started for the first time.
 12. When collapse/expand, only adjust height and not width.
-13. Add a 'Cache' page to settngs dialog, allowing cahce usage to be displayed
-    and cache items delete.
+13. Add a 'Cache' page to settings dialog, allowing cache usage to be displayed
+    and cache items deleted.
 14. Move group warning to last stage of intial settings wizard.
-15. Basic cover fetching dialog, allowing to change downloaded cover. Curerntly
-    Last.fm and Google are used to find images.
+15. Basic cover fetching dialog, allowing to change downloaded cover. Currently
+    only Last.fm and Google are used to find images.
 16. Use cache by default for devices.
 17. Compress cache files.
 18. Save remote device library settings on remote device.
@@ -57,7 +57,7 @@
     exit is enabled.
 33. Add a new view style - 'Detailed Tree'. This uses the list-style appearance
     for treeviews - e.g. The album count appears under each artist, etc.
-34. Install cantata-dynamic to $prefix/share/cantata - as this is script is not
+34. Install cantata-dynamic to $prefix/share/cantata - as this script is not
     intended to be run by users.
 35. Use com.googlecode.cantata instead of org.kde.cantata for DBUS service, etc.
 36. Add action icons to grouped-albums style playlists at the top level.

@@ -186,7 +186,7 @@ public:
 
         QPixmap pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
         bool oneLine = childText.isEmpty();
-        bool iconMode = view && QListView::IconMode==view->viewMode();
+        ActionPos actionPos = view && QListView::IconMode==view->viewMode() ? AP_VTop : AP_HMiddle;
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
 
         painter->save();
@@ -200,7 +200,7 @@ public:
             r.adjust(2, 0, 0, -(textHeight+4));
         }
 
-        if (iconMode) {
+        if (AP_VTop==actionPos) {
             r.adjust(constBorder, constBorder, -constBorder, -constBorder);
             r2=r;
         } else {
@@ -208,7 +208,7 @@ public:
         }
         if (!pix.isNull()) {
             int adjust=qMax(pix.width(), pix.height());
-            if (iconMode) {
+            if (AP_VTop==actionPos) {
                 painter->drawPixmap(r.x()+((r.width()-pix.width())/2), r.y(), pix.width(), pix.height(), pix);
                 r.adjust(0, adjust+3, 0, -3);
             } else {
@@ -223,12 +223,12 @@ public:
         }
 
         if (!mouseOver && (allLevelsHaveActions || hasActions(index, actLevel))) {
-            drawIcons(painter, iconMode ? r2 : r, false, rtl, iconMode, index);
+            drawIcons(painter, AP_VTop==actionPos ? r2 : r, false, rtl, actionPos, index);
         }
 
         QRect textRect;
         QColor color(option.palette.color(active ? QPalette::Active : QPalette::Inactive, selected ? QPalette::HighlightedText : QPalette::Text));
-        QTextOption textOpt(iconMode ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
+        QTextOption textOpt(AP_VTop==actionPos ? Qt::AlignHCenter|Qt::AlignVCenter : Qt::AlignVCenter);
 
         if (oneLine) {
             textRect=QRect(r.x(), r.y()+((r.height()-textHeight)/2), r.width(), textHeight);
@@ -283,7 +283,7 @@ public:
         }
 
         if (drawBgnd && mouseOver && (allLevelsHaveActions || hasActions(index, actLevel))) {
-            drawIcons(painter, iconMode ? r2 : r, true, rtl, iconMode, index);
+            drawIcons(painter, AP_VTop==actionPos ? r2 : r, true, rtl, actionPos, index);
         }
 
         painter->restore();
@@ -394,7 +394,7 @@ public:
         }
 
         if ((option.state & QStyle::State_MouseOver) && (allLevelsHaveActions || hasActions(index, actLevel))) {
-            drawIcons(painter, option.rect, true, rtl, false, index);
+            drawIcons(painter, option.rect, true, rtl, AP_HMiddle, index);
         }
     }
 
@@ -510,7 +510,7 @@ void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel, QActi
     listView->setItemDelegate(new ListDelegate(listView, listView, a1, a2, toggle, actionLevel, s1, s2));
     treeView->setItemDelegate(new TreeDelegate(treeView, a1, a2, toggle, actionLevel, s1, s2));
     if (groupedView) {
-        groupedView->init(0, 0, 0, 0); // No actions in grouped view :-(
+        groupedView->init(a1, a2, t, 0);
     }
     connect(treeSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
     connect(treeSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));

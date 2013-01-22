@@ -71,6 +71,7 @@ strings are not sufficient), then please translate both into the form
 
 Creating a new translation
 --------------------------
+
 To generate a new translation for Cantata, please just copy cantata.pot (in the
 po folder) to whetever letter code your language uses (e.g. es.po for Spanish).
 Then edit this new file to add the translations.
@@ -79,7 +80,7 @@ Please DO NOT use any tools to manully generate the translations from Cantata's
 source code, as this will probably not work. This is due to Cantata using the
 KDE framework for translations, and then generating the Qt-only ones from this.
 
-In the po folder there is s script named generate.sh, this wha tis used to
+In the po folder there is a script named generate.sh, this is what is used to
 extract translateable strings, and update current translations.
 
 
@@ -166,12 +167,12 @@ Amarok Radio Streams
 
 The script amarok2cantata.sh may be used to convert Amarok Radio plugins
 into an XML file suitable to be imported into Cantata. The script is
-rather basic and requires the Amarok plugin to list its streams in 'main.js'
+VERY basic and REQUIRES the Amarok plugin to list its streams in 'main.js'
 with the following syntax:
 
     Station( "NAME", "URL")
 
-Each station *must* be on its own line, and must be all on *one* line.
+Each station MUST be on its own line, and must be all on ONE line.
 
 'script.spec' is used to ascertain the Amarok plugin name, for this the
 script will look for the line starting with "Name="
@@ -279,7 +280,7 @@ one of the example init scripts (or create a new one) to
 /etc/init.d/cantata.dynamic - and create the appropriate links in /etc/rc?.d
 
 NOTE: These example script assume cantata has been installed to /usr, and that
-cantata-dynmaic is in /usr/share/cantata/. If this is not the case, then these
+cantata-dynamic is in /usr/share/cantata/. If this is not the case, then these
 will need to be edited.
 
 Copy dynamic/init/cantata-dynamic.conf to /etc, and edit as appropriate.
@@ -373,7 +374,7 @@ Cantata contains code/icons from:
     Quassel        - quassel-irc.org (Qt-only keyboard short-cut config support)
     Solid          - solid.kde.org (Device detection for Qt-only builds)
     libebur128     - https://github.com/jiixyj/libebur128 (Replay gain
-                      calcuation)
+                      calculation)
     wikipedia icon - Social Media Mini by Paul Robert Lloyd License: Commons
                      licence: Attribution-Share Alike 2.0 UK: England & Wales
     gear icon      - Token by http://brsev.deviantart.com License: Creative

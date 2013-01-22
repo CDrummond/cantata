@@ -52,17 +52,18 @@ void ActionItemDelegate::setup()
     }
 }
 
-QRect ActionItemDelegate::calcActionRect(bool rtl, bool iconMode, const QRect &rect)
+QRect ActionItemDelegate::calcActionRect(bool rtl, ActionPos actionPos, const QRect &o) const
 {
+    QRect rect=AP_HBottom==actionPos ? QRect(o.x(), o.y()+(o.height()/2), o.width(), o.height()/2) : o;
     return rtl
-                ? iconMode
+                ? AP_VTop==actionPos
                     ? QRect(rect.x()+constActionBorder,
                             rect.y()+constActionBorder,
                             constActionIconSize, constActionIconSize)
                     : QRect(rect.x()+constActionBorder,
                             rect.y()+((rect.height()-constActionIconSize)/2),
                             constActionIconSize, constActionIconSize)
-                : iconMode
+                : AP_VTop==actionPos
                     ? QRect(rect.x()+rect.width()-(constActionIconSize+constActionBorder),
                             rect.y()+constActionBorder,
                             constActionIconSize, constActionIconSize)
@@ -71,16 +72,16 @@ QRect ActionItemDelegate::calcActionRect(bool rtl, bool iconMode, const QRect &r
                             constActionIconSize, constActionIconSize);
 }
 
-void ActionItemDelegate::adjustActionRect(bool rtl, bool iconMode, QRect &rect)
+void ActionItemDelegate::adjustActionRect(bool rtl, ActionPos actionPos, QRect &rect)
 {
     if (rtl) {
-        if (iconMode) {
+        if (AP_VTop==actionPos) {
             rect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
         } else {
             rect.adjust(constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder, 0);
         }
     } else {
-        if (iconMode) {
+        if (AP_VTop==actionPos) {
             rect.adjust(0, constActionIconSize+constActionBorder, 0, constActionIconSize+constActionBorder);
         } else {
             rect.adjust(-(constActionIconSize+constActionBorder), 0, -(constActionIconSize+constActionBorder), 0);
@@ -146,14 +147,14 @@ ActionItemDelegate::ActionItemDelegate(QObject *p, QAction *a1, QAction *a2, QAc
     toggle[1]=0;
 }
 
-void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, bool iconMode, const QModelIndex &index) const
+void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, ActionPos actionPos, const QModelIndex &index) const
 {
     double opacity=painter->opacity();
     if (!mouseOver) {
         painter->setOpacity(opacity*0.2);
     }
 
-    QRect actionRect=calcActionRect(rtl, iconMode, r);
+    QRect actionRect=calcActionRect(rtl, actionPos, r);
     bool isSub=(act1[1] || act2[1]) && index.parent().isValid();
     QAction *a1=act1[isSub ? 1 : 0];
     QAction *a2=act2[isSub ? 1 : 0];
@@ -170,7 +171,7 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
 
     if (a2) {
         if (a1) {
-            adjustActionRect(rtl, iconMode, actionRect);
+            adjustActionRect(rtl, actionPos, actionRect);
         }
         QPixmap pix=a2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
         if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
@@ -184,7 +185,7 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
         QIcon icon=index.data(ItemView::Role_ToggleIcon).value<QIcon>();
         if (!icon.isNull()) {
             if (a1 || a2) {
-                adjustActionRect(rtl, iconMode, actionRect);
+                adjustActionRect(rtl, actionPos, actionRect);
             }
             QPixmap pix=icon.pixmap(QSize(constActionIconSize, constActionIconSize));
             if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
@@ -232,12 +233,12 @@ QAction * ActionItemDelegate::getAction(QAbstractItemView *view, const QModelInd
     bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
     QListView *lv=qobject_cast<QListView *>(view);
     GroupedView *gv=lv ? 0 : qobject_cast<GroupedView *>(view);
-    bool iconMode=lv && QListView::ListMode!=lv->viewMode() && index.child(0, 0).isValid();
+    ActionPos actionPos=gv ? AP_HBottom : (lv && QListView::ListMode!=lv->viewMode() && index.child(0, 0).isValid() ? AP_VTop : AP_HMiddle);
     QRect rect = view->visualRect(index);
     rect.moveTo(view->viewport()->mapToGlobal(QPoint(rect.x(), rect.y())));
     bool showCapacity = !index.data(ItemView::Role_CapacityText).toString().isEmpty();
     if (gv || lv || showCapacity) {
-        if (iconMode) {
+        if (AP_VTop==actionPos) {
             rect.adjust(ActionItemDelegate::constBorder, ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder, -ActionItemDelegate::constBorder);
         } else {
             rect.adjust(ActionItemDelegate::constBorder+3, 0, -(ActionItemDelegate::constBorder+3), 0);
@@ -249,30 +250,30 @@ QAction * ActionItemDelegate::getAction(QAbstractItemView *view, const QModelInd
         rect.adjust(0, 0, 0, -(textHeight+8));
     }
 
-    QRect actionRect=ActionItemDelegate::calcActionRect(rtl, iconMode, rect);
+    QRect actionRect=calcActionRect(rtl, actionPos, rect);
     QRect actionRect2(actionRect);
-    ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect2);
+    ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect2);
 
-    actionRect=iconMode ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
+    actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
     if (a1 && actionRect.contains(QCursor::pos())) {
         return a1;
     }
 
     if (a1) {
-        ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
+        ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect);
     }
 
-    actionRect=iconMode ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
+    actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
     if (a2 && actionRect.contains(QCursor::pos())) {
         return a2;
     }
 
     if (t) {
         if (a1 || a2) {
-            ActionItemDelegate::adjustActionRect(rtl, iconMode, actionRect);
+            ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect);
         }
 
-        actionRect=iconMode ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
+        actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
         if (t && actionRect.contains(QCursor::pos())) {
             return t;
         }

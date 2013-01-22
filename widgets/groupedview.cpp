@@ -392,7 +392,7 @@ public:
         }
 
         if ((option.state & QStyle::State_MouseOver) && (act1 || act2 || toggle) && hasActions(index, actLevel)) {
-            drawIcons(painter, option.rect, true, rtl, false, index);
+            drawIcons(painter, option.rect, true, rtl, AP_HBottom, index);
         }
         painter->restore();
     }

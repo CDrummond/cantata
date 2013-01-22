@@ -1,9 +1,8 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 
-
 <node>
-  <interface name="org.kde.cantata">
+  <interface name="com.googlecode.cantata">
     <method name="showPage">
         <arg type="s" name="page" direction="in"/>
         <arg type="b" name="focusSearch" direction="in"/>

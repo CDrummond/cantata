@@ -416,10 +416,10 @@ sub uniq {
 sub sendMessage() {
     my $method=shift;
     my $argument=shift;
-    system("qdbus org.kde.cantata /cantata ${method} ${argument}");
+    system("qdbus com.googlecode.cantata /cantata ${method} ${argument}");
     if ( $? == -1 ) {
         # Maybe qdbus is not installed? Try dbus-send...
-        system("dbus-send --type=method_call --session --dest=org.kde.cantata /cantata org.kde.cantata.${method} string:${argument}");
+        system("dbus-send --type=method_call --session --dest=com.googlecode.cantata /cantata com.googlecode.cantata.${method} string:${argument}");
     }
 }
 

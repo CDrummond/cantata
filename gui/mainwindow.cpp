@@ -2981,7 +2981,7 @@ void MainWindow::restoreWindow()
     activateWindow();
     #ifndef Q_OS_WIN
     // This section seems to be required for compiz...
-    // ...without this, when 'qdbus org.kde.cantata /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Raise' is used
+    // ...without this, when 'qdbus com.googlecode.cantata /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Raise' is used
     // the Unity launcher item is highlighted, but the window is not shown!
     static const Atom constNetActive=XInternAtom(QX11Info::display(), "_NET_ACTIVE_WINDOW", False);
     QX11Info info;

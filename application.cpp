@@ -234,7 +234,7 @@ Application::Application(int &argc, char **argv)
 
 bool Application::start()
 {
-    if (QDBusConnection::sessionBus().registerService("org.kde.cantata")) {
+    if (QDBusConnection::sessionBus().registerService(CANTATA_URL)) {
         connectPowerSignal();
         setupIconTheme();
         Icons::init();
@@ -272,7 +272,7 @@ void Application::loadFiles()
     QStringList args(arguments());
     if (args.count()>1) {
         args.takeAt(0);
-        QDBusMessage m = QDBusMessage::createMethodCall("org.kde.cantata", "/cantata", "", "load");
+        QDBusMessage m = QDBusMessage::createMethodCall("com.googlecode.cantata", "/cantata", "", "load");
         QList<QVariant> a;
         a.append(args);
         m.setArguments(a);

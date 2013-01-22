@@ -2,6 +2,11 @@
 #define _CONFIG_H
 
 #define CANTATA_MAKE_VERSION(a, b, c) (((a) << 16) | ((b) << 8) | (c))
+/*
+  NOTE: If CANTATA_URL is changed, then cantata-dynamac, CMakeLists.txt, and README will need updating.
+        dbus/com.googlecode.cantata.xml will also need renaming/updating.
+*/
+#define CANTATA_URL "com.googlecode.cantata"
 
 #define PACKAGE_NAME  "@PROJECT_NAME@"
 #define PACKAGE_VERSION CANTATA_MAKE_VERSION(@CPACK_PACKAGE_VERSION_MAJOR@, @CPACK_PACKAGE_VERSION_MINOR@, @CPACK_PACKAGE_VERSION_PATCH@)

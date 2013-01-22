@@ -28,9 +28,9 @@
 #include "lineedit.h"
 #include <QtCore/QSet>
 
-#ifdef ENABLE_KDE_SUPPORT
-class QPushButton;
-#endif
+//#ifdef ENABLE_KDE_SUPPORT
+//class QPushButton;
+//#endif
 class StreamCategoryDialog : public Dialog
 {
     Q_OBJECT
@@ -49,22 +49,22 @@ public:
 
 private Q_SLOTS:
     void changed();
-    #ifdef ENABLE_KDE_SUPPORT
-    void setIcon();
-    #endif
+//    #ifdef ENABLE_KDE_SUPPORT
+//    void setIcon();
+//    #endif
 
-#ifdef ENABLE_KDE_SUPPORT
-private:
-    void setIcon(const QString &icn);
-#endif
+//#ifdef ENABLE_KDE_SUPPORT
+//private:
+//    void setIcon(const QString &icn);
+//#endif
 
 private:
     QString prevName;
-    #ifdef ENABLE_KDE_SUPPORT
-    QString prevIconName;
-    QString iconName;
-    QPushButton *iconButton;
-    #endif
+//    #ifdef ENABLE_KDE_SUPPORT
+//    QString prevIconName;
+//    QString iconName;
+//    QPushButton *iconButton;
+//    #endif
     LineEdit *nameEntry;
     QSet<QString> existingCategories;
 };

@@ -30,10 +30,10 @@
 #include "localize.h"
 #include "icons.h"
 #include "buddylabel.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIconDialog>
-#include <QtGui/QPushButton>
-#endif
+//#ifdef ENABLE_KDE_SUPPORT
+//#include <KDE/KIconDialog>
+//#include <QtGui/QPushButton>
+//#endif
 
 StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidget *parent)
     : Dialog(parent)
@@ -48,40 +48,36 @@ StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidge
     sizePolicy.setVerticalStretch(0);
     int row=0;
 
-    #ifdef ENABLE_KDE_SUPPORT
     layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Name:"), wid, nameEntry));
-    #else
-    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Name:"), wid, nameEntry));
-    #endif
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
-    #ifdef ENABLE_KDE_SUPPORT
-    iconButton=new QPushButton(this);
-    iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    setIcon(QString());
-    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconButton));
-    layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
-    #endif
+//    #ifdef ENABLE_KDE_SUPPORT
+//    iconButton=new QPushButton(this);
+//    iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    setIcon(QString());
+//    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconButton));
+//    layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
+//    #endif
     setCaption(i18n("Add Category"));
     setMainWidget(wid);
     setButtons(Ok|Cancel);
     enableButton(Ok, false);
 
     connect(nameEntry, SIGNAL(textChanged(const QString &)), SLOT(changed()));
-    #ifdef ENABLE_KDE_SUPPORT
-    connect(iconButton, SIGNAL(clicked()), SLOT(setIcon()));
-    #endif
+//    #ifdef ENABLE_KDE_SUPPORT
+//    connect(iconButton, SIGNAL(clicked()), SLOT(setIcon()));
+//    #endif
     nameEntry->setFocus();
     resize(400, 100);
 }
 
 void StreamCategoryDialog::setEdit(const QString &editName, const QString &editIconName)
 {
-    #ifdef ENABLE_KDE_SUPPORT
-    prevIconName=iconName=editIconName;
-    setIcon(prevIconName);
-    #else
+//    #ifdef ENABLE_KDE_SUPPORT
+//    prevIconName=iconName=editIconName;
+//    setIcon(prevIconName);
+//    #else
     Q_UNUSED(editIconName)
-    #endif
+//    #endif
     setCaption(i18n("Edit Category"));
     enableButton(Ok, false);
     prevName=editName;
@@ -93,28 +89,28 @@ void StreamCategoryDialog::changed()
     QString n=name();
     bool enableOk=!n.isEmpty() && (n!=prevName) && !existingCategories.contains(n);
 
-    #ifdef ENABLE_KDE_SUPPORT
-    enableOk=enableOk || icon()!=prevIconName;
-    #endif
+//    #ifdef ENABLE_KDE_SUPPORT
+//    enableOk=enableOk || icon()!=prevIconName;
+//    #endif
     enableButton(Ok, enableOk);
 }
 
-#ifdef ENABLE_KDE_SUPPORT
-void StreamCategoryDialog::setIcon(const QString &icn)
-{
-    iconButton->setIcon(icn.isEmpty() ? Icons::streamIcon
-                                      : icn.startsWith('/')
-                                            ? QIcon(icn)
-                                            : QIcon::fromTheme(icn));
-}
+//#ifdef ENABLE_KDE_SUPPORT
+//void StreamCategoryDialog::setIcon(const QString &icn)
+//{
+//    iconButton->setIcon(icn.isEmpty() ? Icons::streamIcon
+//                                      : icn.startsWith('/')
+//                                            ? QIcon(icn)
+//                                            : QIcon::fromTheme(icn));
+//}
 
-void StreamCategoryDialog::setIcon()
-{
-    QString icon=KIconDialog::getIcon(KIconLoader::MainToolbar, KIconLoader::Any, false, 22, false, this);
-    if (!icon.isEmpty()) {
-        iconName=icon;
-        setIcon(icon);
-        changed();
-    }
-}
-#endif
+//void StreamCategoryDialog::setIcon()
+//{
+//    QString icon=KIconDialog::getIcon(KIconLoader::MainToolbar, KIconLoader::Any, false, 22, false, this);
+//    if (!icon.isEmpty()) {
+//        iconName=icon;
+//        setIcon(icon);
+//        changed();
+//    }
+//}
+//#endif

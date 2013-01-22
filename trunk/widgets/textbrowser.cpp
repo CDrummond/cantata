@@ -24,6 +24,33 @@
 #include "textbrowser.h"
 #include <QtGui/QPainter>
 
+static const int constMinSize=300;
+
+void TextBrowser::setImage(const QImage &img)
+{
+    if (drawImage && (!img.isNull() || (img.isNull()!=image.isNull()))) {
+        image=img;
+        if (image.width()<constMinSize || image.height()<constMinSize) {
+            image=image.scaled(QSize(constMinSize, constMinSize), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        }
+        viewport()->update();
+    }
+}
+
+void TextBrowser::enableImage(bool e)
+{
+    if (e!=drawImage) {
+        drawImage=e;
+        if (!drawImage) {
+            image=QImage();
+        }
+        if (e) {
+            viewport()->setAutoFillBackground(false);
+        }
+        viewport()->update();
+    }
+}
+
 void TextBrowser::paintEvent(QPaintEvent *e)
 {
     if (drawImage && isReadOnly() && !image.isNull()) {

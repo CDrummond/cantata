@@ -61,6 +61,7 @@
     intended to be run by users.
 35. Use com.googlecode.cantata instead of org.kde.cantata for DBUS service, etc.
 36. Add action icons to grouped-albums style playlists at the top level.
+37. Scale image in lyrics view if it is less than 300x300px
 
 0.9.2
 -----

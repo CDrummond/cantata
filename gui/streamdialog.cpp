@@ -65,15 +65,14 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     int row=0;
 
     if (addToPlayQueue) {
-        saveButton=new OnOffButton(wid);
-        saveButton->setChecked(false);
+        saveCombo=new QComboBox(wid);
+        saveCombo->addItem(i18n("Just add to play queue, do not save"));
+        saveCombo->addItem(i18n("Add to play queue, and save in list of streams"));
+        saveCombo->setCurrentIndex(0);
         layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Stream:"), wid, urlEntry));
         layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
-        layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Save stream:"), wid, saveButton));
-        layout->setWidget(row++, QFormLayout::FieldRole, saveButton);
-        connect(saveButton, SIGNAL(toggled(bool)), nameEntry, SLOT(setEnabled(bool)));
-        connect(saveButton, SIGNAL(toggled(bool)), catCombo, SLOT(setEnabled(bool)));
-        connect(saveButton, SIGNAL(toggled(bool)), genreCombo, SLOT(setEnabled(bool)));
+        layout->setWidget(row++, QFormLayout::FieldRole, saveCombo);
+        connect(saveCombo, SIGNAL(activated(int)), SLOT(saveComboChanged()));
         nameEntry->setEnabled(false);
         catCombo->setEnabled(false);
         genreCombo->setEnabled(false);
@@ -137,13 +136,22 @@ void StreamDialog::setEdit(const QString &cat, const QString &editName, const QS
     genreCombo->setEditText(editGenre);
 }
 
+void StreamDialog::saveComboChanged()
+{
+    bool s=save();
+    nameEntry->setEnabled(s);
+    catCombo->setEnabled(s);
+    genreCombo->setEnabled(s);
+    changed();
+}
+
 void StreamDialog::changed()
 {
     QString u=url();
     bool validProtocol=u.isEmpty() || urlHandlers.contains(QUrl(u).scheme()) || urlHandlers.contains(u);
     bool enableOk=false;
 
-    if (saveButton && !saveButton->isChecked()) {
+    if (!save()) {
         enableOk=!u.isEmpty();
     } else {
         QString n=name();

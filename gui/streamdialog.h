@@ -28,7 +28,6 @@
 #include "dialog.h"
 #include "lineedit.h"
 #include "completioncombo.h"
-#include "onoffbutton.h"
 
 class QLabel;
 #ifdef ENABLE_KDE_SUPPORT
@@ -49,9 +48,10 @@ public:
     QString category() const { return catCombo->currentText().trimmed(); }
     QString genre() const { return genreCombo->currentText().trimmed(); }
     QString icon() const { return iconName; }
-    bool save() const { return saveButton && saveButton->isChecked(); }
+    bool save() const { return saveCombo && 1==saveCombo->currentIndex(); }
 
 private Q_SLOTS:
+    void saveComboChanged();
     void changed();
     #ifdef ENABLE_KDE_SUPPORT
     void setIcon();
@@ -72,7 +72,7 @@ private:
     QString prevIconName;
     QPushButton *iconButton;
     #endif
-    OnOffButton *saveButton;
+    QComboBox *saveCombo;
     LineEdit *nameEntry;
     LineEdit *urlEntry;
     CompletionCombo *catCombo;

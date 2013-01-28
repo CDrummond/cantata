@@ -88,36 +88,40 @@ void OnOffButton::paintEvent(QPaintEvent *e)
     }
 
     QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
     const QPalette &pal=palette();
     bool isOn=isChecked();
     bool isActive=isEnabled() && QPalette::Active==pal.currentColorGroup();
-    QRect borderRect=rect().adjusted(1, 1, -2, -2);
-    QRect borderInnder=borderRect.adjusted(1, 1, -1, -1);
-    QRect onRect=QRect(borderRect.x(), borderRect.y(), borderRect.width()/2, borderRect.height());
-    QRect offRect=QRect(borderRect.x()+(borderRect.width()/2)+1, borderRect.y(), borderRect.width()/2, borderRect.height());
+    QRect orig=rect();
+    QRectF r(orig.x()+1.5, orig.y()+1.5, orig.width()-3, orig.height()-3); //.adjusted(1.5, 1.5, -2, -2);
+    QRectF borderRect=r.adjusted(1, 1, -1, -1);
+    //QRect borderInnder=borderRect.adjusted(1, 1, -1, -1);
+    QRectF onRect=QRectF(borderRect.x(), borderRect.y(), borderRect.width()/2, borderRect.height());
+    QRectF offRect=QRectF(borderRect.x()+(borderRect.width()/2), borderRect.y(), borderRect.width()/2, borderRect.height());
     QPainterPath border=buildPath(borderRect, 3.0);
-    QPainterPath inner=buildPath(borderInnder, 2.0);
+    //QPainterPath inner=buildPath(borderInnder, 2.0);
     QPainterPath slider=buildPath(isOn ? offRect : onRect, 3.0);
     QPainterPath sliderInner=buildPath((isOn ? offRect : onRect).adjusted(1, 1, -1, -1), 2.0);
     QLinearGradient grad(borderRect.topLeft(), borderRect.bottomLeft());
-    QColor bgndCol=isOn && isActive ? pal.highlight().color() : pal.mid().color();
-    grad.setColorAt(0, bgndCol.lighter(isActive ? 105 : 110));
-    grad.setColorAt(1, bgndCol.lighter(isActive ? 115 : 120));
+    bool active=isOn && isActive;
+    QColor bgndCol=active ? pal.highlight().color() : pal.mid().color();
+    grad.setColorAt(0, active ? bgndCol.darker(110) : bgndCol.lighter(110));
+    grad.setColorAt(1, active ? bgndCol.darker(102) : bgndCol.lighter(120));
     p.fillPath(border, grad);
-    QColor col(bgndCol.darker(110));
-    p.setPen(col);
+    QColor borderCol(bgndCol.darker(active ? 145 : 110));
+    p.setPen(borderCol);
     p.drawPath(border);
     //p.setPen(pal.light().color());
     //p.drawText((isOn ? onRect : offRect).adjusted(1, 1, 1, 1), isOn ? onText : offText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
     QColor textcol(isOn && isActive ? pal.highlightedText().color() : pal.text().color());
     if (!isOn && textcol.red()<64 && textcol.green()<64 && textcol.blue()<64) {
-        col=Qt::white;
+        QColor col=Qt::white;
         col.setAlphaF(0.4);
 	    p.setPen(col);
     	p.drawText(offRect.adjusted(0, 1, 0, 1), offText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
     } else if (isOn && (isActive ? (textcol.red()>196 && textcol.green()>196 && textcol.blue()>196)
                                  : (textcol.red()<64 && textcol.green()<64 && textcol.blue()<64))) {
-        col=isActive ? bgndCol.darker(110) : Qt::white;
+        QColor col=isActive ? bgndCol.darker(110) : Qt::white;
         col.setAlphaF(isActive ? 0.9 : 0.4);
 	    p.setPen(col);
     	p.drawText(isActive ? onRect.adjusted(0, -1, 0, -1) : onRect.adjusted(0, 1, 0, 1), onText, QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
@@ -128,12 +132,17 @@ void OnOffButton::paintEvent(QPaintEvent *e)
     grad.setColorAt(0, pal.mid().color().lighter(150));
     grad.setColorAt(1, pal.mid().color().darker(82));
     p.fillPath(slider, grad);
-    col=QColor(pal.mid().color().lighter(170));
-    col.setAlphaF(0.2);
-    p.setPen(col);
+    QColor sliderCol(pal.mid().color().lighter(170));
+    sliderCol.setAlphaF(0.2);
+    p.setPen(sliderCol);
     p.drawPath(sliderInner);
-    p.setPen(pal.mid().color());
+    p.setPen(borderCol);
     p.drawPath(slider);
+
+    if (hasFocus()) {
+        p.setPen(pal.highlight().color());
+        p.drawPath(buildPath(QRectF(orig.x()+0.5, orig.y()+0.5, orig.width()-1, orig.height()-1), 4.0));
+    }
 }
 
 #endif

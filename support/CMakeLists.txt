@@ -29,10 +29,10 @@ if (ENABLE_KDE_SUPPORT )
     endif (NOT KDE_VERSION_47)
     KDE4_ADD_UI_FILES( SUPPORT_UI_HDRS ${SUPPORT_UIS} )
 else (ENABLE_KDE_SUPPORT)
-    SET( SUPPORT_SRCS ${SUPPORT_SRCS} dirrequester.cpp lineedit.cpp kmessagewidget.cpp
+    SET( SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp lineedit.cpp kmessagewidget.cpp
         dialog.cpp messagebox.cpp pagewidget.cpp shortcutsmodel.cpp shortcutssettingspage.cpp
         keysequencewidget.cpp )
-    SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} dirrequester.h lineedit.h kmessagewidget.h urllabel.h
+    SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} pathrequester.h lineedit.h kmessagewidget.h urllabel.h
          dialog.h shortcutsmodel.h shortcutssettingspage.h keysequencewidget.h spinner.h )
     SET( SUPPORT_UIS shortcutssettingspage.ui )
     QT4_WRAP_UI( SUPPORT_UI_HDRS ${SUPPORT_UIS} )

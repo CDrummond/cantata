@@ -21,14 +21,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "dirrequester.h"
+#include "pathrequester.h"
 #include "icon.h"
 #include "localize.h"
 #include "utils.h"
 #include <QFileDialog>
 #include <QHBoxLayout>
 
-DirRequester::DirRequester(QWidget *parent)
+PathRequester::PathRequester(QWidget *parent)
     : QWidget(parent)
 {
     QHBoxLayout *layout=new QHBoxLayout(this);
@@ -43,7 +43,7 @@ DirRequester::DirRequester(QWidget *parent)
     connect(edit, SIGNAL(textChanged(const QString &)), SIGNAL(textChanged(const QString &)));
 }
 
-void DirRequester::choose()
+void PathRequester::choose()
 {
     QString item=dirMode
                     ? QFileDialog::getExistingDirectory(this, i18n("Select Folder"), edit->text())
@@ -53,7 +53,7 @@ void DirRequester::choose()
     }
 }
 
-void DirRequester::setEnabled(bool e)
+void PathRequester::setEnabled(bool e)
 {
     edit->setEnabled(e);
     btn->setEnabled(e);

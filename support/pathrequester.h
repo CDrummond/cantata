@@ -21,17 +21,17 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DIR_REQUESER_H
-#define DIR_REQUESER_H
+#ifndef PATH_REQUESER_H
+#define PATH_REQUESER_H
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KUrlRequester>
 #include <KDE/KLineEdit>
 #include <KDE/KPushButton>
-class DirRequester : public KUrlRequester
+class PathRequester : public KUrlRequester
 {
 public:
-    DirRequester(QWidget *parent) : KUrlRequester(parent) {
+    PathRequester(QWidget *parent) : KUrlRequester(parent) {
         setMode(KFile::Directory|KFile::ExistingOnly|KFile::LocalOnly);
     }
 
@@ -42,12 +42,12 @@ public:
 #else
 #include "lineedit.h"
 #include <QToolButton>
-class DirRequester : public QWidget
+class PathRequester : public QWidget
 {
     Q_OBJECT
 public:
-    DirRequester(QWidget *parent);
-    virtual ~DirRequester() { }
+    PathRequester(QWidget *parent);
+    virtual ~PathRequester() { }
 
     QString text() const { return edit->text(); }
     void setText(const QString &t) { edit->setText(t); }

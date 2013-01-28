@@ -28,8 +28,8 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "icon.h"
-#include <QtGui/QTabWidget>
-#include <QtGui/QIcon>
+#include <QTabWidget>
+#include <QIcon>
 
 RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     : Dialog(parent)

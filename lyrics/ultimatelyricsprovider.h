@@ -24,10 +24,10 @@
 #ifndef ULTIMATELYRICSPROVIDER_H
 #define ULTIMATELYRICSPROVIDER_H
 
-#include <QtCore/QObject>
-#include <QtCore/QPair>
-#include <QtCore/QStringList>
-#include <QtCore/QHash>
+#include <QObject>
+#include <QPair>
+#include <QStringList>
+#include <QHash>
 #include "songinfoprovider.h"
 
 class Song;

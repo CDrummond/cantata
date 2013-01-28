@@ -27,7 +27,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
 #else
-#include <QtGui/QIcon>
+#include <QIcon>
 #endif
 
 class QToolButton;

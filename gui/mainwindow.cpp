@@ -24,12 +24,12 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QSet>
-#include <QtCore/QString>
-#include <QtCore/QTimer>
-#include <QtCore/QThread>
-#include <QtGui/QClipboard>
-#include <QtGui/QProxyStyle>
+#include <QSet>
+#include <QString>
+#include <QTimer>
+#include <QThread>
+#include <QClipboard>
+#include <QProxyStyle>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kdeversion.h>
@@ -41,7 +41,7 @@
 #include <KDE/KMenu>
 #include <KDE/KShortcutsDialog>
 #else
-#include <QtGui/QMenuBar>
+#include <QMenuBar>
 #include "networkproxyfactory.h"
 #endif
 #include "localize.h"
@@ -2960,7 +2960,7 @@ QString MainWindow::coverFile() const
 }
 
 #ifndef Q_OS_WIN
-#include <QtGui/QX11Info>
+#include <QX11Info>
 #include <X11/Xlib.h>
 #endif
 

@@ -22,7 +22,7 @@
 
 #include "valueslider.h"
 #include "localize.h"
-#include <QtGui/QGridLayout>
+#include <QGridLayout>
 
 ValueSlider::ValueSlider(QWidget *parent)
     : QWidget(parent)

@@ -29,7 +29,7 @@
 #include <KDE/KMessageBox>
 typedef KMessageBox MessageBox;
 #else
-#include <QtGui/QMessageBox>
+#include <QMessageBox>
 #include "localize.h"
 
 namespace MessageBox {

@@ -24,7 +24,7 @@
 #ifndef LISTVIEW_H
 #define LISTVIEW_H
 
-#include <QtGui/QListView>
+#include <QListView>
 
 class QMenu;
 class ListView : public QListView

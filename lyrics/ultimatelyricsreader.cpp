@@ -24,9 +24,9 @@
 #include "ultimatelyricsprovider.h"
 #include "ultimatelyricsreader.h"
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
-#include <QtXml/QXmlStreamReader>
+#include <QCoreApplication>
+#include <QFile>
+#include <QXmlStreamReader>
 
 UltimateLyricsReader::UltimateLyricsReader(/*QObject* parent*/)
 //   : QObject(parent)

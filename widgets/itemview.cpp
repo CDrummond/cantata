@@ -32,12 +32,12 @@
 #include "config.h"
 #include "gtkstyle.h"
 #include "spinner.h"
-#include <QtGui/QToolButton>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionViewItem>
-#include <QtGui/QPainter>
-#include <QtGui/QAction>
-#include <QtCore/QTimer>
+#include <QToolButton>
+#include <QStyle>
+#include <QStyleOptionViewItem>
+#include <QPainter>
+#include <QAction>
+#include <QTimer>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #endif

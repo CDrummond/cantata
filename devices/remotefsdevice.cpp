@@ -34,12 +34,12 @@
 #include "mountpoints.h"
 #ifdef ENABLE_MOUNTER
 #include "mounterinterface.h"
-#include <QtDBus/QDBusConnection>
+#include <QDBusConnection>
 #endif
-#include <QtCore/QTimer>
-#include <QtCore/QProcess>
-#include <QtCore/QDir>
-#include <QtCore/QFile>
+#include <QTimer>
+#include <QProcess>
+#include <QDir>
+#include <QFile>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kmountpoint.h>
 #include <kde_file.h>

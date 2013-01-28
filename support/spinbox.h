@@ -24,8 +24,8 @@
 #ifndef SPINBOX_H
 #define SPINBOX_H
 
-#include <QtGui/QSpinBox>
-#include <QtGui/QFontMetrics>
+#include <QSpinBox>
+#include <QFontMetrics>
 
 class EmptySpinBox : public QSpinBox
 {

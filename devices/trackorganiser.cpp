@@ -36,9 +36,9 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "icons.h"
-#include <QtCore/QTimer>
-#include <QtCore/QFile>
-#include <QtCore/QDir>
+#include <QTimer>
+#include <QFile>
+#include <QDir>
 
 static int iCount=0;
 

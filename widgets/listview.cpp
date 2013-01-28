@@ -25,10 +25,10 @@
 #include "itemview.h"
 #include "config.h"
 #include "icons.h"
-#include <QtCore/QMimeData>
-#include <QtGui/QDrag>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QMenu>
+#include <QMimeData>
+#include <QDrag>
+#include <QMouseEvent>
+#include <QMenu>
 
 ListView::ListView(QWidget *parent)
         : QListView(parent)

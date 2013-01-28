@@ -25,7 +25,7 @@
 #define JAMENDO_SERVICE_H
 
 #include "onlineservice.h"
-#include <QtCore/QLatin1String>
+#include <QLatin1String>
 
 class MusicLibraryItemArtist;
 class MusicLibraryItemAlbum;

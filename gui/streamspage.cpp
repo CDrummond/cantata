@@ -32,16 +32,16 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "networkaccessmanager.h"
-#include <QtGui/QToolButton>
+#include <QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KFileDialog>
 #else
-#include <QtGui/QFileDialog>
-#include <QtCore/QDir>
+#include <QFileDialog>
+#include <QDir>
 #endif
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#include <QtXml/QXmlStreamReader>
+#include <QAction>
+#include <QMenu>
+#include <QXmlStreamReader>
 
 static QString webStreamName(StreamsPage::WebStream type)
 {

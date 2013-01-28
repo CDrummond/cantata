@@ -24,8 +24,8 @@
 #ifndef FILE_JOB_H
 #define FILE_JOB_H
 
-#include <QtCore/QObject>
-#include <QtCore/QSet>
+#include <QObject>
+#include <QSet>
 #include "song.h"
 #include "deviceoptions.h"
 

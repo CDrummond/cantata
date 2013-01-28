@@ -22,7 +22,7 @@
  */
 
 #include "mounter.h"
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 
 int main(int argc, char *argv[])
 {

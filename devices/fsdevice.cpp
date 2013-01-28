@@ -38,11 +38,11 @@
 #include "actiondialog.h"
 #include "localize.h"
 #include "covers.h"
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QTextStream>
-#include <QtCore/QTimer>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QTextStream>
+#include <QTimer>
 #include <time.h>
 
 const QLatin1String FsDevice::constCantataCacheFile("/.cache");

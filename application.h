@@ -25,7 +25,7 @@
 #define APPLICATION_H
 
 #include "config.h"
-#include <QtCore/qglobal.h>
+#include <qglobal.h>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KUniqueApplication>
 class MainWindow;
@@ -76,7 +76,7 @@ Q_SIGNALS:
     void reconnect();
 };
 #else
-#include <QtGui/QApplication>
+#include <QApplication>
 class Application : public QApplication
 {
 public:

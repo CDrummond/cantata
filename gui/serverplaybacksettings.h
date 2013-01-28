@@ -26,7 +26,7 @@
 
 #include "ui_serverplaybacksettings.h"
 #include "output.h"
-#include <QtCore/QList>
+#include <QList>
 
 class ServerPlaybackSettings : public QWidget, private Ui::ServerPlaybackSettings
 {

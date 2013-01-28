@@ -25,9 +25,9 @@
 #include "device.h"
 #include "covers.h"
 #include "utils.h"
-#include <QtCore/QBuffer>
-#include <QtCore/QDir>
-#include <QtCore/QTemporaryFile>
+#include <QBuffer>
+#include <QDir>
+#include <QTemporaryFile>
 #ifndef Q_OS_WIN
 #include "devicesmodel.h"
 #include "umsdevice.h"

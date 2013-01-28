@@ -25,11 +25,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGui/QApplication>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QMessageBox>
-#include <QtGui/QToolButton>
+#include <QApplication>
+#include <QKeyEvent>
+#include <QHBoxLayout>
+#include <QMessageBox>
+#include <QToolButton>
 
 // This defines the unicode symbols for special keys (kCommandUnicode and friends)
 #ifdef Q_WS_MAC

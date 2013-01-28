@@ -47,9 +47,9 @@
 #ifndef QTLOCKEDFILE_H
 #define QTLOCKEDFILE_H
 
-#include <QtCore/QFile>
+#include <QFile>
 #ifdef Q_OS_WIN
-#include <QtCore/QVector>
+#include <QVector>
 #endif
 
 #if defined(Q_OS_WIN)

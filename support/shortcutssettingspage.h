@@ -21,7 +21,7 @@
 #ifndef SHORTCUTSSETTINGSPAGE_H
 #define SHORTCUTSSETTINGSPAGE_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QSortFilterProxyModel>
 #include "ui_shortcutssettingspage.h"
 
 class ActionCollection;

@@ -24,18 +24,18 @@
 #include "spinbox.h"
 #include "icon.h"
 #include "gtkstyle.h"
-#include <QtGui/QToolButton>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QSpacerItem>
-#include <QtGui/QApplication>
-#include <QtGui/QWheelEvent>
-#include <QtGui/QApplication>
-#include <QtGui/QPixmap>
-#include <QtGui/QFont>
-#include <QtGui/QPainter>
-#include <QtGui/QPalette>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOption>
+#include <QToolButton>
+#include <QHBoxLayout>
+#include <QSpacerItem>
+#include <QApplication>
+#include <QWheelEvent>
+#include <QApplication>
+#include <QPixmap>
+#include <QFont>
+#include <QPainter>
+#include <QPalette>
+#include <QStyle>
+#include <QStyleOption>
 
 static Icon incIcon;
 static Icon decIcon;

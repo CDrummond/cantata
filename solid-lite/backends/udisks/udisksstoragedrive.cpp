@@ -21,7 +21,7 @@
 
 #include "udisksstoragedrive.h"
 
-#include <QtCore/QDebug>
+#include <QDebug>
 
 using namespace Solid::Backends::UDisks;
 

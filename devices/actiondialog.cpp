@@ -40,7 +40,7 @@
 #include "freespaceinfo.h"
 #include "icons.h"
 #include "onlineservicesmodel.h"
-#include <QtCore/QFile>
+#include <QFile>
 
 static int iCount=0;
 

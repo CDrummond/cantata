@@ -24,8 +24,8 @@
 #ifndef _HTTP_SERVER_H
 #define _HTTP_SERVER_H
 
-#include <QtCore/qglobal.h>
-#include <QtCore/QByteArray>
+#include <qglobal.h>
+#include <QByteArray>
 #include "song.h"
 
 class HttpSocket;

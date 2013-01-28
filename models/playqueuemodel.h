@@ -27,10 +27,10 @@
 #ifndef PLAYQUEUEMODEL_H
 #define PLAYQUEUEMODEL_H
 
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QList>
-#include <QtCore/QStringList>
-#include <QtCore/QSet>
+#include <QAbstractItemModel>
+#include <QList>
+#include <QStringList>
+#include <QSet>
 #include "song.h"
 #include "mpdstatus.h"
 #include "config.h"

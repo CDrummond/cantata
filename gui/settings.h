@@ -32,7 +32,7 @@ namespace KWallet {
 class Wallet;
 }
 #else
-#include <QtCore/QSettings>
+#include <QSettings>
 #endif
 #include "config.h"
 #include "mpdconnection.h"

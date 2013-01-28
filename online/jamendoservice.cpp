@@ -28,7 +28,7 @@
 #include "musiclibraryitemsong.h"
 #include "song.h"
 #include "settings.h"
-#include <QtXml/QXmlStreamReader>
+#include <QXmlStreamReader>
 
 static QString id3Genre(int id)
 {

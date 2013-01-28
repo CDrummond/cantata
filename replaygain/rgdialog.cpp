@@ -33,14 +33,14 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "jobcontroller.h"
-#include <QtGui/QTreeWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QProgressBar>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QCloseEvent>
-#include <QtCore/QCoreApplication>
-#include <QtCore/QEventLoop>
+#include <QTreeWidget>
+#include <QLabel>
+#include <QProgressBar>
+#include <QBoxLayout>
+#include <QHeaderView>
+#include <QCloseEvent>
+#include <QCoreApplication>
+#include <QEventLoop>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocale>
 #endif

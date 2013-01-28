@@ -29,7 +29,7 @@
 #include "devicesmodel.h"
 #include "localize.h"
 #include "messagebox.h"
-#include <QtGui/QSplitter>
+#include <QSplitter>
 
 struct SyncSong : public Song
 {

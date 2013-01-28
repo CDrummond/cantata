@@ -22,7 +22,7 @@
 // #include "udevqt_p.h"
 
 #include <sys/stat.h>
-#include <QtCore/QSocketNotifier>
+#include <QSocketNotifier>
 
 namespace UdevQt {
 

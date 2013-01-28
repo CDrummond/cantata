@@ -22,11 +22,11 @@
 #ifndef SOLID_BACKENDS_WMI_WMIQUERY_H
 #define SOLID_BACKENDS_WMI_WMIQUERY_H
 
-#include <QtCore/QDebug>
-#include <QtCore/QVariant>
-#include <QtCore/QList>
-#include <QtCore/QAtomicInt>
-#include <QtCore/QSharedPointer>
+#include <QDebug>
+#include <QVariant>
+#include <QList>
+#include <QAtomicInt>
+#include <QSharedPointer>
 
 #include <solid-lite/solid_export.h>
 

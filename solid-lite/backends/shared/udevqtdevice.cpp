@@ -21,7 +21,7 @@
 #include "udevqt.h"
 // #include "udevqt_p.h"
 
-#include <QtCore/QByteArray>
+#include <QByteArray>
 
 namespace UdevQt {
 

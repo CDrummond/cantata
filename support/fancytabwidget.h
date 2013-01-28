@@ -36,13 +36,13 @@
 #ifndef FANCYTABWIDGET_H
 #define FANCYTABWIDGET_H
 
-#include <QtGui/QIcon>
-#include <QtGui/QProxyStyle>
-#include <QtGui/QTabBar>
-#include <QtGui/QWidget>
-#include <QtCore/QPropertyAnimation>
-#include <QtCore/QTimer>
-#include <QtCore/QScopedPointer>
+#include <QIcon>
+#include <QProxyStyle>
+#include <QTabBar>
+#include <QWidget>
+#include <QPropertyAnimation>
+#include <QTimer>
+#include <QScopedPointer>
 
 //#include <boost/scoped_ptr.hpp>
 

@@ -24,13 +24,13 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QPalette>
-#include <QtGui/QFont>
-#include <QtCore/QModelIndex>
-#include <QtCore/QMimeData>
-#include <QtCore/QTextStream>
-#include <QtCore/QSet>
-#include <QtCore/QUrl>
+#include <QPalette>
+#include <QFont>
+#include <QModelIndex>
+#include <QMimeData>
+#include <QTextStream>
+#include <QSet>
+#include <QUrl>
 #include "localize.h"
 #include "playqueuemodel.h"
 #include "groupedview.h"

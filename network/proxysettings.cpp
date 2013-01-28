@@ -23,7 +23,7 @@
 
 #include "proxysettings.h"
 #include "networkproxyfactory.h"
-#include <QtCore/QSettings>
+#include <QSettings>
 
 ProxySettings::ProxySettings(QWidget *parent)
     : QWidget(parent)

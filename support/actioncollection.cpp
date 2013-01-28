@@ -23,7 +23,7 @@
 #include "actioncollection.h"
 #include "action.h"
 #include "icon.h"
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 
 static const char *constProp="Category";
 static ActionCollection *coll=0;
@@ -78,7 +78,7 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
 
 #ifndef ENABLE_KDE_SUPPORT
 
-#include <QtCore/QSettings>
+#include <QSettings>
 
 ActionCollection::ActionCollection(QObject *parent) : QObject(parent) {
   _connectTriggered = _connectHovered = false;

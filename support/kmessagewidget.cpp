@@ -30,16 +30,16 @@
 #endif
 
 #include "icon.h"
-#include <QtCore/QEvent>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPainter>
-#include <QtGui/QShowEvent>
-#include <QtCore/QTimeLine>
-#include <QtGui/QToolButton>
-#include <QtGui/QStyle>
-#include <QtGui/QAction>
+#include <QEvent>
+#include <QGridLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPainter>
+#include <QShowEvent>
+#include <QTimeLine>
+#include <QToolButton>
+#include <QStyle>
+#include <QAction>
 
 //---------------------------------------------------------------------
 // KMsgWidgetPrivate

@@ -27,18 +27,18 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include <QtCore/qglobal.h>
+#include <qglobal.h>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KXmlGuiWindow>
 #else
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 #endif
-#include <QtGui/QMenu>
-#include <QtGui/QProxyStyle>
-#include <QtGui/QPixmap>
-#include <QtGui/QMoveEvent>
-#include <QtGui/QToolButton>
-#include <QtCore/QStringList>
+#include <QMenu>
+#include <QProxyStyle>
+#include <QPixmap>
+#include <QMoveEvent>
+#include <QToolButton>
+#include <QStringList>
 #include "ui_mainwindow.h"
 #include "playqueuemodel.h"
 #include "playqueueproxymodel.h"

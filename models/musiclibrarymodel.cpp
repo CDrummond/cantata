@@ -41,14 +41,14 @@
 #include "utils.h"
 #include "icons.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include <QtGui/QCommonStyle>
-#include <QtCore/QFile>
-#include <QtCore/QTimer>
-#include <QtCore/QStringRef>
-#include <QtCore/QDateTime>
-#include <QtCore/QDir>
-#include <QtCore/QMimeData>
-#include <QtCore/QStringList>
+#include <QCommonStyle>
+#include <QFile>
+#include <QTimer>
+#include <QStringRef>
+#include <QDateTime>
+#include <QDir>
+#include <QMimeData>
+#include <QStringList>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #endif

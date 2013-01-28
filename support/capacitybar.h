@@ -42,7 +42,7 @@ public:
 };
 
 #else
-#include <QtGui/QProgressBar>
+#include <QProgressBar>
 class CapacityBar : public QProgressBar
 {
 public:

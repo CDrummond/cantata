@@ -24,7 +24,7 @@
 #ifndef ACTIONITEMDELEGATE_H
 #define ACTIONITEMDELEGATE_H
 
-#include <QtGui/QStyledItemDelegate>
+#include <QStyledItemDelegate>
 
 class QAction;
 

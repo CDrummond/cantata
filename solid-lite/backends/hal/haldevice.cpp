@@ -20,13 +20,13 @@
 
 #include "haldevice.h"
 
-#include <QtCore/QDebug>
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusReply>
-#include <QtDBus/QDBusArgument>
-#include <QtDBus/QDBusMetaType>
-#include <QtDBus/QDBusVariant>
+#include <QDebug>
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDBusArgument>
+#include <QDBusMetaType>
+#include <QDBusVariant>
 
 #include <solid-lite/genericinterface.h>
 

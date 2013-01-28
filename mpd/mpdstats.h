@@ -27,8 +27,8 @@
 #ifndef MPD_STATS_H
 #define MPD_STATS_H
 
-#include <QtCore/QDateTime>
-#include <QtCore/QObject>
+#include <QDateTime>
+#include <QObject>
 
 struct MPDStatsValues
 {

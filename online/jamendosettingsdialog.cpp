@@ -24,7 +24,7 @@
 #include "jamendosettingsdialog.h"
 #include "localize.h"
 #include "buddylabel.h"
-#include <QtGui/QFormLayout>
+#include <QFormLayout>
 
 JamendoSettingsDialog::JamendoSettingsDialog(QWidget *parent)
     : Dialog(parent)

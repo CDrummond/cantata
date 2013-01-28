@@ -22,7 +22,7 @@
  */
 
 #include "textbrowser.h"
-#include <QtGui/QPainter>
+#include <QPainter>
 
 static const int constMinSize=300;
 

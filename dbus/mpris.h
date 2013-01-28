@@ -24,10 +24,10 @@
 #ifndef MPRIS_H
 #define MPRIS_H
 
-#include <QtCore/QObject>
-#include <QtCore/QStringList>
-#include <QtCore/QVariantMap>
-#include <QtGui/QApplication>
+#include <QObject>
+#include <QStringList>
+#include <QVariantMap>
+#include <QApplication>
 
 #include "song.h"
 #include "mpdstatus.h"

@@ -21,8 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtGui/QFormLayout>
-#include <QtGui/QIcon>
+#include <QFormLayout>
+#include <QIcon>
 #include "streamcategorydialog.h"
 #include "mainwindow.h"
 #include "settings.h"
@@ -32,7 +32,7 @@
 #include "buddylabel.h"
 //#ifdef ENABLE_KDE_SUPPORT
 //#include <KDE/KIconDialog>
-//#include <QtGui/QPushButton>
+//#include <QPushButton>
 //#endif
 
 StreamCategoryDialog::StreamCategoryDialog(const QStringList &categories, QWidget *parent)

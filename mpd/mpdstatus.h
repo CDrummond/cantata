@@ -27,7 +27,7 @@
 #ifndef MPD_STATUS_H
 #define MPD_STATUS_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 enum MPDState {
     MPDState_Inactive,

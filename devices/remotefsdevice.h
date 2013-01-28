@@ -26,7 +26,7 @@
 
 #include "fsdevice.h"
 #include "config.h"
-#include <QtCore/QUrl>
+#include <QUrl>
 
 class ComGooglecodeCantataMounterInterface;
 class QProcess;

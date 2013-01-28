@@ -27,10 +27,10 @@
 #include "messagebox.h"
 #include "localize.h"
 #include "icons.h"
-#include <QtGui/QIcon>
-#include <QtGui/QStandardItem>
-#include <QtGui/QStandardItemModel>
-#include <QtGui/QSortFilterProxyModel>
+#include <QIcon>
+#include <QStandardItem>
+#include <QStandardItemModel>
+#include <QSortFilterProxyModel>
 
 class RulesSort : public QSortFilterProxyModel
 {

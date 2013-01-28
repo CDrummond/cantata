@@ -23,8 +23,8 @@
 
 #include "filetyperesolver.h"
 
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
+#include <QFile>
+#include <QFileInfo>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMimeType>
 #endif

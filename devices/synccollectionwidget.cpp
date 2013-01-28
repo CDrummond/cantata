@@ -27,9 +27,9 @@
 #include "icon.h"
 #include "localize.h"
 #include "actioncollection.h"
-#include <QtCore/QTimer>
-#include <QtGui/QAction>
-#include <QtCore/QDebug>
+#include <QTimer>
+#include <QAction>
+#include <QDebug>
 
 SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title, const QString &action, bool showCovers)
     : QWidget(parent)

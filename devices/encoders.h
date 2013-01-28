@@ -24,9 +24,9 @@
 #ifndef ENCODERS_H
 #define ENCODERS_H
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QList>
+#include <QString>
+#include <QStringList>
+#include <QList>
 
 namespace Encoders
 {

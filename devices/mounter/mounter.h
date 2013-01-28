@@ -24,9 +24,9 @@
 #ifndef MOUNTER_H
 #define MOUNTER_H
 
-#include <QtCore/QObject>
-#include <QtCore/QMap>
-#include <QtCore/QSet>
+#include <QObject>
+#include <QMap>
+#include <QSet>
 #include <QtDBus>
 
 class QTimer;

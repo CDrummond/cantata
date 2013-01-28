@@ -29,7 +29,7 @@
 #include "song.h"
 #include "settings.h"
 #include "localize.h"
-#include <QtXml/QXmlStreamReader>
+#include <QXmlStreamReader>
 
 MagnatuneMusicLoader::MagnatuneMusicLoader(const QUrl &src)
     : OnlineMusicLoader(src)

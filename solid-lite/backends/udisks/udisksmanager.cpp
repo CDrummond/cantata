@@ -22,10 +22,10 @@
 #include "udisksmanager.h"
 #include "udisks.h"
 
-#include <QtDBus/QDBusReply>
-#include <QtCore/QDebug>
-#include <QtDBus/QDBusMetaType>
-#include <QtDBus/QDBusConnectionInterface>
+#include <QDBusReply>
+#include <QDebug>
+#include <QDBusMetaType>
+#include <QDBusConnectionInterface>
 
 #include "../shared/rootdevice.h"
 

@@ -24,7 +24,7 @@
 #include <solid-lite/ifaces/portablemediaplayer.h>
 #include "udevdeviceinterface.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 namespace Solid
 {

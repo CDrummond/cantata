@@ -19,7 +19,7 @@
 */
 
 #include "rootdevice.h"
-#include <QtCore/QStringList>
+#include <QStringList>
 
 using namespace Solid::Backends::Shared;
 

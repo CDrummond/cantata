@@ -27,7 +27,7 @@
 #ifndef OUTPUT_H
 #define OUTPUT_H
 
-#include <QtCore/QString>
+#include <QString>
 
 struct Output
 {

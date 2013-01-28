@@ -31,9 +31,9 @@
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
-#include <QtGui/QToolButton>
+#include <QToolButton>
 #ifndef ENABLE_KDE_SUPPORT
-#include <QtGui/QStyle>
+#include <QStyle>
 #endif
 
 PlaylistsPage::PlaylistsPage(MainWindow *p)

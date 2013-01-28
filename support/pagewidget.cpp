@@ -23,10 +23,10 @@
 
 #include "pagewidget.h"
 #include "icon.h"
-#include <QtGui/QBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QSizePolicy>
-#include <QtGui/QApplication>
+#include <QBoxLayout>
+#include <QLabel>
+#include <QSizePolicy>
+#include <QApplication>
 
 PageWidgetItem::PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg)
     : QWidget(p) {

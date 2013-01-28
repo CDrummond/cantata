@@ -24,7 +24,7 @@
 #ifndef FREESPACEINFO_H
 #define FREESPACEINFO_H
 
-#include <QtCore/QString>
+#include <QString>
 
 class FreeSpaceInfo
 {

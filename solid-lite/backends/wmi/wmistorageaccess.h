@@ -25,7 +25,7 @@
 #include <solid-lite/ifaces/storageaccess.h>
 #include "wmideviceinterface.h"
 
-#include <QtCore/QProcess>
+#include <QProcess>
 
 namespace Solid
 {

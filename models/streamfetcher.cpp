@@ -24,10 +24,10 @@
 #include "streamfetcher.h"
 #include "networkaccessmanager.h"
 #include "mpdconnection.h"
-#include <QtCore/QRegExp>
-#include <QtCore/QUrl>
-#include <QtXml/QDomDocument>
-#include <QtXml/QDomElement>
+#include <QRegExp>
+#include <QUrl>
+#include <QDomDocument>
+#include <QDomElement>
 
 static const int constMaxRedirects = 3;
 static const int constMaxData = 12 * 1024;

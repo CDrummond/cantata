@@ -24,8 +24,8 @@
 #include <ifaces/deviceinterface.h>
 #include "udisksdevice.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QStringList>
+#include <QObject>
+#include <QStringList>
 
 namespace Solid
 {

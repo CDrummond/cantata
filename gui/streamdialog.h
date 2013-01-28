@@ -24,7 +24,7 @@
 #ifndef STREAMDIALOG_H
 #define STREAMDIALOG_H
 
-#include <QtCore/QSet>
+#include <QSet>
 #include "dialog.h"
 #include "lineedit.h"
 #include "completioncombo.h"

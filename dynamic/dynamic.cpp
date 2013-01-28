@@ -34,12 +34,12 @@
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(Dynamic, instance)
 #endif
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
-#include <QtCore/QProcess>
-#include <QtCore/QTimer>
-#include <QtGui/QIcon>
+#include <QDir>
+#include <QFile>
+#include <QTextStream>
+#include <QProcess>
+#include <QTimer>
+#include <QIcon>
 #include <signal.h>
 
 static const QString constDir=QLatin1String("dynamic");

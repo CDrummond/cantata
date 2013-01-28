@@ -25,7 +25,7 @@
 #define JAMENDO_SETTINGS_DIALOG_H
 
 #include "dialog.h"
-#include <QtGui/QComboBox>
+#include <QComboBox>
 
 class JamendoSettingsDialog : public Dialog
 {

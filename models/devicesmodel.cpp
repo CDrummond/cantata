@@ -36,9 +36,9 @@
 #include "localize.h"
 #include "icons.h"
 #include "mountpoints.h"
-#include <QtGui/QMenu>
-#include <QtCore/QStringList>
-#include <QtCore/QMimeData>
+#include <QMenu>
+#include <QStringList>
+#include <QMimeData>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIcon>
 #include <KDE/KGlobal>
@@ -60,7 +60,7 @@ K_GLOBAL_STATIC(DevicesModel, instance)
 #include "solid-lite/storagevolume.h"
 #endif
 
-#include <QtCore/QDebug>
+#include <QDebug>
 #define DBUG qDebug()
 
 DevicesModel * DevicesModel::self()

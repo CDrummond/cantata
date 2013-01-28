@@ -28,8 +28,8 @@
 #include "dialog.h"
 #include "ui_tageditor.h"
 #include "song.h"
-#include <QtCore/QSet>
-#include <QtCore/QList>
+#include <QSet>
+#include <QList>
 
 #ifdef ENABLE_DEVICES_SUPPORT
 class Device;

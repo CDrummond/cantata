@@ -25,7 +25,7 @@
 #define LYRICSPAGE_H
 
 #include <QWidget>
-// #include <QtCore/QScopedPointer>
+// #include <QScopedPointer>
 #include "song.h"
 #include "ui_lyricspage.h"
 #include "textbrowser.h"

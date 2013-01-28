@@ -21,7 +21,7 @@
 #ifndef SOLID_DEVICEINTERFACE_P_H
 #define SOLID_DEVICEINTERFACE_P_H
 
-#include <QtCore/QWeakPointer>
+#include <QWeakPointer>
 
 namespace Solid
 {

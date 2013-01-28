@@ -24,7 +24,7 @@
 #ifndef JOB_CONTROLLER
 #define JOB_CONTROLLER
 
-#include <QtCore/QThread>
+#include <QThread>
 
 class Job : public QThread
 {

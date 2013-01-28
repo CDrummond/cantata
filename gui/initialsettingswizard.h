@@ -26,7 +26,7 @@
 
 #include "ui_initialsettingswizard.h"
 #include "mpdconnection.h"
-#include <QtGui/QWizard>
+#include <QWizard>
 
 class InitialSettingsWizard : public QWizard, public Ui::InitialSettingsWizard
 {

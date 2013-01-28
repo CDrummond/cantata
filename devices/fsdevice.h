@@ -28,8 +28,8 @@
 #include "song.h"
 #include "utils.h"
 #include "freespaceinfo.h"
-#include <QtCore/QThread>
-#include <QtCore/QStringList>
+#include <QThread>
+#include <QStringList>
 
 class MusicLibraryItemRoot;
 class KJob;

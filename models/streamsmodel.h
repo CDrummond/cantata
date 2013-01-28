@@ -23,11 +23,11 @@
 #ifndef STREAMSMODEL_H
 #define STREAMSMODEL_H
 
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QList>
-#include <QtCore/QUrl>
-#include <QtCore/QHash>
-#include <QtCore/QSet>
+#include <QAbstractItemModel>
+#include <QList>
+#include <QUrl>
+#include <QHash>
+#include <QSet>
 
 class QTimer;
 

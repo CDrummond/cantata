@@ -24,9 +24,9 @@
 #ifndef MOUNTPOINTS_H
 #define MOUNTPOINTS_H
 
-#include <QtCore/QObject>
-#include <QtCore/QSet>
-#include <QtCore/QString>
+#include <QObject>
+#include <QSet>
+#include <QString>
 
 class QFile;
 

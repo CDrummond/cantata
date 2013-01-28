@@ -190,7 +190,7 @@
      </widget>
     </item>
     <item row="7" column="1">
-     <widget class="DirRequester" name="dir"/>
+     <widget class="PathRequester" name="dir"/>
     </item>
     <item row="8" column="0">
      <widget class="QLabel" name="label_7">
@@ -411,9 +411,9 @@
    <header>lineedit.h</header>
   </customwidget>
   <customwidget>
-   <class>DirRequester</class>
+   <class>PathRequester</class>
    <extends>QLineEdit</extends>
-   <header>dirrequester.h</header>
+   <header>pathrequester.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

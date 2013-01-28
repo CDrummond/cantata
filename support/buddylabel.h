@@ -29,7 +29,7 @@
 #include <QComboBox>
 #include "spinbox.h"
 #ifndef ENABLE_KDE_SUPPORT
-#include "dirrequester.h"
+#include "pathrequester.h"
 #endif
 
 class BuddyLabel : public QLabel
@@ -56,9 +56,9 @@ protected:
     void mouseReleaseEvent(QMouseEvent *) {
         if (buddy() && buddy()->isEnabled()) {
             #ifndef ENABLE_KDE_SUPPORT
-            DirRequester *d=qobject_cast<DirRequester*>(buddy());
-            if (d) {
-                d->setFocus();
+            PathRequester *pr=qobject_cast<PathRequester*>(buddy());
+            if (pr) {
+                pr->setFocus();
                 return;
             }
             #endif

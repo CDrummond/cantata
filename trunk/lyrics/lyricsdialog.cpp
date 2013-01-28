@@ -21,8 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtGui/QFormLayout>
-#include <QtGui/QLabel>
+#include <QFormLayout>
+#include <QLabel>
 #include "icon.h"
 #include "lyricsdialog.h"
 #include "localize.h"

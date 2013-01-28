@@ -28,8 +28,8 @@
 #include "dialog.h"
 #include "song.h"
 #include "ui_coverdialog.h"
-#include <QtCore/QSet>
-#include <QtCore/QList>
+#include <QSet>
+#include <QList>
 
 class QNetworkReply;
 class QUrl;

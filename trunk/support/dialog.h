@@ -29,8 +29,8 @@
 typedef KDialog Dialog;
 typedef KGuiItem GuiItem;
 #else
-#include <QtGui/QDialog>
-#include <QtCore/QMap>
+#include <QDialog>
+#include <QMap>
 
 struct GuiItem {
     GuiItem(const QString &t=QString(), const QString &i=QString())

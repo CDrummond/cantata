@@ -36,11 +36,11 @@
 #include "devicesmodel.h"
 #include "device.h"
 #endif
-#include <QtGui/QMenu>
-#include <QtGui/QCloseEvent>
-#include <QtCore/QCoreApplication>
-#include <QtCore/QEventLoop>
-#include <QtCore/QDir>
+#include <QMenu>
+#include <QCloseEvent>
+#include <QCoreApplication>
+#include <QEventLoop>
+#include <QDir>
 
 static bool equalTags(const Song &a, const Song &b, bool compareCommon)
 {

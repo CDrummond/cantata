@@ -28,14 +28,14 @@
 #include "musiclibrarymodel.h"
 #include "utils.h"
 #include "messagebox.h"
-#include <QtGui/QFormLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyle>
-#include <QtGui/QGridLayout>
-#include <QtCore/QThread>
-#include <QtCore/QFileInfo>
-#include <QtCore/QDir>
+#include <QFormLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QStyle>
+#include <QGridLayout>
+#include <QThread>
+#include <QFileInfo>
+#include <QDir>
 
 static const int constMaxRecurseLevel=4;
 

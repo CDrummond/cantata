@@ -24,10 +24,10 @@
 #ifndef STREAMFETCHER_H
 #define STREAMFETCHER_H
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QByteArray>
-#include <QtCore/QStringList>
+#include <QObject>
+#include <QList>
+#include <QByteArray>
+#include <QStringList>
 
 class QNetworkReply;
 

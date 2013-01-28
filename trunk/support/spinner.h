@@ -37,7 +37,7 @@ private:
     bool active;
 };
 #else
-#include <QtGui/QWidget>
+#include <QWidget>
 class QTimer;
 class Spinner : public QWidget
 {

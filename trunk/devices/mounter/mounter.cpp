@@ -25,13 +25,13 @@
 #include "mounteradaptor.h"
 #include "config.h"
 #include <stdlib.h>
-#include <QtCore/QCoreApplication>
-#include <QtCore/QUrl>
-#include <QtCore/QProcess>
-#include <QtCore/QTemporaryFile>
-#include <QtCore/QTextStream>
-#include <QtCore/QTimer>
-#include <QtCore/QDebug>
+#include <QCoreApplication>
+#include <QUrl>
+#include <QProcess>
+#include <QTemporaryFile>
+#include <QTextStream>
+#include <QTimer>
+#include <QDebug>
 #include <sys/types.h>
 #include <signal.h>
 

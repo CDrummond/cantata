@@ -25,7 +25,7 @@
 #include "musiclibrarymodel.h"
 #include "utils.h"
 #include "networkaccessmanager.h"
-#include <QtCore/QDir>
+#include <QDir>
 
 static const int constMaxRedirects=5;
 

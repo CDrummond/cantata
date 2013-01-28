@@ -26,12 +26,12 @@
 #include "icon.h"
 #include "config.h"
 #include "groupedview.h"
-#include <QtGui/QPainter>
-#include <QtGui/QAction>
-#include <QtGui/QPixmap>
-#include <QtGui/QListView>
-#include <QtGui/QHelpEvent>
-#include <QtGui/QToolTip>
+#include <QPainter>
+#include <QAction>
+#include <QPixmap>
+#include <QListView>
+#include <QHelpEvent>
+#include <QToolTip>
 
 int ActionItemDelegate::constBorder = 1;
 int ActionItemDelegate::constActionBorder = 4;

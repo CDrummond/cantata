@@ -24,7 +24,7 @@
 
 #include "filejob.h"
 #include "encoders.h"
-#include <QtCore/QProcess>
+#include <QProcess>
 
 class TranscodingJob : public CopyJob
 {

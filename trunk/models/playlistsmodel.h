@@ -27,9 +27,9 @@
 #ifndef PLAYLISTS_MODEL_H
 #define PLAYLISTS_MODEL_H
 
-#include <QtGui/QIcon>
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QList>
+#include <QIcon>
+#include <QAbstractItemModel>
+#include <QList>
 #include "playlist.h"
 #include "song.h"
 

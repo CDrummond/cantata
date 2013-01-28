@@ -25,12 +25,12 @@
 #include "itemview.h"
 #include "icons.h"
 #include "config.h"
-#include <QtGui/QMouseEvent>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QPainter>
-#include <QtGui/QDrag>
-#include <QtCore/QMimeData>
-#include <QtCore/QMap>
+#include <QMouseEvent>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QDrag>
+#include <QMimeData>
+#include <QMap>
 
 TreeView::TreeView(QWidget *parent)
         : QTreeView(parent)

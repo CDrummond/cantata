@@ -28,8 +28,8 @@
 #include <KDE/KUrlLabel>
 typedef KUrlLabel UrlLabel;
 #else
-#include <QtGui/QLabel>
-#include <QtGui/QFont>
+#include <QLabel>
+#include <QFont>
 class QResizeEvent;
 
 class UrlLabel : public QLabel

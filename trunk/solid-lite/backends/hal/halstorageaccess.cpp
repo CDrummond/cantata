@@ -23,16 +23,16 @@
 #include "halfstabhandling.h"
 #include "../../genericinterface.h"
 
-#include <QtCore/QLocale>
-#include <QtCore/QDebug>
-#include <QtCore/QProcess>
-#include <QtCore/QTimer>
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusReply>
-#include <QtDBus/QDBusVariant>
-#include <QtGui/QApplication>
-#include <QtGui/QWidget>
+#include <QLocale>
+#include <QDebug>
+#include <QProcess>
+#include <QTimer>
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDBusVariant>
+#include <QApplication>
+#include <QWidget>
 
 #include <unistd.h>
 #include <stdlib.h>

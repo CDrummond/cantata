@@ -33,14 +33,14 @@
 #include <KDE/KGlobal>
 #include <KDE/KConfig>
 #include "kwallet.h"
-#include <QtGui/QApplication>
-#include <QtGui/QWidget>
-#include <QtCore/QTimer>
+#include <QApplication>
+#include <QWidget>
+#include <QTimer>
 
 K_GLOBAL_STATIC(Settings, instance)
 #endif
-#include <QtCore/QFile>
-#include <QtCore/QDir>
+#include <QFile>
+#include <QDir>
 
 Settings * Settings::self()
 {

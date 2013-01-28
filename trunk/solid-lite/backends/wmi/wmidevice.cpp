@@ -44,7 +44,7 @@
 //#include "wmidvbinterface.h"
 //#include "wmivideo.h"
 
-#include <QtCore/QDebug>
+#include <QDebug>
 
 using namespace Solid::Backends::Wmi;
 

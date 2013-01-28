@@ -21,11 +21,11 @@
 #ifndef SOLID_DEVICE_P_H
 #define SOLID_DEVICE_P_H
 
-#include <QtCore/QObject>
-#include <QtCore/QSharedData>
-#include <QtCore/QWeakPointer>
+#include <QObject>
+#include <QSharedData>
+#include <QWeakPointer>
 
-#include <QtCore/QMap>
+#include <QMap>
 #include "deviceinterface.h"
 
 namespace Solid

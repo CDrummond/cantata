@@ -26,8 +26,8 @@
 #include "covers.h"
 #include "localize.h"
 #include "icons.h"
-#include <QtGui/QValidator>
-#include <QtGui/QTabWidget>
+#include <QValidator>
+#include <QTabWidget>
 
 class CoverNameValidator : public QValidator
 {

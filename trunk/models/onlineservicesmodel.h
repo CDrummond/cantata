@@ -23,8 +23,8 @@
 #ifndef ONLINE_SERVICES_MODEL_H
 #define ONLINE_SERVICES_MODEL_H
 
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QSet>
+#include <QAbstractItemModel>
+#include <QSet>
 #include "song.h"
 #include "config.h"
 

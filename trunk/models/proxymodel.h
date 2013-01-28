@@ -24,8 +24,8 @@
 #ifndef PROXYMODEL_H
 #define PROXYMODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
-#include <QtCore/QStringList>
+#include <QSortFilterProxyModel>
+#include <QStringList>
 #include "song.h"
 
 class ProxyModel : public QSortFilterProxyModel

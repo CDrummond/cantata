@@ -27,8 +27,8 @@
 #include "localize.h"
 #include "musiclibraryitemalbum.h"
 #include "onoffbutton.h"
-#include <QtGui/QComboBox>
-#include <QtCore/qglobal.h>
+#include <QComboBox>
+#include <qglobal.h>
 
 static void addImageSizes(QComboBox *box)
 {

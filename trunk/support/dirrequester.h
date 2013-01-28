@@ -41,7 +41,7 @@ public:
 
 #else
 #include "lineedit.h"
-#include <QtGui/QToolButton>
+#include <QToolButton>
 class DirRequester : public QWidget
 {
     Q_OBJECT

@@ -24,7 +24,7 @@
 #ifndef DEVICE_OPTIONS_H
 #define DEVICE_OPTIONS_H
 
-#include <QtCore/QString>
+#include <QString>
 #include "config.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "encoders.h"

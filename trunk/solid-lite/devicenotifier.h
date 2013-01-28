@@ -21,8 +21,8 @@
 #ifndef SOLID_DEVICENOTIFIER_H
 #define SOLID_DEVICENOTIFIER_H
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
+#include <QObject>
+#include <QList>
 
 #include <solid-lite/solid_export.h>
 

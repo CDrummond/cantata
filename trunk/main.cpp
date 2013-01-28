@@ -28,10 +28,10 @@
 #include <KDE/KCmdLineArgs>
 #include <KDE/KStartupInfo>
 #else
-#include <QtCore/QTranslator>
-#include <QtCore/QTextCodec>
-#include <QtCore/QLibraryInfo>
-#include <QtCore/QDir>
+#include <QTranslator>
+#include <QTextCodec>
+#include <QLibraryInfo>
+#include <QDir>
 #endif
 #include "utils.h"
 #include "config.h"

@@ -32,34 +32,34 @@
 #include "utils.h"
 #include "spinner.h"
 #include "icon.h"
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QListWidget>
-#include <QtGui/QPixmap>
-#include <QtGui/QFont>
-#include <QtGui/QFontMetrics>
-#include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QApplication>
-#include <QtGui/QProgressBar>
-#include <QtGui/QScrollArea>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QWheelEvent>
-#include <QtGui/QScrollBar>
-#include <QtGui/QMenu>
-#include <QtGui/QAction>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QListWidget>
+#include <QPixmap>
+#include <QFont>
+#include <QFontMetrics>
+#include <QPainter>
+#include <QStyle>
+#include <QApplication>
+#include <QProgressBar>
+#include <QScrollArea>
+#include <QDesktopWidget>
+#include <QWheelEvent>
+#include <QScrollBar>
+#include <QMenu>
+#include <QAction>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KFileDialog>
 #else
-#include <QtGui/QFileDialog>
+#include <QFileDialog>
 #endif
-#include <QtCore/QFileInfo>
-#include <QtCore/QUrl>
-#include <QtCore/QTemporaryFile>
-#include <QtCore/QDir>
-#include <QtXml/QXmlStreamReader>
-#include <QtXml/QDomDocument>
-#include <QtXml/QDomElement>
+#include <QFileInfo>
+#include <QUrl>
+#include <QTemporaryFile>
+#include <QDir>
+#include <QXmlStreamReader>
+#include <QDomDocument>
+#include <QDomElement>
 
 static int iCount=0;
 static const int constMaxTempFiles=20;

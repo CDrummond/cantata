@@ -34,8 +34,8 @@ class Action : public KAction {
     Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
 };
 #else
-#include <QtGui/QShortcut>
-#include <QtGui/QAction>
+#include <QShortcut>
+#include <QAction>
 
 /// A specialized QWidgetAction, enhanced by some KDE features
 /** This declares/implements a subset of KAction's API (notably we've left out global shortcuts

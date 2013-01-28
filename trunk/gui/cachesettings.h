@@ -24,10 +24,10 @@
 #ifndef CACHESETTINGS_H
 #define CACHESETTINGS_H
 
-#include <QtGui/QWidget>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtGui/QGroupBox>
+#include <QWidget>
+#include <QString>
+#include <QStringList>
+#include <QGroupBox>
 
 class QThread;
 class CacheItemCounter : public QObject

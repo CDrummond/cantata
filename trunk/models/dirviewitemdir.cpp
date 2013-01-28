@@ -26,7 +26,7 @@
 
 #include "dirviewitemdir.h"
 #include "dirviewitemfile.h"
-#include <QtCore/QStringList>
+#include <QStringList>
 
 DirViewItem * DirViewItemDir::createDirectory(const QString &dirName)
 {

@@ -25,9 +25,9 @@
 #include "encoders.h"
 #include "utils.h"
 #include "localize.h"
-#include <QtCore/QRegExp>
-#include <QtCore/QProcess>
-#include <QtCore/QDebug>
+#include <QRegExp>
+#include <QProcess>
+#include <QDebug>
 
 namespace Encoders
 {

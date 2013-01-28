@@ -21,7 +21,7 @@
 
 #include "wmimanager.h"
 
-#include <QtCore/QDebug>
+#include <QDebug>
 
 #include "wmidevice.h"
 #include "wmideviceinterface.h"

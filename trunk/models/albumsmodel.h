@@ -23,10 +23,10 @@
 #ifndef ALBUMSMODEL_H
 #define ALBUMSMODEL_H
 
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QList>
-#include <QtCore/QSet>
-#include <QtCore/QStringList>
+#include <QAbstractItemModel>
+#include <QList>
+#include <QSet>
+#include <QStringList>
 #include "song.h"
 #include "musiclibraryitemalbum.h"
 

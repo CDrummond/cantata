@@ -33,12 +33,12 @@
 #include <solid-lite/deviceinterface.h>
 #include <solid-lite/device.h>
 
-#include <QtCore/QStringList>
-#include <QtCore/QDebug>
+#include <QStringList>
+#include <QDebug>
 
-#include <QtDBus/QDBusMessage>
-#include <QtDBus/QDBusMetaType>
-#include <QtDBus/QDBusPendingReply>
+#include <QDBusMessage>
+#include <QDBusMetaType>
+#include <QDBusPendingReply>
 
 using namespace Solid::Backends::UDisks;
 

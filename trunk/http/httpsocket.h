@@ -24,7 +24,7 @@
 #ifndef _HTTP_SOCKET_H_
 #define _HTTP_SOCKET_H_
 
-#include <QtNetwork/QTcpServer>
+#include <QTcpServer>
 
 class HttpSocket : public QTcpServer
 {

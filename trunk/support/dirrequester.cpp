@@ -25,8 +25,8 @@
 #include "icon.h"
 #include "localize.h"
 #include "utils.h"
-#include <QtGui/QFileDialog>
-#include <QtGui/QHBoxLayout>
+#include <QFileDialog>
+#include <QHBoxLayout>
 
 DirRequester::DirRequester(QWidget *parent)
     : QWidget(parent)

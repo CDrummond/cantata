@@ -28,7 +28,7 @@
 #include <KDE/KComboBox>
 #include <KDE/KLineEdit>
 #include <KDE/KGlobalSettings>
-#include <QtGui/QAbstractItemView>
+#include <QAbstractItemView>
 
 class CompletionCombo : public KComboBox
 {
@@ -67,8 +67,8 @@ public:
     }
 };
 #else
-#include <QtGui/QComboBox>
-#include <QtGui/QLineEdit>
+#include <QComboBox>
+#include <QLineEdit>
 
 class CompletionCombo : public QComboBox
 {

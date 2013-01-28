@@ -24,9 +24,9 @@
 #ifndef PLAYQUEUEVIEW_H
 #define PLAYQUEUEVIEW_H
 
-#include <QtGui/QStackedWidget>
-#include <QtGui/QAbstractItemView>
-#include <QtCore/QSet>
+#include <QStackedWidget>
+#include <QAbstractItemView>
+#include <QSet>
 #include "treeview.h"
 #include "song.h"
 

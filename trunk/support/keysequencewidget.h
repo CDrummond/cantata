@@ -28,9 +28,9 @@
 #ifndef KEYSEQUENCEWIDGET_H
 #define KEYSEQUENCEWIDGET_H
 
-#include <QtGui/QKeySequence>
-#include <QtGui/QPushButton>
-#include <QtCore/QSet>
+#include <QKeySequence>
+#include <QPushButton>
+#include <QSet>
 #include "shortcutsmodel.h"
 
 class Action;

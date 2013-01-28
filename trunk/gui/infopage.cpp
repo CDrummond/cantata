@@ -21,26 +21,26 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtGui/QGridLayout>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QComboBox>
-#include <QtGui/QToolButton>
-#include <QtGui/QContextMenuEvent>
-#include <QtGui/QMenu>
-#include <QtGui/QAction>
-#include <QtGui/QFrame>
-#include <QtCore/QDir>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkRequest>
-#include <QtWebKit/QWebSettings>
+#include <QGridLayout>
+#include <QBoxLayout>
+#include <QComboBox>
+#include <QToolButton>
+#include <QContextMenuEvent>
+#include <QMenu>
+#include <QAction>
+#include <QFrame>
+#include <QDir>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QWebSettings>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KWebView>
 #include <KDE/KFileDialog>
 #include <KDE/KGlobalSettings>
 #else
-#include <QtGui/QFileDialog>
-#include <QtWebKit/QWebView>
+#include <QFileDialog>
+#include <QWebView>
 #endif
 #include "localize.h"
 #include "infopage.h"

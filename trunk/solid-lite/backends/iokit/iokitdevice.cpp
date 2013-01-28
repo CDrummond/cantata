@@ -26,7 +26,7 @@
 //#include "iokitnetworkinterface.h"
 //#include "iokitserialinterface.h"
 
-#include <QtCore/qdebug.h>
+#include <qdebug.h>
 
 #include <IOKit/IOKitLib.h>
 #include <IOKit/usb/IOUSBLib.h>

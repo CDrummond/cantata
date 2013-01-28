@@ -30,8 +30,8 @@ void PredicateParse_mainParse(const char *_code);
 
 #include <stdlib.h>
 
-#include <QtCore/QStringList>
-#include <QtCore/QThreadStorage>
+#include <QStringList>
+#include <QThreadStorage>
 
 namespace Solid
 {

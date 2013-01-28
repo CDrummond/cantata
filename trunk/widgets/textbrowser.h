@@ -24,9 +24,9 @@
 #ifndef TEXTBROWSER_H
 #define TEXTBROWSER_H
 
-#include <QtGui/QTextBrowser>
-#include <QtGui/QImage>
-#include <QtCore/QDebug>
+#include <QTextBrowser>
+#include <QImage>
+#include <QDebug>
 
 class TextBrowser : public QTextBrowser
 {

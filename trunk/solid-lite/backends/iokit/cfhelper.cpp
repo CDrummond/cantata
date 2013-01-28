@@ -18,12 +18,12 @@
     License along with this library. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtCore/qvarlengtharray.h>
-#include <QtCore/qstring.h>
-#include <QtCore/qstringlist.h>
-#include <QtCore/qvariant.h>
-#include <QtCore/qdatetime.h>
-#include <QtCore/qdebug.h>
+#include <qvarlengtharray.h>
+#include <qstring.h>
+#include <qstringlist.h>
+#include <qvariant.h>
+#include <qdatetime.h>
+#include <qdebug.h>
 
 #include <CoreFoundation/CoreFoundation.h>
 

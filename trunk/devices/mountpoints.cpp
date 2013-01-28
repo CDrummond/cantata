@@ -22,9 +22,9 @@
  */
 
 #include "mountpoints.h"
-#include <QtCore/QSocketNotifier>
-#include <QtCore/QFile>
-#include <QtCore/QStringList>
+#include <QSocketNotifier>
+#include <QFile>
+#include <QStringList>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(MountPoints, instance)

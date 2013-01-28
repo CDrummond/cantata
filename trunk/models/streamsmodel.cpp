@@ -21,21 +21,21 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QModelIndex>
-#include <QtCore/QDataStream>
-#include <QtCore/QTextStream>
-#include <QtCore/QMimeData>
-#include <QtCore/QStringList>
-#include <QtCore/QTimer>
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/qglobal.h>
-#include <QtXml/QXmlStreamReader>
-#include <QtXml/QXmlStreamWriter>
+#include <QModelIndex>
+#include <QDataStream>
+#include <QTextStream>
+#include <QMimeData>
+#include <QStringList>
+#include <QTimer>
+#include <QDir>
+#include <QFile>
+#include <qglobal.h>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 #include "config.h"
 #include "settings.h"
 #if defined Q_OS_WIN
-#include <QtGui/QDesktopServices>
+#include <QDesktopServices>
 #endif
 #include "localize.h"
 #include "itemview.h"

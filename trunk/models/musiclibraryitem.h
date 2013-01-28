@@ -27,9 +27,9 @@
 #ifndef MUSIC_LIBRARY_ITEM_H
 #define MUSIC_LIBRARY_ITEM_H
 
-#include <QtCore/QList>
-#include <QtCore/QVariant>
-#include <QtCore/QSet>
+#include <QList>
+#include <QVariant>
+#include <QSet>
 
 class MusicLibraryItemContainer;
 class MusicLibraryItem : public QObject

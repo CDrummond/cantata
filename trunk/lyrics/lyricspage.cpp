@@ -38,15 +38,15 @@
 #include "utils.h"
 #include "action.h"
 #include "actioncollection.h"
-#include <QtCore/QFuture>
-#include <QtCore/QFutureWatcher>
-#include <QtCore/QSettings>
-#include <QtCore/QtConcurrentRun>
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QSettings>
+#include <QtConcurrentRun>
 #include <QTextBrowser>
-#include <QtCore/QFile>
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
-#include <QtGui/QToolButton>
+#include <QFile>
+#include <QDir>
+#include <QFileInfo>
+#include <QToolButton>
 
 const QLatin1String LyricsPage::constLyricsDir("lyrics/");
 const QLatin1String LyricsPage::constExtension(".lyrics");

@@ -21,8 +21,8 @@
 #ifndef SOLID_MANAGERBASE_P_H
 #define SOLID_MANAGERBASE_P_H
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#include <QObject>
+#include <QString>
 
 #include "solid-lite/solid_export.h"
 

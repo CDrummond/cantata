@@ -46,7 +46,7 @@
 
 #include "qtiocompressor.h"
 #include "zlib.h"
-#include <QtCore/QDebug>
+#include <QDebug>
 
 typedef Bytef ZlibByte;
 typedef uInt ZlibSize;

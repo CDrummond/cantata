@@ -21,7 +21,7 @@
 #ifndef SOLID_BACKENDS_HAL_FSTABHANDLING_H
 #define SOLID_BACKENDS_HAL_FSTABHANDLING_H
 
-#include <QtCore/QString>
+#include <QString>
 
 class QProcess;
 class QObject;

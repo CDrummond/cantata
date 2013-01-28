@@ -24,7 +24,7 @@
 #ifndef GROUPEDVIEW_H
 #define GROUPEDVIEW_H
 
-#include <QtCore/QSet>
+#include <QSet>
 #include "treeview.h"
 class Song;
 

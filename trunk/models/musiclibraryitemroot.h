@@ -27,11 +27,11 @@
 #ifndef MUSIC_LIBRARY_ITEM_ROOT_H
 #define MUSIC_LIBRARY_ITEM_ROOT_H
 
-#include <QtCore/QList>
-#include <QtCore/QVariant>
-#include <QtCore/QHash>
-#include <QtCore/QSet>
-#include <QtCore/QDateTime>
+#include <QList>
+#include <QVariant>
+#include <QHash>
+#include <QSet>
+#include <QDateTime>
 #include "musiclibraryitem.h"
 #include "song.h"
 

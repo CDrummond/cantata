@@ -26,13 +26,13 @@
 #include "config.h"
 #include "localize.h"
 #include "icons.h"
-#include <QtGui/QPixmap>
-#include <QtGui/QPainter>
-#include <QtCore/QBuffer>
-#include <QtCore/QEvent>
-#include <QtCore/QFile>
-#include <QtCore/QTimer>
-#include <QtCore/QVariant>
+#include <QPixmap>
+#include <QPainter>
+#include <QBuffer>
+#include <QEvent>
+#include <QFile>
+#include <QTimer>
+#include <QVariant>
 
 static QString encode(const QImage &img)
 {

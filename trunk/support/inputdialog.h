@@ -24,7 +24,7 @@
 #ifndef INPUT_DIALOG_H
 #define INPUT_DIALOG_H
 
-#include <QtGui/QInputDialog>
+#include <QInputDialog>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KInputDialog>
 #endif

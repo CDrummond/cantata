@@ -29,8 +29,8 @@
 #include "mpdparseutils.h"
 #include "covers.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include <QtCore/QFile>
-#include <QtXml/QXmlStreamReader>
+#include <QFile>
+#include <QXmlStreamReader>
 
 static QString cacheFileName(OnlineService *srv, bool create=false)
 {

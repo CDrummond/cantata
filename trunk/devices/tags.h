@@ -25,7 +25,7 @@
 #define TAGS_H
 
 #include "song.h"
-#include <QtGui/QImage>
+#include <QImage>
 
 namespace Tags
 {

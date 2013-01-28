@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 #include "action.h"
-#include <QtGui/QApplication>
+#include <QApplication>
 
 Action::Action(QObject *parent)
 #ifdef ENABLE_KDE_SUPPORT

@@ -23,12 +23,12 @@
  */
 
 #include "autohidingsplitter.h"
-#include <QtGui/QSplitterHandle>
-#include <QtCore/QTimer>
-#include <QtCore/QChildEvent>
-#include <QtGui/QResizeEvent>
-#include <QtGui/QComboBox>
-#include <QtGui/QMenu>
+#include <QSplitterHandle>
+#include <QTimer>
+#include <QChildEvent>
+#include <QResizeEvent>
+#include <QComboBox>
+#include <QMenu>
 
 class SplitterSizeAnimation:public QVariantAnimation
 {

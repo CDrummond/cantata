@@ -27,8 +27,8 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
-#include <QtCore/QDateTime>
-#include <QtCore/QString>
+#include <QDateTime>
+#include <QString>
 
 struct Playlist
 {

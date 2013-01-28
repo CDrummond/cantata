@@ -26,7 +26,7 @@
 
 #include "dialog.h"
 #include "lineedit.h"
-#include <QtGui/QComboBox>
+#include <QComboBox>
 
 class MagnatuneSettingsDialog : public Dialog
 {

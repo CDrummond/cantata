@@ -29,8 +29,8 @@
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
-#include <QtGui/QIcon>
-#include <QtGui/QToolButton>
+#include <QIcon>
+#include <QToolButton>
 
 DynamicPage::DynamicPage(MainWindow *p)
     : QWidget(p)

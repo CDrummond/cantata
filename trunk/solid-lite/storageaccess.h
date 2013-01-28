@@ -25,7 +25,7 @@
 
 #include <solid-lite/solidnamespace.h>
 #include <solid-lite/deviceinterface.h>
-#include <QtCore/QVariant>
+#include <QVariant>
 
 namespace Solid
 {

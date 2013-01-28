@@ -23,16 +23,16 @@
 
 #include "config.h"
 #include "httpsocket.h"
-#include <QtNetwork/QTcpSocket>
-#include <QtNetwork/QNetworkInterface>
-#include <QtCore/QStringList>
-#include <QtCore/QTextStream>
-#include <QtCore/QFile>
-#include <QtCore/QUrl>
+#include <QTcpSocket>
+#include <QNetworkInterface>
+#include <QStringList>
+#include <QTextStream>
+#include <QFile>
+#include <QUrl>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMimeType>
 #endif
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 #ifdef TAGLIB_FOUND
 #include <taglib/oggflacfile.h>
 #include <taglib/trueaudiofile.h>

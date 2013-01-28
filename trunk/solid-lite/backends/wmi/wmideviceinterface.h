@@ -24,8 +24,8 @@
 #include <solid-lite/ifaces/deviceinterface.h>
 #include "wmidevice.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QStringList>
+#include <QObject>
+#include <QStringList>
 
 namespace Solid
 {

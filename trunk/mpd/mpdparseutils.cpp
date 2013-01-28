@@ -24,10 +24,10 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QList>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QUrl>
+#include <QList>
+#include <QString>
+#include <QStringList>
+#include <QUrl>
 #include "localize.h"
 #include "dirviewitemroot.h"
 #include "dirviewitemdir.h"

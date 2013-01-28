@@ -26,8 +26,8 @@
 
 #include <math.h>
 #include <sys/types.h>
-#include <QtCore/qglobal.h>
-#include <QtCore/QString>
+#include <qglobal.h>
+#include <QString>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #include <KDE/KLocale>

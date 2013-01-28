@@ -23,8 +23,8 @@
 #ifndef SOLID_PORTABLEMEDIAPLAYER_H
 #define SOLID_PORTABLEMEDIAPLAYER_H
 
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
+#include <QStringList>
+#include <QVariant>
 
 #include <solid-lite/solid_export.h>
 

@@ -26,10 +26,10 @@
 #ifndef DIRVIEWITEM_H
 #define DIRVIEWITEM_H
 
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QVariant>
-#include <QtCore/QSet>
+#include <QString>
+#include <QList>
+#include <QVariant>
+#include <QSet>
 
 class DirViewItem
 {

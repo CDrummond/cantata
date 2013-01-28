@@ -21,8 +21,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtGui/QFormLayout>
-#include <QtGui/QIcon>
+#include <QFormLayout>
+#include <QIcon>
 #include "streamdialog.h"
 #include "mainwindow.h"
 #include "settings.h"
@@ -33,7 +33,7 @@
 #include "buddylabel.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIconDialog>
-#include <QtGui/QPushButton>
+#include <QPushButton>
 #endif
 
 StreamDialog::StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent, bool addToPlayQueue)

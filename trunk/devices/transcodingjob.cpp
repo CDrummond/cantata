@@ -22,7 +22,7 @@
 
 #include "transcodingjob.h"
 #include "device.h"
-#include <QtCore/QStringList>
+#include <QStringList>
 
 TranscodingJob::TranscodingJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const DeviceOptions &d, int co, const Song &s)
     : CopyJob(src, dest, d, co, s)

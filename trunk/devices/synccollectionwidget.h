@@ -27,7 +27,7 @@
 #include "ui_synccollectionwidget.h"
 #include "song.h"
 #include "musiclibrarymodel.h"
-#include <QtCore/QSet>
+#include <QSet>
 
 class QTimer;
 class MusicLibraryProxyModel;

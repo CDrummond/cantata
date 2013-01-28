@@ -26,8 +26,8 @@
 
 #include "ultimatelyricsprovider.h"
 
-// #include <QtCore/QObject>
-#include <QtXml/QXmlStreamReader>
+// #include <QObject>
+#include <QXmlStreamReader>
 
 class QIODevice;
 

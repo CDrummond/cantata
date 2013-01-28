@@ -24,8 +24,8 @@
 #ifndef COVERWIDGET_H
 #define COVERWIDGET_H
 
-#include <QtGui/QLabel>
-#include <QtGui/QImage>
+#include <QLabel>
+#include <QImage>
 #include "song.h"
 
 class QPixmap;

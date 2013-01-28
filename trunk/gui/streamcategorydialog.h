@@ -26,7 +26,7 @@
 
 #include "dialog.h"
 #include "lineedit.h"
-#include <QtCore/QSet>
+#include <QSet>
 
 //#ifdef ENABLE_KDE_SUPPORT
 //class QPushButton;

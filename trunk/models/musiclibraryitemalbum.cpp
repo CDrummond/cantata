@@ -37,9 +37,9 @@
 #include "utils.h"
 #endif
 #include "onlineservice.h"
-#include <QtGui/QPixmap>
-#include <QtGui/QApplication>
-#include <QtGui/QFontMetrics>
+#include <QPixmap>
+#include <QApplication>
+#include <QFontMetrics>
 
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;

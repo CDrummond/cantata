@@ -23,7 +23,7 @@
 
 #include "messagebox.h"
 #include "icon.h"
-#include <QtGui/QAbstractButton>
+#include <QAbstractButton>
 
 MessageBox::ButtonCode map(QMessageBox::StandardButton c)
 {

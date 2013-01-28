@@ -23,8 +23,8 @@
 #ifndef VALUESLIDER_H
 #define VALUESLIDER_H
 
-#include <QtGui/QLabel>
-#include <QtGui/QSlider>
+#include <QLabel>
+#include <QSlider>
 #include "encoders.h"
 
 class ValueSlider : public QWidget

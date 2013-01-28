@@ -27,9 +27,9 @@
 #ifndef MUSIC_LIBRARY_ITEM_ALBUM_H
 #define MUSIC_LIBRARY_ITEM_ALBUM_H
 
-#include <QtCore/QList>
-#include <QtCore/QVariant>
-#include <QtGui/QPixmap>
+#include <QList>
+#include <QVariant>
+#include <QPixmap>
 #include "musiclibraryitem.h"
 #include "song.h"
 

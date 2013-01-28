@@ -27,7 +27,7 @@
 #ifndef MPD_PARSE_UTILS_H
 #define MPD_PARSE_UTILS_H
 
-#include <QtCore/QString>
+#include <QString>
 
 class Song;
 class Playlist;

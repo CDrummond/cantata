@@ -31,30 +31,30 @@
 #ifdef TAGLIB_FOUND
 #include "tags.h"
 #endif
-#include <QtCore/QFile>
-#include <QtCore/QDir>
-#include <QtCore/QCryptographicHash>
-#include <QtCore/QThread>
-#include <QtCore/QMutex>
-#include <QtCore/QUrl>
-#include <QtCore/QTextStream>
-#include <QtCore/qglobal.h>
-#include <QtNetwork/QNetworkReply>
-#include <QtGui/QIcon>
-#include <QtGui/QImage>
-#include <QtGui/QPixmap>
-#include <QtGui/QPainter>
-#include <QtGui/QFont>
-#include <QtXml/QXmlStreamReader>
-#include <QtXml/QDomDocument>
-#include <QtXml/QDomElement>
+#include <QFile>
+#include <QDir>
+#include <QCryptographicHash>
+#include <QThread>
+#include <QMutex>
+#include <QUrl>
+#include <QTextStream>
+#include <qglobal.h>
+#include <QNetworkReply>
+#include <QIcon>
+#include <QImage>
+#include <QPixmap>
+#include <QPainter>
+#include <QFont>
+#include <QXmlStreamReader>
+#include <QDomDocument>
+#include <QDomElement>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #include <KDE/KGlobal>
 #include <KDE/KTemporaryFile>
 #include <KDE/KIO/NetAccess>
-#include <QtGui/QApplication>
+#include <QApplication>
 K_GLOBAL_STATIC(Covers, instance)
 #endif
 

@@ -31,13 +31,13 @@
 #include "localize.h"
 #include "icons.h"
 #include "gtkstyle.h"
-#include <QtGui/QStyledItemDelegate>
-#include <QtGui/QApplication>
-#include <QtGui/QFontMetrics>
-#include <QtGui/QPainter>
-#include <QtGui/QLinearGradient>
-#include <QtGui/QAction>
-#include <QtGui/QDropEvent>
+#include <QStyledItemDelegate>
+#include <QApplication>
+#include <QFontMetrics>
+#include <QPainter>
+#include <QLinearGradient>
+#include <QAction>
+#include <QDropEvent>
 
 static int constCoverSize=32;
 static int constIconSize=16;

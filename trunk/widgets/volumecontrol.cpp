@@ -23,11 +23,11 @@
 
 #include "volumecontrol.h"
 #include "icon.h"
-#include <QtGui/QFrame>
-#include <QtGui/QSlider>
-#include <QtGui/QLabel>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QApplication>
+#include <QFrame>
+#include <QSlider>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QApplication>
 
 VolumeControl::VolumeControl(QWidget *parent)
     : QMenu(parent)

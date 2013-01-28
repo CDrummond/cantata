@@ -278,7 +278,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="DirRequester" name="fileFolder"/>
+           <widget class="PathRequester" name="fileFolder"/>
           </item>
          </layout>
         </widget>
@@ -310,9 +310,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DirRequester</class>
+   <class>PathRequester</class>
    <extends>QLineEdit</extends>
-   <header>dirrequester.h</header>
+   <header>pathrequester.h</header>
   </customwidget>
   <customwidget>
    <class>LineEdit</class>

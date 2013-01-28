@@ -36,7 +36,7 @@ xgettext --from-code=UTF-8 -C -kde -ci18n -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki1
          --files-from=infiles.list -D ${BASEDIR} -D ${WDIR} -o ${PROJECT}_kde.pot || { echo "error while calling xgettext. aborting."; exit 1; }
 
 find .. -name '*.cpp' | xargs grep -l 'QObject::tr(' |  grep -v "solid-lite" | sort > ${WDIR}/infiles.qt.list
-echo "../qtplural.h" >> ${WDIR}/infiles.qt.list
+echo "../gui/qtplural.h" >> ${WDIR}/infiles.qt.list
 
 # If we just call lconvert this adds a msgctxt of "QObject|<any other context>" This seems to mess things up.
 # So, pipe the output of lconvert into sed to change "QObject|<any other context>" to "<any other context>", and then into

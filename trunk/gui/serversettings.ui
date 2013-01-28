@@ -95,7 +95,7 @@
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="DirRequester" name="dir"/>
+         <widget class="PathRequester" name="dir"/>
         </item>
         <item row="5" column="0">
          <widget class="BuddyLabel" name="dynamizerPortLabel">
@@ -282,9 +282,9 @@
    <header>lineedit.h</header>
   </customwidget>
   <customwidget>
-   <class>DirRequester</class>
+   <class>PathRequester</class>
    <extends>QLineEdit</extends>
-   <header>dirrequester.h</header>
+   <header>pathrequester.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

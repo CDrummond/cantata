@@ -72,8 +72,8 @@ macro(cantata_check_for_sse)
 endmacro(cantata_check_for_sse)
 
 SET( CANTATA_SRCS
-    application.cpp
-    main.cpp
+    gui/application.cpp
+    gui/main.cpp
     gui/initialsettingswizard.cpp
     gui/mainwindow.cpp
     gui/preferencesdialog.cpp
@@ -83,9 +83,6 @@ SET( CANTATA_SRCS
     gui/playbacksettings.cpp
     gui/serverplaybacksettings.cpp
     gui/serversettings.cpp
-    gui/streamspage.cpp
-    gui/streamdialog.cpp
-    gui/streamcategorydialog.cpp
     gui/librarypage.cpp
     gui/albumspage.cpp
     gui/folderpage.cpp
@@ -93,6 +90,10 @@ SET( CANTATA_SRCS
     gui/trayitem.cpp
     gui/cachesettings.cpp
     gui/coverdialog.cpp
+    streams/streamspage.cpp
+    streams/streamdialog.cpp
+    streams/streamcategorydialog.cpp
+    streams/streamfetcher.cpp
     models/musiclibraryitemroot.cpp
     models/musiclibraryitemartist.cpp
     models/musiclibraryitemalbum.cpp
@@ -110,7 +111,6 @@ SET( CANTATA_SRCS
     models/streamsproxymodel.cpp
     models/albumsmodel.cpp
     models/albumsproxymodel.cpp
-    models/streamfetcher.cpp
     models/proxymodel.cpp
     models/onlineservicesmodel.cpp
     mpd/mpdconnection.cpp
@@ -162,9 +162,6 @@ SET( CANTATA_MOC_HDRS
     gui/librarypage.h
     gui/albumspage.h
     gui/playlistspage.h
-    gui/streamspage.h
-    gui/streamdialog.h
-    gui/streamcategorydialog.h
     gui/serverplaybacksettings.h
     gui/serversettings.h
     gui/preferencesdialog.h
@@ -172,6 +169,10 @@ SET( CANTATA_MOC_HDRS
     gui/cachesettings.h
     gui/trayitem.h
     gui/coverdialog.h
+    streams/streamspage.h
+    streams/streamdialog.h
+    streams/streamcategorydialog.h
+    streams/streamfetcher.h
     models/musiclibrarymodel.h
     models/musiclibraryproxymodel.h
     models/playlistsmodel.h
@@ -181,7 +182,6 @@ SET( CANTATA_MOC_HDRS
     models/dirviewmodel.h
     models/dirviewproxymodel.h
     models/albumsmodel.h
-    models/streamfetcher.h
     models/streamsmodel.h
     models/onlineservicesmodel.h
     mpd/mpdconnection.h
@@ -224,12 +224,12 @@ SET( CANTATA_UIS
     gui/librarypage.ui
     gui/albumspage.ui
     gui/playlistspage.ui
-    gui/streamspage.ui
     gui/interfacesettings.ui
     gui/playbacksettings.ui
     gui/serverplaybacksettings.ui
     gui/serversettings.ui
     gui/coverdialog.ui
+    streams/streamspage.ui
     dynamic/dynamicpage.ui
     dynamic/dynamicrule.ui
     dynamic/dynamicrules.ui
@@ -247,27 +247,27 @@ endif (ENABLE_TAGLIB)
 if (TAGLIB_FOUND)
     SET( CANTATA_SRCS ${CANTATA_SRCS}
         gui/httpserversettings.cpp
-        gui/tageditor.cpp
+        tags/tageditor.cpp
+        tags/trackorganiser.cpp
+        tags/tags.cpp
         devices/deviceoptions.cpp
-        devices/trackorganiser.cpp
+        devices/filenameschemedialog.cpp
         http/httpserver.cpp
         http/httpsocket.cpp
-        devices/filenameschemedialog.cpp
-        devices/tags.cpp
     )
 
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
-        gui/tageditor.h
+        tags/tageditor.h
+        tags/trackorganiser.h
         http/httpsocket.h
         devices/filenameschemedialog.h
-        devices/trackorganiser.h
     )
 
     SET( CANTATA_UIS ${CANTATA_UIS}
         gui/httpserversettings.ui
-        gui/tageditor.ui
+        tags/tageditor.ui
+        tags/trackorganiser.ui
         devices/filenameschemedialog.ui
-        devices/trackorganiser.ui
     )
 endif (TAGLIB_FOUND)
 
@@ -299,6 +299,8 @@ include_directories( ${CMAKE_SOURCE_DIR}/gui
                      ${CMAKE_SOURCE_DIR}/devices
                      ${CMAKE_SOURCE_DIR}/dynamic
                      ${CMAKE_SOURCE_DIR}/support
+                     ${CMAKE_SOURCE_DIR}/streams
+                     ${CMAKE_SOURCE_DIR}/tags
                      ${CMAKE_BINARY_DIR}/support
                      ${CMAKE_SOURCE_DIR}/online
                      ${CMAKE_SOURCE_DIR}
@@ -395,7 +397,7 @@ if (TAGLIB_FOUND)
     endif(FFMPEG_FOUND OR MPG123_FOUND)
 
     if (WIN32)
-        SET( CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp devices/filetyperesolver.cpp)
+        SET( CANTATA_SRCS ${CANTATA_SRCS} devices/device.cpp tags/filetyperesolver.cpp)
     else (WIN32)
         set (ENABLE_DEVICES_SUPPORT 1)
         if (NOT ENABLE_KDE_SUPPORT)
@@ -411,7 +413,7 @@ if (TAGLIB_FOUND)
 
         SET( CANTATA_SRCS ${CANTATA_SRCS} devices/devicespage.cpp devices/filejob.cpp
                 devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
-                models/devicesmodel.cpp devices/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
+                models/devicesmodel.cpp tags/filetyperesolver.cpp devices/actiondialog.cpp devices/devicepropertieswidget.cpp
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
                 devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp)
         SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/devicespage.h devices/filejob.h
@@ -453,7 +455,7 @@ IF( ENABLE_KDE_SUPPORT )
     install( FILES cantata.notifyrc DESTINATION ${DATA_INSTALL_DIR}/cantata )
 ELSE( ENABLE_KDE_SUPPORT )
     if (WIN32)
-        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} application.h )
+        SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/application.h )
         IF( MINGW )
             # resource compilation for MinGW
             ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cantataico.o

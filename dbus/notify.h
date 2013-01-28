@@ -24,8 +24,8 @@
 #ifndef NOTIFY_H
 #define NOTIFY_H
 
-#include <QtCore/QObject>
-#include <QtCore/QDateTime>
+#include <QObject>
+#include <QDateTime>
 
 class QImage;
 class QDBusPendingCallWatcher;

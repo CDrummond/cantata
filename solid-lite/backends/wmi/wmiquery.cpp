@@ -39,11 +39,11 @@
 
 # pragma comment(lib, "wbemuuid.lib")
 
-#include <QtCore/QDebug>
-#include <QtCore/QVariant>
-#include <QtCore/QList>
-#include <QtCore/QStringList>
-#include <QtCore/QCoreApplication>
+#include <QDebug>
+#include <QVariant>
+#include <QList>
+#include <QStringList>
+#include <QCoreApplication>
 
 //needed for mingw
 inline OLECHAR* SysAllocString(const QString &s){

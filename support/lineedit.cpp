@@ -33,8 +33,8 @@
 #include "lineedit.h"
 #include "icon.h"
 #include "config.h"
-#include <QtGui/QToolButton>
-#include <QtGui/QStyle>
+#include <QToolButton>
+#include <QStyle>
 
 LineEdit::LineEdit(QWidget *parent)
     : QLineEdit(parent)

@@ -33,8 +33,8 @@
 #include "icon.h"
 #include "mainwindow.h"
 #include "action.h"
-#include <QtGui/QIcon>
-#include <QtGui/QToolButton>
+#include <QIcon>
+#include <QToolButton>
 
 AlbumsPage::AlbumsPage(MainWindow *p)
     : QWidget(p)

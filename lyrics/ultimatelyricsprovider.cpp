@@ -26,8 +26,8 @@
 #include "networkaccessmanager.h"
 //#include "core/network.h"
 #include "song.h"
-#include <QtNetwork/QNetworkReply>
-#include <QtCore/QTextCodec>
+#include <QNetworkReply>
+#include <QTextCodec>
 //#include <boost/scoped_ptr.hpp>
 
 const int UltimateLyricsProvider::kRedirectLimit = 5;

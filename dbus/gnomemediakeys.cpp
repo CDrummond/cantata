@@ -24,11 +24,11 @@
 #include "gnomemediakeys.h"
 #include "mainwindow.h"
 #include "mediakeysinterface.h"
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusConnectionInterface>
-#include <QtDBus/QDBusPendingReply>
-#include <QtDBus/QDBusPendingCallWatcher>
-#include <QtCore/QCoreApplication>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#include <QDBusPendingReply>
+#include <QDBusPendingCallWatcher>
+#include <QCoreApplication>
 
 static const char * constService = "org.gnome.SettingsDaemon";
 static const char * constPath = "/org/gnome/SettingsDaemon/MediaKeys";

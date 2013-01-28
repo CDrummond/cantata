@@ -22,8 +22,8 @@
  */
 
 #include "icon.h"
-#include <QtGui/QApplication>
-#include <QtGui/QToolButton>
+#include <QApplication>
+#include <QToolButton>
 
 int Icon::stdSize(int v)
 {

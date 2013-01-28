@@ -28,10 +28,10 @@
 #include "messagebox.h"
 #include "icons.h"
 #include "musiclibrarymodel.h"
-#include <QtCore/QDir>
-#include <QtGui/QComboBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QValidator>
+#include <QDir>
+#include <QComboBox>
+#include <QPushButton>
+#include <QValidator>
 
 class CoverNameValidator : public QValidator
 {

@@ -24,10 +24,10 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QModelIndex>
-#include <QtCore/QString>
-#include <QtCore/QVariant>
-#include <QtCore/QMimeData>
+#include <QModelIndex>
+#include <QString>
+#include <QVariant>
+#include <QMimeData>
 #include "localize.h"
 #include "dirviewmodel.h"
 #include "dirviewitem.h"

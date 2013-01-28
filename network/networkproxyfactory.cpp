@@ -22,9 +22,9 @@
  */
 
 #include "networkproxyfactory.h"
-#include <QtCore/QMutexLocker>
-#include <QtCore/QSettings>
-#include <QtCore/QStringList>
+#include <QMutexLocker>
+#include <QSettings>
+#include <QStringList>
 #include <stdlib.h>
 
 const char* NetworkProxyFactory::constSettingsGroup = "Proxy";

@@ -25,12 +25,12 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KIconLoader>
 #else
-#include <QtGui/QIcon>
+#include <QIcon>
 #endif
-#include <QtGui/QLabel>
-#include <QtCore/QTimer>
-#include <QtGui/QPixmap>
-#include <QtGui/QMatrix>
+#include <QLabel>
+#include <QTimer>
+#include <QPixmap>
+#include <QMatrix>
 
 // Borrowed from kolourpaint...
 static QMatrix matrixWithZeroOrigin(const QMatrix &matrix, int width, int height)

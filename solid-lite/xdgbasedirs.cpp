@@ -24,8 +24,8 @@
 
 #include "xdgbasedirs_p.h"
 
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
+#include <QDir>
+#include <QFileInfo>
 
 static QStringList splitPathList( const QString &pathList )
 {

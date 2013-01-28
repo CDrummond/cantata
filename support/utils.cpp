@@ -26,11 +26,11 @@
 #include "mpdparseutils.h"
 #include "covers.h"
 #include "localize.h"
-#include <QtCore/QFile>
-#include <QtCore/QDir>
-#include <QtCore/QSet>
-#include <QtCore/QThread>
-#include <QtCore/QCoreApplication>
+#include <QFile>
+#include <QDir>
+#include <QSet>
+#include <QThread>
+#include <QCoreApplication>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #endif
@@ -38,7 +38,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifdef Q_OS_WIN
-#include <QtGui/QDesktopServices>
+#include <QDesktopServices>
 #endif
 #ifndef Q_OS_WIN
 #include <grp.h>
@@ -236,7 +236,7 @@ void Utils::stopThread(QThread *thread)
 
 #ifndef ENABLE_KDE_SUPPORT
 // Copied from KDE... START
-#include <QtCore/QLocale>
+#include <QLocale>
 
 QString Utils::formatByteSize(double size)
 {

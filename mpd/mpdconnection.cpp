@@ -31,11 +31,11 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 #endif
-#include <QtGui/QApplication>
-#include <QtCore/QDebug>
-#include <QtCore/QThread>
-#include <QtCore/QStringList>
-#include <QtCore/QTimer>
+#include <QApplication>
+#include <QDebug>
+#include <QThread>
+#include <QStringList>
+#include <QTimer>
 #include "settings.h"
 
 // #define DBUG qWarning() << "MPDConnection" << QThread::currentThreadId()

@@ -37,8 +37,8 @@ public:
     }
 };
 #else
-#include <QtGui/QLabel>
-#include <QtGui/QFontMetrics>
+#include <QLabel>
+#include <QFontMetrics>
 class QResizeEvent;
 
 class SqueezedTextLabel : public QLabel

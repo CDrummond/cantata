@@ -25,7 +25,7 @@
 #define ITEMVIEW_H
 
 #include "ui_itemview.h"
-#include <QtCore/QMap>
+#include <QMap>
 
 class ProxyModel;
 class Spinner;

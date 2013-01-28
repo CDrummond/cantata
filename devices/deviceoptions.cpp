@@ -25,8 +25,8 @@
 #include "song.h"
 #include "localize.h"
 #include "settings.h"
-#include <QtCore/QDir>
-#include <QtCore/QUrl>
+#include <QDir>
+#include <QUrl>
 #include <unistd.h>
 
 static QString cleanPath(const QString &path)

@@ -22,12 +22,12 @@
  */
 
 #include "icons.h"
-#include <QtGui/QApplication>
-#include <QtGui/QPixmap>
-#include <QtGui/QFont>
-#include <QtGui/QPainter>
-#include <QtGui/QPalette>
-#include <QtCore/QDir>
+#include <QApplication>
+#include <QPixmap>
+#include <QFont>
+#include <QPainter>
+#include <QPalette>
+#include <QDir>
 #include <math.h>
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;

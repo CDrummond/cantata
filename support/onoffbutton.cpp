@@ -26,10 +26,10 @@
 #include "onoffbutton.h"
 #include "localize.h"
 #include "gtkstyle.h"
-#include <QtGui/QFontMetrics>
-#include <QtGui/QPainter>
-#include <QtGui/QPainterPath>
-#include <QtGui/QLinearGradient>
+#include <QFontMetrics>
+#include <QPainter>
+#include <QPainterPath>
+#include <QLinearGradient>
 
 static QString onText;
 static QString offText;

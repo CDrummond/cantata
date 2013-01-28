@@ -23,8 +23,8 @@
 #ifndef DEVICES_MODEL_H
 #define DEVICES_MODEL_H
 
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QSet>
+#include <QAbstractItemModel>
+#include <QSet>
 #include "song.h"
 #include "config.h"
 #include "remotefsdevice.h"

@@ -33,9 +33,9 @@
 #include "song.h"
 #include "localize.h"
 #include "qtiocompressor/qtiocompressor.h"
-#include <QtXml/QXmlStreamReader>
-#include <QtXml/QXmlStreamWriter>
-#include <QtCore/QFile>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
+#include <QFile>
 
 MusicLibraryItemArtist * MusicLibraryItemRoot::artist(const Song &s, bool create)
 {

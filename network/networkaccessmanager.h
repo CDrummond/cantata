@@ -28,11 +28,11 @@
 #include <KDE/KIO/AccessManager>
 #define BASE_NETWORK_ACCESS_MANAGER KIO::Integration::AccessManager
 #else
-#include <QtNetwork/QNetworkAccessManager>
+#include <QNetworkAccessManager>
 #define BASE_NETWORK_ACCESS_MANAGER QNetworkAccessManager
 #endif
-#include <QtNetwork/QNetworkReply>
-#include <QtCore/QMap>
+#include <QNetworkReply>
+#include <QMap>
 
 class QTimerEvent;
 

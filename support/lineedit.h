@@ -33,7 +33,7 @@
 #ifndef LINEEDIT_H
 #define LINEEDIT_H
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLineEdit>
 class LineEdit : public KLineEdit
@@ -57,7 +57,7 @@ public:
 };
 
 #else
-#include <QtGui/QLineEdit>
+#include <QLineEdit>
 
 class QToolButton;
 

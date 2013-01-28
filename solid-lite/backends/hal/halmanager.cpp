@@ -22,10 +22,10 @@
 #include "haldevice.h"
 #include "haldeviceinterface.h"
 
-#include <QtCore/QDebug>
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusReply>
+#include <QDebug>
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 using namespace Solid::Backends::Hal;
 

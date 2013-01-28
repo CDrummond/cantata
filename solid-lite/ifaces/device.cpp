@@ -20,8 +20,8 @@
 
 #include "ifaces/device.h"
 
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusMessage>
+#include <QDBusConnection>
+#include <QDBusMessage>
 
 Solid::Ifaces::Device::Device(QObject *parent)
     : QObject(parent)

@@ -25,7 +25,7 @@
 #include "magnatuneservice.h"
 #include "localize.h"
 #include "buddylabel.h"
-#include <QtGui/QFormLayout>
+#include <QFormLayout>
 
 MagnatuneSettingsDialog::MagnatuneSettingsDialog(QWidget *parent)
     : Dialog(parent)

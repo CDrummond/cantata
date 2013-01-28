@@ -41,11 +41,11 @@
 #include "filejob.h"
 #include "utils.h"
 #include "covers.h"
-#include <QtGui/QMenu>
-#include <QtCore/QStringList>
-#include <QtCore/QMimeData>
-#include <QtCore/QFile>
-#include <QtCore/QDir>
+#include <QMenu>
+#include <QStringList>
+#include <QMimeData>
+#include <QFile>
+#include <QDir>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(OnlineServicesModel, instance)

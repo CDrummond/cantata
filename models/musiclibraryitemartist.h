@@ -27,9 +27,9 @@
 #ifndef MUSIC_LIBRARY_ITEM_ARTIST_H
 #define MUSIC_LIBRARY_ITEM_ARTIST_H
 
-#include <QtCore/QList>
-#include <QtCore/QVariant>
-#include <QtCore/QHash>
+#include <QList>
+#include <QVariant>
+#include <QHash>
 #include "musiclibraryitem.h"
 
 class MusicLibraryItemRoot;

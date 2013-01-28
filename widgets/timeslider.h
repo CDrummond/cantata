@@ -24,8 +24,8 @@
 #ifndef TIMESLIDER_H
 #define TIMESLIDER_H
 
-#include <QtGui/QSlider>
-#include <QtCore/QTime>
+#include <QSlider>
+#include <QTime>
 class QTimer;
 
 class TimeSlider : public QSlider

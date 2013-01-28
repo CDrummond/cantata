@@ -24,7 +24,7 @@
 #ifndef PROXYSETTINGS_H
 #define PROXYSETTINGS_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include "ui_proxysettings.h"
 
 class ProxySettings : public QWidget, public Ui::ProxySettings

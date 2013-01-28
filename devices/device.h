@@ -36,7 +36,7 @@ namespace Device
 #include "song.h"
 #include "encoders.h"
 #include "deviceoptions.h"
-#include <QtCore/QObject>
+#include <QObject>
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/device.h>
 #else

@@ -20,7 +20,7 @@
 #ifndef KMESSAGEWIDGET_H
 #define KMESSAGEWIDGET_H
 
-#include <QtGui/QFrame>
+#include <QFrame>
 
 class KMsgWidgetPrivate;
 

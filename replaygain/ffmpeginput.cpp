@@ -27,11 +27,11 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#include <QtCore/QMutex>
-#include <QtCore/QFile>
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QByteArray>
+#include <QMutex>
+#include <QFile>
+#include <QString>
+#include <QList>
+#include <QByteArray>
 #include "ebur128.h"
 #include "ffmpeginput.h"
 

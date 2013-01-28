@@ -24,11 +24,11 @@
 #ifndef COVERS_H
 #define COVERS_H
 
-#include <QtCore/QObject>
-#include <QtCore/QHash>
-#include <QtCore/QCache>
-#include <QtGui/QImage>
-#include <QtGui/QPixmap>
+#include <QObject>
+#include <QHash>
+#include <QCache>
+#include <QImage>
+#include <QPixmap>
 #include "song.h"
 #include "config.h"
 

@@ -26,7 +26,7 @@
 #include "settings.h"
 #include "utils.h"
 #include "icon.h"
-#include <QtCore/QDir>
+#include <QDir>
 
 static const int constIconSize=48;
 

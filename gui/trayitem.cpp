@@ -25,7 +25,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMenu>
 #include <KDE/KNotification>
-#include <QtGui/QPixmap>
+#include <QPixmap>
 #else
 #include "notify.h"
 #endif

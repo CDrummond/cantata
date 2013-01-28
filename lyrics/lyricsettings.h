@@ -24,9 +24,9 @@
 #ifndef LYRICSETTINGS_H
 #define LYRICSETTINGS_H
 
-#include <QtGui/QWidget>
-#include <QtCore/QStringList>
-#include <QtCore/QList>
+#include <QWidget>
+#include <QStringList>
+#include <QList>
 
 class Ui_LyricSettings;
 class QListWidgetItem;

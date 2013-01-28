@@ -24,7 +24,7 @@
 #ifndef VOLUMECONTROL_H
 #define VOLUMECONTROL_H
 
-#include <QtGui/QMenu>
+#include <QMenu>
 
 class QSlider;
 

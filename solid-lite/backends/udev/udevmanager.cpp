@@ -24,9 +24,9 @@
 #include "udevdevice.h"
 #include "../shared/rootdevice.h"
 
-#include <QtCore/QSet>
-#include <QtCore/QFile>
-#include <QtCore/QDebug>
+#include <QSet>
+#include <QFile>
+#include <QDebug>
 
 #define DETAILED_OUTPUT 0
 

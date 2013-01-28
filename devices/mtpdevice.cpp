@@ -39,10 +39,10 @@
 #include "localize.h"
 #include "filejob.h"
 #include "settings.h"
-#include <QtCore/QThread>
-#include <QtCore/QTimer>
-#include <QtCore/QDir>
-#include <QtCore/QTemporaryFile>
+#include <QThread>
+#include <QTimer>
+#include <QDir>
+#include <QTemporaryFile>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMimeType>
 #include <solid/genericinterface.h>
@@ -52,7 +52,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <QtCore/QDebug>
+#include <QDebug>
 
 
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)

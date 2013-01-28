@@ -24,14 +24,14 @@
 #ifndef TRAYITEM_H
 #define TRAYITEM_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStatusNotifierItem>
 class KMenu;
 class KNotification;
 #else
-#include <QtGui/QSystemTrayIcon>
+#include <QSystemTrayIcon>
 #include "icon.h"
 class QMenu;
 class Notify;

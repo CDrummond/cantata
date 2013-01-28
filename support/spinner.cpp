@@ -24,7 +24,7 @@
 #include "spinner.h"
 
 #ifdef ENABLE_KDE_SUPPORT
-#include <QtGui/QApplication>
+#include <QApplication>
 
 Spinner::Spinner(QObject *p)
     : KPixmapSequenceOverlayPainter(p)
@@ -47,9 +47,9 @@ void Spinner::stop()
 }
 
 #else
-#include <QtGui/QPainter>
-#include <QtGui/QPaintEvent>
-#include <QtCore/QTimer>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QTimer>
 
 Spinner::Spinner(QObject *p)
     : QWidget(0)

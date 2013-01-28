@@ -27,10 +27,10 @@
 #include "devicepropertieswidget.h"
 #include "actiondialog.h"
 #include "localize.h"
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QTextStream>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QTextStream>
 
 static const QLatin1String constSettingsFile("/.is_audio_player");
 static const QLatin1String constMusicFolderKey("audio_folder");

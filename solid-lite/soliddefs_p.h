@@ -21,7 +21,7 @@
 #ifndef SOLID_SOLIDDEFS_P_H
 #define SOLID_SOLIDDEFS_P_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #define return_SOLID_CALL(Type, Object, Default, Method) \
     Type t = qobject_cast<Type>(Object); \

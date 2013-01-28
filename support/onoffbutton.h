@@ -24,7 +24,7 @@
 #ifndef ONOFF_BUTTON_H
 #define ONOFF_BUTTON_H
 
-#include <QtGui/QCheckBox>
+#include <QCheckBox>
 
 #ifdef Q_OS_WIN
 typedef QCheckBox OnOffButton;

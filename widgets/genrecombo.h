@@ -24,8 +24,8 @@
 #ifndef GENRECOMBO_H
 #define GENRECOMBO_H
 
-#include <QtGui/QComboBox>
-#include <QtCore/QSet>
+#include <QComboBox>
+#include <QSet>
 
 class GenreCombo : public QComboBox
 {

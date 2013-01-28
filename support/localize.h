@@ -27,7 +27,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLocalizedString>
 #else
-#include <QtCore/QObject>
+#include <QObject>
 #include "qtplural.h"
 #define i18n QObject::tr
 #define i18nc(A, B) QObject::tr(B, A)

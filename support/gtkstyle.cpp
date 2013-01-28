@@ -22,11 +22,11 @@
  */
 
 #include "gtkstyle.h"
-#include <QtGui/QPainter>
-#include <QtGui/QStyleOptionViewItemV4>
-#include <QtGui/QApplication>
-#include <QtCore/QCache>
-#include <QtCore/qglobal.h>
+#include <QPainter>
+#include <QStyleOptionViewItemV4>
+#include <QApplication>
+#include <QCache>
+#include <qglobal.h>
 
 static bool usingGtkStyle=false;
 static bool useFullGtkStyle=false;

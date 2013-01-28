@@ -45,7 +45,7 @@
 ****************************************************************************/
 
 
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 
 class QtLocalPeer;
 

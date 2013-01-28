@@ -26,10 +26,10 @@
 #include "device.h"
 #include "lyricspage.h"
 #include "covers.h"
-#include <QtCore/QFile>
-#include <QtCore/QThread>
-#include <QtCore/QTimer>
-#include <QtCore/QTemporaryFile>
+#include <QFile>
+#include <QThread>
+#include <QTimer>
+#include <QTemporaryFile>
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>

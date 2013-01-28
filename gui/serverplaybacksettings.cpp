@@ -26,7 +26,7 @@
 #include "localize.h"
 #include "settings.h"
 #include "icon.h"
-#include <QtGui/QListWidget>
+#include <QListWidget>
 
 static const int constIconSize=48;
 

@@ -21,11 +21,11 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QModelIndex>
-#include <QtCore/QDataStream>
-#include <QtCore/QMimeData>
-#include <QtCore/QStringList>
-#include <QtGui/QPainter>
+#include <QModelIndex>
+#include <QDataStream>
+#include <QMimeData>
+#include <QStringList>
+#include <QPainter>
 #include "localize.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>

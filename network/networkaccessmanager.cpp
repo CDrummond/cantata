@@ -1,5 +1,5 @@
 #include "networkaccessmanager.h"
-#include <QtCore/QTimerEvent>
+#include <QTimerEvent>
 
 /*
  * Cantata

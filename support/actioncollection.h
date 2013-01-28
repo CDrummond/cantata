@@ -43,10 +43,10 @@ class ActionCollection : public KActionCollection {
 
 #else
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#include <QList>
+#include <QMap>
+#include <QObject>
+#include <QString>
 
 class QWidget;
 class QAction;

@@ -29,9 +29,9 @@
 #include <KDE/Solid/PowerManagement>
 #include "initialsettingswizard.h"
 #else
-#include <QtGui/QIcon>
+#include <QIcon>
 #ifdef Q_OS_WIN
-#include <QtCore/QDir>
+#include <QDir>
 #include <windows.h>
 #endif
 #endif
@@ -222,9 +222,9 @@ void Application::load(const QStringList &files)
 #endif // TAGLIB_FOUND
 
 #else // Q_OS_WIN
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusMessage>
-#include <QtCore/QDir>
+#include <QDBusConnection>
+#include <QDBusMessage>
+#include <QDir>
 #include "upowerinterface.h"
 
 Application::Application(int &argc, char **argv)

@@ -27,9 +27,9 @@
 #ifndef MUSIC_LIBRARY_MODEL_H
 #define MUSIC_LIBRARY_MODEL_H
 
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QDateTime>
-#include <QtCore/QSet>
+#include <QAbstractItemModel>
+#include <QDateTime>
+#include <QSet>
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemalbum.h"
 #include "song.h"

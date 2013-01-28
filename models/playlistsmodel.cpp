@@ -24,9 +24,9 @@
  * along with QtMPC.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QModelIndex>
-#include <QtCore/QMimeData>
-#include <QtGui/QMenu>
+#include <QModelIndex>
+#include <QMimeData>
+#include <QMenu>
 #include "playlistsmodel.h"
 #include "playlistsproxymodel.h"
 #include "itemview.h"

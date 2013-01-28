@@ -24,7 +24,7 @@
 #ifndef __ACTION_LABEL_H__
 #define __ACTION_LABEL_H__
 
-#include <QtGui/QLabel>
+#include <QLabel>
 
 class QTimer;
 class QLabel;

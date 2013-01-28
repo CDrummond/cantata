@@ -21,13 +21,13 @@
 #ifndef UDEVQT_H
 #define UDEVQT_H
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
+#include <QObject>
+#include <QList>
+#include <QString>
+#include <QStringList>
+#include <QVariant>
 
-#include <QtCore/QSocketNotifier>
+#include <QSocketNotifier>
 #include <libudev.h>
 
 namespace UdevQt

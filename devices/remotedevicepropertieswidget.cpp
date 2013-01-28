@@ -25,8 +25,8 @@
 #include "filenameschemedialog.h"
 #include "covers.h"
 #include "localize.h"
-#include <QtGui/QTabWidget>
-#include <QtGui/QIcon>
+#include <QTabWidget>
+#include <QIcon>
 #include "lineedit.h"
 #include "config.h"
 

@@ -26,8 +26,8 @@
 #include "utils.h"
 #include "tags.h"
 #include "settings.h"
-#include <QtCore/QUrl>
-#include <QtCore/QThread>
+#include <QUrl>
+#include <QThread>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(HttpServer, instance)

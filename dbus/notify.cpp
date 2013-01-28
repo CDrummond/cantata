@@ -23,11 +23,11 @@
 
 #include "notify.h"
 #include "notificationsinterface.h"
-#include <QtDBus/QDBusPendingReply>
-#include <QtDBus/QDBusPendingCallWatcher>
-#include <QtCore/QCoreApplication>
-#include <QtGui/QPixmap>
-#include <QtGui/QImage>
+#include <QDBusPendingReply>
+#include <QDBusPendingCallWatcher>
+#include <QCoreApplication>
+#include <QPixmap>
+#include <QImage>
 
 QDBusArgument& operator<< (QDBusArgument &arg, const QImage &image)
 {

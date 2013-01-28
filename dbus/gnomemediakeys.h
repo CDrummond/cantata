@@ -24,7 +24,7 @@
 #ifndef GNOME_MEDIA_KEYS_H
 #define GNOME_MEDIA_KEYS_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class OrgGnomeSettingsDaemonMediaKeysInterface;
 class QDBusPendingCallWatcher;

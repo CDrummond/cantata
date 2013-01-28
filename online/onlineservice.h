@@ -28,9 +28,9 @@
 #include "song.h"
 #include "icons.h"
 #include "localize.h"
-#include <QtCore/QObject>
-#include <QtCore/QUrl>
-#include <QtCore/QThread>
+#include <QObject>
+#include <QUrl>
+#include <QThread>
 
 class NetworkAccessManager;
 class OnlineServicesModel;

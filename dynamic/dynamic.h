@@ -24,12 +24,12 @@
 #ifndef DYNAMIC_H
 #define DYNAMIC_H
 
-#include <QtGui/QIcon>
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
+#include <QIcon>
+#include <QAbstractItemModel>
+#include <QList>
+#include <QMap>
+#include <QString>
+#include <QStringList>
 
 class QTimer;
 class QNetworkReply;

@@ -27,10 +27,10 @@
 #ifndef MPDCONNECTION_H
 #define MPDCONNECTION_H
 
-#include <QtNetwork/QTcpSocket>
-#include <QtNetwork/QLocalSocket>
-#include <QtCore/QDateTime>
-#include <QtCore/QStringList>
+#include <QTcpSocket>
+#include <QLocalSocket>
+#include <QDateTime>
+#include <QStringList>
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "song.h"

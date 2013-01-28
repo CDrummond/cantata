@@ -24,10 +24,10 @@
 
 #include "solid-lite/xdgbasedirs_p.h"
 
-#include <QtCore/QChar>
-#include <QtCore/QDebug>
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
+#include <QChar>
+#include <QDebug>
+#include <QFile>
+#include <QTextStream>
 
 using namespace Solid::Backends::UDev;
 

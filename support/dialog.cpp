@@ -23,9 +23,9 @@
 
 #include "dialog.h"
 #include "icon.h"
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QBoxLayout>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QBoxLayout>
 
 static QDialogButtonBox::StandardButton mapType(int btn) {
     switch (btn) {

@@ -29,10 +29,10 @@
 #include "settings.h"
 #include "mpdstatus.h"
 #include "localize.h"
-#include <QtGui/QHeaderView>
-#include <QtGui/QMenu>
-#include <QtGui/QAction>
-#include <QtCore/QFile>
+#include <QHeaderView>
+#include <QMenu>
+#include <QAction>
+#include <QFile>
 
 PlayQueueTreeView::PlayQueueTreeView(QWidget *parent)
     : TreeView(parent)

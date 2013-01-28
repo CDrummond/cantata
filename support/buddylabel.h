@@ -24,9 +24,9 @@
 #ifndef BUDDYLABEL_H
 #define BUDDYLABEL_H
 
-#include <QtGui/QLabel>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
+#include <QLabel>
+#include <QCheckBox>
+#include <QComboBox>
 #include "spinbox.h"
 #ifndef ENABLE_KDE_SUPPORT
 #include "dirrequester.h"

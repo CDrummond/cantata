@@ -20,12 +20,12 @@
 
 #include "halfstabhandling.h"
 
-#include <QtCore/QFile>
-#include <QtCore/QMultiHash>
-#include <QtCore/QObject>
-#include <QtCore/QProcess>
-#include <QtCore/QTextStream>
-#include <QtCore/QTime>
+#include <QFile>
+#include <QMultiHash>
+#include <QObject>
+#include <QProcess>
+#include <QTextStream>
+#include <QTime>
 
 #include <solid-lite/soliddefs_p.h>
 

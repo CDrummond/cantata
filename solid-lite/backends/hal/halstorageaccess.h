@@ -24,10 +24,10 @@
 #include <solid-lite/ifaces/storageaccess.h>
 #include "haldeviceinterface.h"
 
-#include <QtCore/QProcess>
-#include <QtDBus/QDBusMessage>
-#include <QtDBus/QDBusError>
-#include <QtDBus/QDBusVariant>
+#include <QProcess>
+#include <QDBusMessage>
+#include <QDBusError>
+#include <QDBusVariant>
 
 namespace Solid
 {

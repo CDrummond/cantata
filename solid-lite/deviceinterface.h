@@ -21,8 +21,8 @@
 #ifndef SOLID_DEVICEINTERFACE_H
 #define SOLID_DEVICEINTERFACE_H
 
-#include <QtCore/QObject>
-#include <QtCore/QBool>
+#include <QObject>
+#include <QBool>
 
 #include <solid-lite/solid_export.h>
 

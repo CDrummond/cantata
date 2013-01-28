@@ -16,9 +16,9 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#include <QtCore/QFile>
-#include <QtCore/QString>
-#include <QtCore/QByteArray>
+#include <QFile>
+#include <QString>
+#include <QByteArray>
 #include "ebur128.h"
 #include "mpg123input.h"
 

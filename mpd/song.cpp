@@ -33,8 +33,8 @@
 #include "httpserver.h"
 #endif
 #include "localize.h"
-#include <QtCore/QFileInfo>
-#include <QtCore/QStringList>
+#include <QFileInfo>
+#include <QStringList>
 
 // When displaying albums, we use the 1st track's year as the year of the album.
 // The map below stores the mapping from artist+album to year.

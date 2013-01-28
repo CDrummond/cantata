@@ -26,13 +26,13 @@
 #define AUTOHIDINGSPLITTER_H
 
 #include "config.h"
-#include <QtGui/QSplitter>
+#include <QSplitter>
 
-#include <QtCore/QList>
-#include <QtCore/QQueue>
-#include <QtCore/QVariantAnimation>
-#include <QtCore/QSet>
-#include <QtGui/QAbstractItemView>
+#include <QList>
+#include <QQueue>
+#include <QVariantAnimation>
+#include <QSet>
+#include <QAbstractItemView>
 
 Q_DECLARE_METATYPE(QList<int>)
 

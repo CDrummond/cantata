@@ -39,23 +39,23 @@
 #include "gtkstyle.h"
 // #include "stylehelper.h"
 
-// #include <QtGui/QColorDialog>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QMenu>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QPainter>
-#include <QtGui/QSplitter>
-#include <QtGui/QStackedLayout>
-#include <QtGui/QStyleOptionTabV3>
-#include <QtGui/QStyleOptionViewItemV4>
-#include <QtGui/QToolButton>
-#include <QtGui/QToolTip>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWindowsStyle>
-#include <QtGui/QApplication>
-#include <QtCore/QAnimationGroup>
-#include <QtCore/QPropertyAnimation>
-#include <QtCore/QSignalMapper>
+// #include <QColorDialog>
+#include <QHBoxLayout>
+#include <QMenu>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QSplitter>
+#include <QStackedLayout>
+#include <QStyleOptionTabV3>
+#include <QStyleOptionViewItemV4>
+#include <QToolButton>
+#include <QToolTip>
+#include <QVBoxLayout>
+#include <QWindowsStyle>
+#include <QApplication>
+#include <QAnimationGroup>
+#include <QPropertyAnimation>
+#include <QSignalMapper>
 
 static inline Qt::TextElideMode elideMode()
 {

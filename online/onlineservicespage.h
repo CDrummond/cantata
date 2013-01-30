@@ -40,6 +40,7 @@ public:
     OnlineServicesPage(MainWindow *p);
     virtual ~OnlineServicesPage();
 
+    void setEnabled(bool e);
     void clear();
     QString activeService() const;
     QStringList selectedFiles() const;

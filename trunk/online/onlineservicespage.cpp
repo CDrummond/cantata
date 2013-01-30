@@ -110,6 +110,14 @@ OnlineServicesPage::~OnlineServicesPage()
 {
 }
 
+void OnlineServicesPage::setEnabled(bool e)
+{
+    OnlineServicesModel::self()->setEnabled(e);
+    jamendoAction->setEnabled(0==OnlineServicesModel::self()->service(JamendoService::constName));
+    magnatuneAction->setEnabled(0==OnlineServicesModel::self()->service(MagnatuneService::constName));
+    controlActions();
+}
+
 void OnlineServicesPage::clear()
 {
     OnlineServicesModel::self()->clear();
@@ -264,7 +272,8 @@ void OnlineServicesPage::controlActions()
         }
     }
 
-    removeAction->setEnabled(srvSelected && 1==selected.count());
+    addAction->setEnabled(jamendoAction->isEnabled() || magnatuneAction->isEnabled());
+    removeAction->setEnabled(srvSelected && 1==selected.count() && (!jamendoAction->isEnabled() || !magnatuneAction->isEnabled()));
     configureAction->setEnabled(srvSelected && 1==selected.count());
     refreshAction->setEnabled(srvSelected && 1==selected.count());
     downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
@@ -327,6 +336,9 @@ void OnlineServicesPage::removeService()
             return;
         }
         OnlineServicesModel::self()->removeService(item->data());
+        jamendoAction->setEnabled(0==OnlineServicesModel::self()->service(JamendoService::constName));
+        magnatuneAction->setEnabled(0==OnlineServicesModel::self()->service(MagnatuneService::constName));
+        controlActions();
     }
 }
 
@@ -388,6 +400,9 @@ void OnlineServicesPage::addService(const QString &name)
     }
 
     OnlineServicesModel::self()->createService(name);
+    jamendoAction->setEnabled(0==OnlineServicesModel::self()->service(JamendoService::constName));
+    magnatuneAction->setEnabled(0==OnlineServicesModel::self()->service(MagnatuneService::constName));
+    controlActions();
 }
 
 void OnlineServicesPage::download()

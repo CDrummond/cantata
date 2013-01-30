@@ -1050,7 +1050,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             emit playListInfo();
             emit outputs();
             if (CS_Init!=connectedState) {
-                loaded=0;
+                loaded=loaded&TAB_STREAMS ? TAB_STREAMS : 0;
                 currentTabChanged(tabWidget->current_index());
             }
             connectedState=CS_Connected;
@@ -1060,6 +1060,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             updateWindowTitle();
         }
     } else {
+        loaded=loaded&TAB_STREAMS ? TAB_STREAMS : 0;
         libraryPage->clear();
         albumsPage->clear();
         folderPage->clear();
@@ -1133,7 +1134,9 @@ void MainWindow::connectToMpd(const MPDConnectionDetails &details)
         }
         showInformation(i18n("Connecting to %1").arg(details.description()));
         outputsAction->setVisible(false);
-        connectedState=CS_Disconnected;
+        if (CS_Init!=connectedState) {
+            connectedState=CS_Disconnected;
+        }
     }
     emit setDetails(details);
 }
@@ -1447,6 +1450,7 @@ void MainWindow::updateSettings()
     if (diffLibCovers || diffLibYear || diffLibArtistImages || diffAlCovers) {
         libraryPage->clear();
         albumsPage->goTop();
+        loaded|=TAB_LIBRARY;
         libraryPage->refresh();
     }
 

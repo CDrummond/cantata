@@ -41,11 +41,11 @@ public:
     void setEdit(const QString &editName, const QString &editIconName);
 
     QString name() const { return nameEntry->text().trimmed(); }
-    #ifdef ENABLE_KDE_SUPPORT
-    QString icon() const { return iconName; }
-    #else
+    //#ifdef ENABLE_KDE_SUPPORT
+    //QString icon() const { return iconName; }
+    //#else
     QString icon() const { return QString(); }
-    #endif
+    //#endif
 
 private Q_SLOTS:
     void changed();

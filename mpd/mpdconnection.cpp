@@ -187,7 +187,6 @@ void MPDConnection::stop()
 {
     if (thread) {
         Utils::stopThread(thread);
-        thread->deleteLater();
         thread=0;
     }
 }

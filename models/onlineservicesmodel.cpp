@@ -308,12 +308,21 @@ void OnlineServicesModel::setEnabled(bool e)
         load();
     } else {
         if (wasEnabled) {
-            disconnect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
-                      this, SLOT(setArtistImage(const Song &, const QImage &)));
-            disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-                      this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+            stop();
         }
         clear();
+    }
+}
+
+void OnlineServicesModel::stop()
+{
+    disconnect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
+              this, SLOT(setArtistImage(const Song &, const QImage &)));
+    disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+              this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+
+    foreach (OnlineService *srv, services) {
+        srv->stopLoader();
     }
 }
 

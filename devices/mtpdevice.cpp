@@ -235,7 +235,7 @@ void MtpConnection::updateLibrary()
 
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
-    while (track) {
+    while (track && !abortRequested()) {
         QMap<int, Folder>::ConstIterator it=folderMap.find(track->parent_id);
         Song s;
         s.id=track->item_id;
@@ -268,13 +268,15 @@ void MtpConnection::updateLibrary()
         library->addGenre(s.genre);
         track=track->next;
     }
-    if (MPDParseUtils::groupSingle()) {
-        library->groupSingleTracks();
+    if (!abortRequested()) {
+        if (MPDParseUtils::groupSingle()) {
+            library->groupSingleTracks();
+        }
+        if (MPDParseUtils::groupMultiple()) {
+            library->groupMultipleArtists();
+        }
+        emit libraryUpdated();
     }
-    if (MPDParseUtils::groupMultiple()) {
-        library->groupMultipleArtists();
-    }
-    emit libraryUpdated();
 }
 
 uint32_t MtpConnection::getMusicFolderId()
@@ -964,10 +966,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
 
 MtpDevice::~MtpDevice()
 {
-    Utils::stopThread(thread);
-    thread->deleteLater();
-    thread=0;
-    deleteTemp();
+    stop();
 }
 
 void MtpDevice::deviceDetails(const QString &s)
@@ -986,6 +985,14 @@ void MtpDevice::deviceDetails(const QString &s)
 bool MtpDevice::isConnected() const
 {
     return solidDev.isValid() && pmp && pmp->isValid() && connection->isConnected();
+}
+
+void MtpDevice::stop()
+{
+    jobAbortRequested=true;
+    Utils::stopThread(thread);
+    thread=0;
+    deleteTemp();
 }
 
 void MtpDevice::configure(QWidget *parent)

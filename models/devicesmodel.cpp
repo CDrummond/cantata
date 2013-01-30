@@ -340,15 +340,24 @@ void DevicesModel::setEnabled(bool e)
         loadRemote();
         #endif
     } else {
-        disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
-        disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
-//        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-//                   this, SLOT(setCover(const Song &, const QImage &, const QString &)));
-        disconnect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
+        stop();
         clear();
     }
     inhibitMenuUpdate=false;
     updateItemMenu();
+}
+
+void DevicesModel::stop()
+{
+    foreach (Device *dev, devices) {
+        dev->stop();
+    }
+
+    disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceAdded(const QString &)), this, SLOT(deviceAdded(const QString &)));
+    disconnect(Solid::DeviceNotifier::instance(), SIGNAL(deviceRemoved(const QString &)), this, SLOT(deviceRemoved(const QString &)));
+//        disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+//                   this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+    disconnect(MountPoints::self(), SIGNAL(updated()), this, SLOT(mountsChanged()));
 }
 
 Device * DevicesModel::device(const QString &udi)

@@ -84,9 +84,11 @@ bool OnlineMusicLoader::readFromCache()
     if (!cache.isEmpty() && QFile::exists(cache)) {
         emit status(i18n("Reading cache"), 0);
         if (library->fromXML(cache, QDateTime(), QString(), this)) {
-            fixLibrary();
-            emit status(i18n("Updating display"), -100);
-            emit loaded();
+            if (!stopRequested) {
+                fixLibrary();
+                emit status(i18n("Updating display"), -100);
+                emit loaded();
+            }
             return true;
         }
     }
@@ -174,8 +176,8 @@ void OnlineService::stopLoader()
         disconnect(loader, SIGNAL(error(QString)), this, SLOT(loaderError(QString)));
         disconnect(loader, SIGNAL(status(QString,int)), this, SLOT(loaderstatus(QString,int)));
         disconnect(loader, SIGNAL(loaded()), this, SLOT(loaderFinished()));
-        loader->deleteLater();
         loader->stop();
+        loader->deleteLater();
         loader=0;
     }
 }

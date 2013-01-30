@@ -39,6 +39,7 @@ public:
     bool isConnected() const { return true; }
     void rescan(bool) { }
     bool isRefreshing() const { return false; }
+    void stop() { }
     QString path() const { return QString(); }
     void addSong(const Song&, bool, bool) { }
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover);

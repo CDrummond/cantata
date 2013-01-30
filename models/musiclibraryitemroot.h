@@ -45,6 +45,7 @@ class MusicLibraryProgressMonitor
 public:
     virtual void readProgress(double pc) =0;
     virtual void writeProgress(double pc) =0;
+    virtual bool wasStopped() const =0;
 };
 
 class MusicLibraryItemRoot : public MusicLibraryItemContainer

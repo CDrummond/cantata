@@ -296,8 +296,12 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
     foreach (const MusicLibraryItem *a, childItems()) {
         foreach (const MusicLibraryItem *al, static_cast<const MusicLibraryItemArtist *>(a)->childItems()) {
             total+=al->childCount();
+            if (prog && prog->wasStopped()) {
+                return;
+            }
         }
     }
+
     writer.writeAttribute("numTracks", QString::number(total));
     if (prog) {
         prog->writeProgress(0.0);
@@ -311,6 +315,9 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
             writer.writeAttribute("img", artist->imageUrl());
         }
         foreach (const MusicLibraryItem *al, artist->childItems()) {
+            if (prog && prog->wasStopped()) {
+                return;
+            }
             const MusicLibraryItemAlbum *album = static_cast<const MusicLibraryItemAlbum *>(al);
             QString albumGenre=!album->childItems().isEmpty() ? static_cast<const MusicLibraryItemSong *>(album->childItems().at(0))->song().genre : QString();
             writer.writeStartElement("Album");
@@ -367,7 +374,7 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
                 if (track->song().year != album->year()) {
                     writer.writeAttribute("year", QString::number(track->song().year));
                 }
-                if (prog && total>0) {
+                if (prog && !prog->wasStopped() && total>0) {
                     count++;
                     prog->writeProgress((count*100.0)/(total*1.0));
                 }
@@ -411,7 +418,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
         prog->readProgress(0.0);
     }
 
-    while (!reader.atEnd()) {
+    while (!reader.atEnd() && (!prog || !prog->wasStopped())) {
         reader.readNext();
 
         /**
@@ -528,7 +535,7 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     artistItem->addGenre(song.genre);
                     addGenre(song.genre);
 
-                    if (prog && total>0) {
+                    if (prog && !prog->wasStopped() && total>0) {
                         count++;
                         prog->readProgress((count*100.0)/(total*1.0));
                     }

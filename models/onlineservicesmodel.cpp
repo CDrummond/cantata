@@ -576,9 +576,14 @@ void OnlineServicesModel::stateChanged(const QString &name, bool state)
 void OnlineServicesModel::load()
 {
     CONFIG
-    QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
-    foreach (const QString &n, names) {
-        addService(n);
+    if (!HAS_ENTRY(constCfgKey)) {
+        addService(JamendoService::constName);
+        addService(MagnatuneService::constName);
+    } else {
+        QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
+        foreach (const QString &n, names) {
+            addService(n);
+        }
     }
 }
 

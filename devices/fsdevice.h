@@ -94,6 +94,7 @@ public:
     virtual ~FsDevice();
 
     void rescan(bool full=true);
+    void stop();
     bool isRefreshing() const { return 0!=scanner; }
     QString path() const { return audioFolder; }
     QString coverFile() const { return opts.coverName; }

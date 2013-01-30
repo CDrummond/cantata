@@ -490,7 +490,6 @@ MainWindow::MainWindow(QWidget *parent)
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
     copyToDeviceAction->setVisible(DevicesModel::self()->isEnabled());
     #endif
-    OnlineServicesModel::self()->setEnabled(!hiddenPages.contains(onlinePage->metaObject()->className()));
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
     streamsPage->setEnabled(!hiddenPages.contains(streamsPage->metaObject()->className()));

@@ -322,6 +322,13 @@ bool FsDevice::readCache()
     return false;
 }
 
+void FsDevice::stop()
+{
+     if (0!=scanner) {
+         scanner->stop();
+     }
+}
+
 void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
 {
     jobAbortRequested=false;
@@ -609,8 +616,8 @@ void FsDevice::stopScanner(bool showStatus)
     if (scanner) {
         disconnect(scanner, SIGNAL(finished()), this, SLOT(libraryUpdated()));
         disconnect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
-        scanner->deleteLater();
         scanner->stop();
+        scanner->deleteLater();
         scanner=0;
         if (showStatus) {
             setStatusMessage(QString());

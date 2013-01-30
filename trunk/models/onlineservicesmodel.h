@@ -55,6 +55,7 @@ public:
     OnlineService * service(const QString &name);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
+    void stop();
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
     QMimeData * mimeData(const QModelIndexList &indexes) const;
     void toggleGrouping();

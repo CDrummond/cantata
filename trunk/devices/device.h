@@ -120,6 +120,7 @@ public:
 
     virtual bool isConnected() const=0;
     virtual void rescan(bool full=true)=0;
+    virtual void stop()=0;
     virtual void connectionStateChanged() { }
     virtual void toggle() { }
     virtual bool isRefreshing() const=0;

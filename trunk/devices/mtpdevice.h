@@ -129,6 +129,7 @@ public:
 
     bool isConnected() const;
     bool isRefreshing() const { return mtpUpdating; }
+    void stop();
     void configure(QWidget *parent);
     QString path() const { return QString(); } // audioFolder; }
     void addSong(const Song &s, bool overwrite, bool copyCover);

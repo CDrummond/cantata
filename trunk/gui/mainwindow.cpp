@@ -914,6 +914,10 @@ MainWindow::~MainWindow()
     #if defined ENABLE_DEVICES_SUPPORT
     FileScheduler::self()->stop();
     #endif
+    OnlineServicesModel::self()->stop();
+    #ifdef ENABLE_DEVICES_SUPPORT
+    DevicesModel::self()->stop();
+    #endif
 }
 
 void MainWindow::initSizes()

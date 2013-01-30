@@ -55,7 +55,6 @@ void HttpServer::stop()
 
     if (thread) {
         Utils::stopThread(thread);
-        thread->deleteLater();
         thread=0;
     }
 }

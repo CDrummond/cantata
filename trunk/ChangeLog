@@ -16,7 +16,7 @@
  8. Merge 'External Settings' into 'Interface Settings'
  9. Add option to embed covers when copying songs to devices. (ID3v2, mp4,
     and vorbis comment tag types only) 
-10. Add a simple system debus helper to allow user mounts of samba shares. This
+10. Add a simple system dbus helper to allow user mounts of samba shares. This
     is intended to allow Cantata to connect to an Android device via Droid NAS.
     Requires cantata be built with remote device support (both 
     -DENABLE_REMOTE_DEVICES=ON and -DENABLE_MOUNTER=ON need to be passed to

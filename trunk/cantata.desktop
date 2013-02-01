@@ -23,3 +23,4 @@ Icon=cantata
 Exec=cantata %U
 Categories=Qt;KDE;AudioVideo;Player;
 X-DBUS-StartupType=Unique
+Keywords=Music;MPD

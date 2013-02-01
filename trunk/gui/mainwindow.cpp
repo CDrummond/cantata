@@ -862,6 +862,11 @@ MainWindow::MainWindow(QWidget *parent)
         // BUG: 146
         move(p.isNull() ? QPoint(96, 96) : p);
     }
+
+    if (PAGE_LIBRARY!=tabWidget->current_index() && PAGE_ALBUMS!=tabWidget->current_index() &&
+        PAGE_FOLDERS!=tabWidget->current_index() && PAGE_PLAYLISTS!=tabWidget->current_index()) {
+        currentTabChanged(tabWidget->current_index());
+    }
 }
 
 MainWindow::~MainWindow()

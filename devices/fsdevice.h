@@ -28,38 +28,41 @@
 #include "song.h"
 #include "utils.h"
 #include "freespaceinfo.h"
+#include "musiclibraryitemroot.h"
 #include <QThread>
 #include <QStringList>
 
-class MusicLibraryItemRoot;
 
-class MusicScanner : public QThread
+class MusicScanner : public QThread, public MusicLibraryProgressMonitor
 {
     Q_OBJECT
 
 public:
-    MusicScanner(const QString &f);
+    MusicScanner();
     virtual ~MusicScanner();
 
-    void run();
-    void start(const QSet<Song> &existingSongs) {
-        existing=existingSongs;
-        QThread::start();
-    }
     void stop();
     bool wasStopped() const { return stopRequested; }
-    MusicLibraryItemRoot * takeLibrary();
+    void readProgress(double pc);
+    void writeProgress(double pc);
+
+public Q_SLOTS:
+    void scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<Song> &existingSongs);
+    void saveCache(const QString &cache, MusicLibraryItemRoot *lib);
 
 Q_SIGNALS:
     void songCount(int c);
+    void libraryUpdated(MusicLibraryItemRoot *);
+    void cacheSaved();
+    void readingCache(int pc);
+    void savingCache(int pc);
 
 private:
-    void scanFolder(const QString &f, int level);
+    void fixLibrary(MusicLibraryItemRoot *lib);
+    void scanFolder(MusicLibraryItemRoot *library, const QString &topLevel, const QString &f, int level);
 
 private:
     QSet<Song> existing;
-    QString folder;
-    MusicLibraryItemRoot *library;
     bool stopRequested;
     int count;
     int lastUpdate;
@@ -70,6 +73,12 @@ class FsDevice : public Device
     Q_OBJECT
 
 public:
+    enum State {
+        Idle,
+        Updating,
+        SavingCache
+    };
+
     static const QLatin1String constCantataCacheFile;
     static const QLatin1String constCantataSettingsFile;
     static const QLatin1String constMusicFilenameSchemeKey;
@@ -94,7 +103,7 @@ public:
 
     void rescan(bool full=true);
     void stop();
-    bool isRefreshing() const { return 0!=scanner; }
+    bool isRefreshing() const { return Idle!=state; }
     QString path() const { return audioFolder; }
     QString coverFile() const { return opts.coverName; }
     void addSong(const Song &s, bool overwrite, bool copyCover);
@@ -108,23 +117,35 @@ public:
     void removeCache();
     bool isStdFs() const { return true; }
 
+Q_SIGNALS:
+    // For talking to scanner...
+    void scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<Song> &existingSongs);
+    void saveCache(const QString &cacheFile, MusicLibraryItemRoot *lib);
+
 protected:
-    bool readCache();
+    void initScaner();
     void startScanner(bool fullScan=true);
-    void stopScanner(bool showStatus=true);
+    void stopScanner();
     void clear() const;
 
 protected Q_SLOTS:
-    void cacheRead();
-    void libraryUpdated();
+    void cacheSaved();
+    void libraryUpdated(MusicLibraryItemRoot *lib);
     void percent(int pc);
     void addSongResult(int status);
     void copySongToResult(int status);
     void removeSongResult(int status);
     void cleanDirsResult(int status);
+    void readingCache(int pc);
+    void savingCache(int pc);
+
+private:
+    void cacheStatus(const QString &msg, int prog);
 
 protected:
+    State state;
     bool scanned;
+    int cacheProgress;
     MusicScanner *scanner;
     mutable QString audioFolder;
     FreeSpaceInfo spaceInfo;

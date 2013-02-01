@@ -63,6 +63,7 @@
 36. Add action icons to grouped-albums style playlists at the top level.
 37. Scale image in lyrics view if it is less than 300x300px
 38. Allow to move streams to different categories via drag-n-drop.
+39. Read/write device cache files in non-gui thread.
 
 0.9.2
 -----

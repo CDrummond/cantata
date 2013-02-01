@@ -188,7 +188,7 @@ void RemoteFsDevice::remove(Device *dev)
         CFG_SYNC;
     }
     if (rfs) {
-        rfs->stopScanner(false);
+        rfs->stopScanner();
         if (rfs->isConnected()) {
             rfs->unmount();
         }
@@ -261,7 +261,6 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
 }
 
 RemoteFsDevice::~RemoteFsDevice() {
-    stopScanner(false);
 }
 
 void RemoteFsDevice::toggle()
@@ -525,6 +524,9 @@ bool RemoteFsDevice::isOldSshfs()
 
 double RemoteFsDevice::usedCapacity()
 {
+    if (cacheProgress>-1) {
+        return (cacheProgress*1.0)/100.0;
+    }
     if (!isConnected()) {
         return -1.0;
     }
@@ -538,6 +540,9 @@ double RemoteFsDevice::usedCapacity()
 
 QString RemoteFsDevice::capacityString()
 {
+    if (cacheProgress>-1) {
+        return statusMessage();
+    }
     if (!isConnected()) {
         return i18n("Not Connected");
     }
@@ -567,9 +572,7 @@ void RemoteFsDevice::load()
     if (isConnected()) {
         setAudioFolder();
         readOpts(settingsFileName(), opts, true);
-        if (!opts.useCache || !readCache()) {
-            rescan();
-        }
+        rescan(false); // Read from cache if we have it!
     }
 }
 

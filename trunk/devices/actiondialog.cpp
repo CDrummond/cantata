@@ -266,8 +266,7 @@ void ActionDialog::slotButtonClicked(int button)
     case PAGE_PROGRESS:
         paused=true;
         if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Are you sure you wish to cancel?"))) {
-            refreshLibrary();
-            reject();
+            cancel();
             // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
             Dialog::slotButtonClicked(button);
         } else if (!performingAction && PAGE_PROGRESS==stack->currentIndex()) {
@@ -278,12 +277,17 @@ void ActionDialog::slotButtonClicked(int button)
     }
 }
 
-Device * ActionDialog::getDevice(const QString &udi)
+Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
 {
     if (udi.startsWith(OnlineServicesModel::constUdiPrefix)) {
         return OnlineServicesModel::self()->device(udi);
     }
     Device *dev=DevicesModel::self()->device(udi);
+
+    if (!logErrors) {
+        return dev;
+    }
+
     QString error;
     if (!dev) {
         error=i18n("Device has been removed!");
@@ -306,6 +310,23 @@ Device * ActionDialog::getDevice(const QString &udi)
     }
 
     return 0;
+}
+
+void ActionDialog::cancel()
+{
+    Device *dev=0;
+    if(Copy==mode) {
+        dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi, false);
+    } else if (!sourceUdi.isEmpty()) { // Must be a delete...
+        dev=getDevice(sourceUdi, false);
+    }
+
+    if (dev) {
+        dev->abortJob();
+    }
+
+    refreshLibrary();
+    reject();
 }
 
 void ActionDialog::doNext()
@@ -428,6 +449,23 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
         break;
     case Device::FailedToCreateTempFile:
         setPage(PAGE_ERROR, i18n("Failed to create temporary file.<br/>(Required for transcoding to MTP devices.)<hr/>%1").arg(formatSong(currentSong)));
+        break;
+    case Device::ReadFailed:
+        setPage(PAGE_SKIP, i18n("Failed to read source file.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        break;
+    case Device::WriteFailed:
+        setPage(PAGE_SKIP, i18n("Failed to write to destination file.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        break;
+    case Device::FailedToUpdateTags:
+        setPage(PAGE_SKIP, i18n("Failed to update metadata.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        break;
+    case Device::TooManyRedirects:
+        setPage(PAGE_SKIP, i18n("Failed to download track - too many redirects encountered.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        break;
+    case Device::DownloadFailed:
+        setPage(PAGE_SKIP, i18n("Failed to download track.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        break;
+    case Device::Cancelled:
         break;
     default:
         break;
@@ -575,8 +613,8 @@ void ActionDialog::removeSong(const Song &s)
 void ActionDialog::removeSongResult(int status)
 {
     FileJob::finished(sender());
-    if (FileJob::StatusOk!=status) {
-        actionStatus(Device::Failed);
+    if (Device::Ok!=status) {
+        actionStatus(status);
     } else {
         MusicLibraryModel::self()->removeSongFromList(currentSong);
         DirViewModel::self()->removeFileFromList(currentSong.file);
@@ -595,7 +633,7 @@ void ActionDialog::cleanDirs()
 void ActionDialog::cleanDirsResult(int status)
 {
     FileJob::finished(sender());
-    actionStatus(FileJob::StatusOk==status ? Device::Ok : Device::Failed);
+    actionStatus(status);
 }
 
 void ActionDialog::jobPercent(int percent)

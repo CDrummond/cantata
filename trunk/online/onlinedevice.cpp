@@ -74,7 +74,7 @@ void OnlineDevice::downloadFinished()
 
         if (redirect.isValid()) {
             if (++redirects >= constMaxRedirects) {
-                emit actionStatus(Failed);
+                emit actionStatus(TooManyRedirects);
             } else {
                 job=NetworkAccessManager::self()->get(QUrl(redirect.toUrl()));
                 connect(job, SIGNAL(finished()), SLOT(downloadFinished()));
@@ -92,11 +92,11 @@ void OnlineDevice::downloadFinished()
                 f.write(reply->readAll());
                 emit actionStatus(Ok);
             } else {
-                emit actionStatus(Failed);
+                emit actionStatus(WriteFailed);
             }
         }
     } else {
-        emit actionStatus(Failed);
+        emit actionStatus(DownloadFailed);
     }
 }
 

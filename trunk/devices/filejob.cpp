@@ -113,11 +113,11 @@ QString CopyJob::updateTagsLocal()
         song.file=srcFile;
         temp=Device::copySongToTemp(song);
         if (!temp) {
-            emit result(StatusFailed);
+            emit result(Device::FailedToUpdateTags);
             return QString();
         }
         if ((copyOpts&OptsApplyVaFix || copyOpts&OptsUnApplyVaFix) && !Device::fixVariousArtists(temp->fileName(), song, copyOpts&OptsApplyVaFix)) {
-            emit result(StatusFailed);
+            emit result(Device::FailedToUpdateTags);
             return QString();
         }
         if (Device::constEmbedCover==deviceOpts.coverName) {
@@ -157,20 +157,20 @@ void CopyJob::run()
     }
 
     if (stopRequested) {
-        emit result(StatusCancelled);
+        emit result(Device::Cancelled);
         return;
     }
 
     QFile src(srcFile);
 
     if (!src.open(QIODevice::ReadOnly)) {
-        emit result(StatusFailed);
+        emit result(Device::ReadFailed);
         return;
     }
 
     QFile dest(destFile);
     if (!dest.open(QIODevice::WriteOnly)) {
-        emit result(StatusFailed);
+        emit result(Device::WriteFailed);
         return;
     }
 
@@ -182,18 +182,18 @@ void CopyJob::run()
 
     do {
         if (stopRequested) {
-            emit result(StatusCancelled);
+            emit result(Device::Cancelled);
             return;
         }
         bytesRead = src.read(buffer, constChunkSize);
         readPos+=bytesRead;
         if (bytesRead<0) {
-            emit result(StatusFailed);
+            emit result(Device::ReadFailed);
             return;
         }
 
         if (stopRequested) {
-            emit result(StatusCancelled);
+            emit result(Device::Cancelled);
             return;
         }
 
@@ -201,11 +201,11 @@ void CopyJob::run()
         do {
             qint64 bytesWritten = dest.write(&buffer[writePos], bytesRead - writePos);
             if (stopRequested) {
-                emit result(StatusCancelled);
+                emit result(Device::Cancelled);
                 return;
             }
             if (-1==bytesWritten) {
-                emit result(StatusFailed);
+                emit result(Device::WriteFailed);
                 return;
             }
             writePos+=bytesWritten;
@@ -220,13 +220,13 @@ void CopyJob::run()
     updateTagsDest();
     copyCover(origSrcFile);
     setPercent(100);
-    emit result(StatusOk);
+    emit result(Device::Ok);
 }
 
 void DeleteJob::run()
 {
-    int status=QFile::remove(fileName) ? StatusOk : StatusFailed;
-    if (remLyrics && StatusOk==status) {
+    int status=QFile::remove(fileName) ? Device::Ok : Device::Failed;
+    if (remLyrics && Device::Ok==status) {
         QString lyrics=Utils::changeExtension(fileName, LyricsPage::constExtension);
         if (lyrics!=fileName) {
             QFile::remove(lyrics);
@@ -242,7 +242,7 @@ void CleanJob::run()
     int current=0;
     foreach (const QString &d, dirs) {
         if (stopRequested) {
-            emit result(StatusCancelled);
+            emit result(Device::Cancelled);
             return;
         }
         Device::cleanDir(d, base, coverFile);
@@ -250,5 +250,5 @@ void CleanJob::run()
     }
 
     emit percent(100);
-    emit result(StatusOk);
+    emit result(Device::Ok);
 }

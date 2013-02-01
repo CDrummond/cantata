@@ -47,6 +47,41 @@
 #include "utils.h"
 
 const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
+static const QString constStreamCategoryMimeType("cantata/streams-category");
+static const QString constStreamMimeType("cantata/stream");
+static const QLatin1String constSeparator("##Cantata##");
+
+static QString encodeStreamItem(StreamsModel::StreamItem *i)
+{
+    return i->name.replace(constSeparator, " ")+constSeparator+
+           i->url.toString()+constSeparator+
+           i->genre+constSeparator+
+           i->icon+constSeparator+
+           i->parent->name;
+}
+
+struct DndStream
+{
+    QString name;
+    QString url;
+    QString genre;
+    QString icon;
+    QString category;
+};
+
+static DndStream decodeStreamItem(const QString &s)
+{
+    DndStream i;
+    QStringList parts=s.split(constSeparator);
+    if (parts.size()>=5) {
+        i.name=parts.at(0);
+        i.url=parts.at(1);
+        i.genre=parts.at(2);
+        i.icon=parts.at(3);
+        i.category=parts.at(4);
+    }
+    return i;
+}
 
 static bool iconIsValid(const QString &icon)
 {
@@ -328,7 +363,6 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
 
 bool StreamsModel::add(const QString &cat, const QString &name, const QString &genre, const QString &icon, const QString &url)
 {
-    QUrl u(url);
     CategoryItem *c=getCategory(cat, true, true);
 
     if (entryExists(c, name, url)) {
@@ -503,6 +537,36 @@ void StreamsModel::removeStream(StreamItem *stream)
     modified=true;
 }
 
+void StreamsModel::removeStream(const QString &category, const QString &name, const QString &url)
+{
+    CategoryItem *cat=getCategory(category);
+    if (!cat) {
+        return;
+    }
+    int parentRow=items.indexOf(cat);
+    if (-1==parentRow) {
+        return;
+    }
+    StreamItem *stream=getStream(cat, name, QUrl(url));
+    if (0==stream) {
+        return;
+    }
+    int row=cat->streams.indexOf(stream);
+    if (-1==row) {
+        return;
+    }
+    beginRemoveRows(createIndex(parentRow, 0, cat), row, row);
+    cat->streams.removeAt(row);
+    cat->itemMap.remove(stream->url.toString());
+    endRemoveRows();
+    delete stream;
+
+    if (cat->streams.isEmpty()) {
+        removeCategory(cat);
+    }
+    modified=true;
+}
+
 StreamsModel::CategoryItem * StreamsModel::getCategory(const QString &name, bool create, bool signal)
 {
     foreach (CategoryItem *c, items) {
@@ -536,25 +600,34 @@ QString StreamsModel::name(CategoryItem *cat, const QString &url)
     return QString();
 }
 
-bool StreamsModel::entryExists(CategoryItem *cat, const QString &name, const QUrl &url)
+StreamsModel::StreamItem * StreamsModel::getStream(CategoryItem *cat, const QString &name, const QUrl &url)
 {
     if(cat) {
-        foreach (const StreamItem *s, cat->streams) {
+        foreach (StreamItem *s, cat->streams) {
             if ( (!name.isEmpty() && s->name==name) || (!url.isEmpty() && s->url==url)) {
-                return true;
+                return s;
             }
         }
     }
 
-    return false;
+    return 0;
 }
 
 Qt::ItemFlags StreamsModel::flags(const QModelIndex &index) const
 {
-    if (index.isValid())
-        return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-    else
+    if (index.isValid()) {
+        return index.internalPointer() &&  static_cast<Item*>(index.internalPointer())->isCategory()
+                ? (Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled)
+                : (Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled);
+    } else {
         return Qt::NoItemFlags;
+    }
+}
+
+
+Qt::DropActions StreamsModel::supportedDropActions() const
+{
+    return Qt::CopyAction | Qt::MoveAction;
 }
 
 bool StreamsModel::validProtocol(const QString &file) const
@@ -601,8 +674,78 @@ QMimeData * StreamsModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();
     PlayQueueModel::encode(*mimeData, PlayQueueModel::constFileNameMimeType, filenames(indexes, true));
+    QStringList categories;
+    QStringList streams;
+
+    foreach(QModelIndex index, indexes) {
+        Item *item=static_cast<Item *>(index.internalPointer());
+
+        if (item->isCategory()) {
+            categories.append(item->name);
+        } else {
+            streams.append(encodeStreamItem(static_cast<StreamItem *>(item)));
+        }
+    }
+
+    if (!categories.isEmpty()) {
+        PlayQueueModel::encode(*mimeData, constStreamCategoryMimeType, categories);
+    }
+    if (!streams.isEmpty()) {
+        PlayQueueModel::encode(*mimeData, constStreamMimeType, streams);
+    }
     return mimeData;
 }
+
+bool StreamsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int col, const QModelIndex &parent)
+{
+    Q_UNUSED(col)
+    Q_UNUSED(row)
+
+    if (Qt::IgnoreAction==action) {
+        return true;
+    }
+
+    if (!parent.isValid()) {
+        return false;
+    }
+
+    if (data->hasFormat(constStreamCategoryMimeType)) {
+        // Cant drag categories onto categories...
+        return false;
+    }
+
+    if (data->hasFormat(constStreamMimeType)) {
+        Item *item=static_cast<Item *>(parent.internalPointer());
+        if (!item->isCategory()) {
+            // Should not happen, due to flags() - but make sure!!!
+            return false;
+        }
+        CategoryItem *dest=static_cast<CategoryItem *>(item);
+        QStringList streams=PlayQueueModel::decode(*data, constStreamMimeType);
+        bool ok=false;
+
+        foreach (const QString &s, streams) {
+            DndStream stream=decodeStreamItem(s);
+            if (!stream.category.isEmpty() && stream.category!=dest->name) {
+                if (add(dest->name, stream.name, stream.genre, stream.icon, stream.url)) {
+                    removeStream(stream.category, stream.name, stream.url);
+                }
+                ok=true;
+            }
+        }
+        return ok;
+    }
+
+    return false;
+}
+
+QStringList StreamsModel::mimeTypes() const
+{
+    QStringList types;
+    types << PlayQueueModel::constFileNameMimeType << constStreamCategoryMimeType;
+    return types;
+}
+
 
 void StreamsModel::persist()
 {

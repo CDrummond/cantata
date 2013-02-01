@@ -30,6 +30,7 @@
 
 PathRequester::PathRequester(QWidget *parent)
     : QWidget(parent)
+    , dirMode(true)
 {
     QHBoxLayout *layout=new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);

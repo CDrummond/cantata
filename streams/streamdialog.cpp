@@ -38,6 +38,7 @@
 
 StreamDialog::StreamDialog(const QStringList &categories, const QStringList &genres, QWidget *parent, bool addToPlayQueue)
     : Dialog(parent)
+    , saveCombo(0)
     , urlHandlers(MPDConnection::self()->urlHandlers())
 {
     QWidget *wid = new QWidget(this);

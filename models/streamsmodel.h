@@ -91,12 +91,16 @@ public:
     void remove(const QModelIndex &index);
     void removeCategory(CategoryItem *cat);
     void removeStream(StreamItem *stream);
+    void removeStream(const QString &category, const QString &name, const QString &url);
     QString name(const QString &cat, const QString &url) { return name(getCategory(cat), url); }
     bool entryExists(const QString &cat, const QString &name, const QUrl &url=QUrl()) { return entryExists(getCategory(cat), name, url); }
     Qt::ItemFlags flags(const QModelIndex &index) const;
+    Qt::DropActions supportedDropActions() const;
     bool validProtocol(const QString &file) const;
     QStringList filenames(const QModelIndexList &indexes, bool addPrefix) const;
     QMimeData * mimeData(const QModelIndexList &indexes) const;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int col, const QModelIndex &parent);
+    QStringList mimeTypes() const;
     void mark(const QList<int> &rows, bool f);
     void updateGenres();
 
@@ -108,7 +112,8 @@ private:
     bool load(const QString &filename, bool isInternal);
     CategoryItem * getCategory(const QString &name, bool create=false, bool signal=false);
     QString name(CategoryItem *cat, const QString &url);
-    bool entryExists(CategoryItem *cat, const QString &name, const QUrl &url=QUrl());
+    bool entryExists(CategoryItem *cat, const QString &name, const QUrl &url=QUrl()) { return 0!=getStream(cat, name, url); }
+    StreamItem * getStream(CategoryItem *cat, const QString &name, const QUrl &url);
 
 private Q_SLOTS:
     void persist();

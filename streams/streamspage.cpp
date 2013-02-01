@@ -287,6 +287,9 @@ StreamsPage::StreamsPage(MainWindow *p)
     Icon::init(replacePlayQueue);
 
     view->setTopText(i18n("Streams"));
+    view->setUniformRowHeights(true);
+    view->setAcceptDrops(true);
+    view->setDragDropMode(QAbstractItemView::DragDrop);
 //     view->addAction(p->addToPlaylistAction);
     view->addAction(p->replacePlayQueueAction);
     view->addAction(p->addWithPriorityAction);

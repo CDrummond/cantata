@@ -1212,8 +1212,8 @@ void MtpDevice::transcodeSongResult(int status)
         deleteTemp();
         return;
     }
-    if (FileJob::StatusOk!=status) {
-        emit actionStatus(TranscodeFailed);
+    if (Ok!=status) {
+        emit actionStatus(status);
     } else {
         emit putSong(currentSong, needToFixVa, DeviceOptions(Device::constNoCover));
     }

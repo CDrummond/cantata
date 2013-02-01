@@ -51,12 +51,6 @@ class FileJob : public QObject
     Q_OBJECT
 
 public:
-    enum Status {
-        StatusOk,
-        StatusFailed,
-        StatusCancelled
-    };
-
     static void finished(QObject *obj) {
         if (obj) {
             obj->deleteLater();

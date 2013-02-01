@@ -32,7 +32,6 @@
 #include <QStringList>
 
 class MusicLibraryItemRoot;
-class KJob;
 
 class MusicScanner : public QThread
 {

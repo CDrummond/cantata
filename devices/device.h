@@ -74,7 +74,15 @@ public:
         NotConnected,
         CodecNotAvailable,
         TranscodeFailed,
-        FailedToCreateTempFile
+        FailedToCreateTempFile,
+        ReadFailed,
+        WriteFailed,
+        FailedToUpdateTags,
+        Cancelled,
+
+        // These are for online services...
+        TooManyRedirects,
+        DownloadFailed
     };
 
     enum DevType {
@@ -170,7 +178,6 @@ public:
     bool isConfigured() {
         return configured;
     }
-
     void abortJob() {
         jobAbortRequested=true;
     }

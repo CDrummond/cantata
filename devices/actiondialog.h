@@ -66,7 +66,8 @@ private Q_SLOTS:
     void jobPercent(int percent);
 
 private:
-    Device * getDevice(const QString &udi);
+    void cancel();
+    Device * getDevice(const QString &udi, bool logErrors=true);
     void configure(const QString &udi);
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
     void slotButtonClicked(int button);

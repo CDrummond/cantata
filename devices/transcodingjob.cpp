@@ -46,7 +46,7 @@ void TranscodingJob::run()
     }
 
     if (stopRequested) {
-        emit result(StatusCancelled);
+        emit result(Device::Cancelled);
     } else {
         QStringList parameters=encoder.params(value, src, destFile);
         process = new QProcess;
@@ -65,7 +65,7 @@ void TranscodingJob::stop()
         process->close();
         process->deleteLater();
         process=0;
-        emit result(StatusCancelled);
+        emit result(Device::Cancelled);
     }
 }
 
@@ -76,20 +76,20 @@ void TranscodingJob::finished(int exitCode, QProcess::ExitStatus exitStatus)
         return;
     }
     if (stopRequested) {
-        emit result(StatusCancelled);
+        emit result(Device::Cancelled);
         return;
     }
     if (0==exitCode) {
         updateTagsDest();
         copyCover(srcFile);
     }
-    emit result(0==exitCode ? StatusOk : StatusFailed);
+    emit result(0==exitCode ? Device::Ok : Device::TranscodeFailed);
 }
 
 void TranscodingJob::processOutput()
 {
     if (stopRequested) {
-        emit result(StatusCancelled);
+        emit result(Device::Cancelled);
         return;
     }
     QString output = process->readAllStandardOutput().data();

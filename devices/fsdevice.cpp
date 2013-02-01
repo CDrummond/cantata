@@ -527,8 +527,8 @@ void FsDevice::addSongResult(int status)
         }
         return;
     }
-    if (FileJob::StatusOk!=status) {
-        emit actionStatus(transcoding ? TranscodeFailed : Failed);
+    if (Ok!=status) {
+        emit actionStatus(status);
     } else {
         currentSong.file=destFileName;
         if (needToFixVa) {
@@ -550,8 +550,8 @@ void FsDevice::copySongToResult(int status)
         }
         return;
     }
-    if (FileJob::StatusOk!=status) {
-        emit actionStatus(Failed);
+    if (Ok!=status) {
+        emit actionStatus(status);
     } else {
         currentSong.file=currentMusicPath; // MPD's paths are not full!!!
         if (needToFixVa) {
@@ -571,8 +571,8 @@ void FsDevice::removeSongResult(int status)
     if (jobAbortRequested) {
         return;
     }
-    if (FileJob::StatusOk!=status) {
-        emit actionStatus(Failed);
+    if (Ok!=status) {
+        emit actionStatus(status);
     } else {
         removeSongFromList(currentSong);
         emit actionStatus(Ok);
@@ -586,7 +586,7 @@ void FsDevice::cleanDirsResult(int status)
     if (jobAbortRequested) {
         return;
     }
-    emit actionStatus(FileJob::StatusOk==status ? Ok : Failed);
+    emit actionStatus(status);
 }
 
 void FsDevice::cacheRead()

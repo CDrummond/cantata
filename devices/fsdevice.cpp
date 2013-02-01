@@ -60,34 +60,72 @@ const QLatin1String FsDevice::constUseCacheKey("use_cache"); // Cantata extensio
 const QLatin1String FsDevice::constDefCoverFileName("cover.jpg");
 const QLatin1String FsDevice::constAutoScanKey("auto_scan"); // Cantata extension!
 
-MusicScanner::MusicScanner(const QString &f)
+MusicScanner::MusicScanner()
     : QThread(0)
-    , library(0)
     , stopRequested(false)
     , count(0)
     , lastUpdate(0)
 {
-    folder=Utils::fixPath(QDir(f).absolutePath());
     moveToThread(this);
+    start();
 }
 
 MusicScanner::~MusicScanner()
 {
-    delete library;
 }
 
-void MusicScanner::run()
+void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<Song> &existingSongs)
 {
+    if (!cacheFile.isEmpty() && readCache) {
+        MusicLibraryItemRoot *lib=new MusicLibraryItemRoot;
+        MusicLibraryModel::convertCache(cacheFile);
+        readProgress(0.0);
+        if (lib->fromXML(cacheFile, QDateTime(), folder)) {
+            fixLibrary(lib);
+            if (!stopRequested) {
+                emit libraryUpdated(lib);
+            }
+            return;
+        }
+    }
+
+    if (stopRequested) {
+        return;
+    }
+    existing=existingSongs;
     count=0;
     lastUpdate=0;
-    library = new MusicLibraryItemRoot;
-    scanFolder(folder, 0);
-    if (MPDParseUtils::groupSingle()) {
-        library->groupSingleTracks();
+    MusicLibraryItemRoot *library = new MusicLibraryItemRoot;
+    QString topLevel=Utils::fixPath(QDir(folder).absolutePath());
+    scanFolder(library, topLevel, topLevel, 0);
+
+    if (!stopRequested) {
+        fixLibrary(library);
+        if (!cacheFile.isEmpty()) {
+            writeProgress(0.0);
+            library->toXML(cacheFile, QDateTime(), this);
+        }
+        emit libraryUpdated(library);
+    } else {
+        delete library;
     }
-    if (MPDParseUtils::groupMultiple()) {
-        library->groupMultipleArtists();
+}
+
+void MusicScanner::fixLibrary(MusicLibraryItemRoot *lib)
+{
+    if (!stopRequested && MPDParseUtils::groupSingle()) {
+        lib->groupSingleTracks();
     }
+    if (!stopRequested && MPDParseUtils::groupMultiple()) {
+        lib->groupMultipleArtists();
+    }
+}
+
+void MusicScanner::saveCache(const QString &cache, MusicLibraryItemRoot *lib)
+{
+    writeProgress(0.0);
+    lib->toXML(cache, QDateTime(), this);
+    emit cacheSaved();
 }
 
 void MusicScanner::stop()
@@ -96,14 +134,7 @@ void MusicScanner::stop()
     Utils::stopThread(this);
 }
 
-MusicLibraryItemRoot * MusicScanner::takeLibrary()
-{
-    MusicLibraryItemRoot *lib=library;
-    library=0;
-    return lib;
-}
-
-void MusicScanner::scanFolder(const QString &f, int level)
+void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topLevel, const QString &f, int level)
 {
     if (stopRequested) {
         return;
@@ -118,10 +149,10 @@ void MusicScanner::scanFolder(const QString &f, int level)
                 return;
             }
             if (info.isDir()) {
-                scanFolder(info.absoluteFilePath(), level+1);
+                scanFolder(library, topLevel, info.absoluteFilePath(), level+1);
             } else if(info.isReadable()) {
                 Song song;
-                QString fname=info.absoluteFilePath().mid(folder.length());
+                QString fname=info.absoluteFilePath().mid(topLevel.length());
                 QSet<Song>::iterator it=existing.find(song);
                 if (existing.end()==it) {
                     song=Tags::read(info.absoluteFilePath());
@@ -157,6 +188,16 @@ void MusicScanner::scanFolder(const QString &f, int level)
             }
         }
     }
+}
+
+void MusicScanner::readProgress(double pc)
+{
+    emit readingCache((int)pc);
+}
+
+void MusicScanner::writeProgress(double pc)
+{
+    emit savingCache((int)pc);
 }
 
 bool FsDevice::readOpts(const QString &fileName, DeviceOptions &opts, bool readAll)
@@ -275,57 +316,46 @@ void FsDevice::writeOpts(const QString &fileName, const DeviceOptions &opts, boo
 
 FsDevice::FsDevice(DevicesModel *m, Solid::Device &dev)
     : Device(m, dev)
+    , state(Idle)
     , scanned(false)
+    , cacheProgress(-1)
     , scanner(0)
 {
+    initScaner();
 }
 
 FsDevice::FsDevice(DevicesModel *m, const QString &name, const QString &id)
     : Device(m, name, id)
+    , state(Idle)
     , scanned(false)
+    , cacheProgress(-1)
     , scanner(0)
 {
+    initScaner();
 }
 
 FsDevice::~FsDevice() {
-    stopScanner(false);
+    stopScanner();
 }
 
 void FsDevice::rescan(bool full)
 {
     spaceInfo.setDirty();
     // If this is the first scan (scanned=false) and we are set to use cache, attempt to load that before scanning
-    if (isIdle() && (scanned || !opts.useCache || !readCache())) {
-        scanned=true;
+    if (isIdle()) {
         if (full) {
+            removeCache();
             clear();
         }
-        removeCache();
         startScanner(full);
+        scanned=true;
     }
-}
-
-bool FsDevice::readCache()
-{
-    if (opts.useCache) {
-        MusicLibraryItemRoot *root=new MusicLibraryItemRoot;
-        MusicLibraryModel::convertCache(cacheFileName());
-        if (root->fromXML(cacheFileName(), QDateTime(), audioFolder)) {
-            update=root;
-            scanned=true;
-            QTimer::singleShot(0, this, SLOT(cacheRead()));
-            return true;
-        }
-        delete root;
-    }
-
-    return false;
 }
 
 void FsDevice::stop()
 {
      if (0!=scanner) {
-         scanner->stop();
+         stopScanner();
      }
 }
 
@@ -589,40 +619,52 @@ void FsDevice::cleanDirsResult(int status)
     emit actionStatus(status);
 }
 
-void FsDevice::cacheRead()
+void FsDevice::initScaner()
 {
-    setStatusMessage(QString());
-    emit updating(udi(), false);
+    if (!scanner) {
+        static bool registeredTypes=false;
+
+        if (!registeredTypes) {
+             qRegisterMetaType<QSet<Song> >("QSet<Song>");
+             registeredTypes=true;
+        }
+        scanner=new MusicScanner();
+        connect(scanner, SIGNAL(libraryUpdated(MusicLibraryItemRoot *)), this, SLOT(libraryUpdated(MusicLibraryItemRoot *)));
+        connect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
+        connect(scanner, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
+        connect(scanner, SIGNAL(savingCache(int)), this, SLOT(savingCache(int)));
+        connect(scanner, SIGNAL(readingCache(int)), this, SLOT(readingCache(int)));
+        connect(this, SIGNAL(scan(const QString &, const QString &, bool, const QSet<Song> &)), scanner, SLOT(scan(const QString &, const QString &, bool, const QSet<Song> &)));
+        connect(this, SIGNAL(saveCache(const QString &, MusicLibraryItemRoot *)), scanner, SLOT(saveCache(const QString &, MusicLibraryItemRoot *)));
+    }
 }
 
 void FsDevice::startScanner(bool fullScan)
 {
-    stopScanner();
-    scanner=new MusicScanner(audioFolder);
-    connect(scanner, SIGNAL(finished()), this, SLOT(libraryUpdated()));
-    connect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
+    initScaner();
     QSet<Song> existingSongs;
     if (!fullScan) {
         existingSongs=allSongs();
     }
-    scanner->start(existingSongs);
+    state=Updating;
+    emit scan(audioFolder, opts.useCache ? cacheFileName() : QString(), !scanned, existingSongs);
     setStatusMessage(i18n("Updating..."));
     emit updating(udi(), true);
 }
 
-void FsDevice::stopScanner(bool showStatus)
+void FsDevice::stopScanner()
 {
-    // Scan for music in a separate thread...
+    scanner->stop();
+    state=Idle;
+
     if (scanner) {
-        disconnect(scanner, SIGNAL(finished()), this, SLOT(libraryUpdated()));
+        disconnect(scanner, SIGNAL(libraryUpdated(MusicLibraryItemRoot *)), this, SLOT(libraryUpdated(MusicLibraryItemRoot *)));
         disconnect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
-        scanner->stop();
+        disconnect(scanner, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
+        disconnect(scanner, SIGNAL(savingCache(int)), this, SLOT(savingCache(int)));
+        disconnect(scanner, SIGNAL(readingCache(int)), this, SLOT(readingCache(int)));
         scanner->deleteLater();
         scanner=0;
-        if (showStatus) {
-            setStatusMessage(QString());
-            emit updating(udi(), false);
-        }
     }
 }
 
@@ -636,18 +678,19 @@ void FsDevice::clear() const
     }
 }
 
-void FsDevice::libraryUpdated()
+void FsDevice::libraryUpdated(MusicLibraryItemRoot *lib)
 {
-    if (scanner) {
-        if (update) {
-            delete update;
-        }
-        update=scanner->takeLibrary();
-        if (opts.useCache && update) {
-            update->toXML(cacheFileName());
-        }
-        stopScanner();
+    cacheProgress=-1;
+    if (update) {
+        delete update;
     }
+    update=lib;
+    if (opts.useCache && update) {
+        update->toXML(cacheFileName());
+    }
+    setStatusMessage(QString());
+    state=Idle;
+    emit updating(udi(), false);
 }
 
 QString FsDevice::cacheFileName() const
@@ -661,8 +704,15 @@ QString FsDevice::cacheFileName() const
 void FsDevice::saveCache()
 {
     if (opts.useCache) {
-        toXML(cacheFileName());
+        state=SavingCache;
+        emit saveCache(cacheFileName(), this);
     }
+}
+
+void FsDevice::cacheSaved()
+{
+    state=Idle;
+    cacheProgress=-1;
 }
 
 void FsDevice::removeCache()
@@ -677,5 +727,23 @@ void FsDevice::removeCache()
     oldCache.replace(MusicLibraryModel::constLibraryCompressedExt, MusicLibraryModel::constLibraryExt);
     if (oldCache!=cacheFile && QFile::exists(oldCache)) {
         QFile::remove(oldCache);
+    }
+}
+
+void FsDevice::readingCache(int pc)
+{
+    cacheStatus(i18n("Reading cache"), pc);
+}
+
+void FsDevice::savingCache(int pc)
+{
+    cacheStatus(i18n("Saving cache"), pc);
+}
+
+void FsDevice::cacheStatus(const QString &msg, int prog)
+{
+    if (prog!=cacheProgress) {
+        cacheProgress=prog;
+        setStatusMessage(i18nc("Message percent", "%1 %2%").arg(msg).arg(cacheProgress));
     }
 }

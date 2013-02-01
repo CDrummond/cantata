@@ -52,9 +52,9 @@ void UmsDevice::connectionStateChanged()
     if (isConnected()) {
         spaceInfo.setPath(access->filePath());
         setup();
-        if ((opts.autoScan || scanned) && (!opts.useCache || !readCache())){ // Only scan if we are set to auto scan, or we have already scanned before...
-            rescan();
-        } else if (!scanned && (!opts.useCache || !readCache())) { // Attempt to read cache, even if autoScan set to false
+        if (opts.autoScan || scanned){ // Only scan if we are set to auto scan, or we have already scanned before...
+            rescan(false); // Read from cache if we have it!
+        } else {
             setStatusMessage(i18n("Not Scanned"));
         }
     } else {
@@ -83,6 +83,9 @@ bool UmsDevice::isConnected() const
 
 double UmsDevice::usedCapacity()
 {
+    if (cacheProgress>-1) {
+        return (cacheProgress*1.0)/100.0;
+    }
     if (!isConnected()) {
         return -1.0;
     }
@@ -92,6 +95,9 @@ double UmsDevice::usedCapacity()
 
 QString UmsDevice::capacityString()
 {
+    if (cacheProgress>-1) {
+        return statusMessage();
+    }
     if (!isConnected()) {
         return i18n("Not Connected");
     }
@@ -178,9 +184,9 @@ void UmsDevice::setup()
         audioFolder+='/';
     }
 
-    if ((opts.autoScan || scanned) && (!opts.useCache || !readCache())){ // Only scan if we are set to auto scan, or we have already scanned before...
-        rescan();
-    } else if (!scanned && (!opts.useCache || !readCache())) { // Attempt to read cache, even if autoScan set to false
+    if (opts.autoScan || scanned){ // Only scan if we are set to auto scan, or we have already scanned before...
+        rescan(false); // Read from cache if we have it!
+    } else {
         setStatusMessage(i18n("Not Scanned"));
     }
 }
@@ -281,6 +287,6 @@ void UmsDevice::saveProperties(const QString &newPath, const DeviceOptions &newO
     FsDevice::writeOpts(spaceInfo.path()+constCantataSettingsFile, opts, false);
 
     if (oldPath!=audioFolder) {
-        rescan();
+        rescan(); // Path changed, so we can ignore cache...
     }
 }

@@ -165,6 +165,7 @@ void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topL
                 QSet<FileOnlySong>::iterator it=existing.find(song);
                 if (existing.end()==it) {
                     song=Tags::read(info.absoluteFilePath());
+                    song.file=fname;
                 } else {
                     song=*it;
                     existing.erase(it);

@@ -675,6 +675,9 @@ void FsDevice::startScanner(bool fullScan)
 
 void FsDevice::stopScanner()
 {
+    if (!scanner) {
+        return;
+    }
     scanner->stop();
     state=Idle;
 

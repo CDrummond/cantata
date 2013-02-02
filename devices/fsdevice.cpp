@@ -710,9 +710,6 @@ void FsDevice::libraryUpdated(MusicLibraryItemRoot *lib)
         delete update;
     }
     update=lib;
-    if (opts.useCache && update) {
-        update->toXML(cacheFileName());
-    }
     setStatusMessage(QString());
     state=Idle;
     emit updating(udi(), false);

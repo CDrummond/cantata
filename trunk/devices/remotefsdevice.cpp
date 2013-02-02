@@ -640,6 +640,8 @@ void RemoteFsDevice::saveProperties(const DeviceOptions &newOpts, const Details 
         return;
     }
 
+    bool isLocal=details.isLocalFile();
+
     if (connected) {
         if (!configured) {
             details.configured=configured=true;
@@ -654,19 +656,26 @@ void RemoteFsDevice::saveProperties(const DeviceOptions &newOpts, const Details 
         }
         opts=newOpts;
         writeOpts(settingsFileName(), opts, true);
-    } else {
+    }
+    if (!connected || isLocal) {
         Details newDetails=nd;
         Details oldDetails=details;
         bool newName=!oldDetails.name.isEmpty() && oldDetails.name!=newDetails.name;
+        bool newDir=oldDetails.url.path()!=newDetails.url.path();
 
+        if (isLocal && newDir && opts.useCache) {
+            removeCache();
+        }
         details=newDetails;
         details.configured=configured;
         details.save();
 
         if (newName) {
-            QString oldMount=mountPoint(oldDetails, false);
-            if (!oldMount.isEmpty() && QDir(oldMount).exists()) {
-                ::rmdir(QFile::encodeName(oldMount).constData());
+            if (!details.isLocalFile()) {
+                QString oldMount=mountPoint(oldDetails, false);
+                if (!oldMount.isEmpty() && QDir(oldMount).exists()) {
+                    ::rmdir(QFile::encodeName(oldMount).constData());
+                }
             }
             setData(details.name);
             renamed(oldDetails.name, details.name);
@@ -674,6 +683,9 @@ void RemoteFsDevice::saveProperties(const DeviceOptions &newOpts, const Details 
             emit udiChanged();
             m_itemData=details.name;
             setStatusMessage(QString());
+        }
+        if (isLocal && newDir && scanned) {
+            rescan(true);
         }
     }
 }

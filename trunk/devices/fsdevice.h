@@ -32,6 +32,23 @@
 #include <QThread>
 #include <QStringList>
 
+struct FileOnlySong : public Song
+{
+    FileOnlySong(const Song &o)
+        : Song(o) {
+    }
+    bool operator==(const FileOnlySong &o) const {
+        return file==o.file;
+    }
+    bool operator<(const FileOnlySong &o) const {
+        return file.compare(o.file)<0;
+    }
+};
+
+inline uint qHash(const FileOnlySong &key)
+{
+    return qHash(key.file);
+}
 
 class MusicScanner : public QThread, public MusicLibraryProgressMonitor
 {
@@ -47,7 +64,7 @@ public:
     void writeProgress(double pc);
 
 public Q_SLOTS:
-    void scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<Song> &existingSongs);
+    void scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<FileOnlySong> &existingSongs);
     void saveCache(const QString &cache, MusicLibraryItemRoot *lib);
 
 Q_SIGNALS:
@@ -59,13 +76,13 @@ Q_SIGNALS:
 
 private:
     void fixLibrary(MusicLibraryItemRoot *lib);
-    void scanFolder(MusicLibraryItemRoot *library, const QString &topLevel, const QString &f, int level);
+    void scanFolder(MusicLibraryItemRoot *library, const QString &topLevel, const QString &f, QSet<FileOnlySong> &existing, int level);
 
 private:
-    QSet<Song> existing;
     bool stopRequested;
     int count;
     int lastUpdate;
+    int lastCacheProg;
 };
 
 class FsDevice : public Device
@@ -119,7 +136,7 @@ public:
 
 Q_SIGNALS:
     // For talking to scanner...
-    void scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<Song> &existingSongs);
+    void scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<FileOnlySong> &existingSongs);
     void saveCache(const QString &cacheFile, MusicLibraryItemRoot *lib);
 
 protected:

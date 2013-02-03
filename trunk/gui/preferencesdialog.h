@@ -34,6 +34,7 @@ class ShortcutsSettingsPage;
 class ServerSettings;
 class ServerPlaybackSettings;
 class PlaybackSettings;
+class FileSettings;
 class InterfaceSettings;
 class LyricSettings;
 class LyricsPage;
@@ -59,11 +60,13 @@ private Q_SLOTS:
 Q_SIGNALS:
     void settingsSaved();
     void connectTo(const MPDConnectionDetails &details);
+    void reloadStreams();
 
 private:
     ServerSettings *server;
     ServerPlaybackSettings *serverplayback;
     PlaybackSettings *playback;
+    FileSettings *files;
     InterfaceSettings *interface;
     LyricSettings *lyrics;
     #ifdef TAGLIB_FOUND

@@ -33,7 +33,7 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     stopFadeDuration->setSuffix(i18n(" ms"));
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
-};
+}
 
 void PlaybackSettings::load()
 {

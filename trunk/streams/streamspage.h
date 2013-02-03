@@ -51,7 +51,6 @@ public:
 
     void setEnabled(bool e);
     bool isEnabled() const { return enabled; }
-    void refresh();
     void save();
     void addSelectionToPlaylist(bool replace, quint8 priorty=0);
     void setView(int v) { view->setMode((ItemView::Mode)v); }
@@ -65,6 +64,7 @@ Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);
 
 public Q_SLOTS:
+    void refresh();
     void removeItems();
     void controlActions();
 

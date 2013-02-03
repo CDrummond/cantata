@@ -79,6 +79,7 @@ SET( CANTATA_SRCS
     gui/preferencesdialog.cpp
     gui/settings.cpp
     gui/covers.cpp
+    gui/filesettings.cpp
     gui/interfacesettings.cpp
     gui/playbacksettings.cpp
     gui/serverplaybacksettings.cpp
@@ -165,6 +166,7 @@ SET( CANTATA_MOC_HDRS
     gui/serverplaybacksettings.h
     gui/serversettings.h
     gui/preferencesdialog.h
+    gui/filesettings.h
     gui/interfacesettings.h
     gui/cachesettings.h
     gui/trayitem.h
@@ -224,6 +226,7 @@ SET( CANTATA_UIS
     gui/librarypage.ui
     gui/albumspage.ui
     gui/playlistspage.ui
+    gui/filesettings.ui
     gui/interfacesettings.ui
     gui/playbacksettings.ui
     gui/serverplaybacksettings.ui

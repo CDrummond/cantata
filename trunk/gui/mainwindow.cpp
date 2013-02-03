@@ -1200,6 +1200,7 @@ void MainWindow::showPreferencesDialog()
         PreferencesDialog pref(this, lyricsPage);
         connect(&pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
         connect(&pref, SIGNAL(connectTo(const MPDConnectionDetails &)), this, SLOT(connectToMpd(const MPDConnectionDetails &)));
+        connect(&pref, SIGNAL(reloadStreams()), streamsPage, SLOT(refresh()));
 
         pref.exec();
         updateConnectionsMenu();

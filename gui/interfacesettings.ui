@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>495</width>
+    <width>482</width>
     <height>341</height>
    </rect>
   </property>
@@ -535,36 +535,6 @@ within the folder of the current track, or within its parent folder. If no image
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="BuddyLabel" name="storeCoversInMpdDirLabel">
-           <property name="text">
-            <string>Save downloaded covers in music folder:</string>
-           </property>
-           <property name="buddy">
-            <cstring>storeCoversInMpdDir</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="OnOffButton" name="storeCoversInMpdDir"/>
-         </item>
-         <item row="4" column="0">
-          <widget class="BuddyLabel" name="label_4">
-           <property name="text">
-            <string>Save downloaded lyrics in music folder:</string>
-           </property>
-           <property name="buddy">
-            <cstring>storeLyricsInMpdDir</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="OnOffButton" name="storeLyricsInMpdDir">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
           <widget class="BuddyLabel" name="forceSingleClick_label">
            <property name="text">
             <string>Enforce single-click activation of items:</string>
@@ -574,7 +544,7 @@ within the folder of the current track, or within its parent folder. If no image
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="3" column="1">
           <widget class="OnOffButton" name="forceSingleClick">
            <property name="text">
             <string/>
@@ -662,8 +632,6 @@ within the folder of the current track, or within its parent folder. If no image
   <tabstop>groupSingle</tabstop>
   <tabstop>groupMultiple</tabstop>
   <tabstop>showDeleteAction</tabstop>
-  <tabstop>storeCoversInMpdDir</tabstop>
-  <tabstop>storeLyricsInMpdDir</tabstop>
   <tabstop>forceSingleClick</tabstop>
  </tabstops>
  <resources/>

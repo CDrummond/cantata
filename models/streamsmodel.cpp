@@ -88,9 +88,14 @@ static bool iconIsValid(const QString &icon)
     return icon.startsWith('/') ? QFile::exists(icon) : QIcon::hasThemeIcon(icon);
 }
 
+static const QLatin1String constStreamsFileName("streams.xml");
+
 static QString getInternalFile(bool createDir=false)
 {
-    return Utils::configDir(QString(), createDir)+"streams.xml";
+    if (Settings::self()->storeStreamsInMpdDir() && MPDConnection::self()->getDetails().dirReadable) {
+        return MPDConnection::self()->getDetails().dir+constStreamsFileName;
+    }
+    return Utils::configDir(QString(), createDir)+constStreamsFileName;
 }
 
 StreamsModel::StreamsModel()

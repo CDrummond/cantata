@@ -108,6 +108,7 @@ public:
     bool smallPlaybackButtons();
     bool storeCoversInMpdDir();
     bool storeLyricsInMpdDir();
+    bool storeStreamsInMpdDir();
     int libraryView();
     int albumsView();
     int folderView();
@@ -171,6 +172,7 @@ public:
     void saveShowPopups(bool v);
     void saveStoreCoversInMpdDir(bool v);
     void saveStoreLyricsInMpdDir(bool v);
+    void saveStoreStreamsInMpdDir(bool v);
     void saveLibraryView(int v);
     void saveAlbumsView(int v);
     void saveFolderView(int v);

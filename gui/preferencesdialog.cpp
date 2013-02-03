@@ -29,6 +29,7 @@
 #include "serversettings.h"
 #include "serverplaybacksettings.h"
 #include "playbacksettings.h"
+#include "filesettings.h"
 #ifdef TAGLIB_FOUND
 #include "httpserversettings.h"
 #endif
@@ -53,6 +54,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     server = new ServerSettings(widget);
     serverplayback = new ServerPlaybackSettings(widget);
     playback = new PlaybackSettings(widget);
+    files = new FileSettings(widget);
     interface = new InterfaceSettings(widget);
     #ifdef TAGLIB_FOUND
     http = new HttpServerSettings(widget);
@@ -62,6 +64,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     server->load();
     serverplayback->load();
     playback->load();
+    files->load();
     interface->load();
     #ifdef TAGLIB_FOUND
     http->load();
@@ -71,6 +74,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     widget->addPage(server, i18n("Connection"), Icons::libraryIcon, i18n("Connection Settings"));
     widget->addPage(serverplayback, i18n("Output"), Icons::speakerIcon, i18n("Output Settings"));
     widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
+    widget->addPage(files, i18n("Files"), Icon("audio-x-generic"), i18n("File Settings"));
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     #ifdef TAGLIB_FOUND
     widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
@@ -92,6 +96,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     setMainWidget(widget);
     connect(server, SIGNAL(connectTo(const MPDConnectionDetails &)), SIGNAL(connectTo(const MPDConnectionDetails &)));
     connect(server, SIGNAL(disconnectFromMpd()), MPDConnection::self(), SLOT(disconnectMpd()));
+    connect(files, SIGNAL(reloadStreams()), SIGNAL(reloadStreams()));
 }
 
 void PreferencesDialog::writeSettings()
@@ -100,6 +105,7 @@ void PreferencesDialog::writeSettings()
     server->save();
     serverplayback->save();
     playback->save();
+    files->save();
     interface->save();
     #ifdef TAGLIB_FOUND
     http->save();

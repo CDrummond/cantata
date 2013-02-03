@@ -103,7 +103,7 @@ InterfaceSettings::InterfaceSettings(QWidget *p)
     #endif
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnClose, SLOT(setEnabled(bool)));
     connect(systemTrayCheckBox, SIGNAL(toggled(bool)), minimiseOnCloseLabel, SLOT(setEnabled(bool)));
-};
+}
 
 void InterfaceSettings::load()
 {
@@ -129,8 +129,6 @@ void InterfaceSettings::load()
     playQueueAutoExpand->setChecked(Settings::self()->playQueueAutoExpand());
     playQueueStartClosed->setChecked(Settings::self()->playQueueStartClosed());
     playQueueScroll->setChecked(Settings::self()->playQueueScroll());
-    storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
-    storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
     albumsViewChanged();
     albumsCoverSizeChanged();
     playListsStyleChanged();
@@ -171,8 +169,6 @@ void InterfaceSettings::save()
     Settings::self()->savePlayQueueAutoExpand(playQueueAutoExpand->isChecked());
     Settings::self()->savePlayQueueStartClosed(playQueueStartClosed->isChecked());
     Settings::self()->savePlayQueueScroll(playQueueScroll->isChecked());
-    Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
-    Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
     Settings::self()->saveLyricsBgnd(lyricsBgnd->isChecked());
     Settings::self()->saveForceSingleClick(forceSingleClick->isChecked());
     Settings::self()->saveUseSystemTray(systemTrayCheckBox->isChecked());

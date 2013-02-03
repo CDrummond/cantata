@@ -21,27 +21,33 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "httpserversettings.h"
+#include "filesettings.h"
 #include "settings.h"
+#include "onoffbutton.h"
 
-HttpServerSettings::HttpServerSettings(QWidget *p)
+FileSettings::FileSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
 }
 
-void HttpServerSettings::load()
+void FileSettings::load()
 {
-    enableHttp->setChecked(Settings::self()->enableHttp());
-    alwaysUseHttp->setChecked(Settings::self()->alwaysUseHttp());
-    httpPort->setValue(Settings::self()->httpPort());
-    httpAddress->setText(Settings::self()->httpAddress());
+    storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
+    storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
+    storeStreamsInMpdDir->setChecked(Settings::self()->storeStreamsInMpdDir());
 }
 
-void HttpServerSettings::save()
+void FileSettings::save()
 {
-    Settings::self()->saveEnableHttp(enableHttp->isChecked());
-    Settings::self()->saveAlwaysUseHttp(alwaysUseHttp->isChecked());
-    Settings::self()->saveHttpPort(httpPort->value());
-    Settings::self()->saveHttpAddress(httpAddress->text());
+    // TODO: Move streams?
+    bool streamsWereInMpd=Settings::self()->storeStreamsInMpdDir();
+    bool streamsChaged=streamsWereInMpd!=storeStreamsInMpdDir->isChecked();
+    Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
+    Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
+    Settings::self()->saveStoreStreamsInMpdDir(storeStreamsInMpdDir->isChecked());
+
+    if (streamsChaged) {
+        emit reloadStreams();
+    }
 }

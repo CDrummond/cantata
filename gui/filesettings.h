@@ -21,27 +21,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "httpserversettings.h"
-#include "settings.h"
+#ifndef FILESETTINGS_H
+#define FILESETTINGS_H
 
-HttpServerSettings::HttpServerSettings(QWidget *p)
-    : QWidget(p)
-{
-    setupUi(this);
-}
+#include "ui_filesettings.h"
 
-void HttpServerSettings::load()
+class FileSettings : public QWidget, private Ui::FileSettings
 {
-    enableHttp->setChecked(Settings::self()->enableHttp());
-    alwaysUseHttp->setChecked(Settings::self()->alwaysUseHttp());
-    httpPort->setValue(Settings::self()->httpPort());
-    httpAddress->setText(Settings::self()->httpAddress());
-}
+    Q_OBJECT
 
-void HttpServerSettings::save()
-{
-    Settings::self()->saveEnableHttp(enableHttp->isChecked());
-    Settings::self()->saveAlwaysUseHttp(alwaysUseHttp->isChecked());
-    Settings::self()->saveHttpPort(httpPort->value());
-    Settings::self()->saveHttpAddress(httpAddress->text());
-}
+public:
+    FileSettings(QWidget *p);
+    virtual ~FileSettings() { }
+
+    void load();
+    void save();
+
+Q_SIGNALS:
+    void reloadStreams();
+};
+
+#endif

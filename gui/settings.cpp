@@ -327,6 +327,11 @@ bool Settings::storeLyricsInMpdDir()
     return GET_BOOL("storeLyricsInMpdDir", true);
 }
 
+bool Settings::storeStreamsInMpdDir()
+{
+    return GET_BOOL("storeStreamsInMpdDir", false);
+}
+
 int Settings::libraryView()
 {
     int v=version();
@@ -712,6 +717,11 @@ void Settings::saveStoreCoversInMpdDir(bool v)
 void Settings::saveStoreLyricsInMpdDir(bool v)
 {
     SET_VALUE_MOD(storeLyricsInMpdDir)
+}
+
+void Settings::saveStoreStreamsInMpdDir(bool v)
+{
+    SET_VALUE_MOD(storeStreamsInMpdDir)
 }
 
 void Settings::saveLibraryView(int v)

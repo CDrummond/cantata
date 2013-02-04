@@ -45,6 +45,7 @@
 #include "config.h"
 #include "icons.h"
 #include "utils.h"
+#include "qtiocompressor/qtiocompressor.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(StreamsModel, instance)
@@ -105,7 +106,31 @@ static bool iconIsValid(const QString &icon)
     return icon.startsWith('/') ? QFile::exists(icon) : QIcon::hasThemeIcon(icon);
 }
 
-static const QLatin1String constStreamsFileName("streams.xml");
+static const QLatin1String constStreamsCompressedFileName("streams.xml.gz");
+static const QLatin1String constStreamsOldFileName("streams.xml");
+
+static void convertOldFile(const QString &compressedName)
+{
+    QString prev=compressedName;
+    prev.replace(constStreamsCompressedFileName, constStreamsOldFileName);
+
+    if (QFile::exists(prev) && !QFile::exists(compressedName)) {
+        QFile old(prev);
+        if (old.open(QIODevice::ReadOnly)) {
+            QByteArray a=old.readAll();
+            old.close();
+
+            QFile newFile(compressedName);
+            QtIOCompressor compressor(&newFile);
+            compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+            if (compressor.open(QIODevice::WriteOnly)) {
+                compressor.write(a);
+                compressor.close();
+                QFile::remove(prev);
+            }
+        }
+    }
+}
 
 QString StreamsModel::dir()
 {
@@ -115,9 +140,9 @@ QString StreamsModel::dir()
 static QString getInternalFile(bool createDir=false)
 {
     if (Settings::self()->storeStreamsInMpdDir()) {
-        return MPDConnection::self()->getDetails().dir+constStreamsFileName;
+        return MPDConnection::self()->getDetails().dir+constStreamsCompressedFileName;
     }
-    return Utils::configDir(QString(), createDir)+constStreamsFileName;
+    return Utils::configDir(QString(), createDir)+constStreamsCompressedFileName;
 }
 
 StreamsModel::StreamsModel()
@@ -268,12 +293,28 @@ void StreamsModel::save(bool force)
 
 bool StreamsModel::load(const QString &filename, bool isInternal)
 {
+    if (isInternal) {
+        convertOldFile(filename);
+    }
+
     QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!file.open(QIODevice::ReadOnly)) {
         return false;
     }
 
-    QXmlStreamReader doc(&file);
+    // Check for gzip header...
+    QByteArray header=file.read(2);
+    bool isCompressed=((unsigned char)header[0])==0x1f && ((unsigned char)header[1])==0x8b;
+    file.seek(0);
+
+    QtIOCompressor compressor(&file);
+    if (isCompressed) {
+        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+        if (!compressor.open(QIODevice::ReadOnly)) {
+            return false;
+        }
+    }
+    QXmlStreamReader doc(isCompressed ? (QIODevice *)&compressor : (QIODevice *)&file);
     bool haveInserted=false;
     int level=0;
     CategoryItem *cat=0;
@@ -342,11 +383,13 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
 bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *> &selection)
 {
     QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    QtIOCompressor compressor(&file);
+    compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+    if (!compressor.open(QIODevice::WriteOnly)) {
         return false;
     }
 
-    QXmlStreamWriter doc(&file);
+    QXmlStreamWriter doc(&compressor);
     doc.writeStartDocument();
     doc.writeStartElement("cantata");
     doc.writeAttribute("version", "1.0");

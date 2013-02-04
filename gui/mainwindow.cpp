@@ -2240,10 +2240,10 @@ void MainWindow::addStreamToPlayQueue()
         if (dlg.save()) {
             QString name=dlg.name();
             QString cat=dlg.category();
-            QString existing=streamsPage->getModel().name(cat, url);
+            QString existing=StreamsModel::self()->name(cat, url);
 
             if (existing.isEmpty()) {
-                streamsPage->getModel().add(cat, name, dlg.genre(), dlg.icon(), url);
+                StreamsModel::self()->add(cat, name, dlg.genre(), dlg.icon(), url);
             }
         }
         playQueueModel.addItems(QStringList() << StreamsModel::prefixUrl(url), false, 0);

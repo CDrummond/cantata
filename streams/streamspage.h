@@ -25,7 +25,6 @@
 #define STREAMSPAGE_H
 
 #include "ui_streamspage.h"
-#include "streamsmodel.h"
 #include "streamsproxymodel.h"
 
 class MainWindow;
@@ -58,12 +57,13 @@ public:
     void goBack() { view->backActivated(); }
     QStringList getCategories();
     QStringList getGenres();
-    StreamsModel & getModel() { return model; }
 
 Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);
 
 public Q_SLOTS:
+    void checkMpdDir();
+    void checkWriteable();
     void refresh();
     void removeItems();
     void controlActions();
@@ -93,7 +93,6 @@ private:
     QAction *importIceCastAction;
     QAction *importSomaFmCastAction;
     QNetworkReply *jobs[WS_Count];
-    StreamsModel model;
     StreamsProxyModel proxy;
     MainWindow *mw;
 };

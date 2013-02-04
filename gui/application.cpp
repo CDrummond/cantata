@@ -234,7 +234,7 @@ Application::Application(int &argc, char **argv)
 
 bool Application::start()
 {
-    if (QDBusConnection::sessionBus().registerService(CANTATA_URL)) {
+    if (QDBusConnection::sessionBus().registerService(CANTATA_REV_URL)) {
         connectPowerSignal();
         setupIconTheme();
         Icons::init();

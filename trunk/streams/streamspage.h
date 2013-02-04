@@ -62,7 +62,7 @@ Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);
 
 public Q_SLOTS:
-    void checkMpdDir();
+    void mpdDirChanged();
     void checkWriteable();
     void refresh();
     void removeItems();

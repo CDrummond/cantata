@@ -70,6 +70,9 @@ public:
     };
 
     static QString prefixUrl(const QString &n, bool addPrefix=true);
+    static QString dir();
+
+    static StreamsModel * self();
 
     StreamsModel();
     ~StreamsModel();
@@ -103,9 +106,12 @@ public:
     QStringList mimeTypes() const;
     void mark(const QList<int> &rows, bool f);
     void updateGenres();
+    bool isWritable() const { return writable; }
+    void setWritable(bool w) { writable=w; }
 
 Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
+    void error(const QString &e);
 
 private:
     void clearCategories();
@@ -120,6 +126,7 @@ private Q_SLOTS:
 
 private:
     QList<CategoryItem *> items;
+    bool writable;
     bool modified;
     QTimer *timer;
 };

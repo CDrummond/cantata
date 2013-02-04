@@ -44,8 +44,14 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     QWidget *wid = new QWidget(this);
     QFormLayout *layout = new QFormLayout(wid);
 
-    nameEntry = new LineEdit(wid);
-    urlEntry = new LineEdit(wid);
+    if (addToPlayQueue) {
+        urlEntry = new LineEdit(wid);
+        saveCombo=new QComboBox(wid);
+        nameEntry = new LineEdit(wid);
+    } else {
+        nameEntry = new LineEdit(wid);
+        urlEntry = new LineEdit(wid);
+    }
     catCombo = new CompletionCombo(wid);
     catCombo->setEditable(true);
     genreCombo = new CompletionCombo(wid);
@@ -66,10 +72,10 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     int row=0;
 
     if (addToPlayQueue) {
-        saveCombo=new QComboBox(wid);
         saveCombo->addItem(i18n("Just add to play queue, do not save"));
         saveCombo->addItem(i18n("Add to play queue, and save in list of streams"));
         saveCombo->setCurrentIndex(0);
+        saveCombo->setEnabled(StreamsModel::self()->isWritable());
         layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Stream:"), wid, urlEntry));
         layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
         layout->setWidget(row++, QFormLayout::FieldRole, saveCombo);
@@ -113,7 +119,11 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
 //    #ifdef ENABLE_KDE_SUPPORT
 //    connect(iconButton, SIGNAL(clicked()), SLOT(setIcon()));
 //    #endif
-    nameEntry->setFocus();
+    if (addToPlayQueue) {
+        urlEntry->setFocus();
+    } else {
+        nameEntry->setFocus();
+    }
     resize(400, 100);
 }
 

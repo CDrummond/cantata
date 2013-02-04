@@ -93,7 +93,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you enable one of the above options, amd Cantata cannot access the music folder, then the files will be written as if the option was disabled. i.e. covers and lyrics will be stored in your cache folder, and streams will be saved in your config folder.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have covers or lyrics stored in the music folder, and Cantata cannot access the music folder, then the files will be written as if the option was disabled.&lt;/i&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

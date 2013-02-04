@@ -282,6 +282,11 @@ void StreamsModel::save(bool force)
             timer->stop();
         }
         persist();
+    } else if (!QFile::exists(getInternalFile(false)) || !QFileInfo(getInternalFile(false)).isWritable()) {
+        if (timer) {
+            timer->stop();
+        }
+        persist(); // Call persist now so as to log errors immediately
     } else {
         if (!timer) {
             timer=new QTimer(this);
@@ -827,11 +832,12 @@ void StreamsModel::persist()
 {
     if (modified) {
         QString fileName=getInternalFile(true);
+        modified=false;
         if (save(fileName)) {
             Utils::setFilePerms(fileName);
-            modified=false;
         } else {
             emit error(i18n("Failed to save stream list. Please check %1 is writable.").arg(fileName));
+            reload();
         }
     }
 }

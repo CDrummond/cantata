@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     KAboutData aboutData(PACKAGE_NAME, 0,
                          ki18n("Cantata"), PACKAGE_VERSION_STRING,
                          ki18n("A KDE client for MPD"),
-                         KAboutData::License_GPL_V2,
+                         KAboutData::License_GPL_V3,
                          ki18n("Copyright (C) 2011-2013 Craig Drummond"),
                          KLocalizedString(),
                          "http://"CANTATA_URL, "craig.p.drummond@gmail.com");

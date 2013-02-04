@@ -828,6 +828,7 @@ void StreamsModel::persist()
     if (modified) {
         QString fileName=getInternalFile(true);
         if (save(fileName)) {
+            Utils::setFilePerms(fileName);
             modified=false;
         } else {
             emit error(i18n("Failed to save stream list. Please check %1 is writable.").arg(fileName));

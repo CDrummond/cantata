@@ -381,6 +381,7 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &g
     endInsertRows();
     updateGenres();
     modified=true;
+    save();
     return true;
 }
 
@@ -403,6 +404,7 @@ void StreamsModel::add(const QString &cat, const QList<StreamsModel::StreamItem 
     endInsertRows();
     updateGenres();
     modified=true;
+    save();
 }
 
 void StreamsModel::editCategory(const QModelIndex &index, const QString &name, const QString &icon)

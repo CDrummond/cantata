@@ -46,6 +46,23 @@
 #include "icons.h"
 #include "utils.h"
 
+#ifdef ENABLE_KDE_SUPPORT
+K_GLOBAL_STATIC(StreamsModel, instance)
+#endif
+
+StreamsModel * StreamsModel::self()
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    return instance;
+    #else
+    static StreamsModel *instance=0;
+    if(!instance) {
+        instance=new StreamsModel;
+    }
+    return instance;
+    #endif
+}
+
 const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
 static const QString constStreamCategoryMimeType("cantata/streams-category");
 static const QString constStreamMimeType("cantata/stream");
@@ -90,9 +107,14 @@ static bool iconIsValid(const QString &icon)
 
 static const QLatin1String constStreamsFileName("streams.xml");
 
+QString StreamsModel::dir()
+{
+    return Settings::self()->storeStreamsInMpdDir() ? MPDConnection::self()->getDetails().dir : Utils::configDir(QString(), false);
+}
+
 static QString getInternalFile(bool createDir=false)
 {
-    if (Settings::self()->storeStreamsInMpdDir() && MPDConnection::self()->getDetails().dirReadable) {
+    if (Settings::self()->storeStreamsInMpdDir()) {
         return MPDConnection::self()->getDetails().dir+constStreamsFileName;
     }
     return Utils::configDir(QString(), createDir)+constStreamsFileName;
@@ -708,6 +730,10 @@ bool StreamsModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
     Q_UNUSED(col)
     Q_UNUSED(row)
 
+    if (!writable) {
+        return false;
+    }
+
     if (Qt::IgnoreAction==action) {
         return true;
     }
@@ -757,8 +783,12 @@ QStringList StreamsModel::mimeTypes() const
 void StreamsModel::persist()
 {
     if (modified) {
-        save(getInternalFile(true));
-        modified=false;
+        QString fileName=getInternalFile(true);
+        if (save(fileName)) {
+            modified=false;
+        } else {
+            emit error(i18n("Failed to save stream list. Please check %1 is writable.").arg(fileName));
+        }
     }
 }
 

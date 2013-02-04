@@ -41,6 +41,7 @@ K_GLOBAL_STATIC(Settings, instance)
 #endif
 #include <QFile>
 #include <QDir>
+#include <qglobal.h>
 
 Settings * Settings::self()
 {
@@ -329,7 +330,12 @@ bool Settings::storeLyricsInMpdDir()
 
 bool Settings::storeStreamsInMpdDir()
 {
-    return GET_BOOL("storeStreamsInMpdDir", false);
+    #ifdef Q_OS_WIN
+    bool def=false;
+    #else
+    bool def=version()>=CANTATA_MAKE_VERSION(0, 9, 50);
+    #endif
+    return GET_BOOL("storeStreamsInMpdDir", def);
 }
 
 int Settings::libraryView()

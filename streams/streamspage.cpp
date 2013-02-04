@@ -277,7 +277,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(StreamsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), mw, SLOT(showError(QString)));
-    connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
+    connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(mpdDirChanged()));
     Icon::init(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
@@ -328,10 +328,10 @@ void StreamsPage::setEnabled(bool e)
     enabled=e;
 }
 
-void StreamsPage::checkMpdDir()
+void StreamsPage::mpdDirChanged()
 {
-    if (enabled && Settings::self()->storeStreamsInMpdDir()) {
-        checkWriteable();
+    if (Settings::self()->storeStreamsInMpdDir()) {
+        refresh();
     }
 }
 

@@ -74,7 +74,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     widget->addPage(server, i18n("Connection"), Icons::libraryIcon, i18n("Connection Settings"));
     widget->addPage(serverplayback, i18n("Output"), Icons::speakerIcon, i18n("Output Settings"));
     widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
-    widget->addPage(files, i18n("Files"), Icon("audio-x-generic"), i18n("File Settings"));
+    widget->addPage(files, i18n("Files"), Icon("empty"), i18n("File Settings"));
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     #ifdef TAGLIB_FOUND
     widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
@@ -90,7 +90,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     shortcuts = new ShortcutsSettingsPage(map, widget);
     widget->addPage(shortcuts, i18nc("Qt-only", "Shortcuts"), Icons::shortcutsIcon, i18nc("Qt-only", "Keyboard Shortcut Settings"));
     #endif
-    widget->addPage(cache, i18n("Cache"), Icon("empty"), i18n("Cached Items"));
+    widget->addPage(cache, i18n("Cache"), Icon("folder"), i18n("Cached Items"));
     widget->allPagesAdded();
     setCaption(i18n("Configure"));
     setMainWidget(widget);

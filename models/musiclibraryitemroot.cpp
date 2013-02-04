@@ -413,6 +413,8 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     QString unknown=i18n("Unknown");
     quint64 total=0;
     quint64 count=0;
+    bool gs=MPDParseUtils::groupSingle();
+    bool gm=MPDParseUtils::groupMultiple();
 
     if (prog) {
         prog->readProgress(0.0);
@@ -421,9 +423,6 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
     while (!reader.atEnd() && (!prog || !prog->wasStopped())) {
         reader.readNext();
 
-        /**
-         * TODO: CHECK FOR ERRORS
-         */
         if (!reader.error() && reader.isStartElement()) {
             QString element = reader.name().toString();
             QXmlStreamAttributes attributes=reader.attributes();
@@ -431,10 +430,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
             if (constTopTag == element) {
                 quint32 version = attributes.value("version").toString().toUInt();
                 xmlDate = attributes.value("date").toString().toUInt();
-                bool gs = QLatin1String("true")==attributes.value("groupSingle").toString();
-                bool gm = QLatin1String("true")==attributes.value("groupMultiple").toString();
+                gs = QLatin1String("true")==attributes.value("groupSingle").toString();
+                gm = QLatin1String("true")==attributes.value("groupMultiple").toString();
 
-                if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t()) || gs!=MPDParseUtils::groupSingle() || gm!=MPDParseUtils::groupMultiple()) {
+                if ( version < constVersion || (date.isValid() && xmlDate < date.toTime_t())) {
                     return 0;
                 }
                 if (prog) {
@@ -541,6 +540,19 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
                     }
                 }
             }
+        }
+    }
+
+    // Grouping has changed!
+    if (gs!=MPDParseUtils::groupSingle() || gm!=MPDParseUtils::groupMultiple()) {
+        if (gs && gm) {
+            // Now using both groupings, where previously we were using none.
+            // ...so, jsut apply grouping!
+            groupSingleTracks();
+            groupMultipleArtists();
+        } else {
+            // Mixed groping, so need to redo from scratch...
+            toggleGrouping();
         }
     }
 

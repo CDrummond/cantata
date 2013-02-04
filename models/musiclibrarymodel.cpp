@@ -96,7 +96,7 @@ void MusicLibraryModel::convertCache(const QString &compressedName)
             QtIOCompressor compressor(&newCache);
             compressor.setStreamFormat(QtIOCompressor::GzipFormat);
             if (compressor.open(QIODevice::WriteOnly)) {
-                compressor.write(qCompress(a));
+                compressor.write(a);
                 compressor.close();
                 QFile::remove(prev);
             }

@@ -152,7 +152,7 @@ void CacheItem::showEvent(QShowEvent *e)
 
 void CacheItem::deleteAllItems()
 {
-    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Delete all cached items?"), title())) {
+    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Delete all '%1' items?").arg(title()), title())) {
         emit deleteAll();
     }
 }

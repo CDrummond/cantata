@@ -30,6 +30,7 @@
 #include <QPainter>
 #include <QBuffer>
 #include <QEvent>
+#include <QResizeEvent>
 #include <QFile>
 #include <QTimer>
 #include <QVariant>
@@ -159,6 +160,12 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
         setToolTip(toolTip);
     }
     return QObject::eventFilter(object, event);
+}
+
+void CoverWidget::resizeEvent(QResizeEvent *e)
+{
+    int sz=qMax(e->size().width(), e->size().height());
+    resize(sz, sz);
 }
 
 const QImage & CoverWidget::image() const

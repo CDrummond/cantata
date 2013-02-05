@@ -21,22 +21,19 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GTKSTYLE_H
-#define GTKSTYLE_H
+#ifndef TOOLBAR_H
+#define TOOLBAR_H
 
-class QStyleOptionViewItemV4;
-class QPainter;
-class QWidget;
+#include <QWidget>
 
-#include <QString>
-
-namespace GtkStyle
+class ToolBar : public QWidget
 {
-    extern bool isActive();
-    extern bool mimicWidgets();
-    extern void drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
-    extern QString themeName();
-    extern void applyTheme(QWidget *widget);
-}
+    Q_OBJECT
+public:
+    ToolBar(QWidget *parent = 0);
+    virtual ~ToolBar() { }
 
-#endif
+    void paintEvent(QPaintEvent *);
+};
+
+#endif // TOOLBAR_H

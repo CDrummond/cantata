@@ -72,6 +72,7 @@
 #include "onlineservicespage.h"
 #include "lyricspage.h"
 #include "infopage.h"
+#include "gtkstyle.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "filejob.h"
 #include "devicespage.h"
@@ -228,7 +229,6 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     , loaded(0)
     , lastState(MPDState_Inactive)
-    , songTime(0)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
     , lyricsNeedUpdating(false)
@@ -437,6 +437,8 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
     #endif
+
+    GtkStyle::applyTheme(toolbar);
 
     // We need to have the window visible inorder for initSizes() to function.
     // So, if we are supposed to be starting hidden, then set the 'dont show on screen' flag before 'showing'
@@ -760,7 +762,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
     connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(togglePlayQueue()));
-    connect(positionSlider, SIGNAL(valueChanged(int)), this, SLOT(updatePosition()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     #ifdef TAGLIB_FOUND
     connect(editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
@@ -939,7 +940,7 @@ void MainWindow::initSizes()
         spacing=4;
     }
     int cwSize=qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+
-               songTimeElapsedLabel->height()+positionSlider->height()+(spacing*2);
+               positionSlider->height()+(spacing*2);
 
     cwSize=(((int)(cwSize/4))*4)+((cwSize%4) ? 4 : 0);
     if (cwSize<72) {
@@ -1937,7 +1938,7 @@ void MainWindow::updateStatus()
 void MainWindow::updateStatus(MPDStatus * const status)
 {
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
-        positionSlider->setValue(0);
+        positionSlider->clearTimes();
     } else {
         positionSlider->setRange(0, status->timeTotal());
         positionSlider->setValue(status->timeElapsed());
@@ -1976,16 +1977,13 @@ void MainWindow::updateStatus(MPDStatus * const status)
     singlePlayQueueAction->setChecked(status->single());
     consumePlayQueueAction->setChecked(status->consume());
 
-    QString timeElapsedFormattedString;
     if (status->timeElapsed()<172800 && (!currentIsStream() || (status->timeTotal()>0 && status->timeElapsed()<=status->timeTotal()))) {
         if (status->state() == MPDState_Stopped || status->state() == MPDState_Inactive) {
-            timeElapsedFormattedString = "0:00 / 0:00";
+            positionSlider->setRange(0, 0);
         } else {
-            timeElapsedFormattedString = Song::formattedTime(status->timeElapsed())+" / "+Song::formattedTime(status->timeTotal());
-            songTime = status->timeTotal();
+            positionSlider->setValue(status->timeElapsed());
         }
     }
-    songTimeElapsedLabel->setText(timeElapsedFormattedString);
 
     playQueueModel.setState(status->state());
     switch (status->state()) {
@@ -2284,13 +2282,6 @@ void MainWindow::updatePlayQueueStats(int songs, quint32 time)
     #endif
 }
 
-void MainWindow::updatePosition()
-{
-    if (positionSlider->value()<172800 && positionSlider->value() != positionSlider->maximum()) {
-        songTimeElapsedLabel->setText(Song::formattedTime(positionSlider->value())+" / "+Song::formattedTime(songTime));
-    }
-}
-
 void MainWindow::copyTrackInfo()
 {
     const QModelIndexList items = playQueue->selectedIndexes();
@@ -2333,7 +2324,7 @@ int MainWindow::calcCompactHeight()
     // For some reason height is always larger than it needs to be - so fix this to cover height +4
     return qMax(qMax(playPauseTrackButton->height(),
                          trackLabel->height()+artistLabel->height()+spacing)+
-                         songTimeElapsedLabel->height()+positionSlider->height()+(spacing*2),
+                         positionSlider->height()+spacing,
                     coverWidget->height()+spacing)+
            (messageWidget->isActive() ? (messageWidget->sizeHint().height()+spacing) : 0);
 }

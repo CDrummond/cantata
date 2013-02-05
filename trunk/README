@@ -373,6 +373,7 @@ Cantata contains code/icons from:
     Clementine     - www.clementine-player.org (Lyrics searches)
     Quassel        - quassel-irc.org (Qt-only keyboard short-cut config support)
     Solid          - solid.kde.org (Device detection for Qt-only builds)
+    Musique        - Copied code for Gtk theme detection
     libebur128     - https://github.com/jiixyj/libebur128 (Replay gain
                       calculation)
     wikipedia icon - Social Media Mini by Paul Robert Lloyd License: Commons

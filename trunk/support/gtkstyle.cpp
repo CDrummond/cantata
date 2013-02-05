@@ -22,10 +22,16 @@
  */
 
 #include "gtkstyle.h"
+#include "windowmanager.h"
+#include "config.h"
 #include <QPainter>
 #include <QStyleOptionViewItemV4>
 #include <QApplication>
 #include <QCache>
+#include <QGtkStyle>
+#include <QProcess>
+#include <QTextStream>
+#include <QFile>
 #include <qglobal.h>
 
 static bool usingGtkStyle=false;
@@ -95,4 +101,76 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
         painter->drawPixmap(opt.rect, *pix);
     }
     painter->setOpacity(opacityB4);
+}
+
+// Copied from musique
+QString GtkStyle::themeName()
+{
+    static QString name;
+
+    #if !defined Q_OS_WIN
+    if (name.isEmpty()) {
+        QProcess process;
+        process.start("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/gtk-theme");
+        if (process.waitForFinished()) {
+            name = process.readAllStandardOutput();
+            name = name.trimmed();
+            name.remove('\'');
+            if (!name.isEmpty()) {
+                return name;
+            }
+        }
+
+        QString rcPaths = QString::fromLocal8Bit(qgetenv("GTK2_RC_FILES"));
+        if (!rcPaths.isEmpty()) {
+            QStringList paths = rcPaths.split(QLatin1String(":"));
+            foreach (const QString &rcPath, paths) {
+                if (!rcPath.isEmpty()) {
+                    QFile rcFile(rcPath);
+                    if (rcFile.exists() && rcFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                        QTextStream in(&rcFile);
+                        while(!in.atEnd()) {
+                            QString line = in.readLine();
+                            if (line.contains(QLatin1String("gtk-theme-name"))) {
+                                line = line.right(line.length() - line.indexOf(QLatin1Char('=')) - 1);
+                                line.remove(QLatin1Char('\"'));
+                                line = line.trimmed();
+                                name = line;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!name.isEmpty()) {
+                    break;
+                }
+            }
+        }
+
+        // Fall back to gconf
+        if (name.isEmpty()) {
+            name = QGtkStyle::getGConfString(QLatin1String("/desktop/gnome/interface/gtk_theme"));
+        }
+    }
+    #endif
+    return name;
+}
+
+void GtkStyle::applyTheme(QWidget *widget)
+{
+    if (widget && isActive()) {
+        QString theme=GtkStyle::themeName().toLower();
+        if (!theme.isEmpty()) {
+            QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/"+theme+QLatin1String(".css"));
+            if (cssFile.open(QFile::ReadOnly)) {
+                QString css=QLatin1String(cssFile.readAll());
+                qApp->setStyleSheet(css);
+                if (css.startsWith("/* drag:toolbar */")) {
+                    WindowManager *wm=new WindowManager(widget);
+                    wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
+                    wm->registerWidgetAndChildren(widget);
+                }
+            }
+        }
+    }
 }

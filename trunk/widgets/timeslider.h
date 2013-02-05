@@ -24,27 +24,38 @@
 #ifndef TIMESLIDER_H
 #define TIMESLIDER_H
 
+#include <QWidget>
 #include <QSlider>
 #include <QTime>
 class QTimer;
+class QLabel;
 
-class TimeSlider : public QSlider
+class TimeSlider : public QWidget
 {
     Q_OBJECT
 public:
     TimeSlider(QWidget *p);
-    virtual ~TimeSlider() {
-    }
+    virtual ~TimeSlider() { }
     void startTimer();
     void stopTimer();
     void setValue(int v);
+    void setRange(int min, int max);
+    void clearTimes();
+    void setOrientation(Qt::Orientation o) {slider->setOrientation(o); }
+    int value() const { return slider->value(); }
+
+Q_SIGNALS:
+    void sliderReleased();
 
 private Q_SLOTS:
+    void updateTimes();
     void updatePos();
     void pressed();
     void released();
 
 private:
+    QLabel *label;
+    QSlider *slider;
     QTimer *timer;
     QTime startTime;
     int lastVal;

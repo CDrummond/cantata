@@ -159,7 +159,9 @@ For artist images:
 7. Query last.fm using ${albumArtist}. Cantata will attempt to download the
    image specified with the "extralarge" size.
 
-Downloaded artist images are saved to Cantata's cache folder.
+Downloaded images will be saved as artist.jpg/png, within the artist folder
+if the folder heirarchy is 2 levels (artist/album/) and the user has write
+permissions. If not, then they will be saved in Cantata's cache folder.
 
 
 Amarok Radio Streams

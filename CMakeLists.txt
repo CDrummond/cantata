@@ -138,6 +138,7 @@ SET( CANTATA_SRCS
     widgets/volumecontrol.cpp
     widgets/icons.cpp
     widgets/genrecombo.cpp
+    widgets/toolbar.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -205,6 +206,7 @@ SET( CANTATA_MOC_HDRS
     widgets/coverwidget.h
     widgets/volumecontrol.h
     widgets/genrecombo.h
+    widgets/toolbar.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
     lyrics/ultimatelyricsprovider.h
@@ -499,7 +501,8 @@ ELSE( ENABLE_KDE_SUPPORT )
 ENDIF( ENABLE_KDE_SUPPORT )
 
 if (NOT WIN32)
-    install( PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/)
+    install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/)
+    install(FILES ambiance.css DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/)
 endif (NOT WIN32)
 
 add_subdirectory(qtiocompressor)

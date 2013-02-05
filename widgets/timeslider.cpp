@@ -22,15 +22,31 @@
  */
 
 #include "timeslider.h"
+#include "song.h"
+#include <QLabel>
+#include <QBoxLayout>
 #include <QTimer>
 
 TimeSlider::TimeSlider(QWidget *p)
-    : QSlider(p)
+    : QWidget(p)
     , timer(0)
     , lastVal(0)
 {
-    connect(this, SIGNAL(sliderPressed()), this, SLOT(pressed()));
-    connect(this, SIGNAL(sliderReleased()), this, SLOT(released()));
+    label=new QLabel(this);
+    slider=new QSlider(this);
+    label->setAlignment((Qt::RightToLeft==layoutDirection() ? Qt::AlignRight : Qt::AlignLeft)|Qt::AlignVCenter);
+    QBoxLayout *layout=new QBoxLayout(QBoxLayout::TopToBottom, this);
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->addWidget(label);
+    layout->addWidget(slider);
+    slider->setPageStep(0);
+    connect(slider, SIGNAL(sliderPressed()), this, SLOT(pressed()));
+    connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
+    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateTimes()));
+    slider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 }
 
 void TimeSlider::startTimer()
@@ -56,13 +72,36 @@ void TimeSlider::setValue(int v)
 {
     startTime.restart();
     lastVal=v;
-    QSlider::setValue(v);
+    slider->setValue(v);
+    updateTimes();
+}
+
+void TimeSlider::setRange(int min, int max)
+{
+    slider->setRange(min, max);
+    slider->setValue(min);
+    updateTimes();
+}
+
+void TimeSlider::clearTimes()
+{
+    stopTimer();
+    lastVal=0;
+    slider->setValue(0);
+    label->setText(Song::formattedTime(0)+" / "+Song::formattedTime(0));
+}
+
+void TimeSlider::updateTimes()
+{
+    if (slider->value()<172800 && slider->value() != slider->maximum()) {
+        label->setText(Song::formattedTime(slider->value())+" / "+Song::formattedTime(slider->maximum()));
+    }
 }
 
 void TimeSlider::updatePos()
 {
     int elapsed=(startTime.elapsed()/1000.0)+0.5;
-    QSlider::setValue(lastVal+elapsed);
+    slider->setValue(lastVal+elapsed);
 }
 
 void TimeSlider::pressed()
@@ -70,6 +109,7 @@ void TimeSlider::pressed()
     if (timer) {
         timer->stop();
     }
+    emit sliderReleased();
 }
 
 void TimeSlider::released()

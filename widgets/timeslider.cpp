@@ -109,7 +109,6 @@ void TimeSlider::pressed()
     if (timer) {
         timer->stop();
     }
-    emit sliderReleased();
 }
 
 void TimeSlider::released()
@@ -117,4 +116,5 @@ void TimeSlider::released()
     if (timer) {
         timer->start();
     }
+    emit sliderReleased();
 }

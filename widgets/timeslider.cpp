@@ -47,6 +47,7 @@ TimeSlider::TimeSlider(QWidget *p)
     slider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    slider->setFocusPolicy(Qt::NoFocus);
 }
 
 void TimeSlider::startTimer()

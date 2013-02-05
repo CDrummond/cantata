@@ -30,7 +30,7 @@ void TextBrowser::setImage(const QImage &img)
 {
     if (drawImage && (!img.isNull() || (img.isNull()!=image.isNull()))) {
         image=img;
-        if (image.width()<constMinSize || image.height()<constMinSize) {
+        if (!image.isNull() && (image.width()<constMinSize || image.height()<constMinSize)) {
             image=image.scaled(QSize(constMinSize, constMinSize), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
         viewport()->update();

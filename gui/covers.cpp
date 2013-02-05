@@ -62,6 +62,7 @@ const QLatin1String Covers::constLastFmApiKey("11172d35eb8cc2fd33250a9e45a2d486"
 const QLatin1String Covers::constCoverDir("covers/");
 const QLatin1String Covers::constFileName("cover");
 static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
+static const QLatin1String constArtistImage("artist");
 
 static QStringList coverFileNames;
 static bool saveInMpdDir=true;
@@ -437,7 +438,7 @@ Covers::Image Covers::getImage(const Song &song)
         dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
         if (isArtistImage) {
-            QStringList names=QStringList() << song.albumartist+".jpg" << song.albumartist+".png" << "artist.jpg" << "artist.png";
+            QStringList names=QStringList() << song.albumartist+".jpg" << song.albumartist+".png" << constArtistImage+".jpg" << constArtistImage+".png";
             for (int level=0; level<2; ++level) {
                 foreach (const QString &fileName, names) {
                     if (QFile::exists(dirName+fileName)) {
@@ -637,7 +638,7 @@ void Covers::download(const Song &song)
     if (!isOnline) {
         bool haveAbsPath=song.file.startsWith('/');
 
-        if (!isArtistImage && (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty())) {
+        if (haveAbsPath || !MPDConnection::self()->getDetails().dir.isEmpty()) {
             dirName=song.file.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file
                                             : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+song.file);
         }
@@ -893,6 +894,18 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
             return savedName;
         }
     } else if (job.isArtist) {
+        if (saveInMpdDir && canSaveTo(job.dir)) {
+            QString mpdDir=MPDConnection::self()->getDetails().dir;
+            if (!mpdDir.isEmpty() && job.dir.startsWith(mpdDir) && 2==job.dir.mid(mpdDir.length()).split('/', QString::SkipEmptyParts).count()) {
+                QDir d(job.dir);
+                d.cdUp();
+                savedName=save(mimeType, extension, d.absolutePath()+'/'+constArtistImage, img, raw);
+                if (!savedName.isEmpty()) {
+                    return savedName;
+                }
+            }
+        }
+
         QString dir = Utils::cacheDir(constCoverDir);
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+encodeName(job.song.albumartist), img, raw);

@@ -2324,8 +2324,8 @@ int MainWindow::calcCompactHeight()
     // For some reason height is always larger than it needs to be - so fix this to cover height +4
     return qMax(qMax(playPauseTrackButton->height(),
                          trackLabel->height()+artistLabel->height()+spacing)+
-                         positionSlider->height()+spacing,
-                    coverWidget->height()+spacing)+
+                         positionSlider->height(),
+                    coverWidget->height())+
            (messageWidget->isActive() ? (messageWidget->sizeHint().height()+spacing) : 0);
 }
 

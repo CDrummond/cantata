@@ -17,8 +17,8 @@ SET( SUPPORT_MOC_HDRS
 )
 
 if (NOT WIN32)
-    SET( SUPPORT_SRCS ${SUPPORT_SRCS} onoffbutton.cpp spinbox.cpp)
-    SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} spinbox.h)
+    SET( SUPPORT_SRCS ${SUPPORT_SRCS} onoffbutton.cpp spinbox.cpp windowmanager.cpp)
+    SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} spinbox.h windowmanager.h)
 endif (NOT WIN32)
 
 if (ENABLE_KDE_SUPPORT )

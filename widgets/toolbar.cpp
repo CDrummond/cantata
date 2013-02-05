@@ -21,22 +21,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GTKSTYLE_H
-#define GTKSTYLE_H
+#include "toolbar.h"
+#include <QStyleOption>
+#include <QStyle>
+#include <QPainter>
 
-class QStyleOptionViewItemV4;
-class QPainter;
-class QWidget;
-
-#include <QString>
-
-namespace GtkStyle
+ToolBar::ToolBar(QWidget *parent)
+    : QWidget(parent)
 {
-    extern bool isActive();
-    extern bool mimicWidgets();
-    extern void drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
-    extern QString themeName();
-    extern void applyTheme(QWidget *widget);
+    //setStyleSheet("ToolBar{ background-color : qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #3c3b37, stop: 1 #474641); }");
 }
 
-#endif
+void ToolBar::paintEvent(QPaintEvent *e)
+{
+    QWidget::paintEvent(e);
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+

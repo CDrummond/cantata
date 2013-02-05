@@ -41,23 +41,10 @@ public:
     virtual ~CoverWidget();
 
     void update(const Song &s);
-
-    const Song & song() const {
-        return current;
-    }
-
-    bool isEmpty() const {
-        return empty;
-    }
-
-    bool isValid() const {
-        return !empty && valid;
-    }
-
-    const QString & fileName() const {
-        return coverFileName;
-    }
-
+    const Song & song() const { return current; }
+    bool isEmpty() const { return empty; }
+    bool isValid() const { return !empty && valid; }
+    const QString & fileName() const { return coverFileName; }
     const QImage &image() const;
 
 Q_SIGNALS:
@@ -73,6 +60,7 @@ private:
     void update(const QImage &i);
     void update(const QPixmap &pix);
     bool eventFilter(QObject *object, QEvent *event);
+    void resizeEvent(QResizeEvent *e);
 //     void paintEvent(QPaintEvent *e);
 
 private:

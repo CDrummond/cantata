@@ -29,7 +29,6 @@
 #include <QTimer>
 #include <QThread>
 #include <QClipboard>
-#include <QProxyStyle>
 #include <cstdlib>
 #ifdef ENABLE_KDE_SUPPORT
 #include <kdeversion.h>
@@ -119,25 +118,6 @@ enum Tabs
     TAB_LIBRARY = 0x01,
     TAB_FOLDERS = 0x02,
     TAB_STREAMS = 0x04
-};
-
-class ProxyStyle : public QProxyStyle
-{
-public:
-    ProxyStyle()
-        : QProxyStyle()
-    {
-        setBaseStyle(qApp->style());
-    }
-
-    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
-    {
-        if (QStyle::SH_Slider_AbsoluteSetButtons==stylehint) {
-            return Qt::LeftButton|QProxyStyle::styleHint(stylehint, opt, widget, returnData);
-        } else {
-            return QProxyStyle::styleHint(stylehint, opt, widget, returnData);
-        }
-    }
 };
 
 DeleteKeyEventHandler::DeleteKeyEventHandler(QAbstractItemView *v, QAction *a)
@@ -396,8 +376,6 @@ MainWindow::MainWindow(QWidget *parent)
     volumeControl = new VolumeControl(volumeButton);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
     volumeButton->installEventFilter(volumeSliderEventHandler);
-
-    positionSlider->setStyle(new ProxyStyle());
 
     playbackPlay = Icon::getMediaIcon("media-playback-start");
     playbackPause = Icon::getMediaIcon("media-playback-pause");

@@ -25,7 +25,28 @@
 #include "song.h"
 #include <QLabel>
 #include <QBoxLayout>
+#include <QProxyStyle>
 #include <QTimer>
+#include <QApplication>
+
+class ProxyStyle : public QProxyStyle
+{
+public:
+    ProxyStyle()
+        : QProxyStyle()
+    {
+        setBaseStyle(qApp->style());
+    }
+
+    int styleHint(StyleHint stylehint, const QStyleOption *opt, const QWidget *widget, QStyleHintReturn *returnData) const
+    {
+        if (QStyle::SH_Slider_AbsoluteSetButtons==stylehint) {
+            return Qt::LeftButton|QProxyStyle::styleHint(stylehint, opt, widget, returnData);
+        } else {
+            return QProxyStyle::styleHint(stylehint, opt, widget, returnData);
+        }
+    }
+};
 
 TimeSlider::TimeSlider(QWidget *p)
     : QWidget(p)
@@ -48,6 +69,7 @@ TimeSlider::TimeSlider(QWidget *p)
     label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     slider->setFocusPolicy(Qt::NoFocus);
+    slider->setStyle(new ProxyStyle());
 }
 
 void TimeSlider::startTimer()

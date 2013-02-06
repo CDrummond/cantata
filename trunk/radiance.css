@@ -1,0 +1,38 @@
+/* drag:toolbar */
+ToolBar {
+  background-color: #dfd7d0;
+  border: 0px;
+}
+
+ToolBar:active {
+  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,  stop: 0 #dfd7d0, stop: 1 #efe7e0);
+  border: 0px;
+}
+
+ToolBar QToolButton,
+ToolBar QLabel {
+  color: #6c6c6c;
+}
+
+ToolBar QToolButton,
+ToolBar QLabel:active {
+  color: #3c3c3c;
+}
+
+ToolBar QToolButton {
+  background: transparent;
+  border: 1px outset transparent;
+}
+
+ToolBar QToolButton:hover {
+  background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #efe7e0, stop: 1 #cfc7c0);
+  border-radius: 5px;
+  border: 1px solid #afa7a0;
+}
+
+ToolBar QToolButton:pressed,
+ToolBar QToolButton:checked {
+  background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #cfc7c0, stop: 1 #dfd7d0);
+  border-radius: 5px;
+  border: 1px solid #afa7a0;
+}

@@ -502,7 +502,7 @@ ENDIF( ENABLE_KDE_SUPPORT )
 
 if (NOT WIN32)
     install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/)
-    install(FILES ambiance.css DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/)
+    install(FILES ambiance.css radiance.css DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cantata/)
 endif (NOT WIN32)
 
 add_subdirectory(qtiocompressor)

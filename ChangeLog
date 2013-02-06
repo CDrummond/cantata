@@ -69,9 +69,9 @@
 42. When reading cache (either MPD, or device), and the grouping (single
     tracks, or multiple artists) has changed - then dont do a rescan, just
     re-do the grouping.
-43. If we are using QGtkStyle and this is set to Ambiance, then apply a
-    corresponding stylesheet to the toolbar - and allow window to be dragged by
-    toolbar.
+43. If we are using QGtkStyle and this is set to Ambiance or Radiance, then
+    apply a corresponding stylesheet to the toolbar - and allow window to be
+    dragged by toolbar.
 44. If fetching artist images for a song, and the song-folder heirarchy is 2
     levels (artist/album/), then save image as artist.jpg/png within the artist
     folder. (Only if 'save downloaded covers in music folder' is enabled)

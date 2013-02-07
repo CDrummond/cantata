@@ -45,8 +45,7 @@ public:
         CoverSmall      = 1,
         CoverMedium     = 2,
         CoverLarge      = 3,
-        CoverExtraLarge = 4,
-        CoverAuto       = 5
+        CoverExtraLarge = 4
     };
 
     static void setup();

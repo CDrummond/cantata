@@ -79,13 +79,13 @@ bool TreeView::haveUnSelectedItems() const
 void TreeView::startDrag(Qt::DropActions supportedActions)
 {
     QModelIndexList indexes = selectedIndexes();
-    qSort(indexes);
     if (indexes.count() > 0) {
+        qSort(indexes);
+
         QMimeData *data = model()->mimeData(indexes);
         if (!data) {
             return;
         }
-        QRect rect;
         QDrag *drag = new QDrag(this);
         drag->setMimeData(data);
         QPixmap pix;

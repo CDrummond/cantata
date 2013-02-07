@@ -590,12 +590,6 @@ void ItemView::setMode(Mode m)
         }
     }
 
-    if (Mode_GroupedTree==mode) {
-        connect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), groupedView, SLOT(coverRetrieved(const Song &)));
-    } else if (groupedView) {
-        disconnect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), groupedView, SLOT(coverRetrieved(const Song &)));
-    }
-
     stackedWidget->setCurrentIndex(Mode_SimpleTree==mode || Mode_DetailedTree==mode || Mode_GroupedTree==mode ? 0 : 1);
     if (spinner) {
         spinner->setWidget(view()->viewport());

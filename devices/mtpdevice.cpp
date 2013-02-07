@@ -637,7 +637,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
             }
 
             if (album) {
-                Covers::Image image=Covers::getImage(s);
+                Covers::Image image=Covers::self()->getImage(s);
                 if (!image.img.isNull()) {
                     // First check if album already has cover...
                     if (!albumsWithCovers.contains(album) && getCover(album).isNull()) {

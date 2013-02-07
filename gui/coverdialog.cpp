@@ -400,7 +400,7 @@ CoverDialog::~CoverDialog()
 void CoverDialog::show(const Song &s)
 {
     song=s;
-    Covers::Image img=Covers::getImage(song);
+    Covers::Image img=Covers::self()->getImage(song);
 
     if (!img.fileName.isEmpty() && !QFileInfo(img.fileName).isWritable()) {
         MessageBox::error(parentWidget(), i18n("<p>A cover already exists for this album, and the file is not writeable.<p></p><i>%1</i></p>").arg(img.fileName));

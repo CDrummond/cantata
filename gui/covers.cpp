@@ -135,6 +135,16 @@ static QString save(const QString &mimeType, const QString &extension, const QSt
     return QString();
 }
 
+static inline QString albumKey(const Song &s)
+{
+    return "{"+s.albumArtist()+"}{"+s.album+"}";
+}
+
+static inline QString artistKey(const Song &s)
+{
+    return "{"+s.albumArtist()+"}";
+}
+
 QString Covers::encodeName(QString name)
 {
     name.replace("/", "_");
@@ -171,36 +181,30 @@ static QString kdeHome()
 }
 #endif
 
-struct AppCover
-{
-    QImage img;
-    QString filename;
-};
-
-static AppCover otherAppCover(const Covers::Job &job)
+static Covers::Image otherAppCover(const Covers::Job &job)
 {
     #ifdef ENABLE_KDE_SUPPORT
     QString kdeDir=KGlobal::dirs()->localkdedir();
     #else
     QString kdeDir=kdeHome();
     #endif
-    AppCover app;
-    app.filename=kdeDir+QLatin1String("/share/apps/amarok/albumcovers/large/")+
+    Covers::Image app;
+    app.fileName=kdeDir+QLatin1String("/share/apps/amarok/albumcovers/large/")+
                  QCryptographicHash::hash(job.song.albumArtist().toLower().toLocal8Bit()+job.song.album.toLower().toLocal8Bit(),
                                           QCryptographicHash::Md5).toHex();
 
-    app.img=QImage(app.filename);
+    app.img=QImage(app.fileName);
 
     if (app.img.isNull()) {
-        app.filename=xdgConfig()+QLatin1String("/Clementine/albumcovers/")+
+        app.fileName=xdgConfig()+QLatin1String("/Clementine/albumcovers/")+
                      QCryptographicHash::hash(job.song.albumArtist().toLower().toUtf8()+job.song.album.toLower().toUtf8(),
                                               QCryptographicHash::Sha1).toHex()+QLatin1String(".jpg");
 
-        app.img=QImage(app.filename);
+        app.img=QImage(app.fileName);
     }
 
     if (!app.img.isNull() && saveInMpdDir && canSaveTo(job.dir)) {
-        QFile f(app.filename);
+        QFile f(app.fileName);
         if (f.open(QIODevice::ReadOnly)) {
             QByteArray raw=f.readAll();
             if (!raw.isEmpty()) {
@@ -212,7 +216,7 @@ static AppCover otherAppCover(const Covers::Job &job)
                 }
                 savedName=save(mimeType, mimeType.isEmpty() ? constExtensions.at(0) : mimeType, job.dir+coverName, app.img, raw);
                 if (!savedName.isEmpty()) {
-                    app.filename=savedName;
+                    app.fileName=savedName;
                 }
             }
         }
@@ -358,8 +362,6 @@ static inline QString cacheKey(const Song &song, int size)
     return song.albumArtist()+QChar(':')+song.album+QChar(':')+QChar(':')+QString::number(size);
 }
 
-static QSet<int> cacheSizes;
-
 QPixmap * Covers::get(const Song &song, int size)
 {
     if (song.isUnknown()) {
@@ -424,8 +426,18 @@ void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOn
 
 Covers::Image Covers::getImage(const Song &song)
 {
-    QString songFile=song.file;
     bool isArtistImage=isRequestingArtistImage(song);
+    QString prevFileName=getFilename(song, isArtistImage);
+
+    if (!prevFileName.isEmpty()) {
+        QImage img(prevFileName);
+
+        if (!img.isNull()) {
+            return Image(img, prevFileName);
+        }
+    }
+
+    QString songFile=song.file;
     QString dirName;
     bool haveAbsPath=song.file.startsWith('/');
 
@@ -433,7 +445,7 @@ Covers::Image Covers::getImage(const Song &song)
         QUrl u(songFile);
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
-    if (!songFile.isEmpty() && ! song.file.startsWith(("http:/")) &&
+    if (!songFile.isEmpty() && !song.file.startsWith(("http:/")) &&
         (haveAbsPath || (!MPDConnection::self()->getDetails().dir.isEmpty() && !MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://")) ) ) ) {
         dirName=songFile.endsWith('/') ? (haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile
                                        : Utils::getDir((haveAbsPath ? QString() : MPDConnection::self()->getDetails().dir)+songFile);
@@ -445,7 +457,9 @@ Covers::Image Covers::getImage(const Song &song)
                         QImage img(dirName+fileName);
 
                         if (!img.isNull()) {
-                            return Image(img, dirName+fileName);
+                            Image i(img, dirName+fileName);
+                            gotArtistImage(song, i, false);
+                            return i;
                         }
                     }
                 }
@@ -477,7 +491,9 @@ Covers::Image Covers::getImage(const Song &song)
                     QImage img(dirName+fileName);
 
                     if (!img.isNull()) {
-                        return Image(img, dirName+fileName);
+                        Image i(img, dirName+fileName);
+                        gotAlbumCover(song, i, false);
+                        return i;
                     }
                 }
             }
@@ -497,7 +513,9 @@ Covers::Image Covers::getImage(const Song &song)
                 QImage img(dirName+fileName);
 
                 if (!img.isNull()) {
-                    return Image(img, dirName+fileName);
+                    Image i(img, dirName+fileName);
+                    gotAlbumCover(song, i, false);
+                    return i;
                 }
             }
         }
@@ -511,7 +529,9 @@ Covers::Image Covers::getImage(const Song &song)
             if (QFile::exists(dir+artist+ext)) {
                 QImage img(dir+artist+ext);
                 if (!img.isNull()) {
-                    return Image(img, dir+artist+ext);
+                    Image i(img, dir+artist+ext);
+                    gotArtistImage(song, i, false);
+                    return i;
                 }
             }
         }
@@ -523,7 +543,9 @@ Covers::Image Covers::getImage(const Song &song)
             if (QFile::exists(dir+album+ext)) {
                 QImage img(dir+album+ext);
                 if (!img.isNull()) {
-                    return Image(img, dir+album+ext);
+                    Image i(img, dir+album+ext);
+                    gotAlbumCover(song, i, false);
+                    return i;
                 }
             }
         }
@@ -532,9 +554,10 @@ Covers::Image Covers::getImage(const Song &song)
 
         #if !defined Q_OS_WIN
         // See if amarok, or clementine, has it...
-        AppCover app=otherAppCover(job);
+        Image app=otherAppCover(job);
         if (!app.img.isNull()) {
-            return Image(app.img, app.filename);
+            gotAlbumCover(song, app, false);
+            return app;
         }
         #endif
     }
@@ -817,8 +840,7 @@ void Covers::lastFmCallFinished()
                 #if defined Q_OS_WIN
                 emit cover(job.song, QImage(), QString());
                 #else
-                AppCover app=otherAppCover(job);
-                emit cover(job.song, app.img, app.filename);
+                gotAlbumCover(job.song, otherAppCover(job));
                 #endif
             }
         }
@@ -839,41 +861,40 @@ void Covers::jobFinished()
     if (it!=end) {
         QByteArray data=QNetworkReply::NoError==reply->error() ? reply->readAll() : QByteArray();
         QString url=reply->url().toString();
-        QImage img = data.isEmpty() ? QImage() : QImage::fromData(data, url.endsWith(".jpg") ? "JPG" : (url.endsWith(".png") ? "PNG" : 0));
-        QString fileName;
+        Image img;
+        img.img= data.isEmpty() ? QImage() : QImage::fromData(data, url.endsWith(".jpg") ? "JPG" : (url.endsWith(".png") ? "PNG" : 0));
         Job job=it.value();
 
-        if (!img.isNull() && img.size().width()<32) {
-            img = QImage();
+        if (!img.img.isNull() && img.img.size().width()<32) {
+            img.img = QImage();
         }
 
         jobs.remove(it.key());
-        if (img.isNull() && JobLastFm!=job.type && JobOnline) {
+        if (img.img.isNull() && JobLastFm!=job.type && JobOnline) {
             if (JobHttpJpg==job.type) {
                 downloadViaHttp(job, JobHttpPng);
             } else {
                 downloadViaLastFm(job);
             }
         } else {
-            if (!img.isNull()) {
-                if (img.size().width()>constMaxSize.width() || img.size().height()>constMaxSize.height()) {
-                    img=img.scaled(constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            if (!img.img.isNull()) {
+                if (img.img.size().width()>constMaxSize.width() || img.img.size().height()>constMaxSize.height()) {
+                    img.img=img.img.scaled(constMaxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                 }
-                fileName=saveImg(job, img, data);
-                clearCache(job.song, img, true);
+                img.fileName=saveImg(job, img.img, data);
+                clearCache(job.song, img.img, true);
             }
 
             if (job.isArtist) {
-                emit artistImage(job.song, img);
-            } else if (img.isNull()) {
+                gotArtistImage(job.song, img);
+            } else if (img.img.isNull()) {
                 #if defined Q_OS_WIN
                 emit cover(job.song, QImage(), QString());
                 #else
-                AppCover app=otherAppCover(job);
-                emit cover(job.song, app.img, app.filename);
+                gotAlbumCover(job.song, otherAppCover(job));
                 #endif
             } else {
-                emit cover(job.song, img, fileName);
+                gotAlbumCover(job.song, img);
             }
         }
     }
@@ -951,4 +972,30 @@ QHash<QNetworkReply *, Covers::Job>::Iterator Covers::findJob(const Job &job)
     }
 
     return end;
+}
+
+void Covers::gotAlbumCover(const Song &song, const Image &img, bool emitResult)
+{
+    if (!img.img.isNull() && !img.fileName.isEmpty() && !img.fileName.startsWith("http:/")) {
+        filenames.insert(albumKey(song), img.fileName);
+    }
+    if (emitResult) {
+        emit cover(song, img.img, img.fileName);
+    }
+}
+
+void Covers::gotArtistImage(const Song &song, const Image &img, bool emitResult)
+{
+    if (!img.img.isNull() && !img.fileName.isEmpty() && !img.fileName.startsWith("http:/")) {
+        filenames.insert(artistKey(song), img.fileName);
+    }
+    if (emitResult) {
+        emit artistImage(song, img.img);
+    }
+}
+
+QString Covers::getFilename(const Song &s, bool isArtist)
+{
+    QMap<QString, QString>::ConstIterator fileIt=filenames.find(isArtist ? artistKey(s) : albumKey(s));
+    return fileIt==filenames.end() ? QString() : fileIt.value();
 }

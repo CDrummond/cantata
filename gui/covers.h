@@ -26,6 +26,8 @@
 
 #include <QObject>
 #include <QHash>
+#include <QSet>
+#include <QMap>
 #include <QCache>
 #include <QImage>
 #include <QPixmap>
@@ -91,7 +93,7 @@ public:
 
     struct Image
     {
-        Image(const QImage &i, const QString &f)
+        Image(const QImage &i=QImage(), const QString &f=QString())
             : img(i)
             , fileName(f) {
         }
@@ -115,7 +117,7 @@ public:
     void stop();
 
     QPixmap * get(const Song &song, int size);
-    static Image getImage(const Song &song);
+    Image getImage(const Song &song);
     Image get(const Song &song);
     void requestCover(const Song &song, bool urgent=false);
     void setSaveInMpdDir(bool s);
@@ -143,10 +145,15 @@ private:
     QString saveImg(const Job &job, const QImage &img, const QByteArray &raw);
     QHash<QNetworkReply *, Job>::Iterator findJob(const Job &job);
     void clearCache(const Song &song, const QImage &img, bool dummyEntriesOnly);
+    void gotAlbumCover(const Song &song, const Image &img, bool emitResult=true);
+    void gotArtistImage(const Song &song, const Image &img, bool emitResult=true);
+    QString getFilename(const Song &s, bool isArtist);
 
 private:
     QHash<QNetworkReply *, Job> jobs;
+    QSet<int> cacheSizes;
     QCache<QString, QPixmap> cache;
+    QMap<QString, QString> filenames;
     CoverQueue *queue;
     QThread *queueThread;
 };

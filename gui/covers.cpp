@@ -357,9 +357,9 @@ void Covers::stop()
     }
 }
 
-static inline QString cacheKey(const Song &song, int size)
+static inline quint32 cacheKey(const Song &song, int size)
 {
-    return song.albumArtist()+QChar(':')+song.album+QChar(':')+QChar(':')+QString::number(size);
+    return (song.key<<16)+(size&0xffffff);
 }
 
 QPixmap * Covers::get(const Song &song, int size)
@@ -368,7 +368,7 @@ QPixmap * Covers::get(const Song &song, int size)
         return 0;
     }
 
-    QString key=cacheKey(song, size);
+    quint32 key=cacheKey(song, size);
     QPixmap *pix(cache.object(key));
 
     if (!pix) {
@@ -397,7 +397,7 @@ void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOn
     bool hadDummy=false;
     bool hadEntries=false;
     foreach (int s, cacheSizes) {
-        QString key=cacheKey(song, s);
+        quint32 key=cacheKey(song, s);
         QPixmap *pix(cache.object(key));
 
         if (pix && (!dummyEntriesOnly || pix->width()<2)) {
@@ -407,10 +407,8 @@ void Covers::clearCache(const Song &song, const QImage &img, bool dummyEntriesOn
             hadEntries=true;
             cache.remove(key);
 
-            QStringList parts=img.isNull() ? QStringList() : key.split(':');
-            if (parts.size()>3) {
-                int size=parts.at(3).toInt();
-                pix=new QPixmap(QPixmap::fromImage(img.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            if (!img.isNull()) {
+                pix=new QPixmap(QPixmap::fromImage(img.scaled(s, s, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
                 cache.insert(key, pix, pix->width()*pix->height()*(pix->depth()/8));
             }
         }

@@ -26,6 +26,7 @@
 
 #include <QSet>
 #include "treeview.h"
+
 class Song;
 
 class GroupedView : public TreeView
@@ -60,6 +61,7 @@ public:
     virtual ~GroupedView();
 
     void init(QAction *a1=0, QAction *a2=0, QAction *t=0, int actionLevel=0);
+    void setModel(QAbstractItemModel *model);
     void setFilterActive(bool f);
     bool isFilterActive() const { return filterActive; }
     void setAutoExpand(bool ae) { autoExpand=ae; }

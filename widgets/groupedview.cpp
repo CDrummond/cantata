@@ -38,6 +38,7 @@
 #include <QLinearGradient>
 #include <QAction>
 #include <QDropEvent>
+#include <QPixmap>
 
 static int constCoverSize=32;
 static int constIconSize=16;
@@ -431,6 +432,16 @@ void GroupedView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
     setItemDelegate(new GroupedViewDelegate(this, a1, a2, t, actionLevel));
 }
 
+void GroupedView::setModel(QAbstractItemModel *model)
+{
+    QTreeView::setModel(model);
+    if (model) {
+        connect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), this, SLOT(coverRetrieved(const Song &)));
+    } else {
+        disconnect(Covers::self(), SIGNAL(coverRetrieved(const Song &)), this, SLOT(coverRetrieved(const Song &)));
+    }
+}
+
 void GroupedView::setFilterActive(bool f)
 {
     if (f==filterActive) {
@@ -643,7 +654,7 @@ void GroupedView::dropEvent(QDropEvent *event)
 
 void GroupedView::coverRetrieved(const Song &s)
 {
-    if (filterActive) {
+    if (filterActive || !isVisible()) {
         return;
     }
 

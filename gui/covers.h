@@ -152,7 +152,7 @@ private:
 private:
     QHash<QNetworkReply *, Job> jobs;
     QSet<int> cacheSizes;
-    QCache<QString, QPixmap> cache;
+    QCache<quint32, QPixmap> cache;
     QMap<QString, QString> filenames;
     CoverQueue *queue;
     QThread *queueThread;

@@ -75,6 +75,8 @@
 44. If fetching artist images for a song, and the song-folder heirarchy is 2
     levels (artist/album/), then save image as artist.jpg/png within the artist
     folder. (Only if 'save downloaded covers in music folder' is enabled)
+45. Work-around issues with some styles (e.g. QGtkStyle) and a large number of
+    items in the genre combos.
 
 0.9.2
 -----

@@ -23,12 +23,66 @@
 
 #include "genrecombo.h"
 #include "localize.h"
+#include <QLineEdit>
+#include <QAbstractItemView>
+#include <QStyle>
+#include <QStyleOption>
+
+// Max number of items before we try to force a scrollbar in popup menu...
+static const int constPopupItemCount=32;
 
 GenreCombo::GenreCombo(QWidget *p)
      : QComboBox(p)
 {
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     update(QSet<QString>());
+    setEditable(false);
+}
+
+void GenreCombo::showPopup()
+{
+    QStyleOptionComboBox opt;
+    opt.init(this);
+    bool usingPopup=style()->styleHint(QStyle::SH_ComboBox_Popup, &opt);
+
+    // Hacky, but if we set the combobox as editable - the style gives the
+    // popup a scrollbar. This is more convenient if we have lots of items!
+    if (usingPopup && count()>constPopupItemCount) {
+        setMaxVisibleItems(constPopupItemCount);
+        setEditable(true);
+        lineEdit()->setReadOnly(true);
+    }
+    QComboBox::showPopup();
+
+    // Also, if the size of the popup is more than required for 32 items, then
+    // restrict its height...
+    if (usingPopup && parentWidget() && view()->parentWidget()) {
+        int maxHeight=constPopupItemCount*view()->sizeHintForRow(0);
+        QRect geo(view()->parentWidget()->geometry());
+        if (geo.height()>maxHeight) {
+            view()->parentWidget()->setGeometry(QRect(geo.x(), geo.y()+(geo.height()-maxHeight), geo.width(), maxHeight));
+        }
+
+        // Hide scrollers - these look ugly...
+        foreach (QObject *c, view()->parentWidget()->children()) {
+            if (0==qstrcmp("QComboBoxPrivateScroller", c->metaObject()->className())) {
+                ((QWidget *)c)->setMaximumHeight(0);
+            }
+        }
+    }
+}
+
+void GenreCombo::hidePopup()
+{
+    // Unset editable...
+    if (count()>constPopupItemCount) {
+        QStyleOptionComboBox opt;
+        opt.init(this);
+        if (style()->styleHint(QStyle::SH_ComboBox_Popup, &opt)) {
+            setEditable(false);
+        }
+    }
+    QComboBox::hidePopup();
 }
 
 void GenreCombo::update(const QSet<QString> &g)

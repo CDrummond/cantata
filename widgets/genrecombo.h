@@ -40,6 +40,10 @@ public Q_SLOTS:
     void update(const QSet<QString> &g);
 
 private:
+    void showPopup();
+    void hidePopup();
+
+private:
     QSet<QString> genres;
 };
 

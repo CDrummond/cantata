@@ -77,6 +77,8 @@
     folder. (Only if 'save downloaded covers in music folder' is enabled)
 45. Work-around issues with some styles (e.g. QGtkStyle) and a large number of
     items in the genre combos.
+46. Remove 'Auto' cover size setting. Now cover sizes are based upon setting
+    and font size.
 
 0.9.2
 -----

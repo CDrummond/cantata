@@ -387,12 +387,14 @@ bool Settings::libraryArtistImage()
 
 int Settings::libraryCoverSize()
 {
-    return GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+    int size=GET_INT("libraryCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+    return size>MusicLibraryItemAlbum::CoverExtraLarge || size<0 ? MusicLibraryItemAlbum::CoverMedium : size;
 }
 
 int Settings::albumsCoverSize()
 {
-    return GET_INT("albumsCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+    int size=GET_INT("albumsCoverSize", (int)(MusicLibraryItemAlbum::CoverMedium));
+    return size>MusicLibraryItemAlbum::CoverExtraLarge || size<0 ? MusicLibraryItemAlbum::CoverMedium : size;
 }
 
 int Settings::albumSort()

@@ -37,7 +37,6 @@ static void addImageSizes(QComboBox *box)
     box->addItem(i18n("Medium"), MusicLibraryItemAlbum::CoverMedium);
     box->addItem(i18n("Large"), MusicLibraryItemAlbum::CoverLarge);
     box->addItem(i18n("Extra Large"), MusicLibraryItemAlbum::CoverExtraLarge);
-    box->addItem(i18n("Automatic"), MusicLibraryItemAlbum::CoverAuto);
 }
 
 static void addViewTypes(QComboBox *box, bool iconMode=false, bool groupedTree=false)

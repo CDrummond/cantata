@@ -47,48 +47,32 @@ static QPixmap *theDefaultLargeIcon=0;
 static bool useDate=false;
 static QSize iconItemSize;
 
-static inline int adjust(int v, int step)
+static inline int adjust(int v)
 {
-    return (((int)(v/step))*step)+((v%step) ? step : 0);
+    if (v>48) {
+        static const int constStep=4;
+        return (((int)(v/constStep))*constStep)+((v%constStep) ? constStep : 0);
+    } else {
+        return Icon::stdSize(v);
+    }
 }
 
-static int autoListSize=32;
-static int autoIconSize=128;
-
-static int setSize(int size, bool iconMode)
-{
-    for (int i=MusicLibraryItemAlbum::CoverSmall; i<=MusicLibraryItemAlbum::CoverAuto; ++i) {
-        int icnSize=MusicLibraryItemAlbum::iconSize((MusicLibraryItemAlbum::CoverSize)i, iconMode);
-        if (size<=icnSize) {
-            size=icnSize;
-            break;
-        }
-    }
-
-    if (autoIconSize>MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverExtraLarge, iconMode)) {
-        size=adjust(size, 4);
-    }
-    return size;
-}
+static int fontHeight=16;
 
 void MusicLibraryItemAlbum::setup()
 {
-    int height=QApplication::fontMetrics().height();
-
-    autoListSize=setSize(height*2, false);
-    autoIconSize=setSize(height*6, true);
+    fontHeight=QApplication::fontMetrics().height();
 }
 
 int MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverSize sz, bool iconMode)
 {
     switch (sz) {
-    default:
     case CoverNone:       return 0;
-    case CoverSmall:      return iconMode ? 76  : 22;
-    case CoverMedium:     return iconMode ? 100 : 32;
-    case CoverLarge:      return iconMode ? 128 : 48;
-    case CoverExtraLarge: return iconMode ? 160 : 64;
-    case CoverAuto:       return iconMode ? autoIconSize : autoListSize;
+    case CoverSmall:      return adjust((iconMode ? 4.75 : 1.375)*fontHeight);
+    default:
+    case CoverMedium:     return adjust((iconMode ? 6.25 : 2)*fontHeight);
+    case CoverLarge:      return adjust((iconMode ? 8 : 3)*fontHeight);
+    case CoverExtraLarge: return adjust((iconMode ? 10 : 4)*fontHeight);
     }
 }
 

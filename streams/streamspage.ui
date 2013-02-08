@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>253</width>
-    <height>157</height>
+    <width>310</width>
+    <height>387</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,10 +18,24 @@
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="3">
-    <widget class="MessageWidget" name="infoMsg"/>
+    <widget class="ItemView" name="view"/>
    </item>
    <item row="1" column="0" colspan="3">
-    <widget class="ItemView" name="view"/>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="infoIcon"/>
+     </item>
+     <item>
+      <widget class="SqueezedTextLabel" name="infoLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item row="2" column="0">
     <widget class="GenreCombo" name="genreCombo"/>
@@ -41,20 +55,14 @@
    <header>itemview.h</header>
   </customwidget>
   <customwidget>
-   <class>LineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>lineedit.h</header>
-  </customwidget>
-  <customwidget>
    <class>GenreCombo</class>
    <extends>QComboBox</extends>
    <header>genrecombo.h</header>
   </customwidget>
   <customwidget>
-   <class>MessageWidget</class>
-   <extends>QFrame</extends>
-   <header>messagewidget.h</header>
-   <container>1</container>
+   <class>SqueezedTextLabel</class>
+   <extends>QLabel</extends>
+   <header>squeezedtextlabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

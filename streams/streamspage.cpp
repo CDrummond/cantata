@@ -308,8 +308,10 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->init(p->replacePlayQueueAction, 0);
 
     memset(jobs, 0, sizeof(QNetworkReply *)*WS_Count);
-    infoMsg->hide();
-    infoMsg->setWordWrap(true);
+    infoLabel->hide();
+    infoIcon->hide();
+    int iconSize=Icon::stdSize(QApplication::fontMetrics().height());
+    infoIcon->setPixmap(Icon("locked").pixmap(iconSize, iconSize));
 }
 
 StreamsPage::~StreamsPage()
@@ -342,9 +344,12 @@ void StreamsPage::checkWriteable()
     bool isHttp=StreamsModel::dir().startsWith("http:/");
     bool dirWritable=!isHttp && QFileInfo(StreamsModel::dir()).isWritable();
     if (dirWritable) {
-        infoMsg->hide();
-    } else if (!isHttp) {
-        infoMsg->setInformation(i18n("Music folder is not writable. Adding/editing streams is disabled."));
+        infoLabel->hide();
+        infoIcon->hide();
+    } else {
+        infoLabel->setVisible(true);
+        infoLabel->setText(isHttp ? i18n("Streams from HTTP server") : i18n("Music folder not writeable."));
+        infoIcon->setVisible(true);
     }
     if (dirWritable!=StreamsModel::self()->isWritable()) {
         StreamsModel::self()->setWritable(dirWritable);

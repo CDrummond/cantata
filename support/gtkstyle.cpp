@@ -164,6 +164,9 @@ QString GtkStyle::themeName()
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
+    #if defined Q_OS_WIN
+    Q_UNUSED(widget)
+    #else
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();
         if (!theme.isEmpty()) {
@@ -179,4 +182,5 @@ void GtkStyle::applyTheme(QWidget *widget)
             }
         }
     }
+    #endif
 }

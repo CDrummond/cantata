@@ -77,7 +77,7 @@ DynamicPage::DynamicPage(MainWindow *p)
     connect(Dynamic::self(), SIGNAL(loadedList()), view, SLOT(hideSpinner()));
 
     #ifdef Q_OS_WIN
-    infoMsg->setVisible(true);
+    infoMsg->setWordWrap(true);
     setEnabled(false);
     #else
     infoMsg->setVisible(false);
@@ -119,7 +119,11 @@ void DynamicPage::controlActions()
 void DynamicPage::dynamicUrlChanged(const QString &url)
 {
     #ifdef Q_OS_WIN
-    infoMsg->setVisible(url.isEmpty());
+    if (url.isEmpty()) {
+        infoMsg->setError(i18n("No dynamizer port defined in server settings. Dynamic functionality disabled."));
+    } else {
+        infoMsg->setVisible(false);
+    }
     setEnabled(!url.isEmpty());
     #else
     refreshBtn->setVisible(!url.isEmpty());

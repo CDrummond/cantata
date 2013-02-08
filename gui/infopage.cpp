@@ -34,6 +34,9 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QWebSettings>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KWebView>
 #include <KDE/KFileDialog>
@@ -185,10 +188,19 @@ void InfoPage::googleAnswer(const QString &ans)
     if (!answer.contains("m.wikipedia.org")) {
         answer.replace("wikipedia.org", "m.wikipedia.org");
     }
+    #if QT_VERSION < 0x050000
     wikiInfo.setEncodedUrl(answer/*.replace("/wiki/", "/wiki/Special:Export/")*/.toUtf8());
     wikiInfo.addQueryItem("action", "view");
     wikiInfo.addQueryItem("useskin", "monobook");
     wikiInfo.addQueryItem("useformat", "mobile");
+    #else
+    wikiInfo=QUrl(answer/*.replace("/wiki/", "/wiki/Special:Export/")*/.toUtf8());
+    QUrlQuery query;
+    query.addQueryItem("action", "view");
+    query.addQueryItem("useskin", "monobook");
+    query.addQueryItem("useformat", "mobile");
+    wikiInfo.setQuery(query);
+    #endif
 
 //     view->settings()->resetFontSize(QWebSettings::MinimumFontSize);
 //     view->settings()->resetFontSize(QWebSettings::MinimumLogicalFontSize);
@@ -288,7 +300,11 @@ void InfoPage::get(const QUrl &url)
     // lie to prevent google etc. from believing we'd be some automated tool, abusing their ... errr ;-P
     request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/6.0");
     if (!lang.isEmpty()) {
+        #if QT_VERSION < 0x050000
         request.setRawHeader("Accept-Language", lang.toAscii());
+        #else
+        request.setRawHeader("Accept-Language", lang.toLatin1());
+        #endif
     }
 
     QNetworkReply *reply = view->page()->networkAccessManager()->get(request);

@@ -90,7 +90,11 @@ bool UDevManager::Private::isOfInterest(const UdevQt::Device &device)
         QString path = device.deviceProperty("DEVPATH").toString();
 
         int lastSlash = path.length() - path.lastIndexOf(QLatin1String("/")) -1;
+        #if QT_VERSION < 0x050000
         QByteArray lastElement = path.right(lastSlash).toAscii();
+        #else
+        QByteArray lastElement = path.right(lastSlash).toLatin1();
+        #endif
 
         if (lastElement.startsWith("tty") && !path.startsWith("/devices/virtual")) {
             return true;

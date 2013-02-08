@@ -29,6 +29,9 @@
 #include <QTextStream>
 #include <QFile>
 #include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMimeType>
 #endif
@@ -226,10 +229,16 @@ void HttpSocket::readClient()
     if (socket->canReadLine()) {
         QList<QByteArray> tokens = split(socket->readLine()); // QRegExp("[ \r\n][ \r\n]*"));
         if (tokens.length()>=2 && "GET"==tokens[0]) {
+            #if QT_VERSION < 0x050000
             QUrl url(QUrl::fromEncoded(tokens[1]));
+            QUrl &q=url;
+            #else
+            QUrl url(QUrl::fromEncoded(tokens[1]));
+            QUrlQuery q(url);
+            #endif
             bool ok=false;
 
-            if (url.hasQueryItem("cantata")) {
+            if (q.hasQueryItem("cantata")) {
                 QFile f(url.path());
 
                 if (f.open(QIODevice::ReadOnly)) {

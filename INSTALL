@@ -7,11 +7,20 @@ With KDE Support
 5. sudo make install
 
 
-Qt-Only
-=======
+Qt4
+===
 1. mkdir build
 2. cd build
 3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_KDE=OFF
+4. make
+5. sudo make install
+
+
+Qt5
+===
+1. mkdir build
+2. cd build
+3. cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_KDE=OFF -DENABLE_QT5=ON
 4. make
 5. sudo make install
 
@@ -43,6 +52,10 @@ The following options may be passed to CMake:
     -DENABLE_KDE=OFF
         Link against KDE libraries, use KDE dialogs, etc.
         Default: ON
+
+    -DENABLE_QT5=ON
+        Build against Qt5, not Qt4
+        Default: OFF
 
     -DENABLE_PHONON=ON
         Enable support for playing back MPD HTTP streams via Phonon.

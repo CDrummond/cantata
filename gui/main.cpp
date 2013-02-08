@@ -77,7 +77,9 @@ static void loadTranslation(const QString &prefix, const QString &path, const QS
         delete t;
     }
 
+    #if QT_VERSION < 0x050000
     QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
+    #endif
 }
 #endif
 

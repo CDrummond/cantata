@@ -57,7 +57,11 @@ Solid::Predicate Solid::Predicate::fromString(const QString &predicate)
 {
     Solid::PredicateParse::ParsingData *data = new Solid::PredicateParse::ParsingData();
     s_parsingData->setLocalData(data);
+    #if QT_VERSION < 0x050000
     data->buffer = predicate.toAscii();
+    #else
+    data->buffer = predicate.toLatin1();
+    #endif
     PredicateParse_mainParse(data->buffer.constData());
     Predicate result;
     if (data->result)

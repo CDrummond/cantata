@@ -41,7 +41,11 @@ UltimateLyricsProvider::UltimateLyricsProvider()
 
 void UltimateLyricsProvider::FetchInfo(int id, const Song& metadata) {
   // Get the text codec
+  #if QT_VERSION < 0x050000
   const QTextCodec* codec = QTextCodec::codecForName(charset_.toAscii().constData());
+  #else
+  const QTextCodec* codec = QTextCodec::codecForName(charset_.toLatin1().constData());
+  #endif
   if (!codec) {
     //qWarning() << "Invalid codec" << charset_;
     //emit Finished(id);
@@ -117,7 +121,11 @@ void UltimateLyricsProvider::LyricsFetched() {
     return;
   }
 
+  #if QT_VERSION < 0x050000
   const QTextCodec* codec = QTextCodec::codecForName(charset_.toAscii().constData());
+  #else
+  const QTextCodec* codec = QTextCodec::codecForName(charset_.toLatin1().constData());
+  #endif
   const QString original_content = codec->toUnicode(reply->readAll());
 
   // Check for invalid indicators

@@ -18,14 +18,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="3">
-    <widget class="QLabel" name="infoMsg">
-     <property name="text">
-      <string>MPD music folder is not writable. Adding/editing streams is disabled.</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <widget class="MessageWidget" name="infoMsg"/>
    </item>
    <item row="1" column="0" colspan="3">
     <widget class="ItemView" name="view"/>
@@ -56,6 +49,12 @@
    <class>GenreCombo</class>
    <extends>QComboBox</extends>
    <header>genrecombo.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MessageWidget</class>
+   <extends>QFrame</extends>
+   <header>messagewidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

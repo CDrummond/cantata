@@ -272,6 +272,7 @@ if (TAGLIB_FOUND)
         tags/trackorganiser.h
         http/httpsocket.h
         devices/filenameschemedialog.h
+        devices/device.h
     )
 
     SET( CANTATA_UIS ${CANTATA_UIS}
@@ -473,7 +474,7 @@ if (TAGLIB_FOUND)
                 devices/devicepropertiesdialog.cpp devices/encoders.cpp devices/freespaceinfo.cpp
                 devices/transcodingjob.cpp devices/valueslider.cpp devices/syncdialog.cpp devices/synccollectionwidget.cpp)
         SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/devicespage.h devices/filejob.h
-                devices/device.h devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
+                devices/fsdevice.h devices/umsdevice.h models/devicesmodel.h
                 devices/actiondialog.h devices/devicepropertieswidget.h devices/devicepropertiesdialog.h
                 devices/transcodingjob.h devices/valueslider.h devices/syncdialog.h devices/synccollectionwidget.h)
         SET( CANTATA_UIS ${CANTATA_UIS} devices/devicespage.ui devices/actiondialog.ui devices/devicepropertieswidget.ui

@@ -30,6 +30,8 @@
 #include <QSet>
 
 class QTimer;
+class QIODevice;
+class QNetworkReply;
 
 class StreamsModel : public QAbstractItemModel
 {
@@ -110,12 +112,17 @@ public:
     void setWritable(bool w) { writable=w; }
 
 Q_SIGNALS:
+    void downloading(bool);
     void updateGenres(const QSet<QString> &genres);
     void error(const QString &e);
+
+private Q_SLOTS:
+    void downloadFinished();
 
 private:
     void clearCategories();
     bool load(const QString &filename, bool isInternal);
+    bool load(QIODevice *dev, bool isInternal);
     CategoryItem * getCategory(const QString &name, bool create=false, bool signal=false);
     QString name(CategoryItem *cat, const QString &url);
     bool entryExists(CategoryItem *cat, const QString &name, const QUrl &url=QUrl()) { return 0!=getStream(cat, name, url); }
@@ -129,6 +136,7 @@ private:
     bool writable;
     bool modified;
     QTimer *timer;
+    QNetworkReply *job;
 };
 
 #endif

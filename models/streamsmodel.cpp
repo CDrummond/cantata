@@ -32,6 +32,7 @@
 #include <qglobal.h>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
+#include <QNetworkReply>
 #include "config.h"
 #include "settings.h"
 #if defined Q_OS_WIN
@@ -46,6 +47,7 @@
 #include "icons.h"
 #include "utils.h"
 #include "qtiocompressor/qtiocompressor.h"
+#include "networkaccessmanager.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(StreamsModel, instance)
@@ -111,6 +113,9 @@ static const QLatin1String constStreamsOldFileName("streams.xml");
 
 static void convertOldFile(const QString &compressedName)
 {
+    if (compressedName.startsWith("http:/")) {
+        return;
+    }
     QString prev=compressedName;
     prev.replace(constStreamsCompressedFileName, constStreamsOldFileName);
 
@@ -149,6 +154,7 @@ StreamsModel::StreamsModel()
     : QAbstractItemModel(0)
     , modified(false)
     , timer(0)
+    , job(0)
 {
 }
 
@@ -299,7 +305,17 @@ void StreamsModel::save(bool force)
 bool StreamsModel::load(const QString &filename, bool isInternal)
 {
     if (isInternal) {
-        convertOldFile(filename);
+        if (filename.startsWith("http:/")) {
+            if (job) {
+                return false;
+            }
+            emit downloading(true);
+            job=NetworkAccessManager::self()->get(QUrl(filename));
+            connect(job, SIGNAL(finished()), SLOT(downloadFinished()));
+            return true;
+        } else {
+            convertOldFile(filename);
+        }
     }
 
     QFile file(filename);
@@ -319,7 +335,38 @@ bool StreamsModel::load(const QString &filename, bool isInternal)
             return false;
         }
     }
-    QXmlStreamReader doc(isCompressed ? (QIODevice *)&compressor : (QIODevice *)&file);
+    return load(isCompressed ? (QIODevice *)&compressor : (QIODevice *)&file, isInternal);
+}
+
+void StreamsModel::downloadFinished()
+{
+    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+
+    if (reply==job) {
+        job=0;
+        if(QNetworkReply::NoError==reply->error()) {
+            QtIOCompressor comp(reply);
+            comp.setStreamFormat(QtIOCompressor::GzipFormat);
+            if (comp.open(QIODevice::ReadOnly)) {
+                beginResetModel();
+                if (!load(&comp, true)) {
+                    emit error(i18n("Failed to parse downloaded stream list."));
+                }
+                endResetModel();
+            } else {
+                emit error(i18n("Failed to read downloaded stream list."));
+            }
+        } else {
+            emit error(i18n("Failed to download stream list."));
+        }
+        emit downloading(false);
+    }
+    reply->deleteLater();
+}
+
+bool StreamsModel::load(QIODevice *dev, bool isInternal)
+{
+    QXmlStreamReader doc(dev);
     bool haveInserted=false;
     int level=0;
     CategoryItem *cat=0;

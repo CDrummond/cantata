@@ -78,6 +78,7 @@ private Q_SLOTS:
     void edit();
     void searchItems();
     void itemDoubleClicked(const QModelIndex &index);
+    void downloading(bool dl);
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);

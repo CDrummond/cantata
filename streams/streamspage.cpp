@@ -308,7 +308,8 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->init(p->replacePlayQueueAction, 0);
 
     memset(jobs, 0, sizeof(QNetworkReply *)*WS_Count);
-    infoMsg->setVisible(false);
+    infoMsg->hide();
+    infoMsg->setWordWrap(true);
 }
 
 StreamsPage::~StreamsPage()
@@ -338,8 +339,13 @@ void StreamsPage::mpdDirChanged()
 
 void StreamsPage::checkWriteable()
 {
-    bool dirWritable=!StreamsModel::dir().startsWith("http:/") && QFileInfo(StreamsModel::dir()).isWritable();
-    infoMsg->setVisible(!dirWritable);
+    bool isHttp=StreamsModel::dir().startsWith("http:/");
+    bool dirWritable=!isHttp && QFileInfo(StreamsModel::dir()).isWritable();
+    if (dirWritable) {
+        infoMsg->hide();
+    } else if (!isHttp) {
+        infoMsg->setInformation(i18n("Music folder is not writable. Adding/editing streams is disabled."));
+    }
     if (dirWritable!=StreamsModel::self()->isWritable()) {
         StreamsModel::self()->setWritable(dirWritable);
         controlActions();

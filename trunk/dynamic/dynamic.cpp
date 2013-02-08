@@ -40,6 +40,10 @@ K_GLOBAL_STATIC(Dynamic, instance)
 #include <QProcess>
 #include <QTimer>
 #include <QIcon>
+#include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #include <signal.h>
 
 static const QString constDir=QLatin1String("dynamic");
@@ -196,9 +200,17 @@ bool Dynamic::save(const Entry &e)
             return false;
         }
 
+        #if QT_VERSION < 0x050000
         QUrl url(dynamicUrl+"/"+constSaveCmd);
         url.addQueryItem("name", e.name);
         url.addQueryItem(constStatusTime, QString::number(statusTime));
+        #else
+        QUrl url(dynamicUrl+"/"+constSaveCmd);
+        QUrlQuery query;
+        query.addQueryItem("name", e.name);
+        query.addQueryItem(constStatusTime, QString::number(statusTime));
+        url.setQuery(query);
+        #endif
 
         currentJob=NetworkAccessManager::self()->post(QNetworkRequest(url), string.toUtf8());
         connect(currentJob, SIGNAL(finished()), this, SLOT(jobFinished()));
@@ -649,8 +661,16 @@ void Dynamic::sendCommand(const QString &cmd, const QStringList &args)
 
     if (constDeleteCmd==cmd) {
         if (!args.isEmpty()) {
+            #if QT_VERSION < 0x050000
             QUrl url(dynamicUrl+"/"+args.at(0));
             url.addQueryItem(constStatusTime, QString::number(statusTime));
+            #else
+            QUrl url(dynamicUrl+"/"+args.at(0));
+            QUrlQuery query;
+            query.addQueryItem(constStatusTime, QString::number(statusTime));
+            url.setQuery(query);
+            #endif
+        
             currentJob=NetworkAccessManager::self()->deleteResource(QNetworkRequest(url));
         } else {
             currentCommand.clear();
@@ -658,12 +678,20 @@ void Dynamic::sendCommand(const QString &cmd, const QStringList &args)
         }
     } else {
         QUrl url(dynamicUrl+"/"+currentCommand);
+        #if QT_VERSION < 0x050000
+        QUrl &query=url;
+        #else
+        QUrlQuery query;
+        #endif
         if (!args.isEmpty() && 0==args.size()%2) {
             for (int i=0; i<args.size(); i+=2) {
-                url.addQueryItem(args.at(i), args.at(i+1));
+                query.addQueryItem(args.at(i), args.at(i+1));
             }
         }
-        url.addQueryItem(constStatusTime, QString::number(statusTime));
+        query.addQueryItem(constStatusTime, QString::number(statusTime));
+        #if QT_VERSION >= 0x050000
+        url.setQuery(query);
+        #endif
         if (constSetActiveCmd==cmd || constControlCmd==cmd) {
             currentJob=NetworkAccessManager::self()->post(QNetworkRequest(url), QByteArray());
         } else {

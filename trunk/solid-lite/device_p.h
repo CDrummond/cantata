@@ -23,17 +23,24 @@
 
 #include <QObject>
 #include <QSharedData>
+#if QT_VERSION < 0x050000
 #include <QWeakPointer>
+#else
+#include <QPointer>
+#include "ifaces/device.h"
+#endif
 
 #include <QMap>
 #include "deviceinterface.h"
 
 namespace Solid
 {
+    #if QT_VERSION < 0x050000
     namespace Ifaces
     {
         class Device;
     }
+    #endif
 
     class DevicePrivate : public QObject, public QSharedData
     {
@@ -55,7 +62,11 @@ namespace Solid
 
     private:
         QString m_udi;
+        #if QT_VERSION < 0x050000
         QWeakPointer<Ifaces::Device> m_backendObject;
+        #else
+        QPointer<Ifaces::Device> m_backendObject;
+        #endif
         QMap<DeviceInterface::Type, DeviceInterface *> m_ifaces;
     };
 }

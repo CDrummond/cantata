@@ -80,6 +80,28 @@ int RgDialog::instanceCount()
     return iCount;
 }
 
+#if QT_VERSION < 0x050000
+static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
+{
+    hdr->setResizeMode(idx, mode);
+}
+
+static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
+{
+    hdr->setResizeMode(mode);
+}
+#else
+static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
+{
+    hdr->setSectionResizeMode(idx, mode);
+}
+
+static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
+{
+    hdr->setSectionResizeMode(mode);
+}
+#endif
+
 RgDialog::RgDialog(QWidget *parent)
     : Dialog(parent)
     , state(State_Idle)
@@ -109,13 +131,13 @@ RgDialog::RgDialog(QWidget *parent)
     hdr->setText(COL_TRACKPEAK, i18n("Track Peak"));
 
     QHeaderView *hv=view->header();
-    hv->setResizeMode(COL_ARTIST, QHeaderView::ResizeToContents);
-    hv->setResizeMode(COL_ALBUM, QHeaderView::ResizeToContents);
-    hv->setResizeMode(COL_TITLE, QHeaderView::Stretch);
-    hv->setResizeMode(COL_ALBUMGAIN, QHeaderView::Fixed);
-    hv->setResizeMode(COL_TRACKGAIN, QHeaderView::Fixed);
-    hv->setResizeMode(COL_ALBUMPEAK, QHeaderView::Fixed);
-    hv->setResizeMode(COL_TRACKPEAK, QHeaderView::Fixed);
+    setResizeMode(hv, COL_ARTIST, QHeaderView::ResizeToContents);
+    setResizeMode(hv, COL_ALBUM, QHeaderView::ResizeToContents);
+    setResizeMode(hv, COL_TITLE, QHeaderView::Stretch);
+    setResizeMode(hv, COL_ALBUMGAIN, QHeaderView::Fixed);
+    setResizeMode(hv, COL_TRACKGAIN, QHeaderView::Fixed);
+    setResizeMode(hv, COL_ALBUMPEAK, QHeaderView::Fixed);
+    setResizeMode(hv, COL_TRACKPEAK, QHeaderView::Fixed);
     hv->setStretchLastSection(false);
 
     layout->addWidget(view);

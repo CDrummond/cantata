@@ -8,7 +8,7 @@ both the code itself, and the GUI are now *very* different to QtMPC.
 Dependencies
 ============
 
-Cantata requires the following Qt4 libraries:
+Cantata requires the following Qt libraries:
 
 1. QtCore
 2. QtGui

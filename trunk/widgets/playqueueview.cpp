@@ -55,6 +55,28 @@ PlayQueueTreeView::~PlayQueueTreeView()
 {
 }
 
+#if QT_VERSION < 0x050000
+static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
+{
+    hdr->setResizeMode(idx, mode);
+}
+
+static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
+{
+    hdr->setResizeMode(mode);
+}
+#else
+static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
+{
+    hdr->setSectionResizeMode(idx, mode);
+}
+
+static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
+{
+    hdr->setSectionResizeMode(mode);
+}
+#endif
+
 void PlayQueueTreeView::initHeader()
 {
     if (!model()) {
@@ -64,20 +86,20 @@ void PlayQueueTreeView::initHeader()
     QFontMetrics fm(font());
     QHeaderView *hdr=header();
     if (!menu) {
-        hdr->setResizeMode(QHeaderView::Interactive);
+        setResizeMode(hdr, QHeaderView::Interactive);
         hdr->setContextMenuPolicy(Qt::CustomContextMenu);
         hdr->resizeSection(PlayQueueModel::COL_STATUS, 20);
         hdr->resizeSection(PlayQueueModel::COL_TRACK, fm.width("999"));
         hdr->resizeSection(PlayQueueModel::COL_YEAR, fm.width("99999"));
-        hdr->setResizeMode(PlayQueueModel::COL_STATUS, QHeaderView::Fixed);
-        hdr->setResizeMode(PlayQueueModel::COL_TITLE, QHeaderView::Interactive);
-        hdr->setResizeMode(PlayQueueModel::COL_ARTIST, QHeaderView::Interactive);
-        hdr->setResizeMode(PlayQueueModel::COL_ALBUM, QHeaderView::Stretch);
-        hdr->setResizeMode(PlayQueueModel::COL_TRACK, QHeaderView::Fixed);
-        hdr->setResizeMode(PlayQueueModel::COL_LENGTH, QHeaderView::ResizeToContents);
-        hdr->setResizeMode(PlayQueueModel::COL_DISC, QHeaderView::ResizeToContents);
-        hdr->setResizeMode(PlayQueueModel::COL_PRIO, QHeaderView::ResizeToContents);
-        hdr->setResizeMode(PlayQueueModel::COL_YEAR, QHeaderView::Fixed);
+        setResizeMode(hdr, PlayQueueModel::COL_STATUS, QHeaderView::Fixed);
+        setResizeMode(hdr, PlayQueueModel::COL_TITLE, QHeaderView::Interactive);
+        setResizeMode(hdr, PlayQueueModel::COL_ARTIST, QHeaderView::Interactive);
+        setResizeMode(hdr, PlayQueueModel::COL_ALBUM, QHeaderView::Stretch);
+        setResizeMode(hdr, PlayQueueModel::COL_TRACK, QHeaderView::Fixed);
+        setResizeMode(hdr, PlayQueueModel::COL_LENGTH, QHeaderView::ResizeToContents);
+        setResizeMode(hdr, PlayQueueModel::COL_DISC, QHeaderView::ResizeToContents);
+        setResizeMode(hdr, PlayQueueModel::COL_PRIO, QHeaderView::ResizeToContents);
+        setResizeMode(hdr, PlayQueueModel::COL_YEAR, QHeaderView::Fixed);
         hdr->setStretchLastSection(false);
         connect(hdr, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu()));
     }

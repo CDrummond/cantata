@@ -26,7 +26,11 @@
 #include "devicenotifier.h"
 
 #include <QMap>
+#if QT_VERSION < 0x050000
 #include <QWeakPointer>
+#else
+#include <QPointer>
+#endif
 #include <QSharedData>
 #include <QThreadStorage>
 
@@ -57,7 +61,11 @@ namespace Solid
         Ifaces::Device *createBackendObject(const QString &udi);
 
         QExplicitlySharedDataPointer<DevicePrivate> m_nullDevice;
+        #if QT_VERSION < 0x050000
         QMap<QString, QWeakPointer<DevicePrivate> > m_devicesMap;
+        #else
+        QMap<QString, QPointer<DevicePrivate> > m_devicesMap;
+        #endif
         QMap<QObject *, QString> m_reverseMap;
     };
 

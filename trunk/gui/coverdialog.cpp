@@ -55,6 +55,10 @@
 #endif
 #include <QFileInfo>
 #include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#include <QMimeData>
+#endif
 #include <QTemporaryFile>
 #include <QDir>
 #include <QXmlStreamReader>
@@ -664,26 +668,45 @@ void CoverDialog::sendQuery()
     cancelButton->setEnabled(true);
 
     currentQueryString=fixedQuery;
-    QUrl lastFm;
-    lastFm.setScheme("http");
-    lastFm.setHost(constLastFmHost);
-    lastFm.setPath("/2.0/");
-    lastFm.addQueryItem("api_key", Covers::constLastFmApiKey);
-    lastFm.addQueryItem("limit", QString::number(20));
-    lastFm.addQueryItem("page", QString::number(page));
-    lastFm.addQueryItem("album", fixedQuery);
-    lastFm.addQueryItem("method", "album.search");
-    sendQueryRequest(lastFm);
+    #if QT_VERSION < 0x050000
+    QUrl lastFmUrl;
+    QUrl &lastFmQuery=lastFmUrl;
+    #else
+    QUrl lastFmUrl;
+    QUrlQuery lastFmQuery;
+    #endif
+    lastFmUrl.setScheme("http");
+    lastFmUrl.setHost(constLastFmHost);
+    lastFmUrl.setPath("/2.0/");
+    lastFmQuery.addQueryItem("api_key", Covers::constLastFmApiKey);
+    lastFmQuery.addQueryItem("limit", QString::number(20));
+    lastFmQuery.addQueryItem("page", QString::number(page));
+    lastFmQuery.addQueryItem("album", fixedQuery);
+    lastFmQuery.addQueryItem("method", "album.search");
+    #if QT_VERSION >= 0x050000
+    lastFmUrl.setQuery(lastFmQuery);
+    #endif
+    sendQueryRequest(lastFmUrl);
 
-    QUrl google;
-    google.setScheme("http");
-    google.setHost(constGoogleHost);
-    google.setPath("/images");
-    google.addQueryItem("q", fixedQuery);
-    google.addQueryItem("gbv", QChar('1'));
-    google.addQueryItem("filter", QChar('1'));
-    google.addQueryItem("start", QString::number(20 * page));
-    sendQueryRequest(google);
+    #if QT_VERSION < 0x050000
+    QUrl googleUrl;
+    QUrl &googleQuery=googleUrl;
+    #else
+    QUrl googleUrl;
+    QUrlQuery googleQuery;
+    #endif
+    googleUrl.setScheme("http");
+    googleUrl.setHost(constGoogleHost);
+    googleUrl.setPath("/images");
+    googleQuery.addQueryItem("q", fixedQuery);
+    googleQuery.addQueryItem("gbv", QChar('1'));
+    googleQuery.addQueryItem("filter", QChar('1'));
+    googleQuery.addQueryItem("start", QString::number(20 * page));
+    #if QT_VERSION >= 0x050000
+    googleUrl.setQuery(googleQuery);
+    #endif
+    sendQueryRequest(googleUrl);
+
 
 //    QUrl yahoo;
 //    yahoo.setScheme("http");
@@ -932,7 +955,12 @@ void CoverDialog::parseGoogleQueryResponse(const QString &resp)
     QString html = xml.replace(QLatin1String("&amp;"), QLatin1String("&"));
 
     while (-1!=(pos=rx.indexIn(html, pos))) {
+        #if QT_VERSION < 0x050000
         QUrl url("http://www.google.com"+rx.cap(1));
+        #else
+        QUrl u("http://www.google.com"+rx.cap(1));
+        QUrlQuery url(u);
+        #endif
         int width=url.queryItemValue("w").toInt();
         int height=url.queryItemValue("h").toInt();
         if (width>=100 && height>=100) {
@@ -1141,16 +1169,25 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
     }
 }
 
+static bool hasMimeType(QDropEvent *event)
+{
+    #if QT_VERSION < 0x050000
+    return event->provides("text/uri-list");
+    #else
+    return event->mimeData()->formats().contains(QLatin1String("text/uri-list"));
+    #endif
+}
+
 void CoverDialog::dragEnterEvent(QDragEnterEvent *event)
 {
-    if(event->provides("text/uri-list")) {
+    if (hasMimeType(event)) {
         event->acceptProposedAction();
     }
 }
 
 void CoverDialog::dropEvent(QDropEvent *event)
 {
-    if(event->provides("text/uri-list") && Qt::CopyAction==event->dropAction()) {
+    if (hasMimeType(event) && Qt::CopyAction==event->dropAction()) {
         event->acceptProposedAction();
 
         QList<QUrl> urls(event->mimeData()->urls());

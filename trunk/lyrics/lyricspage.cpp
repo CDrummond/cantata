@@ -47,6 +47,9 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QToolButton>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 
 const QLatin1String LyricsPage::constLyricsDir("lyrics/");
 const QLatin1String LyricsPage::constExtension(".lyrics");
@@ -282,7 +285,12 @@ void LyricsPage::update(const Song &s, bool force)
             QString songFile=song.file;
 
             if (song.isCantataStream()) {
+                #if QT_VERSION < 0x050000
                 QUrl u(songFile);
+                #else
+                QUrl qu(songFile);
+                QUrlQuery u(qu);
+                #endif
                 songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
             }
 

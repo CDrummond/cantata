@@ -116,6 +116,11 @@ class ActionCollection : public QObject {
     virtual void connectNotify(const char *signal);
     virtual void slotActionTriggered();
 
+  #if QT_VERSION >= 0x050000
+  protected:
+    virtual void connectNotify(const QMetaMethod &signal);
+  #endif
+
   private slots:
     void slotActionHovered();
     void actionDestroyed(QObject *);

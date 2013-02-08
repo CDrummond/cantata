@@ -22,17 +22,21 @@
  */
 
 #include "gtkstyle.h"
-#include "windowmanager.h"
 #include "config.h"
 #include <QPainter>
 #include <QStyleOptionViewItemV4>
 #include <QApplication>
 #include <QCache>
-#include <QGtkStyle>
 #include <QProcess>
 #include <QTextStream>
 #include <QFile>
 #include <qglobal.h>
+#if !defined Q_OS_WIN
+#include "windowmanager.h"
+#if QT_VERSION < 0x050000
+#include <QGtkStyle>
+#endif
+#endif
 
 static bool usingGtkStyle=false;
 static bool useFullGtkStyle=false;
@@ -147,10 +151,12 @@ QString GtkStyle::themeName()
             }
         }
 
+         #if QT_VERSION < 0x050000
         // Fall back to gconf
         if (name.isEmpty()) {
             name = QGtkStyle::getGConfString(QLatin1String("/desktop/gnome/interface/gtk_theme"));
         }
+        #endif
     }
     #endif
     return name;

@@ -21,7 +21,11 @@
 #ifndef SOLID_DEVICEINTERFACE_P_H
 #define SOLID_DEVICEINTERFACE_P_H
 
+#if QT_VERSION < 0x050000
 #include <QWeakPointer>
+#else
+#include <QPointer>
+#endif
 
 namespace Solid
 {
@@ -37,7 +41,11 @@ namespace Solid
         void setDevicePrivate(DevicePrivate *devicePrivate);
 
     private:
+        #if QT_VERSION < 0x050000
         QWeakPointer<QObject> m_backendObject;
+        #else
+        QPointer<QObject> m_backendObject;
+        #endif
         DevicePrivate* m_devicePrivate;
     };
 }

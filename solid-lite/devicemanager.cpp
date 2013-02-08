@@ -32,6 +32,12 @@
 
 SOLID_GLOBAL_STATIC(Solid::DeviceManagerStorage, globalDeviceStorage)
 
+#if QT_VERSION < 0x050000
+#define QtPointer QWeakPointer
+#else
+#define QtPointer QPointer
+#endif
+
 Solid::DeviceManagerPrivate::DeviceManagerPrivate()
     : m_nullDevice(new DevicePrivate(QString()))
 {
@@ -53,7 +59,7 @@ Solid::DeviceManagerPrivate::~DeviceManagerPrivate()
         disconnect(backend, 0, this, 0);
     }
 
-    foreach (QWeakPointer<DevicePrivate> dev, m_devicesMap) {
+    foreach (QtPointer<DevicePrivate> dev, m_devicesMap) {
         if (!dev.data()->ref.deref()) {
             delete dev.data();
         }
@@ -228,7 +234,7 @@ Solid::DevicePrivate *Solid::DeviceManagerPrivate::findRegisteredDevice(const QS
         DevicePrivate *devData = new DevicePrivate(udi);
         devData->setBackendObject(iface);
 
-        QWeakPointer<DevicePrivate> ptr(devData);
+        QtPointer<DevicePrivate> ptr(devData);
         m_devicesMap[udi] = ptr;
         m_reverseMap[devData] = udi;
 

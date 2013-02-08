@@ -583,7 +583,11 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
     }
 
     if (!img.isEmpty()) {
+        #if QT_VERSION < 0x050000
         tag->addField("COVERART", qString2TString(QString::fromAscii(img.toBase64())));
+        #else
+        tag->addField("COVERART", qString2TString(QString::fromLatin1(img.toBase64())));
+        #endif
         changed=true;
     }
     return changed;

@@ -235,6 +235,7 @@ void ActionCollection::actionDestroyed(QObject *obj) {
 }
 
 void ActionCollection::connectNotify(const char *signal) {
+  #if QT_VERSION < 0x050000
   if(_connectHovered && _connectTriggered)
     return;
 
@@ -253,7 +254,34 @@ void ActionCollection::connectNotify(const char *signal) {
   }
 
   QObject::connectNotify(signal);
+  #else
+  Q_UNUSED(signal)
+  #endif
 }
+
+#if QT_VERSION >= 0x050000
+#include <QMetaMethod>
+void ActionCollection::connectNotify(const QMetaMethod &signal) {
+  if(_connectHovered && _connectTriggered)
+    return;
+
+  if(QMetaObject::normalizedSignature(SIGNAL(actionHovered(QAction*))) == signal.methodSignature()) {
+    if(!_connectHovered) {
+      _connectHovered = true;
+      foreach (QAction* action, actions())
+        connect(action, SIGNAL(hovered()), SLOT(slotActionHovered()));
+    }
+  } else if(QMetaObject::normalizedSignature(SIGNAL(actionTriggered(QAction*))) == signal.methodSignature()) {
+    if(!_connectTriggered) {
+      _connectTriggered = true;
+      foreach (QAction* action, actions())
+        connect(action, SIGNAL(triggered(bool)), SLOT(slotActionTriggered()));
+    }
+  }
+
+  QObject::connectNotify(signal);
+}
+#endif
 
 void ActionCollection::associateWidget(QWidget *widget) const {
   foreach(QAction *action, actions()) {

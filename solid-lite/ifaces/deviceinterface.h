@@ -22,7 +22,9 @@
 #define SOLID_IFACES_DEVICEINTERFACE_H
 
 #include <QObject>
+#if QT_VERSION < 0x050000
 #include <QBool>
+#endif
 
 namespace Solid
 {

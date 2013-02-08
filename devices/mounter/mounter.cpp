@@ -27,6 +27,9 @@
 #include <stdlib.h>
 #include <QCoreApplication>
 #include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #include <QProcess>
 #include <QTemporaryFile>
 #include <QTextStream>
@@ -84,9 +87,16 @@ void Mounter::mount(const QString &url, const QString &mountPoint, int uid, int 
         QString password=u.password();
         int port=u.port();
 
+        #if QT_VERSION < 0x050000
         if (u.hasQueryItem("domain")) {
             domain=u.queryItemValue("domain");
         }
+        #else
+        QUrlQuery q(u);
+        if (q.hasQueryItem("domain")) {
+            domain=q.queryItemValue("domain");
+        }
+        #endif
 
         QTemporaryFile *temp=0;
 

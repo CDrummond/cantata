@@ -27,6 +27,9 @@
 #include "tags.h"
 #include "settings.h"
 #include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #include <QThread>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
@@ -107,39 +110,48 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
     if (!isAlive()) {
         return QByteArray();
     }
+    #if QT_VERSION < 0x050000
     QUrl url;
+    QUrl &query=url;
+    #else
+    QUrl url;
+    QUrlQuery query;
+    #endif
     url.setScheme("http");
     url.setHost(socket->address());
     url.setPort(socket->serverPort());
     url.setPath(s.file);
     if (!s.album.isEmpty()) {
-        url.addQueryItem("album", s.album);
+        query.addQueryItem("album", s.album);
     }
     if (!s.artist.isEmpty()) {
-        url.addQueryItem("artist", s.artist);
+        query.addQueryItem("artist", s.artist);
     }
     if (!s.albumartist.isEmpty()) {
-        url.addQueryItem("albumartist", s.albumartist);
+        query.addQueryItem("albumartist", s.albumartist);
     }
     if (!s.title.isEmpty()) {
-        url.addQueryItem("title", s.title);
+        query.addQueryItem("title", s.title);
     }
     if (!s.genre.isEmpty()) {
-        url.addQueryItem("genre", s.genre);
+        query.addQueryItem("genre", s.genre);
     }
     if (s.disc) {
-        url.addQueryItem("disc", QString::number(s.disc));
+        query.addQueryItem("disc", QString::number(s.disc));
     }
     if (s.year) {
-        url.addQueryItem("year", QString::number(s.year));
+        query.addQueryItem("year", QString::number(s.year));
     }
     if (s.time) {
-        url.addQueryItem("time", QString::number(s.time));
+        query.addQueryItem("time", QString::number(s.time));
     }
     if (s.track) {
-        url.addQueryItem("track", QString::number(s.track));
+        query.addQueryItem("track", QString::number(s.track));
     }
-    url.addQueryItem("cantata", "song");
+    query.addQueryItem("cantata", "song");
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
     return url.toEncoded();
 }
 
@@ -153,35 +165,41 @@ QByteArray HttpServer::encodeUrl(const QString &file) const
 Song HttpServer::decodeUrl(const QString &url) const
 {
     Song s;
+    #if QT_VERSION < 0x050000
     QUrl u(url);
+    QUrl &q=u;
+    #else
+    QUrl u(url);
+    QUrlQuery q(u); 
+    #endif
 
-    if (u.hasQueryItem("cantata") && u.queryItemValue("cantata")=="song") {
-        if (u.hasQueryItem("album")) {
-            s.album=u.queryItemValue("album");
+    if (q.hasQueryItem("cantata") && q.queryItemValue("cantata")=="song") {
+        if (q.hasQueryItem("album")) {
+            s.album=q.queryItemValue("album");
         }
-        if (u.hasQueryItem("artist")) {
-            s.artist=u.queryItemValue("artist");
+        if (q.hasQueryItem("artist")) {
+            s.artist=q.queryItemValue("artist");
         }
-        if (u.hasQueryItem("albumartist")) {
-            s.albumartist=u.queryItemValue("albumartist");
+        if (q.hasQueryItem("albumartist")) {
+            s.albumartist=q.queryItemValue("albumartist");
         }
-        if (u.hasQueryItem("title")) {
-            s.title=u.queryItemValue("title");
+        if (q.hasQueryItem("title")) {
+            s.title=q.queryItemValue("title");
         }
-        if (u.hasQueryItem("genre")) {
-            s.genre=u.queryItemValue("genre");
+        if (q.hasQueryItem("genre")) {
+            s.genre=q.queryItemValue("genre");
         }
-        if (u.hasQueryItem("disc")) {
-            s.disc=u.queryItemValue("disc").toInt();
+        if (q.hasQueryItem("disc")) {
+            s.disc=q.queryItemValue("disc").toInt();
         }
-        if (u.hasQueryItem("year")) {
-            s.year=u.queryItemValue("year").toInt();
+        if (q.hasQueryItem("year")) {
+            s.year=q.queryItemValue("year").toInt();
         }
-        if (u.hasQueryItem("time")) {
-            s.time=u.queryItemValue("time").toInt();
+        if (q.hasQueryItem("time")) {
+            s.time=q.queryItemValue("time").toInt();
         }
-        if (u.hasQueryItem("track")) {
-            s.track=u.queryItemValue("track").toInt();
+        if (q.hasQueryItem("track")) {
+            s.track=q.queryItemValue("track").toInt();
         }
         s.file=u.path();
     }

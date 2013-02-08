@@ -1,3 +1,13 @@
+- Qt5 port
+  - Crash if link to QtWebKit?
+    Looks like QtWebKit is sonehow pulling in QtGui from Qt4
+  - QUrl.setEncodedUrl
+    covers.cpp
+    magnatuneservice.cpp
+    infopage.cpp
+  - Fix raising of mainwindow via dbus.
+    Qt5 no longer has QX11Info
+
 - Albums
   - Coverflow view?
 

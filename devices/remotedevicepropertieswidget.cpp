@@ -27,6 +27,9 @@
 #include "localize.h"
 #include <QTabWidget>
 #include <QIcon>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #include "lineedit.h"
 #include "config.h"
 
@@ -98,11 +101,20 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
         smbHost->setText(d.url.host());
         smbUser->setText(d.url.userName());
         smbPassword->setText(d.url.password());
+        #if QT_VERSION < 0x050000
         if (d.url.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
             smbDomain->setText(d.url.queryItemValue(RemoteFsDevice::constDomainQuery));
         } else {
             smbDomain->setText(QString());
         }
+        #else
+        QUrlQuery q(d.url);
+        if (q.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
+            smbDomain->setText(q.queryItemValue(RemoteFsDevice::constDomainQuery));
+        } else {
+            smbDomain->setText(QString());
+        }
+        #endif
         break;
     }
     #endif
@@ -190,7 +202,13 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
         det.url.setScheme(RemoteFsDevice::constSambaProtocol);
         det.url.setPassword(smbPassword->text().trimmed());
         if (!smbDomain->text().trimmed().isEmpty()) {
+            #if QT_VERSION < 0x050000
             det.url.addQueryItem(RemoteFsDevice::constDomainQuery, smbDomain->text().trimmed());
+            #else
+            QUrlQuery q;
+            q.addQueryItem(RemoteFsDevice::constDomainQuery, smbDomain->text().trimmed());
+            det.url.setQuery(q);
+            #endif
         }
         break;
     #endif

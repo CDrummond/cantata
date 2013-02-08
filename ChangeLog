@@ -79,6 +79,8 @@
     items in the genre combos.
 46. Remove 'Auto' cover size setting. Now cover sizes are based upon setting
     and font size.
+47. Initial support for Qt5. Currently crashes if using WebKit - this seems to
+    cause a link to QtGui from Qt4? (Thefore compile with -DENABLE_WEBKIT=OFF)
 
 0.9.2
 -----

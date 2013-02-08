@@ -44,7 +44,13 @@
 #include <QObject>
 #include <QSet>
 #include <QString>
+#if QT_VERSION < 0x050000
 #include <QWeakPointer>
+#define WmPointer QWeakPointer
+#else
+#include <QPointer>
+#define WmPointer QPointer
+#endif
 #include <QWidget>
 
 class WindowManager: public QObject
@@ -52,7 +58,7 @@ class WindowManager: public QObject
     Q_OBJECT
     
     #if QT_VERSION < 0x040600
-    class Pointer : public QObject
+    class WmPointer : public QObject
     {
     public:
         Pointer(QWidget *w=0L) : widget_(w) {}
@@ -156,9 +162,9 @@ private:
     //! target being dragged
     /*! QWeakPointer is used in case the target gets deleted while drag is in progress */
     #if QT_VERSION < 0x040600
-    Pointer _target;
+    WmPointer _target;
     #else
-    QWeakPointer<QWidget> _target;
+    WmPointer<QWidget> _target;
     #endif
 
     //! true if drag is about to start

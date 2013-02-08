@@ -2,7 +2,7 @@ INCLUDE(MacroOptionalFindPackage)
 INCLUDE(MacroLogFeature)
 
 add_subdirectory( ifaces )
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}  ${QT_INCLUDES})
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}  ${QTINCLUDES})
 
 file(MAKE_DIRECTORY
    ${CMAKE_CURRENT_BINARY_DIR}/backends/hal
@@ -233,7 +233,11 @@ if(APPLE)
    set(solidlite_OPTIONAL_LIBS ${IOKIT_LIBRARY})
 endif(APPLE)
 
-QT4_WRAP_CPP(solidlite_LIB_MOC_SRCS ${solidlite_LIB_MOC_HDRS} )
+if (ENABLE_QT5)
+    QT5_WRAP_CPP(solidlite_LIB_MOC_SRCS ${solidlite_LIB_MOC_HDRS} )
+else (ENABLE_QT5)
+    QT4_WRAP_CPP(solidlite_LIB_MOC_SRCS ${solidlite_LIB_MOC_HDRS} )
+endif (ENABLE_QT5)
 add_library(solidlite ${solidlite_LIB_SRCS} ${solidlite_LIB_MOC_SRCS})
 # set_target_properties(solidlite PROPERTIES AUTOMOC TRUE)
 

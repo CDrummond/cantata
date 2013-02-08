@@ -37,6 +37,9 @@
 #include <QThread>
 #include <QMutex>
 #include <QUrl>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #include <QTextStream>
 #include <qglobal.h>
 #include <QNetworkReply>
@@ -440,7 +443,12 @@ Covers::Image Covers::getImage(const Song &song)
     bool haveAbsPath=song.file.startsWith('/');
 
     if (song.isCantataStream()) {
+        #if QT_VERSION < 0x050000
         QUrl u(songFile);
+        #else
+        QUrl url(songFile);
+        QUrlQuery u(url);
+        #endif
         songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
     }
     if (!songFile.isEmpty() && !song.file.startsWith(("http:/")) &&
@@ -693,7 +701,11 @@ void Covers::downloadViaHttp(Job &job, JobType type)
         coverName=constFileName;
     }
     coverName+=constExtensions.at(JobHttpJpg==type ? 0 : 1);
+    #if QT_VERSION < 0x050000
     u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+coverName.toLatin1());
+    #else
+    u=QUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+coverName.toLatin1());
+    #endif
 
     job.type=type;
     QNetworkReply *j=NetworkAccessManager::self()->get(QNetworkRequest(u));
@@ -827,7 +839,11 @@ void Covers::lastFmCallFinished()
 
         if (!url.isEmpty()) {
             QUrl u;
+            #if QT_VERSION < 0x050000
             u.setEncodedUrl(url.toLatin1());
+            #else
+            u=QUrl(url.toLatin1());
+            #endif
             QNetworkReply *j=NetworkAccessManager::self()->get(QNetworkRequest(u));
             connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
             jobs.insert(j, job);

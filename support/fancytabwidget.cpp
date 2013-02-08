@@ -37,21 +37,16 @@
 #include "localize.h"
 #include "icon.h"
 #include "gtkstyle.h"
-// #include "stylehelper.h"
-
-// #include <QColorDialog>
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSplitter>
 #include <QStackedLayout>
-#include <QStyleOptionTabV3>
-#include <QStyleOptionViewItemV4>
+#include <QStyleOption>
 #include <QToolButton>
 #include <QToolTip>
 #include <QVBoxLayout>
-#include <QWindowsStyle>
 #include <QApplication>
 #include <QAnimationGroup>
 #include <QPropertyAnimation>
@@ -320,7 +315,6 @@ FancyTabBar::FancyTabBar(QWidget *parent, bool hasBorder, bool text, int iSize, 
     , m_pos(pos)
     , m_iconSize(iSize)
 {
-//    setStyle(new QWindowsStyle);
     setAttribute(Qt::WA_Hover, true);
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true); // Needed for hover events

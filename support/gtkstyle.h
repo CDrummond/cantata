@@ -24,7 +24,7 @@
 #ifndef GTKSTYLE_H
 #define GTKSTYLE_H
 
-class QStyleOptionViewItemV4;
+#include <QStyleOption>
 class QPainter;
 class QWidget;
 

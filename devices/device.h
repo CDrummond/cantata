@@ -24,23 +24,16 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#ifdef Q_OS_WIN
-namespace Device
-{
-    extern void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
-    extern void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
-}
-#else
-
 #include "musiclibraryitemroot.h"
 #include "song.h"
+#ifndef Q_OS_WIN
 #include "encoders.h"
 #include "deviceoptions.h"
-#include <QObject>
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/device.h>
 #else
 #include "solid-lite/device.h"
+#endif
 #endif
 
 class QWidget;
@@ -53,15 +46,16 @@ class Device : public MusicLibraryItemRoot
     Q_OBJECT
 
 public:
+    #ifndef Q_OS_WIN
+    static const QLatin1String constNoCover;
+    static const QLatin1String constEmbedCover;
     static Device * create(DevicesModel *m, const QString &udi);
     static bool fixVariousArtists(const QString &file, Song &song, bool applyFix);
     static void embedCover(const QString &file, Song &song, unsigned int coverMaxSize);
     static QTemporaryFile * copySongToTemp(Song &song);
+    #endif
     static void moveDir(const QString &from, const QString &to, const QString &base, const QString &coverFile);
     static void cleanDir(const QString &dir, const QString &base, const QString &coverFile, int level=0);
-
-    static const QLatin1String constNoCover;
-    static const QLatin1String constEmbedCover;
 
     enum Status {
         Ok,
@@ -91,6 +85,18 @@ public:
         RemoteFs
     };
 
+    #ifdef Q_OS_WIN
+    Device(DevicesModel *m, const QString &name, const QString &id)
+        : MusicLibraryItemRoot(name)
+        , update(0)
+        , needToFixVa(false)
+        , jobAbortRequested(false) {
+        setUseArtistImages(false);
+        setUseAlbumImages(true);
+        Q_UNUSED(m)
+        Q_UNUSED(id)
+    }
+    #else
     Device(DevicesModel *m, Solid::Device &dev, bool albumArtistSupport=true)
         : MusicLibraryItemRoot(dev.vendor()+QChar(' ')+dev.product(), albumArtistSupport)
         , model(m)
@@ -116,11 +122,17 @@ public:
         setUseArtistImages(false);
         setUseAlbumImages(true);
     }
+    #endif
+
     virtual ~Device() {
     }
 
     virtual QString icon() const {
+        #ifdef Q_OS_WIN
+        return QLatin1String("folder");
+        #else
         return solidDev.isValid() ? solidDev.icon() : QLatin1String("folder");
+        #endif
     }
     virtual QString coverFile() const {
         return QString();
@@ -149,6 +161,7 @@ public:
     virtual void removeCache() {
     }
 
+    #ifndef Q_OS_WIN
     const QString & udi() const {
         return deviceId;
     }
@@ -193,7 +206,9 @@ public:
     virtual bool isStdFs() const {
         return false;
     }
+    #endif
 
+#ifndef Q_OS_WIN
 public Q_SLOTS:
     void setStatusMessage(const QString &message);
     void songCount(int c);
@@ -202,6 +217,7 @@ public:
     bool updateSong(const Song &orig, const Song &edit);
     void addSongToList(const Song &s);
     void removeSongFromList(const Song &s);
+#endif
 
 Q_SIGNALS:
     void connected(const QString &udi);
@@ -213,22 +229,21 @@ Q_SIGNALS:
     void cover(const Song &song, const QImage &img);
 
 protected:
+    #ifndef Q_OS_WIN
     DevicesModel *model;
     DeviceOptions opts;
     bool configured;
     Solid::Device solidDev;
     QString deviceId;
-    MusicLibraryItemRoot *update;
     Song currentSong;
+    Encoders::Encoder encoder;
+    #endif
+    MusicLibraryItemRoot *update;
     QString currentBaseDir;
     QString currentMusicPath;
     QString statusMsg;
     bool needToFixVa;
     bool jobAbortRequested;
-    bool transcoding;
-    Encoders::Encoder encoder;
-};
-
-#endif // Q_OS_WIN
+    bool transcoding;};
 
 #endif

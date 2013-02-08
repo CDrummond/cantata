@@ -47,7 +47,11 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     port->setValue(det.port);
     password->setText(det.password);
     dir->setText(det.dir);
+    #if defined Q_OS_WIN
+    bool showGroupWarning=false;
+    #else
     bool showGroupWarning=0==Utils::getGroupId();
+    #endif
     groupWarningLabel->setVisible(showGroupWarning);
     groupWarningIcon->setVisible(showGroupWarning);
     groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(constIconSize, constIconSize));

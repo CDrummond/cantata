@@ -277,6 +277,7 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(StreamsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), mw, SLOT(showError(QString)));
+    connect(StreamsModel::self(), SIGNAL(downloading(bool)), this, SLOT(downloading(bool)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(mpdDirChanged()));
     Icon::init(menuButton);
     menuButton->setPopupMode(QToolButton::InstantPopup);
@@ -337,7 +338,7 @@ void StreamsPage::mpdDirChanged()
 
 void StreamsPage::checkWriteable()
 {
-    bool dirWritable=QFileInfo(StreamsModel::dir()).isWritable();
+    bool dirWritable=!StreamsModel::dir().startsWith("http:/") && QFileInfo(StreamsModel::dir()).isWritable();
     infoMsg->setVisible(!dirWritable);
     if (dirWritable!=StreamsModel::self()->isWritable()) {
         StreamsModel::self()->setWritable(dirWritable);
@@ -393,6 +394,15 @@ void StreamsPage::itemDoubleClicked(const QModelIndex &index)
         QModelIndexList indexes;
         indexes.append(index);
         addItemsToPlayQueue(indexes, false);
+    }
+}
+
+void StreamsPage::downloading(bool dl)
+{
+    if (dl) {
+        view->showSpinner();
+    } else {
+        view->hideSpinner();
     }
 }
 

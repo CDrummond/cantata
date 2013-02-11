@@ -70,12 +70,13 @@ const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
 static const QString constStreamCategoryMimeType("cantata/streams-category");
 static const QString constStreamMimeType("cantata/stream");
 static const QLatin1String constSeparator("##Cantata##");
+const QLatin1String StreamsModel::constGenreSeparator("|");
 
 static QString encodeStreamItem(StreamsModel::StreamItem *i)
 {
     return i->name.replace(constSeparator, " ")+constSeparator+
            i->url.toString()+constSeparator+
-           i->genre+constSeparator+
+           i->genreString()+constSeparator+
            i->icon+constSeparator+
            i->parent->name;
 }
@@ -469,8 +470,10 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
                     if (!s->icon.isEmpty() && s->icon!=Icons::streamIcon.name()) {
                         doc.writeAttribute("icon", s->icon);
                     }
-                    if (!s->genre.isEmpty() && s->genre!=unknown) {
-                        doc.writeAttribute("genre", s->genre);
+                    QSet<QString> genres=s->genres;
+                    genres.remove(unknown);
+                    if (!genres.isEmpty()) {
+                        doc.writeAttribute("genre", QStringList(genres.toList()).join(constGenreSeparator));
                     }
                     doc.writeEndElement();
                 }
@@ -492,7 +495,7 @@ bool StreamsModel::add(const QString &cat, const QString &name, const QString &g
     }
 
     beginInsertRows(createIndex(items.indexOf(c), 0, c), c->streams.count(), c->streams.count());
-    StreamItem *stream=new StreamItem(name, genre, icon.isEmpty() || icon==Icons::streamIcon.name() ? QString() : icon, QUrl(url), c);
+    StreamItem *stream=new StreamItem(name, genreSet(genre), icon.isEmpty() || icon==Icons::streamIcon.name() ? QString() : icon, QUrl(url), c);
     c->itemMap.insert(url, stream);
     c->streams.append(stream);
     endInsertRows();
@@ -561,7 +564,6 @@ void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, c
         return;
     }
 
-    QUrl u(url);
     int row=index.row();
 
     if (row<cat->streams.count()) {
@@ -574,8 +576,9 @@ void StreamsModel::editStream(const QModelIndex &index, const QString &oldCat, c
             cat->itemMap.remove(oldUrl);
             cat->itemMap.insert(url, stream);
         }
-        if (stream->genre!=genre) {
-            stream->genre=genre;
+        QSet<QString> genres=genreSet(genre);
+        if (stream->genres!=genres) {
+            stream->genres=genres;
             updateGenres();
         }
         emit dataChanged(index, index);
@@ -902,10 +905,8 @@ void StreamsModel::updateGenres()
     foreach (CategoryItem *c, items) {
         c->genres.clear();
         foreach (const StreamItem *s, c->streams) {
-            if (!s->genre.isEmpty()) {
-                c->genres.insert(s->genre);
-                genres.insert(s->genre);
-            }
+            c->genres+=s->genres;
+            genres+=s->genres;
         }
     }
 

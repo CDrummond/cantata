@@ -63,7 +63,7 @@ bool StreamsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
     } else {
         StreamsModel::StreamItem *s = static_cast<StreamsModel::StreamItem *>(item);
 
-        if (!filterGenre.isEmpty() && s->genre!=filterGenre) {
+        if (!filterGenre.isEmpty() && !s->genres.contains(filterGenre)) {
             return false;
         }
         return matchesFilter(QStringList() << s->name);

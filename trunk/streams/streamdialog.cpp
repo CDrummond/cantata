@@ -103,6 +103,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     layout->setWidget(row++, QFormLayout::FieldRole, catCombo);
     layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Genre:"), wid, genreCombo));
     layout->setWidget(row++, QFormLayout::FieldRole, genreCombo);
+    layout->setWidget(row++, QFormLayout::SpanningRole, new QLabel(i18n("<i><b>NOTE:</b> Use '|' to split mutliple genres - e.g. 'Current|Classic'</i>"), this));
     layout->setWidget(row++, QFormLayout::SpanningRole, statusText);
     setCaption(i18n("Add Stream"));
     setMainWidget(wid);
@@ -174,7 +175,7 @@ void StreamDialog::changed()
 //                                                                      #endif
                                                                       );
 
-        statusText->setText(validProtocol ? QString() : i18n("<i>Invalid protocol</i>"));
+        statusText->setText(validProtocol ? QString() : i18n("<i><b>ERROR:</b> Invalid protocol</i>"));
     }
     enableOk=enableOk && validProtocol;
     enableButton(Ok, enableOk);

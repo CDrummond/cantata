@@ -28,6 +28,7 @@
 #include <QUrl>
 #include <QHash>
 #include <QSet>
+#include <QStringList>
 
 class QTimer;
 class QIODevice;
@@ -40,6 +41,11 @@ class StreamsModel : public QAbstractItemModel
 public:
 
     static const QLatin1String constDefaultCategoryIcon;
+    static QString prefixUrl(const QString &n, bool addPrefix=true);
+    static QString dir();
+    static const QLatin1String constGenreSeparator;
+
+    static QSet<QString> genreSet(const QString &str) { return str.split(constGenreSeparator, QString::SkipEmptyParts).toSet(); }
 
     struct Item
     {
@@ -53,9 +59,11 @@ public:
     struct CategoryItem;
     struct StreamItem : public Item
     {
-        StreamItem(const QString &n, const QString &g, const QString &i, const QUrl &u, CategoryItem *p=0) : Item(n, i), genre(g), url(u), parent(p) { }
+        StreamItem(const QString &n, const QString &g, const QString &i, const QUrl &u, CategoryItem *p=0) : Item(n, i), genres(genreSet(g)), url(u), parent(p) { }
+        StreamItem(const QString &n, const QSet<QString> &g, const QString &i, const QUrl &u, CategoryItem *p=0) : Item(n, i), genres(g), url(u), parent(p) { }
         bool isCategory() { return false; }
-        QString genre;
+        QString genreString() const { return QStringList(genres.toList()).join(constGenreSeparator); }
+        QSet<QString> genres;
         QUrl url;
         CategoryItem *parent;
     };
@@ -70,9 +78,6 @@ public:
         QList<StreamItem *> streams;
         QSet<QString> genres;
     };
-
-    static QString prefixUrl(const QString &n, bool addPrefix=true);
-    static QString dir();
 
     static StreamsModel * self();
 

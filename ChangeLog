@@ -85,6 +85,7 @@
     delete the item. This helps remobing the entry from the Unity menubar.
 49. If all streams (and categories) have been removed, then remove streams xml
     file as well.
+50. Allow streams to have multiple genres.
 
 0.9.2
 -----

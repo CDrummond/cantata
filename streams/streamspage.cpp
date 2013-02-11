@@ -68,18 +68,13 @@ static QUrl webStreamUrl(StreamsPage::WebStream type)
     }
 }
 
-static QString fixGenre(const QString &g)
+static QString fixSingleGenre(const QString &g)
 {
     if (g.length()) {
-        QString genre=g.toLower();
+        QString genre=Song::capitalize(g);
         genre[0]=genre[0].toUpper();
-        int pos=genre.indexOf('|');
-
-        if (pos>0) {
-            genre=genre.left(pos);
-        }
-
         genre=genre.trimmed();
+        genre=genre.replace(QLatin1String("Afro Caribbean"), QLatin1String("Afrocaribbean"));
         if (genre.length() < 3 ||
             QLatin1String("The")==genre || QLatin1String("All")==genre ||
             QLatin1String("Various")==genre || QLatin1String("Unknown")==genre ||
@@ -89,7 +84,7 @@ static QString fixGenre(const QString &g)
                 return QString();
         }
 
-        if (genre==QLatin1String("R b") || genre==QLatin1String("R b")|| genre==QLatin1String("Rnb")) {
+        if (genre==QLatin1String("R&B") || genre==QLatin1String("R B") || genre==QLatin1String("Rnb") || genre==QLatin1String("RnB")) {
             return QLatin1String("R&B");
         }
         if (genre==QLatin1String("Classic") || genre==QLatin1String("Classical")) {
@@ -104,20 +99,31 @@ static QString fixGenre(const QString &g)
         if (genre==QLatin1String("Electronic") || genre==QLatin1String("Electronica") || genre==QLatin1String("Electric")) {
             return QLatin1String("Electronic");
         }
-        if (genre==QLatin1String("Easy") || genre==QLatin1String("Easy listening")) {
-            return QLatin1String("Easy listening");
+        if (genre==QLatin1String("Easy") || genre==QLatin1String("Easy Listening")) {
+            return QLatin1String("Easy Listening");
         }
         if (genre==QLatin1String("Hit") || genre==QLatin1String("Hits") || genre==QLatin1String("Easy listening")) {
             return QLatin1String("Hits");
         }
-        if (genre==QLatin1String("Hip") || genre==QLatin1String("Hiphop") || genre==QLatin1String("Hip hop") || genre==QLatin1String("Hop hip")) {
-            return QLatin1String("Hip hop");
+        if (genre==QLatin1String("Hip") || genre==QLatin1String("Hiphop") || genre==QLatin1String("Hip Hop") || genre==QLatin1String("Hop Hip")) {
+            return QLatin1String("Hip Hop");
         }
         if (genre==QLatin1String("News") || genre==QLatin1String("News talk")) {
             return QLatin1String("News");
         }
-        if (genre==QLatin1String("Top40") || genre==QLatin1String("Top 40") || genre==QLatin1String("40top") || genre==QLatin1String("40 top")) {
+        if (genre==QLatin1String("Top40") || genre==QLatin1String("Top 40") || genre==QLatin1String("40Top") || genre==QLatin1String("40 Top")) {
             return QLatin1String("Top 40");
+        }
+
+        QStringList small=QStringList() << QLatin1String("Adult Contemporary") << QLatin1String("Alternative")
+                                       << QLatin1String("Community Radio") << QLatin1String("Local Service")
+                                       << QLatin1String("Multiultural") << QLatin1String("News")
+                                       << QLatin1String("Student") << QLatin1String("Urban");
+
+        foreach (const QString &s, small) {
+            if (genre==s || genre.startsWith(s+" ") || genre.endsWith(" "+s)) {
+                return s;
+            }
         }
 
         // Convert XX's to XXs
@@ -136,6 +142,28 @@ static QString fixGenre(const QString &g)
     return g;
 }
 
+static QString fixGenres(const QString &genre)
+{
+    QString g(genre);
+    int pos=g.indexOf("<br");
+    if (pos>3) {
+        g=g.left(pos);
+    }
+    g=Song::capitalize(g);
+    QStringList genres=g.split('|', QString::SkipEmptyParts);
+    QStringList allGenres;
+
+    foreach (const QString &genre, genres) {
+        allGenres+=genre.split('/', QString::SkipEmptyParts);
+    }
+
+    QStringList fixed;
+    foreach (const QString &genre, allGenres) {
+        fixed.append(fixSingleGenre(genre));
+    }
+    return fixed.join(StreamsModel::constGenreSeparator);
+}
+
 static void trimGenres(QMultiHash<QString, StreamsModel::StreamItem *> &genres)
 {
     QSet<QString> genreSet = genres.keys().toSet();
@@ -143,7 +171,7 @@ static void trimGenres(QMultiHash<QString, StreamsModel::StreamItem *> &genres)
         if (genres.count(genre) < 3) {
             const QList<StreamsModel::StreamItem *> &smallGnre = genres.values(genre);
             foreach (StreamsModel::StreamItem* s, smallGnre) {
-                s->genre = QString();
+                s->genres.remove(genre);
             }
         }
     }
@@ -174,7 +202,7 @@ static QList<StreamsModel::StreamItem *> parseIceCast(const QByteArray &data)
                     name=doc.readElementText();
                     --level;
                 } else if (QLatin1String("genre")==doc.name()) {
-                    genre=fixGenre(doc.readElementText());
+                    genre=fixGenres(doc.readElementText());
                     --level;
                 } else if (QLatin1String("listen_url")==doc.name()) {
                     url=QUrl(doc.readElementText());
@@ -185,7 +213,9 @@ static QList<StreamsModel::StreamItem *> parseIceCast(const QByteArray &data)
             if (2==level && QLatin1String("entry")==doc.name() && !name.isEmpty() && url.isValid() && !names.contains(name)) {
                 StreamsModel::StreamItem *item=new StreamsModel::StreamItem(name, genre, QString(), url);
                 streams.append(item);
-                genres.insert(item->genre, item);
+                foreach (const QString &genre, item->genres) {
+                    genres.insert(genre, item);
+                }
                 names.insert(item->name);
             }
             --level;
@@ -222,7 +252,7 @@ static QList<StreamsModel::StreamItem *> parseSomaFm(const QByteArray &data)
                     name=doc.readElementText();
                     --level;
                 } else if (QLatin1String("genre")==doc.name()) {
-                    genre=fixGenre(doc.readElementText());
+                    genre=fixGenres(doc.readElementText());
                     --level;
                 } else if (QLatin1String("fastpls")==doc.name()) {
                     if (streamFormat.isEmpty() || QLatin1String("mp3")!=streamFormat) {
@@ -236,7 +266,9 @@ static QList<StreamsModel::StreamItem *> parseSomaFm(const QByteArray &data)
             if (2==level && QLatin1String("channel")==doc.name() && !name.isEmpty() && url.isValid() && !names.contains(name)) {
                 StreamsModel::StreamItem *item=new StreamsModel::StreamItem(name, genre, QString(), url);
                 streams.append(item);
-                genres.insert(item->genre, item);
+                foreach (const QString &genre, item->genres) {
+                    genres.insert(genre, item);
+                }
                 names.insert(item->name);
             }
             --level;
@@ -674,7 +706,7 @@ void StreamsPage::edit()
     StreamsModel::StreamItem *stream=static_cast<StreamsModel::StreamItem *>(item);
     QString url=stream->url.toString();
     QString cat=stream->parent->name;
-    QString genre=stream->genre;
+    QString genre=stream->genreString();
 
     dlg.setEdit(cat, name, genre, icon, url);
 

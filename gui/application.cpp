@@ -90,9 +90,6 @@ int Application::newInstance() {
             if (QDialog::Rejected==wz.exec()) {
                 QApplication::exit(0);
                 return 0;
-            }  else {
-                Settings::self()->saveConnectionDetails(wz.getDetails());
-                Settings::self()->save(true);
             }
         }
         w=new MainWindow();

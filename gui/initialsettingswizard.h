@@ -46,6 +46,7 @@ private Q_SLOTS:
     void mpdConnectionStateChanged(bool c);
     void showError(const QString &message, bool showActions);
     void pageChanged(int p);
+    void accept();
 
 private:
     void controlNextButton();

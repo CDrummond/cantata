@@ -48,7 +48,7 @@ public:
     QString category() const { return catCombo->currentText().trimmed(); }
     QString genre() const { return genreCombo->currentText().trimmed(); }
     QString icon() const { return iconName; }
-    bool save() const { return saveCombo && 1==saveCombo->currentIndex(); }
+    bool save() const { return !saveCombo || 1==saveCombo->currentIndex(); }
 
 private Q_SLOTS:
     void saveComboChanged();

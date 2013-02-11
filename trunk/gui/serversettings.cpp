@@ -255,7 +255,7 @@ MPDConnectionDetails ServerSettings::getDetails() const
     details.hostname=host->text().trimmed();
     details.port=port->value();
     details.password=password->text();
-    details.dir=dir->text();
+    details.dir=dir->text().trimmed();
     details.dirReadable=details.dir.isEmpty() ? false : QDir(details.dir).isReadable();
     details.dynamizerPort=dynamizerPort->value();
     details.coverName=coverName->text().trimmed();

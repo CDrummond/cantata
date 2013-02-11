@@ -30,6 +30,13 @@
 
 static const int constIconSize=48;
 
+enum Pages {
+    PAGE_INTRO,
+    PAGE_CONNECTION,
+    PAGE_FILES,
+    PAGE_END
+};
+
 InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     : QWizard(p)
 {
@@ -55,6 +62,9 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     groupWarningLabel->setVisible(showGroupWarning);
     groupWarningIcon->setVisible(showGroupWarning);
     groupWarningIcon->setPixmap(Icon("dialog-warning").pixmap(constIconSize, constIconSize));
+    storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
+    storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
+    storeStreamsInMpdDir->setChecked(Settings::self()->storeStreamsInMpdDir());
 }
 
 InitialSettingsWizard::~InitialSettingsWizard()
@@ -67,7 +77,7 @@ MPDConnectionDetails InitialSettingsWizard::getDetails()
     det.hostname=host->text().trimmed();
     det.port=port->value();
     det.password=password->text();
-    det.dir=dir->text();
+    det.dir=dir->text().trimmed();
     det.dirReadable=det.dir.isEmpty() ? false : QDir(det.dir).isReadable();
     det.dynamizerPort=0;
     return det;
@@ -81,7 +91,7 @@ void InitialSettingsWizard::connectToMpd()
 void InitialSettingsWizard::mpdConnectionStateChanged(bool c)
 {
     statusLabel->setText(c ? i18n("Connection Established") : i18n("Connection Failed"));
-    if (1==currentId()) {
+    if (PAGE_CONNECTION==currentId()) {
         controlNextButton();
     }
 }
@@ -94,12 +104,23 @@ void InitialSettingsWizard::showError(const QString &message, bool showActions)
 
 void InitialSettingsWizard::pageChanged(int p)
 {
-    if (1==p) {
+    if (PAGE_CONNECTION==p) {
         controlNextButton();
-    } else {
-        button(NextButton)->setEnabled(0==p);
+        return;
     }
+    if (PAGE_FILES==p) {
+        if (dir->text().trimmed().startsWith(QLatin1String("http:/"))) {
+            storeCoversInMpdDir->setChecked(false);
+            storeLyricsInMpdDir->setChecked(false);
+            storeStreamsInMpdDir->setChecked(false);
+            httpNote->setVisible(true);
+        } else {
+            httpNote->setVisible(false);
+        }
+    }
+    button(NextButton)->setEnabled(PAGE_END!=p);
 }
+
 
 void InitialSettingsWizard::controlNextButton()
 {
@@ -108,7 +129,7 @@ void InitialSettingsWizard::controlNextButton()
     if (isOk) {
        MPDConnectionDetails det=getDetails();
        MPDConnectionDetails mpdDet=MPDConnection::self()->getDetails();
-       isOk=det.hostname==mpdDet.hostname && det.dir==mpdDet.dir && (det.isLocal() || det.port==mpdDet.port);
+       isOk=det.hostname==mpdDet.hostname && (det.isLocal() || det.port==mpdDet.port);
     }
 
     button(NextButton)->setEnabled(isOk);
@@ -117,6 +138,9 @@ void InitialSettingsWizard::controlNextButton()
 void InitialSettingsWizard::accept()
 {
     Settings::self()->saveConnectionDetails(getDetails());
+    Settings::self()->saveStoreCoversInMpdDir(storeCoversInMpdDir->isChecked());
+    Settings::self()->saveStoreLyricsInMpdDir(storeLyricsInMpdDir->isChecked());
+    Settings::self()->saveStoreStreamsInMpdDir(storeStreamsInMpdDir->isChecked());
     Settings::self()->save(true);
     QDialog::accept();
 }

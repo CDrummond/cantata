@@ -297,6 +297,155 @@
     </item>
    </layout>
   </widget>
+  <widget class="QWizardPage" name="filesPage">
+   <layout class="QGridLayout" name="gridLayoutf">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_6f">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Covers, Lyrics, and Streams</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <spacer name="verticalSpacer_9f">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>16</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="0" colspan="2">
+     <widget class="QLabel" name="label_5f">
+      <property name="text">
+       <string>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet. Cantata also allows you to save a list of internet streams that you wish to be able to playback.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within the cache/config folders in your home folder.&lt;/p&gt;</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <spacer name="verticalSpacer_7f">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>8</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="0" colspan="2">
+     <layout class="QFormLayout" name="filesFormLayout">
+      <item row="0" column="0">
+       <widget class="BuddyLabel" name="storeCoversInMpdDirLabel">
+        <property name="text">
+         <string>Save downloaded covers in music folder:</string>
+        </property>
+        <property name="buddy">
+         <cstring>storeCoversInMpdDir</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="OnOffButton" name="storeCoversInMpdDir"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="BuddyLabel" name="storeLyricsInMpdDirLabel">
+        <property name="text">
+         <string>Save downloaded lyrics in music folder:</string>
+         </property>
+        <property name="buddy">
+         <cstring>storeLyricsInMpdDir</cstring>
+        </property>
+        </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="OnOffButton" name="storeLyricsInMpdDir">
+         <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+       <item row="2" column="0">
+       <widget class="QLabel" name="storeStreamsInMpdDirLabel">
+        <property name="text">
+         <string>Save list of streams in music folder:</string>
+        </property>
+        <property name="buddy">
+         <cstring>storeStreamsInMpdDir</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="OnOffButton" name="storeStreamsInMpdDir">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="5" column="0">
+     <spacer name="verticalSpacer_7f2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>8</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="6" column="0" colspan="2">
+     <widget class="QLabel" name="httpNote">
+      <property name="text">
+       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' is set to a HTTP address, and Cantata currently cannot upload files to external HTTP servers. Therefore, the above settings should be left disabled.&lt;/i&gt;</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0" colspan="2">
+     <spacer name="verticalSpacer_8f">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>352</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
   <widget class="QWizardPage" name="wizardPage">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
@@ -404,6 +553,11 @@
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>lineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QcheckBox</extends>
+   <header>onoffbutton.h</header>
   </customwidget>
   <customwidget>
    <class>PathRequester</class>

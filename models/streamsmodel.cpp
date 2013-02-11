@@ -880,7 +880,14 @@ void StreamsModel::persist()
     if (modified) {
         QString fileName=getInternalFile(true);
         modified=false;
-        if (save(fileName)) {
+        if (items.isEmpty()) {
+            // No entries, so remove file...
+            if (QFile::exists(fileName) && !QFile::remove(fileName)) {
+                emit error(i18n("Failed to save stream list. Please check %1 is writable.").arg(fileName));
+                reload();
+            }
+        } 
+        else if (save(fileName)) {
             Utils::setFilePerms(fileName);
         } else {
             emit error(i18n("Failed to save stream list. Please check %1 is writable.").arg(fileName));

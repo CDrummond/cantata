@@ -46,35 +46,14 @@
 #include <QXmlStreamReader>
 #include <QFileInfo>
 
-static QString webStreamName(StreamsPage::WebStream type)
-{
-    switch (type) {
-    default:
-    case StreamsPage::WS_IceCast:
-        return i18n("IceCast");
-    case StreamsPage::WS_SomaFm:
-        return i18n("SomaFM");
-    }
-}
-
-static QUrl webStreamUrl(StreamsPage::WebStream type)
-{
-    switch (type) {
-    default:
-    case StreamsPage::WS_IceCast:
-        return QUrl("http://dir.xiph.org/yp.xml");
-    case StreamsPage::WS_SomaFm:
-        return QUrl("http://somafm.com/channels.xml");
-    }
-}
-
 static QString fixSingleGenre(const QString &g)
 {
     if (g.length()) {
         QString genre=Song::capitalize(g);
         genre[0]=genre[0].toUpper();
         genre=genre.trimmed();
-        genre=genre.replace(QLatin1String("Afro Caribbean"), QLatin1String("Afrocaribbean"));
+        genre=genre.replace(QLatin1String("Afrocaribbean"), QLatin1String("Afro-Caribbean"));
+        genre=genre.replace(QLatin1String("Afro Caribbean"), QLatin1String("Afro-Caribbean"));
         if (genre.length() < 3 ||
             QLatin1String("The")==genre || QLatin1String("All")==genre ||
             QLatin1String("Various")==genre || QLatin1String("Unknown")==genre ||
@@ -149,6 +128,11 @@ static QString fixGenres(const QString &genre)
     if (pos>3) {
         g=g.left(pos);
     }
+    pos=g.indexOf("(");
+    if (pos>3) {
+        g=g.left(pos);
+    }
+
     g=Song::capitalize(g);
     QStringList genres=g.split('|', QString::SkipEmptyParts);
     QStringList allGenres;
@@ -177,7 +161,7 @@ static void trimGenres(QMultiHash<QString, StreamsModel::StreamItem *> &genres)
     }
 }
 
-static QList<StreamsModel::StreamItem *> parseIceCast(const QByteArray &data)
+static QList<StreamsModel::StreamItem *> parseIceCast(QIODevice *dev)
 {
     QList<StreamsModel::StreamItem *> streams;
     QString name;
@@ -186,7 +170,7 @@ static QList<StreamsModel::StreamItem *> parseIceCast(const QByteArray &data)
     QSet<QString> names;
     QMultiHash<QString, StreamsModel::StreamItem *> genres;
     int level=0;
-    QXmlStreamReader doc(QString::fromUtf8(data));
+    QXmlStreamReader doc(dev);
 
     while (!doc.atEnd()) {
         doc.readNext();
@@ -225,7 +209,7 @@ static QList<StreamsModel::StreamItem *> parseIceCast(const QByteArray &data)
     return streams;
 }
 
-static QList<StreamsModel::StreamItem *> parseSomaFm(const QByteArray &data)
+static QList<StreamsModel::StreamItem *> parseSomaFm(QIODevice *dev)
 {
     QList<StreamsModel::StreamItem *> streams;
     QSet<QString> names;
@@ -235,7 +219,7 @@ static QList<StreamsModel::StreamItem *> parseSomaFm(const QByteArray &data)
     QUrl url;
     QString genre;
     int level=0;
-    QXmlStreamReader doc(QString::fromUtf8(data));
+    QXmlStreamReader doc(dev);
 
     while (!doc.atEnd()) {
         doc.readNext();
@@ -279,6 +263,140 @@ static QList<StreamsModel::StreamItem *> parseSomaFm(const QByteArray &data)
     return streams;
 }
 
+struct Stream {
+    enum Format {
+        AAC,
+        MP3,
+        WMA,
+        Unknown
+    };
+
+    Stream() : format(Unknown), bitrate(0) { }
+    bool operator<(const Stream &o) const {
+        return weight()>o.weight();
+    }
+
+    int weight() const {
+        return ((format&0x0f)<<8)+(bitrate&0xff);
+    }
+
+    void setFormat(const QString &f) {
+        if (QLatin1String("mp3")==f.toLower()) {
+            format=MP3;
+        } else if (QLatin1String("aacplus")==f.toLower()) {
+            format=AAC;
+        } else if (QLatin1String("windows media")==f.toLower()) {
+            format=WMA;
+        } else {
+            format=Unknown;
+        }
+    }
+
+    QUrl url;
+    Format format;
+    unsigned int bitrate;
+};
+
+struct StationEntry {
+    StationEntry() { clear(); }
+    void clear() { name=location=comment=QString(); streams.clear(); }
+    QString name;
+    QString location;
+    QString comment;
+    QList<Stream> streams;
+};
+
+static QString getString(QString &str, const QString &start, const QString &end)
+{
+    QString rv;
+    int b=str.indexOf(start);
+    int e=-1==b ? -1 : str.indexOf(end, b+start.length());
+    if (-1!=e) {
+        rv=str.mid(b+start.length(), e-(b+start.length()));
+        str=str.mid(e+end.length());
+    }
+    return rv;
+}
+
+static QList<StreamsModel::StreamItem *> parseRadio(QIODevice *dev)
+{
+    QList<StreamsModel::StreamItem *> streams;
+//    QMultiHash<QString, StreamsModel::StreamItem *> genres;
+    QSet<QString> names;
+
+    if (dev) {
+        StationEntry entry;
+
+        while (!dev->atEnd()) {
+            QString line=dev->readLine().trimmed().replace("> <", "><").replace("<td><b><a href", "<td><a href").replace("</b></a></b>", "</b></a>");
+            if ("<tr>"==line) {
+                entry.clear();
+            } else if (line.startsWith("<td><a href=")) {
+                if (line.endsWith("</b></a></td>")) {
+                    // Station name
+                    if (entry.name.isEmpty()) {
+                        entry.name=getString(line, "<b>", "</b>");
+                    }
+                } else {
+                    // Station URLs...
+                    QString url;
+                    QString bitrate;
+                    int idx=0;
+                    do {
+                        url=getString(line, "href=\"", "\"");
+                        bitrate=getString(line, ">", " Kbps");
+                        if (!url.isEmpty() && !bitrate.isEmpty()) {
+                            if (idx<entry.streams.count()) {
+                                entry.streams[idx].url=url;
+                                entry.streams[idx].bitrate=bitrate.toUInt();
+                                idx++;
+                            }
+                        }
+                    } while (!url.isEmpty() && !bitrate.isEmpty());
+                }
+            } else if (line.startsWith("<td><img src")) {
+                // Station formats...
+                QString format;
+                do {
+                    format=getString(line, "alt=\"", "\"");
+                    if (!format.isEmpty()) {
+                        Stream stream;
+                        stream.setFormat(format);
+                        entry.streams.append(stream);
+                    }
+                } while (!format.isEmpty());
+            } else if (line.startsWith("<td>")) {
+                if (entry.location.isEmpty()) {
+                    entry.location=getString(line, "<td>", "</td>");
+                } else {
+                    entry.comment=getString(line, "<td>", "</td>");
+                }
+            } else if ("</tr>"==line) {
+                if (entry.streams.count()) {
+                    QString name=QLatin1String("National")==entry.location ? entry.name : (entry.name+" ("+entry.location+")");
+                    QUrl url=entry.streams.at(0).url;
+
+                    if (!names.contains(name) && !name.isEmpty() && url.isValid()) {
+                        qSort(entry.streams);
+                        QString genre=fixGenres(entry.comment);
+                        StreamsModel::StreamItem *item=new StreamsModel::StreamItem(name, genre, QString(), url);
+                        streams.append(item);
+//                        foreach (const QString &genre, item->genres) {
+//                            genres.insert(genre, item);
+//                        }
+                        names.insert(item->name);
+                    }
+                }
+            }
+        }
+    }
+
+//    trimGenres(genres);
+    return streams;
+}
+
+static const char * constUrlProperty("url");
+
 StreamsPage::StreamsPage(MainWindow *p)
     : QWidget(p)
     , enabled(false)
@@ -292,8 +410,42 @@ StreamsPage::StreamsPage(MainWindow *p)
 
     QMenu *importMenu=new QMenu(this);
     importFileAction=importMenu->addAction("From Cantata File");
-    importIceCastAction=importMenu->addAction("From IceCast");
-    importSomaFmCastAction=importMenu->addAction("From SomaFM");
+    initWebStreams();
+    int radio=0;
+    foreach (const WebStream &ws, webStreams) {
+        if (ws.type==WebStream::WS_Radio) {
+            radio++;
+        } else {
+            QAction *act=importMenu->addAction(i18n("From %1").arg(ws.name));
+            act->setProperty(constUrlProperty, ws.url);
+            connect(act, SIGNAL(triggered(bool)), this, SLOT(importWebStreams()));
+        }
+    }
+
+    if (radio) {
+        QAction *radioAction=importMenu->addAction(i18n("Radio Stations"));
+        QMenu *radioMenu=new QMenu(this);
+        radioAction->setMenu(radioMenu);
+
+        QMap<QString, QMenu *> regions;
+        foreach (const WebStream &ws, webStreams) {
+            if (ws.type==WebStream::WS_Radio) {
+                QMenu *menu=radioMenu;
+                if (!ws.region.isEmpty()) {
+                    if (!regions.contains(ws.region)) {
+                        QAction *regionAction=radioMenu->addAction(ws.region);
+                        regions.insert(ws.region, new QMenu(this));
+                        regionAction->setMenu(regions[ws.region]);
+                    }
+                    menu=regions[ws.region];
+                }
+                QAction *act=menu->addAction(ws.name);
+                act->setProperty(constUrlProperty, ws.url);
+                connect(act, SIGNAL(triggered(bool)), this, SLOT(importWebStreams()));
+            }
+        }
+    }
+
     importAction->setMenu(importMenu);
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
@@ -303,8 +455,6 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(addAction, SIGNAL(triggered(bool)), this, SLOT(add()));
     connect(editAction, SIGNAL(triggered(bool)), this, SLOT(edit()));
     connect(importFileAction, SIGNAL(triggered(bool)), this, SLOT(importXml()));
-    connect(importIceCastAction, SIGNAL(triggered(bool)), this, SLOT(importIceCast()));
-    connect(importSomaFmCastAction, SIGNAL(triggered(bool)), this, SLOT(importSomaFm()));
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(StreamsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
@@ -339,7 +489,6 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->setDeleteAction(p->removeAction);
     view->init(p->replacePlayQueueAction, 0);
 
-    memset(jobs, 0, sizeof(QNetworkReply *)*WS_Count);
     infoLabel->hide();
     infoIcon->hide();
     int iconSize=Icon::stdSize(QApplication::fontMetrics().height());
@@ -348,10 +497,11 @@ StreamsPage::StreamsPage(MainWindow *p)
 
 StreamsPage::~StreamsPage()
 {
-    for (int i=0; i<WS_Count; ++i) {
-        if (jobs[i]) {
-            disconnect(jobs[i], SIGNAL(finished()), this, SLOT(downloadFinished()));
-            jobs[i]->deleteLater();
+    foreach (const WebStream &ws, webStreams) {
+        if (ws.job) {
+            disconnect(ws.job, SIGNAL(finished()), this, SLOT(downloadFinished()));
+            ws.job->deleteLater();
+            ws.job=0;
         }
     }
 }
@@ -456,56 +606,51 @@ void StreamsPage::downloadFinished()
         return;
     }
 
-    WebStream type=WS_Count;
     bool busy=false;
+    QMap<QUrl, WebStream>::Iterator it(webStreams.begin());
+    QMap<QUrl, WebStream>::Iterator end(webStreams.end());
+    QMap<QUrl, WebStream>::Iterator stream=end;
 
-    for (int i=0; i<WS_Count; ++i) {
-        if (jobs[i]==reply) {
-            type=(WebStream)i;
-        } else if (jobs[i]) {
+    for (; it!=end; ++it) {
+        if ((*it).job==reply) {
+            stream=it;
+        } else if ((*it).job) {
             busy=true;
         }
     }
 
-    if (type!=WS_Count) {
+    if (stream!=end) {
         if(QNetworkReply::NoError==reply->error()) {
             QList<StreamsModel::StreamItem *> streams;
-            switch (type) {
-            case WS_IceCast:
-                streams=parseIceCast(reply->readAll());
+            switch ((*stream).type) {
+            case WebStream::WS_IceCast:
+                streams=parseIceCast(reply);
                 break;
-            case WS_SomaFm:
-                streams=parseSomaFm(reply->readAll());
+            case WebStream::WS_SomaFm:
+                streams=parseSomaFm(reply);
+                break;
+            case WebStream::WS_Radio:
+                streams=parseRadio(reply);
                 break;
             default:
                 break;
             }
 
             if (streams.isEmpty()) {
-                MessageBox::error(this, i18n("No streams downloaded from %1").arg(webStreamName(type)));
+                MessageBox::error(this, i18nc("message \n url", "No streams downloaded from %1\n(%2)").arg((*stream).name).arg((*stream).url.toString()));
             } else {
-                StreamsModel::self()->add(webStreamName(type), streams);
+                StreamsModel::self()->add((*stream).name, streams);
             }
         } else {
-            MessageBox::error(this, i18n("Failed to download streams from %1").arg(webStreamName(type)));
+            MessageBox::error(this, i18nc("message \n url", "Failed to download streams from %1\n(%2)").arg((*stream).name).arg((*stream).url.toString()));
         }
-        jobs[type]=0;
+        (*stream).job=0;
     }
 
     if (!busy) {
         view->hideSpinner();
     }
     reply->deleteLater();
-}
-
-void StreamsPage::importIceCast()
-{
-    importWebStreams(WS_IceCast);
-}
-
-void StreamsPage::importSomaFm()
-{
-    importWebStreams(WS_SomaFm);
 }
 
 void StreamsPage::importXml()
@@ -778,28 +923,60 @@ QStringList StreamsPage::getGenres()
     return g;
 }
 
-void StreamsPage::importWebStreams(WebStream type)
+void StreamsPage::importWebStreams()
 {
     if (!StreamsModel::self()->isWritable()) {
         return;
     }
-    if (jobs[WS_IceCast]) {
-        MessageBox::error(this, i18n("Download from %1 is already in progress!").arg(webStreamName(type)));
+
+    QObject *obj=qobject_cast<QObject *>(sender());
+    if (!obj) {
         return;
     }
 
-    if (getCategories().contains(webStreamName(type))) {
-        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Update streams from %1?\n(This will replace any existing streams in this category)").arg(webStreamName(type)),
-                                                     i18n("Update %1").arg(webStreamName(type)))) {
+    QUrl url=obj->property(constUrlProperty).toUrl();
+    if (!url.isValid()) {
+        return;
+    }
+
+    if (0!=webStreams[url].job) {
+        MessageBox::error(this, i18n("Download from %1 is already in progress!").arg(webStreams[url].name));
+        return;
+    }
+
+    if (getCategories().contains(webStreams[url].name)) {
+        if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Update streams from %1?\n(This will replace any existing streams in this category)").arg(webStreams[url].name),
+                                                     i18n("Update %1").arg(webStreams[url].name))) {
             return;
         }
     } else {
-        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Download streams from %1?").arg(webStreamName(type)), i18n("Download %1").arg(webStreamName(type)))) {
+        if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Download streams from %1?").arg(webStreams[url].name), i18n("Download %1").arg(webStreams[url].name))) {
             return;
         }
     }
 
-    jobs[type]=NetworkAccessManager::self()->get(QNetworkRequest(webStreamUrl(type)));
-    connect(jobs[type], SIGNAL(finished()), this, SLOT(downloadFinished()));
+    QNetworkReply *job=NetworkAccessManager::self()->get(QNetworkRequest(url));
+    connect(job, SIGNAL(finished()), this, SLOT(downloadFinished()));
+    webStreams[url].job=job;
     view->showSpinner();
+}
+
+void StreamsPage::initWebStreams()
+{
+    QFile f(":streams.xml");
+    if (f.open(QIODevice::ReadOnly)) {
+        QXmlStreamReader doc(&f);
+        while (!doc.atEnd()) {
+            doc.readNext();
+
+            if (doc.isStartElement() && QLatin1String("stream")==doc.name()) {
+                QString name=doc.attributes().value("name").toString();
+                unsigned int type=doc.attributes().value("type").toString().toUInt();
+                QUrl url=QUrl(doc.attributes().value("url").toString());
+                if (type<WebStream::WS_Count) {
+                    webStreams[url]=WebStream(name, doc.attributes().value("region").toString(), url, (WebStream::Type)type);
+                }
+            }
+        }
+    }
 }

@@ -49,6 +49,7 @@ void TrayItem::setup()
 {
     if (!Settings::self()->useSystemTray()) {
         if (trayItem) {
+            trayItem->setVisible(false);
             trayItem->deleteLater();
             trayItem=0;
             trayItemMenu->deleteLater();

@@ -141,9 +141,6 @@ int main(int argc, char *argv[])
         InitialSettingsWizard wz;
         if (QDialog::Rejected==wz.exec()) {
             return 0;
-        } else {
-            Settings::self()->saveConnectionDetails(wz.getDetails());
-            Settings::self()->save(true);
         }
     }
     MainWindow mw;

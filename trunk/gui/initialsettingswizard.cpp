@@ -113,3 +113,10 @@ void InitialSettingsWizard::controlNextButton()
 
     button(NextButton)->setEnabled(isOk);
 }
+
+void InitialSettingsWizard::accept()
+{
+    Settings::self()->saveConnectionDetails(getDetails());
+    Settings::self()->save(true);
+    QDialog::accept();
+}

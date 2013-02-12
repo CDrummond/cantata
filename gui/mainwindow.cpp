@@ -269,7 +269,6 @@ MainWindow::MainWindow(QWidget *parent)
     restoreAction = ActionCollection::get()->createAction("showwindow", i18n("Show Window"));
     connect(restoreAction, SIGNAL(triggered(bool)), this, SLOT(restoreWindow()));
 
-    smallPlaybackButtonsAction = ActionCollection::get()->createAction("smallplaybackbuttons", i18n("Small Playback Buttons"));
     connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::connectIcon);
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Connection"), "network-server");
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::speakerIcon);
@@ -510,27 +509,38 @@ MainWindow::MainWindow(QWidget *parent)
     foreach (QToolButton *b, btns) {
         Icon::init(b);
     }
+
+    int playbackIconSize=28;
+    int controlIconSize=22;
+    int buttonSize=32;
+    if (repeatPushButton->iconSize().height()>=22) {
+        controlIconSize=32;
+        playbackIconSize=32;
+        buttonSize=36;
+    } else if (repeatPushButton->iconSize().height()>=32) {
+        controlIconSize=48;
+        playbackIconSize=48;
+        buttonSize=54;
+    } else if (repeatPushButton->iconSize().height()>=48) {
+        controlIconSize=64;
+        playbackIconSize=64;
+        buttonSize=72;
+    }
+
     foreach (QToolButton *b, controlBtns) {
         b->setAutoRaise(true);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        b->setMinimumSize(QSize(26, 26));
-        b->setMaximumSize(QSize(26, 26));
-        b->setIconSize(QSize(22, 22));
+        b->setMinimumSize(QSize(buttonSize, buttonSize));
+        b->setMaximumSize(QSize(buttonSize, buttonSize));
+        b->setIconSize(QSize(controlIconSize, controlIconSize));
     }
-
-    smallPlaybackButtonsAction->setCheckable(true);
-    smallPlaybackButtonsAction->setChecked(Settings::self()->smallPlaybackButtons());
-    playbackBtnsMenu = new QMenu(this);
-    playbackBtnsMenu->addAction(smallPlaybackButtonsAction);
-    connect(smallPlaybackButtonsAction, SIGNAL(triggered(bool)), SLOT(setPlaybackButtonsSize(bool)));
     foreach (QToolButton *b, playbackBtns) {
         b->setAutoRaise(true);
-        b->setContextMenuPolicy(Qt::CustomContextMenu);
         b->setToolButtonStyle(Qt::ToolButtonIconOnly);
-        connect(b, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(playbackButtonsMenu()));
+        b->setMinimumSize(QSize(buttonSize, buttonSize));
+        b->setMaximumSize(QSize(buttonSize, buttonSize));
+        b->setIconSize(QSize(playbackIconSize, playbackIconSize));
     }
-
-    setPlaybackButtonsSize(Settings::self()->smallPlaybackButtons());
 
     trackLabel->setText(QString());
     artistLabel->setText(QString());
@@ -866,7 +876,6 @@ MainWindow::~MainWindow()
     Settings::self()->saveSplitterAutoHide(autoHideSplitterAction->isChecked());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
-    Settings::self()->saveSmallPlaybackButtons(smallPlaybackButtonsAction->isChecked());
     playQueue->saveHeader();
     QStringList hiddenPages;
     for (int i=0; i<tabWidget->count(); ++i) {
@@ -960,22 +969,6 @@ void MainWindow::load(const QStringList &urls)
     #else
     Q_UNUSED(urls)
     #endif
-}
-
-void MainWindow::playbackButtonsMenu()
-{
-    playbackBtnsMenu->exec(QCursor::pos());
-}
-
-void MainWindow::setPlaybackButtonsSize(bool smallButtons)
-{
-    QList<QToolButton *> playbackBtns;
-    playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
-    foreach (QToolButton *b, playbackBtns) {
-        b->setIconSize(smallButtons ? QSize(22, 22) : QSize(28, 28));
-        b->setMinimumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
-        b->setMaximumSize(smallButtons ? QSize(26, 26) : QSize(32, 32));
-    }
 }
 
 void MainWindow::songLoaded()

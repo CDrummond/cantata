@@ -101,6 +101,7 @@ SET( CANTATA_SRCS
     streams/streamdialog.cpp
     streams/streamcategorydialog.cpp
     streams/streamfetcher.cpp
+    streams/webstreams.cpp
     models/musiclibraryitemroot.cpp
     models/musiclibraryitemartist.cpp
     models/musiclibraryitemalbum.cpp
@@ -182,6 +183,7 @@ SET( CANTATA_MOC_HDRS
     streams/streamdialog.h
     streams/streamcategorydialog.h
     streams/streamfetcher.h
+    streams/webstreams.h
     models/musiclibrarymodel.h
     models/musiclibraryproxymodel.h
     models/playlistsmodel.h
@@ -257,12 +259,12 @@ endif (ENABLE_TAGLIB)
 
 if (TAGLIB_FOUND)
     SET( CANTATA_SRCS ${CANTATA_SRCS}
+        gui/httpserversettings.cpp
         tags/tageditor.cpp
         tags/trackorganiser.cpp
         tags/tags.cpp
         devices/deviceoptions.cpp
         devices/filenameschemedialog.cpp
-        http/httpserversettings.cpp
         http/httpserver.cpp
         http/httpsocket.cpp
     )
@@ -276,7 +278,7 @@ if (TAGLIB_FOUND)
     )
 
     SET( CANTATA_UIS ${CANTATA_UIS}
-        http/httpserversettings.ui
+        gui/httpserversettings.ui
         tags/tageditor.ui
         tags/trackorganiser.ui
         devices/filenameschemedialog.ui

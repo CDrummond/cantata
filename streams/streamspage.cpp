@@ -312,7 +312,7 @@ static QString getString(QString &str, const QString &start, const QString &end)
     int b=str.indexOf(start);
     int e=-1==b ? -1 : str.indexOf(end, b+start.length());
     if (-1!=e) {
-        rv=str.mid(b+start.length(), e-(b+start.length()));
+        rv=str.mid(b+start.length(), e-(b+start.length())).trimmed();
         str=str.mid(e+end.length());
     }
     return rv;
@@ -332,10 +332,11 @@ static QList<StreamsModel::StreamItem *> parseRadio(QIODevice *dev)
             if ("<tr>"==line) {
                 entry.clear();
             } else if (line.startsWith("<td><a href=")) {
-                if (line.endsWith("</b></a></td>")) {
-                    // Station name
-                    if (entry.name.isEmpty()) {
-                        entry.name=getString(line, "<b>", "</b>");
+                if (entry.name.isEmpty()) {
+                    entry.name=getString(line, "<b>", "</b>");
+                    QString extra=getString(line, "</a>", "</td>");
+                    if (!extra.isEmpty()) {
+                        entry.name+=" "+extra;
                     }
                 } else {
                     // Station URLs...

@@ -31,6 +31,7 @@
 
 static const int constMaxRedirects = 3;
 static const int constMaxData = 12 * 1024;
+static const int constTimeout = 5*1000;
 
 static QString parsePlaylist(const QByteArray &data, const QString &key, const QSet<QString> &handlers)
 {
@@ -184,7 +185,7 @@ void StreamFetcher::doNext()
         if (QLatin1String("cantata-http")==u.scheme()) {
             data.clear();
             u.setScheme("http");
-            job=NetworkAccessManager::self()->get(u);
+            job=NetworkAccessManager::self()->get(u, constTimeout);
             connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
             connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
             return;
@@ -247,7 +248,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
             if (redirect.isValid() && ++redirects<constMaxRedirects) {
                 current=redirect.toString();
                 data.clear();
-                job=NetworkAccessManager::self()->get(current);
+                job=NetworkAccessManager::self()->get(current, constTimeout);
                 connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
                 connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                 redirected=true;
@@ -260,7 +261,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                     // Redirect...
                     current=u;
                     data.clear();
-                    job=NetworkAccessManager::self()->get(u);
+                    job=NetworkAccessManager::self()->get(u, constTimeout);
                     connect(job, SIGNAL(readyRead()), this, SLOT(dataReady()));
                     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                     redirected=true;

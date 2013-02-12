@@ -90,6 +90,7 @@ QModelIndex ShortcutsModel::index(int row, int column, const QModelIndex &parent
 }
 
 int ShortcutsModel::columnCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return 2;
   /*if(!parent.isValid())
     return 2;

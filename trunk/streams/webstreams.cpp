@@ -418,7 +418,7 @@ QList<StreamsModel::StreamItem *> RadioWebStream::parse(QIODevice *dev)
                     do {
                         url=getString(line, "href=\"", "\"");
                         bitrate=getString(line, ">", " Kbps");
-                        if (!url.isEmpty() && !bitrate.isEmpty()) {
+                        if (!url.isEmpty() && !bitrate.isEmpty() && !url.startsWith(QLatin1String("javascript"))) {
                             if (idx<entry.streams.count()) {
                                 entry.streams[idx].url=url;
                                 entry.streams[idx].bitrate=bitrate.toUInt();

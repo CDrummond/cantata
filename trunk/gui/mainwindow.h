@@ -215,8 +215,6 @@ public Q_SLOTS:
     void saveShortcuts();
     #endif
     void setMpdVolume(int );
-    void playbackButtonsMenu();
-    void setPlaybackButtonsSize(bool smallButtons);
     void songLoaded();
     void messageWidgetVisibility(bool v);
     void mpdConnectionStateChanged(bool connected);
@@ -419,12 +417,10 @@ private:
     Action *searchAction;
     Action *expandAllAction;
     Action *collapseAllAction;
-    Action *smallPlaybackButtonsAction;
     Action *setCoverAction;
     Action *serverInfoAction;
     QAction *autoHideSplitterAction;
     TrayItem *trayItem;
-    QMenu *playbackBtnsMenu;
     QPoint lastPos;
     QSize expandedSize;
     QSize collapsedSize;

@@ -69,7 +69,10 @@ Icon Icon::getMediaIcon(const QString &name)
 
     foreach (QIcon::Mode mode, modes) {
         icn.addPixmap(icon.pixmap(QSize(64, 64), mode).scaled(QSize(28, 28), Qt::KeepAspectRatio, Qt::SmoothTransformation), mode);
+        icn.addPixmap(icon.pixmap(QSize(48, 48), mode), mode);
+        icn.addPixmap(icon.pixmap(QSize(32, 32), mode), mode);
         icn.addPixmap(icon.pixmap(QSize(22, 22), mode), mode);
+        icn.addPixmap(icon.pixmap(QSize(16, 16), mode), mode);
     }
 
     return icn;

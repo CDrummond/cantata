@@ -313,11 +313,6 @@ bool Settings::stopDynamizerOnExit()
     return GET_BOOL("stopDynamizerOnExit", false);
 }
 
-bool Settings::smallPlaybackButtons()
-{
-    return GET_BOOL("smallPlaybackButtons", false);
-}
-
 bool Settings::storeCoversInMpdDir()
 {
     return GET_BOOL("storeCoversInMpdDir", true);
@@ -710,11 +705,6 @@ void Settings::saveStopOnExit(bool v)
 void Settings::saveStopDynamizerOnExit(bool v)
 {
     SET_VALUE_MOD(stopDynamizerOnExit)
-}
-
-void Settings::saveSmallPlaybackButtons(bool v)
-{
-    SET_VALUE_MOD(smallPlaybackButtons)
 }
 
 void Settings::saveStoreCoversInMpdDir(bool v)

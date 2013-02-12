@@ -339,6 +339,7 @@ struct Stream {
     enum Format {
         AAC,
         MP3,
+        OGG,
         WMA,
         Unknown
     };
@@ -357,6 +358,8 @@ struct Stream {
             format=MP3;
         } else if (QLatin1String("aacplus")==f.toLower()) {
             format=AAC;
+        } else if (QLatin1String("ogg vorbis")==f.toLower()) {
+            format=OGG;
         } else if (QLatin1String("windows media")==f.toLower()) {
             format=WMA;
         } else {

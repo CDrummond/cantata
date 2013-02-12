@@ -337,11 +337,11 @@ QList<StreamsModel::StreamItem *> SomaFmWebStream::parse(QIODevice *dev)
 
 struct Stream {
     enum Format {
-        AAC,
-        MP3,
-        OGG,
+        Unknown,
         WMA,
-        Unknown
+        OGG,
+        MP3,
+        AAC
     };
 
     Stream() : format(Unknown), bitrate(0) { }
@@ -350,7 +350,7 @@ struct Stream {
     }
 
     int weight() const {
-        return ((format&0x0f)<<8)+(bitrate&0xff);
+        return ((bitrate&0xff)<<8)+(format&0x0f);
     }
 
     void setFormat(const QString &f) {
@@ -403,7 +403,9 @@ QList<StreamsModel::StreamItem *> RadioWebStream::parse(QIODevice *dev)
         StationEntry entry;
 
         while (!dev->atEnd()) {
-            QString line=dev->readLine().trimmed().replace("> <", "><").replace("<td><b><a href", "<td><a href").replace("</b></a></b>", "</b></a>");
+            QString line=dev->readLine().trimmed().replace("> <", "><").replace("<td><b><a href", "<td><a href")
+                                                  .replace("</b></a></b>", "</b></a>").replace("<br />", "<br/>")
+                                                  .replace("</a> ,", "</a>,");
             if ("<tr>"==line) {
                 entry.clear();
             } else if (line.startsWith("<td><a href=")) {
@@ -421,12 +423,16 @@ QList<StreamsModel::StreamItem *> RadioWebStream::parse(QIODevice *dev)
                     do {
                         url=getString(line, "href=\"", "\"");
                         bitrate=getString(line, ">", " Kbps");
-                        if (!url.isEmpty() && !bitrate.isEmpty() && !url.startsWith(QLatin1String("javascript"))) {
-                            if (idx<entry.streams.count()) {
-                                entry.streams[idx].url=url;
-                                entry.streams[idx].bitrate=bitrate.toUInt();
-                                idx++;
+                        bool sameFormatAsLast=line.startsWith("</a>,");
+                        if (!url.isEmpty() && !bitrate.isEmpty() && !url.startsWith(QLatin1String("javascript")) && idx<entry.streams.count()) {
+                            if (sameFormatAsLast && 0!=idx) {
+                                Stream stream;
+                                stream.format=entry.streams[idx-1].format;
+                                entry.streams.insert(idx, stream);
                             }
+                            entry.streams[idx].url=url;
+                            entry.streams[idx].bitrate=bitrate.toUInt();
+                            idx++;
                         }
                     } while (!url.isEmpty() && !bitrate.isEmpty());
                 }
@@ -449,11 +455,11 @@ QList<StreamsModel::StreamItem *> RadioWebStream::parse(QIODevice *dev)
                 }
             } else if ("</tr>"==line) {
                 if (entry.streams.count()) {
+                    qSort(entry.streams);
                     QString name=QLatin1String("National")==entry.location ? entry.name : (entry.name+" ("+entry.location+")");
                     QUrl url=entry.streams.at(0).url;
 
                     if (!names.contains(name) && !name.isEmpty() && url.isValid()) {
-                        qSort(entry.streams);
                         QString genre=fixGenres(entry.comment);
                         StreamsModel::StreamItem *item=new StreamsModel::StreamItem(name, genre, QString(), url);
                         streams.append(item);

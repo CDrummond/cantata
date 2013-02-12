@@ -278,7 +278,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void OnlineServicesModel::clear()
+void OnlineServicesModel::clear(bool clearConfig)
 {
     QSet<QString> names;
     foreach (OnlineService *srv, services) {
@@ -286,7 +286,7 @@ void OnlineServicesModel::clear()
     }
 
     foreach (const QString &n, names) {
-        removeService(n);
+        removeService(n, clearConfig);
     }
 
     services.clear();
@@ -310,7 +310,7 @@ void OnlineServicesModel::setEnabled(bool e)
         if (wasEnabled) {
             stop();
         }
-        clear();
+        clear(false);
     }
 }
 
@@ -542,7 +542,7 @@ OnlineService * OnlineServicesModel::addService(const QString &name)
     return srv;
 }
 
-void OnlineServicesModel::removeService(const QString &name)
+void OnlineServicesModel::removeService(const QString &name, bool fullRemove)
 {
     int idx=indexOf(name);
     if (idx<0) {
@@ -557,17 +557,18 @@ void OnlineServicesModel::removeService(const QString &name)
         endRemoveRows();
         updateGenres();
 
-        CONFIG
-        QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
-        if (names.contains(srv->name())) {
-            names.removeAll(srv->name());
-            REMOVE_GROUP(cfgKey(srv));
-            SET_VALUE(constCfgKey, names);
-            CFG_SYNC;
+        if (fullRemove) {
+            CONFIG
+            QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
+            if (names.contains(srv->name())) {
+                names.removeAll(srv->name());
+                REMOVE_GROUP(cfgKey(srv));
+                SET_VALUE(constCfgKey, names);
+                CFG_SYNC;
+            }
         }
-        srv->removeCache();
-        srv->stopLoader();
-        srv->deleteLater();
+        // Destroy will stop service, and delete it (via deleteLater())
+        srv->destroy(fullRemove);
     }
 }
 

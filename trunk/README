@@ -393,7 +393,7 @@ To compile for windows:
 
 1. Install Qt, MinGW, cmake, TagLib. TagLib will probably need compiling.
 2. Call cmake (e.g.):
-     cmake ../src -G "MinGW Makefiles" -DTAGLIB_INCLUDES=z:\taglib\include -DTAGLIB_LIBRARIES=z:\taglib\lib\libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1
+     cmake ../src -G "MinGW Makefiles" -DTAGLIB_INCLUDES=z:\taglib\include -DTAGLIB_LIBRARIES=z:\taglib\lib\libtag.dll.a -DTAGLIB_MP4_FOUND=1 -DTAGLIB_ASF_FOUND=1 -DCMAKE_PREFIX_PATH=z:\zlib
 3. make! :-)
 
 This build is as per Qt-only, but does not have support for dbus, local dynamic

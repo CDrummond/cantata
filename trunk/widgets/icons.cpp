@@ -73,6 +73,59 @@ static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opaci
     return pix;
 }
 
+static QPainterPath buildPath(const QRectF &r, double radius)
+{
+    QPainterPath path;
+    double diameter(radius*2);
+
+    path.moveTo(r.x()+r.width(), r.y()+r.height()-radius);
+    path.arcTo(r.x()+r.width()-diameter, r.y(), diameter, diameter, 0, 90);
+    path.arcTo(r.x(), r.y(), diameter, diameter, 90, 90);
+    path.arcTo(r.x(), r.y()+r.height()-diameter, diameter, diameter, 180, 90);
+    path.arcTo(r.x()+r.width()-diameter, r.y()+r.height()-diameter, diameter, diameter, 270, 90);
+    return path;
+}
+
+static QPixmap createMenuIconPixmap(int size, QColor col, double opacity)
+{
+    QPixmap pix(size, size);
+    pix.fill(Qt::transparent);
+    QPainter p(&pix);
+    int lineWidth=3;
+    int space=2;
+    int borderX=1;
+    if (22==size) {
+        lineWidth=3;
+        space=3;
+        borderX=2;
+    } else if (32==size) {
+        lineWidth=5;
+        space=5;
+        borderX=3;
+    } else if (48==size) {
+        lineWidth=8;
+        space=6;
+        borderX=4;
+    }
+    int borderY=((size-((3*lineWidth)+(2*space)))/2.0)+0.5;
+
+    p.setOpacity(opacity);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    bool isLight=col.red()>100 && col.blue()>100 && col.green()>100;
+    for (int i=0; i<3; ++i) {
+        int offset=i*(space+lineWidth);
+        QRectF rect(borderX+0.5, borderY+offset, size-(2*borderX), lineWidth);
+        QLinearGradient grad(rect.topLeft(), rect.bottomLeft());
+        col.setAlphaF(isLight ? 0.5 : 1.0);
+        grad.setColorAt(0, col);
+        col.setAlphaF(isLight ? 1.0 : 0.5);
+        grad.setColorAt(1, col);
+        p.fillPath(buildPath(rect, lineWidth/2.0), grad);
+    }
+    p.end();
+    return pix;
+}
+
 static void calcIconColors(QColor &stdColor, QColor &highlightColor)
 {
     stdColor=QColor(QApplication::palette().color(QPalette::Active, QPalette::ButtonText));
@@ -85,14 +138,40 @@ static void calcIconColors(QColor &stdColor, QColor &highlightColor)
     highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
 }
 
-static Icon createIcon(bool isSingle, const QColor &stdColor, const QColor &highlightColor)
+static Icon createSingleIcon(const QColor &stdColor, const QColor &highlightColor)
 {
     Icon icon;
 
     foreach (int s, constStdSizes) {
-        icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 1.0) : createConsumeIconPixmap(s, stdColor, 1.0));
-        icon.addPixmap(isSingle ? createSingleIconPixmap(s, stdColor, 0.5) : createConsumeIconPixmap(s, stdColor, 0.5), QIcon::Disabled);
-        icon.addPixmap(isSingle ? createSingleIconPixmap(s, highlightColor, 1.0) : createConsumeIconPixmap(s, highlightColor, 1.0), QIcon::Active);
+        icon.addPixmap(createSingleIconPixmap(s, stdColor, 1.0));
+        icon.addPixmap(createSingleIconPixmap(s, stdColor, 0.5), QIcon::Disabled);
+        icon.addPixmap(createSingleIconPixmap(s, highlightColor, 1.0), QIcon::Active);
+    }
+
+    return icon;
+}
+
+static Icon createConsumeIcon(const QColor &stdColor, const QColor &highlightColor)
+{
+    Icon icon;
+
+    foreach (int s, constStdSizes) {
+        icon.addPixmap(createConsumeIconPixmap(s, stdColor, 1.0));
+        icon.addPixmap(createConsumeIconPixmap(s, stdColor, 0.5), QIcon::Disabled);
+        icon.addPixmap(createConsumeIconPixmap(s, highlightColor, 1.0), QIcon::Active);
+    }
+
+    return icon;
+}
+
+static Icon createMenuIcon(const QColor &stdColor, const QColor &highlightColor)
+{
+    Icon icon;
+
+    foreach (int s, constStdSizes) {
+        icon.addPixmap(createMenuIconPixmap(s, stdColor, 1.0));
+        icon.addPixmap(createMenuIconPixmap(s, stdColor, 0.5), QIcon::Disabled);
+        icon.addPixmap(createMenuIconPixmap(s, highlightColor, 1.0), QIcon::Active);
     }
 
     return icon;
@@ -198,8 +277,9 @@ void Icons::init()
     QColor highlightColor;
     calcIconColors(stdColor, highlightColor);
 
-    singleIcon=createIcon(true, stdColor, highlightColor);
-    consumeIcon=createIcon(false, stdColor, highlightColor);
+    singleIcon=createSingleIcon(stdColor, highlightColor);
+    consumeIcon=createConsumeIcon(stdColor, highlightColor);
+    menuIcon=createMenuIcon(stdColor, highlightColor);
     libraryIcon=Icon("cantata-view-media-library");
     radioStreamIcon=Icon("cantata-view-radiostream");
     addRadioStreamIcon=Icon("cantata-radiostream-add");
@@ -219,10 +299,9 @@ void Icons::init()
     clearListIcon=Icon("edit-clear-list");
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
-    menuIcon=createRecolourableIcon("menu", stdColor, highlightColor);
     QColor white(Qt::white);
     if (stdColor!=white) {
-        menuIconWhite=createRecolourableIcon("menu", white, white.darker(50));
+        menuIconWhite=createMenuIcon(white, white.darker(50));
     }
     jamendoIcon=Icon("cantata-view-services-jamendo");
     magnatuneIcon=Icon("cantata-view-services-jamendo");

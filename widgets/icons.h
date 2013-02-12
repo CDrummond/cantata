@@ -57,6 +57,7 @@ namespace Icons
     extern Icon menuIcon;
     extern Icon jamendoIcon;
     extern Icon magnatuneIcon;
+    extern Icon filesIcon;
 }
 
 #endif

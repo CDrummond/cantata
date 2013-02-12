@@ -189,6 +189,7 @@ Icon Icons::clearListIcon;
 Icon Icons::menuIcon;
 Icon Icons::jamendoIcon;
 Icon Icons::magnatuneIcon;
+Icon Icons::filesIcon;
 
 void Icons::init()
 {
@@ -220,6 +221,7 @@ void Icons::init()
     menuIcon=createRecolourableIcon("menu", stdColor, highlightColor);
     jamendoIcon=Icon("cantata-view-services-jamendo");
     magnatuneIcon=Icon("cantata-view-services-jamendo");
+    filesIcon=Icon("document-multiple");
     #ifndef ENABLE_KDE_SUPPORT
     appIcon=Icon::create("cantata", QList<int>() << 16 << 22 << 32 << 48 << 64);
     shortcutsIcon=Icon("preferences-desktop-keyboard");
@@ -286,6 +288,9 @@ void Icons::init()
     }
     if (clearListIcon.isNull()) {
         clearListIcon=Icon("edit-delete");
+    }
+    if (filesIcon.isNull()) {
+        filesIcon=Icon("empty");
     }
     #endif // Q_OS_WIN
     #endif // ENABLE_KDE_SUPPORT

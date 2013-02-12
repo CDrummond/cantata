@@ -122,7 +122,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When looking for artist images, Cantata will look for either artist.jpg, artist.png, &quot;Artist&quot;.jpg, or &quot;Artist&quot;.png,
+          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; When looking for artist images, Cantata will look for either artist.jpg, artist.png, 'Artist'.jpg, or 'Artist'.png,
 within the folder of the current track, or within its parent folder. If no image is found, Cantata will attempt to download one. When the image is displayed, it will be cropped (either top/bottom, or left/right) to provide a square image.&lt;/i&gt;</string>
          </property>
          <property name="alignment">
@@ -578,7 +578,7 @@ within the folder of the current track, or within its parent folder. If no image
           </sizepolicy>
          </property>
          <property name="text">
-          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Changing the &quot;Enforce single-click activation of items&quot; setting will require a re-start of Cantata.&lt;/i&gt;</string>
+          <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; Changing the 'Enforce single-click activation of items' setting will require a re-start of Cantata.&lt;/i&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

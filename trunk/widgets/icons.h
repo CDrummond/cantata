@@ -55,6 +55,7 @@ namespace Icons
     extern Icon editIcon;
     extern Icon clearListIcon;
     extern Icon menuIcon;
+    extern Icon menuIconWhite;
     extern Icon jamendoIcon;
     extern Icon magnatuneIcon;
     extern Icon filesIcon;

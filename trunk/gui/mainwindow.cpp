@@ -391,7 +391,6 @@ MainWindow::MainWindow(QWidget *parent)
     addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
 
-    menuButton->setIcon(Icons::configureIcon);
     menuButton->setMenu(mainMenu);
     menuButton->setPopupMode(QToolButton::InstantPopup);
     volumeButton->setIcon(Icon("audio-volume-high"));
@@ -417,6 +416,8 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     GtkStyle::applyTheme(toolbar);
+    QColor tbText=artistLabel->palette().color(QPalette::Foreground) ;
+    menuButton->setIcon(tbText.red()>100 && tbText.green()>100 && tbText.blue()>100 && !Icons::menuIconWhite.isNull() ? Icons::menuIconWhite : Icons::menuIcon);
 
     // We need to have the window visible inorder for initSizes() to function.
     // So, if we are supposed to be starting hidden, then set the 'dont show on screen' flag before 'showing'

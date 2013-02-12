@@ -294,7 +294,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void DevicesModel::clear()
+void DevicesModel::clear(bool clearConfig)
 {
     inhibitMenuUpdate=true;
     QSet<QString> remoteUdis;
@@ -311,7 +311,7 @@ void DevicesModel::clear()
         deviceRemoved(u);
     }
     foreach (const QString &u, remoteUdis) {
-        removeRemoteDevice(u);
+        removeRemoteDevice(u, clearConfig);
     }
 
     devices.clear();
@@ -341,7 +341,7 @@ void DevicesModel::setEnabled(bool e)
         #endif
     } else {
         stop();
-        clear();
+        clear(false);
     }
     inhibitMenuUpdate=false;
     updateItemMenu();
@@ -662,7 +662,7 @@ void DevicesModel::addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::De
     #endif
 }
 
-void DevicesModel::removeRemoteDevice(const QString &udi)
+void DevicesModel::removeRemoteDevice(const QString &udi, bool removeFromConfig)
 {
     #ifdef ENABLE_REMOTE_DEVICES
     int idx=indexOf(udi);
@@ -679,11 +679,15 @@ void DevicesModel::removeRemoteDevice(const QString &udi)
         endRemoveRows();
         updateItemMenu();
         updateGenres();
-        // Remove will stop device, and delete it
-        RemoteFsDevice::remove(dev);
+        RemoteFsDevice *rfs=qobject_cast<RemoteFsDevice *>(dev);
+        if (rfs) {
+            // Destroy will stop device, and delete it (via deleteLater())
+            rfs->destroy(removeFromConfig);
+        }
     }
     #else
     Q_UNUSED(udi)
+    Q_UNUSED(removeFromConfig)
     #endif
 }
 

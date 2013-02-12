@@ -72,7 +72,6 @@ public:
 
     static QList<Device *> loadAll(DevicesModel *m);
     static Device * create(DevicesModel *m, const DeviceOptions &options, const Details &d);
-    static void remove(Device *dev);
     static void renamed(const QString &oldName, const QString &newName);
     static QString createUdi(const QString &n);
 
@@ -99,6 +98,7 @@ public:
         #endif
     }
     bool canPlaySongs() const;
+    void destroy(bool removeFromConfig=true);
 
 Q_SIGNALS:
     void udiChanged();

@@ -77,7 +77,7 @@ static QString parseAsx(const QByteArray &data, const QSet<QString> &handlers)
     QStringList lines=QString(data).split(QRegExp(QLatin1String("(\r\n|\n|\r|/>)")), QString::SkipEmptyParts);
 
     foreach (QString line, lines) {
-        int ref=line.indexOf(QLatin1String("<ref href="), Qt::CaseInsensitive);
+        int ref=line.indexOf(QLatin1String("<ref href"), Qt::CaseInsensitive);
         if (-1!=ref) {
             foreach (const QString &handler, handlers) {
                 QString protocol(handler+QLatin1String("://"));

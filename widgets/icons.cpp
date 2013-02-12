@@ -187,6 +187,7 @@ Icon Icons::artistIcon;
 Icon Icons::editIcon;
 Icon Icons::clearListIcon;
 Icon Icons::menuIcon;
+Icon Icons::menuIconWhite;
 Icon Icons::jamendoIcon;
 Icon Icons::magnatuneIcon;
 Icon Icons::filesIcon;
@@ -219,6 +220,10 @@ void Icons::init()
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
     menuIcon=createRecolourableIcon("menu", stdColor, highlightColor);
+    QColor white(Qt::white);
+    if (stdColor!=white) {
+        menuIconWhite=createRecolourableIcon("menu", white, white.darker(50));
+    }
     jamendoIcon=Icon("cantata-view-services-jamendo");
     magnatuneIcon=Icon("cantata-view-services-jamendo");
     filesIcon=Icon("document-multiple");

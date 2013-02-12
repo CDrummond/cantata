@@ -489,7 +489,7 @@ bool Settings::showDeleteAction()
 
 int Settings::devicesView()
 {
-    return GET_INT("devicesView", (int)ItemView::Mode_SimpleTree);
+    return GET_INT("devicesView", (int)ItemView::Mode_DetailedTree);
 }
 #endif
 

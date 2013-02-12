@@ -10,9 +10,5 @@
 <file alias="shuffle22.png">icons/view-media-shuffle22.png</file>
 <file alias="shuffle32.png">icons/view-media-shuffle32.png</file>
 <file alias="shuffle48.png">icons/view-media-shuffle48.png</file>
-<file alias="menu16.png">icons/menubutton16.png</file>
-<file alias="menu22.png">icons/menubutton22.png</file>
-<file alias="menu32.png">icons/menubutton32.png</file>
-<file alias="menu48.png">icons/menubutton48.png</file>
 </qresource>
 </RCC>

@@ -97,6 +97,7 @@ public:
     virtual ~OnlineService() {
     }
 
+    void destroy(bool delCache=true);
     void stopLoader();
     virtual const Icon & serviceIcon() const =0;
     virtual Song fixPath(const Song &orig) const =0;

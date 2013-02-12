@@ -168,41 +168,36 @@ Device * RemoteFsDevice::create(DevicesModel *m, const DeviceOptions &options, c
     return 0;
 }
 
-void RemoteFsDevice::remove(Device *dev)
+void RemoteFsDevice::destroy(bool removeFromConfig)
 {
-    if (!dev || RemoteFs!=dev->devType()) {
-        return;
-    }
-    #ifdef ENABLE_KDE_SUPPORT
-    KConfigGroup cfg(KGlobal::config(), "General");
-    #else
-    QSettings cfg;
-    #endif
-    QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
-    RemoteFsDevice *rfs=qobject_cast<RemoteFsDevice *>(dev);
-    QString name=rfs ? rfs->details.name : QString();
-    if (names.contains(name)) {
-        names.removeAll(name);
-        REMOVE_GROUP(dev->udi());
-        SET_VALUE(constCfgKey, names);
-        CFG_SYNC;
-    }
-    if (rfs) {
-        rfs->stopScanner();
-        if (rfs->isConnected()) {
-            rfs->unmount();
+    if (removeFromConfig) {
+        #ifdef ENABLE_KDE_SUPPORT
+        KConfigGroup cfg(KGlobal::config(), "General");
+        #else
+        QSettings cfg;
+        #endif
+        QStringList names=GET_STRINGLIST(constCfgKey, QStringList());
+        if (names.contains(details.name)) {
+            names.removeAll(details.name);
+            REMOVE_GROUP(udi());
+            SET_VALUE(constCfgKey, names);
+            CFG_SYNC;
         }
-        if (isMountable(rfs->details)) {
-            QString mp=mountPoint(rfs->details, false);
-            if (!mp.isEmpty()) {
-                QDir d(mp);
-                if (d.exists()) {
-                    d.rmdir(mp);
-                }
+    }
+    stopScanner();
+    if (isConnected()) {
+        unmount();
+    }
+    if (isMountable(details)) {
+        QString mp=mountPoint(details, false);
+        if (!mp.isEmpty()) {
+            QDir d(mp);
+            if (d.exists()) {
+                d.rmdir(mp);
             }
         }
     }
-    dev->deleteLater();
+    deleteLater();
 }
 
 QString RemoteFsDevice::createUdi(const QString &n)

@@ -169,6 +169,15 @@ void OnlineMusicLoader::progressReport(const QString &str, int prog)
     }
 }
 
+void OnlineService::destroy(bool delCache)
+{
+    if (delCache) {
+        removeCache();
+    }
+    stopLoader();
+    deleteLater();
+}
+
 void OnlineService::stopLoader()
 {
     // Load music in a separate thread...

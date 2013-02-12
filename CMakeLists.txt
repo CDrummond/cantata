@@ -343,6 +343,8 @@ else (ENABLE_QT5)
     add_definitions( -DQT_NO_STL -DQT_NO_CAST_TO_ASCII -Wall -Wextra )
 endif (ENABLE_QT5)
 
+find_package(ZLIB REQUIRED)
+
 if (ENABLE_WEBKIT)
     if (ENABLE_KDE_SUPPORT)
         TARGET_LINK_LIBRARIES( cantata ${KDE4_KDEWEBKIT_LIBRARY} ${QT_QTWEBKIT_LIBRARY}  )
@@ -579,8 +581,8 @@ endif (MTP_FOUND AND NOT WIN32)
 
 ADD_SUBDIRECTORY( icons )
 
-TARGET_LINK_LIBRARIES(cantata support ${QTLIBS} -lz)
-include_directories(${QTINCLUDES})
+TARGET_LINK_LIBRARIES(cantata support ${QTLIBS} ${ZLIB_LIBRARIES})
+include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
 
 if (TAGLIB_FOUND)
     TARGET_LINK_LIBRARIES(cantata ${TAGLIB_LIBRARIES})

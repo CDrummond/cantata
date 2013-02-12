@@ -26,8 +26,6 @@
 
 #include "ui_streamspage.h"
 #include "streamsproxymodel.h"
-#include <QMap>
-#include <QUrl>
 
 class MainWindow;
 class Action;
@@ -39,25 +37,6 @@ class StreamsPage : public QWidget, public Ui::StreamsPage
     Q_OBJECT
 
 public:
-    struct WebStream
-    {
-        enum Type {
-            WS_IceCast,
-            WS_SomaFm,
-            WS_Radio,
-
-            WS_Count
-        };
-
-        WebStream(const QString &n=QString(), const QString &r=QString(), const QUrl &u=QUrl(), Type t=WS_Radio)
-                : name(n), region(r), url(u), type(t), job(0) { }
-        QString name;
-        QString region;
-        QUrl url;
-        Type type;
-        mutable QNetworkReply *job;
-    };
-
     StreamsPage(MainWindow *p);
     virtual ~StreamsPage();
 
@@ -82,7 +61,6 @@ public Q_SLOTS:
     void controlActions();
 
 private Q_SLOTS:
-    void downloadFinished();
     void importWebStreams();
     void importXml();
     void exportXml();
@@ -91,6 +69,7 @@ private Q_SLOTS:
     void searchItems();
     void itemDoubleClicked(const QModelIndex &index);
     void downloading(bool dl);
+    void checkIfBusy();
 
 private:
     void addItemsToPlayQueue(const QModelIndexList &indexes, bool replace, quint8 priorty=0);
@@ -98,6 +77,7 @@ private:
 
 private:
     bool enabled;
+    bool modelIsDownloading;
     Action *importAction;
     Action *exportAction;
     Action *addAction;
@@ -105,7 +85,6 @@ private:
     QAction *importFileAction;
     QAction *importIceCastAction;
     QAction *importSomaFmCastAction;
-    QMap<QUrl, WebStream> webStreams;
     StreamsProxyModel proxy;
     MainWindow *mw;
 };

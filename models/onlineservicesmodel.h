@@ -51,7 +51,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes) const;
     QList<Song> songs(const QModelIndexList &indexes) const;
-    void clear();
+    void clear(bool clearConfig=true);
     OnlineService * service(const QString &name);
     bool isEnabled() const { return enabled; }
     void setEnabled(bool e);
@@ -62,11 +62,11 @@ public:
     const QSet<QString> & genres() { return srvGenres; }
     void createService(const QString &name);
     Device *device(const QString &udi);
+    void removeService(const QString &name, bool fullRemove=true);
 
 public Q_SLOTS:
     void setArtistImage(const Song &song, const QImage &img);
     void setCover(const Song &song, const QImage &img, const QString &fileName);
-    void removeService(const QString &name);
     void stateChanged(const QString &name, bool state);
 
 private:

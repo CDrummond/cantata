@@ -51,7 +51,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
     QList<Song> songs(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
-    void clear();
+    void clear(bool clearConfig=true);
     QMenu * menu() { return itemMenu; }
     Device * device(const QString &udi);
     bool isEnabled() const { return enabled; }
@@ -73,7 +73,7 @@ public Q_SLOTS:
     void deviceUpdating(const QString &udi, bool state);
     void emitAddToDevice();
     void addRemoteDevice(const DeviceOptions &opts, RemoteFsDevice::Details details);
-    void removeRemoteDevice(const QString &udi);
+    void removeRemoteDevice(const QString &udi, bool removeFromConfig=true);
     void remoteDeviceUdiChanged();
     void removeDeviceConnectionStateChanged(const QString &udi, bool state);
     void mountsChanged();

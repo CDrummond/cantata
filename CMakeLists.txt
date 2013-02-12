@@ -259,12 +259,12 @@ endif (ENABLE_TAGLIB)
 
 if (TAGLIB_FOUND)
     SET( CANTATA_SRCS ${CANTATA_SRCS}
-        gui/httpserversettings.cpp
         tags/tageditor.cpp
         tags/trackorganiser.cpp
         tags/tags.cpp
         devices/deviceoptions.cpp
         devices/filenameschemedialog.cpp
+        http/httpserversettings.cpp
         http/httpserver.cpp
         http/httpsocket.cpp
     )
@@ -278,7 +278,7 @@ if (TAGLIB_FOUND)
     )
 
     SET( CANTATA_UIS ${CANTATA_UIS}
-        gui/httpserversettings.ui
+        http/httpserversettings.ui
         tags/tageditor.ui
         tags/trackorganiser.ui
         devices/filenameschemedialog.ui

@@ -41,7 +41,7 @@
     <widget class="GenreCombo" name="genreCombo"/>
    </item>
    <item row="2" column="1">
-    <widget class="QToolButton" name="menuButton"/>
+    <widget class="MenuButton" name="menuButton"/>
    </item>
    <item row="2" column="2">
     <widget class="QToolButton" name="replacePlayQueue"/>
@@ -63,6 +63,11 @@
    <class>SqueezedTextLabel</class>
    <extends>QLabel</extends>
    <header>squeezedtextlabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MenuButton</class>
+   <extends>QToolButton</extends>
+   <header>menubutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

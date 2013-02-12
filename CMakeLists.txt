@@ -32,7 +32,7 @@ OPTION(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculati
 OPTION(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain calculation)" ON)
 
 if (ENABLE_QT5)
-    set(ENABLE_PHONON FALSE) 
+    set(ENABLE_PHONON FALSE)
     set(ENABLE_KDE FALSE)
 endif (ENABLE_QT5)
 
@@ -146,6 +146,7 @@ SET( CANTATA_SRCS
     widgets/icons.cpp
     widgets/genrecombo.cpp
     widgets/toolbar.cpp
+    widgets/menubutton.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
@@ -322,7 +323,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/gui
 )
 
 if (ENABLE_QT5)
-    find_package(Qt5Widgets REQUIRED)   
+    find_package(Qt5Widgets REQUIRED)
     find_package(Qt5Xml REQUIRED)
     find_package(Qt5Network REQUIRED)
     find_package(Qt5Concurrent REQUIRED)

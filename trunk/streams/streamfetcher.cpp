@@ -24,6 +24,7 @@
 #include "streamfetcher.h"
 #include "networkaccessmanager.h"
 #include "mpdconnection.h"
+#include "streamsmodel.h"
 #include <QRegExp>
 #include <QUrl>
 #include <QDomDocument>
@@ -182,7 +183,7 @@ void StreamFetcher::doNext()
         current=todo.takeFirst();
         QUrl u(current);
 
-        if (QLatin1String("cantata-http")==u.scheme()) {
+        if (u.scheme().startsWith(StreamsModel::constPrefix)) {
             data.clear();
             u.setScheme("http");
             job=NetworkAccessManager::self()->get(u, constTimeout);
@@ -256,7 +257,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                 QString u=parse(data);
 
                 if (u.isEmpty() || u==current) {
-                    done.append(current.startsWith("cantata-http:") ? current.mid(8) : current);
+                    done.append(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current);
                 } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
                     // Redirect...
                     current=u;
@@ -270,7 +271,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                 }
             }
         } else {
-            done.append(current.startsWith("cantata-http:") ? current.mid(8) : current);
+            done.append(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current);
         }
 
         if (!redirected) {

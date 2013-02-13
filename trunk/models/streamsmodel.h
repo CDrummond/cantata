@@ -39,7 +39,7 @@ class StreamsModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-
+    static const QString constPrefix;
     static const QLatin1String constDefaultCategoryIcon;
     static QString prefixUrl(const QString &n, bool addPrefix=true);
     static QString dir();

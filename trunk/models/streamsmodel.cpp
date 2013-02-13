@@ -66,6 +66,7 @@ StreamsModel * StreamsModel::self()
     #endif
 }
 
+const QString StreamsModel::constPrefix("cantata-");
 const QLatin1String StreamsModel::constDefaultCategoryIcon("inode-directory");
 static const QString constStreamCategoryMimeType("cantata/streams-category");
 static const QString constStreamMimeType("cantata/stream");
@@ -768,7 +769,7 @@ QString StreamsModel::prefixUrl(const QString &n, bool addPrefix)
     if (!addPrefix || !n.startsWith("http:")) {
         return n;
     }
-    return QLatin1String("cantata-")+n;
+    return constPrefix+n;
 }
 
 QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPrefix) const

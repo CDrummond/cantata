@@ -1097,7 +1097,7 @@ void MainWindow::connectToMpd()
 void MainWindow::refresh()
 {
     MusicLibraryModel::self()->removeCache();
-    emit getStats(true); // QApplication::keyboardModifiers()&Qt::ShiftModifier);
+    emit getStats(true);
 }
 
 #define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
@@ -1436,7 +1436,6 @@ void MainWindow::updateSettings()
 void MainWindow::toggleOutput()
 {
     QAction *act=qobject_cast<QAction *>(sender());
-
     if (act) {
         emit enableOutput(act->data().toInt(), act->isChecked());
     }
@@ -1558,16 +1557,16 @@ void MainWindow::stopTrack()
     stopTrackAction->setEnabled(false);
     nextTrackAction->setEnabled(false);
     prevTrackAction->setEnabled(false);
-    startVolumeFade(/*true*/);
+    startVolumeFade();
 }
 
-void MainWindow::startVolumeFade(/*bool stop*/)
+void MainWindow::startVolumeFade()
 {
     if (!fadeWhenStop()) {
         return;
     }
 
-    stopState=/*stop ? */StopState_Stopping/* : StopState_Pausing*/;
+    stopState=StopState_Stopping;
     if (!volumeFade) {
         volumeFade = new QPropertyAnimation(this, "volume");
         volumeFade->setDuration(Settings::self()->stopFadeDuration());
@@ -1595,9 +1594,7 @@ void MainWindow::setMpdVolume(int v)
         emit setVolume(origVolume);
         if (StopState_Stopping==stopState) {
             emit stop();
-        } /*else if (StopState_Pausing==stopState) {
-            emit pause(true);
-        }*/
+        }
         stopState=StopState_None;
     } else if (lastVolume!=v) {
         emit setVolume(v);
@@ -1610,11 +1607,7 @@ void MainWindow::playPauseTrack()
     MPDStatus * const status = MPDStatus::self();
 
     if (MPDState_Playing==status->state()) {
-        /*if (fadeWhenStop()) {
-            startVolumeFade(false);
-        } else*/ {
-            emit pause(true);
-        }
+        emit pause(true);
     } else if (MPDState_Paused==status->state()) {
         stopVolumeFade();
         emit pause(false);
@@ -1779,9 +1772,7 @@ void MainWindow::updateCurrentSong(const Song &song)
     if (fadeWhenStop() && StopState_None!=stopState) {
         if (StopState_Stopping==stopState) {
             emit stop();
-        } /*else if (StopState_Pausing==stopState) {
-            emit pause(true);
-        }*/
+        }
     }
 
     current=song;
@@ -1792,7 +1783,6 @@ void MainWindow::updateCurrentSong(const Song &song)
         if (!mod.title.isEmpty()) {
             current=mod;
             current.id=song.id;
-//             current.file="XXX";
         }
     }
     #endif
@@ -2039,8 +2029,6 @@ void MainWindow::removeFromPlayQueue()
 
 void MainWindow::replacePlayQueue()
 {
-//     emit clear();
-//     emit getStatus();
     addToPlayQueue(true);
 }
 
@@ -2069,13 +2057,9 @@ void MainWindow::addToPlayQueue(bool replace, quint8 priority)
 
 void MainWindow::addWithPriority()
 {
-    if (!MPDConnection::self()->canUsePriority() || !addWithPriorityAction->isVisible()) {
-        return;
-    }
-
     QAction *act=qobject_cast<QAction *>(sender());
 
-    if (!act) {
+    if (!act || !MPDConnection::self()->canUsePriority() || !addWithPriorityAction->isVisible()) {
         return;
     }
 
@@ -2344,8 +2328,7 @@ void MainWindow::cropPlayQueue()
         selected << playQueueModel.getIdByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
     }
 
-    QList<qint32> toBeRemoved = (songs - selected).toList();
-    emit removeSongs(toBeRemoved);
+    emit removeSongs((songs - selected).toList());
 }
 
 void MainWindow::currentTabChanged(int index)
@@ -2497,14 +2480,12 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         if (focusSearch) {
             playlistsPage->focusSearch();
         }
-    }
-    else if (QLatin1String("dynamic")==p) {
+    } else if (QLatin1String("dynamic")==p) {
         showTab(MainWindow::PAGE_DYNAMIC);
         if (focusSearch) {
             dynamicPage->focusSearch();
         }
-    }
-    else if (QLatin1String("streams")==p) {
+    } else if (QLatin1String("streams")==p) {
         showTab(MainWindow::PAGE_STREAMS);
         if (focusSearch) {
             streamsPage->focusSearch();
@@ -2513,6 +2494,9 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         showTab(MainWindow::PAGE_LYRICS);
     } else if (QLatin1String("online")==p) {
         showTab(MainWindow::PAGE_ONLINE);
+        if (focusSearch) {
+            onlinePage->focusSearch();
+        }
     }
     #ifdef ENABLE_WEBKIT
     else if (QLatin1String("info")==p) {
@@ -2561,7 +2545,7 @@ void MainWindow::goBack()
     case PAGE_FOLDERS:   folderPage->goBack();     break;
     case PAGE_PLAYLISTS: playlistsPage->goBack();  break;
     case PAGE_STREAMS:   streamsPage->goBack();    break;
-    case PAGE_ONLINE: onlinePage->goBack();    break;
+    case PAGE_ONLINE:    onlinePage->goBack();     break;
     default:                                       break;
     }
 }

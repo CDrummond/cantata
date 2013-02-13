@@ -555,16 +555,30 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->SetMode((FancyTabWidget::Mode)Settings::self()->sidebar());
     expandedSize=Settings::self()->mainWindowSize();
     collapsedSize=Settings::self()->mainWindowCollapsedSize();
-    if (expandInterfaceAction->isChecked()) {
-        if (!expandedSize.isEmpty() && expandedSize.width()>0) {
-            resize(expandedSize);
-        }
+
+    if (Settings::self()->firstRun()) {
+        int width=playPauseTrackButton->width()*25;
+        resize(playPauseTrackButton->width()*25, playPauseTrackButton->height()*18);
+        splitter->setSizes(QList<int>() << width*0.4 << width*0.6);
     } else {
-        if (!collapsedSize.isEmpty() && collapsedSize.width()>0) {
-            resize(collapsedSize);
+        if (expandInterfaceAction->isChecked()) {
+            if (!expandedSize.isEmpty() && expandedSize.width()>0) {
+                resize(expandedSize);
+                expandOrCollapse(false);
+            }
+        } else {
+            if (!collapsedSize.isEmpty() && collapsedSize.width()>0) {
+                resize(collapsedSize);
+                expandOrCollapse(false);
+            }
+        }
+        if (!playQueueInSidebar) {
+            QByteArray state=Settings::self()->splitterState();
+            if (!state.isEmpty()) {
+                splitter->restoreState(Settings::self()->splitterState());
+            }
         }
     }
-    expandOrCollapse(false);
 
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
@@ -794,18 +808,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef Q_OS_LINUX
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
     #endif // Q_OS_LINUX
-
-    if (!playQueueInSidebar) {
-        QByteArray state=Settings::self()->splitterState();
-
-        if (state.isEmpty()) {
-            QList<int> sizes=QList<int>() << 250 << 500;
-            splitter->setSizes(sizes);
-            resize(800, 600);
-        } else {
-            splitter->restoreState(Settings::self()->splitterState());
-        }
-    }
 
     playQueueItemsSelected(false);
     playQueue->setFocus();

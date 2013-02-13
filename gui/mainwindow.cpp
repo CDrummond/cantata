@@ -252,7 +252,7 @@ MainWindow::MainWindow(QWidget *parent)
     refreshAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::toolbarNextIcon);
-    playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"));
+    playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::toolbarPlayIcon);
     stopTrackAction = ActionCollection::get()->createAction("stoptrack", i18n("Stop"), Icons::toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
@@ -352,8 +352,6 @@ MainWindow::MainWindow(QWidget *parent)
     volumeControl = new VolumeControl(volumeButton);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
     volumeButton->installEventFilter(volumeSliderEventHandler);
-
-    playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());

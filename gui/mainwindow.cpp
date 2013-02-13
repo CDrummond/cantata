@@ -861,8 +861,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : QSize(size().width(), expandedSize.height()));
-    Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? QSize(size().width(), collapsedSize.height()) : size());
+    Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
+    Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->unmountRemote();
     #endif
@@ -2319,7 +2319,7 @@ void MainWindow::togglePlayQueue()
         setMinimumHeight(calcMinHeight());
         setMaximumHeight(QWIDGETSIZE_MAX);
     }
-    int width=size().width();
+    int prevWidth=size().width();
     splitter->setVisible(showing);
     if (!showing) {
         setWindowState(windowState()&~Qt::WindowMaximized);
@@ -2328,16 +2328,17 @@ void MainWindow::togglePlayQueue()
     adjustSize();
 
     if (showing) {
-        bool adjustWidth=size().width()!=width;
+        bool adjustWidth=size().width()!=expandedSize.width();
         bool adjustHeight=size().height()!=expandedSize.height();
         if (adjustWidth || adjustHeight) {
-            resize(width, adjustHeight ? expandedSize.height() : size().height());
+            resize(adjustWidth ? expandedSize.width() : size().width(), adjustHeight ? expandedSize.height() : size().height());
         }
         if (lastMax) {
             showMaximized();
         }
     } else {
-        collapsedSize=QSize(width, compactHeight);
+        // Widths also sometimes expands, so make sure this is no larger than it was before...
+        collapsedSize=QSize(collapsedSize.isValid() ? collapsedSize.width() : (size().width()>prevWidth ? prevWidth : size().width()), compactHeight);
         resize(collapsedSize);
         setFixedHeight(size().height());
     }

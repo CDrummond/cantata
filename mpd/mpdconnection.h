@@ -193,7 +193,7 @@ public Q_SLOTS:
     void disconnectMpd();
     // Current Playlist
     void add(const QStringList &files, bool replace, quint8 priority);
-    void addid(const QStringList &files, quint32 pos, quint32 size, bool replace, quint8 priority);
+    void add(const QStringList &files, quint32 pos, quint32 size, bool replace, quint8 priority);
     void currentSong();
     void playListChanges();
     void playListInfo();

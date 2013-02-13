@@ -88,6 +88,8 @@
 50. Custom menu icon - more like the one used in chrome.
 51. Use "-symbolic" icons for Qt-only linux builds with ambiance theme.
 52. If replacing playqueue with a stream, then start playing when added.
+53. Fix restoring of alternate size. e.g. fix restore of collapsed size if
+    started expanded - and vice versa.
 
 0.9.2
 -----

@@ -263,7 +263,7 @@ public Q_SLOTS:
     void cropPlayQueue();
     void updatePlayQueueStats(int songs, quint32 time);
     void copyTrackInfo();
-    void togglePlayQueue();
+    void expandOrCollapse(bool saveCurrentSize=true);
     void sidebarModeChanged();
     void currentTabChanged(int index);
     void tabToggled(int index);

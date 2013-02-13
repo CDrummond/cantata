@@ -552,8 +552,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     #ifdef ENABLE_KDE_SUPPORT
-    setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
-    menuBar()->setVisible(false);
+    setupGUI(KXmlGuiWindow::Keys);
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
@@ -582,7 +581,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addSeparator();
     mainMenu->addAction(quitAction);
 
-    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    #if !defined Q_OS_WIN
     if (qgetenv("XDG_CURRENT_DESKTOP")=="Unity") {
         QMenu *menu=new QMenu(i18n("&File"), this);
         menu->addAction(quitAction);
@@ -591,11 +590,22 @@ MainWindow::MainWindow(QWidget *parent)
         menu->addAction(expandInterfaceAction);
         menu->addAction(connectionsAction);
         menu->addAction(outputsAction);
+        menu->addSeparator();
+        #ifdef ENABLE_KDE_SUPPORT
+        menu->addAction(shortcutsAction);
+        #endif
         menu->addAction(prefAction);
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Help"), this);
         menu->addAction(serverInfoAction);
+        #ifdef ENABLE_KDE_SUPPORT
+        menu->addSeparator();
+        foreach (QAction *act, helpMenu()->actions()) {
+            menu->addAction(act);
+        }
+        #else
         menu->addAction(aboutAction);
+        #endif
         menuBar()->addMenu(menu);
     }
     #endif

@@ -338,8 +338,6 @@ private:
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
     bool autoScrollPlayQueue;
-    QIcon playbackPause;
-    QIcon playbackPlay;
     VolumeSliderEventHandler *volumeSliderEventHandler;
     VolumeControl *volumeControl;
     Action *prefAction;

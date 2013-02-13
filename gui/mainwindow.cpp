@@ -255,6 +255,10 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
+    GtkStyle::applyTheme(toolbar);
+    Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground));
+    menuButton->setIcon(Icons::toolbarMenuIcon);
+
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));
     quitAction=static_cast<Action *>(KStandardAction::quit(this, SLOT(quit()), ActionCollection::get()));
@@ -273,10 +277,10 @@ MainWindow::MainWindow(QWidget *parent)
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Connection"), "network-server");
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::speakerIcon);
     refreshAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
-    prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), "media-skip-backward");
-    nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), "media-skip-forward");
+    prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::toolbarPrevIcon);
+    nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"));
-    stopTrackAction = ActionCollection::get()->createAction("stoptrack", i18n("Stop"), "media-playback-stop");
+    stopTrackAction = ActionCollection::get()->createAction("stoptrack", i18n("Stop"), Icons::toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
     addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
@@ -309,7 +313,7 @@ MainWindow::MainWindow(QWidget *parent)
     addPrioDefaultAction = ActionCollection::get()->createAction("defaultprio", i18n("Default Priority (0)"));
     addPrioCustomAction = ActionCollection::get()->createAction("customprio", i18n("Custom Priority..."));
     #ifdef PHONON_FOUND
-    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), Icons::streamIcon, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
+    streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), Icons::toolbarStreamIcon, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
     #endif
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
@@ -376,9 +380,7 @@ MainWindow::MainWindow(QWidget *parent)
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
     volumeButton->installEventFilter(volumeSliderEventHandler);
 
-    playbackPlay = Icon::getMediaIcon("media-playback-start");
-    playbackPause = Icon::getMediaIcon("media-playback-pause");
-    playPauseTrackAction->setIcon(playbackPlay);
+    playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
@@ -392,7 +394,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     menuButton->setMenu(mainMenu);
     menuButton->setPopupMode(QToolButton::InstantPopup);
-    volumeButton->setIcon(Icon("audio-volume-high"));
+    volumeButton->setIcon(Icons::toolbarVolumeHighIcon);
 
     playPauseTrackButton->setDefaultAction(playPauseTrackAction);
     stopTrackButton->setDefaultAction(stopTrackAction);
@@ -413,10 +415,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
     #endif
-
-    GtkStyle::applyTheme(toolbar);
-    QColor tbText=artistLabel->palette().color(QPalette::Foreground) ;
-    menuButton->setIcon(tbText.red()>100 && tbText.green()>100 && tbText.blue()>100 && !Icons::menuIconWhite.isNull() ? Icons::menuIconWhite : Icons::menuIcon);
 
     // We need to have the window visible inorder for initSizes() to function.
     // So, if we are supposed to be starting hidden, then set the 'dont show on screen' flag before 'showing'
@@ -513,18 +511,14 @@ MainWindow::MainWindow(QWidget *parent)
     int playbackIconSize=28;
     int controlIconSize=22;
     int buttonSize=32;
-    if (repeatPushButton->iconSize().height()>=22) {
-        controlIconSize=32;
-        playbackIconSize=32;
-        buttonSize=36;
-    } else if (repeatPushButton->iconSize().height()>=32) {
+    if (repeatPushButton->iconSize().height()>=32) {
         controlIconSize=48;
         playbackIconSize=48;
         buttonSize=54;
-    } else if (repeatPushButton->iconSize().height()>=48) {
-        controlIconSize=64;
-        playbackIconSize=64;
-        buttonSize=72;
+    } else if (repeatPushButton->iconSize().height()>=22) {
+        controlIconSize=32;
+        playbackIconSize=32;
+        buttonSize=36;
     }
 
     foreach (QToolButton *b, controlBtns) {
@@ -1934,13 +1928,13 @@ void MainWindow::updateStatus(MPDStatus * const status)
         volumeControl->blockSignals(false);
 
         if (volume<=0) {
-            volumeButton->setIcon(Icon("audio-volume-muted"));
+            volumeButton->setIcon(Icons::toolbarVolumeMutedIcon);
         } else if (volume<=33) {
-            volumeButton->setIcon(Icon("audio-volume-low"));
+            volumeButton->setIcon(Icons::toolbarVolumeLowIcon);
         } else if (volume<=67) {
-            volumeButton->setIcon(Icon("audio-volume-medium"));
+            volumeButton->setIcon(Icons::toolbarVolumeMediumIcon);
         } else {
-            volumeButton->setIcon(Icon("audio-volume-high"));
+            volumeButton->setIcon(Icons::toolbarVolumeHighIcon);
         }
     }
 
@@ -1965,7 +1959,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             phononStream->play();
         }
         #endif
-        playPauseTrackAction->setIcon(playbackPause);
+        playPauseTrackAction->setIcon(Icons::toolbarPauseIcon);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         //playPauseTrackButton->setChecked(false);
         if (StopState_Stopping!=stopState) {
@@ -1976,9 +1970,9 @@ void MainWindow::updateStatus(MPDStatus * const status)
         positionSlider->startTimer();
 
         #ifdef ENABLE_KDE_SUPPORT
-        trayItem->setIconByName("media-playback-start");
+        trayItem->setIconByName(Icons::toolbarPlayIcon.name());
         #else
-        trayItem->setIcon(playbackPlay);
+        trayItem->setIcon(Icons::toolbarPlayIcon);
         #endif
         break;
     case MPDState_Inactive:
@@ -1988,7 +1982,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
             phononStream->stop();
         }
         #endif
-        playPauseTrackAction->setIcon(playbackPlay);
+        playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         stopTrackAction->setEnabled(false);
         nextTrackAction->setEnabled(false);
@@ -2016,15 +2010,15 @@ void MainWindow::updateStatus(MPDStatus * const status)
             phononStream->pause();
         }
         #endif
-        playPauseTrackAction->setIcon(playbackPlay);
+        playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         stopTrackAction->setEnabled(0!=playQueueModel.rowCount());
         nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
         prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
         #ifdef ENABLE_KDE_SUPPORT
-        trayItem->setIconByName("media-playback-pause");
+        trayItem->setIconByName(Icons::toolbarPauseIcon.name());
         #else
-        trayItem->setIcon(playbackPause);
+        trayItem->setIcon(Icons::toolbarPauseIcon);
         #endif
         positionSlider->stopTimer();
         break;

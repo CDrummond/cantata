@@ -50,6 +50,7 @@ public:
 Q_SIGNALS:
     void coverImage(const QImage &img);
     void coverFile(const QString &name);
+    void clicked();
 
 private Q_SLOTS:
     void init();
@@ -66,6 +67,7 @@ private:
 private:
     bool empty;
     bool valid;
+    bool pressed;
     Song current;
     QString tipText;
     mutable QImage img;

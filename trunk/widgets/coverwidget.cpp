@@ -55,6 +55,7 @@ CoverWidget::CoverWidget(QWidget *parent)
     : QLabel(parent)
     , empty(true)
     , valid(false)
+    , pressed(false)
 {
     connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
     connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)), SLOT(coverRetreived(const Song &, const QImage &, const QString &)));
@@ -142,7 +143,8 @@ void CoverWidget::coverRetreived(const Song &s, const QImage &img, const QString
 
 bool CoverWidget::eventFilter(QObject *object, QEvent *event)
 {
-    if (event->type()==QEvent::ToolTip) {
+    switch(event->type()) {
+    case QEvent::ToolTip: {
         QString toolTip=QLatin1String("<table>");
 
         toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"
@@ -158,6 +160,21 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
             }
         }
         setToolTip(toolTip);
+        break;
+    }
+    case QEvent::MouseButtonPress:
+        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
+            pressed=true;
+        }
+        break;
+    case QEvent::MouseButtonRelease:
+        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
+            emit clicked();
+        }
+        pressed=false;
+        break;
+    default:
+        break;
     }
     return QObject::eventFilter(object, event);
 }

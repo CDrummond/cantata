@@ -160,33 +160,6 @@ bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
-CoverEventHandler::CoverEventHandler(MainWindow *w)
-    : QObject(w)
-    , window(w)
-    , pressed(false)
-{
-}
-
-bool CoverEventHandler::eventFilter(QObject *obj, QEvent *event)
-{
-    switch(event->type()) {
-    case QEvent::MouseButtonPress:
-        if (Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
-            pressed=true;
-        }
-        break;
-    case QEvent::MouseButtonRelease:
-        if (pressed && Qt::LeftButton==static_cast<QMouseEvent *>(event)->button()) {
-            window->expandInterfaceAction->trigger();
-        }
-        pressed=false;
-        break;
-    default:
-        break;
-    }
-    return QObject::eventFilter(obj, event);
-}
-
 static int nextKey(int &key) {
     int k=key;
 
@@ -629,9 +602,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     #endif
 
-    coverWidget->installEventFilter(new CoverEventHandler(this));
     dynamicLabel->setVisible(false);
-
     addWithPriorityAction->setVisible(false);
     setPriorityAction->setVisible(false);
     addPrioHighestAction->setData(255);
@@ -805,6 +776,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
+    connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
     #ifdef Q_OS_LINUX
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
     #endif // Q_OS_LINUX

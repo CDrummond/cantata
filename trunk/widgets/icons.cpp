@@ -31,8 +31,9 @@
 #include <math.h>
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
+static const double constDisabledOpacity=0.5;
 
-static QPixmap createSingleIconPixmap(int size, const QColor &col, double opacity)
+static QPixmap createSingleIconPixmap(int size, const QColor &col, double opacity=1.0)
 {
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
@@ -52,7 +53,7 @@ static QPixmap createSingleIconPixmap(int size, const QColor &col, double opacit
     return pix;
 }
 
-static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opacity)
+static QPixmap createConsumeIconPixmap(int size, const QColor &col, double opacity=1.0)
 {
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
@@ -86,7 +87,7 @@ static QPainterPath buildPath(const QRectF &r, double radius)
     return path;
 }
 
-static QPixmap createMenuIconPixmap(int size, QColor col, double opacity)
+static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
 {
     QPixmap pix(size, size);
     pix.fill(Qt::transparent);
@@ -143,9 +144,9 @@ static Icon createSingleIcon(const QColor &stdColor, const QColor &highlightColo
     Icon icon;
 
     foreach (int s, constStdSizes) {
-        icon.addPixmap(createSingleIconPixmap(s, stdColor, 1.0));
-        icon.addPixmap(createSingleIconPixmap(s, stdColor, 0.5), QIcon::Disabled);
-        icon.addPixmap(createSingleIconPixmap(s, highlightColor, 1.0), QIcon::Active);
+        icon.addPixmap(createSingleIconPixmap(s, stdColor));
+        icon.addPixmap(createSingleIconPixmap(s, stdColor, constDisabledOpacity), QIcon::Disabled);
+        icon.addPixmap(createSingleIconPixmap(s, highlightColor), QIcon::Active);
     }
 
     return icon;
@@ -156,9 +157,9 @@ static Icon createConsumeIcon(const QColor &stdColor, const QColor &highlightCol
     Icon icon;
 
     foreach (int s, constStdSizes) {
-        icon.addPixmap(createConsumeIconPixmap(s, stdColor, 1.0));
-        icon.addPixmap(createConsumeIconPixmap(s, stdColor, 0.5), QIcon::Disabled);
-        icon.addPixmap(createConsumeIconPixmap(s, highlightColor, 1.0), QIcon::Active);
+        icon.addPixmap(createConsumeIconPixmap(s, stdColor));
+        icon.addPixmap(createConsumeIconPixmap(s, stdColor, constDisabledOpacity), QIcon::Disabled);
+        icon.addPixmap(createConsumeIconPixmap(s, highlightColor), QIcon::Active);
     }
 
     return icon;
@@ -169,9 +170,9 @@ static Icon createMenuIcon(const QColor &stdColor, const QColor &highlightColor)
     Icon icon;
 
     foreach (int s, constStdSizes) {
-        icon.addPixmap(createMenuIconPixmap(s, stdColor, 1.0));
-        icon.addPixmap(createMenuIconPixmap(s, stdColor, 0.5), QIcon::Disabled);
-        icon.addPixmap(createMenuIconPixmap(s, highlightColor, 1.0), QIcon::Active);
+        icon.addPixmap(createMenuIconPixmap(s, stdColor));
+        icon.addPixmap(createMenuIconPixmap(s, stdColor, constDisabledOpacity), QIcon::Disabled);
+        icon.addPixmap(createMenuIconPixmap(s, highlightColor), QIcon::Active);
     }
 
     return icon;
@@ -209,7 +210,7 @@ static void adjustPix(unsigned char *data, int numChannels, int w, int h, int st
     }
 }
 
-static QPixmap recolour(const QImage &img, const QColor &col, double opacity)
+static QPixmap recolour(const QImage &img, const QColor &col, double opacity=1.0)
 {
     QImage i=img;
     if (i.depth()!=32) {
@@ -232,9 +233,9 @@ static Icon createRecolourableIcon(const QString &name, const QColor &stdColor, 
     foreach (int s, constStdSizes) {
         QImage img(QChar(':')+name+QString::number(s));
         if (!img.isNull()) {
-            icon.addPixmap(recolour(img, stdColor, 1.0));
-            icon.addPixmap(recolour(img, stdColor, 0.5), QIcon::Disabled);
-            icon.addPixmap(recolour(img, highlightColor, 1.0), QIcon::Active);
+            icon.addPixmap(recolour(img, stdColor));
+            icon.addPixmap(recolour(img, stdColor, constDisabledOpacity), QIcon::Disabled);
+            icon.addPixmap(recolour(img, highlightColor), QIcon::Active);
         }
     }
     return icon;

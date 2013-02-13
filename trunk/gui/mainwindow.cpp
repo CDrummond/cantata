@@ -921,16 +921,7 @@ void MainWindow::initSizes()
     if (spacing<0) {
         spacing=4;
     }
-    int cwSize=qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+
-               positionSlider->height()+(spacing*2);
-
-    cwSize=(((int)(cwSize/4))*4)+((cwSize%4) ? 4 : 0);
-    if (cwSize<72) {
-        cwSize=72;
-    } else if (cwSize>200) {
-        cwSize=200;
-    }
-    cwSize+=2; // Sometimes get an extra 1 pix top border when resize window, so add an extra 2 pix to ensure this does not happen.
+    int cwSize=qMax(playPauseTrackButton->height(), trackLabel->height()+artistLabel->height()+spacing)+positionSlider->height()+spacing;
 
     coverWidget->setMinimumSize(cwSize, cwSize);
     coverWidget->setMaximumSize(cwSize, cwSize);

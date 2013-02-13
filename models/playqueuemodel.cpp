@@ -39,6 +39,7 @@
 #include "mpdstats.h"
 #include "mpdstatus.h"
 #include "streamfetcher.h"
+#include "streamsmodel.h"
 #ifdef TAGLIB_FOUND
 #include "httpserver.h"
 #endif
@@ -538,18 +539,18 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
 
 void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, quint8 priority)
 {
-    bool haveHttp=false;
+    bool haveRadioStream=false;
 
     foreach (const QString &f, items) {
         QUrl u(f);
 
-        if (u.scheme()=="cantata-http") {
-            haveHttp=true;
+        if (u.scheme().startsWith(StreamsModel::constPrefix)) {
+            haveRadioStream=true;
             break;
         }
     }
 
-    if (haveHttp) {
+    if (haveRadioStream) {
         fetcher->get(items, row, replace, priority);
     } else {
         addFiles(items, row, replace, priority);

@@ -560,7 +560,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu->addAction(outputsAction);
     serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), "network-server");
     connect(serverInfoAction, SIGNAL(triggered(bool)),this, SLOT(showServerInfo()));
-    serverInfoAction->setEnabled(false);
+    serverInfoAction->setEnabled(Settings::self()->firstRun());
     #ifdef ENABLE_KDE_SUPPORT
     mainMenu->addAction(prefAction);
     shortcutsAction=static_cast<Action *>(KStandardAction::keyBindings(this, SLOT(configureShortcuts()), ActionCollection::get()));

@@ -72,11 +72,8 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     albumText->clear();
     albumText->insertItems(0, strings);
 
-    strings=genres.toList();
-    strings.sort();
     genreCombo->clear();
-    strings.prepend(i18n("All Genres"));
-    genreCombo->insertItems(0, strings);
+    genreCombo->update(genres);
     dateFromSpin->setRange(constMinDate-1, constMaxDate);
     dateToSpin->setRange(constMinDate-1, constMaxDate);
     artistText->setFocus();

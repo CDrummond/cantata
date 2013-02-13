@@ -54,22 +54,22 @@ void GenreCombo::showPopup()
     }
     QComboBox::showPopup();
 
-    // Also, if the size of the popup is more than required for 32 items, then
-    // restrict its height...
-    if (usingPopup && parentWidget() && view()->parentWidget()) {
-        int maxHeight=constPopupItemCount*view()->sizeHintForRow(0);
-        QRect geo(view()->parentWidget()->geometry());
-        if (geo.height()>maxHeight) {
-            view()->parentWidget()->setGeometry(QRect(geo.x(), geo.y()+(geo.height()-maxHeight), geo.width(), maxHeight));
-        }
+//    // Also, if the size of the popup is more than required for 32 items, then
+//    // restrict its height...
+//    if (usingPopup && parentWidget() && view()->parentWidget()) {
+//        int maxHeight=constPopupItemCount*view()->sizeHintForRow(0);
+//        QRect geo(view()->parentWidget()->geometry());
+//        if (geo.height()>maxHeight) {
+//            view()->parentWidget()->setGeometry(QRect(geo.x(), geo.y()+(geo.height()-maxHeight), geo.width(), maxHeight));
+//        }
 
-        // Hide scrollers - these look ugly...
-        foreach (QObject *c, view()->parentWidget()->children()) {
-            if (0==qstrcmp("QComboBoxPrivateScroller", c->metaObject()->className())) {
-                ((QWidget *)c)->setMaximumHeight(0);
-            }
-        }
-    }
+//        // Hide scrollers - these look ugly...
+//        foreach (QObject *c, view()->parentWidget()->children()) {
+//            if (0==qstrcmp("QComboBoxPrivateScroller", c->metaObject()->className())) {
+//                ((QWidget *)c)->setMaximumHeight(0);
+//            }
+//        }
+//    }
 }
 
 void GenreCombo::hidePopup()

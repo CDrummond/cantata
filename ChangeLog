@@ -29,7 +29,7 @@
 14. Basic cover fetching dialog, allowing to change downloaded cover. Currently
     only Last.fm and Google are used to find images.
 15. Use cache by default for devices.
-16. Compress cache files.
+16. GZip compress cache files.
 17. Save remote device library settings on remote device.
 18. When using list or icon view, only show genres that are relevant to the
     current level.
@@ -85,6 +85,7 @@
 48. If all streams (and categories) have been removed, then remove streams xml
     file as well.
 49. Allow streams to have multiple genres.
+50. Custom menu icon - more like the one used in chrome.
 
 0.9.2
 -----

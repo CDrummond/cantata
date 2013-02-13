@@ -25,10 +25,14 @@
 #define ICONS_H
 
 #include "icon.h"
+#include "config.h"
+
+class QColor;
 
 namespace Icons
 {
     extern void init();
+    extern void initToolbarIcons(const QColor &color);
     #ifndef ENABLE_KDE_SUPPORT
     extern Icon appIcon;
     extern Icon shortcutsIcon;
@@ -55,10 +59,23 @@ namespace Icons
     extern Icon editIcon;
     extern Icon clearListIcon;
     extern Icon menuIcon;
-    extern Icon menuIconWhite;
     extern Icon jamendoIcon;
     extern Icon magnatuneIcon;
     extern Icon filesIcon;
+
+    extern Icon toolbarMenuIcon;
+    extern Icon toolbarPrevIcon;
+    extern Icon toolbarPlayIcon;
+    extern Icon toolbarPauseIcon;
+    extern Icon toolbarNextIcon;
+    extern Icon toolbarStopIcon;
+    extern Icon toolbarVolumeMutedIcon;
+    extern Icon toolbarVolumeLowIcon;
+    extern Icon toolbarVolumeMediumIcon;
+    extern Icon toolbarVolumeHighIcon;
+    #ifdef PHONON_FOUND
+    extern Icon toolbarStreamIcon;
+    #endif
 }
 
 #endif

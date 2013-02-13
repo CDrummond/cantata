@@ -86,6 +86,7 @@
     file as well.
 49. Allow streams to have multiple genres.
 50. Custom menu icon - more like the one used in chrome.
+51. Use "-symbolic" icons for Qt-only linux builds with ambiance theme.
 
 0.9.2
 -----

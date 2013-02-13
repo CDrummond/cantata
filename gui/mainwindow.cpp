@@ -849,8 +849,11 @@ MainWindow::MainWindow(QWidget *parent)
         move(p.isNull() ? QPoint(96, 96) : p);
     }
 
-    if (PAGE_LIBRARY!=tabWidget->current_index() && PAGE_ALBUMS!=tabWidget->current_index() &&
-        PAGE_FOLDERS!=tabWidget->current_index() && PAGE_PLAYLISTS!=tabWidget->current_index()) {
+    // If this is the first run, then the wizard will have done the MPD connection. But this will not have loaded then model!
+    // So, we need to load this now - which is done in currentTabChanged()
+    if (Settings::self()->firstRun() ||
+        (PAGE_LIBRARY!=tabWidget->current_index() && PAGE_ALBUMS!=tabWidget->current_index() &&
+         PAGE_FOLDERS!=tabWidget->current_index() && PAGE_PLAYLISTS!=tabWidget->current_index())) {
         currentTabChanged(tabWidget->current_index());
     }
 }

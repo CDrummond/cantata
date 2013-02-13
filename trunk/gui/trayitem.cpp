@@ -49,7 +49,9 @@ void TrayItem::setup()
 {
     if (!Settings::self()->useSystemTray()) {
         if (trayItem) {
+            #ifndef ENABLE_KDE_SUPPORT
             trayItem->setVisible(false);
+            #endif
             trayItem->deleteLater();
             trayItem=0;
             trayItemMenu->deleteLater();

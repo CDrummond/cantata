@@ -126,7 +126,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
     connect(fetcher, SIGNAL(result(const QStringList &, int, bool, quint8)), SLOT(addFiles(const QStringList &, int, bool, quint8)));
     connect(this, SIGNAL(filesAdded(const QStringList, quint32, quint32, bool, quint8)),
-            MPDConnection::self(), SLOT(addid(const QStringList, quint32, quint32, bool, quint8)));
+            MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, bool, quint8)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
     connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<quint32> &, quint8)),
@@ -560,7 +560,7 @@ void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, q
 void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replace, quint8 priority)
 {
     //Check for empty playlist
-    if (replace || (songs.size() == 1 && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty())) {
+    if (replace || songs.isEmpty() || (1==songs.size() && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty())) {
         emit filesAdded(filenames, 0, 0, replace, priority);
     } else {
         if (row < 0) {

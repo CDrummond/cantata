@@ -564,7 +564,7 @@ MainWindow::MainWindow(QWidget *parent)
             resize(collapsedSize);
         }
     }
-    togglePlayQueue();
+    expandOrCollapse(false);
 
     #ifdef ENABLE_KDE_SUPPORT
     setupGUI(KXmlGuiWindow::Keys | KXmlGuiWindow::Save | KXmlGuiWindow::Create);
@@ -744,7 +744,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(copyTrackInfoAction, SIGNAL(triggered(bool)), this, SLOT(copyTrackInfo()));
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
-    connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(togglePlayQueue()));
+    connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(expandOrCollapse()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     #ifdef TAGLIB_FOUND
     connect(editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
@@ -2295,7 +2295,7 @@ int MainWindow::calcCompactHeight()
            (messageWidget->isActive() ? (messageWidget->sizeHint().height()+spacing) : 0);
 }
 
-void MainWindow::togglePlayQueue()
+void MainWindow::expandOrCollapse(bool saveCurrentSize)
 {
     static bool lastMax=false;
 
@@ -2306,10 +2306,14 @@ void MainWindow::togglePlayQueue()
     if (!showing) {
         setMinimumHeight(0);
         lastMax=isMaximized();
-        expandedSize=size();
+        if (saveCurrentSize) {
+            expandedSize=size();
+        }
         compactHeight=calcCompactHeight();
     } else {
-        collapsedSize=size();
+        if (saveCurrentSize) {
+            collapsedSize=size();
+        }
         setMinimumHeight(calcMinHeight());
         setMaximumHeight(QWIDGETSIZE_MAX);
     }
@@ -2556,7 +2560,7 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
 
     if (!expandInterfaceAction->isChecked()) {
         expandInterfaceAction->setChecked(true);
-        togglePlayQueue();
+        expandOrCollapse();
     }
 }
 

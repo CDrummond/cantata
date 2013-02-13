@@ -33,6 +33,11 @@
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
 static const double constDisabledOpacity=0.5;
 
+static bool inline isLight(const QColor &col)
+{
+    return col.red()>100 && col.blue()>100 && col.green()>100;
+}
+
 static QPixmap createSingleIconPixmap(int size, const QColor &col, double opacity=1.0)
 {
     QPixmap pix(size, size);
@@ -136,7 +141,7 @@ static void calcIconColors(QColor &stdColor, QColor &highlightColor)
                stdColor.red()==stdColor.green() && stdColor.green()==stdColor.blue()) {
         stdColor=Qt::black;
     }
-    highlightColor=stdColor.red()<100 ? stdColor.lighter(50) : stdColor.darker(50);
+    highlightColor=isLight(stdColor) ? stdColor.lighter(50) : stdColor.darker(50);
 }
 
 static Icon createSingleIcon(const QColor &stdColor, const QColor &highlightColor)
@@ -267,17 +272,29 @@ Icon Icons::artistIcon;
 Icon Icons::editIcon;
 Icon Icons::clearListIcon;
 Icon Icons::menuIcon;
-Icon Icons::menuIconWhite;
 Icon Icons::jamendoIcon;
 Icon Icons::magnatuneIcon;
 Icon Icons::filesIcon;
+Icon Icons::toolbarMenuIcon;
+Icon Icons::toolbarPrevIcon;
+Icon Icons::toolbarPlayIcon;
+Icon Icons::toolbarPauseIcon;
+Icon Icons::toolbarNextIcon;
+Icon Icons::toolbarStopIcon;
+Icon Icons::toolbarVolumeMutedIcon;
+Icon Icons::toolbarVolumeLowIcon;
+Icon Icons::toolbarVolumeMediumIcon;
+Icon Icons::toolbarVolumeHighIcon;
+#ifdef PHONON_FOUND
+Icon Icons::toolbarStreamIcon;
+#endif
+
+static QColor stdColor;
+static QColor highlightColor;
 
 void Icons::init()
 {
-    QColor stdColor;
-    QColor highlightColor;
     calcIconColors(stdColor, highlightColor);
-
     singleIcon=createSingleIcon(stdColor, highlightColor);
     consumeIcon=createConsumeIcon(stdColor, highlightColor);
     menuIcon=createMenuIcon(stdColor, highlightColor);
@@ -300,10 +317,6 @@ void Icons::init()
     clearListIcon=Icon("edit-clear-list");
     repeatIcon=createRecolourableIcon("repeat", stdColor, highlightColor);
     shuffleIcon=createRecolourableIcon("shuffle", stdColor, highlightColor);
-    QColor white(Qt::white);
-    if (stdColor!=white) {
-        menuIconWhite=createMenuIcon(white, white.darker(50));
-    }
     jamendoIcon=Icon("cantata-view-services-jamendo");
     magnatuneIcon=Icon("cantata-view-services-jamendo");
     filesIcon=Icon("document-multiple");
@@ -379,4 +392,108 @@ void Icons::init()
     }
     #endif // Q_OS_WIN
     #endif // ENABLE_KDE_SUPPORT
+}
+
+#if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+// For some reason, the -symbolic icons on Ubuntu have a lighter colour when disabled!
+// This looks odd to me, so base the disabled icon on the enabled version but with opacity
+// set to default value...
+static void setDisabledOpacity(Icon &icon)
+{
+    Icon copy;
+    for (int i=0; i<2; ++i) {
+        QIcon::State state=(QIcon::State)i;
+        for (int j=0; j<4; ++j) {
+            QIcon::Mode mode=(QIcon::Mode)j;
+            QList<int> sizes=constStdSizes;
+            foreach (const int sz, sizes) {
+                if (QIcon::Disabled==mode) {
+                    QPixmap pix=icon.pixmap(QSize(sz, sz), QIcon::Normal, state);
+                    if (!pix.isNull()) {
+                        QPixmap dis(sz, sz);
+                        dis.fill(Qt::transparent);
+                        QPainter p(&dis);
+                        p.setOpacity(constDisabledOpacity);
+                        p.drawPixmap(0, 0, pix);
+                        p.end();
+                        copy.addPixmap(dis, mode, state);
+                    }
+                } else {
+                    copy.addPixmap(icon.pixmap(QSize(sz, sz), mode, state), mode, state);
+                }
+            }
+        }
+    }
+    icon=copy;
+}
+#else
+#define setDisabledOpacity(A) ;
+#endif
+
+void Icons::initToolbarIcons(const QColor &color)
+{
+    bool light=isLight(color);
+    QColor col(light ? Qt::white : Qt::black);
+    QColor highlight(light ? col.darker(50) : col.lighter(50));
+
+    if (stdColor!=col) {
+        toolbarMenuIcon=createMenuIcon(col, highlight);
+    } else {
+        toolbarMenuIcon=menuIcon;
+    }
+
+    #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+    if (light) {
+        toolbarPrevIcon=Icon("media-skip-backward-symbolic");
+        toolbarPlayIcon=Icon("media-playback-start-symbolic");
+        toolbarPauseIcon=Icon("media-playback-pause-symbolic");
+        toolbarStopIcon=Icon("media-playback-stop-symbolic");
+        toolbarNextIcon=Icon("media-skip-forward-symbolic");
+        toolbarVolumeMutedIcon=Icon("audio-volume-muted-symbolic");
+        toolbarVolumeLowIcon=Icon("audio-volume-low-symbolic");
+        toolbarVolumeMediumIcon=Icon("audio-volume-medium-symbolic");
+        toolbarVolumeHighIcon=Icon("audio-volume-high-symbolic");
+    }
+    #endif
+    if (toolbarPrevIcon.isNull()) {
+        toolbarPrevIcon=Icon("media-skip-backward");
+    } else {
+        setDisabledOpacity(toolbarPrevIcon);
+    }
+    if (toolbarPlayIcon.isNull()) {
+        toolbarPlayIcon=Icon("media-playback-start");
+    } else {
+        setDisabledOpacity(toolbarPlayIcon);
+    }
+    if (toolbarPauseIcon.isNull()) {
+        toolbarPauseIcon=Icon("media-playback-pause");
+    } else {
+        setDisabledOpacity(toolbarPauseIcon);
+    }
+    if (toolbarStopIcon.isNull()) {
+        toolbarStopIcon=Icon("media-playback-stop");
+    } else {
+        setDisabledOpacity(toolbarStopIcon);
+    }
+    if (toolbarNextIcon.isNull()) {
+        toolbarNextIcon=Icon("media-skip-forward");
+    } else {
+        setDisabledOpacity(toolbarNextIcon);
+    }
+    if (toolbarVolumeMutedIcon.isNull()) {
+        toolbarVolumeMutedIcon=Icon("audio-volume-muted");
+    }
+    if (toolbarVolumeLowIcon.isNull()) {
+        toolbarVolumeLowIcon=Icon("audio-volume-low");
+    }
+    if (toolbarVolumeMediumIcon.isNull()) {
+        toolbarVolumeMediumIcon=Icon("audio-volume-medium");
+    }
+    if (toolbarVolumeHighIcon.isNull()) {
+        toolbarVolumeHighIcon=Icon("audio-volume-high");
+    }
+
+    #ifdef PHONON_FOUND
+    toolbarStreamIcon=streamIcon;
+    #endif
 }

@@ -92,6 +92,8 @@
     started expanded - and vice versa.
 54. Recreate menubar for KDE4 build when run under unity. (Qt builds already
     had this)
+55. Hack-around size of QComboBox in page classes so that height is same as
+    buttons. (QGtkStyle only)
 
 0.9.2
 -----

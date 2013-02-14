@@ -97,6 +97,7 @@ SET( CANTATA_SRCS
     gui/trayitem.cpp
     gui/cachesettings.cpp
     gui/coverdialog.cpp
+    gui/gtkproxystyle.cpp
     streams/streamspage.cpp
     streams/streamdialog.cpp
     streams/streamcategorydialog.cpp

@@ -32,6 +32,7 @@
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
 static const double constDisabledOpacity=0.5;
+static const int constShadeFactor=75;
 
 static bool inline isLight(const QColor &col)
 {
@@ -118,6 +119,11 @@ static QPixmap createMenuIconPixmap(int size, QColor col, double opacity=1.0)
     p.setOpacity(opacity);
     p.setRenderHint(QPainter::Antialiasing, true);
     bool isLight=col.red()>100 && col.blue()>100 && col.green()>100;
+    if (isLight) {
+        col=col.darker(constShadeFactor);
+    } else {
+        col=col.lighter(constShadeFactor);
+    }
     for (int i=0; i<3; ++i) {
         int offset=i*(space+lineWidth);
         QRectF rect(borderX+0.5, borderY+offset, size-(2*borderX), lineWidth);
@@ -141,7 +147,7 @@ static void calcIconColors(QColor &stdColor, QColor &highlightColor)
                stdColor.red()==stdColor.green() && stdColor.green()==stdColor.blue()) {
         stdColor=Qt::black;
     }
-    highlightColor=isLight(stdColor) ? stdColor.lighter(50) : stdColor.darker(50);
+    highlightColor=isLight(stdColor) ? stdColor.lighter(constShadeFactor) : stdColor.darker(constShadeFactor);
 }
 
 static Icon createSingleIcon(const QColor &stdColor, const QColor &highlightColor)
@@ -434,7 +440,7 @@ void Icons::initToolbarIcons(const QColor &color)
 {
     bool light=isLight(color);
     QColor col(light ? Qt::white : Qt::black);
-    QColor highlight(light ? col.darker(50) : col.lighter(50));
+    QColor highlight(light ? col.darker(constShadeFactor) : col.lighter(constShadeFactor));
 
     if (stdColor!=col) {
         toolbarMenuIcon=createMenuIcon(col, highlight);

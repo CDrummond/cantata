@@ -1,12 +1,17 @@
 - Qt5 port
   - Crash if link to QtWebKit?
-    Looks like QtWebKit is sonehow pulling in QtGui from Qt4
+    - Looks like QtWebKit is sonehow pulling in QtGui from Qt4
   - QUrl.setEncodedUrl
     covers.cpp
     magnatuneservice.cpp
     infopage.cpp
   - Fix raising of mainwindow via dbus.
-    Qt5 no longer has QX11Info
+    - Qt5 no longer has QX11Info
+  - Stylesheet seems to mess things up
+   - Disabled icons in sidebar context menu
+   - Menu button keeps border after used?
+   - Menu button icon does not get changed to light
+  - QGtkStyle seems to be using gnome icons, this causes some conflicts
 
 - Albums
   - Coverflow view?

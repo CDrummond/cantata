@@ -475,27 +475,27 @@ void Icons::initToolbarIcons(const QColor &color)
     }
     #endif
     if (toolbarPrevIcon.isNull()) {
-        toolbarPrevIcon=Icon("media-skip-backward");
+        toolbarPrevIcon=Icon::getMediaIcon("media-skip-backward");
     } else {
         setDisabledOpacity(toolbarPrevIcon);
     }
     if (toolbarPlayIcon.isNull()) {
-        toolbarPlayIcon=Icon("media-playback-start");
+        toolbarPlayIcon=Icon::getMediaIcon("media-playback-start");
     } else {
         setDisabledOpacity(toolbarPlayIcon);
     }
     if (toolbarPauseIcon.isNull()) {
-        toolbarPauseIcon=Icon("media-playback-pause");
+        toolbarPauseIcon=Icon::getMediaIcon("media-playback-pause");
     } else {
         setDisabledOpacity(toolbarPauseIcon);
     }
     if (toolbarStopIcon.isNull()) {
-        toolbarStopIcon=Icon("media-playback-stop");
+        toolbarStopIcon=Icon::getMediaIcon("media-playback-stop");
     } else {
         setDisabledOpacity(toolbarStopIcon);
     }
     if (toolbarNextIcon.isNull()) {
-        toolbarNextIcon=Icon("media-skip-forward");
+        toolbarNextIcon=Icon::getMediaIcon("media-skip-forward");
     } else {
         setDisabledOpacity(toolbarNextIcon);
     }

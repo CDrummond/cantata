@@ -50,6 +50,9 @@ OnlineMusicLoader::OnlineMusicLoader(const QUrl &src)
 
 void OnlineMusicLoader::run()
 {
+    if (library) {
+        delete library;
+    }
     library = new MusicLibraryItemRoot;
     if (!readFromCache()) {
         emit status(i18n("Dowloading"), 0);

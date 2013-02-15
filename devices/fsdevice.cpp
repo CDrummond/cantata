@@ -85,8 +85,12 @@ void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool re
             fixLibrary(lib);
             if (!stopRequested) {
                 emit libraryUpdated(lib);
+            } else {
+                delete lib;
             }
             return;
+        } else {
+            delete lib;
         }
     }
 

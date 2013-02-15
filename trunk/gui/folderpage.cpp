@@ -25,7 +25,6 @@
 #include "mpdconnection.h"
 #include "musiclibrarymodel.h"
 #include "settings.h"
-#include "icon.h"
 #include "localize.h"
 #include "messagebox.h"
 #include "mainwindow.h"
@@ -49,9 +48,6 @@ FolderPage::FolderPage(MainWindow *p)
     #ifdef ENABLE_KDE_SUPPORT
     browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open File Manager"), "system-file-manager");
     #endif
-    Icon::init(addToPlayQueue);
-    Icon::init(replacePlayQueue);
-    Icon::init(libraryUpdate);
 
     view->setTopText(i18n("Folders"));
     view->addAction(p->addToPlayQueueAction);

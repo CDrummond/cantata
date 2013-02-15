@@ -41,7 +41,7 @@
     </layout>
    </item>
    <item row="2" column="0">
-    <widget class="QToolButton" name="refreshBtn"/>
+    <widget class="ToolButton" name="refreshBtn"/>
    </item>
    <item row="2" column="1">
     <spacer name="horizontalSpacer">
@@ -57,19 +57,19 @@
     </spacer>
    </item>
    <item row="2" column="2">
-    <widget class="QToolButton" name="addBtn"/>
+    <widget class="ToolButton" name="addBtn"/>
    </item>
    <item row="2" column="3">
-    <widget class="QToolButton" name="editBtn"/>
+    <widget class="ToolButton" name="editBtn"/>
    </item>
    <item row="2" column="4">
-    <widget class="QToolButton" name="removeBtn"/>
+    <widget class="ToolButton" name="removeBtn"/>
    </item>
    <item row="2" column="5">
-    <widget class="QToolButton" name="startBtn"/>
+    <widget class="ToolButton" name="startBtn"/>
    </item>
    <item row="2" column="6">
-    <widget class="QToolButton" name="stopBtn"/>
+    <widget class="ToolButton" name="stopBtn"/>
    </item>
   </layout>
  </widget>
@@ -83,6 +83,11 @@
    <class>SqueezedTextLabel</class>
    <extends>QLabel</extends>
    <header>squeezedtextlabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>toolbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

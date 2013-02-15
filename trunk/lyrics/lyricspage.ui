@@ -34,10 +34,10 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QToolButton" name="refreshBtn"/>
+       <widget class="ToolButton" name="refreshBtn"/>
       </item>
       <item>
-       <widget class="QToolButton" name="searchBtn"/>
+       <widget class="ToolButton" name="searchBtn"/>
       </item>
       <item>
        <spacer name="horizontalSpacer">
@@ -53,16 +53,16 @@
        </spacer>
       </item>
       <item>
-       <widget class="QToolButton" name="editBtn"/>
+       <widget class="ToolButton" name="editBtn"/>
       </item>
       <item>
-       <widget class="QToolButton" name="saveBtn"/>
+       <widget class="ToolButton" name="saveBtn"/>
       </item>
       <item>
-       <widget class="QToolButton" name="cancelBtn"/>
+       <widget class="ToolButton" name="cancelBtn"/>
       </item>
       <item>
-       <widget class="QToolButton" name="delBtn"/>
+       <widget class="ToolButton" name="delBtn"/>
       </item>
      </layout>
     </widget>
@@ -79,6 +79,11 @@
    <class>TextBrowser</class>
    <extends>QTextBrowser</extends>
    <header>textbrowser.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>toolbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

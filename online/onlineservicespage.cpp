@@ -37,8 +37,6 @@
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
-#include <QIcon>
-#include <QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #endif

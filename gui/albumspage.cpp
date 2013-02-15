@@ -32,8 +32,6 @@
 #include "settings.h"
 #include "mainwindow.h"
 #include "action.h"
-#include <QIcon>
-#include <QToolButton>
 
 AlbumsPage::AlbumsPage(MainWindow *p)
     : QWidget(p)

@@ -38,6 +38,7 @@
 #include "utils.h"
 #include "action.h"
 #include "actioncollection.h"
+#include "networkaccessmanager.h"
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QSettings>
@@ -72,6 +73,7 @@ LyricsPage::LyricsPage(QWidget *p)
 //     , reader(new UltimateLyricsReader(this))
     , currentRequest(0)
     , mode(Mode_Display)
+    , job(0)
 {
     setupUi(this);
 
@@ -294,29 +296,31 @@ void LyricsPage::update(const Song &s, bool force)
                 songFile=u.hasQueryItem("file") ? u.queryItemValue("file") : QString();
             }
 
-            #ifdef TAGLIB_FOUND
-            QString tagLyrics=Tags::readLyrics(MPDConnection::self()->getDetails().dir+songFile);
-
-            if (!tagLyrics.isEmpty()) {
-                text->setText(tagLyrics);
-                setMode(Mode_Display);
-                controls->setVisible(false);
-                return;
-            }
-            #endif
-
-            // Check for MPD file...
             QString mpdLyrics=Utils::changeExtension(MPDConnection::self()->getDetails().dir+songFile, constExtension);
 
-//             if (force && QFile::exists(mpdLyrics)) {
-//                 QFile::remove(mpdLyrics);
-//             }
-
-            // Stop here if we found lyrics in the cache dir.
-            if (setLyricsFromFile(mpdLyrics)) {
-                lyricsFile=mpdLyrics;
-                setMode(Mode_Display);
+            if (MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http:/"))) {
+                QUrl url(mpdLyrics);
+                job=NetworkAccessManager::self()->get(url);
+                job->setProperty("file", songFile);
+                connect(job, SIGNAL(finished()), SLOT(downloadFinished()));
                 return;
+            } else {
+                #ifdef TAGLIB_FOUND
+                QString tagLyrics=Tags::readLyrics(MPDConnection::self()->getDetails().dir+songFile);
+
+                if (!tagLyrics.isEmpty()) {
+                    text->setText(tagLyrics);
+                    setMode(Mode_Display);
+                    controls->setVisible(false);
+                    return;
+                }
+                #endif
+                // Stop here if we found lyrics in the cache dir.
+                if (setLyricsFromFile(mpdLyrics)) {
+                    lyricsFile=mpdLyrics;
+                    setMode(Mode_Display);
+                    return;
+                }
             }
         }
 
@@ -341,6 +345,26 @@ void LyricsPage::update(const Song &s, bool force)
 
         getLyrics();
     }
+}
+
+void LyricsPage::downloadFinished()
+{
+    QNetworkReply *reply=qobject_cast<QNetworkReply *>(sender());
+    if (reply) {
+        reply->deleteLater();
+        if (QNetworkReply::NoError==reply->error()) {
+            QString file=reply->property("file").toString();
+            if (!file.isEmpty() && file==currentSong.file) {
+                QTextStream str(reply);
+                QString lyrics=str.readAll();
+                if (!lyrics.isEmpty()) {
+                    text->setText(lyrics);
+                    return;
+                }
+            }
+        }
+    }
+    getLyrics();
 }
 
 void LyricsPage::resultReady(int id, const QString &lyrics)

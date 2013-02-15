@@ -35,6 +35,7 @@ class UltimateLyricsProvider;
 class UltimateLyricsProvider;
 class QImage;
 class Action;
+class QNetworkReply;
 
 class LyricsPage : public QWidget, public Ui::LyricsPage
 {
@@ -67,6 +68,7 @@ public Q_SLOTS:
     void setImage(const QImage &img) { text->setImage(img); }
 
 protected Q_SLOTS:
+    void downloadFinished();
     void resultReady(int id, const QString &lyrics);
     void update();
     void search();
@@ -111,6 +113,7 @@ private:
     Mode mode;
     QString lyricsFile;
     QString preEdit;
+    QNetworkReply *job;
 };
 
 #endif

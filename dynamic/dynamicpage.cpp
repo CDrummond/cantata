@@ -44,12 +44,6 @@ DynamicPage::DynamicPage(MainWindow *p)
     stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
     toggleAction = new Action(this);
 
-    Icon::init(refreshBtn);
-    Icon::init(addBtn);
-    Icon::init(editBtn);
-    Icon::init(removeBtn);
-    Icon::init(startBtn);
-    Icon::init(stopBtn);
     refreshBtn->setDefaultAction(refreshAction);
     addBtn->setDefaultAction(addAction);
     editBtn->setDefaultAction(editAction);

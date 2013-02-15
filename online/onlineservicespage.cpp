@@ -83,8 +83,6 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     connect(magnatuneAction, SIGNAL(triggered()), this, SLOT(addMagnatune()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
 
-    Icon::init(addToPlayQueue);
-    Icon::init(replacePlayQueue);
     QMenu *menu=new QMenu(this);
     menu->addAction(addAction);
     menu->addAction(removeAction);

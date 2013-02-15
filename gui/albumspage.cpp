@@ -30,7 +30,6 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "settings.h"
-#include "icon.h"
 #include "mainwindow.h"
 #include "action.h"
 #include <QIcon>
@@ -44,10 +43,6 @@ AlbumsPage::AlbumsPage(MainWindow *p)
     addToPlayQueue->setDefaultAction(p->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
-
-    Icon::init(addToPlayQueue);
-    Icon::init(replacePlayQueue);
-    Icon::init(libraryUpdate);
 
     view->setTopText(i18n("Albums"));
     view->addAction(p->addToPlayQueueAction);

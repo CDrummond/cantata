@@ -49,7 +49,7 @@
 #include "infopage.h"
 #include "mainwindow.h"
 #include "settings.h"
-#include "icon.h"
+#include "toolbutton.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 #define WEBVIEW_BASE KWebView
@@ -108,9 +108,9 @@ InfoPage::InfoPage(QWidget *parent)
     frame->setFrameShadow(QFrame::Sunken);
     frameLayout->setMargin(0);
     frameLayout->addWidget(view);
-    QToolButton *refreshBtn=new QToolButton(this);
-    QToolButton *backBtn=new QToolButton(this);
-    QToolButton *forwardBtn=new QToolButton(this);
+    ToolButton *refreshBtn=new ToolButton(this);
+    ToolButton *backBtn=new ToolButton(this);
+    ToolButton *forwardBtn=new ToolButton(this);
     combo=new QComboBox(this);
     combo->insertItem(0, i18n("Artist Information"));
     combo->insertItem(1, i18n("Album Information"));
@@ -122,11 +122,8 @@ InfoPage::InfoPage(QWidget *parent)
     layout->setContentsMargins(0, 0, 0, 0);
 
     view->page()->action(QWebPage::Reload)->setShortcut(QKeySequence());
-    Icon::init(refreshBtn);
     refreshBtn->setDefaultAction(view->page()->action(QWebPage::Reload));
-    Icon::init(backBtn);
     backBtn->setDefaultAction(view->page()->action(QWebPage::Back));
-    Icon::init(forwardBtn);
     forwardBtn->setDefaultAction(view->page()->action(QWebPage::Forward));
     connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(changeView()));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)), SLOT(downloadRequested(const QNetworkRequest &)));

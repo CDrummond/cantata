@@ -21,16 +21,16 @@
     <widget class="ItemView" name="view"/>
    </item>
    <item row="1" column="0">
-    <widget class="QToolButton" name="libraryUpdate"/>
+    <widget class="ToolButton" name="libraryUpdate"/>
    </item>
    <item row="1" column="1">
     <widget class="GenreCombo" name="genreCombo"/>
    </item>
    <item row="1" column="2">
-    <widget class="QToolButton" name="addToPlayQueue"/>
+    <widget class="ToolButton" name="addToPlayQueue"/>
    </item>
    <item row="1" column="3">
-    <widget class="QToolButton" name="replacePlayQueue"/>
+    <widget class="ToolButton" name="replacePlayQueue"/>
    </item>
   </layout>
  </widget>
@@ -44,6 +44,11 @@
    <class>GenreCombo</class>
    <extends>QComboBox</extends>
    <header>genrecombo.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>toolbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

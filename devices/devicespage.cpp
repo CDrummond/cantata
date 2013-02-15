@@ -35,8 +35,6 @@
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
-#include <QIcon>
-#include <QToolButton>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #endif
@@ -57,7 +55,6 @@ DevicesPage::DevicesPage(MainWindow *p)
     , mw(p)
 {
     setupUi(this);
-
     configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), Icons::configureIcon);
     refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
     copyAction = ActionCollection::get()->createAction("copytolibrary", i18n("Copy To Library"), "document-import");
@@ -70,7 +67,6 @@ DevicesPage::DevicesPage(MainWindow *p)
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
     connect(toggleDeviceAction, SIGNAL(triggered()), this, SLOT(toggleDevice()));
     #endif
-    Icon::init(copyToLibraryButton);
     copyToLibraryButton->setEnabled(false);
     syncAction->setEnabled(false);
     view->addAction(copyAction);

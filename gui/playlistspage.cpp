@@ -47,9 +47,6 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
 
-    Icon::init(replacePlayQueue);
-    Icon::init(libraryUpdate);
-
     view->allowGroupedView();
     view->setTopText(i18n("Playlists"));
     view->addAction(p->addToPlayQueueAction);

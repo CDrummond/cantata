@@ -148,6 +148,7 @@ SET( CANTATA_SRCS
     widgets/genrecombo.cpp
     widgets/toolbar.cpp
     widgets/menubutton.cpp
+    widgets/toolbutton.cpp
     widgets/wizardpage.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp

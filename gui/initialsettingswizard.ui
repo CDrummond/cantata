@@ -47,7 +47,7 @@
     <item>
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a client for Music Player Daemon (MPD). In order for Cantata to function you must already have MPD setup, configured, and running on either your local machine or a machnie that is accessible to you.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://mpd.wikia.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://mpd.wikia.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cantata is a client for Music Player Daemon (MPD). In order for Cantata to function you must already have MPD setup, configured, and running on either your local machine or a machnie that is accessible to you.&lt;/p&gt;&lt;p&gt;For more information on MPD itself, please refer to the MPD website &lt;a href=&quot;http://mpd.wikia.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://mpd.wikia.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;br/&gt;&lt;p&gt;This 'wizard' will guide you through the basic settings required for Cantata to function correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -103,7 +103,7 @@
     <item row="2" column="0" colspan="2">
      <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>The settings below are the basic settings required by Cantata. Please enter the relevant details, and use the &quot;Connect&quot; button to test the connection.</string>
+       <string>The settings below are the basic settings required by Cantata. Please enter the relevant details, and use the 'Connect' button to test the connection.</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -249,7 +249,7 @@
     <item row="11" column="0" colspan="2">
      <widget class="QLabel" name="musicFolderNoteLabel">
       <property name="text">
-       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' setting is used to lookup cover-art. If you also have write permissions to this folder (and it's sub-folders), then Cantata will save any downloaded covers into the respective album folder.&lt;/i&gt;</string>
+       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; The 'Music folder' setting is used to lookup cover-art, lyrics, etc.&lt;/i&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -331,7 +331,7 @@
     <item row="2" column="0" colspan="2">
      <widget class="QLabel" name="label_5f">
       <property name="text">
-       <string>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet. Cantata also allows you to save a list of internet streams that you wish to be able to playback.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within the cache/config folders in your home folder.&lt;/p&gt;</string>
+       <string>&lt;p&gt;Cantata will download missing covers, and lyrics, from the internet. Cantata also allows you to save a list of internet streams (e.g. Radio Stations) that you wish to be able to play.&lt;/p&gt;&lt;p&gt;For each of these, please confirm whether you wish Cantata to store the relevant files within the music folder, or within your personal cache/config folders.&lt;/p&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -339,7 +339,7 @@
      </widget>
     </item>
     <item row="3" column="0">
-     <spacer name="verticalSpacer_7f">
+     <spacer name="verticalSpacer_7x">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
@@ -367,26 +367,26 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="OnOffButton" name="storeCoversInMpdDir"/>
+       <widget class="OnOffButton" name="storeCoversInMpdDir" native="true"/>
       </item>
       <item row="1" column="0">
        <widget class="BuddyLabel" name="storeLyricsInMpdDirLabel">
         <property name="text">
          <string>Save downloaded lyrics in music folder:</string>
-         </property>
+        </property>
         <property name="buddy">
          <cstring>storeLyricsInMpdDir</cstring>
         </property>
-        </widget>
+       </widget>
       </item>
       <item row="1" column="1">
-       <widget class="OnOffButton" name="storeLyricsInMpdDir">
-         <property name="text">
+       <widget class="OnOffButton" name="storeLyricsInMpdDir" native="true">
+        <property name="text" stdset="0">
          <string/>
         </property>
        </widget>
       </item>
-       <item row="2" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="storeStreamsInMpdDirLabel">
         <property name="text">
          <string>Save list of streams in music folder:</string>
@@ -397,9 +397,35 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="OnOffButton" name="storeStreamsInMpdDir">
-        <property name="text">
+       <widget class="OnOffButton" name="storeStreamsInMpdDir" native="true">
+        <property name="text" stdset="0">
          <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <spacer name="verticalSpacer_5x">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>13</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="11" column="0" colspan="2">
+       <widget class="QLabel" name="persNote">
+        <property name="text">
+         <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have Cantata store covers, or lyrics, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder. However, for streams, if you do not have write access, then you will only be able to view (and play) the streams stored in the music folder, and not add (or edit) any streams.&lt;/i&gt;</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -555,20 +581,21 @@
    <header>lineedit.h</header>
   </customwidget>
   <customwidget>
-   <class>OnOffButton</class>
-   <extends>QcheckBox</extends>
-   <header>onoffbutton.h</header>
-  </customwidget>
-  <customwidget>
    <class>WizardPage</class>
    <extends>QWizardPage</extends>
    <header>wizardpage.h</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>PathRequester</class>
    <extends>QLineEdit</extends>
    <header>pathrequester.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OnOffButton</class>
+   <extends>QWidget</extends>
+   <header>onoffbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

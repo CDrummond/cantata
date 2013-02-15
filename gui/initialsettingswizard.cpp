@@ -26,7 +26,9 @@
 #include "settings.h"
 #include "utils.h"
 #include "icon.h"
+#include "icons.h"
 #include <QDir>
+#include <QDebug>
 
 static const int constIconSize=48;
 
@@ -65,6 +67,14 @@ InitialSettingsWizard::InitialSettingsWizard(QWidget *p)
     storeCoversInMpdDir->setChecked(Settings::self()->storeCoversInMpdDir());
     storeLyricsInMpdDir->setChecked(Settings::self()->storeLyricsInMpdDir());
     storeStreamsInMpdDir->setChecked(Settings::self()->storeStreamsInMpdDir());
+    #ifdef ENABLE_KDE_SUPPORT
+    introPage->setBackground(Icon("cantata"));
+    #else
+    introPage->setBackground(Icons::appIcon);
+    #endif
+    connectionPage->setBackground(Icons::libraryIcon);
+    filesPage->setBackground(Icons::filesIcon);
+    finishedPage->setBackground(Icon("dialog-ok"));
 }
 
 InitialSettingsWizard::~InitialSettingsWizard()

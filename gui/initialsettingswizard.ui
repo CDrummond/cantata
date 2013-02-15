@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Cantata First Run</string>
   </property>
-  <widget class="QWizardPage" name="wizardPage1">
+  <widget class="WizardPage" name="introPage">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label">
@@ -69,7 +69,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWizardPage" name="wizardPage2">
+  <widget class="WizardPage" name="connectionPage">
    <layout class="QFormLayout" name="formLayout">
     <item row="0" column="0">
      <widget class="QLabel" name="label_3">
@@ -297,7 +297,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWizardPage" name="filesPage">
+  <widget class="WizardPage" name="filesPage">
    <layout class="QGridLayout" name="gridLayoutf">
     <item row="0" column="0">
      <widget class="QLabel" name="label_6f">
@@ -446,7 +446,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWizardPage" name="wizardPage">
+  <widget class="WizardPage" name="finishedPage">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QLabel" name="label_6">
@@ -558,6 +558,11 @@
    <class>OnOffButton</class>
    <extends>QcheckBox</extends>
    <header>onoffbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>WizardPage</class>
+   <extends>QWizardPage</extends>
+   <header>wizardpage.h</header>
   </customwidget>
   <customwidget>
    <class>PathRequester</class>

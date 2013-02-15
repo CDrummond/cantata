@@ -272,11 +272,11 @@ void OnlineService::applyUpdate()
             foreach (MusicLibraryItem *item, update->childItems()) {
                 item->setParent(this);
             }
-            delete update;
             refreshIndexes();
             model->endInsertRows();
         }
     }
+    delete update;
     update=0;
 }
 

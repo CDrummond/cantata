@@ -33,7 +33,6 @@
 #include "localize.h"
 #include "messagebox.h"
 #include "settings.h"
-#include "icon.h"
 #include "mainwindow.h"
 #include "action.h"
 #include <QIcon>
@@ -51,10 +50,6 @@ LibraryPage::LibraryPage(MainWindow *p)
     addToPlayQueue->setDefaultAction(p->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
-
-    Icon::init(addToPlayQueue);
-    Icon::init(replacePlayQueue);
-    Icon::init(libraryUpdate);
 
     view->addAction(p->addToPlayQueueAction);
     view->addAction(p->replacePlayQueueAction);

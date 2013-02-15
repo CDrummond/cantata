@@ -21,17 +21,15 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef MENUBUTTON_H
-#define MENUBUTTON_H
+#ifndef TOOLBUTTON_H
+#define TOOLBUTTON_H
 
 #include <QToolButton>
 
-class MenuButton : public QToolButton
+class ToolButton : public QToolButton
 {
 public:
-    explicit MenuButton(QWidget *parent = 0);
-    void controlState();
-    void paintEvent(QPaintEvent *ev);
+    explicit ToolButton(QWidget *parent = 0);
     QSize sizeHint() const;
 
 private:

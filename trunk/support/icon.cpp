@@ -27,7 +27,7 @@
 
 int Icon::stdSize(int v)
 {
-    if (v<20) {
+    if (v<19) {
         return 16;
     } else if (v<28) {
         return 22;

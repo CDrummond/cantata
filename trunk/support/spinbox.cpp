@@ -115,9 +115,10 @@ SpinBox::SpinBox(QWidget *p)
         intButton(incButton, true);
         decButton->installEventFilter(this);
         incButton->installEventFilter(this);
-        QPalette pal(palette());
-        pal.setColor(QPalette::Base, palette().color(QPalette::Window));
-        setPalette(pal);
+        spin->installEventFilter(this);
+        //QPalette pal(palette());
+        //pal.setColor(QPalette::Base, palette().color(QPalette::Window));
+        //setPalette(pal);
     } else {
         layout->addWidget(spin);
     }
@@ -159,7 +160,12 @@ void SpinBox::paintEvent(QPaintEvent *e)
         QStyleOptionFrame opt;
         opt.init(this);
         opt.rect=spin->geometry().united(incButton->geometry()).united(decButton->geometry());
-        opt.state=(isEnabled() ? QStyle::State_Enabled : QStyle::State_None)|QStyle::State_Sunken;
+        if (Qt::RightToLeft==QApplication::layoutDirection()) {
+            opt.rect.adjust(-1, 0, 1, 0);
+        } else {
+            opt.rect.adjust(0, 0, 1, 0);
+        }
+        opt.state=(isEnabled() ? (QStyle::State_Enabled|(spin->hasFocus() ? QStyle::State_HasFocus : QStyle::State_None)) : QStyle::State_None)|QStyle::State_Sunken;
         opt.lineWidth=1;
         QPainter painter(this);
         QApplication::style()->drawPrimitive(QStyle::PE_PanelLineEdit, &opt, &painter, this);
@@ -170,14 +176,30 @@ void SpinBox::paintEvent(QPaintEvent *e)
 
 bool SpinBox::eventFilter(QObject *obj, QEvent *event)
 {
-    if (GtkStyle::mimicWidgets() && (obj==incButton || obj==decButton) && QEvent::Wheel==event->type()) {
-        QWheelEvent *we=(QWheelEvent *)event;
-        if (we->delta()<0) {
-            decPressed();
-        } else if (we->delta()>0) {
-            incPressed();
+    if (GtkStyle::mimicWidgets()) {
+        if ((obj==incButton || obj==decButton) && QEvent::Wheel==event->type()) {
+            QWheelEvent *we=(QWheelEvent *)event;
+            if (we->delta()<0) {
+                decPressed();
+            } else if (we->delta()>0) {
+                incPressed();
+            }
+            return true;
+        } else if (obj==spin) {
+            // QGtkStyle does not seem to like spinboxes with no buttons - which is what we use. It looks like it sets the 'has focus' flag
+            // on some internal gtk-line edit. If a spinbox has focus, and we change to another config dialog page - ALL line-edits on the new
+            // page a re drawn as if they have focus.
+            //
+            // So, to 'fix' this, we ignore paint events on the spin-box itself, and handle focus in/out here...
+            if (QEvent::FocusIn==event->type() || QEvent::FocusOut==event->type()) {
+                // focus in/out on spin just cause this whole widget to be repainted - therefore focus is drawn around whole widget...
+                repaint();
+                return true;
+            } else if (QEvent::Paint==event->type()) {
+                // ignore paint events...
+                return true;
+            }
         }
-        return true;
     }
 
     return QWidget::eventFilter(obj, event);

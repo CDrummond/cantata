@@ -75,6 +75,7 @@ bool HttpServer::setDetails(const QString &addr, quint16 port)
 
     if (thread) {
         thread->quit();
+        thread->deleteLater();
         thread=0;
     }
 

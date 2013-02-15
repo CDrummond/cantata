@@ -30,8 +30,8 @@
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KRun>
+#ifndef Q_OS_WIN
+#include <QProcess>
 #endif
 
 FolderPage::FolderPage(MainWindow *p)
@@ -42,8 +42,8 @@ FolderPage::FolderPage(MainWindow *p)
     addToPlayQueue->setDefaultAction(p->addToPlayQueueAction);
     replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
     libraryUpdate->setDefaultAction(p->refreshAction);
-    #ifdef ENABLE_KDE_SUPPORT
-    browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open File Manager"), "system-file-manager");
+    #ifndef Q_OS_WIN
+    browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open In File Manager"), "system-file-manager");
     #endif
 
     view->setTopText(i18n("Folders"));
@@ -61,7 +61,7 @@ FolderPage::FolderPage(MainWindow *p)
     view->addAction(p->replaygainAction);
     #endif // TAGLIB_FOUND
     #endif
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifndef Q_OS_WIN
     view->addAction(browseAction);
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -80,7 +80,7 @@ FolderPage::FolderPage(MainWindow *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifndef Q_OS_WIN
     connect(browseAction, SIGNAL(triggered(bool)), this, SLOT(openFileManager()));
     #endif
 }
@@ -150,7 +150,7 @@ void FolderPage::controlActions()
     #endif
     #endif // TAGLIB_FOUND
 
-    #ifdef ENABLE_KDE_SUPPORT
+    #ifndef Q_OS_WIN
     browseAction->setEnabled(false);
     if (1==selected.count() && MPDConnection::self()->getDetails().dirReadable) {
         DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
@@ -172,20 +172,21 @@ void FolderPage::itemDoubleClicked(const QModelIndex &)
     }
 }
 
-#ifdef ENABLE_KDE_SUPPORT
 void FolderPage::openFileManager()
 {
+    #ifndef Q_OS_WIN
     const QModelIndexList selected = view->selectedIndexes();
     if (1!=selected.size()) {
         return;
     }
 
+
     DirViewItem *item = static_cast<DirViewItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
     if (DirViewItem::Type_Dir==item->type()) {
-        KRun::runUrl(KUrl(MPDConnection::self()->getDetails().dir+item->fullName()), "inode/directory", this);
+        QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << MPDConnection::self()->getDetails().dir+item->fullName());
     }
+    #endif
 }
-#endif
 
 QList<Song> FolderPage::selectedSongs(EmptySongMod esMod, bool allowPlaylists) const
 {

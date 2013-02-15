@@ -31,7 +31,6 @@
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
-#include <QToolButton>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QStyle>
 #endif

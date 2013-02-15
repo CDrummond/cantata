@@ -30,9 +30,6 @@
 #include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
-#include <QIcon>
-#include <QToolButton>
-#include <QDir>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KRun>
 #endif

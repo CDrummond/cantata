@@ -62,6 +62,8 @@ namespace Icons
     extern Icon jamendoIcon;
     extern Icon magnatuneIcon;
     extern Icon filesIcon;
+    extern Icon cancelIcon;
+    extern Icon importIcon;
 
     extern Icon toolbarMenuIcon;
     extern Icon toolbarPrevIcon;

@@ -24,7 +24,6 @@
 #include <QGridLayout>
 #include <QBoxLayout>
 #include <QComboBox>
-#include <QToolButton>
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QAction>

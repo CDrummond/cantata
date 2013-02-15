@@ -13,34 +13,44 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="vlayout">
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="4">
+   <item>
     <widget class="ItemView" name="view"/>
    </item>
-   <item row="1" column="0">
-    <widget class="ToolButton" name="libraryUpdate"/>
-   </item>
-   <item row="1" column="1">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+   <item>
+    <layout class="QHBoxLayout" name="hlayout">
+     <property name="margin">
+      <number>0</number>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>191</width>
-       <height>20</height>
-      </size>
+     <property name="spacing">
+      <number>0</number>
      </property>
-    </spacer>
-   </item>
-   <item row="1" column="2">
-    <widget class="ToolButton" name="addToPlayQueue"/>
-   </item>
-   <item row="1" column="3">
-    <widget class="ToolButton" name="replacePlayQueue"/>
+     <item>
+      <widget class="ToolButton" name="libraryUpdate"/>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>191</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="ToolButton" name="addToPlayQueue"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="replacePlayQueue"/>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

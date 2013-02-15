@@ -170,103 +170,113 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QVBoxLayout" name="vlayout">
        <property name="margin">
         <number>0</number>
        </property>
-       <item row="0" column="0" colspan="11">
+       <item>
         <widget class="LineEdit" name="searchPlayQueueLineEdit"/>
        </item>
-       <item row="1" column="0" colspan="11">
+       <item>
         <widget class="PlayQueueView" name="playQueue"/>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="dynamicLabel">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
+       <item>
+        <layout class="QHBoxLayout" name="hlayout">
+         <property name="margin">
+          <number>0</number>
          </property>
-         <property name="text">
-          <string>[Dynamic]</string>
+         <property name="spacing">
+          <number>0</number>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="SqueezedTextLabel" name="playQueueStatsLabel"/>
-       </item>
-       <item row="2" column="2">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>6</width>
-           <height>21</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="3">
-        <widget class="ToolButton" name="repeatPushButton">
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="ToolButton" name="singlePushButton">
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="5">
-        <widget class="ToolButton" name="randomPushButton">
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="6">
-        <widget class="ToolButton" name="consumePushButton">
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="7">
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="8">
-        <widget class="ToolButton" name="addStreamToPlayQueuePushButton"/>
-       </item>
-       <item row="2" column="9">
-        <widget class="ToolButton" name="savePlayQueuePushButton"/>
-       </item>
-       <item row="2" column="10">
-        <widget class="ToolButton" name="removeAllFromPlayQueuePushButton"/>
+         <item>    
+          <widget class="QLabel" name="dynamicLabel">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>[Dynamic]</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="SqueezedTextLabel" name="playQueueStatsLabel"/>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>6</width>
+             <height>21</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="ToolButton" name="repeatPushButton">
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="ToolButton" name="singlePushButton">
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="ToolButton" name="randomPushButton">
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="ToolButton" name="consumePushButton">
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="ToolButton" name="addStreamToPlayQueuePushButton"/>
+         </item>
+         <item>
+          <widget class="ToolButton" name="savePlayQueuePushButton"/>
+         </item>
+         <item>
+          <widget class="ToolButton" name="removeAllFromPlayQueuePushButton"/>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>

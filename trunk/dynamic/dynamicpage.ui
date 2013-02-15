@@ -13,15 +13,15 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="vlayout">
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="7">
+   <item>
     <widget class="ItemView" name="view"/>
    </item>
-   <item row="1" column="0" colspan="7">
-    <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="hlayoutA">
      <item>
       <widget class="QLabel" name="infoIcon"/>
      </item>
@@ -40,38 +40,48 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
-    <widget class="ToolButton" name="refreshBtn"/>
-   </item>
-   <item row="2" column="1">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+   <item>
+    <layout class="QHBoxLayout" name="hlayout">
+     <property name="margin">
+      <number>0</number>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>16</width>
-       <height>20</height>
-      </size>
+     <property name="spacing">
+      <number>0</number>
      </property>
-    </spacer>
-   </item>
-   <item row="2" column="2">
-    <widget class="ToolButton" name="addBtn"/>
-   </item>
-   <item row="2" column="3">
-    <widget class="ToolButton" name="editBtn"/>
-   </item>
-   <item row="2" column="4">
-    <widget class="ToolButton" name="removeBtn"/>
-   </item>
-   <item row="2" column="5">
-    <widget class="ToolButton" name="startBtn"/>
-   </item>
-   <item row="2" column="6">
-    <widget class="ToolButton" name="stopBtn"/>
-   </item>
-  </layout>
+     <item>
+      <widget class="ToolButton" name="refreshBtn"/>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>16</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="ToolButton" name="addBtn"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="editBtn"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="removeBtn"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="startBtn"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="stopBtn"/>
+     </item>
+    </layout>
+  </item>
+ </layout>
  </widget>
  <customwidgets>
   <customwidget>

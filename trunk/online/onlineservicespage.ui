@@ -13,31 +13,41 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="vlayout">
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="4">
+   <item>
     <widget class="ItemView" name="view"/>
    </item>
-   <item row="1" column="0">
-    <widget class="GenreCombo" name="genreCombo">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+   <item>
+    <layout class="QHBoxLayout" name="hlayout">
+     <property name="margin">
+      <number>0</number>
      </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="MenuButton" name="menuButton"/>
-   </item>
-   <item row="1" column="2">
-    <widget class="ToolButton" name="addToPlayQueue"/>
-   </item>
-   <item row="1" column="3">
-    <widget class="ToolButton" name="replacePlayQueue"/>
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="GenreCombo" name="genreCombo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="MenuButton" name="menuButton"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="addToPlayQueue"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="replacePlayQueue"/>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

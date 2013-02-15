@@ -57,7 +57,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     setupUi(this);
     configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), Icons::configureIcon);
     refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
-    copyAction = ActionCollection::get()->createAction("copytolibrary", i18n("Copy To Library"), "document-import");
+    copyAction = ActionCollection::get()->createAction("copytolibrary", i18n("Copy To Library"), Icons::importIcon);
     copyToLibraryButton->setDefaultAction(copyAction);
     syncAction = ActionCollection::get()->createAction("syncdevice", i18n("Sync"), "folder-sync");
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));

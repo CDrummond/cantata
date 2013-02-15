@@ -92,7 +92,7 @@ LyricsPage::LyricsPage(QWidget *p)
     searchAction = ActionCollection::get()->createAction("searchlyrics", i18n("Search For Lyrics"), "edit-find");
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::editIcon);
     saveAction = ActionCollection::get()->createAction("savelyrics", i18n("Save Lyrics"), "document-save");
-    cancelAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), "dialog-cancel");
+    cancelAction = ActionCollection::get()->createAction("canceleditlyrics", i18n("Cancel Editing Lyrics"), Icons::cancelIcon);
     delAction = ActionCollection::get()->createAction("dellyrics", i18n("Delete Lyrics File"), "edit-delete");
 
     connect(refreshAction, SIGNAL(triggered()), SLOT(update()));

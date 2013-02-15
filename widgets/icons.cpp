@@ -281,6 +281,8 @@ Icon Icons::menuIcon;
 Icon Icons::jamendoIcon;
 Icon Icons::magnatuneIcon;
 Icon Icons::filesIcon;
+Icon Icons::cancelIcon;
+Icon Icons::importIcon;
 Icon Icons::toolbarMenuIcon;
 Icon Icons::toolbarPrevIcon;
 Icon Icons::toolbarPlayIcon;
@@ -326,6 +328,14 @@ void Icons::init()
     jamendoIcon=Icon("cantata-view-services-jamendo");
     magnatuneIcon=Icon("cantata-view-services-jamendo");
     filesIcon=Icon("document-multiple");
+    cancelIcon=Icon("dialog-cancel");
+    importIcon=Icon("document-import");
+    if (editIcon.isNull()) {
+        editIcon=Icon("text-editor");
+    }
+    if (importIcon.isNull()) {
+        importIcon=Icon("down");
+    }
     #ifndef ENABLE_KDE_SUPPORT
     appIcon=Icon::create("cantata", QList<int>() << 16 << 22 << 32 << 48 << 64);
     shortcutsIcon=Icon("preferences-desktop-keyboard");
@@ -395,6 +405,9 @@ void Icons::init()
     }
     if (filesIcon.isNull()) {
         filesIcon=Icon("empty");
+    }
+    if (cancelIcon.isNull()) {
+        cancelIcon=Icon("gtk-cancel");
     }
     #endif // Q_OS_WIN
     #endif // ENABLE_KDE_SUPPORT

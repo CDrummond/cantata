@@ -33,6 +33,7 @@
 #include <QPixmap>
 #include <QFont>
 #include <QPainter>
+#include <QLinearGradient>
 #include <QPalette>
 #include <QStyle>
 #include <QStyleOption>
@@ -47,7 +48,6 @@ static QPixmap createPixmap(int size, QColor &col, double opacity, bool isPlus)
     pix.fill(Qt::transparent);
     QPainter p(&pix);
     p.setRenderHint(QPainter::Antialiasing, false);
-
     p.setPen(QPen(col, lineWidth));
     p.setOpacity(opacity);
 
@@ -80,16 +80,19 @@ static Icon createIcon(bool isPlus)
 static void intButton(QToolButton *btn, bool inc)
 {
     if (incIcon.isNull()) {
-        incIcon=createIcon(true); // Icon("list-add");
+        incIcon=createIcon(true);
     }
     if (decIcon.isNull()) {
-        decIcon=createIcon(false); // Icon("list-remove");
+        decIcon=createIcon(false);
     }
     btn->setAutoRaise(true);
     btn->setIcon(inc ? incIcon : decIcon);
     btn->setAutoRepeat(true);
-    //btn->setMinimumWidth(w);
-    //btn->setMaximumWidth(w);
+}
+
+static QString toString(const QColor &col, int alpha)
+{
+    return QString("rgba(%1, %2, %3, %4%)").arg(col.red()).arg(col.green()).arg(col.blue()).arg(alpha);
 }
 
 SpinBox::SpinBox(QWidget *p)
@@ -115,10 +118,13 @@ SpinBox::SpinBox(QWidget *p)
         intButton(incButton, true);
         decButton->installEventFilter(this);
         incButton->installEventFilter(this);
+        QString stylesheet=QString("QToolButton { border: 0px } QToolButton:pressed { background-color: %2 } ")
+                           .arg(toString(palette().highlight().color(), 20));
+        decButton->setStyleSheet(stylesheet);
+        incButton->setStyleSheet(stylesheet);
+        decButton->setFocusPolicy(Qt::NoFocus);
+        incButton->setFocusPolicy(Qt::NoFocus);
         spin->installEventFilter(this);
-        //QPalette pal(palette());
-        //pal.setColor(QPalette::Base, palette().color(QPalette::Window));
-        //setPalette(pal);
     } else {
         layout->addWidget(spin);
     }
@@ -154,6 +160,20 @@ void SpinBox::checkValue()
     incButton->setEnabled(spin->value()<spin->maximum());
 }
 
+static void drawLine(QPainter *painter, QColor col, const QPoint &start, const QPoint &end)
+{
+    QLinearGradient grad(start, end);
+    col.setAlphaF(0.0);
+    grad.setColorAt(0, col);
+    col.setAlphaF(0.25);
+    grad.setColorAt(0.25, col);
+    grad.setColorAt(0.8, col);
+    col.setAlphaF(0.0);
+    grad.setColorAt(1, col);
+    painter->setPen(QPen(QBrush(grad), 1));
+    painter->drawLine(start, end);
+}
+
 void SpinBox::paintEvent(QPaintEvent *e)
 {
     if (GtkStyle::mimicWidgets()) {
@@ -169,6 +189,14 @@ void SpinBox::paintEvent(QPaintEvent *e)
         opt.lineWidth=1;
         QPainter painter(this);
         QApplication::style()->drawPrimitive(QStyle::PE_PanelLineEdit, &opt, &painter, this);
+        QColor col(palette().foreground().color());
+        if (Qt::RightToLeft==QApplication::layoutDirection()) {
+            drawLine(&painter, col, incButton->geometry().topRight(), incButton->geometry().bottomRight());
+            drawLine(&painter, col, decButton->geometry().topRight(), decButton->geometry().bottomRight());
+        } else {
+            drawLine(&painter, col, incButton->geometry().topLeft(), incButton->geometry().bottomLeft());
+            drawLine(&painter, col, decButton->geometry().topLeft(), decButton->geometry().bottomLeft());
+        }
     } else {
         QWidget::paintEvent(e);
     }

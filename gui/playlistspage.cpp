@@ -81,16 +81,12 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(renamePlaylistAction, SIGNAL(triggered(bool)), this, SLOT(renamePlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
-    Icon::init(menuButton);
-    menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(p->addToPlayQueueAction);
     menu->addAction(p->addWithPriorityAction);
     menu->addAction(p->removeAction);
     menu->addAction(renamePlaylistAction);
     menuButton->setMenu(menu);
-    menuButton->setIcon(Icons::menuIcon);
-    menuButton->setToolTip(i18n("Other Actions"));
 }
 
 PlaylistsPage::~PlaylistsPage()
@@ -309,6 +305,7 @@ void PlaylistsPage::controlActions()
     mw->replacePlayQueueAction->setEnabled(selected.count()>0);
     mw->addToPlayQueueAction->setEnabled(selected.count()>0);
     mw->addWithPriorityAction->setEnabled(selected.count()>0);
+    menuButton->controlState();
 }
 
 void PlaylistsPage::searchItems()

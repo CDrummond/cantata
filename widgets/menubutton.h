@@ -30,6 +30,7 @@ class MenuButton : public QToolButton
 {
 public:
     explicit MenuButton(QWidget *parent = 0);
+    void controlState();
     void paintEvent(QPaintEvent *ev);
 };
 

@@ -99,8 +99,6 @@ DevicesPage::DevicesPage(MainWindow *p)
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(configureAction, SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshDevice()));
-    Icon::init(menuButton);
-    menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     #ifdef ENABLE_REMOTE_DEVICES
     Action *addRemote=ActionCollection::get()->createAction("adddevice", i18n("Add Device"), "network-server");
@@ -118,8 +116,6 @@ DevicesPage::DevicesPage(MainWindow *p)
     menu->addAction(p->replaygainAction);
     #endif
     menuButton->setMenu(menu);
-    menuButton->setIcon(Icons::menuIcon);
-    menuButton->setToolTip(i18n("Other Actions"));
     proxy.setSourceModel(DevicesModel::self());
     view->setTopText(i18n("Devices"));
     view->setModel(&proxy);
@@ -303,6 +299,7 @@ void DevicesPage::controlActions()
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction->setEnabled(singleUdi && remoteDev);
     #endif
+    menuButton->controlState();
 }
 
 void DevicesPage::copyToLibrary()

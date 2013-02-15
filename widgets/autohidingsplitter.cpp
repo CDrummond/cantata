@@ -71,7 +71,7 @@ AutohidingSplitter::AutohidingSplitter(Qt::Orientation orientation, QWidget *par
     autohideAnimation->setSplitter(this);
     autohideAnimation->setDuration(100);
     autohideAnimation->setEasingCurve(QEasingCurve::Linear);
-    connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
+    //connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     setMinimumWidth(32);
 }
 
@@ -84,7 +84,7 @@ AutohidingSplitter::AutohidingSplitter(QWidget *parent)
     autohideAnimation->setSplitter(this);
     autohideAnimation->setDuration(100);
     autohideAnimation->setEasingCurve(QEasingCurve::Linear);
-    connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
+    //connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(updateAfterSplitterMoved(int, int)));
     setMinimumWidth(32);
 }
 
@@ -102,7 +102,7 @@ AutohidingSplitter::~AutohidingSplitter()
 
 QSplitterHandle * AutohidingSplitter::createHandle()
 {
-    AutohidingSplitterHandle *sh = new AutohidingSplitterHandle(this->orientation(),this);
+    AutohidingSplitterHandle *sh = new AutohidingSplitterHandle(orientation(), this);
     connect(sh, SIGNAL(hoverStarted()), this, SLOT(handleHoverStarted()));
     connect(sh, SIGNAL(hoverFinished()), this, SLOT(handleHoverFinished()));
     return sh;
@@ -155,6 +155,9 @@ void AutohidingSplitter::childEvent(QChildEvent *e)
 
 bool AutohidingSplitter::eventFilter(QObject *target, QEvent *e)
 {
+    if (!autoHideEnabled) {
+        return QSplitter::eventFilter(target, e);
+    }
     switch (e->type()) {
     case QEvent::ChildAdded: {
         QChildEvent *ce = (QChildEvent*)e;
@@ -174,13 +177,13 @@ bool AutohidingSplitter::eventFilter(QObject *target, QEvent *e)
     }
     switch (e->type()) {
     case QEvent::Enter:
-        this->widgetHoverStarted(indexOf(qobject_cast<QWidget *>(target)));
+        widgetHoverStarted(indexOf(qobject_cast<QWidget *>(target)));
         if(popupsBlockingAutohiding.contains(qobject_cast<QWidget *>(target))) {
             haltModifications = true;
         }
         break;
     case QEvent::Leave:
-        this->widgetHoverFinished(indexOf(qobject_cast<QWidget *>(target)));
+        widgetHoverFinished(indexOf(qobject_cast<QWidget *>(target)));
         if(popupsBlockingAutohiding.contains(qobject_cast<QWidget *>(target))) {
             haltModifications = false;
         }
@@ -235,7 +238,8 @@ void AutohidingSplitter::setAutoHideEnabled(bool ah)
     }
 }
 
-void AutohidingSplitter::setVisible(bool visible){
+void AutohidingSplitter::setVisible(bool visible)
+{
     haltModifications=!visible;
     QSplitter::setVisible(visible);
 }
@@ -245,8 +249,9 @@ void AutohidingSplitter::resizeEvent(QResizeEvent *event)
     if (autoHideEnabled && !haltModifications && event->oldSize().width() > 0) {
 //        int oldUsableSize = event->oldSize().width()/*-(count()-1)*handleWidth()*/;
         int oldUsableSize = 0;
-        foreach(int size, expandedSizes)
+        foreach(int size, expandedSizes) {
             oldUsableSize+=size;
+        }
         int newUsableSize = event->size().width()/*-(count()-1)*handleWidth()*/;
         int leftToDistribute = newUsableSize-oldUsableSize;
 
@@ -278,11 +283,14 @@ void AutohidingSplitter::addWidget(QWidget *widget)
     }
 }
 
-void AutohidingSplitter::setAutohidable(int index, bool autohidable) {
+void AutohidingSplitter::setAutohidable(int index, bool autohidable)
+{
     widgetAutohidable[index]=autohidable;
     widgetAutohidden[index]=autohidable;
 //     updateResizeQueue();
-    setSizes(getSizesAfterHiding());
+    if (autoHideEnabled) {
+        setSizes(getSizesAfterHiding());
+    }
 }
 
 bool AutohidingSplitter::restoreState(const QByteArray &state)
@@ -439,7 +447,7 @@ void AutohidingSplitter::startAnimation()
     if (!targetSizes.isEmpty()) {
         QList<int> nextSizes = targetSizes.dequeue();
 
-        autohideAnimation->setStartValue(QVariant::fromValue(this->sizes()));
+        autohideAnimation->setStartValue(QVariant::fromValue(sizes()));
         autohideAnimation->setCurrentTime(0);
         autohideAnimation->setEndValue(QVariant::fromValue(nextSizes));
         connect(autohideAnimation,SIGNAL(finished()),this,SLOT(startAnimation()));
@@ -449,7 +457,6 @@ void AutohidingSplitter::startAnimation()
 
 void AutohidingSplitter::setWidgetForHiding()
 {
-
     int index = animationDelayTimer.indexOf(qobject_cast<QTimer *>(QObject::sender()));
     if(!haltModifications){
         if (!widgetAutohidden.at(index)) {

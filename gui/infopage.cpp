@@ -21,7 +21,6 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QGridLayout>
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QContextMenuEvent>
@@ -99,9 +98,10 @@ InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
     , iHaveAskedForArtist(false)
 {
-    QGridLayout *layout=new QGridLayout(this);
+    QVBoxLayout *vlayout=new QVBoxLayout(this);
+    QHBoxLayout *hlayout=new QHBoxLayout(this);
     QFrame *frame=new QFrame(this);
-    QBoxLayout *frameLayout=new QBoxLayout(QBoxLayout::TopToBottom, frame);
+    QHBoxLayout *frameLayout=new QHBoxLayout(frame);
     view=new WebView(frame);
     frame->setFrameShape(QFrame::StyledPanel);
     frame->setFrameShadow(QFrame::Sunken);
@@ -113,12 +113,16 @@ InfoPage::InfoPage(QWidget *parent)
     combo=new QComboBox(this);
     combo->insertItem(0, i18n("Artist Information"));
     combo->insertItem(1, i18n("Album Information"));
-    layout->addWidget(frame, 0, 0, 1, 4);
-    layout->addWidget(refreshBtn, 1, 0, 1, 1);
-    layout->addWidget(backBtn, 1, 1, 1, 1);
-    layout->addWidget(forwardBtn, 1, 2, 1, 1);
-    layout->addWidget(combo, 1, 3, 1, 1);
-    layout->setContentsMargins(0, 0, 0, 0);
+    vlayout->addWidget(frame);
+    vlayout->addItem(hlayout);
+    hlayout->addWidget(refreshBtn);
+    hlayout->addWidget(backBtn);
+    hlayout->addWidget(forwardBtn);
+    hlayout->addWidget(combo);
+    frameLayout->setMargin(0);
+    vlayout->setMargin(0);
+    hlayout->setMargin(0);
+    hlayout->setSpacing(0);
 
     view->page()->action(QWebPage::Reload)->setShortcut(QKeySequence());
     refreshBtn->setDefaultAction(view->page()->action(QWebPage::Reload));

@@ -13,38 +13,48 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="vlayout">
    <property name="margin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="3">
+   <item>
     <widget class="ItemView" name="view"/>
    </item>
-   <item row="1" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="hlayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
-      <widget class="QLabel" name="infoIcon"/>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="infoIcon"/>
+       </item>
+       <item>
+        <widget class="SqueezedTextLabel" name="infoLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="SqueezedTextLabel" name="infoLabel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
+      <widget class="GenreCombo" name="genreCombo"/>
+     </item>
+     <item>
+      <widget class="MenuButton" name="menuButton"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="replacePlayQueue"/>
      </item>
     </layout>
-   </item>
-   <item row="2" column="0">
-    <widget class="GenreCombo" name="genreCombo"/>
-   </item>
-   <item row="2" column="1">
-    <widget class="MenuButton" name="menuButton"/>
-   </item>
-   <item row="2" column="2">
-    <widget class="ToolButton" name="replacePlayQueue"/>
    </item>
   </layout>
  </widget>

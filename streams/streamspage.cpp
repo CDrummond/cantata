@@ -110,8 +110,6 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(StreamsModel::self(), SIGNAL(error(const QString &)), mw, SLOT(showError(QString)));
     connect(StreamsModel::self(), SIGNAL(downloading(bool)), this, SLOT(downloading(bool)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(mpdDirChanged()));
-    Icon::init(menuButton);
-    menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(addAction);
     menu->addAction(p->removeAction);
@@ -119,8 +117,6 @@ StreamsPage::StreamsPage(MainWindow *p)
     menu->addAction(importAction);
     menu->addAction(exportAction);
     menuButton->setMenu(menu);
-    menuButton->setIcon(Icons::menuIcon);
-    menuButton->setToolTip(i18n("Other Actions"));
     Icon::init(replacePlayQueue);
 
     view->setTopText(i18n("Streams"));
@@ -493,6 +489,7 @@ void StreamsPage::controlActions()
     importAction->setEnabled(StreamsModel::self()->isWritable());
     mw->replacePlayQueueAction->setEnabled(selected.count());
     mw->addWithPriorityAction->setEnabled(selected.count());
+    menuButton->controlState();
 }
 
 void StreamsPage::searchItems()

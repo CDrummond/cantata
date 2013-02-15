@@ -22,12 +22,35 @@
  */
 
 #include "menubutton.h"
+#include "icon.h"
+#include "icons.h"
+#include "localize.h"
+#include <QAction>
+#include <QMenu>
 #include <QStylePainter>
 #include <QStyleOptionToolButton>
 
 MenuButton::MenuButton(QWidget *parent)
     : QToolButton(parent)
 {
+    Icon::init(this);
+    setPopupMode(QToolButton::InstantPopup);
+    setIcon(Icons::menuIcon);
+    setToolTip(i18n("Other Actions"));
+}
+
+void MenuButton::controlState()
+{
+    if (!menu()) {
+        return;
+    }
+    foreach (QAction *a, menu()->actions()) {
+        if (a->isEnabled()) {
+            setEnabled(true);
+            return;
+        }
+    }
+    setEnabled(false);
 }
 
 void MenuButton::paintEvent(QPaintEvent *)

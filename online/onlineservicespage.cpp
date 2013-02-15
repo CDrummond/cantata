@@ -85,8 +85,6 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
 
     Icon::init(addToPlayQueue);
     Icon::init(replacePlayQueue);
-    Icon::init(menuButton);
-    menuButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *menu=new QMenu(this);
     menu->addAction(addAction);
     menu->addAction(removeAction);
@@ -97,8 +95,6 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     view->addAction(sep);
     view->addAction(removeAction);
     menuButton->setMenu(menu);
-    menuButton->setIcon(Icons::menuIcon);
-    menuButton->setToolTip(i18n("Other Actions"));
     proxy.setSourceModel(OnlineServicesModel::self());
     view->setTopText(i18n("Online Music"));
     view->setModel(&proxy);
@@ -281,6 +277,7 @@ void OnlineServicesPage::controlActions()
     mw->addWithPriorityAction->setEnabled(!srvSelected && !selected.isEmpty());
     mw->replacePlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
     mw->addToStoredPlaylistAction->setEnabled(!srvSelected && !selected.isEmpty());
+    menuButton->controlState();
 }
 
 void OnlineServicesPage::configureService()

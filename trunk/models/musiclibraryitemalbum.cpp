@@ -41,6 +41,7 @@
 #include <QApplication>
 #include <QFontMetrics>
 
+#include <QDebug>
 static MusicLibraryItemAlbum::CoverSize coverSize=MusicLibraryItemAlbum::CoverNone;
 static QPixmap *theDefaultIcon=0;
 static QPixmap *theDefaultLargeIcon=0;
@@ -66,13 +67,26 @@ void MusicLibraryItemAlbum::setup()
 
 int MusicLibraryItemAlbum::iconSize(MusicLibraryItemAlbum::CoverSize sz, bool iconMode)
 {
-    switch (sz) {
-    case CoverNone:       return 0;
-    case CoverSmall:      return adjust((iconMode ? 4.75 : 1.375)*fontHeight);
-    default:
-    case CoverMedium:     return adjust((iconMode ? 6.25 : 2)*fontHeight);
-    case CoverLarge:      return adjust((iconMode ? 8 : 3)*fontHeight);
-    case CoverExtraLarge: return adjust((iconMode ? 10 : 4)*fontHeight);
+    if (CoverNone==sz) {
+        return 0;
+    }
+
+    if (iconMode) {
+        switch (sz) {
+        case CoverSmall:      return qMax(76, adjust((4.75*fontHeight)+0.5));
+        default:
+        case CoverMedium:     return qMax(100, adjust((6.25*fontHeight)+0.5));
+        case CoverLarge:      return qMax(128, adjust(8*fontHeight));
+        case CoverExtraLarge: return qMax(160, adjust(10*fontHeight));
+        }
+    } else {
+        switch (sz) {
+        case CoverSmall:      return qMax(22, adjust((1.375*fontHeight)+0.5));
+        default:
+        case CoverMedium:     return qMax(32, adjust(2*fontHeight));
+        case CoverLarge:      return qMax(48, adjust(3*fontHeight));
+        case CoverExtraLarge: return qMax(64, adjust(4*fontHeight));
+        }
     }
 }
 

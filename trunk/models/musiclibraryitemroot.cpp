@@ -623,10 +623,10 @@ void MusicLibraryItemRoot::toggleGrouping()
 
 void MusicLibraryItemRoot::clearItems()
 {
+    qDeleteAll(m_childItems);
     m_childItems.clear();
     m_indexes.clear();
     m_genres.clear();
-    qDeleteAll(m_childItems);
 }
 
 QString MusicLibraryItemRoot::songArtist(const Song &s)

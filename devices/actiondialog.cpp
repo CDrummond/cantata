@@ -266,7 +266,24 @@ void ActionDialog::slotButtonClicked(int button)
     case PAGE_PROGRESS:
         paused=true;
         if (MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Are you sure you wish to cancel?"))) {
-            cancel();
+            Device *dev=0;
+            if(Copy==mode) {
+                dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi, false);
+            } else if (!sourceUdi.isEmpty()) { // Must be a delete...
+                dev=getDevice(sourceUdi, false);
+            }
+
+            if (dev) {
+                if (Close==button) { // Close is only enabled when saving cache...
+                    disconnect(dev, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
+                } else {
+                    dev->abortJob();
+                }
+            }
+            if (Close!=button) {
+                refreshLibrary();
+            }
+            reject();
             // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
             Dialog::slotButtonClicked(button);
         } else if (!performingAction && PAGE_PROGRESS==stack->currentIndex()) {
@@ -310,23 +327,6 @@ Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
     }
 
     return 0;
-}
-
-void ActionDialog::cancel()
-{
-    Device *dev=0;
-    if(Copy==mode) {
-        dev=getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi, false);
-    } else if (!sourceUdi.isEmpty()) { // Must be a delete...
-        dev=getDevice(sourceUdi, false);
-    }
-
-    if (dev) {
-        dev->abortJob();
-    }
-
-    refreshLibrary();
-    reject();
 }
 
 void ActionDialog::doNext()
@@ -388,9 +388,10 @@ void ActionDialog::doNext()
         }
         dirsToClean.clear();
     } else {
-        refreshLibrary();
-        emit completed();
-        accept();
+        if (!refreshLibrary()) {
+            emit completed();
+            accept();
+        }
     }
 }
 
@@ -579,7 +580,7 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles)
                        .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)));
 }
 
-void ActionDialog::refreshLibrary()
+bool ActionDialog::refreshLibrary()
 {
     actionLabel->stopAnimation();
     if (!actionedSongs.isEmpty()) {
@@ -593,9 +594,14 @@ void ActionDialog::refreshLibrary()
 
             if (dev) {
                 dev->saveCache();
+                progressLabel->setText(i18n("Saving cache"));
+                connect(dev, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
+                setButtons(Close);
+                return true;
             }
         }
     }
+    return false;
 }
 
 void ActionDialog::removeSong(const Song &s)
@@ -650,4 +656,10 @@ void ActionDialog::incProgress()
         int val=progressBar->value()+100;
         progressBar->setValue(val<=progressBar->maximum() ? val : progressBar->maximum());
     }
+}
+
+void ActionDialog::cacheSaved()
+{
+    emit completed();
+    accept();
 }

@@ -157,6 +157,7 @@ public:
     virtual qint64 freeSpace()=0;
     virtual DevType devType() const=0;
     virtual void saveCache() {
+        emit cacheSaved();
     }
     virtual void removeCache() {
     }
@@ -227,6 +228,7 @@ Q_SIGNALS:
     void progress(int pc);
     void error(const QString &);
     void cover(const Song &song, const QImage &img);
+    void cacheSaved();
 
 protected:
     #ifndef Q_OS_WIN

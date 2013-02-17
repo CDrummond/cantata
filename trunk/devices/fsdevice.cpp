@@ -653,7 +653,7 @@ void FsDevice::initScaner()
         scanner=new MusicScanner();
         connect(scanner, SIGNAL(libraryUpdated(MusicLibraryItemRoot *)), this, SLOT(libraryUpdated(MusicLibraryItemRoot *)));
         connect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
-        connect(scanner, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
+        connect(scanner, SIGNAL(cacheSaved()), this, SLOT(savedCache()));
         connect(scanner, SIGNAL(savingCache(int)), this, SLOT(savingCache(int)));
         connect(scanner, SIGNAL(readingCache(int)), this, SLOT(readingCache(int)));
         connect(this, SIGNAL(scan(const QString &, const QString &, bool, const QSet<FileOnlySong> &)), scanner, SLOT(scan(const QString &, const QString &, bool, const QSet<FileOnlySong> &)));
@@ -689,7 +689,7 @@ void FsDevice::stopScanner()
     if (scanner) {
         disconnect(scanner, SIGNAL(libraryUpdated(MusicLibraryItemRoot *)), this, SLOT(libraryUpdated(MusicLibraryItemRoot *)));
         disconnect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
-        disconnect(scanner, SIGNAL(cacheSaved()), this, SLOT(cacheSaved()));
+        disconnect(scanner, SIGNAL(cacheSaved()), this, SLOT(savedCache()));
         disconnect(scanner, SIGNAL(savingCache(int)), this, SLOT(savingCache(int)));
         disconnect(scanner, SIGNAL(readingCache(int)), this, SLOT(readingCache(int)));
         scanner->deleteLater();
@@ -735,10 +735,12 @@ void FsDevice::saveCache()
     }
 }
 
-void FsDevice::cacheSaved()
+void FsDevice::savedCache()
 {
     state=Idle;
     cacheProgress=-1;
+    setStatusMessage(QString());
+    emit cacheSaved();
 }
 
 void FsDevice::removeCache()

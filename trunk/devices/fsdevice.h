@@ -146,7 +146,7 @@ protected:
     void clear() const;
 
 protected Q_SLOTS:
-    void cacheSaved();
+    void savedCache();
     void libraryUpdated(MusicLibraryItemRoot *lib);
     void percent(int pc);
     void addSongResult(int status);

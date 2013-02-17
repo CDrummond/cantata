@@ -212,10 +212,10 @@ void ActionDialog::slotButtonClicked(int button)
         switch (button) {
         case Ok:
             if (haveVariousArtists &&
-                ((configureDestLabel->isVisible() &&
+                ((configureDestLabel->isVisible() && sourceUdi.isEmpty() && // Only warn if copying FROM library
                   MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>You have not configured the destination device.<br/>"
                                                                       "Continue with the default settings?</p>"))) ||
-                 (configureSourceLabel->isVisible() &&
+                 (configureSourceLabel->isVisible() && !sourceUdi.isEmpty() && // Only warn if copying TO library
                   MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>You have not configured the source device.<br/>"
                                                                       "Continue with the default settings?</p>"))))) {
                 return;

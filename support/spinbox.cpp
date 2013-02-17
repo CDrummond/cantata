@@ -102,6 +102,7 @@ SpinBox::SpinBox(QWidget *p)
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     spin=new EmptySpinBox(this);
+    connect(spin, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
     if (GtkStyle::mimicWidgets()) {
         spin->setButtonSymbols(QAbstractSpinBox::NoButtons);
         decButton=new QToolButton(this);
@@ -111,7 +112,6 @@ SpinBox::SpinBox(QWidget *p)
         layout->addWidget(incButton);
         layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
         connect(spin, SIGNAL(valueChanged(int)), SLOT(checkValue()));
-        connect(spin, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
         connect(decButton, SIGNAL(pressed()), SLOT(decPressed()));
         connect(incButton, SIGNAL(pressed()), SLOT(incPressed()));
         intButton(decButton, false);

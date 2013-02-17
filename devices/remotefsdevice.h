@@ -38,7 +38,7 @@ public:
     struct Details
     {
         Details()
-            : port(0) {
+            : configured(false) {
         }
         void load(const QString &group=QString());
         void save() const;
@@ -58,7 +58,6 @@ public:
 
         QString name;
         QUrl url;
-        int port;
         bool configured;
     };
 

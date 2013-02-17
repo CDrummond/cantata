@@ -352,7 +352,7 @@ void RemoteFsDevice::mount()
             }
 
             args << details.url.userName()+QChar('@')+details.url.host()+QChar(':')+details.url.path()<< QLatin1String("-p")
-                 << QString::number(details.port) << mountPoint(details, true)
+                 << QString::number(details.url.port()) << mountPoint(details, true)
                  << QLatin1String("-o") << QLatin1String("ServerAliveInterval=15");
                  //<< QLatin1String("-o") << QLatin1String("Ciphers=arcfour");
         } else {

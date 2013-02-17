@@ -64,16 +64,16 @@ private Q_SLOTS:
     void removeSongResult(int status);
     void cleanDirsResult(int status);
     void jobPercent(int percent);
+    void cacheSaved();
 
 private:
-    void cancel();
     Device * getDevice(const QString &udi, bool logErrors=true);
     void configure(const QString &udi);
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
     void slotButtonClicked(int button);
     void setPage(int page, const QString &msg=QString());
     QString formatSong(const Song &s, bool showFiles=false);
-    void refreshLibrary();
+    bool refreshLibrary();
     void removeSong(const Song &s);
     void cleanDirs();
     void incProgress();

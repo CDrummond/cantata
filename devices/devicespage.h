@@ -32,7 +32,6 @@
 #include "remotefsdevice.h"
 #endif
 
-class MainWindow;
 class Action;
 
 class DevicesPage : public QWidget, public Ui::DevicesPage
@@ -40,7 +39,7 @@ class DevicesPage : public QWidget, public Ui::DevicesPage
     Q_OBJECT
 
 public:
-    DevicesPage(MainWindow *p);
+    DevicesPage(QWidget *p);
     virtual ~DevicesPage();
 
     void clear();
@@ -72,14 +71,10 @@ Q_SIGNALS:
     void deleteSongs(const QString &from, const QList<Song> &songs);
 
 private:
-    MainWindow *mw;
     MusicLibraryProxyModel proxy;
-    Action *configureAction;
-    Action *refreshAction;
     Action *copyAction;
     #ifdef ENABLE_REMOTE_DEVICES
     Action *forgetDeviceAction;
-    Action *toggleDeviceAction;
     #endif
     Action *syncAction;
     QSet<QString> genres;

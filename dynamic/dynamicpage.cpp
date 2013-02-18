@@ -26,11 +26,11 @@
 #include "dynamicrulesdialog.h"
 #include "localize.h"
 #include "icons.h"
-#include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
+#include "mpdconnection.h"
 
-DynamicPage::DynamicPage(MainWindow *p)
+DynamicPage::DynamicPage(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
@@ -38,20 +38,18 @@ DynamicPage::DynamicPage(MainWindow *p)
     addAction = ActionCollection::get()->createAction("adddynamic", i18n("Add Dynamic Rules"), "list-add");
     editAction = ActionCollection::get()->createAction("editdynamic", i18n("Edit Dynamic Rules"), Icons::editIcon);
     removeAction = ActionCollection::get()->createAction("removedynamic", i18n("Remove Dynamic Rules"), "list-remove");
-    startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Playlist"), "media-playback-start");
-    stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
     toggleAction = new Action(this);
 
     refreshBtn->setDefaultAction(refreshAction);
     addBtn->setDefaultAction(addAction);
     editBtn->setDefaultAction(editAction);
     removeBtn->setDefaultAction(removeAction);
-    startBtn->setDefaultAction(startAction);
-    stopBtn->setDefaultAction(stopAction);
+    startBtn->setDefaultAction(Dynamic::self()->startAct());
+    stopBtn->setDefaultAction(Dynamic::self()->stopAct());
 
     view->addAction(editAction);
     view->addAction(removeAction);
-    view->addAction(startAction);
+    view->addAction(Dynamic::self()->startAct());
 
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(toggle()));
@@ -61,8 +59,8 @@ DynamicPage::DynamicPage(MainWindow *p)
     connect(addAction, SIGNAL(triggered()), SLOT(add()));
     connect(editAction, SIGNAL(triggered()), SLOT(edit()));
     connect(removeAction, SIGNAL(triggered()), SLOT(remove()));
-    connect(startAction, SIGNAL(triggered()), SLOT(start()));
-    connect(stopAction, SIGNAL(triggered()), SLOT(stop()));
+    connect(Dynamic::self()->startAct(), SIGNAL(triggered()), SLOT(start()));
+    connect(Dynamic::self()->stopAct(), SIGNAL(triggered()), SLOT(stop()));
     connect(toggleAction, SIGNAL(triggered()), SLOT(toggle()));
     connect(Dynamic::self(), SIGNAL(running(bool)), SLOT(running(bool)));
     connect(Dynamic::self(), SIGNAL(loadingList()), view, SLOT(showSpinner()));
@@ -77,13 +75,12 @@ DynamicPage::DynamicPage(MainWindow *p)
     infoIcon->setVisible(false);
     refreshBtn->setVisible(false);
     #endif
-    stopAction->setEnabled(false);
+    Dynamic::self()->stopAct()->setEnabled(false);
     proxy.setSourceModel(Dynamic::self());
     view->setTopText(i18n("Dynamic"));
     view->setModel(&proxy);
     view->hideBackButton();
     view->setDeleteAction(removeAction);
-    view->init(0, 0, toggleAction);
     view->setMode(ItemView::Mode_List);
     controlActions();
 }
@@ -106,7 +103,7 @@ void DynamicPage::controlActions()
     QModelIndexList selected=qobject_cast<Dynamic *>(sender()) ? QModelIndexList() : view->selectedIndexes();
 
     editAction->setEnabled(1==selected.count());
-    startAction->setEnabled(1==selected.count());
+    Dynamic::self()->startAct()->setEnabled(1==selected.count());
     removeAction->setEnabled(selected.count());
 }
 
@@ -184,5 +181,5 @@ void DynamicPage::toggle()
 
 void DynamicPage::running(bool status)
 {
-    stopAction->setEnabled(status);
+    Dynamic::self()->stopAct()->setEnabled(status);
 }

@@ -36,6 +36,8 @@
 #include "localize.h"
 #include "icons.h"
 #include "mountpoints.h"
+#include "stdactions.h"
+#include "actioncollection.h"
 #include <QMenu>
 #include <QStringList>
 #include <QMimeData>
@@ -77,11 +79,15 @@ DevicesModel * DevicesModel::self()
 }
 
 DevicesModel::DevicesModel(QObject *parent)
-    : QAbstractItemModel(parent)
+    : ActionModel(parent)
     , itemMenu(0)
     , enabled(false)
     , inhibitMenuUpdate(false)
 {
+    configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), Icons::configureIcon);
+    refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
+    connectAction = ActionCollection::get()->createAction("connectdevice", i18n("Connect Device"), Icons::connectIcon);
+    disconnectAction = ActionCollection::get()->createAction("disconnectdevice", i18n("Disconnect Device"), Icons::disconnectIcon);
     updateItemMenu();
 }
 
@@ -278,16 +284,27 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             return static_cast<Device *>(item)->capacityString();
         }
         return QVariant();
-    case ItemView::Role_ToggleIcon:
-        if (MusicLibraryItem::Type_Root==item->itemType() && static_cast<Device *>(item)->supportsDisconnect()) {
-            return static_cast<Device *>(item)->isConnected() ? Icons::disconnectIcon : Icons::connectIcon;
+    case ItemView::Role_Action1:
+        if (MusicLibraryItem::Type_Root==item->itemType()) {
+            QVariant v;
+            v.setValue<QPointer<Action> >(configureAction);
+            return v;
         }
-        return QVariant();
-    case ItemView::Role_ToggleToolTip:
-        if (MusicLibraryItem::Type_Root==item->itemType() && static_cast<Device *>(item)->supportsDisconnect()) {
-            return static_cast<Device *>(item)->isConnected() ? i18n("Disconnect Device") : i18n("Connect Device");
+        break;
+    case ItemView::Role_Action2:
+        if (MusicLibraryItem::Type_Root==item->itemType()) {
+            QVariant v;
+            v.setValue<QPointer<Action> >(refreshAction);
+            return v;
         }
-        return QVariant();
+        break;
+    case ItemView::Role_Action3:
+        if (MusicLibraryItem::Type_Root==item->itemType() && static_cast<Device *>(item)->supportsDisconnect()) {
+            QVariant v;
+            v.setValue<QPointer<Action> >(static_cast<Device *>(item)->isConnected() ? disconnectAction : connectAction);
+            return v;
+        }
+        break;
     default:
         return QVariant();
     }
@@ -322,6 +339,8 @@ void DevicesModel::clear(bool clearConfig)
 
 void DevicesModel::setEnabled(bool e)
 {
+    StdActions::self()->copyToDeviceAction->setVisible(e);
+
     if (e==enabled) {
         return;
     }

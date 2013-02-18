@@ -55,7 +55,7 @@ DirViewModel * DirViewModel::self()
 }
 
 DirViewModel::DirViewModel(QObject *parent)
-    : QAbstractItemModel(parent)
+    : ActionModel(parent)
     , rootItem(new DirViewItemRoot)
     , enabled(false)
 {
@@ -199,7 +199,7 @@ QVariant DirViewModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     default:
-        break;
+        return ActionModel::data(index, role);
     }
     return QVariant();
 }

@@ -32,10 +32,11 @@
 #include <QList>
 #include "playlist.h"
 #include "song.h"
+#include "actionmodel.h"
 
 class QMenu;
 
-class PlaylistsModel : public QAbstractItemModel
+class PlaylistsModel : public ActionModel
 {
     Q_OBJECT
 

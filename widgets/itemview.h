@@ -72,16 +72,16 @@ public:
         Role_Image,
         Role_Capacity,
         Role_CapacityText,
-        Role_ToggleIcon,
-        Role_ToggleToolTip,
-        Role_Search
+        Role_Search,
+        Role_Action1,
+        Role_Action2,
+        Role_Action3
     };
 
     static Mode toMode(const QString &str);
     static QString modeStr(Mode m);
 
     static void setup();
-
     static void setForceSingleClick(bool v);
     static bool getForceSingleClick();
 
@@ -89,8 +89,6 @@ public:
     virtual ~ItemView();
 
     void allowGroupedView();
-    void init(QAction *a1, QAction *a2, int actionLevel=-1, QAction *s1=0, QAction *s2=0) { init(a1, a2, 0, actionLevel, s1, s2); }
-    void init(QAction *a1, QAction *a2, QAction *toggle, int actionLevel=-1, QAction *s1=0, QAction *s2=0);
     void addAction(QAction *act);
     void setMode(Mode m);
     void hideBackButton();
@@ -150,12 +148,6 @@ private:
     QTimer *searchTimer;
     ProxyModel *itemModel;
     QAction *backAction;
-    int actLevel;
-    QAction *act1;
-    QAction *act2;
-    QAction *toggle;
-    QAction *subAct1;
-    QAction *subAct2;
     int currentLevel;
     Mode mode;
     QString topText;

@@ -27,38 +27,36 @@
 #include "settings.h"
 #include "localize.h"
 #include "messagebox.h"
-#include "mainwindow.h"
-#include "action.h"
 #include "actioncollection.h"
+#include "stdactions.h"
 #ifndef Q_OS_WIN
 #include <QProcess>
 #endif
 
-FolderPage::FolderPage(MainWindow *p)
+FolderPage::FolderPage(QWidget *p)
     : QWidget(p)
-    , mw(p)
 {
     setupUi(this);
-    addToPlayQueue->setDefaultAction(p->addToPlayQueueAction);
-    replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
-    libraryUpdate->setDefaultAction(p->refreshAction);
+    addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
+    replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
+    libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
     #ifndef Q_OS_WIN
     browseAction = ActionCollection::get()->createAction("openfilemanager", i18n("Open In File Manager"), "system-file-manager");
     #endif
 
     view->setTopText(i18n("Folders"));
-    view->addAction(p->addToPlayQueueAction);
-    view->addAction(p->replacePlayQueueAction);
-    view->addAction(p->addWithPriorityAction);
-    view->addAction(p->addToStoredPlaylistAction);
+    view->addAction(StdActions::self()->addToPlayQueueAction);
+    view->addAction(StdActions::self()->replacePlayQueueAction);
+    view->addAction(StdActions::self()->addWithPriorityAction);
+    view->addAction(StdActions::self()->addToStoredPlaylistAction);
     #ifdef TAGLIB_FOUND
     #ifdef ENABLE_DEVICES_SUPPORT
-    view->addAction(p->copyToDeviceAction);
+    view->addAction(StdActions::self()->copyToDeviceAction);
     #endif
-    view->addAction(p->organiseFilesAction);
-    view->addAction(p->editTagsAction);
+    view->addAction(StdActions::self()->organiseFilesAction);
+    view->addAction(StdActions::self()->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    view->addAction(p->replaygainAction);
+    view->addAction(StdActions::self()->replaygainAction);
     #endif // TAGLIB_FOUND
     #endif
     #ifndef Q_OS_WIN
@@ -68,12 +66,11 @@ FolderPage::FolderPage(MainWindow *p)
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     view->addAction(sep);
-    view->addAction(p->deleteSongsAction);
+    view->addAction(StdActions::self()->deleteSongsAction);
     #endif
 
     proxy.setSourceModel(DirViewModel::self());
     view->setModel(&proxy);
-    view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
     connect(this, SIGNAL(loadFolders()), MPDConnection::self(), SLOT(loadFolders()));
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
@@ -134,19 +131,19 @@ void FolderPage::controlActions()
     QModelIndexList selected=view->selectedIndexes();
     bool enable=selected.count()>0;
 
-    mw->addToPlayQueueAction->setEnabled(enable);
-    mw->addWithPriorityAction->setEnabled(enable);
-    mw->replacePlayQueueAction->setEnabled(enable);
-    mw->addToStoredPlaylistAction->setEnabled(enable);
+    StdActions::self()->addToPlayQueueAction->setEnabled(enable);
+    StdActions::self()->addWithPriorityAction->setEnabled(enable);
+    StdActions::self()->replacePlayQueueAction->setEnabled(enable);
+    StdActions::self()->addToStoredPlaylistAction->setEnabled(enable);
     #ifdef TAGLIB_FOUND
-    mw->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
-    mw->editTagsAction->setEnabled(mw->organiseFilesAction->isEnabled());
+    StdActions::self()->organiseFilesAction->setEnabled(enable && MPDConnection::self()->getDetails().dirReadable);
+    StdActions::self()->editTagsAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    mw->replaygainAction->setEnabled(mw->organiseFilesAction->isEnabled());
+    StdActions::self()->replaygainAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    mw->deleteSongsAction->setEnabled(mw->organiseFilesAction->isEnabled());
-    mw->copyToDeviceAction->setEnabled(mw->organiseFilesAction->isEnabled());
+    StdActions::self()->deleteSongsAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
+    StdActions::self()->copyToDeviceAction->setEnabled(StdActions::self()->organiseFilesAction->isEnabled());
     #endif
     #endif // TAGLIB_FOUND
 

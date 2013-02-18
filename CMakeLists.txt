@@ -98,6 +98,7 @@ SET( CANTATA_SRCS
     gui/cachesettings.cpp
     gui/coverdialog.cpp
     gui/gtkproxystyle.cpp
+    gui/stdactions.cpp
     streams/streamspage.cpp
     streams/streamdialog.cpp
     streams/streamcategorydialog.cpp
@@ -122,6 +123,7 @@ SET( CANTATA_SRCS
     models/albumsproxymodel.cpp
     models/proxymodel.cpp
     models/onlineservicesmodel.cpp
+    models/actionmodel.cpp
     mpd/mpdconnection.cpp
     mpd/mpdparseutils.cpp
     mpd/mpdstats.cpp
@@ -199,6 +201,7 @@ SET( CANTATA_MOC_HDRS
     models/albumsmodel.h
     models/streamsmodel.h
     models/onlineservicesmodel.h
+    models/actionmodel.h
     mpd/mpdconnection.h
     mpd/mpdstats.h
     mpd/mpdstatus.h

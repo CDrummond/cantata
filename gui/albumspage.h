@@ -28,7 +28,6 @@
 #include "albumsproxymodel.h"
 #include "config.h"
 
-class MainWindow;
 class Action;
 class MusicLibraryItemRoot;
 
@@ -36,7 +35,7 @@ class AlbumsPage : public QWidget, public Ui::AlbumsPage
 {
     Q_OBJECT
 public:
-    AlbumsPage(MainWindow *p);
+    AlbumsPage(QWidget *p);
     virtual ~AlbumsPage();
 
     void clear();
@@ -72,7 +71,6 @@ public Q_SLOTS:
 
 private:
     AlbumsProxyModel proxy;
-    MainWindow *mw;
 };
 
 #endif

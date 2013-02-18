@@ -23,16 +23,16 @@
 #ifndef ONLINE_SERVICES_MODEL_H
 #define ONLINE_SERVICES_MODEL_H
 
-#include <QAbstractItemModel>
 #include <QSet>
 #include "song.h"
 #include "config.h"
+#include "actionmodel.h"
 
 class Device;
 class OnlineService;
 class OnlineDevice;
 
-class OnlineServicesModel : public QAbstractItemModel
+class OnlineServicesModel : public ActionModel
 {
     Q_OBJECT
 
@@ -63,6 +63,10 @@ public:
     void createService(const QString &name);
     Device *device(const QString &udi);
     void removeService(const QString &name, bool fullRemove=true);
+    Action * configureAct() const { return configureAction; }
+    Action * refreshAct() const { return refreshAction; }
+    Action * connectAct() const { return connectAction; }
+    Action * disconnectAct() const { return disconnectAction; }
 
 public Q_SLOTS:
     void setArtistImage(const Song &song, const QImage &img);
@@ -85,6 +89,10 @@ private:
     QSet<QString> srvGenres;
     bool enabled;
     OnlineDevice *dev;
+    Action *configureAction;
+    Action *refreshAction;
+    Action *connectAction;
+    Action *disconnectAction;
 
     friend class OnlineService;
 };

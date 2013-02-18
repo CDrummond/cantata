@@ -23,18 +23,18 @@
 #ifndef STREAMSMODEL_H
 #define STREAMSMODEL_H
 
-#include <QAbstractItemModel>
 #include <QList>
 #include <QUrl>
 #include <QHash>
 #include <QSet>
 #include <QStringList>
+#include "actionmodel.h"
 
 class QTimer;
 class QIODevice;
 class QNetworkReply;
 
-class StreamsModel : public QAbstractItemModel
+class StreamsModel : public ActionModel
 {
     Q_OBJECT
 
@@ -115,6 +115,7 @@ public:
     void updateGenres();
     bool isWritable() const { return writable; }
     void setWritable(bool w) { writable=w; }
+    Action * getAction(const QModelIndex &idx, int num);
 
 Q_SIGNALS:
     void downloading(bool);

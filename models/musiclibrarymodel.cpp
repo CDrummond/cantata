@@ -40,6 +40,7 @@
 #include "localize.h"
 #include "utils.h"
 #include "icons.h"
+#include "stdactions.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include <QCommonStyle>
 #include <QFile>
@@ -124,7 +125,7 @@ void MusicLibraryModel::cleanCache()
 }
 
 MusicLibraryModel::MusicLibraryModel(QObject *parent)
-    : QAbstractItemModel(parent)
+    : ActionModel(parent)
     , rootItem(new MusicLibraryItemRoot)
 {
     connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
@@ -329,7 +330,7 @@ QVariant MusicLibraryModel::data(const QModelIndex &index, int role) const
             return MusicLibraryItemAlbum::itemSize();
         }
     default:
-        return QVariant();
+        return ActionModel::data(index, role);
     }
     return QVariant();
 }

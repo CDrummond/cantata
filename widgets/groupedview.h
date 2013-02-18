@@ -60,7 +60,6 @@ public:
     GroupedView(QWidget *parent=0);
     virtual ~GroupedView();
 
-    void init(QAction *a1=0, QAction *a2=0, QAction *t=0, int actionLevel=0);
     void setModel(QAbstractItemModel *model);
     void setFilterActive(bool f);
     bool isFilterActive() const { return filterActive; }

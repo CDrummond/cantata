@@ -343,7 +343,6 @@ FsDevice::FsDevice(DevicesModel *m, Solid::Device &dev)
     , cacheProgress(-1)
     , scanner(0)
 {
-    initScaner();
 }
 
 FsDevice::FsDevice(DevicesModel *m, const QString &name, const QString &id)
@@ -353,7 +352,6 @@ FsDevice::FsDevice(DevicesModel *m, const QString &name, const QString &id)
     , cacheProgress(-1)
     , scanner(0)
 {
-    initScaner();
 }
 
 FsDevice::~FsDevice() {
@@ -663,6 +661,7 @@ void FsDevice::initScaner()
 
 void FsDevice::startScanner(bool fullScan)
 {
+    stopScanner();
     initScaner();
     QSet<FileOnlySong> existingSongs;
     if (!fullScan) {
@@ -680,21 +679,18 @@ void FsDevice::startScanner(bool fullScan)
 
 void FsDevice::stopScanner()
 {
+    state=Idle;
     if (!scanner) {
         return;
     }
     scanner->stop();
-    state=Idle;
-
-    if (scanner) {
-        disconnect(scanner, SIGNAL(libraryUpdated(MusicLibraryItemRoot *)), this, SLOT(libraryUpdated(MusicLibraryItemRoot *)));
-        disconnect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
-        disconnect(scanner, SIGNAL(cacheSaved()), this, SLOT(savedCache()));
-        disconnect(scanner, SIGNAL(savingCache(int)), this, SLOT(savingCache(int)));
-        disconnect(scanner, SIGNAL(readingCache(int)), this, SLOT(readingCache(int)));
-        scanner->deleteLater();
-        scanner=0;
-    }
+    disconnect(scanner, SIGNAL(libraryUpdated(MusicLibraryItemRoot *)), this, SLOT(libraryUpdated(MusicLibraryItemRoot *)));
+    disconnect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
+    disconnect(scanner, SIGNAL(cacheSaved()), this, SLOT(savedCache()));
+    disconnect(scanner, SIGNAL(savingCache(int)), this, SLOT(savingCache(int)));
+    disconnect(scanner, SIGNAL(readingCache(int)), this, SLOT(readingCache(int)));
+    scanner->deleteLater();
+    scanner=0;
 }
 
 void FsDevice::clear() const

@@ -283,7 +283,8 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
                 q.addQueryItem(RemoteFsDevice::constDomainQuery, smbAvahiDomain->text().trimmed());
             }
             if (!smbAvahiName->text().trimmed().isEmpty()) {
-                q.addQueryItem(RemoteFsDevice::constServiceNameQuery, smbAvahiName->text().trimmed());
+                det.serviceName=smbAvahiName->text().trimmed();
+                q.addQueryItem(RemoteFsDevice::constServiceNameQuery, det.serviceName);
             }
             det.url.setQuery(q);
         }

@@ -59,6 +59,9 @@ public:
         QString name;
         QUrl url;
         bool configured;
+        #ifdef ENABLE_MOUNTER
+        QString serviceName;
+        #endif
     };
 
     static const QLatin1String constPromptPassword;
@@ -101,6 +104,11 @@ public:
     bool canPlaySongs() const;
     void destroy(bool removeFromConfig=true);
     const Details & getDetails() const { return details; }
+    QString subText() { return sub; }
+
+private Q_SLOTS:
+    void serviceAdded(const QString &name);
+    void serviceRemoved(const QString &name);
 
 Q_SIGNALS:
     void udiChanged();
@@ -135,6 +143,7 @@ protected:
     ComGooglecodeCantataMounterInterface *mounterIface;
     bool messageSent;
     #endif
+    QString sub;
     friend class DevicesModel;
 };
 

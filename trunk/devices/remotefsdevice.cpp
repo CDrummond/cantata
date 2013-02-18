@@ -204,6 +204,30 @@ void RemoteFsDevice::destroy(bool removeFromConfig)
     deleteLater();
 }
 
+void RemoteFsDevice::serviceAdded(const QString &name)
+{
+    #ifdef ENABLE_MOUNTER
+    if (name==details.serviceName && constSambaAvahiProtocol==details.url.scheme()) {
+        sub=i18n("Available");
+        updateStatus();
+    }
+    #else
+    Q_UNUSED(name)
+    #endif
+}
+
+void RemoteFsDevice::serviceRemoved(const QString &name)
+{
+    #ifdef ENABLE_MOUNTER
+    if (name==details.serviceName && constSambaAvahiProtocol==details.url.scheme()) {
+        sub=i18n("Not Available");
+        updateStatus();
+    }
+    #else
+    Q_UNUSED(name)
+    #endif
+}
+
 QString RemoteFsDevice::createUdi(const QString &n)
 {
     return constCfgPrefix+n;
@@ -305,18 +329,7 @@ void RemoteFsDevice::mount()
     }
     if (constSambaAvahiProtocol==details.url.scheme()) {
         Details det=details;
-        QString serviceName;
-        #if QT_VERSION < 0x050000
-        if (det.url.hasQueryItem(constServiceNameQuery)) {
-            serviceName=det.url.queryItemValue(constServiceNameQuery);
-        }
-        #else
-        QUrlQuery q(det.url);
-        if (q.hasQueryItem(constServiceNameQuery)) {
-            serviceName=q.queryItemValue(constServiceNameQuery);
-        }
-        #endif
-        AvahiService *srv=Avahi::self()->getService(serviceName);
+        AvahiService *srv=Avahi::self()->getService(det.serviceName);
         if (!srv || srv->getHost().isEmpty() || 0==srv->getPort()) {
             emit error(i18n("Failed to resolve connection details for %1").arg(details.name));
             return;
@@ -603,12 +616,24 @@ qint64 RemoteFsDevice::freeSpace()
 
 void RemoteFsDevice::load()
 {
-    #ifdef  ENABLE_MOUNTER
+    #ifdef ENABLE_MOUNTER
     if (RemoteFsDevice::constSambaAvahiProtocol==details.url.scheme()) {
         // Start Avahi listener...
         Avahi::self();
     }
-    #endif
+    #if QT_VERSION < 0x050000
+    if (details.url.hasQueryItem(constServiceNameQuery)) {
+        details.serviceName=details.url.queryItemValue(constServiceNameQuery);
+    }
+    #else // QT_VERSION
+    QUrlQuery q(details.url);
+    if (q.hasQueryItem(constServiceNameQuery)) {
+        details.serviceName=q.queryItemValue(constServiceNameQuery);
+    }
+    #endif // QT_VERSION
+    connect(Avahi::self(), SIGNAL(serviceAdded(QString)), SLOT(serviceAdded(QString)));
+    connect(Avahi::self(), SIGNAL(serviceRemoved(QString)), SLOT(serviceRemoved(QString)));
+    #endif // ENABLE_MOUNTER
     if (isConnected()) {
         setAudioFolder();
         readOpts(settingsFileName(), opts, true);
@@ -618,13 +643,7 @@ void RemoteFsDevice::load()
 
 void RemoteFsDevice::setup()
 {
-    QString key=udi();
     details.load(details.name);
-//    details.path=Utils::fixPath(details.path);
-    #ifndef ENABLE_KDE_SUPPORT
-    QSettings cfg;
-    #endif
-
     if (isConnected()) {
         readOpts(settingsFileName(), opts, true);
     }

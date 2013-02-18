@@ -33,7 +33,7 @@ class AvahiService : public QObject
     Q_OBJECT
 
 public:
-    AvahiService(const QString &name, const QString &type, const QString &domain);
+    AvahiService(const QString &n, const QString &type, const QString &domain);
     virtual ~AvahiService();
 
     const QString & getHost() const { return host; }
@@ -42,12 +42,16 @@ public:
 private:
     void stop();
 
+Q_SIGNALS:
+    void serviceResolved(const QString &);
+
 private Q_SLOTS:
     void resolved(int, int, const QString &name, const QString &, const QString &domain, const QString &h,
                   int, const QString &, ushort p, const QList<QByteArray> &txt, uint);
     void error(const QString &msg);
 
 private:
+    QString name;
     QString host;
     ushort port;
     OrgFreedesktopAvahiServiceResolverInterface *resolver;

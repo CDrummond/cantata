@@ -27,17 +27,17 @@
 #ifndef PLAYQUEUEMODEL_H
 #define PLAYQUEUEMODEL_H
 
-#include <QAbstractItemModel>
 #include <QList>
 #include <QStringList>
 #include <QSet>
 #include "song.h"
 #include "mpdstatus.h"
 #include "config.h"
+#include "actionmodel.h"
 
 class StreamFetcher;
 
-class PlayQueueModel : public QAbstractItemModel
+class PlayQueueModel : public ActionModel
 {
     Q_OBJECT
 
@@ -94,6 +94,7 @@ public:
     bool isGrouped() const { return grouped; }
     void setGrouped(bool g);
     void update(const QList<Song> &songList);
+    Action * getAction(const QModelIndex &, int) { return 0; }
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace, quint8 priority);

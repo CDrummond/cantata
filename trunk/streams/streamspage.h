@@ -27,7 +27,6 @@
 #include "ui_streamspage.h"
 #include "streamsproxymodel.h"
 
-class MainWindow;
 class Action;
 class QAction;
 class QNetworkReply;
@@ -37,7 +36,7 @@ class StreamsPage : public QWidget, public Ui::StreamsPage
     Q_OBJECT
 
 public:
-    StreamsPage(MainWindow *p);
+    StreamsPage(QWidget *p);
     virtual ~StreamsPage();
 
     void setEnabled(bool e);
@@ -52,6 +51,8 @@ public:
 
 Q_SIGNALS:
     void add(const QStringList &streams, bool replace, quint8 priorty);
+
+    void error(const QString &str);
 
 public Q_SLOTS:
     void mpdDirChanged();
@@ -86,7 +87,6 @@ private:
     QAction *importIceCastAction;
     QAction *importSomaFmCastAction;
     StreamsProxyModel proxy;
-    MainWindow *mw;
 };
 
 #endif

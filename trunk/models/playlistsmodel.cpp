@@ -57,7 +57,7 @@ PlaylistsModel * PlaylistsModel::self()
 }
 
 PlaylistsModel::PlaylistsModel(QObject *parent)
-    : QAbstractItemModel(parent)
+    : ActionModel(parent)
     , itemMenu(0)
     , dropAdjust(0)
 {
@@ -203,7 +203,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             #else
             return QTP_TRACKS_DURATION_STR(pl->songs.count(), Song::formattedTime(pl->totalTime()));
             #endif
-        default: break;
+        default:
+            return ActionModel::data(index, role);
         }
     } else {
         SongItem *s=static_cast<SongItem *>(item);
@@ -282,6 +283,8 @@ QVariant PlaylistsModel::data(const QModelIndex &index, int role) const
             return s->title.isEmpty() ? s->file : s->title;
         case ItemView::Role_SubText:
             return s->artist+QLatin1String(" - ")+s->album;
+        default:
+            return ActionModel::data(index, role);
         }
     }
 

@@ -26,12 +26,12 @@
 #ifndef DIRVIEWMODEL_H
 #define DIRVIEWMODEL_H
 
-#include <QAbstractItemModel>
 #include <QList>
 #include <QModelIndex>
 #include "dirviewitemroot.h"
+#include "actionmodel.h"
 
-class DirViewModel : public QAbstractItemModel
+class DirViewModel : public ActionModel
 {
     Q_OBJECT
 

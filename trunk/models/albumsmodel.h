@@ -23,18 +23,18 @@
 #ifndef ALBUMSMODEL_H
 #define ALBUMSMODEL_H
 
-#include <QAbstractItemModel>
 #include <QList>
 #include <QSet>
 #include <QStringList>
 #include "song.h"
 #include "musiclibraryitemalbum.h"
+#include "actionmodel.h"
 
 class MusicLibraryItemRoot;
 class QSize;
 class QPixmap;
 
-class AlbumsModel : public QAbstractItemModel
+class AlbumsModel : public ActionModel
 {
     Q_OBJECT
 

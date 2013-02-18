@@ -179,7 +179,6 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     groupedView->setIndentation(0);
     groupedView->setItemsExpandable(false);
     groupedView->setExpandsOnDoubleClick(false);
-    groupedView->init();
     treeView=new PlayQueueTreeView(this);
     addWidget(groupedView);
     addWidget(treeView);

@@ -345,7 +345,6 @@ void RemoteFsDevice::mount()
         det.url.setScheme(constSambaProtocol);
         det.url.setHost(srv->getHost());
         det.url.setPort(srv->getPort());
-        qWarning() << "CALL MOUNT" << det.url.toString() << mountPoint(details, true);
         mounter()->mount(det.url.toString(), mountPoint(details, true), getuid(), getgid(), getpid());
         setStatusMessage(i18n("Connecting..."));
         messageSent=true;

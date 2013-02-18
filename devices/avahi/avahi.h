@@ -40,8 +40,12 @@ public:
     static Avahi *self();
 
     Avahi();
-    
+
     AvahiService * getService(const QString &name);
+
+Q_SIGNALS:
+    void serviceAdded(const QString &);
+    void serviceRemoved(const QString &);
 
 private Q_SLOTS:
     void addService(int, int, const QString &name, const QString &type, const QString &domain, uint);

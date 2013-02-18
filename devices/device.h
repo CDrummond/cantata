@@ -207,9 +207,12 @@ public:
     virtual bool isStdFs() const {
         return false;
     }
+    virtual QString subText() { return QString(); }
     #endif
 
 #ifndef Q_OS_WIN
+    void updateStatus();
+
 public Q_SLOTS:
     void setStatusMessage(const QString &message);
     void songCount(int c);

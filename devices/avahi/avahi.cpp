@@ -78,7 +78,9 @@ AvahiService * Avahi::getService(const QString &name)
 void Avahi::addService(int, int, const QString &name, const QString &type, const QString &domain, uint)
 {
     if (isLocalDomain(domain) && !services.contains(name)) {
-        services.insert(name, new AvahiService(name, type, domain));
+        AvahiService *srv=new AvahiService(name, type, domain);
+        services.insert(name, srv);
+        connect(srv, SIGNAL(serviceResolved(QString)), this, SIGNAL(serviceAdded(QString)));
     }
 }
 
@@ -86,6 +88,8 @@ void Avahi::removeService(int, int, const QString &name, const QString &, const 
 {
     if (isLocalDomain(domain) && services.contains(name)) {
         services[name]->deleteLater();
+        disconnect(services[name], SIGNAL(serviceResolved(QString)), this, SIGNAL(serviceAdded(QString)));
         services.remove(name);
+        emit serviceRemoved(name);
     }
 }

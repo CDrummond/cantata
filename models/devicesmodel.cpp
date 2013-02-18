@@ -241,7 +241,8 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
                 return dev->statusMessage();
             }
             if (!dev->isConnected()) {
-                return i18n("Not Connected");
+                QString sub=dev->subText();
+                return i18n("Not Connected")+(sub.isEmpty() ? QString() : (QString(" - ")+sub));
             }
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Artist", "%1 Artists", item->childCount());

@@ -29,7 +29,6 @@
 #include "dirviewproxymodel.h"
 #include "config.h"
 
-class MainWindow;
 class Action;
 
 class FolderPage : public QWidget, public Ui::FolderPage
@@ -43,7 +42,7 @@ public:
         ES_GuessTags
     };
 
-    FolderPage(MainWindow *p);
+    FolderPage(QWidget *p);
     virtual ~FolderPage();
 
     void setEnabled(bool e);
@@ -84,7 +83,6 @@ private:
     Action *browseAction;
     #endif
     DirViewProxyModel proxy;
-    MainWindow *mw;
 };
 
 #endif

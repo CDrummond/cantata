@@ -110,6 +110,7 @@
 #include "volumecontrol.h"
 #include "action.h"
 #include "actioncollection.h"
+#include "stdactions.h"
 #ifdef Q_OS_WIN
 static void raiseWindow(QWidget *w);
 #endif
@@ -253,22 +254,13 @@ MainWindow::MainWindow(QWidget *parent)
     connectAction = ActionCollection::get()->createAction("connect", i18n("Connect"), Icons::connectIcon);
     connectionsAction = ActionCollection::get()->createAction("connections", i18n("Connection"), "network-server");
     outputsAction = ActionCollection::get()->createAction("outputs", i18n("Outputs"), Icons::speakerIcon);
-    refreshAction = ActionCollection::get()->createAction("refresh", i18n("Refresh Database"), "view-refresh");
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::toolbarPlayIcon);
     stopTrackAction = ActionCollection::get()->createAction("stoptrack", i18n("Stop"), Icons::toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
-    addToPlayQueueAction = ActionCollection::get()->createAction("addtoplaylist", i18n("Add To Play Queue"), "list-add");
-    addToStoredPlaylistAction = ActionCollection::get()->createAction("addtostoredplaylist", i18n("Add To Playlist"), Icons::playlistIcon);
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::playlistIcon);
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction = ActionCollection::get()->createAction("replaygain", i18n("ReplayGain"), "audio-x-generic");
-    #endif
-    backAction = ActionCollection::get()->createAction("back", i18n("Back"), "go-previous");
-    removeAction = ActionCollection::get()->createAction("removeitems", i18n("Remove"), "list-remove");
-    replacePlayQueueAction = ActionCollection::get()->createAction("replaceplaylist", i18n("Replace Play Queue"), "media-playback-start");
     removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
     copyTrackInfoAction = ActionCollection::get()->createAction("copytrackinfo", i18n("Copy Track Info"));
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
@@ -281,21 +273,12 @@ MainWindow::MainWindow(QWidget *parent)
     repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::repeatIcon);
     singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
     consumePlayQueueAction = ActionCollection::get()->createAction("consumeplaylist", i18n("Consume"), Icons::consumeIcon, i18n("When consume is activated, a song is removed from the play queue after it has been played."));
-    addWithPriorityAction = ActionCollection::get()->createAction("addwithprio", i18n("Add With Priority"), Icon("favorites"));
     setPriorityAction = ActionCollection::get()->createAction("setprio", i18n("Set Priority"), Icon("favorites"));
-    addPrioHighestAction = ActionCollection::get()->createAction("highestprio", i18n("Highest Priority (255)"));
-    addPrioHighAction = ActionCollection::get()->createAction("highprio", i18n("High Priority (200)"));
-    addPrioMediumAction = ActionCollection::get()->createAction("mediumprio", i18n("Medium Priority (125)"));
-    addPrioLowAction = ActionCollection::get()->createAction("lowprio", i18n("Low Priority (50)"));
-    addPrioDefaultAction = ActionCollection::get()->createAction("defaultprio", i18n("Default Priority (0)"));
-    addPrioCustomAction = ActionCollection::get()->createAction("customprio", i18n("Custom Priority..."));
     #ifdef PHONON_FOUND
     streamPlayAction = ActionCollection::get()->createAction("streamplay", i18n("Play Stream"), Icons::toolbarStreamIcon, i18n("When 'Play Stream' is activated, the enabled stream is played locally."));
     #endif
     locateTrackAction = ActionCollection::get()->createAction("locatetrack", i18n("Locate In Library"), "edit-find");
     #ifdef TAGLIB_FOUND
-    organiseFilesAction = ActionCollection::get()->createAction("organizefiles", i18n("Organize Files"), "inode-directory");
-    editTagsAction = ActionCollection::get()->createAction("edittags", i18n("Edit Tags"), "document-edit");
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
     #endif
     showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), "media-playback-start");
@@ -312,13 +295,10 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), "multimedia-player");
-    copyToDeviceAction = ActionCollection::get()->createAction("copytodevice", i18n("Copy To Device"), "multimedia-player");
-    deleteSongsAction = ActionCollection::get()->createAction("deletesongs", i18n("Delete Songs"), "edit-delete");
     #endif
     searchAction = ActionCollection::get()->createAction("search", i18n("Search"), "edit-find");
     expandAllAction = ActionCollection::get()->createAction("expandall", i18n("Expand All"));
     collapseAllAction = ActionCollection::get()->createAction("collapseall", i18n("Collapse All"));
-    setCoverAction = ActionCollection::get()->createAction("setcover", i18n("Set Cover"));
 
     #if defined ENABLE_KDE_SUPPORT
     prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
@@ -330,7 +310,6 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     copyTrackInfoAction->setShortcut(QKeySequence::Copy);
-    backAction->setShortcut(QKeySequence::Back);
     searchAction->setShortcut(Qt::ControlModifier+Qt::Key_F);
     expandAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Plus);
     collapseAllAction->setShortcut(Qt::ControlModifier+Qt::Key_Minus);
@@ -361,10 +340,6 @@ MainWindow::MainWindow(QWidget *parent)
     connectionsGroup=new QActionGroup(connectionsAction->menu());
     outputsAction->setMenu(new QMenu(this));
     outputsAction->setVisible(false);
-    #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setMenu(DevicesModel::self()->menu());
-    #endif
-    addToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
     addPlayQueueToStoredPlaylistAction->setMenu(PlaylistsModel::self()->menu());
 
     menuButton->setMenu(mainMenu);
@@ -441,7 +416,6 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef ENABLE_DEVICES_SUPPORT
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
-    copyToDeviceAction->setVisible(DevicesModel::self()->isEnabled());
     #endif
     AlbumsModel::self()->setEnabled(!hiddenPages.contains(albumsPage->metaObject()->className()));
     folderPage->setEnabled(!hiddenPages.contains(folderPage->metaObject()->className()));
@@ -615,23 +589,9 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     dynamicLabel->setVisible(false);
-    addWithPriorityAction->setVisible(false);
+    StdActions::self()->addWithPriorityAction->setVisible(false);
     setPriorityAction->setVisible(false);
-    addPrioHighestAction->setData(255);
-    addPrioHighAction->setData(200);
-    addPrioMediumAction->setData(125);
-    addPrioLowAction->setData(50);
-    addPrioDefaultAction->setData(0);
-    addPrioCustomAction->setData(-1);
-    QMenu *prioMenu=new QMenu(this);
-    prioMenu->addAction(addPrioHighestAction);
-    prioMenu->addAction(addPrioHighAction);
-    prioMenu->addAction(addPrioMediumAction);
-    prioMenu->addAction(addPrioLowAction);
-    prioMenu->addAction(addPrioDefaultAction);
-    prioMenu->addAction(addPrioCustomAction);
-    addWithPriorityAction->setMenu(prioMenu);
-    setPriorityAction->setMenu(prioMenu);
+    setPriorityAction->setMenu(StdActions::self()->addWithPriorityAction->menu());
 
     // Ensure these objects are created in the GUI thread...
     MPDStatus::self();
@@ -667,12 +627,12 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setStartClosed(Settings::self()->playQueueStartClosed());
     playlistsPage->setStartClosed(Settings::self()->playListsStartClosed());
 
-    connect(addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioDefaultAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
-    connect(addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioHighestAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioHighAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioMediumAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioLowAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioDefaultAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
+    connect(StdActions::self()->addPrioCustomAction, SIGNAL(triggered(bool)), this, SLOT(addWithPriority()));
     connect(MPDConnection::self(), SIGNAL(playlistLoaded(const QString &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(added(const QStringList &)), SLOT(songLoaded()));
     connect(MPDConnection::self(), SIGNAL(outputsUpdated(const QList<Output> &)), this, SLOT(outputsUpdated(const QList<Output> &)));
@@ -696,6 +656,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&playQueueModel, SIGNAL(statsUpdated(int, quint32)), this, SLOT(updatePlayQueueStats(int, quint32)));
     connect(playQueue, SIGNAL(itemsSelected(bool)), SLOT(playQueueItemsSelected(bool)));
     connect(streamsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
+    connect(streamsPage, SIGNAL(error(QString)), this, SLOT(showError(QString)));
     connect(MPDStats::self(), SIGNAL(updated()), this, SLOT(updateStats()));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
     connect(MPDConnection::self(), SIGNAL(playlistUpdated(const QList<Song> &)), this, SLOT(updatePlayQueue(const QList<Song> &)));
@@ -707,8 +668,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(checkMpdDir()));
     connect(Dynamic::self(), SIGNAL(error(const QString &)), SLOT(showError(const QString &)));
     connect(Dynamic::self(), SIGNAL(running(bool)), dynamicLabel, SLOT(setVisible(bool)));
-    connect(refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
-    connect(refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
+    connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), this, SLOT(refresh()));
+    connect(StdActions::self()->refreshAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(update()));
     connect(connectAction, SIGNAL(triggered(bool)), this, SLOT(connectToMpd()));
     connect(prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
     connect(nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
@@ -728,13 +689,13 @@ MainWindow::MainWindow(QWidget *parent)
     #ifdef PHONON_FOUND
     connect(streamPlayAction, SIGNAL(triggered(bool)), this, SLOT(toggleStream(bool)));
     #endif
-    connect(backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
+    connect(StdActions::self()->backAction, SIGNAL(triggered(bool)), this, SLOT(goBack()));
     connect(searchPlayQueueLineEdit, SIGNAL(returnPressed()), this, SLOT(searchPlayQueue()));
     connect(searchPlayQueueLineEdit, SIGNAL(textChanged(const QString)), this, SLOT(searchPlayQueue()));
     connect(playQueue, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(playQueueItemActivated(const QModelIndex &)));
-    connect(removeAction, SIGNAL(triggered(bool)), this, SLOT(removeItems()));
-    connect(addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
-    connect(replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
+    connect(StdActions::self()->removeAction, SIGNAL(triggered(bool)), this, SLOT(removeItems()));
+    connect(StdActions::self()->addToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addToPlayQueue()));
+    connect(StdActions::self()->replacePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(replacePlayQueue()));
     connect(removeFromPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(removeFromPlayQueue()));
     connect(clearPlayQueueAction, SIGNAL(triggered(bool)), searchPlayQueueLineEdit, SLOT(clear()));
     connect(clearPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(clear()));
@@ -744,9 +705,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(expandOrCollapse()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     #ifdef TAGLIB_FOUND
-    connect(editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
+    connect(StdActions::self()->editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
     connect(editPlayQueueTagsAction, SIGNAL(triggered(bool)), this, SLOT(editPlayQueueTags()));
-    connect(organiseFilesAction, SIGNAL(triggered(bool)), SLOT(organiseFiles()));
+    connect(StdActions::self()->organiseFilesAction, SIGNAL(triggered(bool)), SLOT(organiseFiles()));
     #endif
     connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
     connect(showPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(showPlayQueue()));
@@ -773,8 +734,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(folderPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(devicesPage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
     connect(onlinePage, SIGNAL(addToDevice(const QString &, const QString &, const QList<Song> &)), SLOT(copyToDevice(const QString &, const QString &, const QList<Song> &)));
-    connect(deleteSongsAction, SIGNAL(triggered(bool)), SLOT(deleteSongs()));
-    connect(setCoverAction, SIGNAL(triggered(bool)), SLOT(setCover()));
+    connect(StdActions::self()->deleteSongsAction, SIGNAL(triggered(bool)), SLOT(deleteSongs()));
+    connect(StdActions::self()->setCoverAction, SIGNAL(triggered(bool)), SLOT(setCover()));
     connect(devicesPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(libraryPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
     connect(albumsPage, SIGNAL(deleteSongs(const QString &, const QList<Song> &)), SLOT(deleteSongs(const QString &, const QList<Song> &)));
@@ -782,11 +743,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(addStreamToPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(addStreamToPlayQueue()));
     #endif
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    connect(replaygainAction, SIGNAL(triggered(bool)), SLOT(replayGain()));
+    connect(StdActions::self()->replaygainAction, SIGNAL(triggered(bool)), SLOT(replayGain()));
     #endif
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
+    connect(savePlayQueueAction, SIGNAL(triggered(bool)), playlistsPage, SLOT(savePlaylist()));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
     connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
     #ifdef Q_OS_LINUX
@@ -1006,8 +968,8 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
                 currentTabChanged(tabWidget->current_index());
             }
             connectedState=CS_Connected;
-            addWithPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
-            setPriorityAction->setVisible(addWithPriorityAction->isVisible());
+            StdActions::self()->addWithPriorityAction->setVisible(MPDConnection::self()->canUsePriority());
+            setPriorityAction->setVisible(StdActions::self()->addWithPriorityAction->isVisible());
         } else {
             updateWindowTitle();
         }
@@ -1195,14 +1157,6 @@ void MainWindow::checkMpdDir()
 
     #ifdef TAGLIB_FOUND
     editPlayQueueTagsAction->setEnabled(MPDConnection::self()->getDetails().dirReadable);
-    organiseFilesAction->setEnabled(editPlayQueueTagsAction->isEnabled());
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    copyToDeviceAction->setEnabled(editPlayQueueTagsAction->isEnabled());
-    deleteSongsAction->setEnabled(editPlayQueueTagsAction->isEnabled());
-    #endif
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    replaygainAction->setEnabled(editPlayQueueTagsAction->isEnabled());
     #endif
     switch (tabWidget->current_index()) {
     #if defined ENABLE_DEVICES_SUPPORT && defined TAGLIB_FOUND
@@ -1312,7 +1266,7 @@ void MainWindow::readSettings()
     }
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
-    deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
+    StdActions::self()->deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
     lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
@@ -2063,7 +2017,7 @@ void MainWindow::addWithPriority()
 {
     QAction *act=qobject_cast<QAction *>(sender());
 
-    if (!act || !MPDConnection::self()->canUsePriority() || !addWithPriorityAction->isVisible()) {
+    if (!act || !MPDConnection::self()->canUsePriority() || !StdActions::self()->addWithPriorityAction->isVisible()) {
         return;
     }
 
@@ -2437,7 +2391,7 @@ void MainWindow::tabToggled(int index)
     #ifdef ENABLE_DEVICES_SUPPORT
     case PAGE_DEVICES:
         DevicesModel::self()->setEnabled(!DevicesModel::self()->isEnabled());
-        copyToDeviceAction->setVisible(DevicesModel::self()->isEnabled());
+        StdActions::self()->copyToDeviceAction->setVisible(DevicesModel::self()->isEnabled());
         break;
     #endif
     default:
@@ -2743,7 +2697,7 @@ void MainWindow::addToDevice(const QString &udi)
 
 void MainWindow::deleteSongs()
 {
-    if (!deleteSongsAction->isVisible()) {
+    if (!StdActions::self()->deleteSongsAction->isVisible()) {
         return;
     }
     if (libraryPage->isVisible()) {

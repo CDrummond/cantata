@@ -41,7 +41,7 @@ public:
 
     static void setup();
 
-    ActionItemDelegate(QObject *p, QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2);
+    ActionItemDelegate(QObject *p);
 
     virtual ~ActionItemDelegate() {
     }
@@ -50,25 +50,17 @@ public:
     static int constActionBorder;
     static int constActionIconSize;
 
-    static bool hasActions(const QModelIndex &index, int actLevel);
-
     void drawIcons(QPainter *painter, const QRect &r, bool mouseOver, bool rtl, ActionPos actionPos, const QModelIndex &index) const;
 
 public Q_SLOTS:
     bool helpEvent(QHelpEvent *e, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index);
 
 public:
-    QAction * getAction(QAbstractItemView *view, const QModelIndex &index) const;
+    QAction * getAction(const QModelIndex &index) const;
 
 private:
     QRect calcActionRect(bool rtl, ActionPos actionPos, const QRect &rect) const;
     static void adjustActionRect(bool rtl, ActionPos actionPos, QRect &rect);
-
-public:
-    QAction *act1[2];
-    QAction *act2[2];
-    QAction *toggle[2];
-    int actLevel;
 };
 
 #endif

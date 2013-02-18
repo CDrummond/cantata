@@ -27,17 +27,17 @@
 #ifndef MUSIC_LIBRARY_MODEL_H
 #define MUSIC_LIBRARY_MODEL_H
 
-#include <QAbstractItemModel>
 #include <QDateTime>
 #include <QSet>
 #include "musiclibraryitemroot.h"
 #include "musiclibraryitemalbum.h"
 #include "song.h"
+#include "actionmodel.h"
 
 class QMimeData;
 class MusicLibraryItemArtist;
 
-class MusicLibraryModel : public QAbstractItemModel
+class MusicLibraryModel : public ActionModel
 {
     Q_OBJECT
 

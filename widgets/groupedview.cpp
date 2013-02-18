@@ -92,8 +92,8 @@ static bool isAlbumHeader(const QModelIndex &index)
 class GroupedViewDelegate : public ActionItemDelegate
 {
 public:
-    GroupedViewDelegate(GroupedView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel)
-        : ActionItemDelegate(p, a1, a2, t, actionLevel, 0, 0)
+    GroupedViewDelegate(GroupedView *p)
+        : ActionItemDelegate(p)
         , view(p)
     {
     }
@@ -392,7 +392,7 @@ public:
             painter->drawText(duratioRect, duration, QTextOption(Qt::AlignVCenter|Qt::AlignRight));
         }
 
-        if ((option.state & QStyle::State_MouseOver) && (act1 || act2 || toggle) && hasActions(index, actLevel)) {
+        if ((option.state & QStyle::State_MouseOver)) {
             drawIcons(painter, option.rect, true, rtl, AP_HBottom, index);
         }
         painter->restore();
@@ -421,15 +421,11 @@ GroupedView::GroupedView(QWidget *parent)
     setSelectionBehavior(SelectRows);
     connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
     setStyleSheet("QTreeView::branch { border: 0px; }");
+    setItemDelegate(new GroupedViewDelegate(this));
 }
 
 GroupedView::~GroupedView()
 {
-}
-
-void GroupedView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel)
-{
-    setItemDelegate(new GroupedViewDelegate(this, a1, a2, t, actionLevel));
 }
 
 void GroupedView::setModel(QAbstractItemModel *model)

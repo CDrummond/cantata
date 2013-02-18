@@ -338,10 +338,7 @@ private:
     Action *stopTrackAction;
     Action *increaseVolumeAction;
     Action *decreaseVolumeAction;
-    Action *addToPlayQueueAction;
-    Action *replacePlayQueueAction;
     Action *removeFromPlayQueueAction;
-    Action *addToStoredPlaylistAction;
     Action *addPlayQueueToStoredPlaylistAction;
     Action *clearPlayQueueAction;
     Action *copyTrackInfoAction;
@@ -353,13 +350,6 @@ private:
     Action *repeatPlayQueueAction;
     Action *singlePlayQueueAction;
     Action *consumePlayQueueAction;
-    Action *addWithPriorityAction;
-    Action *addPrioHighestAction;  // 255
-    Action *addPrioHighAction;     // 200
-    Action *addPrioMediumAction;   // 125
-    Action *addPrioLowAction;      // 50
-    Action *addPrioDefaultAction;  // 0
-    Action *addPrioCustomAction;
     Action *setPriorityAction;
     #ifdef PHONON_FOUND
     Action *streamPlayAction;
@@ -377,29 +367,18 @@ private:
     Action *lyricsTabAction;
     Action *streamsTabAction;
     Action *onlineTabAction;
-    Action *removeAction;
-    Action *backAction;
     #ifdef TAGLIB_FOUND
-    Action *editTagsAction;
     Action *editPlayQueueTagsAction;
-    Action *organiseFilesAction;
     #endif
     #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     Action *devicesTabAction;
-    Action *copyToDeviceAction;
-    Action *deleteSongsAction;
     #endif
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    Action *replaygainAction;
-    #endif
-    Action *refreshAction;
     Action *searchAction;
     Action *expandAllAction;
     Action *collapseAllAction;
-    Action *setCoverAction;
     Action *serverInfoAction;
     QAction *autoHideSplitterAction;
     TrayItem *trayItem;
@@ -464,18 +443,6 @@ private:
     friend class VolumeSliderEventHandler;
     friend class CoverEventHandler;
     friend class TrayItem;
-    friend class LibraryPage;
-    friend class AlbumsPage;
-    friend class FolderPage;
-    friend class PlaylistsPage;
-    friend class DynamicPage;
-    friend class StreamsPage;
-    friend class OnlineServicesPage;
-    friend class LyricsPage;
-    friend class InfoPage;
-    #ifdef ENABLE_DEVICES_SUPPORT
-    friend class DevicesPage;
-    #endif
 };
 
 #endif

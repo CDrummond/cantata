@@ -23,17 +23,17 @@
 #ifndef DEVICES_MODEL_H
 #define DEVICES_MODEL_H
 
-#include <QAbstractItemModel>
 #include <QSet>
 #include "song.h"
 #include "config.h"
 #include "remotefsdevice.h"
+#include "actionmodel.h"
 
 class QMimeData;
 class Device;
 class QMenu;
 
-class DevicesModel : public QAbstractItemModel
+class DevicesModel : public ActionModel
 {
     Q_OBJECT
 
@@ -64,6 +64,11 @@ public:
     #endif
     void toggleGrouping();
     const QSet<QString> & genres() { return devGenres; }
+
+    Action * configureAct() const { return configureAction; }
+    Action * refreshAct() const { return refreshAction; }
+    Action * connectAct() const { return connectAction; }
+    Action * disconnectAct() const { return disconnectAction; }
 
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img);
@@ -100,6 +105,10 @@ private:
     QMenu *itemMenu;
     bool enabled;
     bool inhibitMenuUpdate;
+    Action *configureAction;
+    Action *refreshAction;
+    Action *connectAction;
+    Action *disconnectAction;
 
     friend class Device;
 };

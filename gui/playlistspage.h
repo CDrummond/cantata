@@ -27,14 +27,13 @@
 #include "ui_playlistspage.h"
 #include "playlistsproxymodel.h"
 
-class MainWindow;
 class Action;
 
 class PlaylistsPage : public QWidget, public Ui::PlaylistsPage
 {
     Q_OBJECT
 public:
-    PlaylistsPage(MainWindow *p);
+    PlaylistsPage(QWidget *p);
     virtual ~PlaylistsPage();
 
     void setStartClosed(bool sc);
@@ -76,7 +75,6 @@ private Q_SLOTS:
 private:
     Action *renamePlaylistAction;
     PlaylistsProxyModel proxy;
-    MainWindow *mw;
 };
 
 #endif

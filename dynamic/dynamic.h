@@ -25,16 +25,16 @@
 #define DYNAMIC_H
 
 #include <QIcon>
-#include <QAbstractItemModel>
 #include <QList>
 #include <QMap>
 #include <QString>
 #include <QStringList>
+#include "actionmodel.h"
 
 class QTimer;
 class QNetworkReply;
 
-class Dynamic : public QAbstractItemModel
+class Dynamic : public ActionModel
 {
     Q_OBJECT
 
@@ -71,28 +71,20 @@ public:
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-
     Entry entry(const QString &e);
-    bool exists(const QString &e) {
-        return entryList.end()!=find(e);
-    }
+    bool exists(const QString &e) { return entryList.end()!=find(e); }
     bool save(const Entry &e);
     void del(const QString &name);
     void start(const QString &name);
     void stop();
     void toggle(const QString &name);
     bool isRunning();
-    QString current() const {
-        return currentEntry;
-    }
-    const QList<Entry> & entries() const {
-        return entryList;
-    }
-    void helperMessage(const QString &message) {
-        Q_UNUSED(message)
-        checkHelper();
-    }
-    
+    QString current() const { return currentEntry; }
+    const QList<Entry> & entries() const { return entryList; }
+    void helperMessage(const QString &message) {  Q_UNUSED(message) checkHelper(); }
+    Action * startAct() const { return startAction; }
+    Action * stopAct() const { return stopAction; }
+
 Q_SIGNALS:
     void running(bool status);
     void error(const QString &str);
@@ -130,6 +122,8 @@ private:
     QTimer *timer;
     QList<Entry> entryList;
     QString currentEntry;
+    Action *startAction;
+    Action *stopAction;
 
     // For remote dynamic servers...
     int statusTime;

@@ -21,45 +21,45 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef DYNAMICPAGE_H
-#define DYNAMICPAGE_H
+#ifndef STDACTIONS_H
+#define STDACTIONS_H
 
-#include "ui_dynamicpage.h"
-#include "dynamicproxymodel.h"
+#include "config.h"
+#include "action.h"
 
-class Action;
-
-class DynamicPage : public QWidget, public Ui::DynamicPage
+class StdActions
 {
-    Q_OBJECT
-
 public:
-    DynamicPage(QWidget *p);
-    virtual ~DynamicPage();
 
-    void focusSearch() { view->focusSearch(); }
+    static StdActions *self();
 
-public Q_SLOTS:
-    void searchItems();
-    void controlActions();
+    StdActions();
 
-private Q_SLOTS:
-    void dynamicUrlChanged(const QString &url);
-    void add();
-    void edit();
-    void remove();
-    void start();
-    void stop();
-    void toggle();
-    void running(bool status);
-
-private:
-    DynamicProxyModel proxy;
+    Action *addToPlayQueueAction;
+    Action *replacePlayQueueAction;
+    Action *addWithPriorityAction;
+    Action *addToStoredPlaylistAction;
+    Action *addPrioHighestAction;  // 255
+    Action *addPrioHighAction;     // 200
+    Action *addPrioMediumAction;   // 125
+    Action *addPrioLowAction;      // 50
+    Action *addPrioDefaultAction;  // 0
+    Action *addPrioCustomAction;
+    #ifdef TAGLIB_FOUND
+    Action *editTagsAction;
+    Action *organiseFilesAction;
+    #endif
+    #ifdef ENABLE_REPLAYGAIN_SUPPORT
+    Action *replaygainAction;
+    #endif
+    #ifdef ENABLE_DEVICES_SUPPORT
+    Action *devicesTabAction;
+    Action *copyToDeviceAction;
+    Action *deleteSongsAction;
+    #endif
+    Action *setCoverAction;
     Action *refreshAction;
-    Action *addAction;
-    Action *editAction;
     Action *removeAction;
-    Action *toggleAction;
+    Action *backAction;
 };
-
 #endif

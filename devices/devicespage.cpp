@@ -32,9 +32,9 @@
 #include "messagebox.h"
 #include "localize.h"
 #include "icons.h"
-#include "mainwindow.h"
 #include "action.h"
 #include "actioncollection.h"
+#include "stdactions.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #endif
@@ -50,31 +50,28 @@
 #include "actiondialog.h"
 #include "trackorganiser.h"
 
-DevicesPage::DevicesPage(MainWindow *p)
+DevicesPage::DevicesPage(QWidget *p)
     : QWidget(p)
-    , mw(p)
 {
     setupUi(this);
-    configureAction = ActionCollection::get()->createAction("configuredevice", i18n("Configure Device"), Icons::configureIcon);
-    refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
     copyAction = ActionCollection::get()->createAction("copytolibrary", i18n("Copy To Library"), Icons::importIcon);
     copyToLibraryButton->setDefaultAction(copyAction);
     syncAction = ActionCollection::get()->createAction("syncdevice", i18n("Sync"), "folder-sync");
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction=ActionCollection::get()->createAction("forgetdevice", i18n("Forget Device"), "list-remove");
-    toggleDeviceAction=ActionCollection::get()->createAction("toggledevice", i18n("Toggle Device"), "network-connect");
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
-    connect(toggleDeviceAction, SIGNAL(triggered()), this, SLOT(toggleDevice()));
+    connect(DevicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
+    connect(DevicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
     #endif
     copyToLibraryButton->setEnabled(false);
     syncAction->setEnabled(false);
     view->addAction(copyAction);
     view->addAction(syncAction);
-    view->addAction(p->organiseFilesAction);
-    view->addAction(p->editTagsAction);
+    view->addAction(StdActions::self()->organiseFilesAction);
+    view->addAction(StdActions::self()->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    view->addAction(p->replaygainAction);
+    view->addAction(StdActions::self()->replaygainAction);
     #endif
     #ifdef ENABLE_REMOTE_DEVICES
     QAction *sepA=new QAction(this);
@@ -85,7 +82,7 @@ DevicesPage::DevicesPage(MainWindow *p)
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     view->addAction(sep);
-    view->addAction(p->deleteSongsAction);
+    view->addAction(StdActions::self()->deleteSongsAction);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
@@ -93,8 +90,8 @@ DevicesPage::DevicesPage(MainWindow *p)
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
-    connect(configureAction, SIGNAL(triggered()), this, SLOT(configureDevice()));
-    connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshDevice()));
+    connect(DevicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureDevice()));
+    connect(DevicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshDevice()));
     QMenu *menu=new QMenu(this);
     #ifdef ENABLE_REMOTE_DEVICES
     Action *addRemote=ActionCollection::get()->createAction("adddevice", i18n("Add Device"), "network-server");
@@ -103,23 +100,18 @@ DevicesPage::DevicesPage(MainWindow *p)
     menu->addAction(forgetDeviceAction);
     menu->addSeparator();
     #endif
-    menu->addAction(configureAction);
-    menu->addAction(refreshAction);
+    menu->addAction(DevicesModel::self()->configureAct());
+    menu->addAction(DevicesModel::self()->refreshAct());
     menu->addSeparator();
-    menu->addAction(p->organiseFilesAction);
-    menu->addAction(p->editTagsAction);
+    menu->addAction(StdActions::self()->organiseFilesAction);
+    menu->addAction(StdActions::self()->editTagsAction);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    menu->addAction(p->replaygainAction);
+    menu->addAction(StdActions::self()->replaygainAction);
     #endif
     menuButton->setMenu(menu);
     proxy.setSourceModel(DevicesModel::self());
     view->setTopText(i18n("Devices"));
     view->setModel(&proxy);
-    #ifdef ENABLE_REMOTE_DEVICES
-    view->init(configureAction, refreshAction, toggleDeviceAction, 0);
-    #else
-    view->init(configureAction, refreshAction, 0);
-    #endif
     view->setRootIsDecorated(false);
 }
 
@@ -281,17 +273,17 @@ void DevicesPage::controlActions()
         }
     }
 
-    configureAction->setEnabled(!busyDevice && 1==selected.count());
-    refreshAction->setEnabled(!busyDevice && 1==selected.count());
+    DevicesModel::self()->configureAct()->setEnabled(!busyDevice && 1==selected.count());
+    DevicesModel::self()->refreshAct()->setEnabled(!busyDevice && 1==selected.count());
     copyAction->setEnabled(!busyDevice && haveTracks && !deviceSelected);
     syncAction->setEnabled(!busyDevice && deviceSelected && connected && 1==selected.count() && singleUdi);
-    mw->deleteSongsAction->setEnabled(!busyDevice && haveTracks && !deviceSelected);
-    mw->editTagsAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
+    StdActions::self()->deleteSongsAction->setEnabled(!busyDevice && haveTracks && !deviceSelected);
+    StdActions::self()->editTagsAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    mw->replaygainAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
+    StdActions::self()->replaygainAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #endif
-    //mw->burnAction->setEnabled(enable && onlyFs);
-    mw->organiseFilesAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
+    //StdActions::self()->burnAction->setEnabled(enable && onlyFs);
+    StdActions::self()->organiseFilesAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction->setEnabled(singleUdi && remoteDev);
     #endif

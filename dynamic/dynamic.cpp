@@ -30,6 +30,7 @@
 #include "networkaccessmanager.h"
 #include "settings.h"
 #include "localize.h"
+#include "actioncollection.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobal>
 K_GLOBAL_STATIC(Dynamic, instance)
@@ -97,6 +98,8 @@ Dynamic::Dynamic()
     connect(MPDConnection::self(), SIGNAL(dynamicUrl(const QString &)), this, SLOT(dynamicUrlChanged(const QString &)));
     connect(MPDConnection::self(), SIGNAL(statusUpdated(const MPDStatusValues &)), this, SLOT(checkRemoteHelper()));
     QTimer::singleShot(500, this, SLOT(checkHelper()));
+    startAction = ActionCollection::get()->createAction("startdynamic", i18n("Start Dynamic Playlist"), "media-playback-start");
+    stopAction = ActionCollection::get()->createAction("stopdynamic", i18n("Stop Dynamic Mode"), "process-stop");
 }
 
 QVariant Dynamic::headerData(int, Qt::Orientation, int) const
@@ -149,8 +152,11 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         return QTP_RULES_STR(entryList.at(index.row()).rules.count());
         #endif
     }
-    case ItemView::Role_ToggleIcon:
-        return Icon(IS_ACTIVE(entryList.at(index.row()).name) ? "process-stop" : "media-playback-start");
+    case ItemView::Role_Action1: {
+        QVariant v;
+        v.setValue<QPointer<Action> >(IS_ACTIVE(entryList.at(index.row()).name) ? stopAction : startAction);
+        return v;
+    }
     default:
         return QVariant();
     }

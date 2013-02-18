@@ -48,6 +48,7 @@
 #include "utils.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include "networkaccessmanager.h"
+#include "stdactions.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(StreamsModel, instance)
@@ -153,7 +154,7 @@ static QString getInternalFile(bool createDir=false)
 }
 
 StreamsModel::StreamsModel()
-    : QAbstractItemModel(0)
+    : ActionModel(0)
     , modified(false)
     , timer(0)
     , job(0)
@@ -256,7 +257,11 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             #else
             return QTP_STREAMS_STR(cat->streams.count());
             #endif
-        default: break;
+        case ItemView::Role_Action1: {
+            QVariant v;
+            v.setValue<QPointer<Action> >(StdActions::self()->replacePlayQueueAction);
+            return v;
+        }
         }
     } else {
         StreamItem *stream=static_cast<StreamItem *>(item);
@@ -266,7 +271,11 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:    return stream->url;
         case Qt::DecorationRole: return stream->icon.isEmpty() ? Icons::radioStreamIcon
                                                                : stream->icon.startsWith('/') ? QIcon(stream->icon) : Icon(stream->icon);
-        default: break;
+        case ItemView::Role_Action1: {
+            QVariant v;
+            v.setValue<QPointer<Action> >(StdActions::self()->replacePlayQueueAction);
+            return v;
+        }
         }
     }
 
@@ -912,6 +921,12 @@ void StreamsModel::updateGenres()
     }
 
     emit updateGenres(genres);
+}
+
+Action * StreamsModel::getAction(const QModelIndex &idx, int num)
+{
+    Q_UNUSED(idx)
+    return 0==num ? StdActions::self()->replacePlayQueueAction : 0;
 }
 
 void StreamsModel::clearCategories()

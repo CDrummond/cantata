@@ -117,7 +117,7 @@ void AlbumsModel::setCoverSize(MusicLibraryItemAlbum::CoverSize size)
 }
 
 AlbumsModel::AlbumsModel(QObject *parent)
-    : QAbstractItemModel(parent)
+    : ActionModel(parent)
     , enabled(false)
 //     , coversRequested(false)
 {
@@ -203,6 +203,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         AlbumItem *al=static_cast<AlbumItem *>(item);
 
         switch (role) {
+        default:
+            return ActionModel::data(index, role);
         case ItemView::Role_Image:
         case Qt::DecorationRole: {
             if (al->cover) {
@@ -260,6 +262,8 @@ QVariant AlbumsModel::data(const QModelIndex &index, int role) const
         SongItem *si=static_cast<SongItem *>(item);
 
         switch (role) {
+        default:
+            return ActionModel::data(index, role);
         case Qt::DecorationRole:
             return Icon(Song::Playlist==si->type ? "view-media-playlist" : "audio-x-generic");
         case Qt::ToolTipRole: {

@@ -28,7 +28,6 @@
 #include "musiclibraryproxymodel.h"
 #include "config.h"
 
-class MainWindow;
 class Action;
 
 class LibraryPage : public QWidget, public Ui::LibraryPage
@@ -36,7 +35,7 @@ class LibraryPage : public QWidget, public Ui::LibraryPage
     Q_OBJECT
 
 public:
-    LibraryPage(MainWindow *p);
+    LibraryPage(QWidget *p);
     virtual ~LibraryPage();
 
     void refresh();
@@ -75,7 +74,6 @@ public Q_SLOTS:
 
 private:
     MusicLibraryProxyModel proxy;
-    MainWindow *mw;
 };
 
 #endif

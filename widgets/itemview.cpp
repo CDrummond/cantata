@@ -27,6 +27,7 @@
 #include "covers.h"
 #include "proxymodel.h"
 #include "actionitemdelegate.h"
+#include "actionmodel.h"
 #include "localize.h"
 #include "icon.h"
 #include "config.h"
@@ -107,9 +108,8 @@ static inline double subTextAlpha(bool selected)
 class ListDelegate : public ActionItemDelegate
 {
 public:
-    ListDelegate(ListView *v, QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2)
-        : ActionItemDelegate(p, a1, a2, t, actionLevel, s1, s2)
-        , allLevelsHaveActions((0!=a1 && 0!=s1) || (0!=a2 && 0!=s2))
+    ListDelegate(ListView *v, QAbstractItemView *p)
+        : ActionItemDelegate(p)
         , view(v)
     {
     }
@@ -222,7 +222,7 @@ public:
             }
         }
 
-        if (!mouseOver && (allLevelsHaveActions || hasActions(index, actLevel))) {
+        if (!mouseOver) {
             drawIcons(painter, AP_VTop==actionPos ? r2 : r, false, rtl, actionPos, index);
         }
 
@@ -282,7 +282,7 @@ public:
             QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, 0L);
         }
 
-        if (drawBgnd && mouseOver && (allLevelsHaveActions || hasActions(index, actLevel))) {
+        if (drawBgnd && mouseOver) {
             drawIcons(painter, AP_VTop==actionPos ? r2 : r, true, rtl, actionPos, index);
         }
 
@@ -290,15 +290,14 @@ public:
     }
 
 protected:
-    bool allLevelsHaveActions;
     ListView *view;
 };
 
 class TreeDelegate : public ListDelegate
 {
 public:
-    TreeDelegate(QAbstractItemView *p, QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2)
-        : ListDelegate(0, p, a1, a2, t, actionLevel, s1, s2)
+    TreeDelegate(QAbstractItemView *p)
+        : ListDelegate(0, p)
         , simpleStyle(true)
     {
     }
@@ -393,7 +392,7 @@ public:
             }
         }
 
-        if ((option.state & QStyle::State_MouseOver) && (allLevelsHaveActions || hasActions(index, actLevel))) {
+        if ((option.state & QStyle::State_MouseOver)) {
             drawIcons(painter, option.rect, true, rtl, AP_HMiddle, index);
         }
     }
@@ -448,12 +447,6 @@ ItemView::ItemView(QWidget *p)
     : QWidget(p)
     , searchTimer(0)
     , itemModel(0)
-    , actLevel(-1)
-    , act1(0)
-    , act2(0)
-    , toggle(0)
-    , subAct1(0)
-    , subAct2(0)
     , currentLevel(0)
     , mode(Mode_SimpleTree)
     , groupedView(0)
@@ -473,6 +466,23 @@ ItemView::ItemView(QWidget *p)
     treeView->setPageDefaults();
     iconGridSize=listGridSize=listView->gridSize();
     listView->installEventFilter(new ListViewEventHandler(listView, backAction));
+    listView->setItemDelegate(new ListDelegate(listView, listView));
+    treeView->setItemDelegate(new TreeDelegate(treeView));
+    connect(treeSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
+    connect(treeSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
+    connect(listSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
+    connect(listSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
+    connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
+    if (SINGLE_CLICK) {
+        connect(treeView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
+    }
+    connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
+    connect(treeView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
+    connect(listView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
+    connect(listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
+    connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
+    connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
+    connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
 }
 
 ItemView::~ItemView()
@@ -493,42 +503,6 @@ void ItemView::allowGroupedView()
         connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
         connect(groupedView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(itemClicked(const QModelIndex &)));
     }
-}
-
-void ItemView::init(QAction *a1, QAction *a2, QAction *t, int actionLevel, QAction *s1, QAction *s2)
-{
-    if (act1 || act2 || toggle || subAct1 || subAct2) {
-        return;
-    }
-
-    act1=a1;
-    act2=a2;
-    toggle=t;
-    subAct1=s1;
-    subAct2=s2;
-    actLevel=actionLevel;
-    listView->setItemDelegate(new ListDelegate(listView, listView, a1, a2, toggle, actionLevel, s1, s2));
-    treeView->setItemDelegate(new TreeDelegate(treeView, a1, a2, toggle, actionLevel, s1, s2));
-    if (groupedView) {
-        groupedView->init(a1, a2, t, 0);
-    }
-    connect(treeSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
-    connect(treeSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
-    connect(listSearch, SIGNAL(returnPressed()), this, SLOT(delaySearchItems()));
-    connect(listSearch, SIGNAL(textChanged(const QString)), this, SLOT(delaySearchItems()));
-    connect(treeView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
-    if (SINGLE_CLICK) {
-        connect(treeView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
-    }
-    connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
-    connect(treeView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
-    connect(listView, SIGNAL(itemsSelected(bool)), this, SIGNAL(itemsSelected(bool)));
-    connect(listView, SIGNAL(activated(const QModelIndex &)), this, SLOT(itemActivated(const QModelIndex &)));
-    connect(listView, SIGNAL(doubleClicked(const QModelIndex &)), this, SIGNAL(doubleClicked(const QModelIndex &)));
-    connect(listView, SIGNAL(clicked(const QModelIndex &)),  this, SLOT(itemClicked(const QModelIndex &)));
-    connect(backAction, SIGNAL(triggered(bool)), this, SLOT(backActivated()));
-    mode=Mode_List;
-    setMode(Mode_SimpleTree);
 }
 
 void ItemView::addAction(QAction *act)
@@ -671,7 +645,12 @@ QAbstractItemView * ItemView::view() const
 
 void ItemView::setModel(ProxyModel *m)
 {
+    bool needtToInit=!itemModel;
     itemModel=m;
+    if (needtToInit) {
+        mode=Mode_List;
+        setMode(Mode_SimpleTree);
+    }
     view()->setModel(m);
 }
 
@@ -892,17 +871,15 @@ QAction * ItemView::getAction(const QModelIndex &index)
 {
     QAbstractItemDelegate *abs=view()->itemDelegate();
     ActionItemDelegate *d=abs ? qobject_cast<ActionItemDelegate *>(abs) : 0;
-    return d ? d->getAction(view(), index) : 0;
+    return d ? d->getAction(index) : 0;
 }
 
 void ItemView::itemClicked(const QModelIndex &index)
 {
-    if ((act1 || act2 || toggle) && (subAct1 || subAct2 || ActionItemDelegate::hasActions(index, actLevel))) {
-        QAction *act=getAction(index);
-        if (act) {
-            act->trigger();
-            return;
-        }
+    QAction *act=getAction(index);
+    if (act) {
+        act->trigger();
+        return;
     }
 
     if (forceSingleClick) {
@@ -919,7 +896,7 @@ void ItemView::itemActivated(const QModelIndex &index)
 
 void ItemView::activateItem(const QModelIndex &index, bool emitRootSet)
 {
-    if ((act1 || act2 || toggle) && (subAct1 || subAct2 || ActionItemDelegate::hasActions(index, actLevel)) && getAction(index)) {
+    if (getAction(index)) {
         return;
     }
 

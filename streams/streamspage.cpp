@@ -28,8 +28,7 @@
 #include "messagebox.h"
 #include "localize.h"
 #include "icons.h"
-#include "mainwindow.h"
-#include "action.h"
+#include "stdactions.h"
 #include "actioncollection.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
@@ -48,11 +47,10 @@
 
 static const char * constUrlProperty("url");
 
-StreamsPage::StreamsPage(MainWindow *p)
+StreamsPage::StreamsPage(QWidget *p)
     : QWidget(p)
     , enabled(false)
     , modelIsDownloading(false)
-    , mw(p)
 {
     setupUi(this);
     importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams"), "document-import");
@@ -91,12 +89,12 @@ StreamsPage::StreamsPage(MainWindow *p)
             act->setProperty(constUrlProperty, ws->getUrl());
             connect(act, SIGNAL(triggered(bool)), this, SLOT(importWebStreams()));
         }
-        connect(ws, SIGNAL(error(const QString &)), mw, SLOT(showError(QString)));
+        connect(ws, SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
         connect(ws, SIGNAL(finished()), this, SLOT(checkIfBusy()));
     }
 
     importAction->setMenu(importMenu);
-    replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
+    replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
 //     connect(view, SIGNAL(itemsSelected(bool)), addToPlaylist, SLOT(setEnabled(bool)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
@@ -107,12 +105,12 @@ StreamsPage::StreamsPage(MainWindow *p)
     connect(exportAction, SIGNAL(triggered(bool)), this, SLOT(exportXml()));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(StreamsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
-    connect(StreamsModel::self(), SIGNAL(error(const QString &)), mw, SLOT(showError(QString)));
+    connect(StreamsModel::self(), SIGNAL(error(const QString &)), this, SIGNAL(error(const QString &)));
     connect(StreamsModel::self(), SIGNAL(downloading(bool)), this, SLOT(downloading(bool)));
     connect(MPDConnection::self(), SIGNAL(dirChanged()), SLOT(mpdDirChanged()));
     QMenu *menu=new QMenu(this);
     menu->addAction(addAction);
-    menu->addAction(p->removeAction);
+    menu->addAction(StdActions::self()->removeAction);
     menu->addAction(editAction);
     menu->addAction(importAction);
     menu->addAction(exportAction);
@@ -124,15 +122,14 @@ StreamsPage::StreamsPage(MainWindow *p)
     view->setAcceptDrops(true);
     view->setDragDropMode(QAbstractItemView::DragDrop);
 //     view->addAction(p->addToPlaylistAction);
-    view->addAction(p->replacePlayQueueAction);
-    view->addAction(p->addWithPriorityAction);
+    view->addAction(StdActions::self()->replacePlayQueueAction);
+    view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(editAction);
     view->addAction(exportAction);
-    view->addAction(p->removeAction);
+    view->addAction(StdActions::self()->removeAction);
     proxy.setSourceModel(StreamsModel::self());
     view->setModel(&proxy);
-    view->setDeleteAction(p->removeAction);
-    view->init(p->replacePlayQueueAction, 0);
+    view->setDeleteAction(StdActions::self()->removeAction);
 
     infoLabel->hide();
     infoIcon->hide();
@@ -483,12 +480,12 @@ void StreamsPage::controlActions()
 {
     QModelIndexList selected=view->selectedIndexes();
     editAction->setEnabled(1==selected.size() && StreamsModel::self()->isWritable());
-    mw->removeAction->setEnabled(selected.count() && StreamsModel::self()->isWritable());
+    StdActions::self()->removeAction->setEnabled(selected.count() && StreamsModel::self()->isWritable());
     addAction->setEnabled(StreamsModel::self()->isWritable());
     exportAction->setEnabled(StreamsModel::self()->rowCount());
     importAction->setEnabled(StreamsModel::self()->isWritable());
-    mw->replacePlayQueueAction->setEnabled(selected.count());
-    mw->addWithPriorityAction->setEnabled(selected.count());
+    StdActions::self()->replacePlayQueueAction->setEnabled(selected.count());
+    StdActions::self()->addWithPriorityAction->setEnabled(selected.count());
     menuButton->controlState();
 }
 

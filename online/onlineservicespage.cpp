@@ -26,7 +26,6 @@
 #include "musiclibraryitemartist.h"
 #include "musiclibraryitemalbum.h"
 #include "musiclibraryitemsong.h"
-#include "mainwindow.h"
 #include "onlineservicesmodel.h"
 #include "jamendoservice.h"
 #include "magnatuneservice.h"
@@ -35,28 +34,24 @@
 #include "localize.h"
 #include "icons.h"
 #include "mainwindow.h"
-#include "action.h"
+#include "stdactions.h"
 #include "actioncollection.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KGlobalSettings>
 #endif
 
-OnlineServicesPage::OnlineServicesPage(MainWindow *p)
+OnlineServicesPage::OnlineServicesPage(QWidget *p)
     : QWidget(p)
-    , mw(p)
 {
     QAction *sep=new QAction(this);
     sep->setSeparator(true);
     setupUi(this);
-    addToPlayQueue->setDefaultAction(p->addToPlayQueueAction);
-    replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
-    view->addAction(p->addToPlayQueueAction);
-    view->addAction(p->replacePlayQueueAction);
-    view->addAction(p->addWithPriorityAction);
-    view->addAction(p->addToStoredPlaylistAction);
-    configureAction = ActionCollection::get()->createAction("configureonlineservice", i18n("Configure Online Service"), Icons::configureIcon);
-    refreshAction = ActionCollection::get()->createAction("refreshonlineservice", i18n("Refresh Online Service"), "view-refresh");
-    toggleAction = ActionCollection::get()->createAction("toggleonlineservice", i18n("Toggle Online Service"));
+    addToPlayQueue->setDefaultAction(StdActions::self()->addToPlayQueueAction);
+    replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
+    view->addAction(StdActions::self()->addToPlayQueueAction);
+    view->addAction(StdActions::self()->replacePlayQueueAction);
+    view->addAction(StdActions::self()->addWithPriorityAction);
+    view->addAction(StdActions::self()->addToStoredPlaylistAction);
     addAction = ActionCollection::get()->createAction("addonlineservice", i18n("Add Online Service"), "view-add");
     removeAction = ActionCollection::get()->createAction("removeonlineservice", i18n("Remove Online Service"), "list-remove");
     downloadAction = ActionCollection::get()->createAction("downloadtolibrary", i18n("Download To Library"), "go-down");
@@ -73,10 +68,11 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
-    connect(configureAction, SIGNAL(triggered()), this, SLOT(configureService()));
+    connect(OnlineServicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureService()));
     connect(removeAction, SIGNAL(triggered()), this, SLOT(removeService()));
-    connect(refreshAction, SIGNAL(triggered()), this, SLOT(refreshService()));
-    connect(toggleAction, SIGNAL(triggered()), this, SLOT(toggleService()));
+    connect(OnlineServicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshService()));
+    connect(OnlineServicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleService()));
+    connect(OnlineServicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleService()));
     connect(jamendoAction, SIGNAL(triggered()), this, SLOT(addJamendo()));
     connect(magnatuneAction, SIGNAL(triggered()), this, SLOT(addMagnatune()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
@@ -85,8 +81,8 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     menu->addAction(addAction);
     menu->addAction(removeAction);
     menu->addAction(sep);
-    menu->addAction(configureAction);
-    menu->addAction(refreshAction);
+    menu->addAction(OnlineServicesModel::self()->configureAct());
+    menu->addAction(OnlineServicesModel::self()->refreshAct());
     view->addAction(downloadAction);
     view->addAction(sep);
     view->addAction(removeAction);
@@ -94,7 +90,6 @@ OnlineServicesPage::OnlineServicesPage(MainWindow *p)
     proxy.setSourceModel(OnlineServicesModel::self());
     view->setTopText(i18n("Online Music"));
     view->setModel(&proxy);
-    view->init(configureAction, refreshAction, toggleAction, 0, p->replacePlayQueueAction, p->addToPlayQueueAction);
     view->setRootIsDecorated(false);
 }
 
@@ -266,13 +261,13 @@ void OnlineServicesPage::controlActions()
 
     addAction->setEnabled(jamendoAction->isEnabled() || magnatuneAction->isEnabled());
     removeAction->setEnabled(srvSelected && 1==selected.count() && (!jamendoAction->isEnabled() || !magnatuneAction->isEnabled()));
-    configureAction->setEnabled(srvSelected && 1==selected.count());
-    refreshAction->setEnabled(srvSelected && 1==selected.count());
+    OnlineServicesModel::self()->configureAct()->setEnabled(srvSelected && 1==selected.count());
+    OnlineServicesModel::self()->refreshAct()->setEnabled(srvSelected && 1==selected.count());
     downloadAction->setEnabled(!srvSelected && canDownload && !selected.isEmpty() && 1==services.count());
-    mw->addToPlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
-    mw->addWithPriorityAction->setEnabled(!srvSelected && !selected.isEmpty());
-    mw->replacePlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
-    mw->addToStoredPlaylistAction->setEnabled(!srvSelected && !selected.isEmpty());
+    StdActions::self()->addToPlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
+    StdActions::self()->addWithPriorityAction->setEnabled(!srvSelected && !selected.isEmpty());
+    StdActions::self()->replacePlayQueueAction->setEnabled(!srvSelected && !selected.isEmpty());
+    StdActions::self()->addToStoredPlaylistAction->setEnabled(!srvSelected && !selected.isEmpty());
     menuButton->controlState();
 }
 

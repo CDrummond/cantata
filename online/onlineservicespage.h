@@ -28,7 +28,6 @@
 #include "musiclibraryproxymodel.h"
 #include "onlineservice.h"
 
-class MainWindow;
 class Action;
 class QAction;
 
@@ -37,7 +36,7 @@ class OnlineServicesPage : public QWidget, public Ui::OnlineServicesPage
     Q_OBJECT
 
 public:
-    OnlineServicesPage(MainWindow *p);
+    OnlineServicesPage(QWidget *p);
     virtual ~OnlineServicesPage();
 
     void setEnabled(bool e);
@@ -75,11 +74,7 @@ private:
     OnlineService * activeSrv() const;
 
 private:
-    MainWindow *mw;
     MusicLibraryProxyModel proxy;
-    Action *configureAction;
-    Action *refreshAction;
-    Action *toggleAction;
     Action *addAction;
     Action *removeAction;
     Action *downloadAction;

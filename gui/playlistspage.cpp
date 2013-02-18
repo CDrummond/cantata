@@ -28,31 +28,31 @@
 #include "inputdialog.h"
 #include "localize.h"
 #include "icons.h"
-#include "mainwindow.h"
-#include "action.h"
+#include "stdactions.h"
 #include "actioncollection.h"
+#include "mpdconnection.h"
+#include <QMenu>
 #ifndef ENABLE_KDE_SUPPORT
 #include <QStyle>
 #endif
 
-PlaylistsPage::PlaylistsPage(MainWindow *p)
+PlaylistsPage::PlaylistsPage(QWidget *p)
     : QWidget(p)
-    , mw(p)
 {
     setupUi(this);
     renamePlaylistAction = ActionCollection::get()->createAction("renameplaylist", i18n("Rename"), "edit-rename");
-    replacePlayQueue->setDefaultAction(p->replacePlayQueueAction);
-    libraryUpdate->setDefaultAction(p->refreshAction);
+    replacePlayQueue->setDefaultAction(StdActions::self()->replacePlayQueueAction);
+    libraryUpdate->setDefaultAction(StdActions::self()->refreshAction);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(PlaylistsModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
 
     view->allowGroupedView();
     view->setTopText(i18n("Playlists"));
-    view->addAction(p->addToPlayQueueAction);
-    view->addAction(p->replacePlayQueueAction);
-    view->addAction(p->addWithPriorityAction);
+    view->addAction(StdActions::self()->addToPlayQueueAction);
+    view->addAction(StdActions::self()->replacePlayQueueAction);
+    view->addAction(StdActions::self()->addWithPriorityAction);
     view->addAction(renamePlaylistAction);
-    view->addAction(p->removeAction);
+    view->addAction(StdActions::self()->removeAction);
     view->setUniformRowHeights(true);
     view->setAcceptDrops(true);
     view->setDragDropOverwriteMode(false);
@@ -60,8 +60,7 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
 
     proxy.setSourceModel(PlaylistsModel::self());
     view->setModel(&proxy);
-    view->init(p->replacePlayQueueAction, p->addToPlayQueueAction);
-    view->setDeleteAction(p->removeAction);
+    view->setDeleteAction(StdActions::self()->removeAction);
 
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
@@ -73,14 +72,13 @@ PlaylistsPage::PlaylistsPage(MainWindow *p)
     connect(this, SIGNAL(savePlaylist(const QString &)), MPDConnection::self(), SLOT(savePlaylist(const QString &)));
     connect(this, SIGNAL(renamePlaylist(const QString &, const QString &)), MPDConnection::self(), SLOT(renamePlaylist(const QString &, const QString &)));
     connect(this, SIGNAL(removeFromPlaylist(const QString &, const QList<quint32> &)), MPDConnection::self(), SLOT(removeFromPlaylist(const QString &, const QList<quint32> &)));
-    connect(p->savePlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(savePlaylist()));
     connect(renamePlaylistAction, SIGNAL(triggered(bool)), this, SLOT(renamePlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(updated(const QModelIndex &)), this, SLOT(updated(const QModelIndex &)));
     connect(PlaylistsModel::self(), SIGNAL(playlistRemoved(quint32)), view, SLOT(collectionRemoved(quint32)));
     QMenu *menu=new QMenu(this);
-    menu->addAction(p->addToPlayQueueAction);
-    menu->addAction(p->addWithPriorityAction);
-    menu->addAction(p->removeAction);
+    menu->addAction(StdActions::self()->addToPlayQueueAction);
+    menu->addAction(StdActions::self()->addWithPriorityAction);
+    menu->addAction(StdActions::self()->removeAction);
     menu->addAction(renamePlaylistAction);
     menuButton->setMenu(menu);
 }
@@ -297,10 +295,10 @@ void PlaylistsPage::controlActions()
     }
     renamePlaylistAction->setEnabled(enable);
     renamePlaylistAction->setEnabled(enable);
-    mw->removeAction->setEnabled(selected.count()>0);
-    mw->replacePlayQueueAction->setEnabled(selected.count()>0);
-    mw->addToPlayQueueAction->setEnabled(selected.count()>0);
-    mw->addWithPriorityAction->setEnabled(selected.count()>0);
+    StdActions::self()->removeAction->setEnabled(selected.count()>0);
+    StdActions::self()->replacePlayQueueAction->setEnabled(selected.count()>0);
+    StdActions::self()->addToPlayQueueAction->setEnabled(selected.count()>0);
+    StdActions::self()->addWithPriorityAction->setEnabled(selected.count()>0);
     menuButton->controlState();
 }
 

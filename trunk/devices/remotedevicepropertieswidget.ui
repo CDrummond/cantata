@@ -178,6 +178,102 @@
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="smbAvahiPage">
+         <layout class="QVBoxLayout" name="verticalLayout_3x">
+          <item>
+           <layout class="QFormLayout" name="formLayout_4x">
+            <item row="0" column="0">
+             <widget class="BuddyLabel" name="hostLabel_2x">
+              <property name="text">
+               <string>Service name:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiName</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="LineEdit" name="smbAvahiName"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="BuddyLabel" name="userLabel_2x">
+              <property name="text">
+               <string>User:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiUser</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="LineEdit" name="smbAvahiUser"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="BuddyLabel" name="label_2x">
+              <property name="text">
+               <string>Domain:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiDomain</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="LineEdit" name="smbAvahiDomain"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="BuddyLabel" name="label_3x">
+              <property name="text">
+               <string>Password:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiPassword</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="LineEdit" name="smbAvahiPassword"/>
+            </item>
+            <item row="4" column="0">
+             <widget class="BuddyLabel" name="folderLabel_x2">
+              <property name="text">
+               <string>Share:</string>
+              </property>
+              <property name="buddy">
+               <cstring>smbAvahiShare</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="LineEdit" name="smbAvahiShare"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4x">
+            <property name="text">
+             <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you enter a password here, it will be stored &lt;b&gt;unencrypted&lt;/b&gt; in Cantata's config file. To have Cantata prompt for the password before accessing the share, set the password to '-'&lt;/i&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacerx">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>14</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
         <widget class="QWidget" name="sshPage">
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>

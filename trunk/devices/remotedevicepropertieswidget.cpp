@@ -36,6 +36,7 @@
 enum Type {
     #ifdef ENABLE_MOUNTER
     Type_Samba,
+    Type_SambaAvahi,
     #endif
     Type_SshFs,
     Type_File
@@ -52,6 +53,7 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     }
     #ifdef ENABLE_MOUNTER
     type->addItem(i18n("Samba Share"), (int)Type_Samba);
+    type->addItem(i18n("Samba Share (Auto-discover host and port)"), (int)Type_SambaAvahi);
     #endif
     type->addItem(i18n("Secure Shell (sshfs)"), (int)Type_SshFs);
     type->addItem(i18n("Locally Mounted Folder"), (int)Type_File);
@@ -60,7 +62,15 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
 void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool create, bool isConnected)
 {
     #ifdef ENABLE_MOUNTER
-    int t=create ? Type_Samba : (d.isLocalFile() ? Type_File : (d.url.scheme()==RemoteFsDevice::constSshfsProtocol ? Type_SshFs : Type_Samba));
+    int t=create
+            ? Type_Samba
+            : d.isLocalFile()
+                ? Type_File
+                : d.url.scheme()==RemoteFsDevice::constSshfsProtocol
+                    ? Type_SshFs
+                    : d.url.scheme()==RemoteFsDevice::constSambaProtocol
+                        ? Type_Samba
+                        : Type_SambaAvahi;
     #else
     int t=create ? Type_SshFs : (d.isLocalFile() ? Type_File : Type_SshFs);
     #endif
@@ -117,6 +127,37 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
         #endif
         break;
     }
+    case Type_SambaAvahi: {
+        smbAvahiShare->setText(d.url.path());
+        smbAvahiUser->setText(d.url.userName());
+        smbAvahiPassword->setText(d.url.password());
+        #if QT_VERSION < 0x050000
+        if (d.url.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
+            smbAvahiDomain->setText(d.url.queryItemValue(RemoteFsDevice::constDomainQuery));
+        } else {
+            smbAvahiDomain->setText(QString());
+        }
+        if (d.url.hasQueryItem(RemoteFsDevice::constServiceNameQuery)) {
+            smbAvahiName->setText(d.url.queryItemValue(RemoteFsDevice::constServiceNameQuery));
+        } else {
+            smbAvahiName->setText(QString());
+        }
+        #else
+        QUrlQuery q(d.url);
+        if (q.hasQueryItem(RemoteFsDevice::constDomainQuery)) {
+            smbAvahiDomain->setText(q.queryItemValue(RemoteFsDevice::constDomainQuery));
+        } else {
+            smbAvahiDomain->setText(QString());
+        }
+        if (q.hasQueryItem(RemoteFsDevice::constServiceNameQuery)) {
+            smbAvahiName->setText(q.queryItemValue(RemoteFsDevice::constServiceNameQuery));
+        } else {
+            smbAvahiName->setText(QString());
+        }
+        #endif
+        break;
+    }
+
     #endif
     }
 
@@ -143,6 +184,12 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     connect(smbDomain, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbShare, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
+
+    connect(smbAvahiName, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(smbAvahiUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(smbAvahiPassword, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(smbAvahiDomain, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    connect(smbAvahiShare, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     #endif
     modified=false;
     setType();
@@ -166,6 +213,11 @@ void RemoteDevicePropertiesWidget::checkSaveable()
     RemoteFsDevice::Details det=details();
     modified=det!=orig;
     saveable=!det.isEmpty();
+    #ifdef ENABLE_MOUNTER
+    if (saveable && Type_SambaAvahi==type->itemData(type->currentIndex()).toInt()) {
+        saveable=!smbAvahiName->text().trimmed().isEmpty();
+    }
+    #endif
     emit updated();
 }
 
@@ -210,6 +262,32 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
             det.url.setQuery(q);
             #endif
         }
+        break;
+    case Type_SambaAvahi:
+        det.url.setUserName(smbAvahiUser->text().trimmed());
+        det.url.setPath(smbAvahiShare->text().trimmed());
+        det.url.setPort(0);
+        det.url.setScheme(RemoteFsDevice::constSambaAvahiProtocol);
+        det.url.setPassword(smbAvahiPassword->text().trimmed());
+        #if QT_VERSION < 0x050000
+        if (!smbDomain->text().trimmed().isEmpty()) {
+            det.url.addQueryItem(RemoteFsDevice::constDomainQuery, smbDomain->text().trimmed());
+        }
+        if (!smbAvahiName->text().trimmed().isEmpty()) {
+            det.url.addQueryItem(RemoteFsDevice::constServiceNameQuery, smbAvahiName->text().trimmed());
+        }
+        #else
+        if (!smbDomain->text().trimmed().isEmpty() || !smbAvahiName->text().trimmed().isEmpty()) {
+            QUrlQuery q;
+            if (!smbDomain->text().trimmed().isEmpty()) {
+                q.addQueryItem(RemoteFsDevice::constDomainQuery, smbAvahiDomain->text().trimmed());
+            }
+            if (!smbAvahiName->text().trimmed().isEmpty()) {
+                q.addQueryItem(RemoteFsDevice::constServiceNameQuery, smbAvahiName->text().trimmed());
+            }
+            det.url.setQuery(q);
+        }
+        #endif
         break;
     #endif
     }

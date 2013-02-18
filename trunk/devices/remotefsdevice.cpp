@@ -631,6 +631,15 @@ void RemoteFsDevice::load()
         details.serviceName=q.queryItemValue(constServiceNameQuery);
     }
     #endif // QT_VERSION
+
+    if (!details.serviceName.isEmpty()) {
+        AvahiService *srv=Avahi::self()->getService(details.serviceName);
+        if (!srv || srv->getHost().isEmpty()) {
+            sub=i18n("Not Available");
+        } else {
+            sub=i18n("Available");
+        }
+    }
     connect(Avahi::self(), SIGNAL(serviceAdded(QString)), SLOT(serviceAdded(QString)));
     connect(Avahi::self(), SIGNAL(serviceRemoved(QString)), SLOT(serviceRemoved(QString)));
     #endif // ENABLE_MOUNTER

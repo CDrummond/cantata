@@ -99,7 +99,7 @@ InfoPage::InfoPage(QWidget *parent)
     , iHaveAskedForArtist(false)
 {
     QVBoxLayout *vlayout=new QVBoxLayout(this);
-    QHBoxLayout *hlayout=new QHBoxLayout(this);
+    QHBoxLayout *hlayout=new QHBoxLayout();
     QFrame *frame=new QFrame(this);
     QHBoxLayout *frameLayout=new QHBoxLayout(frame);
     view=new WebView(frame);

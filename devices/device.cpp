@@ -452,6 +452,11 @@ void Device::removeSongFromList(const Song &s)
 void Device::setStatusMessage(const QString &msg)
 {
     statusMsg=msg;
+    updateStatus();
+}
+
+void Device::updateStatus()
+{
     QModelIndex modelIndex=model->createIndex(model->devices.indexOf(this), 0, this);
     emit model->dataChanged(modelIndex, modelIndex);
 }

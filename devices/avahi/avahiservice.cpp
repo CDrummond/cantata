@@ -27,8 +27,9 @@
 #include "serviceresolverinterface.h"
 Q_DECLARE_METATYPE(QList<QByteArray>)
 
-AvahiService::AvahiService(const QString &name, const QString &type, const QString &domain)
-    : port(0)
+AvahiService::AvahiService(const QString &n, const QString &type, const QString &domain)
+    : name(n)
+    , port(0)
 {
     static bool registeredTypes=false;
     if (!registeredTypes) {
@@ -58,6 +59,7 @@ void AvahiService::resolved(int, int, const QString &name, const QString &, cons
     port=p;
     host=h;
     stop();
+    emit serviceResolved(name);
 }
 
 void AvahiService::error(const QString &)

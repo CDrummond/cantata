@@ -482,6 +482,7 @@ void RemoteFsDevice::procFinished(int exitCode)
     } else {
         setStatusMessage(QString());
         update=new MusicLibraryItemRoot;
+        scanned=false;
         emit updating(udi(), false);
         emit connectionStateHasChanged(udi(), false);
     }

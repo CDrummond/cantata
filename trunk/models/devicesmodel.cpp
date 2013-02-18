@@ -739,9 +739,9 @@ void DevicesModel::mountsChanged()
     #ifdef ENABLE_REMOTE_DEVICES
     foreach (Device *dev, devices) {
         if (Device::RemoteFs==dev->devType()) {
-            if (0==dev->childCount()) {
+            /*if (0==dev->childCount()) {
                 ((RemoteFsDevice *)dev)->load();
-            } else if (!dev->isConnected()) {
+            } else*/ if (!dev->isConnected()) {
                 ((RemoteFsDevice *)dev)->clear();
             }
         }

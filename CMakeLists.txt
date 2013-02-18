@@ -498,6 +498,7 @@ if (TAGLIB_FOUND)
                 devices/remotedevicepropertieswidget.h)
             SET(CANTATA_UIS ${CANTATA_UIS} devices/remotedevicepropertieswidget.ui)
             if (ENABLE_MOUNTER)
+                add_subdirectory(devices/avahi)
                 if (ENABLE_QT5)
                     qt5_add_dbus_interfaces(CANTATA_SRCS devices/mounter/com.googlecode.cantata.mounter.xml)
                 else (ENABLE_QT5)
@@ -588,7 +589,7 @@ endif (MTP_FOUND AND NOT WIN32)
 
 ADD_SUBDIRECTORY( icons )
 
-TARGET_LINK_LIBRARIES(cantata support ${QTLIBS} ${ZLIB_LIBRARIES})
+target_link_libraries(cantata support ${QTLIBS} ${ZLIB_LIBRARIES})
 include_directories(${QTINCLUDES} ${ZLIB_INCLUDE_DIRS})
 
 if (TAGLIB_FOUND)
@@ -616,6 +617,10 @@ if (TAGLIB_FOUND)
     if (NOT ENABLE_KDE_SUPPORT AND NOT WIN32)
         TARGET_LINK_LIBRARIES(cantata solidlite)
     endif (NOT ENABLE_KDE_SUPPORT AND NOT WIN32)
+    if (ENABLE_REMOTE_DEVICES AND ENABLE_MOUNTER AND NOT WIN32)
+        TARGET_LINK_LIBRARIES(cantata avahi)
+    endif (ENABLE_REMOTE_DEVICES AND ENABLE_MOUNTER AND NOT WIN32)
+
 endif (TAGLIB_FOUND)
 
 if (PHONON_FOUND)

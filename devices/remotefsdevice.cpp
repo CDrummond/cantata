@@ -34,6 +34,8 @@
 #include "mountpoints.h"
 #ifdef ENABLE_MOUNTER
 #include "mounterinterface.h"
+#include "avahi/avahi.h"
+#include "avahi/avahiservice.h"
 #include <QDBusConnection>
 #endif
 #include <QTimer>
@@ -53,6 +55,8 @@ const QLatin1String RemoteFsDevice::constFileProtocol("file");
 #ifdef ENABLE_MOUNTER
 const QLatin1String RemoteFsDevice::constDomainQuery("domain");
 const QLatin1String RemoteFsDevice::constSambaProtocol("smb");
+const QLatin1String RemoteFsDevice::constServiceNameQuery("name");
+const QLatin1String RemoteFsDevice::constSambaAvahiProtocol("smb-avahi");
 #endif
 static const QLatin1String constCfgPrefix("RemoteFsDevice-");
 static const QLatin1String constCfgKey("remoteFsDevices");
@@ -107,7 +111,7 @@ static inline bool isValid(const RemoteFsDevice::Details &d)
 {
     return d.isLocalFile() || RemoteFsDevice::constSshfsProtocol==d.url.scheme()
         #ifdef ENABLE_MOUNTER
-        || RemoteFsDevice::constSambaProtocol==d.url.scheme()
+        || RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme()
         #endif
         ;
 }
@@ -116,7 +120,7 @@ static inline bool isMountable(const RemoteFsDevice::Details &d)
 {
     return RemoteFsDevice::constSshfsProtocol==d.url.scheme()
         #ifdef ENABLE_MOUNTER
-        || RemoteFsDevice::constSambaProtocol==d.url.scheme()
+        || RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme()
         #endif
         ;
 }
@@ -299,6 +303,41 @@ void RemoteFsDevice::mount()
     if (messageSent) {
         return;
     }
+    if (constSambaAvahiProtocol==details.url.scheme()) {
+        Details det=details;
+        QString serviceName;
+        #if QT_VERSION < 0x050000
+        if (det.url.hasQueryItem(constServiceNameQuery)) {
+            serviceName=det.url.queryItemValue(constServiceNameQuery);
+        }
+        #else
+        QUrlQuery q(det.url);
+        if (q.hasQueryItem(constServiceNameQuery)) {
+            serviceName=q.queryItemValue(constServiceNameQuery);
+        }
+        #endif
+        AvahiService *srv=Avahi::self()->getService(serviceName);
+        if (!srv || srv->getHost().isEmpty() || 0==srv->getPort()) {
+            emit error(i18n("Failed to resolve connection details for %1").arg(details.name));
+            return;
+        }
+        if (constPromptPassword==det.url.password()) {
+            bool ok=false;
+            QString passwd=InputDialog::getPassword(QString(), &ok, QApplication::activeWindow());
+            if (!ok) {
+                return;
+            }
+            det.url.setPassword(passwd);
+        }
+        det.url.setScheme(constSambaProtocol);
+        det.url.setHost(srv->getHost());
+        det.url.setPort(srv->getPort());
+        qWarning() << "CALL MOUNT" << det.url.toString() << mountPoint(details, true);
+        mounter()->mount(det.url.toString(), mountPoint(details, true), getuid(), getgid(), getpid());
+        setStatusMessage(i18n("Connecting..."));
+        messageSent=true;
+        return;
+    }
     if (constSambaProtocol==details.url.scheme()) {
         Details det=details;
         if (constPromptPassword==det.url.password()) {
@@ -383,7 +422,7 @@ void RemoteFsDevice::unmount()
     if (messageSent) {
         return;
     }
-    if (constSambaProtocol==details.url.scheme()) {
+    if (constSambaProtocol==details.url.scheme() || constSambaAvahiProtocol==details.url.scheme()) {
         mounter()->umount(mountPoint(details, false), getpid());
         setStatusMessage(i18n("Disconnecting..."));
         messageSent=true;
@@ -564,6 +603,12 @@ qint64 RemoteFsDevice::freeSpace()
 
 void RemoteFsDevice::load()
 {
+    #ifdef  ENABLE_MOUNTER
+    if (RemoteFsDevice::constSambaAvahiProtocol==details.url.scheme()) {
+        // Start Avahi listener...
+        Avahi::self();
+    }
+    #endif
     if (isConnected()) {
         setAudioFolder();
         readOpts(settingsFileName(), opts, true);

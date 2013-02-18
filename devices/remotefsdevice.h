@@ -67,10 +67,12 @@ public:
     #ifdef ENABLE_MOUNTER
     static const QLatin1String constDomainQuery;
     static const QLatin1String constSambaProtocol;
+    static const QLatin1String constServiceNameQuery;
+    static const QLatin1String constSambaAvahiProtocol;
     #endif
 
     static QList<Device *> loadAll(DevicesModel *m);
-    static Device * create(DevicesModel *m, const DeviceOptions &options, const Details &d);
+    static Device *create(DevicesModel *m, const DeviceOptions &options, const Details &d);
     static void renamed(const QString &oldName, const QString &newName);
     static QString createUdi(const QString &n);
 
@@ -98,6 +100,7 @@ public:
     }
     bool canPlaySongs() const;
     void destroy(bool removeFromConfig=true);
+    const Details & getDetails() const { return details; }
 
 Q_SIGNALS:
     void udiChanged();

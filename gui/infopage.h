@@ -66,7 +66,6 @@ private:
     QComboBox *combo;
     QString lastWikiQuestion;
     bool iHaveAskedForArtist;
-    QString origAlbumArtist;
     Song song;
 };
 

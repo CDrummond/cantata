@@ -351,7 +351,7 @@ bool Song::revertVariousArtists()
 
 bool Song::setAlbumArtist()
 {
-    if (!artist.isEmpty() && artist!=albumartist) {
+    if (!artist.isEmpty() && albumartist.isEmpty()) {
         albumartist=artist;
         return true;
     }

@@ -416,8 +416,8 @@ void TagEditor::setAlbumArtistFromArtist()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
 
-    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Set 'Album Artist' from 'Artist' for <b>all</b> tracks?")
-                                                              : i18n("Set 'Album Artist' from 'Artist'?"))) {
+    if (MessageBox::No==MessageBox::questionYesNo(this, isAll ? i18n("Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty) for <b>all</b> tracks?")
+                                                              : i18n("Set 'Album Artist' from 'Artist' (if 'Album Artist' is empty)?"))) {
         return;
     }
 

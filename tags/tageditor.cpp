@@ -408,6 +408,7 @@ void TagEditor::revertVa()
             edited.replace(currentSongIndex, s);
             updateEditedStatus(currentSongIndex);
             setSong(s);
+            enableOkButton();
         }
     }
 }
@@ -422,6 +423,7 @@ void TagEditor::setAlbumArtistFromArtist()
     }
 
     if (isAll) {
+        updating=true;
         for (int i=0; i<edited.count(); ++i) {
             Song s=edited.at(i);
             if (s.setAlbumArtist()) {
@@ -432,6 +434,9 @@ void TagEditor::setAlbumArtistFromArtist()
                 }
             }
         }
+        updating=false;
+        setLabelStates();
+        enableOkButton();
     } else {
         Song s=edited.at(currentSongIndex);
         if (s.setAlbumArtist()) {

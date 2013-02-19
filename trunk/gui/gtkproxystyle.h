@@ -33,9 +33,14 @@ class GtkProxyStyle : public QProxyStyle
 public:
     GtkProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
+    int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
+    int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
+    QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const;
+    void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const;
 
 private:
     QComboBox *toolbarCombo;
+    bool slimScrollbars;
 };
 
 #endif

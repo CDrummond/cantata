@@ -102,6 +102,7 @@
     used, so Cantata's spin box attempts to work-around this.
 58. Improve look of Gtk3 style spinbox.
 59. Use xdg-open for "Open In File Manager" action of folder page.
+60. When searching for album information, use the album-artist of the track.
 
 0.9.2
 -----

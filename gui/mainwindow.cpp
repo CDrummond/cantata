@@ -234,7 +234,7 @@ MainWindow::MainWindow(QWidget *parent)
     Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground));
     menuButton->setIcon(Icons::toolbarMenuIcon);
     if (GtkStyle::isActive()) {
-        setStyle(new GtkProxyStyle());
+        qApp->setStyle(new GtkProxyStyle());
     }
 
     #ifdef ENABLE_KDE_SUPPORT

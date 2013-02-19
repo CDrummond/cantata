@@ -214,6 +214,7 @@ void InfoPage::update(const Song &s)
 {
     iHaveAskedForArtist=false;
     song=s;
+    origAlbumArtist=s.albumArtist();
     if (song.isVariousArtists()) {
         song.revertVariousArtists();
     }
@@ -222,7 +223,7 @@ void InfoPage::update(const Song &s)
 
 void InfoPage::fetchInfo()
 {
-    QString question = 0==combo->currentIndex() ? song.artist : (song.artist.isEmpty() && song.album.isEmpty() ? song.title : song.artist + " " + song.album);
+    QString question = 0==combo->currentIndex() ? song.artist : (origAlbumArtist.isEmpty() && song.album.isEmpty() ? song.title : origAlbumArtist + " " + song.album);
     if (!question.isEmpty() && lastWikiQuestion != question) {
         lastWikiQuestion = question;
         view->setHtml(i18n("<h3><i>Loading...</i></h3>"));

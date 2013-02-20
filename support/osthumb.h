@@ -44,6 +44,7 @@ public:
     void setMinimum(int minimum);
     void setMaximum(int maximum);
     bool isVisible() const;
+    bool mouseButtonPressed() const;
 
 protected:
     OsThumbPrivate * const d_ptr;
@@ -57,7 +58,7 @@ Q_SIGNALS:
     void thumbDragged(QPoint coordinates);
     void pageUp();
     void pageDown();
-    void hidding();
+    void hiding();
     void showing();
 
 public Q_SLOTS:

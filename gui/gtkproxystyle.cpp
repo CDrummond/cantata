@@ -28,6 +28,8 @@
 #include <QApplication>
 #include <QPainter>
 
+const char * GtkProxyStyle::constSlimComboProperty="gtkslim";
+
 GtkProxyStyle::GtkProxyStyle()
     : QProxyStyle()
 {
@@ -40,7 +42,7 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
 {
     QSize sz=baseStyle()->sizeFromContents(type, option, size, widget);
 
-    if (CT_ComboBox==type && widget && widget->parentWidget() && QString(widget->parentWidget()->metaObject()->className()).endsWith("Page")) {
+    if (CT_ComboBox==type && widget && widget->property(constSlimComboProperty).toBool()) {
         QSize orig=baseStyle()->sizeFromContents(type, option, size, widget);
         QSize other=baseStyle()->sizeFromContents(type, option, size, toolbarCombo);
         if (orig.height()>other.height()) {

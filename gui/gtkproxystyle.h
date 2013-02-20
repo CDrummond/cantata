@@ -31,6 +31,8 @@ class QComboBox;
 class GtkProxyStyle : public QProxyStyle
 {
 public:
+    static const char * constSlimComboProperty;
+
     GtkProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;

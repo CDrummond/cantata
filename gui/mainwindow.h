@@ -76,6 +76,7 @@ class QActionGroup;
 class QDateTime;
 class VolumeControl;
 class TrayItem;
+class GtkProxyStyle;
 
 // Dummy class so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget
@@ -408,6 +409,7 @@ private:
     #ifndef Q_OS_WIN
     Mpris *mpris;
     GnomeMediaKeys *gnomeMediaKeys;
+    GtkProxyStyle *gtkStyle;
     #endif // Q_OS_WIN
     QTimer *playQueueSearchTimer;
     bool usingProxy;

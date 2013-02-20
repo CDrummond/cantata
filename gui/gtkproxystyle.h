@@ -27,22 +27,43 @@
 #include <QProxyStyle>
 
 class QComboBox;
+class QScrollBar;
+class OsThumb;
 
 class GtkProxyStyle : public QProxyStyle
 {
+    Q_OBJECT
+
 public:
     static const char * constSlimComboProperty;
 
     GtkProxyStyle();
+    ~GtkProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
     int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
     QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const;
     void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const;
+    void polish(QWidget *widget);
+    void unpolish(QWidget *widget);
+    bool eventFilter(QObject *object, QEvent *event);
+    void destroySliderThumb();
+
+private Q_SLOTS:
+    void objectDestroyed(QObject *);
+    void thumbMoved(const QPoint &point);
+    void sbarPageUp();
+    void sbarPageDown();
 
 private:
     QComboBox *toolbarCombo;
+    OsThumb *thumb;
     bool slimScrollbars;
+    int sbarWidth;
+    int sbarWebViewWidth;
+    int sbarAreaWidth;
+    int sliderOffset;
+    QScrollBar *thumbTarget;
 };
 
 #endif

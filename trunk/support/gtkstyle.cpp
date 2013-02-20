@@ -31,7 +31,8 @@
 #include <QTextStream>
 #include <QFile>
 #include <qglobal.h>
-#if !defined Q_OS_WIN
+#ifndef Q_OS_WIN
+#include "gtkproxystyle.h"
 #include "windowmanager.h"
 #if QT_VERSION < 0x050000
 #include <QGtkStyle>
@@ -110,9 +111,11 @@ void GtkStyle::drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painte
 // Copied from musique
 QString GtkStyle::themeName()
 {
+    #ifdef Q_OS_WIN
+    return QString();
+    #else
     static QString name;
 
-    #if !defined Q_OS_WIN
     if (name.isEmpty()) {
         QProcess process;
         process.start("dconf",  QStringList() << "read" << "/org/gnome/desktop/interface/gtk-theme");
@@ -158,9 +161,13 @@ QString GtkStyle::themeName()
         }
         #endif
     }
-    #endif
     return name;
+    #endif
 }
+
+#ifndef Q_OS_WIN
+static GtkProxyStyle *style=0;
+#endif
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
@@ -169,6 +176,7 @@ void GtkStyle::applyTheme(QWidget *widget)
     #else
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();
+        bool useOverlayScrollbars=false;
         if (!theme.isEmpty()) {
             QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/"+theme+QLatin1String(".css"));
             if (cssFile.open(QFile::ReadOnly)) {
@@ -179,8 +187,22 @@ void GtkStyle::applyTheme(QWidget *widget)
                     wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
                     wm->registerWidgetAndChildren(widget);
                 }
+                useOverlayScrollbars=css.left(100).contains("/* scrollbar:overlay */");
             }
         }
+        if (!style) {
+            style=new GtkProxyStyle(useOverlayScrollbars);
+            qApp->setStyle(style);
+        }
+    }
+    #endif
+}
+
+void GtkStyle::cleanup()
+{
+    #ifndef Q_OS_WIN
+    if (style) {
+        style->destroySliderThumb();
     }
     #endif
 }

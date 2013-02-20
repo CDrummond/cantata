@@ -37,7 +37,7 @@ class GtkProxyStyle : public QProxyStyle
 public:
     static const char * constSlimComboProperty;
 
-    GtkProxyStyle();
+    GtkProxyStyle(bool overlaySBars);
     ~GtkProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
@@ -57,8 +57,9 @@ private Q_SLOTS:
 
 private:
     QComboBox *toolbarCombo;
+
+    bool useOverlayScrollbars;
     OsThumb *thumb;
-    bool slimScrollbars;
     int sbarWidth;
     int sbarWebViewWidth;
     int sbarAreaWidth;

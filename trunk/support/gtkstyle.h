@@ -37,6 +37,7 @@ namespace GtkStyle
     extern void drawSelection(const QStyleOptionViewItemV4 &opt, QPainter *painter, double opacity);
     extern QString themeName();
     extern void applyTheme(QWidget *widget);
+    extern void cleanup();
 }
 
 #endif

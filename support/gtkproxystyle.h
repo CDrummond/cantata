@@ -29,6 +29,7 @@
 class QComboBox;
 class QScrollBar;
 class OsThumb;
+class QTimer;
 
 class GtkProxyStyle : public QProxyStyle
 {
@@ -54,8 +55,11 @@ private Q_SLOTS:
     void thumbMoved(const QPoint &point);
     void sbarPageUp();
     void sbarPageDown();
+    void sbarEdgeTimeout();
 
 private:
+    void checkEdges();
+    QRect getSliderRect();
     void updateSliderOffset();
 
 private:
@@ -67,7 +71,9 @@ private:
     int sbarWebViewWidth;
     int sbarAreaWidth;
     int sliderOffset;
+    int sliderLast;
     QScrollBar *thumbTarget;
+    QTimer *edgeTimer;
 };
 
 #endif

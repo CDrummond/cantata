@@ -46,7 +46,7 @@ static bool revertQGtkStyleOverlayMod()
     typedef void (*SetUseOsFn) (int);
     // enforce the "0" suffix, so we'll open libgtk-x11-2.0.so.0
     QLibrary libgtk(QLatin1String("gtk-x11-2.0"), 0, 0);
-    SetUseOsFn setUseOsFn = (SetUseOsFn)libgtk.resolve("ubuntu_gtk_set_use_overlay_scrollbar");;
+    SetUseOsFn setUseOsFn = (SetUseOsFn)libgtk.resolve("ubuntu_gtk_set_use_overlay_scrollbar");
 
     if (setUseOsFn) {
         setUseOsFn(!0);
@@ -256,11 +256,11 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                     QPainterPath path=buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
                                                 (Qt::Horizontal==sb->orientation ? r.height() : r.width())/4);
                     QColor col(option->palette.highlight().color());
-                    if (option->state&State_Active && !(option->state&State_MouseOver)) {
+                    if (option->state&State_Active && (!(sb->activeSubControls&SC_ScrollBarSlider) || !(option->state&State_MouseOver))) {
                         col.setAlphaF(0.5);
                     }
                     painter->fillPath(path, col);
-                    if (option->state&State_Active && !(option->state&State_MouseOver)) {
+                    if (option->state&State_Active && (!(sb->activeSubControls&SC_ScrollBarSlider) || !(option->state&State_MouseOver))) {
                         col.setAlphaF(0.1);
                     }
                     painter->setPen(col);

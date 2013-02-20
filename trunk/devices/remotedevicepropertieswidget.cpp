@@ -34,10 +34,8 @@
 #include "config.h"
 
 enum Type {
-    #ifdef ENABLE_MOUNTER
     Type_Samba,
     Type_SambaAvahi,
-    #endif
     Type_SshFs,
     Type_File
 };
@@ -51,17 +49,14 @@ RemoteDevicePropertiesWidget::RemoteDevicePropertiesWidget(QWidget *parent)
     if (qobject_cast<QTabWidget *>(parent)) {
         verticalLayout->setMargin(4);
     }
-    #ifdef ENABLE_MOUNTER
     type->addItem(i18n("Samba Share"), (int)Type_Samba);
     type->addItem(i18n("Samba Share (Auto-discover host and port)"), (int)Type_SambaAvahi);
-    #endif
     type->addItem(i18n("Secure Shell (sshfs)"), (int)Type_SshFs);
     type->addItem(i18n("Locally Mounted Folder"), (int)Type_File);
 }
 
 void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool create, bool isConnected)
 {
-    #ifdef ENABLE_MOUNTER
     int t=create
             ? Type_Samba
             : d.isLocalFile()
@@ -71,17 +66,12 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
                     : d.url.scheme()==RemoteFsDevice::constSambaProtocol
                         ? Type_Samba
                         : Type_SambaAvahi;
-    #else
-    int t=create ? Type_SshFs : (d.isLocalFile() ? Type_File : Type_SshFs);
-    #endif
     setEnabled(d.isLocalFile() || !isConnected);
     infoLabel->setVisible(create);
     orig=d;
     name->setText(d.name);
     sshPort->setValue(22);
-    #ifdef ENABLE_MOUNTER
     smbPort->setValue(445);
-    #endif
 
     connectionNote->setVisible(!d.isLocalFile() && isConnected);
     sshFolder->setText(QString());
@@ -102,7 +92,6 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     case Type_File:
         fileFolder->setText(d.url.path());
         break;
-    #ifdef ENABLE_MOUNTER
     case Type_Samba: {
         smbShare->setText(d.url.path());
         if (0!=d.url.port()) {
@@ -157,8 +146,6 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
         #endif
         break;
     }
-
-    #endif
     }
 
     name->setEnabled(d.isLocalFile() || !isConnected);
@@ -177,20 +164,17 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     connect(sshFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(sshPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     connect(fileFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    #ifdef ENABLE_MOUNTER
     connect(smbHost, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbPassword, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbDomain, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbShare, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
-
     connect(smbAvahiName, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbAvahiUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbAvahiPassword, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbAvahiDomain, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbAvahiShare, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    #endif
     modified=false;
     setType();
     checkSaveable();
@@ -201,11 +185,9 @@ void RemoteDevicePropertiesWidget::setType()
     if (Type_SshFs==type->itemData(type->currentIndex()).toInt() && 0==sshPort->value()) {
         sshPort->setValue(22);
     }
-    #ifdef ENABLE_MOUNTER
     if (Type_Samba==type->itemData(type->currentIndex()).toInt() && 0==smbPort->value()) {
         smbPort->setValue(445);
     }
-    #endif
 }
 
 void RemoteDevicePropertiesWidget::checkSaveable()
@@ -213,11 +195,9 @@ void RemoteDevicePropertiesWidget::checkSaveable()
     RemoteFsDevice::Details det=details();
     modified=det!=orig;
     saveable=!det.isEmpty();
-    #ifdef ENABLE_MOUNTER
     if (saveable && Type_SambaAvahi==type->itemData(type->currentIndex()).toInt()) {
         saveable=!smbAvahiName->text().trimmed().isEmpty();
     }
-    #endif
     emit updated();
 }
 
@@ -245,7 +225,6 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
         det.url.setScheme(RemoteFsDevice::constFileProtocol);
         break;
     }
-    #ifdef ENABLE_MOUNTER
     case Type_Samba:
         det.url.setHost(smbHost->text().trimmed());
         det.url.setUserName(smbUser->text().trimmed());
@@ -290,7 +269,6 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
         }
         #endif
         break;
-    #endif
     }
     return det;
 }

@@ -37,12 +37,7 @@ The following options may be passed to CMake:
         Default: all
 
     -DENABLE_REMOTE_DEVICES=ON
-        Compile support for sshfs, and local folder, devices.
-        Default: OFF
-
-    -DENABLE_MOUNTER=ON
-        Enable support for, and building of, a small dbu system service to
-        allow user mounts of samba shares. Required remote device support.
+        Compile support for samba, sshfs, and local folder, devices.
         Default: OFF
 
     -DENABLE_WEBKIT=OFF

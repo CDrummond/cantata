@@ -66,7 +66,7 @@ GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
     toolbarCombo=new QComboBox(new QToolBar());
     if (useOverlayScrollbars) {
         int fh=QApplication::fontMetrics().height();
-        sbarWebViewWidth=fh/1.75;
+        sbarWebViewWidth=fh/1.5;
 
         if (Qt::LeftToRight==QApplication::layoutDirection() && revertQGtkStyleOverlayMod()) {
             sbarWidth=qMax(fh/5, 3);
@@ -243,19 +243,19 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                 if (webView) {
                     painter->setRenderHint(QPainter::Antialiasing, true);
                     if (Qt::Horizontal==sb->orientation) {
-                        slider.adjust(0, 2, 0, -2);
+                        slider.adjust(1, 2, -1, -1);
                     } else {
-                        slider.adjust(2, 0, -2, 0);
+                        slider.adjust(2, 1, -1, -1);
                     }
                     QPainterPath path=buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
                                                 (Qt::Horizontal==sb->orientation ? r.height() : r.width())/4);
                     QColor col(option->palette.highlight().color());
                     if (option->state&State_Active && !(option->state&State_MouseOver)) {
-                        col.setAlphaF(0.75);
+                        col.setAlphaF(0.5);
                     }
                     painter->fillPath(path, col);
                     if (option->state&State_Active && !(option->state&State_MouseOver)) {
-                        col.setAlphaF(0.25);
+                        col.setAlphaF(0.1);
                     }
                     painter->setPen(col);
                     painter->drawPath(path);

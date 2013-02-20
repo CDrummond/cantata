@@ -139,7 +139,6 @@ OsThumb::OsThumb(Qt::Orientation o, QWidget *parent) :
     QObject::connect(d_ptr->hideTimer, SIGNAL(timeout()), this, SLOT(hide()));
 }
 
-#include <QDebug>
 void OsThumb::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
@@ -156,7 +155,6 @@ void OsThumb::paintEvent(QPaintEvent *event)
         QColor arrowColor(Qt::black);
         QColor etchColor(Qt::white);
         QLinearGradient fill(1, 1, THUMB_WIDTH - 2, THUMB_HEIGHT - 2);
-        qWarning() << THUMB_WIDTH;
 
         int start=(THUMB_WIDTH/4)*1.5;
         int size=THUMB_WIDTH/5;

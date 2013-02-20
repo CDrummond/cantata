@@ -18,9 +18,7 @@
     and vorbis comment tag types only) 
 10. Add a simple system dbus helper to allow user mounts of samba shares. This
     is intended to allow Cantata to connect to an Android device via Droid NAS.
-    Requires cantata be built with remote device support (both 
-    -DENABLE_REMOTE_DEVICES=ON and -DENABLE_MOUNTER=ON need to be passed to
-    cmake).
+    Requires cantata be built with remote device support.
 11. Add first-run wizard to enable basic configuration before Cantata is
     started for the first time.
 12. Add a 'Cache' page to settings dialog, allowing cache usage to be displayed

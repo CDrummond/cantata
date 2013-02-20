@@ -32,12 +32,10 @@
 #include "localize.h"
 #include "settings.h"
 #include "mountpoints.h"
-#ifdef ENABLE_MOUNTER
 #include "mounterinterface.h"
 #include "avahi/avahi.h"
 #include "avahi/avahiservice.h"
 #include <QDBusConnection>
-#endif
 #include <QTimer>
 #include <QProcess>
 #include <QDir>
@@ -52,12 +50,11 @@
 const QLatin1String RemoteFsDevice::constPromptPassword("-");
 const QLatin1String RemoteFsDevice::constSshfsProtocol("sshfs");
 const QLatin1String RemoteFsDevice::constFileProtocol("file");
-#ifdef ENABLE_MOUNTER
 const QLatin1String RemoteFsDevice::constDomainQuery("domain");
 const QLatin1String RemoteFsDevice::constSambaProtocol("smb");
 const QLatin1String RemoteFsDevice::constServiceNameQuery("name");
 const QLatin1String RemoteFsDevice::constSambaAvahiProtocol("smb-avahi");
-#endif
+
 static const QLatin1String constCfgPrefix("RemoteFsDevice-");
 static const QLatin1String constCfgKey("remoteFsDevices");
 
@@ -109,20 +106,14 @@ void RemoteFsDevice::Details::save() const
 
 static inline bool isValid(const RemoteFsDevice::Details &d)
 {
-    return d.isLocalFile() || RemoteFsDevice::constSshfsProtocol==d.url.scheme()
-        #ifdef ENABLE_MOUNTER
-        || RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme()
-        #endif
-        ;
+    return d.isLocalFile() || RemoteFsDevice::constSshfsProtocol==d.url.scheme() ||
+           RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme();
 }
 
 static inline bool isMountable(const RemoteFsDevice::Details &d)
 {
-    return RemoteFsDevice::constSshfsProtocol==d.url.scheme()
-        #ifdef ENABLE_MOUNTER
-        || RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme()
-        #endif
-        ;
+    return RemoteFsDevice::constSshfsProtocol==d.url.scheme() ||
+           RemoteFsDevice::constSambaProtocol==d.url.scheme() || RemoteFsDevice::constSambaAvahiProtocol==d.url.scheme();
 }
 
 QList<Device *> RemoteFsDevice::loadAll(DevicesModel *m)
@@ -206,26 +197,18 @@ void RemoteFsDevice::destroy(bool removeFromConfig)
 
 void RemoteFsDevice::serviceAdded(const QString &name)
 {
-    #ifdef ENABLE_MOUNTER
     if (name==details.serviceName && constSambaAvahiProtocol==details.url.scheme()) {
         sub=i18n("Available");
         updateStatus();
     }
-    #else
-    Q_UNUSED(name)
-    #endif
 }
 
 void RemoteFsDevice::serviceRemoved(const QString &name)
 {
-    #ifdef ENABLE_MOUNTER
     if (name==details.serviceName && constSambaAvahiProtocol==details.url.scheme()) {
         sub=i18n("Not Available");
         updateStatus();
     }
-    #else
-    Q_UNUSED(name)
-    #endif
 }
 
 QString RemoteFsDevice::createUdi(const QString &n)
@@ -258,9 +241,8 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const DeviceOptions &options, co
     , currentMountStatus(false)
     , details(d)
     , proc(0)
-    #ifdef ENABLE_MOUNTER
     , mounterIface(0)
-    #endif
+    , messageSent(false)
 {
     opts=options;
 //    details.path=Utils::fixPath(details.path);
@@ -274,10 +256,8 @@ RemoteFsDevice::RemoteFsDevice(DevicesModel *m, const Details &d)
     , currentMountStatus(false)
     , details(d)
     , proc(0)
-    #ifdef ENABLE_MOUNTER
     , mounterIface(0)
     , messageSent(false)
-    #endif
 {
 //    details.path=Utils::fixPath(details.path);
     setup();
@@ -298,7 +278,6 @@ void RemoteFsDevice::toggle()
     }
 }
 
-#ifdef ENABLE_MOUNTER
 ComGooglecodeCantataMounterInterface * RemoteFsDevice::mounter()
 {
     if (!mounterIface) {
@@ -312,7 +291,6 @@ ComGooglecodeCantataMounterInterface * RemoteFsDevice::mounter()
     }
     return mounterIface;
 }
-#endif
 
 void RemoteFsDevice::mount()
 {
@@ -323,7 +301,6 @@ void RemoteFsDevice::mount()
         return;
     }
 
-    #ifdef ENABLE_MOUNTER
     if (messageSent) {
         return;
     }
@@ -365,7 +342,6 @@ void RemoteFsDevice::mount()
         messageSent=true;
         return;
     }
-    #endif
 
     QString cmd;
     QStringList args;
@@ -430,7 +406,6 @@ void RemoteFsDevice::unmount()
         return;
     }
 
-    #ifdef ENABLE_MOUNTER
     if (messageSent) {
         return;
     }
@@ -440,7 +415,6 @@ void RemoteFsDevice::unmount()
         messageSent=true;
         return;
     }
-    #endif
 
     QString cmd;
     QStringList args;
@@ -490,7 +464,6 @@ void RemoteFsDevice::procFinished(int exitCode)
 
 void RemoteFsDevice::mountStatus(const QString &mp, int pid, int st)
 {
-    #ifdef ENABLE_MOUNTER
     if (pid==getpid() && mp==mountPoint(details, false)) {
         messageSent=false;
         if (0!=st) {
@@ -502,16 +475,10 @@ void RemoteFsDevice::mountStatus(const QString &mp, int pid, int st)
             emit connectionStateHasChanged(udi(), true);
         }
     }
-    #else
-    Q_UNUSED(mp)
-    Q_UNUSED(pid)
-    Q_UNUSED(st)
-    #endif
 }
 
 void RemoteFsDevice::umountStatus(const QString &mp, int pid, int st)
 {
-    #ifdef ENABLE_MOUNTER
     if (pid==getpid() && mp==mountPoint(details, false)) {
         messageSent=false;
         if (0!=st) {
@@ -524,11 +491,6 @@ void RemoteFsDevice::umountStatus(const QString &mp, int pid, int st)
             emit connectionStateHasChanged(udi(), false);
         }
     }
-    #else
-    Q_UNUSED(mp)
-    Q_UNUSED(pid)
-    Q_UNUSED(st)
-    #endif
 }
 
 bool RemoteFsDevice::isConnected() const
@@ -616,7 +578,6 @@ qint64 RemoteFsDevice::freeSpace()
 
 void RemoteFsDevice::load()
 {
-    #ifdef ENABLE_MOUNTER
     if (RemoteFsDevice::constSambaAvahiProtocol==details.url.scheme()) {
         // Start Avahi listener...
         Avahi::self();
@@ -642,7 +603,7 @@ void RemoteFsDevice::load()
     }
     connect(Avahi::self(), SIGNAL(serviceAdded(QString)), SLOT(serviceAdded(QString)));
     connect(Avahi::self(), SIGNAL(serviceRemoved(QString)), SLOT(serviceRemoved(QString)));
-    #endif // ENABLE_MOUNTER
+
     if (isConnected()) {
         setAudioFolder();
         readOpts(settingsFileName(), opts, true);

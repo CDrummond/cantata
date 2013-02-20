@@ -59,20 +59,16 @@ public:
         QString name;
         QUrl url;
         bool configured;
-        #ifdef ENABLE_MOUNTER
         QString serviceName;
-        #endif
     };
 
     static const QLatin1String constPromptPassword;
     static const QLatin1String constSshfsProtocol;
     static const QLatin1String constFileProtocol;
-    #ifdef ENABLE_MOUNTER
     static const QLatin1String constDomainQuery;
     static const QLatin1String constSambaProtocol;
     static const QLatin1String constServiceNameQuery;
     static const QLatin1String constSambaAvahiProtocol;
-    #endif
 
     static QList<Device *> loadAll(DevicesModel *m);
     static Device *create(DevicesModel *m, const DeviceOptions &options, const Details &d);
@@ -94,13 +90,7 @@ public:
     void saveOptions();
     void configure(QWidget *parent);
     DevType devType() const { return RemoteFs; }
-    QString icon() const {
-        #ifdef ENABLE_MOUNTER
-        return QLatin1String(details.isLocalFile() ? "inode-directory" : (constSshfsProtocol==details.url.scheme() ? "utilities-terminal" : "network-server"));
-        #else
-        return QLatin1String(details.isLocalFile() ? "inode-directory" : "utilities-terminal");
-        #endif
-    }
+    QString icon() const { return QLatin1String(details.isLocalFile() ? "inode-directory" : (constSshfsProtocol==details.url.scheme() ? "utilities-terminal" : "network-server")); }
     bool canPlaySongs() const;
     void destroy(bool removeFromConfig=true);
     const Details & getDetails() const { return details; }
@@ -121,9 +111,7 @@ protected:
 
 private:
     bool isOldSshfs();
-    #ifdef ENABLE_MOUNTER
     ComGooglecodeCantataMounterInterface * mounter();
-    #endif
     QString settingsFileName() const;
 
 protected Q_SLOTS:
@@ -139,10 +127,8 @@ protected:
     Details details;
     QProcess *proc;
 //     QString audioFolderSetting;
-    #ifdef ENABLE_MOUNTER
     ComGooglecodeCantataMounterInterface *mounterIface;
     bool messageSent;
-    #endif
     QString sub;
     friend class DevicesModel;
 };

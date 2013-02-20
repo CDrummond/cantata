@@ -72,7 +72,6 @@
 #include "lyricspage.h"
 #include "infopage.h"
 #include "gtkstyle.h"
-#include "gtkproxystyle.h"
 #ifdef ENABLE_DEVICES_SUPPORT
 #include "filejob.h"
 #include "devicespage.h"
@@ -100,6 +99,7 @@
 #include "cantataadaptor.h"
 #include "gnomemediakeys.h"
 #include "mountpoints.h"
+#include "gtkproxystyle.h"
 #endif
 #include "dynamicpage.h"
 #include "dynamic.h"
@@ -230,12 +230,14 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
+    #ifndef Q_OS_WIN
     GtkStyle::applyTheme(toolbar);
-    Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground));
-    menuButton->setIcon(Icons::toolbarMenuIcon);
     if (GtkStyle::isActive()) {
         qApp->setStyle(new GtkProxyStyle());
     }
+    #endif
+    Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground));
+    menuButton->setIcon(Icons::toolbarMenuIcon);
 
     #ifdef ENABLE_KDE_SUPPORT
     prefAction=static_cast<Action *>(KStandardAction::preferences(this, SLOT(showPreferencesDialog()), ActionCollection::get()));

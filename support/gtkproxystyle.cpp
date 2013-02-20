@@ -70,7 +70,7 @@ GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
 
         if (Qt::LeftToRight==QApplication::layoutDirection() && revertQGtkStyleOverlayMod()) {
             sbarWidth=qMax(fh/5, 3);
-            sbarAreaWidth=sbarWidth*4;
+            sbarAreaWidth=sbarWidth*6;
             thumb=new OsThumb();
             thumb->setVisible(false);
             connect(thumb, SIGNAL(thumbDragged(QPoint)), SLOT(thumbMoved(QPoint)));

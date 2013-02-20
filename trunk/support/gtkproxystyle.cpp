@@ -34,8 +34,10 @@
 #include <QPainter>
 #include <QDesktopWidget>
 #include <QLibrary>
+#include <QTimer>
 
 const char * GtkProxyStyle::constSlimComboProperty="gtkslim";
+static const char * constIncProp="inc";
 
 static bool revertQGtkStyleOverlayMod()
 {
@@ -76,6 +78,10 @@ GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
             connect(thumb, SIGNAL(thumbDragged(QPoint)), SLOT(thumbMoved(QPoint)));
             connect(thumb, SIGNAL(pageUp()), SLOT(sbarPageUp()));
             connect(thumb, SIGNAL(pageDown()), SLOT(sbarPageDown()));
+            edgeTimer=new QTimer(this);
+            edgeTimer->setSingleShot(true);
+            edgeTimer->setInterval(10);
+            connect(edgeTimer, SIGNAL(timeout()), SLOT(sbarEdgeTimeout()));
         }
     }
 }
@@ -330,6 +336,11 @@ void GtkProxyStyle::destroySliderThumb()
         thumb->deleteLater();
         thumb=0;
     }
+    if (edgeTimer) {
+        edgeTimer->stop();
+        edgeTimer->deleteLater();
+        edgeTimer=0;
+    }
 }
 
 bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
@@ -350,12 +361,12 @@ bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
             if (thumbTarget!=bar) {
                 if (thumbTarget) {
                     disconnect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
-                    disconnect(thumb, SIGNAL(hidding()), thumbTarget, SLOT(update()));
+                    disconnect(thumb, SIGNAL(hiding()), thumbTarget, SLOT(update()));
                     disconnect(thumb, SIGNAL(showing()), thumbTarget, SLOT(update()));
                 }
                 thumbTarget=bar;
                 connect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
-                connect(thumb, SIGNAL(hidding()), thumbTarget, SLOT(update()));
+                connect(thumb, SIGNAL(hiding()), thumbTarget, SLOT(update()));
                 connect(thumb, SIGNAL(showing()), thumbTarget, SLOT(update()));
             }
 
@@ -384,8 +395,6 @@ bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
                     if (QApplication::desktop() && toXPos+thumb->width()>QApplication::desktop()->width()) {
                         toXPos=global.x()-(thumb->width()-sbarWidth);
                     }
-                    int sliderPos=sliderPositionFromValue(thumbTarget->minimum(), thumbTarget->maximum(), thumbTarget->value(), thumbTarget->height() - thumb->height());
-                    sliderOffset=toYPos-(global.y()+sliderPos);
                 } else {
                     int thumbSize = thumb->height();
                     toXPos = a->mapToGlobal(he->pos()).x() - thumb->width() / 2;
@@ -405,11 +414,10 @@ bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
                     if (QApplication::desktop() && toYPos+thumb->height()>QApplication::desktop()->height()) {
                         toYPos=global.y()-(thumb->height()-sbarWidth);
                     }
-                    int sliderPos=sliderPositionFromValue(thumbTarget->minimum(), thumbTarget->maximum(), thumbTarget->value(), thumbTarget->width() - thumb->width());
-                    sliderOffset=toXPos-(global.x()+sliderPos);
                 }
                 thumb->move(toXPos, toYPos);
                 thumb->show();
+                updateSliderOffset();
             }
         } else {
             thumb->hide();
@@ -432,7 +440,7 @@ void GtkProxyStyle::objectDestroyed(QObject *obj)
 void GtkProxyStyle::thumbMoved(const QPoint &point)
 {
     if (thumbTarget) {
-        QPoint global=thumbTarget->mapToGlobal(QPoint(0, 0));
+        QPoint global=thumbTarget->mapToGlobal(QPoint(0, 0))-QPoint(1, 1);
         int value=thumbTarget->value();
         if (Qt::Vertical==thumbTarget->orientation()) {
             thumbTarget->setValue(sliderValueFromPosition(thumbTarget->minimum(), thumbTarget->maximum(), point.y() - (global.y()+sliderOffset), thumbTarget->height() - thumb->height()));
@@ -442,7 +450,7 @@ void GtkProxyStyle::thumbMoved(const QPoint &point)
         if (value==thumbTarget->value()) {
             thumbTarget->update();
         }
-        updateSliderOffset();
+        checkEdges();
     }
 }
 
@@ -470,14 +478,70 @@ void GtkProxyStyle::sbarPageDown()
     }
 }
 
+void GtkProxyStyle::sbarEdgeTimeout()
+{
+    if (thumb->mouseButtonPressed()) {
+        int newVal=thumbTarget->value()+(edgeTimer->property(constIncProp).toBool() ? 1 : -1);
+        if (newVal>=thumbTarget->minimum() && newVal<=thumbTarget->maximum()) {
+            thumbTarget->setValue(newVal);
+        }
+        if (newVal>thumbTarget->minimum() && newVal<thumbTarget->maximum()) {
+            checkEdges();
+        }
+    }
+}
+
+void GtkProxyStyle::checkEdges()
+{
+    if (thumb->mouseButtonPressed()) {
+        QPoint global=thumbTarget->mapToGlobal(QPoint(0, 0))-QPoint(1, 1);
+        bool v=Qt::Vertical==thumbTarget->orientation();
+        if (thumbTarget->value()!=thumbTarget->minimum() &&
+                (v ? thumb->pos().y()==global.y() : thumb->pos().x()==global.x())) {
+            if (getSliderRect().intersects(QRect(thumb->pos(), thumb->size()))) {
+                edgeTimer->setProperty(constIncProp, false);
+                edgeTimer->start();
+            }
+        } else if (thumbTarget->value()!=thumbTarget->maximum() &&
+                   (v ? (thumb->pos().y()+thumb->height())==(global.y()+thumbTarget->height()+2) : (thumb->pos().x()+thumb->width())==(global.x()+thumbTarget->width()+2))) {
+            if (getSliderRect().intersects(QRect(thumb->pos(), thumb->size()))) {
+                edgeTimer->setProperty(constIncProp, true);
+                edgeTimer->start();
+            }
+        }
+    }
+}
+
+QRect GtkProxyStyle::getSliderRect()
+{
+    QStyleOptionSlider opt;
+    opt.initFrom(thumbTarget);
+    opt.subControls = QStyle::SC_None;
+    opt.activeSubControls = QStyle::SC_None;
+    opt.orientation = thumbTarget->orientation();
+    opt.minimum = thumbTarget->minimum();
+    opt.maximum = thumbTarget->maximum();
+    opt.sliderPosition = thumbTarget->sliderPosition();
+    opt.sliderValue = thumbTarget->value();
+    opt.singleStep = thumbTarget->singleStep();
+    opt.pageStep = thumbTarget->pageStep();
+    opt.upsideDown = thumbTarget->invertedAppearance();
+    if (Qt::Horizontal==thumbTarget->orientation()) {
+        opt.state |= QStyle::State_Horizontal;
+    }
+
+    QRect slider=subControlRect(CC_ScrollBar, &opt, SC_ScrollBarSlider, thumbTarget);
+    QPoint gpos=thumbTarget->mapToGlobal(slider.topLeft())-QPoint(1, 1);
+    return QRect(gpos.x(), gpos.y(), slider.width(), slider.height());
+}
+
 void GtkProxyStyle::updateSliderOffset()
 {
-    QPoint global=thumbTarget->mapToGlobal(QPoint(0, 0));
+    QRect sr=getSliderRect();
+
     if (Qt::Vertical==thumbTarget->orientation()) {
-        int sliderPos=sliderPositionFromValue(thumbTarget->minimum(), thumbTarget->maximum(), thumbTarget->value(), thumbTarget->height() - thumb->height());
-        sliderOffset=thumb->pos().y()-(global.y()+sliderPos);
+        sliderOffset=thumb->pos().y()-sr.y();
     } else {
-        int sliderPos=sliderPositionFromValue(thumbTarget->minimum(), thumbTarget->maximum(), thumbTarget->value(), thumbTarget->width() - thumb->width());
-        sliderOffset=thumb->pos().x()-(global.x()+sliderPos);
+        sliderOffset=thumb->pos().x()-sr.x();
     }
 }

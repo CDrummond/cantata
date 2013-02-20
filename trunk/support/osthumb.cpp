@@ -198,7 +198,7 @@ void OsThumb::paintEvent(QPaintEvent *event)
             else
                 d->alpha -= ANIMATION_ALPHA_INC;
             if (d->alpha<100) {
-                emit hidding();
+                emit hiding();
             }
         }
 
@@ -403,6 +403,12 @@ void OsThumb::mouseReleaseEvent(QMouseEvent *event)
 bool OsThumb::isVisible() const
 {
     return hidden();
+}
+
+bool OsThumb::mouseButtonPressed() const
+{
+    Q_D(const OsThumb);
+    return d->mouseButtonPressed;
 }
 
 Qt::Orientation OsThumb::orientation() const

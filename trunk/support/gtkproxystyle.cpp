@@ -436,18 +436,13 @@ void GtkProxyStyle::thumbMoved(const QPoint &point)
         int value=thumbTarget->value();
         if (Qt::Vertical==thumbTarget->orientation()) {
             thumbTarget->setValue(sliderValueFromPosition(thumbTarget->minimum(), thumbTarget->maximum(), point.y() - (global.y()+sliderOffset), thumbTarget->height() - thumb->height()));
-            if ((sliderOffset>0 && point.y()<=global.y()) || (sliderOffset<0 && ((point.y()+thumb->height())>=(global.y()+thumbTarget->height())))) {
-                sliderOffset=0;
-            }
         } else {
             thumbTarget->setValue(sliderValueFromPosition(thumbTarget->minimum(), thumbTarget->maximum(), point.x() - global.x(), thumbTarget->width() - thumb->width()));
-            if ((sliderOffset>0 && point.x()<=global.x()) || (sliderOffset<0 && ((point.x()+thumb->width())>=(global.x()+thumbTarget->width())))) {
-                sliderOffset=0;
-            }
         }
         if (value==thumbTarget->value()) {
             thumbTarget->update();
         }
+        updateSliderOffset();
     }
 }
 

@@ -34,7 +34,6 @@
 #include <QPainter>
 #include <QDesktopWidget>
 #include <QLibrary>
-#include <QDebug>
 
 const char * GtkProxyStyle::constSlimComboProperty="gtkslim";
 
@@ -460,6 +459,7 @@ void GtkProxyStyle::sbarPageUp()
         if (thumbTarget->value() < thumbTarget->minimum()) {
             thumbTarget->setValue(thumbTarget->minimum());
         }
+        updateSliderOffset();
     }
 }
 
@@ -471,6 +471,18 @@ void GtkProxyStyle::sbarPageDown()
         if (thumbTarget->value() > thumbTarget->maximum()) {
             thumbTarget->setValue(thumbTarget->maximum());
         }
+        updateSliderOffset();
     }
 }
 
+void GtkProxyStyle::updateSliderOffset()
+{
+    QPoint global=thumbTarget->mapToGlobal(QPoint(0, 0));
+    if (Qt::Vertical==thumbTarget->orientation()) {
+        int sliderPos=sliderPositionFromValue(thumbTarget->minimum(), thumbTarget->maximum(), thumbTarget->value(), thumbTarget->height() - thumb->height());
+        sliderOffset=thumb->pos().y()-(global.y()+sliderPos);
+    } else {
+        int sliderPos=sliderPositionFromValue(thumbTarget->minimum(), thumbTarget->maximum(), thumbTarget->value(), thumbTarget->width() - thumb->width());
+        sliderOffset=thumb->pos().x()-(global.x()+sliderPos);
+    }
+}

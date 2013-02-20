@@ -193,7 +193,6 @@ MainWindow::MainWindow(QWidget *parent)
     #if !defined Q_OS_WIN
     , mpris(0)
     , gnomeMediaKeys(0)
-    , gtkStyle(0)
     #endif
     , playQueueSearchTimer(0)
     , usingProxy(false)
@@ -231,13 +230,7 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
-    #ifndef Q_OS_WIN
     GtkStyle::applyTheme(toolbar);
-    if (GtkStyle::isActive()) {
-        gtkStyle=new GtkProxyStyle();
-        qApp->setStyle(gtkStyle);
-    }
-    #endif
     Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground));
     menuButton->setIcon(Icons::toolbarMenuIcon);
 
@@ -1012,9 +1005,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     } else {
-        #ifndef Q_OS_WIN
-        gtkStyle->destroySliderThumb();
-        #endif
+        GtkStyle::cleanup();
         #ifdef ENABLE_KDE_SUPPORT
         KXmlGuiWindow::closeEvent(event);
         #else

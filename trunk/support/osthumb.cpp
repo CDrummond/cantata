@@ -94,6 +94,7 @@ OsThumb::OsThumb(Qt::Orientation o, QWidget *parent) :
 {
     int fh=QApplication::fontMetrics().height();
     thumbWidth=qMax(20, fh);
+    thumbWidth=(((int)(thumbWidth/2))*2)+(thumbWidth%2 ? 2 : 0);
     thumbHeight=thumbWidth*3.5;
 
     /*
@@ -138,6 +139,7 @@ OsThumb::OsThumb(Qt::Orientation o, QWidget *parent) :
     QObject::connect(d_ptr->hideTimer, SIGNAL(timeout()), this, SLOT(hide()));
 }
 
+#include <QDebug>
 void OsThumb::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
@@ -154,15 +156,19 @@ void OsThumb::paintEvent(QPaintEvent *event)
         QColor arrowColor(Qt::black);
         QColor etchColor(Qt::white);
         QLinearGradient fill(1, 1, THUMB_WIDTH - 2, THUMB_HEIGHT - 2);
+        qWarning() << THUMB_WIDTH;
+
+        int start=(THUMB_WIDTH/4)*1.5;
+        int size=THUMB_WIDTH/5;
         QPoint pgUpPoints[] = {
-            QPoint(THUMB_WIDTH/2, 7),
-            QPoint(THUMB_WIDTH/2 + 4, 12),
-            QPoint(THUMB_WIDTH/2 - 4, 12)
+            QPoint(THUMB_WIDTH/2, start),
+            QPoint(THUMB_WIDTH/2 + size, start+size+1),
+            QPoint(THUMB_WIDTH/2 - size, start+size+1)
         };
         QPoint pgDownPoints[] = {
-            QPoint(THUMB_WIDTH/2, THUMB_HEIGHT - 7/*75*/),
-            QPoint(THUMB_WIDTH/2 + 4, THUMB_HEIGHT - 12/*69*/),
-            QPoint(THUMB_WIDTH/2 - 4, THUMB_HEIGHT - 12/*69*/)
+            QPoint(THUMB_WIDTH/2, THUMB_HEIGHT - start/*75*/),
+            QPoint(THUMB_WIDTH/2 + size, THUMB_HEIGHT - (start+size+1)/*69*/),
+            QPoint(THUMB_WIDTH/2 - size, THUMB_HEIGHT - (start+size+1)/*69*/)
         };
 
         /*

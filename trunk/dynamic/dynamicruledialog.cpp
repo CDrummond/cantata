@@ -24,6 +24,9 @@
 #include "dynamicruledialog.h"
 #include "musiclibrarymodel.h"
 #include "localize.h"
+#ifndef Q_OS_WIN
+#include "gtkproxystyle.h"
+#endif
 
 static const int constMinDate=1800;
 static const int constMaxDate=2100;
@@ -77,6 +80,10 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     dateFromSpin->setRange(constMinDate-1, constMaxDate);
     dateToSpin->setRange(constMinDate-1, constMaxDate);
     artistText->setFocus();
+
+    #ifndef Q_OS_WIN
+    genreCombo->setProperty(GtkProxyStyle::constSlimComboProperty, false);
+    #endif
 }
 
 DynamicRuleDialog::~DynamicRuleDialog()

@@ -27,6 +27,9 @@
 #include <QAbstractItemView>
 #include <QStyle>
 #include <QStyleOption>
+#ifndef Q_OS_WIN
+#include "gtkproxystyle.h"
+#endif
 
 // Max number of items before we try to force a scrollbar in popup menu...
 static const int constPopupItemCount=32;
@@ -37,6 +40,9 @@ GenreCombo::GenreCombo(QWidget *p)
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     update(QSet<QString>());
     setEditable(false);
+    #ifndef Q_OS_WIN
+    setProperty(GtkProxyStyle::constSlimComboProperty, true);
+    #endif
 }
 
 void GenreCombo::showPopup()

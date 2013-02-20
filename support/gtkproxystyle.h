@@ -56,6 +56,9 @@ private Q_SLOTS:
     void sbarPageDown();
 
 private:
+    void updateSliderOffset();
+
+private:
     QComboBox *toolbarCombo;
 
     bool useOverlayScrollbars;

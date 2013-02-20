@@ -97,7 +97,6 @@ SET( CANTATA_SRCS
     gui/trayitem.cpp
     gui/cachesettings.cpp
     gui/coverdialog.cpp
-    gui/gtkproxystyle.cpp
     gui/stdactions.cpp
     streams/streamspage.cpp
     streams/streamdialog.cpp
@@ -299,7 +298,7 @@ if (ENABLE_WEBKIT)
 endif (ENABLE_WEBKIT)
 
 if (NOT WIN32)
-    SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/gnomemediakeys.cpp devices/mountpoints.cpp )
+    SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/gnomemediakeys.cpp devices/mountpoints.cpp gui/gtkproxystyle.cpp )
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/gnomemediakeys.h devices/mountpoints.h )
     if (NOT ENABLE_KDE_SUPPORT)
         SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/notify.cpp)

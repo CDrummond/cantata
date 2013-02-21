@@ -28,6 +28,9 @@
 #include <QComboBox>
 #include <QToolBar>
 #include <QAbstractScrollArea>
+#include <QAbstractItemView>
+#include <QTreeView>
+#include <QHeaderView>
 #include <QScrollBar>
 #include <QApplication>
 #include <QHoverEvent>
@@ -226,6 +229,14 @@ static QPainterPath buildPath(const QRectF &r, double radius)
     return path;
 }
 
+const QAbstractItemView * view(const QWidget *w) {
+    if (!w) {
+        return 0;
+    }
+    const QAbstractItemView *v=qobject_cast<const QAbstractItemView *>(w);
+    return v ? v : view(w->parentWidget());
+}
+
 void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {
     if (useOverlayScrollbars && CC_ScrollBar==control) {
@@ -233,8 +244,8 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             QRect r=option->rect;
             QRect slider=subControlRect(control, option, SC_ScrollBarSlider, widget);
             painter->save();
-            painter->fillRect(r, option->palette.base());
             bool webView=!sbarThumb || isWebView(widget);
+            painter->fillRect(r, webView ? option->palette.base() : option->palette.background());
 
             if (webView) {
                 QColor col=option->palette.foreground().color();
@@ -246,6 +257,17 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                     painter->drawLine(r.x()+r.width()-1, r.y(), r.x()+r.width()-1, r.y()+r.height()-1);
                 } else {
                     painter->drawLine(r.x(), r.y(), r.x(), r.y()+r.height()-1);
+                }
+            } else {
+                const QAbstractItemView *v=view(widget);
+                if (v && qobject_cast<const QTreeView *>(v) && ((const QTreeView *)v)->header()&& ((const QTreeView *)v)->header()->isVisible()) {
+                    QStyleOptionHeader ho;
+                    ho.rect=QRect(r.x()+r.width()-(sbarWidth), r.y(), sbarWidth, ((const QTreeView *)v)->header()->height());
+                    ho.state=option->state;
+                    ho.palette=option->palette;
+                    painter->save();
+                    drawControl(CE_Header, &ho, painter, ((const QTreeView *)v)->header());
+                    painter->restore();
                 }
             }
             if (slider.isValid()) {

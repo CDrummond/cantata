@@ -439,6 +439,11 @@ bool MusicLibraryModel::updateSong(const Song &orig, const Song &edit)
         foreach (MusicLibraryItem *song, albumItem->childItems()) {
             if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
                 static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
+                if (orig.genre!=edit.genre) {
+                    albumItem->updateGenres();
+                    artistItem->updateGenres();
+                    rootItem->updateGenres();
+                }
                 QModelIndex idx=index(songRow, 0, index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex())));
                 emit dataChanged(idx, idx);
                 return true;
@@ -602,11 +607,10 @@ void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateT
         if (!fromFile && (needToSave || needToUpdate)) {
             toXML(rootItem, dbUpdate);
         }
-
-        AlbumsModel::self()->update(rootItem);
-//         emit updated(rootItem);
-        emit updateGenres(rootItem->genres());
     }
+
+    AlbumsModel::self()->update(rootItem);
+    emit updateGenres(rootItem->genres());
 }
 
 bool MusicLibraryModel::update(const QSet<Song> &songs)

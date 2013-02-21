@@ -391,9 +391,8 @@ bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
                 connect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
             }
 
-            sbarThumb->setOrientation(bar->orientation());
-
-            if (!sbarThumb->isVisible()) {
+            if (!sbarThumb->isVisible() || bar->orientation()!=sbarThumb->orientation()) {
+                sbarThumb->setOrientation(bar->orientation());
                 QPoint global=a->mapToGlobal(QPoint(Qt::Vertical==bar->orientation() ? a->width()-sbarWidth-1 : 0, Qt::Vertical==bar->orientation() ? 0 : a->height()-sbarWidth-1));
                 int toXPos=global.x();
                 int toYPos=global.y();

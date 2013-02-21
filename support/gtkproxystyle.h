@@ -56,6 +56,8 @@ private Q_SLOTS:
     void sbarPageUp();
     void sbarPageDown();
     void sbarEdgeTimeout();
+    void sbarThumbHiding();
+    void sbarThumbShowing();
 
 private:
     void sbarCheckEdges();

@@ -69,7 +69,6 @@ public Q_SLOTS:
     void itemDoubleClicked(const QModelIndex &);
     void searchItems();
     void controlActions();
-    void databaseUpdated();
     void updateGenres(const QModelIndex &);
 
 private:

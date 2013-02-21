@@ -49,7 +49,10 @@ class PreferencesDialog : public Dialog
     Q_OBJECT
 
 public:
+    static int instanceCount();
+
     PreferencesDialog(QWidget *parent, LyricsPage *lp);
+    virtual ~PreferencesDialog();
 
 private:
     void slotButtonClicked(int button);

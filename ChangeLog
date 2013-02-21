@@ -105,6 +105,7 @@
 62. If 'Album Artist' is empty, then store this as empty in the cache files.
     This is so that when these are read back, and the tag-editor has the
     actual values.
+63. If we change a genre in the tag-editor, then update genre list in views.
 
 0.9.2
 -----

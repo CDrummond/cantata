@@ -1082,11 +1082,9 @@ void MainWindow::saveShortcuts()
 
 #endif
 
-static bool showingPrefDlg=false;
-
 void MainWindow::showPreferencesDialog()
 {
-    if (!showingPrefDlg) {
+    if (0==PreferencesDialog::instanceCount()) {
         #ifdef TAGLIB_FOUND
         if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
             DIALOG_ERROR;
@@ -1103,22 +1101,19 @@ void MainWindow::showPreferencesDialog()
         }
         #endif
 
-        showingPrefDlg=true;
-        PreferencesDialog pref(this, lyricsPage);
-        connect(&pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
-        connect(&pref, SIGNAL(connectTo(const MPDConnectionDetails &)), this, SLOT(connectToMpd(const MPDConnectionDetails &)));
-        connect(&pref, SIGNAL(reloadStreams()), streamsPage, SLOT(refresh()));
-
-        pref.exec();
-        updateConnectionsMenu();
-        showingPrefDlg=false;
+        PreferencesDialog *pref=new PreferencesDialog(this, lyricsPage);
+        connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
+        connect(pref, SIGNAL(connectTo(const MPDConnectionDetails &)), this, SLOT(connectToMpd(const MPDConnectionDetails &)));
+        connect(pref, SIGNAL(reloadStreams()), streamsPage, SLOT(refresh()));
+        connect(pref, SIGNAL(destroyed()), SLOT(updateConnectionsMenu()));
+        pref->show();
     }
 }
 
 
 void MainWindow::quit()
 {
-    if (showingPrefDlg) {
+    if (PreferencesDialog::instanceCount()) {
         return;
     }
     #ifdef ENABLE_REPLAYGAIN_SUPPORT

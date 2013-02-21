@@ -355,6 +355,11 @@ bool Device::updateSong(const Song &orig, const Song &edit)
         foreach (MusicLibraryItem *song, albumItem->childItems()) {
             if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
                 static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
+                if (orig.genre!=edit.genre) {
+                    albumItem->updateGenres();
+                    artistItem->updateGenres();
+                    updateGenres();
+                }
                 QModelIndex idx=model->createIndex(songRow, 0, albumItem);
                 emit model->dataChanged(idx, idx);
                 return true;

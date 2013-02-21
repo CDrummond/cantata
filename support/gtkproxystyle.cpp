@@ -276,13 +276,13 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                             if (p.x()<slider.x()) {
                                 toThumb=QRect(p.x(), slider.y(), slider.x()-p.x(), slider.width());
                             } else if (p.x()>(slider.x()+slider.width())) {
-                                toThumb=QRect(slider.x()+slider.width(), slider.x(), p.x()-slider.y(), slider.width());
+                                toThumb=QRect(slider.x()+slider.width(), slider.x(), p.x()-(slider.y()+slider.width()), slider.width());
                             }
                         } else {
                             if (p.y()<slider.y()) {
                                 toThumb=QRect(slider.x(), p.y(), slider.width(), slider.y()-p.y());
                             } else if (p.y()>(slider.y()+slider.height())) {
-                                toThumb=QRect(slider.x(), slider.y()+slider.height(), slider.width(), p.y()-slider.y());
+                                toThumb=QRect(slider.x(), slider.y()+slider.height(), slider.width(), p.y()-(slider.y()+slider.height()));
                             }
                         }
                     }

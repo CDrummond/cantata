@@ -121,6 +121,7 @@ RgDialog::RgDialog(QWidget *parent)
     progress->setVisible(false);
     view->setRootIsDecorated(false);
     view->setAllColumnsShowFocus(true);
+    view->setAlternatingRowColors(true);
     QTreeWidgetItem *hdr = view->headerItem();
     hdr->setText(COL_ARTIST, i18n("Artist"));
     hdr->setText(COL_ALBUM, i18n("Album"));

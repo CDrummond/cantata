@@ -71,11 +71,8 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
-    connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
-            MusicLibraryModel::self(), SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
     connect(MPDConnection::self(), SIGNAL(updatingLibrary()), view, SLOT(showSpinner()));
     connect(MPDConnection::self(), SIGNAL(updatedLibrary()), view, SLOT(hideSpinner()));
-    connect(MPDConnection::self(), SIGNAL(databaseUpdated()), this, SLOT(databaseUpdated()));
     connect(MusicLibraryModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(this, SIGNAL(loadLibrary()), MPDConnection::self(), SLOT(loadLibrary()));
     connect(view, SIGNAL(itemsSelected(bool)), this, SLOT(controlActions()));
@@ -120,11 +117,6 @@ void LibraryPage::refresh()
         view->showSpinner();
         emit loadLibrary();
     }
-}
-
-void LibraryPage::databaseUpdated()
-{
-//     refresh(RefreshFromCache);
 }
 
 void LibraryPage::clear()

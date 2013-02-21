@@ -57,11 +57,11 @@ static bool revertQGtkStyleOverlayMod()
 
 GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
     : QProxyStyle()
-    , thumb(0)
+    , sbarThumb(0)
     , sbarWidth(-1)
     , sbarAreaWidth(-1)
-    , sliderOffset(0xffffffff)
-    , thumbTarget(0)
+    , sbarOffset(0xffffffff)
+    , sbarThumbTarget(0)
 {
     useOverlayScrollbars=overlaySBars && qgetenv("LIBOVERLAY_SCROLLBAR")!="0";
     setBaseStyle(qApp->style());
@@ -73,15 +73,15 @@ GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
         if (Qt::LeftToRight==QApplication::layoutDirection() && revertQGtkStyleOverlayMod()) {
             sbarWidth=qMax(fh/5, 3);
             sbarAreaWidth=sbarWidth*6;
-            thumb=new OsThumb();
-            thumb->setVisible(false);
-            connect(thumb, SIGNAL(thumbDragged(QPoint)), SLOT(thumbMoved(QPoint)));
-            connect(thumb, SIGNAL(pageUp()), SLOT(sbarPageUp()));
-            connect(thumb, SIGNAL(pageDown()), SLOT(sbarPageDown()));
-            edgeTimer=new QTimer(this);
-            edgeTimer->setSingleShot(true);
-            edgeTimer->setInterval(10);
-            connect(edgeTimer, SIGNAL(timeout()), SLOT(sbarEdgeTimeout()));
+            sbarThumb=new OsThumb();
+            sbarThumb->setVisible(false);
+            connect(sbarThumb, SIGNAL(thumbDragged(QPoint)), SLOT(sbarThumbMoved(QPoint)));
+            connect(sbarThumb, SIGNAL(pageUp()), SLOT(sbarPageUp()));
+            connect(sbarThumb, SIGNAL(pageDown()), SLOT(sbarPageDown()));
+            sbarEdgeTimer=new QTimer(this);
+            sbarEdgeTimer->setSingleShot(true);
+            sbarEdgeTimer->setInterval(10);
+            connect(sbarEdgeTimer, SIGNAL(timeout()), SLOT(sbarEdgeTimeout()));
         }
     }
 }
@@ -134,7 +134,7 @@ int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const Q
 int GtkProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
     if (useOverlayScrollbars && PM_ScrollBarExtent==metric) {
-        return !thumb || isWebView(widget) ? sbarWebViewWidth : sbarWidth;
+        return !sbarThumb || isWebView(widget) ? sbarWebViewWidth : sbarWidth;
     }
     return baseStyle()->pixelMetric(metric, option, widget);
 }
@@ -231,7 +231,7 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             QRect slider=subControlRect(control, option, SC_ScrollBarSlider, widget);
             painter->save();
             painter->fillRect(r, option->palette.base());
-            bool webView=!thumb || isWebView(widget);
+            bool webView=!sbarThumb || isWebView(widget);
 
             if (webView) {
                 QColor col=option->palette.foreground().color();
@@ -267,8 +267,8 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                     painter->drawPath(path);
                 } else {
                     QRect toThumb;
-                    if (thumb && thumbTarget && thumbTarget==widget && thumb->isVisible()) {
-                        QPoint p=thumbTarget->mapFromGlobal(thumb->pos())+QPoint(1, 1);
+                    if (sbarThumb && sbarThumbTarget && sbarThumbTarget==widget && sbarThumb->isVisible()) {
+                        QPoint p=sbarThumbTarget->mapFromGlobal(sbarThumb->pos())+QPoint(1, 1);
                         if (Qt::Horizontal==sb->orientation) {
                             if (p.x()<slider.x()) {
                                 toThumb=QRect(p.x(), slider.y(), slider.x()-p.x(), slider.width());
@@ -307,7 +307,7 @@ static inline void addEventFilter(QObject *object, QObject *filter)
 
 void GtkProxyStyle::polish(QWidget *widget)
 {
-    if (useOverlayScrollbars && thumb && widget && qobject_cast<QAbstractScrollArea *>(widget)) {
+    if (useOverlayScrollbars && sbarThumb && widget && qobject_cast<QAbstractScrollArea *>(widget)) {
         addEventFilter(widget, this);
         widget->setAttribute(Qt::WA_Hover, true);
     } else if (useOverlayScrollbars && isWebView(widget)) {
@@ -318,12 +318,12 @@ void GtkProxyStyle::polish(QWidget *widget)
 
 void GtkProxyStyle::unpolish(QWidget *widget)
 {
-    if (useOverlayScrollbars && thumb && widget) {
+    if (useOverlayScrollbars && sbarThumb && widget) {
         if (qobject_cast<QAbstractScrollArea *>(widget)) {
             widget->removeEventFilter(this);
         }
-        if (thumb && thumbTarget==widget) {
-            thumb->hide();
+        if (sbarThumb && sbarThumbTarget==widget) {
+            sbarThumb->hide();
         }
     }
     baseStyle()->unpolish(widget);
@@ -331,15 +331,15 @@ void GtkProxyStyle::unpolish(QWidget *widget)
 
 void GtkProxyStyle::destroySliderThumb()
 {
-    if (thumb) {
-        thumb->setVisible(false);
-        thumb->deleteLater();
-        thumb=0;
+    if (sbarThumb) {
+        sbarThumb->setVisible(false);
+        sbarThumb->deleteLater();
+        sbarThumb=0;
     }
-    if (edgeTimer) {
-        edgeTimer->stop();
-        edgeTimer->deleteLater();
-        edgeTimer=0;
+    if (sbarEdgeTimer) {
+        sbarEdgeTimer->stop();
+        sbarEdgeTimer->deleteLater();
+        sbarEdgeTimer=0;
     }
 }
 
@@ -358,33 +358,33 @@ bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
         }
 
         if (bar) {
-            if (thumbTarget!=bar) {
-                if (thumbTarget) {
+            if (sbarThumbTarget!=bar) {
+                if (sbarThumbTarget) {
                     disconnect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
-                    disconnect(thumb, SIGNAL(hiding()), thumbTarget, SLOT(update()));
-                    disconnect(thumb, SIGNAL(showing()), thumbTarget, SLOT(update()));
+                    disconnect(sbarThumb, SIGNAL(hiding()), sbarThumbTarget, SLOT(update()));
+                    disconnect(sbarThumb, SIGNAL(showing()), sbarThumbTarget, SLOT(update()));
                 }
-                thumbTarget=bar;
+                sbarThumbTarget=bar;
                 connect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
-                connect(thumb, SIGNAL(hiding()), thumbTarget, SLOT(update()));
-                connect(thumb, SIGNAL(showing()), thumbTarget, SLOT(update()));
+                connect(sbarThumb, SIGNAL(hiding()), sbarThumbTarget, SLOT(update()));
+                connect(sbarThumb, SIGNAL(showing()), sbarThumbTarget, SLOT(update()));
             }
 
-            thumb->setOrientation(bar->orientation());
+            sbarThumb->setOrientation(bar->orientation());
 
-            if (!thumb->isVisible()) {
+            if (!sbarThumb->isVisible()) {
                 QPoint global=a->mapToGlobal(QPoint(Qt::Vertical==bar->orientation() ? a->width()-sbarWidth-1 : 0, Qt::Vertical==bar->orientation() ? 0 : a->height()-sbarWidth-1));
                 int toXPos=global.x();
                 int toYPos=global.y();
 
                 if (Qt::Vertical==bar->orientation()) {
-                    int thumbSize = thumb->height();
-                    toYPos = a->mapToGlobal(he->pos()).y() - thumb->height() / 2;
+                    int thumbSize = sbarThumb->height();
+                    toYPos = a->mapToGlobal(he->pos()).y() - sbarThumb->height() / 2;
                     int minYPos = global.y();
                     int maxYPos = global.y() + a->height() - thumbSize;
 
-                    thumb->setMaximum(maxYPos);
-                    thumb->setMinimum(minYPos);
+                    sbarThumb->setMaximum(maxYPos);
+                    sbarThumb->setMinimum(minYPos);
 
                     if (toYPos < minYPos) {
                         toYPos = minYPos;
@@ -392,17 +392,17 @@ bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
                     if (toYPos > maxYPos) {
                         toYPos = maxYPos;
                     }
-                    if (QApplication::desktop() && toXPos+thumb->width()>QApplication::desktop()->width()) {
-                        toXPos=global.x()-(thumb->width()-sbarWidth);
+                    if (QApplication::desktop() && toXPos+sbarThumb->width()>QApplication::desktop()->width()) {
+                        toXPos=global.x()-(sbarThumb->width()-sbarWidth);
                     }
                 } else {
-                    int thumbSize = thumb->height();
-                    toXPos = a->mapToGlobal(he->pos()).x() - thumb->width() / 2;
+                    int thumbSize = sbarThumb->height();
+                    toXPos = a->mapToGlobal(he->pos()).x() - sbarThumb->width() / 2;
                     int minXPos = global.x();
                     int maxXPos = global.x() + a->width() - thumbSize;
 
-                    thumb->setMaximum(maxXPos);
-                    thumb->setMinimum(minXPos);
+                    sbarThumb->setMaximum(maxXPos);
+                    sbarThumb->setMinimum(minXPos);
 
                     if (toXPos < minXPos) {
                         toXPos = minXPos;
@@ -411,19 +411,19 @@ bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
                         toXPos = maxXPos;
                     }
 
-                    if (QApplication::desktop() && toYPos+thumb->height()>QApplication::desktop()->height()) {
-                        toYPos=global.y()-(thumb->height()-sbarWidth);
+                    if (QApplication::desktop() && toYPos+sbarThumb->height()>QApplication::desktop()->height()) {
+                        toYPos=global.y()-(sbarThumb->height()-sbarWidth);
                     }
                 }
-                thumb->move(toXPos, toYPos);
-                thumb->show();
-                updateSliderOffset();
+                sbarThumb->move(toXPos, toYPos);
+                sbarThumb->show();
+                sbarUpdateOffset();
             }
         } else {
-            thumb->hide();
+            sbarThumb->hide();
         }
-    } else if (useOverlayScrollbars && thumb && QEvent::WindowDeactivate==event->type() && thumb->isVisible()) {
-        thumb->hide();
+    } else if (useOverlayScrollbars && sbarThumb && QEvent::WindowDeactivate==event->type() && sbarThumb->isVisible()) {
+        sbarThumb->hide();
     }
 
     return baseStyle()->eventFilter(object, event);
@@ -431,117 +431,117 @@ bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
 
 void GtkProxyStyle::objectDestroyed(QObject *obj)
 {
-    if (obj==thumbTarget) {
-        disconnect(thumbTarget, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
-        thumbTarget=0;
+    if (obj==sbarThumbTarget) {
+        disconnect(sbarThumbTarget, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
+        sbarThumbTarget=0;
     }
 }
 
-void GtkProxyStyle::thumbMoved(const QPoint &point)
+void GtkProxyStyle::sbarThumbMoved(const QPoint &point)
 {
-    if (thumbTarget) {
-        QPoint global=thumbTarget->mapToGlobal(QPoint(0, 0))-QPoint(1, 1);
-        int value=thumbTarget->value();
-        if (Qt::Vertical==thumbTarget->orientation()) {
-            thumbTarget->setValue(sliderValueFromPosition(thumbTarget->minimum(), thumbTarget->maximum(), point.y() - (global.y()+sliderOffset), thumbTarget->height() - thumb->height()));
+    if (sbarThumbTarget) {
+        QPoint global=sbarThumbTarget->mapToGlobal(QPoint(0, 0))-QPoint(1, 1);
+        int value=sbarThumbTarget->value();
+        if (Qt::Vertical==sbarThumbTarget->orientation()) {
+            sbarThumbTarget->setValue(sliderValueFromPosition(sbarThumbTarget->minimum(), sbarThumbTarget->maximum(), point.y() - (global.y()+sbarOffset), sbarThumbTarget->height() - sbarThumb->height()));
         } else {
-            thumbTarget->setValue(sliderValueFromPosition(thumbTarget->minimum(), thumbTarget->maximum(), point.x() - global.x(), thumbTarget->width() - thumb->width()));
+            sbarThumbTarget->setValue(sliderValueFromPosition(sbarThumbTarget->minimum(), sbarThumbTarget->maximum(), point.x() - global.x(), sbarThumbTarget->width() - sbarThumb->width()));
         }
-        if (value==thumbTarget->value()) {
-            thumbTarget->update();
+        if (value==sbarThumbTarget->value()) {
+            sbarThumbTarget->update();
         }
-        checkEdges();
+        sbarCheckEdges();
     }
 }
 
 void GtkProxyStyle::sbarPageUp()
 {
-    if (thumbTarget) {
-        thumbTarget->setValue(thumbTarget->value() - thumbTarget->pageStep());
+    if (sbarThumbTarget) {
+        sbarThumbTarget->setValue(sbarThumbTarget->value() - sbarThumbTarget->pageStep());
 
-        if (thumbTarget->value() < thumbTarget->minimum()) {
-            thumbTarget->setValue(thumbTarget->minimum());
+        if (sbarThumbTarget->value() < sbarThumbTarget->minimum()) {
+            sbarThumbTarget->setValue(sbarThumbTarget->minimum());
         }
-        updateSliderOffset();
+        sbarUpdateOffset();
     }
 }
 
 void GtkProxyStyle::sbarPageDown()
 {
-    if (thumbTarget) {
-        thumbTarget->setValue(thumbTarget->value() + thumbTarget->pageStep());
+    if (sbarThumbTarget) {
+        sbarThumbTarget->setValue(sbarThumbTarget->value() + sbarThumbTarget->pageStep());
 
-        if (thumbTarget->value() > thumbTarget->maximum()) {
-            thumbTarget->setValue(thumbTarget->maximum());
+        if (sbarThumbTarget->value() > sbarThumbTarget->maximum()) {
+            sbarThumbTarget->setValue(sbarThumbTarget->maximum());
         }
-        updateSliderOffset();
+        sbarUpdateOffset();
     }
 }
 
 void GtkProxyStyle::sbarEdgeTimeout()
 {
-    if (thumb->mouseButtonPressed()) {
-        int newVal=thumbTarget->value()+(edgeTimer->property(constIncProp).toBool() ? 1 : -1);
-        if (newVal>=thumbTarget->minimum() && newVal<=thumbTarget->maximum()) {
-            thumbTarget->setValue(newVal);
+    if (sbarThumb->mouseButtonPressed()) {
+        int newVal=sbarThumbTarget->value()+(sbarEdgeTimer->property(constIncProp).toBool() ? 1 : -1);
+        if (newVal>=sbarThumbTarget->minimum() && newVal<=sbarThumbTarget->maximum()) {
+            sbarThumbTarget->setValue(newVal);
         }
-        if (newVal>thumbTarget->minimum() && newVal<thumbTarget->maximum()) {
-            checkEdges();
+        if (newVal>sbarThumbTarget->minimum() && newVal<sbarThumbTarget->maximum()) {
+            sbarCheckEdges();
         }
     }
 }
 
-void GtkProxyStyle::checkEdges()
+void GtkProxyStyle::sbarCheckEdges()
 {
-    if (thumb->mouseButtonPressed()) {
-        QPoint global=thumbTarget->mapToGlobal(QPoint(0, 0))-QPoint(1, 1);
-        bool v=Qt::Vertical==thumbTarget->orientation();
-        if (thumbTarget->value()!=thumbTarget->minimum() &&
-                (v ? thumb->pos().y()==global.y() : thumb->pos().x()==global.x())) {
-            if (getSliderRect().intersects(QRect(thumb->pos(), thumb->size()))) {
-                edgeTimer->setProperty(constIncProp, false);
-                edgeTimer->start();
+    if (sbarThumb->mouseButtonPressed()) {
+        QPoint global=sbarThumbTarget->mapToGlobal(QPoint(0, 0))-QPoint(1, 1);
+        bool v=Qt::Vertical==sbarThumbTarget->orientation();
+        if (sbarThumbTarget->value()!=sbarThumbTarget->minimum() &&
+                (v ? sbarThumb->pos().y()==global.y() : sbarThumb->pos().x()==global.x())) {
+            if (sbarGetSliderRect().intersects(QRect(sbarThumb->pos(), sbarThumb->size()))) {
+                sbarEdgeTimer->setProperty(constIncProp, false);
+                sbarEdgeTimer->start();
             }
-        } else if (thumbTarget->value()!=thumbTarget->maximum() &&
-                   (v ? (thumb->pos().y()+thumb->height())==(global.y()+thumbTarget->height()+2) : (thumb->pos().x()+thumb->width())==(global.x()+thumbTarget->width()+2))) {
-            if (getSliderRect().intersects(QRect(thumb->pos(), thumb->size()))) {
-                edgeTimer->setProperty(constIncProp, true);
-                edgeTimer->start();
+        } else if (sbarThumbTarget->value()!=sbarThumbTarget->maximum() &&
+                   (v ? (sbarThumb->pos().y()+sbarThumb->height())==(global.y()+sbarThumbTarget->height()+2) : (sbarThumb->pos().x()+sbarThumb->width())==(global.x()+sbarThumbTarget->width()+2))) {
+            if (sbarGetSliderRect().intersects(QRect(sbarThumb->pos(), sbarThumb->size()))) {
+                sbarEdgeTimer->setProperty(constIncProp, true);
+                sbarEdgeTimer->start();
             }
         }
     }
 }
 
-QRect GtkProxyStyle::getSliderRect()
+QRect GtkProxyStyle::sbarGetSliderRect()
 {
     QStyleOptionSlider opt;
-    opt.initFrom(thumbTarget);
+    opt.initFrom(sbarThumbTarget);
     opt.subControls = QStyle::SC_None;
     opt.activeSubControls = QStyle::SC_None;
-    opt.orientation = thumbTarget->orientation();
-    opt.minimum = thumbTarget->minimum();
-    opt.maximum = thumbTarget->maximum();
-    opt.sliderPosition = thumbTarget->sliderPosition();
-    opt.sliderValue = thumbTarget->value();
-    opt.singleStep = thumbTarget->singleStep();
-    opt.pageStep = thumbTarget->pageStep();
-    opt.upsideDown = thumbTarget->invertedAppearance();
-    if (Qt::Horizontal==thumbTarget->orientation()) {
+    opt.orientation = sbarThumbTarget->orientation();
+    opt.minimum = sbarThumbTarget->minimum();
+    opt.maximum = sbarThumbTarget->maximum();
+    opt.sliderPosition = sbarThumbTarget->sliderPosition();
+    opt.sliderValue = sbarThumbTarget->value();
+    opt.singleStep = sbarThumbTarget->singleStep();
+    opt.pageStep = sbarThumbTarget->pageStep();
+    opt.upsideDown = sbarThumbTarget->invertedAppearance();
+    if (Qt::Horizontal==sbarThumbTarget->orientation()) {
         opt.state |= QStyle::State_Horizontal;
     }
 
-    QRect slider=subControlRect(CC_ScrollBar, &opt, SC_ScrollBarSlider, thumbTarget);
-    QPoint gpos=thumbTarget->mapToGlobal(slider.topLeft())-QPoint(1, 1);
+    QRect slider=subControlRect(CC_ScrollBar, &opt, SC_ScrollBarSlider, sbarThumbTarget);
+    QPoint gpos=sbarThumbTarget->mapToGlobal(slider.topLeft())-QPoint(1, 1);
     return QRect(gpos.x(), gpos.y(), slider.width(), slider.height());
 }
 
-void GtkProxyStyle::updateSliderOffset()
+void GtkProxyStyle::sbarUpdateOffset()
 {
-    QRect sr=getSliderRect();
+    QRect sr=sbarGetSliderRect();
 
-    if (Qt::Vertical==thumbTarget->orientation()) {
-        sliderOffset=thumb->pos().y()-sr.y();
+    if (Qt::Vertical==sbarThumbTarget->orientation()) {
+        sbarOffset=sbarThumb->pos().y()-sr.y();
     } else {
-        sliderOffset=thumb->pos().x()-sr.x();
+        sbarOffset=sbarThumb->pos().x()-sr.x();
     }
 }

@@ -52,28 +52,28 @@ public:
 
 private Q_SLOTS:
     void objectDestroyed(QObject *);
-    void thumbMoved(const QPoint &point);
+    void sbarThumbMoved(const QPoint &point);
     void sbarPageUp();
     void sbarPageDown();
     void sbarEdgeTimeout();
 
 private:
-    void checkEdges();
-    QRect getSliderRect();
-    void updateSliderOffset();
+    void sbarCheckEdges();
+    QRect sbarGetSliderRect();
+    void sbarUpdateOffset();
 
 private:
     QComboBox *toolbarCombo;
 
     bool useOverlayScrollbars;
-    OsThumb *thumb;
+    OsThumb *sbarThumb;
     int sbarWidth;
     int sbarWebViewWidth;
     int sbarAreaWidth;
-    int sliderOffset;
-    int sliderLast;
-    QScrollBar *thumbTarget;
-    QTimer *edgeTimer;
+    int sbarOffset;
+    int sbarLastPos;
+    QScrollBar *sbarThumbTarget;
+    QTimer *sbarEdgeTimer;
 };
 
 #endif

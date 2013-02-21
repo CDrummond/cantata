@@ -297,10 +297,10 @@ public Q_SLOTS:
     void collapseAll();
     void checkMpdDir();
     void outputsUpdated(const QList<Output> &outputs);
+    void updateConnectionsMenu();
 
 private:
     void updateStatus(MPDStatus * const status);
-    void updateConnectionsMenu();
     void readSettings();
     int calcMinHeight();
     int calcCompactHeight();

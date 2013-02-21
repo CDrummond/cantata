@@ -45,9 +45,17 @@
 #include "actioncollection.h"
 #endif
 
+static int iCount=0;
+
+int PreferencesDialog::instanceCount()
+{
+    return iCount;
+}
+
 PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     : Dialog(parent)
 {
+    iCount++;
     setButtons(Ok|Apply|Cancel);
 
     PageWidget *widget = new PageWidget(this);
@@ -94,9 +102,15 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     widget->allPagesAdded();
     setCaption(i18n("Configure"));
     setMainWidget(widget);
+    setAttribute(Qt::WA_DeleteOnClose);
     connect(server, SIGNAL(connectTo(const MPDConnectionDetails &)), SIGNAL(connectTo(const MPDConnectionDetails &)));
     connect(server, SIGNAL(disconnectFromMpd()), MPDConnection::self(), SLOT(disconnectMpd()));
     connect(files, SIGNAL(reloadStreams()), SIGNAL(reloadStreams()));
+}
+
+PreferencesDialog::~PreferencesDialog()
+{
+    iCount--;
 }
 
 void PreferencesDialog::writeSettings()
@@ -128,6 +142,8 @@ void PreferencesDialog::slotButtonClicked(int button)
         break;
     case Cancel:
         reject();
+        // Need to call this - if not, when dialog is closed by window X control, it is not deleted!!!!
+        Dialog::slotButtonClicked(button);
         break;
     default:
         break;

@@ -117,6 +117,12 @@ public:
     QSet<QString> allGenres() const {
         return genres();
     }
+    void updateGenres() {
+        m_genres.clear();
+        foreach (MusicLibraryItem *i, m_childItems) {
+            m_genres+=i->allGenres();
+        }
+    }
 
 protected:
     friend class MusicLibraryItem;

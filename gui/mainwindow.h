@@ -298,6 +298,7 @@ public Q_SLOTS:
     void checkMpdDir();
     void outputsUpdated(const QList<Output> &outputs);
     void updateConnectionsMenu();
+    void controlConnectionsMenu(bool enable=true);
 
 private:
     void updateStatus(MPDStatus * const status);

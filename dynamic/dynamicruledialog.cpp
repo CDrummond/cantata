@@ -44,7 +44,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     connect(albumArtistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(titleText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
-    connect(genreText, SIGNAL(currentIndexChanged(int)), SLOT(enableOkButton()));
+    connect(genreText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(dateFromSpin, SIGNAL(valueChanged(int)), SLOT(enableOkButton()));
     connect(dateToSpin, SIGNAL(valueChanged(int)), SLOT(enableOkButton()));
 
@@ -80,6 +80,8 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     dateFromSpin->setRange(constMinDate-1, constMaxDate);
     dateToSpin->setRange(constMinDate-1, constMaxDate);
     artistText->setFocus();
+    errorLabel->setVisible(false);
+    errorLabel->setStyleSheet(QLatin1String("QLabel{color:red;}"));
 }
 
 DynamicRuleDialog::~DynamicRuleDialog()
@@ -118,6 +120,8 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
     dateFromSpin->setValue(dateFrom);
     dateToSpin->setValue(dateTo);
     exactCheck->setChecked(QLatin1String("false")!=rule[Dynamic::constExactKey]);
+    errorLabel->setVisible(false);
+    enableOkButton();
     return QDialog::Accepted==exec();
 }
 
@@ -166,12 +170,25 @@ Dynamic::Rule DynamicRuleDialog::rule() const
 
 void DynamicRuleDialog::enableOkButton()
 {
+    static const int constMaxDateRange=20;
+
     int dateFrom=dateFromSpin->value();
     int dateTo=dateToSpin->value();
     bool haveFrom=dateFrom>=constMinDate && dateFrom<=constMaxDate;
     bool haveTo=dateTo>=constMinDate && dateTo<=constMaxDate && dateTo!=dateFrom;
-    bool enable=(!haveFrom || !haveTo || haveTo>=haveFrom) &&
+    bool enable=(!haveFrom || !haveTo || (dateTo>=dateFrom && (dateTo-dateFrom)<=constMaxDateRange)) &&
                 (haveFrom || haveTo || !artist().isEmpty() || !similarArtists().isEmpty() || !albumArtist().isEmpty() ||
                  !album().isEmpty() || !title().isEmpty() || !genre().isEmpty());
+
+    errorLabel->setVisible(false);
+    if (!enable && haveFrom && haveTo) {
+        if (dateTo<dateFrom) {
+            errorLabel->setText(i18n("<i><b>ERROR</b>: 'From Year' should be less than 'To Year'</i>"));
+            errorLabel->setVisible(true);
+        } else if (dateTo-dateFrom>constMaxDateRange) {
+            errorLabel->setText(i18n("<i><b>ERROR:</b> Date range is too large (can only be a maximum of %1 years)</i>").arg(constMaxDateRange));
+            errorLabel->setVisible(true);
+        }
+    }
     enableButton(Ok, enable);
 }

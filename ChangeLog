@@ -106,6 +106,7 @@
     This is so that when these are read back, and the tag-editor has the
     actual values.
 63. If we change a genre in the tag-editor, then update genre list in views.
+64. Disable connections menu when preferences dialog is open.
 
 0.9.2
 -----

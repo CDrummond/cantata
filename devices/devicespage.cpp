@@ -49,6 +49,8 @@
 #include "tageditor.h"
 #include "actiondialog.h"
 #include "trackorganiser.h"
+#include "preferencesdialog.h"
+#include "coverdialog.h"
 
 DevicesPage::DevicesPage(QWidget *p)
     : QWidget(p)
@@ -455,7 +457,7 @@ void DevicesPage::toggleDevice()
     }
 }
 
-#define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
+#define DIALOG_ERROR MessageBox::error(this, i18n("Please close other dialogs first.")); return
 
 void DevicesPage::sync()
 {
@@ -463,14 +465,14 @@ void DevicesPage::sync()
         return;
     }
 
-    if (0!=TagEditor::instanceCount() || 0!=ActionDialog::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
+    if (0!=PreferencesDialog::instanceCount() || 0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()
+        || 0!=ActionDialog::instanceCount() || 0!=CoverDialog::instanceCount()
+        #ifdef ENABLE_REPLAYGAIN_SUPPORT
+        || 0!=RgDialog::instanceCount()
+        #endif
+        ) {
         DIALOG_ERROR;
     }
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    if (0!=RgDialog::instanceCount()) {
-        DIALOG_ERROR;
-    }
-    #endif
 
     const QModelIndexList selected = view->selectedIndexes();
 

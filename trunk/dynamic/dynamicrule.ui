@@ -202,6 +202,25 @@
     </spacer>
    </item>
    <item>
+    <widget class="QLabel" name="errorLabel"/>
+  </item>
+  <item>
+   <spacer name="verticalSpacer_3xz">
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+    <property name="sizeType">
+     <enum>QSizePolicy::Fixed</enum>
+    </property>
+    <property name="sizeHint" stdset="0">
+     <size>
+      <width>20</width>
+      <height>4</height>
+     </size>
+    </property>
+   </spacer>
+  </item>
+   <item>
     <widget class="QLabel" name="label_7">
      <property name="text">
       <string>&lt;i&gt;&lt;b&gt;NOTE&lt;/b&gt; Only enter values for the tags you wish to be search on. &lt;/i&gt;</string>

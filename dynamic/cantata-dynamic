@@ -39,6 +39,7 @@ my $isServerMode : shared =0;
 my $dynamicIsActive : shared =1;
 my $currentStatus : shared ="IDLE";
 
+$testMode=0;
 $PLAY_QUEUE_DESIRED_LENGTH=10;
 $PLAY_QUEUE_CURRENT_POS=5;
 
@@ -229,8 +230,9 @@ sub saveRule() {
     my $rule=$_[0];
     my @dates=@{ $_[1] };
     my @artistList=@{ $_[2] };
-    my $ruleMatch=$_[3];
-    my $isInclude=$_[4];
+    my @genreList=@{ $_[3] };
+    my $ruleMatch=$_[4];
+    my $isInclude=$_[5];
     my @type=();
 
     if ($isInclude == 1) {
@@ -244,24 +246,35 @@ sub saveRule() {
     if (scalar(@artistList)==0) {
         $artistList[0]="";
     }
+    if (scalar(@genreList)==0) {
+        $genreList[0]="";
+    }
     my $ruleNum=scalar(@type);
-    for my $artist (@artistList) {
-        $line =~ s/\"//g;
-        if (scalar(@dates)>0) { # Create rule for each date (as MPDs search does not take ranges)
-            my $baseRule=$rule;
-            foreach my $date (@dates) {
-                $type[$ruleNum]="${ruleMatch} ${baseRule} Date \"${date}\"";
+    for my $genre (@genreList) {
+        for my $artist (@artistList) {
+            $line =~ s/\"//g;
+            if (scalar(@dates)>0) { # Create rule for each date (as MPDs search does not take ranges)
+                my $baseRule=$rule;
+                foreach my $date (@dates) {
+                    $type[$ruleNum]="${ruleMatch} ${baseRule} Date \"${date}\"";
+                    if ($artist ne "") {
+                        $type[$ruleNum]=$type[$ruleNum]." Artist \"${artist}\"";
+                    }
+                    if ($genre ne "") {
+                        $type[$ruleNum]=$type[$ruleNum]." Genre \"${genre}\"";
+                    }
+                    $ruleNum++;
+                }
+            } elsif ($artist ne "" || $genre ne "" || $rule ne "") {
+                $type[$ruleNum]="${ruleMatch} $rule";
                 if ($artist ne "") {
                     $type[$ruleNum]=$type[$ruleNum]." Artist \"${artist}\"";
                 }
+                if ($genre ne "") {
+                    $type[$ruleNum]=$type[$ruleNum]." Genre \"${genre}\"";
+                }
                 $ruleNum++;
             }
-        } elsif ($artist ne "" || $rule ne ""){
-            $type[$ruleNum]="${ruleMatch} $rule";
-            if ($artist ne "") {
-                $type[$ruleNum]=$type[$ruleNum]." Artist \"${artist}\"";
-            }
-            $ruleNum++;
         }
     }
     if ($isInclude == 1) {
@@ -341,12 +354,13 @@ sub readRules() {
                         $val="";
                     }
                     if ($key=~ m/^(Rule)/) { # New rule...
-                        if (length($currentRule)>1 || scalar(@similarArtists)>0 || scalar(@dates)>0) {
-                            &saveRule($currentRule, \@dates, \@similarArtists, $ruleMatch, $isInclude);
+                        if (length($currentRule)>1 || scalar(@similarArtists)>0 || scalar(@dates)>0 || scalar(@genres)>0) {
+                            &saveRule($currentRule, \@dates, \@similarArtists, \@genres, $ruleMatch, $isInclude);
                         }
                         $currentRule="";
                         @dates=();
                         @similarArtists=();
+                        @genres=();
                     } else {
                         if ($key eq "Date") {
                             my @dateVals = split("-", $val);
@@ -366,13 +380,62 @@ sub readRules() {
                             } else {
                                 @dates=($val)
                             }
+                        } elsif ($key eq "Genre" && $val =~ m{\*}) {
+                            # Wildcard genre - get list of genres from MPD, and find the ones that contain the genre string.
+                            $val =~ s/\*//g;
+                            my $socketData=&sendCommand("list genre");
+                            my @mpdGenres = split("\n", $socketData);
+                            my $pos=0;
+                            foreach my $genre (@mpdGenres) {
+                                $genre =~ s/Genre: //g;
+                                if ($genre ne "OK" && $genre ne "" && $genre =~/$val/i) {
+                                    $genres[$pos]=$genre;
+                                    $pos++;
+                                }
+                            }
                         } elsif ($key eq "Artist" || $key eq "Album" || $key eq "AlbumArtist" || $key eq "Title" || $key eq "Genre") {
                             $currentRule="${currentRule} ${key} \"${val}\"";
                         } elsif ($key eq "SimilarArtists") {
                             &querySimilarArtists($val); # Perform a last.fm query to find similar artists
-                            @similarArtists=@artistSearchResults; # Save results of query
+                            @artistSearchResults; # Save results of query
+                            @artistSearchResults=uniq(@artistSearchResults);        # Ensure we only have unique entries...
+                            if (scalar(@artistSearchResults)>1) {
+                                my @mpdArtists = ();
+                                my $pos=0;
+                                # Get MPD artists...
+                                my $socketData=&sendCommand("list artist");
+                                my @mpdResponse=split("\n", $socketData);
+                                foreach my $artist (@mpdResponse) {
+                                    $artist =~ s/Artist: //g;
+                                    if ($artist ne "OK" && $artist ne "" && $artist ne $val) {
+                                        $mpdArtists[$pos]=$artist;
+                                        $pos++;
+                                    }
+                                }
+
+                                ## Get MPD album-artists...
+                                #$socketData=&sendCommand("list albumartist");
+                                #@mpdResponse=split("\n", $socketData);
+                                #foreach my $artist (@mpdResponse) {
+                                #    $artist =~ s/AlbumArtist: //g;
+                                #    if ($artist ne "OK" && $artist ne "" && $artist ne $val) {
+                                #        $mpdArtists[$pos]=$artist;
+                                #        $pos++;
+                                #    }
+                                #}
+                                @mpdArtists=uniq(@mpdArtists); 
+
+                                # Now chec which last.fm artists MPD actually has...    
+                                my $pos=0;
+                                foreach my $artist (@artistSearchResults) {
+                                    my @match = grep(/^$artist/i, @mpdArtists);
+                                    if (scalar(@match)>0) {
+                                        $similarArtists[$pos]=$artist;
+                                        $pos++;
+                                    }
+                                }
+                            }
                             $similarArtists[scalar(@similarArtists)]=$val; # Add ourselves!!!
-                            @similarArtists=uniq(@similarArtists);        # Ensure we only have unique entries...
                         } elsif ($key eq "Exact" && $val eq "false") {
                             $ruleMatch="search";
                         } elsif ($key eq "Exclude" && $val eq "true") {
@@ -382,19 +445,21 @@ sub readRules() {
                 }
             }
 
-            if (length($currentRule)>1 || scalar(@similarArtists)>0 || scalar(@dates)>0) {
-                &saveRule($currentRule, \@dates, \@similarArtists, $ruleMatch, $isInclude);
+            if (length($currentRule)>1 || scalar(@similarArtists)>0 || scalar(@dates)>0 || scalar(@genres)>0) {
+                &saveRule($currentRule, \@dates, \@similarArtists, \@genres, $ruleMatch, $isInclude);
             }
 
-#             print "INCLUDE--------------\n";
-#             foreach my $rule (@includeRules) {
-#                 print "${rule}\n";
-#             }
-#             print "EXCLUDE--------------\n";
-#             foreach my $rule (@excludeRules) {
-#                 print "${rule}\n";
-#             }
-#             print "---------------------\n";
+            if (1==$testMode) {
+                print "INCLUDE--------------\n";
+                foreach my $rule (@includeRules) {
+                    print "${rule}\n";
+                }
+                print "EXCLUDE--------------\n";
+                foreach my $rule (@excludeRules) {
+                    print "${rule}\n";
+                }
+                print "---------------------\n"
+            }
 
             &checkRulesChanged();
             return 1;
@@ -445,8 +510,8 @@ sub getSongs() {
                         }
                     }
                 }
+                @excludeSongs=uniq(@excludeSongs);
             }
-            @excludeSongs=uniq(@excludeSongs);
         }
 
         my %excludeSongSet = map { $_ => 1 } @excludeSongs;
@@ -471,8 +536,8 @@ sub getSongs() {
                         }
                     }
                 }
+                @mpdSongs=uniq(@mpdSongs);
             }
-            @mpdSongs=uniq(@mpdSongs);
         } else {
             # No 'include' rules => get all songs!
             my $socketData=&sendCommand("listall");
@@ -501,6 +566,14 @@ sub getSongs() {
             }
         } elsif (1==$isServerMode) {
             $currentStatus="HAVE_SONGS";
+        }
+
+        if (1==$testMode) {
+            print "SONGS--------------\n";
+            foreach my $song (@mpdSongs) {
+                print "${song}\n";
+            }
+            print "---------------------\n"
         }
     }
 }
@@ -1145,6 +1218,7 @@ if ($ARGV[0] eq "start") {
 } elsif ($ARGV[0] eq "stopserver") {
     &stopServer($ARGV[1]);
 } elsif ($ARGV[0] eq "test") {
+    $testMode=1;
     &populatePlayQueue();
 } else {
     print "Cantata MPD Dynamizer script\n";

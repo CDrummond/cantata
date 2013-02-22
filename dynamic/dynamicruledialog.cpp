@@ -24,9 +24,6 @@
 #include "dynamicruledialog.h"
 #include "musiclibrarymodel.h"
 #include "localize.h"
-#ifndef Q_OS_WIN
-#include "gtkproxystyle.h"
-#endif
 
 static const int constMinDate=1800;
 static const int constMaxDate=2100;
@@ -47,7 +44,7 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     connect(albumArtistText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(albumText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
     connect(titleText, SIGNAL(textChanged(const QString &)), SLOT(enableOkButton()));
-    connect(genreCombo, SIGNAL(currentIndexChanged(int)), SLOT(enableOkButton()));
+    connect(genreText, SIGNAL(currentIndexChanged(int)), SLOT(enableOkButton()));
     connect(dateFromSpin, SIGNAL(valueChanged(int)), SLOT(enableOkButton()));
     connect(dateToSpin, SIGNAL(valueChanged(int)), SLOT(enableOkButton()));
 
@@ -75,15 +72,14 @@ DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
     albumText->clear();
     albumText->insertItems(0, strings);
 
-    genreCombo->clear();
-    genreCombo->update(genres);
+    strings=genres.toList();
+    strings.sort();
+    genreText->clear();
+    genreText->insertItems(0, strings);
+
     dateFromSpin->setRange(constMinDate-1, constMaxDate);
     dateToSpin->setRange(constMinDate-1, constMaxDate);
     artistText->setFocus();
-
-    #ifndef Q_OS_WIN
-    genreCombo->setProperty(GtkProxyStyle::constSlimComboProperty, false);
-    #endif
 }
 
 DynamicRuleDialog::~DynamicRuleDialog()
@@ -98,16 +94,7 @@ bool DynamicRuleDialog::edit(const Dynamic::Rule &rule)
     albumArtistText->setText(rule[Dynamic::constAlbumArtistKey]);
     albumText->setText(rule[Dynamic::constAlbumKey]);
     titleText->setText(rule[Dynamic::constTitleKey]);
-    QString genre=rule[Dynamic::constGenreKey];
-    genreCombo->setCurrentIndex(0);
-    if (!genre.isEmpty()) {
-        for (int i=1; i<genreCombo->count(); ++i) {
-            if (genre==genreCombo->itemText(i)) {
-                genreCombo->setCurrentIndex(i);
-                break;
-            }
-        }
-    }
+    genreText->setText(rule[Dynamic::constGenreKey]);
 
     QString date=rule[Dynamic::constDateKey];
     int dateFrom=0;

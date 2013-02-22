@@ -1114,9 +1114,6 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::quit()
 {
-    if (PreferencesDialog::instanceCount()) {
-        return;
-    }
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     if (0!=RgDialog::instanceCount()) {
         return;

@@ -29,7 +29,6 @@
 #include "ui_dynamicrule.h"
 #include "dynamic.h"
 
-
 class DynamicRuleDialog : public Dialog, Ui::DynamicRule
 {
     Q_OBJECT
@@ -46,8 +45,7 @@ public:
     QString albumArtist() const { return albumArtistText->text().trimmed(); }
     QString album() const { return albumText->text().trimmed(); }
     QString title() const { return titleText->text().trimmed(); }
-    QString genre() const { return 0==genreCombo->currentIndex() ? QString() : genreCombo->currentText(); }
-
+    QString genre() const { return genreText->text().trimmed(); }
 
 private Q_SLOTS:
     void enableOkButton();

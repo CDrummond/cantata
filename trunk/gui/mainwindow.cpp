@@ -1064,7 +1064,7 @@ void MainWindow::refresh()
     emit getStats(true);
 }
 
-#define DIALOG_ERROR MessageBox::error(this, i18n("Action is not currently possible, due to other open dialogs.")); return
+#define DIALOG_ERROR MessageBox::error(this, i18n("Please close other dialogs first.")); return
 
 #ifdef ENABLE_KDE_SUPPORT
 void MainWindow::configureShortcuts()
@@ -1102,10 +1102,11 @@ void MainWindow::showPreferencesDialog()
         #endif
 
         PreferencesDialog *pref=new PreferencesDialog(this, lyricsPage);
+        controlConnectionsMenu(false);
         connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
         connect(pref, SIGNAL(connectTo(const MPDConnectionDetails &)), this, SLOT(connectToMpd(const MPDConnectionDetails &)));
         connect(pref, SIGNAL(reloadStreams()), streamsPage, SLOT(refresh()));
-        connect(pref, SIGNAL(destroyed()), SLOT(updateConnectionsMenu()));
+        connect(pref, SIGNAL(destroyed()), SLOT(controlConnectionsMenu()));
         pref->show();
     }
 }
@@ -1244,6 +1245,17 @@ void MainWindow::updateConnectionsMenu()
                 act->setShortcut(Qt::ControlModifier+nextKey(i));
             }
         }
+    }
+}
+
+void MainWindow::controlConnectionsMenu(bool enable)
+{
+    if (enable) {
+        updateConnectionsMenu();
+    }
+
+    foreach(QAction *act, connectionsAction->menu()->actions()) {
+        act->setEnabled(enable);
     }
 }
 
@@ -1394,38 +1406,10 @@ void MainWindow::toggleOutput()
 
 void MainWindow::changeConnection()
 {
-    bool allowChange=true;
-    #ifdef TAGLIB_FOUND
-    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
-        allowChange=false;
-    }
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
-        allowChange=false;
-    }
-    #endif
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    if (0!=RgDialog::instanceCount()) {
-        allowChange=false;
-    }
-    #endif
-
-    if (allowChange) {
-        QAction *act=qobject_cast<QAction *>(sender());
-
-        if (act) {
-            Settings::self()->saveCurrentConnection(act->data().toString());
-            connectToMpd();
-        }
-    } else {
-        QString current=Settings::self()->currentConnection();
-        foreach (QAction *act, connectionsAction->menu()->actions()) {
-            if (act->data().toString()==current) {
-                act->setChecked(true);
-            }
-            break;
-        }
+    QAction *act=qobject_cast<QAction *>(sender());
+    if (act) {
+        Settings::self()->saveCurrentConnection(act->data().toString());
+        connectToMpd();
     }
 }
 
@@ -2586,7 +2570,7 @@ void MainWindow::editTags(const QList<Song> &songs, bool isPlayQueue)
         return;
     }
 
-    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
+    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount() || 0!=PreferencesDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -2631,7 +2615,7 @@ void MainWindow::organiseFiles()
         return;
     }
 
-    if (0!=TagEditor::instanceCount() || 0!=CoverDialog::instanceCount()) {
+    if (0!=TagEditor::instanceCount() || 0!=CoverDialog::instanceCount() || 0!=PreferencesDialog::instanceCount()) {
         DIALOG_ERROR;
     }
     #ifdef ENABLE_DEVICES_SUPPORT
@@ -2709,21 +2693,16 @@ void MainWindow::copyToDevice(const QString &from, const QString &to, const QLis
     if (songs.isEmpty() || 0!=ActionDialog::instanceCount()) {
         return;
     }
-    #ifdef TAGLIB_FOUND
-    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
+    if (0!=CoverDialog::instanceCount() || 0!=PreferencesDialog::instanceCount() || 0!=SyncDialog::instanceCount()
+        #ifdef TAGLIB_FOUND
+        || 0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()
+        #endif
+        #ifdef ENABLE_REPLAYGAIN_SUPPORT
+        || 0!=RgDialog::instanceCount()
+        #endif
+       ) {
         DIALOG_ERROR;
     }
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=SyncDialog::instanceCount()) {
-        DIALOG_ERROR;
-    }
-    #endif
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    if (0!=RgDialog::instanceCount()) {
-        DIALOG_ERROR;
-    }
-    #endif
 
     ActionDialog *dlg=new ActionDialog(this);
     dlg->copy(from, to, songs);
@@ -2734,24 +2713,16 @@ void MainWindow::deleteSongs(const QString &from, const QList<Song> &songs)
     if (songs.isEmpty() || 0!=ActionDialog::instanceCount()) {
         return;
     }
-    if (0!=CoverDialog::instanceCount()) {
+    if (0!=CoverDialog::instanceCount() || 0!=PreferencesDialog::instanceCount() || 0!=SyncDialog::instanceCount()
+        #ifdef TAGLIB_FOUND
+        || 0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()
+        #endif
+        #ifdef ENABLE_REPLAYGAIN_SUPPORT
+        || 0!=RgDialog::instanceCount()
+        #endif
+       ) {
         DIALOG_ERROR;
     }
-    #ifdef TAGLIB_FOUND
-    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
-        DIALOG_ERROR;
-    }
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=SyncDialog::instanceCount()) {
-        DIALOG_ERROR;
-    }
-    #endif
-    #ifdef ENABLE_REPLAYGAIN_SUPPORT
-    if (0!=RgDialog::instanceCount()) {
-        DIALOG_ERROR;
-    }
-    #endif
 
     ActionDialog *dlg=new ActionDialog(this);
     dlg->remove(from, songs);
@@ -2764,16 +2735,16 @@ void MainWindow::replayGain()
     if (0!=RgDialog::instanceCount()) {
         return;
     }
-    #ifdef TAGLIB_FOUND
-    if (0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()) {
+    if (0!=CoverDialog::instanceCount() || 0!=PreferencesDialog::instanceCount()
+        #ifdef TAGLIB_FOUND
+        || 0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()
+        #endif
+        #ifdef ENABLE_DEVICES_SUPPORT
+        || 0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()
+        #endif
+        ) {
         DIALOG_ERROR;
     }
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()) {
-        DIALOG_ERROR;
-    }
-    #endif
 
     QList<Song> songs;
     if (libraryPage->isVisible()) {
@@ -2811,16 +2782,19 @@ void MainWindow::setCover()
     if (0!=CoverDialog::instanceCount()) {
         return;
     }
-    #ifdef TAGLIB_FOUND
-    if (0!=TrackOrganiser::instanceCount()) {
+    if (0!=PreferencesDialog::instanceCount()
+        #ifdef TAGLIB_FOUND
+        || 0!=TagEditor::instanceCount() || 0!=TrackOrganiser::instanceCount()
+        #endif
+        #ifdef ENABLE_DEVICES_SUPPORT
+        || 0!=ActionDialog::instanceCount() || 0!=SyncDialog::instanceCount()
+        #endif
+        #ifdef ENABLE_REPLAYGAIN_SUPPORT
+        || 0!=RgDialog::instanceCount()
+        #endif
+        ) {
         DIALOG_ERROR;
     }
-    #endif
-    #ifdef ENABLE_DEVICES_SUPPORT
-    if (0!=ActionDialog::instanceCount()) {
-        DIALOG_ERROR;
-    }
-    #endif
 
     QList<Song> songs;
     if (libraryPage->isVisible()) {

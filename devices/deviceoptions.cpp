@@ -239,6 +239,7 @@ void DeviceOptions::load(const QString &group, bool isMpd)
         transcoderWhenDifferent=GET_BOOL("transcoderWhenDifferent", transcoderWhenDifferent);
         coverName=GET_STRING("coverFileName", coverName);
         coverMaxSize=GET_INT("coverMaxSize", coverMaxSize);
+        volumeId=GET_STRING("volumeId", volumeId);
         checkCoverSize();
     }
     #endif
@@ -267,6 +268,7 @@ void DeviceOptions::save(const QString &group, bool isMpd)
         SET_VALUE("transcoderWhenDifferent", transcoderWhenDifferent);
         SET_VALUE("coverFileName", coverName);
         SET_VALUE("coverMaxSize", coverMaxSize);
+        SET_VALUE("volumeId", volumeId);
     }
     #endif
     CFG_SYNC;

@@ -61,7 +61,7 @@ void displayFolders(LIBMTP_folder_t *folder, const QString &parent="/")
     if (!folder) {
         return;
     }
-    qWarning() << "FOLDER:" << parent+folder->name << " ID:" << folder->folder_id << " STOR:" << folder->storage_id;
+    qWarning() << "FOLDER:" << parent+folder->name << "ID:" << folder->folder_id << "PID:" << folder->parent_id << "STOR:" << folder->storage_id;
     if (folder->child) {
         displayFolders(folder->child, parent+folder->name+"/");
     }
@@ -76,7 +76,7 @@ void displayFiles(LIBMTP_file_t *file)
         return;
     }
 
-    qWarning() << "FILE:" << file->filename << " ID:" << file->item_id << " PID:" << file->parent_id << " STOR:" << file->storage_id;
+    qWarning() << "FILE:" << file->filename << "ID:" << file->item_id << "PID:" << file->parent_id << "STOR:" << file->storage_id;
     if (file->next) {
         displayFiles(file->next);
     }
@@ -88,7 +88,7 @@ void displayAlbums(LIBMTP_album_t *album)
         return;
     }
 
-    qWarning() << "ALBUM_NAME:" << album->name << " ARTIST:" << album->artist << " ID:" << album->album_id << " PID:" << album->parent_id << " STOR:" << album->storage_id;
+    qWarning() << "ALBUM_NAME:" << album->name << "ARTIST:" << album->artist << "ID:" << album->album_id << "PID:" << album->parent_id << "STOR:" << album->storage_id;
     if (album->next) {
         displayAlbums(album->next);
     }
@@ -100,7 +100,7 @@ void displayTracks(LIBMTP_track_t *track)
         return;
     }
 
-    qWarning() << "TRACK_TITLE:" << track->title << " ARTIST:" << track->artist << " ALBUM:" << track->album << " FILENAME:" << track->filename << " ID:" << track->item_id << " PID:" << track->parent_id << " STOR:" << track->storage_id;
+    qWarning() << "TRACK_TITLE:" << track->title << "ARTIST:" << track->artist << "ALBUM:" << track->album << "FILENAME:" << track->filename << "ID:" << track->item_id << "PID:" << track->parent_id << "STOR:" << track->storage_id;
     if (track->next) {
         displayTracks(track->next);
     }
@@ -137,7 +137,6 @@ MtpConnection::MtpConnection(MtpDevice *p)
     , albums(0)
     , tracks(0)
     , library(0)
-    , musicFolderId(0)
     //, albumsFolderId(0)
     , dev(p)
     , lastUpdate(0)
@@ -181,7 +180,8 @@ void MtpConnection::trackListProgress(uint64_t count)
 void MtpConnection::connectToDevice()
 {
     device=0;
-    musicFolderId=0;
+    storage.clear();
+    defaultMusicFolder=0;
     //albumsFolderId=0;
     LIBMTP_raw_device_t *rawDevices=0;
     int numDev=-1;
@@ -206,7 +206,7 @@ void MtpConnection::connectToDevice()
     size=0;
     used=0;
     device=mptDev;
-    updateCapacity();
+    updateStorage();
     free(rawDevices);
     if (!device) {
         emit statusMessage(i18n("No devices found"));
@@ -220,7 +220,7 @@ void MtpConnection::connectToDevice()
         emit deviceDetails(QString());
     }
 
-    musicFolderId=device->default_music_folder;
+    defaultMusicFolder=device->default_music_folder;
     #if 0
     albumsFolderId=device->default_album_folder;
     supportedTypes.clear();
@@ -284,11 +284,10 @@ void MtpConnection::updateLibrary()
     updateAlbums();
     LIBMTP_track_t *track=tracks;
     QMap<int, Folder>::ConstIterator folderEnd=folderMap.constEnd();
-    if (0!=musicFolderId) {
-        QMap<int, Folder>::ConstIterator musicFolder=folderMap.find(musicFolderId);
-        if (musicFolder!=folderEnd) {
-            musicPath=musicFolder.value().path;
-        }
+    QMap<uint32_t, Storage>::Iterator it=storage.begin();
+    QMap<uint32_t, Storage>::Iterator end=storage.end();
+    for (; it!=end; ++it) {
+        setMusicFolder(it.value());
     }
 
     MusicLibraryItemArtist *artistItem = 0;
@@ -337,12 +336,19 @@ void MtpConnection::updateLibrary()
     }
 }
 
-uint32_t MtpConnection::getMusicFolderId()
+void MtpConnection::setMusicFolder(Storage &store)
 {
-    return musicFolderId ? musicFolderId
-                         : folders
-                            ? getFolderId("Music", folders)
-                            : 0;
+    if (0==store.musicFolderId) {
+        if (folders) {
+            store.musicFolderId=getFolderId("Music", folders, store.id);
+        }
+        if (0==store.musicFolderId) {
+            store.musicFolderId=createFolder("Music", "Music/", 0, store.id);
+        }
+        if (0!=store.musicFolderId) {
+            store.musicPath=getPath(store.musicFolderId);
+        }
+    }
 }
 
 //uint32_t MtpConnection::getAlbumsFolderId()
@@ -353,22 +359,22 @@ uint32_t MtpConnection::getMusicFolderId()
 //                            : 0;
 //}
 
-uint32_t MtpConnection::getFolderId(const char *name, LIBMTP_folder_t *f)
+uint32_t MtpConnection::getFolderId(const char *name, LIBMTP_folder_t *f, uint32_t storageId)
 {
     if (!f) {
         return 0;
     }
 
-    if (!strcasecmp(name, f->name)) {
+    if (f->storage_id==storageId && !strcasecmp(name, f->name)) {
         return f->folder_id;
     }
 
     uint32_t i;
 
-//     if ((i=getFolderId(name, f->child))) {
+//     if ((i=getFolderId(name, f->child, storageId))) {
 //         return i;
 //     }
-    if ((i=getFolderId(name, f->sibling))) {
+    if ((i=getFolderId(name, f->sibling, storageId))) {
         return i;
     }
 
@@ -417,71 +423,108 @@ void MtpConnection::updateAlbums()
     }
 }
 
-void MtpConnection::updateCapacity()
+void MtpConnection::updateStorage()
 {
-    if (device && LIBMTP_ERROR_NONE==LIBMTP_Get_Storage(device, LIBMTP_STORAGE_SORTBY_NOTSORTED) && device->storage) {
-        size=device->storage->MaxCapacity;
-        used=size-device->storage->FreeSpaceInBytes;
+    size=0;
+    used=0;
+    if (device && LIBMTP_ERROR_NONE==LIBMTP_Get_Storage(device, LIBMTP_STORAGE_SORTBY_NOTSORTED)) {
+        LIBMTP_devicestorage_struct *s=device->storage;
+        while (s) {
+            if (!storage.contains(s->id)) {
+                storage[s->id].id=s->id;
+                storage[s->id].description=QString::fromUtf8(s->StorageDescription);
+                storage[s->id].volumeIdentifier=QString::fromUtf8(s->VolumeIdentifier);
+            }
+            storage[s->id].size=s->MaxCapacity;
+            storage[s->id].used=s->MaxCapacity-s->FreeSpaceInBytes;
+            size+=s->MaxCapacity;
+            used+=s->MaxCapacity-s->FreeSpaceInBytes;
+            s=s->next;
+        }
     }
 }
 
-uint32_t MtpConnection::createFolder(const char *name, uint32_t parentId)
+QList<DeviceStorage> MtpConnection::getStorageList() const
 {
-    QMap<int, Folder>::ConstIterator it=folderMap.find(parentId);
-    uint32_t storageId=0;
-    if (it!=folderMap.constEnd()) {
-        storageId=it.value().entry->storage_id;
+    QList<DeviceStorage> s;
+    QMap<uint32_t, Storage>::ConstIterator it=storage.constBegin();
+    QMap<uint32_t, Storage>::ConstIterator end=storage.constEnd();
+    for ( ;it!=end; ++it) {
+        DeviceStorage store;
+        store.size=(*it).size;
+        store.used=(*it).used;
+        store.description=(*it).description;
+        store.volumeIdentifier=(*it).volumeIdentifier;
+        s.append(store);
     }
-    char *nameCopy = qstrdup(name);
+
+    return s;
+}
+
+MtpConnection::Storage & MtpConnection::getStorage(const QString &volumeIdentifier)
+{
+    QMap<uint32_t, Storage>::Iterator first=storage.begin();
+    if (!volumeIdentifier.isEmpty()) {
+        QMap<uint32_t, Storage>::Iterator it=first;
+        QMap<uint32_t, Storage>::Iterator end=storage.end();
+        for ( ;it!=end; ++it) {
+            if ((*it).volumeIdentifier==volumeIdentifier) {
+                return it.value();
+            }
+        }
+    }
+
+    return first.value();
+}
+
+uint32_t MtpConnection::createFolder(const QString &name, const QString &fullPath, uint32_t parentId, uint32_t storageId)
+{
+    char *nameCopy = qstrdup(name.toUtf8().constData());
     uint32_t newFolderId=LIBMTP_Create_Folder(device, nameCopy, parentId, storageId);
     delete nameCopy;
     if (0==newFolderId)  {
         return 0;
     }
-    updateFolders();
+
+    //updateFolders();
+    //return getFolder(fullPath, storageId);
+    folderMap.insert(newFolderId, Folder(fullPath, newFolderId, parentId, storageId));
     return newFolderId;
 }
 
-uint32_t MtpConnection::getFolder(const QString &path)
+uint32_t MtpConnection::getFolder(const QString &path, uint32_t storageId)
 {
     QMap<int, Folder>::ConstIterator it=folderMap.constBegin();
     QMap<int, Folder>::ConstIterator end=folderMap.constEnd();
 
     for (; it!=end; ++it) {
-        if (it.value().path==path) {
-            return it.value().entry->folder_id;
+        if (storageId==(*it).storageId && (*it).path==path) {
+            return (*it).id;
         }
     }
     return 0;
 }
 
-MtpConnection::Folder * MtpConnection::getFolderEntry(const QString &path)
+QString MtpConnection::getPath(uint32_t folderId)
 {
-    QMap<int, Folder>::ConstIterator it=folderMap.constBegin();
-    QMap<int, Folder>::ConstIterator end=folderMap.constEnd();
-
-    for (; it!=end; ++it) {
-        if (it.value().path==path) {
-            return const_cast<MtpConnection::Folder *>(&(it.value()));
-        }
-    }
-    return 0;
+    return folderMap.contains(folderId) ? folderMap[folderId].path : QString();
 }
 
-uint32_t MtpConnection::checkFolderStructure(const QStringList &dirs)
+uint32_t MtpConnection::checkFolderStructure(const QStringList &dirs, Storage &store)
 {
-    uint32_t parentId=getMusicFolderId();
+    setMusicFolder(store);
     QString path;
+    uint32_t parentId=store.musicFolderId;
+
     foreach (const QString &d, dirs) {
         path+=d+QChar('/');
-        uint32_t folderId=getFolder(path);
+        uint32_t folderId=getFolder(path, store.id);
         if (0==folderId) {
-            folderId=createFolder(d.toUtf8().constData(), parentId);
+            folderId=createFolder(d, path, parentId, store.id);
             if (0==folderId) {
                 return parentId;
             } else {
-                updateFolders();
-                parentId=getFolder(path);
+                parentId=folderId;
             }
         } else {
             parentId=folderId;
@@ -497,11 +540,13 @@ void MtpConnection::parseFolder(LIBMTP_folder_t *folder)
     }
 
     QMap<int, Folder>::ConstIterator it=folderMap.find(folder->parent_id);
+    QString path;
     if (it!=folderMap.constEnd()) {
-        folderMap.insert(folder->folder_id, Folder(it.value().path+QString::fromUtf8(folder->name)+QChar('/'), folder));
+        path=it.value().path+QString::fromUtf8(folder->name)+QChar('/');
     } else {
-        folderMap.insert(folder->folder_id, Folder(QString::fromUtf8(folder->name)+QChar('/'), folder));
+        path=QString::fromUtf8(folder->name)+QChar('/');
     }
+    folderMap.insert(folder->folder_id, Folder(path, folder->folder_id, folder->parent_id, folder->storage_id));
     if (folder->child) {
         parseFolder(folder->child);
     }
@@ -573,17 +618,20 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     bool fixedVa=false;
     bool embedCoverImage=Device::constEmbedCover==opts.coverName;
     LIBMTP_track_t *meta=0;
+
+    Storage &store=getStorage(opts.volumeId);
+
     if (device) {
         meta=LIBMTP_new_track_t();
-        meta->parent_id=musicFolderId;
-        meta->storage_id=0;
+        meta->parent_id=store.musicFolderId;
+        meta->storage_id=store.id;
 
         Song song=s;
-        QString destName=musicPath+dev->opts.createFilename(song);
+        QString destName=store.musicPath+dev->opts.createFilename(song);
         QStringList dirs=destName.split('/', QString::SkipEmptyParts);
-        if (dirs.count()>2) {
+        if (dirs.count()>1) {
             destName=dirs.takeLast();
-            meta->parent_id=checkFolderStructure(dirs);
+            meta->parent_id=checkFolderStructure(dirs, store);
         }
         meta->item_id=0;
         QString fileName=song.file;
@@ -749,7 +797,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     }
     if (added) {
         trackMap.insert(meta->item_id, meta);
-        updateCapacity();
+        updateStorage();
     } else if (meta) {
         LIBMTP_destroy_track_t(meta);
     }
@@ -856,32 +904,37 @@ void MtpConnection::delSong(const Song &song)
                 }
             }
         }
-        updateCapacity();
+        updateStorage();
     }
     emit delSongStatus(deleted);
 }
 
 void MtpConnection::cleanDirs(const QSet<QString> &dirs)
 {
-    foreach (const QString &path, dirs) {
-        QStringList parts=path.split("/", QString::SkipEmptyParts);
-        while (parts.length()>1) {
-            // Find ID of this folder...
-            uint32_t id=getFolder(parts.join("/")+QChar('/'));
-            if (0==id || musicFolderId==id) {
-                break;
-            }
+    QMap<uint32_t, Storage>::ConstIterator it=storage.constBegin();
+    QMap<uint32_t, Storage>::ConstIterator end=storage.constEnd();
 
-            QMap<int, Folder>::Iterator folder=folderMap.find(id);
-            if (folder!=folderMap.end()) {
-                if (0==LIBMTP_Delete_Object(device, id)) {
-                    folderMap.erase(folder);
+    for (; it!=end; ++it) {
+        foreach (const QString &path, dirs) {
+            QStringList parts=path.split("/", QString::SkipEmptyParts);
+            while (parts.length()>1) {
+                // Find ID of this folder...
+                uint32_t id=getFolder(parts.join("/")+QChar('/'), it.key());
+                if (0==id || (*it).musicFolderId==id) {
+                    break;
+                }
+
+                QMap<int, Folder>::Iterator folder=folderMap.find(id);
+                if (folder!=folderMap.end()) {
+                    if (0==LIBMTP_Delete_Object(device, id)) {
+                        folderMap.erase(folder);
+                    } else {
+                        break;
+                    }
+                    parts.takeLast();
                 } else {
                     break;
                 }
-                parts.takeLast();
-            } else {
-                break;
             }
         }
     }
@@ -1064,7 +1117,7 @@ void MtpDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(QString(), opts, DevicePropertiesWidget::Prop_CoversBasic|DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
+    dlg->show(QString(), opts, connection->getStorageList(), DevicePropertiesWidget::Prop_CoversBasic|DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
 }
 
 void MtpDevice::rescan(bool full)
@@ -1250,7 +1303,6 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
     if (!ok) {
         emit actionStatus(Failed);
     } else {
-
         currentSong.id=id;
         currentSong.file=file;
         if (needToFixVa && fixedVa) {

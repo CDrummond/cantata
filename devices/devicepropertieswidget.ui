@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>390</height>
+    <width>549</width>
+    <height>496</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -114,6 +114,16 @@
      </item>
      <item row="5" column="1">
       <widget class="OnOffButton" name="useCache"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="defaultVolumeLabel">
+       <property name="text">
+        <string>Default volume:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QComboBox" name="defaultVolume"/>
      </item>
     </layout>
    </item>
@@ -316,6 +326,7 @@
   <tabstop>fixVariousArtists</tabstop>
   <tabstop>autoScan</tabstop>
   <tabstop>useCache</tabstop>
+  <tabstop>defaultVolume</tabstop>
   <tabstop>vfatSafe</tabstop>
   <tabstop>asciiOnly</tabstop>
   <tabstop>replaceSpaces</tabstop>

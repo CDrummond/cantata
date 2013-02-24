@@ -32,6 +32,14 @@
 
 class Song;
 
+struct DeviceStorage {
+    DeviceStorage() : size(0), used(0) { }
+    qulonglong size;
+    qulonglong used;
+    QString description;
+    QString volumeIdentifier;
+};
+
 struct DeviceOptions {
     static const QLatin1String constAlbumArtist;
     static const QLatin1String constAlbumTitle;
@@ -59,7 +67,7 @@ struct DeviceOptions {
                 #ifdef ENABLE_DEVICES_SUPPORT
                 && coverMaxSize==o.coverMaxSize && coverName==o.coverName
                 && fixVariousArtists==o.fixVariousArtists && useCache==o.useCache &&
-                transcoderCodec==o.transcoderCodec && autoScan==o.autoScan &&
+                transcoderCodec==o.transcoderCodec && autoScan==o.autoScan && volumeId==o.volumeId &&
                 (transcoderCodec.isEmpty() || (transcoderValue==o.transcoderValue && transcoderWhenDifferent==o.transcoderWhenDifferent))
                 #endif
                 ;
@@ -93,6 +101,7 @@ struct DeviceOptions {
     bool autoScan;
     QString coverName;
     unsigned int coverMaxSize;
+    QString volumeId;
     #endif
 };
 

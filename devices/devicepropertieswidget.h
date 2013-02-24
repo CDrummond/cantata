@@ -48,7 +48,7 @@ public:
     };
     DevicePropertiesWidget(QWidget *parent);
     virtual ~DevicePropertiesWidget() { }
-    void update(const QString &path, const DeviceOptions &opts, int props);
+    void update(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props);
     DeviceOptions settings();
     bool isModified() const { return modified; }
     bool isSaveable() const { return saveable; }

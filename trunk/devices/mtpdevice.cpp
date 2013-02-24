@@ -52,8 +52,60 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
+#ifdef MTP_DEBUG
 #include <QDebug>
 
+void displayFolders(LIBMTP_folder_t *folder, const QString &parent="/")
+{
+    if (!folder) {
+        return;
+    }
+    qWarning() << "FOLDER:" << parent+folder->name << " ID:" << folder->folder_id << " STOR:" << folder->storage_id;
+    if (folder->child) {
+        displayFolders(folder->child, parent+folder->name+"/");
+    }
+    if (folder->sibling) {
+        displayFolders(folder->sibling, parent);
+    }
+}
+
+void displayFiles(LIBMTP_file_t *file)
+{
+    if (!file) {
+        return;
+    }
+
+    qWarning() << "FILE:" << file->filename << " ID:" << file->item_id << " PID:" << file->parent_id << " STOR:" << file->storage_id;
+    if (file->next) {
+        displayFiles(file->next);
+    }
+}
+
+void displayAlbums(LIBMTP_album_t *album)
+{
+    if (!album) {
+        return;
+    }
+
+    qWarning() << "ALBUM_NAME:" << album->name << " ARTIST:" << album->artist << " ID:" << album->album_id << " PID:" << album->parent_id << " STOR:" << album->storage_id;
+    if (album->next) {
+        displayAlbums(album->next);
+    }
+}
+
+void displayTracks(LIBMTP_track_t *track)
+{
+    if (!track) {
+        return;
+    }
+
+    qWarning() << "TRACK_TITLE:" << track->title << " ARTIST:" << track->artist << " ALBUM:" << track->album << " FILENAME:" << track->filename << " ID:" << track->item_id << " PID:" << track->parent_id << " STOR:" << track->storage_id;
+    if (track->next) {
+        displayTracks(track->next);
+    }
+}
+#endif
 
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
@@ -221,6 +273,12 @@ void MtpConnection::updateLibrary()
         return;
     }
     emit statusMessage(i18n("Updating tracks..."));
+    #ifdef MTP_DEBUG
+    displayFolders(LIBMTP_Get_Folder_List(device));
+    displayFiles(LIBMTP_Get_Filelisting_With_Callback(device, 0, 0));
+    displayAlbums(LIBMTP_Get_Album_List(device));
+    displayTracks(LIBMTP_Get_Tracklisting_With_Callback(device, 0, 0));
+    #endif
     lastUpdate=0;
     tracks=LIBMTP_Get_Tracklisting_With_Callback(device, &trackListMonitor, this);
     updateAlbums();

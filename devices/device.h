@@ -156,13 +156,11 @@ public:
     virtual QString capacityString()=0;
     virtual qint64 freeSpace()=0;
     virtual DevType devType() const=0;
-    virtual void saveCache() {
-        emit cacheSaved();
-    }
     virtual void removeCache() {
     }
 
     #ifndef Q_OS_WIN
+    virtual void saveCache();
     const QString & udi() const {
         return deviceId;
     }

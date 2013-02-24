@@ -28,6 +28,7 @@
 #include <QBuffer>
 #include <QDir>
 #include <QTemporaryFile>
+#include <QTimer>
 #ifndef Q_OS_WIN
 #include "devicesmodel.h"
 #include "umsdevice.h"
@@ -248,6 +249,11 @@ QTemporaryFile * Device::copySongToTemp(Song &song)
         }
     }
     return temp;
+}
+
+void Device::saveCache()
+{
+    QTimer::singleShot(0, this, SIGNAL(cacheSaved()));
 }
 
 void Device::applyUpdate()

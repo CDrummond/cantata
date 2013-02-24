@@ -43,12 +43,30 @@ class MtpConnection : public QObject
     Q_OBJECT
 public:
     struct Folder {
-        Folder(const QString &p, LIBMTP_folder_t *e)
-            : path(p)
-            , entry(e) {
+        Folder(const QString &pth=QString(), uint32_t i=0, uint32_t p=0, uint32_t s=0)
+            : path(pth)
+            , id(i)
+            , parentId(p)
+            , storageId(s) {
         }
         QString path;
-        LIBMTP_folder_t *entry;
+        uint32_t id;
+        uint32_t parentId;
+        uint32_t storageId;
+    };
+
+    struct Storage : public DeviceStorage {
+        Storage() : id(0), musicFolderId(0) { }
+        uint32_t id;
+        uint32_t musicFolderId;
+        //uint32_t albumsFolderId;
+        QString musicPath;
+    };
+
+    struct FolderId {
+        FolderId(uint32_t i, uint32_t s) : id(i), storage(s) { }
+        uint32_t id;
+        uint32_t storage;
     };
 
     MtpConnection(MtpDevice *p);
@@ -58,6 +76,7 @@ public:
     MusicLibraryItemRoot * takeLibrary();
     uint64_t capacity() const { return size; }
     uint64_t usedSpace() const { return used; }
+    QList<DeviceStorage> getStorageList() const;
     void emitProgress(int percent);
     void trackListProgress(uint64_t count);
     bool abortRequested() const;
@@ -87,15 +106,16 @@ Q_SIGNALS:
 private:
     void updateFolders();
     void updateAlbums();
-    void updateCapacity();
-    uint32_t createFolder(const char *name, uint32_t parentId);
-    uint32_t getFolder(const QString &path);
-    Folder * getFolderEntry(const QString &path);
-    uint32_t checkFolderStructure(const QStringList &dirs);
+    void updateStorage();
+    Storage & getStorage(const QString &volumeIdentifier);
+    uint32_t createFolder(const QString &name, const QString &fullPath, uint32_t parentId, uint32_t storageId);
+    uint32_t getFolder(const QString &path, uint32_t storageId);
+    QString getPath(uint32_t folderId);
+    uint32_t checkFolderStructure(const QStringList &dirs, Storage &store);
     void parseFolder(LIBMTP_folder_t *folder);
-    uint32_t getMusicFolderId();
+    void setMusicFolder(Storage &store);
     //uint32_t getAlbumsFolderId();
-    uint32_t getFolderId(const char *name, LIBMTP_folder_t *f);
+    uint32_t getFolderId(const char *name, LIBMTP_folder_t *f, uint32_t storageId);
     LIBMTP_album_t * getAlbum(const Song &song);
     QImage getCover(LIBMTP_album_t *album);
     void destroyData();
@@ -110,11 +130,10 @@ private:
     //QSet<uint16_t> supportedTypes;
     QSet<LIBMTP_album_t *> albumsWithCovers;
     MusicLibraryItemRoot *library;
+    uint32_t defaultMusicFolder;
+    QMap<uint32_t, Storage> storage;
     uint64_t size;
     uint64_t used;
-    uint32_t musicFolderId;
-    //uint32_t albumsFolderId;
-    QString musicPath;
     MtpDevice *dev;
     int lastUpdate;
 };

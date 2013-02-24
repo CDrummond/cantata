@@ -61,7 +61,7 @@ void RemoteDevicePropertiesDialog::show(const DeviceOptions &opts, const RemoteF
     }
     devProp->setEnabled(!create && isConnected);
     devProp->showRemoteConnectionNote(!isConnected);
-    devProp->update(QString(), opts, props);
+    devProp->update(QString(), opts, QList<DeviceStorage>(), props);
     remoteProp->update(det, create, isConnected);
     connect(devProp, SIGNAL(updated()), SLOT(enableOkButton()));
     connect(remoteProp, SIGNAL(updated()), SLOT(enableOkButton()));

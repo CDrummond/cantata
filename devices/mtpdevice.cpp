@@ -950,8 +950,8 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));
     connect(this, SIGNAL(putSong(const Song &, bool, const DeviceOptions &)), connection, SLOT(putSong(const Song &, bool, const DeviceOptions &)));
     connect(connection, SIGNAL(putSongStatus(bool, int, const QString &, bool)), this, SLOT(putSongStatus(bool, int, const QString &, bool)));
-    connect(this, SIGNAL(getSong(const Song &, const QString &)), connection, SLOT(getSong(const Song &, const QString &)));
-    connect(connection, SIGNAL(getSongStatus(bool)), this, SLOT(getSongStatus(bool)));
+    connect(this, SIGNAL(getSong(const Song &, const QString &, bool, bool)), connection, SLOT(getSong(const Song &, const QString &, bool, bool)));
+    connect(connection, SIGNAL(getSongStatus(bool, bool)), this, SLOT(getSongStatus(bool, bool)));
     connect(this, SIGNAL(delSong(const Song &)), connection, SLOT(delSong(const Song &)));
     connect(connection, SIGNAL(delSongStatus(bool)), this, SLOT(delSongStatus(bool)));
     connect(this, SIGNAL(cleanMusicDirs(const QSet<QString> &)), connection, SLOT(cleanDirs(const QSet<QString> &)));

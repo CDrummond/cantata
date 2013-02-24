@@ -26,6 +26,7 @@
 #include "covers.h"
 #include "localize.h"
 #include "icons.h"
+#include "utils.h"
 #include <QValidator>
 #include <QTabWidget>
 
@@ -109,7 +110,7 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     }
 }
 
-void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &opts, int props)
+void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props)
 {
     bool allowCovers=(props&Prop_CoversAll)||(props&Prop_CoversBasic);
     filenameScheme->setText(opts.scheme);
@@ -197,6 +198,26 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         coverMaxSize->setCurrentIndex(0==coverMax ? 0 : (coverMaxSize->count()-coverMax));
     } else {
         coverMaxSize->setCurrentIndex(0);
+    }
+
+    if (storage.count()<2) {
+        defaultVolumeLabel->setVisible(false);
+        defaultVolume->setVisible(false);
+    } else {
+        defaultVolumeLabel->setVisible(true);
+        defaultVolume->setVisible(true);
+        foreach (const DeviceStorage &ds, storage) {
+            defaultVolume->addItem(i18nc("name (size free)", "%1 (%2 free)")
+                                   .arg(ds.description).arg(Utils::formatByteSize(ds.size-ds.used)), ds.volumeIdentifier);
+        }
+
+        for (int i=0; i<defaultVolume->count(); ++i) {
+            if (defaultVolume->itemData(i).toString()==opts.volumeId) {
+                defaultVolume->setCurrentIndex(i);
+                break;
+            }
+        }
+        connect(defaultVolume,SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
     }
 
     origMusicFolder=path;
@@ -294,6 +315,7 @@ DeviceOptions DevicePropertiesWidget::settings()
     opts.transcoderWhenDifferent=false;
     opts.coverName=cover();
     opts.coverMaxSize=0==coverMaxSize->currentIndex() ? 0 : ((coverMaxSize->count()-coverMaxSize->currentIndex())*100);
+    opts.volumeId=defaultVolume->isVisible() ? defaultVolume->itemData(defaultVolume->currentIndex()).toString() : QString();
     if (transcoderFrame->isVisible()) {
         opts.transcoderCodec=transcoderName->itemData(transcoderName->currentIndex()).toString();
 

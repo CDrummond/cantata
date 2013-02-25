@@ -614,6 +614,7 @@ void RemoteFsDevice::load()
 void RemoteFsDevice::setup()
 {
     details.load(details.name);
+    configured=details.configured;
     if (isConnected()) {
         readOpts(settingsFileName(), opts, true);
     }
@@ -696,7 +697,7 @@ void RemoteFsDevice::saveProperties(const DeviceOptions &newOpts, const Details 
             removeCache();
         }
         details=newDetails;
-        details.configured=configured;
+        details.configured=configured=true;
         details.save();
 
         if (newName) {

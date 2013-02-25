@@ -29,6 +29,7 @@
 #include "messagebox.h"
 #include "icon.h"
 #include <QTabWidget>
+#include <QStyle>
 #include <QIcon>
 
 RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
@@ -42,6 +43,11 @@ RemoteDevicePropertiesDialog::RemoteDevicePropertiesDialog(QWidget *parent)
     tab=new QTabWidget(this);
     remoteProp=new RemoteDevicePropertiesWidget(tab);
     devProp=new DevicePropertiesWidget(tab);
+    int margin=style()->pixelMetric(QStyle::PM_LayoutLeftMargin);
+    if (margin<1) {
+        margin=6;
+    }
+    devProp->layout()->setContentsMargins(margin, margin, margin, margin);
     tab->addTab(remoteProp, QIcon::fromTheme("network-server"), i18n("Connection"));
     tab->addTab(devProp, Icon("cantata-view-media-library"), i18n("Music Library"));
     setMainWidget(tab);

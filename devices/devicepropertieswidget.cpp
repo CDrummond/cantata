@@ -154,15 +154,6 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
                 }
             }
         }
-        albumCovers->setValidator(new CoverNameValidator(this));
-        connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(albumCoversChanged()));
-    } else {
-        albumCovers->deleteLater();
-        albumCovers=0;
-        albumCoversLabel->deleteLater();
-        albumCoversLabel=0;
-    }
-    if (props&Prop_CoversAll) {
         if (0!=origOpts.coverMaxSize) {
             int coverMax=origOpts.coverMaxSize/100;
             if (coverMax<0 || coverMax>=coverMaxSize->count()) {
@@ -172,8 +163,14 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         } else {
             coverMaxSize->setCurrentIndex(0);
         }
+        albumCovers->setValidator(new CoverNameValidator(this));
+        connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(albumCoversChanged()));
         connect(coverMaxSize, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
     } else {
+        albumCovers->deleteLater();
+        albumCovers=0;
+        albumCoversLabel->deleteLater();
+        albumCoversLabel=0;
         coverMaxSize->deleteLater();
         coverMaxSize=0;
         coverMaxSizeLabel->deleteLater();

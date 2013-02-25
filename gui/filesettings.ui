@@ -93,7 +93,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have covers or lyrics stored in the music folder, and Cantata cannot access the music folder, then the files will be written as if the option was disabled.&lt;/i&gt;</string>
+      <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; If you elect to have Cantata store covers, or lyrics, within the music folder, and you do not have write access to this folder, then Cantata will revert to saving the files in your personal cache folder. However, for streams, if you do not have write access, then you will only be able to view (and play) the streams stored in the music folder, and not add (or edit) any streams. If you elect not to store streams within the music folder, then these will be saved in your local config folder - and will only be accessible to yourself.&lt;/i&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

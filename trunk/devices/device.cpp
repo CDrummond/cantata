@@ -209,7 +209,7 @@ void Device::embedCover(const QString &file, Song &song, unsigned int coverMaxSi
         Covers::Image coverImage=Covers::self()->getImage(song);
         if (!coverImage.img.isNull()) {
             QByteArray imgData;
-            if (coverImage.img.width()>(int)coverMaxSize || coverImage.img.height()>(int)coverMaxSize) {
+            if (coverMaxSize && (coverImage.img.width()>(int)coverMaxSize || coverImage.img.height()>(int)coverMaxSize)) {
                 imgData=save(coverImage.img.scaled(QSize(coverMaxSize, coverMaxSize), Qt::KeepAspectRatio, Qt::SmoothTransformation));
             } else if (!coverImage.fileName.endsWith(".jpg", Qt::CaseInsensitive) || !QFile::exists(coverImage.fileName)) {
                 imgData=save(coverImage.img);
@@ -222,7 +222,7 @@ void Device::embedCover(const QString &file, Song &song, unsigned int coverMaxSi
                 }
             }
             Tags::embedImage(file, imgData);
-       }
+        }
     }
 }
 

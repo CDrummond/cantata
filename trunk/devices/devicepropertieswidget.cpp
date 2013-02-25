@@ -125,49 +125,86 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     asciiOnly->setChecked(opts.asciiOnly);
     ignoreThe->setChecked(opts.ignoreThe);
     replaceSpaces->setChecked(opts.replaceSpaces);
-    if (!(props&Prop_Folder)) {
+    origOpts=opts;
+
+    if (props&Prop_Folder) {
+        musicFolder->setText(path);
+        connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    } else {
         musicFolder->deleteLater();
         musicFolder=0;
         musicFolderLabel->deleteLater();
         musicFolderLabel=0;
     }
-    if (!allowCovers) {
+    if (allowCovers) {
+        albumCovers->setEditable(props&Prop_CoversAll);
+        if (origOpts.coverName==Device::constNoCover) {
+            origOpts.coverName=noCoverText;
+            albumCovers->setCurrentIndex(0);
+        }
+        if (origOpts.coverName==Device::constEmbedCover) {
+            origOpts.coverName=embedCoverText;
+            albumCovers->setCurrentIndex(1);
+        } else {
+            albumCovers->setCurrentIndex(0);
+            for (int i=1; i<albumCovers->count(); ++i) {
+                if (albumCovers->itemText(i)==origOpts.coverName) {
+                    albumCovers->setCurrentIndex(i);
+                    break;
+                }
+            }
+        }
+        albumCovers->setValidator(new CoverNameValidator(this));
+        connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(albumCoversChanged()));
+    } else {
         albumCovers->deleteLater();
         albumCovers=0;
         albumCoversLabel->deleteLater();
         albumCoversLabel=0;
-    } else {
-        albumCovers->setEditable(props&Prop_CoversAll);
     }
-    if (!(props&Prop_CoversAll)) {
+    if (props&Prop_CoversAll) {
+        if (0!=origOpts.coverMaxSize) {
+            int coverMax=origOpts.coverMaxSize/100;
+            if (coverMax<0 || coverMax>=coverMaxSize->count()) {
+                coverMax=0;
+            }
+            coverMaxSize->setCurrentIndex(0==coverMax ? 0 : (coverMaxSize->count()-coverMax));
+        } else {
+            coverMaxSize->setCurrentIndex(0);
+        }
+        connect(coverMaxSize, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
+    } else {
         coverMaxSize->deleteLater();
         coverMaxSize=0;
         coverMaxSizeLabel->deleteLater();
         coverMaxSizeLabel=0;
     }
-    if (!(props&Prop_Va)) {
+    if (props&Prop_Va) {
+        fixVariousArtists->setChecked(opts.fixVariousArtists);
+        connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    } else {
         fixVariousArtists->deleteLater();
         fixVariousArtists=0;
         fixVariousArtistsLabel->deleteLater();
         fixVariousArtistsLabel=0;
-    } else {
-        fixVariousArtists->setChecked(opts.fixVariousArtists);
     }
-    if (!(props&Prop_Cache)) {
+    if (props&Prop_Cache) {
+        useCache->setChecked(opts.useCache);
+        connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    } else {
         useCache->deleteLater();
         useCache=0;
         useCacheLabel->deleteLater();
         useCacheLabel=0;
-    } else {
-        useCache->setChecked(opts.useCache);
     }
-    if (!(props&Prop_AutoScan)) {
+    if (props&Prop_AutoScan) {
+        autoScan->setChecked(opts.autoScan);
+        connect(autoScan, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    } else {
         autoScan->deleteLater();
         autoScan=0;
         autoScanLabel->deleteLater();
         autoScanLabel=0;
-    } else {
-        autoScan->setChecked(opts.autoScan);
     }
 
     if (props&Prop_Transcoder) {
@@ -204,41 +241,11 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
                 }
             }
         }
+        connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
+        connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     } else {
         transcoderFrame->deleteLater();
         transcoderFrame=0;
-    }
-
-    origOpts=opts;
-    if (albumCovers) {
-        if (origOpts.coverName==Device::constNoCover) {
-            origOpts.coverName=noCoverText;
-            albumCovers->setCurrentIndex(0);
-        }
-        if (origOpts.coverName==Device::constEmbedCover) {
-            origOpts.coverName=embedCoverText;
-            albumCovers->setCurrentIndex(1);
-        } else {
-            albumCovers->setCurrentIndex(0);
-            for (int i=1; i<albumCovers->count(); ++i) {
-                if (albumCovers->itemText(i)==origOpts.coverName) {
-                    albumCovers->setCurrentIndex(i);
-                    break;
-                }
-            }
-        }
-    }
-
-    if (coverMaxSize) {
-        if (0!=origOpts.coverMaxSize) {
-            int coverMax=origOpts.coverMaxSize/100;
-            if (coverMax<0 || coverMax>=coverMaxSize->count()) {
-                coverMax=0;
-            }
-            coverMaxSize->setCurrentIndex(0==coverMax ? 0 : (coverMaxSize->count()-coverMax));
-        } else {
-            coverMaxSize->setCurrentIndex(0);
-        }
     }
 
     if (storage.count()<2) {
@@ -262,36 +269,13 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     }
 
     origMusicFolder=path;
-    if (albumCovers) {
-        albumCovers->setValidator(new CoverNameValidator(this));
-        connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(albumCoversChanged()));
-    }
     connect(configFilename, SIGNAL(clicked()), SLOT(configureFilenameScheme()));
     connect(filenameScheme, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    if (musicFolder) {
-        connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    }
-    if (coverMaxSize) {
-        connect(coverMaxSize, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
-    }
-    if (fixVariousArtists) {
-        connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    }
-    if (transcoderFrame) {
-        connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
-        connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
-    }
-    if (useCache) {
-        connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    }
-    if (autoScan) {
-        connect(autoScan, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    }
     connect(replaceSpaces, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    modified=false;
+
     if (albumCovers) {
         albumCoversChanged();
     }

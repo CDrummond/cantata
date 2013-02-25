@@ -98,7 +98,7 @@ public:
     }
     #else
     Device(DevicesModel *m, Solid::Device &dev, bool albumArtistSupport=true)
-        : MusicLibraryItemRoot(dev.vendor()+QChar(' ')+dev.product(), albumArtistSupport)
+        : MusicLibraryItemRoot(dev.product().startsWith(dev.vendor()) ? dev.product() : (dev.vendor()+QChar(' ')+dev.product()), albumArtistSupport)
         , model(m)
         , configured(false)
         , solidDev(dev)

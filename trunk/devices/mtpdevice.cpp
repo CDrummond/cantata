@@ -763,26 +763,17 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     bool embedCoverImage=Device::constEmbedCover==opts.coverName;
     LIBMTP_track_t *meta=0;
     QString destName;
-    Storage &store=getStorage(opts.volumeId);
 
     if (device) {
         meta=LIBMTP_new_track_t();
-        meta->parent_id=store.musicFolderId;
-        meta->storage_id=store.id;
+        meta->item_id=0;
 
         Song song=s;
-        destName=store.musicPath+dev->opts.createFilename(song);
-        QStringList dirs=destName.split('/', QString::SkipEmptyParts);
-        if (dirs.count()>1) {
-            destName=dirs.takeLast();
-            meta->parent_id=checkFolderStructure(dirs, store);
-        }
-        meta->item_id=0;
         QString fileName=song.file;
         QTemporaryFile *temp=0;
 
         if (fixVa || embedCoverImage) {
-            // Need to 'workaround' broken various artists handling, so write to a temporary file first...
+            // Need to 'workaround' broken various artists handling, and/or embedding cover, so write to a temporary file first...
             temp=Device::copySongToTemp(song);
             if (temp) {
                 if (embedCoverImage) {
@@ -794,6 +785,36 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
                 song.file=temp->fileName();
             }
         }
+        struct stat statBuf;
+        if (0==stat(QFile::encodeName(song.file).constData(), &statBuf)) {
+            meta->filesize=statBuf.st_size;
+            meta->modificationdate=statBuf.st_mtime;
+        }
+
+        Storage store=getStorage(opts.volumeId);
+
+        // Check if storage has enough space, if not try to find one that does!
+        qulonglong spaceRequired=meta->filesize+8192;
+        if (store.freeSpace()<spaceRequired) {
+            QList<Storage>::Iterator it=storage.begin();
+            QList<Storage>::Iterator end=storage.end();
+            for ( ;it!=end; ++it) {
+                if ((*it).freeSpace()>=spaceRequired) {
+                    store=*it;
+                    break;
+                }
+            }
+        }
+
+        meta->parent_id=store.musicFolderId;
+        meta->storage_id=store.id;
+        destName=store.musicPath+dev->opts.createFilename(song);
+        QStringList dirs=destName.split('/', QString::SkipEmptyParts);
+        if (dirs.count()>1) {
+            destName=dirs.takeLast();
+            meta->parent_id=checkFolderStructure(dirs, store);
+        }
+
         meta->title=createString(song.title);
         meta->artist=createString(song.artist);
         meta->composer=createString(QString());
@@ -805,12 +826,6 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         meta->duration=song.time*1000;
         meta->rating=0;
         meta->usecount=0;
-
-        struct stat statBuf;
-        if (0==stat(QFile::encodeName(fileName).constData(), &statBuf)) {
-            meta->filesize=statBuf.st_size;
-            meta->modificationdate=statBuf.st_mtime;
-        }
         meta->filetype=mtpFileType(song);
         meta->next=0;
         added=0==LIBMTP_Send_Track_From_File(device, fileName.toUtf8(), meta, &progressMonitor, this);
@@ -945,13 +960,8 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     } else if (meta) {
         LIBMTP_destroy_track_t(meta);
     }
-    QString path;
 
-    if (added && meta) {
-        path=encodePath(meta, destName);
-    }
-
-    emit putSongStatus(added, meta ? meta->item_id : 0, path, fixedVa);
+    emit putSongStatus(added, meta ? meta->item_id : 0, meta ? encodePath(meta, destName) : QString(), fixedVa);
 }
 
 static bool saveFile(const QString &name, char *data, uint64_t size)

@@ -283,11 +283,12 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                     QPainterPath path=buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
                                                 (Qt::Horizontal==sb->orientation ? r.height() : r.width())/4);
                     QColor col(option->palette.highlight().color());
-                    if (option->state&State_Active && (!(sb->activeSubControls&SC_ScrollBarSlider) || !(option->state&State_MouseOver))) {
+                    bool faded=option->state&State_Active && !(sb->activeSubControls&SC_ScrollBarSlider && (option->state&State_MouseOver || option->state&State_Sunken));
+                    if (faded) {
                         col.setAlphaF(0.5);
                     }
                     painter->fillPath(path, col);
-                    if (option->state&State_Active && (!(sb->activeSubControls&SC_ScrollBarSlider) || !(option->state&State_MouseOver))) {
+                    if (faded) {
                         col.setAlphaF(0.1);
                     }
                     painter->setPen(col);

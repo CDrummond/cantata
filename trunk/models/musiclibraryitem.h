@@ -94,7 +94,6 @@ public:
     virtual void append(MusicLibraryItem *i) {
         m_childItems.append(i);
     }
-
     virtual MusicLibraryItem * childItem(int row) const {
         return m_childItems.value(row);
     }

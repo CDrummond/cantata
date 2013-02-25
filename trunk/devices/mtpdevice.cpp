@@ -53,6 +53,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#define MTP_FAKE_ALBUMARTIST_SUPPORT
+
 #ifdef MTP_DEBUG
 #include <QDebug>
 
@@ -251,6 +253,11 @@ void MtpConnection::disconnectFromDevice(bool showStatus)
     }
 }
 
+struct Album {
+    QSet<QString> artists;
+    QList<MusicLibraryItemSong *> songs;
+};
+
 void MtpConnection::updateLibrary()
 {
     if (!isConnected()) {
@@ -284,14 +291,16 @@ void MtpConnection::updateLibrary()
     updateAlbums();
     LIBMTP_track_t *track=tracks;
     QMap<int, Folder>::ConstIterator folderEnd=folderMap.constEnd();
-    QMap<uint32_t, Storage>::Iterator it=storage.begin();
-    QMap<uint32_t, Storage>::Iterator end=storage.end();
+    QList<Storage>::Iterator it=storage.begin();
+    QList<Storage>::Iterator end=storage.end();
     for (; it!=end; ++it) {
-        setMusicFolder(it.value());
+        setMusicFolder(*it);
     }
 
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
+    QMap<QString, Album> albums;
+
     while (track && !abortRequested()) {
         QMap<int, Folder>::ConstIterator it=folderMap.find(track->parent_id);
         Song s;
@@ -323,9 +332,82 @@ void MtpConnection::updateLibrary()
         albumItem->addGenre(s.genre);
         artistItem->addGenre(s.genre);
         library->addGenre(s.genre);
+
+        #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
+        // Store AlbumName->Artists/Songs mapping
+        Album &al=albums[s.album];
+        al.artists.insert(s.artist);
+        al.songs.append(songItem);
+        #endif
         track=track->next;
     }
     if (!abortRequested()) {
+        #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
+        // Use Album map to determine 'AlbumAritst' tag for various artist albums, and
+        // albums that have tracks where artist is set to '${artist} and somebodyelse'
+        QMap<QString, Album>::ConstIterator it=albums.constBegin();
+        QMap<QString, Album>::ConstIterator end=albums.constEnd();
+        for (; it!=end; ++it) {
+            if ((*it).artists.count()>1) {
+                QSet<quint16> tracks;
+                QString shortestArtist;
+                bool duplicateTrackNumbers=false;
+                foreach (MusicLibraryItemSong *s, (*it).songs) {
+                    if (tracks.contains(s->track())) {
+                        duplicateTrackNumbers=true;
+                        break;
+                    } else {
+                        if (shortestArtist.isEmpty() || s->song().artist.length()<shortestArtist.length()) {
+                            shortestArtist=s->song().artist.length();
+                        }
+                        tracks.insert(s->track());
+                    }
+                }
+
+                // If an album has mutiple tracks with the same track number, then we probably have X albums
+                // by X artists - in which case we proceeed no further.
+                if (!duplicateTrackNumbers) {
+                    // Now, check to see if all artists contain 'shortesArtist'. If so then use 'shortesArtist' as the album
+                    // artist. This ir probably due to songs which have artist set to '${artist} and somebodyelse'
+                    QString albumArtist=shortestArtist;
+                    foreach (const QString &artist, (*it).artists) {
+                        if (!artist.contains(shortestArtist)) {
+                            // Found an artist that did not contain 'shortestArtist', so use 'Various Artists' for album artist
+                            albumArtist=i18n("Various Artists");
+                            break;
+                        }
+                    }
+
+                    // Now move songs to correct artist/album...
+                    foreach (MusicLibraryItemSong *s, (*it).songs) {
+                        if (s->song().albumartist==albumArtist) {
+                            continue;
+                        }
+                        Song song=s->song();
+                        song.albumartist=albumArtist;
+                        artistItem=library->artist(song);
+                        albumItem=artistItem->album(song);
+                        MusicLibraryItemSong *songItem = new MusicLibraryItemSong(song, albumItem);
+                        albumItem->append(songItem);
+                        albumItem->updateGenres();
+                        artistItem->updateGenres();
+                        MusicLibraryItemAlbum *prevAlbum=(MusicLibraryItemAlbum *)s->parentItem();
+                        prevAlbum->remove(s);
+                        if (0==prevAlbum->childCount()) {
+                            // Album no longer has any songs, so remove!
+                            MusicLibraryItemArtist *prevArtist=(MusicLibraryItemArtist *)prevAlbum->parentItem();
+                            prevArtist->remove(prevAlbum);
+                            if (0==prevArtist->childCount()) {
+                                // Artist no longer has any albums, so remove!
+                                library->remove(prevArtist);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #endif
+
         if (MPDParseUtils::groupSingle()) {
             library->groupSingleTracks();
         }
@@ -427,16 +509,29 @@ void MtpConnection::updateStorage()
 {
     size=0;
     used=0;
-    if (device && LIBMTP_ERROR_NONE==LIBMTP_Get_Storage(device, LIBMTP_STORAGE_SORTBY_NOTSORTED)) {
+    if (device && LIBMTP_ERROR_NONE==LIBMTP_Get_Storage(device, LIBMTP_STORAGE_SORTBY_MAXSPACE)) {
         LIBMTP_devicestorage_struct *s=device->storage;
         while (s) {
-            if (!storage.contains(s->id)) {
-                storage[s->id].id=s->id;
-                storage[s->id].description=QString::fromUtf8(s->StorageDescription);
-                storage[s->id].volumeIdentifier=QString::fromUtf8(s->VolumeIdentifier);
+            QString volumeIdentifier=QString::fromUtf8(s->VolumeIdentifier);
+            QList<Storage>::Iterator it=storage.begin();
+            QList<Storage>::Iterator end=storage.end();
+            for ( ;it!=end; ++it) {
+                if ((*it).volumeIdentifier==volumeIdentifier) {
+                    (*it).size=s->MaxCapacity;
+                    (*it).used=s->MaxCapacity-s->FreeSpaceInBytes;
+                    break;
+                }
             }
-            storage[s->id].size=s->MaxCapacity;
-            storage[s->id].used=s->MaxCapacity-s->FreeSpaceInBytes;
+
+            if (it==end) {
+                Storage store;
+                store.id=s->id;
+                store.description=QString::fromUtf8(s->StorageDescription);
+                store.volumeIdentifier=QString::fromUtf8(s->VolumeIdentifier);
+                store.size=s->MaxCapacity;
+                store.used=s->MaxCapacity-s->FreeSpaceInBytes;
+                storage.append(store);
+            }
             size+=s->MaxCapacity;
             used+=s->MaxCapacity-s->FreeSpaceInBytes;
             s=s->next;
@@ -447,8 +542,8 @@ void MtpConnection::updateStorage()
 QList<DeviceStorage> MtpConnection::getStorageList() const
 {
     QList<DeviceStorage> s;
-    QMap<uint32_t, Storage>::ConstIterator it=storage.constBegin();
-    QMap<uint32_t, Storage>::ConstIterator end=storage.constEnd();
+    QList<Storage>::ConstIterator it=storage.constBegin();
+    QList<Storage>::ConstIterator end=storage.constEnd();
     for ( ;it!=end; ++it) {
         DeviceStorage store;
         store.size=(*it).size;
@@ -463,18 +558,18 @@ QList<DeviceStorage> MtpConnection::getStorageList() const
 
 MtpConnection::Storage & MtpConnection::getStorage(const QString &volumeIdentifier)
 {
-    QMap<uint32_t, Storage>::Iterator first=storage.begin();
+    QList<Storage>::Iterator first=storage.begin();
     if (!volumeIdentifier.isEmpty()) {
-        QMap<uint32_t, Storage>::Iterator it=first;
-        QMap<uint32_t, Storage>::Iterator end=storage.end();
+        QList<Storage>::Iterator it=first;
+        QList<Storage>::Iterator end=storage.end();
         for ( ;it!=end; ++it) {
             if ((*it).volumeIdentifier==volumeIdentifier) {
-                return it.value();
+                return *it;
             }
         }
     }
 
-    return first.value();
+    return *first;
 }
 
 uint32_t MtpConnection::createFolder(const QString &name, const QString &fullPath, uint32_t parentId, uint32_t storageId)
@@ -911,15 +1006,15 @@ void MtpConnection::delSong(const Song &song)
 
 void MtpConnection::cleanDirs(const QSet<QString> &dirs)
 {
-    QMap<uint32_t, Storage>::ConstIterator it=storage.constBegin();
-    QMap<uint32_t, Storage>::ConstIterator end=storage.constEnd();
+    QList<Storage>::ConstIterator it=storage.constBegin();
+    QList<Storage>::ConstIterator end=storage.constEnd();
 
     for (; it!=end; ++it) {
         foreach (const QString &path, dirs) {
             QStringList parts=path.split("/", QString::SkipEmptyParts);
             while (parts.length()>1) {
                 // Find ID of this folder...
-                uint32_t id=getFolder(parts.join("/")+QChar('/'), it.key());
+                uint32_t id=getFolder(parts.join("/")+QChar('/'), (*it).id);
                 if (0==id || (*it).musicFolderId==id) {
                     break;
                 }
@@ -1031,7 +1126,13 @@ QString cfgKey(Solid::Device &dev, const QString &serial)
 }
 
 MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
-    : Device(m, dev, false)
+    : Device(m, dev,
+             #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
+             true
+             #else
+             false
+             #endif
+             )
     , pmp(dev.as<Solid::PortableMediaPlayer>())
     , tempFile(0)
     , mtpUpdating(false)
@@ -1307,9 +1408,12 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
         currentSong.file=file;
         if (needToFixVa && fixedVa) {
             currentSong.fixVariousArtists();
-        } else if (!opts.fixVariousArtists) { // TODO: ALBUMARTIST: Remove when libMTP supports album artist!
+        }
+        #ifndef MTP_FAKE_ALBUMARTIST_SUPPORT
+        else if (!opts.fixVariousArtists) { // TODO: ALBUMARTIST: Remove when libMTP supports album artist!
             currentSong.albumartist=currentSong.artist;
         }
+        #endif
         addSongToList(currentSong);
         emit actionStatus(Ok);
     }

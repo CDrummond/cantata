@@ -131,7 +131,7 @@ private:
     QSet<LIBMTP_album_t *> albumsWithCovers;
     MusicLibraryItemRoot *library;
     uint32_t defaultMusicFolder;
-    QMap<uint32_t, Storage> storage;
+    QList<Storage> storage;
     uint64_t size;
     uint64_t used;
     MtpDevice *dev;

@@ -253,10 +253,44 @@ void MtpConnection::disconnectFromDevice(bool showStatus)
     }
 }
 
+#ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
 struct Album {
     QSet<QString> artists;
     QList<MusicLibraryItemSong *> songs;
 };
+#endif
+
+struct Path {
+    Path() : storage(0), parent(0), id(0) { }
+    uint32_t storage;
+    uint32_t parent;
+    uint32_t id;
+    QString path;
+};
+
+static QString encodePath(LIBMTP_track_t *track, const QString &path)
+{
+    return QChar('{')+QString::number(track->storage_id)+QChar('/')+QString::number(track->parent_id)+QChar('/')+QString::number(track->item_id)+QChar('}')+path;
+}
+
+static Path decodePath(const QString &path)
+{
+    Path p;
+    if (path.startsWith(QChar('{')) && path.contains(QChar('}'))) {
+        int end=path.indexOf(QChar('}'));
+        QStringList details=path.mid(1, end-1).split(QChar('/'));
+        if (3==details.count()) {
+            p.storage=details.at(0).toUInt();
+            p.parent=details.at(1).toUInt();
+            p.id=details.at(2).toUInt();
+        }
+        p.path=path.mid(end+1);
+    } else {
+        p.path=path;
+    }
+
+    return p;
+}
 
 void MtpConnection::updateLibrary()
 {
@@ -302,14 +336,15 @@ void MtpConnection::updateLibrary()
     QMap<QString, Album> albums;
 
     while (track && !abortRequested()) {
-        QMap<int, Folder>::ConstIterator it=folderMap.find(track->parent_id);
         Song s;
         s.id=track->item_id;
+        QMap<int, Folder>::ConstIterator it=folderMap.find(track->parent_id);
         if (it!=folderEnd) {
-            s.file=it.value().path+QString::fromUtf8(track->filename);
+            s.file=encodePath(track, it.value().path+QString::fromUtf8(track->filename));
         } else {
-            s.file=track->filename;
+            s.file=encodePath(track, track->filename);
         }
+        Path pth=decodePath(s.file);
         s.album=QString::fromUtf8(track->album);
         s.artist=QString::fromUtf8(track->artist);
         s.albumartist=s.artist; // TODO: ALBUMARTIST: Read from 'track' when libMTP supports album artist!
@@ -572,6 +607,20 @@ MtpConnection::Storage & MtpConnection::getStorage(const QString &volumeIdentifi
     return *first;
 }
 
+MtpConnection::Storage & MtpConnection::getStorage(uint32_t id)
+{
+    QList<Storage>::Iterator first=storage.begin();
+    QList<Storage>::Iterator it=first;
+    QList<Storage>::Iterator end=storage.end();
+    for ( ;it!=end; ++it) {
+        if ((*it).id==id) {
+            return *it;
+        }
+    }
+
+    return *first;
+}
+
 uint32_t MtpConnection::createFolder(const QString &name, const QString &fullPath, uint32_t parentId, uint32_t storageId)
 {
     char *nameCopy = qstrdup(name.toUtf8().constData());
@@ -713,7 +762,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     bool fixedVa=false;
     bool embedCoverImage=Device::constEmbedCover==opts.coverName;
     LIBMTP_track_t *meta=0;
-
+    QString destName;
     Storage &store=getStorage(opts.volumeId);
 
     if (device) {
@@ -722,7 +771,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         meta->storage_id=store.id;
 
         Song song=s;
-        QString destName=store.musicPath+dev->opts.createFilename(song);
+        destName=store.musicPath+dev->opts.createFilename(song);
         QStringList dirs=destName.split('/', QString::SkipEmptyParts);
         if (dirs.count()>1) {
             destName=dirs.takeLast();
@@ -896,7 +945,13 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     } else if (meta) {
         LIBMTP_destroy_track_t(meta);
     }
-    emit putSongStatus(added, meta ? meta->item_id : 0, meta ? meta->filename : 0, fixedVa);
+    QString path;
+
+    if (added && meta) {
+        path=encodePath(meta, destName);
+    }
+
+    emit putSongStatus(added, meta ? meta->item_id : 0, path, fixedVa);
 }
 
 static bool saveFile(const QString &name, char *data, uint64_t size)
@@ -1006,33 +1061,25 @@ void MtpConnection::delSong(const Song &song)
 
 void MtpConnection::cleanDirs(const QSet<QString> &dirs)
 {
-    QList<Storage>::ConstIterator it=storage.constBegin();
-    QList<Storage>::ConstIterator end=storage.constEnd();
-
-    for (; it!=end; ++it) {
-        foreach (const QString &path, dirs) {
-            QStringList parts=path.split("/", QString::SkipEmptyParts);
-            while (parts.length()>1) {
-                // Find ID of this folder...
-                uint32_t id=getFolder(parts.join("/")+QChar('/'), (*it).id);
-                if (0==id || (*it).musicFolderId==id) {
-                    break;
-                }
-
-                QMap<int, Folder>::Iterator folder=folderMap.find(id);
-                if (folder!=folderMap.end()) {
-                    if (0==LIBMTP_Delete_Object(device, id)) {
-                        folderMap.erase(folder);
-                    } else {
-                        break;
-                    }
-                    parts.takeLast();
+    foreach (const QString &d, dirs) {
+        Path path=decodePath(d);
+        Storage &store=getStorage(path.storage);
+        uint32_t folderId=path.parent;
+        while (0!=folderId && folderId!=store.musicFolderId) {
+            if (folderMap.contains(folderId)) {
+                if (0==LIBMTP_Delete_Object(device, folderId)) {
+                    uint32_t next=folderMap[folderId].parentId;
+                    folderMap.remove(folderId);
+                    folderId=next;
                 } else {
                     break;
                 }
+            } else {
+                break;
             }
         }
     }
+
     emit cleanDirsStatus(true);
 }
 
@@ -1173,6 +1220,8 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(connection, SIGNAL(deviceDetails(const QString &)), this, SLOT(deviceDetails(const QString &)));
     connect(connection, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
     connect(connection, SIGNAL(cover(const Song &, const QImage &)), this, SIGNAL(cover(const Song &, const QImage &)));
+    opts.fixVariousArtists=false;
+    opts.coverName=Device::constEmbedCover;
     QTimer::singleShot(0, this, SLOT(rescan(bool)));
 }
 

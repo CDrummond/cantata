@@ -109,6 +109,11 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
     }
 }
 
+#define REMOVE(w) \
+    w->setVisible(false); \
+    w->deleteLater(); \
+    w=0;
+
 void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props)
 {
     bool allowCovers=(props&Prop_CoversAll)||(props&Prop_CoversBasic);
@@ -131,10 +136,8 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         musicFolder->setText(path);
         connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     } else {
-        musicFolder->deleteLater();
-        musicFolder=0;
-        musicFolderLabel->deleteLater();
-        musicFolderLabel=0;
+        REMOVE(musicFolder);
+        REMOVE(musicFolderLabel);
     }
     if (allowCovers) {
         albumCovers->setEditable(props&Prop_CoversAll);
@@ -167,41 +170,31 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(albumCoversChanged()));
         connect(coverMaxSize, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
     } else {
-        albumCovers->deleteLater();
-        albumCovers=0;
-        albumCoversLabel->deleteLater();
-        albumCoversLabel=0;
-        coverMaxSize->deleteLater();
-        coverMaxSize=0;
-        coverMaxSizeLabel->deleteLater();
-        coverMaxSizeLabel=0;
+        REMOVE(albumCovers);
+        REMOVE(albumCoversLabel);
+        REMOVE(coverMaxSize);
+        REMOVE(coverMaxSizeLabel);
     }
     if (props&Prop_Va) {
         fixVariousArtists->setChecked(opts.fixVariousArtists);
         connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     } else {
-        fixVariousArtists->deleteLater();
-        fixVariousArtists=0;
-        fixVariousArtistsLabel->deleteLater();
-        fixVariousArtistsLabel=0;
+        REMOVE(fixVariousArtists);
+        REMOVE(fixVariousArtistsLabel);
     }
     if (props&Prop_Cache) {
         useCache->setChecked(opts.useCache);
         connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     } else {
-        useCache->deleteLater();
-        useCache=0;
-        useCacheLabel->deleteLater();
-        useCacheLabel=0;
+        REMOVE(useCache);
+        REMOVE(useCacheLabel);
     }
     if (props&Prop_AutoScan) {
         autoScan->setChecked(opts.autoScan);
         connect(autoScan, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     } else {
-        autoScan->deleteLater();
-        autoScan=0;
-        autoScanLabel->deleteLater();
-        autoScanLabel=0;
+        REMOVE(autoScan);
+        REMOVE(autoScanLabel);
     }
 
     if (props&Prop_Transcoder) {
@@ -241,15 +234,12 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
         connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
     } else {
-        transcoderFrame->deleteLater();
-        transcoderFrame=0;
+        REMOVE(transcoderFrame);
     }
 
     if (storage.count()<2) {
-        defaultVolume->deleteLater();
-        defaultVolume=0;
-        defaultVolumeLabel->deleteLater();
-        defaultVolumeLabel=0;
+        REMOVE(defaultVolume);
+        REMOVE(defaultVolumeLabel);
     } else {
         foreach (const DeviceStorage &ds, storage) {
             defaultVolume->addItem(i18nc("name (size free)", "%1 (%2 free)")

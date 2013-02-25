@@ -110,6 +110,9 @@
 65. Allow wildcard genres. e.g. 'Rock*' for 'Hard Rock' and 'RockNRoll'
 66. Handle multiple storage locations on MTP devices.
 67. Fix creation of music folder on MTP devices.
+68. Attempt to work-around lack of AlbumArtist support in libmtp. For each
+    album that has tracks by different artists, set the AlbumArtist to
+    'Various Artists'
 
 0.9.2
 -----

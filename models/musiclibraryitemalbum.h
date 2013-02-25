@@ -74,6 +74,7 @@ public:
     bool isSingleTrackFile(const Song &s) const { return m_singleTrackFiles.contains(s.file); }
     void append(MusicLibraryItem *i);
     void remove(int row);
+    void remove(MusicLibraryItemSong *i);
     bool detectIfIsMultipleArtists();
     bool isMultipleArtists() const { return Song::MultipleArtists==m_type; }
     Song::Type songType() const { return m_type; }

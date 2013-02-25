@@ -311,6 +311,14 @@ void MusicLibraryItemAlbum::remove(int row)
     m_totalTime=0;
 }
 
+void MusicLibraryItemAlbum::remove(MusicLibraryItemSong *i)
+{
+    int idx=m_childItems.indexOf(i);
+    if (-1!=idx) {
+        remove(idx);
+    }
+}
+
 bool MusicLibraryItemAlbum::detectIfIsMultipleArtists()
 {
     if (m_childItems.count()<2) {

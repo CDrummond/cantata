@@ -72,7 +72,7 @@ GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
     toolbarCombo=new QComboBox(new QToolBar());
     if (useOverlayScrollbars) {
         int fh=QApplication::fontMetrics().height();
-        sbarWebViewWidth=fh/1.5;
+        sbarPlainViewWidth=fh/1.5;
 
         if (Qt::LeftToRight==QApplication::layoutDirection() && revertQGtkStyleOverlayMod()) {
             sbarWidth=qMax(fh/5, 3);
@@ -97,9 +97,11 @@ GtkProxyStyle::~GtkProxyStyle()
     destroySliderThumb();
 }
 
-static bool isWebView(const QWidget *widget)
+static bool usePlainScrollbars(const QWidget *widget)
 {
-    return !widget || 0==qstrcmp(widget->metaObject()->className(), "QWebView");
+    return !widget || 0==qstrcmp(widget->metaObject()->className(), "QWebView") ||
+           (widget && widget->parentWidget() && widget->parentWidget()->parentWidget() &&
+            0==qstrcmp(widget->parentWidget()->parentWidget()->metaObject()->className(), "QComboBoxListView"));
 }
 
 QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const
@@ -140,7 +142,7 @@ int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const Q
 int GtkProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
     if (useOverlayScrollbars && PM_ScrollBarExtent==metric) {
-        return !sbarThumb || isWebView(widget) ? sbarWebViewWidth : sbarWidth;
+        return !sbarThumb || usePlainScrollbars(widget) ? sbarPlainViewWidth : sbarWidth;
     }
     return baseStyle()->pixelMetric(metric, option, widget);
 }
@@ -244,10 +246,10 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             QRect r=option->rect;
             QRect slider=subControlRect(control, option, SC_ScrollBarSlider, widget);
             painter->save();
-            bool webView=!sbarThumb || isWebView(widget);
-            painter->fillRect(r, webView ? option->palette.base() : option->palette.background());
+            bool usePlain=!sbarThumb || usePlainScrollbars(widget);
+            painter->fillRect(r, usePlain ? option->palette.base() : option->palette.background());
 
-            if (webView) {
+            if (usePlain) {
                 QColor col=option->palette.foreground().color();
                 col.setAlphaF(0.15);
                 painter->setPen(col);
@@ -271,7 +273,7 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                 }
             }
             if (slider.isValid()) {
-                if (webView) {
+                if (usePlain) {
                     painter->setRenderHint(QPainter::Antialiasing, true);
                     if (Qt::Horizontal==sb->orientation) {
                         slider.adjust(1, 2, -1, -1);
@@ -332,10 +334,10 @@ static inline void addEventFilter(QObject *object, QObject *filter)
 
 void GtkProxyStyle::polish(QWidget *widget)
 {
-    if (useOverlayScrollbars && sbarThumb && widget && qobject_cast<QAbstractScrollArea *>(widget)) {
+    if (useOverlayScrollbars && sbarThumb && widget && qobject_cast<QAbstractScrollArea *>(widget) && qstrcmp(widget->metaObject()->className(), "QComboBoxListView")) {
         addEventFilter(widget, this);
         widget->setAttribute(Qt::WA_Hover, true);
-    } else if (useOverlayScrollbars && isWebView(widget)) {
+    } else if (useOverlayScrollbars && usePlainScrollbars(widget)) {
         widget->setAttribute(Qt::WA_Hover, true);
     }
     baseStyle()->polish(widget);
@@ -344,7 +346,7 @@ void GtkProxyStyle::polish(QWidget *widget)
 void GtkProxyStyle::unpolish(QWidget *widget)
 {
     if (useOverlayScrollbars && sbarThumb && widget) {
-        if (qobject_cast<QAbstractScrollArea *>(widget)) {
+        if (qobject_cast<QAbstractScrollArea *>(widget) && qstrcmp(widget->metaObject()->className(), "QComboBoxListView")) {
             widget->removeEventFilter(this);
         }
         if (sbarThumb && sbarThumbTarget==widget) {

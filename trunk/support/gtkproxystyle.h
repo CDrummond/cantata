@@ -70,7 +70,7 @@ private:
     bool useOverlayScrollbars;
     OsThumb *sbarThumb;
     int sbarWidth;
-    int sbarWebViewWidth;
+    int sbarPlainViewWidth;
     int sbarAreaWidth;
     int sbarOffset;
     int sbarLastPos;

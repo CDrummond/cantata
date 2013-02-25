@@ -87,7 +87,6 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
 {
     setupUi(this);
     configFilename->setIcon(Icons::configureIcon);
-    albumCovers->insertItems(0, QStringList() << noCoverText << embedCoverText << Covers::standardNames());
     coverMaxSize->insertItems(0, QStringList() << i18n("No maximum size") << i18n("400 pixels") << i18n("300 pixels") << i18n("200 pixels") << i18n("100 pixels"));
     fixVariousArtists->setToolTip(i18n("<p>When copying tracks to a device, and the 'Album Artist' is set to 'Various Artists', "
                                        "then Cantata will set the 'Artist' tag of all tracks to 'Various Artists' and the "
@@ -113,38 +112,73 @@ DevicePropertiesWidget::DevicePropertiesWidget(QWidget *parent)
 void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &opts, const QList<DeviceStorage> &storage, int props)
 {
     bool allowCovers=(props&Prop_CoversAll)||(props&Prop_CoversBasic);
+    albumCovers->clear();
+    if (allowCovers) {
+        if (props&Prop_CoversBasic) {
+            albumCovers->insertItems(0, QStringList() << noCoverText << embedCoverText);
+        } else {
+            albumCovers->insertItems(0, QStringList() << noCoverText << embedCoverText << Covers::standardNames());
+        }
+    }
     filenameScheme->setText(opts.scheme);
     vfatSafe->setChecked(opts.vfatSafe);
     asciiOnly->setChecked(opts.asciiOnly);
     ignoreThe->setChecked(opts.ignoreThe);
     replaceSpaces->setChecked(opts.replaceSpaces);
-    musicFolder->setText(path);
-    musicFolder->setVisible(props&Prop_Folder);
-    musicFolderLabel->setVisible(props&Prop_Folder);
-    albumCovers->setVisible(allowCovers);
-    albumCoversLabel->setVisible(allowCovers);
-    coverMaxSize->setVisible(allowCovers);
-    coverMaxSizeLabel->setVisible(allowCovers);
-    albumCovers->setEditable(props&Prop_CoversAll);
-    fixVariousArtists->setVisible(props&Prop_Va);
-    fixVariousArtistsLabel->setVisible(props&Prop_Va);
-    fixVariousArtists->setChecked(opts.fixVariousArtists);
-    useCache->setVisible(props&Prop_Cache);
-    useCacheLabel->setVisible(props&Prop_Cache);
-    useCache->setChecked(opts.useCache);
-    autoScan->setVisible(props&Prop_AutoScan);
-    autoScanLabel->setVisible(props&Prop_AutoScan);
-    autoScan->setChecked(opts.autoScan);
-    transcoderFrame->setVisible(props&Prop_Transcoder);
-    transcoderName->clear();
-    transcoderName->addItem(i18n("Do not transcode"), QString());
-    transcoderName->setCurrentIndex(0);
-    transcoderValue->setVisible(false);
-    transcoderWhenDifferentLabel->setVisible(false);
-    transcoderWhenDifferent->setVisible(false);
-    transcoderWhenDifferent->setChecked(opts.transcoderWhenDifferent);
+    if (!(props&Prop_Folder)) {
+        musicFolder->deleteLater();
+        musicFolder=0;
+        musicFolderLabel->deleteLater();
+        musicFolderLabel=0;
+    }
+    if (!allowCovers) {
+        albumCovers->deleteLater();
+        albumCovers=0;
+        albumCoversLabel->deleteLater();
+        albumCoversLabel=0;
+    } else {
+        albumCovers->setEditable(props&Prop_CoversAll);
+    }
+    if (!(props&Prop_CoversAll)) {
+        coverMaxSize->deleteLater();
+        coverMaxSize=0;
+        coverMaxSizeLabel->deleteLater();
+        coverMaxSizeLabel=0;
+    }
+    if (!(props&Prop_Va)) {
+        fixVariousArtists->deleteLater();
+        fixVariousArtists=0;
+        fixVariousArtistsLabel->deleteLater();
+        fixVariousArtistsLabel=0;
+    } else {
+        fixVariousArtists->setChecked(opts.fixVariousArtists);
+    }
+    if (!(props&Prop_Cache)) {
+        useCache->deleteLater();
+        useCache=0;
+        useCacheLabel->deleteLater();
+        useCacheLabel=0;
+    } else {
+        useCache->setChecked(opts.useCache);
+    }
+    if (!(props&Prop_AutoScan)) {
+        autoScan->deleteLater();
+        autoScan=0;
+        autoScanLabel->deleteLater();
+        autoScanLabel=0;
+    } else {
+        autoScan->setChecked(opts.autoScan);
+    }
 
     if (props&Prop_Transcoder) {
+        transcoderName->clear();
+        transcoderName->addItem(i18n("Do not transcode"), QString());
+        transcoderName->setCurrentIndex(0);
+        transcoderValue->setVisible(false);
+        transcoderWhenDifferentLabel->setVisible(false);
+        transcoderWhenDifferent->setVisible(false);
+        transcoderWhenDifferent->setChecked(opts.transcoderWhenDifferent);
+
         QList<Encoders::Encoder> encs=Encoders::getAvailable();
 
         if (encs.isEmpty()) {
@@ -170,42 +204,49 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
                 }
             }
         }
+    } else {
+        transcoderFrame->deleteLater();
+        transcoderFrame=0;
     }
 
     origOpts=opts;
-    if (origOpts.coverName==Device::constNoCover) {
-        origOpts.coverName=noCoverText;
-        albumCovers->setCurrentIndex(0);
-    }
-    if (origOpts.coverName==Device::constEmbedCover) {
-        origOpts.coverName=embedCoverText;
-        albumCovers->setCurrentIndex(1);
-    } else {
-        albumCovers->setCurrentIndex(0);
-        for (int i=1; i<albumCovers->count(); ++i) {
-            if (albumCovers->itemText(i)==origOpts.coverName) {
-                albumCovers->setCurrentIndex(i);
-                break;
+    if (albumCovers) {
+        if (origOpts.coverName==Device::constNoCover) {
+            origOpts.coverName=noCoverText;
+            albumCovers->setCurrentIndex(0);
+        }
+        if (origOpts.coverName==Device::constEmbedCover) {
+            origOpts.coverName=embedCoverText;
+            albumCovers->setCurrentIndex(1);
+        } else {
+            albumCovers->setCurrentIndex(0);
+            for (int i=1; i<albumCovers->count(); ++i) {
+                if (albumCovers->itemText(i)==origOpts.coverName) {
+                    albumCovers->setCurrentIndex(i);
+                    break;
+                }
             }
         }
     }
 
-    if (0!=origOpts.coverMaxSize) {
-        int coverMax=origOpts.coverMaxSize/100;
-        if (coverMax<0 || coverMax>=coverMaxSize->count()) {
-            coverMax=0;
+    if (coverMaxSize) {
+        if (0!=origOpts.coverMaxSize) {
+            int coverMax=origOpts.coverMaxSize/100;
+            if (coverMax<0 || coverMax>=coverMaxSize->count()) {
+                coverMax=0;
+            }
+            coverMaxSize->setCurrentIndex(0==coverMax ? 0 : (coverMaxSize->count()-coverMax));
+        } else {
+            coverMaxSize->setCurrentIndex(0);
         }
-        coverMaxSize->setCurrentIndex(0==coverMax ? 0 : (coverMaxSize->count()-coverMax));
-    } else {
-        coverMaxSize->setCurrentIndex(0);
     }
 
     if (storage.count()<2) {
-        defaultVolumeLabel->setVisible(false);
-        defaultVolume->setVisible(false);
+        defaultVolume->deleteLater();
+        defaultVolume=0;
+        defaultVolumeLabel->deleteLater();
+        defaultVolumeLabel=0;
     } else {
-        defaultVolumeLabel->setVisible(true);
-        defaultVolume->setVisible(true);
         foreach (const DeviceStorage &ds, storage) {
             defaultVolume->addItem(i18nc("name (size free)", "%1 (%2 free)")
                                    .arg(ds.description).arg(Utils::formatByteSize(ds.size-ds.used)), ds.volumeIdentifier);
@@ -221,24 +262,39 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     }
 
     origMusicFolder=path;
-    albumCovers->setValidator(new CoverNameValidator(this));
-
+    if (albumCovers) {
+        albumCovers->setValidator(new CoverNameValidator(this));
+        connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(albumCoversChanged()));
+    }
     connect(configFilename, SIGNAL(clicked()), SLOT(configureFilenameScheme()));
     connect(filenameScheme, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(vfatSafe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     connect(asciiOnly, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     connect(ignoreThe, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
-    connect(albumCovers, SIGNAL(editTextChanged(const QString &)), this, SLOT(albumCoversChanged()));
-    connect(coverMaxSize, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
-    connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
-    connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
-    connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
-    connect(autoScan, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    if (musicFolder) {
+        connect(musicFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
+    }
+    if (coverMaxSize) {
+        connect(coverMaxSize, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSaveable()));
+    }
+    if (fixVariousArtists) {
+        connect(fixVariousArtists, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    }
+    if (transcoderFrame) {
+        connect(transcoderName, SIGNAL(currentIndexChanged(int)), this, SLOT(transcoderChanged()));
+        connect(transcoderValue, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
+    }
+    if (useCache) {
+        connect(useCache, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    }
+    if (autoScan) {
+        connect(autoScan, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
+    }
     connect(replaceSpaces, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
     modified=false;
-    albumCoversChanged();
+    if (albumCovers) {
+        albumCoversChanged();
+    }
 }
 
 void DevicePropertiesWidget::transcoderChanged()
@@ -266,16 +322,18 @@ void DevicePropertiesWidget::transcoderChanged()
 
 void DevicePropertiesWidget::albumCoversChanged()
 {
-    bool enableSize=albumCovers->currentText()!=noCoverText;
-    coverMaxSize->setEnabled(enableSize);
-    coverMaxSizeLabel->setEnabled(enableSize);
+    if (coverMaxSize) {
+        bool enableSize=albumCovers->currentText()!=noCoverText;
+        coverMaxSize->setEnabled(enableSize);
+        coverMaxSizeLabel->setEnabled(enableSize);
+    }
     checkSaveable();
 }
 
 void DevicePropertiesWidget::checkSaveable()
 {
     DeviceOptions opts=settings();
-    bool checkFolder=musicFolder->isVisible();
+    bool checkFolder=musicFolder ? musicFolder->isVisible() : false;
 
     modified=opts!=origOpts;
     if (!modified && checkFolder) {
@@ -308,15 +366,15 @@ DeviceOptions DevicePropertiesWidget::settings()
     opts.ignoreThe=ignoreThe->isChecked();
     opts.replaceSpaces=replaceSpaces->isChecked();
     opts.fixVariousArtists=fixVariousArtists->isChecked();
-    opts.useCache=useCache->isChecked();
-    opts.autoScan=autoScan->isChecked();
+    opts.useCache=useCache ? useCache->isChecked() : false;
+    opts.autoScan=autoScan ? autoScan->isChecked() : false;
     opts.transcoderCodec=QString();
     opts.transcoderValue=0;
     opts.transcoderWhenDifferent=false;
     opts.coverName=cover();
-    opts.coverMaxSize=0==coverMaxSize->currentIndex() ? 0 : ((coverMaxSize->count()-coverMaxSize->currentIndex())*100);
-    opts.volumeId=defaultVolume->isVisible() ? defaultVolume->itemData(defaultVolume->currentIndex()).toString() : QString();
-    if (transcoderFrame->isVisible()) {
+    opts.coverMaxSize=(!coverMaxSize || 0==coverMaxSize->currentIndex()) ? 0 : ((coverMaxSize->count()-coverMaxSize->currentIndex())*100);
+    opts.volumeId=defaultVolume && defaultVolume->isVisible() ? defaultVolume->itemData(defaultVolume->currentIndex()).toString() : QString();
+    if (transcoderFrame && transcoderFrame->isVisible()) {
         opts.transcoderCodec=transcoderName->itemData(transcoderName->currentIndex()).toString();
 
         if (!opts.transcoderCodec.isEmpty()) {
@@ -333,7 +391,7 @@ DeviceOptions DevicePropertiesWidget::settings()
 
 QString DevicePropertiesWidget::cover() const
 {
-    QString coverName=albumCovers->currentText().trimmed();
+    QString coverName=albumCovers ? albumCovers->currentText().trimmed() : QString();
     return coverName==noCoverText
             ? Device::constNoCover
             : coverName==embedCoverText

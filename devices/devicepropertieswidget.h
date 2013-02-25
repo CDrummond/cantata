@@ -52,7 +52,7 @@ public:
     DeviceOptions settings();
     bool isModified() const { return modified; }
     bool isSaveable() const { return saveable; }
-    QString music() const { return musicFolder->text().trimmed(); }
+    QString music() const { return musicFolder ? musicFolder->text().trimmed() : QString(); }
     QString cover() const;
     void showRemoteConnectionNote(bool v) { remoteDeviceNote->setVisible(v); }
 

@@ -102,7 +102,7 @@ void displayTracks(LIBMTP_track_t *track)
         return;
     }
 
-    qWarning() << "TRACK_TITLE:" << track->title << "ARTIST:" << track->artist << "ALBUM:" << track->album << "FILENAME:" << track->filename << "ID:" << track->item_id << "PID:" << track->parent_id << "STOR:" << track->storage_id;
+    qWarning() << "TRACK_NUMBER:" << track->tracknumber << "TRACK_TITLE:" << track->title << "ARTIST:" << track->artist << "ALBUM:" << track->album << "FILENAME:" << track->filename << "ID:" << track->item_id << "PID:" << track->parent_id << "STOR:" << track->storage_id;
     if (track->next) {
         displayTracks(track->next);
     }

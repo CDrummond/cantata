@@ -119,10 +119,10 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
     bool allowCovers=(props&Prop_CoversAll)||(props&Prop_CoversBasic);
     albumCovers->clear();
     if (allowCovers) {
-        if (props&Prop_CoversBasic) {
-            albumCovers->insertItems(0, QStringList() << noCoverText << embedCoverText);
-        } else {
+        if (props&Prop_CoversAll) {
             albumCovers->insertItems(0, QStringList() << noCoverText << embedCoverText << Covers::standardNames());
+        } else {
+            albumCovers->insertItems(0, QStringList() << noCoverText << embedCoverText);
         }
     }
     filenameScheme->setText(opts.scheme);

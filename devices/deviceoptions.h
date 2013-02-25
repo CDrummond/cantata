@@ -34,6 +34,7 @@ class Song;
 
 struct DeviceStorage {
     DeviceStorage() : size(0), used(0) { }
+    qulonglong freeSpace() const { return size-used; }
     qulonglong size;
     qulonglong used;
     QString description;

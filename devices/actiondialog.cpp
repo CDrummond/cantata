@@ -553,6 +553,15 @@ void ActionDialog::setPage(int page, const QString &msg)
     }
 }
 
+// Remove MTP id encode
+static QString fixPath(const QString &path)
+{
+    if (path.startsWith(QChar('{')) && path.contains(QChar('}'))) {
+        return path.mid(path.indexOf(QChar('}'))+1);
+    }
+    return path;
+}
+
 QString ActionDialog::formatSong(const Song &s, bool showFiles)
 {
     return showFiles
@@ -564,14 +573,14 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles)
                        "<tr><td align=\"right\">Source file:</td><td>%4</td></tr>"
                        "<tr><td align=\"right\">Destination file:</td><td>%5</td></tr>"
                        "</table>").arg(s.albumArtist()).arg(s.album)
-                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))).arg(s.file).arg(destFile)
+                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))).arg(fixPath(s.file)).arg(fixPath(destFile))
                 : i18n("<table>"
                        "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
                        "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
                        "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
                        "<tr><td align=\"right\">File:</td><td>%4</td></tr>"
                        "</table>").arg(s.albumArtist()).arg(s.album)
-                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))).arg(s.file)
+                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))).arg(fixPath(s.file))
             : i18n("<table>"
                    "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
                    "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"

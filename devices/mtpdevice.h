@@ -108,6 +108,7 @@ private:
     void updateAlbums();
     void updateStorage();
     Storage & getStorage(const QString &volumeIdentifier);
+    Storage & getStorage(uint32_t id);
     uint32_t createFolder(const QString &name, const QString &fullPath, uint32_t parentId, uint32_t storageId);
     uint32_t getFolder(const QString &path, uint32_t storageId);
     QString getPath(uint32_t folderId);

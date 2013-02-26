@@ -40,6 +40,8 @@ class DevicesModel : public ActionModel
 public:
     static DevicesModel * self();
 
+    static QString fixDevicePath(const QString &path);
+
     DevicesModel(QObject *parent = 0);
     ~DevicesModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;

@@ -71,12 +71,6 @@ public:
         QString musicPath;
     };
 
-    struct FolderId {
-        FolderId(uint32_t i, uint32_t s) : id(i), storage(s) { }
-        uint32_t id;
-        uint32_t storage;
-    };
-
     MtpConnection(MtpDevice *p);
     virtual ~MtpConnection();
 

@@ -56,60 +56,6 @@
 #define MTP_FAKE_ALBUMARTIST_SUPPORT
 #define MTP_TRACKNUMBER_FROM_FILENAME
 
-#ifdef MTP_DEBUG
-#include <QDebug>
-
-void displayFolders(LIBMTP_folder_t *folder, const QString &parent="/")
-{
-    if (!folder) {
-        return;
-    }
-    qWarning() << "FOLDER:" << parent+folder->name << "ID:" << folder->folder_id << "PID:" << folder->parent_id << "STOR:" << folder->storage_id;
-    if (folder->child) {
-        displayFolders(folder->child, parent+folder->name+"/");
-    }
-    if (folder->sibling) {
-        displayFolders(folder->sibling, parent);
-    }
-}
-
-void displayFiles(LIBMTP_file_t *file)
-{
-    if (!file) {
-        return;
-    }
-
-    qWarning() << "FILE:" << file->filename << "ID:" << file->item_id << "PID:" << file->parent_id << "STOR:" << file->storage_id;
-    if (file->next) {
-        displayFiles(file->next);
-    }
-}
-
-void displayAlbums(LIBMTP_album_t *album)
-{
-    if (!album) {
-        return;
-    }
-
-    qWarning() << "ALBUM_NAME:" << album->name << "ARTIST:" << album->artist << "ID:" << album->album_id << "PID:" << album->parent_id << "STOR:" << album->storage_id;
-    if (album->next) {
-        displayAlbums(album->next);
-    }
-}
-
-void displayTracks(LIBMTP_track_t *track)
-{
-    if (!track) {
-        return;
-    }
-
-    qWarning() << "TRACK_NUMBER:" << track->tracknumber << "TRACK_TITLE:" << track->title << "ARTIST:" << track->artist << "ALBUM:" << track->album << "FILENAME:" << track->filename << "ID:" << track->item_id << "PID:" << track->parent_id << "STOR:" << track->storage_id;
-    if (track->next) {
-        displayTracks(track->next);
-    }
-}
-#endif
-
 static int progressMonitor(uint64_t const processed, uint64_t const total, void const * const data)
 {
     ((MtpConnection *)data)->emitProgress((int)(((processed*1.0)/(total*1.0)*100.0)+0.5));
@@ -168,7 +114,7 @@ void MtpConnection::emitProgress(int percent)
 void MtpConnection::trackListProgress(uint64_t count)
 {
     int t=time(NULL);
-    if ((t-lastUpdate)>=2 || 0==(count%5)) {
+    if ((t-lastUpdate)>=2 || 0==(count%10)) {
         lastUpdate=t;
         emit songCount((int)count);
     }
@@ -304,12 +250,6 @@ void MtpConnection::updateLibrary()
     emit statusMessage(i18n("Updating files..."));
     updateFiles();
     emit statusMessage(i18n("Updating tracks..."));
-    #ifdef MTP_DEBUG
-    displayFolders(LIBMTP_Get_Folder_List(device));
-    displayFiles(LIBMTP_Get_Filelisting_With_Callback(device, 0, 0));
-    displayAlbums(LIBMTP_Get_Album_List(device));
-    displayTracks(LIBMTP_Get_Tracklisting_With_Callback(device, 0, 0));
-    #endif
     lastUpdate=0;
     LIBMTP_track_t *tracks=LIBMTP_Get_Tracklisting_With_Callback(device, &trackListMonitor, this);
     LIBMTP_track_t *track=tracks;
@@ -390,7 +330,7 @@ void MtpConnection::updateLibrary()
     }
     if (!abortRequested()) {
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
-        // Use Album map to determine 'AlbumAritst' tag for various artist albums, and
+        // Use Album map to determine 'AlbumArtist' tag for various artist albums, and
         // albums that have tracks where artist is set to '${artist} and somebodyelse'
         QMap<QString, MtpAlbum>::ConstIterator it=albums.constBegin();
         QMap<QString, MtpAlbum>::ConstIterator end=albums.constEnd();
@@ -493,17 +433,17 @@ void MtpConnection::updateFiles()
 {
     LIBMTP_file_t *files=LIBMTP_Get_Filelisting_With_Callback(device, 0, 0);
     LIBMTP_file_t *file=files;
-    QMap<uint32_t, Folder>::iterator end=folderMap.end();
+    QSet<uint32_t>folders=folderMap.keys().toSet();
     while (file) {
-        QMap<uint32_t, Folder>::iterator it=folderMap.find(file->parent_id);
-        if (it!=end) {
+        if (folders.contains(file->parent_id)) {
+            Folder &folder=folderMap[file->parent_id];
             if (LIBMTP_FILETYPE_FOLDER!=file->filetype) {
                 QString name=QString::fromUtf8(file->filename);
                 if (name.endsWith(".jpg", Qt::CaseInsensitive) || name.endsWith(".png", Qt::CaseInsensitive)) {
-                    (*it).covers.insert(file->item_id, Cover(name, file->filesize, file->item_id));
+                    folder.covers.insert(file->item_id, Cover(name, file->filesize, file->item_id));
                 }
             }
-            (*it).children.insert(file->item_id);
+            folder.children.insert(file->item_id);
         }
         file=file->next;
     }
@@ -980,6 +920,9 @@ void MtpConnection::cleanDirs(const QSet<QString> &dirs)
     foreach (const QString &d, dirs) {
         Path path=decodePath(d);
         Storage &store=getStorage(path.storage);
+        if (0==store.musicFolderId) {
+            continue;
+        }
         uint32_t folderId=path.parent;
         while (0!=folderId && folderId!=store.musicFolderId) {
             QMap<uint32_t, Folder>::iterator it=folderMap.find(folderId);

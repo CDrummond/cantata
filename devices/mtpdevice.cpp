@@ -696,16 +696,18 @@ static QTemporaryFile * saveImageToTemp(const QImage &img, const QString &name)
     return temp;
 }
 
-void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts)
+void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts, bool copyCover)
 {
     bool added=false;
     bool fixedVa=false;
     bool embedCoverImage=Device::constEmbedCover==opts.coverName;
+    bool copiedCover=false;
     LIBMTP_track_t *meta=0;
     QString destName;
     Storage store=getStorage(opts.volumeId);
     uint32_t folderId=0;
 
+    copyCover=copyCover && !embedCoverImage && Device::constNoCover!=opts.coverName;
     if (device) {
         meta=LIBMTP_new_track_t();
         meta->item_id=0;
@@ -775,10 +777,23 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     }
 
     if (added) {
+        Folder &folder=folderMap[folderId];
         // LibMTP seems to reset parent_id to 0 - but we NEED the correct value for encodePath
         meta->parent_id=folderId;
+        if (copyCover) {
+            QMap<uint32_t, Cover>::ConstIterator it=folder.covers.constBegin();
+            QMap<uint32_t, Cover>::ConstIterator end=folder.covers.constEnd();
+
+            for (; it!=end; ++it) {
+                if (it.value().name==opts.coverName) {
+                    copiedCover=true;
+                    copyCover=false;
+                    break;
+                }
+            }
+        }
         // Send cover, as a plain file...
-        if (!embedCoverImage && Device::constNoCover!=opts.coverName) {
+        if (copyCover) {
             QString srcFile;
             Covers::Image coverImage=Covers::self()->getImage(s);
             QTemporaryFile *temp=0;
@@ -809,8 +824,9 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
                 meta->filetype=mtpFileType(opts.coverName);
 
                 if (0==LIBMTP_Send_File_From_File(device, srcFile.toUtf8(), fileMeta, 0, 0)) {
-                    folderMap[folderId].children.insert(fileMeta->item_id);
-                    folderMap[folderId].covers.insert(fileMeta->item_id, Cover(opts.coverName, statBuf.st_size, fileMeta->item_id));
+                    folder.children.insert(fileMeta->item_id);
+                    folder.covers.insert(fileMeta->item_id, Cover(opts.coverName, statBuf.st_size, fileMeta->item_id));
+                    copiedCover=true;
                 }
                 LIBMTP_destroy_file_t(fileMeta);
             }
@@ -819,11 +835,11 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
                 delete temp;
             }
         }
-        folderMap[folderId].children.insert(meta->item_id);
+        folder.children.insert(meta->item_id);
     }
     emit putSongStatus(added, meta ? meta->item_id : 0,
                        meta ? encodePath(meta, destName, storage.count()>1 ? store.description : QString()) : QString(),
-                       fixedVa);
+                       fixedVa, copiedCover);
     if (meta) {
         LIBMTP_destroy_track_t(meta);
     }
@@ -1009,8 +1025,8 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
     connect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));
-    connect(this, SIGNAL(putSong(const Song &, bool, const DeviceOptions &)), connection, SLOT(putSong(const Song &, bool, const DeviceOptions &)));
-    connect(connection, SIGNAL(putSongStatus(bool, int, const QString &, bool)), this, SLOT(putSongStatus(bool, int, const QString &, bool)));
+    connect(this, SIGNAL(putSong(const Song &, bool, const DeviceOptions &, bool)), connection, SLOT(putSong(const Song &, bool, const DeviceOptions &, bool)));
+    connect(connection, SIGNAL(putSongStatus(bool, int, const QString &, bool, bool)), this, SLOT(putSongStatus(bool, int, const QString &, bool, bool)));
     connect(this, SIGNAL(getSong(const Song &, const QString &, bool, bool)), connection, SLOT(getSong(const Song &, const QString &, bool, bool)));
     connect(connection, SIGNAL(getSongStatus(bool, bool)), this, SLOT(getSongStatus(bool, bool)));
     connect(this, SIGNAL(delSong(const Song &)), connection, SLOT(delSong(const Song &)));
@@ -1089,7 +1105,6 @@ void MtpDevice::rescan(bool full)
 
 void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
 {
-    Q_UNUSED(copyCover)
     jobAbortRequested=false;
     if (!isConnected()) {
         emit actionStatus(NotConnected);
@@ -1138,6 +1153,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
                 QFile::remove(destFile);
             }
             transcoding=true;
+            needToCopyCover=copyCover;
             TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile);
             connect(job, SIGNAL(result(int)), SLOT(transcodeSongResult(int)));
             connect(job, SIGNAL(percent(int)), SLOT(transcodePercent(int)));
@@ -1147,7 +1163,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         }
     }
     transcoding=false;
-    emit putSong(currentSong, needToFixVa, opts);
+    emit putSong(currentSong, needToFixVa, opts, copyCover);
 }
 
 void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)
@@ -1226,7 +1242,7 @@ void MtpDevice::requestCover(const Song &song)
     }
 }
 
-void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa)
+void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa, bool copiedCover)
 {
     deleteTemp();
     if (jobAbortRequested) {
@@ -1246,7 +1262,7 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
         }
         #endif
         addSongToList(currentSong);
-        emit actionStatus(Ok);
+        emit actionStatus(Ok, copiedCover);
     }
 }
 
@@ -1260,7 +1276,7 @@ void MtpDevice::transcodeSongResult(int status)
     if (Ok!=status) {
         emit actionStatus(status);
     } else {
-        emit putSong(currentSong, needToFixVa, DeviceOptions(Device::constNoCover));
+        emit putSong(currentSong, needToFixVa, opts, needToCopyCover);
     }
 }
 

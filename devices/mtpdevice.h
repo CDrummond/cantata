@@ -87,7 +87,7 @@ public Q_SLOTS:
     void connectToDevice();
     void disconnectFromDevice(bool showStatus=true);
     void updateLibrary();
-    void putSong(const Song &song, bool fixVa, const DeviceOptions &opts);
+    void putSong(const Song &song, bool fixVa, const DeviceOptions &opts, bool copyCover);
     void getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover);
     void delSong(const Song &song);
     void cleanDirs(const QSet<QString> &dirs);
@@ -95,7 +95,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void statusMessage(const QString &message);
-    void putSongStatus(bool, int, const QString &, bool);
+    void putSongStatus(bool, int, const QString &, bool, bool);
     void getSongStatus(bool ok, bool copiedCover);
     void delSongStatus(bool);
     void cleanDirsStatus(bool ok);
@@ -160,7 +160,7 @@ public:
 Q_SIGNALS:
     // These are for talking to connection thread...
     void updateLibrary();
-    void putSong(const Song &song, bool fixVa, const DeviceOptions &opts);
+    void putSong(const Song &song, bool fixVa, const DeviceOptions &opts, bool copyCover);
     void getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover);
     void delSong(const Song &song);
     void cleanMusicDirs(const QSet<QString> &dirs);
@@ -171,7 +171,7 @@ private Q_SLOTS:
     void deviceDetails(const QString &s);
     void libraryUpdated();
     void rescan(bool full=true);
-    void putSongStatus(bool ok, int id, const QString &file, bool fixedVa);
+    void putSongStatus(bool ok, int id, const QString &file, bool fixedVa, bool copiedCover);
     void transcodeSongResult(int status);
     void transcodePercent(int percent);
     void emitProgress(int);
@@ -190,6 +190,7 @@ private:
     MtpConnection *connection;
     QTemporaryFile *tempFile;
     Song currentSong;
+    bool needToCopyCover;
     bool mtpUpdating;
     QString serial;
     unsigned int busNum;

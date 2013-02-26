@@ -123,6 +123,15 @@ static int trackListMonitor(uint64_t const processed, uint64_t const total, void
     return ((MtpConnection *)data)->abortRequested() ? -1 : 0;
 }
 
+static uint16_t fileReceiver(void *params, void *priv, uint32_t sendlen, unsigned char *data, uint32_t *putlen)
+{
+    Q_UNUSED(params)
+    QByteArray *byteData=(QByteArray *)priv;
+    (*byteData)+=QByteArray((char *)data, (int)sendlen);
+    *putlen = sendlen;
+    return LIBMTP_HANDLER_RETURN_OK;
+}
+
 MtpConnection::MtpConnection(MtpDevice *p)
     : device(0)
     , library(0)
@@ -470,7 +479,7 @@ void MtpConnection::updateFiles()
             if (LIBMTP_FILETYPE_FOLDER!=file->filetype) {
                 QString name=QString::fromUtf8(file->filename);
                 if (name.endsWith(".jpg", Qt::CaseInsensitive) || name.endsWith(".png", Qt::CaseInsensitive)) {
-                    (*it).covers.insert(file->item_id);
+                    (*it).covers.insert(file->item_id, Cover(name, file->filesize, file->item_id));
                 }
             }
             (*it).children.insert(file->item_id);
@@ -648,10 +657,10 @@ static char * createString(const QString &str)
     return str.isEmpty() ? qstrdup("") : qstrdup(str.toUtf8());
 }
 
-static LIBMTP_filetype_t mtpFileType(const Song &s)
+static LIBMTP_filetype_t mtpFileType(const QString &f)
 {
     #ifdef ENABLE_KDE_SUPPORT
-    KMimeType::Ptr mime=KMimeType::findByPath(s.file);
+    KMimeType::Ptr mime=KMimeType::findByPath(f);
 
     if (mime->is("audio/mpeg")) {
         return LIBMTP_FILETYPE_MP3;
@@ -674,30 +683,56 @@ static LIBMTP_filetype_t mtpFileType(const Song &s)
     if (mime->is("audio/x-wav")) {
         return LIBMTP_FILETYPE_WAV;
     }
+    if (mime->is("image/jpeg")) {
+        return LIBMTP_FILETYPE_JPEG;
+    }
+    if (mime->is("image/png")) {
+        return LIBMTP_FILETYPE_PNG;
+    }
     #else
-    if (s.file.endsWith(".mp3", Qt::CaseInsensitive)) {
+    if (f.endsWith(".mp3", Qt::CaseInsensitive)) {
         return LIBMTP_FILETYPE_MP3;
     }
-    if (s.file.endsWith(".ogg", Qt::CaseInsensitive)) {
+    if (f.endsWith(".ogg", Qt::CaseInsensitive)) {
         return LIBMTP_FILETYPE_OGG;
     }
-    if (s.file.endsWith(".wma", Qt::CaseInsensitive)) {
+    if (f.endsWith(".wma", Qt::CaseInsensitive)) {
         return LIBMTP_FILETYPE_WMA;
     }
-    if (s.file.endsWith(".m4a", Qt::CaseInsensitive)) {
+    if (f.endsWith(".m4a", Qt::CaseInsensitive)) {
         return LIBMTP_FILETYPE_M4A; // LIBMTP_FILETYPE_MP4
     }
-    if (s.file.endsWith(".aac", Qt::CaseInsensitive)) {
+    if (f.endsWith(".aac", Qt::CaseInsensitive)) {
         return LIBMTP_FILETYPE_AAC;
     }
-    if (s.file.endsWith(".flac", Qt::CaseInsensitive)) {
+    if (f.endsWith(".flac", Qt::CaseInsensitive)) {
         return LIBMTP_FILETYPE_FLAC;
     }
-    if (s.file.endsWith(".wav", Qt::CaseInsensitive)) {
+    if (f.endsWith(".wav", Qt::CaseInsensitive)) {
         return LIBMTP_FILETYPE_WAV;
+    }
+    if (f.endsWith(".jpg", Qt::CaseInsensitive)) {
+        return LIBMTP_FILETYPE_JPEG;
+    }
+    if (f.endsWith(".png", Qt::CaseInsensitive)) {
+        return LIBMTP_FILETYPE_PNG;
     }
     #endif
     return LIBMTP_FILETYPE_UNDEF_AUDIO;
+}
+
+static QTemporaryFile * saveImageToTemp(const QImage &img, const QString &name)
+{
+    QTemporaryFile *temp=new QTemporaryFile();
+
+    int index=name.lastIndexOf('.');
+    if (index>0) {
+        temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX"+name.mid(index));
+    } else {
+        temp=new QTemporaryFile(QDir::tempPath()+"/cantata_XXXXXX");
+    }
+    img.save(temp);
+    return temp;
 }
 
 void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts)
@@ -708,11 +743,11 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     LIBMTP_track_t *meta=0;
     QString destName;
     Storage store=getStorage(opts.volumeId);
+    uint32_t folderId=0;
 
     if (device) {
         meta=LIBMTP_new_track_t();
         meta->item_id=0;
-
         Song song=s;
         QString fileName=song.file;
         QTemporaryFile *temp=0;
@@ -737,7 +772,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         }
 
         // Check if storage has enough space, if not try to find one that does!
-        qulonglong spaceRequired=meta->filesize+8192;
+        qulonglong spaceRequired=meta->filesize+(embedCoverImage ? (32*1024) : 0);
         if (store.freeSpace()<spaceRequired) {
             QList<Storage>::Iterator it=storage.begin();
             QList<Storage>::Iterator end=storage.end();
@@ -749,13 +784,13 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
             }
         }
 
-        meta->parent_id=store.musicFolderId;
+        meta->parent_id=folderId=store.musicFolderId;
         meta->storage_id=store.id;
         destName=store.musicPath+dev->opts.createFilename(song);
         QStringList dirs=destName.split('/', QString::SkipEmptyParts);
         if (dirs.count()>1) {
             destName=dirs.takeLast();
-            meta->parent_id=checkFolderStructure(dirs, store);
+            meta->parent_id=folderId=checkFolderStructure(dirs, store);
         }
 
         meta->title=createString(song.title);
@@ -769,7 +804,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         meta->duration=song.time*1000;
         meta->rating=0;
         meta->usecount=0;
-        meta->filetype=mtpFileType(song);
+        meta->filetype=mtpFileType(song.file);
         meta->next=0;
         added=0==LIBMTP_Send_Track_From_File(device, fileName.toUtf8(), meta, &progressMonitor, this);
         if (temp) {
@@ -780,6 +815,48 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     }
 
     if (added) {
+        // Send cover, as a plain file...
+        if (!embedCoverImage && Device::constNoCover!=opts.coverName) {
+            QString srcFile;
+            Covers::Image coverImage=Covers::self()->getImage(s);
+            QTemporaryFile *temp=0;
+            if (!coverImage.img.isNull() && !coverImage.fileName.isEmpty()) {
+                if (opts.coverMaxSize && (coverImage.img.width()>(int)opts.coverMaxSize || coverImage.img.height()>(int)opts.coverMaxSize)) {
+                    temp=saveImageToTemp(coverImage.img.scaled(QSize(opts.coverMaxSize, opts.coverMaxSize), Qt::KeepAspectRatio, Qt::SmoothTransformation), opts.coverName);
+                } else if (!coverImage.fileName.endsWith(".jpg", Qt::CaseInsensitive) || !QFile::exists(coverImage.fileName)) {
+                    temp=saveImageToTemp(coverImage.img, opts.coverName);
+                } else {
+                    srcFile=coverImage.fileName;
+                }
+                if (temp) {
+                    srcFile=temp->fileName();
+                }
+            }
+
+            if (!srcFile.isEmpty()) {
+                LIBMTP_file_t *fileMeta=LIBMTP_new_file_t();
+                fileMeta->item_id=0;
+                fileMeta->parent_id=folderId;
+                fileMeta->storage_id=store.id;
+                fileMeta->filename=createString(opts.coverName);
+                struct stat statBuf;
+                if (0==stat(QFile::encodeName(srcFile).constData(), &statBuf)) {
+                    fileMeta->filesize=statBuf.st_size;
+                    fileMeta->modificationdate=statBuf.st_mtime;
+                }
+                meta->filetype=mtpFileType(opts.coverName);
+
+                if (0==LIBMTP_Send_File_From_File(device, srcFile.toUtf8(), fileMeta, 0, 0)) {
+                    folderMap[meta->parent_id].children.insert(fileMeta->item_id);
+                    folderMap[meta->parent_id].covers.insert(fileMeta->item_id, Cover(opts.coverName, statBuf.st_size, fileMeta->item_id));
+                }
+                LIBMTP_destroy_file_t(fileMeta);
+            }
+            if (temp) {
+                temp->remove();
+                delete temp;
+            }
+        }
         folderMap[meta->parent_id].children.insert(meta->item_id);
     }
     emit putSongStatus(added, meta ? meta->item_id : 0,
@@ -790,56 +867,51 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     }
 }
 
-static bool saveFile(const QString &name, char *data, uint64_t size)
+MtpConnection::Cover MtpConnection::getCoverDetils(const Song &s)
 {
-    QFile f(name);
+    MtpConnection::Cover cover;
+    Path path=decodePath(s.file);
+    if (path.ok() && folderMap.contains(path.parent) && !folderMap[path.parent].covers.isEmpty()) {
+        QMap<uint32_t, Cover> &covers=folderMap[path.parent].covers;
+        QMap<uint32_t, Cover>::ConstIterator it=covers.constBegin();
+        QMap<uint32_t, Cover>::ConstIterator end=covers.constEnd();
 
-    if (f.open(QIODevice::WriteOnly)) {
-        f.write(data, size);
-        f.close();
-        Utils::setFilePerms(name);
-        return true;
+        for (; it!=end; ++it) {
+            if (it.value().size>cover.size) {
+                cover=it.value();
+            }
+        }
     }
-    return false;
+
+    return cover;
 }
 
 void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover)
 {
     bool copiedSong=device && 0==LIBMTP_Get_File_To_File(device, song.id, dest.toUtf8(), &progressMonitor, this);
     bool copiedCover=false;
-    /*
+
     if (copiedSong && !abortRequested() && copyCover) {
         QString destDir=Utils::getDir(dest);
 
         if (QDir(destDir).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable).isEmpty()) {
-            LIBMTP_album_t *album=getAlbum(song);
-            if (album) {
-                LIBMTP_filesampledata_t *albumart = LIBMTP_new_filesampledata_t();
-                QImage img;
-                if (0==LIBMTP_Get_Representative_Sample(device, album->album_id, albumart)) {
-                    img.loadFromData((unsigned char *)albumart->data, (int)albumart->size);
-                    if (!img.isNull()) {
-                        QString mpdCover=MPDConnection::self()->getDetails().coverName;
-                        if (mpdCover.isEmpty()) {
-                            mpdCover="cover";
-                        }
-                        if (LIBMTP_FILETYPE_JPEG==albumart->filetype) {
-                            copiedCover=saveFile(QString(destDir+mpdCover+".jpg"), albumart->data, albumart->size);
-                        } else if (LIBMTP_FILETYPE_PNG==albumart->filetype) {
-                            copiedCover=saveFile(QString(destDir+mpdCover+".png"), albumart->data, albumart->size);
-                        } else {
-                            copiedCover=img.save(QString(destDir+mpdCover+".png"));
-                            if (copiedCover) {
-                                Utils::setFilePerms(destDir+mpdCover);
-                            }
-                        }
-                    }
+            Cover cover=getCoverDetils(song);
+
+            if (0!=cover.id) {
+                QString mpdCover=MPDConnection::self()->getDetails().coverName;
+                if (mpdCover.isEmpty()) {
+                    mpdCover="cover";
                 }
-                LIBMTP_destroy_filesampledata_t(albumart);
+                QString fileName=QString(destDir+mpdCover+(cover.name.endsWith(".jpg", Qt::CaseInsensitive) ? ".jpg" : ".png"));
+                QByteArray fileNameUtf8=fileName.toUtf8();
+                copiedCover=0==LIBMTP_Get_File_To_File(device, cover.id, fileNameUtf8.constData(), 0, 0);
+                if (copiedCover) {
+                    Utils::setFilePerms(fileName);
+                }
             }
         }
     }
-    */
+
     if (copiedSong && fixVa && !abortRequested()) {
         Song s(song);
         Device::fixVariousArtists(dest, s, false);
@@ -853,7 +925,7 @@ void MtpConnection::delSong(const Song &song)
     emit delSongStatus(device && path.ok() && 0==LIBMTP_Delete_Object(device, path.id));
 }
 
-bool MtpConnection::removeFolder(uint32_t storageId, uint32_t folderId)
+bool MtpConnection::removeFolder(uint32_t folderId)
 {
     QMap<uint32_t, Folder>::iterator folder=folderMap.find(folderId);
 
@@ -861,14 +933,16 @@ bool MtpConnection::removeFolder(uint32_t storageId, uint32_t folderId)
         if (!(*folder).children.isEmpty()) {
             // If we only have covers left, then remove them!
             if ((*folder).children.count()==(*folder).covers.count()) {
-                QSet<uint32_t> covers=(*folder).covers;
-                foreach (uint32_t cover, (*folder).covers) {
+                QList<uint32_t> removed;
+                foreach (uint32_t cover, (*folder).covers.keys()) {
                     if (0==LIBMTP_Delete_Object(device, cover)) {
-                        covers.remove(cover);
+                        removed.append(cover);
                         (*folder).children.remove(cover);
                     }
                 }
-                (*folder).covers=covers;
+                foreach (uint32_t cover, removed) {
+                    (*folder).covers.remove(cover);
+                }
             }
         }
 
@@ -889,7 +963,7 @@ void MtpConnection::cleanDirs(const QSet<QString> &dirs)
         while (0!=folderId && folderId!=store.musicFolderId) {
             QMap<uint32_t, Folder>::iterator it=folderMap.find(folderId);
             if (it!=folderMap.end()) {
-                if (removeFolder(store.id, folderId)) {
+                if (removeFolder(folderId)) {
                     folderId=(*it).parentId;
                     folderMap.erase(it);
                 } else {
@@ -906,16 +980,17 @@ void MtpConnection::cleanDirs(const QSet<QString> &dirs)
 
 void MtpConnection::getCover(const Song &song)
 {
-    /*
-    LIBMTP_album_t *album=getAlbum(song);
-    if (album) {
-        QImage img=getCover(album);
-        if (!img.isNull()) {
-            albumsWithCovers.insert(album);
-            emit cover(song, img);
+    Cover c=getCoverDetils(song);
+
+    if (0!=c.id) {
+        QByteArray data;
+        if (0==LIBMTP_Get_File_To_Handler(device, c.id, fileReceiver, &data, 0, 0)) {
+            QImage img;
+            if (img.loadFromData(data)) {
+                emit cover(song, img);
+            }
         }
     }
-    */
 }
 
 void MtpConnection::destroyData()
@@ -1029,7 +1104,7 @@ void MtpDevice::configure(QWidget *parent)
     if (!configured) {
         connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
     }
-    dlg->show(QString(), opts, connection->getStorageList(), DevicePropertiesWidget::Prop_CoversBasic|DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
+    dlg->show(QString(), opts, connection->getStorageList(), DevicePropertiesWidget::Prop_CoversAll|DevicePropertiesWidget::Prop_Va|DevicePropertiesWidget::Prop_Transcoder);
 }
 
 void MtpDevice::rescan(bool full)

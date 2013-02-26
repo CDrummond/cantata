@@ -42,6 +42,13 @@ class MtpConnection : public QObject
 {
     Q_OBJECT
 public:
+    struct Cover {
+        Cover(const QString &n=QString(), uint64_t s=0, uint32_t i=0) : name(n), size(s), id(i) { }
+        QString name;
+        uint64_t size;
+        uint32_t id;
+    };
+
     struct Folder {
         Folder(const QString &pth=QString(), uint32_t i=0, uint32_t p=0, uint32_t s=0)
             : path(pth)
@@ -54,7 +61,7 @@ public:
         uint32_t parentId;
         uint32_t storageId;
         QSet<uint32_t> children;
-        QSet<uint32_t> covers;
+        QMap<uint32_t, Cover> covers;
     };
 
     struct Storage : public DeviceStorage {
@@ -105,7 +112,8 @@ Q_SIGNALS:
     void cover(const Song &s, const QImage &img);
 
 private:
-    bool removeFolder(uint32_t storageId, uint32_t folderId);
+    Cover getCoverDetils(const Song &s);
+    bool removeFolder(uint32_t folderId);
     void updateFolders();
     void updateFiles();
     void updateStorage();

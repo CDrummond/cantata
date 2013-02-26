@@ -52,9 +52,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <QDebug>
 
 #define MTP_FAKE_ALBUMARTIST_SUPPORT
+#define MTP_TRACKNUMBER_FROM_FILENAME
 
 #ifdef MTP_DEBUG
 #include <QDebug>
@@ -234,9 +234,16 @@ void MtpConnection::disconnectFromDevice(bool showStatus)
 
 #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
 struct MtpAlbum {
+    uint32_t folder;
     QSet<QString> artists;
     QList<MusicLibraryItemSong *> songs;
 };
+struct MtpFolder {
+    MtpFolder(const QString &ar=QString(), const QString &al=QString()) : artist(ar), album(al) { }
+    QString artist;
+    QString album;
+};
+
 #endif
 
 struct Path {
@@ -319,6 +326,7 @@ void MtpConnection::updateLibrary()
     MusicLibraryItemAlbum *albumItem = 0;
     #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
     QMap<QString, MtpAlbum> albums;
+    QMap<uint32_t, MtpFolder> folders;
     #endif
 
     while (track && !abortRequested()) {
@@ -329,12 +337,15 @@ void MtpConnection::updateLibrary()
             continue;
         }
         Song s;
+        #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
+        QStringList folderParts=(*it).path.split(QString::SkipEmptyParts);
+        if (folderParts.length()==3) {
+            folders.insert(track->parent_id, MtpFolder(folderParts.at(1), folderParts.at(2)));
+        }
+        #endif
+        QString trackFilename=QString::fromUtf8(track->filename);
         s.id=track->item_id;
-        //if (it!=folderEnd) {
-            s.file=encodePath(track, it.value().path+QString::fromUtf8(track->filename), storageNames.count()>1 ? storageNames[track->storage_id] : QString());
-        //} else {
-        //    s.file=encodePath(track, track->filename, storageNames.count()>1 ? storageNames[track->storage_id] : QString());
-        //}
+        s.file=encodePath(track, it.value().path+trackFilename, storageNames.count()>1 ? storageNames[track->storage_id] : QString());
         s.album=QString::fromUtf8(track->album);
         s.artist=QString::fromUtf8(track->artist);
         s.albumartist=s.artist; // TODO: ALBUMARTIST: Read from 'track' when libMTP supports album artist!
@@ -345,6 +356,14 @@ void MtpConnection::updateLibrary()
         s.time=(track->duration/1000.0)+0.5;
         s.fillEmptyFields();
 
+        #ifdef MTP_TRACKNUMBER_FROM_FILENAME
+        if (0==s.track) {
+            int space=trackFilename.indexOf(' ');
+            if (space>0) {
+                s.track=trackFilename.mid(0, space).toInt();
+            }
+        }
+        #endif
         if (!artistItem || (dev->supportsAlbumArtistTag() ? s.albumArtist()!=artistItem->data() : s.album!=artistItem->data())) {
             artistItem = library->artist(s);
         }
@@ -362,6 +381,7 @@ void MtpConnection::updateLibrary()
         MtpAlbum &al=albums[s.album];
         al.artists.insert(s.artist);
         al.songs.append(songItem);
+        al.folder=track->parent_id;
         #endif
         track=track->next;
     }
@@ -394,13 +414,14 @@ void MtpConnection::updateLibrary()
                 // If an album has mutiple tracks with the same track number, then we probably have X albums
                 // by X artists - in which case we proceeed no further.
                 if (!duplicateTrackNumbers) {
+                    MtpFolder &f=folders[(*it).folder];
                     // Now, check to see if all artists contain 'shortesArtist'. If so then use 'shortesArtist' as the album
                     // artist. This ir probably due to songs which have artist set to '${artist} and somebodyelse'
                     QString albumArtist=shortestArtist;
                     foreach (const QString &artist, (*it).artists) {
                         if (!artist.contains(shortestArtist)) {
                             // Found an artist that did not contain 'shortestArtist', so use 'Various Artists' for album artist
-                            albumArtist=i18n("Various Artists");
+                            albumArtist=!f.artist.isEmpty() && f.album==it.key() ? f.artist : i18n("Various Artists");
                             break;
                         }
                     }

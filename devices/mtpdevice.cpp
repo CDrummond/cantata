@@ -1086,24 +1086,6 @@ void MtpDevice::rescan(bool full)
     emit updateLibrary();
 }
 
-int MtpDevice::getSongId(const Song &s)
-{
-    // Tracks are associated with Albums, but to find an existing MTP album we need to know the ID
-    // of one of its tracks. Tracks copied FROM the library, will have no valid ID - but if the album
-    // is already on the device, we can use the song id of an existing track to locate it...
-    foreach (MusicLibraryItem *artist, m_childItems) {
-        if (artist->data()==s.artist || artist->data()==s.albumartist) {
-            foreach (MusicLibraryItem *album, static_cast<MusicLibraryItemContainer *>(artist)->childItems()) {
-                if (album->data()==s.album) {
-                    MusicLibraryItemContainer *al=static_cast<MusicLibraryItemContainer *>(album);
-                    return currentSong.id=static_cast<MusicLibraryItemSong *>(al->childItems().at(0))->song().id;
-                }
-            }
-        }
-    }
-    return 0;
-}
-
 void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
 {
     Q_UNUSED(copyCover)
@@ -1132,8 +1114,6 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         return;
     }
     currentSong=s;
-    currentSong.id=getSongId(currentSong);
-
     if (!opts.transcoderCodec.isEmpty()) {
         encoder=Encoders::getEncoder(opts.transcoderCodec);
         if (encoder.codec.isEmpty()) {

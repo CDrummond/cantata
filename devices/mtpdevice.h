@@ -182,7 +182,6 @@ private Q_SLOTS:
     void saveProperties();
 
 private:
-    int getSongId(const Song &s);
     void deleteTemp();
 
 private:

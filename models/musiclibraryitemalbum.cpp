@@ -356,6 +356,18 @@ const MusicLibraryItemSong * MusicLibraryItemAlbum::getCueFile() const
     return 0;
 }
 
+bool MusicLibraryItemAlbum::updateYear()
+{
+    quint32 currentYear=m_year;
+    foreach (MusicLibraryItem *track, m_childItems) {
+        m_year=static_cast<MusicLibraryItemSong*>(track)->song().year;
+        if (m_year==currentYear) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void MusicLibraryItemAlbum::setYear(const MusicLibraryItemSong *song)
 {
     if (m_childItems.isEmpty() || (m_yearOfDisc>song->disc() || (m_yearOfDisc==song->disc() && m_yearOfTrack>song->track()))) {

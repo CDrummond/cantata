@@ -444,6 +444,14 @@ bool MusicLibraryModel::updateSong(const Song &orig, const Song &edit)
                     artistItem->updateGenres();
                     rootItem->updateGenres();
                 }
+
+                if (orig.year!=edit.year) {
+                    if (albumItem->updateYear()) {
+                        QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
+                        emit dataChanged(idx, idx);
+                    }
+                }
+
                 QModelIndex idx=index(songRow, 0, index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex())));
                 emit dataChanged(idx, idx);
                 return true;

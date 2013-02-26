@@ -83,6 +83,7 @@ public:
     const MusicLibraryItemSong * getCueFile() const;
     const QString & imageUrl() const { return m_imageUrl; }
     void setImageUrl(const QString &u) { m_imageUrl=u; }
+    bool updateYear();
 
 private:
     void setYear(const MusicLibraryItemSong *song);

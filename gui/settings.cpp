@@ -257,11 +257,6 @@ QString Settings::iconTheme()
 }
 #endif
 
-int Settings::id3v2Version()
-{
-    return GET_INT("id3v2Version", 3);
-}
-
 bool Settings::showPlaylist()
 {
     return GET_BOOL("showPlaylist", true);

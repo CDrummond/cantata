@@ -65,6 +65,20 @@ K_GLOBAL_STATIC(DevicesModel, instance)
 #include <QDebug>
 #define DBUG qDebug()
 
+QString DevicesModel::fixDevicePath(const QString &path)
+{
+    // Remove MTP IDs, and display storage...
+    if (path.startsWith(QChar('{')) && path.contains(QChar('}'))) {
+        int end=path.indexOf(QChar('}'));
+        QStringList details=path.mid(1, end-1).split(QChar('/'));
+        if (details.length()>3) {
+            return QChar('(')+details.at(3)+QLatin1String(") ")+path.mid(end+1);
+        }
+        return path.mid(end+1);
+    }
+    return path;
+}
+
 DevicesModel * DevicesModel::self()
 {
     #ifdef ENABLE_KDE_SUPPORT
@@ -224,7 +238,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
                     #endif
         case MusicLibraryItem::Type_Song:
             return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+
-                   QLatin1String("<br/><small><i>")+static_cast<MusicLibraryItemSong *>(item)->song().file+QLatin1String("</i></small>");
+                   QLatin1String("<br/><small><i>")+fixDevicePath(static_cast<MusicLibraryItemSong *>(item)->song().file)+QLatin1String("</i></small>");
         default: return QVariant();
         }
     case ItemView::Role_ImageSize:

@@ -268,9 +268,10 @@ struct Path {
     QString path;
 };
 
-static QString encodePath(LIBMTP_track_t *track, const QString &path)
+static QString encodePath(LIBMTP_track_t *track, const QString &path, const QString &store)
 {
-    return QChar('{')+QString::number(track->storage_id)+QChar('/')+QString::number(track->parent_id)+QChar('/')+QString::number(track->item_id)+QChar('}')+path;
+    return QChar('{')+QString::number(track->storage_id)+QChar('/')+QString::number(track->parent_id)+QChar('/')+QString::number(track->item_id)+
+           (store.isEmpty() ? QString() : (QChar('/')+store))+QChar('}')+path;
 }
 
 static Path decodePath(const QString &path)
@@ -279,7 +280,7 @@ static Path decodePath(const QString &path)
     if (path.startsWith(QChar('{')) && path.contains(QChar('}'))) {
         int end=path.indexOf(QChar('}'));
         QStringList details=path.mid(1, end-1).split(QChar('/'));
-        if (3==details.count()) {
+        if (details.count()>=3) {
             p.storage=details.at(0).toUInt();
             p.parent=details.at(1).toUInt();
             p.id=details.at(2).toUInt();
@@ -327,8 +328,10 @@ void MtpConnection::updateLibrary()
     QMap<int, Folder>::ConstIterator folderEnd=folderMap.constEnd();
     QList<Storage>::Iterator it=storage.begin();
     QList<Storage>::Iterator end=storage.end();
+    QMap<int, QString> storageNames;
     for (; it!=end; ++it) {
         setMusicFolder(*it);
+        storageNames[(*it).id]=(*it).description;
     }
 
     MusicLibraryItemArtist *artistItem = 0;
@@ -340,11 +343,10 @@ void MtpConnection::updateLibrary()
         s.id=track->item_id;
         QMap<int, Folder>::ConstIterator it=folderMap.find(track->parent_id);
         if (it!=folderEnd) {
-            s.file=encodePath(track, it.value().path+QString::fromUtf8(track->filename));
+            s.file=encodePath(track, it.value().path+QString::fromUtf8(track->filename), storageNames.count()>1 ? storageNames[track->storage_id] : QString());
         } else {
-            s.file=encodePath(track, track->filename);
+            s.file=encodePath(track, track->filename, storageNames.count()>1 ? storageNames[track->storage_id] : QString());
         }
-        Path pth=decodePath(s.file);
         s.album=QString::fromUtf8(track->album);
         s.artist=QString::fromUtf8(track->artist);
         s.albumartist=s.artist; // TODO: ALBUMARTIST: Read from 'track' when libMTP supports album artist!
@@ -763,6 +765,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     bool embedCoverImage=Device::constEmbedCover==opts.coverName;
     LIBMTP_track_t *meta=0;
     QString destName;
+    Storage store=getStorage(opts.volumeId);
 
     if (device) {
         meta=LIBMTP_new_track_t();
@@ -790,8 +793,6 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
             meta->filesize=statBuf.st_size;
             meta->modificationdate=statBuf.st_mtime;
         }
-
-        Storage store=getStorage(opts.volumeId);
 
         // Check if storage has enough space, if not try to find one that does!
         qulonglong spaceRequired=meta->filesize+8192;
@@ -961,7 +962,9 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         LIBMTP_destroy_track_t(meta);
     }
 
-    emit putSongStatus(added, meta ? meta->item_id : 0, meta ? encodePath(meta, destName) : QString(), fixedVa);
+    emit putSongStatus(added, meta ? meta->item_id : 0,
+                       meta ? encodePath(meta, destName, storage.count()>1 ? store.description : QString()) : QString(),
+                       fixedVa);
 }
 
 static bool saveFile(const QString &name, char *data, uint64_t size)

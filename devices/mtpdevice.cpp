@@ -753,7 +753,6 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
             destName=dirs.takeLast();
             meta->parent_id=folderId=checkFolderStructure(dirs, store);
         }
-
         meta->title=createString(song.title);
         meta->artist=createString(song.artist);
         meta->composer=createString(QString());
@@ -776,6 +775,8 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     }
 
     if (added) {
+        // LibMTP seems to reset parent_id to 0 - but we NEED the correct value for encodePath
+        meta->parent_id=folderId;
         // Send cover, as a plain file...
         if (!embedCoverImage && Device::constNoCover!=opts.coverName) {
             QString srcFile;
@@ -808,8 +809,8 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
                 meta->filetype=mtpFileType(opts.coverName);
 
                 if (0==LIBMTP_Send_File_From_File(device, srcFile.toUtf8(), fileMeta, 0, 0)) {
-                    folderMap[meta->parent_id].children.insert(fileMeta->item_id);
-                    folderMap[meta->parent_id].covers.insert(fileMeta->item_id, Cover(opts.coverName, statBuf.st_size, fileMeta->item_id));
+                    folderMap[folderId].children.insert(fileMeta->item_id);
+                    folderMap[folderId].covers.insert(fileMeta->item_id, Cover(opts.coverName, statBuf.st_size, fileMeta->item_id));
                 }
                 LIBMTP_destroy_file_t(fileMeta);
             }
@@ -818,7 +819,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
                 delete temp;
             }
         }
-        folderMap[meta->parent_id].children.insert(meta->item_id);
+        folderMap[folderId].children.insert(meta->item_id);
     }
     emit putSongStatus(added, meta ? meta->item_id : 0,
                        meta ? encodePath(meta, destName, storage.count()>1 ? store.description : QString()) : QString(),

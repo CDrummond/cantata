@@ -53,6 +53,7 @@ namespace Tags
         Update_Modified
     };
 
+    extern void setID3V2Version(int v);
     extern Song read(const QString &fileName);
     extern QImage readImage(const QString &fileName);
     extern QString readLyrics(const QString &fileName);

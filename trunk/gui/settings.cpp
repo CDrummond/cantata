@@ -255,8 +255,12 @@ QString Settings::iconTheme()
 {
     return GET_STRING("iconTheme", QString());
 }
-
 #endif
+
+int Settings::id3v2Version()
+{
+    return GET_INT("id3v2Version", 3);
+}
 
 bool Settings::showPlaylist()
 {

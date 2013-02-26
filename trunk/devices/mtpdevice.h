@@ -53,13 +53,14 @@ public:
         uint32_t id;
         uint32_t parentId;
         uint32_t storageId;
+        QSet<uint32_t> children;
+        QSet<uint32_t> covers;
     };
 
     struct Storage : public DeviceStorage {
         Storage() : id(0), musicFolderId(0) { }
         uint32_t id;
         uint32_t musicFolderId;
-        //uint32_t albumsFolderId;
         QString musicPath;
     };
 
@@ -104,8 +105,9 @@ Q_SIGNALS:
     void cover(const Song &s, const QImage &img);
 
 private:
+    bool removeFolder(uint32_t storageId, uint32_t folderId);
     void updateFolders();
-    void updateAlbums();
+    void updateFiles();
     void updateStorage();
     Storage & getStorage(const QString &volumeIdentifier);
     Storage & getStorage(uint32_t id);
@@ -115,21 +117,11 @@ private:
     uint32_t checkFolderStructure(const QStringList &dirs, Storage &store);
     void parseFolder(LIBMTP_folder_t *folder);
     void setMusicFolder(Storage &store);
-    //uint32_t getAlbumsFolderId();
-    uint32_t getFolderId(const char *name, LIBMTP_folder_t *f, uint32_t storageId);
-    LIBMTP_album_t * getAlbum(const Song &song);
-    QImage getCover(LIBMTP_album_t *album);
     void destroyData();
 
 private:
     LIBMTP_mtpdevice_t *device;
-    LIBMTP_folder_t *folders;
-    LIBMTP_album_t *albums;
-    LIBMTP_track_t *tracks;
-    QMap<int, Folder> folderMap;
-    QMap<int, LIBMTP_track_t *> trackMap;
-    //QSet<uint16_t> supportedTypes;
-    QSet<LIBMTP_album_t *> albumsWithCovers;
+    QMap<uint32_t, Folder> folderMap;
     MusicLibraryItemRoot *library;
     uint32_t defaultMusicFolder;
     QList<Storage> storage;

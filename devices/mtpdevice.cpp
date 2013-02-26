@@ -439,7 +439,7 @@ void MtpConnection::updateFiles()
             Folder &folder=folderMap[file->parent_id];
             if (LIBMTP_FILETYPE_FOLDER!=file->filetype) {
                 QString name=QString::fromUtf8(file->filename);
-                if (name.endsWith(".jpg", Qt::CaseInsensitive) || name.endsWith(".png", Qt::CaseInsensitive)) {
+                if (name.endsWith(".jpg", Qt::CaseInsensitive) || name.endsWith(".png", Qt::CaseInsensitive) || QLatin1String("albumart.pamp")==name) {
                     folder.covers.insert(file->item_id, Cover(name, file->filesize, file->item_id));
                 }
             }

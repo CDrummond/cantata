@@ -433,7 +433,7 @@ void MtpConnection::updateFiles()
 {
     LIBMTP_file_t *files=LIBMTP_Get_Filelisting_With_Callback(device, 0, 0);
     LIBMTP_file_t *file=files;
-    QSet<uint32_t>folders=folderMap.keys().toSet();
+    QSet<uint32_t> folders=folderMap.keys().toSet();
     while (file) {
         if (folders.contains(file->parent_id)) {
             Folder &folder=folderMap[file->parent_id];
@@ -900,26 +900,27 @@ void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa, b
 void MtpConnection::delSong(const Song &song)
 {
     Path path=decodePath(song.file);
-    emit delSongStatus(device && path.ok() && 0==LIBMTP_Delete_Object(device, path.id));
+    bool deletedSong=device && path.ok() && 0==LIBMTP_Delete_Object(device, path.id);
+    if (deletedSong) {
+        int before=folderMap[path.parent].children.count();
+        folderMap[path.parent].children.remove(path.id);
+    }
+    emit delSongStatus(deletedSong);
 }
 
 bool MtpConnection::removeFolder(uint32_t folderId)
 {
     QMap<uint32_t, Folder>::iterator folder=folderMap.find(folderId);
-
     if (folderMap.end()!=folder) {
         if (!(*folder).children.isEmpty()) {
             // If we only have covers left, then remove them!
             if ((*folder).children.count()==(*folder).covers.count()) {
-                QList<uint32_t> removed;
-                foreach (uint32_t cover, (*folder).covers.keys()) {
+                QList<uint32_t> toRemove=(*folder).covers.keys();
+                foreach (uint32_t cover, toRemove) {
                     if (0==LIBMTP_Delete_Object(device, cover)) {
-                        removed.append(cover);
+                        (*folder).covers.remove(cover);
                         (*folder).children.remove(cover);
                     }
-                }
-                foreach (uint32_t cover, removed) {
-                    (*folder).covers.remove(cover);
                 }
             }
         }

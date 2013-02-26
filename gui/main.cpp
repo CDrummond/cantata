@@ -36,7 +36,6 @@
 #include "utils.h"
 #include "config.h"
 #include "settings.h"
-#include "tags.h"
 #include "initialsettingswizard.h"
 #include "mainwindow.h"
 
@@ -111,7 +110,6 @@ int main(int argc, char *argv[])
     if (!KUniqueApplication::start()) {
         exit(0);
     }
-    Tags::setID3V2Version(Settings::self()->id3v2Version());
 
     Application app;
     #else // ENABLE_KDE_SUPPORT
@@ -126,7 +124,6 @@ int main(int argc, char *argv[])
     if (!app.start()) {
         return 0;
     }
-    Tags::setID3V2Version(Settings::self()->id3v2Version());
 
     // Translations
     QString langEnv=qgetenv("CANTATA_LANG");

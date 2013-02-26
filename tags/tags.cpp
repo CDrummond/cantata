@@ -75,8 +75,6 @@
 #include <taglib-extras/realmediafiletyperesolver.h>
 #endif
 
-static int id3v2Version=3; // Set to 4 to save ID3v2.4 and 3 for ID3v2.3
-
 namespace Tags
 {
 
@@ -363,6 +361,11 @@ static bool updateID3v2Tag(TagLib::ID3v2::Tag *tag, const char *tagName, const Q
     return false;
 }
 
+static bool isId3V24(TagLib::ID3v2::Header *header)
+{
+    return header && header->majorVersion()>3;
+}
+
 static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img)
 {
     bool changed=false;
@@ -386,13 +389,13 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
         while (clearRva2Tag(tag, TagLib::String("track").upper()));
         setTxxxTag(tag, "replaygain_track_gain", rgs.trackGain);
         setTxxxTag(tag, "replaygain_track_peak", rgs.trackPeak);
-        if (id3v2Version>3) {
+        if (isId3V24(tag->header())) {
             setRva2Tag(tag, "track", rg.trackGain, rg.trackPeak);
         }
         if (rg.albumMode) {
             setTxxxTag(tag, "replaygain_album_gain", rgs.albumGain);
             setTxxxTag(tag, "replaygain_album_peak", rgs.albumPeak);
-            if (id3v2Version>3) {
+            if (isId3V24(tag->header())) {
                 setRva2Tag(tag, "album", rg.albumGain, rg.albumPeak);
             }
         }
@@ -944,13 +947,6 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
 
 static QMutex mutex;
 
-void setID3V2Version(int v)
-{
-    if (3==v || 4==v) {
-        id3v2Version=v;
-    }
-}
-
 Song read(const QString &fileName)
 {
     QMutexLocker locker(&mutex);
@@ -1003,13 +999,14 @@ QString readLyrics(const QString &fileName)
 
 static Update update(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img)
 {
-    TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
-    TagLib::ID3v1::Tag *v1=mpeg ? mpeg->ID3v1Tag(false) : 0;
-    bool haveV1=v1 && (!v1->title().isEmpty() || !v1->artist().isEmpty() || !v1->album().isEmpty());
-
     if (writeTags(fileref, from, to, rg, img)) {
+        TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
         if (mpeg) {
-            return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, true, id3v2Version) ? Update_Modified : Update_Failed;
+            TagLib::ID3v1::Tag *v1=mpeg->ID3v1Tag(false);
+            TagLib::ID3v2::Tag *v2=mpeg->ID3v2Tag(false);
+            bool haveV1=v1 && (!v1->title().isEmpty() || !v1->artist().isEmpty() || !v1->album().isEmpty());
+            bool isID3v24=v2 && isId3V24(v2->header());
+            return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, true, isID3v24 ? 4 : 3) ? Update_Modified : Update_Failed;
         }
         return fileref.file()->save() ? Update_Modified : Update_Failed;
     }
@@ -1028,14 +1025,16 @@ Update updateArtistAndTitle(const QString &fileName, const Song &song)
     }
 
     TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
-    TagLib::ID3v1::Tag *v1=mpeg ? mpeg->ID3v1Tag(false) : 0;
-    bool haveV1=v1 && (!v1->title().isEmpty() || !v1->artist().isEmpty() || !v1->album().isEmpty());
     TagLib::Tag *tag=fileref.tag();
     tag->setTitle(qString2TString(song.title));
     tag->setArtist(qString2TString(song.artist));
 
     if (mpeg) {
-        return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, id3v2Version) ? Update_Modified : Update_Failed;
+        TagLib::ID3v1::Tag *v1=mpeg->ID3v1Tag(false);
+        TagLib::ID3v2::Tag *v2=mpeg->ID3v2Tag(false);
+        bool haveV1=v1 && (!v1->title().isEmpty() || !v1->artist().isEmpty() || !v1->album().isEmpty());
+        bool isID3v24=v2 && isId3V24(v2->header());
+        return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, isID3v24 ? 4 : 3) ? Update_Modified : Update_Failed;
     }
     return fileref.file()->save() ? Update_Modified : Update_Failed;
 }

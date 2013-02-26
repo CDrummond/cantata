@@ -113,6 +113,8 @@
 68. Attempt to work-around lack of AlbumArtist support in libmtp. For each
     album that has tracks by different artists, set the AlbumArtist to
     'Various Artists'
+69. Send cover files to MTP devices.
+70. If MTP track number is 0, then attempt to ascertin this from the filename.
 
 0.9.2
 -----

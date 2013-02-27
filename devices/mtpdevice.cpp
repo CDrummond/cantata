@@ -444,13 +444,16 @@ void MtpConnection::updateFiles()
     while (file) {
         if (folders.contains(file->parent_id)) {
             Folder &folder=folderMap[file->parent_id];
-            if (LIBMTP_FILETYPE_FOLDER!=file->filetype) {
+            if (LIBMTP_FILETYPE_FOLDER==file->filetype) {
+                folder.folders.insert(file->item_id);
+            } else {
                 QString name=QString::fromUtf8(file->filename);
                 if (name.endsWith(".jpg", Qt::CaseInsensitive) || name.endsWith(".png", Qt::CaseInsensitive) || QLatin1String("albumart.pamp")==name) {
-                    folder.covers.insert(file->item_id, Cover(name, file->filesize, file->item_id));
+                    folder.covers.insert(file->item_id, File(name, file->filesize, file->item_id));
+                } else {
+                    folder.files.insert(file->item_id, File(name, file->filesize, file->item_id));
                 }
             }
-            folder.children.insert(file->item_id);
         }
         file=file->next;
     }
@@ -610,6 +613,9 @@ void MtpConnection::parseFolder(LIBMTP_folder_t *folder)
     bool isMusic=path.startsWith(QLatin1String("Music/"), Qt::CaseInsensitive);
     if (isMusic) {
         folderMap.insert(folder->folder_id, Folder(path, folder->folder_id, folder->parent_id, folder->storage_id));
+        if (folderMap.contains(folder->parent_id)) {
+            folderMap[folder->parent_id].folders.insert(folder->folder_id);
+        }
     }
     // Only recurse into music folder...
     if (folder->child && isMusic) {
@@ -703,9 +709,9 @@ static QTemporaryFile * saveImageToTemp(const QImage &img, const QString &name)
     return temp;
 }
 
-void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts, bool copyCover)
+void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts, bool overwrite, bool copyCover)
 {
-    bool added=false;
+    int status=Device::Failed;
     bool fixedVa=false;
     bool embedCoverImage=Device::constEmbedCover==opts.coverName;
     bool copiedCover=false;
@@ -762,20 +768,34 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
             destName=dirs.takeLast();
             meta->parent_id=folderId=checkFolderStructure(dirs, store);
         }
-        meta->title=createString(song.title);
-        meta->artist=createString(song.artist);
-        meta->composer=createString(QString());
-        meta->genre=createString(song.genre);
-        meta->album=createString(song.album);
-        meta->date=createString(QString().sprintf("%4d0101T0000.0", song.year));
-        meta->filename=createString(destName);
-        meta->tracknumber=song.track;
-        meta->duration=song.time*1000;
-        meta->rating=0;
-        meta->usecount=0;
-        meta->filetype=mtpFileType(song.file);
-        meta->next=0;
-        added=0==LIBMTP_Send_Track_From_File(device, fileName.toUtf8(), meta, &progressMonitor, this);
+        Folder &folder=folderMap[folderId];
+        QMap<uint32_t, File>::ConstIterator it=folder.files.constBegin();
+        QMap<uint32_t, File>::ConstIterator end=folder.files.constEnd();
+        for (; it!=end; ++it) {
+            if ((*it).name==destName) {
+                if (!overwrite || 0!=LIBMTP_Delete_Object(device, (*it).id)) {
+                    status=Device::SongExists;
+                }
+                break;
+            }
+        }
+
+        if (status!=Device::SongExists) {
+            meta->title=createString(song.title);
+            meta->artist=createString(song.artist);
+            meta->composer=createString(QString());
+            meta->genre=createString(song.genre);
+            meta->album=createString(song.album);
+            meta->date=createString(QString().sprintf("%4d0101T0000.0", song.year));
+            meta->filename=createString(destName);
+            meta->tracknumber=song.track;
+            meta->duration=song.time*1000;
+            meta->rating=0;
+            meta->usecount=0;
+            meta->filetype=mtpFileType(song.file);
+            meta->next=0;
+            status=0==LIBMTP_Send_Track_From_File(device, fileName.toUtf8(), meta, &progressMonitor, this) ? Device::Ok : Device::Failed;
+        }
         if (temp) {
             // Delete the temp file...
             temp->remove();
@@ -783,13 +803,13 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         }
     }
 
-    if (added) {
+    if (Device::Ok==status) {
         Folder &folder=folderMap[folderId];
         // LibMTP seems to reset parent_id to 0 - but we NEED the correct value for encodePath
         meta->parent_id=folderId;
         if (copyCover) {
-            QMap<uint32_t, Cover>::ConstIterator it=folder.covers.constBegin();
-            QMap<uint32_t, Cover>::ConstIterator end=folder.covers.constEnd();
+            QMap<uint32_t, File>::ConstIterator it=folder.covers.constBegin();
+            QMap<uint32_t, File>::ConstIterator end=folder.covers.constEnd();
 
             for (; it!=end; ++it) {
                 if (it.value().name==opts.coverName) {
@@ -831,8 +851,7 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
                 meta->filetype=mtpFileType(opts.coverName);
 
                 if (0==LIBMTP_Send_File_From_File(device, srcFile.toUtf8(), fileMeta, 0, 0)) {
-                    folder.children.insert(fileMeta->item_id);
-                    folder.covers.insert(fileMeta->item_id, Cover(opts.coverName, statBuf.st_size, fileMeta->item_id));
+                    folder.covers.insert(fileMeta->item_id, File(opts.coverName, statBuf.st_size, fileMeta->item_id));
                     copiedCover=true;
                 }
                 LIBMTP_destroy_file_t(fileMeta);
@@ -842,9 +861,9 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
                 delete temp;
             }
         }
-        folder.children.insert(meta->item_id);
+        folder.files.insert(meta->item_id, File(destName, meta->filesize, meta->item_id));
     }
-    emit putSongStatus(added, meta ? meta->item_id : 0,
+    emit putSongStatus(status,
                        meta ? encodePath(meta, destName, storage.count()>1 ? store.description : QString()) : QString(),
                        fixedVa, copiedCover);
     if (meta) {
@@ -852,14 +871,14 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
     }
 }
 
-MtpConnection::Cover MtpConnection::getCoverDetils(const Song &s)
+MtpConnection::File MtpConnection::getCoverDetils(const Song &s)
 {
-    MtpConnection::Cover cover;
+    File cover;
     Path path=decodePath(s.file);
     if (path.ok() && folderMap.contains(path.parent) && !folderMap[path.parent].covers.isEmpty()) {
-        QMap<uint32_t, Cover> &covers=folderMap[path.parent].covers;
-        QMap<uint32_t, Cover>::ConstIterator it=covers.constBegin();
-        QMap<uint32_t, Cover>::ConstIterator end=covers.constEnd();
+        QMap<uint32_t, File> &covers=folderMap[path.parent].covers;
+        QMap<uint32_t, File>::ConstIterator it=covers.constBegin();
+        QMap<uint32_t, File>::ConstIterator end=covers.constEnd();
 
         for (; it!=end; ++it) {
             if (it.value().size>cover.size) {
@@ -880,7 +899,7 @@ void MtpConnection::getSong(const Song &song, const QString &dest, bool fixVa, b
         QString destDir=Utils::getDir(dest);
 
         if (QDir(destDir).entryList(QStringList() << QLatin1String("*.jpg") << QLatin1String("*.png"), QDir::Files|QDir::Readable).isEmpty()) {
-            Cover cover=getCoverDetils(song);
+            File cover=getCoverDetils(song);
 
             if (0!=cover.id) {
                 QString mpdCover=MPDConnection::self()->getDetails().coverName;
@@ -909,7 +928,7 @@ void MtpConnection::delSong(const Song &song)
     Path path=decodePath(song.file);
     bool deletedSong=device && path.ok() && 0==LIBMTP_Delete_Object(device, path.id);
     if (deletedSong) {
-        folderMap[path.parent].children.remove(path.id);
+        folderMap[path.parent].files.remove(path.id);
     }
     emit delSongStatus(deletedSong);
 }
@@ -917,21 +936,20 @@ void MtpConnection::delSong(const Song &song)
 bool MtpConnection::removeFolder(uint32_t folderId)
 {
     QMap<uint32_t, Folder>::iterator folder=folderMap.find(folderId);
-    if (folderMap.end()!=folder) {
-        if (!(*folder).children.isEmpty()) {
-            // If we only have covers left, then remove them!
-            if ((*folder).children.count()==(*folder).covers.count()) {
-                QList<uint32_t> toRemove=(*folder).covers.keys();
-                foreach (uint32_t cover, toRemove) {
-                    if (0==LIBMTP_Delete_Object(device, cover)) {
-                        (*folder).covers.remove(cover);
-                        (*folder).children.remove(cover);
-                    }
-                }
+    if (folderMap.end()!=folder && (*folder).folders.isEmpty() && (*folder).files.isEmpty()) {
+        // Delete any cover files...
+        QList<uint32_t> toRemove=(*folder).covers.keys();
+        foreach (uint32_t cover, toRemove) {
+            if (0==LIBMTP_Delete_Object(device, cover)) {
+                (*folder).covers.remove(cover);
             }
         }
 
-        if ((*folder).children.isEmpty() && 0==LIBMTP_Delete_Object(device, folderId)) {
+        // Delete folder, if it is now empty...
+        if ((*folder).covers.isEmpty() && 0==LIBMTP_Delete_Object(device, folderId)) {
+            if (folderMap.contains((*folder).parentId)) {
+                folderMap[(*folder).parentId].folders.remove(folderId);
+            }
             folderMap.remove(folderId);
             return true;
         }
@@ -968,7 +986,7 @@ void MtpConnection::cleanDirs(const QSet<QString> &dirs)
 
 void MtpConnection::getCover(const Song &song)
 {
-    Cover c=getCoverDetils(song);
+    File c=getCoverDetils(song);
 
     if (0!=c.id) {
         QByteArray data;
@@ -1032,8 +1050,8 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
     connect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));
-    connect(this, SIGNAL(putSong(const Song &, bool, const DeviceOptions &, bool)), connection, SLOT(putSong(const Song &, bool, const DeviceOptions &, bool)));
-    connect(connection, SIGNAL(putSongStatus(bool, int, const QString &, bool, bool)), this, SLOT(putSongStatus(bool, int, const QString &, bool, bool)));
+    connect(this, SIGNAL(putSong(const Song &, bool, const DeviceOptions &, bool, bool)), connection, SLOT(putSong(const Song &, bool, const DeviceOptions &, bool, bool)));
+    connect(connection, SIGNAL(putSongStatus(int, const QString &, bool, bool)), this, SLOT(putSongStatus(int, const QString &, bool, bool)));
     connect(this, SIGNAL(getSong(const Song &, const QString &, bool, bool)), connection, SLOT(getSong(const Song &, const QString &, bool, bool)));
     connect(connection, SIGNAL(getSongStatus(bool, bool)), this, SLOT(getSongStatus(bool, bool)));
     connect(this, SIGNAL(delSong(const Song &)), connection, SLOT(delSong(const Song &)));
@@ -1160,8 +1178,9 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
                 QFile::remove(destFile);
             }
             transcoding=true;
-            needToCopyCover=copyCover;
             TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile);
+            job->setProperty("overwrite", overwrite);
+            job->setProperty("copyCover", copyCover);
             connect(job, SIGNAL(result(int)), SLOT(transcodeSongResult(int)));
             connect(job, SIGNAL(percent(int)), SLOT(transcodePercent(int)));
             job->start();
@@ -1170,7 +1189,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         }
     }
     transcoding=false;
-    emit putSong(currentSong, needToFixVa, opts, copyCover);
+    emit putSong(currentSong, needToFixVa, opts, overwrite, copyCover);
 }
 
 void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover)
@@ -1249,16 +1268,15 @@ void MtpDevice::requestCover(const Song &song)
     }
 }
 
-void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa, bool copiedCover)
+void MtpDevice::putSongStatus(int status, const QString &file, bool fixedVa, bool copiedCover)
 {
     deleteTemp();
     if (jobAbortRequested) {
         return;
     }
-    if (!ok) {
-        emit actionStatus(Failed);
+    if (Ok!=status) {
+        emit actionStatus(status);
     } else {
-        currentSong.id=id;
         currentSong.file=file;
         if (needToFixVa && fixedVa) {
             currentSong.fixVariousArtists();
@@ -1275,7 +1293,11 @@ void MtpDevice::putSongStatus(bool ok, int id, const QString &file, bool fixedVa
 
 void MtpDevice::transcodeSongResult(int status)
 {
-    FileJob::finished(sender());
+    TranscodingJob *job=qobject_cast<TranscodingJob *>(sender());
+    if (!job) {
+        return;
+    }
+    FileJob::finished(job);
     if (jobAbortRequested) {
         deleteTemp();
         return;
@@ -1283,7 +1305,7 @@ void MtpDevice::transcodeSongResult(int status)
     if (Ok!=status) {
         emit actionStatus(status);
     } else {
-        emit putSong(currentSong, needToFixVa, opts, needToCopyCover);
+        emit putSong(currentSong, needToFixVa, opts, job->property("overwrite").toBool(), job->property("copyCover").toBool());
     }
 }
 

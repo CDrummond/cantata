@@ -45,10 +45,14 @@ public:
     int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
     QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const;
     void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const;
-    void polish(QWidget *widget);
-    void unpolish(QWidget *widget);
     bool eventFilter(QObject *object, QEvent *event);
     void destroySliderThumb();
+
+    void polish(QWidget *widget);
+    void polish(QPalette &pal);
+    void polish(QApplication *app);
+    void unpolish(QWidget *widget);
+    void unpolish(QApplication *app);
 
 private Q_SLOTS:
     void objectDestroyed(QObject *);

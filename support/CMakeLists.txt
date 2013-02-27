@@ -7,6 +7,7 @@ SET( SUPPORT_SRCS
     gtkstyle.cpp
     utils.cpp
     spinner.cpp
+    messagebox.cpp
 )
 
 SET( SUPPORT_MOC_HDRS
@@ -31,7 +32,7 @@ if (ENABLE_KDE_SUPPORT )
     KDE4_ADD_UI_FILES( SUPPORT_UI_HDRS ${SUPPORT_UIS} )
 else (ENABLE_KDE_SUPPORT)
     SET( SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp lineedit.cpp kmessagewidget.cpp
-        dialog.cpp messagebox.cpp pagewidget.cpp shortcutsmodel.cpp shortcutssettingspage.cpp
+        dialog.cpp pagewidget.cpp shortcutsmodel.cpp shortcutssettingspage.cpp
         keysequencewidget.cpp )
     SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} pathrequester.h lineedit.h kmessagewidget.h urllabel.h
          dialog.h shortcutsmodel.h shortcutssettingspage.h keysequencewidget.h spinner.h )

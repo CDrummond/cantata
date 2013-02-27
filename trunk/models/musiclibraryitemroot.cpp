@@ -629,7 +629,7 @@ void MusicLibraryItemRoot::clearItems()
     m_genres.clear();
 }
 
-QString MusicLibraryItemRoot::songArtist(const Song &s)
+QString MusicLibraryItemRoot::songArtist(const Song &s) const
 {
     if (!supportsAlbumArtist) {
         return s.artist;

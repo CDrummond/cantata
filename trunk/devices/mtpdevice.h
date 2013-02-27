@@ -42,8 +42,8 @@ class MtpConnection : public QObject
 {
     Q_OBJECT
 public:
-    struct Cover {
-        Cover(const QString &n=QString(), uint64_t s=0, uint32_t i=0) : name(n), size(s), id(i) { }
+    struct File {
+        File(const QString &n=QString(), uint64_t s=0, uint32_t i=0) : name(n), size(s), id(i) { }
         QString name;
         uint64_t size;
         uint32_t id;
@@ -60,8 +60,9 @@ public:
         uint32_t id;
         uint32_t parentId;
         uint32_t storageId;
-        QSet<uint32_t> children;
-        QMap<uint32_t, Cover> covers;
+        QSet<uint32_t> folders;
+        QMap<uint32_t, File> files;
+        QMap<uint32_t, File> covers;
     };
 
     struct Storage : public DeviceStorage {
@@ -87,7 +88,7 @@ public Q_SLOTS:
     void connectToDevice();
     void disconnectFromDevice(bool showStatus=true);
     void updateLibrary();
-    void putSong(const Song &song, bool fixVa, const DeviceOptions &opts, bool copyCover);
+    void putSong(const Song &song, bool fixVa, const DeviceOptions &opts, bool overwrite, bool copyCover);
     void getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover);
     void delSong(const Song &song);
     void cleanDirs(const QSet<QString> &dirs);
@@ -95,7 +96,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void statusMessage(const QString &message);
-    void putSongStatus(bool, int, const QString &, bool, bool);
+    void putSongStatus(int, const QString &, bool, bool);
     void getSongStatus(bool ok, bool copiedCover);
     void delSongStatus(bool);
     void cleanDirsStatus(bool ok);
@@ -106,7 +107,7 @@ Q_SIGNALS:
     void cover(const Song &s, const QImage &img);
 
 private:
-    Cover getCoverDetils(const Song &s);
+    File getCoverDetils(const Song &s);
     bool removeFolder(uint32_t folderId);
     void updateFolders();
     void updateFiles();
@@ -160,7 +161,7 @@ public:
 Q_SIGNALS:
     // These are for talking to connection thread...
     void updateLibrary();
-    void putSong(const Song &song, bool fixVa, const DeviceOptions &opts, bool copyCover);
+    void putSong(const Song &song, bool fixVa, const DeviceOptions &opts, bool overwrite, bool copyCover);
     void getSong(const Song &song, const QString &dest, bool fixVa, bool copyCover);
     void delSong(const Song &song);
     void cleanMusicDirs(const QSet<QString> &dirs);
@@ -171,7 +172,7 @@ private Q_SLOTS:
     void deviceDetails(const QString &s);
     void libraryUpdated();
     void rescan(bool full=true);
-    void putSongStatus(bool ok, int id, const QString &file, bool fixedVa, bool copiedCover);
+    void putSongStatus(int status, const QString &file, bool fixedVa, bool copiedCover);
     void transcodeSongResult(int status);
     void transcodePercent(int percent);
     void emitProgress(int);
@@ -190,7 +191,6 @@ private:
     MtpConnection *connection;
     QTemporaryFile *tempFile;
     Song currentSong;
-    bool needToCopyCover;
     bool mtpUpdating;
     QString serial;
     unsigned int busNum;

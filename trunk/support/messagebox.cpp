@@ -24,6 +24,7 @@
 #include "messagebox.h"
 #include "icon.h"
 #include "dialog.h"
+#include "localize.h"
 #include <QGridLayout>
 #include <QLabel>
 #include <QListWidget>

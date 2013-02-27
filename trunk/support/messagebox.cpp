@@ -74,8 +74,6 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
 }
 #endif
 
-static const int constIconSize=48;
-
 void MessageBox::failedList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
 {
     Dialog *dlg=new Dialog(parent);
@@ -85,9 +83,10 @@ void MessageBox::failedList(QWidget *parent, const QString &message, const QStri
     QWidget *wid=new QWidget(dlg);
     QGridLayout *lay=new QGridLayout(wid);
     QLabel *iconLabel=new QLabel(wid);
-    iconLabel->setMinimumSize(constIconSize, constIconSize);
-    iconLabel->setMaximumSize(constIconSize, constIconSize);
-    iconLabel->setPixmap(Icon("dialog-error").pixmap(constIconSize, constIconSize));
+    int iconSize=Icon::dlgIconSize();
+    iconLabel->setMinimumSize(iconSize, iconSize);
+    iconLabel->setMaximumSize(iconSize, iconSize);
+    iconLabel->setPixmap(Icon("dialog-error").pixmap(iconSize, iconSize));
     lay->addWidget(iconLabel, 0, 0, 1, 1);
     lay->addWidget(new QLabel(message, wid), 0, 1, 1, 1);
     QListWidget *list=new QListWidget(wid);

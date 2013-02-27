@@ -53,6 +53,7 @@ public:
     }
 
     static int stdSize(int s);
+    static int dlgIconSize();
     static void init(QToolButton *btn, bool setFlat=true);
     #ifdef ENABLE_KDE_SUPPORT
     static Icon getMediaIcon(const QString &name) {

@@ -361,7 +361,7 @@ QModelIndex MusicLibraryModel::findSongIndex(const Song &s) const
         MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
         if (albumItem) {
             foreach (MusicLibraryItem *songItem, albumItem->childItems()) {
-                if (songItem->data()==s.title) {
+                if (songItem->data()==s.displayTitle()) {
                     return createIndex(albumItem->childItems().indexOf(songItem), 0, songItem);
                 }
             }
@@ -378,7 +378,7 @@ const MusicLibraryItem * MusicLibraryModel::findSong(const Song &s) const
         MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
         if (albumItem) {
             foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-                if (songItem->data()==s.title) {
+                if (songItem->data()==s.displayTitle()) {
                     return songItem;
                 }
             }
@@ -480,7 +480,7 @@ void MusicLibraryModel::addSongToList(const Song &s)
     quint32 year=albumItem->year();
     foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
         const MusicLibraryItemSong *song=static_cast<const MusicLibraryItemSong *>(songItem);
-        if (song->track()==s.track && song->disc()==s.disc && song->data()==s.title) {
+        if (song->track()==s.track && song->disc()==s.disc && song->data()==s.displayTitle()) {
             return;
         }
     }

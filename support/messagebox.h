@@ -27,8 +27,8 @@
 #include "dialog.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMessageBox>
-class MessageBox: public KMessageBox {
-    static errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
+struct MessageBox: public KMessageBox {
+    static void errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
 };
 #else
 #include <QMessageBox>

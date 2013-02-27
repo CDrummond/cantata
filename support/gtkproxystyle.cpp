@@ -333,6 +333,20 @@ static inline void addEventFilter(QObject *object, QObject *filter)
     object->installEventFilter(filter);
 }
 
+void GtkProxyStyle::destroySliderThumb()
+{
+    if (sbarThumb) {
+        sbarThumb->setVisible(false);
+        sbarThumb->deleteLater();
+        sbarThumb=0;
+    }
+    if (sbarEdgeTimer) {
+        sbarEdgeTimer->stop();
+        sbarEdgeTimer->deleteLater();
+        sbarEdgeTimer=0;
+    }
+}
+
 void GtkProxyStyle::polish(QWidget *widget)
 {
     if (useOverlayScrollbars && sbarThumb && widget && qobject_cast<QAbstractScrollArea *>(widget) && qstrcmp(widget->metaObject()->className(), "QComboBoxListView")) {
@@ -342,6 +356,16 @@ void GtkProxyStyle::polish(QWidget *widget)
         widget->setAttribute(Qt::WA_Hover, true);
     }
     baseStyle()->polish(widget);
+}
+
+void GtkProxyStyle::polish(QPalette &pal)
+{
+    baseStyle()->polish(pal);
+}
+
+void GtkProxyStyle::polish(QApplication *app)
+{
+    baseStyle()->polish(app);
 }
 
 void GtkProxyStyle::unpolish(QWidget *widget)
@@ -357,18 +381,9 @@ void GtkProxyStyle::unpolish(QWidget *widget)
     baseStyle()->unpolish(widget);
 }
 
-void GtkProxyStyle::destroySliderThumb()
+void GtkProxyStyle::unpolish(QApplication *app)
 {
-    if (sbarThumb) {
-        sbarThumb->setVisible(false);
-        sbarThumb->deleteLater();
-        sbarThumb=0;
-    }
-    if (sbarEdgeTimer) {
-        sbarEdgeTimer->stop();
-        sbarEdgeTimer->deleteLater();
-        sbarEdgeTimer=0;
-    }
+    baseStyle()->unpolish(app);
 }
 
 bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)

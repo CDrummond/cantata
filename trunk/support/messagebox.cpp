@@ -93,5 +93,13 @@ void MessageBox::failedList(QWidget *parent, const QString &message, const QStri
     lay->addWidget(list, 1, 0, 1, 2);
     list->insertItems(0, strlist);
     dlg->setMainWidget(wid);
+    QWidget *win=parent ? parent->window() : 0;
+    bool wasGl=win ? win->testAttribute(Qt::WA_GroupLeader) : false;
+    if (win && !wasGl) {
+        win->setAttribute(Qt::WA_GroupLeader, true);
+    }
     dlg->exec();
+    if (win && !wasGl) {
+        win->setAttribute(Qt::WA_GroupLeader, false);
+    }
 }

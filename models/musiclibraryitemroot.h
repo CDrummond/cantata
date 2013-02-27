@@ -92,8 +92,8 @@ public:
     void toggleGrouping();
     void clearItems();
 
-private:
-    QString songArtist(const Song &s);
+protected:
+    QString songArtist(const Song &s) const;
 
 protected:
     bool supportsAlbumArtist; // TODO: ALBUMARTIST: Remove when libMPT supports album artist!

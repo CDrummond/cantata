@@ -28,7 +28,7 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KMessageBox>
 class MessageBox: public KMessageBox {
-    static failedList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
+    static errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
 };
 #else
 #include <QMessageBox>
@@ -59,7 +59,10 @@ namespace MessageBox {
     inline void information(QWidget *parent, const QString &message, const QString &title=QString()) {
         QMessageBox::information(parent, title.isEmpty() ? i18n("Information") : title, message);
     }
-    void failedList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
+    extern void errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString());
+    inline void errorList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title=QString()) {
+        errorListEx(parent, message, strlist, title);
+    }
 };
 #endif
 

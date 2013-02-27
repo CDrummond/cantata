@@ -42,6 +42,16 @@ int Icon::stdSize(int v)
     }
 }
 
+int Icon::dlgIconSize()
+{
+    static int size=-1;
+
+    if (-1==size) {
+        size=stdSize(QApplication::fontMetrics().height()*3);
+    }
+    return size;
+}
+
 void Icon::init(QToolButton *btn, bool setFlat)
 {
     static int size=-1;

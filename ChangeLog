@@ -118,6 +118,8 @@
 70. If MTP track number is 0, then attempt to ascertin this from the filename.
 71. Respect ID3v2.3 / ID3v2.4 setting of tags - i.e. when save, ensure we use
     the same version.
+72. Optionally start track organizer after tag editor, if chaging the tags
+    indicates that the files should be renamed.
 
 0.9.2
 -----

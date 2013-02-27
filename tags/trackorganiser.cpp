@@ -182,7 +182,7 @@ void TrackOrganiser::startRename()
 {
     optionsBox->setEnabled(false);
     progress->setVisible(true);
-    progress->setRange(0, origSongs.count());
+    progress->setRange(1, origSongs.count());
     enableButtonOk(false);
     index=0;
     paused=autoSkip=false;

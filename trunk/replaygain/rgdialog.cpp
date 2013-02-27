@@ -416,7 +416,7 @@ void RgDialog::saveTags()
     }
 
     if (failed.count()) {
-        MessageBox::failedList(this, i18n("Failed to update the tags of the following tracks:"), failed);
+        MessageBox::errorListEx(this, i18n("Failed to update the tags of the following tracks:"), failed);
     }
 }
 

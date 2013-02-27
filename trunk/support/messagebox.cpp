@@ -74,7 +74,7 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
 }
 #endif
 
-void MessageBox::failedList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
+void MessageBox::errorListEx(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
 {
     Dialog *dlg=new Dialog(parent);
     dlg->setCaption(title.isEmpty() ? i18n("Error") : title);

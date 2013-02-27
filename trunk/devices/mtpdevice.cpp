@@ -267,6 +267,8 @@ void MtpConnection::updateLibrary()
     #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
     QMap<QString, MtpAlbum> albums;
     QMap<uint32_t, MtpFolder> folders;
+    bool getAlbumArtistFromPath=dev->options().scheme==DeviceOptions().scheme;
+    QString va=i18n("Various Artists");
     #endif
 
     while (track && !abortRequested()) {
@@ -277,12 +279,6 @@ void MtpConnection::updateLibrary()
             continue;
         }
         Song s;
-        #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
-        QStringList folderParts=(*it).path.split(QString::SkipEmptyParts);
-        if (folderParts.length()==3) {
-            folders.insert(track->parent_id, MtpFolder(folderParts.at(1), folderParts.at(2)));
-        }
-        #endif
         QString trackFilename=QString::fromUtf8(track->filename);
         s.id=track->item_id;
         s.file=encodePath(track, it.value().path+trackFilename, storageNames.count()>1 ? storageNames[track->storage_id] : QString());
@@ -295,7 +291,18 @@ void MtpConnection::updateLibrary()
         s.track=track->tracknumber;
         s.time=(track->duration/1000.0)+0.5;
         s.fillEmptyFields();
-
+        #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
+        if (getAlbumArtistFromPath) {
+            QStringList folderParts=(*it).path.split('/', QString::SkipEmptyParts);
+            if (folderParts.length()==3) {
+                MtpFolder folder(folderParts.at(1), folderParts.at(2));
+                folders.insert(track->parent_id, folder);
+                if (folder.album==s.album && (folder.artist==QLatin1String("Various Artists") || folder.artist==va)) {
+                    s.albumartist=folder.artist;
+                }
+            }
+        }
+        #endif
         #ifdef MTP_TRACKNUMBER_FROM_FILENAME
         if (0==s.track) {
             int space=trackFilename.indexOf(' ');

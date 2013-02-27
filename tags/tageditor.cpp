@@ -731,7 +731,7 @@ void TagEditor::applyUpdates()
     saving=false;
 
     if (failed.count()) {
-        MessageBox::failedList(this, i18n("Failed to update the tags of the following tracks:"), failed);
+        MessageBox::errorListEx(this, i18n("Failed to update the tags of the following tracks:"), failed);
     }
 
     if (updated) {

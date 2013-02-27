@@ -373,80 +373,96 @@ void GtkProxyStyle::destroySliderThumb()
 
 bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
 {
-    if (useOverlayScrollbars && QEvent::HoverMove==event->type() && object && qobject_cast<QAbstractScrollArea *>(object)) {
-        QHoverEvent *he=(QHoverEvent *)event;
-        QAbstractScrollArea *a=(QAbstractScrollArea *)object;
-        QScrollBar *bar=0;
-        if (a->horizontalScrollBar() && a->horizontalScrollBar()->isVisible() && he->pos().y()>(a->height()-sbarAreaWidth)) {
-            bar=a->horizontalScrollBar();
-        }
-
-        if (a->verticalScrollBar() && a->verticalScrollBar()->isVisible() && he->pos().x()>(a->width()-sbarAreaWidth)) {
-            bar=a->verticalScrollBar();
-        }
-
-        if (bar) {
-            if (sbarThumbTarget!=bar) {
-                if (sbarThumbTarget) {
-                    disconnect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
+    if (useOverlayScrollbars) {
+        switch (event->type()) {
+        case QEvent::HoverMove:
+            if (object && qobject_cast<QAbstractScrollArea *>(object)) {
+                QHoverEvent *he=(QHoverEvent *)event;
+                QAbstractScrollArea *a=(QAbstractScrollArea *)object;
+                QScrollBar *bar=0;
+                if (a->horizontalScrollBar() && a->horizontalScrollBar()->isVisible() && he->pos().y()>(a->height()-sbarAreaWidth)) {
+                    bar=a->horizontalScrollBar();
                 }
-                sbarThumbTarget=bar;
-                connect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
-            }
 
-            if (!sbarThumb->isVisible() || bar->orientation()!=sbarThumb->orientation()) {
-                sbarThumb->setOrientation(bar->orientation());
-                QPoint global=a->mapToGlobal(QPoint(Qt::Vertical==bar->orientation() ? a->width()-sbarWidth-1 : 0, Qt::Vertical==bar->orientation() ? 0 : a->height()-sbarWidth-1));
-                int toXPos=global.x();
-                int toYPos=global.y();
+                if (a->verticalScrollBar() && a->verticalScrollBar()->isVisible() && he->pos().x()>(a->width()-sbarAreaWidth)) {
+                    bar=a->verticalScrollBar();
+                }
 
-                if (Qt::Vertical==bar->orientation()) {
-                    int thumbSize = sbarThumb->height();
-                    toYPos = a->mapToGlobal(he->pos()).y() - sbarThumb->height() / 2;
-                    int minYPos = global.y();
-                    int maxYPos = global.y() + a->height() - thumbSize;
-
-                    sbarThumb->setMaximum(maxYPos);
-                    sbarThumb->setMinimum(minYPos);
-
-                    if (toYPos < minYPos) {
-                        toYPos = minYPos;
+                if (bar) {
+                    if (sbarThumbTarget!=bar) {
+                        if (sbarThumbTarget) {
+                            disconnect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
+                        }
+                        sbarThumbTarget=bar;
+                        connect(bar, SIGNAL(destroyed(QObject *)), this, SLOT(objectDestroyed(QObject *)));
                     }
-                    if (toYPos > maxYPos) {
-                        toYPos = maxYPos;
-                    }
-                    if (QApplication::desktop() && toXPos+sbarThumb->width()>QApplication::desktop()->width()) {
-                        toXPos=global.x()-(sbarThumb->width()-sbarWidth);
+
+                    if (!sbarThumb->isVisible() || bar->orientation()!=sbarThumb->orientation()) {
+                        sbarThumb->setOrientation(bar->orientation());
+                        QPoint global=a->mapToGlobal(QPoint(Qt::Vertical==bar->orientation() ? a->width()-sbarWidth-1 : 0, Qt::Vertical==bar->orientation() ? 0 : a->height()-sbarWidth-1));
+                        int toXPos=global.x();
+                        int toYPos=global.y();
+
+                        if (Qt::Vertical==bar->orientation()) {
+                            int thumbSize = sbarThumb->height();
+                            toYPos = a->mapToGlobal(he->pos()).y() - sbarThumb->height() / 2;
+                            int minYPos = global.y();
+                            int maxYPos = global.y() + a->height() - thumbSize;
+
+                            sbarThumb->setMaximum(maxYPos);
+                            sbarThumb->setMinimum(minYPos);
+
+                            if (toYPos < minYPos) {
+                                toYPos = minYPos;
+                            }
+                            if (toYPos > maxYPos) {
+                                toYPos = maxYPos;
+                            }
+                            if (QApplication::desktop() && toXPos+sbarThumb->width()>QApplication::desktop()->width()) {
+                                toXPos=global.x()-(sbarThumb->width()-sbarWidth);
+                            }
+                        } else {
+                            int thumbSize = sbarThumb->height();
+                            toXPos = a->mapToGlobal(he->pos()).x() - sbarThumb->width() / 2;
+                            int minXPos = global.x();
+                            int maxXPos = global.x() + a->width() - thumbSize;
+
+                            sbarThumb->setMaximum(maxXPos);
+                            sbarThumb->setMinimum(minXPos);
+
+                            if (toXPos < minXPos) {
+                                toXPos = minXPos;
+                            }
+                            if (toXPos > maxXPos) {
+                                toXPos = maxXPos;
+                            }
+
+                            if (QApplication::desktop() && toYPos+sbarThumb->height()>QApplication::desktop()->height()) {
+                                toYPos=global.y()-(sbarThumb->height()-sbarWidth);
+                            }
+                        }
+                        sbarThumb->move(toXPos, toYPos);
+                        sbarThumb->show();
+                        sbarUpdateOffset();
                     }
                 } else {
-                    int thumbSize = sbarThumb->height();
-                    toXPos = a->mapToGlobal(he->pos()).x() - sbarThumb->width() / 2;
-                    int minXPos = global.x();
-                    int maxXPos = global.x() + a->width() - thumbSize;
-
-                    sbarThumb->setMaximum(maxXPos);
-                    sbarThumb->setMinimum(minXPos);
-
-                    if (toXPos < minXPos) {
-                        toXPos = minXPos;
-                    }
-                    if (toXPos > maxXPos) {
-                        toXPos = maxXPos;
-                    }
-
-                    if (QApplication::desktop() && toYPos+sbarThumb->height()>QApplication::desktop()->height()) {
-                        toYPos=global.y()-(sbarThumb->height()-sbarWidth);
-                    }
+                    sbarThumb->hide();
                 }
-                sbarThumb->move(toXPos, toYPos);
-                sbarThumb->show();
-                sbarUpdateOffset();
             }
-        } else {
-            sbarThumb->hide();
+            break;
+        case QEvent::Resize:
+        case QEvent::Move:
+            if (sbarThumb && sbarThumb->isVisible() && object && qobject_cast<QAbstractScrollArea *>(object)) {
+                sbarThumb->hide();
+            }
+            break;
+        case QEvent::WindowDeactivate:
+            if (sbarThumb && sbarThumb->isVisible()) {
+                sbarThumb->hide();
+            }
+        default:
+            break;
         }
-    } else if (useOverlayScrollbars && sbarThumb && QEvent::WindowDeactivate==event->type() && sbarThumb->isVisible()) {
-        sbarThumb->hide();
     }
 
     return baseStyle()->eventFilter(object, event);

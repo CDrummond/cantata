@@ -459,6 +459,9 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
     case Device::WriteFailed:
         setPage(PAGE_SKIP, i18n("Failed to write to destination file.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
         break;
+    case Device::NoSpace:
+        setPage(PAGE_SKIP, i18n("No space left on device.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
+        break;
     case Device::FailedToUpdateTags:
         setPage(PAGE_SKIP, i18n("Failed to update metadata.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
         break;

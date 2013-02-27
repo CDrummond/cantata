@@ -902,7 +902,6 @@ void MtpConnection::delSong(const Song &song)
     Path path=decodePath(song.file);
     bool deletedSong=device && path.ok() && 0==LIBMTP_Delete_Object(device, path.id);
     if (deletedSong) {
-        int before=folderMap[path.parent].children.count();
         folderMap[path.parent].children.remove(path.id);
     }
     emit delSongStatus(deletedSong);

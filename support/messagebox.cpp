@@ -23,6 +23,11 @@
 
 #include "messagebox.h"
 #include "icon.h"
+#include "dialog.h"
+#include <QGridLayout>
+#include <QLabel>
+#include <QListWidget>
+#ifndef ENABLE_KDE_SUPPORT
 #include <QAbstractButton>
 
 MessageBox::ButtonCode map(QMessageBox::StandardButton c)
@@ -67,10 +72,27 @@ MessageBox::ButtonCode MessageBox::questionYesNoCancel(QWidget *parent, const QS
         return -1==box.exec() ? Cancel : map(box.standardButton(box.clickedButton()));
     }
 }
+#endif
 
-void MessageBox::errorList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
+static const int constIconSize=48;
+
+void MessageBox::failedList(QWidget *parent, const QString &message, const QStringList &strlist, const QString &title)
 {
-    QMessageBox box(QMessageBox::Critical, title.isEmpty() ? i18n("Error") : title, message, QMessageBox::Ok, parent);
-    box.setDetailedText(strlist.join("\n"));
-    box.exec();
+    Dialog *dlg=new Dialog(parent);
+    dlg->setCaption(title.isEmpty() ? i18n("Error") : title);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setButtons(Dialog::Ok);
+    QWidget *wid=new QWidget(dlg);
+    QGridLayout *lay=new QGridLayout(wid);
+    QLabel *iconLabel=new QLabel(wid);
+    iconLabel->setMinimumSize(constIconSize, constIconSize);
+    iconLabel->setMaximumSize(constIconSize, constIconSize);
+    iconLabel->setPixmap(Icon("dialog-error").pixmap(constIconSize, constIconSize));
+    lay->addWidget(iconLabel, 0, 0, 1, 1);
+    lay->addWidget(new QLabel(message, wid), 0, 1, 1, 1);
+    QListWidget *list=new QListWidget(wid);
+    lay->addWidget(list, 1, 0, 1, 2);
+    list->insertItems(0, strlist);
+    dlg->setMainWidget(wid);
+    dlg->exec();
 }

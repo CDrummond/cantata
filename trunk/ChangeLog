@@ -108,12 +108,14 @@
 63. If we change a genre, or year, in the tag-editor, then update genre list in
     views.
 64. Disable connections menu when preferences dialog is open.
-65. Allow wildcard genres. e.g. 'Rock*' for 'Hard Rock' and 'RockNRoll'
+65. Allow wildcard genres. e.g. 'Rock*' for 'Hard Rock' and 'RockNRoll' in
+    dynamic rules.
 66. Handle multiple storage locations on MTP devices.
 67. Fix creation of music folder on MTP devices.
 68. Attempt to work-around lack of AlbumArtist support in libmtp. For each
     album that has tracks by different artists, set the AlbumArtist to
-    'Various Artists'
+    'Various Artists' (This *only* works if there are not duplicate track
+    numbers)
 69. Send cover files to MTP devices.
 70. If MTP track number is 0, then attempt to ascertin this from the filename.
 71. Respect ID3v2.3 / ID3v2.4 setting of tags - i.e. when save, ensure we use

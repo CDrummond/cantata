@@ -50,18 +50,7 @@ void GroupedView::setup()
 
     if (height>17) {
         constCoverSize=((int)((height*2)/4))*4;
-        constIconSize=((int)(height/4))*4;
-        if (constIconSize<20) {
-            constIconSize=16;
-        } else if (constIconSize<28) {
-            constIconSize=22;
-        } else if (constIconSize<40) {
-            constIconSize=32;
-        } else if (constIconSize<56) {
-            constIconSize=48;
-        } else {
-            constIconSize=64;
-        }
+        constIconSize=Icon::stdSize(((int)(height/4))*4);
         constBorder=constCoverSize>48 ? 2 : 1;
     } else {
         constCoverSize=32;

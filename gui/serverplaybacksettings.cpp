@@ -28,8 +28,6 @@
 #include "icon.h"
 #include <QListWidget>
 
-static const int constIconSize=48;
-
 ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     : QWidget(p)
 {
@@ -45,8 +43,9 @@ ServerPlaybackSettings::ServerPlaybackSettings(QWidget *p)
     connect(this, SIGNAL(setReplayGain(const QString &)), MPDConnection::self(), SLOT(setReplayGain(const QString &)));
     connect(this, SIGNAL(setCrossFade(int)), MPDConnection::self(), SLOT(setCrossFade(int)));
     connect(this, SIGNAL(getReplayGain()), MPDConnection::self(), SLOT(getReplayGain()));
-    messageIcon->setMinimumSize(constIconSize, constIconSize);
-    messageIcon->setMaximumSize(constIconSize, constIconSize);
+    int iconSize=Icon::dlgIconSize();
+    messageIcon->setMinimumSize(iconSize, iconSize);
+    messageIcon->setMaximumSize(iconSize, iconSize);
     mpdConnectionStateChanged(MPDConnection::self()->isConnected());
     #ifndef PHONON_FOUND
     streamUrl->setVisible(false);
@@ -115,7 +114,7 @@ void ServerPlaybackSettings::mpdConnectionStateChanged(bool c)
     streamUrl->setEnabled(c);
     streamUrlLabel->setEnabled(c);
     #endif
-    messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(constIconSize, constIconSize));
+    messageIcon->setPixmap(Icon(c ? "dialog-information" : "dialog-warning").pixmap(messageIcon->minimumSize()));
     if (c) {
         messageLabel->setText(i18n("<i><b>Connected to %1</b><br/>The entries below apply to the currently connected MPD instance.</i>")
                               .arg(MPDConnection::self()->getDetails().description()));

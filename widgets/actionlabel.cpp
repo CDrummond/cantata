@@ -22,11 +22,7 @@
  */
 
 #include "actionlabel.h"
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KIconLoader>
-#else
-#include <QIcon>
-#endif
+#include "icon.h"
 #include <QLabel>
 #include <QTimer>
 #include <QPixmap>
@@ -57,18 +53,15 @@ static QPixmap *theIcons[constNumIcons];
 ActionLabel::ActionLabel(QWidget *parent)
     : QLabel(parent)
 {
-    static const int constIconSize(64);
+    int iconSize=Icon::dlgIconSize();
+    int labelSize=Icon::stdSize((int)((iconSize*1.333333333)+0.5));
 
-    setMinimumSize(constIconSize, constIconSize);
-    setMaximumSize(constIconSize, constIconSize);
+    setMinimumSize(labelSize, labelSize);
+    setMaximumSize(labelSize, labelSize);
     setAlignment(Qt::AlignCenter);
 
     if(0==theUsageCount++) {
-        #ifdef ENABLE_KDE_SUPPORT
-        QImage img(KIconLoader::global()->loadIcon("audio-x-generic", KIconLoader::NoGroup, 48).toImage());
-        #else
-        QImage img(QIcon::fromTheme("audio-x-generic").pixmap(48, 48).toImage());
-        #endif
+        QImage img(Icon::fromTheme("audio-x-generic").pixmap(iconSize, iconSize).toImage());
         double increment=360.0/constNumIcons;
 
         for(int i=0; i<constNumIcons; ++i) {

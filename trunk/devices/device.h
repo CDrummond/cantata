@@ -71,6 +71,7 @@ public:
         FailedToCreateTempFile,
         ReadFailed,
         WriteFailed,
+        NoSpace,
         FailedToUpdateTags,
         Cancelled,
 

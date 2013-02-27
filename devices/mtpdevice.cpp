@@ -748,12 +748,11 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
         }
 
         // Check if storage has enough space, if not try to find one that does!
-        qulonglong spaceRequired=meta->filesize+(embedCoverImage ? (32*1024) : 0);
-        if (store.freeSpace()<spaceRequired) {
+        if (store.freeSpace()<meta->filesize) {
             QList<Storage>::Iterator it=storage.begin();
             QList<Storage>::Iterator end=storage.end();
             for ( ;it!=end; ++it) {
-                if ((*it).freeSpace()>=spaceRequired) {
+                if ((*it).freeSpace()>=meta->filesize) {
                     store=*it;
                     break;
                 }
@@ -794,7 +793,11 @@ void MtpConnection::putSong(const Song &s, bool fixVa, const DeviceOptions &opts
             meta->usecount=0;
             meta->filetype=mtpFileType(song.file);
             meta->next=0;
-            status=0==LIBMTP_Send_Track_From_File(device, fileName.toUtf8(), meta, &progressMonitor, this) ? Device::Ok : Device::Failed;
+            switch (LIBMTP_Send_Track_From_File(device, fileName.toUtf8(), meta, &progressMonitor, this)) {
+            case LIBMTP_ERROR_NONE:         status=Device::Ok;      break;
+            case LIBMTP_ERROR_STORAGE_FULL: status=Device::NoSpace; break;
+            default:                        status=Device::Failed;  break;
+            }
         }
         if (temp) {
             // Delete the temp file...

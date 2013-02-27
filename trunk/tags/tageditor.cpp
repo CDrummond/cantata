@@ -29,6 +29,7 @@
 #include "messagebox.h"
 #include "inputdialog.h"
 #include "localize.h"
+#include "trackorganiser.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardGuiItem>
 #endif
@@ -662,9 +663,10 @@ void TagEditor::setIndex(int idx)
 
 void TagEditor::applyUpdates()
 {
-    bool updated=false;
     bool skipFirst=original.count()>1;
     QStringList failed;
+    DeviceOptions opts;
+    QString udi;
     #ifdef ENABLE_DEVICES_SUPPORT
     Device * dev=0;
     if (!deviceUdi.isEmpty()) {
@@ -672,10 +674,15 @@ void TagEditor::applyUpdates()
         if (!dev) {
             return;
         }
-    }
+        opts=dev->options();
+        udi=dev->udi();
+    } else
     #endif
+    opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
 
     int toSave=editedIndexes.count();
+    bool renameFiles=false;
+    QList<Song> updatedSongs;
 
     saving=true;
     enableButton(Ok, false);
@@ -685,11 +692,12 @@ void TagEditor::applyUpdates()
     enableButton(User2, false);
     enableButton(User3, false);
     progress->setVisible(true);
-    progress->setRange(0, toSave);
+    progress->setRange(1, toSave);
 
     int count=0;
     foreach (int idx, editedIndexes) {
         progress->setValue(progress->value()+1);
+
         if (0==count++%10) {
             QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         }
@@ -719,7 +727,10 @@ void TagEditor::applyUpdates()
                     MusicLibraryModel::self()->addSongToList(edit);
                 }
             }
-            updated=true;
+            updatedSongs.append(edit);
+            if (!renameFiles && orig.file!=opts.createFilename(edit)) {
+                renameFiles=true;
+            }
             break;
         case Tags::Update_Failed:
             failed.append(orig.file);
@@ -734,7 +745,7 @@ void TagEditor::applyUpdates()
         MessageBox::errorListEx(this, i18n("Failed to update the tags of the following tracks:"), failed);
     }
 
-    if (updated) {
+    if (updatedSongs.count()) {
         #ifdef ENABLE_DEVICES_SUPPORT
         if (!deviceUdi.isEmpty()) {
             dev->saveCache();
@@ -743,6 +754,12 @@ void TagEditor::applyUpdates()
         {
 //             MusicLibraryModel::self()->removeCache();
             emit update();
+        }
+
+        if (renameFiles &&
+            MessageBox::Yes==MessageBox::questionYesNo(this, i18n("Would you also like to rename your song files, so as to match your tags?"), i18n("Rename Files?"))) {
+            TrackOrganiser *dlg=new TrackOrganiser(parentWidget());
+            dlg->show(updatedSongs, udi);
         }
     }
 }

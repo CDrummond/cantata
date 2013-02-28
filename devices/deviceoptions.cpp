@@ -173,6 +173,7 @@ const QLatin1String DeviceOptions::constAlbumArtist("%albumartist%");
 const QLatin1String DeviceOptions::constAlbumTitle("%album%");
 const QLatin1String DeviceOptions::constTrackArtist("%artist%");
 const QLatin1String DeviceOptions::constTrackTitle("%title%");
+const QLatin1String DeviceOptions::constTrackPlainTitle("%plaintitle%");
 const QLatin1String DeviceOptions::constTrackNumber("%track%");
 const QLatin1String DeviceOptions::constCdNumber("%discnumber%");
 const QLatin1String DeviceOptions::constGenre("%genre%");
@@ -341,7 +342,8 @@ QString DeviceOptions::createFilename(const Song &s) const
     path.replace(constAlbumArtist, copy.albumArtist());
     path.replace(constAlbumTitle, copy.album);
     path.replace(constTrackArtist, copy.artist);
-    path.replace(constTrackTitle, copy.title);
+    path.replace(constTrackTitle, clean(copy.displayTitle()));
+    path.replace(constTrackPlainTitle, copy.title);
     QString track(QString::number(copy.track));
     if (copy.track<10) {
         track=QChar('0')+track;

@@ -122,6 +122,9 @@
     the same version.
 72. Optionally start track organizer after tag editor, if chaging the tags
     indicates that the files should be renamed.
+73. When renaming files based upon scheme, if artist!=albumArtist, then add
+    artist to %title% key. Extend file naming scheme to have a %plaintitle%
+    which allways corresponds to just the title.
 
 0.9.2
 -----

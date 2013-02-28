@@ -42,7 +42,7 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     connect(albumTitle, SIGNAL(clicked()), this, SLOT(insertAlbumTitle()));
     connect(trackArtist, SIGNAL(clicked()), this, SLOT(insertTrackArtist()));
     connect(trackTitle, SIGNAL(clicked()), this, SLOT(insertTrackTitle()));
-    connect(trackPlainTitle, SIGNAL(clicked()), this, SLOT(insertTrackPlainTitle()));
+    connect(trackArtistAndTitle, SIGNAL(clicked()), this, SLOT(insertTrackArtistAndTitle()));
     connect(trackNo, SIGNAL(clicked()), this, SLOT(insertTrackNumber()));
     connect(cdNo, SIGNAL(clicked()), this, SLOT(insertCdNumber()));
     connect(genre, SIGNAL(clicked()), this, SLOT(insertGenre()));
@@ -98,8 +98,8 @@ void FilenameSchemeDialog::showHelp()
                                "For compilations, this will often be <i>Various Artists.</i> </td></tr>"
                                "<tr><td>%3</td><td>%4</td><td>The name of the album.</td></tr>"
                                "<tr><td>%5</td><td>%6</td><td>The artist of each track.</td></tr>"
-                               "<tr><td>%7</td><td>%8</td><td>The track title (with <i>Track Artist</i>, if different to <i>Album Artist</i>).</td></tr>"
-                               "<tr><td>%9</td><td>%10</td><td>The track title (without <i>Track Artist</i>).</td></tr>"
+                               "<tr><td>%7</td><td>%8</td><td>The track title (without <i>Track Artist</i>).</td></tr>"
+                               "<tr><td>%9</td><td>%10</td><td>The track title (with <i>Track Artist</i>, if different to <i>Album Artist</i>).</td></tr>"
                                "<tr><td>%11</td><td>%12</td><td>The track number.</td></tr>"
                                "<tr><td>%13</td><td>%14</td><td>The album number of a multi-album album. Often compilations consist of several albums.</td></tr>"
                                "<tr><td>%15</td><td>%16</td><td>The year of the album's release.</td></tr>"
@@ -109,7 +109,7 @@ void FilenameSchemeDialog::showHelp()
                                .arg(albumTitle->text()).arg(DeviceOptions::constAlbumTitle)
                                .arg(trackArtist->text()).arg(DeviceOptions::constTrackArtist)
                                .arg(trackTitle->text()).arg(DeviceOptions::constTrackTitle)
-                               .arg(trackPlainTitle->text()).arg(DeviceOptions::constTrackPlainTitle)
+                               .arg(trackArtistAndTitle->text()).arg(DeviceOptions::constTrackArtistAndTitle)
                                .arg(trackNo->text()).arg(DeviceOptions::constTrackNumber)
                                .arg(cdNo->text()).arg(DeviceOptions::constCdNumber)
                                .arg(year->text()).arg(DeviceOptions::constYear)
@@ -142,9 +142,9 @@ void FilenameSchemeDialog::insertTrackTitle()
     insert(DeviceOptions::constTrackTitle);
 }
 
-void FilenameSchemeDialog::insertTrackPlainTitle()
+void FilenameSchemeDialog::insertTrackArtistAndTitle()
 {
-    insert(DeviceOptions::constTrackPlainTitle);
+    insert(DeviceOptions::constTrackArtistAndTitle);
 }
 
 void FilenameSchemeDialog::insertTrackNumber()

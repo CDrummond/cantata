@@ -141,7 +141,7 @@
     </widget>
    </item>
    <item row="4" column="4">
-    <widget class="QPushButton" name="trackPlainTitle">
+    <widget class="QPushButton" name="trackArtistAndTitle">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -155,7 +155,7 @@
       </size>
      </property>
      <property name="text">
-      <string>Plain Track Title</string>
+      <string>Track Title (+Artist)</string>
      </property>
     </widget>
    </item>

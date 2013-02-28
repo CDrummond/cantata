@@ -27,7 +27,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QComboBox" name="trackName"/>
+    <widget class="ComboBox" name="trackName"/>
    </item>
    <item row="1" column="0">
     <widget class="StateLabel" name="titleLabel">
@@ -150,6 +150,11 @@
    <class>CompletionCombo</class>
    <extends>QComboBox</extends>
    <header>completioncombo.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ComboBox</class>
+   <extends>QComboBox</extends>
+   <header>combobox.h</header>
   </customwidget>
   <customwidget>
    <class>SpinBox</class>

@@ -21,26 +21,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GENRECOMBO_H
-#define GENRECOMBO_H
+#ifndef COMBOBOX_H
+#define COMBOBOX_H
 
-#include "combobox.h"
-#include <QSet>
+#include <QComboBox>
 
-class GenreCombo : public ComboBox
+#ifdef Q_OS_WIN
+typedef QComboBox ComboBox;
+#else
+class ComboBox : public QComboBox
 {
-    Q_OBJECT
 public:
-    GenreCombo(QWidget *p);
-    virtual ~GenreCombo() { }
-
-    const QSet<QString> & entries() const { return genres; }
-
-public Q_SLOTS:
-    void update(const QSet<QString> &g);
+    ComboBox(QWidget *p);
+    virtual ~ComboBox() { }
 
 private:
-    QSet<QString> genres;
+    void showPopup();
+    void hidePopup();
 };
+#endif
 
 #endif

@@ -31,6 +31,7 @@
 #include <cstring>
 #include <sstream>
 #include <ios>
+#include <QPair>
 #include <QFile>
 #include <QMutex>
 #include <QMutexLocker>

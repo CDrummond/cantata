@@ -33,6 +33,7 @@
 #include "httpserver.h"
 #endif
 #include "localize.h"
+#include <QMap>
 #include <QFileInfo>
 #include <QStringList>
 

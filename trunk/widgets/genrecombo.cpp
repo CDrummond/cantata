@@ -23,10 +23,6 @@
 
 #include "genrecombo.h"
 #include "localize.h"
-#include <QLineEdit>
-#include <QAbstractItemView>
-#include <QStyle>
-#include <QStyleOption>
 #ifndef Q_OS_WIN
 #include "gtkproxystyle.h"
 #endif
@@ -35,7 +31,7 @@
 static const int constPopupItemCount=32;
 
 GenreCombo::GenreCombo(QWidget *p)
-     : QComboBox(p)
+     : ComboBox(p)
 {
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     update(QSet<QString>());
@@ -43,67 +39,6 @@ GenreCombo::GenreCombo(QWidget *p)
     #ifndef Q_OS_WIN
     setProperty(GtkProxyStyle::constSlimComboProperty, true);
     #endif
-}
-
-void GenreCombo::showPopup()
-{
-    QStyleOptionComboBox opt;
-    opt.init(this);
-    bool usingPopup=style()->styleHint(QStyle::SH_ComboBox_Popup, &opt);
-
-    // Hacky, but if we set the combobox as editable - the style gives the
-    // popup a scrollbar. This is more convenient if we have lots of items!
-    if (usingPopup && count()>constPopupItemCount) {
-        setMaxVisibleItems(constPopupItemCount);
-        setEditable(true);
-        lineEdit()->setReadOnly(true);
-    }
-    QComboBox::showPopup();
-
-    // Also, if the size of the popup is more than required for 32 items, then
-    // restrict its height...
-    if (usingPopup && parentWidget() && view()->parentWidget() && count()>constPopupItemCount) {
-        int maxHeight=constPopupItemCount*view()->sizeHintForRow(0);
-        QRect geo(view()->parentWidget()->geometry());
-        QRect r(view()->parentWidget()->rect());
-        if (geo.height()>maxHeight) {
-            geo=QRect(geo.x(), geo.y()+(geo.height()-maxHeight), geo.width(), maxHeight);
-            r=QRect(r.x(), r.y()+(r.height()-maxHeight), r.width(), maxHeight);
-        }
-        QPoint popupBot=view()->parentWidget()->mapToGlobal(r.bottomLeft());
-        QPoint bot=mapToGlobal(rect().bottomLeft());
-
-        if (popupBot.y()<bot.y()) {
-            geo=QRect(geo.x(), geo.y()+(bot.y()-popupBot.y()), geo.width(), geo.height());
-        } else {
-            QPoint popupTop=view()->parentWidget()->mapToGlobal(r.topLeft());
-            QPoint top=mapToGlobal(rect().topLeft());
-            if (popupTop.y()>top.y()) {
-                geo=QRect(geo.x(), geo.y()-(popupTop.y()-top.y()), geo.width(), geo.height());
-            }
-        }
-        view()->parentWidget()->setGeometry(geo);
-
-        // Hide scrollers - these look ugly...
-        foreach (QObject *c, view()->parentWidget()->children()) {
-            if (0==qstrcmp("QComboBoxPrivateScroller", c->metaObject()->className())) {
-                ((QWidget *)c)->setMaximumHeight(0);
-            }
-        }
-    }
-}
-
-void GenreCombo::hidePopup()
-{
-    // Unset editable...
-    if (count()>constPopupItemCount) {
-        QStyleOptionComboBox opt;
-        opt.init(this);
-        if (style()->styleHint(QStyle::SH_ComboBox_Popup, &opt)) {
-            setEditable(false);
-        }
-    }
-    QComboBox::hidePopup();
 }
 
 void GenreCombo::update(const QSet<QString> &g)

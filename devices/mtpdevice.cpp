@@ -267,7 +267,7 @@ void MtpConnection::updateLibrary()
     #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
     QMap<QString, MtpAlbum> albums;
     QMap<uint32_t, MtpFolder> folders;
-    bool getAlbumArtistFromPath=dev->options().scheme==DeviceOptions().scheme;
+    bool getAlbumArtistFromPath=dev->options().scheme.startsWith(DeviceOptions::constAlbumArtist+QChar('/')+DeviceOptions::constAlbumTitle+QChar('/'));
     QString va=i18n("Various Artists");
     #endif
 
@@ -294,7 +294,7 @@ void MtpConnection::updateLibrary()
         #ifdef MTP_FAKE_ALBUMARTIST_SUPPORT
         if (getAlbumArtistFromPath) {
             QStringList folderParts=(*it).path.split('/', QString::SkipEmptyParts);
-            if (folderParts.length()==3) {
+            if (folderParts.length()>=3) {
                 MtpFolder folder(folderParts.at(1), folderParts.at(2));
                 folders.insert(track->parent_id, folder);
                 if (folder.album==s.album && (folder.artist==QLatin1String("Various Artists") || folder.artist==va)) {

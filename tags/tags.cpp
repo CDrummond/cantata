@@ -1034,7 +1034,7 @@ Update updateArtistAndTitle(const QString &fileName, const Song &song)
         TagLib::ID3v2::Tag *v2=mpeg->ID3v2Tag(false);
         bool haveV1=v1 && (!v1->title().isEmpty() || !v1->artist().isEmpty() || !v1->album().isEmpty());
         bool isID3v24=v2 && isId3V24(v2->header());
-        return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, isID3v24 ? 4 : 3) ? Update_Modified : Update_Failed;
+        return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, true, isID3v24 ? 4 : 3) ? Update_Modified : Update_Failed;
     }
     return fileref.file()->save() ? Update_Modified : Update_Failed;
 }

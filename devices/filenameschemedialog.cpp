@@ -42,6 +42,7 @@ FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
     connect(albumTitle, SIGNAL(clicked()), this, SLOT(insertAlbumTitle()));
     connect(trackArtist, SIGNAL(clicked()), this, SLOT(insertTrackArtist()));
     connect(trackTitle, SIGNAL(clicked()), this, SLOT(insertTrackTitle()));
+    connect(trackPlainTitle, SIGNAL(clicked()), this, SLOT(insertTrackPlainTitle()));
     connect(trackNo, SIGNAL(clicked()), this, SLOT(insertTrackNumber()));
     connect(cdNo, SIGNAL(clicked()), this, SLOT(insertCdNumber()));
     connect(genre, SIGNAL(clicked()), this, SLOT(insertGenre()));
@@ -92,20 +93,27 @@ void FilenameSchemeDialog::showHelp()
     MessageBox::information(this,
                           i18n("<p>The following variables will be replaced with their corresponding meaning for each track name.</p>"
                                "<p><table border=\"1\">"
-                               "<tr><th><em>Variable</em></th><th><em>Description</em></th></tr>"
-                               "<tr><td>%1</td><td>The artist of the album. For most albums, this will be the same as the <i>Track Artist.</i> "
+                               "<tr><th><em>Button</em></th><th><em>Variable</em></th><th><em>Description</em></th></tr>"
+                               "<tr><td>%1</td><td>%2</td><td>The artist of the album. For most albums, this will be the same as the <i>Track Artist.</i> "
                                "For compilations, this will often be <i>Various Artists.</i> </td></tr>"
-                               "<tr><td>%2</td><td>The name of the album.</td></tr>"
-                               "<tr><td>%3</td><td>The artist of each track.</td></tr>"
-                               "<tr><td>%4</td><td>The track title.</td></tr>"
-                               "<tr><td>%5</td><td>The track number.</td></tr>"
-                               "<tr><td>%6</td><td>The album number of a multi-album album. Often compilations consist of several albums.</td></tr>"
-                               "<tr><td>%7</td><td>The year of the album's release.</td></tr>"
-                               "<tr><td>%8</td><td>The genre of the album.</td></tr>"
-                               "</table></p>").arg(DeviceOptions::constAlbumArtist).arg(DeviceOptions::constAlbumTitle)
-                               .arg(DeviceOptions::constTrackArtist).arg(DeviceOptions::constTrackTitle)
-                               .arg(DeviceOptions::constTrackNumber).arg(DeviceOptions::constCdNumber).arg(DeviceOptions::constYear)
-                               .arg(DeviceOptions::constGenre));
+                               "<tr><td>%3</td><td>%4</td><td>The name of the album.</td></tr>"
+                               "<tr><td>%5</td><td>%6</td><td>The artist of each track.</td></tr>"
+                               "<tr><td>%7</td><td>%8</td><td>The track title (with <i>Track Artist</i>, if different to <i>Album Artist</i>).</td></tr>"
+                               "<tr><td>%9</td><td>%10</td><td>The track title (without <i>Track Artist</i>).</td></tr>"
+                               "<tr><td>%11</td><td>%12</td><td>The track number.</td></tr>"
+                               "<tr><td>%13</td><td>%14</td><td>The album number of a multi-album album. Often compilations consist of several albums.</td></tr>"
+                               "<tr><td>%15</td><td>%16</td><td>The year of the album's release.</td></tr>"
+                               "<tr><td>%17</td><td>%18</td><td>The genre of the album.</td></tr>"
+                               "</table></p>")
+                               .arg(albumArtist->text()).arg(DeviceOptions::constAlbumArtist)
+                               .arg(albumTitle->text()).arg(DeviceOptions::constAlbumTitle)
+                               .arg(trackArtist->text()).arg(DeviceOptions::constTrackArtist)
+                               .arg(trackTitle->text()).arg(DeviceOptions::constTrackTitle)
+                               .arg(trackPlainTitle->text()).arg(DeviceOptions::constTrackPlainTitle)
+                               .arg(trackNo->text()).arg(DeviceOptions::constTrackNumber)
+                               .arg(cdNo->text()).arg(DeviceOptions::constCdNumber)
+                               .arg(year->text()).arg(DeviceOptions::constYear)
+                               .arg(genre->text()).arg(DeviceOptions::constGenre));
 }
 
 void FilenameSchemeDialog::enableOkButton()
@@ -132,6 +140,11 @@ void FilenameSchemeDialog::insertTrackArtist()
 void FilenameSchemeDialog::insertTrackTitle()
 {
     insert(DeviceOptions::constTrackTitle);
+}
+
+void FilenameSchemeDialog::insertTrackPlainTitle()
+{
+    insert(DeviceOptions::constTrackPlainTitle);
 }
 
 void FilenameSchemeDialog::insertTrackNumber()

@@ -47,6 +47,7 @@ private Q_SLOTS:
     void insertAlbumTitle();
     void insertTrackArtist();
     void insertTrackTitle();
+    void insertTrackPlainTitle();
     void insertTrackNumber();
     void insertCdNumber();
     void insertGenre();

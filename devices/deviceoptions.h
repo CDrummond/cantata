@@ -46,7 +46,7 @@ struct DeviceOptions {
     static const QLatin1String constAlbumTitle;
     static const QLatin1String constTrackArtist;
     static const QLatin1String constTrackTitle;
-    static const QLatin1String constTrackPlainTitle;
+    static const QLatin1String constTrackArtistAndTitle;
     static const QLatin1String constTrackNumber;
     static const QLatin1String constCdNumber;
     static const QLatin1String constGenre;

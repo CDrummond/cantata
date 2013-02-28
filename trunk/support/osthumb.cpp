@@ -13,7 +13,7 @@ static int thumbHeight=72;
 #define THUMB_WIDTH thumbWidth
 #define THUMB_HEIGHT thumbHeight
 #define OUTLINE_THICKNESS     2
-#define ANIMATION_TIMEOUT    20
+#define ANIMATION_TIMEOUT    10
 #define HIDE_TIMEOUT        100
 #define ANIMATION_ALPHA_INC  15
 

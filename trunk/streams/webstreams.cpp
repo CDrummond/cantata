@@ -147,9 +147,6 @@ static QString fixSingleGenre(const QString &g)
         if (genre==QLatin1String("Rock") || genre.startsWith(QLatin1String("Rock "))) {
             return QLatin1String("Rock");
         }
-        if (genre==QLatin1String("Electronic") || genre==QLatin1String("Electronica") || genre==QLatin1String("Electric")) {
-            return QLatin1String("Electronic");
-        }
         if (genre==QLatin1String("Easy") || genre==QLatin1String("Easy Listening")) {
             return QLatin1String("Easy Listening");
         }

@@ -152,9 +152,9 @@ QVariant Dynamic::data(const QModelIndex &index, int role) const
         return QTP_RULES_STR(entryList.at(index.row()).rules.count());
         #endif
     }
-    case ItemView::Role_Action1: {
+    case ItemView::Role_Actions: {
         QVariant v;
-        v.setValue<QPointer<Action> >(IS_ACTIVE(entryList.at(index.row()).name) ? stopAction : startAction);
+        v.setValue<QList<QPointer<Action> > >(QList<QPointer<Action> >() << (IS_ACTIVE(entryList.at(index.row()).name) ? stopAction : startAction));
         return v;
     }
     default:

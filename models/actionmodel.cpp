@@ -30,15 +30,8 @@ QVariant ActionModel::data(const QModelIndex &index, int role) const
 {
     QVariant v;
     Q_UNUSED(index)
-    switch(role) {
-    case ItemView::Role_Action1:
-        v.setValue<QPointer<Action> >(StdActions::self()->replacePlayQueueAction);
-        break;
-    case ItemView::Role_Action2:
-        v.setValue<QPointer<Action> >(StdActions::self()->addToPlayQueueAction);
-        break;
-    default:
-        break;
+    if (ItemView::Role_Actions==role) {
+        v.setValue<QList< QPointer<Action> > >(QList< QPointer<Action> >() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
     }
     return v;
 }

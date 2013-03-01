@@ -257,9 +257,9 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             #else
             return QTP_STREAMS_STR(cat->streams.count());
             #endif
-        case ItemView::Role_Action1: {
+        case ItemView::Role_Actions: {
             QVariant v;
-            v.setValue<QPointer<Action> >(StdActions::self()->replacePlayQueueAction);
+            v.setValue<QList<QPointer<Action> > >(QList<QPointer<Action> >() << StdActions::self()->replacePlayQueueAction);
             return v;
         }
         }
@@ -271,9 +271,9 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:    return stream->url;
         case Qt::DecorationRole: return stream->icon.isEmpty() ? Icons::radioStreamIcon
                                                                : stream->icon.startsWith('/') ? QIcon(stream->icon) : Icon(stream->icon);
-        case ItemView::Role_Action1: {
+        case ItemView::Role_Actions: {
             QVariant v;
-            v.setValue<QPointer<Action> >(StdActions::self()->replacePlayQueueAction);
+            v.setValue<QList<QPointer<Action> > >(QList<QPointer<Action> >() << StdActions::self()->replacePlayQueueAction);
             return v;
         }
         }

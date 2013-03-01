@@ -29,15 +29,30 @@
 #ifdef Q_OS_WIN
 typedef QComboBox ComboBox;
 #else
-class ComboBox : public QComboBox
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KComboBox>
+#endif
+class ComboBox
+    #ifdef ENABLE_KDE_SUPPORT
+    : public KComboBox
+    #else
+    : public QComboBox
+    #endif
 {
 public:
     ComboBox(QWidget *p);
     virtual ~ComboBox() { }
 
+    #ifdef ENABLE_KDE_SUPPORT
+    void setEditable(bool editable);
+    #endif
+
 private:
     void showPopup();
     void hidePopup();
+
+private:
+    bool toggleState;
 };
 #endif
 

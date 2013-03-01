@@ -267,31 +267,16 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
             return static_cast<OnlineService *>(item)->statusMessage();
         }
         return QVariant();
-    case ItemView::Role_Action1: {
+    case ItemView::Role_Actions: {
         QVariant v;
         if (MusicLibraryItem::Type_Root==item->itemType()) {
-            v.setValue<QPointer<Action> >(configureAction);
+            v.setValue<QList< QPointer<Action> > >(QList< QPointer<Action> >() << configureAction << refreshAction
+                                                                               << (static_cast<OnlineService *>(item)->isLoaded()  ? disconnectAction : connectAction));
         } else {
-            v.setValue<QPointer<Action> >(StdActions::self()->replacePlayQueueAction);
+            v.setValue<QList< QPointer<Action> > >(QList< QPointer<Action> >() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
         }
         return v;
     }
-    case ItemView::Role_Action2: {
-        QVariant v;
-        if (MusicLibraryItem::Type_Root==item->itemType()) {
-            v.setValue<QPointer<Action> >(refreshAction);
-        } else {
-            v.setValue<QPointer<Action> >(StdActions::self()->addToPlayQueueAction);
-        }
-        return v;
-    }
-    case ItemView::Role_Action3:
-        if (MusicLibraryItem::Type_Root==item->itemType()) {
-            QVariant v;
-            v.setValue<QPointer<Action> >(static_cast<OnlineService *>(item)->isLoaded()  ? disconnectAction : connectAction);
-            return v;
-        }
-        break;
     default:
         return QVariant();
     }

@@ -131,42 +131,18 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
     }
 
     QRect actionRect=calcActionRect(rtl, actionPos, r);
-    QPointer<Action> a1=index.data(ItemView::Role_Action1).value< QPointer<Action> >();
-    QPointer<Action> a2=index.data(ItemView::Role_Action2).value< QPointer<Action> >();
-    QPointer<Action> a3=index.data(ItemView::Role_Action3).value< QPointer<Action> >();
+    QList<QPointer<Action> > actions=index.data(ItemView::Role_Actions).value<QList<QPointer<Action> > >();
 
-    if (a1) {
-        QPixmap pix=a1->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
+    foreach (const QPointer<Action> &a, actions) {
+        QPixmap pix=a->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
         if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
             drawBgnd(painter, actionRect);
             painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
                                 actionRect.y()+(actionRect.height()-pix.height())/2, pix);
         }
+        adjustActionRect(rtl, actionPos, actionRect);
     }
 
-    if (a2) {
-        if (a1) {
-            adjustActionRect(rtl, actionPos, actionRect);
-        }
-        QPixmap pix=a2->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-        if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-            drawBgnd(painter, actionRect);
-            painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-        }
-    }
-
-    if (a3) {
-        if (a1 || a2) {
-            adjustActionRect(rtl, actionPos, actionRect);
-        }
-        QPixmap pix=a3->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
-        if (!pix.isNull() && actionRect.width()>=pix.width()/* && r.x()>=0 && r.y()>=0*/) {
-            drawBgnd(painter, actionRect);
-            painter->drawPixmap(actionRect.x()+(actionRect.width()-pix.width())/2,
-                                actionRect.y()+(actionRect.height()-pix.height())/2, pix);
-        }
-    }
     if (!mouseOver) {
         painter->setOpacity(opacity);
     }
@@ -210,31 +186,15 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
     QRect actionRect=calcActionRect(rtl, actionPos, rect);
     QRect actionRect2(actionRect);
     ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect2);
+    QList<QPointer<Action> > actions=index.data(ItemView::Role_Actions).value<QList<QPointer<Action> > >();
 
-    actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
-    QPointer<Action> a1=index.data(ItemView::Role_Action1).value< QPointer<Action> >();
-    if (a1 && actionRect.contains(QCursor::pos())) {
-        return a1;
-    }
+    foreach (const QPointer<Action> &a, actions) {
+        actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
+        if (actionRect.contains(QCursor::pos())) {
+            return a;
+        }
 
-    if (a1) {
         ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect);
-    }
-
-    actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
-    QPointer<Action> a2=index.data(ItemView::Role_Action2).value< QPointer<Action> >();
-    if (a2 && actionRect.contains(QCursor::pos())) {
-        return a2;
-    }
-
-    if (a1 || a2) {
-        ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect);
-    }
-
-    actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);
-    QPointer<Action> a3=index.data(ItemView::Role_Action3).value< QPointer<Action> >();
-    if (a3 && actionRect.contains(QCursor::pos())) {
-        return a3;
     }
 
     return 0;

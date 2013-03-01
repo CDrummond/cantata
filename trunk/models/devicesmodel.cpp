@@ -299,24 +299,11 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             return static_cast<Device *>(item)->capacityString();
         }
         return QVariant();
-    case ItemView::Role_Action1:
+    case ItemView::Role_Actions:
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             QVariant v;
-            v.setValue<QPointer<Action> >(configureAction);
-            return v;
-        }
-        break;
-    case ItemView::Role_Action2:
-        if (MusicLibraryItem::Type_Root==item->itemType()) {
-            QVariant v;
-            v.setValue<QPointer<Action> >(refreshAction);
-            return v;
-        }
-        break;
-    case ItemView::Role_Action3:
-        if (MusicLibraryItem::Type_Root==item->itemType() && static_cast<Device *>(item)->supportsDisconnect()) {
-            QVariant v;
-            v.setValue<QPointer<Action> >(static_cast<Device *>(item)->isConnected() ? disconnectAction : connectAction);
+            v.setValue<QList<QPointer<Action> > >(QList<QPointer<Action> >() << configureAction << refreshAction
+                                                                             << (static_cast<Device *>(item)->isConnected() ? disconnectAction : connectAction));
             return v;
         }
         break;

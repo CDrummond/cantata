@@ -73,9 +73,7 @@ public:
         Role_Capacity,
         Role_CapacityText,
         Role_Search,
-        Role_Action1,
-        Role_Action2,
-        Role_Action3
+        Role_Actions
     };
 
     static Mode toMode(const QString &str);

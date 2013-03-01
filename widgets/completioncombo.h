@@ -24,74 +24,92 @@
 #ifndef COMPLETION_COMBO_H
 #define COMPLETION_COMBO_H
 
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KComboBox>
-#include <KDE/KLineEdit>
-#include <KDE/KGlobalSettings>
+// #ifdef ENABLE_KDE_SUPPORT
+// #include <KDE/KComboBox>
+// #include <KDE/KLineEdit>
+// #include <KDE/KGlobalSettings>
+// #include <QAbstractItemView>
+// 
+// class CompletionCombo : public KComboBox
+// {
+// public:
+//     CompletionCombo(QWidget *p)
+//         : KComboBox(p) {
+//         completionObject()->setIgnoreCase(true);
+//         setCompletionMode(KGlobalSettings::CompletionPopup);
+//         setEditable(true);
+//         setAutoCompletion(false);
+//         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+//         setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+//         view()->setTextElideMode(Qt::ElideRight);
+//     }
+// 
+//     void setEnabled(bool e) {
+//         KComboBox::setEnabled(e);
+//         qobject_cast<KLineEdit*>(lineEdit())->setClearButtonShown(e);
+//     }
+// 
+//     void insertItems(int index, const QStringList &items) {
+//         KComboBox::insertItems(index, items);
+//         completionObject()->setItems(items);
+//     }
+// 
+//     void setText(const QString &text) {
+//         qobject_cast<KLineEdit*>(lineEdit())->setText(text);
+//     }
+// 
+//     QString text() const {
+//         return qobject_cast<KLineEdit*>(lineEdit())->text();
+//     }
+// 
+//     void setPlaceholderText(const QString &text) {
+//         qobject_cast<KLineEdit*>(lineEdit())->setPlaceholderText(text);
+//     }
+// };
+// #else
+#include "combobox.h"
+#include "lineedit.h"
 #include <QAbstractItemView>
 
-class CompletionCombo : public KComboBox
+class CompletionCombo : public ComboBox
 {
 public:
     CompletionCombo(QWidget *p)
-        : KComboBox(p) {
+        : ComboBox(p) {
+        #ifdef ENABLE_KDE_SUPPORT
         completionObject()->setIgnoreCase(true);
         setCompletionMode(KGlobalSettings::CompletionPopup);
-        setEditable(true);
         setAutoCompletion(false);
+        #endif
+        setEditable(true);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
         view()->setTextElideMode(Qt::ElideRight);
     }
 
+    #ifdef ENABLE_KDE_SUPPORT
     void setEnabled(bool e) {
-        KComboBox::setEnabled(e);
+        ComboBox::setEnabled(e);
         qobject_cast<KLineEdit*>(lineEdit())->setClearButtonShown(e);
     }
 
     void insertItems(int index, const QStringList &items) {
-        KComboBox::insertItems(index, items);
+        ComboBox::insertItems(index, items);
         completionObject()->setItems(items);
     }
-
+    #endif
+    
     void setText(const QString &text) {
-        qobject_cast<KLineEdit*>(lineEdit())->setText(text);
+        if (lineEdit()) qobject_cast<QLineEdit*>(lineEdit())->setText(text);
     }
 
     QString text() const {
-        return qobject_cast<KLineEdit*>(lineEdit())->text();
+        return lineEdit() ? qobject_cast<QLineEdit*>(lineEdit())->text() : QString();
     }
 
     void setPlaceholderText(const QString &text) {
-        qobject_cast<KLineEdit*>(lineEdit())->setPlaceholderText(text);
+        if (lineEdit()) qobject_cast<QLineEdit*>(lineEdit())->setPlaceholderText(text);
     }
 };
-#else
-#include <QComboBox>
-#include <QLineEdit>
-
-class CompletionCombo : public QComboBox
-{
-public:
-    CompletionCombo(QWidget *p)
-        : QComboBox(p) {
-        setEditable(true);
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
-    }
-
-    void setText(const QString &text) {
-        qobject_cast<QLineEdit*>(lineEdit())->setText(text);
-    }
-
-    QString text() const {
-        return qobject_cast<QLineEdit*>(lineEdit())->text();
-    }
-
-    void setPlaceholderText(const QString &text) {
-        qobject_cast<QLineEdit*>(lineEdit())->setPlaceholderText(text);
-    }
-};
-#endif
 
 #endif

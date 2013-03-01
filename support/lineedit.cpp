@@ -55,9 +55,9 @@ LineEdit::LineEdit(QWidget *parent)
     connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateCloseButton(const QString&)));
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     setStyleSheet(QString(Qt::RightToLeft==layoutDirection() ? "QLineEdit { padding-left: %1px; } " : "QLineEdit { padding-right: %1px; } ").arg(clearButton->sizeHint().width() + frameWidth + 1));
-    QSize msz = minimumSizeHint();
-    setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
-                   qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
+//     QSize msz = minimumSizeHint();
+//     setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
+//                    qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
 }
 
 void LineEdit::setReadOnly(bool e)

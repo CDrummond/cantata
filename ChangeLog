@@ -72,8 +72,7 @@
 43. If fetching artist images for a song, and the song-folder heirarchy is 2
     levels (artist/album/), then save image as artist.jpg/png within the artist
     folder. (Only if 'save downloaded covers in music folder' is enabled)
-44. Work-around issues with some styles (e.g. QGtkStyle) and a large number of
-    items in the genre combos.
+44. Work-around QGtkStyle issues with large entries in comboboxes.
 45. Remove 'Auto' cover size setting. Now cover sizes are based upon setting
     and font size.
 46. Initial support for Qt5. Currently crashes if using WebKit - this seems to

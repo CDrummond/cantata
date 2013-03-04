@@ -83,6 +83,7 @@ private:
 Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
     void error(const QString &text);
+    void updated(const QModelIndex &idx);
 
 private:
     QList<OnlineService *> services;

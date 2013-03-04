@@ -867,6 +867,13 @@ void ItemView::backActivated()
     }
 }
 
+void ItemView::setExpanded(const QModelIndex &idx, bool exp)
+{
+    if (Mode_SimpleTree==mode || Mode_DetailedTree==mode) {
+        treeView->setExpanded(idx, exp);
+    }
+}
+
 QAction * ItemView::getAction(const QModelIndex &index)
 {
     QAbstractItemDelegate *abs=view()->itemDelegate();

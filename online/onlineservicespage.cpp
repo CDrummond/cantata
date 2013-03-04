@@ -64,6 +64,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(OnlineServicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
+    connect(OnlineServicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
@@ -72,7 +73,6 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(removeAction, SIGNAL(triggered()), this, SLOT(removeService()));
     connect(OnlineServicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshService()));
     connect(OnlineServicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleService()));
-    connect(OnlineServicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleService()));
     connect(jamendoAction, SIGNAL(triggered()), this, SLOT(addJamendo()));
     connect(magnatuneAction, SIGNAL(triggered()), this, SLOT(addMagnatune()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));
@@ -399,7 +399,6 @@ void OnlineServicesPage::download()
 
     if (!songs.isEmpty()) {
         QModelIndex idx = view->selectedIndexes().at(0);
-
         MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
 
         while (item && item->parentItem()) {
@@ -409,4 +408,9 @@ void OnlineServicesPage::download()
             emit addToDevice(OnlineServicesModel::constUdiPrefix+item->data(), QString(), songs);
         }
     }
+}
+
+void OnlineServicesPage::updated(const QModelIndex &idx)
+{
+    view->setExpanded(proxy.mapFromSource(idx));
 }

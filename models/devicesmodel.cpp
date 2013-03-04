@@ -433,6 +433,7 @@ void DevicesModel::deviceUpdating(const QString &udi, bool state)
             QModelIndex modelIndex=createIndex(idx, 0, dev);
             emit dataChanged(modelIndex, modelIndex);
             updateGenres();
+            emit updated(modelIndex);
         }
     }
 }

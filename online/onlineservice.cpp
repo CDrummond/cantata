@@ -308,6 +308,7 @@ void OnlineService::loaderFinished()
     stopLoader();
     applyUpdate();
     model->updateGenres();
+    emit model->updated(model->createIndex(model->services.indexOf(this), 0, this));
 }
 
 void OnlineService::setStatusMessage(const QString &msg)

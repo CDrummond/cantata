@@ -62,6 +62,7 @@ public Q_SLOTS:
     void toggleDevice();
     void sync();
     void updateGenres(const QModelIndex &);
+    void updated(const QModelIndex &idx);
 
 private:
     Device * activeFsDevice() const;

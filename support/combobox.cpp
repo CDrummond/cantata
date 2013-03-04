@@ -26,10 +26,12 @@
 #include <QAbstractItemView>
 #include <QStyle>
 #include <QStyleOption>
+#include <QDesktopWidget>
+#include <QApplication>
 #include "gtkstyle.h"
 
 // Max number of items before we try to force a scrollbar in popup menu...
-static const int constPopupItemCount=32;
+static int maxPopupItemCount=-1;
 
 ComboBox::ComboBox(QWidget *p)
     #ifdef ENABLE_KDE_SUPPORT
@@ -39,6 +41,13 @@ ComboBox::ComboBox(QWidget *p)
     #endif
      , toggleState(false)
 {
+    if (-1==maxPopupItemCount) {
+        if (QApplication::desktop()) {
+            maxPopupItemCount=((QApplication::desktop()->height()/(QApplication::fontMetrics().height()*1.5))*0.75)+0.5;
+        } else {
+            maxPopupItemCount=32;
+        }
+    }
 }
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -61,17 +70,17 @@ void ComboBox::showPopup()
         // Hacky, but if we set the combobox as editable - the style gives the
         // popup a scrollbar. This is more convenient if we have lots of items!
         if (toggleState) {
-            setMaxVisibleItems(constPopupItemCount);
+            setMaxVisibleItems(maxPopupItemCount);
             setEditable(true);
             lineEdit()->setReadOnly(true);
         }
     }
     QComboBox::showPopup();
 
-    if (GtkStyle::isActive() && parentWidget() && view()->parentWidget() && count()>constPopupItemCount) {
+    if (GtkStyle::isActive() && parentWidget() && view()->parentWidget() && count()>maxPopupItemCount) {
         // Also, if the size of the popup is more than required for 32 items, then
         // restrict its height...
-        int maxHeight=constPopupItemCount*view()->sizeHintForRow(0);
+        int maxHeight=maxPopupItemCount*view()->sizeHintForRow(0);
         QRect geo(view()->parentWidget()->geometry());
         QRect r(view()->parentWidget()->rect());
         if (geo.height()>maxHeight) {

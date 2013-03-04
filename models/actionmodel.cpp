@@ -24,14 +24,13 @@
 #include "actionmodel.h"
 #include "stdactions.h"
 #include "itemview.h"
-#include <QDebug>
 
 QVariant ActionModel::data(const QModelIndex &index, int role) const
 {
     QVariant v;
     Q_UNUSED(index)
     if (ItemView::Role_Actions==role) {
-        v.setValue<QList< QPointer<Action> > >(QList< QPointer<Action> >() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
+        v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
     }
     return v;
 }

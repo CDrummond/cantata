@@ -259,7 +259,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             #endif
         case ItemView::Role_Actions: {
             QVariant v;
-            v.setValue<QList<QPointer<Action> > >(QList<QPointer<Action> >() << StdActions::self()->replacePlayQueueAction);
+            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
             return v;
         }
         }
@@ -273,7 +273,7 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
                                                                : stream->icon.startsWith('/') ? QIcon(stream->icon) : Icon(stream->icon);
         case ItemView::Role_Actions: {
             QVariant v;
-            v.setValue<QList<QPointer<Action> > >(QList<QPointer<Action> >() << StdActions::self()->replacePlayQueueAction);
+            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
             return v;
         }
         }

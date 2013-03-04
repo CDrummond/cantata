@@ -131,7 +131,7 @@ void ActionItemDelegate::drawIcons(QPainter *painter, const QRect &r, bool mouse
     }
 
     QRect actionRect=calcActionRect(rtl, actionPos, r);
-    QList<QPointer<Action> > actions=index.data(ItemView::Role_Actions).value<QList<QPointer<Action> > >();
+    QList<Action *> actions=index.data(ItemView::Role_Actions).value<QList<Action *> >();
 
     foreach (const QPointer<Action> &a, actions) {
         QPixmap pix=a->icon().pixmap(QSize(constActionIconSize, constActionIconSize));
@@ -186,7 +186,7 @@ QAction * ActionItemDelegate::getAction(const QModelIndex &index) const
     QRect actionRect=calcActionRect(rtl, actionPos, rect);
     QRect actionRect2(actionRect);
     ActionItemDelegate::adjustActionRect(rtl, actionPos, actionRect2);
-    QList<QPointer<Action> > actions=index.data(ItemView::Role_Actions).value<QList<QPointer<Action> > >();
+    QList<Action *> actions=index.data(ItemView::Role_Actions).value<QList<Action *> >();
 
     foreach (const QPointer<Action> &a, actions) {
         actionRect=actionPos ? actionRect.adjusted(0, -2, 0, 2) : actionRect.adjusted(-2, 0, 2, 0);

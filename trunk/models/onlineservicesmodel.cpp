@@ -270,10 +270,10 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
     case ItemView::Role_Actions: {
         QVariant v;
         if (MusicLibraryItem::Type_Root==item->itemType()) {
-            v.setValue<QList< QPointer<Action> > >(QList< QPointer<Action> >() << configureAction << refreshAction
-                                                                               << (static_cast<OnlineService *>(item)->isLoaded()  ? disconnectAction : connectAction));
+            v.setValue<QList<Action *> >(QList<Action *>() << configureAction << refreshAction
+                                                           << (static_cast<OnlineService *>(item)->isLoaded()  ? disconnectAction : connectAction));
         } else {
-            v.setValue<QList< QPointer<Action> > >(QList< QPointer<Action> >() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
+            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
         }
         return v;
     }

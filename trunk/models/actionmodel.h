@@ -26,7 +26,6 @@
 
 #include <QAbstractItemModel>
 #include <QMetaType>
-#include <QPointer>
 #include "action.h"
 
 class ActionModel : public QAbstractItemModel
@@ -40,6 +39,6 @@ public:
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 };
 
-Q_DECLARE_METATYPE(QList<QPointer<Action> >)
+Q_DECLARE_METATYPE(QList<Action *>)
 
 #endif

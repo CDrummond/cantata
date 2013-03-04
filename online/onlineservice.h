@@ -133,9 +133,6 @@ private:
     void setStatusMessage(const QString &msg);
 
 Q_SIGNALS:
-    void connected(const QString &udi);
-    void disconnected(const QString &udi);
-    void updating(const QString &udi, bool s);
     void actionStatus(int status, bool copiedCover=false);
     void error(const QString &);
 

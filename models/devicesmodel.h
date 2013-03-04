@@ -99,6 +99,7 @@ Q_SIGNALS:
     void updateGenres(const QSet<QString> &genres);
     void addToDevice(const QString &udi);
     void error(const QString &text);
+    void updated(const QModelIndex &idx);
 
 private:
     QList<Device *> devices;

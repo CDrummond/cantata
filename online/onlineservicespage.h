@@ -58,6 +58,7 @@ public Q_SLOTS:
     void removeService();
     void toggleService();
     void updateGenres(const QModelIndex &);
+    void updated(const QModelIndex &idx);
     void addJamendo();
     void addMagnatune();
     void download();

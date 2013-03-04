@@ -87,6 +87,7 @@ DevicesPage::DevicesPage(QWidget *p)
     view->addAction(StdActions::self()->deleteSongsAction);
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
+    connect(DevicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));
     connect(view, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(itemDoubleClicked(const QModelIndex &)));
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(itemsSelected(bool)), SLOT(controlActions()));
@@ -507,4 +508,9 @@ void DevicesPage::updateGenres(const QModelIndex &idx)
         }
     }
     genreCombo->update(DevicesModel::self()->genres());
+}
+
+void DevicesPage::updated(const QModelIndex &idx)
+{
+    view->setExpanded(proxy.mapFromSource(idx));
 }

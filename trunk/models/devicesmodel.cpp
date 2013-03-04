@@ -302,8 +302,12 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     case ItemView::Role_Actions:
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             QVariant v;
-            v.setValue<QList<QPointer<Action> > >(QList<QPointer<Action> >() << configureAction << refreshAction
-                                                                             << (static_cast<Device *>(item)->isConnected() ? disconnectAction : connectAction));
+            QList<QPointer<Action> > actions;
+            actions << configureAction << refreshAction;
+            if (static_cast<Device *>(item)->supportsDisconnect()) {
+                actions << (static_cast<Device *>(item)->isConnected() ? disconnectAction : connectAction);
+            }
+            v.setValue<QList<QPointer<Action> > >(actions);
             return v;
         }
         break;

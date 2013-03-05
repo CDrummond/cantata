@@ -42,21 +42,22 @@
 const char * GtkProxyStyle::constSlimComboProperty="gtkslim";
 static const char * constIncProp="inc";
 
-static bool revertQGtkStyleOverlayMod()
-{
-    // TODO: This is not working. ubuntu_gtk_set_use_overlay_scrollbar is found, and called.
-    // But, Gtk filechooser STILL has non-overlay scrollbars!!!
-    typedef void (*SetUseOsFn) (int);
-    // enforce the "0" suffix, so we'll open libgtk-x11-2.0.so.0
-    QLibrary libgtk(QLatin1String("gtk-x11-2.0"), 0, 0);
-    SetUseOsFn setUseOsFn = (SetUseOsFn)libgtk.resolve("ubuntu_gtk_set_use_overlay_scrollbar");
+//static bool revertQGtkStyleOverlayMod()
+//{
+//    // TODO: This is not working. ubuntu_gtk_set_use_overlay_scrollbar is found, and called.
+//    // But, Gtk filechooser STILL has non-overlay scrollbars!!!
+//    typedef void (*SetUseOsFn) (int);
+//    // enforce the "0" suffix, so we'll open libgtk-x11-2.0.so.0
+//    QLibrary libgtk(QLatin1String("gtk-x11-2.0"), 0, 0);
+//    SetUseOsFn setUseOsFn = (SetUseOsFn)libgtk.resolve("ubuntu_gtk_set_use_overlay_scrollbar");
 
-    if (setUseOsFn) {
-        setUseOsFn(!0);
-        return true;
-    }
-    return false;
-}
+//    if (setUseOsFn) {
+//        setUseOsFn(!0);
+//        qputenv("LIBOVERLAY_SCROLLBAR", "override-blacklist");
+//        return true;
+//    }
+//    return false;
+//}
 
 GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
     : QProxyStyle()
@@ -74,7 +75,7 @@ GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
         int fh=QApplication::fontMetrics().height();
         sbarPlainViewWidth=fh/1.5;
 
-        if (Qt::LeftToRight==QApplication::layoutDirection() && revertQGtkStyleOverlayMod()) {
+        if (Qt::LeftToRight==QApplication::layoutDirection()) { //  && revertQGtkStyleOverlayMod()) {
             sbarWidth=qMax(fh/5, 3);
             sbarAreaWidth=sbarWidth*6;
             sbarThumb=new OsThumb();

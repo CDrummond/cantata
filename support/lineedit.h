@@ -33,27 +33,14 @@
 #ifndef LINEEDIT_H
 #define LINEEDIT_H
 
-#include <QApplication>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KLineEdit>
 class LineEdit : public KLineEdit
 {
 public:
     LineEdit(QWidget *parent = 0) : KLineEdit(parent) { setClearButtonShown(true); }
-    virtual ~LineEdit() {
-    }
-    void setReadOnly(bool e) {
-        KLineEdit::setReadOnly(e);
-        if (e) {
-            QPalette p(palette());
-            p.setColor(QPalette::Active, QPalette::Base, p.color(QPalette::Active, QPalette::Window));
-            p.setColor(QPalette::Disabled, QPalette::Base, p.color(QPalette::Disabled, QPalette::Window));
-            p.setColor(QPalette::Inactive, QPalette::Base, p.color(QPalette::Inactive, QPalette::Window));
-            setPalette(p);
-        } else {
-            setPalette(qApp->palette());
-        }
-    }
+    virtual ~LineEdit() { }
+    void setReadOnly(bool e);
 };
 
 #else

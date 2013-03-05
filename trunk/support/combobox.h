@@ -43,9 +43,7 @@ public:
     ComboBox(QWidget *p);
     virtual ~ComboBox() { }
 
-    #ifdef ENABLE_KDE_SUPPORT
     void setEditable(bool editable);
-    #endif
 
 private:
     void showPopup();

@@ -39,7 +39,7 @@ ComboBox::ComboBox(QWidget *p)
     #else
     : QComboBox(p)
     #endif
-     , toggleState(false)
+    , toggleState(false)
 {
     if (-1==maxPopupItemCount) {
         if (QApplication::desktop()) {
@@ -50,17 +50,14 @@ ComboBox::ComboBox(QWidget *p)
     }
 }
 
-#ifdef ENABLE_KDE_SUPPORT
 void ComboBox::setEditable(bool editable)
 {
+    QComboBox::setEditable(editable);
     if (editable) {
         LineEdit *edit = new LineEdit(this);
         setLineEdit(edit);
-    } else {
-        QComboBox::setEditable(editable);
     }
 }
-#endif
 
 void ComboBox::showPopup()
 {
@@ -71,7 +68,7 @@ void ComboBox::showPopup()
         // popup a scrollbar. This is more convenient if we have lots of items!
         if (toggleState) {
             setMaxVisibleItems(maxPopupItemCount);
-            setEditable(true);
+            QComboBox::setEditable(true);
             lineEdit()->setReadOnly(true);
         }
     }
@@ -117,7 +114,7 @@ void ComboBox::hidePopup()
     if (GtkStyle::isActive()) {
         // Unset editable...
         if (toggleState) {
-            setEditable(false);
+            QComboBox::setEditable(false);
         }
     }
     QComboBox::hidePopup();

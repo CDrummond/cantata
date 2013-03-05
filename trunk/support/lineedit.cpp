@@ -20,6 +20,28 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301, USA.
  */
+#include "lineedit.h"
+#include <QApplication>
+
+void LineEdit::setReadOnly(bool e)
+{
+    #ifdef ENABLE_KDE_SUPPORT
+    KLineEdit::setReadOnly(e);
+    #else
+    QLineEdit::setReadOnly(e);
+    #endif
+    if (e) {
+        QPalette p(palette());
+        p.setColor(QPalette::Active, QPalette::Base, p.color(QPalette::Active, QPalette::Window));
+        p.setColor(QPalette::Disabled, QPalette::Base, p.color(QPalette::Disabled, QPalette::Window));
+        p.setColor(QPalette::Inactive, QPalette::Base, p.color(QPalette::Inactive, QPalette::Window));
+        setPalette(p);
+    } else {
+        setPalette(qApp->palette());
+    }
+}
+
+#ifndef ENABLE_KDE_SUPPORT
 
 /****************************************************************************
 **
@@ -30,7 +52,6 @@
 **
 ****************************************************************************/
 
-#include "lineedit.h"
 #include "icon.h"
 #include "config.h"
 #include <QToolButton>
@@ -63,30 +84,14 @@ LineEdit::LineEdit(QWidget *parent)
     }
 }
 
-void LineEdit::setReadOnly(bool e)
-{
-    QLineEdit::setReadOnly(e);
-    if (e) {
-        QPalette p(palette());
-        p.setColor(QPalette::Active, QPalette::Base, p.color(QPalette::Active, QPalette::Window));
-        p.setColor(QPalette::Disabled, QPalette::Base, p.color(QPalette::Disabled, QPalette::Window));
-        p.setColor(QPalette::Inactive, QPalette::Base, p.color(QPalette::Inactive, QPalette::Window));
-        setPalette(p);
-    } else {
-        setPalette(qApp->palette());
-    }
-}
-
 void LineEdit::resizeEvent(QResizeEvent *)
 {
     QSize sz = clearButton->sizeHint();
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     if (Qt::RightToLeft==layoutDirection()) {
-        clearButton->move(rect().left() + frameWidth,
-                          (rect().bottom() + 1 - sz.height()) / 2);
+        clearButton->move(rect().left() + frameWidth, (rect().bottom() + 1 - sz.height()) / 2);
     } else {
-        clearButton->move(rect().right() - frameWidth - sz.width(),
-                          (rect().bottom() + 1 - sz.height()) / 2);
+        clearButton->move(rect().right() - frameWidth - sz.width(), (rect().bottom() + 1 - sz.height()) / 2);
     }
 }
 
@@ -94,3 +99,5 @@ void LineEdit::updateCloseButton(const QString& text)
 {
     clearButton->setVisible(!isReadOnly() && !text.isEmpty());
 }
+
+#endif

@@ -4,6 +4,7 @@ SET( SUPPORT_SRCS
     fancytabwidget.cpp
     messagewidget.cpp
     icon.cpp
+    lineedit.cpp
     gtkstyle.cpp
     utils.cpp
     spinner.cpp
@@ -31,7 +32,7 @@ if (ENABLE_KDE_SUPPORT )
     endif (NOT KDE_VERSION_47)
     KDE4_ADD_UI_FILES( SUPPORT_UI_HDRS ${SUPPORT_UIS} )
 else (ENABLE_KDE_SUPPORT)
-    SET( SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp lineedit.cpp kmessagewidget.cpp
+    SET( SUPPORT_SRCS ${SUPPORT_SRCS} pathrequester.cpp kmessagewidget.cpp
         dialog.cpp pagewidget.cpp shortcutsmodel.cpp shortcutssettingspage.cpp
         keysequencewidget.cpp )
     SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} pathrequester.h lineedit.h kmessagewidget.h urllabel.h

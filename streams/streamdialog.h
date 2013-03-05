@@ -30,6 +30,7 @@
 #include "completioncombo.h"
 
 class QLabel;
+class BuddyLabel;
 //#ifdef ENABLE_KDE_SUPPORT
 //class QPushButton;
 //#endif
@@ -57,10 +58,11 @@ private Q_SLOTS:
 //    void setIcon();
 //    #endif
 
-//#ifdef ENABLE_KDE_SUPPORT
-//private:
+private:
+    void setWidgetVisiblity();
+//    #ifdef ENABLE_KDE_SUPPORT
 //    void setIcon(const QString &icn);
-//#endif
+//    #endif
 
 private:
     QString prevName;
@@ -77,6 +79,10 @@ private:
     LineEdit *urlEntry;
     CompletionCombo *catCombo;
     CompletionCombo *genreCombo;
+    BuddyLabel *nameLabel;
+    BuddyLabel *catLabel;
+    BuddyLabel *genreLabel;
+    QLabel *multipleGenresText;
     QLabel *statusText;
     QSet<QString> urlHandlers;
 };

@@ -167,12 +167,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>120</x>
-     <y>7</y>
+     <x>146</x>
+     <y>8</y>
     </hint>
     <hint type="destinationlabel">
-     <x>148</x>
-     <y>61</y>
+     <x>189</x>
+     <y>112</y>
     </hint>
    </hints>
   </connection>
@@ -183,12 +183,28 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>126</x>
-     <y>19</y>
+     <x>146</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
      <x>128</x>
      <y>44</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>enableHttp</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>httpAddress</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>141</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>

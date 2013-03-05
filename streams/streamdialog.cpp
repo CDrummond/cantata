@@ -64,6 +64,12 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     catCombo->setSizePolicy(sizePolicy);
     genreCombo->setSizePolicy(sizePolicy);
     urlEntry->setMinimumWidth(300);
+    multipleGenresText=new QLabel(i18n("<i><b>NOTE:</b> Use '|' to split mutliple genres - e.g. 'Current|Classic'</i>"), this);
+    nameLabel=new BuddyLabel(i18n("Name:"), wid, nameEntry);
+    catLabel=new BuddyLabel(i18n("Category:"), wid, catCombo);
+    genreLabel=new BuddyLabel(i18n("Genre:"), wid, genreCombo);
+    BuddyLabel *streamLabel=new BuddyLabel(i18n("Stream:"), wid, urlEntry);
+
 //    #ifdef ENABLE_KDE_SUPPORT
 //    iconButton=new QPushButton(this);
 //    iconButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -76,34 +82,31 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
         saveCombo->addItem(i18n("Add to play queue, and save in list of streams"));
         saveCombo->setCurrentIndex(0);
         saveCombo->setEnabled(StreamsModel::self()->isWritable());
-        layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Stream:"), wid, urlEntry));
+        layout->setWidget(row, QFormLayout::LabelRole, streamLabel);
         layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
         layout->setWidget(row++, QFormLayout::FieldRole, saveCombo);
         connect(saveCombo, SIGNAL(activated(int)), SLOT(saveComboChanged()));
-        nameEntry->setEnabled(false);
-        catCombo->setEnabled(false);
-        genreCombo->setEnabled(false);
-        nameEntry->setEnabled(false);
+        setWidgetVisiblity();
 //        #ifdef ENABLE_KDE_SUPPORT
 //        connect(saveButton, SIGNAL(toggled(bool)), iconButton, SLOT(setEnabled(bool)));
 //        iconButton->setEnabled(false);
 //        #endif
     }
-    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Name:"), wid, nameEntry));
+    layout->setWidget(row, QFormLayout::LabelRole, nameLabel);
     layout->setWidget(row++, QFormLayout::FieldRole, nameEntry);
 //    #ifdef ENABLE_KDE_SUPPORT
 //    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Icon:"), wid, iconButton));
 //    layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
 //    #endif
     if (!addToPlayQueue) {
-        layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Stream:"), wid, urlEntry));
+        layout->setWidget(row, QFormLayout::LabelRole, streamLabel);
         layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
     }
-    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Category:"), wid, catCombo));
+    layout->setWidget(row, QFormLayout::LabelRole, catLabel);
     layout->setWidget(row++, QFormLayout::FieldRole, catCombo);
-    layout->setWidget(row, QFormLayout::LabelRole, new BuddyLabel(i18n("Genre:"), wid, genreCombo));
+    layout->setWidget(row, QFormLayout::LabelRole, genreLabel);
     layout->setWidget(row++, QFormLayout::FieldRole, genreCombo);
-    layout->setWidget(row++, QFormLayout::SpanningRole, new QLabel(i18n("<i><b>NOTE:</b> Use '|' to split mutliple genres - e.g. 'Current|Classic'</i>"), this));
+    layout->setWidget(row++, QFormLayout::SpanningRole, multipleGenresText);
     layout->setWidget(row++, QFormLayout::SpanningRole, statusText);
     setCaption(i18n("Add Stream"));
     setMainWidget(wid);
@@ -150,11 +153,22 @@ void StreamDialog::setEdit(const QString &cat, const QString &editName, const QS
 
 void StreamDialog::saveComboChanged()
 {
-    bool s=save();
-    nameEntry->setEnabled(s);
-    catCombo->setEnabled(s);
-    genreCombo->setEnabled(s);
+    setWidgetVisiblity();
     changed();
+}
+
+void StreamDialog::setWidgetVisiblity()
+{
+    bool s=save();
+    nameEntry->setVisible(s);
+    catCombo->setVisible(s);
+    genreCombo->setVisible(s);
+    nameLabel->setVisible(s);
+    catLabel->setVisible(s);
+    genreLabel->setVisible(s);
+    multipleGenresText->setVisible(s);
+    QApplication::processEvents();
+    adjustSize();
 }
 
 void StreamDialog::changed()

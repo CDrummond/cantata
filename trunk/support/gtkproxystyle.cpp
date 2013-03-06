@@ -342,7 +342,7 @@ void GtkProxyStyle::destroySliderThumb()
         sbarThumb=0;
     }
     if (sbarEdgeTimer) {
-        sbarEdgeTimer->stop();
+        //sbarEdgeTimer->stop();
         sbarEdgeTimer->deleteLater();
         sbarEdgeTimer=0;
     }

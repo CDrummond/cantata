@@ -35,7 +35,7 @@ public:
       enum Mode {
         Mode_System = 0,
         Mode_Direct = 1,
-        Mode_Manual = 2,
+        Mode_Manual = 2
     };
 
     static NetworkProxyFactory * self();

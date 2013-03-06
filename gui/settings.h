@@ -151,6 +151,10 @@ public:
     bool playStream();
     QString streamUrl();
     #endif
+    #ifdef CDDB_FOUND
+    QString cddbHost();
+    int cddbPort();
+    #endif
     bool forceSingleClick();
     bool startHidden();
 
@@ -212,6 +216,10 @@ public:
     #ifdef PHONON_FOUND
     void savePlayStream(bool v);
     void saveStreamUrl(const QString &v);
+    #endif
+    #ifdef CDDB_FOUND
+    void saveCddbHost(const QString &v);
+    void saveCddbPort(int v);
     #endif
     void saveForceSingleClick(bool v);
     void saveStartHidden(bool v);

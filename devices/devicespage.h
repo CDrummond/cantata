@@ -31,6 +31,7 @@
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotefsdevice.h"
 #endif
+#include "cddb.h"
 
 class Action;
 
@@ -63,6 +64,8 @@ public Q_SLOTS:
     void sync();
     void updateGenres(const QModelIndex &);
     void updated(const QModelIndex &idx);
+    void cddbMatches(const QString &udi, const QList<CddbAlbum> &albums);
+    void editDetails();
 
 private:
     Device * activeFsDevice() const;

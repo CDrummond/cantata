@@ -129,7 +129,11 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     if (enoughSpace || (sourceUdi.isEmpty() && Encoders::getAvailable().count())) {
         QString mpdCfgName=MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name);
         overwrite->setChecked(Settings::self()->overwriteSongs());
-        sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
+        sourceLabel->setText(QLatin1String("<b>")+(sourceUdi.isEmpty()
+                                ? i18n("Local Music Library")
+                                : Device::AudioCd==dev->devType()
+                                    ? i18n("Audio CD")
+                                    : dev->data())+QLatin1String("</b>"));
         destinationLabel->setText(QLatin1String("<b>")+(destUdi.isEmpty() ? i18n("Local Music Library") : dev->data())+QLatin1String("</b>"));
         namingOptions.load(mpdCfgName, true);
         setPage(PAGE_START);
@@ -493,13 +497,18 @@ void ActionDialog::configureSource()
 void ActionDialog::configure(const QString &udi)
 {
     if (udi.isEmpty()) {
+        Device *dev=DevicesModel::self()->device(sourceUdi);
+        bool isCd=false;
+        if (dev) {
+            isCd=Device::AudioCd==dev->devType();
+        }
         DevicePropertiesDialog *dlg=new DevicePropertiesDialog(this);
         connect(dlg, SIGNAL(updatedSettings(const QString &, const DeviceOptions &)), SLOT(saveProperties(const QString &, const DeviceOptions &)));
         if (!mpdConfigured) {
             connect(dlg, SIGNAL(cancelled()), SLOT(saveProperties()));
         }
         dlg->setCaption(i18n("Local Music Library Properties"));
-        dlg->show(MPDConnection::self()->getDetails().dir, namingOptions, DevicePropertiesWidget::Prop_Basic);
+        dlg->show(MPDConnection::self()->getDetails().dir, namingOptions, DevicePropertiesWidget::Prop_Basic|(isCd ? DevicePropertiesWidget::Prop_Encoder : 0));
     } else {
         Device *dev=DevicesModel::self()->device(udi);
         if (dev) {
@@ -511,14 +520,24 @@ void ActionDialog::configure(const QString &udi)
 void ActionDialog::saveProperties(const QString &path, const DeviceOptions &opts)
 {
     Q_UNUSED(path)
+    Device *dev=DevicesModel::self()->device(sourceUdi);
+    bool isCd=false;
+    if (dev) {
+        isCd=Device::AudioCd==dev->devType();
+    }
     namingOptions=opts;
-    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
+    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true, isCd);
     mpdConfigured=true;
 }
 
 void ActionDialog::saveProperties()
 {
-    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
+    Device *dev=DevicesModel::self()->device(sourceUdi);
+    bool isCd=false;
+    if (dev) {
+        isCd=Device::AudioCd==dev->devType();
+    }
+    namingOptions.save(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true, isCd);
     mpdConfigured=true;
 }
 

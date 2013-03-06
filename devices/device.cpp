@@ -35,6 +35,10 @@
 #ifdef MTP_FOUND
 #include "mtpdevice.h"
 #endif // MTP_FOUND
+#ifdef CDDB_FOUND
+#include "audiocddevice.h"
+#endif // CDDB_FOUND
+#include "encoders.h"
 #include "tags.h"
 #include "song.h"
 #include "mpdparseutils.h"
@@ -138,8 +142,11 @@ Device * Device::create(DevicesModel *m, const QString &udi)
 {
     Solid::Device device=Solid::Device(udi);
 
-    if (device.is<Solid::PortableMediaPlayer>())
-    {
+    if (device.is<Solid::OpticalDisc>()) {
+        #ifdef CDDB_FOUND
+        return Encoders::getAvailable().isEmpty() ? 0 : new AudioCdDevice(m, device);
+        #endif
+    } else if (device.is<Solid::PortableMediaPlayer>()) {
         #ifdef MTP_FOUND
         Solid::PortableMediaPlayer *pmp = device.as<Solid::PortableMediaPlayer>();
 
@@ -287,7 +294,9 @@ void Device::applyUpdate()
             foreach (MusicLibraryItem *item, update->childItems()) {
                 item->setParent(this);
             }
-            refreshIndexes();
+            if (AudioCd!=devType()) {
+                refreshIndexes();
+            }
             model->endInsertRows();
         }
     }
@@ -297,13 +306,21 @@ void Device::applyUpdate()
 
 const MusicLibraryItem * Device::findSong(const Song &s) const
 {
-    MusicLibraryItemArtist *artistItem = ((MusicLibraryItemRoot *)this)->artist(s, false);
-    if (artistItem) {
-        MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
-        if (albumItem) {
-            foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-                if (songItem->data()==s.displayTitle()) {
-                    return songItem;
+    if (AudioCd==devType()) {
+        foreach (const MusicLibraryItem *songItem, childItems()) {
+            if (songItem->data()==s.displayTitle()) {
+                return songItem;
+            }
+        }
+    } else {
+        MusicLibraryItemArtist *artistItem = ((MusicLibraryItemRoot *)this)->artist(s, false);
+        if (artistItem) {
+            MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
+            if (albumItem) {
+                foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
+                    if (songItem->data()==s.displayTitle()) {
+                        return songItem;
+                    }
                 }
             }
         }
@@ -348,7 +365,21 @@ bool Device::songExists(const Song &s) const
 
 bool Device::updateSong(const Song &orig, const Song &edit)
 {
-    if ((supportsAlbumArtist ? orig.albumArtist()==edit.albumArtist() : orig.artist==edit.artist) && orig.album==edit.album) {
+    if (AudioCd==devType()) {
+        int songRow=0;
+        foreach (MusicLibraryItem *song,childItems()) {
+            if (static_cast<MusicLibraryItemSong *>(song)->song()==orig) {
+                static_cast<MusicLibraryItemSong *>(song)->setSong(edit);
+                if (orig.genre!=edit.genre) {
+                    updateGenres();
+                }
+                QModelIndex idx=model->createIndex(songRow, 0, song);
+                emit model->dataChanged(idx, idx);
+                return true;
+            }
+            songRow++;
+        }
+    } else if ((supportsAlbumArtist ? orig.albumArtist()==edit.albumArtist() : orig.artist==edit.artist) && orig.album==edit.album) {
         MusicLibraryItemArtist *artistItem = artist(orig, false);
         if (!artistItem) {
             return false;
@@ -366,7 +397,7 @@ bool Device::updateSong(const Song &orig, const Song &edit)
                     artistItem->updateGenres();
                     updateGenres();
                 }
-                QModelIndex idx=model->createIndex(songRow, 0, albumItem);
+                QModelIndex idx=model->createIndex(songRow, 0, song);
                 emit model->dataChanged(idx, idx);
                 return true;
             }
@@ -378,6 +409,9 @@ bool Device::updateSong(const Song &orig, const Song &edit)
 
 void Device::addSongToList(const Song &s)
 {
+    if (AudioCd==devType()) {
+        return;
+    }
     MusicLibraryItemArtist *artistItem = artist(s, false);
     if (!artistItem) {
         model->beginInsertRows(model->createIndex(model->devices.indexOf(this), 0, this), childCount(), childCount());
@@ -410,6 +444,10 @@ void Device::addSongToList(const Song &s)
 
 void Device::removeSongFromList(const Song &s)
 {
+    if (AudioCd==devType()) {
+        return;
+    }
+
     MusicLibraryItemArtist *artistItem = artist(s, false);
     if (!artistItem) {
         return;

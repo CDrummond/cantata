@@ -44,6 +44,8 @@ public:
         Prop_Cache       = 0x20,
         Prop_AutoScan    = 0x40,
 
+        Prop_Encoder     = 0x80,
+
         Prop_All         = 0xFF
     };
     DevicePropertiesWidget(QWidget *parent);

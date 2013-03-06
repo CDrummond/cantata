@@ -59,7 +59,7 @@ MusicLibraryItemArtist * MusicLibraryItemRoot::createArtist(const Song &s)
 
 void MusicLibraryItemRoot::groupSingleTracks()
 {
-    if (!supportsAlbumArtist) {
+    if (!supportsAlbumArtist || isFlat) {
         return;
     }
 
@@ -102,7 +102,7 @@ void MusicLibraryItemRoot::groupSingleTracks()
 
 void MusicLibraryItemRoot::groupMultipleArtists()
 {
-    if (!supportsAlbumArtist) {
+    if (!supportsAlbumArtist || isFlat) {
         return;
     }
 
@@ -162,7 +162,7 @@ void MusicLibraryItemRoot::groupMultipleArtists()
 
 bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
 {
-    if (supportsAlbumArtist && !s.file.isEmpty()) {
+    if (!isFlat && (supportsAlbumArtist && !s.file.isEmpty())) {
         QHash<QString, int>::ConstIterator it=m_indexes.find(i18n("Various Artists"));
 
         if (m_indexes.end()!=it) {
@@ -174,6 +174,9 @@ bool MusicLibraryItemRoot::isFromSingleTracks(const Song &s) const
 
 void MusicLibraryItemRoot::refreshIndexes()
 {
+    if (isFlat) {
+        return;
+    }
     m_indexes.clear();
     int i=0;
     foreach (MusicLibraryItem *item, m_childItems) {
@@ -183,6 +186,10 @@ void MusicLibraryItemRoot::refreshIndexes()
 
 void MusicLibraryItemRoot::remove(MusicLibraryItemArtist *artist)
 {
+    if (isFlat) {
+        return;
+    }
+
     int index=m_childItems.indexOf(artist);
 
     if (index<0 || index>=m_childItems.count()) {
@@ -205,15 +212,25 @@ QSet<Song> MusicLibraryItemRoot::allSongs(bool revertVa) const
 {
     QSet<Song> songs;
 
-    foreach (const MusicLibraryItem *artist, m_childItems) {
-        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                if (revertVa) {
-                    Song s=static_cast<const MusicLibraryItemSong *>(song)->song();
-                    s.revertVariousArtists();
-                    songs.insert(s);
-                } else {
-                    songs.insert(static_cast<const MusicLibraryItemSong *>(song)->song());
+    foreach (const MusicLibraryItem *child, m_childItems) {
+        if (MusicLibraryItem::Type_Song==child->itemType()) {
+            if (revertVa) {
+                Song s=static_cast<const MusicLibraryItemSong *>(child)->song();
+                s.revertVariousArtists();
+                songs.insert(s);
+            } else {
+                songs.insert(static_cast<const MusicLibraryItemSong *>(child)->song());
+            }
+        } else {
+            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
+                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
+                    if (revertVa) {
+                        Song s=static_cast<const MusicLibraryItemSong *>(song)->song();
+                        s.revertVariousArtists();
+                        songs.insert(s);
+                    } else {
+                        songs.insert(static_cast<const MusicLibraryItemSong *>(song)->song());
+                    }
                 }
             }
         }
@@ -223,15 +240,25 @@ QSet<Song> MusicLibraryItemRoot::allSongs(bool revertVa) const
 
 void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
 {
-    foreach (const MusicLibraryItem *artist, m_childItems) {
-        foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(artist)->childItems()) {
-            foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                const Song &s=static_cast<const MusicLibraryItemSong *>(song)->song();
-                artists.insert(s.artist);
-                albumArtists.insert(s.albumArtist());
-                albums.insert(s.album);
-                if (!s.genre.isEmpty()) {
-                    genres.insert(s.genre);
+    foreach (const MusicLibraryItem *child, m_childItems) {
+        if (MusicLibraryItem::Type_Song==child->itemType()) {
+            const Song &s=static_cast<const MusicLibraryItemSong *>(child)->song();
+            artists.insert(s.artist);
+            albumArtists.insert(s.albumArtist());
+            albums.insert(s.album);
+            if (!s.genre.isEmpty()) {
+                genres.insert(s.genre);
+            }
+        } else {
+            foreach (const MusicLibraryItem *album, static_cast<const MusicLibraryItemContainer *>(child)->childItems()) {
+                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
+                    const Song &s=static_cast<const MusicLibraryItemSong *>(song)->song();
+                    artists.insert(s.artist);
+                    albumArtists.insert(s.albumArtist());
+                    albums.insert(s.album);
+                    if (!s.genre.isEmpty()) {
+                        genres.insert(s.genre);
+                    }
                 }
             }
         }
@@ -240,6 +267,10 @@ void MusicLibraryItemRoot::getDetails(QSet<QString> &artists, QSet<QString> &alb
 
 void MusicLibraryItemRoot::updateSongFile(const Song &from, const Song &to)
 {
+    if (isFlat) {
+        return;
+    }
+
     MusicLibraryItemArtist *art=artist(from, false);
     if (art) {
         MusicLibraryItemAlbum *alb=art->album(from, false);
@@ -259,6 +290,10 @@ static QLatin1String constTopTag("CantataLibrary");
 
 void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date, MusicLibraryProgressMonitor *prog) const
 {
+    if (isFlat) {
+        return;
+    }
+
     // If saving device cache, and we have NO items, then remove cache file...
     if (0==childCount() && date==QDateTime()) {
         if (QFile::exists(filename)) {
@@ -281,6 +316,10 @@ void MusicLibraryItemRoot::toXML(const QString &filename, const QDateTime &date,
 
 void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date, MusicLibraryProgressMonitor *prog) const
 {
+    if (isFlat) {
+        return;
+    }
+
     quint64 total=0;
     quint64 count=0;
     writer.writeStartDocument();
@@ -390,6 +429,10 @@ void MusicLibraryItemRoot::toXML(QXmlStreamWriter &writer, const QDateTime &date
 
 quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &date, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
 {
+    if (isFlat) {
+        return 0;
+    }
+
     QFile file(filename);
     QtIOCompressor compressor(&file);
     compressor.setStreamFormat(QtIOCompressor::GzipFormat);
@@ -405,6 +448,10 @@ quint32 MusicLibraryItemRoot::fromXML(const QString &filename, const QDateTime &
 
 quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime &date, const QString &baseFolder, MusicLibraryProgressMonitor *prog)
 {
+    if (isFlat) {
+        return 0;
+    }
+
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
     MusicLibraryItemSong *songItem = 0;
@@ -561,6 +608,10 @@ quint32 MusicLibraryItemRoot::fromXML(QXmlStreamReader &reader, const QDateTime 
 
 void MusicLibraryItemRoot::add(const QSet<Song> &songs)
 {
+    if (isFlat) {
+        return;
+    }
+
     MusicLibraryItemArtist *artistItem = 0;
     MusicLibraryItemAlbum *albumItem = 0;
 
@@ -586,6 +637,10 @@ void MusicLibraryItemRoot::add(const QSet<Song> &songs)
 
 void MusicLibraryItemRoot::toggleGrouping()
 {
+    if (isFlat) {
+        return;
+    }
+
     // Grouping has changed, so we need to recreate whole structure from list of songs.
     QSet<Song> songs=allSongs();
     clearItems();
@@ -631,7 +686,7 @@ void MusicLibraryItemRoot::clearItems()
 
 QString MusicLibraryItemRoot::songArtist(const Song &s) const
 {
-    if (!supportsAlbumArtist) {
+    if (isFlat || !supportsAlbumArtist) {
         return s.artist;
     }
 

@@ -52,12 +52,13 @@ public:
 class MusicLibraryItemRoot : public MusicLibraryItemContainer
 {
 public:
-    MusicLibraryItemRoot(const QString &name=QString(), bool albumArtistSupport=true)
+    MusicLibraryItemRoot(const QString &name=QString(), bool albumArtistSupport=true, bool flat=false)
         : MusicLibraryItemContainer(name, 0)
         , supportsAlbumArtist(albumArtistSupport)
         , albumImages(true)
         , artistImages(false)
-        , largeImages(false) {
+        , largeImages(false)
+        , isFlat(flat) {
     }
     virtual ~MusicLibraryItemRoot() {
     }
@@ -99,9 +100,10 @@ protected:
     bool supportsAlbumArtist; // TODO: ALBUMARTIST: Remove when libMPT supports album artist!
 
 private:
-    bool albumImages;
-    bool artistImages;
-    bool largeImages;
+    bool albumImages:1;
+    bool artistImages:1;
+    bool largeImages:1;
+    bool isFlat:1;
     QHash<QString, int> m_indexes;
 };
 

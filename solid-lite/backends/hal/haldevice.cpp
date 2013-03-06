@@ -36,9 +36,9 @@
 #include "halblock.h"
 #include "halstorageaccess.h"
 #include "halstorage.h"
-//#include "halcdrom.h"
+#include "halcdrom.h"
 #include "halvolume.h"
-//#include "halopticaldisc.h"
+#include "halopticaldisc.h"
 //#include "halcamera.h"
 #include "halportablemediaplayer.h"
 //#include "halnetworkinterface.h"
@@ -203,9 +203,9 @@ QString HalDevice::icon() const
 
         if (prop("storage.drive_type").toString()=="floppy") {
             return "media-floppy";
-        } /*else if (prop("storage.drive_type").toString()=="cdrom") {
+        } else if (prop("storage.drive_type").toString()=="cdrom") {
             return "drive-optical";
-        } */ else if (prop("storage.drive_type").toString()=="sd_mmc") {
+        } else if (prop("storage.drive_type").toString()=="sd_mmc") {
             return "media-flash-sd-mmc";
         } else if (prop("storage.hotpluggable").toBool()) {
             if (prop("storage.bus").toString()=="usb") {
@@ -235,13 +235,13 @@ QString HalDevice::icon() const
                           || prop("volume.disc.is_appendable").toBool()
                           || prop("volume.disc.is_rewritable").toBool();
 
-            /*if (has_video) {
+            if (has_video) {
                 return "media-optical-video";
             } else if (has_audio) {
                 return "media-optical-audio";
             } else if (recordable) {
                 return "media-optical-recordable";
-            } else*/ {
+            } else {
                 return "media-optical";
             }
 
@@ -469,15 +469,15 @@ QObject *HalDevice::createDeviceInterface(const Solid::DeviceInterface::Type &ty
     case Solid::DeviceInterface::StorageDrive:
         iface = new Storage(this);
         break;
-    //case Solid::DeviceInterface::OpticalDrive:
-    //    iface = new Cdrom(this);
-    //    break;
+    case Solid::DeviceInterface::OpticalDrive:
+        iface = new Cdrom(this);
+        break;
     case Solid::DeviceInterface::StorageVolume:
         iface = new Volume(this);
         break;
-    //case Solid::DeviceInterface::OpticalDisc:
-    //    iface = new OpticalDisc(this);
-    //    break;
+    case Solid::DeviceInterface::OpticalDisc:
+        iface = new OpticalDisc(this);
+        break;
     //case Solid::DeviceInterface::Camera:
     //    iface = new Camera(this);
     //    break;
@@ -568,7 +568,7 @@ QString HalDevice::storageDescription() const
     Solid::StorageDrive::DriveType drive_type = storageDrive.driveType();
     bool drive_is_hotpluggable = storageDrive.isHotpluggable();
 
-    /*if (drive_type == Solid::StorageDrive::CdromDrive) {
+    if (drive_type == Solid::StorageDrive::CdromDrive) {
         const Cdrom opticalDrive(const_cast<HalDevice*>(this));
         Solid::OpticalDrive::MediumTypes mediumTypes = opticalDrive.supportedMedia();
         QString first;
@@ -624,7 +624,7 @@ QString HalDevice::storageDescription() const
         }
 
         return description;
-    }*/
+    }
 
     /*if (drive_type == Solid::StorageDrive::Floppy) {
         if (drive_is_hotpluggable)
@@ -693,7 +693,7 @@ QString HalDevice::volumeDescription() const
     Solid::StorageDrive::DriveType drive_type = storageDrive.driveType();
 
     /* Handle media in optical drives */
-    /*if (drive_type == Solid::StorageDrive::CdromDrive) {
+    if (drive_type == Solid::StorageDrive::CdromDrive) {
         const OpticalDisc disc(const_cast<HalDevice*>(this));
         switch (disc.discType()) {
             case Solid::OpticalDisc::UnknownDiscType:
@@ -805,13 +805,13 @@ QString HalDevice::volumeDescription() const
                 break;
             }
 
-        / * Special case for pure audio disc * /
+        /* Special case for pure audio disc */
         if (disc.availableContent() == Solid::OpticalDisc::Audio) {
             description = QObject::tr("Audio CD");
         }
 
         return description;
-    }*/
+    }
 
     bool drive_is_removable = storageDrive.isRemovable();
     bool drive_is_hotpluggable = storageDrive.isHotpluggable();

@@ -90,9 +90,9 @@ const char *IOKitManagerPrivate::typeToName(Solid::DeviceInterface::Type type)
     //Solid::DeviceInterface::Block:
     //Solid::DeviceInterface::StorageAccess:
     //Solid::DeviceInterface::StorageDrive:
-    //Solid::DeviceInterface::OpticalDrive:
+    Solid::DeviceInterface::OpticalDrive:
     //Solid::DeviceInterface::StorageVolume:
-    //Solid::DeviceInterface::OpticalDisc:
+    Solid::DeviceInterface::OpticalDisc:
     //Solid::DeviceInterface::Camera:
     //Solid::DeviceInterface::PortableMediaPlayer:
     //Solid::DeviceInterface::NetworkInterface:

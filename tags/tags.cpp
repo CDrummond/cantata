@@ -843,7 +843,7 @@ static bool writeTags(const TagLib::FileRef fileref, const Song &from, const Son
 {
     bool changed=false;
     TagLib::Tag *tag=fileref.tag();
-    if (!from.isEmpty() && !to.isEmpty()) {
+    if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
         if (from.title!=to.title) {
             tag->setTitle(qString2TString(to.title));
             changed=true;
@@ -998,7 +998,7 @@ QString readLyrics(const QString &fileName)
     return lyrics;
 }
 
-static Update update(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img)
+static Update update(const TagLib::FileRef fileref, const Song &from, const Song &to, const RgTags &rg, const QByteArray &img, int id3Ver=-1)
 {
     if (writeTags(fileref, from, to, rg, img)) {
         TagLib::MPEG::File *mpeg=dynamic_cast<TagLib::MPEG::File *>(fileref.file());
@@ -1007,7 +1007,8 @@ static Update update(const TagLib::FileRef fileref, const Song &from, const Song
             TagLib::ID3v2::Tag *v2=mpeg->ID3v2Tag(false);
             bool haveV1=v1 && (!v1->title().isEmpty() || !v1->artist().isEmpty() || !v1->album().isEmpty());
             bool isID3v24=v2 && isId3V24(v2->header());
-            return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, true, isID3v24 ? 4 : 3) ? Update_Modified : Update_Failed;
+            int ver=id3Ver==3 ? 3 : (id3Ver==4 ? 4 : (isID3v24 ? 4 : 3));
+            return mpeg->save((haveV1 ? TagLib::MPEG::File::ID3v1 : 0)|TagLib::MPEG::File::ID3v2, true, ver) ? Update_Modified : Update_Failed;
         }
         return fileref.file()->save() ? Update_Modified : Update_Failed;
     }
@@ -1040,13 +1041,13 @@ Update updateArtistAndTitle(const QString &fileName, const Song &song)
     return fileref.file()->save() ? Update_Modified : Update_Failed;
 }
 
-Update update(const QString &fileName, const Song &from, const Song &to)
+Update update(const QString &fileName, const Song &from, const Song &to, int id3Ver)
 {
     QMutexLocker locker(&mutex);
     ensureFileTypeResolvers();
 
     TagLib::FileRef fileref = getFileRef(fileName);
-    return fileref.isNull() ? Update_Failed : update(fileref, from, to, RgTags(), QByteArray());
+    return fileref.isNull() ? Update_Failed : update(fileref, from, to, RgTags(), QByteArray(), id3Ver);
 }
 
 ReplayGain readReplaygain(const QString &fileName)

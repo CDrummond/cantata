@@ -197,14 +197,21 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         REMOVE(autoScanLabel);
     }
 
-    if (props&Prop_Transcoder) {
+    if (props&Prop_Transcoder || props&Prop_Encoder) {
+        bool transcode=props&Prop_Transcoder;
         transcoderName->clear();
-        transcoderName->addItem(i18n("Do not transcode"), QString());
-        transcoderName->setCurrentIndex(0);
-        transcoderValue->setVisible(false);
-        transcoderWhenDifferentLabel->setVisible(false);
-        transcoderWhenDifferent->setVisible(false);
-        transcoderWhenDifferent->setChecked(opts.transcoderWhenDifferent);
+        if (transcode) {
+            transcoderName->addItem(i18n("Do not transcode"), QString());
+            transcoderName->setCurrentIndex(0);
+            transcoderValue->setVisible(false);
+            transcoderWhenDifferentLabel->setVisible(false);
+            transcoderWhenDifferent->setVisible(false);
+            transcoderWhenDifferent->setChecked(opts.transcoderWhenDifferent);
+        } else {
+            transcoderFrame->setTitle(i18n("Encoder"));
+            REMOVE(transcoderWhenDifferent);
+            REMOVE(transcoderWhenDifferentLabel);
+        }
 
         QList<Encoders::Encoder> encs=Encoders::getAvailable();
 
@@ -212,7 +219,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
             transcoderFrame->setVisible(false);
         } else {
             foreach (const Encoders::Encoder &e, encs) {
-                transcoderName->addItem(i18n("Transcode to \"%1\"").arg(e.name), e.codec);
+                transcoderName->addItem(transcode ? i18n("Transcode to \"%1\"").arg(e.name) : e.name, e.codec);
             }
 
             if (opts.transcoderCodec.isEmpty()) {
@@ -274,13 +281,17 @@ void DevicePropertiesWidget::transcoderChanged()
     if (codec.isEmpty()) {
         transcoderName->setToolTip(QString());
         transcoderValue->setVisible(false);
-        transcoderWhenDifferentLabel->setVisible(false);
-        transcoderWhenDifferent->setVisible(false);
+        if (transcoderWhenDifferent) {
+            transcoderWhenDifferentLabel->setVisible(false);
+            transcoderWhenDifferent->setVisible(false);
+        }
     } else {
         Encoders::Encoder enc=Encoders::getEncoder(codec);
         transcoderName->setToolTip(enc.description);
-        transcoderWhenDifferentLabel->setVisible(true);
-        transcoderWhenDifferent->setVisible(true);
+        if (transcoderWhenDifferent) {
+            transcoderWhenDifferentLabel->setVisible(true);
+            transcoderWhenDifferent->setVisible(true);
+        }
         if (enc.values.count()) {
             transcoderValue->setValues(enc);
             transcoderValue->setVisible(true);
@@ -336,7 +347,7 @@ DeviceOptions DevicePropertiesWidget::settings()
     opts.asciiOnly=asciiOnly->isChecked();
     opts.ignoreThe=ignoreThe->isChecked();
     opts.replaceSpaces=replaceSpaces->isChecked();
-    opts.fixVariousArtists=fixVariousArtists->isChecked();
+    opts.fixVariousArtists=fixVariousArtists ? fixVariousArtists->isChecked() : false;
     opts.useCache=useCache ? useCache->isChecked() : false;
     opts.autoScan=autoScan ? autoScan->isChecked() : false;
     opts.transcoderCodec=QString();
@@ -351,7 +362,7 @@ DeviceOptions DevicePropertiesWidget::settings()
         if (!opts.transcoderCodec.isEmpty()) {
             Encoders::Encoder enc=Encoders::getEncoder(opts.transcoderCodec);
 
-            opts.transcoderWhenDifferent=transcoderWhenDifferent->isChecked();
+            opts.transcoderWhenDifferent=transcoderWhenDifferent ? transcoderWhenDifferent->isChecked() : false;
             if (!enc.isNull() && transcoderValue->value()<enc.values.count()) {
                 opts.transcoderValue=enc.values.at(transcoderValue->value()).value;
             }
@@ -362,7 +373,7 @@ DeviceOptions DevicePropertiesWidget::settings()
 
 QString DevicePropertiesWidget::cover() const
 {
-    QString coverName=albumCovers ? albumCovers->currentText().trimmed() : QString();
+    QString coverName=albumCovers ? albumCovers->currentText().trimmed() : noCoverText;
     return coverName==noCoverText
             ? Device::constNoCover
             : coverName==embedCoverText

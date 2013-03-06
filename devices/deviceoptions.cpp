@@ -235,18 +235,18 @@ void DeviceOptions::load(const QString &group, bool isMpd)
     if (!isMpd) {
         useCache=GET_BOOL("useCache", useCache);
         fixVariousArtists=GET_BOOL("fixVariousArtists", fixVariousArtists);
-        transcoderCodec=GET_STRING("transcoderCodec", transcoderCodec);
-        transcoderValue=GET_INT("transcoderValue", transcoderValue);
-        transcoderWhenDifferent=GET_BOOL("transcoderWhenDifferent", transcoderWhenDifferent);
         coverName=GET_STRING("coverFileName", coverName);
         coverMaxSize=GET_INT("coverMaxSize", coverMaxSize);
         volumeId=GET_STRING("volumeId", volumeId);
         checkCoverSize();
     }
+    transcoderCodec=GET_STRING("transcoderCodec", transcoderCodec);
+    transcoderValue=GET_INT("transcoderValue", transcoderValue);
+    transcoderWhenDifferent=GET_BOOL("transcoderWhenDifferent", transcoderWhenDifferent);
     #endif
 }
 
-void DeviceOptions::save(const QString &group, bool isMpd)
+void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans)
 {
     #ifdef ENABLE_KDE_SUPPORT
     KConfigGroup cfg(KGlobal::config(), !isMpd || group.isEmpty() || KGlobal::config()->hasGroup(group) ? group : constMpdGroup);
@@ -264,12 +264,14 @@ void DeviceOptions::save(const QString &group, bool isMpd)
     if (!isMpd) {
         SET_VALUE("useCache", useCache);
         SET_VALUE("fixVariousArtists", fixVariousArtists);
-        SET_VALUE("transcoderCodec", transcoderCodec);
-        SET_VALUE("transcoderValue", transcoderValue);
-        SET_VALUE("transcoderWhenDifferent", transcoderWhenDifferent);
         SET_VALUE("coverFileName", coverName);
         SET_VALUE("coverMaxSize", coverMaxSize);
         SET_VALUE("volumeId", volumeId);
+    }
+    if (saveTrans) {
+        SET_VALUE("transcoderCodec", transcoderCodec);
+        SET_VALUE("transcoderValue", transcoderValue);
+        SET_VALUE("transcoderWhenDifferent", transcoderWhenDifferent);
     }
     #endif
     CFG_SYNC;

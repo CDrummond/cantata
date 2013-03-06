@@ -67,6 +67,7 @@ GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
     , sbarOffset(0xffffffff)
     , sbarLastPos(-1)
     , sbarThumbTarget(0)
+    , sbarEdgeTimer(0)
 {
     useOverlayScrollbars=overlaySBars && qgetenv("LIBOVERLAY_SCROLLBAR")!="0";
     setBaseStyle(qApp->style());

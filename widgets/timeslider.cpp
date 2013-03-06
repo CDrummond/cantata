@@ -66,6 +66,9 @@ TimeSlider::TimeSlider(QWidget *p)
     connect(slider, SIGNAL(sliderReleased()), this, SLOT(released()));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateTimes()));
     slider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    // Set minimum height to help with some Gtk themes.
+    // BUG:179
+    slider->setMinimumHeight(24);
     label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     slider->setFocusPolicy(Qt::NoFocus);

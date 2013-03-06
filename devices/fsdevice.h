@@ -29,8 +29,9 @@
 #include "utils.h"
 #include "freespaceinfo.h"
 #include "musiclibraryitemroot.h"
-#include <QThread>
 #include <QStringList>
+
+class QThread;
 
 struct FileOnlySong : public Song
 {
@@ -50,7 +51,7 @@ inline uint qHash(const FileOnlySong &key)
     return qHash(key.file);
 }
 
-class MusicScanner : public QThread, public MusicLibraryProgressMonitor
+class MusicScanner : public QObject, public MusicLibraryProgressMonitor
 {
     Q_OBJECT
 
@@ -79,6 +80,7 @@ private:
     void scanFolder(MusicLibraryItemRoot *library, const QString &topLevel, const QString &f, QSet<FileOnlySong> &existing, int level);
 
 private:
+    QThread *thread;
     bool stopRequested;
     int count;
     int lastUpdate;

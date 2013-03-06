@@ -123,6 +123,7 @@ private:
     void destroyData();
 
 private:
+    QThread *thread;
     LIBMTP_mtpdevice_t *device;
     QMap<uint32_t, Folder> folderMap;
     MusicLibraryItemRoot *library;
@@ -187,7 +188,6 @@ private:
 
 private:
     Solid::PortableMediaPlayer *pmp;
-    QThread *thread;
     MtpConnection *connection;
     QTemporaryFile *tempFile;
     Song currentSong;

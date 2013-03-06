@@ -43,6 +43,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <QTimer>
+#include <QThread>
 #include <time.h>
 
 const QLatin1String FsDevice::constCantataCacheFile("/.cache");
@@ -61,17 +62,19 @@ const QLatin1String FsDevice::constDefCoverFileName("cover.jpg");
 const QLatin1String FsDevice::constAutoScanKey("auto_scan"); // Cantata extension!
 
 MusicScanner::MusicScanner()
-    : QThread(0)
+    : QObject(0)
     , stopRequested(false)
     , count(0)
     , lastUpdate(0)
 {
-    moveToThread(this);
-    start();
+    thread=new QThread();
+    moveToThread(thread);
+    thread->start();
 }
 
 MusicScanner::~MusicScanner()
 {
+    stop();
 }
 
 void MusicScanner::scan(const QString &folder, const QString &cacheFile, bool readCache, const QSet<FileOnlySong> &existingSongs)
@@ -137,7 +140,8 @@ void MusicScanner::saveCache(const QString &cache, MusicLibraryItemRoot *lib)
 void MusicScanner::stop()
 {
     stopRequested=true;
-    Utils::stopThread(this);
+    Utils::stopThread(thread);
+    thread=0;
 }
 
 void MusicScanner::scanFolder(MusicLibraryItemRoot *library, const QString &topLevel, const QString &f,
@@ -683,7 +687,6 @@ void FsDevice::stopScanner()
     if (!scanner) {
         return;
     }
-    scanner->stop();
     disconnect(scanner, SIGNAL(libraryUpdated(MusicLibraryItemRoot *)), this, SLOT(libraryUpdated(MusicLibraryItemRoot *)));
     disconnect(scanner, SIGNAL(songCount(int)), this, SLOT(songCount(int)));
     disconnect(scanner, SIGNAL(cacheSaved()), this, SLOT(savedCache()));

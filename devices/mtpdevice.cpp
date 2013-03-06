@@ -87,11 +87,15 @@ MtpConnection::MtpConnection(MtpDevice *p)
     size=0;
     used=0;
     LIBMTP_Init();
+    thread=new QThread();
+    moveToThread(thread);
+    thread->start();
 }
 
 MtpConnection::~MtpConnection()
 {
     disconnectFromDevice(false);
+    Utils::stopThread(thread);
 }
 
 MusicLibraryItemRoot * MtpConnection::takeLibrary()
@@ -1046,10 +1050,7 @@ MtpDevice::MtpDevice(DevicesModel *m, Solid::Device &dev)
         devNum = properties.value(QLatin1String("DEVNUM")).toInt();
     }
 
-    thread=new QThread(this);
     connection=new MtpConnection(this);
-    connection->moveToThread(thread);
-    thread->start();
     connect(this, SIGNAL(updateLibrary()), connection, SLOT(updateLibrary()));
     connect(connection, SIGNAL(libraryUpdated()), this, SLOT(libraryUpdated()));
     connect(connection, SIGNAL(progress(int)), this, SLOT(emitProgress(int)));
@@ -1097,9 +1098,9 @@ bool MtpDevice::isConnected() const
 void MtpDevice::stop()
 {
     jobAbortRequested=true;
-    Utils::stopThread(thread);
-    thread=0;
     deleteTemp();
+    connection->deleteLater();
+    connection=0;
 }
 
 void MtpDevice::configure(QWidget *parent)

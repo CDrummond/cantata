@@ -71,6 +71,9 @@ public:
     Action * refreshAct() const { return refreshAction; }
     Action * connectAct() const { return connectAction; }
     Action * disconnectAct() const { return disconnectAction; }
+    #ifdef CDDB_FOUND
+    Action * editAct() const { return editAction; }
+    #endif
 
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img);
@@ -112,7 +115,9 @@ private:
     Action *refreshAction;
     Action *connectAction;
     Action *disconnectAction;
-
+    #ifdef CDDB_FOUND
+    Action *editAction;
+    #endif
     friend class Device;
 };
 

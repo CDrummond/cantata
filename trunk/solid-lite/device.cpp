@@ -38,12 +38,12 @@
 #include <solid-lite/ifaces/storageaccess.h>
 #include <solid-lite/storagedrive.h>
 #include <solid-lite/ifaces/storagedrive.h>
-//#include <solid-lite/opticaldrive.h>
-//#include <solid-lite/ifaces/opticaldrive.h>
+#include <solid-lite/opticaldrive.h>
+#include <solid-lite/ifaces/opticaldrive.h>
 #include <solid-lite/storagevolume.h>
 #include <solid-lite/ifaces/storagevolume.h>
-//#include <solid-lite/opticaldisc.h>
-//#include <solid-lite/ifaces/opticaldisc.h>
+#include <solid-lite/opticaldisc.h>
+#include <solid-lite/ifaces/opticaldisc.h>
 //#include <solid-lite/camera.h>
 //#include <solid-lite/ifaces/camera.h>
 #include <solid-lite/portablemediaplayer.h>
@@ -195,15 +195,15 @@ const Solid::DeviceInterface *Solid::Device::asDeviceInterface(const DeviceInter
             case DeviceInterface::StorageDrive:
                 iface = deviceinterface_cast(Ifaces::StorageDrive, StorageDrive, dev_iface);
                 break;
-            //case DeviceInterface::OpticalDrive:
-            //    iface = deviceinterface_cast(Ifaces::OpticalDrive, OpticalDrive, dev_iface);
-            //    break;
+            case DeviceInterface::OpticalDrive:
+                iface = deviceinterface_cast(Ifaces::OpticalDrive, OpticalDrive, dev_iface);
+                break;
             case DeviceInterface::StorageVolume:
                 iface = deviceinterface_cast(Ifaces::StorageVolume, StorageVolume, dev_iface);
                 break;
-            //case DeviceInterface::OpticalDisc:
-            //    iface = deviceinterface_cast(Ifaces::OpticalDisc, OpticalDisc, dev_iface);
-            //    break;
+            case DeviceInterface::OpticalDisc:
+                iface = deviceinterface_cast(Ifaces::OpticalDisc, OpticalDisc, dev_iface);
+                break;
             //case DeviceInterface::Camera:
             //    iface = deviceinterface_cast(Ifaces::Camera, Camera, dev_iface);
             //    break;

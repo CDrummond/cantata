@@ -258,6 +258,11 @@ SET( CANTATA_UIS
     online/onlineservicespage.ui
 )
 
+find_package( Cdparanoia )
+if (CDPARANOIA_FOUND) 
+    find_package( CDDB )
+endif (CDPARANOIA_FOUND)
+
 if (ENABLE_TAGLIB)
     set(TAGLIB_MIN_VERSION "1.6")
     find_package(Taglib)
@@ -477,6 +482,10 @@ if (TAGLIB_FOUND)
             SET( CANTATA_SRCS ${CANTATA_SRCS} devices/mtpdevice.cpp )
             SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h )
         endif (MTP_FOUND)
+        if (CDDB_FOUND)
+            SET( CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddb.cpp devices/cdparanoia.cpp devices/extractjob.cpp)
+            SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/audiocddevice.h devices/cddb.h devices/extractjob.h)
+        endif (CDDB_FOUND)
 
         SET( CANTATA_SRCS ${CANTATA_SRCS} devices/devicespage.cpp devices/filejob.cpp
                 devices/device.cpp devices/fsdevice.cpp devices/umsdevice.cpp
@@ -572,16 +581,20 @@ ENDIF( ENABLE_KDE_SUPPORT )
 
 if (NOT WIN32)
     install(PROGRAMS dynamic/cantata-dynamic DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/)
+    if (MTP_FOUND)
+        TARGET_LINK_LIBRARIES(cantata ${MTP_LIBRARIES})
+        include_directories(${MTP_INCLUDE_DIR})
+    endif (MTP_FOUND)
+
+    if (CDDB_FOUND)
+        TARGET_LINK_LIBRARIES(cantata ${CDDB_LIBS} ${CDPARANOIA_LIBRARIES})
+        include_directories(${CDDB_INCLUDE_DIR} ${CDPARANOIA_INCLUDE_DIR})
+    endif (CDDB_FOUND)
 endif (NOT WIN32)
 
 add_subdirectory(qtiocompressor)
 TARGET_LINK_LIBRARIES(cantata qtiocompressor)
 include_directories(${CMAKE_BINARY_DIR}/qtiocompressor)
-
-if (MTP_FOUND AND NOT WIN32)
-    TARGET_LINK_LIBRARIES(cantata ${MTP_LIBRARIES})
-    include_directories( ${MTP_INCLUDE_DIR})
-endif (MTP_FOUND AND NOT WIN32)
 
 ADD_SUBDIRECTORY( icons )
 

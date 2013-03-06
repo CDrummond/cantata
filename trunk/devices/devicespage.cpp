@@ -51,6 +51,9 @@
 #include "trackorganiser.h"
 #include "preferencesdialog.h"
 #include "coverdialog.h"
+#ifdef CDDB_FOUND
+#include "audiocddevice.h"
+#endif
 
 DevicesPage::DevicesPage(QWidget *p)
     : QWidget(p)
@@ -95,6 +98,9 @@ DevicesPage::DevicesPage(QWidget *p)
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(DevicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(DevicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshDevice()));
+    #ifdef CDDB_FOUND
+    connect(DevicesModel::self()->editAct(), SIGNAL(triggered()), this, SLOT(editDetails()));
+    #endif
     QMenu *menu=new QMenu(this);
     #ifdef ENABLE_REMOTE_DEVICES
     Action *addRemote=ActionCollection::get()->createAction("adddevice", i18n("Add Device"), "network-server");
@@ -236,6 +242,7 @@ void DevicesPage::controlActions()
     #endif
     bool deviceSelected=false;
     bool busyDevice=false;
+    bool audioCd=false;
     QString udi;
 
     foreach (const QModelIndex &idx, selected) {
@@ -259,8 +266,11 @@ void DevicesPage::controlActions()
             if (!dev->isIdle()) {
                 busyDevice=true;
             }
+            if (Device::AudioCd==dev->devType()) {
+                audioCd=true;
+            }
             #ifdef ENABLE_REMOTE_DEVICES
-            if (Device::RemoteFs==dev->devType()) {
+            else if (Device::RemoteFs==dev->devType()) {
                 remoteDev=true;
             }
             #endif
@@ -278,9 +288,9 @@ void DevicesPage::controlActions()
 
     DevicesModel::self()->configureAct()->setEnabled(!busyDevice && 1==selected.count());
     DevicesModel::self()->refreshAct()->setEnabled(!busyDevice && 1==selected.count());
-    copyAction->setEnabled(!busyDevice && haveTracks && !deviceSelected);
-    syncAction->setEnabled(!busyDevice && deviceSelected && connected && 1==selected.count() && singleUdi);
-    StdActions::self()->deleteSongsAction->setEnabled(!busyDevice && haveTracks && !deviceSelected);
+    copyAction->setEnabled(!busyDevice && haveTracks && (!deviceSelected || audioCd));
+    syncAction->setEnabled(!audioCd && !busyDevice && deviceSelected && connected && 1==selected.count() && singleUdi);
+    StdActions::self()->deleteSongsAction->setEnabled(!audioCd && !busyDevice && haveTracks && !deviceSelected);
     StdActions::self()->editTagsAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     StdActions::self()->replaygainAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
@@ -289,6 +299,9 @@ void DevicesPage::controlActions()
     StdActions::self()->organiseFilesAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction->setEnabled(singleUdi && remoteDev);
+    #endif
+    #ifdef CDDB_FOUND
+    DevicesModel::self()->editAct()->setEnabled(!busyDevice && 1==selected.count() && audioCd && haveTracks && deviceSelected);
     #endif
     menuButton->controlState();
 }
@@ -355,23 +368,29 @@ void DevicesPage::refreshDevice()
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         Device *dev=static_cast<Device *>(item);
         bool full=true;
-        if (dev->childCount() && Device::Mtp!=dev->devType()) {
-            QString udi=dev->udi();
-            switch (MessageBox::questionYesNoCancel(this, i18n("<p>Which type of refresh do you wish to perform?<ul>"
-                                                               "<li>Partial - Only new songs are scanned <i>(quick)</i></li>"
-                                                               "<li>Full - All songs are rescanned <i>(slow)</i></li></ul></p>"),
-                                                    i18n("Refresh"), GuiItem(i18n("Partial")), GuiItem(i18n("Full")))) {
+
+        if (Device::AudioCd==dev->devType()) {
+            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Perform CDDB lookup?"))) {
+                return;
+            }
+        } else {
+            if (dev->childCount() && Device::Mtp!=dev->devType()) {
+                QString udi=dev->udi();
+                switch (MessageBox::questionYesNoCancel(this, i18n("<p>Which type of refresh do you wish to perform?<ul>"
+                                                                   "<li>Partial - Only new songs are scanned <i>(quick)</i></li>"
+                                                                   "<li>Full - All songs are rescanned <i>(slow)</i></li></ul></p>"),
+                                                        i18n("Refresh"), GuiItem(i18n("Partial")), GuiItem(i18n("Full")))) {
                 case MessageBox::Yes:
                     full=false;
                 case MessageBox::No:
                     break;
                 default:
                     return;
+                }
+                // We have to query for device again, as it could have been unplugged whilst the above question dialog was visible...
+                dev=DevicesModel::self()->device(udi);
             }
-            // We have to query for device again, as it could have been unplugged whilst the above question dialog was visible...
-            dev=DevicesModel::self()->device(udi);
         }
-
         if (dev) {
             dev->rescan(full);
         }
@@ -513,4 +532,38 @@ void DevicesPage::updateGenres(const QModelIndex &idx)
 void DevicesPage::updated(const QModelIndex &idx)
 {
     view->setExpanded(proxy.mapFromSource(idx));
+}
+
+void DevicesPage::cddbMatches(const QString &udi, const QList<CddbAlbum> &albums)
+{
+    #ifdef CDDB_FOUND
+    // TODO: Prompt user!
+    int chosen=0;
+    Device *dev=DevicesModel::self()->device(udi);
+    if (dev && Device::AudioCd==dev->devType()) {
+        static_cast<AudioCdDevice *>(dev)->setDetails(albums.at(chosen));
+    }
+    #else
+    Q_UNUSED(udi)
+    Q_UNUSED(albums)
+    #endif
+}
+
+void DevicesPage::editDetails()
+{
+    #ifdef CDDB_FOUND
+    const QModelIndexList selected = view->selectedIndexes();
+    if (1!=selected.size()) {
+        return;
+    }
+
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+
+    if (MusicLibraryItem::Type_Root==item->itemType()) {
+        Device *dev=static_cast<Device *>(item);
+        if (Device::AudioCd==dev->devType()) {
+            // TODO: Show edit details dialog!
+        }
+    }
+    #endif
 }

@@ -83,7 +83,8 @@ public:
     enum DevType {
         Ums,
         Mtp,
-        RemoteFs
+        RemoteFs,
+        AudioCd
     };
 
     #ifdef Q_OS_WIN
@@ -98,8 +99,8 @@ public:
         Q_UNUSED(id)
     }
     #else
-    Device(DevicesModel *m, Solid::Device &dev, bool albumArtistSupport=true)
-        : MusicLibraryItemRoot(dev.product().startsWith(dev.vendor()) ? dev.product() : (dev.vendor()+QChar(' ')+dev.product()), albumArtistSupport)
+    Device(DevicesModel *m, Solid::Device &dev, bool albumArtistSupport=true, bool flat=false)
+        : MusicLibraryItemRoot(dev.product().startsWith(dev.vendor()) ? dev.product() : (dev.vendor()+QChar(' ')+dev.product()), albumArtistSupport, flat)
         , model(m)
         , configured(false)
         , solidDev(dev)

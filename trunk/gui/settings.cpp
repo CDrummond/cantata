@@ -577,6 +577,18 @@ QString Settings::streamUrl()
 }
 #endif
 
+#ifdef CDDB_FOUND
+QString Settings::cddbHost()
+{
+    return GET_STRING("cddbHost", QString("freedb.freedb.org"));
+}
+
+int Settings::cddbPort()
+{
+    return GET_INT("cddbPort", 8880);
+}
+#endif
+
 bool Settings::forceSingleClick()
 {
     return GET_BOOL("forceSingleClick", true);
@@ -909,6 +921,18 @@ void Settings::savePlayStream(bool v)
 void Settings::saveStreamUrl(const QString &v)
 {
     SET_VALUE_MOD(streamUrl)
+}
+#endif
+
+#ifdef CDDB_FOUND
+void Settings::saveCddbHost(const QString &v)
+{
+    SET_VALUE_MOD(cddbHost)
+}
+
+void Settings::saveCddbPort(int v)
+{
+    SET_VALUE_MOD(cddbPort)
 }
 #endif
 

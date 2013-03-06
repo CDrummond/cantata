@@ -38,6 +38,9 @@
 #include "mountpoints.h"
 #include "stdactions.h"
 #include "actioncollection.h"
+#ifdef CDDB_FOUND
+#include "audiocddevice.h"
+#endif
 #include <QMenu>
 #include <QStringList>
 #include <QMimeData>
@@ -51,6 +54,7 @@
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
 #include <solid/storagevolume.h>
+#include <solid/opticaldisc.h>
 K_GLOBAL_STATIC(DevicesModel, instance)
 #else
 #include "solid-lite/device.h"
@@ -60,6 +64,7 @@ K_GLOBAL_STATIC(DevicesModel, instance)
 #include "solid-lite/storageaccess.h"
 #include "solid-lite/storagedrive.h"
 #include "solid-lite/storagevolume.h"
+#include "solid-lite/opticaldisc.h"
 #endif
 
 #include <QDebug>
@@ -102,6 +107,9 @@ DevicesModel::DevicesModel(QObject *parent)
     refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
     connectAction = ActionCollection::get()->createAction("connectdevice", i18n("Connect Device"), Icons::connectIcon);
     disconnectAction = ActionCollection::get()->createAction("disconnectdevice", i18n("Disconnect Device"), Icons::disconnectIcon);
+    #ifdef CDDB_FOUND
+    editAction = ActionCollection::get()->createAction("editcd", i18n("Edit CD Details"), Icons::editIcon);
+    #endif
     updateItemMenu();
 }
 
@@ -196,11 +204,15 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         if (MusicLibraryItem::Type_Song==item->itemType()) {
             MusicLibraryItemSong *song = static_cast<MusicLibraryItemSong *>(item);
-            if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
-                return song->song().artistSong();
+            if (MusicLibraryItem::Type_Artist==song->parentItem()->itemType()) {
+                if (static_cast<MusicLibraryItemAlbum *>(song->parentItem())->isSingleTracks()) {
+                    return song->song().artistSong();
+                } else {
+                    return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
+                                                         !Song::isVariousArtists(song->song().artist));
+                }
             } else {
-                return song->song().trackAndTitleStr(static_cast<MusicLibraryItemArtist *>(song->parentItem()->parentItem())->isVarious() &&
-                                                     !Song::isVariousArtists(song->song().artist));
+                return song->song().trackAndTitleStr(Song::isVariousArtists(song->song().artist));
             }
         } else if(MusicLibraryItem::Type_Album==item->itemType() && MusicLibraryItemAlbum::showDate() &&
                   static_cast<MusicLibraryItemAlbum *>(item)->year()>0) {
@@ -210,6 +222,18 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root:
+            #ifdef CDDB_FOUND
+            if (Device::AudioCd==static_cast<Device *>(item)->devType()) {
+                return 0==item->childCount()
+                    ? item->data()
+                    : item->data()+"\n"+
+                        #ifdef ENABLE_KDE_SUPPORT
+                        i18np("1 Track (%2)", "%1 Tracks (%2)",item->childCount(), Song::formattedTime(static_cast<MusicLibraryItemAlbum *>(item)->totalTime()));
+                        #else
+                        QTP_TRACKS_DURATION_STR(item->childCount(), Song::formattedTime(static_cast<AudioCdDevice *>(item)->totalTime()));
+                        #endif
+            }
+            #endif
             return 0==item->childCount()
                 ? item->data()
                 : item->data()+"\n"+
@@ -238,7 +262,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
                     #endif
         case MusicLibraryItem::Type_Song:
             return data(index, Qt::DisplayRole).toString()+QLatin1String("<br/>")+Song::formattedTime(static_cast<MusicLibraryItemSong *>(item)->time())+
-                   QLatin1String("<br/><small><i>")+fixDevicePath(static_cast<MusicLibraryItemSong *>(item)->song().file)+QLatin1String("</i></small>");
+                    (static_cast<MusicLibraryItemSong *>(item)->song().file.isEmpty()
+                     ? QString()
+                     : QLatin1String("<br/><small><i>")+fixDevicePath(static_cast<MusicLibraryItemSong *>(item)->song().file)+QLatin1String("</i></small>"));
         default: return QVariant();
         }
     case ItemView::Role_ImageSize:
@@ -257,6 +283,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             if (!dev->isConnected()) {
                 QString sub=dev->subText();
                 return i18n("Not Connected")+(sub.isEmpty() ? QString() : (QString(" - ")+sub));
+            }
+            if (Device::AudioCd==dev->devType()) {
+                return dev->subText();
             }
             #ifdef ENABLE_KDE_SUPPORT
             return i18np("1 Artist", "%1 Artists", item->childCount());
@@ -303,10 +332,18 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         if (MusicLibraryItem::Type_Root==item->itemType()) {
             QVariant v;
             QList<Action *> actions;
-            actions << configureAction << refreshAction;
+            if (Device::AudioCd!=static_cast<Device *>(item)->devType()) {
+                actions << configureAction;
+            }
+            actions << refreshAction;
             if (static_cast<Device *>(item)->supportsDisconnect()) {
                 actions << (static_cast<Device *>(item)->isConnected() ? disconnectAction : connectAction);
             }
+            #ifdef CDDB_FOUND
+            if (Device::AudioCd==static_cast<Device *>(item)->devType()) {
+                actions << editAction;
+            }
+            #endif
             v.setValue<QList<Action *> >(actions);
             return v;
         }
@@ -503,19 +540,27 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
 
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
-            // First, sort all artists as they would appear in UI...
-            QList<MusicLibraryItem *> artists=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
-            qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
-            foreach (MusicLibraryItem *a, artists) {
-                const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
-                // Now sort all albums as they would appear in UI...
-                QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(artist)->childItems();
-                qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
-                foreach (MusicLibraryItem *i, artistAlbums) {
-                    const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
-                    foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
-                        if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
-                            devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
+            if (Device::AudioCd==static_cast<Device *>(parent)->devType()) {
+                foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(item)->childItems()) {
+                    if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
+                        devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
+                    }
+                }
+            } else {
+                // First, sort all artists as they would appear in UI...
+                QList<MusicLibraryItem *> artists=static_cast<const MusicLibraryItemContainer *>(item)->childItems();
+                qSort(artists.begin(), artists.end(), MusicLibraryItemArtist::lessThan);
+                foreach (MusicLibraryItem *a, artists) {
+                    const MusicLibraryItemContainer *artist=static_cast<const MusicLibraryItemContainer *>(a);
+                    // Now sort all albums as they would appear in UI...
+                    QList<MusicLibraryItem *> artistAlbums=static_cast<const MusicLibraryItemContainer *>(artist)->childItems();
+                    qSort(artistAlbums.begin(), artistAlbums.end(), MusicLibraryItemAlbum::lessThan);
+                    foreach (MusicLibraryItem *i, artistAlbums) {
+                        const MusicLibraryItemContainer *album=static_cast<const MusicLibraryItemContainer *>(i);
+                        foreach (const MusicLibraryItem *song, static_cast<const MusicLibraryItemContainer *>(album)->childItems()) {
+                            if (MusicLibraryItem::Type_Song==song->itemType() && !devSongs[parent].contains(static_cast<const MusicLibraryItemSong*>(song)->song())) {
+                                devSongs[parent] << fixPath(static_cast<const MusicLibraryItemSong*>(song)->song(), base);
+                            }
                         }
                     }
                 }
@@ -589,9 +634,15 @@ void DevicesModel::deviceAdded(const QString &udi)
 
     Solid::Device device(udi);
     DBUG << "Solid device added udi:" << device.udi() << "product:" << device.product() << "vendor:" << device.vendor();
-    Solid::StorageAccess *ssa = device.as<Solid::StorageAccess>();
+    Solid::StorageAccess *ssa =0;
+    #ifdef CDDB_FOUND
+    Solid::OpticalDisc * opt = device.as<Solid::OpticalDisc>();
 
-    if (ssa) {
+    if (opt && (opt->availableContent()&Solid::OpticalDisc::Audio)) {
+        DBUG << "device is audiocd";
+    } else
+    #endif
+    if ((ssa=device.as<Solid::StorageAccess>())) {
         if ((!device.parent().as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.parent().as<Solid::StorageDrive>()->bus()) &&
             (!device.as<Solid::StorageDrive>() || Solid::StorageDrive::Usb!=device.as<Solid::StorageDrive>()->bus())) {
             DBUG << "Found Solid::StorageAccess that is not usb, skipping";
@@ -615,6 +666,9 @@ void DevicesModel::deviceAdded(const QString &udi)
 
 void DevicesModel::addLocalDevice(const QString &udi)
 {
+    if (device(udi)) {
+        return;
+    }
     Device *dev=Device::create(this, udi);
     if (dev) {
         beginInsertRows(QModelIndex(), devices.count(), devices.count());
@@ -807,6 +861,23 @@ void DevicesModel::loadLocal()
         }
     }
 
+    #ifdef CDDB_FOUND
+    deviceList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDisc);
+    foreach (const Solid::Device &device, deviceList) {
+        if (existingUdis.contains(device.udi())) {
+            existingUdis.remove(device.udi());
+            continue;
+        }
+        DBUG << "Solid::OpticalDisc with udi:" << device.udi() << "product:" << device.product() << "vendor:" << device.vendor();
+        const Solid::OpticalDisc * opt = device.as<Solid::OpticalDisc>();
+        if (opt && (opt->availableContent()&Solid::OpticalDisc::Audio)) {
+            addLocalDevice(device.udi());
+        } else {
+            DBUG << "Solid::OpticalDisc that is not audio, skipping";
+        }
+    }
+    #endif
+
     // Remove any previous MTP/UMS devices that were not listed above.
     // This is to fix BUG:127
     foreach (const QString &udi, existingUdis) {
@@ -890,7 +961,9 @@ void DevicesModel::updateItemMenu()
         QMap<QString, const Device *> items;
 
         foreach (const Device *d, devices) {
-            items.insert(d->data(), d);
+            if (Device::AudioCd!=d->devType()) {
+                items.insert(d->data(), d);
+            }
         }
 
         QStringList keys=items.keys();

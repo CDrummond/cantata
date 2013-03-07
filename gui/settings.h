@@ -152,6 +152,7 @@ public:
     QString streamUrl();
     #endif
     #ifdef CDDB_FOUND
+    bool cddbAuto();
     QString cddbHost();
     int cddbPort();
     #endif
@@ -218,6 +219,7 @@ public:
     void saveStreamUrl(const QString &v);
     #endif
     #ifdef CDDB_FOUND
+    void saveCddbAuto(bool v);
     void saveCddbHost(const QString &v);
     void saveCddbPort(int v);
     #endif

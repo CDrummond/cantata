@@ -47,15 +47,6 @@
 #include "icon.h"
 #include "config.h"
 
-static QStringList reverseList(const QStringList &orig)
-{
-    QStringList rev;
-    foreach (const QString &s, orig) {
-        rev.prepend(s);
-    }
-    return rev;
-}
-
 const QLatin1String PlayQueueModel::constMoveMimeType("cantata/move");
 const QLatin1String PlayQueueModel::constFileNameMimeType("cantata/filename");
 const QLatin1String PlayQueueModel::constUriMimeType("text/uri-list");
@@ -500,12 +491,12 @@ bool PlayQueueModel::dropMimeData(const QMimeData *data,
         return true;
     } else if (data->hasFormat(constFileNameMimeType)) {
         //Act on moves from the music library and dir view
-        addItems(reverseList(decode(*data, constFileNameMimeType)), row, false, 0);
+        addItems(decode(*data, constFileNameMimeType), row, false, 0);
         return true;
     }
     #ifdef TAGLIB_FOUND
     else if(data->hasFormat(constUriMimeType)/* && MPDConnection::self()->getDetails().isLocal()*/) {
-        QStringList orig=reverseList(decode(*data, constUriMimeType));
+        QStringList orig=decode(*data, constUriMimeType);
         QStringList useable;
         bool haveHttp=HttpServer::self()->isAlive();
         bool alwaysUseHttp=haveHttp && Settings::self()->alwaysUseHttp();
@@ -560,7 +551,7 @@ void PlayQueueModel::addItems(const QStringList &items, int row, bool replace, q
 void PlayQueueModel::addFiles(const QStringList &filenames, int row, bool replace, quint8 priority)
 {
     //Check for empty playlist
-    if (replace || songs.isEmpty() || (1==songs.size() && songs.at(0).artist.isEmpty() && songs.at(0).album.isEmpty() && songs.at(0).title.isEmpty())) {
+    if (replace || songs.isEmpty()) {
         emit filesAdded(filenames, 0, 0, replace, priority);
     } else {
         if (row < 0) {

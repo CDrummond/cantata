@@ -43,6 +43,9 @@ class HttpServerSettings;
 #endif
 class MPDConnectionDetails;
 class CacheSettings;
+#ifdef CDDB_FOUND
+class AudioCdSettings;
+#endif
 
 class PreferencesDialog : public Dialog
 {
@@ -80,6 +83,9 @@ private:
     ShortcutsSettingsPage *shortcuts;
     #endif
     CacheSettings *cache;
+    #ifdef CDDB_FOUND
+    AudioCdSettings *audiocd;
+    #endif
 };
 
 #endif

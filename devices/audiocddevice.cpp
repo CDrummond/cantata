@@ -31,6 +31,7 @@
 #include "extractjob.h"
 #include "mpdconnection.h"
 #include "covers.h"
+#include "settings.h"
 #include <QDir>
 
 QString AudioCdDevice::coverUrl(QString udi)
@@ -64,7 +65,9 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
         lookupInProcess=true;
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
-        emit lookup();
+        if (Settings::self()->cddbAuto()) {
+            emit lookup();
+        }
     }
 }
 

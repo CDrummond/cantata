@@ -483,10 +483,11 @@ if (TAGLIB_FOUND)
             SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/mtpdevice.h )
         endif (MTP_FOUND)
         if (CDDB_FOUND)
-            SET( CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddb.cpp devices/cddbselectiondialog.cpp devices/cdparanoia.cpp
-                 devices/extractjob.cpp devices/albumdetailsdialog.cpp)
-            SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/audiocddevice.h devices/cddb.h devices/extractjob.h devices/albumdetailsdialog.h)
-            SET( CANTATA_UIS ${CANTATA_UIS} devices/albumdetails.ui)
+            SET( CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddb.cpp devices/cddbselectiondialog.cpp
+                 devices/cdparanoia.cpp devices/audiocdsettings.cpp devices/extractjob.cpp devices/albumdetailsdialog.cpp)
+            SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/audiocddevice.h devices/cddb.h devices/extractjob.h
+                 devices/albumdetailsdialog.h)
+            SET( CANTATA_UIS ${CANTATA_UIS} devices/albumdetails.ui devices/audiocdsettings.ui)
         endif (CDDB_FOUND)
 
         SET( CANTATA_SRCS ${CANTATA_SRCS} devices/devicespage.cpp devices/filejob.cpp

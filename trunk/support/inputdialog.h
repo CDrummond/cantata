@@ -40,15 +40,8 @@ namespace InputDialog
         #endif
     }
 
-    inline int getInteger(const QString &caption, const QString &label, int value=0, int minValue=INT_MIN, int maxValue=INT_MAX,
-                          int step=1, int base=10, bool *ok=0, QWidget *parent=0) {
-        #ifdef ENABLE_KDE_SUPPORT
-        return KInputDialog::getInteger(caption, label, value, minValue, maxValue, step, base, ok, parent);
-        #else
-        Q_UNUSED(base)
-        return QInputDialog::getInt(parent, caption, label, value, minValue, maxValue, step, ok);
-        #endif
-    }
+    extern int getInteger(const QString &caption, const QString &label, int value=0, int minValue=INT_MIN, int maxValue=INT_MAX,
+                          int step=1, int base=10, bool *ok=0, QWidget *parent=0);
 
     inline QString getPassword(const QString &value=QString(), bool *ok=0, QWidget *parent=0) {
         return QInputDialog::getText(parent, i18n("Password"), i18n("Please enter password:"), QLineEdit::Password, value, ok);

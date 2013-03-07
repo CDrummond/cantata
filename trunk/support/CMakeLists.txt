@@ -9,6 +9,7 @@ SET( SUPPORT_SRCS
     utils.cpp
     spinner.cpp
     messagebox.cpp
+    inputdialog.cpp
 )
 
 SET( SUPPORT_MOC_HDRS

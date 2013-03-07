@@ -683,6 +683,12 @@ void DevicesModel::addLocalDevice(const QString &udi)
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
         connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
+        #ifdef CDDB_FOUND
+        if (Device::AudioCd==dev->devType()) {
+            connect(static_cast<AudioCdDevice *>(dev), SIGNAL(matches(const QString &, const QList<CddbAlbum> &)),
+                    SIGNAL(matches(const QString &, const QList<CddbAlbum> &)));
+        }
+        #endif
         updateItemMenu();
     }
 }

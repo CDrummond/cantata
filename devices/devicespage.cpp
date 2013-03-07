@@ -102,6 +102,8 @@ DevicesPage::DevicesPage(QWidget *p)
     connect(DevicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshDevice()));
     #ifdef CDDB_FOUND
     connect(DevicesModel::self()->editAct(), SIGNAL(triggered()), this, SLOT(editDetails()));
+    connect(DevicesModel::self(), SIGNAL(matches(const QString &, const QList<CddbAlbum> &)),
+            SLOT(cddbMatches(const QString &, const QList<CddbAlbum> &)));
     #endif
     QMenu *menu=new QMenu(this);
     #ifdef ENABLE_REMOTE_DEVICES

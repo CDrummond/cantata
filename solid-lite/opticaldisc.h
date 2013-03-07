@@ -21,9 +21,9 @@
 #ifndef SOLID_OPTICALDISC_H
 #define SOLID_OPTICALDISC_H
 
-#include <solid/solid_export.h>
+#include <solid-lite/solid_export.h>
 
-#include <solid/storagevolume.h>
+#include <solid-lite/storagevolume.h>
 
 namespace Solid
 {

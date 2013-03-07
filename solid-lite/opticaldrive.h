@@ -24,10 +24,10 @@
 #include <QtCore/QList>
 #include <QtCore/QVariant>
 
-#include <solid/solid_export.h>
-#include <solid/solidnamespace.h>
+#include <solid-lite/solid_export.h>
+#include <solid-lite/solidnamespace.h>
 
-#include <solid/storagedrive.h>
+#include <solid-lite/storagedrive.h>
 
 namespace Solid
 {

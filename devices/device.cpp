@@ -50,10 +50,12 @@
 #include <solid/portablemediaplayer.h>
 #include <solid/storageaccess.h>
 #include <solid/storagedrive.h>
+#include <solid/opticaldisc.h>
 #else // ENABLE_KDE_SUPPORT
 #include "solid-lite/portablemediaplayer.h"
 #include "solid-lite/storageaccess.h"
 #include "solid-lite/storagedrive.h"
+#include "solid-lite/opticaldisc.h"
 #endif // ENABLE_KDE_SUPPORT
 #endif // Q_OS_WIN
 

@@ -53,6 +53,8 @@
 #include "coverdialog.h"
 #ifdef CDDB_FOUND
 #include "audiocddevice.h"
+#include "albumdetailsdialog.h"
+#include "cddbselectiondialog.h"
 #endif
 
 DevicesPage::DevicesPage(QWidget *p)
@@ -301,7 +303,7 @@ void DevicesPage::controlActions()
     forgetDeviceAction->setEnabled(singleUdi && remoteDev);
     #endif
     #ifdef CDDB_FOUND
-    DevicesModel::self()->editAct()->setEnabled(!busyDevice && 1==selected.count() && audioCd && haveTracks && deviceSelected);
+    DevicesModel::self()->editAct()->setEnabled(!AlbumDetailsDialog::instanceCount() && !busyDevice && 1==selected.count() && audioCd && haveTracks && deviceSelected);
     #endif
     menuButton->controlState();
 }
@@ -537,11 +539,24 @@ void DevicesPage::updated(const QModelIndex &idx)
 void DevicesPage::cddbMatches(const QString &udi, const QList<CddbAlbum> &albums)
 {
     #ifdef CDDB_FOUND
-    // TODO: Prompt user!
     int chosen=0;
     Device *dev=DevicesModel::self()->device(udi);
     if (dev && Device::AudioCd==dev->devType()) {
-        static_cast<AudioCdDevice *>(dev)->setDetails(albums.at(chosen));
+        if (Device::AudioCd==dev->devType()) {
+            CddbSelectionDialog *dlg=new CddbSelectionDialog(this);
+            chosen=dlg->select(albums);
+            if (chosen<0 || chosen>=albums.count()) {
+                chosen=0;
+            }
+        }
+    }
+
+    // Need to get device again, as it may have been removed!
+    dev=DevicesModel::self()->device(udi);
+    if (dev && Device::AudioCd==dev->devType()) {
+        if (Device::AudioCd==dev->devType()) {
+            static_cast<AudioCdDevice *>(dev)->setDetails(albums.at(chosen));
+        }
     }
     #else
     Q_UNUSED(udi)
@@ -552,6 +567,9 @@ void DevicesPage::cddbMatches(const QString &udi, const QList<CddbAlbum> &albums
 void DevicesPage::editDetails()
 {
     #ifdef CDDB_FOUND
+    if (AlbumDetailsDialog::instanceCount()) {
+        return;
+    }
     const QModelIndexList selected = view->selectedIndexes();
     if (1!=selected.size()) {
         return;
@@ -562,7 +580,8 @@ void DevicesPage::editDetails()
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         Device *dev=static_cast<Device *>(item);
         if (Device::AudioCd==dev->devType()) {
-            // TODO: Show edit details dialog!
+            AlbumDetailsDialog *dlg=new AlbumDetailsDialog(this);
+            dlg->show(static_cast<AudioCdDevice *>(dev));
         }
     }
     #endif

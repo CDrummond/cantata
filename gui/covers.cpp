@@ -63,6 +63,7 @@ K_GLOBAL_STATIC(Covers, instance)
 
 const QLatin1String Covers::constLastFmApiKey("11172d35eb8cc2fd33250a9e45a2d486");
 const QLatin1String Covers::constCoverDir("covers/");
+const QLatin1String Covers::constCddaCoverDir("cdda/");
 const QLatin1String Covers::constFileName("cover");
 static const QStringList   constExtensions=QStringList() << ".jpg" << ".png";
 static const QLatin1String constArtistImage("artist");
@@ -254,23 +255,25 @@ static bool fExists(const QString &dir, const QString &file)
     return QFile::exists(dir+file);
 }
 
-static void fCopy(const QString &sDir, const QString &sFile, const QString &dDir, const QString &dFile)
+static bool fCopy(const QString &sDir, const QString &sFile, const QString &dDir, const QString &dFile)
 {
-    QFile::copy(sDir+sFile, dDir+dFile);
+    return QFile::copy(sDir+sFile, dDir+dFile);
 }
 
-static void copyImage(const QString &sourceDir, const QString &destDir, const QString &coverFile, const QString &destName, unsigned short maxSize)
+bool Covers::copyImage(const QString &sourceDir, const QString &destDir, const QString &coverFile, const QString &destName, unsigned short maxSize)
 {
     QImage img(sourceDir+coverFile);
+    bool ok=false;
     if (maxSize>0 && (img.width()>maxSize || img.height()>maxSize)) { // Need to scale image...
         img=img.scaled(QSize(maxSize, maxSize), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        img.save(destDir+destName);
+        ok=img.save(destDir+destName);
     } else if (destName.right(4)!=coverFile.right(4)) { // Diff extensions, so need to convert image type...
-        img.save(destDir+destName);
+        ok=img.save(destDir+destName);
     } else { // no scaling, and same image type, so we can just copy...
-        fCopy(sourceDir, coverFile, destDir, destName);
+        ok=fCopy(sourceDir, coverFile, destDir, destName);
     }
     Utils::setFilePerms(destDir+destName);
+    return ok;
 }
 
 bool Covers::copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name, unsigned short maxSize)
@@ -684,6 +687,25 @@ void Covers::download(const Song &song)
     }
 }
 
+#ifdef CDDB_FOUND
+void Covers::cleanCdda()
+{
+    QString dir = Utils::cacheDir(Covers::constCddaCoverDir, false);
+    if (!dir.isEmpty()) {
+        QDir d(dir);
+        QStringList entries=d.entryList(QDir::Files|QDir::NoSymLinks|QDir::NoDotAndDotDot);
+
+        foreach (const QString &f, entries) {
+            if (f.endsWith(".jpg") || f.endsWith(".png")) {
+                QFile::remove(dir+f);
+            }
+        }
+        d.cdUp();
+        d.rmdir(dir);
+    }
+}
+#endif
+
 void Covers::donwloadOnlineImage(Job &job)
 {
     job.type=JobOnline;
@@ -921,6 +943,17 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     QString mimeType=typeFromRaw(raw);
     QString extension=mimeType.isEmpty() ? constExtensions.at(0) : mimeType;
     QString savedName;
+
+    if (job.song.file.startsWith(("cdda://"))) {
+        QString dir = Utils::cacheDir(constCddaCoverDir, true);
+        if (!dir.isEmpty()) {
+            savedName=save(mimeType, extension, dir+job.song.file.mid(7), img, raw);
+            if (!savedName.isEmpty()) {
+                return savedName;
+            }
+        }
+        return QString();
+    }
 
     if (JobOnline==job.type) {
         // ONLINE: Cache dir is saved in Song.name

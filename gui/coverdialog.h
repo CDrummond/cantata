@@ -28,6 +28,7 @@
 #include "dialog.h"
 #include "song.h"
 #include "ui_coverdialog.h"
+#include "covers.h"
 #include <QSet>
 #include <QList>
 
@@ -97,8 +98,11 @@ public:
     CoverDialog(QWidget *parent);
     virtual ~CoverDialog();
 
-    void show(const Song &s);
+    void show(const Song &s, const Covers::Image &current=Covers::Image());
     int imageSize() const { return iSize; }
+
+Q_SIGNALS:
+    void selectedCover(const QImage &img, const QString &fileName);
 
 private Q_SLOTS:
     void queryJobFinished();

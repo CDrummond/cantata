@@ -21,52 +21,47 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef CANTATA_CDDB_H
-#define CANTATA_CDDB_H
+#ifndef ALBUMDETAILSDIALOG_H
+#define ALBUMDETAILSDIALOG_H
 
-#include <QObject>
-#include <QString>
+#include "ui_albumdetails.h"
+#include "dialog.h"
 #include "song.h"
-#include "config.h"
+#include "covers.h"
 
-struct CddbAlbum {
-    QString name;
-    QString artist;
-    QString genre;
-    int year;
-    int disc;
-    QList<Song> tracks;
-};
+class AudioCdDevice;
+class QTreeWidgetItem;
 
-#ifdef CDDB_FOUND
-class QThread;
-typedef struct cddb_disc_s cddb_disc_t;
-
-class Cddb : public QObject
+class AlbumDetailsDialog : public Dialog, Ui::AlbumDetails
 {
     Q_OBJECT
 
 public:
-    static QString dataTrack();
+    static int instanceCount();
 
-    Cddb(const QString &device);
-    ~Cddb();
+    AlbumDetailsDialog(QWidget *parent);
+    virtual ~AlbumDetailsDialog();
+    void show(AudioCdDevice *dev);
 
-public Q_SLOTS:
-    void readDisc();
-    void lookup();
-
-Q_SIGNALS:
-    void error(const QString &error);
-    void initialDetails(const CddbAlbum &);
-    void matches(const QList<CddbAlbum> &);
+private Q_SLOTS:
+    void hideArtistColumn(bool hide);
+    void applyVa();
+    void revertVa();
+    void capitalise();
+    void adjustTrackNumbers();
+    void coverSelected(const QImage &img, const QString &fileName);
 
 private:
-    QThread *thread;
-    QString dev;
-    cddb_disc_t *disc;
+    void slotButtonClicked(int button);
+    Song toSong(QTreeWidgetItem *i);
+    void update(QTreeWidgetItem *i, const Song &s);
+    void setCover();
+    bool eventFilter(QObject *object, QEvent *event);
+
+private:
+    QString udi;
+    bool pressed;
+    Covers::Image coverImage;
 };
-#endif
 
 #endif
-

@@ -28,6 +28,7 @@
 #include "config.h"
 #include "remotefsdevice.h"
 #include "actionmodel.h"
+#include "cddb.h"
 
 class QMimeData;
 class Device;
@@ -103,6 +104,7 @@ Q_SIGNALS:
     void addToDevice(const QString &udi);
     void error(const QString &text);
     void updated(const QModelIndex &idx);
+    void matches(const QString &udi, const QList<CddbAlbum> &albums);
 
 private:
     QList<Device *> devices;

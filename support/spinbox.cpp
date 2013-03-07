@@ -222,7 +222,8 @@ bool SpinBox::eventFilter(QObject *obj, QEvent *event)
             if (QEvent::FocusIn==event->type() || QEvent::FocusOut==event->type()) {
                 // focus in/out on spin just cause this whole widget to be repainted - therefore focus is drawn around whole widget...
                 repaint();
-                return true;
+                // Dont stop here, need to pass event down to spin widget - so that the | bar appears.
+                //return true;
             } else if (QEvent::Paint==event->type()) {
                 // ignore paint events...
                 return true;

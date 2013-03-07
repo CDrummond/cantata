@@ -23,7 +23,7 @@
 
 #include "cddbselectiondialog.h"
 #include "localize.h"
-#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QComboBox>
 
@@ -31,34 +31,32 @@ CddbSelectionDialog::CddbSelectionDialog(QWidget *parent)
     : Dialog(parent)
 {
     QWidget *wid = new QWidget(this);
-    QHBoxLayout *layout = new QHBoxLayout(wid);
+    QVBoxLayout *layout = new QVBoxLayout(wid);
 
     combo=new QComboBox(wid);
-    layout->addWidget(new QLabel(i18n("Multiple matches were found for the inserted disc. Please choose the relevant one from below:"), wid));
+    QLabel *label=new QLabel(i18n("Multiple matches were found. "
+                                  "Please choose the relevant one from below:"), wid);
+    label->setWordWrap(true);
+    layout->addWidget(label);
     layout->addWidget(combo);
+    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding));
 
     setCaption(i18n("Disc Selection"));
     setMainWidget(wid);
     setButtons(Ok);
-    resize(400, 100);
 }
 
 int CddbSelectionDialog::select(const QList<CddbAlbum> &albums)
 {
     combo->clear();
     foreach (const CddbAlbum &a, albums) {
-        quint32 totalTime=0;
-        foreach (const Song &s, a.tracks) {
-            totalTime+=s.time;
-        }
-
         if (a.disc>0) {
-            combo->addItem(QString("%1 %2 %3 %4 (%5)").arg(a.artist).arg(a.name).arg(a.year).arg(i18n("Disc %1").arg(a.disc)).arg(Song::formattedTime(totalTime)));
+            combo->addItem(QString("%1 -%2 %3 (%4)").arg(a.artist).arg(a.name).arg(i18n("Disc %1").arg(a.disc)).arg(a.year));
         } else {
-            combo->addItem(QString("%1 %2 %3 (%4)").arg(a.artist).arg(a.name).arg(a.year).arg(Song::formattedTime(totalTime)));
+            combo->addItem(QString("%1 - %2 (%3)").arg(a.artist).arg(a.name).arg(a.year));
         }
     }
-    
+
     exec();
     return combo->currentIndex();
 }

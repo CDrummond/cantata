@@ -185,6 +185,12 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
+            #ifdef CDDB_FOUND
+            if (Device::AudioCd==static_cast<Device *>(item)->devType() &&
+                !static_cast<AudioCdDevice *>(item)->cover().img.isNull()) {
+                return static_cast<AudioCdDevice *>(item)->cover().img;
+            }
+            #endif
             QString iconName = static_cast<MusicLibraryItemRoot *>(item)->icon();
             return QIcon::fromTheme(iconName.isEmpty() ? QLatin1String("multimedia-player") : iconName);
         }

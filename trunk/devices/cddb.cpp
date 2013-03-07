@@ -84,12 +84,12 @@ static CddbAlbum toAlbum(cddb_disc_t *disc)
             }
 
             Song track;
-            track.id=track.track;
             track.track=cddb_track_get_number(trk);
             track.title=cddb_track_get_title(trk);
             track.artist=cddb_track_get_artist(trk);
             track.albumartist=album.artist;
             track.album=album.name;
+            track.id=track.track;
             track.time=cddb_track_get_length(trk);
             track.file=QString("%1.wav").arg(track.track);
             track.year=album.year;

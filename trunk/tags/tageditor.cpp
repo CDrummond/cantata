@@ -484,18 +484,18 @@ void TagEditor::adjustTrackNumbers()
 {
     bool isAll=0==currentSongIndex && original.count()>1;
     bool ok=false;
-    int inc=InputDialog::getInteger(i18n("Adjust Track Numbers"), isAll ? i18n("Increment the value of each track number by:")
-                                                                        : i18n("Increment track number by:"),
-                                    0, 1, 500, 1, 10, &ok, this);
+    int adj=InputDialog::getInteger(i18n("Adjust Track Numbers"), isAll ? i18n("Adjust the value of each track number by:")
+                                                                        : i18n("Adjust track number by:"),
+                                    0, -500, 500, 1, 10, &ok, this);
 
-    if (!ok || inc<=0) {
+    if (!ok || 0==adj) {
         return;
     }
 
     if (isAll) {
         for (int i=0; i<edited.count(); ++i) {
             Song s=edited.at(i);
-            s.track+=inc;
+            s.track+=adj;
             edited.replace(i, s);
             updateEditedStatus(i);
             if (i==currentSongIndex) {
@@ -504,7 +504,7 @@ void TagEditor::adjustTrackNumbers()
         }
     } else {
         Song s=edited.at(currentSongIndex);
-        s.track+=inc;
+        s.track+=adj;
         edited.replace(currentSongIndex, s);
         updateEditedStatus(currentSongIndex);
         setSong(s);

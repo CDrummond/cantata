@@ -106,9 +106,11 @@ public:
     static const QLatin1String constLastFmApiKey;
     static const QLatin1String constCoverDir;
     static const QLatin1String constFileName;
+    static const QLatin1String constCddaCoverDir;
 
     static Covers * self();
     static bool isCoverFile(const QString &file);
+    static bool copyImage(const QString &sourceDir, const QString &destDir, const QString &coverFile, const QString &destName, unsigned short maxSize=0);
     static bool copyCover(const Song &song, const QString &sourceDir, const QString &destDir, const QString &name=QString(), unsigned short maxSize=0);
     static QStringList standardNames();
     static QString encodeName(QString name);
@@ -122,6 +124,10 @@ public:
     void requestCover(const Song &song, bool urgent=false);
     void setSaveInMpdDir(bool s);
     void emitCoverUpdated(const Song &song, const QImage &img, const QString &file);
+
+    #ifdef CDDB_FOUND
+    void cleanCdda();
+    #endif
 
 public Q_SLOTS:
     void download(const Song &song);

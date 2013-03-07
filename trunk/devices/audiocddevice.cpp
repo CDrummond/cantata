@@ -30,12 +30,24 @@
 #include "utils.h"
 #include "extractjob.h"
 #include "mpdconnection.h"
+#include "covers.h"
 #include <QDir>
+
+QString AudioCdDevice::coverUrl(QString udi)
+{
+    udi.replace(" ", "_");
+    udi.replace("\n", "_");
+    udi.replace("\t", "_");
+    udi.replace("/", "_");
+    udi.replace(":", "_");
+    return QLatin1String("cdda://")+udi;
+}
 
 AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
     : Device(m, dev, false, true)
-    , disc(dev.as<Solid::OpticalDisc>())
     , cddb(0)
+    , year(0)
+    , disc(0)
     , time(0xFFFFFFFF)
     , lookupInProcess(false)
 {
@@ -50,6 +62,8 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
         detailsString=i18n("Reading disc");
         setStatusMessage(detailsString);
         lookupInProcess=true;
+        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
         emit lookup();
     }
 }
@@ -122,7 +136,7 @@ void AudioCdDevice::copySongTo(const Song &s, const QString &baseDir, const QStr
     }
 
     currentSong=s;
-    ExtractJob *job=new ExtractJob(encoder, mpdOpts.transcoderValue, source, dest, currentSong);
+    ExtractJob *job=new ExtractJob(encoder, mpdOpts.transcoderValue, source, dest, currentSong, copyCover ? coverImage.fileName : QString());
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     job->start();
@@ -178,9 +192,14 @@ void AudioCdDevice::copySongToResult(int status)
 
 void AudioCdDevice::setDetails(const CddbAlbum &a)
 {
+    bool differentAlbum=album!=a.name || artist!=a.artist;
     lookupInProcess=false;
     setData(a.artist);
-    albumName=a.name;
+    album=a.name;
+    artist=a.artist;
+    genre=a.genre;
+    year=a.year;
+    disc=a.disc;
     update=new MusicLibraryItemRoot();
     int totalDuration=0;
     foreach (const Song &s, a.tracks) {
@@ -194,6 +213,13 @@ void AudioCdDevice::setDetails(const CddbAlbum &a)
     detailsString=QTP_TRACKS_DURATION_STR(a.tracks.count(), Song::formattedTime(totalDuration));
     #endif
     emit updating(udi(), false);
+    if (differentAlbum) {
+        Song s;
+        s.artist=artist;
+        s.album=album;
+        s.file=AudioCdDevice::coverUrl(udi());
+        Covers::self()->requestCover(s);
+    }
 }
 
 void AudioCdDevice::cddbMatches(const QList<CddbAlbum> &albums)
@@ -204,5 +230,13 @@ void AudioCdDevice::cddbMatches(const QList<CddbAlbum> &albums)
     } else if (albums.count()>1) {
         // More than 1 match, so prompt user!
         emit matches(udi(), albums);
+    }
+}
+
+void AudioCdDevice::setCover(const Song &song, const QImage &img, const QString &file)
+{
+    if(song.file.startsWith("cdda://") && song.artist==artist && song.album==album) {
+        coverImage=Covers::Image(img, file);
+        updateStatus();
     }
 }

@@ -25,15 +25,15 @@
 #define AUDIOCDDEVICE_H
 
 #include "device.h"
+#include "covers.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/block.h>
-#include <solid/opticaldisc.h>
 #include <solid/opticaldrive.h>
 #else
 #include "solid-lite/block.h"
-#include "solid-lite/opticaldisc.h"
 #include "solid-lite/opticaldrive.h"
 #endif
+#include <QImage>
 
 class Cddb;
 class CddbAlbum;
@@ -43,6 +43,8 @@ class AudioCdDevice : public Device
     Q_OBJECT
 
 public:
+    static QString coverUrl(QString udi);
+
     AudioCdDevice(DevicesModel *m, Solid::Device &dev);
     virtual ~AudioCdDevice();
 
@@ -63,8 +65,15 @@ public:
     qint64 freeSpace() { return 1.0; }
     DevType devType() const { return AudioCd; }
     void saveOptions() { }
-    QString subText() { return albumName; }
+    QString subText() { return album; }
     quint32 totalTime();
+
+    QString albumName() const { return album; }
+    QString albumArtist() const { return artist; }
+    QString albumGenre() const { return genre; }
+    int albumDisc() const { return disc; }
+    int albumYear() const { return year; }
+    const Covers::Image & cover() const { return coverImage; }
 
 Q_SIGNALS:
     void lookup();
@@ -75,16 +84,21 @@ public Q_SLOTS:
     void copySongToResult(int status);
     void setDetails(const CddbAlbum &a);
     void cddbMatches(const QList<CddbAlbum> &albums);
+    void setCover(const Song &song, const QImage &img, const QString &file);
 
 private:
-    Solid::OpticalDisc *disc;
     Solid::OpticalDrive *drive;
     Solid::Block *block;
     Cddb *cddb;
     QString detailsString;
-    QString albumName;
+    QString album;
+    QString artist;
+    QString genre;
+    int year;
+    int disc;
     quint32 time;
     bool lookupInProcess;
+    Covers::Image coverImage;
 };
 
 #endif

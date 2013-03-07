@@ -184,7 +184,12 @@ public:
             image = index.data(Qt::DecorationRole);
         }
 
-        QPixmap pix = QVariant::Pixmap==image.type() ? image.value<QPixmap>() : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
+        QPixmap pix = QVariant::Pixmap==image.type()
+                        ? image.value<QPixmap>()
+                        : QVariant::Image==image.type()
+                            ? QPixmap::fromImage(image.value<QImage>().scaled(listDecorationSize, listDecorationSize,
+                                                                              Qt::KeepAspectRatio, Qt::SmoothTransformation))
+                            : image.value<QIcon>().pixmap(listDecorationSize, listDecorationSize);
         bool oneLine = childText.isEmpty();
         ActionPos actionPos = view && QListView::IconMode==view->viewMode() ? AP_VTop : AP_HMiddle;
         bool rtl = Qt::RightToLeft==QApplication::layoutDirection();
@@ -344,7 +349,15 @@ public:
             }
             QRect r(option.rect);
             r.adjust(4, 0, -4, 0);
-            QPixmap pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
+
+            QVariant image=index.data(Qt::DecorationRole);
+            QPixmap pix = QVariant::Pixmap==image.type()
+                            ? image.value<QPixmap>()
+                            : QVariant::Image==image.type()
+                                ? QPixmap::fromImage(image.value<QImage>().scaled(treeDecorationSize, treeDecorationSize,
+                                                                                  Qt::KeepAspectRatio, Qt::SmoothTransformation))
+                                : image.value<QIcon>().pixmap(treeDecorationSize, treeDecorationSize);
+
             if (gtk && pix.isNull()) {
                 QVariant image = index.data(ItemView::Role_Image);
                 if (!image.isNull()) {

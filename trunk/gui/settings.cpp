@@ -578,6 +578,11 @@ QString Settings::streamUrl()
 #endif
 
 #ifdef CDDB_FOUND
+bool Settings::cddbAuto()
+{
+    return GET_BOOL("cddbAuto", true);
+}
+
 QString Settings::cddbHost()
 {
     return GET_STRING("cddbHost", QString("freedb.freedb.org"));
@@ -925,6 +930,11 @@ void Settings::saveStreamUrl(const QString &v)
 #endif
 
 #ifdef CDDB_FOUND
+void Settings::saveCddbAuto(bool v)
+{
+    SET_VALUE_MOD(cddbAuto)
+}
+
 void Settings::saveCddbHost(const QString &v)
 {
     SET_VALUE_MOD(cddbHost)

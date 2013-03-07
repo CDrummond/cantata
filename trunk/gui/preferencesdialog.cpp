@@ -44,6 +44,9 @@
 #include "shortcutssettingspage.h"
 #include "actioncollection.h"
 #endif
+#ifdef CDDB_FOUND
+#include "audiocdsettings.h"
+#endif
 
 static int iCount=0;
 
@@ -64,9 +67,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     playback = new PlaybackSettings(widget);
     files = new FileSettings(widget);
     interface = new InterfaceSettings(widget);
-    #ifdef TAGLIB_FOUND
-    http = new HttpServerSettings(widget);
-    #endif
     lyrics = new LyricSettings(widget);
     cache = new CacheSettings(widget);
     server->load();
@@ -74,9 +74,6 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     playback->load();
     files->load();
     interface->load();
-    #ifdef TAGLIB_FOUND
-    http->load();
-    #endif
     const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
     lyrics->Load(lprov);
     widget->addPage(server, i18n("Connection"), Icons::libraryIcon, i18n("Connection Settings"));
@@ -85,10 +82,16 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     widget->addPage(files, i18n("Files"), Icons::filesIcon, i18n("File Settings"));
     widget->addPage(interface, i18n("Interface"), Icon("preferences-other"), i18n("Interface Settings"));
     #ifdef TAGLIB_FOUND
+    http = new HttpServerSettings(widget);
+    http->load();
     widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
     #endif
     widget->addPage(lyrics, i18n("Lyrics"), Icons::lyricsIcon, i18n("Lyrics Settings"));
-
+    #ifdef CDDB_FOUND
+    audiocd = new AudioCdSettings(widget);
+    audiocd->load();
+    widget->addPage(audiocd, i18n("Audio CD"), Icons::albumIcon, i18n("Audio CD Settings"));
+    #endif
     #ifndef ENABLE_KDE_SUPPORT
     proxy = new ProxySettings(widget);
     proxy->load();
@@ -127,6 +130,9 @@ void PreferencesDialog::writeSettings()
     #ifndef ENABLE_KDE_SUPPORT
     proxy->save();
     shortcuts->save();
+    #endif
+    #ifdef CDDB_FOUND
+    audiocd->save();
     #endif
     Settings::self()->saveLyricProviders(lyrics->EnabledProviders());
     Settings::self()->save();

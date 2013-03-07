@@ -32,7 +32,7 @@ class ExtractJob : public FileJob
 {
     Q_OBJECT
 public:
-    explicit ExtractJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const Song &s);
+    explicit ExtractJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const Song &s, const QString &cover);
     virtual ~ExtractJob();
 
     bool coverCopied() const { return copiedCover; }
@@ -46,6 +46,7 @@ private:
     QString srcFile;
     QString destFile;
     Song song;
+    QString coverFile;
     bool copiedCover;
 };
 

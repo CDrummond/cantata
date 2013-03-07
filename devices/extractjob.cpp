@@ -25,6 +25,8 @@
 #include "utils.h"
 #include "tags.h"
 #include "cdparanoia.h"
+#include "covers.h"
+#include "mpdconnection.h"
 #include <QStringList>
 #include <QProcess>
 #include <QFile>
@@ -48,12 +50,13 @@ static void writeHeader(QIODevice &dev)
     dev.write((char*)riffHeader, 44);
 }
 
-ExtractJob::ExtractJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const Song &s)
+ExtractJob::ExtractJob(const Encoders::Encoder &enc, int val, const QString &src, const QString &dest, const Song &s, const QString &cover)
     : encoder(enc)
     , value(val)
     , srcFile(src)
     , destFile(dest)
     , song(s)
+    , coverFile(cover)
     , copiedCover(false)
 {
 }
@@ -84,8 +87,8 @@ void ExtractJob::run()
             process.close();
             return;
         }
-        int firstSector = cdparanoia.firstSectorOfTrack(song.track);
-        int lastSector = cdparanoia.lastSectorOfTrack(song.track);
+        int firstSector = cdparanoia.firstSectorOfTrack(song.id);
+        int lastSector = cdparanoia.lastSectorOfTrack(song.id);
         int total=lastSector-firstSector;
         int count=0;
 
@@ -131,7 +134,15 @@ void ExtractJob::run()
         process.waitForFinished();
         Utils::setFilePerms(destFile);
         Tags::update(destFile, Song(), song, 3);
-        // TODO: Copy cover!!!
+
+        if (!stopRequested && !coverFile.isEmpty()) {
+            QString mpdCover=MPDConnection::self()->getDetails().coverName;
+            if (mpdCover.isEmpty()) {
+                mpdCover=Covers::constFileName;
+            }
+            copiedCover=Covers::copyImage(Utils::getDir(coverFile), Utils::getDir(destFile), Utils::getFile(coverFile), mpdCover+coverFile.mid(coverFile.length()-4), 0);
+        }
+
         emit result(Device::Ok);
     }
 }

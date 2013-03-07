@@ -22,7 +22,6 @@
  */
 
 #include "coverdialog.h"
-#include "covers.h"
 #include "messagebox.h"
 #include "localize.h"
 #include "listview.h"
@@ -401,10 +400,10 @@ CoverDialog::~CoverDialog()
     clearTempFiles();
 }
 
-void CoverDialog::show(const Song &s)
+void CoverDialog::show(const Song &s, const Covers::Image &current)
 {
     song=s;
-    Covers::Image img=Covers::self()->getImage(song);
+    Covers::Image img=current.img.isNull() ? Covers::self()->getImage(song) : current;
 
     if (!img.fileName.isEmpty() && !QFileInfo(img.fileName).isWritable()) {
         MessageBox::error(parentWidget(), i18n("<p>A cover already exists for this album, and the file is not writeable.<p></p><i>%1</i></p>").arg(img.fileName));
@@ -552,7 +551,7 @@ void CoverDialog::downloadJobFinished()
                     previewDialog()->showImage(img, reply->property(constLargeProperty).toString());
                 } else if (DL_LargeSave==dlType) {
                     if (!temp) {
-                        MessageBox::error(this, i18n("Failed to set cover!\nCould not daownload to temporary file!"));
+                        MessageBox::error(this, i18n("Failed to set cover!\nCould not download to temporary file!"));
                     } else if (saveCover(temp->fileName(), img)) {
                         accept();
                     }
@@ -1127,6 +1126,18 @@ void CoverDialog::slotButtonClicked(int button)
 
 bool CoverDialog::saveCover(const QString &src, const QImage &img)
 {
+    if (song.file.startsWith("cdda://")) {
+        QString dir = Utils::cacheDir(Covers::constCddaCoverDir, true);
+        if (!dir.isEmpty()) {
+            QString destName=dir+song.file.mid(7)+src.mid(src.length()-4);
+            if (QFile::copy(src, destName)) {
+                emit selectedCover(img, destName);
+                return true;
+            }
+        }
+        MessageBox::error(this, i18n("Failed to set cover!\nCould not make copy!"));
+        return false;
+    }
     QString existingBackup;
 
     if (existing) {

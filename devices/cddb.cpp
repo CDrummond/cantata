@@ -38,7 +38,11 @@
 #elif defined(__linux__)
 #include <linux/cdrom.h>
 #endif
-#include <QDebug>
+
+QString Cddb::dataTrack()
+{
+    return i18n("Data Track");
+}
 
 Cddb::Cddb(const QString &device)
     : dev(device)
@@ -80,6 +84,7 @@ static CddbAlbum toAlbum(cddb_disc_t *disc)
             }
 
             Song track;
+            track.id=track.track;
             track.track=cddb_track_get_number(trk);
             track.title=cddb_track_get_title(trk);
             track.artist=cddb_track_get_artist(trk);
@@ -88,7 +93,9 @@ static CddbAlbum toAlbum(cddb_disc_t *disc)
             track.time=cddb_track_get_length(trk);
             track.file=QString("%1.wav").arg(track.track);
             track.year=album.year;
-            album.tracks.append(track);
+            if (Cddb::dataTrack()!=track.title) {
+                album.tracks.append(track);
+            }
         }
     }
 
@@ -150,7 +157,7 @@ void Cddb::readDisc()
                 }
 
                 cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? i18n("Data Track") : i18n("Audio Track")).toLocal8Bit());
+                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack() : i18n("Audio Track")).toLocal8Bit());
                 cddb_track_set_artist(track, unknown.constData());
                 cddb_disc_add_track(disc, track);
             }
@@ -182,7 +189,7 @@ void Cddb::readDisc()
                 }
 
                 cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? i18n("Data Track") : i18n("Audio Track")).toLocal8Bit());
+                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack() : i18n("Audio Track")).toLocal8Bit());
                 cddb_track_set_artist(track, unknown.constData());
                 cddb_disc_add_track(disc, track);
             }

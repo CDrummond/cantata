@@ -112,7 +112,8 @@ void ActionDialog::controlInfoLabel(Device *dev)
                 }
                 index++;
             }
-            codec->setText(QString("%1 (%2)").arg(encoder.name).arg(encoder.values.at(settingIndex).descr));
+            codec->setText(QString("%1 (%2)").arg(encoder.name).arg(encoder.values.at(settingIndex).descr)+
+                           (Device::AudioCd!=dev->devType() && opts.transcoderWhenDifferent ? QLatin1String(" - ")+i18n("<i>When different</i>") : QString()));
         }
     }
 }

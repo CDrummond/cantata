@@ -82,6 +82,46 @@ ActionDialog::~ActionDialog()
     iCount--;
 }
 
+void ActionDialog::controlInfoLabel(Device *dev)
+{
+    DeviceOptions opts;
+    if (Device::AudioCd==dev->devType()) {
+        opts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
+    } else {
+        opts=dev->options();
+    }
+
+    if (opts.transcoderCodec.isEmpty()) {
+        codecLabel->setVisible(false);
+        codec->setVisible(false);
+    } else {
+        codecLabel->setVisible(true);
+        codec->setVisible(true);
+        Encoders::Encoder encoder=Encoders::getEncoder(opts.transcoderCodec);
+        if (Encoders::getEncoder(opts.transcoderCodec).codec.isEmpty()) {
+            codec->setText(i18n("<b>INVALID</b>"));
+        } else {
+            int settingIndex=0;
+            bool increase=encoder.values.at(0).value<encoder.values.at(1).value;
+            int index=0;
+            foreach (const Encoders::Setting &s, encoder.values) {
+                if ((increase && s.value>opts.transcoderValue) || (!increase && s.value<opts.transcoderValue)) {
+                    break;
+                } else {
+                    settingIndex=index;
+                }
+                index++;
+            }
+            codec->setText(QString("%1 (%2)").arg(encoder.name).arg(encoder.values.at(settingIndex).descr));
+        }
+    }
+}
+
+void ActionDialog::controlInfoLabel()
+{
+    controlInfoLabel(getDevice(sourceUdi.isEmpty() ? destUdi : sourceUdi));
+}
+
 void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs)
 {
     init(srcUdi, dstUdi, songs, Copy);
@@ -91,6 +131,8 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         deleteLater();
         return;
     }
+
+    controlInfoLabel(dev);
 
     // check space...
     haveVariousArtists=false;
@@ -168,6 +210,8 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
 void ActionDialog::remove(const QString &udi, const QList<Song> &songs)
 {
     init(udi, QString(), songs, Remove);
+    codecLabel->setVisible(false);
+    codec->setVisible(false);
     QString baseDir;
 
     if (udi.isEmpty()) {
@@ -509,10 +553,12 @@ void ActionDialog::configure(const QString &udi)
         }
         dlg->setCaption(i18n("Local Music Library Properties"));
         dlg->show(MPDConnection::self()->getDetails().dir, namingOptions, DevicePropertiesWidget::Prop_Basic|(isCd ? DevicePropertiesWidget::Prop_Encoder : 0));
+        connect(dlg, SIGNAL(destroyed()), SLOT(controlInfoLabel()));
     } else {
         Device *dev=DevicesModel::self()->device(udi);
         if (dev) {
             dev->configure(this);
+            connect(dev, SIGNAL(configurationChanged()), SLOT(controlInfoLabel()));
         }
     }
 }

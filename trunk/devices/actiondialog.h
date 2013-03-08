@@ -65,8 +65,10 @@ private Q_SLOTS:
     void cleanDirsResult(int status);
     void jobPercent(int percent);
     void cacheSaved();
+    void controlInfoLabel();
 
 private:
+    void controlInfoLabel(Device *dev);
     Device * getDevice(const QString &udi, bool logErrors=true);
     void configure(const QString &udi);
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);

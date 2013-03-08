@@ -718,6 +718,7 @@ void RemoteFsDevice::saveProperties(const DeviceOptions &newOpts, const Details 
             rescan(true);
         }
     }
+    emit configurationChanged();
 }
 
 QString RemoteFsDevice::settingsFileName() const

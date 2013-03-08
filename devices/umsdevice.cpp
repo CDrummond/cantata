@@ -276,6 +276,8 @@ void UmsDevice::saveProperties(const QString &newPath, const DeviceOptions &newO
             removeCache();
         }
     }
+    emit configurationChanged();
+
     QString oldPath=audioFolder;
     if (!isConnected()) {
         return;

@@ -232,6 +232,7 @@ Q_SIGNALS:
     void error(const QString &);
     void cover(const Song &song, const QImage &img);
     void cacheSaved();
+    void configurationChanged();
 
 protected:
     #ifndef Q_OS_WIN

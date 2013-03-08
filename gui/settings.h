@@ -155,6 +155,8 @@ public:
     bool cddbAuto();
     QString cddbHost();
     int cddbPort();
+    bool paranoiaFull();
+    bool paranoiaNeverSkip();
     #endif
     bool forceSingleClick();
     bool startHidden();
@@ -222,6 +224,8 @@ public:
     void saveCddbAuto(bool v);
     void saveCddbHost(const QString &v);
     void saveCddbPort(int v);
+    void saveParanoiaFull(bool v);
+    void saveParanoiaNeverSkip(bool v);
     #endif
     void saveForceSingleClick(bool v);
     void saveStartHidden(bool v);

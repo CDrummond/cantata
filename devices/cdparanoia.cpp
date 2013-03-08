@@ -112,7 +112,7 @@ void CdParanoia::reset()
 bool CdParanoia::init()
 {
     free();
-    drive = cdda_identify(dev.toAscii().data(), 0, 0);
+    drive = cdda_identify(dev.toLatin1().data(), 0, 0);
     if (!drive) {
         return false;
     }

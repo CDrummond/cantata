@@ -100,7 +100,7 @@ void ActionDialog::controlInfoLabel(Device *dev)
         Encoders::Encoder encoder=Encoders::getEncoder(opts.transcoderCodec);
         if (Encoders::getEncoder(opts.transcoderCodec).codec.isEmpty()) {
             codec->setText(i18n("<b>INVALID</b>"));
-        } else {
+        } else if (encoder.values.count()>1) {
             int settingIndex=0;
             bool increase=encoder.values.at(0).value<encoder.values.at(1).value;
             int index=0;
@@ -113,7 +113,10 @@ void ActionDialog::controlInfoLabel(Device *dev)
                 index++;
             }
             codec->setText(QString("%1 (%2)").arg(encoder.name).arg(encoder.values.at(settingIndex).descr)+
-                           (Device::AudioCd!=dev->devType() && opts.transcoderWhenDifferent ? QLatin1String(" - ")+i18n("<i>When different</i>") : QString()));
+                           (Device::AudioCd!=dev->devType() && opts.transcoderWhenDifferent ? QLatin1String("")+i18n("<i>(When different)</i>") : QString()));
+        } else {
+            codec->setText(encoder.name+
+                           (Device::AudioCd!=dev->devType() && opts.transcoderWhenDifferent ? QLatin1String("")+i18n("<i>(When different)</i>") : QString()));
         }
     }
 }

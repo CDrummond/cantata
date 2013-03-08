@@ -207,6 +207,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
             transcoderWhenDifferentLabel->setVisible(false);
             transcoderWhenDifferent->setVisible(false);
             transcoderWhenDifferent->setChecked(opts.transcoderWhenDifferent);
+            connect(transcoderWhenDifferent, SIGNAL(stateChanged(int)), this, SLOT(checkSaveable()));
         } else {
             transcoderFrame->setTitle(i18n("Encoder"));
             REMOVE(transcoderWhenDifferent);

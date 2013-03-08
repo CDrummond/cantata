@@ -228,10 +228,7 @@ void Utils::msleep(int msecs)
 void Utils::stopThread(QThread *thread)
 {
     thread->quit();
-    for(int i=0; i<10 && thread->isRunning(); ++i) {
-        sleep();
-    }
-    thread->deleteLater();
+    thread->connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 }
 
 #ifndef ENABLE_KDE_SUPPORT

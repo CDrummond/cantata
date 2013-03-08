@@ -382,7 +382,7 @@ public:
         }
 
         if ((option.state & QStyle::State_MouseOver)) {
-            drawIcons(painter, option.rect, true, rtl, AP_HBottom, index);
+            drawIcons(painter, option.rect, true, rtl, AlbumHeader==type || isCollection ? AP_HBottom : AP_HMiddle, index);
         }
         painter->restore();
     }

@@ -35,6 +35,8 @@ void AudioCdSettings::load()
     cddbAuto->setChecked(Settings::self()->cddbAuto());
     cddbHost->setText(Settings::self()->cddbHost());
     cddbPort->setValue(Settings::self()->cddbPort());
+    paranoiaFull->setChecked(Settings::self()->paranoiaFull());
+    paranoiaNeverSkip->setChecked(Settings::self()->paranoiaNeverSkip());
 }
 
 void AudioCdSettings::save()
@@ -42,4 +44,6 @@ void AudioCdSettings::save()
     Settings::self()->saveCddbAuto(cddbAuto->isChecked());
     Settings::self()->saveCddbHost(cddbHost->text().trimmed());
     Settings::self()->saveCddbPort(cddbPort->value());
+    Settings::self()->saveParanoiaFull(paranoiaFull->isChecked());
+    Settings::self()->saveParanoiaNeverSkip(paranoiaNeverSkip->isChecked());
 }

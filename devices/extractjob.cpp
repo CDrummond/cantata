@@ -27,6 +27,7 @@
 #include "cdparanoia.h"
 #include "covers.h"
 #include "mpdconnection.h"
+#include "settings.h"
 #include <QStringList>
 #include <QProcess>
 #include <QFile>
@@ -92,7 +93,9 @@ void ExtractJob::run()
         int total=lastSector-firstSector;
         int count=0;
 
-        cdparanoia.setParanoiaMode(0);
+        cdparanoia.setParanoiaMode(Settings::self()->paranoiaFull() ? 3 : 0);
+        cdparanoia.setNeverSkip(Settings::self()->paranoiaNeverSkip());
+
         cdparanoia.seek(firstSector, SEEK_SET);
 
         writeHeader(process);

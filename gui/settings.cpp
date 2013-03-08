@@ -592,6 +592,16 @@ int Settings::cddbPort()
 {
     return GET_INT("cddbPort", 8880);
 }
+
+bool Settings::paranoiaFull()
+{
+    return GET_BOOL("paranoiaFull", true);
+}
+
+bool Settings::paranoiaNeverSkip()
+{
+    return GET_BOOL("paranoiaNeverSkip", true);
+}
 #endif
 
 bool Settings::forceSingleClick()
@@ -943,6 +953,16 @@ void Settings::saveCddbHost(const QString &v)
 void Settings::saveCddbPort(int v)
 {
     SET_VALUE_MOD(cddbPort)
+}
+
+void Settings::saveParanoiaFull(bool v)
+{
+    SET_VALUE_MOD(paranoiaFull)
+}
+
+void Settings::saveParanoiaNeverSkip(bool v)
+{
+    SET_VALUE_MOD(paranoiaNeverSkip)
 }
 #endif
 

@@ -1422,6 +1422,7 @@ void MtpDevice::saveProperties()
     if (solidDev.isValid()) {
         configured=true;
         opts.save(cfgKey(solidDev, serial));
+        emit configurationChanged();
     }
 }
 

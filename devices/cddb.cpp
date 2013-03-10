@@ -71,9 +71,9 @@ Cddb::~Cddb()
 static CddbAlbum toAlbum(cddb_disc_t *disc)
 {
     CddbAlbum album;
-    album.name=cddb_disc_get_title(disc);
-    album.artist=cddb_disc_get_artist(disc);
-    album.genre=cddb_disc_get_genre(disc);
+    album.name=QString::fromUtf8(cddb_disc_get_title(disc));
+    album.artist=QString::fromUtf8(cddb_disc_get_artist(disc));
+    album.genre=QString::fromUtf8(cddb_disc_get_genre(disc));
     album.year=cddb_disc_get_year(disc);
     int numTracks=cddb_disc_get_track_count(disc);
     if (numTracks>0) {
@@ -85,8 +85,8 @@ static CddbAlbum toAlbum(cddb_disc_t *disc)
 
             Song track;
             track.track=cddb_track_get_number(trk);
-            track.title=cddb_track_get_title(trk);
-            track.artist=cddb_track_get_artist(trk);
+            track.title=QString::fromUtf8(cddb_track_get_title(trk));
+            track.artist=QString::fromUtf8(cddb_track_get_artist(trk));
             track.albumartist=album.artist;
             track.album=album.name;
             track.id=track.track;
@@ -128,7 +128,7 @@ void Cddb::readDisc()
         return;
     }
 
-    QByteArray unknown=i18n("Unknown").toLocal8Bit();
+    QByteArray unknown=i18n("Unknown").toUtf8();
 
     #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
     // read disc status info
@@ -157,7 +157,7 @@ void Cddb::readDisc()
                 }
 
                 cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack() : i18n("Audio Track")).toLocal8Bit());
+                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack() : i18n("Audio Track")).toUtf8());
                 cddb_track_set_artist(track, unknown.constData());
                 cddb_disc_add_track(disc, track);
             }
@@ -189,7 +189,7 @@ void Cddb::readDisc()
                 }
 
                 cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack() : i18n("Audio Track")).toLocal8Bit());
+                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack() : i18n("Audio Track")).toUtf8());
                 cddb_track_set_artist(track, unknown.constData());
                 cddb_disc_add_track(disc, track);
             }

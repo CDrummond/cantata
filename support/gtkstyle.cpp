@@ -168,6 +168,7 @@ QString GtkStyle::themeName()
 #ifndef Q_OS_WIN
 static GtkProxyStyle *style=0;
 #endif
+static bool symbolicIcons=false;
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
@@ -181,13 +182,15 @@ void GtkStyle::applyTheme(QWidget *widget)
             QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/"+theme+QLatin1String(".css"));
             if (cssFile.open(QFile::ReadOnly)) {
                 QString css=QLatin1String(cssFile.readAll());
+                QString header=css.left(100);
                 qApp->setStyleSheet(css);
-                if (css.startsWith("/* drag:toolbar */")) {
+                if (header.contains("drag:toolbar")) {
                     WindowManager *wm=new WindowManager(widget);
                     wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
                     wm->registerWidgetAndChildren(widget);
                 }
-                useOverlayScrollbars=css.left(100).contains("/* scrollbar:overlay */");
+                useOverlayScrollbars=header.contains("scrollbar:overlay");
+                symbolicIcons=header.contains("symbolic-icons:true");
             }
         }
         if (!style) {
@@ -205,4 +208,9 @@ void GtkStyle::cleanup()
         style->destroySliderThumb();
     }
     #endif
+}
+
+bool GtkStyle::useSymbolicIcons()
+{
+    return symbolicIcons;
 }

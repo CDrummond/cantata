@@ -38,6 +38,7 @@ namespace GtkStyle
     extern QString themeName();
     extern void applyTheme(QWidget *widget);
     extern void cleanup();
+    extern bool useSymbolicIcons();
 }
 
 #endif

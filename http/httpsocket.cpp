@@ -186,7 +186,7 @@ HttpSocket::HttpSocket(const QString &addr, quint16 p)
             }
         }
     }
-    listen(a.isNull() ? QHostAddress::LocalHost : a, p);
+    listen(a.isNull() ? QHostAddress::LocalHost : a, p<1024 ? 0 : p);
 }
 
 void HttpSocket::terminate()

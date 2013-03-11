@@ -145,33 +145,66 @@ set(solidlite_LIB_MOC_HDRS
    backends/hal/halvolume.h
    )
 
-   # FIXME: this should work on more Unix systems
-   if (CMAKE_SYSTEM_NAME MATCHES Linux)
-      message(STATUS "Building Solid UDisks backend." )
-      set(solidlite_LIB_SRCS ${solidlite_LIB_SRCS}
-      backends/udisks/udisksmanager.cpp
-      backends/udisks/udisksdevice.cpp
-      backends/udisks/udisksblock.cpp
-      backends/udisks/udisksstoragevolume.cpp
-      backends/udisks/udisksdeviceinterface.cpp
-      backends/udisks/udisksopticaldisc.cpp
-      backends/udisks/udisksopticaldrive.cpp
-      backends/udisks/udisksstoragedrive.cpp
-      backends/udisks/udisksstorageaccess.cpp
-      backends/udisks/udisksgenericinterface.cpp
-      )
-      set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
-      backends/udisks/udisksblock.h
-      backends/udisks/udisksdevice.h
-      backends/udisks/udisksdeviceinterface.h
-      backends/udisks/udisksgenericinterface.h
-      backends/udisks/udisksopticaldisc.h
-      backends/udisks/udisksopticaldrive.h
-      backends/udisks/udisksmanager.h
-      backends/udisks/udisksstorageaccess.h
-      backends/udisks/udisksstoragedrive.h
-      backends/udisks/udisksstoragevolume.h
-      )
+    # FIXME: this should work on more Unix systems
+    if (CMAKE_SYSTEM_NAME MATCHES Linux)
+        if ( WITH_SOLID_UDISKS2 )
+            message(STATUS "Building Solid UDisks2 backend." )
+            add_definitions(-DWITH_SOLID_UDISKS2)
+            set(solidlite_LIB_SRCS ${solidlite_LIB_SRCS}
+            backends/udisks2/udisksmanager.cpp
+            backends/udisks2/udisksdevice.cpp
+            backends/udisks2/udisksdevicebackend.cpp
+            backends/udisks2/udisksblock.cpp
+            backends/udisks2/udisksstoragevolume.cpp
+            backends/udisks2/udisksdeviceinterface.cpp
+            backends/udisks2/udisksopticaldisc.cpp
+            backends/udisks2/udisksopticaldrive.cpp
+            backends/udisks2/udisksstoragedrive.cpp
+            backends/udisks2/udisksstorageaccess.cpp
+            backends/udisks2/udisksgenericinterface.cpp
+            backends/udisks2/dbus/manager.cpp
+            )
+            set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
+            backends/udisks2/udisksblock.h
+            backends/udisks2/udisksdevicebackend.h
+            backends/udisks2/udisksdevice.h
+            backends/udisks2/udisksdeviceinterface.h
+            backends/udisks2/udisksgenericinterface.h
+            backends/udisks2/udisksmanager.h
+            backends/udisks2/udisksopticaldisc.h
+            backends/udisks2/udisksopticaldrive.h
+            backends/udisks2/udisksstorageaccess.h
+            backends/udisks2/udisksstoragedrive.h
+            backends/udisks2/udisksstoragevolume.h
+            backends/udisks2/dbus/manager.h
+            )
+        else ( WITH_SOLID_UDISKS2 )
+            message(STATUS "Building Solid UDisks backend." )
+            set(solidlite_LIB_SRCS ${solidlite_LIB_SRCS}
+            backends/udisks/udisksmanager.cpp
+            backends/udisks/udisksdevice.cpp
+            backends/udisks/udisksblock.cpp
+            backends/udisks/udisksstoragevolume.cpp
+            backends/udisks/udisksdeviceinterface.cpp
+            backends/udisks/udisksopticaldisc.cpp
+            backends/udisks/udisksopticaldrive.cpp
+            backends/udisks/udisksstoragedrive.cpp
+            backends/udisks/udisksstorageaccess.cpp
+            backends/udisks/udisksgenericinterface.cpp
+            )
+            set(solidlite_LIB_MOC_HDRS ${solidlite_LIB_MOC_HDRS}
+            backends/udisks/udisksblock.h
+            backends/udisks/udisksdevice.h
+            backends/udisks/udisksdeviceinterface.h
+            backends/udisks/udisksgenericinterface.h
+            backends/udisks/udisksopticaldisc.h
+            backends/udisks/udisksopticaldrive.h
+            backends/udisks/udisksmanager.h
+            backends/udisks/udisksstorageaccess.h
+            backends/udisks/udisksstoragedrive.h
+            backends/udisks/udisksstoragevolume.h
+            )
+        endif ( WITH_SOLID_UDISKS2 )
    endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 
 if(APPLE)

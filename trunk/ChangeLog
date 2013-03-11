@@ -126,6 +126,7 @@
     also contain the track arist, if this is different to the album artist.
 74. Expand device when connected.
 75. Basic support for extracting music from audio CDs
+76. Update copy of Solid to KDE4.10.1 - adds Udisks2 support.
 
 0.9.2
 -----

@@ -199,6 +199,14 @@ void UDisksStorageAccess::slotDBusReply( const QDBusMessage & reply )
                 QDBusMessage msg = QDBusMessage::createMethodCall(UD_DBUS_SERVICE, drivePath, UD_DBUS_INTERFACE_DISKS_DEVICE, "DriveEject");
                 msg << QStringList();   // options, unused now
                 c.call(msg, QDBus::NoBlock);
+
+                // power down removable USB hard drives, rhbz#852196
+                UDisksDevice drive(drivePath);
+                if (drive.prop("DriveCanDetach").toBool()) {
+                    QDBusMessage msg2 = QDBusMessage::createMethodCall(UD_DBUS_SERVICE, drivePath, UD_DBUS_INTERFACE_DISKS_DEVICE, "DriveDetach");
+                    msg2 << QStringList();   // options, unused now
+                    c.call(msg2, QDBus::NoBlock);
+                }
             }
 
             m_teardownInProgress = false;

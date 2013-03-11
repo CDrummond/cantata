@@ -48,7 +48,9 @@
 #include "mainwindow.h"
 #include "settings.h"
 #include "toolbutton.h"
-
+#ifndef Q_OS_WIN
+#include "gtkproxystyle.h"
+#endif
 #ifdef ENABLE_KDE_SUPPORT
 #define WEBVIEW_BASE KWebView
 #else
@@ -139,6 +141,9 @@ InfoPage::InfoPage(QWidget *parent)
     #ifdef ENABLE_KDE_SUPPORT
     connect(KGlobalSettings::self(), SIGNAL(appearanceChanged()), SLOT(updateFonts()));
     updateFonts();
+    #endif
+    #ifndef Q_OS_WIN
+    combo->setProperty(GtkProxyStyle::constSlimComboProperty, true);
     #endif
 }
 

@@ -297,6 +297,7 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                     painter->drawPath(path);
                 } else {
                     QRect toThumb;
+                    QPalette::ColorGroup cg=option->palette.currentColorGroup();
                     if (sbarThumb && sbarThumbTarget && sbarThumbTarget==widget && sbarThumb->isVisible()) {
                         QPoint p=sbarThumbTarget->mapFromGlobal(sbarThumb->pos())+QPoint(1, 1);
                         if (Qt::Horizontal==sb->orientation) {
@@ -312,13 +313,14 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                                 toThumb=QRect(slider.x(), slider.y()+slider.height(), slider.width(), p.y()-(slider.y()+slider.height()));
                             }
                         }
+                        cg=QPalette::Active;
                     }
                     if (toThumb.isValid()) {
-                        QColor col(option->palette.text().color());
+                        QColor col(option->palette.color(cg, QPalette::Text));
                         col.setAlphaF(0.35);
                         painter->fillRect(toThumb, col);
                     }
-                    painter->fillRect(slider, option->palette.highlight().color());
+                    painter->fillRect(slider, option->palette.color(cg, QPalette::Highlight));
                 }
             }
 

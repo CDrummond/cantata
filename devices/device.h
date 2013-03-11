@@ -74,6 +74,7 @@ public:
         NoSpace,
         FailedToUpdateTags,
         Cancelled,
+        FailedToLockDevice,
 
         // These are for online services...
         TooManyRedirects,

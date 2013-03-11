@@ -55,7 +55,7 @@ public:
     bool isRefreshing() const { return lookupInProcess; }
     void toggle();
     void stop();
-    QString path() const { return QString(); } // audioFolder; }
+    QString path() const { return devPath; }
     void addSong(const Song &, bool, bool) { }
     void copySongTo(const Song &s, const QString &baseDir, const QString &musicPath, bool overwrite, bool copyCover);
     void removeSong(const Song &) { }
@@ -67,6 +67,9 @@ public:
     void saveOptions() { }
     QString subText() { return album; }
     quint32 totalTime();
+    #ifdef CDDB_PLAYBACK
+    bool canPlaySongs() const { return true; }
+    #endif
 
     QString albumName() const { return album; }
     QString albumArtist() const { return artist; }
@@ -94,6 +97,7 @@ private:
     QString album;
     QString artist;
     QString genre;
+    QString devPath;
     int year;
     int disc;
     quint32 time;

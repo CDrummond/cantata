@@ -1985,6 +1985,8 @@ void MainWindow::addToPlayQueue(bool replace, quint8 priority)
         playlistsPage->addSelectionToPlaylist(replace, priority);
     } else if (streamsPage->isVisible()) {
         streamsPage->addSelectionToPlaylist(replace, priority);
+    } else if (devicesPage->isVisible()) {
+        devicesPage->addSelectionToPlaylist(QString(), replace, priority);
     } else if (onlinePage->isVisible()) {
         onlinePage->addSelectionToPlaylist(QString(), replace, priority);
     }

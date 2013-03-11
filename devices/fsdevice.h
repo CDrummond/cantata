@@ -135,6 +135,7 @@ public:
     void saveCache();
     void removeCache();
     bool isStdFs() const { return true; }
+    bool canPlaySongs() const { return true; }
 
 Q_SIGNALS:
     // For talking to scanner...

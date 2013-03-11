@@ -32,20 +32,20 @@
 #include <QProcess>
 #include <QFile>
 
-static void writeHeader(QIODevice &dev)
+void ExtractJob::writeWavHeader(QIODevice &dev)
 {
     static const unsigned char riffHeader[] = {
-      0x52, 0x49, 0x46, 0x46, // 0  "RIFF"
-      0x00, 0x00, 0x00, 0x00, // 4  wavSize
-      0x57, 0x41, 0x56, 0x45, // 8  "WAVE"
-      0x66, 0x6d, 0x74, 0x20, // 12 "fmt "
-      0x10, 0x00, 0x00, 0x00, // 16
-      0x01, 0x00, 0x02, 0x00, // 20
-      0x44, 0xac, 0x00, 0x00, // 24
-      0x10, 0xb1, 0x02, 0x00, // 28
-      0x04, 0x00, 0x10, 0x00, // 32
-      0x64, 0x61, 0x74, 0x61, // 36 "data"
-      0x00, 0x00, 0x00, 0x00  // 40 byteCount
+        0x52, 0x49, 0x46, 0x46, // 0  "RIFF"
+        0x00, 0x00, 0x00, 0x00, // 4  wavSize
+        0x57, 0x41, 0x56, 0x45, // 8  "WAVE"
+        0x66, 0x6d, 0x74, 0x20, // 12 "fmt "
+        0x10, 0x00, 0x00, 0x00, // 16
+        0x01, 0x00, 0x02, 0x00, // 20
+        0x44, 0xac, 0x00, 0x00, // 24
+        0x10, 0xb1, 0x02, 0x00, // 28
+        0x04, 0x00, 0x10, 0x00, // 32
+        0x64, 0x61, 0x74, 0x61, // 36 "data"
+        0x00, 0x00, 0x00, 0x00  // 40 byteCount
     };
 
     dev.write((char*)riffHeader, 44);
@@ -72,10 +72,10 @@ void ExtractJob::run()
         emit result(Device::Cancelled);
     } else {
         QStringList encParams=encoder.params(value, "pipe:", destFile);
-        CdParanoia cdparanoia;
+        CdParanoia cdparanoia(srcFile, Settings::self()->paranoiaFull(), Settings::self()->paranoiaNeverSkip());
 
-        if (!cdparanoia.setDevice(srcFile)) {
-            emit result(Device::Failed);
+        if (!cdparanoia) {
+            emit result(Device::FailedToLockDevice);
             return;
         }
         QProcess process;
@@ -93,12 +93,9 @@ void ExtractJob::run()
         int total=lastSector-firstSector;
         int count=0;
 
-        cdparanoia.setParanoiaMode(Settings::self()->paranoiaFull() ? 3 : 0);
-        cdparanoia.setNeverSkip(Settings::self()->paranoiaNeverSkip());
-
         cdparanoia.seek(firstSector, SEEK_SET);
 
-        writeHeader(process);
+        writeWavHeader(process);
         while ((firstSector+count) <= lastSector) {
             qint16 *buf = cdparanoia.read();
             if (!buf) {

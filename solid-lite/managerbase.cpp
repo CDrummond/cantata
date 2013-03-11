@@ -31,12 +31,16 @@
 #include "backends/iokit/iokitmanager.h"
 #elif defined (Q_OS_UNIX)
 #include "backends/hal/halmanager.h"
+#if defined (WITH_SOLID_UDISKS2)
+#include "backends/udisks2/udisksmanager.h"
+#else
 #include "backends/udisks/udisksmanager.h"
+#endif
 //#include "backends/upower/upowermanager.h"
 
-#if defined (HUPNP_FOUND)
-#include "backends/upnp/upnpdevicemanager.h"
-#endif
+//#if defined (HUPNP_FOUND)
+//#include "backends/upnp/upnpdevicemanager.h"
+//#endif
 
 #if defined (UDEV_FOUND)
 #include "backends/udev/udevmanager.h"
@@ -83,7 +87,11 @@ void Solid::ManagerBasePrivate::loadBackends()
 #               if defined(UDEV_FOUND)
                     m_backends << new Solid::Backends::UDev::UDevManager(0);
 #               endif
+#		if defined(WITH_SOLID_UDISKS2)
+                m_backends << new Solid::Backends::UDisks2::Manager(0)
+#		else
                 m_backends << new Solid::Backends::UDisks::UDisksManager(0)
+#		endif
                            /*<< new Solid::Backends::UPower::UPowerManager(0)
                            << new Solid::Backends::Fstab::FstabManager(0)*/;
             }

@@ -341,6 +341,11 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             if (Device::AudioCd!=static_cast<Device *>(item)->devType()) {
                 actions << configureAction;
             }
+            #ifdef CDDB_PLAYBACK
+            else if (HttpServer::self()->isAlive()) {
+                actions << StdActions::self()->replacePlayQueueAction;
+            }
+            #endif
             actions << refreshAction;
             if (static_cast<Device *>(item)->supportsDisconnect()) {
                 actions << (static_cast<Device *>(item)->isConnected() ? disconnectAction : connectAction);
@@ -352,7 +357,17 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             #endif
             v.setValue<QList<Action *> >(actions);
             return v;
-        }
+        } /*else if (HttpServer::self()->isAlive()) {
+            MusicLibraryItem *root=static_cast<MusicLibraryItem *>(item);
+            while (root && MusicLibraryItem::Type_Root!=root->itemType()) {
+                root=root->parentItem();
+            }
+            if (root && static_cast<Device *>(root)->canPlaySongs()) {
+                QVariant v;
+                v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction << StdActions::self()->addToPlayQueueAction);
+                return v;
+            }
+        } */
         break;
     default:
         return QVariant();
@@ -513,6 +528,16 @@ QStringList DevicesModel::filenames(const QModelIndexList &indexes, bool playabl
         fnames.append(s.file);
     }
     return fnames;
+}
+
+QStringList DevicesModel::playableUrls(const QModelIndexList &indexes) const
+{
+    QList<Song> songList=songs(indexes, true, true);
+    QStringList urls;
+    foreach (const Song &s, songList) {
+        urls.append(HttpServer::self()->encodeUrl(s));
+    }
+    return urls;
 }
 
 static Song fixPath(Song s, const QString &path)
@@ -998,7 +1023,7 @@ QMimeData * DevicesModel::mimeData(const QModelIndexList &indexes) const
             paths.append(HttpServer::self()->encodeUrl(s));
         }
     } else {
-        paths=filenames(indexes, true, true);
+        paths=playableUrls(indexes);
     }
 
     if (!paths.isEmpty()) {

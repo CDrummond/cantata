@@ -23,6 +23,8 @@
 
 #include "config.h"
 #include "httpsocket.h"
+#include "httpserver.h"
+#include "settings.h"
 #include <QTcpSocket>
 #include <QNetworkInterface>
 #include <QStringList>
@@ -41,6 +43,11 @@
 #include <taglib/trueaudiofile.h>
 #include <taglib/vorbisfile.h>
 #include <taglib/audioproperties.h>
+#endif
+
+#ifdef CDDB_PLAYBACK
+#include "cdparanoia.h"
+#include "extractjob.h"
 #endif
 
 static QString detectMimeType(const QString &file)
@@ -116,6 +123,15 @@ static QString detectMimeType(const QString &file)
     }
 
     return QString();
+}
+
+static void writeMimeType(const QString &mimeType, QTcpSocket *socket)
+{
+    if (!mimeType.isEmpty()) {
+        QTextStream os(socket);
+        os.setAutoDetectUnicode(true);
+        os << "HTTP/1.0 200 OK\r\nContent-Type: " << mimeType << "\r\n\r\n";
+    }
 }
 
 // static int level(const QString &s)
@@ -239,51 +255,87 @@ void HttpSocket::readClient()
             bool ok=false;
 
             if (q.hasQueryItem("cantata")) {
-                QFile f(url.path());
+                #ifdef CDDB_PLAYBACK
+                // Not working :-( No sound is played, plus thi seems to continue until Cantata is stopped??
+                Song song=HttpServer::self()->decodeUrl(url);
+                if (song.file.startsWith(QLatin1String("cdda:/"))) {
+                    QStringList parts=song.file.split("/", QString::SkipEmptyParts);
+                    if (parts.length()>=3) {
+                        QString dev=QLatin1Char('/')+parts.at(1)+QLatin1Char('/')+parts.at(2);
+                        CdParanoia cdparanoia(dev, false, false);
 
-                if (f.open(QIODevice::ReadOnly)) {
-                    QString mimeType=detectMimeType(url.path());
-                    if (!mimeType.isEmpty()) {
-                        QTextStream os(socket);
-                        os.setAutoDetectUnicode(true);
-                        os << "HTTP/1.0 200 OK\r\nContent-Type: " << mimeType << "\r\n\r\n";
+                        if (cdparanoia) {
+                            int firstSector = cdparanoia.firstSectorOfTrack(song.id);
+                            int lastSector = cdparanoia.lastSectorOfTrack(song.id);
+                            int count = 0;
+                            cdparanoia.seek(firstSector, SEEK_SET);
+                            ok=true;
+                            writeMimeType(QLatin1String("audio/x-wav"), socket);
+                            ExtractJob::writeWavHeader(*socket);
+                            while (!terminated && (firstSector+count) <= lastSector) {
+                                qint16 *buf = cdparanoia.read();
+                                if (!buf) {
+                                    ok=false;
+                                    break;
+                                }
+                                char *buffer=(char *)buf;
+                                qint64 writePos=0;
+                                do {
+                                    qint64 bytesWritten = socket->write(&buffer[writePos], CD_FRAMESIZE_RAW - writePos);
+                                    if (-1==bytesWritten) {
+                                        ok=false;
+                                        break;
+                                    }
+                                    writePos+=bytesWritten;
+                                } while (!terminated && writePos<CD_FRAMESIZE_RAW);
+                                count++;
+                            }
+                        }
                     }
+                } else {
+                #endif
+                    QFile f(url.path());
 
-                    ok=true;
-                    static const int constChunkSize=8192;
-                    char buffer[constChunkSize];
-                    qint64 totalBytes = f.size();
-                    qint64 readPos = 0;
-                    qint64 bytesRead = 0;
+                    if (f.open(QIODevice::ReadOnly)) {
+                        writeMimeType(detectMimeType(url.path()), socket);
+                        ok=true;
+                        static const int constChunkSize=8192;
+                        char buffer[constChunkSize];
+                        qint64 totalBytes = f.size();
+                        qint64 readPos = 0;
+                        qint64 bytesRead = 0;
 
-                    do {
-                        if (terminated) {
-                            break;
-                        }
-                        bytesRead = f.read(buffer, constChunkSize);
-                        readPos+=bytesRead;
-                        if (bytesRead<0 || terminated) {
-                            break;
-                        }
-
-                        qint64 writePos=0;
                         do {
-                            qint64 bytesWritten = socket->write(&buffer[writePos], bytesRead - writePos);
                             if (terminated) {
                                 break;
                             }
-                            if (-1==bytesWritten) {
-                                ok=false;
+                            bytesRead = f.read(buffer, constChunkSize);
+                            readPos+=bytesRead;
+                            if (bytesRead<0 || terminated) {
                                 break;
                             }
-                            writePos+=bytesWritten;
-                        } while (writePos<bytesRead);
 
-                        if (f.atEnd()) {
-                            break;
-                        }
-                    } while ((readPos+bytesRead)<totalBytes);
+                            qint64 writePos=0;
+                            do {
+                                qint64 bytesWritten = socket->write(&buffer[writePos], bytesRead - writePos);
+                                if (terminated) {
+                                    break;
+                                }
+                                if (-1==bytesWritten) {
+                                    ok=false;
+                                    break;
+                                }
+                                writePos+=bytesWritten;
+                            } while (writePos<bytesRead);
+
+                            if (f.atEnd()) {
+                                break;
+                            }
+                        } while ((readPos+bytesRead)<totalBytes);
+                    }
+                #ifdef CDDB_PLAYBACK
                 }
+                #endif
             }
 
             if (!ok) {

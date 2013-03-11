@@ -34,11 +34,13 @@ extern "C" {
 class CdParanoia
 {
 public:
-    CdParanoia();
+    CdParanoia(const QString &device, bool full, bool noSkip);
     ~CdParanoia();
 
-    bool setDevice(const QString &device);
+    inline operator bool() const { return !dev.isEmpty(); }
+
     void setParanoiaMode(int mode);
+    void setFullParanoiaMode(bool f) { setParanoiaMode(f ? 3 : 0); }
     void setNeverSkip(bool b);
     void setMaxRetries(int m) { maxRetries=m; }
 

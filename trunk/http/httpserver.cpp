@@ -149,6 +149,7 @@ QByteArray HttpServer::encodeUrl(const Song &s) const
     if (s.track) {
         query.addQueryItem("track", QString::number(s.track));
     }
+    query.addQueryItem("id", QString::number(s.id));
     query.addQueryItem("cantata", "song");
     #if QT_VERSION >= 0x050000
     url.setQuery(query);
@@ -165,13 +166,16 @@ QByteArray HttpServer::encodeUrl(const QString &file) const
 
 Song HttpServer::decodeUrl(const QString &url) const
 {
+    return decodeUrl(QUrl(url));
+}
+
+Song HttpServer::decodeUrl(const QUrl &url) const
+{
     Song s;
     #if QT_VERSION < 0x050000
-    QUrl u(url);
-    QUrl &q=u;
+    const QUrl &q=url;
     #else
-    QUrl u(url);
-    QUrlQuery q(u); 
+    QUrlQuery q(url);
     #endif
 
     if (q.hasQueryItem("cantata") && q.queryItemValue("cantata")=="song") {
@@ -202,7 +206,15 @@ Song HttpServer::decodeUrl(const QString &url) const
         if (q.hasQueryItem("track")) {
             s.track=q.queryItemValue("track").toInt();
         }
-        s.file=u.path();
+        if (q.hasQueryItem("id")) {
+            s.id=q.queryItemValue("id").toInt();
+        }
+        s.file=url.path();
+        #ifdef CDDB_FOUND
+        if (s.file.startsWith("/cdda:/")) {
+            s.file=s.file.mid(1);
+        }
+        #endif
     }
 
     return s;

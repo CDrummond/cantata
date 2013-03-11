@@ -523,6 +523,9 @@ void ActionDialog::actionStatus(int status, bool copiedCover)
     case Device::DownloadFailed:
         setPage(PAGE_SKIP, i18n("Failed to download track.<br/><br/<hr/>%1").arg(formatSong(currentSong)));
         break;
+    case Device::FailedToLockDevice:
+        setPage(PAGE_ERROR, i18n("Failed to lock device.<hr/>%1").arg(formatSong(currentSong)));
+        break;
     case Device::Cancelled:
         break;
     default:

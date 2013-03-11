@@ -179,6 +179,23 @@ Device * DevicesPage::activeFsDevice() const
     return activeDev;
 }
 
+QStringList DevicesPage::playableUrls() const
+{
+    QModelIndexList selected = view->selectedIndexes();
+
+    if (0==selected.size()) {
+        return QStringList();
+    }
+    qSort(selected);
+
+    QModelIndexList mapped;
+    foreach (const QModelIndex &idx, selected) {
+        mapped.append(proxy.mapToSource(idx));
+    }
+
+    return DevicesModel::self()->playableUrls(mapped);
+}
+
 QList<Song> DevicesPage::selectedSongs() const
 {
     QModelIndexList selected = view->selectedIndexes();
@@ -211,6 +228,20 @@ QList<Song> DevicesPage::selectedSongs() const
     }
 
     return DevicesModel::self()->songs(mapped);
+}
+
+void DevicesPage::addSelectionToPlaylist(const QString &name, bool replace, quint8 priorty)
+{
+    QStringList files=playableUrls();
+
+    if (!files.isEmpty()) {
+        if (name.isEmpty()) {
+            emit add(files, replace, priorty);
+        } else {
+            emit addSongsToPlaylist(name, files);
+        }
+        view->clearSelection();
+    }
 }
 
 void DevicesPage::itemDoubleClicked(const QModelIndex &)
@@ -247,6 +278,7 @@ void DevicesPage::controlActions()
     bool deviceSelected=false;
     bool busyDevice=false;
     bool audioCd=false;
+    bool canPlay=false;
     QString udi;
 
     foreach (const QModelIndex &idx, selected) {
@@ -277,6 +309,7 @@ void DevicesPage::controlActions()
             else if (Device::RemoteFs==dev->devType()) {
                 remoteDev=true;
             }
+            canPlay=dev->canPlaySongs();
             #endif
             if (udi.isEmpty()) {
                 udi=dev->udi();
@@ -301,6 +334,9 @@ void DevicesPage::controlActions()
     #endif
     //StdActions::self()->burnAction->setEnabled(enable && onlyFs);
     StdActions::self()->organiseFilesAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
+    StdActions::self()->addToPlayQueueAction->setEnabled(!selected.isEmpty() && singleUdi && !busyDevice && haveTracks && (audioCd || !deviceSelected));
+    StdActions::self()->addWithPriorityAction->setEnabled(StdActions::self()->addToPlayQueueAction->isEnabled());
+    StdActions::self()->replacePlayQueueAction->setEnabled(StdActions::self()->addToPlayQueueAction->isEnabled());
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction->setEnabled(singleUdi && remoteDev);
     #endif

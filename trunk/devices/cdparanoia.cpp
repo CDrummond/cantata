@@ -22,30 +22,45 @@
  */
 
 #include "cdparanoia.h"
+#include <QMutex>
+#include <QMutexLocker>
+#include <QSet>
 
-CdParanoia::CdParanoia()
+static QSet<QString> lockedDevices;
+static QMutex mutex;
+
+CdParanoia::CdParanoia(const QString &device, bool full, bool noSkip)
     : drive(0)
     , paranoia(0)
     , paranoiaMode(0)
-    , neverSkip(true)
+    , neverSkip(noSkip)
     , maxRetries(20)
 {
     paranoia = 0;
     drive = 0;
-    setNeverSkip(true);
-    setMaxRetries(20);
-    setParanoiaMode(3);
+    QMutexLocker locker(&mutex);
+    if (!lockedDevices.contains(device)) {
+        dev = device;
+        if (init()) {
+            lockedDevices.insert(device);
+        } else {
+            dev=QString();
+        }
+    }
+
+    if (!dev.isEmpty()) {
+        setFullParanoiaMode(full);
+        setMaxRetries(20);
+    }
 }
 
 CdParanoia::~CdParanoia()
 {
+    QMutexLocker locker(&mutex);
     free();
-}
-
-bool CdParanoia::setDevice(const QString& device)
-{
-    dev = device;
-    return init();
+    if (!dev.isEmpty()) {
+        lockedDevices.remove(dev);
+    }
 }
 
 void CdParanoia::setParanoiaMode(int mode)

@@ -29,6 +29,9 @@
 #include <QPalette>
 #include <QDir>
 #include <math.h>
+#if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
+#include "gtkstyle.h"
+#endif
 
 static QList<int> constStdSizes=QList<int>() << 16 << 22 << 32 << 48;
 static const double constDisabledOpacity=0.5;
@@ -462,7 +465,7 @@ void Icons::initToolbarIcons(const QColor &color)
     }
 
     #if !defined ENABLE_KDE_SUPPORT && !defined Q_OS_WIN
-    if (light) {
+    if (light && GtkStyle::useSymbolicIcons()) {
         toolbarPrevIcon=Icon("media-skip-backward-symbolic");
         toolbarPlayIcon=Icon("media-playback-start-symbolic");
         toolbarPauseIcon=Icon("media-playback-pause-symbolic");

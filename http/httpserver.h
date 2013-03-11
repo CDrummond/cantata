@@ -30,6 +30,7 @@
 
 class HttpSocket;
 class QThread;
+class QUrl;
 
 class HttpServer
 {
@@ -51,7 +52,8 @@ public:
     bool isOurs(const QString &url) const;
     QByteArray encodeUrl(const Song &s) const;
     QByteArray encodeUrl(const QString &file) const;
-    Song decodeUrl(const QString &url) const;
+    Song decodeUrl(const QUrl &url) const;
+    Song decodeUrl(const QString &file) const;
 
 private:
     QThread *thread;

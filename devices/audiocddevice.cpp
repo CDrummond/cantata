@@ -56,6 +56,7 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
     block=dev.as<Solid::Block>();
     if (block) {
         cddb=new Cddb(block->device());
+        devPath=QLatin1String("cdda:/")+block->device()+QChar('/');
         connect(cddb, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
         connect(cddb, SIGNAL(initialDetails(CddbAlbum)), this, SLOT(setDetails(CddbAlbum)));
         connect(this, SIGNAL(lookup()), cddb, SLOT(lookup()));
@@ -238,7 +239,7 @@ void AudioCdDevice::cddbMatches(const QList<CddbAlbum> &albums)
 
 void AudioCdDevice::setCover(const Song &song, const QImage &img, const QString &file)
 {
-    if(song.file.startsWith("cdda://") && song.artist==artist && song.album==album) {
+    if (song.file.startsWith("cdda://") && song.artist==artist && song.album==album) {
         coverImage=Covers::Image(img, file);
         updateStatus();
     }

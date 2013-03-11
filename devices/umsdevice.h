@@ -48,7 +48,6 @@ public:
     DevType devType() const { return Ums; }
     void saveOptions();
     void configure(QWidget *parent);
-    virtual bool canPlaySongs() const { return true; }
     bool supportsDisconnect() const { return true; }
 
 private:

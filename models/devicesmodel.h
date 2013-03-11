@@ -53,6 +53,7 @@ public:
     QVariant data(const QModelIndex &, int) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QStringList filenames(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
+    QStringList playableUrls(const QModelIndexList &indexes) const;
     QList<Song> songs(const QModelIndexList &indexes, bool playableOnly=false, bool fullPath=false) const;
     void clear(bool clearConfig=true);
     QMenu * menu() { return itemMenu; }

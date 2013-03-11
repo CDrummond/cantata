@@ -45,7 +45,9 @@ public:
 
     void clear();
     QString activeFsDeviceUdi() const;
+    QStringList playableUrls() const;
     QList<Song> selectedSongs() const;
+    void addSelectionToPlaylist(const QString &name=QString(), bool replace=false, quint8 priorty=0);
     void setView(int v) { view->setMode((ItemView::Mode)v); }
     void focusSearch() { view->focusSearch(); }
     void goBack() { view->backActivated(); }
@@ -71,6 +73,10 @@ private:
     Device * activeFsDevice() const;
 
 Q_SIGNALS:
+    // These are for communicating with MPD object (which is in its own thread, so need to talk via signal/slots)
+    void add(const QStringList &files, bool replace, quint8 priorty);
+    void addSongsToPlaylist(const QString &name, const QStringList &files);
+
     void addToDevice(const QString &from, const QString &to, const QList<Song> &songs);
     void deleteSongs(const QString &from, const QList<Song> &songs);
 

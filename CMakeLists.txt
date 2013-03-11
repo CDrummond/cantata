@@ -30,11 +30,16 @@ OPTION(ENABLE_WEBKIT "Enable WebKit library (required for artist/album informati
 OPTION(ENABLE_FFMPEG "Enable ffmpeg/libav libraries (required for replaygain calculation)" ON)
 OPTION(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculation)" ON)
 OPTION(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain calculation)" ON)
+OPTION(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" OFF)
 
 if (ENABLE_QT5)
     set(ENABLE_PHONON FALSE)
     set(ENABLE_KDE FALSE)
 endif (ENABLE_QT5)
+
+if (ENABLE_UDISKS2)
+    set (WITH_SOLID_UDISKS2 ON)
+endif (ENABLE_UDISKS2)
 
 macro(cantata_check_for_sse)
     # check for SSE extensions

@@ -18,8 +18,8 @@
     License along with this library. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef UDISKSDEVICEINTERFACE_H
-#define UDISKSDEVICEINTERFACE_H
+#ifndef UDISKS2DEVICEINTERFACE_H
+#define UDISKS2DEVICEINTERFACE_H
 
 #include <ifaces/deviceinterface.h>
 #include "udisksdevice.h"
@@ -31,7 +31,7 @@ namespace Solid
 {
 namespace Backends
 {
-namespace UDisks
+namespace UDisks2
 {
 
 class DeviceInterface : public QObject, virtual public Solid::Ifaces::DeviceInterface
@@ -39,11 +39,11 @@ class DeviceInterface : public QObject, virtual public Solid::Ifaces::DeviceInte
     Q_OBJECT
     Q_INTERFACES(Solid::Ifaces::DeviceInterface)
 public:
-    DeviceInterface(UDisksDevice *device);
+    DeviceInterface(Device *device);
     virtual ~DeviceInterface();
 
 protected:
-    UDisksDevice *m_device;
+    Device *m_device;
 
 public:
     inline static QStringList toStringList(Solid::DeviceInterface::Type type)
@@ -55,9 +55,11 @@ public:
         case Solid::DeviceInterface::GenericInterface:
             list << "generic";
             break;
-        //case Solid::DeviceInterface::Processor:
+        /*
+        case Solid::DeviceInterface::Processor:
             // Doesn't exist with UDisks
-        //    break;
+            break;
+        */
         case Solid::DeviceInterface::Block:
             list << "block";
             break;
@@ -76,9 +78,11 @@ public:
         case Solid::DeviceInterface::OpticalDisc:
             list << "volume.disc";
             break;
-        //case Solid::DeviceInterface::Camera:
+        /*
+        case Solid::DeviceInterface::Camera:
             // Doesn't exist with UDisks
-        //    break;
+            break;
+        */
         case Solid::DeviceInterface::PortableMediaPlayer:
             // Doesn't exist with UDisks
             break;
@@ -128,8 +132,6 @@ public:
     {
         if (capability == "generic")
             return Solid::DeviceInterface::GenericInterface;
-        /*else if (capability == "processor")
-            return Solid::DeviceInterface::Processor; */
         else if (capability == "block")
             return Solid::DeviceInterface::Block;
         else if (capability == "storage")
@@ -140,30 +142,6 @@ public:
             return Solid::DeviceInterface::StorageVolume;
         else if (capability == "volume.disc")
             return Solid::DeviceInterface::OpticalDisc;
-        /*else if (capability == "camera")
-            return Solid::DeviceInterface::Camera;*/
-        else if (capability == "portable_audio_player")
-            return Solid::DeviceInterface::PortableMediaPlayer;
-        /*else if (capability == "net")
-            return Solid::DeviceInterface::NetworkInterface;
-        else if (capability == "ac_adapter")
-            return Solid::DeviceInterface::AcAdapter;
-        else if (capability == "battery")
-            return Solid::DeviceInterface::Battery;
-        else if (capability == "button")
-            return Solid::DeviceInterface::Button;
-        else if (capability == "alsa" || capability == "oss")
-            return Solid::DeviceInterface::AudioInterface;
-        else if (capability == "dvb")
-            return Solid::DeviceInterface::DvbInterface;
-        else if (capability == "video4linux")
-            return Solid::DeviceInterface::Video;
-        else if (capability == "serial")
-            return Solid::DeviceInterface::SerialInterface;
-        else if (capability == "smart_card_reader")
-            return Solid::DeviceInterface::SmartCardReader;
-        else if (capability == "networkshare")
-            return Solid::DeviceInterface::NetworkShare;*/
         else
             return Solid::DeviceInterface::Unknown;
     }
@@ -173,4 +151,4 @@ public:
 }
 }
 
-#endif // UDISKSDEVICEINTERFACE_H
+#endif // UDISKS2DEVICEINTERFACE_H

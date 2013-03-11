@@ -56,3 +56,8 @@ The following options may be passed to CMake:
         Enable support for playing back MPD HTTP streams via Phonon.
         Default: OFF
 
+    -DENABLE_UDISKS2=ON
+        Build UDisks2 backend for solid-lite. (This is for Qt only builds,
+        KDE builds use KDE supplied Solid libraries).
+        Default: OFF
+

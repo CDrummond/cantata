@@ -502,11 +502,14 @@ void GtkProxyStyle::sbarThumbMoved(const QPoint &point)
         }
         QPoint global=sbarThumbTarget->mapToGlobal(QPoint(0, 0))-QPoint(1, 1);
         int value=sbarThumbTarget->value();
+        QRect sliderThumbRect=sbarGetSliderRect();
         if (v) {
-            sbarThumbTarget->setValue(sliderValueFromPosition(sbarThumbTarget->minimum(), sbarThumbTarget->maximum(), point.y() - (global.y()+sbarOffset), sbarThumbTarget->height() - sbarThumb->height()));
+            sbarThumbTarget->setValue(sliderValueFromPosition(sbarThumbTarget->minimum(), sbarThumbTarget->maximum(), point.y() - (global.y()+sbarOffset),
+                                                              sbarThumbTarget->height() - sliderThumbRect.height()));
             sbarLastPos=point.y();
         } else {
-            sbarThumbTarget->setValue(sliderValueFromPosition(sbarThumbTarget->minimum(), sbarThumbTarget->maximum(), point.x() - global.x(), sbarThumbTarget->width() - sbarThumb->width()));
+            sbarThumbTarget->setValue(sliderValueFromPosition(sbarThumbTarget->minimum(), sbarThumbTarget->maximum(), point.x() - global.x(),
+                                                              sbarThumbTarget->width() - sliderThumbRect.width()));
             sbarLastPos=point.x();
         }
         if (value==sbarThumbTarget->value()) {

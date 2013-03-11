@@ -72,8 +72,11 @@ GtkProxyStyle::GtkProxyStyle(ScrollbarType sb)
 {
     sbarType=sb;
 
-    if (SB_Overlay==sbarType && qgetenv("LIBOVERLAY_SCROLLBAR")!="0") {
-        sbarType=SB_Standard;
+    if (SB_Overlay==sbarType) {
+        QByteArray env=qgetenv("LIBOVERLAY_SCROLLBAR");
+        if (!env.isEmpty() && env!="1") {
+            sbarType=SB_Standard;
+        }
     }
 
     setBaseStyle(qApp->style());

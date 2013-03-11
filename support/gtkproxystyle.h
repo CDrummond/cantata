@@ -38,7 +38,13 @@ class GtkProxyStyle : public QProxyStyle
 public:
     static const char * constSlimComboProperty;
 
-    GtkProxyStyle(bool overlaySBars);
+    enum ScrollbarType {
+        SB_Standard,
+        SB_Thin,
+        SB_Overlay
+    };
+
+    GtkProxyStyle(ScrollbarType sb);
     ~GtkProxyStyle();
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const;
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const;
@@ -67,11 +73,12 @@ private:
     void sbarCheckEdges();
     QRect sbarGetSliderRect();
     void sbarUpdateOffset();
+    bool usePlainScrollbars(const QWidget *widget) const;
 
 private:
     QComboBox *toolbarCombo;
 
-    bool useOverlayScrollbars;
+    ScrollbarType sbarType;
     OsThumb *sbarThumb;
     int sbarWidth;
     int sbarPlainViewWidth;

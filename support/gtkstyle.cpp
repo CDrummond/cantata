@@ -177,7 +177,7 @@ void GtkStyle::applyTheme(QWidget *widget)
     #else
     if (widget && isActive()) {
         QString theme=GtkStyle::themeName().toLower();
-        bool useOverlayScrollbars=false;
+        GtkProxyStyle::ScrollbarType sbType=GtkProxyStyle::SB_Standard;
         if (!theme.isEmpty()) {
             QFile cssFile(QLatin1String(INSTALL_PREFIX"/share/")+QCoreApplication::applicationName()+"/"+theme+QLatin1String(".css"));
             if (cssFile.open(QFile::ReadOnly)) {
@@ -189,12 +189,16 @@ void GtkStyle::applyTheme(QWidget *widget)
                     wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
                     wm->registerWidgetAndChildren(widget);
                 }
-                useOverlayScrollbars=header.contains("scrollbar:overlay");
+                if (header.contains("scrollbar:overlay")) {
+                    sbType=GtkProxyStyle::SB_Overlay;
+                } else if (header.contains("scrollbar:thin")) {
+                    sbType=GtkProxyStyle::SB_Thin;
+                }
                 symbolicIcons=header.contains("symbolic-icons:true");
             }
         }
         if (!style) {
-            style=new GtkProxyStyle(useOverlayScrollbars);
+            style=new GtkProxyStyle(sbType);
             qApp->setStyle(style);
         }
     }

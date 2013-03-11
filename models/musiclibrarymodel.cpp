@@ -378,7 +378,7 @@ const MusicLibraryItem * MusicLibraryModel::findSong(const Song &s) const
         MusicLibraryItemAlbum *albumItem = artistItem->album(s, false);
         if (albumItem) {
             foreach (const MusicLibraryItem *songItem, albumItem->childItems()) {
-                if (songItem->data()==s.displayTitle()) {
+                if (songItem->data()==s.displayTitle() && static_cast<const MusicLibraryItemSong *>(songItem)->song().track==s.track) {
                     return songItem;
                 }
             }

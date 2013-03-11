@@ -66,7 +66,7 @@
      <item row="3" column="1">
       <widget class="SpinBox" name="httpPort">
        <property name="minimum">
-        <number>1</number>
+        <number>1023</number>
        </property>
        <property name="maximum">
         <number>65535</number>
@@ -108,7 +108,7 @@
     <widget class="QLabel" name="label_4">
      <property name="text">
       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; MPD usually only plays songs that are stored within its folders. If you have connected via a local socket, then MPD can also play files located on your filesystem. If you are using a non local socket (e.g. you have entered a hostname or IP address in the 'Host' field of the 'Connection' settings page), then Cantata contains a minimal HTTP server that can be used to serve files to MPD. This, however, will only work whilst Cantata is running.  If you enable 'Always use server', then Cantata will always pass server URLs to MPD for files, even when you have  connected via a local socket.&lt;br/&gt;&lt;br/&gt;
-&lt;b&gt;NOTE:&lt;/b&gt; 'Address/interface' may contain either the IP address, or interface (e.g. eth0), that you wish to listen for connections on. Leave blank to use the local loopback address (127.0.0.1).&lt;/i&gt;&lt;/i&gt;</string>
+&lt;b&gt;NOTE:&lt;/b&gt; 'Address/interface' may contain either the IP address, or interface (e.g. eth0), that you wish to listen for connections on. Leave blank to use the local loopback address (127.0.0.1).&lt;br/&gt;&lt;br/&gt;&lt;b&gt;NOTE:&lt;/b&gt; Leave port set to 'Dynamic' to have Cantata choose a random port number.&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

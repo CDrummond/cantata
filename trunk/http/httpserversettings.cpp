@@ -23,18 +23,21 @@
 
 #include "httpserversettings.h"
 #include "settings.h"
+#include "localize.h"
 
 HttpServerSettings::HttpServerSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
+    httpPort->setSpecialValueText(i18n("Dynamic"));
 }
 
 void HttpServerSettings::load()
 {
+    int port=Settings::self()->httpPort();
     enableHttp->setChecked(Settings::self()->enableHttp());
     alwaysUseHttp->setChecked(Settings::self()->alwaysUseHttp());
-    httpPort->setValue(Settings::self()->httpPort());
+    httpPort->setValue(port<1024 ? 1023 : port);
     httpAddress->setText(Settings::self()->httpAddress());
 }
 

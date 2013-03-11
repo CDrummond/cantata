@@ -38,6 +38,7 @@
 #include <QDesktopWidget>
 #include <QLibrary>
 #include <QTimer>
+#include <QDebug>
 
 const char * GtkProxyStyle::constSlimComboProperty="gtkslim";
 static const char * constIncProp="inc";
@@ -59,7 +60,7 @@ static const char * constIncProp="inc";
 //    return false;
 //}
 
-GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
+GtkProxyStyle::GtkProxyStyle(ScrollbarType sb)
     : QProxyStyle()
     , sbarThumb(0)
     , sbarWidth(-1)
@@ -69,14 +70,19 @@ GtkProxyStyle::GtkProxyStyle(bool overlaySBars)
     , sbarThumbTarget(0)
     , sbarEdgeTimer(0)
 {
-    useOverlayScrollbars=overlaySBars && qgetenv("LIBOVERLAY_SCROLLBAR")!="0";
+    sbarType=sb;
+
+    if (SB_Overlay==sbarType && qgetenv("LIBOVERLAY_SCROLLBAR")!="0") {
+        sbarType=SB_Standard;
+    }
+
     setBaseStyle(qApp->style());
     toolbarCombo=new QComboBox(new QToolBar());
-    if (useOverlayScrollbars) {
+    if (SB_Standard!=sbarType) {
         int fh=QApplication::fontMetrics().height();
         sbarPlainViewWidth=fh/1.5;
 
-        if (Qt::LeftToRight==QApplication::layoutDirection()) { //  && revertQGtkStyleOverlayMod()) {
+        if (SB_Overlay==sbarType && Qt::LeftToRight==QApplication::layoutDirection()) { //  && revertQGtkStyleOverlayMod()) {
             sbarWidth=qMax(fh/5, 3);
             sbarAreaWidth=sbarWidth*6;
             sbarThumb=new OsThumb();
@@ -99,13 +105,6 @@ GtkProxyStyle::~GtkProxyStyle()
     destroySliderThumb();
 }
 
-static bool usePlainScrollbars(const QWidget *widget)
-{
-    return !widget || 0==qstrcmp(widget->metaObject()->className(), "QWebView") ||
-           (widget && widget->parentWidget() && widget->parentWidget()->parentWidget() &&
-            0==qstrcmp(widget->parentWidget()->parentWidget()->metaObject()->className(), "QComboBoxListView"));
-}
-
 QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *option,  const QSize &size, const QWidget *widget) const
 {
     QSize sz=baseStyle()->sizeFromContents(type, option, size, widget);
@@ -117,7 +116,7 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
             return QSize(orig.width(), other.height());
         }
         return orig;
-    } else if (useOverlayScrollbars && CT_ScrollBar==type) {
+    } else if (SB_Standard!=sbarType && CT_ScrollBar==type) {
         if (const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>(option)) {
             int extent(pixelMetric(PM_ScrollBarExtent, option, widget)),
                 sliderMin(pixelMetric(PM_ScrollBarSliderMin, option, widget));
@@ -134,7 +133,7 @@ QSize GtkProxyStyle::sizeFromContents(ContentsType type, const QStyleOption *opt
 
 int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
 {
-    if (useOverlayScrollbars && SH_ScrollView_FrameOnlyAroundContents==hint) {
+    if (SB_Standard!=sbarType && SH_ScrollView_FrameOnlyAroundContents==hint) {
         return false;
     }
 
@@ -143,7 +142,7 @@ int GtkProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const Q
 
 int GtkProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
-    if (useOverlayScrollbars && PM_ScrollBarExtent==metric) {
+    if (SB_Standard!=sbarType && PM_ScrollBarExtent==metric) {
         return !sbarThumb || usePlainScrollbars(widget) ? sbarPlainViewWidth : sbarWidth;
     }
     return baseStyle()->pixelMetric(metric, option, widget);
@@ -151,7 +150,7 @@ int GtkProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, c
 
 QRect GtkProxyStyle::subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const
 {
-    if (useOverlayScrollbars && CC_ScrollBar==control) {
+    if (SB_Standard!=sbarType && CC_ScrollBar==control) {
         if (const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>(option))  {
             QRect ret;
             bool  horizontal(Qt::Horizontal==sb->orientation);
@@ -243,26 +242,21 @@ const QAbstractItemView * view(const QWidget *w) {
 
 void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {
-    if (useOverlayScrollbars && CC_ScrollBar==control) {
+    if (SB_Standard!=sbarType && CC_ScrollBar==control) {
         if (const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>(option)) {
             QRect r=option->rect;
             QRect slider=subControlRect(control, option, SC_ScrollBarSlider, widget);
             painter->save();
             bool usePlain=!sbarThumb || usePlainScrollbars(widget);
-            painter->fillRect(r, usePlain ? option->palette.base() : option->palette.background());
 
             if (usePlain) {
-                QColor col=option->palette.foreground().color();
-                col.setAlphaF(0.15);
-                painter->setPen(col);
-                if (Qt::Horizontal==sb->orientation) {
-                    painter->drawLine(r.x(), r.y(), r.x()+r.width()-1, r.y());
-                } else if (Qt::RightToLeft==QApplication::layoutDirection()) {
-                    painter->drawLine(r.x()+r.width()-1, r.y(), r.x()+r.width()-1, r.y()+r.height()-1);
-                } else {
-                    painter->drawLine(r.x(), r.y(), r.x(), r.y()+r.height()-1);
-                }
+                QLinearGradient grad(r.topLeft(), Qt::Horizontal==sb->orientation ? r.bottomLeft() : r.topRight());
+                QColor col=option->palette.base().color();
+                grad.setColorAt(0, col.darker(110));
+                grad.setColorAt(1, col.darker(95));
+                painter->fillRect(r, grad);
             } else {
+                painter->fillRect(r, usePlain ? option->palette.base() : option->palette.background());
                 const QAbstractItemView *v=view(widget);
                 if (v && qobject_cast<const QTreeView *>(v) && ((const QTreeView *)v)->header()&& ((const QTreeView *)v)->header()->isVisible()) {
                     QStyleOptionHeader ho;
@@ -276,23 +270,27 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             }
             if (slider.isValid()) {
                 if (usePlain) {
+                    bool inactive=!(sb->activeSubControls&SC_ScrollBarSlider && (option->state&State_MouseOver || option->state&State_Sunken));
+                    int adjust=inactive ? 2 : 1;
                     painter->setRenderHint(QPainter::Antialiasing, true);
                     if (Qt::Horizontal==sb->orientation) {
-                        slider.adjust(1, 2, -1, -1);
+                        slider.adjust(1, 1+adjust, -1, -adjust);
                     } else {
-                        slider.adjust(2, 1, -1, -1);
+                        slider.adjust(1+adjust, 1, -adjust, -1);
                     }
                     QPainterPath path=buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
                                                 (Qt::Horizontal==sb->orientation ? r.height() : r.width())/4);
                     QColor col(option->palette.highlight().color());
-                    bool faded=option->state&State_Active && !(sb->activeSubControls&SC_ScrollBarSlider && (option->state&State_MouseOver || option->state&State_Sunken));
-                    if (faded) {
-                        col.setAlphaF(0.5);
+                    if (!(option->state&State_Active)) {
+                        col=col.darker(115);
                     }
+//                    if (inactive) {
+//                        col.setAlphaF(0.5);
+//                    }
                     painter->fillPath(path, col);
-                    if (faded) {
-                        col.setAlphaF(0.1);
-                    }
+//                    if (inactive) {
+//                        col.setAlphaF(0.1);
+//                    }
                     painter->setPen(col);
                     painter->drawPath(path);
                 } else {
@@ -353,10 +351,10 @@ void GtkProxyStyle::destroySliderThumb()
 
 void GtkProxyStyle::polish(QWidget *widget)
 {
-    if (useOverlayScrollbars && sbarThumb && widget && qobject_cast<QAbstractScrollArea *>(widget) && qstrcmp(widget->metaObject()->className(), "QComboBoxListView")) {
+    if (SB_Overlay==sbarType && sbarThumb && widget && qobject_cast<QAbstractScrollArea *>(widget) && qstrcmp(widget->metaObject()->className(), "QComboBoxListView")) {
         addEventFilter(widget, this);
         widget->setAttribute(Qt::WA_Hover, true);
-    } else if (useOverlayScrollbars && usePlainScrollbars(widget)) {
+    } else if (SB_Standard!=sbarType && usePlainScrollbars(widget)) {
         widget->setAttribute(Qt::WA_Hover, true);
     }
     baseStyle()->polish(widget);
@@ -374,7 +372,7 @@ void GtkProxyStyle::polish(QApplication *app)
 
 void GtkProxyStyle::unpolish(QWidget *widget)
 {
-    if (useOverlayScrollbars && sbarThumb && widget) {
+    if (SB_Overlay==sbarType && sbarThumb && widget) {
         if (qobject_cast<QAbstractScrollArea *>(widget) && qstrcmp(widget->metaObject()->className(), "QComboBoxListView")) {
             widget->removeEventFilter(this);
         }
@@ -392,7 +390,7 @@ void GtkProxyStyle::unpolish(QApplication *app)
 
 bool GtkProxyStyle::eventFilter(QObject *object, QEvent *event)
 {
-    if (useOverlayScrollbars) {
+    if (SB_Overlay==sbarType) {
         switch (event->type()) {
         case QEvent::HoverMove:
             if (object && qobject_cast<QAbstractScrollArea *>(object)) {
@@ -626,4 +624,11 @@ void GtkProxyStyle::sbarUpdateOffset()
     } else {
         sbarOffset=sbarThumb->pos().x()-sr.x();
     }
+}
+
+bool GtkProxyStyle::usePlainScrollbars(const QWidget *widget) const
+{
+    return SB_Thin==sbarType || !widget || 0==qstrcmp(widget->metaObject()->className(), "QWebView") ||
+           (widget && widget->parentWidget() && widget->parentWidget()->parentWidget() &&
+            0==qstrcmp(widget->parentWidget()->parentWidget()->metaObject()->className(), "QComboBoxListView"));
 }

@@ -334,7 +334,7 @@ void DevicesPage::controlActions()
     #endif
     //StdActions::self()->burnAction->setEnabled(enable && onlyFs);
     StdActions::self()->organiseFilesAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
-    StdActions::self()->addToPlayQueueAction->setEnabled(!selected.isEmpty() && singleUdi && !busyDevice && haveTracks && (audioCd || !deviceSelected));
+    StdActions::self()->addToPlayQueueAction->setEnabled(canPlay && !selected.isEmpty() && singleUdi && !busyDevice && haveTracks && (audioCd || !deviceSelected));
     StdActions::self()->addWithPriorityAction->setEnabled(StdActions::self()->addToPlayQueueAction->isEnabled());
     StdActions::self()->replacePlayQueueAction->setEnabled(StdActions::self()->addToPlayQueueAction->isEnabled());
     #ifdef ENABLE_REMOTE_DEVICES

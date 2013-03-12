@@ -189,11 +189,17 @@ void GtkStyle::applyTheme(QWidget *widget)
                     wm->initialize(WindowManager::WM_DRAG_MENU_AND_TOOLBAR);
                     wm->registerWidgetAndChildren(widget);
                 }
+                #ifdef ENABLE_OVERLAYSCROLLBARS
                 if (header.contains("scrollbar:overlay")) {
                     sbType=GtkProxyStyle::SB_Overlay;
                 } else if (header.contains("scrollbar:thin")) {
                     sbType=GtkProxyStyle::SB_Thin;
                 }
+                #else
+                if (header.contains("scrollbar:overlay") || header.contains("scrollbar:thin")) {
+                    sbType=GtkProxyStyle::SB_Thin;
+                }
+                #endif
                 symbolicIcons=header.contains("symbolic-icons:true");
             }
         }
@@ -207,7 +213,7 @@ void GtkStyle::applyTheme(QWidget *widget)
 
 void GtkStyle::cleanup()
 {
-    #ifndef Q_OS_WIN
+    #if !defined Q_OS_WIN && defined ENABLE_OVERLAYSCROLLBARS
     if (style) {
         style->destroySliderThumb();
     }

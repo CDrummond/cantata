@@ -20,8 +20,12 @@ SET( SUPPORT_MOC_HDRS
 )
 
 if (NOT WIN32)
-    SET( SUPPORT_SRCS ${SUPPORT_SRCS} onoffbutton.cpp spinbox.cpp windowmanager.cpp gtkproxystyle.cpp osthumb.cpp combobox.cpp)
+    SET( SUPPORT_SRCS ${SUPPORT_SRCS} onoffbutton.cpp spinbox.cpp windowmanager.cpp gtkproxystyle.cpp combobox.cpp)
     SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} spinbox.h windowmanager.h gtkproxystyle.h osthumb.h)
+    if (ENABLE_OVERLAYSCROLLBARS)
+        SET( SUPPORT_SRCS ${SUPPORT_SRCS} osthumb.cpp)
+        SET( SUPPORT_MOC_HDRS ${SUPPORT_MOC_HDRS} osthumb.h)
+    endif (ENABLE_OVERLAYSCROLLBARS)
     install(FILES ambiance.css radiance.css DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/)
 endif (NOT WIN32)
 

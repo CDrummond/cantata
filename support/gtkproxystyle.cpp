@@ -83,7 +83,7 @@ GtkProxyStyle::GtkProxyStyle(ScrollbarType sb)
     toolbarCombo=new QComboBox(new QToolBar());
     if (SB_Standard!=sbarType) {
         int fh=QApplication::fontMetrics().height();
-        sbarPlainViewWidth=fh/1.5;
+        sbarPlainViewWidth=fh/1.75;
 
         if (SB_Overlay==sbarType && Qt::LeftToRight==QApplication::layoutDirection()) { //  && revertQGtkStyleOverlayMod()) {
             sbarWidth=qMax(fh/5, 3);
@@ -256,7 +256,7 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
                 QLinearGradient grad(r.topLeft(), Qt::Horizontal==sb->orientation ? r.bottomLeft() : r.topRight());
                 QColor col=option->palette.base().color();
                 grad.setColorAt(0, col.darker(110));
-                grad.setColorAt(1, col.darker(95));
+                grad.setColorAt(1, col.darker(102));
                 painter->fillRect(r, grad);
             } else {
                 painter->fillRect(r, usePlain ? option->palette.base() : option->palette.background());
@@ -274,26 +274,21 @@ void GtkProxyStyle::drawComplexControl(ComplexControl control, const QStyleOptio
             if (slider.isValid()) {
                 if (usePlain) {
                     bool inactive=!(sb->activeSubControls&SC_ScrollBarSlider && (option->state&State_MouseOver || option->state&State_Sunken));
-                    int adjust=inactive ? 2 : 1;
+                    int adjust=inactive ? 3 : 1;
                     painter->setRenderHint(QPainter::Antialiasing, true);
                     if (Qt::Horizontal==sb->orientation) {
-                        slider.adjust(1, 1+adjust, -1, -adjust);
+                        slider.adjust(1, adjust, -1, -adjust);
                     } else {
-                        slider.adjust(1+adjust, 1, -adjust, -1);
+                        slider.adjust(adjust, 1, -adjust, -1);
                     }
+                    int dimension=(Qt::Horizontal==sb->orientation ? slider.height() : slider.width());
                     QPainterPath path=buildPath(QRectF(slider.x()+0.5, slider.y()+0.5, slider.width()-1, slider.height()-1),
-                                                (Qt::Horizontal==sb->orientation ? r.height() : r.width())/4);
+                                                dimension>6 ? (dimension/4.0) : (dimension/8.0));
                     QColor col(option->palette.highlight().color());
                     if (!(option->state&State_Active)) {
                         col=col.darker(115);
                     }
-//                    if (inactive) {
-//                        col.setAlphaF(0.5);
-//                    }
                     painter->fillPath(path, col);
-//                    if (inactive) {
-//                        col.setAlphaF(0.1);
-//                    }
                     painter->setPen(col);
                     painter->drawPath(path);
                 } else {

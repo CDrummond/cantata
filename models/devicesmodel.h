@@ -77,6 +77,8 @@ public:
     Action * editAct() const { return editAction; }
     #endif
 
+    MusicLibraryItem * toItem(const QModelIndex &idx) const;
+
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img);
     void deviceAdded(const QString &udi);

@@ -127,7 +127,8 @@
 74. Expand device when connected.
 75. Basic support for extracting music from audio CDs
 76. Update copy of Solid to KDE4.10.1 - adds Udisks2 support.
-
+77. Reduce memory usage - by having only Device/OnlineService derive from
+    QObject, as opposed to every artist/album/song!
 0.9.2
 -----
  1. (Qt-Only) Dont show clear button for read-only line-edits.

@@ -90,7 +90,7 @@ QModelIndex OnlineServicesModel::index(int row, int column, const QModelIndex &p
     }
 
     if (parent.isValid()) {
-        MusicLibraryItem *p=static_cast<MusicLibraryItem *>(parent.internalPointer());
+        MusicLibraryItem *p=toItem(parent);
 
         if (p) {
             return row<p->childCount() ? createIndex(row, column, p->childItem(row)) : QModelIndex();
@@ -108,7 +108,7 @@ QModelIndex OnlineServicesModel::parent(const QModelIndex &index) const
         return QModelIndex();
     }
 
-    MusicLibraryItem *childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
+    MusicLibraryItem *childItem = toItem(index);
     MusicLibraryItem *parentItem = childItem->parentItem();
 
     if (parentItem) {
@@ -129,7 +129,7 @@ int OnlineServicesModel::rowCount(const QModelIndex &parent) const
         return 0;
     }
 
-    return parent.isValid() ? static_cast<MusicLibraryItem *>(parent.internalPointer())->childCount() : services.count();
+    return parent.isValid() ? toItem(parent)->childCount() : services.count();
 }
 
 int OnlineServicesModel::columnCount(const QModelIndex &parent) const
@@ -144,7 +144,7 @@ QVariant OnlineServicesModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+    MusicLibraryItem *item = toItem(index);
 
     switch (role) {
     case Qt::DecorationRole:
@@ -414,7 +414,7 @@ QList<Song> OnlineServicesModel::songs(const QModelIndexList &indexes) const
     QMap<MusicLibraryItem *, QList<Song> > srvSongs;
 
     foreach(QModelIndex index, indexes) {
-        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
+        MusicLibraryItem *item = toItem(index);
         MusicLibraryItem *parent=item;
 
         while (parent->parentItem()) {
@@ -575,6 +575,13 @@ void OnlineServicesModel::removeService(const QString &name, bool fullRemove)
         // Destroy will stop service, and delete it (via deleteLater())
         srv->destroy(fullRemove);
     }
+}
+
+MusicLibraryItem * OnlineServicesModel::toItem(const QModelIndex &idx) const
+{
+    return services.contains((OnlineService *)(idx.internalPointer()))
+            ? static_cast<OnlineService *>(idx.internalPointer())
+            : static_cast<MusicLibraryItem *>(idx.internalPointer());
 }
 
 void OnlineServicesModel::stateChanged(const QString &name, bool state)

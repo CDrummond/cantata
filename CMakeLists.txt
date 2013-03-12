@@ -31,6 +31,7 @@ OPTION(ENABLE_FFMPEG "Enable ffmpeg/libav libraries (required for replaygain cal
 OPTION(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculation)" ON)
 OPTION(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain calculation)" ON)
 OPTION(ENABLE_UDISKS2 "Build UDisks2 backend, and NOT UDisks, for Qt builds" OFF)
+OPTION(ENABLE_OVERLAYSCROLLBARS "Wnable support for overlay style scrollbars when using QGtkStyle (Linux only)" OFF)
 
 if (ENABLE_QT5)
     set(ENABLE_PHONON FALSE)

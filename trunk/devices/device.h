@@ -41,7 +41,7 @@ class QImage;
 class QTemporaryFile;
 class DevicesModel;
 
-class Device : public MusicLibraryItemRoot
+class Device : public QObject, public MusicLibraryItemRoot
 {
     Q_OBJECT
 

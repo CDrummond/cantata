@@ -77,7 +77,7 @@ protected:
     int lastProg;
 };
 
-class OnlineService : public MusicLibraryItemRoot
+class OnlineService : public QObject, public MusicLibraryItemRoot
 {
     Q_OBJECT
 

@@ -31,6 +31,7 @@
 class Device;
 class OnlineService;
 class OnlineDevice;
+class MusicLibraryItem;
 
 class OnlineServicesModel : public ActionModel
 {
@@ -67,6 +68,8 @@ public:
     Action * refreshAct() const { return refreshAction; }
     Action * connectAct() const { return connectAction; }
     Action * disconnectAct() const { return disconnectAction; }
+
+    MusicLibraryItem * toItem(const QModelIndex &idx) const;
 
 public Q_SLOTS:
     void setArtistImage(const Song &song, const QImage &img);

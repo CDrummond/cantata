@@ -32,7 +32,7 @@
 #include <QSet>
 
 class MusicLibraryItemContainer;
-class MusicLibraryItem : public QObject
+class MusicLibraryItem
 {
 public:
     enum Type {

@@ -126,7 +126,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
             //    static_cast<Device *>(parentItem()->parentItem())->requestArtistImage(song);
             //} else
             //#endif
-            if (parentItem() && parentItem()->parentItem() && qobject_cast<OnlineService *>(parentItem()->parentItem()) &&
+            if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem()) &&
                 static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
                 // ONLINE: Image URL is encoded in song.name...
                 song.name=m_imageUrl;

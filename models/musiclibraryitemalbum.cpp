@@ -222,14 +222,14 @@ const QPixmap & MusicLibraryItemAlbum::cover()
             song.year=m_year;
             song.file=firstSong->file();
             #ifdef ENABLE_DEVICES_SUPPORT
-            if (parentItem() && parentItem()->parentItem() && qobject_cast<Device *>(parentItem()->parentItem()) &&
+            if (parentItem() && parentItem()->parentItem() && dynamic_cast<Device *>(parentItem()->parentItem()) &&
                 static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
                 // This item is in the devices model, so get cover from device...
                 song.id=firstSong->song().id;
                 static_cast<Device *>(parentItem()->parentItem())->requestCover(song);
             } else
             #endif
-            if (parentItem() && parentItem()->parentItem() && qobject_cast<OnlineService *>(parentItem()->parentItem()) &&
+            if (parentItem() && parentItem()->parentItem() && dynamic_cast<OnlineService *>(parentItem()->parentItem()) &&
                 static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useAlbumImages()) {
                 // ONLINE: Image URL is encoded in song.name...
                 song.name=m_imageUrl;

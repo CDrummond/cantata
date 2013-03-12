@@ -156,7 +156,7 @@ Device * DevicesPage::activeFsDevice() const
     Device *activeDev=0;
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
-        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
+        MusicLibraryItem *item=DevicesModel::self()->toItem(index);
 
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parentItem()) {
@@ -211,7 +211,7 @@ QList<Song> DevicesPage::selectedSongs() const
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
         mapped.append(index);
-        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
+        MusicLibraryItem *item=DevicesModel::self()->toItem(index);
 
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parentItem()) {
@@ -250,7 +250,7 @@ void DevicesPage::itemDoubleClicked(const QModelIndex &)
 //     if (1!=selected.size()) {
 //         return; //doubleclick should only have one selected item
 //     }
-//     MusicDevicesItem *item = static_cast<MusicDevicesItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
+//     MusicDevicesItem *item = DevicesModel::self()->toItem(proxy.mapToSource(selected.at(0)));
 //     if (MusicDevicesItem::Type_Song==item->itemType()) {
 //         addSelectionToPlaylist();
 //     }
@@ -282,7 +282,7 @@ void DevicesPage::controlActions()
     QString udi;
 
     foreach (const QModelIndex &idx, selected) {
-        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
+        MusicLibraryItem *item=DevicesModel::self()->toItem(proxy.mapToSource(idx));
 
         if (item && MusicLibraryItem::Type_Root==item->itemType()) {
             deviceSelected=true;
@@ -359,7 +359,7 @@ void DevicesPage::copyToLibrary()
         mapped.append(proxy.mapToSource(idx));
     }
 
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(mapped.first().internalPointer());
+    MusicLibraryItem *item=DevicesModel::self()->toItem(mapped.first());
     while (item->parentItem()) {
         item=item->parentItem();
     }
@@ -388,7 +388,7 @@ void DevicesPage::configureDevice()
         return;
     }
 
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+    MusicLibraryItem *item=DevicesModel::self()->toItem(proxy.mapToSource(selected.first()));
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         static_cast<Device *>(item)->configure(this);
@@ -403,7 +403,7 @@ void DevicesPage::refreshDevice()
         return;
     }
 
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+    MusicLibraryItem *item=DevicesModel::self()->toItem(proxy.mapToSource(selected.first()));
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         Device *dev=static_cast<Device *>(item);
@@ -450,7 +450,7 @@ void DevicesPage::deleteSongs()
         mapped.append(proxy.mapToSource(idx));
     }
 
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(mapped.first().internalPointer());
+    MusicLibraryItem *item=DevicesModel::self()->toItem(mapped.first());
     while (item->parentItem()) {
         item=item->parentItem();
     }
@@ -506,7 +506,7 @@ void DevicesPage::toggleDevice()
         return;
     }
 
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+    MusicLibraryItem *item=DevicesModel::self()->toItem(proxy.mapToSource(selected.first()));
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         if (static_cast<Device *>(item)->isConnected() &&
@@ -540,7 +540,7 @@ void DevicesPage::sync()
         return;
     }
 
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+    MusicLibraryItem *item=DevicesModel::self()->toItem(selected.first());
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         SyncDialog *dlg=new SyncDialog(this);
@@ -553,15 +553,16 @@ void DevicesPage::updateGenres(const QModelIndex &idx)
     if (idx.isValid()) {
         QModelIndex m=proxy.mapToSource(idx);
         if (m.isValid()) {
-            MusicLibraryItem::Type itemType=static_cast<MusicLibraryItem *>(m.internalPointer())->itemType();
+            MusicLibraryItem *item=DevicesModel::self()->toItem(m);
+            MusicLibraryItem::Type itemType=item->itemType();
             if (itemType==MusicLibraryItem::Type_Root) {
-                genreCombo->update(static_cast<MusicLibraryItemRoot *>(m.internalPointer())->genres());
+                genreCombo->update(static_cast<MusicLibraryItemRoot *>(item)->genres());
                 return;
             } else if (itemType==MusicLibraryItem::Type_Artist) {
-                genreCombo->update(static_cast<MusicLibraryItemArtist *>(m.internalPointer())->genres());
+                genreCombo->update(static_cast<MusicLibraryItemArtist *>(item)->genres());
                 return;
             } else if (itemType==MusicLibraryItem::Type_Album) {
-                genreCombo->update(static_cast<MusicLibraryItemAlbum *>(m.internalPointer())->genres());
+                genreCombo->update(static_cast<MusicLibraryItemAlbum *>(item)->genres());
                 return;
             }
         }
@@ -613,7 +614,7 @@ void DevicesPage::editDetails()
         return;
     }
 
-    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
+    MusicLibraryItem *item=DevicesModel::self()->toItem(proxy.mapToSource(selected.first()));
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         Device *dev=static_cast<Device *>(item);

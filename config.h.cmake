@@ -29,6 +29,6 @@
 #cmakedefine USE_SPEEX_RESAMPLER 1
 #cmakedefine ENABLE_REPLAYGAIN_SUPPORT 1
 #cmakedefine ENABLE_REMOTE_DEVICES 1
-
+#cmakedefine ENABLE_OVERLAYSCROLLBARS 1
 #endif
 

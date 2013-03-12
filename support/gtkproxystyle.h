@@ -25,11 +25,13 @@
 #define GTKPROXYSTYLE_H
 
 #include <QProxyStyle>
+#include "config.h"
 
 class QComboBox;
+#ifdef ENABLE_OVERLAYSCROLLBARS
 class QScrollBar;
 class OsThumb;
-class QTimer;
+#endif
 
 class GtkProxyStyle : public QProxyStyle
 {
@@ -40,8 +42,10 @@ public:
 
     enum ScrollbarType {
         SB_Standard,
-        SB_Thin,
-        SB_Overlay
+        SB_Thin
+        #ifdef ENABLE_OVERLAYSCROLLBARS
+        , SB_Overlay
+        #endif
     };
 
     GtkProxyStyle(ScrollbarType sb);
@@ -51,8 +55,10 @@ public:
     int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const;
     QRect subControlRect(ComplexControl control, const QStyleOptionComplex *option, SubControl subControl, const QWidget *widget) const;
     void drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const;
+    #ifdef ENABLE_OVERLAYSCROLLBARS
     bool eventFilter(QObject *object, QEvent *event);
     void destroySliderThumb();
+    #endif
 
     void polish(QWidget *widget);
     void polish(QPalette &pal);
@@ -60,33 +66,35 @@ public:
     void unpolish(QWidget *widget);
     void unpolish(QApplication *app);
 
+#ifdef ENABLE_OVERLAYSCROLLBARS
 private Q_SLOTS:
     void objectDestroyed(QObject *);
     void sbarThumbMoved(const QPoint &point);
     void sbarPageUp();
     void sbarPageDown();
-    void sbarEdgeTimeout();
     void sbarThumbHiding();
     void sbarThumbShowing();
 
 private:
-    void sbarCheckEdges();
-    QRect sbarGetSliderRect();
+    QRect sbarGetSliderRect() const;
     void sbarUpdateOffset();
     bool usePlainScrollbars(const QWidget *widget) const;
+#endif
 
 private:
     QComboBox *toolbarCombo;
 
     ScrollbarType sbarType;
+    int sbarPlainViewWidth;
+
+    #ifdef ENABLE_OVERLAYSCROLLBARS
     OsThumb *sbarThumb;
     int sbarWidth;
-    int sbarPlainViewWidth;
     int sbarAreaWidth;
     int sbarOffset;
     int sbarLastPos;
     QScrollBar *sbarThumbTarget;
-    QTimer *sbarEdgeTimer;
+    #endif
 };
 
 #endif

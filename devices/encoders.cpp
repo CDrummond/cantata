@@ -352,7 +352,9 @@ QStringList Encoder::params(int value, const QString &in, const QString &out) co
         p << param << QString::number(v);
     }
 
-    if (!transcoder) {
+    if (transcoder) {
+        p << "-y"; // Overwrite destination
+    } else {
         p << in;
     }
     p << out;

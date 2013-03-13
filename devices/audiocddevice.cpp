@@ -76,9 +76,7 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
         lookupInProcess=true;
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
-        if (Settings::self()->cdAuto()) {
-            emit lookup();
-        }
+        emit lookup(Settings::self()->cdAuto());
     }
 }
 
@@ -109,7 +107,7 @@ void AudioCdDevice::connectService()
         connect(cddb, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
         connect(cddb, SIGNAL(initialDetails(CdAlbum)), this, SLOT(setDetails(CdAlbum)));
         connect(cddb, SIGNAL(matches(const QList<CdAlbum> &)), SLOT(cdMatches(const QList<CdAlbum> &)));
-        connect(this, SIGNAL(lookup()), cddb, SLOT(lookup()));
+        connect(this, SIGNAL(lookup(bool)), cddb, SLOT(lookup(bool)));
     }
     #endif
 
@@ -123,7 +121,7 @@ void AudioCdDevice::connectService()
         connect(mb, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
         connect(mb, SIGNAL(initialDetails(CdAlbum)), this, SLOT(setDetails(CdAlbum)));
         connect(mb, SIGNAL(matches(const QList<CdAlbum> &)), SLOT(cdMatches(const QList<CdAlbum> &)));
-        connect(this, SIGNAL(lookup()), mb, SLOT(lookup()));
+        connect(this, SIGNAL(lookup(bool)), mb, SLOT(lookup(bool)));
     }
     #endif
 }
@@ -133,7 +131,7 @@ void AudioCdDevice::rescan(bool)
     if (block) {
         connectService();
         lookupInProcess=true;
-        emit lookup();
+        emit lookup(true);
     }
 }
 

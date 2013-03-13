@@ -245,12 +245,15 @@ void MusicBrainz::readDisc()
     emit initialDetails(initial);
 }
 
-void MusicBrainz::lookup()
+void MusicBrainz::lookup(bool full)
 {
     if (discId.isEmpty()) {
         readDisc();
     }
 
+    if (!full) {
+        return;
+    }
     DBUG << "Should lookup " << discId;
 
     MusicBrainz5::CQuery Query("cantata-"PACKAGE_VERSION_STRING);

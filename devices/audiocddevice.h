@@ -58,7 +58,7 @@ public:
     bool supportsDisconnect() const { return 0!=drive; }
     bool isConnected() const { return 0!=block; }
     QString icon() const { return "media-optical"; }
-    void rescan(bool);
+    void rescan(bool useCddb);
     bool isRefreshing() const { return lookupInProcess; }
     void toggle();
     void stop();
@@ -97,7 +97,7 @@ public Q_SLOTS:
     void setCover(const Song &song, const QImage &img, const QString &file);
 
 private:
-    void connectService();
+    void connectService(bool useCddb);
 
 private:
     Service srv;

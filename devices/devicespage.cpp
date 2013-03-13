@@ -410,17 +410,24 @@ void DevicesPage::refreshDevice()
         bool full=true;
 
         if (Device::AudioCd==dev->devType()) {
-            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Lookup album and track details via %1?")
-                                                          #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
-                                                          .arg(Settings::self()->useCddb() ? i18n("CDDB") : i18n("MusicBrainz"))
-                                                          #elif defined MUSICBRAINZ5_FOUND
-                                                          .arg(i18n("MusicBrainz"))
-                                                          #else
-                                                          .arg(i18n("CDDB"))
-                                                          #endif
-                                                          )) {
+            // Bit HAck - we use full to determine CDDB/MusicBrainz!
+            #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
+            switch (MessageBox::questionYesNoCancel(this, i18n("Lookup album and track details?"),
+                                                    i18n("Refresh"), GuiItem(i18n("Via CDDB")), GuiItem(i18n("Via MusicBrainz")))) {
+            case MessageBox::Yes:
+                full=true;
+                break;
+            case MessageBox::No:
+                full=false;
+                break;
+            default:
                 return;
             }
+            #else
+            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Lookup album and track details?"), i18n("Refresh"))) {
+                return;
+            }
+            #endif
         } else {
             if (dev->childCount() && Device::Mtp!=dev->devType()) {
                 QString udi=dev->udi();

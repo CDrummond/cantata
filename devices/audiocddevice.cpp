@@ -70,7 +70,11 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
             registeredTypes=true;
         }
         devPath=QLatin1String("cdda:/")+block->device()+QChar('/');
-        connectService();
+        #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
+        connectService(Settings::self()->useCddb());
+        #else
+        connectService(true);
+        #endif
         detailsString=i18n("Reading disc");
         setStatusMessage(detailsString);
         lookupInProcess=true;
@@ -84,23 +88,25 @@ AudioCdDevice::~AudioCdDevice()
 {
 }
 
-void AudioCdDevice::connectService()
+void AudioCdDevice::connectService(bool useCddb)
 {
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
-    if (cddb && !Settings::self()->useCddb()) {
+    if (cddb && !useCddb) {
         cddb->deleteLater();
         cddb=0;
     }
-    if (mb && Settings::self()->useCddb()) {
+    if (mb && useCddb) {
         mb->deleteLater();
         mb=0;
     }
+    #else
+    Q_UNSED(useCddb);
     #endif
 
     #ifdef CDDB_FOUND
     if (!cddb
             #ifdef MUSICBRAINZ5_FOUND
-            && Settings::self()->useCddb()
+            && useCddb
             #endif
             ) {
         cddb=new Cddb(block->device());
@@ -114,7 +120,7 @@ void AudioCdDevice::connectService()
     #ifdef MUSICBRAINZ5_FOUND
     if (!mb
             #ifdef CDDB_FOUND
-            && !Settings::self()->useCddb()
+            && !useCddb
             #endif
             ) {
         mb=new MusicBrainz(block->device());
@@ -126,10 +132,10 @@ void AudioCdDevice::connectService()
     #endif
 }
 
-void AudioCdDevice::rescan(bool)
+void AudioCdDevice::rescan(bool useCddb)
 {
     if (block) {
-        connectService();
+        connectService(useCddb);
         lookupInProcess=true;
         emit lookup(true);
     }

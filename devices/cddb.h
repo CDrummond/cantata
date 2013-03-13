@@ -31,6 +31,7 @@
 
 struct CdAlbum {
     CdAlbum() : year(0), disc(0) { }
+    bool isNull() const { return 0==year && 0==disc && tracks.isEmpty() && name.isEmpty() && artist.isEmpty() && genre.isEmpty(); }
     QString name;
     QString artist;
     QString genre;
@@ -55,7 +56,7 @@ public:
 
 public Q_SLOTS:
     void readDisc();
-    void lookup();
+    void lookup(bool full);
 
 Q_SIGNALS:
     void error(const QString &error);
@@ -66,6 +67,7 @@ private:
     QThread *thread;
     QString dev;
     cddb_disc_t *disc;
+    CdAlbum initial;
 };
 #endif
 

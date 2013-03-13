@@ -71,7 +71,7 @@ void ExtractJob::run()
     if (stopRequested) {
         emit result(Device::Cancelled);
     } else {
-        QStringList encParams=encoder.params(value, "pipe:", destFile);
+        QStringList encParams=encoder.params(value, encoder.transcoder ? "pipe:" : "-", destFile);
         CdParanoia cdparanoia(srcFile, Settings::self()->paranoiaFull(), Settings::self()->paranoiaNeverSkip());
 
         if (!cdparanoia) {

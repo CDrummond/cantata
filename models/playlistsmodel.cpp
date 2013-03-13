@@ -42,6 +42,7 @@ K_GLOBAL_STATIC(PlaylistsModel, instance)
 #include "mpdconnection.h"
 #include "playqueuemodel.h"
 #include "icons.h"
+#include "gtkstyle.h"
 
 PlaylistsModel * PlaylistsModel::self()
 {
@@ -718,7 +719,8 @@ void PlaylistsModel::updateItemMenu()
     }
 
     itemMenu->clear();
-    itemMenu->addAction(Icon("document-new"), i18n("New Playlist..."), this, SIGNAL(addToNew()));
+    QAction *act=itemMenu->addAction(Icon("document-new"), i18n("New Playlist..."), this, SIGNAL(addToNew()));
+    Action::initIcon(act);
 
     QStringList names;
     foreach (const PlaylistItem *p, items) {

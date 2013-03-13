@@ -240,7 +240,7 @@ void DeviceOptions::load(const QString &group, bool isMpd)
         volumeId=GET_STRING("volumeId", volumeId);
         checkCoverSize();
     }
-    transcoderCodec=GET_STRING("transcoderCodec", (isMpd ? "libmp3lame" : transcoderCodec));
+    transcoderCodec=GET_STRING("transcoderCodec", (isMpd ? "lame" : transcoderCodec));
     transcoderValue=GET_INT("transcoderValue", (isMpd ? 2 : transcoderValue));
     transcoderWhenDifferent=GET_BOOL("transcoderWhenDifferent", transcoderWhenDifferent);
     #endif

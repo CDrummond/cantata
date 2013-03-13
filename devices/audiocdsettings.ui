@@ -39,7 +39,7 @@
       <item row="1" column="0">
        <widget class="BuddyLabel" name="cdLookupLabel">
         <property name="text">
-         <string>Look up via:</string>
+         <string>Initially look up via:</string>
         </property>
         <property name="buddy">
          <cstring>cdAuto</cstring>

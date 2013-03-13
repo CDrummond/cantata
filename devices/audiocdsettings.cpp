@@ -37,7 +37,6 @@ AudioCdSettings::AudioCdSettings(QWidget *p)
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     cdLookup->addItem(i18n("CDDB"), true);
     cdLookup->addItem(i18n("MusicBrainz"), false);
-    connect(cdLookup, SIGNAL(currentIndexChanged(int)), SLOT(controlCddb()));
     #else
     REMOVE(cdLookup)
     REMOVE(cdLookupLabel)
@@ -82,13 +81,3 @@ void AudioCdSettings::save()
     #endif
 }
 
-void AudioCdSettings::controlCddb()
-{
-    #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
-    bool enable=cdLookup->itemData(cdLookup->currentIndex()).toBool();
-    cddbHost->setEnabled(enable);
-    cddbHostLabel->setEnabled(enable);
-    cddbPort->setEnabled(enable);
-    cddbPortLabel->setEnabled(enable);
-    #endif
-}

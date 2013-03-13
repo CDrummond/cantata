@@ -169,6 +169,7 @@ QString GtkStyle::themeName()
 static GtkProxyStyle *style=0;
 #endif
 static bool symbolicIcons=false;
+static bool lightIcons=false;
 
 void GtkStyle::applyTheme(QWidget *widget)
 {
@@ -201,6 +202,7 @@ void GtkStyle::applyTheme(QWidget *widget)
                 }
                 #endif
                 symbolicIcons=header.contains("symbolic-icons:true");
+                lightIcons=header.contains("light-icons:true");
             }
         }
         if (!style) {
@@ -223,4 +225,9 @@ void GtkStyle::cleanup()
 bool GtkStyle::useSymbolicIcons()
 {
     return symbolicIcons;
+}
+
+bool GtkStyle::useLightIcons()
+{
+    return lightIcons;
 }

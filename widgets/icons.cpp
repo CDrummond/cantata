@@ -452,9 +452,9 @@ static void setDisabledOpacity(Icon &icon)
 #define setDisabledOpacity(A) ;
 #endif
 
-void Icons::initToolbarIcons(const QColor &color)
+void Icons::initToolbarIcons(const QColor &color, bool forceLight)
 {
-    bool light=isLight(color);
+    bool light=forceLight || isLight(color);
     QColor col(light ? Qt::white : Qt::black);
     QColor highlight(light ? col.darker(constShadeFactor) : col.lighter(constShadeFactor));
 

@@ -330,6 +330,7 @@ void MusicBrainz::lookup()
                                     song.id=song.track=track->Position();
                                     song.time=track->Length()/1000;
                                     song.disc=album.disc;
+                                    song.file=QString("%1.wav").arg(song.track);
 
                                     // Prefer title and artist from the track credits, but it appears to be empty if same as in Recording
                                     // Noticable in the musicbrainztest-fulldate test, where the title on the credits of track 18 are

@@ -31,9 +31,30 @@
 
 namespace Encoders
 {
-QString constFfmpegPrefix(" (ffmpeg)");
+
 static QList<Encoder> installedEncoders;
 static bool usingAvconv=false;
+
+static void insertCodec(const QString &cmd, const QString &param, Encoder &enc)
+{
+    QString command=Utils::findExe(cmd);
+    if (!command.isEmpty()) {
+        int index=installedEncoders.indexOf(enc);
+        enc.codec=cmd;
+        enc.param=param;
+        enc.transcoder=false;
+        enc.app=command;
+        if (-1!=index) {
+            Encoder orig=installedEncoders.takeAt(index);
+            orig.name+=QLatin1String(" (ffmpeg)");
+            installedEncoders.insert(index, orig);
+            enc.name+=QLatin1String(" (")+cmd+QChar(')');
+            installedEncoders.insert(index+1, enc);
+        } else {
+            installedEncoders.append(enc);
+        }
+    }
+}
 
 static void init()
 {
@@ -51,7 +72,49 @@ static void init()
         QByteArray cbr = "%1kb/s CBR";
         QByteArray quality = "%1 (~%2kb/s VBR)";
 
-        Encoder lame(QLatin1String("MP3")+constFfmpegPrefix,
+        Encoder aac(QLatin1String("AAC"),
+                    i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
+                          "it exists.",
+                          "<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
+                          "Coding</a> (AAC) is a patented lossy codec for digital audio.<br>AAC "
+                          "generally achieves better sound quality than MP3 at similar bit rates. "
+                          "It is a reasonable choice for the iPod and some other portable music "
+                          "players."),
+                    i18n("The bitrate is a measure of the quantity of data used to represent a second "
+                         "of the audio track.<br>The <b>AAC</b> encoder used by Cantata supports a <a href="
+                         "http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR"
+                         ">variable bitrate (VBR)</a> setting, which means that the bitrate value "
+                         "fluctuates along the track based on the complexity of the audio content. "
+                         "More complex intervals of data are encoded with a higher bitrate than less "
+                         "complex ones; this approach yields overall better quality and a smaller file "
+                         "than having a constant bitrate throughout the track.<br>"
+                         "For this reason, the bitrate measure in this slider is just an estimate "
+                         "of the <a href=http://www.ffmpeg.org/faq.html#SEC21>average bitrate</a> of "
+                         "the encoded track.<br>"
+                         "<b>150kb/s</b> is a good choice for music listening on a portable player.<br/>"
+                         "Anything below <b>120kb/s</b> might be unsatisfactory for music and anything above "
+                         "<b>200kb/s</b> is probably overkill."),
+                    QLatin1String("m4a"),
+                    command,
+                    QLatin1String("libfaac"),
+                    QLatin1String("-aq"),
+                    i18n("Expected average bitrate for variable bitrate encoding"),
+                    QList<Setting>() << Setting(i18n(vbr).arg(25), 30)
+                    << Setting(i18n(vbr).arg(50), 55)
+                    << Setting(i18n(vbr).arg(70), 80)
+                    << Setting(i18n(vbr).arg(90), 105)
+                    << Setting(i18n(vbr).arg(120), 125)
+                    << Setting(i18n(vbr).arg(150), 155)
+                    << Setting(i18n(vbr).arg(170), 180)
+                    << Setting(i18n(vbr).arg(180), 205)
+                    << Setting(i18n(vbr).arg(190), 230)
+                    << Setting(i18n(vbr).arg(200), 255)
+                    << Setting(i18n(vbr).arg(210), 280),
+                    i18n("Smaller file"),
+                    i18n("Better sound quality"),
+                    5);
+
+        Encoder lame(QLatin1String("MP3"),
                     i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
                           "it exists.",
                           "<a href=http://en.wikipedia.org/wiki/MP3>MPEG Audio Layer 3</a> (MP3) is "
@@ -90,50 +153,54 @@ static void init()
                     i18n("Better sound quality"),
                     4);
 
+    Encoder ogg(i18n("Ogg Vorbis"),
+                   i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
+                         "it exists.",
+                         "<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> is an open "
+                         "and royalty-free audio codec for lossy audio compression.<br>It produces "
+                         "smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an "
+                         "all-around excellent choice, especially for portable music players that "
+                         "support it."),
+                   i18n("The bitrate is a measure of the quantity of data used to represent a "
+                        "second of the audio track.<br>The <b>Vorbis</b> encoder used by Cantata supports "
+                        "a <a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder>variable bitrate "
+                        "(VBR)</a> setting, which means that the bitrate value fluctuates along the track "
+                        "based on the complexity of the audio content. More complex intervals of "
+                        "data are encoded with a higher bitrate than less complex ones; this "
+                        "approach yields overall better quality and a smaller file than having a "
+                        "constant bitrate throughout the track.<br>"
+                        "The Vorbis encoder uses a quality rating between -1 and 10 to define "
+                        "a certain expected audio quality level. The bitrate measure in this slider is "
+                        "just a rough estimate (provided by Vorbis) of the average bitrate of the encoded "
+                        "track given a quality value. In fact, with newer and more efficient Vorbis versions the "
+                        "actual bitrate is even lower.<br>"
+                        "<b>5</b> is a good choice for music listening on a portable player.<br/>"
+                        "Anything below <b>3</b> might be unsatisfactory for music and anything above "
+                        "<b>8</b> is probably overkill."),
+                   QLatin1String("ogg"),
+                   command,
+                   QLatin1String("libvorbis"),
+                   QLatin1String("-aq"),
+                   i18n("Quality rating"),
+                   QList<Setting>() << Setting(i18n(quality).arg(-1).arg(45), -1)
+                   << Setting(i18n(quality).arg(0).arg(64), 0)
+                   << Setting(i18n(quality).arg(1).arg(80), 1)
+                   << Setting(i18n(quality).arg(2).arg(96), 2)
+                   << Setting(i18n(quality).arg(3).arg(112), 3)
+                   << Setting(i18n(quality).arg(4).arg(128), 4)
+                   << Setting(i18n(quality).arg(5).arg(160), 5)
+                   << Setting(i18n(quality).arg(6).arg(192), 6)
+                   << Setting(i18n(quality).arg(7).arg(224), 7)
+                   << Setting(i18n(quality).arg(8).arg(256), 8)
+                   << Setting(i18n(quality).arg(9).arg(320), 9)
+                   << Setting(i18n(quality).arg(10).arg(500), 10),
+                   i18n("Smaller file"),
+                   i18n("Better sound quality"),
+                   6);
+
         if (!command.isEmpty()) {
             QList<Encoder> initial;
-            initial.append(
-                        Encoder(i18n("AAC (Non-Free)"),
-                                i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
-                                      "it exists.",
-                                      "<a href=http://en.wikipedia.org/wiki/Advanced_Audio_Coding>Advanced Audio "
-                                      "Coding</a> (AAC) is a patented lossy codec for digital audio.<br>AAC "
-                                      "generally achieves better sound quality than MP3 at similar bit rates. "
-                                      "It is a reasonable choice for the iPod and some other portable music "
-                                      "players. Non-Free implementation."),
-                                i18n("The bitrate is a measure of the quantity of data used to represent a second "
-                                     "of the audio track.<br>The <b>AAC</b> encoder used by Cantata supports a <a href="
-                                     "http://en.wikipedia.org/wiki/Variable_bitrate#Advantages_and_disadvantages_of_VBR"
-                                     ">variable bitrate (VBR)</a> setting, which means that the bitrate value "
-                                     "fluctuates along the track based on the complexity of the audio content. "
-                                     "More complex intervals of data are encoded with a higher bitrate than less "
-                                     "complex ones; this approach yields overall better quality and a smaller file "
-                                     "than having a constant bitrate throughout the track.<br>"
-                                     "For this reason, the bitrate measure in this slider is just an estimate "
-                                     "of the <a href=http://www.ffmpeg.org/faq.html#SEC21>average bitrate</a> of "
-                                     "the encoded track.<br>"
-                                     "<b>150kb/s</b> is a good choice for music listening on a portable player.<br/>"
-                                     "Anything below <b>120kb/s</b> might be unsatisfactory for music and anything above "
-                                     "<b>200kb/s</b> is probably overkill."),
-                                QLatin1String("m4a"),
-                                command,
-                                QLatin1String("libfaac"),
-                                QLatin1String("-aq"),
-                                i18n("Expected average bitrate for variable bitrate encoding"),
-                                QList<Setting>() << Setting(i18n(vbr).arg(25), 30)
-                                << Setting(i18n(vbr).arg(50), 55)
-                                << Setting(i18n(vbr).arg(70), 80)
-                                << Setting(i18n(vbr).arg(90), 105)
-                                << Setting(i18n(vbr).arg(120), 125)
-                                << Setting(i18n(vbr).arg(150), 155)
-                                << Setting(i18n(vbr).arg(170), 180)
-                                << Setting(i18n(vbr).arg(180), 205)
-                                << Setting(i18n(vbr).arg(190), 230)
-                                << Setting(i18n(vbr).arg(200), 255)
-                                << Setting(i18n(vbr).arg(210), 280),
-                                i18n("Smaller file"),
-                                i18n("Better sound quality"),
-                                5));
+            initial.append(aac);
             initial.append(
                         Encoder(i18n("Apple Lossless"),
                                 i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
@@ -189,51 +256,7 @@ static void init()
                                 i18n("Smaller file"),
                                 5));
             initial.append(lame);
-            initial.append(
-                        Encoder(i18n("Ogg Vorbis"),
-                                i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
-                                      "it exists.",
-                                      "<a href=http://en.wikipedia.org/wiki/Vorbis>Ogg Vorbis</a> is an open "
-                                      "and royalty-free audio codec for lossy audio compression.<br>It produces "
-                                      "smaller files than MP3 at equivalent or higher quality. Ogg Vorbis is an "
-                                      "all-around excellent choice, especially for portable music players that "
-                                      "support it."),
-                                i18n("The bitrate is a measure of the quantity of data used to represent a "
-                                     "second of the audio track.<br>The <b>Vorbis</b> encoder used by Cantata supports "
-                                     "a <a href=http://en.wikipedia.org/wiki/Vorbis#Technical_Encoder>variable bitrate "
-                                     "(VBR)</a> setting, which means that the bitrate value fluctuates along the track "
-                                     "based on the complexity of the audio content. More complex intervals of "
-                                     "data are encoded with a higher bitrate than less complex ones; this "
-                                     "approach yields overall better quality and a smaller file than having a "
-                                     "constant bitrate throughout the track.<br>"
-                                     "The Vorbis encoder uses a quality rating between -1 and 10 to define "
-                                     "a certain expected audio quality level. The bitrate measure in this slider is "
-                                     "just a rough estimate (provided by Vorbis) of the average bitrate of the encoded "
-                                     "track given a quality value. In fact, with newer and more efficient Vorbis versions the "
-                                     "actual bitrate is even lower.<br>"
-                                     "<b>5</b> is a good choice for music listening on a portable player.<br/>"
-                                     "Anything below <b>3</b> might be unsatisfactory for music and anything above "
-                                     "<b>8</b> is probably overkill."),
-                                QLatin1String("ogg"),
-                                command,
-                                QLatin1String("libvorbis"),
-                                QLatin1String("-aq"),
-                                i18n("Quality rating"),
-                                QList<Setting>() << Setting(i18n(quality).arg(-1).arg(45), -1)
-                                << Setting(i18n(quality).arg(0).arg(64), 0)
-                                << Setting(i18n(quality).arg(1).arg(80), 1)
-                                << Setting(i18n(quality).arg(2).arg(96), 2)
-                                << Setting(i18n(quality).arg(3).arg(112), 3)
-                                << Setting(i18n(quality).arg(4).arg(128), 4)
-                                << Setting(i18n(quality).arg(5).arg(160), 5)
-                                << Setting(i18n(quality).arg(6).arg(192), 6)
-                                << Setting(i18n(quality).arg(7).arg(224), 7)
-                                << Setting(i18n(quality).arg(8).arg(256), 8)
-                                << Setting(i18n(quality).arg(9).arg(320), 9)
-                                << Setting(i18n(quality).arg(10).arg(500), 10),
-                                i18n("Smaller file"),
-                                i18n("Better sound quality"),
-                                6));
+            initial.append(ogg);
             initial.append(
                         Encoder(i18n("Windows Media Audio"),
                                 i18nc("Feel free to redirect the english Wikipedia link to a local version, if "
@@ -304,21 +327,16 @@ static void init()
             }
         }
 
-        command=Utils::findExe(QLatin1String("lame"));
-        if (!command.isEmpty()) {
-            int index=installedEncoders.indexOf(lame);
-            lame.name=QLatin1String("MP3 (lame)");
-            lame.codec="lame";
-            lame.param="-V";
-            lame.transcoder=false;
-            lame.app=command;
-            if (-1!=index) {
-                installedEncoders.insert(index+1, lame);
-            } else {
-                installedEncoders.append(lame);
-            }
-        }
+        insertCodec(QLatin1String("faac"), QLatin1String("-q"), aac);
+        insertCodec(QLatin1String("lame"), QLatin1String("-V"), lame);
+        insertCodec(QLatin1String("oggenc"), QLatin1String("-q"), ogg);
+        qSort(installedEncoders);
     }
+}
+
+bool Encoder::operator<(const Encoder &o) const
+{
+    return name.compare(o.name)<0;
 }
 
 QString Encoder::changeExtension(const QString &file)

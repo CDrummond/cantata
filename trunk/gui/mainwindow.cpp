@@ -854,9 +854,6 @@ MainWindow::~MainWindow()
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->stop();
     #endif
-    #ifdef CDDB_FOUND
-    Covers::self()->cleanCdda();
-    #endif
 }
 
 void MainWindow::initSizes()

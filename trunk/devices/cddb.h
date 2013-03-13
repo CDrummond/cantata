@@ -29,7 +29,8 @@
 #include "song.h"
 #include "config.h"
 
-struct CddbAlbum {
+struct CdAlbum {
+    CdAlbum() : year(0), disc(0) { }
     QString name;
     QString artist;
     QString genre;
@@ -58,8 +59,8 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void error(const QString &error);
-    void initialDetails(const CddbAlbum &);
-    void matches(const QList<CddbAlbum> &);
+    void initialDetails(const CdAlbum &);
+    void matches(const QList<CdAlbum> &);
 
 private:
     QThread *thread;

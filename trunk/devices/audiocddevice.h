@@ -36,13 +36,20 @@
 #include <QImage>
 
 class Cddb;
-class CddbAlbum;
+class MusicBrainz;
+class CdAlbum;
 
 class AudioCdDevice : public Device
 {
     Q_OBJECT
 
 public:
+    enum Service {
+        SrvNone,
+        SrvCddb,
+        SrvMusicBrainz
+    };
+
     static QString coverUrl(QString udi);
 
     AudioCdDevice(DevicesModel *m, Solid::Device &dev);
@@ -80,19 +87,28 @@ public:
 
 Q_SIGNALS:
     void lookup();
-    void matches(const QString &u, const QList<CddbAlbum> &);
+    void matches(const QString &u, const QList<CdAlbum> &);
 
 public Q_SLOTS:
     void percent(int pc);
     void copySongToResult(int status);
-    void setDetails(const CddbAlbum &a);
-    void cddbMatches(const QList<CddbAlbum> &albums);
+    void setDetails(const CdAlbum &a);
+    void cdMatches(const QList<CdAlbum> &albums);
     void setCover(const Song &song, const QImage &img, const QString &file);
 
 private:
+    void connectService();
+
+private:
+    Service srv;
     Solid::OpticalDrive *drive;
     Solid::Block *block;
+    #ifdef CDDB_FOUND
     Cddb *cddb;
+    #endif
+    #ifdef MUSICBRAINZ5_FOUND
+    MusicBrainz *mb;
+    #endif
     QString detailsString;
     QString album;
     QString artist;

@@ -151,8 +151,13 @@ public:
     bool playStream();
     QString streamUrl();
     #endif
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    bool cdAuto();
+    #endif
+    #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
+    bool useCddb();
+    #endif
     #ifdef CDDB_FOUND
-    bool cddbAuto();
     QString cddbHost();
     int cddbPort();
     bool paranoiaFull();
@@ -220,8 +225,13 @@ public:
     void savePlayStream(bool v);
     void saveStreamUrl(const QString &v);
     #endif
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    void saveCdAuto(bool v);
+    #endif
+    #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
+    void saveUseCddb(bool v);
+    #endif
     #ifdef CDDB_FOUND
-    void saveCddbAuto(bool v);
     void saveCddbHost(const QString &v);
     void saveCddbPort(int v);
     void saveParanoiaFull(bool v);

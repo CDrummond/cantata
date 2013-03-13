@@ -125,7 +125,7 @@ public:
     void setSaveInMpdDir(bool s);
     void emitCoverUpdated(const Song &song, const QImage &img, const QString &file);
 
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     void cleanCdda();
     #endif
 

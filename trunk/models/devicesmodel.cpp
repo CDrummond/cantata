@@ -38,7 +38,7 @@
 #include "mountpoints.h"
 #include "stdactions.h"
 #include "actioncollection.h"
-#ifdef CDDB_FOUND
+#if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocddevice.h"
 #endif
 #include <QMenu>
@@ -107,7 +107,7 @@ DevicesModel::DevicesModel(QObject *parent)
     refreshAction = ActionCollection::get()->createAction("refreshdevice", i18n("Refresh Device"), "view-refresh");
     connectAction = ActionCollection::get()->createAction("connectdevice", i18n("Connect Device"), Icons::connectIcon);
     disconnectAction = ActionCollection::get()->createAction("disconnectdevice", i18n("Disconnect Device"), Icons::disconnectIcon);
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     editAction = ActionCollection::get()->createAction("editcd", i18n("Edit CD Details"), Icons::editIcon);
     #endif
     updateItemMenu();
@@ -185,7 +185,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root: {
-            #ifdef CDDB_FOUND
+            #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
             if (Device::AudioCd==static_cast<Device *>(item)->devType() &&
                 !static_cast<AudioCdDevice *>(item)->cover().img.isNull()) {
                 return static_cast<AudioCdDevice *>(item)->cover().img;
@@ -228,7 +228,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         switch (item->itemType()) {
         case MusicLibraryItem::Type_Root:
-            #ifdef CDDB_FOUND
+            #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
             if (Device::AudioCd==static_cast<Device *>(item)->devType()) {
                 return 0==item->childCount()
                     ? item->data()
@@ -350,7 +350,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             if (static_cast<Device *>(item)->supportsDisconnect()) {
                 actions << (static_cast<Device *>(item)->isConnected() ? disconnectAction : connectAction);
             }
-            #ifdef CDDB_FOUND
+            #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
             if (Device::AudioCd==static_cast<Device *>(item)->devType()) {
                 actions << editAction;
             }
@@ -666,7 +666,7 @@ void DevicesModel::deviceAdded(const QString &udi)
     Solid::Device device(udi);
     DBUG << "Solid device added udi:" << device.udi() << "product:" << device.product() << "vendor:" << device.vendor();
     Solid::StorageAccess *ssa =0;
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     Solid::OpticalDisc * opt = device.as<Solid::OpticalDisc>();
 
     if (opt && (opt->availableContent()&Solid::OpticalDisc::Audio)) {
@@ -708,10 +708,10 @@ void DevicesModel::addLocalDevice(const QString &udi)
         connect(dev, SIGNAL(updating(const QString &, bool)), SLOT(deviceUpdating(const QString &, bool)));
         connect(dev, SIGNAL(error(const QString &)), SIGNAL(error(const QString &)));
         connect(dev, SIGNAL(cover(const Song &, const QImage &)), SLOT(setCover(const Song &, const QImage &)));
-        #ifdef CDDB_FOUND
+        #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
         if (Device::AudioCd==dev->devType()) {
-            connect(static_cast<AudioCdDevice *>(dev), SIGNAL(matches(const QString &, const QList<CddbAlbum> &)),
-                    SIGNAL(matches(const QString &, const QList<CddbAlbum> &)));
+            connect(static_cast<AudioCdDevice *>(dev), SIGNAL(matches(const QString &, const QList<CdAlbum> &)),
+                    SIGNAL(matches(const QString &, const QList<CdAlbum> &)));
         }
         #endif
         updateItemMenu();
@@ -898,7 +898,7 @@ void DevicesModel::loadLocal()
         }
     }
 
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     deviceList = Solid::Device::listFromType(Solid::DeviceInterface::OpticalDisc);
     foreach (const Solid::Device &device, deviceList) {
         if (existingUdis.contains(device.udi())) {

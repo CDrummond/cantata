@@ -73,7 +73,7 @@ public:
     Action * refreshAct() const { return refreshAction; }
     Action * connectAct() const { return connectAction; }
     Action * disconnectAct() const { return disconnectAction; }
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     Action * editAct() const { return editAction; }
     #endif
 
@@ -107,7 +107,7 @@ Q_SIGNALS:
     void addToDevice(const QString &udi);
     void error(const QString &text);
     void updated(const QModelIndex &idx);
-    void matches(const QString &udi, const QList<CddbAlbum> &albums);
+    void matches(const QString &udi, const QList<CdAlbum> &albums);
 
 private:
     QList<Device *> devices;
@@ -120,7 +120,7 @@ private:
     Action *refreshAction;
     Action *connectAction;
     Action *disconnectAction;
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     Action *editAction;
     #endif
     friend class Device;

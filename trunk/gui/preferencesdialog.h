@@ -43,7 +43,7 @@ class HttpServerSettings;
 #endif
 class MPDConnectionDetails;
 class CacheSettings;
-#ifdef CDDB_FOUND
+#if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 class AudioCdSettings;
 #endif
 
@@ -83,7 +83,7 @@ private:
     ShortcutsSettingsPage *shortcuts;
     #endif
     CacheSettings *cache;
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     AudioCdSettings *audiocd;
     #endif
 };

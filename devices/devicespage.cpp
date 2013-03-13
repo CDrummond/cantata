@@ -51,7 +51,7 @@
 #include "trackorganiser.h"
 #include "preferencesdialog.h"
 #include "coverdialog.h"
-#ifdef CDDB_FOUND
+#if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocddevice.h"
 #include "albumdetailsdialog.h"
 #include "cddbselectiondialog.h"
@@ -100,10 +100,10 @@ DevicesPage::DevicesPage(QWidget *p)
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copyToLibrary()));
     connect(DevicesModel::self()->configureAct(), SIGNAL(triggered()), this, SLOT(configureDevice()));
     connect(DevicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshDevice()));
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     connect(DevicesModel::self()->editAct(), SIGNAL(triggered()), this, SLOT(editDetails()));
-    connect(DevicesModel::self(), SIGNAL(matches(const QString &, const QList<CddbAlbum> &)),
-            SLOT(cddbMatches(const QString &, const QList<CddbAlbum> &)));
+    connect(DevicesModel::self(), SIGNAL(matches(const QString &, const QList<CdAlbum> &)),
+            SLOT(cdMatches(const QString &, const QList<CdAlbum> &)));
     #endif
     QMenu *menu=new QMenu(this);
     #ifdef ENABLE_REMOTE_DEVICES
@@ -340,7 +340,7 @@ void DevicesPage::controlActions()
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction->setEnabled(singleUdi && remoteDev);
     #endif
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     DevicesModel::self()->editAct()->setEnabled(!AlbumDetailsDialog::instanceCount() && !busyDevice && 1==selected.count() && audioCd && haveTracks && deviceSelected);
     #endif
     menuButton->controlState();
@@ -410,7 +410,15 @@ void DevicesPage::refreshDevice()
         bool full=true;
 
         if (Device::AudioCd==dev->devType()) {
-            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Perform CDDB lookup?"))) {
+            if (MessageBox::No==MessageBox::questionYesNo(this, i18n("Lookup album and track details via %1?")
+                                                          #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
+                                                          .arg(Settings::self()->useCddb() ? i18n("CDDB") : i18n("MusicBrainz"))
+                                                          #elif defined MUSICBRAINZ5_FOUND
+                                                          .arg(i18n("MusicBrainz"))
+                                                          #else
+                                                          .arg(i18n("CDDB"))
+                                                          #endif
+                                                          )) {
                 return;
             }
         } else {
@@ -575,9 +583,9 @@ void DevicesPage::updated(const QModelIndex &idx)
     view->setExpanded(proxy.mapFromSource(idx));
 }
 
-void DevicesPage::cddbMatches(const QString &udi, const QList<CddbAlbum> &albums)
+void DevicesPage::cdMatches(const QString &udi, const QList<CdAlbum> &albums)
 {
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     int chosen=0;
     Device *dev=DevicesModel::self()->device(udi);
     if (dev && Device::AudioCd==dev->devType()) {
@@ -605,7 +613,7 @@ void DevicesPage::cddbMatches(const QString &udi, const QList<CddbAlbum> &albums
 
 void DevicesPage::editDetails()
 {
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     if (AlbumDetailsDialog::instanceCount()) {
         return;
     }

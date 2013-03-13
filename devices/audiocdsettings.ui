@@ -20,46 +20,59 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>CDDB Settings</string>
+      <string>Album and Track Information Retrieval</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
        <widget class="BuddyLabel" name="label_3">
         <property name="text">
-         <string>Lookup CD details automatically:</string>
+         <string>Automatically lookup:</string>
         </property>
         <property name="buddy">
-         <cstring>cddbAuto</cstring>
+         <cstring>cdAuto</cstring>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="OnOffButton" name="cddbAuto"/>
+       <widget class="OnOffButton" name="cdAuto"/>
       </item>
       <item row="1" column="0">
-       <widget class="BuddyLabel" name="label">
+       <widget class="BuddyLabel" name="cdLookupLabel">
         <property name="text">
-         <string>Host:</string>
+         <string>Look up via:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cdAuto</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cdLookup"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="BuddyLabel" name="cddbHostLabel">
+        <property name="text">
+         <string>CDDB Host:</string>
         </property>
         <property name="buddy">
          <cstring>cddbHost</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="LineEdit" name="cddbHost"/>
       </item>
-      <item row="2" column="0">
-       <widget class="BuddyLabel" name="label_2">
+      <item row="3" column="0">
+       <widget class="BuddyLabel" name="cddbPortLabel">
         <property name="text">
-         <string>Port:</string>
+         <string>CDDB Port:</string>
         </property>
         <property name="buddy">
          <cstring>cddbPort</cstring>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="SpinBox" name="cddbPort">
         <property name="minimum">
          <number>1</number>
@@ -75,7 +88,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Ripper</string>
+      <string>Audio Extraction</string>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <item row="0" column="0">
@@ -145,7 +158,7 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>cddbAuto</tabstop>
+  <tabstop>cdAuto</tabstop>
   <tabstop>cddbHost</tabstop>
   <tabstop>cddbPort</tabstop>
   <tabstop>paranoiaFull</tabstop>

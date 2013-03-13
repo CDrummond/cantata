@@ -577,12 +577,21 @@ QString Settings::streamUrl()
 }
 #endif
 
-#ifdef CDDB_FOUND
-bool Settings::cddbAuto()
+#if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+bool Settings::cdAuto()
 {
-    return GET_BOOL("cddbAuto", true);
+    return GET_BOOL("cdAuto", true);
 }
+#endif
 
+#if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
+bool Settings::useCddb()
+{
+    return GET_BOOL("useCddb", true);
+}
+#endif
+
+#ifdef CDDB_FOUND
 QString Settings::cddbHost()
 {
     return GET_STRING("cddbHost", QString("freedb.freedb.org"));
@@ -939,12 +948,21 @@ void Settings::saveStreamUrl(const QString &v)
 }
 #endif
 
-#ifdef CDDB_FOUND
-void Settings::saveCddbAuto(bool v)
+#if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+void Settings::saveCdAuto(bool v)
 {
-    SET_VALUE_MOD(cddbAuto)
+    SET_VALUE_MOD(cdAuto)
 }
+#endif
 
+#if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
+void Settings::saveUseCddb(bool v)
+{
+    SET_VALUE_MOD(useCddb)
+}
+#endif
+
+#ifdef CDDB_FOUND
 void Settings::saveCddbHost(const QString &v)
 {
     SET_VALUE_MOD(cddbHost)

@@ -44,7 +44,7 @@
 #include "shortcutssettingspage.h"
 #include "actioncollection.h"
 #endif
-#ifdef CDDB_FOUND
+#if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocdsettings.h"
 #endif
 
@@ -87,7 +87,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     widget->addPage(http, i18n("HTTP Server"), Icon("network-server"), i18n("HTTP Server Settings"));
     #endif
     widget->addPage(lyrics, i18n("Lyrics"), Icons::lyricsIcon, i18n("Lyrics Settings"));
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd = new AudioCdSettings(widget);
     audiocd->load();
     widget->addPage(audiocd, i18n("Audio CD"), Icons::albumIcon, i18n("Audio CD Settings"));
@@ -131,7 +131,7 @@ void PreferencesDialog::writeSettings()
     proxy->save();
     shortcuts->save();
     #endif
-    #ifdef CDDB_FOUND
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd->save();
     #endif
     Settings::self()->saveLyricProviders(lyrics->EnabledProviders());

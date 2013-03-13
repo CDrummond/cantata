@@ -378,6 +378,7 @@ Cantata contains code/icons from:
     Musique        - Copied code for Gtk theme detection
     Ayatana Qt     - Overlay scrollbar code copied/modified from https://launchpad.net/ayatana-scrollbar-qt
     Asunder        - CDDB code
+    libkcddb       - MusicBrainz code
     libebur128     - https://github.com/jiixyj/libebur128 (Replay gain
                       calculation)
     wikipedia icon - Social Media Mini by Paul Robert Lloyd License: Commons

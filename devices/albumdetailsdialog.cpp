@@ -194,24 +194,24 @@ void AlbumDetailsDialog::slotButtonClicked(int button)
     case Ok: {
         Device *dev=DevicesModel::self()->device(udi);
         if (dev && Device::AudioCd==dev->devType()) {
-            CddbAlbum cddbAlbum;
-            cddbAlbum.artist=artist->text().trimmed();
-            cddbAlbum.name=title->text().trimmed();
-            cddbAlbum.disc=disc->value();
-            cddbAlbum.year=year->value();
-            cddbAlbum.genre=genre->text().trimmed();
+            CdAlbum cdAlbum;
+            cdAlbum.artist=artist->text().trimmed();
+            cdAlbum.name=title->text().trimmed();
+            cdAlbum.disc=disc->value();
+            cdAlbum.year=year->value();
+            cdAlbum.genre=genre->text().trimmed();
             QString unknown=i18n("Unknown");
-            if (cddbAlbum.artist.isEmpty()) {
-                cddbAlbum.artist=unknown;
+            if (cdAlbum.artist.isEmpty()) {
+                cdAlbum.artist=unknown;
             }
-            if (cddbAlbum.name.isEmpty()) {
-                cddbAlbum.name=unknown;
+            if (cdAlbum.name.isEmpty()) {
+                cdAlbum.name=unknown;
             }
             for(int i=0; i<tracks->topLevelItemCount(); ++i) {
                 QTreeWidgetItem *itm=tracks->topLevelItem(i);
-                cddbAlbum.tracks.append(toSong(itm));
+                cdAlbum.tracks.append(toSong(itm));
             }
-            static_cast<AudioCdDevice *>(dev)->setDetails(cddbAlbum);
+            static_cast<AudioCdDevice *>(dev)->setDetails(cdAlbum);
         }
         accept();
         break;

@@ -86,6 +86,18 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
 
 AudioCdDevice::~AudioCdDevice()
 {
+    #ifdef CDDB_FOUND
+    if (cddb) {
+        cddb->deleteLater();
+        cddb=0;
+    }
+    #endif
+    #ifdef MUSICBRAINZ5_FOUND
+    if (mb) {
+        mb->deleteLater();
+        mb=0;
+    }
+    #endif
 }
 
 void AudioCdDevice::connectService(bool useCddb)

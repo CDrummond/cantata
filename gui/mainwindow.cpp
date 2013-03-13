@@ -231,7 +231,7 @@ MainWindow::MainWindow(QWidget *parent)
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
 
     GtkStyle::applyTheme(toolbar);
-    Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground));
+    Icons::initToolbarIcons(artistLabel->palette().color(QPalette::Foreground), GtkStyle::useLightIcons());
     menuButton->setIcon(Icons::toolbarMenuIcon);
 
     #ifdef ENABLE_KDE_SUPPORT

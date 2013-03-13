@@ -1015,7 +1015,9 @@ void DevicesModel::updateItemMenu()
 
         foreach (const QString &k, keys) {
             const Device *d=items[k];
-            itemMenu->addAction(QIcon::fromTheme(d->icon()), k, this, SLOT(emitAddToDevice()))->setData(d->udi());
+            QAction *act=itemMenu->addAction(QIcon::fromTheme(d->icon()), k, this, SLOT(emitAddToDevice()));
+            act->setData(d->udi());
+            Action::initIcon(act);
         }
     }
 }

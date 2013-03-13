@@ -32,7 +32,7 @@ class QColor;
 namespace Icons
 {
     extern void init();
-    extern void initToolbarIcons(const QColor &color);
+    extern void initToolbarIcons(const QColor &color, bool forceLight=false);
     #ifndef ENABLE_KDE_SUPPORT
     extern Icon appIcon;
     extern Icon shortcutsIcon;

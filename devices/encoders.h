@@ -30,8 +30,6 @@
 
 namespace Encoders
 {
-    extern QString constFfmpegPrefix;
-
     struct Setting {
         Setting(const QString &d, int v)
             : descr(d)
@@ -61,7 +59,8 @@ namespace Encoders
             , transcoder(true) {
         }
         bool isNull() { return name.isEmpty(); }
-        bool operator==(const Encoder &o) const { return name==o.name; }
+        bool operator==(const Encoder &o) const { return name==o.name && codec==o.codec; }
+        bool operator<(const Encoder &o) const;
         QString changeExtension(const QString &file);
         bool isDifferent(const QString &file);
         QStringList params(int value, const QString &in, const QString &out) const;

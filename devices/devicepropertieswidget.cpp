@@ -221,11 +221,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         } else {
             foreach (const Encoders::Encoder &e, encs) {
                 if (!transcode || e.transcoder) {
-                    QString name=e.name;
-                    if (transcode && name.contains(Encoders::constFfmpegPrefix)) {
-                        name=name.remove(Encoders::constFfmpegPrefix);
-                    }
-                    transcoderName->addItem(transcode ? i18n("Transcode to %1").arg(name) : name, e.codec);
+                    transcoderName->addItem(transcode ? i18n("Transcode to \"%1\"").arg(e.name) : e.name, e.codec);
                 }
             }
 

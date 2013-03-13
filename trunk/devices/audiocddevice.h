@@ -86,7 +86,7 @@ public:
     const Covers::Image & cover() const { return coverImage; }
 
 Q_SIGNALS:
-    void lookup();
+    void lookup(bool full);
     void matches(const QString &u, const QList<CdAlbum> &);
 
 public Q_SLOTS:

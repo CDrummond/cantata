@@ -40,7 +40,7 @@ public:
 
 public Q_SLOTS:
     void readDisc();
-    void lookup();
+    void lookup(bool full);
 
 Q_SIGNALS:
     void error(const QString &error);

@@ -61,7 +61,7 @@ Cddb::~Cddb()
     }
 }
 
-static CdAlbum toAlbum(cddb_disc_t *disc)
+static CdAlbum toAlbum(cddb_disc_t *disc, const CdAlbum &initial=CdAlbum())
 {
     CdAlbum album;
     album.name=QString::fromUtf8(cddb_disc_get_title(disc));
@@ -99,6 +99,17 @@ static CdAlbum toAlbum(cddb_disc_t *disc)
         }
     }
 
+    if (!initial.isNull()) {
+        // Ensure we always have same number of tracks...
+        while (album.tracks.count()>initial.tracks.count()) {
+            album.tracks.takeLast();
+        }
+        if (album.tracks.count()<initial.tracks.count()) {
+            for (int i=album.tracks.count(); i<initial.tracks.count(); ++i) {
+                album.tracks.append(initial.tracks.at(i));
+            }
+        }
+    }
     return album;
 }
 
@@ -157,7 +168,7 @@ void Cddb::readDisc()
                 }
 
                 cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack() : i18n("Audio Track")).toUtf8());
+                cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : unknown.constData());
                 cddb_track_set_artist(track, unknown.constData());
                 cddb_disc_add_track(disc, track);
             }
@@ -189,7 +200,7 @@ void Cddb::readDisc()
                 }
 
                 cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                cddb_track_set_title(track, (te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack() : i18n("Audio Track")).toUtf8());
+                cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : unknown.constData());
                 cddb_track_set_artist(track, unknown.constData());
                 cddb_disc_add_track(disc, track);
             }
@@ -207,17 +218,18 @@ void Cddb::readDisc()
     cddb_disc_set_genre(disc, unknown.constData());
     close(fd);
 
-    emit initialDetails(toAlbum(disc));
+    initial=toAlbum(disc);
+    emit initialDetails(initial);
 }
 
-void Cddb::lookup()
+void Cddb::lookup(bool full)
 {
     bool isInitial=!disc;
     if (!disc) {
         readDisc();
     }
 
-    if (!disc) {
+    if (!disc || !full) {
         // Errors already logged in readDisc
         return;
     }
@@ -268,7 +280,7 @@ void Cddb::lookup()
             continue;
         }
 
-        CdAlbum album=toAlbum(possible);
+        CdAlbum album=toAlbum(possible, initial);
         if (!album.tracks.isEmpty()) {
             m.append(album);
         }

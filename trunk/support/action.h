@@ -29,6 +29,8 @@ class Action : public KAction {
   Q_OBJECT
 
   public:
+    static void initIcon(QAction *act);
+
     explicit Action(QObject *parent);
     Action(const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
     Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
@@ -55,6 +57,7 @@ class Action : public QAction {
     };
     Q_DECLARE_FLAGS(ShortcutTypes, ShortcutType)
 
+    static void initIcon(QAction *act);
     explicit Action(QObject *parent);
     Action(const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
     Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);

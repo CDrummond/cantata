@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "action.h"
+#include "gtkstyle.h"
 #include <QApplication>
 
 Action::Action(QObject *parent)
@@ -66,6 +67,13 @@ Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QO
   setShortcut(shortcut);
   if(receiver && slot)
     connect(this, SIGNAL(triggered()), receiver, slot);
+}
+
+void Action::initIcon(QAction *act)
+{
+    if (GtkStyle::isActive()) {
+        act->setIconVisibleInMenu(false);
+    }
 }
 
 #ifndef ENABLE_KDE_SUPPORT

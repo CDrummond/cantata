@@ -60,6 +60,7 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
     if (!whatsThis.isEmpty()) {
         act->setWhatsThis(whatsThis);
     }
+    Action::initIcon(act);
     return act;
 }
 
@@ -73,6 +74,7 @@ Action * ActionCollection::createAction(const QString &name, const QString &text
     if (!whatsThis.isEmpty()) {
         act->setWhatsThis(whatsThis);
     }
+    Action::initIcon(act);
     return act;
 }
 

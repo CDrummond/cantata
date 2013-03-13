@@ -58,6 +58,8 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     QMenu *addMenu=new QMenu(this);
     jamendoAction=addMenu->addAction(Icons::jamendoIcon, JamendoService::constName);
     magnatuneAction=addMenu->addAction(Icons::magnatuneIcon, MagnatuneService::constName);
+    Action::initIcon(jamendoAction);
+    Action::initIcon(magnatuneAction);
     addAction->setMenu(addMenu);
 
     connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));

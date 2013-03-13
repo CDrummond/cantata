@@ -37,6 +37,7 @@
 #include "localize.h"
 #include "icon.h"
 #include "gtkstyle.h"
+#include "action.h"
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QMouseEvent>
@@ -931,6 +932,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
             action->setCheckable(true);
             action->setChecked(item.enabled_);
             action->setData(idx);
+            Action::initIcon(action);
             connect(action, SIGNAL(triggered()), this, SLOT(ToggleTab()));
         }
         idx++;

@@ -210,7 +210,7 @@ Song HttpServer::decodeUrl(const QUrl &url) const
             s.id=q.queryItemValue("id").toInt();
         }
         s.file=url.path();
-        #ifdef CDDB_FOUND
+        #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
         if (s.file.startsWith("/cdda:/")) {
             s.file=s.file.mid(1);
         }

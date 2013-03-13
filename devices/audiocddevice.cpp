@@ -23,6 +23,9 @@
 
 #include "audiocddevice.h"
 #include "cddb.h"
+#ifdef MUSICBRAINZ5_FOUND
+#include "musicbrainz.h"
+#endif
 #include "localize.h"
 #include "musiclibraryitemsong.h"
 #include "musiclibrarymodel.h"
@@ -46,7 +49,12 @@ QString AudioCdDevice::coverUrl(QString udi)
 
 AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
     : Device(m, dev, false, true)
+    #ifdef CDDB_FOUND
     , cddb(0)
+    #endif
+    #ifdef MUSICBRAINZ5_FOUND
+    , mb(0)
+    #endif
     , year(0)
     , disc(0)
     , time(0xFFFFFFFF)
@@ -55,18 +63,20 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
     drive=dev.parent().as<Solid::OpticalDrive>();
     block=dev.as<Solid::Block>();
     if (block) {
-        cddb=new Cddb(block->device());
+        static bool registeredTypes=false;
+        if (!registeredTypes) {
+            qRegisterMetaType<CdAlbum >("CdAlbum");
+            qRegisterMetaType<QList<CdAlbum> >("QList<CdAlbum>");
+            registeredTypes=true;
+        }
         devPath=QLatin1String("cdda:/")+block->device()+QChar('/');
-        connect(cddb, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
-        connect(cddb, SIGNAL(initialDetails(CddbAlbum)), this, SLOT(setDetails(CddbAlbum)));
-        connect(this, SIGNAL(lookup()), cddb, SLOT(lookup()));
-        connect(cddb, SIGNAL(matches(const QList<CddbAlbum> &)), SLOT(cddbMatches(const QList<CddbAlbum> &)));
+        connectService();
         detailsString=i18n("Reading disc");
         setStatusMessage(detailsString);
         lookupInProcess=true;
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
-        if (Settings::self()->cddbAuto()) {
+        if (Settings::self()->cdAuto()) {
             emit lookup();
         }
     }
@@ -76,9 +86,52 @@ AudioCdDevice::~AudioCdDevice()
 {
 }
 
+void AudioCdDevice::connectService()
+{
+    #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
+    if (cddb && !Settings::self()->useCddb()) {
+        cddb->deleteLater();
+        cddb=0;
+    }
+    if (mb && Settings::self()->useCddb()) {
+        mb->deleteLater();
+        mb=0;
+    }
+    #endif
+
+    #ifdef CDDB_FOUND
+    if (!cddb
+            #ifdef MUSICBRAINZ5_FOUND
+            && Settings::self()->useCddb()
+            #endif
+            ) {
+        cddb=new Cddb(block->device());
+        connect(cddb, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
+        connect(cddb, SIGNAL(initialDetails(CdAlbum)), this, SLOT(setDetails(CdAlbum)));
+        connect(cddb, SIGNAL(matches(const QList<CdAlbum> &)), SLOT(cdMatches(const QList<CdAlbum> &)));
+        connect(this, SIGNAL(lookup()), cddb, SLOT(lookup()));
+    }
+    #endif
+
+    #ifdef MUSICBRAINZ5_FOUND
+    if (!mb
+            #ifdef CDDB_FOUND
+            && !Settings::self()->useCddb()
+            #endif
+            ) {
+        mb=new MusicBrainz(block->device());
+        connect(mb, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
+        connect(mb, SIGNAL(initialDetails(CdAlbum)), this, SLOT(setDetails(CdAlbum)));
+        connect(mb, SIGNAL(matches(const QList<CdAlbum> &)), SLOT(cdMatches(const QList<CdAlbum> &)));
+        connect(this, SIGNAL(lookup()), mb, SLOT(lookup()));
+    }
+    #endif
+}
+
 void AudioCdDevice::rescan(bool)
 {
-    if (cddb) {
+    if (block) {
+        connectService();
         lookupInProcess=true;
         emit lookup();
     }
@@ -194,7 +247,7 @@ void AudioCdDevice::copySongToResult(int status)
     }
 }
 
-void AudioCdDevice::setDetails(const CddbAlbum &a)
+void AudioCdDevice::setDetails(const CdAlbum &a)
 {
     bool differentAlbum=album!=a.name || artist!=a.artist;
     lookupInProcess=false;
@@ -226,7 +279,7 @@ void AudioCdDevice::setDetails(const CddbAlbum &a)
     }
 }
 
-void AudioCdDevice::cddbMatches(const QList<CddbAlbum> &albums)
+void AudioCdDevice::cdMatches(const QList<CdAlbum> &albums)
 {
     lookupInProcess=false;
     if (1==albums.count()) {

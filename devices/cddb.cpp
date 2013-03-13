@@ -48,13 +48,6 @@ Cddb::Cddb(const QString &device)
     : dev(device)
     , disc(0)
 {
-    static bool registeredTypes=false;
-    if (!registeredTypes) {
-        qRegisterMetaType<CddbAlbum >("CddbAlbum");
-        qRegisterMetaType<QList<CddbAlbum> >("QList<CddbAlbum>");
-        registeredTypes=true;
-    }
-
     thread=new QThread();
     moveToThread(thread);
     thread->start();
@@ -68,9 +61,9 @@ Cddb::~Cddb()
     }
 }
 
-static CddbAlbum toAlbum(cddb_disc_t *disc)
+static CdAlbum toAlbum(cddb_disc_t *disc)
 {
-    CddbAlbum album;
+    CdAlbum album;
     album.name=QString::fromUtf8(cddb_disc_get_title(disc));
     album.artist=QString::fromUtf8(cddb_disc_get_artist(disc));
     album.genre=QString::fromUtf8(cddb_disc_get_genre(disc));
@@ -93,7 +86,14 @@ static CddbAlbum toAlbum(cddb_disc_t *disc)
             track.time=cddb_track_get_length(trk);
             track.file=QString("%1.wav").arg(track.track);
             track.year=album.year;
-            if (Cddb::dataTrack()!=track.title) {
+            if (Cddb::dataTrack()==track.title) {
+                // Adjust last track length...
+                if (album.tracks.count()) {
+                    Song last=album.tracks.takeLast();
+                    last.time-=FRAMES_TO_SECONDS(11400);
+                    album.tracks.append(last);
+                }
+            } else {
                 album.tracks.append(track);
             }
         }
@@ -179,7 +179,7 @@ void Cddb::readDisc()
         te.cdte_format = CDROM_LBA;
         for (int i=th.cdth_trk0; i<=th.cdth_trk1; i++) {
             te.cdte_track = i;
-            if (ioctl(fd, CDROMREADTOCENTRY, &te) == 0) {
+            if (0==ioctl(fd, CDROMREADTOCENTRY, &te)) {
                 cddb_track_t *track = cddb_track_new();
                 if (!track) {
                     cddb_disc_destroy(disc);
@@ -254,7 +254,7 @@ void Cddb::lookup()
         return;
     }
 
-    QList<CddbAlbum> m;
+    QList<CdAlbum> m;
     for (int i = 0; i < numMatches; i++) {
         cddb_disc_t *possible = cddb_disc_clone(disc);
         if (!cddb_read(connection, possible)) {
@@ -268,7 +268,7 @@ void Cddb::lookup()
             continue;
         }
 
-        CddbAlbum album=toAlbum(possible);
+        CdAlbum album=toAlbum(possible);
         if (!album.tracks.isEmpty()) {
             m.append(album);
         }

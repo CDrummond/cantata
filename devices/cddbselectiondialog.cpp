@@ -46,10 +46,10 @@ CddbSelectionDialog::CddbSelectionDialog(QWidget *parent)
     setButtons(Ok);
 }
 
-int CddbSelectionDialog::select(const QList<CddbAlbum> &albums)
+int CddbSelectionDialog::select(const QList<CdAlbum> &albums)
 {
     combo->clear();
-    foreach (const CddbAlbum &a, albums) {
+    foreach (const CdAlbum &a, albums) {
         if (a.disc>0) {
             combo->addItem(QString("%1 -%2 %3 (%4)").arg(a.artist).arg(a.name).arg(i18n("Disc %1").arg(a.disc)).arg(a.year));
         } else {

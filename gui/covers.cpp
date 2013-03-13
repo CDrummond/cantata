@@ -361,6 +361,9 @@ void Covers::stop()
         disconnect(queue, SIGNAL(download(const Song &)), this, SLOT(download(const Song &)));
         Utils::stopThread(queueThread);
     }
+    #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
+    cleanCdda();
+    #endif
 }
 
 static inline quint32 cacheKey(const Song &song, int size)
@@ -687,7 +690,7 @@ void Covers::download(const Song &song)
     }
 }
 
-#ifdef CDDB_FOUND
+#if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 void Covers::cleanCdda()
 {
     QString dir = Utils::cacheDir(Covers::constCddaCoverDir, false);

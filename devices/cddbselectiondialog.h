@@ -35,7 +35,7 @@ class CddbSelectionDialog : public Dialog
 public:
     CddbSelectionDialog(QWidget *parent);
 
-    int select(const QList<CddbAlbum> &albums);
+    int select(const QList<CdAlbum> &albums);
 private:
     QComboBox *combo;
 };

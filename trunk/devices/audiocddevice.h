@@ -74,10 +74,7 @@ public:
     void saveOptions() { }
     QString subText() { return album; }
     quint32 totalTime();
-    #ifdef CDDB_PLAYBACK
     bool canPlaySongs() const { return true; }
-    #endif
-
     QString albumName() const { return album; }
     QString albumArtist() const { return artist; }
     QString albumGenre() const { return genre; }

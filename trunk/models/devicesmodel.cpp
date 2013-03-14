@@ -340,12 +340,9 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
             QList<Action *> actions;
             if (Device::AudioCd!=static_cast<Device *>(item)->devType()) {
                 actions << configureAction;
-            }
-            #ifdef CDDB_PLAYBACK
-            else if (HttpServer::self()->isAlive()) {
+            } else if (HttpServer::self()->isAlive()) {
                 actions << StdActions::self()->replacePlayQueueAction;
             }
-            #endif
             actions << refreshAction;
             if (static_cast<Device *>(item)->supportsDisconnect()) {
                 actions << (static_cast<Device *>(item)->isConnected() ? disconnectAction : connectAction);

@@ -39,6 +39,11 @@
 #include <linux/cdrom.h>
 #endif
 
+static struct CddbCleanup
+{
+    ~CddbCleanup() { libcddb_shutdown(); }
+} cleanup;
+
 QString Cddb::dataTrack()
 {
     return i18n("Data Track");

@@ -29,7 +29,7 @@
 static QSet<QString> lockedDevices;
 static QMutex mutex;
 
-CdParanoia::CdParanoia(const QString &device, bool full, bool noSkip)
+CdParanoia::CdParanoia(const QString &device, bool full, bool noSkip, bool playback)
     : drive(0)
     , paranoia(0)
     , paranoiaMode(0)
@@ -50,7 +50,10 @@ CdParanoia::CdParanoia(const QString &device, bool full, bool noSkip)
 
     if (!dev.isEmpty()) {
         setFullParanoiaMode(full);
-        setMaxRetries(20);
+        if (playback) {
+            maxRetries=1;
+            paranoia_cachemodel_size(paranoia, 24);
+        }
     }
 }
 

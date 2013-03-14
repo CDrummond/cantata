@@ -33,9 +33,6 @@
   - RemoteFsDevices
     - Cantata hangs if smb service is stopped before its un-mounted
   - Re-enable covers in sync dialog?
-  - Playback of tracks from CD
-    - Tried, could not get to work - no sound!
-    - If stop playback, HTTP server continues with track extraction.
 
 - Lyrics
   - Add support for reading via tags in mp4, flac, and ogg files.

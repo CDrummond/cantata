@@ -97,7 +97,7 @@ AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
 {
     iCount++;
     setButtons(User1|Ok|Cancel);
-    setCaption(i18n("Disc Details"));
+    setCaption(i18n("Audio CD"));
     setAttribute(Qt::WA_DeleteOnClose);
 
     QWidget *mainWidet = new QWidget(this);

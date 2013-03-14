@@ -47,7 +47,13 @@ void GenreCombo::update(const QSet<QString> &g)
         return;
     }
 
-    genres=g;
+    QSet<QString> mg=g;
+    mg.remove(QString());
+    if (mg.count()!=g.count() && count() && mg==genres) {
+        return;
+    }
+
+    genres=mg;
     QStringList entries=g.toList();
     qSort(entries);
     entries.prepend(i18n("All Genres"));

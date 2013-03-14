@@ -157,7 +157,7 @@ void Cddb::readDisc()
     if (status >= 0 && 0==ioctl(fd, CDIOREADTOCHEADER, &th)) {
         disc = cddb_disc_new();
         if (!disc) {
-            emit error(i18n("Failed read CD"));
+            emit error(i18n("Internal error"));
             return 0;
         }
         te.address_format = CD_LBA_FORMAT;
@@ -168,7 +168,7 @@ void Cddb::readDisc()
                 if (!track) {
                     cddb_disc_destroy(disc);
                     disc=0;
-                    emit error(i18n("Failed read CD track %1").arg(i));
+                    emit error(i18n("Internal error"));
                     return 0;
                 }
 
@@ -189,7 +189,7 @@ void Cddb::readDisc()
     if ( (CDS_AUDIO==status || CDS_MIXED==status) && 0==ioctl(fd, CDROMREADTOCHDR, &th)) {
         disc = cddb_disc_new();
         if (!disc) {
-            emit error(i18n("Failed read CD"));
+            emit error(i18n("Internal error"));
             return;
         }
         te.cdte_format = CDROM_LBA;
@@ -200,7 +200,7 @@ void Cddb::readDisc()
                 if (!track) {
                     cddb_disc_destroy(disc);
                     disc=0;
-                    emit error(i18n("Failed to read CD track %1").arg(i));
+                    emit error(i18n("Internal error"));
                     return;
                 }
 
@@ -221,11 +221,58 @@ void Cddb::readDisc()
     cddb_disc_set_artist(disc, unknown.constData());
     cddb_disc_set_title(disc, unknown.constData());
     cddb_disc_set_genre(disc, unknown.constData());
+    cddb_disc_calc_discid(disc);
     close(fd);
 
     initial=toAlbum(disc);
     emit initialDetails(initial);
 }
+
+class CddbConnection
+{
+public:
+    CddbConnection(cddb_disc_t *d) : disc(0) {
+        connection = cddb_new();
+        if (connection) {
+            cddb_set_server_name(connection, Settings::self()->cddbHost().toLatin1().constData());
+            cddb_set_server_port(connection, Settings::self()->cddbPort());
+            disc=cddb_disc_clone(d);
+            QUrl url;
+            url.setHost(Settings::self()->cddbHost());
+            url.setPort(Settings::self()->cddbPort());
+            QList<QNetworkProxy> proxies=NetworkProxyFactory::self()->queryProxy(QNetworkProxyQuery(url));
+            foreach (const QNetworkProxy &p, proxies) {
+                if (QNetworkProxy::NoProxy!=p.type()) {
+                    cddb_set_http_proxy_server_name(connection, p.hostName().toLatin1().constData());
+                    cddb_set_http_proxy_server_port(connection, p.port());
+                    cddb_http_proxy_enable(connection);
+                    break;
+                }
+            }
+        }
+    }
+
+    ~CddbConnection() {
+        if (disc) {
+            cddb_disc_destroy(disc);
+        }
+        if (connection) {
+            cddb_destroy(connection);
+        }
+    }
+
+    operator bool() const { return 0!=connection; }
+    int query() { return cddb_query(connection, disc); }
+    int read() { return cddb_read(connection, disc); }
+    const char * error() { return cddb_error_str(cddb_errno(connection)); }
+    int trackCount() {  return cddb_disc_get_track_count(disc); }
+    int next() { return cddb_query_next(connection, disc); }
+    CdAlbum toAlbum(const CdAlbum &initial) { return ::toAlbum(disc, initial); }
+
+private:
+    cddb_conn_t *connection;
+    cddb_disc_t *disc;
+};
 
 void Cddb::lookup(bool full)
 {
@@ -239,61 +286,41 @@ void Cddb::lookup(bool full)
         return;
     }
 
-    cddb_conn_t *connection = cddb_new();
-    if (!connection) {
+    CddbConnection cddb(disc);
+    if (!cddb) {
         emit error(i18n("Failed to create CDDB connection"));
         return;
     }
 
-    cddb_set_server_name(connection, Settings::self()->cddbHost().toLatin1().constData());
-    cddb_set_server_port(connection, Settings::self()->cddbPort());
-
-    QUrl url;
-    url.setHost(Settings::self()->cddbHost());
-    url.setPort(Settings::self()->cddbPort());
-    QList<QNetworkProxy> proxies=NetworkProxyFactory::self()->queryProxy(QNetworkProxyQuery(url));
-    foreach (const QNetworkProxy &p, proxies) {
-        if (QNetworkProxy::NoProxy!=p.type()) {
-            cddb_set_http_proxy_server_name(connection, p.hostName().toLatin1().constData());
-            cddb_set_http_proxy_server_port(connection, p.port());
-            cddb_http_proxy_enable(connection);
-            break;
-        }
-    }
-
-    int numMatches = cddb_query(connection, disc);
-
+    int numMatches = cddb.query();
     if (numMatches<1) {
         if (!isInitial) {
             emit error(i18n("No matches found in CDDB"));
         }
-        cddb_destroy(connection);
         return;
     }
 
     QList<CdAlbum> m;
-    for (int i = 0; i < numMatches; i++) {
-        cddb_disc_t *possible = cddb_disc_clone(disc);
-        if (!cddb_read(connection, possible)) {
-            emit error(i18n("CDDB error: %1").arg(cddb_error_str(cddb_errno(connection))));
-            cddb_destroy(connection);
+    while(numMatches>0) {
+        if (!cddb.read()) {
+            emit error(i18n("CDDB error: %1").arg(cddb.error()));
             return;
         }
-
-        int numTracks=cddb_disc_get_track_count(possible);
+        int numTracks=cddb.trackCount();
         if (numTracks<=0) {
             continue;
         }
 
-        CdAlbum album=toAlbum(possible, initial);
+        CdAlbum album=cddb.toAlbum(initial);
         if (!album.tracks.isEmpty()) {
             m.append(album);
         }
-
-        cddb_disc_destroy(possible);
+        numMatches--;
+        if (numMatches>0 && !cddb.next()) {
+            break;
+        }
     }
 
-    cddb_destroy(connection);
     if (m.isEmpty()) {
         if (!isInitial) {
             emit error(i18n("No matches found in CDDB"));

@@ -24,13 +24,23 @@
 #ifndef DIALOG_H
 #define DIALOG_H
 
+#include "config.h"
+
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KDialog>
+#ifdef ENABLE_OVERLAYSCROLLBARS
+struct Dialog : public KDialog {
+    Dialog(QWidget *parent) : KDialog(parent) { }
+    int exec();
+};
+#else
 typedef KDialog Dialog;
+#endif
 typedef KGuiItem GuiItem;
 #else
 #include <QDialog>
 #include <QMap>
+#include <QDebug>
 
 struct GuiItem {
     GuiItem(const QString &t=QString(), const QString &i=QString())
@@ -99,6 +109,10 @@ public:
     QWidget *mainWidget() {
         return mw;
     }
+
+    #ifdef ENABLE_OVERLAYSCROLLBARS
+    int exec();
+    #endif
 
 private Q_SLOTS:
     void buttonPressed(QAbstractButton *button);

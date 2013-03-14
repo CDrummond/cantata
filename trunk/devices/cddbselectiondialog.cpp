@@ -26,6 +26,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QComboBox>
+#include <QTreeWidget>
 
 CddbSelectionDialog::CddbSelectionDialog(QWidget *parent)
     : Dialog(parent)
@@ -36,19 +37,31 @@ CddbSelectionDialog::CddbSelectionDialog(QWidget *parent)
     combo=new QComboBox(wid);
     QLabel *label=new QLabel(i18n("Multiple matches were found. "
                                   "Please choose the relevant one from below:"), wid);
+
+    tracks = new QTreeWidget(wid);
+    tracks->setAlternatingRowColors(true);
+    tracks->setRootIsDecorated(false);
+    tracks->setUniformRowHeights(true);
+    tracks->setItemsExpandable(false);
+    tracks->setAllColumnsShowFocus(true);
+    tracks->setHeaderLabels(QStringList() << i18n("Artist") << i18n("Title"));
+    tracks->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+
     label->setWordWrap(true);
     layout->addWidget(label);
     layout->addWidget(combo);
-    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding));
+    layout->addWidget(tracks);
 
     setCaption(i18n("Disc Selection"));
     setMainWidget(wid);
     setButtons(Ok);
+    connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(updateTracks()));
 }
 
 int CddbSelectionDialog::select(const QList<CdAlbum> &albums)
 {
     combo->clear();
+    albumDetails=albums;
     foreach (const CdAlbum &a, albums) {
         if (a.disc>0) {
             combo->addItem(QString("%1 -%2 %3 (%4)").arg(a.artist).arg(a.name).arg(i18n("Disc %1").arg(a.disc)).arg(a.year));
@@ -57,6 +70,21 @@ int CddbSelectionDialog::select(const QList<CdAlbum> &albums)
         }
     }
 
+    updateTracks();
     exec();
     return combo->currentIndex();
+}
+
+void CddbSelectionDialog::updateTracks()
+{
+    tracks->clear();
+    bool sameArtist=true;
+    const CdAlbum &a=albumDetails.at(combo->currentIndex());
+    foreach (const Song &s, a.tracks) {
+        new QTreeWidgetItem(tracks, QStringList() << s.artist << s.title);
+        if (s.artist!=a.artist) {
+            sameArtist=false;
+        }
+    }
+    tracks->setColumnHidden(0, sameArtist);
 }

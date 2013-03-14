@@ -275,6 +275,10 @@ if (ENABLE_TAGLIB)
     find_package(Taglib)
 endif (ENABLE_TAGLIB)
 
+if (ENABLE_OVERLAYSCROLLBARS)
+    add_definitions(-DENABLE_OVERLAYSCROLLBARS)
+endif (ENABLE_OVERLAYSCROLLBARS)
+
 if (TAGLIB_FOUND)
     SET( CANTATA_SRCS ${CANTATA_SRCS}
         tags/tageditor.cpp
@@ -497,6 +501,9 @@ if (TAGLIB_FOUND)
             if (MUSICBRAINZ5_FOUND)
                 SET( CANTATA_SRCS ${CANTATA_SRCS} devices/musicbrainz.cpp )
                 SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} devices/musicbrainz.h )
+                if (ENABLE_KDE_SUPPORT)
+                    add_definitions(${KDE4_ENABLE_EXCEPTIONS})
+                endif (ENABLE_KDE_SUPPORT)
             endif (MUSICBRAINZ5_FOUND)
             SET( CANTATA_SRCS ${CANTATA_SRCS} devices/audiocddevice.cpp devices/cddb.cpp devices/cddbselectiondialog.cpp
                  devices/cdparanoia.cpp devices/audiocdsettings.cpp devices/extractjob.cpp devices/albumdetailsdialog.cpp)

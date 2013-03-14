@@ -32,20 +32,12 @@ class HttpSocket : public QTcpServer
 
 public:
      HttpSocket(const QString &addr, quint16 p);
-
-     virtual ~HttpSocket() {
-     }
+     virtual ~HttpSocket() { }
 
      void terminate();
      void incomingConnection(int socket);
-
-     QString address() const {
-         return serverAddress().toString();
-     }
-
-     QString configuredAddress() {
-         return cfgAddr;
-     }
+     QString address() const { return serverAddress().toString(); }
+     QString configuredAddress() { return cfgAddr; }
 
 private Q_SLOTS:
      void readClient();

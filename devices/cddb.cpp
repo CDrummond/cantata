@@ -23,7 +23,9 @@
 
 #include "cddb.h"
 #include "settings.h"
+#ifndef ENABLE_KDE_SUPPORT
 #include "networkproxyfactory.h"
+#endif
 #include "localize.h"
 #include "utils.h"
 #include <QNetworkProxy>
@@ -238,18 +240,28 @@ public:
             cddb_set_server_name(connection, Settings::self()->cddbHost().toLatin1().constData());
             cddb_set_server_port(connection, Settings::self()->cddbPort());
             disc=cddb_disc_clone(d);
+            #ifdef ENABLE_KDE_SUPPORT
+            QNetworkProxy p(QNetworkProxy::DefaultProxy);
+            if (QNetworkProxy::HttpProxy==p.type() && 0!=p.port()) {
+                cddb_set_http_proxy_server_name(connection, p.hostName().toLatin1().constData());
+                cddb_set_http_proxy_server_port(connection, p.port());
+                cddb_http_proxy_enable(connection);
+            }
+            #else
             QUrl url;
             url.setHost(Settings::self()->cddbHost());
             url.setPort(Settings::self()->cddbPort());
             QList<QNetworkProxy> proxies=NetworkProxyFactory::self()->queryProxy(QNetworkProxyQuery(url));
+
             foreach (const QNetworkProxy &p, proxies) {
-                if (QNetworkProxy::NoProxy!=p.type()) {
+                if (QNetworkProxy::HttpProxy==p.type() && 0!=p.port()) {
                     cddb_set_http_proxy_server_name(connection, p.hostName().toLatin1().constData());
                     cddb_set_http_proxy_server_port(connection, p.port());
                     cddb_http_proxy_enable(connection);
                     break;
                 }
             }
+            #endif
         }
     }
 
@@ -275,7 +287,6 @@ private:
     cddb_disc_t *disc;
 };
 
-#include <QDebug>
 void Cddb::lookup(bool full)
 {
     bool isInitial=!disc;

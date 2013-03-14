@@ -30,6 +30,10 @@
 #cmakedefine USE_SPEEX_RESAMPLER 1
 #cmakedefine ENABLE_REPLAYGAIN_SUPPORT 1
 #cmakedefine ENABLE_REMOTE_DEVICES 1
-#cmakedefine ENABLE_OVERLAYSCROLLBARS 1
+/*
+ This is done via CMake add_defintions - as it controls SLOT generation in GtkProxyStyle
+ - hence adding _XXX
+*/
+#cmakedefine ENABLE_OVERLAYSCROLLBARS_XXX 1
 #endif
 

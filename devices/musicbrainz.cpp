@@ -24,7 +24,9 @@
 */
 
 #include "musicbrainz.h"
+#ifndef ENABLE_KDE_SUPPORT
 #include "networkproxyfactory.h"
+#endif
 #include <QNetworkProxy>
 #include <QCryptographicHash>
 #include <cstdio>
@@ -261,14 +263,22 @@ void MusicBrainz::lookup(bool full)
     MusicBrainz5::CQuery Query("cantata-"PACKAGE_VERSION_STRING);
     QList<CdAlbum> m;
 
+    #ifdef ENABLE_KDE_SUPPORT
+    QNetworkProxy p(QNetworkProxy::DefaultProxy);
+    if (QNetworkProxy::HttpProxy==p.type() && 0!=p.port()) {
+        Query.SetProxyHost(p.hostName().toLatin1().constData());
+        Query.SetProxyPort(p.port());
+    }
+    #else
     QList<QNetworkProxy> proxies=NetworkProxyFactory::self()->queryProxy(QNetworkProxyQuery(QUrl("http://musicbrainz.org")));
     foreach (const QNetworkProxy &p, proxies) {
-        if (QNetworkProxy::NoProxy!=p.type()) {
+        if (QNetworkProxy::HttpProxy==p.type() && 0!=p.port()) {
             Query.SetProxyHost(p.hostName().toLatin1().constData());
             Query.SetProxyPort(p.port());
             break;
         }
     }
+    #endif
     // Code adapted from libmusicbrainz/examples/cdlookup.cc
 
     try {

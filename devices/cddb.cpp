@@ -234,6 +234,7 @@ public:
     CddbConnection(cddb_disc_t *d) : disc(0) {
         connection = cddb_new();
         if (connection) {
+            cddb_cache_disable(connection);
             cddb_set_server_name(connection, Settings::self()->cddbHost().toLatin1().constData());
             cddb_set_server_port(connection, Settings::self()->cddbPort());
             disc=cddb_disc_clone(d);
@@ -274,6 +275,7 @@ private:
     cddb_disc_t *disc;
 };
 
+#include <QDebug>
 void Cddb::lookup(bool full)
 {
     bool isInitial=!disc;
@@ -292,8 +294,7 @@ void Cddb::lookup(bool full)
         return;
     }
 
-    int numMatches = cddb.query();
-    if (numMatches<1) {
+    if (cddb.query()<1) {
         if (!isInitial) {
             emit error(i18n("No matches found in CDDB"));
         }
@@ -301,7 +302,7 @@ void Cddb::lookup(bool full)
     }
 
     QList<CdAlbum> m;
-    while(numMatches>0) {
+    for (;;) {
         if (!cddb.read()) {
             emit error(i18n("CDDB error: %1").arg(cddb.error()));
             return;
@@ -315,8 +316,7 @@ void Cddb::lookup(bool full)
         if (!album.tracks.isEmpty()) {
             m.append(album);
         }
-        numMatches--;
-        if (numMatches>0 && !cddb.next()) {
+        if (!cddb.next()) {
             break;
         }
     }

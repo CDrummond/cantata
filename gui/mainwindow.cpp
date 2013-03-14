@@ -1804,7 +1804,8 @@ void MainWindow::updateStatus(MPDStatus * const status)
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
         positionSlider->clearTimes();
     } else {
-        positionSlider->setRange(0, status->timeTotal());
+        positionSlider->setRange(0, 0==status->timeTotal() && 0!=current.time && (current.isCdda() || current.isCantataStream())
+                                    ? current.time : status->timeTotal());
         positionSlider->setValue(status->timeElapsed());
     }
 

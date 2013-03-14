@@ -205,6 +205,7 @@ public:
         QString track;
         QString duration=song.time>0 ? Song::formattedTime(song.time) : QString();
         bool stream=!isCollection && (song.isStream() && !song.isCantataStream());
+        bool audiocd=stream && song.isCdda();
         bool isEmpty=song.title.isEmpty() & song.artist.isEmpty() && !song.file.isEmpty();
         QString trackTitle=isEmpty
                         ? song.file
@@ -222,7 +223,7 @@ public:
             title=index.data(Qt::DisplayRole).toString();
         } else if (AlbumHeader==type) {
             if (stream) {
-                title=i18n("Streams");
+                title=audiocd ? i18n("Audio CD") : i18n("Streams");
                 if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
                     track=song.title.isEmpty() && song.name.isEmpty() ? song.file : (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
                 } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
@@ -296,7 +297,7 @@ public:
                 pix=index.data(Qt::DecorationRole).value<QIcon>().pixmap(constCoverSize, constCoverSize);
             } else {
                 QPixmap *cover=stream ? 0 : Covers::self()->get(song, constCoverSize);
-                pix=cover ? *cover : (stream ? Icons::streamIcon : Icons::albumIcon).pixmap(constCoverSize, constCoverSize);
+                pix=cover ? *cover : (stream && !audiocd ? Icons::streamIcon : Icons::albumIcon).pixmap(constCoverSize, constCoverSize);
             }
 
             if (rtl) {

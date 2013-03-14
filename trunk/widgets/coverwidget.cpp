@@ -111,7 +111,7 @@ void CoverWidget::update(const Song &s)
         } else {
             valid=false;
             coverFileName=QString();
-            update(stdPixmap(current.isStream()));
+            update(stdPixmap(current.isStream() && !current.isCdda()));
             emit coverImage(QImage());
             emit coverFile(QString());
         }
@@ -133,7 +133,7 @@ void CoverWidget::coverRetreived(const Song &s, const QImage &img, const QString
             emit coverImage(img);
             emit coverFile(file);
         } else {
-            update(stdPixmap(current.isStream()));
+            update(stdPixmap(current.isStream() && !current.isCdda()));
             coverFileName=QString();
             emit coverImage(QImage());
             emit coverFile(QString());

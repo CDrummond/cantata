@@ -44,7 +44,7 @@ QString AudioCdDevice::coverUrl(QString udi)
     udi.replace("\t", "_");
     udi.replace("/", "_");
     udi.replace(":", "_");
-    return QLatin1String("cdda://")+udi;
+    return Song::constCddaProtocol+udi;
 }
 
 AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
@@ -69,7 +69,7 @@ AudioCdDevice::AudioCdDevice(DevicesModel *m, Solid::Device &dev)
             qRegisterMetaType<QList<CdAlbum> >("QList<CdAlbum>");
             registeredTypes=true;
         }
-        devPath=QLatin1String("cdda:/")+block->device()+QChar('/');
+        devPath=Song::constCddaProtocol+block->device()+QChar('/');
         #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
         connectService(Settings::self()->useCddb());
         #else
@@ -308,7 +308,7 @@ void AudioCdDevice::cdMatches(const QList<CdAlbum> &albums)
 
 void AudioCdDevice::setCover(const Song &song, const QImage &img, const QString &file)
 {
-    if (song.file.startsWith("cdda://") && song.artist==artist && song.album==album) {
+    if (song.isCdda() && song.artist==artist && song.album==album) {
         coverImage=Covers::Image(img, file);
         updateStatus();
     }

@@ -22,6 +22,24 @@
  */
 
 #include "dialog.h"
+
+#ifdef ENABLE_OVERLAYSCROLLBARS
+int Dialog::exec()
+{
+    QWidget *win=parentWidget() ? parentWidget()->window() : 0;
+    bool wasGl=win ? win->testAttribute(Qt::WA_GroupLeader) : false;
+    if (win && !wasGl) {
+        win->setAttribute(Qt::WA_GroupLeader, true);
+    }
+    int rv=QDialog::exec();
+    if (win && !wasGl) {
+        win->setAttribute(Qt::WA_GroupLeader, false);
+    }
+    return rv;
+}
+#endif
+
+#ifndef ENABLE_KDE_SUPPORT
 #include "icon.h"
 #include <QDialogButtonBox>
 #include <QPushButton>
@@ -211,3 +229,4 @@ QAbstractButton *Dialog::getButton(ButtonCode button)
     }
     return b;
 }
+#endif

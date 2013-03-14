@@ -211,7 +211,7 @@ Song HttpServer::decodeUrl(const QUrl &url) const
         }
         s.file=url.path();
         #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
-        if (s.file.startsWith("/cdda:/")) {
+        if (s.file.startsWith(QChar('/')+Song::constCddaProtocol)) {
             s.file=s.file.mid(1);
         }
         #endif

@@ -947,7 +947,7 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     QString extension=mimeType.isEmpty() ? constExtensions.at(0) : mimeType;
     QString savedName;
 
-    if (job.song.file.startsWith(("cdda://"))) {
+    if (job.song.isCdda()) {
         QString dir = Utils::cacheDir(constCddaCoverDir, true);
         if (!dir.isEmpty()) {
             savedName=save(mimeType, extension, dir+job.song.file.mid(7), img, raw);

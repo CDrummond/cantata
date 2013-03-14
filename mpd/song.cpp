@@ -37,6 +37,8 @@
 #include <QFileInfo>
 #include <QStringList>
 
+const QString Song::constCddaProtocol("cdda:/");
+
 // When displaying albums, we use the 1st track's year as the year of the album.
 // The map below stores the mapping from artist+album to year.
 // This way the grouped view can find this quickly...
@@ -400,4 +402,9 @@ bool Song::isCantataStream() const
     #else
     return false;
     #endif
+}
+
+bool Song::isCdda() const
+{
+    return !file.isEmpty() && file.contains(constCddaProtocol);
 }

@@ -64,6 +64,7 @@ struct Song
     // Only used in PlayQueue/PlayLists...
     quint16 key;
 
+    static const QString constCddaProtocol;
     static void storeAlbumYear(const Song &s);
     static int albumYear(const Song &s);
 
@@ -98,6 +99,7 @@ struct Song
     bool capitalise();
     bool isStream() const { return /*file.isEmpty() || */file.contains("://"); }
     bool isCantataStream() const;
+    bool isCdda() const;
     QString albumKey() const { return albumArtist()+QChar(':')+album; }
 };
 

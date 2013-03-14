@@ -1126,7 +1126,7 @@ void CoverDialog::slotButtonClicked(int button)
 
 bool CoverDialog::saveCover(const QString &src, const QImage &img)
 {
-    if (song.file.startsWith("cdda://")) {
+    if (song.isCdda()) {
         QString dir = Utils::cacheDir(Covers::constCddaCoverDir, true);
         if (!dir.isEmpty()) {
             QString destName=dir+song.file.mid(7)+src.mid(src.length()-4);

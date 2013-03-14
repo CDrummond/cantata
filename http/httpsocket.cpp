@@ -255,7 +255,7 @@ void HttpSocket::readClient()
 
             if (q.hasQueryItem("cantata")) {
                 Song song=HttpServer::self()->decodeUrl(url);
-                if (song.file.startsWith(QLatin1String("cdda:/"))) {
+                if (song.isCdda()) {
                     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
                     QStringList parts=song.file.split("/", QString::SkipEmptyParts);
                     if (parts.length()>=3) {

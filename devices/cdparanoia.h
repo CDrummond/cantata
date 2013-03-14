@@ -34,7 +34,7 @@ extern "C" {
 class CdParanoia
 {
 public:
-    CdParanoia(const QString &device, bool full, bool noSkip);
+    CdParanoia(const QString &device, bool full, bool noSkip, bool playback=false);
     ~CdParanoia();
 
     inline operator bool() const { return !dev.isEmpty(); }

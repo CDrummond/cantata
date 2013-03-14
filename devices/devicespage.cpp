@@ -51,6 +51,7 @@
 #include "trackorganiser.h"
 #include "preferencesdialog.h"
 #include "coverdialog.h"
+#include "mpdconnection.h"
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "audiocddevice.h"
 #include "albumdetailsdialog.h"
@@ -90,6 +91,8 @@ DevicesPage::DevicesPage(QWidget *p)
     sep->setSeparator(true);
     view->addAction(sep);
     view->addAction(StdActions::self()->deleteSongsAction);
+    connect(this, SIGNAL(add(const QStringList &, bool, quint8)), MPDConnection::self(), SLOT(add(const QStringList &, bool, quint8)));
+    connect(this, SIGNAL(addSongsToPlaylist(const QString &, const QStringList &)), MPDConnection::self(), SLOT(addToPlaylist(const QString &, const QStringList &)));
     connect(genreCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchItems()));
     connect(DevicesModel::self(), SIGNAL(updateGenres(const QSet<QString> &)), genreCombo, SLOT(update(const QSet<QString> &)));
     connect(DevicesModel::self(), SIGNAL(updated(QModelIndex)), this, SLOT(updated(QModelIndex)));

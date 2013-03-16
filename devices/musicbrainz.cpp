@@ -247,6 +247,7 @@ void MusicBrainz::readDisc()
     }
 
     discId = calculateDiscId(tracks);
+    emit initialDetails(initial);
 }
 
 void MusicBrainz::lookup(bool full)
@@ -257,9 +258,6 @@ void MusicBrainz::lookup(bool full)
     }
 
     if (!full) {
-        if (isInitial) {
-            emit initialDetails(initial);
-        }
         return;
     }
     DBUG << "Should lookup " << discId;

@@ -29,6 +29,7 @@ FileSettings::FileSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
+    connect(storeStreamsInMpdDir, SIGNAL(toggled(bool)), SLOT(streamLocationChanged()));
 }
 
 void FileSettings::load()
@@ -50,4 +51,10 @@ void FileSettings::save()
     if (streamsChaged) {
         emit reloadStreams();
     }
+    streamLocationChanged();
+}
+
+void FileSettings::streamLocationChanged()
+{
+    streamLocationNote->setOn(storeStreamsInMpdDir->isChecked()!=Settings::self()->storeStreamsInMpdDir());
 }

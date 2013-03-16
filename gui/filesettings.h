@@ -39,6 +39,9 @@ public:
 
 Q_SIGNALS:
     void reloadStreams();
+
+private Q_SLOTS:
+    void streamLocationChanged();
 };
 
 #endif

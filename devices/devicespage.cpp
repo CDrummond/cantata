@@ -312,8 +312,8 @@ void DevicesPage::controlActions()
             else if (Device::RemoteFs==dev->devType()) {
                 remoteDev=true;
             }
-            canPlay=dev->canPlaySongs();
             #endif
+            canPlay=dev->canPlaySongs();
             if (udi.isEmpty()) {
                 udi=dev->udi();
             } else if (udi!=dev->udi()) {
@@ -326,7 +326,7 @@ void DevicesPage::controlActions()
         }
     }
 
-    DevicesModel::self()->configureAct()->setEnabled(!busyDevice && 1==selected.count());
+    DevicesModel::self()->configureAct()->setEnabled(!busyDevice && 1==selected.count() && !audioCd);
     DevicesModel::self()->refreshAct()->setEnabled(!busyDevice && 1==selected.count());
     copyAction->setEnabled(!busyDevice && haveTracks && (!deviceSelected || audioCd));
     syncAction->setEnabled(!audioCd && !busyDevice && deviceSelected && connected && 1==selected.count() && singleUdi);
@@ -335,7 +335,6 @@ void DevicesPage::controlActions()
     #ifdef ENABLE_REPLAYGAIN_SUPPORT
     StdActions::self()->replaygainAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #endif
-    //StdActions::self()->burnAction->setEnabled(enable && onlyFs);
     StdActions::self()->organiseFilesAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     StdActions::self()->addToPlayQueueAction->setEnabled(canPlay && !selected.isEmpty() && singleUdi && !busyDevice && haveTracks && (audioCd || !deviceSelected));
     StdActions::self()->addWithPriorityAction->setEnabled(StdActions::self()->addToPlayQueueAction->isEnabled());

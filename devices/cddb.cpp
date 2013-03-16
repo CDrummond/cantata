@@ -92,31 +92,34 @@ static CdAlbum toAlbum(cddb_disc_t *disc, const CdAlbum &initial=CdAlbum())
             track.albumartist=album.artist;
             track.album=album.name;
             track.id=track.track;
-            track.time=cddb_track_get_length(trk);
             track.file=QString("%1.wav").arg(track.track);
             track.year=album.year;
-            if (Cddb::dataTrack()==track.title) {
-                // Adjust last track length...
-                if (album.tracks.count()) {
-                    Song last=album.tracks.takeLast();
-                    last.time-=FRAMES_TO_SECONDS(11400);
-                    album.tracks.append(last);
+
+            if (initial.isNull()) {
+                track.time=cddb_track_get_length(trk);
+                if (Cddb::dataTrack()==track.title) {
+                    // Adjust last track length...
+                    if (album.tracks.count()) {
+                        Song last=album.tracks.takeLast();
+                        last.time-=FRAMES_TO_SECONDS(11400);
+                        album.tracks.append(last);
+                    }
+                } else {
+                    album.tracks.append(track);
                 }
+            } else if (t>=initial.tracks.count()) {
+                break;
             } else {
+                track.time=initial.tracks.at(t).time;
                 album.tracks.append(track);
             }
         }
     }
 
-    if (!initial.isNull()) {
-        // Ensure we always have same number of tracks...
-        while (album.tracks.count()>initial.tracks.count()) {
-            album.tracks.takeLast();
-        }
-        if (album.tracks.count()<initial.tracks.count()) {
-            for (int i=album.tracks.count(); i<initial.tracks.count(); ++i) {
-                album.tracks.append(initial.tracks.at(i));
-            }
+    // Ensure we always have same number of tracks...
+    if (!initial.isNull() && album.tracks.count()<initial.tracks.count()) {
+        for (int i=album.tracks.count(); i<initial.tracks.count(); ++i) {
+            album.tracks.append(initial.tracks.at(i));
         }
     }
     return album;

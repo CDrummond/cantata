@@ -69,7 +69,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     nameLabel=new BuddyLabel(i18n("Name:"), wid, nameEntry);
     catLabel=new BuddyLabel(i18n("Category:"), wid, catCombo);
     genreLabel=new BuddyLabel(i18n("Genre:"), wid, genreCombo);
-    BuddyLabel *streamLabel=new BuddyLabel(i18n("Stream:"), wid, urlEntry);
+    BuddyLabel *urlLabel=new BuddyLabel(i18n("URL:"), wid, urlEntry);
 
 //    #ifdef ENABLE_KDE_SUPPORT
 //    iconButton=new QPushButton(this);
@@ -83,7 +83,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
         saveCombo->addItem(i18n("Add to play queue, and save in list of streams"));
         saveCombo->setCurrentIndex(0);
         saveCombo->setEnabled(StreamsModel::self()->isWritable());
-        layout->setWidget(row, QFormLayout::LabelRole, streamLabel);
+        layout->setWidget(row, QFormLayout::LabelRole, urlLabel);
         layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
         layout->setWidget(row++, QFormLayout::FieldRole, saveCombo);
         connect(saveCombo, SIGNAL(activated(int)), SLOT(saveComboChanged()));
@@ -100,7 +100,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
 //    layout->setWidget(row++, QFormLayout::FieldRole, iconButton);
 //    #endif
     if (!addToPlayQueue) {
-        layout->setWidget(row, QFormLayout::LabelRole, streamLabel);
+        layout->setWidget(row, QFormLayout::LabelRole, urlLabel);
         layout->setWidget(row++, QFormLayout::FieldRole, urlEntry);
     }
     layout->setWidget(row, QFormLayout::LabelRole, catLabel);

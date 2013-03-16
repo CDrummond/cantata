@@ -1709,6 +1709,10 @@ void MainWindow::updateCurrentSong(const Song &song)
 
     current=song;
 
+    if (current.isCdda()) {
+        emit getStatus();
+    }
+
     #ifdef TAGLIB_FOUND
     if (current.isCantataStream()) {
         Song mod=HttpServer::self()->decodeUrl(current.file);

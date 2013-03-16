@@ -69,9 +69,9 @@ DevicesPage::DevicesPage(QWidget *p)
     #ifdef ENABLE_REMOTE_DEVICES
     forgetDeviceAction=ActionCollection::get()->createAction("forgetdevice", i18n("Forget Device"), "list-remove");
     connect(forgetDeviceAction, SIGNAL(triggered()), this, SLOT(forgetRemoteDevice()));
+    #endif
     connect(DevicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
     connect(DevicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleDevice()));
-    #endif
     copyToLibraryButton->setEnabled(false);
     syncAction->setEnabled(false);
     view->addAction(copyAction);
@@ -413,15 +413,15 @@ void DevicesPage::refreshDevice()
         bool full=true;
 
         if (Device::AudioCd==dev->devType()) {
-            // Bit HAck - we use full to determine CDDB/MusicBrainz!
+            // Bit hacky - we use 'full' to determine CDDB/MusicBrainz!
             #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
             switch (MessageBox::questionYesNoCancel(this, i18n("Lookup album and track details?"),
                                                     i18n("Refresh"), GuiItem(i18n("Via CDDB")), GuiItem(i18n("Via MusicBrainz")))) {
             case MessageBox::Yes:
-                full=true;
+                full=true; // full==true => CDDB
                 break;
             case MessageBox::No:
-                full=false;
+                full=false; // full==false => MusicBrainz
                 break;
             default:
                 return;
@@ -519,7 +519,6 @@ void DevicesPage::forgetRemoteDevice()
 void DevicesPage::toggleDevice()
 {
     const QModelIndexList selected = view->selectedIndexes();
-
     if (1!=selected.size()) {
         return;
     }
@@ -527,8 +526,12 @@ void DevicesPage::toggleDevice()
     MusicLibraryItem *item=DevicesModel::self()->toItem(proxy.mapToSource(selected.first()));
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
-        if (static_cast<Device *>(item)->isConnected() &&
-            MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to disconnect '%1'?").arg(static_cast<Device *>(item)->data()))) {
+        Device *dev=static_cast<Device *>(item);
+        if (dev->isConnected() &&
+            MessageBox::No==MessageBox::warningYesNo(this,
+                                                     Device::AudioCd==dev->devType()
+                                                        ? i18n("Are you sure you wish to eject Audio CD '%1 - %2'?").arg(dev->data()).arg(dev->subText())
+                                                        : i18n("Are you sure you wish to disconnect '%1'?").arg(dev->data()))) {
             return;
         }
         static_cast<Device *>(item)->toggle();

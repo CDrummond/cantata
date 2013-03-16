@@ -23,7 +23,9 @@
 
 #include "cddb.h"
 #include "settings.h"
-#ifndef ENABLE_KDE_SUPPORT
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KProtocolManager>
+#else
 #include "networkproxyfactory.h"
 #endif
 #include "localize.h"
@@ -242,10 +244,11 @@ public:
             cddb_set_server_port(connection, Settings::self()->cddbPort());
             disc=cddb_disc_clone(d);
             #ifdef ENABLE_KDE_SUPPORT
-            QNetworkProxy p(QNetworkProxy::DefaultProxy);
-            if (QNetworkProxy::HttpProxy==p.type() && 0!=p.port()) {
-                cddb_set_http_proxy_server_name(connection, p.hostName().toLatin1().constData());
-                cddb_set_http_proxy_server_port(connection, p.port());
+            QString proxy=KProtocolManager::proxyFor("http");
+            if (!proxy.isEmpty()) {
+                QUrl url(proxy);
+                cddb_set_http_proxy_server_name(connection, url.host().toLatin1().constData());
+                cddb_set_http_proxy_server_port(connection, url.port());
                 cddb_http_proxy_enable(connection);
             }
             #else

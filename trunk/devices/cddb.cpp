@@ -132,95 +132,70 @@ void Cddb::readDisc()
         return;
     }
 
-    int fd=-1;
-    int status=-1;
+    int fd=open(dev.toLocal8Bit(), O_RDONLY | O_NONBLOCK);
+    if (fd < 0) {
+        emit error(i18n("Failed to open CD device"));
+        return;
+    }
+    QByteArray unknown=i18n("Unknown").toUtf8();
+
     #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
     struct ioc_toc_header th;
     struct ioc_read_toc_single_entry te;
     struct ioc_read_subchannel cdsc;
     struct cd_sub_channel_info data;
-    #elif defined(__linux__)
-    struct cdrom_tochdr th;
-    struct cdrom_tocentry te;
-    #endif
-
-    // open the device
-    fd = open(dev.toLocal8Bit(), O_RDONLY | O_NONBLOCK);
-    if (fd < 0) {
-        emit error(i18n("Failed to open CD device"));
-        return;
-    }
-
-    QByteArray unknown=i18n("Unknown").toUtf8();
-
-    #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-    // read disc status info
     bzero(&cdsc,sizeof(cdsc));
     cdsc.data = &data;
     cdsc.data_len = sizeof(data);
     cdsc.data_format = CD_CURRENT_POSITION;
     cdsc.address_format = CD_MSF_FORMAT;
-    status = ioctl(fd, CDIOCREADSUBCHANNEL, (char *)&cdsc);
-    if (status >= 0 && 0==ioctl(fd, CDIOREADTOCHEADER, &th)) {
+    if (ioctl(fd, CDIOCREADSUBCHANNEL, (char *)&cdsc) >= 0 && 0==ioctl(fd, CDIOREADTOCHEADER, &th)) {
         disc = cddb_disc_new();
-        if (!disc) {
-            emit error(i18n("Internal error"));
-            return 0;
-        }
-        te.address_format = CD_LBA_FORMAT;
-        for (int i=th.starting_track; i<=th.ending_track; i++) {
-            te.track = i;
-            if (0==ioctl(fd, CDIOREADTOCENTRY, &te)) {
-                cddb_track_t *track = cddb_track_new();
-                if (!track) {
-                    cddb_disc_destroy(disc);
-                    disc=0;
-                    emit error(i18n("Internal error"));
-                    return 0;
+        if (disc) {
+            te.address_format = CD_LBA_FORMAT;
+            for (int i=th.starting_track; i<=th.ending_track; i++) {
+                te.track = i;
+                if (0==ioctl(fd, CDIOREADTOCENTRY, &te)) {
+                    cddb_track_t *track = cddb_track_new();
+                    if (track) {
+                        cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
+                        cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : unknown.constData());
+                        cddb_track_set_artist(track, unknown.constData());
+                        cddb_disc_add_track(disc, track);
+                    }
                 }
-
-                cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : unknown.constData());
-                cddb_track_set_artist(track, unknown.constData());
-                cddb_disc_add_track(disc, track);
             }
-        }
-        te.track = 0xAA;
-        if (0==ioctl(fd, CDIOREADTOCENTRY, &te))  {
-            cddb_disc_set_length(disc, (ntohl(te.entry.addr.lba)+SECONDS_TO_FRAMES(2))/SECONDS_TO_FRAMES(1));
+            te.track = 0xAA;
+            if (0==ioctl(fd, CDIOREADTOCENTRY, &te))  {
+                cddb_disc_set_length(disc, (ntohl(te.entry.addr.lba)+SECONDS_TO_FRAMES(2))/SECONDS_TO_FRAMES(1));
+            }
         }
     }
     #elif defined(__linux__)
-    // read disc status info
-    status = ioctl(fd, CDROM_DISC_STATUS, CDSL_CURRENT);
-    if ( (CDS_AUDIO==status || CDS_MIXED==status) && 0==ioctl(fd, CDROMREADTOCHDR, &th)) {
+    struct cdrom_tochdr th;
+    struct cdrom_tocentry te;
+    int status = ioctl(fd, CDROM_DISC_STATUS, CDSL_CURRENT);
+    if ((CDS_AUDIO==status || CDS_MIXED==status) && 0==ioctl(fd, CDROMREADTOCHDR, &th)) {
         disc = cddb_disc_new();
-        if (!disc) {
-            emit error(i18n("Internal error"));
-            return;
-        }
-        te.cdte_format = CDROM_LBA;
-        for (int i=th.cdth_trk0; i<=th.cdth_trk1; i++) {
-            te.cdte_track = i;
-            if (0==ioctl(fd, CDROMREADTOCENTRY, &te)) {
-                cddb_track_t *track = cddb_track_new();
-                if (!track) {
-                    cddb_disc_destroy(disc);
-                    disc=0;
-                    emit error(i18n("Internal error"));
-                    return;
+        if (disc) {
+            te.cdte_format = CDROM_LBA;
+            for (int i=th.cdth_trk0; i<=th.cdth_trk1; i++) {
+                te.cdte_track = i;
+                if (0==ioctl(fd, CDROMREADTOCENTRY, &te)) {
+                    cddb_track_t *track = cddb_track_new();
+                    if (track) {
+                        cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
+                        cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : unknown.constData());
+                        cddb_track_set_artist(track, unknown.constData());
+                        cddb_disc_add_track(disc, track);
+                    }
                 }
-
-                cddb_track_set_frame_offset(track, te.cdte_addr.lba + SECONDS_TO_FRAMES(2));
-                cddb_track_set_title(track, te.cdte_ctrl&CDROM_DATA_TRACK ? dataTrack().toUtf8().constData() : unknown.constData());
-                cddb_track_set_artist(track, unknown.constData());
-                cddb_disc_add_track(disc, track);
             }
-        }
 
-        te.cdte_track = CDROM_LEADOUT;
-        if (0==ioctl(fd, CDROMREADTOCENTRY, &te)) {
-            cddb_disc_set_length(disc, (te.cdte_addr.lba+SECONDS_TO_FRAMES(2))/SECONDS_TO_FRAMES(1));
+            te.cdte_track = CDROM_LEADOUT;
+            if (0==ioctl(fd, CDROMREADTOCENTRY, &te)) {
+                cddb_disc_set_length(disc, (te.cdte_addr.lba+SECONDS_TO_FRAMES(2))/SECONDS_TO_FRAMES(1));
+            }
         }
     }
     #endif

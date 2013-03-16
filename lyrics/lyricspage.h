@@ -25,13 +25,11 @@
 #define LYRICSPAGE_H
 
 #include <QWidget>
-// #include <QScopedPointer>
 #include "song.h"
 #include "ui_lyricspage.h"
 #include "textbrowser.h"
 
 class UltimateLyricsProvider;
-// class UltimateLyricsReader;
 class UltimateLyricsProvider;
 class QImage;
 class Action;
@@ -55,9 +53,7 @@ public:
     ~LyricsPage();
 
     void saveSettings();
-    void setEnabledProviders(const QStringList &providerList);
     void update(const Song &song, bool force=false);
-    const QList<UltimateLyricsProvider *> & getProviders() { return providers; }
     void setBgndImageEnabled(bool e) { text->enableImage(e); }
     bool bgndImageEnabled() { return text->imageEnabled(); }
 
@@ -69,7 +65,7 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void downloadFinished();
-    void resultReady(int id, const QString &lyrics);
+    void lyricsReady(int, const QString &lyrics);
     void update();
     void search();
     void edit();
@@ -80,7 +76,6 @@ protected Q_SLOTS:
 private:
     QString mpdFileName() const;
     QString cacheFileName() const;
-    UltimateLyricsProvider * providerByName(const QString &name) const;
     void getLyrics();
     void setMode(Mode m);
     bool saveFile(const QString &fileName);
@@ -95,12 +90,7 @@ private:
      */
     bool setLyricsFromFile(const QString &filePath) const;
 
-// private Q_SLOTS:
-//     void ultimateLyricsParsed();
-
 private:
-//     QScopedPointer<UltimateLyricsReader> reader;
-    QList<UltimateLyricsProvider *> providers;
     int currentProvider;
     int currentRequest;
     Song currentSong;

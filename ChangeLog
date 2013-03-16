@@ -129,6 +129,7 @@
 77. Reduce memory usage - by having only Device/OnlineService derive from
     QObject, as opposed to every artist/album/song!
 78. Fix HTTP server listening on non-loopback address.
+79. Rename 'Library' tab to 'Artists'
 
 0.9.2
 -----

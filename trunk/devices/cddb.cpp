@@ -227,7 +227,7 @@ void Cddb::readDisc()
     close(fd);
 
     initial=toAlbum(disc);
-    emit initialDetails(initial);
+    initial.isDefault=true;
 }
 
 class CddbConnection
@@ -294,6 +294,11 @@ void Cddb::lookup(bool full)
         readDisc();
     }
 
+    if (!full && disc && isInitial) {
+        emit initialDetails(initial);
+        return;
+    }
+
     if (!disc || !full) {
         // Errors already logged in readDisc
         return;
@@ -336,6 +341,8 @@ void Cddb::lookup(bool full)
         if (!isInitial) {
             emit error(i18n("No matches found in CDDB"));
         }
+    } else if (isInitial) {
+        emit initialDetails(m.first());
     } else {
         emit matches(m);
     }

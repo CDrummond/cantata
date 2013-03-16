@@ -216,6 +216,7 @@ void MusicBrainz::readDisc()
     initial.name=unknown;
     initial.artist=unknown;
     initial.genre=unknown;
+    initial.isDefault=true;
 
     if (tracks.count()>1) {
         for (int i=0; i<tracks.count()-1; ++i) {
@@ -246,16 +247,19 @@ void MusicBrainz::readDisc()
     }
 
     discId = calculateDiscId(tracks);
-    emit initialDetails(initial);
 }
 
 void MusicBrainz::lookup(bool full)
 {
-    if (discId.isEmpty()) {
+    bool isInitial=discId.isEmpty();
+    if (isInitial) {
         readDisc();
     }
 
     if (!full) {
+        if (isInitial) {
+            emit initialDetails(initial);
+        }
         return;
     }
     DBUG << "Should lookup " << discId;
@@ -406,7 +410,11 @@ void MusicBrainz::lookup(bool full)
     }
 
     if (m.isEmpty()) {
-        emit error(i18n("No matches found in MusicBrainz"));
+        if (!isInitial) {
+            emit error(i18n("No matches found in MusicBrainz"));
+        }
+    } else if (isInitial) {
+        emit initialDetails(m.first());
     } else {
         emit matches(m);
     }

@@ -410,6 +410,7 @@ void DevicesPage::refreshDevice()
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         Device *dev=static_cast<Device *>(item);
+        QString udi=dev->udi();
         bool full=true;
 
         if (Device::AudioCd==dev->devType()) {
@@ -431,9 +432,9 @@ void DevicesPage::refreshDevice()
                 return;
             }
             #endif
+            dev=DevicesModel::self()->device(udi);
         } else {
             if (dev->childCount() && Device::Mtp!=dev->devType()) {
-                QString udi=dev->udi();
                 switch (MessageBox::questionYesNoCancel(this, i18n("<p>Which type of refresh do you wish to perform?<ul>"
                                                                    "<li>Partial - Only new songs are scanned <i>(quick)</i></li>"
                                                                    "<li>Full - All songs are rescanned <i>(slow)</i></li></ul></p>"),

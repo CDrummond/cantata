@@ -86,14 +86,9 @@ static QString calculateDiscId(const QList<Track> &tracks)
     QCryptographicHash sha(QCryptographicHash::Sha1);
     char temp[9];
 
-    // FIXME How do I check that?
-    int firstTrack = 1;
-    int lastTrack = numTracks;
-
-    sprintf(temp, "%02X", firstTrack);
+    sprintf(temp, "%02X", 1);
     sha.addData(temp, strlen(temp));
-
-    sprintf(temp, "%02X", lastTrack);
+    sprintf(temp, "%02X", numTracks);
     sha.addData(temp, strlen(temp));
 
     for(int i = 0; i < 100; i++) {
@@ -154,35 +149,24 @@ MusicBrainz::~MusicBrainz()
 
 void MusicBrainz::readDisc()
 {
+    int fd=open(dev.toLocal8Bit(), O_RDONLY | O_NONBLOCK);
+    if (fd < 0) {
+        emit error(i18n("Failed to open CD device"));
+        return;
+    }
     QList<Track> tracks;
-    int fd=-1;
-    int status=-1;
+
     #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
     struct ioc_toc_header th;
     struct ioc_read_toc_single_entry te;
     struct ioc_read_subchannel cdsc;
     struct cd_sub_channel_info data;
-    #elif defined(__linux__)
-    struct cdrom_tochdr th;
-    struct cdrom_tocentry te;
-    #endif
-
-    // open the device
-    fd = open(dev.toLocal8Bit(), O_RDONLY | O_NONBLOCK);
-    if (fd < 0) {
-        emit error(i18n("Failed to open CD device"));
-        return;
-    }
-
-    #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-    // read disc status info
     bzero(&cdsc,sizeof(cdsc));
     cdsc.data = &data;
     cdsc.data_len = sizeof(data);
     cdsc.data_format = CD_CURRENT_POSITION;
     cdsc.address_format = CD_MSF_FORMAT;
-    status = ioctl(fd, CDIOCREADSUBCHANNEL, (char *)&cdsc);
-    if (status >= 0 && 0==ioctl(fd, CDIOREADTOCHEADER, &th)) {
+    if (ioctl(fd, CDIOCREADSUBCHANNEL, (char *)&cdsc) >= 0 && 0==ioctl(fd, CDIOREADTOCHEADER, &th)) {
         te.address_format = CD_LBA_FORMAT;
         for (int i=th.starting_track; i<=th.ending_track; i++) {
             te.track = i;
@@ -196,8 +180,9 @@ void MusicBrainz::readDisc()
         }
     }
     #elif defined(__linux__)
-    // read disc status info
-    status = ioctl(fd, CDROM_DISC_STATUS, CDSL_CURRENT);
+    struct cdrom_tochdr th;
+    struct cdrom_tocentry te;
+    int status = ioctl(fd, CDROM_DISC_STATUS, CDSL_CURRENT);
     if ( (CDS_AUDIO==status || CDS_MIXED==status) && 0==ioctl(fd, CDROMREADTOCHDR, &th)) {
         te.cdte_format = CDROM_LBA;
         for (int i=th.cdth_trk0; i<=th.cdth_trk1; i++) {

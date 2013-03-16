@@ -76,8 +76,12 @@ LineEdit::LineEdit(QWidget *parent)
     connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
     connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateCloseButton(const QString&)));
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    setStyleSheet(QString(Qt::RightToLeft==layoutDirection() ? "QLineEdit { padding-left: %1px; } " : "QLineEdit { padding-right: %1px; } ").arg(clearButton->sizeHint().width() + frameWidth + 1));
-    if (!parent || !qobject_cast<QComboBox *>(parent)) {
+    bool onCombo = parent && qobject_cast<QComboBox *>(parent);
+    QString styleSheet=QLatin1String("QLineEdit { padding-")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "left" : "right")+
+                       QLatin1String(" %1px; ")+QLatin1String(onCombo ? "background: transparent " : "")+QChar('}');
+    setStyleSheet(styleSheet.arg(clearButton->sizeHint().width() + frameWidth + 1));
+
+    if (!onCombo) {
         QSize msz = minimumSizeHint();
         setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
                        qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));

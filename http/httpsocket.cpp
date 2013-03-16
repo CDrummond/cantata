@@ -28,6 +28,9 @@
 #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
 #include "cdparanoia.h"
 #include "extractjob.h"
+#ifdef LAME_FOUND
+#include "lame/lame.h"
+#endif
 #endif
 #include <QTcpSocket>
 #include <QNetworkInterface>
@@ -243,7 +246,7 @@ QList<QByteArray> split(const QByteArray &a)
     }
     return rv;
 }
-
+#include <QDebug>
 void HttpSocket::readClient()
 {
     if (terminated) {
@@ -278,8 +281,32 @@ void HttpSocket::readClient()
                             int count = 0;
                             cdparanoia.seek(firstSector, SEEK_SET);
                             ok=true;
-                            writeMimeType(QLatin1String("audio/x-wav"), socket);
-                            ExtractJob::writeWavHeader(*socket);
+                            #ifdef LAME_FOUND
+                            lame_global_flags *lame=0;
+                            static const int constMp3BufferSize=CD_FRAMESIZE_RAW*2*sizeof(short int);
+                            static const int constPcmSize=CD_FRAMESIZE_RAW/(2*sizeof(short int));
+                            unsigned char mp3Buffer[constMp3BufferSize];
+                            if (Settings::self()->cdMp3()) {
+                                lame = lame_init();
+                                lame_set_num_channels(lame, 2);
+                                lame_set_in_samplerate(lame, 44100);
+                                lame_set_brate(lame, 128);
+                                lame_set_quality(lame, 5);
+                                lame_set_VBR(lame, vbr_off);
+                                if (-1!=lame_init_params(lame)) {
+                                    writeMimeType(QLatin1String("audio/mpeg"), socket);
+                                } else {
+                                    lame_close(lame);
+                                    lame=0;
+                                }
+                            }
+                            if (!lame) {
+                            #endif
+                                writeMimeType(QLatin1String("audio/x-wav"), socket);
+                                ExtractJob::writeWavHeader(*socket);
+                            #ifdef LAME_FOUND
+                            }
+                            #endif
                             bool stop=false;
                             while (!terminated && (firstSector+count) <= lastSector && !stop) {
                                 qint16 *buf = cdparanoia.read();
@@ -288,17 +315,32 @@ void HttpSocket::readClient()
                                 }
                                 char *buffer=(char *)buf;
                                 qint64 writePos=0;
+                                qint64 toWrite=CD_FRAMESIZE_RAW;
+
+                                #ifdef LAME_FOUND
+                                if (lame) {
+                                    toWrite=lame_encode_buffer_interleaved(lame, (short *)buffer, constPcmSize, mp3Buffer, constMp3BufferSize);
+                                    buffer=(char *)mp3Buffer;
+                                }
+                                #endif
+
                                 do {
-                                    qint64 bytesWritten = socket->write(&buffer[writePos], CD_FRAMESIZE_RAW - writePos);
+                                    qint64 bytesWritten=socket->write(&buffer[writePos], toWrite - writePos);
                                     if (terminated || -1==bytesWritten) {
                                         stop=true;
                                         break;
                                     }
                                     socket->flush();
                                     writePos+=bytesWritten;
-                                } while (!terminated && writePos<CD_FRAMESIZE_RAW);
+                                } while (!terminated && writePos<toWrite);
                                 count++;
                             }
+                            #ifdef LAME_FOUND
+                            if (lame) {
+                                lame_close(lame);
+                                lame=0;
+                            }
+                            #endif
                         }
                     }
                     #endif

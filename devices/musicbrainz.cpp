@@ -24,7 +24,9 @@
 */
 
 #include "musicbrainz.h"
-#ifndef ENABLE_KDE_SUPPORT
+#ifdef ENABLE_KDE_SUPPORT
+#include <KDE/KProtocolManager>
+#else
 #include "networkproxyfactory.h"
 #endif
 #include <QNetworkProxy>
@@ -266,10 +268,11 @@ void MusicBrainz::lookup(bool full)
     QList<CdAlbum> m;
 
     #ifdef ENABLE_KDE_SUPPORT
-    QNetworkProxy p(QNetworkProxy::DefaultProxy);
-    if (QNetworkProxy::HttpProxy==p.type() && 0!=p.port()) {
-        Query.SetProxyHost(p.hostName().toLatin1().constData());
-        Query.SetProxyPort(p.port());
+    QString proxy=KProtocolManager::proxyFor("http");
+    if (!proxy.isEmpty()) {
+        QUrl url(proxy);
+        Query.SetProxyHost(url.host().toLatin1().constData());
+        Query.SetProxyPort(url.port());
     }
     #else
     QList<QNetworkProxy> proxies=NetworkProxyFactory::self()->queryProxy(QNetworkProxyQuery(QUrl("http://musicbrainz.org")));

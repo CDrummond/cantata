@@ -28,12 +28,16 @@
 
 class HttpServerSettings : public QWidget, private Ui::HttpServerSettings
 {
+    Q_OBJECT
 public:
     HttpServerSettings(QWidget *p);
     virtual ~HttpServerSettings() { }
 
     void load();
     void save();
+
+private Q_SLOTS:
+    void updateStatus();
 };
 
 #endif

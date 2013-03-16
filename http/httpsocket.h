@@ -36,15 +36,16 @@ public:
 
      void terminate();
      void incomingConnection(int socket);
-     QString address() const { return serverAddress().toString(); }
-     QString configuredAddress() { return cfgAddr; }
+     QString address() const { return ifaceAddress; }
+     QString configuredAddress() { return cfgAddress; }
 
 private Q_SLOTS:
      void readClient();
      void discardClient();
 
 private:
-    QString cfgAddr;
+    QString cfgAddress;
+    QString ifaceAddress;
     bool terminated;
 };
 

@@ -80,7 +80,7 @@ LibraryPage::LibraryPage(QWidget *p)
     connect(view, SIGNAL(searchItems()), this, SLOT(searchItems()));
     connect(view, SIGNAL(rootIndexSet(QModelIndex)), this, SLOT(updateGenres(QModelIndex)));
     proxy.setSourceModel(MusicLibraryModel::self());
-    view->setTopText(i18n("Library"));
+    view->setTopText(i18n("Artists"));
     view->setModel(&proxy);
 }
 

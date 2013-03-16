@@ -41,6 +41,16 @@ AudioCdSettings::AudioCdSettings(QWidget *p)
     REMOVE(cdLookup)
     REMOVE(cdLookupLabel)
     #endif
+
+    #if !defined CDDB_FOUND
+    REMOVE(cddbHost)
+    REMOVE(cddbHostLabel)
+    REMOVE(cddbPort)
+    REMOVE(cddbPortLabel)
+    #endif
+    #if !defined CDDB_FOUND
+    REMOVE(playbackOptions)
+    #endif
 }
 
 void AudioCdSettings::load()
@@ -49,11 +59,9 @@ void AudioCdSettings::load()
     #if defined CDDB_FOUND
     cddbHost->setText(Settings::self()->cddbHost());
     cddbPort->setValue(Settings::self()->cddbPort());
-    #else
-    REMOVE(cddbHost)
-    REMOVE(cddbHostLabel)
-    REMOVE(cddbPort)
-    REMOVE(cddbPortLabel)
+    #endif
+    #if defined CDDB_FOUND
+    cdMp3->setChecked(Settings::self()->cdMp3());
     #endif
     paranoiaFull->setChecked(Settings::self()->paranoiaFull());
     paranoiaNeverSkip->setChecked(Settings::self()->paranoiaNeverSkip());
@@ -79,5 +87,7 @@ void AudioCdSettings::save()
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     Settings::self()->saveUseCddb(cdLookup->itemData(cdLookup->currentIndex()).toBool());
     #endif
+    #if defined CDDB_FOUND
+    Settings::self()->saveCdMp3(cdMp3->isChecked());
+    #endif
 }
-

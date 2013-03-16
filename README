@@ -18,15 +18,19 @@ Cantata requires the following Qt libraries:
 
 Cantata may also use the following optional libraries:
 
-1. KDElibs4
-2. QtWebKit - used for the artist/album information page. If QtWebKit is not
-   found, the page will not be built.
-3. TagLib - used for the tag edit dialog, replaygain, track organizer, and
-   for UMS device support.
-4. LibMTP - used to support MTP devices.
-5. FFMPEG (libavcodec) - used by ReplayGain detection code.
-6. SpeexDSP - used by ReplayGain detection code.
-7. MPG123 - used by ReplayGain detection code.
+ 1. KDElibs4
+ 2. QtWebKit - used for the artist/album information page. If QtWebKit is not
+    found, the page will not be built.
+ 3. TagLib - used for the tag edit dialog, replaygain, track organizer, and
+    for UMS device support.
+ 4. LibMTP - used to support MTP devices.
+ 5. FFMPEG (libavcodec) - used by ReplayGain detection code.
+ 6. SpeexDSP - used by ReplayGain detection code.
+ 7. MPG123 - used by ReplayGain detection code.
+ 8. CDParanoia - required to read Audio CDs.
+ 9. CDDB - either this or MusicBrainz5 required for Audio CDs
+10. MusicBrainz5 - either this or CDDB required for Audio CDs
+11. Lame - used to encode Audio CD streams when sent via HTTP server.
 
 
 Translations

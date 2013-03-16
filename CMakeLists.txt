@@ -294,6 +294,7 @@ if (TAGLIB_FOUND)
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS}
         tags/tageditor.h
         tags/trackorganiser.h
+        http/httpserversettings.h
         http/httpsocket.h
         devices/filenameschemedialog.h
         devices/device.h

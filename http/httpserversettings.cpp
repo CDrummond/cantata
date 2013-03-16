@@ -24,12 +24,15 @@
 #include "httpserversettings.h"
 #include "settings.h"
 #include "localize.h"
+#include "httpserver.h"
+#include <QTimer>
 
 HttpServerSettings::HttpServerSettings(QWidget *p)
     : QWidget(p)
 {
     setupUi(this);
     httpPort->setSpecialValueText(i18n("Dynamic"));
+    updateStatus();
 }
 
 void HttpServerSettings::load()
@@ -47,4 +50,14 @@ void HttpServerSettings::save()
     Settings::self()->saveAlwaysUseHttp(alwaysUseHttp->isChecked());
     Settings::self()->saveHttpPort(httpPort->value());
     Settings::self()->saveHttpAddress(httpAddress->text());
+    QTimer::singleShot(250, this, SLOT(updateStatus()));
+}
+
+void HttpServerSettings::updateStatus()
+{
+    if (HttpServer::self()->isAlive()) {
+        status->setText(HttpServer::self()->address());
+    } else {
+        status->setText(i18n("Inactive"));
+    }
 }

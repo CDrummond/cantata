@@ -35,6 +35,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QUrl>
+#include <QNetworkProxy>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -133,20 +134,22 @@ static void writeMimeType(const QString &mimeType, QTcpSocket *socket)
     }
 }
 
-// static int level(const QString &s)
-// {
-//     return QLatin1String("Link-local")==s
-//             ? 1
-//             : QLatin1String("Site-local")==s
-//                 ? 2
-//                 : QLatin1String("Global")==s
-//                     ? 3
-//                     : 0;
-// }
+static QHostAddress getAddress(const QNetworkInterface &iface)
+{
+    QList<QNetworkAddressEntry> addresses=iface.addressEntries();
+    foreach (const QNetworkAddressEntry &addr, addresses) {
+        QHostAddress hostAddress=addr.ip();
+        if (QAbstractSocket::IPv4Protocol==hostAddress.protocol()) {
+            return hostAddress;
+            break;
+        }
+    }
+    return QHostAddress();
+}
 
 HttpSocket::HttpSocket(const QString &addr, quint16 p)
     : QTcpServer(0)
-    , cfgAddr(addr)
+    , cfgAddress(addr)
     , terminated(false)
 {
     QHostAddress a;
@@ -154,38 +157,45 @@ HttpSocket::HttpSocket(const QString &addr, quint16 p)
         a=QHostAddress(addr);
 
         if (a.isNull()) {
-            QString ifaceName=addr;
-//             bool ipV4=true;
-//
-//             if (ifaceName.endsWith("::6")) {
-//                 ifaceName=ifaceName.left(ifaceName.length()-3);
-//                 ipV4=false;
-//             }
-
-            QNetworkInterface iface=QNetworkInterface::interfaceFromName(ifaceName);
+            QNetworkInterface iface=QNetworkInterface::interfaceFromName(addr);
             if (iface.isValid()) {
-                QList<QNetworkAddressEntry> addresses=iface.addressEntries();
-//                 int ip6Scope=-1;
-                foreach (const QNetworkAddressEntry &addr, addresses) {
-                    QHostAddress ha=addr.ip();
-                    if (QAbstractSocket::IPv4Protocol==ha.protocol()) {
-//                     if ((ipV4 && QAbstractSocket::IPv4Protocol==ha.protocol()) || (!ipV4 && QAbstractSocket::IPv6Protocol==ha.protocol())) {
-//                         if (ipV4) {
-                            a=ha;
-                            break;
-//                         } else {
-//                             int scope=level(a.scopeId());
-//                             if (scope>ip6Scope) {
-//                                 ip6Scope=scope;
-//                                 a=ha;
-//                             }
-//                         }
-                    }
-                }
+                a=getAddress(iface);
             }
         }
     }
-    listen(a.isNull() ? QHostAddress::LocalHost : a, p<1024 ? 0 : p);
+
+    if (a.isNull()) {
+        QList<QNetworkInterface> ifaces=QNetworkInterface::allInterfaces();
+        foreach (const QNetworkInterface &iface, ifaces) {
+            if (QLatin1String("lo")==iface.name()) {
+                continue;
+            }
+            a=getAddress(iface);
+            if (!a.isNull()) {
+                break;
+            }
+        }
+    }
+
+    if (listen(QHostAddress::Any, p<1024 ? 0 : p)) {
+        ifaceAddress=a.isNull() ? serverAddress().toString() : a.toString();
+    } else {
+        // Failed to liston on 'Any' address
+        if (addr.isEmpty()) {
+            // No specific address was set, so fallback to loopback address...
+            listen(QHostAddress::LocalHost, p<1024 ? 0 : p);
+            ifaceAddress=QLatin1String("127.0.0.1");
+        } else {
+            // Listen probably failed due to proxy, so unset and try again!
+            setProxy(QNetworkProxy::NoProxy);
+            listen(QHostAddress::Any, p<1024 ? 0 : p);
+            ifaceAddress=a.isNull() ? serverAddress().toString() : a.toString();
+        }
+    }
+
+    if (isListening() && ifaceAddress.isEmpty()) {
+        ifaceAddress=QLatin1String("127.0.0.1");
+    }
 }
 
 void HttpSocket::terminate()

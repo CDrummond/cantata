@@ -53,6 +53,19 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="0">
+      <widget class="BuddyLabel" name="label_5">
+       <property name="text">
+        <string>Address/interface:</string>
+       </property>
+       <property name="buddy">
+        <cstring>httpAddress</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="LineEdit" name="httpAddress"/>
+     </item>
      <item row="3" column="0">
       <widget class="BuddyLabel" name="label_3">
        <property name="text">
@@ -73,18 +86,21 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="BuddyLabel" name="label_5">
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_3b">
        <property name="text">
-        <string>Address/interface:</string>
-       </property>
-       <property name="buddy">
-        <cstring>httpAddress</cstring>
+        <string>Current URL:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="LineEdit" name="httpAddress"/>
+     <item row="4" column="1">
+      <widget class="QLabel" name="status">
+       <property name="font">
+        <font>
+         <italic>true</italic>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -108,7 +124,7 @@
     <widget class="QLabel" name="label_4">
      <property name="text">
       <string>&lt;i&gt;&lt;b&gt;NOTE:&lt;/b&gt; MPD usually only plays songs that are stored within its folders. If you have connected via a local socket, then MPD can also play files located on your filesystem. If you are using a non local socket (e.g. you have entered a hostname or IP address in the 'Host' field of the 'Connection' settings page), then Cantata contains a minimal HTTP server that can be used to serve files to MPD. This, however, will only work whilst Cantata is running.  If you enable 'Always use server', then Cantata will always pass server URLs to MPD for files, even when you have  connected via a local socket.&lt;br/&gt;&lt;br/&gt;
-&lt;b&gt;NOTE:&lt;/b&gt; 'Address/interface' may contain either the IP address, or interface (e.g. eth0), that you wish to listen for connections on. Leave blank to use the local loopback address (127.0.0.1).&lt;br/&gt;&lt;br/&gt;&lt;b&gt;NOTE:&lt;/b&gt; Leave port set to 'Dynamic' to have Cantata choose a random port number.&lt;/i&gt;</string>
+&lt;b&gt;NOTE:&lt;/b&gt; 'Address/interface' may contain either the IP address, or interface (e.g. eth0), that you wish to listen for connections on. If you leave this blank, then Cantata will choose the IP address of the first active interface.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;NOTE:&lt;/b&gt; Leave port set to 'Dynamic' to have Cantata choose a random port number.&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -961,7 +961,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             emit playListInfo();
             emit outputs();
             if (CS_Init!=connectedState) {
-                loaded=loaded&TAB_STREAMS ? TAB_STREAMS : 0;
+                loaded=(loaded&TAB_STREAMS);
                 currentTabChanged(tabWidget->current_index());
             }
             connectedState=CS_Connected;
@@ -971,7 +971,7 @@ void MainWindow::mpdConnectionStateChanged(bool connected)
             updateWindowTitle();
         }
     } else {
-        loaded=loaded&TAB_STREAMS ? TAB_STREAMS : 0;
+        loaded=(loaded&TAB_STREAMS);
         libraryPage->clear();
         albumsPage->clear();
         folderPage->clear();
@@ -1101,7 +1101,7 @@ void MainWindow::showPreferencesDialog()
         }
         #endif
 
-        PreferencesDialog *pref=new PreferencesDialog(this, lyricsPage);
+        PreferencesDialog *pref=new PreferencesDialog(this);
         controlConnectionsMenu(false);
         connect(pref, SIGNAL(settingsSaved()), this, SLOT(updateSettings()));
         connect(pref, SIGNAL(connectTo(const MPDConnectionDetails &)), this, SLOT(connectToMpd(const MPDConnectionDetails &)));
@@ -1270,7 +1270,6 @@ void MainWindow::readSettings()
     #ifdef ENABLE_DEVICES_SUPPORT
     StdActions::self()->deleteSongsAction->setVisible(Settings::self()->showDeleteAction());
     #endif
-    lyricsPage->setEnabledProviders(Settings::self()->lyricProviders());
     MPDParseUtils::setGroupSingle(Settings::self()->groupSingle());
     MPDParseUtils::setGroupMultiple(Settings::self()->groupMultiple());
     albumsPage->setView(Settings::self()->albumsView());

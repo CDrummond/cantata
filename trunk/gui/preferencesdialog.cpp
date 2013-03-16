@@ -34,7 +34,6 @@
 #include "httpserversettings.h"
 #endif
 #include "lyricsettings.h"
-#include "lyricspage.h"
 #include "cachesettings.h"
 #include "localize.h"
 #include "mpdconnection.h"
@@ -55,7 +54,7 @@ int PreferencesDialog::instanceCount()
     return iCount;
 }
 
-PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
+PreferencesDialog::PreferencesDialog(QWidget *parent)
     : Dialog(parent)
 {
     iCount++;
@@ -74,8 +73,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent, LyricsPage *lp)
     playback->load();
     files->load();
     interface->load();
-    const QList<UltimateLyricsProvider *> &lprov=lp->getProviders();
-    lyrics->Load(lprov);
+    lyrics->load();
     widget->addPage(server, i18n("Connection"), Icons::libraryIcon, i18n("Connection Settings"));
     widget->addPage(serverplayback, i18n("Output"), Icons::speakerIcon, i18n("Output Settings"));
     widget->addPage(playback, i18n("Playback"), Icon("media-playback-start"), i18n("Playback Settings"));
@@ -134,7 +132,7 @@ void PreferencesDialog::writeSettings()
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     audiocd->save();
     #endif
-    Settings::self()->saveLyricProviders(lyrics->EnabledProviders());
+    lyrics->save();
     Settings::self()->save();
     emit settingsSaved();
 }

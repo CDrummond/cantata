@@ -22,86 +22,80 @@
 */
 
 #include "lyricsettings.h"
-//#include "songinfoview.h"
 #include "ultimatelyricsprovider.h"
+#include "ultimatelyrics.h"
 #include "ui_lyricsettings.h"
 #include "localize.h"
 #include "icon.h"
 #include "config.h"
+#include "settings.h"
 
-LyricSettings::LyricSettings(QWidget *parent)
-  : QWidget(parent),
-    ui_(new Ui_LyricSettings)
+LyricSettings::LyricSettings(QWidget *p)
+    : QWidget(p)
 {
-  ui_->setupUi(this);
-
-  connect(ui_->up, SIGNAL(clicked()), SLOT(MoveUp()));
-  connect(ui_->down, SIGNAL(clicked()), SLOT(MoveDown()));
-  connect(ui_->providers, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-          SLOT(CurrentItemChanged(QListWidgetItem*)));
-//   connect(ui_->providers, SIGNAL(itemChanged(QListWidgetItem*)),
-//           SLOT(ItemChanged(QListWidgetItem*)));
-    ui_->up->setIcon(Icon("arrow-up"));
-    ui_->down->setIcon(Icon("arrow-down"));
+    setupUi(this);
+    connect(up, SIGNAL(clicked()), SLOT(moveUp()));
+    connect(down, SIGNAL(clicked()), SLOT(moveDown()));
+    connect(providers, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+            SLOT(currentItemChanged(QListWidgetItem*)));
+    up->setIcon(Icon("arrow-up"));
+    down->setIcon(Icon("arrow-down"));
 }
 
-LyricSettings::~LyricSettings() {
-  delete ui_;
+void LyricSettings::load()
+{
+    const QList<UltimateLyricsProvider *> &lprov=UltimateLyrics::self()->getProviders();
+
+    providers->clear();
+    foreach (const UltimateLyricsProvider *provider, lprov) {
+        QListWidgetItem *item = new QListWidgetItem(providers);
+        QString name(provider->getName());
+        name.replace("(POLISH)", i18n("(Polish Translations)"));
+        name.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
+        item->setText(name);
+        item->setData(Qt::UserRole, provider->getName());
+        item->setCheckState(provider->isEnabled() ? Qt::Checked : Qt::Unchecked);
+    }
 }
 
-void LyricSettings::Load(const QList<UltimateLyricsProvider*> &providers) {
-  ui_->providers->clear();
-  foreach (const UltimateLyricsProvider* provider, providers) {
-    QListWidgetItem* item = new QListWidgetItem(ui_->providers);
-    QString name(provider->name());
-    name.replace("(POLISH)", i18n("(Polish Translations)"));
-    name.replace("(PORTUGUESE)", i18n("(Portuguese Translations)"));
-    item->setText(name);
-    item->setData(Qt::UserRole, provider->name());
-    item->setCheckState(provider->is_enabled() ? Qt::Checked : Qt::Unchecked);
-//     item->setForeground(provider->is_enabled() ? palette().color(QPalette::Active, QPalette::Text)
-//                                                : palette().color(QPalette::Disabled, QPalette::Text));
-  }
+void LyricSettings::save()
+{
+    QStringList enabled;
+    for (int i=0 ; i<providers->count() ; ++i) {
+        const QListWidgetItem* item = providers->item(i);
+        if (Qt::Checked==item->checkState()) {
+            enabled << item->data(Qt::UserRole).toString();
+        }
+    }
+    UltimateLyrics::self()->setEnabled(enabled);
 }
 
-QStringList LyricSettings::EnabledProviders() {
-  QStringList providers;
-  for (int i=0 ; i<ui_->providers->count() ; ++i) {
-    const QListWidgetItem* item = ui_->providers->item(i);
-    if (item->checkState() == Qt::Checked)
-      providers << item->data(Qt::UserRole).toString();
-  }
-  return providers;
+void LyricSettings::currentItemChanged(QListWidgetItem *item)
+{
+    if (!item) {
+        up->setEnabled(false);
+        down->setEnabled(false);
+    } else {
+        const int row = providers->row(item);
+        up->setEnabled(row != 0);
+        down->setEnabled(row != providers->count() - 1);
+    }
 }
 
-void LyricSettings::CurrentItemChanged(QListWidgetItem* item) {
-  if (!item) {
-    ui_->up->setEnabled(false);
-    ui_->down->setEnabled(false);
-  } else {
-    const int row = ui_->providers->row(item);
-    ui_->up->setEnabled(row != 0);
-    ui_->down->setEnabled(row != ui_->providers->count() - 1);
-  }
+void LyricSettings::moveUp()
+{
+    move(-1);
 }
 
-void LyricSettings::MoveUp() {
-  Move(-1);
+void LyricSettings::moveDown()
+{
+    move(+1);
 }
 
-void LyricSettings::MoveDown() {
-  Move(+1);
+void LyricSettings::move(int d)
+{
+    const int row = providers->currentRow();
+    QListWidgetItem* item = providers->takeItem(row);
+    providers->insertItem(row + d, item);
+    providers->setCurrentRow(row + d);
 }
-
-void LyricSettings::Move(int d) {
-  const int row = ui_->providers->currentRow();
-  QListWidgetItem* item = ui_->providers->takeItem(row);
-  ui_->providers->insertItem(row + d, item);
-  ui_->providers->setCurrentRow(row + d);
-}
-
-// void LyricSettings::ItemChanged(QListWidgetItem* item) {
-//   const bool checked = item->checkState() == Qt::Checked;
-//   item->setForeground(checked ? palette().color(QPalette::Active, QPalette::Text)
-//                               : palette().color(QPalette::Disabled, QPalette::Text));
-// }

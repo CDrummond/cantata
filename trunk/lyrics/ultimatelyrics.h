@@ -21,38 +21,35 @@
    along with Clementine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SONGINFOPROVIDER_H
-#define SONGINFOPROVIDER_H
+#ifndef ULTIMATELYRICS_H
+#define ULTIMATELYRICS_H
 
 #include <QObject>
-#include <QUrl>
 
-//#include "collapsibleinfopane.h"
-//#include "core/song.h"
+class UltimateLyricsProvider;
 
-class Song;
-
-class SongInfoProvider : public QObject {
-  Q_OBJECT
+class UltimateLyrics : public QObject
+{
+    Q_OBJECT
 
 public:
-  SongInfoProvider();
+    static UltimateLyrics * self();
+    UltimateLyrics() { }
 
-  virtual void FetchInfo(int id, const Song& metadata) = 0;
-//   virtual void Cancel(int id) {}
+    UltimateLyricsProvider * getNext(int &index);
+    const QList<UltimateLyricsProvider *> getProviders();
+    void release();
+    void setEnabled(const QStringList &enabled);
 
-  virtual QString name() const;
-
-  bool is_enabled() const { return enabled_; }
-  void set_enabled(bool enabled) { enabled_ = enabled; }
-
-signals:
-  void ImageReady(int id, const QUrl& url);
-  void InfoReady(int id, const QString& data);
-  void Finished(int id);
+Q_SIGNALS:
+    void lyricsReady(int id, const QString &data);
 
 private:
-  bool enabled_;
+    UltimateLyricsProvider * providerByName(const QString &name) const;
+    void load();
+
+private:
+    QList<UltimateLyricsProvider *> providers;
 };
 
-#endif // SONGINFOPROVIDER_H
+#endif // ULTIMATELYRICS_H

@@ -28,71 +28,57 @@
 #include <QPair>
 #include <QStringList>
 #include <QHash>
-#include "songinfoprovider.h"
 
 class Song;
 class QNetworkReply;
 
-class UltimateLyricsProvider : public SongInfoProvider {
-  Q_OBJECT
+class UltimateLyricsProvider : public QObject {
+    Q_OBJECT
 
 public:
-  UltimateLyricsProvider();
+    UltimateLyricsProvider();
 
-  static const int kRedirectLimit;
+    typedef QPair<QString, QString> RuleItem;
+    typedef QList<RuleItem> Rule;
+    typedef QPair<QString, QString> UrlFormat;
 
-  typedef QPair<QString, QString> RuleItem;
-  typedef QList<RuleItem> Rule;
-  typedef QPair<QString, QString> UrlFormat;
+    void setName(const QString &n) { name = n; }
+    void setTitle(const QString &t) { title = t; }
+    void setUrl(const QString &u) { url = u; }
+    void setCharset(const QString &c) { charset = c; }
+    void setRelevance(int r) { relevance = r; }
+    void addUrlFormat(const QString &replace, const QString &with) { urlFormats << UrlFormat(replace, with); }
+    void addExtractRule(const Rule &rule) { extractRules << rule; }
+    void addExcludeRule(const Rule &rule) { excludeRules << rule; }
+    void addInvalidIndicator(const QString &indicator) { invalidIndicators << indicator; }
+    QString getName() const { return name; }
+    int getRelevance() const { return relevance; }
+    void fetchInfo(int id, const Song &metadata);
+    bool isEnabled() const { return enabled; }
+    void setEnabled(bool e) { enabled = e; }
 
-  void set_name(const QString& name) { name_ = name; }
-  void set_title(const QString& title) { title_ = title; }
-  void set_url(const QString& url) { url_ = url; }
-  void set_charset(const QString& charset) { charset_ = charset; }
-  void set_relevance(int relevance) { relevance_ = relevance; }
+Q_SIGNALS:
+    void lyricsReady(int id, const QString &data);
 
-  void add_url_format(const QString& replace, const QString& with) {
-    url_formats_ << UrlFormat(replace, with); }
-
-  void add_extract_rule(const Rule& rule) { extract_rules_ << rule; }
-  void add_exclude_rule(const Rule& rule) { exclude_rules_ << rule; }
-  void add_invalid_indicator(const QString& indicator) { invalid_indicators_ << indicator; }
-
-  QString name() const { return name_; }
-  int relevance() const { return relevance_; }
-
-  void FetchInfo(int id, const Song& metadata);
-
-private slots:
-  void LyricsFetched();
+private Q_SLOTS:
+    void lyricsFetched();
 
 private:
-  void ApplyExtractRule(const Rule& rule, QString* content) const;
-  void ApplyExcludeRule(const Rule& rule, QString* content) const;
-
-  static QString ExtractXmlTag(const QString& source, const QString& tag);
-  static QString Extract(const QString& source, const QString& begin, const QString& end);
-  static QString ExcludeXmlTag(const QString& source, const QString& tag);
-  static QString Exclude(const QString& source, const QString& begin, const QString& end);
-  static QString FirstChar(const QString& text);
-  static QString TitleCase(const QString& text);
-  void DoUrlReplace(const QString& tag, const QString& value, QString* url) const;
+    void doUrlReplace(const QString &tag, const QString &value, QString *u) const;
 
 private:
-  QHash<QNetworkReply*, int> requests_;
-
-  QString name_;
-  QString title_;
-  QString url_;
-  QString charset_;
-  int relevance_;
-
-  QList<UrlFormat> url_formats_;
-  QList<Rule> extract_rules_;
-  QList<Rule> exclude_rules_;
-  QStringList invalid_indicators_;
-
-  int redirect_count_;
+    bool enabled;
+    QHash<QNetworkReply*, int> requests;
+    QString name;
+    QString title;
+    QString url;
+    QString charset;
+    int relevance;
+    QList<UrlFormat> urlFormats;
+    QList<Rule> extractRules;
+    QList<Rule> excludeRules;
+    QStringList invalidIndicators;
+    int redirectCount;
 };
 
 #endif // ULTIMATELYRICSPROVIDER_H

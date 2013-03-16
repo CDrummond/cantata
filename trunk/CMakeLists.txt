@@ -160,8 +160,7 @@ SET( CANTATA_SRCS
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp
-    lyrics/ultimatelyricsreader.cpp
-    lyrics/songinfoprovider.cpp
+    lyrics/ultimatelyrics.cpp
     lyrics/lyricsdialog.cpp
     network/networkaccessmanager.cpp
     online/onlineservicespage.cpp
@@ -229,8 +228,8 @@ SET( CANTATA_MOC_HDRS
     widgets/toolbar.h
     lyrics/lyricspage.h
     lyrics/lyricsettings.h
+    lyrics/ultimatelyrics.h
     lyrics/ultimatelyricsprovider.h
-    lyrics/songinfoprovider.h
     lyrics/lyricsdialog.h
     network/networkaccessmanager.h
     online/onlineservice.h

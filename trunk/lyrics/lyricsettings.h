@@ -27,34 +27,27 @@
 #include <QWidget>
 #include <QStringList>
 #include <QList>
+#include "ui_lyricsettings.h"
 
-class Ui_LyricSettings;
 class QListWidgetItem;
 class UltimateLyricsProvider;
 
-class LyricSettings : public QWidget
+class LyricSettings : public QWidget, private Ui::LyricSettings
 {
   Q_OBJECT
 
 public:
-  LyricSettings(QWidget *parent = 0);
-  ~LyricSettings();
+    LyricSettings(QWidget *p);
+    virtual ~LyricSettings() { }
 
-  QStringList EnabledProviders();
-
-public Q_SLOTS:
-  void Load(const QList<UltimateLyricsProvider*> &providers);
+    void load();
+    void save();
 
 private Q_SLOTS:
-  void MoveUp();
-  void MoveDown();
-  void Move(int d);
-
-  void CurrentItemChanged(QListWidgetItem* item);
-//   void ItemChanged(QListWidgetItem* item);
-
-private:
-  Ui_LyricSettings* ui_;
+    void moveUp();
+    void moveDown();
+    void move(int d);
+    void currentItemChanged(QListWidgetItem *item);
 };
 
 #endif // LYRICSETTINGS_H

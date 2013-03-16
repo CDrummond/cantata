@@ -37,7 +37,6 @@ class PlaybackSettings;
 class FileSettings;
 class InterfaceSettings;
 class LyricSettings;
-class LyricsPage;
 #ifdef TAGLIB_FOUND
 class HttpServerSettings;
 #endif
@@ -54,7 +53,7 @@ class PreferencesDialog : public Dialog
 public:
     static int instanceCount();
 
-    PreferencesDialog(QWidget *parent, LyricsPage *lp);
+    PreferencesDialog(QWidget *parent);
     virtual ~PreferencesDialog();
 
 private:

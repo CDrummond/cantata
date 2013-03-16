@@ -21,11 +21,10 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "songinfoprovider.h"
 #include "lyricspage.h"
 #include "lyricsdialog.h"
 #include "ultimatelyricsprovider.h"
-#include "ultimatelyricsreader.h"
+#include "ultimatelyrics.h"
 #include "settings.h"
 #include "squeezedtextlabel.h"
 #include "utils.h"
@@ -62,32 +61,14 @@ static QString cacheFile(QString artist, QString title, bool createDir=false)
     return QDir::toNativeSeparators(Utils::cacheDir(LyricsPage::constLyricsDir+artist+'/', createDir))+title+LyricsPage::constExtension;
 }
 
-typedef QList<UltimateLyricsProvider *> ProviderList;
-
-bool CompareLyricProviders(const UltimateLyricsProvider* a, const UltimateLyricsProvider* b) {
-    return a->relevance() < b->relevance();
-}
-
 LyricsPage::LyricsPage(QWidget *p)
     : QWidget(p)
-//     , reader(new UltimateLyricsReader(this))
+    , currentProvider(-1)
     , currentRequest(0)
     , mode(Mode_Display)
     , job(0)
 {
     setupUi(this);
-
-    providers=UltimateLyricsReader().Parse(QString(":lyrics.xml"));
-    foreach (UltimateLyricsProvider* provider, providers) {
-        connect(provider, SIGNAL(InfoReady(int, const QString &)), SLOT(resultReady(int, const QString &)));
-    }
-
-    // Parse the ultimate lyrics xml file in the background
-//     QFuture<ProviderList> future = QtConcurrent::run(reader.data(), &UltimateLyricsReader::Parse,
-//                                                      QString(":lyrics.xml"));
-//     QFutureWatcher<ProviderList> *watcher = new QFutureWatcher<ProviderList>(this);
-//     watcher->setFuture(future);
-//     connect(watcher, SIGNAL(finished()), SLOT(ultimateLyricsParsed()));
     refreshAction = ActionCollection::get()->createAction("refreshlyrics", i18n("Refresh"), "view-refresh");
     searchAction = ActionCollection::get()->createAction("searchlyrics", i18n("Search For Lyrics"), "edit-find");
     editAction = ActionCollection::get()->createAction("editlyrics", i18n("Edit Lyrics"), Icons::editIcon);
@@ -101,6 +82,7 @@ LyricsPage::LyricsPage(QWidget *p)
     connect(saveAction, SIGNAL(triggered()), SLOT(save()));
     connect(cancelAction, SIGNAL(triggered()), SLOT(cancel()));
     connect(delAction, SIGNAL(triggered()), SLOT(del()));
+    connect(UltimateLyrics::self(), SIGNAL(lyricsReady(int, const QString &)), SLOT(lyricsReady(int, const QString &)));
     Icon::init(refreshBtn);
     Icon::init(searchBtn);
     Icon::init(editBtn);
@@ -120,33 +102,12 @@ LyricsPage::LyricsPage(QWidget *p)
 
 LyricsPage::~LyricsPage()
 {
-    foreach (UltimateLyricsProvider* provider, providers) {
-        delete provider;
-    }
+    UltimateLyrics::self()->release();
 }
 
 void LyricsPage::saveSettings()
 {
     Settings::self()->saveLyricsZoom(text->zoom());
-}
-
-void LyricsPage::setEnabledProviders(const QStringList &providerList)
-{
-    foreach (UltimateLyricsProvider* provider, providers) {
-        provider->set_enabled(false);
-        provider->set_relevance(0xFFFF);
-    }
-
-    int relevance=0;
-    foreach (const QString &p, providerList) {
-        UltimateLyricsProvider *provider=providerByName(p);
-        if (provider) {
-            provider->set_enabled(true);
-            provider->set_relevance(relevance++);
-        }
-    }
-
-    qSort(providers.begin(), providers.end(), CompareLyricProviders);
 }
 
 void LyricsPage::update()
@@ -367,7 +328,7 @@ void LyricsPage::downloadFinished()
     getLyrics();
 }
 
-void LyricsPage::resultReady(int id, const QString &lyrics)
+void LyricsPage::lyricsReady(int id, const QString &lyrics)
 {
     if (id != currentRequest)
         return;
@@ -412,38 +373,21 @@ QString LyricsPage::cacheFileName() const
     return currentSong.artist.isEmpty() || currentSong.title.isEmpty() ? QString() : cacheFile(currentSong.artist, currentSong.title);
 }
 
-UltimateLyricsProvider* LyricsPage::providerByName(const QString &name) const
-{
-    foreach (UltimateLyricsProvider* provider, providers) {
-        if (provider->name() == name) {
-            return provider;
-        }
-    }
-    return 0;
-}
-
 void LyricsPage::getLyrics()
 {
-    for(;;) {
-        currentProvider++;
-        if (currentProvider<providers.count()) {
-            UltimateLyricsProvider *prov=providers.at(currentProvider++);
-            if (prov && prov->is_enabled()) {
-                text->setText(i18nc("<title> by <artist>\nFetching lyrics via <url>", "%1 by %2\nFetching lyrics via %3")
-                                    .arg(currentSong.title).arg(currentSong.artist, prov->name()));
-                prov->FetchInfo(currentRequest, currentSong);
-                return;
-            }
-        } else {
-            text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
-            currentProvider=-1;
-            // Set lyrics file anyway - so that editing is enabled!
-            lyricsFile=Settings::self()->storeLyricsInMpdDir()
-                        ? Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)
-                        : cacheFile(currentSong.artist, currentSong.title);
-            setMode(Mode_Display);
-            return;
-        }
+    UltimateLyricsProvider *prov=UltimateLyrics::self()->getNext(currentProvider);
+    if (prov) {
+        text->setText(i18nc("<title> by <artist>\nFetching lyrics via <url>", "%1 by %2\nFetching lyrics via %3")
+                      .arg(currentSong.title).arg(currentSong.artist, prov->getName()));
+        prov->fetchInfo(currentRequest, currentSong);
+    } else {
+        text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
+        currentProvider=-1;
+        // Set lyrics file anyway - so that editing is enabled!
+        lyricsFile=Settings::self()->storeLyricsInMpdDir()
+                ? Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)
+                : cacheFile(currentSong.artist, currentSong.title);
+        setMode(Mode_Display);
     }
 }
 
@@ -482,18 +426,3 @@ bool LyricsPage::setLyricsFromFile(const QString &filePath) const
 
     return success;
 }
-
-// void LyricsPage::ultimateLyricsParsed()
-// {
-//     QFutureWatcher<ProviderList>* watcher = static_cast<QFutureWatcher<ProviderList>*>(sender());
-//     QStringList names;
-//
-//     foreach (UltimateLyricsProvider* provider, watcher->result()) {
-//         providers.append(provider);
-//         connect(provider, SIGNAL(InfoReady(int, const QString &)), SLOT(resultReady(int, const QString &)));
-//     }
-//
-//     watcher->deleteLater();
-//     reader.reset();
-//     emit providersUpdated();
-// }

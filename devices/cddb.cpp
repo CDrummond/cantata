@@ -228,6 +228,7 @@ void Cddb::readDisc()
 
     initial=toAlbum(disc);
     initial.isDefault=true;
+    emit initialDetails(initial);
 }
 
 class CddbConnection
@@ -292,11 +293,6 @@ void Cddb::lookup(bool full)
     bool isInitial=!disc;
     if (!disc) {
         readDisc();
-    }
-
-    if (!full && disc && isInitial) {
-        emit initialDetails(initial);
-        return;
     }
 
     if (!disc || !full) {

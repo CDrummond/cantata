@@ -286,7 +286,7 @@ void AudioCdDevice::setDetails(const CdAlbum &a)
     detailsString=QTP_TRACKS_DURATION_STR(a.tracks.count(), Song::formattedTime(totalDuration));
     #endif
     emit updating(udi(), false);
-    if (differentAlbum) {
+    if (differentAlbum && !a.isDefault) {
         Song s;
         s.artist=artist;
         s.album=album;

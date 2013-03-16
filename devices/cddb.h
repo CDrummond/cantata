@@ -30,8 +30,9 @@
 #include "config.h"
 
 struct CdAlbum {
-    CdAlbum() : year(0), disc(0) { }
+    CdAlbum() : isDefault(false), year(0), disc(0)  { }
     bool isNull() const { return 0==year && 0==disc && tracks.isEmpty() && name.isEmpty() && artist.isEmpty() && genre.isEmpty(); }
+    bool isDefault;
     QString name;
     QString artist;
     QString genre;
@@ -55,13 +56,15 @@ public:
     ~Cddb();
 
 public Q_SLOTS:
-    void readDisc();
     void lookup(bool full);
 
 Q_SIGNALS:
     void error(const QString &error);
     void initialDetails(const CdAlbum &);
     void matches(const QList<CdAlbum> &);
+
+private:
+    void readDisc();
 
 private:
     QThread *thread;

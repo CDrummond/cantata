@@ -81,11 +81,11 @@ LineEdit::LineEdit(QWidget *parent)
                        QLatin1String(" %1px; ")+QLatin1String(onCombo ? "background: transparent " : "")+QChar('}');
     setStyleSheet(styleSheet.arg(clearButton->sizeHint().width() + frameWidth + 1));
 
-    if (!onCombo) {
-        QSize msz = minimumSizeHint();
-        setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
-                       qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
-    }
+//    if (!onCombo) {
+//        QSize msz = minimumSizeHint();
+//        setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
+//                       qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
+//    }
 }
 
 void LineEdit::resizeEvent(QResizeEvent *)

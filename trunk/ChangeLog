@@ -129,6 +129,7 @@
 76. Update copy of Solid to KDE4.10.1 - adds Udisks2 support.
 77. Reduce memory usage - by having only Device/OnlineService derive from
     QObject, as opposed to every artist/album/song!
+76. Fix HTTP server listening on non-loopback address.
 
 0.9.2
 -----

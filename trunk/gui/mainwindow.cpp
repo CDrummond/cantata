@@ -279,7 +279,7 @@ MainWindow::MainWindow(QWidget *parent)
     editPlayQueueTagsAction = ActionCollection::get()->createAction("editpqtags", i18n("Edit Song Tags"), "document-edit");
     #endif
     showPlayQueueAction = ActionCollection::get()->createAction("showplayqueue", i18n("Play Queue"), "media-playback-start");
-    libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Library"), Icons::libraryIcon);
+    libraryTabAction = ActionCollection::get()->createAction("showlibrarytab", i18n("Artists"), Icons::artistIcon);
     albumsTabAction = ActionCollection::get()->createAction("showalbumstab", i18n("Albums"), Icons::albumIcon);
     foldersTabAction = ActionCollection::get()->createAction("showfolderstab", i18n("Folders"), "inode-directory");
     playlistsTabAction = ActionCollection::get()->createAction("showplayliststab", i18n("Playlists"), Icons::playlistIcon);
@@ -2398,7 +2398,7 @@ void MainWindow::locateTrack()
 void MainWindow::showPage(const QString &page, bool focusSearch)
 {
     QString p=page.toLower();
-    if (QLatin1String("library")==p) {
+    if (QLatin1String("library")==p || QLatin1String("artists")==p) {
         showTab(MainWindow::PAGE_LIBRARY);
         if (focusSearch) {
             libraryPage->focusSearch();

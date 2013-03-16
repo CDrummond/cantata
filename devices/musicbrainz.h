@@ -39,13 +39,15 @@ public:
     ~MusicBrainz();
 
 public Q_SLOTS:
-    void readDisc();
     void lookup(bool full);
 
 Q_SIGNALS:
     void error(const QString &error);
     void initialDetails(const CdAlbum &);
     void matches(const QList<CdAlbum> &);
+
+private:
+    void readDisc();
 
 private:
     QThread *thread;

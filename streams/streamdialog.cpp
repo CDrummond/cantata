@@ -44,6 +44,7 @@ StreamDialog::StreamDialog(const QStringList &categories, const QStringList &gen
     QWidget *wid = new QWidget(this);
     QFormLayout *layout = new QFormLayout(wid);
 
+    layout->setMargin(0);
     if (addToPlayQueue) {
         urlEntry = new LineEdit(wid);
         saveCombo=new QComboBox(wid);

@@ -582,6 +582,12 @@ bool Settings::cdAuto()
 {
     return GET_BOOL("cdAuto", true);
 }
+#ifdef LAME_FOUND
+bool Settings::cdMp3()
+{
+    return GET_BOOL("cdMp3", true);
+}
+#endif
 #endif
 
 #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
@@ -953,6 +959,12 @@ void Settings::saveCdAuto(bool v)
 {
     SET_VALUE_MOD(cdAuto)
 }
+#ifdef LAME_FOUND
+void Settings::saveCdMp3(bool v)
+{
+    SET_VALUE_MOD(cdMp3)
+}
+#endif
 #endif
 
 #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND

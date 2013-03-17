@@ -60,7 +60,7 @@ void AudioCdSettings::load()
     cddbHost->setText(Settings::self()->cddbHost());
     cddbPort->setValue(Settings::self()->cddbPort());
     #endif
-    #if defined CDDB_FOUND
+    #if defined LAME_FOUND
     cdMp3->setChecked(Settings::self()->cdMp3());
     #endif
     paranoiaFull->setChecked(Settings::self()->paranoiaFull());
@@ -87,7 +87,8 @@ void AudioCdSettings::save()
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
     Settings::self()->saveUseCddb(cdLookup->itemData(cdLookup->currentIndex()).toBool());
     #endif
-    #if defined CDDB_FOUND
+    #if defined LAME_FOUND
     Settings::self()->saveCdMp3(cdMp3->isChecked());
     #endif
 }
+

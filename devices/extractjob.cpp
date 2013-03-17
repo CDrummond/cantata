@@ -117,11 +117,13 @@ void ExtractJob::run()
                 if (stopRequested) {
                     emit result(Device::Cancelled);
                     process.close();
+                    QFile::remove(destFile);
                     return;
                 }
                 if (-1==bytesWritten) {
                     emit result(Device::WriteFailed);
                     process.close();
+                    QFile::remove(destFile);
                     return;
                 }
                 writePos+=bytesWritten;

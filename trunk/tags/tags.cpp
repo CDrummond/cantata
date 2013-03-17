@@ -371,7 +371,7 @@ static bool writeID3v2Tags(TagLib::ID3v2::Tag *tag, const Song &from, const Song
 {
     bool changed=false;
 
-    if (!from.isEmpty() && !to.isEmpty()) {
+    if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
         if (from.albumartist!=to.albumartist && updateID3v2Tag(tag, "TPE2", to.albumartist)) {
             changed=true;
         }
@@ -466,7 +466,7 @@ static bool writeAPETags(TagLib::APE::Tag *tag, const Song &from, const Song &to
 {
     bool changed=false;
 
-    if (!from.isEmpty() && !to.isEmpty()) {
+    if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
         if (from.albumartist!=to.albumartist && updateAPETag(tag, "Album Artist", to.albumartist)) {
             changed=true;
         }
@@ -569,7 +569,7 @@ static bool writeVorbisCommentTags(TagLib::Ogg::XiphComment *tag, const Song &fr
 {
     bool changed=false;
 
-    if (!from.isEmpty() && !to.isEmpty()) {
+    if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
         if (from.albumartist!=to.albumartist && updateVorbisCommentTag(tag, "ALBUMARTIST", to.albumartist)) {
             changed=true;
         }
@@ -662,7 +662,7 @@ static bool writeMP4Tags(TagLib::MP4::Tag *tag, const Song &from, const Song &to
 {
     bool changed=false;
 
-    if (!from.isEmpty() && !to.isEmpty()) {
+    if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
         if (from.albumartist!=to.albumartist && updateMP4Tag(tag, "aART", to.albumartist)) {
             changed=true;
         }
@@ -739,7 +739,7 @@ static bool writeASFTags(TagLib::ASF::Tag *tag, const Song &from, const Song &to
     Q_UNUSED(rg)
     bool changed=false;
 
-    if (!from.isEmpty() && !to.isEmpty()) {
+    if (/*!from.isEmpty() &&*/ !to.isEmpty()) {
         if (from.albumartist!=to.albumartist && updateASFTag(tag, "WM/AlbumTitle", to.albumartist)) {
             changed=true;
         }

@@ -145,6 +145,10 @@ bool CoverWidget::eventFilter(QObject *object, QEvent *event)
 {
     switch(event->type()) {
     case QEvent::ToolTip: {
+        if (current.isEmpty()) {
+            setToolTip(QString());
+            break;
+        }
         QString toolTip=QLatin1String("<table>");
 
         toolTip+=i18n("<tr><td align=\"right\"><b>Artist:</b></td><td>%1</td></tr>"

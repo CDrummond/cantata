@@ -225,7 +225,8 @@ static Covers::Image otherAppCover(const Covers::Job &job)
             }
         }
     }
-    return app;
+
+    return app.img.isNull() ? Covers::Image() : app;
 }
 #endif
 

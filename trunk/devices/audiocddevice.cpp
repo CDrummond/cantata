@@ -306,10 +306,15 @@ void AudioCdDevice::cdMatches(const QList<CdAlbum> &albums)
     }
 }
 
+void AudioCdDevice::setCover(const Covers::Image &img)
+{
+    coverImage=img;
+    updateStatus();
+}
+
 void AudioCdDevice::setCover(const Song &song, const QImage &img, const QString &file)
 {
-    if (song.isCdda() && song.artist==artist && song.album==album) {
-        coverImage=Covers::Image(img, file);
-        updateStatus();
+    if (song.isCdda() && song.albumartist==artist && song.album==album) {
+        setCover(Covers::Image(img, file));
     }
 }

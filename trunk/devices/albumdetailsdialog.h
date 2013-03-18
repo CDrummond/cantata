@@ -31,6 +31,7 @@
 
 class AudioCdDevice;
 class QTreeWidgetItem;
+class CdAlbum;
 
 class AlbumDetailsDialog : public Dialog, Ui::AlbumDetails
 {
@@ -53,10 +54,11 @@ private Q_SLOTS:
 
 private:
     void slotButtonClicked(int button);
-    Song toSong(QTreeWidgetItem *i);
+    Song toSong(QTreeWidgetItem *i, const CdAlbum &album);
     void update(QTreeWidgetItem *i, const Song &s);
     void setCover();
     bool eventFilter(QObject *object, QEvent *event);
+    CdAlbum getAlbum() const;
 
 private:
     QString udi;

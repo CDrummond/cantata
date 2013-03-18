@@ -103,7 +103,7 @@ static inline void setResizeMode(QHeaderView *hdr, QHeaderView::ResizeMode mode)
 #endif
 
 RgDialog::RgDialog(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "RgDialog")
     , state(State_Idle)
     , totalToScan(0)
     , tagReader(0)

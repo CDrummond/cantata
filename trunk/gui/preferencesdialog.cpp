@@ -55,7 +55,7 @@ int PreferencesDialog::instanceCount()
 }
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "PreferencesDialog")
 {
     iCount++;
     setButtons(Ok|Apply|Cancel);

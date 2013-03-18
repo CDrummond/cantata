@@ -335,7 +335,7 @@ void CoverPreview::wheelEvent(QWheelEvent *event)
 }
 
 CoverDialog::CoverDialog(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "CoverDialog")
     , existing(0)
     , preview(0)
     , saving(false)

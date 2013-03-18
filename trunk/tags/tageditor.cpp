@@ -70,7 +70,7 @@ TagEditor::TagEditor(QWidget *parent, const QList<Song> &songs,
                      , const QString &udi
                      #endif
                      )
-    : Dialog(parent)
+    : Dialog(parent, "TagEditor")
     #ifdef ENABLE_DEVICES_SUPPORT
     , deviceUdi(udi)
     #endif

@@ -84,9 +84,10 @@ public:
 //        Type_Discogs
     };
 
-    CoverItem(const QString &u, QListWidget *parent)
+    CoverItem(const QString &u, const QString &tu, QListWidget *parent)
         : QListWidgetItem(parent)
         , imgUrl(u)
+        , thmbUrl(tu)
         , list(parent) {
         setSizeHint(parent->gridSize());
         setTextAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -95,6 +96,7 @@ public:
     virtual quint32 key() const =0;
     virtual Type type() const =0;
     const QString & url() const { return imgUrl; }
+    const QString & thumbUrl() const { return thmbUrl; }
 
     //bool operator<(const CoverItem &o) const {
     //    return key()<o.key();
@@ -118,14 +120,15 @@ protected:
 
 protected:
     QString imgUrl;
+    QString thmbUrl;
     QListWidget *list;
 };
 
 class LastFmCover : public CoverItem
 {
 public:
-    LastFmCover(const QString &u, const QImage &img, QListWidget *parent)
-        : CoverItem(u, parent) {
+    LastFmCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
+        : CoverItem(u, tu, parent) {
         setImage(img);
         setText(i18n("Last.fm"));
     }
@@ -138,7 +141,7 @@ class LocalCover : public CoverItem
 {
 public:
     LocalCover(const QString &u, const QImage &i, QListWidget *parent)
-        : CoverItem(u, parent)
+        : CoverItem(u, QString(), parent)
         , img(i) {
         setImage(i);
         setText(i18nc("name\nwidth x height (file size)", "%1\n%2 x %3 (%4)")
@@ -155,8 +158,8 @@ private:
 class GoogleCover : public CoverItem
 {
 public:
-    GoogleCover(const QString &u, const QImage &img, int w, int h, int size, QListWidget *parent)
-        : CoverItem(u, parent)
+    GoogleCover(const QString &u, const QString &tu, const QImage &img, int w, int h, int size, QListWidget *parent)
+        : CoverItem(u, tu, parent)
         , width(w)
         , height(h) {
         setImage(img);
@@ -174,8 +177,8 @@ private:
 //class YahooCover : public CoverItem
 //{
 //public:
-//    YahooCover(const QString &u, const QImage &img, QListWidget *parent)
-//        : CoverItem(u, parent) {
+//    YahooCover(const QString &u, const QString &tu, const QImage &img, QListWidget *parent)
+//        : CoverItem(u, tu, parent) {
 //        setImage(img);
 //        setText(i18n("Yahoo!"));
 //    }
@@ -187,8 +190,8 @@ private:
 //class DiscogsCover : public CoverItem
 //{
 //public:
-//    DiscogsCover(const QString &u, const QImage &img, int w, int h, QListWidget *parent)
-//        : CoverItem(u, parent)
+//    DiscogsCover(const QString &u, const QString &tu, const QImage &img, int w, int h, QListWidget *parent)
+//        : CoverItem(u, tu, parent)
 //        , width(w)
 //        , height(h) {
 //        setImage(img);
@@ -207,7 +210,7 @@ class ExistingCover : public CoverItem
 {
 public:
     ExistingCover(const Covers::Image &i, QListWidget *parent)
-        : CoverItem(i.fileName, parent)
+        : CoverItem(i.fileName, QString(), parent)
         , img(i) {
         setImage(img.img);
         QFont f(font());
@@ -559,16 +562,16 @@ void CoverDialog::downloadJobFinished()
             } else {
                 CoverItem *item=0;
                 if (constLastFmHost==host) {
-                    item=new LastFmCover(reply->property(constLargeProperty).toString(), img, list);
+                    item=new LastFmCover(reply->property(constLargeProperty).toString(), url, img, list);
                 } else if (constGoogleHost==host) {
-                    item=new GoogleCover(reply->property(constLargeProperty).toString(), img,
+                    item=new GoogleCover(reply->property(constLargeProperty).toString(), url, img,
                                          reply->property(constWidthProperty).toInt(), reply->property(constHeightProperty).toInt(),
                                          reply->property(constSizeProperty).toInt(), list);
                 }
 //                else if (constYahooHost==host) {
-//                    item=new YahooCover(reply->property(constLargeProperty).toString(), img, list);
+//                    item=new YahooCover(reply->property(constLargeProperty).toString(), url, img, list);
 //                } else if (constDiscogsHost==host) {
-//                    item=new DiscogsCover(reply->property(constLargeProperty).toString(), img,
+//                    item=new DiscogsCover(reply->property(constLargeProperty).toString(), url, img,
 //                                          reply->property(constWidthProperty).toInt(), reply->property(constHeightProperty).toInt(), list);
 //                }
                 if (item) {
@@ -647,6 +650,8 @@ void CoverDialog::sendQuery()
             if (CoverItem::Type_Existing==item->type() || CoverItem::Type_Local==item->type()) {
                 keep.append(item);
             } else {
+                currentUrls.remove(item->url());
+                currentUrls.remove(item->thumbUrl());
                 delete item;
             }
         }
@@ -705,7 +710,6 @@ void CoverDialog::sendQuery()
     googleUrl.setQuery(googleQuery);
     #endif
     sendQueryRequest(googleUrl);
-
 
 //    QUrl yahoo;
 //    yahoo.setScheme("http");

@@ -119,9 +119,7 @@ void ServerSettings::save()
     MPDConnectionDetails details=getDetails();
     Settings::self()->saveConnectionDetails(details);
     MusicLibraryModel::cleanCache();
-    if (1==combo->count()) {
-        Settings::self()->saveCurrentConnection(details.name);
-    }
+    Settings::self()->saveCurrentConnection(details.name);
 }
 
 void ServerSettings::mpdConnectionStateChanged(bool c)

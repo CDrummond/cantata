@@ -133,7 +133,7 @@ gid_t Utils::getGroupId(const char *groupName)
     init=true;
 
     // First of all see if current group is actually 'groupName'!!!
-    int egid=getegid();
+    gid_t egid=getegid();
     struct group *group=getgrgid(egid);
 
     if (group && 0==strcmp(group->gr_name, groupName)) {

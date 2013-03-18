@@ -246,7 +246,7 @@ QList<QByteArray> split(const QByteArray &a)
     }
     return rv;
 }
-#include <QDebug>
+
 void HttpSocket::readClient()
 {
     if (terminated) {

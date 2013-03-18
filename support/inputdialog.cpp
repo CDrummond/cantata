@@ -59,12 +59,12 @@ int InputDialog::getInteger(const QString &caption, const QString &label, int va
     if (GtkStyle::mimicWidgets()) {
         IntInputDialog dlg(caption, label, value, minValue, maxValue, step, parent);
         if (QDialog::Accepted==dlg.exec()) {
-            if (*ok) {
+            if (ok) {
                 *ok=true;
             }
             return dlg.spin->value();
         } else {
-            if (*ok) {
+            if (ok) {
                 *ok=false;
             }
             return value;

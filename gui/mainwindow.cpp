@@ -1032,7 +1032,7 @@ void MainWindow::playQueueItemsSelected(bool s)
 
 void MainWindow::connectToMpd(const MPDConnectionDetails &details)
 {
-    messageWidget->hide();
+    //messageWidget->hide();
 
     if (!MPDConnection::self()->isConnected() || details!=MPDConnection::self()->getDetails()) {
         libraryPage->clear();

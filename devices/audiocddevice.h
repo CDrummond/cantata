@@ -81,6 +81,7 @@ public:
     int albumDisc() const { return disc; }
     int albumYear() const { return year; }
     const Covers::Image & cover() const { return coverImage; }
+    void setCover(const Covers::Image &img);
 
 Q_SIGNALS:
     void lookup(bool full);

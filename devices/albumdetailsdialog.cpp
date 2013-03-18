@@ -194,24 +194,12 @@ void AlbumDetailsDialog::slotButtonClicked(int button)
     case Ok: {
         Device *dev=DevicesModel::self()->device(udi);
         if (dev && Device::AudioCd==dev->devType()) {
-            CdAlbum cdAlbum;
-            cdAlbum.artist=artist->text().trimmed();
-            cdAlbum.name=title->text().trimmed();
-            cdAlbum.disc=disc->value();
-            cdAlbum.year=year->value();
-            cdAlbum.genre=genre->text().trimmed();
-            QString unknown=i18n("Unknown");
-            if (cdAlbum.artist.isEmpty()) {
-                cdAlbum.artist=unknown;
-            }
-            if (cdAlbum.name.isEmpty()) {
-                cdAlbum.name=unknown;
-            }
+            CdAlbum cdAlbum=getAlbum();
             for(int i=0; i<tracks->topLevelItemCount(); ++i) {
-                QTreeWidgetItem *itm=tracks->topLevelItem(i);
-                cdAlbum.tracks.append(toSong(itm));
+                cdAlbum.tracks.append(toSong(tracks->topLevelItem(i), cdAlbum));
             }
             static_cast<AudioCdDevice *>(dev)->setDetails(cdAlbum);
+            static_cast<AudioCdDevice *>(dev)->setCover(coverImage);
         }
         accept();
         break;
@@ -245,9 +233,10 @@ void AlbumDetailsDialog::applyVa()
         return;
     }
 
+    CdAlbum album=getAlbum();
     for(int i=0; i<tracks->topLevelItemCount(); ++i) {
         QTreeWidgetItem *itm=tracks->topLevelItem(i);
-        Song s=toSong(itm);
+        Song s=toSong(itm, album);
         if (s.fixVariousArtists()) {
             update(itm, s);
         }
@@ -267,9 +256,10 @@ void AlbumDetailsDialog::revertVa()
         return;
     }
 
+    CdAlbum album=getAlbum();
     for(int i=0; i<tracks->topLevelItemCount(); ++i) {
         QTreeWidgetItem *itm=tracks->topLevelItem(i);
-        Song s=toSong(itm);
+        Song s=toSong(itm, album);
         if (s.revertVariousArtists()) {
             update(itm, s);
         }
@@ -282,9 +272,10 @@ void AlbumDetailsDialog::capitalise()
         return;
     }
 
+    CdAlbum album=getAlbum();
     for(int i=0; i<tracks->topLevelItemCount(); ++i) {
         QTreeWidgetItem *itm=tracks->topLevelItem(i);
-        Song s=toSong(itm);
+        Song s=toSong(itm, album);
         if (s.capitalise()) {
             update(itm, s);
         }
@@ -300,28 +291,49 @@ void AlbumDetailsDialog::adjustTrackNumbers()
         return;
     }
 
+    CdAlbum album=getAlbum();
     for(int i=0; i<tracks->topLevelItemCount(); ++i) {
         QTreeWidgetItem *itm=tracks->topLevelItem(i);
-        Song s=toSong(itm);
+        Song s=toSong(itm, album);
         s.track+=adj;
         update(itm, s);
     }
 }
 
-Song AlbumDetailsDialog::toSong(QTreeWidgetItem *i)
+Song AlbumDetailsDialog::toSong(QTreeWidgetItem *i, const CdAlbum &album)
 {
     Song s;
-    s.albumartist=artist->text().trimmed();
-    s.album=title->text().trimmed();
-    s.genre=genre->text().trimmed();
-    s.year=year->value();
-    s.disc=disc->value();
+    s.albumartist=album.artist;
+    s.album=album.name;
+    s.genre=album.genre;
+    s.year=album.year;
+    s.disc=album.disc;
     s.artist=singleArtist->isChecked() ? s.albumartist : i->text(COL_ARTIST);
     s.title=i->text(COL_TITLE);
     s.track=i->text(COL_TRACK).toInt();
     s.id=i->data(0, Qt::UserRole).toInt();
+    s.file=i->data(0, Qt::UserRole+1).toString();
     s.fillEmptyFields();
     return s;
+}
+
+CdAlbum AlbumDetailsDialog::getAlbum() const
+{
+    static QString unknown=i18n("Unknown");
+
+    CdAlbum cdAlbum;
+    cdAlbum.artist=artist->text().trimmed();
+    cdAlbum.name=title->text().trimmed();
+    cdAlbum.disc=disc->value();
+    cdAlbum.year=year->value();
+    cdAlbum.genre=genre->text().trimmed();
+    if (cdAlbum.artist.isEmpty()) {
+        cdAlbum.artist=unknown;
+    }
+    if (cdAlbum.name.isEmpty()) {
+        cdAlbum.name=unknown;
+    }
+    return cdAlbum;
 }
 
 void AlbumDetailsDialog::update(QTreeWidgetItem *i, const Song &s)
@@ -330,6 +342,7 @@ void AlbumDetailsDialog::update(QTreeWidgetItem *i, const Song &s)
     i->setText(COL_ARTIST, s.artist);
     i->setText(COL_TITLE, s.title);
     i->setData(0, Qt::UserRole, s.id);
+    i->setData(0, Qt::UserRole+1, s.file);
 }
 
 void AlbumDetailsDialog::setCover()

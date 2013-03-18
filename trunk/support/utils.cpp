@@ -132,18 +132,28 @@ gid_t Utils::getGroupId(const char *groupName)
 
     init=true;
 
+    // First of all see if current group is actually 'groupName'!!!
+    int egid=getegid();
+    struct group *group=getgrgid(egid);
+
+    if (group && 0==strcmp(group->gr_name, groupName)) {
+        gid=egid;
+        return gid;
+    }
+
+    // Now see if user is a member of 'groupName'
     struct passwd *pw=getpwuid(geteuid());
 
     if (!pw) {
         return gid;
     }
 
-    struct group *audioGroup=getgrnam(groupName);
+    group=getgrnam(groupName);
 
-    if (audioGroup) {
-        for (int i=0; audioGroup->gr_mem[i]; ++i) {
-            if (0==strcmp(audioGroup->gr_mem[i], pw->pw_name)) {
-                gid=audioGroup->gr_gid;
+    if (group) {
+        for (int i=0; group->gr_mem[i]; ++i) {
+            if (0==strcmp(group->gr_mem[i], pw->pw_name)) {
+                gid=group->gr_gid;
                 return gid;
             }
         }

@@ -125,7 +125,7 @@ static void update(QStandardItem *i, const Dynamic::Rule &rule)
 }
 
 DynamicRulesDialog::DynamicRulesDialog(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "DynamicRulesDialog")
     , dlg(0)
 {
     QWidget *mainWidet = new QWidget(this);

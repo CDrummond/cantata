@@ -30,7 +30,7 @@ static const int constMaxDate=2100;
 static const QChar constDateSep('-');
 
 DynamicRuleDialog::DynamicRuleDialog(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "DynamicRuleDialog")
 {
     QWidget *mainWidet = new QWidget(this);
     setupUi(mainWidet);

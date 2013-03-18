@@ -27,7 +27,7 @@
 #include "messagebox.h"
 
 FilenameSchemeDialog::FilenameSchemeDialog(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "FilenameSchemeDialog")
 {
     setButtons(Ok|Cancel);
     setCaption(i18n("Filename Scheme"));

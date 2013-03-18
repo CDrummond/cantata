@@ -1130,6 +1130,9 @@ bool CoverDialog::saveCover(const QString &src, const QImage &img)
         QString dir = Utils::cacheDir(Covers::constCddaCoverDir, true);
         if (!dir.isEmpty()) {
             QString destName=dir+song.file.mid(7)+src.mid(src.length()-4);
+            if (QFile::exists(destName)) {
+                QFile::remove(destName);
+            }
             if (QFile::copy(src, destName)) {
                 emit selectedCover(img, destName);
                 return true;

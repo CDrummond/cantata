@@ -107,6 +107,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     connect(server, SIGNAL(connectTo(const MPDConnectionDetails &)), SIGNAL(connectTo(const MPDConnectionDetails &)));
     connect(server, SIGNAL(disconnectFromMpd()), MPDConnection::self(), SLOT(disconnectMpd()));
     connect(files, SIGNAL(reloadStreams()), SIGNAL(reloadStreams()));
+    widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 }
 
 PreferencesDialog::~PreferencesDialog()

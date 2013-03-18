@@ -92,7 +92,7 @@ int AlbumDetailsDialog::instanceCount()
 }
 
 AlbumDetailsDialog::AlbumDetailsDialog(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "AlbumDetailsDialog")
     , pressed(false)
 {
     iCount++;

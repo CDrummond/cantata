@@ -29,7 +29,7 @@
 #include <QTreeWidget>
 
 CddbSelectionDialog::CddbSelectionDialog(QWidget *parent)
-    : Dialog(parent)
+    : Dialog(parent, "CddbSelectionDialog")
 {
     QWidget *wid = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(wid);

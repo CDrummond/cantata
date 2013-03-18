@@ -39,11 +39,45 @@ int Dialog::exec()
 }
 #endif
 
-#ifndef ENABLE_KDE_SUPPORT
+#ifdef ENABLE_KDE_SUPPORT
+#include <KGlobal>
+#include <KConfigGroup>
+Dialog::Dialog(QWidget *parent, const QString &name=QString())
+    : KDialog(parent)
+{
+    if (!name.isEmpty()) {
+        setObjectName(name);
+        KConfigGroup cfg(KGlobal::config(), name);
+        cfgSize=GET_SIZE("size");
+        if (!cfgSize.isEmpty()) {
+            KDialog::resize(cfgSize);
+        }
+    }
+}
+
+Dialog::~Dialog()
+{
+    if (!objectName().isEmpty() && size()!=cfgSize) {
+        KConfigGroup cfg(KGlobal::config(), objectName());
+        cfg.writeEntry("size", size());
+        KGlobal::config()->sync();
+    }
+}
+
+void Dialog::resize(const QSize &sz)
+{
+    if (cfgSize.isEmpty()) {
+        KDialog::resize(sz);
+        cfgSize=sz;
+    }
+}
+
+#else
 #include "icon.h"
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QBoxLayout>
+#include <QSettings>
 
 static QDialogButtonBox::StandardButton mapType(int btn) {
     switch (btn) {
@@ -56,6 +90,41 @@ static QDialogButtonBox::StandardButton mapType(int btn) {
     case Dialog::Yes:    return QDialogButtonBox::Yes;
     case Dialog::Reset:  return QDialogButtonBox::Reset;
     default:             return QDialogButtonBox::NoButton;
+    }
+}
+
+Dialog::Dialog(QWidget *parent, const QString &name)
+    : QDialog(parent)
+    , buttonTypes(0)
+    , mw(0)
+    , buttonBox(0)
+{
+    if (!name.isEmpty()) {
+        setObjectName(name);
+        QSettings cfg;
+        cfg.beginGroup(name);
+        cfgSize=cfg.contains("size") ? cfg.value("size").toSize() : QSize();
+        if (!cfgSize.isEmpty()) {
+            QDialog::resize(cfgSize);
+        }
+    }
+}
+
+Dialog::~Dialog()
+{
+    if (!objectName().isEmpty() && size()!=cfgSize) {
+        QSettings cfg;
+        cfg.beginGroup(objectName());
+        cfg.setValue("size", size());
+        cfg.sync();
+    }
+}
+
+void Dialog::resize(const QSize &sz)
+{
+    if (cfgSize.isEmpty()) {
+        QDialog::resize(sz);
+        cfgSize=sz;
     }
 }
 
@@ -230,3 +299,4 @@ QAbstractButton *Dialog::getButton(ButtonCode button)
     return b;
 }
 #endif
+

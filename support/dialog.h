@@ -28,14 +28,20 @@
 
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KDialog>
-#ifdef ENABLE_OVERLAYSCROLLBARS
 struct Dialog : public KDialog {
-    Dialog(QWidget *parent) : KDialog(parent) { }
+    Dialog(QWidget *parent, const QString &name=QString());
+    virtual ~Dialog();
+    #ifdef ENABLE_OVERLAYSCROLLBARS
     int exec();
+    #endif
+
+    const QSize & configuredSize() const { return cfgSize; }
+    void resize(int w, int h) { resize(QSize(w, h)); }
+    void resize(const QSize &sz);
+
+private:
+    QSize cfgSize;
 };
-#else
-typedef KDialog Dialog;
-#endif
 typedef KGuiItem GuiItem;
 #else
 #include <QDialog>
@@ -84,35 +90,28 @@ public:
       DelayedPopup = 1
     };
 
-    Dialog(QWidget *parent)
-        : QDialog(parent)
-        , buttonTypes(0)
-        , mw(0)
-        , buttonBox(0) {
-    }
-    virtual ~Dialog() {
-    }
-    void setCaption(const QString &cap) {
-        setWindowTitle(cap);
-    }
+    Dialog(QWidget *parent, const QString &name=QString());
+    virtual ~Dialog();
+
+    void setCaption(const QString &cap) { setWindowTitle(cap); }
     void setButtons(ButtonCodes buttons);
     void setButtonText(ButtonCode button, const QString &text);
     void setButtonGuiItem(ButtonCode button, const GuiItem &item);
     void setButtonMenu(ButtonCode button, QMenu *menu, ButtonPopupMode popupmode=InstantPopup);
     void enableButton(ButtonCode button, bool enable);
-    void enableButtonOk(bool enable) {
-        enableButton(Ok, enable);
-    }
+    void enableButtonOk(bool enable) { enableButton(Ok, enable); }
     bool isButtonEnabled(ButtonCode button);
     void setMainWidget(QWidget *widget);
     virtual void slotButtonClicked(int button);
-    QWidget *mainWidget() {
-        return mw;
-    }
+    QWidget * mainWidget() { return mw; }
 
     #ifdef ENABLE_OVERLAYSCROLLBARS
     int exec();
     #endif
+
+    const QSize & configuredSize() const { return cfgSize; }
+    void resize(int w, int h) { resize(QSize(w, h)); }
+    void resize(const QSize &sz);
 
 private Q_SLOTS:
     void buttonPressed(QAbstractButton *button);
@@ -126,6 +125,7 @@ private:
     QWidget *mw;
     QDialogButtonBox *buttonBox;
     QMap<ButtonCode, QAbstractButton *> userButtons;
+    QSize cfgSize;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Dialog::ButtonCodes)

@@ -40,7 +40,7 @@ void HttpServerSettings::load()
     int port=Settings::self()->httpPort();
     enableHttp->setChecked(Settings::self()->enableHttp());
     alwaysUseHttp->setChecked(Settings::self()->alwaysUseHttp());
-    httpPort->setValue(port<1024 ? 1023 : port);
+    httpPort->setValue(port);
     httpAddress->setText(Settings::self()->httpAddress());
 }
 
@@ -50,6 +50,7 @@ void HttpServerSettings::save()
     Settings::self()->saveAlwaysUseHttp(alwaysUseHttp->isChecked());
     Settings::self()->saveHttpPort(httpPort->value());
     Settings::self()->saveHttpAddress(httpAddress->text());
+    HttpServer::self()->readConfig();
     QTimer::singleShot(250, this, SLOT(updateStatus()));
 }
 

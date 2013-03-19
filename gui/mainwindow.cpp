@@ -1261,11 +1261,7 @@ void MainWindow::readSettings()
     checkMpdDir();
     #ifdef TAGLIB_FOUND
     Covers::self()->setSaveInMpdDir(Settings::self()->storeCoversInMpdDir());
-    if (Settings::self()->enableHttp()) {
-        HttpServer::self()->setDetails(Settings::self()->httpAddress(), Settings::self()->httpPort());
-    } else {
-        HttpServer::self()->setDetails(QString(), 0);
-    }
+    HttpServer::self()->readConfig();
     #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     StdActions::self()->deleteSongsAction->setVisible(Settings::self()->showDeleteAction());

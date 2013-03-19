@@ -41,7 +41,7 @@ class StreamsModel : public ActionModel
 public:
     static const QString constPrefix;
     static const QLatin1String constDefaultCategoryIcon;
-    static QString prefixUrl(const QString &n, bool addPrefix=true);
+    static QString modifyUrl(const QString &u, bool addPrefix=true, const QString &name=QString());
     static QString dir();
     static const QLatin1String constGenreSeparator;
 

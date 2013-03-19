@@ -2119,7 +2119,7 @@ void MainWindow::addStreamToPlayQueue()
                 StreamsModel::self()->add(cat, name, dlg.genre(), dlg.icon(), url);
             }
         }
-        playQueueModel.addItems(QStringList() << StreamsModel::prefixUrl(url), false, 0);
+        playQueueModel.addItems(QStringList() << StreamsModel::modifyUrl(url), false, 0);
     }
 }
 

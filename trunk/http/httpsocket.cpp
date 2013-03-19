@@ -180,18 +180,18 @@ HttpSocket::HttpSocket(const QString &addr, quint16 p)
         }
     }
 
-    if (listen(QHostAddress::Any, p<1024 ? 0 : p)) {
+    if (listen(QHostAddress::Any, p)) {
         ifaceAddress=a.isNull() ? serverAddress().toString() : a.toString();
     } else {
         // Failed to liston on 'Any' address
         if (addr.isEmpty()) {
             // No specific address was set, so fallback to loopback address...
-            listen(QHostAddress::LocalHost, p<1024 ? 0 : p);
+            listen(QHostAddress::LocalHost, p);
             ifaceAddress=QLatin1String("127.0.0.1");
         } else {
             // Listen probably failed due to proxy, so unset and try again!
             setProxy(QNetworkProxy::NoProxy);
-            listen(QHostAddress::Any, p<1024 ? 0 : p);
+            listen(QHostAddress::Any, p);
             ifaceAddress=a.isNull() ? serverAddress().toString() : a.toString();
         }
     }

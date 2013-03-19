@@ -561,7 +561,7 @@ void DevicesPage::sync()
         return;
     }
 
-    MusicLibraryItem *item=DevicesModel::self()->toItem(selected.first());
+    MusicLibraryItem *item=DevicesModel::self()->toItem(proxy.mapToSource(selected.first()));
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         SyncDialog *dlg=new SyncDialog(this);

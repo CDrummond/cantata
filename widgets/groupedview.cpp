@@ -225,7 +225,13 @@ public:
             if (stream) {
                 title=audiocd ? i18n("Audio CD") : i18n("Streams");
                 if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
-                    track=song.title.isEmpty() && song.name.isEmpty() ? song.file : (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
+                    track=song.title.isEmpty() && song.name.isEmpty()
+                            ? song.file
+                            : song.name.isEmpty()
+                              ? song.title
+                              : song.title.isEmpty()
+                                ? song.name
+                                : QString("%1 (%2)").arg(song.title).arg(song.name);
                 } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
                     track=song.artist + " - " + (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
                 } else {

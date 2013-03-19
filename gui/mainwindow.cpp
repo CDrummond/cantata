@@ -1682,6 +1682,10 @@ void MainWindow::updateWindowTitle()
     }
     if (stopped) {
         setWindowTitle(multipleConnections ? i18n("Cantata (%1)").arg(connection) : "Cantata");
+    } else if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
+        setWindowTitle(multipleConnections
+                        ? i18nc("track :: Cantata (connection)", "%1 :: Cantata (%2)").arg(trackLabel->text()).arg(connection)
+                        : i18nc("track :: Cantata", "%1 :: Cantata").arg(trackLabel->text()));
     } else if (current.artist.isEmpty()) {
         if (trackLabel->text().isEmpty()) {
             setWindowTitle(multipleConnections ? i18n("Cantata (%1)").arg(connection) : "Cantata");
@@ -1725,24 +1729,31 @@ void MainWindow::updateCurrentSong(const Song &song)
     positionSlider->setEnabled(-1!=current.id && !currentIsStream());
     coverWidget->update(current);
 
-    if (current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())) {
-        trackLabel->setText(current.name.isEmpty() ? current.file : current.name);
-    } else if (current.name.isEmpty()) {
-        trackLabel->setText(current.title);
-    } else {
-        trackLabel->setText(QString("%1 (%2)").arg(current.title).arg(current.name));
-    }
-    if (current.album.isEmpty() && current.artist.isEmpty()) {
-        artistLabel->setText(trackLabel->text().isEmpty() || current.isStream() ? i18n("(Stream)") : i18n("Unknown"));
-    } else if (current.album.isEmpty()) {
-        artistLabel->setText(current.artist);
-    } else {
-        QString album=current.album;
-        quint16 year=Song::albumYear(current);
-        if (year>0) {
-            album+=QString(" (%1)").arg(year);
+    if (current.isStream() && !current.isCantataStream() && !current.isCdda()) {
+        trackLabel->setText(current.name.isEmpty() ? i18n("Unknown") : current.name);
+        if (current.artist.isEmpty() && current.title.isEmpty() && !current.name.isEmpty()) {
+            artistLabel->setText(i18n("(Stream)"));
+        } else {
+            artistLabel->setText(current.artist.isEmpty() ? current.title : i18nc("title - artist", "%1 - %2").arg(current.artist).arg(current.title));
         }
-        artistLabel->setText(i18nc("artist - album", "%1 - %2").arg(current.artist).arg(album));
+    } else {
+        if (current.title.isEmpty() && current.artist.isEmpty() && (!current.name.isEmpty() || !current.file.isEmpty())) {
+            trackLabel->setText(current.name.isEmpty() ? current.file : current.name);
+        } else {
+            trackLabel->setText(current.title);
+        }
+        if (current.album.isEmpty() && current.artist.isEmpty()) {
+            artistLabel->setText(trackLabel->text().isEmpty() ? QString() : i18n("Unknown"));
+        } else if (current.album.isEmpty()) {
+            artistLabel->setText(current.artist);
+        } else {
+            QString album=current.album;
+            quint16 year=Song::albumYear(current);
+            if (year>0) {
+                album+=QString(" (%1)").arg(year);
+            }
+            artistLabel->setText(i18nc("artist - album", "%1 - %2").arg(current.artist).arg(album));
+        }
     }
 
     bool isPlaying=MPDState_Playing==MPDStatus::self()->state();

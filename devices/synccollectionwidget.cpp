@@ -40,7 +40,7 @@ SyncCollectionWidget::SyncCollectionWidget(QWidget *parent, const QString &title
     button->setText(action);
     button->setEnabled(false);
 
-    model=new MusicLibraryModel(this);
+    model=new MusicLibraryModel(this, false);
     proxy=new MusicLibraryProxyModel(this);
     model->setUseAlbumImages(showCovers);
     proxy->setSourceModel(model);

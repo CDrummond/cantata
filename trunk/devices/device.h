@@ -27,7 +27,6 @@
 #include "musiclibraryitemroot.h"
 #include "song.h"
 #ifndef Q_OS_WIN
-#include "encoders.h"
 #include "deviceoptions.h"
 #ifdef ENABLE_KDE_SUPPORT
 #include <solid/device.h>
@@ -243,11 +242,10 @@ protected:
     Solid::Device solidDev;
     QString deviceId;
     Song currentSong;
-    Encoders::Encoder encoder;
     #endif
     MusicLibraryItemRoot *update;
-    QString currentBaseDir;
-    QString currentMusicPath;
+    QString currentDestFile;
+    QString currentMpdDir;
     QString statusMsg;
     bool needToFixVa;
     bool jobAbortRequested;

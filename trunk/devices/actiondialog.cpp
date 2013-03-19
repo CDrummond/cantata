@@ -141,6 +141,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
     // check space...
     haveVariousArtists=false;
     qint64 spaceRequired=0;
+    totalTime=0;
     foreach (const Song &s, songsToAction) {
         if (s.size>0) {
             spaceRequired+=s.size;
@@ -148,6 +149,7 @@ void ActionDialog::copy(const QString &srcUdi, const QString &dstUdi, const QLis
         if (!haveVariousArtists && s.isVariousArtists()) {
             haveVariousArtists=true;
         }
+        totalTime+=s.time;
     }
 
     qint64 spaceAvailable=0;
@@ -255,6 +257,10 @@ void ActionDialog::init(const QString &srcUdi, const QString &dstUdi, const QLis
     performingAction=false;
     paused=false;
     actionedSongs.clear();
+    skippedSongs.clear();
+    actionedTime=0;
+    timeTaken=0;
+    currentPercent=0;
     currentDev=0;
     count=0;
 }
@@ -276,6 +282,7 @@ void ActionDialog::slotButtonClicked(int button)
             }
             Settings::self()->saveOverwriteSongs(overwrite->isChecked());
             setPage(PAGE_PROGRESS);
+            timer.start();
             doNext();
             break;
         case Cancel:
@@ -290,9 +297,13 @@ void ActionDialog::slotButtonClicked(int button)
         }
         break;
     case PAGE_SKIP:
+        timeTaken+=timer.elapsed();
         setPage(PAGE_PROGRESS);
         switch(button) {
         case User1:
+            skippedSongs.append(currentSong);
+            totalTime-=currentSong.time;
+            timer.restart();
             incProgress();
             doNext();
             break;
@@ -385,6 +396,7 @@ Device * ActionDialog::getDevice(const QString &udi, bool logErrors)
 
 void ActionDialog::doNext()
 {
+    currentPercent=0;
     if (songsToAction.count()) {
         currentSong=origCurrentSong=songsToAction.takeFirst();
         if(Copy==mode) {
@@ -429,7 +441,7 @@ void ActionDialog::doNext()
                 }
             }
         }
-        progressLabel->setText(formatSong(currentSong));
+        progressLabel->setText(formatSong(currentSong, false, true));
     } else if (Remove==mode && dirsToClean.count()) {
         Device *dev=sourceUdi.isEmpty() ? 0 : DevicesModel::self()->device(sourceUdi);
         if (sourceUdi.isEmpty() || dev) {
@@ -452,23 +464,25 @@ void ActionDialog::doNext()
 void ActionDialog::actionStatus(int status, bool copiedCover)
 {
     int origStatus=status;
+    bool wasSkip=false;
     if (Device::Ok!=status && Device::NotConnected!=status && autoSkip) {
+        skippedSongs.append(currentSong);
+        totalTime-=currentSong.time;
+        wasSkip=true;
         status=Device::Ok;
     }
     switch (status) {
     case Device::Ok:
         performingAction=false;
         if (Device::Ok==origStatus) {
-            actionedSongs.append(currentSong);
+            if (!wasSkip) {
+                actionedSongs.append(currentSong);
+                actionedTime+=currentSong.time;
+            }
             if (copiedCover) {
                 copiedCovers.insert(Utils::getDir(destFile));
             }
         }
-//         if (1==actionedSongs.count() && ( (Copy==mode && !sourceUdi.isEmpty()) ||
-//                                           (Remove==mode && sourceUdi.isEmpty()) ) ) {
-//             // Cache is now out of date, so need to remove!
-//             MusicLibraryModel::self()->removeCache();
-//         }
         if (!paused) {
             incProgress();
             doNext();
@@ -630,32 +644,54 @@ void ActionDialog::setPage(int page, const QString &msg)
     }
 }
 
-QString ActionDialog::formatSong(const Song &s, bool showFiles)
+#include <QDebug>
+#include <time.h>
+#define DBUG qDebug()
+QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
 {
-    return showFiles
-            ? Copy==mode
-                ? i18n("<table>"
-                       "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
-                       "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
-                       "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
-                       "<tr><td align=\"right\">Source file:</td><td>%4</td></tr>"
-                       "<tr><td align=\"right\">Destination file:</td><td>%5</td></tr>"
-                       "</table>").arg(s.albumArtist()).arg(s.album)
-                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)))
-                       .arg(DevicesModel::fixDevicePath(s.file)).arg(DevicesModel::fixDevicePath(destFile))
-                : i18n("<table>"
-                       "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
-                       "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
-                       "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
-                       "<tr><td align=\"right\">File:</td><td>%4</td></tr>"
-                       "</table>").arg(s.albumArtist()).arg(s.album)
-                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist))).arg(DevicesModel::fixDevicePath(s.file))
-            : i18n("<table>"
-                   "<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
-                   "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
-                   "<tr><td align=\"right\">Track:</td><td>%3</td></tr>"
-                   "</table>").arg(s.albumArtist()).arg(s.album)
-                       .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)));
+    QString str("<table>");
+    str+=i18n("<tr><td align=\"right\">Artist:</td><td>%1</td></tr>"
+              "<tr><td align=\"right\">Album:</td><td>%2</td></tr>"
+              "<tr><td align=\"right\">Track:</td><td>%3</td></tr>")
+              .arg(s.albumArtist())
+              .arg(s.album)
+              .arg(s.trackAndTitleStr(Song::isVariousArtists(s.albumArtist()) && !Song::isVariousArtists(s.artist)));
+
+    if (showFiles) {
+        if (Copy==mode) {
+            str+=i18n("<tr><td align=\"right\">Source file:</td><td>%1</td></tr>"
+                      "<tr><td align=\"right\">Destination file:</td><td>%2</td></tr>")
+                      .arg(DevicesModel::fixDevicePath(s.file))
+                      .arg(DevicesModel::fixDevicePath(destFile));
+
+        } else {
+            str+=i18n("<tr><td align=\"right\">File:</td><td>%1</td></tr>")
+                      .arg(DevicesModel::fixDevicePath(s.file));
+        }
+    }
+
+    if (showTime) {
+        QString estimate=i18n("Unknown");
+
+        double taken=timeTaken+timer.elapsed();
+        DBUG << time(NULL) << "timeTaken" << timeTaken << "elapsed" << timer.elapsed() << "taken" << taken
+                   << currentSong.file;
+        if (taken>5.0) {
+            double percent=(actionedTime+(currentPercent*currentSong.time))/totalTime;
+            quint64 timeRemaining=((taken/percent)-taken)/1000.0;
+            estimate=Song::formattedTime(timeRemaining>0 ? timeRemaining : 0);
+            DBUG << "PC:" << percent
+                       << "actionedTime" << actionedTime
+                       << "currentPercent" << currentPercent
+                       << "cs.t" << currentSong.time
+                       << "totalTime" << totalTime << "timeRemaining" << timeRemaining << estimate;
+        }
+
+        str+=i18n("<tr><i><td align=\"right\">Estimated time remaining:</td><td>%5</td></i></tr>")
+                .arg(estimate);
+    }
+
+    return str+"</table>";
 }
 
 bool ActionDialog::refreshLibrary()
@@ -723,6 +759,10 @@ void ActionDialog::cleanDirsResult(int status)
 void ActionDialog::jobPercent(int percent)
 {
     progressBar->setValue((100*count)+percent);
+    currentPercent=percent/100.00;
+    if (PAGE_PROGRESS==stack->currentIndex()) {
+        progressLabel->setText(formatSong(currentSong, false, true));
+    }
 }
 
 void ActionDialog::incProgress()

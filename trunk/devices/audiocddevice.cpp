@@ -190,26 +190,24 @@ void AudioCdDevice::copySongTo(const Song &s, const QString &baseDir, const QStr
     DeviceOptions mpdOpts;
     mpdOpts.load(MPDConnectionDetails::configGroupName(MPDConnection::self()->getDetails().name), true);
 
-    encoder=Encoders::getEncoder(mpdOpts.transcoderCodec);
+    Encoders::Encoder encoder=Encoders::getEncoder(mpdOpts.transcoderCodec);
     if (encoder.codec.isEmpty()) {
         emit actionStatus(CodecNotAvailable);
         return;
     }
 
-
     QString source=block->device();
-    currentBaseDir=baseDir;
-    currentMusicPath=musicPath;
-    QString dest(currentBaseDir+currentMusicPath);
-    dest=encoder.changeExtension(dest);
-    QDir dir(Utils::getDir(dest));
+    currentMpdDir=baseDir;
+    currentDestFile=encoder.changeExtension(baseDir+musicPath);
+
+    QDir dir(Utils::getDir(currentDestFile));
     if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
     }
 
     currentSong=s;
-    ExtractJob *job=new ExtractJob(encoder, mpdOpts.transcoderValue, source, dest, currentSong, copyCover ? coverImage.fileName : QString());
+    ExtractJob *job=new ExtractJob(encoder, mpdOpts.transcoderValue, source, currentDestFile, currentSong, copyCover ? coverImage.fileName : QString());
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
     job->start();
@@ -244,19 +242,19 @@ void AudioCdDevice::copySongToResult(int status)
     ExtractJob *job=qobject_cast<ExtractJob *>(sender());
     FileJob::finished(job);
     if (jobAbortRequested) {
-        if (job && job->wasStarted() && QFile::exists(currentBaseDir+currentMusicPath)) {
-            QFile::remove(currentBaseDir+currentMusicPath);
+        if (job && job->wasStarted() && QFile::exists(currentDestFile)) {
+            QFile::remove(currentDestFile);
         }
         return;
     }
     if (Ok!=status) {
         emit actionStatus(status);
     } else {
-        currentSong.file=currentMusicPath; // MPD's paths are not full!!!
+        currentSong.file=currentDestFile.mid(currentMpdDir.length());
         if (needToFixVa) {
             currentSong.revertVariousArtists();
         }
-        Utils::setFilePerms(currentBaseDir+currentSong.file);
+        Utils::setFilePerms(currentDestFile);
         MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(currentSong.file);
         emit actionStatus(Ok, job && job->coverCopied());

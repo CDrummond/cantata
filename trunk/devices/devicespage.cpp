@@ -329,7 +329,8 @@ void DevicesPage::controlActions()
     DevicesModel::self()->configureAct()->setEnabled(!busyDevice && 1==selected.count() && !audioCd);
     DevicesModel::self()->refreshAct()->setEnabled(!busyDevice && 1==selected.count());
     copyAction->setEnabled(!busyDevice && haveTracks && (!deviceSelected || audioCd));
-    syncAction->setEnabled(!audioCd && !busyDevice && deviceSelected && connected && 1==selected.count() && singleUdi);
+    syncAction->setEnabled(!audioCd && !busyDevice && deviceSelected && connected && 1==selected.count() && singleUdi &&
+                           MPDConnection::self()->getDetails().dirReadable);
     StdActions::self()->deleteSongsAction->setEnabled(!audioCd && !busyDevice && haveTracks && !deviceSelected);
     StdActions::self()->editTagsAction->setEnabled(!busyDevice && haveTracks && onlyFs && singleUdi && !deviceSelected);
     #ifdef ENABLE_REPLAYGAIN_SUPPORT

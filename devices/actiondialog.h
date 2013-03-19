@@ -28,6 +28,7 @@
 #include "song.h"
 #include "device.h"
 #include "ui_actiondialog.h"
+#include <QElapsedTimer>
 
 class ActionDialog : public Dialog, Ui::ActionDialog
 {
@@ -74,7 +75,7 @@ private:
     void init(const QString &srcUdi, const QString &dstUdi, const QList<Song> &songs, Mode m);
     void slotButtonClicked(int button);
     void setPage(int page, const QString &msg=QString());
-    QString formatSong(const Song &s, bool showFiles=false);
+    QString formatSong(const Song &s, bool showFiles=false, bool showTime=false);
     bool refreshLibrary();
     void removeSong(const Song &s);
     void cleanDirs();
@@ -85,10 +86,16 @@ private:
     QString sourceUdi;
     QString destUdi;
     QList<Song> songsToAction;
+    QList<Song> skippedSongs;
     QList<Song> actionedSongs;
     QSet<QString> dirsToClean;
     QSet<QString> copiedCovers;
     unsigned long count;
+    double totalTime; // Time of all songs
+    double actionedTime; // Time of songs that have currently been actioned
+    double currentPercent; // Percentage of current song
+    quint64 timeTaken; // Amount of time spent copying/deleting
+    QElapsedTimer timer;
     Song origCurrentSong;
     Song currentSong;
     bool autoSkip;

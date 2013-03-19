@@ -1160,7 +1160,7 @@ void MtpDevice::addSong(const Song &s, bool overwrite, bool copyCover)
     }
     currentSong=s;
     if (!opts.transcoderCodec.isEmpty()) {
-        encoder=Encoders::getEncoder(opts.transcoderCodec);
+        Encoders::Encoder encoder=Encoders::getEncoder(opts.transcoderCodec);
         if (encoder.codec.isEmpty()) {
             emit actionStatus(CodecNotAvailable);
             return;
@@ -1224,17 +1224,16 @@ void MtpDevice::copySongTo(const Song &s, const QString &baseDir, const QString 
         return;
     }
 
-    currentBaseDir=baseDir;
-    currentMusicPath=musicPath;
-    QString dest(currentBaseDir+currentMusicPath);
-    QDir dir(Utils::getDir(dest));
+    currentMpdDir=baseDir;
+    currentDestFile=baseDir+musicPath;
+    QDir dir(Utils::getDir(currentDestFile));
     if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
     }
 
     currentSong=s;
-    emit getSong(s, currentBaseDir+currentMusicPath, needToFixVa, copyCover);
+    emit getSong(s, currentDestFile, needToFixVa, copyCover);
 }
 
 void MtpDevice::removeSong(const Song &s)
@@ -1341,11 +1340,11 @@ void MtpDevice::getSongStatus(bool ok, bool copiedCover)
     if (!ok) {
         emit actionStatus(Failed);
     } else {
-        currentSong.file=currentMusicPath; // MPD's paths are not full!!!
+        currentSong.file=currentDestFile.mid(currentMpdDir.length());
         if (needToFixVa) {
             currentSong.revertVariousArtists();
         }
-        Utils::setFilePerms(currentBaseDir+currentSong.file);
+        Utils::setFilePerms(currentDestFile);
         MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(currentSong.file);
         emit actionStatus(Ok, copiedCover);

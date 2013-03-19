@@ -410,7 +410,8 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         return;
     }
 
-    QString destFile=audioFolder+opts.createFilename(s);
+    currentDestFile=audioFolder+opts.createFilename(s);
+    Encoders::Encoder encoder;
 
     if (!opts.transcoderCodec.isEmpty()) {
         encoder=Encoders::getEncoder(opts.transcoderCodec);
@@ -418,15 +419,15 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
             emit actionStatus(CodecNotAvailable);
             return;
         }
-        destFile=encoder.changeExtension(destFile);
+        currentDestFile=encoder.changeExtension(currentDestFile);
     }
 
-    if (!overwrite && QFile::exists(destFile)) {
+    if (!overwrite && QFile::exists(currentDestFile)) {
         emit actionStatus(FileExists);
         return;
     }
 
-    QDir dir(Utils::getDir(destFile));
+    QDir dir(Utils::getDir(currentDestFile));
     if(!dir.exists() && !Utils::createDir(dir.absolutePath(), QString())) {
         emit actionStatus(DirCreationFaild);
         return;
@@ -434,7 +435,7 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
     currentSong=s;
     if (encoder.codec.isEmpty() || (opts.transcoderWhenDifferent && !encoder.isDifferent(s.file))) {
         transcoding=false;
-        CopyJob *job=new CopyJob(s.file, destFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
+        CopyJob *job=new CopyJob(s.file, currentDestFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
                                  (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|(Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone),
                                  currentSong);
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
@@ -442,7 +443,7 @@ void FsDevice::addSong(const Song &s, bool overwrite, bool copyCover)
         job->start();
     } else {
         transcoding=true;
-        TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, destFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
+        TranscodingJob *job=new TranscodingJob(encoder, opts.transcoderValue, s.file, currentDestFile, copyCover ? opts : DeviceOptions(Device::constNoCover),
                                                (needToFixVa ? CopyJob::OptsApplyVaFix : CopyJob::OptsNone)|
                                                (Device::RemoteFs==devType() ? CopyJob::OptsFixLocal : CopyJob::OptsNone));
         connect(job, SIGNAL(result(int)), SLOT(addSongResult(int)));
@@ -485,10 +486,10 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
         return;
     }
 
-    currentBaseDir=baseDir;
-    currentMusicPath=musicPath;
-    QString dest(currentBaseDir+currentMusicPath);
-    QDir dir(Utils::getDir(dest));
+    currentMpdDir=baseDir;
+    currentDestFile=baseDir+musicPath;
+
+    QDir dir(Utils::getDir(currentDestFile));
     if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
         return;
@@ -496,7 +497,7 @@ void FsDevice::copySongTo(const Song &s, const QString &baseDir, const QString &
 
     currentSong=s;
     // Pass an empty filename as covername, so that Covers::copyCover knows this is TO MPD...
-    CopyJob *job=new CopyJob(source, dest, copyCover ? DeviceOptions(QString()) : DeviceOptions(Device::constNoCover),
+    CopyJob *job=new CopyJob(source, currentDestFile, copyCover ? DeviceOptions(QString()) : DeviceOptions(Device::constNoCover),
                              needToFixVa ? CopyJob::OptsUnApplyVaFix : CopyJob::OptsNone, currentSong);
     connect(job, SIGNAL(result(int)), SLOT(copySongToResult(int)));
     connect(job, SIGNAL(percent(int)), SLOT(percent(int)));
@@ -571,20 +572,17 @@ void FsDevice::addSongResult(int status)
     CopyJob *job=qobject_cast<CopyJob *>(sender());
     FileJob::finished(job);
     spaceInfo.setDirty();
-    QString destFileName=opts.createFilename(currentSong);
-    if (transcoding) {
-        destFileName=encoder.changeExtension(destFileName);
-    }
+
     if (jobAbortRequested) {
-        if (job && job->wasStarted() && QFile::exists(audioFolder+destFileName)) {
-            QFile::remove(audioFolder+destFileName);
+        if (job && job->wasStarted() && QFile::exists(currentDestFile)) {
+            QFile::remove(currentDestFile);
         }
         return;
     }
     if (Ok!=status) {
         emit actionStatus(status);
     } else {
-        currentSong.file=destFileName;
+        currentSong.file=currentDestFile.mid(audioFolder.length());
         if (needToFixVa) {
             currentSong.fixVariousArtists();
         }
@@ -599,19 +597,19 @@ void FsDevice::copySongToResult(int status)
     FileJob::finished(job);
     spaceInfo.setDirty();
     if (jobAbortRequested) {
-        if (job && job->wasStarted() && QFile::exists(currentBaseDir+currentMusicPath)) {
-            QFile::remove(currentBaseDir+currentMusicPath);
+        if (job && job->wasStarted() && QFile::exists(currentDestFile)) {
+            QFile::remove(currentDestFile);
         }
         return;
     }
     if (Ok!=status) {
         emit actionStatus(status);
     } else {
-        currentSong.file=currentMusicPath; // MPD's paths are not full!!!
+        currentSong.file=currentDestFile.mid(currentMpdDir.length());
         if (needToFixVa) {
             currentSong.revertVariousArtists();
         }
-        Utils::setFilePerms(currentBaseDir+currentSong.file);
+        Utils::setFilePerms(currentDestFile);
         MusicLibraryModel::self()->addSongToList(currentSong);
         DirViewModel::self()->addFileToList(currentSong.file);
         emit actionStatus(Ok, job && job->coverCopied());

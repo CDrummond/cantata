@@ -48,7 +48,7 @@ private:
     inline qint64 computeProgress(const QString &output);
 
 private:
-    const Encoders::Encoder &encoder;
+    Encoders::Encoder encoder;
     int value;
     QProcess *process;
     qint64 duration; //in csec

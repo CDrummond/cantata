@@ -24,6 +24,7 @@
 #include "streamfetcher.h"
 #include "networkaccessmanager.h"
 #include "mpdconnection.h"
+#include "mpdparseutils.h"
 #include "streamsmodel.h"
 #include <QRegExp>
 #include <QUrl>
@@ -161,6 +162,7 @@ void StreamFetcher::get(const QStringList &items, int insertRow, bool replace, q
     replacePlayQueue=replace;
     prio=priority;
     current=QString();
+    currentName=QString();
     doNext();
 }
 
@@ -170,7 +172,10 @@ void StreamFetcher::doNext()
     while (todo.count()) {
         current=todo.takeFirst();
         QUrl u(current);
-
+        currentName=MPDParseUtils::getName(current);
+        if (!currentName.isEmpty()) {
+            current=current.left(current.length()-(currentName.length()+1));
+        }
         if (u.scheme().startsWith(StreamsModel::constPrefix)) {
             data.clear();
             u.setScheme("http");
@@ -179,7 +184,7 @@ void StreamFetcher::doNext()
             connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
             return;
         } else {
-            done.append(current);
+            done.append(MPDParseUtils::addName(current, currentName));
         }
     }
 
@@ -245,7 +250,7 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                 QString u=parse(data);
 
                 if (u.isEmpty() || u==current) {
-                    done.append(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current);
+                    done.append(MPDParseUtils::addName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
                 } else if (u.startsWith(QLatin1String("http://")) && ++redirects<constMaxRedirects) {
                     // Redirect...
                     current=u;
@@ -255,11 +260,11 @@ void StreamFetcher::jobFinished(QNetworkReply *reply)
                     connect(job, SIGNAL(finished()), this, SLOT(jobFinished()));
                     redirected=true;
                 } else {
-                    done.append(u);
+                    done.append(MPDParseUtils::addName(u, currentName));
                 }
             }
         } else {
-            done.append(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current);
+            done.append(MPDParseUtils::addName(current.startsWith(StreamsModel::constPrefix) ? current.mid(StreamsModel::constPrefix.length()) : current, currentName));
         }
 
         if (!redirected) {

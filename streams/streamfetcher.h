@@ -60,6 +60,7 @@ private:
 private:
     QNetworkReply *job;
     QString current;
+    QString currentName;
     QStringList todo;
     QStringList done;
     int row;

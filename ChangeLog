@@ -131,6 +131,8 @@
 78. Fix HTTP server listening on non-loopback address.
 79. Rename 'Library' tab to 'Artists'
 80. Save, and restore, sizes of (most) dialogs.
+81. Add stream name to fragment part of URL sent to MPD. This way, when the
+    playqueue listing is received back from MPD, the name can be determined.
 
 0.9.2
 -----

@@ -51,7 +51,7 @@ public:
     static void convertCache(const QString &compressedName);
     static void cleanCache();
 
-    MusicLibraryModel(QObject *parent=0);
+    MusicLibraryModel(QObject *parent=0, bool isMpdModel=true);
     ~MusicLibraryModel();
     QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &) const;

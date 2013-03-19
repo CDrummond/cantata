@@ -124,18 +124,21 @@ void MusicLibraryModel::cleanCache()
     }
 }
 
-MusicLibraryModel::MusicLibraryModel(QObject *parent)
+MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel)
     : ActionModel(parent)
     , rootItem(new MusicLibraryItemRoot)
 {
-    connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
-            this, SLOT(setArtistImage(const Song &, const QImage &)));
-    connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
-            this, SLOT(setCover(const Song &, const QImage &, const QString &)));
-    connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
-            this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
-    connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
-            this, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
+    if (isMpdModel)
+    {
+        connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
+                this, SLOT(setArtistImage(const Song &, const QImage &)));
+        connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
+                this, SLOT(setCover(const Song &, const QImage &, const QString &)));
+        connect(Covers::self(), SIGNAL(coverUpdated(const Song &, const QImage &, const QString &)),
+                this, SLOT(updateCover(const Song &, const QImage &, const QString &)));
+        connect(MPDConnection::self(), SIGNAL(musicLibraryUpdated(MusicLibraryItemRoot *, QDateTime)),
+                this, SLOT(updateMusicLibrary(MusicLibraryItemRoot *, QDateTime)));
+    }
 }
 
 MusicLibraryModel::~MusicLibraryModel()

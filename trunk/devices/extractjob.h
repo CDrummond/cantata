@@ -43,7 +43,7 @@ private:
     void run();
 
 private:
-    const Encoders::Encoder &encoder;
+    Encoders::Encoder encoder;
     int value;
     QString srcFile;
     QString destFile;

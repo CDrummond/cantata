@@ -300,6 +300,12 @@ void AlbumDetailsDialog::adjustTrackNumbers()
     }
 }
 
+enum Roles {
+    Role_Id = Qt::UserRole,
+    Role_File,
+    Role_Time
+};
+
 Song AlbumDetailsDialog::toSong(QTreeWidgetItem *i, const CdAlbum &album)
 {
     Song s;
@@ -311,8 +317,9 @@ Song AlbumDetailsDialog::toSong(QTreeWidgetItem *i, const CdAlbum &album)
     s.artist=singleArtist->isChecked() ? s.albumartist : i->text(COL_ARTIST);
     s.title=i->text(COL_TITLE);
     s.track=i->text(COL_TRACK).toInt();
-    s.id=i->data(0, Qt::UserRole).toInt();
-    s.file=i->data(0, Qt::UserRole+1).toString();
+    s.id=i->data(0, Role_Id).toInt();
+    s.file=i->data(0, Role_File).toString();
+    s.time=i->data(0, Role_Time).toInt();
     s.fillEmptyFields();
     return s;
 }
@@ -341,8 +348,9 @@ void AlbumDetailsDialog::update(QTreeWidgetItem *i, const Song &s)
     i->setText(COL_TRACK, QString::number(s.track));
     i->setText(COL_ARTIST, s.artist);
     i->setText(COL_TITLE, s.title);
-    i->setData(0, Qt::UserRole, s.id);
-    i->setData(0, Qt::UserRole+1, s.file);
+    i->setData(0, Role_Id, s.id);
+    i->setData(0, Role_File, s.file);
+    i->setData(0, Role_Time, s.time);
 }
 
 void AlbumDetailsDialog::setCover()

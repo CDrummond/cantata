@@ -30,8 +30,8 @@
 #include <QXmlStreamReader>
 
 static const int constMaxRedirects = 3;
-static const int constMaxData = 12 * 1024;
-static const int constTimeout = 5*1000;
+static const int constMaxData = 1024;
+static const int constTimeout = 3*1000;
 
 static QString parsePlaylist(const QByteArray &data, const QString &key, const QSet<QString> &handlers)
 {

@@ -27,8 +27,7 @@
 #include "streamsmodel.h"
 #include <QRegExp>
 #include <QUrl>
-#include <QDomDocument>
-#include <QDomElement>
+#include <QXmlStreamReader>
 
 static const int constMaxRedirects = 3;
 static const int constMaxData = 12 * 1024;
@@ -101,28 +100,17 @@ static QString parseAsx(const QByteArray &data, const QSet<QString> &handlers)
 static QString parseXml(const QByteArray &data, const QSet<QString> &handlers)
 {
     // XSPF / SPIFF
-    QDomDocument doc;
-    doc.setContent(data);
-    QDomElement root = doc.documentElement();
+    QXmlStreamReader reader(data);
 
-    if (QLatin1String("playlist") == root.tagName()) {
-        QDomElement tl = root.firstChildElement(QLatin1String("trackList"));
-        while (!tl.isNull()) {
-            QDomElement t = root.firstChildElement(QLatin1String("track"));
-            while (!t.isNull()) {
-                QDomElement l = root.firstChildElement(QLatin1String("location"));
-                while (!l.isNull()) {
-                    QString node=l.nodeValue();
-                    foreach (const QString &handler, handlers) {
-                        if (node.startsWith(handler+QLatin1String("://"))) {
-                            return node;
-                        }
-                    }
-                    l=l.nextSiblingElement(QLatin1String("location"));
+    while (!reader.atEnd()) {
+        reader.readNext();
+        if (QXmlStreamReader::StartElement==reader.tokenType() && QLatin1String("location")==reader.name()) {
+            QString loc=reader.readElementText().trimmed();
+            foreach (const QString &handler, handlers) {
+                if (loc.startsWith(handler+QLatin1String("://"))) {
+                    return loc;
                 }
-                t=t.nextSiblingElement(QLatin1String("track"));
             }
-            tl=tl.nextSiblingElement(QLatin1String("trackList"));
         }
     }
 

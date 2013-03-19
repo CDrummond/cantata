@@ -644,9 +644,6 @@ void ActionDialog::setPage(int page, const QString &msg)
     }
 }
 
-#include <QDebug>
-#include <time.h>
-#define DBUG qDebug()
 QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
 {
     QString str("<table>");
@@ -674,20 +671,13 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
         QString estimate=i18n("Unknown");
 
         double taken=timeTaken+timer.elapsed();
-        DBUG << time(NULL) << "timeTaken" << timeTaken << "elapsed" << timer.elapsed() << "taken" << taken
-                   << currentSong.file;
         if (taken>5.0) {
             double percent=(actionedTime+(currentPercent*currentSong.time))/totalTime;
             quint64 timeRemaining=((taken/percent)-taken)/1000.0;
-            estimate=Song::formattedTime(timeRemaining>0 ? timeRemaining : 0);
-            DBUG << "PC:" << percent
-                       << "actionedTime" << actionedTime
-                       << "currentPercent" << currentPercent
-                       << "cs.t" << currentSong.time
-                       << "totalTime" << totalTime << "timeRemaining" << timeRemaining << estimate;
+            estimate=i18nc("time (EStimated)", "%1 (Estimated)").arg(Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
         }
 
-        str+=i18n("<tr><i><td align=\"right\">Estimated time remaining:</td><td>%5</td></i></tr>")
+        str+=i18n("<tr><i><td align=\"right\">Time remaining:</td><td>%5</td></i></tr>")
                 .arg(estimate);
     }
 

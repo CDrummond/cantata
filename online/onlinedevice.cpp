@@ -43,8 +43,9 @@ void OnlineDevice::copySongTo(const Song &s, const QString &baseDir, const QStri
     overWrite=overWrite;
     lastProg=-1;
     redirects=0;
-    currentBaseDir=baseDir;
-    currentMusicPath=musicPath;
+    currentMpdDir=baseDir;
+    currentDestFile=baseDir+musicPath;
+
     QDir dir(Utils::getDir(dest));
     if (!dir.exists() && !Utils::createDir(dir.absolutePath(), baseDir)) {
         emit actionStatus(DirCreationFaild);
@@ -81,13 +82,11 @@ void OnlineDevice::downloadFinished()
                 connect(job, SIGNAL(downloadProgress(qint64,qint64)), SLOT(downloadProgress(qint64,qint64)));
             }
         } else {
-            QString dest(currentBaseDir+currentMusicPath);
-
-            if (overWrite && QFile::exists(dest)) {
-                QFile::remove(dest);
+            if (overWrite && QFile::exists(currentDestFile)) {
+                QFile::remove(currentDestFile);
             }
 
-            QFile f(dest);
+            QFile f(currentDestFile);
             if (f.open(QIODevice::WriteOnly)) {
                 f.write(reply->readAll());
                 emit actionStatus(Ok);

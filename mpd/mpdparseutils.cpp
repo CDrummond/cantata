@@ -227,8 +227,14 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     if (isPlayQueue) {
         if (song.title.isEmpty() && !song.file.isEmpty()) {
             if (song.isStream()) {
-                if (!song.isCantataStream() && song.name.isEmpty()) {
-                    song.title=Utils::getFile(QUrl(song.file).path());
+                if (!song.isCantataStream()) {
+                    QString name=getName(song.file);
+                    if (!name.isEmpty()) {
+                        song.name=name;
+                    }
+                    if (song.name.isEmpty()) {
+                        song.title=Utils::getFile(QUrl(song.file).path());
+                    }
                 }
             } else {
                 song.guessTags();
@@ -491,4 +497,15 @@ QString MPDParseUtils::formatDuration(const quint32 totalseconds)
             ? time.toString("h:mm:ss")
             : QString("%1:%2").arg(days).arg(time.toString("hh:mm:ss"));
     #endif
+}
+
+QString MPDParseUtils::addName(const QString &url, const QString &name)
+{
+    return name.isEmpty() ? url : (url+"#"+name);
+}
+
+QString MPDParseUtils::getName(const QString &url)
+{
+    int idx=url.lastIndexOf('#');
+    return -1==idx ? QString() : url.mid(idx+1);
 }

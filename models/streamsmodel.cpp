@@ -49,6 +49,7 @@
 #include "qtiocompressor/qtiocompressor.h"
 #include "networkaccessmanager.h"
 #include "stdactions.h"
+#include "mpdparseutils.h"
 
 #ifdef ENABLE_KDE_SUPPORT
 K_GLOBAL_STATIC(StreamsModel, instance)
@@ -773,12 +774,12 @@ bool StreamsModel::validProtocol(const QString &file) const
     return scheme.isEmpty() || MPDConnection::self()->urlHandlers().contains(scheme);
 }
 
-QString StreamsModel::prefixUrl(const QString &n, bool addPrefix)
+QString StreamsModel::modifyUrl(const QString &u, bool addPrefix, const QString &name)
 {
-    if (!addPrefix || !n.startsWith("http:")) {
-        return n;
+    if (!addPrefix || !u.startsWith("http:")) {
+        return MPDParseUtils::addName(u, name);
     }
-    return constPrefix+n;
+    return MPDParseUtils::addName(constPrefix+u, name);
 }
 
 QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPrefix) const
@@ -793,13 +794,13 @@ QStringList StreamsModel::filenames(const QModelIndexList &indexes, bool addPref
             foreach (const StreamItem *s, static_cast<CategoryItem*>(item)->streams) {
                 QString f=s->url.toString();
                 if (!fnames.contains(f) && validProtocol(f)) {
-                    fnames << prefixUrl(f, addPrefix);
+                    fnames << modifyUrl(f, addPrefix, s->name);
                 }
             }
         } else if (!selectedCategories.contains(static_cast<StreamItem*>(item)->parent)) {
             QString f=static_cast<StreamItem*>(item)->url.toString();
             if (!fnames.contains(f) && validProtocol(f)) {
-                fnames << prefixUrl(f, addPrefix);
+                fnames << modifyUrl(f, addPrefix, static_cast<StreamItem*>(item)->name);
             }
         }
     }

@@ -62,9 +62,12 @@ void HttpServer::stop()
     }
 }
 
-bool HttpServer::setDetails(const QString &addr, quint16 port)
+bool HttpServer::readConfig()
 {
-    if (socket && port==socket->serverPort() && addr==socket->configuredAddress()) {
+    QString addr=Settings::self()->httpAddress();
+    quint16 port=Settings::self()->httpPort();
+
+    if (socket && socket->isListening() && port==socket->serverPort() && addr==socket->configuredAddress() && Settings::self()->enableHttp()) {
         return true;
     }
 
@@ -79,7 +82,7 @@ bool HttpServer::setDetails(const QString &addr, quint16 port)
         thread=0;
     }
 
-    if (0!=port) {
+    if (Settings::self()->enableHttp()) {
         thread=new QThread(0);
         socket=new HttpSocket(addr, port);
         socket->moveToThread(thread);

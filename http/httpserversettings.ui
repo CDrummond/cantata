@@ -79,7 +79,7 @@
      <item row="3" column="1">
       <widget class="SpinBox" name="httpPort">
        <property name="minimum">
-        <number>1023</number>
+        <number>0</number>
        </property>
        <property name="maximum">
         <number>65535</number>

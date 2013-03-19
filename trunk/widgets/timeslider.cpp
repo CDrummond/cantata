@@ -106,6 +106,7 @@ void TimeSlider::setRange(int min, int max)
 {
     slider->setRange(min, max);
     slider->setValue(min);
+    label->setStyleSheet(min==max ? QLatin1String("QLabel { color : transparent; }") : QString());
     updateTimes();
 }
 

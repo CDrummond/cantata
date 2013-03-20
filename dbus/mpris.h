@@ -219,6 +219,9 @@ public:
         return QStringList();
     }
 
+public:
+    void updateCurrentSong(const Song &song);
+
 public Q_SLOTS:
     void Raise();
 
@@ -239,7 +242,6 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void updateStatus();
-    void updateCurrentSong(const Song &song);
 
 private:
     void signalUpdate(const QString &property, const QVariant &value);

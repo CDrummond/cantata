@@ -1709,6 +1709,9 @@ void MainWindow::updateCurrentSong(const Song &song)
     }
     #endif
 
+    #if !defined Q_OS_WIN
+    mpris->updateCurrentSong(current);
+    #endif
     positionSlider->setEnabled(-1!=current.id && !currentIsStream());
     coverWidget->update(current);
 

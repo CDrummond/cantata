@@ -133,6 +133,8 @@
 80. Save, and restore, sizes of (most) dialogs.
 81. Add stream name to fragment part of URL sent to MPD. This way, when the
     playqueue listing is received back from MPD, the name can be determined.
+82. Improve MPRIS interface - fix CanPlay/CanPause status update, and use micro
+    seconds for times.
 
 0.9.2
 -----

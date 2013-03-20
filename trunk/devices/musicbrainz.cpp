@@ -272,7 +272,11 @@ void MusicBrainz::lookup(bool full)
     // Code adapted from libmusicbrainz/examples/cdlookup.cc
 
     try {
-        MusicBrainz5::CMetadata Metadata=Query.Query("discid",discId.toAscii().constData());
+        #if QT_VERSION < 0x050000
+        MusicBrainz5::CMetadata Metadata=Query.Query("discid", discId.toAscii().constData());
+        #else
+        MusicBrainz5::CMetadata Metadata=Query.Query("discid", discId.toLatin1().constData());
+        #endif
 
         if (Metadata.Disc() && Metadata.Disc()->ReleaseList()) {
             MusicBrainz5::CReleaseList *releaseList=Metadata.Disc()->ReleaseList();
@@ -295,7 +299,11 @@ void MusicBrainz::lookup(bool full)
                     //However, these releases will include information for all media in the release
                     //So we need to filter out the only the media we want.
 
+                    #if QT_VERSION < 0x050000
                     MusicBrainz5::CMediumList mediaList=fullRelease->MediaMatchingDiscID(discId.toAscii().constData());
+                    #else
+                    MusicBrainz5::CMediumList mediaList=fullRelease->MediaMatchingDiscID(discId.toLatin1().constData());
+                    #endif
 
                     if (mediaList.NumItems() > 0) {
                         DBUG << "Found " << mediaList.NumItems() << " media item(s)";

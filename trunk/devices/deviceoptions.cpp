@@ -273,6 +273,8 @@ void DeviceOptions::save(const QString &group, bool isMpd, bool saveTrans)
         SET_VALUE("transcoderValue", transcoderValue);
         SET_VALUE("transcoderWhenDifferent", transcoderWhenDifferent);
     }
+    #else
+    Q_UNUSED(saveTrans)
     #endif
     CFG_SYNC;
 

@@ -40,15 +40,17 @@ int Dialog::exec()
 #endif
 
 #ifdef ENABLE_KDE_SUPPORT
-#include <KGlobal>
-#include <KConfigGroup>
-Dialog::Dialog(QWidget *parent, const QString &name=QString())
+#include <KDE/KGlobal>
+#include <KDE/KConfig>
+#include <KDE/KConfigGroup>
+
+Dialog::Dialog(QWidget *parent, const QString &name)
     : KDialog(parent)
 {
     if (!name.isEmpty()) {
         setObjectName(name);
         KConfigGroup cfg(KGlobal::config(), name);
-        cfgSize=GET_SIZE("size");
+        cfgSize=cfg.readEntry("size", QSize());
         if (!cfgSize.isEmpty()) {
             KDialog::resize(cfgSize);
         }

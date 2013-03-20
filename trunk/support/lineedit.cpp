@@ -57,7 +57,7 @@ void LineEdit::setReadOnly(bool e)
 #include <QToolButton>
 #include <QStyle>
 #include <QComboBox>
-
+#include <QDebug>
 LineEdit::LineEdit(QWidget *parent)
     : QLineEdit(parent)
 {
@@ -78,7 +78,7 @@ LineEdit::LineEdit(QWidget *parent)
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     bool onCombo = parent && qobject_cast<QComboBox *>(parent);
     QString styleSheet=QLatin1String("QLineEdit { padding-")+QLatin1String(Qt::RightToLeft==layoutDirection() ? "left" : "right")+
-                       QLatin1String(" %1px; ")+QLatin1String(onCombo ? "background: transparent " : "")+QChar('}');
+                       QLatin1String(": %1px; ")+QLatin1String(onCombo ? "background: transparent " : "")+QChar('}');
     setStyleSheet(styleSheet.arg(clearButton->sizeHint().width() + frameWidth + 1));
 
 //    if (!onCombo) {

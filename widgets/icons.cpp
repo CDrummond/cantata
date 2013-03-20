@@ -266,7 +266,7 @@ Icon Icons::shuffleIcon;
 Icon Icons::libraryIcon;
 Icon Icons::radioStreamIcon;
 Icon Icons::addRadioStreamIcon;
-Icon Icons::wikiIcon;
+Icon Icons::infoIcon;
 Icon Icons::albumIcon;
 Icon Icons::streamIcon;
 Icon Icons::configureIcon;
@@ -312,7 +312,7 @@ void Icons::init()
     libraryIcon=Icon("cantata-view-media-library");
     radioStreamIcon=Icon("cantata-view-radiostream");
     addRadioStreamIcon=Icon("cantata-radiostream-add");
-    wikiIcon=Icon("cantata-view-wikipedia");
+    infoIcon=Icon("dialog-information");
     albumIcon=Icon("media-optical");
     streamIcon=Icon("applications-internet");
     configureIcon=Icon("configure");
@@ -350,9 +350,6 @@ void Icons::init()
     }
     if (addRadioStreamIcon.isNull()) {
         addRadioStreamIcon=Icon::create("addradio", constStdSizes);
-    }
-    if (wikiIcon.isNull()) {
-        wikiIcon=Icon::create("wiki", constStdSizes);
     }
     if (variousArtistsIcon.isNull()) {
         variousArtistsIcon=Icon::create("va", QList<int>() << 16 << 22 << 32 << 48 << 64 << 128);

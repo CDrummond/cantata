@@ -187,9 +187,7 @@ MainWindow::MainWindow(QWidget *parent)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
     , lyricsNeedUpdating(false)
-    #ifdef ENABLE_WEBKIT
     , infoNeedsUpdating(false)
-    #endif
     #if !defined Q_OS_WIN
     , mpris(0)
     , gnomeMediaKeys(0)
@@ -287,9 +285,7 @@ MainWindow::MainWindow(QWidget *parent)
     lyricsTabAction = ActionCollection::get()->createAction("showlyricstab", i18n("Lyrics"), Icons::lyricsIcon);
     streamsTabAction = ActionCollection::get()->createAction("showstreamstab", i18n("Streams"), Icons::radioStreamIcon);
     onlineTabAction = ActionCollection::get()->createAction("showonlinetab", i18n("Online"), Icons::streamIcon);
-    #ifdef ENABLE_WEBKIT
-    infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"), Icons::wikiIcon);
-    #endif
+    infoTabAction = ActionCollection::get()->createAction("showinfotab", i18n("Info"), Icons::infoIcon);
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction = ActionCollection::get()->createAction("showdevicestab", i18n("Devices"), "multimedia-player");
     #endif
@@ -321,9 +317,7 @@ MainWindow::MainWindow(QWidget *parent)
     streamsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     onlineTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     lyricsTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    #ifdef ENABLE_WEBKIT
     infoTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
-    #endif // ENABLE_WEBKIT
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesTabAction->setShortcut(Qt::AltModifier+nextKey(pageKey));
     #endif // ENABLE_DEVICES_SUPPORT
@@ -356,9 +350,7 @@ MainWindow::MainWindow(QWidget *parent)
     streamsPage = new StreamsPage(this);
     onlinePage = new OnlineServicesPage(this);
     lyricsPage = new LyricsPage(this);
-    #ifdef ENABLE_WEBKIT
     infoPage = new InfoPage(this);
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     devicesPage = new DevicesPage(this);
     #endif
@@ -407,9 +399,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabWidget->AddTab(streamsPage, TAB_ACTION(streamsTabAction), !hiddenPages.contains(streamsPage->metaObject()->className()));
     tabWidget->AddTab(onlinePage, TAB_ACTION(onlineTabAction), !hiddenPages.contains(onlinePage->metaObject()->className()));
     tabWidget->AddTab(lyricsPage, TAB_ACTION(lyricsTabAction), !hiddenPages.contains(lyricsPage->metaObject()->className()));
-    #ifdef ENABLE_WEBKIT
     tabWidget->AddTab(infoPage, TAB_ACTION(infoTabAction), !hiddenPages.contains(infoPage->metaObject()->className()));
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     tabWidget->AddTab(devicesPage, TAB_ACTION(devicesTabAction), !hiddenPages.contains(devicesPage->metaObject()->className()));
     DevicesModel::self()->setEnabled(!hiddenPages.contains(devicesPage->metaObject()->className()));
@@ -716,9 +706,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(lyricsTabAction, SIGNAL(triggered(bool)), this, SLOT(showLyricsTab()));
     connect(streamsTabAction, SIGNAL(triggered(bool)), this, SLOT(showStreamsTab()));
     connect(onlineTabAction, SIGNAL(triggered(bool)), this, SLOT(showOnlineTab()));
-    #ifdef ENABLE_WEBKIT
     connect(infoTabAction, SIGNAL(triggered(bool)), this, SLOT(showInfoTab()));
-    #endif
     connect(searchAction, SIGNAL(triggered(bool)), this, SLOT(focusSearch()));
     connect(expandAllAction, SIGNAL(triggered(bool)), this, SLOT(expandAll()));
     connect(collapseAllAction, SIGNAL(triggered(bool)), this, SLOT(collapseAll()));
@@ -747,6 +735,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(savePlayQueueAction, SIGNAL(triggered(bool)), playlistsPage, SLOT(savePlaylist()));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
+    connect(coverWidget, SIGNAL(coverImage(const QImage &)), infoPage, SLOT(setImage(const QImage &)));
     connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
     #ifdef Q_OS_LINUX
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
@@ -831,9 +820,7 @@ MainWindow::~MainWindow()
     Settings::self()->saveHiddenPages(hiddenPages);
     streamsPage->save();
     lyricsPage->saveSettings();
-    #ifdef ENABLE_WEBKIT
-    infoPage->save();
-    #endif
+    infoPage->saveSettings();
     Settings::self()->saveForceSingleClick(ItemView::getForceSingleClick());
     Settings::self()->saveStartHidden(trayItem->isActive() && isHidden() && Settings::self()->minimiseOnClose());
     Settings::self()->save(true);
@@ -1161,9 +1148,7 @@ void MainWindow::checkMpdDir()
     case PAGE_STREAMS:   streamsPage->controlActions();    break;
     case PAGE_ONLINE:    onlinePage->controlActions();     break;
     case PAGE_LYRICS:                                      break;
-    #ifdef ENABLE_WEBKIT
     case PAGE_INFO:                                        break;
-    #endif
     default:                                               break;
     }
 }
@@ -1379,10 +1364,12 @@ void MainWindow::updateSettings()
 
     if (Settings::self()->lyricsBgnd()!=lyricsPage->bgndImageEnabled()) {
         lyricsPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
+        infoPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
         if (lyricsPage->bgndImageEnabled() && !coverWidget->isEmpty()) {
             Covers::Image img=Covers::self()->get(coverWidget->song());
             if (!img.img.isNull()) {
                 lyricsPage->setImage(img.img);
+                infoPage->setImage(img.img);
             }
         }
     }
@@ -1765,13 +1752,11 @@ void MainWindow::updateCurrentSong(const Song &song)
         lyricsNeedUpdating=true;
     }
 
-    #ifdef ENABLE_WEBKIT
     if (PAGE_INFO==tabWidget->current_index()) {
         infoPage->update(song);
     } else {
         infoNeedsUpdating=true;
     }
-    #endif
     trayItem->songChanged(song, isPlaying);
 }
 
@@ -2331,14 +2316,12 @@ void MainWindow::currentTabChanged(int index)
             lyricsNeedUpdating=false;
         }
         break;
-    #ifdef ENABLE_WEBKIT
     case PAGE_INFO:
         if (infoNeedsUpdating) {
             infoPage->update(current);
             infoNeedsUpdating=false;
         }
         break;
-    #endif
     default:
         break;
     }
@@ -2446,12 +2429,9 @@ void MainWindow::showPage(const QString &page, bool focusSearch)
         if (focusSearch) {
             onlinePage->focusSearch();
         }
-    }
-    #ifdef ENABLE_WEBKIT
-    else if (QLatin1String("info")==p) {
+    } else if (QLatin1String("info")==p) {
         showTab(MainWindow::PAGE_INFO);
     }
-    #endif
     #if defined ENABLE_KDE_SUPPORT && defined TAGLIB_FOUND
     else if (QLatin1String("devices")==p) {
         showTab(MainWindow::PAGE_DEVICES);

@@ -40,10 +40,6 @@ The following options may be passed to CMake:
         Compile support for samba, sshfs, and local folder, devices.
         Default: OFF
 
-    -DENABLE_WEBKIT=OFF
-        Compile with WebKit, used for info page.
-        Default: ON
-
     -DENABLE_KDE=OFF
         Link against KDE libraries, use KDE dialogs, etc.
         Default: ON

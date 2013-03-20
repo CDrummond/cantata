@@ -1,8 +1,6 @@
 - Qt5 port
   - Only tested with Qt5.0.1
-  - Crash if link to QtWebKit?
-    - Looks like QtWebKit is somehow pulling in QtGui from Qt4
-  - Segmentation fault on exit due to QIcon destrctor?
+  - Segmentation fault on exit due to QIcon destructor?
   - QUrl.setEncodedUrl
     - covers.cpp
     - magnatuneservice.cpp

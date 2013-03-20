@@ -26,7 +26,6 @@ OPTION(ENABLE_PHONON "Enable Phonon library (required to playback MPD HTTP strea
 OPTION(ENABLE_KDE "Enable KDE libraries" ON)
 OPTION(ENABLE_QT5 "Build against Qt5" OFF)
 OPTION(ENABLE_MTP "Enable MTP library (required to support MTP devices)" ON)
-OPTION(ENABLE_WEBKIT "Enable WebKit library (required for artist/album information)" ON)
 OPTION(ENABLE_FFMPEG "Enable ffmpeg/libav libraries (required for replaygain calculation)" ON)
 OPTION(ENABLE_MPG123 "Enable mpg123 libraries (required for replaygain calculation)" ON)
 OPTION(ENABLE_SPEEXDSP "Enable SpeexDSP libraries (used to speed-up replaygain calculation)" ON)
@@ -100,6 +99,7 @@ SET( CANTATA_SRCS
     gui/albumspage.cpp
     gui/folderpage.cpp
     gui/playlistspage.cpp
+    gui/infopage.cpp
     gui/trayitem.cpp
     gui/cachesettings.cpp
     gui/coverdialog.cpp
@@ -181,6 +181,7 @@ SET( CANTATA_MOC_HDRS
     gui/librarypage.h
     gui/albumspage.h
     gui/playlistspage.h
+    gui/infopage.h
     gui/serverplaybacksettings.h
     gui/serversettings.h
     gui/preferencesdialog.h
@@ -308,12 +309,6 @@ if (TAGLIB_FOUND)
     )
 endif (TAGLIB_FOUND)
 
-if (ENABLE_WEBKIT)
-    SET( CANTATA_SRCS ${CANTATA_SRCS} gui/infopage.cpp )
-    SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} gui/infopage.h )
-    ADD_DEFINITIONS( -DENABLE_WEBKIT )
-endif (ENABLE_WEBKIT)
-
 if (NOT WIN32)
     SET( CANTATA_SRCS ${CANTATA_SRCS} dbus/mpris.cpp dbus/gnomemediakeys.cpp devices/mountpoints.cpp )
     SET( CANTATA_MOC_HDRS ${CANTATA_MOC_HDRS} dbus/mpris.h dbus/gnomemediakeys.h devices/mountpoints.h )
@@ -367,23 +362,6 @@ else (ENABLE_QT5)
 endif (ENABLE_QT5)
 
 find_package(ZLIB REQUIRED)
-
-if (ENABLE_WEBKIT)
-    if (ENABLE_KDE_SUPPORT)
-        TARGET_LINK_LIBRARIES( cantata ${KDE4_KDEWEBKIT_LIBRARY} ${QT_QTWEBKIT_LIBRARY}  )
-    else (ENABLE_KDE_SUPPORT)
-        if (ENABLE_QT5)
-            find_package(Qt5WebKit REQUIRED)
-            find_package(Qt5WebKitWidgets REQUIRED)
-            set (QTLIBS ${QTLIBS} ${Qt5WebKit_LIBRARIES} ${Qt5WebKitWidgets_LIBRARIES})
-            set (QTINCLUDES ${QTINCLUDES} ${Qt5WebKit_INCLUDE_DIRS} ${Qt5WebKitWidgets_INCLUDE_DIRS})
-            add_definitions(${Qt5WebKit_DEFINITIONS} ${Qt5WebKitWidgets_DEFINITIONS})
-        else (ENABLE_QT5)
-            set (QTLIBS ${QTLIBS} ${QT_QTWEBKIT_LIBRARY})
-        endif (ENABLE_QT5)
-    endif (ENABLE_KDE_SUPPORT)
-endif (ENABLE_WEBKIT)
-
 
 if (ENABLE_PHONON)
     FIND_PACKAGE( Phonon )
@@ -551,7 +529,7 @@ IF( ENABLE_KDE_SUPPORT )
     QT4_ADD_RESOURCES( CANTATA_RC_SRCS ${CANTATA_RCS} )
     KDE4_ADD_UI_FILES( CANTATA_UI_HDRS ${CANTATA_UIS} )
     KDE4_ADD_EXECUTABLE( cantata ${CANTATA_SRCS} ${CANTATA_MOC_SRCS} ${CANTATA_RC_SRCS} ${CANTATA_UI_HDRS} )
-    TARGET_LINK_LIBRARIES( cantata ${KDE4_KDEWEBKIT_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_SOLID_LIBS} X11)
+    TARGET_LINK_LIBRARIES( cantata ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_SOLID_LIBS} X11)
     if (NOT WIN32 AND TAGLIB_FOUND AND ENABLE_REMOTE_DEVICES)
         TARGET_LINK_LIBRARIES(cantata ${KDE4_KFILE_LIBS})
     endif (NOT WIN32 AND TAGLIB_FOUND AND ENABLE_REMOTE_DEVICES)
@@ -631,7 +609,8 @@ if (NOT WIN32)
 endif (NOT WIN32)
 
 add_subdirectory(qtiocompressor)
-TARGET_LINK_LIBRARIES(cantata qtiocompressor)
+add_subdirectory(qjson)
+TARGET_LINK_LIBRARIES(cantata qtiocompressor qjson)
 include_directories(${CMAKE_BINARY_DIR}/qtiocompressor)
 
 ADD_SUBDIRECTORY( icons )

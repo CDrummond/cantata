@@ -250,6 +250,7 @@ private:
     MPDStatusValues status;
     QString currentCover;
     Song currentSong;
+    int pos;
 };
 
 #endif

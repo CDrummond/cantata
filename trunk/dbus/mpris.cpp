@@ -51,7 +51,7 @@ Mpris::Mpris(MainWindow *p)
     connect(this, SIGNAL(setSeekId(quint32, quint32)), MPDConnection::self(), SLOT(setSeekId(quint32, quint32)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
 
-    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
+//    connect(MPDConnection::self(), SIGNAL(currentSongUpdated(const Song &)), this, SLOT(updateCurrentSong(const Song &)));
     connect(MPDStatus::self(), SIGNAL(updated()), this, SLOT(updateStatus()));
 }
 
@@ -104,8 +104,8 @@ void Mpris::updateCurrentCover(const QString &fileName)
 
 void Mpris::updateCurrentSong(const Song &song)
 {
-    if (song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album || song.track!=currentSong.track ||
-        song.disc!=currentSong.disc) {
+    if (song.albumArtist()!=currentSong.albumArtist() || song.album!=currentSong.album ||
+        song.track!=currentSong.track || song.title!=currentSong.title || song.disc!=currentSong.disc) {
         currentSong = song;
         signalUpdate("Metadata", Metadata());
     }
@@ -113,11 +113,17 @@ void Mpris::updateCurrentSong(const Song &song)
 
 QVariantMap Mpris::Metadata() const {
     QVariantMap metadataMap;
-
-    if (!currentSong.title.isEmpty() && !currentSong.artist.isEmpty() && !currentSong.album.isEmpty()) {
+    if (!currentSong.title.isEmpty() && !currentSong.artist.isEmpty() &&
+            (!currentSong.album.isEmpty() || currentSong.isStream() && !currentSong.name.isEmpty())) {
         metadataMap.insert("mpris:trackid", currentSong.id);
-        metadataMap.insert("mpris:length", currentSong.time*1000000);
-        metadataMap.insert("xesam:album", currentSong.album);
+        if (currentSong.time>0) {
+            metadataMap.insert("mpris:length", currentSong.time*1000000);
+        }
+        if (!currentSong.album.isEmpty()) {
+            metadataMap.insert("xesam:album", currentSong.album);
+        } else if (!currentSong.name.isEmpty()) {
+            metadataMap.insert("xesam:album", currentSong.name);
+        }
         if (!currentSong.albumartist.isEmpty() && currentSong.albumartist!=currentSong.artist) {
             metadataMap.insert("xesam:albumArtist", QStringList() << currentSong.albumartist);
         }

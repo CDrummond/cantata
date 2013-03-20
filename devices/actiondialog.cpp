@@ -677,7 +677,7 @@ QString ActionDialog::formatSong(const Song &s, bool showFiles, bool showTime)
             estimate=i18nc("time (EStimated)", "%1 (Estimated)").arg(Song::formattedTime(timeRemaining>0 ? timeRemaining : 0));
         }
 
-        str+=i18n("<tr><i><td align=\"right\">Time remaining:</td><td>%5</td></i></tr>")
+        str+=i18n("<tr><i><td align=\"right\"><i>Time remaining:</i></td><td><i>%5</i></td></i></tr>")
                 .arg(estimate);
     }
 

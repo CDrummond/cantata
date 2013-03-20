@@ -78,6 +78,27 @@ static bool isAlbumHeader(const QModelIndex &index)
     return !index.data(GroupedView::Role_IsCollection).toBool() && AlbumHeader==getType(index);
 }
 
+static QString streamText(const Song &song, const QString &trackTitle)
+{
+    if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
+        return song.title.isEmpty() && song.name.isEmpty()
+                ? song.file
+                : song.name.isEmpty()
+                  ? song.title
+                  : song.title.isEmpty()
+                    ? song.name
+                    : (song.title + " - " + song.name);
+    } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
+        return song.artist + " - " + (song.name.isEmpty()
+                                     ? song.title
+                                     : song.title.isEmpty()
+                                        ? song.name
+                                        : (song.title + " - " + song.name));
+    } else {
+        return trackTitle;
+    }
+}
+
 class GroupedViewDelegate : public ActionItemDelegate
 {
 public:
@@ -224,19 +245,7 @@ public:
         } else if (AlbumHeader==type) {
             if (stream) {
                 title=audiocd ? i18n("Audio CD") : i18n("Streams");
-                if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
-                    track=song.title.isEmpty() && song.name.isEmpty()
-                            ? song.file
-                            : song.name.isEmpty()
-                              ? song.title
-                              : song.title.isEmpty()
-                                ? song.name
-                                : QString("%1 (%2)").arg(song.title).arg(song.name);
-                } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
-                    track=song.artist + " - " + (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
-                } else {
-                    track=trackTitle;
-                }
+                track=streamText(song, trackTitle);
             } else if (isEmpty) {
                 title=i18n("Unknown");
                 track=trackTitle;
@@ -252,13 +261,7 @@ public:
             }
         } else {
             if (stream) {
-                if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
-                    track=song.title.isEmpty() && song.name.isEmpty() ? song.file : (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
-                } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
-                    track=song.artist + " - " + (song.name.isEmpty() ? song.title : QString("%1 (%2)").arg(song.title).arg(song.name));
-                } else {
-                    track=trackTitle;
-                }
+                track=streamText(song, trackTitle);
             } else {
                 track=formatNumber(song.track)+QChar(' ')+trackTitle;
             }

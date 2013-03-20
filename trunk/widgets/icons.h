@@ -44,7 +44,7 @@ namespace Icons
     extern Icon libraryIcon;
     extern Icon radioStreamIcon;
     extern Icon addRadioStreamIcon;
-    extern Icon wikiIcon;
+    extern Icon infoIcon;
     extern Icon albumIcon;
     extern Icon streamIcon;
     extern Icon configureIcon;

@@ -19,18 +19,16 @@ Cantata requires the following Qt libraries:
 Cantata may also use the following optional libraries:
 
  1. KDElibs4
- 2. QtWebKit - used for the artist/album information page. If QtWebKit is not
-    found, the page will not be built.
- 3. TagLib - used for the tag edit dialog, replaygain, track organizer, and
+ 2. TagLib - used for the tag edit dialog, replaygain, track organizer, and
     for UMS device support.
- 4. LibMTP - used to support MTP devices.
- 5. FFMPEG (libavcodec) - used by ReplayGain detection code.
- 6. SpeexDSP - used by ReplayGain detection code.
- 7. MPG123 - used by ReplayGain detection code.
- 8. CDParanoia - required to read Audio CDs.
- 9. CDDB - either this or MusicBrainz5 required for Audio CDs
-10. MusicBrainz5 - either this or CDDB required for Audio CDs
-11. Lame - used to encode Audio CD streams when sent via HTTP server.
+ 3. LibMTP - used to support MTP devices.
+ 4. FFMPEG (libavcodec) - used by ReplayGain detection code.
+ 5. SpeexDSP - used by ReplayGain detection code.
+ 6. MPG123 - used by ReplayGain detection code.
+ 7. CDParanoia - required to read Audio CDs.
+ 8. CDDB - either this or MusicBrainz5 required for Audio CDs
+ 9. MusicBrainz5 - either this or CDDB required for Audio CDs
+10. Lame - used to encode Audio CD streams when sent via HTTP server.
 
 
 Translations
@@ -380,11 +378,13 @@ Cantata contains code/icons from:
     Quassel        - quassel-irc.org (Qt-only keyboard short-cut config support)
     Solid          - solid.kde.org (Device detection for Qt-only builds)
     Musique        - Copied code for Gtk theme detection
-    Ayatana Qt     - Overlay scrollbar code copied/modified from https://launchpad.net/ayatana-scrollbar-qt
+    Ayatana Qt     - Overlay scrollbar code copied/modified from
+                     https://launchpad.net/ayatana-scrollbar-qt
     Asunder        - CDDB code
     libkcddb       - MusicBrainz code
     libebur128     - https://github.com/jiixyj/libebur128 (Replay gain
-                      calculation)
+                     calculation)
+    QJson          - JSON parser, taken from https://github.com/flavio/qjson
     wikipedia icon - Social Media Mini by Paul Robert Lloyd License: Commons
                      licence: Attribution-Share Alike 2.0 UK: England & Wales
     radio icon     - Taken from WP Woothemes Ultimate (findicons.com)

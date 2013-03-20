@@ -25,12 +25,14 @@
 #define INFOPAGE_H
 
 #include <QWidget>
+#include <QMap>
 #include "song.h"
+#include "textbrowser.h"
 
-class QComboBox;
-class WebView;
-class QNetworkRequest;
-class QUrl;
+class Song;
+class ComboBox;
+class QNetworkReply;
+class QIODevice;
 
 class InfoPage : public QWidget
 {
@@ -38,35 +40,31 @@ class InfoPage : public QWidget
 
 public:
     InfoPage(QWidget *parent);
-    virtual ~InfoPage() { }
+    virtual ~InfoPage() { abort(); }
 
-    void save();
+    void saveSettings();
     void update(const Song &s);
+    void setBgndImageEnabled(bool e) { text->enableImage(e); }
+    bool bgndImageEnabled() { return text->imageEnabled(); }
 
-private:
-    void fetchInfo();
-    void askGoogle(const QString &query);
-//     void fetchWiki(QString query);
+public Q_SLOTS:
+    void setImage(const QImage &img) { text->setImage(img); }
 
 private Q_SLOTS:
-    void changeView();
-    void googleAnswer(const QString &answer);
-    void downloadRequested(const QNetworkRequest &);
-    void downloadingFinished();
-    #ifdef ENABLE_KDE_SUPPORT
-    void updateFonts();
-    #endif
     void handleReply();
+    void setBio();
 
 private:
-    void get(const QUrl &url);
+    void requestBio();
+    void abort();
+    bool parseResponse(QIODevice *dev);
 
 private:
-    WebView *view;
-    QComboBox *combo;
-    QString lastWikiQuestion;
-    bool iHaveAskedForArtist;
-    Song song;
+    TextBrowser *text;
+    ComboBox *combo;
+    QMap<int, QString> biographies;
+    Song currentSong;
+    QNetworkReply *currentJob;
 };
 
 #endif

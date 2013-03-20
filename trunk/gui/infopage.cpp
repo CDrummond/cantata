@@ -23,259 +23,64 @@
 
 #include <QBoxLayout>
 #include <QComboBox>
-#include <QContextMenuEvent>
-#include <QMenu>
-#include <QAction>
-#include <QFrame>
-#include <QDir>
-#include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QWebSettings>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
-#ifdef ENABLE_KDE_SUPPORT
-#include <KDE/KWebView>
-#include <KDE/KFileDialog>
-#include <KDE/KGlobalSettings>
-#else
-#include <QFileDialog>
-#include <QWebView>
-#endif
 #include "localize.h"
 #include "infopage.h"
-#include "mainwindow.h"
+#include "combobox.h"
+#include "networkaccessmanager.h"
 #include "settings.h"
-#include "toolbutton.h"
 #ifndef Q_OS_WIN
 #include "gtkproxystyle.h"
 #endif
-#ifdef ENABLE_KDE_SUPPORT
-#define WEBVIEW_BASE KWebView
-#else
-#define WEBVIEW_BASE QWebView
-#endif
+#include "qjson/parser.h"
 
-class WebView : public WEBVIEW_BASE
-{
-public:
-    WebView(QWidget *p) : WEBVIEW_BASE(p) { }
-    QSize sizeHint() const { return QSize(128, 128); }
-
-    void contextMenuEvent(QContextMenuEvent *ev)
-    {
-        if (page()->swallowContextMenuEvent(ev)) {
-            ev->accept();
-        }
-        QMenu *menu=page()->createStandardContextMenu();
-
-        foreach (QAction *act, menu->actions()) {
-            if (act==page()->action(QWebPage::OpenLinkInNewWindow) ||
-                act==page()->action(QWebPage::OpenFrameInNewWindow) ||
-                act==page()->action(QWebPage::OpenImageInNewWindow)) {
-                act->setVisible(false);
-            }
-        }
-        menu->exec(ev->globalPos());
-        menu->deleteLater();
-    }
-
-    #ifndef ENABLE_KDE_SUPPORT
-    void wheelEvent(QWheelEvent *event)
-    {
-        if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
-            const int numDegrees = event->delta() / 8;
-            const int numSteps = numDegrees / 15;
-            setZoomFactor(zoomFactor() + numSteps * 0.1);
-            event->accept();
-            return;
-        }
-        QWebView::wheelEvent(event);
-    }
-    #endif
-};
+static const QLatin1String constApiKey("N5JHVHNG0UOZZIDVT");
+static const QLatin1String constBioUrl("http://developer.echonest.com/api/v4/artist/biographies");
 
 InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
-    , iHaveAskedForArtist(false)
+    , currentJob(0)
 {
     QVBoxLayout *vlayout=new QVBoxLayout(this);
-    QHBoxLayout *hlayout=new QHBoxLayout();
-    QFrame *frame=new QFrame(this);
-    QHBoxLayout *frameLayout=new QHBoxLayout(frame);
-    view=new WebView(frame);
-    frame->setFrameShape(QFrame::StyledPanel);
-    frame->setFrameShadow(QFrame::Sunken);
-    frameLayout->setMargin(0);
-    frameLayout->addWidget(view);
-    ToolButton *refreshBtn=new ToolButton(this);
-    ToolButton *backBtn=new ToolButton(this);
-    ToolButton *forwardBtn=new ToolButton(this);
-    combo=new QComboBox(this);
-    combo->insertItem(0, i18n("Artist Information"));
-    combo->insertItem(1, i18n("Album Information"));
-    vlayout->addWidget(frame);
-    vlayout->addItem(hlayout);
-    hlayout->addWidget(refreshBtn);
-    hlayout->addWidget(backBtn);
-    hlayout->addWidget(forwardBtn);
-    hlayout->addWidget(combo);
-    frameLayout->setMargin(0);
+    text=new TextBrowser(this);
+    combo=new ComboBox(this);
+    vlayout->addWidget(text);
+    vlayout->addWidget(combo);
     vlayout->setMargin(0);
-    hlayout->setMargin(0);
-    hlayout->setSpacing(0);
-
-    view->page()->action(QWebPage::Reload)->setShortcut(QKeySequence());
-    refreshBtn->setDefaultAction(view->page()->action(QWebPage::Reload));
-    backBtn->setDefaultAction(view->page()->action(QWebPage::Back));
-    forwardBtn->setDefaultAction(view->page()->action(QWebPage::Forward));
-    connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(changeView()));
-    connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)), SLOT(downloadRequested(const QNetworkRequest &)));
-    view->setZoomFactor(Settings::self()->infoZoom()/100.0);
-    view->settings()->setAttribute(QWebSettings::PrivateBrowsingEnabled, true);
-    view->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
-    view->settings()->setFontSize(QWebSettings::MinimumFontSize, 8);
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
-
-    #ifdef ENABLE_KDE_SUPPORT
-    connect(KGlobalSettings::self(), SIGNAL(appearanceChanged()), SLOT(updateFonts()));
-    updateFonts();
-    #endif
+    connect(combo, SIGNAL(currentIndexChanged(int)), SLOT(setBio()));
     #ifndef Q_OS_WIN
     combo->setProperty(GtkProxyStyle::constSlimComboProperty, true);
     #endif
+    setBgndImageEnabled(Settings::self()->lyricsBgnd());
+    text->setZoom(Settings::self()->infoZoom());
 }
 
-void InfoPage::save()
+void InfoPage::saveSettings()
 {
-    Settings::self()->saveInfoZoom(view->zoomFactor()*100);
-}
-
-void InfoPage::askGoogle(const QString &query)
-{
-    if (query.isEmpty()) {
-        return;
-    }
-    get("http://www.google.com/search?as_q=" + query + "&ft=i&num=1&as_sitesearch=wikipedia.org");
-}
-
-void InfoPage::changeView()
-{
-    fetchInfo();
-}
-
-void InfoPage::googleAnswer(const QString &ans)
-{
-    QString answer(ans);
-    int start = answer.indexOf("<h3");
-    if (start > -1) {
-        start = answer.indexOf("href=\"", start) + 6;
-        start = answer.indexOf("http", start);
-        int end = answer.indexOf("\"", start);
-        end = qMin(end, answer.indexOf("&amp", start));
-        answer = answer.mid(start, end - start);
-        // For "Queensrÿche" google returns http://en.wikipedia.org/wiki/Queensr%25C3%25BFche
-        // ...but (I think) this should be http://en.wikipedia.org/wiki/Queensr%C3%BFche
-        // ...so, replace %25 with % :-)
-        answer.replace("%25", "%");
-    }
-    else {
-        answer.clear();
-    }
-
-    if (!iHaveAskedForArtist && (!answer.contains("wikipedia.org") || answer.contains(QRegExp("/.*:")))) {
-        iHaveAskedForArtist=true;
-        askGoogle(song.artist);
-        return;
-    }
-    QUrl wikiInfo; //(answer.mid(start, end - start).replace("/wiki/", "/wiki/Special:Export/").toUtf8());
-    if (!answer.contains("m.wikipedia.org")) {
-        answer.replace("wikipedia.org", "m.wikipedia.org");
-    }
-    #if QT_VERSION < 0x050000
-    wikiInfo.setEncodedUrl(answer/*.replace("/wiki/", "/wiki/Special:Export/")*/.toUtf8());
-    wikiInfo.addQueryItem("action", "view");
-    wikiInfo.addQueryItem("useskin", "monobook");
-    wikiInfo.addQueryItem("useformat", "mobile");
-    #else
-    wikiInfo=QUrl(answer/*.replace("/wiki/", "/wiki/Special:Export/")*/.toUtf8());
-    QUrlQuery query;
-    query.addQueryItem("action", "view");
-    query.addQueryItem("useskin", "monobook");
-    query.addQueryItem("useformat", "mobile");
-    wikiInfo.setQuery(query);
-    #endif
-
-//     view->settings()->resetFontSize(QWebSettings::MinimumFontSize);
-//     view->settings()->resetFontSize(QWebSettings::MinimumLogicalFontSize);
-//     view->settings()->resetFontSize(QWebSettings::DefaultFontSize);
-//     view->settings()->resetFontSize(QWebSettings::DefaultFixedFontSize);
-//     view->settings()->resetFontFamily(QWebSettings::StandardFont);
-    view->setUrl(wikiInfo);
+    Settings::self()->saveInfoZoom(text->zoom());
 }
 
 void InfoPage::update(const Song &s)
 {
-    iHaveAskedForArtist=false;
-    song=s;
+    Song song=s;
     if (song.isVariousArtists()) {
         song.revertVariousArtists();
     }
-    fetchInfo();
-}
-
-void InfoPage::fetchInfo()
-{
-    QString question = 0==combo->currentIndex() ? song.artist : (song.albumArtist().isEmpty() && song.album.isEmpty() ? song.title : song.albumArtist() + " " + song.album);
-    if (!question.isEmpty() && lastWikiQuestion != question) {
-        lastWikiQuestion = question;
-        view->setHtml(i18n("<h3><i>Loading...</i></h3>"));
-        askGoogle(question);
-//         fetchWiki(artist);
+    if (song.artist!=currentSong.artist) {
+        currentSong=song;
+        combo->clear();
+        biographies.clear();
+        if (currentSong.isEmpty()) {
+            text->setText(QString());
+        } else {
+            text->setHtml("<i>Retrieving...</i>");
+            requestBio();
+        }
     }
 }
-
-void InfoPage::downloadRequested(const QNetworkRequest &request)
-{
-    QString defaultFileName=QFileInfo(request.url().toString()).fileName();
-    #ifdef ENABLE_KDE_SUPPORT
-    QString fileName=KFileDialog::getSaveFileName(KUrl(), QString(), this);
-    #else
-    QString fileName=QFileDialog::getSaveFileName(this, i18nc("Qt-only", "Save File"), defaultFileName);
-    #endif
-    if (fileName.isEmpty()) {
-        return;
-    }
-
-    QNetworkRequest newRequest = request;
-    newRequest.setAttribute(QNetworkRequest::User, fileName);
-
-    QNetworkAccessManager *networkManager = view->page()->networkAccessManager();
-    QNetworkReply *reply = networkManager->get(newRequest);
-    connect(reply, SIGNAL(finished()), this, SLOT(downloadingFinished()));
-}
-
-void InfoPage::downloadingFinished()
-{
-    QNetworkReply *reply = ((QNetworkReply*)sender());
-    QNetworkRequest request = reply->request();
-    QFile file(request.attribute(QNetworkRequest::User).toString());
-    if (file.open(QFile::ReadWrite)) {
-        file.write(reply->readAll());
-    }
-    reply->deleteLater();
-}
-
-#ifdef ENABLE_KDE_SUPPORT
-void InfoPage::updateFonts()
-{
-    view->settings()->setFontFamily(QWebSettings::StandardFont, KGlobalSettings::generalFont().family());
-    view->settings()->setFontFamily(QWebSettings::SerifFont, KGlobalSettings::generalFont().family());
-    view->settings()->setFontFamily(QWebSettings::SansSerifFont, KGlobalSettings::generalFont().family());
-    view->settings()->setFontFamily(QWebSettings::FixedFont, KGlobalSettings::fixedFont().family());
-}
-#endif
 
 void InfoPage::handleReply()
 {
@@ -284,34 +89,112 @@ void InfoPage::handleReply()
         return;
     }
 
-    QVariant redirect = reply->header(QNetworkRequest::LocationHeader);
-    if (redirect.isValid()) {
-        get(redirect.toUrl());
+    if (reply==currentJob) {
+        if (QNetworkReply::NoError==reply->error() && parseResponse(reply)) {
+            setBio();
+        } else {
+            text->setHtml(i18n(("<i><Failed to download information!</i>")));
+        }
         reply->deleteLater();
-        return;
+        currentJob=0;
     }
-
-    reply->open(QIODevice::ReadOnly | QIODevice::Text);
-    QString answer = QString::fromUtf8(reply->readAll());
-    reply->close();
-    googleAnswer(answer);
-    reply->deleteLater();
 }
 
-void InfoPage::get(const QUrl &url)
+void InfoPage::setBio()
 {
-    QNetworkRequest request(url);
-    QString lang(QLocale::languageToString(QLocale::system().language()));
-    // lie to prevent google etc. from believing we'd be some automated tool, abusing their ... errr ;-P
-    request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20100101 Firefox/6.0");
-    if (!lang.isEmpty()) {
-        #if QT_VERSION < 0x050000
-        request.setRawHeader("Accept-Language", lang.toAscii());
-        #else
-        request.setRawHeader("Accept-Language", lang.toLatin1());
-        #endif
+    int bio=combo->currentIndex();
+    if (biographies.contains(bio)) {
+        text->setHtml(biographies[bio]);
+    }
+}
+
+void InfoPage::requestBio()
+{
+    abort();
+    #if QT_VERSION < 0x050000
+    QUrl url;
+    QUrl &query=url;
+    #else
+    QUrl url;
+    QUrlQuery query;
+    #endif
+    url.setScheme("http");
+    url.setHost("developer.echonest.com");
+    url.setPath("api/v4/artist/biographies");
+    query.addQueryItem("api_key", constApiKey);
+    query.addQueryItem("name", currentSong.artist);
+    query.addQueryItem("format", "json");
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+
+    currentJob=NetworkAccessManager::self()->get(url);
+    connect(currentJob, SIGNAL(finished()), this, SLOT(handleReply()));
+}
+
+void InfoPage::abort()
+{
+    if (currentJob) {
+        disconnect(currentJob, SIGNAL(finished()), this, SLOT(handleReply()));
+        currentJob->abort();
+        currentJob=0;
+    }
+}
+
+struct Bio
+{
+    Bio(const QString &s=QString(), const QString &t=QString())
+        : site(s), text(t) {
+        text.replace("\n", "<br/><br/>");
+        if (QLatin1String("last.fm")==site) {
+            text.replace("  ", "<br/><br/>");
+        }
+        text.replace("<br/><br/><br/>", "<br/>");
+    }
+    QString site;
+    QString text;
+};
+
+int value(const QString &site)
+{
+    return QLatin1String("wikipedia")==site
+            ? 0
+            : QLatin1String("last.fm")==site
+              ? 1
+              : 2;
+}
+
+bool InfoPage::parseResponse(QIODevice *dev)
+{
+    QMultiMap<int, Bio> biogs;
+    QByteArray array=dev->readAll();
+    QJson::Parser parser;
+    bool ok=false;
+    QVariantMap parsed=parser.parse(array, &ok).toMap();
+    if (ok && parsed.contains("response")) {
+        QVariantMap response=parsed["response"].toMap();
+        if (response.contains("biographies")) {
+            QVariantList biographies=response["biographies"].toList();
+            foreach (const QVariant &b, biographies) {
+                QVariantMap details=b.toMap();
+                if (!details.isEmpty() && details.contains("text") && details.contains("site")) {
+                    QString site=details["site"].toString();
+                    biogs.insertMulti(value(site), Bio(site, details["text"].toString()));
+                }
+            }
+        }
     }
 
-    QNetworkReply *reply = view->page()->networkAccessManager()->get(request);
-    connect(reply, SIGNAL(finished()), this, SLOT(handleReply()));
+    QMultiMap<int, Bio>::ConstIterator it=biogs.constBegin();
+    QMultiMap<int, Bio>::ConstIterator end=biogs.constEnd();
+    for (; it!=end; ++it) {
+        if (it.value().text.length()<75 && combo->count()>0) {
+            // Ignore the "..." cr*p
+            continue;
+        }
+        biographies[combo->count()]=it.value().text;
+        combo->insertItem(combo->count(), i18n("Source: %1").arg(it.value().site));
+    }
+
+    return !biogs.isEmpty();
 }

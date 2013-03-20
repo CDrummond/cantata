@@ -26,7 +26,9 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "playlistsmodel.h"
+#ifdef ENABLE_DEVICES_SUPPORT
 #include "devicesmodel.h"
+#endif
 #include "icon.h"
 #include "icons.h"
 #include <QMenu>

@@ -137,10 +137,8 @@ public:
         PAGE_DYNAMIC,
         PAGE_STREAMS,
         PAGE_ONLINE,
-        PAGE_LYRICS
-        #ifdef ENABLE_WEBKIT
-        , PAGE_INFO
-        #endif
+        PAGE_LYRICS,
+        PAGE_INFO
         #ifdef ENABLE_DEVICES_SUPPORT
         , PAGE_DEVICES
         #endif
@@ -257,18 +255,11 @@ public Q_SLOTS:
     void showAlbumsTab() { showTab(PAGE_ALBUMS); }
     void showFoldersTab() { showTab(PAGE_FOLDERS); }
     void showPlaylistsTab() { showTab(PAGE_PLAYLISTS); }
-    void showDynamicTab() {
-        showTab(PAGE_DYNAMIC);
-    }
+    void showDynamicTab() { showTab(PAGE_DYNAMIC); }
     void showStreamsTab() { showTab(PAGE_STREAMS); }
     void showOnlineTab() { showTab(PAGE_ONLINE); }
     void showLyricsTab() { showTab(PAGE_LYRICS); }
-
-    void showInfoTab() {
-        #ifdef ENABLE_WEBKIT
-        showTab(PAGE_INFO);
-        #endif
-    }
+    void showInfoTab() { showTab(PAGE_INFO); }
     void showDevicesTab() {
         #ifdef ENABLE_DEVICES_SUPPORT
         showTab(PAGE_DEVICES);
@@ -372,9 +363,7 @@ private:
     #ifdef TAGLIB_FOUND
     Action *editPlayQueueTagsAction;
     #endif
-    #ifdef ENABLE_WEBKIT
     Action *infoTabAction;
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     Action *devicesTabAction;
     #endif
@@ -389,9 +378,7 @@ private:
     QSize collapsedSize;
     Song current;
     bool lyricsNeedUpdating;
-    #ifdef ENABLE_WEBKIT
     bool infoNeedsUpdating;
-    #endif
     QWidget *playQueuePage;
     LibraryPage *libraryPage;
     AlbumsPage *albumsPage;
@@ -401,9 +388,7 @@ private:
     LyricsPage *lyricsPage;
     StreamsPage *streamsPage;
     OnlineServicesPage *onlinePage;
-    #ifdef ENABLE_WEBKIT
     InfoPage *infoPage;
-    #endif
     #ifdef ENABLE_DEVICES_SUPPORT
     DevicesPage *devicesPage;
     #endif

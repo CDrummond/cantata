@@ -22,10 +22,6 @@
 <file alias="lib22.png">icons/hi22-action-cantata-view-media-library.png</file>
 <file alias="lib32.png">icons/hi32-action-cantata-view-media-library.png</file>
 <file alias="lib48.png">icons/hi48-action-cantata-view-media-library.png</file>
-<file alias="wiki16.png">icons/hi16-action-cantata-view-wikipedia.png</file>
-<file alias="wiki22.png">icons/hi22-action-cantata-view-wikipedia.png</file>
-<file alias="wiki32.png">icons/hi32-action-cantata-view-wikipedia.png</file>
-<file alias="wiki48.png">icons/hi48-action-cantata-view-wikipedia.png</file>
 <file alias="radio16.png">icons/hi16-action-cantata-view-radiostream.png</file>
 <file alias="radio22.png">icons/hi22-action-cantata-view-radiostream.png</file>
 <file alias="radio32.png">icons/hi32-action-cantata-view-radiostream.png</file>

@@ -72,6 +72,7 @@ struct Song
     Song(const Song &o) { *this=o; }
     Song & operator=(const Song &o);
     bool operator==(const Song &o) const;
+    bool operator!=(const Song &o) const { return !(*this==o); }
     bool operator<(const Song &o) const;
     int compareTo(const Song &o) const;
     virtual ~Song() { }

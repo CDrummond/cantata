@@ -114,7 +114,7 @@ void Mpris::updateCurrentSong(const Song &song)
 QVariantMap Mpris::Metadata() const {
     QVariantMap metadataMap;
     if (!currentSong.title.isEmpty() && !currentSong.artist.isEmpty() &&
-            (!currentSong.album.isEmpty() || currentSong.isStream() && !currentSong.name.isEmpty())) {
+            (!song.currentSong.isEmpty() || (currentSong.isStream() && !currentSong.name.isEmpty()))) {
         metadataMap.insert("mpris:trackid", currentSong.id);
         if (currentSong.time>0) {
             metadataMap.insert("mpris:length", currentSong.time*1000000);

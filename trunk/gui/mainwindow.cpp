@@ -1369,6 +1369,9 @@ void MainWindow::updateSettings()
                 lyricsPage->setImage(img.img);
             }
         }
+
+        infoPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
+        infoPage->update(current, true);
     }
 }
 

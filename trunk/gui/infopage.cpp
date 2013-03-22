@@ -78,21 +78,21 @@ void InfoPage::saveSettings()
     Settings::self()->saveInfoZoom(text->zoom());
 }
 
-void InfoPage::update(const Song &s)
+void InfoPage::update(const Song &s, bool force)
 {
     Song song=s;
     if (song.isVariousArtists()) {
         song.revertVariousArtists();
     }
-    if (song.artist!=currentSong.artist) {
+    if (song.artist!=currentSong.artist || force) {
         currentSong=song;
         combo->clear();
         biographies.clear();
+        text->setImage(QImage());
         if (currentSong.isEmpty()) {
             text->setText(QString());
         } else {
             text->setHtml("<i>Retrieving...</i>");
-            text->setImage(QImage());
 
             Song s;
             s.albumartist=currentSong.artist;

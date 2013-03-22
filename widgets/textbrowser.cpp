@@ -58,21 +58,14 @@ static void fadeEdges(QImage &img, int edgeSize)
             #endif
         }
         for (int j=i; j<height; ++j) {
-            offset=(img.bytesPerLine()*j)+(i*4);
-            #if Q_BYTE_ORDER == Q_BIG_ENDIAN
-            // ARGB
-            data[offset] = alpha;
-            #else
-            // BGRA
-            data[offset+3] = alpha;
-            #endif
-
             offset=img.bytesPerLine()*j;
             #if Q_BYTE_ORDER == Q_BIG_ENDIAN
             // ARGB
+            data[offset+(i*4)] = alpha;
             data[offset+(width-4)] = alpha;
             #else
             // BGRA
+            data[offset+3+(i*4)] = alpha;
             data[offset+3+(width-4)] = alpha;
             #endif
         }

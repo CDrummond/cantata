@@ -61,7 +61,6 @@ private:
     void requestBio();
     void abort();
     bool parseResponse(const QByteArray &resp);
-    void clearOldCache();
 
 private:
     TextBrowser *text;

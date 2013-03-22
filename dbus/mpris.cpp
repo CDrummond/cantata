@@ -67,15 +67,12 @@ void Mpris::updateStatus()
     QVariantMap map;
 
     if (MPDStatus::self()->repeat()!=status.repeat) {
-        status.repeat=MPDStatus::self()->repeat();
         map.insert("LoopStatus", LoopStatus());
     }
     if (MPDStatus::self()->random()!=status.random) {
-        status.random=MPDStatus::self()->random();
         map.insert("Shuffle", Shuffle());
     }
     if (MPDStatus::self()->volume()!=status.volume) {
-        status.volume=MPDStatus::self()->volume();
         map.insert("Volume", Volume());
     }
     if (MPDStatus::self()->playlistLength()!=status.playlistLength) {
@@ -83,15 +80,18 @@ void Mpris::updateStatus()
         map.insert("CanGoPrevious", CanGoPrevious());
     }
     if (MPDStatus::self()->state()!=status.state) {
-        status.state=MPDStatus::self()->state();
         map.insert("PlaybackStatus", PlaybackStatus());
         map.insert("CanPlay", CanPlay());
         map.insert("CanPause", CanPause());
     }
-    if (!map.isEmpty()) {
+    if (MPDStatus::self()->timeElapsed()!=status.timeElapsed) {
+        map.insert("Position", MPDStatus::self()->timeElapsed()*1000000);
+    }
+    if (!map.isEmpty() || MPDStatus::self()->songId()!=status.songId) {
         map.insert("Metadata", Metadata());
         signalUpdate(map);
     }
+    status=MPDStatus::self()->getValues();
 }
 
 void Mpris::updateCurrentCover(const QString &fileName)

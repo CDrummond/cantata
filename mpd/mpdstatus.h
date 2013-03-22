@@ -89,63 +89,26 @@ public:
     static MPDStatus * self();
 
     // NOTE: There are no read/write locks aroud these values as they are read/written only fro the GUI thread...
-    qint8 volume() const {
-        return values.volume;
-    }
-    bool consume() const {
-        return values.consume;
-    }
-    bool repeat() const {
-        return values.repeat;
-    }
-    bool single() const {
-        return values.single;
-    }
-    bool random() const {
-        return values.random;
-    }
-    quint32 playlist() const {
-        return values.playlist;
-    }
-    quint32 playlistLength() const {
-        return values.playlistLength;
-    }
-    qint32 crossFade() const {
-        return values.crossFade;
-    }
-    MPDState state() const {
-        return values.state;
-    }
-    qint32 song() const {
-        return values.song;
-    }
-    qint32 songId() const {
-        return values.songId;
-    }
-    qint32 timeElapsed() const {
-        return values.timeElapsed;
-    }
-    qint32 timeTotal() const {
-        return values.timeTotal;
-    }
-    quint16 bitrate() const {
-        return values.bitrate;
-    }
-    quint16 samplerate() const {
-        return values.samplerate;
-    }
-    quint8 bits() const {
-        return values.bits;
-    }
-    quint8 channels() const {
-        return values.channels;
-    }
-    qint32 updatingDb() const {
-        return values.updatingDb;
-    }
-    const QString & error() const {
-        return values.error;
-    }
+    qint8 volume() const { return values.volume; }
+    bool consume() const { return values.consume; }
+    bool repeat() const { return values.repeat; }
+    bool single() const { return values.single; }
+    bool random() const { return values.random; }
+    quint32 playlist() const { return values.playlist; }
+    quint32 playlistLength() const { return values.playlistLength; }
+    qint32 crossFade() const { return values.crossFade; }
+    MPDState state() const { return values.state; }
+    qint32 song() const { return values.song; }
+    qint32 songId() const { return values.songId; }
+    qint32 timeElapsed() const { return values.timeElapsed; }
+    qint32 timeTotal() const { return values.timeTotal; }
+    quint16 bitrate() const { return values.bitrate; }
+    quint16 samplerate() const { return values.samplerate; }
+    quint8 bits() const { return values.bits; }
+    quint8 channels() const { return values.channels; }
+    qint32 updatingDb() const { return values.updatingDb; }
+    const QString & error() const { return values.error; }
+    MPDStatusValues getValues() const { return values; }
 
 public Q_SLOTS:
     void update(const MPDStatusValues &v);

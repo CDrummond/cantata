@@ -27,7 +27,7 @@
 #include <QComboBox>
 
 #ifdef Q_OS_WIN
-typedef QComboBox ComboBox;
+class ComboBox : public QComboBox { public: ComboBox(QWidget *p) : QComboBox(p) { } };
 #else
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KComboBox>

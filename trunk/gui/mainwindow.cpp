@@ -735,7 +735,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
     connect(savePlayQueueAction, SIGNAL(triggered(bool)), playlistsPage, SLOT(savePlaylist()));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
-    connect(coverWidget, SIGNAL(coverImage(const QImage &)), infoPage, SLOT(setImage(const QImage &)));
     connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
     #ifdef Q_OS_LINUX
     connect(MountPoints::self(), SIGNAL(updated()), SLOT(checkMpdAccessibility()));
@@ -1364,12 +1363,10 @@ void MainWindow::updateSettings()
 
     if (Settings::self()->lyricsBgnd()!=lyricsPage->bgndImageEnabled()) {
         lyricsPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
-        infoPage->setBgndImageEnabled(Settings::self()->lyricsBgnd());
         if (lyricsPage->bgndImageEnabled() && !coverWidget->isEmpty()) {
             Covers::Image img=Covers::self()->get(coverWidget->song());
             if (!img.img.isNull()) {
                 lyricsPage->setImage(img.img);
-                infoPage->setImage(img.img);
             }
         }
     }

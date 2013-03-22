@@ -21,14 +21,9 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QBoxLayout>
-#include <QComboBox>
-#include <QNetworkReply>
-#if QT_VERSION >= 0x050000
-#include <QUrlQuery>
-#endif
-#include "localize.h"
 #include "infopage.h"
+#include "localize.h"
+#include "covers.h"
 #include "combobox.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
@@ -36,6 +31,12 @@
 #include "gtkproxystyle.h"
 #endif
 #include "qjson/parser.h"
+#include <QBoxLayout>
+#include <QComboBox>
+#include <QNetworkReply>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 
 static const QLatin1String constApiKey("N5JHVHNG0UOZZIDVT");
 static const QLatin1String constBioUrl("http://developer.echonest.com/api/v4/artist/biographies");
@@ -56,6 +57,7 @@ InfoPage::InfoPage(QWidget *parent)
     #endif
     setBgndImageEnabled(Settings::self()->lyricsBgnd());
     text->setZoom(Settings::self()->infoZoom());
+    connect(Covers::self(), SIGNAL(artistImage(Song,QImage)), SLOT(artistImage(Song,QImage)));
 }
 
 void InfoPage::saveSettings()
@@ -77,8 +79,21 @@ void InfoPage::update(const Song &s)
             text->setText(QString());
         } else {
             text->setHtml("<i>Retrieving...</i>");
+            text->setImage(QImage());
+
+            Song s;
+            s.albumartist=currentSong.artist;
+            s.file=currentSong.file;
+            Covers::self()->requestCover(s, true);
             requestBio();
         }
+    }
+}
+
+void InfoPage::artistImage(const Song &song, const QImage &img)
+{
+    if (song.albumartist==currentSong.artist) {
+        text->setImage(img);
     }
 }
 
@@ -88,9 +103,8 @@ void InfoPage::handleReply()
     if (!reply) {
         return;
     }
-
     if (reply==currentJob) {
-        if (QNetworkReply::NoError==reply->error() && parseResponse(reply)) {
+        if (QNetworkReply::NoError==reply->error() && parseResponse(reply->readAll())) {
             setBio();
         } else {
             text->setHtml(i18n(("<i><Failed to download information!</i>")));
@@ -157,20 +171,22 @@ struct Bio
 
 int value(const QString &site)
 {
-    return QLatin1String("wikipedia")==site
+    return QLatin1String("last.fm")==site
             ? 0
-            : QLatin1String("last.fm")==site
+            : QLatin1String("wikipedia")==site
               ? 1
               : 2;
 }
 
-bool InfoPage::parseResponse(QIODevice *dev)
+static const QString constReferencesLine("This article does not cite any references or sources.");
+static const QString constDisambiguationLine("This article is about the band");
+
+bool InfoPage::parseResponse(const QByteArray &resp)
 {
     QMultiMap<int, Bio> biogs;
-    QByteArray array=dev->readAll();
     QJson::Parser parser;
     bool ok=false;
-    QVariantMap parsed=parser.parse(array, &ok).toMap();
+    QVariantMap parsed=parser.parse(resp, &ok).toMap();
     if (ok && parsed.contains("response")) {
         QVariantMap response=parsed["response"].toMap();
         if (response.contains("biographies")) {
@@ -179,7 +195,20 @@ bool InfoPage::parseResponse(QIODevice *dev)
                 QVariantMap details=b.toMap();
                 if (!details.isEmpty() && details.contains("text") && details.contains("site")) {
                     QString site=details["site"].toString();
-                    biogs.insertMulti(value(site), Bio(site, details["text"].toString()));
+                    QString text=details["text"].toString();
+
+                    if (text.startsWith(constReferencesLine) || text.startsWith(constDisambiguationLine)) {
+                        int eol=text.indexOf("\n");
+                        if (-1!=eol) {
+                            text=text.mid(eol+1);
+                        }
+                    }
+
+                    while ('\n'==text[0]) {
+                        text=text.mid(1);
+                    }
+
+                    biogs.insertMulti(value(site), Bio(site, text));
                 }
             }
         }

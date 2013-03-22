@@ -75,6 +75,8 @@ private:
     QString coverFileName;
     QPixmap noStreamCover;
     QPixmap noCover;
+    QString noStreamCoverFileName;
+    QString noCoverFileName;
 };
 
 #endif

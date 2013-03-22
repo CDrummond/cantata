@@ -166,22 +166,6 @@ if the folder heirarchy is 2 levels (artist/album/) and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
 
 
-Amarok Radio Streams
-====================
-
-The script amarok2cantata.sh may be used to convert Amarok Radio plugins
-into an XML file suitable to be imported into Cantata. The script is
-VERY basic and REQUIRES the Amarok plugin to list its streams in 'main.js'
-with the following syntax:
-
-    Station( "NAME", "URL")
-
-Each station MUST be on its own line, and must be all on ONE line.
-
-'script.spec' is used to ascertain the Amarok plugin name, for this the
-script will look for the line starting with "Name="
-
-
 Dynamic Helper Script - Local Mode
 ==================================
 

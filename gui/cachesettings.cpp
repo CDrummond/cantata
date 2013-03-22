@@ -24,6 +24,7 @@
 #include "cachesettings.h"
 #include "localize.h"
 #include "lyricspage.h"
+#include "infopage.h"
 #include "covers.h"
 #include "musiclibrarymodel.h"
 #include "utils.h"
@@ -189,6 +190,7 @@ CacheSettings::CacheSettings(QWidget *parent)
     layout->addItem(new QSpacerItem(0, 8, QSizePolicy::Fixed, QSizePolicy::MinimumExpanding), row++, 0);
     row=2;
     col=1;
+    layout->addWidget(new CacheItem(i18n("Artist Information"), Utils::cacheDir(InfoPage::constCacheDir, false), QStringList() << "*"+InfoPage::constInfoExt << "*.jpg" << "*.png", this), row++, 1);
     layout->addWidget(new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", this), row++, 1);
     layout->addWidget(new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt<< "*.jpg" << "*.png", this), row++, 1);
 }

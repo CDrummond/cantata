@@ -46,7 +46,7 @@ public:
     virtual ~InfoPage() { abort(); }
 
     void saveSettings();
-    void update(const Song &s);
+    void update(const Song &s, bool force=false);
     void setBgndImageEnabled(bool e) { text->enableImage(e); }
     bool bgndImageEnabled() { return text->imageEnabled(); }
 

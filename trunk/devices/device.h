@@ -126,8 +126,7 @@ public:
     }
     #endif
 
-    virtual ~Device() {
-    }
+    virtual ~Device() { }
 
     virtual QString icon() const {
         #ifdef Q_OS_WIN
@@ -136,10 +135,7 @@ public:
         return solidDev.isValid() ? solidDev.icon() : QLatin1String("folder");
         #endif
     }
-    virtual QString coverFile() const {
-        return QString();
-    }
-
+    virtual QString coverFile() const { return QString(); }
     virtual bool isConnected() const=0;
     virtual void rescan(bool full=true)=0;
     virtual void stop()=0;
@@ -163,50 +159,23 @@ public:
 
     #ifndef Q_OS_WIN
     virtual void saveCache();
-    const QString & udi() const {
-        return deviceId;
-    }
+    const QString & udi() const { return deviceId; }
     void applyUpdate();
-    bool haveUpdate() const {
-        return 0!=update;
-    }
-    int newRows() const {
-        return update ? update->childCount() : 0;
-    }
-    const DeviceOptions & options() const {
-        return opts;
-    }
-    void setOptions(const DeviceOptions &o) {
-        opts=o;
-        saveOptions();
-    }
+    bool haveUpdate() const { return 0!=update; }
+    int newRows() const { return update ? update->childCount() : 0; }
+    const DeviceOptions & options() const { return opts; }
+    void setOptions(const DeviceOptions &o) { opts=o; saveOptions(); }
     virtual void saveOptions()=0;
-    const QString & statusMessage() const {
-        return statusMsg;
-    }
-    bool isDevice() const {
-        return true;
-    }
+    const QString & statusMessage() const { return statusMsg; }
+    bool isDevice() const { return true; }
     const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
-    bool isConfigured() {
-        return configured;
-    }
-    void abortJob() {
-        jobAbortRequested=true;
-    }
-    bool abortRequested() const {
-        return jobAbortRequested;
-    }
-    virtual bool canPlaySongs() const {
-        return false;
-    }
-    virtual bool supportsDisconnect() const {
-        return false;
-    }
-    virtual bool isStdFs() const {
-        return false;
-    }
+    bool isConfigured() { return configured; }
+    void abortJob() { jobAbortRequested=true; }
+    bool abortRequested() const { return jobAbortRequested; }
+    virtual bool canPlaySongs() const { return false; }
+    virtual bool supportsDisconnect() const { return false; }
+    virtual bool isStdFs() const { return false; }
     virtual QString subText() { return QString(); }
     #endif
 

@@ -5,7 +5,7 @@
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
   * License version 2.1, as published by the Free Software Foundation.
-  * 
+  *
   *
   * This library is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ class QObject;
 QT_END_NAMESPACE
 
 namespace QJson {
-  /**
+/**
   * @brief Class used to convert QObject into QVariant and vivce-versa.
   * During these operations only the class attributes defined as properties will
   * be considered.
@@ -115,10 +115,10 @@ namespace QJson {
     \sa Parser
     \sa Serializer
   */
-  class QJSON_EXPORT QObjectHelper {
-    public:
-      QObjectHelper();
-      ~QObjectHelper();
+class QJSON_EXPORT QObjectHelper {
+public:
+    QObjectHelper();
+    ~QObjectHelper();
 
     /**
     * This method converts a QObject instance into a QVariantMap.
@@ -127,7 +127,7 @@ namespace QJson {
     * @param ignoredProperties Properties that won't be converted.
     */
     static QVariantMap qobject2qvariant( const QObject* object,
-                                  const QStringList& ignoredProperties = QStringList(QString(QLatin1String("objectName"))));
+                                         const QStringList& ignoredProperties = QStringList(QString(QLatin1String("objectName"))));
 
     /**
     * This method converts a QVariantMap instance into a QObject
@@ -137,11 +137,11 @@ namespace QJson {
     */
     static void qvariant2qobject(const QVariantMap& variant, QObject* object);
 
-    private:
-      Q_DISABLE_COPY(QObjectHelper)
-      class QObjectHelperPrivate;
-      QObjectHelperPrivate* const d;
-  };
+private:
+    Q_DISABLE_COPY(QObjectHelper)
+    class QObjectHelperPrivate;
+    QObjectHelperPrivate* const d;
+};
 }
 
 #endif // QOBJECTHELPER_H

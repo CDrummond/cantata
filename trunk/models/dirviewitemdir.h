@@ -31,39 +31,20 @@
 class DirViewItemDir : public DirViewItem
 {
 public:
-    DirViewItemDir(const QString &name=QString(), DirViewItem *parent=0)
-        : DirViewItem(name, parent) {
-    }
+    DirViewItemDir(const QString &name=QString(), DirViewItem *parent=0) : DirViewItem(name, parent) { }
+    virtual ~DirViewItemDir() { qDeleteAll(m_childItems); }
 
-    virtual ~DirViewItemDir() {
-        qDeleteAll(m_childItems);
-    }
-
-    virtual int indexOf(DirViewItem *c) const {
-        return m_childItems.indexOf(c);
-    }
-    int childCount() const {
-        return m_childItems.count();
-    }
-    DirViewItem * child(int row) const {
-        return m_childItems.value(row);
-    }
-    DirViewItem * child(const QString &name) const {
-        return m_indexes.contains(name) ? m_childItems.value(m_indexes[name]) : 0;
-    }
+    virtual int indexOf(DirViewItem *c) const { return m_childItems.indexOf(c); }
+    int childCount() const { return m_childItems.count(); }
+    DirViewItem * child(int row) const { return m_childItems.value(row); }
+    DirViewItem * child(const QString &name) const { return m_indexes.contains(name) ? m_childItems.value(m_indexes[name]) : 0; }
     DirViewItem * createDirectory(const QString &dirName);
     DirViewItem * insertFile(const QString &fileName);
     void insertFile(const QStringList &path);
     void remove(DirViewItem *dir);
-
-    bool hasChild(const QString &name) {
-        return m_indexes.contains(name);
-    }
-
+    bool hasChild(const QString &name) { return m_indexes.contains(name); }
     QSet<QString> allFiles() const;
-    Type type() const {
-        return Type_Dir;
-    }
+    Type type() const { return Type_Dir; }
 
 private:
     QHash<QString, int> m_indexes;

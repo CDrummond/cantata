@@ -53,12 +53,9 @@ public:
     };
 
     static const QLatin1String constName;
-    JamendoService(OnlineServicesModel *m)
-        : OnlineService(m, constName)
-        , format(FMT_MP3) {
-    }
+    JamendoService(OnlineServicesModel *m) : OnlineService(m, constName), format(FMT_MP3) { }
 
-    virtual const Icon & serviceIcon() const { return Icons::jamendoIcon; }
+    const Icon & serviceIcon() const { return Icons::jamendoIcon; }
     Song fixPath(const Song &orig) const;
     void createLoader();
     void loadConfig();

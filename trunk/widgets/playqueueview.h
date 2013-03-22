@@ -65,9 +65,7 @@ public:
     PlayQueueView(QWidget *parent=0);
     virtual ~PlayQueueView();
 
-    void initHeader() {
-        treeView->initHeader();
-    }
+    void initHeader() { treeView->initHeader(); }
     void saveHeader();
     void setGrouped(bool g);
     bool isGrouped() const { return currentWidget()==(QWidget *)groupedView; }

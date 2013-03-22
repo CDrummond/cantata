@@ -5,7 +5,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License version 2.1, as published by the Free Software Foundation.
- * 
+ *
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -41,13 +41,13 @@ ParserPrivate::ParserPrivate() :
 
 ParserPrivate::~ParserPrivate()
 {
-  delete m_scanner;
+    delete m_scanner;
 }
 
 void ParserPrivate::setError(QString errorMsg, int errorLine) {
-  m_error = true;
-  m_errorMsg = errorMsg;
-  m_errorLine = errorLine;
+    m_error = true;
+    m_errorMsg = errorMsg;
+    m_errorLine = errorLine;
 }
 
 Parser::Parser() :
@@ -57,69 +57,69 @@ Parser::Parser() :
 
 Parser::~Parser()
 {
-  delete d;
+    delete d;
 }
 
 QVariant Parser::parse (QIODevice* io, bool* ok)
 {
-  d->m_errorMsg.clear();
-  delete d->m_scanner;
-  d->m_scanner = 0;
+    d->m_errorMsg.clear();
+    delete d->m_scanner;
+    d->m_scanner = 0;
 
-  if (!io->isOpen()) {
-    if (!io->open(QIODevice::ReadOnly)) {
-      if (ok != 0)
-        *ok = false;
-      qCritical ("Error opening device");
-      return QVariant();
+    if (!io->isOpen()) {
+        if (!io->open(QIODevice::ReadOnly)) {
+            if (ok != 0)
+                *ok = false;
+            qCritical ("Error opening device");
+            return QVariant();
+        }
     }
-  }
 
-  if (!io->isReadable()) {
+    if (!io->isReadable()) {
+        if (ok != 0)
+            *ok = false;
+        qCritical ("Device is not readable");
+        io->close();
+        return QVariant();
+    }
+
+    d->m_scanner = new JSonScanner (io);
+    d->m_scanner->allowSpecialNumbers(d->m_specialNumbersAllowed);
+    yy::json_parser parser(d);
+    parser.parse();
+
+    delete d->m_scanner;
+    d->m_scanner = 0;
+
     if (ok != 0)
-      *ok = false;
-    qCritical ("Device is not readable");
+        *ok = !d->m_error;
+
     io->close();
-    return QVariant();
-  }
-
-  d->m_scanner = new JSonScanner (io);
-  d->m_scanner->allowSpecialNumbers(d->m_specialNumbersAllowed);
-  yy::json_parser parser(d);
-  parser.parse();
-
-  delete d->m_scanner;
-  d->m_scanner = 0;
-
-  if (ok != 0)
-    *ok = !d->m_error;
-
-  io->close();
-  return d->m_result;
+    return d->m_result;
 }
 
 QVariant Parser::parse(const QByteArray& jsonString, bool* ok) {
-  QBuffer buffer;
-  buffer.open(QBuffer::ReadWrite);
-  buffer.write(jsonString);
-  buffer.seek(0);
-  return parse (&buffer, ok);
+    QBuffer buffer;
+    buffer.open(QBuffer::ReadWrite);
+    buffer.write(jsonString);
+    buffer.seek(0);
+    return parse (&buffer, ok);
 }
 
 QString Parser::errorString() const
 {
-  return d->m_errorMsg;
+    return d->m_errorMsg;
 }
 
 int Parser::errorLine() const
 {
-  return d->m_errorLine;
+    return d->m_errorLine;
 }
 
 void QJson::Parser::allowSpecialNumbers(bool allowSpecialNumbers) {
-  d->m_specialNumbersAllowed = allowSpecialNumbers;
+    d->m_specialNumbersAllowed = allowSpecialNumbers;
 }
 
 bool Parser::specialNumbersAllowed() const {
-  return d->m_specialNumbersAllowed;
+    return d->m_specialNumbersAllowed;
 }

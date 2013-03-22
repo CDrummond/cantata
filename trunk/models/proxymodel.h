@@ -31,25 +31,14 @@
 class ProxyModel : public QSortFilterProxyModel
 {
 public:
-    ProxyModel(QObject *parent)
-        : QSortFilterProxyModel(parent)
-        , filterEnabled(false) {
-    }
-    virtual ~ProxyModel() {
-    }
+    ProxyModel(QObject *parent) : QSortFilterProxyModel(parent), filterEnabled(false) { }
+    virtual ~ProxyModel() { }
 
     bool update(const QString &text, const QString &genre=QString());
-    void setRootIndex(const QModelIndex &idx) {
-        rootIndex=idx.isValid() ? mapToSource(idx) : idx;
-    }
+    void setRootIndex(const QModelIndex &idx) { rootIndex=idx.isValid() ? mapToSource(idx) : idx; }
     bool isChildOfRoot(const QModelIndex &idx) const;
-    bool isEmpty() const {
-        return filterGenre.isEmpty() && filterRegExp().isEmpty();
-    }
-
-    bool enabled() const {
-        return filterEnabled;
-    }
+    bool isEmpty() const { return filterGenre.isEmpty() && filterRegExp().isEmpty(); }
+    bool enabled() const { return filterEnabled; }
 
 protected:
     bool matchesFilter(const Song &s) const;

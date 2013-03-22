@@ -39,6 +39,9 @@ class InfoPage : public QWidget
     Q_OBJECT
 
 public:
+    static const QLatin1String constCacheDir;
+    static const QLatin1String constInfoExt;
+
     InfoPage(QWidget *parent);
     virtual ~InfoPage() { abort(); }
 
@@ -58,6 +61,7 @@ private:
     void requestBio();
     void abort();
     bool parseResponse(const QByteArray &resp);
+    void clearOldCache();
 
 private:
     TextBrowser *text;

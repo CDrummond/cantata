@@ -159,9 +159,10 @@ struct Bio
 {
     Bio(const QString &s=QString(), const QString &t=QString())
         : site(s), text(t) {
-        text.replace("\n", "<br/><br/>");
         if (QLatin1String("last.fm")==site) {
             text.replace("  ", "<br/><br/>");
+        } else {
+            text.replace("\n", "<br/><br/>");
         }
         text.replace("<br/><br/><br/>", "<br/>");
     }
@@ -180,6 +181,7 @@ int value(const QString &site)
 
 static const QString constReferencesLine("This article does not cite any references or sources.");
 static const QString constDisambiguationLine("This article is about the band");
+static const QString constDisambiguationLine2("For other uses, see ");
 
 bool InfoPage::parseResponse(const QByteArray &resp)
 {
@@ -197,16 +199,26 @@ bool InfoPage::parseResponse(const QByteArray &resp)
                     QString site=details["site"].toString();
                     QString text=details["text"].toString();
 
-                    if (text.startsWith(constReferencesLine) || text.startsWith(constDisambiguationLine)) {
+                    if (text.startsWith(constReferencesLine) || text.startsWith(constDisambiguationLine) || text.startsWith(constDisambiguationLine2)) {
                         int eol=text.indexOf("\n");
                         if (-1!=eol) {
                             text=text.mid(eol+1);
                         }
                     }
 
+//                    if (QLatin1String("wikipedia")==site) {
+//                        int start=text.indexOf("\n , ");
+//                        if (-1!=start) {
+//                            int end=text.indexOf("\n", start+4);
+//                            if (-1!=end) {
+//                                text=text.remove(start, end-start);
+//                            }
+//                        }
+//                    }
                     while ('\n'==text[0]) {
                         text=text.mid(1);
                     }
+                    text.replace("\n ", "\n");
 
                     biogs.insertMulti(value(site), Bio(site, text));
                 }
@@ -220,6 +232,15 @@ bool InfoPage::parseResponse(const QByteArray &resp)
         if (it.value().text.length()<75 && combo->count()>0) {
             // Ignore the "..." cr*p
             continue;
+        }
+
+        // And some others that seem to be just lots of dots???
+        if (it.value().text.length()<250) {
+            QString copy=it.value().text;
+            copy.replace(".", "");
+            if (copy.length()<75) {
+                continue;
+            }
         }
         biographies[combo->count()]=it.value().text;
         combo->insertItem(combo->count(), i18n("Source: %1").arg(it.value().site));

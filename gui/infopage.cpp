@@ -42,7 +42,6 @@
 #endif
 
 static const QLatin1String constApiKey("N5JHVHNG0UOZZIDVT");
-static const QLatin1String constBioUrl("http://developer.echonest.com/api/v4/artist/biographies");
 static const char *constNameKey="name";
 static const int constCacheAge=7;
 

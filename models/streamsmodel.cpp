@@ -259,9 +259,10 @@ QVariant StreamsModel::data(const QModelIndex &index, int role) const
             return QTP_STREAMS_STR(cat->streams.count());
             #endif
         case ItemView::Role_Actions: {
-            QVariant v;
-            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
-            return v;
+//            QVariant v;
+//            v.setValue<QList<Action *> >(QList<Action *>() << StdActions::self()->replacePlayQueueAction);
+//            return v;
+            break;
         }
         }
     } else {
@@ -900,7 +901,7 @@ void StreamsModel::persist()
                 emit error(i18n("Failed to save stream list. Please check %1 is writable.").arg(fileName));
                 reload();
             }
-        } 
+        }
         else if (save(fileName)) {
             Utils::setFilePerms(fileName);
         } else {

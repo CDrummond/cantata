@@ -31,7 +31,7 @@
 class TextBrowser : public QTextBrowser
 {
 public:
-    TextBrowser(QWidget *p) : QTextBrowser(p) , drawImage(false) { orig=font().pointSize(); }
+    TextBrowser(QWidget *p);
     virtual ~TextBrowser() {  }
 
     void setZoom(int diff) { if (diff) zoomIn(diff);  }

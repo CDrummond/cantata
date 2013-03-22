@@ -290,7 +290,3 @@ bool InfoPage::parseResponse(const QByteArray &resp)
 
     return !biogs.isEmpty();
 }
-
-void InfoPage::clearOldCache()
-{
-}

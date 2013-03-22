@@ -22,6 +22,8 @@
 
 #include <QtCore/qglobal.h>
 
+#if 0
+
 #ifndef QJSON_EXPORT
 # if defined(QJSON_MAKEDLL)
    /* We are building this library */
@@ -30,6 +32,12 @@
    /* We are using this library */
 #  define QJSON_EXPORT Q_DECL_IMPORT
 # endif
+
+#endif
+
+#else
+
+#define QJSON_EXPORT
 
 #endif
 

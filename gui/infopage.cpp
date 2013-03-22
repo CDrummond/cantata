@@ -32,6 +32,7 @@
 #include "gtkproxystyle.h"
 #endif
 #include "qjson/parser.h"
+#include "qtiocompressor/qtiocompressor.h"
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QNetworkReply>
@@ -46,7 +47,7 @@ static const char *constNameKey="name";
 static const int constCacheAge=7;
 
 const QLatin1String InfoPage::constCacheDir("artists/");
-const QLatin1String InfoPage::constInfoExt(".json");
+const QLatin1String InfoPage::constInfoExt(".json.gz");
 
 static QString cacheFileName(const QString &artist, bool createDir)
 {
@@ -101,8 +102,10 @@ void InfoPage::update(const Song &s)
             QString cachedFile=cacheFileName(song.artist, false);
             if (QFile::exists(cachedFile)) {
                 QFile f(cachedFile);
-                if (f.open(QIODevice::ReadOnly)) {
-                    QByteArray data=f.readAll();
+                QtIOCompressor compressor(&f);
+                compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+                if (compressor.open(QIODevice::ReadOnly)) {
+                    QByteArray data=compressor.readAll();
 
                     if (!data.isEmpty() && parseResponse(data)) {
                         setBio();
@@ -138,8 +141,10 @@ void InfoPage::handleReply()
                 setBio();
                 ok=true;
                 QFile f(cacheFileName(reply->property(constNameKey).toString(), true));
-                if (f.open(QIODevice::WriteOnly)) {
-                    f.write(data);
+                QtIOCompressor compressor(&f);
+                compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+                if (compressor.open(QIODevice::WriteOnly)) {
+                    compressor.write(data);
                 }
             }
         }

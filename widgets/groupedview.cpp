@@ -78,22 +78,22 @@ static bool isAlbumHeader(const QModelIndex &index)
     return !index.data(GroupedView::Role_IsCollection).toBool() && AlbumHeader==getType(index);
 }
 
-static QString streamText(const Song &song, const QString &trackTitle)
+static QString streamText(const Song &song, const QString &trackTitle, bool useName=true)
 {
     if (song.album.isEmpty() && song.albumArtist().isEmpty()) {
         return song.title.isEmpty() && song.name.isEmpty()
                 ? song.file
-                : song.name.isEmpty()
+                : !useName || song.name.isEmpty()
                   ? song.title
                   : song.title.isEmpty()
                     ? song.name
                     : (song.title + " - " + song.name);
     } else if (!song.title.isEmpty() && !song.artist.isEmpty()) {
-        return song.artist + " - " + (song.name.isEmpty()
-                                     ? song.title
-                                     : song.title.isEmpty()
-                                        ? song.name
-                                        : (song.title + " - " + song.name));
+        return song.artist + " - " + (!useName || song.name.isEmpty()
+                                        ? song.title
+                                        : song.title.isEmpty()
+                                            ? song.name
+                                            : (song.title + " - " + song.name));
     } else {
         return trackTitle;
     }
@@ -244,8 +244,15 @@ public:
             title=index.data(Qt::DisplayRole).toString();
         } else if (AlbumHeader==type) {
             if (stream) {
-                title=audiocd ? i18n("Audio CD") : i18n("Streams");
-                track=streamText(song, trackTitle);
+                QModelIndex next=index.sibling(index.row()+1, 0);
+                quint16 nextKey=next.isValid() ? next.data(GroupedView::Role_Key).toUInt() : Song::constNullKey;
+                if (nextKey!=song.key && !song.name.isEmpty()) {
+                    title=song.name;
+                    track=streamText(song, trackTitle, false);
+                } else {
+                    title=audiocd ? i18n("Audio CD") : i18n("Streams");
+                    track=streamText(song, trackTitle);
+                }
             } else if (isEmpty) {
                 title=i18n("Unknown");
                 track=trackTitle;

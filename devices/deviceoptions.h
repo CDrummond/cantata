@@ -74,9 +74,7 @@ struct DeviceOptions {
                 #endif
                 ;
     }
-    bool operator!=(const DeviceOptions &o) const {
-        return !(*this==o);
-    }
+    bool operator!=(const DeviceOptions &o) const { return !(*this==o); }
     QString clean(const QString &str) const;
     Song clean(const Song &s) const;
     QString createFilename(const Song &s) const;

@@ -42,9 +42,7 @@ public:
     static void setup();
 
     ActionItemDelegate(QObject *p);
-
-    virtual ~ActionItemDelegate() {
-    }
+    virtual ~ActionItemDelegate() { }
 
     static int constBorder;
     static int constActionBorder;

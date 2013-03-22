@@ -33,10 +33,8 @@ class TagReader : public Job
     Q_OBJECT
 
 public:
-    TagReader() {
-    }
-    virtual ~TagReader() {
-    }
+    TagReader() { }
+    virtual ~TagReader() { }
 
     void setDetails(const QList<Song> &s, const QString &dir);
 

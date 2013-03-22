@@ -45,8 +45,7 @@ class Spinner : public QWidget
 
 public:
     Spinner(QObject *p);
-    virtual ~Spinner() {
-    }
+    virtual ~Spinner() { }
 
     void setWidget(QWidget *widget) { setParent(widget); }
     void start();

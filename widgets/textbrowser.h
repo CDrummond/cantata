@@ -39,7 +39,6 @@ public:
     void setImage(const QImage &img);
     void enableImage(bool e);
     bool imageEnabled() { return drawImage; }
-
     void paintEvent(QPaintEvent *e);
 
 private:

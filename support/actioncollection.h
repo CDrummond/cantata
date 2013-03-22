@@ -30,9 +30,9 @@ class Icon;
 #include <KDE/KActionCollection>
 
 class ActionCollection : public KActionCollection {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     explicit ActionCollection(QObject *parent) : KActionCollection(parent) {};
 
     static void setMainWidget(QWidget *w);
@@ -52,9 +52,9 @@ class QWidget;
 class QAction;
 
 class ActionCollection : public QObject {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     explicit ActionCollection(QObject *parent);
     virtual ~ActionCollection();
 
@@ -100,33 +100,33 @@ class ActionCollection : public QObject {
     /// Create new action under the given name, add it to the collection and connect its triggered(bool) signal to the specified receiver.
     template<class ActionType>
     ActionType *add(const QString &name, const QObject *receiver = 0, const char *member = 0) {
-      ActionType *a = new ActionType(this);
-      if(receiver && member)
-        connect(a, SIGNAL(triggered(bool)), receiver, member);
-      addAction(name, a);
-      return a;
+        ActionType *a = new ActionType(this);
+        if(receiver && member)
+            connect(a, SIGNAL(triggered(bool)), receiver, member);
+        addAction(name, a);
+        return a;
     }
 
-  signals:
+signals:
     void inserted(QAction *action);
     void actionHovered(QAction *action);
     void actionTriggered(QAction *action);
 
-  protected slots:
+protected slots:
     virtual void connectNotify(const char *signal);
     virtual void slotActionTriggered();
 
-  #if QT_VERSION >= 0x050000
-  protected:
+#if QT_VERSION >= 0x050000
+protected:
     virtual void connectNotify(const QMetaMethod &signal);
-  #endif
+#endif
 
-  private slots:
+private slots:
     void slotActionHovered();
     void actionDestroyed(QObject *);
     void associatedWidgetDestroyed(QObject *);
 
-  private:
+private:
     bool unlistAction(QAction *);
     QString configKey() const;
 

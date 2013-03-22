@@ -140,13 +140,9 @@ int DirViewModel::rowCount(const QModelIndex &parent) const
     return parentItem->childCount();
 }
 
-int DirViewModel::columnCount(const QModelIndex &parent) const
+int DirViewModel::columnCount(const QModelIndex &) const
 {
-    if (parent.isValid()) {
-        return static_cast<DirViewItem *>(parent.internalPointer())->columnCount();
-    } else {
-        return rootItem->columnCount();
-    }
+    return 1;
 }
 
 QVariant DirViewModel::data(const QModelIndex &index, int role) const

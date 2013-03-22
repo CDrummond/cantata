@@ -67,31 +67,19 @@ class Mpris : public QObject
 public:
     Mpris(MainWindow *p);
 
-    virtual ~Mpris() {
-    }
+    virtual ~Mpris() { }
 
     // org.mpris.MediaPlayer2.Player
-    void Next() {
-        mw->nextTrack();
-    }
-
-    void Previous() {
-        mw->prevTrack();
-    }
-
+    void Next() { mw->nextTrack(); }
+    void Previous() { mw->prevTrack(); }
     void Pause() {
         if (MPDState_Playing==MPDStatus::self()->state()) {
             mw->playPauseTrack();
         }
     }
 
-    void PlayPause() {
-        mw->playPauseTrack();
-    }
-
-    void Stop() {
-        mw->stopTrack();
-    }
+    void PlayPause() {  mw->playPauseTrack(); }
+    void Stop() {  mw->stopTrack(); }
 
     void Play() {
         MPDStatus * const status = MPDStatus::self();
@@ -101,14 +89,9 @@ public:
         }
     }
 
-    void Seek(qlonglong) {
-    }
-
-    void SetPosition(const QDBusObjectPath &, qlonglong) {
-    }
-
-    void OpenUri(const QString &) {
-    }
+    void Seek(qlonglong) { }
+    void SetPosition(const QDBusObjectPath &, qlonglong) { }
+    void OpenUri(const QString &) { }
 
     QString PlaybackStatus() {
         switch(MPDStatus::self()->state()) {
@@ -119,86 +102,29 @@ public:
         }
     }
 
-    QString LoopStatus() {
-        return MPDStatus::self()->repeat() ? QLatin1String("Playlist") : QLatin1String("None");
-    }
-
-    void SetLoopStatus(const QString &s) {
-        emit setRepeat(QLatin1String("None")!=s);
-    }
-
+    QString LoopStatus() { return MPDStatus::self()->repeat() ? QLatin1String("Playlist") : QLatin1String("None"); }
+    void SetLoopStatus(const QString &s) { emit setRepeat(QLatin1String("None")!=s); }
     QVariantMap Metadata() const;
-
-    int Rate() const {
-        return 1.0;
-    }
-
-    void SetRate(double) {
-    }
-
-    bool Shuffle() {
-        return MPDStatus::self()->random();
-    }
-
-    void SetShuffle(bool s) {
-        emit setRandom(s);
-    }
-
-    double Volume() const {
-        return MPDStatus::self()->volume()/100.0;
-    }
-
-    void SetVolume(double v) {
-        emit setVolume(v*100);
-    }
-
+    int Rate() const { return 1.0; }
+    void SetRate(double) { }
+    bool Shuffle() { return MPDStatus::self()->random(); }
+    void SetShuffle(bool s) { emit setRandom(s); }
+    double Volume() const { return MPDStatus::self()->volume()/100.0; }
+    void SetVolume(double v) { emit setVolume(v*100); }
     qlonglong Position() const;
-
-    double MinimumRate() const {
-        return 1.0;
-    }
-
-    double MaximumRate() const {
-        return 1.0;
-    }
-
-    bool CanControl() const {
-        return true;
-    }
-
-    bool CanPlay() const {
-        return MPDState_Playing!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>0;
-    }
-
-    bool CanPause() const {
-        return MPDState_Playing==MPDStatus::self()->state();
-    }
-
-    bool CanGoNext() const {
-        return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1;
-    }
-
-    bool CanGoPrevious() const {
-        return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1;
-    }
+    double MinimumRate() const { return 1.0; }
+    double MaximumRate() const { return 1.0; }
+    bool CanControl() const { return true; }
+    bool CanPlay() const { return MPDState_Playing!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>0; }
+    bool CanPause() const { return MPDState_Playing==MPDStatus::self()->state(); }
+    bool CanGoNext() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
+    bool CanGoPrevious() const { return MPDState_Stopped!=MPDStatus::self()->state() && MPDStatus::self()->playlistLength()>1; }
 
     // org.mpris.MediaPlayer2
-    bool CanQuit() const {
-        return true;
-    }
-
-    bool CanRaise() const {
-        return true;
-    }
-
-    bool HasTrackList() const {
-        return false;
-    }
-
-    QString Identity() const {
-        return QLatin1String("Cantata");
-    }
-
+    bool CanQuit() const { return true; }
+    bool CanRaise() const { return true; }
+    bool HasTrackList() const { return false; }
+    QString Identity() const { return QLatin1String("Cantata"); }
     QString DesktopEntry() const {
         #ifdef ENABLE_KDE_SUPPORT
         // Desktop file is installed in $prefix/share/applications/kde4/
@@ -211,13 +137,8 @@ public:
         #endif
     }
 
-    QStringList SupportedUriSchemes() const {
-        return QStringList();
-    }
-
-    QStringList SupportedMimeTypes() const {
-        return QStringList();
-    }
+    QStringList SupportedUriSchemes() const { return QStringList(); }
+    QStringList SupportedMimeTypes() const { return QStringList(); }
 
 public:
     void updateCurrentSong(const Song &song);
@@ -225,9 +146,7 @@ public:
 public Q_SLOTS:
     void Raise();
 
-    void Quit() {
-        QApplication::quit();
-    }
+    void Quit() { QApplication::quit(); }
 
 Q_SIGNALS:
     // org.mpris.MediaPlayer2.Player

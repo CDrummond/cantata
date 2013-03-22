@@ -48,9 +48,7 @@ class CoverQueue : public QObject
 
 public:
     CoverQueue();
-
-    ~CoverQueue() {
-    }
+    ~CoverQueue() { }
 
     void getCover(const Song &s, bool urgent);
 

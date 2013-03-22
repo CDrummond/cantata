@@ -60,8 +60,7 @@ public:
         , largeImages(false)
         , isFlat(flat) {
     }
-    virtual ~MusicLibraryItemRoot() {
-    }
+    virtual ~MusicLibraryItemRoot() { }
 
     virtual QString icon() const { return QString(); }
     virtual bool isDevice() const { return false; }

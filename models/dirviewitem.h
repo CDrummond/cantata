@@ -40,38 +40,17 @@ public:
         Type_File
     };
 
-    DirViewItem(const QString &name=QString(), DirViewItem *p=0)
-        : m_parentItem(p)
-        , m_name(name) {
-    }
-    virtual ~DirViewItem() {
-    }
+    DirViewItem(const QString &name=QString(), DirViewItem *p=0) : m_parentItem(p), m_name(name) { }
+    virtual ~DirViewItem() { }
 
-    int row() const {
-        return m_parentItem ? m_parentItem->indexOf(const_cast<DirViewItem *>(this)) : 0;
-    }
-    virtual int indexOf(DirViewItem *) const {
-        return 0;
-    }
-    DirViewItem * parent() const {
-        return m_parentItem;
-    }
-    virtual int childCount() const {
-        return 0;
-    }
-    virtual DirViewItem * child(int) const {
-        return 0;
-    }
+    int row() const { return m_parentItem ? m_parentItem->indexOf(const_cast<DirViewItem *>(this)) : 0; }
+    virtual int indexOf(DirViewItem *) const { return 0; }
+    DirViewItem * parent() const { return m_parentItem; }
+    virtual int childCount() const { return 0; }
+    virtual DirViewItem * child(int) const { return 0; }
     QString fullName();
-    int columnCount() const {
-        return 1;
-    }
-    const QString & data() const {
-        return m_name;
-    }
-    const QString & name() const {
-        return m_name;
-    }
+    const QString & data() const { return m_name; }
+    const QString & name() const { return m_name; }
     virtual Type type() const=0;
 
 protected:

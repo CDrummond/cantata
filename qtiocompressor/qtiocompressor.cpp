@@ -1,17 +1,17 @@
 /****************************************************************************
-** 
+**
 ** Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
-** 
+**
 ** This file is part of a Qt Solutions component.
 **
-** Commercial Usage  
+** Commercial Usage
 ** Licensees holding valid Qt Commercial licenses may use this file in
 ** accordance with the Qt Solutions Commercial License Agreement provided
 ** with the Software or, alternatively, in accordance with the terms
 ** contained in a written agreement between you and Nokia.
-** 
+**
 ** GNU Lesser General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU Lesser
 ** General Public License version 2.1 as published by the Free Software
@@ -19,29 +19,29 @@
 ** packaging of this file.  Please review the following information to
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
-** 
+**
 ** In addition, as a special exception, Nokia gives you certain
 ** additional rights. These rights are described in the Nokia Qt LGPL
 ** Exception version 1.1, included in the file LGPL_EXCEPTION.txt in this
 ** package.
-** 
-** GNU General Public License Usage 
+**
+** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
 ** General Public License version 3.0 as published by the Free Software
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.  Please review the following information to
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
-** 
+**
 ** Please note Third Party Software included with Qt Solutions may impose
 ** additional restrictions and it is the user's responsibility to ensure
 ** that they have met the licensing requirements of the GPL, LGPL, or Qt
 ** Solutions Commercial license and the relevant license of the Third
 ** Party Software they are using.
-** 
+**
 ** If you are unsure which license is appropriate for your use, please
 ** contact Nokia at qt-info@nokia.com.
-** 
+**
 ****************************************************************************/
 
 #include "qtiocompressor.h"
@@ -88,13 +88,13 @@ public:
     \internal
 */
 QtIOCompressorPrivate::QtIOCompressorPrivate(QtIOCompressor *q_ptr, QIODevice *device, int compressionLevel, int bufferSize)
-:q_ptr(q_ptr)
-,device(device)
-,compressionLevel(compressionLevel)
-,bufferSize(bufferSize)
-,buffer(new ZlibByte[bufferSize])
-,state(Closed)
-,streamFormat(QtIOCompressor::ZlibFormat)
+    :q_ptr(q_ptr)
+    ,device(device)
+    ,compressionLevel(compressionLevel)
+    ,bufferSize(bufferSize)
+    ,buffer(new ZlibByte[bufferSize])
+    ,state(Closed)
+    ,streamFormat(QtIOCompressor::ZlibFormat)
 {
     // Use default zlib memory management.
     zlibStream.zalloc = Z_NULL;
@@ -136,8 +136,8 @@ void QtIOCompressorPrivate::flushZlib(int flushMode)
         if (!writeBytes(buffer, outputSize))
             return;
 
-    // If the mode is Z_FNISH we must loop until we get Z_STREAM_END,
-    // else we loop as long as zlib is able to fill the output buffer.
+        // If the mode is Z_FNISH we must loop until we get Z_STREAM_END,
+        // else we loop as long as zlib is able to fill the output buffer.
     } while ((flushMode == Z_FINISH && status != Z_STREAM_END) || (flushMode != Z_FINISH && zlibStream.avail_out == 0));
 
     if (flushMode == Z_FINISH)
@@ -255,7 +255,7 @@ void QtIOCompressorPrivate::setZlibError(const QString &errorMessage, int zlibEr
     deompression at the expense of memory usage.
 */
 QtIOCompressor::QtIOCompressor(QIODevice *device, int compressionLevel, int bufferSize)
-:d_ptr(new QtIOCompressorPrivate(this, device, compressionLevel, bufferSize))
+    :d_ptr(new QtIOCompressorPrivate(this, device, compressionLevel, bufferSize))
 {}
 
 /*!
@@ -355,7 +355,7 @@ bool QtIOCompressor::open(OpenMode mode)
             return false;
         }
 
-    // If the underlying device is closed, open it.
+        // If the underlying device is closed, open it.
     } else {
         d->manageDevice = true;
         if (d->device->open(mode) == false) {
@@ -479,16 +479,16 @@ qint64 QtIOCompressor::bytesAvailable() const
     int numBytes = 0;
 
     switch (d->state) {
-        case QtIOCompressorPrivate::NotReadFirstByte:
-            numBytes = d->device->bytesAvailable();
+    case QtIOCompressorPrivate::NotReadFirstByte:
+        numBytes = d->device->bytesAvailable();
         break;
-        case QtIOCompressorPrivate::InStream:
-            numBytes = 1;
+    case QtIOCompressorPrivate::InStream:
+        numBytes = 1;
         break;
-        case QtIOCompressorPrivate::EndOfStream:
-        case QtIOCompressorPrivate::Error:
-        default:
-            numBytes = 0;
+    case QtIOCompressorPrivate::EndOfStream:
+    case QtIOCompressorPrivate::Error:
+    default:
+        numBytes = 0;
         break;
     };
 
@@ -545,17 +545,17 @@ qint64 QtIOCompressor::readData(char *data, qint64 maxSize)
         // Decompress.
         status = inflate(&d->zlibStream, Z_SYNC_FLUSH);
         switch (status) {
-            case Z_NEED_DICT:
-            case Z_DATA_ERROR:
-            case Z_MEM_ERROR:
-                d->state = QtIOCompressorPrivate::Error;
-                d->setZlibError(QT_TRANSLATE_NOOP("QtIOCompressor", "Internal zlib error when decompressing: "), status);
-                return -1;
-            case Z_BUF_ERROR: // No more input and zlib can not privide more output - Not an error, we can try to read again when we have more input.
-                return 0;
+        case Z_NEED_DICT:
+        case Z_DATA_ERROR:
+        case Z_MEM_ERROR:
+            d->state = QtIOCompressorPrivate::Error;
+            d->setZlibError(QT_TRANSLATE_NOOP("QtIOCompressor", "Internal zlib error when decompressing: "), status);
+            return -1;
+        case Z_BUF_ERROR: // No more input and zlib can not privide more output - Not an error, we can try to read again when we have more input.
+            return 0;
             break;
         }
-    // Loop util data buffer is full or we reach the end of the input stream.
+        // Loop util data buffer is full or we reach the end of the input stream.
     } while (d->zlibStream.avail_out != 0 && status != Z_STREAM_END);
 
     if (status == Z_STREAM_END) {

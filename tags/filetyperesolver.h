@@ -28,22 +28,18 @@
 
 namespace Meta
 {
-    namespace Tag
-    {
-        /** A FileTypeResolver for taglib.
-            The resolver will look at the file and then return a proper TagLib::File as result.
-            This specific resolver will first look at the mime type and then at the extension.
-        */
-        class FileTypeResolver : public TagLib::FileRef::FileTypeResolver
-        {
-            TagLib::File *createFile(TagLib::FileName fileName,
-                                     bool readAudioProperties,
-                                     TagLib::AudioProperties::ReadStyle audioPropertiesStyle) const;
+namespace Tag
+{
+class FileTypeResolver : public TagLib::FileRef::FileTypeResolver
+{
+    TagLib::File *createFile(TagLib::FileName fileName,
+                             bool readAudioProperties,
+                             TagLib::AudioProperties::ReadStyle audioPropertiesStyle) const;
 
-        public:
-            virtual ~FileTypeResolver() {}
-        };
-    }
+public:
+    virtual ~FileTypeResolver() {}
+};
+}
 }
 
 #endif

@@ -37,13 +37,8 @@ class HttpServer
 public:
     static HttpServer * self();
 
-    HttpServer()
-        : thread(0)
-        , socket(0) {
-    }
-
-    virtual ~HttpServer() {
-    }
+    HttpServer() : thread(0), socket(0) { }
+    virtual ~HttpServer() { }
 
     void stop();
     bool isAlive() const;

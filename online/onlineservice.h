@@ -94,9 +94,7 @@ public:
         setUseArtistImages(true);
         setUseAlbumImages(true);
     }
-    virtual ~OnlineService() {
-    }
-
+    virtual ~OnlineService() { }
     void destroy(bool delCache=true);
     void stopLoader();
     virtual const Icon & serviceIcon() const =0;

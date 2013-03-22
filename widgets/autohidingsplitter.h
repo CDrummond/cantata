@@ -43,23 +43,16 @@ class AutohidingSplitterHandle : public QSplitterHandle
     Q_OBJECT
 
 public:
-    AutohidingSplitterHandle(Qt::Orientation orientation, QSplitter *parent)
-        :QSplitterHandle(orientation,parent) {
-    }
-    virtual ~AutohidingSplitterHandle() {
-    }
+    AutohidingSplitterHandle(Qt::Orientation orientation, QSplitter *parent) : QSplitterHandle(orientation, parent) { }
+    virtual ~AutohidingSplitterHandle() { }
 
 Q_SIGNALS:
     void hoverStarted();
     void hoverFinished();
 
 protected:
-    virtual void enterEvent(QEvent *){
-        emit hoverStarted();
-    }
-    virtual void leaveEvent(QEvent *){
-        emit hoverFinished();
-    }
+    virtual void enterEvent(QEvent *) { emit hoverStarted(); }
+    virtual void leaveEvent(QEvent *) { emit hoverFinished(); }
 };
 
 class AutohidingSplitter : public QSplitter
@@ -76,9 +69,7 @@ public:
     bool restoreState( const QByteArray &state);
     QByteArray saveState() const;
     bool eventFilter(QObject *watched, QEvent *event);
-    bool isAutoHideEnabled() const {
-        return autoHideEnabled;
-    }
+    bool isAutoHideEnabled() const { return autoHideEnabled; }
 
 public Q_SLOTS:
     void setAutoHideEnabled(bool en);

@@ -45,7 +45,6 @@ public:
     void setError(const QString &msg) { setMessage(msg, true); }
     void setInformation(const QString &msg) { setMessage(msg, false); }
     void setVisible(bool v);
-
     bool isActive() const { return active; }
 
 Q_SIGNALS:

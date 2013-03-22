@@ -33,7 +33,6 @@ class ListView : public QListView
 
 public:
     ListView(QWidget *parent=0);
-
     virtual ~ListView();
 
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);

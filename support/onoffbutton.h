@@ -33,8 +33,7 @@ class OnOffButton : public QCheckBox
 {
 public:
     OnOffButton(QWidget *p);
-    virtual ~OnOffButton() {
-    }
+    virtual ~OnOffButton() { }
 
     QSize sizeHint() const;
     bool hitButton(const QPoint &pos) const;

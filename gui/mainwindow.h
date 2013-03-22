@@ -84,9 +84,7 @@ class PlayQueuePage : public QWidget
     Q_OBJECT
 
 public:
-    PlayQueuePage(QWidget *p)
-        : QWidget(p) {
-    }
+    PlayQueuePage(QWidget *p) : QWidget(p) { }
 };
 
 class DeleteKeyEventHandler : public QObject
@@ -149,9 +147,7 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    int mpdVolume() const {
-        return volume;
-    }
+    int mpdVolume() const { return volume; }
 
     int currentTrackPosition() const;
     QString coverFile() const;

@@ -33,19 +33,15 @@ typedef KPageWidgetItem PageWidgetItem;
 class PageWidget : public KPageWidget
 {
 public:
-    PageWidget(QWidget *p)
-        : KPageWidget(p) {
-    }
-    virtual ~PageWidget() {
-    }
+    PageWidget(QWidget *p) : KPageWidget(p) { }
+    virtual ~PageWidget() { }
     PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header) {
         PageWidgetItem *item=KPageWidget::addPage(widget, name);
         item->setIcon(icon);
         item->setHeader(header);
         return item;
     }
-    void allPagesAdded() {
-    }
+    void allPagesAdded() { }
 };
 
 #else
@@ -54,16 +50,14 @@ class PageWidgetItem : public QWidget
 {
 public:
     PageWidgetItem(QWidget *p, const QString &header, const Icon &icon, QWidget *cfg);
-    virtual ~PageWidgetItem() {
-    }
+    virtual ~PageWidgetItem() { }
 };
 
 class PageWidget : public FancyTabWidget
 {
 public:
     PageWidget(QWidget *p);
-    virtual ~PageWidget() {
-    }
+    virtual ~PageWidget() { }
     PageWidgetItem * addPage(QWidget *widget, const QString &name, const Icon &icon, const QString &header);
     void allPagesAdded();
 };

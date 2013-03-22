@@ -33,64 +33,64 @@ class ActionCollection;
  *  removing actions), because it is supposed to be used after all actions being defined.
  */
 class ShortcutsModel : public QAbstractItemModel {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  enum Role {
-    ActionRole = Qt::UserRole,
-    DefaultShortcutRole,
-    ActiveShortcutRole,
-    IsConfigurableRole
-  };
+    enum Role {
+        ActionRole = Qt::UserRole,
+        DefaultShortcutRole,
+        ActiveShortcutRole,
+        IsConfigurableRole
+    };
 
-  ShortcutsModel(const QHash<QString, ActionCollection *> &actionCollections, QObject *parent = 0);
-  ~ShortcutsModel();
+    ShortcutsModel(const QHash<QString, ActionCollection *> &actionCollections, QObject *parent = 0);
+    ~ShortcutsModel();
 
-  QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-  QModelIndex parent(const QModelIndex &child) const;
-  int columnCount(const QModelIndex &parent = QModelIndex()) const;
-  int rowCount(const QModelIndex &parent = QModelIndex()) const;
-  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-  QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-  bool setData(const QModelIndex &index, const QVariant &value, int role = ActiveShortcutRole);
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex &child) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = ActiveShortcutRole);
 
 public slots:
-  //! Load shortcuts from the ActionCollections
-  /** Note that this will not rebuild the internal structure of the model, as we assume the
+    //! Load shortcuts from the ActionCollections
+    /** Note that this will not rebuild the internal structure of the model, as we assume the
    *  ActionCollections to be static during the lifetime of the settingspage. This will merely
    *  re-read the shortcuts currently set in Quassel.
    */
-  void load();
+    void load();
 
-  //! Load default shortcuts from the ActionCollections
-  /** Note that this will not rebuild the internal structure of the model, as we assume the
+    //! Load default shortcuts from the ActionCollections
+    /** Note that this will not rebuild the internal structure of the model, as we assume the
    *  ActionCollections to be static during the lifetime of the settingspage. This will update
    *  the model's state from the ActionCollections' defaults.
    */
-  void defaults();
+    void defaults();
 
-  //! Commit the model changes to the ActionCollections
-  void commit();
+    //! Commit the model changes to the ActionCollections
+    void commit();
 
-  inline bool hasChanged() const { return _changedCount; }
+    inline bool hasChanged() const { return _changedCount; }
 
 signals:
-  //! Reflects the difference between model contents and the ActionCollections we loaded this from
-  void hasChanged(bool changed);
+    //! Reflects the difference between model contents and the ActionCollections we loaded this from
+    void hasChanged(bool changed);
 
 private:
-  struct Item {
-    inline Item() : row(-1), parentItem(0), collection(0), action(0) { }
-    inline ~Item() { qDeleteAll(actionItems); }
-    int row;
-    Item *parentItem;
-    ActionCollection *collection;
-    Action *action;
-    QKeySequence shortcut;
-    QList<Item *> actionItems;
-  };
+    struct Item {
+        inline Item() : row(-1), parentItem(0), collection(0), action(0) { }
+        inline ~Item() { qDeleteAll(actionItems); }
+        int row;
+        Item *parentItem;
+        ActionCollection *collection;
+        Action *action;
+        QKeySequence shortcut;
+        QList<Item *> actionItems;
+    };
 
-  QList<Item *> _categoryItems;
-  int _changedCount;
+    QList<Item *> _categoryItems;
+    int _changedCount;
 };
 
 #endif // SHORTCUTSMODEL_H

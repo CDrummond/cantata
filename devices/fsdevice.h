@@ -35,15 +35,9 @@ class QThread;
 
 struct FileOnlySong : public Song
 {
-    FileOnlySong(const Song &o)
-        : Song(o) {
-    }
-    bool operator==(const FileOnlySong &o) const {
-        return file==o.file;
-    }
-    bool operator<(const FileOnlySong &o) const {
-        return file.compare(o.file)<0;
-    }
+    FileOnlySong(const Song &o) : Song(o) { }
+    bool operator==(const FileOnlySong &o) const { return file==o.file; }
+    bool operator<(const FileOnlySong &o) const { return file.compare(o.file)<0; }
 };
 
 inline uint qHash(const FileOnlySong &key)

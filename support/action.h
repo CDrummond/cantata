@@ -26,9 +26,9 @@
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KAction>
 class Action : public KAction {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     static void initIcon(QAction *act);
 
     explicit Action(QObject *parent);
@@ -44,16 +44,16 @@ class Action : public KAction {
  *  for now), which should make it easy to plug in KDE support later on.
  */
 class Action : public QAction {
-  Q_OBJECT
+    Q_OBJECT
 
-  Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut)
-  Q_PROPERTY(bool shortcutConfigurable READ isShortcutConfigurable WRITE setShortcutConfigurable)
-  Q_FLAGS(ShortcutType)
+    Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut)
+    Q_PROPERTY(bool shortcutConfigurable READ isShortcutConfigurable WRITE setShortcutConfigurable)
+    Q_FLAGS(ShortcutType)
 
-  public:
+public:
     enum ShortcutType {
-      ActiveShortcut = 0x01,
-      DefaultShortcut = 0x02
+        ActiveShortcut = 0x01,
+        DefaultShortcut = 0x02
     };
     Q_DECLARE_FLAGS(ShortcutTypes, ShortcutType)
 
@@ -69,13 +69,13 @@ class Action : public QAction {
     bool isShortcutConfigurable() const;
     void setShortcutConfigurable(bool configurable);
 
-  signals:
+signals:
     void triggered(Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers);
 
-  private:
+private:
     void init();
 
-  private slots:
+private slots:
     void slotTriggered();
 };
 

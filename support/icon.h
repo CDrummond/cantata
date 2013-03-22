@@ -41,24 +41,17 @@ class Icon : public
 {
 public:
     #ifdef ENABLE_KDE_SUPPORT
-    explicit Icon(const QString &icon)
-        : KIcon(icon) {
-    }
+    explicit Icon(const QString &icon) : KIcon(icon) { }
     #else
-    explicit Icon(const QString &icon)
-        : QIcon(QIcon::fromTheme(icon)) {
-    }
+    explicit Icon(const QString &icon) : QIcon(QIcon::fromTheme(icon)) { }
     #endif
-    Icon() {
-    }
+    Icon() { }
 
     static int stdSize(int s);
     static int dlgIconSize();
     static void init(QToolButton *btn, bool setFlat=true);
     #ifdef ENABLE_KDE_SUPPORT
-    static Icon getMediaIcon(const QString &name) {
-        return Icon(name);
-    }
+    static Icon getMediaIcon(const QString &name) { return Icon(name); }
     #else
     static Icon getMediaIcon(const QString &name);
     #endif

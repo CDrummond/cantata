@@ -58,17 +58,17 @@ namespace Core {
 namespace Internal {
 
 class FancyTabProxyStyle : public QProxyStyle {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  void drawControl(ControlElement element, const QStyleOption* option,
-                   QPainter* painter, const QWidget* widget) const;
-  void polish(QWidget* widget);
-  void polish(QApplication* app);
-  void polish(QPalette& palette);
+    void drawControl(ControlElement element, const QStyleOption* option,
+                     QPainter* painter, const QWidget* widget) const;
+    void polish(QWidget* widget);
+    void polish(QApplication* app);
+    void polish(QPalette& palette);
 
 protected:
-  bool eventFilter(QObject* o, QEvent* e);
+    bool eventFilter(QObject* o, QEvent* e);
 };
 
 class FancyTab : public QWidget{
@@ -120,10 +120,7 @@ public:
 
     void addTab(const QIcon &icon, const QString &label, const QString &tt);
     void addSpacer(int size = 40);
-    void removeTab(int index) {
-        FancyTab *tab = m_tabs.takeAt(index);
-        delete tab;
-    }
+    void removeTab(int index) { delete m_tabs.takeAt(index); }
     void setCurrentIndex(int index);
     int currentIndex() const { return m_currentIndex; }
 
@@ -157,125 +154,121 @@ private:
 };
 
 class FancyTabWidget : public QWidget {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  static void setup();
+    static void setup();
 
-  FancyTabWidget(QWidget *parent, bool allowContext=true, bool drawBorder=false);
+    FancyTabWidget(QWidget *parent, bool allowContext=true, bool drawBorder=false);
 
-  // Values are persisted - only add to the end
-  enum Mode {
-    Mode_None = 0,
+    // Values are persisted - only add to the end
+    enum Mode {
+        Mode_None = 0,
 
-    Mode_LargeSidebar = 1,
-    Mode_SmallSidebar = 2,
-    //Mode_Tabs = 3,
-    //Mode_IconOnlyTabs = 4,
-    //Mode_PlainSidebar = 5,
-    Mode_SideTabs = 3,
-    Mode_TopTabs = 4,
-    Mode_IconOnlyTopTabs = 5,
-    Mode_BotTabs = 6,
-    Mode_IconOnlyBotTabs = 7,
-    Mode_IconOnlyLargeSidebar = 8,
-    Mode_IconOnlySmallSidebar = 9,
-    Mode_IconOnlySideTabs = 10,
+        Mode_LargeSidebar = 1,
+        Mode_SmallSidebar = 2,
+        //Mode_Tabs = 3,
+        //Mode_IconOnlyTabs = 4,
+        //Mode_PlainSidebar = 5,
+        Mode_SideTabs = 3,
+        Mode_TopTabs = 4,
+        Mode_IconOnlyTopTabs = 5,
+        Mode_BotTabs = 6,
+        Mode_IconOnlyBotTabs = 7,
+        Mode_IconOnlyLargeSidebar = 8,
+        Mode_IconOnlySmallSidebar = 9,
+        Mode_IconOnlySideTabs = 10,
 
-    Mode_BottomBar = 11,
-    Mode_IconOnlyBottomBar = 12,
+        Mode_BottomBar = 11,
+        Mode_IconOnlyBottomBar = 12,
 
-    Mode_TopBar = 13,
-    Mode_IconOnlyTopBar = 14
-  };
-
-  struct Item {
-    Item(const QIcon& icon, const QString& label, const QString &tt, bool enabled)
-      : type_(Type_Tab), tab_label_(label), tab_tooltip_(tt), tab_icon_(icon), spacer_size_(0), enabled_(enabled), index_(-1) {}
-    Item(int size) : type_(Type_Spacer), spacer_size_(size), enabled_(true), index_(-1) {}
-
-    enum Type {
-      Type_Tab,
-      Type_Spacer,
+        Mode_TopBar = 13,
+        Mode_IconOnlyTopBar = 14
     };
 
-    Type type_;
-    QString tab_label_;
-    QString tab_tooltip_;
-    QIcon tab_icon_;
-    int spacer_size_;
-    bool enabled_;
-    int index_;
-  };
+    struct Item {
+        Item(const QIcon& icon, const QString& label, const QString &tt, bool enabled)
+            : type_(Type_Tab), tab_label_(label), tab_tooltip_(tt), tab_icon_(icon), spacer_size_(0), enabled_(enabled), index_(-1) {}
+        Item(int size) : type_(Type_Spacer), spacer_size_(size), enabled_(true), index_(-1) {}
 
-  void AddTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
-  void InsertTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
-  void RemoveTab(QWidget *tab);
-  int IndexOf(QWidget *tab);
-  void AddSpacer(int size = 40);
-  void SetBackgroundPixmap(const QPixmap& pixmap);
+        enum Type {
+            Type_Tab,
+            Type_Spacer,
+        };
 
-  void AddBottomWidget(QWidget* widget);
+        Type type_;
+        QString tab_label_;
+        QString tab_tooltip_;
+        QIcon tab_icon_;
+        int spacer_size_;
+        bool enabled_;
+        int index_;
+    };
 
-  int current_index() const;
-  QWidget * currentWidget() const;
-  bool isEnabled(int index) const { return index>=0 && index<items_.count() ? items_[index].enabled_ : false; }
-  QWidget * widget(int index) const;
-  int count() const;
-  int visibleCount() const;
-  Mode mode() const { return mode_; }
-
-  void addMenuAction(QAction *a) { removeMenuAction(a); otherActions.append(a); }
-  void removeMenuAction(QAction *a) { otherActions.removeAll(a); }
-
-  QSize tabSize() const;
+    void AddTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
+    void InsertTab(QWidget *tab, const QIcon &icon, const QString &label, const QString &tt=QString(), bool enabled=true);
+    void RemoveTab(QWidget *tab);
+    int IndexOf(QWidget *tab);
+    void AddSpacer(int size = 40);
+    void SetBackgroundPixmap(const QPixmap& pixmap);
+    void AddBottomWidget(QWidget* widget);
+    int current_index() const;
+    QWidget * currentWidget() const;
+    bool isEnabled(int index) const { return index>=0 && index<items_.count() ? items_[index].enabled_ : false; }
+    QWidget * widget(int index) const;
+    int count() const;
+    int visibleCount() const;
+    Mode mode() const { return mode_; }
+    void addMenuAction(QAction *a) { removeMenuAction(a); otherActions.append(a); }
+    void removeMenuAction(QAction *a) { otherActions.removeAll(a); }
+    QSize tabSize() const;
 
 public slots:
-  void SetCurrentIndex(int index);
-  void SetMode(Mode mode);
-  void SetMode(int mode) { SetMode(Mode(mode)); }
-  void ToggleTab(int tab, bool show);
+    void SetCurrentIndex(int index);
+    void SetMode(Mode mode);
+    void SetMode(int mode) { SetMode(Mode(mode)); }
+    void ToggleTab(int tab, bool show);
 
 signals:
-  void CurrentChanged(int index);
-  void ModeChanged(FancyTabWidget::Mode mode);
-  void TabToggled(int index);
+    void CurrentChanged(int index);
+    void ModeChanged(FancyTabWidget::Mode mode);
+    void TabToggled(int index);
 
 protected:
-  void paintEvent(QPaintEvent *event);
-  void contextMenuEvent(QContextMenuEvent* e);
+    void paintEvent(QPaintEvent *event);
+    void contextMenuEvent(QContextMenuEvent* e);
 
 private slots:
-  void SetMode();
-  void ShowWidget(int index);
-  void ToggleTab();
+    void SetMode();
+    void ShowWidget(int index);
+    void ToggleTab();
 
 private:
-  void MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
-  void AddMenuItem(QActionGroup* group,  const QString& text, Mode mode, Mode iconMode);
-  int TabToIndex(int tab) const;
-  int IndexToTab(int index) const { return index>=0 && index<items_.count() ? items_[index].index_ : 0; }
+    void MakeTabBar(QTabBar::Shape shape, bool text, bool icons, bool fancy);
+    void AddMenuItem(QActionGroup* group,  const QString& text, Mode mode, Mode iconMode);
+    int TabToIndex(int tab) const;
+    int IndexToTab(int index) const { return index>=0 && index<items_.count() ? items_[index].index_ : 0; }
 
-  Mode mode_;
-  QList<Item> items_;
+    Mode mode_;
+    QList<Item> items_;
 
-  QWidget* tab_bar_;
-  QStackedLayout* stack_;
-  QPixmap background_pixmap_;
-  QWidget* side_widget_;
-  QVBoxLayout* side_layout_;
-  QVBoxLayout* top_layout_;
+    QWidget* tab_bar_;
+    QStackedLayout* stack_;
+    QPixmap background_pixmap_;
+    QWidget* side_widget_;
+    QVBoxLayout* side_layout_;
+    QVBoxLayout* top_layout_;
 
-//   bool use_background_;
+    //   bool use_background_;
 
-  QMenu* menu_;
+    QMenu* menu_;
 
-  //boost::scoped_ptr<FancyTabProxyStyle> proxy_style_;
-  QScopedPointer<FancyTabProxyStyle> proxy_style_;
-  bool allowContext_;
-  bool drawBorder_;
+    //boost::scoped_ptr<FancyTabProxyStyle> proxy_style_;
+    QScopedPointer<FancyTabProxyStyle> proxy_style_;
+    bool allowContext_;
+    bool drawBorder_;
 
-  QList<QAction *> otherActions;
+    QList<QAction *> otherActions;
 };
 
 } // namespace Internal

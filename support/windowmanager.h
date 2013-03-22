@@ -56,7 +56,7 @@
 class WindowManager: public QObject
 {
     Q_OBJECT
-    
+
     #if QT_VERSION < 0x040600
     class WmPointer : public QObject
     {
@@ -72,9 +72,8 @@ class WindowManager: public QObject
         QWidget *widget_;
     };
     #endif
-    
-public:
 
+public:
     enum DragMode
     {
         WM_DRAG_NONE             = 0,
@@ -145,7 +144,6 @@ protected:
     void setLocked(bool value) { _locked = value; }
     bool isLocked(void) const  { return _locked; }
 
-
 private:
     bool _useWMMoveResize;
     int _dragMode;
@@ -186,12 +184,7 @@ private:
     class AppEventFilter: public QObject
     {
     public:
-
-        //! constructor
-        AppEventFilter(WindowManager *parent)
-            : QObject(parent)
-            , _parent(parent) {
-        }
+        AppEventFilter(WindowManager *parent) : QObject(parent), _parent(parent) { }
 
         virtual bool eventFilter(QObject *, QEvent *);
 

@@ -31,8 +31,7 @@ class Job : public QThread
     Q_OBJECT
 public:
     Job();
-    virtual ~Job() {
-    }
+    virtual ~Job() { }
 
     void requestAbort() { abortRequested=true; }
     void stop();
@@ -53,8 +52,7 @@ class JobController : public QObject
     Q_OBJECT
 public:
     static JobController * self();
-    JobController() {
-    }
+    JobController() { }
 
     void add(Job *job);
     void finishedWith(Job *job);

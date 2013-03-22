@@ -100,7 +100,7 @@ void TextBrowser::setImage(const QImage &img)
         image=img;
         if (!image.isNull()) {
             if (image.width()<minSize || image.height()<minSize) {
-                image=image.scaled(QSize(maxSize, maxSize), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                image=image.scaled(QSize(minSize, minSize), Qt::KeepAspectRatio, Qt::SmoothTransformation);
             } else if (image.width()>maxSize || image.height()>maxSize) {
                 image=image.scaled(QSize(maxSize, maxSize), Qt::KeepAspectRatio, Qt::SmoothTransformation);
             }

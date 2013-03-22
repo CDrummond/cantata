@@ -29,9 +29,6 @@
 #include "song.h"
 #include "mpdparseutils.h"
 #include "musiclibraryitemalbum.h"
-#ifdef TAGLIB_FOUND
-#include "httpserver.h"
-#endif
 #include "localize.h"
 #include <QMap>
 #include <QFileInfo>
@@ -393,18 +390,4 @@ bool Song::capitalise()
     title=capitalize(title);
 
     return artist!=origArtist || albumartist!=origAlbumArtist || album!=origAlbum || title!=origTitle;
-}
-
-bool Song::isCantataStream() const
-{
-    #ifdef TAGLIB_FOUND
-    return !file.isEmpty() && file.startsWith("http") && HttpServer::self()->isOurs(file);
-    #else
-    return false;
-    #endif
-}
-
-bool Song::isCdda() const
-{
-    return !file.isEmpty() && file.contains(constCddaProtocol);
 }

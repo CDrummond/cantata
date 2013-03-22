@@ -49,6 +49,85 @@ static QString encode(const QImage &img)
     return QString("<img src=\"data:image/png;base64,%1\">").arg(QString(buffer.data().toBase64()));
 }
 
+#ifndef Q_OS_WIN
+static QStringList iconThemes;
+static void themes(const QString &theme)
+{
+    if (iconThemes.contains(theme)) {
+        return;
+    }
+    iconThemes << theme;
+    QStringList paths=QIcon::themeSearchPaths();
+    QString key("Inherits=");
+    foreach (const QString &p, paths) {
+        QString index(p+"/"+theme+"/index.theme");
+        QFile f(index);
+        if (f.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            while (!f.atEnd()) {
+                QString line=f.readLine().trimmed().simplified();
+                if (line.startsWith(key)) {
+                    QStringList inherited=line.mid(key.length()).split(",", QString::SkipEmptyParts);
+                    foreach (const QString &i, inherited) {
+                        themes(i);
+                    }
+                    return;
+                }
+            }
+        }
+    }
+}
+
+static void initIconThemes()
+{
+    if (iconThemes.isEmpty()) {
+        themes(QIcon::themeName());
+    }
+}
+
+static QString findIcon(const QStringList &names)
+{
+    initIconThemes();
+    QList<int> sizes=QList<int>() << 256 << 128 << 64 << 48 << 32 << 24 << 22;
+    QStringList paths=QIcon::themeSearchPaths();
+    QStringList sections=QStringList() << "categories" << "devices";
+    foreach (const QString &p, paths) {;
+        foreach (const QString &n, names) {
+            foreach (const QString &theme, iconThemes) {
+                QMap<int, QString> files;
+                foreach (int s, sizes) {
+                    foreach (const QString &sect, sections) {
+                        QString f(p+"/"+theme+"/"+QString::number(s)+"x"+QString::number(s)+"/"+sect+"/"+n+".png");
+                        if (QFile::exists(f)) {
+                            files.insert(s, f);
+                            break;
+                        }
+                        f=QString(p+"/"+theme+"/"+QString::number(s)+"x"+QString::number(s)+"/"+sect+"/"+n+".svg");
+                        if (QFile::exists(f)) {
+                            files.insert(s, f);
+                            break;
+                        }
+                        f=QString(p+"/"+theme+"/"+sect+"/"+QString::number(s)+"/"+n+".svg");
+                        if (QFile::exists(f)) {
+                            files.insert(s, f);
+                            break;
+                        }
+                    }
+                }
+
+                if (!files.isEmpty()) {
+                    foreach (int s, sizes) {
+                        if (files.contains(s)) {
+                            return files[s];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return QString();
+}
+#endif
+
 const int CoverWidget::constBorder=1;
 
 CoverWidget::CoverWidget(QWidget *parent)
@@ -76,6 +155,13 @@ const QPixmap & CoverWidget::stdPixmap(bool stream)
         QSize s=size()-QSize(constBorder*2, constBorder*2);
         int iconSize=s.width()<=128 ? 128 : 256;
         pix = (stream ? Icons::streamIcon : Icons::albumIcon).pixmap(iconSize, iconSize).scaled(s, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+        #ifndef Q_OS_WIN
+        QString &file=stream ? noStreamCoverFileName : noCoverFileName;
+        if (file.isEmpty()) {
+            file=findIcon(stream ? QStringList() << "applications-internet" : QStringList() << "media-optical" << "media-optical-audio");
+        }
+        #endif
     }
     return pix;
 }
@@ -110,10 +196,11 @@ void CoverWidget::update(const Song &s)
             }
         } else {
             valid=false;
-            coverFileName=QString();
-            update(stdPixmap(current.isStream() && !current.isCdda()));
+            bool stream=current.isStream() && !current.isCdda();
+            update(stdPixmap(stream));
+            coverFileName=stream ? noStreamCoverFileName : noCoverFileName;
             emit coverImage(QImage());
-            emit coverFile(QString());
+            emit coverFile(coverFileName);
         }
     }
 }
@@ -133,10 +220,11 @@ void CoverWidget::coverRetreived(const Song &s, const QImage &img, const QString
             emit coverImage(img);
             emit coverFile(file);
         } else {
-            update(stdPixmap(current.isStream() && !current.isCdda()));
-            coverFileName=QString();
+            bool stream=current.isStream() && !current.isCdda();
+            update(stdPixmap(stream));
+            coverFileName=stream ? noStreamCoverFileName : noCoverFileName;
             emit coverImage(QImage());
-            emit coverFile(QString());
+            emit coverFile(coverFileName);
         }
     }
 }

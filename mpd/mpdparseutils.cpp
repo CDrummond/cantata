@@ -215,14 +215,20 @@ Song MPDParseUtils::parseSong(const QByteArray &data, bool isPlayQueue)
     }
 
     #ifdef TAGLIB_FOUND
-    if (song.isCantataStream()) {
+    if (!song.file.isEmpty() && song.file.startsWith("http") && HttpServer::self()->isOurs(song.file)) {
+        song.type=Song::CantataStream;
         Song mod=HttpServer::self()->decodeUrl(song.file);
         if (!mod.title.isEmpty()) {
             mod.id=song.id;
             song=mod;
         }
-    }
+    } else
     #endif
+    if (song.file.contains(Song::constCddaProtocol)) {
+        song.type=Song::Cdda;
+    } else if (song.file.contains("://")) {
+        song.type=Song::Stream;
+    }
 
     if (isPlayQueue) {
         if (!song.file.isEmpty()) {

@@ -40,7 +40,10 @@ struct Song
         Standard        = 0,
         MultipleArtists = 1,
         SingleTracks    = 2,
-        Playlist        = 3
+        Playlist        = 3,
+        Stream          = 4,
+        CantataStream   = 5,
+        Cdda            = 6
     };
 
     qint32 id;
@@ -56,8 +59,8 @@ struct Song
     mutable quint8 priority;
     quint16 time;
     quint16 track;
-    quint16 year : 13;
-    mutable Type type : 2;
+    quint16 year : 12;
+    mutable Type type : 3;
     mutable bool guessed : 1;
     mutable qint32 size;
 
@@ -98,9 +101,9 @@ struct Song
     bool setAlbumArtist();
     static QString capitalize(const QString &s);
     bool capitalise();
-    bool isStream() const { return /*file.isEmpty() || */file.contains("://"); }
-    bool isCantataStream() const;
-    bool isCdda() const;
+    bool isStream() const { return Stream==type || CantataStream==type; }
+    bool isCantataStream() const { return CantataStream==type; }
+    bool isCdda() const { return Cdda==type; }
     QString albumKey() const { return albumArtist()+QChar(':')+album; }
 };
 

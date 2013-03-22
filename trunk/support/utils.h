@@ -69,6 +69,8 @@ namespace Utils
     extern QString cleanPath(const QString &p);
     extern QString configDir(const QString &sub=QString(), bool create=false);
     extern QString cacheDir(const QString &sub=QString(), bool create=true);
+    extern void clearOldCache(const QString &sub, int maxAge);
+    extern void touchFile(const QString &fileName);
 };
 
 #endif

@@ -24,6 +24,7 @@
 #include "infopage.h"
 #include "localize.h"
 #include "covers.h"
+#include "utils.h"
 #include "combobox.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
@@ -34,12 +35,23 @@
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QNetworkReply>
+#include <QFile>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 
 static const QLatin1String constApiKey("N5JHVHNG0UOZZIDVT");
 static const QLatin1String constBioUrl("http://developer.echonest.com/api/v4/artist/biographies");
+static const char *constNameKey="name";
+static const int constCacheAge=7;
+
+const QLatin1String InfoPage::constCacheDir("artists/");
+const QLatin1String InfoPage::constInfoExt(".json");
+
+static QString cacheFileName(const QString &artist, bool createDir)
+{
+    return Utils::cacheDir(InfoPage::constCacheDir, createDir)+Covers::encodeName(artist)+InfoPage::constInfoExt;
+}
 
 InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
@@ -58,6 +70,7 @@ InfoPage::InfoPage(QWidget *parent)
     setBgndImageEnabled(Settings::self()->lyricsBgnd());
     text->setZoom(Settings::self()->infoZoom());
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage)), SLOT(artistImage(Song,QImage)));
+    Utils::clearOldCache(constCacheDir, constCacheAge);
 }
 
 void InfoPage::saveSettings()
@@ -85,6 +98,20 @@ void InfoPage::update(const Song &s)
             s.albumartist=currentSong.artist;
             s.file=currentSong.file;
             Covers::self()->requestCover(s, true);
+            QString cachedFile=cacheFileName(song.artist, false);
+            if (QFile::exists(cachedFile)) {
+                QFile f(cachedFile);
+                if (f.open(QIODevice::ReadOnly)) {
+                    QByteArray data=f.readAll();
+
+                    if (!data.isEmpty() && parseResponse(data)) {
+                        setBio();
+                        Utils::touchFile(cachedFile);
+                        return;
+                    }
+                }
+            }
+
             requestBio();
         }
     }
@@ -104,9 +131,19 @@ void InfoPage::handleReply()
         return;
     }
     if (reply==currentJob) {
-        if (QNetworkReply::NoError==reply->error() && parseResponse(reply->readAll())) {
-            setBio();
-        } else {
+        bool ok=false;
+        if (QNetworkReply::NoError==reply->error()) {
+            QByteArray data=reply->readAll();
+            if (parseResponse(data)) {
+                setBio();
+                ok=true;
+                QFile f(cacheFileName(reply->property(constNameKey).toString(), true));
+                if (f.open(QIODevice::WriteOnly)) {
+                    f.write(data);
+                }
+            }
+        }
+        if (!ok) {
             text->setHtml(i18n(("<i><Failed to download information!</i>")));
         }
         reply->deleteLater();
@@ -143,6 +180,7 @@ void InfoPage::requestBio()
     #endif
 
     currentJob=NetworkAccessManager::self()->get(url);
+    currentJob->setProperty(constNameKey, currentSong.artist);
     connect(currentJob, SIGNAL(finished()), this, SLOT(handleReply()));
 }
 
@@ -247,4 +285,8 @@ bool InfoPage::parseResponse(const QByteArray &resp)
     }
 
     return !biogs.isEmpty();
+}
+
+void InfoPage::clearOldCache()
+{
 }

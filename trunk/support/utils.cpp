@@ -31,6 +31,7 @@
 #include <QSet>
 #include <QThread>
 #include <QCoreApplication>
+#include <QDateTime>
 #ifdef ENABLE_KDE_SUPPORT
 #include <KDE/KStandardDirs>
 #endif
@@ -44,6 +45,8 @@
 #include <grp.h>
 #include <pwd.h>
 #endif
+#include <sys/types.h>
+#include <utime.h>
 
 QString Utils::strippedText(QString s)
 {
@@ -504,4 +507,31 @@ QString Utils::cacheDir(const QString &sub, bool create)
     dir=Utils::fixPath(dir);
     QDir d(dir);
     return d.exists() || (create && d.mkpath(dir)) ? QDir::toNativeSeparators(dir) : QString();
+}
+
+void Utils::clearOldCache(const QString &sub, int maxAge)
+{
+    if (sub.isEmpty()) {
+        return;
+    }
+
+    QString d=cacheDir(sub, false);
+    QDir dir(d);
+
+    if (dir.exists()) {
+        QFileInfoList files=dir.entryInfoList(QDir::Files|QDir::NoDotAndDotDot);
+        if (files.count()) {
+            QDateTime now=QDateTime::currentDateTime();
+            foreach (const QFileInfo &f, files) {
+                if (f.lastModified().daysTo(now)>maxAge) {
+                    QFile::remove(f.absoluteFilePath());
+                }
+            }
+        }
+    }
+}
+
+void Utils::touchFile(const QString &fileName)
+{
+    ::utime(QFile::encodeName(fileName).constData(), 0);
 }

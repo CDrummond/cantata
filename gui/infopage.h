@@ -48,7 +48,7 @@ public:
     bool bgndImageEnabled() { return text->imageEnabled(); }
 
 public Q_SLOTS:
-    void setImage(const QImage &img) { text->setImage(img); }
+    void artistImage(const Song &song, const QImage &img);
 
 private Q_SLOTS:
     void handleReply();
@@ -57,7 +57,7 @@ private Q_SLOTS:
 private:
     void requestBio();
     void abort();
-    bool parseResponse(QIODevice *dev);
+    bool parseResponse(const QByteArray &resp);
 
 private:
     TextBrowser *text;

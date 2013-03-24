@@ -29,6 +29,11 @@
 #include <KDE/KWindowSystem>
 #endif
 
+static inline int convertTime(int t)
+{
+    return t*1000000;
+}
+
 Mpris::Mpris(MainWindow *p)
     : QObject(p)
     , mw(p)
@@ -59,7 +64,7 @@ qlonglong Mpris::Position() const
 {
     // Cant use MPDStatus, as we dont poll for track position, but use a timer instead!
     //return MPDStatus::self()->timeElapsed();
-    return mw->currentTrackPosition()*1000000;
+    return convertTime(mw->currentTrackPosition());
 }
 
 void Mpris::updateStatus()
@@ -85,7 +90,7 @@ void Mpris::updateStatus()
         map.insert("CanPause", CanPause());
     }
     if (MPDStatus::self()->timeElapsed()!=status.timeElapsed) {
-        map.insert("Position", MPDStatus::self()->timeElapsed()*1000000);
+        map.insert("Position", convertTime(MPDStatus::self()->timeElapsed()));
     }
     if (!map.isEmpty() || MPDStatus::self()->songId()!=status.songId) {
         map.insert("Metadata", Metadata());
@@ -117,7 +122,7 @@ QVariantMap Mpris::Metadata() const {
             (!currentSong.album.isEmpty() || (currentSong.isStream() && !currentSong.name.isEmpty()))) {
         metadataMap.insert("mpris:trackid", currentSong.id);
         if (currentSong.time>0) {
-            metadataMap.insert("mpris:length", currentSong.time*1000000);
+            metadataMap.insert("mpris:length", convertTime(currentSong.time));
         }
         if (!currentSong.album.isEmpty()) {
             metadataMap.insert("xesam:album", currentSong.album);

@@ -93,6 +93,9 @@ void Mpris::updateStatus()
         map.insert("Position", convertTime(MPDStatus::self()->timeElapsed()));
     }
     if (!map.isEmpty() || MPDStatus::self()->songId()!=status.songId) {
+        if (!map.contains("Position")) {
+            map.insert("Position", convertTime(MPDStatus::self()->timeElapsed()));
+        }
         map.insert("Metadata", Metadata());
         signalUpdate(map);
     }

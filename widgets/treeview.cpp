@@ -59,6 +59,7 @@ void TreeView::setPageDefaults()
     setHeaderHidden(true);
     setDragDropMode(QAbstractItemView::DragOnly);
     setSortingEnabled(true);
+    setAnimated(true);
 }
 
 void TreeView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

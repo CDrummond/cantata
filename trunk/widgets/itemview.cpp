@@ -461,7 +461,7 @@ ItemView::ItemView(QWidget *p)
     backAction = new QAction(i18n("Back"), this);
     backAction->setIcon(Icon("go-previous"));
     backButton->setDefaultAction(backAction);
-    backButton->setMaximumHeight(listSearch->sizeHint().height());
+    //backButton->setMaximumHeight(listSearch->sizeHint().height());
     backAction->setShortcut(Qt::Key_Escape);
     listView->addAction(backAction);
     listView->addDefaultAction(backAction);

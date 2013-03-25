@@ -214,7 +214,7 @@ void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
      if (1!=selected.size()) {
          return; //doubleclick should only have one selected item
      }
-     MusicLibraryItem *item = OnlineServicesModel::self()->toItem(selected.at(0));
+     MusicLibraryItem *item = OnlineServicesModel::self()->toItem(proxy.mapToSource(selected.at(0)));
      if (MusicLibraryItem::Type_Song==item->itemType()) {
          addSelectionToPlaylist();
      }

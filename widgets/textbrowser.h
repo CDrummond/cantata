@@ -27,6 +27,7 @@
 #include <QTextBrowser>
 #include <QImage>
 #include <QDebug>
+class Spinner;
 
 class TextBrowser : public QTextBrowser
 {
@@ -40,11 +41,16 @@ public:
     void enableImage(bool e);
     bool imageEnabled() { return drawImage; }
     void paintEvent(QPaintEvent *e);
+    void setHtml(const QString &txt, bool showSpin=false);
+    void setText(const QString &txt, bool showSpin=false);
+    void showSpiner();
+    void hideSpinner();
 
 private:
     int orig;
     QImage image;
     bool drawImage;
+    Spinner *spinner;
 };
 
 #endif

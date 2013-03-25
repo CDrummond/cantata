@@ -378,10 +378,10 @@ void LyricsPage::getLyrics()
     UltimateLyricsProvider *prov=UltimateLyrics::self()->getNext(currentProvider);
     if (prov) {
         text->setText(i18nc("<title> by <artist>\nFetching lyrics via <url>", "%1 by %2\nFetching lyrics via %3")
-                      .arg(currentSong.title).arg(currentSong.artist, prov->getName()));
+                      .arg(currentSong.title).arg(currentSong.artist, prov->getName()), true);
         prov->fetchInfo(currentRequest, currentSong);
     } else {
-        text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
+        text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist), true);
         currentProvider=-1;
         // Set lyrics file anyway - so that editing is enabled!
         lyricsFile=Settings::self()->storeLyricsInMpdDir()

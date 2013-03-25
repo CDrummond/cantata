@@ -75,6 +75,7 @@ OnlineServicesPage::OnlineServicesPage(QWidget *p)
     connect(removeAction, SIGNAL(triggered()), this, SLOT(removeService()));
     connect(OnlineServicesModel::self()->refreshAct(), SIGNAL(triggered()), this, SLOT(refreshService()));
     connect(OnlineServicesModel::self()->connectAct(), SIGNAL(triggered()), this, SLOT(toggleService()));
+    connect(OnlineServicesModel::self()->disconnectAct(), SIGNAL(triggered()), this, SLOT(toggleService()));
     connect(jamendoAction, SIGNAL(triggered()), this, SLOT(addJamendo()));
     connect(magnatuneAction, SIGNAL(triggered()), this, SLOT(addMagnatune()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(download()));

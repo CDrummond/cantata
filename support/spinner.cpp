@@ -22,16 +22,16 @@
  */
 
 #include "spinner.h"
-
-#ifdef ENABLE_KDE_SUPPORT
 #include <QApplication>
 
-Spinner::Spinner(QObject *p)
+#ifdef ENABLE_KDE_SUPPORT
+
+Spinner::Spinner(QObject *p, bool inMiddle)
     : KPixmapSequenceOverlayPainter(p)
     , active(false)
 {
     setSequence(KPixmapSequence("process-working", KIconLoader::SizeSmallMedium));
-    setAlignment(Qt::AlignTop | (Qt::RightToLeft==QApplication::layoutDirection() ? Qt::AlignLeft : Qt::AlignRight));
+    setAlignment(inMiddle ? Qt::AlignCenter : (Qt::AlignTop | (Qt::RightToLeft==QApplication::layoutDirection() ? Qt::AlignLeft : Qt::AlignRight)));
 }
 
 void Spinner::start()
@@ -51,11 +51,12 @@ void Spinner::stop()
 #include <QPaintEvent>
 #include <QTimer>
 
-Spinner::Spinner(QObject *p)
+Spinner::Spinner(QObject *p, bool inMiddle)
     : QWidget(0)
     , timer(0)
     , value(0)
     , active(false)
+    , central(inMiddle)
 {
     Q_UNUSED(p)
     static const int constSize=24;
@@ -117,7 +118,11 @@ void Spinner::timeout()
 void Spinner::setPosition()
 {
     QPoint current=pos();
-    QPoint desired=QPoint(parentWidget()->size().width()-(size().width()+4), 4);
+    QPoint desired=central
+                    ? QPoint((parentWidget()->size().width()-size().width())/2, (parentWidget()->size().height()-size().height())/2)
+                    : Qt::RightToLeft==QApplication::layoutDirection()
+                        ? QPoint(4, 4)
+                        : QPoint(parentWidget()->size().width()-(size().width()+4), 4);
 
     if (current!=desired) {
         move(desired);

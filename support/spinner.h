@@ -28,7 +28,7 @@
 class Spinner : public KPixmapSequenceOverlayPainter
 {
 public:
-    Spinner(QObject *p);
+    Spinner(QObject *p, bool inMiddle=false);
     bool isActive() const { return active; }
     void start();
     void stop();
@@ -44,7 +44,7 @@ class Spinner : public QWidget
     Q_OBJECT
 
 public:
-    Spinner(QObject *p);
+    Spinner(QObject *p, bool inMiddle=false);
     virtual ~Spinner() { }
 
     void setWidget(QWidget *widget) { setParent(widget); }
@@ -63,5 +63,6 @@ private:
     QTimer *timer;
     int value;
     bool active;
+    bool central;
 };
 #endif

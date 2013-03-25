@@ -391,7 +391,7 @@ void LyricsPage::getLyrics()
                       .arg(currentSong.title).arg(currentSong.artist, prov->getName()), true);
         prov->fetchInfo(currentRequest, currentSong);
     } else {
-        text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist), true);
+        text->setText(i18nc("<title> by <artist>\nFailed\n", "%1 by %2\nFailed to fetch lyrics").arg(currentSong.title).arg(currentSong.artist));
         currentProvider=-1;
         // Set lyrics file anyway - so that editing is enabled!
         lyricsFile=Settings::self()->storeLyricsInMpdDir()

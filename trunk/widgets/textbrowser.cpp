@@ -22,6 +22,7 @@
  */
 
 #include "textbrowser.h"
+#include "spinner.h"
 #include <QPainter>
 #include <QDebug>
 
@@ -108,6 +109,7 @@ static void toGray(QImage &img)
 TextBrowser::TextBrowser(QWidget *p)
     : QTextBrowser(p)
     , drawImage(false)
+    , spinner(0)
 {
     orig=font().pointSize();
     if (-1==minSize) {
@@ -167,4 +169,42 @@ void TextBrowser::paintEvent(QPaintEvent *e)
     }
 
     QTextBrowser::paintEvent(e);
+}
+
+void TextBrowser::setHtml(const QString &txt, bool showSpin)
+{
+    QTextBrowser::setHtml(txt);
+    if (showSpin) {
+        showSpiner();
+    } else {
+        hideSpinner();
+    }
+}
+
+void TextBrowser::setText(const QString &txt, bool showSpin)
+{
+    QTextBrowser::setText(txt);
+    if (showSpin) {
+        showSpiner();
+    } else {
+        hideSpinner();
+    }
+}
+
+void TextBrowser::showSpiner()
+{
+    if (!spinner) {
+        spinner=new Spinner(this);
+        spinner->setWidget(this);
+    }
+    if (!spinner->isActive()) {
+        spinner->start();
+    }
+}
+
+void TextBrowser::hideSpinner()
+{
+    if (spinner) {
+        spinner->stop();
+    }
 }

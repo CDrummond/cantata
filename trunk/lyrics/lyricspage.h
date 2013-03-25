@@ -65,7 +65,7 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void downloadFinished();
-    void lyricsReady(int, const QString &lyrics);
+    void lyricsReady(int, QString lyrics);
     void update();
     void search();
     void edit();

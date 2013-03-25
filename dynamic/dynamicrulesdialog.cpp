@@ -268,7 +268,7 @@ void DynamicRulesDialog::showAbout()
                               "e.g. to have Cantata look for 'Rock songs by Wibble OR songs by Various Artists', you would need the following: "
                               "<ul><li>Include AlbumArtist=Wibble Genre=Rock</li><li>Include AlbumArtist=Various Artists</li></ul> "
                               "To have Cantata look for 'Songs by Wibble but not from album Abc', you would need the following: "
-                              "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude Album=Avc</li></ul>"
+                              "<ul><li>Include AlbumArtist=Wibble</li><li>Exclude Album=Abc</li></ul>"
                               "After the set of usable songs has been created, Cantata will randomly select songs to "
                               "keep the play queue filled with 10 entries.</p>")
                         );

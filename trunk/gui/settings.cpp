@@ -454,7 +454,13 @@ bool Settings::lyricsBgnd()
 
 int Settings::infoZoom()
 {
-    return version() < CANTATA_MAKE_VERSION(0, 9, 51) ? 0 : GET_INT("infoZoom", 0);
+    int zoom=GET_INT("infoZoom", 0);
+    if (zoom>0 && version()<CANTATA_MAKE_VERSION(0, 9, 51)) {
+        modified=true;
+        zoom=0;
+        SET_VALUE("infoZoom", zoom);
+    }
+    return zoom;
 }
 
 QString Settings::page()

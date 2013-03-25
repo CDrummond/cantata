@@ -436,7 +436,6 @@ Covers::Image Covers::getImage(const Song &song)
 {
     bool isArtistImage=isRequestingArtistImage(song);
     QString prevFileName=getFilename(song, isArtistImage);
-
     if (!prevFileName.isEmpty()) {
         QImage img(prevFileName);
 
@@ -478,7 +477,7 @@ Covers::Image Covers::getImage(const Song &song)
                 }
                 QDir d(dirName);
                 d.cdUp();
-                dirName=d.absolutePath();
+                dirName=Utils::fixPath(d.absolutePath());
             }
         } else {
             initCoverNames();

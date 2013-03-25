@@ -74,6 +74,37 @@ static void fadeEdges(QImage &img, int edgeSize)
     }
 }
 
+static int toGray(int r, int g, int b)
+{
+    return (r+g+b)/3; // QColor(r, g, b).value();
+}
+
+static void toGray(QImage &img)
+{
+    unsigned char *data=img.bits();
+    int width=img.width()*4;
+    int height=img.height();
+
+    for(int row=0; row<height; ++row) {
+        int offset=row*img.bytesPerLine();
+        for(int column=0; column<width; column+=4) {
+            #if Q_BYTE_ORDER == Q_BIG_ENDIAN
+            // ARGB
+            int gray=toGray(data[offset+column+1], data[offset+column+2], data[offset+column+3]);
+            data[offset+column+1] = gray;
+            data[offset+column+2] = gray;
+            data[offset+column+3] = gray;
+            #else
+            // BGRA
+            int gray=toGray(data[offset+column+2], data[offset+column+1], data[offset+column]);
+            data[offset+column] = gray;
+            data[offset+column+1] = gray;
+            data[offset+column+2] = gray;
+            #endif
+        }
+    }
+}
+
 TextBrowser::TextBrowser(QWidget *p)
     : QTextBrowser(p)
     , drawImage(false)
@@ -83,7 +114,7 @@ TextBrowser::TextBrowser(QWidget *p)
         minSize=fontMetrics().height()*18;
         minSize=(((int)(minSize/100))*100)+(minSize%100 ? 100 : 0);
         maxSize=minSize*2;
-        border=minSize/4;
+        border=minSize/16;
     }
 }
 
@@ -100,6 +131,7 @@ void TextBrowser::setImage(const QImage &img)
 
             image=image.convertToFormat(QImage::Format_ARGB32);
             fadeEdges(image, border);
+            toGray(image);
         }
         viewport()->update();
     }

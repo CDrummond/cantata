@@ -154,7 +154,7 @@ public:
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     bool cdAuto();
     #ifdef LAME_FOUND
-    bool cdMp3();
+    bool cdEncode();
     #endif
     #endif
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND
@@ -231,7 +231,7 @@ public:
     #if defined CDDB_FOUND || defined MUSICBRAINZ5_FOUND
     void saveCdAuto(bool v);
     #ifdef LAME_FOUND
-    void saveCdMp3(bool v);
+    void saveCdEncode(bool v);
     #endif
     #endif
     #if defined CDDB_FOUND && defined MUSICBRAINZ5_FOUND

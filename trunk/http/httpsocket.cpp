@@ -286,7 +286,7 @@ void HttpSocket::readClient()
                             static const int constMp3BufferSize=CD_FRAMESIZE_RAW*2*sizeof(short int);
                             static const int constPcmSize=CD_FRAMESIZE_RAW/(2*sizeof(short int));
                             unsigned char mp3Buffer[constMp3BufferSize];
-                            if (Settings::self()->cdMp3()) {
+                            if (Settings::self()->cdEncode()) {
                                 lame = lame_init();
                                 lame_set_num_channels(lame, 2);
                                 lame_set_in_samplerate(lame, 44100);

@@ -959,6 +959,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent* e) {
                             Mode_IconOnlyBotTabs==mode_ || Mode_IconOnlyTopBar==mode_);
     iconOnlyAct->setData(0);
     connect(iconOnlyAct, SIGNAL(triggered()), this, SLOT(SetMode()));
+    modeMenu->addSeparator();
     modeMenu->addAction(iconOnlyAct);
     modeAct->setMenu(modeMenu);
     modeAct->setData(-1);

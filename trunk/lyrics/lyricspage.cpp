@@ -82,7 +82,7 @@ LyricsPage::LyricsPage(QWidget *p)
     connect(saveAction, SIGNAL(triggered()), SLOT(save()));
     connect(cancelAction, SIGNAL(triggered()), SLOT(cancel()));
     connect(delAction, SIGNAL(triggered()), SLOT(del()));
-    connect(UltimateLyrics::self(), SIGNAL(lyricsReady(int, const QString &)), SLOT(lyricsReady(int, const QString &)));
+    connect(UltimateLyrics::self(), SIGNAL(lyricsReady(int, QString)), SLOT(lyricsReady(int, QString)));
     Icon::init(refreshBtn);
     Icon::init(searchBtn);
     Icon::init(editBtn);
@@ -328,23 +328,33 @@ void LyricsPage::downloadFinished()
     getLyrics();
 }
 
-void LyricsPage::lyricsReady(int id, const QString &lyrics)
+void LyricsPage::lyricsReady(int id, QString lyrics)
 {
-    if (id != currentRequest)
+    if (id != currentRequest) {
         return;
+    }
+    lyrics=lyrics.trimmed();
 
     if (lyrics.isEmpty()) {
         getLyrics();
     } else {
+        QString before=text->toHtml();
         text->setText(lyrics);
         // Remove formatting, as we dont save this anyway...
-        text->setText(text->toPlainText());
-        lyricsFile=QString();
-        if (! ( Settings::self()->storeLyricsInMpdDir() &&
-                saveFile(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension))) ) {
-            saveFile(cacheFile(currentSong.artist, currentSong.title, true));
+        QString plain=text->toPlainText().trimmed();
+
+        if (plain.isEmpty()) {
+            text->setText(before);
+            getLyrics();
+        } else {
+            text->setText(plain);
+            lyricsFile=QString();
+            if (! ( Settings::self()->storeLyricsInMpdDir() &&
+                    saveFile(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension))) ) {
+                saveFile(cacheFile(currentSong.artist, currentSong.title, true));
+            }
+            setMode(Mode_Display);
         }
-        setMode(Mode_Display);
     }
 }
 
@@ -409,20 +419,17 @@ void LyricsPage::setMode(Mode m)
 
 bool LyricsPage::setLyricsFromFile(const QString &filePath) const
 {
-    bool success = false;
-
     QFile f(filePath);
 
     if (f.exists() && f.open(QIODevice::ReadOnly)) {
-        // Read the file using a QTextStream so we get
-        // automatic UTF8 detection.
+        // Read the file using a QTextStream so we get automatic UTF8 detection.
         QTextStream inputStream(&f);
 
         text->setText(inputStream.readAll());
         f.close();
 
-        success = true;
+        return true;
     }
 
-    return success;
+    return false;
 }

@@ -48,7 +48,7 @@ AudioCdSettings::AudioCdSettings(QWidget *p)
     REMOVE(cddbPort)
     REMOVE(cddbPortLabel)
     #endif
-    #if !defined CDDB_FOUND
+    #if !defined LAME_FOUND
     REMOVE(playbackOptions)
     #endif
 }
@@ -61,7 +61,7 @@ void AudioCdSettings::load()
     cddbPort->setValue(Settings::self()->cddbPort());
     #endif
     #if defined LAME_FOUND
-    cdMp3->setChecked(Settings::self()->cdMp3());
+    cdEncode->setChecked(Settings::self()->cdEncode());
     #endif
     paranoiaFull->setChecked(Settings::self()->paranoiaFull());
     paranoiaNeverSkip->setChecked(Settings::self()->paranoiaNeverSkip());
@@ -88,7 +88,7 @@ void AudioCdSettings::save()
     Settings::self()->saveUseCddb(cdLookup->itemData(cdLookup->currentIndex()).toBool());
     #endif
     #if defined LAME_FOUND
-    Settings::self()->saveCdMp3(cdMp3->isChecked());
+    Settings::self()->saveCdEncode(cdEncode->isChecked());
     #endif
 }
 

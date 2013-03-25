@@ -588,9 +588,9 @@ bool Settings::cdAuto()
     return GET_BOOL("cdAuto", true);
 }
 #ifdef LAME_FOUND
-bool Settings::cdMp3()
+bool Settings::cdEncode()
 {
-    return GET_BOOL("cdMp3", true);
+    return GET_BOOL("cdEncode", true);
 }
 #endif
 #endif
@@ -965,9 +965,9 @@ void Settings::saveCdAuto(bool v)
     SET_VALUE_MOD(cdAuto)
 }
 #ifdef LAME_FOUND
-void Settings::saveCdMp3(bool v)
+void Settings::saveCdEncode(bool v)
 {
-    SET_VALUE_MOD(cdMp3)
+    SET_VALUE_MOD(cdEncode)
 }
 #endif
 #endif

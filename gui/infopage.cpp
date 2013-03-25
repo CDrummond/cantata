@@ -92,7 +92,7 @@ void InfoPage::update(const Song &s, bool force)
         if (currentSong.isEmpty()) {
             text->setText(QString());
         } else {
-            text->setHtml("<i>Retrieving...</i>");
+            text->setHtml("<i>Retrieving...</i>", true);
 
             Song s;
             s.albumartist=currentSong.artist;

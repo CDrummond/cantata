@@ -45,7 +45,7 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QToolButton" name="backButton"/>
+        <widget class="ToolButton" name="backButton"/>
        </item>
        <item row="0" column="1">
         <widget class="LineEdit" name="listSearch">
@@ -64,6 +64,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>toolbutton.h</header>
+  </customwidget>
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>

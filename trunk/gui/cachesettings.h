@@ -27,9 +27,11 @@
 #include <QWidget>
 #include <QString>
 #include <QStringList>
-#include <QGroupBox>
+#include <QTreeWidget>
 
+class QPushButton;
 class QThread;
+
 class CacheItemCounter : public QObject
 {
     Q_OBJECT
@@ -51,32 +53,42 @@ private:
     QThread *thread;
 };
 
-class QLabel;
-class QPushButton;
-class CacheItem : public QGroupBox
+class CacheItem : public QObject, public QTreeWidgetItem
 {
     Q_OBJECT
 
 public:
-    CacheItem(const QString &title, const QString &d, const QStringList &t, QWidget *parent);
+    CacheItem(const QString &title, const QString &d, const QStringList &t, QTreeWidget *parent);
     ~CacheItem();
 
-    void showEvent(QShowEvent *e);
+    void calculate();
+    void clean();
+    bool isEmpty() const { return empty; }
+    QString name() const { return text(0); }
 
 Q_SIGNALS:
     void getCount();
     void deleteAll();
+    void updated();
 
 private Q_SLOTS:
-    void deleteAllItems();
     void update(int itemCount, int space);
 
 private:
-    bool calculated;
     CacheItemCounter *counter;
-    QPushButton *button;
-    QLabel *numItems;
-    QLabel *spaceUsed;
+    bool empty;
+};
+
+class CacheTree : public QTreeWidget
+{
+public:
+    CacheTree(QWidget *parent);
+    ~CacheTree();
+
+    void showEvent(QShowEvent *e);
+
+private:
+    bool calculated;
 };
 
 class CacheSettings : public QWidget
@@ -86,6 +98,14 @@ class CacheSettings : public QWidget
 public:
     CacheSettings(QWidget *parent);
     ~CacheSettings();
+
+private Q_SLOTS:
+    void controlButton();
+    void deleteAll();
+
+private:
+    QTreeWidget *tree;
+    QPushButton *button;
 };
 
 #endif

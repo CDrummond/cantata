@@ -27,6 +27,7 @@
 #include "song.h"
 #include "config.h"
 #include "actionmodel.h"
+#include "musiclibraryproxymodel.h"
 
 class Device;
 class OnlineService;
@@ -99,6 +100,13 @@ private:
     Action *disconnectAction;
 
     friend class OnlineService;
+};
+
+class OnlineServicesProxyModel : public MusicLibraryProxyModel
+{
+public:
+    OnlineServicesProxyModel(QObject *parent = 0) : MusicLibraryProxyModel(parent) { }
+    virtual const MusicLibraryItem * toItem(const QModelIndex &idx) const { return OnlineServicesModel::self()->toItem(idx); }
 };
 
 #endif

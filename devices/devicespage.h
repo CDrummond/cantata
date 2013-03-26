@@ -25,7 +25,7 @@
 #define DEVICESPAGE_H
 
 #include "ui_devicespage.h"
-#include "musiclibraryproxymodel.h"
+#include "devicesmodel.h"
 #include "device.h"
 #include "config.h"
 #ifdef ENABLE_REMOTE_DEVICES
@@ -81,7 +81,7 @@ Q_SIGNALS:
     void deleteSongs(const QString &from, const QList<Song> &songs);
 
 private:
-    MusicLibraryProxyModel proxy;
+    DevicesProxyModel proxy;
     Action *copyAction;
     #ifdef ENABLE_REMOTE_DEVICES
     Action *forgetDeviceAction;

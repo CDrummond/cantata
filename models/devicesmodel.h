@@ -29,6 +29,7 @@
 #include "remotefsdevice.h"
 #include "actionmodel.h"
 #include "cddb.h"
+#include "musiclibraryproxymodel.h"
 
 class QMimeData;
 class Device;
@@ -124,6 +125,13 @@ private:
     Action *editAction;
     #endif
     friend class Device;
+};
+
+class DevicesProxyModel : public MusicLibraryProxyModel
+{
+public:
+    DevicesProxyModel(QObject *parent = 0) : MusicLibraryProxyModel(parent) { }
+    virtual const MusicLibraryItem * toItem(const QModelIndex &idx) const { return DevicesModel::self()->toItem(idx); }
 };
 
 #endif

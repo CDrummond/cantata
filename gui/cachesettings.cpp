@@ -29,7 +29,6 @@
 #include "musiclibrarymodel.h"
 #include "utils.h"
 #include "messagebox.h"
-#include <QFormLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QStyle>
@@ -37,6 +36,7 @@
 #include <QThread>
 #include <QFileInfo>
 #include <QDir>
+#include <QList>
 
 static const int constMaxRecurseLevel=4;
 
@@ -114,55 +114,69 @@ void CacheItemCounter::deleteAll()
     getCount();
 }
 
-CacheItem::CacheItem(const QString &title, const QString &d, const QStringList &t, QWidget *p)
-    : QGroupBox(p)
-    , calculated(false)
+CacheItem::CacheItem(const QString &title, const QString &d, const QStringList &t, QTreeWidget *p)
+    : QTreeWidgetItem(p, QStringList() << title)
     , counter(new CacheItemCounter(d, t))
+    , empty(true)
 {
-    setTitle(title);
-    QFormLayout *layout=new QFormLayout(this);
-    button=new QPushButton(i18n("Delete All"), this);
-    button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
-    button->setEnabled(false);
     connect(this, SIGNAL(getCount()), counter, SLOT(getCount()), Qt::QueuedConnection);
     connect(this, SIGNAL(deleteAll()), counter, SLOT(deleteAll()), Qt::QueuedConnection);
     connect(counter, SIGNAL(count(int, int)), this, SLOT(update(int, int)), Qt::QueuedConnection);
-    connect(button, SIGNAL(clicked(bool)), this, SLOT(deleteAllItems()));
-
-    numItems=new QLabel(this);
-    spaceUsed=new QLabel(this);
-    layout->addRow(i18n("Number of items:"), numItems);
-    layout->addRow(i18n("Space used:"), spaceUsed);
-    layout->setWidget(2, QFormLayout::FieldRole, button);
-    numItems->setText(i18n("Calculating..."));
-    spaceUsed->setText(i18n("Calculating..."));
+    connect(this, SIGNAL(updated()), p, SIGNAL(itemSelectionChanged()));
 }
 
 CacheItem::~CacheItem()
 {
 }
 
-void CacheItem::showEvent(QShowEvent *e)
-{
-    if (!calculated) {
-        emit getCount();
-        calculated=true;
-    }
-    QGroupBox::showEvent(e);
-}
-
-void CacheItem::deleteAllItems()
-{
-    if (MessageBox::Yes==MessageBox::warningYesNo(this, i18n("Delete all '%1' items?").arg(title()), title())) {
-        emit deleteAll();
-    }
-}
-
 void CacheItem::update(int itemCount, int space)
 {
-    numItems->setText(QString::number(itemCount));
-    spaceUsed->setText(Utils::formatByteSize(space));
-    button->setEnabled(itemCount>0);
+    setText(1, QString::number(itemCount));
+    setText(2, Utils::formatByteSize(space));
+    empty=0==itemCount;
+    emit updated();
+}
+
+void CacheItem::clean()
+{
+    emit deleteAll();
+}
+
+void CacheItem::calculate()
+{
+    emit getCount();
+}
+
+CacheTree::CacheTree(QWidget *parent)
+    : QTreeWidget(parent)
+{
+    setHeaderLabels(QStringList() << i18n("Name") << i18n("Item Count") << i18n("Space Used"));
+    setAlternatingRowColors(true);
+    setAllColumnsShowFocus(true);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setRootIsDecorated(false);
+    setSortingEnabled(false);
+    //setSortingEnabled(true);
+    //sortByColumn(0, Qt::AscendingOrder);
+    header()->setResizeMode(0, QHeaderView::Stretch);
+    header()->setResizeMode(1, QHeaderView::Stretch);
+    header()->setResizeMode(2, QHeaderView::Stretch);
+    header()->setStretchLastSection(true);
+}
+
+CacheTree::~CacheTree()
+{
+}
+
+void CacheTree::showEvent(QShowEvent *e)
+{
+    if (!calculated) {
+        for (int i=0; i<topLevelItemCount(); ++i) {
+            ((CacheItem *)topLevelItem(i))->calculate();
+        }
+        calculated=true;
+    }
+    QTreeWidget::showEvent(e);
 }
 
 CacheSettings::CacheSettings(QWidget *parent)
@@ -183,17 +197,71 @@ CacheSettings::CacheSettings(QWidget *parent)
     label->setWordWrap(true);
     layout->addWidget(label, row++, col, 1, 2);
     layout->addItem(new QSpacerItem(spacing, spacing, QSizePolicy::Fixed, QSizePolicy::Fixed), row++, 0);
-    layout->addWidget(new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", this), row++, col);
-    layout->addWidget(new CacheItem(i18n("Lyrics"), Utils::cacheDir(LyricsPage::constLyricsDir, false), QStringList() << "*"+LyricsPage::constExtension, this), row++, col);
-    layout->addWidget(new CacheItem(i18n("Music Library List"), Utils::cacheDir(MusicLibraryModel::constLibraryCache, false),
-                                    QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, this), row++, col);
-    layout->addItem(new QSpacerItem(0, 8, QSizePolicy::Fixed, QSizePolicy::MinimumExpanding), row++, 0);
-    row=2;
-    col=1;
-    layout->addWidget(new CacheItem(i18n("Artist Information"), Utils::cacheDir(InfoPage::constCacheDir, false), QStringList() << "*"+InfoPage::constInfoExt << "*.jpg" << "*.png", this), row++, 1);
-    layout->addWidget(new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", this), row++, 1);
-    layout->addWidget(new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt<< "*.jpg" << "*.png", this), row++, 1);
+
+    tree=new CacheTree(this);
+    layout->addWidget(tree, row++, col, 1, 2);
+
+    new CacheItem(i18n("Music Library"), Utils::cacheDir(MusicLibraryModel::constLibraryCache, false),
+                  QStringList() << "*"+MusicLibraryModel::constLibraryExt << "*"+MusicLibraryModel::constLibraryCompressedExt, tree);
+    new CacheItem(i18n("Covers"), Utils::cacheDir(Covers::constCoverDir, false), QStringList() << "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Lyrics"), Utils::cacheDir(LyricsPage::constLyricsDir, false), QStringList() << "*"+LyricsPage::constExtension, tree);
+    new CacheItem(i18n("Artist Information"), Utils::cacheDir(InfoPage::constCacheDir, false), QStringList() << "*"+InfoPage::constInfoExt << "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Jamendo"), Utils::cacheDir("jamendo", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt << "*.jpg" << "*.png", tree);
+    new CacheItem(i18n("Magnatune"), Utils::cacheDir("magnatune", false), QStringList() << "*"+MusicLibraryModel::constLibraryCompressedExt<< "*.jpg" << "*.png", tree);
+
+    button=new QPushButton(i18n("Delete All"), this);
+    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed), row++, 0);
+    layout->addWidget(button, row, 1, 1, 1);
+    button->setEnabled(false);
+
+    connect(tree, SIGNAL(itemSelectionChanged()), this, SLOT(controlButton()));
+    connect(button, SIGNAL(clicked()), this, SLOT(deleteAll()));
 }
 
-CacheSettings::~CacheSettings() {
+CacheSettings::~CacheSettings()
+{
+}
+
+void CacheSettings::controlButton()
+{
+    button->setEnabled(false);
+    for (int i=0; i<tree->topLevelItemCount(); ++i) {
+        CacheItem *item=(CacheItem *)tree->topLevelItem(i);
+
+        if (item->isSelected() && !item->isEmpty()) {
+            button->setEnabled(true);
+            break;
+        }
+    }
+}
+
+void CacheSettings::deleteAll()
+{
+    QList<CacheItem *> toDelete;
+    for (int i=0; i<tree->topLevelItemCount(); ++i) {
+        CacheItem *item=(CacheItem *)tree->topLevelItem(i);
+
+        if (item->isSelected() && !item->isEmpty()) {
+            toDelete.append(item);
+        }
+    }
+
+    if (!toDelete.isEmpty()) {
+        if (1==toDelete.count() && MessageBox::No==MessageBox::warningYesNo(this, i18n("Delete all '%1' items?").arg(toDelete.at(0)->name()), i18n("Delete Cache Items"))) {
+            return;
+        } else if (toDelete.count()>1) {
+            QString items;
+            foreach (CacheItem *i, toDelete) {
+                items+="<li>"+i->name()+"</li>";
+            }
+
+            if (MessageBox::No==MessageBox::warningYesNo(this, i18n("<p>Delete all from the following?<ul>%1</ul></p>").arg(items), i18n("Delete Cache Items"))) {
+                return;
+            }
+
+            foreach (CacheItem *i, toDelete) {
+                i->clean();
+            }
+        }
+    }
 }

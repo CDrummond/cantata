@@ -274,7 +274,7 @@
           <widget class="ToolButton" name="savePlayQueuePushButton"/>
          </item>
          <item>
-          <widget class="ToolButton" name="removeAllFromPlayQueuePushButton"/>
+          <widget class="ToolButton" name="clearPlayQueuePushButton"/>
          </item>
         </layout>
        </item>

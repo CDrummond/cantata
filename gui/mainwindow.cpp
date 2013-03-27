@@ -369,7 +369,7 @@ MainWindow::MainWindow(QWidget *parent)
     addStreamToPlayQueueAction->setEnabled(false);
     savePlayQueuePushButton->setDefaultAction(savePlayQueueAction);
     addStreamToPlayQueuePushButton->setDefaultAction(addStreamToPlayQueueAction);
-    removeAllFromPlayQueuePushButton->setDefaultAction(clearPlayQueueAction);
+    clearPlayQueuePushButton->setDefaultAction(clearPlayQueueAction);
     randomPushButton->setDefaultAction(randomPlayQueueAction);
     repeatPushButton->setDefaultAction(repeatPlayQueueAction);
     singlePushButton->setDefaultAction(singlePlayQueueAction);
@@ -2487,7 +2487,7 @@ void MainWindow::focusSearch()
     }
     if (playQueue->hasFocus() || repeatPushButton->hasFocus() || singlePushButton->hasFocus() || randomPushButton->hasFocus() ||
         consumePushButton->hasFocus() || savePlayQueuePushButton->hasFocus() || addStreamToPlayQueuePushButton->hasFocus() ||
-        removeAllFromPlayQueuePushButton->hasFocus()) {
+        clearPlayQueuePushButton->hasFocus()) {
         searchPlayQueueLineEdit->setFocus();
     } else if (libraryPage->isVisible()) {
         libraryPage->focusSearch();

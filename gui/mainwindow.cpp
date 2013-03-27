@@ -434,15 +434,8 @@ MainWindow::MainWindow(QWidget *parent)
     searchPlayQueueLineEdit->setPlaceholderText(i18n("Search Play Queue..."));
     QList<QToolButton *> playbackBtns;
     QList<QToolButton *> controlBtns;
-    QList<QToolButton *> btns;
     playbackBtns << prevTrackButton << stopTrackButton << playPauseTrackButton << nextTrackButton;
     controlBtns << volumeButton << menuButton << streamButton;
-    btns << repeatPushButton << singlePushButton << randomPushButton << savePlayQueuePushButton << addStreamToPlayQueuePushButton
-         << removeAllFromPlayQueuePushButton << consumePushButton;
-
-    foreach (QToolButton *b, btns) {
-        Icon::init(b);
-    }
 
     int playbackIconSize=28;
     int controlIconSize=22;

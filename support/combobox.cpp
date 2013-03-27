@@ -61,7 +61,7 @@ void ComboBox::setEditable(bool editable)
 
 void ComboBox::showPopup()
 {
-    if (GtkStyle::isActive()) {
+    if (GtkStyle::isActive() && count()>(maxPopupItemCount-2)) {
         toggleState=!isEditable();
 
         // Hacky, but if we set the combobox as editable - the style gives the
@@ -111,11 +111,8 @@ void ComboBox::showPopup()
 
 void ComboBox::hidePopup()
 {
-    if (GtkStyle::isActive()) {
-        // Unset editable...
-        if (toggleState) {
-            QComboBox::setEditable(false);
-        }
+    if (GtkStyle::isActive() && count()>(maxPopupItemCount-2) && toggleState) {
+        QComboBox::setEditable(false);
     }
     QComboBox::hidePopup();
 }

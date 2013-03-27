@@ -44,7 +44,7 @@ public:
         void save() const;
 
         bool operator==(const Details &o) const {
-            return url==o.url;
+            return url==o.url && extraOptions==o.extraOptions;
         }
         bool operator!=(const Details &o) const {
             return !(*this==o);
@@ -58,8 +58,9 @@ public:
 
         QString name;
         QUrl url;
-        bool configured;
         QString serviceName;
+        QString extraOptions;
+        bool configured;
     };
 
     static const QLatin1String constPromptPassword;

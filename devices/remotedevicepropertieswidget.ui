@@ -334,6 +334,19 @@
             <item row="3" column="1">
              <widget class="LineEdit" name="sshFolder"/>
             </item>
+            <item row="4" column="0">
+             <widget class="BuddyLabel" name="sshExtraLabel">
+              <property name="text">
+               <string>Extra Options:</string>
+              </property>
+              <property name="buddy">
+               <cstring>sshExtra</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="LineEdit" name="sshExtra"/>
+            </item>
            </layout>
           </item>
           <item>

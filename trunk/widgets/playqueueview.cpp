@@ -300,6 +300,11 @@ void PlayQueueView::setContextMenuPolicy(Qt::ContextMenuPolicy policy)
     treeView->setContextMenuPolicy(policy);
 }
 
+bool PlayQueueView::haveSelectedItems()
+{
+    return isGrouped() ? groupedView->haveSelectedItems() : treeView->haveSelectedItems();
+}
+
 bool PlayQueueView::haveUnSelectedItems()
 {
     return isGrouped() ? groupedView->haveUnSelectedItems() : treeView->haveUnSelectedItems();

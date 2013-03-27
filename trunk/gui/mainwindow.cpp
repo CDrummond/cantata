@@ -1010,9 +1010,13 @@ void MainWindow::playQueueItemsSelected(bool s)
     if (playQueue->model()->rowCount()) {
         playQueue->setContextMenuPolicy(Qt::ActionsContextMenu);
         removeFromPlayQueueAction->setEnabled(s);
+        locateTrackAction->setEnabled(s);
         copyTrackInfoAction->setEnabled(s);
         cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems());
         shufflePlayQueueAction->setEnabled(true);
+        editPlayQueueTagsAction->setEnabled(s);
+    } else {
+        playQueue->setContextMenuPolicy(Qt::NoContextMenu);
     }
 }
 
@@ -1646,6 +1650,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
             updateCurrentSong(pqSong);
         }
     }
+    playQueueItemsSelected(playQueue->haveSelectedItems());
 }
 
 bool MainWindow::currentIsStream() const

@@ -82,6 +82,7 @@ public:
     bool hasFocus();
     QAbstractItemModel * model();
     void setContextMenuPolicy(Qt::ContextMenuPolicy policy);
+    bool haveSelectedItems();
     bool haveUnSelectedItems();
     QItemSelectionModel * selectionModel() const;
     void setCurrentIndex(const QModelIndex &index);

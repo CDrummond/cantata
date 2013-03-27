@@ -55,7 +55,7 @@ StreamsPage::StreamsPage(QWidget *p)
     setupUi(this);
     importAction = ActionCollection::get()->createAction("importstreams", i18n("Import Streams"), "document-import");
     exportAction = ActionCollection::get()->createAction("exportstreams", i18n("Export Streams"), "document-export");
-    addAction = ActionCollection::get()->createAction("addstream", i18n("Add Stream"), "list-add");
+    addAction = ActionCollection::get()->createAction("addstream", i18n("Add Stream"), Icons::addRadioStreamIcon);
     editAction = ActionCollection::get()->createAction("editstream", i18n("Edit"), Icons::editIcon);
 
     QMenu *importMenu=new QMenu(this);

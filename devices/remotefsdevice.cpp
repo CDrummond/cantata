@@ -88,6 +88,7 @@ void RemoteFsDevice::Details::load(const QString &group)
     if (!u.isEmpty()) {
         url=QUrl(u);
     }
+    extraOptions=GET_STRING("extraOptions", QString());
     configured=GET_BOOL("configured", configured);
 }
 
@@ -100,6 +101,7 @@ void RemoteFsDevice::Details::save() const
     cfg.beginGroup(constCfgPrefix+name);
     #endif
     SET_VALUE("url", url.toString());
+    SET_VALUE("extraOptions", extraOptions);
     SET_VALUE("configured", configured);
     CFG_SYNC;
 }
@@ -346,30 +348,35 @@ void RemoteFsDevice::mount()
     QString cmd;
     QStringList args;
     if (!details.isLocalFile() && !details.isEmpty()) {
-        if (ttyname(0)) {
-            emit error(i18n("Password prompting does not work when cantata is started from the commandline."));
-            return;
-        }
-        QStringList askPassList;
-        const char *env=qgetenv("KDE_FULL_SESSION");
-        QString dm=env && 0==strcmp(env, "true") ? QLatin1String("KDE") : QString(qgetenv("XDG_CURRENT_DESKTOP"));
-        if (dm.isEmpty() || QLatin1String("KDE")==dm) {
-            askPassList << QLatin1String("ksshaskpass") << QLatin1String("ssh-askpass") << QLatin1String("ssh-askpass-gnome");
-        } else {
-            askPassList << QLatin1String("ssh-askpass-gnome") << QLatin1String("ssh-askpass") << QLatin1String("ksshaskpass");
-        }
+        // If user has added 'IdentityFile' to extra options, then no password prompting is required...
+        bool needAskPass=!details.extraOptions.contains("IdentityFile=");
 
-        QString askPass;
-        foreach (const QString &ap, askPassList) {
-            askPass=Utils::findExe(ap);
-            if (!askPass.isEmpty()) {
-                break;
+        if (needAskPass) {
+            if (ttyname(0)) {
+                emit error(i18n("Password prompting does not work when cantata is started from the commandline."));
+                return;
             }
-        }
+            QStringList askPassList;
+            const char *env=qgetenv("KDE_FULL_SESSION");
+            QString dm=env && 0==strcmp(env, "true") ? QLatin1String("KDE") : QString(qgetenv("XDG_CURRENT_DESKTOP"));
+            if (dm.isEmpty() || QLatin1String("KDE")==dm) {
+                askPassList << QLatin1String("ksshaskpass") << QLatin1String("ssh-askpass") << QLatin1String("ssh-askpass-gnome");
+            } else {
+                askPassList << QLatin1String("ssh-askpass-gnome") << QLatin1String("ssh-askpass") << QLatin1String("ksshaskpass");
+            }
 
-        if (askPass.isEmpty()) {
-            emit error(i18n("No suitable ssh-askpass application installed! This is required for entering passwords."));
-            return;
+            QString askPass;
+            foreach (const QString &ap, askPassList) {
+                askPass=Utils::findExe(ap);
+                if (!askPass.isEmpty()) {
+                    break;
+                }
+            }
+
+            if (askPass.isEmpty()) {
+                emit error(i18n("No suitable ssh-askpass application installed! This is required for entering passwords."));
+                return;
+            }
         }
         cmd=Utils::findExe("sshfs");
         if (!cmd.isEmpty()) {
@@ -381,7 +388,10 @@ void RemoteFsDevice::mount()
             args << details.url.userName()+QChar('@')+details.url.host()+QChar(':')+details.url.path()<< QLatin1String("-p")
                  << QString::number(details.url.port()) << mountPoint(details, true)
                  << QLatin1String("-o") << QLatin1String("ServerAliveInterval=15");
-                 //<< QLatin1String("-o") << QLatin1String("Ciphers=arcfour");
+            //<< QLatin1String("-o") << QLatin1String("Ciphers=arcfour");
+            if (!details.extraOptions.isEmpty()) {
+                args << details.extraOptions.split(' ', QString::SkipEmptyParts);
+            }
         } else {
             emit error(i18n("\"sshfs\" is not installed!"));
         }

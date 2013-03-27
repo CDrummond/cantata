@@ -87,6 +87,7 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
         }
         sshHost->setText(d.url.host());
         sshUser->setText(d.url.userName());
+        sshExtra->setText(d.extraOptions);
         break;
     }
     case Type_File:
@@ -163,6 +164,7 @@ void RemoteDevicePropertiesWidget::update(const RemoteFsDevice::Details &d, bool
     connect(sshUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(sshFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(sshPort, SIGNAL(valueChanged(int)), this, SLOT(checkSaveable()));
+    connect(sshExtra, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(fileFolder, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbHost, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
     connect(smbUser, SIGNAL(textChanged(const QString &)), this, SLOT(checkSaveable()));
@@ -214,6 +216,7 @@ RemoteFsDevice::Details RemoteDevicePropertiesWidget::details()
         det.url.setPath(sshFolder->text().trimmed());
         det.url.setPort(sshPort->value());
         det.url.setScheme(RemoteFsDevice::constSshfsProtocol);
+        det.extraOptions=sshExtra->text().trimmed();
         break;
     }
     case Type_File: {

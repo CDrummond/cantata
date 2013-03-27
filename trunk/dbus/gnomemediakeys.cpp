@@ -40,10 +40,24 @@ GnomeMediaKeys::GnomeMediaKeys(MainWindow *parent)
 {
 }
 
+static bool runningUnderKde()
+{
+    const char *env=qgetenv("KDE_FULL_SESSION");
+    if (env && 0==strcmp(env, "true")) {
+        return true;
+    }
+    return QLatin1String("KDE")==QString(qgetenv("XDG_CURRENT_DESKTOP"));
+}
+
 void GnomeMediaKeys::setEnabled(bool en)
 {
     if (en && !iface) {
         // Check if the service is available
+        if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(constService) && !runningUnderKde()) {
+            //...not already started, so attempt to start!
+            QDBusConnection::sessionBus().interface()->startService(constService);
+        }
+        // Now see if it is started!
         if (QDBusConnection::sessionBus().interface()->isServiceRegistered(constService)) {
             if (!iface) {
                 iface = new OrgGnomeSettingsDaemonMediaKeysInterface(constService, constPath, QDBusConnection::sessionBus(), this);

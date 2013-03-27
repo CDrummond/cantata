@@ -401,7 +401,7 @@ void Icons::init()
         editIcon=Icon("gtk-edit");
     }
     if (clearListIcon.isNull()) {
-        clearListIcon=Icon("edit-delete");
+        clearListIcon=Icon("edit-clear");
     }
     if (filesIcon.isNull()) {
         filesIcon=Icon("empty");

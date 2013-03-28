@@ -408,8 +408,8 @@ private:
     GroupedView *view;
 };
 
-GroupedView::GroupedView(QWidget *parent)
-    : TreeView(parent)
+GroupedView::GroupedView(QWidget *parent, bool menuAlwaysAllowed)
+    : TreeView(parent, menuAlwaysAllowed)
     , startClosed(true)
     , autoExpand(true)
     , filterActive(false)

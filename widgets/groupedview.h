@@ -57,7 +57,7 @@ public:
 
     static void setup();
 
-    GroupedView(QWidget *parent=0);
+    GroupedView(QWidget *parent=0, bool menuAlwaysAllowed=false);
     virtual ~GroupedView();
 
     void setModel(QAbstractItemModel *model);

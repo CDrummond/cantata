@@ -243,6 +243,7 @@ public Q_SLOTS:
     void updatePlayQueueStats(int songs, quint32 time);
     void copyTrackInfo();
     void expandOrCollapse(bool saveCurrentSize=true);
+    void fullScreen();
     void sidebarModeChanged();
     void currentTabChanged(int index);
     void tabToggled(int index);
@@ -344,6 +345,7 @@ private:
     Action *streamPlayAction;
     #endif
     Action *expandInterfaceAction;
+    Action *fullScreenAction;
     Action *quitAction;
     Action *restoreAction;
     Action *locateTrackAction;

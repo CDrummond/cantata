@@ -95,6 +95,7 @@ public:
     MPDConnectionDetails connectionDetails(const QString &name=Settings::self()->currentConnection());
     QList<MPDConnectionDetails> allConnections();
     bool showPlaylist();
+    bool showFullScreen();
     QByteArray playQueueHeaderState();
     QByteArray splitterState();
     bool splitterAutoHide();
@@ -173,6 +174,7 @@ public:
     void saveConnectionDetails(const MPDConnectionDetails &v);
     void saveCurrentConnection(const QString &v);
     void saveShowPlaylist(bool v);
+    void saveShowFullScreen(bool v);
     void saveStopOnExit(bool v);
     void saveStopDynamizerOnExit(bool v);
     void savePlayQueueHeaderState(const QByteArray &v);

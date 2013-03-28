@@ -136,6 +136,7 @@
     seconds for times.
 83. Use EchoNest to retrieve artist information.
 84. Add ability to specify extra options for sshfs.
+85. Press F11 to make Cantata fullscreen.
 
 0.9.2
 -----

@@ -264,6 +264,8 @@ MainWindow::MainWindow(QWidget *parent)
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::addRadioStreamIcon);
     clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::clearListIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
+    fullScreenAction = ActionCollection::get()->createAction("fullScreen", i18n("Full Screen"), "view-fullscreen");
+    fullScreenAction->setShortcut(Qt::Key_F11);
     randomPlayQueueAction = ActionCollection::get()->createAction("randomplaylist", i18n("Random"), Icons::shuffleIcon);
     repeatPlayQueueAction = ActionCollection::get()->createAction("repeatplaylist", i18n("Repeat"), Icons::repeatIcon);
     singlePlayQueueAction = ActionCollection::get()->createAction("singleplaylist", i18n("Single"), Icons::singleIcon, i18n("When 'Single' is activated, playback is stopped after current song, or song is repeated if 'Repeat' is enabled."));
@@ -423,6 +425,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     tabWidget->SetMode(FancyTabWidget::Mode_LargeSidebar);
     expandInterfaceAction->setCheckable(true);
+    fullScreenAction->setCheckable(true);
     randomPlayQueueAction->setCheckable(true);
     repeatPlayQueueAction->setCheckable(true);
     singlePlayQueueAction->setCheckable(true);
@@ -469,6 +472,10 @@ MainWindow::MainWindow(QWidget *parent)
     artistLabel->setText(QString());
 
     expandInterfaceAction->setChecked(Settings::self()->showPlaylist());
+    fullScreenAction->setEnabled(expandInterfaceAction->isChecked());
+    if (fullScreenAction->isEnabled()) {
+        fullScreenAction->setChecked(Settings::self()->showFullScreen());
+    }
     randomPlayQueueAction->setChecked(false);
     repeatPlayQueueAction->setChecked(false);
     singlePlayQueueAction->setChecked(false);
@@ -507,6 +514,9 @@ MainWindow::MainWindow(QWidget *parent)
                 splitter->restoreState(Settings::self()->splitterState());
             }
         }
+        if (fullScreenAction->isChecked()) {
+            fullScreen();
+        }
     }
 
     #ifdef ENABLE_KDE_SUPPORT
@@ -514,6 +524,7 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     mainMenu->addAction(expandInterfaceAction);
+    mainMenu->addAction(fullScreenAction);
     mainMenu->addAction(connectionsAction);
     mainMenu->addAction(outputsAction);
     serverInfoAction=ActionCollection::get()->createAction("mpdinfo", i18n("Server information..."), "network-server");
@@ -546,6 +557,7 @@ MainWindow::MainWindow(QWidget *parent)
         menuBar()->addMenu(menu);
         menu=new QMenu(i18n("&Settings"), this);
         menu->addAction(expandInterfaceAction);
+        menu->addAction(fullScreenAction);
         menu->addAction(connectionsAction);
         menu->addAction(outputsAction);
         menu->addSeparator();
@@ -683,6 +695,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cropPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(cropPlayQueue()));
     connect(shufflePlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(shuffle()));
     connect(expandInterfaceAction, SIGNAL(triggered(bool)), this, SLOT(expandOrCollapse()));
+    connect(fullScreenAction, SIGNAL(triggered(bool)), this, SLOT(fullScreen()));
     connect(volumeButton, SIGNAL(clicked()), SLOT(showVolumeControl()));
     #ifdef TAGLIB_FOUND
     connect(StdActions::self()->editTagsAction, SIGNAL(triggered(bool)), this, SLOT(editTags()));
@@ -784,18 +797,23 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
-    Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
+    Settings::self()->saveShowFullScreen(fullScreenAction->isChecked());
+    if (!fullScreenAction->isChecked()) {
+        Settings::self()->saveMainWindowSize(expandInterfaceAction->isChecked() ? size() : expandedSize);
+        Settings::self()->saveMainWindowCollapsedSize(expandInterfaceAction->isChecked() ? collapsedSize : size());
+    }
     #if defined ENABLE_REMOTE_DEVICES && defined ENABLE_DEVICES_SUPPORT
     DevicesModel::self()->unmountRemote();
     #endif
     #ifdef PHONON_FOUND
     Settings::self()->savePlayStream(streamPlayAction->isChecked());
     #endif
-    if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
-        Settings::self()->saveSplitterState(splitter->saveState());
+    if (!fullScreenAction->isChecked()) {
+        if (!tabWidget->isEnabled(PAGE_PLAYQUEUE)) {
+            Settings::self()->saveSplitterState(splitter->saveState());
+        }
+        Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     }
-    Settings::self()->saveShowPlaylist(expandInterfaceAction->isChecked());
     Settings::self()->saveSplitterAutoHide(autoHideSplitterAction->isChecked());
     Settings::self()->saveSidebar((int)(tabWidget->mode()));
     Settings::self()->savePage(tabWidget->currentWidget()->metaObject()->className());
@@ -2192,6 +2210,9 @@ int MainWindow::calcCompactHeight()
 
 void MainWindow::expandOrCollapse(bool saveCurrentSize)
 {
+    if (isFullScreen()) {
+        return;
+    }
     static bool lastMax=false;
 
     bool showing=expandInterfaceAction->isChecked();
@@ -2238,6 +2259,25 @@ void MainWindow::expandOrCollapse(bool saveCurrentSize)
 
     if (!p.isNull()) {
         move(p);
+    }
+
+    fullScreenAction->setEnabled(showing);
+}
+
+void MainWindow::fullScreen()
+{
+    if (expandInterfaceAction->isChecked()) {
+        if (isFullScreen()) {
+            showNormal();
+            expandInterfaceAction->setEnabled(true);
+            connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
+        } else {
+            showFullScreen();
+            expandInterfaceAction->setEnabled(false);
+            disconnect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
+        }
+    } else {
+        fullScreenAction->setChecked(false);
     }
 }
 

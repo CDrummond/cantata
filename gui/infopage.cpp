@@ -55,6 +55,7 @@ static QString cacheFileName(const QString &artist, bool createDir)
 
 InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
+    , needToUpdate(false)
     , currentJob(0)
 {
     QVBoxLayout *vlayout=new QVBoxLayout(this);
@@ -78,13 +79,33 @@ void InfoPage::saveSettings()
     Settings::self()->saveInfoZoom(text->zoom());
 }
 
+void InfoPage::showEvent(QShowEvent *e)
+{
+    if (needToUpdate) {
+        update(currentSong, true);
+    }
+    needToUpdate=false;
+    QWidget::showEvent(e);
+}
+
 void InfoPage::update(const Song &s, bool force)
 {
     Song song=s;
     if (song.isVariousArtists()) {
         song.revertVariousArtists();
     }
-    if (song.artist!=currentSong.artist || force) {
+
+    bool artistChanged=song.artist!=currentSong.artist;
+
+    if (!isVisible()) {
+        if (artistChanged) {
+            needToUpdate=true;
+        }
+        currentSong=song;
+        return;
+    }
+
+    if (artistChanged || force) {
         currentSong=song;
         combo->clear();
         biographies.clear();

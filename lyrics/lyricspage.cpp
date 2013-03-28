@@ -63,6 +63,7 @@ static QString cacheFile(QString artist, QString title, bool createDir=false)
 
 LyricsPage::LyricsPage(QWidget *p)
     : QWidget(p)
+    , needToUpdate(false)
     , currentProvider(-1)
     , currentRequest(0)
     , mode(Mode_Display)
@@ -211,6 +212,15 @@ void LyricsPage::del()
     }
 }
 
+void LyricsPage::showEvent(QShowEvent *e)
+{
+    if (needToUpdate) {
+        update(currentSong, true);
+    }
+    needToUpdate=false;
+    QWidget::showEvent(e);
+}
+
 void LyricsPage::update(const Song &s, bool force)
 {
     if (Mode_Edit==mode && !force) {
@@ -223,6 +233,14 @@ void LyricsPage::update(const Song &s, bool force)
     }
 
     bool songChanged = song.artist!=currentSong.artist || song.title!=currentSong.title;
+
+    if (!isVisible()) {
+        if (songChanged) {
+            needToUpdate=true;
+        }
+        currentSong=song;
+        return;
+    }
 
     if (force || songChanged) {
         setMode(Mode_Blank);

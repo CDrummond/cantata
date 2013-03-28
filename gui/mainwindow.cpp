@@ -186,8 +186,6 @@ MainWindow::MainWindow(QWidget *parent)
     , lastState(MPDState_Inactive)
     , lastSongId(-1)
     , autoScrollPlayQueue(true)
-    , lyricsNeedUpdating(false)
-    , infoNeedsUpdating(false)
     #if !defined Q_OS_WIN
     , mpris(0)
     , gnomeMediaKeys(0)
@@ -1765,17 +1763,8 @@ void MainWindow::updateCurrentSong(const Song &song)
     scrollPlayQueue();
 
     updateWindowTitle();
-    if (PAGE_LYRICS==tabWidget->current_index()) {
-        lyricsPage->update(song);
-    } else {
-        lyricsNeedUpdating=true;
-    }
-
-    if (PAGE_INFO==tabWidget->current_index()) {
-        infoPage->update(song);
-    } else {
-        infoNeedsUpdating=true;
-    }
+    lyricsPage->update(song);
+    infoPage->update(song);
     trayItem->songChanged(song, isPlaying);
 }
 
@@ -2352,16 +2341,8 @@ void MainWindow::currentTabChanged(int index)
         onlinePage->controlActions();
         break;
     case PAGE_LYRICS:
-        if (lyricsNeedUpdating) {
-            lyricsPage->update(current);
-            lyricsNeedUpdating=false;
-        }
         break;
     case PAGE_INFO:
-        if (infoNeedsUpdating) {
-            infoPage->update(current);
-            infoNeedsUpdating=false;
-        }
         break;
     default:
         break;

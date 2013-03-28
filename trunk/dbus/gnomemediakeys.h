@@ -26,6 +26,7 @@
 
 #include <QObject>
 
+class OrgGnomeSettingsDaemonInterface;
 class OrgGnomeSettingsDaemonMediaKeysInterface;
 class QDBusPendingCallWatcher;
 class MainWindow;
@@ -38,13 +39,20 @@ public:
     GnomeMediaKeys(MainWindow *parent);
 
     void setEnabled(bool en);
+
+private:
+    void grabKeys();
+    void disconnectDaemon();
+
 private Q_SLOTS:
     void registerFinished(QDBusPendingCallWatcher *watcher);
     void keyPressed(const QString &app, const QString &key);
+    void pluginActivated(const QString &name);
 
 private:
     MainWindow *mw;
-    OrgGnomeSettingsDaemonMediaKeysInterface *iface;
+    OrgGnomeSettingsDaemonInterface *daemon;
+    OrgGnomeSettingsDaemonMediaKeysInterface *mk;
 };
 
 #endif

@@ -137,6 +137,8 @@
 83. Use EchoNest to retrieve artist information.
 84. Add ability to specify extra options for sshfs.
 85. Press F11 to make Cantata fullscreen.
+86. If configured to use GNOME MediaKeys, then start dbus service if it is not
+    already started.
 
 0.9.2
 -----

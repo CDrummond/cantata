@@ -258,7 +258,6 @@ MainWindow::MainWindow(QWidget *parent)
     copyTrackInfoAction = ActionCollection::get()->createAction("copytrackinfo", i18n("Copy Track Info"));
     cropPlayQueueAction = ActionCollection::get()->createAction("cropplaylist", i18n("Crop"));
     shufflePlayQueueAction = ActionCollection::get()->createAction("shuffleplaylist", i18n("Shuffle"));
-    savePlayQueueAction = ActionCollection::get()->createAction("saveplaylist", i18n("Save As"), "document-save-as");
     addStreamToPlayQueueAction = ActionCollection::get()->createAction("addstreamtoplayqueue", i18n("Add Stream URL"), Icons::addRadioStreamIcon);
     clearPlayQueueAction = ActionCollection::get()->createAction("clearplaylist", i18n("Clear"), Icons::clearListIcon);
     expandInterfaceAction = ActionCollection::get()->createAction("expandinterface", i18n("Expanded Interface"), "view-media-playlist");
@@ -364,15 +363,15 @@ MainWindow::MainWindow(QWidget *parent)
     setVisible(true);
     initSizes();
 
-    savePlayQueueAction->setEnabled(false);
     clearPlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
-    savePlayQueuePushButton->setDefaultAction(savePlayQueueAction);
-    clearPlayQueuePushButton->setDefaultAction(clearPlayQueueAction);
-    randomPushButton->setDefaultAction(randomPlayQueueAction);
-    repeatPushButton->setDefaultAction(repeatPlayQueueAction);
-    singlePushButton->setDefaultAction(singlePlayQueueAction);
-    consumePushButton->setDefaultAction(consumePlayQueueAction);
+    savePlayQueueButton->setIcon(Icon("document-save-as"));
+    savePlayQueueButton->setMenu(PlaylistsModel::self()->menu());
+    clearPlayQueueButton->setDefaultAction(clearPlayQueueAction);
+    randomButton->setDefaultAction(randomPlayQueueAction);
+    repeatButton->setDefaultAction(repeatPlayQueueAction);
+    singleButton->setDefaultAction(singlePlayQueueAction);
+    consumeButton->setDefaultAction(consumePlayQueueAction);
     #ifdef PHONON_FOUND
     streamButton->setDefaultAction(streamPlayAction);
     #else
@@ -440,11 +439,11 @@ MainWindow::MainWindow(QWidget *parent)
     int playbackIconSize=28;
     int controlIconSize=22;
     int buttonSize=32;
-    if (repeatPushButton->iconSize().height()>=32) {
+    if (repeatButton->iconSize().height()>=32) {
         controlIconSize=48;
         playbackIconSize=48;
         buttonSize=54;
-    } else if (repeatPushButton->iconSize().height()>=22) {
+    } else if (repeatButton->iconSize().height()>=22) {
         controlIconSize=32;
         playbackIconSize=32;
         buttonSize=36;
@@ -735,7 +734,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(PlaylistsModel::self(), SIGNAL(addToNew()), this, SLOT(addToNewStoredPlaylist()));
     connect(PlaylistsModel::self(), SIGNAL(addToExisting(const QString &)), this, SLOT(addToExistingStoredPlaylist(const QString &)));
     connect(playlistsPage, SIGNAL(add(const QStringList &, bool, quint8)), &playQueueModel, SLOT(addItems(const QStringList &, bool, quint8)));
-    connect(savePlayQueueAction, SIGNAL(triggered(bool)), playlistsPage, SLOT(savePlaylist()));
     connect(coverWidget, SIGNAL(coverImage(const QImage &)), lyricsPage, SLOT(setImage(const QImage &)));
     connect(coverWidget, SIGNAL(clicked()), expandInterfaceAction, SLOT(trigger()));
     #ifdef Q_OS_LINUX
@@ -1637,7 +1635,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     playPauseTrackAction->setEnabled(!songs.isEmpty());
     nextTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
     prevTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
-    savePlayQueueAction->setEnabled(!songs.isEmpty());
+    savePlayQueueButton->setEnabled(!songs.isEmpty());
     clearPlayQueueAction->setEnabled(!songs.isEmpty());
 
     playQueueModel.update(songs);
@@ -2501,8 +2499,8 @@ void MainWindow::focusSearch()
     if (searchPlayQueueLineEdit->hasFocus()) {
         return;
     }
-    if (playQueue->hasFocus() || repeatPushButton->hasFocus() || singlePushButton->hasFocus() || randomPushButton->hasFocus() ||
-        consumePushButton->hasFocus() || savePlayQueuePushButton->hasFocus() || clearPlayQueuePushButton->hasFocus()) {
+    if (playQueue->hasFocus() || repeatButton->hasFocus() || singleButton->hasFocus() || randomButton->hasFocus() ||
+        consumeButton->hasFocus() || savePlayQueueButton->hasFocus() || clearPlayQueueButton->hasFocus()) {
         searchPlayQueueLineEdit->setFocus();
     } else if (libraryPage->isVisible()) {
         libraryPage->focusSearch();

@@ -218,7 +218,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="ToolButton" name="repeatPushButton">
+          <widget class="ToolButton" name="repeatButton">
            <property name="checkable">
             <bool>true</bool>
            </property>
@@ -228,7 +228,7 @@
           </widget>
          </item>
          <item>
-          <widget class="ToolButton" name="singlePushButton">
+          <widget class="ToolButton" name="singleButton">
            <property name="checkable">
             <bool>true</bool>
            </property>
@@ -238,14 +238,14 @@
           </widget>
          </item>
          <item>
-          <widget class="ToolButton" name="randomPushButton">
+          <widget class="ToolButton" name="randomButton">
            <property name="checkable">
             <bool>true</bool>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="ToolButton" name="consumePushButton">
+          <widget class="ToolButton" name="consumeButton">
            <property name="checkable">
             <bool>true</bool>
            </property>
@@ -268,10 +268,10 @@
           </spacer>
          </item>
          <item>
-          <widget class="ToolButton" name="savePlayQueuePushButton"/>
+          <widget class="ToolButton" name="savePlayQueueButton"/>
          </item>
          <item>
-          <widget class="ToolButton" name="clearPlayQueuePushButton"/>
+          <widget class="ToolButton" name="clearPlayQueueButton"/>
          </item>
         </layout>
        </item>

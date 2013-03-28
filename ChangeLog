@@ -45,7 +45,7 @@
 25. Add import of IceCast and SomaFM streams.
 26. Move server info into a dialog.
 27. Add support for Jamendo and Magnatune streams.
-28. Add 'Add Stream' button to play queue - so that streams can be quickly
+28. Add 'Add Stream' action to play queue menu - so that streams can be quickly
     added without needing to store in streams page.
 29. For streams, use filename part of path as track title.
 30. Fix setting of buttons in song copy dialog (Qt-only builds, KDE already

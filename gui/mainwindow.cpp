@@ -367,6 +367,7 @@ MainWindow::MainWindow(QWidget *parent)
     addStreamToPlayQueueAction->setEnabled(false);
     savePlayQueueButton->setIcon(Icon("document-save-as"));
     savePlayQueueButton->setMenu(PlaylistsModel::self()->menu());
+    savePlayQueueButton->setToolTip(addPlayQueueToStoredPlaylistAction->toolTip());
     clearPlayQueueButton->setDefaultAction(clearPlayQueueAction);
     randomButton->setDefaultAction(randomPlayQueueAction);
     repeatButton->setDefaultAction(repeatPlayQueueAction);

@@ -32,8 +32,9 @@
 #include <QMimeData>
 #include <QMap>
 
-TreeView::TreeView(QWidget *parent)
+TreeView::TreeView(QWidget *parent, bool menuAlwaysAllowed)
         : QTreeView(parent)
+        , alwaysAllowMenu(menuAlwaysAllowed)
 {
     setDragEnabled(true);
     setContextMenuPolicy(Qt::NoContextMenu);
@@ -67,7 +68,9 @@ void TreeView::selectionChanged(const QItemSelection &selected, const QItemSelec
     QTreeView::selectionChanged(selected, deselected);
     bool haveSelection=selectedIndexes().count();
 
-    setContextMenuPolicy(haveSelection ? Qt::ActionsContextMenu : Qt::NoContextMenu);
+    if (!alwaysAllowMenu) {
+        setContextMenuPolicy(haveSelection ? Qt::ActionsContextMenu : Qt::NoContextMenu);
+    }
     emit itemsSelected(haveSelection);
 }
 

@@ -23,6 +23,7 @@
 
 #include "gnomemediakeys.h"
 #include "mainwindow.h"
+#include "settingsdaemoninterface.h"
 #include "mediakeysinterface.h"
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -31,12 +32,14 @@
 #include <QCoreApplication>
 
 static const char * constService = "org.gnome.SettingsDaemon";
-static const char * constPath = "/org/gnome/SettingsDaemon/MediaKeys";
+static const char * constDaemonPath = "/org/gnome/SettingsDaemon";
+static const char * constMediaKeysPath = "/org/gnome/SettingsDaemon/MediaKeys";
 
 GnomeMediaKeys::GnomeMediaKeys(MainWindow *parent)
     : QObject(parent)
     , mw(parent)
-    , iface(0)
+    , daemon(0)
+    , mk(0)
 {
 }
 
@@ -51,27 +54,47 @@ static bool runningUnderKde()
 
 void GnomeMediaKeys::setEnabled(bool en)
 {
-    if (en && !iface) {
+    if (en && !mk) {
         // Check if the service is available
         if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(constService) && !runningUnderKde()) {
             //...not already started, so attempt to start!
             QDBusConnection::sessionBus().interface()->startService(constService);
-        }
-        // Now see if it is started!
-        if (QDBusConnection::sessionBus().interface()->isServiceRegistered(constService)) {
-            if (!iface) {
-                iface = new OrgGnomeSettingsDaemonMediaKeysInterface(constService, constPath, QDBusConnection::sessionBus(), this);
+            if (!daemon) {
+                daemon = new OrgGnomeSettingsDaemonInterface(constService, constDaemonPath, QDBusConnection::sessionBus(), this);
+                connect(daemon, SIGNAL(PluginActivated(QString)), this, SLOT(pluginActivated(QString)));
+                daemon->Start();
+                return;
             }
-
-            QDBusPendingReply<> reply = iface->GrabMediaPlayerKeys(QCoreApplication::applicationName(), QDateTime::currentDateTime().toTime_t());
-            QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
-            connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this, SLOT(registerFinished(QDBusPendingCallWatcher*)));
         }
-    } else if (!en && iface) {
-        iface->ReleaseMediaPlayerKeys(QCoreApplication::applicationName());
-        disconnect(iface, SIGNAL(MediaPlayerKeyPressed(QString,QString)), this, SLOT(keyPressed(QString,QString)));
-        iface->deleteLater();
-        iface=0;
+        grabKeys();
+    } else if (!en && mk) {
+        mk->ReleaseMediaPlayerKeys(QCoreApplication::applicationName());
+        disconnect(mk, SIGNAL(MediaPlayerKeyPressed(QString,QString)), this, SLOT(keyPressed(QString,QString)));
+        mk->deleteLater();
+        mk=0;
+        disconnectDaemon();
+    }
+}
+
+void GnomeMediaKeys::grabKeys()
+{
+    if (QDBusConnection::sessionBus().interface()->isServiceRegistered(constService)) {
+        if (!mk) {
+            mk = new OrgGnomeSettingsDaemonMediaKeysInterface(constService, constMediaKeysPath, QDBusConnection::sessionBus(), this);
+        }
+
+        QDBusPendingReply<> reply = mk->GrabMediaPlayerKeys(QCoreApplication::applicationName(), QDateTime::currentDateTime().toTime_t());
+        QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
+        connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this, SLOT(registerFinished(QDBusPendingCallWatcher*)));
+    }
+}
+
+void GnomeMediaKeys::disconnectDaemon()
+{
+    if (daemon) {
+        disconnect(daemon, SIGNAL(PluginActivated(QString)), this, SLOT(pluginActivated(QString)));
+        daemon->deleteLater();
+        daemon=0;
     }
 }
 
@@ -81,7 +104,8 @@ void GnomeMediaKeys::registerFinished(QDBusPendingCallWatcher *watcher)
     watcher->deleteLater();
 
     if (QDBusMessage::ErrorMessage!=reply.type()) {
-        connect(iface, SIGNAL(MediaPlayerKeyPressed(QString, QString)),  this, SLOT(keyPressed(QString,QString)));
+        connect(mk, SIGNAL(MediaPlayerKeyPressed(QString, QString)),  this, SLOT(keyPressed(QString,QString)));
+        disconnectDaemon();
     }
 }
 
@@ -98,5 +122,12 @@ void GnomeMediaKeys::keyPressed(const QString &app, const QString &key)
         mw->nextTrack();
     } else if (QLatin1String("Previous")==key) {
         mw->prevTrack();
+    }
+}
+
+void GnomeMediaKeys::pluginActivated(const QString &name)
+{
+    if (QLatin1String("media-keys")==name) {
+        grabKeys();
     }
 }

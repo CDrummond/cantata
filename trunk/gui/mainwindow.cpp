@@ -592,7 +592,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(removeFromPlayQueueAction);
     playQueue->addAction(clearPlayQueueAction);
     playQueue->addAction(addStreamToPlayQueueAction);
-    playQueue->addAction(savePlayQueueAction);
+    playQueue->addAction(addPlayQueueToStoredPlaylistAction);
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(shufflePlayQueueAction);
     Action *sep2=new Action(this);
@@ -603,7 +603,6 @@ MainWindow::MainWindow(QWidget *parent)
     sep->setSeparator(true);
     playQueue->addAction(sep);
     playQueue->addAction(locateTrackAction);
-    playQueue->addAction(addPlayQueueToStoredPlaylistAction);
     #ifdef TAGLIB_FOUND
     playQueue->addAction(editPlayQueueTagsAction);
     #endif
@@ -1016,17 +1015,14 @@ void MainWindow::showVolumeControl()
 
 void MainWindow::playQueueItemsSelected(bool s)
 {
-    if (playQueue->model()->rowCount()) {
-        playQueue->setContextMenuPolicy(Qt::ActionsContextMenu);
-        removeFromPlayQueueAction->setEnabled(s);
-        locateTrackAction->setEnabled(s);
-        copyTrackInfoAction->setEnabled(s);
-        cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems());
-        shufflePlayQueueAction->setEnabled(true);
-        editPlayQueueTagsAction->setEnabled(s);
-    } else {
-        playQueue->setContextMenuPolicy(Qt::NoContextMenu);
-    }
+    bool haveItems=playQueue->model()->rowCount()>0;
+    removeFromPlayQueueAction->setEnabled(s && haveItems);
+    locateTrackAction->setEnabled(s && haveItems);
+    copyTrackInfoAction->setEnabled(s && haveItems);
+    cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
+    shufflePlayQueueAction->setEnabled(haveItems);
+    editPlayQueueTagsAction->setEnabled(s && haveItems);
+    addPlayQueueToStoredPlaylistAction->setEnabled(haveItems);
 }
 
 void MainWindow::connectToMpd(const MPDConnectionDetails &details)

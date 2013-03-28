@@ -35,7 +35,7 @@
 #include <QFile>
 
 PlayQueueTreeView::PlayQueueTreeView(QWidget *parent)
-    : TreeView(parent)
+    : TreeView(parent, true)
     , menu(0)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -175,7 +175,7 @@ void PlayQueueTreeView::toggleHeaderItem(bool visible)
 PlayQueueView::PlayQueueView(QWidget *parent)
     : QStackedWidget(parent)
 {
-    groupedView=new GroupedView(this);
+    groupedView=new GroupedView(this, true);
     groupedView->setIndentation(0);
     groupedView->setItemsExpandable(false);
     groupedView->setExpandsOnDoubleClick(false);
@@ -187,6 +187,7 @@ PlayQueueView::PlayQueueView(QWidget *parent)
     connect(treeView, SIGNAL(itemsSelected(bool)), SIGNAL(itemsSelected(bool)));
     connect(groupedView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
     connect(treeView, SIGNAL(doubleClicked(const QModelIndex &)), SIGNAL(doubleClicked(const QModelIndex &)));
+    setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 PlayQueueView::~PlayQueueView()

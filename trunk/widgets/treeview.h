@@ -31,7 +31,7 @@ class TreeView : public QTreeView
     Q_OBJECT
 
 public:
-    TreeView(QWidget *parent=0);
+    TreeView(QWidget *parent=0, bool menuAlwaysAllowed=false);
     virtual ~TreeView();
 
     void setPageDefaults();
@@ -50,6 +50,8 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     bool itemsSelected(bool);
+private:
+    bool alwaysAllowMenu;
 };
 
 #endif

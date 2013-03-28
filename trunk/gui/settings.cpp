@@ -262,6 +262,11 @@ bool Settings::showPlaylist()
     return GET_BOOL("showPlaylist", true);
 }
 
+bool Settings::showFullScreen()
+{
+    return GET_BOOL("showFullScreen", false);
+}
+
 QByteArray Settings::playQueueHeaderState()
 {
     return GET_BYTE_ARRAY("playQueueHeaderState");
@@ -701,6 +706,11 @@ void Settings::saveCurrentConnection(const QString &v)
 void Settings::saveShowPlaylist(bool v)
 {
     SET_VALUE_MOD(showPlaylist)
+}
+
+void Settings::saveShowFullScreen(bool v)
+{
+    SET_VALUE_MOD(showFullScreen)
 }
 
 void Settings::savePlayQueueHeaderState(const QByteArray &v)

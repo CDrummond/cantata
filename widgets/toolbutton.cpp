@@ -23,6 +23,7 @@
 
 #include "toolbutton.h"
 #include "icon.h"
+#include "gtkstyle.h"
 #include <QApplication>
 
 ToolButton::ToolButton(QWidget *parent)
@@ -39,6 +40,17 @@ QSize ToolButton::sizeHint() const
     }
 
     sh=QToolButton::sizeHint();
-    sh=QSize(qMax(sh.width(), sh.height()), qMax(sh.width(), sh.height()));
+    if (!menu()) {
+        sh=QSize(qMax(sh.width(), sh.height()), qMax(sh.width(), sh.height()));
+    } else if (GtkStyle::isActive()) {
+        sh=QSize(sh.width()*1.2, sh.height());
+    }
     return sh;
+}
+
+void ToolButton::setMenu(QMenu *m)
+{
+    QToolButton::setMenu(m);
+    sh=QSize();
+    setPopupMode(InstantPopup);
 }

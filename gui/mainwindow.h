@@ -333,7 +333,6 @@ private:
     Action *copyTrackInfoAction;
     Action *cropPlayQueueAction;
     Action *shufflePlayQueueAction;
-    Action *savePlayQueueAction;
     Action *addStreamToPlayQueueAction;
     Action *randomPlayQueueAction;
     Action *repeatPlayQueueAction;

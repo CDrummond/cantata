@@ -56,6 +56,7 @@ public:
     void update(const Song &song, bool force=false);
     void setBgndImageEnabled(bool e) { text->enableImage(e); }
     bool bgndImageEnabled() { return text->imageEnabled(); }
+    void showEvent(QShowEvent *e);
 
 Q_SIGNALS:
     void providersUpdated();
@@ -91,6 +92,7 @@ private:
     bool setLyricsFromFile(const QString &filePath) const;
 
 private:
+    bool needToUpdate;
     int currentProvider;
     int currentRequest;
     Song currentSong;

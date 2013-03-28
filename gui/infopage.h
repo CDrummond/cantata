@@ -49,6 +49,7 @@ public:
     void update(const Song &s, bool force=false);
     void setBgndImageEnabled(bool e) { text->enableImage(e); }
     bool bgndImageEnabled() { return text->imageEnabled(); }
+    void showEvent(QShowEvent *e);
 
 public Q_SLOTS:
     void artistImage(const Song &song, const QImage &img);
@@ -63,6 +64,7 @@ private:
     bool parseResponse(const QByteArray &resp);
 
 private:
+    bool needToUpdate;
     TextBrowser *text;
     ComboBox *combo;
     QMap<int, QString> biographies;

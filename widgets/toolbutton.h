@@ -26,11 +26,13 @@
 
 #include <QToolButton>
 
+class QMenu;
 class ToolButton : public QToolButton
 {
 public:
     explicit ToolButton(QWidget *parent = 0);
     QSize sizeHint() const;
+    void setMenu(QMenu *m);
 
 private:
     mutable QSize sh;

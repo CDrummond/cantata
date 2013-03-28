@@ -307,7 +307,6 @@ private:
 private:
     int loaded;
     MPDState lastState;
-    quint32 songTime;
     qint32 lastSongId;
     PlayQueueModel playQueueModel;
     PlayQueueProxyModel playQueueProxyModel;
@@ -375,8 +374,6 @@ private:
     QSize expandedSize;
     QSize collapsedSize;
     Song current;
-    bool lyricsNeedUpdating;
-    bool infoNeedsUpdating;
     QWidget *playQueuePage;
     LibraryPage *libraryPage;
     AlbumsPage *albumsPage;

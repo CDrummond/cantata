@@ -150,7 +150,6 @@ public:
     int mpdVolume() const { return volume; }
     int currentTrackPosition() const;
     QString coverFile() const;
-    void stopPlayback();
 
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -214,7 +213,8 @@ public Q_SLOTS:
     #ifdef PHONON_FOUND
     void toggleStream(bool s);
     #endif
-    void stopTrack();
+    void stopPlayback();
+    void stopImmediately();
     void stopAfterTrack();
     void playPauseTrack();
     void nextTrack();
@@ -290,6 +290,7 @@ public Q_SLOTS:
     void controlConnectionsMenu(bool enable=true);
 
 private:
+    void enableStopActions(bool enable);
     void updateStatus(MPDStatus * const status);
     void readSettings();
     int calcMinHeight();
@@ -325,7 +326,8 @@ private:
     Action *prevTrackAction;
     Action *nextTrackAction;
     Action *playPauseTrackAction;
-    Action *stopTrackAction;
+    Action *stopPlaybackAction;
+    Action *stopImmediatelyAction;
     Action *stopAfterTrackAction;
     Action *increaseVolumeAction;
     Action *decreaseVolumeAction;
@@ -414,6 +416,7 @@ private:
     };
 
     bool fadeStop;
+    bool stopAfterCurrent;
     QPropertyAnimation *volumeFade;
     int volume;
     int origVolume;

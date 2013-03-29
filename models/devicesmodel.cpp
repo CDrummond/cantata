@@ -464,14 +464,12 @@ void DevicesModel::setCover(const Song &song, const QImage &img)
     if (i<0) {
         return;
     }
-    MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemRoot *>(dev)->artist(song, false);
+    MusicLibraryItemArtist *artistItem = dev->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-        if (albumItem) {
-            if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
-                QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(dev->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
-                emit dataChanged(idx, idx);
-            }
+        if (albumItem && albumItem->setCover(img)) {
+            QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(dev->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
+            emit dataChanged(idx, idx);
         }
     }
 }

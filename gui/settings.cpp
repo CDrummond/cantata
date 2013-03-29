@@ -317,6 +317,11 @@ bool Settings::stopDynamizerOnExit()
     return GET_BOOL("stopDynamizerOnExit", false);
 }
 
+bool Settings::stopAfterCurrent()
+{
+    return GET_BOOL("stopAfterCurrent", false);
+}
+
 bool Settings::storeCoversInMpdDir()
 {
     return GET_BOOL("storeCoversInMpdDir", true);
@@ -761,6 +766,11 @@ void Settings::saveStopOnExit(bool v)
 void Settings::saveStopDynamizerOnExit(bool v)
 {
     SET_VALUE_MOD(stopDynamizerOnExit)
+}
+
+void Settings::saveStopAfterCurrent(bool v)
+{
+    SET_VALUE_MOD(stopAfterCurrent)
 }
 
 void Settings::saveStoreCoversInMpdDir(bool v)

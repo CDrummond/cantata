@@ -139,6 +139,7 @@
 85. Press F11 to make Cantata fullscreen.
 86. If configured to use GNOME MediaKeys, then start dbus service if it is not
     already started.
+87. Implement 'Stop after current track'
 
 0.9.2
 -----

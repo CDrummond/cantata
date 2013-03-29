@@ -157,6 +157,7 @@ SET( CANTATA_SRCS
     widgets/menubutton.cpp
     widgets/toolbutton.cpp
     widgets/wizardpage.cpp
+    widgets/headerlabel.cpp
     lyrics/lyricspage.cpp
     lyrics/lyricsettings.cpp
     lyrics/ultimatelyricsprovider.cpp

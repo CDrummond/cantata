@@ -656,7 +656,7 @@ void MusicLibraryModel::setArtistImage(const Song &song, const QImage &img)
     }
 
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
-    if (artistItem && static_cast<const MusicLibraryItemArtist *>(artistItem)->setCover(img)) {
+    if (artistItem && artistItem->setCover(img)) {
         QModelIndex idx=index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex());
         emit dataChanged(idx, idx);
     }
@@ -683,7 +683,7 @@ void MusicLibraryModel::setCover(const Song &song, const QImage &img, const QStr
     MusicLibraryItemArtist *artistItem = rootItem->artist(song, false);
     if (artistItem) {
         MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
-        if (albumItem && static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img, update)) {
+        if (albumItem && albumItem->setCover(img, update)) {
             QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()));
             emit dataChanged(idx, idx);
         }

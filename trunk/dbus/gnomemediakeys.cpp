@@ -117,7 +117,7 @@ void GnomeMediaKeys::keyPressed(const QString &app, const QString &key)
     if (QLatin1String("Play")==key) {
         mw->playPauseTrack();
     } else if (QLatin1String("Stop")==key) {
-        mw->stopTrack();
+        mw->stopPlayback();
     } else if (QLatin1String("Next")==key) {
         mw->nextTrack();
     } else if (QLatin1String("Previous")==key) {

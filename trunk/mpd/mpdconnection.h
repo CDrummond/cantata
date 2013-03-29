@@ -212,7 +212,7 @@ public Q_SLOTS:
     void setSeek(quint32 song, quint32 time);
     void setSeekId(quint32 songId, quint32 time);
     void setVolume(int vol);
-    void stopPlaying();
+    void stopPlaying(bool afterCurrent=false);
 
     // Output
     void outputs();
@@ -322,6 +322,9 @@ private:
     State state;
     QTimer *reconnectTimer;
     time_t reconnectStart;
+
+    bool stopAfterCurrent;
+    qint32 currentSongId;
 };
 
 #endif

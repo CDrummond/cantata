@@ -33,6 +33,8 @@ PlaybackSettings::PlaybackSettings(QWidget *p)
     stopFadeDuration->setSuffix(i18n(" ms"));
     stopFadeDuration->setRange(Settings::MinFade, Settings::MaxFade);
     stopFadeDuration->setSingleStep(100);
+    stopAction->addItem(i18n("Stop immediately (or after fadout)"));
+    stopAction->addItem(i18n("Stop after current track"));
 }
 
 void PlaybackSettings::load()
@@ -40,6 +42,7 @@ void PlaybackSettings::load()
     stopOnExit->setChecked(Settings::self()->stopOnExit());
     stopFadeDuration->setValue(Settings::self()->stopFadeDuration());
     stopDynamizerOnExit->setChecked(Settings::self()->stopDynamizerOnExit());
+    stopAction->setCurrentIndex(Settings::self()->stopAfterCurrent() ? 1 : 0);
 }
 
 void PlaybackSettings::save()
@@ -47,4 +50,5 @@ void PlaybackSettings::save()
     Settings::self()->saveStopOnExit(stopOnExit->isChecked());
     Settings::self()->saveStopFadeDuration(stopFadeDuration->value());
     Settings::self()->saveStopDynamizerOnExit(stopDynamizerOnExit->isChecked());
+    Settings::self()->saveStopAfterCurrent(1==stopAction->currentIndex());
 }

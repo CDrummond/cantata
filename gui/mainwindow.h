@@ -148,9 +148,9 @@ public:
     ~MainWindow();
 
     int mpdVolume() const { return volume; }
-
     int currentTrackPosition() const;
     QString coverFile() const;
+    void stopPlayback();
 
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -166,7 +166,7 @@ Q_SIGNALS:
     void removeSongs(const QList<qint32> &);
     void pause(bool p);
     void play();
-    void stop();
+    void stop(bool afterCurrent=false);
     void getStatus();
     void getStats(bool andUpdate);
     void updateMpd();
@@ -215,6 +215,7 @@ public Q_SLOTS:
     void toggleStream(bool s);
     #endif
     void stopTrack();
+    void stopAfterTrack();
     void playPauseTrack();
     void nextTrack();
     void prevTrack();
@@ -325,6 +326,7 @@ private:
     Action *nextTrackAction;
     Action *playPauseTrackAction;
     Action *stopTrackAction;
+    Action *stopAfterTrackAction;
     Action *increaseVolumeAction;
     Action *decreaseVolumeAction;
     Action *removeFromPlayQueueAction;

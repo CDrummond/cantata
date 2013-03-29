@@ -348,7 +348,7 @@ void OnlineServicesModel::setArtistImage(const Song &song, const QImage &img)
         if (srv->useArtistImages()) {
             MusicLibraryItemArtist *artistItem = srv->artist(song, false);
             if (artistItem && static_cast<const MusicLibraryItemArtist *>(artistItem)->setCover(img)) {
-                QModelIndex idx=index(static_cast<MusicLibraryItemContainer *>(srv)->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex()));
+                QModelIndex idx=index(srv->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex()));
                 emit dataChanged(idx, idx);
             }
         }
@@ -365,12 +365,12 @@ void OnlineServicesModel::setCover(const Song &song, const QImage &img, const QS
     for (int i=0; i<services.count() ; ++i) {
         OnlineService *srv=services.at(i);
         if (srv->useArtistImages()) {
-            MusicLibraryItemArtist *artistItem = static_cast<MusicLibraryItemRoot *>(srv)->artist(song, false);
+            MusicLibraryItemArtist *artistItem = srv->artist(song, false);
             if (artistItem) {
                 MusicLibraryItemAlbum *albumItem = artistItem->album(song, false);
                 if (albumItem) {
                     if (static_cast<const MusicLibraryItemAlbum *>(albumItem)->setCover(img)) {
-                        QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(static_cast<MusicLibraryItemContainer *>(srv)->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
+                        QModelIndex idx=index(artistItem->childItems().indexOf(albumItem), 0, index(srv->childItems().indexOf(artistItem), 0, index(i, 0, QModelIndex())));
                         emit dataChanged(idx, idx);
                     }
                 }

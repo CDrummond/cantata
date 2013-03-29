@@ -18,6 +18,9 @@
     <number>0</number>
    </property>
    <item>
+    <widget class="HeaderLabel" name="header"/>
+   </item>
+   <item>
     <widget class="TextBrowser" name="text">
      <property name="openLinks">
       <bool>false</bool>
@@ -25,15 +28,12 @@
     </widget>
    </item>
    <item>
-    <widget class="SqueezedTextLabel" name="songLabel"/>
-   </item>
-   <item>
     <widget class="QWidget" name="controls" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="margin">
+      <property name="spacing">
        <number>0</number>
       </property>
-      <property name="spacing">
+      <property name="margin">
        <number>0</number>
       </property>
       <item>
@@ -74,9 +74,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SqueezedTextLabel</class>
+   <class>HeaderLabel</class>
    <extends>QLabel</extends>
-   <header>squeezedtextlabel.h</header>
+   <header>headerlabel.h</header>
   </customwidget>
   <customwidget>
    <class>TextBrowser</class>

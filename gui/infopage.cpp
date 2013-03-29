@@ -26,6 +26,7 @@
 #include "covers.h"
 #include "utils.h"
 #include "combobox.h"
+#include "headerlabel.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
 #ifndef Q_OS_WIN
@@ -59,8 +60,10 @@ InfoPage::InfoPage(QWidget *parent)
     , currentJob(0)
 {
     QVBoxLayout *vlayout=new QVBoxLayout(this);
+    header=new HeaderLabel(this);
     text=new TextBrowser(this);
     combo=new ComboBox(this);
+    vlayout->addWidget(header);
     vlayout->addWidget(text);
     vlayout->addWidget(combo);
     vlayout->setMargin(0);
@@ -112,8 +115,10 @@ void InfoPage::update(const Song &s, bool force)
         text->setImage(QImage());
         if (currentSong.isEmpty()) {
             text->setText(QString());
+            header->setText(QString());
         } else {
             text->setHtml("<i>Retrieving...</i>", true);
+            header->setText(currentSong.artist);
 
             Song s;
             s.albumartist=currentSong.artist;

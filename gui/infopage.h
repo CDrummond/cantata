@@ -31,6 +31,7 @@
 
 class Song;
 class ComboBox;
+class HeaderLabel;
 class QNetworkReply;
 class QIODevice;
 
@@ -65,6 +66,7 @@ private:
 
 private:
     bool needToUpdate;
+    HeaderLabel *header;
     TextBrowser *text;
     ComboBox *combo;
     QMap<int, QString> biographies;

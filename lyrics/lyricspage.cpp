@@ -250,13 +250,13 @@ void LyricsPage::update(const Song &s, bool force)
 
         if (song.title.isEmpty() || song.artist.isEmpty()) {
             text->setText(QString());
+            header->setText(QString());
             return;
         }
 
-        // Only reset the provider if the refresh
-        // was an automatic one or if the song has
-        // changed. Otherwise we'll keep the provider
-        // so the user can cycle through the lyrics
+        header->setText(song.title);
+        // Only reset the provider if the refresh was an automatic one or if the song has
+        // changed. Otherwise we'll keep the provider so the user can cycle through the lyrics
         // offered by the various providers.
         if (!force || songChanged) {
             currentProvider=-1;
@@ -307,16 +307,12 @@ void LyricsPage::update(const Song &s, bool force)
         QString file=cacheFile(song.artist, song.title);
 
         /*if (force && QFile::exists(file)) {
-            // Delete the cached lyrics file when the user
-            // is force-fully re-fetching the lyrics.
-            // Afterwards we'll simply do getLyrics() to get
-            // the new ones.
+            // Delete the cached lyrics file when the user is force-fully re-fetching the lyrics.
+            // Afterwards we'll simply do getLyrics() to get the new ones.
             QFile::remove(file);
         } else */if (setLyricsFromFile(file)) {
-           // We just wanted a normal update without
-           // explicit re-fetching. We can return
-           // here because we got cached lyrics and
-           // we don't want an explicit re-fetch.
+           // We just wanted a normal update without explicit re-fetching. We can return
+           // here because we got cached lyrics and we don't want an explicit re-fetch.
            lyricsFile=file;
            setMode(Mode_Display);
            return;
@@ -431,8 +427,6 @@ void LyricsPage::setMode(Mode m)
     editAction->setEnabled(editable);
     delAction->setEnabled(editable && !MPDConnection::self()->getDetails().dir.isEmpty() && QFile::exists(Utils::changeExtension(MPDConnection::self()->getDetails().dir+currentSong.file, constExtension)));
     text->setReadOnly(Mode_Edit!=m);
-    songLabel->setVisible(Mode_Edit==m);
-    songLabel->setText(Mode_Edit==m ? i18nc("title, by artist", "%1, by %2").arg(currentSong.title).arg(currentSong.artist) : QString());
 }
 
 bool LyricsPage::setLyricsFromFile(const QString &filePath) const

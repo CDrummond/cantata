@@ -196,6 +196,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mpdAccessibilityTimer(0)
     #endif
     , connectedState(CS_Init)
+    , stopAfterCurrent(false)
     , volumeFade(0)
     , origVolume(0)
     , lastVolume(0)
@@ -250,7 +251,8 @@ MainWindow::MainWindow(QWidget *parent)
     prevTrackAction = ActionCollection::get()->createAction("prevtrack", i18n("Previous Track"), Icons::toolbarPrevIcon);
     nextTrackAction = ActionCollection::get()->createAction("nexttrack", i18n("Next Track"), Icons::toolbarNextIcon);
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::toolbarPlayIcon);
-    stopTrackAction = ActionCollection::get()->createAction("stoptrack", i18n("Stop"), Icons::toolbarStopIcon);
+    stopPlaybackAction = ActionCollection::get()->createAction("stopplayback", i18n("Stop"), Icons::toolbarStopIcon);
+    stopImmediatelyAction = ActionCollection::get()->createAction("stoptrack", i18n("Stop Immediately"), Icons::toolbarStopIcon);
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Current Track"), Icons::toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
@@ -297,7 +299,7 @@ MainWindow::MainWindow(QWidget *parent)
     prevTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Left));
     nextTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Right));
     playPauseTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_C));
-    stopTrackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
+    stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
     increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Up));
     decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
     #endif
@@ -338,11 +340,12 @@ MainWindow::MainWindow(QWidget *parent)
     volumeButton->setIcon(Icons::toolbarVolumeHighIcon);
 
     playPauseTrackButton->setDefaultAction(playPauseTrackAction);
+    stopTrackButton->setDefaultAction(stopPlaybackAction);
     nextTrackButton->setDefaultAction(nextTrackAction);
     prevTrackButton->setDefaultAction(prevTrackAction);
 
     QMenu *stopMenu=new QMenu(this);
-    stopMenu->addAction(stopTrackAction);
+    stopMenu->addAction(stopImmediatelyAction);
     stopMenu->addAction(stopAfterTrackAction);
     stopTrackButton->setMenu(stopMenu);
     stopTrackButton->setPopupMode(QToolButton::DelayedPopup);
@@ -668,7 +671,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(prevTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToPrevious()));
     connect(nextTrackAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(goToNext()));
     connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
-    connect(stopTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopTrack()));
+    connect(stopPlaybackAction, SIGNAL(triggered(bool)), this, SLOT(stopPlayback()));
+    connect(stopImmediatelyAction, SIGNAL(triggered(bool)), this, SLOT(stopImmediately()));
     connect(stopAfterTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterTrack()));
     connect(volumeControl, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
@@ -1295,7 +1299,7 @@ void MainWindow::readSettings()
         gnomeMediaKeys->setEnabled(Settings::self()->gnomeMediaKeys());
     }
     #endif
-    stopTrackButton->setDefaultAction(Settings::self()->stopAfterCurrent() ? stopAfterTrackAction : stopTrackAction);
+    stopAfterCurrent=Settings::self()->stopAfterCurrent();
 }
 
 void MainWindow::updateSettings()
@@ -1478,22 +1482,28 @@ void MainWindow::toggleStream(bool s)
 }
 #endif
 
+void MainWindow::enableStopActions(bool enable)
+{
+    stopImmediatelyAction->setEnabled(enable);
+    stopAfterTrackAction->setEnabled(enable);
+    stopPlaybackAction->setEnabled(enable);
+}
+
 void MainWindow::stopPlayback()
 {
-    if (Settings::self()->stopAfterCurrent()) {
+    if (stopAfterCurrent) {
         stopAfterTrack();
     } else {
-        stopTrack();
+        stopImmediately();
     }
 }
 
-void MainWindow::stopTrack()
+void MainWindow::stopImmediately()
 {
     if (!fadeWhenStop() || MPDState_Paused==MPDStatus::self()->state() || 0==volume) {
         emit stop();
     }
-    stopTrackAction->setEnabled(false);
-    stopAfterTrackAction->setEnabled(false);
+    enableStopActions(false);
     nextTrackAction->setEnabled(false);
     prevTrackAction->setEnabled(false);
     startVolumeFade();
@@ -1657,8 +1667,8 @@ void MainWindow::realSearchPlayQueue()
 void MainWindow::updatePlayQueue(const QList<Song> &songs)
 {
     playPauseTrackAction->setEnabled(!songs.isEmpty());
-    nextTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
-    prevTrackAction->setEnabled(stopTrackAction->isEnabled() && songs.count()>1);
+    nextTrackAction->setEnabled(stopImmediatelyAction->isEnabled() && songs.count()>1);
+    prevTrackAction->setEnabled(stopImmediatelyAction->isEnabled() && songs.count()>1);
     savePlayQueueButton->setEnabled(!songs.isEmpty());
     clearPlayQueueAction->setEnabled(!songs.isEmpty());
 
@@ -1882,8 +1892,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
         //playPauseTrackButton->setChecked(false);
         if (StopState_Stopping!=stopState) {
-            stopTrackAction->setEnabled(true);
-            stopAfterTrackAction->setEnabled(true);
+            enableStopActions(true);
             nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
             prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
         }
@@ -1904,8 +1913,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
         #endif
         playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
-        stopTrackAction->setEnabled(false);
-        stopAfterTrackAction->setEnabled(false);
+        enableStopActions(false);
         nextTrackAction->setEnabled(false);
         prevTrackAction->setEnabled(false);
         if (!playPauseTrackAction->isEnabled()) {
@@ -1933,8 +1941,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
         #endif
         playPauseTrackAction->setIcon(Icons::toolbarPlayIcon);
         playPauseTrackAction->setEnabled(0!=playQueueModel.rowCount());
-        stopTrackAction->setEnabled(0!=playQueueModel.rowCount());
-        stopAfterTrackAction->setEnabled(0!=playQueueModel.rowCount());
+        enableStopActions(0!=playQueueModel.rowCount());
         nextTrackAction->setEnabled(playQueueModel.rowCount()>1);
         prevTrackAction->setEnabled(playQueueModel.rowCount()>1);
         #ifdef ENABLE_KDE_SUPPORT

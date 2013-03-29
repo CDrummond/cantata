@@ -79,7 +79,7 @@ public:
     }
 
     void PlayPause() {  mw->playPauseTrack(); }
-    void Stop() {  mw->stopTrack(); }
+    void Stop() {  mw->stopPlayback(); }
 
     void Play() {
         MPDStatus * const status = MPDStatus::self();
@@ -145,7 +145,6 @@ public:
 
 public Q_SLOTS:
     void Raise();
-
     void Quit() { QApplication::quit(); }
 
 Q_SIGNALS:

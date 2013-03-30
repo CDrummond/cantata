@@ -40,8 +40,6 @@ public:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
-    virtual const MusicLibraryItem * toItem(const QModelIndex &idx) const;
-
 private:
     bool filterAcceptsRoot(const MusicLibraryItem *item) const;
     bool filterAcceptsArtist(const MusicLibraryItem *item) const;

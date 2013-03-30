@@ -70,8 +70,6 @@ public:
     Action * connectAct() const { return connectAction; }
     Action * disconnectAct() const { return disconnectAction; }
 
-    MusicLibraryItem * toItem(const QModelIndex &idx) const;
-
 public Q_SLOTS:
     void setArtistImage(const Song &song, const QImage &img);
     void setCover(const Song &song, const QImage &img, const QString &fileName);
@@ -100,13 +98,6 @@ private:
     Action *disconnectAction;
 
     friend class OnlineService;
-};
-
-class OnlineServicesProxyModel : public MusicLibraryProxyModel
-{
-public:
-    OnlineServicesProxyModel(QObject *parent = 0) : MusicLibraryProxyModel(parent) { }
-    virtual const MusicLibraryItem * toItem(const QModelIndex &idx) const { return OnlineServicesModel::self()->toItem(idx); }
 };
 
 #endif

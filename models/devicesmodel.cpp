@@ -125,7 +125,7 @@ QModelIndex DevicesModel::index(int row, int column, const QModelIndex &parent) 
     }
 
     if (parent.isValid()) {
-        MusicLibraryItem *p=toItem(parent);
+        MusicLibraryItem *p=static_cast<MusicLibraryItem *>(parent.internalPointer());
 
         if (p) {
             return row<p->childCount() ? createIndex(row, column, p->childItem(row)) : QModelIndex();
@@ -143,7 +143,7 @@ QModelIndex DevicesModel::parent(const QModelIndex &index) const
         return QModelIndex();
     }
 
-    MusicLibraryItem *childItem = toItem(index);
+    MusicLibraryItem *childItem = static_cast<MusicLibraryItem *>(index.internalPointer());
     MusicLibraryItem *parentItem = childItem->parentItem();
 
     if (parentItem) {
@@ -164,7 +164,7 @@ int DevicesModel::rowCount(const QModelIndex &parent) const
         return 0;
     }
 
-    return parent.isValid() ? toItem(parent)->childCount() : devices.count();
+    return parent.isValid() ? static_cast<MusicLibraryItem *>(parent.internalPointer())->childCount() : devices.count();
 }
 
 int DevicesModel::columnCount(const QModelIndex &parent) const
@@ -179,7 +179,7 @@ QVariant DevicesModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    MusicLibraryItem *item = toItem(index);
+    MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
 
     switch (role) {
     case Qt::DecorationRole:
@@ -548,7 +548,7 @@ QList<Song> DevicesModel::songs(const QModelIndexList &indexes, bool playableOnl
     QMap<MusicLibraryItem *, QList<Song> > devSongs;
 
     foreach(QModelIndex index, indexes) {
-        MusicLibraryItem *item = toItem(index);
+        MusicLibraryItem *item = static_cast<MusicLibraryItem *>(index.internalPointer());
         MusicLibraryItem *parent=item;
 
         while (parent->parentItem()) {
@@ -956,13 +956,6 @@ void DevicesModel::toggleGrouping()
         dev->toggleGrouping();
     }
     endResetModel();
-}
-
-MusicLibraryItem * DevicesModel::toItem(const QModelIndex &idx) const
-{
-    return devices.contains((Device *)(idx.internalPointer()))
-            ? static_cast<Device *>(idx.internalPointer())
-            : static_cast<MusicLibraryItem *>(idx.internalPointer());
 }
 
 int DevicesModel::indexOf(const QString &udi)

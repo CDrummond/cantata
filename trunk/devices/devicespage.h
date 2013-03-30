@@ -25,13 +25,13 @@
 #define DEVICESPAGE_H
 
 #include "ui_devicespage.h"
-#include "devicesmodel.h"
 #include "device.h"
 #include "config.h"
 #ifdef ENABLE_REMOTE_DEVICES
 #include "remotefsdevice.h"
 #endif
 #include "cddb.h"
+#include "musiclibraryproxymodel.h"
 
 class Action;
 
@@ -81,7 +81,7 @@ Q_SIGNALS:
     void deleteSongs(const QString &from, const QList<Song> &songs);
 
 private:
-    DevicesProxyModel proxy;
+    MusicLibraryProxyModel proxy;
     Action *copyAction;
     #ifdef ENABLE_REMOTE_DEVICES
     Action *forgetDeviceAction;

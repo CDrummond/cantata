@@ -88,7 +88,7 @@ bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
     }
 
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-    const MusicLibraryItem *item = toItem(index);
+    const MusicLibraryItem *item = static_cast<const MusicLibraryItem *>(index.internalPointer());
 
     if (!filterGenre.isEmpty() && !item->hasGenre(filterGenre)) {
         return false;
@@ -108,11 +108,6 @@ bool MusicLibraryProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
     }
 
     return false;
-}
-
-const MusicLibraryItem * MusicLibraryProxyModel::toItem(const QModelIndex &idx) const
-{
-    return static_cast<MusicLibraryItem *>(idx.internalPointer());
 }
 
 bool MusicLibraryProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const

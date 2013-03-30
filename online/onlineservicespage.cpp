@@ -132,7 +132,7 @@ OnlineService * OnlineServicesPage::activeSrv() const
     OnlineService *activeSrv=0;
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
-        MusicLibraryItem *item=OnlineServicesModel::self()->toItem(index);
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
 
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parentItem()) {
@@ -183,7 +183,7 @@ QList<Song> OnlineServicesPage::selectedSongs() const
     foreach (const QModelIndex &idx, selected) {
         QModelIndex index = proxy.mapToSource(idx);
         mapped.append(index);
-        MusicLibraryItem *item=OnlineServicesModel::self()->toItem(index);
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(index.internalPointer());
 
         if (item && MusicLibraryItem::Type_Root!=item->itemType()) {
             while(item->parentItem()) {
@@ -215,7 +215,7 @@ void OnlineServicesPage::itemDoubleClicked(const QModelIndex &)
      if (1!=selected.size()) {
          return; //doubleclick should only have one selected item
      }
-     MusicLibraryItem *item = OnlineServicesModel::self()->toItem(proxy.mapToSource(selected.at(0)));
+     MusicLibraryItem *item = static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.at(0)).internalPointer());
      if (MusicLibraryItem::Type_Song==item->itemType()) {
          addSelectionToPlaylist();
      }
@@ -238,7 +238,7 @@ void OnlineServicesPage::controlActions()
     QSet<QString> services;
 
     foreach (const QModelIndex &idx, selected) {
-        MusicLibraryItem *item=OnlineServicesModel::self()->toItem(proxy.mapToSource(idx));
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
 
         if (item) {
             if (MusicLibraryItem::Type_Root==item->itemType()) {
@@ -282,7 +282,7 @@ void OnlineServicesPage::configureService()
         return;
     }
 
-    MusicLibraryItem *item=OnlineServicesModel::self()->toItem(proxy.mapToSource(selected.first()));
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         static_cast<OnlineService *>(item)->configure(this);
@@ -297,7 +297,7 @@ void OnlineServicesPage::refreshService()
         return;
     }
 
-    MusicLibraryItem *item=OnlineServicesModel::self()->toItem(proxy.mapToSource(selected.first()));
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         OnlineService *srv=static_cast<OnlineService *>(item);
@@ -320,7 +320,7 @@ void OnlineServicesPage::removeService()
         return;
     }
 
-    MusicLibraryItem *item=OnlineServicesModel::self()->toItem(proxy.mapToSource(selected.first()));
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         if (MessageBox::No==MessageBox::warningYesNo(this, i18n("Are you sure you wish to remove '%1'?").arg(item->data()))) {
@@ -341,7 +341,7 @@ void OnlineServicesPage::toggleService()
         return;
     }
 
-    MusicLibraryItem *item=OnlineServicesModel::self()->toItem(proxy.mapToSource(selected.first()));
+    MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(selected.first()).internalPointer());
 
     if (MusicLibraryItem::Type_Root==item->itemType()) {
         if (static_cast<OnlineService *>(item)->isLoaded() &&
@@ -357,7 +357,7 @@ void OnlineServicesPage::updateGenres(const QModelIndex &idx)
     if (idx.isValid()) {
         QModelIndex m=proxy.mapToSource(idx);
         if (m.isValid()) {
-            MusicLibraryItem *item=OnlineServicesModel::self()->toItem(m);
+            MusicLibraryItem *item=static_cast<MusicLibraryItem *>(m.internalPointer());
             MusicLibraryItem::Type itemType=item->itemType();
             if (itemType==MusicLibraryItem::Type_Root) {
                 genreCombo->update(static_cast<MusicLibraryItemRoot *>(item)->genres());
@@ -403,7 +403,7 @@ void OnlineServicesPage::download()
 
     if (!songs.isEmpty()) {
         QModelIndex idx = view->selectedIndexes().at(0);
-        MusicLibraryItem *item=OnlineServicesModel::self()->toItem(proxy.mapToSource(idx));
+        MusicLibraryItem *item=static_cast<MusicLibraryItem *>(proxy.mapToSource(idx).internalPointer());
 
         while (item && item->parentItem()) {
             item=item->parentItem();

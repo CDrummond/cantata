@@ -77,7 +77,13 @@ protected:
     int lastProg;
 };
 
+// MOC requires the QObject class to be first. But due to models stornig void pointers, and
+// needing to cast these - the model prefers MusicLibraryItemRoot to be first!
+#ifdef Q_MOC_RUN
 class OnlineService : public QObject, public MusicLibraryItemRoot
+#else
+class OnlineService : public MusicLibraryItemRoot, public QObject
+#endif
 {
     Q_OBJECT
 

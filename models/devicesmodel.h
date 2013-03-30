@@ -78,8 +78,6 @@ public:
     Action * editAct() const { return editAction; }
     #endif
 
-    MusicLibraryItem * toItem(const QModelIndex &idx) const;
-
 public Q_SLOTS:
     void setCover(const Song &song, const QImage &img);
     void deviceAdded(const QString &udi);
@@ -125,13 +123,6 @@ private:
     Action *editAction;
     #endif
     friend class Device;
-};
-
-class DevicesProxyModel : public MusicLibraryProxyModel
-{
-public:
-    DevicesProxyModel(QObject *parent = 0) : MusicLibraryProxyModel(parent) { }
-    virtual const MusicLibraryItem * toItem(const QModelIndex &idx) const { return DevicesModel::self()->toItem(idx); }
 };
 
 #endif

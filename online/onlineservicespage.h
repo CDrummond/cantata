@@ -25,8 +25,8 @@
 #define ONLINE_SERVICES_PAGE_H
 
 #include "ui_onlineservicespage.h"
-#include "onlineservicesmodel.h"
 #include "onlineservice.h"
+#include "musiclibraryproxymodel.h"
 
 class Action;
 class QAction;
@@ -75,7 +75,7 @@ private:
     OnlineService * activeSrv() const;
 
 private:
-    OnlineServicesProxyModel proxy;
+    MusicLibraryProxyModel proxy;
     Action *addAction;
     Action *removeAction;
     Action *downloadAction;

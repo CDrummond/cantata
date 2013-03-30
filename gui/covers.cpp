@@ -444,6 +444,29 @@ Covers::Image Covers::getImage(const Song &song)
         }
     }
 
+    bool isOnline=song.file.startsWith("http:/") && song.name.startsWith("http:/");
+
+    if (isOnline) {
+        // ONLINE: Cache dir is saved in Song.title
+        QString baseName=Utils::cacheDir(song.title, false)+encodeName(isArtistImage ? song.albumartist : (song.albumartist+" - "+song.album));
+        foreach (const QString &ext, constExtensions) {
+            if (QFile::exists(baseName+ext)) {
+                QImage img(baseName+ext);
+
+                if (!img.isNull()) {
+                    Image i(img, baseName+ext);
+                    if (isArtistImage) {
+                        gotArtistImage(song, i, false);
+                    } else {
+                        gotAlbumCover(song, i, false);
+                    }
+                    return i;
+                }
+            }
+        }
+        return Image(QImage(), QString());
+    }
+
     QString songFile=song.file;
     QString dirName;
     bool haveAbsPath=song.file.startsWith('/');
@@ -959,8 +982,8 @@ QString Covers::saveImg(const Job &job, const QImage &img, const QByteArray &raw
     }
 
     if (JobOnline==job.type) {
-        // ONLINE: Cache dir is saved in Song.name
-        savedName=save(mimeType, extension, job.song.name+encodeName(job.isArtist ? job.song.albumartist : (job.song.albumartist+" - "+job.song.album)), img, raw);
+        // ONLINE: Cache dir is saved in Song.title
+        savedName=save(mimeType, extension, Utils::cacheDir(job.song.title)+encodeName(job.isArtist ? job.song.albumartist : (job.song.albumartist+" - "+job.song.album)), img, raw);
         if (!savedName.isEmpty()) {
             return savedName;
         }

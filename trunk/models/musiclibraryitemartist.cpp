@@ -130,6 +130,7 @@ const QPixmap & MusicLibraryItemArtist::cover()
                 static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
                 // ONLINE: Image URL is encoded in song.name...
                 song.name=m_imageUrl;
+                song.title=parentItem()->parentItem()->data().toLower();
                 Covers::self()->requestCover(song, true);
             } else if (parentItem() && parentItem()->parentItem() && !static_cast<MusicLibraryItemRoot *>(parentItem()->parentItem())->useArtistImages()) {
                 // Not showing artist images in this model, so dont request any!

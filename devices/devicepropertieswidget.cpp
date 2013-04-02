@@ -221,7 +221,11 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
         } else {
             foreach (const Encoders::Encoder &e, encs) {
                 if (!transcode || e.transcoder) {
-                    transcoderName->addItem(transcode ? i18n("Transcode to \"%1\"").arg(e.name) : e.name, e.codec);
+                    QString name=e.name;
+                    if (transcode && name.endsWith(QLatin1String(" (ffmpeg)"))) {
+                        name=name.left(name.length()-9);
+                    }
+                    transcoderName->addItem(transcode ? i18n("Transcode to \"%1\"").arg(name) : name, e.codec);
                 }
             }
 

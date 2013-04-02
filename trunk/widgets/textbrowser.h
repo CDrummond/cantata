@@ -37,6 +37,7 @@ public:
 
     void setZoom(int diff) { if (diff) zoomIn(diff);  }
     int zoom() const { return font().pointSize()-orig; }
+    void setReadOnly(bool ro);
     void setImage(const QImage &img);
     void enableImage(bool e);
     bool imageEnabled() { return drawImage; }

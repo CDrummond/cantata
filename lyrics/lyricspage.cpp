@@ -99,6 +99,7 @@ LyricsPage::LyricsPage(QWidget *p)
     setBgndImageEnabled(Settings::self()->lyricsBgnd());
     text->setZoom(Settings::self()->lyricsZoom());
     setMode(Mode_Blank);
+    header->setText(i18n("Lyrics"));
 }
 
 LyricsPage::~LyricsPage()
@@ -250,7 +251,7 @@ void LyricsPage::update(const Song &s, bool force)
 
         if (song.title.isEmpty() || song.artist.isEmpty()) {
             text->setText(QString());
-            header->setText(QString());
+            header->setText(i18n("Lyrics"));
             return;
         }
 

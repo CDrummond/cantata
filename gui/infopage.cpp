@@ -75,6 +75,7 @@ InfoPage::InfoPage(QWidget *parent)
     text->setZoom(Settings::self()->infoZoom());
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage)), SLOT(artistImage(Song,QImage)));
     Utils::clearOldCache(constCacheDir, constCacheAge);
+    header->setText(i18n("Information"));
 }
 
 void InfoPage::saveSettings()
@@ -115,7 +116,7 @@ void InfoPage::update(const Song &s, bool force)
         text->setImage(QImage());
         if (currentSong.isEmpty()) {
             text->setText(QString());
-            header->setText(QString());
+            header->setText(i18n("Information"));
         } else {
             text->setHtml("<i>Retrieving...</i>", true);
             header->setText(currentSong.artist);

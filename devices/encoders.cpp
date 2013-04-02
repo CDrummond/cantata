@@ -371,7 +371,8 @@ QStringList Encoder::params(int value, const QString &in, const QString &out) co
     }
 
     if (transcoder) {
-        p << "-y"; // Overwrite destination
+        p << "-vn"  // Ensure ffmpeg does not think embedded cover-art is a video!!!
+          << "-y"; // Overwrite destination
     } else {
         p << in;
     }

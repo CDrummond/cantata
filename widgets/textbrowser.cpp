@@ -118,6 +118,14 @@ TextBrowser::TextBrowser(QWidget *p)
         maxSize=minSize*2;
         border=minSize/16;
     }
+    setReadOnly(true);
+}
+
+void TextBrowser::setReadOnly(bool ro)
+{
+    viewport()->update();
+    QTextBrowser::setReadOnly(ro);
+    viewport()->update();
 }
 
 void TextBrowser::setImage(const QImage &img)

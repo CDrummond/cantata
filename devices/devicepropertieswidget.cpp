@@ -225,7 +225,7 @@ void DevicePropertiesWidget::update(const QString &path, const DeviceOptions &op
                     if (transcode && name.endsWith(QLatin1String(" (ffmpeg)"))) {
                         name=name.left(name.length()-9);
                     }
-                    transcoderName->addItem(transcode ? i18n("Transcode to \"%1\"").arg(name) : name, e.codec);
+                    transcoderName->addItem(transcode ? i18n("Transcode to %1").arg(name) : name, e.codec);
                 }
             }
 

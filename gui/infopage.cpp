@@ -38,7 +38,6 @@
 #include <QFile>
 #include <QBuffer>
 #include <QApplication>
-#include <QPainter>
 #include <QTextDocument>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -181,12 +180,7 @@ void InfoPage::artistImage(const Song &song, const QImage &i, const QString &f)
             image=QString("<img src=\"%1\" width=\"%2\" height=\"%3\">").arg(f).arg(sz.width()).arg(sz.height());
         } else {
             // No filename given, or file does not exist - therefore scale image.
-            QImage img=i.scaled(imageSize*1.5, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            int padding=fontMetrics().height()/4;
-            QImage padded(img.width()+padding, img.height()+padding, QImage::Format_ARGB32);
-            padded.fill(Qt::transparent);
-            QPainter(&padded).drawImage(Qt::RightToLeft==QApplication::layoutDirection() ? padding : 0, 0, img);
-            image=encode(padded);
+            image=encode(i.scaled(imageSize*1.5, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         setBio();
     }

@@ -26,6 +26,7 @@
 
 #include <QWidget>
 #include <QMap>
+#include <QImage>
 #include "song.h"
 #include "textbrowser.h"
 
@@ -34,6 +35,7 @@ class ComboBox;
 class HeaderLabel;
 class QNetworkReply;
 class QIODevice;
+class QUrl;
 
 class InfoPage : public QWidget
 {
@@ -52,17 +54,26 @@ public:
     bool bgndImageEnabled() { return text->imageEnabled(); }
     void showEvent(QShowEvent *e);
 
+Q_SIGNALS:
+    void findArtist(const QString &artist);
+
 public Q_SLOTS:
-    void artistImage(const Song &song, const QImage &img);
+    void artistImage(const Song &song, const QImage &i);
 
 private Q_SLOTS:
-    void handleReply();
+    void handleBioReply();
     void setBio();
+    void handleSimilarReply();
+    void showArtist(const QUrl &url);
 
 private:
+    void loadBio();
     void requestBio();
+    bool parseBioResponse(const QByteArray &resp);
+    void loadSimilar();
+    void requestSimilar();
+    bool parseSimilarResponse(const QByteArray &resp);
     void abort();
-    bool parseResponse(const QByteArray &resp);
 
 private:
     bool needToUpdate;
@@ -70,8 +81,11 @@ private:
     TextBrowser *text;
     ComboBox *combo;
     QMap<int, QString> biographies;
+    QString similarArtists;
     Song currentSong;
-    QNetworkReply *currentJob;
+    QNetworkReply *currentBioJob;
+    QNetworkReply *currentSimilarJob;
+    QString encodedImg;
 };
 
 #endif

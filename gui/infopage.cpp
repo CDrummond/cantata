@@ -27,6 +27,7 @@
 #include "utils.h"
 #include "combobox.h"
 #include "headerlabel.h"
+#include "musiclibrarymodel.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
 #ifndef Q_OS_WIN
@@ -38,6 +39,9 @@
 #include <QComboBox>
 #include <QNetworkReply>
 #include <QFile>
+#include <QBuffer>
+#include <QApplication>
+#include <QPainter>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -45,19 +49,32 @@
 static const QLatin1String constApiKey("N5JHVHNG0UOZZIDVT");
 static const char *constNameKey="name";
 static const int constCacheAge=7;
+static int imageSize=-1;
 
 const QLatin1String InfoPage::constCacheDir("artists/");
 const QLatin1String InfoPage::constInfoExt(".json.gz");
 
-static QString cacheFileName(const QString &artist, bool createDir)
+static QString cacheFileName(const QString &artist, bool similar, bool createDir)
 {
-    return Utils::cacheDir(InfoPage::constCacheDir, createDir)+Covers::encodeName(artist)+InfoPage::constInfoExt;
+    return Utils::cacheDir(InfoPage::constCacheDir, createDir)+Covers::encodeName(artist)+(similar ? "-similar" : "")+InfoPage::constInfoExt;
+}
+
+static QString encode(const QImage &img)
+{
+    QByteArray bytes;
+    QBuffer buffer(&bytes);
+    buffer.open(QIODevice::WriteOnly);
+    img.save(&buffer, "PNG");
+    return QString("<img src=\"data:image/png;base64,%1\" align=\"%2\">")
+            .arg(QString(buffer.data().toBase64()))
+            .arg(Qt::RightToLeft==QApplication::layoutDirection() ? "right" : "left");
 }
 
 InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
     , needToUpdate(false)
-    , currentJob(0)
+    , currentBioJob(0)
+    , currentSimilarJob(0)
 {
     QVBoxLayout *vlayout=new QVBoxLayout(this);
     header=new HeaderLabel(this);
@@ -73,9 +90,14 @@ InfoPage::InfoPage(QWidget *parent)
     #endif
     setBgndImageEnabled(Settings::self()->lyricsBgnd());
     text->setZoom(Settings::self()->infoZoom());
+    text->setOpenLinks(false);
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage)), SLOT(artistImage(Song,QImage)));
+    connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(showArtist(QUrl)));
     Utils::clearOldCache(constCacheDir, constCacheAge);
     header->setText(i18n("Information"));
+    if (-1==imageSize) {
+        imageSize=fontMetrics().height()*10;
+    }
 }
 
 void InfoPage::saveSettings()
@@ -114,6 +136,8 @@ void InfoPage::update(const Song &s, bool force)
         combo->clear();
         biographies.clear();
         text->setImage(QImage());
+        encodedImg=QString();
+        similarArtists=QString();
         if (currentSong.isEmpty()) {
             text->setText(QString());
             header->setText(i18n("Information"));
@@ -125,48 +149,81 @@ void InfoPage::update(const Song &s, bool force)
             s.albumartist=currentSong.artist;
             s.file=currentSong.file;
             Covers::self()->requestCover(s, true);
-            QString cachedFile=cacheFileName(song.artist, false);
-            if (QFile::exists(cachedFile)) {
-                QFile f(cachedFile);
-                QtIOCompressor compressor(&f);
-                compressor.setStreamFormat(QtIOCompressor::GzipFormat);
-                if (compressor.open(QIODevice::ReadOnly)) {
-                    QByteArray data=compressor.readAll();
-
-                    if (!data.isEmpty() && parseResponse(data)) {
-                        setBio();
-                        Utils::touchFile(cachedFile);
-                        return;
-                    }
-                }
-            }
-
-            requestBio();
+            loadBio();
         }
     }
 }
 
-void InfoPage::artistImage(const Song &song, const QImage &img)
+void InfoPage::artistImage(const Song &song, const QImage &i)
 {
-    if (song.albumartist==currentSong.artist) {
+    if (song.albumartist==currentSong.artist && encodedImg.isEmpty()) {
+        QImage img=i.scaled(imageSize, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        int padding=fontMetrics().height()/4;
+        QImage padded(img.width()+padding, img.height()+padding, QImage::Format_ARGB32);
+        padded.fill(Qt::transparent);
+        QPainter(&padded).drawImage(Qt::RightToLeft==QApplication::layoutDirection() ? padding : 0, 0, img);
+        encodedImg=encode(padded);
         text->setImage(img);
+        setBio();
     }
 }
 
-void InfoPage::handleReply()
+void InfoPage::loadBio()
+{
+    QString cachedFile=cacheFileName(currentSong.artist, false, false);
+    if (QFile::exists(cachedFile)) {
+        QFile f(cachedFile);
+        QtIOCompressor compressor(&f);
+        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+        if (compressor.open(QIODevice::ReadOnly)) {
+            QByteArray data=compressor.readAll();
+
+            if (!data.isEmpty() && parseBioResponse(data)) {
+                setBio();
+                Utils::touchFile(cachedFile);
+                return;
+            }
+        }
+    }
+
+    requestBio();
+}
+
+void InfoPage::loadSimilar()
+{
+    QString cachedFile=cacheFileName(currentSong.artist, true, false);
+    if (QFile::exists(cachedFile)) {
+        QFile f(cachedFile);
+        QtIOCompressor compressor(&f);
+        compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+        if (compressor.open(QIODevice::ReadOnly)) {
+            QByteArray data=compressor.readAll();
+
+            if (!data.isEmpty() && parseSimilarResponse(data)) {
+                setBio();
+                Utils::touchFile(cachedFile);
+                return;
+            }
+        }
+    }
+
+    requestSimilar();
+}
+
+void InfoPage::handleBioReply()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if (!reply) {
         return;
     }
-    if (reply==currentJob) {
+    if (reply==currentBioJob) {
         bool ok=false;
         if (QNetworkReply::NoError==reply->error()) {
             QByteArray data=reply->readAll();
-            if (parseResponse(data)) {
+            if (parseBioResponse(data)) {
                 setBio();
                 ok=true;
-                QFile f(cacheFileName(reply->property(constNameKey).toString(), true));
+                QFile f(cacheFileName(reply->property(constNameKey).toString(), false, true));
                 QtIOCompressor compressor(&f);
                 compressor.setStreamFormat(QtIOCompressor::GzipFormat);
                 if (compressor.open(QIODevice::WriteOnly)) {
@@ -178,7 +235,31 @@ void InfoPage::handleReply()
             text->setHtml(i18n(("<i><Failed to download information!</i>")));
         }
         reply->deleteLater();
-        currentJob=0;
+        currentBioJob=0;
+    }
+}
+
+void InfoPage::handleSimilarReply()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    if (!reply) {
+        return;
+    }
+    if (reply==currentSimilarJob) {
+        if (QNetworkReply::NoError==reply->error()) {
+            QByteArray data=reply->readAll();
+            if (parseSimilarResponse(data)) {
+                setBio();
+                QFile f(cacheFileName(reply->property(constNameKey).toString(), true, true));
+                QtIOCompressor compressor(&f);
+                compressor.setStreamFormat(QtIOCompressor::GzipFormat);
+                if (compressor.open(QIODevice::WriteOnly)) {
+                    compressor.write(data);
+                }
+            }
+        }
+        reply->deleteLater();
+        currentSimilarJob=0;
     }
 }
 
@@ -186,9 +267,19 @@ void InfoPage::setBio()
 {
     int bio=combo->currentIndex();
     if (biographies.contains(bio)) {
-        text->setHtml(biographies[bio]);
+        QString html;
+
+        if (!encodedImg.isEmpty()) {
+            html=encodedImg;
+        }
+        html+=biographies[bio];
+        if (!similarArtists.isEmpty()) {
+            html+=similarArtists;
+        }
+        text->setHtml(html);
     }
 }
+
 
 void InfoPage::requestBio()
 {
@@ -210,17 +301,48 @@ void InfoPage::requestBio()
     url.setQuery(query);
     #endif
 
-    currentJob=NetworkAccessManager::self()->get(url);
-    currentJob->setProperty(constNameKey, currentSong.artist);
-    connect(currentJob, SIGNAL(finished()), this, SLOT(handleReply()));
+    currentBioJob=NetworkAccessManager::self()->get(url);
+    currentBioJob->setProperty(constNameKey, currentSong.artist);
+    connect(currentBioJob, SIGNAL(finished()), this, SLOT(handleBioReply()));
+}
+
+void InfoPage::requestSimilar()
+{
+    abort();
+    #if QT_VERSION < 0x050000
+    QUrl url;
+    QUrl &query=url;
+    #else
+    QUrl url;
+    QUrlQuery query;
+    #endif
+    url.setScheme("http");
+    url.setHost("developer.echonest.com");
+    url.setPath("api/v4/artist/similar");
+    query.addQueryItem("api_key", constApiKey);
+    query.addQueryItem("name", currentSong.artist);
+    query.addQueryItem("format", "json");
+    #if QT_VERSION >= 0x050000
+    url.setQuery(query);
+    #endif
+
+    currentSimilarJob=NetworkAccessManager::self()->get(url);
+    currentSimilarJob->setProperty(constNameKey, currentSong.artist);
+    connect(currentSimilarJob, SIGNAL(finished()), this, SLOT(handleSimilarReply()));
 }
 
 void InfoPage::abort()
 {
-    if (currentJob) {
-        disconnect(currentJob, SIGNAL(finished()), this, SLOT(handleReply()));
-        currentJob->abort();
-        currentJob=0;
+    if (currentBioJob) {
+        disconnect(currentBioJob, SIGNAL(finished()), this, SLOT(handleBioReply()));
+        currentBioJob->abort();
+        currentBioJob=0;
+    }
+
+    if (currentSimilarJob) {
+        disconnect(currentSimilarJob, SIGNAL(finished()), this, SLOT(handleSimilarArtistsReply()));
+        currentSimilarJob->abort();
+        currentSimilarJob=0;
     }
 }
 
@@ -252,7 +374,7 @@ static const QString constReferencesLine("This article does not cite any referen
 static const QString constDisambiguationLine("This article is about the band");
 static const QString constDisambiguationLine2("For other uses, see ");
 
-bool InfoPage::parseResponse(const QByteArray &resp)
+bool InfoPage::parseBioResponse(const QByteArray &resp)
 {
     QMultiMap<int, Bio> biogs;
     QJson::Parser parser;
@@ -315,5 +437,62 @@ bool InfoPage::parseResponse(const QByteArray &resp)
         combo->insertItem(combo->count(), i18n("Source: %1").arg(it.value().site));
     }
 
+    if (!biogs.isEmpty()) {
+        loadSimilar();
+    }
     return !biogs.isEmpty();
+}
+
+bool InfoPage::parseSimilarResponse(const QByteArray &resp)
+{
+    QSet<QString> mpdArtists=MusicLibraryModel::self()->getAlbumArtists();
+    QJson::Parser parser;
+    bool ok=false;
+    QVariantMap parsed=parser.parse(resp, &ok).toMap();
+    if (ok && parsed.contains("response")) {
+        QVariantMap response=parsed["response"].toMap();
+        if (response.contains("artists")) {
+            QVariantList artists=response["artists"].toList();
+            foreach (const QVariant &a, artists) {
+                QVariantMap details=a.toMap();
+                if (!details.isEmpty() && details.contains("name")) {
+                    QString artist=details["name"].toString();
+                    if (similarArtists.isEmpty()) {
+                        similarArtists="<br/><p><b>"+i18n("Similar Artists")+"</b></p><p>";
+                    }
+                    if (mpdArtists.contains(artist)) {
+                        artist=QLatin1String("<a href=\"cantata://?artist=")+artist+"\">"+artist+"</a>";
+                    } else {
+                        // Check for AC/DC -> AC-DC
+                        QString mod=artist;
+                        mod=mod.replace("/", "-");
+                        if (mod!=artist && mpdArtists.contains(mod)) {
+                            artist=QLatin1String("<a href=\"cantata://?artist=")+mod+"\">"+artist+"</a>";
+                        }
+                    }
+                    similarArtists+=artist+"<br/>";
+                }
+            }
+        }
+    }
+
+    if (!similarArtists.isEmpty()) {
+        similarArtists+="</p>";
+    }
+    return !similarArtists.isEmpty();
+}
+
+void InfoPage::showArtist(const QUrl &url)
+{
+    if (QLatin1String("cantata")==url.scheme()) {
+        #if QT_VERSION < 0x050000
+        const QUrl &q=url;
+        #else
+        QUrlQuery q(url);
+        #endif
+
+        if (q.hasQueryItem("artist")) {
+            emit findArtist(q.queryItemValue("artist"));
+        }
+    }
 }

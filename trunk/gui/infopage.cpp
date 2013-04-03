@@ -95,7 +95,7 @@ InfoPage::InfoPage(QWidget *parent)
     Utils::clearOldCache(constCacheDir, constCacheAge);
     header->setText(i18n("Information"));
     if (-1==imageSize) {
-        imageSize=fontMetrics().height()*15;
+        imageSize=fontMetrics().height()*12;
     }
 }
 
@@ -156,7 +156,7 @@ void InfoPage::update(const Song &s, bool force)
 void InfoPage::artistImage(const Song &song, const QImage &i)
 {
     if (song.albumartist==currentSong.artist && encodedImg.isEmpty()) {
-        QImage img=i.scaled(imageSize, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QImage img=i.scaled(imageSize*1.5, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         int padding=fontMetrics().height()/4;
         QImage padded(img.width()+padding, img.height()+padding, QImage::Format_ARGB32);
         padded.fill(Qt::transparent);

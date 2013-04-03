@@ -88,7 +88,6 @@ InfoPage::InfoPage(QWidget *parent)
     #ifndef Q_OS_WIN
     combo->setProperty(GtkProxyStyle::constSlimComboProperty, true);
     #endif
-    setBgndImageEnabled(Settings::self()->lyricsBgnd());
     text->setZoom(Settings::self()->infoZoom());
     text->setOpenLinks(false);
     connect(Covers::self(), SIGNAL(artistImage(Song,QImage)), SLOT(artistImage(Song,QImage)));

@@ -303,7 +303,7 @@ within the folder of the current track, or within its parent folder. If no image
        <item row="4" column="0">
         <widget class="BuddyLabel" name="label_5">
          <property name="text">
-          <string>Use image as lyrics and info background:</string>
+          <string>Use cover as lyrics background:</string>
          </property>
          <property name="buddy">
           <cstring>lyricsBgnd</cstring>

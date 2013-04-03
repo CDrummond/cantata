@@ -2,6 +2,7 @@
 <qresource>
 <file alias="lyrics.xml">lyrics/ultimate_providers.xml</file>
 <file alias="streams.xml">streams/providers.xml</file>
+<file alias="weblinks.xml">gui/weblinks.xml</file>
 <file alias="repeat16.png">icons/view-media-repeat16.png</file>
 <file alias="repeat22.png">icons/view-media-repeat22.png</file>
 <file alias="repeat32.png">icons/view-media-repeat32.png</file>

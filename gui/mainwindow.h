@@ -265,6 +265,7 @@ public Q_SLOTS:
     }
     void toggleSplitterAutoHide();
     void locateTrack();
+    void locateArtist(const QString &artist);
     #ifdef TAGLIB_FOUND
     void editTags();
     void editPlayQueueTags();

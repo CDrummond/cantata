@@ -69,6 +69,7 @@ public:
     bool fromXML();
     void clear();
     QModelIndex findSongIndex(const Song &s) const;
+    QModelIndex findArtistsIndex(const QString &artist) const;
     const MusicLibraryItem * findSong(const Song &s) const;
     bool songExists(const Song &s) const;
     bool updateSong(const Song &orig, const Song &edit);
@@ -77,6 +78,7 @@ public:
     void updateSongFile(const Song &from, const Song &to);
     void removeCache();
     void getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres);
+    QSet<QString> getAlbumArtists();
     bool update(const QSet<Song> &songs);
     bool useAlbumImages() const { return rootItem->useAlbumImages(); }
     void setUseAlbumImages(bool a) { rootItem->setUseAlbumImages(a); }

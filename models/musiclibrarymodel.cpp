@@ -374,6 +374,14 @@ QModelIndex MusicLibraryModel::findSongIndex(const Song &s) const
     return QModelIndex();
 }
 
+QModelIndex MusicLibraryModel::findArtistsIndex(const QString &artist) const
+{
+    Song s;
+    s.artist=artist;
+    MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
+    return artistItem ? index(rootItem->childItems().indexOf(artistItem), 0, QModelIndex()) : QModelIndex();
+}
+
 const MusicLibraryItem * MusicLibraryModel::findSong(const Song &s) const
 {
     MusicLibraryItemArtist *artistItem = rootItem->artist(s, false);
@@ -577,6 +585,15 @@ void MusicLibraryModel::removeCache()
 void MusicLibraryModel::getDetails(QSet<QString> &artists, QSet<QString> &albumArtists, QSet<QString> &albums, QSet<QString> &genres)
 {
     rootItem->getDetails(artists, albumArtists, albums, genres);
+}
+
+QSet<QString> MusicLibraryModel::getAlbumArtists()
+{
+    QSet<QString> a;
+    foreach (MusicLibraryItem *i, rootItem->childItems()) {
+        a.insert(i->data());
+    }
+    return a;
 }
 
 void MusicLibraryModel::updateMusicLibrary(MusicLibraryItemRoot *newroot, QDateTime dbUpdate, bool fromFile)

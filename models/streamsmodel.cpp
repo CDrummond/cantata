@@ -456,7 +456,7 @@ bool StreamsModel::save(const QString &filename, const QSet<StreamsModel::Item *
 
     QXmlStreamWriter doc(&compressor);
     doc.writeStartDocument();
-    doc.writeStartElement("cantata");
+    doc.writeStartElement("streams");
     doc.writeAttribute("version", "1.0");
     if (filename==getInternalFile(false)) {
         doc.setAutoFormatting(false);

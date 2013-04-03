@@ -37,6 +37,14 @@ class QNetworkReply;
 class QIODevice;
 class QUrl;
 
+class InfoBrowser : public TextBrowser
+{
+public:
+    InfoBrowser(QWidget *w);
+    virtual ~InfoBrowser() { }
+    QVariant loadResource(int type, const QUrl &name);
+};
+
 class InfoPage : public QWidget
 {
     Q_OBJECT
@@ -58,7 +66,7 @@ Q_SIGNALS:
     void findArtist(const QString &artist);
 
 public Q_SLOTS:
-    void artistImage(const Song &song, const QImage &i);
+    void artistImage(const Song &song, const QImage &i, const QString &f);
 
 private Q_SLOTS:
     void handleBioReply();
@@ -78,14 +86,14 @@ private:
 private:
     bool needToUpdate;
     HeaderLabel *header;
-    TextBrowser *text;
+    InfoBrowser *text;
     ComboBox *combo;
     QMap<int, QString> biographies;
     QString similarArtists;
     Song currentSong;
     QNetworkReply *currentBioJob;
     QNetworkReply *currentSimilarJob;
-    QString encodedImg;
+    QString image;
     #ifndef Q_OS_WIN
     QStringList webLinks;
     #endif

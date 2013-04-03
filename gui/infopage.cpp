@@ -39,6 +39,7 @@
 #include <QBuffer>
 #include <QApplication>
 #include <QPainter>
+#include <QTextDocument>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -70,6 +71,26 @@ static QString encode(const QImage &img)
     return QString("<img src=\"data:image/png;base64,%1\">").arg(QString(buffer.data().toBase64()));
 }
 
+InfoBrowser::InfoBrowser(QWidget *p)
+    : TextBrowser(p)
+{
+    setZoom(Settings::self()->infoZoom());
+    setOpenLinks(false);
+}
+
+// QTextEdit/QTextBrowser seems to do FastTransformatio when scaling images, and this looks bad.
+QVariant InfoBrowser::loadResource(int type, const QUrl &name)
+{
+    if (QTextDocument::ImageResource==type && (name.scheme().isEmpty() || QLatin1String("file")==name.scheme())) {
+        QImage img;
+        img.load(name.path());
+        if (!img.isNull()) {
+            return img.scaled(imageSize*1.5, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        }
+    }
+    return TextBrowser::loadResource(type, name);
+}
+
 InfoPage::InfoPage(QWidget *parent)
     : QWidget(parent)
     , needToUpdate(false)
@@ -78,7 +99,7 @@ InfoPage::InfoPage(QWidget *parent)
 {
     QVBoxLayout *vlayout=new QVBoxLayout(this);
     header=new HeaderLabel(this);
-    text=new TextBrowser(this);
+    text=new InfoBrowser(this);
     combo=new ComboBox(this);
     vlayout->addWidget(header);
     vlayout->addWidget(text);
@@ -88,9 +109,7 @@ InfoPage::InfoPage(QWidget *parent)
     #ifndef Q_OS_WIN
     combo->setProperty(GtkProxyStyle::constSlimComboProperty, true);
     #endif
-    text->setZoom(Settings::self()->infoZoom());
-    text->setOpenLinks(false);
-    connect(Covers::self(), SIGNAL(artistImage(Song,QImage)), SLOT(artistImage(Song,QImage)));
+    connect(Covers::self(), SIGNAL(artistImage(Song,QImage,QString)), SLOT(artistImage(Song,QImage,QString)));
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(showArtist(QUrl)));
     Utils::clearOldCache(constCacheDir, constCacheAge);
     header->setText(i18n("Information"));
@@ -135,7 +154,7 @@ void InfoPage::update(const Song &s, bool force)
         combo->clear();
         biographies.clear();
         text->setImage(QImage());
-        encodedImg=QString();
+        image=QString();
         similarArtists=QString();
         if (currentSong.isEmpty()) {
             text->setText(QString());
@@ -153,16 +172,22 @@ void InfoPage::update(const Song &s, bool force)
     }
 }
 
-void InfoPage::artistImage(const Song &song, const QImage &i)
+void InfoPage::artistImage(const Song &song, const QImage &i, const QString &f)
 {
-    if (song.albumartist==currentSong.artist && encodedImg.isEmpty()) {
-        QImage img=i.scaled(imageSize*1.5, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        int padding=fontMetrics().height()/4;
-        QImage padded(img.width()+padding, img.height()+padding, QImage::Format_ARGB32);
-        padded.fill(Qt::transparent);
-        QPainter(&padded).drawImage(Qt::RightToLeft==QApplication::layoutDirection() ? padding : 0, 0, img);
-        encodedImg=encode(padded);
-        text->setImage(img);
+    if (song.albumartist==currentSong.artist && image.isEmpty() && !i.isNull()) {
+        if (!f.isEmpty() && QFile::exists(f)) {
+            QSize sz=i.size();
+            sz.scale(imageSize*1.5, imageSize, Qt::KeepAspectRatio);
+            image=QString("<img src=\"%1\" width=\"%2\" height=\"%3\">").arg(f).arg(sz.width()).arg(sz.height());
+        } else {
+            // No filename given, or file does not exist - therefore scale image.
+            QImage img=i.scaled(imageSize*1.5, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            int padding=fontMetrics().height()/4;
+            QImage padded(img.width()+padding, img.height()+padding, QImage::Format_ARGB32);
+            padded.fill(Qt::transparent);
+            QPainter(&padded).drawImage(Qt::RightToLeft==QApplication::layoutDirection() ? padding : 0, 0, img);
+            image=encode(padded);
+        }
         setBio();
     }
 }
@@ -268,8 +293,8 @@ void InfoPage::setBio()
     if (biographies.contains(bio)) {
         QString html;
 
-        if (!encodedImg.isEmpty()) {
-            html=encodedImg;
+        if (!image.isEmpty()) {
+            html=image;
         }
         html+=biographies[bio];
         if (!similarArtists.isEmpty()) {

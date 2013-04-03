@@ -30,9 +30,6 @@
 #include "musiclibrarymodel.h"
 #include "networkaccessmanager.h"
 #include "settings.h"
-#ifndef Q_OS_WIN
-#include "gtkproxystyle.h"
-#endif
 #include "qjson/parser.h"
 #include "qtiocompressor/qtiocompressor.h"
 #include <QBoxLayout>
@@ -44,6 +41,11 @@
 #include <QPainter>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
+#endif
+#ifndef Q_OS_WIN
+#include "gtkproxystyle.h"
+#include <QProcess>
+#include <QXmlStreamReader>
 #endif
 
 static const QLatin1String constApiKey("N5JHVHNG0UOZZIDVT");
@@ -274,10 +276,32 @@ void InfoPage::setBio()
         if (!similarArtists.isEmpty()) {
             html+=similarArtists;
         }
+
+        #ifndef Q_OS_WIN
+        if (webLinks.isEmpty()) {
+            QFile file(":weblinks.xml");
+            if (file.open(QIODevice::ReadOnly)) {
+                QXmlStreamReader reader(&file);
+                while (!reader.atEnd()) {
+                    reader.readNext();
+                    if (QLatin1String("link")==reader.name()) {
+                        QXmlStreamAttributes attributes = reader.attributes();
+                        webLinks.append(QLatin1String("<a href=\"")+attributes.value("url").toString()+"\">"+attributes.value("name").toString()+"</a><br/>");
+                    }
+                }
+            }
+        }
+
+        if (!webLinks.isEmpty()) {
+            html+="<p><b>"+i18n("Web Links")+"</b></p><p>";
+            foreach (QString wl, webLinks) {
+                html+=wl.replace("${artist}", currentSong.artist);
+            }
+        }
+        #endif
         text->setHtml(html);
     }
 }
-
 
 void InfoPage::requestBio()
 {
@@ -493,4 +517,9 @@ void InfoPage::showArtist(const QUrl &url)
             emit findArtist(q.queryItemValue("artist"));
         }
     }
+    #ifndef Q_OS_WIN
+    else {
+        QProcess::startDetached(QLatin1String("xdg-open"), QStringList() << url.toString());
+    }
+    #endif
 }

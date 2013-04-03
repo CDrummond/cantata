@@ -709,6 +709,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(editPlayQueueTagsAction, SIGNAL(triggered(bool)), this, SLOT(editPlayQueueTags()));
     connect(StdActions::self()->organiseFilesAction, SIGNAL(triggered(bool)), SLOT(organiseFiles()));
     #endif
+    connect(infoPage, SIGNAL(findArtist(QString)), this, SLOT(locateArtist(QString)));
     connect(locateTrackAction, SIGNAL(triggered(bool)), this, SLOT(locateTrack()));
     connect(showPlayQueueAction, SIGNAL(triggered(bool)), this, SLOT(showPlayQueue()));
     connect(libraryTabAction, SIGNAL(triggered(bool)), this, SLOT(showLibraryTab()));
@@ -2436,6 +2437,14 @@ void MainWindow::locateTrack()
         showLibraryTab();
     }
     libraryPage->showSongs(playQueue->selectedSongs());
+}
+
+void MainWindow::locateArtist(const QString &artist)
+{
+    if (!libraryPage->isVisible()) {
+        showLibraryTab();
+    }
+    libraryPage->showArtist(artist);
 }
 
 void MainWindow::showPage(const QString &page, bool focusSearch)

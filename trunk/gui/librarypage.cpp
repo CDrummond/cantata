@@ -234,6 +234,20 @@ void LibraryPage::showSongs(const QList<Song> &songs)
     }
 }
 
+void LibraryPage::showArtist(const QString &artist)
+{
+    QModelIndex idx=MusicLibraryModel::self()->findArtistsIndex(artist);
+    if (idx.isValid()) {
+        idx=proxy.mapFromSource(idx);
+        genreCombo->setCurrentIndex(0);
+        view->clearSearchText();
+        view->showIndex(idx, true);
+        if (ItemView::Mode_SimpleTree==view->viewMode() || ItemView::Mode_DetailedTree==view->viewMode()) {
+            view->setExpanded(idx);
+        }
+    }
+}
+
 void LibraryPage::itemDoubleClicked(const QModelIndex &)
 {
     const QModelIndexList selected = view->selectedIndexes();

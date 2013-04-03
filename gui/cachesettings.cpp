@@ -147,6 +147,18 @@ void CacheItem::calculate()
     emit getCount();
 }
 
+#if QT_VERSION < 0x050000
+static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
+{
+    hdr->setResizeMode(idx, mode);
+}
+#else
+static inline void setResizeMode(QHeaderView *hdr, int idx, QHeaderView::ResizeMode mode)
+{
+    hdr->setSectionResizeMode(idx, mode);
+}
+#endif
+
 CacheTree::CacheTree(QWidget *parent)
     : QTreeWidget(parent)
 {
@@ -158,9 +170,9 @@ CacheTree::CacheTree(QWidget *parent)
     setSortingEnabled(false);
     //setSortingEnabled(true);
     //sortByColumn(0, Qt::AscendingOrder);
-    header()->setResizeMode(0, QHeaderView::Stretch);
-    header()->setResizeMode(1, QHeaderView::Stretch);
-    header()->setResizeMode(2, QHeaderView::Stretch);
+    setResizeMode(header(), 0, QHeaderView::Stretch);
+    setResizeMode(header(), 1, QHeaderView::Stretch);
+    setResizeMode(header(), 2, QHeaderView::Stretch);
     header()->setStretchLastSection(true);
 }
 

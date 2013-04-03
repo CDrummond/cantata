@@ -86,6 +86,9 @@ private:
     QNetworkReply *currentBioJob;
     QNetworkReply *currentSimilarJob;
     QString encodedImg;
+    #ifndef Q_OS_WIN
+    QStringList webLinks;
+    #endif
 };
 
 #endif

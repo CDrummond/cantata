@@ -166,6 +166,20 @@ if the folder heirarchy is 2 levels (artist/album/) and the user has write
 permissions. If not, then they will be saved in Cantata's cache folder.
 
 
+MultiMedia Keys
+===============
+
+Cantata may be controlled via the media keys on some keyboards. To enable this,
+the KDE version can be configured to use KDE's global shortcuts. The Qt only
+builds (under Linux) can use the GNOME settings daemon's MediaKeys interface.
+This interface is normally started automatically under GNOME/Unity - and you
+will also need to enable the setting in Cantata's configuration dialog.
+
+If your system does not have this daemon, you could possibly use
+https://code.google.com/p/mediakeys-daemon/ which is a python re-implementation
+of the interface.
+
+
 Dynamic Helper Script - Local Mode
 ==================================
 

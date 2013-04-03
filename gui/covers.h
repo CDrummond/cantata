@@ -58,7 +58,7 @@ private Q_SLOTS:
 Q_SIGNALS:
     void getNext();
     void cover(const Song &song, const QImage &img, const QString &file);
-    void artistImage(const Song &song, const QImage &img);
+    void artistImage(const Song &song, const QImage &img, const QString &file);
     void download(const Song &song);
 
 private:
@@ -133,7 +133,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void cover(const Song &song, const QImage &img, const QString &file);
     void coverUpdated(const Song &song, const QImage &img, const QString &file);
-    void artistImage(const Song &song, const QImage &img);
+    void artistImage(const Song &song, const QImage &img, const QString &file);
     void coverRetrieved(const Song &song);
 
 private:

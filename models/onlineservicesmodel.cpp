@@ -306,7 +306,7 @@ void OnlineServicesModel::setEnabled(bool e)
     bool wasEnabled=enabled;
     enabled=e;
     if (enabled) {
-        connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
+        connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &, const QString &)),
                 this, SLOT(setArtistImage(const Song &, const QImage &)));
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));
@@ -321,7 +321,7 @@ void OnlineServicesModel::setEnabled(bool e)
 
 void OnlineServicesModel::stop()
 {
-    disconnect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
+    disconnect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &, const QString &)),
               this, SLOT(setArtistImage(const Song &, const QImage &)));
     disconnect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
               this, SLOT(setCover(const Song &, const QImage &, const QString &)));

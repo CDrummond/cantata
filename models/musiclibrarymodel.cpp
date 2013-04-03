@@ -130,7 +130,7 @@ MusicLibraryModel::MusicLibraryModel(QObject *parent, bool isMpdModel)
 {
     if (isMpdModel)
     {
-        connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &)),
+        connect(Covers::self(), SIGNAL(artistImage(const Song &, const QImage &, const QString &)),
                 this, SLOT(setArtistImage(const Song &, const QImage &)));
         connect(Covers::self(), SIGNAL(cover(const Song &, const QImage &, const QString &)),
                 this, SLOT(setCover(const Song &, const QImage &, const QString &)));

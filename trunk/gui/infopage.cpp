@@ -290,7 +290,7 @@ void InfoPage::setBio()
         if (!image.isEmpty()) {
             html=image;
         }
-        html+=biographies[bio];
+        html+="<p>"+biographies[bio]+"</p>";
         if (!similarArtists.isEmpty()) {
             html+=similarArtists;
         }
@@ -304,17 +304,19 @@ void InfoPage::setBio()
                     reader.readNext();
                     if (QLatin1String("link")==reader.name()) {
                         QXmlStreamAttributes attributes = reader.attributes();
-                        webLinks.append(QLatin1String("<a href=\"")+attributes.value("url").toString()+"\">"+attributes.value("name").toString()+"</a><br/>");
+                        QString url=attributes.value("url").toString();
+                        QString name=attributes.value("name").toString();
+
+                        if (!url.isEmpty() && !name.isEmpty()) {
+                            webLinks+=QLatin1String("<li><a href=\"")+url+"\">"+name+"</a></li>";
+                        }
                     }
                 }
             }
         }
 
         if (!webLinks.isEmpty()) {
-            html+="<p><b>"+i18n("Web Links")+"</b></p><p>";
-            foreach (QString wl, webLinks) {
-                html+=wl.replace("${artist}", currentSong.artist);
-            }
+            html+="<br/><b>"+i18n("Web Links")+"</b><ul>"+QString(webLinks).replace("${artist}", currentSong.artist)+"</ul>";
         }
         #endif
         text->setHtml(html);
@@ -498,7 +500,7 @@ bool InfoPage::parseSimilarResponse(const QByteArray &resp)
                 if (!details.isEmpty() && details.contains("name")) {
                     QString artist=details["name"].toString();
                     if (similarArtists.isEmpty()) {
-                        similarArtists="<br/><p><b>"+i18n("Similar Artists")+"</b></p><p>";
+                        similarArtists="<br/><b>"+i18n("Similar Artists")+"</b><ul>";
                     }
                     if (mpdArtists.contains(artist)) {
                         artist=QLatin1String("<a href=\"cantata://?artist=")+artist+"\">"+artist+"</a>";
@@ -510,14 +512,15 @@ bool InfoPage::parseSimilarResponse(const QByteArray &resp)
                             artist=QLatin1String("<a href=\"cantata://?artist=")+mod+"\">"+artist+"</a>";
                         }
                     }
-                    similarArtists+=artist+"<br/>";
+
+                    similarArtists+="<li>"+artist+"</li>";
                 }
             }
         }
     }
 
     if (!similarArtists.isEmpty()) {
-        similarArtists+="</p>";
+        similarArtists+="</ul></p>";
     }
     return !similarArtists.isEmpty();
 }

@@ -95,7 +95,7 @@ private:
     QNetworkReply *currentSimilarJob;
     QString image;
     #ifndef Q_OS_WIN
-    QStringList webLinks;
+    QString webLinks;
     #endif
 };
 

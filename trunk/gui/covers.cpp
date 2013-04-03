@@ -617,7 +617,7 @@ void Covers::requestCover(const Song &song, bool urgent)
         queueThread=new QThread(this);
         queue->moveToThread(queueThread);
         connect(queue, SIGNAL(cover(const Song &, const QImage &, const QString &)), this, SIGNAL(cover(const Song &, const QImage &, const QString &)));
-        connect(queue, SIGNAL(artistImage(const Song &, const QImage &)), this, SIGNAL(artistImage(const Song &, const QImage &)));
+        connect(queue, SIGNAL(artistImage(const Song &, const QImage &, const QString &)), this, SIGNAL(artistImage(const Song &, const QImage &, const QString &)));
         connect(queue, SIGNAL(download(const Song &)), this, SLOT(download(const Song &)));
         queueThread->start();
     }
@@ -665,7 +665,7 @@ void CoverQueue::getNextCover()
     if (img.img.isNull()) {
         emit download(song);
     } else if (song.album.isEmpty() && song.artist.isEmpty() && !song.albumartist.isEmpty()) {
-        emit artistImage(song, img.img);
+        emit artistImage(song, img.img, img.fileName);
     } else {
         emit cover(song, img.img, img.fileName);
     }
@@ -897,7 +897,7 @@ void Covers::lastFmCallFinished()
             jobs.insert(j, job);
         } else {
             if (job.isArtist) {
-                emit artistImage(job.song, QImage());
+                emit artistImage(job.song, QImage(), QString());
             } else {
                 #if defined Q_OS_WIN
                 emit cover(job.song, QImage(), QString());
@@ -1063,7 +1063,7 @@ void Covers::gotArtistImage(const Song &song, const Image &img, bool emitResult)
         filenames.insert(artistKey(song), img.fileName);
     }
     if (emitResult) {
-        emit artistImage(song, img.img);
+        emit artistImage(song, img.img, img.fileName);
     }
 }
 

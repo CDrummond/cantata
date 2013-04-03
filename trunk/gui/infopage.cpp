@@ -51,7 +51,8 @@
 static const QLatin1String constApiKey("N5JHVHNG0UOZZIDVT");
 static const char *constNameKey="name";
 static const int constCacheAge=7;
-static int imageSize=-1;
+static int imageWidth=-1;
+static int imageHeight=-1;
 
 const QLatin1String InfoPage::constCacheDir("artists/");
 const QLatin1String InfoPage::constInfoExt(".json.gz");
@@ -77,14 +78,14 @@ InfoBrowser::InfoBrowser(QWidget *p)
     setOpenLinks(false);
 }
 
-// QTextEdit/QTextBrowser seems to do FastTransformatio when scaling images, and this looks bad.
+// QTextEdit/QTextBrowser seems to do FastTransformation when scaling images, and this looks bad.
 QVariant InfoBrowser::loadResource(int type, const QUrl &name)
 {
     if (QTextDocument::ImageResource==type && (name.scheme().isEmpty() || QLatin1String("file")==name.scheme())) {
         QImage img;
         img.load(name.path());
         if (!img.isNull()) {
-            return img.scaled(imageSize*1.5, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            return img.scaled(imageWidth, imageHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
     }
     return TextBrowser::loadResource(type, name);
@@ -112,8 +113,9 @@ InfoPage::InfoPage(QWidget *parent)
     connect(text, SIGNAL(anchorClicked(QUrl)), SLOT(showArtist(QUrl)));
     Utils::clearOldCache(constCacheDir, constCacheAge);
     header->setText(i18n("Information"));
-    if (-1==imageSize) {
-        imageSize=fontMetrics().height()*12;
+    if (-1==imageHeight) {
+        imageHeight=fontMetrics().height()*12;
+        imageWidth=imageHeight*1.5;
     }
 }
 
@@ -175,12 +177,10 @@ void InfoPage::artistImage(const Song &song, const QImage &i, const QString &f)
 {
     if (song.albumartist==currentSong.artist && image.isEmpty() && !i.isNull()) {
         if (!f.isEmpty() && QFile::exists(f)) {
-            QSize sz=i.size();
-            sz.scale(imageSize*1.5, imageSize, Qt::KeepAspectRatio);
-            image=QString("<img src=\"%1\" width=\"%2\" height=\"%3\">").arg(f).arg(sz.width()).arg(sz.height());
+            image=QString("<img src=\"%1\">").arg(f);
         } else {
             // No filename given, or file does not exist - therefore scale image.
-            image=encode(i.scaled(imageSize*1.5, imageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            image=encode(i.scaled(imageWidth, imageHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         setBio();
     }

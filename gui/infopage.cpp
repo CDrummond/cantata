@@ -65,9 +65,7 @@ static QString encode(const QImage &img)
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::WriteOnly);
     img.save(&buffer, "PNG");
-    return QString("<img src=\"data:image/png;base64,%1\" align=\"%2\">")
-            .arg(QString(buffer.data().toBase64()))
-            .arg(Qt::RightToLeft==QApplication::layoutDirection() ? "right" : "left");
+    return QString("<img src=\"data:image/png;base64,%1\">").arg(QString(buffer.data().toBase64()));
 }
 
 InfoPage::InfoPage(QWidget *parent)
@@ -96,7 +94,7 @@ InfoPage::InfoPage(QWidget *parent)
     Utils::clearOldCache(constCacheDir, constCacheAge);
     header->setText(i18n("Information"));
     if (-1==imageSize) {
-        imageSize=fontMetrics().height()*10;
+        imageSize=fontMetrics().height()*15;
     }
 }
 
@@ -433,7 +431,7 @@ bool InfoPage::parseBioResponse(const QByteArray &resp)
                 continue;
             }
         }
-        biographies[combo->count()]=it.value().text;
+        biographies[combo->count()]="<p><b>"+i18n("Biography")+"</b></p><p>"+it.value().text;
         combo->insertItem(combo->count(), i18n("Source: %1").arg(it.value().site));
     }
 

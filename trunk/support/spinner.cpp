@@ -59,10 +59,10 @@ Spinner::Spinner(QObject *p, bool inMiddle)
     , central(inMiddle)
 {
     Q_UNUSED(p)
-    static const int constSize=24;
+    int size=fontMetrics().height()*2;
     setVisible(false);
-    setMinimumSize(constSize, constSize);
-    setMaximumSize(constSize, constSize);
+    setMinimumSize(size, size);
+    setMaximumSize(size, size);
 }
 
 void Spinner::start()

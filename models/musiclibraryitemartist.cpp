@@ -79,7 +79,7 @@ bool MusicLibraryItemArtist::setCover(const QImage &img) const
     if (m_coverIsDefault && !img.isNull()) {
         int size=MusicLibraryItemAlbum::iconSize(!MusicLibraryItemAlbum::itemSize().isNull());
         QImage scaled=img.scaled(QSize(size, size), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-        m_cover = new QPixmap(QPixmap::fromImage(scaled.width()>size || scaled.height()>size ? scaled.copy((scaled.width()-size)/2, (scaled.height()-size)/2, size, size) : scaled));
+        m_cover = new QPixmap(QPixmap::fromImage(scaled.width()>size || scaled.height()>size ? scaled.copy((scaled.width()-size)/2, 0, size, size) : scaled));
         m_coverIsDefault=false;
         return true;
     }

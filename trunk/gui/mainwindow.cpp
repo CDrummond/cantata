@@ -259,7 +259,8 @@ MainWindow::MainWindow(QWidget *parent)
     playPauseTrackAction = ActionCollection::get()->createAction("playpausetrack", i18n("Play/Pause"), Icons::toolbarPlayIcon);
     stopPlaybackAction = ActionCollection::get()->createAction("stopplayback", i18n("Stop"), Icons::toolbarStopIcon);
     stopImmediatelyAction = ActionCollection::get()->createAction("stoptrack", i18n("Stop Immediately"), Icons::toolbarStopIcon);
-    stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Current Track"), Icons::toolbarStopIcon);
+    stopAfterCurrentTrackAction = ActionCollection::get()->createAction("stopaftercurrenttrack", i18n("Stop After Current Track"), Icons::toolbarStopIcon);
+    stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Track"), Icons::toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
     muteAction = ActionCollection::get()->createAction("mute", i18n("Mute"));
@@ -354,7 +355,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QMenu *stopMenu=new QMenu(this);
     stopMenu->addAction(stopImmediatelyAction);
-    stopMenu->addAction(stopAfterTrackAction);
+    stopMenu->addAction(stopAfterCurrentTrackAction);
     stopTrackButton->setMenu(stopMenu);
     stopTrackButton->setPopupMode(QToolButton::DelayedPopup);
 
@@ -611,13 +612,11 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->addAction(addPlayQueueToStoredPlaylistAction);
     playQueue->addAction(cropPlayQueueAction);
     playQueue->addAction(shufflePlayQueueAction);
-    Action *sep2=new Action(this);
-    sep2->setSeparator(true);
-    playQueue->addAction(sep2);
-    playQueue->addAction(setPriorityAction);
     Action *sep=new Action(this);
     sep->setSeparator(true);
     playQueue->addAction(sep);
+    playQueue->addAction(stopAfterTrackAction);
+    playQueue->addAction(setPriorityAction);
     playQueue->addAction(locateTrackAction);
     #ifdef TAGLIB_FOUND
     playQueue->addAction(editPlayQueueTagsAction);
@@ -681,6 +680,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playPauseTrackAction, SIGNAL(triggered(bool)), this, SLOT(playPauseTrack()));
     connect(stopPlaybackAction, SIGNAL(triggered(bool)), this, SLOT(stopPlayback()));
     connect(stopImmediatelyAction, SIGNAL(triggered(bool)), this, SLOT(stopImmediately()));
+    connect(stopAfterCurrentTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterCurrentTrack()));
     connect(stopAfterTrackAction, SIGNAL(triggered(bool)), this, SLOT(stopAfterTrack()));
     connect(volumeControl, SIGNAL(valueChanged(int)), MPDConnection::self(), SLOT(setVolume(int)));
     connect(this, SIGNAL(setVolume(int)), MPDConnection::self(), SLOT(setVolume(int)));
@@ -1035,13 +1035,15 @@ void MainWindow::showVolumeControl()
 void MainWindow::playQueueItemsSelected(bool s)
 {
     bool haveItems=playQueue->model()->rowCount()>0;
+    bool singleSelection=1==playQueue->selectedIndexes().count();
     removeFromPlayQueueAction->setEnabled(s && haveItems);
-    locateTrackAction->setEnabled(s && haveItems);
+    locateTrackAction->setEnabled(singleSelection);
     copyTrackInfoAction->setEnabled(s && haveItems);
     cropPlayQueueAction->setEnabled(playQueue->haveUnSelectedItems() && haveItems);
     shufflePlayQueueAction->setEnabled(haveItems);
     editPlayQueueTagsAction->setEnabled(s && haveItems);
     addPlayQueueToStoredPlaylistAction->setEnabled(haveItems);
+    stopAfterTrackAction->setEnabled(singleSelection);
 }
 
 void MainWindow::connectToMpd(const MPDConnectionDetails &details)
@@ -1492,14 +1494,14 @@ void MainWindow::toggleStream(bool s)
 void MainWindow::enableStopActions(bool enable)
 {
     stopImmediatelyAction->setEnabled(enable);
-    stopAfterTrackAction->setEnabled(enable);
+    stopAfterCurrentTrackAction->setEnabled(enable);
     stopPlaybackAction->setEnabled(enable);
 }
 
 void MainWindow::stopPlayback()
 {
     if (stopAfterCurrent) {
-        stopAfterTrack();
+        stopAfterCurrentTrack();
     } else {
         stopImmediately();
     }
@@ -1516,9 +1518,20 @@ void MainWindow::stopImmediately()
     startVolumeFade();
 }
 
+void MainWindow::stopAfterCurrentTrack()
+{
+    playQueueModel.clearStopAfterTrack();
+    emit stop(true);
+}
+
 void MainWindow::stopAfterTrack()
 {
-    emit stop(true);
+    QModelIndexList selected=playQueue->selectedIndexes();
+
+    if (1==selected.count()) {
+        QModelIndex idx=usingProxy ? playQueueProxyModel.mapToSource(selected.first()) : selected.first();
+        playQueueModel.setStopAfterTrack(playQueueModel.getIdByRow(idx.row()));
+    }
 }
 
 void MainWindow::startVolumeFade()
@@ -1840,6 +1853,7 @@ void MainWindow::updateStatus(MPDStatus * const status)
 {
     if (MPDState_Stopped==status->state() || MPDState_Inactive==status->state()) {
         positionSlider->clearTimes();
+        playQueueModel.clearStopAfterTrack();
     } else {
         positionSlider->setRange(0, 0==status->timeTotal() && 0!=current.time && (current.isCdda() || current.isCantataStream())
                                     ? current.time : status->timeTotal());

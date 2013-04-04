@@ -215,6 +215,7 @@ public Q_SLOTS:
     #endif
     void stopPlayback();
     void stopImmediately();
+    void stopAfterCurrentTrack();
     void stopAfterTrack();
     void playPauseTrack();
     void nextTrack();
@@ -329,6 +330,7 @@ private:
     Action *playPauseTrackAction;
     Action *stopPlaybackAction;
     Action *stopImmediatelyAction;
+    Action *stopAfterCurrentTrackAction;
     Action *stopAfterTrackAction;
     Action *increaseVolumeAction;
     Action *decreaseVolumeAction;

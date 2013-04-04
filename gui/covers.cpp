@@ -706,7 +706,7 @@ void Covers::download(const Song &song)
 
     if (isOnline) {
         donwloadOnlineImage(job);
-    } else if (!isArtistImage && !MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
+    } else if (!MPDConnection::self()->getDetails().dir.isEmpty() && MPDConnection::self()->getDetails().dir.startsWith(QLatin1String("http://"))) {
         downloadViaHttp(job, JobHttpJpg);
     } else {
         downloadViaLastFm(job);
@@ -741,24 +741,40 @@ void Covers::donwloadOnlineImage(Job &job)
     jobs.insert(j, job);
 }
 
-void Covers::downloadViaHttp(Job &job, JobType type)
+bool Covers::downloadViaHttp(Job &job, JobType type)
 {
     QUrl u;
-    QString coverName=MPDConnection::self()->getDetails().coverName;
+    bool isArtistImage=isRequestingArtistImage(job.song);
+    QString coverName=isArtistImage ? constArtistImage : MPDConnection::self()->getDetails().coverName;
     if (coverName.isEmpty()) {
         coverName=constFileName;
     }
     coverName+=constExtensions.at(JobHttpJpg==type ? 0 : 1);
+    QString dir=Utils::getDir(job.song.file);
+    if (isArtistImage) {
+        if (job.level) {
+            QStringList parts=dir.split("/", QString::SkipEmptyParts);
+            if (parts.size()<job.level) {
+                return false;
+            }
+            dir=QString();
+            for (int i=0; i<(parts.length()-job.level); ++i) {
+                dir+=parts.at(i)+"/";
+            }
+        }
+        job.level++;
+    }
     #if QT_VERSION < 0x050000
-    u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+coverName.toLatin1());
+    u.setEncodedUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(dir, "/")+coverName.toLatin1());
     #else
-    u=QUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(job.song.file), "/")+coverName.toLatin1());
+    u=QUrl(MPDConnection::self()->getDetails().dir.toLatin1()+QUrl::toPercentEncoding(Utils::getDir(dir, "/")+coverName.toLatin1());
     #endif
 
     job.type=type;
     QNetworkReply *j=NetworkAccessManager::self()->get(QNetworkRequest(u));
     connect(j, SIGNAL(finished()), this, SLOT(jobFinished()));
     jobs.insert(j, job);
+    return true;
 }
 
 static QDomElement addArg(QDomDocument &doc, const QString &key, const QString &val)
@@ -934,8 +950,11 @@ void Covers::jobFinished()
         jobs.remove(it.key());
         if (img.img.isNull() && JobLastFm!=job.type && JobOnline) {
             if (JobHttpJpg==job.type) {
-                downloadViaHttp(job, JobHttpPng);
-            } else {
+                if (!job.level || !downloadViaHttp(job, JobHttpJpg)) {
+                    job.level=0;
+                    downloadViaHttp(job, JobHttpPng);
+                }
+            } else if (JobHttpPng==job.type && (!job.level || !downloadViaHttp(job, JobHttpPng))) {
                 downloadViaLastFm(job);
             }
         } else {

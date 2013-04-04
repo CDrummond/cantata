@@ -156,9 +156,17 @@ For artist images:
 5. ${albumArtist}.jpg
 6. ${albumArtist}.png
 
+...if the MPD folder was specified as a http URL
+
+7. ${url}/${dirFromFile}/artist.jpg
+8. ${url}/${dirFromFile}/artist.png
+ 
+... the above will be repeated for each parent folder (until we reach the MPD
+    root folder)
+
 ...lastly
 
-7. Query last.fm using ${albumArtist}. Cantata will attempt to download the
+9. Query last.fm using ${albumArtist}. Cantata will attempt to download the
    image specified with the "extralarge" size.
 
 Downloaded images will be saved as artist.jpg/png, within the artist folder

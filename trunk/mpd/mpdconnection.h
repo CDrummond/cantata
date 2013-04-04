@@ -277,6 +277,7 @@ Q_SIGNALS:
     void prioritySet(const QList<quint32> &ids, quint8 priority);
 
     void dynamicUrl(const QString &url);
+    void stopAfterCurrentChanged(bool afterCurrent);
 
 private Q_SLOTS:
     void idleDataReady();
@@ -297,6 +298,7 @@ private:
     void initialize();
     void parseIdleReturn(const QByteArray &data);
     bool doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size);
+    void toggleStopAfterCurrent(bool afterCurrent);
 
 private:
     QThread *thread;

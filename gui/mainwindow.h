@@ -81,22 +81,16 @@ class GtkProxyStyle;
 // Dummy class so that when class name is saved to the config file, we get a more meaningful name than QWidget!!!
 class PlayQueuePage : public QWidget
 {
-    Q_OBJECT
-
 public:
     PlayQueuePage(QWidget *p) : QWidget(p) { }
 };
 
 class DeleteKeyEventHandler : public QObject
 {
-    Q_OBJECT
-
 public:
-    DeleteKeyEventHandler(QAbstractItemView *v, QAction *a);
-
+    DeleteKeyEventHandler(QAbstractItemView *v, QAction *a) : QObject(v), view(v), act(a) { }
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
-
 private:
     QAbstractItemView *view;
     QAction *act;
@@ -104,16 +98,22 @@ private:
 
 class VolumeSliderEventHandler : public QObject
 {
-    Q_OBJECT
-
 public:
     VolumeSliderEventHandler(MainWindow *w);
-
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
-
-private:
+protected:
     MainWindow * const window;
+};
+
+class VolumeButtonEventHandler : public VolumeSliderEventHandler
+{
+public:
+    VolumeButtonEventHandler(MainWindow *w) : VolumeSliderEventHandler(w), down(false) { }
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+private:
+    bool down;
 };
 
 #ifdef ENABLE_KDE_SUPPORT
@@ -332,6 +332,7 @@ private:
     Action *stopAfterTrackAction;
     Action *increaseVolumeAction;
     Action *decreaseVolumeAction;
+    Action *muteAction;
     Action *removeFromPlayQueueAction;
     Action *addPlayQueueToStoredPlaylistAction;
     Action *clearPlayQueueAction;
@@ -429,6 +430,7 @@ private:
     #endif
 
     friend class VolumeSliderEventHandler;
+    friend class VolumeButtonEventHandler;
     friend class CoverEventHandler;
     friend class TrayItem;
 };

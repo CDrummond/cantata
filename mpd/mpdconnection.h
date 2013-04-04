@@ -178,6 +178,7 @@ public:
     const QSet<QString> & urlHandlers() const { return handlers; }
     long version() const { return ver; }
     static bool isPlaylist(const QString &file);
+    int unmuteVolume() { return unmuteVol; }
 
 public Q_SLOTS:
     void reconnect();
@@ -212,6 +213,7 @@ public Q_SLOTS:
     void setSeek(quint32 song, quint32 time);
     void setSeekId(quint32 songId, quint32 time);
     void setVolume(int vol);
+    void toggleMute();
     void stopPlaying(bool afterCurrent=false);
 
     // Output
@@ -325,6 +327,7 @@ private:
 
     bool stopAfterCurrent;
     qint32 currentSongId;
+    int unmuteVol;
 };
 
 #endif

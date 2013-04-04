@@ -82,11 +82,12 @@ public:
     struct Job
     {
         Job(const Song &s, const QString &d, bool a=false)
-            : song(s), dir(d), isArtist(a), type(JobLastFm) { }
+            : song(s), dir(d), isArtist(a), type(JobLastFm), level(0) { }
         Song song;
         QString dir;
         bool isArtist;
         JobType type;
+        int level;
     };
 
     struct Image
@@ -138,7 +139,7 @@ Q_SIGNALS:
 
 private:
     void donwloadOnlineImage(Job &job);
-    void downloadViaHttp(Job &job, JobType type);
+    bool downloadViaHttp(Job &job, JobType type);
     void downloadViaLastFm(Job &job);
 
 private Q_SLOTS:

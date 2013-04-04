@@ -284,7 +284,7 @@ public:
         QRect r(option.rect.adjusted(constBorder+4, constBorder, -(constBorder+4), -constBorder));
         bool rtl=Qt::RightToLeft==QApplication::layoutDirection();
 
-        if (state) {
+        if (state && GroupedView::State_StopAfterTrack!=state) {
             QRectF border(option.rect.x()+1.5, option.rect.y()+1.5, option.rect.width()-3, option.rect.height()-3);
             if (!title.isEmpty()) {
                 border.adjust(0, textHeight+constBorder, 0, 0);
@@ -373,6 +373,13 @@ public:
                 painter->setPen(inside);
                 painter->drawRect(ir.adjusted(1, 1, -2, -2));
                 painter->fillRect(ir.adjusted(3, 3, -3, -3), inside);
+                break;
+            case GroupedView::State_StopAfterTrack:
+                painter->setPen(border);
+                painter->drawRect(ir.adjusted(0, 0, -1, -1));
+                painter->drawRect(ir.adjusted(2, 2, -3, -3));
+                painter->setPen(inside);
+                painter->drawRect(ir.adjusted(1, 1, -2, -2));
                 break;
             case GroupedView::State_Paused: {
                 int blockSize=hSize-1;

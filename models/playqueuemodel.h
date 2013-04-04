@@ -95,6 +95,8 @@ public:
     void setGrouped(bool g);
     void update(const QList<Song> &songList);
     Action * getAction(const QModelIndex &, int) { return 0; }
+    void setStopAfterTrack(qint32 track);
+    void clearStopAfterTrack() { setStopAfterTrack(-1); }
 
 public Q_SLOTS:
     void addItems(const QStringList &items, int row, bool replace, quint8 priority);
@@ -107,6 +109,8 @@ private Q_SLOTS:
     void stopAfterCurrentChanged(bool afterCurrent);
 
 Q_SIGNALS:
+    void stop(bool afterCurrent);
+    void clearStopAfter();
     void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, bool replace, quint8 priority);
     void move(const QList<quint32> &items, const quint32 row, const quint32 size);
     void statsUpdated(int songs, quint32 time);
@@ -121,6 +125,7 @@ private:
     bool grouped;
     quint32 dropAdjust;
     bool stopAfterCurrent;
+    qint32 stopAfterTrackId;
 };
 
 #endif

@@ -758,7 +758,7 @@ void MPDConnection::getReplayGain()
 
 void MPDConnection::goToNext()
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("next");
 }
 
@@ -769,25 +769,25 @@ static inline QByteArray value(bool b)
 
 void MPDConnection::setPause(bool toggle)
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("pause "+value(toggle));
 }
 
 void MPDConnection::startPlayingSong(quint32 song)
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("play "+QByteArray::number(song));
 }
 
 void MPDConnection::startPlayingSongId(quint32 songId)
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("playid "+QByteArray::number(songId));
 }
 
 void MPDConnection::goToPrevious()
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("previous");
 }
 
@@ -813,13 +813,13 @@ void MPDConnection::setSingle(bool toggle)
 
 void MPDConnection::setSeek(quint32 song, quint32 time)
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("seek "+QByteArray::number(song)+' '+QByteArray::number(time));
 }
 
 void MPDConnection::setSeekId(quint32 songId, quint32 time)
 {
-    stopAfterCurrent=false;
+    toggleStopAfterCurrent(false);
     sendCommand("seekid "+QByteArray::number(songId)+' '+QByteArray::number(time));
 }
 
@@ -850,7 +850,7 @@ void MPDConnection::toggleMute()
 
 void MPDConnection::stopPlaying(bool afterCurrent)
 {
-    stopAfterCurrent=afterCurrent;
+    toggleStopAfterCurrent(afterCurrent);
     if (!stopAfterCurrent) {
         sendCommand("stop");
     }
@@ -874,7 +874,7 @@ void MPDConnection::getStatus()
         lastStatusPlayQueueVersion=sv.playlist;
         if (stopAfterCurrent && currentSongId!=sv.songId) {
             sendCommand("stop");
-            stopAfterCurrent=false;
+            toggleStopAfterCurrent(false);
         }
         currentSongId=sv.songId;
         emit statusUpdated(sv);
@@ -1181,7 +1181,7 @@ void MPDConnection::moveInPlaylist(const QString &name, const QList<quint32> &it
 bool MPDConnection::doMoveInPlaylist(const QString &name, const QList<quint32> &items, quint32 pos, quint32 size)
 {
     if (name.isEmpty()) {
-        stopAfterCurrent=false;
+        toggleStopAfterCurrent(false);
     }
     QByteArray cmd = name.isEmpty() ? "move " : ("playlistmove "+encodeName(name)+" ");
     QByteArray send = "command_list_begin\n";
@@ -1213,6 +1213,14 @@ bool MPDConnection::doMoveInPlaylist(const QString &name, const QList<quint32> &
 
     send += "command_list_end";
     return sendCommand(send).ok;
+}
+
+void MPDConnection::toggleStopAfterCurrent(bool afterCurrent)
+{
+    if (afterCurrent!=stopAfterCurrent) {
+        stopAfterCurrent=afterCurrent;
+        emit stopAfterCurrentChanged(stopAfterCurrent);
+    }
 }
 
 MpdSocket::MpdSocket(QObject *parent)

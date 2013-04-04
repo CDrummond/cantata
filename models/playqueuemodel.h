@@ -103,6 +103,9 @@ public Q_SLOTS:
     void prioritySet(const QList<quint32> &ids, quint8 priority);
     void stats();
 
+private Q_SLOTS:
+    void stopAfterCurrentChanged(bool afterCurrent);
+
 Q_SIGNALS:
     void filesAdded(const QStringList filenames, const quint32 row, const quint32 size, bool replace, quint8 priority);
     void move(const QList<quint32> &items, const quint32 row, const quint32 size);
@@ -117,6 +120,7 @@ private:
     MPDState mpdState;
     bool grouped;
     quint32 dropAdjust;
+    bool stopAfterCurrent;
 };
 
 #endif

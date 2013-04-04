@@ -37,6 +37,7 @@ public:
     enum Status {
         State_Default,
         State_Playing,
+        State_StopAfter,
         State_Paused,
         State_Stopped
     };

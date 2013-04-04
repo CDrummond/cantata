@@ -114,6 +114,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , grouped(false)
     , dropAdjust(0)
     , stopAfterCurrent(false)
+    , stopAfterTrackId(-1)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
@@ -124,6 +125,8 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
     connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<quint32> &, quint8)), SLOT(prioritySet(const QList<quint32> &, quint8)));
     connect(MPDConnection::self(), SIGNAL(stopAfterCurrentChanged(bool)), SLOT(stopAfterCurrentChanged(bool)));
+    connect(this, SIGNAL(stop(bool)), MPDConnection::self(), SLOT(stopPlaying(bool)));
+    connect(this, SIGNAL(clearStopAfter()), MPDConnection::self(), SLOT(clearStopAfter()));
 }
 
 PlayQueueModel::~PlayQueueModel()
@@ -263,21 +266,27 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
                 case MPDState_Playing: return (int)(stopAfterCurrent ? GroupedView::State_StopAfter : GroupedView::State_Playing);
                 case MPDState_Paused:  return (int)GroupedView::State_Paused;
                 }
+            }  else if (s.id==stopAfterTrackId) {
+                return GroupedView::State_StopAfterTrack;
             }
         }
         return QVariant();
     }
-    case GroupedView::Role_Status:
-        if (songs.at(index.row()).id == currentSongId) {
+    case GroupedView::Role_Status: {
+        qint32 id=songs.at(index.row()).id;
+        if (id==currentSongId) {
             switch (mpdState) {
             case MPDState_Inactive:
             case MPDState_Stopped: return (int)GroupedView::State_Stopped;
             case MPDState_Playing: return (int)(stopAfterCurrent ? GroupedView::State_StopAfter : GroupedView::State_Playing);
             case MPDState_Paused:  return (int)GroupedView::State_Paused;
             }
+        } else if (id==stopAfterTrackId) {
+            return GroupedView::State_StopAfterTrack;
         }
         return (int)GroupedView::State_Default;
         break;
+    }
     case Qt::FontRole: {
         Song s=songs.at(index.row());
 
@@ -365,12 +374,17 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             return int(Qt::AlignVCenter|Qt::AlignRight);
         }
     case Qt::DecorationRole:
-        if (COL_STATUS==index.column() && songs.at(index.row()).id == currentSongId) {
-            switch (mpdState) {
-            case MPDState_Inactive:
-            case MPDState_Stopped: return Icon("media-playback-stop");
-            case MPDState_Playing: return Icon(stopAfterCurrent ? "media-playback-stop" : "media-playback-start");
-            case MPDState_Paused:  return Icon("media-playback-pause");
+        if (COL_STATUS==index.column()) {
+            qint32 id=songs.at(index.row()).id;
+            if (id==currentSongId) {
+                switch (mpdState) {
+                case MPDState_Inactive:
+                case MPDState_Stopped: return Icon("media-playback-stop");
+                case MPDState_Playing: return Icon(stopAfterCurrent ? "media-playback-stop" : "media-playback-start");
+                case MPDState_Paused:  return Icon("media-playback-pause");
+                }
+            } else if (id==stopAfterTrackId) {
+                return Icon("media-playback-stop");
             }
         }
         break;
@@ -621,6 +635,11 @@ void PlayQueueModel::updateCurrentSong(quint32 id)
 
     currentSongRowNum=getRowById(currentSongId);
     emit dataChanged(index(currentSongRowNum, 0), index(currentSongRowNum, columnCount(QModelIndex())-1));
+
+    if (stopAfterTrackId==currentSongId) {
+        stopAfterTrackId=-1;
+        emit stop(true);
+    }
 }
 
 void PlayQueueModel::clear()
@@ -669,6 +688,9 @@ void PlayQueueModel::update(const QList<Song> &songList)
         songs=songList;
         ids=newIds;
         endResetModel();
+        if (songList.isEmpty()) {
+            stopAfterTrackId=-1;
+        }
     } else {
         quint32 time = 0;
 
@@ -722,7 +744,26 @@ void PlayQueueModel::update(const QList<Song> &songList)
         }
 
         ids=newIds;
+        if (-1!=stopAfterTrackId && !ids.contains(stopAfterTrackId)) {
+            stopAfterTrackId=-1;
+        }
         emit statsUpdated(songs.size(), time);
+    }
+}
+
+void PlayQueueModel::setStopAfterTrack(qint32 track)
+{
+    bool clear=track==stopAfterTrackId || (track==currentSongId && stopAfterCurrent);
+
+    stopAfterTrackId=clear ? -1 : track;
+    qint32 row=getRowById(track);
+    if (-1!=row) {
+        emit dataChanged(index(row, 0), index(row, columnCount(QModelIndex())-1));
+    }
+    if (clear) {
+        emit clearStopAfter();
+    } else if (stopAfterTrackId==currentSongId) {
+        emit stop(true);
     }
 }
 

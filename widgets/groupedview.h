@@ -38,6 +38,7 @@ public:
         State_Default,
         State_Playing,
         State_StopAfter,
+        State_StopAfterTrack,
         State_Paused,
         State_Stopped
     };

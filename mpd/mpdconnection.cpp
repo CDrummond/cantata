@@ -856,6 +856,11 @@ void MPDConnection::stopPlaying(bool afterCurrent)
     }
 }
 
+void MPDConnection::clearStopAfter()
+{
+    toggleStopAfterCurrent(false);
+}
+
 void MPDConnection::getStats(bool andUpdate)
 {
     Response response=sendCommand(andUpdate ? "command_list_begin\nupdate\nstats\ncommand_list_end" : "stats");

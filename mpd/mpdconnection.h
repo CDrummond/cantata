@@ -215,6 +215,7 @@ public Q_SLOTS:
     void setVolume(int vol);
     void toggleMute();
     void stopPlaying(bool afterCurrent=false);
+    void clearStopAfter();
 
     // Output
     void outputs();

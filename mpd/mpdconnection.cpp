@@ -152,6 +152,7 @@ MPDConnection::MPDConnection()
     , reconnectStart(0)
     , stopAfterCurrent(false)
     , currentSongId(-1)
+    , unmuteVol(-1)
 {
     qRegisterMetaType<Song>("Song");
     qRegisterMetaType<Output>("Output");
@@ -363,6 +364,7 @@ void MPDConnection::setDetails(const MPDConnectionDetails &det)
         DBUG << "setDetails" << details.hostname << details.port << (details.password.isEmpty() ? false : true);
         disconnectFromMPD();
         DBUG << "call connectToMPD";
+        unmuteVol=-1;
         switch (connectToMPD()) {
         case Success:
             getStatus();
@@ -824,7 +826,25 @@ void MPDConnection::setSeekId(quint32 songId, quint32 time)
 void MPDConnection::setVolume(int vol)
 {
     if (vol>=0) {
+        unmuteVol=-1;
         sendCommand("setvol "+QByteArray::number(vol), false);
+    }
+}
+
+void MPDConnection::toggleMute()
+{
+    if (unmuteVol>0) {
+        sendCommand("setvol "+QByteArray::number(unmuteVol), false);
+        unmuteVol=-1;
+    } else {
+        Response status=sendCommand("status");
+        if (status.ok) {
+            MPDStatusValues sv=MPDParseUtils::parseStatus(status.data);
+            if (sv.volume>0) {
+                unmuteVol=sv.volume;
+                sendCommand("setvol "+QByteArray::number(0), false);
+            }
+        }
     }
 }
 

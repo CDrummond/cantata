@@ -122,13 +122,6 @@ enum Tabs
     TAB_STREAMS = 0x04
 };
 
-DeleteKeyEventHandler::DeleteKeyEventHandler(QAbstractItemView *v, QAction *a)
-    : QObject(v)
-    , view(v)
-    , act(a)
-{
-}
-
 bool DeleteKeyEventHandler::eventFilter(QObject *obj, QEvent *event)
 {
     if (view->hasFocus() && QEvent::KeyRelease==event->type() && static_cast<QKeyEvent *>(event)->matches(QKeySequence::Delete)) {
@@ -146,7 +139,7 @@ VolumeSliderEventHandler::VolumeSliderEventHandler(MainWindow *w)
 
 bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
 {
-    if (event->type() == QEvent::Wheel) {
+    if (QEvent::Wheel==event->type()) {
         int numDegrees = static_cast<QWheelEvent *>(event)->delta() / 8;
         int numSteps = numDegrees / 15;
         if (numSteps > 0) {
@@ -160,6 +153,19 @@ bool VolumeSliderEventHandler::eventFilter(QObject *obj, QEvent *event)
     }
 
     return QObject::eventFilter(obj, event);
+}
+
+bool VolumeButtonEventHandler::eventFilter(QObject *obj, QEvent *event)
+{
+    if (QEvent::MouseButtonPress==event->type() && Qt::MiddleButton==static_cast<QMouseEvent *>(event)->buttons()) {
+        down=true;
+    } else if (QEvent::MouseButtonRelease==event->type()) {
+        if (down) {
+            window->muteAction->trigger();
+        }
+        down=false;
+    }
+    return VolumeSliderEventHandler::eventFilter(obj, event);
 }
 
 static int nextKey(int &key) {
@@ -256,6 +262,7 @@ MainWindow::MainWindow(QWidget *parent)
     stopAfterTrackAction = ActionCollection::get()->createAction("stopaftertrack", i18n("Stop After Current Track"), Icons::toolbarStopIcon);
     increaseVolumeAction = ActionCollection::get()->createAction("increasevolume", i18n("Increase Volume"));
     decreaseVolumeAction = ActionCollection::get()->createAction("decreasevolume", i18n("Decrease Volume"));
+    muteAction = ActionCollection::get()->createAction("mute", i18n("Mute"));
     addPlayQueueToStoredPlaylistAction = ActionCollection::get()->createAction("addpqtostoredplaylist", i18n("Add To Stored Playlist"), Icons::playlistIcon);
     removeFromPlayQueueAction = ActionCollection::get()->createAction("removefromplaylist", i18n("Remove From Play Queue"), "list-remove");
     copyTrackInfoAction = ActionCollection::get()->createAction("copytrackinfo", i18n("Copy Track Info"));
@@ -302,6 +309,7 @@ MainWindow::MainWindow(QWidget *parent)
     stopPlaybackAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_X));
     increaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Up));
     decreaseVolumeAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_Down));
+    muteAction->setGlobalShortcut(KShortcut(Qt::META + Qt::Key_M));
     #endif
 
     copyTrackInfoAction->setShortcut(QKeySequence::Copy);
@@ -327,7 +335,7 @@ MainWindow::MainWindow(QWidget *parent)
     volumeSliderEventHandler = new VolumeSliderEventHandler(this);
     volumeControl = new VolumeControl(volumeButton);
     volumeControl->installSliderEventFilter(volumeSliderEventHandler);
-    volumeButton->installEventFilter(volumeSliderEventHandler);
+    volumeButton->installEventFilter(new VolumeButtonEventHandler(this));
 
     connectionsAction->setMenu(new QMenu(this));
     connectionsGroup=new QActionGroup(connectionsAction->menu());
@@ -680,6 +688,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(decreaseVolumeAction, SIGNAL(triggered(bool)), this, SLOT(decreaseVolume()));
     connect(increaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(increaseVolume()));
     connect(decreaseVolumeAction, SIGNAL(triggered(bool)), volumeControl, SLOT(decreaseVolume()));
+    connect(muteAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(toggleMute()));
     connect(positionSlider, SIGNAL(sliderReleased()), this, SLOT(setPosition()));
     connect(randomPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRandom(bool)));
     connect(repeatPlayQueueAction, SIGNAL(triggered(bool)), MPDConnection::self(), SLOT(setRepeat(bool)));
@@ -1840,20 +1849,6 @@ void MainWindow::updateStatus(MPDStatus * const status)
     if (!stopState) {
         volume=status->volume();
 
-        volumeControl->blockSignals(true);
-        if (volume<0) {
-            volumeButton->setEnabled(false);
-            volumeButton->setToolTip(i18n("Volume Disabled"));
-            volumeControl->setToolTip(i18n("Volume Disabled"));
-            volumeControl->setValue(0);
-        } else {
-            volumeButton->setEnabled(true);
-            volumeButton->setToolTip(i18n("Volume %1%").arg(volume));
-            volumeControl->setToolTip(i18n("Volume %1%").arg(volume));
-            volumeControl->setValue(volume);
-        }
-        volumeControl->blockSignals(false);
-
         if (volume<=0) {
             volumeButton->setIcon(Icons::toolbarVolumeMutedIcon);
         } else if (volume<=33) {
@@ -1863,6 +1858,29 @@ void MainWindow::updateStatus(MPDStatus * const status)
         } else {
             volumeButton->setIcon(Icons::toolbarVolumeHighIcon);
         }
+
+        volumeControl->blockSignals(true);
+        if (volume<0) {
+            volumeButton->setEnabled(false);
+            volumeButton->setToolTip(i18n("Volume Disabled"));
+            volumeControl->setToolTip(i18n("Volume Disabled"));
+            volumeControl->setValue(0);
+        } else {
+            if (0==volume) {
+                int unmuteVolume=MPDConnection::self()->unmuteVolume();
+                if (unmuteVolume>0) {
+                    volume=unmuteVolume;
+                }
+            }
+            volumeButton->setEnabled(true);
+            volumeButton->setToolTip(i18n("Volume %1%").arg(volume));
+            volumeControl->setToolTip(i18n("Volume %1%").arg(volume));
+            volumeControl->setValue(volume);
+        }
+        muteAction->setEnabled(volumeButton->isEnabled());
+        increaseVolumeAction->setEnabled(volumeButton->isEnabled());
+        decreaseVolumeAction->setEnabled(volumeButton->isEnabled());
+        volumeControl->blockSignals(false);
     }
 
     randomPlayQueueAction->setChecked(status->random());

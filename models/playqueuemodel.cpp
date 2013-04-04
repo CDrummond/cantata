@@ -31,6 +31,7 @@
 #include <QTextStream>
 #include <QSet>
 #include <QUrl>
+#include <QTimer>
 #include "localize.h"
 #include "playqueuemodel.h"
 #include "groupedview.h"
@@ -112,6 +113,7 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
     , mpdState(MPDState_Inactive)
     , grouped(false)
     , dropAdjust(0)
+    , stopAfterCurrent(false)
 {
     fetcher=new StreamFetcher(this);
     connect(this, SIGNAL(modelReset()), this, SLOT(stats()));
@@ -120,8 +122,8 @@ PlayQueueModel::PlayQueueModel(QObject *parent)
             MPDConnection::self(), SLOT(add(const QStringList, quint32, quint32, bool, quint8)));
     connect(this, SIGNAL(move(const QList<quint32> &, quint32, quint32)),
             MPDConnection::self(), SLOT(move(const QList<quint32> &, quint32, quint32)));
-    connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<quint32> &, quint8)),
-            this, SLOT(prioritySet(const QList<quint32> &, quint8)));
+    connect(MPDConnection::self(), SIGNAL(prioritySet(const QList<quint32> &, quint8)), SLOT(prioritySet(const QList<quint32> &, quint8)));
+    connect(MPDConnection::self(), SIGNAL(stopAfterCurrentChanged(bool)), SLOT(stopAfterCurrentChanged(bool)));
 }
 
 PlayQueueModel::~PlayQueueModel()
@@ -258,7 +260,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
                 switch (mpdState) {
                 case MPDState_Inactive:
                 case MPDState_Stopped: return (int)GroupedView::State_Stopped;
-                case MPDState_Playing: return (int)GroupedView::State_Playing;
+                case MPDState_Playing: return (int)(stopAfterCurrent ? GroupedView::State_StopAfter : GroupedView::State_Playing);
                 case MPDState_Paused:  return (int)GroupedView::State_Paused;
                 }
             }
@@ -270,7 +272,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             switch (mpdState) {
             case MPDState_Inactive:
             case MPDState_Stopped: return (int)GroupedView::State_Stopped;
-            case MPDState_Playing: return (int)GroupedView::State_Playing;
+            case MPDState_Playing: return (int)(stopAfterCurrent ? GroupedView::State_StopAfter : GroupedView::State_Playing);
             case MPDState_Paused:  return (int)GroupedView::State_Paused;
             }
         }
@@ -367,7 +369,7 @@ QVariant PlayQueueModel::data(const QModelIndex &index, int role) const
             switch (mpdState) {
             case MPDState_Inactive:
             case MPDState_Stopped: return Icon("media-playback-stop");
-            case MPDState_Playing: return Icon("media-playback-start");
+            case MPDState_Playing: return Icon(stopAfterCurrent ? "media-playback-stop" : "media-playback-start");
             case MPDState_Paused:  return Icon("media-playback-pause");
             }
         }
@@ -734,6 +736,14 @@ void PlayQueueModel::stats()
     }
 
     emit statsUpdated(songs.size(), time);
+}
+
+void PlayQueueModel::stopAfterCurrentChanged(bool afterCurrent)
+{
+    if (afterCurrent!=stopAfterCurrent) {
+        stopAfterCurrent=afterCurrent;
+        emit dataChanged(index(currentSongRowNum, 0), index(currentSongRowNum, columnCount(QModelIndex())-1));
+    }
 }
 
 QSet<qint32>  PlayQueueModel::getSongIdSet()

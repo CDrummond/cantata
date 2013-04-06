@@ -35,6 +35,7 @@
 #include "actionmodel.h"
 
 class QMenu;
+class QAction;
 
 class PlaylistsModel : public ActionModel
 {
@@ -135,6 +136,7 @@ private:
     QSet<QString> plGenres;
     QMenu *itemMenu;
     quint32 dropAdjust;
+    QAction *newAction;
 };
 
 #endif

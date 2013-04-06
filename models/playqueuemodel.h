@@ -87,6 +87,7 @@ public:
     QMimeData *mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
     QSet<qint32> getSongIdSet();
+    QStringList filenames();
     void clear();
     qint32 currentSong() const { return currentSongId; }
     qint32 currentSongRow() const;

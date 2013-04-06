@@ -381,11 +381,10 @@ MainWindow::MainWindow(QWidget *parent)
     initSizes();
 
     clearPlayQueueAction->setEnabled(false);
+    StdActions::self()->savePlayQueueAction->setEnabled(false);
     addStreamToPlayQueueAction->setEnabled(false);
-    savePlayQueueButton->setMenu(PlaylistsModel::self()->menu());
-    savePlayQueueButton->setIcon(Icon("document-save-as"));
-    savePlayQueueButton->setToolTip(i18n("Save Play Queue"));
     clearPlayQueueButton->setDefaultAction(clearPlayQueueAction);
+    savePlayQueueButton->setDefaultAction(StdActions::self()->savePlayQueueAction);
     randomButton->setDefaultAction(randomPlayQueueAction);
     repeatButton->setDefaultAction(repeatPlayQueueAction);
     singleButton->setDefaultAction(singlePlayQueueAction);
@@ -607,6 +606,7 @@ MainWindow::MainWindow(QWidget *parent)
     playQueue->setModel(&playQueueModel);
     playQueue->addAction(removeFromPlayQueueAction);
     playQueue->addAction(clearPlayQueueAction);
+    playQueue->addAction(StdActions::self()->savePlayQueueAction);
     playQueue->addAction(addStreamToPlayQueueAction);
     playQueue->addAction(addPlayQueueToStoredPlaylistAction);
     playQueue->addAction(cropPlayQueueAction);
@@ -1688,7 +1688,7 @@ void MainWindow::updatePlayQueue(const QList<Song> &songs)
     playPauseTrackAction->setEnabled(!songs.isEmpty());
     nextTrackAction->setEnabled(stopImmediatelyAction->isEnabled() && songs.count()>1);
     prevTrackAction->setEnabled(stopImmediatelyAction->isEnabled() && songs.count()>1);
-    savePlayQueueButton->setEnabled(!songs.isEmpty());
+    StdActions::self()->savePlayQueueAction->setEnabled(!songs.isEmpty());
     clearPlayQueueAction->setEnabled(!songs.isEmpty());
 
     playQueueModel.update(songs);
@@ -2128,9 +2128,10 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
 {
     if (pq) {
         QModelIndexList items = playQueue->selectedIndexes();
-        if (!items.isEmpty()) {
-            QStringList files;
-
+        QStringList files;
+        if (items.isEmpty()) {
+            files = playQueueModel.filenames();
+        } else {
             qSort(items);
             foreach (const QModelIndex &idx, items) {
                 Song s = playQueueModel.getSongByRow(usingProxy ? playQueueProxyModel.mapToSource(idx).row() : idx.row());
@@ -2138,10 +2139,9 @@ void MainWindow::addToExistingStoredPlaylist(const QString &name, bool pq)
                     files.append(s.file);
                 }
             }
-
-            if (!files.isEmpty()) {
-                emit addSongsToPlaylist(name, files);
-            }
+        }
+        if (!files.isEmpty()) {
+            emit addSongsToPlaylist(name, files);
         }
     } else if (libraryPage->isVisible()) {
         libraryPage->addSelectionToPlaylist(name);
